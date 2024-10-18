@@ -8,15 +8,15 @@ options-tech-level =
 
 checkbox-kill-bounties =
     .label = Kill Bounties
-    .description = Players receive cash bonuses when killing enemy units
+    .description = Players receive cash bonuses for killing enemy units
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allow undeploying Construction Yard
+    .description = Allows Construction Yards to be undeployed
 
 checkbox-reusable-engineers =
     .label = Reusable Engineers
-    .description = Engineers remain on the battlefield after capturing a structure
+    .description = Engineers stay on the battlefield after capturing a structure
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
@@ -40,19 +40,19 @@ faction-allies =
 
 faction-england =
     .name = England
-    .description = England: Counterintelligence
+    .description = England: Counterintelligence.
      Special Unit: British Spy
      Special Unit: Mobile Gap Generator
 
 faction-france =
     .name = France
-    .description = France: Deception
+    .description = France: Deception.
      Special Ability: Can build fake structures
      Special Unit: Phase Transport
 
 faction-germany =
     .name = Germany
-    .description = Germany: Technology
+    .description = Germany: Chronoshift Technology.
      Special Ability: Advanced Chronoshift
      Special Unit: Chrono Tank
 
@@ -61,74 +61,74 @@ faction-soviet =
 
 faction-russia =
     .name = Russia
-    .description = Russia: Tesla Weapons
+    .description = Russia: Tesla Weapons.
      Special Unit: Tesla Tank
      Special Unit: Shock Trooper
 
 faction-ukraine =
     .name = Ukraine
-    .description = Ukraine: Demolitions
+    .description = Ukraine: Demolitions.
      Special Ability: Parabombs
      Special Unit: Demolition Truck
 
 faction-random =
     .name = Any
-    .description = Random Country
-     A random country will be chosen when the game starts.
+    .description = Random Country.
+     A random country is chosen when the game starts.
 
 faction-randomallies =
     .name = Allies
-    .description = Random Allied Country
-     A random Allied country will be chosen when the game starts.
+    .description = Random Allied Country.
+     A random Allied country is chosen when the game starts.
 
 faction-randomsoviet =
     .name = Soviet
-    .description = Random Soviet Country
-     A random Soviet country will be chosen when the game starts.
+    .description = Random Soviet Country.
+     A random Soviet country is chosen when the game starts.
 
 ## aircraft.yaml
 actor-badr-name = Badger
 
 actor-mig =
-   .description = Fast Ground-Attack Plane.
-      Strong vs Buildings, Vehicles
-      Weak vs Infantry, Aircraft
    .name = MiG Attack Plane
+   .description = Fast Ground-Attack Plane.
+      Strong vs. Buildings and Vehicles.
+      Weak vs. Infantry and Aircraft.
 
 actor-yak =
-   .description = Attack Plane armed with
-    dual machine guns.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
    .name = Yak Attack Plane
+   .description = Attack Plane with
+    dual machine guns.
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 actor-tran =
-   .description = Fast Infantry Transport Helicopter.
-      Unarmed
    .name = Chinook
+   .description = Fast infantry transport helicopter.
+      Unarmed
 
 actor-heli =
-   .description = Helicopter gunship armed
-    with multi-purpose missiles.
-      Strong vs Buildings, Vehicles, Aircraft
-      Weak vs Infantry
    .name = Longbow
+   .description = Helicopter gunship
+    with multi-purpose missiles.
+      Strong vs. Buildings, Vehicles and Aircraft.
+      Weak vs. Infantry.
 
 actor-hind =
-   .description = Helicopter gunship armed
-    with dual chainguns.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
    .name = Hind
+   .description = Helicopter gunship
+    with dual chain guns.
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 actor-u2-name = Spy Plane
 
 actor-mh60 =
-   .description = Helicopter gunship armed
-    with dual chainguns.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
    .name = Black Hawk
+   .description = Helicopter gunship
+    with dual chain guns.
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 ## civilian.yaml
 actor-c10-name = Scientist
@@ -176,7 +176,7 @@ meta-civfield-name = Field
 
 meta-civhaystackorigloo =
    .winter-name = Igloo
-   .summer-name = Haystacks
+   .summer-name = Haystack
 
 meta-tree-name = Tree
 meta-treehusk-name = Tree (Burnt)
@@ -195,29 +195,29 @@ meta-mine-name = Mine
 
 ## fakes.yaml
 actor-fpwr =
-   .description = Looks like a Power Plant.
    .name = Fake Power Plant
    .generic-name = Power Plant
+   .description = Looks like a Power Plant.
 
 actor-tenf =
-   .description = Looks like an Allied Barracks.
    .name = Fake Allied Barracks
    .generic-name = Allied Barracks
+   .description = Looks like an Allied Barracks.
 
 actor-syrf =
-   .description = Looks like a Naval Yard.
    .name = Fake Naval Yard
    .generic-name = Naval Yard
+   .description = Looks like a Naval Yard.
 
 actor-spef =
-   .description = Looks like a Sub Pen.
    .name = Fake Sub Pen
    .generic-name = Sub Pen
+   .description = Looks like a Sub Pen.
 
 actor-weaf =
-   .description = Looks like a War Factory.
    .name = Fake War Factory
    .generic-name = War Factory
+   .description = Looks like a War Factory.
 
 actor-domf =
    .name = Fake Radar Dome
@@ -225,14 +225,14 @@ actor-domf =
    .description = Looks like a Radar Dome.
 
 actor-fixf =
-   .description = Looks like a Service Depot.
    .name = Fake Service Depot
    .generic-name = Service Depot
+   .description = Looks like a Service Depot.
 
 actor-fapw =
-   .description = Looks like an Advanced Power Plant.
    .name = Fake Advanced Power Plant
    .generic-name = Advanced Power Plant
+   .description = Looks like an Advanced Power Plant.
 
 actor-atef =
    .name = Fake Allied Tech Center
@@ -243,18 +243,18 @@ actor-pdof =
    .name = Fake Chronosphere
    .generic-name = Chronosphere
    .description = Looks like a Chronosphere.
-    Maximum 1 can be built.
+    Maximum of one can be built.
 
 actor-mslf =
    .name = Fake Missile Silo
    .generic-name = Missile Silo
    .description = Looks like a Missile Silo.
-    Maximum 1 can be built.
+    Maximum of one can be built.
 
 actor-facf =
-   .description = Looks like a Construction Yard.
    .name = Fake Construction Yard
    .generic-name = Construction Yard
+   .description = Looks like a Construction Yard.
 
 ## husks.yaml
 actor-2tnk-husk-name = Husk (Medium Tank)
@@ -279,76 +279,76 @@ actor-mh60-husk-name = Black Hawk
 notification-building-infiltrated = Building infiltrated.
 
 actor-dog =
-   .description = Anti-infantry unit.
-    Can detect spies.
-      Strong vs Infantry
-      Weak vs Vehicles, Aircraft
    .name = Attack Dog
    .generic-name = Dog
+   .description = Anti-infantry unit.
+    Can detect spies.
+      Strong vs. Infantry.
+      Weak vs. Vehicles and Aircraft.
 
 actor-e1 =
-   .description = General-purpose infantry.
-      Strong vs Infantry
-      Weak vs Vehicles, Aircraft
    .name = Rifle Infantry
+   .description = General-purpose infantry.
+      Strong vs. Infantry.
+      Weak vs. Vehicles and Aircraft.
 
 actor-e2 =
-   .description = Infantry armed with grenades.
-      Strong vs Buildings, Infantry
-      Weak vs Vehicles, Aircraft
    .name = Grenadier
+   .description = Infantry with grenades.
+      Strong vs. Buildings and Infantry.
+      Weak vs. Vehicles and Aircraft.
 
 actor-e3 =
-   .description = Anti-tank/Anti-aircraft infantry.
-      Strong vs Vehicles, Aircraft
-      Weak vs Infantry
    .name = Rocket Soldier
+   .description = Anti-tank/Anti-aircraft infantry.
+      Strong vs. Vehicles and Aircraft.
+      Weak vs. Infantry.
 
 actor-e4 =
+   .name = Flame Infantry
    .description = Advanced anti-structure unit.
-      Strong vs Infantry, Buildings
-      Weak vs Vehicles, Aircraft
-   .name = Flamethrower
+      Strong vs. Infantry and Buildings.
+      Weak vs. Vehicles and Aircraft.
 
 actor-e6 =
+   .name = Engineer
    .description = Infiltrates and captures
     enemy structures.
-      Unarmed
-   .name = Engineer
+      Unarmed.
 
 actor-spy =
+   .disguisetooltip-name = Spy
+   .disguisetooltip-generic-name = Soldier
    .description = Infiltrates enemy structures for intel or
     sabotage. Exact effect depends on the
     building infiltrated.
     Loses disguise when attacking.
     Can detect spies.
-      Strong vs Infantry
-      Weak vs Vehicles, Aircraft
-      Special Ability: Disguised
-   .disguisetooltip-name = Spy
-   .disguisetooltip-generic-name = Soldier
+      Strong vs. Infantry.
+      Weak vs. Vehicles and Aircraft.
+      Special Ability: Disguised.
 
 actor-spy-england-disguisetooltip-name = British Spy
 
 actor-e7 =
-   .description = Elite commando infantry. Armed with
-    dual pistols and C4.
-    Maximum 1 can be trained.
-      Strong vs Infantry, Buildings
-      Weak vs Vehicles, Aircraft
-      Special Ability: Destroy Building with C4
    .name = Tanya
+   .description = Elite commando infantry, with
+    dual pistols and C4.
+    Maximum of one can be built.
+      Strong vs. Infantry and Buildings.
+      Weak vs. Vehicles and Aircraft.
+      Special Ability: Destroys buildings with C4.
 
 actor-medi =
-   .description = Heals nearby infantry.
-      Unarmed
    .name = Medic
+   .description = Heals nearby infantry.
+      Unarmed.
 
 actor-mech =
+   .name = Mechanic
    .description = Repairs nearby vehicles and restores
     husks to working condition by capturing them.
-      Unarmed
-   .name = Mechanic
+      Unarmed.
 
 actor-einstein-name = Prof. Einstein
 actor-delphi-name = Agent Delphi
@@ -356,25 +356,25 @@ actor-chan-name = Scientist
 actor-gnrl-name = General
 
 actor-thf =
+   .name = Thief
    .description = Steals enemy credits.
     Hijacks enemy vehicles.
-      Unarmed
-   .name = Thief
+      Unarmed.
 
 actor-shok =
-   .description = Elite infantry with portable Tesla coils.
-      Strong vs Infantry, Vehicles
-      Weak vs Aircraft
    .name = Shock Trooper
+   .description = Elite infantry with portable Tesla coils.
+      Strong vs. Infantry and Vehicles.
+      Weak vs. Aircraft.
 
 actor-zombie =
    .name = Zombie
-   .description = Slow undead. Attacks in close combat.
+   .description = Slow-moving undead that attack in close combat.
 
 actor-ant =
    .name = Giant Ant
    .generic-name = Ant
-   .description = Irradiated insect that grew oversize.
+   .description = Irradiated insect that grew to an abnormally large size.
 
 actor-fireant-name = Fire Ant
 actor-scoutant-name = Scout Ant
@@ -398,54 +398,54 @@ actor-railmine-name = Abandoned Mine
 actor-quee-name = Queen Ant
 actor-lar1-name = Ant Larva
 actor-lar2-name = Ant Larvae
-actor-mpspawn-name = (multiplayer player starting point)
+actor-mpspawn-name = (multiplayer starting point)
 actor-waypoint-name = (waypoint for scripted behavior)
 actor-ctflag-name = Flag
 
 ## ships.yaml
 actor-ss =
-   .description = Submerged anti-ship unit
-    armed with torpedoes.
-    Can detect other submarines.
-      Strong vs Naval units
-      Weak vs Ground units, Aircraft
-      Special Ability: Submerge
    .name = Submarine
+   .description = Submerged anti-ship unit
+    with torpedoes.
+    Can detect other submarines.
+      Strong vs. Naval units.
+      Weak vs. Ground units and Aircraft.
+      Special Ability: Submerge.
 
 actor-msub =
+   .name = Missile Submarine
    .description = Submerged anti-ground siege unit
     with anti-air capabilities.
     Can detect other submarines.
-      Strong vs Buildings, Ground units, Aircraft
-      Weak vs Naval units
-      Special Ability: Submerge
-   .name = Missile Submarine
+      Strong vs. Buildings, Ground units and Aircraft.
+      Weak vs. Naval units.
+      Special Ability: Submerge.
 
 actor-dd =
+   .name = Destroyer
    .description = Fast multi-role ship.
     Can detect submarines.
-      Strong vs Naval units, Vehicles, Aircraft
-      Weak vs Infantry
-   .name = Destroyer
+      Strong vs. Naval units, Vehicles and Aircraft.
+      Weak vs. Infantry.
 
 actor-ca =
-   .description = Very slow long-range ship.
-      Strong vs Buildings, Ground units
-      Weak vs Naval units, Aircraft
    .name = Cruiser
+   .description = Very slow long-range ship.
+      Strong vs. Buildings and Ground units.
+      Weak vs. Naval units and Aircraft.
 
 actor-lst =
-   .description = General-purpose naval transport.
-    Can carry infantry and tanks.
-      Unarmed
    .name = Transport
+   .description = General-purpose naval transport.
+    Carries infantry and tanks.
+      Unarmed.
 
 actor-pt =
-   .description = Light scout & support ship.
-    Can detect submarines.
-      Strong vs Naval units
-      Weak vs Ground units, Aircraft
    .name = Gunboat
+   .description = Light scout and support ship.
+    Can detect submarines.
+      Strong vs. Naval units.
+      Weak vs. Ground units and Aircraft.
 
 ## structures.yaml
 notification-construction-complete = Construction complete.
@@ -472,11 +472,11 @@ actor-mslo =
    .name = Missile Silo
    .description = Provides an atomic bomb.
     Requires power to operate.
-    Maximum 1 can be built.
-      Special Ability: Atom Bomb
+    Maximum of one can be built.
+      Special Ability: Atom Bomb.
    .nukepower-name = Atom Bomb
    .nukepower-description = Launches a devastating atomic bomb
-    at a target location.
+    at the target location.
 
 actor-gap =
    .name = Gap Generator
@@ -489,28 +489,28 @@ actor-spen =
     submarines and transports.
 
 actor-syrd =
+   .name = Naval Yard
    .description = Produces and repairs
     ships and transports.
-   .name = Naval Yard
 
 actor-iron =
-   .description = Makes a group of units invulnerable
-    for a short time.
-    Requires power to operate.
-    Maximum 1 can be built.
-      Special Ability: Invulnerability
    .name = Iron Curtain
+   .description = Grants a group of units temporary
+    invulnerability.
+    Requires power to operate.
+    Maximum of one can be built.
+      Special Ability: Invulnerability.
    .grantexternalconditionpower-ironcurtain-name = Invulnerability
-   .grantexternalconditionpower-ironcurtain-description = Makes a group of units invulnerable
+   .grantexternalconditionpower-ironcurtain-description = Grants invulnerability to a group of units
     for 20 seconds.
 
 actor-pdox =
+   .name = Chronosphere
    .description = Teleports a group of units across the
     map for a short time.
     Requires power to operate.
-    Maximum 1 can be built.
+    Maximum of one can be built.
       Special Ability: Chronoshift
-   .name = Chronosphere
    .chronoshiftpower-chronoshift-name = Chronoshift
    .chronoshiftpower-chronoshift-description = Teleports a group of units across
     the map for 20 seconds.
@@ -519,106 +519,106 @@ actor-pdox =
     the map for 20 seconds.
 
 actor-tsla =
+   .name = Tesla Coil
    .description = Advanced base defense.
     Requires power to operate.
     Can detect cloaked units.
-      Strong vs Vehicles, Infantry
-      Weak vs Aircraft
-   .name = Tesla Coil
+      Strong vs. Vehicles and Infantry.
+      Weak vs. Aircraft.
 
 actor-agun =
+   .name = AA Gun
    .description = Anti-Air base defense.
     Requires power to operate.
-      Strong vs Aircraft
-      Weak vs Ground units
-   .name = AA Gun
+      Strong vs. Aircraft.
+      Weak vs. Ground units.
 
 actor-dome =
+   .name = Radar Dome
    .description = Provides an overview
     of the battlefield.
     Requires power to operate.
-   .name = Radar Dome
 
 actor-pbox =
    .name = Pillbox
    .description = Static defense with a fireport for
     a garrisoned soldier.
     Can detect cloaked units.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 actor-hbox =
    .name = Camo Pillbox
    .description = Camouflaged static defense with a fireport
     for a garrisoned soldier.
     Can detect cloaked units.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 actor-gun =
+   .name = Turret
    .description = Anti-Armor base defense.
     Can detect cloaked units.
-      Strong vs Vehicles
-      Weak vs Infantry, Aircraft
-   .name = Turret
+      Strong vs. Vehicles.
+      Weak vs. Infantry and Aircraft.
 
 actor-ftur =
+   .name = Flame Tower
    .description = Anti-Infantry base defense.
     Can detect cloaked units.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
-   .name = Flame Tower
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 actor-sam =
+   .name = SAM Site
    .description = Anti-Air base defense.
     Requires power to operate.
-      Strong vs Aircraft
-      Weak vs Ground units
-   .name = SAM Site
+      Strong vs. Aircraft.
+      Weak vs. Ground units.
 
 actor-atek =
-   .description = Provides Allied advanced technologies.
-      Special Ability: GPS Satellite
    .name = Allied Tech Center
+   .description = Provides advanced Allied technology.
+      Special Ability: GPS Satellite.
    .gpspower-name = GPS Satellite
-   .gpspower-description = Reveals map terrain and provides tactical
-    information. Requires power and active radar.
+   .gpspower-description = Reveals map terrain and provides tactical information.
+    Requires power and active radar.
 
 actor-weap =
-   .description = Produces vehicles.
    .name = War Factory
+   .description = Produces vehicles.
 
 actor-fact =
-   .description = Produces structures.
    .name = Construction Yard
+   .description = Produces structures.
 
 actor-proc =
+   .name = Ore Refinery
    .description = Refines Ore and Gems
     into credits.
-   .name = Ore Refinery
 
 actor-silo =
+   .name = Silo
    .description = Stores excess refined
     Ore and Gems.
-   .name = Silo
 
 actor-hpad =
+   .name = Helipad
    .description = Produces and reloads
     helicopters.
-   .name = Helipad
 
 actor-afld =
-   .description = Produces and reloads aircraft.
-      Special Ability: Spy Plane
-      Special Ability: Paratroopers
    .name = Airfield
+   .description = Produces and reloads aircraft.
+      Special Ability: Spy Plane.
+      Special Ability: Paratroopers.
    .airstrikepower-spyplane-name = Spy Plane
    .airstrikepower-spyplane-description = Reveals an area of the map.
    .paratrooperspower-paratroopers-name = Paratroopers
    .paratrooperspower-paratroopers-description = A Badger drops a squad of infantry
     at the selected location.
    .airstrikepower-parabombs-name = Parabombs
-   .airstrikepower-parabombs-description = A Badger drops a load of parachuted bombs
+   .airstrikepower-parabombs-description = A Badger drops parachuted bombs
     at the selected location.
 
 actor-afld-ukraine-description = Produces and reloads aircraft.
@@ -627,47 +627,47 @@ actor-afld-ukraine-description = Produces and reloads aircraft.
       Special Ability: Parabombs
 
 actor-powr =
-   .description = Provides power for other structures.
    .name = Power Plant
+   .description = Provides power for other structures.
 
 actor-apwr =
+   .name = Advanced Power Plant
    .description = Provides double the power of
     a standard Power Plant.
-   .name = Advanced Power Plant
 
 actor-stek =
-   .description = Provides Soviet advanced technologies.
    .name = Soviet Tech Center
+   .description = Provides advanced Soviet technology.
 
 actor-barr =
-   .description = Trains infantry.
    .name = Soviet Barracks
+   .description = Trains infantry units.
 
 actor-kenn =
-   .description = Trains Attack Dogs.
    .name = Kennel
+   .description = Trains Attack Dogs.
 
 actor-tent =
-   .description = Trains infantry.
    .name = Allied Barracks
+   .description = Trains infantry.
 
 actor-fix =
-   .description = Repairs vehicles for credits.
    .name = Service Depot
+   .description = Repairs vehicles for credits.
 
 actor-sbag =
+   .name = Sandbag Wall
    .description = Stops infantry and light vehicles.
     Can be crushed by tanks.
-   .name = Sandbag Wall
 
 actor-fenc =
+   .name = Wire Fence
    .description = Stops infantry and light vehicles.
     Can be crushed by tanks.
-   .name = Wire Fence
 
 actor-brik =
-   .description = Stop units and blocks enemy fire.
    .name = Concrete Wall
+   .description = Stops units and blocks enemy fire.
 
 actor-cycl-name = Chain-Link Barrier
 actor-barb-name = Barbed-Wire Fence
@@ -678,135 +678,134 @@ actor-anypower-name = Any Power Generation
 
 ## vehicles.yaml
 actor-v2rl =
-   .description = Long-range rocket artillery.
-      Strong vs Infantry, Buildings
-      Weak vs Vehicles, Aircraft
    .name = V2 Rocket Launcher
+   .description = Long-range rocket artillery.
+      Strong vs. Infantry and Buildings.
+      Weak vs. Vehicles and Aircraft.
 
 actor-1tnk =
-   .description = Fast tank, good for scouting.
-      Strong vs Light armor
-      Weak vs Infantry, Tanks, Aircraft
    .name = Light Tank
    .generic-name = Tank
+   .description = Fast tank; good for scouting.
+      Strong vs. Light armor.
+      Weak vs. Infantry, Tanks and Aircraft.
 
 actor-2tnk =
-   .description = Allied Main Battle Tank.
-      Strong vs Vehicles
-      Weak vs Infantry, Aircraft
    .name = Medium Tank
    .generic-name = Tank
+   .description = Allied Main Battle Tank.
+      Strong vs. Vehicles.
+      Weak vs. Infantry and Aircraft.
 
 actor-3tnk =
-   .description = Soviet Main Battle Tank, with dual cannons
-      Strong vs Vehicles
-      Weak vs Infantry, Aircraft
    .name = Heavy Tank
    .generic-name = Tank
+   .description = Soviet Main Battle Tank with dual cannons.
+      Strong vs. Vehicles.
+      Weak vs. Infantry and Aircraft.
 
 actor-4tnk =
-   .description = Big and slow tank, with anti-air capability.
-    Can crush concrete walls.
-      Strong vs Vehicles, Infantry, Aircraft
-      Weak vs Nothing
    .name = Mammoth Tank
    .generic-name = Tank
+   .description = Large, slow tank with anti-air capabilities.
+    Can crush concrete walls.
+      Strong vs. Vehicles, Infantry and Aircraft.
+      Weak vs. Nothing.
 
 actor-arty =
-   .description = Long-range artillery.
-      Strong vs Infantry, Buildings
-      Weak vs Vehicles, Aircraft
    .name = Artillery
+   .description = Long-range artillery.
+      Strong vs. Infantry and Buildings.
+      Weak vs. Vehicles and Aircraft.
 
 actor-harv =
-   .description = Collects Ore and Gems for processing.
-      Unarmed
    .name = Ore Truck
    .generic-name = Harvester
+   .description = Collects Ore and Gems for processing.
+      Unarmed.
 
 actor-mcv =
-   .description = Deploys into another Construction Yard.
-      Unarmed
    .name = Mobile Construction Vehicle
+   .description = Deploys into a Construction Yard.
+      Unarmed.
 
 actor-jeep =
-   .description = Fast scout & anti-infantry vehicle.
-    Can carry one infantry.
-      Strong vs Infantry
-      Weak vs Vehicles, Aircraft
    .name = Ranger
+   .description = Fast scout and anti-infantry vehicle.
+    Can carry just one infantry unit.
+      Strong vs. Infantry.
+      Weak vs. Vehicles and Aircraft.
 
 actor-apc =
-   .description = Tough infantry transport.
-      Strong vs Infantry, Light armor
-      Weak vs Tanks, Aircraft
    .name = Armored Personnel Carrier
+   .description = Tough infantry transport.
+      Strong vs. Infantry and Light armor.
+      Weak vs. Tanks and Aircraft.
 
 actor-mnly =
+   .name = Minelayer
    .description = Lays mines to destroy
     unwary enemy units.
     Can detect mines.
-      Unarmed
-   .name = Minelayer
+      Unarmed.
 
 actor-truk =
-   .description = Transports cash to other players.
-      Unarmed
    .name = Supply Truck
+   .description = Transports cash to other players.
+      Unarmed.
 
 actor-mgg =
-   .description = Regenerates the shroud nearby,
-    obscuring the area.
-      Unarmed
    .name = Mobile Gap Generator
+   .description = Regenerates shroud to obscure nearby areas.
+      Unarmed.
 
 actor-mrj =
    .name = Mobile Radar Jammer
-   .description = Jams nearby enemy radar domes
+   .description = Jams nearby enemy Radar Domes
     and deflects incoming missiles.
-      Unarmed
+      Unarmed.
 
 actor-ttnk =
-   .description = Tank with mounted Tesla coil.
-      Strong vs Infantry, Vehicles, Buildings
-      Weak vs Aircraft
    .name = Tesla Tank
    .generic-name = Tank
+   .description = Tank with mounted Tesla coil.
+      Strong vs. Infantry, Vehicles and Buildings.
+      Weak vs. Aircraft.
 
 actor-ftrk =
-   .description = Mobile unit with mounted Flak cannon.
-      Strong vs Infantry, Light armor, Aircraft
-      Weak vs Tanks
    .name = Mobile Flak
+   .description = Mobile unit with a Flak cannon.
+      Strong vs. Infantry, Light armor and Aircraft.
+      Weak vs. Tanks.
 
 actor-dtrk =
-   .description = Truck with actively armed nuclear
-    explosives. Has very weak armor.
    .name = Demolition Truck
+   .description = Truck carrying armed nuclear explosives,
+    with very weak armor.
 
 actor-ctnk =
-   .description = Armed with anti-ground missiles.
-    Teleports to areas within range.
-      Strong vs Vehicles, Buildings
-      Weak vs Infantry, Aircraft
-      Special ability: Can teleport
    .name = Chrono Tank
    .generic-name = Tank
+   .description = Armed with anti-ground missiles.
+   Teleports to any area within range.
+      Strong vs. Vehicles and Buildings.
+      Weak vs. Infantry and Aircraft.
+      Special ability: Can teleport.
 
 actor-qtnk =
-   .description = Deals seismic damage to nearby vehicles
-    and structures.
-      Strong vs Vehicles, Buildings
-      Weak vs Infantry, Aircraft
    .name = MAD Tank
    .generic-name = Tank
+   .description = Deals seismic damage to nearby vehicles
+    and structures.
+      Strong vs. Vehicles and Buildings.
+      Weak vs. Infantry and Aircraft.
 
 actor-stnk =
-   .description = Lightly armored infantry transport which
-    can cloak. Armed with anti-ground missiles.
-      Strong vs Light armor
-      Weak vs Infantry, Tanks, Aircraft
    .name = Phase Transport
+   .description = Light armored infantry transport which
+    can cloak. Armed with anti-ground missiles.
+      Strong vs. Light armor.
+      Weak vs. Infantry, Tanks and Aircraft.
 
 ## Civilian Tech
 actor-hosp =
@@ -817,7 +816,7 @@ actor-hosp =
 actor-fcom =
    .name = Forward Command
    .captured-desc = Provides buildable area.
-   .capturable-desc =Capture to give buildable area.
+   .capturable-desc = Capture to give buildable area.
 
 actor-miss =
    .name = Communications Center
@@ -837,8 +836,8 @@ actor-oilb =
 ## misc.yaml
 actor-powerproxy-parabombs =
    .name = Parabombs (Single Use)
-   .description = A Badger drops a load of parachuted bombs
-    at the selected location.
+   .description = A Badger drops parachuted bombs
+    over a selected location.
 
 actor-powerproxy-sonarpulse =
    .name = Sonar Pulse

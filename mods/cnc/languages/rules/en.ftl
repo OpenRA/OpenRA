@@ -2,12 +2,12 @@
 options-tech-level =
     .low = Low
     .medium = Medium
-    .no-powers = No Powers
+    .no-powers = No Superpowers
     .unrestricted = Unrestricted
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allow undeploying Construction Yard
+    .description = Allows Construction Yards to undeploy
 
 checkbox-stealth-deliveries =
     .label = Stealth Deliveries
@@ -35,59 +35,58 @@ resource-tiberium = Tiberium
 faction-random =
     .name = Any
     .description = Random Faction
-     A random faction will be chosen when the game starts
+     A random faction is chosen at the start of the game.
 
 faction-gdi =
     .name = GDI
     .description = Global Defense Initiative
      The GDI is an international military branch of the United Nations tasked
      with keeping world peace. Commanding the combined forces of the world's
-     most powerful nations, they possess an unmatched arsenal of high-tech weaponry.
+     most powerful nations, it possess an unmatched arsenal of high-tech weaponry.
 
 faction-nod =
     .name = Nod
     .description = Brotherhood of Nod
      The Brotherhood is a religious cult centered around their leader Kane
-     and the alien substance Tiberium. They utilize stealth technology
+     and the alien substance Tiberium. They use stealth technology
      and guerilla tactics to defeat those who oppose them.
 
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
 notification-building-captured = Building captured.
-notification-civ-building-captured = Civilian Building captured.
+notification-civ-building-captured = Civilian building captured.
 notification-structure-lost = Structure lost.
 
 ## aircraft.yaml
 actor-tran =
    .name = Chinook Transport
    .description = Fast Infantry Transport Helicopter.
-      Unarmed
-   .encyclopedia = The chinook is a flying transport capable of carrying a detatchement of infantry. In general, it is used to transport commandos or engineers for backline-destruction.
+      Unarmed.
+   .encyclopedia = The chinook is a flying transport capable of carrying a detachement of infantry. It is mostly used to transport commandos or engineers for backline-destruction.
     Like all aircraft, it can be handy in a pinch to crush a commando by landing!
 
 actor-heli =
    .name = Apache Longbow
-   .description = Helicopter Gunship with Chainguns.
-      Strong vs Infantry, Light Vehicles and
-      Aircraft
-      Weak vs Tanks
-   .encyclopedia = Has more health than the Orca and acts as a support unit. It works well with artillery, as it can kill any approaching light vehicles.
+   .description = Helicopter Gunship with chainguns.
+      Strong vs. Infantry, Light Vehicles and Aircraft.
+      Weak vs. Tanks.
+   .encyclopedia = Has more health than the Orca and acts as a support unit. It works well with artillery, as it can kill approaching light vehicles.
      Ammo is automatically reloaded in the air.
 
 actor-orca =
    .name = Orca
-   .description = Helicopter Gunship with AG Missiles.
-      Strong vs Buildings, Tanks
-      Weak vs Infantry
-   .encyclopedia = Fast but fragile, the Orca harasses enemy vehicles and aircraft with AT missiles. It is best used opportunistically, and can be kept alive longer with careful micro. It’s AA missiles are effective but have a hard time hitting fast-moving air targets.
+   .description = Helicopter gunship with AG missiles.
+      Strong vs. Buildings and Tanks.
+      Weak vs. Infantry.
+   .encyclopedia = Fast but fragile, the Orca harasses enemy vehicles and aircraft with AT missiles. It is best used opportunistically, and can be kept alive longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
      Ammo is automatically reloaded in the air.
 
 actor-c17-name = Supply Aircraft
 actor-a10-name = A10 Bomber
-actor-tran-husk-name = Chinook Transport
-actor-heli-husk-name = Apache Longbow
-actor-orca-husk-name = Orca
+actor-tran-husk-name = Chinook Transport (Destroyed)
+actor-heli-husk-name = Apache Longbow (Destroyed)
+actor-orca-husk-name = Orca (Destroyed)
 
 ## civilian-desert.yaml
 actor-v20-name = Sala's House
@@ -130,14 +129,14 @@ actor-v37-husk-name = The Studio (Destroyed)
 ## civilian.yaml
 actor-v01-name = Church
 actor-v01-husk-name = Church (Destroyed)
-actor-v02-name = Han's and Gretel's
-actor-v02-husk-name = Han's and Gretel's (Destroyed)
+actor-v02-name = Hans and Gretel's House
+actor-v02-husk-name = Hans and Gretel's House (Destroyed)
 actor-v03-name = Hewitt's House
 actor-v03-husk-name = Hewitt's House (Destroyed)
 actor-v04-name = Ricktor's House
 actor-v04-husk-name = Ricktor's House (Destroyed)
-actor-v05-name = Gretchkin's house
-actor-v05-husk-name = Gretchkin's house (Destroyed)
+actor-v05-name = Gretchkin's House
+actor-v05-husk-name = Gretchkin's House (Destroyed)
 actor-v06-name = The Barn
 actor-v06-husk-name = The Barn (Destroyed)
 actor-v07-name = Damon's Pub
@@ -183,11 +182,11 @@ meta-civfield-generic-name = Field
 
 meta-civhaystackorigloo =
    .winter-name = Igloo
-   .summer-name = Haystacks
+   .summer-name = Haystack
 
 meta-civhaystackorigloohusk =
    .winter-name = Igloo (Destroyed)
-   .summer-name = Haystacks (Destroyed)
+   .summer-name = Haystack (Destroyed)
 
 meta-tree-name = Tree
 meta-treehusk-name = Tree (Burnt)
@@ -209,12 +208,12 @@ actor-ftnk-husk-name = Flame Tank (Destroyed)
 actor-arty-husk-name = Artillery (Destroyed)
 actor-bggy-husk-name = Nod Buggy (Destroyed)
 actor-bike-husk-name = Recon Bike (Destroyed)
-actor-jeep-husk-name = Hum-Vee (Destroyed)
+actor-jeep-husk-name = Hum-vee (Destroyed)
 actor-ltnk-husk-name = Light Tank (Destroyed)
 actor-mtnk-husk-name = Medium Tank (Destroyed)
 actor-htnk-husk-name = Mammoth Tank (Destroyed)
 actor-msam-husk-name = Rocket Launcher (Destroyed)
-actor-mlrs-husk-name = Mobile S.A.M. (Destroyed)
+actor-mlrs-husk-name = Mobile SAM (Destroyed)
 actor-stnk-husk-name = Stealth Tank (Destroyed)
 actor-truck-husk-name = Supply Truck (Destroyed)
 
@@ -222,84 +221,84 @@ actor-truck-husk-name = Supply Truck (Destroyed)
 actor-e1 =
    .name = Minigunner
    .description = General-purpose infantry.
-      Strong vs Infantry
-      Weak vs Vehicles
+      Strong vs. Infantry.
+      Weak vs. Vehicles.
    .encyclopedia = The humble Minigunner is a highly specialized infantry unit designed to soak damage and kill other infantry.
      Like most TD units, they can see farther than they can shoot, and work well in packs to eliminate enemy infantry.
 
 actor-e2 =
    .name = Grenadier
-   .description = Fast infantry armed with grenades.
-      Strong vs Buildings, slow-moving targets
+   .description = Fast infantry with grenades.
+      Strong vs. Buildings, slow-moving targets.
    .encyclopedia = Fast and able to keep up with medium tanks, letting it work well with flanking armies.
      While not as powerful as the Minigunner or a Rocket soldier, its speed can be used to your advantage.
 
 actor-e3 =
    .name = Rocket Soldier
    .description = Anti-tank/Anti-aircraft infantry.
-      Strong vs Tanks, Aircraft
-      Weak vs Infantry
+      Strong vs. Tanks and Aircraft.
+      Weak vs. Infantry.
    .encyclopedia = Highly vulnerable but excelling at eliminating enemy armor and aircraft. It is the slowest unit in the game, lagging behind other infantry and even mammoth tanks.
-     It’s large weapons range makes up for its slow speed, making it most effective when used defensively, where it can be protected and provide vision.
+     Its large weapons range makes up for its slow speed, making it most effective when used defensively, where it can be protected and provide vision.
 
 actor-e4 =
    .name = Flamethrower
-   .description = Advanced Anti-infantry unit.
-      Strong vs Infantry, Buildings
-      Weak vs Tanks
-   .encyclopedia = Good for flanking and burning down structures. It has more health than a standard Minigunner, but its short weapons range makes it difficult to for direct confrontation.
+   .description = Advanced anti-infantry unit.
+      Strong vs. Infantry and Buildings.
+      Weak vs. Tanks.
+   .encyclopedia = Good for flanking and burning down structures. It has more health than a standard Minigunner, but its short weapons range makes it difficult to use in large armies.
 
 actor-e5 =
    .name = Chemical Warrior
    .description = Advanced general-purpose infantry.
-      Strong vs all Ground units
+      Strong vs. all Ground units.
    .encyclopedia = Similar stats to the Flamethrower but deals good damage vs. heavy armor. Great for stopping enemy armor from crushing your forces.
      It can walk on Tiberium without taking damage, making it particularly useful for harvester harassment on certain maps.
 
 actor-e6 =
    .name = Engineer
    .description = Damages and captures enemy structures.
-      Repairs destroyed vehicles
-      Unarmed
+      Repairs destroyed vehicles.
+      Unarmed.
    .encyclopedia = Like the rocket soldier, the Engineer is slow and requires escorts to be used effectively. It can instantly capture structures but is consumed in the process.
      Capturing a civilian structure requires only one engineer, while capturing an enemy structure typically requires two engineers, or one if the structure is heavily damaged.
-     Engineers can also be used to repair friendly structures or restotre husks from destroyed vehicles.
+     Engineers can also be used to repair friendly structures or restore husks from destroyed vehicles.
 
 actor-rmbo =
    .name = Commando
    .description = Elite sniper infantry unit.
-      Strong vs Infantry, Buildings
-      Weak vs Vehicles
+      Strong vs Infantry and Buildings.
+      Weak vs Vehicles.
    .encyclopedia = Equipped with a long-range sniper rifle, the Commando fires slowly but can eliminate enemy infantry from a distance when well-supported.
      It carries C4, for surprise backline structure destruction.
 
 actor-pvice =
    .description = Mutated abomination that spits liquid Tiberium.
-      Strong vs Infantry, Buildings
-      Weak vs Aircraft
+      Strong vs Infantry and Buildings.
+      Weak vs Aircraft.
    .encyclopedia = A mutated lifeform created from the strange properties of Tiberium, when infantry units are expose to it.
      They regenerate health quickly and have a short-range Tiberium weapon.
 
 actor-steg =
    .name = Stegosaurus
-   .description = A large, heavily built, herbivorous quadruped
+   .description = A large, heavily built, herbivorous quadruped.
 
 actor-trex =
    .name = Tyrannosaurus rex
-   .description = Bipedal carnivore with a massive skull
+   .description = Bipedal carnivore with a massive skull.
 
 actor-tric =
    .name = Triceratops
-   .description = Quadruped with large bony frill and three horns
+   .description = Quadruped with large bony frill and three horns.
 
 actor-rapt =
    .name = Velociraptor
-   .description = Bipedal with enlarged sickle-shaped claw on each hindfoot
+   .description = Bipedal with enlarged sickle-shaped claw on each hindfoot.
 
 ## misc.yaml
 actor-wcrate-name = Wooden Crate
 actor-scrate-name = Steel Crate
-actor-mpspawn-name = (multiplayer player starting point)
+actor-mpspawn-name = (multiplayer starting point)
 actor-waypoint-name = (waypoint for scripted behavior)
 actor-camera-name = (reveals area to owner)
 actor-camera-small-name = (reveals small area to owner)
@@ -328,34 +327,34 @@ notification-nuclear-warhead-approaching = Nuclear warhead approaching.
 
 actor-fact =
    .name = Construction Yard
-   .description = Builds structures
+   .description = Builds structures.
    .encyclopedia = The core of any base. It produces buildings and defenses while also providing a build radius. It has a large health pool, but is difficult to replace, making it paramount to defend.
      It can be unpacked into a mobile version using the deploy key, but takes a small amount of time to do so.
 
-actor-fact-gdi-name = Construction Yard (GDI)
-actor-fact-nod-name = Construction Yard (Nod)
+actor-fact-gdi-name = GDI Construction Yard
+actor-fact-nod-name = Nod Construction Yard
 
 actor-nuke =
    .name = Power Plant
-   .description = Generates power
+   .description = Generates power.
    .encyclopedia = Provides power to the structures in your base. Power output is directly related to the power plant's condition, so protect them during battles.
 
 actor-nuk2 =
    .name = Advanced Power Plant
    .description = Provides more power, cheaper than the
-    standard Power Plant
+    standard Power Plant.
    .encyclopedia = Provides more power to the structures in your base, making it more cost-effective than the Power Plant. Power output is directly related to its condition, so protect it during battle.
 
 actor-proc =
    .name = Tiberium Refinery
    .description = Processes raw Tiberium
-    into useable resources
+     into usable resources.
    .encyclopedia = Stores and processes the alien material and resource, Tiberium. Harvesters collect Tiberium in the field and deposit it at the refinery, where it is converted into credits.
      The refinery stores Tiberium and immediately deploys a harvester once constructed. 3 harvesters is the maximum it can handle for close refining.
 
 actor-silo =
    .name = Tiberium Silo
-   .description = Stores processed Tiberium
+   .description = Stores processed Tiberium.
    .encyclopedia = Stores credits. If storage is full, harvesters will wait until credits are spent.
      Useful when harvesting the more valuable blue Tiberium, as a single refinery cannot store a full load.
 
@@ -372,22 +371,22 @@ actor-hand =
 actor-afld =
    .name = Airstrip
    .description = Provides a dropzone
-    for vehicle reinforcements
+   for vehicle reinforcements.
    .encyclopedia = Delivers vehicles by plane for Nod. Nod vehicles are fast but fragile. Produce harvesters at the start to jumpstart your economy.
 
 actor-weap =
    .name = Weapons Factory
-   .description = Produces vehicles
+   .description = Produces vehicles.
    .encyclopedia = Produces vehicles for GDI. GDI vehicles tend to be slow but hard-hitting. Produce harvesters at the start to jumpstart your economy.
 
 actor-hpad =
    .name = Helipad
-   .description = Produces and repairs helicopters
+   .description = Produces and repairs helicopters.
    .encyclopedia = Produces and repairs helicopters. Requires a Communications Center to build advanced attack helicopters.
 
 actor-hq =
    .name = Communications Center
-   .description = Provides radar and Air Strike support power.
+   .description = Provides radar and Air Strike support power
     Unlocks higher-tech units and buildings.
     Requires power to operate.
    .airstrikepower-name = Air Strike
@@ -397,7 +396,7 @@ actor-hq =
 
 actor-fix =
    .name = Repair Facility
-   .description = Repairs vehicles
+   .description = Repairs vehicles.
    .encyclopedia = Repairs vehicles. The repair command can be used on units to send them to the nearest repair facility.
 
 actor-eye =
@@ -406,7 +405,7 @@ actor-eye =
     Unlocks Mammoth Tank and Commando.
     Requires power to operate.
    .ioncannonpower-name = Ion Cannon
-   .ioncannonpower-description = Initiate an Ion Cannon strike.
+   .ioncannonpower-description = Initiates an Ion Cannon strike.
     Applies instant damage to a small area.
    .encyclopedia = Unlocks advanced units and the ion cannon support power. If the Communications Center is lost, it restores minimap functionality and unit production.
 
@@ -416,44 +415,44 @@ actor-tmpl =
     Unlocks Stealth Tank, Chem. Warrior and Obelisk of Light.
     Requires power to operate.
    .nukepower-name = Nuclear Strike
-   .nukepower-description = Launch a tactical nuclear warhead.
+   .nukepower-description = Launches a tactical nuclear warhead.
     Applies heavy damage over a large area.
    .encyclopedia = Unlocks advanced units and the Nuke support power. Keeps unit unlocks online if the Communications Center is lost.
 
 actor-gun =
    .name = Turret
    .description = Basic Anti-Tank base defense.
-      Strong vs Tanks, vehicles
-      Weak vs Infantry
+      Strong vs Tanks and Vehicles.
+      Weak vs Infantry.
    .encyclopedia = Base defense armed with an armor-piercing cannon, it deals significant damage to vehicles in range.
 
 actor-sam =
    .name = SAM Site
    .description = Anti-Aircraft base defense.
-      Strong vs Aircraft
+      Strong vs Aircraft.
       Cannot target Ground units.
    .encyclopedia = Nod anti-air base defense. It remains protected when closed and opens to engage aircraft.
 
 actor-obli =
    .name = Obelisk of Light
    .description = Advanced base defense.
-    Requires power to operate.
-      Strong vs all Ground units
-      Cannot target Aircraft
+      Requires power to operate.
+      Strong vs. all Ground units.
+      Cannot target Aircraft.
    .encyclopedia = Advanced defense for Nod that quickly destroys ground targets with a powerful laser.
 
 actor-gtwr =
    .name = Guard Tower
    .description = Basic defensive structure.
-      Strong vs Infantry
-      Weak vs Tanks
+      Strong vs. Infantry.
+      Weak vs. Tanks.
    .encyclopedia = Base defense armed with a high-velocity machine gun, it shreds infantry and light vehicles within range with its large area of effect.
 
 actor-atwr =
    .name = Advanced Guard Tower
    .description = All-purpose defensive structure.
-      Strong vs Aircraft, Infantry
-      Weak vs Tanks
+      Strong vs. Aircraft and Infantry.
+      Weak vs. Tanks.
    .encyclopedia = Advanced defense for GDI that fires volleys of high explosive missiles at both ground and air targets. Effective versus everything.
 
 actor-sbag =
@@ -479,8 +478,8 @@ actor-brik =
 
 actor-barracks-name = Infantry Production
 actor-vehicleproduction-name = Vehicle Production
-actor-anypower-name = Any Power Generation
-actor-anyhq-name = A Communications Center
+actor-anypower-name = Power Generation
+actor-anyhq-name = Communications Center
 
 ## tech.yaml
 actor-v19-husk-name = Oil Derrick (Destroyed)
@@ -497,7 +496,7 @@ actor-miss =
    .name = Tech Center
    .captured-desc = Provides range of vision.
    .capturable-desc = Capture to give visual range.
-   .encyclopedia = Provides a wide area of vision when captured
+   .encyclopedia = Provides a wide area of vision when captured.
 
 actor-bio =
    .name = Biological Lab
@@ -509,18 +508,18 @@ actor-v19 =
    .name = Oil Derrick
    .captured-desc = Provides additional funds.
    .capturable-desc = Capture to receive additional funds.
-   .encyclopedia = Produces asmall amount of income frequently when captured. Makes less money than building a harvester, but provides consistent income.
+   .encyclopedia = Produces a small amount of income frequently when captured. Makes less money than building a harvester, but provides consistent income.
 
 ## trees.yaml
-actor-splitblue-name = Blossom Tree (blue)
+actor-splitblue-name = Blue Blossom Tree
 actor-t03-transformable-name = (Tree that can transform into a Blossom Tree)
 actor-t13-transformable-name = (Tree that can transform into a Blossom Tree)
 
 ## vehicles.yaml
 actor-mcv =
    .name = Mobile Construction Vehicle
-   .description = Deploys into another Construction Yard.
-      Unarmed
+   .description = Deploys into a Construction Yard.
+      Unarmed.
    .encyclopedia = Deploying an MCV changes it into a Construction Yard. The MCV has more health in its deployed form, but undeploying can be helpful to escape infantry.
      If you have a teammate, they can “gift” you an MCV by destroying an undeployed one near your base, allowing you to reclaim it with an engineer.
 
@@ -528,7 +527,7 @@ actor-harv =
    .name = Harvester
    .generic-name = Harvester
    .description = Collects Tiberium for processing.
-      Unarmed
+      Unarmed.
    .encyclopedia = Harvesters slowly mine Tiberium and deposit it in your refinery, where it is converted into credits. They can also be sent to allied refineries to provide funds.
 
 notification-harvester-lost = Harvester lost.
@@ -537,63 +536,62 @@ actor-apc =
    .name = APC
    .description = Armed infantry transport.
     Can attack Aircraft.
-      Strong vs Vehicles
-      Weak vs Infantry
+      Strong vs. Vehicles.
+      Weak vs. Infantry.
    .encyclopedia = The APC (Armored Personnel Carrier) transports infantry, making it handy for capturing civilian structures. While its flak gun does not do much damage to enemy vehicles, the APC can resist enemy shots while your Hum-vees deal the damage.
-     It also functions as your primary AA unit; if you hit the stop command, it’ll retarget onto any nearby enemy air units.
+     It also functions as your primary AA unit; if you hit the stop command, it'll retarget onto any nearby enemy air units.
 
 actor-arty =
    .name = Artillery
    .description = Long-range artillery.
-      Strong vs Infantry, Vehicles and Buildings
-   .encyclopedia = Nod’s artillery is a glass cannon, fragile but dealing large amounts of damage at long range. Particularly strong vs structures and infantry, it can destroy stationary tanks.
+      Strong vs. Infantry, Vehicles and Buildings.
+   .encyclopedia = Nod's artillery is a glass cannon, fragile but dealing large amounts of damage at long range. Particularly strong vs structures and infantry, it can destroy stationary tanks.
      Highly vulnerable when clumped due to its explosion on death.
 
 actor-ftnk =
    .name = Flame Tank
    .description = Heavily armored flame-throwing vehicle.
-      Strong vs Infantry, Buildings and Vehicles
-      Weak vs Tanks
+      Strong vs. Infantry, Buildings and Vehicles.
+      Weak vs. Tanks.
    .encyclopedia = Roast infantry and structures alike, making them great for surprise attacks. Be wary of their splash damage on death, but be aware it can also be used to your advantage.
 
 actor-bggy =
    .name = Nod Buggy
    .description = Fast scout and anti-infantry vehicle.
-      Strong vs Infantry
-      Weak vs Tanks
+      Strong vs. Infantry.
+      Weak vs. Tanks.
    .encyclopedia = Strong versus light vehicles and infantry, Buggies are great at scouting and killing isolated infantry. Though it is a little cheaper and faster than the GDI Hum-vee, they are more fragile.
 
 actor-bike =
    .name = Recon Bike
-   .description = Fast scout vehicle, armed with
-    rockets.
+   .description = Fast scout vehicle with rockets.
     Can attack Aircraft.
-      Strong vs Vehicles, Tanks
-      Weak vs Infantry
+      Strong vs. Vehicles and Tanks.
+      Weak vs. Infantry.
    .encyclopedia = The Nod bike is a very fast vehicle armed with armor-piercing rockets, which makes it great for hit and run and harvester harassment.
      Be wary that its rockets are slow and have a hard time hitting fast-moving targets.
 
 actor-jeep =
-   .name = Hum-Vee
+   .name = Hum-vee
    .description = Fast scout and anti-infantry vehicle.
-      Strong vs Infantry
-      Weak vs Tanks
+      Strong vs. Infantry.
+      Weak vs. Tanks.
    .encyclopedia = Strong versus light vehicles and infantry, Hum-vees are great at scouting and eliminating isolated infantry.
      They're excellent for dealing with Nod bike spam and should be built instead of tanks in such engagements. Although a little slower than the Nod buggy, it has more health.
 
 actor-ltnk =
    .name = Light Tank
    .description = Fast, light tank.
-      Strong vs Vehicles, Tanks
-      Weak vs Infantry
+      Strong vs. Vehicles and Tanks.
+      Weak vs. Infantry.
    .encyclopedia = With its great speed and high health pool, the light tank works great as a frontline unit in various compositions despite its damage output.
      It should be combined with bikes, stealth tanks, or infantry when facing medium tanks.
 
 actor-mtnk =
    .name = Medium Tank
    .description = General-Purpose GDI Tank.
-      Strong vs Tanks, Vehicles
-      Weak vs Infantry
+      Strong vs. Tanks and Vehicles.
+      Weak vs. Infantry.
    .encyclopedia = The workhorse of GDI, offering a good balance of speed, durability and firepower. It will easily destroy Nod light tanks and can tear through structures if it sneaks into a base.
      Mix minigunners with your medium tank armies to deal with enemy infantry.
 
@@ -601,21 +599,21 @@ actor-htnk =
    .name = Mammoth Tank
    .description = Heavily armored GDI Tank.
     Can attack Aircraft.
-      Strong vs Everything
+      Strong vs. Everything.
    .encyclopedia = A crawling battle station, capable of self-repair and engaging any threat. It is particularly effective against enemy armor, but can also destroy small amounts of infantry or aircraft.
      When in an enemy base, put it on aggressive stance to have it carve a path of destruction as it moves.
 
 actor-msam =
    .name = Rocket Launcher
-   .description = Long range rocket artillery.
-      Strong vs all Ground units.
+   .description = Long-range rocket artillery.
+      Strong vs. all ground units.
    .encyclopedia = Referred to as  “MLRS” by players (Multiple Launch Rocket System), this artillery platform fires volleys of rockets at distant targets. It is particularly effective against light vehicles and does moderate damage vs infantry, buildings, and heavy armor.
      A strong unit to build vs enemy artillery, its high bullet velocity and damage to light vehicles makes it the perfect counter to Nod artillery.
 
 actor-mlrs =
-   .name = Mobile S.A.M.
+   .name = Mobile SAM.
    .description = Powerful anti-air unit.
-    Cannot attack Ground units.
+    Cannot attack ground units.
    .encyclopedia = Generally referred to as “MSAM” by players, this Nod vehicle is a dedicated anti-air vehicle when their bikes do not cut it. It fires slow-moving missiles with powerful splash damage.
 
 actor-stnk =
@@ -623,20 +621,20 @@ actor-stnk =
    .description = Long-range missile tank that can cloak.
     Can attack Aircraft.
     Has weak armor. Can be spotted by infantry and defense structures.
-      Strong vs Vehicles, Tanks
-      Weak vs Infantry.
+      Strong vs. Vehicles and Tanks.
+      Weak vs. Infantry.
    .encyclopedia = Cloaked units that become visible when damaged or firing their weapons. They can also be detected by defenses within a small radius or infantry at a one-cell range.
      Their long-range AP missiles are excellent for dealing with enemy armor or air. They can also crush infantry in a pinch.
 
 actor-mhq =
    .name = Mobile HQ
-   .description = Mobile base of operations
+   .description = Mobile base of operations.
 
 actor-truck =
-   .description = Transports cash to other players.
-      Builds fast
-      Unarmed
    .name = Supply Truck
+   .description = Transports cash to other players.
+      Builds quickly.
+      Unarmed.
    .encyclopedia = Supply trucks are a convenient way to share cash when your ally is out of money, or you can't spend yours fast enough. They build far quicker than their cost suggests.
 
 ## ai.yaml
