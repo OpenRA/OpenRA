@@ -13,7 +13,7 @@ destroy-obelisk-sams = Destroy the SAM sites protecting the Obelisk.
 destroy-obelisk = Destroy the Obelisk.
 destroy-biotech = Destroy the biotech facility.
 
-## gdi03, gdi05abc, gdi07 gdi08ab, gdi09
+## gdi03, gdi05abc, gdi07 gdi08ab, gdi09, gdi10a
 destroy-sams = Destroy the SAM sites to receive air support.
 
 ## funpark01
@@ -66,6 +66,9 @@ destroy-nod-bases = Destroy the Nod bases.
 destroy-nod-bunkers = Destroy the Nod bunkers to allow Carter's
     convoy to pass through safely.
 convoy-passed-partly = Part of Carter's convoy passed through!
+
+## gdi10a
+destroy-nod-units-buildings = Destroy all Nod units and buildings.
 
 ## nod01
 destroy-gdi-troops-area = Destroy all GDI troops in the area.
