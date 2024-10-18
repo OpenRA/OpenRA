@@ -5,7 +5,7 @@ World:
 		BackgroundVideo: spy.vqa
 		WinVideo: apcescpe.vqa
 		LossVideo: bmap.vqa
-		Briefing: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nCONGRATULATIONS. CAPTURING TECH CENTERS HAS REVEALED AN UNDERGROUND WEAPONS FACILITY. PLACE EXPLOSIVE CHARGES ON ALL GENERATORS. RESULTING EXPOSIONS SHOULD DESTROY FACILITY.\nGET OUT BEFORE NERVE GAS IS USED.\n\nTRANSMISSION ENDS.
+		Briefing: briefing
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label

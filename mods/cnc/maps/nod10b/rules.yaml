@@ -2,7 +2,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, nod10b.lua
 	MissionData:
-		Briefing: GDI is developing a new, heavily armored tank. Our spies have located the GDI R&D base.\n\nUse your small strike force to breach the facility. Ensure the tanks in the base are destroyed, as well as the factory.
+		Briefing: briefing
 		BackgroundVideo: kanepre.vqa
 		LossVideo: deskill.vqa
 		WinVideo: tankkill.vqa

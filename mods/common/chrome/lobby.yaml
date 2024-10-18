@@ -44,24 +44,31 @@ Background@SERVER_LOBBY:
 			Children:
 				Button@PLAYERS_TAB:
 					Y: 285
-					Width: 162
+					Width: 120
 					Height: 31
 					Font: Bold
 					Text: button-skirmish-tabs-players-tab
 				Button@OPTIONS_TAB:
-					X: 162
+					X: 120
 					Y: 285
-					Width: 162
+					Width: 120
 					Height: 31
 					Font: Bold
 					Text: button-skirmish-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 2 * 162
+					X: 2 * 120
 					Y: 285
-					Width: 162
+					Width: 120
 					Height: 31
 					Font: Bold
 					Text: label-music-title
+				Button@BRIEFING_TAB:
+					X: 3 * 120
+					Y: 285
+					Width: 120
+					Height: 31
+					Font: Bold
+					Text: button-skirmish-tabs-briefing-tab
 		Container@MULTIPLAYER_TABS:
 			X: 695 - WIDTH
 			Width: 486
@@ -69,31 +76,38 @@ Background@SERVER_LOBBY:
 			Children:
 				Button@PLAYERS_TAB:
 					Y: 285
-					Width: 121
+					Width: 97
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-players-tab
 				Button@OPTIONS_TAB:
-					X: 121
+					X: 97
 					Y: 285
-					Width: 122
+					Width: 97
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 243
+					X: 2 * 97
 					Y: 285
-					Width: 121
+					Width: 97
 					Height: 31
 					Font: Bold
 					Text: label-music-title
 				Button@SERVERS_TAB:
-					X: 364
+					X: 3 * 97
 					Y: 285
-					Width: 122
+					Width: 97
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-servers-tab
+				Button@BRIEFING_TAB:
+					X: 4 * 97
+					Y: 285
+					Width: 98
+					Height: 31
+					Font: Bold
+					Text: button-multiplayer-tabs-briefing-tab
 		Container@TOP_PANELS_ROOT:
 			X: 20
 			Y: 67
