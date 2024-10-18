@@ -162,7 +162,7 @@ checkbox-debug-panel-show-screenmap = Show Screen Map
 label-mission-objectives = Mission:
 
 ## ingame-infoscripterror.yaml
-label-script-error-panel-desc-a = The map script has encountered a fatal error
+label-script-error-panel-desc-a = The map script has encountered a fatal error.
 label-script-error-panel-desc-b = The details of the error have been saved to lua.log in the logs directory.
 label-script-error-panel-desc-c = Please send this file to the map author so that they can fix this issue.
 
@@ -183,10 +183,10 @@ label-kick-client-dialog-text-b = them from joining for the remainder of this ga
 checkbox-kick-client-dialog-prevent-rejoining = Temporarily Ban
 button-kick-client-dialog = Kick
 label-kick-spectators-dialog-title = Kick Spectators
-button-kick-spectators-dialog-ok = Ok
+button-kick-spectators-dialog-ok = OK
 label-force-start-dialog-title = Start Game?
 label-force-start-dialog-text-a = One or more players are not yet ready.
-label-force-start-dialog-text-b = Are you sure that you want to force start the game?
+label-force-start-dialog-text-b = Are you sure you want to force start the game?
 label-kick-warning-a = One or more clients are missing the selected
 label-kick-warning-b = map, and will be kicked from the server.
 button-force-start-dialog-start = Start
@@ -344,7 +344,7 @@ label-filter-order-controls-orderby = Order by:
 button-mapchooser-panel-randommap = Random Map
 button-mapchooser-panel-delete-map = Delete Map
 button-mapchooser-panel-delete-all-maps = Delete All Maps
-button-mapchooser-panel-ok = Ok
+button-mapchooser-panel-ok = OK
 
 ## missionbrowser.yaml
 button-missionbrowser-panel-start-briefing-video = Watch Briefing
@@ -528,7 +528,7 @@ hotkey-group-control-groups = Control Groups
 hotkey-group-editor-commands = Editor Commands
 label-hotkeys-panel-filter-input = Filter by name:
 label-hotkeys-panel-context-dropdown = Context:
-label-hotkey-empty-list-message = No hotkeys match the filter criteria.
+label-hotkey-empty-list-message = No hotkeys match the filter criteria
 label-notices-readonly-notice = This hotkey cannot be modified
 button-hotkey-remap-dialog-override = Override
 
@@ -544,7 +544,7 @@ button-hotkey-remap-dialog-reset =
 label-zoom-modifier-container = Zoom Modifier:
 checkbox-alternate-scroll-container = Alternate Mouse Panning
 checkbox-lockmouse-container = Lock Mouse to Window
-label-mouse-scroll-type-container = Pan Behaviour:
+label-mouse-scroll-type-container = Pan Behavior:
 label-scrollspeed-slider-container-scroll-speed = Pan Speed:
 label-zoomspeed-slider-container-zoom-speed = Zoom Speed:
 label-ui-scrollspeed-slider-container-scroll-speed = UI Scroll Speed:
