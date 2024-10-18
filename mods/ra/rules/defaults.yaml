@@ -439,7 +439,7 @@
 	EdibleByLeap:
 	DetectCloaked:
 		DetectionTypes: Cloak
-		Range: 1c0
+		Range: 1c512
 
 ^Soldier:
 	Inherits: ^Infantry
