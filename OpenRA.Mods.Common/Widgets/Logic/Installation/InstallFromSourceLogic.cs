@@ -87,7 +87,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModData modData;
 		readonly ModContent content;
 		readonly Dictionary<string, ModContent.ModSource> sources;
-		readonly FluentBundle externalFluentBundle;
 
 		readonly Widget panel;
 		readonly LabelWidget titleLabel;
@@ -118,12 +117,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public InstallFromSourceLogic(
-			Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources, FluentBundle externalFluentBundle)
+			Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources)
 		{
 			this.modData = modData;
 			this.content = content;
 			this.sources = sources;
-			this.externalFluentBundle = externalFluentBundle;
 
 			Log.AddChannel("install", "install.log");
 
@@ -173,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					message = FluentProvider.GetString(SearchingSourceFor, "title", kv.Value.Title);
 
-					var sourceResolver = kv.Value.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
+					var sourceResolver = modData.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
 
 					var path = sourceResolver.FindSourcePath(kv.Value);
 					if (path != null)
@@ -210,7 +208,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var source in missingSources)
 				{
-					var sourceResolver = source.ObjectCreator.CreateObject<ISourceResolver>($"{source.Type.Value}SourceResolver");
+					var sourceResolver = modData.ObjectCreator.CreateObject<ISourceResolver>($"{source.Type.Value}SourceResolver");
 
 					var availability = sourceResolver.GetAvailability();
 
@@ -260,7 +258,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var split = key.IndexOf('@');
 							if (split != -1)
 								key = key[..split];
-							var sourceAction = modSource.ObjectCreator.CreateObject<ISourceAction>($"{key}SourceAction");
+							var sourceAction = modData.ObjectCreator.CreateObject<ISourceAction>($"{key}SourceAction");
 							sourceAction.RunActionOnSource(sourceActionNode.Value, path, modData, extracted, m => message = m);
 						}
 					}
@@ -342,7 +340,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var containerWidget = (ContainerWidget)checkboxListTemplate.Clone();
 				var checkboxWidget = containerWidget.Get<CheckboxWidget>("PACKAGE_CHECKBOX");
-				var title = externalFluentBundle.GetString(package.Title);
+				var title = FluentProvider.GetString(package.Title);
 				checkboxWidget.GetText = () => title;
 				checkboxWidget.IsDisabled = () => package.Required;
 				checkboxWidget.IsChecked = () => selectedPackages[package.Identifier];
