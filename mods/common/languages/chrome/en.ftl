@@ -212,6 +212,9 @@ label-no-music-desc-b = from the "Manage Content" menu.
 ## lobby-options.yaml
 label-lobby-options-bin-title = Map Options
 
+## lobby-briefing.yaml
+label-lobby-briefing-bin-title = Mission Briefing
+
 ## lobby-players.yaml
 label-lobby-players-name = Name
 label-lobby-players-color = Color
@@ -245,9 +248,11 @@ dropdownbutton-server-lobby-slots = Slot Admin
 button-server-lobby-reset-options = Reset Defaults
 button-skirmish-tabs-players-tab = Players
 button-skirmish-tabs-options-tab = Options
+button-skirmish-tabs-briefing-tab = Briefing
 button-multiplayer-tabs-players-tab = Players
 button-multiplayer-tabs-options-tab = Options
 button-multiplayer-tabs-servers-tab = Servers
+button-multiplayer-tabs-briefing-tab = Briefing
 button-server-lobby-changemap = Change Map
 
 button-lobbychat-chat-mode =

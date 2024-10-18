@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset modRules;
 		readonly WebServices services;
 
-		enum PanelType { Players, Options, Music, Servers, Kick, ForceStart }
+		enum PanelType { Players, Options, Music, Briefing, Servers, Kick, ForceStart }
 		PanelType panel = PanelType.Players;
 
 		readonly Widget lobby;
@@ -383,6 +383,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 			musicBin.IsVisible = () => panel == PanelType.Music;
 
+			var briefingBin = Ui.LoadWidget("LOBBY_BRIEFING_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs()
+			{
+				{ "orderManager", orderManager },
+				{ "getMap", (Func<MapPreview>)(() => map) }
+			});
+			briefingBin.IsVisible = () => panel == PanelType.Briefing;
+
 			ServerListLogic serverListLogic = null;
 			if (!skirmishMode)
 			{
@@ -414,6 +421,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			musicTab.IsHighlighted = () => panel == PanelType.Music;
 			musicTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
 			musicTab.OnClick = () => panel = PanelType.Music;
+
+			var briefingTab = tabContainer.Get<ButtonWidget>("BRIEFING_TAB");
+			briefingTab.IsHighlighted = () => panel == PanelType.Briefing;
+			briefingTab.IsDisabled = () => panel == PanelType.Kick || panel == PanelType.ForceStart;
+			briefingTab.OnClick = () => panel = PanelType.Briefing;
 
 			var serversTab = tabContainer.GetOrNull<ButtonWidget>("SERVERS_TAB");
 			if (serversTab != null)
