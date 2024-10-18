@@ -2,7 +2,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, negotiations.lua, negotiations-ai.lua, negotiations-reinforcements.lua
 	MissionData:
-		Briefing: A Soviet force has holed up in a small town, threatening to kill a hostage every few minutes until their demands are met. We do not negotiate with terrorists -- explain this to them.\n\nLocate the hostages, free as many of them as you can, and get them safely to a nearby abandoned church. Once done, return to your drop-off point, signal for reinforcements, and finish off the Soviet forces.
+		Briefing: briefing
 		WinVideo: allymorf.vqa
 		LossVideo: battle.vqa
 	TimeLimitManager:
