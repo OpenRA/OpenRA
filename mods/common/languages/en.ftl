@@ -12,15 +12,15 @@ notification-two-humans-required = This server requires at least two human playe
 notification-unknown-server-command = Unknown server command: { $command }
 notification-admin-start-game = Only the host can start the game.
 notification-no-start-until-required-slots-full = Unable to start the game until required slots are full.
-notification-no-start-without-players = Unable to start the game with no players.
+notification-no-start-without-players = Game cannot start without players.
 notification-insufficient-enabled-spawn-points = Unable to start the game until more spawn points are enabled.
-notification-malformed-command = Malformed { $command } command
+notification-malformed-command = Malformed { $command } command.
 notification-state-unchanged-ready = Cannot change state when marked as ready.
 notification-invalid-faction-selected = Invalid faction selected: { $faction }
 notification-supported-factions = Supported values: { $factions }
-notification-state-unchanged-game-started = Cannot change state when game started. ({ $command })
+notification-state-unchanged-game-started = State cannot be changed once the game has started ({ $command })
 notification-requires-host = Only the host can do that.
-notification-invalid-bot-slot = Can't add bots to a slot with another client.
+notification-invalid-bot-slot = Cannot add bots to a slot with another client.
 notification-invalid-bot-type = Invalid bot type.
 notification-admin-change-map = Only the host can change the map.
 notification-player-disconnected = { $player } has disconnected.
@@ -30,16 +30,16 @@ notification-unknown-map = Map was not found on server.
 notification-searching-map = Searching for map on the Resource Center...
 notification-admin-change-configuration = Only the host can change the configuration.
 notification-changed-map = { $player } changed the map to { $map }
-notification-option-changed = { $player } changed { $name } to { $value }.
+notification-option-changed = { $player } changed { $name } to { $value }
 notification-you-were-kicked = You have been kicked from the server.
 notification-admin-kicked = { $admin } kicked { $player } from the server.
 notification-kicked = { $player } was kicked from the server.
 notification-temp-ban = { $admin } temporarily banned { $player } from the server.
 notification-admin-transfer-admin = Only admins can transfer admin to another player.
 notification-admin-move-spectators = Only the host can move players to spectators.
-notification-empty-slot = No-one in that slot.
+notification-empty-slot = No one in that slot.
 notification-move-spectators = { $admin } moved { $player } to spectators.
-notification-nick-changed = { $player } is now known as { $name }.
+notification-nick-changed = { $player } is now known as { $name }
 notification-player-dropped = A player has been dropped after timing out.
 notification-connection-problems = { $player } is experiencing connection problems.
 notification-timeout-dropped = { $player } has been dropped after timing out.
@@ -61,10 +61,10 @@ notification-new-admin = { $player } is now the admin.
 notification-option-locked = { $option } cannot be changed.
 notification-invalid-configuration-command = Invalid configuration command.
 notification-admin-option = Only the host can set that option.
-notification-error-number-teams = Number of teams could not be parsed: { $raw }
+notification-error-number-teams = Could not parse the number of teams: { $raw }
 notification-admin-kick = Only the host can kick players.
-notification-kick-self = The host is not allowed to kick themselves.
-notification-kick-none = No-one in that slot.
+notification-kick-self = The host cannot kick themselves.
+notification-kick-none = No one in that slot.
 notification-no-kick-game-started = Only spectators and defeated players can be kicked after the game has started.
 notification-admin-clear-spawn = Only admins can clear spawn points.
 notification-spawn-occupied = You cannot occupy the same spawn point as another player.
@@ -76,7 +76,7 @@ notification-player-color-player = Color was adjusted to be less similar to anot
 notification-invalid-player-color = Unable to determine a valid player color. A random color has been selected.
 notification-invalid-error-code = Failed to parse error message.
 notification-master-server-connected = Master server communication established.
-notification-master-server-error = "Master server communication failed."
+notification-master-server-error = Master server communication failed.
 notification-game-offline = Game has not been advertised online.
 notification-no-port-forward = Server port is not accessible from the internet.
 notification-blacklisted-server-name = Server name contains a blacklisted word.
@@ -91,11 +91,11 @@ notification-lobby-disconnected = { $player } has left.
 ## UnitOrders
 notification-game-has-started = The game has started.
 notification-game-saved = Game saved.
-notification-game-paused = The game is paused by { $player }
-notification-game-unpaused = The game is un-paused by { $player }
+notification-game-paused = The game has been paused by { $player }
+notification-game-unpaused = The game has been un-paused by { $player }
 
 ## Server
-notification-game-started = Game started
+notification-game-started = Game started.
 
 ## PlayerMessageTracker
 notification-chat-temp-disabled =
@@ -105,11 +105,11 @@ notification-chat-temp-disabled =
     }
 
 ## VoteKickTracker
-notification-unable-to-start-a-vote = Unable to start a vote.
-notification-insufficient-votes-to-kick = Insufficient votes to kick player { $kickee }.
+notification-unable-to-start-a-vote = Unable to start a vote
+notification-insufficient-votes-to-kick = Insufficient votes to kick player { $kickee }
 notification-kick-already-voted = You have already voted.
-notification-vote-kick-started = Player { $kicker } has started a vote to kick player { $kickee }.
-notification-vote-kick-in-progress = { $percentage }% of players have voted to kick player { $kickee }.
+notification-vote-kick-started = Player { $kicker } has started a vote to kick player { $kickee }
+notification-vote-kick-in-progress = { $percentage }% of players have voted to kick player { $kickee }
 notification-vote-kick-ended = Vote to kick player { $kickee } has failed.
 
 ## ActorEditLogic
@@ -143,11 +143,11 @@ dialog-overwrite-map-failed =
 
 dialog-overwrite-map-outside-edit =
     .title = Warning
-    .prompt = The map has been edited from outside the editor.
-    By saving you may overwrite progress
+    .prompt = The map has been edited from outside the editor
+    By saving you may overwrite progress.
     .confirm = Save
 
-notification-save-current-map = Saved current map.
+notification-save-current-map = Saved current map
 
 ## GameInfoLogic
 menu-game-info =
@@ -171,7 +171,7 @@ button-vote-kick-player = Vote to kick this player
 
 dialog-kick =
     .title = Kick { $player }?
-    .prompt = This player will not be able to rejoin the game.
+    .prompt = This player will not be able to rejoin the game
     .confirm = Kick
 
 dialog-vote-kick =
@@ -179,15 +179,15 @@ dialog-vote-kick =
     .prompt = This player will not be able to rejoin the game.
     .prompt-break-bots =
     { $bots ->
-        [one] Kicking the game admin will also kick 1 bot.
-       *[other] Kicking the game admin will also kick { $bots } bots.
+        [one] Kicking the game admin will also kick 1 bot
+       *[other] Kicking the game admin will also kick { $bots } bots
     }
     .vote-start = Start Vote
     .vote-for = Vote For
     .vote-against = Vote Against
     .vote-cancel = Abstain
 
-notification-vote-kick-disabled = Vote kick is disabled on this server.
+notification-vote-kick-disabled = Vote kick is disabled on this server
 
 ## GameTimerLogic
 label-paused = Paused
@@ -238,20 +238,20 @@ dialog-surrender =
 
 dialog-error-max-player =
     .title = Error: Max player count exceeded
-    .prompt = There are too many players defined ({ $players }/{ $max }).
+    .prompt = There are too many players defined ({ $players }/{ $max })
     .confirm = Back
 
 dialog-exit-map-editor =
     .title = Exit Map Editor
     .prompt-unsaved = Exit and lose all unsaved changes?
-    .prompt-deleted = The map may have been deleted outside the editor.
+    .prompt-deleted = The map may have been deleted outside the editor
     .confirm-anyway = Exit anyway
     .confirm = Exit
 
 dialog-play-map-warning =
     .title = Warning
-    .prompt = The map may have been deleted or has
-    errors preventing it from being loaded.
+    .prompt = The map may have been deleted or contains
+    errors that prevent it from being loaded
     .cancel = Okay
 
 dialog-exit-to-map-editor =
@@ -263,7 +263,7 @@ dialog-exit-to-map-editor =
 ## IngamePowerBarLogic
 ## IngamePowerCounterLogic
 label-power-usage = Power Usage: { $usage }/{ $capacity }
-label-infinite-power = Infinite
+label-infinite-power = Infinite Power
 
 ## IngameSiloBarLogic
 ## IngameCashCounterLogic
@@ -448,7 +448,7 @@ label-could-not-connect-to-target = Could not connect to { $target }
 label-unknown-error = Unknown error
 label-password-required = Password Required
 label-connection-failed = Connection Failed
-notification-mod-switch-failed = Failed to switch mod.
+notification-mod-switch-failed = Failed to switch mod
 
 ## GameSaveBrowserLogic
 dialog-rename-save =
@@ -465,8 +465,8 @@ dialog-delete-all-saves =
     .title = Delete all game saves?
     .prompt =
     { $count ->
-        [one] Delete { $count } save.
-       *[other] Delete { $count } saves.
+        [one] Delete { $count } save
+       *[other] Delete { $count } saves
     }
     .confirm = Delete All
 
@@ -528,17 +528,17 @@ options-order-maps =
 dialog-no-video =
     .title = Video not installed
     .prompt = The game videos can be installed from the
-    "Manage Content" menu in the mod chooser.
+    "Manage Content" menu in the mod chooser
     .cancel = Back
 
 dialog-cant-play-video =
     .title = Unable to play video
-    .prompt = Something went wrong during video playback.
+    .prompt = Something went wrong during video playback
     .cancel = Back
 
 ## MusicPlayerLogic
-label-sound-muted = Audio has been muted in settings.
-label-no-song-playing = No song playing
+label-sound-muted = Audio has been muted in settings
+label-no-song-playing = No song is playing
 
 ## MuteHotkeyLogic
 label-audio-muted = Audio muted.
@@ -546,7 +546,7 @@ label-audio-unmuted = Audio unmuted.
 
 ## PlayerProfileLogic
 label-loading-player-profile = Loading player profile...
-label-loading-player-profile-failed = Failed to load player profile.
+label-loading-player-profile-failed = Failed to load player profile
 
 ## ProductionTooltipLogic
 label-requires = Requires { $prequisites }
@@ -589,7 +589,7 @@ dialog-delete-all-replays =
     .prompt =
     { $count ->
         [one] Delete { $count } replay.
-       *[other] Delete { $count } replays.
+       *[other] Delete { $count } replays
     }
     .confirm = Delete All
 
@@ -600,30 +600,30 @@ notification-replay-deletion-failed = Failed to delete replay file '{ $file }'. 
 
 dialog-incompatible-replay =
     .title = Incompatible Replay
-    .prompt = Replay metadata could not be read.
+    .prompt = Replay metadata could not be read
     .confirm = OK
-    .prompt-unknown-version = { -incompatible-replay-recorded } an unknown version.
-    .prompt-unknown-mod = { -incompatible-replay-recorded } an unknown mod.
-    .prompt-unavailable-mod = { -incompatible-replay-recorded } an unavailable mod: { $mod }.
+    .prompt-unknown-version = { -incompatible-replay-recorded } an unknown version
+    .prompt-unknown-mod = { -incompatible-replay-recorded } an unknown mod
+    .prompt-unavailable-mod = { -incompatible-replay-recorded } an unavailable mod: { $mod }
     .prompt-incompatible-version = { -incompatible-replay-recorded } an incompatible version:
     { $version }.
     .prompt-unavailable-map = { -incompatible-replay-recorded } an unavailable map:
-    { $map }.
+    { $map }
 
 # SelectUnitsByTypeHotkeyLogic
-nothing-selected = Nothing selected.
+nothing-selected = Nothing selected
 
 ## SelectUnitsByTypeHotkeyLogic, SelectAllUnitsHotkeyLogic
 selected-units-across-screen =
     { $units ->
-        [one] Selected one unit across screen.
-       *[other] Selected { $units } units across screen.
+        [one] Selected one unit across screen
+       *[other] Selected { $units } units across screen
     }
 
 selected-units-across-map =
     { $units ->
-        [one] Selected one unit across map.
-       *[other] Selected { $units } units across map.
+        [one] Selected one unit across map
+       *[other] Selected { $units } units across map
     }
 
 ## ServerCreationLogic
@@ -637,7 +637,7 @@ label-local-server = Local Server:
 
 dialog-server-creation-failed =
     .prompt = Could not listen on port { $port }
-    .prompt-port-used = Check if the port is already being used.
+    .prompt-port-used = Check if the port is already being used
     .prompt-error = Error is: "{ $message }" ({ $code })
     .title = Server Creation Failed
     .cancel = Back
@@ -649,8 +649,8 @@ label-players-online-count =
        *[other] { $players } Players Online
     }
 
-label-search-status-failed = Failed to query server list.
-label-search-status-no-games = No games found. Try changing filters.
+label-search-status-failed = Failed to query server list
+label-search-status-no-games = No games found. Try changing filters
 label-no-server-selected = No Server Selected
 
 label-map-status-searching = Searching...
@@ -697,9 +697,9 @@ label-other-players-count =
 
 label-in-progress-for =
     { $minutes ->
-        [0] In progress for less than a minute.
-        [one] In progress for { $minutes } minute.
-       *[other] In progress for { $minutes } minutes.
+        [0] In progress for less than a minute
+        [one] In progress for { $minutes } minute
+       *[other] In progress for { $minutes } minutes
     }
 
 label-password-protected = Password protected
@@ -711,7 +711,7 @@ label-unknown-server-state = Unknown server state
 notification-saved-screenshot = Saved screenshot { $filename }
 
 ## ChatCommands
-notification-invalid-command = { $name } is not a valid command.
+notification-invalid-command = { $name } is not a valid command
 
 ## DebugVisualizationCommands
 description-combat-geometry = toggles combat geometry overlay.
@@ -722,31 +722,31 @@ description-actor-tags-overlay = toggles actor tags overlay.
 
 ## DevCommands
 notification-cheats-disabled = Cheats are disabled.
-notification-invalid-cash-amount = Invalid amount of cash.
+notification-invalid-cash-amount = Invalid cash amount.
 description-toggle-visibility = toggles visibility checks and minimap.
 description-give-cash = gives the default or specified amount of money.
-description-give-cash-all = gives the default or specified amount of money to all players and ai.
+description-give-cash-all = gives the default or specified amount of money to all players and AI.
 description-instant-building = toggles instant building.
 description-build-anywhere = toggles the ability to build anywhere.
 description-unlimited-power = toggles infinite power.
 description-enable-tech = toggles the ability to build everything.
-description-fast-charge = toggles almost instant support power charging.
+description-fast-charge = toggles near-instant support power charging.
 description-dev-cheat-all = toggles all cheats and gives you some cash for your trouble.
 description-dev-crash = crashes the game.
 description-levelup-actor = adds a specified number of levels to the selected actors.
 description-player-experience = adds a specified amount of player experience to the owner(s) of selected actors.
-description-power-outage = causes owner(s) of selected actors to have a 5 second power outage.
+description-power-outage = causes a 5-second power outage for the owner(s) of selected actors.
 description-kill-selected-actors = kills selected actors.
 description-dispose-selected-actors = disposes selected actors.
 
 ## HelpCommands
 notification-available-commands = Here are the available commands:
 description-no-description = no description available.
-description-help-description = provides useful info about various commands
+description-help-description = provides useful info about various commands.
 
 ## PlayerCommands
-description-pause-description = pause or unpause the game
-description-surrender-description = self-destruct everything and lose the game
+description-pause-description = pause or unpause the game.
+description-surrender-description = self-destruct everything and lose the game.
 
 ## DeveloperMode
 notification-cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }
@@ -802,7 +802,7 @@ notification-copied-tiles =
 ## EditorDefaultBrush
 notification-selected-area = Selected area { $x },{ $y } ({ $width },{ $height })
 notification-selected-actor = Selected actor { $id }
-notification-cleared-selection = Cleared selection
+notification-cleared-selection = Cleared selection.
 notification-removed-actor = Removed { $name } ({ $id })
 notification-removed-resource = Removed { $type }
 notification-moved-actor = Moved { $id } from { $x1 },{ $y1 } to { $x2 },{ $y2 }
@@ -830,10 +830,10 @@ notification-removed-marker-tiles =
       *[other] Removed { $amount } marker tiles
     }
 notification-cleared-selected-marker-tiles = Cleared { $amount } marker tiles of type { $type }
-notification-cleared-all-marker-tiles = Cleared { $amount } marker tiles
+notification-cleared-all-marker-tiles = Cleared { $amount } marker tiles.
 
 ## EditorActionManager
-notification-opened = Opened
+notification-opened = Opened.
 
 ## MapOverlaysLogic
 mirror-mode =
@@ -850,7 +850,7 @@ notification-player-is-victorious = { $player } is victorious.
 notification-player-is-defeated = { $player } is defeated.
 
 ## OrderManager
-notification-desync-compare-logs = Out of sync in frame { $frame }.
+notification-desync-compare-logs = Out of sync in frame { $frame }
     Compare syncreport.log with other players.
 
 ## SupportPowerTimerWidget
