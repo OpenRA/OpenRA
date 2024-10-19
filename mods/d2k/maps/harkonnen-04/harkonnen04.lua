@@ -133,12 +133,12 @@ Tick = function()
 	end
 
 	if Atreides.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
 	if Fremen.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillFremen) then
-		Media.DisplayMessage(UserInterface.Translate("fremen-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("fremen-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillFremen)
 	end
 
@@ -191,7 +191,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		Media.DisplayMessage(UserInterface.Translate("fremen-spotted-north-southwest"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("fremen-spotted-north-southwest"), Mentat)
 	end)
 
 	local atreidesCondition = function() return Harkonnen.IsObjectiveCompleted(KillAtreides) end

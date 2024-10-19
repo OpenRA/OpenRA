@@ -82,7 +82,7 @@ DefendChronosphereCompleted = function()
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)
-	UserInterface.SetMissionText(UserInterface.Translate("experiment-successful"), Greece.Color)
+	UserInterface.SetMissionText(UserInterface.FluentMessage("experiment-successful"), Greece.Color)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		Greece.MarkCompletedObjective(DefendChronosphere)
@@ -105,7 +105,7 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("chronosphere-experiment-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("chronosphere-experiment-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1

@@ -114,7 +114,7 @@ StartTimerFunction = function()
 	end
 end
 
-EnemyApproaching = UserInterface.Translate("enemy-approaching")
+EnemyApproaching = UserInterface.FluentMessage("enemy-approaching")
 FinishTimer = function()
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -166,7 +166,7 @@ Tick = function()
 	if StartTimer then
 		if Ticked > 0 then
 			if (Ticked % DateTime.Seconds(1)) == 0 then
-				Timer = UserInterface.Translate("soviet-armored-battalion-arrives-in", { ["time"] = Utils.FormatTime(Ticked) })
+				Timer = UserInterface.FluentMessage("soviet-armored-battalion-arrives-in", { ["time"] = Utils.FormatTime(Ticked) })
 				UserInterface.SetMissionText(Timer, TimerColor)
 			end
 			Ticked = Ticked - 1

@@ -11,10 +11,10 @@ Difficulty = Map.LobbyOptionOrDefault("difficulty", "normal")
 
 InitObjectives = function(player)
 	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), UserInterface.Translate("objective-completed"))
+		Media.DisplayMessage(p.GetObjectiveDescription(id), UserInterface.FluentMessage("objective-completed"))
 	end)
 	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), UserInterface.Translate("objective-failed"))
+		Media.DisplayMessage(p.GetObjectiveDescription(id), UserInterface.FluentMessage("objective-failed"))
 	end)
 
 	Trigger.OnPlayerLost(player, function()
@@ -29,7 +29,7 @@ InitObjectives = function(player)
 	end)
 end
 
-Mentat = UserInterface.Translate("mentat")
+Mentat = UserInterface.FluentMessage("mentat")
 
 SendCarryallReinforcements = function(player, currentWave, totalWaves, delay, pathFunction, unitTypes, customCondition, customHuntFunction, announcementFunction)
 	Trigger.AfterDelay(delay, function()

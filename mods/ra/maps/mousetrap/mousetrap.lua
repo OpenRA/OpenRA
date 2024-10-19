@@ -93,7 +93,7 @@ OnStartingEngineersKilled = function()
 	end
 
 	Media.PlaySoundNotification(USSR, "AlertBleep")
-	Media.DisplayMessage(UserInterface.Translate("all-engineers-killed"))
+	Media.DisplayMessage(UserInterface.FluentMessage("all-engineers-killed"))
 	Trigger.AfterDelay(DateTime.Seconds(1), AlliedWin)
 end
 

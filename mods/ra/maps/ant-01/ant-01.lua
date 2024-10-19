@@ -34,7 +34,7 @@ SendInsertionHelicopter = function()
 	Reinforcements.ReinforceWithTransport(Allies, InsertionHelicopterType, ChopperTeam, InsertionPath, { waypoint4.Location })
 end
 
-AlliedForcesHaveArrived = UserInterface.Translate("allied-forces-have-arrived")
+AlliedForcesHaveArrived = UserInterface.FluentMessage("allied-forces-have-arrived")
 FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
@@ -124,7 +124,7 @@ Tick = function()
 
 			Ticks = Ticks - 1;
 			if (Ticks % DateTime.Seconds(1)) == 0 then
-				Timer = UserInterface.Translate("reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticks) })
+				Timer = UserInterface.FluentMessage("reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticks) })
 				UserInterface.SetMissionText(Timer, TimerColor)
 			end
 		else

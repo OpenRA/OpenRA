@@ -51,7 +51,7 @@ SendAlliedUnits = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
+			Media.DisplayMessage(UserInterface.FluentMessage("tanya-rules-of-engagement"), UserInterface.FluentMessage("tanya"))
 		end)
 	end
 	Artillery.Stance = "HoldFire"

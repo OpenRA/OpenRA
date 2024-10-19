@@ -90,7 +90,7 @@ SetupTriggers = function()
 	end)
 
 	Trigger.OnInfiltrated(BioLab, function()
-		Media.DisplayMessage(UserInterface.Translate("plans-stolen-erase-data"), UserInterface.Translate("scientist"))
+		Media.DisplayMessage(UserInterface.FluentMessage("plans-stolen-erase-data"), UserInterface.FluentMessage("scientist"))
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			USSR.MarkCompletedObjective(InfiltrateLab)
 			LabInfiltrated = true
@@ -137,7 +137,7 @@ SendInVolkov = function()
 			USSR.MarkFailedObjective(VolkovSurvive)
 		end)
 		Trigger.OnAddedToWorld(teamVolkov[1], function(a)
-			Media.DisplayMessage(UserInterface.Translate("software-update-failed-manual-targets"), UserInterface.Translate("volkov"))
+			Media.DisplayMessage(UserInterface.FluentMessage("software-update-failed-manual-targets"), UserInterface.FluentMessage("volkov"))
 		end)
 
 		Trigger.OnAddedToWorld(teamVolkov[2], function(b)
@@ -158,12 +158,12 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("missiles-launch-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("missiles-launch-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
 	elseif Ticked == 0 then
-		UserInterface.SetMissionText(UserInterface.Translate("too-late"), USSR.Color)
+		UserInterface.SetMissionText(UserInterface.FluentMessage("too-late"), USSR.Color)
 		Turkey.MarkCompletedObjective(LaunchMissles)
 	end
 end

@@ -230,12 +230,12 @@ Tick = function()
 		return
 	end
 
-	local text = UserInterface.Translate("hostage-dies-in", { ["time"] = Utils.FormatTime(TimeRemaining) })
+	local text = UserInterface.FluentMessage("hostage-dies-in", { ["time"] = Utils.FormatTime(TimeRemaining) })
 	UserInterface.SetMissionText(text, TimerColor)
 end
 
 PrepareCountdown = function(interval)
-	local text = UserInterface.Translate("hostage-dies-in", { ["time"] = Utils.FormatTime(interval) })
+	local text = UserInterface.FluentMessage("hostage-dies-in", { ["time"] = Utils.FormatTime(interval) })
 	UserInterface.SetMissionText(text, TimerColor)
 	DateTime.TimeLimit = 1
 
@@ -379,7 +379,7 @@ PrepareForestEncounter = function()
 		end
 
 		Trigger.RemoveFootprintTrigger(id)
-		Media.DisplayMessage(UserInterface.Translate("guide-follow-me"), actor.TooltipName)
+		Media.DisplayMessage(UserInterface.FluentMessage("guide-follow-me"), actor.TooltipName)
 	end)
 
 	Trigger.OnEnteredFootprint({ ForestSouthwest.Location }, function(actor, id)
@@ -935,7 +935,7 @@ GuideToForest = function(guide)
 	guide.Move(GuideHouse.Location + CVec.New(0, 1))
 
 	guide.CallFunc(function()
-		Media.DisplayMessage(UserInterface.Translate("guide-thank-you"), guide.TooltipName)
+		Media.DisplayMessage(UserInterface.FluentMessage("guide-thank-you"), guide.TooltipName)
 	end)
 
 	guide.Move(SouthRiver.Location)
@@ -950,7 +950,7 @@ GuideToHideout = function(guide)
 	end
 
 	guide.CallFunc(function()
-		Media.DisplayMessage(UserInterface.Translate("guide-patrol-coming"), guide.TooltipName)
+		Media.DisplayMessage(UserInterface.FluentMessage("guide-patrol-coming"), guide.TooltipName)
 	end)
 
 	guide.Wait(DateTime.Seconds(2))
@@ -960,7 +960,7 @@ GuideToHideout = function(guide)
 			return
 		end
 
-		Media.DisplayMessage(UserInterface.Translate("guide-come-this-way"), guide.TooltipName)
+		Media.DisplayMessage(UserInterface.FluentMessage("guide-come-this-way"), guide.TooltipName)
 		guide.Move(ForestHideout.Location)
 	end)
 end
@@ -973,7 +973,7 @@ GuideToVillage = function(guide, patrolKilled)
 
 	guide.Stop()
 	Media.PlaySoundNotification(Greece, "GuideOkay")
-	Media.DisplayMessage(UserInterface.Translate("guide-safe-to-move"), guide.TooltipName)
+	Media.DisplayMessage(UserInterface.FluentMessage("guide-safe-to-move"), guide.TooltipName)
 	if not patrolKilled then
 		guide.Wait(DateTime.Seconds(1))
 	end
@@ -1203,7 +1203,7 @@ end
 
 OnAllHostagesKilled = function()
 	Media.PlaySoundNotification(Greece, "AlertBleep")
-	Media.DisplayMessage(UserInterface.Translate("all-hostages-killed"))
+	Media.DisplayMessage(UserInterface.FluentMessage("all-hostages-killed"))
 	MarkAlliedDefeat(EscortTheHostages or FreeTheHostages)
 end
 
@@ -1228,7 +1228,7 @@ end
 
 OnChurchKilled = function()
 	Media.PlaySoundNotification(Greece, "AlertBleep")
-	Media.DisplayMessage(UserInterface.Translate("church-destroyed"))
+	Media.DisplayMessage(UserInterface.FluentMessage("church-destroyed"))
 	MarkAlliedDefeat(EscortTheHostages, DateTime.Seconds(2))
 end
 

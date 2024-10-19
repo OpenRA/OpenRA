@@ -90,7 +90,7 @@ RunForHelp = function()
 		CivsRunning = true
 		local cam = Actor.Create("camera", true, { Owner = Nod, Location = CPos.New(53,44) })
 		Trigger.AfterDelay(125, cam.Destroy)
-		Media.DisplayMessage(UserInterface.Translate("civilians-running"), UserInterface.Translate("nod-soldier"))
+		Media.DisplayMessage(UserInterface.FluentMessage("civilians-running"), UserInterface.FluentMessage("nod-soldier"))
 	end
 end
 
@@ -98,7 +98,7 @@ CivsBuildingsToDestroy = 0
 CheckVillageDestruction = function()
 	CivsBuildingsToDestroy = CivsBuildingsToDestroy - 1
 	if CivsBuildingsToDestroy == 2 then
-		Media.DisplayMessage(UserInterface.Translate("village-destruction-warning"))
+		Media.DisplayMessage(UserInterface.FluentMessage("village-destruction-warning"))
 	elseif CivsBuildingsToDestroy == 0 then
 		Reinforcements.Reinforce(GDI, ReinforcementsMammoths, { CPos.New(2,9), CPos.New(3,9) }, 40, function(a)
 			a.AttackMove(waypoint11.Location)

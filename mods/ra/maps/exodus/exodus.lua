@@ -230,7 +230,7 @@ ManageSovietAircraft = function()
 end
 
 SetEvacuateMissionText = function()
-	local unitsEvacuated = UserInterface.Translate("units-evacuated",
+	local unitsEvacuated = UserInterface.FluentMessage("units-evacuated",
 		{ ["evacuated"] = UnitsEvacuated, ["threshold"] = UnitsEvacuatedThreshold[Difficulty] })
 	UserInterface.SetMissionText(unitsEvacuated, TextColor)
 end
@@ -309,7 +309,7 @@ WorldLoaded = function()
 	SetEvacuateMissionText()
 	Utils.Do(Humans, function(player)
 		if player then
-			EvacuateUnits = AddPrimaryObjective(player, UserInterface.Translate("evacuate-units", { ["threshold"] = UnitsEvacuatedThreshold[Difficulty] }))
+			EvacuateUnits = AddPrimaryObjective(player, UserInterface.FluentMessage("evacuate-units", { ["threshold"] = UnitsEvacuatedThreshold[Difficulty] }))
 			DestroyAirbases = AddSecondaryObjective(player, "destroy-nearby-soviet-airbases")
 			EvacuateMgg = AddSecondaryObjective(player, "evacuate-at-least-one-gap-generator")
 		end
@@ -333,7 +333,7 @@ WorldLoaded = function()
 
 	if not Allies2 then
 		Allies1.Cash = 10000
-		Media.DisplayMessage(UserInterface.Translate("transferring-funds"), UserInterface.Translate("co-commander-missing"))
+		Media.DisplayMessage(UserInterface.FluentMessage("transferring-funds"), UserInterface.FluentMessage("co-commander-missing"))
 	end
 
 	SpawnAlliedUnit(MobileConstructionVehicle)

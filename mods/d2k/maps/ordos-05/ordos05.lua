@@ -122,7 +122,7 @@ Tick = function()
 	end
 
 	if AtreidesMain.HasNoRequiredUnits() and AtreidesSmall1.HasNoRequiredUnits() and AtreidesSmall2.HasNoRequiredUnits() and AtreidesSmall3.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Ordos.MarkCompletedObjective(KillAtreides)
 	end
 
@@ -132,7 +132,7 @@ Tick = function()
 
 	if Ordos.IsObjectiveCompleted(CaptureStarport) then
 		if Ordos.Resources ~= CachedResources then
-			local harvestedResources = UserInterface.Translate("harvested-resources",
+			local harvestedResources = UserInterface.FluentMessage("harvested-resources",
 				{ ["harvested"] = Ordos.Resources, ["goal"] = SpiceToHarvest })
 			UserInterface.SetMissionText(harvestedResources)
 			CachedResources = Ordos.Resources
@@ -158,7 +158,7 @@ WorldLoaded = function()
 	KillOrdos3 = AddPrimaryObjective(AtreidesSmall2, "")
 	KillOrdos4 = AddPrimaryObjective(AtreidesSmall3, "")
 	CaptureStarport = AddPrimaryObjective(Ordos, "capture-atreides-starport-establish-base")
-	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
+	local harvestSpice = UserInterface.FluentMessage("harvest-spice", { ["spice"] = SpiceToHarvest })
 	GatherSpice = AddPrimaryObjective(Ordos, harvestSpice)
 	KillAtreides = AddSecondaryObjective(Ordos, "destroy-atreides")
 

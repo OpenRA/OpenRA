@@ -114,7 +114,7 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	local localBuildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	local localBuildSAMs = UserInterface.FluentMessage("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMObjective = AddPrimaryObjective(Nod, localBuildSAMs)
 	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-base")
 	GDIObjective = AddPrimaryObjective(GDI, "")
