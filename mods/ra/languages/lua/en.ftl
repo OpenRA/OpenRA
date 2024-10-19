@@ -57,7 +57,7 @@ rescue-tanya = Rescue Tanya.
 eliminate-soviet-units = Eliminate all Soviet units in this area.
 infiltrate-warfactory = Infiltrate the Soviet War Factory.
 destroy-sam-sites-blocker = Destroy all four SAM Sites blocking
-    our reinforcements' helicopter.
+    our reinforcements' helicopter from landing.
 
 # allies-06ab
 soviet-tech-centers-discovered = Soviet tech center coordinates discovered.
