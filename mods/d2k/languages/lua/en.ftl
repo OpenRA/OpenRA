@@ -22,8 +22,7 @@ build-refinery = Build a Refinery to collect Spice.
 build-silo = Build a Silo to store additional Spice.
 
 ## atreides-01ab, ordos01a, ordos-03ab
-eliminate-harkonnen-units-reinforcements = Eliminate all Harkonnen units and reinforcements
-    in the area.
+eliminate-harkonnen-units-reinforcements = Eliminate all Harkonnen units and reinforcements in the area.
 
 ## atreides-02a, atreides-04, atreides-05, ordos-02ab, ordos-03ab, ordos-04, ordos-06a
 harkonnen-annihilated = The Harkonnen have been annihilated!
@@ -38,8 +37,7 @@ ordos-annihilated = The Ordos have been annihilated!
 upgrade-barracks-light-factory = Upgrade the Barracks and Light Factory to enable advanced unit production.
 
 ## atreides-02b
-eliminate-ordos-units-reinforcements = Eliminate all Ordos forces and reinforcements
-    in the area.
+eliminate-ordos-units-reinforcements = Eliminate all Ordos forces and reinforcements in the area.
 
 ## atreides-04, ordos-04, ordos-06a
 destroy-harkonnen = Destroy the Harkonnen.
@@ -61,7 +59,7 @@ smugglers-annihilated = The Smugglers have been annihilated!
 incoming-mercenary-force = Hostile mercenary force incoming.
 contraband-has-arrived = The contraband has arrived!
 contraband-confiscated = Contraband has arrived and been confiscated.
-contraband-not-confiscated = Smuggler contraband has arrived. Confiscation is impossible given how heavily defended the Star Port is.
+contraband-not-confiscated = The Smuggler contraband has arrived, but confiscation is impossible due to the heavy defenses of the Starport.
 contraband-arrives-in = The contraband arriving in { $time }
 capture-barracks-sietch-tabr = Capture the Barracks at Sietch Tabr.
 annihilate-harkonnen-units-reinforcements = Annihilate all Harkonnen reinforcements.
