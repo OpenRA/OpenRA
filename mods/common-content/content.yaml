@@ -1,5 +1,11 @@
-Background@CONTENT_PANEL:
+Background@MODCONTENT_BACKGROUND:
 	Logic: ModContentLogic
+	Background: background
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+
+Background@CONTENT_PANEL:
+	Logic: ModContentInstallerLogic
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 500
@@ -20,11 +26,12 @@ Background@CONTENT_PANEL:
 			Text: label-content-panel-title
 			Align: Center
 			Font: MediumBold
-		Label@HEADER_TEMPLATE:
+		Label@HEADER_LABEL:
 			X: 30
 			Y: 66
 			Width: PARENT_WIDTH - 60
 			Height: 16
+			Text: modcontent-header
 			Align: Center
 			WordWrap: true
 		ScrollPanel@PACKAGES:
@@ -343,11 +350,12 @@ Background@CONTENT_PROMPT_PANEL:
 			Text: label-content-prompt-panel-title
 			Align: Center
 			Font: MediumBold
-		Label@HEADER_TEMPLATE:
+		Label@HEADER_LABEL:
 			X: 30
 			Y: 65
 			Width: PARENT_WIDTH - 60
 			Height: 16
+			Text: modcontent-installprompt
 			Align: Center
 			WordWrap: true
 		Button@ADVANCED_BUTTON:
@@ -376,10 +384,6 @@ Background@CONTENT_PROMPT_PANEL:
 			Font: Bold
 			Key: escape
 
-Background@MODCONTENT_BACKGROUND:
-	Background: background
-	Width: WINDOW_WIDTH
-	Height: WINDOW_HEIGHT
 
 Background@BUTTON_TOOLTIP:
 	Logic: ButtonTooltipLogic

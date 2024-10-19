@@ -9,9 +9,6 @@
  */
 #endregion
 
-using System;
-using System.IO;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
@@ -48,49 +45,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 
 		public override void StartGame(Arguments args)
 		{
-			var modId = args.GetValue("Content.Mod", null);
-			if (modId == null || !Game.Mods.TryGetValue(modId, out var selectedMod))
-				throw new InvalidOperationException("Invalid or missing Content.Mod argument.");
-
-			var translationFilePath = args.GetValue("Content.TranslationFile", null);
-			if (translationFilePath == null || !File.Exists(translationFilePath))
-				throw new InvalidOperationException("Invalid or missing Content.TranslationFile argument.");
-
-			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);
-
 			Ui.LoadWidget("MODCONTENT_BACKGROUND", Ui.Root, new WidgetArgs());
-
-			if (!IsModInstalled(content))
-			{
-				var widgetArgs = new WidgetArgs
-				{
-					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
-					{ "mod", selectedMod },
-					{ "content", content },
-					{ "translationFilePath", translationFilePath },
-				};
-
-				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
-			}
-			else
-			{
-				var widgetArgs = new WidgetArgs
-				{
-					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
-					{ "mod", selectedMod },
-					{ "content", content },
-					{ "translationFilePath", translationFilePath },
-				};
-
-				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);
-			}
-		}
-
-		static bool IsModInstalled(ModContent content)
-		{
-			return content.Packages
-				.Where(p => p.Value.Required)
-				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
 		}
 
 		public override bool BeforeLoad()
