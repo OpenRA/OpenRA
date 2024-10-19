@@ -466,7 +466,7 @@ actor-cycl =
    .name = Chain Link Barrier
    .description = Stops infantry and light vehicles.
     Can be crushed by tanks.
-   .encyclopedia = Blocks infantry movement and light vehicles, but can be crushed by tanks. Immune to small arms fire.
+   .encyclopedia = Blocks movement of infantry and light vehicles, but can be crushed by tanks. Immune to small arms fire.
      This barrier can be built in multiple segments once an initial chain link has been placed.
 
 actor-brik =
@@ -611,7 +611,7 @@ actor-msam =
      A strong unit to build vs enemy artillery, its high bullet velocity and damage to light vehicles makes it the perfect counter to Nod artillery.
 
 actor-mlrs =
-   .name = Mobile SAM.
+   .name = Mobile SAM
    .description = Powerful anti-air unit.
     Cannot attack ground units.
    .encyclopedia = Generally referred to as “MSAM” by players, this Nod vehicle is a dedicated anti-air vehicle when their bikes do not cut it. It fires slow-moving missiles with powerful splash damage.

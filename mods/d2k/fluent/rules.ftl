@@ -164,7 +164,7 @@ actor-light-inf =
       Weak vs. Vehicles and Artillery.
    .encyclopedia = Lightly armored foot soldiers, equipped with 9mm RP assault rifles. They are effective against infantry and lightly armored vehicles.
 
-    Light Infantry are resistant to missiles and large-caliber guns, but are very vulnerable to high-explosives, fire and bullet weapons.
+    Light Infantry are resistant to missiles and large-caliber guns, but are very vulnerable to high-explosives, fire, and small arms.
 
 actor-engineer =
    .name = Engineer
@@ -174,7 +174,7 @@ actor-engineer =
       Repairs damaged cliffs.
    .encyclopedia = Can be used to capture enemy buildings.
 
-    Engineers are resistant to anti-tank weaponry but are very vulnerable to high-explosives, fire and firearms.
+    Engineers are resistant to anti-tank weaponry but are very vulnerable to high-explosives, fire, and small arms.
 
 actor-trooper =
    .name = Trooper
@@ -376,7 +376,7 @@ actor-wall =
    .description = Stops units and blocks enemy fire.
    .encyclopedia = The most effective defensive barriers on Dune, blocking tank fire and impeding unit movement.
 
-    Walls can only be damaged by explosive weapons, missiles and shells. Similar to concrete slabs, they cannot be repaired once damaged.
+    Walls can only be damaged by explosive weapons, missiles and shells. Similar to Concrete Slabs, they cannot be repaired once damaged.
 
 actor-medium-gun-turret =
    .name = Gun Turret
@@ -385,7 +385,7 @@ actor-medium-gun-turret =
       Weak vs. Infantry and Aircraft.
    .encyclopedia = A medium-range weapon that is effective against all types of vehicle, particularly heavily armored ones. It automatically fires upon any enemy unit within its range and requires power to operate.
 
-    The Gun Turret is resistant to firearms and explosive weapons, but vulnerable to missiles and high-caliber guns.
+    The Gun Turret is resistant to small arms and explosive weapons, but vulnerable to missiles and high-caliber guns.
 
 actor-large-gun-turret =
    .name = Rocket Turret
