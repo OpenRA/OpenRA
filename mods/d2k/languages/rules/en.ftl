@@ -376,7 +376,7 @@ actor-wall =
    .generic-name = Structure
    .encyclopedia = The most effective defensive barriers on Dune, blocking tank fire and hindering enemy movement.
 
-    Walls can only be damaged by explosive weapons, missiles and shells. Similar to concrete slabs, they cannot be repaired once damaged.
+    Walls can only be damaged by explosive weapons, missiles and shells. Similar to Concrete Slabs, they cannot be repaired once damaged.
 
 actor-medium-gun-turret =
    .description = Defensive structure.
