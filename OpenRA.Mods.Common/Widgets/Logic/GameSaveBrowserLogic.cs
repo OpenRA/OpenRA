@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(FluentProvider.GetString(SaveDeletionFailed, "savePath", savePath));
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(SaveDeletionFailed, "savePath", savePath));
 				Log.Write("debug", ex.ToString());
 				return;
 			}

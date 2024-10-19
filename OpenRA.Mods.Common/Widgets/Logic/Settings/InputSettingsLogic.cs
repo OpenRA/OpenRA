@@ -44,8 +44,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public InputSettingsLogic(Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel, string panelID, string label)
 		{
-			classic = FluentProvider.GetString(Classic);
-			modern = FluentProvider.GetString(Modern);
+			classic = FluentProvider.GetMessage(Classic);
+			modern = FluentProvider.GetMessage(Modern);
 
 			registerPanel(panelID, label, InitPanel, ResetPanel);
 		}
@@ -148,8 +148,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, bool>()
 			{
-				{ FluentProvider.GetString(Classic), true },
-				{ FluentProvider.GetString(Modern), false },
+				{ FluentProvider.GetMessage(Classic), true },
+				{ FluentProvider.GetMessage(Modern), false },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
@@ -168,10 +168,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
-				{ FluentProvider.GetString(Disabled), MouseScrollType.Disabled },
-				{ FluentProvider.GetString(Standard), MouseScrollType.Standard },
-				{ FluentProvider.GetString(Inverted), MouseScrollType.Inverted },
-				{ FluentProvider.GetString(Joystick), MouseScrollType.Joystick },
+				{ FluentProvider.GetMessage(Disabled), MouseScrollType.Disabled },
+				{ FluentProvider.GetMessage(Standard), MouseScrollType.Standard },
+				{ FluentProvider.GetMessage(Inverted), MouseScrollType.Inverted },
+				{ FluentProvider.GetMessage(Joystick), MouseScrollType.Joystick },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)

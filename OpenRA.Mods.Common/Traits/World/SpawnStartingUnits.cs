@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Duplicate classes are defined for different race variants
 			foreach (var t in map.WorldActorInfo.TraitInfos<StartingUnitsInfo>())
-				startingUnits[t.Class] = map.GetString(t.ClassName);
+				startingUnits[t.Class] = map.GetMessage(t.ClassName);
 
 			if (startingUnits.Count > 0)
 				yield return new LobbyOption(map, "startingunits", DropdownLabel, DropdownDescription, DropdownVisible, DropdownDisplayOrder,

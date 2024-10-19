@@ -88,9 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 			var timelimits = TimeLimitOptions.ToDictionary(m => m.ToStringInvariant(), m =>
 			{
 				if (m == 0)
-					return FluentProvider.GetString(NoTimeLimit);
+					return FluentProvider.GetMessage(NoTimeLimit);
 				else
-					return FluentProvider.GetString(TimeLimitOption, "minutes", m);
+					return FluentProvider.GetMessage(TimeLimitOption, "minutes", m);
 			});
 
 			yield return new LobbyOption(map, "timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 				countdownLabel.GetText = () => null;
 
 			if (!info.SkipTimerExpiredNotification)
-				TextNotificationsManager.AddSystemLine(FluentProvider.GetString(TimeLimitExpired));
+				TextNotificationsManager.AddSystemLine(FluentProvider.GetMessage(TimeLimitExpired));
 		}
 	}
 }

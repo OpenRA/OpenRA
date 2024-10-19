@@ -155,10 +155,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var statsDropDown = widget.Get<DropDownButtonWidget>("STATS_DROPDOWN");
 			StatsDropDownOption CreateStatsOption(string title, ObserverStatsPanel panel, ScrollItemWidget template, Action a)
 			{
-				title = FluentProvider.GetString(title);
+				title = FluentProvider.GetMessage(title);
 				return new StatsDropDownOption
 				{
-					Title = FluentProvider.GetString(title),
+					Title = FluentProvider.GetMessage(title),
 					IsSelected = () => activePanel == panel,
 					OnClick = () =>
 					{
@@ -179,11 +179,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				new()
 				{
-					Title = FluentProvider.GetString(InformationNone),
+					Title = FluentProvider.GetMessage(InformationNone),
 					IsSelected = () => activePanel == ObserverStatsPanel.None,
 					OnClick = () =>
 					{
-						var informationNone = FluentProvider.GetString(InformationNone);
+						var informationNone = FluentProvider.GetMessage(InformationNone);
 						statsDropDown.GetText = () => informationNone;
 						playerStatsPanel.Visible = false;
 						ClearStats();
@@ -286,8 +286,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					tt.IgnoreMouseOver = true;
 
 					var teamLabel = tt.Get<LabelWidget>("TEAM");
-					var teamText = team.Key > 0 ? FluentProvider.GetString(TeamNumber, "team", team.Key)
-						: FluentProvider.GetString(NoTeam);
+					var teamText = team.Key > 0 ? FluentProvider.GetMessage(TeamNumber, "team", team.Key)
+						: FluentProvider.GetMessage(NoTeam);
 					teamLabel.GetText = () => teamText;
 					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(teamText).X;
 

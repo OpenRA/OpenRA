@@ -56,10 +56,10 @@ namespace OpenRA.Mods.Common.Scripting.Global
 					}
 				}
 
-				return FluentProvider.GetString(key, argumentDictionary);
+				return FluentProvider.GetMessage(key, argumentDictionary);
 			}
 
-			return FluentProvider.GetString(key);
+			return FluentProvider.GetMessage(key);
 		}
 	}
 }

@@ -178,9 +178,9 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
 
 			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
-			HoldText = FluentProvider.GetString(HoldText);
+			HoldText = FluentProvider.GetMessage(HoldText);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
-			ReadyText = FluentProvider.GetString(ReadyText);
+			ReadyText = FluentProvider.GetMessage(ReadyText);
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 
 			if (ChromeMetrics.TryGet("InfiniteOffset", out infiniteOffset))

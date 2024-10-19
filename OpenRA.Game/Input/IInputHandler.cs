@@ -80,12 +80,12 @@ namespace OpenRA
 		public static string DisplayString(Modifiers m)
 		{
 			if (m == Modifiers.Meta && Platform.CurrentPlatform == PlatformType.OSX)
-				return FluentProvider.GetString(Cmd);
+				return FluentProvider.GetMessage(Cmd);
 
 			if (!ModifierFluentKeys.TryGetValue(m, out var fluentKey))
 				return m.ToString();
 
-			return FluentProvider.GetString(fluentKey);
+			return FluentProvider.GetMessage(fluentKey);
 		}
 	}
 

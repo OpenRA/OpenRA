@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
 			{
 				{ MapFileType.OraMap, new MapFileTypeInfo { Extension = ".oramap", UiLabel = ".oramap" } },
-				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({FluentProvider.GetString(Unpacked)})" } }
+				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({FluentProvider.GetMessage(Unpacked)})" } }
 			};
 
 			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");

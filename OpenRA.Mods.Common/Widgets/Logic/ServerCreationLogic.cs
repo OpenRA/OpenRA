@@ -170,15 +170,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (advertiseOnline)
 			{
-				var noticesLabelAText = FluentProvider.GetString(InternetServerNatA) + " ";
+				var noticesLabelAText = FluentProvider.GetMessage(InternetServerNatA) + " ";
 				noticesLabelA.GetText = () => noticesLabelAText;
 				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelAText).X;
 				noticesLabelA.Bounds.Width = aWidth;
 
 				var noticesLabelBText =
-					Nat.Status == NatStatus.Enabled ? FluentProvider.GetString(InternetServerNatBenabled) :
-					Nat.Status == NatStatus.NotSupported ? FluentProvider.GetString(InternetServerNatBnotSupported) :
-					FluentProvider.GetString(InternetServerNatBdisabled);
+					Nat.Status == NatStatus.Enabled ? FluentProvider.GetMessage(InternetServerNatBenabled) :
+					Nat.Status == NatStatus.NotSupported ? FluentProvider.GetMessage(InternetServerNatBnotSupported) :
+					FluentProvider.GetMessage(InternetServerNatBdisabled);
 				noticesLabelB.GetText = () => noticesLabelBText;
 
 				noticesLabelB.TextColor =
@@ -191,14 +191,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				noticesLabelB.Bounds.Width = bWidth;
 				noticesLabelB.Visible = true;
 
-				var noticesLabelCText = FluentProvider.GetString(InternetServerNatC);
+				var noticesLabelCText = FluentProvider.GetMessage(InternetServerNatC);
 				noticesLabelC.GetText = () => noticesLabelCText;
 				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
 				noticesLabelC.Visible = true;
 			}
 			else
 			{
-				var noticesLabelAText = FluentProvider.GetString(LocalServer);
+				var noticesLabelAText = FluentProvider.GetMessage(LocalServer);
 				noticesLabelA.GetText = () => noticesLabelAText;
 				noticesLabelB.Visible = false;
 				noticesLabelC.Visible = false;
@@ -239,13 +239,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
-				var message = FluentProvider.GetString(ServerCreationFailedPrompt, "port", Game.Settings.Server.ListenPort);
+				var message = FluentProvider.GetMessage(ServerCreationFailedPrompt, "port", Game.Settings.Server.ListenPort);
 
 				// AddressAlreadyInUse (WSAEADDRINUSE)
 				if (e.ErrorCode == 10048)
-					message += "\n" + FluentProvider.GetString(ServerCreationFailedPortUsed);
+					message += "\n" + FluentProvider.GetMessage(ServerCreationFailedPortUsed);
 				else
-					message += "\n" + FluentProvider.GetString(ServerCreationFailedError, "message", e.Message, "code", e.ErrorCode);
+					message += "\n" + FluentProvider.GetMessage(ServerCreationFailedError, "message", e.Message, "code", e.ErrorCode);
 
 				ConfirmationDialogs.ButtonPrompt(modData, ServerCreationFailedTitle, message,
 					onCancel: () => { }, cancelText: ServerCreationFailedCancel);

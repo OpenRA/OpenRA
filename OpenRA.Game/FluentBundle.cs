@@ -112,15 +112,15 @@ namespace OpenRA
 			}
 		}
 
-		public string GetString(string key, object[] args = null)
+		public string GetMessage(string key, object[] args = null)
 		{
-			if (!TryGetString(key, out var message, args))
+			if (!TryGetMessage(key, out var message, args))
 				message = key;
 
 			return message;
 		}
 
-		public bool TryGetString(string key, out string value, object[] args = null)
+		public bool TryGetMessage(string key, out string value, object[] args = null)
 		{
 			if (key == null)
 				throw new ArgumentNullException(nameof(key));

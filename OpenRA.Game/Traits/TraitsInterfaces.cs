@@ -586,11 +586,11 @@ namespace OpenRA.Traits
 			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
 		{
 			Id = id;
-			Name = map.GetString(name);
-			Description = description != null ? map.GetString(description).Replace(@"\n", "\n") : null;
+			Name = map.GetMessage(name);
+			Description = description != null ? map.GetMessage(description).Replace(@"\n", "\n") : null;
 			IsVisible = visible;
 			DisplayOrder = displayorder;
-			Values = values.ToDictionary(v => v.Key, v => map.GetString(v.Value));
+			Values = values.ToDictionary(v => v.Key, v => map.GetMessage(v.Value));
 			DefaultValue = defaultValue;
 			IsLocked = locked;
 		}

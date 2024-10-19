@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public LabelWidget(ModData modData)
 		{
-			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetString(s) : "");
+			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetMessage(s) : "");
 			GetText = () => textCache.Update(Text);
 			GetColor = () => TextColor;
 			GetContrastColorDark = () => ContrastColorDark;

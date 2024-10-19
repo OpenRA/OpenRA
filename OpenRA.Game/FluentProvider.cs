@@ -31,32 +31,32 @@ namespace OpenRA
 			}
 		}
 
-		public static string GetString(string key, params object[] args)
+		public static string GetMessage(string key, params object[] args)
 		{
 			lock (SyncObject)
 			{
 				// By prioritizing mod-level fluent bundles we prevent maps from overwriting string keys. We do not want to
 				// allow maps to change the UI nor any other strings not exposed to the map.
-				if (modFluentBundle.TryGetString(key, out var message, args))
+				if (modFluentBundle.TryGetMessage(key, out var message, args))
 					return message;
 
 				if (mapFluentBundle != null)
-					return mapFluentBundle.GetString(key, args);
+					return mapFluentBundle.GetMessage(key, args);
 
 				return key;
 			}
 		}
 
-		public static bool TryGetString(string key, out string message, params object[] args)
+		public static bool TryGetMessage(string key, out string message, params object[] args)
 		{
 			lock (SyncObject)
 			{
 				// By prioritizing mod-level bundle we prevent maps from overwriting string keys. We do not want to
 				// allow maps to change the UI nor any other strings not exposed to the map.
-				if (modFluentBundle.TryGetString(key, out message, args))
+				if (modFluentBundle.TryGetMessage(key, out message, args))
 					return true;
 
-				if (mapFluentBundle != null && mapFluentBundle.TryGetString(key, out message, args))
+				if (mapFluentBundle != null && mapFluentBundle.TryGetMessage(key, out message, args))
 					return true;
 
 				return false;
@@ -64,11 +64,11 @@ namespace OpenRA
 		}
 
 		/// <summary>Should only be used by <see cref="MapPreview"/>.</summary>
-		internal static bool TryGetModString(string key, out string message, params object[] args)
+		internal static bool TryGetModMessage(string key, out string message, params object[] args)
 		{
 			lock (SyncObject)
 			{
-				return modFluentBundle.TryGetString(key, out message, args);
+				return modFluentBundle.TryGetMessage(key, out message, args);
 			}
 		}
 	}

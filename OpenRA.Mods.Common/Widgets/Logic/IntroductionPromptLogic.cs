@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
 
-			classic = FluentProvider.GetString(Classic);
-			modern = FluentProvider.GetString(Modern);
+			classic = FluentProvider.GetMessage(Classic);
+			modern = FluentProvider.GetMessage(Modern);
 
 			var escPressed = false;
 			var nameTextfield = widget.Get<TextFieldWidget>("PLAYERNAME");

@@ -385,7 +385,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (option.Values.TryGetValue(missionOptions[option.Id], out var value))
 						return value;
 
-					return FluentProvider.GetString(NotAvailable);
+					return FluentProvider.GetMessage(NotAvailable);
 				};
 
 				if (option.Description != null)

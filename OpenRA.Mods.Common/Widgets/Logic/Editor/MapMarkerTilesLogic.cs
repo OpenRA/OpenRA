@@ -130,11 +130,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				switch (markerLayerTrait.MirrorMode)
 				{
 					case MarkerTileMirrorMode.None:
-						return FluentProvider.GetString(MarkerMirrorModeNone);
+						return FluentProvider.GetMessage(MarkerMirrorModeNone);
 					case MarkerTileMirrorMode.Flip:
-						return FluentProvider.GetString(MarkerMirrorModeFlip);
+						return FluentProvider.GetMessage(MarkerMirrorModeFlip);
 					case MarkerTileMirrorMode.Rotate:
-						return FluentProvider.GetString(MarkerMirrorModeRotate);
+						return FluentProvider.GetMessage(MarkerMirrorModeRotate);
 					default:
 						throw new ArgumentException($"Couldn't find fluent string for marker tile mirror mode '{markerLayerTrait.MirrorMode}'");
 				}
@@ -221,11 +221,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					switch (mode)
 					{
 						case MarkerTileMirrorMode.None:
-							return FluentProvider.GetString(MarkerMirrorModeNone);
+							return FluentProvider.GetMessage(MarkerMirrorModeNone);
 						case MarkerTileMirrorMode.Flip:
-							return FluentProvider.GetString(MarkerMirrorModeFlip);
+							return FluentProvider.GetMessage(MarkerMirrorModeFlip);
 						case MarkerTileMirrorMode.Rotate:
-							return FluentProvider.GetString(MarkerMirrorModeRotate);
+							return FluentProvider.GetMessage(MarkerMirrorModeRotate);
 						default:
 							throw new ArgumentException($"Couldn't find fluent string for marker tile mirror mode '{mode}'");
 					}

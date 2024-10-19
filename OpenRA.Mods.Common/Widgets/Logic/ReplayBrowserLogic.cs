@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
-				FluentProvider.GetString(Duration, "time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds)));
+				FluentProvider.GetMessage(Duration, "time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds)));
 			panel.Get<LabelWidget>("DURATION").GetText = () => replayDuration.Update(selectedReplay);
 
 			SetupFilters();
@@ -234,8 +234,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(GameType GameType, string Text)>
 					{
 						(GameType.Any, ddb.GetText()),
-						(GameType.Singleplayer, FluentProvider.GetString(Singleplayer)),
-						(GameType.Multiplayer, FluentProvider.GetString(Multiplayer))
+						(GameType.Singleplayer, FluentProvider.GetMessage(Singleplayer)),
+						(GameType.Multiplayer, FluentProvider.GetMessage(Multiplayer))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.GameType, kvp => kvp.Text);
@@ -267,10 +267,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(DateType DateType, string Text)>
 					{
 						(DateType.Any, ddb.GetText()),
-						(DateType.Today, FluentProvider.GetString(Today)),
-						(DateType.LastWeek, FluentProvider.GetString(LastWeek)),
-						(DateType.LastFortnight, FluentProvider.GetString(LastFortnight)),
-						(DateType.LastMonth, FluentProvider.GetString(LastMonth))
+						(DateType.Today, FluentProvider.GetMessage(Today)),
+						(DateType.LastWeek, FluentProvider.GetMessage(LastWeek)),
+						(DateType.LastFortnight, FluentProvider.GetMessage(LastFortnight)),
+						(DateType.LastMonth, FluentProvider.GetMessage(LastMonth))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.DateType, kvp => kvp.Text);
@@ -303,10 +303,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(DurationType DurationType, string Text)>
 					{
 						(DurationType.Any, ddb.GetText()),
-						(DurationType.VeryShort, FluentProvider.GetString(ReplayDurationVeryShort)),
-						(DurationType.Short, FluentProvider.GetString(ReplayDurationShort)),
-						(DurationType.Medium, FluentProvider.GetString(ReplayDurationMedium)),
-						(DurationType.Long, FluentProvider.GetString(ReplayDurationLong))
+						(DurationType.VeryShort, FluentProvider.GetMessage(ReplayDurationVeryShort)),
+						(DurationType.Short, FluentProvider.GetMessage(ReplayDurationShort)),
+						(DurationType.Medium, FluentProvider.GetMessage(ReplayDurationMedium)),
+						(DurationType.Long, FluentProvider.GetMessage(ReplayDurationLong))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.DurationType, kvp => kvp.Text);
@@ -340,8 +340,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(WinState WinState, string Text)>
 					{
 						(WinState.Undefined, ddb.GetText()),
-						(WinState.Lost, FluentProvider.GetString(Defeat)),
-						(WinState.Won, FluentProvider.GetString(Victory))
+						(WinState.Lost, FluentProvider.GetMessage(Defeat)),
+						(WinState.Won, FluentProvider.GetMessage(Victory))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.WinState, kvp => kvp.Text);
@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					options.Insert(0, null); // no filter
 
 					var anyText = ddb.GetText();
-					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : FluentProvider.GetString(filter.Faction);
+					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : FluentProvider.GetMessage(filter.Faction);
 					ddb.OnMouseDown = _ =>
 					{
 						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
@@ -455,7 +455,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								tpl,
 								() => string.Equals(filter.Faction, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.Faction = option; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option != null ? FluentProvider.GetString(option) : anyText;
+							item.Get<LabelWidget>("LABEL").GetText = () => option != null ? FluentProvider.GetMessage(option) : anyText;
 							return item;
 						}
 
@@ -584,7 +584,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(FluentProvider.GetString(ReplayDeletionFailed, "file", replay.FilePath));
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(ReplayDeletionFailed, "file", replay.FilePath));
 				Log.Write("debug", ex.ToString());
 				return;
 			}
@@ -724,9 +724,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var noTeams = players.Count == 1;
 				foreach (var p in players)
 				{
-					var label = noTeams ? FluentProvider.GetString(Players) : p.Key > 0
-						? FluentProvider.GetString(TeamNumber, "team", p.Key)
-						: FluentProvider.GetString(NoTeam);
+					var label = noTeams ? FluentProvider.GetMessage(Players) : p.Key > 0
+						? FluentProvider.GetMessage(TeamNumber, "team", p.Key)
+						: FluentProvider.GetMessage(NoTeam);
 
 					teams.Add(label, p);
 				}

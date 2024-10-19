@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			siloBar.GetProvided = () => playerResources.ResourceCapacity;
 			siloBar.GetUsed = () => playerResources.Resources;
 			siloBar.TooltipTextCached = new CachedTransform<(float Current, float Capacity), string>(
-				usage => FluentProvider.GetString(SiloUsage, "usage", usage.Current, "capacity", usage.Capacity));
+				usage => FluentProvider.GetMessage(SiloUsage, "usage", usage.Current, "capacity", usage.Capacity));
 			siloBar.GetBarColor = () =>
 			{
 				if (playerResources.Resources == playerResources.ResourceCapacity)

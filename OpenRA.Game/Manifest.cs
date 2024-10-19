@@ -57,8 +57,8 @@ namespace OpenRA
 		public readonly bool Hidden;
 #pragma warning restore IDE1006 // Naming Styles
 
-		public string TitleTranslated => FluentProvider.GetString(Title);
-		public string WindowTitleTranslated => WindowTitle != null ? FluentProvider.GetString(WindowTitle) : null;
+		public string TitleTranslated => FluentProvider.GetMessage(Title);
+		public string WindowTitleTranslated => WindowTitle != null ? FluentProvider.GetMessage(WindowTitle) : null;
 	}
 
 	/// <summary>Describes what is to be loaded in order to run a mod.</summary>
