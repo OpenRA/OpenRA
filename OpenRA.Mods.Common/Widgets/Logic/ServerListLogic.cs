@@ -145,8 +145,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			switch (searchStatus)
 			{
-				case SearchStatus.Failed: return FluentProvider.GetString(SearchStatusFailed);
-				case SearchStatus.NoGames: return FluentProvider.GetString(SearchStatusNoGames);
+				case SearchStatus.Failed: return FluentProvider.GetMessage(SearchStatusFailed);
+				case SearchStatus.NoGames: return FluentProvider.GetMessage(SearchStatusNoGames);
 				default: return "";
 			}
 		}
@@ -157,22 +157,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onJoin = onJoin;
 
-			playing = FluentProvider.GetString(Playing);
-			waiting = FluentProvider.GetString(Waiting);
+			playing = FluentProvider.GetMessage(Playing);
+			waiting = FluentProvider.GetMessage(Waiting);
 
-			noServerSelected = FluentProvider.GetString(NoServerSelected);
-			mapStatusSearching = FluentProvider.GetString(MapStatusSearching);
-			mapClassificationUnknown = FluentProvider.GetString(MapClassificationUnknown);
+			noServerSelected = FluentProvider.GetMessage(NoServerSelected);
+			mapStatusSearching = FluentProvider.GetMessage(MapStatusSearching);
+			mapClassificationUnknown = FluentProvider.GetMessage(MapClassificationUnknown);
 
-			players = new CachedTransform<int, string>(i => FluentProvider.GetString(PlayersLabel, "players", i));
-			bots = new CachedTransform<int, string>(i => FluentProvider.GetString(BotsLabel, "bots", i));
-			spectators = new CachedTransform<int, string>(i => FluentProvider.GetString(SpectatorsLabel, "spectators", i));
+			players = new CachedTransform<int, string>(i => FluentProvider.GetMessage(PlayersLabel, "players", i));
+			bots = new CachedTransform<int, string>(i => FluentProvider.GetMessage(BotsLabel, "bots", i));
+			spectators = new CachedTransform<int, string>(i => FluentProvider.GetMessage(SpectatorsLabel, "spectators", i));
 
-			minutes = new CachedTransform<double, string>(i => FluentProvider.GetString(InProgress, "minutes", i));
-			passwordProtected = FluentProvider.GetString(PasswordProtected);
-			waitingForPlayers = FluentProvider.GetString(WaitingForPlayers);
-			serverShuttingDown = FluentProvider.GetString(ServerShuttingDown);
-			unknownServerState = FluentProvider.GetString(UnknownServerState);
+			minutes = new CachedTransform<double, string>(i => FluentProvider.GetMessage(InProgress, "minutes", i));
+			passwordProtected = FluentProvider.GetMessage(PasswordProtected);
+			waitingForPlayers = FluentProvider.GetMessage(WaitingForPlayers);
+			serverShuttingDown = FluentProvider.GetMessage(ServerShuttingDown);
+			unknownServerState = FluentProvider.GetMessage(UnknownServerState);
 
 			services = modData.Manifest.Get<WebServices>();
 
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playersLabel = widget.GetOrNull<LabelWidget>("PLAYER_COUNT");
 			if (playersLabel != null)
 			{
-				var playersText = new CachedTransform<int, string>(p => FluentProvider.GetString(PlayersOnline, "players", p));
+				var playersText = new CachedTransform<int, string>(p => FluentProvider.GetMessage(PlayersOnline, "players", p));
 				playersLabel.IsVisible = () => playerCount != 0;
 				playersLabel.GetText = () => playersText.Update(playerCount);
 			}
@@ -581,14 +581,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var noTeams = players.Count == 1;
 			foreach (var p in players)
 			{
-				var label = noTeams ? FluentProvider.GetString(Players) : p.Key > 0
-					? FluentProvider.GetString(TeamNumber, "team", p.Key)
-					: FluentProvider.GetString(NoTeam);
+				var label = noTeams ? FluentProvider.GetMessage(Players) : p.Key > 0
+					? FluentProvider.GetMessage(TeamNumber, "team", p.Key)
+					: FluentProvider.GetMessage(NoTeam);
 				teams.Add(label, p);
 			}
 
 			if (server.Clients.Any(c => c.IsSpectator))
-				teams.Add(FluentProvider.GetString(Spectators), server.Clients.Where(c => c.IsSpectator));
+				teams.Add(FluentProvider.GetMessage(Spectators), server.Clients.Where(c => c.IsSpectator));
 
 			var factionInfo = modData.DefaultRules.Actors[SystemActors.World].TraitInfos<FactionInfo>();
 			foreach (var kv in teams)
@@ -765,7 +765,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								if (game.Clients.Length > 10)
 									displayClients = displayClients
 										.Take(9)
-										.Append(FluentProvider.GetString(OtherPlayers, "players", game.Clients.Length - 9));
+										.Append(FluentProvider.GetMessage(OtherPlayers, "players", game.Clients.Length - 9));
 
 								var tooltip = displayClients.JoinWith("\n");
 								players.GetTooltipText = () => tooltip;

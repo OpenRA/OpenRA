@@ -94,8 +94,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorIDErrorLabel.IsVisible = () => actorIDStatus != ActorIDStatus.Normal;
 			actorIDErrorLabel.GetText = () =>
 				actorIDStatus == ActorIDStatus.Duplicate || nextActorIDStatus == ActorIDStatus.Duplicate
-					? FluentProvider.GetString(DuplicateActorId)
-					: FluentProvider.GetString(EnterActorId);
+					? FluentProvider.GetMessage(DuplicateActorId)
+					: FluentProvider.GetMessage(EnterActorId);
 
 			okButton.IsDisabled = () => !IsValid() || editActorPreview == null || !editActorPreview.IsDirty;
 			okButton.OnClick = Save;
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				initialActorID = actorIDField.Text = SelectedActor.ID;
 
 				var font = Game.Renderer.Fonts[typeLabel.Font];
-				var truncatedType = WidgetUtils.TruncateText(FluentProvider.GetString(SelectedActor.DescriptiveName), typeLabel.Bounds.Width, font);
+				var truncatedType = WidgetUtils.TruncateText(FluentProvider.GetMessage(SelectedActor.DescriptiveName), typeLabel.Bounds.Width, font);
 				typeLabel.GetText = () => truncatedType;
 
 				actorIDField.CursorPosition = SelectedActor.ID.Length;
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Add owner dropdown
 				var ownerContainer = dropdownOptionTemplate.Clone();
-				var owner = FluentProvider.GetString(Owner);
+				var owner = FluentProvider.GetMessage(Owner);
 				ownerContainer.Get<LabelWidget>("LABEL").GetText = () => owner;
 				var ownerDropdown = ownerContainer.Get<DropDownButtonWidget>("OPTION");
 				var selectedOwner = SelectedActor.Owner;
@@ -454,7 +454,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			Actor = actor;
 			this.handles = handles;
-			Text = FluentProvider.GetString(EditedActor, "name", actor.Info.Name, "id", actor.ID);
+			Text = FluentProvider.GetMessage(EditedActor, "name", actor.Info.Name, "id", actor.ID);
 		}
 
 		public void Execute()
@@ -466,7 +466,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var after = Actor;
 			if (before != after)
-				Text = FluentProvider.GetString(EditedActorId, "name", after.Info.Name, "old-id", before.ID, "new-id", after.ID);
+				Text = FluentProvider.GetMessage(EditedActorId, "name", after.Info.Name, "old-id", before.ID, "new-id", after.ID);
 		}
 
 		public void Do()

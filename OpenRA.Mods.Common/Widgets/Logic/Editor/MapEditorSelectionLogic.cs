@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var resourceValueInRegion = editorResourceLayer.CalculateRegionValue(selectedRegion);
 
 			var areaSelectionLabel =
-				$"{FluentProvider.GetString(AreaSelection)} ({DimensionsAsString(selectionSize)}) " +
+				$"{FluentProvider.GetMessage(AreaSelection)} ({DimensionsAsString(selectionSize)}) " +
 				$"{PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
 
 			AreaEditTitle.GetText = () => areaSelectionLabel;

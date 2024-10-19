@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info == null)
 				return null;
 
-			return FluentProvider.GetString(info.Name);
+			return FluentProvider.GetMessage(info.Name);
 		}
 
 		IEnumerable<string> IResourceRenderer.ResourceTypes => Info.ResourceTypes.Keys;

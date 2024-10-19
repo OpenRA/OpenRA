@@ -150,9 +150,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			if (type != null)
-				Text = FluentProvider.GetString(AddedMarkerTiles, "amount", paintTiles.Count, "type", type);
+				Text = FluentProvider.GetMessage(AddedMarkerTiles, "amount", paintTiles.Count, "type", type);
 			else
-				Text = FluentProvider.GetString(RemovedMarkerTiles, "amount", paintTiles.Count);
+				Text = FluentProvider.GetMessage(RemovedMarkerTiles, "amount", paintTiles.Count);
 		}
 	}
 
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tiles = new HashSet<CPos>(markerLayerOverlay.Tiles[tile]);
 
-			Text = FluentProvider.GetString(ClearedSelectedMarkerTiles, "amount", tiles.Count, "type", tile);
+			Text = FluentProvider.GetMessage(ClearedSelectedMarkerTiles, "amount", tiles.Count, "type", tile);
 		}
 
 		public void Execute()
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var allTilesCount = tiles.Values.Select(x => x.Count).Sum();
 
-			Text = FluentProvider.GetString(ClearedAllMarkerTiles, "amount", allTilesCount);
+			Text = FluentProvider.GetMessage(ClearedAllMarkerTiles, "amount", allTilesCount);
 		}
 
 		public void Execute()

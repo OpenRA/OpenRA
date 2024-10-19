@@ -51,9 +51,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var missionStatus = widget.Get<LabelWidget>("MISSION_STATUS");
-			var inProgress = FluentProvider.GetString(InProgress);
-			var accomplished = FluentProvider.GetString(Accomplished);
-			var failed = FluentProvider.GetString(Failed);
+			var inProgress = FluentProvider.GetMessage(InProgress);
+			var accomplished = FluentProvider.GetMessage(Accomplished);
+			var failed = FluentProvider.GetMessage(Failed);
 			missionStatus.GetText = () => player.WinState == WinState.Undefined ? inProgress :
 				player.WinState == WinState.Won ? accomplished : failed;
 			missionStatus.GetColor = () => player.WinState == WinState.Undefined ? Color.White :

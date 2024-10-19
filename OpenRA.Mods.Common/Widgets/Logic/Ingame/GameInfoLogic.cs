@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (tabButton != null)
 				{
-					var tabButtonText = FluentProvider.GetString(label);
+					var tabButtonText = FluentProvider.GetMessage(label);
 					tabButton.GetText = () => tabButtonText;
 					tabButton.OnClick = () =>
 					{

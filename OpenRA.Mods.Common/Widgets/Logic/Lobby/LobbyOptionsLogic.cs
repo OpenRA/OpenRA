@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var getOptionLabel = new CachedTransform<string, string>(id =>
 				{
 					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return FluentProvider.GetString(NotAvailable);
+						return FluentProvider.GetMessage(NotAvailable);
 
 					return value;
 				});

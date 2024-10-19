@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public OpenMapAction()
 		{
-			Text = FluentProvider.GetString(Opened);
+			Text = FluentProvider.GetMessage(Opened);
 		}
 
 		public void Execute()

@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Do()
 		{
 			editorActorPreview = editorLayer.Add(actor);
-			Text = FluentProvider.GetString(AddedActor,
+			Text = FluentProvider.GetMessage(AddedActor,
 				"name", editorActorPreview.Info.Name,
 				"id", editorActorPreview.ID);
 		}

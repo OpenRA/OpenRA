@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var self = p.Instances[0].Self;
 				var time = WidgetUtils.FormatTime(p.RemainingTicks, false, self.World.Timestep);
-				var text = FluentProvider.GetString(Format,
+				var text = FluentProvider.GetMessage(Format,
 					"player", self.Owner.ResolvedPlayerName,
 					"support-power", p.Name,
 					"time", time);

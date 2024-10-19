@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.content = content;
 			CheckRequiredContentInstalled();
 
-			var continueMessage = FluentProvider.GetString(Continue);
-			var quitMessage = FluentProvider.GetString(Quit);
+			var continueMessage = FluentProvider.GetMessage(Continue);
+			var quitMessage = FluentProvider.GetMessage(Quit);
 
 			var panel = widget.Get("CONTENT_PROMPT_PANEL");
 			var headerLabel = panel.Get<LabelWidget>("HEADER_LABEL");

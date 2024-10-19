@@ -282,7 +282,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							new()
 							{
-								Title = FluentProvider.GetString(Add),
+								Title = FluentProvider.GetMessage(Add),
 								IsSelected = () => false,
 								OnClick = () =>
 								{
@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							botOptions.Add(new DropDownOption()
 							{
-								Title = FluentProvider.GetString(Remove),
+								Title = FluentProvider.GetMessage(Remove),
 								IsSelected = () => false,
 								OnClick = () =>
 								{
@@ -315,7 +315,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							});
 						}
 
-						options.Add(FluentProvider.GetString(ConfigureBots), botOptions);
+						options.Add(FluentProvider.GetMessage(ConfigureBots), botOptions);
 					}
 
 					var teamCount = (orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) + 1) / 2;
@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var teamOptions = Enumerable.Range(2, teamCount - 1).Reverse().Select(d => new DropDownOption
 						{
-							Title = FluentProvider.GetString(NumberTeams, "count", d),
+							Title = FluentProvider.GetMessage(NumberTeams, "count", d),
 							IsSelected = () => false,
 							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
@@ -332,7 +332,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							teamOptions.Add(new DropDownOption
 							{
-								Title = FluentProvider.GetString(HumanVsBots),
+								Title = FluentProvider.GetMessage(HumanVsBots),
 								IsSelected = () => false,
 								OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 1"))
 							});
@@ -340,12 +340,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						teamOptions.Add(new DropDownOption
 						{
-							Title = FluentProvider.GetString(FreeForAll),
+							Title = FluentProvider.GetMessage(FreeForAll),
 							IsSelected = () => false,
 							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 0"))
 						});
 
-						options.Add(FluentProvider.GetString(ConfigureTeams), teamOptions);
+						options.Add(FluentProvider.GetMessage(ConfigureTeams), teamOptions);
 					}
 
 					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
@@ -483,7 +483,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (skirmishMode)
 			{
-				var disconnectButtonText = FluentProvider.GetString(Back);
+				var disconnectButtonText = FluentProvider.GetMessage(Back);
 				disconnectButton.GetText = () => disconnectButtonText;
 			}
 
@@ -497,8 +497,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
-			var team = FluentProvider.GetString(TeamChat);
-			var all = FluentProvider.GetString(GeneralChat);
+			var team = FluentProvider.GetMessage(TeamChat);
+			var all = FluentProvider.GetMessage(GeneralChat);
 			chatMode.GetText = () => teamChat ? team : all;
 			chatMode.OnClick = () => teamChat ^= true;
 			chatMode.IsDisabled = () => disableTeamChat || !chatEnabled;
@@ -539,8 +539,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatTextField.OnEscKey = _ => chatTextField.YieldKeyboardFocus();
 
-			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetString(ChatAvailability, "seconds", x));
-			chatDisabled = FluentProvider.GetString(ChatDisabled);
+			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetMessage(ChatAvailability, "seconds", x));
+			chatDisabled = FluentProvider.GetMessage(ChatDisabled);
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			lobbyChatPanel.RemoveChildren();

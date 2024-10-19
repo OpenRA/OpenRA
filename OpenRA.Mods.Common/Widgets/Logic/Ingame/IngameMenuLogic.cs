@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			button.Id = id;
 			button.IsDisabled = () => leaving;
-			var text = FluentProvider.GetString(label);
+			var text = FluentProvider.GetMessage(label);
 			button.GetText = () => text;
 			buttonContainer.AddChild(button);
 			buttons.Add(button);
@@ -319,8 +319,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var button = AddButton("ABORT_MISSION", world.IsGameOver
-				? FluentProvider.GetString(Leave)
-				: FluentProvider.GetString(AbortMission));
+				? FluentProvider.GetMessage(Leave)
+				: FluentProvider.GetMessage(AbortMission));
 
 			button.OnClick = () =>
 			{

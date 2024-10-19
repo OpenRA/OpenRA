@@ -73,10 +73,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
-			var none = FluentProvider.GetString(None);
-			var searchResults = FluentProvider.GetString(SearchResults);
-			var all = FluentProvider.GetString(All);
-			var multiple = FluentProvider.GetString(Multiple);
+			var none = FluentProvider.GetMessage(None);
+			var searchResults = FluentProvider.GetMessage(SearchResults);
+			var all = FluentProvider.GetMessage(All);
+			var multiple = FluentProvider.GetMessage(Multiple);
 
 			var categorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
 			categorySelector.GetText = () =>

@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var profileWidth = 0;
 			var maxProfileWidth = widget.Bounds.Width;
-			var messageText = FluentProvider.GetString(LoadingPlayerProfile);
+			var messageText = FluentProvider.GetMessage(LoadingPlayerProfile);
 			var messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 
 			Task.Run(async () =>
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (profile == null)
 					{
-						messageText = FluentProvider.GetString(LoadingPlayerProfileFailed);
+						messageText = FluentProvider.GetMessage(LoadingPlayerProfileFailed);
 						messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 						header.Bounds.Width = widget.Bounds.Width = messageWidth;
 					}

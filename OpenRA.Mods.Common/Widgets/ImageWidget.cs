@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			GetImageName = () => ImageName;
 			GetImageCollection = () => ImageCollection;
-			var tooltipCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetString(s) : "");
+			var tooltipCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetMessage(s) : "");
 			GetTooltipText = () => tooltipCache.Update(TooltipText);
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));

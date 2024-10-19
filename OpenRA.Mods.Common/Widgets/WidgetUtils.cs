@@ -339,12 +339,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var suffix = "";
 				if (c.WinState == WinState.Won)
-					suffix = $" ({FluentProvider.GetString(Won)})";
+					suffix = $" ({FluentProvider.GetMessage(Won)})";
 				else if (c.WinState == WinState.Lost)
-					suffix = $" ({FluentProvider.GetString(Lost)})";
+					suffix = $" ({FluentProvider.GetMessage(Lost)})";
 
 				if (client.State == Session.ClientState.Disconnected)
-					suffix = $" ({FluentProvider.GetString(Gone)})";
+					suffix = $" ({FluentProvider.GetMessage(Gone)})";
 
 				text += suffix;
 
