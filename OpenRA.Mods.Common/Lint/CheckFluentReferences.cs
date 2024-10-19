@@ -71,6 +71,11 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 			}
+
+			if (map.FluentMessageDefinitions.Nodes.Length > 0)
+				emitWarning(
+					$"Lint pass ({nameof(CheckFluentReferences)}) lacks the know-how to test inline map fluent messages " +
+					"- previous warnings may be incorrect");
 		}
 
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)

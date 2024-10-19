@@ -122,13 +122,32 @@ namespace OpenRA
 				NotificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
-
-				FluentBundle = yaml.TryGetValue("Translations", out var node) && node != null
-					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
-					: null;
+				FluentMessageDefinitions = LoadRuleSection(yaml, "Translations");
 
 				try
 				{
+					if (FluentMessageDefinitions != null)
+					{
+						var files = Array.Empty<string>();
+						if (FluentMessageDefinitions.Value != null)
+							files = FieldLoader.GetValue<string[]>("value", FluentMessageDefinitions.Value);
+
+						string text = null;
+						if (FluentMessageDefinitions.Nodes.Length > 0)
+						{
+							var builder = new StringBuilder();
+							foreach (var node in FluentMessageDefinitions.Nodes)
+								if (node.Key == "base64")
+									builder.Append(Encoding.UTF8.GetString(Convert.FromBase64String(node.Value.Value)));
+
+							text = builder.ToString();
+						}
+
+						FluentBundle = new FluentBundle(Game.Settings.Player.Language, files, fileSystem, text);
+					}
+					else
+						FluentBundle = null;
+
 					// PERF: Implement a minimal custom loader for custom world and player actors to minimize loading time
 					// This assumes/enforces that these actor types can only inherit abstract definitions (starting with ^)
 					if (RuleDefinitions != null)
