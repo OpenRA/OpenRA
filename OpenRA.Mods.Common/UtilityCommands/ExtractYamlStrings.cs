@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var fluentPackage = modData.ModFiles.OpenPackage(modData.Manifest.Id + "|languages");
-			ExtractFromFile(Path.Combine(fluentPackage.Name, "rules/en.ftl"), modRules, traitInfos);
+			ExtractFromFile(Path.Combine(fluentPackage.Name, "rules.ftl"), modRules, traitInfos);
 			modRules.Save();
 
 			// Extract from maps.
@@ -83,18 +83,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapRulesNode != null)
 						mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, new HashSet<string>()));
 
-					const string Enftl = "en.ftl";
-					ExtractFromFile(Path.Combine(package.Name, Enftl), mapRules, traitInfos, () =>
+					const string Mapftl = "map.ftl";
+					ExtractFromFile(Path.Combine(package.Name, Mapftl), mapRules, traitInfos, () =>
 					{
 						var node = yaml.NodeWithKeyOrDefault("FluentMessages");
 						if (node != null)
 						{
 							var value = node.NodeValue<string[]>();
-							if (!value.Contains(Enftl))
-								node.Value.Value = string.Join(", ", value.Concat(new string[] { Enftl }).ToArray());
+							if (!value.Contains(Mapftl))
+								node.Value.Value = string.Join(", ", value.Concat(new string[] { Mapftl }).ToArray());
 						}
 						else
-							yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentMessages", Enftl));
+							yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentMessages", Mapftl));
 					});
 
 					mapRules.Save();

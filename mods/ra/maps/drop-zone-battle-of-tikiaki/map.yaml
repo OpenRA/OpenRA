@@ -266,4 +266,4 @@ Rules: rules.yaml
 
 Weapons: weapons.yaml
 
-FluentMessages: en.ftl
+FluentMessages: map.ftl

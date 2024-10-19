@@ -185,4 +185,4 @@ Sequences: sequences.yaml
 
 Weapons: weapons.yaml
 
-FluentMessages: en.ftl
+FluentMessages: map.ftl
