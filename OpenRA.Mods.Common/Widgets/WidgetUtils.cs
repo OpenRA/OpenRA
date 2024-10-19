@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return text;
 		}
 
-		public static string TruncateText(string text, int width, SpriteFont font)
+		public static string TruncateText(string text, int width, SpriteFont font, bool truncateEnd = true)
 		{
 			var trimmedWidth = font.Measure(text).X;
 			if (trimmedWidth <= width)
@@ -290,16 +290,20 @@ namespace OpenRA.Mods.Common.Widgets
 			var trimmed = text;
 			while (trimmedWidth > width && trimmed.Length > 3)
 			{
-				trimmed = text[..(trimmed.Length - 4)] + "...";
+				if (truncateEnd)
+					trimmed = trimmed[..^4] + "...";
+				else
+					trimmed = "..." + trimmed[4..];
+
 				trimmedWidth = font.Measure(trimmed).X;
 			}
 
 			return trimmed;
 		}
 
-		public static void TruncateLabelToTooltip(LabelWithTooltipWidget label, string text)
+		public static void TruncateLabelToTooltip(LabelWithTooltipWidget label, string text, bool truncateEnd = true)
 		{
-			var truncatedText = TruncateText(text, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+			var truncatedText = TruncateText(text, label.Bounds.Width, Game.Renderer.Fonts[label.Font], truncateEnd);
 
 			label.GetText = () => truncatedText;
 
@@ -309,9 +313,9 @@ namespace OpenRA.Mods.Common.Widgets
 				label.GetTooltipText = null;
 		}
 
-		public static void TruncateButtonToTooltip(ButtonWidget button, string text)
+		public static void TruncateButtonToTooltip(ButtonWidget button, string text, bool truncateEnd = true)
 		{
-			var truncatedText = TruncateText(text, button.Bounds.Width - button.LeftMargin - button.RightMargin, Game.Renderer.Fonts[button.Font]);
+			var truncatedText = TruncateText(text, button.Bounds.Width - button.LeftMargin - button.RightMargin, Game.Renderer.Fonts[button.Font], truncateEnd);
 
 			button.GetText = () => truncatedText;
 
