@@ -164,7 +164,7 @@ ChromeLayout:
 	common|chrome/playerprofile.yaml
 	common|chrome/text-notifications.yaml
 
-Translations:
+FluentMessages:
 	common|languages/en.ftl
 	common|languages/chrome/en.ftl
 	common|languages/hotkeys/en.ftl
@@ -174,7 +174,7 @@ Translations:
 	ra|languages/hotkeys/en.ftl
 	ra|languages/rules/en.ftl
 
-AllowUnusedTranslationsInExternalPackages: false
+AllowUnusedFluentMessagesInExternalPackages: false
 
 Weapons:
 	ra|weapons/explosions.yaml

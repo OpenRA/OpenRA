@@ -26,7 +26,7 @@ namespace OpenRA
 		{
 			lock (SyncObject)
 			{
-				modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modData.Manifest.Translations, fileSystem);
+				modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modData.Manifest.FluentMessages, fileSystem);
 				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
 				{
 					var files = Array.Empty<string>();

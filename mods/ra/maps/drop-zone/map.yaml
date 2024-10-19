@@ -161,4 +161,4 @@ Rules: rules.yaml
 
 Weapons: weapons.yaml
 
-Translations: en.ftl
+FluentMessages: en.ftl

@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					const string Enftl = "en.ftl";
 					ExtractFromFile(Path.Combine(package.Name, Enftl), mapRules, traitInfos, () =>
 					{
-						var node = yaml.NodeWithKeyOrDefault("Translations");
+						var node = yaml.NodeWithKeyOrDefault("FluentMessages");
 						if (node != null)
 						{
 							var value = node.NodeValue<string[]>();
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								node.Value.Value = string.Join(", ", value.Concat(new string[] { Enftl }).ToArray());
 						}
 						else
-							yaml.Nodes.Add(new MiniYamlNodeBuilder("Translations", Enftl));
+							yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentMessages", Enftl));
 					});
 
 					mapRules.Save();

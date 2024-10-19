@@ -122,7 +122,7 @@ namespace OpenRA
 				NotificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
-				FluentMessageDefinitions = LoadRuleSection(yaml, "Translations");
+				FluentMessageDefinitions = LoadRuleSection(yaml, "FluentMessages");
 
 				try
 				{
@@ -355,7 +355,7 @@ namespace OpenRA
 			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
 			{
 				{ "Rules", map.RuleDefinitions },
-				{ "Translations", map.FluentMessageDefinitions },
+				{ "FluentMessages", map.FluentMessageDefinitions },
 				{ "Weapons", map.WeaponDefinitions },
 				{ "Voices", map.VoiceDefinitions },
 				{ "Music", map.MusicDefinitions },

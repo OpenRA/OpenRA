@@ -40,16 +40,16 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var context in usedKeys.EmptyKeyContexts)
 				emitWarning($"Empty key in map ftl files required by {context}");
 
-			var mapTranslations = FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value);
-			var allModTranslations = modData.Manifest.Translations;
+			var mapMessages = FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value);
+			var modMessages = modData.Manifest.FluentMessages;
 
 			// For maps we don't warn on unused keys. They might be unused on *this* map,
 			// but the mod or another map may use them and we don't have sight of that.
-			CheckKeys(allModTranslations.Concat(mapTranslations), map.Open, usedKeys,
+			CheckKeys(modMessages.Concat(mapMessages), map.Open, usedKeys,
 				_ => false, emitError, emitWarning);
 
-			var modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, allModTranslations, modData.DefaultFileSystem, _ => { });
-			var mapFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, mapTranslations, map, error => emitError(error.Message));
+			var modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modMessages, modData.DefaultFileSystem, _ => { });
+			var mapFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, mapMessages, map, error => emitError(error.Message));
 
 			foreach (var group in usedKeys.KeysWithContext)
 			{
@@ -79,14 +79,14 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var context in usedKeys.EmptyKeyContexts)
 				emitWarning($"Empty key in mod translation files required by {context}");
 
-			var allModTranslations = modData.Manifest.Translations.ToArray();
+			var modMessages = modData.Manifest.FluentMessages.ToArray();
 			CheckModWidgets(modData, usedKeys, testedFields);
 
 			// With the fully populated keys, check keys and variables are not missing and not unused across all language files.
 			var keyWithAttrs = CheckKeys(
-				allModTranslations, modData.DefaultFileSystem.Open, usedKeys,
+				modMessages, modData.DefaultFileSystem.Open, usedKeys,
 				file =>
-					!modData.Manifest.AllowUnusedTranslationsInExternalPackages ||
+					!modData.Manifest.AllowUnusedFluentMessagesInExternalPackages ||
 					!modData.DefaultFileSystem.IsExternalFile(file),
 				emitError, emitWarning);
 

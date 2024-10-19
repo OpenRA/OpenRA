@@ -172,7 +172,7 @@ namespace OpenRA
 			new("Players", nameof(PlayerDefinitions)),
 			new("Actors", nameof(ActorDefinitions)),
 			new("Rules", nameof(RuleDefinitions), required: false),
-			new("Translations", nameof(FluentMessageDefinitions), required: false),
+			new("FluentMessages", nameof(FluentMessageDefinitions), required: false),
 			new("Sequences", nameof(SequenceDefinitions), required: false),
 			new("ModelSequences", nameof(ModelSequenceDefinitions), required: false),
 			new("Weapons", nameof(WeaponDefinitions), required: false),
