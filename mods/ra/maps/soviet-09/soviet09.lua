@@ -24,7 +24,7 @@ MissionStart = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(45), function()
-		Media.DisplayMessage(UserInterface.Translate("truck-stopped-near-allied-base"))
+		Media.DisplayMessage(UserInterface.FluentMessage("truck-stopped-near-allied-base"))
 	end)
 
 	Trigger.OnKilled(StolenTruck, function()
@@ -40,7 +40,7 @@ end
 Trigger.OnEnteredProximityTrigger(TruckAlarm.CenterPosition, WDist.FromCells(11), function(actor, triggerflee)
 	if actor.Owner == USSR and actor.Type ~= "badr" and actor.Type ~= "u2" and actor.Type ~= "camera.spyplane" then
 		Trigger.RemoveProximityTrigger(triggerflee)
-		Media.DisplayMessage(UserInterface.Translate("convoy-truck-escaping"))
+		Media.DisplayMessage(UserInterface.FluentMessage("convoy-truck-escaping"))
 		EscapeCamera = Actor.Create("camera", true, { Owner = USSR, Location = TruckAlarm.Location })
 		Media.PlaySoundNotification(USSR, "AlertBleep")
 		Utils.Do(TruckEscape, function(waypoint)

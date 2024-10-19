@@ -36,7 +36,7 @@ MissionTriggers = function()
 
 	Trigger.OnCapture(Chronosphere, function()
 		if not USSR.IsObjectiveCompleted(TakeDownRadar) then
-			Media.DisplayMessage(UserInterface.Translate("chrono-trap-triggered"), UserInterface.Translate("headquarters"))
+			Media.DisplayMessage(UserInterface.FluentMessage("chrono-trap-triggered"), UserInterface.FluentMessage("headquarters"))
 			Chronosphere.Kill()
 		else
 			USSR.MarkCompletedObjective(CaptureChronosphere)
@@ -52,7 +52,7 @@ MissionTriggers = function()
 		if actor.Owner == USSR and not chronoTriggered and not USSR.IsObjectiveCompleted(TakeDownRadar) then
 			Trigger.RemoveFootprintTrigger(id)
 			chronoTriggered = true
-			Media.DisplayMessage(UserInterface.Translate("chrono-trap-triggered"), UserInterface.Translate("headquarters"))
+			Media.DisplayMessage(UserInterface.FluentMessage("chrono-trap-triggered"), UserInterface.FluentMessage("headquarters"))
 			Chronosphere.Kill()
 		end
 	end)

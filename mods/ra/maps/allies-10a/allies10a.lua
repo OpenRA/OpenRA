@@ -60,7 +60,7 @@ MissionTriggers = function()
 
 	Trigger.OnTimerExpired(function()
 		DateTime.TimeLimit = 0
-		Trigger.AfterDelay(1, function() UserInterface.SetMissionText(UserInterface.Translate("we-are-too-late"), USSR.Color) end)
+		Trigger.AfterDelay(1, function() UserInterface.SetMissionText(UserInterface.FluentMessage("we-are-too-late"), USSR.Color) end)
 		USSR.MarkCompletedObjective(HoldOut)
 	end)
 
@@ -99,7 +99,7 @@ LaunchMissiles = function()
 	MissileSilo1.ActivateNukePower(CPos.New(127, 127))
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage(UserInterface.Translate("incoming-transmission-capitalized"), UserInterface.Translate("landcom-16-capitalized"))
+		Media.DisplayMessage(UserInterface.FluentMessage("incoming-transmission-capitalized"), UserInterface.FluentMessage("landcom-16-capitalized"))
 		Media.PlaySpeechNotification(Greece, "AbombLaunchDetected")
 		MissileSilo2.ActivateNukePower(CPos.New(127, 127))
 	end)
@@ -120,7 +120,7 @@ LaunchMissiles = function()
 			-- Completing immediately indicates that the FMV is not available
 			-- Fall back to a text message
 			if fmvStart == DateTime.GameTime then
-				Media.DisplayMessage(UserInterface.Translate("deactivate-four-missiles"), UserInterface.Translate("landcom-16-capitalized"))
+				Media.DisplayMessage(UserInterface.FluentMessage("deactivate-four-missiles"), UserInterface.FluentMessage("landcom-16-capitalized"))
 			end
 		end)
 	end)

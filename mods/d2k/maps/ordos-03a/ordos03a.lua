@@ -86,7 +86,7 @@ Tick = function()
 	end
 
 	if Harkonnen.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("harkonnen-annihilated"), Mentat)
 		Ordos.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -100,7 +100,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage(UserInterface.Translate("upgrade-barracks-light-factory"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("upgrade-barracks-light-factory"), Mentat)
 	end
 end
 

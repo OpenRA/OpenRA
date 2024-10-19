@@ -302,7 +302,7 @@ SpawnTemporaryCamera = function(location, duration)
 end
 
 FinishTimer = function()
-	local submarineEscapes = UserInterface.Translate("submarine-escapes")
+	local submarineEscapes = UserInterface.FluentMessage("submarine-escapes")
 
 	for i = 0, 5 do
 		local c = TimerColor
@@ -329,7 +329,7 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("submarine-construction-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("submarine-construction-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1

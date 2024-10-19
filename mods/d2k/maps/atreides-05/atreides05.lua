@@ -186,7 +186,7 @@ SendMercenaries = function()
 	Trigger.AfterDelay(MercenaryAttackDelay[Difficulty], function()
 		MercWave = MercWave + 1
 
-		Media.DisplayMessage(UserInterface.Translate("incoming-mercenary-force"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("incoming-mercenary-force"), Mentat)
 
 		local units = Reinforcements.Reinforce(Mercenary, MercenaryReinforcements[Difficulty][MercWave], MercenarySpawn)
 		Utils.Do(units, function(unit)
@@ -206,7 +206,7 @@ end
 
 SendContraband = function(owner)
 	ContrabandArrived = true
-	UserInterface.SetMissionText(UserInterface.Translate("contraband-has-arrived"), Atreides.Color)
+	UserInterface.SetMissionText(UserInterface.FluentMessage("contraband-has-arrived"), Atreides.Color)
 
 	local units = SmugglerReinforcements
 	if owner == Atreides then
@@ -218,10 +218,10 @@ SendContraband = function(owner)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		if owner == Atreides then
 			Atreides.MarkCompletedObjective(CaptureStarport)
-			Media.DisplayMessage(UserInterface.Translate("contraband-confiscated"), Mentat)
+			Media.DisplayMessage(UserInterface.FluentMessage("contraband-confiscated"), Mentat)
 		else
 			Atreides.MarkFailedObjective(CaptureStarport)
-			Media.DisplayMessage(UserInterface.Translate("contraband-not-confiscated"), Mentat)
+			Media.DisplayMessage(UserInterface.FluentMessage("contraband-not-confiscated"), Mentat)
 		end
 	end)
 
@@ -251,12 +251,12 @@ Tick = function()
 	end
 
 	if LastHarkonnenArrived and not Atreides.IsObjectiveCompleted(KillHarkonnen) and Harkonnen.HasNoRequiredUnits() then
-		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("harkonnen-annihilated"), Mentat)
 		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 
 	if LastMercenariesArrived and not Atreides.IsObjectiveCompleted(KillSmuggler) and Smuggler.HasNoRequiredUnits() and Mercenary.HasNoRequiredUnits() then
-		Media.DisplayMessage(UserInterface.Translate("smugglers-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("smugglers-annihilated"), Mentat)
 		Atreides.MarkCompletedObjective(KillSmuggler)
 	end
 
@@ -274,7 +274,7 @@ Tick = function()
 	if TimerTicks and not ContrabandArrived then
 		TimerTicks = TimerTicks - 1
 		if (TimerTicks % DateTime.Seconds(1)) == 0 then
-			local contrabandArrivesIn = UserInterface.Translate("contraband-arrives-in", { ["time"] = Utils.FormatTime(TimerTicks)})
+			local contrabandArrivesIn = UserInterface.FluentMessage("contraband-arrives-in", { ["time"] = Utils.FormatTime(TimerTicks)})
 			UserInterface.SetMissionText(contrabandArrivesIn, Atreides.Color)
 		end
 
@@ -306,7 +306,7 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		TimerTicks = ContrabandTimes[Difficulty]
 		local time = Utils.FormatTime(TimerTicks)
-		local contrabandApproaching = UserInterface.Translate("contraband-approaching-starport-north-in", { ["time"] = time })
+		local contrabandApproaching = UserInterface.FluentMessage("contraband-approaching-starport-north-in", { ["time"] = time })
 		Media.DisplayMessage(contrabandApproaching, Mentat)
 	end)
 
@@ -317,7 +317,7 @@ WorldLoaded = function()
 	Trigger.OnKilled(Starport, function()
 		if not Atreides.IsObjectiveCompleted(CaptureStarport) then
 			ContrabandArrived = true
-			UserInterface.SetMissionText(UserInterface.Translate("starport-destroyed-no-contraband"), Atreides.Color)
+			UserInterface.SetMissionText(UserInterface.FluentMessage("starport-destroyed-no-contraband"), Atreides.Color)
 			Atreides.MarkFailedObjective(CaptureStarport)
 			SmugglersAttack()
 
@@ -337,7 +337,7 @@ WorldLoaded = function()
 
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage(UserInterface.Translate("do-not-destroy-starport"), Mentat)
+			Media.DisplayMessage(UserInterface.FluentMessage("do-not-destroy-starport"), Mentat)
 
 			local defenders = Smuggler.GetGroundAttackers()
 			if #defenders > 0 then
@@ -369,11 +369,11 @@ WorldLoaded = function()
 	Trigger.OnDamaged(HarkonnenBarracks, function()
 		if AttackNotifier <= 0 and HarkonnenBarracks.Health < HarkonnenBarracks.MaxHealth * 3/4 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage(UserInterface.Translate("do-not-destroy-barracks"), Mentat)
+			Media.DisplayMessage(UserInterface.FluentMessage("do-not-destroy-barracks"), Mentat)
 		end
 	end)
 	Trigger.OnCapture(HarkonnenBarracks, function()
-		Media.DisplayMessage(UserInterface.Translate("hostages-released"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("hostages-released"), Mentat)
 
 		if DefendStarport then
 			Atreides.MarkCompletedObjective(DefendStarport)
@@ -400,7 +400,7 @@ WorldLoaded = function()
 		if not Warned and a.Owner == Atreides and a.Type ~= "carryall" then
 			Warned = true
 			Trigger.RemoveFootprintTrigger(id)
-			Media.DisplayMessage(UserInterface.Translate("stay-away-from-starport"), UserInterface.Translate("smuggler-leader"))
+			Media.DisplayMessage(UserInterface.FluentMessage("stay-away-from-starport"), UserInterface.FluentMessage("smuggler-leader"))
 		end
 	end)
 
@@ -408,7 +408,7 @@ WorldLoaded = function()
 		if not Paid and a.Owner == Atreides and a.Type ~= "carryall" then
 			Paid = true
 			Trigger.RemoveFootprintTrigger(id)
-			Media.DisplayMessage(UserInterface.Translate("were-warned-will-pay"), UserInterface.Translate("smuggler-leader"))
+			Media.DisplayMessage(UserInterface.FluentMessage("were-warned-will-pay"), UserInterface.FluentMessage("smuggler-leader"))
 			Utils.Do(Smuggler.GetGroundAttackers(), function(unit)
 				unit.AttackMove(SmugglerWaypoint2.Location)
 			end)
@@ -423,7 +423,7 @@ WorldLoaded = function()
 	Trigger.OnEnteredProximityTrigger(HarkonnenBarracks.CenterPosition, WDist.New(5 * 1024), function(a, id)
 		if a.Owner == Atreides and a.Type ~= "carryall" then
 			Trigger.RemoveProximityTrigger(id)
-			Media.DisplayMessage(UserInterface.Translate("capture-harkonnen-barracks-release-hostages"), Mentat)
+			Media.DisplayMessage(UserInterface.FluentMessage("capture-harkonnen-barracks-release-hostages"), Mentat)
 			StopInfantryProduction = true
 		end
 	end)

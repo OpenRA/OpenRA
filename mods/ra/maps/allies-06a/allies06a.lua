@@ -129,7 +129,7 @@ CaptureRadarDome = function()
 			end
 		end)
 
-		Media.DisplayMessage(UserInterface.Translate("soviet-tech-centers-discovered"))
+		Media.DisplayMessage(UserInterface.FluentMessage("soviet-tech-centers-discovered"))
 
 		if Difficulty == "easy" then
 			Actor.Create("Camera", true, { Owner = Greece, Location = Weapcam.Location })
@@ -169,7 +169,7 @@ InfiltrateTechCenter = function()
 		Trigger.OnCapture(a, function()
 			if not infiltrated then
 				Media.PlaySoundNotification(Greece, "AlertBleep")
-				Media.DisplayMessage(UserInterface.Translate("do-not-capture-tech-centers"))
+				Media.DisplayMessage(UserInterface.FluentMessage("do-not-capture-tech-centers"))
 			end
 		end)
 	end)

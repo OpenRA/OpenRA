@@ -158,22 +158,22 @@ namespace OpenRA.Mods.Common.Lint
 			if (luaScriptInfo != null)
 			{
 				// Matches expressions such as:
-				// UserInterface.Translate("fluent-key")
-				// UserInterface.Translate("fluent-key\"with-escape")
-				// UserInterface.Translate("fluent-key", { ["attribute"] = foo })
-				// UserInterface.Translate("fluent-key", { ["attribute\"-with-escape"] = foo })
-				// UserInterface.Translate("fluent-key", { ["attribute1"] = foo, ["attribute2"] = bar })
-				// UserInterface.Translate("fluent-key", tableVariable)
+				// UserInterface.FluentMessage("fluent-key")
+				// UserInterface.FluentMessage("fluent-key\"with-escape")
+				// UserInterface.FluentMessage("fluent-key", { ["attribute"] = foo })
+				// UserInterface.FluentMessage("fluent-key", { ["attribute\"-with-escape"] = foo })
+				// UserInterface.FluentMessage("fluent-key", { ["attribute1"] = foo, ["attribute2"] = bar })
+				// UserInterface.FluentMessage("fluent-key", tableVariable)
 				// Extracts groups for the 'key' and each 'attr'.
 				// If the table isn't inline like in the last example, extracts it as 'variable'.
-				const string UserInterfaceTranslatePattern =
-					@"UserInterface\s*\.\s*Translate\s*\(" + // UserInterface.Translate(
+				const string UserInterfaceFluentMessagePattern =
+					@"UserInterface\s*\.\s*FluentMessage\s*\(" + // UserInterface.FluentMessage(
 					@"\s*""(?<key>(?:[^""\\]|\\.)+?)""\s*" + // "fluent-key"
 					@"(,\s*({\s*\[\s*""(?<attr>(?:[^""\\]|\\.)*?)""\s*\]\s*=\s*.*?" + // { ["attribute1"] = foo
 					@"(\s*,\s*\[\s*""(?<attr>(?:[^""\\]|\\.)*?)""\s*\]\s*=\s*.*?)*\s*}\s*)" + // , ["attribute2"] = bar }
 					"|\\s*,\\s*(?<variable>.*?))?" + // tableVariable
 					@"\)"; // )
-				var translateRegex = new Regex(UserInterfaceTranslatePattern);
+				var fluentMessageRegex = new Regex(UserInterfaceFluentMessagePattern);
 
 				// The script in mods/common/scripts/utils.lua defines some helpers which accept a fluent key
 				// Matches expressions such as:
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Lint
 					using (scriptStream)
 					{
 						var scriptText = scriptStream.ReadAllText();
-						IEnumerable<Match> matches = translateRegex.Matches(scriptText);
+						IEnumerable<Match> matches = fluentMessageRegex.Matches(scriptText);
 						if (luaScriptInfo.Scripts.Contains("utils.lua"))
 							matches = matches.Concat(objectiveRegex.Matches(scriptText));
 
@@ -216,9 +216,9 @@ namespace OpenRA.Mods.Common.Lint
 							if (variable != "")
 							{
 								var userInterface = typeof(UserInterfaceGlobal).GetCustomAttribute<ScriptGlobalAttribute>().Name;
-								const string Translate = nameof(UserInterfaceGlobal.Translate);
+								const string FluentMessage = nameof(UserInterfaceGlobal.FluentMessage);
 								emitWarning(
-									$"{context} calls {userInterface}.{Translate} with key `{key}` and translate args passed as `{variable}`." +
+									$"{context} calls {userInterface}.{FluentMessage} with key `{key}` and args passed as `{variable}`." +
 									"Inline the args at the callsite for lint analysis.");
 							}
 						}

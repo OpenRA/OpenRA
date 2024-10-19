@@ -177,12 +177,12 @@ Tick = function()
 	end
 
 	if AtreidesMain.HasNoRequiredUnits() and AtreidesSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
 	if Corrino.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("emperor-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -191,7 +191,7 @@ Tick = function()
 	end
 
 	if (AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesMain) and not HiTechIsDead then
-		Media.DisplayMessage(UserInterface.Translate("high-tech-factory-neutralized-imperial-reinforcements"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("high-tech-factory-neutralized-imperial-reinforcements"), Mentat)
 		HiTechIsDead = true
 	end
 
@@ -228,7 +228,7 @@ WorldLoaded = function()
 	KillHarkonnen2 = AddPrimaryObjective(AtreidesSmall, "")
 	KillHarkonnen3 = AddPrimaryObjective(Corrino, "")
 
-	Media.DisplayMessage(UserInterface.Translate("destroy-atreides-high-tech-factory-imperial-reinforcements"), Mentat)
+	Media.DisplayMessage(UserInterface.FluentMessage("destroy-atreides-high-tech-factory-imperial-reinforcements"), Mentat)
 
 	Camera.Position = HEngineer.CenterPosition
 	AtreidesAttackLocation = AConYard2.Location

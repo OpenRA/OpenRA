@@ -117,7 +117,7 @@ WorldLoaded = function()
 
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]
 	local civilians = 14 - CiviliansKilledThreshold
-	local keepCiviliansAlive = UserInterface.Translate("keep-civilians-alive", { ["civilians"] = civilians })
+	local keepCiviliansAlive = UserInterface.FluentMessage("keep-civilians-alive", { ["civilians"] = civilians })
 	ProtectCivilians = AddPrimaryObjective(GDI, keepCiviliansAlive)
 	Utils.Do(Civilians, function(civilian)
 		Trigger.OnKilled(civilian, function()

@@ -241,7 +241,7 @@ Tick = function()
 		end
 
 		if CachedVillagePercentage ~= VillagePercentage then
-			VillageDestroyed = UserInterface.Translate("percentage-village-destroyed", { ["percentage"] = VillagePercentage })
+			VillageDestroyed = UserInterface.FluentMessage("percentage-village-destroyed", { ["percentage"] = VillagePercentage })
 			UserInterface.SetMissionText(VillageDestroyed, CurrentColor)
 			CachedVillagePercentage = VillagePercentage
 		end

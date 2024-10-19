@@ -196,7 +196,7 @@ WorldLoaded = function()
 	LocateNodBase = AddPrimaryObjective(Nod, "locate-nod-base")
 	CaptureRefinery = AddPrimaryObjective(Nod, "capture-refinery")
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
-	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	local buildSAMs = UserInterface.FluentMessage("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
 	GDIObjective = AddPrimaryObjective(GDI, "")
 end
