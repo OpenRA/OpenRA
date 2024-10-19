@@ -172,7 +172,7 @@ namespace OpenRA
 			new("Players", nameof(PlayerDefinitions)),
 			new("Actors", nameof(ActorDefinitions)),
 			new("Rules", nameof(RuleDefinitions), required: false),
-			new("Translations", nameof(TranslationDefinitions), required: false),
+			new("Translations", nameof(FluentMessageDefinitions), required: false),
 			new("Sequences", nameof(SequenceDefinitions), required: false),
 			new("ModelSequences", nameof(ModelSequenceDefinitions), required: false),
 			new("Weapons", nameof(WeaponDefinitions), required: false),
@@ -203,7 +203,7 @@ namespace OpenRA
 
 		// Custom map yaml. Public for access by the map importers and lint checks
 		public MiniYaml RuleDefinitions;
-		public MiniYaml TranslationDefinitions;
+		public MiniYaml FluentMessageDefinitions;
 		public MiniYaml SequenceDefinitions;
 		public MiniYaml ModelSequenceDefinitions;
 		public MiniYaml WeaponDefinitions;

@@ -90,6 +90,7 @@ namespace OpenRA
 			public MiniYaml NotificationDefinitions;
 			public MiniYaml SequenceDefinitions;
 			public MiniYaml ModelSequenceDefinitions;
+			public MiniYaml FluentMessageDefinitions;
 
 			public FluentBundle FluentBundle { get; private set; }
 			public ActorInfo WorldActorInfo { get; private set; }
@@ -335,7 +336,7 @@ namespace OpenRA
 			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
 			{
 				{ "Rules", map.RuleDefinitions },
-				{ "Translations", map.TranslationDefinitions },
+				{ "Translations", map.FluentMessageDefinitions },
 				{ "Weapons", map.WeaponDefinitions },
 				{ "Voices", map.VoiceDefinitions },
 				{ "Music", map.MusicDefinitions },
