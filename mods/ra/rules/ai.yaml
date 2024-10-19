@@ -289,7 +289,7 @@ Player:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england
 		ConstructionYardTypes: fact
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
@@ -309,6 +309,8 @@ Player:
 			e4: 15
 			dog: 15
 			shok: 15
+			spy: 2
+			spy.england: 2
 			harv: 10
 			apc: 30
 			jeep: 20
@@ -321,16 +323,20 @@ Player:
 			4tnk: 25
 			ttnk: 25
 			stnk: 5
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			dtrk: 1
+			qtnk: 1
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -347,6 +353,8 @@ Player:
 			dog: 15
 			shok: 15
 			harv: 15
+			spy: 2
+			spy.england: 2
 			apc: 30
 			jeep: 20
 			arty: 15
@@ -367,16 +375,20 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			dtrk: 1
+			qtnk: 1
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly, dtrk, qtnk, spy, spy.england
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -392,6 +404,8 @@ Player:
 			e4: 15
 			dog: 15
 			shok: 15
+			spy: 2
+			spy.england: 2
 			harv: 15
 			apc: 30
 			jeep: 20
@@ -414,12 +428,16 @@ Player:
 			ca: 10
 			pt: 10
 			mnly: 2
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
 			mnly: 2
+			dtrk: 1
+			qtnk: 1
 	MinelayerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		MinelayingActorTypes: mnly
@@ -430,7 +448,7 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
@@ -441,6 +459,8 @@ Player:
 	UnitBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		UnitsToBuild:
+			spy: 2
+			spy.england: 2
 			harv: 1
 			ftrk: 40
 			arty: 40
@@ -463,3 +483,39 @@ Player:
 			jeep: 1
 		UnitDelays:
 			harv: 10000
+	SendUnitToAttackBotModule@truck:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackDesire: 
+			dtrk: 100
+		ValidTargets: Structure
+		InvalidTargets: WaterActor
+		AttackDistance: Furthest
+	SendUnitToAttackBotModule@Mad:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackDesire: 
+			qtnk: 100
+		ValidTargets: Structure
+		InvalidTargets: WaterActor
+		AttackDistance: Closest
+		AttackOrderName: DetonateAttack
+	GrantConditionOnPrerequisite@DisguiseSpy:
+		Condition: disguise-first
+		Prerequisites: disguise.first
+	SendUnitToAttackBotModule@DisguiseSpy:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && disguise-first
+		ActorTypesAndAttackDesire: 
+			spy: 100
+			spy.england: 100
+		AttackOrderName: Disguise
+		ValidTargets: Disguise
+		AttackDistance: Random
+	SendUnitToAttackBotModule@SendSpy:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && !disguise-first
+		ActorTypesAndAttackDesire: 
+			spy: 100
+			spy.england: 100
+		AttackOrderName: Infiltrate
+		ValidTargets: SpyInfiltrate
+		InvalidTargets: WaterActor
+		AttackDistance: Random
+
