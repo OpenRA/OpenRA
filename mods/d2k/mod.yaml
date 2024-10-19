@@ -7,20 +7,29 @@ Metadata:
 
 PackageFormats: D2kSoundResources
 
-FileSystem: DefaultFileSystem
+FileSystem: ContentInstallerFileSystem
     Packages:
-		~^SupportDir|Content/d2k/v3/
-		~^SupportDir|Content/d2k/v3/GAMESFX
-		~^SupportDir|Content/d2k/v3/Movies
-		~^SupportDir|Content/d2k/v3/Music
 		^EngineDir
 		$d2k: d2k
 		^EngineDir|mods/common: common
-		~SOUND.RS
-		d2k|bits
+		~^SupportDir|Content/d2k/v3/: content
 		d2k|scripts
 		common|scripts
 		d2k|uibits
+	ContentPackages:
+		content|SOUND.RS
+		content|GAMESFX
+		d2k|bits
+	ContentFiles:
+		content|DATA.R16
+		content|BLOXBASE.R16
+		content|BLOXBAT.R16
+		content|BLOXBGBS.R16
+		content|BLOXICE.R16
+		content|BLOXTREE.R16
+		content|BLOXWAST.R16
+		content|PALETTE.BIN
+	ContentInstallerMod: d2k-content
 
 MapFolders:
 	d2k|maps: System
@@ -259,42 +268,6 @@ GameSpeeds:
 			Name: options-game-speed.fastest
 			Timestep: 20
 			OrderLatency: 6
-
-ModContent:
-	InstallPromptMessage: modcontent-installprompt
-	HeaderMessage: modcontent-header
-	QuickDownload: quickinstall
-	Packages:
-		ContentPackage@base:
-			Title: modcontent-package-basefiles
-			Identifier: base
-			TestFiles: ^SupportDir|Content/d2k/v3/BLOXBASE.R16, ^SupportDir|Content/d2k/v3/BLOXBAT.R16, ^SupportDir|Content/d2k/v3/BLOXBGBS.R16, ^SupportDir|Content/d2k/v3/BLOXICE.R16, ^SupportDir|Content/d2k/v3/BLOXTREE.R16, ^SupportDir|Content/d2k/v3/BLOXWAST.R16, ^SupportDir|Content/d2k/v3/SOUND.RS, ^SupportDir|Content/d2k/v3/PALETTE.BIN
-			Sources: d2k, gruntmods
-			Required: true
-			Download: basefiles
-		ContentPackage@patch:
-			Title: modcontent-package-106patch
-			Identifier: patch
-			TestFiles: ^SupportDir|Content/d2k/v3/DATA.R16
-			Sources: gruntmods
-			Required: true
-			Download: patch106
-		ContentPackage@music:
-			Title: modcontent-package-music
-			Identifier: music
-			TestFiles: ^SupportDir|Content/d2k/v3/Music/AMBUSH.AUD, ^SupportDir|Content/d2k/v3/Music/WAITGAME.AUD
-			Sources: d2k, gruntmods
-		ContentPackage@movies:
-			Title: modcontent-package-briefings
-			Identifier: movies
-			TestFiles: ^SupportDir|Content/d2k/v3/Movies/A_BR01_E.VQA
-			Sources: d2k
-	Downloads:
-		d2k|installer/downloads.yaml
-	Sources:
-		d2k|installer/d2k.yaml
-		d2k|installer/gruntmods.yaml
-	Translation: d2k|languages/modcontent/en.ftl
 
 DiscordService:
 	ApplicationId: 712711732770111550

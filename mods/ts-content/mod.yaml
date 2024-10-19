@@ -1,0 +1,114 @@
+Metadata:
+	Title: mod-title
+	Version: {DEV_VERSION}
+	Hidden: true
+
+FileSystem: DefaultFileSystem
+	Packages:
+		^EngineDir
+		^EngineDir|mods/common-content: content
+		^EngineDir|mods/common: common
+		$ts-content: tscontent
+
+Rules:
+	content|rules.yaml
+
+Cursors:
+	content|cursors.yaml
+
+Chrome:
+	content|chrome.yaml
+
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll
+
+ChromeLayout:
+	content|content.yaml
+
+Notifications:
+	content|notifications.yaml
+
+LoadScreen: ModContentLoadScreen
+	Image: ^EngineDir|mods/common-content/chrome.png
+	Image2x: ^EngineDir|mods/common-content/chrome-2x.png
+	Image3x: ^EngineDir|mods/common-content/chrome-3x.png
+
+ChromeMetrics:
+	common|metrics.yaml
+	content|metrics.yaml
+
+Translations:
+	common|languages/en.ftl
+	content|languages/en.ftl
+	content|languages/chrome/en.ftl
+	tscontent|languages/chrome/en.ftl
+
+Fonts:
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size: 10
+		Ascender: 8
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size: 10
+		Ascender: 8
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+		Ascender: 11
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+		Ascender: 14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+		Ascender: 18
+
+ModContent:
+	Mod: ts
+	QuickDownload: quickinstall
+	Packages:
+		ContentPackage@tibsun:
+			Title: modcontent-package-basefiles
+			Identifier: tibsun
+			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
+			Sources: tibsun, tfd, steam, origin
+			Required: true
+			Download: basefiles
+		ContentPackage@tibsun-music:
+			Title: modcontent-package-basemusic
+			Identifier: tibsun-music
+			TestFiles: ^SupportDir|Content/ts/scores.mix
+			Sources: tibsun, tfd, steam, origin
+		ContentPackage@fstorm:
+			Title: modcontent-package-firestormfiles
+			Identifier: fstorm
+			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
+			Sources: tfd, steam, origin, fstorm
+			Required: true
+			Download: fstorm
+		ContentPackage@fstorm-music:
+			Title: modcontent-package-firestormmusic
+			Identifier: fstorm-music
+			Sources: tfd, steam, origin, fstorm
+			TestFiles: ^SupportDir|Content/ts/firestorm/scores01.mix
+	Downloads:
+		tscontent|installer/downloads.yaml
+	Sources:
+		tscontent|installer/firestorm.yaml
+		tscontent|installer/firstdecade.yaml
+		tscontent|installer/steam.yaml
+		tscontent|installer/origin.yaml
+		tscontent|installer/tibsun.yaml
+
+SoundFormats:
+
+SpriteFormats: PngSheet
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: DefaultSpriteSequence

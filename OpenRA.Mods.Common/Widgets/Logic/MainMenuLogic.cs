@@ -15,6 +15,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using OpenRA.Mods.Common.FileSystem;
 using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Widgets;
@@ -81,24 +82,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var contentButton = mainMenu.GetOrNull<ButtonWidget>("CONTENT_BUTTON");
 			if (contentButton != null)
 			{
-				var hasContent = modData.Manifest.Contains<ModContent>();
-				contentButton.Disabled = !hasContent;
+				var contentInstaller = modData.FileSystemLoader as ContentInstallerFileSystemLoader;
+				contentButton.Disabled = contentInstaller == null;
 				contentButton.OnClick = () =>
 				{
 					// Switching mods changes the world state (by disposing it),
 					// so we can't do this inside the input handler.
 					Game.RunAfterTick(() =>
 					{
-						if (!hasContent)
-							return;
-
-						var content = modData.Manifest.Get<ModContent>();
-						string translationPath;
-						using (var fs = (FileStream)modData.DefaultFileSystem.Open(content.Translation))
-							translationPath = fs.Name;
-						Game.InitializeMod(
-							content.ContentInstallerMod,
-							new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id, "Content.TranslationFile=" + translationPath }));
+						if (contentInstaller != null)
+							Game.InitializeMod(contentInstaller.ContentInstallerMod, new Arguments());
 					});
 				};
 			}

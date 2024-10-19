@@ -10,8 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.FileSystem
@@ -22,7 +20,7 @@ namespace OpenRA.Mods.Common.FileSystem
 		public bool InstallContentIfRequired(ModData modData);
 	}
 
-	public class DefaultFileSystemLoader : IFileSystemLoader, IFileSystemExternalContent
+	public class DefaultFileSystemLoader : IFileSystemLoader
 	{
 		public readonly Dictionary<string, string> Packages = null;
 
@@ -31,30 +29,6 @@ namespace OpenRA.Mods.Common.FileSystem
 			if (Packages != null)
 				foreach (var kv in Packages)
 					fileSystem.Mount(kv.Key, kv.Value);
-		}
-
-		bool IFileSystemExternalContent.InstallContentIfRequired(ModData modData)
-		{
-			// If a ModContent section is defined then we need to make sure that the
-			// required content is installed or switch to the defined content installer.
-			if (!modData.Manifest.Contains<ModContent>())
-				return false;
-
-			var content = modData.Manifest.Get<ModContent>();
-			var contentInstalled = content.Packages
-				.Where(p => p.Value.Required)
-				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
-
-			if (contentInstalled)
-				return false;
-
-			string translationPath;
-			using (var fs = (FileStream)modData.DefaultFileSystem.Open(content.Translation))
-				translationPath = fs.Name;
-			Game.InitializeMod(
-				content.ContentInstallerMod,
-				new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id, "Content.TranslationFile=" + translationPath }));
-			return true;
 		}
 	}
 }

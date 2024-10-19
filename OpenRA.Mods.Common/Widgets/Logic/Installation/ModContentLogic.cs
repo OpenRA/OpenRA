@@ -13,13 +13,47 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Widgets;
-using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentLogic : ChromeLogic
+	{
+		[ObjectCreator.UseCtor]
+		public ModContentLogic(ModData modData)
+		{
+			var content = modData.Manifest.Get<ModContent>();
+			if (!IsModInstalled(content))
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(content.Mod, new Arguments())) },
+					{ "content", content },
+				};
+
+				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
+			}
+			else
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(content.Mod, new Arguments())) },
+					{ "content", content },
+				};
+
+				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);
+			}
+		}
+
+		static bool IsModInstalled(ModContent content)
+		{
+			return content.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
+		}
+	}
+
+	public class ModContentInstallerLogic : ChromeLogic
 	{
 		[FluentReference]
 		const string ManualInstall = "button-manual-install";
@@ -31,56 +65,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<string, ModContent.ModSource> sources = new();
 		readonly Dictionary<string, ModContent.ModDownload> downloads = new();
 
-		readonly FluentBundle externalFluentBundle;
-
 		bool sourceAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel, string translationFilePath)
+		public ModContentInstallerLogic(ModData modData, Widget widget, ModContent content, Action onCancel)
 		{
 			this.content = content;
 
 			var panel = widget.Get("CONTENT_PANEL");
 
-			var modObjectCreator = new ObjectCreator(mod, Game.Mods);
-			var modPackageLoaders = modObjectCreator.GetLoaders<IPackageLoader>(mod.PackageFormats, "package");
-			var modFileSystem = new FS(mod.Id, Game.Mods, modPackageLoaders);
-
-			var modFileSystemLoader = modObjectCreator.GetLoader<IFileSystemLoader>(mod.FileSystem.Value, "filesystem");
-			FieldLoader.Load(modFileSystemLoader, mod.FileSystem);
-			modFileSystemLoader.Mount(modFileSystem, modObjectCreator);
-			modFileSystem.TrimExcess();
-
-			var sourceYaml = MiniYaml.Load(modFileSystem, content.Sources, null);
+			var sourceYaml = MiniYaml.Load(modData.DefaultFileSystem, content.Sources, null);
 			foreach (var s in sourceYaml)
-				sources.Add(s.Key, new ModContent.ModSource(s.Value, modObjectCreator));
+				sources.Add(s.Key, new ModContent.ModSource(s.Value));
 
-			var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
+			var downloadYaml = MiniYaml.Load(modData.DefaultFileSystem, content.Downloads, null);
 			foreach (var d in downloadYaml)
-				downloads.Add(d.Key, new ModContent.ModDownload(d.Value, modObjectCreator));
-
-			modFileSystem.UnmountAll();
-
-			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(translationFilePath), _ => { });
+				downloads.Add(d.Key, new ModContent.ModDownload(d.Value));
 
 			scrollPanel = panel.Get<ScrollPanelWidget>("PACKAGES");
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");
-
-			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
-			var headerLines =
-				!string.IsNullOrEmpty(content.HeaderMessage)
-					? externalFluentBundle.GetString(content.HeaderMessage)
-					: null;
-			var headerHeight = 0;
-			if (headerLines != null)
-			{
-				var label = (LabelWidget)headerTemplate.Clone();
-				label.GetText = () => headerLines;
-				label.IncreaseHeightToFitCurrentText();
-				panel.AddChild(label);
-
-				headerHeight += label.Bounds.Height;
-			}
+			var headerLabel = panel.Get<LabelWidget>("HEADER_LABEL");
+			headerLabel.IncreaseHeightToFitCurrentText();
+			var headerHeight = headerLabel.Bounds.Height;
 
 			panel.Bounds.Height += headerHeight;
 			panel.Bounds.Y -= headerHeight / 2;
@@ -94,7 +100,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "sources", sources },
 				{ "content", content },
-				{ "externalFluentBundle", externalFluentBundle },
 			});
 
 			var backButton = panel.Get<ButtonWidget>("BACK_BUTTON");
@@ -118,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var container = template.Clone();
 				var titleWidget = container.Get<LabelWidget>("TITLE");
-				var title = externalFluentBundle.GetString(p.Value.Title);
+				var title = FluentProvider.GetString(p.Value.Title);
 				titleWidget.GetText = () => title;
 
 				var requiredWidget = container.Get<LabelWidget>("REQUIRED");
