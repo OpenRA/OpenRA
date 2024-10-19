@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			if (map.TranslationDefinitions == null)
+			if (map.FluentMessageDefinitions == null)
 				return;
 
 			var usedKeys = GetUsedFluentKeysInMap(map, emitWarning);
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var context in usedKeys.EmptyKeyContexts)
 				emitWarning($"Empty key in map ftl files required by {context}");
 
-			var mapTranslations = FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value);
+			var mapTranslations = FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value);
 
 			var allModTranslations = modData.Manifest.Translations;
 			foreach (var language in GetModLanguages(allModTranslations))

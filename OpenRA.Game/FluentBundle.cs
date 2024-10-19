@@ -56,28 +56,17 @@ namespace OpenRA
 		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem)
 			: this(language, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
 
+		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, string text)
+			: this(language, paths, fileSystem, text, error => Log.Write("debug", error.Message)) { }
+
 		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
-		{
-			if (paths == null || paths.Length == 0)
-				return;
-
-			bundle = LinguiniBuilder.Builder()
-				.CultureInfo(new CultureInfo(language))
-				.SkipResources()
-				.SetUseIsolating(false)
-				.UseConcurrent()
-				.UncheckedBuild();
-
-			Load(language, paths, fileSystem, onError);
-		}
+			: this(language, paths, fileSystem, null, onError) { }
 
 		public FluentBundle(string language, string text, Action<ParseError> onError)
-		{
-			var parser = new LinguiniParser(text);
-			var resource = parser.Parse();
-			foreach (var error in resource.Errors)
-				onError(error);
+			: this(language, null, null, text, onError) { }
 
+		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, string text, Action<ParseError> onError)
+		{
 			bundle = LinguiniBuilder.Builder()
 				.CultureInfo(new CultureInfo(language))
 				.SkipResources()
@@ -85,30 +74,38 @@ namespace OpenRA
 				.UseConcurrent()
 				.UncheckedBuild();
 
-			bundle.AddResourceOverriding(resource);
-		}
-
-		void Load(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
-		{
-			// Always load english strings to provide a fallback for missing translations.
-			// It is important to load the english files first so the chosen language's files can override them.
-			var resolvedPaths = paths.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
-			foreach (var t in paths)
-				if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
-					resolvedPaths.Add(t);
-
-			foreach (var path in resolvedPaths.Distinct())
+			if (paths != null && paths.Length > 0)
 			{
-				var stream = fileSystem.Open(path);
-				using (var reader = new StreamReader(stream))
-				{
-					var parser = new LinguiniParser(reader);
-					var resource = parser.Parse();
-					foreach (var error in resource.Errors)
-						onError(error);
+				// Always load english strings to provide a fallback for missing translations.
+				// It is important to load the english files first so the chosen language's files can override them.
+				var resolvedPaths = paths.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
+				foreach (var t in paths)
+					if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
+						resolvedPaths.Add(t);
 
-					bundle.AddResourceOverriding(resource);
+				foreach (var path in resolvedPaths.Distinct())
+				{
+					var stream = fileSystem.Open(path);
+					using (var reader = new StreamReader(stream))
+					{
+						var parser = new LinguiniParser(reader);
+						var resource = parser.Parse();
+						foreach (var error in resource.Errors)
+							onError(error);
+
+						bundle.AddResourceOverriding(resource);
+					}
 				}
+			}
+
+			if (!string.IsNullOrEmpty(text))
+			{
+				var parser = new LinguiniParser(text);
+				var resource = parser.Parse();
+				foreach (var error in resource.Errors)
+					onError(error);
+
+				bundle.AddResourceOverriding(resource);
 			}
 		}
 
