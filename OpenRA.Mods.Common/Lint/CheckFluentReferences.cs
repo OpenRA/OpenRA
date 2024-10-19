@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			// TODO: linter does not work with LoadUsing
 			foreach (var speed in modData.Manifest.Get<GameSpeeds>().Speeds)
-				GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+				GetUsedFluentKeys(
 					usedKeys, testedFields,
 					Utility.GetFields(typeof(GameSpeed)),
 					new[] { speed.Value },
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var resource in modData.DefaultRules.Actors
 				.SelectMany(actorInfo => actorInfo.Value.TraitInfos<ResourceRendererInfo>())
 				.SelectMany(info => info.ResourceTypes))
-				GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+				GetUsedFluentKeys(
 					usedKeys, testedFields,
 					Utility.GetFields(typeof(ResourceRendererInfo.ResourceTypeInfo)),
 					new[] { resource.Value },
@@ -258,39 +258,39 @@ namespace OpenRA.Mods.Common.Lint
 
 			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 			var constFields = modData.ObjectCreator.GetTypes().SelectMany(modType => modType.GetFields(Binding)).Where(f => f.IsLiteral);
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				constFields,
 				new[] { (object)null },
 				(obj, field) => $"`{field.ReflectedType.Name}.{field.Name}`");
 
 			var modMetadataFields = typeof(ModMetadata).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				modMetadataFields,
 				new[] { modData.Manifest.Metadata },
 				(obj, field) => $"`Metadata.{field.Name}` in mod.yaml");
 
 			var modContent = modData.Manifest.Get<ModContent>();
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(ModContent)),
 				new[] { modContent },
 				(obj, field) => $"`ModContent.{field.Name}` in mod.yaml");
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(ModContent.ModPackage)),
 				modContent.Packages.Values.ToArray(),
 				(obj, field) => $"`ModContent.Packages.ContentPackage.{field.Name}` in mod.yaml");
 
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(HotkeyDefinition)),
 				modData.Hotkeys.Definitions,
 				(obj, field) => $"`{obj.Name}.{field.Name}` in hotkeys yaml");
 
 			// All keycodes and modifiers should be marked as used, as they can all be configured for use at hotkeys at runtime.
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(KeycodeExts)).Concat(Utility.GetFields(typeof(ModifiersExts))),
 				new[] { (object)null },
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Lint
 			return (usedKeys, testedFields);
 		}
 
-		static void GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute<T>(
+		static void GetUsedFluentKeys<T>(
 			Keys usedKeys, List<FieldInfo> testedFields,
 			IEnumerable<FieldInfo> newFields, IEnumerable<T> objects,
 			Func<T, FieldInfo, string> getContext)
