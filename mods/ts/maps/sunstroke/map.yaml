@@ -2630,4 +2630,4 @@ Actors:
 Rules: rules.yaml
 
 Sequences: sequences.yaml
-FluentMessages: en.ftl
+FluentMessages: map.ftl

@@ -419,4 +419,4 @@ Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rule
 
 Sequences: sequences.yaml
 
-FluentMessages: d2k|languages/lua/en.ftl, d2k|languages/campaign/en.ftl
+FluentMessages: d2k|fluent/lua.ftl, d2k|fluent/campaign.ftl

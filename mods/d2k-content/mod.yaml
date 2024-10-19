@@ -37,10 +37,10 @@ ChromeMetrics:
 	content|metrics.yaml
 
 FluentMessages:
-	common|languages/en.ftl
-	content|languages/en.ftl
-	content|languages/chrome/en.ftl
-	d2kcontent|languages/chrome/en.ftl
+	common|fluent/common.ftl
+	content|fluent/content.ftl
+	content|fluent/chrome.ftl
+	d2kcontent|fluent/chrome.ftl
 
 Fonts:
 	Tiny:

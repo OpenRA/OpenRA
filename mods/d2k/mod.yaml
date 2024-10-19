@@ -130,14 +130,14 @@ ChromeLayout:
 	d2k|chrome/encyclopedia.yaml
 
 FluentMessages:
-	common|languages/en.ftl
-	common|languages/chrome/en.ftl
-	common|languages/hotkeys/en.ftl
-	common|languages/rules/en.ftl
-	d2k|languages/en.ftl
-	d2k|languages/chrome/en.ftl
-	d2k|languages/hotkeys/en.ftl
-	d2k|languages/rules/en.ftl
+	common|fluent/common.ftl
+	common|fluent/chrome.ftl
+	common|fluent/hotkeys.ftl
+	common|fluent/rules.ftl
+	d2k|fluent/d2k.ftl
+	d2k|fluent/chrome.ftl
+	d2k|fluent/hotkeys.ftl
+	d2k|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
 

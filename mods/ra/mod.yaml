@@ -165,14 +165,14 @@ ChromeLayout:
 	common|chrome/text-notifications.yaml
 
 FluentMessages:
-	common|languages/en.ftl
-	common|languages/chrome/en.ftl
-	common|languages/hotkeys/en.ftl
-	common|languages/rules/en.ftl
-	ra|languages/en.ftl
-	ra|languages/chrome/en.ftl
-	ra|languages/hotkeys/en.ftl
-	ra|languages/rules/en.ftl
+	common|fluent/common.ftl
+	common|fluent/chrome.ftl
+	common|fluent/hotkeys.ftl
+	common|fluent/rules.ftl
+	ra|fluent/ra.ftl
+	ra|fluent/chrome.ftl
+	ra|fluent/hotkeys.ftl
+	ra|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
 

@@ -795,4 +795,4 @@ Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/c
 
 Weapons: weapons.yaml
 
-FluentMessages: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl
