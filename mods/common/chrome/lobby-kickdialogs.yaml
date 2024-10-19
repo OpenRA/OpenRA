@@ -16,14 +16,14 @@ Background@KICK_CLIENT_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: label-kick-client-dialog-texta
+			Text: label-kick-client-dialog-text-a
 		Label@TEXTB:
 			Y: 86
 			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: label-kick-client-dialog-textb
+			Text: label-kick-client-dialog-text-b
 		Checkbox@PREVENT_REJOINING_CHECKBOX:
 			X: (PARENT_WIDTH - WIDTH) / 2
 			Y: 120
@@ -97,14 +97,14 @@ Background@FORCE_START_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: label-force-start-dialog-texta
+			Text: label-force-start-dialog-text-a
 		Label@TEXTB:
 			Y: 86
 			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: label-force-start-dialog-textb
+			Text: label-force-start-dialog-text-b
 		Container@KICK_WARNING:
 			Width: PARENT_WIDTH
 			Children:

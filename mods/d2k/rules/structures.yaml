@@ -1195,7 +1195,7 @@ palace:
 		ReadyAudio: Reinforce
 		ReadyTextNotification: notification-reinforcements-have-arrived
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		OrderName: ProduceActorPower.Fremen
 		SupportPowerPaletteOrder: 20
 	ProduceActorPower@saboteur:
@@ -1212,7 +1212,7 @@ palace:
 		ReadyAudio: Reinforce
 		ReadyTextNotification: notification-reinforcements-have-arrived
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		OrderName: ProduceActorPower.Saboteur
 		SupportPowerPaletteOrder: 30
 	Exit@1:

@@ -12,7 +12,7 @@ Container@SKIRMISH_STATS:
 					Width: 80
 					Height: 20
 					Font: MediumBold
-					Text: label-objective-mission
+					Text: label-mission-objective
 				Label@STATS_STATUS:
 					X: 95
 					Y: 17
@@ -25,7 +25,7 @@ Container@SKIRMISH_STATS:
 					Width: 482
 					Height: 20
 					Font: Bold
-					Text: checkbox-objective-stats
+					Text: checkbox-stats-objective
 					Disabled: true
 					TextColorDisabled: FFFFFF
 		Container@STATS_HEADERS:

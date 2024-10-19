@@ -17,7 +17,7 @@ notification-base-under-attack = Base under attack.
 notification-ally-under-attack = Our ally is under attack.
 notification-harvester-under-attack = Harvester under attack.
 notification-silos-needed = Silos needed.
-notification-no-room-for-new-unit = No room for new unit.
+notification-no-room-for-new-units = No room for new unit.
 notification-cannot-build-here = Cannot build here.
 notification-one-of-our-buildings-has-been-captured = One of our buildings has been captured.
 

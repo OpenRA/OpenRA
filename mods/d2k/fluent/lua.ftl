@@ -17,7 +17,7 @@ not-enough-silos = We don't have enough silo space to store the required amount 
 
 ## atreides-01ab, harkonnen-01ab, ordos01ab
 build-concrete = Build a concrete foundation before placing structures.
-build-windtrap = Build a Wind Trap to generate power.
+build-wind-trap = Build a Wind Trap to generate power.
 build-refinery = Build a Refinery to collect Spice.
 build-silo = Build a Silo to store additional Spice.
 
@@ -127,7 +127,7 @@ atreides-hostile = The Atreides are now hostile!
 mercenaries-annihilated = The Mercenaries have been annihilated!
 ally-mercenaries = Persuade the Mercenaries to fight alongside House Harkonnen.
 mercenary-leader-captured-allied = Leader Captured. The mercenaries have been persuaded to fight with House Harkonnen.
-can-not-stand-harkonnen-must-become-neutral = We cannot stand against the Harkonnen. We must become neutral.
+cannot-stand-harkonnen-must-become-neutral = We cannot stand against the Harkonnen. We must become neutral.
 atreides-commander = Atreides Commander
 
 ## harkonnen-09ab

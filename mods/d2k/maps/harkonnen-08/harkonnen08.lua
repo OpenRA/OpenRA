@@ -296,7 +296,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnKilledOrCaptured(OPalace, function()
-		Media.DisplayMessage(UserInterface.GetFluentMessage("can-not-stand-harkonnen-must-become-neutral"), UserInterface.GetFluentMessage("atreides-commander"))
+		Media.DisplayMessage(UserInterface.GetFluentMessage("cannot-stand-harkonnen-must-become-neutral"), UserInterface.GetFluentMessage("atreides-commander"))
 
 		ChangeOwner(AtreidesEnemy, AtreidesNeutral)
 		DefendAndRepairBase(AtreidesNeutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])

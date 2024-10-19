@@ -54,7 +54,7 @@ HarkonnenEntryPath = { HarkonnenWaypoint.Location, HarkonnenRally.Location }
 Messages =
 {
 	UserInterface.GetFluentMessage("build-concrete"),
-	UserInterface.GetFluentMessage("build-windtrap"),
+	UserInterface.GetFluentMessage("build-wind-trap"),
 	UserInterface.GetFluentMessage("build-refinery"),
 	UserInterface.GetFluentMessage("build-silo")
 }

@@ -82,7 +82,7 @@ defeat-allied-forces = Defeat the Allied forces.
 
 ## allies-08ab
 experiment-successful = The experiment is a success!
-chronosphere-experiment-complete-in = Chronosphere experiment completes in { $time }
+chronosphere-experiment-completes-in = Chronosphere experiment completes in { $time }
 defend-chronosphere-tech-center = Defend the Chronosphere and Technology Center
     at all costs.
 chronosphere-needs-power = The Chronosphere must have power when the

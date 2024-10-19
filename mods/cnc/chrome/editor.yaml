@@ -439,7 +439,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 1
 							Width: 55
 							Height: 25
-							Text: label-tools-bg-categories
+							Text: label-tool-bg-category
 							Align: Right
 							Font: TinyBold
 						DropDownButton@TOOLS_DROPDOWN:

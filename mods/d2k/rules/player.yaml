@@ -18,7 +18,7 @@ Player:
 		ReadyAudio: BuildingReady
 		ReadyTextNotification: notification-construction-complete
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -31,7 +31,7 @@ Player:
 		ReadyAudio: UnitReady
 		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -44,7 +44,7 @@ Player:
 		ReadyAudio: UnitReady
 		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -57,7 +57,7 @@ Player:
 		ReadyAudio: UnitReady
 		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -68,7 +68,7 @@ Player:
 		DisplayOrder: 4
 		BuildDurationModifier: 212
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: OrderPlaced
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -79,7 +79,7 @@ Player:
 		ReadyAudio: UnitReady
 		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -90,7 +90,7 @@ Player:
 		ReadyAudio: NewOptions
 		ReadyTextNotification: notification-new-construction-options
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-unit
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Upgrading
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled

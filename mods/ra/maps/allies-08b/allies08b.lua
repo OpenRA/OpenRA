@@ -105,7 +105,7 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.GetFluentMessage("chronosphere-experiment-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.GetFluentMessage("chronosphere-experiment-completes-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
