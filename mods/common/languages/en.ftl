@@ -549,7 +549,7 @@ label-loading-player-profile = Loading player profile...
 label-loading-player-profile-failed = Failed to load player profile.
 
 ## ProductionTooltipLogic
-label-requires = Requires { $prequisites }
+label-requires = Requires { $prerequisites }
 
 ## ReplayBrowserLogic
 label-duration = Duration: { $time }
