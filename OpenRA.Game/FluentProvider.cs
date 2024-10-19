@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+using System.Text;
 using OpenRA.FileSystem;
 
 namespace OpenRA
@@ -25,9 +27,25 @@ namespace OpenRA
 			lock (SyncObject)
 			{
 				modFluentBundle = new FluentBundle(Game.Settings.Player.Language, modData.Manifest.Translations, fileSystem);
-				mapFluentBundle = fileSystem is Map map && map.FluentMessageDefinitions != null
-					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value), fileSystem)
-					: null;
+				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
+				{
+					var files = Array.Empty<string>();
+					if (map.FluentMessageDefinitions.Value != null)
+						files = FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value);
+
+					string text = null;
+					if (map.FluentMessageDefinitions.Nodes.Length > 0)
+					{
+						var builder = new StringBuilder();
+						foreach (var node in map.FluentMessageDefinitions.Nodes)
+							if (node.Key == "base64")
+								builder.Append(Encoding.UTF8.GetString(Convert.FromBase64String(node.Value.Value)));
+
+						text = builder.ToString();
+					}
+
+					mapFluentBundle = new FluentBundle(Game.Settings.Player.Language, files, fileSystem, text);
+				}
 			}
 		}
 

@@ -47,6 +47,35 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(output.ToLines(key).JoinWith("\n"));
 		}
 
+		static void MergeAndPrintFluentMessages(Map map, string key, MiniYaml value)
+		{
+			var nodes = new List<MiniYamlNode>();
+			var includes = new List<string>();
+			if (value != null && value.Value != null)
+			{
+				// The order of the included files matter, so we can defer to system files
+				// only as long as they are included first.
+				var include = false;
+				var files = FieldLoader.GetValue<string[]>("value", value.Value);
+				foreach (var f in files)
+				{
+					include |= map.Package.Contains(f);
+					if (include)
+					{
+						nodes.Add(new MiniYamlNode("base64", Convert.ToBase64String(map.Open(f).ReadAllBytes())));
+					}
+					else
+						includes.Add(f);
+				}
+			}
+
+			if (value != null)
+				nodes.AddRange(value.Nodes);
+
+			var output = new MiniYaml(includes.JoinWith(", "), nodes);
+			Console.WriteLine(output.ToLines(key).JoinWith("\n"));
+		}
+
 		[Desc("MAPFILE", "Merge custom map rules into a form suitable for including in map.yaml.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
@@ -60,6 +89,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			MergeAndPrint(map, "Voices", map.VoiceDefinitions);
 			MergeAndPrint(map, "Music", map.MusicDefinitions);
 			MergeAndPrint(map, "Notifications", map.NotificationDefinitions);
+			MergeAndPrintFluentMessages(map, "Translations", map.FluentMessageDefinitions);
 		}
 	}
 }
