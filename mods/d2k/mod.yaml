@@ -129,7 +129,7 @@ ChromeLayout:
 	common|chrome/text-notifications.yaml
 	d2k|chrome/encyclopedia.yaml
 
-Translations:
+FluentMessages:
 	common|languages/en.ftl
 	common|languages/chrome/en.ftl
 	common|languages/hotkeys/en.ftl
@@ -139,7 +139,7 @@ Translations:
 	d2k|languages/hotkeys/en.ftl
 	d2k|languages/rules/en.ftl
 
-AllowUnusedTranslationsInExternalPackages: false
+AllowUnusedFluentMessagesInExternalPackages: false
 
 Weapons:
 	d2k|weapons/debris.yaml

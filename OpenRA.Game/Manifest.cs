@@ -70,7 +70,7 @@ namespace OpenRA
 		public readonly string[]
 			Rules, ServerTraits,
 			Sequences, ModelSequences, Cursors, Chrome, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Translations, TileSets,
+			Weapons, Voices, Notifications, Music, FluentMessages, TileSets,
 			ChromeMetrics, MapCompatibility, Missions, Hotkeys;
 
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
@@ -88,15 +88,15 @@ namespace OpenRA
 
 		// TODO: This should be controlled by a user-selected translation bundle!
 		public readonly string FluentCulture = "en";
-		public readonly bool AllowUnusedTranslationsInExternalPackages = true;
+		public readonly bool AllowUnusedFluentMessagesInExternalPackages = true;
 
 		readonly string[] reservedModuleNames =
 		{
 			"Include", "Metadata", "FileSystem", "MapFolders", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
-			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
+			"Voices", "Notifications", "Music", "FluentMessages", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats", "AllowUnusedTranslationsInExternalPackages", "FontSheetSize", "CursorSheetSize"
+			"RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "FontSheetSize", "CursorSheetSize"
 		};
 
 		readonly TypeDictionary modules = new();
@@ -147,7 +147,7 @@ namespace OpenRA
 			Voices = YamlList(yaml, "Voices");
 			Notifications = YamlList(yaml, "Notifications");
 			Music = YamlList(yaml, "Music");
-			Translations = YamlList(yaml, "Translations");
+			FluentMessages = YamlList(yaml, "FluentMessages");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			Missions = YamlList(yaml, "Missions");
@@ -184,9 +184,9 @@ namespace OpenRA
 			if (yaml.TryGetValue("VideoFormats", out entry))
 				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", entry.Value);
 
-			if (yaml.TryGetValue("AllowUnusedTranslationsInExternalPackages", out entry))
-				AllowUnusedTranslationsInExternalPackages =
-					FieldLoader.GetValue<bool>("AllowUnusedTranslationsInExternalPackages", entry.Value);
+			if (yaml.TryGetValue("AllowUnusedFluentMessagesInExternalPackages", out entry))
+				AllowUnusedFluentMessagesInExternalPackages =
+					FieldLoader.GetValue<bool>("AllowUnusedFluentMessagesInExternalPackages", entry.Value);
 
 			if (yaml.TryGetValue("FontSheetSize", out entry))
 				FontSheetSize = FieldLoader.GetValue<int>("FontSheetSize", entry.Value);

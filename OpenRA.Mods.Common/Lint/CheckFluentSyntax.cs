@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
-			Run(emitError, emitWarning, modData.DefaultFileSystem, modData.Manifest.Translations);
+			Run(emitError, emitWarning, modData.DefaultFileSystem, modData.Manifest.FluentMessages);
 		}
 
 		static void Run(Action<string> emitError, Action<string> emitWarning, IReadOnlyFileSystem fileSystem, IEnumerable<string> paths)

@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			MergeAndPrint(map, "Voices", map.VoiceDefinitions);
 			MergeAndPrint(map, "Music", map.MusicDefinitions);
 			MergeAndPrint(map, "Notifications", map.NotificationDefinitions);
-			MergeAndPrintFluentMessages(map, "Translations", map.FluentMessageDefinitions);
+			MergeAndPrintFluentMessages(map, "FluentMessages", map.FluentMessageDefinitions);
 		}
 	}
 }

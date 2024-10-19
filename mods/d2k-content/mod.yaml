@@ -36,7 +36,7 @@ ChromeMetrics:
 	common|metrics.yaml
 	content|metrics.yaml
 
-Translations:
+FluentMessages:
 	common|languages/en.ftl
 	content|languages/en.ftl
 	content|languages/chrome/en.ftl
