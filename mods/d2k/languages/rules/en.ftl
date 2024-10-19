@@ -123,7 +123,7 @@ actor-frigate-name = Frigate
 
 actor-ornithopter =
    .name = Ornithopter
-   .encyclopedia = The fastest aircraft on Dune, it is lightly armored and capable of dropping 500lb bombs. Highly effective against infantry and lightly armored targets, with the ability to damage other armor types.
+   .encyclopedia = The fastest aircraft on Dune, it is lightly armored and capable of dropping 500 lb bombs. Highly effective against infantry and lightly armored targets, with the ability to damage other armor types.
 
 actor-ornithopter-husk-name = Ornithopter
 actor-carryall-husk-name = Carryall
