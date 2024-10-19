@@ -509,7 +509,7 @@ actor-v19 =
    .name = Oil Derrick
    .captured-desc = Provides additional funds.
    .capturable-desc = Capture to receive additional funds.
-   .encyclopedia = Produces asmall amount of income frequently when captured. Makes less money than building a harvester, but provides consistent income.
+   .encyclopedia = Produces a small amount of income frequently when captured. Makes less money than building a harvester, but provides consistent income.
 
 ## trees.yaml
 actor-splitblue-name = Blossom Tree (blue)
