@@ -80,7 +80,7 @@ actor-orca =
    .description = Helicopter Gunship with AG Missiles.
       Strong vs Buildings, Tanks
       Weak vs Infantry
-   .encyclopedia = Fast but fragile, the Orca harasses enemy vehicles and aircraft with AT missiles. It is best used opportunistically, and can be kept alive longer with careful micro. It’s AA missiles are effective but have a hard time hitting fast-moving air targets.
+   .encyclopedia = Fast but fragile, the Orca harasses enemy vehicles and aircraft with AT missiles. It is best used opportunistically, and can be kept alive longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
      Ammo is automatically reloaded in the air.
 
 actor-c17-name = Supply Aircraft
@@ -240,7 +240,7 @@ actor-e3 =
       Strong vs Tanks, Aircraft
       Weak vs Infantry
    .encyclopedia = Highly vulnerable but excelling at eliminating enemy armor and aircraft. It is the slowest unit in the game, lagging behind other infantry and even mammoth tanks.
-     It’s large weapons range makes up for its slow speed, making it most effective when used defensively, where it can be protected and provide vision.
+     Its large weapons range makes up for its slow speed, making it most effective when used defensively, where it can be protected and provide vision.
 
 actor-e4 =
    .name = Flamethrower
