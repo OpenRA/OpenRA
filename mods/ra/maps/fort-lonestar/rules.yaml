@@ -41,6 +41,7 @@ World:
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
 		ShortGameCheckboxVisible: False
+		ViewportHeight: 15c0
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label

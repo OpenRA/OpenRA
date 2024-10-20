@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -79,6 +80,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the game speed option in the lobby.")]
 		public readonly int GameSpeedDropdownDisplayOrder = 0;
 
+		[Desc("If defined, overrides the viewport height for all players to this many world units.")]
+		public readonly WDist? ViewportHeight = null;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyBooleanOption(map, "shortgame",
@@ -113,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MapOptions(this); }
 	}
 
-	public class MapOptions : INotifyCreated
+	public class MapOptions : INotifyCreated, IWorldLoaded
 	{
 		readonly MapOptionsInfo info;
 
@@ -132,6 +136,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			TechLevel = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("techlevel", info.TechLevel);
+		}
+
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
+		{
+			if (info.ViewportHeight.HasValue)
+			{
+				// WPos to world pixels
+				var height = info.ViewportHeight.Value.Length * w.Map.Grid.TileSize.Height / w.Map.Grid.TileScale;
+				wr.Viewport.OverrideDefaultHeight(height);
+			}
 		}
 	}
 }
