@@ -143,7 +143,7 @@ namespace OpenRA
 							text = builder.ToString();
 						}
 
-						FluentBundle = new FluentBundle(Game.Settings.Player.Language, files, fileSystem, text);
+						FluentBundle = new FluentBundle(modData.Manifest.FluentCulture, files, fileSystem, text);
 					}
 					else
 						FluentBundle = null;
