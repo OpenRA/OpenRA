@@ -83,9 +83,12 @@ namespace OpenRA
 		public readonly string[] SpriteFormats = Array.Empty<string>();
 		public readonly string[] PackageFormats = Array.Empty<string>();
 		public readonly string[] VideoFormats = Array.Empty<string>();
-		public readonly bool AllowUnusedTranslationsInExternalPackages = true;
 		public readonly int FontSheetSize = 512;
 		public readonly int CursorSheetSize = 512;
+
+		// TODO: This should be controlled by a user-selected translation bundle!
+		public readonly string FluentCulture = "en";
+		public readonly bool AllowUnusedTranslationsInExternalPackages = true;
 
 		readonly string[] reservedModuleNames =
 		{

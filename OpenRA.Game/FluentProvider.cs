@@ -26,7 +26,7 @@ namespace OpenRA
 		{
 			lock (SyncObject)
 			{
-				modFluentBundle = new FluentBundle(Game.Settings.Player.Language, modData.Manifest.Translations, fileSystem);
+				modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modData.Manifest.Translations, fileSystem);
 				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
 				{
 					var files = Array.Empty<string>();
@@ -44,7 +44,7 @@ namespace OpenRA
 						text = builder.ToString();
 					}
 
-					mapFluentBundle = new FluentBundle(Game.Settings.Player.Language, files, fileSystem, text);
+					mapFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, files, fileSystem, text);
 				}
 			}
 		}

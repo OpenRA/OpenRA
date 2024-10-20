@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using Linguini.Bundle;
 using Linguini.Bundle.Builder;
 using Linguini.Shared.Types.Bundle;
@@ -53,37 +52,30 @@ namespace OpenRA
 	{
 		readonly Linguini.Bundle.FluentBundle bundle;
 
-		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem)
-			: this(language, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem)
+			: this(culture, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
 
-		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, string text)
-			: this(language, paths, fileSystem, text, error => Log.Write("debug", error.Message)) { }
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, string text)
+			: this(culture, paths, fileSystem, text, error => Log.Write("debug", error.Message)) { }
 
-		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
-			: this(language, paths, fileSystem, null, onError) { }
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+			: this(culture, paths, fileSystem, null, onError) { }
 
-		public FluentBundle(string language, string text, Action<ParseError> onError)
-			: this(language, null, null, text, onError) { }
+		public FluentBundle(string culture, string text, Action<ParseError> onError)
+			: this(culture, null, null, text, onError) { }
 
-		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, string text, Action<ParseError> onError)
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, string text, Action<ParseError> onError)
 		{
 			bundle = LinguiniBuilder.Builder()
-				.CultureInfo(new CultureInfo(language))
+				.CultureInfo(new CultureInfo(culture))
 				.SkipResources()
 				.SetUseIsolating(false)
 				.UseConcurrent()
 				.UncheckedBuild();
 
-			if (paths != null && paths.Length > 0)
+			if (paths != null)
 			{
-				// Always load english strings to provide a fallback for missing translations.
-				// It is important to load the english files first so the chosen language's files can override them.
-				var resolvedPaths = paths.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
-				foreach (var t in paths)
-					if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
-						resolvedPaths.Add(t);
-
-				foreach (var path in resolvedPaths.Distinct())
+				foreach (var path in paths)
 				{
 					var stream = fileSystem.Open(path);
 					using (var reader = new StreamReader(stream))
