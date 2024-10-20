@@ -172,7 +172,7 @@ WorldLoaded = function()
 	InitObjectives(Nod)
 
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
-	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	local buildSAMs = UserInterface.FluentMessage("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
 end
 

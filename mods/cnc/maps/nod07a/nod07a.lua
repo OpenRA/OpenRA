@@ -175,7 +175,7 @@ WorldLoaded = function()
 
 	FindBase = AddPrimaryObjective(Nod, "find-nod-base")
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
-	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	local buildSAMs = UserInterface.FluentMessage("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMs = AddPrimaryObjective(Nod, buildSAMs)
 	GDIObjective = AddPrimaryObjective(GDI, "")
 

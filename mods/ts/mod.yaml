@@ -173,17 +173,17 @@ ChromeLayout:
 	common|chrome/editor.yaml
 	common|chrome/text-notifications.yaml
 
-Translations:
-	common|languages/en.ftl
-	common|languages/chrome/en.ftl
-	common|languages/hotkeys/en.ftl
-	common|languages/rules/en.ftl
-	ts|languages/en.ftl
-	ts|languages/chrome/en.ftl
-	ts|languages/hotkeys/en.ftl
-	ts|languages/rules/en.ftl
+FluentMessages:
+	common|fluent/common.ftl
+	common|fluent/chrome.ftl
+	common|fluent/hotkeys.ftl
+	common|fluent/rules.ftl
+	ts|fluent/ts.ftl
+	ts|fluent/chrome.ftl
+	ts|fluent/hotkeys.ftl
+	ts|fluent/rules.ftl
 
-AllowUnusedTranslationsInExternalPackages: false
+AllowUnusedFluentMessagesInExternalPackages: false
 
 Voices:
 	ts|audio/voices.yaml

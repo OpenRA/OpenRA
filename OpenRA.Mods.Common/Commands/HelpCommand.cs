@@ -52,12 +52,12 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void InvokeCommand(string name, string arg)
 		{
-			TextNotificationsManager.Debug(FluentProvider.GetString(AvailableCommands));
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(AvailableCommands));
 
 			foreach (var key in console.Commands.Keys.OrderBy(k => k))
 			{
 				if (!helpDescriptions.TryGetValue(key, out var description))
-					description = FluentProvider.GetString(NoDescription);
+					description = FluentProvider.GetMessage(NoDescription);
 
 				TextNotificationsManager.Debug($"{key}: {description}");
 			}
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void RegisterHelp(string name, string description)
 		{
-			helpDescriptions[name] = FluentProvider.GetString(description);
+			helpDescriptions[name] = FluentProvider.GetMessage(description);
 		}
 	}
 }

@@ -82,7 +82,7 @@ Expand = function()
 	ExpansionCheck = true
 	Trigger.ClearAll(mcvGG)
 	Trigger.ClearAll(mcvtransport)
-	Media.DisplayMessage(UserInterface.Translate("allied-mcv-island"))
+	Media.DisplayMessage(UserInterface.FluentMessage("allied-mcv-island"))
 
 	Reinforcements.Reinforce(GoodGuy, { "dd", "dd" }, ShipArrivePath, 0, function(ddsquad)
 		ddsquad.AttackMove(NearExpPoint.Location) end)
@@ -219,10 +219,10 @@ WorldLoaded = function()
 		Beacon.New(USSR, MCVDeploy.CenterPosition)
 		if Difficulty == "easy" then
 			Actor.Create("camera", true, { Owner = USSR, Location = MCVDeploy.Location })
-			Media.DisplayMessage(UserInterface.Translate("allied-expansion-movement-detected"))
+			Media.DisplayMessage(UserInterface.FluentMessage("allied-expansion-movement-detected"))
 		else
 			Actor.Create("MCV.CAM", true, { Owner = USSR, Location = MCVDeploy.Location })
-			Media.DisplayMessage(UserInterface.Translate("coordinates-allied-expansion-discovered"))
+			Media.DisplayMessage(UserInterface.FluentMessage("coordinates-allied-expansion-discovered"))
 		end
 
 		if not ExpansionCheck then

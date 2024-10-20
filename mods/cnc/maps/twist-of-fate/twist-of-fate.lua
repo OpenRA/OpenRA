@@ -132,7 +132,7 @@ CompleteCaptureCommCenterObjective = function()
 		end)
 	end
 
-	Media.DisplayMessage(UserInterface.Translate("communications-center-captured-sams-located"))
+	Media.DisplayMessage(UserInterface.FluentMessage("communications-center-captured-sams-located"))
 	local activeSams = Nod.GetActorsByType("sam")
 	local miniCams = { }
 	if #activeSams > 0 then
@@ -260,7 +260,7 @@ WorldLoaded = function()
 		if AstkDelay > 0 then
 			SendNodAirstrike(true)
 			Trigger.AfterDelay(DateTime.Seconds(15), function()
-				Media.DisplayMessage(UserInterface.Translate("air-strikes-intel-report"))
+				Media.DisplayMessage(UserInterface.FluentMessage("air-strikes-intel-report"))
 				Trigger.AfterDelay(DateTime.Seconds(8), function()
 					CaptureCommCenter = AddSecondaryObjective(GDI, "capture-nod-communications-center")
 					if NodAstkHq.IsDead then

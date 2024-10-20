@@ -102,7 +102,7 @@ MoveTruckEscapeRoute = function(truck, route)
 	if truck.IsDead then
 		return
 	else
-		Media.DisplayMessage(UserInterface.Translate("convoy-truck-escaping"))
+		Media.DisplayMessage(UserInterface.FluentMessage("convoy-truck-escaping"))
 		Media.PlaySoundNotification(Greece, "AlertBleep")
 		Utils.Do(route, function(waypoint)
 			truck.Move(waypoint.Location)

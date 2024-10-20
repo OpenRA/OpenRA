@@ -22,15 +22,15 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			if (map.TranslationDefinitions == null)
+			if (map.FluentMessageDefinitions == null)
 				return;
 
-			Run(emitError, emitWarning, map, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value));
+			Run(emitError, emitWarning, map, FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value));
 		}
 
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
-			Run(emitError, emitWarning, modData.DefaultFileSystem, modData.Manifest.Translations);
+			Run(emitError, emitWarning, modData.DefaultFileSystem, modData.Manifest.FluentMessages);
 		}
 
 		static void Run(Action<string> emitError, Action<string> emitWarning, IReadOnlyFileSystem fileSystem, IEnumerable<string> paths)

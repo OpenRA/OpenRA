@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc
 
 			versionText = modData.Manifest.Metadata.Version;
 
-			message = FluentProvider.GetString(Loading);
+			message = FluentProvider.GetMessage(Loading);
 		}
 
 		public override void DisplayInner(Renderer r, Sheet s, int density)

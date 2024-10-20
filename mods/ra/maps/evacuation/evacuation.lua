@@ -189,7 +189,7 @@ Tick = function()
 	if Allies2.IsLocalPlayer and DateTime.GameTime <= ReinforcementsDelay then
 		if DateTime.GameTime % DateTime.Seconds(1) == 0 then
 			local time = Utils.FormatTime(ReinforcementsDelay - DateTime.GameTime)
-			local timer = UserInterface.Translate("allied-reinforcements-arrive-in", { ["time"] = time })
+			local timer = UserInterface.FluentMessage("allied-reinforcements-arrive-in", { ["time"] = time })
 			UserInterface.SetMissionText(timer)
 		end
 	else
@@ -295,7 +295,7 @@ SpawnTanya = function()
 
 	if Difficulty ~= "easy" and Allies1.IsLocalPlayer then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Media.DisplayMessageToPlayer(Allies1, UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
+			Media.DisplayMessageToPlayer(Allies1, UserInterface.FluentMessage("tanya-rules-of-engagement"), UserInterface.FluentMessage("tanya"))
 		end)
 	end
 end
@@ -347,7 +347,7 @@ WorldLoaded = function()
 	DestroySamSitesObjective = AddPrimaryObjective(Allies1, "destroy-sam-sites")
 
 	HoldPositionObjective = AddPrimaryObjective(Allies2, "hold-position-protect-base")
-	local dontLoseMoreThan = UserInterface.Translate("do-not-lose-more-than", { ["units"] = DeathThreshold[Difficulty] })
+	local dontLoseMoreThan = UserInterface.FluentMessage("do-not-lose-more-than", { ["units"] = DeathThreshold[Difficulty] })
 	LimitLossesObjective = AddSecondaryObjective(Allies2, dontLoseMoreThan)
 	CutSovietPowerObjective = AddSecondaryObjective(Allies2, "take-out-the-soviet-power-grid")
 

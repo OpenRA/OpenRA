@@ -44,10 +44,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			bool Paused() => world.Paused || world.ReplayTimestep == 0;
 
-			var pausedText = FluentProvider.GetString(GameTimerLogic.Paused);
-			var maxSpeedText = FluentProvider.GetString(MaxSpeed);
+			var pausedText = FluentProvider.GetMessage(GameTimerLogic.Paused);
+			var maxSpeedText = FluentProvider.GetMessage(MaxSpeed);
 			var speedText = new CachedTransform<int, string>(p =>
-					FluentProvider.GetString(Speed, "percentage", p));
+					FluentProvider.GetMessage(Speed, "percentage", p));
 
 			if (timer != null)
 			{
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var timerText = new CachedTransform<int, string>(p =>
-				FluentProvider.GetString(Complete, "percentage", p));
+				FluentProvider.GetMessage(Complete, "percentage", p));
 			if (timer is LabelWithTooltipWidget timerTooltip)
 			{
 				var connection = orderManager.Connection as ReplayConnection;

@@ -36,7 +36,7 @@ SendAttack = function(owner, size)
 	Utils.Do(units, IdleHunt)
 
 	if #units > 0 then
-		Media.DisplayMessage(UserInterface.Translate("harkonnen-units-approaching"), UserInterface.Translate("fremen-leader"))
+		Media.DisplayMessage(UserInterface.FluentMessage("harkonnen-units-approaching"), UserInterface.FluentMessage("fremen-leader"))
 	end
 
 	Trigger.OnAllRemovedFromWorld(units, function()

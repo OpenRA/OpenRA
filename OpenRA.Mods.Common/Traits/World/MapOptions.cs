@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 				ShortGameCheckboxVisible, ShortGameCheckboxDisplayOrder, ShortGameCheckboxEnabled, ShortGameCheckboxLocked);
 
 			var techLevels = map.PlayerActorInfo.TraitInfos<ProvidesTechPrerequisiteInfo>()
-				.ToDictionary(t => t.Id, t => map.GetString(t.Name));
+				.ToDictionary(t => t.Id, t => map.GetMessage(t.Name));
 
 			if (techLevels.Count > 0)
 				yield return new LobbyOption(map, "techlevel",
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 					techLevels, TechLevel, TechLevelDropdownLocked);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
-			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => FluentProvider.GetString(s.Value.Name));
+			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => FluentProvider.GetMessage(s.Value.Name));
 
 			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World.
 			yield return new LobbyOption(map, "gamespeed",

@@ -51,7 +51,7 @@ SendGDIReinforcements = function()
 			if GDIReinforcementsLeft > 0 then
 				GDIReinforcementsLeft = GDIReinforcementsLeft - 1
 				Trigger.AfterDelay(DateTime.Seconds(5), function()
-					Media.DisplayMessage(UserInterface.Translate("apcs-left", { ["apcs"] = GDIReinforcementsLeft }), UserInterface.Translate("battlefield-control"))
+					Media.DisplayMessage(UserInterface.FluentMessage("apcs-left", { ["apcs"] = GDIReinforcementsLeft }), UserInterface.FluentMessage("battlefield-control"))
 					SendGDIReinforcements()
 				end)
 			end
@@ -105,7 +105,7 @@ WorldLoaded = function()
 	InitObjectives(GDI)
 
 	GDIObjective = AddPrimaryObjective(GDI, "retrieve-rods")
-	local eliminateReinforcements = UserInterface.Translate("eliminate-reinforcements", { ["kills"] = KillsUntilReinforcements })
+	local eliminateReinforcements = UserInterface.FluentMessage("eliminate-reinforcements", { ["kills"] = KillsUntilReinforcements })
 	ReinforcementsObjective = AddSecondaryObjective(GDI, eliminateReinforcements)
 
 	SetupWorld()

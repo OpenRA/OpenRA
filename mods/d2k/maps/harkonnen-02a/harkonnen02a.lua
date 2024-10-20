@@ -70,7 +70,7 @@ Tick = function()
 	end
 
 	if Atreides.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 end

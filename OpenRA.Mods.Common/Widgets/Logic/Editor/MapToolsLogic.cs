@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			toolPanels.Add(MapTool.MarkerTiles, markerToolPanel);
 
 			toolsDropdown.OnMouseDown = _ => ShowToolsDropDown(toolsDropdown);
-			toolsDropdown.GetText = () => FluentProvider.GetString(toolNames[selectedTool]);
+			toolsDropdown.GetText = () => FluentProvider.GetMessage(toolNames[selectedTool]);
 			toolsDropdown.Disabled = true; // TODO: Enable if new tools are added
 		}
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => selectedTool == tool,
 					() => SelectTool(tool));
 
-				item.Get<LabelWidget>("LABEL").GetText = () => FluentProvider.GetString(toolNames[tool]);
+				item.Get<LabelWidget>("LABEL").GetText = () => FluentProvider.GetMessage(toolNames[tool]);
 
 				return item;
 			}

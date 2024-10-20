@@ -595,7 +595,7 @@ namespace OpenRA
 				Log.Write("debug", "Taking screenshot " + path);
 
 				Renderer.SaveScreenshot(path);
-				TextNotificationsManager.Debug(FluentProvider.GetString(SavedScreenshot, "filename", filename));
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(SavedScreenshot, "filename", filename));
 			}
 		}
 

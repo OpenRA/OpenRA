@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		{
 			base.Init(modData, info);
 
-			messages = FluentProvider.GetString(Loading).Split(',').Select(x => x.Trim()).ToArray();
+			messages = FluentProvider.GetMessage(Loading).Split(',').Select(x => x.Trim()).ToArray();
 		}
 
 		public override void DisplayInner(Renderer r, Sheet s, int density)

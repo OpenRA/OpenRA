@@ -237,7 +237,7 @@ end
 RunForIt = function()
 	Running = true
 	Media.PlaySoundNotification(USSR, "AlertBleep")
-	Media.DisplayMessage(UserInterface.Translate("run-for-it"), UserInterface.Translate("convoy-commander"))
+	Media.DisplayMessage(UserInterface.FluentMessage("run-for-it"), UserInterface.FluentMessage("convoy-commander"))
 	Utils.Do(Trucks, function(truck)
 		if not truck.IsDead then
 			truck.Stop()
@@ -274,7 +274,7 @@ StartTimerFunction = function()
 	end)
 end
 
-WeAreSurrounded = UserInterface.Translate("we-are-surrounded")
+WeAreSurrounded = UserInterface.FluentMessage("we-are-surrounded")
 FinishTimer = function()
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -291,7 +291,7 @@ Tick = function()
 	if StartTimer then
 		if Ticked > 0 then
 			if (Ticked % DateTime.Seconds(1)) == 0 then
-				Timer = UserInterface.Translate("corridor-closes-in", { ["time"] = Utils.FormatTime(Ticked) })
+				Timer = UserInterface.FluentMessage("corridor-closes-in", { ["time"] = Utils.FormatTime(Ticked) })
 				UserInterface.SetMissionText(Timer, TimerColor)
 			end
 			Ticked = Ticked - 1

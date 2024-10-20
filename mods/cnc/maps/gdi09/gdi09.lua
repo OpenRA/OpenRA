@@ -123,7 +123,7 @@ WorldLoaded = function()
 		if a.Type == "boat" then
 			a.Stop()
 			a.Destroy()
-			Media.DisplayMessage(UserInterface.Translate("convoy-passed-partly"))
+			Media.DisplayMessage(UserInterface.FluentMessage("convoy-passed-partly"))
 			Media.PlaySoundNotification(GDI, "Beepy6")
 		end
 	end)

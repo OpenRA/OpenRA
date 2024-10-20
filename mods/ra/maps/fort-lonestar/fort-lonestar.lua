@@ -167,7 +167,7 @@ SendWave = function()
 			end
 
 			Trigger.AfterDelay(DateTime.Minutes(1), SovietsRetreating)
-			Media.DisplayMessage(UserInterface.Translate("no-more-waves"))
+			Media.DisplayMessage(UserInterface.FluentMessage("no-more-waves"))
 		end
 	end)
 end
@@ -220,7 +220,7 @@ WorldLoaded = function()
 		end
 	end
 
-	Media.DisplayMessage(UserInterface.Translate("defend-fort-lonestar"))
+	Media.DisplayMessage(UserInterface.FluentMessage("defend-fort-lonestar"))
 
 	SetupWallOwners()
 

@@ -201,7 +201,7 @@ CheckAttackToAtreides = function()
 				end)
 
 				Check = true
-				Media.DisplayMessage(UserInterface.Translate("atreides-hostile"), Mentat)
+				Media.DisplayMessage(UserInterface.FluentMessage("atreides-hostile"), Mentat)
 			end
 		end)
 	end)
@@ -223,17 +223,17 @@ Tick = function()
 	end
 
 	if Ordos.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("ordos-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillOrdos)
 	end
 
 	if AtreidesEnemy.HasNoRequiredUnits() and AtreidesNeutral.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
 	if MercenaryEnemy.HasNoRequiredUnits() and MercenaryAlly.HasNoRequiredUnits() and not MercenariesDestroyed then
-		Media.DisplayMessage(UserInterface.Translate("mercenaries-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("mercenaries-annihilated"), Mentat)
 		MercenariesDestroyed = true
 	end
 
@@ -280,7 +280,7 @@ WorldLoaded = function()
 
 	Trigger.OnCapture(MHeavyFactory, function()
 		Harkonnen.MarkCompletedObjective(AllyWithMercenaries)
-		Media.DisplayMessage(UserInterface.Translate("mercenary-leader-captured-allied"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("mercenary-leader-captured-allied"), Mentat)
 		MercenaryAttackLocation = MercenaryAttackPoint.Location
 
 		ChangeOwner(MercenaryEnemy, MercenaryAlly)
@@ -296,7 +296,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnKilledOrCaptured(OPalace, function()
-		Media.DisplayMessage(UserInterface.Translate("can-not-stand-harkonnen-must-become-neutral"), UserInterface.Translate("atreides-commander"))
+		Media.DisplayMessage(UserInterface.FluentMessage("can-not-stand-harkonnen-must-become-neutral"), UserInterface.FluentMessage("atreides-commander"))
 
 		ChangeOwner(AtreidesEnemy, AtreidesNeutral)
 		DefendAndRepairBase(AtreidesNeutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])

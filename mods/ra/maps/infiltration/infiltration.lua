@@ -268,13 +268,13 @@ SecureLabTimer = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("secure-lab-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("secure-lab-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
 	elseif Ticked <= 0 then
 		TimerColor = Soviets.Color
-		UserInterface.SetMissionText(UserInterface.Translate("soviet-research-lab-not-secured-in-time"), TimerColor)
+		UserInterface.SetMissionText(UserInterface.FluentMessage("soviet-research-lab-not-secured-in-time"), TimerColor)
 		SecureLabFailed()
 	end
 end

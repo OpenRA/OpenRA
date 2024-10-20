@@ -232,7 +232,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newsPanel.RemoveChild(newsTemplate);
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
-				SetNewsStatus(FluentProvider.GetString(LoadingNews));
+				SetNewsStatus(FluentProvider.GetMessage(LoadingNews));
 			}
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
@@ -334,7 +334,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							catch (Exception e)
 							{
 								Game.RunAfterTick(() => // run on the main thread
-									SetNewsStatus(FluentProvider.GetString(NewsRetrivalFailed, "message", e.Message)));
+									SetNewsStatus(FluentProvider.GetMessage(NewsRetrivalFailed, "message", e.Message)));
 							}
 						});
 					}
@@ -405,7 +405,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus(FluentProvider.GetString(NewsParsingFailed, "message", ex.Message));
+				SetNewsStatus(FluentProvider.GetMessage(NewsParsingFailed, "message", ex.Message));
 			}
 
 			return null;
@@ -426,7 +426,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleLabel.GetText = () => item.Title;
 
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
-				var authorDateTime = FluentProvider.GetString(AuthorDateTime,
+				var authorDateTime = FluentProvider.GetMessage(AuthorDateTime,
 					"author", item.Author,
 					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture));
 

@@ -238,8 +238,8 @@ namespace OpenRA
 			{
 				var botInfo = botInfos.First(b => b.Type == BotType);
 				var botsOfSameType = World.Players.Where(c => c.BotType == BotType).ToArray();
-				return FluentProvider.GetString(EnumeratedBotName,
-					"name", FluentProvider.GetString(botInfo.Name),
+				return FluentProvider.GetMessage(EnumeratedBotName,
+					"name", FluentProvider.GetMessage(botInfo.Name),
 					"number", botsOfSameType.IndexOf(this) + 1);
 			}
 

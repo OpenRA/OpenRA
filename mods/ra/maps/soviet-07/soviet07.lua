@@ -310,7 +310,7 @@ Tick = function()
 
 	if RemainingTime > 0 and TimerStarted then
 		if (RemainingTime % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("time-until-meltdown", { ["time"] = Utils.FormatTime(RemainingTime) })
+			Timer = UserInterface.FluentMessage("time-until-meltdown", { ["time"] = Utils.FormatTime(RemainingTime) })
 			UserInterface.SetMissionText(Timer, USSR.Color)
 		end
 		RemainingTime = RemainingTime - 1

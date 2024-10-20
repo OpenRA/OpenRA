@@ -105,7 +105,7 @@ Tick = function()
 	end
 
 	if Atreides.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
@@ -119,7 +119,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage(UserInterface.Translate("upgrade-barracks-light-factory"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("upgrade-barracks-light-factory"), Mentat)
 	end
 end
 

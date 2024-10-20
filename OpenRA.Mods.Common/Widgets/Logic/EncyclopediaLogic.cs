@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
 				var name = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault)?.Name;
 				if (!string.IsNullOrEmpty(name))
-					WidgetUtils.TruncateLabelToTooltip(label, FluentProvider.GetString(name));
+					WidgetUtils.TruncateLabelToTooltip(label, FluentProvider.GetMessage(name));
 
 				if (firstItem == null)
 				{
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var info = actor.TraitInfoOrDefault<EncyclopediaInfo>();
 			if (info != null && !string.IsNullOrEmpty(info.Description))
-				text += WidgetUtils.WrapText(FluentProvider.GetString(info.Description) + "\n\n", descriptionLabel.Bounds.Width, descriptionFont);
+				text += WidgetUtils.WrapText(FluentProvider.GetMessage(info.Description) + "\n\n", descriptionLabel.Bounds.Width, descriptionFont);
 
 			var height = descriptionFont.Measure(text).Y;
 			descriptionLabel.GetText = () => text;
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var actorTooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				if (actorTooltip != null)
-					return FluentProvider.GetString(actorTooltip.Name);
+					return FluentProvider.GetMessage(actorTooltip.Name);
 			}
 
 			return name;

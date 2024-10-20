@@ -88,7 +88,7 @@ Tick = function()
 	end
 
 	if Ordos.HasNoRequiredUnits() and not Atreides.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("ordos-annihilated"), Mentat)
 		Atreides.MarkCompletedObjective(KillOrdos)
 	end
 
@@ -106,11 +106,11 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage(UserInterface.Translate("upgrade-barracks-light-factory"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("upgrade-barracks-light-factory"), Mentat)
 	end
 
 	if Atreides.Resources ~= CachedResources then
-		local harvestedResources = UserInterface.Translate("harvested-resources",
+		local harvestedResources = UserInterface.FluentMessage("harvested-resources",
 			{ ["harvested"] = Atreides.Resources, ["goal"] = SpiceToHarvest })
 		UserInterface.SetMissionText(harvestedResources)
 		CachedResources = Atreides.Resources
@@ -125,7 +125,7 @@ WorldLoaded = function()
 
 	InitObjectives(Atreides)
 	KillAtreides = AddPrimaryObjective(Ordos, "")
-	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
+	local harvestSpice = UserInterface.FluentMessage("harvest-spice", { ["spice"] = SpiceToHarvest })
 	GatherSpice = AddPrimaryObjective(Atreides, harvestSpice)
 	KillOrdos = AddSecondaryObjective(Atreides, "eliminate-ordos-units-reinforcements")
 
@@ -134,7 +134,7 @@ WorldLoaded = function()
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
 			if Atreides.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage(UserInterface.Translate("not-enough-silos"), Mentat)
+				Media.DisplayMessage(UserInterface.FluentMessage("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					Ordos.MarkCompletedObjective(KillAtreides)
 				end)

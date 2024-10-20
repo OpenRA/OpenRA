@@ -266,7 +266,7 @@ CheckSmugglerEnemies = function()
 
 			if attacker.Owner == Harkonnen and not MessageCheck then
 				MessageCheck = true
-				Media.DisplayMessage(UserInterface.Translate("smugglers-now-hostile"), Mentat)
+				Media.DisplayMessage(UserInterface.FluentMessage("smugglers-now-hostile"), Mentat)
 			end
 		end)
 	end)
@@ -281,17 +281,17 @@ Tick = function()
 	end
 
 	if AtreidesMain.HasNoRequiredUnits() and AtreidesSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
 	if CorrinoMain.HasNoRequiredUnits() and CorrinoSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("emperor-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillCorrino)
 	end
 
 	if SmugglerNeutral.HasNoRequiredUnits() and SmugglerHarkonnen.HasNoRequiredUnits() and SmugglerAI.HasNoRequiredUnits() and SmugglerBoth.HasNoRequiredUnits() and not SmugglersKilled then
-		Media.DisplayMessage(UserInterface.Translate("smugglers-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("smugglers-annihilated"), Mentat)
 		SmugglersKilled = true
 	end
 

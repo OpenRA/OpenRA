@@ -88,7 +88,7 @@ AlliedReinforcements = function()
 				Trigger.OnAllKilled(houseSquad, function()
 					if not AlliesHouse.IsDead then
 						Media.PlaySoundNotification(Greece, "AlertBleep")
-						Media.DisplayMessage(UserInterface.Translate("friendlies-coming-out"), UserInterface.Translate("medic"))
+						Media.DisplayMessage(UserInterface.FluentMessage("friendlies-coming-out"), UserInterface.FluentMessage("medic"))
 						Reinforcements.Reinforce(Greece, AlliedHouseSquad, { VillageSpawnAllies.Location, VillageRally.Location }, 0)
 					end
 				end)
@@ -183,7 +183,7 @@ AlliedReinforcements = function()
 
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
-				Media.DisplayMessage(UserInterface.Translate("get-scientists-evacuation-point"), UserInterface.Translate("landcom-16-capitalized"))
+				Media.DisplayMessage(UserInterface.FluentMessage("get-scientists-evacuation-point"), UserInterface.FluentMessage("landcom-16-capitalized"))
 				local northTeam = Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", NorthWaterTeam, NorthWaterPath1, { NorthWaterPath1[1] })
 			end)
 
@@ -323,7 +323,7 @@ LoseTriggers = function()
 	Trigger.OnKilled(ForwardCommand, function()
 		if not ScientistsFreed then
 			Greece.MarkFailedObjective(RescueScientists)
-			Media.DisplayMessage(UserInterface.Translate("scientists-killed-in-command-center"), UserInterface.Translate("landcom-16-capitalized"))
+			Media.DisplayMessage(UserInterface.FluentMessage("scientists-killed-in-command-center"), UserInterface.FluentMessage("landcom-16-capitalized"))
 		end
 	end)
 
@@ -344,12 +344,12 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("chronosphere-explodes-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("chronosphere-explodes-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
 	elseif Ticked == 0 then
-		UserInterface.SetMissionText(UserInterface.Translate("too-late"), USSR.Color)
+		UserInterface.SetMissionText(UserInterface.FluentMessage("too-late"), USSR.Color)
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 end

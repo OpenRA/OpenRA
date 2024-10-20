@@ -507,7 +507,7 @@ namespace OpenRA
 			if (!KeycodeFluentKeys.TryGetValue(k, out var fluentKey))
 				return k.ToString();
 
-			return FluentProvider.GetString(fluentKey);
+			return FluentProvider.GetMessage(fluentKey);
 		}
 	}
 }

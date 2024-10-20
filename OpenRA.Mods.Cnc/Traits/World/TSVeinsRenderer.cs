@@ -371,7 +371,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		string IResourceRenderer.GetRenderedResourceTooltip(CPos cell)
 		{
 			if (renderIndices[cell] != null || borders[cell] != Adjacency.None)
-				return FluentProvider.GetString(info.Name);
+				return FluentProvider.GetMessage(info.Name);
 
 			return null;
 		}

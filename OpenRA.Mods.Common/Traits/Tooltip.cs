@@ -60,19 +60,19 @@ namespace OpenRA.Mods.Common.Traits
 		public string TooltipForPlayerStance(PlayerRelationship relationship)
 		{
 			if (relationship == PlayerRelationship.None || !GenericVisibility.HasRelationship(relationship))
-				return FluentProvider.GetString(Name);
+				return FluentProvider.GetMessage(Name);
 
-			var genericName = string.IsNullOrEmpty(GenericName) ? "" : FluentProvider.GetString(GenericName);
+			var genericName = string.IsNullOrEmpty(GenericName) ? "" : FluentProvider.GetMessage(GenericName);
 			if (GenericStancePrefix)
 			{
 				if (!string.IsNullOrEmpty(AllyPrefix) && relationship == PlayerRelationship.Ally)
-					return FluentProvider.GetString(AllyPrefix) + " " + genericName;
+					return FluentProvider.GetMessage(AllyPrefix) + " " + genericName;
 
 				if (!string.IsNullOrEmpty(NeutralPrefix) && relationship == PlayerRelationship.Neutral)
-					return FluentProvider.GetString(NeutralPrefix) + " " + genericName;
+					return FluentProvider.GetMessage(NeutralPrefix) + " " + genericName;
 
 				if (!string.IsNullOrEmpty(EnemyPrefix) && relationship == PlayerRelationship.Enemy)
-					return FluentProvider.GetString(EnemyPrefix) + " " + genericName;
+					return FluentProvider.GetMessage(EnemyPrefix) + " " + genericName;
 			}
 
 			return genericName;

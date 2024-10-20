@@ -152,8 +152,8 @@ namespace OpenRA
 			if (player.IsBot)
 			{
 				var number = Players.Where(p => p.BotType == player.BotType).ToList().IndexOf(player) + 1;
-				return FluentProvider.GetString(EnumeratedBotName,
-						"name", FluentProvider.GetString(player.Name),
+				return FluentProvider.GetMessage(EnumeratedBotName,
+						"name", FluentProvider.GetMessage(player.Name),
 						"number", number);
 			}
 

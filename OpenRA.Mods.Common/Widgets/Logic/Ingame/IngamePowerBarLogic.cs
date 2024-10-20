@@ -36,10 +36,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			powerBar.TooltipTextCached = new CachedTransform<(float Current, float Capacity), string>(usage =>
 			{
 				var capacity = developerMode.UnlimitedPower ?
-					FluentProvider.GetString(Infinite) :
+					FluentProvider.GetMessage(Infinite) :
 					powerManager.PowerProvided.ToString(NumberFormatInfo.CurrentInfo);
 
-				return FluentProvider.GetString(PowerUsage, "usage", usage.Current, "capacity", capacity);
+				return FluentProvider.GetMessage(PowerUsage, "usage", usage.Current, "capacity", capacity);
 			});
 
 			powerBar.GetBarColor = () =>

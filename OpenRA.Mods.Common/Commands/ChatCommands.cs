@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (Commands.TryGetValue(name, out var command))
 					command.InvokeCommand(name, message[(1 + name.Length)..].Trim());
 				else
-					TextNotificationsManager.Debug(FluentProvider.GetString(InvalidCommand, "name", name));
+					TextNotificationsManager.Debug(FluentProvider.GetMessage(InvalidCommand, "name", name));
 
 				return false;
 			}

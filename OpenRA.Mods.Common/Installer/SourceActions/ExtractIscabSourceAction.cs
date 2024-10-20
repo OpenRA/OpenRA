@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Installer
 						{
 							Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
 							var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-							void OnProgress(int percent) => updateMessage(FluentProvider.GetString(
+							void OnProgress(int percent) => updateMessage(FluentProvider.GetMessage(
 								InstallFromSourceLogic.ExtractingProgress,
 								"filename", displayFilename, "progress", percent));
 							reader.ExtractFile(node.Value.Value, target, OnProgress);

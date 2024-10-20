@@ -161,15 +161,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DetectContentSources()
 		{
-			var message = FluentProvider.GetString(DetectingSources);
-			ShowProgressbar(FluentProvider.GetString(CheckingSources), () => message);
+			var message = FluentProvider.GetMessage(DetectingSources);
+			ShowProgressbar(FluentProvider.GetMessage(CheckingSources), () => message);
 			ShowBackRetry(DetectContentSources);
 
 			new Task(() =>
 			{
 				foreach (var kv in sources)
 				{
-					message = FluentProvider.GetString(SearchingSourceFor, "title", kv.Value.Title);
+					message = FluentProvider.GetMessage(SearchingSourceFor, "title", kv.Value.Title);
 
 					var sourceResolver = modData.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
 
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Game.RunAfterTick(() =>
 							{
-								ShowList(kv.Value, FluentProvider.GetString(ContentPackageInstallation));
+								ShowList(kv.Value, FluentProvider.GetMessage(ContentPackageInstallation));
 								ShowContinueCancel(() => InstallFromSource(path, kv.Value));
 							});
 
@@ -221,14 +221,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var options = new Dictionary<string, IEnumerable<string>>();
 
 				if (gameSources.Count != 0)
-					options.Add(FluentProvider.GetString(GameSources), gameSources);
+					options.Add(FluentProvider.GetMessage(GameSources), gameSources);
 
 				if (digitalInstalls.Count != 0)
-					options.Add(FluentProvider.GetString(DigitalInstalls), digitalInstalls);
+					options.Add(FluentProvider.GetMessage(DigitalInstalls), digitalInstalls);
 
 				Game.RunAfterTick(() =>
 				{
-					ShowList(FluentProvider.GetString(GameContentNotFound), FluentProvider.GetString(AlternativeContentSources), options);
+					ShowList(FluentProvider.GetMessage(GameContentNotFound), FluentProvider.GetMessage(AlternativeContentSources), options);
 					ShowBackRetry(DetectContentSources);
 				});
 			}).Start();
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void InstallFromSource(string path, ModContent.ModSource modSource)
 		{
 			var message = "";
-			ShowProgressbar(FluentProvider.GetString(InstallingContent), () => message);
+			ShowProgressbar(FluentProvider.GetMessage(InstallingContent), () => message);
 			ShowDisabledCancel();
 
 			new Task(() =>
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Game.RunAfterTick(() =>
 					{
-						ShowMessage(FluentProvider.GetString(InstallationFailed), FluentProvider.GetString(CheckInstallLog));
+						ShowMessage(FluentProvider.GetMessage(InstallationFailed), FluentProvider.GetMessage(CheckInstallLog));
 						ShowBackRetry(() => InstallFromSource(path, modSource));
 					});
 				}
@@ -340,7 +340,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var containerWidget = (ContainerWidget)checkboxListTemplate.Clone();
 				var checkboxWidget = containerWidget.Get<CheckboxWidget>("PACKAGE_CHECKBOX");
-				var title = FluentProvider.GetString(package.Title);
+				var title = FluentProvider.GetMessage(package.Title);
 				checkboxWidget.GetText = () => title;
 				checkboxWidget.IsDisabled = () => package.Required;
 				checkboxWidget.IsChecked = () => selectedPackages[package.Identifier];
@@ -400,12 +400,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowContinueCancel(Action continueAction)
 		{
 			primaryButton.OnClick = continueAction;
-			var primaryButtonText = FluentProvider.GetString(Continue);
+			var primaryButtonText = FluentProvider.GetMessage(Continue);
 			primaryButton.GetText = () => primaryButtonText;
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			var secondaryButtonText = FluentProvider.GetString(Cancel);
+			var secondaryButtonText = FluentProvider.GetMessage(Cancel);
 			secondaryButton.GetText = () => secondaryButtonText;
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
@@ -415,12 +415,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowBackRetry(Action retryAction)
 		{
 			primaryButton.OnClick = retryAction;
-			var primaryButtonText = FluentProvider.GetString(Retry);
+			var primaryButtonText = FluentProvider.GetMessage(Retry);
 			primaryButton.GetText = () => primaryButtonText;
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			var secondaryButtonText = FluentProvider.GetString(Back);
+			var secondaryButtonText = FluentProvider.GetMessage(Back);
 			secondaryButton.GetText = () => secondaryButtonText;
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;

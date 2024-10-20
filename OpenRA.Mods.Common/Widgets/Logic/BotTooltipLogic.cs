@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 			var controller = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == client.BotControllerClientIndex);
 			if (controller != null)
-				nameLabel.GetText = () => FluentProvider.GetString(BotManagedBy, "name", controller.Name);
+				nameLabel.GetText = () => FluentProvider.GetMessage(BotManagedBy, "name", controller.Name);
 
 			widget.Bounds.Width = nameFont.Measure(nameLabel.GetText()).X + 2 * nameLabel.Bounds.Left;
 		}

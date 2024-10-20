@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var container = template.Clone();
 				var titleWidget = container.Get<LabelWidget>("TITLE");
-				var title = FluentProvider.GetString(p.Value.Title);
+				var title = FluentProvider.GetMessage(p.Value.Title);
 				titleWidget.GetText = () => title;
 
 				var requiredWidget = container.Get<LabelWidget>("REQUIRED");
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				requiresSourceWidget.IsVisible = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
 				{
-					var manualInstall = FluentProvider.GetString(ManualInstall);
+					var manualInstall = FluentProvider.GetMessage(ManualInstall);
 					requiresSourceWidget.GetText = () => manualInstall;
 				}
 

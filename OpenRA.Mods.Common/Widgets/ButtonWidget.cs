@@ -77,9 +77,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			ModRules = modData.DefaultRules;
 
-			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetString(s) : "");
-			var tooltipTextCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetString(s) : "");
-			var tooltipDescCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetString(s) : "");
+			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetMessage(s) : "");
+			var tooltipTextCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetMessage(s) : "");
+			var tooltipDescCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetMessage(s) : "");
 
 			GetText = () => textCache.Update(Text);
 			GetColor = () => TextColor;
