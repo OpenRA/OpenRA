@@ -153,12 +153,12 @@ tests:
 
 ############# LOCAL INSTALLATION AND DOWNSTREAM PACKAGING ##############
 #
-version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
+version: VERSION mods/*/mod.yaml
 ifeq ($(VERSION),)
 	$(error Unable to determine new version (requires git or override of variable VERSION))
 endif
 	@sh -c '. ./packaging/functions.sh; set_engine_version "$(VERSION)" .'
-	@sh -c '. ./packaging/functions.sh; set_mod_version "$(VERSION)" mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml'
+	@sh -c '. ./packaging/functions.sh; set_mod_version "$(VERSION)" mods/*/mod.yaml'
 
 install:
 	@sh -c '. ./packaging/functions.sh; install_assemblies $(CWD) $(DESTDIR)$(gameinstalldir) $(TARGETPLATFORM) $(RUNTIME) True True True'
