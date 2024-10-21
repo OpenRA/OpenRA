@@ -7,7 +7,7 @@ options-tech-level =
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allows Construction Yards to be undeployed.
+    .description = Allows Construction Yards to be undeployed
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
@@ -27,7 +27,7 @@ options-starting-units =
 
 dropdown-map-creeps =
     .label = Creep Actors
-    .description = Hostile forces spawn on the battlefield.
+    .description = Hostile forces spawn on the battlefield
 
 resource-veins = Veins
 resource-tiberium = Tiberium
