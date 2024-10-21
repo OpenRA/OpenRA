@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Server
 			// Update the master server and LAN clients if something has changed
 			// Note that isBusy is set while the master server ping is running on a
 			// background thread, and limits LAN pings as well as master server pings for simplicity.
-			if (!isBusy && ((lastChanged > lastPing && Game.RunTime - lastPing > RateLimitInterval) || isInitialPing))
+			if (!isBusy && lastChanged >= lastPing && Game.RunTime - lastPing > RateLimitInterval)
 			{
 				var gs = new GameServer(server);
 				if (server.Settings.AdvertiseOnline)
