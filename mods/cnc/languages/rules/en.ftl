@@ -11,7 +11,7 @@ checkbox-redeployable-mcvs =
 
 checkbox-stealth-deliveries =
     .label = Stealth Deliveries
-    .description = Nod delivery plane cloaks.
+    .description = Cloaked Nod delivery plane
 
 notification-new-construction-options = New construction options.
 notification-cannot-deploy-here = Cannot deploy here.
