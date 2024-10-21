@@ -785,8 +785,8 @@ actor-dtrk =
 actor-ctnk =
    .name = Chrono Tank
    .generic-name = Tank
-   .description = Armed with anti-ground missiles,
-    and capable of teleporting to any area within range.
+   .description = Armed with anti-ground missiles.
+   Teleports to any area within range.
       Strong vs. Vehicles and Buildings.
       Weak vs. Infantry and Aircraft.
       Special ability: Can teleport.
