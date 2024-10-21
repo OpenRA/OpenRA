@@ -350,7 +350,7 @@ actor-mech =
     husks to working condition by capturing them.
       Unarmed.
 
-actor-einstein-name = Professor Einstein
+actor-einstein-name = Prof. Einstein
 actor-delphi-name = Agent Delphi
 actor-chan-name = Scientist
 actor-gnrl-name = General
