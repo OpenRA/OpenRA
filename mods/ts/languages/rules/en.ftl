@@ -569,7 +569,7 @@ actor-namisl =
 
 actor-nawast =
    .name = Waste Refinery
-   .description = Processes Tiberium Veins
+   .description = Processes Veins
     into usable resources.
     Maximum of one can be built.
 
