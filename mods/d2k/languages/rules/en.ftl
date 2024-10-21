@@ -123,7 +123,7 @@ actor-frigate-name = Frigate
 
 actor-ornithopter =
    .name = Ornithopter
-   .encyclopedia = The fastest aircraft on Dune, it is lightly armored and capable of dropping 500lb bombs. Highly effective against infantry and lightly armored targets, with the ability to damage other armor types.
+   .encyclopedia = The fastest aircraft on Dune, it is lightly armored and capable of dropping 500 lb bombs. Highly effective against infantry and lightly armored targets, with the ability to damage other armor types.
 
 actor-ornithopter-husk-name = Ornithopter
 actor-carryall-husk-name = Carryall
@@ -164,7 +164,7 @@ actor-light-inf =
    .name = Light Infantry
    .encyclopedia = Lightly armored foot soldiers, equipped with 9mm RP assault rifles. They are effective against infantry and lightly armored vehicles.
 
-    Light Infantry are resistant to missiles and large-caliber guns, but are very vulnerable to high-explosives, fire and bullet weapons.
+    Light Infantry are resistant to missiles and large-caliber guns, but are very vulnerable to high-explosives, fire, and small arms.
 
 actor-engineer =
    .description = Infiltrates and captures enemy structures
@@ -174,7 +174,7 @@ actor-engineer =
    .name = Engineer
    .encyclopedia = Can be used to capture enemy buildings.
 
-    Engineers are resistant to anti-tank weaponry but are very vulnerable to high-explosives, fire and firearms.
+    Engineers are resistant to anti-tank weaponry but are very vulnerable to high-explosives, fire, and small arms.
 
 actor-trooper =
    .description = Anti-tank infantry
@@ -376,7 +376,7 @@ actor-wall =
    .generic-name = Structure
    .encyclopedia = The most effective defensive barriers on Dune, blocking tank fire and hindering enemy movement.
 
-    Walls can only be damaged by explosive weapons, missiles and shells. Similar to concrete slabs, they cannot be repaired once damaged.
+    Walls can only be damaged by explosive weapons, missiles and shells. Similar to Concrete Slabs, they cannot be repaired once damaged.
 
 actor-medium-gun-turret =
    .description = Defensive structure.
@@ -385,7 +385,7 @@ actor-medium-gun-turret =
    .name = Gun Turret
    .encyclopedia = A medium-range weapon that is effective against all types of vehicle, particularly heavily armored ones. It automatically fires upon any enemy unit within its range and requires power to operate.
 
-    The Gun Turret is resistant to firearms and explosive weapons, but vulnerable to missiles and high-caliber guns.
+    The Gun Turret is resistant to small arms and explosive weapons, but vulnerable to missiles and high-caliber guns.
 
 actor-large-gun-turret =
    .description = Defensive structure.
