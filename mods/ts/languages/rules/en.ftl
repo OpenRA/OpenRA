@@ -34,7 +34,7 @@ resource-tiberium = Tiberium
 
 faction-random =
     .name = Any
-    .description = Random Faction.
+    .description = Random Faction
      A random faction is chosen when the game starts.
 
 faction-gdi =
