@@ -73,7 +73,7 @@ do-not-destroy-barracks = Do not destroy the Barracks!
 hostages-released = Hostages released!
 stay-away-from-starport = Stay away from our Starport.
 smuggler-leader = Smuggler Leader.
-were-warned-will-pay = You have been warned. Now you will pay.
+were-warned-will-pay = You were warned. Now you will pay.
 destroy-smugglers-mercenaries = Destroy the Smugglers and their mercenaries.
 capture-harkonnen-barracks-release-hostages = Capture the Harkonnen barracks to release the hostages.
 
