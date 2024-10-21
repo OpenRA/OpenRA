@@ -543,7 +543,7 @@ actor-pbox =
    .name = Pillbox
    .description = Static defense with a fireport for
     a garrisoned soldier.
-    Capable of detecting cloaked units.
+    Can detect cloaked units.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
 
