@@ -88,7 +88,7 @@ actor-orca =
 
 actor-orcab =
    .name = Orca Bomber
-   .description = Heavy bomber.
+   .description = Heavy bomber
       Strong vs. Buildings and Vehicles.
       Weak vs. Infantry and Aircraft.
 
