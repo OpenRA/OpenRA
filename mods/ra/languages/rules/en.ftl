@@ -8,15 +8,15 @@ options-tech-level =
 
 checkbox-kill-bounties =
     .label = Kill Bounties
-    .description = Players receive cash bonuses for killing enemy units.
+    .description = Players receive cash bonuses for killing enemy units
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allows Construction Yards to be undeployed.
+    .description = Allows Construction Yards to be undeployed
 
 checkbox-reusable-engineers =
     .label = Reusable Engineers
-    .description = Engineers stay on the battlefield after capturing a structure.
+    .description = Engineers stay on the battlefield after capturing a structure
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
