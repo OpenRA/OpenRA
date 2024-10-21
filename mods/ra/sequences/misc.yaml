@@ -83,8 +83,8 @@ explosion:
 burn-l:
 	Defaults:
 		Filename: burn-l.shp
-	idle:
-		Length: *
+	start:
+		Length: 16
 		ZOffset: 512
 	loop:
 		Start: 16
@@ -98,8 +98,8 @@ burn-l:
 burn-m:
 	Defaults:
 		Filename: burn-m.shp
-	idle:
-		Length: *
+	start:
+		Length: 16
 		ZOffset: 512
 	loop:
 		Start: 16
@@ -113,8 +113,8 @@ burn-m:
 burn-s:
 	Defaults:
 		Filename: burn-s.shp
-	idle:
-		Length: *
+	start:
+		Length: 12
 		ZOffset: 512
 	loop:
 		Start: 12
@@ -226,13 +226,13 @@ smoke_m:
 		Length: *
 		Offset: 2, -5
 		ZOffset: 512
+	start:
+		Length: 49
+		Offset: 2, -5
+		ZOffset: 512
 	loop:
 		Start: 49
 		Length: 42
-		Offset: 2, -5
-		ZOffset: 512
-	end:
-		Frames: 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 		Offset: 2, -5
 		ZOffset: 512
 
