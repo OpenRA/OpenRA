@@ -709,7 +709,7 @@ actor-4tnk =
    .description = Large, slow tank with anti-air capabilities.
     Can crush concrete walls.
       Strong vs. Vehicles, Infantry and Aircraft.
-      Weak vs. None.
+      Weak vs. Nothing.
 
 actor-arty =
    .name = Artillery
