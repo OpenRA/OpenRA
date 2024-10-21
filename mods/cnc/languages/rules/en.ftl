@@ -28,7 +28,7 @@ options-starting-units =
 
 dropdown-map-creeps =
     .label = Creep Actors
-    .description = Hostile forces spawn on the battlefield.
+    .description = Hostile forces spawn on the battlefield
 
 resource-tiberium = Tiberium
 
