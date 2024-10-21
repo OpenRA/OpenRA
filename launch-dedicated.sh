@@ -9,11 +9,6 @@
 set -o errexit || exit $?
 
 ENGINEDIR=$(dirname "$0")
-if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= "${ENGINEDIR}/bin/OpenRA.Server.dll")" = "0" ]; then
-	RUNTIME_LAUNCHER="mono --debug"
-else
-	RUNTIME_LAUNCHER="dotnet"
-fi
 
 Name="${Name:-"Dedicated Server"}"
 Mod="${Mod:-"ra"}"
@@ -38,7 +33,7 @@ FloodLimitJoinCooldown="${FloodLimitJoinCooldown:-"5000"}"
 SupportDir="${SupportDir:-""}"
 
 while true; do
-     ${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.Server.dll" Engine.EngineDir=".." Game.Mod="$Mod" \
+     dotnet "${ENGINEDIR}/bin/OpenRA.Server.dll" Engine.EngineDir=".." Game.Mod="$Mod" \
      Server.Name="$Name" \
      Server.Map="$Map" \
      Server.ListenPort="$ListenPort" \

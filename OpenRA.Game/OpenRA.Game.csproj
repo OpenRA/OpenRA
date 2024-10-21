@@ -2,14 +2,9 @@
   <PropertyGroup>
     <RootNamespace>OpenRA</RootNamespace>
   </PropertyGroup>
-  <ItemGroup Condition="'$(MSBuildRuntimeType)'!='Mono'">
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Mono'">
-    <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Linguini.Bundle" Version="0.8.1" />
     <PackageReference Include="OpenRA-Eluant" Version="1.0.22" />
     <PackageReference Include="Mono.NAT" Version="3.0.4" />

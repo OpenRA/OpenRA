@@ -2,11 +2,6 @@
 set -o errexit || exit $?
 
 ENGINEDIR=$(dirname "$0")
-if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= "${ENGINEDIR}/bin/OpenRA.dll")" = "0" ]; then
-	RUNTIME_LAUNCHER="mono --debug"
-else
-	RUNTIME_LAUNCHER="dotnet"
-fi
 
 if command -v python3 >/dev/null 2>&1; then
 	 LAUNCHPATH=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$0")
@@ -34,7 +29,7 @@ then
 fi
 
 # Launch the engine with the appropriate arguments
-${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@" && rc=0 || rc=$?
+dotnet "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@" && rc=0 || rc=$?
 
 # Show a crash dialog if something went wrong
 if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
