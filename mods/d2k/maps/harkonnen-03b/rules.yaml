@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, harkonnen03b.lua, harkonnen03b-AI.lua
 	MissionData:
-		Briefing: Attack and destroy the Atreides base at the Sietch Tabr. Strike hard and eliminate all resistance.\n\nHeavier Quad vehicles have been made available for this assault - upgrade your Light Factory to access them.\n
+		Briefing: briefing
 		BriefingVideo: H_BR03_E.VQA
 	MapOptions:
 		TechLevel: low

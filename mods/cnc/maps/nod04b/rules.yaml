@@ -5,7 +5,7 @@ World:
 		StartingMusic: valkyrie
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: A small village friendly to our cause has been increasingly harassed by GDI, and the Brotherhood wishes you to assist them in their efforts.\n\nSeek out the enemy village and destroy it. The event will be disguised as a GDI attack.
+		Briefing: briefing
 		BriefingVideo: nod4b.vqa
 		StartVideo: retro.vqa
 		LossVideo: deskill.vqa

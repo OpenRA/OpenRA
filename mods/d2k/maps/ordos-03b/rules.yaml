@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, ordos03b.lua, ordos03b-AI.lua
 	MissionData:
-		Briefing: The Harkonnen have been hindering Spice production. Inefficiency cannot be tolerated. They must be eliminated.\n\nNew and more powerful weapons are available - Quads. Powerful weapons ensure victory.
+		Briefing: briefing
 		BriefingVideo: O_BR03_E.VQA
 	MapOptions:
 		TechLevel: low

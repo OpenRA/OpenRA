@@ -5,7 +5,7 @@ World:
 		StartingMusic: march
 		VictoryMusic: gdi_win1
 	MissionData:
-		Briefing: Take out the Nod turrets along the shore so Gunboats can approach the Nod base.\n\nThe Nod base must be destroyed.\n\nIf Gunboats can get in, they should be able to destroy the base with ease.\n\nKeep an eye out for the new weapon rumored to be under development.
+		Briefing: briefing
 		BriefingVideo: gdi9.vqa
 		WinVideo: gunboat.vqa
 		LossVideo: gameover.vqa

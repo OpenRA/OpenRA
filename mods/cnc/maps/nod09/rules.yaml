@@ -5,7 +5,7 @@ World:
 		StartingMusic: march
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: GDI is attempting to retake Egypt.\n\nUse every available resource to stop their advance.\n\nThe local populace has once again sided with GDI forces, so show no mercy to the villagers.
+		Briefing: briefing
 		LossVideo: banner.vqa
 		BriefingVideo: nod9.vqa
 	SmudgeLayer@SCORCH:
