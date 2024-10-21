@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Provides access to the attack-move command, which will make the actor automatically engage viable targets while moving to the destination.")]
-	sealed class AttackMoveInfo : TraitInfo, Requires<IMoveInfo>
+	public class AttackMoveInfo : TraitInfo, Requires<IMoveInfo>
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
-	sealed class AttackMove : IResolveOrder, IOrderVoice
+	public class AttackMove : IResolveOrder, IOrderVoice
 	{
 		public readonly AttackMoveInfo Info;
 		readonly IMove move;
@@ -102,14 +102,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class AttackMoveOrderGenerator : UnitOrderGenerator
 	{
-		TraitPair<AttackMove>[] subjects;
+		protected TraitPair<AttackMove>[] subjects;
 
-		readonly MouseButton expectedButton;
+		protected readonly MouseButton ExpectedButton;
 
 		public AttackMoveOrderGenerator(IEnumerable<Actor> subjects, MouseButton button)
 		{
-			expectedButton = button;
-
+			ExpectedButton = button;
 			this.subjects = subjects.Where(a => !a.IsDead)
 				.SelectMany(a => a.TraitsImplementing<AttackMove>()
 					.Select(am => new TraitPair<AttackMove>(a, am)))
@@ -118,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (mi.Button != expectedButton)
+			if (mi.Button != ExpectedButton)
 				world.CancelInputMode();
 
 			return OrderInner(world, cell, mi);
@@ -126,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual IEnumerable<Order> OrderInner(World world, CPos cell, MouseInput mi)
 		{
-			if (mi.Button == expectedButton)
+			if (mi.Button == ExpectedButton)
 			{
 				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 				if (!queued)

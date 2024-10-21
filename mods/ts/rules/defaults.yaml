@@ -594,6 +594,8 @@
 	WithSplitAttackPaletteInfantryBody:
 	AttackMove:
 		Voice: Move
+	Patrol:
+		Voice: Move
 	Passenger:
 		CargoType: Infantry
 		Voice: Move
@@ -809,6 +811,8 @@
 		Voice: Move
 	AttackMove:
 		Voice: Move
+	Patrol:
+		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
@@ -937,6 +941,8 @@
 	AttackMove:
 		Voice: Move
 		MoveIntoShroud: false
+	Patrol:
+		Voice: Move
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
 	BodyOrientation:
@@ -1021,6 +1027,7 @@
 	Targetable:
 		TargetTypes: Ground, Creep
 	AttackMove:
+	Patrol:
 	HiddenUnderFog:
 	Guardable:
 	WithFacingSpriteBody:

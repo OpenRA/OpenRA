@@ -266,6 +266,7 @@
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
+	Patrol:
 	HiddenUnderFog:
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
@@ -363,6 +364,7 @@
 			ElectricityDeath: 6
 		CrushedSequence: die-crushed
 	AttackMove:
+	Patrol:
 	Passenger:
 		CargoType: Infantry
 		CargoCondition: disable-experience
@@ -520,6 +522,7 @@
 		ValidDamageStates: Light, Medium, Heavy, Critical
 	HiddenUnderFog:
 	AttackMove:
+	Patrol:
 	ActorLostNotification:
 		Notification: NavalUnitLost
 		TextNotification: notification-naval-unit-lost
@@ -603,6 +606,7 @@
 	HiddenUnderFog:
 		Type: GroundPosition
 	AttackMove:
+	Patrol:
 	Guard:
 	Guardable:
 	ActorLostNotification:
