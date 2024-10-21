@@ -369,7 +369,8 @@ actor-hand =
 
 actor-afld =
    .name = Airstrip
-   .description = Provides a dropzone for vehicle reinforcements.
+   .description = Provides a dropzone
+   for vehicle reinforcements.
    .encyclopedia = Delivers vehicles by plane for Nod. Nod vehicles are fast but fragile. Produce harvesters at the start to jumpstart your economy.
 
 actor-weap =
