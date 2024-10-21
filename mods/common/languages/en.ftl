@@ -263,7 +263,7 @@ dialog-exit-to-map-editor =
 ## IngamePowerBarLogic
 ## IngamePowerCounterLogic
 label-power-usage = Power Usage: { $usage }/{ $capacity }
-label-infinite-power = Infinite Power
+label-infinite-power = Infinite 
 
 ## IngameSiloBarLogic
 ## IngameCashCounterLogic
