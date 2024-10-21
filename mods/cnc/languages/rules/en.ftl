@@ -7,7 +7,7 @@ options-tech-level =
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allows Construction Yards to undeploy.
+    .description = Allows Construction Yards to undeploy
 
 checkbox-stealth-deliveries =
     .label = Stealth Deliveries
