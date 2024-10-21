@@ -7,7 +7,7 @@ options-tech-level =
 
 checkbox-automatic-concrete =
     .label = Automatic Concrete
-    .description = Concrete foundations are automatically laid under buildings.
+    .description = Concrete foundations are automatically laid under buildings
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
@@ -24,7 +24,7 @@ notification-one-of-our-buildings-has-been-captured = One of our buildings has b
 ## world.yaml
 dropdown-map-worms =
     .label = Worms
-    .description = Worms roam the map, devouring unprepared forces.
+    .description = Worms roam the map, devouring unprepared forces
 
 options-starting-units =
     .mcv-only = MCV Only
