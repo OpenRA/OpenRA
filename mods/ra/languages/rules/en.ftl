@@ -369,7 +369,7 @@ actor-shok =
 
 actor-zombie =
    .name = Zombie
-   .description = Slow-moving undead that attacks when near.
+   .description = Slow-moving undead that attack in close combat.
 
 actor-ant =
    .name = Giant Ant
