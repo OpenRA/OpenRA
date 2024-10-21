@@ -599,7 +599,8 @@ actor-proc =
 
 actor-silo =
    .name = Silo
-   .description = Stores excess refined Ore and Gems.
+   .description = Stores excess refined
+    Ore and Gems.
 
 actor-hpad =
    .name = Helipad
