@@ -589,7 +589,7 @@ dialog-delete-all-replays =
     .prompt =
     { $count ->
         [one] Delete { $count } replay.
-       *[other] Delete { $count } replays
+       *[other] Delete { $count } replays.
     }
     .confirm = Delete All
 
