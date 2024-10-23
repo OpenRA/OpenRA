@@ -102,7 +102,7 @@ MiscTriggers = function()
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower.IsDead then
 				Media.PlaySoundNotification(Greece, "AlertBleep")
-				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
+				Media.DisplayMessage(UserInterface.FluentMessage("flame-turret-deactivated"), UserInterface.FluentMessage("console"))
 				FlameTower.Kill()
 			end
 		end
@@ -232,7 +232,7 @@ DeactivateMissiles = function()
 			Trigger.RemoveFootprintTrigger(id)
 			TopLeftTriggered = true
 			Media.PlaySpeechNotification(Greece, "ControlCenterDeactivated")
-			Media.DisplayMessage(UserInterface.Translate("nuclear-missile-deactivated"), UserInterface.Translate("console"))
+			Media.DisplayMessage(UserInterface.FluentMessage("nuclear-missile-deactivated"), UserInterface.FluentMessage("console"))
 		end
 	end)
 
@@ -241,7 +241,7 @@ DeactivateMissiles = function()
 			Trigger.RemoveFootprintTrigger(id)
 			BottomLeftTriggered = true
 			Media.PlaySpeechNotification(Greece, "ControlCenterDeactivated")
-			Media.DisplayMessage(UserInterface.Translate("nuclear-missile-deactivated"), UserInterface.Translate("console"))
+			Media.DisplayMessage(UserInterface.FluentMessage("nuclear-missile-deactivated"), UserInterface.FluentMessage("console"))
 		end
 	end)
 
@@ -250,7 +250,7 @@ DeactivateMissiles = function()
 			Trigger.RemoveFootprintTrigger(id)
 			TopRightTriggered = true
 			Media.PlaySpeechNotification(Greece, "ControlCenterDeactivated")
-			Media.DisplayMessage(UserInterface.Translate("nuclear-missile-deactivated"), UserInterface.Translate("console"))
+			Media.DisplayMessage(UserInterface.FluentMessage("nuclear-missile-deactivated"), UserInterface.FluentMessage("console"))
 		end
 	end)
 
@@ -259,7 +259,7 @@ DeactivateMissiles = function()
 			Trigger.RemoveFootprintTrigger(id)
 			MiddleRightTriggered = true
 			Media.PlaySpeechNotification(Greece, "ControlCenterDeactivated")
-			Media.DisplayMessage(UserInterface.Translate("nuclear-missile-deactivated"), UserInterface.Translate("console"))
+			Media.DisplayMessage(UserInterface.FluentMessage("nuclear-missile-deactivated"), UserInterface.FluentMessage("console"))
 		end
 	end)
 end
@@ -278,12 +278,12 @@ Tick = function()
 
 	if Ticked > 0 then
 		if Ticked % DateTime.Seconds(1) == 0 then
-			local timer = UserInterface.Translate("reach-target-in", { ["time"] = Utils.FormatTime(Ticked) })
+			local timer = UserInterface.FluentMessage("reach-target-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(timer, USSR.Color)
 		end
 		Ticked = Ticked - 1
 	elseif Ticked == 0 then
-		FinishedTimer = UserInterface.Translate("we-are-too-late")
+		FinishedTimer = UserInterface.FluentMessage("we-are-too-late")
 		UserInterface.SetMissionText(FinishedTimer, USSR.Color)
 		Greece.MarkFailedObjective(StopNukes)
 	end

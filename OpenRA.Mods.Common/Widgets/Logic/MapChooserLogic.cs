@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onSelect = onSelect;
 			this.remoteMapPool = remoteMapPool;
 
-			allMaps = FluentProvider.GetString(AllMaps);
+			allMaps = FluentProvider.GetMessage(AllMaps);
 
 			var approving = new Action(() =>
 			{
@@ -205,9 +205,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var remoteMapText = new CachedTransform<(int Searching, int Unavailable), string>(counts =>
 			{
 				if (counts.Searching > 0)
-					return FluentProvider.GetString(MapSearchingCount, "count", counts.Searching);
+					return FluentProvider.GetMessage(MapSearchingCount, "count", counts.Searching);
 
-				return FluentProvider.GetString(MapUnavailableCount, "count", counts.Unavailable);
+				return FluentProvider.GetMessage(MapUnavailableCount, "count", counts.Unavailable);
 			});
 
 			remoteMapLabel.IsVisible = () => remoteMapPool != null && (remoteSearching > 0 || remoteUnavailable > 0);
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var item = categories.FirstOrDefault(m => m.Category == category);
 					if (item == default((string, int)))
-						item.Category = FluentProvider.GetString(NoMatches);
+						item.Category = FluentProvider.GetMessage(NoMatches);
 
 					return ShowItem(item);
 				};
@@ -372,14 +372,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (orderByDropdown == null)
 				return;
 
-			var orderByPlayer = FluentProvider.GetString(OrderMapsByPlayers);
+			var orderByPlayer = FluentProvider.GetMessage(OrderMapsByPlayers);
 
 			var orderByDict = new Dictionary<string, Func<MapPreview, long>>()
 			{
 				{ orderByPlayer, m => m.PlayerCount },
-				{ FluentProvider.GetString(OrderMapsByTitle), null },
-				{ FluentProvider.GetString(OrderMapsByDate), m => -m.ModifiedDate.Ticks },
-				{ FluentProvider.GetString(OrderMapsBySize), m => m.Bounds.Width * m.Bounds.Height },
+				{ FluentProvider.GetMessage(OrderMapsByTitle), null },
+				{ FluentProvider.GetMessage(OrderMapsByDate), m => -m.ModifiedDate.Ticks },
+				{ FluentProvider.GetMessage(OrderMapsBySize), m => m.Bounds.Width * m.Bounds.Height },
 			};
 
 			orderByFunc = orderByDict[orderByPlayer];
@@ -458,23 +458,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (type != null)
 						details = type + " ";
 
-					details += FluentProvider.GetString(Players, "players", preview.PlayerCount);
+					details += FluentProvider.GetMessage(Players, "players", preview.PlayerCount);
 					detailsWidget.GetText = () => details;
 				}
 
 				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
 				if (authorWidget != null && !string.IsNullOrEmpty(preview.Author))
-					WidgetUtils.TruncateLabelToTooltip(authorWidget, FluentProvider.GetString(CreatedBy, "author", preview.Author));
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, FluentProvider.GetMessage(CreatedBy, "author", preview.Author));
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
 				{
 					var size = preview.Bounds.Width + "x" + preview.Bounds.Height;
 					var numberPlayableCells = preview.Bounds.Width * preview.Bounds.Height;
-					if (numberPlayableCells >= 120 * 120) size += " " + FluentProvider.GetString(MapSizeHuge);
-					else if (numberPlayableCells >= 90 * 90) size += " " + FluentProvider.GetString(MapSizeLarge);
-					else if (numberPlayableCells >= 60 * 60) size += " " + FluentProvider.GetString(MapSizeMedium);
-					else size += " " + FluentProvider.GetString(MapSizeSmall);
+					if (numberPlayableCells >= 120 * 120) size += " " + FluentProvider.GetMessage(MapSizeHuge);
+					else if (numberPlayableCells >= 90 * 90) size += " " + FluentProvider.GetMessage(MapSizeLarge);
+					else if (numberPlayableCells >= 60 * 60) size += " " + FluentProvider.GetMessage(MapSizeMedium);
+					else size += " " + FluentProvider.GetMessage(MapSizeSmall);
 					sizeWidget.GetText = () => size;
 				}
 
@@ -502,7 +502,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(FluentProvider.GetString(MapDeletionFailed, "map", map));
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(MapDeletionFailed, "map", map));
 				Log.Write("debug", ex.ToString());
 			}
 

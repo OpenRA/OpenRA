@@ -108,9 +108,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					checkbox.GetText = () => mo.Objectives[0].Description;
 				}
 
-				var failed = FluentProvider.GetString(Failed);
-				var inProgress = FluentProvider.GetString(InProgress);
-				var accomplished = FluentProvider.GetString(Accomplished);
+				var failed = FluentProvider.GetMessage(Failed);
+				var inProgress = FluentProvider.GetMessage(InProgress);
+				var accomplished = FluentProvider.GetMessage(Accomplished);
 				statusLabel.GetText = () => player.WinState == WinState.Won ? accomplished :
 					player.WinState == WinState.Lost ? failed : inProgress;
 				statusLabel.GetColor = () => player.WinState == WinState.Won ? Color.LimeGreen :
@@ -133,10 +133,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
 			var spectatorTemplate = playerPanel.Get("SPECTATOR_TEMPLATE");
-			var unmuteTooltip = FluentProvider.GetString(Unmute);
-			var muteTooltip = FluentProvider.GetString(Mute);
-			var kickTooltip = FluentProvider.GetString(KickTooltip);
-			var voteKickTooltip = FluentProvider.GetString(KickVoteTooltip);
+			var unmuteTooltip = FluentProvider.GetMessage(Unmute);
+			var muteTooltip = FluentProvider.GetMessage(Mute);
+			var kickTooltip = FluentProvider.GetMessage(KickTooltip);
+			var voteKickTooltip = FluentProvider.GetMessage(KickVoteTooltip);
 			playerPanel.RemoveChildren();
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
@@ -227,8 +227,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
 					var team = t.Key > 0
-						? FluentProvider.GetString(TeamNumber, "team", t.Key)
-						: FluentProvider.GetString(NoTeam);
+						? FluentProvider.GetMessage(TeamNumber, "team", t.Key)
+						: FluentProvider.GetMessage(NoTeam);
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => team;
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString(NumberFormatInfo.CurrentInfo));
@@ -257,13 +257,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
 						factionName = pp.Faction.Name != factionName
-							? $"{FluentProvider.GetString(factionName)} ({FluentProvider.GetString(pp.Faction.Name)})"
-							: FluentProvider.GetString(pp.Faction.Name);
+							? $"{FluentProvider.GetMessage(factionName)} ({FluentProvider.GetMessage(pp.Faction.Name)})"
+							: FluentProvider.GetMessage(pp.Faction.Name);
 					}
 					else
 					{
 						flag.GetImageName = () => pp.DisplayFaction.InternalName;
-						factionName = FluentProvider.GetString(factionName);
+						factionName = FluentProvider.GetMessage(factionName);
 					}
 
 					WidgetUtils.TruncateLabelToTooltip(item.Get<LabelWithTooltipWidget>("FACTION"), factionName);
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (spectators.Count > 0)
 			{
 				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
-				var spectatorTeam = FluentProvider.GetString(Spectators);
+				var spectatorTeam = FluentProvider.GetMessage(Spectators);
 				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => spectatorTeam;
 
 				playerPanel.AddChild(spectatorHeader);
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					nameLabel.GetText = () =>
 					{
-						var suffix = client.State == Session.ClientState.Disconnected ? $" ({FluentProvider.GetString(Gone)})" : "";
+						var suffix = client.State == Session.ClientState.Disconnected ? $" ({FluentProvider.GetMessage(Gone)})" : "";
 						return name.Update((client.Name, suffix));
 					};
 

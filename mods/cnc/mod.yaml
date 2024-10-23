@@ -144,16 +144,16 @@ ChromeLayout:
 	cnc|chrome/editor.yaml
 	common|chrome/text-notifications.yaml
 
-Translations:
-	common|languages/en.ftl
-	common|languages/hotkeys/en.ftl
-	common|languages/rules/en.ftl
-	cnc|languages/en.ftl
-	cnc|languages/chrome/en.ftl
-	cnc|languages/hotkeys/en.ftl
-	cnc|languages/rules/en.ftl
+FluentMessages:
+	common|fluent/common.ftl
+	common|fluent/hotkeys.ftl
+	common|fluent/rules.ftl
+	cnc|fluent/cnc.ftl
+	cnc|fluent/chrome.ftl
+	cnc|fluent/hotkeys.ftl
+	cnc|fluent/rules.ftl
 
-AllowUnusedTranslationsInExternalPackages: false
+AllowUnusedFluentMessagesInExternalPackages: false
 
 Voices:
 	cnc|audio/voices.yaml

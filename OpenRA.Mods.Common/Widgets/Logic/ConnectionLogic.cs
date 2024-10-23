@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			var connectingDesc = FluentProvider.GetString(ConnectingToEndpoint, "endpoint", endpoint);
+			var connectingDesc = FluentProvider.GetMessage(ConnectingToEndpoint, "endpoint", endpoint);
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
@@ -130,17 +130,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onRetry(pass);
 			};
 
-			var connectingDescText = FluentProvider.GetString(CouldNotConnectToTarget, "target", connection.Target);
+			var connectingDescText = FluentProvider.GetMessage(CouldNotConnectToTarget, "target", connection.Target);
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
 			var connectionErrorText = orderManager.ServerError != null
-				? FluentProvider.GetString(orderManager.ServerError)
-				: connection.ErrorMessage ?? FluentProvider.GetString(UnknownError);
+				? FluentProvider.GetMessage(orderManager.ServerError)
+				: connection.ErrorMessage ?? FluentProvider.GetMessage(UnknownError);
 			connectionError.GetText = () => connectionErrorText;
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
-			var panelTitleText = orderManager.AuthenticationFailed ? FluentProvider.GetString(PasswordRequired) : FluentProvider.GetString(ConnectionFailed);
+			var panelTitleText = orderManager.AuthenticationFailed ? FluentProvider.GetMessage(PasswordRequired) : FluentProvider.GetMessage(ConnectionFailed);
 			panelTitle.GetText = () => panelTitleText;
 
 			passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");

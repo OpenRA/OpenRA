@@ -90,7 +90,7 @@ Tick = function()
 	end
 
 	if Harkonnen.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("harkonnen-annihilated"), Mentat)
 		Ordos.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -146,7 +146,7 @@ WorldLoaded = function()
 
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage(UserInterface.Translate("do-not-destroy-outpost"), Mentat)
+			Media.DisplayMessage(UserInterface.FluentMessage("do-not-destroy-outpost"), Mentat)
 		end
 	end)
 
@@ -156,6 +156,6 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()
-		Media.DisplayMessage(UserInterface.Translate("warning-large-force-approaching"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("warning-large-force-approaching"), Mentat)
 	end)
 end

@@ -204,7 +204,7 @@ BridgeTriggers = function()
 	end)
 end
 
-FirstTrucksEntering = UserInterface.Translate("first-trucks-entering")
+FirstTrucksEntering = UserInterface.FluentMessage("first-trucks-entering")
 FinishTimer = function()
 	for i = 0, 5 do
 		local c = TimerColor
@@ -222,7 +222,7 @@ ConvoysSent = false
 Tick = function()
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("first-trucks-arrive-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("first-trucks-arrive-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1

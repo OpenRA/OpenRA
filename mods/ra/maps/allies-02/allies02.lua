@@ -175,7 +175,7 @@ FinishTimer = function()
 		end
 
 		Trigger.AfterDelay(DateTime.Seconds(i), function()
-			UserInterface.SetMissionText(UserInterface.Translate("convoy-arrived"), c)
+			UserInterface.SetMissionText(UserInterface.FluentMessage("convoy-arrived"), c)
 		end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)

@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			TextNotificationsManager.Debug(FluentProvider.GetString(CheatUsed,
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatUsed,
 				"cheat", order.OrderString,
 				"player", self.Owner.ResolvedPlayerName,
 				"suffix", debugSuffix));

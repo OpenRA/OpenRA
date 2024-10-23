@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
-			TooltipText = FluentProvider.GetString(info.Description);
+			TooltipText = FluentProvider.GetMessage(info.Description);
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)

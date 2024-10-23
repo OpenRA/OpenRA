@@ -36,11 +36,11 @@ ChromeMetrics:
 	common|metrics.yaml
 	content|metrics.yaml
 
-Translations:
-	common|languages/en.ftl
-	content|languages/en.ftl
-	content|languages/chrome/en.ftl
-	cnccontent|languages/chrome/en.ftl
+FluentMessages:
+	common|fluent/common.ftl
+	content|fluent/content.ftl
+	content|fluent/chrome.ftl
+	cnccontent|fluent/chrome.ftl
 
 Fonts:
 	Tiny:

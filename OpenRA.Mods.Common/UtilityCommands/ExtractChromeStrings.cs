@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var fluentFolder = layout.Key + "|languages";
 				var fluentPackage = modData.ModFiles.OpenPackage(fluentFolder);
-				var fluentPath = Path.Combine(fluentPackage.Name, "chrome/en.ftl");
+				var fluentPath = Path.Combine(fluentPackage.Name, "chrome.ftl");
 
 				var unsortedCandidates = new List<ExtractionCandidate>();
 				var groupedCandidates = new Dictionary<HashSet<string>, List<ExtractionCandidate>>();

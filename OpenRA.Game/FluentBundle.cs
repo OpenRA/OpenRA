@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using Linguini.Bundle;
 using Linguini.Bundle.Builder;
 using Linguini.Shared.Types.Bundle;
@@ -53,74 +52,64 @@ namespace OpenRA
 	{
 		readonly Linguini.Bundle.FluentBundle bundle;
 
-		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem)
-			: this(language, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem)
+			: this(culture, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
 
-		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, string text)
+			: this(culture, paths, fileSystem, text, error => Log.Write("debug", error.Message)) { }
+
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+			: this(culture, paths, fileSystem, null, onError) { }
+
+		public FluentBundle(string culture, string text, Action<ParseError> onError)
+			: this(culture, null, null, text, onError) { }
+
+		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, string text, Action<ParseError> onError)
 		{
-			if (paths == null || paths.Length == 0)
-				return;
-
 			bundle = LinguiniBuilder.Builder()
-				.CultureInfo(new CultureInfo(language))
+				.CultureInfo(new CultureInfo(culture))
 				.SkipResources()
 				.SetUseIsolating(false)
 				.UseConcurrent()
 				.UncheckedBuild();
 
-			Load(language, paths, fileSystem, onError);
-		}
-
-		public FluentBundle(string language, string text, Action<ParseError> onError)
-		{
-			var parser = new LinguiniParser(text);
-			var resource = parser.Parse();
-			foreach (var error in resource.Errors)
-				onError(error);
-
-			bundle = LinguiniBuilder.Builder()
-				.CultureInfo(new CultureInfo(language))
-				.SkipResources()
-				.SetUseIsolating(false)
-				.UseConcurrent()
-				.UncheckedBuild();
-
-			bundle.AddResourceOverriding(resource);
-		}
-
-		void Load(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
-		{
-			// Always load english strings to provide a fallback for missing translations.
-			// It is important to load the english files first so the chosen language's files can override them.
-			var resolvedPaths = paths.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
-			foreach (var t in paths)
-				if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
-					resolvedPaths.Add(t);
-
-			foreach (var path in resolvedPaths.Distinct())
+			if (paths != null)
 			{
-				var stream = fileSystem.Open(path);
-				using (var reader = new StreamReader(stream))
+				foreach (var path in paths)
 				{
-					var parser = new LinguiniParser(reader);
-					var resource = parser.Parse();
-					foreach (var error in resource.Errors)
-						onError(error);
+					var stream = fileSystem.Open(path);
+					using (var reader = new StreamReader(stream))
+					{
+						var parser = new LinguiniParser(reader);
+						var resource = parser.Parse();
+						foreach (var error in resource.Errors)
+							onError(error);
 
-					bundle.AddResourceOverriding(resource);
+						bundle.AddResourceOverriding(resource);
+					}
 				}
+			}
+
+			if (!string.IsNullOrEmpty(text))
+			{
+				var parser = new LinguiniParser(text);
+				var resource = parser.Parse();
+				foreach (var error in resource.Errors)
+					onError(error);
+
+				bundle.AddResourceOverriding(resource);
 			}
 		}
 
-		public string GetString(string key, object[] args = null)
+		public string GetMessage(string key, object[] args = null)
 		{
-			if (!TryGetString(key, out var message, args))
+			if (!TryGetMessage(key, out var message, args))
 				message = key;
 
 			return message;
 		}
 
-		public bool TryGetString(string key, out string value, object[] args = null)
+		public bool TryGetMessage(string key, out string value, object[] args = null)
 		{
 			if (key == null)
 				throw new ArgumentNullException(nameof(key));

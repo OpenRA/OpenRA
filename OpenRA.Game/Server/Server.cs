@@ -958,7 +958,7 @@ namespace OpenRA.Server
 			DispatchServerOrdersToClients(Order.FromTargetString("FluentMessage", text, true));
 
 			if (Type == ServerType.Dedicated)
-				WriteLineWithTimeStamp(FluentProvider.GetString(key, args));
+				WriteLineWithTimeStamp(FluentProvider.GetMessage(key, args));
 		}
 
 		public void SendFluentMessageTo(Connection conn, string key, object[] args = null)
@@ -1302,7 +1302,7 @@ namespace OpenRA.Server
 		{
 			lock (LobbyInfo)
 			{
-				WriteLineWithTimeStamp(FluentProvider.GetString(GameStarted));
+				WriteLineWithTimeStamp(FluentProvider.GetMessage(GameStarted));
 
 				// Drop any players who are not ready
 				foreach (var c in Conns.Where(c => !c.Validated || GetClient(c).IsInvalid).ToArray())

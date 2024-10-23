@@ -220,12 +220,12 @@ Tick = function()
 	end
 
 	if AtreidesMain.HasNoRequiredUnits() and AtreidesSmall1.HasNoRequiredUnits() and AtreidesSmall2.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("atreides-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
 	if CorrinoMain.HasNoRequiredUnits() and CorrinoSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("emperor-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillCorrino)
 	end
 

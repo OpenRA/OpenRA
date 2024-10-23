@@ -112,9 +112,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 
-			HoldText = FluentProvider.GetString(HoldText);
+			HoldText = FluentProvider.GetMessage(HoldText);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
-			ReadyText = FluentProvider.GetString(ReadyText);
+			ReadyText = FluentProvider.GetMessage(ReadyText);
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 
 			clock = new Animation(worldRenderer.World, ClockAnimation);

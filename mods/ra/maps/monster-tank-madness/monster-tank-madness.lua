@@ -177,7 +177,7 @@ SuperTankDomeInfiltrated = function()
 		Media.PlaySpeechNotification(Greece, "ControlCenterDeactivated")
 
 		Trigger.AfterDelay(DateTime.Seconds(4), function()
-			Media.DisplayMessage(UserInterface.Translate("super-tank-self-destruct-t-minus-3"))
+			Media.DisplayMessage(UserInterface.FluentMessage("super-tank-self-destruct-t-minus-3"))
 			Media.PlaySpeechNotification(Greece, "WarningThreeMinutesRemaining")
 		end)
 	end)
@@ -250,7 +250,7 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("super-tank-self-destruct-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.FluentMessage("super-tank-self-destruct-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
@@ -267,7 +267,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(UserInterface.Translate("super-tanks-destroyed"), c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(UserInterface.FluentMessage("super-tanks-destroyed"), c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
@@ -318,7 +318,7 @@ AddObjectives = function()
 	end)
 
 	Trigger.OnPlayerWon(Greece, function()
-		Media.DisplayMessage(UserInterface.Translate("demitri-extracted-super-tanks-destroyed"))
+		Media.DisplayMessage(UserInterface.FluentMessage("demitri-extracted-super-tanks-destroyed"))
 		USSR.MarkFailedObjective(USSRObj)
 		BadGuy.MarkFailedObjective(BadGuyObj)
 		Ukraine.MarkFailedObjective(UkraineObj)

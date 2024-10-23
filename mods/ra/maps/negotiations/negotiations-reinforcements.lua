@@ -78,7 +78,7 @@ AnnounceTanyaRules = function(tanya)
 
 	Trigger.OnAddedToWorld(tanya, function()
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), tanya.TooltipName)
+			Media.DisplayMessage(UserInterface.FluentMessage("tanya-rules-of-engagement"), tanya.TooltipName)
 			Media.PlaySoundNotification(Greece, "AlertBleep")
 		end)
 	end)

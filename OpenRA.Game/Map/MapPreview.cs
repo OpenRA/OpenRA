@@ -90,6 +90,7 @@ namespace OpenRA
 			public MiniYaml NotificationDefinitions;
 			public MiniYaml SequenceDefinitions;
 			public MiniYaml ModelSequenceDefinitions;
+			public MiniYaml FluentMessageDefinitions;
 
 			public FluentBundle FluentBundle { get; private set; }
 			public ActorInfo WorldActorInfo { get; private set; }
@@ -121,13 +122,32 @@ namespace OpenRA
 				NotificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
-
-				FluentBundle = yaml.TryGetValue("Translations", out var node) && node != null
-					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
-					: null;
+				FluentMessageDefinitions = LoadRuleSection(yaml, "FluentMessages");
 
 				try
 				{
+					if (FluentMessageDefinitions != null)
+					{
+						var files = Array.Empty<string>();
+						if (FluentMessageDefinitions.Value != null)
+							files = FieldLoader.GetValue<string[]>("value", FluentMessageDefinitions.Value);
+
+						string text = null;
+						if (FluentMessageDefinitions.Nodes.Length > 0)
+						{
+							var builder = new StringBuilder();
+							foreach (var node in FluentMessageDefinitions.Nodes)
+								if (node.Key == "base64")
+									builder.Append(Encoding.UTF8.GetString(Convert.FromBase64String(node.Value.Value)));
+
+							text = builder.ToString();
+						}
+
+						FluentBundle = new FluentBundle(modData.Manifest.FluentCulture, files, fileSystem, text);
+					}
+					else
+						FluentBundle = null;
+
 					// PERF: Implement a minimal custom loader for custom world and player actors to minimize loading time
 					// This assumes/enforces that these actor types can only inherit abstract definitions (starting with ^)
 					if (RuleDefinitions != null)
@@ -224,16 +244,16 @@ namespace OpenRA
 		public int DownloadPercentage { get; private set; }
 
 		/// <summary>
-		/// Functionality mirrors <see cref="FluentProvider.GetString"/>, except instead of using
+		/// Functionality mirrors <see cref="FluentProvider.GetMessage"/>, except instead of using
 		/// loaded <see cref="Map"/>'s fluent bundle as backup, we use this <see cref="MapPreview"/>'s.
 		/// </summary>
-		public string GetString(string key, object[] args = null)
+		public string GetMessage(string key, object[] args = null)
 		{
 			// PERF: instead of loading mod level strings per each MapPreview, reuse the already loaded one in FluentProvider.
-			if (FluentProvider.TryGetModString(key, out var message, args))
+			if (FluentProvider.TryGetModMessage(key, out var message, args))
 				return message;
 
-			return innerData.FluentBundle?.GetString(key, args) ?? key;
+			return innerData.FluentBundle?.GetMessage(key, args) ?? key;
 		}
 
 		Sprite minimap;
@@ -335,7 +355,7 @@ namespace OpenRA
 			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
 			{
 				{ "Rules", map.RuleDefinitions },
-				{ "Translations", map.TranslationDefinitions },
+				{ "FluentMessages", map.FluentMessageDefinitions },
 				{ "Weapons", map.WeaponDefinitions },
 				{ "Voices", map.VoiceDefinitions },
 				{ "Music", map.MusicDefinitions },

@@ -147,7 +147,7 @@ SendStarportReinforcements = function()
 			return
 		end
 
-		Media.DisplayMessage(UserInterface.Translate("imperial-ships-penetrating-defense-grid"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("imperial-ships-penetrating-defense-grid"), Mentat)
 	end)
 end
 
@@ -171,7 +171,7 @@ OrdosReinforcementNotification = function(currentWave, totalWaves)
 			return
 		end
 
-		Media.DisplayMessage(UserInterface.Translate("enemy-carryall-drop-detected"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("enemy-carryall-drop-detected"), Mentat)
 
 		OrdosReinforcementNotification(currentWave, totalWaves)
 	end)
@@ -186,12 +186,12 @@ Tick = function()
 	end
 
 	if OrdosMain.HasNoRequiredUnits() and OrdosSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("ordos-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillOrdos)
 	end
 
 	if Corrino.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("emperor-annihilated"), Mentat)
 		Harkonnen.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -254,7 +254,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Media.DisplayMessage(UserInterface.Translate("protect-outpost"), Mentat)
+		Media.DisplayMessage(UserInterface.FluentMessage("protect-outpost"), Mentat)
 	end)
 
 	local path = function() return Utils.Random(OrdosPaths) end

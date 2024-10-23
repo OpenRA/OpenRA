@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var authorCache = new CachedTransform<string, string>(
-				text => FluentProvider.GetString(CreatedBy, "author", text));
+				text => FluentProvider.GetMessage(CreatedBy, "author", text));
 
 			Widget SetupAuthorAndMapType(Widget parent)
 			{
@@ -165,13 +165,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var (map, _) = getMap();
 					if (map.DownloadBytes == 0)
-						return FluentProvider.GetString(Connecting);
+						return FluentProvider.GetMessage(Connecting);
 
 					// Server does not provide the total file length.
 					if (map.DownloadPercentage == 0)
-						return FluentProvider.GetString(Downloading, "size", map.DownloadBytes / 1024);
+						return FluentProvider.GetMessage(Downloading, "size", map.DownloadBytes / 1024);
 
-					return FluentProvider.GetString(DownloadingPercentage, "size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage);
+					return FluentProvider.GetMessage(DownloadingPercentage, "size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage);
 				};
 
 				return parent;
@@ -198,8 +198,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					modData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { map.Uid });
 			};
 
-			var retryInstall = FluentProvider.GetString(RetryInstall);
-			var retrySearch = FluentProvider.GetString(RetrySearch);
+			var retryInstall = FluentProvider.GetMessage(RetryInstall);
+			var retrySearch = FluentProvider.GetMessage(RetrySearch);
 			retryButton.GetText = () => getMap().Map.Status == MapStatus.DownloadError ? retryInstall : retrySearch;
 
 			var previewLarge = SetupMapPreview(widget.Get("MAP_LARGE"));
