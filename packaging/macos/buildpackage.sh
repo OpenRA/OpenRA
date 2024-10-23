@@ -9,7 +9,7 @@
 #                                       Generate using `base64 certificate.p12 | pbcopy`
 #   MACOS_DEVELOPER_CERTIFICATE_PASSWORD: password to unlock the MACOS_DEVELOPER_CERTIFICATE_BASE64 certificate
 #
-# The applicaton bundles will be notarized if the following environment variables are defined:
+# The application bundles will be notarized if the following environment variables are defined:
 #   MACOS_DEVELOPER_USERNAME: Email address for the developer account
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
@@ -81,7 +81,7 @@ build_app() {
 
 	install_data "${SRCDIR}" "${LAUNCHER_RESOURCES_DIR}" "${MOD_ID}"
 	set_engine_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}"
-	set_mod_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}/mod.yaml" "${LAUNCHER_RESOURCES_DIR}/mods/modcontent/mod.yaml"
+	set_mod_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}/mod.yaml" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}-content/mod.yaml"
 
 	# Assemble multi-resolution icon
 	mkdir "${MOD_ID}.iconset"
@@ -149,6 +149,10 @@ build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Dune 2000.app" "d2k" "Dune 200
 rm -rf "${TEMPLATE_DIR}"
 
 echo "Packaging disk image"
+if hdiutil info | grep -q "/Volumes/OpenRA"; then
+  echo "Some process is stealing our resources! /Volumes/OpenRA is already mounted!"
+fi
+
 hdiutil create "build.dmg" -format UDRW -volname "OpenRA" -fs HFS+ -srcfolder build
 DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "build.dmg" | egrep '^/dev/' | sed 1q | awk '{print $1}')
 sleep 2

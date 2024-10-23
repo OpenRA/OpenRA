@@ -123,7 +123,8 @@ install_data() (
 		if [ "${MOD_ID}" = "ra" ] || [ "${MOD_ID}" = "cnc" ] || [ "${MOD_ID}" = "d2k" ]; then
 			echo "Installing mod ${MOD_ID} to ${DEST_PATH}"
 			cp -r "${SRC_PATH}/mods/${MOD_ID}" "${DEST_PATH}/mods/"
-			cp -r "${SRC_PATH}/mods/modcontent" "${DEST_PATH}/mods/"
+			cp -r "${SRC_PATH}/mods/common-content" "${DEST_PATH}/mods/"
+			cp -r "${SRC_PATH}/mods/${MOD_ID}-content" "${DEST_PATH}/mods/"
 		fi
 
 		shift
