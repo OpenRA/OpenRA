@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class LobbySettingsNotification : ServerTrait, IClientJoined
 	{
+		[FluentReference("name", "value")]
+		const string NotificationLobbyOption = "notification-lobby-option";
+
 		public void ClientJoined(OpenRA.Server.Server server, Connection conn)
 		{
 			lock (server.LobbyInfo)
@@ -31,11 +34,9 @@ namespace OpenRA.Mods.Common.Server
 					.ToDictionary(o => o.Id, o => o);
 
 				foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
-				{
 					if (!defaults.LobbyOptions.TryGetValue(kv.Key, out var def) || kv.Value.Value != def.Value)
 						if (options.TryGetValue(kv.Key, out var option))
-							server.SendOrderTo(conn, "Message", option.Name + ": " + option.Values[kv.Value.Value]);
-				}
+							server.SendFluentMessageTo(conn, NotificationLobbyOption, new object[] { "name", option.Name, "value", option.Values[kv.Value.Value] });
 			}
 		}
 	}

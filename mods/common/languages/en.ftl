@@ -84,6 +84,9 @@ notification-requires-authentication = Server requires players to have an OpenRA
 notification-no-permission-to-join = You do not have permission to join this server.
 notification-slot-closed = Your slot was closed by the host.
 
+## LobbySettingsNotification
+notification-lobby-option = { $name }: { $value }.
+
 ## ServerOrders, UnitOrders
 notification-joined = { $player } has joined the game.
 notification-lobby-disconnected = { $player } has left.
