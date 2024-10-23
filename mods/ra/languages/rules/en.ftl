@@ -94,6 +94,7 @@ actor-mig =
    .description = Fast Ground-Attack Plane.
       Strong vs. Buildings and Vehicles.
       Weak vs. Infantry and Aircraft.
+   .encyclopedia = A tricky aircraft to control, the MiG fires missiles from a distance while circling. With careful control, it is good at destroying enemy harvesters.
 
 actor-yak =
    .name = Yak Attack Plane
@@ -101,11 +102,14 @@ actor-yak =
     dual machine guns.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
+   .encyclopedia = Require forward momentum to fire, keeping them within the enemy’s weapon range while attacking.
+   This makes them less durable and prone to being shot down mid-attack, reducing their effectiveness against organized forces unless they have overwhelming numbers or are used for a kamikaze strike on high-value targets.
 
 actor-tran =
    .name = Chinook
    .description = Fast infantry transport helicopter.
       Unarmed
+   .encyclopedia = Functions like an airborne APC, transporting units across the battlefield.
 
 actor-heli =
    .name = Longbow
@@ -113,6 +117,7 @@ actor-heli =
     with multi-purpose missiles.
       Strong vs. Buildings, Vehicles and Aircraft.
       Weak vs. Infantry.
+   .encyclopedia = The only anti-aircraft airborne unit, ensuring air superiority for the Allies within its operational range.
 
 actor-hind =
    .name = Hind
@@ -122,6 +127,7 @@ actor-hind =
       Weak vs. Tanks and Aircraft.
 
 actor-u2-name = Spy Plane
+   .encyclopedia = Reveals a wide area of vision for a brief area of time.
 
 actor-mh60 =
    .name = Black Hawk
@@ -129,6 +135,8 @@ actor-mh60 =
     with dual chain guns.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
+   .encyclopedia = The distinctive "rararararar" sound of a Black Hawk strikes fear into your enemies, making them cower in their bases.
+   A well-microed Black Hawk is unparalleled, excelling against small groups or cleaning up infantry after a large engagement.
 
 ## civilian.yaml
 actor-c10-name = Scientist
@@ -194,6 +202,8 @@ meta-crate =
 meta-mine-name = Mine
 
 ## fakes.yaml
+meta-fake-encyclopedia = Mimics a building with a fraction of its health, appearing fully intact until it is destroyed.
+
 actor-fpwr =
    .name = Fake Power Plant
    .generic-name = Power Plant
@@ -285,36 +295,42 @@ actor-dog =
     Can detect spies.
       Strong vs. Infantry.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = The only vision unit available before early vehicles arrive, it has low health. When encountering groups of infantry, it may enter a "killing spree," swiftly jumping from one enemy to the next. Even when camouflaged, it can easily detect and kill a Spy.
 
 actor-e1 =
    .name = Rifle Infantry
    .description = General-purpose infantry.
       Strong vs. Infantry.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = A basic infantry unit, the Rifleman is inexpensive and quick to train, making it the backbone of your early-game army alongside Rocket Soldiers.
 
 actor-e2 =
    .name = Grenadier
    .description = Infantry with grenades.
       Strong vs. Buildings and Infantry.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = Dealing less anti-structure damage than a flamethrower, it struggles to damage anything outside of buildings. Avoid grouping them together, as a single death can trigger a chain explosion.
 
 actor-e3 =
    .name = Rocket Soldier
    .description = Anti-tank/Anti-aircraft infantry.
       Strong vs. Vehicles and Aircraft.
       Weak vs. Infantry.
+   .encyclopedia = Equipped with powerful dragon rockets that easily destroy tanks and, when manually targeted, can take down air units from a distance. However, its rockets surprisingly struggle against infantry.
 
 actor-e4 =
    .name = Flame Infantry
    .description = Advanced anti-structure unit.
       Strong vs. Infantry and Buildings.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = Incinerates infantry and demolishes structures in a blazing inferno. However, this fire will also harm your own troops, so keep them well away!
 
 actor-e6 =
    .name = Engineer
    .description = Infiltrates and captures
     enemy structures.
       Unarmed.
+   .encyclopedia = Engineer: Captures neutral or enemy structures. Capturing an enemy faction's MCV grants access to both factions' technology. They can instantly repair any structure at the cost of their life.
 
 actor-spy =
    .disguisetooltip-name = Spy
@@ -327,8 +343,12 @@ actor-spy =
       Strong vs. Infantry.
       Weak vs. Vehicles and Aircraft.
       Special Ability: Disguised.
+   .encyclopedia = Prepares an atomic bomb for launch. The explosion vaporizes everything within the immediate blast radius, with damage decreasing outward.
+   Armored vehicles have a higher survival chance.
 
-actor-spy-england-disguisetooltip-name = British Spy
+actor-spy-england-disguisetooltip =
+   .name = British Spy
+   .encyclopedia = Cheaper than a Spy, but just as effective.
 
 actor-e7 =
    .name = Tanya
@@ -338,17 +358,20 @@ actor-e7 =
       Strong vs. Infantry and Buildings.
       Weak vs. Vehicles and Aircraft.
       Special Ability: Destroys buildings with C4.
+   .encyclopedia = Tanya: Wipes out infantry infantry with her dual .45s and demolishes buildings with C4 explosives.
 
 actor-medi =
    .name = Medic
    .description = Heals nearby infantry.
       Unarmed.
+   .encyclopedia = Medic: Heals infantry within its radius and works faster when in greater numbers, but cannot heal itself or while moving.
 
 actor-mech =
    .name = Mechanic
    .description = Repairs nearby vehicles and restores
     husks to working condition by capturing them.
       Unarmed.
+   .encyclopedia = Repairs vehicles and salvages husks to restore them to working order at a fraction of their health.
 
 actor-einstein-name = Prof. Einstein
 actor-delphi-name = Agent Delphi
@@ -360,12 +383,14 @@ actor-thf =
    .description = Steals enemy credits.
     Hijacks enemy vehicles.
       Unarmed.
+   .encyclopedia = Steals half of the enemy's funds from refineries or silos—or your money back if there's nothing to take. Also skilled at breaking into construction sites, stealing vehicles, and driving off with them.
 
 actor-shok =
    .name = Shock Trooper
    .description = Elite infantry with portable Tesla coils.
       Strong vs. Infantry and Vehicles.
       Weak vs. Aircraft.
+   .encyclopedia = Only limited by build time and cost, Shock Troopers unleash devastating electric bursts on ground units before reloading when gathered in large numbers.
 
 actor-zombie =
    .name = Zombie
@@ -411,6 +436,7 @@ actor-ss =
       Strong vs. Naval units.
       Weak vs. Ground units and Aircraft.
       Special Ability: Submerge.
+   .encyclopedia = Cannot be targeted while underwater but must surface to fire, making it vulnerable during that time. It can be revealed by infantry, ground defenses, or a Spy Plane.
 
 actor-msub =
    .name = Missile Submarine
@@ -420,6 +446,7 @@ actor-msub =
       Strong vs. Buildings, Ground units and Aircraft.
       Weak vs. Naval units.
       Special Ability: Submerge.
+   .encyclopedia = Possesses anti-air capabilities and can shell land units, though it has a shorter range and inflicts less damage than a Cruiser. It cannot engage other vessels in combat.
 
 actor-dd =
    .name = Destroyer
@@ -427,18 +454,21 @@ actor-dd =
     Can detect submarines.
       Strong vs. Naval units, Vehicles and Aircraft.
       Weak vs. Infantry.
+   .encyclopedia = More powerful than the Gunboat and equipped with anti-air capabilities.
 
 actor-ca =
    .name = Cruiser
    .description = Very slow long-range ship.
       Strong vs. Buildings and Ground units.
       Weak vs. Naval units and Aircraft.
+   .encyclopedia = Relies on other ships for protection, as it cannot engage marine vessels or aircraft. It excels at inflicting heavy damage on land units from a distance.
 
 actor-lst =
    .name = Transport
    .description = General-purpose naval transport.
     Carries infantry and tanks.
       Unarmed.
+   .encyclopedia = Carries a handful of ground units across water. These can only be loaded or unloaded on shore terrain and are most vulnerable while unloading.
 
 actor-pt =
    .name = Gunboat
@@ -446,6 +476,7 @@ actor-pt =
     Can detect submarines.
       Strong vs. Naval units.
       Weak vs. Ground units and Aircraft.
+   .encyclopedia =  A fast, lightly armored warship capable of attacking ships and submarines.
 
 ## structures.yaml
 notification-construction-complete = Construction complete.
@@ -477,21 +508,25 @@ actor-mslo =
    .nukepower-name = Atom Bomb
    .nukepower-description = Launches a devastating atomic bomb
     at the target location.
+   .encyclopedia = Prepares an atomic bomb for launch on a timer. The explosion vaporizes everything within the immediate blast radius, with damage decreasing outward. Armored vehicles have a higher survival chance.
 
 actor-gap =
    .name = Gap Generator
    .description = Obscures the enemy's view with shroud.
     Requires power to operate.
+   .encyclopedia = Generates an impenetrable black shroud that reduces the vision of most units.
 
 actor-spen =
    .name = Sub Pen
    .description = Produces and repairs
     submarines and transports.
+   .encyclopedia = Constructs and repairs transports and submarines.
 
 actor-syrd =
    .name = Naval Yard
    .description = Produces and repairs
     ships and transports.
+   .encyclopedia = Constructs and repairs transports and surface warships. Build 7 for maximum production.
 
 actor-iron =
    .name = Iron Curtain
@@ -503,6 +538,7 @@ actor-iron =
    .grantexternalconditionpower-ironcurtain-name = Invulnerability
    .grantexternalconditionpower-ironcurtain-description = Grants invulnerability to a group of units
     for 20 seconds.
+   .encyclopedia = Grants vehicles and buildings within its cross-shaped area temporary invulnerability for a while.
 
 actor-pdox =
    .name = Chronosphere
@@ -514,9 +550,11 @@ actor-pdox =
    .chronoshiftpower-chronoshift-name = Chronoshift
    .chronoshiftpower-chronoshift-description = Teleports a group of units across
     the map for 20 seconds.
+   .encyclopedia = Teleports up to 5 units to a new location temporarily before returning them to their original position.
    .chronoshiftpower-advancedchronoshift-name = Advanced Chronoshift
    .chronoshiftpower-advancedchronoshift-description = Teleports a large group of units across
     the map for 20 seconds.
+   .advancedchronoshift-encyclopedia = Teleports up to 13 units.
 
 actor-tsla =
    .name = Tesla Coil
@@ -525,6 +563,7 @@ actor-tsla =
     Can detect cloaked units.
       Strong vs. Vehicles and Infantry.
       Weak vs. Aircraft.
+   .encyclopedia = Deals greater damage than a Turret with three shots per burst, though it has a longer reload time.
 
 actor-agun =
    .name = AA Gun
@@ -532,12 +571,14 @@ actor-agun =
     Requires power to operate.
       Strong vs. Aircraft.
       Weak vs. Ground units.
+   .encyclopedia = An AA gun fires much quicker than a SAM. It offers nearly instant hits and slightly greater range, but has reduced vision.
 
 actor-dome =
    .name = Radar Dome
    .description = Provides an overview
     of the battlefield.
     Requires power to operate.
+   .encyclopedia = A rapid-fire cannon encased in concrete, ideal for mowing down infantry.
 
 actor-pbox =
    .name = Pillbox
@@ -546,6 +587,7 @@ actor-pbox =
     Can detect cloaked units.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
+   .encyclopedia = A rapid-fire cannon encased in concrete, ideal for mowing down infantry.
 
 actor-hbox =
    .name = Camo Pillbox
@@ -554,6 +596,8 @@ actor-hbox =
     Can detect cloaked units.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
+   .encyclopedia = Camo Pillboxes remain hidden until they fire or are detected, making them useful for misleading opponents about your defenses.
+   They are also effective against artillery and V2 units, as they must be detected first.
 
 actor-gun =
    .name = Turret
@@ -561,6 +605,7 @@ actor-gun =
     Can detect cloaked units.
       Strong vs. Vehicles.
       Weak vs. Infantry and Aircraft.
+   .encyclopedia = A cannon mounted on a turret that delivers moderate damage to vehicles with single-shot bursts.
 
 actor-ftur =
    .name = Flame Tower
@@ -568,6 +613,7 @@ actor-ftur =
     Can detect cloaked units.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
+   .encyclopedia = Most effective when used in groups, maximizing the area-of-effect damage its fireballs inflict on clustered infantry.
 
 actor-sam =
    .name = SAM Site
@@ -575,6 +621,7 @@ actor-sam =
     Requires power to operate.
       Strong vs. Aircraft.
       Weak vs. Ground units.
+   .encyclopedia = SAM missiles have a shorter range but better tracking and greater vision.
 
 actor-atek =
    .name = Allied Tech Center
@@ -583,29 +630,36 @@ actor-atek =
    .gpspower-name = GPS Satellite
    .gpspower-description = Reveals map terrain and provides tactical information.
     Requires power and active radar.
+   .encyclopedia = Temporarily reveals the locations of structures and units on the map. Power and radar must be on at the same time.
 
 actor-weap =
    .name = War Factory
    .description = Produces vehicles.
+   .encyclopedia = Constructs vehicles. Build 4 for maximum production.
 
 actor-fact =
    .name = Construction Yard
    .description = Produces structures.
+   .encyclopedia = Enables construction of other structures within a designated area, with walls being an exception.
+   New structures can only be placed within one cell of an existing structure.
 
 actor-proc =
    .name = Ore Refinery
    .description = Refines Ore and Gems
     into credits.
+   .encyclopedia = Processes ore into cash and stores more credits than a Silo
 
 actor-silo =
    .name = Silo
    .description = Stores excess refined
     Ore and Gems.
+   .encyclopedia = Stores credits.
 
 actor-hpad =
    .name = Helipad
    .description = Produces and reloads
     helicopters.
+   .encyclopedia =  Constructs and reloads helicopters.
 
 actor-afld =
    .name = Airfield
@@ -614,12 +668,15 @@ actor-afld =
       Special Ability: Paratroopers.
    .airstrikepower-spyplane-name = Spy Plane
    .airstrikepower-spyplane-description = Reveals an area of the map.
+   .airstrikepower-spyplane-encyclopedia = Reveals an area of the map for a brief period of time.
    .paratrooperspower-paratroopers-name = Paratroopers
    .paratrooperspower-paratroopers-description = A Badger drops a squad of infantry
     at the selected location.
+   .paratrooperspower-paratroopers-encyclopedia = Drops 3 Riflemen and 2 Rocket Soldiers, all at veterancy 1.
    .airstrikepower-parabombs-name = Parabombs
    .airstrikepower-parabombs-description = A Badger drops parachuted bombs
     at the selected location.
+   .airstrikepower-parabombs-encyclopedia = Exclusive to Ukraine, this ability is unlocked with an airfield. A single Badger drops bombs in a straight line.
 
 actor-afld-ukraine-description = Produces and reloads aircraft.
       Special Ability: Spy Plane
@@ -629,45 +686,55 @@ actor-afld-ukraine-description = Produces and reloads aircraft.
 actor-powr =
    .name = Power Plant
    .description = Provides power for other structures.
+   .encyclopedia = Generates 100 power per plant, with output directly tied to its condition. Protect these structures to avoid low power mode.
 
 actor-apwr =
    .name = Advanced Power Plant
    .description = Provides double the power of
     a standard Power Plant.
+   .encyclopedia = Provides double the power of a standard Power Plant.
 
 actor-stek =
    .name = Soviet Tech Center
    .description = Provides advanced Soviet technology.
+   .encyclopedia = Unlocks tier three Soviet units. Requires less power than its Allied version and has greater health.
 
 actor-barr =
    .name = Soviet Barracks
    .description = Trains infantry units.
+   .encyclopedia = Trains Soviet infantry units. Build 7 for maximum production.
 
 actor-kenn =
    .name = Kennel
    .description = Trains Attack Dogs.
+   .encyclopedia = Trains attack dogs.
 
 actor-tent =
    .name = Allied Barracks
    .description = Trains infantry.
+   .encyclopedia = Trains Allied infantry units. Build 7 for maximum production.
 
 actor-fix =
    .name = Service Depot
    .description = Repairs vehicles for credits.
+   .encyclopedia = Repairs vehicles, aircraft, and deploys mines. Units can be set to move to a rally point after using the depot.
 
 actor-sbag =
    .name = Sandbag Wall
    .description = Stops infantry and light vehicles.
     Can be crushed by tanks.
+   .encyclopedia = Can be crushed by all types of vehicle, stops infantry. Stronger than Sandbags.
 
 actor-fenc =
    .name = Wire Fence
    .description = Stops infantry and light vehicles.
     Can be crushed by tanks.
+   .encyclopedia = Can be crushed by all types of vehicle, stops infantry. Stronger than Sandbags.
 
 actor-brik =
    .name = Concrete Wall
    .description = Stops units and blocks enemy fire.
+   .encyclopedia = Blocks nearly all ground units. Only a few units can fire over it. Can only be crushed by Mammoth Tanks.
 
 actor-cycl-name = Chain-Link Barrier
 actor-barb-name = Barbed-Wire Fence
@@ -682,6 +749,7 @@ actor-v2rl =
    .description = Long-range rocket artillery.
       Strong vs. Infantry and Buildings.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = Bigger explosions, greater durability, faster maneuverability, and more accurate firing than artillery.
 
 actor-1tnk =
    .name = Light Tank
@@ -689,6 +757,7 @@ actor-1tnk =
    .description = Fast tank; good for scouting.
       Strong vs. Light armor.
       Weak vs. Infantry, Tanks and Aircraft.
+   .encyclopedia = Excels in direct confrontations with light vehicles. Although lightly armored, it can crush units and inflict moderate damage on structures.
 
 actor-2tnk =
    .name = Medium Tank
@@ -696,6 +765,9 @@ actor-2tnk =
    .description = Allied Main Battle Tank.
       Strong vs. Vehicles.
       Weak vs. Infantry and Aircraft.
+   .encyclopedia = Medium Tanks are faster in both build time and speed. They offer better armor, making them effective for head-on engagements with Soviets.
+   Their numbers enable them to crush more effectively, though husks can hinder this ability. Medium Tanks can also distribute their armor efficiently, giving them an advantage on larger maps.
+   They are the first heavily armored tanks to enter the battlefield, and their speed allows them to quickly engage or disengage as needed, making them ideal for chasing down harvesters and MCVs.
 
 actor-3tnk =
    .name = Heavy Tank
@@ -703,6 +775,8 @@ actor-3tnk =
    .description = Soviet Main Battle Tank with dual cannons.
       Strong vs. Vehicles.
       Weak vs. Infantry and Aircraft.
+   .encyclopedia = Heavy Tanks possess greater durability and higher burst damage than their Allied counterparts, allowing them to win 1:1 confrontations with Medium Tanks.
+   Their ability to absorb more damage makes them highly effective at harassing harvesters, and their greater health allows them to either retreat or push through enemy lines.
 
 actor-4tnk =
    .name = Mammoth Tank
@@ -711,23 +785,28 @@ actor-4tnk =
     Can crush concrete walls.
       Strong vs. Vehicles, Infantry and Aircraft.
       Weak vs. Nothing.
+   .encyclopedia = Often misunderstood as the strongest unit in Red Alert, the Mammoth Tank is actually a versatile all-rounder that doesn’t excel in any specific area.
+   Its dual weapons allow it to continuously kite infantry, target aircraft, or engage tanks.
 
 actor-arty =
    .name = Artillery
    .description = Long-range artillery.
       Strong vs. Infantry and Buildings.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = Similar to its counterpart, a single unit can halt infantry pushes when well protected. It has a higher fire rate and longer range.
 
 actor-harv =
    .name = Ore Truck
    .generic-name = Harvester
    .description = Collects Ore and Gems for processing.
       Unarmed.
+   .encyclopedia =Harvests ore and transports it to a refinery. Though heavily armored, its slow speed makes it vulnerable to enemy attacks. Protecting Ore Trucks is essential; otherwise, your economy will quickly suffer.
 
 actor-mcv =
    .name = Mobile Construction Vehicle
    .description = Deploys into a Construction Yard.
       Unarmed.
+   .encyclopedia = mobile Construction Yard, like other vehicles, gains speed on roads— a useful tip for quick escapes. However, it has significantly less health in this form.
 
 actor-jeep =
    .name = Ranger
@@ -735,12 +814,14 @@ actor-jeep =
     Can carry just one infantry unit.
       Strong vs. Infantry.
       Weak vs. Vehicles and Aircraft.
+   .encyclopedia = The best scouting vehicle until air units are available. It swiftly maneuvers within enemy lines and can transport a single unit.
 
 actor-apc =
    .name = Armored Personnel Carrier
    .description = Tough infantry transport.
       Strong vs. Infantry and Light armor.
       Weak vs. Tanks and Aircraft.
+   .encyclopedia = A lightly armored vehicle capable of crushing enemies and carrying up to 10 infantry units.
 
 actor-mnly =
    .name = Minelayer
@@ -748,22 +829,26 @@ actor-mnly =
     unwary enemy units.
     Can detect mines.
       Unarmed.
+   .encyclopedia = Destroys any unit that triggers up to two mines. Entire minefields can be deployed automatically. A single Minelayer is enough to reveal enemy mines, which can then be cleared by force firing them.
 
 actor-truk =
    .name = Supply Truck
    .description = Transports cash to other players.
       Unarmed.
+   .encyclopedia = Single-use truck that transports a small amount of cash.
 
 actor-mgg =
    .name = Mobile Gap Generator
    .description = Regenerates shroud to obscure nearby areas.
       Unarmed.
+   .encyclopedia = Aside from being mobile, it functions like its namesake. It's useful for creating decoy army movements or hiding units. Its shroud can be seen through the fog of war and toggled on or off with the deploy key.
 
 actor-mrj =
    .name = Mobile Radar Jammer
    .description = Jams nearby enemy Radar Domes
     and deflects incoming missiles.
       Unarmed.
+   .encyclopedia = Ability to deflect any guided missile within its inner circle compensates for its fragility. The outer circle jams the enemy’s Radar Dome.
 
 actor-ttnk =
    .name = Tesla Tank
@@ -771,17 +856,20 @@ actor-ttnk =
    .description = Tank with mounted Tesla coil.
       Strong vs. Infantry, Vehicles and Buildings.
       Weak vs. Aircraft.
+   .encyclopedia = A mobile Tesla Coil capable of crushing units. When paired with Flak Trucks and/or an Iron Curtain, it forms one of the most powerful unit combinations in the game.
 
 actor-ftrk =
    .name = Mobile Flak
    .description = Mobile unit with a Flak cannon.
       Strong vs. Infantry, Light armor and Aircraft.
       Weak vs. Tanks.
+   .encyclopedia = The mobile air advantage the Allies lack, its superior range allows it to target unsupported infantry without taking return fire.
 
 actor-dtrk =
    .name = Demolition Truck
    .description = Truck carrying armed nuclear explosives,
     with very weak armor.
+   .encyclopedia = A slow and fragile vehicle that can be detonated by a single infantry unit, yet it carries a tactical nuke capable of obliterating any army within its blast radius.
 
 actor-ctnk =
    .name = Chrono Tank
@@ -791,6 +879,7 @@ actor-ctnk =
       Strong vs. Vehicles and Buildings.
       Weak vs. Infantry and Aircraft.
       Special ability: Can teleport.
+   .encyclopedia = A lightly armored tank that can teleport. When used in groups or with a Chronosphere, they can crush enemy forces and teleport away before taking significant damage.
 
 actor-qtnk =
    .name = MAD Tank
@@ -799,6 +888,7 @@ actor-qtnk =
     and structures.
       Strong vs. Vehicles and Buildings.
       Weak vs. Infantry and Aircraft.
+   .encyclopedia = Deals seismic damage to structures upon deployment, destroying itself in the process. It is most effective when used in groups of three, as a single MAD Tank deals a fraction of damage to a structure's health.
 
 actor-stnk =
    .name = Phase Transport
@@ -806,48 +896,57 @@ actor-stnk =
     can cloak. Armed with anti-ground missiles.
       Strong vs. Light armor.
       Weak vs. Infantry, Tanks and Aircraft.
+   .encyclopedia = An invisible APC that only becomes visible when critically damaged. It emits a global sound when built and is highly effective for surprise drops in the back of an opponent’s base.
 
 ## Civilian Tech
 actor-hosp =
    .name = Hospital
    .captured-desc = Provides infantry with self-healing.
    .capturable-desc = Capture to enable self-healing for infantry.
+   .encyclopedia = Restores small amounts of health to infantry at frequent intervals.
 
 actor-fcom =
    .name = Forward Command
    .captured-desc = Provides buildable area.
    .capturable-desc = Capture to give buildable area.
+   .encyclopedia = Esentially a Construction Yard with a smaller build radius and less health.
 
 actor-miss =
    .name = Communications Center
    .captured-desc = Provides range of vision.
    .capturable-desc = Capture to give visual range.
+   .encyclopedia = Provides an area of vision around it.
 
 actor-bio =
    .name = Biological Lab
    .captured-desc = Provides prerequisite for Bio-Lab units.
    .capturable-desc = Capture to produce Bio-Lab units.
+   .encyclopedia = Produces Zombies and Ants.
 
 actor-oilb =
    .name = Oil Derrick
    .captured-desc = Provides additional funds.
    .capturable-desc =  Capture to receive additional funds.
+   .encyclopedia = Becomes profitable under a minute after capture, depending on whether you receive the early income tick. Oil Derricks provide money frequents as well as a cash bonus upon capture. Its tick sounds are heard globally.
 
 ## misc.yaml
 actor-powerproxy-parabombs =
    .name = Parabombs (Single Use)
    .description = A Badger drops parachuted bombs
     over a selected location.
+   .encyclopedia= Exclusive to Ukraine, this ability is unlocked with an airfield. A single Badger drops 10 bombs in a straight line.
 
 actor-powerproxy-sonarpulse =
    .name = Sonar Pulse
    .description = Reveals all submarines in the vicinity for a
     short time.
+   .encyclopedia = Upon infiltrating a Naval Yard or Submarine Pen with a Spy, all submarines within a short radius are revealed for a brief period of time.
 
 actor-powerproxy-paratroopers =
    .name = Paratroopers
    .description = A Badger drops a squad of infantry
     anywhere on the map.
+   .encyclopedia = A small group of units that can periodically be used to harass the enemy.
 
 ## ai.yaml
 bot-rush-ai =
