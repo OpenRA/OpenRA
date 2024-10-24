@@ -1,0 +1,21 @@
+Container@LOBBY_BRIEFING_BIN:
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		Label@TITLE:
+			Y: 0 - 24
+			Width: PARENT_WIDTH
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: label-lobby-briefing-bin-title
+		ScrollPanel:
+			Logic: LobbyBriefingLogic
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Label@MISSION_DESCRIPTION:
+					X: 8
+					Y: 8
+					Width: PARENT_WIDTH - 32
+					VAlign: Top

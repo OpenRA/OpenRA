@@ -6,7 +6,7 @@ World:
 		WinVideo: sitduck.vqa
 		LossVideo: dpthchrg.vqa
 		StartVideo: periscop.vqa
-		Briefing: Intelligence indicates that a large portion of the Allied Naval Fleet will stop for refueling at a base in this area. Destroy the fleet and the base. Beware the long range of their cruisers.
+		Briefing: briefing
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label

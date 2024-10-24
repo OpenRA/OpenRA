@@ -200,6 +200,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						{
 							var candidate = grouping.First();
 							var key = $"{candidate.Actor}-{candidate.Key}";
+							if (key == "actor-world-missiondata-briefing")
+								key = "briefing";
+
 							build += $"{key} = {candidate.Value}\n";
 							foreach (var node in candidate.Nodes)
 								node.Value.Value = key;
