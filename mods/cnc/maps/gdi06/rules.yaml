@@ -86,6 +86,7 @@ RMBO.hard:
 	-AutoTargetPriority@DEFAULT:
 	-AutoTargetPriority@ATTACKANYTHING:
 	-AttackMove:
+	-Patrol:
 	RenderSprites:
 		Image: RMBO
 

@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool forceAttackDisabled = true;
 		bool guardDisabled = true;
 		bool scatterDisabled = true;
+		bool patrolModeDisabled = true;
 		bool stopDisabled = true;
 		bool waypointModeDisabled = true;
 
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 				WidgetUtils.BindButtonIcon(attackMoveButton);
 
 				attackMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return attackMoveDisabled; };
-				attackMoveButton.IsHighlighted = () => world.OrderGenerator is AttackMoveOrderGenerator;
+				attackMoveButton.IsHighlighted = () => world.OrderGenerator.GetType() == typeof(AttackMoveOrderGenerator);
 
 				void Toggle(bool allowCancel)
 				{
@@ -149,6 +150,29 @@ namespace OpenRA.Mods.Common.Widgets
 				scatterButton.OnKeyPress = ki => { scatterHighlighted = 2; scatterButton.OnClick(); };
 			}
 
+			var patrolButton = widget.GetOrNull<ButtonWidget>("PATROL");
+			if (patrolButton != null)
+			{
+				WidgetUtils.BindButtonIcon(patrolButton);
+
+				patrolButton.IsDisabled = () => { UpdateStateIfNecessary(); return patrolModeDisabled; };
+				patrolButton.IsHighlighted = () => world.OrderGenerator is PatrolOrderGenerator;
+
+				void Toggle(bool allowCancel)
+				{
+					if (patrolButton.IsHighlighted())
+					{
+						if (allowCancel)
+							world.CancelInputMode();
+					}
+					else
+						world.OrderGenerator = new PatrolOrderGenerator(selectedActors, Game.Settings.Game.MouseButtonPreference.Action);
+				}
+
+				patrolButton.OnClick = () => Toggle(true);
+				patrolButton.OnKeyPress = _ => Toggle(false);
+			}
+
 			var deployButton = widget.GetOrNull<ButtonWidget>("DEPLOY");
 			if (deployButton != null)
 			{
@@ -212,8 +236,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var keyOverrides = widget.GetOrNull<LogicKeyListenerWidget>("MODIFIER_OVERRIDES");
 			if (keyOverrides != null)
 			{
-				var noShiftButtons = new[] { guardButton, deployButton, scatterButton, attackMoveButton };
-				var keyUpButtons = new[] { guardButton, attackMoveButton };
+				var noShiftButtons = new[] { guardButton, deployButton, scatterButton, attackMoveButton, patrolButton };
+				var keyUpButtons = new[] { guardButton, attackMoveButton, patrolButton };
 				keyOverrides.AddHandler(e =>
 				{
 					// HACK: allow command buttons to be triggered if the shift (queue order modifier) key is held
@@ -249,6 +273,14 @@ namespace OpenRA.Mods.Common.Widgets
 					if (attackMoveButton != null && !attackMoveDisabled && attackMoveButton.Key.IsActivatedBy(eNoMods))
 					{
 						attackMoveButton.OnKeyPress(e);
+						return true;
+					}
+
+					// HACK: Patrol can be triggered if the ctrl (assault move modifier)
+					// or shift (queue order modifier) keys are pressed, on both key down and key up
+					if (patrolButton != null && !patrolModeDisabled && patrolButton.Key.IsActivatedBy(eNoMods))
+					{
+						patrolButton.OnKeyPress(e);
 						return true;
 					}
 
@@ -293,6 +325,10 @@ namespace OpenRA.Mods.Common.Widgets
 			forceMoveDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<MobileInfo>() || a.Info.HasTraitInfo<AircraftInfo>());
 			forceAttackDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<AttackBaseInfo>());
 			scatterDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<IMoveInfo>());
+			patrolModeDisabled = !selectedActors.Any(a =>
+				a.Info.HasTraitInfo<PatrolInfo>()
+				&& a.Info.HasTraitInfo<AttackMoveInfo>()
+				&& a.Info.HasTraitInfo<AutoTargetInfo>());
 
 			selectedDeploys = selectedActors
 				.SelectMany(a => a.TraitsImplementing<IIssueDeployOrder>()
