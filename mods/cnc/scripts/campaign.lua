@@ -139,6 +139,20 @@ MoveAndIdle = function(actors, path)
 	end)
 end
 
+Patrol = function(actors, path, waitTicks)
+	Utils.Do(actors, function(actor)
+		if not actor or actor.IsDead then
+			return
+		end
+
+		local locations = {}
+		for idx, point in ipairs(path) do
+			table.insert(locations, point.Location)
+		end
+		actor.Patrol(locations, true, waitTicks)
+	end)
+end
+
 Searches = 0
 GetAirstrikeTarget = function(player)
 	local list = player.GetGroundAttackers()
@@ -162,4 +176,13 @@ GetAirstrikeTarget = function(player)
 		Searches = 0
 		return nil
 	end
+end
+
+-- Convert a list of cellnumbers to cartesian (X,Y) positions
+CellsToPositions = function(list)
+    for i = 1, #list do
+        local cell = list[i]
+        list[i] = CPos.New(cell % 64, math.floor(cell / 64))
+    end
+    return list
 end
