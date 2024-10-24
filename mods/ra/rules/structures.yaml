@@ -224,7 +224,7 @@ SPEN:
 	ProductionBar:
 		ProductionType: Ship
 	Power:
-		Amount: -30
+		Amount: -20
 	DetectCloaked:
 		DetectionTypes: Underwater
 		Range: 10c0
@@ -344,7 +344,7 @@ SYRD:
 	ProductionBar:
 		ProductionType: Ship
 	Power:
-		Amount: -30
+		Amount: -20
 	DetectCloaked:
 		DetectionTypes: Underwater
 		Range: 10c0
@@ -404,7 +404,7 @@ IRON:
 		BuildLimit: 1
 		Description: actor-iron.description
 	Valued:
-		Cost: 1500
+		Cost: 2000
 	Tooltip:
 		Name: actor-iron.name
 	Building:
@@ -598,7 +598,7 @@ TSLA:
 		MaxCharges: 3
 		ReloadDelay: 120
 	Power:
-		Amount: -100
+		Amount: -80
 	DetectCloaked:
 		Range: 6c0
 		RequiresCondition: !disabled
@@ -917,7 +917,7 @@ FTUR:
 	Power:
 		Amount: -20
 	DetectCloaked:
-		Range: 6c0
+		Range: 5c0
 	ProvidesPrerequisite@buildingname:
 	FireWarheadsOnDeath:
 		Weapon: BuildingExplode
