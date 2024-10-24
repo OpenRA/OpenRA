@@ -342,7 +342,7 @@ label-kick-client-dialog-textb = them from joining for the rest of the game
 checkbox-kick-client-dialog-prevent-rejoining = Temporarily Ban
 button-kick-client-dialog = Kick
 label-kick-spectators-dialog-title = Kick Spectators
-button-kick-spectators-dialog-ok = Ok
+button-kick-spectators-dialog-ok = OK
 label-force-start-dialog-title = Start Game?
 label-force-start-dialog-texta = One or more players are not yet ready.
 label-force-start-dialog-textb = Are you sure you want to force start the game?
@@ -499,7 +499,7 @@ label-filter-order-controls-orderby = Order by:
 button-bg-randommap = Random
 button-bg-delete-map = Delete Map
 button-bg-delete-all-maps = Delete All Maps
-button-bg-ok = Ok
+button-bg-ok = OK
 
 ## missionbrowser.yaml
 button-missionbrowser-panel-mission-info = Mission Info
