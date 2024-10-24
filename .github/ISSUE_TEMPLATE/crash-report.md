@@ -16,7 +16,6 @@ assignees: ''
 - OpenRA Version: ENGINE VERSION
 - OpenRA Mod: GAME MOD
 - Source: Official download package OR self-compiled OR third-party package
-- For self-compiled or third-party packages: Mono version
 
 
 ## Exception log

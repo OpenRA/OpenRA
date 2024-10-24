@@ -72,11 +72,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E2FAACA-DADB-4EEB-9898-2B0269F45E69}
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = OpenRA.Game\OpenRA.Game.csproj
-		Policies = $0
-		$0.DotNetNamingPolicy = $1
-		$0.TextStylePolicy = $7
-		outputpath = .
-	EndGlobalSection
 EndGlobal

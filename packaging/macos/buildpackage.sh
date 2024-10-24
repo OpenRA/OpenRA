@@ -75,9 +75,8 @@ build_app() {
 	fi
 
 	# Install engine and mod files
-	install_assemblies "${SRCDIR}" "${LAUNCHER_CONTENTS_DIR}/MacOS/x86_64" "osx-x64" "net6" "True" "True" "${IS_D2K}"
-	install_assemblies "${SRCDIR}" "${LAUNCHER_CONTENTS_DIR}/MacOS/arm64" "osx-arm64" "net6" "True" "True" "${IS_D2K}"
-	install_assemblies "${SRCDIR}" "${LAUNCHER_CONTENTS_DIR}/MacOS/mono" "osx-x64" "mono" "True" "True" "${IS_D2K}"
+	install_assemblies "${SRCDIR}" "${LAUNCHER_CONTENTS_DIR}/MacOS/x86_64" "osx-x64" "net8" "True" "True" "${IS_D2K}"
+	install_assemblies "${SRCDIR}" "${LAUNCHER_CONTENTS_DIR}/MacOS/arm64" "osx-arm64" "net8" "True" "True" "${IS_D2K}"
 
 	install_data "${SRCDIR}" "${LAUNCHER_RESOURCES_DIR}" "${MOD_ID}"
 	set_engine_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}"
@@ -114,7 +113,6 @@ echo "Building launchers"
 # Prepare generic template for the mods to duplicate and customize
 TEMPLATE_DIR="${BUILTDIR}/template.app"
 mkdir -p "${TEMPLATE_DIR}/Contents/Resources"
-mkdir -p "${TEMPLATE_DIR}/Contents/MacOS/mono"
 mkdir -p "${TEMPLATE_DIR}/Contents/MacOS/x86_64"
 mkdir -p "${TEMPLATE_DIR}/Contents/MacOS/arm64"
 
@@ -127,8 +125,6 @@ modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.11" "${TEMPLATE_DIR}/Contents/Info.p
 # Compile universal (x86_64 + arm64) arch-specific apphosts
 clang apphost.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-x86_64" -framework AppKit -target x86_64-apple-macos10.15
 clang apphost.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-arm64" -framework AppKit -target arm64-apple-macos10.15
-clang apphost-mono.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-mono" -framework AppKit -target x86_64-apple-macos10.11
-clang checkmono.c -o "${TEMPLATE_DIR}/Contents/MacOS/checkmono" -framework AppKit -target x86_64-apple-macos10.11
 
 # Compile universal (x86_64 + arm64) Launcher
 clang launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" -framework AppKit -target x86_64-apple-macos10.11
@@ -193,7 +189,7 @@ SetFile -a C "/Volumes/OpenRA"
 
 # Replace duplicate .NET runtime files with hard links to improve compression
 for MOD in "Red Alert" "Tiberian Dawn"; do
-	for p in "x86_64" "arm64" "mono"; do
+	for p in "x86_64" "arm64"; do
 		for f in "/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS/${p}"/*; do
 			g="/Volumes/OpenRA/OpenRA - Dune 2000.app/Contents/MacOS/${p}/"$(basename "${f}")
 			hashf=$(shasum "${f}" | awk '{ print $1 }') || :
@@ -208,7 +204,7 @@ for MOD in "Red Alert" "Tiberian Dawn"; do
 done
 
 for MOD in "Red Alert" "Tiberian Dawn" "Dune 2000"; do
-	for p in "arm64" "mono"; do
+	for p in "arm64"; do
 		for f in "/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS/x86_64"/*; do
 			g="/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS/${p}/"$(basename "${f}")
 			if [ -e "${g}" ]; then
