@@ -69,6 +69,8 @@ namespace OpenRA.Graphics
 		bool unlockMinZoom;
 		float unlockedMinZoomScale;
 		float unlockedMinZoom = 1f;
+		float defaultScale;
+		bool overrideUserScale;
 
 		public float Zoom
 		{
@@ -85,6 +87,13 @@ namespace OpenRA.Graphics
 
 		public float MinZoom { get; private set; } = 1f;
 		public float MaxZoom { get; private set; } = 2f;
+
+		public void OverrideDefaultHeight(float height)
+		{
+			defaultScale = viewportSizes.DefaultScale * Game.Renderer.NativeResolution.Height / height;
+			overrideUserScale = true;
+			UpdateViewportZooms(false);
+		}
 
 		public void AdjustZoom(float dz)
 		{
@@ -140,6 +149,7 @@ namespace OpenRA.Graphics
 			var grid = Game.ModData.Manifest.Get<MapGrid>();
 			viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
 			graphicSettings = Game.Settings.Graphics;
+			defaultScale = viewportSizes.DefaultScale;
 
 			// Calculate map bounds in world-px
 			if (wr.World.Type == WorldType.Editor)
@@ -207,17 +217,17 @@ namespace OpenRA.Graphics
 			lastViewportDistance = graphicSettings.ViewportDistance;
 
 			var vd = graphicSettings.ViewportDistance;
-			if (viewportSizes.AllowNativeZoom && vd == WorldViewport.Native)
-				MinZoom = viewportSizes.DefaultScale;
+			if (overrideUserScale || (viewportSizes.AllowNativeZoom && vd == WorldViewport.Native))
+				MinZoom = defaultScale;
 			else
 			{
 				var range = viewportSizes.GetSizeRange(vd);
-				MinZoom = CalculateMinimumZoom(range.X, range.Y) * viewportSizes.DefaultScale;
+				MinZoom = CalculateMinimumZoom(range.X, range.Y) * defaultScale;
 			}
 
 			MaxZoom = Math.Min(
 				MinZoom * viewportSizes.MaxZoomScale,
-				Game.Renderer.NativeResolution.Height * viewportSizes.DefaultScale / viewportSizes.MaxZoomWindowHeight);
+				Game.Renderer.NativeResolution.Height * defaultScale / viewportSizes.MaxZoomWindowHeight);
 
 			if (unlockMinZoom)
 			{
