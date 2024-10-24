@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 3;
 		}
 
-		[Desc("PALETTE", "TILESET-OR-MAP", "Exports sequence texture atlas as a set of png images.")]
+		[Desc("PALETTE", "TILESET-OR-MAP", "Exports sequence and cursor texture atlas as a set of png images.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -63,6 +63,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			sb = sequences.SpriteCache.SheetBuilders[SheetType.BGRA];
 			foreach (var s in sb.AllSheets)
 				s.AsPng().Save($"{count++}.png");
+
+			var cursorProvider = new CursorProvider(modData);
+			using (var cursor = new CursorManager(cursorProvider, modData.Manifest.CursorSheetSize))
+			{
+				foreach (var c in cursor.SheetBuilder.AllSheets)
+					c.AsPng().Save($"{count++}.png");
+			}
 		}
 	}
 }
