@@ -382,6 +382,9 @@ SPY:
 		Voice: Move
 	Voiced:
 		VoiceSet: SpyVoice
+	ProvidesPrerequisite@bot:
+		Prerequisite: disguise.first
+		RequiresCondition: !disguise
 
 SPY.England:
 	Inherits: SPY
