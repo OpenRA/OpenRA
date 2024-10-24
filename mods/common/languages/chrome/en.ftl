@@ -151,7 +151,7 @@ checkbox-debug-panel-show-screenmap = Show Screen Map
 label-mission-objectives = Mission:
 
 ## ingame-infoscripterror.yaml
-label-script-error-panel-desc-a = The map script has encountered a fatal error
+label-script-error-panel-desc-a = The map script has encountered a fatal error.
 label-script-error-panel-desc-b = The details of the error have been saved to lua.log in the logs directory.
 label-script-error-panel-desc-c = Please send this file to the map author so that they can fix this issue.
 
@@ -168,16 +168,16 @@ label-menu-buttons-title = Options
 
 ## lobby-kickdialogs.yaml
 label-kick-client-dialog-texta = You may also apply a temporary ban, preventing
-label-kick-client-dialog-textb = them from joining for the remainder of this game.
+label-kick-client-dialog-textb = them from joining for the remainder of this game
 checkbox-kick-client-dialog-prevent-rejoining = Temporarily Ban
 button-kick-client-dialog = Kick
 label-kick-spectators-dialog-title = Kick Spectators
-button-kick-spectators-dialog-ok = Ok
+button-kick-spectators-dialog-ok = OK
 label-force-start-dialog-title = Start Game?
 label-force-start-dialog-texta = One or more players are not yet ready.
 label-force-start-dialog-textb = Are you sure that you want to force start the game?
 label-kick-warning-a = One or more clients are missing the selected
-label-kick-warning-b = map, and will be kicked from the server.
+label-kick-warning-b = map, and will be kicked from the server
 button-force-start-dialog-start = Start
 
 ## lobby-mappreview.yaml
@@ -259,8 +259,8 @@ button-server-lobby-disconnect = Leave Game
 
 ## mainmenu-prompts.yaml
 label-mainmenu-introduction-prompt-title = Establishing Battlefield Control
-label-mainmenu-introduction-prompt-desc-a = Welcome back Commander! Initialize combat parameters using the options below.
-label-mainmenu-introduction-prompt-desc-b = Additional options can be configured later from the Settings menu.
+label-mainmenu-introduction-prompt-desc-a = Welcome back Commander! Initialize combat parameters using the options below
+label-mainmenu-introduction-prompt-desc-b = Additional options can be configured later from the Settings menu
 label-mainmenu-system-info-prompt-title = Establishing Battlefield Control
 label-mainmenu-system-info-prompt-text-a = We would like to collect some system details that will help us optimize OpenRA.
 label-mainmenu-system-info-prompt-text-b = With your permission, the following anonymous data will be sent each game launch:
@@ -310,7 +310,7 @@ button-extras-menu-assetbrowser = Asset Browser
 button-map-editor-new-map = New Map
 button-map-editor-load-map = Load Map
 dropdownbutton-news-bg-button = Battlefield News
-label-update-notice-a = You are running an outdated version of OpenRA.
+label-update-notice-a = You are running an outdated version of OpenRA
 label-update-notice-b = Download the latest version from www.openra.net
 
 ## mainmenu.yaml, missionbrowser.yaml
@@ -333,7 +333,7 @@ label-filter-order-controls-orderby = Order by:
 button-mapchooser-panel-randommap = Random Map
 button-mapchooser-panel-delete-map = Delete Map
 button-mapchooser-panel-delete-all-maps = Delete All Maps
-button-mapchooser-panel-ok = Ok
+button-mapchooser-panel-ok = OK
 
 ## missionbrowser.yaml
 button-missionbrowser-panel-start-briefing-video = Watch Briefing
@@ -393,9 +393,9 @@ button-directconnect-panel-join = Join
 button-profile-header-logout = Logout
 label-generate-keys-desc-a = Connect to a forum account to identify
 label-generate-keys-desc-b = yourself to other players, join private
-label-generate-keys-desc-c = servers, and display badges.
+label-generate-keys-desc-c = servers, and display badges
 button-generate-keys-key = Connect to an OpenRA forum account
-label-generating-keys-desc-a = Generating authentication key pair.
+label-generating-keys-desc-a = Generating authentication key pair
 label-generating-keys-desc-b = This will take several seconds...
 label-register-fingerprint-desc-a = An authentication key has been copied to your
 label-register-fingerprint-desc-b = clipboard. Add this to your User Control Panel
@@ -403,9 +403,9 @@ label-register-fingerprint-desc-c = on the OpenRA forum then press Continue.
 label-checking-fingerprint-desc-a = Querying account details from
 label-checking-fingerprint-desc-b = the OpenRA forum...
 label-fingerprint-not-found-desc-a = Your authentication key is not connected
-label-fingerprint-not-found-desc-b = to an OpenRA forum account.
-label-connection-error-desc-a = Failed to connect to the OpenRA forum.
-label-connection-error-desc-b = Please check your internet connection.
+label-fingerprint-not-found-desc-b = to an OpenRA forum account
+label-connection-error-desc-a = Failed to connect to the OpenRA forum
+label-connection-error-desc-b = Please check your internet connection
 
 ## replaybrowser.yaml
 label-replaybrowser-panel-title = Replay Viewer
@@ -435,7 +435,7 @@ checkbox-perfgraph-container = Show Performance Graph
 checkbox-check-version-container = Check for Updates
 checkbox-perftext-container = Show Performance Text
 checkbox-sendsysinfo-container = Send System Information
-label-sendsysinfo-checkbox-container-desc = Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+label-sendsysinfo-checkbox-container-desc = Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development
 label-debug-section-header = Developer
 label-debug-hidden-container-a = Additional developer-specific options can be enabled via the
 label-debug-hidden-container-b = Debug.DisplayDeveloperSettings setting or launch flag
@@ -506,7 +506,7 @@ hotkey-group-control-groups = Control Groups
 hotkey-group-editor-commands = Editor Commands
 label-hotkeys-panel-filter-input = Filter by name:
 label-hotkeys-panel-context-dropdown = Context:
-label-hotkey-empty-list-message = No hotkeys match the filter criteria.
+label-hotkey-empty-list-message = No hotkeys match the filter criteria
 label-notices-readonly-notice = This hotkey cannot be modified
 button-hotkey-remap-dialog-override = Override
 
@@ -522,7 +522,7 @@ button-hotkey-remap-dialog-reset =
 label-zoom-modifier-container = Zoom Modifier:
 checkbox-alternate-scroll-container = Alternate Mouse Panning
 checkbox-lockmouse-container = Lock Mouse to Window
-label-mouse-scroll-type-container = Pan Behaviour:
+label-mouse-scroll-type-container = Pan Behavior:
 label-scrollspeed-slider-container-scroll-speed = Pan Speed:
 label-zoomspeed-slider-container-zoom-speed = Zoom Speed:
 label-ui-scrollspeed-slider-container-scroll-speed = UI Scroll Speed:
