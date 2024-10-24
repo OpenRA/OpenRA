@@ -59,6 +59,7 @@ construction_yard:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@UPGRADEABLE: ^Upgradeable
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Description: actor-construction-yard.description
 	D2kBuilding:
@@ -116,9 +117,48 @@ construction_yard:
 		Prerequisites: upgrade.conyard
 	RevealOnDeath:
 		Radius: 5c768
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 600, -500, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -300, -1200, 0
+		SpawnFrequency: 3, 13
+	FloatingSpriteEmitter@SmokeSmallConyard:
+		RequiresCondition: heavy-damage && atreidesVFX
+		Offset: -1024, -500, 0
+		SpawnFrequency: 5, 20
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		Duration: 800
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 300, 500, 0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 2024, -350, 0
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: -100,300,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: 800,-200,0
+		Speed: 10
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: -700, -200,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 500, 900,0
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 500, -1000, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -300, -1200, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 300, 500, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 1124, -350, 0
 
 wind_trap:
 	Inherits: ^Building
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
@@ -166,11 +206,33 @@ wind_trap:
 	ProvidesPrerequisite@buildingname:
 	RevealOnDeath:
 		Radius: 3c768
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 100, -1024, 0
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -580, -400, 0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 1124, 0, 0
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 100, -1024, 0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -500, -400, 0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: 300, -500, 0
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -500, -900, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 500, -700, 0
+	-WithDamageOverlay@Fire2Harkonnen:
+	-FloatingSpriteEmitter@SmokeHugeOrdos:
+	-WithDamageOverlay@Fire2Ordos:
+	-WithDamageOverlay@Fire2_atreides:
 
 barracks:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@UPGRADEABLE: ^Upgradeable
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
@@ -242,9 +304,28 @@ barracks:
 		Prerequisites: upgrade.barracks
 	RevealOnDeath:
 		Radius: 3c768
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 500, 500, 0
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: 600, -500, 0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: 0,0,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 0,0,0
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 300, -800, 0
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 600, 300, 0
+	-WithDamageOverlay@Fire2_atreides:
+	-WithDamageOverlay@Fire1Harkonnen:
+	-WithDamageOverlay@Fire2Ordos:
+	-FloatingSpriteEmitter@SmokeHugeHarkonnen:
+	-FloatingSpriteEmitter@SmokeSmallOrdos:
+	-FloatingSpriteEmitter@SmokeHugeAtreides:
 
 refinery:
 	Inherits: ^Building
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
@@ -317,6 +398,34 @@ refinery:
 		Margin: 1, 4
 		RequiresSelection: true
 		PipCount: 10
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -900, 0, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 700,-612,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 950, 600,0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 700, -800, 0
+		LoopSequence: 4
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 1100,-800,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -1024, 0,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: 1200, 1000,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 0, -1024, 0
+		LoopSequence: 4
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: -100, -1050, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -250, 250, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 1200, -200, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 0, -200, 0
 
 silo:
 	Inherits: ^Building
@@ -374,11 +483,26 @@ silo:
 		Margin: 1, 4
 		RequiresSelection: true
 		PipCount: 5
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@SmokeSmall:
+		Offset: 0, -300, 0
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1024
 
 light_factory:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@UPGRADEABLE: ^Upgradeable
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
@@ -459,11 +583,39 @@ light_factory:
 		Amount: -125
 	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.light
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -400, -500, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 400,-612,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 1024, 300,0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 1024, -500, 0
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: -100,300,0
+		Speed: 7
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -900,-500,0
+		Speed: 10
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: -0,-950,0
+	WithDamageOverlay@Fire2Harkonnen:
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: -900, 0, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: 300, -200, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: -600, -1000, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 700, 200, 0
 
 heavy_factory:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@UPGRADEABLE: ^Upgradeable
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: refinery
 		Queue: Building
@@ -555,10 +707,36 @@ heavy_factory:
 	ProvidesPrerequisite@buildingname:
 	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.heavy
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 512, 0, 0
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -300, -1000, 0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: -200, 300, 0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 1550, -400, 0
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: -600,-200,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: 0, -660,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: 500, -600,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 1800, 50,0
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: -700, 100,0
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -400, -1000,0
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 1300, -500,0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 100, -600,0
+		LoopSequence: 4
 
 outpost:
 	Inherits: ^Building
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: barracks, ~techlevel.medium
 		Queue: Building
@@ -609,10 +787,35 @@ outpost:
 	Power:
 		Amount: -125
 	ProvidesPrerequisite@buildingname:
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -400, -500, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 300,0,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: -150, 300, 0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 1024, -400, 0
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: -550, -500, 0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: 400, 0, 0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: 600,-600,0
+	-WithDamageOverlay@Fire2Harkonnen:
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: -600, -300, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: 350, 0, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 350, -600, 0
+	-WithDamageOverlay@Fire2Ordos:
 
 starport:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Tooltip:
 		Name: actor-starport.name
 	Buildable:
@@ -699,6 +902,32 @@ starport:
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 900, -1400, 0
+		Gravity: 40
+		Speed: 5
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -1224, -1312, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 1424, -1390, 0
+	-WithDamageOverlay@Fire2_atreides:
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: -1100,-1000,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: 700,-900,0
+		Speed: 10
+	-WithDamageOverlay@Fire1Harkonnen:
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 1800, 780,0
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: -1100,-1000,0
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: 700,-900,0
+		Speed: 10
+	-WithDamageOverlay@Fire1Ordos:
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 1800, 780,0
 
 wall:
 	Inherits@1: ^SpriteActor
@@ -817,6 +1046,20 @@ medium_gun_turret:
 		Amount: -50
 	Replacement:
 		ReplaceableTypes: Tower
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@smoke2_small:
+		Offset: 0, -700, 0
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1024
 
 large_gun_turret:
 	Inherits: ^Defense
@@ -865,6 +1108,20 @@ large_gun_turret:
 		Radius: 5c768
 	Replacement:
 		ReplaceableTypes: Tower
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@smokeSmall:
+		Offset: 0, -700, 0
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1024
 
 repair_pad:
 	Inherits: ^Building
@@ -927,11 +1184,38 @@ repair_pad:
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@smokeSmall:
+		Offset: 100, -1400, 0
+		Gravity: 40
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1024
+	FloatingSpriteEmitter@smokeHuge:
+		Offset: 800,200,0
+		SpawnFrequency: 4,10
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 7
+		Gravity: 60
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1224
 
 high_tech_factory:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@UPGRADEABLE: ^Upgradeable
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: outpost, ~techlevel.medium
 		Queue: Building
@@ -1017,6 +1301,25 @@ high_tech_factory:
 		Amount: -75
 	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.hightech
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 500, -800, 0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 1100, 500, 0
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 400,-150,0
+	-FloatingSpriteEmitter@SmokeSmallHarkonnen:
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: -100, 350,0
+	-WithDamageOverlay@Fire2Harkonnen:
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 500, -200, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: 0, -800, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 0, 450, 0
+	-WithDamageOverlay@Fire2Ordos:
 
 research_centre:
 	Inherits: ^Building
@@ -1071,11 +1374,44 @@ research_centre:
 	Power:
 		Amount: -175
 	ProvidesPrerequisite@buildingname:
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 512, 0, 0
+		Speed: 10
+		SpawnFrequency: 3,6
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Gravity: 60
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1224
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: 300, -1500, 0
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1024
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: -300, 500, 0
+		RequiresCondition: heavy-damage
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 30
 
 palace:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@BUILDINGVFX: ^DamagedBuildingsVFX
 	Buildable:
 		Prerequisites: research_centre, ~techlevel.high
 		Queue: Building
@@ -1242,6 +1578,34 @@ palace:
 	SupportPowerChargeBar:
 		RequiresCondition: atreides || harkonnen || ordos
 	ProvidesPrerequisite@buildingname:
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 1000, -600, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -300, -2000, 0
+		SpawnFrequency: 2,6
+		Speed: 10
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: -200, 800, 0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 3048, -350, 0
+		LoopSequence: 4
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 600,-200,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -100, -660,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: -300, 512,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 1700, -100,0
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 800,0,0
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -150, -1200,0
+	WithDamageOverlay@Fire1Ordos:
+		Offset: -500, 750,0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 2450, -200,0
 
 conyard.atreides:
 	Inherits: construction_yard
