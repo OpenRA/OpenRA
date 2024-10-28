@@ -171,19 +171,39 @@ namespace OpenRA.Mods.Cnc.Traits
 				var targetDisguise = target.TraitOrDefault<Disguise>();
 				if (targetDisguise != null && targetDisguise.Disguised)
 				{
-					AsPlayer = targetDisguise.AsPlayer;
-					AsActor = targetDisguise.AsActor;
-					AsTooltipInfo = targetDisguise.AsTooltipInfo;
+					// Don't disguise as yourself
+					if (targetDisguise.AsActor.Name == self.Info.Name && targetDisguise.AsPlayer == self.Owner)
+					{
+						AsTooltipInfo = null;
+						AsPlayer = null;
+						AsActor = self.Info;
+					}
+					else
+					{
+						AsPlayer = targetDisguise.AsPlayer;
+						AsActor = targetDisguise.AsActor;
+						AsTooltipInfo = targetDisguise.AsTooltipInfo;
+					}
 				}
 				else
 				{
-					var tooltip = target.TraitsImplementing<ITooltip>().FirstEnabledTraitOrDefault();
-					if (tooltip == null)
-						throw new ArgumentException("Missing tooltip or invalid target.", nameof(target));
+					// Don't disguise as yourself
+					if (target.Info.Name == self.Info.Name && target.Owner == self.Owner)
+					{
+						AsTooltipInfo = null;
+						AsPlayer = null;
+						AsActor = self.Info;
+					}
+					else
+					{
+						var tooltip = target.TraitsImplementing<ITooltip>().FirstEnabledTraitOrDefault();
+						if (tooltip == null)
+							throw new ArgumentException("Missing tooltip or invalid target.", nameof(target));
 
-					AsPlayer = tooltip.Owner;
-					AsActor = target.Info;
-					AsTooltipInfo = tooltip.TooltipInfo;
+						AsPlayer = tooltip.Owner;
+						AsActor = target.Info;
+						AsTooltipInfo = tooltip.TooltipInfo;
+					}
 				}
 			}
 			else
