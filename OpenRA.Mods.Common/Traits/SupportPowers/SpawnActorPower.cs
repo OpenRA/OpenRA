@@ -43,8 +43,10 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(EffectImage))]
 		public readonly string EffectSequence = null;
 
-		[PaletteReference]
+		[PaletteReference(nameof(EffectPaletteIsPlayerPalette))]
 		public readonly string EffectPalette = null;
+
+		public readonly bool EffectPaletteIsPlayerPalette = false;
 
 		public override object Create(ActorInitializer init) { return new SpawnActorPower(init.Self, this); }
 	}
@@ -71,7 +73,13 @@ namespace OpenRA.Mods.Common.Traits
 				Game.Sound.Play(SoundType.World, info.DeploySound, position);
 
 				if (!string.IsNullOrEmpty(info.EffectSequence) && !string.IsNullOrEmpty(info.EffectPalette))
-					w.Add(new SpriteEffect(position, w, info.EffectImage, info.EffectSequence, info.EffectPalette));
+				{
+					var palette = info.EffectPalette;
+					if (info.EffectPaletteIsPlayerPalette)
+						palette += self.Owner.InternalName;
+
+					w.Add(new SpriteEffect(position, w, info.EffectImage, info.EffectSequence, palette));
+				}
 
 				var actor = w.CreateActor(info.Actor, new TypeDictionary
 				{
