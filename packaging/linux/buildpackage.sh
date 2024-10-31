@@ -46,9 +46,9 @@ fi
 # Add native libraries
 echo "Downloading appimagetool"
 if command -v curl >/dev/null 2>&1; then
-	curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+	curl -s -L -O https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 else
-	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+	wget -cq https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 fi
 
 chmod a+x appimagetool-x86_64.AppImage
