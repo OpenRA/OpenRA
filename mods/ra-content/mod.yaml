@@ -37,7 +37,7 @@ ChromeMetrics:
 	content|metrics.yaml
 
 FluentMessages:
-	common|fluent/en.ftl
+	common|fluent/common.ftl
 	content|fluent/content.ftl
 	content|fluent/chrome.ftl
 	racontent|fluent/chrome.ftl
