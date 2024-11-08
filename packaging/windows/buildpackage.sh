@@ -69,11 +69,6 @@ function build_platform()
 	PLATFORM="${1}"
 
 	echo "Building core files (${PLATFORM})"
-	if [ "${PLATFORM}" = "x86" ]; then
-		USE_PROGRAMFILES32="-DUSE_PROGRAMFILES32=true"
-	else
-		USE_PROGRAMFILES32=""
-	fi
 
 	install_assemblies "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "False" "True" "True"
 	install_data "${SRCDIR}" "${BUILTDIR}" "cnc" "d2k" "ra"
@@ -85,10 +80,10 @@ function build_platform()
 	makelauncher "TiberianDawn" "Tiberian Dawn" "cnc" "${PLATFORM}"
 	makelauncher "Dune2000" "Dune 2000" "d2k" "${PLATFORM}"
 
-	echo "Building Windows setup.exe ($1)"
-	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" -DOUTFILE="${OUTPUTDIR}/OpenRA-${TAG}-${PLATFORM}.exe" ${USE_PROGRAMFILES32} OpenRA.nsi
+	echo "Building Windows setup.exe (${PLATFORM})"
+	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" -DOUTFILE="${OUTPUTDIR}/OpenRA-${TAG}-${PLATFORM}.exe" OpenRA.nsi
 
-	echo "Packaging zip archive ($1)"
+	echo "Packaging zip archive ($PLATFORM)"
 	pushd "${BUILTDIR}" > /dev/null
 	zip "OpenRA-${TAG}-${PLATFORM}-winportable.zip" -r -9 ./* --quiet
 	mv "OpenRA-${TAG}-${PLATFORM}-winportable.zip" "${OUTPUTDIR}"
@@ -97,6 +92,5 @@ function build_platform()
 	rm -rf "${BUILTDIR}"
 }
 
-build_platform "x86"
 build_platform "x64"
 rm rcedit-x64.exe

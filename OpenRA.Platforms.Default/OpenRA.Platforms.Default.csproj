@@ -6,7 +6,7 @@
     <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.41" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">
+    <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
