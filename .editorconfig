@@ -74,6 +74,10 @@ dotnet_diagnostic.IDE0211.severity = warning
 #csharp_style_prefer_primary_constructors = true
 dotnet_diagnostic.IDE0200.severity = silent # Requires C# 12
 
+# IDE0330 Prefer 'System.Threading.Lock'
+#csharp_prefer_system_threading_lock = true
+dotnet_diagnostic.IDE0330.severity = silent # Requires C# 13
+
 ## Expression-bodied members
 
 # IDE0021 Use expression body for constructors
@@ -298,6 +302,34 @@ dotnet_diagnostic.IDE0240.severity = warning
 # No options
 dotnet_diagnostic.IDE0241.severity = warning
 
+# This option applies to the collection expression rules below
+# .NET 8 defaults to true/when_types_exactly_match, .NET 9+ defaults to when_types_loosely_match
+#dotnet_style_prefer_collection_expression = true
+
+# IDE0300 Use collection expression for array
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0300.severity = silent # Requires C# 12
+
+# IDE0301 Use collection expression for empty
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0301.severity = silent # Requires C# 12
+
+# IDE0302 Use collection expression for stackalloc
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0302.severity = silent # Requires C# 12
+
+# IDE0303 Use collection expression for 'Create()'
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0303.severity = silent # Requires C# 12
+
+# IDE0304 Use collection expression for builder
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0304.severity = silent # Requires C# 12
+
+# IDE0305 Use collection expression for fluent
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0305.severity = silent # Requires C# 12
+
 ## Field preferences
 
 # IDE0044 Add readonly modifier
@@ -336,6 +368,10 @@ dotnet_diagnostic.IDE0250.severity = warning
 # IDE0251 Member can be made 'readonly'
 #csharp_style_prefer_readonly_struct_member = true
 dotnet_diagnostic.IDE0251.severity = warning
+
+# IDE0320 Make anonymous function static
+#csharp_prefer_static_anonymous_function = true
+dotnet_diagnostic.IDE0320.severity = warning
 
 ## Null-checking preferences
 
@@ -726,6 +762,18 @@ dotnet_diagnostic.CA1417.severity = warning
 # Use 'nameof' in place of string.
 dotnet_diagnostic.CA1507.severity = warning
 
+# Use ArgumentNullException throw helper.
+dotnet_diagnostic.CA1510.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
+# Use ArgumentException throw helper.
+dotnet_diagnostic.CA1511.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
+# Use ArgumentOutOfRangeException throw helper.
+dotnet_diagnostic.CA1512.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+
+# Use ObjectDisposedException throw helper.
+dotnet_diagnostic.CA1513.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
 # Avoid redundant length argument.
 dotnet_diagnostic.CA1514.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
@@ -853,11 +901,20 @@ dotnet_diagnostic.CA1854.severity = suggestion # TODO: Change to warning once us
 # Use Span<T>.Clear() instead of Span<T>.Fill().
 dotnet_diagnostic.CA1855.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
+# Incorrect usage of ConstantExpected attribute.
+dotnet_diagnostic.CA1856.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
+# The parameter expects a constant for optimal performance.
+dotnet_diagnostic.CA1857.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
 # Use StartsWith instead of IndexOf.
 dotnet_diagnostic.CA1858.severity = warning
 
 # Avoid using 'Enumerable.Any()' extension method.
 dotnet_diagnostic.CA1860.severity = warning
+
+# Use 'CompositeFormat'.
+dotnet_diagnostic.CA1863.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 # Prefer the 'IDictionary.TryAdd(TKey, TValue)' method.
 dotnet_diagnostic.CA1864.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
@@ -875,6 +932,12 @@ dotnet_diagnostic.CA1869.severity = suggestion # TODO: Change to warning once us
 
 # Use a cached 'SearchValues' instance.
 dotnet_diagnostic.CA1870.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+
+# Do not pass a nullable struct to 'ArgumentNullException.ThrowIfNull'.
+dotnet_diagnostic.CA1871.severity = warning
+
+# Prefer 'Convert.ToHexString' and 'Convert.ToHexStringLower' over call chains based on 'BitConverter.ToString'.
+dotnet_diagnostic.CA1872.severity = warning
 
 ### Reliability Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/reliability-warnings
@@ -899,6 +962,12 @@ dotnet_diagnostic.CA2018.severity = warning
 
 # ThreadStatic fields should not use inline initialization.
 dotnet_diagnostic.CA2019.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
+# Don't call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types.
+dotnet_diagnostic.CA2021.severity = warning
+
+# Avoid inexact read with Stream.Read.
+dotnet_diagnostic.CA2022.severity = warning
 
 ### Security Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/security-warnings
@@ -970,6 +1039,9 @@ dotnet_diagnostic.CA2251.severity = warning
 
 # Ensure ThreadStatic is only used with static fields.
 dotnet_diagnostic.CA2259.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
+
+# Do not pass a non-nullable value to 'ArgumentNullException.ThrowIfNull'.
+dotnet_diagnostic.CA2264.severity = warning
 
 ### Roslynator.Analyzers
 ### https://josefpihrt.github.io/docs/roslynator/analyzers
