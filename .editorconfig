@@ -1049,6 +1049,9 @@ dotnet_diagnostic.CA2263.severity = none # TODO: Change to warning once mono is 
 # Do not pass a non-nullable value to 'ArgumentNullException.ThrowIfNull'.
 dotnet_diagnostic.CA2264.severity = warning
 
+# Do not compare 'Span<T>' to 'null' or 'default'.
+dotnet_diagnostic.CA2265.severity = warning
+
 ### Roslynator.Analyzers
 ### https://josefpihrt.github.io/docs/roslynator/analyzers
 

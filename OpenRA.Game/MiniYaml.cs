@@ -333,7 +333,7 @@ namespace OpenRA
 
 					// Note: We need to support empty comments here to ensure that empty comments
 					// (i.e. a lone # at the end of a line) can be correctly re-serialized
-					var commentString = comment == default ? null : comment.ToString();
+					var commentString = comment == ReadOnlySpan<char>.Empty ? null : comment.ToString();
 
 					keyString = keyString == null ? null : stringPool.GetOrAdd(keyString);
 					valueString = valueString == null ? null : stringPool.GetOrAdd(valueString);
