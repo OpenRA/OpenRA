@@ -913,6 +913,9 @@ dotnet_diagnostic.CA1858.severity = warning
 # Avoid using 'Enumerable.Any()' extension method.
 dotnet_diagnostic.CA1860.severity = warning
 
+# Use the 'StringComparison' method overloads to perform case-insensitive string comparisons.
+dotnet_diagnostic.CA1862.severity = warning
+
 # Use 'CompositeFormat'.
 dotnet_diagnostic.CA1863.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 

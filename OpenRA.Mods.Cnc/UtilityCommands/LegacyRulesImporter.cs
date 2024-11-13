@@ -130,7 +130,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					Console.WriteLine("\t\tIntoActor: " + undeploysInto);
 				}
 
-				if (artIni.Sections.Any(s => s.Name == building.ToLowerInvariant()))
+				var buildingLower = building.ToLowerInvariant();
+				if (artIni.Sections.Any(s => s.Name == buildingLower))
 				{
 					var artSection = artIni.GetSection(building);
 

@@ -336,7 +336,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 		public static bool IsAlreadyExtracted(string key)
 		{
+#pragma warning disable CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
 			if (key == key.ToLowerInvariant() && key.Any(c => c == '-') && key.All(c => c != ' '))
+#pragma warning restore CA1862
 			{
 				Console.WriteLine($"Skipping {key} because it is already extracted.");
 				return true;

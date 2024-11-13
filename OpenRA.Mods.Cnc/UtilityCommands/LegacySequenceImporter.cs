@@ -138,7 +138,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				Console.WriteLine("\t\tUseTilesetCode: false");
 			}
 
-			if (file.Sections.Any(s => s.Name == sequence.ToLowerInvariant()))
+			var sequenceLower = sequence.ToLowerInvariant();
+			if (file.Sections.Any(s => s.Name == sequenceLower))
 			{
 				var sequenceSection = file.GetSection(sequence);
 				var guard = sequenceSection.GetValue("Guard", string.Empty);
