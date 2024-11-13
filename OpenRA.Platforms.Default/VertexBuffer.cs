@@ -17,7 +17,7 @@ namespace OpenRA.Platforms.Default
 	sealed class VertexBuffer<T> : ThreadAffine, IDisposable, IVertexBuffer<T>
 			where T : struct
 	{
-		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
+		static readonly int VertexSize = Marshal.SizeOf<T>();
 		uint buffer;
 		bool disposed;
 

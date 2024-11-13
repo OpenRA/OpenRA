@@ -30,7 +30,7 @@ namespace OpenRA.Platforms.Default
 				if (surface == IntPtr.Zero)
 					throw new InvalidDataException($"Failed to create surface: {SDL.SDL_GetError()}");
 
-				var sur = (SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL.SDL_Surface));
+				var sur = Marshal.PtrToStructure<SDL.SDL_Surface>(surface);
 				Marshal.Copy(data, 0, sur.pixels, data.Length);
 
 				// This call very occasionally fails on Windows, but often works when retried.

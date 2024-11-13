@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common
 
 		public void Initialize(MiniYaml yaml)
 		{
-			Initialize((int)FieldLoader.GetValue(nameof(value), typeof(int), yaml.Value));
+			Initialize(FieldLoader.GetValue<int>(nameof(value), yaml.Value));
 		}
 
 		public void Initialize(int value)

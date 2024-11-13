@@ -1043,6 +1043,9 @@ dotnet_diagnostic.CA2251.severity = warning
 # Ensure ThreadStatic is only used with static fields.
 dotnet_diagnostic.CA2259.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
+# Prefer generic overload when type is known.
+dotnet_diagnostic.CA2263.severity = none # TODO: Change to warning once mono is dropped.
+
 # Do not pass a non-nullable value to 'ArgumentNullException.ThrowIfNull'.
 dotnet_diagnostic.CA2264.severity = warning
 
