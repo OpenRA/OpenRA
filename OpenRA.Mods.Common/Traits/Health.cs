@@ -60,47 +60,45 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyKilled[] notifyKilled;
 		INotifyKilled[] notifyKilledPlayer;
 
-		[Sync]
-		int hp;
-
 		public int DisplayHP { get; private set; }
 
 		public Health(ActorInitializer init, HealthInfo info)
 		{
 			Info = info;
-			MaxHP = hp = info.HP > 0 ? info.HP : 1;
+			MaxHP = HP = info.HP > 0 ? info.HP : 1;
 
 			// Cast to long to avoid overflow when multiplying by the health
 			var healthInit = init.GetOrDefault<HealthInit>();
 			if (healthInit != null)
-				hp = (int)(healthInit.Value * (long)MaxHP / 100);
+				HP = (int)(healthInit.Value * (long)MaxHP / 100);
 
-			DisplayHP = hp;
+			DisplayHP = HP;
 		}
 
-		public int HP => hp;
+		[Sync]
+		public int HP { get; private set; }
 		public int MaxHP { get; }
 
-		public bool IsDead => hp <= 0;
+		public bool IsDead => HP <= 0;
 		public bool RemoveOnDeath = true;
 
 		public DamageState DamageState
 		{
 			get
 			{
-				if (hp == MaxHP)
+				if (HP == MaxHP)
 					return DamageState.Undamaged;
 
-				if (hp <= 0)
+				if (HP <= 0)
 					return DamageState.Dead;
 
-				if (hp * 100L < MaxHP * 25L)
+				if (HP * 100L < MaxHP * 25L)
 					return DamageState.Critical;
 
-				if (hp * 100L < MaxHP * 50L)
+				if (HP * 100L < MaxHP * 50L)
 					return DamageState.Heavy;
 
-				if (hp * 100L < MaxHP * 75L)
+				if (HP * 100L < MaxHP * 75L)
 					return DamageState.Medium;
 
 				return DamageState.Light;
@@ -130,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsDead)
 				return;
 
-			hp = MaxHP;
+			HP = MaxHP;
 
 			var ai = new AttackInfo
 			{
@@ -188,7 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 				damage = new Damage((int)appliedDamage, damage.DamageTypes);
 			}
 
-			hp = (hp - damage.Value).Clamp(0, MaxHP);
+			HP = (HP - damage.Value).Clamp(0, MaxHP);
 
 			var ai = new AttackInfo
 			{
@@ -215,7 +213,7 @@ namespace OpenRA.Mods.Common.Traits
 					nd.AppliedDamage(attacker, self, ai);
 			}
 
-			if (hp == 0)
+			if (HP == 0)
 			{
 				foreach (var nd in notifyKilled)
 					nd.Killed(self, ai);
@@ -234,10 +232,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (hp >= DisplayHP)
-				DisplayHP = hp;
+			if (HP >= DisplayHP)
+				DisplayHP = HP;
 			else
-				DisplayHP = (2 * DisplayHP + hp) / 3;
+				DisplayHP = (2 * DisplayHP + HP) / 3;
 		}
 	}
 
