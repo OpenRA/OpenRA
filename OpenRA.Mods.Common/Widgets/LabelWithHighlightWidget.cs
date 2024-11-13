@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		(string, bool)[] MakeComponents(string text)
 		{
 			var components = new List<(string, bool)>();
-			foreach (var l in text.Split(new[] { "\\n" }, StringSplitOptions.None))
+			foreach (var l in text.Split("\\n", StringSplitOptions.None))
 			{
 				var line = l;
 

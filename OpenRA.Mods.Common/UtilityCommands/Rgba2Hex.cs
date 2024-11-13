@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		string IUtilityCommand.Name => "--rgba2hex";
 
-		static readonly char[] Comma = new char[] { ',' };
+		const char Comma = ',';
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		string IUtilityCommand.Name => "--argb2hex";
 
-		static readonly char[] Comma = new char[] { ',' };
+		const char Comma = ',';
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var hva = unit;
 			if (info.Value != null)
 			{
-				var fields = info.Value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+				var fields = info.Value.Split(',', StringSplitOptions.RemoveEmptyEntries);
 				if (fields.Length >= 1)
 					vxl = hva = fields[0].Trim();
 

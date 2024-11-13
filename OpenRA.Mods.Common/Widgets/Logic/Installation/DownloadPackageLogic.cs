@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var httpResponseMessage = await client.GetAsync(download.MirrorList);
 						var result = await httpResponseMessage.Content.ReadAsStringAsync();
 
-						var mirrorList = result.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+						var mirrorList = result.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 						DownloadUrl(mirrorList.Random(new MersenneTwister()));
 					}
 					catch (Exception e)
