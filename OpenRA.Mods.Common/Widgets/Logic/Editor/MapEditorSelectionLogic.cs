@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Traits;
@@ -34,8 +33,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LabelWidget DiagonalLabel;
 		public LabelWidget ResourceCounterLabel;
 
-		MapCopyFilters copyFilters = MapCopyFilters.All;
-		EditorClipboard? clipboard;
+		MapBlitFilters copyFilters = MapBlitFilters.All;
+		EditorBlitSource? clipboard;
 
 		[ObjectCreator.UseCtor]
 		public MapEditorSelectionLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -91,39 +90,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var closeAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_CANCEL_BUTTON");
 			closeAreaSelectionButton.OnClick = () => editor.DefaultBrush.ClearSelection(updateSelectedTab: true);
 
-			CreateCategoryPanel(MapCopyFilters.Terrain, copyTerrainCheckbox);
-			CreateCategoryPanel(MapCopyFilters.Resources, copyResourcesCheckbox);
-			CreateCategoryPanel(MapCopyFilters.Actors, copyActorsCheckbox);
+			CreateCategoryPanel(MapBlitFilters.Terrain, copyTerrainCheckbox);
+			CreateCategoryPanel(MapBlitFilters.Resources, copyResourcesCheckbox);
+			CreateCategoryPanel(MapBlitFilters.Actors, copyActorsCheckbox);
 		}
 
-		EditorClipboard CopySelectionContents()
+		EditorBlitSource CopySelectionContents()
 		{
-			var selection = editor.DefaultBrush.Selection.Area;
-			var source = new CellCoordsRegion(selection.TopLeft, selection.BottomRight);
-
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
-			var mapResources = map.Resources;
-
-			var previews = new Dictionary<string, EditorActorPreview>();
-			var tiles = new Dictionary<CPos, ClipboardTile>();
-
-			foreach (var cell in source)
-			{
-				if (!mapTiles.Contains(cell))
-					continue;
-
-				tiles.Add(cell, new ClipboardTile(mapTiles[cell], mapResources[cell], resourceLayer?.GetResource(cell), mapHeight[cell]));
-
-				if (copyFilters.HasFlag(MapCopyFilters.Actors))
-					foreach (var preview in editorActorLayer.PreviewsInCellRegion(selection.CellCoords))
-						previews.TryAdd(preview.ID, preview);
-			}
-
-			return new EditorClipboard(selection, previews, tiles);
+			return EditorBlit.CopyRegionContents(
+				map,
+				editorActorLayer,
+				resourceLayer,
+				editor.DefaultBrush.Selection.Area,
+				copyFilters);
 		}
 
-		void CreateCategoryPanel(MapCopyFilters copyFilter, CheckboxWidget checkbox)
+		void CreateCategoryPanel(MapBlitFilters copyFilter, CheckboxWidget checkbox)
 		{
 			checkbox.GetText = () => copyFilter.ToString();
 			checkbox.IsChecked = () => copyFilters.HasFlag(copyFilter);
