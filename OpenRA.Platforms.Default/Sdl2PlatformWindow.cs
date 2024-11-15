@@ -271,6 +271,10 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
 					surfaceSize = new Size(width, height);
 					windowScale = width * 1f / windowSize.Width;
+
+					// SDL expects OpenGL Context to be on the main thread on OSX by default.
+					// If this hint isn't set, window management calls will deadlock.
+					SDL.SDL_SetHint(SDL.SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH, "1");
 				}
 				else
 					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
