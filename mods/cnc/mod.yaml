@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: Mix
 
 FileSystem: ContentInstallerFileSystem
-	Packages:
+	SystemPackages:
 		^EngineDir
 		$cnc: cnc
 		^EngineDir|mods/common: common
@@ -30,6 +30,7 @@ FileSystem: ContentInstallerFileSystem
 		~content|scores-covertops.mix
 		~content|transit.mix
 		~content|general.mix
+		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
 		cnc|bits/snow.mix
 		cnc|bits
 		cnc|bits/jungle

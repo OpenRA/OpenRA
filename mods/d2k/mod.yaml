@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: D2kSoundResources
 
 FileSystem: ContentInstallerFileSystem
-	Packages:
+	SystemPackages:
 		^EngineDir
 		$d2k: d2k
 		^EngineDir|mods/common: common
@@ -21,8 +21,9 @@ FileSystem: ContentInstallerFileSystem
 		content|GAMESFX
 		~content|Music
 		~content|Movies
+		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
 		d2k|bits
-	ContentFiles:
+	RequiredContentFiles:
 		content|BLOXBASE.R16
 		content|BLOXBAT.R16
 		content|BLOXBGBS.R16

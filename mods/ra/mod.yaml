@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: Mix
 
 FileSystem: ContentInstallerFileSystem
-	Packages:
+	SystemPackages:
 		^EngineDir
 		$ra: ra
 		^EngineDir|mods/common: common
@@ -36,9 +36,10 @@ FileSystem: ContentInstallerFileSystem
 		~content|movies
 		~content|scores.mix
 		~content|general.mix
+		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
 		ra|bits
 		ra|bits/desert
-	ContentFiles:
+	RequiredContentFiles:
 		content|expand/chrotnk1.aud
 		content|expand/fixit1.aud
 		content|expand/jburn1.aud

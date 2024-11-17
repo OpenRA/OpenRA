@@ -13,23 +13,28 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.FileSystem
 {
+	[Desc("A file system that loads game assets installed by the user into their support directory.")]
 	public class ContentInstallerFileSystemLoader : IFileSystemLoader, IFileSystemExternalContent
 	{
 		[FieldLoader.Require]
+		[Desc("Mod to use for content installation.")]
 		public readonly string ContentInstallerMod = null;
 
 		[FieldLoader.Require]
-		public readonly Dictionary<string, string> Packages = null;
+		[Desc("A list of mod-provided packages. Anything required to display the initial load screen must be listed here.")]
+		public readonly Dictionary<string, string> SystemPackages = null;
 
+		[Desc("A list of user-installed packages. If missing (and not marked as optional), these will trigger the content installer.")]
 		public readonly Dictionary<string, string> ContentPackages = null;
 
-		public readonly Dictionary<string, string> ContentFiles = null;
+		[Desc("Files that aren't mounted as packages, but still need to trigger the content installer if missing.")]
+		public readonly Dictionary<string, string> RequiredContentFiles = null;
 
-		bool contentAvailable = true;
+		bool isContentAvailable = true;
 
 		public void Mount(OpenRA.FileSystem.FileSystem fileSystem, ObjectCreator objectCreator)
 		{
-			foreach (var kv in Packages)
+			foreach (var kv in SystemPackages)
 				fileSystem.Mount(kv.Key, kv.Value);
 
 			if (ContentPackages != null)
@@ -42,23 +47,23 @@ namespace OpenRA.Mods.Common.FileSystem
 					}
 					catch
 					{
-						contentAvailable = false;
+						isContentAvailable = false;
 					}
 				}
 			}
 
-			if (ContentFiles != null)
-				foreach (var kv in ContentFiles)
+			if (RequiredContentFiles != null)
+				foreach (var kv in RequiredContentFiles)
 					if (!fileSystem.Exists(kv.Key))
-						contentAvailable = false;
+						isContentAvailable = false;
 		}
 
 		bool IFileSystemExternalContent.InstallContentIfRequired(ModData modData)
 		{
-			if (!contentAvailable)
+			if (!isContentAvailable)
 				Game.InitializeMod(ContentInstallerMod, new Arguments());
 
-			return !contentAvailable;
+			return !isContentAvailable;
 		}
 	}
 }

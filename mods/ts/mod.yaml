@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: Mix
 
 FileSystem: ContentInstallerFileSystem
-	Packages:
+	SystemPackages:
 		^EngineDir
 		$ts: ts
 		^EngineDir|mods/common: common
@@ -38,6 +38,7 @@ FileSystem: ContentInstallerFileSystem
 		content|firestorm/e01vox02.mix
 		content|firestorm/ecache01.mix
 		~content|firestorm/scores01.mix
+		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
 		ts|bits
 	ContentInstallerMod: ts-content
 
