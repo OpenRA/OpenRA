@@ -13,8 +13,8 @@ FileSystem: ContentInstallerFileSystem
 		$ra: ra
 		^EngineDir|mods/common: common
 		~^SupportDir|Content/ra/v2/: content
-		ra|scripts
 		common|scripts
+		ra|scripts
 		ra|uibits
 	ContentPackages:
 		content|allies.mix

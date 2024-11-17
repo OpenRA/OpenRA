@@ -13,8 +13,8 @@ FileSystem: ContentInstallerFileSystem
 		$cnc: cnc
 		^EngineDir|mods/common: common
 		~^SupportDir|Content/cnc: content
-		cnc|scripts
 		common|scripts
+		cnc|scripts
 		cnc|uibits
 	ContentPackages:
 		content|speech.mix

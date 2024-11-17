@@ -13,8 +13,8 @@ FileSystem: ContentInstallerFileSystem
 		$d2k: d2k
 		^EngineDir|mods/common: common
 		~^SupportDir|Content/d2k/v3/: content
-		d2k|scripts
 		common|scripts
+		d2k|scripts
 		d2k|uibits
 	ContentPackages:
 		content|SOUND.RS
@@ -23,13 +23,13 @@ FileSystem: ContentInstallerFileSystem
 		~content|Movies
 		d2k|bits
 	ContentFiles:
-		content|DATA.R16
 		content|BLOXBASE.R16
 		content|BLOXBAT.R16
 		content|BLOXBGBS.R16
 		content|BLOXICE.R16
 		content|BLOXTREE.R16
 		content|BLOXWAST.R16
+		content|DATA.R16
 		content|MOUSE.R16
 		content|PALETTE.BIN
 	ContentInstallerMod: d2k-content
