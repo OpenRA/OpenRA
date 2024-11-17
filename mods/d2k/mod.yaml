@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: D2kSoundResources
 
 FileSystem: ContentInstallerFileSystem
-    Packages:
+	Packages:
 		^EngineDir
 		$d2k: d2k
 		^EngineDir|mods/common: common

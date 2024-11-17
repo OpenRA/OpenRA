@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: Mix
 
 FileSystem: ContentInstallerFileSystem
-    Packages:
+	Packages:
 		^EngineDir
 		$cnc: cnc
 		^EngineDir|mods/common: common

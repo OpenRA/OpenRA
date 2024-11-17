@@ -8,7 +8,7 @@ Metadata:
 PackageFormats: Mix
 
 FileSystem: ContentInstallerFileSystem
-    Packages:
+	Packages:
 		^EngineDir
 		$ts: ts
 		^EngineDir|mods/common: common
