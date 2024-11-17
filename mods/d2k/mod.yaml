@@ -19,6 +19,8 @@ FileSystem: ContentInstallerFileSystem
 	ContentPackages:
 		content|SOUND.RS
 		content|GAMESFX
+		~content|Music
+		~content|Movies
 		d2k|bits
 	ContentFiles:
 		content|DATA.R16
@@ -28,6 +30,7 @@ FileSystem: ContentInstallerFileSystem
 		content|BLOXICE.R16
 		content|BLOXTREE.R16
 		content|BLOXWAST.R16
+		content|MOUSE.R16
 		content|PALETTE.BIN
 	ContentInstallerMod: d2k-content
 
