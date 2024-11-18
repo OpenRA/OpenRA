@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				if (CachedTraitDisabled)
+				if (IsTraitDisabled)
 					return WDist.Zero;
 
 				var range = Util.ApplyPercentageModifiers(Info.Range.Length, rangeModifiers);
