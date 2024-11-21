@@ -889,7 +889,7 @@ namespace OpenRA.Server
 		public void ReceiveOrders(Connection conn, int frame, byte[] data)
 		{
 			// Make sure we don't accidentally forward on orders from clients who we have just dropped
-			if (!Conns.Contains(conn))
+			if (conn == null || !Conns.Contains(conn))
 				return;
 
 			if (frame == 0)
