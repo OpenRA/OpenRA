@@ -33,7 +33,6 @@ namespace OpenRA.Mods.Common.Activities
 			BlockedByActor.All,
 			BlockedByActor.Stationary,
 			BlockedByActor.Immovable,
-			BlockedByActor.None
 		];
 
 		int carryoverProgress;
