@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public AnnounceOnSeen(Actor self, AnnounceOnSeenInfo info)
 		{
 			Info = info;
-			radarPings = Exts.Lazy(() => self.World.WorldActor.Trait<RadarPings>());
+			radarPings = Exts.Lazy(self.World.WorldActor.Trait<RadarPings>);
 		}
 
 		public void OnDiscovered(Actor self, Player discoverer, bool playNotification)

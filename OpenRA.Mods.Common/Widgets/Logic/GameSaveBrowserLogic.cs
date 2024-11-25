@@ -118,8 +118,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				saveWidgets.IsVisible = () => true;
 
 				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
-				saveTextField.OnEnterKey = input => saveButton.HandleKeyPress(input);
-				saveTextField.OnEscKey = input => cancelButton.HandleKeyPress(input);
+				saveTextField.OnEnterKey = saveButton.HandleKeyPress;
+				saveTextField.OnEscKey = cancelButton.HandleKeyPress;
 			}
 			else
 			{
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var savePaths = Directory.GetFiles(baseSavePath, "*.orasav", SearchOption.AllDirectories)
-				.OrderByDescending(p => File.GetLastWriteTime(p))
+				.OrderByDescending(File.GetLastWriteTime)
 				.ToList();
 
 			foreach (var savePath in savePaths)

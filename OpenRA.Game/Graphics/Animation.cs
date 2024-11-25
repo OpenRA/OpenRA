@@ -252,7 +252,7 @@ namespace OpenRA.Graphics
 
 		public string GetRandomExistingSequence(string[] sequences, MersenneTwister random)
 		{
-			return sequences.Where(s => HasSequence(s)).RandomOrDefault(random);
+			return sequences.Where(HasSequence).RandomOrDefault(random);
 		}
 	}
 }

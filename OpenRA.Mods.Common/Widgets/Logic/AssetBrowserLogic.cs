@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.OnTextEdited = () => ApplyFilter();
+			filenameInput.OnTextEdited = ApplyFilter;
 			filenameInput.OnEscKey = _ =>
 			{
 				if (string.IsNullOrEmpty(filenameInput.Text))

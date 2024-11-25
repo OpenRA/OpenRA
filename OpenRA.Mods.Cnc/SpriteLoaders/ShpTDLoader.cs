@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		public static void Write(Stream s, Size size, IEnumerable<byte[]> frames)
 		{
-			var compressedFrames = frames.Select(f => LCWCompression.Encode(f)).ToList();
+			var compressedFrames = frames.Select(LCWCompression.Encode).ToList();
 
 			// note: end-of-file and all-zeroes headers
 			var dataOffset = 14 + (compressedFrames.Count + 2) * 8;

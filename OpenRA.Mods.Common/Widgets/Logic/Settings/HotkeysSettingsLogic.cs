@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				contexts.UnionWith(hd.Contexts);
 
 			filterInput = panel.Get<TextFieldWidget>("FILTER_INPUT");
-			filterInput.OnTextEdited = () => InitHotkeyList();
+			filterInput.OnTextEdited = InitHotkeyList;
 			filterInput.OnEscKey = _ =>
 			{
 				if (string.IsNullOrEmpty(filterInput.Text))

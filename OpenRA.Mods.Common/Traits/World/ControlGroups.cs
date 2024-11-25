@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var n in groupsNode.Value.Nodes)
 				{
 					var group = FieldLoader.GetValue<uint[]>(n.Key, n.Value.Value)
-						.Select(a => self.World.GetActorById(a)).Where(a => a != null);
+						.Select(self.World.GetActorById).Where(a => a != null);
 					controlGroups[Exts.ParseInt32Invariant(n.Key)].AddRange(group);
 				}
 			}

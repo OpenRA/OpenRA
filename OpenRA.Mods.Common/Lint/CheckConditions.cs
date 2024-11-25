@@ -42,19 +42,19 @@ namespace OpenRA.Mods.Common.Lint
 					var properties = trait.GetType().GetProperties();
 
 					var fieldConsumed = fields
-						.Where(x => Utility.HasAttribute<ConsumedConditionReferenceAttribute>(x))
+						.Where(Utility.HasAttribute<ConsumedConditionReferenceAttribute>)
 						.SelectMany(f => LintExts.GetFieldValues(trait, f));
 
 					var propertyConsumed = properties
-						.Where(x => Utility.HasAttribute<ConsumedConditionReferenceAttribute>(x))
+						.Where(Utility.HasAttribute<ConsumedConditionReferenceAttribute>)
 						.SelectMany(p => LintExts.GetPropertyValues(trait, p));
 
 					var fieldGranted = fields
-						.Where(x => Utility.HasAttribute<GrantedConditionReferenceAttribute>(x))
+						.Where(Utility.HasAttribute<GrantedConditionReferenceAttribute>)
 						.SelectMany(f => LintExts.GetFieldValues(trait, f));
 
 					var propertyGranted = properties
-						.Where(x => Utility.HasAttribute<GrantedConditionReferenceAttribute>(x))
+						.Where(Utility.HasAttribute<GrantedConditionReferenceAttribute>)
 						.SelectMany(f => LintExts.GetPropertyValues(trait, f));
 
 					foreach (var c in fieldConsumed.Concat(propertyConsumed))

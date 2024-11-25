@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var templates = new List<TerrainTemplateInfo>();
 				var segments = Start.Union(Inner).Union(End).ToHashSet();
 				foreach (var template in TemplatedTerrainInfo.Templates.Values.OrderBy(tti => tti.Id))
-					if (template.Segments.Any(segment => segments.Contains(segment)))
+					if (template.Segments.Any(segments.Contains))
 						templates.Add(template);
 				return templates;
 			}

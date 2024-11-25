@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (runtimeCargoInit != null)
 			{
 				cargo = runtimeCargoInit.Value.ToList();
-				totalWeight = cargo.Sum(c => GetWeight(c));
+				totalWeight = cargo.Sum(GetWeight);
 			}
 			else if (cargoInit != null)
 			{
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 					cargo.Add(unit);
 				}
 
-				totalWeight = cargo.Sum(c => GetWeight(c));
+				totalWeight = cargo.Sum(GetWeight);
 			}
 			else
 			{
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 					cargo.Add(unit);
 				}
 
-				totalWeight = cargo.Sum(c => GetWeight(c));
+				totalWeight = cargo.Sum(GetWeight);
 			}
 
 			facing = Exts.Lazy(self.TraitOrDefault<IFacing>);

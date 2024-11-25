@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var unitsNode = yaml.NodeWithKeyOrDefault("Units");
 			if (unitsNode != null)
 				squad.Units.UnionWith(FieldLoader.GetValue<uint[]>("Units", unitsNode.Value.Value)
-					.Select(a => squadManager.World.GetActorById(a)));
+					.Select(squadManager.World.GetActorById));
 
 			return squad;
 		}

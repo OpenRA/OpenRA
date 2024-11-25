@@ -70,7 +70,7 @@ namespace OpenRA.Graphics
 			renderers = world.WorldActor.TraitsImplementing<IRenderer>().ToArray();
 			terrainRenderer = world.WorldActor.TraitOrDefault<IRenderTerrain>();
 
-			debugVis = Exts.Lazy(() => world.WorldActor.TraitOrDefault<DebugVisualizations>());
+			debugVis = Exts.Lazy(world.WorldActor.TraitOrDefault<DebugVisualizations>);
 
 			postProcessPasses = world.WorldActor.TraitsImplementing<IRenderPostProcessPass>().ToArray();
 		}

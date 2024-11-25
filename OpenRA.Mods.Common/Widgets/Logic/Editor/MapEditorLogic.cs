@@ -48,9 +48,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var actionManager = world.WorldActor.Trait<EditorActionManager>();
 				undoButton.IsDisabled = () => !actionManager.HasUndos();
-				undoButton.OnClick = () => actionManager.Undo();
+				undoButton.OnClick = actionManager.Undo;
 				redoButton.IsDisabled = () => !actionManager.HasRedos();
-				redoButton.OnClick = () => actionManager.Redo();
+				redoButton.OnClick = actionManager.Redo;
 			}
 		}
 	}

@@ -81,11 +81,11 @@ namespace OpenRA.Platforms.Default
 					context.InitializeOpenGL();
 
 					doClear = () => { context.Clear(); return null; };
-					doClearDepthBuffer = () => context.ClearDepthBuffer();
-					doDisableDepthBuffer = () => context.DisableDepthBuffer();
-					doEnableDepthBuffer = () => context.EnableDepthBuffer();
-					doDisableScissor = () => context.DisableScissor();
-					doPresent = () => context.Present();
+					doClearDepthBuffer = context.ClearDepthBuffer;
+					doDisableDepthBuffer = context.DisableDepthBuffer;
+					doEnableDepthBuffer = context.EnableDepthBuffer;
+					doDisableScissor = context.DisableScissor;
+					doPresent = context.Present;
 					getGLVersion = () => context.GLVersion;
 					getCreateTexture = () => new ThreadedTexture(this, (ITextureInternal)context.CreateTexture());
 					getCreateFrameBuffer =
@@ -659,7 +659,7 @@ namespace OpenRA.Platforms.Default
 			setScaleFilter = value => texture.ScaleFilter = (TextureScaleFilter)value;
 			getSize = () => texture.Size;
 			setEmpty = tuple => { var t = ((int, int))tuple; texture.SetEmpty(t.Item1, t.Item2); };
-			getData = () => texture.GetData();
+			getData = texture.GetData;
 			setData1 = tuple => { var t = ((byte[], int, int))tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
 			setData2 = tuple => { setData1(tuple); return null; };
 			setData3 = tuple => { var t = ((float[], int, int))tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };

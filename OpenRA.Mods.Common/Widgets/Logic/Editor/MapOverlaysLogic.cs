@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var cat in allCategories)
 			{
 				var category = categoryTemplate.Clone();
-				category.GetText = () => cat.ToString();
+				category.GetText = cat.ToString;
 				category.IsVisible = () => true;
 
 				if (cat.HasFlag(MapOverlays.Grid))

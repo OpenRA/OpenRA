@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return 0;
 			}
 
-			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => MakeColor(i))));
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(MakeColor)));
 		}
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }

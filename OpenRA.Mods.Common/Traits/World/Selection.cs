@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (selectionNode != null)
 			{
 				var selected = FieldLoader.GetValue<uint[]>("Selection", selectionNode.Value.Value)
-					.Select(a => self.World.GetActorById(a)).Where(a => a != null);
+					.Select(self.World.GetActorById).Where(a => a != null);
 				Combine(self.World, selected, false, false);
 			}
 		}

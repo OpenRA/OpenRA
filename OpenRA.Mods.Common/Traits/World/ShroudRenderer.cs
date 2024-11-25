@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (newShroud != null)
 				{
-					cellVisibility = puv => newShroud.GetVisibility(puv);
+					cellVisibility = newShroud.GetVisibility;
 					newShroud.OnShroudChanged += UpdateShroudCell;
 				}
 				else

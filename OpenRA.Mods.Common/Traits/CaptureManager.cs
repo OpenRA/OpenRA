@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IDisableEnemyAutoTarget.DisableEnemyAutoTarget(Actor self, Actor attacker)
 		{
-			return info.PreventsAutoTarget && currentCaptors.Any(c => attacker.AppearsFriendlyTo(c));
+			return info.PreventsAutoTarget && currentCaptors.Any(attacker.AppearsFriendlyTo);
 		}
 	}
 }

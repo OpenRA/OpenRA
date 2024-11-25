@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				case TextFieldType.Integer:
-					return new string(input.Where(c => char.IsDigit(c)).ToArray());
+					return new string(input.Where(char.IsDigit).ToArray());
 
 				default:
 					return input;

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType());
-					foreach (var field in fields.Where(x => Utility.HasAttribute<NotificationReferenceAttribute>(x)))
+					foreach (var field in fields.Where(Utility.HasAttribute<NotificationReferenceAttribute>))
 					{
 						string type = null;
 						var notificationReference = Utility.GetCustomAttributes<NotificationReferenceAttribute>(field, true).First();

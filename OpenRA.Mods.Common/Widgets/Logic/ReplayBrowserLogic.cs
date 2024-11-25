@@ -793,7 +793,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var item = ScrollItemWidget.Setup(template,
 				() => selectedReplay == replay,
 				() => SelectReplay(replay),
-				() => WatchReplay());
+				WatchReplay);
 
 			replayState[replay] = new ReplayState
 			{

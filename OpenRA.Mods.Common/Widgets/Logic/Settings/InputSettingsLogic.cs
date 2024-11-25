@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL_TYPE_DROPDOWN");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
-			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+			mouseScrollDropdown.GetText = gs.MouseScroll.ToString;
 
 			var mouseControlDescClassic = panel.Get("MOUSE_CONTROL_DESC_CLASSIC");
 			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
 			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
-			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
+			zoomModifierDropdown.GetText = gs.ZoomModifier.ToString;
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 

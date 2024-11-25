@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(self, info)
 		{
 			Info = info;
-			coords = Exts.Lazy(() => self.Trait<BodyOrientation>());
+			coords = Exts.Lazy(self.Trait<BodyOrientation>);
 			armaments = new List<Armament>();
 			muzzles = new List<AnimationWithOffset>();
 			paxFacing = new Dictionary<Actor, IFacing>();

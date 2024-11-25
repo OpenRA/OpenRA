@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var w in modData.ObjectCreator.GetTypesImplementing<Widget>())
 			{
-				foreach (var m in w.GetMethods().Where(m => Utility.HasAttribute<CustomLintableHotkeyNames>(m)))
+				foreach (var m in w.GetMethods().Where(Utility.HasAttribute<CustomLintableHotkeyNames>))
 				{
 					var p = m.GetParameters();
 					if (p.Length == 3 && p[0].ParameterType == typeof(MiniYamlNode) && p[1].ParameterType == typeof(Action<string>)

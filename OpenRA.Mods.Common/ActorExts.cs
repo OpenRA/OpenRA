@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common
 
 		public static void NotifyBlocker(this Actor self, IEnumerable<CPos> positions)
 		{
-			NotifyBlocker(self, positions.SelectMany(p => self.World.ActorMap.GetActorsAt(p)));
+			NotifyBlocker(self, positions.SelectMany(self.World.ActorMap.GetActorsAt));
 		}
 
 		public static CPos ClosestCell(this Actor self, IEnumerable<CPos> cells)

@@ -265,7 +265,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						slider.GetValue = () => so.GetValue(SelectedActor);
 						slider.OnChange += value => so.OnChange(SelectedActor, value);
-						slider.OnChange += value => editorActionHandle.OnChange(value);
+						slider.OnChange += editorActionHandle.OnChange;
 
 						var valueField = sliderContainer.GetOrNull<TextFieldWidget>("VALUE");
 						if (valueField != null)

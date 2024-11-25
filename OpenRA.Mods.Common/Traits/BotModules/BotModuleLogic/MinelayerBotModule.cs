@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (minelayers.Length == 0)
 							return;
 
-						var enemies = world.Actors.Where(a => IsPreferredEnemyUnit(a)).ToArray();
+						var enemies = world.Actors.Where(IsPreferredEnemyUnit).ToArray();
 						if (enemies.Length == 0)
 							return;
 

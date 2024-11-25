@@ -553,14 +553,14 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				unitsHangingAroundTheBase.Clear();
 				unitsHangingAroundTheBase.AddRange(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value)
-					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
+					.Select(self.World.GetActorById).Where(a => a != null));
 			}
 
 			if (nodes.TryGetValue("ActiveUnits", out var activeUnitsNode))
 			{
 				activeUnits.Clear();
 				activeUnits.UnionWith(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value)
-					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
+					.Select(self.World.GetActorById).Where(a => a != null));
 			}
 
 			if (nodes.TryGetValue("RushTicks", out var rushTicksNode))

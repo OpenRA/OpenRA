@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = Utility.GetFields(traitInfo.GetType()).Where(f => Utility.HasAttribute<VoiceSetReferenceAttribute>(f));
+					var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<VoiceSetReferenceAttribute>);
 					foreach (var field in fields)
 					{
 						var voiceSets = LintExts.GetFieldValues(traitInfo, field);
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 			{
-				var fields = Utility.GetFields(traitInfo.GetType()).Where(f => Utility.HasAttribute<VoiceReferenceAttribute>(f));
+				var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<VoiceReferenceAttribute>);
 				foreach (var field in fields)
 				{
 					var voices = LintExts.GetFieldValues(traitInfo, field);

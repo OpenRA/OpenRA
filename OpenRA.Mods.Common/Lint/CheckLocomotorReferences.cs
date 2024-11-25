@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = Utility.GetFields(traitInfo.GetType()).Where(f => Utility.HasAttribute<LocomotorReferenceAttribute>(f));
+					var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<LocomotorReferenceAttribute>);
 					foreach (var field in fields)
 					{
 						var locomotors = LintExts.GetFieldValues(traitInfo, field);

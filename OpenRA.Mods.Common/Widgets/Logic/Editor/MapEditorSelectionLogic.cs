@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateCategoryPanel(MapBlitFilters copyFilter, CheckboxWidget checkbox)
 		{
-			checkbox.GetText = () => copyFilter.ToString();
+			checkbox.GetText = copyFilter.ToString;
 			checkbox.IsChecked = () => selectionFilters.HasFlag(copyFilter);
 			checkbox.IsVisible = () => true;
 			checkbox.OnClick = () => selectionFilters ^= copyFilter;

@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var ratio = Common.Util.RandomInRange(world.LocalRandom, info.Ratio);
 			var positions = cells.Shuffle(world.LocalRandom)
 				.Take(Math.Max(1, cells.Count * ratio / 100))
-				.Select(x => world.Map.CenterOfCell(x));
+				.Select(world.Map.CenterOfCell);
 
 			foreach (var position in positions)
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(position, w, info.Image, info.Sequences.Random(w.LocalRandom), info.Palette)));

@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (buildingInfo != null)
 				{
 					var footprint = buildingInfo.PathableTiles(target.Location);
-					if (footprint.All(c => self.World.ShroudObscures(c)))
+					if (footprint.All(self.World.ShroudObscures))
 						return false;
 				}
 

@@ -63,7 +63,7 @@ dotnet_diagnostic.IDE0161.severity = warning
 
 # IDE0200 Remove unnecessary lambda expression
 #csharp_style_prefer_method_group_conversion = true
-dotnet_diagnostic.IDE0200.severity = suggestion # TODO: Consider enabling
+dotnet_diagnostic.IDE0200.severity = warning
 
 # IDE0210 Convert to top-level statements/IDE0211 Convert to 'Program.Main' style program
 csharp_style_prefer_top_level_statements = false

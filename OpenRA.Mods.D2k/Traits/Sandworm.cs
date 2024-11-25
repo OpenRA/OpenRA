@@ -85,7 +85,7 @@ namespace OpenRA.Mods.D2k.Traits
 			// If close enough, we don't care about other actors.
 			var target = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.IgnoreNoiseAttackRange)
 				.WithPathFrom(self)
-				.Select(t => Target.FromActor(t))
+				.Select(Target.FromActor)
 				.FirstOrDefault(t => attackTrait.HasAnyValidWeapons(t));
 
 			if (target.Type == TargetType.Actor)

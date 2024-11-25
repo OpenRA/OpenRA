@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
-			health = Exts.Lazy(() => self.TraitOrDefault<IHealth>());
+			health = Exts.Lazy(self.TraitOrDefault<IHealth>);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
