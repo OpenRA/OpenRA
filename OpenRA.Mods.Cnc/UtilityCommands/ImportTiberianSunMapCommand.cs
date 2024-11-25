@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -208,6 +209,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x65, DamageState.Undamaged },
 		};
 
+		[SuppressMessage("Style", "IDE0230:Use UTF-8 string literal", Justification = "False positive")]
 		protected override Dictionary<byte, byte[]> ResourceFromOverlay { get; } = new()
 		{
 			// "tib" - Regular Tiberium

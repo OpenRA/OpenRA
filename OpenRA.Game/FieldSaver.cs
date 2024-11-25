@@ -95,7 +95,7 @@ namespace OpenRA
 					var formattedKey = FormatValue(key);
 					var formattedValue = FormatValue(value);
 
-					result.Append($"{formattedKey}: {formattedValue}{Environment.NewLine}");
+					result.Append(CultureInfo.InvariantCulture, $"{formattedKey}: {formattedValue}{Environment.NewLine}");
 				}
 
 				return result.ToString();

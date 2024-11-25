@@ -5,7 +5,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
-    <LangVersion>9</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <EngineRootPath Condition="'$(EngineRootPath)' == ''">..</EngineRootPath>
     <OutputPath>$(EngineRootPath)/bin</OutputPath>
@@ -52,7 +52,7 @@
 
   <!-- StyleCop/Roslynator -->
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="All" />
     <PackageReference Include="Roslynator.Analyzers" Version="4.2.0" PrivateAssets="All" />
     <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.2.0" PrivateAssets="All" />
   </ItemGroup>

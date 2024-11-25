@@ -100,7 +100,7 @@ namespace OpenRA.Scripting
 		public LuaValue Get(LuaRuntime runtime)
 		{
 			if (IsMethod)
-				return runtime.CreateFunctionFromDelegate((Func<LuaVararg, LuaValue>)Invoke);
+				return runtime.CreateFunctionFromDelegate(Invoke);
 
 			if (IsGetProperty)
 				return ((PropertyInfo)Member).GetValue(Target, null).ToLuaValue(context);

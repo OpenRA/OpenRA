@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using OpenRA.Mods.Common.Traits;
@@ -237,7 +238,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var descriptionBuilder = new StringBuilder();
 					foreach (var variable in config.Variables)
-						descriptionBuilder.Append($"  {variable}={iterationChoices[variable]}\n");
+						descriptionBuilder.Append(CultureInfo.InvariantCulture, $"  {variable}={iterationChoices[variable]}\n");
 
 					if (!config.NoDefaults)
 						descriptionBuilder.Append("  (+Defaults)\n");

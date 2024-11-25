@@ -63,7 +63,7 @@ dotnet_diagnostic.IDE0161.severity = warning
 
 # IDE0200 Remove unnecessary lambda expression
 #csharp_style_prefer_method_group_conversion = true
-dotnet_diagnostic.IDE0200.severity = silent # Requires C# 11
+dotnet_diagnostic.IDE0200.severity = suggestion # TODO: Consider enabling
 
 # IDE0210 Convert to top-level statements/IDE0211 Convert to 'Program.Main' style program
 csharp_style_prefer_top_level_statements = false
@@ -72,7 +72,7 @@ dotnet_diagnostic.IDE0211.severity = warning
 
 # IDE0290 Use primary constructor
 #csharp_style_prefer_primary_constructors = true
-dotnet_diagnostic.IDE0200.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0290.severity = suggestion # TODO: Consider enabling
 
 # IDE0330 Prefer 'System.Threading.Lock'
 #csharp_prefer_system_threading_lock = true
@@ -138,7 +138,7 @@ dotnet_diagnostic.IDE0017.severity = warning
 
 # IDE0028 Use collection initializers
 #dotnet_style_collection_initializer = true
-dotnet_diagnostic.IDE0028.severity = warning
+dotnet_diagnostic.IDE0028.severity = suggestion # TODO: Consider enabling
 
 # IDE0029/IDE0030/IDE0270 Use coalesce expression (non-nullable types)/Use coalesce expression (nullable types)/Use coalesce expression (if null)
 #dotnet_style_coalesce_expression = true
@@ -292,7 +292,7 @@ dotnet_diagnostic.IDE0220.severity = warning
 
 # IDE0230 Use UTF-8 string literal
 #csharp_style_prefer_utf8_string_literals = true
-dotnet_diagnostic.IDE0230.severity = silent # Requires C# 11
+dotnet_diagnostic.IDE0230.severity = warning
 
 # IDE0240 Nullable directive is redundant
 # No options
@@ -308,27 +308,27 @@ dotnet_diagnostic.IDE0241.severity = warning
 
 # IDE0300 Use collection expression for array
 # From above, uses dotnet_style_prefer_collection_expression
-dotnet_diagnostic.IDE0300.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0300.severity = suggestion # TODO: Consider enabling
 
 # IDE0301 Use collection expression for empty
 # From above, uses dotnet_style_prefer_collection_expression
-dotnet_diagnostic.IDE0301.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0301.severity = suggestion # TODO: Consider enabling
 
 # IDE0302 Use collection expression for stackalloc
 # From above, uses dotnet_style_prefer_collection_expression
-dotnet_diagnostic.IDE0302.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0302.severity = suggestion # TODO: Consider enabling
 
 # IDE0303 Use collection expression for 'Create()'
 # From above, uses dotnet_style_prefer_collection_expression
-dotnet_diagnostic.IDE0303.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0303.severity = suggestion # TODO: Consider enabling
 
 # IDE0304 Use collection expression for builder
 # From above, uses dotnet_style_prefer_collection_expression
-dotnet_diagnostic.IDE0304.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0304.severity = suggestion # TODO: Consider enabling
 
 # IDE0305 Use collection expression for fluent
 # From above, uses dotnet_style_prefer_collection_expression
-dotnet_diagnostic.IDE0305.severity = silent # Requires C# 12
+dotnet_diagnostic.IDE0305.severity = suggestion # TODO: Consider enabling
 
 ## Field preferences
 
@@ -387,7 +387,7 @@ dotnet_diagnostic.IDE0060.severity = warning
 
 # IDE0280 Use 'nameof'
 # No options
-dotnet_diagnostic.IDE0280.severity = silent # Requires C# 11
+dotnet_diagnostic.IDE0280.severity = warning
 
 ## Parentheses preferences
 
@@ -426,7 +426,7 @@ dotnet_diagnostic.IDE0083.severity = warning
 
 # IDE0170 Simplify property pattern
 #csharp_style_prefer_extended_property_pattern = true
-dotnet_diagnostic.IDE0170.severity = silent # Requires C# 10
+dotnet_diagnostic.IDE0170.severity = warning
 
 ## Suppression preferences
 

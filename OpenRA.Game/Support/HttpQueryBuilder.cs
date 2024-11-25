@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace OpenRA.Support
@@ -40,7 +41,7 @@ namespace OpenRA.Support
 			builder.Append('?');
 
 			foreach (var parameter in parameters)
-				builder.Append($"{parameter.Key}={parameter.Value}&");
+				builder.Append(CultureInfo.InvariantCulture, $"{parameter.Key}={parameter.Value}&");
 
 			return builder.ToString();
 		}

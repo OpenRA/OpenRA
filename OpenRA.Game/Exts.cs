@@ -482,7 +482,7 @@ namespace OpenRA
 				var badKeysFormatted = new StringBuilder(
 					$"{debugName}, duplicate values found for the following keys: ");
 				foreach (var p in dupKeys)
-					badKeysFormatted.Append($"{logKey(p.Key)}: [{string.Join(",", p.Value)}]");
+					badKeysFormatted.Append(CultureInfo.InvariantCulture, $"{logKey(p.Key)}: [{string.Join(",", p.Value)}]");
 				throw new ArgumentException(badKeysFormatted.ToString());
 			}
 		}

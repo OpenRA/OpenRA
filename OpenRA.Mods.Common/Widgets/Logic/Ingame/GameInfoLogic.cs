@@ -157,8 +157,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			Game.LoadWidget(world, "LOBBY_OPTIONS_PANEL", optionsPanelContainer, new WidgetArgs()
 			{
-				{ "getMap", (Func<MapPreview>)(() => modData.MapCache[world.Map.Uid]) },
-				{ "configurationDisabled", (Func<bool>)(() => true) }
+				{ "getMap", () => modData.MapCache[world.Map.Uid] },
+				{ "configurationDisabled", () => true }
 			});
 		}
 

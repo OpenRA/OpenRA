@@ -204,7 +204,7 @@ namespace OpenRA.Scripting
 
 			runtime.Globals["MaxUserScriptInstructions"] = MaxUserScriptInstructions;
 
-			using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
+			using (var fn = runtime.CreateFunctionFromDelegate(LogDebugMessage))
 				runtime.Globals["print"] = fn;
 
 			// Register global tables
