@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class SkirmishLogic : ServerTrait, IClientJoined, INotifySyncLobbyInfo
 	{
-		class SkirmishSlot
+		sealed class SkirmishSlot
 		{
 			[FieldLoader.Serialize(FromYamlKey = true)]
 			public readonly string Slot;

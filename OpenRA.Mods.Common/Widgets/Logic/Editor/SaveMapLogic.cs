@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var visOptionTemplate = visibilityPanel.Get<CheckboxWidget>("VISIBILITY_TEMPLATE");
 			visibilityPanel.RemoveChildren();
 
-			foreach (MapVisibility visibilityOption in Enum.GetValues(typeof(MapVisibility)))
+			foreach (var visibilityOption in Enum.GetValues<MapVisibility>())
 			{
 				// To prevent users from breaking the game only show the 'Shellmap' option when it is already set.
 				if (visibilityOption == MapVisibility.Shellmap && !map.Visibility.HasFlag(visibilityOption))
@@ -311,8 +311,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			try
 			{
-				if (package == null)
-					throw new ArgumentNullException(nameof(package));
+				ArgumentNullException.ThrowIfNull(package);
 
 				map.Save(package);
 

@@ -502,7 +502,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		class Keys
+		sealed class Keys
 		{
 			readonly HashSet<string> keys = new();
 			readonly List<(string Key, string Context)> keysWithContext = new();

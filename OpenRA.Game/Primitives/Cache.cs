@@ -21,8 +21,7 @@ namespace OpenRA.Primitives
 
 		public Cache(Func<T, U> loader, IEqualityComparer<T> c)
 		{
-			if (loader == null)
-				throw new ArgumentNullException(nameof(loader));
+			ArgumentNullException.ThrowIfNull(loader);
 
 			this.loader = loader;
 			cache = new Dictionary<T, U>(c);

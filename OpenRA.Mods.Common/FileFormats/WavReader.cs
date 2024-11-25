@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.FileFormats
 						var audioFormat = s.ReadInt16();
 						audioType = (WaveType)audioFormat;
 
-						if (!Enum.IsDefined(typeof(WaveType), audioType))
+						if (!Enum.IsDefined(audioType))
 							throw new NotSupportedException($"Compression type {audioFormat} is not supported.");
 
 						channels = s.ReadInt16();

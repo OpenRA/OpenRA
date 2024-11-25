@@ -21,8 +21,7 @@ namespace OpenRA
 
 		public ActorInfoDictionary(IReadOnlyDictionary<string, ActorInfo> dict)
 		{
-			if (dict == null)
-				throw new ArgumentNullException(nameof(dict));
+			ArgumentNullException.ThrowIfNull(dict);
 
 			this.dict = new Dictionary<string, ActorInfo>(dict);
 		}

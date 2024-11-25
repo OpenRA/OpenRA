@@ -359,8 +359,7 @@ namespace OpenRA
 		public bool PlayPredefined(SoundType soundType, Ruleset ruleset, Player player, Actor voicedActor, string type, string definition, string variant,
 			bool relative, WPos pos, float volumeModifier, bool attenuateVolume)
 		{
-			if (ruleset == null)
-				throw new ArgumentNullException(nameof(ruleset));
+			ArgumentNullException.ThrowIfNull(ruleset);
 
 			if (definition == null || DisableAllSounds || (DisableWorldSounds && soundType == SoundType.World))
 				return false;
@@ -460,8 +459,7 @@ namespace OpenRA
 
 		public bool PlayNotification(Ruleset rules, Player player, string type, string notification, string variant)
 		{
-			if (rules == null)
-				throw new ArgumentNullException(nameof(rules));
+			ArgumentNullException.ThrowIfNull(rules);
 
 			if (type == null || notification == null)
 				return false;

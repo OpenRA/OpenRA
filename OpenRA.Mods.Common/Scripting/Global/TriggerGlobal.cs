@@ -567,7 +567,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"so you must not add new triggers at the same time that you are calling this function.")]
 		public void Clear(Actor actor, string triggerName)
 		{
-			var trigger = (Trigger)Enum.Parse(typeof(Trigger), triggerName);
+			var trigger = Enum.Parse<Trigger>(triggerName);
 
 			if (actor == null)
 				throw new NullReferenceException(nameof(actor));

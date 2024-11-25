@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class PaintMarkerTileEditorAction : IEditorAction
+	sealed class PaintMarkerTileEditorAction : IEditorAction
 	{
 		[FluentReference("amount", "type")]
 		const string AddedMarkerTiles = "notification-added-marker-tiles";
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class ClearSelectedMarkerTilesEditorAction : IEditorAction
+	sealed class ClearSelectedMarkerTilesEditorAction : IEditorAction
 	{
 		[FluentReference("amount", "type")]
 		const string ClearedSelectedMarkerTiles = "notification-cleared-selected-marker-tiles";
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class ClearAllMarkerTilesEditorAction : IEditorAction
+	sealed class ClearAllMarkerTilesEditorAction : IEditorAction
 	{
 		[FluentReference("amount")]
 		const string ClearedAllMarkerTiles = "notification-cleared-all-marker-tiles";
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.markerLayerOverlay = markerLayerOverlay;
 			tiles = new Dictionary<int, HashSet<CPos>>(markerLayerOverlay.Tiles);
 
-			var allTilesCount = tiles.Values.Select(x => x.Count).Sum();
+			var allTilesCount = tiles.Values.Sum(x => x.Count);
 
 			Text = FluentProvider.GetMessage(ClearedAllMarkerTiles, "amount", allTilesCount);
 		}

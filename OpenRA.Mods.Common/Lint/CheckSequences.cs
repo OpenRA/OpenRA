@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Lint
 					{
 						// Remove the "Info" suffix.
 						var traitName = traitInfo.GetType().Name;
-						traitName = traitName.Remove(traitName.Length - 4);
+						traitName = traitName[..^4];
 
 						var fields = Utility.GetFields(traitInfo.GetType());
 						foreach (var field in fields)

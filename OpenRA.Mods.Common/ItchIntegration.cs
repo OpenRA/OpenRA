@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common
 {
 	public class ItchIntegration : IGlobalModData
 	{
-		class User
+		sealed class User
 		{
 			[JsonProperty("url")]
 			public string Url { get; set; }
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common
 			public string DisplayName { get; set; }
 		}
 
-		class Root
+		sealed class Root
 		{
 			public User User { get; set; }
 		}

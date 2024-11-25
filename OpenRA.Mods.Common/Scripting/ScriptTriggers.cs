@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public event Action<Actor, Actor> OnProducedInternal = (a, b) => { };
 		public event Action<Actor, Actor> OnOtherProducedInternal = (a, b) => { };
 
-		readonly List<Triggerable>[] triggerables = Exts.MakeArray(Enum.GetValues(typeof(Trigger)).Length, _ => new List<Triggerable>());
+		readonly List<Triggerable>[] triggerables = Exts.MakeArray(Enum.GetValues<Trigger>().Length, _ => new List<Triggerable>());
 
 		readonly struct Triggerable : IDisposable
 		{
@@ -526,7 +526,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public void ClearAll()
 		{
-			foreach (Trigger t in Enum.GetValues(typeof(Trigger)))
+			foreach (var t in Enum.GetValues<Trigger>())
 				Clear(t);
 		}
 

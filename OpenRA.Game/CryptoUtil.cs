@@ -210,8 +210,7 @@ namespace OpenRA
 				using (var rsa = new RSACryptoServiceProvider())
 				{
 					rsa.ImportParameters(parameters);
-					using (var csp = SHA1.Create())
-						return Convert.ToBase64String(rsa.SignHash(csp.ComputeHash(data), CryptoConfig.MapNameToOID("SHA1")));
+					return Convert.ToBase64String(rsa.SignHash(SHA1.HashData(data), CryptoConfig.MapNameToOID("SHA1")));
 				}
 			}
 			catch (Exception e)
@@ -236,8 +235,7 @@ namespace OpenRA
 				using (var rsa = new RSACryptoServiceProvider())
 				{
 					rsa.ImportParameters(parameters);
-					using (var csp = SHA1.Create())
-						return rsa.VerifyHash(csp.ComputeHash(data), CryptoConfig.MapNameToOID("SHA1"), Convert.FromBase64String(signature));
+					return rsa.VerifyHash(SHA1.HashData(data), CryptoConfig.MapNameToOID("SHA1"), Convert.FromBase64String(signature));
 				}
 			}
 			catch (Exception e)
@@ -252,14 +250,12 @@ namespace OpenRA
 
 		public static string SHA1Hash(Stream data)
 		{
-			using var csp = SHA1.Create();
-			return ToHex(csp.ComputeHash(data), true);
+			return ToHex(SHA1.HashData(data), true);
 		}
 
 		public static string SHA1Hash(byte[] data)
 		{
-			using var csp = SHA1.Create();
-			return ToHex(csp.ComputeHash(data), true);
+			return ToHex(SHA1.HashData(data), true);
 		}
 
 		public static string SHA1Hash(string data)

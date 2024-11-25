@@ -321,7 +321,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
-						text = text.Remove(CursorPosition);
+						text = text[..CursorPosition];
 						CursorPosition = CursorPosition.Clamp(0, text.Length);
 
 						OnTextEdited();
@@ -379,7 +379,7 @@ namespace OpenRA.Mods.Common.Widgets
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 							text = text[..CursorPosition] + text[GetNextWhitespaceIndex()..];
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
-							text = text.Remove(CursorPosition);
+							text = text[..CursorPosition];
 						else
 							text = text.Remove(CursorPosition, 1);
 

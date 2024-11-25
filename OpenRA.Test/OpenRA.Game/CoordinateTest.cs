@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using NUnit.Framework;
 
 namespace OpenRA.Test
@@ -21,7 +20,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Test CPos and MPos conversion and back again.")]
 		public void CoarseToMapProjection()
 		{
-			foreach (var gridType in Enum.GetValues(typeof(MapGridType)).Cast<MapGridType>())
+			foreach (var gridType in Enum.GetValues<MapGridType>())
 			{
 				for (var x = 0; x < 12; x++)
 				{

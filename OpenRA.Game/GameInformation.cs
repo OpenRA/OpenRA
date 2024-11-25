@@ -100,11 +100,9 @@ namespace OpenRA
 		/// <summary>Adds the player information at start-up.</summary>
 		public void AddPlayer(OpenRA.Player runtimePlayer, Session lobbyInfo)
 		{
-			if (runtimePlayer == null)
-				throw new ArgumentNullException(nameof(runtimePlayer));
+			ArgumentNullException.ThrowIfNull(runtimePlayer);
 
-			if (lobbyInfo == null)
-				throw new ArgumentNullException(nameof(lobbyInfo));
+			ArgumentNullException.ThrowIfNull(lobbyInfo);
 
 			// We don't care about spectators and map players
 			if (runtimePlayer.NonCombatant || !runtimePlayer.Playable)

@@ -111,8 +111,7 @@ namespace OpenRA
 
 		public bool TryGetMessage(string key, out string value, object[] args = null)
 		{
-			if (key == null)
-				throw new ArgumentNullException(nameof(key));
+			ArgumentNullException.ThrowIfNull(key);
 
 			try
 			{
