@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			TextNotificationsManager.Debug(FluentProvider.GetMessage(AvailableCommands));
 
-			foreach (var key in console.Commands.Keys.OrderBy(k => k))
+			foreach (var key in console.Commands.Keys.Order())
 			{
 				if (!helpDescriptions.TryGetValue(key, out var description))
 					description = FluentProvider.GetMessage(NoDescription);

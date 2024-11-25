@@ -1263,3 +1263,24 @@ dotnet_diagnostic.RCS1239.severity = warning
 
 # Use element access.
 dotnet_diagnostic.RCS1246.severity = warning
+
+# Use enum field explicitly.
+dotnet_diagnostic.RCS1257.severity = warning
+
+# Unnecessary enum flag.
+dotnet_diagnostic.RCS1258.severity = warning
+
+# Resource can be disposed asynchronously.
+dotnet_diagnostic.RCS1261.severity = warning
+
+# Unnecessary raw string literal.
+dotnet_diagnostic.RCS1262.severity = warning
+
+# Remove redundant catch block.
+dotnet_diagnostic.RCS1265.severity = warning
+
+# Use raw string literal.
+dotnet_diagnostic.RCS1266.severity = warning
+
+# Use string interpolation instead of 'string.Concat'.
+dotnet_diagnostic.RCS1267.severity = warning

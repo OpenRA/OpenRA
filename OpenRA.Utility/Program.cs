@@ -152,7 +152,7 @@ namespace OpenRA
 			if (actions == null)
 				return;
 
-			var keys = actions.Keys.OrderBy(x => x);
+			var keys = actions.Keys.Order();
 
 			foreach (var key in keys)
 			{

@@ -10,7 +10,6 @@
 #endregion
 
 using System.IO;
-using System.Linq;
 using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Video;
 
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 
 			s.Position = start;
 
-			return s.Length == offsets.Last();
+			return s.Length == offsets[^1];
 		}
 	}
 }

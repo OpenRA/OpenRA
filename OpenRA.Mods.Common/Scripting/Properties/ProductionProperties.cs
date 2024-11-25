@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Scripting
 			get
 			{
 				if (rp.Path.Count > 0)
-					return rp.Path.Last();
+					return rp.Path[^1];
 
 				var exit = Self.NearestExitOrDefault(Self.CenterPosition);
 				if (exit != null)

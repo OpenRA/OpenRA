@@ -373,7 +373,7 @@ namespace OpenRA.Mods.Common.Traits
 					});
 
 				if (path.Count > 0)
-					return lookup[path.Last()];
+					return lookup[path[^1]];
 			}
 			else
 			{

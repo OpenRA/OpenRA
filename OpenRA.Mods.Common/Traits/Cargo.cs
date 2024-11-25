@@ -331,11 +331,11 @@ namespace OpenRA.Mods.Common.Traits
 		public bool HasSpace(int weight) { return totalWeight + reservedWeight + weight <= Info.MaxWeight; }
 		public bool IsEmpty() { return cargo.Count == 0; }
 
-		public Actor Peek() { return cargo.Last(); }
+		public Actor Peek() { return cargo[^1]; }
 
 		public Actor Unload(Actor self, Actor passenger = null)
 		{
-			passenger ??= cargo.Last();
+			passenger ??= cargo[^1];
 			if (!cargo.Remove(passenger))
 				throw new ArgumentException("Attempted to unload an actor that is not a passenger.");
 

@@ -26,7 +26,7 @@ namespace OpenRA
 			var total = response.Content.Headers.ContentLength ?? -1;
 			var canReportProgress = total > 0;
 
-			using (var contentStream = await response.Content.ReadAsStreamAsync(token))
+			await using (var contentStream = await response.Content.ReadAsStreamAsync(token))
 			{
 				var totalRead = 0L;
 				var buffer = new byte[8192];

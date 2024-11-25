@@ -887,7 +887,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (orderManager.LobbyInfo.GlobalSettings.Dedicated)
 				{
 					var endpoint = CurrentServerSettings.Target.GetConnectEndPoints().First();
-					secret = string.Concat(endpoint.Address, "|", endpoint.Port);
+					secret = $"{endpoint.Address}|{endpoint.Port}";
 				}
 
 				var state = skirmishMode ? DiscordState.InSkirmishLobby : DiscordState.InMultiplayerLobby;

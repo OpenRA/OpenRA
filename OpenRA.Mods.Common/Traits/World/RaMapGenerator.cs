@@ -477,7 +477,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var types = typeWeights
 					.Select(kv => kv.Key)
-					.OrderBy(k => k)
+					.Order()
 					.ToArray();
 				var weights = types
 					.Select(type => typeWeights[type])

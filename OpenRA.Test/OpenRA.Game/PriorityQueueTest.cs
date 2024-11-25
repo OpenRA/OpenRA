@@ -112,7 +112,7 @@ namespace OpenRA.Test
 				Assert.That(queue.Empty, Is.False, "Queue should not be empty - items have been added.");
 			}
 
-			foreach (var value in shuffledValues.Take(10).OrderBy(x => x).Take(5))
+			foreach (var value in shuffledValues.Take(10).Order().Take(5))
 			{
 				Assert.That(value, Is.EqualTo(queue.Peek()), "Peek returned the wrong item - should be in order.");
 				Assert.That(queue.Empty, Is.False, "Queue should not be empty yet.");
@@ -125,8 +125,8 @@ namespace OpenRA.Test
 				Assert.That(queue.Empty, Is.False, "Queue should not be empty - items have been added.");
 			}
 
-			foreach (var value in shuffledValues.Take(10).OrderBy(x => x).Skip(5)
-				.Concat(shuffledValues.Skip(10).Take(5)).OrderBy(x => x).Take(5))
+			foreach (var value in shuffledValues.Take(10).Order().Skip(5)
+				.Concat(shuffledValues.Skip(10).Take(5)).Order().Take(5))
 			{
 				Assert.That(value, Is.EqualTo(queue.Peek()), "Peek returned the wrong item - should be in order.");
 				Assert.That(queue.Empty, Is.False, "Queue should not be empty yet.");
@@ -139,9 +139,9 @@ namespace OpenRA.Test
 				Assert.That(queue.Empty, Is.False, "Queue should not be empty - items have been added.");
 			}
 
-			foreach (var value in shuffledValues.Take(10).OrderBy(x => x).Skip(5)
-				.Concat(shuffledValues.Skip(10).Take(5)).OrderBy(x => x).Skip(5)
-				.Concat(shuffledValues.Skip(15)).OrderBy(x => x))
+			foreach (var value in shuffledValues.Take(10).Order().Skip(5)
+				.Concat(shuffledValues.Skip(10).Take(5)).Order().Skip(5)
+				.Concat(shuffledValues.Skip(15)).Order())
 			{
 				Assert.That(value, Is.EqualTo(queue.Peek()), "Peek returned the wrong item - should be in order.");
 				Assert.That(queue.Empty, Is.False, "Queue should not be empty yet.");

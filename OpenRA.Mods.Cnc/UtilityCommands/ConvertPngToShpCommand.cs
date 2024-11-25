@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		[Desc("PNGFILE [PNGFILE ...]", "Combine a list of PNG images into a SHP")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			var inputFiles = GlobArgs(args).OrderBy(a => a).ToList();
+			var inputFiles = GlobArgs(args).Order().ToList();
 			var dest = inputFiles[0].Split('-').First() + ".shp";
 
 			var frames = inputFiles.ConvertAll(a => new Png(File.OpenRead(a)));

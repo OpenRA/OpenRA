@@ -408,7 +408,7 @@ namespace OpenRA
 
 				// Sanitize input from platform-specific launchers
 				// Process.Start requires paths to not be quoted, even if they contain spaces
-				if (launchPath != null && launchPath[0] == '"' && launchPath.Last() == '"')
+				if (launchPath != null && launchPath[0] == '"' && launchPath[^1] == '"')
 					launchPath = launchPath[1..^1];
 
 				// Metadata registration requires an explicit launch path
@@ -584,7 +584,7 @@ namespace OpenRA
 				Directory.CreateDirectory(directory);
 
 				var filename = TimestampedFilename(true);
-				var path = Path.Combine(directory, string.Concat(filename, ".png"));
+				var path = Path.Combine(directory, $"{filename}.png");
 				Log.Write("debug", "Taking screenshot " + path);
 
 				Renderer.SaveScreenshot(path);

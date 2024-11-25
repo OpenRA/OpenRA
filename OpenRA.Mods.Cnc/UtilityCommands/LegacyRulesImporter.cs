@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					if (!string.IsNullOrEmpty(foundation))
 					{
 						var dimensions = foundation.Split('x');
-						if (dimensions[0] == "0" || dimensions.Last() == "0")
+						if (dimensions[0] == "0" || dimensions[^1] == "0")
 							Console.WriteLine("\tImmobile:\n \t\tOccupiesSpace: False");
 						else
 						{
@@ -149,11 +149,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 							if (!string.IsNullOrEmpty(adjacent))
 								Console.WriteLine("\t\tAdjacent: " + adjacent);
 
-							Console.WriteLine("\t\tDimensions: " + dimensions[0] + "," + dimensions.Last());
+							Console.WriteLine("\t\tDimensions: " + dimensions[0] + "," + dimensions[^1]);
 
 							Console.Write("\t\tFootprint:");
 							int.TryParse(dimensions[0], out var width);
-							int.TryParse(dimensions.Last(), out var height);
+							int.TryParse(dimensions[^1], out var height);
 							for (var y = 0; y < height; y++)
 							{
 								Console.Write(" ");

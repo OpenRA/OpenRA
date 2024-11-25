@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			allCategories = allActors.SelectMany(ac => ac.Categories)
 				.Distinct()
-				.OrderBy(x => x)
+				.Order()
 				.ToArray();
 
 			foreach (var c in allCategories)
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 						.SelectMany(t => t.Categories)
 						.Distinct()
-						.OrderBy(x => x));
+						.Order());
 				else
 					FilteredCategories.AddRange(allCategories);
 

@@ -35,7 +35,7 @@ namespace OpenRA.FileSystem
 				return Directory.GetFiles(Name, "*", SearchOption.TopDirectoryOnly)
 					.Concat(Directory.GetDirectories(Name))
 					.Select(Path.GetFileName)
-					.OrderBy(f => f);
+					.Order();
 			}
 		}
 

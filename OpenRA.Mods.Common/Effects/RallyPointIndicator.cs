@@ -96,10 +96,10 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				var palette = wr.Palette(rp.PaletteName);
 				if (circles != null)
-					renderables = renderables.Concat(circles.Render(targetLineNodes.Last(), palette));
+					renderables = renderables.Concat(circles.Render(targetLineNodes[^1], palette));
 
 				if (flag != null)
-					renderables = renderables.Concat(flag.Render(targetLineNodes.Last(), palette));
+					renderables = renderables.Concat(flag.Render(targetLineNodes[^1], palette));
 			}
 
 			return renderables;

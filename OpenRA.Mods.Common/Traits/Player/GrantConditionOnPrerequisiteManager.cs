@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static string MakeKey(string[] prerequisites)
 		{
-			return "condition_" + string.Join("_", prerequisites.OrderBy(a => a));
+			return "condition_" + string.Join("_", prerequisites.Order());
 		}
 
 		public void Register(Actor actor, GrantConditionOnPrerequisite u, string[] prerequisites)
