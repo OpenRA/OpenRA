@@ -326,14 +326,14 @@ saboteur:
 		Flashes: 0
 		EnterBehaviour: Suicide
 	-RevealOnFire:
-	GrantConditionOnDeployWithCharge:
-		DeployedCondition: deployed
+	GrantChargedConditionOnToggle:
+		ActivatedCondition: cloaked
 		CanCancelCondition: true
 		ChargeDuration: 1250
 		ChargeThreshhold: 100
 		ConditionDuration: 375
 	Cloak:
-		RequiresCondition: deployed
+		RequiresCondition: cloaked
 		InitialDelay: 0
 		CloakDelay: 25
 		CloakSound: STEALTH1.WAV

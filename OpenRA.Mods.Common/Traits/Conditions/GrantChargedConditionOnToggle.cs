@@ -17,13 +17,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Allow deploying on specified charge to grant a condition for a specified duration.")]
-	public class GrantConditionOnDeployWithChargeInfo : PausableConditionalTraitInfo, IRulesetLoaded
+	[Desc("Grant a condition via player orders for a specified amount of time.")]
+	public class GrantChargedConditionOnToggleInfo : PausableConditionalTraitInfo, IRulesetLoaded
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
-		[Desc("The condition to grant after deploying.")]
-		public readonly string DeployedCondition = null;
+		[Desc("The condition to grant when enabled.")]
+		public readonly string ActivatedCondition = null;
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant when charge is above " + nameof(ChargeThreshhold) + ".")]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cooldown (in ticks) to reach full charge.")]
 		public readonly int ChargeDuration = 500;
 
-		[Desc("The amount of charge that needs to be present for deploy to be issued. " +
+		[Desc("The amount of charge that needs to be present to turn on the condition. " +
 			"If set to -1, threshold is set to full charge. " +
 			"If activated without full charge " + nameof(ConditionDuration) + " is percentally smaller.")]
 		public readonly int ChargeThreshhold = -1;
@@ -43,30 +43,39 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How long (in ticks) should the condition stay active?")]
 		public readonly int ConditionDuration = 1;
 
-		[Desc("Can " + nameof(DeployedCondition) + " be canceled by followup deploy order?")]
+		[Desc("Can " + nameof(ActivatedCondition) + " be turned off manually?")]
 		public readonly bool CanCancelCondition = false;
 
-		[CursorReference]
-		[Desc("Cursor to display when able to (un)deploy the actor.")]
-		public readonly string DeployCursor = "deploy";
+		[Desc("Should we interrupt the current activity")]
+		public readonly bool CancelsCurrentActivity = false;
 
 		[CursorReference]
-		[Desc("Cursor to display when unable to (un)deploy the actor.")]
-		public readonly string DeployBlockedCursor = "deploy-blocked";
+		[Desc("Cursor to display when able to trigger a state change.")]
+		public readonly string Cursor = "deploy";
 
-		[Desc("Play a randomly selected sound from this list when deploying.")]
-		public readonly string[] DeploySounds = null;
+		[CursorReference]
+		[Desc("Cursor to display when unable to trigger a state change.")]
+		public readonly string BlockedCursor = "deploy-blocked";
 
-		[Desc("Play a randomly selected sound from this list when undeploying.")]
-		public readonly string[] UndeploySounds = null;
+		[Desc("Play a randomly selected sound from this list when turning on.")]
+		public readonly string[] ActivationSounds = null;
+
+		[Desc("Play a randomly selected sound from this list when turning off.")]
+		public readonly string[] DeactivattionSounds = null;
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public readonly Color ChargingColor = Color.Magenta;
-		public readonly Color DeployedColor = Color.DarkMagenta;
+		[Desc("Color of the charge bar when deactivated.")]
+		public readonly Color DeactivatedColor = Color.Magenta;
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnDeployWithCharge(this); }
+		[Desc("Color of the charge bar  when activated.")]
+		public readonly Color ActivatedColor = Color.DarkMagenta;
+
+		[Desc("Should the charge bar be displayed when not charged or the trait is disabled?")]
+		public readonly bool DisplayBarWhenEmpty = true;
+
+		public override object Create(ActorInitializer init) { return new GrantChargedConditionOnToggle(this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -80,37 +89,37 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class GrantConditionOnDeployWithCharge : PausableConditionalTrait<GrantConditionOnDeployWithChargeInfo>,
+	public class GrantChargedConditionOnToggle : PausableConditionalTrait<GrantChargedConditionOnToggleInfo>,
 		IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync, IIssueDeployOrder
 	{
 		[Sync]
 		int chargeTick = 0;
 
-		bool deployed = false;
+		bool isActive = false;
 
-		int deployedToken = Actor.InvalidConditionToken;
+		int activatedToken = Actor.InvalidConditionToken;
 
 		int chargedToken = Actor.InvalidConditionToken;
 
 		readonly int chargeThreshold;
-		readonly int deployedChargeThreshold;
+		readonly int activatedChargeThreshold;
 
-		public GrantConditionOnDeployWithCharge(GrantConditionOnDeployWithChargeInfo info)
+		public GrantChargedConditionOnToggle(GrantChargedConditionOnToggleInfo info)
 			: base(info)
 		{
 			chargeTick = info.InitialCharge < 0 || info.InitialCharge >= info.ChargeDuration ? Info.ChargeDuration : info.InitialCharge;
 
 			// PERF: Cache the conversions.
 			chargeThreshold = Info.ChargeThreshhold < 0 || Info.ChargeThreshhold > Info.ChargeDuration ? Info.ChargeDuration : Info.ChargeThreshhold;
-			deployedChargeThreshold = chargeThreshold * Info.ConditionDuration / Info.ChargeDuration;
+			activatedChargeThreshold = chargeThreshold * Info.ConditionDuration / Info.ChargeDuration;
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
 			base.TraitDisabled(self);
 
-			if (deployed)
-				Undeploy(self);
+			if (isActive)
+				Deactivate(self);
 
 			// Reset charge.
 			chargeTick = Info.InitialCharge < 0 || Info.InitialCharge > Info.ChargeDuration ? Info.ChargeDuration : Info.InitialCharge;
@@ -120,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "DeployWithCharge" ? Info.Voice : null;
+			return order.OrderString == "ActivateCondition" ? Info.Voice : null;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -128,14 +137,14 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new DeployOrderTargeter("DeployWithCharge", 5,
-						() => CanDeploy() ? Info.DeployCursor : Info.DeployBlockedCursor);
+					yield return new DeployOrderTargeter("ActivateCondition", 5,
+						() => CanToggle() ? Info.Cursor : Info.BlockedCursor);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
-			if (order.OrderID == "DeployWithCharge")
+			if (order.OrderID == "ActivateCondition")
 				return new Order(order.OrderID, self, queued);
 
 			return null;
@@ -143,55 +152,60 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			return new Order("DeployWithCharge", self, queued);
+			return new Order("ActivateCondition", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return queued || CanDeploy(); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return queued || CanToggle(); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployWithCharge")
-				self.QueueActivity(order.Queued, new DeployForGrantedConditionWithCharge(self, this));
+			if (order.OrderString != "ActivateCondition")
+				return;
+
+			if (order.Queued || Info.CancelsCurrentActivity)
+				self.QueueActivity(order.Queued, new ToggleChargedCondition(self, this));
+			else if (CanToggle())
+				ToggleState(self);
 		}
 
-		public bool CanDeploy() => !IsTraitDisabled && !IsTraitPaused && ((!deployed && chargeTick >= chargeThreshold) || (deployed && Info.CanCancelCondition));
+		public bool CanToggle() => !IsTraitDisabled && !IsTraitPaused && ((!isActive && chargeTick >= chargeThreshold) || (isActive && Info.CanCancelCondition));
 
-		public void TriggerDeploy(Actor self)
+		public void ToggleState(Actor self)
 		{
-			if (deployed)
+			if (isActive)
 			{
 				// Keep the percentage of the unused charge.
 				chargeTick = chargeTick * Info.ChargeDuration / Info.ConditionDuration;
-				Undeploy(self);
+				Deactivate(self);
 			}
 			else
 			{
-				// If deployed without full charge, reduce the deploy duration.
+				// If activated without full charge, subtract from the activated duration.
 				chargeTick = chargeTick * Info.ConditionDuration / Info.ChargeDuration;
-				Deploy(self);
+				Activate(self);
 			}
 		}
 
-		void Deploy(Actor self)
+		void Activate(Actor self)
 		{
-			if (Info.DeploySounds != null && Info.DeploySounds.Length > 0)
-				Game.Sound.Play(SoundType.World, Info.DeploySounds, self.World, self.CenterPosition);
+			if (Info.ActivationSounds != null && Info.ActivationSounds.Length > 0)
+				Game.Sound.Play(SoundType.World, Info.ActivationSounds, self.World, self.CenterPosition);
 
-			if (deployedToken == Actor.InvalidConditionToken)
-				deployedToken = self.GrantCondition(Info.DeployedCondition);
+			if (activatedToken == Actor.InvalidConditionToken)
+				activatedToken = self.GrantCondition(Info.ActivatedCondition);
 
-			deployed = true;
+			isActive = true;
 		}
 
-		void Undeploy(Actor self)
+		void Deactivate(Actor self)
 		{
-			if (Info.UndeploySounds != null && Info.UndeploySounds.Length > 0)
-				Game.Sound.Play(SoundType.World, Info.UndeploySounds, self.World, self.CenterPosition);
+			if (Info.DeactivattionSounds != null && Info.DeactivattionSounds.Length > 0)
+				Game.Sound.Play(SoundType.World, Info.DeactivattionSounds, self.World, self.CenterPosition);
 
-			if (deployedToken != Actor.InvalidConditionToken)
-				deployedToken = self.RevokeCondition(deployedToken);
+			if (activatedToken != Actor.InvalidConditionToken)
+				activatedToken = self.RevokeCondition(activatedToken);
 
-			deployed = false;
+			isActive = false;
 		}
 
 		void ITick.Tick(Actor self)
@@ -199,12 +213,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || IsTraitPaused)
 				return;
 
-			if (deployed)
+			if (isActive)
 			{
 				if (chargeTick > 0)
 					chargeTick--;
 				else
-					Undeploy(self);
+					Deactivate(self);
 			}
 			else
 			{
@@ -214,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.ChargedCondition != null)
 			{
-				if (chargeTick < (deployed ? deployedChargeThreshold : chargeThreshold))
+				if (chargeTick < (isActive ? activatedChargeThreshold : chargeThreshold))
 				{
 					if (chargedToken != Actor.InvalidConditionToken)
 						chargedToken = self.RevokeCondition(chargedToken);
@@ -232,28 +246,28 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return 0f;
 
-			return deployed
+			return isActive
 				? (float)chargeTick / Info.ConditionDuration
 				: (float)chargeTick / Info.ChargeDuration;
 		}
 
-		Color ISelectionBar.GetColor() { return deployed ? Info.DeployedColor : Info.ChargingColor; }
-		bool ISelectionBar.DisplayWhenEmpty => false;
+		Color ISelectionBar.GetColor() { return isActive ? Info.ActivatedColor : Info.DeactivatedColor; }
+		bool ISelectionBar.DisplayWhenEmpty => Info.DisplayBarWhenEmpty;
 	}
 
-	public class DeployForGrantedConditionWithCharge : Activity
+	public class ToggleChargedCondition : Activity
 	{
-		readonly GrantConditionOnDeployWithCharge deploy;
+		readonly GrantChargedConditionOnToggle toggle;
 
-		public DeployForGrantedConditionWithCharge(Actor self, GrantConditionOnDeployWithCharge deploy)
+		public ToggleChargedCondition(Actor self, GrantChargedConditionOnToggle toggle)
 		{
-			this.deploy = deploy;
+			this.toggle = toggle;
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
-			if (deploy.CanDeploy())
-				deploy.TriggerDeploy(self);
+			if (toggle.CanToggle())
+				toggle.ToggleState(self);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
