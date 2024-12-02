@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var i = 0; i < updateCount; i++)
 				{
 					var rp = rallyPoints.Pop();
-					if (rp.Actor.Owner == player)
+					if (rp.Actor.Owner == player && !rp.Actor.Disposed)
 						SetRallyPoint(bot, rp);
 				}
 			}
@@ -343,23 +343,37 @@ namespace OpenRA.Mods.Common.Traits
 
 		Locomotor[] LocomotorsForProducibles(Actor producer)
 		{
-			var buildingInfo = producer.Info.TraitInfoOrDefault<BuildingInfo>();
-			var productionInfo = producer.Info.TraitInfoOrDefault<ProductionInfo>();
-			var locomotors = Array.Empty<Locomotor>();
+			// Per-actor production
+			var productions = producer.TraitsImplementing<Production>();
 
-			if (productionInfo != null && productionInfo.Produces.Length > 0)
+			// Player-wide production
+			if (!productions.Any())
+				productions = producer.World.ActorsWithTrait<Production>().Where(x => x.Actor.Owner != producer.Owner).Select(x => x.Trait);
+
+			var produces = productions.SelectMany(p => p.Info.Produces).ToHashSet();
+			var locomotors = Array.Empty<Locomotor>();
+			if (produces.Count > 0)
 			{
-				var productionQueues = producer.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.Where(pq => productionInfo.Produces.Contains(pq.Info.Type));
+				// Per-actor production
+				var productionQueues = producer.TraitsImplementing<ProductionQueue>();
+
+				// Player-wide production
+				if (!productionQueues.Any())
+					productionQueues = producer.Owner.PlayerActor.TraitsImplementing<ProductionQueue>();
+
+				productionQueues = productionQueues.Where(pq => produces.Contains(pq.Info.Type));
+
 				var producibles = productionQueues.SelectMany(pq => pq.BuildableItems());
 				var locomotorNames = producibles
 					.Select(p => p.TraitInfoOrDefault<MobileInfo>())
 					.Where(mi => mi != null)
 					.Select(mi => mi.Locomotor)
 					.ToHashSet();
-				locomotors = world.WorldActor.TraitsImplementing<Locomotor>()
-					.Where(l => locomotorNames.Contains(l.Info.Name))
-					.ToArray();
+
+				if (locomotorNames.Count != 0)
+					locomotors = world.WorldActor.TraitsImplementing<Locomotor>()
+						.Where(l => locomotorNames.Contains(l.Info.Name))
+						.ToArray();
 			}
 
 			return locomotors;
