@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					() => requireForceMove,
-					DockingPossible,
+					CanQueueDockAt,
 					(target, forceEnter) => CanDockAt(target, forceEnter, true));
 			}
 		}
@@ -194,9 +194,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.Target.Type != TargetType.Actor || IsTraitDisabled)
 				return null;
 
-			if (order.OrderString == "Dock" && CanDockAt(order.Target.Actor, false, true))
-				return Info.Voice;
-			else if (order.OrderString == "ForceDock" && CanDockAt(order.Target.Actor, true, true))
+			if (order.OrderString != "Dock" && order.OrderString != "ForceDock")
+				return null;
+
+			if (CanQueueDockAt(order.Target.Actor, order.OrderString == "ForceDock", order.Queued))
 				return Info.Voice;
 
 			return null;
@@ -225,13 +226,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Do we have an enabled client with matching <paramref name="type"/>.</summary>
-		public bool DockingPossible(BitSet<DockType> type, bool forceEnter = false)
+		public bool CanDock(BitSet<DockType> type, bool forceEnter = false)
 		{
 			return !IsTraitDisabled && dockClients.Any(client => client.CanDock(type, forceEnter));
 		}
 
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
-		public bool DockingPossible(Actor target, bool forceEnter = false)
+		public bool CanDock(Actor target, bool forceEnter = false)
 		{
 			return !IsTraitDisabled &&
 				target.TraitsImplementing<IDockHost>()
@@ -250,6 +251,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(
 				host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
+		}
+
+		/// <summary>Can we dock to this <paramref name="target"/>.</summary>
+		public bool CanQueueDockAt(Actor target, bool forceEnter, bool isQueued)
+		{
+			return !IsTraitDisabled
+				&& target.TraitsImplementing<IDockHost>()
+				.Any(host => dockClients.Any(client => client.CanQueueDockAt(target, host, forceEnter, isQueued)));
 		}
 
 		/// <summary>Find the closest viable <see cref="IDockHost"/>.</summary>
@@ -292,11 +301,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string enterCursor;
 		readonly string enterBlockedCursor;
 		readonly Func<bool> requireForceMove;
-		readonly Func<Actor, bool, bool> canTarget;
+		readonly Func<Actor, bool, bool, bool> canTarget;
 		readonly Func<Actor, bool, bool> useEnterCursor;
 
 		public DockActorTargeter(int priority, string enterCursor, string enterBlockedCursor,
-			Func<bool> requireForceMove, Func<Actor, bool, bool> canTarget, Func<Actor, bool, bool> useEnterCursor)
+			Func<bool> requireForceMove, Func<Actor, bool, bool, bool> canTarget, Func<Actor, bool, bool> useEnterCursor)
 		{
 			OrderID = "Dock";
 			OrderPriority = priority;
@@ -325,10 +334,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (requireForceMove() && !forceEnter)
 				return false;
 
-			if (!canTarget(target.Actor, forceEnter))
+			if (!canTarget(target.Actor, forceEnter, IsQueued))
 				return false;
 
-			cursor = useEnterCursor(target.Actor, forceEnter) ? enterCursor : enterBlockedCursor;
+			cursor = IsQueued || useEnterCursor(target.Actor, forceEnter)
+				? enterCursor
+				: enterBlockedCursor;
+
 			return true;
 		}
 

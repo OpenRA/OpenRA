@@ -220,19 +220,26 @@ namespace OpenRA.Mods.Common.Traits
 		bool OnDockTick(Actor self, Actor hostActor, IDockHost dock);
 		void OnDockCompleted(Actor self, Actor hostActor, IDockHost host);
 
-		/// <summary>Is this client allowed to dock.</summary>
+		/// <summary>Are we allowed to dock.</summary>
 		/// <remarks>
 		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
 		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
 		/// </remarks>
 		bool CanDock(BitSet<DockType> type, bool forceEnter = false);
 
-		/// <summary>Is this client allowed to dock to <paramref name="host"/>.</summary>
+		/// <summary>Are we allowed to dock to this <paramref name="host"/>.</summary>
 		/// <remarks>
 		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
 		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
 		/// </remarks>
 		bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false);
+
+		/// <summary>Are we allowed to give a docking order for this <paramref name="host"/>.</summary>
+		/// <remarks>
+		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// </remarks>
+		bool CanQueueDockAt(Actor hostActor, IDockHost host, bool forceEnter, bool isQueued);
 	}
 
 	public interface IDockHostInfo : ITraitInfoInterface { }

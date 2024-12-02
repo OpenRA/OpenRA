@@ -37,9 +37,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
-			return (forceEnter || self.Owner.IsAlliedWith(hostActor.Owner)) &&
-				CanDock(host.GetDockType, forceEnter) &&
-				host.IsDockingPossible(self, this, ignoreOccupancy);
+			return CanDock(host.GetDockType, forceEnter)
+				&& host.IsDockingPossible(self, this, ignoreOccupancy);
+		}
+
+		public virtual bool CanQueueDockAt(Actor hostActor, IDockHost host, bool forceEnter, bool isQueued)
+		{
+			return CanDock(host.GetDockType, true)
+				&& host.IsDockingPossible(self, this, true);
 		}
 
 		public virtual void OnDockStarted(Actor self, Actor hostActor, IDockHost host) { }

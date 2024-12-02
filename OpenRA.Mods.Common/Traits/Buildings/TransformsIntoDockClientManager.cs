@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					() => Info.RequiresForceMove,
-					DockingPossible,
+					CanQueueDockAt,
 					CanDockAt);
 			}
 		}
@@ -109,9 +109,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Dock" && CanDockAt(order.Target.Actor, false))
-				return Info.Voice;
-			else if (order.OrderString == "ForceDock" && CanDockAt(order.Target.Actor, true))
+			if (order.Target.Type != TargetType.Actor || IsTraitDisabled)
+				return null;
+
+			if (order.OrderString != "Dock" && order.OrderString != "ForceDock")
+				return null;
+
+			if (CanQueueDockAt(order.Target.Actor, order.OrderString == "ForceDock", order.Queued))
 				return Info.Voice;
 
 			return null;
@@ -125,12 +129,6 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor, bool)"/>.</summary>
-		public bool DockingPossible(Actor target, bool forceEnter)
-		{
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.CanDock(host.GetDockType)));
-		}
-
 		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool, bool)"/>.</summary>
 		public bool CanDockAt(Actor target, bool forceEnter)
 		{
@@ -139,6 +137,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(
 				host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, true)));
+		}
+
+		/// <summary>Clone of <see cref="DockClientManager.CanQueueDockAt(Actor, bool, bool)"/>.</summary>
+		public bool CanQueueDockAt(Actor target, bool forceEnter, bool isQueued)
+		{
+			if (Info.RequiresForceMove && !forceEnter)
+				return false;
+
+			return (!IsTraitDisabled)
+				&& target.TraitsImplementing<IDockHost>().Any(
+					host => dockClients.Any(client => client.CanQueueDockAt(target, host, forceEnter, isQueued)));
 		}
 	}
 }

@@ -137,6 +137,12 @@ namespace OpenRA.Mods.Common.Traits
 				&& (self.Owner == hostActor.Owner || (ignoreOccupancy && self.Owner.IsAlliedWith(hostActor.Owner)));
 		}
 
+		public override bool CanQueueDockAt(Actor hostActor, IDockHost host, bool forceEnter, bool isQueued)
+		{
+			return base.CanQueueDockAt(hostActor, host, forceEnter, isQueued)
+				&& self.Owner.IsAlliedWith(hostActor.Owner);
+		}
+
 		void UpdateCondition(Actor self)
 		{
 			if (string.IsNullOrEmpty(Info.EmptyCondition))
