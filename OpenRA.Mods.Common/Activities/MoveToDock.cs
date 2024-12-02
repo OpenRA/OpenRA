@@ -29,6 +29,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly bool forceEnter;
 		readonly bool ignoreOccupancy;
 
+		bool dockingCancelled;
+
 		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null,
 			bool forceEnter = false, bool ignoreOccupancy = false, Color? dockLineColor = null)
 		{
@@ -44,17 +46,25 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			if (IsCanceling || dockClient.IsTraitDisabled)
+			if (dockClient.IsTraitDisabled)
 				return;
 
 			// We were ordered to dock to an actor but host was unspecified.
 			if (dockHostActor != null && dockHost == null)
 			{
+				if (dockHostActor.IsDead || !dockHostActor.IsInWorld)
+				{
+					dockingCancelled = true;
+					return;
+				}
+
 				var link = dockClient.AvailableDockHosts(dockHostActor, default, forceEnter, ignoreOccupancy)
 					.ClosestDock(self, dockClient);
 
 				if (link.HasValue)
 					dockHost = link.Value.Trait;
+				else
+					dockingCancelled = true;
 			}
 		}
 
@@ -63,7 +73,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
-			if (dockClient.IsTraitDisabled)
+			if (dockingCancelled || dockClient.IsTraitDisabled)
 			{
 				Cancel(self, true);
 				return true;
