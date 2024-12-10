@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
 		readonly ScrollPanelWidget newsPanel;
+		readonly int maxNewsHeight;
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
 		readonly ModData modData;
@@ -230,6 +231,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
 				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
 				newsPanel.RemoveChild(newsTemplate);
+				maxNewsHeight = newsPanel.Bounds.Height;
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
 				SetNewsStatus(FluentProvider.GetMessage(LoadingNews));
@@ -416,10 +418,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			newsPanel.RemoveChildren();
 			SetNewsStatus("");
 
-			foreach (var i in newsItems)
+			foreach (var item in newsItems)
 			{
-				var item = i;
-
 				var newsItem = newsTemplate.Clone();
 
 				var titleLabel = newsItem.Get<LabelWidget>("TITLE");
@@ -441,6 +441,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				newsPanel.AddChild(newsItem);
 				newsPanel.Layout.AdjustChildren();
+				newsPanel.Bounds.Height = Math.Min(newsPanel.ContentHeight, maxNewsHeight);
 			}
 		}
 

@@ -284,29 +284,27 @@ ScrollPanel@NEWS_PANEL:
 	Width: 400
 	Height: 265
 	Background: panel-black
-	TopBottomSpacing: 5
+	TopBottomSpacing: 10
 	ItemSpacing: 5
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:
 			X: 10
-			Y: 5
 			Width: PARENT_WIDTH - 40
-			Height: 45
+			Height: 40
 			Children:
 				Label@TITLE:
-					Y: 1
 					Width: PARENT_WIDTH
-					Height: 25
+					Height: 20
 					Align: Center
 					Font: Bold
 				Label@AUTHOR_DATETIME:
-					Y: 26
+					Y: 21
 					Width: PARENT_WIDTH
 					Height: 15
 					Align: Center
 					Font: TinyBold
 				Label@CONTENT:
-					Y: 46
+					Y: 40
 					Width: PARENT_WIDTH
 		Label@NEWS_STATUS:
 			X: 80
