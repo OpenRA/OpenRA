@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
-			var fluentPackage = modData.ModFiles.OpenPackage(modData.Manifest.Id + "|languages");
+			var fluentPackage = modData.ModFiles.OpenPackage(modData.Manifest.Id + "|fluent");
 			ExtractFromFile(Path.Combine(fluentPackage.Name, "rules.ftl"), modRules, traitInfos);
 			modRules.Save();
 
@@ -307,9 +307,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (string.IsNullOrEmpty(propertyValue) || UpdateUtils.IsAlreadyExtracted(propertyValue) || !propertyValue.Any(char.IsLetterOrDigit))
 						continue;
 
-					var value = propertyValue
-						.Replace("\\n", "\n    ")
-						.Trim().Trim('\n');
+					var replaced = false;
+					var value = propertyValue;
+					if (value.Contains("\\n"))
+					{
+						value = value.Replace("\\n", "\n    ");
+						replaced = true;
+					}
+
+					// Preserve indentation
+					value = (replaced ? "\n    " : "") + value.Trim().Trim('\n');
 
 					var actorName = ToLowerActor(actor.Key);
 					var key = traitInfo;

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var layout in chromeLayouts)
 			{
-				var fluentFolder = layout.Key + "|languages";
+				var fluentFolder = layout.Key + "|fluent";
 				var fluentPackage = modData.ModFiles.OpenPackage(fluentFolder);
 				var fluentPath = Path.Combine(fluentPackage.Name, "chrome.ftl");
 
@@ -262,11 +262,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						&& !UpdateUtils.IsAlreadyExtracted(childNode.Value.Value)
 						&& childNode.Value.Value.Any(char.IsLetterOrDigit))
 					{
-						var value = childNode.Value.Value
-							.Replace("\\n", "\n    ")
+						var replaced = false;
+						var value = childNode.Value.Value;
+						if (value.Contains("\\n"))
+						{
+							value = value.Replace("\\n", "\n    ");
+							replaced = true;
+						}
+
+						value = value
 							.Replace("{", "<")
 							.Replace("}", ">")
 							.Trim().Trim('\n');
+
+						// Preserve indentation
+						if (replaced)
+							value = "\n    " + value;
 
 						validChildTypes.Add((childNode, childType.ToLowerInvariant(), value));
 					}
