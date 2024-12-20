@@ -34,6 +34,13 @@ EditorPaste: V Ctrl
 	Platform:
 		OSX: V Meta
 
+EditorDeleteSelection: DELETE
+	Description: hotkey-description-editordeleteselection
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: BACKSPACE
+
 EditorSelectTab: E
 	Description: hotkey-description-editorselecttab
 	Types: Editor

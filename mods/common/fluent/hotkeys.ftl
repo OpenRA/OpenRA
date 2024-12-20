@@ -70,6 +70,7 @@ hotkey-description-editorredo = Redo
 hotkey-description-editorcopy = Copy
 hotkey-description-editorquicksave = Save Map
 hotkey-description-editorpaste = Paste
+hotkey-description-editordeleteselection = Delete Selection
 hotkey-description-editorselecttab = Select Tab
 hotkey-description-editortilestab = Tiles Tab
 hotkey-description-editoroverlaystab = Overlays Tab

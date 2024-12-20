@@ -695,6 +695,10 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 							Text: button-delete-area.label
 							Font: Bold
+							Key: EditorDeleteSelection
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-delete-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_CANCEL_BUTTON:
 							X: 208
 							Y: 222
@@ -786,8 +790,12 @@ Container@EDITOR_WORLD_ROOT:
 									X: 7
 									Width: 75
 									Height: 25
-									Text: button-container-delete
+									Text: button-delete-actor.label
 									Font: Bold
+									Key: EditorDeleteSelection
+									TooltipTemplate: BUTTON_TOOLTIP
+									TooltipText: button-delete-actor.tooltip
+									TooltipContainer: TOOLTIP_CONTAINER
 								Button@CANCEL_BUTTON:
 									X: 127
 									Width: 75

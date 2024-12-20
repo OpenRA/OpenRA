@@ -55,7 +55,6 @@ label-save-map-background-directory = Directory:
 label-save-map-background-filename = Filename:
 button-save-map-panel = Save
 label-actor-edit-panel-id = ID
-button-container-delete = Delete
 button-container-ok = OK
 button-editor-world-root-options-tooltip = Menu
 label-tiles-bg-search = Search:
@@ -87,6 +86,11 @@ button-map-editor-tab-container-history-tooltip = History
 
 button-delete-area =
    .label = Delete
+   .tooltip = Remove everything in the selected area
+
+button-delete-actor =
+   .label = Delete
+   .tooltip = Remove the selected actor
 
 button-editor-world-root-copy =
    .label = Copy
