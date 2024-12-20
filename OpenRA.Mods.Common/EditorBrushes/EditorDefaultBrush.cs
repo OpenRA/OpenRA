@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -85,6 +87,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Sort by pixel distance then in world z position.
 			return ((long)pixelDistance << 32) + worldZPosition;
+		}
+
+		public void DeleteSelection(MapBlitFilters filters)
+		{
+			if (Selection.Area != null)
+				editorActionManager.Add(new DeleteAreaAction(world.Map, filters, Selection.Area, resourceLayer, actorLayer));
 		}
 
 		public void ClearSelection(bool updateSelectedTab = false)
@@ -332,6 +340,114 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Undo()
 		{
 			defaultBrush.SetSelection(previousSelection);
+		}
+	}
+
+	sealed class DeleteAreaAction : IEditorAction
+	{
+		[FluentReference("x", "y", "width", "height")]
+		const string RemovedArea = "notification-removed-area";
+
+		public string Text { get; }
+
+		readonly EditorBlitSource editorBlitSource;
+		readonly MapBlitFilters blitFilters;
+		readonly IResourceLayer resourceLayer;
+		readonly EditorActorLayer editorActorLayer;
+		readonly CellRegion area;
+		readonly Map map;
+
+		public DeleteAreaAction(Map map, MapBlitFilters blitFilters, CellRegion area, IResourceLayer resourceLayer, EditorActorLayer editorActorLayer)
+		{
+			this.map = map;
+			this.blitFilters = blitFilters;
+			this.resourceLayer = resourceLayer;
+			this.editorActorLayer = editorActorLayer;
+			this.area = area;
+
+			editorBlitSource = EditorBlit.CopyRegionContents(map, editorActorLayer, resourceLayer, area, blitFilters);
+
+			Text = FluentProvider.GetMessage(RemovedArea,
+				"x", area.TopLeft.X,
+				"y", area.TopLeft.Y,
+				"width", area.BottomRight.X - area.TopLeft.X,
+				"height", area.BottomRight.Y - area.TopLeft.Y);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			if (blitFilters.HasFlag(MapBlitFilters.Actors))
+			{
+				// Clear any existing actors in the paste cells.
+				foreach (var regionActor in editorActorLayer.PreviewsInCellRegion(area.CellCoords).ToList())
+					editorActorLayer.Remove(regionActor);
+			}
+
+			foreach (var tileKeyValuePair in editorBlitSource.Tiles)
+			{
+				var position = tileKeyValuePair.Key;
+				if (!map.Tiles.Contains(position))
+					continue;
+
+				// Clear any existing resources.
+				if (resourceLayer != null && blitFilters.HasFlag(MapBlitFilters.Resources))
+					resourceLayer.ClearResources(position);
+
+				if (blitFilters.HasFlag(MapBlitFilters.Terrain))
+				{
+					map.Tiles[position] = map.Rules.TerrainInfo.DefaultTerrainTile;
+					map.Height[position] = 0;
+				}
+			}
+		}
+
+		public void Undo()
+		{
+			foreach (var tileKeyValuePair in editorBlitSource.Tiles)
+			{
+				var position = tileKeyValuePair.Key;
+				if (!map.Tiles.Contains(position))
+					continue;
+
+				var tile = tileKeyValuePair.Value;
+				var resourceLayerContents = tile.ResourceLayerContents;
+
+				if (blitFilters.HasFlag(MapBlitFilters.Terrain))
+				{
+					map.Tiles[position] = tile.TerrainTile;
+					map.Height[position] = tile.Height;
+				}
+
+				if (blitFilters.HasFlag(MapBlitFilters.Resources) &&
+					resourceLayerContents.HasValue &&
+					!string.IsNullOrWhiteSpace(resourceLayerContents.Value.Type))
+					resourceLayer.AddResource(resourceLayerContents.Value.Type, position, resourceLayerContents.Value.Density);
+			}
+
+			if (blitFilters.HasFlag(MapBlitFilters.Actors))
+			{
+				// Create copies of the original actors, update their locations, and place.
+				foreach (var actorKeyValuePair in editorBlitSource.Actors)
+				{
+					var copy = actorKeyValuePair.Value.Export();
+					var locationInit = copy.GetOrDefault<LocationInit>();
+					if (locationInit != null)
+					{
+						if (!map.Tiles.Contains(locationInit.Value))
+							continue;
+
+						copy.RemoveAll<LocationInit>();
+						copy.Add(new LocationInit(locationInit.Value));
+					}
+
+					editorActorLayer.Add(copy);
+				}
+			}
 		}
 	}
 

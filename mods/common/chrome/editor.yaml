@@ -600,7 +600,7 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 							Font: Bold
 							Align: Left
-							Text: label-copy-filters
+							Text: label-selection-filters
 						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
 							X: 5
 							Y: 70
@@ -654,6 +654,13 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 55
 							Height: 22
 							Align: Left
+						Button@SELECTION_DELETE_BUTTON:
+							X: 5
+							Y: 222
+							Width: 75
+							Height: 25
+							Text: button-delete-area.label
+							Font: Bold
 						Button@SELECTION_CANCEL_BUTTON:
 							X: 208
 							Y: 222
