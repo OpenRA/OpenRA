@@ -3,7 +3,7 @@
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
       <Private>False</Private>
     </ProjectReference>
-    <PackageReference Include="NuGet.CommandLine" Version="6.12.1" />
+    <PackageReference Include="NuGet.CommandLine" Version="6.12.2" />
     <PackageReference Include="OpenRA-FuzzyLogicLibrary" Version="1.0.1" />
     <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
     <PackageReference Include="MP3Sharp" Version="1.0.5" />
