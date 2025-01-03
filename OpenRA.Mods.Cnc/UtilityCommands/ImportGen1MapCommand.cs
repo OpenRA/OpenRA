@@ -51,6 +51,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			Game.ModData = ModData = utility.ModData;
 
 			var filename = args[1];
+			var author = args.Length > 2
+				? args[2]
+				: "Westwood Studios";
+
 			using (var stream = File.OpenRead(filename))
 			{
 				var file = new IniFile(stream);
@@ -73,7 +77,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				Map = new Map(ModData, terrainInfo, MapSize, MapSize)
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
-					Author = "Westwood Studios",
+					Author = author,
 					RequiresMod = ModData.Manifest.Id
 				};
 

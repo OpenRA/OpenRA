@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		string IUtilityCommand.Name => "--import-ra-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return ValidateArguments(args); }
 
-		[Desc("FILENAME", "Convert a legacy Red Alert INI/MPR map to the OpenRA format.")]
+		[Desc("FILENAME [AUTHOR]", "Convert a legacy Red Alert INI/MPR map to the OpenRA format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args) { Run(utility, args); }
 
 		public override void ValidateMapFormat(int format)

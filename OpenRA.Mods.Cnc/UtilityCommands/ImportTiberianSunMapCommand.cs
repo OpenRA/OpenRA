@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length >= 2; }
 
-		[Desc("FILENAME", "Convert a Tiberian Sun map to the OpenRA format.")]
+		[Desc("FILENAME [AUTHOR]", "Convert a Tiberian Sun map to the OpenRA format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			Run(utility, args);
