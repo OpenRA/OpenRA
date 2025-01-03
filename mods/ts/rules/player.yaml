@@ -117,6 +117,10 @@ Player:
 		TextNotification: notification-base-under-attack
 		AllyTextNotification: notification-ally-under-attack
 		AllyNotification: OurAllyIsUnderAttack
+	BaseAttackNotifier@RadarPing:
+		NotifyInterval: 10000
+		TriggerOnUnits: true
+		Notification:
 	HarvesterAttackNotifier:
 		TextNotification: notification-harvester-under-attack
 	PlayerStatistics:

@@ -44,6 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Text notification to display to allies when under attack.")]
 		public readonly string AllyTextNotification = null;
 
+		[Desc("Trigger the notification for units only (instead of buildings only).")]
+		public readonly bool TriggerOnUnits = false;
+
 		public override object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }
 	}
 
@@ -77,8 +80,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Attacker == self.World.WorldActor)
 				return;
 
-			// Only track last hit against our base
-			if (!self.Info.HasTraitInfo<BuildingInfo>())
+			var isBuilding = self.Info.HasTraitInfo<BuildingInfo>();
+			if ((!info.TriggerOnUnits && !isBuilding) || (info.TriggerOnUnits && isBuilding))
 				return;
 
 			if (e.Attacker.Owner.IsAlliedWith(self.Owner) && e.Damage.Value <= 0)

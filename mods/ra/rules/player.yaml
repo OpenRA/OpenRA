@@ -148,6 +148,10 @@ Player:
 	BaseAttackNotifier:
 		TextNotification: notification-base-under-attack
 		AllyTextNotification: notification-ally-under-attack
+	BaseAttackNotifier@RadarPing:
+		NotifyInterval: 10000
+		TriggerOnUnits: true
+		Notification:
 	PlayerStatistics:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@infonly:
