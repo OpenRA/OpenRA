@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	sealed class FireProjectilesOnDeath : ConditionalTrait<FireProjectilesOnDeathInfo>, INotifyKilled
+	public class FireProjectilesOnDeath : ConditionalTrait<FireProjectilesOnDeathInfo>, INotifyKilled
 	{
 		public FireProjectilesOnDeath(FireProjectilesOnDeathInfo info)
 			: base(info) { }
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var wep in Info.WeaponInfos)
 			{
-				var pieces = self.World.SharedRandom.Next(Info.Pieces[0], Info.Pieces[1]);
+				var pieces = Util.RandomInRange(self.World.SharedRandom, Info.Pieces);
 				var range = self.World.SharedRandom.Next(Info.Range[0].Length, Info.Range[1].Length);
 
 				for (var i = 0; pieces > i; i++)
