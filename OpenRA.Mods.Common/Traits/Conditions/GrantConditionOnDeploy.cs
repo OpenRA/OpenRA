@@ -37,6 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can this actor deploy on slopes?")]
 		public readonly bool CanDeployOnRamps = false;
 
+		[Desc("Does this actor need to synchronize its deployment with other actors?")]
+		public readonly bool SmartDeploy = false;
+
 		[CursorReference]
 		[Desc("Cursor to display when able to (un)deploy the actor.")]
 		public readonly string DeployCursor = "deploy";
@@ -183,7 +186,26 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("GrantConditionOnDeploy", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return !IsTraitPaused && !IsTraitDisabled; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued)
+		{
+			if (IsTraitPaused || IsTraitDisabled || self.IsDead || self.Disposed)
+				return false;
+
+			if (queued || !Info.SmartDeploy || DeployState == DeployState.Undeployed || DeployState == DeployState.Undeploying)
+				return true;
+
+			foreach (var actor in self.World.Selection.Actors)
+			{
+				if (actor == self || actor.IsDead || !actor.IsInWorld)
+					continue;
+
+				if (actor.TraitsImplementing<GrantConditionOnDeploy>()
+					.Any(d => !d.IsTraitPaused && !d.IsTraitDisabled && (d.DeployState == DeployState.Undeployed || d.DeployState == DeployState.Undeploying)))
+					return false;
+			}
+
+			return true;
+		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{

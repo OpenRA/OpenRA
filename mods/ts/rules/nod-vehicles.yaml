@@ -140,6 +140,7 @@ TTNK:
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
 		Voice: Move
+		SmartDeploy: true
 	EntersTunnels:
 		RequireForceMoveCondition: !undeployed
 	Repairable:
@@ -252,6 +253,7 @@ ART2:
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
 		Voice: Move
+		SmartDeploy: true
 	EntersTunnels:
 		RequireForceMoveCondition: !undeployed
 	Repairable:
@@ -605,6 +607,7 @@ SGEN:
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
 		Voice: Move
+		SmartDeploy: true
 	EntersTunnels:
 		RequireForceMoveCondition: !undeployed
 	Repairable:

@@ -135,6 +135,7 @@ thumper:
 		UndeployOnMove: true
 		Facing: 512
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
+		SmartDeploy: true
 	Encyclopedia:
 		Description: actor-thumper.encyclopedia
 		Order: 40
