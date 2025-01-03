@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		[Desc("Follow the targeted actor when it moves.")]
 		public readonly bool TrackTarget = true;
 
+		[Desc("Controls Z sorting.")]
+		public readonly int ZOffset = 0;
+
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
@@ -87,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			zap = new TeslaZapRenderable(args.Source, 0, target - args.Source,
+			zap = new TeslaZapRenderable(args.Source, info.ZOffset, target - args.Source,
 				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
 
 			yield return zap;
