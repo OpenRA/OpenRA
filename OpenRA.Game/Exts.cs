@@ -510,6 +510,11 @@ namespace OpenRA
 			return byte.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
+		public static ushort ParseUshortInvariant(string s)
+		{
+			return ushort.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
+		}
+
 		public static short ParseInt16Invariant(string s)
 		{
 			return short.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
@@ -520,6 +525,22 @@ namespace OpenRA
 			return int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
+		public static float ParseFloatOrPercentInvariant(string s)
+		{
+			var f = float.Parse(s.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+			return f * (s.Contains('%') ? 0.01f : 1f);
+		}
+
+		public static bool TryParseByteInvariant(string s, out byte i)
+		{
+			return byte.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static bool TryParseUshortInvariant(string s, out ushort i)
+		{
+			return ushort.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
 		public static bool TryParseInt32Invariant(string s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
@@ -528,6 +549,17 @@ namespace OpenRA
 		public static bool TryParseInt64Invariant(string s, out long i)
 		{
 			return long.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static bool TryParseFloatOrPercentInvariant(string s, out float f)
+		{
+			if (float.TryParse(s.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out f))
+			{
+				f *= s.Contains('%') ? 0.01f : 1f;
+				return true;
+			}
+
+			return false;
 		}
 
 		public static string ToStringInvariant(this byte i)
@@ -543,6 +575,11 @@ namespace OpenRA
 		public static string ToStringInvariant(this int i)
 		{
 			return i.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
+		public static string ToStringInvariant(this float f)
+		{
+			return f.ToString(NumberFormatInfo.InvariantInfo);
 		}
 
 		public static string ToStringInvariant(this int i, string format)

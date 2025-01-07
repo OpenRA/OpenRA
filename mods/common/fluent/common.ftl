@@ -1120,3 +1120,9 @@ keycode =
     .sleep = Sleep
     .mouse4 = Mouse 4
     .mouse5 = Mouse 5
+
+## MapGeneratorToolLogic
+label-map-generator-failed-cancel = Dismiss
+notification-map-generator-generated = Generated using { $name }
+notification-map-generator-bad-option = Option "{ $option }" is invalid
+notification-map-generator-failed = Map generation failed

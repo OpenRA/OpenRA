@@ -63,12 +63,16 @@ namespace OpenRA
 
 			var u = (x - y) / 2;
 			var v = x + y;
+			if (!Bounds.Contains(u, v))
+				throw new IndexOutOfRangeException();
 			return v * Size.Width + u;
 		}
 
 		// Resolve an array index from map coordinates
 		int Index(MPos uv)
 		{
+			if (!Bounds.Contains(uv.U, uv.V))
+				throw new IndexOutOfRangeException();
 			return uv.V * Size.Width + uv.U;
 		}
 
@@ -145,6 +149,9 @@ namespace OpenRA
 		{
 			return uv.Clamp(new Rectangle(0, 0, Size.Width - 1, Size.Height - 1));
 		}
+
+		public CellRegion CellRegion =>
+			new(GridType, new MPos(0, 0), new MPos(Size.Width - 1, Size.Height - 1));
 	}
 
 	// Helper functions

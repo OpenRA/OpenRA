@@ -25,6 +25,21 @@ namespace OpenRA
 		public override int GetHashCode() { return Type.GetHashCode() ^ Index.GetHashCode(); }
 
 		public override string ToString() { return Type + "," + Index; }
+
+		public static bool TryParse(string s, out TerrainTile tt)
+		{
+			var split = s.Split(',');
+			if (split.Length == 2 &&
+				Exts.TryParseUshortInvariant(split[0], out var type) &&
+				Exts.TryParseByteInvariant(split[1], out var index))
+			{
+				tt = new TerrainTile(type, index);
+				return true;
+			}
+
+			tt = default;
+			return false;
+		}
 	}
 
 	public readonly struct ResourceTile

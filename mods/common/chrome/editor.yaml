@@ -541,6 +541,86 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 							Align: Left
 							Visible: false
+				ScrollPanel@MAP_GENERATOR_TOOL_PANEL:
+					X: 9
+					Y: 35
+					Width: 290
+					Height: WINDOW_HEIGHT - 490
+					Visible: false
+					ScrollBar: Hidden
+					ScrollbarWidth: 0
+					Logic: MapGeneratorToolLogic
+					Children:
+						LabelForInput@GENERATOR_LABEL:
+							Y: 5
+							Width: 65
+							Height: 25
+							Align: Right
+							Font: TinyBold
+							Text: label-map-generator-generator
+							For: GENERATOR
+						DropDownButton@GENERATOR:
+							X: 70
+							Y: 5
+							Width: PARENT_WIDTH - 75
+							Height: 25
+							Font: Bold
+						Button@GENERATE_BUTTON:
+							X: 5
+							Y: 45
+							Width: 95
+							Height: 25
+							Text: button-map-generator-generate
+							Font: Bold
+						Button@GENERATE_RANDOM_BUTTON:
+							X: 105
+							Y: 45
+							Width: 180
+							Height: 25
+							Text: button-map-generator-generate-random
+							Font: Bold
+						ScrollPanel@SETTINGS_PANEL:
+							X: 0
+							Y: 85
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT - 85
+							Children:
+								Container@CHECKBOX_TEMPLATE:
+									X: 5
+									Width: PARENT_WIDTH - 35
+									Height: 30
+									Children:
+										Checkbox@CHECKBOX:
+											Width: PARENT_WIDTH
+											Height: 25
+								Container@TEXT_TEMPLATE:
+									X: 5
+									Width: PARENT_WIDTH - 35
+									Height: 50
+									Children:
+										LabelForInput@LABEL:
+											Y: 0
+											Width: PARENT_WIDTH
+											Height: 20
+											For: INPUT
+										TextField@INPUT:
+											Y: 20
+											Width: PARENT_WIDTH
+											Height: 25
+								Container@DROPDOWN_TEMPLATE:
+									X: 5
+									Width: PARENT_WIDTH - 35
+									Height: 50
+									Children:
+										LabelForInput@LABEL:
+											Y: 0
+											Width: PARENT_WIDTH
+											Height: 20
+											For: DROPDOWN
+										DropDownButton@DROPDOWN:
+											Y: 20
+											Width: PARENT_WIDTH
+											Height: 25
 		Container@HISTORY_WIDGETS:
 			X: WINDOW_WIDTH - 320
 			Y: 354

@@ -147,6 +147,12 @@ Templates:
 			12: Water
 			13: Water
 			16: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 4,1, 4,2, 3,2, 2,2, 1,2, 1,3, 0,3
 	Template@4:
 		Id: 4
 		Images: sh02.tem
@@ -168,6 +174,12 @@ Templates:
 			20: Water
 			21: Water
 			22: Rock
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 5,1, 5,2, 4,2, 4,3, 3,3, 3,4, 2,4, 1,4, 1,3, 0,3
 	Template@5:
 		Id: 5
 		Images: sh03.tem
@@ -183,6 +195,12 @@ Templates:
 			9: Water
 			10: Water
 			12: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 3,2, 2,2, 1,2, 1,3, 0,3
 	Template@6:
 		Id: 6
 		Images: sh04.tem
@@ -198,6 +216,12 @@ Templates:
 			6: Water
 			7: Water
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
 	Template@7:
 		Id: 7
 		Images: sh05.tem
@@ -213,6 +237,12 @@ Templates:
 			6: Rock
 			7: River
 			8: River
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
 	Template@8:
 		Id: 8
 		Images: sh06.tem
@@ -228,6 +258,12 @@ Templates:
 			6: Water
 			7: Water
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
 	Template@9:
 		Id: 9
 		Images: sh07.tem
@@ -243,6 +279,12 @@ Templates:
 			6: Water
 			7: Water
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
 	Template@10:
 		Id: 10
 		Images: sh08.tem
@@ -251,6 +293,12 @@ Templates:
 		Tiles:
 			0: Beach
 			1: Beach
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 1,1, 0,1
 	Template@11:
 		Id: 11
 		Images: sh09.tem
@@ -287,6 +335,12 @@ Templates:
 			24: Rock
 			28: Water
 			29: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 5,4, 4,4, 4,3, 3,3, 2,3, 1,3, 1,2, 0,2, 0,1
 	Template@13:
 		Id: 13
 		Images: sh11.tem
@@ -306,6 +360,12 @@ Templates:
 			15: Beach
 			18: Water
 			19: Beach
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 4,3, 4,4, 3,4, 3,3, 2,3, 2,2, 1,2, 1,1, 0,1
 	Template@14:
 		Id: 14
 		Images: sh12.tem
@@ -323,6 +383,12 @@ Templates:
 			10: Water
 			11: Beach
 			14: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,3, 2,3, 2,2, 1,2, 1,1, 0,1
 	Template@15:
 		Id: 15
 		Images: sh13.tem
@@ -347,6 +413,12 @@ Templates:
 			27: Beach
 			28: Beach
 			29: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 4,5, 4,4, 3,4, 3,3, 2,3, 1,3, 1,2, 1,1, 1,0
 	Template@16:
 		Id: 16
 		Images: sh14.tem
@@ -365,6 +437,12 @@ Templates:
 			13: Water
 			14: Beach
 			15: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 2,4, 1,4, 1,3, 1,2, 0,2, 0,1, 0,0
 	Template@17:
 		Id: 17
 		Images: sh15.tem
@@ -381,6 +459,12 @@ Templates:
 			12: Water
 			13: Beach
 			14: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 3,3, 2,3, 2,2, 1,2, 1,1, 1,0
 	Template@18:
 		Id: 18
 		Images: sh16.tem
@@ -396,6 +480,12 @@ Templates:
 			6: Water
 			7: Beach
 			8: Clear
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 1,3, 1,2, 1,1, 1,0
 	Template@19:
 		Id: 19
 		Images: sh17.tem
@@ -404,6 +494,12 @@ Templates:
 		Tiles:
 			0: Beach
 			1: Clear
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 0,1, 0,0
 	Template@20:
 		Id: 20
 		Images: sh18.tem
@@ -440,6 +536,12 @@ Templates:
 			16: Water
 			17: Beach
 			18: Clear
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 0,5, 1,5, 1,4, 1,3, 0,3, 0,2, 1,2, 1,1, 2,1, 2,0
 	Template@22:
 		Id: 22
 		Images: sh20.tem
@@ -459,6 +561,12 @@ Templates:
 			15: Water
 			16: Beach
 			17: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 1,4, 0,4, 0,3, 0,2, 0,1, 1,1, 2,1, 3,1, 3,0
 	Template@23:
 		Id: 23
 		Images: sh21.tem
@@ -476,6 +584,12 @@ Templates:
 			10: Water
 			11: Beach
 			12: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 1,3, 0,3, 0,2, 0,1, 1,1, 2,1, 2,0, 3,0
 	Template@24:
 		Id: 24
 		Images: sh22.tem
@@ -499,6 +613,12 @@ Templates:
 			27: Beach
 			28: Beach
 			29: Beach
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 2,3, 3,3, 4,3, 4,4, 5,4, 6,4
 	Template@25:
 		Id: 25
 		Images: sh23.tem
@@ -523,6 +643,12 @@ Templates:
 			22: Beach
 			23: Beach
 			24: Beach
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,1, 1,1, 2,1, 2,2, 3,2, 3,3, 4,3, 5,3, 5,4
 	Template@26:
 		Id: 26
 		Images: sh24.tem
@@ -537,6 +663,12 @@ Templates:
 			7: Clear
 			8: Beach
 			11: Clear
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,1, 1,1, 1,2, 2,2, 3,2, 3,3
 	Template@27:
 		Id: 27
 		Images: sh25.tem
@@ -552,6 +684,12 @@ Templates:
 			6: Rock
 			7: Rock
 			8: Beach
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
 	Template@28:
 		Id: 28
 		Images: sh26.tem
@@ -567,6 +705,12 @@ Templates:
 			6: Beach
 			7: Beach
 			8: Beach
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
 	Template@29:
 		Id: 29
 		Images: sh27.tem
@@ -582,6 +726,12 @@ Templates:
 			6: Beach
 			7: Beach
 			8: Rough
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
 	Template@30:
 		Id: 30
 		Images: sh28.tem
@@ -596,6 +746,12 @@ Templates:
 			6: Beach
 			7: Rough
 			8: Rough
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
 	Template@31:
 		Id: 31
 		Images: sh29.tem
@@ -604,6 +760,12 @@ Templates:
 		Tiles:
 			0: Beach
 			1: Clear
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,1, 1,1
 	Template@32:
 		Id: 32
 		Images: sh30.tem
@@ -644,6 +806,12 @@ Templates:
 			26: Beach
 			27: Beach
 			28: Clear
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,4, 1,4, 2,4, 3,4, 3,3, 3,2, 4,2, 4,1, 5,1, 6,1
 	Template@34:
 		Id: 34
 		Images: sh32.tem
@@ -661,6 +829,12 @@ Templates:
 			10: Beach
 			12: Clear
 			13: Clear
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,3, 1,3, 1,2, 2,2, 2,1, 3,1, 4,1
 	Template@35:
 		Id: 35
 		Images: sh33.tem
@@ -676,6 +850,12 @@ Templates:
 			7: Rough
 			9: Beach
 			10: Beach
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,3, 0,2, 1,2, 1,1, 2,1, 3,1
 	Template@36:
 		Id: 36
 		Images: sh34.tem
@@ -698,6 +878,12 @@ Templates:
 			24: Beach
 			25: Beach
 			26: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 5,0, 5,1, 4,1, 4,2, 3,2, 3,3, 3,4, 2,4, 2,5
 	Template@37:
 		Id: 37
 		Images: sh35.tem
@@ -715,6 +901,12 @@ Templates:
 			12: Clear
 			13: Beach
 			14: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 3,0, 3,1, 3,2, 3,3, 2,3, 2,4
 	Template@38:
 		Id: 38
 		Images: sh36.tem
@@ -730,6 +922,12 @@ Templates:
 			8: Beach
 			9: Water
 			10: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 3,0, 3,1, 2,1, 2,2, 1,2, 1,3
 	Template@39:
 		Id: 39
 		Images: sh37.tem
@@ -744,6 +942,12 @@ Templates:
 			6: Rough
 			7: Beach
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 2,0, 2,1, 2,2, 2,3
 	Template@40:
 		Id: 40
 		Images: sh38.tem
@@ -752,6 +956,12 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Beach
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 2,0, 2,1
 	Template@41:
 		Id: 41
 		Images: sh39.tem
@@ -788,6 +998,12 @@ Templates:
 			22: Beach
 			23: Beach
 			24: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 2,0, 2,1, 2,2, 2,3, 3,3, 4,3, 4,4, 4,5
 	Template@43:
 		Id: 43
 		Images: sh41.tem
@@ -806,6 +1022,12 @@ Templates:
 			13: Clear
 			14: Beach
 			15: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 1,0, 1,1, 1,2, 2,2, 2,3, 3,3, 3,4
 	Template@44:
 		Id: 44
 		Images: sh42.tem
@@ -821,6 +1043,12 @@ Templates:
 			9: Clear
 			10: Beach
 			11: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 1,0, 1,1, 2,1, 3,1, 3,2, 3,3
 	Template@45:
 		Id: 45
 		Images: sh43.tem
@@ -836,6 +1064,12 @@ Templates:
 			6: Beach
 			7: Water
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.U
+				Points: 3,1, 3,2, 2,2, 1,2, 1,3, 0,3, 0,2, 0,1, 0,0, 1,0
 	Template@46:
 		Id: 46
 		Images: sh44.tem
@@ -846,6 +1080,12 @@ Templates:
 			1: Beach
 			2: River
 			3: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.U
+				Points: 2,1, 1,1, 0,1, 0,0
 	Template@47:
 		Id: 47
 		Images: sh45.tem
@@ -861,6 +1101,12 @@ Templates:
 			6: Water
 			7: River
 			8: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.R
+				Points: 1,3, 1,2, 1,1, 1,0, 2,0, 2,1, 2,2, 3,2
 	Template@48:
 		Id: 48
 		Images: sh46.tem
@@ -871,6 +1117,12 @@ Templates:
 			1: River
 			2: River
 			3: Beach
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 1,1, 2,1
 	Template@49:
 		Id: 49
 		Images: sh47.tem
@@ -883,6 +1135,12 @@ Templates:
 			6: Beach
 			7: Beach
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.D
+				Points: 0,2, 1,2, 2,2, 2,3
 	Template@50:
 		Id: 50
 		Images: sh48.tem
@@ -893,6 +1151,12 @@ Templates:
 			1: Water
 			2: Clear
 			3: Beach
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.D
+				Points: 0,1, 1,1, 2,1, 2,2
 	Template@51:
 		Id: 51
 		Images: sh49.tem
@@ -908,6 +1172,12 @@ Templates:
 			6: River
 			7: Rock
 			8: Rock
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.L
+				Points: 2,0, 2,1, 1,1, 0,1
 	Template@52:
 		Id: 52
 		Images: sh50.tem
@@ -918,6 +1188,12 @@ Templates:
 			1: Beach
 			2: Beach
 			3: Water
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.L
+				Points: 2,0, 1,0, 1,1, 0,1
 	Template@53:
 		Id: 53
 		Images: sh51.tem
@@ -931,6 +1207,12 @@ Templates:
 			5: Beach
 			7: Rough
 			8: Clear
+		Segments:
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.R
+				Points: 2,0, 2,1, 3,1, 3,2
 	Template@54:
 		Id: 54
 		Images: sh52.tem
@@ -944,6 +1226,12 @@ Templates:
 			5: Beach
 			7: Beach
 			8: Water
+		Segments:
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.D
+				Points: 3,1, 2,1, 2,2, 2,3
 	Template@55:
 		Id: 55
 		Images: sh53.tem
@@ -958,6 +1246,12 @@ Templates:
 			6: Water
 			7: Beach
 			8: Clear
+		Segments:
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.L
+				Points: 1,3, 1,2, 0,2, 0,1
 	Template@56:
 		Id: 56
 		Images: sh54.tem
@@ -970,6 +1264,12 @@ Templates:
 			3: Beach
 			4: Beach
 			6: Clear
+		Segments:
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.U
+				Points: 0,2, 0,1, 1,1, 1,0
 	Template@57:
 		Id: 57
 		Images: sh55.tem
@@ -995,6 +1295,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Clear.L
+				Points: 2,1, 1,1, 0,1
 	Template@136:
 		Id: 136
 		Images: s02.tem
@@ -1007,6 +1313,12 @@ Templates:
 			3: Rock
 			4: Rock
 			5: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,2, 1,2, 1,1, 0,1
 	Template@137:
 		Id: 137
 		Images: s03.tem
@@ -1017,6 +1329,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
 	Template@138:
 		Id: 138
 		Images: s04.tem
@@ -1027,6 +1345,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
 	Template@139:
 		Id: 139
 		Images: s05.tem
@@ -1037,6 +1361,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
 	Template@140:
 		Id: 140
 		Images: s06.tem
@@ -1048,6 +1378,12 @@ Templates:
 			2: Rock
 			3: Rock
 			4: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,2
 	Template@141:
 		Id: 141
 		Images: s07.tem
@@ -1058,6 +1394,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Clear.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
 	Template@142:
 		Id: 142
 		Images: s08.tem
@@ -1068,6 +1410,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Clear.U
+				Points: 1,2, 1,1, 1,0
 	Template@143:
 		Id: 143
 		Images: s09.tem
@@ -1080,6 +1428,12 @@ Templates:
 			3: Rock
 			4: Rock
 			5: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 2,2, 2,1, 1,1, 1,0
 	Template@144:
 		Id: 144
 		Images: s10.tem
@@ -1090,6 +1444,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
 	Template@145:
 		Id: 145
 		Images: s11.tem
@@ -1100,6 +1460,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
 	Template@146:
 		Id: 146
 		Images: s12.tem
@@ -1110,6 +1476,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
 	Template@147:
 		Id: 147
 		Images: s13.tem
@@ -1122,6 +1494,12 @@ Templates:
 			3: Rock
 			4: Rock
 			5: Rough
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 2,1, 2,0
 	Template@148:
 		Id: 148
 		Images: s14.tem
@@ -1131,6 +1509,12 @@ Templates:
 			0: Rock
 			1: Rough
 			2: Rock
+		Segments:
+			Segment:
+				Start: Clear.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
 	Template@149:
 		Id: 149
 		Images: s15.tem
@@ -1141,6 +1525,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Clear.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
 	Template@150:
 		Id: 150
 		Images: s16.tem
@@ -1151,6 +1541,12 @@ Templates:
 			2: Rock
 			3: Rock
 			5: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 1,2, 2,2
 	Template@151:
 		Id: 151
 		Images: s17.tem
@@ -1161,6 +1557,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
 	Template@152:
 		Id: 152
 		Images: s18.tem
@@ -1171,6 +1573,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
 	Template@153:
 		Id: 153
 		Images: s19.tem
@@ -1181,6 +1589,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
 	Template@154:
 		Id: 154
 		Images: s20.tem
@@ -1192,6 +1606,12 @@ Templates:
 			3: Rock
 			4: Rock
 			5: Rough
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,2, 1,2, 1,1, 2,1
 	Template@155:
 		Id: 155
 		Images: s21.tem
@@ -1200,6 +1620,12 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Clear.R
+				Points: 0,1, 1,1
 	Template@156:
 		Id: 156
 		Images: s22.tem
@@ -1208,6 +1634,12 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+		Segments:
+			Segment:
+				Start: Clear.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1
 	Template@157:
 		Id: 157
 		Images: s23.tem
@@ -1220,6 +1652,12 @@ Templates:
 			3: Rock
 			4: Rock
 			5: Rough
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 2,0, 2,1, 1,1, 1,2
 	Template@158:
 		Id: 158
 		Images: s24.tem
@@ -1230,6 +1668,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
 	Template@159:
 		Id: 159
 		Images: s25.tem
@@ -1240,6 +1684,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
 	Template@160:
 		Id: 160
 		Images: s26.tem
@@ -1250,6 +1700,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
 	Template@161:
 		Id: 161
 		Images: s27.tem
@@ -1262,6 +1718,12 @@ Templates:
 			3: Rough
 			4: Rock
 			5: Rock
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1, 2,1, 2,2
 	Template@162:
 		Id: 162
 		Images: s28.tem
@@ -1271,6 +1733,12 @@ Templates:
 			0: Rock
 			1: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Clear.D
+				Points: 1,0, 1,1, 1,2
 	Template@163:
 		Id: 163
 		Images: s29.tem
@@ -1281,6 +1749,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.U
+				Points: 2,1, 1,1, 1,0
 	Template@164:
 		Id: 164
 		Images: s30.tem
@@ -1291,6 +1765,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.R
+				Points: 1,2, 1,1, 2,1
 	Template@165:
 		Id: 165
 		Images: s31.tem
@@ -1301,6 +1781,12 @@ Templates:
 			1: Rough
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.D
+				Points: 0,1, 1,1, 1,2
 	Template@166:
 		Id: 166
 		Images: s32.tem
@@ -1310,6 +1796,12 @@ Templates:
 			0: Rock
 			1: Rock
 			2: Rough
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.L
+				Points: 1,0, 1,1, 0,1
 	Template@167:
 		Id: 167
 		Images: s33.tem
@@ -1320,6 +1812,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Cliff.R
+				Points: 1,0, 1,1, 2,1
 	Template@168:
 		Id: 168
 		Images: s34.tem
@@ -1330,6 +1828,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Cliff.D
+				Points: 2,1, 1,1, 1,2
 	Template@169:
 		Id: 169
 		Images: s35.tem
@@ -1340,6 +1844,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Cliff.L
+				Points: 1,2, 1,1, 0,1
 	Template@170:
 		Id: 170
 		Images: s36.tem
@@ -1350,6 +1860,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+		Segments:
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Cliff.U
+				Points: 0,1, 1,1, 1,0
 	Template@171:
 		Id: 171
 		Images: s37.tem
@@ -1767,6 +2283,17 @@ Templates:
 			1: Road
 			2: Clear
 			3: Clear
+		Segments:
+			Segment@1:
+				End: Clear.D
+				Inner: Road
+				Points: 1,0, 1,1
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 2,1, 2,0
+				Start: Clear.U
 	Template@174:
 		Id: 174
 		Images: d02.tem
@@ -1777,6 +2304,17 @@ Templates:
 			1: Road
 			2: Clear
 			3: Clear
+		Segments:
+			Segment@1:
+				End: Clear.L
+				Inner: Road
+				Points: 2,0, 1,0
+				Start: Road.L
+			Segment@2:
+				End: Road.R
+				Inner: Road
+				Points: 1,1, 2,1
+				Start: Clear.R
 	Template@175:
 		Id: 175
 		Images: d03.tem
@@ -1785,6 +2323,17 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Road
+		Segments:
+			Segment@1:
+				End: Clear.U
+				Inner: Road
+				Points: 1,2, 1,1
+				Start: Road.U
+			Segment@2:
+				End: Road.D
+				Inner: Road
+				Points: 0,1, 0,2
+				Start: Clear.D
 	Template@176:
 		Id: 176
 		Images: d04.tem
@@ -1794,6 +2343,17 @@ Templates:
 			1: Clear
 			2: Road
 			3: Clear
+		Segments:
+			Segment@1:
+				End: Clear.R
+				Inner: Road
+				Points: 0,2, 1,2
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 1,1, 0,1
+				Start: Clear.L
 	Template@177:
 		Id: 177
 		Images: d05.tem
@@ -1808,6 +2368,17 @@ Templates:
 			7: Road
 			9: Road
 			10: Road
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 1,0, 1,1, 0,1, 0,2, 0,3, 0,4, 1,4
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 2,4, 2,3, 1,3, 1,2, 2,2, 2,1, 2,0
+				Start: Road.U
 	Template@178:
 		Id: 178
 		Images: d06.tem
@@ -1819,6 +2390,17 @@ Templates:
 			3: Road
 			4: Road
 			5: Clear
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 0,3
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 1,3, 1,2, 1,1, 1,0
+				Start: Road.U
 	Template@179:
 		Id: 179
 		Images: d07.tem
@@ -1830,6 +2412,17 @@ Templates:
 			2: Clear
 			4: Road
 			5: Clear
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 1,0, 1,1, 1,2
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 2,2, 2,1, 2,0
+				Start: Road.U
 	Template@180:
 		Id: 180
 		Images: d08.tem
@@ -1840,6 +2433,17 @@ Templates:
 			3: Clear
 			4: Road
 			5: Clear
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 1,0, 1,1, 1,2
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 2,2, 2,1, 2,0
+				Start: Road.U
 	Template@181:
 		Id: 181
 		Images: d09.tem
@@ -1856,6 +2460,17 @@ Templates:
 			7: Road
 			10: Clear
 			11: Clear
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 4,1, 3,1, 2,1, 1,1, 0,1
+				Start: Road.L
 	Template@182:
 		Id: 182
 		Images: d10.tem
@@ -1868,6 +2483,17 @@ Templates:
 			5: Road
 			6: Road
 			7: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 4,1, 3,1, 2,1, 1,1, 0,1
+				Start: Road.L
 	Template@183:
 		Id: 183
 		Images: d11.tem
@@ -1878,6 +2504,17 @@ Templates:
 			2: Road
 			3: Road
 			4: Clear
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 2,1, 1,1, 0,1
+				Start: Road.L
 	Template@184:
 		Id: 184
 		Images: d12.tem
@@ -1887,6 +2524,17 @@ Templates:
 			0: Clear
 			2: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 2,1, 1,1, 0,1
+				Start: Road.L
 	Template@185:
 		Id: 185
 		Images: d13.tem
@@ -1902,6 +2550,17 @@ Templates:
 			7: Rock
 			10: Rock
 			11: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,1, 1,1, 1,2, 2,2, 2,3, 3,3, 4,3
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 4,2, 3,2, 3,1, 2,1, 2,0, 1,0, 0,0
+				Start: Road.L
 	Template@186:
 		Id: 186
 		Images: d14.tem
@@ -2001,6 +2660,17 @@ Templates:
 			6: Clear
 			7: Road
 			8: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 1,2, 1,3, 2,3, 3,3
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 3,2, 2,2, 2,1, 1,1, 1,0
+				Start: Road.L
 	Template@193:
 		Id: 193
 		Images: d21.tem
@@ -2013,6 +2683,17 @@ Templates:
 			3: Clear
 			4: Road
 			5: Rough
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 2,2, 2,1, 3,1
+				Start: Road.U
+			Segment@2:
+				End: Road.D
+				Inner: Road
+				Points: 3,0, 2,0, 1,0, 1,1, 1,2
+				Start: Road.L
 	Template@194:
 		Id: 194
 		Images: d22.tem
@@ -2026,6 +2707,17 @@ Templates:
 			6: Clear
 			7: Road
 			8: Clear
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 0,2, 1,2, 1,3
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 2,3, 2,2, 2,1, 1,1, 0,1
+				Start: Road.U
 	Template@195:
 		Id: 195
 		Images: d23.tem
@@ -2039,6 +2731,17 @@ Templates:
 			5: Clear
 			6: Road
 			7: Road
+		Segments:
+			Segment@1:
+				End: Road.U
+				Inner: Road
+				Points: 0,3, 1,3, 2,3, 2,2, 2,1, 2,0
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 1,0, 1,1, 1,2, 0,2
+				Start: Road.D
 	Template@196:
 		Id: 196
 		Images: d24.tem
@@ -2052,6 +2755,17 @@ Templates:
 			5: Road
 			7: Road
 			8: Road
+		Segments:
+			Segment@1:
+				End: RoadOut.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 1,3, 2,3
+				Start: RoadIn.RD
+			Segment@2:
+				End: RoadOut.LU
+				Inner: Road
+				Points: 3,2, 3,1, 2,1, 2,0, 1,0
+				Start: RoadIn.LU
 	Template@197:
 		Id: 197
 		Images: d25.tem
@@ -2065,6 +2779,17 @@ Templates:
 			5: Road
 			7: Road
 			8: Road
+		Segments:
+			Segment@1:
+				End: RoadOut.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 1,3, 2,3
+				Start: RoadIn.RD
+			Segment@2:
+				End: RoadOut.LU
+				Inner: Road
+				Points: 3,2, 3,1, 2,1, 2,0, 1,0
+				Start: RoadIn.LU
 	Template@198:
 		Id: 198
 		Images: d26.tem
@@ -2073,6 +2798,17 @@ Templates:
 		Tiles:
 			1: Road
 			2: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2
+				Start: RoadOut.RD
+			Segment@2:
+				End: RoadIn.LU
+				Inner: Road
+				Points: 2,1, 2,0, 1,0
+				Start: RoadOut.LU
 	Template@199:
 		Id: 199
 		Images: d27.tem
@@ -2081,6 +2817,17 @@ Templates:
 		Tiles:
 			1: Road
 			2: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2
+				Start: RoadOut.RD
+			Segment@2:
+				End: RoadIn.LU
+				Inner: Road
+				Points: 2,1, 2,0, 1,0
+				Start: RoadOut.LU
 	Template@200:
 		Id: 200
 		Images: d28.tem
@@ -2090,6 +2837,17 @@ Templates:
 			0: Road
 			1: Road
 			2: Rough
+		Segments:
+			Segment@1:
+				End: RoadIn.RD
+				Inner: Road
+				Points: 0,1, 1,1, 1,2
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 2,1, 2,0, 1,0, 0,0
+				Start: RoadOut.LU
 	Template@201:
 		Id: 201
 		Images: d29.tem
@@ -2099,6 +2857,17 @@ Templates:
 			0: Road
 			1: Road
 			2: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RD
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 1,2
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 2,1, 1,1, 1,0
+				Start: RoadOut.LU
 	Template@202:
 		Id: 202
 		Images: d30.tem
@@ -2117,6 +2886,17 @@ Templates:
 			1: Road
 			2: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 2,2
+				Start: RoadOut.RD
+			Segment@2:
+				End: RoadIn.LU
+				Inner: Road
+				Points: 2,1, 1,1, 1,0
+				Start: Road.L
 	Template@204:
 		Id: 204
 		Images: d32.tem
@@ -2126,6 +2906,17 @@ Templates:
 			1: Clear
 			2: Road
 			3: Clear
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 0,1, 0,2
+				Start: RoadOut.RD
+			Segment@2:
+				End: RoadIn.LU
+				Inner: Road
+				Points: 1,2, 1,1, 1,0
+				Start: Road.U
 	Template@205:
 		Id: 205
 		Images: d33.tem
@@ -2148,6 +2939,17 @@ Templates:
 			5: Road
 			6: Road
 			7: Road
+		Segments:
+			Segment@1:
+				End: RoadOut.RU
+				Inner: Road
+				Points: 1,3, 2,3, 2,2, 3,2, 3,1
+				Start: RoadIn.RU
+			Segment@2:
+				End: RoadOut.LD
+				Inner: Road
+				Points: 2,0, 1,0, 1,1, 0,1, 0,2
+				Start: RoadIn.LD
 	Template@207:
 		Id: 207
 		Images: d35.tem
@@ -2161,6 +2963,17 @@ Templates:
 			5: Road
 			6: Road
 			7: Road
+		Segments:
+			Segment@1:
+				End: RoadOut.RU
+				Inner: Road
+				Points: 1,3, 2,3, 2,2, 3,2, 3,1
+				Start: RoadIn.RU
+			Segment@2:
+				End: RoadOut.LD
+				Inner: Road
+				Points: 2,0, 1,0, 1,1, 0,1, 0,2
+				Start: RoadIn.LD
 	Template@208:
 		Id: 208
 		Images: d36.tem
@@ -2169,6 +2982,17 @@ Templates:
 		Tiles:
 			0: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RU
+				Inner: Road
+				Points: 1,2, 2,2, 2,1
+				Start: RoadOut.RU
+			Segment@2:
+				End: RoadIn.LD
+				Inner: Road
+				Points: 1,0, 0,0, 0,1
+				Start: RoadOut.LD
 	Template@209:
 		Id: 209
 		Images: d37.tem
@@ -2177,6 +3001,17 @@ Templates:
 		Tiles:
 			0: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RU
+				Inner: Road
+				Points: 1,2, 2,2, 2,1
+				Start: RoadOut.RU
+			Segment@2:
+				End: RoadIn.LD
+				Inner: Road
+				Points: 1,0, 0,0, 0,1
+				Start: RoadOut.LD
 	Template@210:
 		Id: 210
 		Images: d38.tem
@@ -2186,6 +3021,17 @@ Templates:
 			0: Road
 			1: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 1,2, 1,1, 2,1
+				Start: RoadOut.RU
+			Segment@2:
+				End: RoadIn.LD
+				Inner: Road
+				Points: 2,0, 1,0, 0,0, 0,1
+				Start: Road.L
 	Template@211:
 		Id: 211
 		Images: d39.tem
@@ -2195,6 +3041,17 @@ Templates:
 			0: Road
 			1: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: Road.U
+				Inner: Road
+				Points: 1,2, 2,2, 2,1, 2,0
+				Start: RoadOut.RU
+			Segment@2:
+				End: RoadIn.LD
+				Inner: Road
+				Points: 1,0, 1,1, 0,1
+				Start: Road.D
 	Template@212:
 		Id: 212
 		Images: d40.tem
@@ -2213,6 +3070,17 @@ Templates:
 			0: Rock
 			2: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RU
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 2,1
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 1,0, 1,1, 0,1
+				Start: RoadOut.LD
 	Template@214:
 		Id: 214
 		Images: d42.tem
@@ -2222,6 +3090,17 @@ Templates:
 			0: Road
 			2: Road
 			3: Road
+		Segments:
+			Segment@1:
+				End: RoadIn.RU
+				Inner: Road
+				Points: 1,2, 1,1, 2,1
+				Start: Road.U
+			Segment@2:
+				End: Road.D
+				Inner: Road
+				Points: 1,0, 0,0, 0,1, 0,2
+				Start: RoadOut.LD
 	Template@215:
 		Id: 215
 		Images: d43.tem
@@ -2238,6 +3117,17 @@ Templates:
 		Categories: Road
 		Tiles:
 			0: Road
+		Segments:
+			Segment@1:
+				End: Road.D
+				Inner: Road
+				Points: 0,0, 0,1
+				Start: Road.D
+			Segment@2:
+				End: Road.U
+				Inner: Road
+				Points: 1,1, 1,0
+				Start: Road.U
 	Template@228:
 		Id: 228
 		Images: d45.tem
@@ -2245,6 +3135,17 @@ Templates:
 		Categories: Road
 		Tiles:
 			0: Road
+		Segments:
+			Segment@1:
+				End: Road.R
+				Inner: Road
+				Points: 0,1, 1,1
+				Start: Road.R
+			Segment@2:
+				End: Road.L
+				Inner: Road
+				Points: 1,0, 0,0
+				Start: Road.L
 	Template@231:
 		Id: 231
 		Images: rc01.tem
@@ -3626,6 +4527,12 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+		Segments:
+			Segment:
+				End: Cliff.L
+				Inner: Cliff
+				Points: 1,1, 0,1
+				Start: Cliff.L
 	Template@402:
 		Id: 402
 		Images: cliffsl2.tem
@@ -3634,6 +4541,12 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+		Segments:
+			Segment:
+				End: Cliff.R
+				Inner: Cliff
+				Points: 0,1, 1,1
+				Start: Cliff.R
 	Template@403:
 		Id: 403
 		Images: cliffsl3.tem
@@ -3642,6 +4555,12 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+		Segments:
+			Segment:
+				End: Cliff.D
+				Inner: Cliff
+				Points: 1,0, 1,1
+				Start: Cliff.D
 	Template@404:
 		Id: 404
 		Images: cliffsl4.tem
@@ -3650,6 +4569,12 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+		Segments:
+			Segment:
+				End: Cliff.U
+				Inner: Cliff
+				Points: 1,1, 1,0
+				Start: Cliff.U
 	Template@405:
 		Id: 405
 		Images: cliffsw1.tem
@@ -3682,3 +4607,234 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+
+MultiBrushCollections:
+	Trees:
+		MultiBrush@t01:
+			Actor: t01
+		MultiBrush@t02:
+			Actor: t02
+		MultiBrush@t03:
+			Actor: t03
+		MultiBrush@t05:
+			Actor: t05
+		MultiBrush@t06:
+			Actor: t06
+		MultiBrush@t07:
+			Actor: t07
+		MultiBrush@t08:
+			Actor: t08
+		MultiBrush@t10:
+			Actor: t10
+		MultiBrush@t11:
+			Actor: t11
+		MultiBrush@t12:
+			Actor: t12
+		MultiBrush@t13:
+			Actor: t13
+		MultiBrush@t14:
+			Actor: t14
+		MultiBrush@t15:
+			Actor: t15
+		MultiBrush@t16:
+			Actor: t16
+		MultiBrush@t17:
+			Actor: t17
+		MultiBrush@tc01:
+			Actor: tc01
+		MultiBrush@tc02:
+			Actor: tc02
+		MultiBrush@tc03:
+			Actor: tc03
+		MultiBrush@tc04:
+			Actor: tc04
+		MultiBrush@tc05:
+			Actor: tc05
+		MultiBrush@t01.husk:
+			Actor: t01.husk
+			Weight: 0.1
+		MultiBrush@t02.husk:
+			Actor: t02.husk
+			Weight: 0.1
+		MultiBrush@t03.husk:
+			Actor: t03.husk
+			Weight: 0.1
+		MultiBrush@t05.husk:
+			Actor: t05.husk
+			Weight: 0.1
+		MultiBrush@t06.husk:
+			Actor: t06.husk
+			Weight: 0.1
+		MultiBrush@t07.husk:
+			Actor: t07.husk
+			Weight: 0.1
+		MultiBrush@t08.husk:
+			Actor: t08.husk
+			Weight: 0.1
+		MultiBrush@t10.husk:
+			Actor: t10.husk
+			Weight: 0.1
+		MultiBrush@t11.husk:
+			Actor: t11.husk
+			Weight: 0.1
+		MultiBrush@t12.husk:
+			Actor: t12.husk
+			Weight: 0.1
+		MultiBrush@t13.husk:
+			Actor: t13.husk
+			Weight: 0.1
+		MultiBrush@t14.husk:
+			Actor: t14.husk
+			Weight: 0.1
+		MultiBrush@t15.husk:
+			Actor: t15.husk
+			Weight: 0.1
+		MultiBrush@t16.husk:
+			Actor: t16.husk
+			Weight: 0.1
+		MultiBrush@t17.husk:
+			Actor: t17.husk
+			Weight: 0.1
+		MultiBrush@tc01.husk:
+			Actor: tc01.husk
+			Weight: 0.1
+		MultiBrush@tc02.husk:
+			Actor: tc02.husk
+			Weight: 0.1
+		MultiBrush@tc03.husk:
+			Actor: tc03.husk
+			Weight: 0.1
+		MultiBrush@tc04.husk:
+			Actor: tc04.husk
+			Weight: 0.1
+		MultiBrush@tc05.husk:
+			Actor: tc05.husk
+			Weight: 0.1
+	Obstructions:
+		MultiBrush@97:
+			Template: 97
+		MultiBrush@98:
+			Template: 98
+		MultiBrush@99:
+			Template: 99
+		MultiBrush@217:
+			Template: 217
+		MultiBrush@218:
+			Template: 218
+		MultiBrush@219:
+			Template: 219
+		MultiBrush@220:
+			Template: 220
+		MultiBrush@221:
+			Template: 221
+		MultiBrush@222:
+			Template: 222
+		MultiBrush@223:
+			Template: 223
+		MultiBrush@224:
+			Template: 224
+		MultiBrush@225:
+			Template: 225
+		MultiBrush@226:
+			Template: 226
+		MultiBrush@103:
+			Template: 103
+		MultiBrush@104:
+			Template: 104
+		MultiBrush@105:
+			Template: 105
+			Weight: 0.05
+		MultiBrush@106:
+			Template: 106
+			Weight: 0.05
+		MultiBrush@109:
+			Template: 109
+		MultiBrush@110:
+			Template: 110
+		MultiBrush@t01:
+			Actor: t01
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t02:
+			Actor: t02
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t03:
+			Actor: t03
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t05:
+			Actor: t05
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t06:
+			Actor: t06
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t07:
+			Actor: t07
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t08:
+			Actor: t08
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t10:
+			Actor: t10
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t11:
+			Actor: t11
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t12:
+			Actor: t12
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t13:
+			Actor: t13
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t14:
+			Actor: t14
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t15:
+			Actor: t15
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t16:
+			Actor: t16
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@t17:
+			Actor: t17
+			BackingTile: 255,0
+			Weight: 0.1
+		MultiBrush@580:
+			Template: 580
+			Weight: 0.1
+		MultiBrush@581:
+			Template: 581
+			Weight: 0.1
+		MultiBrush@582:
+			Template: 582
+			Weight: 0.1
+		MultiBrush@583:
+			Template: 583
+			Weight: 0.1
+		MultiBrush@584:
+			Template: 584
+			Weight: 0.1
+		MultiBrush@585:
+			Template: 585
+			Weight: 0.1
+		MultiBrush@586:
+			Template: 586
+			Weight: 0.1
+		MultiBrush@587:
+			Template: 587
+			Weight: 0.1
+		MultiBrush@588:
+			Template: 588
+			Weight: 0.1

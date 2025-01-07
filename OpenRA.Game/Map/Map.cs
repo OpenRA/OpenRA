@@ -1146,6 +1146,11 @@ namespace OpenRA
 
 		public byte GetTerrainIndex(CPos cell)
 		{
+			return GetTerrainIndex(cell.ToMPos(this));
+		}
+
+		public byte GetTerrainIndex(MPos uv)
+		{
 			// Lazily initialize a cache for terrain indexes.
 			if (cachedTerrainIndexes == null)
 			{
@@ -1153,7 +1158,6 @@ namespace OpenRA
 				cachedTerrainIndexes.Clear(InvalidCachedTerrainIndex);
 			}
 
-			var uv = cell.ToMPos(this);
 			var terrainIndex = cachedTerrainIndexes[uv];
 
 			// PERF: Cache terrain indexes per cell on demand.
@@ -1168,7 +1172,12 @@ namespace OpenRA
 
 		public TerrainTypeInfo GetTerrainInfo(CPos cell)
 		{
-			return Rules.TerrainInfo.TerrainTypes[GetTerrainIndex(cell)];
+			return GetTerrainInfo(cell.ToMPos(this));
+		}
+
+		public TerrainTypeInfo GetTerrainInfo(MPos uv)
+		{
+			return Rules.TerrainInfo.TerrainTypes[GetTerrainIndex(uv)];
 		}
 
 		public CPos Clamp(CPos cell)

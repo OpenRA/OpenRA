@@ -1,0 +1,431 @@
+^MapGenerators:
+	RaMapGenerator@ra:
+		Type: ra
+		Name: map-generator-ra
+		Settings:
+			Option@hidden_defaults:
+				Choice@hidden_defaults:
+					Settings:
+						TerrainFeatureSize: 20.0
+						ForestFeatureSize: 20.0
+						ResourceFeatureSize: 20.0
+						Water: 0.2
+						Mountains: 0.1
+						Forests: 0.025
+						ForestCutout: 2
+						MaximumCutoutSpacing: 12
+						TerrainSmoothing: 4
+						SmoothingThreshold: 0.833333
+						MinimumLandSeaThickness: 5
+						MinimumMountainThickness: 5
+						MaximumAltitude: 8
+						RoughnessRadius: 5
+						Roughness: 0.5
+						MinimumTerrainContourSpacing: 6
+						MinimumCliffLength: 10
+						ForestClumpiness: 0.5
+						DenyWalledAreas: True
+						EnforceSymmetry: 0
+						Roads: True
+						RoadSpacing: 5
+						RoadShrink: 0
+						CreateEntities: True
+						CentralSpawnReservationFraction: 0.25
+						ResourceSpawnReservation: 8
+						SpawnRegionSize: 12
+						SpawnBuildSize: 8
+						SpawnResourceSpawns: 3
+						SpawnReservation: 20
+						SpawnResourceBias: 1.15
+						ResourcesPerPlayer: 50000
+						OreUniformity: 0.25
+						OreClumpiness: 0.25
+						MaximumExpansionResourceSpawns: 5
+						MaximumResourceSpawnsPerExpansion: 2
+						MinimumExpansionSize: 2
+						MaximumExpansionSize: 12
+						ExpansionInner: 2
+						ExpansionBorder: 1
+						DefaultResource: Ore
+						ResourceSpawnSeeds:
+							mine: Ore
+							gmine: Gems
+						ClearTerrain: Clear
+						PlayableTerrain: Beach,Bridge,Clear,Gems,Ore,Road,Rough,Wall,Water
+						PartiallyPlayableTerrain: Tree
+						UnplayableTerrain: River,Rock
+						DominantTerrain: River,Rock,Tree,Water
+						PartiallyPlayableCategories: Beach,Road
+						ClearSegmentTypes: Clear
+						BeachSegmentTypes: Beach
+						CliffSegmentTypes: Cliff
+						RoadSegmentTypes: Road,RoadIn,RoadOut
+						ForestObstacles: Trees
+						UnplayableObstacles: Obstructions
+			Option@hidden_tileset_overrides:
+				Choice@desert:
+					Tileset: DESERT
+					Settings:
+						LandTile: 255
+						WaterTile: 256
+				Choice@temperat:
+					Tileset: TEMPERAT
+					Settings:
+						LandTile: 255
+						WaterTile: 1
+				Choice@snow:
+					Tileset: SNOW
+					Settings:
+						LandTile: 255
+						WaterTile: 1
+			Option@Seed:
+				Label: label-ra-map-generator-option-seed
+				Random: True
+				Default: 0
+				Integer: Seed
+			Option@TerrainType:
+				Label: label-ra-map-generator-option-terrain-type
+				Priority: 2
+				Default: Gardens
+				Choice@Lakes:
+					Label: label-ra-map-generator-choice-terrain-type-lakes
+					Settings:
+				Choice@Puddles:
+					Label: label-ra-map-generator-choice-terrain-type-puddles
+					Settings:
+						Water: 0.1
+				Choice@Gardens:
+					Label: label-ra-map-generator-choice-terrain-type-gardens
+					Settings:
+						Water: 0.05
+						Forests: 0.3
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						RoadSpacing: 3
+						RoadShrink: 4
+				Choice@Plains:
+					Label: label-ra-map-generator-choice-terrain-type-plains
+					Settings:
+						Water: 0.0
+				Choice@Parks:
+					Label: label-ra-map-generator-choice-terrain-type-parks
+					Settings:
+						Water: 0.0
+						Forests: 0.1
+				Choice@Woodlands:
+					Label: label-ra-map-generator-choice-terrain-type-woodlands
+					Settings:
+						Water: 0.0
+						Forests: 0.4
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						RoadSpacing: 3
+						RoadShrink: 4
+				Choice@Overgrown:
+					Label: label-ra-map-generator-choice-terrain-type-overgrown
+					Settings:
+						Water: 0.0
+						Forests: 0.5
+						EnforceSymmetry: 2
+						Mountains: 0.5
+						Roughness: 0.25
+				Choice@Rocky:
+					Label: label-ra-map-generator-choice-terrain-type-rocky
+					Settings:
+						Water: 0.0
+						Forests: 0.3
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						Mountains: 0.5
+						Roughness: 0.25
+						RoadSpacing: 3
+						RoadShrink: 4
+				Choice@Mountains:
+					Label: label-ra-map-generator-choice-terrain-type-mountains
+					Settings:
+						Water: 0.0
+						Mountains: 1.0
+						Roughness: 0.60
+						MinimumTerrainContourSpacing: 5
+				Choice@MountainLakes:
+					Label: label-ra-map-generator-choice-terrain-type-mountain-lakes
+					Settings:
+						Water: 0.2
+						Mountains: 1.0
+						Roughness: 0.85
+						MinimumTerrainContourSpacing: 5
+				Choice@Oceanic:
+					Label: label-ra-map-generator-choice-terrain-type-oceanic
+					Settings:
+						Water: 0.8
+						Forests: 0.0
+				Choice@LargeIslands:
+					Label: label-ra-map-generator-choice-terrain-type-large-islands
+					Settings:
+						Water: 0.75
+						TerrainFeatureSize: 50.0
+						Forests: 0.0
+				Choice@Continents:
+					Label: label-ra-map-generator-choice-terrain-type-continents
+					Settings:
+						Water: 0.5
+						TerrainFeatureSize: 100.0
+				Choice@Wetlands:
+					Label: label-ra-map-generator-choice-terrain-type-wetlands
+					Settings:
+						Water: 0.5
+				Choice@NarrowWetlands:
+					Label: label-ra-map-generator-choice-terrain-type-narrow-wetlands
+					Settings:
+						Water: 0.5
+						TerrainFeatureSize: 5.0
+						Forests: 0.0
+						SpawnBuildSize: 6
+			Option@Rotations:
+				Label: label-ra-map-generator-option-rotations
+				SimpleChoice: Rotations
+					Values: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+				Default: 2
+				Priority: 1
+			Option@Mirror:
+				Label: label-ra-map-generator-option-mirror
+				Default: None
+				Priority: 1
+				Choice@None:
+					Label: label-ra-map-generator-choice-mirror-none
+					Settings:
+						Mirror: None
+				Choice@LeftMatchesRight:
+					Label: label-ra-map-generator-choice-mirror-left-matches-right
+					Settings:
+						Mirror: LeftMatchesRight
+				Choice@TopLeftMatchesBottomRight:
+					Label: label-ra-map-generator-choice-mirror-top-left-matches-bottom-right
+					Settings:
+						Mirror: TopLeftMatchesBottomRight
+				Choice@TopMatchesBottom:
+					Label: label-ra-map-generator-choice-mirror-top-matches-bottom
+					Settings:
+						Mirror: TopMatchesBottom
+				Choice@TopRightMatchesBottomLeft:
+					Label: label-ra-map-generator-choice-mirror-top-right-matches-bottom-left
+					Settings:
+						Mirror: TopRightMatchesBottomLeft
+			Option@Shape:
+				Label: label-ra-map-generator-option-shape
+				Default: Square
+				Priority: 1
+				Choice@Square:
+					Label: label-ra-map-generator-choice-shape-square
+					Settings:
+						ExternalCircularBias: 0
+				Choice@CircleMountain:
+					Label: label-ra-map-generator-choice-shape-circle-mountain
+					Settings:
+						ExternalCircularBias: 1
+				Choice@CircleWater:
+					Label: label-ra-map-generator-choice-shape-circle-water
+					Settings:
+						ExternalCircularBias: -1
+			Option@Players:
+				Label: label-ra-map-generator-option-players
+				SimpleChoice: Players
+					Values: 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16
+				Default: 1
+				Priority: 1
+			Option@Resources:
+				Label: label-ra-map-generator-option-resources
+				Default: Medium
+				Choice@None:
+					Label: label-ra-map-generator-choice-resources-none
+					Settings:
+						SpawnResourceSpawns: 0
+						ResourcesPerPlayer: 0
+						ResourceSpawnWeights:
+						MaximumExpansionResourceSpawns: 0
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@Low:
+					Label: label-ra-map-generator-choice-resources-low
+					Settings:
+						SpawnResourceSpawns: 2
+						ResourcesPerPlayer: 25000
+						ResourceSpawnWeights:
+							mine: 1.0
+						MaximumExpansionResourceSpawns: 3
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@Medium:
+					Label: label-ra-map-generator-choice-resources-medium
+					Settings:
+						SpawnResourceSpawns: 3
+						ResourcesPerPlayer: 50000
+						ResourceSpawnWeights:
+							mine: 0.95
+							gmine: 0.05
+						MaximumExpansionResourceSpawns: 5
+						MaximumResourceSpawnsPerExpansion: 2
+				Choice@High:
+					Label: label-ra-map-generator-choice-resources-high
+					Settings:
+						SpawnResourceSpawns: 3
+						ResourcesPerPlayer: 75000
+						ResourceSpawnWeights:
+							mine: 0.9
+							gmine: 0.1
+						MaximumExpansionResourceSpawns: 8
+						MaximumResourceSpawnsPerExpansion: 3
+				Choice@VeryHigh:
+					Label: label-ra-map-generator-choice-resources-very-high
+					Settings:
+						SpawnResourceSpawns: 4
+						ResourcesPerPlayer: 100000
+						ResourceSpawnWeights:
+							mine: 0.8
+							gmine: 0.2
+						MaximumExpansionResourceSpawns: 10
+						MaximumResourceSpawnsPerExpansion: 3
+				Choice@Full:
+					Label: label-ra-map-generator-choice-resources-full
+					Settings:
+						SpawnResourceSpawns: 0
+						ResourcesPerPlayer: 1000000000
+						ResourceSpawnWeights:
+						MaximumExpansionResourceSpawns: 0
+						MaximumResourceSpawnsPerExpansion: 1
+			Option@Buildings:
+				Label: label-ra-map-generator-option-buildings
+				Default: Standard
+				Choice@None:
+					Label: label-ra-map-generator-choice-buildings-none
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 0
+						BuildingWeights:
+				Choice@Standard:
+					Label: label-ra-map-generator-choice-buildings-standard
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 3
+						BuildingWeights:
+							hosp: 2
+							miss: 1
+							oilb: 9
+				Choice@Extra:
+					Label: label-ra-map-generator-choice-buildings-extra
+					Settings:
+						MinimumBuildings: 3
+						MaximumBuildings: 6
+						BuildingWeights:
+							fcom: 3
+							hosp: 2
+							miss: 1
+							oilb: 9
+							pbox: 2
+				Choice@OilOnly:
+					Label: label-ra-map-generator-choice-buildings-oil-only
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 3
+						BuildingWeights:
+							oilb: 1
+				Choice@OilRush:
+					Label: label-ra-map-generator-choice-buildings-oil-rush
+					Settings:
+						MinimumBuildings: 8
+						MaximumBuildings: 10
+						BuildingWeights:
+							oilb: 1
+			Option@Density:
+				Label: label-ra-map-generator-option-density
+				Default: Players
+				Priority: 1
+				Choice@Players:
+					Label: label-ra-map-generator-choice-density-players
+					Settings:
+						AreaEntityBonus: 0.0
+						PlayerCountEntityBonus: 1.0
+				Choice@AreaAndPlayers:
+					Label: label-ra-map-generator-choice-density-area-and-players
+					Settings:
+						AreaEntityBonus: 0.0002
+						PlayerCountEntityBonus: 0.5
+				Choice@AreaVeryLow:
+					Label: label-ra-map-generator-choice-density-area-very-low
+					Settings:
+						AreaEntityBonus: 0.0001
+						PlayerCountEntityBonus: 0.0
+				Choice@AreaLow:
+					Label: label-ra-map-generator-choice-density-area-low
+					Settings:
+						AreaEntityBonus: 0.0002
+						PlayerCountEntityBonus: 0.0
+				Choice@AreaMedium:
+					Label: label-ra-map-generator-choice-density-area-medium
+					Settings:
+						AreaEntityBonus: 0.0004
+						PlayerCountEntityBonus: 0.0
+				Choice@AreaHigh:
+					Label: label-ra-map-generator-choice-density-area-high
+					Settings:
+						AreaEntityBonus: 0.0006
+						PlayerCountEntityBonus: 0.0
+				Choice@AreaVeryHigh:
+					Label: label-ra-map-generator-choice-density-area-very-high
+					Settings:
+						AreaEntityBonus: 0.0008
+						PlayerCountEntityBonus: 0.0
+			Option@DenyWalledArea:
+				Label: label-ra-map-generator-option-deny-walled-areas
+				Checkbox: DenyWalledAreas
+				Default: True
+				Priority: 1
+			Option@Roads:
+				Label: label-ra-map-generator-option-roads
+				Checkbox: Roads
+				Default: True
+				Priority: 1
+	ClearMapGenerator@clear:
+		Type: clear
+		Name: map-generator-clear
+		Settings:
+			Option@Tile:
+				Label: label-clear-map-generator-option-tile
+				Choice@DesertClear:
+					Label: label-clear-map-generator-choice-tile-clear
+					Tileset: DESERT
+					Settings:
+						Tile: 255
+				Choice@DesertWater:
+					Label: label-clear-map-generator-choice-tile-water
+					Tileset: DESERT
+					Settings:
+						Tile: 256
+				Choice@SnowClear:
+					Label: label-clear-map-generator-choice-tile-clear
+					Tileset: SNOW
+					Settings:
+						Tile: 255
+				Choice@SnowWater:
+					Label: label-clear-map-generator-choice-tile-water
+					Tileset: SNOW
+					Settings:
+						Tile: 1
+				Choice@TemperatClear:
+					Label: label-clear-map-generator-choice-tile-clear
+					Tileset: TEMPERAT
+					Settings:
+						Tile: 255
+				Choice@TemperatWater:
+					Label: label-clear-map-generator-choice-tile-water
+					Tileset: TEMPERAT
+					Settings:
+						Tile: 1
+				Choice@InteriorClear:
+					Label: label-clear-map-generator-choice-tile-clear
+					Tileset: INTERIOR
+					Settings:
+						Tile: 275
+				Choice@InteriorEmpty:
+					Label: label-clear-map-generator-choice-tile-empty
+					Tileset: INTERIOR
+					Settings:
+						Tile: 255

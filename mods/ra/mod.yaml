@@ -86,6 +86,7 @@ Rules:
 	ra|rules/aircraft.yaml
 	ra|rules/ships.yaml
 	ra|rules/fakes.yaml
+	ra|rules/map-generators.yaml
 
 Sequences:
 	ra|sequences/ships.yaml

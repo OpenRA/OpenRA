@@ -10,7 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -19,16 +21,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		[FluentReference]
 		const string MarkerTiles = "label-tool-marker-tiles";
+		[FluentReference]
+		const string MapGenerator = "label-tool-map-generator";
 
 		enum MapTool
 		{
-			MarkerTiles
+			MarkerTiles,
+			MapGenerator
 		}
 
 		readonly DropDownButtonWidget toolsDropdown;
 		readonly Dictionary<MapTool, string> toolNames = new()
 		{
-			{ MapTool.MarkerTiles, MarkerTiles }
+			{ MapTool.MarkerTiles, MarkerTiles },
+			{ MapTool.MapGenerator, MapGenerator }
 		};
 
 		readonly Dictionary<MapTool, Widget> toolPanels = new();
@@ -42,10 +48,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var markerToolPanel = widget.Get("MARKER_TOOL_PANEL");
 			toolPanels.Add(MapTool.MarkerTiles, markerToolPanel);
+			if (world.WorldActor.TraitsImplementing<IMapGenerator>().Any())
+			{
+				var mapGeneratorToolPanel = widget.GetOrNull("MAP_GENERATOR_TOOL_PANEL");
+				if (mapGeneratorToolPanel != null)
+					toolPanels.Add(MapTool.MapGenerator, mapGeneratorToolPanel);
+			}
 
 			toolsDropdown.OnMouseDown = _ => ShowToolsDropDown(toolsDropdown);
 			toolsDropdown.GetText = () => FluentProvider.GetMessage(toolNames[selectedTool]);
-			toolsDropdown.Disabled = true; // TODO: Enable if new tools are added
+			if (toolPanels.Count <= 1)
+				toolsDropdown.Disabled = true;
 		}
 
 		void ShowToolsDropDown(DropDownButtonWidget dropdown)
@@ -61,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			var options = new[] { MapTool.MarkerTiles };
+			var options = new[] { MapTool.MarkerTiles, MapTool.MapGenerator };
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
 		}
 
