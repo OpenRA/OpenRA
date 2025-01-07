@@ -17,6 +17,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.UtilityCommands.Documentation.Objects;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands.Documentation
@@ -54,10 +55,10 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 
 			var sequenceTypesInfo = sequenceTypes
 				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
-				.Select(type => new
+				.Select(type => new ExtractedClassInfo
 				{
-					type.Namespace,
-					type.Name,
+					Namespace = type.Namespace,
+					Name = type.Name,
 					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
 					InheritedTypes = type.BaseTypes()
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 							if (defaultValueField != null && defaultValueField.FieldType.IsEnum)
 								relatedEnumTypes.Add(defaultValueField.FieldType);
 
-							return new
+							return new ExtractedClassFieldInfo
 							{
 								PropertyName = key,
 								DefaultValue = defaultValue?.ToString(),
@@ -93,15 +94,11 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 						})
 				});
 
-			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new
+			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new ExtractedEnumInfo
 			{
-				type.Namespace,
-				type.Name,
-				Values = Enum.GetNames(type).Select(x => new
-				{
-					Key = Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo),
-					Value = x
-				})
+				Namespace = type.Namespace,
+				Name = type.Name,
+				Values = Enum.GetNames(type).ToDictionary(x => Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo), y => y)
 			});
 
 			var result = new

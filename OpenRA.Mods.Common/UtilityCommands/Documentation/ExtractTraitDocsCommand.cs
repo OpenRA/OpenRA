@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
+using OpenRA.Mods.Common.UtilityCommands.Documentation.Objects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -52,9 +53,9 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 
 			var traitTypesInfo = traitTypes
 				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
-				.Select(type => new
+				.Select(type => new ExtractedTraitInfo
 				{
-					type.Namespace,
+					Namespace = type.Namespace,
 					Name = type.Name.EndsWith("Info", StringComparison.Ordinal) ? type.Name[..^4] : type.Name,
 					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 							if (fi.Field.FieldType.IsEnum)
 								relatedEnumTypes.Add(fi.Field.FieldType);
 
-							return new
+							return new ExtractedClassFieldInfo
 							{
 								PropertyName = fi.YamlName,
 								DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
@@ -84,13 +85,13 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 										var name = a.AttributeType.Name;
 										name = name.EndsWith("Attribute", StringComparison.Ordinal) ? name[..^9] : name;
 
-										return new
+										return new ExtractedClassFieldAttributeInfo
 										{
 											Name = name,
 											Parameters = a.Constructor.GetParameters()
-												.Select(pi => new
+												.Select(pi => new ExtractedClassFieldAttributeInfo.Parameter
 												{
-													pi.Name,
+													Name = pi.Name,
 													Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
 												})
 										};
@@ -99,15 +100,11 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 						})
 				});
 
-			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new
+			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new ExtractedEnumInfo
 			{
-				type.Namespace,
-				type.Name,
-				Values = Enum.GetNames(type).Select(x => new
-				{
-					Key = Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo),
-					Value = x
-				})
+				Namespace = type.Namespace,
+				Name = type.Name,
+				Values = Enum.GetNames(type).ToDictionary(x => Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo), y => y)
 			});
 
 			var result = new
