@@ -14,7 +14,7 @@ using System.Linq;
 using System.Reflection;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 {
 	// See https://studio.zerobrane.com/doc-api-auto-complete for reference
 	sealed class ExtractZeroBraneStudioLuaAPI : IUtilityCommand

@@ -12,7 +12,7 @@
 using System;
 using System.Linq;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 {
 	sealed class ExtractSettingsDocsCommand : IUtilityCommand
 	{

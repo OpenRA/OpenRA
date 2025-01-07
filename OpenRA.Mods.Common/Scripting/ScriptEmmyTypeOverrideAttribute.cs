@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using OpenRA.Mods.Common.UtilityCommands;
+using OpenRA.Mods.Common.UtilityCommands.Documentation;
 
 namespace OpenRA.Mods.Common.Scripting
 {

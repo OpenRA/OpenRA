@@ -19,7 +19,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 {
 	sealed class ExtractSpriteSequenceDocsCommand : IUtilityCommand
 	{

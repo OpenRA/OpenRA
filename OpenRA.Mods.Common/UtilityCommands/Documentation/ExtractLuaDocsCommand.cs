@@ -11,9 +11,10 @@
 
 using System;
 using System.Linq;
+using OpenRA;
 using OpenRA.Scripting;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 {
 	sealed class ExtractLuaDocsCommand : IUtilityCommand
 	{

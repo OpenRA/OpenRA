@@ -18,7 +18,7 @@ using OpenRA.Mods.Common.Scripting;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 {
 	// See https://emmylua.github.io/annotation.html for reference
 	sealed class ExtractEmmyLuaAPI : IUtilityCommand

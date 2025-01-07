@@ -14,22 +14,21 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
-using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 {
-	sealed class ExtractWeaponDocsCommand : IUtilityCommand
+	sealed class ExtractTraitDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name => "--weapon-docs";
+		string IUtilityCommand.Name => "--docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
 			return true;
 		}
 
-		[Desc("[VERSION]", "Generate weaponry documentation in JSON format.")]
+		[Desc("[VERSION]", "Generate trait documentation in JSON format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -40,22 +39,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				version = args[1];
 
 			var objectCreator = utility.ModData.ObjectCreator;
-			var weaponInfo = new[] { typeof(WeaponInfo) };
-			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
-			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
+			var traitInfos = objectCreator.GetTypesImplementing<TraitInfo>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
 
-			var weaponTypes = weaponInfo.Concat(projectiles).Concat(warheads);
-
-			var json = GenerateJson(version, weaponTypes, objectCreator);
+			var json = GenerateJson(version, traitInfos, objectCreator);
 			Console.WriteLine(json);
 		}
 
-		static string GenerateJson(string version, IEnumerable<Type> weaponTypes, ObjectCreator objectCreator)
+		static string GenerateJson(string version, IEnumerable<Type> traitTypes, ObjectCreator objectCreator)
 		{
 			var relatedEnumTypes = new HashSet<Type>();
 			var pdbReaderCache = Utilities.CreatePdbReaderCache();
 
-			var weaponTypesInfo = weaponTypes
+			var traitTypesInfo = traitTypes
 				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
 				.Select(type => new
 				{
@@ -63,9 +58,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Name = type.Name.EndsWith("Info", StringComparison.Ordinal) ? type.Name[..^4] : type.Name,
 					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
+					RequiresTraits = RequiredTraitTypes(type)
+						.Select(y => y.Name),
 					InheritedTypes = type.BaseTypes()
 						.Select(y => y.Name)
-						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object"),
+						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object" && y != "TraitInfo`1"), // HACK: This is the simplest way to exclude TraitInfo<T>, which doesn't serialize well.
 					Properties = FieldLoader.GetTypeLoadInfo(type)
 						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic)
 						.Select(fi =>
@@ -116,11 +113,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var result = new
 			{
 				Version = version,
-				WeaponTypes = weaponTypesInfo,
+				TraitInfos = traitTypesInfo,
 				RelatedEnums = relatedEnums
 			};
 
 			return JsonConvert.SerializeObject(result);
+		}
+
+		static IEnumerable<Type> RequiredTraitTypes(Type t)
+		{
+			return t.GetInterfaces()
+				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>))
+				.SelectMany(i => i.GetGenericArguments())
+				.Where(i => !i.IsInterface && !t.IsSubclassOf(i))
+				.OrderBy(i => i.Name);
 		}
 	}
 }
