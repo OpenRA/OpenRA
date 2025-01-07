@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -26,10 +25,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 	{
 		string IUtilityCommand.Name => "--sprite-sequence-docs";
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
-		{
-			return true;
-		}
+		bool IUtilityCommand.ValidateArguments(string[] args) => true;
 
 		[Desc("[VERSION]", "Generate sprite sequence documentation in JSON format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
@@ -59,8 +55,8 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 				{
 					Namespace = type.Namespace,
 					Name = type.Name,
-					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
+					Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
 					InheritedTypes = type.BaseTypes()
 						.Select(y => y.Name)
 						.Where(y => y != type.Name && y != "Object"),
@@ -68,7 +64,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 						.Where(fi => fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(SpriteSequenceField<>))
 						.Select(fi =>
 						{
-							var description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(fi, false)
+							var description = string.Join(" ", fi.GetCustomAttributes<DescAttribute>(false)
 								.SelectMany(d => d.Lines));
 
 							var valueType = fi.FieldType.GetGenericArguments()[0];
@@ -94,18 +90,11 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 						})
 				});
 
-			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new ExtractedEnumInfo
-			{
-				Namespace = type.Namespace,
-				Name = type.Name,
-				Values = Enum.GetNames(type).ToDictionary(x => Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo), y => y)
-			});
-
 			var result = new
 			{
 				Version = version,
 				SpriteSequenceTypes = sequenceTypesInfo,
-				RelatedEnums = relatedEnums
+				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes)
 			};
 
 			return JsonConvert.SerializeObject(result);

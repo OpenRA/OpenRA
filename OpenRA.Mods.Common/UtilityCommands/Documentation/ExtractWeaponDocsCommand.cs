@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using OpenRA.GameRules;
@@ -25,10 +24,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 	{
 		string IUtilityCommand.Name => "--weapon-docs";
 
-		bool IUtilityCommand.ValidateArguments(string[] args)
-		{
-			return true;
-		}
+		bool IUtilityCommand.ValidateArguments(string[] args) => true;
 
 		[Desc("[VERSION]", "Generate weaponry documentation in JSON format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
@@ -58,63 +54,29 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 
 			var weaponTypesInfo = weaponTypes
 				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
-				.Select(type => new ExtractedClassInfo
+				.Select(type =>
 				{
-					Namespace = type.Namespace,
-					Name = type.Name.EndsWith("Info", StringComparison.Ordinal) ? type.Name[..^4] : type.Name,
-					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
-					Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
-					InheritedTypes = type.BaseTypes()
-						.Select(y => y.Name)
-						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object"),
-					Properties = FieldLoader.GetTypeLoadInfo(type)
-						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic)
-						.Select(fi =>
-						{
-							if (fi.Field.FieldType.IsEnum)
-								relatedEnumTypes.Add(fi.Field.FieldType);
+					var fields = FieldLoader.GetTypeLoadInfo(type)
+						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic);
 
-							return new ExtractedClassFieldInfo
-							{
-								PropertyName = fi.YamlName,
-								DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
-								InternalType = Util.InternalTypeName(fi.Field.FieldType),
-								UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
-								Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(fi.Field, true).SelectMany(d => d.Lines)),
-								OtherAttributes = fi.Field.CustomAttributes
-									.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
-									.Select(a =>
-									{
-										var name = a.AttributeType.Name;
-										name = name.EndsWith("Attribute", StringComparison.Ordinal) ? name[..^9] : name;
-
-										return new ExtractedClassFieldAttributeInfo
-										{
-											Name = name,
-											Parameters = a.Constructor.GetParameters()
-												.Select(pi => new ExtractedClassFieldAttributeInfo.Parameter
-												{
-													Name = pi.Name,
-													Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
-												})
-										};
-									})
-							};
-						})
+					return new ExtractedClassInfo
+					{
+						Namespace = type.Namespace,
+						Name = type.Name.EndsWith("Info", StringComparison.Ordinal) ? type.Name[..^4] : type.Name,
+						Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
+						Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
+						InheritedTypes = type.BaseTypes()
+							.Select(y => y.Name)
+							.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object"),
+						Properties = DocumentationHelpers.GetClassFieldInfos(type, fields, relatedEnumTypes, objectCreator)
+					};
 				});
-
-			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new ExtractedEnumInfo
-			{
-				Namespace = type.Namespace,
-				Name = type.Name,
-				Values = Enum.GetNames(type).ToDictionary(x => Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo), y => y)
-			});
 
 			var result = new
 			{
 				Version = version,
 				WeaponTypes = weaponTypesInfo,
-				RelatedEnums = relatedEnums
+				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes)
 			};
 
 			return JsonConvert.SerializeObject(result);
