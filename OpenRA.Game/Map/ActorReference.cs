@@ -125,6 +125,15 @@ namespace OpenRA
 			InitDict.Add(init);
 		}
 
+		public void Replace<T>(T init) where T : ActorInit, ISingleInstanceInit
+		{
+			var original = GetOrDefault<T>();
+			if (original != null)
+				Remove(original);
+
+			Add(init);
+		}
+
 		public void Remove(ActorInit o) { initDict.Value.Remove(o); }
 
 		public int RemoveAll<T>() where T : ActorInit

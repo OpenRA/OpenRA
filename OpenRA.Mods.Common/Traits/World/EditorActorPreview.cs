@@ -245,11 +245,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ReplaceInit<T>(T init) where T : ActorInit, ISingleInstanceInit
 		{
-			var original = reference.GetOrDefault<T>();
-			if (original != null)
-				reference.Remove(original);
-
-			reference.Add(init);
+			reference.Replace(init);
 			GeneratePreviews();
 			UpdateRadarColor();
 		}

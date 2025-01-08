@@ -144,8 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Players.Players.TryGetValue(ownerInit.InternalName, out var owner))
 			{
 				owner = worldOwner;
-				reference.Remove(ownerInit);
-				reference.Add(new OwnerInit(worldOwner.Name));
+				reference.Replace(new OwnerInit(worldOwner.Name));
 			}
 
 			return owner;
