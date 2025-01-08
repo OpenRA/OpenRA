@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			else if (!hasTiles && hasActorPlans)
 				return Replaceability.Actor;
 			else
-				throw new ArgumentException("MultiBrush has no tiles or actors");
+				return Replaceability.None;
 		}
 
 		/// <summary>
@@ -190,7 +190,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 				foreach (var cpos in actorPlan.Footprint().Keys)
 					xys.Add(new CVec(cpos.X, cpos.Y));
 
-			shape = xys.OrderBy(xy => (xy.Y, xy.X)).ToArray();
+			if (xys.Count != 0)
+				shape = xys.OrderBy(xy => (xy.Y, xy.X)).ToArray();
+			else
+				shape = new[] { new CVec(0, 0) };
 		}
 
 		/// <summary>

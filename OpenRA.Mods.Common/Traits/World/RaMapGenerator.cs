@@ -174,6 +174,8 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly IReadOnlyList<MultiBrush> ForestObstacles;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyList<MultiBrush> UnplayableObstacles;
+			[FieldLoader.Ignore]
+			public readonly IReadOnlyDictionary<ushort, IReadOnlyList<MultiBrush>> RepaintTiles;
 
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyDictionary<string, ResourceTypeInfo> ResourceTypes;
@@ -221,6 +223,16 @@ namespace OpenRA.Mods.Common.Traits
 				TemplatedTerrainInfo = Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 				ForestObstacles = MultiBrush.LoadCollection(map, my.NodeWithKey("ForestObstacles").Value.Value);
 				UnplayableObstacles = MultiBrush.LoadCollection(map, my.NodeWithKey("UnplayableObstacles").Value.Value);
+				RepaintTiles = my.NodeWithKeyOrDefault("RepaintTiles")?.Value.ToDictionary(
+					k =>
+					{
+						if (Exts.TryParseUshortInvariant(k, out var tile))
+							return tile;
+						else
+							throw new YamlException($"RepaintTile {k} is not a ushort");
+					},
+					v => MultiBrush.LoadCollection(map, v.Value) as IReadOnlyList<MultiBrush>);
+				RepaintTiles ??= ImmutableDictionary<ushort, IReadOnlyList<MultiBrush>>.Empty;
 
 				ResourceTypes = map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<ResourceLayerInfo>().ResourceTypes;
 				if (!ResourceTypes.TryGetValue(my.NodeWithKey("DefaultResource").Value.Value, out DefaultResource))
@@ -559,6 +571,7 @@ namespace OpenRA.Mods.Common.Traits
 			var expansionRandom = new MersenneTwister(random.Next());
 			var buildingRandom = new MersenneTwister(random.Next());
 			var topologyRandom = new MersenneTwister(random.Next());
+			var repaintRandom = new MersenneTwister(random.Next());
 
 			TerrainTile PickTile(ushort tileType)
 			{
@@ -1599,6 +1612,19 @@ namespace OpenRA.Mods.Common.Traits
 								remaining -= AddResource(cpos);
 					}
 				}
+			}
+
+			// Cosmetically repaint tiles
+			foreach (var (tile, collection) in param.RepaintTiles.OrderBy(kv => kv.Key))
+			{
+				var replace = new CellLayer<MultiBrush.Replaceability>(map);
+				foreach (var mpos in replace.CellRegion.MapCoords)
+					replace[mpos] =
+						map.Tiles[mpos].Type == tile
+							? MultiBrush.Replaceability.Any
+							: MultiBrush.Replaceability.None;
+
+				MultiBrush.PaintArea(map, actorPlans, replace, collection, repaintRandom);
 			}
 
 			map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();

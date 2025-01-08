@@ -59,6 +59,7 @@ Rules:
 	cnc|rules/ships.yaml
 	cnc|rules/aircraft.yaml
 	cnc|rules/husks.yaml
+	cnc|rules/map-generators.yaml
 
 Sequences:
 	cnc|sequences/structures.yaml

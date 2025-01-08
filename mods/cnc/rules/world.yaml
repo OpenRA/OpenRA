@@ -280,6 +280,7 @@ World:
 
 EditorWorld:
 	Inherits: ^BaseWorld
+	Inherits@MapGenerators: ^MapGenerators
 	EditorActorLayer:
 	EditorCursorLayer:
 	EditorResourceLayer:

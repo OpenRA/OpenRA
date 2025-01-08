@@ -51,6 +51,9 @@ faction-nod =
      and the alien substance Tiberium. They use stealth technology
      and guerilla tactics to defeat those who oppose them.
 
+map-generator-ra = RA Experimental (CnC)
+map-generator-clear = Clear
+
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
@@ -776,3 +779,65 @@ bot-watson =
 
 bot-hal9001 =
    .name = HAL 9001
+
+## map-generators.yaml
+label-clear-map-generator-option-tile = Tile
+label-clear-map-generator-choice-tile-clear = Clear
+label-clear-map-generator-choice-tile-water = Water
+
+label-cnc-map-generator-option-seed = Seed
+
+label-cnc-map-generator-option-terrain-type = Terrain Type
+label-cnc-map-generator-choice-terrain-type-lakes = Lakes
+label-cnc-map-generator-choice-terrain-type-puddles = Puddles
+label-cnc-map-generator-choice-terrain-type-gardens = Gardens
+label-cnc-map-generator-choice-terrain-type-plains = Plains
+label-cnc-map-generator-choice-terrain-type-parks = Parks
+label-cnc-map-generator-choice-terrain-type-woodlands = Woodlands
+label-cnc-map-generator-choice-terrain-type-overgrown = Overgrown
+label-cnc-map-generator-choice-terrain-type-rocky = Rocky
+label-cnc-map-generator-choice-terrain-type-mountains = Mountains
+label-cnc-map-generator-choice-terrain-type-mountain-lakes = Mountain Lakes
+
+label-cnc-map-generator-option-rotations = Rotations
+
+label-cnc-map-generator-option-mirror = Mirror
+label-cnc-map-generator-choice-mirror-none = None
+label-cnc-map-generator-choice-mirror-left-matches-right = Left vs right
+label-cnc-map-generator-choice-mirror-top-left-matches-bottom-right = Top left vs bottom right
+label-cnc-map-generator-choice-mirror-top-matches-bottom = Top vs bottom
+label-cnc-map-generator-choice-mirror-top-right-matches-bottom-left = Top right vs bottom left
+
+label-cnc-map-generator-option-shape = Bounds Shape
+label-cnc-map-generator-choice-shape-square = Square
+label-cnc-map-generator-choice-shape-circle-mountain = Circle in mountains
+label-cnc-map-generator-choice-shape-circle-water = Circle in water
+
+label-cnc-map-generator-option-players = Players per side
+
+label-cnc-map-generator-option-resources = Resources
+label-cnc-map-generator-choice-resources-none = None
+label-cnc-map-generator-choice-resources-low = Low
+label-cnc-map-generator-choice-resources-medium = Medium
+label-cnc-map-generator-choice-resources-high = High
+label-cnc-map-generator-choice-resources-very-high = Very High
+label-cnc-map-generator-choice-resources-full = Oreful
+
+label-cnc-map-generator-option-buildings = Buildings
+label-cnc-map-generator-choice-buildings-none = None
+label-cnc-map-generator-choice-buildings-standard = Standard
+label-cnc-map-generator-choice-buildings-extra = Extra
+label-cnc-map-generator-choice-buildings-oil-only = Oil Only
+label-cnc-map-generator-choice-buildings-oil-rush = Oil Rush
+
+label-cnc-map-generator-option-density = Entity Density
+label-cnc-map-generator-choice-density-players = Scale with players
+label-cnc-map-generator-choice-density-area-and-players = Scale with area and players
+label-cnc-map-generator-choice-density-area-very-low = Scale with area (very low density)
+label-cnc-map-generator-choice-density-area-low = Scale with area (low density)
+label-cnc-map-generator-choice-density-area-medium = Scale with area (medium density)
+label-cnc-map-generator-choice-density-area-high = Scale with area (high density)
+label-cnc-map-generator-choice-density-area-very-high = Scale with area (very high density)
+
+label-cnc-map-generator-option-roads = Roads
+label-cnc-map-generator-option-deny-walled-areas = Obstruct walled areas

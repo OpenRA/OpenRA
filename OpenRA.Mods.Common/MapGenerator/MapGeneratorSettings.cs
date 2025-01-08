@@ -33,27 +33,29 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public sealed class Choice
 		{
 			/// <summary>Uniquely identifies a Choice within an Option.</summary>
-			[FieldLoader.Ignore]
 			public readonly string Id;
 
 			/// <summary>The label to use for UI selection. Post-fluent.</summary>
-			[FieldLoader.Ignore]
 			public readonly string Label = null;
 
-			/// <summary>Only offer the Choice for this tileset. (If null, show for all.)</summary>
-			public readonly string Tileset = null;
+			/// <summary>
+			/// Only offer the Choice for these tilesets. (If null, show for all.)
+			/// </summary>
+			public readonly IReadOnlySet<string> Tileset = null;
 
 			/// <summary>(Partial) settings to combine into the final overall settings.</summary>
-			[FieldLoader.LoadUsing(nameof(SettingsLoader))]
 			public readonly MiniYaml Settings;
 
 			public Choice(string id, MiniYaml my)
 			{
 				Id = id;
-				FieldLoader.Load(this, my);
 				var label = my.NodeWithKeyOrDefault("Label")?.Value.Value;
 				if (label != null)
 					Label = FluentProvider.GetMessage(label);
+				Tileset = my.NodeWithKeyOrDefault("Tileset")?.Value.Value
+					?.Split(',')
+					.ToImmutableHashSet();
+				Settings = my.NodeWithKey("Settings").Value;
 			}
 
 			/// <summary>Create a choice that represents a top-level setting with a given value.</summary>
@@ -72,12 +74,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 					references.Add(label);
 			}
 
-			static MiniYaml SettingsLoader(MiniYaml my) => my.NodeWithKey("Settings").Value;
-
 			/// <summary>Check whether this choice is permitted for this map.</summary>
 			public bool Allowed(Map map)
 			{
-				if (Tileset != null && map.Tileset != Tileset)
+				if (Tileset != null && !Tileset.Contains(map.Tileset))
 					return false;
 
 				return true;
@@ -208,12 +208,18 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 					if (Choices.Count > 0)
 					{
-						var defaultNode = my.NodeWithKeyOrDefault("Default");
-						if (defaultNode != null)
+						var defaultOrder = my.NodeWithKeyOrDefault("Default")?.Value.Value;
+						if (defaultOrder != null)
 						{
-							Default = Choices.FirstOrDefault(choice => choice.Id == defaultNode.Value.Value);
+							foreach (var defaultChoice in defaultOrder.Split(','))
+							{
+								Default = Choices.FirstOrDefault(choice => choice.Id == defaultChoice);
+								if (Default != null)
+									break;
+							}
+
 							if (Default == null)
-								throw new YamlException($"Option `{id}` default choice `{defaultNode.Value.Value}` is not valid");
+								throw new YamlException($"None of option `{id}`'s default choices `{defaultOrder}` are not valid");
 						}
 						else
 						{
