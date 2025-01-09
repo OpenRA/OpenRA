@@ -85,7 +85,7 @@ def format_docs(version, collectionName, types, relatedEnums):
                 formattedRequiredTraits = [format_type_name(x, is_known_type(x, types)) for x in currentType["RequiresTraits"]]
                 print("\n> Requires trait(s): " + ", ".join(sorted(formattedRequiredTraits)) + '.')
 
-            if len(currentType["Properties"]) > 0:
+            if currentType["Properties"] and len(currentType["Properties"]) > 0:
                 print()
                 print(f'| Property | Default Value | Type | Description |')
                 print(f'| -------- | ------------- | ---- | ----------- |')
@@ -102,7 +102,7 @@ def format_docs(version, collectionName, types, relatedEnums):
                         else:
                             enumReferences[prop["InternalType"]] = [currentType["Name"]]
 
-                    if "OtherAttributes" in prop:
+                    if prop.get("OtherAttributes", None) is not None:
                         attributes = []
                         for attribute in prop["OtherAttributes"]:
                             attributes.append(attribute["Name"])
@@ -120,7 +120,7 @@ def format_docs(version, collectionName, types, relatedEnums):
     if len(relatedEnums) > 0:
         print('\n# Related value types (enums):\n')
         for relatedEnum in relatedEnums:
-            values = [f"`{value['Value']}`" for value in relatedEnum["Values"]]
+            values = [f"`{value}`" for value in relatedEnum["Values"].values()]
             print(f"### {relatedEnum['Name']}")
             print(f"Possible values: {', '.join(values)}\n")
             distinctReferencingTypes = sorted(set(enumReferences[relatedEnum['Name']]))
@@ -132,5 +132,9 @@ if __name__ == "__main__":
     jsonInfo = json.load(input_stream)
 
     keys = list(jsonInfo)
-    if len(keys) == 3 and keys[0] == 'Version':
-        format_docs(jsonInfo[keys[0]], keys[1], jsonInfo[keys[1]], jsonInfo[keys[2]])
+    if len(keys) >= 2 and keys[0] == 'Version':
+        version = jsonInfo[keys[0]]
+        collectionName = keys[1]
+        types = jsonInfo[keys[1]]
+        relatedEnums = jsonInfo["RelatedEnums"] or []
+        format_docs(version, collectionName, types, relatedEnums)
