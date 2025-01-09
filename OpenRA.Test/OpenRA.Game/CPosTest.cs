@@ -30,9 +30,9 @@ namespace OpenRA.Test
 					{
 						var cell = new CPos(x, y, layer);
 
-						Assert.AreEqual(x, cell.X);
-						Assert.AreEqual(y, cell.Y);
-						Assert.AreEqual(layer, cell.Layer);
+						Assert.That(x, Is.EqualTo(cell.X));
+						Assert.That(y, Is.EqualTo(cell.Y));
+						Assert.That(layer, Is.EqualTo(cell.Layer));
 					}
 				}
 			}

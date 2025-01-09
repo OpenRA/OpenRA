@@ -173,7 +173,7 @@ Parent:
 			var baseYaml = MiniYaml.FromString(BaseString, "");
 
 			var resultYaml = MiniYaml.Merge(new[] { baseYaml });
-			Assert.AreEqual(ResultString, resultYaml.WriteToString());
+			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
 		[TestCase(TestName = "Merged yaml files should be able to remove nodes")]
@@ -196,7 +196,7 @@ Parent:
 			var mergeYaml = MiniYaml.FromString(MergeString, "");
 
 			var resultYaml = MiniYaml.Merge(new[] { baseYaml, mergeYaml });
-			Assert.AreEqual(ResultString, resultYaml.WriteToString());
+			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
 		[TestCase(TestName = "Merged yaml files should be able to remove nodes from inherited parents")]
@@ -221,7 +221,7 @@ Parent:
 			var mergeYaml = MiniYaml.FromString(MergeString, "");
 
 			var resultYaml = MiniYaml.Merge(new[] { baseYaml, mergeYaml });
-			Assert.AreEqual(ResultString, resultYaml.WriteToString());
+			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
 		[TestCase(TestName = "Inheritance and removal can be composed")]
@@ -248,9 +248,9 @@ Test:
 			var result = MiniYaml.Merge(new[] { BaseYaml, ExtendedYaml, MapYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 
-			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
-			Assert.IsTrue(result.Any(n => n.Key == "MockB2"), "Node should have the MockB2 child, but does not.");
-			Assert.IsTrue(result.Any(n => n.Key == "MockC2"), "Node should have the MockC2 child, but does not.");
+			Assert.That(result.Any(n => n.Key == "MockA2"), Is.False, "Node should not have the MockA2 child, but does.");
+			Assert.That(result.Any(n => n.Key == "MockB2"), Is.True, "Node should have the MockB2 child, but does not.");
+			Assert.That(result.Any(n => n.Key == "MockC2"), Is.True, "Node should have the MockC2 child, but does not.");
 		}
 
 		[TestCase(TestName = "Child can be removed after multiple inheritance")]
@@ -271,7 +271,7 @@ Test:
 			var result = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 
-			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
+			Assert.That(result.Any(n => n.Key == "MockA2"), Is.False, "Node should not have the MockA2 child, but does.");
 		}
 
 		[TestCase(TestName = "Child can be immediately removed")]
@@ -291,7 +291,7 @@ Test:
 			var result = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")))
 				 .First(n => n.Key == "Test").Value.Nodes;
 
-			Assert.IsFalse(result.Any(n => n.Key == "MockString"), "Node should not have the MockString child, but does.");
+			Assert.That(result.Any(n => n.Key == "MockString"), Is.False, "Node should not have the MockString child, but does.");
 		}
 
 		[TestCase(TestName = "Child can be removed and immediately overridden")]
@@ -311,8 +311,8 @@ Test:
 			var result = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")))
 				 .First(n => n.Key == "Test").Value.Nodes;
 
-			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
-			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.NodeWithKey("AString").Value.Value == "Override",
+			Assert.That(result.Any(n => n.Key == "MockString"), Is.True, "Node should have the MockString child, but does not.");
+			Assert.That(result.First(n => n.Key == "MockString").Value.NodeWithKey("AString").Value.Value == "Override", Is.True,
 				"MockString value has not been set with the correct override value for AString.");
 		}
 
@@ -336,8 +336,8 @@ Test:
 			var result = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 
-			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
-			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.NodeWithKey("AString").Value.Value == "Override",
+			Assert.That(result.Any(n => n.Key == "MockString"), Is.True, "Node should have the MockString child, but does not.");
+			Assert.That(result.First(n => n.Key == "MockString").Value.NodeWithKey("AString").Value.Value == "Override", Is.True,
 				"MockString value has not been set with the correct override value for AString.");
 		}
 
@@ -362,8 +362,8 @@ Test:
 
 			var result = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
-			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
-			Assert.IsFalse(result.First(n => n.Key == "MockString").Value.Nodes.Any(n => n.Key == "AString"),
+			Assert.That(result.Any(n => n.Key == "MockString"), Is.True, "Node should have the MockString child, but does not.");
+			Assert.That(result.First(n => n.Key == "MockString").Value.Nodes.Any(n => n.Key == "AString"), Is.False,
 				"MockString value should have been removed, but was not.");
 		}
 
@@ -391,8 +391,8 @@ Test:
 			var fieldNodes = traitNode.Value.Nodes;
 			var fieldSubNodes = fieldNodes.Single().Value.Nodes;
 
-			Assert.IsTrue(fieldSubNodes.Length == 1, "Collection of strings should only contain the overriding subnode.");
-			Assert.IsTrue(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C",
+			Assert.That(fieldSubNodes.Length == 1, Is.True, "Collection of strings should only contain the overriding subnode.");
+			Assert.That(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C", Is.True,
 				"CollectionOfStrings value has not been set with the correct override value for StringC.");
 		}
 
@@ -425,8 +425,8 @@ Test:
 			var fieldNodes = traitNode.Value.Nodes;
 			var fieldSubNodes = fieldNodes.Single().Value.Nodes;
 
-			Assert.IsTrue(fieldSubNodes.Length == 1, "Collection of strings should only contain the overriding subnode.");
-			Assert.IsTrue(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C",
+			Assert.That(fieldSubNodes.Length == 1, Is.True, "Collection of strings should only contain the overriding subnode.");
+			Assert.That(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C", Is.True,
 				"CollectionOfStrings value has not been set with the correct override value for StringC.");
 		}
 
@@ -454,7 +454,7 @@ Parent:
 			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
 
 			var resultYaml = MiniYaml.Merge(new[] { baseYaml, mergeYaml });
-			Assert.AreEqual(ResultString, resultYaml.WriteToString());
+			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
 		[TestCase(TestName = "Empty lines should count toward line numbers")]
@@ -469,7 +469,7 @@ TestB:
 ";
 
 			var result = MiniYaml.FromString(Yaml, "").First(n => n.Key == "TestB");
-			Assert.AreEqual(5, result.Location.Line);
+			Assert.That(5, Is.EqualTo(result.Location.Line));
 		}
 
 		[TestCase(TestName = "Duplicated nodes are correctly merged")]
@@ -642,29 +642,29 @@ Test:
 		public void TestEscapedHashInValues()
 		{
 			var trailingWhitespace = MiniYaml.FromString("key: value # comment", "", discardCommentsAndWhitespace: false)[0];
-			Assert.AreEqual("value", trailingWhitespace.Value.Value);
-			Assert.AreEqual(" comment", trailingWhitespace.Comment);
+			Assert.That("value", Is.EqualTo(trailingWhitespace.Value.Value));
+			Assert.That(" comment", Is.EqualTo(trailingWhitespace.Comment));
 
 			var noWhitespace = MiniYaml.FromString("key:value# comment", "", discardCommentsAndWhitespace: false)[0];
-			Assert.AreEqual("value", noWhitespace.Value.Value);
-			Assert.AreEqual(" comment", noWhitespace.Comment);
+			Assert.That("value", Is.EqualTo(noWhitespace.Value.Value));
+			Assert.That(" comment", Is.EqualTo(noWhitespace.Comment));
 
 			var escapedHashInValue = MiniYaml.FromString(@"key: before \# after # comment", "", discardCommentsAndWhitespace: false)[0];
-			Assert.AreEqual("before # after", escapedHashInValue.Value.Value);
-			Assert.AreEqual(" comment", escapedHashInValue.Comment);
+			Assert.That("before # after", Is.EqualTo(escapedHashInValue.Value.Value));
+			Assert.That(" comment", Is.EqualTo(escapedHashInValue.Comment));
 
 			var emptyValueAndComment = MiniYaml.FromString("key:#", "", discardCommentsAndWhitespace: false)[0];
-			Assert.AreEqual(null, emptyValueAndComment.Value.Value);
-			Assert.AreEqual("", emptyValueAndComment.Comment);
+			Assert.That(null, Is.EqualTo(emptyValueAndComment.Value.Value));
+			Assert.That("", Is.EqualTo(emptyValueAndComment.Comment));
 
 			var noValue = MiniYaml.FromString("key:", "", discardCommentsAndWhitespace: false)[0];
-			Assert.AreEqual(null, noValue.Value.Value);
-			Assert.AreEqual(null, noValue.Comment);
+			Assert.That(null, Is.EqualTo(noValue.Value.Value));
+			Assert.That(null, Is.EqualTo(noValue.Comment));
 
 			var emptyKey = MiniYaml.FromString(" : value", "", discardCommentsAndWhitespace: false)[0];
-			Assert.AreEqual(null, emptyKey.Key);
-			Assert.AreEqual("value", emptyKey.Value.Value);
-			Assert.AreEqual(null, emptyKey.Comment);
+			Assert.That(null, Is.EqualTo(emptyKey.Key));
+			Assert.That("value", Is.EqualTo(emptyKey.Value.Value));
+			Assert.That(null, Is.EqualTo(emptyKey.Comment));
 		}
 
 		[TestCase(TestName = "Leading and trailing whitespace can be guarded using a backslash")]
@@ -672,7 +672,7 @@ Test:
 		{
 			const string TestYaml = @"key:   \      test value    \   ";
 			var nodes = MiniYaml.FromString(TestYaml, "");
-			Assert.AreEqual("      test value    ", nodes[0].Value.Value);
+			Assert.That("      test value    ", Is.EqualTo(nodes[0].Value.Value));
 		}
 
 		[TestCase(TestName = "Comments should count toward line numbers")]
@@ -739,7 +739,7 @@ Parent: # comment without value
 ".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(yaml, "", discardCommentsAndWhitespace: false).WriteToString();
-			Assert.AreEqual(canonicalYaml, result);
+			Assert.That(canonicalYaml, Is.EqualTo(result));
 		}
 
 		[TestCase(TestName = "Comments should be removed when discardCommentsAndWhitespace is false")]
@@ -775,7 +775,7 @@ Parent: # comment without value
 ".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(Yaml, "").WriteToString();
-			Assert.AreEqual(strippedYaml, result);
+			Assert.That(strippedYaml, Is.EqualTo(result));
 		}
 	}
 }

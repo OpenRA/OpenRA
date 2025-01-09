@@ -18,7 +18,7 @@ namespace OpenRA.Test
 		{
 			var actual = CryptoUtil.SHA1Hash(input);
 
-			Assert.AreEqual(expected, actual);
+			Assert.That(expected, Is.EqualTo(actual));
 		}
 
 		[TestCase(0xFF0000FF, "0000FF")]
@@ -29,7 +29,7 @@ namespace OpenRA.Test
 		{
 			var color = Color.FromArgb(value);
 			var actual = color.ToString();
-			Assert.AreEqual(expected, actual);
+			Assert.That(expected, Is.EqualTo(actual));
 		}
 	}
 }

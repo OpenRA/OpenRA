@@ -26,7 +26,7 @@ namespace OpenRA.Test
 
 			mediator.Send(new TestNotificaton());
 
-			Assert.IsTrue(testHandler.WasNotified);
+			Assert.That(testHandler.WasNotified, Is.True);
 		}
 	}
 

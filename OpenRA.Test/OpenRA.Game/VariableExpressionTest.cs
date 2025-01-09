@@ -29,17 +29,17 @@ namespace OpenRA.Test
 
 		void AssertFalse(string expression)
 		{
-			Assert.False(new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.That(new BooleanExpression(expression).Evaluate(testValues), Is.False, expression);
 		}
 
 		void AssertTrue(string expression)
 		{
-			Assert.True(new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.That(new BooleanExpression(expression).Evaluate(testValues), Is.True, expression);
 		}
 
 		void AssertValue(string expression, int value)
 		{
-			Assert.AreEqual(value, new IntegerExpression(expression).Evaluate(testValues), expression);
+			Assert.That(value, Is.EqualTo(new IntegerExpression(expression).Evaluate(testValues)), expression);
 		}
 
 		void AssertParseFailure(string expression, string errorMessage)
@@ -47,7 +47,7 @@ namespace OpenRA.Test
 			var actualErrorMessage = Assert.Throws(typeof(InvalidDataException),
 				() => new IntegerExpression(expression).Evaluate(testValues),
 				expression).Message;
-			Assert.AreEqual(errorMessage, actualErrorMessage, expression + "   ===>   " + actualErrorMessage);
+			Assert.That(errorMessage, Is.EqualTo(actualErrorMessage), expression + "   ===>   " + actualErrorMessage);
 		}
 
 		[TestCase(TestName = "Numbers")]

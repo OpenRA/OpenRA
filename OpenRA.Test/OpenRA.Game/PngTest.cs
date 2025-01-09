@@ -32,7 +32,7 @@ namespace OpenRA.Test
 			var result = png.Save();
 
 			// Assert
-			Assert.IsTrue(Png.Verify(new MemoryStream(result)));
+			Assert.That(Png.Verify(new MemoryStream(result)), Is.True);
 		}
 
 		[Test]
@@ -90,7 +90,7 @@ namespace OpenRA.Test
 
 			// Act & Assert
 			var exception = Assert.Throws<InvalidDataException>(() => new Png(new MemoryStream(invalidSignature)));
-			StringAssert.Contains("PNG Signature is bogus", exception.Message);
+			Assert.That("PNG Signature is bogus", Does.Contain(exception.Message));
 		}
 
 		[Test]
@@ -106,7 +106,7 @@ namespace OpenRA.Test
 
 			// Act & Assert
 			var exception = Assert.Throws<InvalidDataException>(() => new Png(new MemoryStream(invalidPngData)));
-			StringAssert.Contains("Invalid PNG file - header does not appear first.", exception.Message);
+			Assert.That("Invalid PNG file - header does not appear first.", Does.Contain(exception.Message));
 		}
 
 		[Test]
@@ -143,7 +143,7 @@ namespace OpenRA.Test
 			{
 				// Act & Assert
 				var exception = Assert.Throws<InvalidDataException>(() => new Png(stream));
-				Assert.AreEqual("Compression method not supported", exception.Message);
+				Assert.That("Compression method not supported", Is.EqualTo(exception.Message));
 			}
 		}
 
