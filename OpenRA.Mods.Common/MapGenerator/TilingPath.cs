@@ -900,7 +900,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (points == null)
 				return null;
 
-			if (points[0] != points[^1])
+			if (points[0] == points[^1])
 			{
 				// Is a loop.
 				return points;
