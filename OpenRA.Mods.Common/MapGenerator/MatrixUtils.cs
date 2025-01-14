@@ -1203,6 +1203,30 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return changes;
 		}
 
+		/// <summary>Remove links from a direction map that are not reciprocated.</summary>
+		public static void RemoveStubsFromDirectionMapInPlace(Matrix<byte> matrix)
+		{
+			var output = matrix.Clone();
+			for (var cy = 0; cy < matrix.Size.Y; cy++)
+				for (var cx = 0; cx < matrix.Size.X; cx++)
+				{
+					var fromPos = new int2(cx, cy);
+					var fromDm = matrix[fromPos];
+					foreach (var (offset, d) in Direction.Spread8D)
+					{
+						if ((fromDm & (1 << d)) == 0)
+							continue;
+
+						var dr = Direction.Reverse(d);
+						var toPos = new int2(cx + offset.X, cy + offset.Y);
+						if (matrix.ContainsXY(toPos) && (matrix[toPos] & (1 << dr)) != 0)
+							continue;
+
+						matrix[fromPos] = (byte)(output[fromPos] & ~(1 << d));
+					}
+				}
+		}
+
 		static Matrix<byte> RemoveJunctionsFromDirectionMap(Matrix<byte> input)
 		{
 			var output = input.Clone();
@@ -1224,65 +1248,114 @@ namespace OpenRA.Mods.Common.MapGenerator
 					}
 				}
 
-			for (var x = 0; x < input.Size.X; x++)
-			{
-				output[x, 0] = (byte)(output[x, 0] & ~(Direction.MLU | Direction.MU | Direction.MRU));
-				output[x, input.Size.Y - 1] = (byte)(output[x, input.Size.Y - 1] & ~(Direction.MRD | Direction.MD | Direction.MLD));
-			}
-
-			for (var y = 0; y < input.Size.Y; y++)
-			{
-				output[0, y] = (byte)(output[0, y] & ~(Direction.MLD | Direction.ML | Direction.MLU));
-				output[input.Size.X - 1, y] &= (byte)(output[input.Size.X - 1, y] & ~(Direction.MRU | Direction.MR | Direction.MRD));
-			}
-
 			return output;
 		}
 
 		/// <summary>
-		/// Traces a matrix of directions into a set of point sequences.
-		/// Any junctions in the input direction map are dropped.
+		/// Traces a matrix of directions into a set of point sequences. Each point sequence is
+		/// traced up to but excluding junction points. Paths are traced in both directions. The
+		/// paths in the direction map must be bidrectional and contain no stubs.
 		/// </summary>
 		public static int2[][] DirectionMapToPaths(Matrix<byte> input)
 		{
-			input = RemoveJunctionsFromDirectionMap(input);
+			var links = RemoveJunctionsFromDirectionMap(input);
 
-			// Loops not handled, but these would be extremely rare anyway.
+			// Find non-loops, starting at terminals.
 			var pointArrays = new List<int2[]>();
-			for (var sy = 0; sy < input.Size.Y; sy++)
-				for (var sx = 0; sx < input.Size.X; sx++)
+
+			void TracePoints(int2 xy, int reverseDm)
+			{
+				var points = new List<int2>();
+
+				bool AddPoint()
 				{
-					var sdm = input[sx, sy];
-					if (Direction.FromMask(sdm) != Direction.None)
-					{
-						var points = new List<int2>();
-						var xy = new int2(sx, sy);
-						var reverseDm = 0;
-
-						bool AddPoint()
+					points.Add(xy);
+					var dm = links[xy] & ~reverseDm;
+					links[xy] = 0;
+					foreach (var (offset, d) in Direction.Spread8D)
+						if ((dm & (1 << d)) != 0)
 						{
-							points.Add(xy);
-							var dm = input[xy] & ~reverseDm;
-							foreach (var (offset, d) in Direction.Spread8D)
-								if ((dm & (1 << d)) != 0)
-								{
-									xy += offset;
-									if (!input.ContainsXY(xy))
-										throw new ArgumentException("input should not link out of bounds");
-									reverseDm = 1 << Direction.Reverse(d);
-									return true;
-								}
-
-							return false;
+							xy += offset;
+							reverseDm = 1 << Direction.Reverse(d);
+							return true;
 						}
 
-						while (AddPoint()) { }
-
-						pointArrays.Add(points.ToArray());
-					}
+					return false;
 				}
 
+				while (AddPoint()) { }
+
+				pointArrays.Add(points.ToArray());
+				pointArrays.Add(points.Reverse<int2>().ToArray());
+			}
+
+			for (var sy = 0; sy < links.Size.Y; sy++)
+				for (var sx = 0; sx < links.Size.X; sx++)
+					if (Direction.FromMask(links[sx, sy]) != Direction.None)
+						TracePoints(new int2(sx, sy), 0);
+
+			// All non-loops have been removed, leaving only loops left.
+			for (var sy = 0; sy < links.Size.Y; sy++)
+				for (var sx = 0; sx < links.Size.X; sx++)
+					if (links[sx, sy] != 0)
+					{
+						// Choose direction with most-significant bit
+						var reverseDm = links[sx, sy] & (links[sx, sy] - 1);
+						TracePoints(new int2(sx, sy), reverseDm);
+					}
+
 			return pointArrays.ToArray();
+		}
+
+		/// <summary>
+		/// Wrapper around DirectionMapToPaths which iteratively prunes stubs and short paths until
+		/// all paths are at least a minimumLength. Paths shorter than mimimumJunctionSeparation
+		/// sever their neighboring junctions instead of fusing them together.
+		/// </summary>
+		public static int2[][] DirectionMapToPathsWithPruning(
+			Matrix<byte> input,
+			int minimumLength,
+			int minimumJunctionSeparation,
+			bool preserveEdgePaths)
+		{
+			var links = input.Clone();
+			int2[][] pointArrays;
+
+			// Iteratively remove paths which are too short and merge remaining ones.
+			while (true)
+			{
+				RemoveStubsFromDirectionMapInPlace(links);
+				pointArrays = DirectionMapToPaths(links);
+
+				var removeablePointArrays = pointArrays;
+				if (preserveEdgePaths)
+					removeablePointArrays = pointArrays
+					.Where(a => !(links.IsEdge(a[0]) || links.IsEdge(a[^1])))
+					.ToArray();
+
+				if (removeablePointArrays.Length == 0)
+					return pointArrays;
+
+				var shortest = removeablePointArrays.Min(a => a.Length);
+
+				if (shortest >= minimumLength)
+					return pointArrays;
+
+				var toDelete = new List<int2>();
+				foreach (var pointArray in removeablePointArrays)
+					if (pointArray.Length == shortest)
+						foreach (var point in pointArray)
+						{
+							toDelete.Add(point);
+							if (pointArray.Length < minimumJunctionSeparation)
+								foreach (var (offset, d) in Direction.Spread8D)
+									if ((links[point] & (1 << d)) != 0)
+										toDelete.Add(point + offset);
+						}
+
+				foreach (var point in toDelete)
+					links[point] = 0;
+			}
 		}
 
 		/// <summary>

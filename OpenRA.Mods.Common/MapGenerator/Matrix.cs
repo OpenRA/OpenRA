@@ -105,6 +105,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return x >= 0 && x < Size.X && y >= 0 && y < Size.Y;
 		}
 
+		public bool IsEdge(int x, int y)
+		{
+			return x == 0 || x == Size.X - 1 || y == 0 || y == Size.Y - 1;
+		}
+
+		public bool IsEdge(int2 xy)
+		{
+			return IsEdge(xy.X, xy.Y);
+		}
+
 		/// <summary>Clamp xy to be the closest index within the matrix.</summary>
 		public int2 ClampXY(int2 xy)
 		{

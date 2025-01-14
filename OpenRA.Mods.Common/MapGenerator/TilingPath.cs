@@ -395,6 +395,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 					? forwardProgressLimit
 					: int.MinValue;
 
+			// Find the progress difference of two progress values. For loops high progress values
+			// wrap around to low ones. (Think of loops' progress like a 24 hour clock,
+			// where 22 -> 2 is a difference of 4, and 2 -> 22 is a difference of -4).
 			int Progress(int from, int to)
 			{
 				if (IsLoop)
@@ -425,11 +428,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				(int Low, int High) FindLowAndHigh(List<int> values)
 				{
-					Debug.Assert(values.Count > 0, "No values");
+					if (values.Count == 0)
+						return (InvalidProgress, InvalidProgress);
+
 					if (values.Count == 1)
 						return (values[0], values[0]);
+
 					if (IsLoop)
 					{
+						// For loops, with a list of 2+ sorted progress values, there are 2 cases:
+						// - The values are spatially grouped, such that the values are contained
+						//   in under a half of the progress range, and the largest gap between
+						//   values is more than half of the progress range. This means that going
+						//   from before the gap to after it is an overall negative progress
+						//   change. (It must be the only negative progress change one as there can
+						//   only be one gap that is over half of the progress range.) In this
+						//   case, there is an obvious start and end to the group, with an overall
+						//   positive progress change.
+						// - The values are dispersed such that there is no obvious start or end.
 						if (Progress(values[^1], values[0]) < 0)
 							return (values[0], values[^1]);
 						for (var i = 0; i < values.Count - 1; i++)
@@ -459,9 +475,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 					lows.Clear();
 					highs.Clear();
-					for (var i = 0; i < 8; i++)
+					foreach (var offset in Direction.Spread8)
 					{
-						var offset = Direction.Spread8[i];
 						var neighbor = xy + offset;
 						if (!deviations.ContainsXY(neighbor) ||
 							deviations[neighbor] >= deviation ||
@@ -839,11 +854,18 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <summary>
 		/// Extend the start and end of a path by extensionLength points. The directions of the
 		/// extensions are based on the overall direction of the outermost inertialRange points.
+		/// Loops are left unmodified.
 		/// </summary>
 		public static CPos[] InertiallyExtendPathPoints(CPos[] points, int extensionLength, int inertialRange)
 		{
 			if (points == null)
 				return null;
+
+			if (points[0] == points[^1])
+			{
+				// Is a loop.
+				return points;
+			}
 
 			if (inertialRange > points.Length - 1)
 				inertialRange = points.Length - 1;
@@ -1107,6 +1129,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Normalized but opposing paths rotate around the center in the same direction.
 		/// </para>
 		/// <para>
+		/// Loops are normalized to rotate in a consistent direction, regardless of position.
+		/// </para>
+		/// <para>
 		/// The measureFromCenter function must convert CVec positions to WVec offsets from the map
 		/// center.
 		/// </para>
@@ -1122,33 +1147,55 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			if (start == end)
 			{
-				// Is loop
-				start = points[1];
-				end = points[^2];
-			}
+				// Is a loop.
+				// Find the top-left-most corner point (on the convex hull) and
+				// sample which way the points are bending.
+				var topLeftIndex = 0;
+				var topLeftPoint = points[0];
+				for (var i = 1; i < points.Length; i++)
+				{
+					var point = points[i];
+					if (point.Y < topLeftPoint.Y || (point.Y == topLeftPoint.Y && point.X < topLeftPoint.X))
+					{
+						topLeftIndex = i;
+						topLeftPoint = point;
+					}
+				}
 
-			bool ShouldReverse(CPos start, CPos end)
+				var inOffset = points[topLeftIndex] - points[(topLeftIndex + points.Length - 1) % points.Length];
+				var outOffset = points[(topLeftIndex + points.Length + 1) % points.Length] - points[topLeftIndex];
+				var crossProd = inOffset.X * outOffset.Y - inOffset.Y * outOffset.X;
+
+				// crossProd should never be 0 for a valid input.
+				if (crossProd < 0)
+					Array.Reverse(normalized);
+			}
+			else
 			{
-				var v1 = measureFromCenter(start);
-				var v2 = measureFromCenter(end);
+				// Is not a loop.
+				bool ShouldReverse(CPos start, CPos end)
+				{
+					var v1 = measureFromCenter(start);
+					var v2 = measureFromCenter(end);
 
-				// Rotation around center?
-				var crossProd = v1.X * v2.Y - v2.X * v1.Y;
-				if (crossProd != 0)
-					return crossProd < 0;
+					// Rotation around center?
+					var crossProd = v1.X * v2.Y - v2.X * v1.Y;
+					if (crossProd != 0)
+						return crossProd < 0;
 
-				// Distance from center?
-				var r1 = v1.X * v1.X + v1.Y * v1.Y;
-				var r2 = v2.X * v2.X + v2.Y * v2.Y;
-				if (r1 != r2)
-					return r1 < r2;
+					// Distance from center?
+					var r1 = v1.X * v1.X + v1.Y * v1.Y;
+					var r2 = v2.X * v2.X + v2.Y * v2.Y;
+					if (r1 != r2)
+						return r1 < r2;
 
-				// Absolute angle
-				return v1.Y == v2.Y ? v1.X > v2.X : v1.Y > v2.Y;
+					// Absolute angle
+					return v1.Y == v2.Y ? v1.X > v2.X : v1.Y > v2.Y;
+				}
+
+				if (ShouldReverse(start, end))
+					Array.Reverse(normalized);
 			}
-
-			if (ShouldReverse(start, end))
-				Array.Reverse(normalized);
 
 			return normalized;
 		}
@@ -1190,6 +1237,43 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			return outputs.ToArray();
+		}
+
+		/// <summary>Nullify the path's points if they aren't suitable for tiling.</summary>
+		public TilingPath RetainIfValid()
+		{
+			if (!ValidatePathPoints(Points))
+				Points = null;
+
+			return this;
+		}
+
+		public static bool ValidatePathPoints(CPos[] points)
+		{
+			if (points == null || points.Length == 0)
+				return false;
+
+			var isLoop = points[0] == points[^1];
+
+			if (points.Length < (isLoop ? 3 : 2))
+				return false;
+
+			// Duplicate points check
+			if (points.Distinct().Count() != points.Length - (isLoop ? 1 : 0))
+				return false;
+
+			// All steps must be (non-diagonal) unit offsets.
+			var lastPoint = points[0];
+			for (var i = 1; i < points.Length; i++)
+			{
+				var offset = lastPoint - points[i];
+				if (Direction.ToCVec(Direction.FromCVecNonDiagonal(offset)) != offset)
+					return false;
+
+				lastPoint = points[i];
+			}
+
+			return true;
 		}
 	}
 }

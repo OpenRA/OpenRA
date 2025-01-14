@@ -1037,7 +1037,12 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var space = new CellLayer<bool>(map);
 				foreach (var mpos in map.AllCells.MapCoords)
-					space[mpos] = playableArea[mpos] && param.ClearTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[mpos]));
+					space[mpos] = param.ClearTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[mpos]));
+
+				foreach (var actorPlan in actorPlans)
+					foreach (var (cpos, _) in actorPlan.Footprint())
+						if (space.Contains(cpos))
+							space[cpos] = false;
 
 				// Improve symmetry.
 				{
@@ -1052,7 +1057,14 @@ namespace OpenRA.Mods.Common.Traits
 					space = newSpace;
 				}
 
-				var matrixSpace = CellLayerUtils.ToMatrix(space, false);
+				// TODO: Move to configuration
+				const int RoadStraightenShrink = 4;
+				const int RoadStraightenGrow = 2;
+				const int RoadMinimumShrinkLength = 12;
+				const int RoadInertialRange = 8;
+				var roadTotalShrink = RoadStraightenShrink + param.RoadShrink;
+
+				var matrixSpace = CellLayerUtils.ToMatrix(space, true);
 				var kernel = new Matrix<bool>(param.RoadSpacing * 2 + 1, param.RoadSpacing * 2 + 1);
 				MatrixUtils.OverCircle(
 					matrix: kernel,
@@ -1065,30 +1077,50 @@ namespace OpenRA.Mods.Common.Traits
 					kernel,
 					new int2(param.RoadSpacing, param.RoadSpacing),
 					false);
-				var deflated = MatrixUtils.DeflateSpace(dilated, false);
-				var matrixPointArrays = MatrixUtils.DirectionMapToPaths(deflated);
+				var deflated = MatrixUtils.DeflateSpace(dilated, true);
+				var matrixPointArrays = MatrixUtils.DirectionMapToPathsWithPruning(
+					input: deflated,
+					minimumLength: 20 + 2 * param.RoadShrink,
+					minimumJunctionSeparation: 6,
+					preserveEdgePaths: true);
 				var pointArrays = CellLayerUtils.FromMatrixPoints(matrixPointArrays, space);
 				pointArrays = TilingPath.RetainDisjointPaths(pointArrays);
 
-				var roadPermittedTemplates =
+				var nonLoopedRoadPermittedTemplates =
 					TilingPath.PermittedSegments.FromInnerAndTerminalTypes(
 						tileset, param.RoadSegmentTypes, param.ClearSegmentTypes);
+				var loopedRoadPermittedTemplates =
+					TilingPath.PermittedSegments.FromType(
+						tileset, param.RoadSegmentTypes);
 
 				foreach (var pointArray in pointArrays)
 				{
-					// Currently, never looped.
-					var path = new TilingPath(
-						map,
-						pointArray,
-						param.RoadSpacing - 1,
-						param.ClearSegmentTypes[0],
-						param.ClearSegmentTypes[0],
-						roadPermittedTemplates);
+					var isLoop = pointArray[0] == pointArray[^1];
+					TilingPath path;
+					if (isLoop)
+						path = new TilingPath(
+							map,
+							pointArray,
+							param.RoadSpacing - 1,
+							param.RoadSegmentTypes[0],
+							param.RoadSegmentTypes[0],
+							loopedRoadPermittedTemplates);
+					else
+						path = new TilingPath(
+							map,
+							pointArray,
+							param.RoadSpacing - 1,
+							param.ClearSegmentTypes[0],
+							param.ClearSegmentTypes[0],
+							nonLoopedRoadPermittedTemplates);
+
 					path
 						.ChirallyNormalize(cvec => CellLayerUtils.CornerToWPos(cvec, gridType) - wMapCenter)
-						.Shrink(4 + param.RoadShrink, 12)
-						.InertiallyExtend(2, 8)
-						.ExtendEdge(4);
+						.ExtendEdge(2 * roadTotalShrink + RoadMinimumShrinkLength)
+						.Shrink(roadTotalShrink, RoadMinimumShrinkLength)
+						.InertiallyExtend(RoadStraightenGrow, RoadInertialRange)
+						.OptimizeLoop()
+						.RetainIfValid();
 
 					// Shrinking may have deleted the path.
 					if (path.Points == null)
