@@ -996,7 +996,7 @@ namespace OpenRA.Mods.Common.Traits
 								var projections = Symmetry.RotateAndMirrorCPos(
 									cpos, map.Tiles, param.Rotations, param.Mirror);
 								foreach (var projection in projections)
-									if (map.Tiles[projection].Type == param.WaterTile)
+									if (map.Tiles.Contains(projection) && map.Tiles[projection].Type == param.WaterTile)
 										unplayableWater.Add(projection);
 							}
 
