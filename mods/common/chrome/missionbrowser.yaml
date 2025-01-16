@@ -76,6 +76,44 @@ Background@MISSIONBROWSER_PANEL:
 							Height: 31
 							Font: Bold
 							Text: button-missionbrowser-panel-mission-options
+				Container@MISSION_MINIFIED_OPTIONS:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Visible: False
+					Children:
+						LabelForInput@DIFFICULTY_DESC:
+							Y: PARENT_HEIGHT - HEIGHT
+							Width: 56
+							Height: 25
+							Align: Right
+							Text: dropdown-missionbrowser-difficulty.label
+							For: DIFFICULTY
+						DropDownButton@DIFFICULTY:
+							X: 61
+							Y: PARENT_HEIGHT - HEIGHT
+							Width: 135
+							Height: 25
+							Font: Regular
+							Text: label-missionbrowser-normal-difficulty
+							TooltipText: dropdown-missionbrowser-difficulty.description
+							PanelRoot: MISSION_DROPDOWN_PANEL_ROOT
+							TooltipContainer: TOOLTIP_CONTAINER
+						LabelForInput@GAMESPEED_DESC:
+							X: PARENT_WIDTH - WIDTH - 115
+							Y: PARENT_HEIGHT - HEIGHT
+							Width: 120
+							Height: 25
+							Align: Right
+							Text: dropdown-missionbrowser-gamespeed
+							For: GAMESPEED
+						DropDownButton@GAMESPEED:
+							X: PARENT_WIDTH - WIDTH
+							Y: PARENT_HEIGHT - HEIGHT
+							Width: 110
+							Height: 25
+							Font: Regular
+							PanelRoot: MISSION_DROPDOWN_PANEL_ROOT
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@MISSION_DETAIL:
 					Y: 212
 					Width: PARENT_WIDTH

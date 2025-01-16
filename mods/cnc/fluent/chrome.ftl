@@ -523,6 +523,12 @@ button-missionbrowser-panel-stop-briefing-video = Stop Briefing
 button-missionbrowser-panel-start-info-video = Watch Info Video
 button-missionbrowser-panel-stop-info-video = Stop Info Video
 button-missionbrowser-panel-play = Play
+dropdown-missionbrowser-difficulty =
+    .label = Difficulty
+    .description = The difficulty of the mission
+
+dropdown-missionbrowser-gamespeed = Speed:
+label-missionbrowser-normal-difficulty = Normal
 
 ## multiplayer-browser.yaml
 image-bg-password-protected-tooltip = Requires Password
