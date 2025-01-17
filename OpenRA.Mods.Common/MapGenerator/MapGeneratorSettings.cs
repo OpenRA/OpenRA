@@ -290,6 +290,23 @@ namespace OpenRA.Mods.Common.MapGenerator
 					return Default;
 				}
 			}
+
+			public bool IsFreeform()
+			{
+				switch (Ui)
+				{
+					case UiType.Hidden:
+					case UiType.DropDown:
+					case UiType.Checkbox:
+						return false;
+					case UiType.Integer:
+					case UiType.Float:
+					case UiType.String:
+						return true;
+					default:
+						throw new InvalidOperationException("Bad UiType");
+				}
+			}
 		}
 
 		public readonly IReadOnlyList<Option> Options;
