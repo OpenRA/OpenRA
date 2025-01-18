@@ -70,7 +70,7 @@ def format_docs(version, collectionName, types, relatedEnums):
 
             sourceUrl = ""
             if currentType["Filename"]:
-                sourceUrl = f"https://github.com/OpenRA/OpenRA/blob/{version}/{currentType["Filename"]}"
+                sourceUrl = f"https://github.com/OpenRA/OpenRA/blob/{version}/{currentType['Filename']}"
                 description = f"{description} [GitHub]({sourceUrl})"
 
             if description:
