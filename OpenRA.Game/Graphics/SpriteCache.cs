@@ -155,7 +155,7 @@ namespace OpenRA.Graphics
 			}
 
 			foreach (var sb in SheetBuilders.Values)
-				sb.Current.ReleaseBuffer();
+				sb.Current?.ReleaseBuffer();
 		}
 
 		public Sprite[] ResolveSprites(int token)

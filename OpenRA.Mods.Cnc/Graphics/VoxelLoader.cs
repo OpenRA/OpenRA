@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public void Finish()
 		{
-			sheetBuilder.Current.ReleaseBuffer();
+			sheetBuilder.Current?.ReleaseBuffer();
 		}
 
 		public void Dispose()
