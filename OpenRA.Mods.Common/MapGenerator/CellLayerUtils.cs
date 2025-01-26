@@ -218,8 +218,21 @@ namespace OpenRA.Mods.Common.MapGenerator
 			{
 				var mCenter = WPosToMPos(wCenter, gridType);
 
-				var mRadiusU = wRadius / 1448 + 2;
-				var mRadiusV = wRadius / 724 + 1;
+				int mRadiusU;
+				int mRadiusV;
+				switch (gridType)
+				{
+					case MapGridType.Rectangular:
+						mRadiusU = wRadius / 1024 + 1;
+						mRadiusV = wRadius / 1024 + 1;
+						break;
+					case MapGridType.RectangularIsometric:
+						mRadiusU = wRadius / 1448 + 2;
+						mRadiusV = wRadius / 724 + 2;
+						break;
+					default:
+						throw new NotImplementedException();
+				}
 
 				minU = Math.Max(mCenter.U - mRadiusU, 0);
 				minV = Math.Max(mCenter.V - mRadiusV, 0);
