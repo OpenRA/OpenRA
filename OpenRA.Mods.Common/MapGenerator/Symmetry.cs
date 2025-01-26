@@ -44,26 +44,26 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Mirrors a (zero-area) point around a given center.
 		/// </para>
 		/// <para>
-		/// For example, if using a center of (4.0, 4.0) a point at (0.1, 0.1) could be projected
-		/// to (0.1, 0.1), (0.1, 7.9), (7.9, 0.1), or (7.9, 7.9).
+		/// For example, if using a center of (40, 40) a point at (1, 1) could be projected
+		/// to (1, 1), (1, 79), (79, 1), or (79, 79).
 		/// </para>
 		/// </summary>
-		public static float2 MirrorPointAround(Mirror mirror, float2 original, float2 center)
+		public static int2 MirrorPointAround(Mirror mirror, int2 original, int2 center)
 		{
 			switch (mirror)
 			{
 				case Mirror.None:
 					throw new ArgumentException("Mirror.None has no transformed point");
 				case Mirror.LeftMatchesRight:
-					return new float2(2.0f * center.X - original.X, original.Y);
+					return new int2(2 * center.X - original.X, original.Y);
 				case Mirror.TopLeftMatchesBottomRight:
-					return new float2(
+					return new int2(
 						center.Y - original.Y + center.X,
 						center.X - original.X + center.Y);
 				case Mirror.TopMatchesBottom:
-					return new float2(original.X, 2.0f * center.Y - original.Y);
+					return new int2(original.X, 2 * center.Y - original.Y);
 				case Mirror.TopRightMatchesBottomLeft:
-					return new float2(
+					return new int2(
 						center.X + original.Y - center.Y,
 						center.Y + original.X - center.X);
 				default:
@@ -73,27 +73,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		public static WPos MirrorWPosAround(Mirror mirror, WPos original, WPos center)
 		{
-			switch (mirror)
-			{
-				case Mirror.None:
-					throw new ArgumentException("Mirror.None has no transformed point");
-				case Mirror.LeftMatchesRight:
-					return new WPos(2 * center.X - original.X, original.Y, original.Z);
-				case Mirror.TopLeftMatchesBottomRight:
-					return new WPos(
-						center.Y - original.Y + center.X,
-						center.X - original.X + center.Y,
-						original.Z);
-				case Mirror.TopMatchesBottom:
-					return new WPos(original.X, 2 * center.Y - original.Y, original.Z);
-				case Mirror.TopRightMatchesBottomLeft:
-					return new WPos(
-						center.X + original.Y - center.Y,
-						center.Y + original.X - center.X,
-						original.Z);
-				default:
-					throw new ArgumentException("Bad mirror");
-			}
+			var result = MirrorPointAround(
+				mirror,
+				new int2(original.X, original.Y),
+				new int2(center.X, center.Y));
+			return new WPos(result.X, result.Y, original.Z);
 		}
 
 		/// <summary>
@@ -199,17 +183,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// functions. This may be slightly imprecise for non-trivial rotations.
 		/// </para>
 		/// <para>
-		/// For example, if using a center of (4.0, 4.0) a point at (0.1, 0.1) could be projected
-		/// to (0.1, 0.1), (0.1, 7.9), (7.9, 0.1), and (7.9, 7.9).
+		/// For example, if using a center of (40, 40) a point at (1, 1) could be projected
+		/// to (1, 1), (1, 79), (79, 1), and (79, 79).
 		/// </para>
 		/// </summary>
-		public static float2[] RotateAndMirrorPointAround(
-			float2 original,
-			float2 center,
+		public static int2[] RotateAndMirrorPointAround(
+			int2 original,
+			int2 center,
 			int rotations,
 			Mirror mirror)
 		{
-			var projections = new float2[RotateAndMirrorProjectionCount(rotations, mirror)];
+			var projections = new int2[RotateAndMirrorProjectionCount(rotations, mirror)];
 			var projectionIndex = 0;
 
 			for (var rotation = 0; rotation < rotations; rotation++)
@@ -217,12 +201,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 				// This could be made more accurate using dedicated, higher precision
 				// rotation count to cos and sin lookup tables.
 				var wangle = new WAngle(rotation * 1024 / rotations);
-				var cos = wangle.Cos() / 1024.0f;
-				var sin = wangle.Sin() / 1024.0f;
+				long cos = wangle.Cos();
+				long sin = wangle.Sin();
 				var relOrig = original - center;
-				var projX = relOrig.X * cos - relOrig.Y * sin + center.X;
-				var projY = relOrig.X * sin + relOrig.Y * cos + center.Y;
-				var projection = new float2(projX, projY);
+				var projX = (relOrig.X * cos - relOrig.Y * sin) / 1024 + center.X;
+				var projY = (relOrig.X * sin + relOrig.Y * cos) / 1024 + center.Y;
+				var projection = new int2((int)projX, (int)projY);
 				projections[projectionIndex++] = projection;
 
 				if (mirror != Mirror.None)
@@ -303,7 +287,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public static bool IsCPosNearCenter<T>(
 			CPos cpos,
 			CellLayer<T> cellLayer,
-			float reservationRadius,
+			int reservationRadius,
 			Mirror mirror)
 		{
 			CPos[] testPoints;
@@ -313,7 +297,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				testPoints = RotateAndMirrorCPos(cpos, cellLayer, 1, mirror);
 
 			var separation = (testPoints[1] - testPoints[0]).LengthSquared;
-			return separation <= reservationRadius * reservationRadius * 4.0f;
+			return separation <= reservationRadius * reservationRadius * 4;
 		}
 	}
 }

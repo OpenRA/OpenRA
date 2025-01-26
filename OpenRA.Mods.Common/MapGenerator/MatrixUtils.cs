@@ -20,6 +20,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 {
 	public static class MatrixUtils
 	{
+		public const int MaxBinomialKernelRadius = 10;
+
 		/// <summary>
 		/// Debugging method that prints a matrix to stderr.
 		/// </summary>
@@ -156,22 +158,20 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// <para>
-		/// Compute the in-game walking distances from a set of seeds.
+		/// Compute the in-game walking distances (in 1024ths) from a set of seeds.
 		/// </para>
 		/// <para>
 		/// The output matrix cells will contain either the distance (if reachable) or
-		/// PositiveInfinity.
+		/// int.MaxValue.
 		/// </para>
 		/// </summary>
-		public static Matrix<float> WalkingDistances(Matrix<bool> passable, IEnumerable<int2> seeds, float maxDistance)
+		public static Matrix<int> WalkingDistances(Matrix<bool> passable, IEnumerable<int2> seeds, int maxDistance)
 		{
-			const float SQRT2 = 1.4142135623730951f;
+			const int Diagonal = 1448;
+			const int Straight = 1024;
 
-			if (maxDistance == float.PositiveInfinity)
-				maxDistance = float.MaxValue;
-
-			var output = new Matrix<float>(passable.Size).Fill(float.PositiveInfinity);
-			var unprocessed = new PriorityArray<float>(passable.Size.X * passable.Size.Y, float.PositiveInfinity);
+			var output = new Matrix<int>(passable.Size).Fill(int.MaxValue);
+			var unprocessed = new PriorityArray<int>(passable.Size.X * passable.Size.Y, int.MaxValue);
 			foreach (var seed in seeds)
 				unprocessed[passable.Index(seed)] = 0;
 
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				if (distance <= maxDistance && output.ContainsXY(xy))
 					output[xy] = distance;
-				unprocessed[i] = float.PositiveInfinity;
+				unprocessed[i] = int.MaxValue;
 
 				foreach (var (offset, direction) in Direction.Spread8D)
 				{
@@ -195,13 +195,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 						continue;
 					if (!passable[nextXY])
 						continue;
-					if (output[nextXY] != float.PositiveInfinity)
+					if (output[nextXY] != int.MaxValue)
 						continue;
-					float nextDistance;
+					int nextDistance;
 					if (Direction.IsDiagonal(direction))
-						nextDistance = distance + SQRT2;
+						nextDistance = distance + Diagonal;
 					else
-						nextDistance = distance + 1;
+						nextDistance = distance + Straight;
 
 					var nextI = passable.Index(nextXY);
 					if (nextDistance < unprocessed[nextI])
@@ -390,83 +390,89 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// <para>
-		/// Create a one-dimensional gaussian kernel.
+		/// Create a one-dimensional binomial kernel of size (2 * radius + 1, 1).
+		/// The total of all kernel cells is 1 &lt;&lt; (radius * 2).
 		/// </para>
 		/// <para>
-		/// This can be applied once, transposed, then applied again to perform a full gaussian blur.
-		/// See <see cref="GaussianBlur"/>.
+		/// This can be applied once, transposed, then applied again to perform a full binomial blur.
+		/// See <see cref="BinomialBlur"/>. Maximum supported radius is MaxBinomialKernelRadius.
 		/// </para>
 		/// </summary>
-		public static Matrix<float> GaussianKernel1D(int radius, float standardDeviation)
+		static Matrix<long> BinomialKernel1D(int radius)
 		{
-			var span = radius * 2 + 1;
-			var kernel = new Matrix<float>(new int2(span, 1));
-			var dsd2 = 2 * standardDeviation * standardDeviation;
-			var total = 0.0f;
-			for (var x = -radius; x <= radius; x++)
-			{
-				var value = MathF.Exp(-x * x / dsd2);
-				kernel[x + radius] = value;
-				total += value;
-			}
+			if (radius < 0 || radius > 10)
+				throw new ArgumentException($"Binomial kernel radius was not in supported range (0 to {MaxBinomialKernelRadius} inclusive).");
 
-			// Instead of dividing by sqrt(PI * dsd2), divide by the total.
-			for (var i = 0; i < span; i++)
-				kernel[i] /= total;
+			var span = radius * 2 + 1;
+			var kernel = new Matrix<long>(new int2(span, 1));
+			var factorials = new long[span];
+			factorials[0] = 1;
+			for (var i = 1; i < span; i++)
+				factorials[i] = factorials[i - 1] * i;
+
+			var n = span - 1;
+			for (var k = 0; k < span; k++)
+				kernel[k] = factorials[n] / (factorials[k] * factorials[n - k]);
 
 			return kernel;
 		}
 
 		/// <summary>
 		/// Apply an arithmetic convolution of a kernel over an input matrix.
+		/// Cells outside the input matrix take the value of the nearest edge/corner cell.
 		/// </summary>
-		public static Matrix<float> KernelBlur(Matrix<float> input, Matrix<float> kernel, int2 kernelCenter)
+		public static Matrix<long> KernelFilter(Matrix<long> input, Matrix<long> kernel, int2 kernelCenter)
 		{
-			var output = new Matrix<float>(input.Size);
+			var output = new Matrix<long>(input.Size);
 			for (var cy = 0; cy < input.Size.Y; cy++)
 				for (var cx = 0; cx < input.Size.X; cx++)
 				{
-					var total = 0.0f;
+					long total = 0;
 					var samples = 0;
 					for (var ky = 0; ky < kernel.Size.Y; ky++)
 						for (var kx = 0; kx < kernel.Size.X; kx++)
 						{
 							var x = cx + kx - kernelCenter.X;
 							var y = cy + ky - kernelCenter.Y;
-							if (!input.ContainsXY(x, y))
-								continue;
-							total += input[x, y] * kernel[kx, ky];
+							total += input[input.ClampXY(new int2(x, y))] * kernel[kx, ky];
 							samples++;
 						}
 
-					output[cx, cy] = total / samples;
+					output[cx, cy] = total;
 				}
 
 			return output;
 		}
 
 		/// <summary>
-		/// Apply a square gaussian blur to a matrix, returning a new matrix.
+		/// Apply a binomial filter-based blur to a matrix, returning a new matrix. The result is
+		/// somewhat similar to a gaussian blur. Maximum supported radius is MaxBinomialKernelRadius.
 		/// </summary>
-		public static Matrix<float> GaussianBlur(Matrix<float> input, int radius, float standardDeviation)
+		public static Matrix<int> BinomialBlur(Matrix<int> input, int radius)
 		{
-			var kernel = GaussianKernel1D(radius, standardDeviation);
-			var stage1 = KernelBlur(input, kernel, new int2(radius, 0));
-			var stage2 = KernelBlur(stage1, kernel.Transpose(), new int2(0, radius));
-			return stage2;
+			var kernel = BinomialKernel1D(radius);
+			var downscale = 2 * radius;
+			var stage1 = KernelFilter(input.Map(v => (long)v), kernel, new int2(radius, 0));
+			for (var i = 0; i < stage1.Data.Length; i++)
+				stage1[i] >>= downscale;
+			var stage2 = KernelFilter(stage1, kernel.Transpose(), new int2(0, radius));
+			for (var i = 0; i < stage2.Data.Length; i++)
+				stage2[i] >>= downscale;
+
+			return stage2.Map(v => (int)v);
 		}
 
 		/// <summary>
 		/// Finds the local variance of points in a grid (using a square sample area).
 		/// Sample areas are centered on data point corners, so output is (size + 1) * (size + 1).
 		/// </summary>
-		public static Matrix<float> GridVariance(Matrix<float> input, int radius)
+		public static Matrix<int> GridVariance(Matrix<int> input, int radius)
 		{
-			var output = new Matrix<float>(input.Size + new int2(1, 1));
+			var output = new Matrix<int>(input.Size + new int2(1, 1));
 			for (var cy = 0; cy < output.Size.Y; cy++)
 				for (var cx = 0; cx < output.Size.X; cx++)
 				{
-					var total = 0.0f;
+					var total = 0;
 					var samples = 0;
 					for (var ry = -radius; ry < radius; ry++)
 						for (var rx = -radius; rx < radius; rx++)
@@ -480,7 +486,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						}
 
 					var mean = total / samples;
-					var sumOfSquares = 0.0f;
+					long sumOfSquares = 0;
 					for (var ry = -radius; ry < radius; ry++)
 						for (var rx = -radius; rx < radius; rx++)
 						{
@@ -488,10 +494,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 							var x = cx + rx;
 							if (!input.ContainsXY(x, y))
 								continue;
-							sumOfSquares += MathF.Pow(mean - input[x, y], 2);
+							long difference = mean - input[x, y];
+							sumOfSquares += difference * difference;
 						}
 
-					output[cx, cy] = sumOfSquares / samples;
+					output[cx, cy] = (int)(sumOfSquares / samples);
 				}
 
 			return output;
@@ -503,8 +510,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// if the neighborhood is significantly different based on a threshold.
 		/// </para>
 		/// <para>
-		/// For example, a threshold of 0.75 means any change requires a 75%
-		/// majority within the kernel.
+		/// The threshold / thresholdOutOf is the size of a majority needed to
+		/// change a value. For example, a threshold of 20 / 25 means, 80% of
+		/// cells must agree to change a cell's value.
 		/// </para>
 		/// <para>
 		/// The space outside of the matrix is treated as if the border was
@@ -522,20 +530,21 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </para>
 		/// </summary>
 		public static (Matrix<bool> Output, int Changes) BooleanBlur(
-			Matrix<bool> input, int radius, float threshold)
+			Matrix<bool> input, int radius, int threshold, int thresholdOutOf)
 		{
-			if (threshold < 0.5f || threshold > 1.0f)
-				throw new ArgumentException("threshold must between 0.5 and 1.0 inclusive");
-
-			var output = new Matrix<bool>(input.Size);
-			var changes = 0;
-
 			// Sum radius-by-1 kernels first in O((size.X + radius) * size.Y) time using a diffing sliding
 			// window, then sum 1-by-radius kernels in O(size.X * (size.Y + radius)) time.
 			var hTrueCounts = new Matrix<int>(input.Size);
 			var kernelArea = (2 * radius + 1) * (2 * radius + 1);
-			var trueThreshold = (int)MathF.Ceiling(kernelArea * threshold);
+
+			if (threshold < 1 || thresholdOutOf < 1 || threshold * 2 < thresholdOutOf)
+				throw new ArgumentException("invalid threshold");
+
+			var trueThreshold = (kernelArea * threshold + thresholdOutOf - 1) / thresholdOutOf;
 			var falseThreshold = kernelArea - trueThreshold;
+
+			var output = new Matrix<bool>(input.Size);
+			var changes = 0;
 
 			for (var cy = 0; cy < input.Size.Y; cy++)
 			{
@@ -642,19 +651,35 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return (output, changes);
 		}
 
-		/// <summary>Read a linearly interpolated value between the cells of a matrix.</summary>
-		public static float Interpolate(Matrix<float> matrix, float x, float y)
+		/// <summary>
+		/// Read a linearly interpolated value between the cells of a matrix. xWeight and yWeight
+		/// must be between 0 and scale inclusive and define the interpolation position
+		/// between x and x+1, and y and y+1.
+		/// </summary>
+		public static int IntegerInterpolate(
+			Matrix<int> matrix,
+			int x,
+			int y,
+			int xWeight,
+			int yWeight,
+			int scale)
 		{
-			var xa = (int)MathF.Floor(x);
-			var xb = (int)MathF.Ceiling(x);
-			var ya = (int)MathF.Floor(y);
-			var yb = (int)MathF.Ceiling(y);
+			var xa = x;
+			var xb = x + 1;
+			var ya = y;
+			var yb = y + 1;
+
+			if (scale <= 0)
+				throw new ArgumentException("Interpolation scale was not > 0");
+
+			if (xWeight < 0 || yWeight < 0 || xWeight > scale || yWeight > scale)
+				throw new ArgumentException("Interpolation weights were not between 0 and scale inclusive.");
 
 			// "w" for "weight"
-			var xbw = x - xa;
-			var ybw = y - ya;
-			var xaw = 1.0f - xbw;
-			var yaw = 1.0f - ybw;
+			var xbw = xWeight;
+			var ybw = yWeight;
+			var xaw = scale - xWeight;
+			var yaw = scale - yWeight;
 
 			if (xa < 0)
 			{
@@ -678,46 +703,22 @@ namespace OpenRA.Mods.Common.MapGenerator
 				yb = matrix.Size.Y - 1;
 			}
 
-			var naa = matrix[xa, ya];
-			var nba = matrix[xb, ya];
-			var nab = matrix[xa, yb];
-			var nbb = matrix[xb, yb];
-			return (naa * xaw + nba * xbw) * yaw + (nab * xaw + nbb * xbw) * ybw;
+			long naa = matrix[xa, ya];
+			long nba = matrix[xb, ya];
+			long nab = matrix[xa, yb];
+			long nbb = matrix[xb, yb];
+			return (int)(((naa * xaw + nba * xbw) * yaw + (nab * xaw + nbb * xbw) * ybw) / scale / scale);
 		}
 
 		/// <summary>
-		/// Finds the (linearly interpolated) value a given fraction through a sorted array.
+		/// Uniformally add to or subtract from all cells such that count out of every outOf cells,
+		/// are no greater than the given target value.
 		/// </summary>
-		public static float ArrayQuantile(float[] array, float quantile)
+		public static void CalibrateQuantileInPlace(Matrix<int> matrix, int target, int count, int outOf)
 		{
-			if (array.Length == 0)
-				throw new ArgumentException("Cannot get quantile of empty array");
-
-			var iFloat = quantile * (array.Length - 1);
-			if (iFloat < 0)
-				iFloat = 0;
-
-			if (iFloat > array.Length - 1)
-				iFloat = array.Length - 1;
-
-			var iLow = (int)iFloat;
-			if (iLow == iFloat)
-				return array[iLow];
-
-			var iHigh = iLow + 1;
-			var weight = iFloat - iLow;
-			return array[iLow] * (1 - weight) + array[iHigh] * weight;
-		}
-
-		/// <summary>
-		/// Uniformally add to or subtract from all matrix cells such that the given quantile,
-		/// fraction, has the given target value.
-		/// </summary>
-		public static void CalibrateQuantileInPlace(Matrix<float> matrix, float target, float fraction)
-		{
-			var sorted = (float[])matrix.Data.Clone();
+			var sorted = (int[])matrix.Data.Clone();
 			Array.Sort(sorted);
-			var adjustment = target - ArrayQuantile(sorted, fraction);
+			var adjustment = target - sorted[(sorted.Length - 1) * count / outOf];
 			for (var i = 0; i < matrix.Data.Length; i++)
 				matrix[i] += adjustment;
 		}
@@ -1017,14 +1018,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public static Matrix<bool> BooleanBlotch(
 			Matrix<bool> input,
 			int terrainSmoothing,
-			float smoothingThreshold,
+			int smoothingThreshold,
+			int smoothingThresholdOutOf,
 			int minimumThickness,
 			bool bias)
 		{
 			var maxSpan = Math.Max(input.Size.X, input.Size.Y);
 			var matrix = input;
 
-			(matrix, _) = BooleanBlur(matrix, terrainSmoothing, 0.5f);
+			(matrix, _) = BooleanBlur(matrix, terrainSmoothing, 1, 2);
 			for (var i1 = 0; i1 < /*max passes*/16; i1++)
 			{
 				for (var i2 = 0; i2 < maxSpan; i2++)
@@ -1033,7 +1035,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					var changesAcc = 0;
 					for (var r = 1; r <= terrainSmoothing; r++)
 					{
-						(matrix, changes) = BooleanBlur(matrix, r, smoothingThreshold);
+						(matrix, changes) = BooleanBlur(matrix, r, smoothingThreshold, smoothingThresholdOutOf);
 						changesAcc += changes;
 					}
 
@@ -1067,8 +1069,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 								if (diff[x, y])
 									OverCircle(
 										matrix: matrix,
-										center: new float2(x, y),
-										radius: minimumThickness * 2,
+										centerIn1024ths: new int2(x * 1024 + 512, y * 1024 + 512),
+										radiusIn1024ths: minimumThickness * 2048,
 										outside: false,
 										action: (xy, _) => matrix[xy] = bias);
 							}
@@ -1425,22 +1427,25 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// <para>
-		/// Run an action over the inside or outside of a circle of given center and radius. The
-		/// action is called with the int2 position and the squared distance to the circle's
-		/// center. If outside is true, the action is run for cells outside of the circle instead
+		/// Run an action over the inside or outside of a circle of given center and radius,
+		/// measured in 1024ths of a cell. The action is called with the int2 cell position (NOT in
+		/// 1024ths), and the square of the distance-in-1024ths from the cell's center to the
+		/// circle's center. (Square root and divide by 1024 to get the distance in whole cells.)
+		/// (0, 0) is a corner of the matrix, and (512, 512) is the center of the first cell.
+		/// If outside is true, the action is run for cells outside of the circle instead
 		/// of the inside.
 		/// </para>
 		/// <para>
-		/// A matrix cell is inside the circle if its position is &lt;= radius from center.
+		/// A matrix cell is inside the circle if its center is &lt;= radius from center.
 		/// Coordinates outside of the Matrix are ignored.
 		/// </para>
 		/// </summary>
 		public static void OverCircle<T>(
 			Matrix<T> matrix,
-			float2 center,
-			float radius,
+			int2 centerIn1024ths,
+			int radiusIn1024ths,
 			bool outside,
-			Action<int2, float> action)
+			Action<int2, long> action)
 		{
 			var size = matrix.Size;
 			int minX;
@@ -1456,10 +1461,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 			else
 			{
-				minX = (int)MathF.Floor(center.X - radius);
-				minY = (int)MathF.Floor(center.Y - radius);
-				maxX = (int)MathF.Ceiling(center.X + radius);
-				maxY = (int)MathF.Ceiling(center.Y + radius);
+				minX = (centerIn1024ths.X - radiusIn1024ths) / 1024;
+				minY = (centerIn1024ths.Y - radiusIn1024ths) / 1024;
+				maxX = (centerIn1024ths.X + radiusIn1024ths + 1023) / 1024;
+				maxY = (centerIn1024ths.Y + radiusIn1024ths + 1023) / 1024;
 				if (minX < 0)
 					minX = 0;
 				if (minY < 0)
@@ -1470,16 +1475,32 @@ namespace OpenRA.Mods.Common.MapGenerator
 					maxY = size.Y - 1;
 			}
 
-			var radiusSquared = radius * radius;
+			var radiusSquared = (long)radiusIn1024ths * radiusIn1024ths;
 			for (var y = minY; y <= maxY; y++)
 				for (var x = minX; x <= maxX; x++)
 				{
-					var rx = x - center.X;
-					var ry = y - center.Y;
-					var thisRadiusSquared = rx * rx + ry * ry;
+					var rx = x * 1024 + 512 - centerIn1024ths.X;
+					var ry = y * 1024 + 512 - centerIn1024ths.Y;
+					var thisRadiusSquared = (long)rx * rx + (long)ry * ry;
 					if (thisRadiusSquared <= radiusSquared != outside)
 						action(new int2(x, y), thisRadiusSquared);
 				}
+		}
+
+		/// <summary>
+		/// Linearly scales the range of values in a matrix to the given target amplitude.
+		/// Returns the modified input. If the input matrix is all zeros, it is left unmodified.
+		/// </summary>
+		public static Matrix<int> NormalizeRangeInPlace(Matrix<int> matrix, int targetAmplitude)
+		{
+			long inputAmplitude = matrix.Data.Max(Math.Abs);
+			if (inputAmplitude == 0)
+				return matrix;
+
+			for (var i = 0; i < matrix.Data.Length; i++)
+				matrix[i] = (int)((long)matrix[i] * targetAmplitude / inputAmplitude);
+
+			return matrix;
 		}
 	}
 }

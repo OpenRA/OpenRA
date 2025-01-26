@@ -4071,16 +4071,16 @@ MultiBrushCollections:
 			Actor: tc01
 		MultiBrush@t04.husk:
 			Actor: t04.husk
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t08.husk:
 			Actor: t08.husk
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t09.husk:
 			Actor: t09.husk
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@tc01.husk:
 			Actor: tc01.husk
-			Weight: 0.1
+			Weight: 100
 	Obstructions:
 		MultiBrush@2:
 			Template: 2
@@ -4096,34 +4096,34 @@ MultiBrushCollections:
 			Template: 7
 		MultiBrush@14:
 			Template: 14
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@15:
 			Template: 15
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@16:
 			Template: 16
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@17:
 			Template: 17
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@18:
 			Template: 18
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@19:
 			Template: 19
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@20:
 			Template: 20
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@21:
 			Template: 21
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@22:
 			Template: 22
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@23:
 			Template: 23
-			Weight: 0.5
+			Weight: 500
 		MultiBrush@35:
 			Template: 35
 		MultiBrush@36:
@@ -4137,32 +4137,32 @@ MultiBrushCollections:
 		MultiBrush@t04:
 			Actor: t04
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t08:
 			Actor: t08
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t09:
 			Actor: t09
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@tc01:
 			Actor: tc01
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t04.husk:
 			Actor: t04.husk
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t08.husk:
 			Actor: t08.husk
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@t09.husk:
 			Actor: t09.husk
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100
 		MultiBrush@tc01.husk:
 			Actor: tc01.husk
 			BackingTile: 255,0
-			Weight: 0.1
+			Weight: 100

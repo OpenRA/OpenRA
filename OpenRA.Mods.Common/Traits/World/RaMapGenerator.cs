@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public sealed class RaMapGenerator : IMapGenerator
 	{
+		const int FractionMax = 1000;
+		const int EntityBonusMax = 1000000;
+
 		sealed class Parameters
 		{
 			[FieldLoader.Ignore]
@@ -74,17 +77,17 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int Players = default;
 			[FieldLoader.Require]
-			public readonly float TerrainFeatureSize = default;
+			public readonly int TerrainFeatureSize = default;
 			[FieldLoader.Require]
-			public readonly float ForestFeatureSize = default;
+			public readonly int ForestFeatureSize = default;
 			[FieldLoader.Require]
-			public readonly float ResourceFeatureSize = default;
+			public readonly int ResourceFeatureSize = default;
 			[FieldLoader.Require]
-			public readonly float Water = default;
+			public readonly int Water = default;
 			[FieldLoader.Require]
-			public readonly float Mountains = default;
+			public readonly int Mountains = default;
 			[FieldLoader.Require]
-			public readonly float Forests = default;
+			public readonly int Forests = default;
 			[FieldLoader.Require]
 			public readonly int ForestCutout = default;
 			[FieldLoader.Require]
@@ -94,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int TerrainSmoothing = default;
 			[FieldLoader.Require]
-			public readonly float SmoothingThreshold = default;
+			public readonly int SmoothingThreshold = default;
 			[FieldLoader.Require]
 			public readonly int MinimumLandSeaThickness = default;
 			[FieldLoader.Require]
@@ -104,13 +107,13 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int RoughnessRadius = default;
 			[FieldLoader.Require]
-			public readonly float Roughness = default;
+			public readonly int Roughness = default;
 			[FieldLoader.Require]
 			public readonly int MinimumTerrainContourSpacing = default;
 			[FieldLoader.Require]
 			public readonly int MinimumCliffLength = default;
 			[FieldLoader.Require]
-			public readonly float ForestClumpiness = default;
+			public readonly int ForestClumpiness = default;
 			[FieldLoader.Require]
 			public readonly bool DenyWalledAreas = default;
 			[FieldLoader.Require]
@@ -124,11 +127,11 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly bool CreateEntities = default;
 			[FieldLoader.Require]
-			public readonly float AreaEntityBonus = default;
+			public readonly int AreaEntityBonus = default;
 			[FieldLoader.Require]
-			public readonly float PlayerCountEntityBonus = default;
+			public readonly int PlayerCountEntityBonus = default;
 			[FieldLoader.Require]
-			public readonly float CentralSpawnReservationFraction = default;
+			public readonly int CentralSpawnReservationFraction = default;
 			[FieldLoader.Require]
 			public readonly int ResourceSpawnReservation = default;
 			[FieldLoader.Require]
@@ -140,13 +143,13 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int SpawnReservation = default;
 			[FieldLoader.Require]
-			public readonly float SpawnResourceBias = default;
+			public readonly int SpawnResourceBias = default;
 			[FieldLoader.Require]
 			public readonly int ResourcesPerPlayer = default;
 			[FieldLoader.Require]
-			public readonly float OreUniformity = default;
+			public readonly int OreUniformity = default;
 			[FieldLoader.Require]
-			public readonly float OreClumpiness = default;
+			public readonly int OreClumpiness = default;
 			[FieldLoader.Require]
 			public readonly int MaximumExpansionResourceSpawns = default;
 			[FieldLoader.Require]
@@ -164,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int MaximumBuildings = default;
 			[FieldLoader.LoadUsing(nameof(BuildingWeightsLoader))]
-			public readonly IReadOnlyDictionary<string, float> BuildingWeights = default;
+			public readonly IReadOnlyDictionary<string, int> BuildingWeights = default;
 
 			[FieldLoader.Require]
 			public readonly ushort LandTile = default;
@@ -188,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyDictionary<string, ResourceTypeInfo> ResourceSpawnSeeds;
 			[FieldLoader.LoadUsing(nameof(ResourceSpawnWeightsLoader))]
-			public readonly IReadOnlyDictionary<string, float> ResourceSpawnWeights = default;
+			public readonly IReadOnlyDictionary<string, int> ResourceSpawnWeights = default;
 
 			[FieldLoader.Ignore]
 			public readonly IReadOnlySet<byte> ClearTerrain;
@@ -311,22 +314,22 @@ namespace OpenRA.Mods.Common.Traits
 					throw new YamlException($"Invalid Mirror value `{my.NodeWithKey("Mirror").Value.Value}`");
 			}
 
-			static IReadOnlyDictionary<string, float> BuildingWeightsLoader(MiniYaml my)
+			static IReadOnlyDictionary<string, int> BuildingWeightsLoader(MiniYaml my)
 			{
 				return my.NodeWithKey("BuildingWeights").Value.ToDictionary(subMy =>
 					{
-						if (Exts.TryParseFloatOrPercentInvariant(subMy.Value, out var f))
+						if (Exts.TryParseInt32Invariant(subMy.Value, out var f))
 							return f;
 						else
 							throw new YamlException($"Invalid building weight `{subMy.Value}`");
 					});
 			}
 
-			static IReadOnlyDictionary<string, float> ResourceSpawnWeightsLoader(MiniYaml my)
+			static IReadOnlyDictionary<string, int> ResourceSpawnWeightsLoader(MiniYaml my)
 			{
 				return my.NodeWithKey("ResourceSpawnWeights").Value.ToDictionary(subMy =>
 					{
-						if (Exts.TryParseFloatOrPercentInvariant(subMy.Value, out var f))
+						if (Exts.TryParseInt32Invariant(subMy.Value, out var f))
 							return f;
 						else
 							throw new YamlException($"Invalid resource spawn weight `{subMy.Value}`");
@@ -337,34 +340,34 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (Rotations < 1)
 					throw new MapGenerationException("Rotations must be >= 1");
-				if (TerrainFeatureSize < 1.0f)
-					throw new MapGenerationException("TerrainFeatureSize must be >= 1.0");
-				if (ForestFeatureSize < 1.0f)
-					throw new MapGenerationException("ForestFeatureSize must be >= 1.0");
-				if (ResourceFeatureSize < 1.0f)
-					throw new MapGenerationException("ResourceFeatureSize must be >= 1.0");
-				if (TerrainSmoothing < 1)
-					throw new MapGenerationException("TerrainSmoothing must be < 1");
-				if (SmoothingThreshold < 0.5f || SmoothingThreshold > 1.0f)
-					throw new MapGenerationException("SmoothingThreshold must be between 0.5 and 1.0 inclusive");
+				if (TerrainFeatureSize < 1)
+					throw new MapGenerationException("TerrainFeatureSize must be >= 1");
+				if (ForestFeatureSize < 1)
+					throw new MapGenerationException("ForestFeatureSize must be >= 1");
+				if (ResourceFeatureSize < 1)
+					throw new MapGenerationException("ResourceFeatureSize must be >= 1");
+				if (TerrainSmoothing < 0 || TerrainSmoothing > MatrixUtils.MaxBinomialKernelRadius)
+					throw new MapGenerationException($"TerrainSmoothing must be between 0 and {MatrixUtils.MaxBinomialKernelRadius} inclusive");
+				if (SmoothingThreshold < (FractionMax + 1) / 2 || SmoothingThreshold > FractionMax)
+					throw new MapGenerationException($"SmoothingThreshold must be between {(FractionMax + 1) / 2} and {FractionMax} inclusive");
 				if (MinimumLandSeaThickness < 1)
 					throw new MapGenerationException("MinimumLandSeaThickness must be >= 1");
 				if (MinimumMountainThickness < 1)
 					throw new MapGenerationException("MinimumMountainThickness must be >= 1");
-				if (Water < 0.0f || Water > 1.0f)
-					throw new MapGenerationException("Water must be between 0.0 and 1.0 inclusive");
-				if (Forests < 0.0f || Forests > 1.0f)
-					throw new MapGenerationException("Forest must be between 0.0 and 1.0 inclusive");
+				if (Water < 0 || Water > FractionMax)
+					throw new MapGenerationException($"Water must be between 0 and {FractionMax} inclusive");
+				if (Forests < 0 || Forests > FractionMax)
+					throw new MapGenerationException($"Forest must be between 0 and {FractionMax} inclusive");
 				if (ForestCutout < 0)
 					throw new MapGenerationException("ForestCutout must be >= 0");
 				if (MaximumCutoutSpacing < 0)
 					throw new MapGenerationException("TopologyAugmentationThreshold must be >= 0");
-				if (ForestClumpiness < 0.0f)
-					throw new MapGenerationException("ForestClumpiness must be >= 0.0");
-				if (Mountains < 0.0f || Mountains > 1.0f)
-					throw new MapGenerationException("Mountains must be between 0.0 and 1.0 inclusive");
-				if (Roughness < 0.0f || Roughness > 1.0f)
-					throw new MapGenerationException("Roughness must be between 0.0 and 1.0");
+				if (ForestClumpiness < 0)
+					throw new MapGenerationException("ForestClumpiness must be >= 0");
+				if (Mountains < 0 || Mountains > FractionMax)
+					throw new MapGenerationException($"Mountains must be between 0 and {FractionMax} inclusive");
+				if (Roughness < 0 || Roughness > FractionMax)
+					throw new MapGenerationException("Roughness must be between 0 and {FractionMax}");
 				if (RoughnessRadius < 1)
 					throw new MapGenerationException("RoughnessRadius must be >= 1");
 				if (MaximumAltitude < 0)
@@ -379,12 +382,12 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("RoadShrink must be >= 0");
 				if (Players < 0)
 					throw new MapGenerationException("Players must be >= 0");
-				if (CentralSpawnReservationFraction < 0.0f)
-					throw new MapGenerationException("CentralSpawnReservationFraction must be >= 0.0");
-				if (AreaEntityBonus < 0.0f)
-					throw new MapGenerationException("PlayableAreaDensityBonus must be >= 0.0");
-				if (PlayerCountEntityBonus < 0.0f)
-					throw new MapGenerationException("PlayerCountDensityBonus must be >= 0.0");
+				if (CentralSpawnReservationFraction < 0)
+					throw new MapGenerationException("CentralSpawnReservationFraction must be >= 0");
+				if (AreaEntityBonus < 0)
+					throw new MapGenerationException("PlayableAreaDensityBonus must be >= 0");
+				if (PlayerCountEntityBonus < 0)
+					throw new MapGenerationException("PlayerCountDensityBonus must be >= 0");
 				if (SpawnRegionSize < 1)
 					throw new MapGenerationException("SpawnRegionSize must be >= 1");
 				if (SpawnReservation < 1)
@@ -417,16 +420,16 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("MinimumBuildings must be <= maximumBuildings");
 				if (ResourcesPerPlayer < 0)
 					throw new MapGenerationException("ResourcesPerPlayer must be >= 0");
-				if (OreUniformity < 0.0f)
-					throw new MapGenerationException("OreUniformity must be >= 0.0");
-				if (OreClumpiness < 0.0f)
-					throw new MapGenerationException("OreClumpiness must be >= 0.0");
+				if (OreUniformity < 0)
+					throw new MapGenerationException("OreUniformity must be >= 0");
+				if (OreClumpiness < 0)
+					throw new MapGenerationException("OreClumpiness must be >= 0");
 				foreach (var kv in BuildingWeights)
-					if (kv.Value < 0.0f)
-						throw new MapGenerationException("BuildingWeights.* must be >= 0.0");
+					if (kv.Value < 0)
+						throw new MapGenerationException("BuildingWeights.* must be >= 0");
 				foreach (var kv in ResourceSpawnWeights)
-					if (kv.Value < 0.0f)
-						throw new MapGenerationException("ResourceSpawnWeights.* must be >= 0.0");
+					if (kv.Value < 0)
+						throw new MapGenerationException("ResourceSpawnWeights.* must be >= 0");
 				foreach (var kv in ResourceSpawnWeights)
 					if (!ResourceSpawnSeeds.ContainsKey(kv.Key))
 						throw new MapGenerationException($"ResourceSpawnSeeds does not contain possible resource spawn `{kv.Key}`");
@@ -440,7 +443,7 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("Total number of players must not exceed 32");
 			}
 
-			public static (T[] Types, float[] Weights) SplitWeights<T>(IReadOnlyDictionary<T, float> typeWeights)
+			public static (T[] Types, int[] Weights) SplitWeights<T>(IReadOnlyDictionary<T, int> typeWeights)
 			{
 				var types = typeWeights
 					.Select(kv => kv.Key)
@@ -469,14 +472,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Generate(Map map, MiniYaml settings)
 		{
-			const float ExternalBias = 1000000.0f;
+			const int ExternalBias = 4096;
 
 			var size = map.MapSize;
 			var minSpan = Math.Min(size.X, size.Y);
 			var maxSpan = Math.Max(size.X, size.Y);
-			var mapCenter = (size.ToFloat2() - new float2(1.0f, 1.0f)) / 2.0f;
+			var mapCenter1024ths = size * 512;
 			var wMapCenter = CellLayerUtils.Center(map.Tiles);
-			var matrixMapCenter = (CellLayerUtils.CellBounds(map).Size.ToInt2().ToFloat2() - new float2(1.0f, 1.0f)) / 2.0f;
+			var matrixMapCenter1024ths = CellLayerUtils.CellBounds(map).Size.ToInt2() * 512;
 			var cellBounds = CellLayerUtils.CellBounds(map);
 			var minCSpan = Math.Min(cellBounds.Size.Width, cellBounds.Size.Height);
 			var gridType = map.Grid.Type;
@@ -596,32 +599,33 @@ namespace OpenRA.Mods.Common.Traits
 				param.Mirror,
 				param.TerrainFeatureSize,
 				NoiseUtils.PinkAmplitude);
+			MatrixUtils.NormalizeRangeInPlace(elevation, 1024);
 
 			if (param.TerrainSmoothing > 0)
 			{
 				var radius = param.TerrainSmoothing;
-				elevation = MatrixUtils.GaussianBlur(elevation, radius, radius);
+				elevation = MatrixUtils.BinomialBlur(elevation, radius);
 			}
 
 			MatrixUtils.CalibrateQuantileInPlace(
 				elevation,
-				0.0f,
-				param.Water);
+				0,
+				param.Water, FractionMax);
 
 			if (param.ExternalCircularBias != 0)
 				MatrixUtils.OverCircle(
 					matrix: elevation,
-					center: mapCenter,
-					radius: externalCircleRadius,
+					centerIn1024ths: mapCenter1024ths,
+					radiusIn1024ths: externalCircleRadius * 1024,
 					outside: true,
 					action: (xy, _) => elevation[xy] = param.ExternalCircularBias * ExternalBias);
 
 			var landPlan = MatrixUtils.BooleanBlotch(
 				elevation.Map(v => v >= 0),
 				param.TerrainSmoothing,
-				param.SmoothingThreshold,
+				param.SmoothingThreshold, FractionMax,
 				param.MinimumLandSeaThickness,
-				/*bias=*/param.Water < 0.5);
+				/*bias=*/param.Water < FractionMax / 2);
 
 			var beaches = CellLayerUtils.FromMatrixPoints(
 				MatrixUtils.BordersToPoints(landPlan),
@@ -712,24 +716,23 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (param.Mountains > 0.0f || param.ExternalCircularBias == 1)
+			if (param.Mountains > 0 || param.ExternalCircularBias == 1)
 			{
 				var roughnessMatrix = MatrixUtils.GridVariance(
 					elevation,
-					param.RoughnessRadius)
-						.Map(v => MathF.Sqrt(v));
+					param.RoughnessRadius);
 				MatrixUtils.CalibrateQuantileInPlace(
 					roughnessMatrix,
-					0.0f,
-					1.0f - param.Roughness);
-				var cliffMask = roughnessMatrix.Map(v => v >= 0.0f);
+					0,
+					FractionMax - param.Roughness, FractionMax);
+				var cliffMask = roughnessMatrix.Map(v => v >= 0);
 				var mountainElevation = elevation.Clone();
 				var cliffPlan = landPlan;
 				if (param.ExternalCircularBias > 0)
 					MatrixUtils.OverCircle(
 						matrix: cliffPlan,
-						center: matrixMapCenter,
-						radius: externalCircleRadius,
+						centerIn1024ths: matrixMapCenter1024ths,
+						radiusIn1024ths: externalCircleRadius * 1024,
 						outside: true,
 						action: (xy, _) => cliffPlan[xy] = false);
 
@@ -742,22 +745,21 @@ namespace OpenRA.Mods.Common.Traits
 					for (var n = 0; n < mountainElevation.Data.Length; n++)
 					{
 						if (roominess.Data[n] < param.MinimumTerrainContourSpacing)
-							mountainElevation.Data[n] = -1.0f;
+							mountainElevation.Data[n] = -1;
 						else
 							available++;
 
 						total++;
 					}
 
-					var availableFraction = (float)available / total;
 					MatrixUtils.CalibrateQuantileInPlace(
 						mountainElevation,
-						0.0f,
-						1.0f - availableFraction * param.Mountains);
+						0,
+						total - available * param.Mountains / FractionMax, total);
 					cliffPlan = MatrixUtils.BooleanBlotch(
 						mountainElevation.Map(v => v >= 0),
 						param.TerrainSmoothing,
-						param.SmoothingThreshold,
+						param.SmoothingThreshold, FractionMax,
 						param.MinimumMountainThickness,
 						/*bias=*/false);
 					var unmaskedCliffs = MatrixUtils.BordersToPoints(cliffPlan);
@@ -795,24 +797,24 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (param.Forests > 0.0f)
+			if (param.Forests > 0)
 			{
-				var forestNoise = new CellLayer<float>(map);
+				var forestNoise = new CellLayer<int>(map);
 				NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
 					forestRandom,
 					forestNoise,
 					param.Rotations,
 					param.Mirror,
 					param.ForestFeatureSize,
-					wavelength => MathF.Pow(wavelength, param.ForestClumpiness));
+					wavelength => ClumpinessAmplitude(wavelength, param.ForestClumpiness));
 				CellLayerUtils.CalibrateQuantileInPlace(
 					forestNoise,
-					0.0f,
-					1.0f - param.Forests);
+					0,
+					FractionMax - param.Forests, FractionMax);
 
 				var forestPlan = new CellLayer<bool>(map);
 				foreach (var mpos in map.AllCells.MapCoords)
-					if (param.ClearTerrain.Contains(map.GetTerrainIndex(mpos)) && forestNoise[mpos] >= 0.0f)
+					if (param.ClearTerrain.Contains(map.GetTerrainIndex(mpos)) && forestNoise[mpos] >= 0)
 						forestPlan[mpos] = true;
 
 				if (param.ForestCutout > 0)
@@ -1081,8 +1083,8 @@ namespace OpenRA.Mods.Common.Traits
 				var kernel = new Matrix<bool>(param.RoadSpacing * 2 + 1, param.RoadSpacing * 2 + 1);
 				MatrixUtils.OverCircle(
 					matrix: kernel,
-					center: new float2(param.RoadSpacing, param.RoadSpacing),
-					radius: param.RoadSpacing,
+					centerIn1024ths: kernel.Size * 512,
+					radiusIn1024ths: param.RoadSpacing * 1024,
 					outside: false,
 					action: (xy, _) => kernel[xy] = true);
 				var dilated = MatrixUtils.KernelDilateOrErode(
@@ -1165,7 +1167,7 @@ namespace OpenRA.Mods.Common.Traits
 					(projections, cpos) =>
 						projectionSpacing[cpos] = Symmetry.ProjectionProximity(projections) / 2);
 
-				var spawnReservationRadius = minSpan * param.CentralSpawnReservationFraction;
+				var spawnReservationRadius = minSpan * param.CentralSpawnReservationFraction / FractionMax;
 				var spawnReservation = new CellLayer<bool>(map);
 				foreach (var mpos in map.AllCells.MapCoords)
 					spawnReservation[mpos] = Symmetry.IsCPosNearCenter(
@@ -1209,8 +1211,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				var zoneableArea = zoneable.Count(v => v);
 				var entityMultiplier =
-					zoneableArea * param.AreaEntityBonus +
-					param.TotalPlayers * param.PlayerCountEntityBonus;
+					(long)zoneableArea * param.AreaEntityBonus +
+					(long)param.TotalPlayers * param.PlayerCountEntityBonus;
 				var perSymmetryEntityMultiplier = entityMultiplier / param.SymmetryCount;
 
 				// Spawn generation
@@ -1242,18 +1244,18 @@ namespace OpenRA.Mods.Common.Traits
 						Location = chosenMPos.ToCPos(gridType),
 					};
 
-					var preferedRange = (param.SpawnBuildSize + param.SpawnRegionSize * 2) / 2;
-					var resourceSpawnPreferences = new CellLayer<float>(map);
+					var preferedRange1024ths = (param.SpawnBuildSize + param.SpawnRegionSize * 2) * 512;
+					var resourceSpawnPreferences = new CellLayer<int>(map);
 					CellLayerUtils.WalkingDistances(
 						resourceSpawnPreferences,
 						zoneable,
 						new[] { chosenMPos.ToCPos(gridType) },
-						param.SpawnRegionSize);
+						param.SpawnRegionSize * 1024);
 					foreach (var mpos in map.AllCells.MapCoords)
 					{
 						var v = resourceSpawnPreferences[mpos];
-						resourceSpawnPreferences[mpos] = MathF.Ceiling(
-							v > preferedRange ? 2 * preferedRange - v : v);
+						resourceSpawnPreferences[mpos] =
+							((v > preferedRange1024ths ? 2 * preferedRange1024ths - v : v) + 1023) / 1024;
 					}
 
 					var resourceSpawns = new List<ActorPlan>();
@@ -1263,7 +1265,7 @@ namespace OpenRA.Mods.Common.Traits
 							resourceSpawnPreferences,
 							playerRandom,
 							(a, b) => a.CompareTo(b));
-						if (value <= 1.0f)
+						if (value <= 1)
 							break;
 
 						var resourceSpawnType = resourceSpawnTypes[playerRandom.PickWeighted(resourceSpawnWeights)];
@@ -1278,7 +1280,7 @@ namespace OpenRA.Mods.Common.Traits
 							wCenter: resourceSpawnPlan.WPosLocation,
 							wRadius: 1024,
 							outside: false,
-							action: (mpos, _, _, _) => resourceSpawnPreferences[mpos] = 0.0f);
+							action: (mpos, _, _, _) => resourceSpawnPreferences[mpos] = 0);
 					}
 
 					var projectedSpawns = Symmetry.RotateAndMirrorActorPlan(spawn, param.Rotations, param.Mirror);
@@ -1304,7 +1306,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Expansions
 				{
-					var resourceSpawnsRemaining = (int)(param.MaximumExpansionResourceSpawns * perSymmetryEntityMultiplier);
+					var resourceSpawnsRemaining = (int)(param.MaximumExpansionResourceSpawns * perSymmetryEntityMultiplier / EntityBonusMax);
 					while (resourceSpawnsRemaining > 0)
 					{
 						var roominess = new CellLayer<int>(map);
@@ -1327,20 +1329,23 @@ namespace OpenRA.Mods.Common.Traits
 						var resourceSpawnCount = Math.Min(resourceSpawnsRemaining, expansionRandom.Next(param.MaximumResourceSpawnsPerExpansion) + 1);
 						resourceSpawnsRemaining -= resourceSpawnCount;
 
-						if (radius1 < 1.0f)
+						if (radius1 < 1)
 							break;
 
 						var resourceSpawns = new List<ActorPlan>();
-						var resourceSpawnPreferences = new CellLayer<float>(map);
-						var wRadius1Sq = (long)radius1 * radius1 * 1024 * 1024;
+						var resourceSpawnPreferences = new CellLayer<int>(map);
+						var radius1Sq = radius1 * radius1;
 						CellLayerUtils.OverCircle(
 							cellLayer: resourceSpawnPreferences,
 							wCenter: CellLayerUtils.MPosToWPos(chosenMPos, gridType),
 							wRadius: radius2 * 1024,
 							outside: false,
-							action: (mpos, _, _, rSq) =>
+							action: (mpos, _, _, wrSq) =>
+							{
+								var rSq = (int)(wrSq / (1024 * 1024));
 								resourceSpawnPreferences[mpos] =
-									rSq >= wRadius1Sq ? rSq : 0.0f);
+									rSq >= radius1Sq ? rSq : 0;
+							});
 						for (var resourceSpawn = 0; resourceSpawn < resourceSpawnCount; resourceSpawn++)
 						{
 							var mpos = CellLayerUtils.PickWeighted(resourceSpawnPreferences, expansionRandom);
@@ -1356,7 +1361,7 @@ namespace OpenRA.Mods.Common.Traits
 								wCenter: resourceSpawnPlan.WPosLocation,
 								wRadius: 1024,
 								outside: false,
-								action: (mpos, _, _, _) => resourceSpawnPreferences[mpos] = 0.0f);
+								action: (mpos, _, _, _) => resourceSpawnPreferences[mpos] = 0);
 						}
 
 						var projectedResourceSpawns = Symmetry.RotateAndMirrorActorPlans(resourceSpawns, param.Rotations, param.Mirror);
@@ -1376,8 +1381,8 @@ namespace OpenRA.Mods.Common.Traits
 					var targetBuildingCount =
 						(param.MaximumBuildings != 0)
 							? expansionRandom.Next(
-								(int)(param.MinimumBuildings * perSymmetryEntityMultiplier),
-								(int)(param.MaximumBuildings * perSymmetryEntityMultiplier) + 1)
+								(int)(param.MinimumBuildings * perSymmetryEntityMultiplier / EntityBonusMax),
+								(int)(param.MaximumBuildings * perSymmetryEntityMultiplier / EntityBonusMax) + 1)
 							: 0;
 					for (var i = 0; i < targetBuildingCount; i++)
 					{
@@ -1415,128 +1420,126 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Grow resources
 				{
-					var pattern = new CellLayer<float>(map);
+					var pattern1024ths = new CellLayer<int>(map);
 					NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
 						resourceRandom,
-						pattern,
+						pattern1024ths,
 						param.Rotations,
 						param.Mirror,
 						param.ResourceFeatureSize,
-						wavelength => MathF.Pow(wavelength, param.OreClumpiness));
+						wavelength => ClumpinessAmplitude(wavelength, param.OreClumpiness));
 					{
 						CellLayerUtils.CalibrateQuantileInPlace(
-							pattern,
-							0.0f,
-							0.0f);
-						var max = pattern.Max();
+							pattern1024ths,
+							0,
+							0, 1);
+						var max1024ths = pattern1024ths.Max();
+						var uniformity1024ths = param.OreUniformity * 1024 / FractionMax;
 						foreach (var mpos in map.AllCells.MapCoords)
-						{
-							pattern[mpos] /= max;
-							pattern[mpos] += param.OreUniformity;
-						}
+							pattern1024ths[mpos] = uniformity1024ths + 1024 * pattern1024ths[mpos] / max1024ths;
 					}
 
-					var strengths = new Dictionary<ResourceTypeInfo, CellLayer<float>>();
+					var strengths1024ths = new Dictionary<ResourceTypeInfo, CellLayer<int>>();
 					foreach (var actorPlan in actorPlans)
 					{
 						var type = actorPlan.Reference.Type;
 						if (param.ResourceSpawnWeights.ContainsKey(type))
 						{
 							var resource = param.ResourceSpawnSeeds[type];
-							if (!strengths.TryGetValue(resource, out var strength))
+							if (!strengths1024ths.TryGetValue(resource, out var strength1024ths))
 							{
-								strength = new CellLayer<float>(map);
-								strengths.Add(resource, strength);
+								strength1024ths = new CellLayer<int>(map);
+								strengths1024ths.Add(resource, strength1024ths);
 							}
 
 							CellLayerUtils.OverCircle(
-								cellLayer: strength,
+								cellLayer: strength1024ths,
 								wCenter: actorPlan.WPosLocation,
 								wRadius: 16 * 1024,
 								outside: false,
-								action: (mpos, _, _, rSq) =>
-									strength[mpos] +=
-										1024.0f / (1024.0f + MathF.Sqrt(rSq)));
+								action: (mpos, _, _, wrSq) =>
+									strength1024ths[mpos] +=
+										(int)(1024 * 1024 / (1024 + Exts.ISqrt(wrSq))));
 						}
 					}
 
-					var maxStrength = new CellLayer<float>(map);
+					var maxStrength1024ths = new CellLayer<int>(map);
 					var bestResource = new CellLayer<ResourceTypeInfo>(map);
 					bestResource.Clear(param.DefaultResource);
-					foreach (var resourceStrength in strengths)
+					foreach (var resourceStrength in strengths1024ths)
 					{
 						var resource = resourceStrength.Key;
-						var strength = resourceStrength.Value;
+						var strength1024ths = resourceStrength.Value;
 						foreach (var mpos in map.AllCells.MapCoords)
-							if (strength[mpos] > maxStrength[mpos])
+							if (strength1024ths[mpos] > maxStrength1024ths[mpos])
 							{
-								maxStrength[mpos] = strength[mpos];
+								maxStrength1024ths[mpos] = strength1024ths[mpos];
 								bestResource[mpos] = resource;
 							}
 					}
 
 					// Closer to +inf means "more preferable" for plan.
-					var plan = new CellLayer<float>(map);
+					var plan1024ths = new CellLayer<int>(map);
 					foreach (var mpos in map.AllCells.MapCoords)
 						if (playableArea[mpos] && param.AllowedTerrainResourceCombos.Contains((bestResource[mpos], map.GetTerrainIndex(mpos))))
-							plan[mpos] = pattern[mpos] * maxStrength[mpos];
+							plan1024ths[mpos] = pattern1024ths[mpos] * maxStrength1024ths[mpos] / 1024;
 						else
-							plan[mpos] = float.NegativeInfinity;
+							plan1024ths[mpos] = -int.MaxValue;
 
 					var wSpawnBuildSizeSq = (long)param.SpawnBuildSize * param.SpawnBuildSize * 1024 * 1024;
 					foreach (var actorPlan in actorPlans)
 						if (actorPlan.Reference.Type == "mpspawn")
 							CellLayerUtils.OverCircle(
-								cellLayer: plan,
+								cellLayer: plan1024ths,
 								wCenter: actorPlan.WPosLocation,
 								wRadius: param.SpawnRegionSize * 2 * 1024,
 								outside: false,
 								action: (mpos, _, _, rSq) =>
-									plan[mpos] *= 1.0f + param.SpawnResourceBias * wSpawnBuildSizeSq / rSq);
+									plan1024ths[mpos] += (int)(plan1024ths[mpos] * param.SpawnResourceBias * wSpawnBuildSizeSq / Math.Max(rSq, 1024 * 1024) / FractionMax));
 
 					foreach (var actorPlan in actorPlans)
 						if (actorPlan.Reference.Type == "mpspawn")
 							CellLayerUtils.OverCircle(
-								cellLayer: plan,
+								cellLayer: plan1024ths,
 								wCenter: actorPlan.WPosLocation,
 								wRadius: param.SpawnBuildSize * 1024,
 								outside: false,
-								action: (mpos, _, _, _) => plan[mpos] = float.NegativeInfinity);
+								action: (mpos, _, _, _) => plan1024ths[mpos] = -int.MaxValue);
 
 					foreach (var actorPlan in actorPlans)
 						foreach (var (cpos, _) in actorPlan.Footprint())
-							if (plan.Contains(cpos))
-								plan[cpos] = float.NegativeInfinity;
+							if (plan1024ths.Contains(cpos))
+								plan1024ths[cpos] = -int.MaxValue;
 
 					// Improve symmetry.
 					{
-						var newPlan = new CellLayer<float>(map);
+						var newPlan = new CellLayer<int>(map);
 						Symmetry.RotateAndMirrorOverCPos(
-							plan,
+							plan1024ths,
 							param.Rotations,
 							param.Mirror,
 							(sources, destination)
 								=> newPlan[destination] =
-									sources.Min(source => plan.TryGetValue(source, out var value) ? value : float.NegativeInfinity));
-						plan = newPlan;
+									sources.Min(source => plan1024ths.TryGetValue(source, out var value) ? value : -int.MaxValue));
+						plan1024ths = newPlan;
 					}
 
-					var remaining = param.ResourcesPerPlayer * entityMultiplier;
+					var remaining = param.ResourcesPerPlayer * entityMultiplier / EntityBonusMax;
 
 					// Closer to -inf means "more preferable" for priorities.
-					var priorities = new PriorityArray<float>(
-						plan.Size.Width * plan.Size.Height,
-						float.PositiveInfinity);
+					var priorities = new PriorityArray<int>(
+						plan1024ths.Size.Width * plan1024ths.Size.Height,
+						int.MaxValue);
 					{
 						var i = 0;
-						foreach (var v in plan)
+						foreach (var v in plan1024ths)
 							priorities[i++] = -v;
 					}
 
-					int PriorityIndex(MPos mpos) => mpos.V * plan.Size.Width + mpos.U;
+					int PriorityIndex(MPos mpos) => mpos.V * plan1024ths.Size.Width + mpos.U;
 					MPos PriorityMPos(int index)
 					{
-						var v = Math.DivRem(index, plan.Size.Width, out var u);
+						var v = Math.DivRem(index, plan1024ths.Size.Width, out var u);
 						return new MPos(u, v);
 					}
 
@@ -1584,7 +1587,7 @@ namespace OpenRA.Mods.Common.Traits
 					int AddResource(CPos cpos)
 					{
 						var mpos = cpos.ToMPos(gridType);
-						priorities[PriorityIndex(mpos)] = float.PositiveInfinity;
+						priorities[PriorityIndex(mpos)] = int.MaxValue;
 
 						// Generally shouldn't happen, but perhaps a rotation/mirror related inaccuracy.
 						if (map.Resources[mpos].Type != 0)
@@ -1602,12 +1605,12 @@ namespace OpenRA.Mods.Common.Traits
 					while (remaining > 0)
 					{
 						var n = priorities.GetMinIndex();
-						if (priorities[n] == float.PositiveInfinity)
+						if (priorities[n] == int.MaxValue)
 							break;
 
 						var chosenMPos = PriorityMPos(n);
 						var chosenCPos = chosenMPos.ToCPos(gridType);
-						foreach (var cpos in Symmetry.RotateAndMirrorCPos(chosenCPos, plan, param.Rotations, param.Mirror))
+						foreach (var cpos in Symmetry.RotateAndMirrorCPos(chosenCPos, plan1024ths, param.Rotations, param.Mirror))
 							if (map.Resources.Contains(cpos))
 								remaining -= AddResource(cpos);
 					}
@@ -1656,6 +1659,14 @@ namespace OpenRA.Mods.Common.Traits
 							output[cpos] = MultiBrush.Replaceability.None;
 
 			return output;
+		}
+
+		static int ClumpinessAmplitude(int wavelength, int clumpiness)
+		{
+			var amplitude = wavelength;
+			for (var i = 0; i < clumpiness; i++)
+				amplitude = Exts.ISqrt(amplitude);
+			return amplitude;
 		}
 	}
 }

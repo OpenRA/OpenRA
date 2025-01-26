@@ -6,40 +6,40 @@
 			Option@hidden_defaults:
 				Choice@hidden_defaults:
 					Settings:
-						TerrainFeatureSize: 20.0
-						ForestFeatureSize: 20.0
-						ResourceFeatureSize: 20.0
-						Water: 0.0
-						Mountains: 0.1
-						Forests: 0.025
+						TerrainFeatureSize: 20480
+						ForestFeatureSize: 20480
+						ResourceFeatureSize: 20480
+						Water: 0
+						Mountains: 100
+						Forests: 25
 						ForestCutout: 2
 						MaximumCutoutSpacing: 12
 						TerrainSmoothing: 4
-						SmoothingThreshold: 0.833333
+						SmoothingThreshold: 833
 						MinimumLandSeaThickness: 5
 						MinimumMountainThickness: 5
 						MaximumAltitude: 8
 						RoughnessRadius: 5
-						Roughness: 0.5
+						Roughness: 500
 						MinimumTerrainContourSpacing: 6
 						MinimumCliffLength: 10
-						ForestClumpiness: 0.5
+						ForestClumpiness: 1
 						DenyWalledAreas: True
 						EnforceSymmetry: 0
 						Roads: True
 						RoadSpacing: 5
 						RoadShrink: 0
 						CreateEntities: True
-						CentralSpawnReservationFraction: 0.25
+						CentralSpawnReservationFraction: 250
 						ResourceSpawnReservation: 8
 						SpawnRegionSize: 12
 						SpawnBuildSize: 8
 						SpawnResourceSpawns: 3
 						SpawnReservation: 20
-						SpawnResourceBias: 1.05
+						SpawnResourceBias: 1050
 						ResourcesPerPlayer: 50000
-						OreUniformity: 0.5
-						OreClumpiness: 0.5
+						OreUniformity: 500
+						OreClumpiness: 1
 						MaximumExpansionResourceSpawns: 5
 						MaximumResourceSpawnsPerExpansion: 2
 						MinimumExpansionSize: 2
@@ -92,18 +92,18 @@
 					Label: label-cnc-map-generator-choice-terrain-type-lakes
 					Tileset: DESERT
 					Settings:
-						Water: 0.2
+						Water: 200
 				Choice@Puddles:
 					Label: label-cnc-map-generator-choice-terrain-type-puddles
 					Tileset: DESERT
 					Settings:
-						Water: 0.1
+						Water: 100
 				Choice@Gardens:
 					Label: label-cnc-map-generator-choice-terrain-type-gardens
 					Tileset: DESERT
 					Settings:
-						Water: 0.05
-						Forests: 0.3
+						Water: 50
+						Forests: 300
 						ForestCutout: 3
 						EnforceSymmetry: 2
 						RoadSpacing: 3
@@ -111,17 +111,17 @@
 				Choice@Plains:
 					Label: label-cnc-map-generator-choice-terrain-type-plains
 					Settings:
-						Water: 0.0
+						Water: 0
 				Choice@Parks:
 					Label: label-cnc-map-generator-choice-terrain-type-parks
 					Settings:
-						Water: 0.0
-						Forests: 0.1
+						Water: 0
+						Forests: 100
 				Choice@Woodlands:
 					Label: label-cnc-map-generator-choice-terrain-type-woodlands
 					Settings:
-						Water: 0.0
-						Forests: 0.4
+						Water: 0
+						Forests: 400
 						ForestCutout: 3
 						EnforceSymmetry: 2
 						RoadSpacing: 3
@@ -129,36 +129,36 @@
 				Choice@Overgrown:
 					Label: label-cnc-map-generator-choice-terrain-type-overgrown
 					Settings:
-						Water: 0.0
-						Forests: 0.5
+						Water: 0
+						Forests: 500
 						EnforceSymmetry: 2
-						Mountains: 0.5
-						Roughness: 0.25
+						Mountains: 500
+						Roughness: 250
 				Choice@Rocky:
 					Label: label-cnc-map-generator-choice-terrain-type-rocky
 					Settings:
-						Water: 0.0
-						Forests: 0.3
+						Water: 0
+						Forests: 300
 						ForestCutout: 3
 						EnforceSymmetry: 2
-						Mountains: 0.5
-						Roughness: 0.25
+						Mountains: 500
+						Roughness: 250
 						RoadSpacing: 3
 						RoadShrink: 4
 				Choice@Mountains:
 					Label: label-cnc-map-generator-choice-terrain-type-mountains
 					Settings:
-						Water: 0.0
-						Mountains: 1.0
-						Roughness: 0.60
+						Water: 0
+						Mountains: 1000
+						Roughness: 600
 						MinimumTerrainContourSpacing: 5
 				Choice@MountainLakes:
 					Label: label-cnc-map-generator-choice-terrain-type-mountain-lakes
 					Tileset: DESERT
 					Settings:
-						Water: 0.2
-						Mountains: 1.0
-						Roughness: 0.85
+						Water: 200
+						Mountains: 1000
+						Roughness: 850
 						MinimumTerrainContourSpacing: 5
 			Option@Rotations:
 				Label: label-cnc-map-generator-option-rotations
@@ -230,8 +230,8 @@
 						SpawnResourceSpawns: 1
 						ResourcesPerPlayer: 25000
 						ResourceSpawnWeights:
-							split2: 1.0
-							split3: 1.0
+							split2: 1
+							split3: 1
 						MaximumExpansionResourceSpawns: 2
 						MaximumResourceSpawnsPerExpansion: 1
 				Choice@Medium:
@@ -240,9 +240,9 @@
 						SpawnResourceSpawns: 2
 						ResourcesPerPlayer: 50000
 						ResourceSpawnWeights:
-							split2: 0.95
-							split3: 0.95
-							splitblue: 0.10
+							split2: 95
+							split3: 95
+							splitblue: 10
 						MaximumExpansionResourceSpawns: 3
 						MaximumResourceSpawnsPerExpansion: 1
 				Choice@High:
@@ -251,9 +251,9 @@
 						SpawnResourceSpawns: 3
 						ResourcesPerPlayer: 75000
 						ResourceSpawnWeights:
-							split2: 0.9
-							split3: 0.9
-							splitblue: 0.2
+							split2: 9
+							split3: 9
+							splitblue: 2
 						MaximumExpansionResourceSpawns: 5
 						MaximumResourceSpawnsPerExpansion: 2
 				Choice@VeryHigh:
@@ -262,9 +262,9 @@
 						SpawnResourceSpawns: 4
 						ResourcesPerPlayer: 100000
 						ResourceSpawnWeights:
-							split2: 0.8
-							split3: 0.8
-							splitblue: 0.4
+							split2: 8
+							split3: 8
+							splitblue: 4
 						MaximumExpansionResourceSpawns: 8
 						MaximumResourceSpawnsPerExpansion: 2
 				Choice@Full:
@@ -324,38 +324,38 @@
 				Choice@Players:
 					Label: label-cnc-map-generator-choice-density-players
 					Settings:
-						AreaEntityBonus: 0.0
-						PlayerCountEntityBonus: 1.0
+						AreaEntityBonus: 0
+						PlayerCountEntityBonus: 1000000
 				Choice@AreaAndPlayers:
 					Label: label-cnc-map-generator-choice-density-area-and-players
 					Settings:
-						AreaEntityBonus: 0.0002
-						PlayerCountEntityBonus: 0.5
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 500000
 				Choice@AreaVeryLow:
 					Label: label-cnc-map-generator-choice-density-area-very-low
 					Settings:
-						AreaEntityBonus: 0.0001
-						PlayerCountEntityBonus: 0.0
+						AreaEntityBonus: 100
+						PlayerCountEntityBonus: 0
 				Choice@AreaLow:
 					Label: label-cnc-map-generator-choice-density-area-low
 					Settings:
-						AreaEntityBonus: 0.0002
-						PlayerCountEntityBonus: 0.0
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 0
 				Choice@AreaMedium:
 					Label: label-cnc-map-generator-choice-density-area-medium
 					Settings:
-						AreaEntityBonus: 0.0004
-						PlayerCountEntityBonus: 0.0
+						AreaEntityBonus: 400
+						PlayerCountEntityBonus: 0
 				Choice@AreaHigh:
 					Label: label-cnc-map-generator-choice-density-area-high
 					Settings:
-						AreaEntityBonus: 0.0006
-						PlayerCountEntityBonus: 0.0
+						AreaEntityBonus: 600
+						PlayerCountEntityBonus: 0
 				Choice@AreaVeryHigh:
 					Label: label-cnc-map-generator-choice-density-area-very-high
 					Settings:
-						AreaEntityBonus: 0.0008
-						PlayerCountEntityBonus: 0.0
+						AreaEntityBonus: 800
+						PlayerCountEntityBonus: 0
 			Option@DenyWalledArea:
 				Label: label-cnc-map-generator-option-deny-walled-areas
 				Checkbox: DenyWalledAreas

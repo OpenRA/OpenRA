@@ -10,21 +10,25 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.MapGenerator
 {
 	public static class NoiseUtils
 	{
+		const int Scale = 1024;
+		const int ScaledSqrt2 = 1448;
+
 		/// <summary>Amplitude proportional to wavelength.</summary>
-		public static float PinkAmplitude(float wavelength) => wavelength;
+		public static int PinkAmplitude(int wavelength) => wavelength;
 
 		/// <summary>
 		/// <para>
 		/// Create noise by combining multiple layers of Perlin noise of halving wavelengths.
 		/// </para>
 		/// <para>
-		/// wavelengthScale defines the largest wavelength as a fraction of the largest dimension of
+		/// featureSize defines the largest wavelength in 1024ths of a matrix cell.
 		/// the output.
 		/// </para>
 		/// <para>
@@ -32,38 +36,45 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// choice.
 		/// </para>
 		/// </summary>
-		public static Matrix<float> FractalNoise(
+		public static Matrix<int> FractalNoise(
 			MersenneTwister random,
 			int2 size,
-			float featureSize,
-			Func<float, float> ampFunc)
+			int featureSize,
+			Func<int, int> ampFunc)
 		{
 			var span = Math.Max(size.X, size.Y);
-			var wavelengths = new float[(int)Math.Log2(span)];
+			var wavelengths = new int[BitOperations.Log2((uint)span)];
 			for (var i = 0; i < wavelengths.Length; i++)
-				wavelengths[i] = featureSize / (1 << i);
+				wavelengths[i] = featureSize >> i;
 
-			var noise = new Matrix<float>(size);
+			var noise = new Matrix<int>(size);
 			foreach (var wavelength in wavelengths)
 			{
-				if (wavelength <= 0.5)
+				if (wavelength <= Scale / 2)
 					break;
 
 				var amps = ampFunc(wavelength);
-				var subSpan = (int)(span / wavelength) + 2;
+				var subSpan = span * Scale / wavelength + 2;
 				var subNoise = PerlinNoise(random, subSpan);
 
 				// Offsets should align to grid.
 				// (The wavelength is divided back out later.)
-				var offsetX = (int)(random.NextFloat() * wavelength);
-				var offsetY = (int)(random.NextFloat() * wavelength);
+				var scaledOffsetX = (int)(random.NextUint() % (wavelength + 1));
+				var scaledOffsetY = (int)(random.NextUint() % (wavelength + 1));
 				for (var y = 0; y < size.Y; y++)
 					for (var x = 0; x < size.X; x++)
+					{
+						var scaledMappedX = x * Scale + scaledOffsetX;
+						var scaledMappedY = y * Scale + scaledOffsetY;
 						noise[y * size.X + x] +=
-							amps * MatrixUtils.Interpolate(
+							amps * MatrixUtils.IntegerInterpolate(
 								subNoise,
-								(offsetX + x) / wavelength,
-								(offsetY + y) / wavelength);
+								scaledMappedX / wavelength,
+								scaledMappedY / wavelength,
+								scaledMappedX % wavelength,
+								scaledMappedY % wavelength,
+								wavelength);
+					}
 			}
 
 			return noise;
@@ -71,25 +82,25 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// 2D Perlin Noise generator without interpolation, producing a span-by-span sized matrix.
+		/// Output values range from -5792 to +5792.
 		/// </summary>
-		public static Matrix<float> PerlinNoise(MersenneTwister random, int span)
+		public static Matrix<int> PerlinNoise(MersenneTwister random, int span)
 		{
-			var noise = new Matrix<float>(span, span);
-			const float D = 0.25f;
+			var noise = new Matrix<int>(span, span);
 			for (var y = 0; y <= span; y++)
 				for (var x = 0; x <= span; x++)
 				{
-					var phase = MathF.Tau * random.NextFloatExclusive();
-					var vx = MathF.Cos(phase);
-					var vy = MathF.Sin(phase);
+					var phase = new WAngle((int)random.NextUint() % 1024);
+					var vx = phase.Cos();
+					var vy = phase.Sin();
 					if (x > 0 && y > 0)
-						noise[x - 1, y - 1] += vx * -D + vy * -D;
+						noise[x - 1, y - 1] += -vx + -vy;
 					if (x < span && y > 0)
-						noise[x, y - 1] += vx * D + vy * -D;
+						noise[x, y - 1] += vx + -vy;
 					if (x > 0 && y < span)
-						noise[x - 1, y] += vx * -D + vy * D;
+						noise[x - 1, y] += -vx + vy;
 					if (x < span && y < span)
-						noise[x, y] += vx * D + vy * D;
+						noise[x, y] += vx + vy;
 				}
 
 			return noise;
@@ -105,13 +116,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// noise with different properties to simple Perlin noise.
 		/// </para>
 		/// </summary>
-		public static Matrix<float> SymmetricFractalNoise(
+		public static Matrix<int> SymmetricFractalNoise(
 			MersenneTwister random,
 			int2 size,
 			int rotations,
 			Symmetry.Mirror mirror,
-			float featureSize,
-			Func<float, float> ampFunc)
+			int featureSize,
+			Func<int, int> ampFunc)
 		{
 			if (rotations < 1)
 				throw new ArgumentException("rotations must be >= 1");
@@ -119,32 +130,37 @@ namespace OpenRA.Mods.Common.MapGenerator
 			// Need higher resolution due to cropping and rotation artifacts
 			var templateSpan = Math.Max(size.X, size.Y) * 2 + 2;
 			var templateSize = new int2(templateSpan, templateSpan);
-			var templateCenter = new float2(templateSpan - 1, templateSpan - 1) / 2.0f;
+			var scaledTemplateCenter = new int2(templateSpan - 1, templateSpan - 1) * Scale / 2;
 			var template = FractalNoise(random, templateSize, featureSize, ampFunc);
 
-			var output = new Matrix<float>(size);
+			var output = new Matrix<int>(size);
 
 			var inclusiveOutputSize = size - new int2(1, 1);
-			var outputMid = new float2(inclusiveOutputSize) / 2.0f;
+			var scaledOutputMid = inclusiveOutputSize * Scale / 2;
 
 			for (var y = 0; y < size.Y; y++)
 				for (var x = 0; x < size.X; x++)
 				{
-					const float Sqrt2 = 1.4142135623730951f;
-					var outputXy = new float2(x, y);
-					var outputXyFromCenter = outputXy - outputMid;
-					var templateXyFromCenter = outputXyFromCenter * Sqrt2;
-					var templateXy = templateXyFromCenter + templateCenter;
+					var outputXy = new int2(x, y);
+					var scaledOutputXy = outputXy * Scale;
+					var scaledOutputXyFromCenter = scaledOutputXy - scaledOutputMid;
+
+					// Apply sqrt2 scaling so that diagonal samples don't alias.
+					var scaledTemplateXyFromCenter = scaledOutputXyFromCenter * ScaledSqrt2 / Scale;
+					var scaledTemplateXy = scaledTemplateXyFromCenter + scaledTemplateCenter;
 
 					var projections = Symmetry.RotateAndMirrorPointAround(
-						templateXy, templateCenter, rotations, mirror);
+						scaledTemplateXy, scaledTemplateCenter, rotations, mirror);
 
 					foreach (var projection in projections)
 						output[x, y] +=
-							MatrixUtils.Interpolate(
+							MatrixUtils.IntegerInterpolate(
 								template,
-								projection.X,
-								projection.Y);
+								projection.X / Scale,
+								projection.Y / Scale,
+								projection.X % Scale,
+								projection.Y % Scale,
+								Scale);
 				}
 
 			return output;
@@ -156,11 +172,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public static void SymmetricFractalNoiseIntoCellLayer(
 			MersenneTwister random,
-			CellLayer<float> cellLayer,
+			CellLayer<int> cellLayer,
 			int rotations,
 			Symmetry.Mirror mirror,
-			float featureSize,
-			Func<float, float> ampFunc)
+			int featureSize,
+			Func<int, int> ampFunc)
 		{
 			var cellBounds = CellLayerUtils.CellBounds(cellLayer);
 			var size = new int2(cellBounds.Size.Width, cellBounds.Size.Height);

@@ -255,14 +255,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
-		/// Uniformally add to or subtract from all matrix cells such that the given quantile,
-		/// fraction, has the given target value.
+		/// Uniformally add to or subtract from all cells such that count out of every outOf cells,
+		/// are no greater than the given target value.
 		/// </summary>
-		public static void CalibrateQuantileInPlace(CellLayer<float> cellLayer, float target, float fraction)
+		public static void CalibrateQuantileInPlace(CellLayer<int> cellLayer, int target, int count, int outOf)
 		{
 			var sorted = Entries(cellLayer);
 			Array.Sort(sorted);
-			var adjustment = target - MatrixUtils.ArrayQuantile(sorted, fraction);
+			var adjustment = target - sorted[(sorted.Length - 1) * count / outOf];
 			foreach (var mpos in cellLayer.CellRegion.MapCoords)
 				cellLayer[mpos] += adjustment;
 		}
@@ -381,12 +381,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 			FromMatrix(output, roominess);
 		}
 
-		/// <summary>Wrapper around MatrixUtils.WalkingDistance in CPos space.</summary>
+		/// <summary>
+		/// Wrapper around MatrixUtils.WalkingDistance in CPos space.
+		/// Returns world distances (1024ths).
+		/// </summary>
 		public static void WalkingDistances(
-			CellLayer<float> distances,
+			CellLayer<int> distances,
 			CellLayer<bool> passable,
 			IEnumerable<CPos> seeds,
-			float maxDistance)
+			int maxDistance)
 		{
 			var passableMatrix = ToMatrix(passable, false);
 			var cellBounds = CellBounds(passable);
@@ -428,7 +431,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Pick a random MPos position in a CellLayer where each cell is a
 		/// selection weight.
 		/// </summary>
-		public static MPos PickWeighted(CellLayer<float> weights, MersenneTwister random)
+		public static MPos PickWeighted(CellLayer<int> weights, MersenneTwister random)
 		{
 			var entries = Entries(weights);
 			var choice = random.PickWeighted(entries);

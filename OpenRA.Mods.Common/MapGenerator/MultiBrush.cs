@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 	/// </summary>
 	public sealed class MultiBrushInfo
 	{
-		public readonly float Weight;
+		public readonly int Weight;
 		public readonly ImmutableArray<string> Actors;
 		public readonly TerrainTile? BackingTile;
 		public readonly ImmutableArray<ushort> Templates;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		// Currently doesn't support specifying offsets. Add this capability if/when needed.
 		public MultiBrushInfo(MiniYaml my)
 		{
-			Weight = 1.0f;
+			Weight = MultiBrush.DefaultWeight;
 			var actors = new List<string>();
 			var templates = new List<ushort>();
 			var tiles = new List<TerrainTile>();
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				switch (node.Key.Split('@')[0])
 				{
 					case "Weight":
-						if (!Exts.TryParseFloatOrPercentInvariant(node.Value.Value, out Weight))
+						if (!Exts.TryParseInt32Invariant(node.Value.Value, out Weight))
 							throw new YamlException($"Invalid MultiBrush Weight `${node.Value.Value}`");
 						break;
 					case "Actor":
@@ -89,6 +89,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 	/// <summary>A super template that can be used to paint both tiles and actors.</summary>
 	sealed class MultiBrush
 	{
+		public const int DefaultWeight = 1000;
+
 		public enum Replaceability
 		{
 			/// <summary>Area cannot be replaced by a tile or obstructing actor.</summary>
@@ -104,7 +106,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Any = 3,
 		}
 
-		public float Weight;
+		public int Weight;
 		readonly List<(CVec, TerrainTile)> tiles;
 		readonly List<ActorPlan> actorPlans;
 		CVec[] shape;
@@ -134,7 +136,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public MultiBrush()
 		{
-			Weight = 1.0f;
+			Weight = DefaultWeight;
 			tiles = new List<(CVec, TerrainTile)>();
 			actorPlans = new List<ActorPlan>();
 			shape = Array.Empty<CVec>();
@@ -264,10 +266,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>Update the weight.</summary>
-		public MultiBrush WithWeight(float weight)
+		public MultiBrush WithWeight(int weight)
 		{
-			if (!(weight > 0.0f))
-				throw new ArgumentException("Weight was not > 0.0");
+			if (weight <= 0)
+				throw new ArgumentException("Weight was not > 0");
 			Weight = weight;
 			return this;
 		}
@@ -438,7 +440,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var remainingQuota =
 					brushArea == 1
 						? int.MaxValue
-						: (int)Math.Ceiling(replaceMposes.Count * brushWeightForArea / brushTotalWeight);
+						: (int)(((long)replaceMposes.Count * brushWeightForArea + brushTotalWeight - 1) / brushTotalWeight);
 				RefreshIndices();
 				foreach (var mpos in mposes)
 				{
