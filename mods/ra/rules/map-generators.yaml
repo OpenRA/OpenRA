@@ -34,8 +34,9 @@
 						ResourceSpawnReservation: 8
 						SpawnRegionSize: 12
 						SpawnBuildSize: 8
+						MinimumSpawnRadius: 5
 						SpawnResourceSpawns: 3
-						SpawnReservation: 20
+						SpawnReservation: 16
 						SpawnResourceBias: 1150
 						ResourcesPerPlayer: 50000
 						OreUniformity: 250
@@ -55,6 +56,7 @@
 						PartiallyPlayableTerrain: Tree
 						UnplayableTerrain: River,Rock
 						DominantTerrain: River,Rock,Tree,Water
+						ZoneableTerrain: Clear,Road
 						PartiallyPlayableCategories: Beach,Road
 						ClearSegmentTypes: Clear
 						BeachSegmentTypes: Beach
@@ -159,6 +161,7 @@
 					Settings:
 						Water: 800
 						Forests: 0
+						MinimumSpawnRadius: 4
 				Choice@LargeIslands:
 					Label: label-ra-map-generator-choice-terrain-type-large-islands
 					Settings:
@@ -181,6 +184,7 @@
 						TerrainFeatureSize: 5120
 						Forests: 0
 						SpawnBuildSize: 6
+						MinimumSpawnRadius: 4
 			Option@Rotations:
 				Label: label-ra-map-generator-option-rotations
 				SimpleChoice: Rotations

@@ -278,26 +278,5 @@ namespace OpenRA.Mods.Common.MapGenerator
 					action(projections, original);
 				}
 		}
-
-		/// <summary>
-		/// Returns true iff xy is within reservationRadius of the center of a given CellLayer. If
-		/// a mirroring is specified, the radius is measured from the mirror line instead of the
-		/// center point.
-		/// </summary>
-		public static bool IsCPosNearCenter<T>(
-			CPos cpos,
-			CellLayer<T> cellLayer,
-			int reservationRadius,
-			Mirror mirror)
-		{
-			CPos[] testPoints;
-			if (mirror == Mirror.None)
-				testPoints = RotateAndMirrorCPos(cpos, cellLayer, 2, Mirror.None);
-			else
-				testPoints = RotateAndMirrorCPos(cpos, cellLayer, 1, mirror);
-
-			var separation = (testPoints[1] - testPoints[0]).LengthSquared;
-			return separation <= reservationRadius * reservationRadius * 4;
-		}
 	}
 }

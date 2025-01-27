@@ -139,6 +139,8 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int SpawnBuildSize = default;
 			[FieldLoader.Require]
+			public readonly int MinimumSpawnRadius = default;
+			[FieldLoader.Require]
 			public readonly int SpawnResourceSpawns = default;
 			[FieldLoader.Require]
 			public readonly int SpawnReservation = default;
@@ -203,6 +205,8 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly IReadOnlySet<byte> UnplayableTerrain;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlySet<byte> DominantTerrain;
+			[FieldLoader.Ignore]
+			public readonly IReadOnlySet<byte> ZoneableTerrain;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlySet<string> PartiallyPlayableCategories;
 			[FieldLoader.Ignore]
@@ -290,6 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 				PartiallyPlayableTerrain = ParseTerrainIndexes("PartiallyPlayableTerrain");
 				UnplayableTerrain = ParseTerrainIndexes("UnplayableTerrain");
 				DominantTerrain = ParseTerrainIndexes("DominantTerrain");
+				ZoneableTerrain = ParseTerrainIndexes("ZoneableTerrain");
 
 				PartiallyPlayableCategories = my.NodeWithKey("PartiallyPlayableCategories").Value.Value
 					.Split(',', StringSplitOptions.RemoveEmptyEntries)
@@ -394,6 +399,8 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("SpawnReservation must be >= 1");
 				if (SpawnBuildSize < 1)
 					throw new MapGenerationException("SpawnBuildSize must be >= 1");
+				if (MinimumSpawnRadius < 1)
+					throw new MapGenerationException("MinimumSpawnRadius must be >= 1");
 				if (SpawnResourceSpawns < 0)
 					throw new MapGenerationException("SpawnResourceSpawns must be >= 0");
 				if (ResourceSpawnReservation < 1)
@@ -1167,18 +1174,23 @@ namespace OpenRA.Mods.Common.Traits
 					(projections, cpos) =>
 						projectionSpacing[cpos] = Symmetry.ProjectionProximity(projections) / 2);
 
-				var spawnReservationRadius = minSpan * param.CentralSpawnReservationFraction / FractionMax;
-				var spawnReservation = new CellLayer<bool>(map);
+				// Spawn bias tries to move spawns away from the map center and their symmetry
+				// projections.
+				var spawnBiasRadius = Math.Max(1, minSpan * param.CentralSpawnReservationFraction / FractionMax);
+				var spawnBias = new CellLayer<int>(map);
+				spawnBias.Clear(spawnBiasRadius);
+				CellLayerUtils.OverCircle(
+					cellLayer: spawnBias,
+					wCenter: wMapCenter,
+					wRadius: 1024 * spawnBiasRadius,
+					outside: false,
+					action: (mpos, _, _, wrSq) => spawnBias[mpos] = (int)Exts.ISqrt(wrSq) / 1024);
 				foreach (var mpos in map.AllCells.MapCoords)
-					spawnReservation[mpos] = Symmetry.IsCPosNearCenter(
-						mpos.ToCPos(gridType),
-						spawnReservation,
-						spawnReservationRadius,
-						param.Mirror);
+					spawnBias[mpos] = Math.Min(spawnBias[mpos], projectionSpacing[mpos]);
 
 				var zoneable = new CellLayer<bool>(map);
 				foreach (var mpos in map.AllCells.MapCoords)
-					zoneable[mpos] = playableArea[mpos] && param.ClearTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[mpos]));
+					zoneable[mpos] = playableArea[mpos] && param.ZoneableTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[mpos]));
 
 				foreach (var actorPlan in actorPlans)
 					foreach (var cpos in actorPlan.Footprint().Keys)
@@ -1198,7 +1210,7 @@ namespace OpenRA.Mods.Common.Traits
 					zoneable = newZoneable;
 				}
 
-				if (param.Rotations > 1 || param.Mirror != 0)
+				if (param.Rotations > 1 || param.Mirror != Symmetry.Mirror.None)
 				{
 					// Reserve the center of the map - otherwise it will mess with rotations
 					CellLayerUtils.OverCircle(
@@ -1221,14 +1233,15 @@ namespace OpenRA.Mods.Common.Traits
 					var spawnPreference = new CellLayer<int>(map);
 					CellLayerUtils.ChebyshevRoom(spawnPreference, zoneable, false);
 					foreach (var mpos in map.AllCells.MapCoords)
-					{
-						var preference = Math.Min(spawnPreference[mpos], projectionSpacing[mpos]);
-						if (spawnReservation[mpos] && preference > 1)
-							preference = 1;
-						else if (preference > param.SpawnRegionSize)
-							preference = param.SpawnRegionSize;
-						spawnPreference[mpos] = preference;
-					}
+						if (spawnPreference[mpos] >= param.MinimumSpawnRadius &&
+							projectionSpacing[mpos] * 2 >= param.SpawnReservation + param.MinimumSpawnRadius)
+						{
+							spawnPreference[mpos] = spawnBias[mpos] * Math.Min(param.SpawnRegionSize, spawnPreference[mpos]);
+						}
+						else
+						{
+							spawnPreference[mpos] = 0;
+						}
 
 					var (chosenMPos, chosenValue) = CellLayerUtils.FindRandomBest(
 						spawnPreference,
@@ -1238,7 +1251,6 @@ namespace OpenRA.Mods.Common.Traits
 					if (chosenValue < 1)
 						throw new MapGenerationException("Not enough room for player spawns");
 
-					var room = chosenValue - 1;
 					var spawn = new ActorPlan(map, "mpspawn")
 					{
 						Location = chosenMPos.ToCPos(gridType),
@@ -1299,7 +1311,7 @@ namespace OpenRA.Mods.Common.Traits
 						CellLayerUtils.OverCircle(
 							cellLayer: zoneable,
 							wCenter: projectedResourceSpawn.WPosLocation,
-							wRadius: param.SpawnReservation * 1024,
+							wRadius: param.ResourceSpawnReservation * 1024,
 							outside: false,
 							action: (mpos, _, _, _) => zoneable[mpos] = false);
 				}

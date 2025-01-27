@@ -34,8 +34,9 @@
 						ResourceSpawnReservation: 8
 						SpawnRegionSize: 12
 						SpawnBuildSize: 8
+						MinimumSpawnRadius: 5
 						SpawnResourceSpawns: 3
-						SpawnReservation: 20
+						SpawnReservation: 16
 						SpawnResourceBias: 1050
 						ResourcesPerPlayer: 50000
 						OreUniformity: 500
@@ -56,6 +57,7 @@
 						PartiallyPlayableTerrain: River,Tree,Water
 						UnplayableTerrain: Rock
 						DominantTerrain: River,Rock,Tree,Water
+						ZoneableTerrain: Clear,Road
 						PartiallyPlayableCategories: Beach,Road
 						ClearSegmentTypes: Clear
 						BeachSegmentTypes: Beach
