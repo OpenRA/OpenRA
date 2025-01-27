@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Terrain;
+using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -21,7 +23,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		static readonly int[] ChannelMasks = [2, 1, 0, 3];
 
-		string IUtilityCommand.Name => "--dump-sequence-sheets";
+		string IUtilityCommand.Name => "--dump-sheets";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -79,6 +81,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				foreach (var s in sequence.SpriteCache.SheetBuilders[SheetType.BGRA].AllSheets)
 					CommitSheet(null, s, sequencesName, palette, ref sheetCount);
+
+				modData.DefaultTerrainInfo.TryGetValue(sequence.TileSet, out var terrainInfo);
+				if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
+				{
+					foreach (var ttr in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
+					{
+						if (!ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine, out var tileCache))
+						{
+							sb = tileCache.SheetBuilders[SheetType.Indexed];
+							foreach (var s in sb.AllSheets)
+								CommitSheet(sb, s, terrainName, palette, ref sheetCount);
+
+							foreach (var s in tileCache.SheetBuilders[SheetType.BGRA].AllSheets)
+								CommitSheet(null, s, terrainName, palette, ref sheetCount);
+						}
+					}
+				}
 
 				sequence.Dispose();
 			}

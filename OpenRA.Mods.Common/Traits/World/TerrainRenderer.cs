@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class TerrainRendererInfo : TraitInfo, ITiledTerrainRendererInfo
 	{
-		bool ITiledTerrainRendererInfo.ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError)
+		bool ITiledTerrainRendererInfo.ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError, out DefaultTileCache tileCache)
 		{
 			var missingImages = new HashSet<string>();
 			var failed = false;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 				failed = true;
 			}
 
-			var tileCache = new DefaultTileCache((DefaultTerrain)terrainInfo, OnMissingImage);
+			tileCache = new DefaultTileCache((DefaultTerrain)terrainInfo, OnMissingImage);
 			foreach (var t in terrainInfo.Templates)
 			{
 				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;

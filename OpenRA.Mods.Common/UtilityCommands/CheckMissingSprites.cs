@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine("Tileset: " + tileset);
 						if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
 							foreach (var ttr in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
-								failed |= ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
+								failed |= ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine, out _);
 
 						var sequences = new SequenceSet(modData.DefaultFileSystem, modData, tileset, null);
 						sequences.SpriteCache.LoadReservations(modData);
