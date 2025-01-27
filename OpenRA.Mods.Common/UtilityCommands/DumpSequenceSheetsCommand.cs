@@ -62,6 +62,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var sheetCount = 1;
+			var cursorProvider = new CursorProvider(modData);
+			using (var cursor = new CursorManager(cursorProvider, modData.Manifest.CursorSheetSize))
+				foreach (var sheet in cursor.SheetBuilder.AllSheets)
+					CommitSheet(null, sheet, "cursors", palette, ref sheetCount);
+
 			foreach (var sequence in sequences)
 			{
 				sequence.LoadSprites();
