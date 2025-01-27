@@ -35,8 +35,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var palette = new ImmutablePalette(args[1], new[] { 0 }, Array.Empty<int>());
 
 			SequenceSet sequences;
-			if (modData.DefaultTerrainInfo.ContainsKey(args[2]))
-				sequences = new SequenceSet(modData.ModFiles, modData, args[2], null);
+			var tilesetUpper = args[2].ToUpperInvariant();
+			if (modData.DefaultTerrainInfo.ContainsKey(tilesetUpper))
+				sequences = new SequenceSet(modData.ModFiles, modData, tilesetUpper, null);
 			else
 			{
 				var mapPackage = new Folder(Platform.EngineDir).OpenPackage(args[2], modData.ModFiles);
