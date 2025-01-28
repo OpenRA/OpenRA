@@ -718,7 +718,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			var sorted = (int[])matrix.Data.Clone();
 			Array.Sort(sorted);
-			var adjustment = target - sorted[(sorted.Length - 1) * count / outOf];
+			var adjustment = target - sorted[(long)(sorted.Length - 1) * count / outOf];
 			for (var i = 0; i < matrix.Data.Length; i++)
 				matrix[i] += adjustment;
 		}
