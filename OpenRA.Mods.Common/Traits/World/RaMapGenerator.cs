@@ -1481,10 +1481,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Closer to +inf means "more preferable" for plan.
 					var plan1024ths = new CellLayer<int>(map);
 					foreach (var mpos in map.AllCells.MapCoords)
-						if (playableArea[mpos] && param.AllowedTerrainResourceCombos.Contains((bestResource[mpos], map.GetTerrainIndex(mpos))))
-							plan1024ths[mpos] = pattern1024ths[mpos] * maxStrength1024ths[mpos] / 1024;
-						else
-							plan1024ths[mpos] = -int.MaxValue;
+						plan1024ths[mpos] = pattern1024ths[mpos] * maxStrength1024ths[mpos] / 1024;
 
 					var wSpawnBuildSizeSq = (long)param.SpawnBuildSize * param.SpawnBuildSize * 1024 * 1024;
 					foreach (var actorPlan in actorPlans)
@@ -1496,6 +1493,10 @@ namespace OpenRA.Mods.Common.Traits
 								outside: false,
 								action: (mpos, _, _, rSq) =>
 									plan1024ths[mpos] += (int)(plan1024ths[mpos] * param.SpawnResourceBias * wSpawnBuildSizeSq / Math.Max(rSq, 1024 * 1024) / FractionMax));
+
+					foreach (var mpos in map.AllCells.MapCoords)
+						if (!playableArea[mpos] || !param.AllowedTerrainResourceCombos.Contains((bestResource[mpos], map.GetTerrainIndex(mpos))))
+							plan1024ths[mpos] = -int.MaxValue;
 
 					foreach (var actorPlan in actorPlans)
 						if (actorPlan.Reference.Type == "mpspawn")
