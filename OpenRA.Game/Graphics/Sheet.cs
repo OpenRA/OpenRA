@@ -149,6 +149,10 @@ namespace OpenRA.Graphics
 			var buffer = data;
 			ReleaseBuffer();
 
+			// We aren't commiting data to the GPU, so let's not delete our data.
+			if (Game.Renderer == null)
+				return false;
+
 			// Only transfer if the destination has no data that would be lost by overwriting.
 			if (buffer != null && destination.data == null && destination.texture == null)
 			{
