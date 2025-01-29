@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.FileFormats;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
@@ -56,14 +57,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
 				for (var i = 0; i < max; i++)
-					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save($"{count}.{i}.png");
+					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save($"{count}.{i}.png", Png.Compression.BEST_SPEED);
 
 				count++;
 			}
 
 			sb = sequences.SpriteCache.SheetBuilders[SheetType.BGRA];
 			foreach (var s in sb.AllSheets)
-				s.AsPng().Save($"{count++}.png");
+				s.AsPng().Save($"{count++}.png", Png.Compression.BEST_SPEED);
 		}
 	}
 }
