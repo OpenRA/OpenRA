@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Returns true if FindNextResource was called.
 		bool HarvestIfAble(IBot bot, HarvesterTraitWrapper h)
 		{
-			if (h.Mobile == null)
+			if (h.Actor.IsDead || !h.Actor.IsInWorld || h.Mobile == null)
 				return false;
 
 			if (!h.Actor.IsIdle)
