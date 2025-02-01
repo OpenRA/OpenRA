@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				new("Units", FieldSaver.FormatValue(Units.Select(a => a.ActorID).ToArray()))
 			};
 
-			if (Target != Target.Invalid)
+			if (Target.Type != TargetType.Invalid)
 			{
 				nodes.Add(new MiniYamlNode("ActorToTarget", FieldSaver.FormatValue(TargetActor.ActorID)));
 				nodes.Add(new MiniYamlNode("TargetOffset", FieldSaver.FormatValue(Target.CenterPosition - TargetActor.CenterPosition)));
