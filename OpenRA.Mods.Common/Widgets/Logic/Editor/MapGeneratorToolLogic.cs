@@ -230,6 +230,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							input.IsValid = () => valid;
 						};
 
+						input.OnEscKey = _ => { input.YieldKeyboardFocus(); return true; };
+						input.OnEnterKey = _ => { input.YieldKeyboardFocus(); return true; };
 						break;
 					}
 
