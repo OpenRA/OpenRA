@@ -4166,3 +4166,48 @@ MultiBrushCollections:
 			Actor: tc01.husk
 			BackingTile: 255,0
 			Weight: 100
+	CivilianBuildings:
+		MultiBrush@v20:
+			Actor: v20
+			Weight: 25000
+		MultiBrush@v21:
+			Actor: v21
+			Weight: 25000
+		MultiBrush@v22:
+			Actor: v22
+			Weight: 10000
+		MultiBrush@v23:
+			Actor: v23
+		MultiBrush@v24:
+			Actor: v24
+			Weight: 25000
+		MultiBrush@v25:
+			Actor: v25
+			Weight: 25000
+		MultiBrush@v26:
+			Actor: v26
+			Weight: 10000
+		MultiBrush@v27:
+			Actor: v27
+		MultiBrush@v28:
+			Actor: v28
+		MultiBrush@v29:
+			Actor: v29
+		MultiBrush@v30:
+			Actor: v30
+			Weight: 10000
+		MultiBrush@v31:
+			Actor: v31
+			Weight: 10000
+		MultiBrush@v32:
+			Actor: v32
+			Weight: 10000
+		MultiBrush@v33:
+			Actor: v33
+			Weight: 10000
+		MultiBrush@v34:
+			Actor: v34
+		MultiBrush@v35:
+			Actor: v35
+		MultiBrush@v36:
+			Actor: v36

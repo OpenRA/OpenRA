@@ -9,6 +9,7 @@
 						TerrainFeatureSize: 20480
 						ForestFeatureSize: 20480
 						ResourceFeatureSize: 20480
+						CivilianBuildingsFeatureSize: 10240
 						Water: 200
 						Mountains: 100
 						Forests: 25
@@ -47,6 +48,9 @@
 						MaximumExpansionSize: 12
 						ExpansionInner: 2
 						ExpansionBorder: 1
+						CivilianBuildings: 125
+						MinimumCivilianBuildingDensity: 50
+						CivilianBuildingDensityRadius: 6
 						DefaultResource: Ore
 						ResourceSpawnSeeds:
 							mine: Ore
@@ -64,6 +68,7 @@
 						RoadSegmentTypes: Road,RoadIn,RoadOut
 						ForestObstacles: Trees
 						UnplayableObstacles: Obstructions
+						CivilianBuildingsObstacles: CivilianBuildings
 			Option@hidden_tileset_overrides:
 				Choice@desert:
 					Tileset: DESERT
@@ -109,11 +114,13 @@
 					Label: label-ra-map-generator-choice-terrain-type-plains
 					Settings:
 						Water: 0
+						CivilianBuildings: 100
 				Choice@Parks:
 					Label: label-ra-map-generator-choice-terrain-type-parks
 					Settings:
 						Water: 0
 						Forests: 100
+						CivilianBuildings: 100
 				Choice@Woodlands:
 					Label: label-ra-map-generator-choice-terrain-type-woodlands
 					Settings:
@@ -173,6 +180,7 @@
 					Settings:
 						Water: 500
 						TerrainFeatureSize: 102400
+						CivilianBuildings: 256
 				Choice@Wetlands:
 					Label: label-ra-map-generator-choice-terrain-type-wetlands
 					Settings:
@@ -387,6 +395,37 @@
 				Checkbox: Roads
 				Default: True
 				Priority: 1
+			Option@CivilianDensity:
+				Label: label-ra-map-generator-option-civilian-density
+				Default: Default
+				Priority: 3
+				Choice@Default:
+					Label: label-ra-map-generator-choice-civilian-density-default
+					Settings:
+				Choice@None:
+					Label: label-ra-map-generator-choice-civilian-density-none
+					Settings:
+						CivilianBuildings: 0
+				Choice@Low:
+					Label: label-ra-map-generator-choice-civilian-density-low
+					Settings:
+						CivilianBuildings: 75
+				Choice@Medium:
+					Label: label-ra-map-generator-choice-civilian-density-medium
+					Settings:
+						CivilianBuildings: 125
+				Choice@High:
+					Label: label-ra-map-generator-choice-civilian-density-high
+					Settings:
+						CivilianBuildings: 250
+				Choice@VeryHigh:
+					Label: label-ra-map-generator-choice-civilian-density-very-high
+					Settings:
+						CivilianBuildings: 500
+				Choice@Max:
+					Label: label-ra-map-generator-choice-civilian-density-max
+					Settings:
+						CivilianBuildings: 1000
 	ClearMapGenerator@clear:
 		Type: clear
 		Name: map-generator-clear

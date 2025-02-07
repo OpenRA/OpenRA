@@ -4838,3 +4838,53 @@ MultiBrushCollections:
 		MultiBrush@588:
 			Template: 588
 			Weight: 100
+	CivilianBuildings:
+		MultiBrush@v01:
+			Actor: v01
+			Weight: 25000
+		MultiBrush@v02:
+			Actor: v02
+			Weight: 25000
+		MultiBrush@v03:
+			Actor: v03
+			Weight: 25000
+		MultiBrush@v04:
+			Actor: v04
+			Weight: 25000
+		MultiBrush@v05:
+			Actor: v05
+			Weight: 10000
+		MultiBrush@v06:
+			Actor: v06
+			Weight: 10000
+		MultiBrush@v07:
+			Actor: v07
+			Weight: 10000
+		MultiBrush@v08:
+			Actor: v08
+		MultiBrush@v09:
+			Actor: v09
+		MultiBrush@v10:
+			Actor: v10
+		MultiBrush@v11:
+			Actor: v11
+		MultiBrush@v12:
+			Actor: v12
+		MultiBrush@v13:
+			Actor: v13
+		MultiBrush@v14:
+			Actor: v14
+		MultiBrush@v15:
+			Actor: v15
+		MultiBrush@v16:
+			Actor: v16
+		MultiBrush@v17:
+			Actor: v17
+		MultiBrush@v18:
+			Actor: v18
+		MultiBrush@railmine:
+			Actor: railmine
+		MultiBrush@rice:
+			Actor: rice
+		MultiBrush@asianhut:
+			Actor: asianhut

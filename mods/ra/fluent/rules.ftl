@@ -1012,3 +1012,12 @@ label-ra-map-generator-choice-density-area-very-high = Scale with area (very hig
 
 label-ra-map-generator-option-roads = Roads
 label-ra-map-generator-option-deny-walled-areas = Obstruct walled areas
+
+label-ra-map-generator-option-civilian-density = Civilian Density
+label-ra-map-generator-choice-civilian-density-default = Default
+label-ra-map-generator-choice-civilian-density-none = None
+label-ra-map-generator-choice-civilian-density-low = Low
+label-ra-map-generator-choice-civilian-density-medium = Medium
+label-ra-map-generator-choice-civilian-density-high = High
+label-ra-map-generator-choice-civilian-density-very-high = Very High
+label-ra-map-generator-choice-civilian-density-max = Maximum

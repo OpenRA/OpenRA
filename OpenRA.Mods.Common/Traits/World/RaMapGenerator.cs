@@ -83,6 +83,8 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int ResourceFeatureSize = default;
 			[FieldLoader.Require]
+			public readonly int CivilianBuildingsFeatureSize = default;
+			[FieldLoader.Require]
 			public readonly int Water = default;
 			[FieldLoader.Require]
 			public readonly int Mountains = default;
@@ -170,6 +172,12 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly int MaximumBuildings = default;
 			[FieldLoader.LoadUsing(nameof(BuildingWeightsLoader))]
 			public readonly IReadOnlyDictionary<string, int> BuildingWeights = default;
+			[FieldLoader.Require]
+			public readonly int CivilianBuildings = default;
+			[FieldLoader.Require]
+			public readonly int MinimumCivilianBuildingDensity = default;
+			[FieldLoader.Require]
+			public readonly int CivilianBuildingDensityRadius = default;
 
 			[FieldLoader.Require]
 			public readonly ushort LandTile = default;
@@ -179,6 +187,8 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly IReadOnlyList<MultiBrush> ForestObstacles;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyList<MultiBrush> UnplayableObstacles;
+			[FieldLoader.Ignore]
+			public readonly IReadOnlyList<MultiBrush> CivilianBuildingsObstacles;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyDictionary<ushort, IReadOnlyList<MultiBrush>> RepaintTiles;
 
@@ -230,6 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 				TemplatedTerrainInfo = Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 				ForestObstacles = MultiBrush.LoadCollection(map, my.NodeWithKey("ForestObstacles").Value.Value);
 				UnplayableObstacles = MultiBrush.LoadCollection(map, my.NodeWithKey("UnplayableObstacles").Value.Value);
+				CivilianBuildingsObstacles = MultiBrush.LoadCollection(map, my.NodeWithKey("CivilianBuildingsObstacles").Value.Value);
 				RepaintTiles = my.NodeWithKeyOrDefault("RepaintTiles")?.Value.ToDictionary(
 					k =>
 					{
@@ -351,6 +362,8 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("ForestFeatureSize must be >= 1");
 				if (ResourceFeatureSize < 1)
 					throw new MapGenerationException("ResourceFeatureSize must be >= 1");
+				if (CivilianBuildingsFeatureSize < 1)
+					throw new MapGenerationException("CivilianBuildingsFeatureSize must be >= 1");
 				if (TerrainSmoothing < 0 || TerrainSmoothing > MatrixUtils.MaxBinomialKernelRadius)
 					throw new MapGenerationException($"TerrainSmoothing must be between 0 and {MatrixUtils.MaxBinomialKernelRadius} inclusive");
 				if (SmoothingThreshold < (FractionMax + 1) / 2 || SmoothingThreshold > FractionMax)
@@ -425,6 +438,12 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("MaximumBuildings must be >= 0");
 				if (MinimumBuildings > MaximumBuildings)
 					throw new MapGenerationException("MinimumBuildings must be <= maximumBuildings");
+				if (CivilianBuildings < 0 || CivilianBuildings > FractionMax)
+					throw new MapGenerationException($"CivilianBuildings must be between 0 and {FractionMax} inclusive");
+				if (MinimumCivilianBuildingDensity < 0 || MinimumCivilianBuildingDensity > FractionMax)
+					throw new MapGenerationException($"MinimumCivilianBuildingDensity must be between 0 and {FractionMax} inclusive");
+				if (CivilianBuildingDensityRadius < 0)
+					throw new MapGenerationException("CivilianBuildingDensityRadius must be >= 0");
 				if (ResourcesPerPlayer < 0)
 					throw new MapGenerationException("ResourcesPerPlayer must be >= 0");
 				if (OreUniformity < 0)
@@ -582,6 +601,8 @@ namespace OpenRA.Mods.Common.Traits
 			var buildingRandom = new MersenneTwister(random.Next());
 			var topologyRandom = new MersenneTwister(random.Next());
 			var repaintRandom = new MersenneTwister(random.Next());
+			var decorationRandom = new MersenneTwister(random.Next());
+			var decorationTilingRandom = new MersenneTwister(random.Next());
 
 			TerrainTile PickTile(ushort tileType)
 			{
@@ -1601,6 +1622,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var mpos = cpos.ToMPos(gridType);
 						priorities[PriorityIndex(mpos)] = int.MaxValue;
+						zoneable[mpos] = false;
 
 						// Generally shouldn't happen, but perhaps a rotation/mirror related inaccuracy.
 						if (map.Resources[mpos].Type != 0)
@@ -1627,6 +1649,94 @@ namespace OpenRA.Mods.Common.Traits
 							if (map.Resources.Contains(cpos))
 								remaining -= AddResource(cpos);
 					}
+				}
+
+				// CivilianBuildings
+				if (param.CivilianBuildings > 0)
+				{
+					var space = new CellLayer<bool>(map);
+					foreach (var mpos in map.AllCells.MapCoords)
+						space[mpos] = param.PlayableTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[mpos]));
+
+					foreach (var actorPlan in actorPlans)
+						foreach (var (cpos, _) in actorPlan.Footprint())
+							if (space.Contains(cpos))
+								space[cpos] = false;
+
+					var matrixSpace = CellLayerUtils.ToMatrix(space, true);
+					var deflated = MatrixUtils.DeflateSpace(matrixSpace, false);
+					var kernel = new Matrix<bool>(2, 2).Fill(true);
+					var reservedMatrix = MatrixUtils.KernelDilateOrErode(deflated.Map(v => v != 0), kernel, new int2(0, 0), true);
+					var reserved = new CellLayer<bool>(map);
+					CellLayerUtils.FromMatrix(reserved, reservedMatrix, true);
+
+					var decorationNoise = new CellLayer<int>(map);
+					NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
+						decorationRandom,
+						decorationNoise,
+						param.Rotations,
+						param.Mirror,
+						param.CivilianBuildingsFeatureSize,
+						wavelength => 1);
+
+					var decorable = new CellLayer<bool>(map);
+					var totalDecorable = 0;
+					foreach (var mpos in map.AllCells.MapCoords)
+					{
+						var isDecorable =
+							map.Tiles[mpos].Type == param.LandTile
+								&& zoneable[mpos] && space[mpos] && !reserved[mpos];
+						decorable[mpos] = isDecorable;
+						if (isDecorable)
+							totalDecorable++;
+						else
+							decorationNoise[mpos] = -1024 * 1024;
+					}
+
+					var mapArea = map.MapSize.X * map.MapSize.Y;
+					CellLayerUtils.CalibrateQuantileInPlace(
+						decorationNoise,
+						0,
+						mapArea - totalDecorable * param.CivilianBuildings / FractionMax, mapArea);
+					foreach (var mpos in map.AllCells.MapCoords)
+						if (decorationNoise[mpos] < 0)
+							decorable[mpos] = false;
+
+					for (var i = 0; i < 8; i++)
+					{
+						var (blurred, changes) = MatrixUtils.BooleanBlur(
+							CellLayerUtils.ToMatrix(decorable, false),
+							param.CivilianBuildingDensityRadius,
+							FractionMax - param.MinimumCivilianBuildingDensity, FractionMax);
+						if (changes == 0)
+							break;
+
+						var densityFilter = new CellLayer<bool>(map);
+						CellLayerUtils.FromMatrix(densityFilter, blurred);
+
+						foreach (var mpos in map.AllCells.MapCoords)
+							if (!densityFilter[mpos])
+								decorable[mpos] = false;
+					}
+
+					// Improve symmetry.
+					{
+						var newDecorable = new CellLayer<bool>(map);
+						Symmetry.RotateAndMirrorOverCPos(
+							decorable,
+							param.Rotations,
+							param.Mirror,
+							(sources, destination)
+								=> newDecorable[destination] =
+									sources.All(source => decorable.TryGetValue(source, out var value) && value));
+						decorable = newDecorable;
+					}
+
+					var replace = new CellLayer<MultiBrush.Replaceability>(map);
+					foreach (var mpos in map.AllCells.MapCoords)
+						replace[mpos] = decorable[mpos] ? MultiBrush.Replaceability.Actor : MultiBrush.Replaceability.None;
+
+					MultiBrush.PaintArea(map, actorPlans, replace, param.CivilianBuildingsObstacles, decorationTilingRandom);
 				}
 			}
 

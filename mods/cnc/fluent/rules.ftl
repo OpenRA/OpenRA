@@ -841,3 +841,12 @@ label-cnc-map-generator-choice-density-area-very-high = Scale with area (very hi
 
 label-cnc-map-generator-option-roads = Roads
 label-cnc-map-generator-option-deny-walled-areas = Obstruct walled areas
+
+label-cnc-map-generator-option-civilian-density = Civilian Density
+label-cnc-map-generator-choice-civilian-density-default = Default
+label-cnc-map-generator-choice-civilian-density-none = None
+label-cnc-map-generator-choice-civilian-density-low = Low
+label-cnc-map-generator-choice-civilian-density-medium = Medium
+label-cnc-map-generator-choice-civilian-density-high = High
+label-cnc-map-generator-choice-civilian-density-very-high = Very High
+label-cnc-map-generator-choice-civilian-density-max = Maximum
