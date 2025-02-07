@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			var sorted = Entries(cellLayer);
 			Array.Sort(sorted);
-			var adjustment = target - sorted[(sorted.Length - 1) * count / outOf];
+			var adjustment = target - sorted[(long)(sorted.Length - 1) * count / outOf];
 			foreach (var mpos in cellLayer.CellRegion.MapCoords)
 				cellLayer[mpos] += adjustment;
 		}
