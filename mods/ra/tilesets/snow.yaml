@@ -4374,13 +4374,3 @@ MultiBrushCollections:
 			Actor: v10
 		MultiBrush@v11:
 			Actor: v11
-		MultiBrush@v12:
-			Actor: v12
-			Weight: 500
-		MultiBrush@v13:
-			Actor: v13
-			Weight: 500
-		MultiBrush@railmine:
-			Actor: railmine
-		MultiBrush@snowhut:
-			Actor: snowhut

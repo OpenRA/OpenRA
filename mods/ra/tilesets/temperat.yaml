@@ -4861,16 +4861,5 @@ MultiBrushCollections:
 			Actor: v10
 		MultiBrush@v11:
 			Actor: v11
-		MultiBrush@v16:
-			Actor: v16
-		MultiBrush@v17:
-			Actor: v17
-		MultiBrush@v18:
-			Actor: v18
-		MultiBrush@railmine:
-			Actor: railmine
-			Weight: 250
-		MultiBrush@rice:
-			Actor: rice
 		MultiBrush@asianhut:
 			Actor: asianhut
