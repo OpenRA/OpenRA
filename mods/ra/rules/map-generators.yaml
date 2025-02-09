@@ -49,8 +49,9 @@
 						ExpansionInner: 2
 						ExpansionBorder: 1
 						CivilianBuildings: 125
-						MinimumCivilianBuildingDensity: 50
-						CivilianBuildingDensityRadius: 6
+						CivilianBuildingDensity: 500
+						MinimumCivilianBuildingDensity: 90
+						CivilianBuildingDensityRadius: 3
 						DefaultResource: Ore
 						ResourceSpawnSeeds:
 							mine: Ore
@@ -180,7 +181,6 @@
 					Settings:
 						Water: 500
 						TerrainFeatureSize: 102400
-						CivilianBuildings: 256
 				Choice@Wetlands:
 					Label: label-ra-map-generator-choice-terrain-type-wetlands
 					Settings:

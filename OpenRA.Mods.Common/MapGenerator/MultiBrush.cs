@@ -338,7 +338,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 			List<ActorPlan> actorPlans,
 			CellLayer<Replaceability> replace,
 			IReadOnlyList<MultiBrush> availableBrushes,
-			MersenneTwister random)
+			MersenneTwister random,
+			bool alwaysPreferLargerBrushes = false)
 		{
 			var brushesByAreaDict = new Dictionary<int, List<MultiBrush>>();
 			foreach (var brush in availableBrushes)
@@ -438,7 +439,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var brushWeights = brushes.Select(o => o.Weight).ToArray();
 				var brushWeightForArea = brushWeights.Sum();
 				var remainingQuota =
-					brushArea == 1
+					(brushArea == 1 || alwaysPreferLargerBrushes)
 						? int.MaxValue
 						: (int)(((long)replaceMposes.Count * brushWeightForArea + brushTotalWeight - 1) / brushTotalWeight);
 				RefreshIndices();

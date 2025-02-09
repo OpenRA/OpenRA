@@ -49,8 +49,9 @@
 						ExpansionInner: 2
 						ExpansionBorder: 1
 						CivilianBuildings: 125
-						MinimumCivilianBuildingDensity: 50
-						CivilianBuildingDensityRadius: 6
+						CivilianBuildingDensity: 500
+						MinimumCivilianBuildingDensity: 90
+						CivilianBuildingDensityRadius: 3
 						DefaultResource: Tiberium
 						ResourceSpawnSeeds:
 							split2: Tiberium

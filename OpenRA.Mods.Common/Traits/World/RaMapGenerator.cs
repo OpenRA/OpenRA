@@ -175,6 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			public readonly int CivilianBuildings = default;
 			[FieldLoader.Require]
+			public readonly int CivilianBuildingDensity = default;
+			[FieldLoader.Require]
 			public readonly int MinimumCivilianBuildingDensity = default;
 			[FieldLoader.Require]
 			public readonly int CivilianBuildingDensityRadius = default;
@@ -440,6 +442,8 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("MinimumBuildings must be <= maximumBuildings");
 				if (CivilianBuildings < 0 || CivilianBuildings > FractionMax)
 					throw new MapGenerationException($"CivilianBuildings must be between 0 and {FractionMax} inclusive");
+				if (CivilianBuildingDensity < 0 || CivilianBuildingDensity > FractionMax)
+					throw new MapGenerationException($"CivilianBuildingDensity must be between 0 and {FractionMax} inclusive");
 				if (MinimumCivilianBuildingDensity < 0 || MinimumCivilianBuildingDensity > FractionMax)
 					throw new MapGenerationException($"MinimumCivilianBuildingDensity must be between 0 and {FractionMax} inclusive");
 				if (CivilianBuildingDensityRadius < 0)
@@ -1679,13 +1683,26 @@ namespace OpenRA.Mods.Common.Traits
 						param.CivilianBuildingsFeatureSize,
 						wavelength => 1);
 
+					var densityNoise = new CellLayer<int>(map);
+					NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
+						decorationRandom,
+						densityNoise,
+						param.Rotations,
+						param.Mirror,
+						1024,
+						NoiseUtils.PinkAmplitude);
+					CellLayerUtils.CalibrateQuantileInPlace(
+						densityNoise,
+						0,
+						FractionMax - param.CivilianBuildingDensity, FractionMax);
+
 					var decorable = new CellLayer<bool>(map);
 					var totalDecorable = 0;
 					foreach (var mpos in map.AllCells.MapCoords)
 					{
 						var isDecorable =
 							map.Tiles[mpos].Type == param.LandTile
-								&& zoneable[mpos] && space[mpos] && !reserved[mpos];
+								&& zoneable[mpos] && space[mpos] && !reserved[mpos] && densityNoise[mpos] >= 0;
 						decorable[mpos] = isDecorable;
 						if (isDecorable)
 							totalDecorable++;
@@ -1736,7 +1753,13 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var mpos in map.AllCells.MapCoords)
 						replace[mpos] = decorable[mpos] ? MultiBrush.Replaceability.Actor : MultiBrush.Replaceability.None;
 
-					MultiBrush.PaintArea(map, actorPlans, replace, param.CivilianBuildingsObstacles, decorationTilingRandom);
+					MultiBrush.PaintArea(
+						map,
+						actorPlans,
+						replace,
+						param.CivilianBuildingsObstacles,
+						decorationTilingRandom,
+						alwaysPreferLargerBrushes: true);
 				}
 			}
 
