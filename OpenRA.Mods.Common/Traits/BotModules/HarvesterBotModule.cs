@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Tell the idle harvester to quit slacking:
 			var newSafeResourcePatch = FindNextResource(h.Actor, h);
 			AIUtils.BotDebug($"AI: Harvester {h.Actor} is idle. Ordering to {newSafeResourcePatch} in search for new resources.");
-			if (newSafeResourcePatch != Target.Invalid)
+			if (newSafeResourcePatch.Type != TargetType.Invalid)
 				bot.QueueOrder(new Order("Harvest", h.Actor, newSafeResourcePatch, false));
 			else
 				h.NoResourcesCooldown = Info.ScanIntervalMultiplerWhenNoResources;
