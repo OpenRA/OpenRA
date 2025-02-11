@@ -12,11 +12,11 @@ checkbox-kill-bounties =
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allows Construction Yards to be undeployed
+    .description = Allows Construction Yards to undeploy
 
 checkbox-reusable-engineers =
     .label = Reusable Engineers
-    .description = Engineers stay on the battlefield after capturing a structure
+    .description = Engineers remain on the battlefield after capturing a structure
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
@@ -50,7 +50,7 @@ faction-england =
 faction-france =
     .name = France
     .description = France: Deception
-     Special Ability: Can build fake structures
+     Special Ability: Fake Structures
      Special Unit: Phase Transport
 
 faction-germany =
@@ -102,7 +102,7 @@ actor-mig =
 actor-yak =
     .name = Yak Attack Plane
     .description =
-    Attack Plane with dual machine guns.
+    Attack Plane armed with dual machine guns.
       Strong vs Infantry and Light armor
       Weak vs Tanks and Aircraft
 
@@ -110,19 +110,19 @@ actor-tran =
     .name = Chinook
     .description =
     Fast infantry transport helicopter.
-      Unarmed
+      Unarmed.
 
 actor-heli =
     .name = Longbow
     .description =
-    Helicopter gunship with multi-purpose missiles.
+    Helicopter gunship armed with multi-purpose missiles.
       Strong vs Buildings, Vehicles and Aircraft
       Weak vs Infantry
 
 actor-hind =
     .name = Hind
     .description =
-    Helicopter gunship with dual chain guns.
+    Helicopter gunship armed with dual chain guns.
       Strong vs Infantry and Light armor
       Weak vs Tanks and Aircraft
 
@@ -131,7 +131,7 @@ actor-u2-name = Spy Plane
 actor-mh60 =
     .name = Black Hawk
     .description =
-    Helicopter gunship with dual chain guns.
+    Helicopter gunship armed with dual chain guns.
       Strong vs Infantry and Light armor
       Weak vs Tanks and Aircraft
 
@@ -249,14 +249,14 @@ actor-pdof =
     .generic-name = Chronosphere
     .description =
     Looks like a Chronosphere.
-    Maximum of one can be built.
+    Maximum 1 can be built.
 
 actor-mslf =
     .name = Fake Missile Silo
     .generic-name = Missile Silo
     .description =
     Looks like a Missile Silo.
-    Maximum of one can be built.
+    Maximum 1 can be built.
 
 actor-facf =
     .name = Fake Construction Yard
@@ -304,7 +304,7 @@ actor-e1 =
 actor-e2 =
     .name = Grenadier
     .description =
-    Infantry with grenades.
+    Infantry armed with grenades.
       Strong vs Buildings and Infantry
       Weak vs Vehicles and Aircraft
 
@@ -340,16 +340,16 @@ actor-spy =
     Can detect spies.
       Strong vs Infantry
       Weak vs Vehicles and Aircraft
-      Special Ability: Disguised
+      Special Ability: Disguise
 
 actor-spy-england-disguisetooltip-name = British Spy
 
 actor-e7 =
     .name = Tanya
     .description =
-    Elite commando infantry, with dual pistols
+    Elite commando infantry. Armed with dual pistols
     and C4.
-    Maximum of one can be built.
+    Maximum 1 can be built.
       Strong vs Infantry and Buildings
       Weak vs Vehicles and Aircraft
       Special Ability: Destroys buildings with C4
@@ -364,7 +364,7 @@ actor-mech =
     .name = Mechanic
     .description =
     Repairs nearby vehicles and restores husks to
-    working condition by capturing them.
+    working condition.
       Unarmed
 
 actor-einstein-name = Prof. Einstein
@@ -427,7 +427,7 @@ actor-ctflag-name = Flag
 actor-ss =
     .name = Submarine
     .description =
-    Submerged anti-ship unit with torpedoes.
+    Submerged anti-ship unit armed with torpedoes.
     Can detect other submarines.
       Strong vs Naval units
       Weak vs Ground units and Aircraft
@@ -499,7 +499,7 @@ actor-mslo =
     .description =
     Provides an atomic bomb.
     Requires power to operate.
-    Maximum of one can be built.
+    Maximum 1 can be built.
       Special Ability: Atom Bomb
     .nukepower-name = Atom Bomb
     .nukepower-description = Launches a devastating atomic bomb
@@ -529,7 +529,7 @@ actor-iron =
     Grants a group of units temporary
     invulnerability.
     Requires power to operate.
-    Maximum of one can be built.
+    Maximum 1 can be built.
       Special Ability: Invulnerability
     .grantexternalconditionpower-ironcurtain-name = Invulnerability
     .grantexternalconditionpower-ironcurtain-description = Grants invulnerability to a group of units
@@ -541,7 +541,7 @@ actor-pdox =
     Teleports a group of units across
     the map for a short time.
     Requires power to operate.
-    Maximum of one can be built.
+    Maximum 1 can be built.
       Special Ability: Chronoshift
     .chronoshiftpower-chronoshift-name = Chronoshift
     .chronoshiftpower-chronoshift-description = Teleports a group of units across
@@ -755,7 +755,7 @@ actor-2tnk =
     .name = Medium Tank
     .generic-name = Tank
     .description =
-    Allied Main Battle Tank.
+    Allied main battle tank.
       Strong vs Vehicles
       Weak vs Infantry and Aircraft
 
@@ -763,7 +763,7 @@ actor-3tnk =
     .name = Heavy Tank
     .generic-name = Tank
     .description =
-    Soviet Main Battle Tank with dual cannons.
+    Soviet main battle tank with dual cannons.
       Strong vs Vehicles
       Weak vs Infantry and Aircraft
 
@@ -857,8 +857,8 @@ actor-ftrk =
 actor-dtrk =
     .name = Demolition Truck
     .description =
-    Truck carrying armed nuclear explosives,
-    with very weak armor.
+    Truck carrying armed nuclear explosives.
+    Has very weak armor.
 
 actor-ctnk =
     .name = Chrono Tank
@@ -868,7 +868,7 @@ actor-ctnk =
     Teleports to any area within range.
       Strong vs Vehicles and Buildings
       Weak vs Infantry and Aircraft
-      Special ability: Can teleport
+      Special Ability: Teleportation
 
 actor-qtnk =
     .name = MAD Tank
@@ -886,6 +886,7 @@ actor-stnk =
     cloak. Armed with anti-ground missiles.
       Strong vs Light armor
       Weak vs Infantry, Tanks and Aircraft
+      Special Ability: Stealth
 
 ## Civilian Tech
 actor-hosp =
@@ -918,7 +919,7 @@ actor-powerproxy-parabombs =
     .name = Parabombs (Single Use)
     .description =
     A Badger drops parachuted bombs
-    over a selected location.
+    at the selected location.
 
 actor-powerproxy-sonarpulse =
     .name = Sonar Pulse

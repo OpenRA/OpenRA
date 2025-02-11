@@ -35,14 +35,14 @@ resource-tiberium = Tiberium
 faction-random =
     .name = Any
     .description = Random Faction
-     A random faction is chosen at the start of the game
+     A random faction is chosen when the game starts
 
 faction-gdi =
     .name = GDI
     .description = Global Defense Initiative
      The GDI is an international military branch of the United Nations tasked
      with keeping world peace. Commanding the combined forces of the world's
-     most powerful nations, it possess an unmatched arsenal of high-tech weaponry.
+     most powerful nations, it possesses an unmatched arsenal of high-tech weaponry.
 
 faction-nod =
     .name = Nod
@@ -58,7 +58,7 @@ map-generator-clear = Clear
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
 notification-building-captured = Building captured.
-notification-civ-building-captured = Civilian building captured.
+notification-civ-building-captured = Civilian Building captured.
 notification-structure-lost = Structure lost.
 
 ## aircraft.yaml
@@ -75,7 +75,7 @@ actor-tran =
 actor-heli =
     .name = Apache Longbow
     .description =
-    Helicopter Gunship with chainguns.
+    Helicopter Gunship armed with chainguns.
       Strong vs Infantry, Light Vehicles and Aircraft
       Weak vs Tanks
     .encyclopedia =
@@ -86,11 +86,11 @@ actor-heli =
 actor-orca =
     .name = Orca
     .description =
-    Helicopter gunship with AG missiles.
+    Helicopter Gunship armed with AA and AG Missiles.
       Strong vs Buildings and Tanks
       Weak vs Infantry
     .encyclopedia =
-    Fast but fragile, the Orca harasses enemy vehicles and aircraft with AT missiles. It is best used opportunistically, and can be kept alive longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
+    Fast but fragile, the Orca harasses enemy vehicles and aircraft. It is best used opportunistically, and can be kept alive for longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
 
     Ammo is automatically reloaded in the air.
 
@@ -233,7 +233,7 @@ actor-truck-husk-name = Supply Truck (Destroyed)
 actor-e1 =
     .name = Minigunner
     .description =
-    General-purpose infantry
+    General-purpose infantry.
       Strong vs Infantry
       Weak vs Vehicles
     .encyclopedia =
@@ -244,12 +244,12 @@ actor-e1 =
 actor-e2 =
     .name = Grenadier
     .description =
-    Fast infantry with grenades
-      Strong vs Buildings, slow-moving targets
+    Fast infantry armed with grenades.
+      Strong vs Buildings and Slow-Moving Targets
     .encyclopedia =
     Fast and able to keep up with medium tanks, letting it work well with flanking armies.
 
-    While not as powerful as the Minigunner or a Rocket soldier, its speed can be used to your advantage.
+    While not as powerful as the Minigunner or a Rocket Soldier, its speed can be used to your advantage.
 
 actor-e3 =
     .name = Rocket Soldier
@@ -258,14 +258,14 @@ actor-e3 =
       Strong vs Tanks and Aircraft
       Weak vs Infantry
     .encyclopedia =
-    Highly vulnerable but excelling at eliminating enemy armor and aircraft. It is the slowest unit in the game, lagging behind other infantry and even mammoth tanks.
+    Highly vulnerable, but excels at eliminating enemy armor and aircraft. It is the slowest unit in the game, lagging behind other infantry and even mammoth tanks.
 
     Its large weapons range makes up for its slow speed, making it most effective when used defensively, where it can be protected and provide vision.
 
 actor-e4 =
     .name = Flamethrower
     .description =
-    Advanced anti-infantry unit.
+    Advanced Anti-infantry unit.
       Strong vs Infantry and Buildings
       Weak vs Tanks
     .encyclopedia =
@@ -279,7 +279,7 @@ actor-e5 =
     .encyclopedia =
     Similar stats to the Flamethrower but deals good damage vs heavy armor. Great for stopping enemy armor from crushing your forces.
 
-    It can walk on Tiberium without taking damage, making it particularly useful for harvester harassment on certain maps.
+    They can walk on Tiberium without taking damage, making it particularly useful for harvester harassment on certain maps.
 
 actor-e6 =
     .name = Engineer
@@ -288,7 +288,7 @@ actor-e6 =
     Repairs destroyed vehicles.
       Unarmed
     .encyclopedia =
-    Like the rocket soldier, the Engineer is slow and requires escorts to be used effectively. It can instantly capture structures but is consumed in the process.
+    Like the Rocket Soldier, the Engineer is slow and requires escorts to be used effectively. It can instantly capture structures but is consumed in the process.
 
     Capturing a civilian structure requires only one engineer, while capturing an enemy structure typically requires two engineers, or one if the structure is heavily damaged.
 
@@ -408,7 +408,7 @@ actor-silo =
     .name = Tiberium Silo
     .description = Stores processed Tiberium.
     .encyclopedia =
-    Stores credits. If storage is full, harvesters will wait until credits are spent.
+    Stores processed Tiberium. If storage is full, harvesters will wait until credits are spent.
 
     Useful when harvesting the more valuable blue Tiberium, as a single refinery cannot store a full load.
 
@@ -448,7 +448,7 @@ actor-hpad =
 actor-hq =
     .name = Communications Center
     .description =
-    Provides radar and Air Strike support power.
+    Provides radar and air strike support.
     Unlocks higher-tech units and buildings.
     Requires power to operate.
     .airstrikepower-name = Air Strike
@@ -470,7 +470,7 @@ actor-eye =
     Unlocks Mammoth Tank and Commando.
     Requires power to operate.
     .ioncannonpower-name = Ion Cannon
-    .ioncannonpower-description = Initiates an Ion Cannon strike.
+    .ioncannonpower-description = Fires an Ion Cannon strike.
     Applies instant damage to a small area.
     .encyclopedia =
     Unlocks advanced units and the ion cannon support power. If the Communications Center is lost, it restores minimap functionality and unit production.
@@ -490,7 +490,7 @@ actor-tmpl =
 actor-gun =
     .name = Turret
     .description =
-    Basic Anti-Tank base defense.
+    Basic anti-tank base defense.
       Strong vs Tanks and Vehicles
       Weak vs Infantry
     .encyclopedia =
@@ -499,9 +499,9 @@ actor-gun =
 actor-sam =
     .name = SAM Site
     .description =
-    Anti-Aircraft base defense.
+    Anti-aircraft base defense.
       Strong vs Aircraft
-      Cannot target Ground units
+      Cannot target ground units
     .encyclopedia =
     Nod anti-air base defense. It remains protected when closed and opens to engage aircraft.
 
@@ -511,7 +511,7 @@ actor-obli =
     Advanced base defense.
     Requires power to operate.
       Strong vs all Ground units
-      Cannot target Aircraft
+      Cannot target aircraft
     .encyclopedia =
     Advanced defense for Nod that quickly destroys ground targets with a powerful laser.
 
@@ -528,10 +528,11 @@ actor-atwr =
     .name = Advanced Guard Tower
     .description =
     All-purpose defensive structure.
+    Requires power to operate.
       Strong vs Aircraft and Infantry
       Weak vs Tanks
     .encyclopedia =
-    Advanced defense for GDI that fires volleys of high explosive missiles at both ground and air targets. Effective versus everything.
+    Advanced defense for GDI that fires volleys of high explosive missiles at both ground and air targets. Effective against most targets.
 
 actor-sbag =
     .name = Sandbag Barrier
@@ -657,7 +658,7 @@ actor-ftnk =
       Strong vs Infantry, Buildings and Vehicles
       Weak vs Tanks
     .encyclopedia =
-    Roast infantry and structures alike, making them great for surprise attacks. Be wary of their splash damage on death, but be aware it can also be used to your advantage.
+    Roast infantry, vehicles and structures alike, making them great for surprise attacks. Be wary of their splash damage on death, but be aware it can also be used to your advantage.
 
 actor-bggy =
     .name = Nod Buggy
@@ -728,17 +729,17 @@ actor-msam =
     .name = Rocket Launcher
     .description =
     Long-range rocket artillery.
-      Strong vs all ground units
+      Strong vs all Ground units
     .encyclopedia =
     Referred to as  “MLRS” by players (Multiple Launch Rocket System), this artillery platform fires volleys of rockets at distant targets. It is particularly effective against light vehicles and does moderate damage vs infantry, buildings, and heavy armor.
 
-    A strong unit to build vs enemy artillery, its high bullet velocity and damage to light vehicles makes it the perfect counter to Nod artillery.
+    Its high bullet velocity and damage to light vehicles makes it the perfect counter to Nod artillery.
 
 actor-mlrs =
     .name = Mobile SAM
     .description =
     Powerful anti-air unit.
-      Cannot attack ground units.
+      Cannot target ground units.
     .encyclopedia =
     Generally referred to as “MSAM” by players, this Nod vehicle is a dedicated anti-air vehicle when their bikes do not cut it. It fires slow-moving missiles with powerful splash damage.
 

@@ -2,8 +2,8 @@ Player:
 	ModularBot@Omnius:
 		Name: bot-omnius.name
 		Type: omnius
-	ModularBot@Vidius:
-		Name: bot-vidius.name
+	ModularBot@Vidious:
+		Name: bot-vidious.name
 		Type: vidious
 	ModularBot@Gladius:
 		Name: bot-gladius.name

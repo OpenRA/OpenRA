@@ -7,7 +7,7 @@ options-tech-level =
 
 checkbox-automatic-concrete =
     .label = Automatic Concrete
-    .description = Concrete foundations are automatically laid under buildings
+    .description = Concrete foundations are automatically created beneath buildings
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
@@ -35,8 +35,8 @@ resource-spice = Spice
 
 faction-random =
     .name = Any
-    .description = Random House.
-    A random house is chosen at the start of the game
+    .description = Random House
+    A random house is chosen when the game starts
 
 faction-atreides =
     .name = Atreides
@@ -106,7 +106,7 @@ faction-fremen =
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
-notification-enemy-building-captured = Enemy building captured.
+notification-enemy-building-captured = Enemy Building captured.
 notification-primary-building-selected = Primary building selected.
 
 ## aircraft.yaml
@@ -179,7 +179,7 @@ actor-engineer =
     structures.
       Strong vs Buildings
       Weak vs Everything
-      Repairs damaged cliffs
+      Can repair destroyed cliffs
     .encyclopedia =
     Can be used to capture enemy buildings.
 
@@ -207,7 +207,7 @@ actor-thumper =
 actor-fremen =
     .name = Fremen
     .description =
-    Elite infantry unit with assault rifles and rockets.
+    Elite infantry unit armed with assault rifles and rockets.
       Strong vs Infantry and Vehicles
       Weak vs Artillery
       Special Ability: Invisibility
@@ -219,7 +219,7 @@ actor-fremen =
 actor-grenadier =
     .name = Grenadier
     .description =
-    Infantry with grenades.
+    Infantry armed with grenades.
       Strong vs Buildings and Infantry
       Weak vs Vehicles
     .encyclopedia =
@@ -242,18 +242,18 @@ actor-mpsardaukar-description =
 actor-saboteur =
     .name = Saboteur
     .description =
-    Sneaky infantry with explosives.
+    Sneaky infantry armed with explosives.
     Turns invisible for a limited time.
       Strong vs Buildings
       Weak vs Everything
-      Special Ability: Destroys buildings
+      Special Ability: Building Destruction
     .encyclopedia =
     A specialized military unit of House Ordos, capable of demolishing enemy buildings upon entry, but dying in the resulting explosion. It can activate stealth mode to become invisible.
 
     The Saboteur is resistant to anti-tank weaponry, but very vulnerable to high-explosives, fire, and bullet weapons.
 
 actor-nsfremen-description =
-    Elite infantry unit with assault rifles and rockets.
+    Elite infantry unit armed with assault rifles and rockets.
       Strong vs Infantry and Vehicles
       Weak vs Artillery
 
@@ -355,7 +355,7 @@ actor-construction-yard =
 actor-wind-trap =
     .name = Wind Trap
     .description =
-    Supplies power to other
+    Provides power for other
     structures.
     .encyclopedia =
     Produces power and water for your base. Large, above-ground ducts funnel wind currents underground into massive turbines, which drive power generators and humidity extractors.
@@ -492,16 +492,16 @@ actor-palace =
     .nukepower-name = Death Hand
     .nukepower-description = Launches an atomic missile at a target location.
     .produceactorpower-fremen-name = Recruit Fremen
-    .produceactorpower-fremen-description = Elite infantry unit with assault rifles and rockets.
+    .produceactorpower-fremen-description = Elite infantry unit armed with assault rifles and rockets.
       Strong vs Infantry and Vehicles
       Weak vs Artillery
       Special Ability: Invisibility
     .produceactorpower-saboteur-name = Recruit Saboteur
-    .produceactorpower-saboteur-description = Sneaky infantry with explosives.
+    .produceactorpower-saboteur-description = Sneaky infantry armed with explosives.
     Can be deployed to become invisible for a limited time.
       Strong vs Buildings
       Weak vs Everything
-      Special Ability: Destroys buildings
+      Special Ability: Building Destruction
 
 ## vehicles.yaml
 actor-mcv =
@@ -660,7 +660,7 @@ meta-destroyedtile =
 bot-omnius =
     .name = Omnius
 
-bot-vidius =
+bot-vidious =
     .name = Vidious
 
 bot-gladius =

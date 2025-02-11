@@ -7,7 +7,7 @@ options-tech-level =
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allows Construction Yards to be undeployed
+    .description = Allows Construction Yards to undeploy
 
 notification-insufficient-funds = Insufficient funds.
 notification-new-construction-options = New construction options.
@@ -82,7 +82,7 @@ actor-dshp-name = Dropship
 actor-orca =
     .name = Orca Fighter
     .description =
-    Fast assault gunship with
+    Fast assault gunship armed with
     dual missile launchers.
        Strong vs Buildings and Vehicles
        Weak vs Infantry and Aircraft
@@ -107,7 +107,7 @@ actor-scrin =
     .name = Banshee Fighter
     .description =
     Advanced fighter-bomber craft
-    with twin plasma cannons.
+    armed with twin plasma cannons.
        Strong vs Buildings and Vehicles
        Weak vs Infantry and Aircraft
 
@@ -115,7 +115,7 @@ actor-apache =
     .name = Harpy
     .description =
     Anti-personnel support gunship
-    with dual chain guns.
+    armed with dual chain guns.
        Strong vs Infantry, Light armor and Aircraft
        Weak vs Vehicles
 
@@ -166,13 +166,13 @@ actor-bboard04-name = Visit Scenic Las Vegas
 actor-bboard05-name = Rooms $29 a nite
 actor-bboard06-name = Kaspm's Tiberium Warhouse
 actor-bboard07-name = Alkaline's Battery Superstore
-actor-bboard08-name = Alex-Gator's Petshop just ahead!
-actor-bboard09-name = TacticX Games rock!
+actor-bboard08-name = Alex-gator's petshop just ahead!
+actor-bboard09-name = TacticX games rock!
 actor-bboard10-name = WW Surf and Turf hits the spot!
 actor-bboard11-name = Only 11 miles to Zydeko's cafe!
 actor-bboard12-name = No escape from Archer's Asylum!
 actor-bboard13-name = Stop in at Hewitt's hair salon
-actor-bboard14-name = Billy Bob's Harvester School
+actor-bboard14-name = Billy Bob's Harvester school
 actor-bboard15-name = Pannullo's hacienda es bueno
 actor-bboard16-name = Join GDI: We save lives.
 actor-ca0001-name = Rade's Roadhouse
@@ -296,7 +296,7 @@ meta-gate-description = Automated gate that opens for allied units.
 actor-e2 =
     .name = Disc Thrower
     .description =
-    Infantry with special explosive discs.
+    Infantry armed with special explosive discs.
        Strong vs Buildings and Infantry
        Weak vs Vehicles and Aircraft
 
@@ -318,12 +318,12 @@ actor-jumpjet-husk-name = Jump Jet Infantry
 actor-ghost =
     .name = Ghost Stalker
     .description =
-    Elite commando infantry with a railgun
+    Elite commando infantry armed with a railgun
     and C4.
-    Only one can be trained at a time.
+    Maximum 1 can be trained.
        Strong vs Infantry and Buildings
        Weak vs Vehicles and Aircraft
-       Special Ability: Destroy Building with C4
+       Special Ability: Destroys buildings with C4
 
 
 ## gdi-structures.yaml
@@ -461,7 +461,7 @@ actor-apc =
 actor-hvr =
     .name = Hover MLRS
     .description =
-    Hovering vehicle with
+    Hovering vehicle armed with
     long-range missiles.
        Strong vs Vehicles and Aircraft
        Weak vs Infantry
@@ -484,7 +484,7 @@ actor-hmec =
     .name = Mammoth Mk. II
     .description =
     Slow, heavily armored walker.
-    Maximum of one can be built.
+    Maximum 1 can be built.
     Armed with dual railguns and rocket launchers.
        Strong vs Infantry, Vehicles, Aircraft and Buildings
        Weak vs Nothing
@@ -545,7 +545,7 @@ actor-cyc2 =
     .name = Cyborg Commando
     .description =
     Elite cybernetic infantry unit.
-    Maximum of one can be built.
+    Maximum 1 can be built.
        Strong vs Infantry, Vehicles and Buildings
        Weak vs Aircraft
 
@@ -613,7 +613,7 @@ actor-namisl =
     Launches a devastating missile
     at a target location.
     Requires power to operate.
-    Maximum of one can be built.
+    Maximum 1 can be built.
     .name = Nod Missile Silo
     .nukepower-description = Launches an explosive cluster warhead
     at a target location.
@@ -623,7 +623,7 @@ actor-nawast =
     .description =
     Processes Veins
     into usable resources.
-    Maximum of one can be built.
+    Maximum 1 can be built.
 
 ## nod-support.yaml
 actor-nawall =
@@ -678,7 +678,7 @@ actor-bggy =
 actor-bike =
     .name = Attack Cycle
     .description =
-    Fast scout vehicle with rockets.
+    Fast scout vehicle armed with rockets.
        Strong vs Vehicles
        Weak vs Infantry and Aircraft
 
@@ -709,7 +709,7 @@ actor-repair =
 actor-weed =
     .name = Weed Eater
     .description =
-    Collects Tiberium veins for processing.
+    Collects veins for processing.
        Unarmed
 
 actor-sapc =
@@ -732,7 +732,7 @@ actor-stnk =
     .description =
     Lightly armored tank equipped with a personal
     stealth generator. Armed with missiles.
-    Visible to infantry at close range.
+    Can be spotted by infantry at close range.
        Strong vs Vehicles and Aircraft
        Weak vs Infantry
 
@@ -740,7 +740,7 @@ actor-sgen =
     .name = Mobile Stealth Generator
     .deployed-name = Mobile Stealth Generator (deployed)
     .description =
-    Able to cloak units once deployed.
+    Cloaks all allied forces in the area around it once deployed.
        Unarmed
 
 ## shared-infantry.yaml
