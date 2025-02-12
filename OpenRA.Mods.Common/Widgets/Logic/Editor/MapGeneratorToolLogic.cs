@@ -187,10 +187,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								void OnClick() => choices[option] = choice;
 								var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
 								item.Get<LabelWidget>("LABEL").GetText = () => choice.Label;
+								item.GetTooltipText =
+									choice.Description != null
+										? () => choice.Description
+										: null;
+
 								return item;
 							}
 
-							dropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Choices.Count * 30, option.Choices, SetupItem);
+							dropDown.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", option.Choices.Count * 30, option.Choices, SetupItem);
 						};
 						break;
 					}

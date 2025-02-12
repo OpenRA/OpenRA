@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// <summary>The label to use for UI selection. Post-fluent.</summary>
 			public readonly string Label = null;
 
+			/// <summary>The tooltip to use for UI selection. Post-fluent.</summary>
+			public readonly string Description = null;
+
 			/// <summary>
 			/// Only offer the Choice for these tilesets. (If null, show for all.)
 			/// </summary>
@@ -51,7 +54,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 				Id = id;
 				var label = my.NodeWithKeyOrDefault("Label")?.Value.Value;
 				if (label != null)
-					Label = FluentProvider.GetMessage(label);
+				{
+					Label = FluentProvider.GetMessage($"{label}.label");
+					FluentProvider.TryGetMessage($"{label}.description", out Description);
+				}
+
 				Tileset = my.NodeWithKeyOrDefault("Tileset")?.Value.Value
 					?.Split(',')
 					.ToImmutableHashSet();
@@ -63,6 +70,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			{
 				Id = value;
 				Label = value;
+				Description = null;
 				Tileset = null;
 				Settings = new MiniYaml(null, new[] { new MiniYamlNode(setting, value) });
 			}
@@ -71,7 +79,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 			{
 				var label = my.NodeWithKeyOrDefault("Label")?.Value.Value;
 				if (label != null)
-					references.Add(label);
+				{
+					references.Add($"{label}.label");
+
+					// Descriptions are optional.
+					if (FluentProvider.TryGetMessage($"{label}.description", out _))
+						references.Add($"{label}.description");
+				}
 			}
 
 			/// <summary>Check whether this choice is permitted for this map.</summary>

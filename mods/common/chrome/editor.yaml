@@ -621,6 +621,7 @@ Container@EDITOR_WORLD_ROOT:
 											Y: 20
 											Width: PARENT_WIDTH
 											Height: 25
+											PanelRoot: EDITOR_WORLD_ROOT
 		Container@HISTORY_WIDGETS:
 			X: WINDOW_WIDTH - 320
 			Y: 354
