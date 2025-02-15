@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			autoSaveIntervalDropDown.GetText = () => GetMessageForAutoSaveInterval(Game.Settings.SinglePlayerSettings.AutoSaveInterval);
 
-			// Setup dropdown for auto-save nr.
+			// Setup dropdown for auto-save number.
 			var autoSaveNoDropDown = panel.Get<DropDownButtonWidget>("AUTO_SAVE_FILE_NUMBER_DROP_DOWN");
 
 			autoSaveNoDropDown.OnMouseDown = _ =>

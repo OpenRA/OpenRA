@@ -641,7 +641,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// Both this and <see cref="ActorCellIsBlocking"/> must be true for a cell to be blocked.
 		/// </para>
 		/// <para>
-		/// This method is dependant on the logic in
+		/// This method is dependent on the logic in
 		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor, bool)"/> and
 		/// <see cref="Locomotor.UpdateCellBlocking"/>. This method must be kept in sync with changes in the locomotor
 		/// rules.

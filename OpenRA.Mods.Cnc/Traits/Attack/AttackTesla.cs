@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("Implements the charge-then-burst attack logic specific to the RA tesla coil.")]
+	[Desc("Implements the charge-then-burst attack logic specific to the RA Tesla coil.")]
 	sealed class AttackTeslaInfo : AttackBaseInfo
 	{
 		[Desc("How many charges this actor has to attack with, once charged.")]

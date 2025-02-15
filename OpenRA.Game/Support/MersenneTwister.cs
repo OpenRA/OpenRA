@@ -126,7 +126,7 @@ namespace OpenRA.Support
 		}
 
 		/// <summary>
-		/// Shuffle a portion of a list list in place. Has minor biases.
+		/// Shuffle a portion of a list in place. Has minor biases.
 		/// </summary>
 		public void ShuffleInPlace<T>(IList<T> list, int start, int len)
 		{

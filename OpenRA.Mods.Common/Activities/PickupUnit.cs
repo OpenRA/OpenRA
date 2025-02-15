@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!IsInterruptible)
 				return;
 
-			// This nulls caryall storage, so to avoid deleting units make sure it is not called while carrying one.
+			// This nulls carryall storage, so to avoid deleting units make sure it is not called while carrying one.
 			if (carryall.State == Carryall.CarryallState.Reserved)
 				carryall.UnreserveCarryable(self);
 

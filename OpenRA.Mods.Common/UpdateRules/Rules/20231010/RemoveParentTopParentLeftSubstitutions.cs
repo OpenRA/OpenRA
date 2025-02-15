@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Name => "Remove PARENT_TOP and PARENT_LEFT from integer expressions for widgets.";
 
 		public override string Description =>
-			"PARENT_TOP is replaced with 0 and PARENT_LEFT is replaced with 0 in integer expressions for width, hegiht and position.";
+			"PARENT_TOP is replaced with 0 and PARENT_LEFT is replaced with 0 in integer expressions for width, height and position.";
 
 		public override IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNodeBuilder chromeNode)
 		{

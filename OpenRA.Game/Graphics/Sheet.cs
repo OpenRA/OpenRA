@@ -149,7 +149,7 @@ namespace OpenRA.Graphics
 			var buffer = data;
 			ReleaseBuffer();
 
-			// We aren't commiting data to the GPU, so let's not delete our data.
+			// We aren't committing data to the GPU, so let's not delete our data.
 			if (Game.Renderer == null)
 				return false;
 

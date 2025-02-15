@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> AwayFromEnemyTargetTypes = default;
 
 		[Desc("Minefield location check distance to AwayFromAlliedTargettype and AwayFromEnemyTargettype.",
-			"In addition, if any emeny actor within this range and minefield location is not cancelled,",
+			"In addition, if any enemy actor within this range and minefield location is not cancelled,",
 			"minelayer will try lay mines at the 3/4 path to minefield location")]
 		public readonly int AwayFromCellDistance = 9;
 

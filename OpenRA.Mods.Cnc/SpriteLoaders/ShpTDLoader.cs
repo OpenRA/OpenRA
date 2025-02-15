@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					}
 				}
 
-				// Keep a 1px empty border to work avoid rounding issues in the gpu shader.
+				// Keep a 1px empty border to work avoid rounding issues in the GPU shader.
 				if (left > 0)
 					left--;
 

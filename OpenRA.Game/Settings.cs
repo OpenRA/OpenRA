@@ -119,7 +119,7 @@ namespace OpenRA
 		[Desc("Can players vote to kick other players?")]
 		public bool EnableVoteKick = true;
 
-		[Desc("After how much time in miliseconds should the vote kick fail after idling?")]
+		[Desc("After how much time in milliseconds should the vote kick fail after idling?")]
 		public int VoteKickTimer = 30000;
 
 		[Desc("If a vote kick was unsuccessful for how long should the player who started the vote not be able to start new votes?")]

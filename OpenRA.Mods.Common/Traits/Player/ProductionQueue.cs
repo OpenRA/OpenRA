@@ -379,7 +379,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (buildableNames.Contains(Queue[i].Item))
 					continue;
 
-				// Refund spended resources
+				// Refund spent resources
 				if (Queue[i].ResourcesPaid > 0)
 				{
 					playerResources.GiveResources(Queue[i].ResourcesPaid);

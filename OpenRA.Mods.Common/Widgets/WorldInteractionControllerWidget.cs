@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets
 					/* The block below does three things:
 					// 1. Allows actor selection using a selection box regardless of input mode.
 					// 2. Allows actor deselection with a single click in the default input mode (UnitOrderGenerator).
-					// 3. Prevents units from getting deselected when exiting input modes (eg. AttackMove or Guard).
+					// 3. Prevents units from getting deselected when exiting input modes (e.g. AttackMove or Guard).
 					//
 					// We cannot check for UnitOrderGenerator here since it's the default order generator that gets activated in
 					// World.CancelInputMode. If we did check it, actor de-selection would not be possible by just clicking somewhere,

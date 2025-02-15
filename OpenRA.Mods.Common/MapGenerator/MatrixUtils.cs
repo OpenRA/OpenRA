@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// Apply a binomial filter-based blur to a matrix, returning a new matrix. The result is
-		/// somewhat similar to a gaussian blur. Maximum supported radius is MaxBinomialKernelRadius.
+		/// somewhat similar to a Gaussian blur. Maximum supported radius is MaxBinomialKernelRadius.
 		/// </summary>
 		public static Matrix<int> BinomialBlur(Matrix<int> input, int radius)
 		{
@@ -519,7 +519,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// extended out.
 		/// </para>
 		/// <para>
-		/// Along with the blured matrix, the number of changes compared to the
+		/// Along with the blurred matrix, the number of changes compared to the
 		/// original is returned.
 		/// </para>
 		/// <para>
@@ -1106,7 +1106,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Each call only dilates thin regions by one cell's thickness on each border.
 		/// </para>
 		/// <para>
-		/// Only regions with a thickness less than width (in Chebychev distance) are considered.
+		/// Only regions with a thickness less than width (in Chebyshev distance) are considered.
 		/// </para>
 		/// <para>
 		/// Returns the number of changes made.
@@ -1256,7 +1256,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <summary>
 		/// Traces a matrix of directions into a set of point sequences. Each point sequence is
 		/// traced up to but excluding junction points. Paths are traced in both directions. The
-		/// paths in the direction map must be bidrectional and contain no stubs.
+		/// paths in the direction map must be bidirectional and contain no stubs.
 		/// </summary>
 		public static int2[][] DirectionMapToPaths(Matrix<byte> input)
 		{

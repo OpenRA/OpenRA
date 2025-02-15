@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		/// <summary>In addition returns true if reservation was succesful or we have already been reserved at <paramref name="host"/>.</summary>
+		/// <summary>In addition returns true if reservation was successful or we have already been reserved at <paramref name="host"/>.</summary>
 		public bool ReserveHost(Actor hostActor, IDockHost host)
 		{
 			if (host == null)
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 			return !IsTraitDisabled && dockClients.Any(client => client.CanDock(type, forceEnter));
 		}
 
-		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
+		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with matching <see cref="DockType"/>.</summary>
 		public bool CanDock(Actor target, bool forceEnter = false)
 		{
 			return !IsTraitDisabled &&

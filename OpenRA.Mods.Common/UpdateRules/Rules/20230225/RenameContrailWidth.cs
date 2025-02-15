@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 	{
 		public override string Name => "Rename contrail width";
 
-		public override string Description => "Rename contrail `TrailWidth` to `StartWidth` in traits and weapons to acount for added `EndWidth` functionality";
+		public override string Description => "Rename contrail `TrailWidth` to `StartWidth` in traits and weapons to account for added `EndWidth` functionality";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{

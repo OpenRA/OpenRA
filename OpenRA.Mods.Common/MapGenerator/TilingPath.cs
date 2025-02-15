@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public CPos[] Points;
 
 		/// <summary>
-		/// Maximum permitted Chebychev distance that layed TemplateSegments may be from the
+		/// Maximum permitted Chebyshev distance that layed TemplateSegments may be from the
 		/// specified points.
 		/// </summary>
 		public int MaxDeviation;
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			//
 			// Then, from the end node, it works backwards. It finds any (random) suitable template
 			// segment which connects back to a previous node where the difference in cost is
-			// that of the template segment's cost, implying that that previous node is on an
+			// that of the template segment's cost, implying that the previous node is on an
 			// optimal path towards the end node. This process repeats until the start node is
 			// reached, painting templates along the way.
 			//
