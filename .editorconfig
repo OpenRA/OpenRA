@@ -972,6 +972,9 @@ dotnet_diagnostic.CA2021.severity = warning
 # Avoid inexact read with Stream.Read.
 dotnet_diagnostic.CA2022.severity = warning
 
+# Do not use StreamReader.EndOfStream in async methods.
+dotnet_diagnostic.CA2024.severity = warning
+
 ### Security Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/security-warnings
 
