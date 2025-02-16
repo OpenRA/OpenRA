@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly World World;
 		public readonly Player Player;
 
-		readonly Predicate<Actor> unitCannotBeOrdered;
+		public readonly Predicate<Actor> UnitCannotBeOrdered;
 		readonly List<Actor> unitsHangingAroundTheBase = new();
 
 		// Units that the bot already knows about. Any unit not on this list needs to be given a role.
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 			World = self.World;
 			Player = self.Owner;
 
-			unitCannotBeOrdered = a => a == null || a.Owner != Player || a.IsDead || !a.IsInWorld;
+			UnitCannotBeOrdered = a => a == null || a.Owner != Player || a.IsDead || !a.IsInWorld;
 			constructionYardBuildings = new ActorIndex.NamesAndTrait<BuildingInfo>(World, info.ConstructionYardTypes);
 		}
 
@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 		void CleanSquads()
 		{
 			foreach (var s in Squads)
-				s.Units.RemoveWhere(unitCannotBeOrdered);
+				s.Units.RemoveWhere(UnitCannotBeOrdered);
 			Squads.RemoveAll(s => !s.IsValid);
 		}
 
@@ -333,8 +333,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			CleanSquads();
 
-			activeUnits.RemoveWhere(unitCannotBeOrdered);
-			unitsHangingAroundTheBase.RemoveAll(unitCannotBeOrdered);
+			activeUnits.RemoveWhere(UnitCannotBeOrdered);
+			unitsHangingAroundTheBase.RemoveAll(UnitCannotBeOrdered);
 			foreach (var n in notifyIdleBaseUnits)
 				n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
 
@@ -476,7 +476,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var protectSq = GetSquadOfType(SquadType.Protection);
 			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
-			protectSq.Units.RemoveWhere(unitCannotBeOrdered);
+			protectSq.Units.RemoveWhere(UnitCannotBeOrdered);
 
 			if (protectSq.IsValid && !protectSq.IsTargetValid(protectSq.CenterUnit()))
 				protectSq.SetActorToTarget((attacker, WVec.Zero));
@@ -525,11 +525,11 @@ namespace OpenRA.Mods.Common.Traits
 				new("Squads", "", Squads.ConvertAll(s => new MiniYamlNode("Squad", s.Serialize()))),
 				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
 				new("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
-					.Where(a => !unitCannotBeOrdered(a))
+					.Where(a => !UnitCannotBeOrdered(a))
 					.Select(a => a.ActorID)
 					.ToArray())),
 				new("ActiveUnits", FieldSaver.FormatValue(activeUnits
-					.Where(a => !unitCannotBeOrdered(a))
+					.Where(a => !UnitCannotBeOrdered(a))
 					.Select(a => a.ActorID)
 					.ToArray())),
 				new("RushTicks", FieldSaver.FormatValue(rushTicks)),
