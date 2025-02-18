@@ -289,7 +289,7 @@ free-tanya-keep-alive = Free Tanya and keep her alive.
 kill-soviet-officers-scientists = Kill all Soviet officers and scientists.
 steal-soviet-mammoth-tank = Steal a Soviet Mammoth Tank.
 no-casualties = Ensure no soldier or civilian
-   under your command is lost.
+    under your command is lost.
 
 ## sarin-gas-3-controlled-burn
 capture-sarin-plants-intact = Capture all Sarin processing plants intact.
@@ -369,7 +369,7 @@ truck-stopped-near-allied-base = Commander, the truck has stopped at a nearby Al
     Radio intercepts indicate the truck has orders to flee if any Soviet units approach.
 
 destroy-stolen-convoy-truck = Destroy the stolen convoy truck
-   - don't let it escape.
+    - don't let it escape.
 defend-forward-command-center = Defend our forward Command Center.
 
 ## soviet-10

@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 											type = type.Replace("text", "");
 									}
 
-									build += $"   .{type} = {candidate.Value}\n";
+									build += $"    .{type} = {candidate.Value}\n";
 									foreach (var node in candidate.Nodes)
 										node.Value.Value = $"{key}.{type}";
 								}

@@ -10,7 +10,7 @@ options-difficulty =
 
 ## player
 bot-campaign-ai =
-   .name = Campaign Player AI
+    .name = Campaign Player AI
 
 ## campaign-tooltips.yaml
 neutral-prefix = Neutral

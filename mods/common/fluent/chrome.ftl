@@ -84,32 +84,32 @@ button-map-editor-tab-container-tools-tooltip = Tools
 button-map-editor-tab-container-history-tooltip = History
 
 button-delete-area =
-   .label = Delete
-   .tooltip = Remove everything in the selected area
+    .label = Delete
+    .tooltip = Remove everything in the selected area
 
 button-delete-actor =
-   .label = Delete
-   .tooltip = Remove the selected actor
+    .label = Delete
+    .tooltip = Remove the selected actor
 
 button-editor-world-root-options =
-   .label = Menu
-   .tooltip = Menu
+    .label = Menu
+    .tooltip = Menu
 
 button-editor-world-root-copy =
-   .label = Copy
-   .tooltip = Copy the selected area
+    .label = Copy
+    .tooltip = Copy the selected area
 
 button-editor-world-root-paste =
-   .label = Paste
-   .tooltip = Paste the saved area
+    .label = Paste
+    .tooltip = Paste the saved area
 
 button-editor-world-root-undo =
-   .label = Undo
-   .tooltip = Undo last step
+    .label = Undo
+    .tooltip = Undo last step
 
 button-editor-world-root-redo =
-   .label = Redo
-   .tooltip = Redo last step
+    .label = Redo
+    .tooltip = Redo last step
 
 dropdownbutton-editor-world-root-overlay-button = Overlays
 button-select-categories-buttons-all = All
@@ -130,8 +130,8 @@ button-gamesave-browser-panel-save = Save
 
 ## ingame-chat.yaml, ingame-infochat.yaml
 button-chat-chrome-mode =
-   .label = Team
-   .tooltip = Toggle chat mode
+    .label = Team
+    .tooltip = Toggle chat mode
 
 ## ingame-debug-hpf.yaml
 dropdownbutton-hpf-overlay-locomotor = Select Locomotor
@@ -262,8 +262,8 @@ button-multiplayer-tabs-servers-tab = Servers
 button-server-lobby-changemap = Change Map
 
 button-lobbychat-chat-mode =
-   .label = Team
-   .tooltip = Toggle chat mode
+    .label = Team
+    .tooltip = Toggle chat mode
 
 button-server-lobby-start-game = Start Game
 button-server-lobby-disconnect = Leave Game
@@ -471,8 +471,8 @@ checkbox-mute-sound-container = Mute Sound
 label-sound-volume-container = Sound Volume:
 
 checkbox-mute-background-music-container =
-   .label = Mute Menu Music
-   .tooltip = Mute background music when no specific track is playing
+    .label = Mute Menu Music
+    .tooltip = Mute background music when no specific track is playing
 
 label-music-title-volume-container = Music Volume:
 label-audio-device-container = Audio Device:
@@ -489,16 +489,16 @@ label-target-lines-dropdown-container = Target Lines:
 label-status-bar-dropdown-container-bars = Status Bars:
 
 checkbox-player-stance-colors-container =
-   .label = Player Relationship Colors
-   .tooltip = Change player colors based on relationship (own, enemy, ally, neutral)
+    .label = Player Relationship Colors
+    .tooltip = Change player colors based on relationship (own, enemy, ally, neutral)
 
 checkbox-ui-feedback-container =
-   .label = Show UI Feedback Notifications
-   .tooltip = Show transient text notifications for UI events
+    .label = Show UI Feedback Notifications
+    .tooltip = Show transient text notifications for UI events
 
 checkbox-transients-container =
-   .label = Show Game Event Notifications
-   .tooltip = Show transient text notifications for game events
+    .label = Show Game Event Notifications
+    .tooltip = Show transient text notifications for game events
 
 checkbox-pause-shellmap-container = Pause Menu Background
 checkbox-hide-replay-chat-container = Hide Chat in Replays
@@ -533,12 +533,12 @@ label-notices-readonly-notice = This hotkey cannot be modified
 button-hotkey-remap-dialog-override = Override
 
 button-hotkey-remap-dialog-clear =
-   .label = Clear
-   .tooltip = Unbind the hotkey
+    .label = Clear
+    .tooltip = Unbind the hotkey
 
 button-hotkey-remap-dialog-reset =
-   .label = Reset
-   .tooltip = Reset to default
+    .label = Reset
+    .tooltip = Reset to default
 
 ## settings-input.yaml
 label-zoom-modifier-container = Zoom Modifier:

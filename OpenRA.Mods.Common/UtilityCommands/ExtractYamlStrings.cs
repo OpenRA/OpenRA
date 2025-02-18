@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							foreach (var candidate in grouping)
 							{
 								var type = candidate.Key;
-								build += $"   .{type} = {candidate.Value}\n";
+								build += $"    .{type} = {candidate.Value}\n";
 
 								foreach (var node in candidate.Nodes)
 									node.Value.Value = $"{key}.{type}";

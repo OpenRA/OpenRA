@@ -10,7 +10,7 @@ options-difficulty =
 
 ## player
 bot-campaign-ai =
-   .name = Campaign Player AI
+    .name = Campaign Player AI
 
 ## campaign-maprules.yaml
 actor-moneycrate-name = Money Crate
