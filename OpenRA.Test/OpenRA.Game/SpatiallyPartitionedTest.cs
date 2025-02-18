@@ -38,7 +38,7 @@ namespace OpenRA.Test
 			Assert.That(partition.At(new int2(3, 2)), Does.Not.Contain(b), "b is present in the wrong location");
 			Assert.That(partition.At(new int2(3, 3)), Does.Not.Contain(b), "b is present in the wrong location");
 
-			partition.Update(b, new Rectangle(4, 4, 1, 1));
+			partition[b] = new Rectangle(4, 4, 1, 1);
 			Assert.That(partition.At(new int2(0, 0)), Does.Contain(a), "a wrongly changed location when b was updated");
 			Assert.That(partition.At(new int2(4, 4)), Does.Contain(b), "b is not present at the new location in the extreme corner of the partition");
 			Assert.That(partition.At(new int2(1, 1)), Does.Not.Contain(b), "b is still present at the old location after update");
@@ -79,7 +79,7 @@ namespace OpenRA.Test
 			Assert.That(new[] { a, b }, Is.EquivalentTo(partition.InBox(new Rectangle(-10, -10, 25, 25))),
 				"Searching an area larger than the partition did not return all items");
 
-			partition.Update(b, new Rectangle(4, 4, 1, 1));
+			partition[b] = new Rectangle(4, 4, 1, 1);
 			Assert.That(partition.InBox(new Rectangle(0, 0, 1, 1)), Does.Contain(a), "a wrongly changed location when b was updated");
 			Assert.That(partition.InBox(new Rectangle(4, 4, 1, 1)), Does.Contain(b), "b is not present at the new location in the extreme corner of the partition");
 			Assert.That(partition.InBox(new Rectangle(1, 1, 1, 1)), Does.Not.Contain(b), "b is still present at the old location after update");

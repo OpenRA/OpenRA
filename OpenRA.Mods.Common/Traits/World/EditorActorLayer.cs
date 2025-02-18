@@ -340,7 +340,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
 		{
-			foreach (var preview in cellMap.Items)
+			foreach (var preview in cellMap.Keys)
 				foreach (var cell in Footprint(preview))
 					destinationBuffer.Add((cell, preview.RadarColor));
 		}

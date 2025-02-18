@@ -10,17 +10,20 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace OpenRA.Primitives
 {
-	public sealed class SpatiallyPartitioned<T>
+	public sealed class SpatiallyPartitioned<T> : IDictionary<T, Rectangle>
 	{
+		static readonly Action<Dictionary<T, Rectangle>, T, Rectangle> AddItem = (bin, item, bounds) => bin.Add(item, bounds);
+		static readonly Action<Dictionary<T, Rectangle>, T, Rectangle> RemoveItem = (bin, item, bounds) => bin.Remove(item);
+
 		readonly int rows, cols, binSize;
 		readonly Dictionary<T, Rectangle>[] itemBoundsBins;
 		readonly Dictionary<T, Rectangle> itemBounds = new();
-		readonly Action<Dictionary<T, Rectangle>, T, Rectangle> addItem = (bin, actor, bounds) => bin.Add(actor, bounds);
-		readonly Action<Dictionary<T, Rectangle>, T, Rectangle> removeItem = (bin, actor, bounds) => bin.Remove(actor);
 
 		public SpatiallyPartitioned(int width, int height, int binSize)
 		{
@@ -30,39 +33,41 @@ namespace OpenRA.Primitives
 			itemBoundsBins = Exts.MakeArray(rows * cols, _ => new Dictionary<T, Rectangle>());
 		}
 
-		static void ValidateBounds(T actor, Rectangle bounds)
+		static void ValidateBounds(T item, Rectangle bounds)
 		{
 			if (bounds.Width == 0 || bounds.Height == 0)
-				throw new ArgumentException($"Bounds of actor {actor} are empty.", nameof(bounds));
+				throw new ArgumentException($"Bounds of {item} are empty.", nameof(bounds));
 		}
 
 		public void Add(T item, Rectangle bounds)
 		{
 			ValidateBounds(item, bounds);
 			itemBounds.Add(item, bounds);
-			MutateBins(item, bounds, addItem);
+			MutateBins(item, bounds, AddItem);
 		}
 
-		public void Update(T item, Rectangle bounds)
+		public Rectangle this[T item]
 		{
-			ValidateBounds(item, bounds);
-			MutateBins(item, itemBounds[item], removeItem);
-			MutateBins(item, itemBounds[item] = bounds, addItem);
+			get => itemBounds[item];
+			set
+			{
+				ValidateBounds(item, value);
+
+				// SAFETY: Dictionary cannot be modified whilst the ref is alive.
+				ref var bounds = ref CollectionsMarshal.GetValueRefOrAddDefault(itemBounds, item, out var exists);
+				if (exists)
+					MutateBins(item, bounds, RemoveItem);
+				MutateBins(item, bounds = value, AddItem);
+			}
 		}
 
 		public bool Remove(T item)
 		{
-			if (!itemBounds.TryGetValue(item, out var bounds))
+			if (!itemBounds.Remove(item, out var bounds))
 				return false;
 
-			MutateBins(item, bounds, removeItem);
-			itemBounds.Remove(item);
+			MutateBins(item, bounds, RemoveItem);
 			return true;
-		}
-
-		public bool Contains(T item)
-		{
-			return itemBounds.ContainsKey(item);
 		}
 
 		Dictionary<T, Rectangle> BinAt(int row, int col)
@@ -88,13 +93,13 @@ namespace OpenRA.Primitives
 			maxCol = Math.Min(cols, Exts.IntegerDivisionRoundingAwayFromZero(right, binSize));
 		}
 
-		void MutateBins(T actor, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
+		void MutateBins(T item, Rectangle bounds, Action<Dictionary<T, Rectangle>, T, Rectangle> action)
 		{
 			BoundsToBinRowsAndCols(bounds, out var minRow, out var maxRow, out var minCol, out var maxCol);
 
 			for (var row = minRow; row < maxRow; row++)
 				for (var col = minCol; col < maxCol; col++)
-					action(BinAt(row, col), actor, bounds);
+					action(BinAt(row, col), item, bounds);
 		}
 
 		public IEnumerable<T> At(int2 location)
@@ -135,8 +140,30 @@ namespace OpenRA.Primitives
 				}
 		}
 
-		public IEnumerable<Rectangle> ItemBounds => itemBounds.Values;
+		public void Clear()
+		{
+			itemBounds.Clear();
+			foreach (var bin in itemBoundsBins)
+				bin.Clear();
+		}
 
-		public IEnumerable<T> Items => itemBounds.Keys;
+		public ICollection<T> Keys => itemBounds.Keys;
+		public ICollection<Rectangle> Values => itemBounds.Values;
+		public int Count => itemBounds.Count;
+		public bool ContainsKey(T item) => itemBounds.ContainsKey(item);
+		public bool TryGetValue(T key, out Rectangle value) => itemBounds.TryGetValue(key, out value);
+		public IEnumerator<KeyValuePair<T, Rectangle>> GetEnumerator() => itemBounds.GetEnumerator();
+
+		bool ICollection<KeyValuePair<T, Rectangle>>.IsReadOnly => false;
+		void ICollection<KeyValuePair<T, Rectangle>>.Add(KeyValuePair<T, Rectangle> item) =>
+			((ICollection<KeyValuePair<T, Rectangle>>)itemBounds).Add(item);
+		bool ICollection<KeyValuePair<T, Rectangle>>.Contains(KeyValuePair<T, Rectangle> item) =>
+			((ICollection<KeyValuePair<T, Rectangle>>)itemBounds).Contains(item);
+		void ICollection<KeyValuePair<T, Rectangle>>.CopyTo(KeyValuePair<T, Rectangle>[] array, int arrayIndex) =>
+			((ICollection<KeyValuePair<T, Rectangle>>)itemBounds).CopyTo(array, arrayIndex);
+		bool ICollection<KeyValuePair<T, Rectangle>>.Remove(KeyValuePair<T, Rectangle> item) =>
+			((ICollection<KeyValuePair<T, Rectangle>>)itemBounds).Remove(item);
+		IEnumerator IEnumerable.GetEnumerator() =>
+			((IEnumerable)itemBounds).GetEnumerator();
 	}
 }
