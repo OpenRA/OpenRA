@@ -336,7 +336,7 @@ dotnet_diagnostic.IDE0305.severity = silent # Requires C# 12
 #dotnet_style_readonly_field = true
 dotnet_diagnostic.IDE0044.severity = warning
 
-## Language keyword vs. framework types preferences
+## Language keyword vs framework types preferences
 
 # IDE0049 Use language keywords instead of framework type names for type references
 #dotnet_style_predefined_type_for_locals_parameters_members = true

@@ -76,8 +76,8 @@ actor-heli =
     .name = Apache Longbow
     .description =
     Helicopter Gunship with chainguns.
-      Strong vs. Infantry, Light Vehicles and Aircraft.
-      Weak vs. Tanks.
+      Strong vs Infantry, Light Vehicles and Aircraft.
+      Weak vs Tanks.
     .encyclopedia =
     Has more health than the Orca and acts as a support unit. It works well with artillery, as it can kill approaching light vehicles.
 
@@ -87,8 +87,8 @@ actor-orca =
     .name = Orca
     .description =
     Helicopter gunship with AG missiles.
-      Strong vs. Buildings and Tanks.
-      Weak vs. Infantry.
+      Strong vs Buildings and Tanks.
+      Weak vs Infantry.
     .encyclopedia =
     Fast but fragile, the Orca harasses enemy vehicles and aircraft with AT missiles. It is best used opportunistically, and can be kept alive longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
 
@@ -234,8 +234,8 @@ actor-e1 =
     .name = Minigunner
     .description =
     General-purpose infantry.
-      Strong vs. Infantry.
-      Weak vs. Vehicles.
+      Strong vs Infantry.
+      Weak vs Vehicles.
     .encyclopedia =
     The humble Minigunner is a highly specialized infantry unit designed to soak damage and kill other infantry.
 
@@ -245,7 +245,7 @@ actor-e2 =
     .name = Grenadier
     .description =
     Fast infantry with grenades.
-      Strong vs. Buildings, slow-moving targets.
+      Strong vs Buildings, slow-moving targets.
     .encyclopedia =
     Fast and able to keep up with medium tanks, letting it work well with flanking armies.
 
@@ -255,8 +255,8 @@ actor-e3 =
     .name = Rocket Soldier
     .description =
     Anti-tank/Anti-aircraft infantry.
-      Strong vs. Tanks and Aircraft.
-      Weak vs. Infantry.
+      Strong vs Tanks and Aircraft.
+      Weak vs Infantry.
     .encyclopedia =
     Highly vulnerable but excelling at eliminating enemy armor and aircraft. It is the slowest unit in the game, lagging behind other infantry and even mammoth tanks.
 
@@ -266,8 +266,8 @@ actor-e4 =
     .name = Flamethrower
     .description =
     Advanced anti-infantry unit.
-      Strong vs. Infantry and Buildings.
-      Weak vs. Tanks.
+      Strong vs Infantry and Buildings.
+      Weak vs Tanks.
     .encyclopedia =
     Good for flanking and burning down structures. It has more health than a standard Minigunner, but its short weapons range makes it difficult to use in large armies.
 
@@ -275,9 +275,9 @@ actor-e5 =
     .name = Chemical Warrior
     .description =
     Advanced general-purpose infantry.
-      Strong vs. all Ground units.
+      Strong vs all Ground units.
     .encyclopedia =
-    Similar stats to the Flamethrower but deals good damage vs. heavy armor. Great for stopping enemy armor from crushing your forces.
+    Similar stats to the Flamethrower but deals good damage vs heavy armor. Great for stopping enemy armor from crushing your forces.
 
     It can walk on Tiberium without taking damage, making it particularly useful for harvester harassment on certain maps.
 
@@ -510,7 +510,7 @@ actor-obli =
     .description =
     Advanced base defense.
     Requires power to operate.
-      Strong vs. all Ground units.
+      Strong vs all Ground units.
       Cannot target Aircraft.
     .encyclopedia =
     Advanced defense for Nod that quickly destroys ground targets with a powerful laser.
@@ -519,8 +519,8 @@ actor-gtwr =
     .name = Guard Tower
     .description =
     Basic defensive structure.
-      Strong vs. Infantry.
-      Weak vs. Tanks.
+      Strong vs Infantry.
+      Weak vs Tanks.
     .encyclopedia =
     Base defense armed with a high-velocity machine gun, it shreds infantry and light vehicles within range with its large area of effect.
 
@@ -528,8 +528,8 @@ actor-atwr =
     .name = Advanced Guard Tower
     .description =
     All-purpose defensive structure.
-      Strong vs. Aircraft and Infantry.
-      Weak vs. Tanks.
+      Strong vs Aircraft and Infantry.
+      Weak vs Tanks.
     .encyclopedia =
     Advanced defense for GDI that fires volleys of high explosive missiles at both ground and air targets. Effective versus everything.
 
@@ -633,8 +633,8 @@ actor-apc =
     .description =
     Armed infantry transport.
     Can attack Aircraft.
-      Strong vs. Vehicles.
-      Weak vs. Infantry.
+      Strong vs Vehicles.
+      Weak vs Infantry.
     .encyclopedia =
     The APC (Armored Personnel Carrier) transports infantry, making it handy for capturing civilian structures. While its flak gun does not do much damage to enemy vehicles, the APC can resist enemy shots while your Hum-vees deal the damage.
 
@@ -644,7 +644,7 @@ actor-arty =
     .name = Artillery
     .description =
     Long-range artillery.
-      Strong vs. Infantry, Vehicles and Buildings.
+      Strong vs Infantry, Vehicles and Buildings.
     .encyclopedia =
     Nod's artillery is a glass cannon, fragile but dealing large amounts of damage at long range. Particularly strong vs structures and infantry, it can destroy stationary tanks.
 
@@ -654,8 +654,8 @@ actor-ftnk =
     .name = Flame Tank
     .description =
     Heavily armored flame-throwing vehicle.
-      Strong vs. Infantry, Buildings and Vehicles.
-      Weak vs. Tanks.
+      Strong vs Infantry, Buildings and Vehicles.
+      Weak vs Tanks.
     .encyclopedia =
     Roast infantry and structures alike, making them great for surprise attacks. Be wary of their splash damage on death, but be aware it can also be used to your advantage.
 
@@ -663,8 +663,8 @@ actor-bggy =
     .name = Nod Buggy
     .description =
     Fast scout and anti-infantry vehicle.
-      Strong vs. Infantry.
-      Weak vs. Tanks.
+      Strong vs Infantry.
+      Weak vs Tanks.
     .encyclopedia =
     Strong versus light vehicles and infantry, Buggies are great at scouting and killing isolated infantry. Though it is a little cheaper and faster than the GDI Hum-vee, they are more fragile.
 
@@ -673,8 +673,8 @@ actor-bike =
     .description =
     Fast scout vehicle with rockets.
     Can attack Aircraft.
-      Strong vs. Vehicles and Tanks.
-      Weak vs. Infantry.
+      Strong vs Vehicles and Tanks.
+      Weak vs Infantry.
     .encyclopedia =
     The Nod bike is a very fast vehicle armed with armor-piercing rockets, which makes it great for hit and run and harvester harassment.
 
@@ -684,8 +684,8 @@ actor-jeep =
     .name = Hum-vee
     .description =
     Fast scout and anti-infantry vehicle.
-      Strong vs. Infantry.
-      Weak vs. Tanks.
+      Strong vs Infantry.
+      Weak vs Tanks.
     .encyclopedia =
     Strong versus light vehicles and infantry, Hum-vees are great at scouting and eliminating isolated infantry.
 
@@ -695,8 +695,8 @@ actor-ltnk =
     .name = Light Tank
     .description =
     Fast, light tank.
-      Strong vs. Vehicles and Tanks.
-      Weak vs. Infantry.
+      Strong vs Vehicles and Tanks.
+      Weak vs Infantry.
     .encyclopedia =
     With its great speed and high health pool, the light tank works great as a frontline unit in various compositions despite its damage output.
 
@@ -706,8 +706,8 @@ actor-mtnk =
     .name = Medium Tank
     .description =
     General-Purpose GDI Tank.
-      Strong vs. Tanks and Vehicles.
-      Weak vs. Infantry.
+      Strong vs Tanks and Vehicles.
+      Weak vs Infantry.
     .encyclopedia =
     The workhorse of GDI, offering a good balance of speed, durability and firepower. It will easily destroy Nod light tanks and can tear through structures if it sneaks into a base.
 
@@ -718,7 +718,7 @@ actor-htnk =
     .description =
     Heavily armored GDI Tank.
     Can attack Aircraft.
-      Strong vs. Everything.
+      Strong vs Everything.
     .encyclopedia =
     A crawling battle station, capable of self-repair and engaging any threat. It is particularly effective against enemy armor, but can also destroy small amounts of infantry or aircraft.
 
@@ -728,7 +728,7 @@ actor-msam =
     .name = Rocket Launcher
     .description =
     Long-range rocket artillery.
-      Strong vs. all ground units.
+      Strong vs all ground units.
     .encyclopedia =
     Referred to as  “MLRS” by players (Multiple Launch Rocket System), this artillery platform fires volleys of rockets at distant targets. It is particularly effective against light vehicles and does moderate damage vs infantry, buildings, and heavy armor.
 
@@ -749,8 +749,8 @@ actor-stnk =
     Can attack Aircraft.
     Has weak armor. Can be spotted by infantry and
     defense structures.
-      Strong vs. Vehicles and Tanks.
-      Weak vs. Infantry.
+      Strong vs Vehicles and Tanks.
+      Weak vs Infantry.
     .encyclopedia =
     Cloaked units that become visible when damaged or firing their weapons. They can also be detected by defenses within a small radius or infantry at a one-cell range.
 

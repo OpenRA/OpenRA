@@ -165,8 +165,8 @@ actor-light-inf =
     .name = Light Infantry
     .description =
     General-purpose infantry.
-      Strong vs. Infantry.
-      Weak vs. Vehicles and Artillery.
+      Strong vs Infantry.
+      Weak vs Vehicles and Artillery.
     .encyclopedia =
     Lightly armored foot soldiers, equipped with 9mm RP assault rifles. They are effective against infantry and lightly armored vehicles.
 
@@ -177,8 +177,8 @@ actor-engineer =
     .description =
     Infiltrates and captures enemy
     structures.
-      Strong vs. Buildings.
-      Weak vs. Everything.
+      Strong vs Buildings.
+      Weak vs Everything.
       Repairs damaged cliffs.
     .encyclopedia =
     Can be used to capture enemy buildings.
@@ -189,8 +189,8 @@ actor-trooper =
     .name = Trooper
     .description =
     Anti-tank infantry.
-      Strong vs. Tanks.
-      Weak vs. Infantry and Artillery.
+      Strong vs Tanks.
+      Weak vs Infantry and Artillery.
     .encyclopedia =
     Armed with wire-guided, armor-piercing missile warheads, Troopers are very effective against vehicles and buildings but struggle against infantry.
 
@@ -208,8 +208,8 @@ actor-fremen =
     .name = Fremen
     .description =
     Elite infantry unit with assault rifles and rockets.
-      Strong vs. Infantry and Vehicles.
-      Weak vs. Artillery.
+      Strong vs Infantry and Vehicles.
+      Weak vs Artillery.
       Special Ability: Invisibility.
     .encyclopedia =
     The native desert warriors of Dune, armed with 10mm Assault Rifles and Rockets. Their firepower is equally effective against infantry and vehicles.
@@ -220,8 +220,8 @@ actor-grenadier =
     .name = Grenadier
     .description =
     Infantry with grenades.
-      Strong vs. Buildings and Infantry.
-      Weak vs. Vehicles.
+      Strong vs Buildings and Infantry.
+      Weak vs Vehicles.
     .encyclopedia =
     An infantry artillery unit strong against buildings. They have a chance of exploding when killed, so should not be grouped together.
 
@@ -229,23 +229,23 @@ actor-sardaukar =
     .name = Sardaukar
     .description =
     Elite Corrino assault infantry.
-      Strong vs. Infantry and Vehicles.
-      Weak vs. Artillery.
+      Strong vs Infantry and Vehicles.
+      Weak vs Artillery.
     .encyclopedia =
     Powerful heavy troopers equipped with a machine gun that is effective against infantry and a rocket launcher for targeting vehicles.
 
 actor-mpsardaukar-description =
     Elite Harkonnen assault infantry.
-      Strong vs. Infantry and Vehicles.
-      Weak vs. Artillery.
+      Strong vs Infantry and Vehicles.
+      Weak vs Artillery.
 
 actor-saboteur =
     .name = Saboteur
     .description =
     Sneaky infantry with explosives.
     Turns invisible for a limited time.
-      Strong vs. Buildings.
-      Weak vs. Everything.
+      Strong vs Buildings.
+      Weak vs Everything.
       Special Ability: Destroys buildings.
     .encyclopedia =
     A specialized military unit of House Ordos, capable of demolishing enemy buildings upon entry, but dying in the resulting explosion. It can activate stealth mode to become invisible.
@@ -254,8 +254,8 @@ actor-saboteur =
 
 actor-nsfremen-description =
     Elite infantry unit with assault rifles and rockets.
-      Strong vs. Infantry and Vehicles.
-      Weak vs. Artillery.
+      Strong vs Infantry and Vehicles.
+      Weak vs Artillery.
 
 ## misc.yaml
 actor-crate-name = Crate
@@ -435,8 +435,8 @@ actor-medium-gun-turret =
     .name = Gun Turret
     .description =
     Defensive structure.
-      Strong vs. Tanks.
-      Weak vs. Infantry and Aircraft.
+      Strong vs Tanks.
+      Weak vs Infantry and Aircraft.
     .encyclopedia =
     A medium-range weapon that is effective against all types of vehicle, particularly heavily armored ones. It automatically fires upon any enemy unit within its range and requires power to operate.
 
@@ -447,8 +447,8 @@ actor-large-gun-turret =
     .description =
     Defensive structure.
     Requires power to operate.
-      Strong vs. Infantry and Aircraft.
-      Weak vs. Tanks.
+      Strong vs Infantry and Aircraft.
+      Weak vs Tanks.
     .encyclopedia =
     An enhanced defensive structure with a longer range and faster rate of fire than the Gun Turret. Its advanced targeting system requires power to operate.
 
@@ -493,8 +493,8 @@ actor-palace =
     .nukepower-description = Launches an atomic missile at a target location.
     .produceactorpower-fremen-name = Recruit Fremen
     .produceactorpower-fremen-description = Elite infantry unit with assault rifles and rockets.
-      Strong vs. Infantry and Vehicles.
-      Weak vs. Artillery.
+      Strong vs Infantry and Vehicles.
+      Weak vs Artillery.
       Special Ability: Invisibility.
     .produceactorpower-saboteur-name = Recruit Saboteur
     .produceactorpower-saboteur-description = Sneaky infantry with explosives.
@@ -528,8 +528,8 @@ actor-trike =
     .name = Trike
     .description =
     Fast scout.
-      Strong vs. Infantry.
-      Weak vs. Tanks.
+      Strong vs Infantry.
+      Weak vs Tanks.
     .encyclopedia =
     Lightly armored, three-wheeled vehicles armed with heavy machine guns, effective against infantry and lightly armored vehicles.
 
@@ -539,8 +539,8 @@ actor-quad =
     .name = Missile Quad
     .description =
     Missile Scout.
-      Strong vs. Vehicles.
-      Weak vs. Infantry.
+      Strong vs Vehicles.
+      Weak vs Infantry.
     .encyclopedia =
     Superior to the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. It is effective against most vehicles.
 
@@ -550,8 +550,8 @@ actor-siege-tank =
     .name = Siege Tank
     .description =
     Siege Artillery.
-      Strong vs. Infantry and Buildings.
-      Weak vs. Tanks.
+      Strong vs Infantry and Buildings.
+      Weak vs Tanks.
     .encyclopedia =
     Incredibly effective against infantry and lightly armored vehicles, but struggles against heavily armored targets. It has a long firing range.
 
@@ -561,8 +561,8 @@ actor-missile-tank =
     .name = Missile Tank
     .description =
     Rocket Artillery.
-      Strong vs. Vehicles, Buildings and Aircraft.
-      Weak vs. Infantry.
+      Strong vs Vehicles, Buildings and Aircraft.
+      Weak vs Infantry.
     .encyclopedia =
     Shoots down aircraft and is effective against most targets, except infantry.
 
@@ -572,8 +572,8 @@ actor-sonic-tank =
     .name = Sonic Tank
     .description =
     Fires sonic shocks.
-      Strong vs. Infantry and Vehicles.
-      Weak vs. Artillery.
+      Strong vs Infantry and Vehicles.
+      Weak vs Artillery.
     .encyclopedia =
     Most effective against infantry and lightly armored vehicles, but weaker against armored targets.
 
@@ -585,8 +585,8 @@ actor-devastator =
     .name = Devastator
     .description =
     Super Heavy Tank.
-      Strong vs. Tanks.
-      Weak vs. Artillery.
+      Strong vs Tanks.
+      Weak vs Artillery.
     .encyclopedia =
     As the most powerful tank on Dune, the Devastator is slow but highly effective against most units. It fires dual plasma charges and can self-destruct on command, damaging nearby units and structures.
 
@@ -596,8 +596,8 @@ actor-raider =
     .name = Raider Trike
     .description =
     Improved Scout.
-      Strong vs. Infantry and Light Vehicles.
-      Weak vs. Tanks.
+      Strong vs Infantry and Light Vehicles.
+      Weak vs Tanks.
     .encyclopedia =
     Raider Trikes, upgraded by House Ordos, have enhanced firepower, speed, and armor. Equipped with dual 20mm cannons, they are strong against infantry and lightly armored vehicles.
 
@@ -607,8 +607,8 @@ actor-stealth-raider =
     .name = Stealth Raider Trike
     .description =
     Invisible Raider Trike.
-      Strong vs. Infantry and Light Vehicles.
-      Weak vs. Tanks.
+      Strong vs Infantry and Light Vehicles.
+      Weak vs Tanks.
     .encyclopedia =
     A cloaked version of the Raider, good for stealth attacks. It uncloaks when it fires its machine guns.
 
@@ -624,8 +624,8 @@ actor-deviator =
 
 meta-combat-tank-description =
     Main Battle Tank.
-      Strong vs. Tanks.
-      Weak vs. Infantry.
+      Strong vs Tanks.
+      Weak vs Infantry.
 
 actor-combat-tank-a =
     .name = Atreides Combat Tank

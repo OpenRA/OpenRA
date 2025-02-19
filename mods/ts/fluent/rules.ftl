@@ -84,15 +84,15 @@ actor-orca =
     .description =
     Fast assault gunship with
     dual missile launchers.
-       Strong vs. Buildings and Vehicles.
-       Weak vs. Infantry and Aircraft.
+       Strong vs Buildings and Vehicles.
+       Weak vs Infantry and Aircraft.
 
 actor-orcab =
     .name = Orca Bomber
     .description =
     Heavy bomber.
-       Strong vs. Buildings and Vehicles.
-       Weak vs. Infantry and Aircraft.
+       Strong vs Buildings and Vehicles.
+       Weak vs Infantry and Aircraft.
 
 actor-orcatran-name = Orca Transport
 
@@ -108,16 +108,16 @@ actor-scrin =
     .description =
     Advanced fighter-bomber craft
     with twin plasma cannons.
-       Strong vs. Buildings and Vehicles.
-       Weak vs. Infantry and Aircraft.
+       Strong vs Buildings and Vehicles.
+       Weak vs Infantry and Aircraft.
 
 actor-apache =
     .name = Harpy
     .description =
     Anti-personnel support gunship
     with dual chain guns.
-       Strong vs. Infantry, Light armor and Aircraft.
-       Weak vs. Vehicles.
+       Strong vs Infantry, Light armor and Aircraft.
+       Weak vs Vehicles.
 
 actor-hunter-name = Hunter-Seeker Droid
 
@@ -297,8 +297,8 @@ actor-e2 =
     .name = Disc Thrower
     .description =
     Infantry with special explosive discs.
-       Strong vs. Buildings and Infantry.
-       Weak vs. Vehicles and Aircraft.
+       Strong vs Buildings and Infantry.
+       Weak vs Vehicles and Aircraft.
 
 actor-medic =
     .name = Medic
@@ -310,8 +310,8 @@ actor-jumpjet =
     .name = Jump Jet Infantry
     .description =
     Airborne soldiers.
-       Strong vs. Infantry and Aircraft.
-       Weak vs. Vehicles.
+       Strong vs Infantry and Aircraft.
+       Weak vs Vehicles.
 
 actor-jumpjet-husk-name = Jump Jet Infantry
 
@@ -321,8 +321,8 @@ actor-ghost =
     Elite commando infantry with a railgun
     and C4.
     Only one can be trained at a time.
-       Strong vs. Infantry and Buildings.
-       Weak vs. Vehicles and Aircraft.
+       Strong vs Infantry and Buildings.
+       Weak vs Vehicles and Aircraft.
        Special Ability: Destroy Building with C4.
 
 
@@ -431,24 +431,24 @@ actor-gavulc =
     .description =
     Basic base defense.
     Does not require power to operate.
-       Strong vs. Infantry and Light armor.
-       Weak vs. Aircraft.
+       Strong vs Infantry and Light armor.
+       Weak vs Aircraft.
 
 actor-garock =
     .name = RPG Upgrade
     .description =
     GDI Advanced base defense.
     Does not require power to operate.
-       Strong vs. Armored ground units.
-       Weak vs. Aircraft.
+       Strong vs Armored ground units.
+       Weak vs Aircraft.
 
 actor-gacsam =
     .name = SAM Upgrade
     .description =
     GDI Anti-Air base defense.
     Does not require power to operate.
-       Strong vs. Aircraft.
-       Weak vs. Ground units.
+       Strong vs Aircraft.
+       Weak vs Ground units.
 
 ## gdi-vehicles.yaml
 actor-apc =
@@ -463,22 +463,22 @@ actor-hvr =
     .description =
     Hovering vehicle with
     long-range missiles.
-       Strong vs. Vehicles and Aircraft.
-       Weak vs. Infantry.
+       Strong vs Vehicles and Aircraft.
+       Weak vs Infantry.
 
 actor-smech =
     .name = Wolverine
     .description =
     Anti-personnel walker.
-       Strong vs. Infantry and Light armor.
-       Weak vs. Vehicles and Aircraft.
+       Strong vs Infantry and Light armor.
+       Weak vs Vehicles and Aircraft.
 
 actor-mmch =
     .name = Titan
     .description =
     General purpose mechanized walker.
-       Strong vs. Vehicles.
-       Weak vs. Infantry and Aircraft.
+       Strong vs Vehicles.
+       Weak vs Infantry and Aircraft.
 
 actor-hmec =
     .name = Mammoth Mk. II
@@ -486,16 +486,16 @@ actor-hmec =
     Slow, heavily armored walker.
     Maximum of one can be built.
     Armed with dual railguns and rocket launchers.
-       Strong vs. Infantry, Vehicles, Aircraft and Buildings.
-       Weak vs. Nothing.
+       Strong vs Infantry, Vehicles, Aircraft and Buildings.
+       Weak vs Nothing.
 
 actor-sonic =
     .name = Disruptor
     .description =
     Armored high-tech vehicle with
     long-range and sonic armament.
-       Strong vs. Infantry, Vehicles and Buildings.
-       Weak vs. Aircraft.
+       Strong vs Infantry, Vehicles and Buildings.
+       Weak vs Aircraft.
 
 actor-jugg =
     .name = Juggernaut
@@ -503,8 +503,8 @@ actor-jugg =
     .description =
     Mobile Artillery Mech.
     Must be deployed in order to shoot.
-       Strong vs. Ground units.
-       Weak vs. Aircraft.
+       Strong vs Ground units.
+       Weak vs Aircraft.
 
 actor-mobilemp =
     .name = Mobile EMP Cannon
@@ -531,23 +531,23 @@ actor-e3 =
     .name = Rocket Infantry
     .description =
     Anti-tank infantry.
-       Strong vs. Vehicles, Aircraft and Buildings.
-       Weak vs. Infantry.
+       Strong vs Vehicles, Aircraft and Buildings.
+       Weak vs Infantry.
 
 actor-cyborg =
     .name = Cyborg Infantry
     .description =
     Cybernetic infantry unit.
-       Strong vs. Infantry and Light armor.
-       Weak vs. Vehicles and Aircraft.
+       Strong vs Infantry and Light armor.
+       Weak vs Vehicles and Aircraft.
 
 actor-cyc2 =
     .name = Cyborg Commando
     .description =
     Elite cybernetic infantry unit.
     Maximum of one can be built.
-       Strong vs. Infantry, Vehicles and Buildings.
-       Weak vs. Aircraft.
+       Strong vs Infantry, Vehicles and Buildings.
+       Weak vs Aircraft.
 
 actor-mhijack =
     .name = Mutant Hijacker
@@ -648,39 +648,39 @@ actor-nalasr =
     .description =
     Basic base defense.
     Requires power to operate.
-       Strong vs. Ground units.
-       Weak vs. Aircraft.
+       Strong vs Ground units.
+       Weak vs Aircraft.
 
 actor-naobel =
     .name = Obelisk of Light
     .description =
     Advanced base defense.
     Requires power to operate.
-       Strong vs. Ground units.
-       Weak vs. Aircraft.
+       Strong vs Ground units.
+       Weak vs Aircraft.
 
 actor-nasam =
     .name = S.A.M. Site
     .description =
     Nod Anti-Air base defense.
     Requires power to operate.
-       Strong vs. Aircraft.
-       Weak vs. Ground units.
+       Strong vs Aircraft.
+       Weak vs Ground units.
 
 ## nod-vehicles.yaml
 actor-bggy =
     .name = Attack Buggy
     .description =
     Fast scout and anti-infantry vehicle.
-       Strong vs. Infantry and Light armor.
-       Weak vs. Vehicles and Aircraft.
+       Strong vs Infantry and Light armor.
+       Weak vs Vehicles and Aircraft.
 
 actor-bike =
     .name = Attack Cycle
     .description =
     Fast scout vehicle with rockets.
-       Strong vs. Vehicles.
-       Weak vs. Infantry and Aircraft.
+       Strong vs Vehicles.
+       Weak vs Infantry and Aircraft.
 
 actor-ttnk =
     .name = Tick Tank
@@ -688,8 +688,8 @@ actor-ttnk =
     .description =
     Nod's main battle tank.
     Can deploy to gain extra protection.
-       Strong vs. Vehicles.
-       Weak vs. Infantry and Aircraft.
+       Strong vs Vehicles.
+       Weak vs Infantry and Aircraft.
 
 actor-art2 =
     .name = Artillery
@@ -697,8 +697,8 @@ actor-art2 =
     .description =
     Mobile Artillery.
     Needs to be deployed in order to shoot.
-       Strong vs. Ground units.
-       Weak vs. Aircraft.
+       Strong vs Ground units.
+       Weak vs Aircraft.
 
 actor-repair =
     .name = Mobile Repair Vehicle
@@ -724,8 +724,8 @@ actor-subtank =
     .description =
     Subterranean Flame Tank
     with the ability to move underground.
-       Strong vs. Infantry and Buildings.
-       Weak vs. Tanks and Aircraft.
+       Strong vs Infantry and Buildings.
+       Weak vs Tanks and Aircraft.
 
 actor-stnk =
     .name = Stealth Tank
@@ -733,8 +733,8 @@ actor-stnk =
     Lightly armored tank equipped with a personal
     stealth generator. Armed with missiles.
     Visible to infantry at close range.
-       Strong vs. Vehicles and Aircraft.
-       Weak vs. Infantry.
+       Strong vs Vehicles and Aircraft.
+       Weak vs Infantry.
 
 actor-sgen =
     .name = Mobile Stealth Generator
@@ -748,8 +748,8 @@ actor-e1 =
     .name = Light Infantry
     .description =
     General-purpose infantry.
-       Strong vs. Infantry.
-       Weak vs. Vehicles and Aircraft.
+       Strong vs Infantry.
+       Weak vs Vehicles and Aircraft.
 
 actor-engineer =
     .name = Engineer
