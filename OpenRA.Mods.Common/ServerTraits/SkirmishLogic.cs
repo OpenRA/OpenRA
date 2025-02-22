@@ -92,12 +92,18 @@ namespace OpenRA.Mods.Common.Server
 				}
 			}
 
+			var selectableFactions = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
+				.Where(f => f.Selectable)
+				.Select(f => f.InternalName)
+				.ToList();
+
 			var playerNode = nodes.NodeWithKeyOrDefault("Player");
 			if (playerNode != null)
 			{
 				var client = server.GetClient(conn);
 				SkirmishSlot.DeserializeToClient(playerNode.Value, client);
 				client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
+				client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
 			}
 
 			var botsNode = nodes.NodeWithKeyOrDefault("Bots");
@@ -127,6 +133,8 @@ namespace OpenRA.Mods.Common.Server
 					// Validate whether color is allowed and get an alternative if it isn't
 					if (client.Slot != null && !server.LobbyInfo.Slots[client.Slot].LockColor)
 						client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
+
+					client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
 
 					server.LobbyInfo.Clients.Add(client);
 					S.SyncClientToPlayerReference(client, server.Map.Players.Players[client.Slot]);

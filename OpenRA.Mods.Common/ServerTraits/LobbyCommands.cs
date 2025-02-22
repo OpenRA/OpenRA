@@ -87,9 +87,6 @@ namespace OpenRA.Mods.Common.Server
 		[FluentReference("faction")]
 		const string InvalidFactionSelected = "notification-invalid-faction-selected";
 
-		[FluentReference("factions")]
-		const string SupportedFactions = "notification-supported-factions";
-
 		[FluentReference]
 		const string RequiresHost = "notification-requires-host";
 
@@ -609,9 +606,8 @@ namespace OpenRA.Mods.Common.Server
 
 						foreach (var c in server.LobbyInfo.Clients)
 						{
+							c.Faction = SanitizePlayerFaction(server, c.Faction, selectableFactions);
 							c.State = Session.ClientState.Invalid;
-							if (!selectableFactions.Contains(c.Faction))
-								c.Faction = "Random";
 						}
 
 						// Reassign players into new slots based on their old slots:
@@ -1055,15 +1051,13 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockFaction)
 					return true;
 
-				var factions = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
-					.Where(f => f.Selectable).Select(f => f.InternalName)
-					.ToList();
-
 				var faction = parts[1];
-				if (!factions.Contains(faction))
+				var isValidFaction = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
+					.Any(f => f.Selectable && f.InternalName == client.Faction);
+
+				if (!isValidFaction)
 				{
 					server.SendFluentMessageTo(conn, InvalidFactionSelected, new object[] { "faction", faction });
-					server.SendFluentMessageTo(conn, SupportedFactions, new object[] { "factions", factions.JoinWith(", ") });
 					return true;
 				}
 
@@ -1436,6 +1430,11 @@ namespace OpenRA.Mods.Common.Server
 
 				return colorManager.MakeValid(askColor, server.Random, terrainColors, playerColors, OnError);
 			}
+		}
+
+		public static string SanitizePlayerFaction(S server, string askedFaction, IEnumerable<string> validFactions)
+		{
+			return !validFactions.Contains(askedFaction) ? "Random" : askedFaction;
 		}
 
 		static string MissionBriefingOrDefault(S server)
