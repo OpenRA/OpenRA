@@ -37,7 +37,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			shader = renderer.CreateShader(new RenderPostProcessPassTexturedShaderBindings("vortex"));
 
 			vortexSheet = new Sheet(SheetType.BGRA, new Size(512, 512));
-			vortexBuffer = renderer.CreateVertexBuffer<RenderPostProcessPassTexturedVertex>(288);
 			var vertices = new RenderPostProcessPassTexturedVertex[288];
 
 			var data = vortexSheet.GetData();
@@ -72,7 +71,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				vertices[j++] = new RenderPostProcessPassTexturedVertex(-32, -32, tl.X, tl.Y);
 			}
 
-			vortexBuffer.SetData(ref vertices, 288);
+			vortexBuffer = renderer.CreateVertexBuffer(vertices, false);
 			vortexSheet.CommitBufferedData();
 		}
 

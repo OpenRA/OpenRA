@@ -45,6 +45,7 @@ namespace OpenRA.Platforms.Default
 		Func<ITexture> getCreateTexture;
 		Func<object, IFrameBuffer> getCreateFrameBuffer;
 		Func<object, IShader> getCreateShader;
+		Func<object, object> getCreateEmptyVertexBuffer;
 		Func<object, object> getCreateVertexBuffer;
 		Func<object, IIndexBuffer> getCreateIndexBuffer;
 		Action<object> doDrawPrimitives;
@@ -96,11 +97,25 @@ namespace OpenRA.Platforms.Default
 								context.CreateFrameBuffer(t.Item1, (ITextureInternal)CreateTexture(), t.Item2));
 						};
 					getCreateShader = bindings => new ThreadedShader(this, context.CreateShader((IShaderBindings)bindings));
-					getCreateVertexBuffer =
+					getCreateEmptyVertexBuffer =
 						tuple =>
 						{
 							(object t, var type) = ((int, Type))tuple;
-							var vertexBuffer = context.GetType().GetMethod(nameof(CreateVertexBuffer)).MakeGenericMethod(type).Invoke(context, [t]);
+							var vertexBuffer = context.GetType()
+								.GetMethod(nameof(CreateEmptyVertexBuffer))
+								.MakeGenericMethod(type)
+								.Invoke(context, [t]);
+
+							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
+						};
+					getCreateVertexBuffer =
+						tuple =>
+						{
+							var (array, dynamic, type) = ((object, bool, Type))tuple;
+							var vertexBuffer = context.GetType()
+								.GetMethod(nameof(CreateVertexBuffer))
+								.MakeGenericMethod(type)
+								.Invoke(context, [array, dynamic]);
 							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
 						};
 					getCreateIndexBuffer = indices => new ThreadedIndexBuffer(this, context.CreateIndexBuffer((uint[])indices));
@@ -426,9 +441,14 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateTexture);
 		}
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>(int size) where T : struct
+		public IVertexBuffer<T> CreateEmptyVertexBuffer<T>(int size) where T : struct
 		{
-			return (IVertexBuffer<T>)Send(getCreateVertexBuffer, (size, typeof(T)));
+			return (IVertexBuffer<T>)Send(getCreateEmptyVertexBuffer, (size, typeof(T)));
+		}
+
+		public IVertexBuffer<T> CreateVertexBuffer<T>(T[] data, bool dynamic = true) where T : struct
+		{
+			return (IVertexBuffer<T>)Send(getCreateVertexBuffer, ((object)data, dynamic, typeof(T)));
 		}
 
 		public IIndexBuffer CreateIndexBuffer(uint[] indices)

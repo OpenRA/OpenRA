@@ -42,7 +42,6 @@ namespace OpenRA.Mods.D2k.Traits
 			Info = info;
 			renderer = Game.Renderer;
 			shader = renderer.CreateShader(new RenderPostProcessPassTexturedShaderBindings("sonic"));
-			buffer = renderer.CreateVertexBuffer<RenderPostProcessPassTexturedVertex>(6);
 
 			var r = 0.5f * info.Size;
 			shader.SetVec("Scale", r * (1f / info.Zoom - 1));
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.D2k.Traits
 				new(-r, -r, -1, -1)
 			};
 
-			buffer.SetData(ref vertices, 6);
+			buffer = renderer.CreateVertexBuffer(vertices, false);
 		}
 
 		public void Draw(float3 pos)

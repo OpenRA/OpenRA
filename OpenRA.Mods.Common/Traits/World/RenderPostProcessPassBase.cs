@@ -36,8 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 				new(-1, -1)
 			};
 
-			buffer = renderer.CreateVertexBuffer<RenderPostProcessPassVertex>(6);
-			buffer.SetData(ref vertices, 6);
+			buffer = renderer.CreateVertexBuffer(vertices, false);
 		}
 
 		PostProcessPassType IRenderPostProcessPass.Type => type;

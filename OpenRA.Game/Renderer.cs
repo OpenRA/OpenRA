@@ -107,7 +107,7 @@ namespace OpenRA
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempVertexBuffer = Context.CreateVertexBuffer<Vertex>(TempVertexBufferSize);
+			tempVertexBuffer = Context.CreateEmptyVertexBuffer<Vertex>(TempVertexBufferSize);
 			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
 			worldBufferSnapshot = Context.CreateTexture();
 		}
@@ -413,9 +413,9 @@ namespace OpenRA
 			return Context.CreateShader(bindings);
 		}
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>(int length) where T : struct
+		public IVertexBuffer<T> CreateVertexBuffer<T>(T[] data, bool dynamic) where T : struct
 		{
-			return Context.CreateVertexBuffer<T>(length);
+			return Context.CreateVertexBuffer(data, dynamic);
 		}
 
 		public void EnableScissor(Rectangle rect)
