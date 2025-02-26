@@ -23,8 +23,8 @@ ProduceInfantry = function(barracks)
 	local delay = Utils.RandomInteger(DateTime.Seconds(3), DateTime.Seconds(9))
 	local toBuild = { Utils.Random(AlliedInfantryTypes) }
 	local path = Utils.Random(AttackPaths)
-	Greece.Build(toBuild, function(unit)
-		InfAttack[#InfAttack + 1] = unit[1]
+	Greece.Build(toBuild, function(units)
+		InfAttack[#InfAttack + 1] = units[1]
 
 		if #InfAttack >= 10 then
 			SendUnits(InfAttack, path)
@@ -41,18 +41,19 @@ ProduceInfantry = function(barracks)
 end
 
 ProduceArmor = function(factory)
+	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
+
 	if factory.IsDead or factory.Owner ~= Greece then
 		return
 	elseif IsHarvesterMissing() then
-		ProduceHarvester(factory)
+		ProduceHarvester(factory, delay)
 		return
 	end
 
-	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
 	local toBuild = { Utils.Random(AlliedArmorTypes) }
 	local path = Utils.Random(AttackPaths)
-	Greece.Build(toBuild, function(unit)
-		ArmorAttack[#ArmorAttack + 1] = unit[1]
+	Greece.Build(toBuild, function(units)
+		ArmorAttack[#ArmorAttack + 1] = units[1]
 
 		if #ArmorAttack >= 6 then
 			SendUnits(ArmorAttack, path)
@@ -68,15 +69,16 @@ ProduceArmor = function(factory)
 	end)
 end
 
-ProduceHarvester = function(factory)
+ProduceHarvester = function(factory, delay)
 	if GreeceMoney() < Actor.Cost("harv") then
 		return
 	end
 
 	local toBuild = { "harv" }
-	Greece.Build(toBuild, function(unit)
-		unit.FindResources()
-		ProduceArmor(factory)
+	Greece.Build(toBuild, function()
+		Trigger.AfterDelay(delay, function()
+			ProduceArmor(factory)
+		end)
 	end)
 end
 
