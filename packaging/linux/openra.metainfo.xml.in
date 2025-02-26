@@ -43,6 +43,10 @@
       <caption>Multiplayer lobby in the Tiberian Dawn mod</caption>
     </screenshot>
   </screenshots>
+  <branding>
+    <color type="primary" scheme_preference="light">#ffffff</color>
+    <color type="primary" scheme_preference="dark">#1a191e</color>
+  </branding>
   <url type="homepage">https://www.openra.net</url>
   <url type="bugtracker">https://github.com/OpenRA/OpenRA/issues</url>
   <url type="donation">https://www.patreon.com/orahosting</url>
