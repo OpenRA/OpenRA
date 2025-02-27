@@ -71,7 +71,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Action<string> afterSave = uid =>
 				{
-					map.Dispose();
 					Game.LoadEditor(uid);
 
 					Ui.CloseWindow();
