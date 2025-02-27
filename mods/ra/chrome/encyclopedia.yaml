@@ -1,0 +1,85 @@
+Background@ENCYCLOPEDIA_PANEL:
+	Logic: EncyclopediaLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 600
+	Children:
+		Container@ENCYCLOPEDIA_CONTENT:
+			Width: PARENT_WIDTH - 40
+			Height: PARENT_HEIGHT - 80
+			X: 20
+			Y: 20
+			Children:
+				Label@ENCYCLOPEDIA_TITLE:
+					Width: PARENT_WIDTH
+					Height: 25
+					Text: label-mentat-title
+					Align: Center
+					Font: Bold
+				ScrollPanel@ACTOR_LIST:
+					Y: 30
+					Width: 190
+					Height: PARENT_HEIGHT - 25
+					Children:
+						ScrollItem@HEADER:
+							Background: scrollheader
+							Width: PARENT_WIDTH - 27
+							Height: 13
+							X: 2
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 13
+									Align: Center
+						ScrollItem@TEMPLATE:
+							Width: PARENT_WIDTH - 27
+							Height: 25
+							X: 2
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 10
+									Width: PARENT_WIDTH - 20
+									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+				Container@ACTOR_INFO:
+					X: PARENT_WIDTH - WIDTH
+					Y: 30
+					Width: PARENT_WIDTH - 190 - 10
+					Height: PARENT_HEIGHT - 25
+					Children:
+						Background@ACTOR_BG:
+							Width: 150
+							Height: 170
+							Background: dialog3
+							Children:
+								ActorPreview@ACTOR_PREVIEW:
+									X: 1
+									Y: 1
+									Width: PARENT_WIDTH - 2
+									Height: PARENT_HEIGHT - 2
+						ScrollPanel@ACTOR_DESCRIPTION_PANEL:
+							X: 150 + 10
+							Width: PARENT_WIDTH - 150 - 10
+							Height: 170
+							TopBottomSpacing: 8
+							Children:
+								Label@ACTOR_DESCRIPTION:
+									X: 8
+									Y: 8
+									Width: PARENT_WIDTH - 40
+									VAlign: Top
+									Font: Regular
+		Button@BACK_BUTTON:
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-back
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
