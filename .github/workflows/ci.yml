@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      - name: Remove System .NET
+        run: sudo apt-get remove -y dotnet*
+
       - name: Clone Repository
         uses: actions/checkout@v4
 
