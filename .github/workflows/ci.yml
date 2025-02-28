@@ -56,7 +56,7 @@ jobs:
 
       - name: Check Mods
         run: |
-          choco install lua --version 5.1.5.52
+          choco install lua --version 5.1.5.52 --no-progress
           $ENV:Path = $ENV:Path + ";C:\Program Files (x86)\Lua\5.1\"
           $ENV:TREAT_WARNINGS_AS_ERRORS = "true"
           .\make.ps1 check-scripts
