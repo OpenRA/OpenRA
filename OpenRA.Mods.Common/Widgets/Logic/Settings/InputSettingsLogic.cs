@@ -68,7 +68,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL_TYPE_DROPDOWN");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
-			mouseScrollDropdown.GetText = gs.MouseScroll.ToString;
+
+			// MouseScroll can change, must display latest value.
+#pragma warning disable IDE0200 // Remove unnecessary lambda expression
+			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
+#pragma warning restore IDE0200
 
 			var mouseControlDescClassic = panel.Get("MOUSE_CONTROL_DESC_CLASSIC");
 			mouseControlDescClassic.IsVisible = () => gs.UseClassicMouseStyle;
@@ -113,7 +117,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
 			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
-			zoomModifierDropdown.GetText = gs.ZoomModifier.ToString;
+
+			// ZoomModifier can change, must display latest value.
+#pragma warning disable IDE0200 // Remove unnecessary lambda expression
+			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
+#pragma warning restore IDE0200
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
