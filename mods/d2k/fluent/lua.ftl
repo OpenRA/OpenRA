@@ -1,12 +1,12 @@
 ## campaign.lua
-objective-failed = Objective Failed
-objective-completed = Objective Completed
+objective-failed = Objective failed
+objective-completed = Objective completed
 
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New Primary Objective
-new-secondary-objective = New Secondary Objective
+new-primary-objective = New primary objective
+new-secondary-objective = New secondary objective
 
 mentat = Mentat
 
@@ -56,7 +56,7 @@ fremen-sietch-under-attack = The Fremen Sietch is under attack!
 smugglers-annihilated = The Smugglers have been annihilated!
 
 ## atreides-05
-incoming-mercenary-force = Hostile mercenary force incoming.
+incoming-mercenary-force = Incoming hostile Mercenary forces detected.
 contraband-has-arrived = The contraband has arrived!
 contraband-confiscated = Contraband has arrived and been confiscated.
 contraband-not-confiscated = The Smuggler contraband has arrived, but confiscation is impossible due to the heavy defenses of the Starport.
@@ -74,7 +74,7 @@ hostages-released = Hostages released!
 stay-away-from-starport = Stay away from our Starport.
 smuggler-leader = Smuggler Leader.
 were-warned-will-pay = You were warned. Now you will pay.
-destroy-smugglers-mercenaries = Destroy the Smugglers and their mercenaries.
+destroy-smugglers-mercenaries = Destroy the Smugglers and their Mercenaries.
 capture-harkonnen-barracks-release-hostages = Capture the Harkonnen barracks to release the hostages.
 
 ## harkonnen-01ab, harkonnen-03ab
@@ -144,7 +144,7 @@ capture-atreides-starport-establish-base = Capture the Atreides Starport and est
 
 ## ordos-06a
 ixian-reinforcements-arrived = Ixian reinforcements have arrived!
-deliveries-arriving-massive-reinforcements = Deliveries are beginning to arrive; massive reinforcements expected!
+deliveries-arriving-massive-reinforcements = Deliveries are beginning to arrive. Massive reinforcements expected!
 initial-reinforcements-arrive-in = Initial reinforcements will arrive in { $time }
 additional-reinforcements-arrive-in = Additional reinforcements will arrive in { $time }
 defend-starport = Defend the Starport.

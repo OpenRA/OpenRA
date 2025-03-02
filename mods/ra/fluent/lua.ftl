@@ -1,12 +1,12 @@
 ## campaign.lua
-objective-failed = Objective Failed
-objective-completed = Objective Completed
+objective-failed = Objective failed
+objective-completed = Objective completed
 
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New Primary Objective
-new-secondary-objective = New Secondary Objective
+new-primary-objective = New primary objective
+new-secondary-objective = New secondary objective
 
 ## allies-01, allies-03, allies-05abc, evacuation, personal-war
 tanya = Tanya
@@ -27,7 +27,7 @@ tanya-survive = Tanya must survive.
 escort-convoy = Escort the convoy.
 
 ## allies-02
-convoy-arrived = The Convoy has arrived!
+convoy-arrived = The convoy has arrived!
 secure-convoy = Secure the convoy's path.
 eliminate-soviets = Eliminate the entire Soviet presence in this area.
 
@@ -46,7 +46,7 @@ destroy-soviet-units-buildings = Destroy all Soviet units and buildings in this 
 destroy-convoys = Eliminate all passing Soviet convoys.
 
 ## allies-05a
-extract-transport = Get all your forces aboard the transport.
+extract-transport = Get all your forces into the transport.
 
 # allies-05abc
 spy = Spy
@@ -55,7 +55,7 @@ battlefield-control = Battlefield Control
 skip-heroics = Good work! But next time, skip the heroics!
 rescue-tanya = Rescue Tanya.
 eliminate-soviet-units = Eliminate all Soviet units in this area.
-infiltrate-warfactory = Infiltrate the Soviet War Factory.
+infiltrate-warfactory = Infiltrate the Soviet war factory.
 destroy-sam-sites-blocker = Destroy all four SAM Sites blocking
     our reinforcements' helicopter from landing.
 
@@ -91,7 +91,7 @@ evacuate-scientists-from-east-island = Evacuate all scientists from the island t
 ## allies-08ab
 experiment-successful = The experiment is a success!
 chronosphere-experiment-completes-in = Chronosphere experiment completes in { $time }
-defend-chronosphere-tech-center = Defend the Chronosphere and Technology Center
+defend-chronosphere-tech-center = Defend the Chronosphere and Tech Center
     at all costs.
 chronosphere-needs-power = The Chronosphere must have power when the
     timer runs out.
@@ -99,7 +99,7 @@ chronosphere-needs-power = The Chronosphere must have power when the
 ## allies09a
 extract-kosygin = Extract Kosygin and
     get him back to your base.
-infiltrate-soviet-command-center-contact-kosygin = Infiltrate the Soviet Command Center and
+infiltrate-soviet-command-center-contact-kosygin = Infiltrate the Soviet command center and
     contact Kosygin.
 kosygin-must-survive = Kosygin must survive.
 
@@ -150,7 +150,7 @@ take-out-the-soviet-power-grid = Disable the Soviet power grid.
 units-evacuated = { $evacuated } / { $threshold } units evacuated.
 evacuate-units = Evacuate { $threshold } units.
 destroy-nearby-soviet-airbases = Destroy the nearby Soviet airbases.
-evacuate-at-least-one-gap-generator = Save at least one Mobile Gap Generator.
+evacuate-at-least-one-gap-generator = Save at least one mobile gap generator.
 transferring-funds = Transferring funds.
 co-commander-missing = Co-Commander is missing
 
@@ -179,14 +179,14 @@ rescue-civilians-island-shelter-hard = Evacuate all civilians to the island shel
 clear-enemy-submarines = Clear the area of enemy submarine activity.
 
 ## fort-lonestar
-no-more-waves = The onslaught is almost over! No more waves remain.
+no-more-waves = You almost survived the onslaught! No more waves incoming.
 defend-fort-lonestar = Defend Fort Lonestar at all costs!
 lonestar-ai-sold-its-walls = Lonestar AI { $id } sold its walls for better combat performance.
 
 ## in-the-nick-of-time
 friendlies-coming-out = Friendlies coming out!
 medic = Medic
-get-scientists-evacuation-point = Commander, we're detecting Soviet transports headed your way. Get the scientists back to the extraction point in the southeast!
+get-scientists-evacuation-point = Commander, we're detecting Soviet transports headed your way. Get those scientists back to the extraction point in the southeast!
 landcom-16-capitalized = LANDCOM 16
 scientists-killed-in-command-center = The scientists were in the Command Center!
 chronosphere-explodes-in = Chronosphere explodes in { $time }
@@ -197,7 +197,7 @@ rescue-scientists-extraction-point = Rescue the scientists and escort them back 
 too-late = We're too late!
 
 ## infiltration
-secure-laboratory-guards = Eliminate the guards to secure the laboratory.
+secure-laboratory-guards = Secure the laboratory by eliminating its guards.
 destroy-remaining-soviet-presence = Destroy the remaining Soviet presence.
 infiltrate-laboratory = Infiltrate the laboratory with a spy undetected.
 secure-lab-in = Secure lab in: { $time }
@@ -207,25 +207,25 @@ soviet-research-lab-not-secured-in-time = The Soviet research laboratory was not
 percentage-village-destroyed = { $percentage }% of the village destroyed.
 save-village = Save the village.
 mcv-main-island = Get your MCV to the main island.
-capture-air-force-hq = Find and capture the enemy Air Force HQ.
+capture-air-force-hq = Locate and capture the enemy Air Force HQ.
 
 ## monster-tank-madness
 find-demitri = Find Dr. Demitri. He is likely hiding in the village
     to the far south.
-reprogram-super-tanks = Reprogram the Super Tanks by infiltrating
-    the Soviet Radar Dome with a spy.
+reprogram-super-tanks = Reprogram the super tanks by sending a spy
+    into the Soviet radar dome.
 defend-outpost = Defend and repair our outpost.
 super-tank-self-destruct-t-minus-3 = In 3 minutes the super tanks will self-destruct.
 evacuate-demitri = Evacuate Dr. Demitri with the helicopter waiting
     at our outpost.
-super-tank-self-destruct-in = The Super Tanks will self-destruct in { $time }
-super-tanks-destroyed = The Super Tanks have been destroyed!
-eliminate-super-tanks = Destroy all remaining Super Tanks.
+super-tank-self-destruct-in = The super tanks will self-destruct in { $time }
+super-tanks-destroyed = The super tanks have been destroyed!
+eliminate-super-tanks = Destroy all remaining super tanks.
 steal-money-outpost = Use the Thief to steal funds from the nearby outpost.
 cross-river = Secure transportation to the mainland.
 find-outpost-and-repair = Find our outpost and start repairs.
 evacuate-civilian-hospital = Evacuate all civilians from the hospital.
-demitri-extracted-super-tanks-destroyed = Dr. Demitri has been safely extracted, and the Super Tanks have been dealt with.
+demitri-extracted-super-tanks-destroyed = Dr. Demitri has been safely extracted, and the super tanks have been dealt with.
 
 ## mousetrap
 all-engineers-killed = All engineers have been killed.
@@ -242,7 +242,7 @@ guide-thank-you = Thank you! I'll help you get into town!
 guide-follow-me = Follow me!
 guide-patrol-coming = Uh oh, a patrol is coming this way.
 guide-come-this-way = Come this way! Hurry!
-guide-safe-to-move = It's safe now. Let's go.
+guide-safe-to-move = It's safe to move now. Let's go.
 hostage-dies-in = Hostage dies in { $time }
 keep-all-hostages-alive = Keep all hostages alive.
 
@@ -253,8 +253,8 @@ capture-enemy-radar-dome = Capture the enemy Radar Dome.
 destroy-escaping-submarine = Destroy the submarine before it escapes!
 submarine-escapes = The submarine is heading for open sea!
 submarine-construction-complete-in = Submarine construction complete in { $time }
-destroy-soviet-sub-pen = Destroy the Soviet Submarine Pen.
-power-down-tesla-coils = Cut power to the Tesla Coils.
+destroy-soviet-sub-pen = Destroy the Soviet sub pen.
+power-down-tesla-coils = Cut power to the tesla coils.
 
 ## sarin-gas-1-crackdown, soviet09
 convoy-truck-escaping = Convoy truck attempting to escape!
@@ -262,7 +262,7 @@ convoy-truck-escaping = Convoy truck attempting to escape!
 ## sarin-gas-1-crackdown
 prevent-soviet-trucks-escaping = Prevent the Soviet convoy trucks from escaping.
 clear-sector-soviet-presence = Clear the sector of all Soviet presence.
-infiltrate-radar-reveal-escape-routes = Infiltrate the Soviet Radar Dome to reveal convoy
+infiltrate-radar-reveal-escape-routes = Infiltrate the Soviet Radar Dome to reveal truck
     escape routes.
 
 ## sarin-gas-2-down-under, situation-critical
@@ -281,30 +281,30 @@ soviet-officer = Soviet Officer
 prepare-to-fire = Prepare to Fire!
 fire = Fire!
 thanks-for-rescue = Thanks for the rescue!
-move-nuclear-outside = The Soviets have an unstable nuclear device stored here
-    - help me move it out of the facility!
+move-nuclear-outside = The Soviets have an unstable nuclear device stored here.
+     I need to move it out of the facility!
 exit-clear-hopefully = I hope the exit is clear!
-reach-eastern-exit = Reach the eastern facility exit.
+reach-eastern-exit = Reach the eastern exit of the facility.
 free-tanya-keep-alive = Free Tanya and keep her alive.
 kill-soviet-officers-scientists = Kill all Soviet officers and scientists.
-steal-soviet-mammoth-tank = Steal a Soviet Mammoth Tank.
-no-casualties = Ensure no soldier or civilian
-    under your command is lost.
+steal-soviet-mammoth-tank = Steal a Soviet mammoth tank.
+no-casualties = Do not lose a single soldier or civilian
+    under your command.
 
 ## sarin-gas-3-controlled-burn
 capture-sarin-plants-intact = Capture all Sarin processing plants intact.
 destroy-enemy-compound = Destroy the enemy compound.
-cut-power-east = Cut the power to the eastern base.
+cut-power-east = Cut the power to the base to the east.
 
 ## shock-therapy
 destroy-opposition = Destroy all who oppose us.
 
 ## siberian-conflict-1-fresh-tracks
-first-trucks-entering = First trucks entering your AO.
+first-trucks-entering = The first trucks are entering your AO.
 first-trucks-arrive-in = First trucks arrive in { $time }
 destroy-soviet-convoy = Destroy all Soviet convoy trucks.
-destroy-bridges-slow-convoy = Demolish the nearby bridges to slow down
-    the convoys.
+destroy-bridges-slow-convoy = Destroy the nearby bridges to slow
+    the convoys down.
 
 ## siberian-conflict-3-wasteland, negotiations
 destroy-soviet-units-infrastructure = Destroy all Soviet units and structures.
@@ -317,7 +317,7 @@ missiles-launch-in = Missiles launch in { $time }
 kill-power = Bring the base to low power. Volkov will arrive
     once the defenses are down.
 infiltrate-bio-weapons-lab-scientist = Infiltrate the bio-weapons lab with the scientist.
-destroy-bio-weapons-lab-missile-silos = Destroy the bio-weapons lab and the missile silos.
+destroy-bio-weapons-lab-missile-silos = Destroy the bio-weapons lab and missile silos.
 destroy-all-sam-sites-strategic-bombers = Destroy all SAM sites on the island.
     Our strategic bombers will finish the rest.
 
@@ -338,8 +338,8 @@ scavenge-civilian-buildings = Scavenge civilian buildings for supplies.
 time-remaining = Time Remaining: { $time }
 
 ## soviet-04ab, soviet-08ab, soviet-10
-destroy-radar-dome-reinforcements = Destroy the Allied Radar Dome to prevent
-    reinforcements.
+destroy-radar-dome-reinforcements = Destroy the Allied Radar Dome to stop
+    enemy reinforcements.
 
 ## soviet05
 allied-mcv-island = Allied MCV detected moving towards the island.
@@ -348,7 +348,7 @@ allied-expansion-movement-detected = Allied MCV movement detected.
 coordinates-allied-expansion-discovered = Allied expansion base discovered.
 
 ## soviet06ab
-destroy-capture-radar-dome-reinforcements = Destroy or capture the Allied Radar Dome to stop
+destroy-capture-radar-dome-reinforcements = Destroy or capture the Allied radar dome to stop
     enemy reinforcements.
 keep-trucks-alive = Keep all trucks alive.
 
@@ -366,11 +366,11 @@ destroy-allied-sympathizers-village = Destroy the village of Allied sympathizers
 
 ## soviet-09
 truck-stopped-near-allied-base = Commander, the truck has stopped at a nearby Allied base.
-    Radio intercepts indicate the truck has orders to flee if any Soviet units approach.
+    Allied radio intercepts say the truck has orders to flee the battlefield if any Soviet units approach the base.
 
-destroy-stolen-convoy-truck = Destroy the stolen convoy truck
-    - don't let it escape.
-defend-forward-command-center = Defend our forward Command Center.
+destroy-stolen-convoy-truck = Destroy the stolen convoy truck.
+    Do not let it escape.
+defend-forward-command-center = Defend our forward command center.
 
 ## soviet-10
 run-for-it = RUN FOR IT!
@@ -378,14 +378,14 @@ convoy-commander = Convoy commander
 we-are-surrounded = We are surrounded!
 corridor-closes-in = Corridor closes in { $time }
 escort-convoy-mountain-pass = Escort the convoy through the mountain pass.
-protect-every-truck = Ensure no truck is lost.
+protect-every-truck = Do not lose a single truck.
 save-migs = Do not squander any of our new MiG aircraft.
 
 ## soviet-11b
 destroy-allied-naval-base = Destroy the Allied naval base.
 
 ## soviet-13a, soviet13b
-chrono-trap-triggered = We failed to disable the trap!
+chrono-trap-triggered = We failed to take the trap offline!
 destroy-allied-radar-sites = Destroy the Allied radar sites before approaching
     the Chronosphere.
 capture-the-chronosphere = Capture the Chronosphere.
@@ -402,18 +402,18 @@ rebuild-chitzkoi = We can rebuild Chitzkoi - we have the technology.
 
 ## survival01
 french-reinforcements-arrive-in = French reinforcements arrive in { $time }
-french-allies-arrived = Our French allies have arrived!
-takeover-reinforcements-kill-remaining-soviet-forces = Take command of French reinforcements and
+french-allies-arrived = Our french allies have arrived!
+takeover-reinforcements-kill-remaining-soviet-forces = Take control of French reinforcements and
     kill all remaining Soviet forces.
 takeover-reinforcements-dismantle-soviet-base = Use French reinforcements to dismantle the nearby Soviet base.
 enforce-position-hold-until-reinforcements = Hold your position and withstand the onslaught
     until reinforcements arrive.
 destroy-two-sams-before-reinforcements = Destroy the two SAM sites before reinforcements
     arrive.
-soviets-blocking-gps = The Soviets are blocking our GPS - we need to investigate their new technology.
+soviets-blocking-gps = The Soviets are blocking our GPS. We need to investigate their new technology.
 capture-hold-soviet-airbase-northeast = Capture and hold the Soviet airbase
     in the northeast.
-french-survived-dismantled-soviet-presence = The French forces have survived and dismantled the Soviet presence!
+french-survived-dismantled-soviet-presence = The French forces have survived and dismantled the Soviet presence in the area!
 kill-remaining-soviet-forces = Kill all remaining Soviet forces.
 dismantle-nearby-soviet-base = Dismantle the nearby Soviet base.
 
@@ -424,9 +424,9 @@ reinforced-position-initiate-counter-attack = Excellent work Commander! We have 
 incoming-report = Incoming Report
 destroy-remaining-soviet-forces-area = Destroy the remaining Soviet forces in the area.
 soviet-reinforcements-arrived = Soviet reinforcements have arrived!
-repair-bridges-for-reinforcement = Commander! The Soviets destroyed the bridges to cut off our reinforcements. Repair them for additional support.
+repair-bridges-for-reinforcement = Commander! The Soviets destroyed the bridges to cut off our reinforcements. Repair them for additional reinforcements.
 repair-two-southern-bridges = Repair the two southern bridges.
-enforce-position-hold-out-onslaught = Fortify your position and hold off the onslaught.
+enforce-position-hold-out-onslaught = Fortify your position and hold out against the onslaught.
 remaining-soviet-presence-destroyed = We have destroyed the remaining Soviet presence!
 soviet-reinforcements-approaching = Soviet reinforcements are approaching!
 
@@ -436,6 +436,6 @@ waystation-must-not-be-destroyed = The waystation must not be destroyed.
 destroy-aa-guns-enable-air-support = Destroy all the AA Guns to enable air support.
 find-destroy-bridge-stop-allied-reinforcements = Find and destroy the bridge the Allies are using
     to bring reinforcements into the area.
-air-support-t-minus-3 = Very good, Comrade General! Our air units are en route
+air-support-t-minus-3 = Very good, comrade General! Our air units are en route
     and should reach your area in approximately three minutes.
-allied-ground-reinforcements-stopped = This should stop the Allied forces from getting further ground reinforcements.
+allied-ground-reinforcements-stopped = This should stop the Allied forces from getting their ground reinforcements.

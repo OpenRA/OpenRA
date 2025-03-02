@@ -1,12 +1,12 @@
 ## campaign
-objective-failed = Objective Failed
-objective-completed = Objective Completed
+objective-failed = Objective failed
+objective-completed = Objective completed
 
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New Primary Objective
-new-secondary-objective = New Secondary Objective
+new-primary-objective = New primary objective
+new-secondary-objective = New secondary objective
 
 # cnc64gdi01
 destroy-obelisk-sams = Destroy the SAM sites protecting the Obelisk.
@@ -59,7 +59,7 @@ destroy-nod-force = Destroy the Nod strike force.
 ## gdi08b
 protect-mobius = Protect Dr. Mobius.
 protect-hospital = Protect the Hospital.
-keep-civilians-alive = Keep at least { $civilians } out of 14 civilians alive.
+keep-civilians-alive = Keep at least { $civilians } out of 14 Civilians alive.
 destroy-nod-bases = Destroy the Nod bases.
 
 ## gdi09
@@ -146,7 +146,7 @@ take-civilians-money-crates = Find all the civilians' money; they won't be needi
 quickly-destroy-ion-cannon = Disable the GDI Ion Cannon before it fires twice.
 nod-soldier = Nod Soldier
 civilians-running = Hey, those civilians... where are they going?
-destroy-ion-cannon-advice = The GDI are preparing their Ion Cannon. Don't let them get comfortable using it.
+destroy-ion-cannon-advice = The GDI are preparing their ion cannon. Don't let them get comfortable using it.
 village-destruction-warning = Be careful, commander. The GDI won't stay idle while we burn the entire village.
 
 ## twist-of-fate
