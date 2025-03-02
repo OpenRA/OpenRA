@@ -19,7 +19,7 @@ checkbox-crates =
 
 ## MapBuildRadius
 checkbox-ally-build-radius =
-    .label = Build Off Allies
+    .label = Build off Allies
     .description = Allows allies to place structures within your build area
 
 checkbox-build-radius =

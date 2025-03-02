@@ -5,4 +5,4 @@ hotkey-description-productiontypeinfantry = Infantry Tab
 hotkey-description-productiontypevehicle = Vehicle Tab
 hotkey-description-productiontypeaircraft = Aircraft Tab
 hotkey-description-productiontypenaval = Naval Tab
-hotkey-description-powerdown = Power-down mode
+hotkey-description-powerdown = Power-Down Mode
