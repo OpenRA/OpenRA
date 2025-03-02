@@ -86,7 +86,7 @@ actor-heli =
 actor-orca =
     .name = Orca
     .description =
-    Helicopter Gunship armed with AA and AG Missiles.
+    Helicopter Gunship armed with Missiles.
       Strong vs Buildings and Tanks
       Weak vs Infantry
     .encyclopedia =
