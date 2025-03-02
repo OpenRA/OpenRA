@@ -90,7 +90,7 @@ actor-orca =
       Strong vs Buildings and Tanks
       Weak vs Infantry
     .encyclopedia =
-    Fast but fragile, the Orca harasses enemy vehicles and aircraft. It is best used opportunistically, and can be kept alive for longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
+    Fast but fragile, the Orca harasses enemy vehicles and aircraft. It is best used opportunistically, and can be kept alive longer with careful micro. Its AA missiles are effective but have a hard time hitting fast-moving air targets.
 
     Ammo is automatically reloaded in the air.
 
