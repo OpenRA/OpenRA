@@ -233,7 +233,7 @@ actor-truck-husk-name = Supply Truck (Destroyed)
 actor-e1 =
     .name = Minigunner
     .description =
-    General-purpose infantry
+    General-purpose infantry.
       Strong vs Infantry
       Weak vs Vehicles
     .encyclopedia =
@@ -244,7 +244,7 @@ actor-e1 =
 actor-e2 =
     .name = Grenadier
     .description =
-    Fast infantry with grenades
+    Fast infantry with grenades.
       Strong vs Buildings, slow-moving targets
     .encyclopedia =
     Fast and able to keep up with medium tanks, letting it work well with flanking armies.

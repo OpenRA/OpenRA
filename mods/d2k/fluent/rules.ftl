@@ -35,7 +35,7 @@ resource-spice = Spice
 
 faction-random =
     .name = Any
-    .description = Random House.
+    .description = Random House
     A random house is chosen at the start of the game
 
 faction-atreides =
