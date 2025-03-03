@@ -25,12 +25,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var origin = new float2(rect.Right, rect.Bottom);
 			var basis = new float2(-rect.Width / 100, -rect.Height / 100);
 
-			cr.DrawLine(new[]
-			{
+			cr.DrawLine(
+			[
 				new float3(rect.Left, rect.Top, 0),
 				new float3(rect.Left, rect.Bottom, 0),
 				new float3(rect.Right, rect.Bottom, 0)
-			}, 1, Color.White);
+			], 1, Color.White);
 
 			cr.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, 1, Color.White);
 

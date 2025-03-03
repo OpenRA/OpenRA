@@ -137,16 +137,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MultiBrush()
 		{
 			Weight = DefaultWeight;
-			tiles = new List<(CVec, TerrainTile)>();
-			actorPlans = new List<ActorPlan>();
-			shape = Array.Empty<CVec>();
+			tiles = [];
+			actorPlans = [];
+			shape = [];
 		}
 
 		MultiBrush(MultiBrush other)
 		{
 			Weight = other.Weight;
-			tiles = new List<(CVec, TerrainTile)>(other.tiles);
-			actorPlans = new List<ActorPlan>(other.actorPlans);
+			tiles = other.tiles.ToList();
+			actorPlans = other.actorPlans.ToList();
 			shape = other.shape.ToArray();
 		}
 
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (xys.Count != 0)
 				shape = xys.OrderBy(xy => (xy.Y, xy.X)).ToArray();
 			else
-				shape = new[] { new CVec(0, 0) };
+				shape = [new CVec(0, 0)];
 		}
 
 		/// <summary>
@@ -345,7 +345,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			foreach (var brush in availableBrushes)
 			{
 				if (!brushesByAreaDict.ContainsKey(brush.Area))
-					brushesByAreaDict.Add(brush.Area, new List<MultiBrush>());
+					brushesByAreaDict.Add(brush.Area, []);
 				brushesByAreaDict[brush.Area].Add(brush);
 			}
 

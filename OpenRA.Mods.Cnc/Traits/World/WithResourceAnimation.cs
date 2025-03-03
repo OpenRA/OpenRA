@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly HashSet<string> Types = null;
 
 		[Desc("The percentage of resource cells to play the animation on.", "Use two values to randomize between them.")]
-		public readonly int[] Ratio = { 1, 10 };
+		public readonly int[] Ratio = [1, 10];
 
 		[Desc("Tick interval between two animation spawning.", "Use two values to randomize between them.")]
-		public readonly int[] Interval = { 200, 500 };
+		public readonly int[] Interval = [200, 500];
 
 		[FieldLoader.Require]
 		[Desc("Animation image.")]
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[SequenceReference(nameof(Image))]
 		[Desc("Randomly select one of these sequences to render.")]
-		public readonly string[] Sequences = new string[] { "idle" };
+		public readonly string[] Sequences = ["idle"];
 
 		[PaletteReference]
 		[Desc("Animation palette.")]

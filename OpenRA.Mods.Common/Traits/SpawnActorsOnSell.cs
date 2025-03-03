@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -30,11 +28,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[Desc("Actors to spawn on sell. Be sure to use lowercase.")]
-		public readonly string[] GuaranteedActorTypes = Array.Empty<string>();
+		public readonly string[] GuaranteedActorTypes = [];
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
-		public readonly HashSet<string> Factions = new();
+		public readonly HashSet<string> Factions = [];
 
 		public override object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
 	}
@@ -102,11 +100,11 @@ namespace OpenRA.Mods.Common.Traits
 					guaranteedActorTypes.Remove(at);
 					dudesValue -= at.Cost;
 
-					self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary
-					{
+					self.World.AddFrameEndTask(w => w.CreateActor(at.Name,
+					[
 						new LocationInit(loc),
 						new OwnerInit(self.Owner),
-					}));
+					]));
 				}
 
 				if (eligibleLocations.Count == 0)
@@ -131,11 +129,11 @@ namespace OpenRA.Mods.Common.Traits
 				eligibleLocations.Remove(loc);
 				dudesValue -= at.Cost;
 
-				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary
-				{
+				self.World.AddFrameEndTask(w => w.CreateActor(at.Name,
+				[
 					new LocationInit(loc),
 					new OwnerInit(self.Owner),
-				}));
+				]));
 			}
 		}
 

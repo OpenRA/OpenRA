@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		// Normal vector tables from https://web.archive.org/web/20041022134721/https://www.sleipnirstuff.com/forum/viewtopic.php?t=8048
 		static readonly float[] TSNormals =
-		{
+		[
 			0.671214f,  0.198492f, -0.714194f,
 			0.269643f,  0.584394f, -0.765360f,
 			-0.040546f,  0.096988f, -0.994459f,
@@ -98,10 +98,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			-0.596251f,  0.220132f,  0.772028f,
 			-0.506455f, -0.396977f,  0.765449f,
 			0.070569f, -0.478474f,  0.875262f
-		};
+		];
 
 		static readonly float[] RA2Normals =
-		{
+		[
 			0.526578f, -0.359621f, -0.770317f,
 			0.150482f, 0.435984f, 0.887284f,
 			0.414195f, 0.738255f, -0.532374f,
@@ -346,6 +346,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			-0.328188f, 0.140251f, 0.934143f,
 			-0.328188f, 0.140251f, 0.934143f,
 			-0.328188f, 0.140251f, 0.934143f
-		};
+		];
 	}
 }

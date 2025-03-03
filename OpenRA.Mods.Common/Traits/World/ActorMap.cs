@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		sealed class Bin
 		{
-			public readonly List<Actor> Actors = new();
-			public readonly List<ProximityTrigger> ProximityTriggers = new();
+			public readonly List<Actor> Actors = [];
+			public readonly List<ProximityTrigger> ProximityTriggers = [];
 		}
 
 		sealed class CellTrigger
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-			readonly HashSet<Actor> oldActors = new();
-			readonly HashSet<Actor> currentActors = new();
+			readonly HashSet<Actor> oldActors = [];
+			readonly HashSet<Actor> currentActors = [];
 
 			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
@@ -98,8 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-			readonly HashSet<Actor> oldActors = new();
-			readonly HashSet<Actor> currentActors = new();
+			readonly HashSet<Actor> oldActors = [];
+			readonly HashSet<Actor> currentActors = [];
 
 			WPos position;
 			WDist range;
@@ -166,23 +166,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly ActorMapInfo info;
 		readonly Map map;
-		readonly Dictionary<int, CellTrigger> cellTriggers = new();
-		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new();
-		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new();
+		readonly Dictionary<int, CellTrigger> cellTriggers = [];
+		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = [];
+		readonly Dictionary<int, ProximityTrigger> proximityTriggers = [];
 		int nextTriggerId;
 
 		CellLayer<InfluenceNode>[] influence;
 
 		// Index 0 is kept null as layer 0 is used for the ground layer.
-		public ICustomMovementLayer[] CustomMovementLayers = new ICustomMovementLayer[] { null };
+		public ICustomMovementLayer[] CustomMovementLayers = [null];
 		public event Action<CPos> CellUpdated;
 		readonly Bin[] bins;
 		readonly int rows, cols;
 
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
-		readonly HashSet<Actor> addActorPosition = new();
-		readonly HashSet<Actor> removeActorPosition = new();
+		readonly HashSet<Actor> addActorPosition = [];
+		readonly HashSet<Actor> removeActorPosition = [];
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
 		public WDist LargestActorRadius { get; }
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			map = world.Map;
-			influence = new[] { new CellLayer<InfluenceNode>(world.Map) };
+			influence = [new CellLayer<InfluenceNode>(world.Map)];
 
 			cols = CellCoordToBinIndex(world.Map.MapSize.X) + 1;
 			rows = CellCoordToBinIndex(world.Map.MapSize.Y) + 1;
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 			var uv = a.ToMPos(map);
 			var layer = influence[a.Layer];
 			if (!layer.Contains(uv))
-				return Enumerable.Empty<Actor>();
+				return [];
 
 			return new ActorsAtEnumerable(layer[uv]);
 		}
@@ -521,7 +521,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				if (!cellTriggerInfluence.ContainsKey(c))
-					cellTriggerInfluence.Add(c, new List<CellTrigger>());
+					cellTriggerInfluence.Add(c, []);
 
 				cellTriggerInfluence[c].Add(t);
 			}

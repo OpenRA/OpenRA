@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
 	public class HuskInfo : TraitInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo, IRulesetLoaded
 	{
-		public readonly HashSet<string> AllowedTerrain = new();
+		public readonly HashSet<string> AllowedTerrain = [];
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly WAngle PreviewFacing = new(384);
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public (CPos, SubCell)[] OccupiedCells() { return new[] { (TopLeft, SubCell.FullCell) }; }
+		public (CPos, SubCell)[] OccupiedCells() { return [(TopLeft, SubCell.FullCell)]; }
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any) { return false; }
 		public SubCell GetValidSubCell(SubCell preferred = SubCell.Any) { return SubCell.FullCell; }
 		public SubCell GetAvailableSubCell(CPos cell, SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)

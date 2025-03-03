@@ -22,11 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[Desc("Name of the armaments that grant this condition.")]
-		public readonly HashSet<string> ArmamentNames = new() { "primary" };
+		public readonly HashSet<string> ArmamentNames = ["primary"];
 
 		[Desc("Shots required to apply an instance of the condition. If there are more instances of the condition granted than values listed,",
 			"the last value is used for all following instances beyond the defined range.")]
-		public readonly int[] RequiredShotsPerInstance = { 1 };
+		public readonly int[] RequiredShotsPerInstance = [1];
 
 		[Desc("Maximum instances of the condition to grant.")]
 		public readonly int MaximumInstances = 1;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class GrantConditionOnAttack : PausableConditionalTrait<GrantConditionOnAttackInfo>, INotifyCreated, ITick, INotifyAttack
 	{
-		readonly Stack<int> tokens = new();
+		readonly Stack<int> tokens = [];
 
 		int cooldown = 0;
 		int shotsFired = 0;

@@ -43,7 +43,7 @@ namespace OpenRA.Scripting
 			if (actor.Disposed)
 				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>()).ToArray();
 
-			Bind(CreateObjects(commandClasses, new object[] { Context, actor }));
+			Bind(CreateObjects(commandClasses, [Context, actor]));
 		}
 
 		public void OnActorDestroyed()

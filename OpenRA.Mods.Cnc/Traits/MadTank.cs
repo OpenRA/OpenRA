@@ -243,11 +243,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			void EjectDriver()
 			{
-				var driver = self.World.CreateActor(mad.info.DriverActor.ToLowerInvariant(), new TypeDictionary
-				{
+				var driver = self.World.CreateActor(mad.info.DriverActor.ToLowerInvariant(),
+				[
 					new LocationInit(self.Location),
 					new OwnerInit(self.Owner)
-				});
+				]);
 				driver.QueueActivity(false, new Nudge(driver));
 			}
 		}

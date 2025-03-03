@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly World world;
 		readonly ModData modData;
-		readonly Dictionary<ActorInfo, EncyclopediaInfo> info = new();
+		readonly Dictionary<ActorInfo, EncyclopediaInfo> info = [];
 
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget titleLabel;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget productionTime;
 		readonly Widget productionPowerIcon;
 		readonly LabelWidget productionPower;
-		readonly List<Sheet> sheets = new();
+		readonly List<Sheet> sheets = [];
 
 		ActorInfo selectedActor;
 		ScrollItemWidget firstItem;

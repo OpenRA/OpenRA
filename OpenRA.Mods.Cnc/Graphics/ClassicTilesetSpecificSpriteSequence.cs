@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 				if (tilesetNode != null)
 				{
 					var loadFrames = CalculateFrameIndices(start, length, stride ?? length ?? 0, facings, frames, transpose, reverseFacings, shadowStart);
-					return new[] { new ReservationInfo(tilesetNode.Value.Value, loadFrames, frames, tilesetNode.Location) };
+					return [new ReservationInfo(tilesetNode.Value.Value, loadFrames, frames, tilesetNode.Location)];
 				}
 			}
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 						frames = Exts.MakeArray(subLength, i => subStart + i);
 					}
 
-					return new[] { new ReservationInfo(tilesetNode.Value.Value, frames, frames, tilesetNode.Location) };
+					return [new ReservationInfo(tilesetNode.Value.Value, frames, frames, tilesetNode.Location)];
 				}
 			}
 

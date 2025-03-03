@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly ModularBotInfo info;
 		readonly World world;
-		readonly Queue<Order> orders = new();
+		readonly Queue<Order> orders = [];
 
 		Player player;
 

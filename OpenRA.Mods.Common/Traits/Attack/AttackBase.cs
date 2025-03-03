@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
-		public readonly string[] Armaments = { "primary", "secondary" };
+		public readonly string[] Armaments = ["primary", "secondary"];
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid target.")]
@@ -366,7 +366,7 @@ namespace OpenRA.Mods.Common.Traits
 			// If force-fire is not used, and the target requires force-firing or the target is
 			// terrain or invalid, no armaments can be used
 			if (!forceAttack && ((t.Type == TargetType.Terrain && !Info.TargetTerrainWithoutForceFire) || t.Type == TargetType.Invalid || t.RequiresForceFire))
-				return Enumerable.Empty<Armament>();
+				return [];
 
 			// Get target's owner; in case of terrain or invalid target there will be no problems
 			// with owner == null since forceFire will have to be true in this part of the method

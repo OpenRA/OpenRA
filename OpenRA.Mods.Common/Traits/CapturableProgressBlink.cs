@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	sealed class CapturableProgressBlink : ConditionalTrait<CapturableProgressBlinkInfo>, ITick, ICaptureProgressWatcher
 	{
-		readonly List<Player> captorOwners = new();
-		readonly HashSet<Actor> captors = new();
+		readonly List<Player> captorOwners = [];
+		readonly HashSet<Actor> captors = [];
 		int tick = 0;
 
 		public CapturableProgressBlink(CapturableProgressBlinkInfo info)

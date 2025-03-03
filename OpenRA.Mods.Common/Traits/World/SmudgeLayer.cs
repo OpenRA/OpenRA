@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[SequenceReference(nameof(SmokeImage), allowNullImage: true)]
 		[Desc("Smoke sprite sequences randomly chosen from")]
-		public readonly string[] SmokeSequences = Array.Empty<string>();
+		public readonly string[] SmokeSequences = [];
 
 		[PaletteReference]
 		public readonly string SmokePalette = "effect";
@@ -94,9 +93,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public readonly SmudgeLayerInfo Info;
-		readonly Dictionary<CPos, Smudge> tiles = new();
-		readonly Dictionary<CPos, Smudge> dirty = new();
-		readonly Dictionary<string, ISpriteSequence> smudges = new();
+		readonly Dictionary<CPos, Smudge> tiles = [];
+		readonly Dictionary<CPos, Smudge> dirty = [];
+		readonly Dictionary<string, ISpriteSequence> smudges = [];
 		readonly World world;
 		readonly bool hasSmoke;
 

@@ -166,9 +166,9 @@ namespace OpenRA.Network
 			public int Frame;
 			public int SyncedRandom;
 			public int TotalCount;
-			public readonly List<TraitReport> Traits = new();
-			public readonly List<EffectReport> Effects = new();
-			public readonly List<OrderManager.ClientOrder> Orders = new();
+			public readonly List<TraitReport> Traits = [];
+			public readonly List<EffectReport> Effects = [];
+			public readonly List<OrderManager.ClientOrder> Orders = [];
 		}
 
 		struct TraitReport
@@ -238,11 +238,11 @@ namespace OpenRA.Network
 						// PERF: If the member is a Boolean, we can also avoid the allocation caused by boxing it.
 						// Instead, we can just return the resulting strings directly.
 						var getBoolString = Expression.Condition(getMember, TrueString, FalseString);
-						return Expression.Lambda<Func<ISync, string>>(getBoolString, name, new[] { SyncParam }).Compile();
+						return Expression.Lambda<Func<ISync, string>>(getBoolString, name, [SyncParam]).Compile();
 					}
 
 					var boxedCopy = Expression.Convert(getMember, typeof(object));
-					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { SyncParam }).Compile();
+					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, [SyncParam]).Compile();
 				}
 
 				// For reference types, we have to call ToString right away to get a snapshot of the value. We cannot
@@ -266,13 +266,13 @@ namespace OpenRA.Network
 					// (ISync sync) => { var foo = ((TSync)sync).Foo; return foo == null ? null : foo.ToString(); }
 					var memberVariable = Expression.Variable(memberType, getMember.Member.Name);
 					var assignMemberVariable = Expression.Assign(memberVariable, getMember);
-					var member = Expression.Block(new[] { memberVariable }, assignMemberVariable);
+					var member = Expression.Block([memberVariable], assignMemberVariable);
 					getString = Expression.Call(member, toString);
 					var nullMember = Expression.Constant(null, memberType);
 					getString = Expression.Condition(Expression.Equal(member, nullMember), NullString, getString);
 				}
 
-				return Expression.Lambda<Func<ISync, string>>(getString, name, new[] { SyncParam }).Compile();
+				return Expression.Lambda<Func<ISync, string>>(getString, name, [SyncParam]).Compile();
 			}
 		}
 

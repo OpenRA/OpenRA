@@ -24,7 +24,7 @@ namespace OpenRA.Support
 		public static readonly IReadOnlyDictionary<string, int> NoVariables = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
 
 		public readonly string Expression;
-		readonly HashSet<string> variables = new();
+		readonly HashSet<string> variables = [];
 		public IEnumerable<string> Variables => variables;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
@@ -717,8 +717,8 @@ namespace OpenRA.Support
 
 		sealed class AstStack
 		{
-			readonly List<Expression> expressions = new();
-			readonly List<ExpressionType> types = new();
+			readonly List<Expression> expressions = [];
+			readonly List<ExpressionType> types = [];
 
 			public ExpressionType PeekType() { return types[^1]; }
 

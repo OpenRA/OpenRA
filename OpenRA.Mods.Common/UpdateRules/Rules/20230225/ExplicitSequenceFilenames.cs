@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		string defaultSpriteExtension = ".shp";
 		List<MiniYamlNodeBuilder> resolvedImagesNodes;
-		readonly Dictionary<string, string> tilesetExtensions = new();
-		readonly Dictionary<string, string> tilesetCodes = new();
+		readonly Dictionary<string, string> tilesetExtensions = [];
+		readonly Dictionary<string, string> tilesetCodes = [];
 		bool parseModYaml = true;
 		bool reportModYamlChanges;
 		bool disabled;
@@ -103,32 +103,32 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					{
 						case "cnc":
 							fromBackup = true;
-							tilesetExtensionsNode = new List<MiniYamlNodeBuilder>()
-							{
+							tilesetExtensionsNode =
+							[
 								new("TEMPERAT", ".tem"),
 								new("SNOW", ".sno"),
 								new("INTERIOR", ".int"),
 								new("DESERT", ".des"),
 								new("JUNGLE", ".jun"),
-							};
+							];
 							break;
 						case "ra":
 							fromBackup = true;
-							tilesetExtensionsNode = new List<MiniYamlNodeBuilder>()
-							{
+							tilesetExtensionsNode =
+							[
 								new("TEMPERAT", ".tem"),
 								new("SNOW", ".sno"),
 								new("INTERIOR", ".int"),
 								new("DESERT", ".des"),
-							};
+							];
 							break;
 						case "ts":
 							fromBackup = true;
-							tilesetExtensionsNode = new List<MiniYamlNodeBuilder>()
-							{
+							tilesetExtensionsNode =
+							[
 								new("TEMPERATE", ".tem"),
 								new("SNOW", ".sno"),
-							};
+							];
 							break;
 					}
 				}
@@ -148,11 +148,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (tilesetCodesNode == null && modData.Manifest.Id == "ts")
 				{
 					fromBackup = true;
-					tilesetCodesNode = new List<MiniYamlNodeBuilder>()
-					{
+					tilesetCodesNode =
+					[
 						new("TEMPERATE", "t"),
 						new("SNOW", "a"),
-					};
+					];
 				}
 
 				if (tilesetCodesNode != null)
@@ -210,11 +210,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (resolvedSequenceNode == resolvedDefaultsNode)
 						continue;
 
-					resolvedSequenceNode.Value.Nodes = MiniYaml.Merge(new[]
-					{
+					resolvedSequenceNode.Value.Nodes = MiniYaml.Merge(
+					[
 						resolvedDefaultsNode.Value.Nodes.Select(n => n.Build()).ToArray(),
 						resolvedSequenceNode.Value.Nodes.Select(n => n.Build()).ToArray()
-					}).ConvertAll(n => new MiniYamlNodeBuilder(n));
+					]).ConvertAll(n => new MiniYamlNodeBuilder(n));
 					resolvedSequenceNode.Value.Value ??= resolvedDefaultsNode.Value.Value;
 				}
 			}

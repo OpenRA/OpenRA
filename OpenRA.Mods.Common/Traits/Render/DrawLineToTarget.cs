@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
-		readonly List<IRenderable> renderableCache = new();
+		readonly List<IRenderable> renderableCache = [];
 		long lifetime;
 
 		public DrawLineToTarget(DrawLineToTargetInfo info)
@@ -81,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (!ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return RenderAboveShroud(self, wr);
 		}
@@ -102,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (!ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			renderableCache.Clear();
 			var prev = self.CenterPosition;
@@ -120,14 +119,14 @@ namespace OpenRA.Mods.Common.Traits
 						var markerWidth = renderableCache.Count > 0 ? info.QueuedMarkerWidth : info.MarkerWidth;
 
 						var pos = n.Target.CenterPosition;
-						renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
+						renderableCache.Add(new TargetLineRenderable([prev, pos], n.Color, lineWidth, markerWidth));
 						prev = pos;
 					}
 				}
 			}
 
 			if (renderableCache.Count == 0)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			// Reverse draw order so target markers are drawn on top of the next line
 			renderableCache.Reverse();

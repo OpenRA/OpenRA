@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
 		readonly TextFieldWidget saveTextField;
-		readonly List<string> games = new();
+		readonly List<string> games = [];
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly ModData modData;
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteSaveTitle,
 					text: DeleteSavePrompt,
-					textArguments: new object[] { "save", Path.GetFileNameWithoutExtension(selectedSave) },
+					textArguments: ["save", Path.GetFileNameWithoutExtension(selectedSave)],
 					onConfirm: () =>
 					{
 						Delete(selectedSave);
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteAllSavesTitle,
 					text: DeleteAllSavesPrompt,
-					textArguments: new object[] { "count", games.Count },
+					textArguments: ["count", games.Count],
 					onConfirm: () =>
 					{
 						foreach (var s in games.ToList())
@@ -373,7 +373,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: OverwriteSaveTitle,
 					text: OverwriteSavePrompt,
-					textArguments: new object[] { "file", saveTextField.Text },
+					textArguments: ["file", saveTextField.Text],
 					onConfirm: Inner,
 					confirmText: OverwriteSaveAccept,
 					onCancel: () => { });

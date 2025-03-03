@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
@@ -20,7 +19,7 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class RevealShroudEffect : IEffect
 	{
-		static readonly PPos[] NoCells = Array.Empty<PPos>();
+		static readonly PPos[] NoCells = [];
 
 		readonly WPos pos;
 		readonly Player player;

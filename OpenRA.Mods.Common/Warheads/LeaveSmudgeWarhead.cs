@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Warheads
 	public class LeaveSmudgeWarhead : Warhead
 	{
 		[Desc("Size of the area. A smudge will be created in each tile.", "Provide 2 values for a ring effect (outer/inner).")]
-		public readonly int[] Size = { 0, 0 };
+		public readonly int[] Size = [0, 0];
 
 		[Desc("Type of smudge to apply to terrain.")]
-		public readonly HashSet<string> SmudgeType = new();
+		public readonly HashSet<string> SmudgeType = [];
 
 		[Desc("Percentage chance the smudge is created.")]
 		public readonly int Chance = 100;

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public class IniFile
 	{
-		readonly Dictionary<string, IniSection> sections = new();
+		readonly Dictionary<string, IniSection> sections = [];
 
 		public IniFile(Stream s)
 		{
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.FileFormats
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>
 	{
 		public string Name { get; }
-		readonly Dictionary<string, string> values = new();
+		readonly Dictionary<string, string> values = [];
 
 		public IniSection(string name)
 		{

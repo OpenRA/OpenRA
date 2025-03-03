@@ -41,21 +41,21 @@ namespace OpenRA.Traits
 
 	public class ScreenMap : IWorldLoaded
 	{
-		static readonly IEnumerable<FrozenActor> NoFrozenActors = Array.Empty<FrozenActor>();
+		static readonly IEnumerable<FrozenActor> NoFrozenActors = [];
 		readonly Func<FrozenActor, bool> frozenActorIsValid = fa => fa.IsValid;
 		readonly Func<Actor, bool> actorIsInWorld = a => a.IsInWorld;
 		readonly Func<Actor, ActorBoundsPair> selectActorAndBounds;
 		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedMouseFrozenActors;
 		readonly SpatiallyPartitioned<Actor> partitionedMouseActors;
-		readonly Dictionary<Actor, ActorBoundsPair> partitionedMouseActorBounds = new();
+		readonly Dictionary<Actor, ActorBoundsPair> partitionedMouseActorBounds = [];
 
 		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedRenderableFrozenActors;
 		readonly SpatiallyPartitioned<Actor> partitionedRenderableActors;
 		readonly SpatiallyPartitioned<IEffect> partitionedRenderableEffects;
 
 		// Updates are done in one pass to ensure all bound changes have been applied
-		readonly HashSet<Actor> addOrUpdateActors = new();
-		readonly HashSet<Actor> removeActors = new();
+		readonly HashSet<Actor> addOrUpdateActors = [];
+		readonly HashSet<Actor> removeActors = [];
 		readonly Cache<Player, HashSet<FrozenActor>> addOrUpdateFrozenActors;
 		readonly Cache<Player, HashSet<FrozenActor>> removeFrozenActors;
 
@@ -77,8 +77,8 @@ namespace OpenRA.Traits
 			partitionedRenderableActors = new SpatiallyPartitioned<Actor>(width, height, info.BinSize);
 			partitionedRenderableEffects = new SpatiallyPartitioned<IEffect>(width, height, info.BinSize);
 
-			addOrUpdateFrozenActors = new Cache<Player, HashSet<FrozenActor>>(_ => new HashSet<FrozenActor>());
-			removeFrozenActors = new Cache<Player, HashSet<FrozenActor>>(_ => new HashSet<FrozenActor>());
+			addOrUpdateFrozenActors = new Cache<Player, HashSet<FrozenActor>>(_ => []);
+			removeFrozenActors = new Cache<Player, HashSet<FrozenActor>>(_ => []);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr) { worldRenderer = wr; }

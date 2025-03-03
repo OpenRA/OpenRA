@@ -120,12 +120,12 @@ namespace OpenRA.Server
 		public readonly ServerType Type;
 		public bool IsMultiplayer => Type == ServerType.Dedicated || Type == ServerType.Multiplayer;
 
-		public readonly List<Connection> Conns = new();
+		public readonly List<Connection> Conns = [];
 
 		public Session LobbyInfo;
 		public ServerSettings Settings;
 		public ModData ModData;
-		public List<string> TempBans = new();
+		public List<string> TempBans = [];
 
 		// Managed by LobbyCommands
 		public MapPreview Map;
@@ -137,19 +137,19 @@ namespace OpenRA.Server
 		public int OrderLatency = 1;
 
 		readonly int randomSeed;
-		readonly List<TcpListener> listeners = new();
-		readonly TypeDictionary serverTraits = new();
+		readonly List<TcpListener> listeners = [];
+		readonly TypeDictionary serverTraits = [];
 		readonly PlayerDatabase playerDatabase;
 
 		OrderBuffer orderBuffer;
 
 		volatile ServerState internalState = ServerState.WaitingPlayers;
 
-		readonly BlockingCollection<IServerEvent> events = new();
+		readonly BlockingCollection<IServerEvent> events = [];
 
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
-		readonly List<GameInformation.Player> worldPlayers = new();
+		readonly List<GameInformation.Player> worldPlayers = [];
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
 
 		public readonly VoteKickTracker VoteKickTracker;
@@ -802,7 +802,7 @@ namespace OpenRA.Server
 			recorder = null;
 		}
 
-		readonly Dictionary<int, byte[]> syncForFrame = new();
+		readonly Dictionary<int, byte[]> syncForFrame = [];
 		int lastDefeatStateFrame;
 		ulong lastDefeatState;
 
@@ -998,7 +998,7 @@ namespace OpenRA.Server
 						if (!InterpretCommand(o.TargetString, conn))
 						{
 							Log.Write("server", $"Unknown server command: {o.TargetString}");
-							SendFluentMessageTo(conn, UnknownServerCommand, new object[] { "command", o.TargetString });
+							SendFluentMessageTo(conn, UnknownServerCommand, ["command", o.TargetString]);
 						}
 
 						break;
@@ -1401,12 +1401,12 @@ namespace OpenRA.Server
 					for (var i = 0; i < OrderLatency; i++)
 					{
 						from.LastOrdersFrame = firstFrame + i;
-						var frameData = CreateFrame(from.PlayerIndex, from.LastOrdersFrame, Array.Empty<byte>());
+						var frameData = CreateFrame(from.PlayerIndex, from.LastOrdersFrame, []);
 						foreach (var to in conns)
 							DispatchFrameToClient(to, from.PlayerIndex, frameData);
 
-						RecordOrder(from.LastOrdersFrame, Array.Empty<byte>(), from.PlayerIndex);
-						GameSave?.DispatchOrders(from, from.LastOrdersFrame, Array.Empty<byte>());
+						RecordOrder(from.LastOrdersFrame, [], from.PlayerIndex);
+						GameSave?.DispatchOrders(from, from.LastOrdersFrame, []);
 					}
 				}
 			}

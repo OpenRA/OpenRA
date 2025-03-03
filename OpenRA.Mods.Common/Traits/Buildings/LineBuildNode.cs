@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class LineBuildNodeInfo : TraitInfo<LineBuildNode>
 	{
 		[Desc("This actor is of LineBuild 'NodeType'...")]
-		public readonly HashSet<string> Types = new() { "wall" };
+		public readonly HashSet<string> Types = ["wall"];
 
 		[Desc("Cells (outside the footprint) that contain cells that can connect to this actor.")]
-		public readonly CVec[] Connections = new[] { new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1) };
+		public readonly CVec[] Connections = [new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1)];
 	}
 
 	public class LineBuildNode { }

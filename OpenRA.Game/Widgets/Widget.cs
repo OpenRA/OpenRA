@@ -28,7 +28,7 @@ namespace OpenRA.Widgets
 
 		public static TickTime LastTickTime = new(() => Timestep, Game.RunTime);
 
-		static readonly Stack<Widget> WindowList = new();
+		static readonly Stack<Widget> WindowList = [];
 
 		public static Widget MouseFocusWidget;
 		public static Widget KeyboardFocusWidget;
@@ -60,7 +60,7 @@ namespace OpenRA.Widgets
 
 		public static Widget OpenWindow(string id)
 		{
-			return OpenWindow(id, new WidgetArgs());
+			return OpenWindow(id, []);
 		}
 
 		public static Widget OpenWindow(string id, WidgetArgs args)
@@ -208,7 +208,7 @@ namespace OpenRA.Widgets
 	{
 		string defaultCursor = null;
 
-		public readonly List<Widget> Children = new();
+		public readonly List<Widget> Children = [];
 
 		// Info defined in YAML
 		public string Id = null;
@@ -216,7 +216,7 @@ namespace OpenRA.Widgets
 		public IntegerExpression Y;
 		public IntegerExpression Width;
 		public IntegerExpression Height;
-		public string[] Logic = Array.Empty<string>();
+		public string[] Logic = [];
 		public ChromeLogic[] LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
@@ -288,7 +288,7 @@ namespace OpenRA.Widgets
 
 			var substitutions = args.TryGetValue("substitutions", out var subs) ?
 				new Dictionary<string, int>((Dictionary<string, int>)subs) :
-				new Dictionary<string, int>();
+				[];
 
 			substitutions.Add("WINDOW_WIDTH", Game.Renderer.Resolution.Width);
 			substitutions.Add("WINDOW_HEIGHT", Game.Renderer.Resolution.Height);
@@ -668,7 +668,7 @@ namespace OpenRA.Widgets
 
 	public sealed class Mediator
 	{
-		readonly TypeDictionary types = new();
+		readonly TypeDictionary types = [];
 
 		public void Subscribe<T>(T instance)
 		{

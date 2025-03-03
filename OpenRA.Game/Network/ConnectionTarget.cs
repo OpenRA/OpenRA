@@ -22,12 +22,12 @@ namespace OpenRA.Network
 
 		public ConnectionTarget()
 		{
-			endpoints = new[] { new DnsEndPoint("invalid", 0) };
+			endpoints = [new DnsEndPoint("invalid", 0)];
 		}
 
 		public ConnectionTarget(string host, int port)
 		{
-			endpoints = new[] { new DnsEndPoint(host, port) };
+			endpoints = [new DnsEndPoint(host, port)];
 		}
 
 		public ConnectionTarget(IEnumerable<DnsEndPoint> endpoints)
@@ -48,7 +48,7 @@ namespace OpenRA.Network
 				}
 				catch (Exception)
 				{
-					return Enumerable.Empty<IPEndPoint>();
+					return [];
 				}
 			}).ToList();
 		}

@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var playerResourcesInfo = w.Map.Rules.Actors[SystemActors.Player].TraitInfoOrDefault<PlayerResourcesInfo>();
-			resourceValues = playerResourcesInfo?.ResourceValues ?? new Dictionary<string, int>();
+			resourceValues = playerResourcesInfo?.ResourceValues ?? [];
 
 			foreach (var cell in Map.AllCells)
 				UpdateCell(cell);

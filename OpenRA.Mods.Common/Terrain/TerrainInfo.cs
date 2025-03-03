@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.MapGenerator;
 
@@ -89,7 +88,7 @@ namespace OpenRA.Mods.Common.Terrain
 			}
 			else
 			{
-				Segments = Array.Empty<TemplateSegment>();
+				Segments = [];
 			}
 		}
 

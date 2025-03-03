@@ -40,8 +40,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected readonly ScrollPanelWidget Panel;
 		protected readonly ScrollItemWidget ItemTemplate;
 
-		protected readonly HashSet<string> SelectedCategories = new();
-		protected readonly List<string> FilteredCategories = new();
+		protected readonly HashSet<string> SelectedCategories = [];
+		protected readonly List<string> FilteredCategories = [];
 
 		protected string[] allCategories;
 		protected string searchFilter;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected Widget CreateCategoriesPanel(ScrollPanelWidget panel)
 		{
-			var categoriesPanel = Ui.LoadWidget("CATEGORY_FILTER_PANEL", null, new WidgetArgs());
+			var categoriesPanel = Ui.LoadWidget("CATEGORY_FILTER_PANEL", null, []);
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
 			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");

@@ -22,17 +22,17 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Defines to which palettes this effect should be applied to.",
 			"If none specified, it applies to all palettes not explicitly excluded.")]
-		public readonly HashSet<string> Palettes = new();
+		public readonly HashSet<string> Palettes = [];
 
 		[Desc("Defines for which tileset IDs this effect should be loaded.",
 			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
-		public readonly HashSet<string> Tilesets = new();
+		public readonly HashSet<string> Tilesets = [];
 
 		[Desc("Defines which palettes should be excluded from this effect.")]
-		public readonly HashSet<string> ExcludePalettes = new();
+		public readonly HashSet<string> ExcludePalettes = [];
 
 		[Desc("Don't apply the effect for these tileset IDs.")]
-		public readonly HashSet<string> ExcludeTilesets = new();
+		public readonly HashSet<string> ExcludeTilesets = [];
 
 		[Desc("Palette index of first RotationRange color.")]
 		public readonly int RotationBase = 0x60;

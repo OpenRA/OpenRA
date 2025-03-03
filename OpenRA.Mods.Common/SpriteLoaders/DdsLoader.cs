@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		public DdsSprite(Stream stream)
 		{
-			Frames = new ISpriteFrame[] { new DdsFrame(stream) };
+			Frames = [new DdsFrame(stream)];
 		}
 	}
 }

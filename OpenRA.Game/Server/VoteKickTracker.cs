@@ -35,8 +35,8 @@ namespace OpenRA.Server
 		[FluentReference("kickee")]
 		const string VoteKickEnded = "notification-vote-kick-ended";
 
-		readonly Dictionary<int, bool> voteTracker = new();
-		readonly Dictionary<Session.Client, long> failedVoteKickers = new();
+		readonly Dictionary<int, bool> voteTracker = [];
+		readonly Dictionary<Session.Client, long> failedVoteKickers = [];
 		readonly Server server;
 
 		Stopwatch voteKickTimer;
@@ -107,7 +107,7 @@ namespace OpenRA.Server
 				if (!kickee.IsObserver && !server.HasClientWonOrLost(kickee))
 				{
 					// Vote kick cannot be the sole deciding factor for a game.
-					server.SendFluentMessageTo(conn, InsufficientVotes, new object[] { "kickee", kickee.Name });
+					server.SendFluentMessageTo(conn, InsufficientVotes, ["kickee", kickee.Name]);
 					EndKickVote();
 					return false;
 				}

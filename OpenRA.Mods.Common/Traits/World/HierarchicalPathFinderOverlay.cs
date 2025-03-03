@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(a => a.TraitOrDefault<Mobile>()?.Locomotor)
 					.Where(l => l != null)
 					.Distinct()
-				: new[] { Locomotor };
+				: [Locomotor];
 			foreach (var locomotor in locomotors)
 			{
 				var (abstractGraph, abstractDomains) = pathFinder.GetOverlayDataForLocomotor(locomotor, Check);

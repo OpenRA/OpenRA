@@ -19,17 +19,17 @@ namespace OpenRA.Mods.Cnc.Graphics
 {
 	sealed class TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
-		static readonly int[][] Steps = new[]
-		{
-			new int[] { 8, 8, 4, 4, 0 },
-			new int[] { -8, -8, -4, -4, 0 },
-			new int[] { 8, 0, 4, 4, 1 },
-			new int[] { -8, 0, -4, 4, 1 },
-			new int[] { 0, 8, 4, 4, 2 },
-			new int[] { 0, -8, 4, -4, 2 },
-			new int[] { -8, 8, -4, 4, 3 },
-			new int[] { 8, -8, 4, -4, 3 }
-		};
+		static readonly int[][] Steps =
+		[
+			[8, 8, 4, 4, 0],
+			[-8, -8, -4, -4, 0],
+			[8, 0, 4, 4, 1],
+			[-8, 0, -4, 4, 1],
+			[0, 8, 4, 4, 2],
+			[0, -8, 4, -4, 2],
+			[-8, 8, -4, 4, 3],
+			[8, -8, 4, -4, 3]
+		];
 		readonly WVec length;
 		readonly string image;
 		readonly string palette;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			cachedPos = WPos.Zero;
 			cachedLength = WVec.Zero;
-			cache = Array.Empty<IFinalizedRenderable>();
+			cache = [];
 		}
 
 		public WPos Pos { get; }

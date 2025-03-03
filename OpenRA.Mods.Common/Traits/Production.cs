@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
-		public readonly string[] Produces = Array.Empty<string>();
+		public readonly string[] Produces = [];
 
 		[Desc("When owner is changed, should the Faction be updated to the new owner's faction?")]
 		public readonly bool UpdateFactionOnOwnerChange = false;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					initialFacing = exitinfo.Facing.Value;
 
-				exitLocations = rp != null && rp.Path.Count > 0 ? rp.Path : new List<CPos> { exit };
+				exitLocations = rp != null && rp.Path.Count > 0 ? rp.Path : [exit];
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));

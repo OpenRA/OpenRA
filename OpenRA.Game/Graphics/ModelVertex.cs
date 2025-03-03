@@ -43,11 +43,11 @@ namespace OpenRA.Graphics
 			: base("model")
 		{ }
 
-		public override ShaderVertexAttribute[] Attributes { get; } = new[]
-		{
+		public override ShaderVertexAttribute[] Attributes { get; } =
+		[
 			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 3, 0),
 			new ShaderVertexAttribute("aVertexTexCoord", ShaderVertexAttributeType.Float, 4, 12),
 			new ShaderVertexAttribute("aVertexTexMetadata", ShaderVertexAttributeType.Float, 2, 28),
-		};
+		];
 	}
 }

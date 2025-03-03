@@ -48,7 +48,8 @@ namespace OpenRA.Network
 	public class GameServer
 	{
 		static readonly string[] SerializeFields =
-		{
+		[
+
 			// Server information
 			"Name", "Address",
 
@@ -57,7 +58,7 @@ namespace OpenRA.Network
 
 			// Current server state
 			"Map", "State", "MaxPlayers", "Protected", "Authentication", "DisabledSpawnPoints"
-		};
+		];
 
 		public const int ProtocolVersion = 2;
 
@@ -133,7 +134,7 @@ namespace OpenRA.Network
 		public readonly GameClient[] Clients;
 
 		/// <summary>The list of spawnpoints that are disabled for this game.</summary>
-		public readonly int[] DisabledSpawnPoints = Array.Empty<int>();
+		public readonly int[] DisabledSpawnPoints = [];
 
 		public string ModLabel => $"{ModTitle} ({Version})";
 
@@ -228,7 +229,7 @@ namespace OpenRA.Network
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);
 			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Length > 0;
 			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToArray();
-			DisabledSpawnPoints = server.LobbyInfo.DisabledSpawnPoints?.ToArray() ?? Array.Empty<int>();
+			DisabledSpawnPoints = server.LobbyInfo.DisabledSpawnPoints?.ToArray() ?? [];
 		}
 
 		public string ToPOSTData(bool lanGame)

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("Which factions this crate action can occur for.")]
-		public readonly HashSet<string> ValidFactions = new();
+		public readonly HashSet<string> ValidFactions = [];
 
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;
@@ -117,11 +117,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				for (var i = 0; i < duplicates; i++)
 				{
-					var actor = w.CreateActor(collector.Info.Name, new TypeDictionary
-					{
+					var actor = w.CreateActor(collector.Info.Name,
+					[
 						new LocationInit(shuffledCandidateCells[i]),
 						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
-					});
+					]);
 
 					// Set the subcell and make sure to crush actors beneath.
 					var positionable = actor.OccupiesSpace as IPositionable;

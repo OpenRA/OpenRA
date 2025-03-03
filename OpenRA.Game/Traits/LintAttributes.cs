@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 		public ActorReferenceAttribute(Type requiredTrait = null,
 			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
-			RequiredTraits = requiredTrait != null ? new[] { requiredTrait } : Array.Empty<Type>();
+			RequiredTraits = requiredTrait != null ? [requiredTrait] : [];
 			DictionaryReference = dictionaryReference;
 		}
 	}

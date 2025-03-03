@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var author = widget.Get<TextFieldWidget>("AUTHOR");
 			author.Text = map.Author;
 
-			var visibilityPanel = Ui.LoadWidget("MAP_SAVE_VISIBILITY_PANEL", null, new WidgetArgs());
+			var visibilityPanel = Ui.LoadWidget("MAP_SAVE_VISIBILITY_PANEL", null, []);
 			var visOptionTemplate = visibilityPanel.Get<CheckboxWidget>("VISIBILITY_TEMPLATE");
 			visibilityPanel.RemoveChildren();
 

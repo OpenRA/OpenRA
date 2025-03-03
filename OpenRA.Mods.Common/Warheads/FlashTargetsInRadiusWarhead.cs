@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Warheads
 		{
 			var targetActor = target.Actor;
 			var firedBy = args.SourceActor;
-			var victims = Radius == WDist.Zero && targetActor != null ? new Actor[] { targetActor } : firedBy.World.FindActorsInCircle(target.CenterPosition, Radius);
+			var victims = Radius == WDist.Zero && targetActor != null ? [targetActor] : firedBy.World.FindActorsInCircle(target.CenterPosition, Radius);
 
 			foreach (var victim in victims)
 			{

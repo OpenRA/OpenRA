@@ -29,14 +29,14 @@ namespace OpenRA
 	public sealed class World : IDisposable
 	{
 		internal readonly TraitDictionary TraitDict = new();
-		readonly SortedDictionary<uint, Actor> actors = new();
-		readonly List<IEffect> effects = new();
-		readonly List<IEffect> unpartitionedEffects = new();
-		readonly List<ISync> syncedEffects = new();
+		readonly SortedDictionary<uint, Actor> actors = [];
+		readonly List<IEffect> effects = [];
+		readonly List<IEffect> unpartitionedEffects = [];
+		readonly List<ISync> syncedEffects = [];
 		readonly GameSettings gameSettings;
 		readonly ModData modData;
 
-		readonly Queue<Action<World>> frameEndActions = new();
+		readonly Queue<Action<World>> frameEndActions = [];
 
 		public readonly GameSpeed GameSpeed;
 
@@ -52,7 +52,7 @@ namespace OpenRA
 		public LongBitSet<PlayerBitMask> AllPlayersMask = default;
 		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default;
 
-		public Player[] Players = Array.Empty<Player>();
+		public Player[] Players = [];
 
 		public event Action<Player> RenderPlayerChanged;
 
@@ -213,7 +213,7 @@ namespace OpenRA
 			LocalRandom = new MersenneTwister();
 
 			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
-			WorldActor = CreateActor(worldActorType.ToString(), new TypeDictionary());
+			WorldActor = CreateActor(worldActorType.ToString(), []);
 			ActorMap = WorldActor.Trait<IActorMap>();
 			ScreenMap = WorldActor.Trait<ScreenMap>();
 			Selection = WorldActor.Trait<ISelection>();
@@ -399,7 +399,7 @@ namespace OpenRA
 
 		public int WorldTick { get; private set; }
 
-		readonly Dictionary<int, MiniYaml> gameSaveTraitData = new();
+		readonly Dictionary<int, MiniYaml> gameSaveTraitData = [];
 		internal void AddGameSaveTraitData(int traitIndex, MiniYaml yaml)
 		{
 			gameSaveTraitData[traitIndex] = yaml;

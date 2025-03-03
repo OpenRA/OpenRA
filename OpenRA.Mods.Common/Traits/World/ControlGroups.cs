@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class ControlGroupsInfo : TraitInfo, IControlGroupsInfo
 	{
-		public readonly string[] Groups = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+		public readonly string[] Groups = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
 		public override object Create(ActorInitializer init) { return new ControlGroups(init.World, this); }
 
@@ -127,10 +127,10 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			return new List<MiniYamlNode>()
-			{
+			return
+			[
 				new("Groups", new MiniYaml("", groups))
-			};
+			];
 		}
 
 		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)

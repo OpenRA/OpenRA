@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
-		readonly HashSet<TextFieldWidget> typableFields = new();
+		readonly HashSet<TextFieldWidget> typableFields = [];
 		readonly LabelWidget actorIDErrorLabel;
 
 		readonly Widget initContainer;
@@ -485,7 +485,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	sealed class EditActorPreview
 	{
 		readonly SetActorIdAction setActorIdAction;
-		readonly List<IEditActorHandle> handles = new();
+		readonly List<IEditActorHandle> handles = [];
 		EditorActorPreview actor;
 
 		public EditActorPreview(ActorEditLogic logic, EditorViewportControllerWidget editor, EditorActorLayer editorActorLayer, EditorActorPreview actor)

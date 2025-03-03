@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
@@ -19,7 +18,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	public class WithHarvesterSpriteBodyInfo : WithFacingSpriteBodyInfo, Requires<HarvesterInfo>
 	{
 		[Desc("Images switched between depending on fullness of harvester. Overrides RenderSprites.Image.")]
-		public readonly string[] ImageByFullness = Array.Empty<string>();
+		public readonly string[] ImageByFullness = [];
 
 		public override object Create(ActorInitializer init) { return new WithHarvesterSpriteBody(init, this); }
 	}

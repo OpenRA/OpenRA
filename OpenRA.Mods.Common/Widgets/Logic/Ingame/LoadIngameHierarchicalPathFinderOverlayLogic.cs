@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public LoadIngameHierarchicalPathFinderOverlayLogic(Widget widget, World world)
 		{
-			Game.LoadWidget(world, "HPF_OVERLAY", widget, new WidgetArgs());
+			Game.LoadWidget(world, "HPF_OVERLAY", widget, []);
 		}
 	}
 }

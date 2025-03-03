@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public readonly ExternalConditionInfo Info;
-		readonly Dictionary<object, HashSet<int>> permanentTokens = new();
+		readonly Dictionary<object, HashSet<int>> permanentTokens = [];
 
 		// Tokens are sorted on insert/remove by ascending expiry time
-		readonly List<TimedToken> timedTokens = new();
+		readonly List<TimedToken> timedTokens = [];
 		IConditionTimerWatcher[] watchers;
 		int duration;
 		int expires;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 			else if (permanent == null)
-				permanentTokens.Add(source, new HashSet<int> { token });
+				permanentTokens.Add(source, [token]);
 			else
 				permanent.Add(token);
 

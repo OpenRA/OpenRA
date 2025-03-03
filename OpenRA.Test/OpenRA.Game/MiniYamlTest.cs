@@ -172,7 +172,7 @@ Parent:
 			const string ResultString = "Parent:\n\tChild:\n";
 			var baseYaml = MiniYaml.FromString(BaseString, "");
 
-			var resultYaml = MiniYaml.Merge(new[] { baseYaml });
+			var resultYaml = MiniYaml.Merge([baseYaml]);
 			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
@@ -195,7 +195,7 @@ Parent:
 			var baseYaml = MiniYaml.FromString(BaseString, "");
 			var mergeYaml = MiniYaml.FromString(MergeString, "");
 
-			var resultYaml = MiniYaml.Merge(new[] { baseYaml, mergeYaml });
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
 			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
@@ -220,7 +220,7 @@ Parent:
 			var baseYaml = MiniYaml.FromString(BaseString, "");
 			var mergeYaml = MiniYaml.FromString(MergeString, "");
 
-			var resultYaml = MiniYaml.Merge(new[] { baseYaml, mergeYaml });
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
 			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 
@@ -453,7 +453,7 @@ Parent:
 			var baseYaml = MiniYaml.FromString(BaseYaml, "");
 			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
 
-			var resultYaml = MiniYaml.Merge(new[] { baseYaml, mergeYaml });
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
 			Assert.That(ResultString, Is.EqualTo(resultYaml.WriteToString()));
 		}
 

@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class WestwoodCompressedReader
 	{
-		static readonly int[] AudWsStepTable2 = { -2, -1, 0, 1 };
-		static readonly int[] AudWsStepTable4 = { -9, -8, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 8 };
+		static readonly int[] AudWsStepTable2 = [-2, -1, 0, 1];
+		static readonly int[] AudWsStepTable4 = [-9, -8, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 8];
 
 		public static void DecodeWestwoodCompressedSample(ReadOnlySpan<byte> input, Span<byte> output)
 		{

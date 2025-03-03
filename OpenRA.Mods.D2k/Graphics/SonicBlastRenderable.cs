@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.D2k.Traits;
@@ -19,7 +18,7 @@ namespace OpenRA.Mods.D2k.Graphics
 {
 	public class SonicBlastRenderable : IRenderable, IFinalizedRenderable
 	{
-		public static readonly IEnumerable<IRenderable> None = Array.Empty<IRenderable>();
+		public static readonly IEnumerable<IRenderable> None = [];
 		readonly SonicBlastRenderer renderer;
 		readonly float3 r;
 

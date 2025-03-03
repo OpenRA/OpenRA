@@ -89,21 +89,21 @@ namespace OpenRA
 		sealed class ConditionState
 		{
 			/// <summary>Delegates that have registered to be notified when this condition changes.</summary>
-			public readonly List<VariableObserverNotifier> Notifiers = new();
+			public readonly List<VariableObserverNotifier> Notifiers = [];
 
 			/// <summary>Unique integers identifying granted instances of the condition.</summary>
-			public readonly HashSet<int> Tokens = new();
+			public readonly HashSet<int> Tokens = [];
 		}
 
-		readonly Dictionary<string, ConditionState> conditionStates = new();
+		readonly Dictionary<string, ConditionState> conditionStates = [];
 
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
-		readonly Dictionary<int, string> conditionTokens = new();
+		readonly Dictionary<int, string> conditionTokens = [];
 
 		int nextConditionToken = 1;
 
 		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
-		readonly Dictionary<string, int> conditionCache = new();
+		readonly Dictionary<string, int> conditionCache = [];
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		readonly IReadOnlyDictionary<string, int> readOnlyConditionCache;
@@ -541,7 +541,7 @@ namespace OpenRA
 			if (EnabledTargetablePositions.Any())
 				return enabledTargetableWorldPositions;
 
-			return new[] { CenterPosition };
+			return [CenterPosition];
 		}
 
 		#region Conditions

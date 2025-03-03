@@ -39,13 +39,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		// Mapping from RA95 overlay index to type string
 		static readonly string[] RedAlertOverlayNames =
-		{
+		[
 			"sbag", "cycl", "brik", "barb", "wood",
 			"gold01", "gold02", "gold03", "gold04",
 			"gem01", "gem02", "gem03", "gem04",
 			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
 			"fpls", "wcrate", "scrate", "fenc", "sbag",
-		};
+		];
 
 		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new()
 		{
@@ -77,8 +77,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					Map.Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
 		}
 
-		static readonly string[] OverlayActors = new string[]
-		{
+		static readonly string[] OverlayActors =
+		[
+
 			// Fences
 			"sbag", "cycl", "brik", "barb", "wood", "fenc",
 
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			// Crates
 			"wcrate", "scrate"
-		};
+		];
 
 		void UnpackOverlayData(MemoryStream ms)
 		{

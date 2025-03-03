@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool minifiedOptions = true;
 		MapPreview selectedMap;
 		PlayingVideo playingVideo;
-		readonly Dictionary<string, string> missionOptions = new();
+		readonly Dictionary<string, string> missionOptions = [];
 		PanelType panel = PanelType.MissionInfo;
 
 		[ObjectCreator.UseCtor]

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.D2k.Projectiles
 	public class SonicBlastInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate a randomly picked velocity per blast.")]
-		public readonly WDist[] Speed = { new(128) };
+		public readonly WDist[] Speed = [new(128)];
 
 		[Desc("The number of ticks between the blast causing warhead impacts in its area of effect.")]
 		public readonly int DamageInterval = 1;
@@ -37,10 +37,10 @@ namespace OpenRA.Mods.D2k.Projectiles
 		public readonly WDist Width = new(650);
 
 		[Desc("Damage modifier applied at each range step.")]
-		public readonly int[] Falloff = { 100, 100 };
+		public readonly int[] Falloff = [100, 100];
 
 		[Desc("Ranges at which each Falloff step is defined.")]
-		public readonly WDist[] Range = { WDist.Zero, new(int.MaxValue) };
+		public readonly WDist[] Range = [WDist.Zero, new(int.MaxValue)];
 
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.D2k.Projectiles
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!wr.World.FogObscures(pos))
-				return new[] { (IRenderable)new SonicBlastRenderable(renderer, pos) };
+				return [(new SonicBlastRenderable(renderer, pos))];
 
 			return SpriteRenderable.None;
 		}

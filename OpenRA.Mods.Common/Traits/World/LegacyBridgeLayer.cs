@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LegacyBridgeLayerInfo : TraitInfo
 	{
 		[ActorReference]
-		public readonly string[] Bridges = { "bridge1", "bridge2" };
+		public readonly string[] Bridges = ["bridge1", "bridge2"];
 
 		public override object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
 	}
@@ -31,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LegacyBridgeLayer : IWorldLoaded
 	{
 		readonly LegacyBridgeLayerInfo info;
-		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new();
+		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = [];
 		readonly ITemplatedTerrainInfo terrainInfo;
 
 		CellLayer<Bridge> bridges;
@@ -80,12 +79,12 @@ namespace OpenRA.Mods.Common.Traits
 			var nj = cell.Y - index / template.Size.X;
 
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
-			var bridge = w.CreateActor(bridgeTypes[tile].Template, new TypeDictionary
-			{
+			var bridge = w.CreateActor(bridgeTypes[tile].Template,
+			[
 				new LocationInit(new CPos(ni, nj)),
 				new OwnerInit(w.WorldActor.Owner),
 				new HealthInit(bridgeTypes[tile].Health, true),
-			}).Trait<Bridge>();
+			]).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
 			var mapTiles = w.Map.Tiles;

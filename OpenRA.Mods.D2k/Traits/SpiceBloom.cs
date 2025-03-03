@@ -25,28 +25,28 @@ namespace OpenRA.Mods.D2k.Traits
 	public class SpiceBloomInfo : TraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
-		public readonly string[] GrowthSequences = { "grow1", "grow2", "grow3" };
+		public readonly string[] GrowthSequences = ["grow1", "grow2", "grow3"];
 
 		[SequenceReference]
 		public readonly string SpurtSequence = "spurt";
 
 		[Desc("The range of time (in ticks) that the spicebloom will take to grow until it blows up.")]
-		public readonly int[] Lifetime = { 2000, 3000 };
+		public readonly int[] Lifetime = [2000, 3000];
 
 		public readonly string ResourceType = "Spice";
 
 		[Desc("Spice blooms only grow on these terrain types.")]
-		public readonly HashSet<string> GrowthTerrainTypes = new();
+		public readonly HashSet<string> GrowthTerrainTypes = [];
 
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]
 		public readonly string Weapon = null;
 
 		[Desc("The number of times to fire Weapon at the minimum and maximum actor age.")]
-		public readonly int[] Bursts = { 4, 12 };
+		public readonly int[] Bursts = [4, 12];
 
 		[Desc("The minimum and maximum distance in cells that spice may be expelled.")]
-		public readonly int[] Range = { 3, 5 };
+		public readonly int[] Range = [3, 5];
 
 		[Desc("Delay between each burst. (in Ticks)")]
 		public readonly int BurstInterval = 1;
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class FireProjectilesEffect : IEffect
 	{
-		readonly Stack<ProjectileArgs> projectiles = new();
+		readonly Stack<ProjectileArgs> projectiles = [];
 		int delay = 1;
 		readonly int delayInfo = 1;
 		public FireProjectilesEffect(Stack<ProjectileArgs> projectiles, int delayInfo)

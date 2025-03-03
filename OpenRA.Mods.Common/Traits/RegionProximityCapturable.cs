@@ -9,8 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -24,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Set of cell offsets (relative to the actor's Location) the " + nameof(ProximityCaptor) + " needs to be in to initiate the capture. ",
 			"A 'Region' ActorInit can be used to override this value per actor. If either is empty or non-existent, ",
 			"the immediately neighboring cells of the actor will be used.")]
-		public readonly CVec[] Region = Array.Empty<CVec>();
+		public readonly CVec[] Region = [];
 
 		public override object Create(ActorInitializer init) { return new RegionProximityCapturable(init, this); }
 	}
@@ -45,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			region = offsets.Select(o => o + self.Location).ToArray();
 
 			if (region.Length == 0)
-				region = Util.ExpandFootprint(new List<CPos> { self.Location }, true).ToArray();
+				region = Util.ExpandFootprint([self.Location], true).ToArray();
 
 			return self.World.ActorMap.AddCellTrigger(region, ActorEntered, ActorLeft);
 		}

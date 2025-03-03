@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()
-				?.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.PlayerExperienceModifier }));
+				?.GiveExperience(Util.ApplyPercentageModifiers(exp, [info.PlayerExperienceModifier]));
 		}
 	}
 }

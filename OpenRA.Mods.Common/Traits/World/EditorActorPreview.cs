@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
 		readonly ActorReference reference;
-		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new();
+		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = [];
 		readonly Action<CPos> onCellEntryChanged;
 
 		SelectionBoxAnnotationRenderable selectionBox;

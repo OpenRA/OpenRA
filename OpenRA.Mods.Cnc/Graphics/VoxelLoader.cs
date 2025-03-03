@@ -21,9 +21,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 {
 	public sealed class VoxelLoader : IDisposable
 	{
-		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
+		static readonly float[] ChannelSelect = [0.75f, 0.25f, -0.25f, -0.75f];
 
-		readonly List<ModelVertex[]> vertices = new();
+		readonly List<ModelVertex[]> vertices = [];
 		readonly Cache<(string, string), Voxel> voxels;
 		readonly IReadOnlyFileSystem fileSystem;
 		IVertexBuffer<ModelVertex> vertexBuffer;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		{
 			this.fileSystem = fileSystem;
 			voxels = new Cache<(string, string), Voxel>(LoadFile);
-			vertices = new List<ModelVertex[]>();
+			vertices = [];
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
 
@@ -86,15 +86,15 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			var channelP = ChannelSelect[(int)s.Channel];
 			var channelC = ChannelSelect[(int)t.Channel];
-			return new ModelVertex[6]
-			{
+			return
+			[
 				new(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC),
 				new(coord(su, 0), s.Right, s.Top, t.Right, t.Top, channelP, channelC),
 				new(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
 				new(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
 				new(coord(0, sv), s.Left, s.Bottom, t.Left, t.Bottom, channelP, channelC),
 				new(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC)
-			};
+			];
 		}
 
 		IEnumerable<ModelVertex[]> GenerateSlicePlanes(VxlLimb l)

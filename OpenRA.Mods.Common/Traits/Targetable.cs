@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Targetable : ConditionalTrait<TargetableInfo>, ITargetable
 	{
-		protected static readonly string[] None = Array.Empty<string>();
+		protected static readonly string[] None = [];
 		protected Cloak[] cloaks;
 
 		public Targetable(TargetableInfo info)

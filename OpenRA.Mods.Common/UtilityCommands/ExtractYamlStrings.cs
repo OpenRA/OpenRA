@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.Where(t => t.Value.Length > 0)
 				.ToDictionary(t => t.Key, t => t.Value);
 
-			var modRules = UpdateUtils.LoadModYaml(modData, UpdateUtils.FilterExternalFiles(modData, modData.Manifest.Rules, new HashSet<string>()));
+			var modRules = UpdateUtils.LoadModYaml(modData, UpdateUtils.FilterExternalFiles(modData, modData.Manifest.Rules, []));
 
 			// Include files referenced in maps.
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false));
 					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 					if (mapRulesNode != null)
-						modRules.AddRange(UpdateUtils.LoadExternalMapYaml(modData, mapRulesNode.Value, new HashSet<string>()));
+						modRules.AddRange(UpdateUtils.LoadExternalMapYaml(modData, mapRulesNode.Value, []));
 				}
 			}
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 					if (mapRulesNode != null)
-						mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, new HashSet<string>()));
+						mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, []));
 
 					const string Mapftl = "map.ftl";
 					ExtractFromFile(Path.Combine(package.Name, Mapftl), mapRules, traitInfos, () =>
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						{
 							var value = node.NodeValue<string[]>();
 							if (!value.Contains(Mapftl))
-								node.Value.Value = string.Join(", ", value.Concat(new string[] { Mapftl }).ToArray());
+								node.Value.Value = string.Join(", ", value.Concat([Mapftl]).ToArray());
 						}
 						else
 							yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentMessages", Mapftl));
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (candidates.Count > 0)
 				{
 					var ruleFilename = file.Split('/').Last();
-					groupedCandidates[new HashSet<string>() { ruleFilename }] = new List<ExtractionCandidate>();
+					groupedCandidates[[ruleFilename]] = [];
 					for (var i = 0; i < candidates.Count; i++)
 					{
 						var candidate = candidates[i];
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (nHash.Key != null)
 					groupedCandidates[nHash.Key].Add(candidate);
 				else
-					groupedCandidates[newHash] = new List<ExtractionCandidate>() { candidate };
+					groupedCandidates[newHash] = [candidate];
 			}
 
 			addAction?.Invoke();
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Actor = actor;
 				Key = key;
 				Value = value;
-				Nodes = new List<MiniYamlNodeBuilder>() { node };
+				Nodes = [node];
 			}
 		}
 

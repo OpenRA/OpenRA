@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LoadIngamePerfLogic(Widget widget, World world)
 		{
 			var perfRoot = widget.Get("PERF_ROOT");
-			Game.LoadWidget(world, "PERF_WIDGETS", perfRoot, new WidgetArgs());
+			Game.LoadWidget(world, "PERF_WIDGETS", perfRoot, []);
 		}
 	}
 }

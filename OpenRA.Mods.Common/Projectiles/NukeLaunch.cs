@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -163,7 +162,7 @@ namespace OpenRA.Mods.Common.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!isLaunched || anim == null)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return anim.Render(pos, wr.Palette(weaponPalette));
 		}

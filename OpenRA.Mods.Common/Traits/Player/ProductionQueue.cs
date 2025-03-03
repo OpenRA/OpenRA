@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Group = null;
 
 		[Desc("Only enable this queue for certain factions.")]
-		public readonly HashSet<string> Factions = new();
+		public readonly HashSet<string> Factions = [];
 
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
@@ -137,8 +137,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ProductionQueueInfo Info;
 
 		// A list of things we could possibly build
-		protected readonly Dictionary<ActorInfo, ProductionState> Producible = new();
-		protected readonly List<ProductionItem> Queue = new();
+		protected readonly Dictionary<ActorInfo, ProductionState> Producible = [];
+		protected readonly List<ProductionItem> Queue = [];
 		readonly IEnumerable<ActorInfo> allProducibles;
 		readonly IEnumerable<ActorInfo> buildableProducibles;
 
@@ -297,7 +297,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
 			if (productionTraits.Length > 0 && productionTraits.All(p => p.IsTraitDisabled))
-				return Enumerable.Empty<ActorInfo>();
+				return [];
 			if (developerMode.AllTech)
 				return Producible.Keys;
 
@@ -307,9 +307,9 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
 			if (productionTraits.Length > 0 && productionTraits.All(p => p.IsTraitDisabled))
-				return Enumerable.Empty<ActorInfo>();
+				return [];
 			if (!Enabled)
-				return Enumerable.Empty<ActorInfo>();
+				return [];
 			if (!Info.PayUpFront && developerMode.AllTech)
 				return Producible.Keys;
 			if (Info.PayUpFront && developerMode.AllTech)

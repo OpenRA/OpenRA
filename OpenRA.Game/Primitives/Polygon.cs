@@ -25,7 +25,7 @@ namespace OpenRA.Primitives
 		public Polygon(Rectangle bounds)
 		{
 			BoundingRect = bounds;
-			Vertices = new[] { bounds.TopLeft, bounds.BottomLeft, bounds.BottomRight, bounds.TopRight };
+			Vertices = [bounds.TopLeft, bounds.BottomLeft, bounds.BottomRight, bounds.TopRight];
 			isRectangle = true;
 		}
 

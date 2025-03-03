@@ -20,7 +20,7 @@ namespace OpenRA.Server
 
 	public class MapStatusCache
 	{
-		readonly Dictionary<MapPreview, Session.MapStatus> cache = new();
+		readonly Dictionary<MapPreview, Session.MapStatus> cache = [];
 		readonly Action<string, Session.MapStatus> onStatusChanged;
 		readonly bool enableRemoteLinting;
 		readonly ModData modData;

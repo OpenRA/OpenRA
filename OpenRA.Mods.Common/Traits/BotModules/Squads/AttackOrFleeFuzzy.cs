@@ -20,17 +20,17 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	sealed class AttackOrFleeFuzzy
 	{
-		static readonly string[] DefaultRulesNormalOwnHealth = new[]
-		{
+		static readonly string[] DefaultRulesNormalOwnHealth =
+		[
 			"if ((OwnHealth is Normal) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
 			"then AttackOrFlee is Attack"
-		};
+		];
 
-		static readonly string[] DefaultRulesInjuredOwnHealth = new[]
-		{
+		static readonly string[] DefaultRulesInjuredOwnHealth =
+		[
 			"if ((OwnHealth is Injured) " +
 			"and (EnemyHealth is NearDead) " +
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
@@ -60,10 +60,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and (RelativeSpeed is Slow)) " +
 			"then AttackOrFlee is Attack"
-		};
+		];
 
-		static readonly string[] DefaultRulesNearDeadOwnHealth = new[]
-		{
+		static readonly string[] DefaultRulesNearDeadOwnHealth =
+		[
 			"if ((OwnHealth is NearDead) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured)) " +
 			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
@@ -93,11 +93,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"and (RelativeAttackPower is Equal) " +
 			"and (RelativeSpeed is Fast) " +
 			"then AttackOrFlee is Flee"
-		};
+		];
 
 		public static readonly AttackOrFleeFuzzy Default = new(null, null, null);
-		public static readonly AttackOrFleeFuzzy Rush = new(new[]
-		{
+		public static readonly AttackOrFleeFuzzy Rush = new(
+		[
 			"if ((OwnHealth is Normal) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 			"and (RelativeAttackPower is Strong) " +
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal)) " +
 			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
 			"then AttackOrFlee is Flee"
-		}, null, null);
+		], null, null);
 
 		readonly MamdaniFuzzySystem fuzzyEngine = new();
 

@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Warheads
 	public class DestroyResourceWarhead : Warhead
 	{
 		[Desc("Size of the area. The resources are removed within this area.", "Provide 2 values for a ring effect (outer/inner).")]
-		public readonly int[] Size = { 0, 0 };
+		public readonly int[] Size = [0, 0];
 
 		[Desc("Amount of resources to be removed. If negative or zero, all resources within the area will be removed.")]
 		public readonly int ResourceAmount = 0;
 
 		[Desc("Resource types to remove with this warhead.", "If empty, all resource types will be removed.")]
-		public readonly HashSet<string> ResourceTypes = new();
+		public readonly HashSet<string> ResourceTypes = [];
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{

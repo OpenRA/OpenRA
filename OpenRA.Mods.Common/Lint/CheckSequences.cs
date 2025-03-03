@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Lint
 									continue;
 								}
 
-								sequenceImages = new[] { imageOverride.ToLowerInvariant() };
+								sequenceImages = [imageOverride.ToLowerInvariant()];
 							}
 
 							foreach (var sequence in LintExts.GetFieldValues(traitInfo, field, sequenceReference.DictionaryReference))

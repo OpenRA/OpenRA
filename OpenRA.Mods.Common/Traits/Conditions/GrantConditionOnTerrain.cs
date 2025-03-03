@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Terrain names to trigger the condition.")]
-		public readonly string[] TerrainTypes = Array.Empty<string>();
+		public readonly string[] TerrainTypes = [];
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnTerrain(init, this); }
 	}

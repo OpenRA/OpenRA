@@ -42,9 +42,9 @@ namespace OpenRA.Network
 	public sealed class EchoConnection : IConnection
 	{
 		const int LocalClientId = 1;
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new();
-		readonly Queue<(int Frame, OrderPacket Orders)> orders = new();
-		readonly Queue<OrderPacket> immediateOrders = new();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = [];
+		readonly Queue<(int Frame, OrderPacket Orders)> orders = [];
+		readonly Queue<OrderPacket> immediateOrders = [];
 		bool disposed;
 
 		int IConnection.LocalClientId => LocalClientId;
@@ -52,7 +52,7 @@ namespace OpenRA.Network
 		void IConnection.StartGame()
 		{
 			// Inject an empty frame to fill the gap we are making by projecting forward orders
-			orders.Enqueue((0, new OrderPacket(Array.Empty<Order>())));
+			orders.Enqueue((0, new OrderPacket([])));
 		}
 
 		void IConnection.Send(int frame, IEnumerable<Order> o)
@@ -100,12 +100,12 @@ namespace OpenRA.Network
 	{
 		public readonly ConnectionTarget Target;
 		internal ReplayRecorder Recorder { get; private set; }
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sentSync = new();
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> queuedSyncPackets = new();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sentSync = [];
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> queuedSyncPackets = [];
 
-		readonly Queue<(int Frame, OrderPacket Orders)> sentOrders = new();
-		readonly Queue<OrderPacket> sentImmediateOrders = new();
-		readonly ConcurrentQueue<(int FromClient, byte[] Data)> receivedPackets = new();
+		readonly Queue<(int Frame, OrderPacket Orders)> sentOrders = [];
+		readonly Queue<OrderPacket> sentImmediateOrders = [];
+		readonly ConcurrentQueue<(int FromClient, byte[] Data)> receivedPackets = [];
 		TcpClient tcp;
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;

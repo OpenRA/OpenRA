@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var isShroudDisabled = viewer == null || (world.RenderPlayer == null && world.LocalPlayer.Spectating);
 			var isEveryone = viewer != null && viewer.NonCombatant && viewer.Spectating;
 
-			return isShroudDisabled || isEveryone ? world.Players : new[] { viewer };
+			return isShroudDisabled || isEveryone ? world.Players : [viewer];
 		}
 	}
 }

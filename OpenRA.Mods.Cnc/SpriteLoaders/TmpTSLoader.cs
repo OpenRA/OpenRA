@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -110,7 +109,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					}
 				}
 				else
-					Data = Array.Empty<byte>();
+					Data = [];
 			}
 		}
 

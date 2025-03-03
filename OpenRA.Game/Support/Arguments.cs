@@ -16,7 +16,7 @@ namespace OpenRA
 {
 	public class Arguments
 	{
-		readonly Dictionary<string, string> args = new();
+		readonly Dictionary<string, string> args = [];
 
 		public static Arguments Empty => new();
 

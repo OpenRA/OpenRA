@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = "primary";
 
 		[Desc("Name(s) of armament(s) that use this pool.")]
-		public readonly string[] Armaments = { "primary", "secondary" };
+		public readonly string[] Armaments = ["primary", "secondary"];
 
 		[Desc("How much ammo does this pool contain when fully loaded.")]
 		public readonly int Ammo = 1;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
 	{
 		public readonly AmmoPoolInfo Info;
-		readonly Stack<int> tokens = new();
+		readonly Stack<int> tokens = [];
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync]

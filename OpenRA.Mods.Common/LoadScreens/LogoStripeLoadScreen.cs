@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -31,7 +30,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		int lastDensity;
 		Size lastResolution;
 
-		string[] messages = Array.Empty<string>();
+		string[] messages = [];
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{

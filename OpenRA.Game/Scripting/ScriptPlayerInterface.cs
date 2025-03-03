@@ -24,7 +24,7 @@ namespace OpenRA.Scripting
 			: base(context)
 		{
 			this.player = player;
-			Bind(CreateObjects(context.PlayerCommands, new object[] { context, player }));
+			Bind(CreateObjects(context.PlayerCommands, [context, player]));
 		}
 	}
 }

@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public string MissionTemplate = "CHAT_LINE_TEMPLATE";
 		public string FeedbackTemplate = "TRANSIENT_LINE_TEMPLATE";
 		public string TransientsTemplate = "TRANSIENT_LINE_TEMPLATE";
-		readonly Dictionary<TextNotificationPool, Widget> templates = new();
+		readonly Dictionary<TextNotificationPool, Widget> templates = [];
 
-		readonly List<long> expirations = new();
+		readonly List<long> expirations = [];
 
 		Rectangle overflowDrawBounds = Rectangle.Empty;
 		public override Rectangle EventBounds => Rectangle.Empty;
@@ -40,11 +40,11 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			templates.Add(TextNotificationPool.Chat, Ui.LoadWidget(ChatTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.System, Ui.LoadWidget(SystemTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.Mission, Ui.LoadWidget(MissionTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.Feedback, Ui.LoadWidget(FeedbackTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.Transients, Ui.LoadWidget(TransientsTemplate, null, new WidgetArgs()));
+			templates.Add(TextNotificationPool.Chat, Ui.LoadWidget(ChatTemplate, null, []));
+			templates.Add(TextNotificationPool.System, Ui.LoadWidget(SystemTemplate, null, []));
+			templates.Add(TextNotificationPool.Mission, Ui.LoadWidget(MissionTemplate, null, []));
+			templates.Add(TextNotificationPool.Feedback, Ui.LoadWidget(FeedbackTemplate, null, []));
+			templates.Add(TextNotificationPool.Transients, Ui.LoadWidget(TransientsTemplate, null, []));
 
 			// HACK: Assume that all templates use the same font
 			var lineHeight = Game.Renderer.Fonts[templates[TextNotificationPool.Chat].Get<LabelWidget>("TEXT").Font].Measure("").Y;

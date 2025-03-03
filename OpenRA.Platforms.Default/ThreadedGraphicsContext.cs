@@ -24,9 +24,9 @@ namespace OpenRA.Platforms.Default
 	sealed class ThreadedGraphicsContext : IGraphicsContext
 	{
 		// PERF: Maintain several object pools to reduce allocations.
-		readonly Dictionary<Type, object> vertexBufferPools = new();
-		readonly Stack<Message> messagePool = new();
-		readonly Queue<Message> messages = new();
+		readonly Dictionary<Type, object> vertexBufferPools = [];
+		readonly Stack<Message> messagePool = [];
+		readonly Queue<Message> messages = [];
 
 		public readonly int VertexBatchSize;
 		public readonly int IndexBatchSize;
@@ -100,8 +100,8 @@ namespace OpenRA.Platforms.Default
 						tuple =>
 						{
 							(object t, var type) = ((int, Type))tuple;
-							var vertexBuffer = context.GetType().GetMethod(nameof(CreateVertexBuffer)).MakeGenericMethod(type).Invoke(context, new[] { t });
-							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { this, vertexBuffer });
+							var vertexBuffer = context.GetType().GetMethod(nameof(CreateVertexBuffer)).MakeGenericMethod(type).Invoke(context, [t]);
+							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
 						};
 					getCreateIndexBuffer = indices => new ThreadedIndexBuffer(this, context.CreateIndexBuffer((uint[])indices));
 					doDrawPrimitives =

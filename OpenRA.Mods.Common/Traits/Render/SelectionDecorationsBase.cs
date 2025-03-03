@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return DrawDecorations(self, wr);
 		}

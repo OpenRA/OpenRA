@@ -103,7 +103,7 @@ namespace OpenRA.Scripting
 				throw new InvalidOperationException($"[ScriptGlobal] attribute not found for global table '{type}'");
 
 			Name = names[0].Name;
-			Bind(new[] { this });
+			Bind([this]);
 		}
 
 		protected IEnumerable<T> FilteredObjects<T>(IEnumerable<T> objects, LuaFunction filter)
@@ -220,7 +220,7 @@ namespace OpenRA.Scripting
 				if (ctor == null)
 					throw new InvalidOperationException($"{b.Name} must define a constructor that takes a {nameof(ScriptContext)} context parameter");
 
-				var binding = (ScriptGlobal)ctor.Invoke(new[] { this });
+				var binding = (ScriptGlobal)ctor.Invoke([this]);
 				using (var obj = binding.ToLuaValue(this))
 					runtime.Globals.Add(binding.Name, obj);
 			}
@@ -341,7 +341,7 @@ namespace OpenRA.Scripting
 			return outer.SelectMany(i => i.GetGenericArguments());
 		}
 
-		static readonly object[] NoArguments = Array.Empty<object>();
+		static readonly object[] NoArguments = [];
 		Type[] FilterActorCommands(ActorInfo ai)
 		{
 			return FilterCommands(ai, knownActorCommands);

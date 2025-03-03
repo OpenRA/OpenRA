@@ -197,14 +197,14 @@ namespace OpenRA.Mods.Common.FileFormats
 		public sealed class WavStreamMsAdpcm : ReadOnlyAdapterStream
 		{
 			static readonly int[] AdaptationTable =
-			{
+			[
 				230, 230, 230, 230, 307, 409, 512, 614,
 				768, 614, 512, 409, 307, 230, 230, 230
-			};
+			];
 
-			static readonly int[] AdaptCoeff1 = { 256, 512, 0, 192, 240, 460, 392 };
+			static readonly int[] AdaptCoeff1 = [256, 512, 0, 192, 240, 460, 392];
 
-			static readonly int[] AdaptCoeff2 = { 0, -256, 0, 64, 0, -208, -232 };
+			static readonly int[] AdaptCoeff2 = [0, -256, 0, 64, 0, -208, -232];
 
 			readonly short channels;
 			readonly int blockDataSize;

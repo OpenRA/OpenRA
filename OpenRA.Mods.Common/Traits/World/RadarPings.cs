@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class RadarPings : ITick
 	{
-		public readonly List<RadarPing> Pings = new();
+		public readonly List<RadarPing> Pings = [];
 		readonly RadarPingsInfo info;
 
 		public WPos? LastPingPosition;

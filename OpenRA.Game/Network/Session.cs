@@ -20,12 +20,12 @@ namespace OpenRA.Network
 {
 	public class Session
 	{
-		public List<Client> Clients = new();
+		public List<Client> Clients = [];
 
 		// Keyed by the PlayerReference id that the slot corresponds to
-		public Dictionary<string, Slot> Slots = new();
+		public Dictionary<string, Slot> Slots = [];
 
-		public HashSet<int> DisabledSpawnPoints = new();
+		public HashSet<int> DisabledSpawnPoints = [];
 
 		public Global GlobalSettings = new();
 
@@ -221,7 +221,7 @@ namespace OpenRA.Network
 			public int NetFrameInterval = 3;
 
 			[FieldLoader.Ignore]
-			public Dictionary<string, LobbyOptionState> LobbyOptions = new();
+			public Dictionary<string, LobbyOptionState> LobbyOptions = [];
 
 			public static Global Deserialize(MiniYaml data)
 			{
@@ -240,7 +240,7 @@ namespace OpenRA.Network
 				var data = new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
 				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value)));
 				data = data.WithValue(data.Value.WithNodesAppended(
-					new[] { new MiniYamlNode("Options", new MiniYaml(null, options)) }));
+					[new MiniYamlNode("Options", new MiniYaml(null, options))]));
 				return data;
 			}
 

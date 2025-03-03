@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		int beingCapturedToken = Actor.InvalidConditionToken;
 		bool enteringCurrentTarget;
 
-		readonly HashSet<Actor> currentCaptors = new();
+		readonly HashSet<Actor> currentCaptors = [];
 
 		public bool BeingCaptured { get; private set; }
 

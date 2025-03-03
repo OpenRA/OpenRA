@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>
 	{
 		[Desc("Turret names")]
-		public readonly string[] Turrets = { "primary" };
+		public readonly string[] Turrets = ["primary"];
 
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}

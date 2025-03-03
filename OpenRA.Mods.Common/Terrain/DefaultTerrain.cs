@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Terrain
 		public readonly string Name;
 		public readonly string Id;
 		public readonly int SheetSize = 512;
-		public readonly Color[] HeightDebugColors = { Color.Red };
+		public readonly Color[] HeightDebugColors = [Color.Red];
 		public readonly string[] EditorTemplateOrder;
 		public readonly bool IgnoreTileSpriteOffsets;
 		public readonly bool EnableDepth = false;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 		[FieldLoader.Ignore]
 		public readonly TerrainTypeInfo[] TerrainInfo;
-		readonly Dictionary<string, byte> terrainIndexByType = new();
+		readonly Dictionary<string, byte> terrainIndexByType = [];
 		readonly byte defaultWalkableTerrainIndex;
 
 		public DefaultTerrain(IReadOnlyFileSystem fileSystem, string filepath)

@@ -25,12 +25,12 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string paletteName = "cloak";
 
 		readonly Color[] colors =
-		{
+		[
 			Color.FromArgb(55, 205, 205, 220),
 			Color.FromArgb(120, 205, 205, 230),
 			Color.FromArgb(192, 180, 180, 255),
 			Color.FromArgb(178, 205, 250, 220),
-		};
+		];
 
 		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{

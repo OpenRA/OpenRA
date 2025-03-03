@@ -90,12 +90,12 @@ namespace OpenRA.Mods.Cnc.Graphics
 			get
 			{
 				return limbData.Select(a => a.Size.Select(b => a.Scale * b).ToArray())
-					.Aggregate((a, b) => new float[]
-					{
+					.Aggregate((a, b) =>
+					[
 						Math.Max(a[0], b[0]),
 						Math.Max(a[1], b[1]),
 						Math.Max(a[2], b[2])
-					});
+					]);
 			}
 		}
 

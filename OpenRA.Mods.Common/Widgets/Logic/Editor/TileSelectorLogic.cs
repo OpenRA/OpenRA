@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Template = template;
 				Categories = template.Categories;
 				Tooltip = template.Id.ToString(NumberFormatInfo.CurrentInfo);
-				SearchTerms = new[] { Tooltip };
+				SearchTerms = [Tooltip];
 			}
 		}
 

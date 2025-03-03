@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithCrateBodyInfo : TraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
 	{
 		[Desc("Easteregg sequences to use in December.")]
-		public readonly string[] XmasImages = Array.Empty<string>();
+		public readonly string[] XmasImages = [];
 
 		[Desc("Terrain types on which to display WaterSequence.")]
-		public readonly HashSet<string> WaterTerrainTypes = new() { "Water" };
+		public readonly HashSet<string> WaterTerrainTypes = ["Water"];
 
 		[SequenceReference]
 		public readonly string IdleSequence = "idle";
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var rs = self.Trait<RenderSprites>();
 			var image = rs.GetImage(self);
-			var images = info.XmasImages.Length > 0 && DateTime.Today.Month == 12 ? info.XmasImages : new[] { image };
+			var images = info.XmasImages.Length > 0 && DateTime.Today.Month == 12 ? info.XmasImages : [image];
 
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play(info.IdleSequence);

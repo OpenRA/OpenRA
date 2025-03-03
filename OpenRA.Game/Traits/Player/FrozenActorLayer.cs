@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 		readonly Actor actor;
 		readonly ICreatesFrozenActors frozenTrait;
 		readonly Shroud shroud;
-		readonly List<WPos> targetablePositions = new();
+		readonly List<WPos> targetablePositions = [];
 
 		public Player Viewer { get; }
 		public Player Owner { get; private set; }
@@ -75,8 +75,8 @@ namespace OpenRA.Traits
 
 		public Polygon MouseBounds = Polygon.Empty;
 
-		static readonly IRenderable[] NoRenderables = Array.Empty<IRenderable>();
-		static readonly Rectangle[] NoBounds = Array.Empty<Rectangle>();
+		static readonly IRenderable[] NoRenderables = [];
+		static readonly Rectangle[] NoBounds = [];
 
 		int flashTicks;
 		TintModifiers flashModifiers;
@@ -261,7 +261,7 @@ namespace OpenRA.Traits
 			binSize = info.BinSize;
 			world = self.World;
 			owner = self.Owner;
-			frozenActorsById = new Dictionary<uint, FrozenActor>();
+			frozenActorsById = [];
 
 			partitionedFrozenActors = new SpatiallyPartitioned<FrozenActor>(
 				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
@@ -329,7 +329,7 @@ namespace OpenRA.Traits
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
 				{
-					frozenActorsToRemove ??= new List<FrozenActor>();
+					frozenActorsToRemove ??= [];
 					frozenActorsToRemove.Add(frozenActor);
 				}
 			}

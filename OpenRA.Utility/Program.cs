@@ -63,11 +63,11 @@ namespace OpenRA
 			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
 			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?
 				FieldLoader.GetValue<string[]>("MOD_SEARCH_PATHS", envModSearchPaths) :
-				new[] { Path.Combine(Platform.EngineDir, "mods") };
+				[Path.Combine(Platform.EngineDir, "mods")];
 
 			if (args.Length == 0)
 			{
-				PrintUsage(new InstalledMods(modSearchPaths, Array.Empty<string>()), null);
+				PrintUsage(new InstalledMods(modSearchPaths, []), null);
 				return;
 			}
 
@@ -75,7 +75,7 @@ namespace OpenRA
 			var explicitModPaths = Array.Empty<string>();
 			if (File.Exists(modId) || Directory.Exists(modId))
 			{
-				explicitModPaths = new[] { modId };
+				explicitModPaths = [modId];
 				modId = Path.GetFileNameWithoutExtension(modId);
 			}
 

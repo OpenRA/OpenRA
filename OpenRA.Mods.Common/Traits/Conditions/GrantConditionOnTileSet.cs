@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Tile set IDs to trigger the condition.")]
-		public readonly string[] TileSets = Array.Empty<string>();
+		public readonly string[] TileSets = [];
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnTileSet(this); }
 	}

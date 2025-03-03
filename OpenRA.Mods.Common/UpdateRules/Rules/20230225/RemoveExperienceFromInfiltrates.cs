@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"Infiltrates property PlayerExperience was removed, " +
 			"it was replaced by adding PlayerExperience to all InfiltrateFor* Traits.";
 
-		readonly List<string> locations = new();
+		readonly List<string> locations = [];
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (server.State == ServerState.GameStarted)
 				{
-					server.SendFluentMessageTo(conn, StateUnchangedGameStarted, new object[] { "command", command });
+					server.SendFluentMessageTo(conn, StateUnchangedGameStarted, ["command", command]);
 					return false;
 				}
 				else if (client.State == Session.ClientState.Ready && !(command.StartsWith("state", StringComparison.Ordinal) || command == "startgame"))
@@ -300,7 +300,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!Enum<Session.ClientState>.TryParse(s, false, out var state))
 				{
-					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "state" });
+					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "state"]);
 
 					return true;
 				}
@@ -396,7 +396,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "allow_spectate" });
+				server.SendFluentMessageTo(conn, MalformedCommand, ["command", "allow_spectate"]);
 
 				return true;
 			}
@@ -485,7 +485,7 @@ namespace OpenRA.Mods.Common.Server
 				var parts = s.Split(' ');
 				if (parts.Length < 3)
 				{
-					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "slot_bot" });
+					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "slot_bot"]);
 					return true;
 				}
 
@@ -672,7 +672,7 @@ namespace OpenRA.Mods.Common.Server
 					server.SendFluentMessageTo(conn, SearchingMap);
 					var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
 					var reported = false;
-					server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { s }, SelectMap, _ =>
+					server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, [s], SelectMap, _ =>
 					{
 						if (!reported)
 							QueryFailed();
@@ -718,7 +718,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (option.IsLocked)
 				{
-					server.SendFluentMessageTo(conn, OptionLocked, new object[] { "option", option.Name });
+					server.SendFluentMessageTo(conn, OptionLocked, ["option", option.Name]);
 					return true;
 				}
 
@@ -801,7 +801,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!Exts.TryParseInt32Invariant(raw, out var teamCount))
 				{
-					server.SendFluentMessageTo(conn, NumberTeams, new object[] { "raw", raw });
+					server.SendFluentMessageTo(conn, NumberTeams, ["raw", raw]);
 					return true;
 				}
 
@@ -846,7 +846,7 @@ namespace OpenRA.Mods.Common.Server
 				var split = s.Split(' ');
 				if (split.Length < 2)
 				{
-					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "kick" });
+					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "kick"]);
 					return true;
 				}
 
@@ -898,7 +898,7 @@ namespace OpenRA.Mods.Common.Server
 				var split = s.Split(' ');
 				if (split.Length != 2)
 				{
-					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
+					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "vote_kick"]);
 					return true;
 				}
 
@@ -926,7 +926,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!bool.TryParse(split[1], out var vote))
 				{
-					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
+					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "vote_kick"]);
 					return true;
 				}
 
@@ -1057,7 +1057,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!isValidFaction)
 				{
-					server.SendFluentMessageTo(conn, InvalidFactionSelected, new object[] { "faction", faction });
+					server.SendFluentMessageTo(conn, InvalidFactionSelected, ["faction", faction]);
 					return true;
 				}
 

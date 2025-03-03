@@ -24,7 +24,7 @@ namespace OpenRA
 		public readonly Dictionary<string, PlayerReference> Players;
 
 		public MapPlayers()
-			: this(new List<MiniYamlNode>()) { }
+			: this([]) { }
 
 		public MapPlayers(IEnumerable<MiniYamlNode> playerDefinitions)
 		{
@@ -66,7 +66,7 @@ namespace OpenRA
 					Name = $"Multi{index}",
 					Faction = "Random",
 					Playable = true,
-					Enemies = new[] { "Creeps" }
+					Enemies = ["Creeps"]
 				};
 				Players.Add(p.Name, p);
 			}

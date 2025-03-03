@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference]
 		[FieldLoader.Require]
 		[Desc("Weapons to fire.")]
-		public readonly string[] Weapons = Array.Empty<string>();
+		public readonly string[] Weapons = [];
 
 		[Desc("How long (in ticks) to wait before the first detonation.")]
 		public readonly int StartCooldown = 0;

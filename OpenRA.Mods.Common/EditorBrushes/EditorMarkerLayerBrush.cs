@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int? type;
 		readonly MarkerLayerOverlay markerLayerOverlay;
 
-		readonly List<PaintMarkerTile> paintTiles = new();
+		readonly List<PaintMarkerTile> paintTiles = [];
 
 		public bool DidPaintTiles => paintTiles.Count > 0;
 
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.tile = tile;
 			this.markerLayerOverlay = markerLayerOverlay;
 
-			tiles = new HashSet<CPos>(markerLayerOverlay.Tiles[tile]);
+			tiles = markerLayerOverlay.Tiles[tile].ToHashSet();
 
 			Text = FluentProvider.GetMessage(ClearedSelectedMarkerTiles, "amount", tiles.Count, "type", tile);
 		}

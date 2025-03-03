@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 
 			public readonly int[] PanelRegion = null;
 			public readonly PanelSides PanelSides = PanelSides.All;
-			public readonly Dictionary<string, Rectangle> Regions = new();
+			public readonly Dictionary<string, Rectangle> Regions = [];
 		}
 
 		public static IReadOnlyDictionary<string, Collection> Collections => collections;
@@ -71,11 +71,11 @@ namespace OpenRA.Graphics
 				dpiScale = Game.Renderer.WindowScale;
 
 			fileSystem = modData.DefaultFileSystem;
-			collections = new Dictionary<string, Collection>();
-			cachedSheets = new Dictionary<string, (Sheet, int)>();
-			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
-			cachedPanelSprites = new Dictionary<string, Sprite[]>();
-			cachedCollectionSheets = new Dictionary<Collection, (Sheet, int)>();
+			collections = [];
+			cachedSheets = [];
+			cachedSprites = [];
+			cachedPanelSprites = [];
+			cachedCollectionSheets = [];
 
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
@@ -170,7 +170,7 @@ namespace OpenRA.Graphics
 			var sheetDensity = SheetForCollection(collection);
 			if (cachedCollection == null)
 			{
-				cachedCollection = new Dictionary<string, Sprite>();
+				cachedCollection = [];
 				cachedSprites.Add(collectionName, cachedCollection);
 			}
 
@@ -240,11 +240,11 @@ namespace OpenRA.Graphics
 				// PERF: We don't need to search for images if there are no definitions.
 				// PERF: It's more efficient to send an empty array rather than an array of 9 nulls.
 				if (collection.Regions.Count == 0)
-					return Array.Empty<Sprite>();
+					return [];
 
 				// Support manual definitions for unusual dialog layouts
-				sprites = new[]
-				{
+				sprites =
+				[
 					TryGetImage(collectionName, "corner-tl"),
 					TryGetImage(collectionName, "border-t"),
 					TryGetImage(collectionName, "corner-tr"),
@@ -254,7 +254,7 @@ namespace OpenRA.Graphics
 					TryGetImage(collectionName, "corner-bl"),
 					TryGetImage(collectionName, "border-b"),
 					TryGetImage(collectionName, "corner-br")
-				};
+				];
 			}
 
 			cachedPanelSprites.Add(collectionName, sprites);

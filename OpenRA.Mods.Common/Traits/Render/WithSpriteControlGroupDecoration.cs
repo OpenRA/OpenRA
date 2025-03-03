@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -54,16 +53,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var group = self.World.ControlGroups.GetControlGroupForActor(self);
 			if (group == null)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			anim.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
 			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) - (0.5f * anim.Image.Size.XY).ToInt2();
 			var palette = wr.Palette(Info.Palette);
-			return new IRenderable[]
-			{
+			return
+			[
 				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette)
-			};
+			];
 		}
 	}
 }

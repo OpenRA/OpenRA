@@ -413,11 +413,6 @@ namespace OpenRA
 			return ts.Except(exclusions);
 		}
 
-		public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
-		{
-			return new HashSet<T>(source);
-		}
-
 		public static Dictionary<TKey, TSource> ToDictionaryWithConflictLog<TSource, TKey>(
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector,
 			string debugName, Func<TKey, string> logKey, Func<TSource, string> logValue)
@@ -460,14 +455,14 @@ namespace OpenRA
 				// Check for a key conflict:
 				if (!output.TryAdd(key, element))
 				{
-					dupKeys ??= new Dictionary<TKey, List<string>>();
+					dupKeys ??= [];
 					if (!dupKeys.TryGetValue(key, out var dupKeyMessages))
 					{
 						// Log the initial conflicting value already inserted:
-						dupKeyMessages = new List<string>
-						{
+						dupKeyMessages =
+						[
 							logValue(output[key])
-						};
+						];
 						dupKeys.Add(key, dupKeyMessages);
 					}
 
@@ -664,7 +659,7 @@ namespace OpenRA
 			if (index == -1)
 			{
 				// The remaining string is an empty string
-				str = ReadOnlySpan<char>.Empty;
+				str = [];
 				Current = span;
 				return true;
 			}

@@ -18,8 +18,8 @@ namespace OpenRA
 	public sealed class HotkeyManager
 	{
 		readonly Dictionary<string, Hotkey> settings;
-		readonly Dictionary<string, HotkeyDefinition> definitions = new();
-		readonly Dictionary<string, Hotkey> keys = new();
+		readonly Dictionary<string, HotkeyDefinition> definitions = [];
+		readonly Dictionary<string, Hotkey> keys = [];
 
 		public HotkeyManager(IReadOnlyFileSystem fileSystem, Dictionary<string, Hotkey> settings, Manifest manifest)
 		{

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = ["idle"];
 
 		[PaletteReference]
 		public readonly string Palette = "effect";
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly WDist DistanceAboveTerrain = new(756);
 
 		[Desc("Only play on these terrain types.")]
-		public readonly HashSet<string> TerrainTypes = new();
+		public readonly HashSet<string> TerrainTypes = [];
 
 		public override object Create(ActorInitializer init) { return new WithAircraftLandingEffect(this); }
 	}

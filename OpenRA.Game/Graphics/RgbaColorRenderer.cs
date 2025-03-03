@@ -191,7 +191,7 @@ namespace OpenRA.Graphics
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
 			var bl = new float3(tl.X, br.Y, br.Z);
-			DrawPolygon(new[] { tl, tr, br, bl }, width, color, blendMode);
+			DrawPolygon([tl, tr, br, bl], width, color, blendMode);
 		}
 
 		public void FillRect(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -21,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 
 		int selectionHash;
-		TraitPair<AutoTarget>[] actorStances = Array.Empty<TraitPair<AutoTarget>>();
+		TraitPair<AutoTarget>[] actorStances = [];
 
 		[ObjectCreator.UseCtor]
 		public StanceSelectorLogic(Widget widget, World world)

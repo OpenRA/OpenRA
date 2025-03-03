@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Primitives;
 
@@ -17,7 +16,7 @@ namespace OpenRA.Graphics
 {
 	public class SpriteRenderable : IPalettedRenderable, IModifyableRenderable, IFinalizedRenderable
 	{
-		public static readonly IEnumerable<IRenderable> None = Array.Empty<IRenderable>();
+		public static readonly IEnumerable<IRenderable> None = [];
 
 		readonly Sprite sprite;
 		readonly WPos pos;

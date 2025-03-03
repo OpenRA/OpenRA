@@ -207,7 +207,7 @@ namespace OpenRA
 			// Therefore assign the uninitialized actor and run the Created callbacks
 			// by calling Initialize ourselves.
 			var playerActorType = world.Type == WorldType.Editor ? SystemActors.EditorPlayer : SystemActors.Player;
-			PlayerActor = new Actor(world, playerActorType.ToString(), new TypeDictionary { new OwnerInit(this) });
+			PlayerActor = new Actor(world, playerActorType.ToString(), [new OwnerInit(this)]);
 			PlayerActor.Initialize(true);
 
 			Shroud = PlayerActor.Trait<Shroud>();

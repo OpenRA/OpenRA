@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class PathFinder : IPathFinder, IWorldLoaded
 	{
-		public static readonly List<CPos> NoPath = new(0);
+		public static readonly List<CPos> NoPath = [];
 
 		/// <summary>
 		/// When searching for paths, use a default weight of 125% to reduce
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Unlike the destination cell, the source cell is allowed to have an unreachable movement cost.
 					if (!PathSearch.CellAllowsMovement(self.World, locomotor, source, customCost))
 						return NoPath;
-					return new List<CPos>(2) { target, source };
+					return [target, source];
 				}
 
 				// Use a hierarchical path search, which performs a guided bidirectional search.

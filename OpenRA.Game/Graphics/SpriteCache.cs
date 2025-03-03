@@ -27,12 +27,12 @@ namespace OpenRA.Graphics
 
 		readonly Dictionary<
 			int,
-			(int[] Frames, MiniYamlNode.SourceLocation Location, AdjustFrame AdjustFrame, bool Premultiplied)> spriteReservations = new();
-		readonly Dictionary<string, List<int>> reservationsByFilename = new();
+			(int[] Frames, MiniYamlNode.SourceLocation Location, AdjustFrame AdjustFrame, bool Premultiplied)> spriteReservations = [];
+		readonly Dictionary<string, List<int>> reservationsByFilename = [];
 
-		readonly Dictionary<int, Sprite[]> resolvedSprites = new();
+		readonly Dictionary<int, Sprite[]> resolvedSprites = [];
 
-		readonly Dictionary<int, (string Filename, MiniYamlNode.SourceLocation Location)> missingFiles = new();
+		readonly Dictionary<int, (string Filename, MiniYamlNode.SourceLocation Location)> missingFiles = [];
 
 		int nextReservationToken = 1;
 
@@ -54,7 +54,7 @@ namespace OpenRA.Graphics
 		{
 			var token = nextReservationToken++;
 			spriteReservations[token] = (frames?.ToArray(), location, adjustFrame, premultiplied);
-			reservationsByFilename.GetOrAdd(filename, _ => new List<int>()).Add(token);
+			reservationsByFilename.GetOrAdd(filename, _ => []).Add(token);
 			return token;
 		}
 

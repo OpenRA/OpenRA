@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
 					if (!defaults.LobbyOptions.TryGetValue(kv.Key, out var def) || kv.Value.Value != def.Value)
 						if (options.TryGetValue(kv.Key, out var option))
-							server.SendFluentMessageTo(conn, NotificationLobbyOption, new object[] { "name", option.Name, "value", option.Values[kv.Value.Value] });
+							server.SendFluentMessageTo(conn, NotificationLobbyOption, ["name", option.Name, "value", option.Values[kv.Value.Value]]);
 			}
 		}
 	}

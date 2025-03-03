@@ -26,13 +26,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Duration = -1;
 
 		[Desc("Randomised offset for the particle emitter.")]
-		public readonly WVec[] Offset = { WVec.Zero };
+		public readonly WVec[] Offset = [WVec.Zero];
 
 		[Desc("Randomized particle forward movement.")]
-		public readonly WDist[] Speed = { WDist.Zero };
+		public readonly WDist[] Speed = [WDist.Zero];
 
 		[Desc("Randomized particle gravity.")]
-		public readonly WDist[] Gravity = { WDist.Zero };
+		public readonly WDist[] Gravity = [WDist.Zero];
 
 		[Desc("Randomize particle facing.")]
 		public readonly bool RandomFacing = true;
@@ -44,14 +44,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RandomRate = 4;
 
 		[Desc("How many particles should spawn. Two values for a random range.")]
-		public readonly int[] SpawnFrequency = { 1 };
+		public readonly int[] SpawnFrequency = [1];
 
 		[Desc("Which image to use.")]
 		public readonly string Image = "smoke";
 
 		[Desc("Which sequence to use.")]
 		[SequenceReference(nameof(Image))]
-		public readonly string[] Sequences = { "particles" };
+		public readonly string[] Sequences = ["particles"];
 
 		[Desc("Which palette to use.")]
 		[PaletteReference(nameof(IsPlayerPalette))]

@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when a specified actor is being carried.",
 			"A dictionary of [actor name]: [condition].")]
-		public readonly Dictionary<string, string> CarryableConditions = new();
+		public readonly Dictionary<string, string> CarryableConditions = [];
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -128,11 +128,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!string.IsNullOrEmpty(info.InitialActor))
 			{
-				var cargo = self.World.CreateActor(false, info.InitialActor.ToLowerInvariant(), new TypeDictionary
-				{
+				var cargo = self.World.CreateActor(false, info.InitialActor.ToLowerInvariant(),
+				[
 					new ParentActorInit(self),
 					new OwnerInit(self.Owner)
-				});
+				]);
 
 				cargo.Trait<Carryable>().Attached(cargo, self);
 				AttachCarryable(self, cargo);

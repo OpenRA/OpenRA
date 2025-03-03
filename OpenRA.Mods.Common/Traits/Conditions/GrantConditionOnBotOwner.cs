@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Bot types that trigger the condition.")]
-		public readonly string[] Bots = Array.Empty<string>();
+		public readonly string[] Bots = [];
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnBotOwner(this); }
 	}

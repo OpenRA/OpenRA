@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class ProductionTabGroup
 	{
-		public List<ProductionTab> Tabs = new();
+		public List<ProductionTab> Tabs = [];
 		public string Group;
 		public int NextQueueName = 1;
 		public bool Alert { get { return Tabs.Any(t => t.Queue.AllQueued().Any(i => i.Done)); } }
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Lazy<ProductionPaletteWidget> paletteWidget;
 		string queueGroup;
 
-		readonly List<(ProductionQueue Queue, bool Enabled)> cachedProductionQueueEnabledStates = new();
+		readonly List<(ProductionQueue Queue, bool Enabled)> cachedProductionQueueEnabledStates = [];
 
 		[ObjectCreator.UseCtor]
 		public ProductionTabsWidget(World world)

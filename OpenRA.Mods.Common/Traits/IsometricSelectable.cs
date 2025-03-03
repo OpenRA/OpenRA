@@ -116,10 +116,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (height == 0)
-				return new Polygon(new[] { top, left, bottom, right });
+				return new Polygon([top, left, bottom, right]);
 
 			var h = new int2(0, height);
-			return new Polygon(new[] { top - h, left - h, left, bottom, right, right - h });
+			return new Polygon([top - h, left - h, left, bottom, right, right - h]);
 		}
 
 		public Polygon Bounds(Actor self, WorldRenderer wr)

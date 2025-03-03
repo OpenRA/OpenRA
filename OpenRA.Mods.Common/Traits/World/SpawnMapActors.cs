@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class SpawnMapActors : IWorldLoaded
 	{
-		public Dictionary<string, Actor> Actors = new();
+		public Dictionary<string, Actor> Actors = [];
 		public uint LastMapActorID { get; private set; }
 
 		public void WorldLoaded(World world, WorldRenderer wr)

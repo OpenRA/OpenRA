@@ -21,14 +21,14 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly float2 TROffset = new(12, -6);
 		static readonly float2 TOffset = new(0, -13);
 		static readonly float2[] Offsets =
-		{
+		[
 			-TROffset, -TLOffset, -TOffset,
 			TROffset, -TOffset, -TLOffset,
 			-TLOffset, TOffset, TROffset,
 			TLOffset, TROffset, TOffset,
 			-TROffset, TOffset, TLOffset,
 			TLOffset, -TOffset, -TROffset
-		};
+		];
 		readonly Polygon bounds;
 		readonly Color color;
 
@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var cr = Game.Renderer.RgbaColorRenderer;
 			for (var i = 0; i < 6; i++)
 			{
-				cr.DrawLine(new float3[] { screen[i] + Offsets[3 * i], screen[i], screen[i] + Offsets[3 * i + 1] }, 1, color, true);
-				cr.DrawLine(new float3[] { screen[i], screen[i] + Offsets[3 * i + 2] }, 1, color, true);
+				cr.DrawLine([screen[i] + Offsets[3 * i], screen[i], screen[i] + Offsets[3 * i + 1]], 1, color, true);
+				cr.DrawLine([screen[i], screen[i] + Offsets[3 * i + 2]], 1, color, true);
 			}
 		}
 

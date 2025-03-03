@@ -66,16 +66,16 @@ namespace OpenRA
 		public string Map = null;
 
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
-		public string[] Ban = Array.Empty<string>();
+		public string[] Ban = [];
 
 		[Desc("For dedicated servers only, allow anonymous clients to join.")]
 		public bool RequireAuthentication = false;
 
 		[Desc("For dedicated servers only, if non-empty, only allow authenticated players with these profile IDs to join.")]
-		public int[] ProfileIDWhitelist = Array.Empty<int>();
+		public int[] ProfileIDWhitelist = [];
 
 		[Desc("For dedicated servers only, if non-empty, always reject players with these user IDs from joining.")]
-		public int[] ProfileIDBlacklist = Array.Empty<int>();
+		public int[] ProfileIDBlacklist = [];
 
 		[Desc("For dedicated servers only, controls whether a game can be started with just one human player in the lobby.")]
 		public bool EnableSingleplayer = false;
@@ -102,7 +102,7 @@ namespace OpenRA
 		public bool EnableLintChecks = true;
 
 		[Desc("For dedicated servers only, a comma separated list of map uids that are allowed to be used.")]
-		public string[] MapPool = Array.Empty<string>();
+		public string[] MapPool = [];
 
 		[Desc("Delay in milliseconds before newly joined players can send chat messages.")]
 		public int FloodLimitJoinCooldown = 5000;
@@ -248,7 +248,7 @@ namespace OpenRA
 		public string Name = "Commander";
 		public Color Color = Color.FromArgb(200, 32, 32);
 		public string LastServer = "localhost:1234";
-		public Color[] CustomColors = Array.Empty<Color>();
+		public Color[] CustomColors = [];
 	}
 
 	public class SinglePlayerGameSettings
@@ -317,13 +317,13 @@ namespace OpenRA
 		public readonly ServerSettings Server = new();
 		public readonly DebugSettings Debug = new();
 		public readonly SinglePlayerGameSettings SinglePlayerSettings = new();
-		internal Dictionary<string, Hotkey> Keys = new();
+		internal Dictionary<string, Hotkey> Keys = [];
 		public readonly Dictionary<string, object> Sections;
 
 		// A direct clone of the file loaded from disk.
 		// Any changed settings will be merged over this on save,
 		// allowing us to persist any unknown configuration keys
-		readonly List<MiniYamlNode> yamlCache = new();
+		readonly List<MiniYamlNode> yamlCache = [];
 
 		public Settings(string file, Arguments args)
 		{

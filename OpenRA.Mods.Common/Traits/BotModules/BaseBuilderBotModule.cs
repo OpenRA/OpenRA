@@ -21,37 +21,37 @@ namespace OpenRA.Mods.Common.Traits
 	public class BaseBuilderBotModuleInfo : ConditionalTraitInfo
 	{
 		[Desc("Tells the AI what building types are considered construction yards.")]
-		public readonly HashSet<string> ConstructionYardTypes = new();
+		public readonly HashSet<string> ConstructionYardTypes = [];
 
 		[Desc("Tells the AI what building types are considered vehicle production facilities.")]
-		public readonly HashSet<string> VehiclesFactoryTypes = new();
+		public readonly HashSet<string> VehiclesFactoryTypes = [];
 
 		[Desc("Tells the AI what building types are considered refineries.")]
-		public readonly HashSet<string> RefineryTypes = new();
+		public readonly HashSet<string> RefineryTypes = [];
 
 		[Desc("Tells the AI what building types are considered power plants.")]
-		public readonly HashSet<string> PowerTypes = new();
+		public readonly HashSet<string> PowerTypes = [];
 
 		[Desc("Tells the AI what building types are considered infantry production facilities.")]
-		public readonly HashSet<string> BarracksTypes = new();
+		public readonly HashSet<string> BarracksTypes = [];
 
 		[Desc("Tells the AI what building types are considered production facilities.")]
-		public readonly HashSet<string> ProductionTypes = new();
+		public readonly HashSet<string> ProductionTypes = [];
 
 		[Desc("Tells the AI what building types are considered naval production facilities.")]
-		public readonly HashSet<string> NavalProductionTypes = new();
+		public readonly HashSet<string> NavalProductionTypes = [];
 
 		[Desc("Tells the AI what building types are considered silos (resource storage).")]
-		public readonly HashSet<string> SiloTypes = new();
+		public readonly HashSet<string> SiloTypes = [];
 
 		[Desc("Tells the AI what building types are considered defenses.")]
-		public readonly HashSet<string> DefenseTypes = new();
+		public readonly HashSet<string> DefenseTypes = [];
 
 		[Desc("Production queues AI uses for buildings.")]
-		public readonly HashSet<string> BuildingQueues = new() { "Building" };
+		public readonly HashSet<string> BuildingQueues = ["Building"];
 
 		[Desc("Production queues AI uses for defenses.")]
-		public readonly HashSet<string> DefenseQueues = new() { "Defense" };
+		public readonly HashSet<string> DefenseQueues = ["Defense"];
 
 		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
 		public readonly int MinBaseRadius = 2;
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CheckForWaterRadius = 8;
 
 		[Desc("Terrain types which are considered water for base building purposes.")]
-		public readonly HashSet<string> WaterTerrainTypes = new() { "Water" };
+		public readonly HashSet<string> WaterTerrainTypes = ["Water"];
 
 		[Desc("What buildings to the AI should build.", "What integer percentage of the total base must be this type of building.")]
 		public readonly Dictionary<string, int> BuildingFractions = null;
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 		public CPos DefenseCenter { get; private set; }
 
 		// Actor, ActorCount.
-		public Dictionary<string, int> BuildingsBeingProduced = new();
+		public Dictionary<string, int> BuildingsBeingProduced = [];
 
 		readonly World world;
 		readonly Player player;
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 		IBotPositionsUpdated[] positionsUpdatedModules;
 		CPos initialBaseCenter;
 
-		readonly Stack<TraitPair<RallyPoint>> rallyPoints = new();
+		readonly Stack<TraitPair<RallyPoint>> rallyPoints = [];
 		int assignRallyPointsTicks;
 
 		readonly BaseBuilderQueueManager[] builders;
@@ -406,11 +406,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return null;
 
-			return new List<MiniYamlNode>()
-			{
+			return
+			[
 				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
 				new("DefenseCenter", FieldSaver.FormatValue(DefenseCenter))
-			};
+			];
 		}
 
 		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)

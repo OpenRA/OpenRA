@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
 		public readonly EditorActorLayerInfo Info;
-		readonly List<EditorActorPreview> previews = new();
+		readonly List<EditorActorPreview> previews = [];
 
 		int2 cellOffset;
 		SpatiallyPartitioned<EditorActorPreview> cellMap;
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 				p.Tick();
 		}
 
-		static readonly IEnumerable<IRenderable> NoRenderables = Enumerable.Empty<IRenderable>();
+		static readonly IEnumerable<IRenderable> NoRenderables = [];
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (wr.World.Type != WorldType.Editor)
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
 			if (preview.Footprint.Count == 0)
-				return new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
+				return [worldRenderer.World.Map.CellContaining(preview.CenterPosition)];
 			return preview.Footprint.Keys;
 		}
 
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Common.Traits
 					Name = $"Multi{index}",
 					Faction = "Random",
 					Playable = true,
-					Enemies = new[] { "Creeps" }
+					Enemies = ["Creeps"]
 				};
 
 				Players.Players.Add(pr.Name, pr);

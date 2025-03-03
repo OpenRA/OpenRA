@@ -19,10 +19,10 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class Shader : ThreadAffine, IShader
 	{
-		readonly Dictionary<string, int> samplers = new();
-		readonly Dictionary<string, int> uniformCache = new();
-		readonly Dictionary<int, ITexture> textures = new();
-		readonly Queue<int> unbindTextures = new();
+		readonly Dictionary<string, int> samplers = [];
+		readonly Dictionary<string, int> uniformCache = [];
+		readonly Dictionary<int, ITexture> textures = [];
+		readonly Queue<int> unbindTextures = [];
 		readonly IShaderBindings bindings;
 		readonly uint program;
 
@@ -37,7 +37,7 @@ namespace OpenRA.Platforms.Default
 			unsafe
 			{
 				var length = code.Length;
-				OpenGL.glShaderSource(shader, 1, new string[] { code }, new IntPtr(&length));
+				OpenGL.glShaderSource(shader, 1, [code], new IntPtr(&length));
 			}
 
 			OpenGL.CheckGLError();

@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Server
 		bool isInitialPing = true;
 
 		volatile bool isBusy;
-		readonly Queue<string> masterServerMessages = new();
+		readonly Queue<string> masterServerMessages = [];
 
 		static MasterServerPinger()
 		{

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Map map;
 		readonly CellLayer<WPos> cellCenters;
 		readonly CellLayer<byte> terrainIndices;
-		readonly HashSet<CPos> ends = new();
+		readonly HashSet<CPos> ends = [];
 		bool enabled;
 
 		public ElevatedBridgeLayer(Actor self, ElevatedBridgeLayerInfo info)

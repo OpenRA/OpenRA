@@ -61,8 +61,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 
 			selectedGenerator = null;
-			generatorsToSettings = new Dictionary<IMapGeneratorInfo, MapGeneratorSettings>();
-			generatorsToSettingsChoices = new Dictionary<IMapGeneratorInfo, Dictionary<MapGeneratorSettings.Option, MapGeneratorSettings.Choice>>();
+			generatorsToSettings = [];
+			generatorsToSettingsChoices = [];
 
 			var mapGenerators = new List<IMapGeneratorInfo>();
 			var terrainInfo = modData.DefaultTerrainInfo[world.Map.Tileset];

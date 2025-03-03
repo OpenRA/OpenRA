@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly WDist Spread = new(43);
 
 		[Desc("Damage percentage at each range step")]
-		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
+		public readonly int[] Falloff = [100, 37, 14, 5, 0];
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public readonly WDist[] Range = null;

@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public string ClockPalette = "chrome";
 		public Func<Player> GetPlayer;
 
-		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = new();
-		readonly List<Rectangle> supportPowerIconsBounds = new();
+		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = [];
+		readonly List<Rectangle> supportPowerIconsBounds = [];
 		Animation icon;
 		int lastIconIdx;
 		int currentTooltipToken;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-			clocks = new Dictionary<string, Animation>();
+			clocks = [];
 
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));

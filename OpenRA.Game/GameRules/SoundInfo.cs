@@ -17,14 +17,14 @@ namespace OpenRA.GameRules
 {
 	public class SoundInfo
 	{
-		public readonly Dictionary<string, string[]> Variants = new();
-		public readonly Dictionary<string, string[]> Prefixes = new();
-		public readonly Dictionary<string, string[]> Voices = new();
-		public readonly Dictionary<string, string[]> Notifications = new();
+		public readonly Dictionary<string, string[]> Variants = [];
+		public readonly Dictionary<string, string[]> Prefixes = [];
+		public readonly Dictionary<string, string[]> Voices = [];
+		public readonly Dictionary<string, string[]> Notifications = [];
 		public readonly string DefaultVariant = ".aud";
 		public readonly string DefaultPrefix = "";
-		public readonly HashSet<string> DisableVariants = new();
-		public readonly HashSet<string> DisablePrefixes = new();
+		public readonly HashSet<string> DisableVariants = [];
+		public readonly HashSet<string> DisablePrefixes = [];
 
 		public readonly Lazy<Dictionary<string, SoundPool>> VoicePools;
 		public readonly Lazy<Dictionary<string, SoundPool>> NotificationsPools;
@@ -69,7 +69,7 @@ namespace OpenRA.GameRules
 		public readonly float VolumeModifier;
 		public readonly InterruptType Type;
 		readonly string[] clips;
-		readonly List<string> liveclips = new();
+		readonly List<string> liveclips = [];
 
 		public SoundPool(float volumeModifier, InterruptType interruptType, params string[] clips)
 		{

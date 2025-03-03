@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Scripting
 	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>, NotBefore<SpawnStartingUnitsInfo>
 	{
 		[Desc("File names with location relative to the map.")]
-		public readonly HashSet<string> Scripts = new();
+		public readonly HashSet<string> Scripts = [];
 
 		public override object Create(ActorInitializer init) { return new LuaScript(this); }
 	}

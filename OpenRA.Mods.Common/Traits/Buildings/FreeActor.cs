@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -72,13 +71,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				w.CreateActor(Info.Actor, new TypeDictionary
-				{
+				w.CreateActor(Info.Actor,
+				[
 					new ParentActorInit(self),
 					new LocationInit(self.Location + Info.SpawnOffset),
 					new OwnerInit(self.Owner),
 					new FacingInit(Info.Facing),
-				});
+				]);
 			});
 		}
 	}

@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// HACK: MULTIPLAYER_FILTER_PANEL doesn't follow our normal procedure for dropdown creation
 				// but we still need to be able to set the dropdown width based on the parent
 				// The yaml should use PARENT_WIDTH instead of DROPDOWN_WIDTH
-				var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", filtersButton, new WidgetArgs());
+				var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", filtersButton, []);
 				filtersButton.Children.Remove(filtersPanel);
 
 				var showWaitingCheckbox = filtersPanel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
@@ -398,14 +398,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			clientContainer = widget.GetOrNull("CLIENT_LIST_CONTAINER");
 			if (clientContainer != null)
 			{
-				clientList = Ui.LoadWidget("MULTIPLAYER_CLIENT_LIST", clientContainer, new WidgetArgs()) as ScrollPanelWidget;
+				clientList = Ui.LoadWidget("MULTIPLAYER_CLIENT_LIST", clientContainer, []) as ScrollPanelWidget;
 				clientList.IsVisible = () => currentServer != null && currentServer.Clients.Length > 0;
 				clientHeader = clientList.Get<ScrollItemWidget>("HEADER");
 				clientTemplate = clientList.Get<ScrollItemWidget>("TEMPLATE");
 				clientList.RemoveChildren();
 			}
 
-			lanGameLocations = new List<BeaconLocation>();
+			lanGameLocations = [];
 			try
 			{
 				lanGameProbe = new Probe("OpenRALANGame");
@@ -461,7 +461,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
 					var yaml = MiniYaml.FromStream(result, queryURL);
-					games = new List<GameServer>();
+					games = [];
 					foreach (var node in yaml)
 					{
 						try

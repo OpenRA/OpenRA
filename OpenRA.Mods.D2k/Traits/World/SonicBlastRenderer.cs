@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly Renderer renderer;
 		readonly IShader shader;
 		readonly IVertexBuffer<RenderPostProcessPassTexturedVertex> buffer;
-		readonly List<float3> positions = new();
+		readonly List<float3> positions = [];
 
 		public SonicBlastRenderer(SonicBlastRendererInfo info)
 		{

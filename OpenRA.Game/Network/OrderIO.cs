@@ -78,7 +78,7 @@ namespace OpenRA.Network
 
 	public static class OrderIO
 	{
-		static readonly OrderPacket NoOrders = new(Array.Empty<Order>());
+		static readonly OrderPacket NoOrders = new([]);
 
 		public static byte[] SerializeSync((int Frame, int SyncHash, ulong DefeatState) data)
 		{

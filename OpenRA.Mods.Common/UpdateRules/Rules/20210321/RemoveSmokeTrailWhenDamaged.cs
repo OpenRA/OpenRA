@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
-		readonly Dictionary<string, List<string>> locations = new();
+		readonly Dictionary<string, List<string>> locations = [];
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

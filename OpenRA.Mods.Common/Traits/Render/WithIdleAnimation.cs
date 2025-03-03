@@ -19,10 +19,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		[SequenceReference]
 		[Desc("Sequence names to use.")]
-		public readonly string[] Sequences = { "active" };
+		public readonly string[] Sequences = ["active"];
 
 		[Desc("The amount of time (in ticks) between animations. Two values indicate a range between which a random value is chosen.")]
-		public readonly int[] Interval = { 750 };
+		public readonly int[] Interval = [750];
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";

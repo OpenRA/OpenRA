@@ -51,7 +51,7 @@ namespace OpenRA
 		public readonly string[] categories;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly short[] spawnpoints = Array.Empty<short>();
+		public readonly short[] spawnpoints = [];
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
@@ -195,7 +195,7 @@ namespace OpenRA
 			}
 		}
 
-		static readonly CPos[] NoSpawns = Array.Empty<CPos>();
+		static readonly CPos[] NoSpawns = [];
 		readonly MapCache cache;
 		readonly ModData modData;
 		IReadOnlyPackage package;
@@ -321,7 +321,7 @@ namespace OpenRA
 			{
 				MapFormat = 0,
 				Title = "Unknown Map",
-				Categories = new[] { "Unknown" },
+				Categories = ["Unknown"],
 				Author = "Unknown Author",
 				TileSet = "unknown",
 				Players = null,
@@ -421,11 +421,11 @@ namespace OpenRA
 					newData.SpawnPoints = spawns.ToArray();
 				}
 				else
-					newData.SpawnPoints = Array.Empty<CPos>();
+					newData.SpawnPoints = [];
 			}
 			catch (Exception)
 			{
-				newData.SpawnPoints = Array.Empty<CPos>();
+				newData.SpawnPoints = [];
 				newData.Status = MapStatus.Unavailable;
 			}
 

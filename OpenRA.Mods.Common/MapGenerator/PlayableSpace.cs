@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				CellLayerUtils.FloodFill(
 					playable,
-					new[] { (start, true) },
+					[(start, true)],
 					Filler,
 					Direction.Spread4CVec);
 			}

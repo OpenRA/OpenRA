@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
-		public readonly Dictionary<string, BooleanExpression> Requirements = new();
+		public readonly Dictionary<string, BooleanExpression> Requirements = [];
 
 		[Desc("Options to display in the map editor.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the label that is displayed in the actor editor dropdown.")]
-		public readonly Dictionary<string, string> EditorOptions = new();
+		public readonly Dictionary<string, string> EditorOptions = [];
 
 		[Desc("Label to use for an empty plug socket.")]
 		public readonly string EmptyOption = "Empty";
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.Requirements.Count > 0)
 			{
-				plugTypesAvailability = new Dictionary<string, bool>();
+				plugTypesAvailability = [];
 				foreach (var plug in info.Requirements)
 					plugTypesAvailability[plug.Key] = true;
 			}

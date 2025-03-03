@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string MirrorSelectionFailed = "label-mirror-selection-failed";
 
-		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+		static readonly string[] SizeSuffixes = ["bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
 		readonly ModData modData;
 		readonly ModContent.ModDownload download;

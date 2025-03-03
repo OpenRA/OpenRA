@@ -530,8 +530,8 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
-				var ctor = fieldType.GetConstructor(new[] { typeof(string[]) });
-				return ctor.Invoke(new object[] { parts.Select(p => p.Trim()).ToArray() });
+				var ctor = fieldType.GetConstructor([typeof(string[])]);
+				return ctor.Invoke([parts.Select(p => p.Trim()).ToArray()]);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -544,7 +544,7 @@ namespace OpenRA
 
 			var innerType = fieldType.GetGenericArguments()[0];
 			var innerValue = GetValue("Nullable<T>", innerType, value, field);
-			return fieldType.GetConstructor(new[] { innerType }).Invoke(new[] { innerValue });
+			return fieldType.GetConstructor([innerType]).Invoke([innerValue]);
 		}
 
 		public static void Load(object self, MiniYaml my)
@@ -565,7 +565,7 @@ namespace OpenRA
 						val = fli.Loader(my);
 					else
 					{
-						missing ??= new List<string>();
+						missing ??= [];
 						missing.Add(fli.YamlName);
 						continue;
 					}
@@ -576,7 +576,7 @@ namespace OpenRA
 					{
 						if (fli.Attribute.Required)
 						{
-							missing ??= new List<string>();
+							missing ??= [];
 							missing.Add(fli.YamlName);
 						}
 

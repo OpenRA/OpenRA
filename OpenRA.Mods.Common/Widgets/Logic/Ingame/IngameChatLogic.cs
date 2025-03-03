@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly TextFieldWidget chatText;
 		readonly CachedTransform<int, string> chatAvailableIn;
 		readonly string chatDisabled;
-		readonly Dictionary<TextNotificationPool, Widget> templates = new();
+		readonly Dictionary<TextNotificationPool, Widget> templates = [];
 
 		readonly TabCompletionLogic tabCompletion = new();
 
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var item in templateIds.Nodes)
 				{
 					var key = FieldLoader.GetValue<TextNotificationPool>("key", item.Key);
-					templates[key] = Ui.LoadWidget(item.Value.Value, null, new WidgetArgs());
+					templates[key] = Ui.LoadWidget(item.Value.Value, null, []);
 				}
 			}
 

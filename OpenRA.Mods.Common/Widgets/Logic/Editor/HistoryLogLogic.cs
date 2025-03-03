@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorActionManager editorActionManager;
 		readonly ScrollItemWidget template;
 
-		readonly Dictionary<EditorActionContainer, ScrollItemWidget> states = new();
+		readonly Dictionary<EditorActionContainer, ScrollItemWidget> states = [];
 
 		[ObjectCreator.UseCtor]
 		public HistoryLogLogic(Widget widget, World world)

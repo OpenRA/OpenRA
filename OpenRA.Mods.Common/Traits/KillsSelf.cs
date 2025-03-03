@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool RemoveInstead = false;
 
 		[Desc("The amount of time (in ticks) before the actor dies. Two values indicate a range between which a random value is chosen.")]
-		public readonly int[] Delay = { 0 };
+		public readonly int[] Delay = [0];
 
 		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default;

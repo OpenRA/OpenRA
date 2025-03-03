@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ushort DestroyedPlusSouthTemplate = 0;
 		public readonly ushort DestroyedPlusBothTemplate = 0;
 
-		public readonly string[] ShorePieces = { "br1", "br2" };
+		public readonly string[] ShorePieces = ["br1", "br2"];
 		public readonly int[] NorthOffset = null;
 		public readonly int[] SouthOffset = null;
 
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!initialized)
 			{
 				var palette = wr.Palette(TileSet.TerrainPaletteInternalName);
-				renderables = new Dictionary<ushort, IRenderable[]>();
+				renderables = [];
 				foreach (var t in info.Templates)
 					renderables.Add(t.Template, TemplateRenderables(wr, palette, t.Template));
 

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TechTree
 	{
-		readonly List<Watcher> watchers = new();
+		readonly List<Watcher> watchers = [];
 
 		public TechTree(ActorInitializer init)
 		{

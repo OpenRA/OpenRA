@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			next ??= harvesters[0];
 
-			selection.Combine(world, new Actor[] { next }, false, true);
+			selection.Combine(world, [next], false, true);
 			viewport.Center(selection.Actors);
 
 			return true;

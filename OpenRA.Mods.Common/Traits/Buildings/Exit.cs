@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle? Facing = null;
 
 		[Desc("Type tags on this exit.")]
-		public readonly HashSet<string> ProductionTypes = new();
+		public readonly HashSet<string> ProductionTypes = [];
 
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static IEnumerable<Exit> Exits(this Actor actor, string productionType = null)
 		{
 			if (!actor.IsInWorld || actor.Disposed)
-				return Enumerable.Empty<Exit>();
+				return [];
 
 			var all = actor.TraitsImplementing<Exit>()
 				.Where(t => !t.IsTraitDisabled);

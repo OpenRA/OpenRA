@@ -44,7 +44,7 @@ namespace OpenRA
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
 			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		readonly Dictionary<Type, ITraitContainer> traits = new();
+		readonly Dictionary<Type, ITraitContainer> traits = [];
 
 		ITraitContainer InnerGet(Type t)
 		{
@@ -143,8 +143,8 @@ namespace OpenRA
 
 		sealed class TraitContainer<T> : ITraitContainer
 		{
-			readonly List<Actor> actors = new();
-			readonly List<T> traits = new();
+			readonly List<Actor> actors = [];
+			readonly List<T> traits = [];
 
 			public int Queries { get; private set; }
 

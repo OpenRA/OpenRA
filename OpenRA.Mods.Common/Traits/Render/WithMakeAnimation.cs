@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Condition = null;
 
 		[Desc("Apply to sprite bodies with these names.")]
-		public readonly string[] BodyNames = { "body" };
+		public readonly string[] BodyNames = ["body"];
 
 		public override object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}

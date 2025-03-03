@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Only allow players listed here as owners.")]
 		[FieldLoader.Require]
-		public readonly HashSet<string> ValidOwnerNames = new();
+		public readonly HashSet<string> ValidOwnerNames = [];
 	}
 
 	public class RequiresSpecificOwners { }

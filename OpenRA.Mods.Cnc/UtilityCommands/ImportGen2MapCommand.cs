@@ -356,13 +356,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			if (lightingNodes.Count > 0)
 			{
-				map.RuleDefinitions = map.RuleDefinitions.WithNodesAppended(new[]
-				{
-					new MiniYamlNode("^BaseWorld", new MiniYaml("", new[]
-					{
+				map.RuleDefinitions = map.RuleDefinitions.WithNodesAppended(
+				[
+					new MiniYamlNode("^BaseWorld", new MiniYaml("",
+					[
 						new MiniYamlNode("TerrainLighting", new MiniYaml("", lightingNodes))
-					}))
-				});
+					]))
+				]);
 			}
 		}
 
@@ -400,10 +400,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				if (lightingNodes.Count > 0)
 				{
-					nodes.Add(new MiniYamlNode(lamp, new MiniYaml("", new[]
-					{
+					nodes.Add(new MiniYamlNode(lamp, new MiniYaml("",
+					[
 						new MiniYamlNode("TerrainLightSource", new MiniYaml("", lightingNodes))
-					})));
+					])));
 				}
 			}
 

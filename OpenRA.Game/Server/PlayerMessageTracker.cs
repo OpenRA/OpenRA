@@ -19,7 +19,7 @@ namespace OpenRA.Server
 		[FluentReference("remaining")]
 		const string ChatTemporaryDisabled = "notification-chat-temp-disabled";
 
-		readonly Dictionary<int, List<long>> messageTracker = new();
+		readonly Dictionary<int, List<long>> messageTracker = [];
 		readonly Server server;
 		readonly Action<Connection, int, int, byte[]> dispatchOrdersToClient;
 		readonly Action<Connection, string, object[]> sendFluentMessageTo;
@@ -42,7 +42,7 @@ namespace OpenRA.Server
 		public bool IsPlayerAtFloodLimit(Connection conn)
 		{
 			if (!messageTracker.ContainsKey(conn.PlayerIndex))
-				messageTracker.Add(conn.PlayerIndex, new List<long>());
+				messageTracker.Add(conn.PlayerIndex, []);
 
 			var isAdmin = server.GetClient(conn)?.IsAdmin ?? false;
 			var settings = server.Settings;
@@ -56,7 +56,7 @@ namespace OpenRA.Server
 			if (!isAdmin && time < settings.FloodLimitJoinCooldown)
 			{
 				var remaining = CalculateRemaining(settings.FloodLimitJoinCooldown);
-				sendFluentMessageTo(conn, ChatTemporaryDisabled, new object[] { "remaining", remaining });
+				sendFluentMessageTo(conn, ChatTemporaryDisabled, ["remaining", remaining]);
 				return true;
 			}
 
@@ -64,7 +64,7 @@ namespace OpenRA.Server
 			if (tracker.Count >= settings.FloodLimitMessageCount)
 			{
 				var remaining = CalculateRemaining(tracker[0] + settings.FloodLimitInterval);
-				sendFluentMessageTo(conn, ChatTemporaryDisabled, new object[] { "remaining", remaining });
+				sendFluentMessageTo(conn, ChatTemporaryDisabled, ["remaining", remaining]);
 				return true;
 			}
 

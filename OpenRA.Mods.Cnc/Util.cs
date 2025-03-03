@@ -20,21 +20,21 @@ namespace OpenRA.Mods.Cnc
 		// i.e. sprite frame 1 is used for facings 20-55, sprite frame 2 for 56-87, and so on.
 		// Sprite frame 0 is used for facings smaller than 20 or larger than 999.
 		static readonly int[] SpriteRanges =
-		{
+		[
 			20, 56, 88, 132, 156, 184, 212, 240,
 			268, 296, 324, 352, 384, 416, 452, 488,
 			532, 568, 604, 644, 668, 696, 724, 752,
 			780, 808, 836, 864, 896, 928, 964, 1000
-		};
+		];
 
 		// The actual facing associated with each sprite frame.
 		static readonly WAngle[] SpriteFacings =
-		{
+		[
 			WAngle.Zero, new(40), new(74), new(112), new(146), new(172), new(200), new(228),
 			new(256), new(284), new(312), new(340), new(370), new(402), new(436), new(472),
 			new(512), new(552), new(588), new(626), new(658), new(684), new(712), new(740),
 			new(768), new(796), new(824), new(852), new(882), new(914), new(948), new(984)
-		};
+		];
 
 		/// <summary>
 		/// Calculate the frame index (between 0..numFrames) that
@@ -70,35 +70,35 @@ namespace OpenRA.Mods.Cnc
 
 		public static float[] IdentityMatrix()
 		{
-			return new float[]
-			{
+			return
+			[
 				1, 0, 0, 0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
 				0, 0, 0, 1,
-			};
+			];
 		}
 
 		public static float[] ScaleMatrix(float sx, float sy, float sz)
 		{
-			return new float[]
-			{
+			return
+			[
 				sx, 0, 0, 0,
 				0, sy, 0, 0,
 				0, 0, sz, 0,
 				0, 0, 0, 1,
-			};
+			];
 		}
 
 		public static float[] TranslationMatrix(float x, float y, float z)
 		{
-			return new float[]
-			{
+			return
+			[
 				1, 0, 0, 0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
 				x, y, z, 1,
-			};
+			];
 		}
 
 		public static float[] MatrixMultiply(float[] lhs, float[] rhs)
@@ -257,8 +257,8 @@ namespace OpenRA.Mods.Cnc
 		public static float[] MakeFloatMatrix(Int32Matrix4x4 imtx)
 		{
 			var multipler = 1f / imtx.M44;
-			return new[]
-			{
+			return
+			[
 				imtx.M11 * multipler,
 				imtx.M12 * multipler,
 				imtx.M13 * multipler,
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Cnc
 				imtx.M42 * multipler,
 				imtx.M43 * multipler,
 				imtx.M44 * multipler,
-			};
+			];
 		}
 
 		public static float[] MatrixAABBMultiply(float[] mtx, float[] bounds)

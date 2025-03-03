@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class MarkerLayerOverlayInfo : TraitInfo
 	{
 		[Desc("A list of colors to be used for drawing.")]
-		public readonly Color[] Colors = new[]
-		{
+		public readonly Color[] Colors =
+		[
 			Color.FromArgb(255, 0, 0),
 			Color.FromArgb(255, 127, 0),
 			Color.FromArgb(255, 238, 70),
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 			Color.FromArgb(0, 42, 255),
 			Color.FromArgb(165, 0, 255),
 			Color.FromArgb(255, 0, 220),
-		};
+		];
 
 		[Desc("Default alpha blend.")]
 		public readonly int Alpha = 85;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		const double DegreesToRadians = Math.PI / 180;
 
-		readonly int[] validFlipModeSides = { 2, 4 };
+		readonly int[] validFlipModeSides = [2, 4];
 
 		public enum MarkerTileMirrorMode
 		{
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Color[] alphaBlendColors;
 
 		public readonly CellLayer<int?> CellLayer;
-		public readonly Dictionary<int, HashSet<CPos>> Tiles = new();
+		public readonly Dictionary<int, HashSet<CPos>> Tiles = [];
 
 		public bool Enabled = true;
 		public MarkerTileMirrorMode MirrorMode { get; private set; } = MarkerTileMirrorMode.None;
@@ -362,7 +362,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (Tiles.TryGetValue(tileType.Value, out set))
 					set.Add(target);
 				else
-					Tiles.Add(tileType.Value, new HashSet<CPos> { target });
+					Tiles.Add(tileType.Value, [target]);
 
 				CellLayer[target] = tileType;
 			}

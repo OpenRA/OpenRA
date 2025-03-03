@@ -46,8 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		readonly List<DemolishAction> actions = new();
-		readonly List<DemolishAction> removeActions = new();
+		readonly List<DemolishAction> actions = [];
+		readonly List<DemolishAction> removeActions = [];
 		IDamageModifier[] damageModifiers;
 
 		public Demolishable(DemolishableInfo info)

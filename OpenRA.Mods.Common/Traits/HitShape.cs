@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = null;
 
 		[Desc("Create a targetable position for each offset listed here (relative to CenterPosition).")]
-		public readonly WVec[] TargetableOffsets = { WVec.Zero };
+		public readonly WVec[] TargetableOffsets = [WVec.Zero];
 
 		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
 		public readonly bool UseTargetableCellsOffsets = false;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<WPos> ITargetablePositions.TargetablePositions(Actor self)
 		{
 			if (IsTraitDisabled)
-				return Enumerable.Empty<WPos>();
+				return [];
 
 			// Check for changes in inputs that affect the result of the TargetablePositions method.
 			// If the inputs have not changed we can cache and reuse the result for later calls.

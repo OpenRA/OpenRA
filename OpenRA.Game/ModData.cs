@@ -49,7 +49,7 @@ namespace OpenRA
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
-			Languages = Array.Empty<string>();
+			Languages = [];
 
 			// Take a local copy of the manifest
 			Manifest = new Manifest(mod.Id, mod.Package);
@@ -82,19 +82,19 @@ namespace OpenRA
 
 			var terrainFormat = Manifest.Get<TerrainFormat>();
 			var terrainLoader = ObjectCreator.FindType(terrainFormat.Type + "Loader");
-			var terrainCtor = terrainLoader?.GetConstructor(new[] { typeof(ModData) });
+			var terrainCtor = terrainLoader?.GetConstructor([typeof(ModData)]);
 			if (terrainLoader == null || !terrainLoader.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
 				throw new InvalidOperationException($"Unable to find a terrain loader for type '{terrainFormat.Type}'.");
 
-			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke(new[] { this });
+			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke([this]);
 
 			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
-			var sequenceCtor = sequenceLoader?.GetConstructor(new[] { typeof(ModData) });
+			var sequenceCtor = sequenceLoader?.GetConstructor([typeof(ModData)]);
 			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || sequenceCtor == null)
 				throw new InvalidOperationException($"Unable to find a sequence loader for type '{sequenceFormat.Type}'.");
 
-			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke(new[] { this });
+			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke([this]);
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 

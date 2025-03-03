@@ -1292,7 +1292,7 @@ namespace OpenRA.Mods.Common.Traits
 					CellLayerUtils.WalkingDistances(
 						resourceSpawnPreferences,
 						zoneable,
-						new[] { chosenMPos.ToCPos(gridType) },
+						[chosenMPos.ToCPos(gridType)],
 						param.SpawnRegionSize * 1024);
 					foreach (var mpos in map.AllCells.MapCoords)
 					{

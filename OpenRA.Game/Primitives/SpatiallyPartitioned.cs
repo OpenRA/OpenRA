@@ -23,7 +23,7 @@ namespace OpenRA.Primitives
 
 		readonly int rows, cols, binSize;
 		readonly Dictionary<T, Rectangle>[] itemBoundsBins;
-		readonly Dictionary<T, Rectangle> itemBounds = new();
+		readonly Dictionary<T, Rectangle> itemBounds = [];
 
 		public SpatiallyPartitioned(int width, int height, int binSize)
 		{

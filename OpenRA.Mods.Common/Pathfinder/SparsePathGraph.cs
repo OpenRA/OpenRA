@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public List<GraphConnection> GetConnections(CPos position, Func<CPos, bool> targetPredicate)
 		{
-			return edges(position) ?? new List<GraphConnection>();
+			return edges(position) ?? [];
 		}
 
 		public CellInfo this[CPos pos]

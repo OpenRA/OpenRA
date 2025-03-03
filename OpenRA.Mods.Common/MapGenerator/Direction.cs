@@ -73,13 +73,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public const int MRU = 1 << RU;
 
 		/// <summary>Adjacent offsets with directions, excluding diagonals.</summary>
-		public static readonly ImmutableArray<(int2, int)> Spread4D = ImmutableArray.Create(new[]
-		{
+		public static readonly ImmutableArray<(int2, int)> Spread4D =
+		[
 			(new int2(1, 0), R),
 			(new int2(0, 1), D),
 			(new int2(-1, 0), L),
 			(new int2(0, -1), U)
-		});
+		];
 
 		/// <summary>Adjacent offsets, excluding diagonals.</summary>
 		public static readonly ImmutableArray<int2> Spread4 =
@@ -93,8 +93,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Spread4.Select(xy => new CVec(xy.X, xy.Y)).ToImmutableArray();
 
 		/// <summary>Adjacent offsets with directions, including diagonals.</summary>
-		public static readonly ImmutableArray<(int2, int)> Spread8D = ImmutableArray.Create(new[]
-		{
+		public static readonly ImmutableArray<(int2, int)> Spread8D =
+		[
 			(new int2(1, 0), R),
 			(new int2(1, 1), RD),
 			(new int2(0, 1), D),
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			(new int2(-1, -1), LU),
 			(new int2(0, -1), U),
 			(new int2(1, -1), RU)
-		});
+		];
 
 		/// <summary>Adjacent offsets, including diagonals.</summary>
 		public static readonly ImmutableArray<int2> Spread8 =

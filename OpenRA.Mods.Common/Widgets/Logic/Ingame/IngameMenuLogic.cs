@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
 		readonly int2 buttonStride;
-		readonly List<ButtonWidget> buttons = new();
+		readonly List<ButtonWidget> buttons = [];
 
 		readonly ModData modData;
 		readonly Action onExit;
@@ -494,7 +494,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: ErrorMaxPlayerTitle,
 						text: ErrorMaxPlayerPrompt,
-						textArguments: new object[] { "players", playerCount, "max", MapPlayers.MaximumPlayerCount },
+						textArguments: ["players", playerCount, "max", MapPlayers.MaximumPlayerCount],
 						onConfirm: ShowMenu,
 						confirmText: ErrorMaxPlayerAccept);
 

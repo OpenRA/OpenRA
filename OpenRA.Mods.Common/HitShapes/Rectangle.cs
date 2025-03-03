@@ -71,37 +71,37 @@ namespace OpenRA.Mods.Common.HitShapes
 			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
 			OuterRadius = new WDist(corners.Max(x => x.Length));
 
-			combatOverlayVertsTop = new WVec[]
-			{
+			combatOverlayVertsTop =
+			[
 				new(TopLeft.X, TopLeft.Y, VerticalTopOffset),
 				new(BottomRight.X, TopLeft.Y, VerticalTopOffset),
 				new(BottomRight.X, BottomRight.Y, VerticalTopOffset),
 				new(TopLeft.X, BottomRight.Y, VerticalTopOffset),
-			};
+			];
 
-			combatOverlayVertsBottom = new WVec[]
-			{
+			combatOverlayVertsBottom =
+			[
 				new(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
 				new(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
 				new(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
 				new(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
-			};
+			];
 
-			combatOverlayVertsSide1 = new WVec[]
-			{
+			combatOverlayVertsSide1 =
+			[
 				new(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
 				new(TopLeft.X, TopLeft.Y, VerticalTopOffset),
 				new(TopLeft.X, BottomRight.Y, VerticalTopOffset),
 				new(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
-			};
+			];
 
-			combatOverlayVertsSide2 = new WVec[]
-			{
+			combatOverlayVertsSide2 =
+			[
 				new(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
 				new(BottomRight.X, TopLeft.Y, VerticalTopOffset),
 				new(BottomRight.X, BottomRight.Y, VerticalTopOffset),
 				new(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-			};
+			];
 		}
 
 		public WDist DistanceFromEdge(in WVec v)

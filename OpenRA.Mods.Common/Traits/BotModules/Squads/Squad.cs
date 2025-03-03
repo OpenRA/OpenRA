@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 	public class Squad
 	{
-		public HashSet<Actor> Units = new();
+		public HashSet<Actor> Units = [];
 		public SquadType Type;
 
 		internal IBot Bot;
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			// e.g. a ship targeting a land unit, but the land unit moved north.
 			// We need to update our location to move north as well.
 			// If we can reach the actor directly, we'll just target it directly.
-			var target = SquadManager.FindEnemies(new[] { TargetActor }, squadUnit).FirstOrDefault();
+			var target = SquadManager.FindEnemies([TargetActor], squadUnit).FirstOrDefault();
 			SetActorToTarget(target);
 			return target.Actor != null;
 		}

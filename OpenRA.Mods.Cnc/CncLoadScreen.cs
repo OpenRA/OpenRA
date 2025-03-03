@@ -52,8 +52,8 @@ namespace OpenRA.Mods.Cnc
 				lastSheet = s;
 				lastDensity = density;
 
-				border = new[]
-				{
+				border =
+				[
 					CreateSprite(s, density, new Rectangle(129, 129, 32, 32)),
 					CreateSprite(s, density, new Rectangle(161, 129, 62, 32)),
 					CreateSprite(s, density, new Rectangle(223, 129, 32, 32)),
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc
 					CreateSprite(s, density, new Rectangle(129, 223, 32, 32)),
 					CreateSprite(s, density, new Rectangle(161, 223, 62, 32)),
 					CreateSprite(s, density, new Rectangle(223, 223, 32, 32))
-				};
+				];
 
 				nodLogo = CreateSprite(s, density, new Rectangle(0, 256, 256, 256));
 				gdiLogo = CreateSprite(s, density, new Rectangle(256, 256, 256, 256));

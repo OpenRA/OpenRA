@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		int MovementSpeed => Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers);
 
-		public (CPos, SubCell)[] OccupiedCells() { return new[] { (TopLeft, SubCell.FullCell) }; }
+		public (CPos, SubCell)[] OccupiedCells() { return [(TopLeft, SubCell.FullCell)]; }
 
 		WVec MoveStep(WAngle facing)
 		{

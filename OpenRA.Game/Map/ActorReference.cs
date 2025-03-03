@@ -74,11 +74,11 @@ namespace OpenRA
 			if (initInstance.Length > 1)
 				type.GetField(nameof(ActorInit.InstanceName)).SetValue(init, initInstance[1]);
 
-			var loader = type.GetMethod("Initialize", new[] { typeof(MiniYaml) });
+			var loader = type.GetMethod("Initialize", [typeof(MiniYaml)]);
 			if (loader == null)
 				throw new InvalidDataException($"{initInstance[0]}Init does not define a yaml-assignable type.");
 
-			loader.Invoke(init, new[] { initYaml });
+			loader.Invoke(init, [initYaml]);
 			return init;
 		}
 

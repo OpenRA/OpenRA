@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{ MapTool.MapGenerator, MapGenerator }
 		};
 
-		readonly Dictionary<MapTool, Widget> toolPanels = new();
+		readonly Dictionary<MapTool, Widget> toolPanels = [];
 
 		MapTool selectedTool = MapTool.MarkerTiles;
 

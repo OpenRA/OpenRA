@@ -64,7 +64,7 @@ namespace OpenRA.Server
 			var explicitModPaths = Array.Empty<string>();
 			if (modID != null && (File.Exists(modID) || Directory.Exists(modID)))
 			{
-				explicitModPaths = new[] { modID };
+				explicitModPaths = [modID];
 				modID = Path.GetFileNameWithoutExtension(modID);
 			}
 
@@ -81,7 +81,7 @@ namespace OpenRA.Server
 			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
 			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?
 				FieldLoader.GetValue<string[]>("MOD_SEARCH_PATHS", envModSearchPaths) :
-				new[] { Path.Combine(Platform.EngineDir, "mods") };
+				[Path.Combine(Platform.EngineDir, "mods")];
 
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -24,8 +23,8 @@ namespace OpenRA.Mods.Common
 			[FluentReference]
 			public readonly string Title;
 			public readonly string Identifier;
-			public readonly string[] TestFiles = Array.Empty<string>();
-			public readonly string[] Sources = Array.Empty<string>();
+			public readonly string[] TestFiles = [];
+			public readonly string[] Sources = [];
 			public readonly bool Required;
 			public readonly string Download;
 
@@ -46,7 +45,7 @@ namespace OpenRA.Mods.Common
 			public readonly MiniYaml Type;
 
 			// Used to find installation locations for SourceType.Install
-			public readonly string[] RegistryPrefixes = { string.Empty };
+			public readonly string[] RegistryPrefixes = [string.Empty];
 			public readonly string RegistryKey;
 			public readonly string RegistryValue;
 
@@ -102,7 +101,7 @@ namespace OpenRA.Mods.Common
 		public readonly string Mod;
 
 		[FieldLoader.LoadUsing(nameof(LoadPackages))]
-		public readonly Dictionary<string, ModPackage> Packages = new();
+		public readonly Dictionary<string, ModPackage> Packages = [];
 
 		static object LoadPackages(MiniYaml yaml)
 		{
@@ -116,21 +115,21 @@ namespace OpenRA.Mods.Common
 		}
 
 		[FieldLoader.LoadUsing(nameof(LoadDownloads))]
-		public readonly string[] Downloads = Array.Empty<string>();
+		public readonly string[] Downloads = [];
 
 		static object LoadDownloads(MiniYaml yaml)
 		{
 			var downloadNode = yaml.NodeWithKeyOrDefault("Downloads");
-			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : Array.Empty<string>();
+			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : [];
 		}
 
 		[FieldLoader.LoadUsing(nameof(LoadSources))]
-		public readonly string[] Sources = Array.Empty<string>();
+		public readonly string[] Sources = [];
 
 		static object LoadSources(MiniYaml yaml)
 		{
 			var sourceNode = yaml.NodeWithKeyOrDefault("Sources");
-			return sourceNode != null ? sourceNode.Value.Nodes.Select(n => n.Key).ToArray() : Array.Empty<string>();
+			return sourceNode != null ? sourceNode.Value.Nodes.Select(n => n.Key).ToArray() : [];
 		}
 	}
 }

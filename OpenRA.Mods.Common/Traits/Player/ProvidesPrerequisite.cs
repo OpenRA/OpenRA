@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -22,17 +21,17 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Prerequisite = null;
 
 		[Desc("Only grant this prerequisite when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = Array.Empty<string>();
+		public readonly string[] RequiresPrerequisites = [];
 
 		[Desc("Only grant this prerequisite for certain factions.")]
-		public readonly HashSet<string> Factions = new();
+		public readonly HashSet<string> Factions = [];
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info)
 		{
-			return new string[] { Prerequisite ?? info.Name };
+			return [Prerequisite ?? info.Name];
 		}
 
 		public override object Create(ActorInitializer init) { return new ProvidesPrerequisite(init, this); }
@@ -50,9 +49,9 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			if (string.IsNullOrEmpty(info.Prerequisite))
-				prerequisites = new[] { init.Self.Info.Name };
+				prerequisites = [init.Self.Info.Name];
 			else
-				prerequisites = new[] { info.Prerequisite };
+				prerequisites = [info.Prerequisite];
 
 			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
 		}

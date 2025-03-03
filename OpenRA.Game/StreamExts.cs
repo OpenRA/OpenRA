@@ -278,7 +278,7 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(text))
 				bytes = encoding.GetBytes(text);
 			else
-				bytes = Array.Empty<byte>();
+				bytes = [];
 
 			s.Write(bytes.Length);
 			s.Write(bytes);

@@ -49,10 +49,10 @@ namespace OpenRA.Mods.Common.Graphics
 			var v = new float2(0, 4);
 
 			var cr = Game.Renderer.RgbaColorRenderer;
-			cr.DrawLine(new float3[] { tl + u, tl, tl + v }, 1, color, true);
-			cr.DrawLine(new float3[] { tr - u, tr, tr + v }, 1, color, true);
-			cr.DrawLine(new float3[] { br - u, br, br - v }, 1, color, true);
-			cr.DrawLine(new float3[] { bl + u, bl, bl - v }, 1, color, true);
+			cr.DrawLine([tl + u, tl, tl + v], 1, color, true);
+			cr.DrawLine([tr - u, tr, tr + v], 1, color, true);
+			cr.DrawLine([br - u, br, br - v], 1, color, true);
+			cr.DrawLine([bl + u, bl, bl - v], 1, color, true);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

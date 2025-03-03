@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -58,12 +57,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
 		{
 			if (anim == null)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
-			return new IRenderable[]
-			{
+			return
+			[
 				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos - (0.5f * anim.Image.Size.XY).ToInt2(), 0, GetPalette(self, wr))
-			};
+			];
 		}
 
 		void ITick.Tick(Actor self) { anim.Tick(); }

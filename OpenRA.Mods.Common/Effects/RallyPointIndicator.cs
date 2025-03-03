@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation flag;
 		readonly Animation circles;
 
-		readonly List<WPos> targetLineNodes = new();
+		readonly List<WPos> targetLineNodes = [];
 		List<CPos> cachedLocations;
 
 		public RallyPointIndicator(Actor building, RallyPoint rp)
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void UpdateTargetLineNodes(World world)
 		{
-			cachedLocations = new List<CPos>(rp.Path);
+			cachedLocations = rp.Path.ToList();
 			targetLineNodes.Clear();
 			foreach (var c in cachedLocations)
 				targetLineNodes.Add(world.Map.CenterOfCell(c));

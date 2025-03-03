@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class EditorActionManager : IWorldLoaded
 	{
-		readonly Stack<EditorActionContainer> undoStack = new();
-		readonly Stack<EditorActionContainer> redoStack = new();
+		readonly Stack<EditorActionContainer> undoStack = [];
+		readonly Stack<EditorActionContainer> redoStack = [];
 
 		public event Action<EditorActionContainer> ItemAdded;
 		public event Action<EditorActionContainer> ItemRemoved;

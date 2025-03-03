@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -158,7 +157,7 @@ namespace OpenRA
 
 		/// <summary>Defines the order of the fields in map.yaml.</summary>
 		static readonly MapField[] YamlFields =
-		{
+		[
 			new("MapFormat"),
 			new("RequiresMod"),
 			new("Title"),
@@ -179,7 +178,7 @@ namespace OpenRA
 			new("Voices", nameof(VoiceDefinitions), required: false),
 			new("Music", nameof(MusicDefinitions), required: false),
 			new("Notifications", nameof(NotificationDefinitions), required: false),
-		};
+		];
 
 		// Format versions
 		public int MapFormat { get; private set; }
@@ -193,13 +192,13 @@ namespace OpenRA
 		public bool LockPreview;
 		public Rectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
-		public string[] Categories = { "Conquest" };
+		public string[] Categories = ["Conquest"];
 
 		public int2 MapSize { get; private set; }
 
 		// Player and actor yaml. Public for access by the map importers and lint checks.
-		public IReadOnlyCollection<MiniYamlNode> PlayerDefinitions = ImmutableArray<MiniYamlNode>.Empty;
-		public IReadOnlyCollection<MiniYamlNode> ActorDefinitions = ImmutableArray<MiniYamlNode>.Empty;
+		public IReadOnlyCollection<MiniYamlNode> PlayerDefinitions = [];
+		public IReadOnlyCollection<MiniYamlNode> ActorDefinitions = [];
 
 		// Custom map yaml. Public for access by the map importers and lint checks
 		public MiniYaml RuleDefinitions;
@@ -211,7 +210,7 @@ namespace OpenRA
 		public MiniYaml MusicDefinitions;
 		public MiniYaml NotificationDefinitions;
 
-		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = new();
+		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = [];
 
 		// Generated data
 		public readonly MapGrid Grid;
@@ -283,7 +282,7 @@ namespace OpenRA
 
 				// Take the SHA1
 				if (streams.Count == 0)
-					return CryptoUtil.SHA1Hash(Array.Empty<byte>());
+					return CryptoUtil.SHA1Hash([]);
 
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)
@@ -368,8 +367,8 @@ namespace OpenRA
 			if (MapFormat < SupportedMapFormat)
 				throw new InvalidDataException($"Map format {MapFormat} is not supported.\n File: {package.Name}");
 
-			PlayerDefinitions = yaml.NodeWithKeyOrDefault("Players")?.Value.Nodes ?? ImmutableArray<MiniYamlNode>.Empty;
-			ActorDefinitions = yaml.NodeWithKeyOrDefault("Actors")?.Value.Nodes ?? ImmutableArray<MiniYamlNode>.Empty;
+			PlayerDefinitions = yaml.NodeWithKeyOrDefault("Players")?.Value.Nodes ?? [];
+			ActorDefinitions = yaml.NodeWithKeyOrDefault("Actors")?.Value.Nodes ?? [];
 
 			Grid = modData.Manifest.Get<MapGrid>();
 
@@ -516,7 +515,7 @@ namespace OpenRA
 			foreach (var cell in AllCells)
 			{
 				var uv = cell.ToMPos(Grid.Type);
-				cellProjection[uv] = Array.Empty<PPos>();
+				cellProjection[uv] = [];
 				inverseCellProjection[uv] = new List<MPos>(1);
 			}
 
@@ -532,7 +531,7 @@ namespace OpenRA
 			if (Grid.MaximumTerrainHeight == 0)
 			{
 				uv = cell.ToMPos(Grid.Type);
-				cellProjection[cell] = new[] { (PPos)uv };
+				cellProjection[cell] = [(PPos)uv];
 				var inverse = inverseCellProjection[uv];
 				inverse.Clear();
 				inverse.Add(uv);
@@ -607,7 +606,7 @@ namespace OpenRA
 			// Any changes to this function should be reflected when setting projectionSafeBounds.
 			var height = mapHeight[uv];
 			if (height == 0)
-				return new[] { (PPos)uv };
+				return [(PPos)uv];
 
 			// Odd-height ramps get bumped up a level to the next even height layer
 			if ((height & 1) == 1 && Ramp[uv] != 0)
@@ -1044,7 +1043,7 @@ namespace OpenRA
 			return (PPos)CellContaining(projectedPos).ToMPos(Grid.Type);
 		}
 
-		static readonly PPos[] NoProjectedCells = Array.Empty<PPos>();
+		static readonly PPos[] NoProjectedCells = [];
 		public PPos[] ProjectedCellsCovering(MPos uv)
 		{
 			if (!initializedCellProjection)
@@ -1064,7 +1063,7 @@ namespace OpenRA
 				InitializeCellProjection();
 
 			if (!inverseCellProjection.Contains(uv))
-				return new List<MPos>();
+				return [];
 
 			return inverseCellProjection[uv];
 		}

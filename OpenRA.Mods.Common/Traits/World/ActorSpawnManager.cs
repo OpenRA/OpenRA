@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -32,17 +30,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.",
 			"If 2 values are provided they are used as a range from which a value is randomly selected.")]
-		public readonly int[] SpawnInterval = { 6000 };
+		public readonly int[] SpawnInterval = [6000];
 
 		[FieldLoader.Require]
 		[ActorReference]
 		[Desc("Name of the actor that will be randomly picked to spawn.")]
-		public readonly string[] Actors = Array.Empty<string>();
+		public readonly string[] Actors = [];
 
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly HashSet<string> Types = new();
+		public readonly HashSet<string> Types = [];
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -123,11 +121,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		WPos SpawnActor(Actor self, Actor spawnPoint)
 		{
-			self.World.AddFrameEndTask(w => w.CreateActor(info.Actors.Random(self.World.SharedRandom), new TypeDictionary
-			{
+			self.World.AddFrameEndTask(w => w.CreateActor(info.Actors.Random(self.World.SharedRandom),
+			[
 				new OwnerInit(w.Players.First(x => x.PlayerName == info.Owner)),
 				new LocationInit(spawnPoint.Location)
-			}));
+			]));
 
 			actorsPresent++;
 

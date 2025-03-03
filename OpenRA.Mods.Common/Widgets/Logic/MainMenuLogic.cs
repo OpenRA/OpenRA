@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.StartupPrompts;
 
-				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
+				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, []);
 				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
 				newsPanel.RemoveChild(newsTemplate);
 				maxNewsHeight = newsPanel.Bounds.Height;

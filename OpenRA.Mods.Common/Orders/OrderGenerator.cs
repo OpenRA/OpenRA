@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Orders;
 
@@ -23,7 +22,7 @@ namespace OpenRA.Mods.Common.Orders
 			if ((mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down) || (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up))
 				return OrderInner(world, cell, worldPixel, mi);
 
-			return Enumerable.Empty<Order>();
+			return [];
 		}
 
 		void IOrderGenerator.Tick(World world) { Tick(world); }

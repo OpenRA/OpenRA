@@ -12,7 +12,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var type = fieldInfo.FieldType;
 			if (type == typeof(string))
-				return new[] { (string)fieldInfo.GetValue(ruleInfo) };
+				return [(string)fieldInfo.GetValue(ruleInfo)];
 
 			if (typeof(IEnumerable<string>).IsAssignableFrom(type))
 				return fieldInfo.GetValue(ruleInfo) as IEnumerable<string>;
@@ -34,7 +33,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (type == typeof(BooleanExpression) || type == typeof(IntegerExpression))
 			{
 				var expr = (VariableExpression)fieldInfo.GetValue(ruleInfo);
-				return expr != null ? expr.Variables : Enumerable.Empty<string>();
+				return expr != null ? expr.Variables : [];
 			}
 
 			if (type.IsGenericType &&
@@ -78,7 +77,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var type = propertyInfo.PropertyType;
 			if (type == typeof(string))
-				return new[] { (string)propertyInfo.GetValue(ruleInfo) };
+				return [(string)propertyInfo.GetValue(ruleInfo)];
 
 			if (typeof(IEnumerable).IsAssignableFrom(type))
 				return (IEnumerable<string>)propertyInfo.GetValue(ruleInfo);
@@ -86,7 +85,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (type == typeof(BooleanExpression) || type == typeof(IntegerExpression))
 			{
 				var expr = (VariableExpression)propertyInfo.GetValue(ruleInfo);
-				return expr != null ? expr.Variables : Enumerable.Empty<string>();
+				return expr != null ? expr.Variables : [];
 			}
 
 			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))

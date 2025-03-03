@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Find any harvestable resources:
 			var path = mobile.PathFinder.FindPathToTargetCellByPredicate(
 				self,
-				new[] { searchFromLoc, self.Location },
+				[searchFromLoc, self.Location],
 				loc =>
 					harv.CanHarvestCell(loc) &&
 					claimLayer.CanClaimCell(self, loc),

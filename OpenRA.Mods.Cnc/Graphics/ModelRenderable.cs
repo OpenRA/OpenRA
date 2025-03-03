@@ -218,9 +218,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 				}
 			}
 
-			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
-			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
-			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
+			static readonly uint[] CornerXIndex = [0, 0, 0, 0, 3, 3, 3, 3];
+			static readonly uint[] CornerYIndex = [1, 1, 4, 4, 1, 1, 4, 4];
+			static readonly uint[] CornerZIndex = [2, 5, 2, 5, 2, 5, 2, 5];
 			static void DrawBoundsBox(WorldRenderer wr, in float3 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
 				var cr = Game.Renderer.RgbaColorRenderer;

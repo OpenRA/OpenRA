@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		public const int MAXWIN = 4096; // maximum window size
 
 		static readonly byte[] LitLen =
-		{
+		[
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
 			10, 8, 12, 10, 12, 10, 8, 23, 8, 9,
 			7, 6, 7, 8, 7, 6, 55, 8, 23, 24,
@@ -37,27 +37,27 @@ namespace OpenRA.Mods.Common.FileFormats
 			6, 21, 6, 10, 53, 8, 7, 24, 10, 27,
 			44, 253, 253, 253, 252, 252, 252, 13, 12, 45,
 			12, 45, 12, 61, 12, 45, 44, 173
-		};
+		];
 
 		// bit lengths of length codes 0..15
-		static readonly byte[] LenLen = { 2, 35, 36, 53, 38, 23 };
+		static readonly byte[] LenLen = [2, 35, 36, 53, 38, 23];
 
 		// bit lengths of distance codes 0..63
-		static readonly byte[] DistLen = { 2, 20, 53, 230, 247, 151, 248 };
+		static readonly byte[] DistLen = [2, 20, 53, 230, 247, 151, 248];
 
 		// base for length codes
 		static readonly short[] LengthBase =
-		{
+		[
 			3, 2, 4, 5, 6, 7, 8, 9, 10, 12,
 			16, 24, 40, 72, 136, 264
-		};
+		];
 
 		// extra bits for length codes
 		static readonly byte[] Extra =
-		{
+		[
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
-		};
+		];
 
 		static readonly Huffman LitCode = new(LitLen, 256);
 		static readonly Huffman LenCode = new(LenLen, 16);

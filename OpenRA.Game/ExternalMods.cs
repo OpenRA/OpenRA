@@ -40,7 +40,7 @@ namespace OpenRA
 
 	public class ExternalMods : IReadOnlyDictionary<string, ExternalMod>
 	{
-		readonly Dictionary<string, ExternalMod> mods = new();
+		readonly Dictionary<string, ExternalMod> mods = [];
 		readonly SheetBuilder sheetBuilder;
 
 		Sheet CreateSheet()
@@ -122,13 +122,13 @@ namespace OpenRA
 				return;
 
 			var key = ExternalMod.MakeKey(mod);
-			var yaml = new MiniYamlNode("Registration", new MiniYaml("", new[]
-			{
+			var yaml = new MiniYamlNode("Registration", new MiniYaml("",
+			[
 				new MiniYamlNode("Id", mod.Id),
 				new MiniYamlNode("Version", mod.Metadata.Version),
 				new MiniYamlNode("LaunchPath", launchPath),
 				new MiniYamlNode("LaunchArgs", new[] { "Game.Mod=" + mod.Id }.Concat(launchArgs).JoinWith(", "))
-			}));
+			]));
 
 			var iconNodes = new List<MiniYamlNode>();
 

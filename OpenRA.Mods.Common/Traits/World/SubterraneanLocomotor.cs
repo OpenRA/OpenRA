@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly short SubterraneanTransitionCost = 0;
 
 		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
-		public readonly HashSet<string> SubterraneanTransitionTerrainTypes = new();
+		public readonly HashSet<string> SubterraneanTransitionTerrainTypes = [];
 
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool SubterraneanTransitionOnRamps = false;

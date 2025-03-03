@@ -13,7 +13,6 @@ using OpenRA.GameRules;
 using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
@@ -91,11 +90,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (info.CameraActor == null)
 					return;
 
-				var camera = w.CreateActor(info.CameraActor, new TypeDictionary
-				{
+				var camera = w.CreateActor(info.CameraActor,
+				[
 					new LocationInit(self.World.Map.CellContaining(target.CenterPosition)),
 					new OwnerInit(self.Owner),
-				});
+				]);
 
 				camera.QueueActivity(new Wait(info.CameraRemoveDelay));
 				camera.QueueActivity(new RemoveSelf());

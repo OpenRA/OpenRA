@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				Label = value;
 				Description = null;
 				Tileset = null;
-				Settings = new MiniYaml(null, new[] { new MiniYamlNode(setting, value) });
+				Settings = new MiniYaml(null, [new MiniYamlNode(setting, value)]);
 			}
 
 			public static void DumpFluent(MiniYaml my, List<string> references)

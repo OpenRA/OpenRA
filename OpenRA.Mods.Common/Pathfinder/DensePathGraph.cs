@@ -73,17 +73,17 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// We can do this because for any cell in range of both the current and parent location,
 		// if we can reach it from one we are guaranteed to be able to reach it from the other.
 		static readonly CVec[][] DirectedNeighbors =
-		{
-			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1) }, // TL
-			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1) }, // T
-			new[] { new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) }, // TR
-			new[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1) }, // L
+		[
+			[new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(-1, 0), new CVec(-1, 1)], // TL
+			[new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1)], // T
+			[new CVec(-1, -1), new CVec(0, -1), new CVec(1, -1), new CVec(1, 0), new CVec(1, 1)], // TR
+			[new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1)], // L
 			CVec.Directions,
-			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(1, 1) }, // R
-			new[] { new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) }, // BL
-			new[] { new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) }, // B
-			new[] { new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1) }, // BR
-		};
+			[new CVec(1, -1), new CVec(1, 0), new CVec(1, 1)], // R
+			[new CVec(-1, -1), new CVec(-1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1)], // BL
+			[new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1)], // B
+			[new CVec(1, -1), new CVec(1, 0), new CVec(-1, 1), new CVec(0, 1), new CVec(1, 1)], // BR
+		];
 
 		// With height discontinuities between the parent and current cell, we cannot optimize the possible neighbors.
 		// It is no longer true that for any cell in range of both the current and parent location,
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		// but our current cell on a new height may be able to reach as the height difference may be small enough.
 		// Therefore, we can only exclude the parent cell in each set of directions.
 		static readonly CVec[][] DirectedNeighborsConservative =
-		{
+		[
 			CVec.Directions.Exclude(new CVec(1, 1)).ToArray(), // TL
 			CVec.Directions.Exclude(new CVec(0, 1)).ToArray(), // T
 			CVec.Directions.Exclude(new CVec(-1, 1)).ToArray(), // TR
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			CVec.Directions.Exclude(new CVec(1, -1)).ToArray(), // BL
 			CVec.Directions.Exclude(new CVec(0, -1)).ToArray(), // B
 			CVec.Directions.Exclude(new CVec(-1, -1)).ToArray(), // BR
-		};
+		];
 
 		public List<GraphConnection> GetConnections(CPos position, Func<CPos, bool> targetPredicate)
 		{

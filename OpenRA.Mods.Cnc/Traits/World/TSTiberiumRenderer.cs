@@ -22,16 +22,16 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class TSTiberiumRendererInfo : ResourceRendererInfo
 	{
 		[Desc("Sequences to use for ramp type 1.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp1Sequences = new();
+		public readonly Dictionary<string, string[]> Ramp1Sequences = [];
 
 		[Desc("Sequences to use for ramp type 2.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp2Sequences = new();
+		public readonly Dictionary<string, string[]> Ramp2Sequences = [];
 
 		[Desc("Sequences to use for ramp type 3.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp3Sequences = new();
+		public readonly Dictionary<string, string[]> Ramp3Sequences = [];
 
 		[Desc("Sequences to use for ramp type 4.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp4Sequences = new();
+		public readonly Dictionary<string, string[]> Ramp4Sequences = [];
 
 		public override object Create(ActorInitializer init) { return new TSTiberiumRenderer(init.Self, this); }
 	}
@@ -40,10 +40,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		readonly TSTiberiumRendererInfo info;
 		readonly World world;
-		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp1Variants = new();
-		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp2Variants = new();
-		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp3Variants = new();
-		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp4Variants = new();
+		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp1Variants = [];
+		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp2Variants = [];
+		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp3Variants = [];
+		readonly Dictionary<string, Dictionary<string, ISpriteSequence>> ramp4Variants = [];
 
 		public TSTiberiumRenderer(Actor self, TSTiberiumRendererInfo info)
 			: base(self, info)

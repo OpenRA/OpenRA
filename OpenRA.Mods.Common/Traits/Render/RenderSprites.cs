@@ -81,12 +81,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
 	{
 		static readonly (DamageState DamageState, string Prefix)[] DamagePrefixes =
-		{
+		[
 			(DamageState.Critical, "critical-"),
 			(DamageState.Heavy, "damaged-"),
 			(DamageState.Medium, "scratched-"),
 			(DamageState.Light, "scuffed-")
-		};
+		];
 
 		sealed class AnimationWrapper
 		{
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly RenderSpritesInfo Info;
 		readonly string faction;
-		readonly List<AnimationWrapper> anims = new();
+		readonly List<AnimationWrapper> anims = [];
 		string cachedImage;
 
 		public static Func<WAngle> MakeFacingFunc(Actor self)

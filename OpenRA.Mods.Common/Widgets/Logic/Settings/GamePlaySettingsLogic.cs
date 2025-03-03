@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[FluentReference]
 		const string AutoSaveMaxFileNumber = "auto-save-max-file-number";
-		readonly int[] autoSaveSeconds = { 0, 10, 30, 45, 60, 120, 180, 300, 600 };
+		readonly int[] autoSaveSeconds = [0, 10, 30, 45, 60, 120, 180, 300, 600];
 
-		readonly int[] autoSaveFileNumbers = { 3, 5, 10, 20, 50, 100 };
+		readonly int[] autoSaveFileNumbers = [3, 5, 10, 20, 50, 100];
 
 		[ObjectCreator.UseCtor]
 		public GameplaySettingsLogic(Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel, string panelID, string label)

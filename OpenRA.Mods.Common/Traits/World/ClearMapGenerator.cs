@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Support;
@@ -95,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
-			map.ActorDefinitions = ImmutableArray<MiniYamlNode>.Empty;
+			map.ActorDefinitions = [];
 		}
 	}
 

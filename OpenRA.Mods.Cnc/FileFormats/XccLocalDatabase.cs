@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			using (var writer = new BinaryWriter(data))
 			{
 				writer.Write(Encoding.ASCII.GetBytes("XCC by Olaf van der Spek"));
-				writer.Write(new byte[] { 0x1A, 0x04, 0x17, 0x27, 0x10, 0x19, 0x80, 0x00 });
+				writer.Write([0x1A, 0x04, 0x17, 0x27, 0x10, 0x19, 0x80, 0x00]);
 
 				writer.Write(Entries.Sum(e => e.Length) + Entries.Length + 52); // Size
 				writer.Write(0); // Type

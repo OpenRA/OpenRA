@@ -18,7 +18,7 @@ namespace OpenRA
 {
 	public class WidgetLoader
 	{
-		readonly Dictionary<string, MiniYamlNode> widgets = new();
+		readonly Dictionary<string, MiniYamlNode> widgets = [];
 		readonly ModData modData;
 
 		public WidgetLoader(ModData modData)

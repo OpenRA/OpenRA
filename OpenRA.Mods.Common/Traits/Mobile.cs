@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		[CursorReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Cursor overrides to display for specific terrain types.",
 			"A dictionary of [terrain type]: [cursor name].")]
-		public readonly Dictionary<string, string> TerrainCursors = new();
+		public readonly Dictionary<string, string> TerrainCursors = [];
 
 		[CursorReference]
 		[Desc("Cursor to display when a move order cannot be issued at target location.")]
@@ -255,13 +255,13 @@ namespace OpenRA.Mods.Common.Traits
 		public (CPos, SubCell)[] OccupiedCells()
 		{
 			if (FromCell == ToCell)
-				return new[] { (FromCell, FromSubCell) };
+				return [(FromCell, FromSubCell)];
 
 			// HACK: Should be fixed properly, see https://github.com/OpenRA/OpenRA/pull/17292 for an explanation
 			if (Info.LocomotorInfo.SharesCell)
-				return new[] { (ToCell, ToSubCell) };
+				return [(ToCell, ToSubCell)];
 
-			return new[] { (FromCell, FromSubCell), (ToCell, ToSubCell) };
+			return [(FromCell, FromSubCell), (ToCell, ToSubCell)];
 		}
 		#endregion
 
@@ -819,7 +819,7 @@ namespace OpenRA.Mods.Common.Traits
 				return above;
 
 			var path = PathFinder.FindPathToTargetCellByPredicate(
-				self, new[] { self.Location }, loc => loc.Layer == 0 && CanEnterCell(loc), BlockedByActor.All);
+				self, [self.Location], loc => loc.Layer == 0 && CanEnterCell(loc), BlockedByActor.All);
 
 			if (path.Count > 0)
 				return path[0];

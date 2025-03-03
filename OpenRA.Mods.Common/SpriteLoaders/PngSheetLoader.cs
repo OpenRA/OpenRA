@@ -79,10 +79,10 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 					Array.Copy(png.Data, (frameStart + y * png.Width) * stride, frames[i].Data, y * frames[i].Size.Width * stride, frames[i].Size.Width * stride);
 			}
 
-			metadata = new TypeDictionary
-			{
+			metadata =
+			[
 				new PngSheetMetadata(png.EmbeddedData),
-			};
+			];
 
 			if (png.Palette != null)
 				metadata.Add(new EmbeddedSpritePalette(png.Palette.Select(x => x.ToArgb()).ToArray()));
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 		static void RegionsFromFrames(Png png, out List<Rectangle> regions, out List<float2> offsets)
 		{
-			regions = new List<Rectangle>();
-			offsets = new List<float2>();
+			regions = [];
+			offsets = [];
 			var pngRectangle = new Rectangle(0, 0, png.Width, png.Height);
 
 			for (var i = 0; png.EmbeddedData.TryGetValue("Frame[" + i + "]", out var frame); i++)
@@ -147,8 +147,8 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			if (png.Width < frameSize.Width * frameAmount / rows || png.Height < frameSize.Height * rows)
 				throw new InvalidDataException($"Invalid frame size {frameSize} and frame amount {frameAmount} defined.");
 
-			regions = new List<Rectangle>();
-			offsets = new List<float2>();
+			regions = [];
+			offsets = [];
 
 			for (var i = 0; i < frameAmount; i++)
 			{

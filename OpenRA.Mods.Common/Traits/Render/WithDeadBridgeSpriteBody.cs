@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		[ActorReference]
-		public readonly string[] RampActors = Array.Empty<string>();
+		public readonly string[] RampActors = [];
 
 		[Desc("Offset to search for the 'A' neighbour")]
 		public readonly CVec AOffset = CVec.Zero;
@@ -30,13 +30,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly CVec BOffset = CVec.Zero;
 
 		[SequenceReference]
-		public readonly string[] ARampSequences = { "aramp" };
+		public readonly string[] ARampSequences = ["aramp"];
 
 		[SequenceReference]
-		public readonly string[] BRampSequences = { "bramp" };
+		public readonly string[] BRampSequences = ["bramp"];
 
 		[SequenceReference]
-		public readonly string[] ABRampSequences = { "abramp" };
+		public readonly string[] ABRampSequences = ["abramp"];
 
 		[SequenceReference]
 		[Desc("Placeholder sequence to use in the map editor.")]

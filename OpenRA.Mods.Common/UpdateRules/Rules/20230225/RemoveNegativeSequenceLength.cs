@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		readonly Queue<Action> actionQueue = new();
+		readonly Queue<Action> actionQueue = [];
 
 		static MiniYamlNodeBuilder GetNode(string key, MiniYamlNodeBuilder node, MiniYamlNodeBuilder defaultNode)
 		{

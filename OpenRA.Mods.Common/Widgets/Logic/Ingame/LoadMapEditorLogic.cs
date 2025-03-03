@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LoadMapEditorLogic(Widget widget, World world)
 		{
 			var editorRoot = widget.Get("WORLD_ROOT");
-			Game.LoadWidget(world, "EDITOR_WORLD_ROOT", editorRoot, new WidgetArgs());
-			Game.LoadWidget(world, "TRANSIENTS_PANEL", editorRoot, new WidgetArgs());
+			Game.LoadWidget(world, "EDITOR_WORLD_ROOT", editorRoot, []);
+			Game.LoadWidget(world, "TRANSIENTS_PANEL", editorRoot, []);
 		}
 	}
 }

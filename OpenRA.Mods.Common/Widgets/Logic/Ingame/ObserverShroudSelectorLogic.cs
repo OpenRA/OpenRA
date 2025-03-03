@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			combined = new CameraOption(this, world, FluentProvider.GetMessage(CameraOptionAllPlayers), world.Players.First(p => p.InternalName == "Everyone"));
 			disableShroud = new CameraOption(this, world, FluentProvider.GetMessage(CameraOptionDisableShroud), null);
 			if (!limitViews)
-				groups.Add(FluentProvider.GetMessage(CameraOptionOther), new List<CameraOption>() { combined, disableShroud });
+				groups.Add(FluentProvider.GetMessage(CameraOptionOther), [combined, disableShroud]);
 
 			teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => new CameraOption(this, p))

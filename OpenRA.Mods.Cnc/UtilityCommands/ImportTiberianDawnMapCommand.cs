@@ -65,8 +65,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static readonly string[] OverlayActors = new string[]
-		{
+		static readonly string[] OverlayActors =
+		[
+
 			// Fences
 			"sbag", "cycl", "brik", "barb", "wood",
 
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			// Crates
 			"wcrate", "scrate"
-		};
+		];
 
 		void ReadOverlay(IniFile file)
 		{

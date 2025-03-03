@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -36,17 +35,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Screen-space offsets to apply when defined conditions are enabled.",
 			"A dictionary of [condition string]: [x, y offset].")]
-		public readonly Dictionary<BooleanExpression, int2> Offsets = new();
+		public readonly Dictionary<BooleanExpression, int2> Offsets = [];
 
 		[Desc("The number of ticks that each step in the blink pattern in active.")]
 		public readonly int BlinkInterval = 5;
 
 		[Desc("A pattern of ticks (BlinkInterval long) where the decoration is visible or hidden.")]
-		public readonly BlinkState[] BlinkPattern = Array.Empty<BlinkState>();
+		public readonly BlinkState[] BlinkPattern = [];
 
 		[Desc("Override blink conditions to use when defined conditions are enabled.",
 			"A dictionary of [condition string]: [pattern].")]
-		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = new();
+		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = [];
 
 		[ConsumedConditionReference]
 		public IEnumerable<string> ConsumedConditions
@@ -97,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) + conditionalOffset;
 			return RenderDecoration(self, wr, screenPos);

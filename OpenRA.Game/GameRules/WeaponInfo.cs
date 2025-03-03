@@ -36,7 +36,7 @@ namespace OpenRA.GameRules
 	public class WarheadArgs
 	{
 		public WeaponInfo Weapon;
-		public int[] DamageModifiers = Array.Empty<int>();
+		public int[] DamageModifiers = [];
 		public WPos? Source;
 		public WRot ImpactOrientation;
 		public WPos ImpactPosition;
@@ -116,7 +116,7 @@ namespace OpenRA.GameRules
 
 		[Desc("Delay in ticks between firing shots from the same ammo magazine. If one entry, it will be used for all bursts.",
 			"If multiple entries, their number needs to match Burst - 1.")]
-		public readonly int[] BurstDelays = { 5 };
+		public readonly int[] BurstDelays = [5];
 
 		[Desc("The minimum range the weapon can fire.")]
 		public readonly WDist MinRange = WDist.Zero;
@@ -128,7 +128,7 @@ namespace OpenRA.GameRules
 		public readonly IProjectileInfo Projectile;
 
 		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
-		public readonly List<IWarhead> Warheads = new();
+		public readonly List<IWarhead> Warheads = [];
 
 		/// <summary>
 		/// This constructor is used solely for documentation generation.
@@ -139,7 +139,7 @@ namespace OpenRA.GameRules
 		{
 			// Resolve any weapon-level yaml inheritance or removals
 			// HACK: The "Defaults" sequence syntax prevents us from doing this generally during yaml parsing
-			content = content.WithNodes(MiniYaml.Merge(new IReadOnlyCollection<MiniYamlNode>[] { content.Nodes }));
+			content = content.WithNodes(MiniYaml.Merge([content.Nodes]));
 			FieldLoader.Load(this, content);
 		}
 

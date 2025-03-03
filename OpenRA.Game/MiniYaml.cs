@@ -99,7 +99,7 @@ namespace OpenRA
 		}
 
 		public MiniYamlNode(string k, string v, string c = null)
-			: this(k, new MiniYaml(v, Enumerable.Empty<MiniYamlNode>()), c) { }
+			: this(k, new MiniYaml(v, []), c) { }
 
 		public MiniYamlNode(string k, string v, IEnumerable<MiniYamlNode> n)
 			: this(k, new MiniYaml(v, n), null) { }
@@ -115,7 +115,7 @@ namespace OpenRA
 		const int SpacesPerLevel = 4;
 		static readonly Func<string, string> StringIdentity = s => s;
 		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
-		static readonly Dictionary<string, MiniYamlNode> ConflictScratch = new();
+		static readonly Dictionary<string, MiniYamlNode> ConflictScratch = [];
 
 		public readonly string Value;
 		public readonly ImmutableArray<MiniYamlNode> Nodes;
@@ -196,12 +196,12 @@ namespace OpenRA
 		}
 
 		public MiniYaml(string value)
-			: this(value, Enumerable.Empty<MiniYamlNode>()) { }
+			: this(value, []) { }
 
 		public MiniYaml(string value, IEnumerable<MiniYamlNode> nodes)
 		{
 			Value = value;
-			Nodes = ImmutableArray.CreateRange(nodes);
+			Nodes = nodes.ToImmutableArray();
 		}
 
 		static List<MiniYamlNode> FromLines(IEnumerable<ReadOnlyMemory<char>> lines, string name, bool discardCommentsAndWhitespace, HashSet<string> stringPool)
@@ -210,7 +210,7 @@ namespace OpenRA
 			// Pool these strings so we only need one copy of each unique string.
 			// This saves on long-term memory usage as parsed values can often live a long time.
 			// A caller can also provide a pool as input, allowing de-duplication across multiple parses.
-			stringPool ??= new HashSet<string>();
+			stringPool ??= [];
 
 			var result = new List<List<MiniYamlNode>>
 			{
@@ -352,7 +352,7 @@ namespace OpenRA
 			{
 				var lastLevel = parsedLines[^1].Level;
 				while (lastLevel >= result.Count)
-					result.Add(new List<MiniYamlNode>());
+					result.Add([]);
 
 				while (parsedLines.Count > 0 && parsedLines[^1].Level >= level)
 				{
@@ -393,14 +393,14 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> FromString(string text, string name, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
 		{
-			return FromLines(text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None).Select(s => s.AsMemory()), name, discardCommentsAndWhitespace, stringPool);
+			return FromLines(text.Split(["\r\n", "\n"], StringSplitOptions.None).Select(s => s.AsMemory()), name, discardCommentsAndWhitespace, stringPool);
 		}
 
 		public static List<MiniYamlNode> Merge(IEnumerable<IReadOnlyCollection<MiniYamlNode>> sources)
 		{
 			var sourcesList = sources.ToList();
 			if (sourcesList.Count == 0)
-				return new List<MiniYamlNode>();
+				return [];
 
 			var tree = sourcesList
 				.Where(s => s != null)
@@ -696,7 +696,7 @@ namespace OpenRA
 		public MiniYamlBuilder(string value, List<MiniYamlNode> nodes)
 		{
 			Value = value;
-			Nodes = nodes == null ? new List<MiniYamlNodeBuilder>() : nodes.ConvertAll(x => new MiniYamlNodeBuilder(x));
+			Nodes = nodes == null ? [] : nodes.ConvertAll(x => new MiniYamlNodeBuilder(x));
 		}
 
 		public MiniYaml Build()

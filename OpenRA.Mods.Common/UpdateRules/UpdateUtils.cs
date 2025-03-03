@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			return FieldLoader.GetValue<string[]>("value", yaml.Value)
 				.Where(f => f.Contains('|'))
-				.SelectMany(f => LoadModYaml(modData, FilterExternalFiles(modData, new[] { f }, externalFilenames)))
+				.SelectMany(f => LoadModYaml(modData, FilterExternalFiles(modData, [f], externalFilenames)))
 				.ToList();
 		}
 
@@ -100,12 +100,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 				if (mapStream == null)
 				{
 					// Not a valid map
-					files = new YamlFileSet();
+					files = [];
 					return manualSteps;
 				}
 
 				var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{mapPackage.Name}:map.yaml", false));
-				files = new YamlFileSet() { (mapPackage, "map.yaml", yaml.Nodes) };
+				files = [(mapPackage, "map.yaml", yaml.Nodes)];
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
 

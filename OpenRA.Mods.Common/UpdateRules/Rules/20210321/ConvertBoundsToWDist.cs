@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"The Bounds and DecorationBounds fields on Interactable and Selectable have been converted from pixels to WDist.\n" +
 			"All bounds must be scaled by 1024 (Rectangular map grid) or 1448 (Isometric map grid) divided by your mod tile size.";
 
-		readonly string[] traits = { "Interactable", "Selectable", "IsometricSelectable" };
-		readonly string[] fields = { "Bounds", "DecorationBounds" };
+		readonly string[] traits = ["Interactable", "Selectable", "IsometricSelectable"];
+		readonly string[] fields = ["Bounds", "DecorationBounds"];
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{

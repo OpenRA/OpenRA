@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class MapPreviewWidget : Widget
 	{
-		static readonly int[] NoDisabledSpawnPoints = Array.Empty<int>();
+		static readonly int[] NoDisabledSpawnPoints = [];
 
 		public readonly bool IgnoreMouseInput = false;
 		public readonly bool ShowSpawnPoints = true;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int2 spawnLabelOffset;
 
 		public Func<MapPreview> Preview = () => null;
-		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => new Dictionary<int, SpawnOccupant>();
+		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => [];
 		public Func<IEnumerable<int>> DisabledSpawnPoints = () => NoDisabledSpawnPoints;
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public int TooltipSpawnIndex = -1;

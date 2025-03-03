@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly ITiledTerrainRenderer terrainRenderer;
 
 		CPos cell;
-		readonly List<IRenderable> preview = new();
+		readonly List<IRenderable> preview = [];
 
 		public EditorTileBrush(EditorViewportControllerWidget editorWidget, ushort id, WorldRenderer wr)
 		{
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Map map;
 		readonly CPos cell;
 
-		readonly Queue<UndoTile> undoTiles = new();
+		readonly Queue<UndoTile> undoTiles = [];
 		readonly TerrainTemplateInfo terrainTemplate;
 
 		public PaintTileEditorAction(ushort template, Map map, CPos cell)
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Map map;
 		readonly CPos cell;
 
-		readonly Queue<UndoTile> undoTiles = new();
+		readonly Queue<UndoTile> undoTiles = [];
 		readonly TerrainTemplateInfo terrainTemplate;
 
 		public FloodFillEditorAction(ushort template, Map map, CPos cell)

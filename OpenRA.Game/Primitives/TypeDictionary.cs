@@ -20,7 +20,7 @@ namespace OpenRA.Primitives
 		static readonly Func<Type, ITypeContainer> CreateTypeContainer = t =>
 			(ITypeContainer)typeof(TypeContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		readonly Dictionary<Type, ITypeContainer> data = new();
+		readonly Dictionary<Type, ITypeContainer> data = [];
 
 		ITypeContainer InnerGet(Type t)
 		{
@@ -81,7 +81,7 @@ namespace OpenRA.Primitives
 		{
 			if (data.TryGetValue(typeof(T), out var container))
 				return ((TypeContainer<T>)container).Objects;
-			return Array.Empty<T>();
+			return [];
 		}
 
 		public void Remove<T>(T val)
@@ -131,7 +131,7 @@ namespace OpenRA.Primitives
 
 		sealed class TypeContainer<T> : ITypeContainer
 		{
-			public List<T> Objects { get; } = new List<T>();
+			public List<T> Objects { get; } = [];
 
 			public int Count => Objects.Count;
 

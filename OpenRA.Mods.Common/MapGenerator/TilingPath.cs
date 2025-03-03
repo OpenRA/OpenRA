@@ -576,8 +576,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 						return;
 					var newId = segmentTypeToId.Count;
 					segmentTypeToId.Add(type, newId);
-					segmentsByStart.Add(new List<TilingSegment>());
-					segmentsByEnd.Add(new List<TilingSegment>());
+					segmentsByStart.Add([]);
+					segmentsByEnd.Add([]);
 					costs.Add(new Matrix<int>(size).Fill(MaxCost));
 				}
 
@@ -944,7 +944,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				if (ox == oy)
 				{
 					// We're either not on an edge or we're at a corner, so don't extend.
-					return Array.Empty<CPos>();
+					return [];
 				}
 
 				var offset = new CVec(ox, oy);

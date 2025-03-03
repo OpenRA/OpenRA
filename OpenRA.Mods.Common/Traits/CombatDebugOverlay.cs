@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.CombatGeometry || self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return RenderAnnotations(self, wr);
 		}

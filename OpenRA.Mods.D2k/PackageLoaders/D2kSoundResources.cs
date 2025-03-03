@@ -37,7 +37,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Stream s;
-			readonly Dictionary<string, Entry> index = new();
+			readonly Dictionary<string, Entry> index = [];
 
 			public D2kSoundResources(Stream s, string filename)
 			{

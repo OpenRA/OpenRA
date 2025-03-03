@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Lint
 				GetUsedFluentKeys(
 					usedKeys, testedFields,
 					Utility.GetFields(typeof(GameSpeed)),
-					new[] { speed.Value },
+					[speed.Value],
 					(obj, field) => $"`GameSpeeds.Speeds.{speed.Key}.{field.Name}` in mod.yaml");
 
 			// TODO: linter does not work with LoadUsing
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Lint
 				GetUsedFluentKeys(
 					usedKeys, testedFields,
 					Utility.GetFields(typeof(ResourceRendererInfo.ResourceTypeInfo)),
-					new[] { resource.Value },
+					[resource.Value],
 					(obj, field) => $"`ResourceRenderer.ResourceTypes.{resource.Key}.{field.Name}` in rules yaml");
 
 			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
@@ -261,21 +261,21 @@ namespace OpenRA.Mods.Common.Lint
 			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				constFields,
-				new[] { (object)null },
+				[(object)null],
 				(obj, field) => $"`{field.ReflectedType.Name}.{field.Name}`");
 
 			var modMetadataFields = typeof(ModMetadata).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				modMetadataFields,
-				new[] { modData.Manifest.Metadata },
+				[modData.Manifest.Metadata],
 				(obj, field) => $"`Metadata.{field.Name}` in mod.yaml");
 
 			var modContent = modData.Manifest.Get<ModContent>();
 			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(ModContent)),
-				new[] { modContent },
+				[modContent],
 				(obj, field) => $"`ModContent.{field.Name}` in mod.yaml");
 			GetUsedFluentKeys(
 				usedKeys, testedFields,
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Lint
 			GetUsedFluentKeys(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(KeycodeExts)).Concat(Utility.GetFields(typeof(ModifiersExts))),
-				new[] { (object)null },
+				[(object)null],
 				(obj, field) => $"`{field.ReflectedType.Name}.{field.Name}`");
 
 			foreach (var filename in modData.Manifest.ChromeLayout)
@@ -426,7 +426,7 @@ namespace OpenRA.Mods.Common.Lint
 
 						IEnumerable<(Pattern Node, string AttributeName)> nodeAndAttributeNames;
 						if (message.Attributes.Count == 0)
-							nodeAndAttributeNames = new[] { (message.Value, (string)null) };
+							nodeAndAttributeNames = [(message.Value, null)];
 						else
 							nodeAndAttributeNames = message.Attributes.Select(a => (a.Value, a.Id.Name.ToString()));
 
@@ -504,10 +504,10 @@ namespace OpenRA.Mods.Common.Lint
 
 		sealed class Keys
 		{
-			readonly HashSet<string> keys = new();
-			readonly List<(string Key, string Context)> keysWithContext = new();
-			readonly Dictionary<string, HashSet<string>> requiredVariablesByKey = new();
-			readonly List<string> contextForEmptyKeys = new();
+			readonly HashSet<string> keys = [];
+			readonly List<(string Key, string Context)> keysWithContext = [];
+			readonly Dictionary<string, HashSet<string>> requiredVariablesByKey = [];
+			readonly List<string> contextForEmptyKeys = [];
 
 			public void Add(string key, FluentReferenceAttribute fluentReference, string context)
 			{
@@ -520,7 +520,7 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (fluentReference.RequiredVariableNames != null && fluentReference.RequiredVariableNames.Length > 0)
 				{
-					var rv = requiredVariablesByKey.GetOrAdd(key, _ => new HashSet<string>());
+					var rv = requiredVariablesByKey.GetOrAdd(key, _ => []);
 					rv.UnionWith(fluentReference.RequiredVariableNames);
 				}
 

@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -63,14 +62,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var group = self.World.ControlGroups.GetControlGroupForActor(self);
 			if (group == null)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			var text = label.Update(group.Value);
 			var screenPos = container.GetDecorationOrigin(self, wr, info.Position, info.Margin);
-			return new IRenderable[]
-			{
+			return
+			[
 				new UITextRenderable(font, self.CenterPosition, screenPos, 0, info.UsePlayerColor ? self.OwnerColor() : info.Color, text)
-			};
+			];
 		}
 	}
 }

@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = ["idle"];
 
 		[PaletteReference]
 		public readonly string Palette = "effect";
 
 		[Desc("Only leave trail on listed terrain types. Leave empty to leave trail on all terrain types.")]
-		public readonly HashSet<string> TerrainTypes = new();
+		public readonly HashSet<string> TerrainTypes = [];
 
 		[Desc("Accepts values: Cell to draw the trail sprite in the center of the current cell,",
 			"CenterPosition to draw the trail sprite at the current position.")]
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int StartDelay = 0;
 
 		[Desc("Trail spawn positions relative to actor position. (forward, right, up) triples")]
-		public readonly WVec[] Offsets = { WVec.Zero };
+		public readonly WVec[] Offsets = [WVec.Zero];
 
 		[Desc("Should the trail spawn relative to last position or current position?")]
 		public readonly bool SpawnAtLastPosition = true;

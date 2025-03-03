@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 			var widget = world.Type == WorldType.Shellmap ? info.ShellmapRoot :
 				world.Type == WorldType.Editor ? info.EditorRoot : info.IngameRoot;
 
-			root = Game.LoadWidget(world, widget, Ui.Root, new WidgetArgs());
+			root = Game.LoadWidget(world, widget, Ui.Root, []);
 
 			// The Lua API requires the UI to available, so hide it instead
 			if (world.IsLoadingGameSave)

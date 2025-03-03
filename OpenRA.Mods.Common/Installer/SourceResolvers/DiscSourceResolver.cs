@@ -37,12 +37,12 @@ namespace OpenRA.Mods.Common.Installer
 			{
 				// Outside of Gnome, most mounting tools on Linux don't set DriveType.CDRom
 				// so provide a fallback by allowing users to manually mount images on known paths
-				volumes = volumes.Concat(new[]
-				{
+				volumes = volumes.Concat(
+				[
 					"/media/openra",
 					"/media/" + Environment.UserName + "/openra",
 					"/mnt/openra"
-				});
+				]);
 			}
 
 			foreach (var volume in volumes)

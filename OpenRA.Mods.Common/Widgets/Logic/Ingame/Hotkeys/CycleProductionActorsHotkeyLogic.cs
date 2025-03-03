@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", clickSound, null);
 
-			selection.Combine(world, new Actor[] { next }, false, true);
+			selection.Combine(world, [next], false, true);
 			viewport.Center(selection.Actors);
 
 			return true;

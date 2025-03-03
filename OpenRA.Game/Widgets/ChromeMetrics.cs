@@ -16,14 +16,14 @@ namespace OpenRA.Widgets
 {
 	public static class ChromeMetrics
 	{
-		static Dictionary<string, string> data = new();
+		static Dictionary<string, string> data = [];
 
 		public static void Initialize(ModData modData)
 		{
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var metrics = MiniYaml.Merge(modData.Manifest.ChromeMetrics.Select(
 				y => MiniYaml.FromStream(modData.DefaultFileSystem.Open(y), y, stringPool: stringPool)));
-			data = new Dictionary<string, string>();
+			data = [];
 			foreach (var m in metrics)
 				foreach (var n in m.Value.Nodes)
 					data[n.Key] = n.Value.Value;

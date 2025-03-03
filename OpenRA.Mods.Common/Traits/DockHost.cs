@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsEnabledAndInWorld => !preventDock && !IsTraitDisabled && !self.IsDead && self.IsInWorld;
 		public int ReservationCount => ReservedDockClients.Count;
 		public bool CanBeReserved => ReservationCount < Info.MaxQueueLength;
-		protected readonly List<DockClientManager> ReservedDockClients = new();
+		protected readonly List<DockClientManager> ReservedDockClients = [];
 
 		public WPos DockPosition => self.CenterPosition + Info.DockOffset;
 

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	public sealed class VoxelCache : IModelCache, INotifyActorDisposing, IDisposable
 	{
 		readonly VoxelLoader loader;
-		readonly Dictionary<string, Dictionary<string, IModel>> models = new();
+		readonly Dictionary<string, Dictionary<string, IModel>> models = [];
 
 		public VoxelCache(VoxelCacheInfo info, Actor self)
 		{

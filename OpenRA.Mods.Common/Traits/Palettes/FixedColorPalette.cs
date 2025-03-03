@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = "resources";
 
 		[Desc("Remap these indices to pre-defined colors.")]
-		public readonly int[] RemapIndex = Array.Empty<int>();
+		public readonly int[] RemapIndex = [];
 
 		[Desc("The fixed color to remap.")]
 		public readonly Color Color;

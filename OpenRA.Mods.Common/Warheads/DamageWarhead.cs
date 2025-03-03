@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Damage percentage versus each armor type.")]
-		public readonly Dictionary<string, int> Versus = new();
+		public readonly Dictionary<string, int> Versus = [];
 
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{

@@ -56,7 +56,7 @@ namespace OpenRA.Support
 				Write();
 			else if (ticks > thresholdTicks)
 			{
-				parent.children ??= new List<PerfTimer>();
+				parent.children ??= [];
 				parent.children.Add(this);
 			}
 		}

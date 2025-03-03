@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public HelpCommand()
 		{
-			helpDescriptions = new Dictionary<string, string>();
+			helpDescriptions = [];
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)

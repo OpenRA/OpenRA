@@ -498,7 +498,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			while (next.Count != 0)
 			{
 				var current = next;
-				next = new List<(CPos, P)>();
+				next = [];
 				foreach (var (source, prop) in current)
 				{
 					var newProp = filler(source, prop);

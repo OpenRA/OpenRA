@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -23,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any)
 		{
 			return OccupiesSpace ? new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } } :
-				new Dictionary<CPos, SubCell>();
+				[];
 		}
 
 		bool IOccupySpaceInfo.SharesCell => false;
@@ -39,9 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 			CenterPosition = init.World.Map.CenterOfCell(TopLeft);
 
 			if (info.OccupiesSpace)
-				occupied = new[] { (TopLeft, SubCell.FullCell) };
+				occupied = [(TopLeft, SubCell.FullCell)];
 			else
-				occupied = Array.Empty<(CPos, SubCell)>();
+				occupied = [];
 		}
 
 		[Sync]

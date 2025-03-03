@@ -43,10 +43,10 @@ namespace OpenRA.Graphics
 		public RenderPostProcessPassShaderBindings(string name)
 			: base("postprocess", "postprocess_" + name) { }
 
-		public override ShaderVertexAttribute[] Attributes { get; } = new[]
-		{
+		public override ShaderVertexAttribute[] Attributes { get; } =
+		[
 			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 2, 0)
-		};
+		];
 	}
 
 	public sealed class RenderPostProcessPassTexturedShaderBindings : ShaderBindings
@@ -55,10 +55,10 @@ namespace OpenRA.Graphics
 			: base("postprocess_textured", "postprocess_textured_" + name)
 		{ }
 
-		public override ShaderVertexAttribute[] Attributes { get; } = new[]
-		{
+		public override ShaderVertexAttribute[] Attributes { get; } =
+		[
 			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 2, 0),
 			new ShaderVertexAttribute("aVertexTexCoord", ShaderVertexAttributeType.Float, 2, 8),
-		};
+		];
 	}
 }

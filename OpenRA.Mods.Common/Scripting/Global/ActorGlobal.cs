@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (!value.TryGetClrValue(valueType, out var clrValue))
 					continue;
 
-				initializer.Invoke(init, new[] { clrValue });
+				initializer.Invoke(init, [clrValue]);
 
 				return init;
 			}

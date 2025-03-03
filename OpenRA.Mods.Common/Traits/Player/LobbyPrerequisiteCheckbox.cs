@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Prerequisites to grant when this checkbox is enabled.")]
-		public readonly HashSet<string> Prerequisites = new();
+		public readonly HashSet<string> Prerequisites = [];
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LobbyPrerequisiteCheckbox : INotifyCreated, ITechTreePrerequisite
 	{
 		readonly LobbyPrerequisiteCheckboxInfo info;
-		HashSet<string> prerequisites = new();
+		HashSet<string> prerequisites = [];
 
 		public LobbyPrerequisiteCheckbox(LobbyPrerequisiteCheckboxInfo info)
 		{

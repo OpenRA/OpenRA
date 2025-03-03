@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			Damage damage;
 			if (damageTypes is string d)
-				damage = new Damage(health.MaxHP, new BitSet<DamageType>(new[] { d }));
+				damage = new Damage(health.MaxHP, new BitSet<DamageType>([d]));
 			else if (damageTypes is LuaTable t && t.TryGetClrValue(out string[] ds))
 				damage = new Damage(health.MaxHP, new BitSet<DamageType>(ds));
 			else

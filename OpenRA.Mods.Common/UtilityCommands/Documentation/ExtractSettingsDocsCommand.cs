@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			Console.WriteLine();
 
 			var sections = new Settings(null, new Arguments()).Sections;
-			sections.Add("Launch", new LaunchArguments(new Arguments(Array.Empty<string>())));
+			sections.Add("Launch", new LaunchArguments(new Arguments([])));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
 				var fields = Utility.GetFields(section.Value.GetType());

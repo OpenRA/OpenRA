@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 	{
 		public static bool Enabled = true;
 
-		static readonly char[] GlobChars = new char[] { '*', '?' };
-		static readonly char[] DirectorySeparators = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+		static readonly char[] GlobChars = ['*', '?'];
+		static readonly char[] DirectorySeparators = [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar];
 
 		static bool NeedsExpansion(string filePath)
 		{

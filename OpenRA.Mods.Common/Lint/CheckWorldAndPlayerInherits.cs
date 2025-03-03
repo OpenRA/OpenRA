@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Lint
 			var inheritsMap = new Dictionary<string, List<string>>();
 			foreach (var actorNode in nodes)
 			{
-				var inherits = inheritsMap.GetOrAdd(actorNode.Key, _ => new List<string>());
+				var inherits = inheritsMap.GetOrAdd(actorNode.Key, _ => []);
 				foreach (var inheritsNode in new MiniYamlNodeBuilder(actorNode).ChildrenMatching("Inherits"))
 					inherits.Add(inheritsNode.Value.Value);
 			}

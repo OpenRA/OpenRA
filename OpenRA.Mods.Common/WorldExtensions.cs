@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common
 				return actors.Select<Actor, (Actor Actor, WVec[] ReachableOffsets)>(a => (a, targetOffsets(a)));
 			var mobile = sourceActor.TraitOrDefault<Mobile>();
 			if (mobile == null)
-				return Enumerable.Empty<(Actor Actor, WVec[] ReachableOffsets)>();
+				return [];
 
 			var pathFinder = sourceActor.World.WorldActor.Trait<PathFinder>();
 			var locomotor = mobile.Locomotor;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common
 		/// </summary>
 		public static IEnumerable<Actor> WithPathFrom(this IEnumerable<Actor> actors, Actor sourceActor)
 		{
-			return actors.WithPathFrom(sourceActor, _ => new[] { WVec.Zero }).Select(x => x.Actor);
+			return actors.WithPathFrom(sourceActor, _ => [WVec.Zero]).Select(x => x.Actor);
 		}
 
 		/// <summary>
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common
 			this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets = null)
 		{
 			return actors
-				.WithPathFrom(sourceActor, targetOffsets ?? (_ => new[] { WVec.Zero }))
+				.WithPathFrom(sourceActor, targetOffsets ?? (_ => [WVec.Zero]))
 				.Select(x => x.Actor)
 				.ClosestToIgnoringPath(sourceActor);
 		}

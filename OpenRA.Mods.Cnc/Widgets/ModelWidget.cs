@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public float Scale = 10f;
 		public int LightPitch = 142;
 		public int LightYaw = 682;
-		public float[] LightAmbientColor = new float[] { 0.6f, 0.6f, 0.6f };
-		public float[] LightDiffuseColor = new float[] { 0.4f, 0.4f, 0.4f };
+		public float[] LightAmbientColor = [0.6f, 0.6f, 0.6f];
+		public float[] LightDiffuseColor = [0.4f, 0.4f, 0.4f];
 		public WRot Rotation = WRot.None;
 		public WAngle CameraAngle = WAngle.FromDegrees(40);
 

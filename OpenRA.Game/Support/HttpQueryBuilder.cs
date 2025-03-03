@@ -20,7 +20,7 @@ namespace OpenRA.Support
 	public class HttpQueryBuilder : IEnumerable<KeyValuePair<string, string>>
 	{
 		readonly string url;
-		readonly List<KeyValuePair<string, string>> parameters = new();
+		readonly List<KeyValuePair<string, string>> parameters = [];
 
 		public HttpQueryBuilder(string url)
 		{

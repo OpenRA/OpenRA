@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[SequenceReference(nameof(Image), dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Pip sequence to use for specific resource types.")]
-		public readonly Dictionary<string, string> ResourceSequences = new();
+		public readonly Dictionary<string, string> ResourceSequences = [];
 
 		[PaletteReference]
 		public readonly string Palette = "chrome";

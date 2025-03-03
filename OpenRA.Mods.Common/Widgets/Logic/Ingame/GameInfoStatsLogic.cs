@@ -160,8 +160,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ConfirmationDialogs.ButtonPrompt(modData,
 							title: VoteKickTitle,
 							text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
-							titleArguments: new object[] { "player", client.Name },
-							textArguments: new object[] { "bots", botsCount },
+							titleArguments: ["player", client.Name],
+							textArguments: ["bots", botsCount],
 							onConfirm: () =>
 							{
 								orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
@@ -176,8 +176,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: VoteKickTitle,
 						text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
-						titleArguments: new object[] { "player", client.Name },
-						textArguments: new object[] { "bots", botsCount },
+						titleArguments: ["player", client.Name],
+						textArguments: ["bots", botsCount],
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: KickTitle,
 						text: KickPrompt,
-						titleArguments: new object[] { "player", client.Name },
+						titleArguments: ["player", client.Name],
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));

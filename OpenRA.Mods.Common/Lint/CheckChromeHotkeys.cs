@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (customLintMethods.TryGetValue(widgetType, out var checkMethods))
 				{
 					var type = modData.ObjectCreator.FindType(widgetType + "Widget");
-					var keyNames = checkMethods.SelectMany(m => (IEnumerable<string>)type.GetMethod(m).Invoke(null, new object[] { node, emitError }));
+					var keyNames = checkMethods.SelectMany(m => (IEnumerable<string>)type.GetMethod(m).Invoke(null, [node, emitError]));
 
 					foreach (var name in keyNames)
 						if (!namedKeys.Contains(name) && !Hotkey.TryParse(name, out var unused))

@@ -36,7 +36,7 @@ namespace OpenRA.Test
 			queue.PerformActions(1);
 			queue.PerformActions(2);
 			queue.PerformActions(3);
-			if (!list.SequenceEqual(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }))
+			if (!list.SequenceEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]))
 				Assert.Fail("Actions were not performed in the correct order. Actual order was: " + string.Join(", ", list));
 		}
 	}

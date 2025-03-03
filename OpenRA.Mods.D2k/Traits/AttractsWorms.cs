@@ -20,7 +20,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int Intensity = 0;
 
 		[Desc("Noise percentage at Range step away from the actor.")]
-		public readonly int[] Falloff = { 100, 100, 25, 11, 6, 4, 3, 2, 1, 0 };
+		public readonly int[] Falloff = [100, 100, 25, 11, 6, 4, 3, 2, 1, 0];
 
 		[Desc("Range between falloff steps.")]
 		public readonly WDist Spread = new(3072);

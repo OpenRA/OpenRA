@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -54,20 +53,20 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int InitialSpawnDelay = 0;
 
 		[Desc("Which terrain types can we drop on?")]
-		public readonly HashSet<string> ValidGround = new() { "Clear", "Rough", "Road", "Ore", "Beach" };
+		public readonly HashSet<string> ValidGround = ["Clear", "Rough", "Road", "Ore", "Beach"];
 
 		[Desc("Which terrain types count as water?")]
-		public readonly HashSet<string> ValidWater = new() { "Water" };
+		public readonly HashSet<string> ValidWater = ["Water"];
 
 		[Desc("Chance of generating a water crate instead of a land crate.")]
 		public readonly int WaterChance = 20;
 
 		[ActorReference]
 		[Desc("Crate actors to drop.")]
-		public readonly string[] CrateActors = { "crate" };
+		public readonly string[] CrateActors = ["crate"];
 
 		[Desc("Chance of each crate actor spawning.")]
-		public readonly int[] CrateActorShares = { 10 };
+		public readonly int[] CrateActorShares = [10];
 
 		[ActorReference]
 		[Desc("If a DeliveryAircraft: is specified, then this actor will deliver crates.")]
@@ -142,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (info.DeliveryAircraft != null)
 				{
-					var crate = w.CreateActor(false, crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
+					var crate = w.CreateActor(false, crateActor, [new OwnerInit(w.WorldActor.Owner)]);
 					var dropFacing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
 					var delta = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(dropFacing));
 
@@ -151,12 +150,12 @@ namespace OpenRA.Mods.Common.Traits
 					var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
 					var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
-					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
-					{
+					var plane = w.CreateActor(info.DeliveryAircraft,
+					[
 						new CenterPositionInit(startEdge),
 						new OwnerInit(self.Owner),
 						new FacingInit(dropFacing),
-					});
+					]);
 
 					var drop = plane.Trait<ParaDrop>();
 					drop.SetLZ(p, true);
@@ -166,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 					plane.QueueActivity(new RemoveSelf());
 				}
 				else
-					w.CreateActor(crateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner), new LocationInit(p) });
+					w.CreateActor(crateActor, [new OwnerInit(w.WorldActor.Owner), new LocationInit(p)]);
 			});
 		}
 

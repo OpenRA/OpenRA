@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			while (next.Count != 0)
 			{
 				var current = next;
-				next = new List<(int2, P)>();
+				next = [];
 				foreach (var (source, prop) in current)
 				{
 					var newProp = filler(source, prop);
@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 							}
 						}
 
-						FloodFill(space.Size, new[] { (new int2(x, y), holeCount) }, Filler, Direction.Spread4);
+						FloodFill(space.Size, [(new int2(x, y), holeCount)], Filler, Direction.Spread4);
 					}
 
 			const int UNASSIGNED = int.MaxValue;
@@ -1402,7 +1402,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				{
 					if (mask.ContainsXY(pointArray[i]) && mask[pointArray[i]])
 					{
-						currentPointArray ??= new List<int2>();
+						currentPointArray ??= [];
 						currentPointArray.Add(pointArray[i]);
 					}
 					else

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class ReloadArmamentsBarInfo : TraitInfo
 	{
 		[Desc("Armament names")]
-		public readonly string[] Armaments = { "primary", "secondary" };
+		public readonly string[] Armaments = ["primary", "secondary"];
 
 		public readonly Color Color = Color.Red;
 

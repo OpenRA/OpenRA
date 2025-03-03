@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool isHotkeyDefault;
 
 		string currentContext = AnyContext;
-		readonly HashSet<string> contexts = new() { AnyContext };
-		readonly Dictionary<string, HashSet<string>> hotkeyGroups = new();
+		readonly HashSet<string> contexts = [AnyContext];
+		readonly Dictionary<string, HashSet<string>> hotkeyGroups = [];
 		TextFieldWidget filterInput;
 
 		Widget headerTemplate;

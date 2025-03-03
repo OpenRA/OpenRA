@@ -95,9 +95,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int remoteSearching = 0;
 		int remoteUnavailable = 0;
 
-		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new();
+		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = [];
 
-		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = new();
+		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = [];
 		string[] visibleMaps;
 
 		string selectedUid;
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 			else
-				tabMaps[tab] = Array.Empty<MapPreview>();
+				tabMaps[tab] = [];
 		}
 
 		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName)
@@ -514,7 +514,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ConfirmationDialogs.ButtonPrompt(modData,
 				title: DeleteMapTitle,
 				text: DeleteMapPrompt,
-				textArguments: new object[] { "title", modData.MapCache[map].Title },
+				textArguments: ["title", modData.MapCache[map].Title],
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly TerrainLightingInfo info;
 		readonly Map map;
-		readonly Dictionary<int, LightSource> lightSources = new();
+		readonly Dictionary<int, LightSource> lightSources = [];
 		readonly SpatiallyPartitioned<LightSource> partitionedLightSources;
 		readonly float3 globalTint;
 		int nextLightSourceToken = 1;

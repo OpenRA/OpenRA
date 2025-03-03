@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -33,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string BasePalette = null;
 
 		[Desc("Remap these indices to player colors.")]
-		public readonly int[] RemapIndex = Array.Empty<int>();
+		public readonly int[] RemapIndex = [];
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "ValidRelations has been moved from Capturable to Captures to match weapon definitions.";
 
-		readonly List<string> locations = new();
+		readonly List<string> locations = [];
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

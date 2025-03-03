@@ -42,7 +42,7 @@ namespace OpenRA
 	{
 		const int CreateLogFileMaxRetryCount = 128;
 
-		static readonly ConcurrentDictionary<string, ChannelInfo> Channels = new();
+		static readonly ConcurrentDictionary<string, ChannelInfo> Channels = [];
 		static readonly Channel<ChannelData> Channel;
 		static readonly ChannelWriter<ChannelData> ChannelWriter;
 		static readonly CancellationTokenSource CancellationToken = new();

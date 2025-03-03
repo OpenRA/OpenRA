@@ -76,7 +76,7 @@ namespace OpenRA
 
 		static Func<object, int> GenerateHashFunc(Type t)
 		{
-			var d = new DynamicMethod($"hash_{t.Name}", typeof(int), new Type[] { typeof(object) }, t);
+			var d = new DynamicMethod($"hash_{t.Name}", typeof(int), [typeof(object)], t);
 			var il = d.GetILGenerator();
 			var this_ = il.DeclareLocal(t).LocalIndex;
 			il.Emit(OpCodes.Ldarg_0);

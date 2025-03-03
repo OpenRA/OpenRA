@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			if (!EnabledByDefault)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			var localRange = ai.TraitInfos<CreatesShroudInfo>()
 				.Where(csi => csi.EnabledByDefault)

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 
 		int selectionHash;
-		Actor[] selectedActors = Array.Empty<Actor>();
+		Actor[] selectedActors = [];
 		bool attackMoveDisabled = true;
 		bool forceMoveDisabled = true;
 		bool forceAttackDisabled = true;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int scatterHighlighted;
 		int stopHighlighted;
 
-		TraitPair<IIssueDeployOrder>[] selectedDeploys = Array.Empty<TraitPair<IIssueDeployOrder>>();
+		TraitPair<IIssueDeployOrder>[] selectedDeploys = [];
 
 		[ObjectCreator.UseCtor]
 		public CommandBarLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)

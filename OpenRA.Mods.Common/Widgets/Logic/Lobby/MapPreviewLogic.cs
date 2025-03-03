@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string CreatedBy = "label-created-by";
 
 		readonly int blinkTickLength = 10;
-		readonly Dictionary<PreviewStatus, Widget[]> previewWidgets = new();
+		readonly Dictionary<PreviewStatus, Widget[]> previewWidgets = [];
 		readonly Func<(MapPreview Map, Session.MapStatus Status)> getMap;
 
 		enum PreviewStatus
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				}
 				else if (map.Status == MapStatus.Unavailable)
-					modData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { map.Uid });
+					modData.MapCache.QueryRemoteMapDetails(mapRepository, [map.Uid]);
 			};
 
 			var retryInstall = FluentProvider.GetMessage(RetryInstall);
@@ -207,27 +207,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Widgets to be made visible.
 			previewWidgets[PreviewStatus.Unknown] =
-				new Widget[] { previewLarge };
+				[previewLarge];
 			previewWidgets[PreviewStatus.Playable] =
-				new Widget[] { previewLarge, SetupAuthorAndMapType(widget.Get("MAP_AVAILABLE")) };
+				[previewLarge, SetupAuthorAndMapType(widget.Get("MAP_AVAILABLE"))];
 			previewWidgets[PreviewStatus.Incompatible] =
-				new Widget[] { previewLarge, widget.Get("MAP_INCOMPATIBLE") };
+				[previewLarge, widget.Get("MAP_INCOMPATIBLE")];
 			previewWidgets[PreviewStatus.Validating] =
-				new Widget[] { previewSmall, widget.Get("MAP_VALIDATING") };
+				[previewSmall, widget.Get("MAP_VALIDATING")];
 			previewWidgets[PreviewStatus.UpdateAvailable] =
-				new Widget[] { previewSmall, widget.Get("MAP_UPDATE_AVAILABLE"), updateButton };
+				[previewSmall, widget.Get("MAP_UPDATE_AVAILABLE"), updateButton];
 			previewWidgets[PreviewStatus.DownloadAvailable] =
-				new Widget[] { previewSmall, SetUpInstallButton(SetupAuthorAndMapType(widget.Get("MAP_DOWNLOAD_AVAILABLE"))) };
+				[previewSmall, SetUpInstallButton(SetupAuthorAndMapType(widget.Get("MAP_DOWNLOAD_AVAILABLE")))];
 			previewWidgets[PreviewStatus.UpdateDownloadAvailable] =
-				new Widget[] { previewSmall, SetUpInstallButton(widget.Get("MAP_UPDATE_DOWNLOAD_AVAILABLE")), updateButton };
+				[previewSmall, SetUpInstallButton(widget.Get("MAP_UPDATE_DOWNLOAD_AVAILABLE")), updateButton];
 			previewWidgets[PreviewStatus.Searching] =
-				new Widget[] { previewSmall, widget.Get("MAP_SEARCHING") };
+				[previewSmall, widget.Get("MAP_SEARCHING")];
 			previewWidgets[PreviewStatus.Downloading] =
-				new Widget[] { previewSmall, SetUpDownloadProgress(widget.Get("MAP_DOWNLOADING")) };
+				[previewSmall, SetUpDownloadProgress(widget.Get("MAP_DOWNLOADING"))];
 			previewWidgets[PreviewStatus.Unavailable] =
-				new Widget[] { previewSmall, widget.Get("MAP_UNAVAILABLE"), retryButton };
+				[previewSmall, widget.Get("MAP_UNAVAILABLE"), retryButton];
 			previewWidgets[PreviewStatus.DownloadError] =
-				new Widget[] { previewSmall, widget.Get("MAP_ERROR"), retryButton };
+				[previewSmall, widget.Get("MAP_ERROR"), retryButton];
 
 			// Hide all widgets.
 			foreach (var preview in previewWidgets)
@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					p.IsVisible = () => false;
 		}
 
-		Widget[] visibleWidgets = Array.Empty<Widget>();
+		Widget[] visibleWidgets = [];
 
 		void UpdateVisibility()
 		{

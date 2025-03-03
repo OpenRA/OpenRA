@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Effects;
@@ -27,10 +26,10 @@ namespace OpenRA.Mods.Common.Effects
 		int remainingDelay;
 
 		public SpawnActorEffect(Actor actor)
-			: this(actor, 0, Array.Empty<CPos>(), null) { }
+			: this(actor, 0, [], null) { }
 
 		public SpawnActorEffect(Actor actor, int delay)
-			: this(actor, delay, Array.Empty<CPos>(), null) { }
+			: this(actor, delay, [], null) { }
 
 		public SpawnActorEffect(Actor actor, int delay, CPos[] pathAfterSpawn, Activity activityAtDestination)
 		{

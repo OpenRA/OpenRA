@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
@@ -24,7 +23,7 @@ namespace OpenRA.Mods.Common.Warheads
 	{
 		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("List of explosion sequences that can be used.")]
-		public readonly string[] Explosions = Array.Empty<string>();
+		public readonly string[] Explosions = [];
 
 		[Desc("Image containing explosion effect sequence.")]
 		public readonly string Image = "explosion";
@@ -40,7 +39,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly bool ForceDisplayAtGroundLevel = false;
 
 		[Desc("List of sounds that can be played on impact.")]
-		public readonly string[] ImpactSounds = Array.Empty<string>();
+		public readonly string[] ImpactSounds = [];
 
 		[Desc("Chance of impact sound to play.")]
 		public readonly int ImpactSoundChance = 100;

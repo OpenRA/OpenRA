@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
 
-		IActorPreview[] preview = Array.Empty<IActorPreview>();
+		IActorPreview[] preview = [];
 		public int2 PreviewOffset { get; private set; }
 		public int2 IdealPreviewSize { get; private set; }
 

@@ -18,11 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class RejectsOrdersInfo : ConditionalTraitInfo
 	{
 		[Desc("Explicit list of rejected orders. Leave empty to reject all minus those listed under Except.")]
-		public readonly HashSet<string> Reject = new();
+		public readonly HashSet<string> Reject = [];
 
 		[Desc("List of orders that should *not* be rejected.",
 			"Also overrides other instances of this trait's Reject fields.")]
-		public readonly HashSet<string> Except = new();
+		public readonly HashSet<string> Except = [];
 
 		[Desc("Remove current and all queued orders from the actor when this trait is enabled.")]
 		public readonly bool RemoveOrders = false;

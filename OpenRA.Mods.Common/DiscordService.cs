@@ -161,14 +161,14 @@ namespace OpenRA.Mods.Common
 
 			if (party == null)
 			{
-				buttons = new[]
-				{
+				buttons =
+				[
 					new Button
 					{
 						Label = "Visit Website",
 						Url = Game.ModData.Manifest.Metadata.Website
 					}
-				};
+				];
 			}
 
 			var richPresence = new RichPresence

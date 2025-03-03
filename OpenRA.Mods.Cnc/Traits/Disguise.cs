@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when disguised as specified actor.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> DisguisedAsConditions = new();
+		public readonly Dictionary<string, string> DisguisedAsConditions = [];
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid actor to disguise as.")]

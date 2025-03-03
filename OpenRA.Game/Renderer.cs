@@ -27,7 +27,7 @@ namespace OpenRA
 		public SpriteRenderer WorldSpriteRenderer { get; }
 		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; }
-		public IRenderer[] WorldRenderers = Array.Empty<IRenderer>();
+		public IRenderer[] WorldRenderers = [];
 		public RgbaColorRenderer RgbaColorRenderer { get; }
 		public SpriteRenderer SpriteRenderer { get; }
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; }
@@ -46,7 +46,7 @@ namespace OpenRA
 
 		readonly IVertexBuffer<Vertex> tempVertexBuffer;
 		readonly IIndexBuffer quadIndexBuffer;
-		readonly Stack<Rectangle> scissorState = new();
+		readonly Stack<Rectangle> scissorState = [];
 		readonly ITexture worldBufferSnapshot;
 
 		IFrameBuffer screenBuffer;

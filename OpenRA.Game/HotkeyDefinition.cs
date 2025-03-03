@@ -24,10 +24,10 @@ namespace OpenRA
 		[FluentReference]
 		public readonly string Description = "";
 
-		public readonly HashSet<string> Types = new();
+		public readonly HashSet<string> Types = [];
 
 		[FluentReference]
-		public readonly HashSet<string> Contexts = new();
+		public readonly HashSet<string> Contexts = [];
 
 		public readonly bool Readonly = false;
 		public bool HasDuplicates { get; internal set; }

@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly LocomotorInfo.TerrainInfo[] terrainInfos;
 		readonly World world;
-		readonly HashSet<CPos> dirtyCells = new();
+		readonly HashSet<CPos> dirtyCells = [];
 		readonly bool sharesCell;
 
 		CellLayer<short>[] cellsCost;
@@ -395,8 +395,8 @@ namespace OpenRA.Mods.Common.Traits
 			map.Tiles.CellEntryChanged += UpdateCellCost;
 			actorMap.CellUpdated += CellUpdated;
 
-			cellsCost = new[] { new CellLayer<short>(map) };
-			blockingCache = new[] { new CellLayer<CellCache>(map) };
+			cellsCost = [new CellLayer<short>(map)];
+			blockingCache = [new CellLayer<CellCache>(map)];
 
 			foreach (var cell in map.AllCells)
 			{

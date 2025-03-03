@@ -24,27 +24,27 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[Desc("Actor types that are valid for naval squads.")]
-		public readonly HashSet<string> NavalUnitsTypes = new();
+		public readonly HashSet<string> NavalUnitsTypes = [];
 
 		[ActorReference]
 		[Desc("Actor types that are excluded from ground attacks.")]
-		public readonly HashSet<string> AirUnitsTypes = new();
+		public readonly HashSet<string> AirUnitsTypes = [];
 
 		[ActorReference]
 		[Desc("Actor types that should generally be excluded from attack squads.")]
-		public readonly HashSet<string> ExcludeFromSquadsTypes = new();
+		public readonly HashSet<string> ExcludeFromSquadsTypes = [];
 
 		[ActorReference]
 		[Desc("Actor types that are considered construction yards (base builders).")]
-		public readonly HashSet<string> ConstructionYardTypes = new();
+		public readonly HashSet<string> ConstructionYardTypes = [];
 
 		[ActorReference]
 		[Desc("Enemy building types around which to scan for targets for naval squads.")]
-		public readonly HashSet<string> NavalProductionTypes = new();
+		public readonly HashSet<string> NavalProductionTypes = [];
 
 		[ActorReference]
 		[Desc("Own actor types that are prioritized when defending.")]
-		public readonly HashSet<string> ProtectionTypes = new();
+		public readonly HashSet<string> ProtectionTypes = [];
 
 		[Desc("Target types are used for identifying aircraft.")]
 		public readonly BitSet<TargetableType> AircraftTargetType = new("Air");
@@ -119,13 +119,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Player Player;
 
 		readonly Predicate<Actor> unitCannotBeOrdered;
-		readonly List<Actor> unitsHangingAroundTheBase = new();
+		readonly List<Actor> unitsHangingAroundTheBase = [];
 
 		// Units that the bot already knows about. Any unit not on this list needs to be given a role.
-		readonly HashSet<Actor> activeUnits = new();
+		readonly HashSet<Actor> activeUnits = [];
 
-		public List<Squad> Squads = new();
-		readonly Stack<Squad> squadsPendingUpdate = new();
+		public List<Squad> Squads = [];
+		readonly Stack<Squad> squadsPendingUpdate = [];
 		readonly ActorIndex.NamesAndTrait<BuildingInfo> constructionYardBuildings;
 
 		IBot bot;
@@ -229,8 +229,8 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var range = ownActorsAndTheirAttackRanges[a].Length;
 					var rangeDiag = Exts.MultiplyBySqrtTwoOverTwo(range);
-					return new[]
-					{
+					return
+					[
 						targetActor.CenterPosition,
 						targetActor.CenterPosition + new WVec(range, 0, 0),
 						targetActor.CenterPosition + new WVec(-range, 0, 0),
@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 						targetActor.CenterPosition + new WVec(-rangeDiag, rangeDiag, 0),
 						targetActor.CenterPosition + new WVec(-rangeDiag, -rangeDiag, 0),
 						targetActor.CenterPosition + new WVec(rangeDiag, -rangeDiag, 0),
-					};
+					];
 				});
 		}
 
@@ -268,8 +268,8 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var range = enemiesAndSourceAttackRanges[a].Length;
 					var rangeDiag = Exts.MultiplyBySqrtTwoOverTwo(range);
-					return new[]
-					{
+					return
+					[
 						WVec.Zero,
 						new WVec(range, 0, 0),
 						new WVec(-range, 0, 0),
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Traits
 						new WVec(-rangeDiag, rangeDiag, 0),
 						new WVec(-rangeDiag, -rangeDiag, 0),
 						new WVec(rangeDiag, -rangeDiag, 0),
-					};
+					];
 				})
 				.Select(x => (x.Actor, x.ReachableOffsets.MinBy(o => o.LengthSquared)));
 		}
@@ -520,8 +520,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return null;
 
-			return new List<MiniYamlNode>()
-			{
+			return
+			[
 				new("Squads", "", Squads.ConvertAll(s => new MiniYamlNode("Squad", s.Serialize()))),
 				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
 				new("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
@@ -536,7 +536,7 @@ namespace OpenRA.Mods.Common.Traits
 				new("AssignRolesTicks", FieldSaver.FormatValue(assignRolesTicks)),
 				new("AttackForceTicks", FieldSaver.FormatValue(attackForceTicks)),
 				new("MinAttackForceDelayTicks", FieldSaver.FormatValue(minAttackForceDelayTicks)),
-			};
+			];
 		}
 
 		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)

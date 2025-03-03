@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	sealed class GivesBounty : ConditionalTrait<GivesBountyInfo>, INotifyKilled, INotifyPassengerEntered, INotifyPassengerExited
 	{
-		readonly Dictionary<Actor, GivesBounty[]> passengerBounties = new();
+		readonly Dictionary<Actor, GivesBounty[]> passengerBounties = [];
 
 		public GivesBounty(GivesBountyInfo info)
 			: base(info) { }

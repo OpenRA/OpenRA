@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantConditionOnPrerequisiteManager : ITechTreeElement
 	{
 		readonly Actor self;
-		readonly Dictionary<string, List<(Actor Actor, GrantConditionOnPrerequisite GrantConditionOnPrerequisite)>> upgradables = new();
+		readonly Dictionary<string, List<(Actor Actor, GrantConditionOnPrerequisite GrantConditionOnPrerequisite)>> upgradables = [];
 		readonly TechTree techTree;
 
 		public GrantConditionOnPrerequisiteManager(ActorInitializer init)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			var key = MakeKey(prerequisites);
 			if (!upgradables.TryGetValue(key, out var list))
 			{
-				upgradables.Add(key, list = new List<(Actor, GrantConditionOnPrerequisite)>());
+				upgradables.Add(key, list = []);
 				techTree.Add(key, prerequisites, 0, this);
 			}
 

@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class BridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		[Desc("Bridge types to act on")]
-		public readonly string[] Types = { "GroundLevelBridge" };
+		public readonly string[] Types = ["GroundLevelBridge"];
 
 		[Desc("Offsets to look for adjacent bridges to act on")]
-		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
+		public readonly CVec[] NeighbourOffsets = [];
 
 		[Desc("Delay between each segment repair step")]
 		public readonly int RepairPropagationDelay = 20;
@@ -47,11 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BridgeLayer bridgeLayer;
 
 		// Fixed at map load
-		readonly List<CPos[]> segmentLocations = new();
+		readonly List<CPos[]> segmentLocations = [];
 
 		// Changes as segments are killed and repaired
-		readonly Dictionary<CPos, IBridgeSegment> segments = new();
-		readonly HashSet<CPos> dirtyLocations = new();
+		readonly Dictionary<CPos, IBridgeSegment> segments = [];
+		readonly HashSet<CPos> dirtyLocations = [];
 
 		// Enabled during a repair action
 		int repairStep;

@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder, IWorldLoaded
 	{
 		public readonly MissionObjectivesInfo Info;
-		readonly List<MissionObjective> objectives = new();
+		readonly List<MissionObjective> objectives = [];
 		readonly Player player;
 		public IReadOnlyList<MissionObjective> Objectives => objectives;
 

@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	public class WithCargoInfo : TraitInfo, Requires<CargoInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Cargo position relative to turret or body in (forward, right, up) triples. The default offset should be in the middle of the list.")]
-		public readonly WVec[] LocalOffset = { WVec.Zero };
+		public readonly WVec[] LocalOffset = [WVec.Zero];
 
 		[Desc("Passenger CargoType to display.")]
-		public readonly HashSet<string> DisplayTypes = new();
+		public readonly HashSet<string> DisplayTypes = [];
 
 		public override object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly IFacing facing;
 		WAngle cachedFacing;
 
-		readonly Dictionary<Actor, IActorPreview[]> previews = new();
+		readonly Dictionary<Actor, IActorPreview[]> previews = [];
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("List of production queues for which the primary flag should be set.",
 			"If empty, the list given in the `Produces` property of the `" + nameof(Production) + "` trait will be used.")]
-		public readonly string[] ProductionQueues = Array.Empty<string>();
+		public readonly string[] ProductionQueues = [];
 
 		[CursorReference]
 		[Desc("Cursor to display when setting the primary building.")]

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithGateSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<GateInfo>
 	{
 		[Desc("Cells (outside the gate footprint) that contain wall cells that can connect to the gate")]
-		public readonly CVec[] WallConnections = Array.Empty<CVec>();
+		public readonly CVec[] WallConnections = [];
 
 		[Desc("Wall type for connections")]
 		public readonly string Type = "wall";

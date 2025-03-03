@@ -33,7 +33,7 @@ namespace OpenRA.Graphics
 	public sealed class SheetBuilder : IDisposable
 	{
 		public readonly SheetType Type;
-		readonly List<Sheet> sheets = new();
+		readonly List<Sheet> sheets = [];
 		readonly Func<Sheet> allocateSheet;
 		readonly int margin;
 		int rowHeight = 0;

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly GainsExperienceInfo info;
 		readonly int initialExperience;
 
-		readonly List<(int RequiredExperience, string Condition)> nextLevel = new();
+		readonly List<(int RequiredExperience, string Condition)> nextLevel = [];
 
 		// Stored as a percentage of our value
 		[Sync]

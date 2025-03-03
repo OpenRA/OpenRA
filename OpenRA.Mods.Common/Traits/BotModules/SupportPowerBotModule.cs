@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing(nameof(LoadDecisions))]
-		public readonly List<SupportPowerDecision> Decisions = new();
+		public readonly List<SupportPowerDecision> Decisions = [];
 
 		static object LoadDecisions(MiniYaml yaml)
 		{
@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly World world;
 		readonly Player player;
-		readonly Dictionary<SupportPowerInstance, int> waitingPowers = new();
-		readonly Dictionary<string, SupportPowerDecision> powerDecisions = new();
-		readonly List<SupportPowerInstance> stalePowers = new();
+		readonly Dictionary<SupportPowerInstance, int> waitingPowers = [];
+		readonly Dictionary<string, SupportPowerDecision> powerDecisions = [];
+		readonly List<SupportPowerInstance> stalePowers = [];
 		SupportPowerManager supportPowerManager;
 
 		public SupportPowerBotModule(Actor self, SupportPowerBotModuleInfo info)
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 					var wbr = world.Map.CenterOfCell(br.ToCPos(map));
 					var targets = world.ActorMap.ActorsInBox(wtl, wbr);
 
-					var frozenTargets = player.FrozenActorLayer != null ? player.FrozenActorLayer.FrozenActorsInRegion(region) : Enumerable.Empty<FrozenActor>();
+					var frozenTargets = player.FrozenActorLayer != null ? player.FrozenActorLayer.FrozenActorsInRegion(region) : [];
 					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player) + powerDecision.GetAttractiveness(frozenTargets, player);
 					if (consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
@@ -218,10 +218,10 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(kv => new MiniYamlNode(kv.Key.Key, FieldSaver.FormatValue(kv.Value)))
 				.ToList();
 
-			return new List<MiniYamlNode>()
-			{
+			return
+			[
 				new("WaitingPowers", "", waitingPowersNodes)
-			};
+			];
 		}
 
 		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)

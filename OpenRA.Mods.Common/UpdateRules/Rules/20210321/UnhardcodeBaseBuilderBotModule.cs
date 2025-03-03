@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		// Excludes AttackBomber and AttackTDGunboatTurreted as actors with these AttackBase traits aren't supposed to be controlled.
 		readonly string[] attackBase =
-		{
+		[
 			"AttackLeap",
 			"AttackPopupTurreted",
 			"AttackAircraft",
@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"AttackGarrisoned",
 			"AttackOmni",
 			"AttackSwallow"
-		};
-		readonly string[] buildings = { "Building", "EnergyWall", "D2kBuilding" };
+		];
+		readonly string[] buildings = ["Building", "EnergyWall", "D2kBuilding"];
 
 		bool anyAdded;
 

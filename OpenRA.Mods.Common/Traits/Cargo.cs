@@ -26,10 +26,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxWeight = 0;
 
 		[Desc("`Passenger.CargoType`s that can be loaded into this actor.")]
-		public readonly HashSet<string> Types = new();
+		public readonly HashSet<string> Types = [];
 
 		[Desc("A list of actor types that are initially spawned into this actor.")]
-		public readonly string[] InitialUnits = Array.Empty<string>();
+		public readonly string[] InitialUnits = [];
 
 		[Desc("When this actor is sold should all of its passengers be unloaded?")]
 		public readonly bool EjectOnSell = true;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool EjectOnDeath = false;
 
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
-		public readonly HashSet<string> UnloadTerrainTypes = new();
+		public readonly HashSet<string> UnloadTerrainTypes = [];
 
 		[VoiceReference]
 		[Desc("Voice to play when ordered to unload the passengers.")]
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when specified actors are loaded inside the transport.",
 			"A dictionary of [actor name]: [condition].")]
-		public readonly Dictionary<string, string> PassengerConditions = new();
+		public readonly Dictionary<string, string> PassengerConditions = [];
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterPassengerConditions => PassengerConditions.Values;
@@ -92,9 +92,9 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyCreated, INotifyKilled, ITransformActorInitModifier
 	{
 		readonly Actor self;
-		readonly List<Actor> cargo = new();
-		readonly HashSet<Actor> reserves = new();
-		readonly Dictionary<string, Stack<int>> passengerTokens = new();
+		readonly List<Actor> cargo = [];
+		readonly HashSet<Actor> reserves = [];
+		readonly Dictionary<string, Stack<int>> passengerTokens = [];
 		readonly Lazy<IFacing> facing;
 		readonly bool checkTerrainType;
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 		int reservedWeight = 0;
 		Aircraft aircraft;
 		int loadingToken = Actor.InvalidConditionToken;
-		readonly Stack<int> loadedTokens = new();
+		readonly Stack<int> loadedTokens = [];
 		bool takeOffAfterLoad;
 		bool initialised;
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var u in cargoInit.Value)
 				{
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
-						new TypeDictionary { new OwnerInit(self.Owner) });
+						[new OwnerInit(self.Owner)]);
 
 					cargo.Add(unit);
 				}
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var u in info.InitialUnits)
 				{
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
-						new TypeDictionary { new OwnerInit(self.Owner) });
+						[new OwnerInit(self.Owner)]);
 
 					cargo.Add(unit);
 				}

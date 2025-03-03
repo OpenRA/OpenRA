@@ -439,12 +439,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					if (tileIndex == indices[i])
 						return new TerrainTile(474, (byte)i);
 
-				indices = new[] { 369, 370, 389, 390 };
+				indices = [369, 370, 389, 390];
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(117, (byte)i);
 
-				indices = new[] { 661, 662, 681, 682 };
+				indices = [661, 662, 681, 682];
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(251, (byte)i);
@@ -493,12 +493,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					if (tileIndex == indices[i])
 						return new TerrainTile(308, (byte)i);
 
-				indices = new[] { 660, 661, 662, 680, 681, 682 };
+				indices = [660, 661, 662, 680, 681, 682];
 				for (var i = 0; i < 6; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(443, (byte)i);
 
-				indices = new[] { 609, 610, 629, 630 };
+				indices = [609, 610, 629, 630];
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(251, (byte)i);

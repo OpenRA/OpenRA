@@ -91,11 +91,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			coords = Exts.Lazy(self.Trait<BodyOrientation>);
-			armaments = new List<Armament>();
-			muzzles = new List<AnimationWithOffset>();
-			paxFacing = new Dictionary<Actor, IFacing>();
-			paxPos = new Dictionary<Actor, IPositionable>();
-			paxRender = new Dictionary<Actor, RenderSprites>();
+			armaments = [];
+			muzzles = [];
+			paxFacing = [];
+			paxPos = [];
+			paxRender = [];
 		}
 
 		protected override void Created(Actor self)

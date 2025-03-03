@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override Rectangle EventBounds => eventBounds;
-		Dictionary<Rectangle, ProductionIcon> icons = new();
+		Dictionary<Rectangle, ProductionIcon> icons = [];
 		Animation cantBuild;
 		Animation clock;
 		Rectangle eventBounds = Rectangle.Empty;
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Widgets
 				count = FieldLoader.GetValue<int>("HotkeyCount", countNode.Value.Value);
 
 			if (count == 0)
-				return Array.Empty<string>();
+				return [];
 
 			if (string.IsNullOrEmpty(prefix))
 				emitError($"{widgetNode.Location} must define HotkeyPrefix if HotkeyCount > 0.");
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.Widgets
 			get
 			{
 				if (CurrentQueue == null)
-					return Enumerable.Empty<ActorInfo>();
+					return [];
 
 				return CurrentQueue.AllItems().OrderBy(a => a.TraitInfo<BuildableInfo>().BuildPaletteOrder);
 			}
@@ -452,7 +452,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (selection.Actors.Count == 1 && selection.Contains(facility))
 				viewport.Center(selection.Actors);
 			else
-				selection.Combine(World, new[] { facility }, false, true);
+				selection.Combine(World, [facility], false, true);
 
 			Game.Sound.PlayNotification(World.Map.Rules, null, "Sounds", ClickSound, null);
 			return true;
@@ -466,7 +466,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void RefreshIcons()
 		{
-			icons = new Dictionary<Rectangle, ProductionIcon>();
+			icons = [];
 			var producer = CurrentQueue != null ? CurrentQueue.MostLikelyProducer() : default;
 			if (CurrentQueue == null || producer.Trait == null)
 			{

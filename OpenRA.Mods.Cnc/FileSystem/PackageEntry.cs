@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			}
 		}
 
-		static readonly Dictionary<uint, string> Names = new();
+		static readonly Dictionary<uint, string> Names = [];
 
 		public static void AddStandardName(string s)
 		{

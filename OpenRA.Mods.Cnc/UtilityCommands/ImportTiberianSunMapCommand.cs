@@ -260,12 +260,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		};
 
 		protected override string[] LampActors { get; } =
-		{
+		[
 			"GALITE", "INGALITE", "NEGLAMP", "REDLAMP", "NEGRED", "GRENLAMP", "BLUELAMP", "YELWLAMP",
 			"INYELWLAMP", "PURPLAMP", "INPURPLAMP", "INORANLAMP", "INGRNLMP", "INREDLMP", "INBLULMP"
-		};
+		];
 
-		protected override string[] CreepActors { get; } = { "DOGGIE", "VISC_SML", "VISC_LRG", "JFISH" };
+		protected override string[] CreepActors { get; } = ["DOGGIE", "VISC_SML", "VISC_LRG", "JFISH"];
 
 		#endregion
 

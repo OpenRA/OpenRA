@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 				return Self.Location;
 			}
-			set => rp.Path = new List<CPos> { value };
+			set => rp.Path = [value];
 		}
 	}
 
@@ -211,9 +211,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public ClassicProductionQueueProperties(ScriptContext context, Player player)
 			: base(context, player)
 		{
-			productionHandlers = new Dictionary<string, Action<Actor, Actor>>();
+			productionHandlers = [];
 
-			queues = new Dictionary<string, ClassicProductionQueue>();
+			queues = [];
 			foreach (var q in player.PlayerActor.TraitsImplementing<ClassicProductionQueue>().Where(q => q.Enabled))
 				queues.Add(q.Info.Type, q);
 

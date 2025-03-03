@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common
 	public abstract class ActorIndex : IDisposable
 	{
 		readonly World world;
-		readonly HashSet<Actor> actors = new();
+		readonly HashSet<Actor> actors = [];
 
 		public IReadOnlyCollection<Actor> Actors => actors;
 

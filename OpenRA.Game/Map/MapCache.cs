@@ -28,7 +28,7 @@ namespace OpenRA
 	{
 		public static readonly MapPreview UnknownMap = new(null, null, MapGridType.Rectangular, null);
 		public IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations => mapLocations;
-		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = new();
+		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = [];
 		public bool LoadPreviewImages = true;
 
 		readonly Cache<string, MapPreview> previews;
@@ -37,17 +37,17 @@ namespace OpenRA
 		Thread previewLoaderThread;
 		bool previewLoaderThreadShutDown = true;
 		readonly object syncRoot = new();
-		readonly Queue<MapPreview> generateMinimap = new();
+		readonly Queue<MapPreview> generateMinimap = [];
 
-		public HashSet<string> StringPool { get; } = new();
+		public HashSet<string> StringPool { get; } = [];
 
-		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new();
+		readonly List<MapDirectoryTracker> mapDirectoryTrackers = [];
 
 		/// <summary>
 		/// The most recently modified or loaded map at runtime.
 		/// </summary>
 		public string LastModifiedMap { get; private set; } = null;
-		readonly Dictionary<string, string> mapUpdates = new();
+		readonly Dictionary<string, string> mapUpdates = [];
 
 		string lastLoadedLastModifiedMap;
 

@@ -53,12 +53,12 @@ namespace OpenRA.Graphics
 			: base("combined")
 		{ }
 
-		public override ShaderVertexAttribute[] Attributes { get; } = new[]
-		{
+		public override ShaderVertexAttribute[] Attributes { get; } =
+		[
 			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 3, 0),
 			new ShaderVertexAttribute("aVertexTexCoord", ShaderVertexAttributeType.Float, 4, 12),
 			new ShaderVertexAttribute("aVertexAttributes", ShaderVertexAttributeType.UInt, 1, 28),
 			new ShaderVertexAttribute("aVertexTint", ShaderVertexAttributeType.Float, 4, 32)
-		};
+		];
 	}
 }

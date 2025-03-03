@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class LogicKeyListenerWidget : Widget
 	{
-		readonly List<Func<KeyInput, bool>> handlers = new();
+		readonly List<Func<KeyInput, bool>> handlers = [];
 
 		public override bool HandleKeyPress(KeyInput e)
 		{

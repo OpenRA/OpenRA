@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	sealed class LightPaletteRotatorInfo : TraitInfo
 	{
 		[Desc("Palettes this effect should not apply to.")]
-		public readonly HashSet<string> ExcludePalettes = new();
+		public readonly HashSet<string> ExcludePalettes = [];
 
 		[Desc("'Speed' at which the effect cycles through palette indices.")]
 		public readonly float TimeStep = .5f;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int ModifyIndex = 103;
 
 		[Desc("Palette indices to rotate through.")]
-		public readonly int[] RotationIndices = { 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 238, 237, 236, 235, 234, 233, 232, 231 };
+		public readonly int[] RotationIndices = [230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 238, 237, 236, 235, 234, 233, 232, 231];
 
 		public override object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}

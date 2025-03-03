@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithProductionIconOverlayInfo : TraitInfo<WithProductionIconOverlay>, IRulesetLoaded
 	{
 		[FieldLoader.Require]
-		public readonly string[] Types = Array.Empty<string>();
+		public readonly string[] Types = [];
 
-		public readonly string[] Prerequisites = Array.Empty<string>();
+		public readonly string[] Prerequisites = [];
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

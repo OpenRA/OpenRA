@@ -28,10 +28,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playerRoot = worldRoot.Get("PLAYER_ROOT");
 
 			if (world.LocalPlayer == null)
-				Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+				Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, []);
 			else
 			{
-				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
+				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, []);
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
 				var objectives = world.LocalPlayer.PlayerActor.Info.TraitInfoOrDefault<MissionObjectivesInfo>();
 
@@ -47,14 +47,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								return;
 
 							playerRoot.RemoveChildren();
-							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, []);
 						});
 					}
 				};
 			}
 
-			Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
-			Game.LoadWidget(world, "TRANSIENTS_PANEL", worldRoot, new WidgetArgs());
+			Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, []);
+			Game.LoadWidget(world, "TRANSIENTS_PANEL", worldRoot, []);
 
 			world.GameOver += () =>
 			{

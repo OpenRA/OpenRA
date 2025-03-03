@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 	public sealed class TerrainSpriteLayer : IDisposable
 	{
 		// PERF: we can reuse the IndexBuffer as all layers have the same size.
-		static readonly ConditionalWeakTable<World, IndexBufferRc> IndexBuffers = new();
+		static readonly ConditionalWeakTable<World, IndexBufferRc> IndexBuffers = [];
 		readonly IndexBufferRc indexBufferWrapper;
 
 		public readonly BlendMode BlendMode;
@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] vertices;
 		readonly bool[] ignoreTint;
-		readonly HashSet<int> dirtyRows = new();
+		readonly HashSet<int> dirtyRows = [];
 		readonly int indexRowStride;
 		readonly int vertexRowStride;
 		readonly bool restrictToBounds;

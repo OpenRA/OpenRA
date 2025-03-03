@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	sealed class DumpSequenceSheetsCommand : IUtilityCommand
 	{
-		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
+		static readonly int[] ChannelMasks = [2, 1, 0, 3];
 
 		string IUtilityCommand.Name => "--dump-sequence-sheets";
 
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
 
-			var palette = new ImmutablePalette(args[1], new[] { 0 }, Array.Empty<int>());
+			var palette = new ImmutablePalette(args[1], [0], []);
 
 			SequenceSet sequences;
 			var tilesetUpper = args[2].ToUpperInvariant();

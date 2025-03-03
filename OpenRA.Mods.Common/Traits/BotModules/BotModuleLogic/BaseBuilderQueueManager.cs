@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Check the number of this structure and its variants
 				var actorInfo = world.Map.Rules.Actors[name];
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
-				var variants = buildingVariantInfo?.Actors ?? Array.Empty<string>();
+				var variants = buildingVariantInfo?.Actors ?? [];
 
 				var count = playerBuildings.Count(a =>
 					a.Info.Name == name || variants.Contains(a.Info.Name)) +

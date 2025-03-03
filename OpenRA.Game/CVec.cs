@@ -62,7 +62,7 @@ namespace OpenRA
 		public override string ToString() { return X + "," + Y; }
 
 		public static readonly CVec[] Directions =
-		{
+		[
 			new(-1, -1),
 			new(-1,  0),
 			new(-1,  1),
@@ -71,7 +71,7 @@ namespace OpenRA
 			new(1, -1),
 			new(1,  0),
 			new(1,  1),
-		};
+		];
 
 		#region Scripting interface
 

@@ -19,12 +19,12 @@ namespace OpenRA.Graphics
 	public static class Util
 	{
 		// yes, our channel order is nuts.
-		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
+		static readonly int[] ChannelMasks = [2, 1, 0, 3];
 
 		public static uint[] CreateQuadIndices(int quads)
 		{
 			var indices = new uint[quads * 6];
-			ReadOnlySpan<uint> cornerVertexMap = stackalloc uint[] { 0, 1, 2, 2, 3, 0 };
+			ReadOnlySpan<uint> cornerVertexMap = [0, 1, 2, 2, 3, 0];
 			for (var i = 0; i < indices.Length; i++)
 				indices[i] = cornerVertexMap[i % 6] + (uint)(4 * (i / 6));
 
@@ -277,13 +277,13 @@ namespace OpenRA.Graphics
 				size.X * angleSin - size.Y * angleCos,
 				(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
 
-			return new float3[]
-			{
+			return
+			[
 				center - ra,
 				center + rb,
 				center + ra,
 				center - rb
-			};
+			];
 		}
 
 		/// <summary>

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public ChatCommands()
 		{
-			Commands = new Dictionary<string, IChatCommand>();
+			Commands = [];
 		}
 
 		public bool OnChat(string playername, string message)

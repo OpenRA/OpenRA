@@ -373,7 +373,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		readonly Dictionary<string, FileDescriptor> index = new();
+		readonly Dictionary<string, FileDescriptor> index = [];
 		readonly Dictionary<int, Stream> volumes;
 		readonly uint version;
 

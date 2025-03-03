@@ -25,14 +25,14 @@ namespace OpenRA.FileFormats
 {
 	public class Png
 	{
-		static readonly byte[] Signature = { 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a };
+		static readonly byte[] Signature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 		public int Width { get; }
 		public int Height { get; }
 		public Color[] Palette { get; }
 		public byte[] Data { get; }
 		public SpriteFrameType Type { get; }
-		public Dictionary<string, string> EmbeddedData = new();
+		public Dictionary<string, string> EmbeddedData = [];
 
 		public int PixelStride => Type == SpriteFrameType.Indexed8 ? 1 : Type == SpriteFrameType.Rgb24 ? 3 : 4;
 

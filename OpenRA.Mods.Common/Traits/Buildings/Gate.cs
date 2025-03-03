@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			blockedPositions = Enumerable.Empty<CPos>();
+			blockedPositions = [];
 		}
 
 		bool CanRemoveBlockage(Actor self, Actor blocking)

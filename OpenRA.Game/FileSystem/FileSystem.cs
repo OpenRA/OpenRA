@@ -29,16 +29,16 @@ namespace OpenRA.FileSystem
 	public class FileSystem : IReadOnlyFileSystem
 	{
 		public IEnumerable<IReadOnlyPackage> MountedPackages => mountedPackages.Keys;
-		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new();
-		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new();
+		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = [];
+		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = [];
 		readonly string modID;
 
 		// Mod packages that should not be disposed
-		readonly List<IReadOnlyPackage> modPackages = new();
+		readonly List<IReadOnlyPackage> modPackages = [];
 		readonly IReadOnlyDictionary<string, Manifest> installedMods;
 		readonly IPackageLoader[] packageLoaders;
 
-		Cache<string, List<IReadOnlyPackage>> fileIndex = new(_ => new List<IReadOnlyPackage>());
+		Cache<string, List<IReadOnlyPackage>> fileIndex = new(_ => []);
 
 		public FileSystem(string modID, IReadOnlyDictionary<string, Manifest> installedMods, IPackageLoader[] packageLoaders)
 		{
@@ -178,7 +178,7 @@ namespace OpenRA.FileSystem
 			explicitMounts.Clear();
 			modPackages.Clear();
 
-			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
+			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => []);
 		}
 
 		public void TrimExcess()

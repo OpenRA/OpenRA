@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly IShader shader;
 		readonly IVertexBuffer<RenderPostProcessPassTexturedVertex> vortexBuffer;
 		readonly Sheet vortexSheet;
-		readonly List<(float3, int)> vortices = new();
+		readonly List<(float3, int)> vortices = [];
 
 		public ChronoVortexRenderer(Actor self)
 		{
