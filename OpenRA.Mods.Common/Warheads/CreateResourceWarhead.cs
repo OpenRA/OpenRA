@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!resourceLayer.CanAddResource(AddsResourceType, cell))
 					continue;
 
-				var splash = world.SharedRandom.Next(1, maxDensity - resourceLayer.GetResource(cell).Density);
+				var splash = (byte)world.SharedRandom.Next(1, maxDensity - resourceLayer.GetResource(cell).Density);
 				resourceLayer.AddResource(AddsResourceType, cell, splash);
 			}
 		}

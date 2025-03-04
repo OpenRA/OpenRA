@@ -2070,7 +2070,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var oldValue = CheckValue3By3(cpos);
 				Map.Resources[mpos] = new ResourceTile(
 					resourceType.ResourceIndex,
-					(byte)resourceType.MaxDensity);
+					resourceType.MaxDensity);
 				var newValue = CheckValue3By3(cpos);
 				return newValue - oldValue;
 			}

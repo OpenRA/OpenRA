@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Type = null;
 
 		[Desc("Resource density threshold which is required.")]
-		public readonly int Density = 1;
+		public readonly byte Density = 1;
 
 		[Desc("This many adjacent resource tiles are required.")]
 		public readonly int Adjacency = 1;

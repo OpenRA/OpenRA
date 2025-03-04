@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly HashSet<CPos> dirty = [];
 		readonly Queue<CPos> cleanDirty = [];
 		readonly HashSet<CPos> veinholeCells = [];
-		readonly int maxDensity;
+		readonly byte maxDensity;
 		readonly Color veinRadarColor;
 
 		ISpriteSequence veinSequence;

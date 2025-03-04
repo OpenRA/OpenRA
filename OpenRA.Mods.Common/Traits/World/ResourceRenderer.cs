@@ -353,11 +353,12 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly ResourceRendererInfo.ResourceTypeInfo Info;
 			public readonly ISpriteSequence Sequence;
 			public readonly PaletteReference Palette;
-			public readonly int Density;
+			public readonly byte Density;
 
 			public static readonly RendererCellContents Empty = default;
 
-			public RendererCellContents(string resourceType, int density, ResourceRendererInfo.ResourceTypeInfo info, ISpriteSequence sequence, PaletteReference palette)
+			public RendererCellContents(string resourceType, byte density, ResourceRendererInfo.ResourceTypeInfo info,
+				ISpriteSequence sequence, PaletteReference palette)
 			{
 				Type = resourceType;
 				Density = density;
@@ -366,7 +367,7 @@ namespace OpenRA.Mods.Common.Traits
 				Palette = palette;
 			}
 
-			public RendererCellContents(RendererCellContents contents, int density)
+			public RendererCellContents(RendererCellContents contents, byte density)
 			{
 				Type = contents.Type;
 				Density = density;
