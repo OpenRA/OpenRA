@@ -1146,6 +1146,16 @@
 		Duration: 15
 		Intensity: 6
 
+^ExplosiveBridge:
+	ExplosionOnDamageTransition@DAMAGED:
+		DamageState: Heavy
+		Weapon: BridgeExplode
+	ExplosionOnDamageTransition@COLLAPSED:
+		DamageState: Dead
+		Weapon: BridgeExplode
+	SoundOnDamageTransition:
+		DestroyedSounds: crmble2.aud
+
 ^Rock:
 	Inherits@1: ^SpriteActor
 	Interactable:

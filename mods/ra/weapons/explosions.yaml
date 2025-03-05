@@ -184,6 +184,12 @@ BarrelCluster:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 
+BridgeExplode:
+	Inherits: VisualExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: large_napalm
+		ValidTargets: Bridge, Ground, Water
+
 ATMine:
 	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
