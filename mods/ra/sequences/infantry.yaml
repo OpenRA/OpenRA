@@ -1088,6 +1088,14 @@ c1:
 		Start: 120
 		Length: 4
 		Facings: 8
+	idle1:
+		Start: 104
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 114
+		Length: 6
+		Tick: 80
 	die1:
 		Start: 152
 		Length: 8
@@ -1143,6 +1151,14 @@ c2:
 		Start: 120
 		Length: 4
 		Facings: 8
+	idle1:
+		Start: 104
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 114
+		Length: 6
+		Tick: 80
 	die1:
 		Start: 152
 		Length: 8
@@ -1198,6 +1214,14 @@ c11:
 		Start: 120
 		Length: 4
 		Facings: 8
+	idle1:
+		Start: 104
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 114
+		Length: 6
+		Tick: 80
 	die1:
 		Start: 152
 		Length: 8
@@ -1254,6 +1278,10 @@ einstein:
 		Length: 6
 		Facings: 8
 		Tick: 80
+	idle1:
+		Start: 104
+		Length: 15
+		Tick: 80
 	die1:
 		Start: 120
 		Length: 8
@@ -1305,6 +1333,14 @@ delphi:
 		Length: 6
 		Facings: 8
 		Tick: 80
+	idle1:
+		Start: 189
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 199
+		Length: 6
+		Tick: 80
 	die1:
 		Start: 329
 		Length: 8
@@ -1355,6 +1391,10 @@ chan:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
+	idle1:
+		Start: 104
+		Length: 15
 		Tick: 80
 	die1:
 		Start: 120

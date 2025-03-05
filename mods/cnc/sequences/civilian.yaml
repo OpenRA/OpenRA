@@ -13,6 +13,15 @@ c1:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
+	idle1:
+		Start: 189
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 199
+		Length: 6
+		Tick: 80
 	shoot:
 		Start: 205
 		Length: 4
@@ -121,6 +130,9 @@ moebius:
 	idle1:
 		Start: 104
 		Length: 15
+	idle2:
+		Start: 120
+		Length: 20
 	die1:
 		Start: 212
 		Length: 8

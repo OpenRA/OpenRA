@@ -479,6 +479,10 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	WithInfantryBody:
+		IdleSequences: idle1
+		MinIdleDelay: 60
+		MaxIdleDelay: 220
 	MapEditorData:
 		Categories: Civilian infantry
 
@@ -492,6 +496,7 @@
 	AttackFrontal:
 		FacingTolerance: 0
 	WithInfantryBody:
+		IdleSequences: idle1,idle2
 		DefaultAttackSequence: shoot
 
 ^Ship:

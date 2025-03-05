@@ -519,12 +519,16 @@ DELPHI:
 
 CHAN:
 	Inherits: ^CivInfantry
+	WithInfantryBody:
+		IdleSequences: idle1, idle2
 	Tooltip:
 		Name: actor-chan-name
 
 MOEBIUS:
 	Inherits: ^CivInfantry
 	-Wanders:
+	WithInfantryBody:
+		IdleSequences: idle1, idle2
 	Voiced:
 		VoiceSet: MoebiusVoice
 	Tooltip:
