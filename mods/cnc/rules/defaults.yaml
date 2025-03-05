@@ -467,6 +467,8 @@
 ^CivInfantry:
 	Inherits: ^Infantry
 	Inherits@selection: ^SelectableSupportUnit
+	Selectable:
+		Class: CivInfantry
 	Valued:
 		Cost: 10
 	Tooltip:
@@ -494,6 +496,7 @@
 		Categories: Civilian infantry
 
 ^ArmedCivilian:
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@selection: ^SelectableCombatUnit
 	Armament:
 		Weapon: Pistol
