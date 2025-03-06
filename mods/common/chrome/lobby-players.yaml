@@ -252,8 +252,8 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 25
 									Text: label-lobby-players-faction
 						Label@TEAM:
-							X: 420
-							Width: 42
+							X: 410
+							Width: 43
 							Height: 25
 							Text: label-lobby-players-team
 							Align: Center

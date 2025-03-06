@@ -489,7 +489,7 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@DERRICKS_HEADER:
-									X: 650
+									X: 645
 									Width: 80
 									Height: PARENT_HEIGHT
 									Font: Bold
