@@ -90,7 +90,7 @@ Container@ADVANCED_PANEL:
 									Font: Regular
 									Text: checkbox-sendsysinfo-container
 								Label@SENDSYSINFO_DESC:
-									Y: 15
+									Y: 30
 									Width: PARENT_WIDTH
 									Height: 30
 									Font: Tiny
