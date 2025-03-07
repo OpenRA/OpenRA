@@ -1000,6 +1000,23 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var cell in rallyPoint)
 						QueueChild(new AttackMoveActivity(self, () => mobile.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 			}
+
+			public override IEnumerable<Target> GetTargets(Actor self)
+			{
+				if (ChildActivity != null)
+					return ChildActivity.GetTargets(self);
+
+				return Target.None;
+			}
+
+			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+			{
+				var a = ChildActivity;
+				for (; a != null; a = a.NextActivity)
+					if (!a.IsCanceling)
+						foreach (var n in a.TargetLineNodes(self))
+							yield return n;
+			}
 		}
 
 		Activity ICreationActivity.GetCreationActivity()

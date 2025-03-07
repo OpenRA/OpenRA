@@ -1325,9 +1325,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 			{
-				if (ChildActivity != null)
-					foreach (var n in ChildActivity.TargetLineNodes(self))
-						yield return n;
+				var a = ChildActivity;
+				for (; a != null; a = a.NextActivity)
+					if (!a.IsCanceling)
+						foreach (var n in a.TargetLineNodes(self))
+							yield return n;
 			}
 		}
 
