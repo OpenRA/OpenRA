@@ -69,8 +69,6 @@ tc04:
 			SNOW: tc04.sno
 			JUNGLE: tc04.jun
 	idle:
-	damaged-idle:
-		Start: 1
 
 tc04.husk:
 	Defaults:
@@ -80,7 +78,7 @@ tc04.husk:
 			SNOW: tc04.sno
 			JUNGLE: tc04.jun
 	idle:
-		Start: 2
+		Start: 1
 
 tc05:
 	Defaults:
@@ -90,8 +88,6 @@ tc05:
 			SNOW: tc05.sno
 			JUNGLE: tc05.jun
 	idle:
-	damaged-idle:
-		Start: 1
 
 tc05.husk:
 	Defaults:
@@ -101,7 +97,7 @@ tc05.husk:
 			SNOW: tc05.sno
 			JUNGLE: tc05.jun
 	idle:
-		Start: 2
+		Start: 1
 
 tc03:
 	Defaults:
