@@ -95,12 +95,13 @@ ModContent:
 			Title: modcontent-package-briefings
 			Identifier: movies
 			TestFiles: ^SupportDir|Content/d2k/v3/Movies/A_BR01_E.VQA
-			Sources: d2k
+			Sources: d2k, gruntmods-movies
 	Downloads:
 		d2kcontent|installer/downloads.yaml
 	Sources:
 		d2kcontent|installer/d2k.yaml
 		d2kcontent|installer/gruntmods.yaml
+		d2kcontent|installer/gruntmods-movies.yaml
 
 SoundFormats:
 

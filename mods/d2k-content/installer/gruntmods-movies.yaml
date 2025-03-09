@@ -1,0 +1,54 @@
+gruntmods-movies: Dune 2000: GruntMods Edition - movies
+	Type: RegistryDirectory
+	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
+	RegistryKey: Dune 2000: Gruntmods Edition
+	IDFiles:
+		Dune 2000/movies/A_BR01_E.VQA: c3d667a22449ebe4c2adafd3bf482e967fbc002a		
+	Install:
+		# Campaign briefings (optional):
+		ContentPackage@movies:
+			Name: movies
+			Actions:
+				Copy: Dune 2000/movies
+					^SupportDir|Content/d2k/v3/Movies/A_BR01_E.VQA: A_BR01_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR02_E.VQA: A_BR02_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR03_E.VQA: A_BR03_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR04_E.VQA: A_BR04_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR05_E.VQA: A_BR05_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR06_E.VQA: A_BR06_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR07_E.VQA: A_BR07_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR08_E.VQA: A_BR08_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_BR09_E.VQA: A_BR09_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_FINL_E.VQA: A_FINL_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_LOSE_E.VQA: A_LOSE_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/A_MNTG_E.VQA: A_MNTG_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR01_E.VQA: H_BR01_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR02_E.VQA: H_BR02_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR03_E.VQA: H_BR03_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR04_E.VQA: H_BR04_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR05_E.VQA: H_BR05_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR06_E.VQA: H_BR06_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR07_E.VQA: H_BR07_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR08_E.VQA: H_BR08_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_BR09_E.VQA: H_BR09_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_FINL_E.VQA: H_FINL_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_LOSE_E.VQA: H_LOSE_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/H_MNTG_E.VQA: H_MNTG_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR01_E.VQA: O_BR01_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR02_E.VQA: O_BR02_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR03_E.VQA: O_BR03_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR04_E.VQA: O_BR04_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR05_E.VQA: O_BR05_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR06_E.VQA: O_BR06_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR07_E.VQA: O_BR07_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR08_E.VQA: O_BR08_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_BR09_E.VQA: O_BR09_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_FINL_E.VQA: O_FINL_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_LOSE_E.VQA: O_LOSE_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/O_MNTG_E.VQA: O_MNTG_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/G_INT1_E.VQA: G_INT1_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/G_INT2_E.VQA: G_INT2_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/G_MAPS_E.VQA: G_MAPS_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/G_PLN2_E.VQA: G_PLN2_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/G_PLNT_E.VQA: G_PLNT_E.VQA
+					^SupportDir|Content/d2k/v3/Movies/T_TITL_E.VQA: T_TITL_E.VQA
