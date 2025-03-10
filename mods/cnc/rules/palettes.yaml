@@ -106,6 +106,7 @@
 		ReferenceHue: 0.1
 		ReferenceSaturation: 0.75
 	MenuPostProcessEffect:
+		FadeInLength: 4
 		MenuEffect: Desaturated
 	CloakPaletteEffect:
 	FlashPostProcessEffect:

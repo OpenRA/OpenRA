@@ -263,7 +263,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterDelay(exitDelay, () =>
 				{
 					if (Game.IsCurrentWorld(world))
-						mpe.Fade(MenuPostProcessEffect.EffectType.Black);
+						mpe.Fade(mpe.Info.GameExitEffect);
 				});
 				exitDelay += 40 * mpe.Info.FadeLength;
 			}
@@ -288,7 +288,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CloseMenu()
 		{
 			Ui.CloseWindow();
-			mpe?.Fade(MenuPostProcessEffect.EffectType.None);
+			mpe?.Fade(mpe.Info.Effect);
 			onExit();
 			Ui.ResetTooltips();
 		}
@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (mpe != null)
 				{
 					if (Game.IsCurrentWorld(world))
-						mpe.Fade(MenuPostProcessEffect.EffectType.Black);
+						mpe.Fade(mpe.Info.GameExitEffect);
 					exitDelay += 40 * mpe.Info.FadeLength;
 				}
 
@@ -545,7 +545,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Ui.ResetTooltips();
 						void CloseMenu()
 						{
-							mpe?.Fade(MenuPostProcessEffect.EffectType.None);
+							mpe?.Fade(mpe.Info.Effect);
 							onExit();
 						}
 

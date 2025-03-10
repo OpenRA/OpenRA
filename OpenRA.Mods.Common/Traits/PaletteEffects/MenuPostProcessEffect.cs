@@ -19,11 +19,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Fades the world from/to black at the start/end of the game, and can (optionally) desaturate the world")]
 	public class MenuPostProcessEffectInfo : TraitInfo
 	{
+		public readonly int FadeInLength = 10;
+
 		[Desc("Time (in ticks) to fade between states")]
 		public readonly int FadeLength = 10;
 
 		[Desc("Effect style to fade to during gameplay. Accepts values of None or Desaturated.")]
 		public readonly MenuPostProcessEffect.EffectType Effect = MenuPostProcessEffect.EffectType.None;
+
+		[Desc("Effect style to fade from when starting the game. Accepts values of None, Black or Desaturated.")]
+		public readonly MenuPostProcessEffect.EffectType GameStartEffect = MenuPostProcessEffect.EffectType.Black;
+
+		[Desc("Effect style to fade to when exiting the game. Accepts values of None, Black or Desaturated.")]
+		public readonly MenuPostProcessEffect.EffectType GameExitEffect = MenuPostProcessEffect.EffectType.Black;
 
 		[Desc("Effect style to fade to when opening the in-game menu. Accepts values of None, Black or Desaturated.")]
 		public readonly MenuPostProcessEffect.EffectType MenuEffect = MenuPostProcessEffect.EffectType.None;
@@ -36,8 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		public enum EffectType { None, Black, Desaturated }
 		public readonly MenuPostProcessEffectInfo Info;
 
-		EffectType from = EffectType.Black;
-		EffectType to = EffectType.Black;
+		EffectType from;
+		EffectType to;
 
 		long startTime;
 		long endTime;
@@ -46,12 +54,16 @@ namespace OpenRA.Mods.Common.Traits
 			: base("menufade", PostProcessPassType.AfterShroud)
 		{
 			Info = info;
+			to = info.GameStartEffect;
 		}
 
-		public void Fade(EffectType type)
+		public void Fade(EffectType type, int length = -1)
 		{
+			if (length < 0)
+				length = Info.FadeLength;
+
 			startTime = Game.RunTime;
-			endTime = startTime + Ui.Timestep * Info.FadeLength;
+			endTime = startTime + Ui.Timestep * length;
 
 			from = to;
 			to = type;
@@ -74,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// HACK: Defer fade-in until the GameLoaded notification for game saves
 			if (!w.IsLoadingGameSave)
-				Fade(Info.Effect);
+				Fade(Info.Effect, Info.FadeInLength);
 		}
 
 		void INotifyGameLoaded.GameLoaded(World world)
@@ -83,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			// to avoid glitches resulting from trying to trigger both
 			// the standard and menu fades at the same time
 			if (world.IsReplay)
-				Fade(Info.Effect);
+				Fade(Info.Effect, Info.FadeInLength);
 		}
 	}
 }
