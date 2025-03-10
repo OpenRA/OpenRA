@@ -149,7 +149,7 @@ namespace OpenRA.Traits
 
 			ExploreMapEnabled = gs.OptionOrDefault("explored", info.ExploredMapCheckboxEnabled);
 			if (ExploreMapEnabled)
-				self.World.AddFrameEndTask(w => ExploreAll());
+				ExploreAll();
 
 			if (!fogEnabled && ExploreMapEnabled)
 				RevealedCells = map.ProjectedCells.Length;
