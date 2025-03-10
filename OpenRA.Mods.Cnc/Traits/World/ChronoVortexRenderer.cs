@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new ChronoVortexRenderer(init.Self); }
 	}
 
-	public sealed class ChronoVortexRenderer : IRenderPostProcessPass
+	public sealed class ChronoVortexRenderer : IRenderPostProcessPass, INotifyActorDisposing
 	{
 		readonly Renderer renderer;
 		readonly IShader shader;
@@ -104,6 +104,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 
 			vortices.Clear();
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			vortexSheet.Dispose();
+			vortexBuffer.Dispose();
 		}
 	}
 }

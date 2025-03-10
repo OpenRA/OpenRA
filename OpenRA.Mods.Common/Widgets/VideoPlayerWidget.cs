@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Stopwatch playTime = new();
 		int textureWidth;
 		int textureHeight;
+		Sheet videoSheet;
 
 		Action onComplete;
 
@@ -123,7 +124,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			textureWidth = Exts.NextPowerOf2(video.Width);
 			textureHeight = Exts.NextPowerOf2(video.Height);
-			var videoSheet = new Sheet(SheetType.BGRA, new Size(textureWidth, textureHeight));
+			videoSheet?.Dispose();
+			videoSheet = new Sheet(SheetType.BGRA, new Size(textureWidth, textureHeight));
 
 			videoSheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
 			videoSheet.GetTexture().SetData(video.CurrentFrameData, textureWidth, textureHeight);
@@ -300,6 +302,12 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Stop();
 			Video = null;
+		}
+
+		public override void Removed()
+		{
+			videoSheet?.Dispose();
+			overlaySheet?.Dispose();
 		}
 	}
 }
