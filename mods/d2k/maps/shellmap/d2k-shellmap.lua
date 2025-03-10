@@ -201,4 +201,6 @@ WorldLoaded = function()
 		Produce(Corrino, CorrinoTankTypes)
 		Produce(Corrino, CorrinoStarportTypes)
 	end)
+
+	Tick()
 end
