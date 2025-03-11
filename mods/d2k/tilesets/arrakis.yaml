@@ -6717,7 +6717,7 @@ Templates:
 	Template@1141:
 		Id: 1141
 		Images: customtiles.r16
-		Frames: 29
+		Frames: 48
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
