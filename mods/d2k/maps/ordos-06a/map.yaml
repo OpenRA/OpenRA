@@ -39,6 +39,7 @@ Players:
 		Enemies: Atreides, Harkonnen, Creeps
 	PlayerReference@Atreides:
 		Name: Atreides
+		Bot: campaign
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
@@ -47,6 +48,7 @@ Players:
 		Enemies: Ordos, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
+		Bot: campaign
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True

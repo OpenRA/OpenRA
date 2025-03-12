@@ -26,11 +26,13 @@ Players:
 		Faction: england
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Enemies: Greece
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Greece

@@ -26,18 +26,21 @@ Players:
 		Faction: england
 	PlayerReference@Spain:
 		Name: Spain
+		Bot: campaign
 		Faction: allies
 		Color: F6D679
 		Allies: Greece, GoodGuy
 		Enemies: USSR
 	PlayerReference@Greece:
 		Name: Greece
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Spain, GoodGuy
 		Enemies: USSR
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Spain, Greece

@@ -26,6 +26,7 @@ Players:
 		Faction: allies
 	PlayerReference@England:
 		Name: England
+		Bot: campaign
 		Faction: allies
 		Color: A0F08C
 		Allies: GreekCivilians, Allies
@@ -50,12 +51,14 @@ Players:
 		Allies: England
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: BadGuy
 		Enemies: England, GreekCivilians, Allies
 	PlayerReference@BadGuy:
 		Name: BadGuy
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR

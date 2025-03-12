@@ -33,6 +33,7 @@ Players:
 		Enemies: USSR
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Greece

@@ -49,6 +49,7 @@ Players:
 		Enemies: USSR
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Enemies: Allies, England

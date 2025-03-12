@@ -26,12 +26,14 @@ Players:
 		Faction: allies
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: BadGuy
 		Enemies: Greece
 	PlayerReference@BadGuy:
 		Name: BadGuy
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR
