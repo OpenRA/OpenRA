@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Graphics
 		int next;
 		int length;
 		readonly int skip;
+		readonly float trailLengthMinusSkip;
 
 		public ContrailRenderable(
 			World world, Actor owner, Color startcolor, bool usePlayerStartColor, Color endcolor, bool usePlayerEndColor,
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.usePlayerStartColor = usePlayerStartColor;
 			this.usePlayerEndColor = usePlayerEndColor;
 			this.endColor = endColor;
+			trailLengthMinusSkip = trail.Length - skip - 1;
 			ZOffset = zOffset;
 		}
 
@@ -92,54 +94,82 @@ namespace OpenRA.Mods.Common.Graphics
 			var screenWidth = wr.ScreenVector(new WVec(1, 0, 0))[0];
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
-			var startColor = this.startColor;
-			if (usePlayerStartColor)
-				startColor = Color.FromArgb(this.startColor.A, owner.OwnerColor());
+			var startColor = usePlayerStartColor ? Color.FromArgb(this.startColor.A, owner.OwnerColor()) : this.startColor;
+			var endColor = usePlayerEndColor ? Color.FromArgb(this.endColor.A, owner.OwnerColor()) : this.endColor;
 
-			var endColor = this.endColor;
-			if (usePlayerEndColor)
-				endColor = Color.FromArgb(this.endColor.A, owner.OwnerColor());
-
-			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[Index(next - skip - 1)];
 			var curColor = startColor;
+			var curWidth = startWidth.Length * screenWidth;
+			var endr = float3.Zero;
+			var endl = float3.Zero;
 
 			for (var i = 1; i < renderLength; i++)
 			{
+				var pos = curPos;
 				var j = next - skip - 1 - i;
-				var nextColor = Exts.ColorLerp(i / (renderLength - 1f), startColor, endColor);
+				var prepos = trail[Index(j)];
+				var trailVec = prepos - pos;
+				var trailLength = (float)trailVec.Length;
 
-				var nextX = 0L;
-				var nextY = 0L;
-				var nextZ = 0L;
-				var k = 0;
-				for (; k < renderLength - i && k < MaxSmoothLength; k++)
-				{
-					var prepos = trail[Index(j - k)];
-					nextX += prepos.X;
-					nextY += prepos.Y;
-					nextZ += prepos.Z;
-				}
-
-				var nextPos = new WPos((int)(nextX / k), (int)(nextY / k), (int)(nextZ / k));
-
-				// When renderLength = 2 we are rendering only one segment, so it needs to be handled differently to avoid
-				// division by 0. For width we choose startWidth instead of the average as this makes the transition between
-				// rendering 1 and multiple segments smoother. Above checks make sure that renderLength can never be lower than 2.
-				float width;
-				if (renderLength == 2)
-					width = startWidth.Length;
+				WPos nextPos;
+				if (trailLength == 0 || renderLength == 2)
+					nextPos = curPos;
 				else
 				{
-					var lerp = (i - 1f) / (renderLength - 2);
-					width = startWidth.Length * (1 - lerp) + endWidth.Length * lerp;
+					// Smooth the line segment by averaging the direction of the previous segments.
+					for (var k = 1; k < renderLength - i && k < MaxSmoothLength; k++)
+					{
+						prepos = trail[Index(j - k)];
+						trailVec += prepos - pos;
+						pos = prepos;
+					}
+
+					// Normalize the vector to the length of the trail.
+					var length = (float)trailVec.Length;
+					nextPos = length == 0
+						? curPos
+						: new WPos(
+							curPos.X + (int)(trailVec.X * (float)(trailLength / length)),
+							curPos.Y + (int)(trailVec.Y * (float)(trailLength / length)),
+							curPos.Z + (int)(trailVec.Z * (float)(trailLength / length)));
 				}
 
-				if (width > 0 && !world.FogObscures(curPos) && !world.FogObscures(nextPos))
-					wcr.DrawLine(wr.Screen3DPosition(curPos), wr.Screen3DPosition(nextPos), screenWidth * width, curColor, nextColor);
+				var start = wr.Screen3DPosition(curPos);
+				var end = wr.Screen3DPosition(nextPos);
+
+				// Use positions from the last segment to draw the first segment, to avoid gaps.
+				var delta = (end - start) / (end - start).XY.Length;
+				float3 startl, startr;
+				if (i == 1)
+				{
+					var startCorner = curWidth * 0.5f * new float3(-delta.Y, delta.X, delta.Z);
+					startl = start - startCorner + RgbaColorRenderer.Offset;
+					startr = start + startCorner + RgbaColorRenderer.Offset;
+				}
+				else
+				{
+					startl = endl;
+					startr = endr;
+				}
+
+				var lerp = i / trailLengthMinusSkip;
+				var width = (startWidth.Length * (1 - lerp) + endWidth.Length * lerp) * screenWidth;
+				if (width < 0)
+					width = 0;
+
+				var endCorner = width * 0.5f * new float3(-delta.Y, delta.X, delta.Z);
+				endr = end + endCorner + RgbaColorRenderer.Offset;
+				endl = end - endCorner + RgbaColorRenderer.Offset;
+
+				var nextColor = Exts.ColorLerp(lerp, startColor, endColor);
+				if ((width != 0 || curWidth != 0)
+					&& curPos != nextPos
+					&& !world.FogObscures(curPos) && !world.FogObscures(nextPos))
+					wcr.DrawLine(startl, startr, endr, endl, curColor, nextColor);
 
 				curPos = nextPos;
 				curColor = nextColor;
+				curWidth = width;
 			}
 		}
 
