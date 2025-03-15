@@ -15,73 +15,56 @@ jobs:
     runs-on: ubuntu-22.04
     if: github.repository == 'openra/openra'
     steps:
-      - name: Download Packages
+      - name: Download Butler
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
         run: |
-          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}-x64.exe"
-          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}-x64-winportable.zip" -O "OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip"
-          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}.dmg"
-          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Dune-2000-x86_64.AppImage"
-          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Red-Alert-x86_64.AppImage"
-          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Tiberian-Dawn-x86_64.AppImage"
-          wget -q "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.event.inputs.tag }}/packaging/.itch.toml"
-          zip -u "OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip" .itch.toml
+          wget -cq -O butler-linux-amd64.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler-linux-amd64.zip
+          rm butler-linux-amd64.zip
+          chmod +x butler
+          ./butler -V
+          ./butler login
 
       - name: Publish Windows Installer
-        uses: josephbmanley/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: win
-          ITCH_GAME: openra
-          ITCH_USER: openra
-          VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}-x64.exe
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}-x64.exe"
+          ./butler push "OpenRA-${{ github.event.inputs.tag }}-x64.exe" "openra/openra:win" --userversion ${{ github.event.inputs.tag }}
 
       - name: Publish Windows Itch Bundle
-        uses: josephbmanley/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: itch
-          ITCH_GAME: openra
-          ITCH_USER: openra
-          VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -q "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.event.inputs.tag }}/packaging/.itch.toml"
+          zip -u "OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip" .itch.toml
+          ./butler push "OpenRA-${{ github.event.inputs.tag }}-x64-win-itch.zip" "openra/openra:itch" --userversion ${{ github.event.inputs.tag }}
 
       - name: Publish macOS Package
-        uses: josephbmanley/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: macos
-          ITCH_GAME: openra
-          ITCH_USER: openra
-          VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-${{ github.event.inputs.tag }}.dmg
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-${{ github.event.inputs.tag }}.dmg"
+          ./butler push "OpenRA-${{ github.event.inputs.tag }}.dmg" "openra/openra:macos" --userversion ${{ github.event.inputs.tag }}
 
       - name: Publish RA AppImage
-        uses: josephbmanley/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: linux-ra
-          ITCH_GAME: openra
-          ITCH_USER: openra
-          VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-Red-Alert-x86_64.AppImage
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Red-Alert-x86_64.AppImage"
+          ./butler push "OpenRA-Red-Alert-x86_64.AppImage" "openra/openra:linux-ra" --userversion ${{ github.event.inputs.tag }}
 
       - name: Publish TD AppImage
-        uses: josephbmanley/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: linux-cnc
-          ITCH_GAME: openra
-          ITCH_USER: openra
-          VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-Tiberian-Dawn-x86_64.AppImage
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Tiberian-Dawn-x86_64.AppImage"
+          ./butler push "OpenRA-Tiberian-Dawn-x86_64.AppImage" "openra/openra:linux-cnc" --userversion ${{ github.event.inputs.tag }}
 
       - name: Publish D2k AppImage
-        uses: josephbmanley/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-          CHANNEL: linux-d2k
-          ITCH_GAME: openra
-          ITCH_USER: openra
-          VERSION: ${{ github.event.inputs.tag }}
-          PACKAGE: OpenRA-Dune-2000-x86_64.AppImage
+          BUTLER_API_KEY: ${{ secrets.BUTLER_CREDENTIALS }}
+        run: |
+          wget -q "https://github.com/${{ github.repository }}/releases/download/${{ github.event.inputs.tag }}/OpenRA-Dune-2000-x86_64.AppImage"
+          ./butler push "OpenRA-Dune-2000-x86_64.AppImage" "openra/openra:linux-d2k" --userversion ${{ github.event.inputs.tag }}
