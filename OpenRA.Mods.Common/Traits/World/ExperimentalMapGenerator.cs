@@ -1013,6 +1013,26 @@ namespace OpenRA.Mods.Common.Traits
 				if (largest.PlayableArea < minimumPlayableSpace)
 					throw new MapGenerationException("playable space is too small");
 
+				bool? AdoptPartiallyPlayableIntoLargest(CPos cpos, bool first)
+				{
+					if (first)
+						return false;
+					else if (regionMask[cpos] == largest.Id || playability[cpos] != PlayableSpace.Playability.Partial)
+						return null;
+
+					regionMask[cpos] = largest.Id;
+					largest.Area++;
+					return false;
+				}
+
+				// Adopt any partially playable tiles connected to the largest region into the largest region.
+				// This avoids potentially debris-filling connected oceans for mods where water is unplayable.
+				CellLayerUtils.FloodFill(
+					regionMask,
+					map.AllCells.Where(cpos => regionMask[cpos] == largest.Id).Select(cpos => (cpos, true)),
+					AdoptPartiallyPlayableIntoLargest,
+					Direction.Spread4CVec);
+
 				if (param.DenyWalledAreas)
 				{
 					// Beach tiles are particularly problematic. If they're for unplayable bodies
