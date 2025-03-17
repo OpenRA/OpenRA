@@ -145,7 +145,7 @@ DeathHandCluster:
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000
-		Spread: 1c0
+		Spread: 2c0
 		Falloff: 100, 0
 		Versus:
 			none: 90
@@ -218,7 +218,7 @@ grenade:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 1c512
+		Spread: 2c0
 		Falloff: 100, 0
 		Versus:
 			none: 135
@@ -247,7 +247,7 @@ grenade:
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 1c0
+		Spread: 2c0
 		Falloff: 100, 0
 		Versus:
 			none: 125

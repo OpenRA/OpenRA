@@ -12,7 +12,7 @@
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
-		Spread: 700
+		Spread: 1c0
 		Falloff: 100, 0
 		Versus:
 			none: 15

@@ -9,7 +9,7 @@
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 2700
-		Spread: 756
+		Spread: 1c0
 		Falloff: 100, 0
 		Versus:
 			none: 30
