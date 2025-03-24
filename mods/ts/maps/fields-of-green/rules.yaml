@@ -18,6 +18,9 @@ World:
 		DisableWorldSounds: true
 		AllowMuteBackgroundMusic: true
 
+^Palettes:
+	-MenuPostProcessEffect:
+
 ^BaseWorld:
 	TerrainLighting:
 		BlueTint: 0.7

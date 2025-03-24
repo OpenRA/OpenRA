@@ -21,6 +21,9 @@ World:
 		Scripts: desert-shellmap.lua
 	-StartGameNotification:
 
+^Palettes:
+	-MenuPostProcessEffect:
+
 ^ExistsInWorld:
 	GivesExperience:
 		ActorExperienceModifier: 0

@@ -53,6 +53,7 @@ Rules:
 			DisableWorldSounds: true
 	# Used for rendering the EVA Database previews
 	^Palettes:
+		-MenuPostProcessEffect:
 		-PlayerColorPalette:
 		-PlayerColorShift:
 		IndexedPlayerPalette:

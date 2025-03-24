@@ -20,6 +20,9 @@ World:
 	LuaScript:
 		Scripts: utils.lua, d2k-shellmap.lua
 
+^Palettes:
+	-MenuPostProcessEffect:
+
 ^ExistsInWorld:
 	-GivesExperience:
 
