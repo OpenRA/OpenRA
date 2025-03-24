@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MenuPostProcessEffect(this); }
 	}
 
-	public class MenuPostProcessEffect : RenderPostProcessPassBase, IWorldLoaded, INotifyGameLoaded
+	public class MenuPostProcessEffect : RenderPostProcessPassBase, INotifyGameLoaded, IPostWorldLoaded
 	{
 		public enum EffectType { None, Black, Desaturated }
 		public readonly MenuPostProcessEffectInfo Info;
@@ -57,7 +57,8 @@ namespace OpenRA.Mods.Common.Traits
 			to = type;
 		}
 
-		protected override bool Enabled => to != EffectType.None || endTime != 0;
+		protected override bool Enabled => to != EffectType.None || (from != EffectType.None && Game.RunTime < endTime);
+
 		protected override void PrepareRender(WorldRenderer wr, IShader shader)
 		{
 			var blend = (endTime - Game.RunTime) * 1f / (endTime - startTime);
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			shader.SetVec("Blend", blend);
 		}
 
-		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
+		void IPostWorldLoaded.PostWorldLoaded(World w, WorldRenderer wr)
 		{
 			// HACK: Defer fade-in until the GameLoaded notification for game saves
 			if (!w.IsLoadingGameSave)
