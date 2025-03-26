@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,49 +17,122 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class ReplaceCloakPalette : UpdateRule, IBeforeUpdateActors
 	{
-		public override string Name => "Change default Cloak style from Palette to Alpha.";
+		public override string Name => "Change default Cloak style to be done by RenderCloak* traits.";
 
 		public override string Description =>
-			"Cloak has gained several new rendering modes\n" +
-			"and its default behaviour has changed from using a palette to native alpha.";
+			"Cloak now relies on RenderCloak* traits for showing the player and allies that the actor is cloaked.";
 
 		readonly List<(string, string)> actorsWithDefault = new();
+
 		IEnumerable<string> IBeforeUpdateActors.BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors)
 		{
 			foreach (var actor in resolvedActors)
+			{
 				foreach (var cloak in actor.ChildrenMatching("Cloak"))
 					if (cloak.LastChildMatching("Palette", false) == null)
 						actorsWithDefault.Add((actor.Key, cloak.Key));
+			}
 
 			yield break;
 		}
 
+		static bool CreateRenderCloakAsAlphaIfNone(MiniYamlNodeBuilder actorNode, string suffix, MiniYamlNodeBuilder cloakType)
+		{
+			if (actorNode.ChildrenMatching("RenderCloakAsAlpha" + suffix).Any())
+				return false;
+
+			var list = new List<MiniYamlNode>();
+			if (cloakType != null)
+				list.Add(new MiniYamlNode("CloakTypes", cloakType.Value.Value));
+			actorNode.AddNode(new MiniYamlNodeBuilder("RenderCloakAsAlpha" + suffix, null, list));
+			return true;
+		}
+
+		static bool HasPossibleMatchingAlphaPalette(MiniYamlNodeBuilder actorNode, string suffix)
+		{
+			var matchingAlphaPalette = actorNode.ChildrenMatching("PaletteFromPlayerPaletteWithAlpha" + suffix, false).LastOrDefault();
+			if (matchingAlphaPalette == null)
+				return false;
+
+			// Assume that Cloak is the only trait that uses this PaletteFromPlayerPaletteWithAlpha and remove it.
+			if (suffix.Contains("cloak", StringComparison.InvariantCultureIgnoreCase))
+			{
+				actorNode.RemoveNode(matchingAlphaPalette);
+				return false; // No need to warn about it.
+			}
+
+			return true;
+		}
+
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
-			foreach (var cloak in actorNode.ChildrenMatching("Cloak"))
+			// Remove unnecessary PaletteFromPlayerPaletteWithAlpha traits
+			var allAlphaPaletes = actorNode.ChildrenMatching("PaletteFromPlayerPaletteWithAlpha").ToArray();
+			var alphaPaletesToRemove = allAlphaPaletes.Where(p => p.LastChildMatching("BaseName")?.Value.Value == "cloak").ToArray();
+
+			foreach (var cloak in actorNode.ChildrenMatching("Cloak").ToArray())
 			{
-				if (actorsWithDefault.Any(pair => pair.Item1 == actorNode.Key && pair.Item2 == cloak.Key))
+				var delimeter = cloak.Key.IndexOf('@');
+				var suffix = delimeter > 0 ? "@" + cloak.Key[(delimeter + 1)..] : "";
+				if (cloak.Key.StartsWith('-'))
 				{
-					cloak.AddNode("CloakedPalette", "cloak");
-					cloak.AddNode("CloakStyle", "Palette");
-					yield break;
+					yield return "Check whether any RenderCloak* traits should be removed from " + actorNode.Key + " with " + cloak.Key[1..] + ".";
+					continue;
 				}
 
-				var palette = cloak.LastChildMatching("Palette", false);
+				var palette = cloak.LastChildMatching("Palette");
 				if (palette != null)
+					cloak.RemoveNode(palette);
+				var isPlayerPalette = cloak.LastChildMatching("IsPlayerPalette");
+				if (isPlayerPalette != null)
+					cloak.RemoveNode(isPlayerPalette);
+				var cloakType = cloak.LastChildMatching("CloakType");
+				if (palette?.Value.Value == "submerged")
 				{
-					if (string.IsNullOrEmpty(palette.Value.Value))
+					var list = new List<MiniYamlNode>();
+					if (cloakType != null)
+						list.Add(new MiniYamlNode("CloakTypes", cloakType.Value.Value));
+					actorNode.AddNode(new MiniYamlNodeBuilder("RenderCloakAsColor" + suffix, null, list));
+					yield return "Check that RenderCloakAsColor" + suffix + " added to " + actorNode.Key + " is correct.";
+				}
+				else if (actorsWithDefault.Any(pair => pair.Item1 == actorNode.Key && pair.Item2 == cloak.Key))
+				{
+					if (CreateRenderCloakAsAlphaIfNone(actorNode, suffix, cloakType))
+						yield return "Check that RenderCloakAsAlpha" + suffix + " added to " + actorNode.Key + " is correct.";
+
+					if (HasPossibleMatchingAlphaPalette(actorNode, suffix))
+						yield return "Check whether PaletteFromPlayerPaletteWithAlpha" + suffix + " should be removed from " + actorNode.Key + ".";
+				}
+				else if (palette != null && !string.IsNullOrEmpty(palette.Value.Value))
+				{
+					var renderTrait = actorNode.ChildrenMatching("RenderCloakWithPalette" + suffix, false).LastOrDefault();
+					if (renderTrait == null)
 					{
-						cloak.RemoveNode(palette);
-						cloak.AddNode("CloakStyle", "None");
+						var list = new List<MiniYamlNode>();
+						if (cloakType != null)
+							list.Add(new MiniYamlNode("CloakTypes", cloakType.Value.Value));
+						if (isPlayerPalette != null)
+							list.Add(isPlayerPalette.Build());
+						list.Add(palette.Build());
+						actorNode.AddNode(new MiniYamlNodeBuilder("RenderCloakWithPalette" + suffix, null, list));
+						yield return "Check that RenderCloakWithPalette" + suffix + " added to " + actorNode.Key + " is correct.";
 					}
 					else
 					{
-						palette.RenameKey("CloakedPalette");
-						cloak.AddNode("CloakStyle", "Palette");
+						var paletteNode = renderTrait.LastChildMatching("Palette", false);
+						if (paletteNode != null)
+							renderTrait.Value.Value = palette.Value.Value;
+						else
+							renderTrait.AddNode(new MiniYamlNodeBuilder(palette.Build()));
+						yield return "Check that RenderCloakWithPalette" + suffix + " for " + actorNode.Key + " is correct.";
 					}
 				}
 			}
+
+			foreach (var alphaPalette in alphaPaletesToRemove)
+				actorNode.RemoveNode(alphaPalette);
+			if (allAlphaPaletes.Length > alphaPaletesToRemove.Length)
+				yield return actorNode.Key + " may have lingering PaletteFromPlayerPaletteWithAlpha.";
 		}
 	}
 }

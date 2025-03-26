@@ -564,11 +564,11 @@
 		DetectionTypes: Underwater
 		InitialDelay: 0
 		CloakDelay: 50
-		CloakStyle: Color
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
 		CloakedCondition: underwater
 		PauseOnCondition: cloak-force-disabled
+	RenderCloakAsColor:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -1245,7 +1245,6 @@
 	Cloak:
 		CloakSound:
 		UncloakSound:
-		CloakStyle: None
 		DetectionTypes: Mine
 		InitialDelay: 0
 	Tooltip:
