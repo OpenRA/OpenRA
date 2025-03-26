@@ -217,6 +217,8 @@ SPEN:
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
+	ProximityLinkHost:
+		Type: RepairShip
 	RallyPoint:
 		ForceSetType: Ship
 	CommandBarBlacklist:
@@ -337,6 +339,8 @@ SYRD:
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
+	ProximityLinkHost:
+		Type: RepairShip
 	RallyPoint:
 		ForceSetType: Ship
 	CommandBarBlacklist:
@@ -707,8 +711,25 @@ DOME:
 
 PBOX:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Inherits@CARGOPIPS: ^CargoPips
+	Refinery:
+	StoresPlayerResources:
+		Capacity: 10000
+	FreeActor:
+		Actor: HARV
+		SpawnOffset: 1,2
+	ProximityLinkHost:
+		Type: Unload
+		RequiresCondition: !disabled
+		OccupyClient: true
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		UncloakOn: Dock
 	Tooltip:
 		Name: actor-pbox.name
 	Building:
@@ -880,7 +901,24 @@ GUN:
 
 FTUR:
 	Inherits: ^Defense
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
+	Refinery:
+	StoresPlayerResources:
+		Capacity: 10000
+	FreeActor:
+		Actor: HARV
+		SpawnOffset: 1,2
+	ProximityLinkHost:
+		Type: Unload
+		RequiresCondition: !disabled
+		Wait: 50
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		UncloakOn: Dock
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
