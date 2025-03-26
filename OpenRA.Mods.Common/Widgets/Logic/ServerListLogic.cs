@@ -604,13 +604,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var option in kv.Value)
 				{
 					var o = option;
+					var playerName = o.IsBot ? currentMap.GetMessage(o.Name) : o.Name;
 
 					var item = ScrollItemWidget.Setup(clientTemplate, () => false, () => { });
 					if (!o.IsSpectator && server.Mod == modData.Manifest.Id)
 					{
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
-						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						var name = WidgetUtils.TruncateText(playerName, label.Bounds.Width, font);
 						label.GetText = () => name;
 						label.GetColor = () => o.Color;
 
@@ -623,7 +624,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var label = item.Get<LabelWidget>("NOFLAG_LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
-						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						var name = WidgetUtils.TruncateText(playerName, label.Bounds.Width, font);
 
 						// Force spectator color to prevent spoofing by the server
 						var color = o.IsSpectator ? Color.White : o.Color;
