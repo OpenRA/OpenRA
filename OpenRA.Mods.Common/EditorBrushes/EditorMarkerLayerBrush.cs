@@ -123,6 +123,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Execute()
 		{
+			paintTiles.TrimExcess();
 		}
 
 		public void Do()

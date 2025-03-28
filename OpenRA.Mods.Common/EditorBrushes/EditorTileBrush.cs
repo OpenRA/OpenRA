@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
@@ -49,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 			terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
 
 			Template = id;
-			TerrainTemplate = terrainInfo.Templates.First(t => t.Value.Id == id).Value;
+			TerrainTemplate = terrainInfo.Templates[Template];
 			cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
 			UpdatePreview();
 		}

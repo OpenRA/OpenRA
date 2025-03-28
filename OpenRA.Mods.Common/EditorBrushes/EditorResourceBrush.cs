@@ -130,6 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Execute()
 		{
+			cellResources.TrimExcess();
 		}
 
 		public void Do()

@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public bool HandleMouseInput(MouseInput mi)
 		{
-			// Exclusively uses left and right mouse buttons, but nothing else
+			// Exclusively uses left and right mouse buttons, but nothing else.
 			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right)
 				return false;
 
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.editorLayer = editorLayer;
 
-			// Take an immutable copy of the reference
+			// Take an immutable copy of the reference.
 			this.actor = actor.Clone();
 		}
 
