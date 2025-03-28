@@ -135,25 +135,24 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Do()
 		{
 			foreach (var resourceCell in cellResources)
-			{
-				resourceLayer.ClearResources(resourceCell.Cell);
 				resourceLayer.AddResource(resourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceType));
-			}
 		}
 
 		public void Undo()
 		{
 			foreach (var resourceCell in cellResources)
 			{
-				resourceLayer.ClearResources(resourceCell.Cell);
-				if (resourceCell.OldResourceTile.Type != null)
+				// If resources match, simulate a replace command.
+				if (resourceCell.OldResourceTile.Type == resourceType || resourceCell.OldResourceTile.Type == null)
+					resourceLayer.ClearResources(resourceCell.Cell);
+
+				if (resourceCell.OldResourceTile.Type == resourceType || resourceCell.OldResourceTile.Type != null)
 					resourceLayer.AddResource(resourceCell.OldResourceTile.Type, resourceCell.Cell, resourceCell.OldResourceTile.Density);
 			}
 		}
 
 		public void Add(CellResource resourceCell)
 		{
-			resourceLayer.ClearResources(resourceCell.Cell);
 			resourceLayer.AddResource(resourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceType));
 			cellResources.Add(resourceCell);
 			Text = FluentProvider.GetMessage(AddedResource, "amount", cellResources.Count, "type", resourceType);
