@@ -174,12 +174,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateNetWorth(string oldResourceType, int oldDensity, string newResourceType, int newDensity)
 		{
-			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
 			if (oldResourceType != null && oldDensity > 0 && resourceValues.TryGetValue(oldResourceType, out var oldResourceValue))
-				NetWorth -= (oldDensity + 1) * oldResourceValue;
+				NetWorth -= oldDensity * oldResourceValue;
 
 			if (newResourceType != null && newDensity > 0 && resourceValues.TryGetValue(newResourceType, out var newResourceValue))
-				NetWorth += (newDensity + 1) * newResourceValue;
+				NetWorth += newDensity * newResourceValue;
 		}
 
 		public int CalculateRegionValue(CellRegion sourceRegion)
@@ -188,39 +187,44 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in sourceRegion.CellCoords)
 			{
 				var mcell = cell.ToMPos(Map);
-				if (Map.Resources.Contains(mcell) && Map.Resources[mcell].Type != 0)
-				{
-					resourceValueInRegion++;
-					var rcell = Map.Resources[mcell];
-					if (ResourceTypesByIndex.TryGetValue(rcell.Type, out var resourceType) && resourceValues.TryGetValue(resourceType, out var resourceValuePerUnit))
-						resourceValueInRegion += Tiles[mcell].Density * resourceValuePerUnit;
-				}
+				if (!Map.Resources.Contains(mcell))
+					continue;
+
+				var resource = Map.Resources[mcell].Type;
+				if (resource != 0
+					&& ResourceTypesByIndex.TryGetValue(resource, out var resourceType)
+					&& resourceValues.TryGetValue(resourceType, out var resourceValuePerUnit))
+					resourceValueInRegion += Tiles[mcell].Density * resourceValuePerUnit;
 			}
 
 			return resourceValueInRegion;
 		}
 
-		protected virtual int CalculateCellDensity(ResourceLayerContents contents, CPos c)
+		/// <summary>
+		/// Matches the logic in <see cref="ResourceLayer"/> trait.
+		/// </summary>
+		protected virtual int CalculateCellDensity(ResourceLayerContents contents, CPos cell)
 		{
 			var resources = Map.Resources;
-			if (contents.Type == null || !info.ResourceTypes.TryGetValue(contents.Type, out var resourceInfo) || resources[c].Type != resourceInfo.ResourceIndex)
+			if (contents.Type == null || !info.ResourceTypes.TryGetValue(contents.Type, out var resourceInfo) || resources[cell].Type != resourceInfo.ResourceIndex)
 				return 0;
 
 			if (!info.RecalculateResourceDensity)
 				return contents.Density.Clamp(1, resourceInfo.MaxDensity);
 
-			// Set density based on the number of neighboring resources
+			// Set density based on the number of neighboring resources.
 			var adjacent = 0;
-			for (var u = -1; u < 2; u++)
+			var directions = CVec.Directions;
+			for (var i = 0; i < directions.Length; i++)
 			{
-				for (var v = -1; v < 2; v++)
-				{
-					var cell = c + new CVec(u, v);
-					if (resources.Contains(cell) && resources[cell].Type == resourceInfo.ResourceIndex)
-						adjacent++;
-				}
+				var c = cell + directions[i];
+				if (resources.Contains(c) && resources[c].Type == resourceInfo.ResourceIndex)
+					++adjacent;
 			}
 
+			// We need to have at least one resource in the cell.
+			// HACK: we should not be lerping to 9, as maximum adjacent resources is 8.
+			// HACK: it's too disruptive to fix.
 			return Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
 		}
 

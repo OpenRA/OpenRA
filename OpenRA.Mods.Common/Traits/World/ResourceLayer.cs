@@ -160,7 +160,9 @@ namespace OpenRA.Mods.Common.Traits
 						++adjacent;
 				}
 
-				// Adjacent includes the current cell, so is always >= 1
+				// We need to have at least one resource in the cell.
+				// HACK: we should not be lerping to 9, as maximum adjacent resources is 8.
+				// HACK: it's too disruptive to fix.
 				var density = Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
 				Content[cell] = new ResourceLayerContents(resource.Type, density);
 			}
