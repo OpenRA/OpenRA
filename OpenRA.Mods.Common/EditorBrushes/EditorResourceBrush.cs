@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && resourceLayer.CanAddResource(ResourceType, cell))
 			{
-				action.Add(new CellResource(cell, resourceLayer.GetResource(cell), ResourceType));
+				action.Add(new CellResource(cell, resourceLayer.GetResource(cell)));
 				resourceAdded = true;
 			}
 			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Dispose() { }
 	}
 
-	readonly record struct CellResource(CPos Cell, ResourceLayerContents OldResourceTile, string NewResourceType);
+	readonly record struct CellResource(CPos Cell, ResourceLayerContents OldResourceTile);
 
 	sealed class AddResourcesEditorAction : IEditorAction
 	{
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var resourceCell in cellResources)
 			{
 				resourceLayer.ClearResources(resourceCell.Cell);
-				resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
+				resourceLayer.AddResource(resourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceType));
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Add(CellResource resourceCell)
 		{
 			resourceLayer.ClearResources(resourceCell.Cell);
-			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
+			resourceLayer.AddResource(resourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceType));
 			cellResources.Add(resourceCell);
 			Text = FluentProvider.GetMessage(AddedResource, "amount", cellResources.Count, "type", resourceType);
 		}
