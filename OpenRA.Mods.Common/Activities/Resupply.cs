@@ -158,6 +158,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!actualResupplyStarted && activeResupplyTypes > 0)
 			{
 				actualResupplyStarted = true;
+				foreach (var t in transportCallers)
+					t.MovementCancelled(self);
+
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
 

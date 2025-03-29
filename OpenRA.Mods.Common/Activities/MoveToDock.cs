@@ -115,6 +115,9 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else
 			{
+				foreach (var ndcm in notifyDockClientMoving)
+					ndcm.MovementCancelled(self);
+
 				// The dock explicitly chosen by the user is currently occupied. Wait and check again.
 				QueueChild(new Wait(dockClient.Info.SearchForDockDelay));
 				return false;
