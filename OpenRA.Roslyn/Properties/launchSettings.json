@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Game": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\OpenRA.Game\\OpenRA.Game.csproj"
+    },
+    "Common": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\OpenRA.Mods.Common\\OpenRA.Mods.Common.csproj"
+    },
+    "Cnc": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\OpenRA.Mods.Cnc\\OpenRA.Mods.Cnc.csproj"
+    },
+    "D2k": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\OpenRA.Mods.D2k\\OpenRA.Mods.D2k.csproj"
+    }
+  }
+}

@@ -488,16 +488,16 @@ namespace OpenRA
 
 				// Hash all the actors.
 				foreach (var a in Actors)
-					ret += n++ * (int)(1 + a.ActorID) * Sync.HashActor(a);
+					ret += n++ * (int)(1 + a.ActorID) * Sync.Hash(a);
 
-				// Hash fields marked with the ISync interface.
+				// Hash fields marked with the VerifySyncAttribute on traits implementing ISync.
 				foreach (var actor in ActorsHavingTrait<ISync>())
-					foreach (var syncHash in actor.SyncHashes)
-						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash();
+					foreach (var syncHash in actor.SyncTraits)
+						ret += n++ * (int)(1 + actor.ActorID) * syncHash.GetSyncHash();
 
 				// Hash game state relevant effects such as projectiles.
 				foreach (var sync in SyncedEffects)
-					ret += n++ * Sync.Hash(sync);
+					ret += n++ * sync.GetSyncHash();
 
 				// Hash the shared random number generator.
 				ret += SharedRandom.Last;
@@ -505,7 +505,7 @@ namespace OpenRA
 				// Hash player RenderPlayer status
 				foreach (var p in Players)
 					if (p.UnlockedRenderPlayer)
-						ret += Sync.HashPlayer(p);
+						ret += Sync.Hash(p);
 
 				return ret;
 			}
