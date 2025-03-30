@@ -205,6 +205,9 @@ label-chat-availability =
        *[other] Chat available in { $seconds } seconds...
     }
 
+## LobbyLogic, ServerListLogic
+label-bot-player = AI Player
+
 ## IngameMenuLogic
 menu-ingame =
     .leave = Leave

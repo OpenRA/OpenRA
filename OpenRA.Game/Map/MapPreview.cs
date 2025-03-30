@@ -253,11 +253,26 @@ namespace OpenRA
 		/// </summary>
 		public string GetMessage(string key, object[] args = null)
 		{
-			// PERF: instead of loading mod level strings per each MapPreview, reuse the already loaded one in FluentProvider.
-			if (FluentProvider.TryGetModMessage(key, out var message, args))
+			if (TryGetMessage(key, out var message, args))
 				return message;
 
-			return innerData.FluentBundle?.GetMessage(key, args) ?? key;
+			return key;
+		}
+
+		/// <summary>
+		/// Functionality mirrors <see cref="FluentProvider.TryGetMessage"/>, except instead of using
+		/// loaded <see cref="Map"/>'s fluent bundle as backup, we use this <see cref="MapPreview"/>'s.
+		/// </summary>
+		public bool TryGetMessage(string key, out string message, object[] args = null)
+		{
+			// PERF: instead of loading mod level strings per each MapPreview, reuse the already loaded one in FluentProvider.
+			if (FluentProvider.TryGetModMessage(key, out message, args))
+				return true;
+
+			if (innerData.FluentBundle == null)
+				return false;
+
+			return innerData.FluentBundle.TryGetMessage(key, out message, args);
 		}
 
 		Sprite minimap;

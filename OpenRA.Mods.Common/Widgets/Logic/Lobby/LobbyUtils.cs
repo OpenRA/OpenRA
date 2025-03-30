@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string Bots = "options-lobby-slot.bots";
 
 		[FluentReference]
+		const string BotPlayer = "label-bot-player";
+
+		[FluentReference]
 		const string BotsDisabled = "options-lobby-slot.bots-disabled";
 
 		[FluentReference]
@@ -432,7 +435,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[label.Font];
 
 			var clientName = new CachedTransform<MapStatus, string>(s =>
-				WidgetUtils.TruncateText(c.IsBot ? map.GetMessage(c.Name) : c.Name, label.Bounds.Width, font));
+			{
+				var name = c.Name;
+				if (c.IsBot && !map.TryGetMessage(c.Name, out name))
+					name = FluentProvider.GetMessage(BotPlayer);
+
+				return WidgetUtils.TruncateText(name, label.Bounds.Width, font);
+			});
 
 			label.GetText = () => clientName.Update(map.Status);
 
@@ -453,7 +462,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var closed = FluentProvider.GetMessage(Closed);
 			var open = FluentProvider.GetMessage(Open);
 
-			var clientName = new CachedTransform<MapStatus, string>(s => c.IsBot ? map.GetMessage(c.Name) : c.Name);
+			var clientName = new CachedTransform<MapStatus, string>(s =>
+			{
+				if (c.IsBot)
+				{
+					if (map.TryGetMessage(c.Name, out var message))
+						return message;
+					else
+						return FluentProvider.GetMessage(BotPlayer);
+				}
+
+				return c.Name;
+			});
+
 			slot.GetText = () => truncated.Update(c != null ?
 				clientName.Update(map.Status)
 				: s.Closed ? closed : open);
