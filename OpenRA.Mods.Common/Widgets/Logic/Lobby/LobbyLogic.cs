@@ -751,7 +751,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 					else
 					{
-						LobbyUtils.SetupNameWidget(template, client, orderManager, worldRenderer);
+						LobbyUtils.SetupNameWidget(template, client, orderManager, worldRenderer, map);
 						LobbyUtils.SetupTeamWidget(template, client);
 						LobbyUtils.SetupHandicapWidget(template, client);
 						LobbyUtils.SetupSpawnWidget(template, client);
@@ -803,7 +803,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						LobbyUtils.SetupPlayerActionWidget(template, client, orderManager, worldRenderer,
 							lobby, () => panel = PanelType.Kick, () => panel = PanelType.Players);
 					else
-						LobbyUtils.SetupNameWidget(template, client, orderManager, worldRenderer);
+						LobbyUtils.SetupNameWidget(template, client, orderManager, worldRenderer, map);
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupReadyWidget(template, client);

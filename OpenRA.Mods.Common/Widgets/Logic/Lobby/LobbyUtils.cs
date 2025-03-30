@@ -425,14 +425,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
-		public static void SetupNameWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
+		public static void SetupNameWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer, MapPreview map)
 		{
 			var label = parent.Get<LabelWidget>("NAME");
 			label.IsVisible = () => true;
 			var font = Game.Renderer.Fonts[label.Font];
-			var name = c.IsBot ? FluentProvider.GetMessage(c.Name) : c.Name;
-			var text = WidgetUtils.TruncateText(name, label.Bounds.Width, font);
-			label.GetText = () => text;
+
+			var clientName = new CachedTransform<MapStatus, string>(s =>
+				WidgetUtils.TruncateText(c.IsBot ? map.GetMessage(c.Name) : c.Name, label.Bounds.Width, font));
+
+			label.GetText = () => clientName.Update(map.Status);
 
 			SetupProfileWidget(parent, c, orderManager, worldRenderer);
 		}
@@ -450,9 +452,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var closed = FluentProvider.GetMessage(Closed);
 			var open = FluentProvider.GetMessage(Open);
+
+			var clientName = new CachedTransform<MapStatus, string>(s => c.IsBot ? map.GetMessage(c.Name) : c.Name);
 			slot.GetText = () => truncated.Update(c != null ?
-				c.IsBot ? map.GetMessage(c.Name) : c.Name
-					: s.Closed ? closed : open);
+				clientName.Update(map.Status)
+				: s.Closed ? closed : open);
 
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map, modData);
 
