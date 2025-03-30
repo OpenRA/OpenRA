@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileSystem;
@@ -241,39 +242,61 @@ namespace OpenRA
 			{
 				var client = HttpClientFactory.Create();
 				var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+				var buffer = new StringBuilder();
 
 				// Limit each query to 50 maps at a time to avoid request size limits
 				for (var i = 0; i < queryUids.Count; i += 50)
 				{
 					var batchUids = queryUids.Skip(i).Take(50).ToList();
 					var url = repositoryUrl + "hash/" + string.Join(",", batchUids) + "/yaml";
-					try
+
+					using (new PerfTimer("RemoteMapDetails"))
 					{
-						var httpResponseMessage = await client.GetAsync(url);
-						var result = await httpResponseMessage.Content.ReadAsStreamAsync();
-
-						var yaml = MiniYaml.FromStream(result, url, stringPool: stringPool);
-						foreach (var kv in yaml)
-							previews[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
-
-						foreach (var uid in batchUids)
+						try
 						{
-							var p = previews[uid];
-							if (p.Status != MapStatus.DownloadAvailable)
-								p.UpdateRemoteSearch(MapStatus.Unavailable, null, null);
+							await using (var resultStream = await client.GetStreamAsync(url))
+							{
+								using (var resultReader = new StreamReader(resultStream))
+								{
+									while (true)
+									{
+										var line = await resultReader.ReadLineAsync();
+										if (line == null || !line.StartsWith('\t'))
+										{
+											var yaml = MiniYaml.FromString(buffer.ToString(), url, stringPool: stringPool);
+											buffer.Clear();
+											foreach (var kv in yaml)
+												previews[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
+
+											if (line == null)
+												break;
+										}
+
+										buffer.Append(line);
+										buffer.Append('\n');
+									}
+								}
+							}
+
+							foreach (var uid in batchUids)
+							{
+								var p = previews[uid];
+								if (p.Status != MapStatus.DownloadAvailable)
+									p.UpdateRemoteSearch(MapStatus.Unavailable, null, null);
+							}
 						}
-					}
-					catch (Exception e)
-					{
-						Log.Write("debug", "Remote map query failed with error:");
-						Log.Write("debug", e);
-						Log.Write("debug", $"URL was: {url}");
-
-						foreach (var uid in batchUids)
+						catch (Exception e)
 						{
-							var p = previews[uid];
-							p.UpdateRemoteSearch(MapStatus.Unavailable, null, null);
-							mapQueryFailed?.Invoke(p);
+							Log.Write("debug", "Remote map query failed with error:");
+							Log.Write("debug", e);
+							Log.Write("debug", $"URL was: {url}");
+
+							foreach (var uid in batchUids)
+							{
+								var p = previews[uid];
+								p.UpdateRemoteSearch(MapStatus.Unavailable, null, null);
+								mapQueryFailed?.Invoke(p);
+							}
 						}
 					}
 				}
