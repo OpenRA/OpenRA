@@ -22,5 +22,5 @@ actor-sniper =
 actor-mig-bomber-name = MiG Bomber
 
 ## rules.yaml
+bot-lonestarai-name = Lonestar AI
 actor-powerproxy-parabombs-description = A MiG bomber drops a load of parachuted bombs on your target.
-

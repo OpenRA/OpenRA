@@ -17,8 +17,10 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.Player)]
 	public sealed class DummyBotInfo : TraitInfo, IBotInfo
 	{
+		[FieldLoader.Require]
+		[FluentReference]
 		[Desc("Human-readable name this bot uses.")]
-		public readonly string Name = "Unnamed Bot";
+		public readonly string Name = null;
 
 		[FieldLoader.Require]
 		[Desc("Internal id for this bot.")]
