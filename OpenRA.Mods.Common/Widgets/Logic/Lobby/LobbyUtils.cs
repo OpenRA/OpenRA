@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var b in map.PlayerActorInfo.TraitInfos<IBotInfo>())
 				{
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					bots.Add(new SlotDropDownOption(FluentProvider.GetMessage(b.Name),
+					bots.Add(new SlotDropDownOption(map.GetMessage(b.Name),
 						$"slot_bot {slot.PlayerReference} {botController.Index} {b.Type}",
 						() => client != null && client.Bot == b.Type));
 				}
@@ -451,7 +451,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var closed = FluentProvider.GetMessage(Closed);
 			var open = FluentProvider.GetMessage(Open);
 			slot.GetText = () => truncated.Update(c != null ?
-				c.IsBot ? FluentProvider.GetMessage(c.Name) : c.Name
+				c.IsBot ? map.GetMessage(c.Name) : c.Name
 					: s.Closed ? closed : open);
 
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map, modData);
