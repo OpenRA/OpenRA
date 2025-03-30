@@ -762,14 +762,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							if (game.Clients.Length > 0)
 							{
-								var displayClients = game.Clients.Select(c => c.Name);
-								if (game.Clients.Length > 10)
-									displayClients = displayClients
-										.Take(9)
-										.Append(FluentProvider.GetMessage(OtherPlayers, "players", game.Clients.Length - 9));
+								var preview = modData.MapCache[game.Map];
+								var tooltip = new CachedTransform<MapStatus, string>(s =>
+								{
+									var displayClients = game.Clients.Select(c => c.IsBot ? preview.GetMessage(c.Name) : c.Name);
+									if (game.Clients.Length > 10)
+										displayClients = displayClients
+											.Take(9)
+											.Append(FluentProvider.GetMessage(OtherPlayers, "players", game.Clients.Length - 9));
 
-								var tooltip = displayClients.JoinWith("\n");
-								players.GetTooltipText = () => tooltip;
+									return displayClients.JoinWith("\n");
+								});
+
+								players.GetTooltipText = () => tooltip.Update(preview.Status);
 							}
 							else
 								players.GetTooltipText = null;
