@@ -22,17 +22,7 @@ namespace OpenRA.Mods.Common.FileSystem
 	{
 		public sealed class InstallShieldPackage : IReadOnlyPackage
 		{
-			public readonly struct Entry
-			{
-				public readonly uint Offset;
-				public readonly uint Length;
-
-				public Entry(uint offset, uint length)
-				{
-					Offset = offset;
-					Length = length;
-				}
-			}
+			public readonly record struct Entry(uint Offset, uint Length);
 
 			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;

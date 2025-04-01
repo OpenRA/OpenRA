@@ -19,19 +19,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.Terrain
 {
-	public class TheaterTemplate
-	{
-		public readonly Sprite[] Sprites;
-		public readonly int Stride;
-		public readonly int Variants;
-
-		public TheaterTemplate(Sprite[] sprites, int stride, int variants)
-		{
-			Sprites = sprites;
-			Stride = stride;
-			Variants = variants;
-		}
-	}
+	public record TheaterTemplate(Sprite[] Sprites, int Stride, int Variants);
 
 	public sealed class DefaultTileCache : IDisposable
 	{

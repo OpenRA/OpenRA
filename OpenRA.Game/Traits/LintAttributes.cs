@@ -46,33 +46,21 @@ namespace OpenRA.Traits
 	public sealed class WeaponReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class SequenceReferenceAttribute : Attribute
+	public sealed class SequenceReferenceAttribute(
+		string imageReference = null, bool prefix = false, bool allowNullImage = false,
+		LintDictionaryReference dictionaryReference = LintDictionaryReference.None) : Attribute
 	{
 		// The field name in the same trait info that contains the image name.
-		public readonly string ImageReference;
-		public readonly bool Prefix;
-		public readonly bool AllowNullImage;
-		public readonly LintDictionaryReference DictionaryReference;
-
-		public SequenceReferenceAttribute(string imageReference = null, bool prefix = false, bool allowNullImage = false,
-			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
-		{
-			ImageReference = imageReference;
-			Prefix = prefix;
-			AllowNullImage = allowNullImage;
-			DictionaryReference = dictionaryReference;
-		}
+		public readonly string ImageReference = imageReference;
+		public readonly bool Prefix = prefix;
+		public readonly bool AllowNullImage = allowNullImage;
+		public readonly LintDictionaryReference DictionaryReference = dictionaryReference;
 	}
 
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class CursorReferenceAttribute : Attribute
+	public sealed class CursorReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None) : Attribute
 	{
-		public readonly LintDictionaryReference DictionaryReference;
-
-		public CursorReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
-		{
-			DictionaryReference = dictionaryReference;
-		}
+		public readonly LintDictionaryReference DictionaryReference = dictionaryReference;
 	}
 
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
@@ -82,13 +70,9 @@ namespace OpenRA.Traits
 	public sealed class ConsumedConditionReferenceAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class PaletteDefinitionAttribute : Attribute
+	public sealed class PaletteDefinitionAttribute(bool isPlayerPalette = false) : Attribute
 	{
-		public readonly bool IsPlayerPalette;
-		public PaletteDefinitionAttribute(bool isPlayerPalette = false)
-		{
-			IsPlayerPalette = isPlayerPalette;
-		}
+		public readonly bool IsPlayerPalette = isPlayerPalette;
 	}
 
 	[AttributeUsage(AttributeTargets.Field)]
@@ -108,12 +92,8 @@ namespace OpenRA.Traits
 	}
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public sealed class TraitLocationAttribute : Attribute
+	public sealed class TraitLocationAttribute(SystemActors systemActors) : Attribute
 	{
-		public readonly SystemActors SystemActors;
-		public TraitLocationAttribute(SystemActors systemActors)
-		{
-			SystemActors = systemActors;
-		}
+		public readonly SystemActors SystemActors = systemActors;
 	}
 }

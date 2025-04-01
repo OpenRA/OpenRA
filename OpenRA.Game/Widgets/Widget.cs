@@ -182,21 +182,13 @@ namespace OpenRA.Widgets
 		protected virtual void Dispose(bool disposing) { }
 	}
 
-	public struct WidgetBounds
+	public struct WidgetBounds(int x, int y, int width, int height)
 	{
-		public int X, Y, Width, Height;
+		public int X = x, Y = y, Width = width, Height = height;
 		public readonly int Left => X;
 		public readonly int Right => X + Width;
 		public readonly int Top => Y;
 		public readonly int Bottom => Y + Height;
-
-		public WidgetBounds(int x, int y, int width, int height)
-		{
-			X = x;
-			Y = y;
-			Width = width;
-			Height = height;
-		}
 
 		public readonly Rectangle ToRectangle()
 		{

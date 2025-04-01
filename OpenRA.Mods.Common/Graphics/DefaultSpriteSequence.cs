@@ -74,17 +74,7 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 	}
 
-	public struct SpriteSequenceField<T>
-	{
-		public string Key;
-		public T DefaultValue;
-
-		public SpriteSequenceField(string key, T defaultValue)
-		{
-			Key = key;
-			DefaultValue = defaultValue;
-		}
-	}
+	public readonly record struct SpriteSequenceField<T>(string Key, T DefaultValue);
 
 	[Desc("Generic sprite sequence implementation, mostly unencumbered with game- or artwork-specific logic.")]
 	public class DefaultSpriteSequence : ISpriteSequence

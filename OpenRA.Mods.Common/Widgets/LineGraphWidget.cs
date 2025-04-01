@@ -230,17 +230,5 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	public class LineGraphSeries
-	{
-		public string Key;
-		public Color Color;
-		public IEnumerable<float> Points;
-
-		public LineGraphSeries(string key, Color color, IEnumerable<float> points)
-		{
-			Key = key;
-			Color = color;
-			Points = points;
-		}
-	}
+	public record LineGraphSeries(string Key, Color Color, IEnumerable<float> Points);
 }

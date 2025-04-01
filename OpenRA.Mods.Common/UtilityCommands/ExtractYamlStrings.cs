@@ -229,22 +229,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		struct ExtractionCandidate
+		struct ExtractionCandidate(string actor, string key, string value, MiniYamlNodeBuilder node)
 		{
-			public string Filename;
-			public readonly string Actor;
-			public readonly string Key;
-			public readonly string Value;
-			public readonly List<MiniYamlNodeBuilder> Nodes;
-
-			public ExtractionCandidate(string actor, string key, string value, MiniYamlNodeBuilder node)
-			{
-				Filename = null;
-				Actor = actor;
-				Key = key;
-				Value = value;
-				Nodes = [node];
-			}
+			public string Filename = null;
+			public readonly string Actor = actor;
+			public readonly string Key = key;
+			public readonly string Value = value;
+			public readonly List<MiniYamlNodeBuilder> Nodes = [node];
 		}
 
 		static string ToLowerActor(string actor)

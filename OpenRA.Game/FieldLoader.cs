@@ -841,9 +841,8 @@ namespace OpenRA
 
 	// Mirrors DescriptionAttribute from System.ComponentModel but we don't want to have to use that everywhere.
 	[AttributeUsage(AttributeTargets.All)]
-	public sealed class DescAttribute : Attribute
+	public sealed class DescAttribute(params string[] lines) : Attribute
 	{
-		public readonly string[] Lines;
-		public DescAttribute(params string[] lines) { Lines = lines; }
+		public readonly string[] Lines = lines;
 	}
 }

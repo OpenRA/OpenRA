@@ -628,16 +628,7 @@ namespace OpenRA.Traits
 	public interface IObservesVariablesInfo : ITraitInfoInterface { }
 
 	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
-	public struct VariableObserver
-	{
-		public VariableObserverNotifier Notifier;
-		public IEnumerable<string> Variables;
-		public VariableObserver(VariableObserverNotifier notifier, IEnumerable<string> variables)
-		{
-			Notifier = notifier;
-			Variables = variables;
-		}
-	}
+	public readonly record struct VariableObserver(VariableObserverNotifier Notifier, IEnumerable<string> Variables);
 
 	public interface IObservesVariables
 	{

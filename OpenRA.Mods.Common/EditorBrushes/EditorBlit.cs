@@ -16,35 +16,9 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.EditorBrushes
 {
-	public readonly struct BlitTile
-	{
-		public readonly TerrainTile TerrainTile;
-		public readonly ResourceTile ResourceTile;
-		public readonly ResourceLayerContents? ResourceLayerContents;
-		public readonly byte Height;
+	public readonly record struct BlitTile(TerrainTile TerrainTile, ResourceTile ResourceTile, ResourceLayerContents? ResourceLayerContents, byte Height);
 
-		public BlitTile(TerrainTile terrainTile, ResourceTile resourceTile, ResourceLayerContents? resourceLayerContents, byte height)
-		{
-			TerrainTile = terrainTile;
-			ResourceTile = resourceTile;
-			ResourceLayerContents = resourceLayerContents;
-			Height = height;
-		}
-	}
-
-	public readonly struct EditorBlitSource
-	{
-		public readonly CellRegion CellRegion;
-		public readonly Dictionary<string, EditorActorPreview> Actors;
-		public readonly Dictionary<CPos, BlitTile> Tiles;
-
-		public EditorBlitSource(CellRegion cellRegion, Dictionary<string, EditorActorPreview> actors, Dictionary<CPos, BlitTile> tiles)
-		{
-			CellRegion = cellRegion;
-			Actors = actors;
-			Tiles = tiles;
-		}
-	}
+	public readonly record struct EditorBlitSource(CellRegion CellRegion, Dictionary<string, EditorActorPreview> Actors, Dictionary<CPos, BlitTile> Tiles);
 
 	[Flags]
 	public enum MapBlitFilters

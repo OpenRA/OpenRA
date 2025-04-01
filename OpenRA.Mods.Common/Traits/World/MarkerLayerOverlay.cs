@@ -378,17 +378,7 @@ namespace OpenRA.Mods.Common.Traits
 			disposed = true;
 		}
 
-		readonly struct MapLine
-		{
-			public readonly float2 Start;
-			public readonly float2 End;
-
-			public MapLine(float2 start, float2 end)
-			{
-				Start = start;
-				End = end;
-			}
-		}
+		readonly record struct MapLine(float2 Start, float2 End);
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{

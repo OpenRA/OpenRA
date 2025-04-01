@@ -170,18 +170,6 @@ namespace OpenRA.Mods.Common.Traits
 			return points;
 		}
 
-		sealed class Arrow
-		{
-			public Sprite Sprite { get; }
-			public double EndAngle { get; }
-			public WAngle Direction { get; }
-
-			public Arrow(Sprite sprite, double endAngle, WAngle direction)
-			{
-				Sprite = sprite;
-				EndAngle = endAngle;
-				Direction = direction;
-			}
-		}
+		sealed record Arrow(Sprite Sprite, double EndAngle, WAngle Direction);
 	}
 }

@@ -18,12 +18,10 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Traits
 {
-	public readonly struct ActorBoundsPair
+	public readonly struct ActorBoundsPair(Actor actor, Polygon bounds)
 	{
-		public readonly Actor Actor;
-		public readonly Polygon Bounds;
-
-		public ActorBoundsPair(Actor actor, Polygon bounds) { Actor = actor; Bounds = bounds; }
+		public readonly Actor Actor = actor;
+		public readonly Polygon Bounds = bounds;
 
 		public override int GetHashCode() { return Actor.GetHashCode() ^ Bounds.GetHashCode(); }
 

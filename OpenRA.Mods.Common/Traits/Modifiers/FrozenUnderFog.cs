@@ -40,14 +40,10 @@ namespace OpenRA.Mods.Common.Traits
 		bool isRendering;
 		bool created;
 
-		sealed class FrozenState
+		sealed class FrozenState(FrozenActor frozenActor)
 		{
-			public readonly FrozenActor FrozenActor;
+			public readonly FrozenActor FrozenActor = frozenActor;
 			public bool IsVisible;
-			public FrozenState(FrozenActor frozenActor)
-			{
-				FrozenActor = frozenActor;
-			}
 		}
 
 		public FrozenUnderFog(ActorInitializer init, FrozenUnderFogInfo info)

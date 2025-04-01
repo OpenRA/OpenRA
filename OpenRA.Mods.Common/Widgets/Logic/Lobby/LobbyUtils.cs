@@ -42,19 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Slot = "options-lobby-slot.slot";
 
-		sealed class SlotDropDownOption
-		{
-			public readonly string Title;
-			public readonly string Order;
-			public readonly Func<bool> Selected;
-
-			public SlotDropDownOption(string title, string order, Func<bool> selected)
-			{
-				Title = title;
-				Order = order;
-				Selected = selected;
-			}
-		}
+		sealed record SlotDropDownOption(string Title, string Order, Func<bool> Selected);
 
 		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager, MapPreview map, ModData modData)
@@ -714,19 +702,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var widget = parent.GetOrNull(widgetId);
 			if (widget != null)
 				widget.IsVisible = () => false;
-		}
-	}
-
-	sealed class ShowPlayerActionDropDownOption
-	{
-		public Action Click { get; set; }
-		public string Title;
-		public Func<bool> Selected = () => false;
-
-		public ShowPlayerActionDropDownOption(string title, Action click)
-		{
-			Click = click;
-			Title = title;
 		}
 	}
 }

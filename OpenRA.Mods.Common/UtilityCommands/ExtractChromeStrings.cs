@@ -200,22 +200,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		struct ExtractionCandidate
+		struct ExtractionCandidate(string key, string type, string value, MiniYamlNodeBuilder node)
 		{
-			public string Chrome;
-			public readonly string Key;
-			public readonly string Type;
-			public readonly string Value;
-			public readonly List<MiniYamlNodeBuilder> Nodes;
-
-			public ExtractionCandidate(string key, string type, string value, MiniYamlNodeBuilder node)
-			{
-				Chrome = null;
-				Key = key;
-				Type = type;
-				Value = value;
-				Nodes = [node];
-			}
+			public string Chrome = null;
+			public readonly string Key = key;
+			public readonly string Type = type;
+			public readonly string Value = value;
+			public readonly List<MiniYamlNodeBuilder> Nodes = [node];
 		}
 
 		static string ClearContainersAndToLower(string node)

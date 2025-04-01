@@ -17,17 +17,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public readonly struct ResourceLayerContents
+	public readonly struct ResourceLayerContents(string type, int density)
 	{
 		public static readonly ResourceLayerContents Empty = default;
-		public readonly string Type;
-		public readonly int Density;
-
-		public ResourceLayerContents(string type, int density)
-		{
-			Type = type;
-			Density = density;
-		}
+		public readonly string Type = type;
+		public readonly int Density = density;
 	}
 
 	[TraitLocation(SystemActors.World)]

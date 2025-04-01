@@ -32,17 +32,7 @@ namespace OpenRA
 		void SetSoundPosition(ISound sound, WPos position);
 	}
 
-	public class SoundDevice
-	{
-		public readonly string Device;
-		public readonly string Label;
-
-		public SoundDevice(string device, string label)
-		{
-			Device = device;
-			Label = label;
-		}
-	}
+	public record SoundDevice(string Device, string Label);
 
 	public interface ISoundSource : IDisposable { }
 

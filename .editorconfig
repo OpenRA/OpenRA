@@ -72,7 +72,7 @@ dotnet_diagnostic.IDE0211.severity = warning
 
 # IDE0290 Use primary constructor
 #csharp_style_prefer_primary_constructors = true
-dotnet_diagnostic.IDE0290.severity = suggestion # TODO: Consider enabling
+dotnet_diagnostic.IDE0290.severity = silent
 
 # IDE0330 Prefer 'System.Threading.Lock'
 #csharp_prefer_system_threading_lock = true

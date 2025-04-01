@@ -59,16 +59,10 @@ namespace OpenRA
 
 	public sealed class MiniYamlNode
 	{
-		public readonly struct SourceLocation
+		public readonly struct SourceLocation(string name, int line)
 		{
-			public readonly string Name;
-			public readonly int Line;
-
-			public SourceLocation(string name, int line)
-			{
-				Name = name;
-				Line = line;
-			}
+			public readonly string Name = name;
+			public readonly int Line = line;
 
 			public override string ToString() { return $"{Name}:{Line}"; }
 		}

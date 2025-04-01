@@ -94,16 +94,10 @@ namespace OpenRA.Mods.Common.Traits
 			BottomLeft
 		}
 
-		readonly struct TileInfo
+		readonly struct TileInfo(in float3 screenPosition, byte variant)
 		{
-			public readonly float3 ScreenPosition;
-			public readonly byte Variant;
-
-			public TileInfo(in float3 screenPosition, byte variant)
-			{
-				ScreenPosition = screenPosition;
-				Variant = variant;
-			}
+			public readonly float3 ScreenPosition = screenPosition;
+			public readonly byte Variant = variant;
 		}
 
 		readonly ShroudRendererInfo info;

@@ -130,19 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Locomotor : IWorldLoaded
 	{
-		readonly struct CellCache
-		{
-			public readonly LongBitSet<PlayerBitMask> Immovable;
-			public readonly LongBitSet<PlayerBitMask> Crushable;
-			public readonly CellFlag CellFlag;
-
-			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable)
-			{
-				Immovable = immovable;
-				Crushable = crushable;
-				CellFlag = cellFlag;
-			}
-		}
+		readonly record struct CellCache(LongBitSet<PlayerBitMask> Immovable, CellFlag CellFlag, LongBitSet<PlayerBitMask> Crushable);
 
 		public readonly LocomotorInfo Info;
 

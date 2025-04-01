@@ -109,19 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Dispose() { }
 	}
 
-	readonly struct CellResource
-	{
-		public readonly CPos Cell;
-		public readonly ResourceLayerContents OldResourceTile;
-		public readonly string NewResourceType;
-
-		public CellResource(CPos cell, ResourceLayerContents oldResourceTile, string newResourceType)
-		{
-			Cell = cell;
-			OldResourceTile = oldResourceTile;
-			NewResourceType = newResourceType;
-		}
-	}
+	readonly record struct CellResource(CPos Cell, ResourceLayerContents OldResourceTile, string NewResourceType);
 
 	sealed class AddResourcesEditorAction : IEditorAction
 	{

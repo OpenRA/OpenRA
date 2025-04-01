@@ -179,12 +179,6 @@ namespace OpenRA
 		TriangleList,
 	}
 
-	public readonly struct Range<T>
-	{
-		public readonly T Start, End;
-		public Range(T start, T end) { Start = start; End = end; }
-	}
-
 	public enum WindowMode
 	{
 		Windowed,

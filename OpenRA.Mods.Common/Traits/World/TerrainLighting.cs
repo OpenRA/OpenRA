@@ -35,22 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public sealed class TerrainLighting : ITerrainLighting
 	{
-		sealed class LightSource
+		sealed class LightSource(WPos pos, CPos cell, WDist range, float intensity, in float3 tint)
 		{
-			public readonly WPos Pos;
-			public readonly CPos Cell;
-			public readonly WDist Range;
-			public readonly float Intensity;
-			public readonly float3 Tint;
-
-			public LightSource(WPos pos, CPos cell, WDist range, float intensity, in float3 tint)
-			{
-				Pos = pos;
-				Cell = cell;
-				Range = range;
-				Intensity = intensity;
-				Tint = tint;
-			}
+			public readonly WPos Pos = pos;
+			public readonly CPos Cell = cell;
+			public readonly WDist Range = range;
+			public readonly float Intensity = intensity;
+			public readonly float3 Tint = tint;
 		}
 
 		readonly TerrainLightingInfo info;

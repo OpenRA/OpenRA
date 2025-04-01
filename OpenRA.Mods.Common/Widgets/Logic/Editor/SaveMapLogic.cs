@@ -30,19 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public string UiLabel;
 		}
 
-		sealed class SaveDirectory
-		{
-			public readonly Folder Folder;
-			public readonly string DisplayName;
-			public readonly MapClassification Classification;
-
-			public SaveDirectory(Folder folder, string displayName, MapClassification classification)
-			{
-				Folder = folder;
-				DisplayName = displayName;
-				Classification = classification;
-			}
-		}
+		sealed record SaveDirectory(Folder Folder, string DisplayName, MapClassification Classification);
 
 		[FluentReference]
 		const string SaveMapFailedTitle = "dialog-save-map-failed.title";

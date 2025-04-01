@@ -380,17 +380,5 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	sealed class UndoTile
-	{
-		public CPos Cell { get; }
-		public TerrainTile MapTile { get; }
-		public byte Height { get; }
-
-		public UndoTile(CPos cell, TerrainTile mapTile, byte height)
-		{
-			Cell = cell;
-			MapTile = mapTile;
-			Height = height;
-		}
-	}
+	sealed record UndoTile(CPos Cell, TerrainTile MapTile, byte Height);
 }

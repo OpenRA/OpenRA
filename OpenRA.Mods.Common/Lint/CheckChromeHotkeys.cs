@@ -18,13 +18,9 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Lint
 {
 	[AttributeUsage(AttributeTargets.Class)]
-	public sealed class ChromeLogicArgsHotkeys : Attribute
+	public sealed class ChromeLogicArgsHotkeys(params string[] logicArgKeys) : Attribute
 	{
-		public string[] LogicArgKeys;
-		public ChromeLogicArgsHotkeys(params string[] logicArgKeys)
-		{
-			LogicArgKeys = logicArgKeys;
-		}
+		public string[] LogicArgKeys = logicArgKeys;
 	}
 
 	[AttributeUsage(AttributeTargets.Method)]

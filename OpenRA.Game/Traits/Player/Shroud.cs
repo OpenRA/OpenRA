@@ -76,17 +76,7 @@ namespace OpenRA.Traits
 		public int RevealedCells { get; private set; }
 
 		enum ShroudCellType : byte { Shroud, Fog, Visible }
-		sealed class ShroudSource
-		{
-			public readonly SourceType Type;
-			public readonly PPos[] ProjectedCells;
-
-			public ShroudSource(SourceType type, PPos[] projectedCells)
-			{
-				Type = type;
-				ProjectedCells = projectedCells;
-			}
-		}
+		readonly record struct ShroudSource(SourceType Type, PPos[] ProjectedCells);
 
 		// Visible is not a super set of Explored. IsExplored may return false even if IsVisible returns true.
 		[Flags]

@@ -23,25 +23,7 @@ namespace OpenRA
 	}
 
 	public enum MouseInputEvent { Down, Move, Up, Scroll }
-	public struct MouseInput
-	{
-		public MouseInputEvent Event;
-		public MouseButton Button;
-		public int2 Location;
-		public int2 Delta;
-		public Modifiers Modifiers;
-		public int MultiTapCount;
-
-		public MouseInput(MouseInputEvent ev, MouseButton button, int2 location, int2 delta, Modifiers mods, int multiTapCount)
-		{
-			Event = ev;
-			Button = button;
-			Location = location;
-			Delta = delta;
-			Modifiers = mods;
-			MultiTapCount = multiTapCount;
-		}
-	}
+	public record struct MouseInput(MouseInputEvent Event, MouseButton Button, int2 Location, int2 Delta, Modifiers Modifiers, int MultiTapCount);
 
 	[Flags]
 	public enum MouseButton

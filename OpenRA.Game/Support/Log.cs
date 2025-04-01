@@ -26,17 +26,7 @@ namespace OpenRA
 		public TextWriter Writer;
 	}
 
-	readonly struct ChannelData
-	{
-		public readonly string Channel;
-		public readonly string Text;
-
-		public ChannelData(string channel, string text)
-		{
-			Text = text;
-			Channel = channel;
-		}
-	}
+	readonly record struct ChannelData(string Channel, string Text);
 
 	public static class Log
 	{

@@ -28,22 +28,14 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WarheadDebugOverlay : IRenderAnnotations
 	{
-		sealed class WHImpact
+		sealed class WHImpact(WPos pos, WDist[] range, int time, Color color)
 		{
-			public readonly WPos CenterPosition;
-			public readonly WDist[] Range;
-			public readonly Color Color;
-			public int Time;
+			public readonly WPos CenterPosition = pos;
+			public readonly WDist[] Range = range;
+			public readonly Color Color = color;
+			public int Time = time;
 
 			public WDist OuterRange => Range[^1];
-
-			public WHImpact(WPos pos, WDist[] range, int time, Color color)
-			{
-				CenterPosition = pos;
-				Range = range;
-				Color = color;
-				Time = time;
-			}
 		}
 
 		readonly WarheadDebugOverlayInfo info;

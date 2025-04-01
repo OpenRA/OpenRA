@@ -54,19 +54,5 @@ namespace OpenRA
 		}
 	}
 
-	public class PlayerBadge
-	{
-		public readonly string Label;
-		public readonly string Icon;
-		public readonly string Icon2x;
-		public readonly string Icon3x;
-
-		public PlayerBadge(string label, string icon, string icon2x, string icon3x)
-		{
-			Label = label;
-			Icon = icon;
-			Icon2x = icon2x;
-			Icon3x = icon3x;
-		}
-	}
+	public record PlayerBadge(string Label, string Icon, string Icon2x, string Icon3x);
 }

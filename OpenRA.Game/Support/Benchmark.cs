@@ -30,17 +30,7 @@ namespace OpenRA.Support
 				samples.GetOrAdd(item.Key).Add(new BenchmarkPoint(localTick, item.Value.LastValue));
 		}
 
-		sealed class BenchmarkPoint
-		{
-			public int Tick { get; }
-			public double Value { get; }
-
-			public BenchmarkPoint(int tick, double value)
-			{
-				Tick = tick;
-				Value = value;
-			}
-		}
+		readonly record struct BenchmarkPoint(int Tick, double Value);
 
 		public void Write()
 		{

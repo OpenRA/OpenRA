@@ -14,29 +14,10 @@ using System.Runtime.InteropServices;
 namespace OpenRA.Graphics
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct RenderPostProcessPassVertex
-	{
-		public readonly float X, Y;
-
-		public RenderPostProcessPassVertex(float x, float y)
-		{
-			X = x; Y = y;
-		}
-	}
+	public readonly record struct RenderPostProcessPassVertex(float X, float Y);
 
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct RenderPostProcessPassTexturedVertex
-	{
-		// 3d position
-		public readonly float X, Y;
-		public readonly float S, T;
-
-		public RenderPostProcessPassTexturedVertex(float x, float y, float s, float t)
-		{
-			X = x; Y = y;
-			S = s; T = t;
-		}
-	}
+	public readonly record struct RenderPostProcessPassTexturedVertex(float X, float Y, float S, float T);
 
 	public sealed class RenderPostProcessPassShaderBindings : ShaderBindings
 	{

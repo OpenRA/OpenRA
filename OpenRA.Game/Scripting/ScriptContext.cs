@@ -33,10 +33,9 @@ namespace OpenRA.Scripting
 
 	// For traitinfos that provide actor / player commands
 	[AttributeUsage(AttributeTargets.Class)]
-	public sealed class ScriptPropertyGroupAttribute : Attribute
+	public sealed class ScriptPropertyGroupAttribute(string category) : Attribute
 	{
-		public readonly string Category;
-		public ScriptPropertyGroupAttribute(string category) { Category = category; }
+		public readonly string Category = category;
 	}
 
 	// For property groups that are safe to initialize invoke on destroyed actors
@@ -46,28 +45,16 @@ namespace OpenRA.Scripting
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
 	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
-	public abstract class ScriptActorProperties
+	public abstract class ScriptActorProperties(ScriptContext context, Actor self)
 	{
-		protected readonly Actor Self;
-		protected readonly ScriptContext Context;
-
-		protected ScriptActorProperties(ScriptContext context, Actor self)
-		{
-			Self = self;
-			Context = context;
-		}
+		protected readonly Actor Self = self;
+		protected readonly ScriptContext Context = context;
 	}
 
-	public abstract class ScriptPlayerProperties
+	public abstract class ScriptPlayerProperties(ScriptContext context, Player player)
 	{
-		protected readonly Player Player;
-		protected readonly ScriptContext Context;
-
-		protected ScriptPlayerProperties(ScriptContext context, Player player)
-		{
-			Player = player;
-			Context = context;
-		}
+		protected readonly Player Player = player;
+		protected readonly ScriptContext Context = context;
 	}
 
 	/// <summary>
@@ -124,10 +111,9 @@ namespace OpenRA.Scripting
 	}
 
 	[AttributeUsage(AttributeTargets.Class)]
-	public sealed class ScriptGlobalAttribute : Attribute
+	public sealed class ScriptGlobalAttribute(string name) : Attribute
 	{
-		public readonly string Name;
-		public ScriptGlobalAttribute(string name) { Name = name; }
+		public readonly string Name = name;
 	}
 
 	public sealed class ScriptContext : IDisposable

@@ -182,19 +182,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 	}
 
-	public class ChronoshiftReturnInit : CompositeActorInit, ISingleInstanceInit
+	public class ChronoshiftReturnInit(int ticks, int duration, CPos origin, Actor chronosphere) : CompositeActorInit, ISingleInstanceInit
 	{
-		public readonly int Ticks;
-		public readonly int Duration;
-		public readonly CPos Origin;
-		public readonly ActorInitActorReference Chronosphere;
-
-		public ChronoshiftReturnInit(int ticks, int duration, CPos origin, Actor chronosphere)
-		{
-			Ticks = ticks;
-			Duration = duration;
-			Origin = origin;
-			Chronosphere = chronosphere;
-		}
+		public readonly int Ticks = ticks;
+		public readonly int Duration = duration;
+		public readonly CPos Origin = origin;
+		public readonly ActorInitActorReference Chronosphere = chronosphere;
 	}
 }

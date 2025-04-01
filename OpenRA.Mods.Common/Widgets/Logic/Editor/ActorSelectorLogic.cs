@@ -24,21 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("actorType")]
 		const string ActorTypeTooltip = "label-actor-type";
 
-		sealed class ActorSelectorActor
-		{
-			public readonly ActorInfo Actor;
-			public readonly string[] Categories;
-			public readonly string[] SearchTerms;
-			public readonly string Tooltip;
-
-			public ActorSelectorActor(ActorInfo actor, string[] categories, string[] searchTerms, string tooltip)
-			{
-				Actor = actor;
-				Categories = categories;
-				SearchTerms = searchTerms;
-				Tooltip = tooltip;
-			}
-		}
+		sealed record ActorSelectorActor(ActorInfo Actor, string[] Categories, string[] SearchTerms, string Tooltip);
 
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly Ruleset mapRules;

@@ -178,68 +178,36 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		readonly struct CommonHeader
+		readonly struct CommonHeader(Stream stream)
 		{
 			public const long Size = 16;
-			public readonly uint Version;
-			public readonly uint VolumeInfo;
-			public readonly long CabDescriptorOffset;
-			public readonly uint CabDescriptorSize;
-
-			public CommonHeader(Stream stream)
-			{
-				Version = stream.ReadUInt32();
-				VolumeInfo = stream.ReadUInt32();
-				CabDescriptorOffset = stream.ReadUInt32();
-				CabDescriptorSize = stream.ReadUInt32();
-			}
+			public readonly uint Version = stream.ReadUInt32();
+			public readonly uint VolumeInfo = stream.ReadUInt32();
+			public readonly long CabDescriptorOffset = stream.ReadUInt32();
+			public readonly uint CabDescriptorSize = stream.ReadUInt32();
 		}
 
-		readonly struct VolumeHeader
+		readonly struct VolumeHeader(Stream stream)
 		{
-			public readonly uint DataOffset;
-			public readonly uint DataOffsetHigh;
-			public readonly uint FirstFileIndex;
-			public readonly uint LastFileIndex;
+			public readonly uint DataOffset = stream.ReadUInt32();
+			public readonly uint DataOffsetHigh = stream.ReadUInt32();
+			public readonly uint FirstFileIndex = stream.ReadUInt32();
+			public readonly uint LastFileIndex = stream.ReadUInt32();
 
-			public readonly uint FirstFileOffset;
-			public readonly uint FirstFileOffsetHigh;
-			public readonly uint FirstFileSizeExpanded;
-			public readonly uint FirstFileSizeExpandedHigh;
+			public readonly uint FirstFileOffset = stream.ReadUInt32();
+			public readonly uint FirstFileOffsetHigh = stream.ReadUInt32();
+			public readonly uint FirstFileSizeExpanded = stream.ReadUInt32();
+			public readonly uint FirstFileSizeExpandedHigh = stream.ReadUInt32();
 
-			public readonly uint FirstFileSizeCompressed;
-			public readonly uint FirstFileSizeCompressedHigh;
-			public readonly uint LastFileOffset;
-			public readonly uint LastFileOffsetHigh;
+			public readonly uint FirstFileSizeCompressed = stream.ReadUInt32();
+			public readonly uint FirstFileSizeCompressedHigh = stream.ReadUInt32();
+			public readonly uint LastFileOffset = stream.ReadUInt32();
+			public readonly uint LastFileOffsetHigh = stream.ReadUInt32();
 
-			public readonly uint LastFileSizeExpanded;
-			public readonly uint LastFileSizeExpandedHigh;
-			public readonly uint LastFileSizeCompressed;
-			public readonly uint LastFileSizeCompressedHigh;
-
-			public VolumeHeader(Stream stream)
-			{
-				DataOffset = stream.ReadUInt32();
-				DataOffsetHigh = stream.ReadUInt32();
-
-				FirstFileIndex = stream.ReadUInt32();
-				LastFileIndex = stream.ReadUInt32();
-				FirstFileOffset = stream.ReadUInt32();
-				FirstFileOffsetHigh = stream.ReadUInt32();
-
-				FirstFileSizeExpanded = stream.ReadUInt32();
-				FirstFileSizeExpandedHigh = stream.ReadUInt32();
-				FirstFileSizeCompressed = stream.ReadUInt32();
-				FirstFileSizeCompressedHigh = stream.ReadUInt32();
-
-				LastFileOffset = stream.ReadUInt32();
-				LastFileOffsetHigh = stream.ReadUInt32();
-				LastFileSizeExpanded = stream.ReadUInt32();
-				LastFileSizeExpandedHigh = stream.ReadUInt32();
-
-				LastFileSizeCompressed = stream.ReadUInt32();
-				LastFileSizeCompressedHigh = stream.ReadUInt32();
-			}
+			public readonly uint LastFileSizeExpanded = stream.ReadUInt32();
+			public readonly uint LastFileSizeExpandedHigh = stream.ReadUInt32();
+			public readonly uint LastFileSizeCompressed = stream.ReadUInt32();
+			public readonly uint LastFileSizeCompressedHigh = stream.ReadUInt32();
 		}
 
 		sealed class CabExtracter

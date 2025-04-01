@@ -37,19 +37,7 @@ namespace OpenRA.Graphics
 			Func<float> getScale, Func<IModel> getVoxel, Func<WRot> getRotation);
 	}
 
-	public readonly struct ModelRenderData
-	{
-		public readonly int Start;
-		public readonly int Count;
-		public readonly Sheet Sheet;
-
-		public ModelRenderData(int start, int count, Sheet sheet)
-		{
-			Start = start;
-			Count = count;
-			Sheet = sheet;
-		}
-	}
+	public readonly record struct ModelRenderData(int Start, int Count, Sheet Sheet);
 
 	public interface IModelCacheInfo : ITraitInfoInterface { }
 
