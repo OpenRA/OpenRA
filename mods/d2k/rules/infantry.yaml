@@ -322,8 +322,8 @@ saboteur:
 	Mobile:
 		Speed: 43
 	Demolition:
-		DetonationDelay: 0
-		Flashes: 0
+		DetonationDelay: 25
+		Flashes: 3
 		EnterBehaviour: Suicide
 	-RevealOnFire:
 	GrantChargedConditionOnToggle:

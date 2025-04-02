@@ -237,6 +237,10 @@
 	Guardable:
 	WithFacingSpriteBody:
 	Demolishable:
+		Condition: being-demolished
+	AmbientSound@onBeingDemolished:
+		SoundFiles: O_SCONF2.AUD
+		RequiresCondition: being-demolished
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	Voiced:
@@ -520,6 +524,9 @@
 	ShakeOnDeath:
 	Demolishable:
 		Condition: being-demolished
+	AmbientSound@onBeingDemolished:
+		SoundFiles: O_SCONF2.AUD
+		RequiresCondition: being-demolished
 	Sellable:
 		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: BUILD1.WAV

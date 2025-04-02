@@ -42,6 +42,7 @@ OrniBomb:
 	Burst: 5
 	BurstDelays: 6
 	Range: 3c0
+	Report: ORNIBOMB.WAV
 	Projectile: GravityBomb
 		Image: BOMBS
 		Velocity: 0, 0, -64

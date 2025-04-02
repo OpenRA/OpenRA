@@ -445,6 +445,10 @@ devastator:
 		Delay: 240
 		RequiresCondition: overload
 		GrantsCondition: meltdown
+	AmbientSound@onMeltDown:
+		SoundFiles: DEVASTATORMELTDOWN.WAV
+		RequiresCondition: overload
+		Interval: 250
 	AttractsWorms:
 		Intensity: 700
 	ChangesHealth:

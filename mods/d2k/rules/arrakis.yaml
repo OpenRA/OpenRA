@@ -146,6 +146,7 @@ sietch:
 		Type: wood
 	RevealsShroud:
 		Range: 10c0
+	-AmbientSound@onBeingDemolished:
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:
