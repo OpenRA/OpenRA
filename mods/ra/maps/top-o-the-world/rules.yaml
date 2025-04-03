@@ -63,13 +63,15 @@ powerproxy.spyplane:
 		EndChargeTextNotification: notification-spy-plane-ready
 		CameraActor: camera.spyplane
 		CameraRemoveDelay: 150
-		UnitType: u2
 		QuantizedFacings: 8
 		DisplayBeacon: true
 		BeaconPoster: camicon
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		Squad:
+			SquadMember:
+				UnitType: u2
 
 powerproxy.parabombs:
 	AirstrikePower:

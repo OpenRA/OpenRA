@@ -166,4 +166,7 @@ MoneyCrate:
 
 airstrike.proxy:
 	AirstrikePower:
-		SquadSize: 1
+		-Squad:
+		Squad:
+			SquadMember:
+				UnitType: a10

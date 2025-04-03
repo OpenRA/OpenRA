@@ -131,7 +131,10 @@ GTWR:
 HQ:
 	AirstrikePower:
 		Prerequisites: gdi
-		SquadSize: 1
+		-Squad:
+		Squad:
+			SquadMember:
+				UnitType: a10
 
 TRAN.IN:
 	Inherits: TRAN

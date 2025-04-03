@@ -350,7 +350,6 @@ powerproxy.parabombs:
 		Description: actor-powerproxy-parabombs.description
 		OneShot: true
 		AllowMultiple: true
-		UnitType: badr.bomber
 		SelectTargetSpeechNotification: SelectTarget
 		SelectTargetTextNotification: notification-select-target
 		QuantizedFacings: 8
@@ -361,6 +360,9 @@ powerproxy.parabombs:
 		ArrowSequence: arrow
 		ClockSequence: clock
 		CircleSequence: circles
+		Squad:
+			SquadMember:
+				UnitType: badr.bomber
 
 powerproxy.sonarpulse:
 	AlwaysVisible:
