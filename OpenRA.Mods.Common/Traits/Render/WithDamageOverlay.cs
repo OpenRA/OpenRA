@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("How many times should " + nameof(LoopSequence),
 			" be played? A range can be provided to be randomly chosen from.")]
-		public readonly int[] LoopCount = [2];
+		public readonly int[] LoopCount = [1, 3];
 
 		[Desc("Initial delay before animation is enabled",
 			"Two values indicate a random delay range.")]
