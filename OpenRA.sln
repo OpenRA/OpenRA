@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -58,7 +58,9 @@ Global
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE6C8CC0-2F07-442A-B29F-17617B3B7FC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB8E1B7-6B36-4D93-8633-7C573E194AC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54DAE0E0-3125-49D3-992E-A0E931EB5FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{54DAE0E0-3125-49D3-992E-A0E931EB5FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DAE0E0-3125-49D3-992E-A0E931EB5FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
