@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var actor in resolvedActors)
 				foreach (var cloak in actor.ChildrenMatching("Cloak"))
-					if (cloak.LastChildMatching("Palette", false) == null)
+					if (cloak.HasChild("Palette"))
 						actorsWithDefault.Add((actor.Key, cloak.Key));
 
 			yield break;

@@ -471,6 +471,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return node.Value.Nodes.Where(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
+		/// <summary>Returns true if node exists and is not being removed.</summary>
+		public static bool HasChild(
+			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true)
+		{
+			return ChildrenMatching(node, match, ignoreSuffix).LastOrDefault()?.IsRemoval() == false;
+		}
+
 		/// <summary>Returns children whose keys contain 'match' (optionally in the suffix).</summary>
 		public static IEnumerable<MiniYamlNodeBuilder> ChildrenContaining(
 			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)

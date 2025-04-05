@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					harvesters[actorNode.Key] = harvesterNode.ChildrenMatching("DeliveryBuildings", includeRemovals: false)
 						.FirstOrDefault()?.NodeValue<HashSet<string>>() ?? [];
 
-				if (actorNode.ChildrenMatching("Refinery", includeRemovals: false).Any())
+				if (actorNode.HasChild("Refinery"))
 					refineries.Add(actorNode.Key.ToLowerInvariant());
 			}
 
