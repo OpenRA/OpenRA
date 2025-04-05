@@ -511,16 +511,56 @@ namespace OpenRA
 			return ret;
 		}
 
+		static IReadOnlyList<MiniYamlNode> WeakResolveRemovals(IReadOnlyList<MiniYamlNode> nodes)
+		{
+			if (nodes == null || nodes.Count == 0)
+				return nodes;
+
+			List<MiniYamlNode> ret = null;
+			for (var i = 0; i < nodes.Count; i++)
+			{
+				var node = nodes[i];
+				if (node.Key.StartsWith('-'))
+				{
+					if (ret == null)
+					{
+						ret ??= new List<MiniYamlNode>(nodes.Count);
+						ret.AddRange(nodes.Take(i));
+					}
+
+					// Apply the removal node - but "weakly" - don't throw if there is no prior node to remove.
+					var removed = node.Key[1..];
+					ret.RemoveAll(r => r.Key == removed);
+				}
+				else
+				{
+					ret?.Add(node);
+				}
+			}
+
+			return ret ?? nodes;
+		}
+
 		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
 		{
+			var resolvedExistingNodes = WeakResolveRemovals(existingNodes?.Nodes);
+			var resolvedOverrideNodes = WeakResolveRemovals(overrideNodes?.Nodes);
+
 			lock (ConflictScratch)
 			{
-				// PERF: Reuse ConflictScratch for all conflict checks to avoid allocations.
-				existingNodes?.Nodes.IntoDictionaryWithConflictLog(
-					n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
-				overrideNodes?.Nodes.IntoDictionaryWithConflictLog(
-					n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
-				ConflictScratch.Clear();
+				try
+				{
+					// PERF: Reuse ConflictScratch for all conflict checks to avoid allocations.
+					resolvedExistingNodes?.IntoDictionaryWithConflictLog(
+						n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
+					resolvedOverrideNodes?.IntoDictionaryWithConflictLog(
+						n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
+					ConflictScratch.Clear();
+				}
+				catch (ArgumentException ex)
+				{
+					throw new YamlException(ex.Message);
+				}
 			}
 
 			if (existingNodes == null)
