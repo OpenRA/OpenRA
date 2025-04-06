@@ -1143,16 +1143,6 @@ Templates:
 				Inner: Road
 				Points: 2,1, 2,0
 				Start: Clear.U
-			Segment@1extended:
-				End: Clear.D
-				Inner: Road
-				Points: 1,0, 1,1, 1,2
-				Start: Road.D
-			Segment@2extended:
-				End: Road.U
-				Inner: Road
-				Points: 2,2, 2,1, 2,0
-				Start: Clear.U
 	Template@94:
 		Id: 94
 		Images: d02.sno
@@ -1174,16 +1164,6 @@ Templates:
 				Inner: Road
 				Points: 1,1, 2,1
 				Start: Clear.R
-			Segment@1extended:
-				End: Clear.L
-				Inner: Road
-				Points: 2,0, 1,0, 0,0
-				Start: Road.L
-			Segment@2extended:
-				End: Road.R
-				Inner: Road
-				Points: 0,1, 1,1, 2,1
-				Start: Clear.R
 	Template@95:
 		Id: 95
 		Images: d03.sno
@@ -1202,16 +1182,6 @@ Templates:
 				End: Road.D
 				Inner: Road
 				Points: 0,1, 0,2
-				Start: Clear.D
-			Segment@1extended:
-				End: Clear.U
-				Inner: Road
-				Points: 1,2, 1,1, 1,0
-				Start: Road.U
-			Segment@2extended:
-				End: Road.D
-				Inner: Road
-				Points: 0,0, 0,1, 0,2
 				Start: Clear.D
 	Template@96:
 		Id: 96
@@ -1232,16 +1202,6 @@ Templates:
 				End: Road.L
 				Inner: Road
 				Points: 1,1, 0,1
-				Start: Clear.L
-			Segment@1extended:
-				End: Clear.R
-				Inner: Road
-				Points: 0,2, 1,2, 2,2
-				Start: Road.R
-			Segment@2extended:
-				End: Road.L
-				Inner: Road
-				Points: 2,1, 1,1, 0,1
 				Start: Clear.L
 	Template@97:
 		Id: 97

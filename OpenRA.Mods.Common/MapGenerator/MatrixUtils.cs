@@ -15,6 +15,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.MapGenerator
 {
@@ -1501,6 +1502,35 @@ namespace OpenRA.Mods.Common.MapGenerator
 				matrix[i] = (int)((long)matrix[i] * targetAmplitude / inputAmplitude);
 
 			return matrix;
+		}
+
+		/// <summary>
+		/// Rank all cell values and select the best (greatest compared) value.
+		/// If there are equally good best candidates, choose one at random.
+		/// </summary>
+		public static (int2 MPos, T Value) FindRandomBest<T>(
+			Matrix<T> matrix,
+			MersenneTwister random,
+			Comparison<T> comparison)
+		{
+			var candidates = new List<int2>();
+			var best = matrix[new int2(0, 0)];
+			for (var y = 0; y < matrix.Size.Y; y++)
+				for (var x = 0; x < matrix.Size.X; x++)
+				{
+					var rank = comparison(matrix[x, y], best);
+					if (rank > 0)
+					{
+						best = matrix[x, y];
+						candidates.Clear();
+					}
+
+					if (rank >= 0)
+						candidates.Add(new int2(x, y));
+				}
+
+			var choice = candidates[random.Next(candidates.Count)];
+			return (choice, best);
 		}
 	}
 }
