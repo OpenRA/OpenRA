@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class BodyOrientationInfo : TraitInfo
 	{
-		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait.")]
+		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait. 0 disables quantization.")]
 		public readonly int QuantizedFacings = -1;
 
 		[Desc("Camera pitch for rotation calculations.")]
@@ -52,6 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WAngle QuantizeFacing(WAngle facing, int facings)
 		{
+			// Quantization disabled
+			if (facings == 0)
+				return facing;
+
 			return Util.QuantizeFacing(facing, facings);
 		}
 
@@ -90,7 +94,11 @@ namespace OpenRA.Mods.Common.Traits
 						throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a quantized body orientation.");
 				}
 
-				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.Sequences, faction);
+				var facings = qboi.QuantizedBodyFacings(self.Info, self.World.Map.Sequences, faction);
+				if (facings == 0)
+					throw new InvalidOperationException($"Actor {self.Info.Name} defines a quantized body orientation from {qboi.GetType().Name} with zero facings.");
+
+				return facings;
 			});
 		}
 
