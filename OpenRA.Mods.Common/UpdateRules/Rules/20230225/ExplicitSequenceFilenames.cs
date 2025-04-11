@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			// Keep a resolved copy of the sequences so we can account for values imported through inheritance or Defaults.
 			// This will be modified during processing, so take a deep copy to avoid side-effects on other update rules.
 			this.resolvedImagesNodes = MiniYaml.FromString(resolvedImagesNodes.WriteToString(), nameof(BeforeUpdateSequences))
-				.ConvertAll(n => new MiniYamlNodeBuilder(n));
+				.Select(n => new MiniYamlNodeBuilder(n))
+				.ToList();
 
 			var requiredMetadata = new HashSet<string>();
 			foreach (var imageNode in resolvedImagesNodes)
@@ -286,7 +287,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						imageNode.Value.Nodes.Insert(inheritsNodeIndex, defaultsNode);
 					}
 
-					var nodes = MiniYaml.FromString(duplicateTilesetCount.First(kv => kv.Value == maxDuplicateTilesetCount).Key, nameof(UpdateSequenceNode));
+					var nodes = MiniYaml.FromString(duplicateTilesetCount.First(kv => kv.Value == maxDuplicateTilesetCount).Key, nameof(UpdateSequenceNode)).ToList();
 					defaultTilesetFilenamesNode = new MiniYamlNodeBuilder("TilesetFilenames", "", nodes);
 					defaultsNode.Value.Nodes.Insert(0, defaultTilesetFilenamesNode);
 				}

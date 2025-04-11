@@ -154,10 +154,10 @@ namespace OpenRA
 					entry.Value.Load(map);
 		}
 
-		public List<MiniYamlNode>[] GetRulesYaml()
+		public MiniYamlNode[][] GetRulesYaml()
 		{
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
-			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s, stringPool: stringPool)).ToArray();
+			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s, stringPool: stringPool).ToArray()).ToArray();
 		}
 
 		public void Dispose()

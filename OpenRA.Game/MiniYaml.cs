@@ -198,7 +198,8 @@ namespace OpenRA
 			Nodes = nodes.ToImmutableArray();
 		}
 
-		static List<MiniYamlNode> FromLines(IEnumerable<ReadOnlyMemory<char>> lines, string name, bool discardCommentsAndWhitespace, HashSet<string> stringPool)
+		static IEnumerable<MiniYamlNode> FromLines(
+			IEnumerable<ReadOnlyMemory<char>> lines, string name, bool discardCommentsAndWhitespace, HashSet<string> stringPool)
 		{
 			// YAML config often contains repeated strings for key, values, comments.
 			// Pool these strings so we only need one copy of each unique string.
@@ -335,12 +336,19 @@ namespace OpenRA
 
 					parsedLines.Add((level, keyString, valueString, commentString, location));
 				}
+
+				foreach (var topLevelNode in result[0])
+					yield return topLevelNode;
+				result[0].Clear();
 			}
 
 			if (parsedLines.Count > 0)
+			{
 				BuildCompletedSubNode(0);
-
-			return result[0];
+				foreach (var topLevelNode in result[0])
+					yield return topLevelNode;
+				result[0].Clear();
+			}
 
 			void BuildCompletedSubNode(int level)
 			{
@@ -375,22 +383,22 @@ namespace OpenRA
 			}
 		}
 
-		public static List<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
+		public static IEnumerable<MiniYamlNode> FromFile(string path, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
 		{
 			return FromStream(File.OpenRead(path), path, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> FromStream(Stream s, string name, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
+		public static IEnumerable<MiniYamlNode> FromStream(Stream s, string name, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
 		{
 			return FromLines(s.ReadAllLinesAsMemory(), name, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> FromString(string text, string name, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
+		public static IEnumerable<MiniYamlNode> FromString(string text, string name, bool discardCommentsAndWhitespace = true, HashSet<string> stringPool = null)
 		{
 			return FromLines(text.Split(["\r\n", "\n"], StringSplitOptions.None).Select(s => s.AsMemory()), name, discardCommentsAndWhitespace, stringPool);
 		}
 
-		public static List<MiniYamlNode> Merge(IEnumerable<IReadOnlyCollection<MiniYamlNode>> sources)
+		public static List<MiniYamlNode> Merge(IEnumerable<IEnumerable<MiniYamlNode>> sources)
 		{
 			var sourcesList = sources.ToList();
 			if (sourcesList.Count == 0)
@@ -398,6 +406,7 @@ namespace OpenRA
 
 			var tree = sourcesList
 				.Where(s => s != null)
+				.Select(s => s as IReadOnlyCollection<MiniYamlNode> ?? s.ToList())
 				.Select(MergeSelfPartial)
 				.Aggregate(MergePartial)
 				.Where(n => n.Key != null)
@@ -665,7 +674,7 @@ namespace OpenRA
 			}
 
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
-			IEnumerable<IReadOnlyCollection<MiniYamlNode>> yaml = files.Select(s => FromStream(fileSystem.Open(s), s, stringPool: stringPool));
+			var yaml = files.Select(s => FromStream(fileSystem.Open(s), s, stringPool: stringPool));
 			if (mapRules != null && mapRules.Nodes.Length > 0)
 				yaml = yaml.Append(mapRules.Nodes);
 

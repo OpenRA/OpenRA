@@ -40,7 +40,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 					name,
 					MiniYaml
 						.FromStream(package.GetStream(name), $"{package.Name}:{name}", false)
-						.ConvertAll(n => new MiniYamlNodeBuilder(n))));
+						.Select(n => new MiniYamlNodeBuilder(n))
+						.ToList()));
 			}
 
 			return yaml;
@@ -78,7 +79,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 						filename,
 						MiniYaml
 							.FromStream(mapPackage.GetStream(filename), $"{mapPackage.Name}:{filename}", false)
-							.ConvertAll(n => new MiniYamlNodeBuilder(n))));
+							.Select(n => new MiniYamlNodeBuilder(n))
+							.ToList()));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -104,7 +106,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					return manualSteps;
 				}
 
-				var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{mapPackage.Name}:map.yaml", false));
+				var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{mapPackage.Name}:map.yaml", false).ToList());
 				files = [(mapPackage, "map.yaml", yaml.Nodes)];
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));

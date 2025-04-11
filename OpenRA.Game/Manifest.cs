@@ -110,7 +110,7 @@ namespace OpenRA
 			Package = package;
 
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
-			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), $"{package.Name}:mod.yaml", stringPool: stringPool);
+			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), $"{package.Name}:mod.yaml", stringPool: stringPool).ToList();
 			for (var i = nodes.Count - 1; i >= 0; i--)
 			{
 				if (nodes[i].Key != "Include")

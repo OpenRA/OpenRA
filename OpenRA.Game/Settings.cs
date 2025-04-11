@@ -348,7 +348,7 @@ namespace OpenRA
 
 				if (File.Exists(settingsFile))
 				{
-					yamlCache = MiniYaml.FromFile(settingsFile, false);
+					yamlCache = MiniYaml.FromFile(settingsFile, false).ToList();
 					foreach (var yamlSection in yamlCache)
 					{
 						if (yamlSection.Key != null && Sections.TryGetValue(yamlSection.Key, out var settingsSection))

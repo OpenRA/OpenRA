@@ -113,7 +113,7 @@ namespace OpenRA
 				return key == "world" || key == "player";
 			}
 
-			public void SetCustomRules(ModData modData, IReadOnlyFileSystem fileSystem, Dictionary<string, MiniYaml> yaml, IEnumerable<List<MiniYamlNode>> modDataRules)
+			public void SetCustomRules(ModData modData, IReadOnlyFileSystem fileSystem, Dictionary<string, MiniYaml> yaml, MiniYamlNode[][] modDataRules)
 			{
 				RuleDefinitions = LoadRuleSection(yaml, "Rules");
 				WeaponDefinitions = LoadRuleSection(yaml, "Weapons");
@@ -341,7 +341,7 @@ namespace OpenRA
 		/// A new copy of the map package will be opened lazily when needed.
 		/// </summary>
 		public void UpdateFromMapWithoutOwningPackage(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification,
-			MapGridType? gridType = null, IEnumerable<List<MiniYamlNode>> modDataRules = null)
+			MapGridType? gridType = null, MiniYamlNode[][] modDataRules = null)
 		{
 			UpdateFromMap(p, classification, gridType, modDataRules);
 			parentPackage = parent;
@@ -353,7 +353,7 @@ namespace OpenRA
 		/// The package remains in memory and must not be disposed.
 		/// </summary>
 		public void UpdateFromMap(IReadOnlyPackage p, MapClassification classification,
-			MapGridType? gridType = null, IEnumerable<List<MiniYamlNode>> modDataRules = null)
+			MapGridType? gridType = null, MiniYamlNode[][] modDataRules = null)
 		{
 			Path = p.Name;
 			package = p;

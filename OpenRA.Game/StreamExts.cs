@@ -211,7 +211,7 @@ namespace OpenRA
 				{
 					var offset = 0;
 					int read;
-					while ((read = sr.ReadBlock(buffer, offset, buffer.Length - offset)) != 0)
+					while ((read = sr.Read(buffer, offset, buffer.Length - offset)) != 0)
 					{
 						offset += read;
 

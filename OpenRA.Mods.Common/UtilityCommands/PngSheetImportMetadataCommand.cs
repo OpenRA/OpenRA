@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			using (var pngStream = File.OpenRead(args[1]))
 				png = new Png(pngStream);
 
-			var yaml = MiniYaml.FromFile(Path.ChangeExtension(args[1], "yaml"));
+			var yaml = MiniYaml.FromFile(Path.ChangeExtension(args[1], "yaml")).ToList();
 
 			var frameSizeField = yaml.Where(y => y.Key == "FrameSize").Select(y => y.Value.Value).FirstOrDefault();
 			if (frameSizeField != null)

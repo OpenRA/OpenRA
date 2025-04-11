@@ -10,7 +10,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace OpenRA.Test
@@ -619,7 +624,7 @@ Test:
 			Assert.That(result.Count(n => n.Key == "Test"), Is.EqualTo(1), "Result should have exactly one Test node.");
 
 			var testNodes = result.First(n => n.Key == "Test").Value.Nodes;
-			Assert.That(testNodes.Select(n => n.Key), Is.EqualTo(new[] { "Merge", "Original", "Override" }), "Merged Test node has incorrect child nodes.");
+			Assert.That(testNodes.Select(n => n.Key), Is.EqualTo(["Merge", "Original", "Override"]), "Merged Test node has incorrect child nodes.");
 
 			var mergeNode = testNodes.First(n => n.Key == "Merge").Value;
 			Assert.That(mergeNode.Value, Is.EqualTo("override"), "Merge node has incorrect value.");
@@ -650,7 +655,7 @@ Test:
 			Assert.That(result.Count(n => n.Key == "Test"), Is.EqualTo(1), "Result should have exactly one Test node.");
 
 			var testNodes = result.First(n => n.Key == "Test").Value.Nodes;
-			Assert.That(testNodes.Select(n => n.Key), Is.EqualTo(new[] { "Merge", "Original", "Override" }), "Merged Test node has incorrect child nodes.");
+			Assert.That(testNodes.Select(n => n.Key), Is.EqualTo(["Merge", "Original", "Override"]), "Merged Test node has incorrect child nodes.");
 
 			var mergeNode = testNodes.First(n => n.Key == "Merge").Value;
 			Assert.That(mergeNode.Value, Is.EqualTo("override"), "Merge node has incorrect value.");
@@ -857,27 +862,27 @@ Test:
 		[TestCase(TestName = "Comments are correctly separated from values")]
 		public void TestEscapedHashInValues()
 		{
-			var trailingWhitespace = MiniYaml.FromString("key: value # comment", "", discardCommentsAndWhitespace: false)[0];
+			var trailingWhitespace = MiniYaml.FromString("key: value # comment", "", discardCommentsAndWhitespace: false).Single();
 			Assert.That("value", Is.EqualTo(trailingWhitespace.Value.Value));
 			Assert.That(" comment", Is.EqualTo(trailingWhitespace.Comment));
 
-			var noWhitespace = MiniYaml.FromString("key:value# comment", "", discardCommentsAndWhitespace: false)[0];
+			var noWhitespace = MiniYaml.FromString("key:value# comment", "", discardCommentsAndWhitespace: false).Single();
 			Assert.That("value", Is.EqualTo(noWhitespace.Value.Value));
 			Assert.That(" comment", Is.EqualTo(noWhitespace.Comment));
 
-			var escapedHashInValue = MiniYaml.FromString(@"key: before \# after # comment", "", discardCommentsAndWhitespace: false)[0];
+			var escapedHashInValue = MiniYaml.FromString(@"key: before \# after # comment", "", discardCommentsAndWhitespace: false).Single();
 			Assert.That("before # after", Is.EqualTo(escapedHashInValue.Value.Value));
 			Assert.That(" comment", Is.EqualTo(escapedHashInValue.Comment));
 
-			var emptyValueAndComment = MiniYaml.FromString("key:#", "", discardCommentsAndWhitespace: false)[0];
+			var emptyValueAndComment = MiniYaml.FromString("key:#", "", discardCommentsAndWhitespace: false).Single();
 			Assert.That(null, Is.EqualTo(emptyValueAndComment.Value.Value));
 			Assert.That("", Is.EqualTo(emptyValueAndComment.Comment));
 
-			var noValue = MiniYaml.FromString("key:", "", discardCommentsAndWhitespace: false)[0];
+			var noValue = MiniYaml.FromString("key:", "", discardCommentsAndWhitespace: false).Single();
 			Assert.That(null, Is.EqualTo(noValue.Value.Value));
 			Assert.That(null, Is.EqualTo(noValue.Comment));
 
-			var emptyKey = MiniYaml.FromString(" : value", "", discardCommentsAndWhitespace: false)[0];
+			var emptyKey = MiniYaml.FromString(" : value", "", discardCommentsAndWhitespace: false).Single();
 			Assert.That(null, Is.EqualTo(emptyKey.Key));
 			Assert.That("value", Is.EqualTo(emptyKey.Value.Value));
 			Assert.That(null, Is.EqualTo(emptyKey.Comment));
@@ -888,7 +893,7 @@ Test:
 		{
 			const string TestYaml = @"key:   \      test value    \   ";
 			var nodes = MiniYaml.FromString(TestYaml, "");
-			Assert.That("      test value    ", Is.EqualTo(nodes[0].Value.Value));
+			Assert.That("      test value    ", Is.EqualTo(nodes.Single().Value.Value));
 		}
 
 		[TestCase(TestName = "Comments should count toward line numbers")]
@@ -902,12 +907,12 @@ TestA:
 TestB:
 	Nothing:
 ";
-			var resultDiscard = MiniYaml.FromString(Yaml, "");
+			var resultDiscard = MiniYaml.FromString(Yaml, "").ToList();
 			var resultDiscardLine = resultDiscard.First(n => n.Key == "TestB").Location.Line;
 			Assert.That(resultDiscardLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (discarding comments)");
 			Assert.That(resultDiscard[1].Key, Is.EqualTo("TestB"), "Node TestB should be the second child of the root node, but is not (discarding comments)");
 
-			var resultKeep = MiniYaml.FromString(Yaml, "", discardCommentsAndWhitespace: false);
+			var resultKeep = MiniYaml.FromString(Yaml, "", discardCommentsAndWhitespace: false).ToList();
 			var resultKeepLine = resultKeep.First(n => n.Key == "TestB").Location.Line;
 			Assert.That(resultKeepLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (parsing comments)");
 			Assert.That(resultKeep[4].Key, Is.EqualTo("TestB"), "Node TestB should be the fifth child of the root node, but is not (parsing comments)");
@@ -992,6 +997,113 @@ Parent: # comment without value
 
 			var result = MiniYaml.FromString(Yaml, "").WriteToString();
 			Assert.That(strippedYaml, Is.EqualTo(result));
+		}
+
+		[TestCase(TestName = "Can enumerate top-level nodes from a stream")]
+		public void FromStreamAsEnumerable()
+		{
+			const string FirstYaml =
+@"Parent: First
+	Child: First
+Parent: Second
+";
+
+			const string SecondYaml =
+@"	Child: Second
+";
+			var events = new List<(string Event, string Payload)>();
+			var stream = new TestStream();
+			var ars = new AutoResetEvent(false);
+
+			var readTask = Task.Run(() =>
+			{
+				foreach (var node in MiniYaml.FromStream(stream, ""))
+				{
+					events.Add(("Saw Node", new[] { node }.WriteToString()));
+					ars.Set();
+				}
+			});
+
+			events.Add(("Stream Write", FirstYaml));
+			stream.WriteBytes(Encoding.UTF8.GetBytes(FirstYaml));
+			if (!ars.WaitOne(TimeSpan.FromSeconds(1)))
+				Assert.Fail("Timeout waiting for first node");
+
+			events.Add(("Stream Write", SecondYaml));
+			stream.WriteBytes(Encoding.UTF8.GetBytes(SecondYaml));
+
+			events.Add(("Stream End", ""));
+			stream.WriteEnd();
+			if (!ars.WaitOne(TimeSpan.FromSeconds(1)))
+				Assert.Fail("Timeout waiting for second node");
+
+			if (!readTask.Wait(TimeSpan.FromSeconds(1)))
+				Assert.Fail("Timeout waiting for task completion");
+
+			Assert.That(events, Is.EquivalentTo([
+				("Stream Write", FirstYaml),
+				("Saw Node", "Parent: First\n\tChild: First\n"),
+				("Stream Write", SecondYaml),
+				("Stream End", ""),
+				("Saw Node", "Parent: Second\n\tChild: Second\n"),
+			]));
+		}
+
+		sealed class TestStream : Stream
+		{
+			readonly ManualResetEventSlim mres = new();
+			readonly List<byte> bytes = [];
+			bool ended;
+
+			public void WriteEnd()
+			{
+				ended = true;
+				mres.Set();
+			}
+
+			public void WriteBytes(ReadOnlySpan<byte> bytes)
+			{
+				if (ended) throw new InvalidOperationException();
+				lock (this.bytes)
+				{
+					this.bytes.AddRange(bytes);
+					mres.Set();
+				}
+			}
+
+			public override int Read(byte[] buffer, int offset, int count)
+			{
+				if (bytes.Count == 0 && ended)
+					return 0;
+
+				if (bytes.Count == 0)
+					mres.Wait();
+
+				lock (bytes)
+				{
+					var read = Math.Min(bytes.Count, count);
+
+					for (var i = 0; i < read; i++)
+						buffer[offset + i] = bytes[i];
+
+					bytes.RemoveRange(0, read);
+
+					if (bytes.Count == 0)
+						mres.Reset();
+
+					return read;
+				}
+			}
+
+			public override bool CanRead => true;
+			public override bool CanSeek => false;
+			public override bool CanWrite => false;
+			public override long Length => throw new NotSupportedException();
+			public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+			public override void Flush() { }
+			public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+			public override void SetLength(long value) => throw new NotSupportedException();
+			public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
 		}
 	}
 }

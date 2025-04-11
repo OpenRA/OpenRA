@@ -123,7 +123,7 @@ namespace OpenRA.Network
 				lastSyncPacket = rs.ReadBytes(Order.SyncHashOrderLength);
 
 				var globalSettings = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength), $"{filepath}:globalSettings");
-				GlobalSettings = Session.Global.Deserialize(globalSettings[0].Value);
+				GlobalSettings = Session.Global.Deserialize(globalSettings.First().Value);
 
 				var slots = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength), $"{filepath}:slots");
 				Slots = [];

@@ -1016,7 +1016,7 @@ namespace OpenRA.Server
 					{
 						if (GameSave != null)
 						{
-							var data = MiniYaml.FromString(o.TargetString, o.OrderString)[0];
+							var data = MiniYaml.FromString(o.TargetString, o.OrderString).First();
 							GameSave.AddTraitData(OpenRA.Exts.ParseInt32Invariant(data.Key), data.Value);
 						}
 

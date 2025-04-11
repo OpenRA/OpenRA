@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					modData.ModFiles.TryGetPackageContaining(chrome, out var chromePackage, out var chromeName);
 					var chromePath = Path.Combine(chromePackage.Name, chromeName);
 
-					var yaml = MiniYaml.FromFile(chromePath, false).ConvertAll(n => new MiniYamlNodeBuilder(n));
+					var yaml = MiniYaml.FromFile(chromePath, false).Select(n => new MiniYamlNodeBuilder(n)).ToList();
 					yamlSet.Add(((IReadWritePackage)chromePackage, chromeName, yaml));
 
 					var extractionCandidates = new List<ExtractionCandidate>();

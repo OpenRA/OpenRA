@@ -492,7 +492,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							continue;
 
 						var game = new MiniYamlBuilder(MiniYaml.FromString(
-							bl.Data, $"BeaconLocation_{bl.Address}_{bl.LastAdvertised:s}", stringPool: stringPool)[0].Value);
+							bl.Data, $"BeaconLocation_{bl.Address}_{bl.LastAdvertised:s}", stringPool: stringPool).First().Value);
 						var idNode = game.NodeWithKeyOrDefault("Id");
 
 						// Skip beacons created by this instance and replace Id by expected int value

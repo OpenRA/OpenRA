@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapStream == null)
 						continue;
 
-					var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false));
+					var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false).ToList());
 					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 					if (mapRulesNode != null)
 						modRules.AddRange(UpdateUtils.LoadExternalMapYaml(modData, mapRulesNode.Value, []));
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapStream == null)
 						continue;
 
-					var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false));
+					var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false).ToList());
 					var mapRules = new YamlFileSet() { (package, "map.yaml", yaml.Nodes) };
 
 					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
