@@ -1789,6 +1789,55 @@ Templates:
 
 MultiBrushCollections:
 	Segmented:
+		MultiBrush@3:
+			Template: 3
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@4:
+			Template: 4
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@7:
+			Template: 7
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@9:
+			Template: 9
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@10:
+			Template: 10
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@11:
+			Template: 11
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@12:
+			Template: 12
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
 		MultiBrush@13:
 			Template: 13
 			Segment:
@@ -2041,6 +2090,55 @@ MultiBrushCollections:
 				Inner: Cliff
 				End: Cliff.U
 				Points: 0,1, 1,1, 1,0
+		MultiBrush@51:
+			Template: 51
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.U
+				Points: 0,2, 1,2, 2,2, 2,1, 2,0
+		MultiBrush@52:
+			Template: 52
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.R
+				Points: 1,0, 1,1, 1,2, 2,2, 3,2
+		MultiBrush@88:
+			Template: 88
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@89:
+			Template: 89
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@90:
+			Template: 90
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.D
+				Points: 3,1, 2,1, 1,1, 1,2, 1,3
+		MultiBrush@91:
+			Template: 91
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.L
+				Points: 2,3, 2,2, 2,1, 1,1, 0,1
+		MultiBrush@92:
+			Template: 92
+			Segment:
+				Start: Beach.L
+				Inner: Beach
+				End: Beach.U
+				Points: 2,1, 1,1, 1,0
 		MultiBrush@93:
 			Template: 93
 			Segment:
@@ -2503,6 +2601,20 @@ MultiBrushCollections:
 				Inner: Road
 				Points: 1,0, 0,0, 0,1, 0,2
 				Start: RoadOut.LD
+		MultiBrush@186:
+			Template: 186
+			Segment:
+				Start: Beach.D
+				Inner: Beach
+				End: Beach.D
+				Points: 1,0, 1,1, 1,2, 1,3
+		MultiBrush@187:
+			Template: 187
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.U
+				Points: 2,3, 2,2, 2,1, 2,0
 		MultiBrush@189:
 			Template: 189
 			Segment:
@@ -2531,6 +2643,32 @@ MultiBrushCollections:
 				Inner: Cliff
 				Points: 1,1, 1,0
 				Start: Cliff.U
+		MultiBrush@TopRightBeachCorner:
+			Tile@0: 52,2
+				Offset: 0,0
+			Tile@2: 52,5
+				Offset: 0,1
+			Tile@3: 52,2
+				Offset: 1,1
+			Segment:
+				Start: Beach.R
+				Inner: Beach
+				End: Beach.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@TopLeftBeachCorner:
+			Tile@1: 75,2
+				Offset: 1,0
+			Tile@2: 75,2
+				Offset: 0,1
+			Tile@3: 51,1
+				Offset: 1,1
+			Actor: tc05.husk
+				Offset: 0,0,0
+			Segment:
+				Start: Beach.U
+				Inner: Beach
+				End: Beach.R
+				Points: 1,2, 1,1, 2,1
 	Trees:
 		MultiBrush@t01:
 			Actor: t01
@@ -2716,12 +2854,11 @@ MultiBrushCollections:
 	Water:
 		MultiBrush@1:
 			Template: 1
-			Weight: 100
 		MultiBrush@2:
 			Template: 2
 		MultiBrush@5:
 			Template: 5
-			Weight: 500
+			Weight: 50
 		MultiBrush@6:
 			Template: 6
 			Weight: 500

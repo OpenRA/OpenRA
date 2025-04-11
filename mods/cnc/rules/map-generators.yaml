@@ -99,17 +99,14 @@
 				Default: Gardens,Rocky
 				Choice@Lakes:
 					Label: label-cnc-map-generator-choice-terrain-type-lakes
-					Tileset: DESERT
 					Settings:
 						Water: 200
 				Choice@Puddles:
 					Label: label-cnc-map-generator-choice-terrain-type-puddles
-					Tileset: DESERT
 					Settings:
 						Water: 100
 				Choice@Gardens:
 					Label: label-cnc-map-generator-choice-terrain-type-gardens
-					Tileset: DESERT
 					Settings:
 						Water: 50
 						Forests: 300
@@ -165,7 +162,6 @@
 						MinimumTerrainContourSpacing: 5
 				Choice@MountainLakes:
 					Label: label-cnc-map-generator-choice-terrain-type-mountain-lakes
-					Tileset: DESERT
 					Settings:
 						Water: 200
 						Mountains: 1000
@@ -254,7 +250,6 @@
 						ExternalCircularBias: 1
 				Choice@CircleWater:
 					Label: label-cnc-map-generator-choice-shape-circle-water
-					Tileset: DESERT
 					Settings:
 						ExternalCircularBias: -1
 			MultiChoiceOption@Resources:
