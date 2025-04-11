@@ -122,6 +122,8 @@ namespace OpenRA.Mods.Common.FileFormats
 			int outOffset;
 			int currentBlock;
 
+			public override long Length => outputSize;
+
 			public WavStreamImaAdpcm(Stream stream, int dataSize, short blockAlign, short channels, int uncompressedSize)
 				: base(stream)
 			{
@@ -206,15 +208,19 @@ namespace OpenRA.Mods.Common.FileFormats
 
 			static readonly int[] AdaptCoeff2 = [0, -256, 0, 64, 0, -208, -232];
 
+			readonly int dataSize;
 			readonly short channels;
 			readonly int blockDataSize;
 			readonly int numBlocks;
 
 			int currentBlock;
 
+			public override long Length => dataSize;
+
 			public WavStreamMsAdpcm(Stream stream, int dataSize, short blockAlign, short channels)
 				: base(stream)
 			{
+				this.dataSize = dataSize;
 				this.channels = channels;
 				blockDataSize = blockAlign - channels * 7;
 				numBlocks = dataSize / blockAlign;
