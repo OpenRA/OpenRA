@@ -119,6 +119,9 @@ Player:
 		TextNotification: notification-base-under-attack
 		AllyTextNotification: notification-ally-under-attack
 		AllyNotification: OurAllyIsUnderAttack
+	DamageNotifier@Unit:
+		InvalidTargets: Building
+		NotifyInterval: 10000
 	HarvesterAttackNotifier:
 		TextNotification: notification-harvester-under-attack
 	PlayerStatistics:

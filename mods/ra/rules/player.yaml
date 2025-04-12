@@ -150,6 +150,9 @@ Player:
 		Notification: BaseAttack
 		TextNotification: notification-base-under-attack
 		AllyTextNotification: notification-ally-under-attack
+	DamageNotifier@Unit:
+		InvalidTargets: Structure
+		NotifyInterval: 10000
 	PlayerStatistics:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@infonly:
