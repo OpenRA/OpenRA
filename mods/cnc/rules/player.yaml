@@ -35,7 +35,9 @@ Player:
 		DefaultCash: 7500
 	DeveloperMode:
 		CheckboxDisplayOrder: 9
-	BaseAttackNotifier:
+	DamageNotifier:
+		ValidTargets: Structure
+		Notification: BaseAttack
 		TextNotification: notification-base-under-attack
 		AllyTextNotification: notification-ally-under-attack
 	Shroud:

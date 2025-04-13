@@ -113,7 +113,9 @@ Player:
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	FrozenActorLayer:
-	BaseAttackNotifier:
+	DamageNotifier:
+		ValidTargets: Building
+		Notification: BaseAttack
 		TextNotification: notification-base-under-attack
 		AllyTextNotification: notification-ally-under-attack
 		AllyNotification: OurAllyIsUnderAttack
