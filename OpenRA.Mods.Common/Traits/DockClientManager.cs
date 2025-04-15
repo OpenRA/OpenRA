@@ -381,6 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 					.OrderBy(dock =>
 						(clientActor.Location - clientActor.World.Map.CellContaining(dock.Trait.DockPosition)).LengthSquared +
 						dock.Trait.ReservationCount * client.OccupancyCostModifier)
+					.Cast<TraitPair<IDockHost>?>()
 					.FirstOrDefault();
 			}
 
