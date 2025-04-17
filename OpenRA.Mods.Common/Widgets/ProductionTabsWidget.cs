@@ -278,12 +278,16 @@ namespace OpenRA.Mods.Common.Widgets
 			// It is possible that production queues get enabled/disabled during their lifetime.
 			// This makes sure every enabled production queue always has its tab associated with it.
 			var shouldUpdateQueues = false;
-			foreach (var (queue, enabled) in cachedProductionQueueEnabledStates)
+			for (var i = 0; i < cachedProductionQueueEnabledStates.Count; i++)
 			{
+				var (queue, enabled) = cachedProductionQueueEnabledStates[i];
+
 				if (queue.Enabled != enabled)
 				{
 					shouldUpdateQueues = true;
-					break;
+
+					// Refresh queue.Enabled value in cache
+					cachedProductionQueueEnabledStates[i] = (queue, queue.Enabled);
 				}
 			}
 
