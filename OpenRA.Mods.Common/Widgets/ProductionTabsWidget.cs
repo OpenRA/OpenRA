@@ -243,31 +243,32 @@ namespace OpenRA.Mods.Common.Widgets
 		// Is added to world.ActorAdded by the SidebarLogic handler
 		public void ActorChanged(Actor a)
 		{
-			if (a.Info.HasTraitInfo<ProductionQueueInfo>())
-			{
-				var queues = a.World.ActorsWithTrait<ProductionQueue>()
-					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
-					.Select(p => p.Trait);
+			// Ignore non-production actors and actors owned by non-local player
+			if (!a.Info.HasTraitInfo<ProductionQueueInfo>() || a.Owner != a.World.LocalPlayer)
+				return;
 
-				cachedProductionQueueEnabledStates.Clear();
-				foreach (var queue in queues)
-					cachedProductionQueueEnabledStates.Add((queue, queue.Enabled));
+			var queues = a.World.ActorsWithTrait<ProductionQueue>()
+				.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
+				.Select(p => p.Trait);
 
-				foreach (var g in Groups.Values)
-					g.Update(cachedProductionQueueEnabledStates.Select(t => t.Queue));
+			cachedProductionQueueEnabledStates.Clear();
+			foreach (var queue in queues)
+				cachedProductionQueueEnabledStates.Add((queue, queue.Enabled));
 
-				if (queueGroup == null)
-					return;
+			foreach (var g in Groups.Values)
+				g.Update(cachedProductionQueueEnabledStates.Select(t => t.Queue));
 
-				// Queue destroyed, was last of type: switch to a new group
-				if (Groups[queueGroup].Tabs.Count == 0)
-					QueueGroup = Groups.Where(g => g.Value.Tabs.Count > 0)
-						.Select(g => g.Key).FirstOrDefault();
+			if (queueGroup == null)
+				return;
 
-				// Queue destroyed, others of same type: switch to another tab
-				else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(CurrentQueue))
-					SelectNextTab(false);
-			}
+			// Queue destroyed, was last of type: switch to a new group
+			if (Groups[queueGroup].Tabs.Count == 0)
+				QueueGroup = Groups.Where(g => g.Value.Tabs.Count > 0)
+					.Select(g => g.Key).FirstOrDefault();
+
+			// Queue destroyed, others of same type: switch to another tab
+			else if (!Groups[queueGroup].Tabs.Select(t => t.Queue).Contains(CurrentQueue))
+				SelectNextTab(false);
 		}
 
 		public override void Tick()
