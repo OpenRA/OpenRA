@@ -45,8 +45,6 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
 			cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
 			UpdatePreview();
-
-			action = new AddResourcesEditorAction(resourceType, resourceLayer);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -70,13 +68,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && resourceLayer.CanAddResource(ResourceType, cell))
 			{
+				action ??= new AddResourcesEditorAction(ResourceType, resourceLayer);
 				action.Add(new CellResource(cell, resourceLayer.GetResource(cell)));
 				resourceAdded = true;
 			}
 			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				editorActionManager.Add(action);
-				action = new AddResourcesEditorAction(ResourceType, resourceLayer);
+				action = null;
 				resourceAdded = false;
 			}
 
@@ -101,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { return preview; }
+		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { return action == null ? preview : null; }
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr) { yield break; }
 
 		public void Tick() { }
