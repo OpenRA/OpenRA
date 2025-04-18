@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -172,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 				NumSides = file.NumSides;
 				AxisAngle = file.AxisAngle;
 
-				SetAll(file.Tiles.ToDictionary(d => d.Key, d => new HashSet<CPos>(d.Value)));
+				SetAll(file.Tiles.ToImmutableDictionary(d => d.Key, d => d.Value.ToImmutableArray()));
 			}
 			catch (Exception e)
 			{
@@ -202,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 			Tiles.Clear();
 		}
 
-		public void SetAll(Dictionary<int, HashSet<CPos>> newTiles)
+		public void SetAll(IImmutableDictionary<int, ImmutableArray<CPos>> newTiles)
 		{
 			ClearAll();
 
@@ -222,7 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void SetSelected(int tile, HashSet<CPos> newTiles)
+		public void SetSelected(int tile, ReadOnlySpan<CPos> newTiles)
 		{
 			var type = Tiles[tile];
 			foreach (var pos in type)
