@@ -28,9 +28,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly MarkerLayerOverlay markerLayerOverlay;
 		readonly EditorViewportControllerWidget editorWidget;
 
-		readonly List<PaintMarkerTile> paintTiles = [];
+		readonly Dictionary<CPos, int?> paintTiles = [];
+		readonly List<CPos> cells = [];
 		bool painting;
-		CPos cell;
+		bool shiftHeldDown;
 
 		public EditorMarkerLayerBrush(EditorViewportControllerWidget editorWidget, int? id, WorldRenderer wr)
 		{
@@ -64,58 +65,86 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Button != MouseButton.Left)
 				return true;
 
-			if (mi.Event == MouseInputEvent.Up)
+			UpdatePreview();
+			if (mi.Event == MouseInputEvent.Down)
+			{
+				painting = true;
+
+				UpdatePreview();
+			}
+			else if (mi.Event == MouseInputEvent.Up)
 			{
 				UpdatePreview();
 				if (paintTiles.Count != 0)
 				{
-					editorActionManager.Add(new PaintMarkerTileEditorAction(Template, paintTiles.ToImmutableArray(), markerLayerOverlay));
+					var tiles = paintTiles.Select(t => new PaintMarkerTile(t.Key, t.Value)).ToImmutableArray();
+					editorActionManager.Add(new PaintMarkerTileEditorAction(Template, tiles, markerLayerOverlay));
 					paintTiles.Clear();
-					UpdatePreview(true);
 				}
 
 				painting = false;
+				UpdatePreview(true);
 			}
 			else
-			{
-				painting = true;
 				UpdatePreview();
-			}
 
 			return true;
+		}
+
+		public bool HandleKeyboardInput(KeyInput ki)
+		{
+			if (ki.Key == Keycode.LSHIFT || ki.Key == Keycode.RSHIFT)
+			{
+				shiftHeldDown = ki.Event == KeyInputEvent.Down;
+				UpdatePreview(true);
+			}
+
+			return false;
 		}
 
 		void UpdatePreview(bool forceRefresh = false)
 		{
 			var currentCell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
-			if (!forceRefresh && cell == currentCell)
+			if (!forceRefresh && cells.Contains(currentCell))
 				return;
 
-			cell = currentCell;
-
-			if (!painting)
+			if (!painting || shiftHeldDown)
 			{
 				foreach (var paintTile in paintTiles)
-					markerLayerOverlay.SetTile(paintTile.Cell, paintTile.Previous);
+					markerLayerOverlay.SetTile(paintTile.Key, paintTile.Value);
 
 				paintTiles.Clear();
 			}
 
-			foreach (var cell in markerLayerOverlay.CalculateMirrorPositions(cell))
+			if (!painting)
+				cells.Clear();
+
+			cells.Add(currentCell);
+			IEnumerable<CPos> cellsToPaint;
+			if (shiftHeldDown)
+				cellsToPaint = Util.GetCurvedLine(cells[0], cells[^1], new int2(1, 1));
+			else
+				cellsToPaint = cells;
+
+			foreach (var c in cellsToPaint)
 			{
-				if (paintTiles.Any(t => t.Cell == cell))
-					continue;
+				foreach (var cell in markerLayerOverlay.CalculateMirrorPositions(c))
+				{
+					if (!world.Map.Contains(c))
+						continue;
 
-				var existing = markerLayerOverlay.CellLayer[cell];
-				if (existing == Template)
-					continue;
+					if (paintTiles.ContainsKey(cell))
+						continue;
 
-				paintTiles.Add(new PaintMarkerTile(cell, existing));
-				markerLayerOverlay.SetTile(cell, Template);
+					var existing = markerLayerOverlay.CellLayer[cell];
+					if (existing == Template)
+						continue;
+
+					paintTiles[cell] = existing;
+					markerLayerOverlay.SetTile(cell, Template);
+				}
 			}
 		}
-
-		public bool HandleKeyboardInput(KeyInput ki) => false;
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { UpdatePreview(); }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
@@ -126,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Dispose()
 		{
 			foreach (var paintTile in paintTiles)
-				markerLayerOverlay.SetTile(paintTile.Cell, paintTile.Previous);
+				markerLayerOverlay.SetTile(paintTile.Key, paintTile.Value);
 		}
 	}
 
