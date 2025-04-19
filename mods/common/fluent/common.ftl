@@ -783,9 +783,9 @@ notification-added-actor = Added { $name } ({ $id })
 
 ## EditorCopyPasteBrush
 notification-copied-tiles =
-    { $amount ->
+    { $count ->
        [one] Copied one tile
-      *[other] Copied { $amount } tiles
+      *[other] Copied { $count } tiles
     }
 
 ## EditorDefaultBrush
@@ -799,9 +799,9 @@ notification-moved-actor = Moved { $id } from { $x1 },{ $y1 } to { $x2 },{ $y2 }
 
 ## EditorResourceBrush
 notification-added-resource =
-    { $amount ->
+    { $count ->
        [one] Added one cell of { $type }
-      *[other] Added { $amount } cells of { $type }
+      *[other] Added { $count } cells of { $type }
     }
 
 ## EditorTileBrush
@@ -810,17 +810,17 @@ notification-filled-tile = Filled with tile { $id }
 
 ## EditorMarkerLayerBrush
 notification-added-marker-tiles =
-    { $amount ->
+    { $count ->
        [one] Added one marker tile of type { $type }
-      *[other] Added { $amount } marker tiles of type { $type }
+      *[other] Added { $count } marker tiles of type { $type }
     }
 notification-removed-marker-tiles =
-    { $amount ->
+    { $count ->
        [one] Removed one marker tile
-      *[other] Removed { $amount } marker tiles
+      *[other] Removed { $count } marker tiles
     }
-notification-cleared-selected-marker-tiles = Cleared { $amount } marker tiles of type { $type }
-notification-cleared-all-marker-tiles = Cleared { $amount } marker tiles
+notification-cleared-selected-marker-tiles = Cleared { $count } marker tiles of type { $type }
+notification-cleared-all-marker-tiles = Cleared { $count } marker tiles
 
 ## EditorActionManager
 notification-opened = Opened

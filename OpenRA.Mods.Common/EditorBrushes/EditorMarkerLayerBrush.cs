@@ -98,10 +98,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class PaintMarkerTileEditorAction : IEditorAction
 	{
-		[FluentReference("amount", "type")]
+		[FluentReference("count", "type")]
 		const string AddedMarkerTiles = "notification-added-marker-tiles";
 
-		[FluentReference("amount")]
+		[FluentReference("count")]
 		const string RemovedMarkerTiles = "notification-removed-marker-tiles";
 
 		public string Text { get; private set; }
@@ -150,16 +150,15 @@ namespace OpenRA.Mods.Common.Widgets
 				markerLayerOverlay.SetTile(cell, type);
 			}
 
-			if (type != null)
-				Text = FluentProvider.GetMessage(AddedMarkerTiles, "amount", paintTiles.Count, "type", type);
-			else
-				Text = FluentProvider.GetMessage(RemovedMarkerTiles, "amount", paintTiles.Count);
+			Text = type != null
+				? FluentProvider.GetMessage(AddedMarkerTiles, "count", paintTiles.Count, "type", type)
+				: FluentProvider.GetMessage(RemovedMarkerTiles, "count", paintTiles.Count);
 		}
 	}
 
 	sealed class ClearSelectedMarkerTilesEditorAction : IEditorAction
 	{
-		[FluentReference("amount", "type")]
+		[FluentReference("count", "type")]
 		const string ClearedSelectedMarkerTiles = "notification-cleared-selected-marker-tiles";
 
 		public string Text { get; }
@@ -177,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tiles = markerLayerOverlay.Tiles[tile].ToHashSet();
 
-			Text = FluentProvider.GetMessage(ClearedSelectedMarkerTiles, "amount", tiles.Count, "type", tile);
+			Text = FluentProvider.GetMessage(ClearedSelectedMarkerTiles, "count", tiles.Count, "type", tile);
 		}
 
 		public void Execute()
@@ -198,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class ClearAllMarkerTilesEditorAction : IEditorAction
 	{
-		[FluentReference("amount")]
+		[FluentReference("count")]
 		const string ClearedAllMarkerTiles = "notification-cleared-all-marker-tiles";
 
 		public string Text { get; }
@@ -214,7 +213,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var allTilesCount = tiles.Values.Sum(x => x.Count);
 
-			Text = FluentProvider.GetMessage(ClearedAllMarkerTiles, "amount", allTilesCount);
+			Text = FluentProvider.GetMessage(ClearedAllMarkerTiles, "count", allTilesCount);
 		}
 
 		public void Execute()

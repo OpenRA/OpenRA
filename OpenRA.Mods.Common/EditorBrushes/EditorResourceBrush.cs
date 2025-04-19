@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class AddResourcesEditorAction : IEditorAction
 	{
-		[FluentReference("amount", "type")]
+		[FluentReference("count", "type")]
 		const string AddedResource = "notification-added-resource";
 
 		public string Text { get; private set; }
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceLayer.ClearResources(resourceCell.Cell);
 			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
 			cellResources.Add(resourceCell);
-			Text = FluentProvider.GetMessage(AddedResource, "amount", cellResources.Count, "type", resourceType);
+			Text = FluentProvider.GetMessage(AddedResource, "count", cellResources.Count, "type", resourceType);
 		}
 	}
 }
