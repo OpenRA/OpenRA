@@ -1086,18 +1086,38 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (param.Roads)
 			{
-				var space = new CellLayer<bool>(map);
-				foreach (var mpos in map.AllCells.MapCoords)
-					space[mpos] = param.ClearTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[mpos]));
+				// For awkward symmetries, we try harder to make sure roads are fairer.
+				// This can degrade the quantity of roads, though.
+				var imperfectSymmetry =
+					param.Mirror != Symmetry.Mirror.None ||
+					param.Rotations == 3 ||
+					param.Rotations >= 5;
+
+				// Enlargement must increase dimensions by multiple of 4 to maximize compatibility
+				// with IsometricRectangular grids, where a non-multiple of 4 would change how the
+				// center aligns with the grid.
+				var enlargedSize = new Size(
+					map.MapSize.Width + (map.MapSize.Width & ~3) + 4,
+					map.MapSize.Height + (map.MapSize.Height & ~3) + 4);
+
+				var space = new CellLayer<bool>(gridType, enlargedSize);
+				space.Clear(true);
+
+				var enlargedOffset =
+					CellLayerUtils.WPosToCPos(CellLayerUtils.Center(space), gridType)
+						- CellLayerUtils.WPosToCPos(CellLayerUtils.Center(map.Tiles), gridType);
+
+				foreach (var cpos in map.AllCells)
+					space[cpos + enlargedOffset] = param.ClearTerrain.Contains(tileset.GetTerrainIndex(map.Tiles[cpos]));
 
 				foreach (var actorPlan in actorPlans)
 					foreach (var (cpos, _) in actorPlan.Footprint())
-						if (space.Contains(cpos))
-							space[cpos] = false;
+						if (space.Contains(cpos + enlargedOffset))
+							space[cpos + enlargedOffset] = false;
 
 				// Improve symmetry.
 				{
-					var newSpace = new CellLayer<bool>(map);
+					var newSpace = new CellLayer<bool>(gridType, enlargedSize);
 					Symmetry.RotateAndMirrorOverCPos(
 						space,
 						param.Rotations,
@@ -1114,6 +1134,7 @@ namespace OpenRA.Mods.Common.Traits
 				const int RoadMinimumShrinkLength = 12;
 				const int RoadInertialRange = 8;
 				var roadTotalShrink = RoadStraightenShrink + param.RoadShrink;
+				var minimumRoadLengthForPruning = RoadMinimumShrinkLength + 2 * roadTotalShrink;
 
 				var matrixSpace = CellLayerUtils.ToMatrix(space, true);
 				var kernel = new Matrix<bool>(param.RoadSpacing * 2 + 1, param.RoadSpacing * 2 + 1);
@@ -1129,13 +1150,70 @@ namespace OpenRA.Mods.Common.Traits
 					new int2(param.RoadSpacing, param.RoadSpacing),
 					false);
 				var deflated = MatrixUtils.DeflateSpace(dilated, true);
+
+				if (imperfectSymmetry)
+				{
+					var changing = true;
+					while (changing)
+					{
+						changing = false;
+
+						// Delete short paths.
+						{
+							MatrixUtils.RemoveStubsFromDirectionMapInPlace(deflated);
+							var paths = MatrixUtils.DirectionMapToPaths(deflated);
+							if (paths.Length == 0)
+								break;
+
+							var minLength = paths.Min(p => p.Length);
+							if (minLength < minimumRoadLengthForPruning)
+							{
+								changing = true;
+								var shortPaths = paths
+									.Where(path => path.Length == minLength);
+								foreach (var path in shortPaths)
+									foreach (var point in path)
+										deflated[point] = 0;
+								MatrixUtils.RemoveStubsFromDirectionMapInPlace(deflated);
+							}
+						}
+
+						// Prune asymmetric paths.
+						{
+							const int Dilation = 3;
+							var nearPath = MatrixUtils.KernelDilateOrErode(
+								deflated.Map(v => v != 0),
+								new Matrix<bool>(Dilation * 2 + 1, Dilation * 2 + 1).Fill(true),
+								new int2(Dilation, Dilation),
+								true);
+							var matrixPaths = MatrixUtils.DirectionMapToPaths(deflated);
+							foreach (var path in matrixPaths)
+							{
+								var cposPath = CellLayerUtils.FromMatrixPoints([path], space)[0];
+								var projectedPoints = cposPath
+									.SelectMany(p => Symmetry.RotateAndMirrorCPos(p, space, param.Rotations, param.Mirror))
+									.ToArray();
+								var matrixPoints = CellLayerUtils.ToMatrixPoints([projectedPoints], space)[0];
+								if (!matrixPoints.All(p => !nearPath.ContainsXY(p) || nearPath[p]))
+								{
+									// The path doesn't exist across all symmetries (or isn't consistent enough).
+									changing = true;
+									foreach (var point in path)
+										deflated[point] = 0;
+								}
+							}
+						}
+					}
+				}
+
 				var matrixPointArrays = MatrixUtils.DirectionMapToPathsWithPruning(
 					input: deflated,
-					minimumLength: 20 + 2 * param.RoadShrink,
+					minimumLength: minimumRoadLengthForPruning,
 					minimumJunctionSeparation: 6,
 					preserveEdgePaths: true);
 				var pointArrays = CellLayerUtils.FromMatrixPoints(matrixPointArrays, space);
 				pointArrays = TilingPath.RetainDisjointPaths(pointArrays);
+				pointArrays = pointArrays.Select(a => a.Select(p => p - enlargedOffset).ToArray()).ToArray();
 
 				var nonLoopedRoadPermittedTemplates =
 					TilingPath.PermittedSegments.FromInnerAndTerminalTypes(
@@ -1176,14 +1254,6 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Shrinking may have deleted the path.
 					if (path.Points == null)
-						continue;
-
-					// Roads that are _almost_ vertical or horizontal tile badly. Filter them out.
-					var minX = path.Points.Min((p) => p.X);
-					var minY = path.Points.Min((p) => p.Y);
-					var maxX = path.Points.Max((p) => p.X);
-					var maxY = path.Points.Max((p) => p.Y);
-					if (maxX - minX < 6 || maxY - minY < 6)
 						continue;
 
 					var brush = path.Tile(roadTilingRandom)
