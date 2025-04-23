@@ -52,7 +52,7 @@ harkonnen-units-approaching = Harkonnen units approaching!
 sietch-destroyed = Sietch destroyed!
 fremen-sietch-under-attack = The Fremen Sietch is under attack!
 
-## atreides-05, harkonnen-06ab, harkonnen09ab
+## atreides-05, atreides-06ab harkonnen-06ab, harkonnen09ab
 smugglers-annihilated = The Smugglers have been annihilated!
 
 ## atreides-06a
@@ -80,11 +80,19 @@ stay-away-from-starport = Stay away from our Starport.
 smuggler-leader = Smuggler Leader.
 were-warned-will-pay = You were warned. Now you will pay.
 destroy-smugglers-mercenaries = Destroy the Smugglers and their mercenaries.
+starport-destroyed = Starport destroyed.
 capture-harkonnen-barracks-release-hostages = Capture the Harkonnen barracks to release the hostages.
 use-engineer-hint = Use engineers to reclaim destroyed vehicles.
 
+## atreides-06b
+destroy-mercenaries = Destroy Mercenaries.
+destroy-ordos-starport = Destroy Ordos Starport.
+destroy-smugglers = Destroy Smugglers.
 ## harkonnen-01ab, harkonnen-03ab
 eliminate-atreides-units-reinforcements = Eliminate all Atreides forces and reinforcements in the area.
+
+## atreides-06b harkonnen-08
+mercenaries-annihilated = The Mercenaries have been annihilated!
 
 ## harkonnen-02ab, harkonnen-03ab, harkonnen-04, harkonnen-07, harkonnen-08, harkonnen-09, ordos-05, ordos-06a
 atreides-annihilated = The Atreides have been annihilated!
@@ -132,7 +140,6 @@ destroy-atreides-high-tech-factory-imperial-reinforcements = Destroy the Atreide
 
 ## harkonnen-08
 atreides-hostile = The Atreides are now hostile!
-mercenaries-annihilated = The Mercenaries have been annihilated!
 ally-mercenaries = Persuade the Mercenaries to fight alongside House Harkonnen.
 mercenary-leader-captured-allied = Leader Captured. The mercenaries have been persuaded to fight with House Harkonnen.
 cannot-stand-harkonnen-must-become-neutral = We cannot stand against the Harkonnen. We must become neutral.
