@@ -99,8 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
-				.SelectMany(p => p.Render());
+			foreach (var p in PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight))
+				foreach (var r in p.Render())
+					yield return r;
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
