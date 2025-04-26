@@ -75,19 +75,12 @@
 						Rotations: 1
 			MultiChoiceOption@hidden_tileset_overrides:
 				Choice@common:
-					Tileset: DESERT,SNOW,TEMPERAT
+					Tileset: DESERT,SNOW,TEMPERAT,WINTER
 					Settings:
 						LandTile: 255
 						WaterTile: 1
 						RepaintTiles:
-							1: Water
-				Choice@winter:
-					Tileset: WINTER
-					Settings:
-						LandTile: 255
-						WaterTile: 1
-						RepaintTiles:
-							255: Snow
+							255: Clear
 							1: Water
 			IntegerOption@Seed:
 				Label: label-cnc-map-generator-option-seed

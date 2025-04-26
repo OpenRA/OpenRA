@@ -2854,6 +2854,15 @@ MultiBrushCollections:
 			Actor: t17
 			BackingTile: 255,0
 			Weight: 200
+	Clear:
+		MultiBrush@Nothing:
+			Weight: 200000
+		MultiBrush@73:
+			Template: 73
+		MultiBrush@74:
+			Template: 74
+		MultiBrush@Pebbles4:
+			Tile: 140,3
 	Water:
 		MultiBrush@1:
 			Template: 1
@@ -2869,6 +2878,9 @@ MultiBrushCollections:
 			Template: 76
 		MultiBrush@77:
 			Template: 77
+		MultiBrush@Pebbles1:
+			Tile: 11,0
+			Weight: 50
 	CivilianBuildings:
 		MultiBrush@v01:
 			Actor: v01

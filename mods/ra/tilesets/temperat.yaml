@@ -5034,6 +5034,23 @@ MultiBrushCollections:
 		MultiBrush@588:
 			Template: 588
 			Weight: 100
+	Clear:
+		MultiBrush@Nothing:
+			Weight: 200000
+		MultiBrush@108:
+			Template: 108
+		MultiBrush@Pebbles1:
+			Tile: 116,0
+		MultiBrush@Pebbles2:
+			Tile: 130,6
+		MultiBrush@Pebbles3:
+			Tile: 182,0
+	Water:
+		MultiBrush@1:
+			Template: 1
+			Weight: 100
+		MultiBrush@2:
+			Template: 2
 	CivilianBuildings:
 		MultiBrush@v01:
 			Actor: v01

@@ -78,16 +78,25 @@
 					Settings:
 						LandTile: 255
 						WaterTile: 256
+						RepaintTiles:
+							255: Clear
+							256: Water
 				Choice@temperat:
 					Tileset: TEMPERAT
 					Settings:
 						LandTile: 255
 						WaterTile: 1
+						RepaintTiles:
+							255: Clear
+							1: Water
 				Choice@snow:
 					Tileset: SNOW
 					Settings:
 						LandTile: 255
 						WaterTile: 1
+						RepaintTiles:
+							255: Clear
+							1: Water
 			IntegerOption@Seed:
 				Label: label-ra-map-generator-option-seed
 				Parameter: Seed

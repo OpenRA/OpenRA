@@ -4266,6 +4266,37 @@ MultiBrushCollections:
 		MultiBrush@tc01.husk:
 			Actor: tc01.husk
 			Weight: 100
+	Clear:
+		MultiBrush@Nothing:
+			Weight: 200000
+		MultiBrush@39:
+			Template: 39
+		MultiBrush@40:
+			Template: 40
+		MultiBrush@44:
+			Template: 44
+		MultiBrush@Pebbles1:
+			Tile: 126,0
+		MultiBrush@Pebbles2:
+			Tile: 126,2
+		MultiBrush@Pebbles3:
+			Tile: 138,0
+		MultiBrush@Pebbles4:
+			Tile: 137,2
+		MultiBrush@Pebbles5:
+			Tile: 135,8
+		MultiBrush@Pebbles7:
+			Tile: 140,0
+		MultiBrush@Pebbles8:
+			Tile: 141,6
+	Water:
+		MultiBrush@256:
+			Template: 256
+			Weight: 100
+		MultiBrush@257:
+			Template: 257
+		MultiBrush@258:
+			Template: 258
 	Obstructions:
 		MultiBrush@2:
 			Template: 2
