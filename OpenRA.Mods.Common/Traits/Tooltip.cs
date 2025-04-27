@@ -21,10 +21,12 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Shown in map editor.")]
-	public class EditorOnlyTooltipInfo : TooltipInfoBase
+	public sealed class EditorOnlyTooltipInfo : TooltipInfoBase
 	{
-		public override object Create(ActorInitializer init) { return this; }
+		public override object Create(ActorInitializer init) { return new EditorOnlyTooltip(); }
 	}
+
+	public sealed class EditorOnlyTooltip { }
 
 	[Desc("Shown in the build palette widget.")]
 	public class TooltipInfo : TooltipInfoBase, ITooltipInfo
