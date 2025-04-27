@@ -16,7 +16,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	public static class Utilities
+	public static class UtiliyHelpers
 	{
 		public static MiniYamlNode GetTopLevelNodeByKey(ModData modData, string key,
 			Func<Manifest, ImmutableArray<string>> manifestPropertySelector,

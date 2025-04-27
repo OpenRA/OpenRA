@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var modData = Game.ModData = utility.ModData;
 
 			var key = args[1];
-			var result = Utilities.GetTopLevelNodeByKey(modData, key,
+			var result = UtiliyHelpers.GetTopLevelNodeByKey(modData, key,
 				manifest => manifest.Rules,
 				map => map.RuleDefinitions,
 				args.Length == 3 ? args[2] : null);
