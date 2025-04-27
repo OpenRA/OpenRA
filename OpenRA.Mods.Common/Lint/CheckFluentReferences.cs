@@ -237,14 +237,6 @@ namespace OpenRA.Mods.Common.Lint
 				.Where(t => t.IsSubclassOf(typeof(TraitInfo)) || t.IsSubclassOf(typeof(Warhead)))
 				.SelectMany(t => Utility.GetFields(t).Where(Utility.HasAttribute<FluentReferenceAttribute>)));
 
-			// TODO: linter does not work with LoadUsing
-			foreach (var speed in modData.Manifest.Get<GameSpeeds>().Speeds)
-				GetUsedFluentKeys(
-					usedKeys, testedFields,
-					Utility.GetFields(typeof(GameSpeed)),
-					[speed.Value],
-					(obj, field) => $"`GameSpeeds.Speeds.{speed.Key}.{field.Name}` in mod.yaml");
-
 			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 			var constFields = modData.ObjectCreator.GetTypes().SelectMany(modType => modType.GetFields(Binding)).Where(f => f.IsLiteral);
 			GetUsedFluentKeys(
@@ -260,17 +252,21 @@ namespace OpenRA.Mods.Common.Lint
 				[modData.Manifest.Metadata],
 				(obj, field) => $"`Metadata.{field.Name}` in mod.yaml");
 
-			var modContent = modData.Manifest.Get<ModContent>();
-			GetUsedFluentKeys(
-				usedKeys, testedFields,
-				Utility.GetFields(typeof(ModContent)),
-				[modContent],
-				(obj, field) => $"`ModContent.{field.Name}` in mod.yaml");
-			GetUsedFluentKeys(
-				usedKeys, testedFields,
-				Utility.GetFields(typeof(ModContent.ModPackage)),
-				modContent.Packages.Values.ToArray(),
-				(obj, field) => $"`ModContent.Packages.ContentPackage.{field.Name}` in mod.yaml");
+			var hasModule = modData.Manifest.GetType().GetMethod(nameof(Manifest.Contains));
+			var getModule = modData.Manifest.GetType().GetMethod(nameof(Manifest.Get), []);
+			var globalModData = modData.ObjectCreator.GetTypesImplementing<IGlobalModData>()
+				.Where(t => (bool)hasModule.MakeGenericMethod(t).Invoke(modData.Manifest, []));
+
+			foreach (var module in globalModData)
+			{
+				foreach (var foo in Utility.GetFields(module))
+					Console.WriteLine($"{module.Name}.{foo.Name}");
+				GetUsedFluentKeys(
+					usedKeys, testedFields,
+					Utility.GetFields(module),
+					[getModule.MakeGenericMethod(module).Invoke(modData.Manifest, [])],
+					(obj, field) => $"`{module.Name}.{field.Name}` in mod.yaml");
+			}
 
 			GetUsedFluentKeys(
 				usedKeys, testedFields,

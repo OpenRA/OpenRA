@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common
 	{
 		public class ModPackage
 		{
-			[FluentReference]
+			// FluentReference enforced by ModContent.LoadFluentReferences
 			public readonly string Title;
 			public readonly string Identifier;
 			public readonly string[] TestFiles = [];
@@ -81,6 +81,7 @@ namespace OpenRA.Mods.Common
 
 		public class ModDownload
 		{
+			// FluentReference enforced by ModContent.LoadFluentReferences
 			public readonly string Title;
 			public readonly string URL;
 			public readonly string MirrorList;
@@ -130,6 +131,23 @@ namespace OpenRA.Mods.Common
 		{
 			var sourceNode = yaml.NodeWithKeyOrDefault("Sources");
 			return sourceNode != null ? sourceNode.Value.Nodes.Select(n => n.Key).ToArray() : [];
+		}
+
+		// This is purely of interest to the linter.
+		[FluentReference]
+		[FieldLoader.LoadUsing(nameof(LoadFluentReferences))]
+		public readonly List<string> FluentReferences = null;
+
+		protected static List<string> LoadFluentReferences(MiniYaml yaml)
+		{
+			var references = new List<string>();
+			references.AddRange(yaml.NodeWithKeyOrDefault("Packages")?.Value.Nodes
+				.Select(n => n.Value.NodeWithKeyOrDefault("Title")?.Value.Value) ?? []);
+
+			references.AddRange(yaml.NodeWithKeyOrDefault("Downloads")?.Value.Nodes
+				.Select(n => n.Value.NodeWithKeyOrDefault("Title")?.Value.Value) ?? []);
+
+			return references;
 		}
 	}
 }

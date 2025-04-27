@@ -10,12 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA
 {
 	public class GameSpeed
 	{
-		[FluentReference]
+		// FluentReference enforced by GameSpeeds.LoadFluentReferences
 		[FieldLoader.Require]
 		public readonly string Name;
 
@@ -55,6 +56,18 @@ namespace OpenRA
 			}
 
 			return ret;
+		}
+
+		// This is purely of interest to the linter.
+		[FluentReference]
+		[FieldLoader.LoadUsing(nameof(LoadFluentReferences))]
+		public readonly List<string> FluentReferences = null;
+
+		protected static List<string> LoadFluentReferences(MiniYaml yaml)
+		{
+			return yaml.NodeWithKeyOrDefault("Speeds")?.Value.Nodes
+				.Select(n => n.Value.NodeWithKeyOrDefault("Name")?.Value.Value)
+				.ToList();
 		}
 	}
 }
