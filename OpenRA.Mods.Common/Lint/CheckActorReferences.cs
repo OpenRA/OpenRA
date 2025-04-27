@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Lint
 		static void CheckTrait(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
 		{
 			var actualType = traitInfo.GetType();
-			foreach (var field in Utility.GetFields(actualType))
+			var members = Utility.GetFields(actualType).Concat(Utility.GetProperties(actualType).Cast<MemberInfo>());
+			foreach (var field in members)
 			{
 				if (Utility.HasAttribute<ActorReferenceAttribute>(field))
 					CheckActorReference(emitError, actorInfo, traitInfo, field, rules.Actors,
@@ -54,11 +55,11 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		static void CheckActorReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
-			FieldInfo fieldInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
+			MemberInfo memberInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, attribute.DictionaryReference);
-			if (values == null)
-				return;
+			var values = memberInfo is PropertyInfo info
+				? LintExts.GetPropertyValues(traitInfo, info, attribute.DictionaryReference)
+				: LintExts.GetFieldValues(traitInfo, (FieldInfo)memberInfo, attribute.DictionaryReference);
 
 			foreach (var value in values)
 			{
@@ -71,42 +72,48 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (!dict.ContainsKey(v))
 				{
-					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}`: Missing actor `{value}`.");
+					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{memberInfo.Name}`: Missing actor `{value}`.");
 
 					continue;
 				}
 
 				foreach (var requiredTrait in attribute.RequiredTraits)
 					if (!dict[v].TraitsInConstructOrder().Any(t => t.GetType() == requiredTrait || t.GetType().IsSubclassOf(requiredTrait)))
-						emitError($"Actor type `{value}` does not have trait `{requiredTrait.Name}` which is required by `{traitInfo.GetType().Name}.{fieldInfo.Name}`.");
+						emitError($"Actor type `{value}` does not have trait `{requiredTrait.Name}` which is required by `{traitInfo.GetType().Name}.{memberInfo.Name}`.");
 			}
 		}
 
 		static void CheckWeaponReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
-			FieldInfo fieldInfo, IReadOnlyDictionary<string, WeaponInfo> dict)
+			MemberInfo memberInfo, IReadOnlyDictionary<string, WeaponInfo> dict)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo);
+			var values = memberInfo is PropertyInfo info
+				? LintExts.GetPropertyValues(traitInfo, info)
+				: LintExts.GetFieldValues(traitInfo, (FieldInfo)memberInfo);
+
 			foreach (var value in values)
 			{
 				if (value == null)
 					continue;
 
 				if (!dict.ContainsKey(value.ToLowerInvariant()))
-					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}`: Missing weapon `{value}`.");
+					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{memberInfo.Name}`: Missing weapon `{value}`.");
 			}
 		}
 
 		static void CheckVoiceReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
-			FieldInfo fieldInfo, IReadOnlyDictionary<string, SoundInfo> dict)
+			MemberInfo memberInfo, IReadOnlyDictionary<string, SoundInfo> dict)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo);
+			var values = memberInfo is PropertyInfo info
+				? LintExts.GetPropertyValues(traitInfo, info)
+				: LintExts.GetFieldValues(traitInfo, (FieldInfo)memberInfo);
+
 			foreach (var value in values)
 			{
 				if (value == null)
 					continue;
 
 				if (!dict.ContainsKey(value.ToLowerInvariant()))
-					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}`: Missing voice `{value}`.");
+					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{memberInfo.Name}`: Missing voice `{value}`.");
 			}
 		}
 	}

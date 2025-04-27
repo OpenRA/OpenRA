@@ -999,10 +999,7 @@ high_tech_factory:
 		Name: actor-high-tech-factory.airstrikepower-name
 		Prerequisites: ~techlevel.superweapons, upgrade.hightech
 		ChargeInterval: 7500
-		SquadSize: 3
-		SquadOffset: -1536, 1024, 0
 		Description: actor-high-tech-factory.airstrikepower-description
-		UnitType: ornithopter
 		DisplayBeacon: True
 		CameraActor: camera
 		CameraRemoveDelay: 60
@@ -1013,6 +1010,17 @@ high_tech_factory:
 		SupportPowerPaletteOrder: 10
 		EndChargeTextNotification: notification-airstrike-ready
 		SelectTargetTextNotification: notification-select-target
+		Squad:
+			SquadMember@0:
+				UnitType: ornithopter
+				SpawnOffset: -1536, -1024, 0
+				TargetOffset: 0, -1024, 0
+			SquadMember@1:
+				UnitType: ornithopter
+			SquadMember@2:
+				UnitType: ornithopter
+				SpawnOffset: -1536, 1024, 0
+				TargetOffset: 0, 1024, 0
 	Power:
 		Amount: -75
 	GrantConditionOnPrerequisite@UPGRADEABLE:
