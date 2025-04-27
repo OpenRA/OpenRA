@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			{
 				Version = version,
 				TraitInfos = traitTypesInfo,
-				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes)
+				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes, pdbTypesCache)
 			};
 
 			return JsonSerializer.Serialize(result);

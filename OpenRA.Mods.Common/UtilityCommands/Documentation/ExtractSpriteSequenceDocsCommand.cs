@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			{
 				Version = version,
 				SpriteSequenceTypes = sequenceTypesInfo,
-				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes)
+				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes, pdbTypesCache)
 			};
 
 			return JsonSerializer.Serialize(result);

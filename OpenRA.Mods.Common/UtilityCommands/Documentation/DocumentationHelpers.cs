@@ -68,12 +68,14 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 				});
 		}
 
-		public static IEnumerable<ExtractedEnumInfo> GetRelatedEnumInfos(HashSet<Type> relatedEnumTypes)
+		public static IEnumerable<ExtractedEnumInfo> GetRelatedEnumInfos(
+			HashSet<Type> relatedEnumTypes, Cache<string, IReadOnlyDictionary<string, ImmutableArray<string>>> pdbTypesCache)
 		{
 			return relatedEnumTypes.OrderBy(t => t.Name).Select(type => new ExtractedEnumInfo
 			{
 				Namespace = type.Namespace,
 				Name = type.Name,
+				Filename = GetSourceFilenameForType(type, pdbTypesCache),
 				Values = Enum.GetNames(type).ToDictionary(x => Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo), y => y)
 			});
 		}

@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			{
 				Version = version,
 				WeaponTypes = weaponTypesInfo,
-				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes)
+				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes, pdbTypesCache)
 			};
 
 			return JsonSerializer.Serialize(result);

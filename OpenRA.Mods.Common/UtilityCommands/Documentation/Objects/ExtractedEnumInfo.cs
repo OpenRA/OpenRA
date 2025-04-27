@@ -19,6 +19,8 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation.Objects
 
 		public string Name { get; set; }
 
+		public string Filename { get; set; }
+
 		public IDictionary<int, string> Values { get; set; }
 	}
 }
