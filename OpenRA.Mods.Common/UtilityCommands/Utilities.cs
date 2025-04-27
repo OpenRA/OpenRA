@@ -12,12 +12,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
 using OpenRA.FileSystem;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
@@ -53,52 +48,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var fs = map ?? modData.DefaultFileSystem;
 			var topLevelNodes = MiniYaml.Load(fs, manifestNodes, mapProperty);
 			return topLevelNodes.FirstOrDefault(n => n.Key == key);
-		}
-
-		public static Cache<string, MetadataReader> CreatePdbReaderCache()
-		{
-			return new Cache<string, MetadataReader>(assemblyPath =>
-			{
-				var pdbPath = Path.ChangeExtension(assemblyPath, "pdb");
-				using var fs = new FileStream(pdbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-				var provider = MetadataReaderProvider.FromPortablePdbStream(fs);
-				return provider.GetMetadataReader();
-			});
-		}
-
-		public static string GetSourceFilenameFromPdb(Type type, Cache<string, MetadataReader> pdbReaderCache)
-		{
-			var filename = "(unknown)";
-			try
-			{
-				var pdb = pdbReaderCache[type.Assembly.Location];
-
-				// Enumerate over ctors before other methods (in case this type is defined across multiple files)
-				var methodInfos = type.GetConstructors().Cast<MemberInfo>().Concat(type.GetMethods());
-				foreach (var mi in methodInfos)
-				{
-					var definitionHandle = (MethodDefinitionHandle)MetadataTokens.Handle(mi.MetadataToken);
-					var sequencePoints = pdb.GetMethodDebugInformation(definitionHandle.ToDebugInformationHandle())
-						.GetSequencePoints()
-						.ToList();
-
-					if (sequencePoints.Count == 0)
-						continue;
-
-					filename = pdb.GetString(pdb.GetDocument(sequencePoints[0].Document).Name);
-
-					// Remove the common path prefix to give a path relative to the repository root
-					for (var i = 0; i < filename.Length; i++)
-						if (filename[i] != type.Assembly.Location[i])
-							return filename[i..];
-				}
-			}
-			catch
-			{
-				// Ignored
-			}
-
-			return filename;
 		}
 	}
 }

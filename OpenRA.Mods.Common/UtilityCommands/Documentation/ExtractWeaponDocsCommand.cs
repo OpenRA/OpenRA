@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 		static string GenerateJson(string version, IEnumerable<Type> weaponTypes, ObjectCreator objectCreator)
 		{
 			var relatedEnumTypes = new HashSet<Type>();
-			var pdbReaderCache = Utilities.CreatePdbReaderCache();
+			var pdbTypesCache = DocumentationHelpers.CreatePdbTypesCache();
 
 			var weaponTypesInfo = weaponTypes
 				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 					{
 						Namespace = type.Namespace,
 						Name = type.Name.EndsWith("Info", StringComparison.Ordinal) ? type.Name[..^4] : type.Name,
-						Filename = Utilities.GetSourceFilenameFromPdb(type, pdbReaderCache),
+						Filename = DocumentationHelpers.GetSourceFilenameForType(type, pdbTypesCache),
 						Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
 						InheritedTypes = type.BaseTypes()
 							.Select(y => y.Name)
