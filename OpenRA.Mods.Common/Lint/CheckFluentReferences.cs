@@ -19,7 +19,6 @@ using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Scripting.Global;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Scripting;
@@ -245,16 +244,6 @@ namespace OpenRA.Mods.Common.Lint
 					Utility.GetFields(typeof(GameSpeed)),
 					[speed.Value],
 					(obj, field) => $"`GameSpeeds.Speeds.{speed.Key}.{field.Name}` in mod.yaml");
-
-			// TODO: linter does not work with LoadUsing
-			foreach (var resource in modData.DefaultRules.Actors
-				.SelectMany(actorInfo => actorInfo.Value.TraitInfos<ResourceRendererInfo>())
-				.SelectMany(info => info.ResourceTypes))
-				GetUsedFluentKeys(
-					usedKeys, testedFields,
-					Utility.GetFields(typeof(ResourceRendererInfo.ResourceTypeInfo)),
-					[resource.Value],
-					(obj, field) => $"`ResourceRenderer.ResourceTypes.{resource.Key}.{field.Name}` in rules yaml");
 
 			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 			var constFields = modData.ObjectCreator.GetTypes().SelectMany(modType => modType.GetFields(Binding)).Where(f => f.IsLiteral);

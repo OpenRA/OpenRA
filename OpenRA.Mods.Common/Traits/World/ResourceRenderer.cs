@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 			[Desc("Palette used for rendering the resource sprites.")]
 			public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
+			// FluentReference enforced by ResourceRendererInfo.LoadFluentReferences
 			[FieldLoader.Require]
 			[Desc("Resource name used by tooltips.")]
-			[FluentReference]
 			public readonly string Name = null;
 
 			public ResourceTypeInfo(MiniYaml yaml)
@@ -61,6 +61,18 @@ namespace OpenRA.Mods.Common.Traits
 					ret[r.Key] = new ResourceTypeInfo(r.Value);
 
 			return ret;
+		}
+
+		// This is purely of interest to the linter.
+		[FluentReference]
+		[FieldLoader.LoadUsing(nameof(LoadFluentReferences))]
+		public readonly List<string> FluentReferences = null;
+
+		protected static List<string> LoadFluentReferences(MiniYaml yaml)
+		{
+			return yaml.NodeWithKeyOrDefault("ResourceTypes")?.Value.Nodes
+				.Select(n => n.Value.NodeWithKeyOrDefault("Name")?.Value.Value)
+				.ToList();
 		}
 
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
