@@ -295,7 +295,7 @@
 					Label: label-ra-map-generator-choice-resources-low
 					Settings:
 						SpawnResourceSpawns: 2
-						ResourcesPerPlayer: 25000
+						ResourcesPerPlayer: 18750
 						ResourceSpawnWeights:
 							mine: 1
 						MaximumExpansionResourceSpawns: 3
@@ -304,7 +304,7 @@
 					Label: label-ra-map-generator-choice-resources-medium
 					Settings:
 						SpawnResourceSpawns: 3
-						ResourcesPerPlayer: 50000
+						ResourcesPerPlayer: 37500
 						ResourceSpawnWeights:
 							mine: 95
 							gmine: 5
@@ -314,7 +314,7 @@
 					Label: label-ra-map-generator-choice-resources-high
 					Settings:
 						SpawnResourceSpawns: 3
-						ResourcesPerPlayer: 75000
+						ResourcesPerPlayer: 56250
 						ResourceSpawnWeights:
 							mine: 9
 							gmine: 1
@@ -324,7 +324,7 @@
 					Label: label-ra-map-generator-choice-resources-very-high
 					Settings:
 						SpawnResourceSpawns: 4
-						ResourcesPerPlayer: 100000
+						ResourcesPerPlayer: 75000
 						ResourceSpawnWeights:
 							mine: 8
 							gmine: 2

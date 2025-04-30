@@ -268,7 +268,7 @@
 					Label: label-cnc-map-generator-choice-resources-low
 					Settings:
 						SpawnResourceSpawns: 1
-						ResourcesPerPlayer: 25000
+						ResourcesPerPlayer: 18750
 						ResourceSpawnWeights:
 							split2: 1
 							split3: 1
@@ -278,7 +278,7 @@
 					Label: label-cnc-map-generator-choice-resources-medium
 					Settings:
 						SpawnResourceSpawns: 2
-						ResourcesPerPlayer: 50000
+						ResourcesPerPlayer: 37500
 						ResourceSpawnWeights:
 							split2: 95
 							split3: 95
@@ -289,7 +289,7 @@
 					Label: label-cnc-map-generator-choice-resources-high
 					Settings:
 						SpawnResourceSpawns: 3
-						ResourcesPerPlayer: 75000
+						ResourcesPerPlayer: 56250
 						ResourceSpawnWeights:
 							split2: 9
 							split3: 9
@@ -300,7 +300,7 @@
 					Label: label-cnc-map-generator-choice-resources-very-high
 					Settings:
 						SpawnResourceSpawns: 4
-						ResourcesPerPlayer: 100000
+						ResourcesPerPlayer: 75000
 						ResourceSpawnWeights:
 							split2: 8
 							split3: 8

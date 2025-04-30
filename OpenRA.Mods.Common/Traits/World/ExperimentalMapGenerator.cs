@@ -1681,8 +1681,7 @@ namespace OpenRA.Mods.Common.Traits
 					map.Resources.Clear();
 
 					// Return resource value of a given square.
-					// See https://github.com/OpenRA/OpenRA/blob/9302bac6199fbc925a85fd7a08fc2ba4b9317d16/OpenRA.Mods.Common/Traits/World/ResourceLayer.cs#L144-L166
-					// https://github.com/OpenRA/OpenRA/blob/9302bac6199fbc925a85fd7a08fc2ba4b9317d16/OpenRA.Mods.Common/Traits/World/EditorResourceLayer.cs#L175-L183
+					// Matches the logic in ResourceLayer trait.
 					int CheckValue(CPos cpos)
 					{
 						if (!map.Resources.Contains(cpos))
@@ -1690,22 +1689,24 @@ namespace OpenRA.Mods.Common.Traits
 						var resource = map.Resources[cpos].Type;
 						if (resource == 0)
 							return 0;
-						var adjacent = 0;
-						for (var y = -1; y <= 1; y++)
-							for (var x = -1; x <= 1; x++)
-							{
-								var offsetCpos = cpos + new CVec(x, y);
-								if (!map.Resources.Contains(offsetCpos))
-									continue;
-								if (map.Resources[offsetCpos].Type == resource)
-									adjacent++;
-							}
 
 						var resourceType = bestResource[cpos];
-						var density = Math.Max(resourceType.MaxDensity * adjacent / /*maxAdjacent=*/9, 1);
 
-						// density + 1 to mirror a bug that got ossified due to balancing.
-						return param.ResourceValues[resourceType] * (density + 1);
+						var adjacent = 0;
+						var directions = CVec.Directions;
+						for (var i = 0; i < directions.Length; i++)
+						{
+							var c = cpos + directions[i];
+							if (map.Resources.Contains(c) && map.Resources[c].Type == resource)
+								++adjacent;
+						}
+
+						// We need to have at least one resource in the cell.
+						// HACK: we should not be lerping to 9, as maximum adjacent resources is 8.
+						// HACK: it's too disruptive to fix.
+						var density = Math.Max(int2.Lerp(0, resourceType.MaxDensity, adjacent, 9), 1);
+
+						return param.ResourceValues[resourceType] * density;
 					}
 
 					int CheckValue3By3(CPos cpos)
