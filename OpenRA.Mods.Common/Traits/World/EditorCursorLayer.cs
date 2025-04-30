@@ -33,17 +33,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return;
-
 			brush?.TickRender(wr, self);
 		}
 
 		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return NoRenderables;
-
 			return brush?.RenderAboveShroud(self, wr) ?? NoRenderables;
 		}
 
@@ -51,9 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return NoRenderables;
-
 			return brush?.RenderAnnotations(self, wr) ?? NoRenderables;
 		}
 

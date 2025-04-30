@@ -59,9 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ICreatePlayers.CreatePlayers(World w, MersenneTwister playerRandom)
 		{
-			if (w.Type != WorldType.Editor)
-				return;
-
 			Players = new MapPlayers(w.Map.PlayerDefinitions);
 
 			worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
@@ -70,9 +67,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			if (world.Type != WorldType.Editor)
-				return;
-
 			worldRenderer = wr;
 
 			foreach (var pr in Players.Players.Values)
@@ -99,19 +93,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return;
-
 			foreach (var p in previews)
 				p.Tick();
 		}
 
-		static readonly IEnumerable<IRenderable> NoRenderables = [];
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return NoRenderables;
-
 			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.SelectMany(p => p.Render());
 		}
@@ -124,9 +111,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return NoRenderables;
-
 			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.SelectMany(p => p.RenderAnnotations());
 		}

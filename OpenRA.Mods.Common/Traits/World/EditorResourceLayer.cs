@@ -96,9 +96,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorResourceLayer(Actor self, EditorResourceLayerInfo info)
 		{
-			if (self.World.Type != WorldType.Editor)
-				return;
-
 			this.info = info;
 			Map = self.World.Map;
 			Tiles = new CellLayer<ResourceLayerContents>(Map);
@@ -111,9 +108,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			if (w.Type != WorldType.Editor)
-				return;
-
 			var playerResourcesInfo = w.Map.Rules.Actors[SystemActors.Player].TraitInfoOrDefault<PlayerResourcesInfo>();
 			resourceValues = playerResourcesInfo?.ResourceValues ?? [];
 
