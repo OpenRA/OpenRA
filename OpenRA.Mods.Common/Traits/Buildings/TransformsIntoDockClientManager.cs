@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using static OpenRA.Mods.Common.Traits.DockActorTargeter;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -66,12 +67,18 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				yield return new DockActorTargeter(
-					6,
-					Info.EnterCursor,
-					Info.EnterBlockedCursor,
-					() => Info.RequiresForceMove,
-					CanQueueDockAt,
-					CanDockAt);
+					priority: 6,
+					context =>
+					{
+						if (Info.RequiresForceMove && !context.ForceEnter)
+							return CanTargetResult.Blocked(Info.EnterCursor);
+
+						if (!CanQueueDockAt(context.Target.Actor, context.ForceEnter, context.IsQueued))
+							return CanTargetResult.Blocked(Info.EnterCursor);
+
+						var cursor = context.IsQueued || CanDockAt(context.Target.Actor, context.ForceEnter) ? Info.EnterCursor : Info.EnterBlockedCursor;
+						return CanTargetResult.Allowed(cursor);
+					});
 			}
 		}
 
