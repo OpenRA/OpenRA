@@ -55,6 +55,11 @@ fremen-sietch-under-attack = The Fremen Sietch is under attack!
 ## atreides-05, harkonnen-06ab, harkonnen09ab
 smugglers-annihilated = The Smugglers have been annihilated!
 
+## atreides-06a
+destroy-ordos-starport = Capture or destroy the Ordos Starport.
+destroy-smugglers = Destroy the Smugglers. 
+ordos-starport-destroyed = Ordos Starport destroyed.
+
 ## atreides-05
 incoming-mercenary-force = Hostile mercenary force incoming.
 contraband-has-arrived = The contraband has arrived!
@@ -107,7 +112,7 @@ destroy-imperial-forces = Destroy the Imperial forces.
 ## harkonnen-05, harkonnen-07, harkonnen-09ab
 emperor-annihilated = The Emperor has been annihilated!
 
-## harkonnen-05, harkonnen-08
+## harkonnen-05, harkonnen-08, atreides06a
 destroy-ordos = Destroy the Ordos.
 
 ## harkonnen-06ab
