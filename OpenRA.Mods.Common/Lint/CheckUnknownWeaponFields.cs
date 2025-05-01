@@ -51,17 +51,8 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var field in weapon.Value.Nodes)
 				{
-					// Removals can never define children or values
 					if (field.Key.StartsWith('-'))
-					{
-						if (field.Value.Nodes.Length > 0)
-							emitError($"{field.Location} `{field.Key}` defines child nodes, which is not valid for removals.");
-
-						if (!string.IsNullOrEmpty(field.Value.Value))
-							emitError($"{field.Location} `{field.Key}` defines a value, which is not valid for removals.");
-
 						continue;
-					}
 
 					var fieldName = NormalizeName(field.Key);
 					if (fieldName == "Projectile" && !string.IsNullOrEmpty(field.Value.Value))
