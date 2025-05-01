@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -67,6 +68,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Sync]
 		WPos pos, lastPos;
 
+		readonly IProjectileEffect[] effects;
+
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{
 			this.info = info;
@@ -88,6 +91,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
+
+			effects = args.Weapon.ProjectileEffects.Select(c => c.Create(args, () => args.Facing)).ToArray();
 		}
 
 		public void Tick(World world)
@@ -96,14 +101,18 @@ namespace OpenRA.Mods.Common.Projectiles
 			pos += velocity;
 			velocity += acceleration;
 
+			var orientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(lastPos, pos), args.Facing);
 			if (pos.Z <= args.PassiveTarget.Z)
 			{
 				pos += new WVec(0, 0, args.PassiveTarget.Z - pos.Z);
 				world.AddFrameEndTask(w => w.Remove(this));
 
+				foreach (var c in effects)
+					c.Destroy(world, pos);
+
 				var warheadArgs = new WarheadArgs(args)
 				{
-					ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(lastPos, pos), args.Facing),
+					ImpactOrientation = orientation,
 					ImpactPosition = pos,
 				};
 
@@ -111,10 +120,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			anim?.Tick();
+
+			foreach (var c in effects)
+				c.Tick(world, pos, orientation);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			foreach (var c in effects)
+				foreach (var r in c.Render(wr))
+					yield return r;
+
 			if (anim == null)
 				yield break;
 

@@ -40,8 +40,9 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			var weaponInfo = new[] { typeof(WeaponInfo) };
 			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
 			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
+			var effects = objectCreator.GetTypesImplementing<IProjectileEffectInfo>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
 
-			var weaponTypes = weaponInfo.Concat(projectiles).Concat(warheads);
+			var weaponTypes = weaponInfo.Concat(projectiles).Concat(warheads).Concat(effects);
 
 			var json = GenerateJson(version, weaponTypes, objectCreator);
 			Console.WriteLine(json);

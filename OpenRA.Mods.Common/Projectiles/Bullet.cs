@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -164,6 +165,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		protected bool FlightLengthReached => ticks >= length;
 
+		readonly IProjectileEffect[] effects;
+
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{
 			this.info = info;
@@ -223,6 +226,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
+
+			effects = args.Weapon.ProjectileEffects.Select(c => c.Create(args, GetEffectiveFacing)).ToArray();
 		}
 
 		WAngle GetEffectiveFacing()
@@ -247,12 +252,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			lastPos = pos;
 			pos = WPos.LerpQuadratic(source, target, angle, ticks, length);
 
+			var orientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(lastPos, pos), Args.Facing);
+			foreach (var c in effects)
+				c.Tick(world, pos, orientation);
+
 			if (ShouldExplode(world))
 			{
 				if (info.ContrailLength > 0)
 					world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
 
-				Explode(world);
+				foreach (var c in effects)
+					c.Destroy(world, pos);
+
+				Explode(world, orientation);
 			}
 		}
 
@@ -328,6 +340,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			foreach (var r in RenderAnimation(wr))
 				yield return r;
+
+			foreach (var c in effects)
+				foreach (var r in c.Render(wr))
+					yield return r;
 		}
 
 		protected IEnumerable<IRenderable> RenderAnimation(WorldRenderer wr)
@@ -359,13 +375,16 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 		}
 
-		protected virtual void Explode(World world)
+		protected virtual void Explode(World world, WRot orientation)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 
+			foreach (var c in effects)
+				c.Destroy(world, pos);
+
 			var warheadArgs = new WarheadArgs(Args)
 			{
-				ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(lastPos, pos), Args.Facing),
+				ImpactOrientation = orientation,
 				ImpactPosition = pos,
 			};
 

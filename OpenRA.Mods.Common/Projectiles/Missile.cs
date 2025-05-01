@@ -245,6 +245,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Sync]
 		int vFacing;
 
+		readonly IProjectileEffect[] effects;
+
 		public Missile(MissileInfo info, ProjectileArgs args)
 		{
 			this.info = info;
@@ -307,6 +309,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
+
+			effects = args.Weapon.ProjectileEffects.Select(c => c.Create(args, () => renderFacing)).ToArray();
 		}
 
 		static int LoopRadius(int speed, int rot)
@@ -910,6 +914,10 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.ContrailLength > 0)
 				contrail.Update(pos);
 
+			var orientation = new WRot(WAngle.Zero, WAngle.FromFacing(vFacing), WAngle.FromFacing(hFacing));
+			foreach (var c in effects)
+				c.Tick(world, pos, orientation);
+
 			distanceCovered += new WDist(speed);
 			var cell = world.Map.CellContaining(pos);
 			var height = world.Map.DistanceAboveTerrain(pos);
@@ -921,13 +929,16 @@ namespace OpenRA.Mods.Common.Projectiles
 				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
 
 			if (shouldExplode)
-				Explode(world);
+				Explode(world, orientation);
 		}
 
-		void Explode(World world)
+		void Explode(World world, WRot orientation)
 		{
 			if (info.ContrailLength > 0)
 				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
+
+			foreach (var c in effects)
+				c.Destroy(world, pos);
 
 			world.AddFrameEndTask(w => w.Remove(this));
 
@@ -937,7 +948,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			var warheadArgs = new WarheadArgs(args)
 			{
-				ImpactOrientation = new WRot(WAngle.Zero, WAngle.FromFacing(vFacing), WAngle.FromFacing(hFacing)),
+				ImpactOrientation = orientation,
 				ImpactPosition = pos,
 			};
 
@@ -948,6 +959,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		{
 			if (info.ContrailLength > 0)
 				yield return contrail;
+
+			foreach (var c in effects)
+				foreach (var r in c.Render(wr))
+					yield return r;
 
 			if (anim == null)
 				yield break;
