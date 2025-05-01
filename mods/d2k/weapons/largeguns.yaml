@@ -6,7 +6,6 @@
 		Speed: 562
 		Inaccuracy: 135
 		InaccuracyType: PerCellIncrement
-		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 2700
 		Spread: 1c0
@@ -30,6 +29,8 @@
 		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 540
+	Effect@SPRITE: Sprite
+		Image: 120mm
 
 110mm_Gun:
 	Inherits: ^Cannon
@@ -61,7 +62,6 @@ DevBullet:
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 281
-		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Damage: 6500
 		Spread: 1c0
@@ -79,6 +79,8 @@ DevBullet:
 	Warhead@3Eff: CreateEffect
 		Explosions: shockwave
 		ImpactSounds: EXPLMD4.WAV
+	Effect@SPRITE: Sprite
+		Image: doubleblastbullet
 
 155mm:
 	Inherits: ^Cannon
@@ -88,10 +90,7 @@ DevBullet:
 	Projectile: Bullet
 		Speed: 192
 		Blockable: false
-		Shadow: true
 		LaunchAngle: 62
-		ContrailLength: 20
-		Image: 155mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 4500
 		Spread: 2c0
@@ -115,3 +114,8 @@ DevBullet:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: EXPLMD2.WAV
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: 155mm
+	Effect@CONTRAIL: Contrail
+		Length: 20

@@ -6,13 +6,9 @@
 	Projectile: Missile
 		MaximumLaunchSpeed: 96
 		Blockable: false
-		Shadow: true
 		Inaccuracy: 128
-		Image: DRAGON
-		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 100
 		RangeLimit: 15c0
-		Palette: ra
 		MinimumLaunchSpeed: 75
 		Speed: 216
 		Acceleration: 96
@@ -47,6 +43,12 @@
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: SmallCrater
 		InvalidTargets: Vehicle, Building, Wall
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: DRAGON
+		Palette: ra
+	Effect@EMITTER: Emitter
+		Image: small_smoke_trail
 
 Bazooka:
 	Inherits: ^DefaultMissile

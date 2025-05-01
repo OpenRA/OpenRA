@@ -5,7 +5,6 @@ FireballLauncher:
 	Report: flamtnk1.aud
 	Projectile: Bullet
 		Speed: 64
-		Image: FLAMEALL
 		Inaccuracy: 384
 	Burst: 5
 	BurstDelays: 5
@@ -24,6 +23,8 @@ FireballLauncher:
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
+	Effect@SPRITE: Sprite
+		Image: FLAMEALL
 
 Bomb:
 	ReloadDelay: 60
@@ -35,9 +36,6 @@ Bomb:
 	Projectile: GravityBomb
 		Velocity: 72, 0, -90
 		Acceleration: 0, 0, -8
-		Image: 120mm
-		Shadow: true
-		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 512
 		Falloff: 100, 50, 25, 12, 6, 3, 0
@@ -65,6 +63,10 @@ Bomb:
 		InvalidTargets: Vehicle, Building, Wall
 	Warhead@5Res: DestroyResource
 		Size: 1
+	Effect@SPRITE: Sprite
+		Image: 120mm
+		Shadow: true
+		Palette: ra
 
 FiendShard:
 	ReloadDelay: 30
@@ -73,11 +75,8 @@ FiendShard:
 	Report: fiend2.aud
 	Projectile: Bullet
 		Speed: 213
-		Image: CRYSTAL4
 		Inaccuracy: 512
-		Shadow: true
 		LaunchAngle: 60
-		Palette: greentiberium
 	Warhead@1Dam: SpreadDamage
 		Damage: 3500
 		Versus:
@@ -91,6 +90,10 @@ FiendShard:
 		ImpactSounds: ssplash3.aud
 		ValidTargets: Water
 		InvalidTargets: Vehicle
+	Effect@SPRITE: Sprite
+		Image: CRYSTAL4
+		Shadow: true
+		Palette: greentiberium
 
 SlimeAttack:
 	ReloadDelay: 80
@@ -138,9 +141,6 @@ Veins:
 	Projectile: Bullet
 		Speed: 64, 128
 		LaunchAngle: 80, 192
-		Image: dbrissm
-		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-		Shadow: true
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Spread: 200
@@ -165,6 +165,10 @@ Veins:
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: SmallScorch
 		InvalidTargets: Vehicle, Building, Wall
+	Effect@SPRITE: Sprite
+		Image: dbrissm
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+		Shadow: true
 
 SmallDebris:
 	Inherits: ^Debris
@@ -172,8 +176,6 @@ SmallDebris:
 LargeDebris:
 	Inherits: ^Debris
 	Projectile: Bullet
-		Image: dbrislg
-		Sequences: 2, 3, 4, 6, 7, 9, 10
 	Warhead@1Dam: SpreadDamage
 		Spread: 320
 		Damage: 2000
@@ -182,10 +184,15 @@ LargeDebris:
 		ImpactSounds: expnew06.aud
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
+	Effect@SPRITE: Sprite
+		Image: dbrislg
+		Sequences: 2, 3, 4, 6, 7, 9, 10
 
 LargeDebrisWithTrail:
 	Inherits: LargeDebris
 	Projectile: Bullet
+	Effect@SPRITE: Sprite
 		Sequences: 1, 5, 8
-		TrailImage: small_smoke_trail
-		TrailInterval: 1
+	Effect@EMITTER: Emitter
+		Image: small_smoke_trail
+		Interval: 1

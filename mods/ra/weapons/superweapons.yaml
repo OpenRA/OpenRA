@@ -4,11 +4,8 @@ ParaBomb:
 	Report: chute1.aud
 	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Projectile: GravityBomb
-		Image: PARABOMB
-		OpenSequence: open
 		Velocity: 0, 0, -50
 		Acceleration: 0, 0, 0
-		Shadow: False
 	Warhead@1Dam: SpreadDamage
 		Spread: 1000
 		Damage: 30000
@@ -30,6 +27,10 @@ ParaBomb:
 		Explosions: small_splash
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
+	Effect@SPRITE: Sprite
+		Image: PARABOMB
+		StartSequence: open
+		Shadow: False
 
 Atomic:
 	ValidTargets: Ground, Water, GroundActor, WaterActor, Underwater, AirborneActor, Trees

@@ -44,10 +44,8 @@ OrniBomb:
 	Range: 3c0
 	Report: ORNIBOMB.WAV
 	Projectile: GravityBomb
-		Image: BOMBS
 		Velocity: 0, 0, -64
 		Acceleration: 0, 0, 0
-		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 7500 #400 in original, reduce when bombers can do multiple passes
 		Spread: 2c0
@@ -73,6 +71,9 @@ OrniBomb:
 		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 6750
+	Effect@SPRITE: Sprite
+		Image: BOMBS
+		Shadow: true
 
 Crush:
 	Warhead@1Dam: SpreadDamage
@@ -108,8 +109,6 @@ DeathHandCluster:
 	Inherits: Debris2
 	Range: 7c0
 	Projectile: Bullet
-		Image: 120mm
-		TrailImage: small_trail2
 		Speed: 96
 		LaunchAngle: 0, 32
 		Inaccuracy: 1c512
@@ -137,6 +136,10 @@ DeathHandCluster:
 		ImpactSounds: EXPLSML4.WAV
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 4500
+	Effect@SPRITE: Sprite
+		Image: 120mm
+	Effect@EMITTER: Emitter
+		Image: small_trail2
 
 CrateExplosion:
 	Warhead@1Dam: SpreadDamage
@@ -210,8 +213,6 @@ grenade:
 		LaunchAngle: 128
 		Inaccuracy: 128
 		InaccuracyType: PerCellIncrement
-		Image: grenade
-		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
 		Spread: 2c0
@@ -239,6 +240,9 @@ grenade:
 		ImpactActors: false
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 1875
+	Effect@SPRITE: Sprite
+		Image: grenade
+		Shadow: true
 
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
@@ -292,11 +296,8 @@ SardDeath:
 SpiceExplosion:
 	Projectile: Bullet
 		Speed: 90, 120
-		Shadow: true
 		Blockable: false
 		LaunchAngle: 60, 90
-		TrailImage: large_trail
-		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 750
 		Spread: 2c0
@@ -320,6 +321,11 @@ SpiceExplosion:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactActors: false
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: 120mm
+	Effect@EMITTER: Emitter
+		Image: large_trail
 
 BloomExplosion:
 	Report: EXPLMD1.WAV

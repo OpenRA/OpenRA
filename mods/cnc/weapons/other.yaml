@@ -74,8 +74,6 @@ Napalm:
 	BurstDelays: 2
 	-Projectile:
 	Projectile: GravityBomb
-		Image: BOMBLET
-		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
 		Damage: 3000
@@ -86,6 +84,9 @@ Napalm:
 			Concrete: 80
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
+	Effect@SPRITE: Sprite
+		Image: BOMBLET
+		Shadow: true
 
 Laser:
 	ReloadDelay: 40

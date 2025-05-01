@@ -8,11 +8,7 @@
 		Arm: 0
 		Blockable: false
 		Inaccuracy: 128
-		Image: DRAGON
-		Shadow: true
 		HorizontalRateOfTurn: 60
-		TrailImage: smokey
-		ContrailLength: 8
 		Speed: 298
 		RangeLimit: 7c204
 	Warhead@1Dam: SpreadDamage
@@ -39,6 +35,13 @@
 		ImpactSounds: xplos.aud
 		ImpactActors: false
 		ValidTargets: Air
+	Effect@SPRITE: Sprite
+		Image: DRAGON
+		Shadow: true
+	Effect@CONTRAIL: Contrail
+		Length: 8
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 Dragon:
 	Inherits: ^MissileWeapon
@@ -155,12 +158,8 @@ MammothMissiles:
 	-Projectile:
 	Projectile: Bullet
 		Blockable: false
-		Image: DRAGON
-		Shadow: true
-		TrailImage: smokey
 		Inaccuracy: 853
 		LaunchAngle: 62
-		ContrailLength: 10
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Spread: 683
@@ -174,6 +173,13 @@ MammothMissiles:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
 		ImpactSounds: xplobig4.aud
+	Effect@SPRITE: Sprite
+		Image: DRAGON
+		Shadow: true
+	Effect@CONTRAIL: Contrail
+		Length: 10
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 227mm.stnk:
 	Inherits: ^MissileWeapon
@@ -266,7 +272,6 @@ TowerAAMissile:
 	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
-		Image: MISSILE
 		HorizontalRateOfTurn: 80
 		Speed: 426
 		RangeLimit: 9c614
@@ -280,6 +285,8 @@ TowerAAMissile:
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
+	Effect@SPRITE: Sprite
+		Image: MISSILE
 
 Patriot:
 	Inherits: ^MissileWeapon
@@ -289,7 +296,6 @@ Patriot:
 	Report: rocket2.aud
 	ValidTargets: Air
 	Projectile: Missile
-		Image: MISSILE
 		HorizontalRateOfTurn: 80
 		Speed: 300
 		RangeLimit: 10c819
@@ -303,3 +309,5 @@ Patriot:
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: poof
+	Effect@SPRITE: Sprite
+		Image: MISSILE

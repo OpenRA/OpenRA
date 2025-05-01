@@ -4,10 +4,7 @@
 	Report: 120mmf.aud
 	Projectile: Bullet
 		Speed: 682
-		Image: 120mm
-		Shadow: true
 		LaunchAngle: 75
-		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
 		Falloff: 100, 50, 25, 12, 6, 3, 0
@@ -32,6 +29,10 @@
 	Warhead@4Smu: LeaveSmudge
 		SmudgeType: MediumCrater
 		InvalidTargets: Vehicle, Building, Wall
+	Effect@SPRITE: Sprite
+		Image: 120mm
+		Shadow: true
+		Palette: ra
 
 90mm:
 	Inherits: ^Cannon
@@ -44,12 +45,12 @@
 	Inherits: ^Cannon
 	ReloadDelay: 80
 	Projectile: Bullet
-		-Image:
 		Speed: 1c512
 		Blockable: false
 		LaunchAngle: 0
 	Warhead@1Dam: SpreadDamage
 		Damage: 7000
+	-Effect@SPRITE: Sprite
 
 120mmx:
 	Inherits: ^Cannon
@@ -67,8 +68,6 @@ RPGTower:
 	Projectile: Bullet
 		Speed: 384
 		Blockable: false
-		Image: canister
-		Palette: player
 	Warhead@1Dam: SpreadDamage
 		Damage: 11000
 		Versus:
@@ -80,6 +79,9 @@ RPGTower:
 		DamageTypes: Prone100Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: large_clsn
+	Effect@SPRITE: Sprite
+		Image: canister
+		Palette: player
 
 ^ArtilleryWeapon:
 	Inherits: ^Cannon
@@ -138,11 +140,8 @@ Grenade:
 	Projectile: Bullet
 		Speed: 226
 		Blockable: true
-		Shadow: true
 		LaunchAngle: 60
 		Inaccuracy: 0
-		Image: DISCUS
-		Palette: effect
 		BounceCount: 2
 	Warhead@1Dam: SpreadDamage
 		Spread: 154
@@ -156,3 +155,7 @@ Grenade:
 		Explosions: small_grey_explosion
 		ImpactSounds: expnew13.aud
 		ValidTargets: Ground, Trees
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: DISCUS
+		Palette: effect

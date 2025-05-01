@@ -7,9 +7,6 @@
 		Speed: 281
 		Inaccuracy: 140
 		InaccuracyType: PerCellIncrement
-		Image: RPG
-		TrailImage: bazooka_trail2
-		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
 		Spread: 1c0
@@ -35,6 +32,11 @@
 		ValidTargets: Ground, Air
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 240
+	Effect@SPRITE: Sprite
+		Image: RPG
+	Effect@EMITTER: Emitter
+		Image: bazooka_trail2
+		Interval: 1
 
 ^Missile:
 	Inherits: ^Rocket
@@ -42,7 +44,6 @@
 	Range: 5c512
 	MinRange: 0c512
 	Projectile: Missile
-		Shadow: true
 		InaccuracyType: Maximum
 		Inaccuracy: 250
 		HorizontalRateOfTurn: 22
@@ -50,8 +51,6 @@
 		CruiseAltitude: 1c0
 		MinimumLaunchAngle: 64
 		VerticalRateOfTurn: 40
-		Image: MISSILE2
-		TrailImage: large_trail
 		Speed: 288
 	Warhead@1Dam: SpreadDamage
 		Damage: 4800
@@ -76,6 +75,11 @@
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: EXPLSML1.WAV
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: MISSILE2
+	Effect@EMITTER: Emitter
+		Image: large_trail
 
 Bazooka:
 	Inherits: ^Rocket
@@ -136,10 +140,6 @@ DeviatorMissile:
 	Projectile: Missile
 		RangeLimit: 6c0
 		Inaccuracy: 96
-		Image: MISSILE
-		TrailImage: deviator_trail
-		TrailPalette: player
-		TrailUsePlayerPalette: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1000
 		Spread: 480
@@ -166,3 +166,9 @@ DeviatorMissile:
 		ValidRelationships: Enemy, Neutral
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 1000
+	Effect@SPRITE: Sprite
+		Image: MISSILE
+	Effect@EMITTER: Emitter
+		Image: deviator_trail
+		Palette: player
+		UsePlayerPalette: true

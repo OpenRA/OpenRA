@@ -121,8 +121,6 @@ CyCannon:
 		MaximumLaunchSpeed: 192
 		Blockable: false
 		HorizontalRateOfTurn: 8
-		Shadow: true
-		Image: TORPEDO
 		MinimumLaunchSpeed: 75
 		Speed: 384
 		RangeLimit: 8c0
@@ -140,6 +138,9 @@ CyCannon:
 		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
 	Warhead@2Eff: CreateEffect
 		ValidTargets: Ground, Trees
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: TORPEDO
 
 Proton:
 	Inherits: ^EnergyBlast
@@ -149,9 +150,7 @@ Proton:
 	Projectile: Bullet
 		Speed: 341
 		Blockable: false
-		Shadow: true
 		Inaccuracy: 128
-		Image: TORPEDO
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 2000
@@ -164,6 +163,9 @@ Proton:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_bang
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: TORPEDO
 
 ^Laser:
 	Projectile: LaserZap
