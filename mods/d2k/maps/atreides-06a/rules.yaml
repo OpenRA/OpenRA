@@ -1,0 +1,143 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+	ExternalCondition@AI:
+		Condition: base-rebuilder
+	ExternalCondition@AIDefense:
+		Condition: defense-rebuilder
+	BaseBuilderBotModule@campaign:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: barracks, light_factory, heavy_factory
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			refinery: 2
+			barracks: 2
+			light_factory: 3
+			heavy_factory: 1
+			high_tech_factory: 1
+			repair_pad: 1
+			wind_trap: 9
+			silo: 1
+		BuildingFractions:
+			high_tech_factory: 1
+			repair_pad: 1
+			wind_trap: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@defense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: barracks, light_factory, heavy_factory
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			refinery: 2
+			barracks: 2
+			light_factory: 3
+			heavy_factory: 1
+			wind_trap: 9
+			silo: 1
+			high_tech_factory: 1
+			repair_pad: 1
+			medium_gun_turret: 6
+		BuildingFractions:
+			high_tech_factory: 1
+			repair_pad: 1
+			wind_trap: 1
+			refinery: 1
+			barracks: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, atreides06a.lua, atreides06a-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: A_BR06_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			OrdosTurrets: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+			OrdosSmall: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			OrdosTurrets: 0.060, -0.275, 1, 0.32, 0.34
+			OrdosSmall: 0.060, -0.275, 1, 0.32, 0.34
+
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+research_centre:
+	Buildable:
+		Prerequisites: outpost, heavy_factory, upgrade.heavy
+
+starport:
+	Buildable:
+		Prerequisites: heavy_factory, outpost
+
+missile_tank:
+	Buildable:
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
