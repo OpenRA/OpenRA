@@ -13,10 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Effects;
-using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
@@ -24,26 +21,6 @@ namespace OpenRA.Mods.Common.Projectiles
 	[Desc("Projectile with smart tracking.")]
 	public class MissileInfo : IProjectileInfo
 	{
-		[Desc("Name of the image containing the projectile sequence.")]
-		public readonly string Image = null;
-
-		[SequenceReference(nameof(Image), allowNullImage: true)]
-		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
-		public readonly string[] Sequences = ["idle"];
-
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Palette used to render the projectile sequence.")]
-		public readonly string Palette = "effect";
-
-		[Desc("Palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
-		[Desc("Does this projectile have a shadow?")]
-		public readonly bool Shadow = false;
-
-		[Desc("Color to draw shadow if Shadow is true.")]
-		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
-
 		[Desc("Minimum vertical launch angle (pitch).")]
 		public readonly WAngle MinimumLaunchAngle = new(-64);
 
@@ -113,59 +90,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Activate homing mechanism after this many ticks.")]
 		public readonly int HomingActivationDelay = 0;
 
-		[Desc("Image that contains the trail animation.")]
-		public readonly string TrailImage = null;
-
-		[SequenceReference(nameof(TrailImage), allowNullImage: true)]
-		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		public readonly string[] TrailSequences = ["idle"];
-
-		[PaletteReference(nameof(TrailUsePlayerPalette))]
-		[Desc("Palette used to render the trail sequence.")]
-		public readonly string TrailPalette = "effect";
-
-		[Desc("Use the Player Palette to render the trail sequence.")]
-		public readonly bool TrailUsePlayerPalette = false;
-
-		[Desc("Interval in ticks between spawning trail animation.")]
-		public readonly int TrailInterval = 2;
-
-		[Desc("Should trail animation be spawned when the propulsion is not activated.")]
-		public readonly bool TrailWhenDeactivated = false;
-
-		[Desc("When set, display a line behind the actor. Length is measured in ticks after appearing.")]
-		public readonly int ContrailLength = 0;
-
-		[Desc("Time (in ticks) after which the line should appear. Controls the distance to the actor.")]
-		public readonly int ContrailDelay = 1;
-
-		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
-		public readonly int ContrailZOffset = 2047;
-
-		[Desc("Thickness of the emitted line at the start of the contrail.")]
-		public readonly WDist ContrailStartWidth = new(64);
-
-		[Desc("Thickness of the emitted line at the end of the contrail. Will default to " + nameof(ContrailStartWidth) + " if left undefined")]
-		public readonly WDist? ContrailEndWidth = null;
-
-		[Desc("RGB color at the contrail start.")]
-		public readonly Color ContrailStartColor = Color.White;
-
-		[Desc("Use player remap color instead of a custom color at the contrail the start.")]
-		public readonly bool ContrailStartColorUsePlayerColor = false;
-
-		[Desc("The alpha value [from 0 to 255] of color at the contrail the start.")]
-		public readonly int ContrailStartColorAlpha = 255;
-
-		[Desc("RGB color at the contrail end. Will default to " + nameof(ContrailStartColor) + " if left undefined")]
-		public readonly Color? ContrailEndColor;
-
-		[Desc("Use player remap color instead of a custom color at the contrail end.")]
-		public readonly bool ContrailEndColorUsePlayerColor = false;
-
-		[Desc("The alpha value [from 0 to 255] of color at the contrail end.")]
-		public readonly int ContrailEndColorAlpha = 0;
-
 		[Desc("Should missile targeting be thrown off by nearby actors with JamsMissiles.")]
 		public readonly bool Jammable = true;
 
@@ -199,7 +123,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
-		readonly Animation anim;
 
 		readonly WVec gravity;
 		readonly int minLaunchSpeed;
@@ -208,14 +131,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WAngle minLaunchAngle;
 		readonly WAngle maxLaunchAngle;
 
-		readonly float3 shadowColor;
-		readonly float shadowAlpha;
-
 		int ticks;
-
-		int ticksToNextSmoke;
-		readonly ContrailRenderable contrail;
-		readonly string trailPalette;
 
 		States state;
 		bool targetPassedBy;
@@ -284,31 +200,6 @@ namespace OpenRA.Mods.Common.Projectiles
 			velocity = new WVec(0, -speed, 0)
 				.Rotate(new WRot(WAngle.FromFacing(vFacing), WAngle.Zero, WAngle.Zero))
 				.Rotate(new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(hFacing)));
-
-			if (!string.IsNullOrEmpty(info.Image))
-			{
-				anim = new Animation(world, info.Image, () => renderFacing);
-				anim.PlayRepeating(info.Sequences.Random(world.SharedRandom));
-			}
-
-			if (info.ContrailLength > 0)
-			{
-				var startcolor = Color.FromArgb(info.ContrailStartColorAlpha, info.ContrailStartColor);
-				var endcolor = Color.FromArgb(info.ContrailEndColorAlpha, info.ContrailEndColor ?? startcolor);
-				contrail = new ContrailRenderable(world, args.SourceActor,
-					startcolor, info.ContrailStartColorUsePlayerColor,
-					endcolor, info.ContrailEndColor == null ? info.ContrailStartColorUsePlayerColor : info.ContrailEndColorUsePlayerColor,
-					info.ContrailStartWidth,
-					info.ContrailEndWidth ?? info.ContrailStartWidth,
-					info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
-			}
-
-			trailPalette = info.TrailPalette;
-			if (info.TrailUsePlayerPalette)
-				trailPalette += args.SourceActor.Owner.InternalName;
-
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
-			shadowAlpha = info.ShadowColor.A / 255f;
 
 			effects = args.Weapon.ProjectileEffects.Select(c => c.Create(args, () => renderFacing)).ToArray();
 		}
@@ -840,7 +731,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		public void Tick(World world)
 		{
 			ticks++;
-			anim?.Tick();
 
 			// Switch from freefall mode to homing mode
 			if (ticks == info.HomingActivationDelay + 1)
@@ -902,18 +792,6 @@ namespace OpenRA.Mods.Common.Projectiles
 				shouldExplode = true;
 			}
 
-			// Create the sprite trail effect
-			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
-			{
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, renderFacing, w,
-					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), trailPalette)));
-
-				ticksToNextSmoke = info.TrailInterval;
-			}
-
-			if (info.ContrailLength > 0)
-				contrail.Update(pos);
-
 			var orientation = new WRot(WAngle.Zero, WAngle.FromFacing(vFacing), WAngle.FromFacing(hFacing));
 			foreach (var c in effects)
 				c.Tick(world, pos, orientation);
@@ -934,9 +812,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		void Explode(World world, WRot orientation)
 		{
-			if (info.ContrailLength > 0)
-				world.AddFrameEndTask(w => w.Add(new ContrailFader(pos, contrail)));
-
 			foreach (var c in effects)
 				c.Destroy(world, pos);
 
@@ -957,38 +832,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (info.ContrailLength > 0)
-				yield return contrail;
-
 			foreach (var c in effects)
 				foreach (var r in c.Render(wr))
 					yield return r;
-
-			if (anim == null)
-				yield break;
-
-			var world = args.SourceActor.World;
-			if (!world.FogObscures(pos))
-			{
-				var paletteName = info.Palette;
-				if (paletteName != null && info.IsPlayerPalette)
-					paletteName += args.SourceActor.Owner.InternalName;
-
-				var palette = wr.Palette(paletteName);
-
-				if (info.Shadow)
-				{
-					var dat = world.Map.DistanceAboveTerrain(pos);
-					var shadowPos = pos - new WVec(0, 0, dat.Length);
-					foreach (var r in anim.Render(shadowPos, palette))
-						yield return ((IModifyableRenderable)r)
-							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
-							.WithAlpha(shadowAlpha);
-				}
-
-				foreach (var r in anim.Render(pos, palette))
-					yield return r;
-			}
 		}
 	}
 }
