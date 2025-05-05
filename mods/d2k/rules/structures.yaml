@@ -325,6 +325,9 @@ barracks:
 refinery:
 	Inherits: ^Building
 	Inherits@BUILDINGVFX: ^DamagedBuildingEffects
+	PlaceBuildingVariants:
+		Actors: refinery_sw, refinery_nw, refinery_ne
+		Facings: 128, 896, 384
 	Buildable:
 		Prerequisites: wind_trap
 		Queue: Building
@@ -366,6 +369,7 @@ refinery:
 		Type: Unload
 		DockAngle: 640
 		DockOffset: 1c0,512,0
+		DockedClientCondition: docked_se
 	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
@@ -423,6 +427,207 @@ refinery:
 		SpawnFrequency: 3, 13
 	WithDamageOverlay@Fire1Ordos:
 		Offset: 1200, -200, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 0, -200, 0
+
+
+refinery_nw:
+	Inherits: refinery
+	Buildable:
+		Prerequisites: ~disabled
+		Queue: Building
+		BuildPaletteOrder: 310
+		Description: actor-refinery.description
+	RenderSprites:
+		Image: refinery_nw.ordos
+		FactionImages:
+			atreides: refinery_nw.atreides
+			fremen: refinery_nw.atreides
+			harkonnen: refinery_nw.harkonnen
+			corrino: refinery_nw.harkonnen
+	WithIdleOverlay@middle:
+		Sequence: idle-middle
+		RequiresCondition: !build-incomplete
+	DockHost:
+		Type: Unload
+		DockAngle: 128
+		DockOffset: -1c0,-512,0
+		DockedClientCondition: docked_nw
+	D2kBuilding:
+		Footprint: === =xx xx=
+		Dimensions: 3,3
+		LocalCenterOffset: 0, 512,0
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -1024
+			BottomRight: 1536, 0
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -1536, 0
+			BottomRight: 512, 1048
+	ProvidesPrerequisite:
+		Prerequisite: refinery
+	FreeActorWithDelivery:
+		DeliveryOffset: 0,0
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -900, 200, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 700,-612,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 950, 600,0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 500, -800, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 1100,-800,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -512, -512,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: 1200, 1000,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 450, -450, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 400, -900, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -250, 250, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 700, 300, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 0, -200, 0
+
+refinery_ne:
+	Inherits: refinery
+	Buildable:
+		Prerequisites: ~disabled
+		Queue: Building
+		BuildPaletteOrder: 310
+		Description: actor-refinery.description
+	RenderSprites:
+		Image: refinery_ne.ordos
+		FactionImages:
+			atreides: refinery_ne.atreides
+			fremen: refinery_ne.atreides
+			harkonnen: refinery_ne.harkonnen
+			corrino: refinery_ne.harkonnen
+	WithIdleOverlay@middle:
+		Sequence: idle-middle
+		RequiresCondition: !build-incomplete
+	DockHost:
+		Type: Unload
+		DockAngle: 896
+		DockOffset: 1c0,-512,0
+		DockedClientCondition: docked_ne
+	D2kBuilding:
+		Footprint: === xx= =xx
+		Dimensions: 3,3
+		LocalCenterOffset: 0, 512,0
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 512, 0
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -512, 0
+			BottomRight: 1536, 1048
+	ProvidesPrerequisite:
+		Prerequisite: refinery
+	FreeActorWithDelivery:
+		DeliveryOffset: 2,0
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: 1150, 250, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: -200,-1024,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 0, 1024,0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: -500, -100, 2000
+		LoopSequence: 4
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 1100,0,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -1024, -1024,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: 0, 1000,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 2048, -1024, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: -700, -1050, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: 0, -300, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 900, -900, 0
+	WithDamageOverlay@Fire2Ordos:
+		Offset: 900, 0, 0
+
+refinery_sw:
+	Inherits: refinery
+	Buildable:
+		Prerequisites: ~disabled
+		Queue: Building
+		BuildPaletteOrder: 310
+		Description: actor-refinery.description
+	RenderSprites:
+		Image: refinery_sw.ordos
+		FactionImages:
+			atreides: refinery_sw.atreides
+			fremen: refinery_sw.atreides
+			harkonnen: refinery_sw.harkonnen
+			corrino: refinery_sw.harkonnen
+	Selectable:
+		Bounds: 3072, 2048
+	DockHost:
+		Type: Unload
+		DockAngle: 384
+		DockOffset: -1c0,512,0
+		DockedClientCondition: docked_sw
+	D2kBuilding:
+		Footprint: xx= =xx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	HitShape:
+		Type: Rectangle
+			TopLeft: -1536, -1024
+			BottomRight: 512, 0
+	HitShape@BOTTOM:
+		Type: Rectangle
+			TopLeft: -512, 0
+			BottomRight: 1536, 1024
+	ProvidesPrerequisite:
+		Prerequisite: refinery
+	FreeActorWithDelivery:
+		DeliveryOffset: 0,2
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		Offset: -500, -800, 0
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		Offset: 700,-612,0
+	WithDamageOverlay@Fire1_Atreides:
+		Offset: 950, 600,0
+	WithDamageOverlay@Fire2_atreides:
+		Offset: 1700, -450, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		Offset: 1200,50,0
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		Offset: -1024, -1024,0
+	WithDamageOverlay@Fire1Harkonnen:
+		Offset: -300, 1100,0
+	WithDamageOverlay@Fire2Harkonnen:
+		Offset: 1700, -1024, 0
+		LoopSequence: 2
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		Offset: 300, -1050, 0
+		Gravity: 70
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		Offset: -250, 250, 0
+		SpawnFrequency: 3, 13
+	WithDamageOverlay@Fire1Ordos:
+		Offset: 1200, 200, 0
 	WithDamageOverlay@Fire2Ordos:
 		Offset: 0, -200, 0
 

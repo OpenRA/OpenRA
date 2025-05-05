@@ -96,6 +96,7 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	PlaceBuilding:
+		ToggleVariantKey: ToggleVariant
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
 		NewOptionsTextNotification: notification-new-construction-options
