@@ -119,7 +119,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		void OnViolation(Type implementor, Type interfaceType, MemberInfo violator)
 		{
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
 			Console.WriteLine($"{implementor.Name} must explicitly implement the interface member {interfaceType.Name}.{violator.Name}");
+			Console.ForegroundColor = originalColor;
 			violationCount++;
 		}
 	}

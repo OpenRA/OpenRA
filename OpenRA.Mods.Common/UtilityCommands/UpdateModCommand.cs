@@ -151,6 +151,36 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(format, args);
 		}
 
+		static void LogSuccess(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine(format, args);
+			Console.ForegroundColor = originalColor;
+		}
+
+		static void LogError(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(format, args);
+			Console.ForegroundColor = originalColor;
+		}
+
+		static void LogWarning(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine(format, args);
+			Console.ForegroundColor = originalColor;
+		}
+
 		static void LogLine(StreamWriter logWriter)
 		{
 			logWriter.WriteLine();
@@ -176,12 +206,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					Log(logWriter, "   Updating mod... ");
 					manualSteps.AddRange(UpdateUtils.UpdateMod(modData, rule, out allFiles, externalFilenames));
-					LogLine(logWriter, "COMPLETE");
+					LogSuccess(logWriter, "COMPLETE");
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("FAILED");
-
+					LogError(logWriter, "FAILED");
 					LogLine(logWriter);
 					LogLine(logWriter, "   The automated changes for this rule were not applied because of an error.");
 					LogLine(logWriter, "   After the issue reported below is resolved you should run the updater");
@@ -211,7 +240,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						}
 						catch (Exception ex)
 						{
-							LogLine(logWriter, "FAILED");
+							LogError(logWriter, "FAILED");
 							LogLine(logWriter);
 							LogLine(logWriter, "   The automated changes for this rule were not applied because of an error.");
 							LogLine(logWriter, "   After the issue reported below is resolved you should run the updater");
@@ -230,7 +259,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapsFailed)
 						continue;
 
-					LogLine(logWriter, "COMPLETE");
+					LogSuccess(logWriter, "COMPLETE");
 				}
 				else
 					LogLine(logWriter, "SKIPPED");
@@ -240,7 +269,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (manualSteps.Count > 0)
 				{
-					LogLine(logWriter, "   Manual changes are required to complete this update:");
+					LogWarning(logWriter, "   Manual changes are required to complete this update:");
 					LogLine(logWriter, UpdateUtils.FormatMessageList(manualSteps, 1));
 				}
 
@@ -249,8 +278,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (externalFilenames.Count > 0)
 			{
+				LogLine(logWriter);
 				LogLine(logWriter, "The following external mod files have been ignored:");
 				LogLine(logWriter, UpdateUtils.FormatMessageList(externalFilenames));
+				LogLine(logWriter);
 				LogLine(logWriter, "These files should be updated by running --update-mod on the referenced mod(s)");
 				LogLine(logWriter);
 			}

@@ -28,7 +28,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		// mimic Windows compiler error format
 		static void EmitError(string e)
 		{
-			Console.WriteLine($"OpenRA.Utility(1,1): Error: {e}");
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.Write("OpenRA.Utility(1,1): Error:");
+			Console.ForegroundColor = originalColor;
+			Console.WriteLine(e);
 			++errors;
 		}
 
@@ -38,7 +42,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				EmitError(e);
 			else
 			{
-				Console.WriteLine($"OpenRA.Utility(1,1): Warning: {e}");
+				var originalColor = Console.ForegroundColor;
+				Console.ForegroundColor = ConsoleColor.Yellow;
+				Console.Write("OpenRA.Utility(1,1): Warning:");
+				Console.ForegroundColor = originalColor;
+				Console.WriteLine(e);
 				++warnings;
 			}
 		}

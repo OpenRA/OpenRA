@@ -57,7 +57,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) != null;
 				if (overridesCreated)
 				{
+					var originalColor = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("{0} must override ConditionalTrait's {1} method instead of implementing {2} directly", t.Name, methodName, interfaceType.Name);
+					Console.ForegroundColor = originalColor;
 					violationCount++;
 				}
 			}

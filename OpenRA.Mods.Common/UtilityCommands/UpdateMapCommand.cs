@@ -110,18 +110,27 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					// Files are saved after each successful automated rule update
 					mapFiles.Save();
+
+					var originalColor = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Green;
 					Console.WriteLine("COMPLETE");
+					Console.ForegroundColor = originalColor;
 
 					if (manualSteps.Count > 0)
 					{
+						Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.WriteLine("   Manual changes are required to complete this update:");
+						Console.ForegroundColor = originalColor;
 						foreach (var manualStep in manualSteps)
 							Console.WriteLine("    * " + manualStep.Replace("\n", "\n      "));
 					}
 				}
 				catch (Exception ex)
 				{
+					var originalColor = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("FAILED");
+					Console.ForegroundColor = originalColor;
 
 					Console.WriteLine();
 					Console.WriteLine("   The automated changes for this rule were not applied because of an error.");
@@ -138,8 +147,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (externalFilenames.Count > 0)
 			{
+				Console.WriteLine();
 				Console.WriteLine("The following shared yaml files referenced by the map have been ignored:");
 				Console.WriteLine(UpdateUtils.FormatMessageList(externalFilenames));
+				Console.WriteLine();
 				Console.WriteLine("These files are assumed to have already been updated by the --update-mod command");
 				Console.WriteLine();
 			}
