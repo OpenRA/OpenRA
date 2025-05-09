@@ -11,7 +11,6 @@ FileSystem: DefaultFileSystem
 		$cnc-content: cnccontent
 
 Rules:
-	content|rules.yaml
 
 Cursors:
 	content|cursors.yaml

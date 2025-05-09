@@ -24,6 +24,15 @@ namespace OpenRA
 			ArgumentNullException.ThrowIfNull(dict);
 
 			this.dict = new Dictionary<string, ActorInfo>(dict);
+
+			// Include an empty entry for each system actor to guarantee that
+			// they will be defined even if not specified in the mod yaml
+			foreach (var systemActor in Enum.GetValues<SystemActors>())
+			{
+				var key = systemActor.ToString().ToLowerInvariant();
+				if (!dict.ContainsKey(key))
+					this.dict[key] = new ActorInfo(key);
+			}
 		}
 
 		public bool ContainsKey(string key) => dict.ContainsKey(key);

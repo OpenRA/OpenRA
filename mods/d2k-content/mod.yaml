@@ -11,7 +11,6 @@ FileSystem: DefaultFileSystem
 		$d2k-content: d2kcontent
 
 Rules:
-	content|rules.yaml
 
 Cursors:
 	content|cursors.yaml
