@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Lint
 				// Catch TypeDictionary errors.
 				try
 				{
+					if (Enum.TryParse<SystemActors>(actorInfo.Key, true, out _))
+						continue;
+
 					var visibilityTypes = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>();
 					var count = visibilityTypes.Count;
 

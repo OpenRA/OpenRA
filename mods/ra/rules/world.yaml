@@ -1,6 +1,5 @@
 ^BaseWorld:
 	Inherits: ^Palettes
-	AlwaysVisible:
 	ActorMap:
 	ScreenMap:
 	Selection:
