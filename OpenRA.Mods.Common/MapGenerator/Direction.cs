@@ -125,6 +125,18 @@ namespace OpenRA.Mods.Common.MapGenerator
 				throw new ArgumentException("bad direction");
 		}
 
+		static readonly ImmutableArray<int2> KiloVectors =
+		[
+			new(1024, 0),
+			new(724, 724),
+			new(0, 1024),
+			new(-724, 724),
+			new(-1024, 0),
+			new(-724, -724),
+			new(0, -1024),
+			new(724, -724),
+		];
+
 		/// <summary>
 		/// Convert a non-none direction to a CVec offset. Assumes that
 		/// CVec(1, 0) corresponds to Direction.R.
@@ -138,7 +150,20 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
+		/// Convert a non-none direction to a WVec offset. Assumes that
+		/// WVec(1, 0, 0) corresponds to Direction.R.
+		/// </summary>
+		public static WVec ToWVec(int d)
+		{
+			if (d >= 0 && d < 8)
+				return new WVec(Spread8[d].X, Spread8[d].Y, 0);
+			else
+				throw new ArgumentException("bad direction");
+		}
+
+		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
+		/// The direction is based purely on the signs of the inputs.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
 		public static int FromOffset(int dx, int dy)
@@ -174,6 +199,32 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
+		/// The direction with the closest angle wins. Keep inputs to 1000000 or less.
+		/// Supplying a zero-offset will throw.
+		/// </summary>
+		public static int FromOffsetRounding(int dx, int dy)
+		{
+			if (dx == 0 && dy == 0)
+				throw new ArgumentException("Bad direction");
+
+			var d = new int2(dx, dy);
+			var direction = None;
+			var best = 0;
+			for (var i = 0; i < KiloVectors.Length; i++)
+			{
+				var score = int2.Dot(d, KiloVectors[i]);
+				if (score > best)
+				{
+					best = score;
+					direction = i;
+				}
+			}
+
+			return direction;
+		}
+
+		/// <summary>
+		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
 		public static int FromInt2(int2 delta)
@@ -186,6 +237,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public static int FromCVec(CVec delta)
 			=> FromOffset(delta.X, delta.Y);
+
+		/// <summary>
+		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
+		/// Supplying a zero-offset will throw. Assumes that CVec(1, 0)
+		/// corresponds to Direction.R.
+		/// </summary>
+		public static int FromCVecRounding(CVec delta)
+			=> FromOffsetRounding(delta.X, delta.Y);
 
 		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a non-diagonal direction.

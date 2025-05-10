@@ -1107,3 +1107,9 @@ keycode =
 label-map-generator-failed-cancel = Dismiss
 notification-map-generator-generated = Generated using { $name }
 notification-map-generator-failed = Map generation failed
+
+## EditorTilingPathBrush
+notification-tiling-path-started = Started tiling path
+notification-tiling-path-updated = Updated tiling path
+notification-tiling-path-reset = Discarded tiling path
+notification-tiling-path-painted = Painted tiling path

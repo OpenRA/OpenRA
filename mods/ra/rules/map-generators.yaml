@@ -67,7 +67,7 @@
 						ClearSegmentTypes: Clear
 						BeachSegmentTypes: Beach
 						CliffSegmentTypes: Cliff
-						RoadSegmentTypes: Road,RoadIn,RoadOut
+						RoadSegmentTypes: Road
 						ForestObstacles: Trees
 						UnplayableObstacles: Obstructions
 						CivilianBuildingsObstacles: CivilianBuildings

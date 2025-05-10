@@ -78,6 +78,16 @@ label-marker-mirror-mode = Mirror Mode
 label-marker-axis-angle = Axis Angle
 button-map-generator-generate = Generate
 button-map-generator-generate-random = Generate Random
+checkbox-tiling-path-edit = Enable editing
+label-tiling-path-type-start = Start type
+label-tiling-path-type-inner = Inner type
+label-tiling-path-type-end = End type
+label-tiling-path-deviation = Deviation limit
+checkbox-tiling-path-closed-loops = Loops use only inner types
+button-tiling-path-reverse = Reverse path
+button-tiling-path-reset = Discard path
+button-tiling-path-randomize = Re-randomize tiling
+button-tiling-path-paint = Paint tiling to map
 
 button-map-editor-tab-container-select-tooltip = Selection
 button-map-editor-tab-container-tiles-tooltip = Tiles
@@ -115,6 +125,7 @@ button-select-categories-buttons-all = All
 button-select-categories-buttons-none = None
 
 label-tool-marker-tiles = Marker Tiles
+label-tool-tiling-path = Path Tiler
 
 ## encyclopedia.yaml, mainmenu.yaml
 label-encyclopedia-title = EVA Database

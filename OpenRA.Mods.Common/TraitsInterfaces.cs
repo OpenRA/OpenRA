@@ -779,6 +779,7 @@ namespace OpenRA.Mods.Common.Traits
 		Rectangle TemplateBounds(TerrainTemplateInfo template);
 		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo template, int2 origin, float scale);
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
+		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTile tile, WPos origin);
 	}
 
 	public interface IResourceLayerInfo : ITraitInfoInterface

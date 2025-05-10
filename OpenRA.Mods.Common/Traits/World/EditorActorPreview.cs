@@ -137,7 +137,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render()
 		{
-			var items = previews.SelectMany(p => p.Render(worldRenderer, CenterPosition));
+			return RenderAt(CenterPosition);
+		}
+
+		public IEnumerable<IRenderable> RenderWithOffset(WVec offset)
+		{
+			return RenderAt(CenterPosition + offset);
+		}
+
+		public IEnumerable<IRenderable> RenderAt(WPos centerPosition)
+		{
+			var items = previews.SelectMany(p => p.Render(worldRenderer, centerPosition));
 			if (Selected)
 			{
 				var overlay = items.Where(r => !r.IsDecoration && r is IModifyableRenderable)

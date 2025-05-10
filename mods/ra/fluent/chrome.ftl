@@ -190,4 +190,3 @@ button-production-types-aircraft-tooltip = Aircraft
 button-production-types-naval-tooltip = Naval
 button-production-types-scroll-up-tooltip = Scroll up
 button-production-types-scroll-down-tooltip = Scroll down
-

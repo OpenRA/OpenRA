@@ -110,6 +110,25 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			/// <summary>
+			/// Creates a PermittedSegments suitable for a path with given inner and terminal types
+			/// at the start and end.
+			/// </summary>
+			public static PermittedSegments FromTypes(
+				IReadOnlyList<MultiBrush> multiBrushes,
+				IEnumerable<string> startTypes,
+				IEnumerable<string> innerTypes,
+				IEnumerable<string> endTypes)
+			{
+				var startTypesArray = startTypes.ToImmutableArray();
+				var innerTypesArray = innerTypes.ToImmutableArray();
+				var endTypesArray = endTypes.ToImmutableArray();
+				return new(
+					FindSegments(multiBrushes, startTypesArray, innerTypesArray, innerTypesArray),
+					FindSegments(multiBrushes, innerTypesArray),
+					FindSegments(multiBrushes, innerTypesArray, innerTypesArray, endTypesArray));
+			}
+
+			/// <summary>
 			/// Equivalent to FindSegments(multiBrushes, types, types, types).
 			/// </summary>
 			public static IEnumerable<MultiBrush> FindSegments(
@@ -604,8 +623,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 				return (typeId, new CVec(xy % size.X, xy / size.X), priority);
 			}
 
-			var pathStartTypeId = segmentTypeToId[start.SegmentType];
-			var pathEndTypeId = segmentTypeToId[end.SegmentType];
+			if (!segmentTypeToId.TryGetValue(start.SegmentType, out var pathStartTypeId))
+				return null;
+			if (!segmentTypeToId.TryGetValue(end.SegmentType, out var pathEndTypeId))
+				return null;
 
 			// Lower (closer to zero) costs are better matches.
 			// MaxScore means totally unacceptable.

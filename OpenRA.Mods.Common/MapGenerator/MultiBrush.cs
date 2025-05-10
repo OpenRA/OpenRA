@@ -14,7 +14,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Terrain;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.MapGenerator
@@ -236,8 +239,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <summary>Total area covered by the MultiBrush.</summary>
 		public int Area => GetShape().Length;
 
-		/// <summary>The CVec of the top-left most cell covered by the MultiBrush.</summary>
-		public CVec TopLeft => GetShape()[0];
+		/// <summary>
+		/// The CVec of the first cell covered by the MultiBrush. This is the left-most cell in the
+		/// top-row. Note that this does not necessarily correspond to the top-left corner of the
+		/// rectangular bounds of the MultiBrush.
+		/// </summary>
+		public CVec FirstCell => GetShape()[0];
 
 		public Replaceability Contract()
 		{
@@ -618,7 +625,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				foreach (var mpos in mposes)
 				{
 					var brush = brushes[random.PickWeighted(brushWeights)];
-					var paintAt = mpos.ToCPos(map) - brush.TopLeft;
+					var paintAt = mpos.ToCPos(map) - brush.FirstCell;
 					var contract = ReserveShape(paintAt, brush.Shape, brush.Contract());
 					if (contract != Replaceability.None)
 						brush.Paint(map, actorPlans, paintAt, contract);
@@ -628,6 +635,72 @@ namespace OpenRA.Mods.Common.MapGenerator
 						break;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Create a sparse EditorBlitSource from this MultiBrush. The EditorBlitSource will have
+		/// the minimum bounding CellRegion fully containing all content. For actors without a
+		/// preconfigured owner, a default owner can be specified or derived automatically.
+		/// </summary>
+		public EditorBlitSource ToEditorBlitSource(
+			WorldRenderer worldRenderer,
+			PlayerReference defaultActorOwner = null)
+		{
+			var world = worldRenderer.World;
+			var map = world.Map;
+
+			if (defaultActorOwner == null)
+			{
+				var editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
+				if (editorActorLayer != null)
+					defaultActorOwner = editorActorLayer.Players.Players.Values.First();
+			}
+
+			var players = world.Players.ToDictionary(
+				player => player.InternalName,
+				player => player.PlayerReference);
+
+			var topLeft = new CPos(
+				Shape.Min(cvec => cvec.X),
+				Shape.Min(cvec => cvec.Y));
+			var bottomRight = new CPos(
+				Shape.Max(cvec => cvec.X),
+				Shape.Max(cvec => cvec.Y));
+			var cellRegion = new CellRegion(map.Grid.Type, topLeft, bottomRight);
+
+			var actorPreviews = new Dictionary<string, EditorActorPreview>();
+			for (var i = 0; i < actorPlans.Count; i++)
+			{
+				// A (non-revert) EditorBlitSource's actors' names are generally unimportant beyond
+				// needing to be distinct. They will get renamed when blitting.
+				var name = $"Actor{i}";
+				var actorReference = actorPlans[i].Reference.Clone();
+				var ownerInit = actorReference.Get<OwnerInit>();
+				if (!players.TryGetValue(ownerInit.InternalName, out var owner))
+					owner = defaultActorOwner;
+
+				if (owner == null)
+					throw new InvalidOperationException("MultiBrush actor has invalid (or no) owner and no default available.");
+
+				actorPreviews[name] = new EditorActorPreview(
+					worldRenderer,
+					name,
+					actorReference,
+					owner);
+			}
+
+			var blitTiles =
+				Tiles
+					.Where(t => map.Tiles.Contains(CPos.Zero + t.XY))
+					.DistinctBy(t => t.XY)
+					.ToDictionary(
+						t => CPos.Zero + t.XY,
+						t => new BlitTile(t.Tile, default, null, map.Height[CPos.Zero + t.XY]));
+
+			return new EditorBlitSource(
+				cellRegion,
+				actorPreviews,
+				blitTiles);
 		}
 	}
 }

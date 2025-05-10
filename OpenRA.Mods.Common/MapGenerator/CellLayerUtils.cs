@@ -61,19 +61,39 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>Get the WPos of the -X-Y corner of a CPos cell.</summary>
-		public static WPos CornerToWPos(CPos xy, MapGridType gridType)
+		public static WPos CornerToWPos(CPos cpos, MapGridType gridType)
 		{
 			switch (gridType)
 			{
 				case MapGridType.Rectangular:
 					return new WPos(
-						xy.X * 1024,
-						xy.Y * 1024,
+						cpos.X * 1024,
+						cpos.Y * 1024,
 						0);
 				case MapGridType.RectangularIsometric:
 					return new WPos(
-						(xy.X - xy.Y) * 724 + 724,
-						(xy.X + xy.Y) * 724,
+						(cpos.X - cpos.Y) * 724 + 724,
+						(cpos.X + cpos.Y) * 724,
+						0);
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
+		/// <summary>Get the closest -X-Y corner of a CPos cell to a WPos.</summary>
+		public static CPos WPosToCorner(WPos cpos, MapGridType gridType)
+		{
+			switch (gridType)
+			{
+				case MapGridType.Rectangular:
+					return new CPos(
+						FloorDiv(cpos.X + 512, 1024),
+						FloorDiv(cpos.Y + 512, 1024),
+						0);
+				case MapGridType.RectangularIsometric:
+					return new CPos(
+						FloorDiv(cpos.Y + cpos.X, 1448),
+						FloorDiv(cpos.Y - cpos.X, 1448),
 						0);
 				default:
 					throw new NotImplementedException();
