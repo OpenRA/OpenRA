@@ -67,8 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class FloatingSpriteEmitter : ConditionalTrait<FloatingSpriteEmitterInfo>, ITick, INotifyDamage
 	{
-		readonly WVec offset;
-
+		WVec offset;
 		IFacing facing;
 		int ticks;
 		int duration;
@@ -82,7 +81,12 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
 			if (Info.ResetOnDamaged)
+			{
+				if (duration < 0)
+					offset = Util.RandomVector(self.World.SharedRandom, Info.Offset);
+
 				duration = Info.Duration;
+			}
 		}
 
 		protected override void Created(Actor self)
@@ -97,6 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.TraitEnabled(self);
 
 			duration = Info.Duration;
+			offset = Util.RandomVector(self.World.SharedRandom, Info.Offset);
 		}
 
 		void ITick.Tick(Actor self)
