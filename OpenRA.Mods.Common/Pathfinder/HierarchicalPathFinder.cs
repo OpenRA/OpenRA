@@ -849,9 +849,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 				pathFinderOverlay?.NewRecording(self, [source], target);
 
+				// For paths over a short distance, use a heuristic weight of 100% to force the shortest path to be returned.
+				// We do this as players are likely to be sensitive to suboptimal paths over short distances.
+				// So we prefer optimal paths over suboptimal ones.
+				// Since we have a limited search area, we don't mind the additional performance impact.
 				List<CPos> localPath;
 				using (var search = GetLocalPathSearch(
-					self, [source], target, customCost, ignoreActor, check, laneBias, gridToSearch, heuristicWeightPercentage,
+					self, [source], target, customCost, ignoreActor, check, laneBias, gridToSearch, 100,
 					null,
 					inReverse,
 					pathFinderOverlay?.RecordLocalEdges(self)))
