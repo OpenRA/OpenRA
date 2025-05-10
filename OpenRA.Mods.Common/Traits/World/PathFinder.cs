@@ -22,9 +22,19 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Calculates routes for mobile actors with locomotors based on the A* search algorithm.", " Attach this to the world actor.")]
 	public class PathFinderInfo : TraitInfo, Requires<LocomotorInfo>, Requires<ActorMapInfo>
 	{
+		[Desc(
+			"The search will aim for the shortest path when given a weight of 100%.",
+			"We can allow the search to find paths that aren't optimal by changing the weight.",
+			"The weight limits the worst case length of the path, " +
+			"e.g. a weight of 110% will find a path no more than 10% longer than the shortest possible." +
+			"The benefit of allowing the search to return suboptimal paths is faster computation time." +
+			"The search can skip some areas of the search space, meaning it has less work to do." +
+			"Defaults to 125%.")]
+		public int HeuristicWeightPercentage = 125;
+
 		public override object Create(ActorInitializer init)
 		{
-			return new PathFinder(init.Self);
+			return new PathFinder(init.Self, this);
 		}
 	}
 
@@ -32,20 +42,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static readonly List<CPos> NoPath = [];
 
-		/// <summary>
-		/// When searching for paths, use a default weight of 125% to reduce
-		/// computation effort - even if this means paths may be sub-optimal.
-		/// </summary>
-		const int DefaultHeuristicWeightPercentage = 125;
-
 		readonly World world;
+		readonly PathFinderInfo info;
 		PathFinderOverlay pathFinderOverlay;
 		Dictionary<Locomotor, HierarchicalPathFinder> hierarchicalPathFindersBlockedByNoneByLocomotor;
 		Dictionary<Locomotor, HierarchicalPathFinder> hierarchicalPathFindersBlockedByImmovableByLocomotor;
 
-		public PathFinder(Actor self)
+		public PathFinder(Actor self, PathFinderInfo info)
 		{
 			world = self.World;
+			this.info = info;
 		}
 
 		public (
@@ -159,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 				// but the local pathfinder can deal with it when doing reverse searches.
 				pathFinderOverlay?.NewRecording(self, accessibleTargets, source);
 				using (var search = PathSearch.ToTargetCell(
-					world, locomotor, self, accessibleTargets, source, check, DefaultHeuristicWeightPercentage,
+					world, locomotor, self, accessibleTargets, source, check, HeuristicWeightPercentage,
 					customCost, ignoreActor, laneBias, inReverse: true, recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					path = search.FindPath();
 			}
@@ -201,12 +207,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Use a hierarchical path search, which performs a guided bidirectional search.
 				return GetHierarchicalPathFinder(locomotor, check, ignoreActor).FindPath(
-					self, source, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, inReverse, laneBias, pathFinderOverlay);
+					self, source, target, check, HeuristicWeightPercentage, customCost, ignoreActor, inReverse, laneBias, pathFinderOverlay);
 			}
 
 			// Use a hierarchical path search, which performs a guided unidirectional search.
 			return GetHierarchicalPathFinder(locomotor, check, ignoreActor).FindPath(
-				self, sources, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, inReverse, laneBias, pathFinderOverlay);
+				self, sources, target, check, HeuristicWeightPercentage, customCost, ignoreActor, inReverse, laneBias, pathFinderOverlay);
 		}
 
 		HierarchicalPathFinder GetHierarchicalPathFinder(Locomotor locomotor, BlockedByActor check, Actor ignoreActor)
@@ -283,5 +289,7 @@ namespace OpenRA.Mods.Common.Traits
 			// We can save some performance by avoiding querying for the Locomotor trait and retrieving it from Mobile.
 			return ((Mobile)self.OccupiesSpace).Locomotor;
 		}
+
+		int HeuristicWeightPercentage => Math.Max(100, info.HeuristicWeightPercentage);
 	}
 }
