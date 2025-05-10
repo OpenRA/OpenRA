@@ -93,15 +93,3 @@ HMG:
 HMGo:
 	Inherits: HMG
 	ReloadDelay: 18
-
-HMG_muzzle:
-	ReloadDelay: 16
-	Range: 3c0
-	Burst: 3
-	BurstDelays: 2
-	Projectile: InstantHit
-	Warhead@TargetValidation: SpreadDamage
-
-HMGo_muzzle:
-	Inherits: HMG_muzzle
-	ReloadDelay: 14

@@ -60,10 +60,138 @@ trike:
 		Facings: -32
 		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R16
-		Start: 3996
+		Combine:
+			0:
+				Filename: DATA.R16
+				Frames: 3996, 38, 3996, 38, 3996, 38, 3996
+				Length: 7
+			1:
+				Filename: DATA.R16
+				Frames: 3997, 38, 3997, 38, 3997, 38, 3997
+				Length: 7
+			2:
+				Filename: DATA.R16
+				Frames: 3998, 38, 3998, 38, 3998, 38, 3998
+				Length: 7
+			3:
+				Filename: DATA.R16
+				Frames: 3999, 38, 3999, 38, 3999, 38, 3999
+				Length: 7
+			4:
+				Filename: DATA.R16
+				Frames: 4000, 38, 4000, 38, 4000, 38, 4000
+				Length: 7
+			5:
+				Filename: DATA.R16
+				Frames: 4001, 38, 4001, 38, 4001, 38, 4001
+				Length: 7
+			6:
+				Filename: DATA.R16
+				Frames: 4002, 38, 4002, 38, 4002, 38, 4002
+				Length: 7
+			7:
+				Filename: DATA.R16
+				Frames: 4003, 38, 4003, 38, 4003, 38, 4003
+				Length: 7
+			8:
+				Filename: DATA.R16
+				Frames: 4004, 38, 4004, 38, 4004, 38, 4004
+				Length: 7
+			9:
+				Filename: DATA.R16
+				Frames: 4005, 38, 4005, 38, 4005, 38, 4005
+				Length: 7
+			10:
+				Filename: DATA.R16
+				Frames: 4006, 38, 4006, 38, 4006, 38, 4006
+				Length: 7
+			11:
+				Filename: DATA.R16
+				Frames: 4007, 38, 4007, 38, 4007, 38, 4007
+				Length: 7
+			12:
+				Filename: DATA.R16
+				Frames: 4008, 38, 4008, 38, 4008, 38, 4008
+				Length: 7
+			13:
+				Filename: DATA.R16
+				Frames: 4009, 38, 4009, 38, 4009, 38, 4009
+				Length: 7
+			14:
+				Filename: DATA.R16
+				Frames: 4010, 38, 4010, 38, 4010, 38, 4010
+				Length: 7
+			15:
+				Filename: DATA.R16
+				Frames: 4011, 38, 4011, 38, 4011, 38, 4011
+				Length: 7
+			16:
+				Filename: DATA.R16
+				Frames: 4012, 38, 4012, 38, 4012, 38, 4012
+				Length: 7
+			17:
+				Filename: DATA.R16
+				Frames: 4013, 38, 4013, 38, 4013, 38, 4013
+				Length: 7
+			18:
+				Filename: DATA.R16
+				Frames: 4014, 38, 4014, 38, 4014, 38, 4014
+				Length: 7
+			19:
+				Filename: DATA.R16
+				Frames: 4015, 38, 4015, 38, 4015, 38, 4015
+				Length: 7
+			20:
+				Filename: DATA.R16
+				Frames: 4016, 38, 4016, 38, 4016, 38, 4016
+				Length: 7
+			21:
+				Filename: DATA.R16
+				Frames: 4017, 38, 4017, 38, 4017, 38, 4017
+				Length: 7
+			22:
+				Filename: DATA.R16
+				Frames: 4018, 38, 4018, 38, 4018, 38, 4018
+				Length: 7
+			23:
+				Filename: DATA.R16
+				Frames: 4019, 38, 4019, 38, 4019, 38, 4019
+				Length: 7
+			24:
+				Filename: DATA.R16
+				Frames: 4020, 38, 4020, 38, 4020, 38, 4020
+				Length: 7
+			25:
+				Filename: DATA.R16
+				Frames: 4021, 38, 4021, 38, 4021, 38, 4021
+				Length: 7
+			26:
+				Filename: DATA.R16
+				Frames: 4022, 38, 4022, 38, 4022, 38, 4022
+				Length: 7
+			27:
+				Filename: DATA.R16
+				Frames: 4023, 38, 4023, 38, 4023, 38, 4023
+				Length: 7
+			28:
+				Filename: DATA.R16
+				Frames: 4024, 38, 4024, 38, 4024, 38, 4024
+				Length: 7
+			29:
+				Filename: DATA.R16
+				Frames: 4025, 38, 4025, 38, 4025, 38, 4025
+				Length: 7
+			30:
+				Filename: DATA.R16
+				Frames: 4026, 38, 4026, 38, 4026, 38, 4026
+				Length: 7
+			31:
+				Filename: DATA.R16
+				Frames: 4027, 38, 4027, 38, 4027, 38, 4027
+				Length: 7
 		Tick: 50
 		Facings: -32
+		Length: 7
 		BlendMode: Additive
 	icon:
 		Filename: DATA.R16
@@ -336,34 +464,24 @@ devastator.husk:
 		Remap: 54F94B
 
 raider:
+	Inherits: trike
 	idle:
 		Filename: DATA.R16
 		Start: 2421
 		Facings: -32
 		Remap: 54F94B
-	muzzle:
-		Filename: DATA.R16
-		Start: 3996
-		Tick: 50
-		Facings: -32
-		BlendMode: Additive
 	icon:
 		Filename: DATA.R16
 		Start: 4278
 		Offset: -30,-24
 
 stealth_raider:
+	Inherits: trike
 	idle:
 		Filename: DATA.R16
 		Start: 2421
 		Facings: -32
 		Remap: 54F94B
-	muzzle:
-		Filename: DATA.R16
-		Start: 3996
-		Tick: 50
-		Facings: -32
-		BlendMode: Additive
 	icon:
 		Filename: DATA.R16
 		Start: 4298
