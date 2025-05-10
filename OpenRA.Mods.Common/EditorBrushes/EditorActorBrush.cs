@@ -100,6 +100,8 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		public bool HandleKeyboardInput(KeyInput ki) => false;
+
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self)
 		{
 			// Offset mouse position by the center offset (in world pixels)

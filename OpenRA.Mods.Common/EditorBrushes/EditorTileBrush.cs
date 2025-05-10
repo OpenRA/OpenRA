@@ -98,6 +98,8 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		public bool HandleKeyboardInput(KeyInput ki) => false;
+
 		void PaintCell(CPos cell, bool isMoving)
 		{
 			var template = terrainInfo.Templates[Template];

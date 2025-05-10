@@ -115,6 +115,8 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		public bool HandleKeyboardInput(KeyInput ki) => false;
+
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { UpdatePreview(); }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr) { yield break; }

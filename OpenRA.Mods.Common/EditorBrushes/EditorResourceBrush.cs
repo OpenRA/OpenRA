@@ -82,6 +82,8 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		public bool HandleKeyboardInput(KeyInput ki) => false;
+
 		void UpdatePreview()
 		{
 			var pos = world.Map.CenterOfCell(cell);
