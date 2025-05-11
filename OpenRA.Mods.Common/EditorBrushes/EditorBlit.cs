@@ -256,7 +256,8 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			{
 				foreach (var (_, editorActorPreview) in blitSource.Actors)
 				{
-					var preview = editorActorPreview.RenderWithOffset(wOffset);
+					var preview = editorActorPreview.RenderWithOffset(wOffset)
+						.OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
 					foreach (var renderable in preview)
 						yield return renderable;
 				}

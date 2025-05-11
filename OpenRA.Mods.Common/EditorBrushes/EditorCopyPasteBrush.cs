@@ -87,7 +87,20 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
-		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
+		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr)
+		{
+			if (PastePreviewPosition != null)
+			{
+				var preview = EditorBlit.PreviewBlitSource(
+					clipboard,
+					getCopyFilters(),
+					PastePreviewPosition.Value - Region.TopLeft,
+					wr);
+				foreach (var renderable in preview)
+					yield return renderable;
+			}
+		}
+
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (PastePreviewPosition != null)
