@@ -51,10 +51,11 @@ namespace OpenRA.Mods.Common.FileFormats
 					break; // Break if we aligned with end of stream
 
 				var blockType = s.ReadASCII(4);
+				var chunkSize = s.ReadUInt32();
+
 				switch (blockType)
 				{
 					case "fmt ":
-						var fmtChunkSize = s.ReadInt32();
 						var audioFormat = s.ReadInt16();
 						audioType = (WaveType)audioFormat;
 
@@ -67,25 +68,24 @@ namespace OpenRA.Mods.Common.FileFormats
 						blockAlign = s.ReadInt16();
 						sampleBits = s.ReadInt16();
 						lengthInSeconds = (float)(s.Length * 8) / (channels * sampleRate * sampleBits);
-						s.Position += fmtChunkSize - 16;
+						s.Position += chunkSize - 16; // Ignoring any optional extra params
 						break;
 					case "fact":
-						var chunkSize = s.ReadInt32();
 						uncompressedSize = s.ReadInt32();
-						s.Position += chunkSize - 4;
+						s.Position += chunkSize - 4; // Ignoring other formats than ADPCM, fact chunk not in standard PCM files
 						break;
 					case "data":
-						dataSize = s.ReadInt32();
+						if (s.Position + chunkSize > s.Length)
+							chunkSize = (uint)(s.Length - s.Position); // Handle defective data chunk size by assuming it's the remainder of the file
+
 						dataOffset = s.Position;
-						s.Position += dataSize;
+						dataSize = (int)chunkSize;
+						s.Position += chunkSize;
 						break;
 					case "LIST":
 					case "cue ":
-						var listCueChunkSize = s.ReadInt32();
-						s.Position += listCueChunkSize;
-						break;
 					default:
-						s.Position = s.Length; // Skip to end of stream
+						s.Position += chunkSize; // Ignoring chunks we don't want to/know how to handle
 						break;
 				}
 			}
