@@ -358,7 +358,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			InnerTypes = SegmentedBrushes
 				.Where(b => b.Segment != null)
-				.Select(b => b.Segment.Inner.Split('.')[0])
+				.SelectMany<MultiBrush, string>(b =>
+					b.Segment.Inner != null
+						? [b.Segment.Inner.Split('.')[0]]
+						: [b.Segment.Start.Split('.')[0], b.Segment.End.Split('.')[0]])
 				.Distinct()
 				.Order()
 				.ToImmutableArray();

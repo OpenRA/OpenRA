@@ -147,8 +147,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 	/// </summary>
 	public sealed class MultiBrushSegment
 	{
+		/// <summary>Start type, including a direction. E.g. "Cliff.R".</summary>
+		[FieldLoader.Require]
 		public readonly string Start;
-		public readonly string Inner;
+
+		/// <summary>
+		/// Inner type. Does not include a direction. E.g. "Cliff".
+		/// A null (absent) inner type implies that both the start and end types can be considered
+		/// valid inner types.
+		/// </summary>
+		public readonly string Inner = null;
+
+		/// <summary>End type, including a direction. E.g. "Cliff.R".</summary>
+		[FieldLoader.Require]
 		public readonly string End;
 
 		/// <summary>
@@ -196,7 +207,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public bool HasStartType(string matcher)
 			=> MatchesType(Start, matcher);
 		public bool HasInnerType(string matcher)
-			=> MatchesType(Inner, matcher);
+			=> Inner != null
+				? MatchesType(Inner, matcher)
+				: (MatchesType(Start, matcher) || MatchesType(End, matcher));
 		public bool HasEndType(string matcher)
 			=> MatchesType(End, matcher);
 	}
