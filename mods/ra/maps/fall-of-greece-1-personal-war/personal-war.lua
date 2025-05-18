@@ -313,8 +313,12 @@ FootprintTriggers = function()
 				trig9camera.Destroy()
 			end)
 
-			Utils.Do(BridgeMammoths, function(actor)
-				actor.AttackMove(MammysGo.Location)
+			Utils.Do(BridgeMammoths, function(mammoth)
+				if mammoth.IsDead then
+					return
+				end
+
+				mammoth.AttackMove(MammysGo.Location)
 			end)
 		end
 	end)
@@ -333,6 +337,10 @@ FootprintTriggers = function()
 			Media.PlaySpeechNotification(Allies, "SignalFlareNorth")
 			Actor.Create("camera", true, { Owner = Allies, Location = ExtractionPoint.Location })
 			SendExtractionHelicopter()
+
+			if HealCrateTruck.IsDead then
+				return
+			end
 
 			HealCrateTruck.Move(TruckGo.Location)
 		end
