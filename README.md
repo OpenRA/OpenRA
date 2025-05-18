@@ -32,7 +32,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 ## Mapping
 
 * We offer a [Mapping](https://github.com/OpenRA/OpenRA/wiki/Mapping) Tutorial as you can change gameplay drastically with custom rules.
-* For scripted mission have a look at the [Lua API](https://docs.openra.net/en/latest/release/lua/).
+* For scripted mission have a look at the [Lua API](https://docs.openra.net/en/release/lua/).
 * If you want to share your maps with the community, upload them at the [OpenRA Resource Center](https://resource.openra.net).
 
 ## Modding
