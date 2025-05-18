@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 								// Includes validation of actor types and template IDs.
 								var multiBrush = new MultiBrush(map, info);
 
-								foreach (var (_, tile) in multiBrush.Tiles)
+								foreach (var tile in multiBrush.PossibleTiles())
 									if (!templatedTerrainInfo.TryGetTerrainInfo(tile, out var _))
 										emitError($"Tileset {terrainInfoName} has invalid MultiBrush collection `{collectionName}`: tileset does not have tile {tile.Type},{tile.Index}");
 							}

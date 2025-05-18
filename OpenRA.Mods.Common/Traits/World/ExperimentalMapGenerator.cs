@@ -601,6 +601,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repaintRandom = new MersenneTwister(random.Next());
 			var decorationRandom = new MersenneTwister(random.Next());
 			var decorationTilingRandom = new MersenneTwister(random.Next());
+			var pickAnyRandom = new MersenneTwister(random.Next());
 
 			TerrainTile PickTile(ushort tileType)
 			{
@@ -675,7 +676,7 @@ namespace OpenRA.Mods.Common.Traits
 						.OptimizeLoop();
 					var brush = beachPath.Tile(beachTilingRandom)
 						?? throw new MapGenerationException("Could not fit tiles for beach");
-					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile);
+					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
 					tiledBeaches[i] = brush.Segment.Points.Select(vec => CPos.Zero + vec).ToArray();
 					foreach (var cvec in brush.Shape)
 						beachesShape.Add(CPos.Zero + cvec);
@@ -745,7 +746,7 @@ namespace OpenRA.Mods.Common.Traits
 						.OptimizeLoop();
 					var brush = cliffPath.Tile(cliffTilingRandom)
 						?? throw new MapGenerationException("Could not fit tiles for exterior circle cliffs");
-					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile);
+					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
 				}
 			}
 
@@ -827,7 +828,7 @@ namespace OpenRA.Mods.Common.Traits
 							.OptimizeLoop();
 						var brush = cliffPath.Tile(cliffTilingRandom)
 							?? throw new MapGenerationException("Could not fit tiles for  cliffs");
-						brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile);
+						brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
 					}
 				}
 			}
@@ -1277,7 +1278,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var brush = path.Tile(roadTilingRandom)
 						?? throw new MapGenerationException("Could not fit tiles for roads");
-					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile);
+					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
 				}
 			}
 

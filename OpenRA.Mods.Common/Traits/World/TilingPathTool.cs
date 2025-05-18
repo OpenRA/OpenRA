@@ -430,6 +430,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var (startType, endType) in terminalTypes)
 			{
+				var random = new MersenneTwister(RandomSeed);
 				var tilingPath = new TilingPath(
 					map,
 					points,
@@ -439,9 +440,9 @@ namespace OpenRA.Mods.Common.Traits
 					permittedTemplates);
 				tilingPath.Start.Direction = plan.AutoStart;
 				tilingPath.End.Direction = plan.AutoEnd;
-				var result = tilingPath.Tile(new MersenneTwister(RandomSeed));
+				var result = tilingPath.Tile(random);
 				if (result != null)
-					return result.ToEditorBlitSource(WorldRenderer);
+					return result.ToEditorBlitSource(WorldRenderer, random);
 			}
 
 			return null;

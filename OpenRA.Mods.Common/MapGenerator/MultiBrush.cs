@@ -221,8 +221,42 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Any = 3,
 		}
 
+		readonly struct TileRange
+		{
+			public readonly ushort Type;
+			public readonly byte MinIndex;
+			public readonly byte MaxIndex;
+
+			public TileRange(ushort type, byte minIndex, byte maxIndex)
+			{
+				Type = type;
+				MinIndex = minIndex;
+				MaxIndex = maxIndex;
+			}
+
+			public TileRange(ushort type, byte index)
+				: this(type, index, index) { }
+
+			public TileRange(TerrainTile tile)
+				: this(tile.Type, tile.Index) { }
+
+			/// <summary>Pick a non-randomized tile.</summary>
+			public TerrainTile DefaultTile => new(Type, MinIndex);
+
+			/// <summary>
+			/// Pick a (possibly randomized) tile. random can be null to fall back to DefaultTile.
+			/// </summary>
+			public TerrainTile Pick(MersenneTwister random)
+			{
+				if (random == null)
+					return DefaultTile;
+
+				return new TerrainTile(Type, (byte)random.Next(MinIndex, MaxIndex + 1));
+			}
+		}
+
 		public int Weight;
-		readonly List<(CVec, TerrainTile)> tiles;
+		readonly List<(CVec XY, TileRange TileRange)> tiles;
 		readonly List<ActorPlan> actorPlans;
 		public MultiBrushSegment Segment { get; private set; }
 
@@ -230,8 +264,6 @@ namespace OpenRA.Mods.Common.MapGenerator
 		// Null means the shape is dirty and must be recomputed.
 		CVec[] shape;
 
-		public IEnumerable<(CVec XY, TerrainTile Tile)> Tiles => tiles;
-		public IEnumerable<ActorPlan> ActorPlans => actorPlans;
 		public bool HasTiles => tiles.Count != 0;
 		public bool HasActors => actorPlans.Count != 0;
 		public IEnumerable<CVec> Shape => GetShape();
@@ -365,17 +397,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MultiBrush WithTemplate(TerrainTemplateInfo templateInfo, CVec offset)
 		{
 			if (templateInfo.PickAny)
-				throw new ArgumentException("PickAny not supported - create separate MultiBrushes using WithTile instead.");
-			for (var y = 0; y < templateInfo.Size.Y; y++)
-				for (var x = 0; x < templateInfo.Size.X; x++)
-				{
-					var i = y * templateInfo.Size.X + x;
-					if (templateInfo[i] != null)
+			{
+				tiles.Add((offset, new(templateInfo.Id, 0, (byte)(templateInfo.TilesCount - 1))));
+			}
+			else
+			{
+				for (var y = 0; y < templateInfo.Size.Y; y++)
+					for (var x = 0; x < templateInfo.Size.X; x++)
 					{
-						var tile = new TerrainTile(templateInfo.Id, (byte)i);
-						tiles.Add((new CVec(x, y) + offset, tile));
+						var i = y * templateInfo.Size.X + x;
+						if (templateInfo[i] != null)
+							tiles.Add((new CVec(x, y) + offset, new(templateInfo.Id, (byte)i)));
 					}
-				}
+			}
 
 			shape = null;
 			return this;
@@ -387,7 +421,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public MultiBrush WithTile(TerrainTile tile, CVec offset)
 		{
-			tiles.Add((offset, tile));
+			tiles.Add((offset, new(tile)));
 			shape = null;
 			return this;
 		}
@@ -409,7 +443,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (Area == 0)
 				throw new InvalidOperationException("No area");
 			foreach (var xy in shape)
-				tiles.Add((xy, tile));
+				tiles.Add((xy, new(tile)));
 
 			return this;
 		}
@@ -454,9 +488,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <summary>
 		/// <para>Paint tiles onto the map and/or add actors to actorPlans at the given location.</para>
 		/// <para>contract specifies whether tiles or actors are allowed to be painted.</para>
+		/// <para>An optional MersenneTwister can be provided to vary randomizable elements.</para>
 		/// <para>If nothing could be painted, throws ArgumentException.</para>
 		/// </summary>
-		public void Paint(Map map, List<ActorPlan> actorPlans, CPos paintAt, Replaceability contract)
+		public void Paint(
+			Map map,
+			List<ActorPlan> actorPlans,
+			CPos paintAt,
+			Replaceability contract,
+			MersenneTwister random)
 		{
 			switch (contract)
 			{
@@ -466,14 +506,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 					if (this.actorPlans.Count > 0)
 						PaintActors(map, actorPlans, paintAt);
 					else if (tiles.Count > 0)
-						PaintTiles(map, paintAt);
+						PaintTiles(map, paintAt, random);
 					else
 						throw new ArgumentException("Cannot paint: no tiles or actors");
 					break;
 				case Replaceability.Tile:
 					if (tiles.Count == 0)
 						throw new ArgumentException("Cannot paint: no tiles");
-					PaintTiles(map, paintAt);
+					PaintTiles(map, paintAt, random);
 					PaintActors(map, actorPlans, paintAt);
 					break;
 				case Replaceability.Actor:
@@ -484,13 +524,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 		}
 
-		void PaintTiles(Map map, CPos paintAt)
+		void PaintTiles(Map map, CPos paintAt, MersenneTwister random)
 		{
 			foreach (var (xy, tile) in tiles)
 			{
 				var mpos = (paintAt + xy).ToMPos(map);
 				if (map.Tiles.Contains(mpos))
-					map.Tiles[mpos] = tile;
+					map.Tiles[mpos] = tile.Pick(random);
 			}
 		}
 
@@ -628,7 +668,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					var paintAt = mpos.ToCPos(map) - brush.FirstCell;
 					var contract = ReserveShape(paintAt, brush.Shape, brush.Contract());
 					if (contract != Replaceability.None)
-						brush.Paint(map, actorPlans, paintAt, contract);
+						brush.Paint(map, actorPlans, paintAt, contract, random);
 
 					remainingQuota -= brushArea;
 					if (remainingQuota <= 0)
@@ -639,11 +679,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// Create a sparse EditorBlitSource from this MultiBrush. The EditorBlitSource will have
-		/// the minimum bounding CellRegion fully containing all content. For actors without a
+		/// the minimum bounding CellRegion fully containing all content. An optional
+		/// MersenneTwister can be provided to vary randomizable elements. For actors without a
 		/// preconfigured owner, a default owner can be specified or derived automatically.
 		/// </summary>
 		public EditorBlitSource ToEditorBlitSource(
 			WorldRenderer worldRenderer,
+			MersenneTwister random,
 			PlayerReference defaultActorOwner = null)
 		{
 			var world = worldRenderer.World;
@@ -690,9 +732,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			var blitTiles =
-				Tiles
+				tiles
 					.Where(t => map.Tiles.Contains(CPos.Zero + t.XY))
 					.DistinctBy(t => t.XY)
+					.Select(t => (t.XY, Tile: t.TileRange.Pick(random)))
 					.ToDictionary(
 						t => CPos.Zero + t.XY,
 						t => new BlitTile(t.Tile, default, null, map.Height[CPos.Zero + t.XY]));
@@ -701,6 +744,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 				cellRegion,
 				actorPreviews,
 				blitTiles);
+		}
+
+		/// <summary>All possible tiles that may be painted by this MultiBrush.</summary>
+		public HashSet<TerrainTile> PossibleTiles()
+		{
+			var possible = new HashSet<TerrainTile>();
+			foreach (var (_, tileRange) in tiles)
+				for (int i = tileRange.MinIndex; i <= tileRange.MaxIndex; i++)
+					possible.Add(new(tileRange.Type, (byte)i));
+			return possible;
 		}
 	}
 }
