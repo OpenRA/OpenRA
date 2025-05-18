@@ -803,7 +803,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 				}
 
 				Debug.Assert(candidates.Count >= 1, "TraceBack didn't find an original route");
-				var chosenSegment = candidates[random.Next(candidates.Count)];
+				var weights = candidates
+					.Select(c => c.MultiBrush.Weight)
+					.ToArray();
+				var chosenSegment = candidates[random.PickWeighted(weights)];
 				var chosenFrom = to - chosenSegment.Moves;
 				compositeBrush.MergeFrom(
 					chosenSegment.MultiBrush,
