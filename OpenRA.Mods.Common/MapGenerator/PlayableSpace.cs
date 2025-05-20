@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					playable,
 					[(start, true)],
 					Filler,
-					Direction.Spread4CVec);
+					DirectionExts.Spread4CVec);
 			}
 
 			foreach (var mpos in map.AllCells.MapCoords)

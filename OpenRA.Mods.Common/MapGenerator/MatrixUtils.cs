@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					output[xy] = distance;
 				unprocessed[i] = int.MaxValue;
 
-				foreach (var (offset, direction) in Direction.Spread8D)
+				foreach (var (offset, direction) in DirectionExts.Spread8D)
 				{
 					var nextXY = xy + offset;
 					if (!passable.ContainsXY(nextXY))
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					if (output[nextXY] != int.MaxValue)
 						continue;
 					int nextDistance;
-					if (Direction.IsDiagonal(direction))
+					if (direction.IsDiagonal())
 						nextDistance = distance + Diagonal;
 					else
 						nextDistance = distance + Straight;
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 							}
 						}
 
-						FloodFill(space.Size, [(new int2(x, y), holeCount)], Filler, Direction.Spread4);
+						FloodFill(space.Size, [(new int2(x, y), holeCount)], Filler, DirectionExts.Spread4);
 					}
 
 			const int UNASSIGNED = int.MaxValue;
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					}
 				}
 
-				FloodFill(size, seeds, Filler, Direction.Spread4);
+				FloodFill(size, seeds, Filler, DirectionExts.Spread4);
 			}
 
 			var deflatedSize = size + new int2(1, 1);
@@ -346,10 +346,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 					}
 
 					deflated[cx, cy] = (byte)(
-						(neighborhood[0] != neighborhood[1] ? Direction.MU : 0) |
-						(neighborhood[1] != neighborhood[3] ? Direction.MR : 0) |
-						(neighborhood[3] != neighborhood[2] ? Direction.MD : 0) |
-						(neighborhood[2] != neighborhood[0] ? Direction.ML : 0));
+						(neighborhood[0] != neighborhood[1] ? DirectionMask.MU : 0) |
+						(neighborhood[1] != neighborhood[3] ? DirectionMask.MR : 0) |
+						(neighborhood[3] != neighborhood[2] ? DirectionMask.MD : 0) |
+						(neighborhood[2] != neighborhood[0] ? DirectionMask.ML : 0));
 				}
 
 			return deflated;
@@ -776,7 +776,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				roominess.Size,
 				seeds,
 				Filler,
-				Direction.Spread8);
+				DirectionExts.Spread8);
 
 			return roominess;
 		}
@@ -813,7 +813,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				{
 					var from = pointArray[i - 1];
 					var to = pointArray[i];
-					var direction = Direction.FromInt2(to - from);
+					var direction = DirectionExts.FromInt2(to - from);
 					var fx = from.X;
 					var fy = from.Y;
 					switch (direction)
@@ -850,7 +850,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				return prop;
 			}
 
-			FloodFill(size, seeds, FillChirality, Direction.Spread4);
+			FloodFill(size, seeds, FillChirality, DirectionExts.Spread4);
 
 			return chirality;
 		}
@@ -898,7 +898,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			// Looping paths contain the start/end point twice.
 			var paths = new List<int2[]>();
-			void TracePath(int sx, int sy, int direction)
+			void TracePath(int sx, int sy, Direction direction)
 			{
 				var points = new List<int2>();
 				var x = sx;
@@ -1214,18 +1214,18 @@ namespace OpenRA.Mods.Common.MapGenerator
 				for (var cx = 0; cx < matrix.Size.X; cx++)
 				{
 					var fromPos = new int2(cx, cy);
-					var fromDm = matrix[fromPos];
-					foreach (var (offset, d) in Direction.Spread8D)
+					var fromDm = (DirectionMask)matrix[fromPos];
+					foreach (var (offset, d) in DirectionExts.Spread8D)
 					{
-						if ((fromDm & (1 << d)) == 0)
+						if ((fromDm & d.ToMask()) == DirectionMask.None)
 							continue;
 
-						var dr = Direction.Reverse(d);
+						var dr = d.Reverse();
 						var toPos = new int2(cx + offset.X, cy + offset.Y);
-						if (matrix.ContainsXY(toPos) && (matrix[toPos] & (1 << dr)) != 0)
+						if (matrix.ContainsXY(toPos) && ((DirectionMask)matrix[toPos] & dr.ToMask()) != DirectionMask.None)
 							continue;
 
-						matrix[fromPos] = (byte)(output[fromPos] & ~(1 << d));
+						matrix[fromPos] = (byte)((DirectionMask)output[fromPos] & ~d.ToMask());
 					}
 				}
 		}
@@ -1236,17 +1236,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 			for (var cy = 0; cy < input.Size.Y; cy++)
 				for (var cx = 0; cx < input.Size.X; cx++)
 				{
-					var dm = input[cx, cy];
-					if (Direction.Count(dm) > 2)
+					var dm = (DirectionMask)input[cx, cy];
+					if (dm.Count() > 2)
 					{
 						output[cx, cy] = 0;
-						foreach (var (offset, d) in Direction.Spread8D)
+						foreach (var (offset, d) in DirectionExts.Spread8D)
 						{
 							var xy = new int2(cx + offset.X, cy + offset.Y);
 							if (!input.ContainsXY(xy))
 								continue;
-							var dr = Direction.Reverse(d);
-							output[xy] = (byte)(output[xy] & ~(1 << dr));
+							var dr = d.Reverse();
+							output[xy] = (byte)((DirectionMask)output[xy] & ~dr.ToMask());
 						}
 					}
 				}
@@ -1266,20 +1266,20 @@ namespace OpenRA.Mods.Common.MapGenerator
 			// Find non-loops, starting at terminals.
 			var pointArrays = new List<int2[]>();
 
-			void TracePoints(int2 xy, int reverseDm)
+			void TracePoints(int2 xy, DirectionMask reverseDm)
 			{
 				var points = new List<int2>();
 
 				bool AddPoint()
 				{
 					points.Add(xy);
-					var dm = links[xy] & ~reverseDm;
+					var dm = (DirectionMask)links[xy] & ~reverseDm;
 					links[xy] = 0;
-					foreach (var (offset, d) in Direction.Spread8D)
-						if ((dm & (1 << d)) != 0)
+					foreach (var (offset, d) in DirectionExts.Spread8D)
+						if ((dm & d.ToMask()) != DirectionMask.None)
 						{
 							xy += offset;
-							reverseDm = 1 << Direction.Reverse(d);
+							reverseDm = d.Reverse().ToMask();
 							return true;
 						}
 
@@ -1294,7 +1294,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			for (var sy = 0; sy < links.Size.Y; sy++)
 				for (var sx = 0; sx < links.Size.X; sx++)
-					if (Direction.FromMask(links[sx, sy]) != Direction.None)
+					if (((DirectionMask)links[sx, sy]).ToDirection() != Direction.None)
 						TracePoints(new int2(sx, sy), 0);
 
 			// All non-loops have been removed, leaving only loops left.
@@ -1303,7 +1303,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					if (links[sx, sy] != 0)
 					{
 						// Choose direction with most-significant bit
-						var reverseDm = links[sx, sy] & (links[sx, sy] - 1);
+						var reverseDm = (DirectionMask)(links[sx, sy] & (links[sx, sy] - 1));
 						TracePoints(new int2(sx, sy), reverseDm);
 					}
 
@@ -1351,8 +1351,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 						{
 							toDelete.Add(point);
 							if (pointArray.Length < minimumJunctionSeparation)
-								foreach (var (offset, d) in Direction.Spread8D)
-									if ((links[point] & (1 << d)) != 0)
+								foreach (var (offset, d) in DirectionExts.Spread8D)
+									if (((DirectionMask)links[point] & d.ToMask()) != DirectionMask.None)
 										toDelete.Add(point + offset);
 						}
 

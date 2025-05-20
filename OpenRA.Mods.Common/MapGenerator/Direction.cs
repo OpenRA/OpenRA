@@ -19,71 +19,80 @@ namespace OpenRA.Mods.Common.MapGenerator
 	/// Utilities for simple directions and adjacency. Note that coordinate systems might not agree
 	/// as to which directions are conceptually left/right or up/down.
 	/// </summary>
-	public static class Direction
+	public enum Direction
 	{
 		/// <summary>No direction.</summary>
-		public const int None = -1;
+		None = -1,
 
 		/// <summary>+X ("right").</summary>
-		public const int R = 0;
+		R = 0,
 
 		/// <summary>+X+Y ("right down").</summary>
-		public const int RD = 1;
+		RD = 1,
 
 		/// <summary>+Y ("down").</summary>
-		public const int D = 2;
+		D = 2,
 
 		/// <summary>-X+Y ("left down").</summary>
-		public const int LD = 3;
+		LD = 3,
 
 		/// <summary>-X ("left").</summary>
-		public const int L = 4;
+		L = 4,
 
 		/// <summary>-X-Y ("left up").</summary>
-		public const int LU = 5;
+		LU = 5,
 
 		/// <summary>-Y ("up").</summary>
-		public const int U = 6;
+		U = 6,
 
 		/// <summary>+X-Y ("right up").</summary>
-		public const int RU = 7;
+		RU = 7,
+	}
+
+	[Flags]
+	public enum DirectionMask
+	{
+		None = 0,
 
 		/// <summary>Bitmask right.</summary>
-		public const int MR = 1 << R;
+		MR = 1 << Direction.R,
 
 		/// <summary>Bitmask right-down.</summary>
-		public const int MRD = 1 << RD;
+		MRD = 1 << Direction.RD,
 
 		/// <summary>Bitmask down.</summary>
-		public const int MD = 1 << D;
+		MD = 1 << Direction.D,
 
 		/// <summary>Bitmask left-down.</summary>
-		public const int MLD = 1 << LD;
+		MLD = 1 << Direction.LD,
 
 		/// <summary>Bitmask left.</summary>
-		public const int ML = 1 << L;
+		ML = 1 << Direction.L,
 
 		/// <summary>Bitmask left-up.</summary>
-		public const int MLU = 1 << LU;
+		MLU = 1 << Direction.LU,
 
 		/// <summary>Bitmask up.</summary>
-		public const int MU = 1 << U;
+		MU = 1 << Direction.U,
 
 		/// <summary>Bitmask right-up.</summary>
-		public const int MRU = 1 << RU;
+		MRU = 1 << Direction.RU,
+	}
 
+	public static class DirectionExts
+	{
 		/// <summary>Adjacent offsets with directions, excluding diagonals.</summary>
-		public static readonly ImmutableArray<(int2, int)> Spread4D =
+		public static readonly ImmutableArray<(int2, Direction)> Spread4D =
 		[
-			(new int2(1, 0), R),
-			(new int2(0, 1), D),
-			(new int2(-1, 0), L),
-			(new int2(0, -1), U)
+			(new int2(1, 0), Direction.R),
+			(new int2(0, 1), Direction.D),
+			(new int2(-1, 0), Direction.L),
+			(new int2(0, -1), Direction.U)
 		];
 
 		/// <summary>Adjacent offsets, excluding diagonals.</summary>
 		public static readonly ImmutableArray<int2> Spread4 =
-			Spread4D.Select(((int2 XY, int _) v) => v.XY).ToImmutableArray();
+			Spread4D.Select(((int2 XY, Direction _) v) => v.XY).ToImmutableArray();
 
 		/// <summary>
 		/// Adjacent offsets, excluding diagonals. Assumes that CVec(1, 0)
@@ -93,21 +102,21 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Spread4.Select(xy => new CVec(xy.X, xy.Y)).ToImmutableArray();
 
 		/// <summary>Adjacent offsets with directions, including diagonals.</summary>
-		public static readonly ImmutableArray<(int2, int)> Spread8D =
+		public static readonly ImmutableArray<(int2, Direction)> Spread8D =
 		[
-			(new int2(1, 0), R),
-			(new int2(1, 1), RD),
-			(new int2(0, 1), D),
-			(new int2(-1, 1), LD),
-			(new int2(-1, 0), L),
-			(new int2(-1, -1), LU),
-			(new int2(0, -1), U),
-			(new int2(1, -1), RU)
+			(new int2(1, 0), Direction.R),
+			(new int2(1, 1), Direction.RD),
+			(new int2(0, 1), Direction.D),
+			(new int2(-1, 1), Direction.LD),
+			(new int2(-1, 0), Direction.L),
+			(new int2(-1, -1), Direction.LU),
+			(new int2(0, -1), Direction.U),
+			(new int2(1, -1), Direction.RU)
 		];
 
 		/// <summary>Adjacent offsets, including diagonals.</summary>
 		public static readonly ImmutableArray<int2> Spread8 =
-			Spread8D.Select(((int2 XY, int _) v) => v.XY).ToImmutableArray();
+			Spread8D.Select(((int2 XY, Direction _) v) => v.XY).ToImmutableArray();
 
 		/// <summary>
 		/// Adjacent offsets, including diagonals. Assumes that CVec(1, 0)
@@ -117,34 +126,22 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Spread8.Select(xy => new CVec(xy.X, xy.Y)).ToImmutableArray();
 
 		/// <summary>Convert a non-none direction to an int2 offset.</summary>
-		public static int2 ToInt2(int d)
+		public static int2 ToInt2(this Direction direction)
 		{
-			if (d >= 0 && d < 8)
-				return Spread8[d];
+			if (direction >= Direction.R && direction <= Direction.RU)
+				return Spread8[(int)direction];
 			else
 				throw new ArgumentException("bad direction");
 		}
-
-		static readonly ImmutableArray<int2> KiloVectors =
-		[
-			new(1024, 0),
-			new(724, 724),
-			new(0, 1024),
-			new(-724, 724),
-			new(-1024, 0),
-			new(-724, -724),
-			new(0, -1024),
-			new(724, -724),
-		];
 
 		/// <summary>
 		/// Convert a non-none direction to a CVec offset. Assumes that
 		/// CVec(1, 0) corresponds to Direction.R.
 		/// </summary>
-		public static CVec ToCVec(int d)
+		public static CVec ToCVec(this Direction direction)
 		{
-			if (d >= 0 && d < 8)
-				return Spread8CVec[d];
+			if (direction >= Direction.R && direction <= Direction.RU)
+				return Spread8CVec[(int)direction];
 			else
 				throw new ArgumentException("bad direction");
 		}
@@ -153,10 +150,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Convert a non-none direction to a WVec offset. Assumes that
 		/// WVec(1, 0, 0) corresponds to Direction.R.
 		/// </summary>
-		public static WVec ToWVec(int d)
+		public static WVec ToWVec(this Direction direction)
 		{
-			if (d >= 0 && d < 8)
-				return new WVec(Spread8[d].X, Spread8[d].Y, 0);
+			if (direction >= Direction.R && direction <= Direction.RU)
+				return new WVec(Spread8[(int)direction].X, Spread8[(int)direction].Y, 0);
 			else
 				throw new ArgumentException("bad direction");
 		}
@@ -166,32 +163,32 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// The direction is based purely on the signs of the inputs.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
-		public static int FromOffset(int dx, int dy)
+		public static Direction FromOffset(int dx, int dy)
 		{
 			if (dx > 0)
 			{
 				if (dy > 0)
-					return RD;
+					return Direction.RD;
 				else if (dy < 0)
-					return RU;
+					return Direction.RU;
 				else
-					return R;
+					return Direction.R;
 			}
 			else if (dx < 0)
 			{
 				if (dy > 0)
-					return LD;
+					return Direction.LD;
 				else if (dy < 0)
-					return LU;
+					return Direction.LU;
 				else
-					return L;
+					return Direction.L;
 			}
 			else
 			{
 				if (dy > 0)
-					return D;
+					return Direction.D;
 				else if (dy < 0)
-					return U;
+					return Direction.U;
 				else
 					throw new ArgumentException("Bad direction");
 			}
@@ -202,32 +199,37 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// The direction with the closest angle wins. Keep inputs to 1000000 or less.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
-		public static int FromOffsetRounding(int dx, int dy)
+		public static Direction ClosestFrom(int dx, int dy)
 		{
 			if (dx == 0 && dy == 0)
-				throw new ArgumentException("Bad direction");
+				throw new ArgumentException("bad direction");
 
-			var d = new int2(dx, dy);
-			var direction = None;
-			var best = 0;
-			for (var i = 0; i < KiloVectors.Length; i++)
+			var absX = Math.Abs(dx);
+			var absY = Math.Abs(dy);
+			var min = Math.Min(absX, absY);
+			var max = Math.Max(absX, absY);
+
+			// 408 / 985 is an approximation of tan(Pi / 8 radians), or tan(22.5 degrees)
+			if (408 * max < 985 * min)
 			{
-				var score = int2.Dot(d, KiloVectors[i]);
-				if (score > best)
-				{
-					best = score;
-					direction = i;
-				}
+				// Diagonal
+				return FromOffset(dx, dy);
 			}
-
-			return direction;
+			else
+			{
+				// Cardinal
+				if (absX > absY)
+					return FromOffsetNonDiagonal(dx, 0);
+				else
+					return FromOffsetNonDiagonal(0, dy);
+			}
 		}
 
 		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
-		public static int FromInt2(int2 delta)
+		public static Direction FromInt2(int2 delta)
 			=> FromOffset(delta.X, delta.Y);
 
 		/// <summary>
@@ -235,7 +237,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Supplying a zero-offset will throw. Assumes that CVec(1, 0)
 		/// corresponds to Direction.R.
 		/// </summary>
-		public static int FromCVec(CVec delta)
+		public static Direction FromCVec(CVec delta)
 			=> FromOffset(delta.X, delta.Y);
 
 		/// <summary>
@@ -243,23 +245,23 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Supplying a zero-offset will throw. Assumes that CVec(1, 0)
 		/// corresponds to Direction.R.
 		/// </summary>
-		public static int FromCVecRounding(CVec delta)
-			=> FromOffsetRounding(delta.X, delta.Y);
+		public static Direction ClosestFromCVec(CVec delta)
+			=> ClosestFrom(delta.X, delta.Y);
 
 		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a non-diagonal direction.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
-		public static int FromOffsetNonDiagonal(int dx, int dy)
+		public static Direction FromOffsetNonDiagonal(int dx, int dy)
 		{
 			if (dx - dy > 0 && dx + dy >= 0)
-				return R;
+				return Direction.R;
 			if (dy + dx > 0 && dy - dx >= 0)
-				return D;
+				return Direction.D;
 			if (-dx + dy > 0 && -dx - dy >= 0)
-				return L;
+				return Direction.L;
 			if (-dy - dx > 0 && -dy + dx >= 0)
-				return U;
+				return Direction.U;
 			throw new ArgumentException("bad direction");
 		}
 
@@ -267,7 +269,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Convert an offset (of arbitrary non-zero magnitude) to a
 		/// non-diagonal direction. Supplying a zero-offset will throw.
 		/// </summary>
-		public static int FromInt2NonDiagonal(int2 delta)
+		public static Direction FromInt2NonDiagonal(int2 delta)
 			=> FromOffsetNonDiagonal(delta.X, delta.Y);
 
 		/// <summary>
@@ -275,81 +277,53 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// non-diagonal direction. Supplying a zero-offset will throw. Assumes
 		/// that CVec(1, 0) corresponds to Direction.R.
 		/// </summary>
-		public static int FromCVecNonDiagonal(CVec delta)
+		public static Direction FromCVecNonDiagonal(CVec delta)
 			=> FromOffsetNonDiagonal(delta.X, delta.Y);
 
 		/// <summary>Return the opposite direction.</summary>
-		public static int Reverse(int direction)
+		public static Direction Reverse(this Direction direction)
 		{
-			if (direction == None)
-				return None;
-			return direction ^ 4;
+			if (direction != Direction.None)
+				return (Direction)((int)direction ^ 4);
+			else
+				return Direction.None;
 		}
 
-		/// <summary>Convert a direction to a short string, like "None", "R", "RD", etc.</summary>
-		public static string ToString(int direction)
+		/// <summary>Converts the direction to a mask value.</summary>
+		public static DirectionMask ToMask(this Direction direction)
 		{
-			switch (direction)
-			{
-				case None: return "None";
-				case R: return "R";
-				case RD: return "RD";
-				case D: return "D";
-				case LD: return "LD";
-				case L: return "L";
-				case LU: return "LU";
-				case U: return "U";
-				case RU: return "RU";
-				default: throw new ArgumentException("bad direction");
-			}
+			if (direction >= Direction.R && direction <= Direction.RU)
+				return (DirectionMask)(1 << (int)direction);
+			else
+				return DirectionMask.None;
+		}
+	}
+
+	public static class DirectionMaskExts
+	{
+		/// <summary>Count the number of set bits (directions) in a direction mask.</summary>
+		public static int Count(this DirectionMask mask)
+		{
+			return int.PopCount((int)mask);
 		}
 
-		/// <summary>Count the number of set bits in a direction mask.</summary>
-		public static int Count(int dm)
+		/// <summary>Finds the only direction set in a direction mask or returns None.</summary>
+		public static Direction ToDirection(this DirectionMask mask)
 		{
-			var count = 0;
-			for (var m = dm; m != 0; m >>= 1)
-				if ((m & 1) == 1)
-					count++;
-
-			return count;
-		}
-
-		/// <summary>Finds the only direction set in a direction mask or returns NONE.</summary>
-		public static int FromMask(int mask)
-		{
-			switch (mask)
-			{
-				case MR: return R;
-				case MRD: return RD;
-				case MD: return D;
-				case MLD: return LD;
-				case ML: return L;
-				case MLU: return LU;
-				case MU: return U;
-				case MRU: return RU;
-				default: return None;
-			}
+			var d = int.Log2((int)mask);
+			if (1 << d == (int)mask)
+				return (Direction)d;
+			else
+				return Direction.None;
 		}
 
 		/// <summary>True if diagonal, false if horizontal/vertical, throws otherwise.</summary>
-		public static bool IsDiagonal(int direction)
+		public static bool IsDiagonal(this Direction direction)
 		{
-			switch (direction)
-			{
-				case R:
-				case D:
-				case L:
-				case U:
-					return false;
-				case RD:
-				case LD:
-				case LU:
-				case RU:
-					return true;
-				default:
-					throw new ArgumentException("NONE or bad direction");
-			}
+			if (direction >= Direction.R && direction <= Direction.RU)
+				return ((int)direction & 1) == 1;
+			else
+				throw new ArgumentException("None or bad direction");
 		}
 	}
 }

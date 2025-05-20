@@ -1049,7 +1049,7 @@ namespace OpenRA.Mods.Common.Traits
 					regionMask,
 					map.AllCells.Where(cpos => regionMask[cpos] == largest.Id).Select(cpos => (cpos, true)),
 					AdoptPartiallyPlayableIntoLargest,
-					Direction.Spread4CVec);
+					DirectionExts.Spread4CVec);
 
 				if (param.DenyWalledAreas)
 				{
@@ -1086,7 +1086,7 @@ namespace OpenRA.Mods.Common.Traits
 							map.Tiles,
 							unplayableWater.Select(cpos => (cpos, false)),
 							ClearWaterBody,
-							Direction.Spread4CVec);
+							DirectionExts.Spread4CVec);
 					}
 
 					var replaceable = IdentifyReplaceableTiles(map, replaceabilityMap, actorPlans);

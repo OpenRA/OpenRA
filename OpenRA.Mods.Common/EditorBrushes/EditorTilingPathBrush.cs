@@ -112,10 +112,10 @@ namespace OpenRA.Mods.Common.Widgets
 						.FirstOrDefault(0);
 				var isStartDirector =
 					plan.AutoStart != Direction.None
-						&& cpos == plan.FirstPoint - Direction.ToCVec(plan.AutoStart);
+						&& cpos == plan.FirstPoint - plan.AutoStart.ToCVec();
 				var isEndDirector =
 					plan.AutoEnd != Direction.None
-						&& cpos == plan.LastPoint + Direction.ToCVec(plan.AutoEnd);
+						&& cpos == plan.LastPoint + plan.AutoEnd.ToCVec();
 				return (isInside, isRally, rallyIndex, isStartDirector, isEndDirector);
 			}
 
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var offset = plan.FirstPoint - to;
 					var direction =
 						offset != CVec.Zero
-							? Direction.FromCVecRounding(offset)
+							? DirectionExts.ClosestFromCVec(offset)
 							: Direction.None;
 					UpdatePlan(plan.WithStart(direction), true);
 				}
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var offset = to - plan.LastPoint;
 					var direction =
 						offset != CVec.Zero
-							? Direction.FromCVecRounding(offset)
+							? DirectionExts.ClosestFromCVec(offset)
 							: Direction.None;
 					UpdatePlan(plan.WithEnd(direction), true);
 				}
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (plan.AutoEnd != Direction.None)
 				yield return new CircleAnnotationRenderable(
-					CornerOfCell(plan.LastPoint) + Direction.ToWVec(plan.AutoEnd) * 768,
+					CornerOfCell(plan.LastPoint) + plan.AutoEnd.ToWVec() * 768,
 					new WDist(256),
 					2,
 					plan.End != Direction.None ? Color.Magenta : Color.Gray,
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (plan.AutoStart != Direction.None)
 				yield return new CircleAnnotationRenderable(
-					CornerOfCell(plan.FirstPoint) - Direction.ToWVec(plan.AutoStart) * 768,
+					CornerOfCell(plan.FirstPoint) - plan.AutoStart.ToWVec() * 768,
 					new WDist(256),
 					2,
 					plan.Start != Direction.None ? Color.Magenta : Color.Gray,

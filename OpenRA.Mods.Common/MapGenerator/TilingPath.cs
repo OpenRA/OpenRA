@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// Direction to use for this terminal.
 			/// If the direction here is null, it will be determined automatically later.
 			/// </summary>
-			public int? Direction;
+			public Direction? Direction;
 
 			/// <summary>
 			/// A string which can match the format used by MultiBrushSegment's Start or End.
@@ -42,11 +42,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 				{
 					var direction =
 						Direction ?? throw new InvalidOperationException("Direction is null");
-					return $"{Type}.{MapGenerator.Direction.ToString(direction)}";
+					return $"{Type}.{direction}";
 				}
 			}
 
-			public Terminal(string type, int? direction)
+			public Terminal(string type, Direction? direction)
 			{
 				Type = type;
 				Direction = direction;
@@ -249,9 +249,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 			public readonly CVec Offset;
 			public readonly CVec Moves;
 			public readonly CVec[] RelativePoints;
-			public readonly int[] Directions;
-			public readonly int[] DirectionMasks;
-			public readonly int[] ReverseDirectionMasks;
+			public readonly Direction[] Directions;
+			public readonly DirectionMask[] DirectionMasks;
+			public readonly DirectionMask[] ReverseDirectionMasks;
 
 			public TilingSegment(MultiBrush multiBrush, int startId, int endId)
 			{
@@ -264,9 +264,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 					.Select(p => p - multiBrush.Segment.Points[0])
 					.ToArray();
 
-				Directions = new int[RelativePoints.Length];
-				DirectionMasks = new int[RelativePoints.Length];
-				ReverseDirectionMasks = new int[RelativePoints.Length];
+				Directions = new Direction[RelativePoints.Length];
+				DirectionMasks = new DirectionMask[RelativePoints.Length];
+				ReverseDirectionMasks = new DirectionMask[RelativePoints.Length];
 
 				// Last point has no direction.
 				Directions[^1] = Direction.None;
@@ -274,12 +274,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 				ReverseDirectionMasks[^1] = 0;
 				for (var i = 0; i < RelativePoints.Length - 1; i++)
 				{
-					var direction = Direction.FromCVec(RelativePoints[i + 1] - RelativePoints[i]);
+					var direction = DirectionExts.FromCVec(RelativePoints[i + 1] - RelativePoints[i]);
 					if (direction == Direction.None)
 						throw new ArgumentException("MultiBrushSegment has duplicate points in sequence");
 					Directions[i] = direction;
-					DirectionMasks[i] = 1 << direction;
-					ReverseDirectionMasks[i] = 1 << Direction.Reverse(direction);
+					DirectionMasks[i] = direction.ToMask();
+					ReverseDirectionMasks[i] = direction.Reverse().ToMask();
 				}
 			}
 		}
@@ -349,8 +349,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			var start = Start;
 			var end = End;
-			start.Direction ??= Direction.FromCVec(Points[1] - Points[0]);
-			end.Direction ??= Direction.FromCVec(IsLoop ? Points[1] - Points[0] : Points[^1] - Points[^2]);
+			start.Direction ??= DirectionExts.FromCVec(Points[1] - Points[0]);
+			end.Direction ??= DirectionExts.FromCVec(IsLoop ? Points[1] - Points[0] : Points[^1] - Points[^2]);
 
 			var maxSkip = MaxSkip > 0 ? MaxSkip : (2 * MaxDeviation + 1);
 
@@ -472,7 +472,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 					lows.Clear();
 					highs.Clear();
-					foreach (var offset in Direction.Spread8)
+					foreach (var offset in DirectionExts.Spread8)
 					{
 						var neighbor = xy + offset;
 						if (!deviations.ContainsXY(neighbor) ||
@@ -502,7 +502,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					size,
 					progressSeeds,
 					ProgressFiller,
-					Direction.Spread8);
+					DirectionExts.Spread8);
 
 				var separationSeeds = new List<(int2, int)>();
 
@@ -521,7 +521,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 						if (MinSeparation > 0)
 						{
-							foreach (var offset in Direction.Spread8)
+							foreach (var offset in DirectionExts.Spread8)
 							{
 								var neighbor = xy + offset;
 								if (!deviations.ContainsXY(neighbor) ||
@@ -553,7 +553,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					size,
 					separationSeeds,
 					SeparationFiller,
-					Direction.Spread8);
+					DirectionExts.Spread8);
 			}
 
 			var pathStart = points[0];
@@ -861,7 +861,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						fallbackDistances.Size,
 						[(new int2(maxEndDeviation, maxEndDeviation), 0)],
 						FallbacksFiller,
-						Direction.Spread4);
+						DirectionExts.Spread4);
 
 					var bestDistance = fallbackDistances.Data.Min();
 					if (bestDistance == Unreached || bestDistance == Unsolved)
@@ -943,17 +943,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			if (inertialRange > points.Length - 1)
 				inertialRange = points.Length - 1;
-			var sd = Direction.FromCVecNonDiagonal(points[inertialRange] - points[0]);
-			var ed = Direction.FromCVecNonDiagonal(points[^1] - points[^(inertialRange + 1)]);
+			var sd = DirectionExts.FromCVecNonDiagonal(points[inertialRange] - points[0]);
+			var ed = DirectionExts.FromCVecNonDiagonal(points[^1] - points[^(inertialRange + 1)]);
 			var newPoints = new CPos[points.Length + extensionLength * 2];
 
 			for (var i = 0; i < extensionLength; i++)
-				newPoints[i] = points[0] - Direction.ToCVec(sd) * (extensionLength - i);
+				newPoints[i] = points[0] - sd.ToCVec() * (extensionLength - i);
 
 			Array.Copy(points, 0, newPoints, extensionLength, points.Length);
 
 			for (var i = 0; i < extensionLength; i++)
-				newPoints[extensionLength + points.Length + i] = points[^1] + Direction.ToCVec(ed) * (i + 1);
+				newPoints[extensionLength + points.Length + i] = points[^1] + ed.ToCVec() * (i + 1);
 
 			return newPoints;
 		}
@@ -1341,7 +1341,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			for (var i = 1; i < points.Length; i++)
 			{
 				var offset = lastPoint - points[i];
-				if (Direction.ToCVec(Direction.FromCVecNonDiagonal(offset)) != offset)
+				if (DirectionExts.FromCVecNonDiagonal(offset).ToCVec() != offset)
 					return false;
 
 				lastPoint = points[i];
