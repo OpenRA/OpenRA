@@ -249,9 +249,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			public readonly CVec Offset;
 			public readonly CVec Moves;
 			public readonly CVec[] RelativePoints;
-			public readonly Direction[] Directions;
-			public readonly DirectionMask[] DirectionMasks;
-			public readonly DirectionMask[] ReverseDirectionMasks;
+			public readonly Direction EndDirection;
 
 			public TilingSegment(MultiBrush multiBrush, int startId, int endId)
 			{
@@ -263,23 +261,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 				RelativePoints = multiBrush.Segment.Points
 					.Select(p => p - multiBrush.Segment.Points[0])
 					.ToArray();
+				EndDirection = multiBrush.Segment.EndDirection;
 
-				Directions = new Direction[RelativePoints.Length];
-				DirectionMasks = new DirectionMask[RelativePoints.Length];
-				ReverseDirectionMasks = new DirectionMask[RelativePoints.Length];
-
-				// Last point has no direction.
-				Directions[^1] = Direction.None;
-				DirectionMasks[^1] = 0;
-				ReverseDirectionMasks[^1] = 0;
 				for (var i = 0; i < RelativePoints.Length - 1; i++)
 				{
 					var direction = DirectionExts.FromCVec(RelativePoints[i + 1] - RelativePoints[i]);
 					if (direction == Direction.None)
 						throw new ArgumentException("MultiBrushSegment has duplicate points in sequence");
-					Directions[i] = direction;
-					DirectionMasks[i] = direction.ToMask();
-					ReverseDirectionMasks[i] = direction.Reverse().ToMask();
 				}
 			}
 		}
@@ -323,6 +311,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			// order for a transition to be allowed at all, it must satisfy some constraints:
 			//
 			// - It must not regress backward along the path (but no immediate progress is OK).
+			// - If it makes exactly zero progress, it must end facing towards increasing progress.
 			// - It must not deviate at any point in the segment beyond MaxDeviation from the path.
 			// - It must not skip to much later path points (which may be within MaxDeviation).
 			//
@@ -688,6 +677,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 					return MaxCost;
 				}
 
+				// If it's a zero-progress segment without deviation, only allow it if it directs
+				// towards a positive progression.
+				if (lowProgressionAcc == 0 && highProgressionAcc == 0)
+				{
+					var point = to;
+					var pointNext = to + segment.EndDirection.ToCVec();
+					if (!deviations.ContainsXY(pointNext.X, pointNext.Y) || deviations[pointNext.X, pointNext.Y] == OverDeviation)
+					{
+						// Projected point escapes bounds or is in an excluded position.
+						return MaxCost;
+					}
+
+					lowProgressionAcc = Progress(lowProgress[point.X, point.Y], lowProgress[pointNext.X, pointNext.Y]);
+					highProgressionAcc = Progress(highProgress[point.X, point.Y], highProgress[pointNext.X, pointNext.Y]);
+					if (lowProgressionAcc < 0 || highProgressionAcc < 0 || (lowProgressionAcc == 0 && highProgressionAcc == 0))
+						return MaxCost;
+				}
+
 				// Satisfies all requirements.
 				return deviationAcc;
 			}
@@ -893,7 +900,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				(to, toTypeId) = TraceBackStep(to, toTypeId, true);
 
 				// No need to check direction. If that is an issue, I have bigger problems to worry about.
-				while (to != pathStart)
+				while (to != pathStart || toTypeId != pathStartTypeId)
 					(to, toTypeId) = TraceBackStep(to, toTypeId, false);
 			}
 
