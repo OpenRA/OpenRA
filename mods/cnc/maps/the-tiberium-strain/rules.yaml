@@ -1,0 +1,90 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, the-tiberium-strain.lua
+	MissionData:
+		Briefing: A nearby GDI base is conducting further ion research. In doing so, they use a large number of chemicals, located in their bio centers. Destroy all the bio centers, and "contaminate" all units and civilians. Leave all the other structures intact, so that it looks like an accident.
+		StartVideo: nodsweep.vqa
+		LossVideo: nodflees.vqa
+		WinVideo: desolat.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+		Locked: false
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+^CivBuilding:
+	Targetable:
+		RequiresCondition: !force-fire-required
+	Targetable@FORCENEEDED:
+		TargetTypes: Ground, Structure
+		RequiresForceFire: true
+		RequiresCondition: force-fire-required
+	GrantConditionOnPrerequisite:
+		Condition: force-fire-required
+		Prerequisites: village-targetable-switch
+
+# Spawned on Easy difficulty.
+VillageTargetableSwitch:
+	AlwaysVisible:
+	ProvidesPrerequisite:
+		Prerequisite: village-targetable-switch
+
+^CivInfantry:
+	AnnounceOnSeen:
+	MustBeDestroyed:
+	ScriptTags:
+
+E1:
+	ScriptTags:
+
+E2:
+	ScriptTags:
+
+FTNK:
+	GrantConditionOnTerrain@SKIPBRIDGEHUSK:
+		Condition: skip-bridge-husk
+		TerrainTypes: Bridge
+	SpawnActorOnDeath:
+		RequiresCondition: !skip-bridge-husk
+
+JEEP:
+	GrantConditionOnTerrain@SKIPBRIDGEHUSK:
+		Condition: skip-bridge-husk
+		TerrainTypes: Bridge
+	SpawnActorOnDeath:
+		RequiresCondition: !skip-bridge-husk
+	ScriptTags:
+
+MTNK:
+	GrantConditionOnTerrain@SKIPBRIDGEHUSK:
+		Condition: skip-bridge-husk
+		TerrainTypes: Bridge
+	SpawnActorOnDeath:
+		RequiresCondition: !skip-bridge-husk
+	ScriptTags:
+
+BIO:
+	# The original BIO is fragile and Nod may take heavy losses on the path here.
+	Health:
+		HP: 70000
+	Armor:
+		Type: Light
+
+BIO.Husk:
+	RevealsShroud:
+		Range: 2c0
+		ValidRelationships: Enemy

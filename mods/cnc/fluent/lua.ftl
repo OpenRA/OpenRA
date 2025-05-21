@@ -141,13 +141,22 @@ destroy-capture-warfactory = Destroy or capture the Weapons Factory.
 destroy-mammoth-tanks = Destroy the Mammoth tanks in the Research Base.
 keep-commando-alive = Keep your Commando alive.
 
+## eviction-notice, the-tiberium-strain
+nod-soldier = Nod Soldier
+
 ## eviction-notice
 take-civilians-money-crates = Find all the civilians' money; they won't be needing it anymore.
 quickly-destroy-ion-cannon = Disable the GDI Ion Cannon before it fires twice.
-nod-soldier = Nod Soldier
 civilians-running = Hey, those civilians... where are they going?
 destroy-ion-cannon-advice = The GDI are preparing their Ion Cannon. Don't let them get comfortable using it.
 village-destruction-warning = Be careful, commander. The GDI won't stay idle while we burn the entire village.
+
+## the-tiberium-strain
+destroy-gdi-bio-centers = Destroy the GDI bio centers.
+keep-all-other-structures = Keep all other structures intact.
+kill-every-villager-in-area = Kill every villager in the area.
+careless-gdi-experiments-killed = Careless GDI experiments killed these villagers.
+villagers-must-not-live = They must not live to dispute that story.
 
 ## twist-of-fate
 clear-path = Repel the ambush and clear the way for our MCV.
