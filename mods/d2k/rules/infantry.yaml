@@ -31,9 +31,9 @@ engineer:
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 80
 		Prerequisites: upgrade.barracks, ~techlevel.medium
-		BuildDuration: 125
+		BuildDuration: 150
 		BuildDurationModifier: 100
 		Description: actor-engineer.description
 	Valued:
@@ -67,7 +67,6 @@ engineer:
 		Description: actor-engineer.encyclopedia
 		Order: 30
 		Category: Units
-	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
 	-AttackFrontal:
@@ -79,11 +78,11 @@ trooper:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Prerequisites: upgrade.barracks, ~techlevel.medium
-		BuildDuration: 85
+		BuildDuration: 124
 		BuildDurationModifier: 100
 		Description: actor-trooper.description
 	Valued:
-		Cost: 90
+		Cost: 100
 	Tooltip:
 		Name: actor-trooper.name
 	UpdatesPlayerStatistics:
@@ -108,10 +107,9 @@ trooper:
 
 thumper:
 	Inherits: ^Infantry
-	-RevealOnFire:
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 100
 		Prerequisites: upgrade.barracks, ~techlevel.high
 		BuildDuration: 125
 		BuildDurationModifier: 100
@@ -303,6 +301,9 @@ mpsardaukar:
 
 saboteur:
 	Inherits: ^Infantry
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
@@ -315,36 +316,57 @@ saboteur:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 4000
+		HP: 5000
 	Encyclopedia:
 		Description: actor-saboteur.encyclopedia
 		Order: 80
 		Category: Units
 	Mobile:
 		Speed: 43
+		PauseOnCondition: triggered
 	Demolition:
-		DetonationDelay: 25
+		DetonationDelay: 50
 		Flashes: 3
 		EnterBehaviour: Suicide
-	-RevealOnFire:
-	GrantChargedConditionOnToggle:
-		ActivatedCondition: cloaked
-		CanCancelCondition: true
-		ChargeDuration: 1250
-		ChargeThreshhold: 100
-		ConditionDuration: 375
 	Cloak:
-		RequiresCondition: cloaked
-		InitialDelay: 0
-		CloakDelay: 25
+		InitialDelay: 100
+		CloakDelay: 100
 		CloakSound: STEALTH1.WAV
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
+		RequiresCondition: !triggered
+	FireWarheadsOnDeath@Selfkill:
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
+		RequiresCondition: kamikadze
+	GrantConditionOnDeploy:
+		DeployCursor: c4
+		DeployedCondition: triggered
+		PauseOnCondition: triggered
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
+	KillsSelf@SuicideKillCount:
+		Delay: 45
+		RequiresCondition: triggered
+		GrantsCondition: kamikadze
+	TakeCover:
+		RequiresCondition: triggered
 	Voiced:
 		VoiceSet: SaboteurVoice
+	RevealsShroud:
+		Range: 4c768
+	Crushable:
+		WarnProbability: 95
+	WithInfantryBody:
+		RequiresCondition: !triggered
+	WithIdleOverlay:
+		Sequence: active
+		RequiresCondition: triggered
+	WithIdleOverlay@prone:
+		StartSequence: standup
+		Sequence: prone-stand
+		RequiresCondition: triggered
 	-AttackFrontal:
 
 nsfremen:

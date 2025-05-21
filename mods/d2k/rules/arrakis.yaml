@@ -156,6 +156,7 @@ sietch:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:
 	-WithBuildingRepairDecoration:
+	-FireWarheadsOnDeath@sabotuerDemolition:
 
 pass01_destroyable_bottom:
 	Inherits: ^DestroyableTile

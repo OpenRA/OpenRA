@@ -1,6 +1,6 @@
 ^Cannon:
 	ReloadDelay: 50
-	Range: 4c0
+	Range: 4c624
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 562
@@ -8,7 +8,7 @@
 		InaccuracyType: PerCellIncrement
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Damage: 2700
+		Damage: 2800
 		Spread: 1c0
 		Falloff: 100, 0
 		Versus:
@@ -20,7 +20,7 @@
 			invulnerable: 0
 			cy: 20
 			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -34,18 +34,24 @@
 110mm_Gun:
 	Inherits: ^Cannon
 	ReloadDelay: 35
-	Range: 5c0
+	Range: 6c0
 	Report: TURRET1.WAV
 	Projectile: Bullet
-		Speed: 875
+		Speed: 800
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		Damage: 2900
+		Versus:
+			none: 65
+			wood: 80
+			heavy: 30
+			harvester: 50
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 2900
 
 80mm_A:
 	Inherits: ^Cannon
+	Range: 5c112
 
 80mm_H:
 	Inherits: ^Cannon
@@ -53,7 +59,7 @@
 
 80mm_O:
 	Inherits: ^Cannon
-	ReloadDelay: 45
+	ReloadDelay: 44
 
 DevBullet:
 	Inherits: ^Cannon
@@ -64,7 +70,7 @@ DevBullet:
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Damage: 6500
-		Spread: 1c0
+		Spread: 1c225
 		Versus:
 			none: 65
 			wall: 100
@@ -82,8 +88,8 @@ DevBullet:
 
 155mm:
 	Inherits: ^Cannon
-	ReloadDelay: 80
-	Range: 5c512
+	ReloadDelay: 105
+	Range: 6c900
 	Report: MORTAR1.WAV
 	Projectile: Bullet
 		Speed: 192
@@ -94,10 +100,10 @@ DevBullet:
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 4500
-		Spread: 2c0
+		Spread: 1c800
 		Versus:
-			none: 125
-			wall: 100
+			none: 100
+			wall: 70
 			building: 100
 			wood: 70
 			light: 30
@@ -105,11 +111,7 @@ DevBullet:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, ExplosionDeath
-	Warhead@proneeffect: TargetDamage
-		DamageTypes: TriggerProne
-		Damage: 1
-		Spread: 1c512
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 5625
 	Warhead@3Eff: CreateEffect

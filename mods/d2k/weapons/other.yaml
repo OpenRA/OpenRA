@@ -1,6 +1,6 @@
 Sound:
 	ReloadDelay: 90
-	Range: 5c0
+	Range: 6c0
 	Report: SONIC1.WAV
 	Projectile: SonicBlast
 		Speed: 0c128
@@ -8,8 +8,8 @@ Sound:
 		InaccuracyType: PerCellIncrement
 		DamageInterval: 1
 		Falloff: 0, 0, 100, 0
-		Range: 0, 0c512, 4c0, 6c0
-		MinDistance: 5c0
+		Range: 0, 0c756, 6c0, 6c100
+		MinDistance: 6c0
 	Warhead@1Dam: SpreadDamage
 		Falloff: 100, 0
 		Spread: 1c756
@@ -39,9 +39,9 @@ WormJaw:
 
 OrniBomb:
 	ReloadDelay: 25
-	Burst: 5
+	Burst: 7
 	BurstDelays: 6
-	Range: 3c0
+	Range: 3c512 #3c0 in original, reduce when bombers can do multiple passes
 	Report: ORNIBOMB.WAV
 	Projectile: GravityBomb
 		Image: BOMBS
@@ -49,20 +49,20 @@ OrniBomb:
 		Acceleration: 0, 0, 0
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
-		Damage: 7500 #400 in original, reduce when bombers can do multiple passes
+		Damage: 10000
 		Spread: 2c0
 		Falloff: 100, 0
 		Versus:
 			none: 90
-			wall: 50
+			wall: 120
 			building: 75
 			wood: 60
 			light: 60
-			heavy: 60
+			heavy: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -88,13 +88,16 @@ Demolish:
 		Explosions: building
 		ImpactSounds: EXPLLG2.WAV
 		ImpactActors: false
+	Warhead@flash: FlashEffect
+		FlashType: flash
+		Duration: 20
 
 DeathHand:
 	Warhead@Cluster: FireCluster
 		Weapon: DeathHandCluster
-		RandomClusterCount: 14
-		Dimensions: 3,3
-		Footprint: xxx xXx xxx
+		RandomClusterCount: 36
+		Dimensions: 6,6
+		Footprint: xXxXxX xxXXxx xXXXXx xxXXxx xXxxXx XxXxXx
 	Warhead@2Eff: CreateEffect
 		Explosions: nuke
 		ImpactSounds: EXPLLG2.WAV
@@ -103,8 +106,12 @@ DeathHand:
 		Duration: 20
 		Intensity: 5
 		Multiplier: 1,1
+	Warhead@flash: FlashEffect
+		FlashType: flash
+		Duration: 20
 
 DeathHandCluster:
+	Report: NAPALM1.WAV
 	Inherits: Debris2
 	Range: 7c0
 	Projectile: Bullet
@@ -115,19 +122,19 @@ DeathHandCluster:
 		Inaccuracy: 1c512
 		BounceCount: 0
 	Warhead@1Dam: SpreadDamage
-		Damage: 4500
+		Damage: 6000
 		Spread: 2c0
 		Versus:
 			none: 90
-			wall: 50
+			wall: 110
 			building: 100
 			wood: 60
-			light: 60
-			heavy: 60
+			light: 80
+			heavy: 100
 			invulnerable: 0
 			cy: 25
 			harvester: 60
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -154,7 +161,7 @@ CrateExplosion:
 			cy: 20
 			harvester: 25
 		AffectsParent: true
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
@@ -192,6 +199,15 @@ WallExplode:
 		ImpactSounds: EXPLHG1.WAV
 		ImpactActors: false
 
+SiegeExplode:
+	Inherits: 155mm
+	Warhead@1Dam: SpreadDamage
+		Damage: 4500
+		Spread: 2c0
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: EXPLSML2.WAV
+
 CliffExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: building
@@ -203,7 +219,7 @@ CliffExplode:
 
 grenade:
 	ReloadDelay: 50
-	Range: 4c0
+	Range: 4c225
 	Projectile: Bullet
 		Speed: 160
 		Blockable: false
@@ -214,7 +230,7 @@ grenade:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 2c0
+		Spread: 1c512
 		Falloff: 100, 0
 		Versus:
 			none: 135
@@ -224,12 +240,8 @@ grenade:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, ExplosionDeath
+		DamageTypes: Prone80Percent, ExplosionDeath, TriggerProne
 		DamageCalculationType: ClosestTargetablePosition
-	Warhead@proneeffect: TargetDamage
-		Damage: 1
-		Spread: 1c0
-		DamageTypes: TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure
@@ -243,7 +255,7 @@ grenade:
 GrenDeath:
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 2c0
+		Spread: 1c512
 		Falloff: 100, 0
 		Versus:
 			none: 125
@@ -253,7 +265,7 @@ GrenDeath:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -267,18 +279,19 @@ GrenDeath:
 SardDeath:
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
-		Spread: 512
+		Spread: 1c0
 		Falloff: 100, 0
 		Versus:
-			none: 15
+			none: 10
 			wall: 75
 			building: 60
 			wood: 65
 			light: 90
+			heavy: 140
 			invulnerable: 0
 			cy: 30
 			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater, RockCrater
@@ -311,7 +324,7 @@ SpiceExplosion:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, SpiceExplosion
+		DamageTypes: Prone80Percent, TriggerProne, SpiceExplosion
 		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 	Warhead@2Res: CreateResource
@@ -339,7 +352,7 @@ BloomExplosion:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, SpiceExplosion
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath, SpiceExplosion
 		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 	Warhead@2Res: CreateResource
@@ -349,7 +362,7 @@ BloomExplosion:
 PlasmaExplosion:
 	Warhead@1Dam: SpreadDamage
 		Damage: 20000
-		Spread: 3c0
+		Spread: 6c0
 		Falloff: 100, 0
 		Versus:
 			None: 100
@@ -357,11 +370,101 @@ PlasmaExplosion:
 			Light: 100
 			Heavy: 100
 			Concrete: 60
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
-	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater
+	Warhead@Resources: DestroyResource
+		Size: 5
+	Warhead@Smudge1: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		Delay: 1
+	Warhead@Smudge2: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		Delay: 2
+	Warhead@Smudge3: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		Delay: 3
+	Warhead@Smudge4: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		Delay: 4
+	Warhead@Smudge5: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		Size: 1
+		Delay: 5
 	Warhead@3Eff: CreateEffect
 		Explosions: devastator
+		ImpactSounds: EXPLLG5.WAV
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 20000
+	Warhead@5Shake: ShakeScreen
+		Duration: 15
+		Intensity: 10
+		Multiplier: 2,2
+
+PlasmaSaboteur:
+	Inherits: PlasmaExplosion
+	Warhead@flash: FlashEffect
+		FlashType: flash
+		Duration: 20
+
+ExplosionAircraft:
+	Warhead@sound: CreateEffect
+		Explosions: building
+		ImpactSounds: EXPLLG3.WAV
+		Inaccuracy: 1c0
+	Warhead@1: SpreadDamage
+		Spread: 2c0
+		Damage: 13000
+		Falloff: 100, 0
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
+		Versus:
+			none: 110
+			light: 80
+			heavy: 50
+			harvester: 70
+			wall: 80
+			invulnerable: 0
+			cy: 30
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 4500
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
+
+ExplosiveDebris:
+	Inherits: Debris2
+	Range: 7c0
+	Projectile: Bullet
+		Image: 120mm
+		TrailImage: small_trail2
+		Speed: 50, 70
+		LaunchAngle: 150, 220
+		Inaccuracy: 2c512
+		BounceCount: 1
+	Warhead@1Dam: SpreadDamage
+		Damage: 3000
+		Spread: 1c562
+		Versus:
+			none: 100
+			wood: 100
+			light: 100
+			heavy: 50
+			harvester: 100
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: EXPLSML4.WAV
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 4500
+
+DeviatorGas:
+	Warhead@5OwnerChange: ChangeOwner
+		Range: 1c850
+		Duration: 160
+		ValidRelationships: Enemy, Neutral
+		InvalidTargets: Infantry, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: deviator
+		ExplosionPalette: player
+		UsePlayerPalette: true

@@ -30,6 +30,7 @@ options-starting-units =
     .mcv-only = MCV Only
     .light-support = Light Support
     .heavy-support = Heavy Support
+    .carryall = MCV + Carryall
 
 resource-spice = Spice
 

@@ -222,8 +222,14 @@
 		PauseOnCondition: notmobile
 	Selectable:
 		Bounds: 1024, 1024
+	ExternalCondition@deviatorInfluence:
+		Condition: unit-captured
 	Targetable:
 		TargetTypes: Ground, Vehicle, C4
+		RequiresCondition: !unit-captured
+	Targetable@CAPTURED:
+		TargetTypes: Ground, CapturedUnit
+		RequiresCondition: unit-captured
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
@@ -241,6 +247,16 @@
 	AmbientSound@onBeingDemolished:
 		SoundFiles: O_SCONF2.AUD
 		RequiresCondition: being-demolished
+	FireWarheadsOnDeath@sabotuerDemolition:
+		RequiresCondition: being-demolished
+		Type: CenterPosition
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
+	FireProjectilesOnDeath@OnsabotuerDemolition:
+		Weapons: Debris2, Debris3, Debris4, ExplosiveDebris
+		Pieces: 3, 7
+		Range: 3c512, 6c0
+		RequiresCondition: being-demolished
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	Voiced:
@@ -254,7 +270,6 @@
 		Margin: 7, 9
 		Sequence: pickup-indicator
 		RequiresCondition: carryall-reserved
-	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
 		Radius: 2c512
@@ -285,12 +300,16 @@
 	Inherits: ^Vehicle
 	Mobile:
 		Locomotor: tank
+	GrantConditionOnDamageState@HEAVY:
+		ValidDamageStates: Critical
+	SpawnActorOnDeath:
+		RequiresCondition: !being-demolished
 
 ^Husk:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
-		HP: 10000
+		HP: 8000
 	Armor:
 		Type: light
 	HiddenUnderFog:
@@ -340,16 +359,16 @@
 		Duration: 1500
 		RequiresCondition: decoration2 || decoration3
 	ChangesHealth:
-		Step: -30
+		Step: -27
 		StartIfBelow: 101
 		Delay: 4
 	GrantRandomCondition:
 		Conditions: decoration1, decoration2, decoration3
 	TransformOnCapture:
-		ForceHealthPercentage: 20
+		ForceHealthPercentage: 5
 	InfiltrateForTransform:
 		Types: Husk
-		ForceHealthPercentage: 20
+		ForceHealthPercentage: 5
 
 ^AircraftHusk:
 	Inherits: ^Husk
@@ -359,7 +378,7 @@
 	FallsToEarth:
 		MaximumSpinSpeed: 0
 		Moves: True
-		Explosion: UnitExplodeLarge
+		Explosion: ExplosionAircraft
 	-MapEditorData:
 
 ^Infantry:
@@ -396,7 +415,7 @@
 		IdleSequences: idle1, idle2
 	TakeCover:
 		DamageModifiers:
-			Prone50Percent: 50
+			Prone80Percent: 80
 		DamageTriggers: TriggerProne
 		ProneOffset: 300,0,0
 	WithDeathAnimation:
@@ -427,7 +446,6 @@
 			Rough: 80
 	Voiced:
 		VoiceSet: InfantryVoice
-	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
 	HitShape:
@@ -527,6 +545,11 @@
 	AmbientSound@onBeingDemolished:
 		SoundFiles: O_SCONF2.AUD
 		RequiresCondition: being-demolished
+	FireWarheadsOnDeath@sabotuerDemolition:
+		RequiresCondition: being-demolished
+		Type: CenterPosition
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
 	Sellable:
 		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: BUILD1.WAV
@@ -564,7 +587,7 @@
 		PauseOnCondition: build-incomplete
 	RenderRangeCircle:
 	DetectCloaked:
-		Range: 1c768
+		Range: 4c768
 	-GivesBuildableArea:
 	WithMakeAnimation:
 		BodyNames: make
@@ -582,7 +605,6 @@
 		Range: 2c0, 4c0
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
 	MapEditorData:
@@ -623,6 +645,7 @@
 		Modifier: 0
 	RepairableBuilding:
 		RepairCondition: repairing
+		RepairStep: 500
 	WithBuildingRepairDecoration:
 		Offsets:
 			powerdown: -10, 0

@@ -2,7 +2,7 @@ mcv:
 	Inherits: ^Tank
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
-		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
+		Prerequisites: repair_pad, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
 		BuildDuration: 750
@@ -50,7 +50,6 @@ mcv:
 		Step: 50
 		Delay: 3
 		StartIfBelow: 50
-	-RevealOnFire:
 
 harvester:
 	Inherits: ^Tank
@@ -109,7 +108,6 @@ harvester:
 		Step: 50
 		Delay: 3
 		StartIfBelow: 50
-	-RevealOnFire:
 	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 1, 4
@@ -158,7 +156,7 @@ trike:
 		TurnSpeed: 40
 		Speed: 128
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c512
 	WithMuzzleOverlay:
 	Armament:
 		Weapon: HMG
@@ -223,17 +221,17 @@ siege_tank:
 		Queue: Armor
 		Prerequisites: upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 50
-		BuildDuration: 375
+		BuildDuration: 475
 		BuildDurationModifier: 100
 		Description: actor-siege-tank.description
 	Valued:
-		Cost: 700
+		Cost: 800
 	Tooltip:
 		Name: actor-siege-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 12000
+		HP: 11500
 	Armor:
 		Type: light
 	Encyclopedia:
@@ -241,7 +239,7 @@ siege_tank:
 		Order: 170
 		Category: Units
 	Mobile:
-		Speed: 43
+		Speed: 40
 		TurnSpeed: 12
 	RevealsShroud:
 		Range: 6c768
@@ -256,11 +254,13 @@ siege_tank:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
+		ForceFireIgnoresActors: True
+		TargetFrozenActors: True
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	FireWarheadsOnDeath:
-		Weapon: UnitExplodeMed
-		EmptyWeapon: UnitExplodeMed
+		Weapon: SiegeExplode
+		EmptyWeapon: SiegeExplode
 	AutoTarget:
 		InitialStanceAI: Defend
 	Selectable:
@@ -271,6 +271,10 @@ siege_tank:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
+	FireProjectilesOnDeath:
+		Weapons: Debris3, Debris
+		Pieces: 0,2
+		Range: 2c0, 3c0
 
 missile_tank:
 	Inherits: ^Tank
@@ -290,7 +294,7 @@ missile_tank:
 	Valued:
 		Cost: 900
 	Mobile:
-		Speed: 64
+		Speed: 60
 		TurnSpeed: 20
 	Health:
 		HP: 13000
@@ -307,6 +311,8 @@ missile_tank:
 		LocalOffset: -128,128,171, -128,-128,171
 	AttackFrontal:
 		FacingTolerance: 0
+		ForceFireIgnoresActors: True
+		TargetFrozenActors: True
 	AutoTarget:
 		InitialStanceAI: Defend
 	FireWarheadsOnDeath:
@@ -337,11 +343,11 @@ sonic_tank:
 		Queue: Armor
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
-		BuildDuration: 562
+		BuildDuration: 600
 		BuildDurationModifier: 100
 		Description: actor-sonic-tank.description
 	Valued:
-		Cost: 1000
+		Cost: 1100
 	Tooltip:
 		Name: actor-sonic-tank.name
 	UpdatesPlayerStatistics:
@@ -386,7 +392,7 @@ devastator:
 		BuildDurationModifier: 100
 		Description: actor-devastator.description
 	Valued:
-		Cost: 1050
+		Cost: 1200
 	Tooltip:
 		Name: actor-devastator.name
 	UpdatesPlayerStatistics:
@@ -400,11 +406,11 @@ devastator:
 		Speed: 31
 		Locomotor: devastator
 		RequiresCondition: !overload
-		PauseOnCondition: notmobile
+		PauseOnCondition: notmobile || being-demolished
 	AutoCarryable:
 		RequiresCondition: !overload
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c512
 	Armament:
 		Weapon: DevBullet
 		LocalOffset: 640,0,32
@@ -425,6 +431,7 @@ devastator:
 		Actor: devastator.husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+		RequiresCondition: !meltdown
 	FireWarheadsOnDeath@OVERLOAD:
 		Weapon: PlasmaExplosion
 		EmptyWeapon: PlasmaExplosion
@@ -432,6 +439,7 @@ devastator:
 	GrantConditionOnDeploy@REACTOR:
 		DeployedCondition: overload
 		PauseOnCondition: overload
+		RequiresCondition: !unit-captured
 	WithIdleOverlay@OVERLOAD:
 		Sequence: active
 		RequiresCondition: overload
@@ -439,7 +447,7 @@ devastator:
 		Sequence: active-2
 		RequiresCondition: overload
 	KillsSelf@MELTDOWN:
-		Delay: 240
+		Delay: 150
 		RequiresCondition: overload
 		GrantsCondition: meltdown
 	AmbientSound@onMeltDown:
@@ -449,11 +457,20 @@ devastator:
 	AttractsWorms:
 		Intensity: 700
 	ChangesHealth:
-		Step: 50
+		Step: 40
 		Delay: 3
 		StartIfBelow: 50
 	Selectable:
 		DecorationBounds: 1408, 1216, 0, 0
+	FireProjectilesOnDeath@OnMeldown:
+		Weapons: Debris2, Debris3, Debris4
+		Pieces: 7, 15
+		Range: 3c512, 6c0
+		RequiresCondition: meltdown
+	FireProjectilesOnDeath@standart:
+		Weapons: Debris, ExplosiveDebris
+		Pieces: 1, 2
+		RequiresCondition: !meltdown
 
 raider:
 	Inherits: ^Vehicle
@@ -463,11 +480,11 @@ raider:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.raider
-		BuildDuration: 225
+		BuildDuration: 255
 		BuildDurationModifier: 100
 		Description: actor-raider.description
 	Valued:
-		Cost: 350
+		Cost: 330
 	Tooltip:
 		Name: actor-raider.name
 	Encyclopedia:
@@ -477,16 +494,16 @@ raider:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 10000
+		HP: 9200
 	Armor:
 		Type: wood
 	Mobile:
 		TurnSpeed: 40
-		Speed: 149
+		Speed: 140
 	RevealsShroud:
 		Range: 4c768
 	WithMuzzleOverlay:
-	Armament@damage:
+	Armament:
 		Weapon: HMGo
 		MuzzleSequence: muzzle
 		LocalOffset: 100,0,0
@@ -503,7 +520,7 @@ stealth_raider:
 	Buildable:
 		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
 		BuildPaletteOrder: 30
-		BuildDuration: 225
+		BuildDuration: 275
 		BuildDurationModifier: 100
 		Description: actor-stealth-raider.description
 	Valued:
@@ -520,6 +537,8 @@ stealth_raider:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
+	Health:
+		HP: 10000
 	Encyclopedia:
 		Description: actor-stealth-raider.encyclopedia
 		Order: 120
@@ -550,7 +569,7 @@ deviator:
 		TurnSpeed: 12
 		Speed: 53
 	Health:
-		HP: 11000
+		HP: 12500
 	Armor:
 		Type: wood
 	Encyclopedia:
@@ -558,7 +577,7 @@ deviator:
 		Order: 210
 		Category: Units
 	RevealsShroud:
-		Range: 4c768
+		Range: 6c0
 	Armament:
 		Weapon: DeviatorMissile
 		LocalOffset: -299,0,85
@@ -571,7 +590,7 @@ deviator:
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: deviator.husk
-		OwnerType: InternalName
+		OwnerType: Victim
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
@@ -591,7 +610,7 @@ deviator:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 21000
+		HP: 22000
 	Armor:
 		Type: heavy
 	Mobile:
@@ -656,7 +675,7 @@ combat_tank_h:
 	Mobile:
 		Speed: 64
 	Health:
-		HP: 27000
+		HP: 28500
 	SpawnActorOnDeath:
 		Actor: combat_tank_h.husk
 
@@ -677,6 +696,6 @@ combat_tank_o:
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 18000
+		HP: 19000
 	SpawnActorOnDeath:
 		Actor: combat_tank_o.husk

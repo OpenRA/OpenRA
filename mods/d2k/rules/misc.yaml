@@ -242,7 +242,7 @@ upgrade.barracks:
 		Prerequisites: barracks
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 208
+		BuildDuration: 260
 		BuildDurationModifier: 100
 		Description: actor-upgrade-barracks.description
 	Valued:
@@ -266,7 +266,7 @@ upgrade.light:
 		Prerequisites: light_factory
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 268
+		BuildDuration: 330
 		BuildDurationModifier: 100
 		Description: actor-upgrade-light.description
 	Valued:
@@ -290,7 +290,7 @@ upgrade.heavy:
 		Prerequisites: heavy_factory
 		Queue: Upgrade
 		BuildLimit: 1
-		BuildDuration: 468
+		BuildDuration: 600
 		BuildDurationModifier: 100
 		Description: actor-upgrade-heavy.description
 	Valued:

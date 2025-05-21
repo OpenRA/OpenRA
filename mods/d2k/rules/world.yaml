@@ -179,12 +179,18 @@ World:
 		ClassName: options-starting-units.mcv-only
 		BaseActor: mcv
 		Factions: atreides, ordos, harkonnen
+	StartingUnits@Carryall:
+		Class: carryall
+		ClassName: options-starting-units.carryall
+		BaseActor: mcv
+		SupportActors: carryall
+		Factions: atreides, ordos, harkonnen
 	StartingUnits@lightatreides:
 		Class: light
 		ClassName: options-starting-units.light-support
 		Factions: atreides
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@lightharkonnen:
@@ -192,7 +198,7 @@ World:
 		ClassName: options-starting-units.light-support
 		Factions: harkonnen
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@lightordos:
@@ -200,7 +206,7 @@ World:
 		ClassName: options-starting-units.light-support
 		Factions: ordos
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@heavyatreides:
@@ -208,7 +214,7 @@ World:
 		ClassName: options-starting-units.heavy-support
 		Factions: atreides
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@heavyharkonnen:
@@ -216,7 +222,7 @@ World:
 		ClassName: options-starting-units.heavy-support
 		Factions: harkonnen
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@heavyordos:
@@ -224,7 +230,7 @@ World:
 		ClassName: options-starting-units.heavy-support
 		Factions: ordos
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnStartingUnits:
@@ -239,6 +245,9 @@ World:
 	ScriptTriggers:
 	CellTriggerOverlay:
 	StartGameNotification:
+	FlashPostProcessEffect:
+		Type: flash
+		Color: E2DD8F4D
 	TimeLimitManager:
 		TimeLimitDisplayOrder: 2
 	ColorPickerManager:

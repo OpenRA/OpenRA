@@ -1,19 +1,19 @@
 carryall.reinforce:
 	Inherits: ^Plane
 	Valued:
-		Cost: 1100
+		Cost: 1000
 	UpdatesPlayerStatistics:
 		AddToAssetsValue: false
 	Tooltip:
 		Name: actor-carryall-reinforce.name
 	Health:
-		HP: 48000
+		HP: 20000
 	Armor:
 		Type: light
 	Aircraft:
 		CruiseAltitude: 2160
 		CruisingCondition: cruising
-		Speed: 144
+		Speed: 170
 		TurnSpeed: 16
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
@@ -21,7 +21,8 @@ carryall.reinforce:
 		CanForceLand: false
 		CanSlide: True
 		VTOL: true
-		IdleTurnSpeed: 4
+		IdleTurnSpeed: 5
+		IdleSpeed: 115
 	Targetable@GROUND:
 		TargetTypes: Ground, Vehicle
 		RequiresCondition: !airborne
@@ -108,7 +109,7 @@ ornithopter:
 	Armament:
 		Weapon: OrniBomb
 	Health:
-		HP: 9000
+		HP: 8000
 	Armor:
 		Type: light
 	Encyclopedia:
@@ -129,7 +130,6 @@ ornithopter:
 	SpawnActorOnDeath:
 		Actor: ornithopter.husk
 	RejectsOrders:
-	RevealOnFire:
 	-MapEditorData:
 
 ornithopter.husk:
@@ -141,6 +141,16 @@ ornithopter.husk:
 		Speed: 224
 	RenderSprites:
 		Image: ornithopter
+	FallsToEarth:
+		MaximumSpinSpeed: 1
+	FireProjectilesOnDeath@derbisshort:
+		Weapons: Debris, Debris2
+		Pieces: 1, 3
+		Range: 1c0, 2c512
+	FireProjectilesOnDeath@derbislong:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 2, 4
+		Range: 3c0, 6c0
 
 carryall.husk:
 	Inherits: ^AircraftHusk
@@ -153,6 +163,14 @@ carryall.husk:
 		VTOL: true
 	RenderSprites:
 		Image: carryall
+	FireProjectilesOnDeath@derbisshort:
+		Weapons: Debris, Debris2
+		Pieces: 1, 3
+		Range: 1c0, 2c512
+	FireProjectilesOnDeath@derbislong:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 2, 4
+		Range: 3c0, 6c0
 
 carryall.huskVTOL:
 	Inherits: ^AircraftHusk
@@ -167,3 +185,11 @@ carryall.huskVTOL:
 		VTOL: true
 	RenderSprites:
 		Image: carryall
+	FireProjectilesOnDeath@derbisshort:
+		Weapons: Debris, Debris2
+		Pieces: 1, 3
+		Range: 1c0, 2c512
+	FireProjectilesOnDeath@derbislong:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 2, 4
+		Range: 3c0, 6c0

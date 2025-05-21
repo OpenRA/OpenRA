@@ -97,7 +97,7 @@ construction_yard:
 	ProductionBar:
 		ProductionType: Building
 	Power:
-		Amount: 20
+		Amount: 50
 	RenderSprites:
 		Image: conyard.ordos
 		FactionImages:
@@ -139,7 +139,7 @@ wind_trap:
 		Category: Buildings
 		Order: 20
 	Health:
-		HP: 30000
+		HP: 28000
 	HitShape:
 		Type: Rectangle
 			TopLeft: -1024, -1024
@@ -174,13 +174,13 @@ barracks:
 		Prerequisites: wind_trap
 		Queue: Building
 		BuildPaletteOrder: 220
-		BuildDuration: 268
+		BuildDuration: 290
 		BuildDurationModifier: 100
 		Description: actor-barracks.description
 	Selectable:
 		Bounds: 2048, 2048
 	Valued:
-		Cost: 225
+		Cost: 300
 	Tooltip:
 		Name: actor-barracks.name
 	D2kBuilding:
@@ -227,7 +227,7 @@ barracks:
 		Prerequisite: barracks.harkonnen
 		Factions: harkonnen
 	Power:
-		Amount: -30
+		Amount: -50
 	RenderSprites:
 		Image: barracks.ordos
 		FactionImages:
@@ -276,7 +276,7 @@ refinery:
 			TopLeft: -1536, 0
 			BottomRight: 512, 1024
 	Armor:
-		Type: heavy
+		Type: building
 	RevealsShroud:
 		Range: 3c768
 	Refinery:
@@ -382,13 +382,13 @@ light_factory:
 		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 230
-		BuildDuration: 321
+		BuildDuration: 390
 		BuildDurationModifier: 100
 		Description: actor-light-factory.description
 	Selectable:
 		Bounds: 3072, 2048
 	Valued:
-		Cost: 500
+		Cost: 600
 	Tooltip:
 		Name: actor-light-factory.name
 	D2kBuilding:
@@ -455,7 +455,7 @@ light_factory:
 		Factions: ordos, smuggler, mercenary
 	ProvidesPrerequisite@buildingname:
 	Power:
-		Amount: -125
+		Amount: -100
 	GrantConditionOnPrerequisite@UPGRADEABLE:
 		Prerequisites: upgrade.light
 
@@ -473,7 +473,7 @@ heavy_factory:
 	Selectable:
 		Bounds: 3072, 3072
 	Valued:
-		Cost: 1000
+		Cost: 1200
 	Tooltip:
 		Name: actor-heavy-factory.name
 	D2kBuilding:
@@ -588,7 +588,14 @@ outpost:
 	Armor:
 		Type: building
 	RevealsShroud:
-		Range: 5c768
+		Range: 11c0
+		RequiresCondition: !disabled
+	RevealsShroud@lowpower:
+		Range: 4c0
+		RequiresCondition: disabled
+	DetectCloaked:
+		Range: 6c0
+		RequiresCondition: !disabled
 	ProvidesRadar:
 		RequiresCondition: !disabled
 	RenderSprites:
@@ -606,7 +613,7 @@ outpost:
 	GrantConditionOnDamageState@STOPDISH:
 		Condition: severe-damaged
 	Power:
-		Amount: -125
+		Amount: -75
 	ProvidesPrerequisite@buildingname:
 
 starport:
@@ -713,7 +720,7 @@ wall:
 		BuildDurationModifier: 100
 		Description: actor-wall.description
 	Valued:
-		Cost: 20
+		Cost: 100
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -777,7 +784,7 @@ medium_gun_turret:
 		Queue: Building
 		Prerequisites: barracks
 		BuildPaletteOrder: 510
-		BuildDuration: 268
+		BuildDuration: 310
 		BuildDurationModifier: 100
 		Description: actor-medium-gun-turret.description
 	Valued:
@@ -790,15 +797,15 @@ medium_gun_turret:
 		Bounds: 1024, 1024
 		DecorationBounds: 1024, 1280, 0, -256
 	Health:
-		HP: 27000
+		HP: 24000
 	Encyclopedia:
 		Description: actor-medium-gun-turret.encyclopedia
 		Category: Buildings
 		Order: 100
 	Armor:
-		Type: heavy
+		Type: wall
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c0
 	BodyOrientation:
 		QuantizedFacings: 32
 	WithMuzzleOverlay:
@@ -825,7 +832,7 @@ large_gun_turret:
 		Queue: Building
 		Prerequisites: outpost, upgrade.conyard, ~techlevel.medium
 		BuildPaletteOrder: 610
-		BuildDuration: 312
+		BuildDuration: 380
 		BuildDurationModifier: 100
 		Description: actor-large-gun-turret.description
 	Valued:
@@ -842,11 +849,11 @@ large_gun_turret:
 		Bounds: 1024, 1024
 		DecorationBounds: 1024, 1280, 0, -256
 	Health:
-		HP: 30000
+		HP: 27000
 	Armor:
-		Type: heavy
+		Type: wall
 	RevealsShroud:
-		Range: 5c768
+		Range: 6c0
 	BodyOrientation:
 		QuantizedFacings: 32
 	Armament:
@@ -858,8 +865,6 @@ large_gun_turret:
 		RealignDelay: -1
 	Power:
 		Amount: -60
-	RevealOnDeath:
-		Radius: 5c768
 	Replacement:
 		ReplaceableTypes: Tower
 
@@ -867,7 +872,7 @@ repair_pad:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: heavy_factory, upgrade.heavy, ~techlevel.medium
+		Prerequisites: heavy_factory, ~techlevel.medium
 		BuildPaletteOrder: 430
 		BuildDuration: 375
 		BuildDurationModifier: 100
@@ -1165,12 +1170,12 @@ palace:
 		MissileImage: deathhand
 		MissileDelay: 18
 		SpawnOffset: 32,816,0
-		DetonationAltitude: 3c0
-		RemoveMissileOnDetonation: False
+		DetonationAltitude: 6c0
+		RemoveMissileOnDetonation: True
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraRange: 10c0
-		CameraRemoveDelay: 60
+		CameraRemoveDelay: 90
 		ArrowSequence: arrow
 		CircleSequence: circles
 		FlightVelocity: 384
@@ -1185,7 +1190,7 @@ palace:
 		PauseOnCondition: disabled
 		RequiresCondition: atreides
 		Prerequisites: ~techlevel.superweapons, ~palace.fremen
-		Actors: fremen, fremen
+		Actors: fremen, fremen, fremen, fremen, fremen
 		Type: Fremen
 		ChargeInterval: 2250
 		EndChargeTextNotification: notification-fremen-ready

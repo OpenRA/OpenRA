@@ -1,25 +1,25 @@
 ^MG:
 	ReloadDelay: 30
-	Range: 2c512
+	Range: 3c112
 	Report: MGUN2.WAV
 	Projectile: InstantHit
 		Inaccuracy: 135
 		InaccuracyType: PerCellIncrement
 	Warhead@1Dam: SpreadDamage
 		Damage: 1250
-		Spread: 480
+		Spread: 512
 		Falloff: 100, 0
 		Versus:
-			none: 110
+			none: 115
 			wall: 10
-			building: 25
-			wood: 75
-			light: 40
-			heavy: 18
+			building: 30
+			wood: 65
+			light: 35
+			heavy: 13
 			invulnerable: 0
 			cy: 20
-			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+			harvester: 23
+		DamageTypes: Prone80Percent, TriggerProne, BulletDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
@@ -41,6 +41,7 @@ M_LMG:
 	Inherits: ^MG
 	ReloadDelay: 40
 	ValidTargets: Infantry
+	Range: 4c0
 
 M_LMG_H:
 	Inherits: M_LMG
@@ -49,7 +50,7 @@ M_LMG_H:
 M_HMG:
 	Inherits: ^MG
 	ReloadDelay: 40
-	Range: 3c512
+	Range: 4c0
 	Report: 20MMGUN1.WAV
 	InvalidTargets: Infantry
 	Warhead@1Dam: SpreadDamage
@@ -76,14 +77,14 @@ Fremen_L:
 	Inherits: M_HMG
 	Report: BAZOOK2.WAV
 	Warhead@1Dam: SpreadDamage
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion
 
 HMG:
 	Inherits: ^MG
 	ReloadDelay: 20
-	Range: 3c0
+	Range: 3c875
 	Report: 20MMGUN1.WAV
 	Warhead@1Dam: SpreadDamage
 		Damage: 1800

@@ -472,6 +472,12 @@ saboteur:
 		Facings: -8
 		Transpose: true
 		Tick: 120
+	active:
+		Filename: DATA.R16
+		Start: 3839
+		Length: 14
+		Tick: 80
+		BlendMode: Additive
 	die1:
 		Filename: DATA.R16
 		Frames: 2325, 2332, 2339, 2346, 2353, 2360, 2367, 2374, 2381, 2383, 2385, 2387
