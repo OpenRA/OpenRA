@@ -106,10 +106,12 @@ namespace OpenRA.Mods.Common.Widgets
 				var isInside = points.Select(p => p.CPos).Contains(cpos);
 				var isRally = plan.Rallies.Contains(cpos);
 				var rallyIndex =
-					points
-						.Where(p => p.CPos == cpos)
-						.Select(p => p.RallyIndex)
-						.FirstOrDefault(0);
+					isRally
+						? plan.Rallies.TakeWhile(r => r != cpos).Count()
+						: points
+							.Where(p => p.CPos == cpos)
+							.Select(p => p.RallyIndex)
+							.FirstOrDefault(0);
 				var isStartDirector =
 					plan.AutoStart != Direction.None
 						&& cpos == plan.FirstPoint - Direction.ToCVec(plan.AutoStart);
