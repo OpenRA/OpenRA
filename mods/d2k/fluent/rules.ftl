@@ -176,6 +176,13 @@ actor-light-inf =
 
     Light Infantry are resistant to missiles and large-caliber guns, but are very vulnerable to high-explosives, fire, and small arms.
 
+    Summary:
+
+        - Explosion Radius: Small
+        - Vision: Very small
+        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator
+        - Weak vs Combat tank, Siege tank, Grenadier, Trike, Sonic Tank
+
 actor-engineer =
     .name = Engineer
     .description =
@@ -189,6 +196,8 @@ actor-engineer =
 
     Engineers are resistant to anti-tank weaponry but are very vulnerable to high-explosives, fire, and small arms.
 
+    Engineer can reactivate destoryed husk to barely functional state. This allow send husk to nearest repair pad for full repair.
+
 actor-trooper =
     .name = Trooper
     .description =
@@ -199,6 +208,13 @@ actor-trooper =
     Armed with wire-guided, armor-piercing missile warheads, Troopers are very effective against vehicles and buildings but struggle against infantry.
 
     Troopers are resistant to anti-tank weaponry but very vulnerable to high-explosives, fire and bullet weapons.
+
+    Summary:
+
+        - Explosion Radius: Medium
+        - Vision: Small
+        - Strong vs  Combat tank, Missile tank, Quad, Trike, Deviator, Buildings, Defenses
+        - Weak vs Siege tank, Light Infantry, Grenadier, Sonic Tank
 
 actor-thumper =
     .name = Thumper Infantry
@@ -220,6 +236,13 @@ actor-fremen =
 
     Fremen units are very vulnerable to high-explosive and bullet weapons.
 
+    Summary:
+
+        - Explosion Radius: Medium
+        - Vision: Small
+        - Strong vs  Quad, Trike, Missile tank, Combat tank, Devastator Buildings, Defenses
+        - Weak vs Siege tank, Light Infantry, Grenadier, Sonic Tank
+
 actor-grenadier =
     .name = Grenadier
     .description =
@@ -229,6 +252,13 @@ actor-grenadier =
     .encyclopedia =
     An infantry artillery unit strong against buildings. They have a chance of exploding when killed, so should not be grouped together.
 
+    Summary:
+
+        - Explosion Radius: Large
+        - Vision: Small
+        - Strong vs  Light Infantry, Trike, Missile tank, Combat tank, Buildings, Defenses
+        - Weak vs Siege tank, Combat tank, Sonic Tank, Devastator
+
 actor-sardaukar =
     .name = Sardaukar
     .description =
@@ -236,7 +266,14 @@ actor-sardaukar =
       Strong vs Infantry and Vehicles
       Weak vs Artillery
     .encyclopedia =
-    Powerful heavy troopers equipped with a machine gun that is effective against infantry and a rocket launcher for targeting vehicles.
+    Powerful heavy troopers equipped with a machine gun that is effective against infantry and a rocket launcher for targeting vehicles. When crushed Unit Explode and damage vehicle above him.
+
+    Summary:
+
+        - Explosion Radius: Large
+        - Vision: Small
+        - Strong vs  Trike, Quad, Missile tank, Combat tank, Buildings, Defenses
+        - Weak vs Siege tank, Sonic Tank, Grenadier, Tank Crush
 
 actor-mpsardaukar-description =
     Elite Harkonnen assault infantry.
@@ -252,7 +289,7 @@ actor-saboteur =
       Weak vs Everything
       Special Ability: Destroys buildings
     .encyclopedia =
-    A specialized military unit of House Ordos, capable of demolishing enemy buildings upon entry, but dying in the resulting explosion. It can activate stealth mode to become invisible.
+    A specialized military unit of House Ordos, capable of demolishing enemy buildings and vehicles upon entry, but dying in the resulting explosion. It can activate self destruction and damage near by enemy units.
 
     The Saboteur is resistant to anti-tank weaponry, but very vulnerable to high-explosives, fire, and bullet weapons.
 
@@ -413,6 +450,7 @@ actor-outpost =
     .description =
     Provides a radar map of the battlefield.
     Requires power to operate.
+    Detects stealth units.
     .encyclopedia =
     Once enough power is available, the Radar Outpost activates, providing a radar map.
 
@@ -438,21 +476,22 @@ actor-wall =
 actor-medium-gun-turret =
     .name = Gun Turret
     .description =
-    Defensive structure.
-      Strong vs Tanks
-      Weak vs Infantry and Aircraft
+    Defensive structure. Detects stealth units.
+      Strong vs Light vehicles
+      Medium vs Infantry
+      Weak vs Tanks and Aircraft
     .encyclopedia =
     A medium-range weapon that is effective against all types of vehicle, particularly heavily armored ones. It automatically fires upon any enemy unit within its range and requires power to operate.
 
-    The Gun Turret is resistant to small arms and explosive weapons, but vulnerable to missiles and high-caliber guns.
+    The Gun Turret is resistant to small arms and explosive weapons, but vulnerable to missiles and heavy explosives.
 
 actor-large-gun-turret =
     .name = Rocket Turret
     .description =
-    Defensive structure.
+    Defensive structure. Detects stealth units.
     Requires power to operate.
-      Strong vs Infantry and Aircraft
-      Weak vs Tanks
+      Strong vs Tanks, Aircraft, Moving targets
+      Weak vs Infantry
     .encyclopedia =
     An enhanced defensive structure with a longer range and faster rate of fire than the Gun Turret. Its advanced targeting system requires power to operate.
 
@@ -539,6 +578,15 @@ actor-trike =
 
     Trikes are vulnerable to most weapons, high-caliber guns are slightly less effective against them.
 
+    Summary:
+
+        - Explosion Radius: Small
+        - Vision: Medium
+        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator
+        - Weak vs Combat tank, Siege tank, Grenadier, Sardaukars
+
+    Tip: Trike have 0.5 range advantage against light infantry. Move them back as soon as light infantry come too close.
+
 actor-quad =
     .name = Missile Quad
     .description =
@@ -549,6 +597,15 @@ actor-quad =
     Superior to the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. It is effective against most vehicles.
 
     Quads are resistant to bullets and, to a lesser degree, explosives. They are vulnerable to missiles and high-caliber guns.
+
+    Summary:
+
+        - Explosion Radius: Medium
+        - Vision: Medium
+        - Strong vs  Siege tanks, Sonic Tanks, Buildings.
+        - Weak vs Combat tanks, Troopers, Missile tanks
+
+    Tip: Quad Has big inaccuracy against moving targets. Get as close to the target as possible to get maximum damage.
 
 actor-siege-tank =
     .name = Siege Tank
@@ -561,6 +618,17 @@ actor-siege-tank =
 
     Siege Tanks are resistant to bullets, and to some degree, explosives. They are vulnerable to missiles and high-caliber guns.
 
+    Big loads of high explosive shells are reason of big explosion after vehicle is destroyed
+
+    Summary:
+
+        - Explosion Radius: Large
+        - Vision: Large
+        - Strong vs any Infantry, Trike, Deviator
+        - Weak vs Combat tank, Quad, Missile tank
+
+    Tip: Siege tank can shoot beyound they vision range.
+
 actor-missile-tank =
     .name = Missile Tank
     .description =
@@ -571,6 +639,16 @@ actor-missile-tank =
     Shoots down aircraft and is effective against most targets, except infantry.
 
     Missile Tanks are vulnerable to most weapons, high-caliber guns are slightly less effective.
+
+    Summary:
+
+        - Explosion Radius: Medium
+        - Vision: Large
+        - Strong vs Combat tank, Devastator, Quad
+        - Weak vs any Infantry type, Trike, Stealth Raider
+
+    Tip: Missile tank can shoot beyond they vision range.
+
 
 actor-sonic-tank =
     .name = Sonic Tank
@@ -585,6 +663,15 @@ actor-sonic-tank =
 
     Resistant to bullets and small-explosives, but vulnerable to missiles and high-caliber guns.
 
+    Summary:
+
+        - Explosion Radius: Very large
+        - Vision: Medium
+        - Strong: any Infantry, Siege tank, Missile tank, Deviator
+        - Weak vs Combat tank, Quad, Devastator
+
+    Tip: Sonic wave strength increase with range. Try shoot at maximum range to get maximum damage.
+
 actor-devastator =
     .name = Devastator
     .description =
@@ -596,6 +683,15 @@ actor-devastator =
 
     Resistant to bullets and high explosives, but vulnerable to missiles and high-caliber guns.
 
+    Summary:
+
+        - Explosion Radius: Large
+        - Vision: Medium
+        - Strong: Combat tank, Siege tank, Light infantry, Sonic Tank
+        - Weak vs Troopers, Missile tank, Deviator
+
+    Tip: Devastator is vulnerable against lots of Troopers. Use selfdestruct instead.
+
 actor-raider =
     .name = Raider Trike
     .description =
@@ -605,7 +701,14 @@ actor-raider =
     .encyclopedia =
     Raider Trikes, upgraded by House Ordos, have enhanced firepower, speed, and armor. Equipped with dual 20mm cannons, they are strong against infantry and lightly armored vehicles.
 
-    Raiders are vulnerable to most weapons, though high-caliber guns are slightly less effective against them.
+    Raiders are vulnerable to most weapons, though high-caliber guns (combat tanks) are slightly less effective against them.
+
+    Summary:
+
+        - Explosion Radius: small
+        - Vision: small
+        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator, Trike
+        - Weak vs Combat tank, Siege tank, Grenadier, Sardaukars, Quad
 
 actor-stealth-raider =
     .name = Stealth Raider Trike
@@ -615,6 +718,15 @@ actor-stealth-raider =
       Weak vs Tanks
     .encyclopedia =
     A cloaked version of the Raider, good for stealth attacks. It uncloaks when it fires its machine guns.
+
+    Summary:
+
+        - Explosion Radius: Small
+        - Vision: Small
+        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator, Trike
+        - Weak vs Combat tank, Siege tank, Grenadier, Sardaukars
+
+    Tip: Siege and Missile tanks can shoot beyound they vision. Use Stealth raider to extend they vision so they can shoot at maximum range.
 
 actor-deviator =
     .name = Deviator
@@ -626,6 +738,16 @@ actor-deviator =
 
     The Deviator is vulnerable to most weapons, high-caliber guns are slightly less effective.
 
+    Summary:
+
+        - Explosion Radius: Small
+        - Vision: Large
+        - Strong vs Combat tank,  Quad, Devastator, Missile tank
+        - Weak vs any infantry, Missile tank, Sonic Tank, Trike
+
+    Tip: Deviator reload time is very long. You Hold fire for some Deviators in your mix to always have missile ready when opportunity rise.
+
+
 meta-combat-tank-description =
     Main Battle Tank.
       Strong vs Tanks
@@ -636,21 +758,48 @@ actor-combat-tank-a =
     .encyclopedia =
     Effective against most vehicles but less suited against lightly armored targets.
 
-    Resistant to bullets and heavy explosives, but vulnerable to missiles and high-caliber guns.
+    Resistant to bullets and heavy explosives, but vulnerable to missiles and high-caliber guns. Atreides Combat Tank is good compromise between mobility and Armor with slight range advantage.
+
+    Summary:
+
+        - Explosion Radius: medium
+        - Vision: Medium
+        - Strong vs Combat tank, Siege tank, Quad, Sonic Tank
+        - Weak vs Trooper, Missile tank, Devastator, Deviator
+
+    Atreides tank bonus: better range
 
 actor-combat-tank-h =
     .name = Harkonnen Combat Tank
     .encyclopedia =
     Effective against most vehicles but less suited against lightly armored targets.
 
-    Stronger than its counterparts, but also slower.
+    Stronger than its counterparts, but also slower and with lower rate of fire.
+
+    Summary:
+
+        - Explosion Radius: medium
+        - Vision: Medium
+        - Strong vs Combat tank, Siege tank, Quad, Sonic Tank
+        - Weak vs Trooper, Missile tank, Devastator, Deviator
+
+    Harkonnen tank bonus: Stronger Armor
 
 actor-combat-tank-o =
     .name = Ordos Combat Tank
     .encyclopedia =
     Effective against most vehicles but less suited against lightly armored targets.
 
-    The fastest variant of Combat Tank, but also the weakest.
+    The fastest variant of Combat Tank, but also the weakest. Best rate of fire than its counterparts.
+
+    Summary:
+
+        - Explosion Radius: medium
+        - Vision: Medium
+        - Strong vs Combat tank, Siege tank, Quad, Sonic Tank
+        - Weak vs Trooper, Missile tank, Devastator, Deviator
+
+    Ordos tank bonus: rate of fire
 
 meta-destroyabletile =
     .generic-name = Passage (destroyable)
