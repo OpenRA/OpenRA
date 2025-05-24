@@ -3475,7 +3475,7 @@ MultiBrushCollections:
 				Start: Cliff.L
 				Inner: Cliff
 				End: Cliff.L
-				Points: 2,1, 1,1, 0,2
+				Points: 2,1, 1,1, 1,2, 0,2
 		MultiBrush@186:
 			Template: 186
 			Segment:

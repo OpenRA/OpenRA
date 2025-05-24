@@ -189,9 +189,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 					.Split(',', StringSplitOptions.RemoveEmptyEntries);
 				if (parts.Length % 2 != 0)
 					FieldLoader.InvalidValueAction(value, typeof(int2[]), "Points");
+
 				var points = new CVec[parts.Length / 2];
 				for (var i = 0; i < points.Length; i++)
+				{
 					points[i] = new CVec(Exts.ParseInt32Invariant(parts[2 * i]), Exts.ParseInt32Invariant(parts[2 * i + 1]));
+					if (i > 0)
+					{
+						var step = points[i] - points[i - 1];
+						if (Math.Abs(step.X) + Math.Abs(step.Y) != 1)
+							throw new YamlException($"Points sequence {value} has non-unit steps");
+					}
+				}
+
 				Points = [.. points];
 			}
 		}
