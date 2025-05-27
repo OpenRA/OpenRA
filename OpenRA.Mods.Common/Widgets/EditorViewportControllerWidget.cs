@@ -118,6 +118,14 @@ namespace OpenRA.Mods.Common.Widgets
 			return base.HandleMouseInput(mi);
 		}
 
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (CurrentBrush is IKeyHandlingEditorBrush keyHandlingBrush && keyHandlingBrush.HandleKeyPress(e))
+				return true;
+
+			return base.HandleKeyPress(e);
+		}
+
 		WPos cachedViewportPosition;
 		public override void Tick()
 		{
