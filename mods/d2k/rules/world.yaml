@@ -267,3 +267,7 @@ EditorWorld:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Rock, Concrete
 	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: RockSmooth
+		DefaultInner: RockSmooth
+		DefaultEnd: RockSmooth
