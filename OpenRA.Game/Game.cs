@@ -661,7 +661,7 @@ namespace OpenRA
 
 						world.Tick();
 
-						PerfHistory.Tick();
+						PerfHistory.Tick(!world.Paused);
 					}
 
 					// Wait until we have done our first world Tick before TickRendering
@@ -759,12 +759,13 @@ namespace OpenRA
 				}
 			}
 
-			PerfHistory.Items["render"].Tick();
-			PerfHistory.Items["batches"].Tick();
-			PerfHistory.Items["render_world"].Tick();
-			PerfHistory.Items["render_widgets"].Tick();
-			PerfHistory.Items["render_flip"].Tick();
-			PerfHistory.Items["terrain_lighting"].Tick();
+			var isActive = !(worldRenderer?.World.Paused ?? true);
+			PerfHistory.Items["render"].Tick(isActive);
+			PerfHistory.Items["batches"].Tick(isActive);
+			PerfHistory.Items["render_world"].Tick(isActive);
+			PerfHistory.Items["render_widgets"].Tick(isActive);
+			PerfHistory.Items["render_flip"].Tick(isActive);
+			PerfHistory.Items["terrain_lighting"].Tick(isActive);
 		}
 
 		static void Loop()

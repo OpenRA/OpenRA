@@ -22,6 +22,8 @@ namespace OpenRA.Support
 		public double Val = 0.0;
 		int head = 1, tail = 0;
 		public bool HasNormalTick = true;
+		public double ActiveGameTotal { get; private set; } = 0.0;
+		public int ActiveGameTotalSamples { get; private set; } = 0;
 
 		public PerfItem(string name, Color c)
 		{
@@ -29,9 +31,15 @@ namespace OpenRA.Support
 			C = c;
 		}
 
-		public void Tick()
+		public void Tick(bool gameIsActive = true)
 		{
 			samples[head++] = Val;
+			if (gameIsActive)
+			{
+				ActiveGameTotal += Val;
+				ActiveGameTotalSamples++;
+			}
+
 			if (head == samples.Length) head = 0;
 			if (head == tail && ++tail == samples.Length) tail = 0;
 			Val = 0.0;
@@ -63,6 +71,11 @@ namespace OpenRA.Support
 			return i == 0 ? sum : sum / i;
 		}
 
+		public double ActiveGameTotalAverage()
+		{
+			return ActiveGameTotal / ActiveGameTotalSamples;
+		}
+
 		public double LastValue
 		{
 			get
@@ -78,6 +91,8 @@ namespace OpenRA.Support
 			head = 1;
 			tail = 0;
 			Val = 0.0;
+			ActiveGameTotal = 0.0;
+			ActiveGameTotalSamples = 0;
 		}
 	}
 }
