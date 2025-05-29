@@ -1584,6 +1584,7 @@ namespace OpenRA.Mods.Common.Traits
 							if (!strengths1024ths.TryGetValue(resource, out var strength1024ths))
 							{
 								strength1024ths = new CellLayer<int>(map);
+								strength1024ths.Clear(1);
 								strengths1024ths.Add(resource, strength1024ths);
 							}
 
@@ -1599,6 +1600,7 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					var maxStrength1024ths = new CellLayer<int>(map);
+					maxStrength1024ths.Clear(1);
 					var bestResource = new CellLayer<ResourceTypeInfo>(map);
 					bestResource.Clear(param.DefaultResource);
 					foreach (var resourceStrength in strengths1024ths)
@@ -1614,68 +1616,68 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					// Closer to +inf means "more preferable" for plan.
-					var plan1024ths = new CellLayer<int>(map);
+					var plan = new CellLayer<int>(map);
 					foreach (var mpos in map.AllCells.MapCoords)
-						plan1024ths[mpos] = pattern1024ths[mpos] * maxStrength1024ths[mpos] / 1024;
+						plan[mpos] = pattern1024ths[mpos] * maxStrength1024ths[mpos];
 
 					var wSpawnBuildSizeSq = (long)param.SpawnBuildSize * param.SpawnBuildSize * 1024 * 1024;
 					foreach (var actorPlan in actorPlans)
 						if (actorPlan.Reference.Type == "mpspawn")
 							CellLayerUtils.OverCircle(
-								cellLayer: plan1024ths,
+								cellLayer: plan,
 								wCenter: actorPlan.WPosLocation,
 								wRadius: param.SpawnRegionSize * 2 * 1024,
 								outside: false,
 								action: (mpos, _, _, rSq) =>
-									plan1024ths[mpos] += (int)(plan1024ths[mpos] * param.SpawnResourceBias * wSpawnBuildSizeSq / Math.Max(rSq, 1024 * 1024) / FractionMax));
+									plan[mpos] += (int)(plan[mpos] * param.SpawnResourceBias * wSpawnBuildSizeSq / Math.Max(rSq, 1024 * 1024) / FractionMax));
 
 					foreach (var mpos in map.AllCells.MapCoords)
 						if (!playableArea[mpos] || !param.AllowedTerrainResourceCombos.Contains((bestResource[mpos], map.GetTerrainIndex(mpos))))
-							plan1024ths[mpos] = -int.MaxValue;
+							plan[mpos] = -int.MaxValue;
 
 					foreach (var actorPlan in actorPlans)
 						if (actorPlan.Reference.Type == "mpspawn")
 							CellLayerUtils.OverCircle(
-								cellLayer: plan1024ths,
+								cellLayer: plan,
 								wCenter: actorPlan.WPosLocation,
 								wRadius: param.SpawnBuildSize * 1024,
 								outside: false,
-								action: (mpos, _, _, _) => plan1024ths[mpos] = -int.MaxValue);
+								action: (mpos, _, _, _) => plan[mpos] = -int.MaxValue);
 
 					foreach (var actorPlan in actorPlans)
 						foreach (var (cpos, _) in actorPlan.Footprint())
-							if (plan1024ths.Contains(cpos))
-								plan1024ths[cpos] = -int.MaxValue;
+							if (plan.Contains(cpos))
+								plan[cpos] = -int.MaxValue;
 
 					// Improve symmetry.
 					{
 						var newPlan = new CellLayer<int>(map);
 						Symmetry.RotateAndMirrorOverCPos(
-							plan1024ths,
+							plan,
 							param.Rotations,
 							param.Mirror,
 							(sources, destination)
 								=> newPlan[destination] =
-									sources.Min(source => plan1024ths.TryGetValue(source, out var value) ? value : -int.MaxValue));
-						plan1024ths = newPlan;
+									sources.Min(source => plan.TryGetValue(source, out var value) ? value : -int.MaxValue));
+						plan = newPlan;
 					}
 
 					var remaining = param.ResourcesPerPlayer * entityMultiplier / EntityBonusMax;
 
 					// Closer to -inf means "more preferable" for priorities.
 					var priorities = new PriorityArray<int>(
-						plan1024ths.Size.Width * plan1024ths.Size.Height,
+						plan.Size.Width * plan.Size.Height,
 						int.MaxValue);
 					{
 						var i = 0;
-						foreach (var v in plan1024ths)
+						foreach (var v in plan)
 							priorities[i++] = -v;
 					}
 
-					int PriorityIndex(MPos mpos) => mpos.V * plan1024ths.Size.Width + mpos.U;
+					int PriorityIndex(MPos mpos) => mpos.V * plan.Size.Width + mpos.U;
 					MPos PriorityMPos(int index)
 					{
-						var v = Math.DivRem(index, plan1024ths.Size.Width, out var u);
+						var v = Math.DivRem(index, plan.Size.Width, out var u);
 						return new MPos(u, v);
 					}
 
@@ -1748,7 +1750,7 @@ namespace OpenRA.Mods.Common.Traits
 
 						var chosenMPos = PriorityMPos(n);
 						var chosenCPos = chosenMPos.ToCPos(gridType);
-						foreach (var cpos in Symmetry.RotateAndMirrorCPos(chosenCPos, plan1024ths, param.Rotations, param.Mirror))
+						foreach (var cpos in Symmetry.RotateAndMirrorCPos(chosenCPos, plan, param.Rotations, param.Mirror))
 							if (map.Resources.Contains(cpos))
 								remaining -= AddResource(cpos);
 					}
