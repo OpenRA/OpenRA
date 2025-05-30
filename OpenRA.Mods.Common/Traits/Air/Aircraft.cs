@@ -746,6 +746,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void OnBecomingIdle(Actor self)
 		{
+			// Add ammo check before other idle behaviors
+			if (rearmable != null && rearmable.Info.RearmActors.Count > 0 &&
+				self.TraitsImplementing<AmmoPool>().Any(p => !p.HasAmmo))
+			{
+				self.QueueActivity(new ReturnToBase(self));
+				return;
+			}
+
 			if (Info.IdleBehavior == IdleBehaviorType.LeaveMap)
 			{
 				self.QueueActivity(new FlyOffMap(self));

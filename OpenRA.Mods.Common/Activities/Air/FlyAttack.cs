@@ -74,6 +74,18 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			// Check if aircraft needs to rearm before continuing attack
+			if (rearmable != null && !returnToBase)
+			{
+				var ammoPool = self.TraitsImplementing<AmmoPool>().FirstOrDefault();
+				if (ammoPool == null || !ammoPool.HasAmmo)
+				{
+					// Return to base when out of ammo
+					QueueChild(new ReturnToBase(self));
+					return true;
+				}
+			}
+
 			if (!IsCanceling && !HasArmamentsFor(target))
 				Cancel(self, true);
 
@@ -128,13 +140,21 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload
 			// and resume the activity after reloading if AbortOnResupply is set to 'false'
-			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			// Fix the weapon validity check
+			if (rearmable != null && !useLastVisibleTarget &&
+				attackAircraft.Armaments.All(x =>
+					x.IsTraitPaused ||
+					(rearmable != null &&
+						(self.TraitsImplementing<AmmoPool>().FirstOrDefault() == null ||
+						 !self.TraitsImplementing<AmmoPool>().FirstOrDefault().HasAmmo)) ||
+					!x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
 				// Attack moves never resupply
 				if (source == AttackSource.AttackMove)
 					return true;
 
-				// AbortOnResupply cancels the current activity (after resupplying) plus any queued activities
+				// AbortOnResupply cancels the current activity (after resupplying)
+				// plus any queued activities
 				if (attackAircraft.Info.AbortOnResupply)
 					NextActivity?.Cancel(self);
 
