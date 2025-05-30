@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					}
 
-					dropDown.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", choices.Length * 30, choices, SetupItem);
+					dropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", choices.Length * 30, choices, SetupItem);
 				};
 			}
 
