@@ -275,9 +275,11 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		{
 			var mask = new HashSet<CPos>();
 
+			var sourceCellCoords = blitSource.CellRegion.CellCoords;
+
 			foreach (var (cpos, _) in blitSource.Tiles)
 			{
-				if (!blitSource.CellRegion.Contains(cpos))
+				if (!sourceCellCoords.Contains(cpos))
 					throw new ArgumentException("EditorBlitSource contains a BlitTile outside of its CellRegion");
 				mask.Add(cpos + offset);
 			}
@@ -286,11 +288,13 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			{
 				var anyContained = false;
 				foreach (var cpos in editorActorPreview.Footprint.Keys)
-					if (blitSource.CellRegion.Contains(cpos))
+				{
+					if (sourceCellCoords.Contains(cpos))
 					{
 						mask.Add(cpos + offset);
 						anyContained = true;
 					}
+				}
 
 				if (!anyContained)
 					throw new ArgumentException("EditorBlitSource contains an actor entirely outside of its CellRegion");
