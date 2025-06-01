@@ -239,6 +239,8 @@ HMEC:
 	Mobile:
 		TurnSpeed: 12
 		Speed: 42
+		SpeedRelatedWithFacing: true
+		TurnsWhileMoving: true
 	Health:
 		HP: 80000
 	ChangesHealth:
