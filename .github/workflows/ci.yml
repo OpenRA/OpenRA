@@ -35,7 +35,7 @@ jobs:
 
   windows:
     name: Windows (.NET 8.0)
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     steps:
       - name: Clone Repository
