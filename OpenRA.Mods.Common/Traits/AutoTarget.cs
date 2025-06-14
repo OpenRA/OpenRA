@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		public UnitStance PredictedStance;
 		IOverrideAutoTarget[] overrideAutoTarget;
 		INotifyStanceChanged[] notifyStanceChanged;
-		IEnumerable<AutoTargetPriorityInfo> activeTargetPriorities;
+		AutoTargetPriority[] targetPriorities;
 		int conditionToken = Actor.InvalidConditionToken;
 
 		public void SetStance(Actor self, UnitStance value)
@@ -190,11 +190,9 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			// AutoTargetPriority and their Priorities are fixed - so we can safely cache them with ToArray.
-			// IsTraitEnabled can change over time, and so must appear after the ToArray so it gets re-evaluated each time.
-			activeTargetPriorities =
+			targetPriorities =
 				self.TraitsImplementing<AutoTargetPriority>()
-					.OrderByDescending(ati => ati.Info.Priority).ToArray()
-					.Where(t => !t.IsTraitDisabled).Select(atp => atp.Info);
+					.OrderByDescending(ati => ati.Info.Priority).ToArray();
 
 			overrideAutoTarget = self.TraitsImplementing<IOverrideAutoTarget>().ToArray();
 			notifyStanceChanged = self.TraitsImplementing<INotifyStanceChanged>().ToArray();
@@ -331,18 +329,64 @@ namespace OpenRA.Mods.Common.Traits
 			if (owner == null || Stance <= UnitStance.ReturnFire)
 				return false;
 
-			return activeTargetPriorities.Any(ati =>
+			foreach (var tp in targetPriorities)
 			{
+				if (tp.IsTraitDisabled)
+					continue;
+
+				var tpi = tp.Info;
+
 				// Incompatible relationship
-				if (!ati.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(owner)))
-					return false;
+				if (!tpi.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(owner)))
+					continue;
 
 				// Incompatible target types
-				if (!ati.ValidTargets.Overlaps(targetTypes) || ati.InvalidTargets.Overlaps(targetTypes))
-					return false;
+				if (!tpi.ValidTargets.Overlaps(targetTypes) || tpi.InvalidTargets.Overlaps(targetTypes))
+					continue;
 
 				return true;
-			});
+			}
+
+			return false;
+		}
+
+		bool HasEnabledTargetPriorities()
+		{
+			foreach (var tp in targetPriorities)
+			{
+				if (!tp.IsTraitDisabled)
+					return true;
+			}
+
+			return false;
+		}
+
+		int GetMaxTargetPriority(Player self, Player targetOwner, BitSet<TargetableType> targetTypes, int chosenTargetPriority)
+		{
+			var max = int.MinValue;
+			foreach (var tp in targetPriorities)
+			{
+				if (tp.IsTraitDisabled)
+					continue;
+
+				var tpi = tp.Info;
+
+				// Already have a higher priority target
+				if (tpi.Priority < chosenTargetPriority)
+					continue;
+
+				// Incompatible relationship
+				if (!tpi.ValidRelationships.HasRelationship(self.RelationshipWith(targetOwner)))
+					continue;
+
+				// Incompatible target types
+				if (!tpi.ValidTargets.Overlaps(targetTypes) || tpi.InvalidTargets.Overlaps(targetTypes))
+					continue;
+
+				chosenTargetPriority = max = tpi.Priority;
+			}
+
+			return max;
 		}
 
 		Target ChooseTarget(Actor self, AttackBase ab, PlayerRelationship attackStances, WDist scanRange, bool allowMove, bool allowTurn)
@@ -351,17 +395,43 @@ namespace OpenRA.Mods.Common.Traits
 			var chosenTargetPriority = int.MinValue;
 			var chosenTargetRange = 0;
 
-			var activePriorities = activeTargetPriorities.ToList();
-			if (activePriorities.Count == 0)
+			if (!HasEnabledTargetPriorities())
 				return chosenTarget;
 
-			var targetsInRange = self.World.FindActorsInCircle(self.CenterPosition, scanRange)
-				.Select(Target.FromActor);
+			// PERF: Avoid early conversion to Target.
+			var targetsInRange = new List<Target>(64);
+
+			foreach (var actor in self.World.FindActorsInCircle(self.CenterPosition, scanRange))
+			{
+				// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
+				// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
+				// allied units, this helps significantly reduce the cost of auto target scans. This is important as
+				// these groups will continuously rescan their allies until an enemy finally comes into range.
+				if (attackStances == PlayerRelationship.Enemy && !actor.AppearsHostileTo(self))
+					continue;
+
+				if (PreventsAutoTarget(self, actor) || !actor.CanBeViewedByPlayer(self.Owner))
+					continue;
+
+				targetsInRange.Add(Target.FromActor(actor));
+			}
 
 			if (allowMove || ab.Info.TargetFrozenActors)
-				targetsInRange = targetsInRange
-					.Concat(self.Owner.FrozenActorLayer.FrozenActorsInCircle(self.World, self.CenterPosition, scanRange)
-					.Select(Target.FromFrozenActor));
+			{
+				foreach (var frozen in self.Owner.FrozenActorLayer.FrozenActorsInCircle(self.World, self.CenterPosition, scanRange))
+				{
+					if (attackStances == PlayerRelationship.Enemy && self.Owner.RelationshipWith(frozen.Owner) == PlayerRelationship.Ally)
+						continue;
+
+					// Bot-controlled units aren't yet capable of understanding visibility changes
+					// Prevent that bot-controlled units endlessly fire at frozen actors.
+					// TODO: Teach the AI to support long range artillery units with units that provide line of sight
+					if (self.Owner.IsBot && frozen.Actor == null)
+						continue;
+
+					targetsInRange.Add(Target.FromFrozenActor(frozen));
+				}
+			}
 
 			foreach (var target in targetsInRange)
 			{
@@ -369,56 +439,19 @@ namespace OpenRA.Mods.Common.Traits
 				Player owner;
 				if (target.Type == TargetType.Actor)
 				{
-					// PERF: Most units can only attack enemy units. If this is the case but the target is not an enemy, we
-					// can bail early and avoid the more expensive targeting checks and armament selection. For groups of
-					// allied units, this helps significantly reduce the cost of auto target scans. This is important as
-					// these groups will continuously rescan their allies until an enemy finally comes into range.
-					if (attackStances == PlayerRelationship.Enemy && !target.Actor.AppearsHostileTo(self))
-						continue;
-
-					// Check whether we can auto-target this actor
 					targetTypes = target.Actor.GetEnabledTargetTypes();
-
-					if (PreventsAutoTarget(self, target.Actor) || !target.Actor.CanBeViewedByPlayer(self.Owner))
-						continue;
-
 					owner = target.Actor.Owner;
 				}
 				else if (target.Type == TargetType.FrozenActor)
 				{
-					if (attackStances == PlayerRelationship.Enemy && self.Owner.RelationshipWith(target.FrozenActor.Owner) == PlayerRelationship.Ally)
-						continue;
-
-					// Bot-controlled units aren't yet capable of understanding visibility changes
-					// Prevent that bot-controlled units endlessly fire at frozen actors.
-					// TODO: Teach the AI to support long range artillery units with units that provide line of sight
-					if (self.Owner.IsBot && target.FrozenActor.Actor == null)
-						continue;
-
 					targetTypes = target.FrozenActor.TargetTypes;
 					owner = target.FrozenActor.Owner;
 				}
 				else
 					continue;
 
-				var validPriorities = activePriorities.Where(ati =>
-				{
-					// Already have a higher priority target
-					if (ati.Priority < chosenTargetPriority)
-						return false;
-
-					// Incompatible relationship
-					if (!ati.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(owner)))
-						return false;
-
-					// Incompatible target types
-					if (!ati.ValidTargets.Overlaps(targetTypes) || ati.InvalidTargets.Overlaps(targetTypes))
-						return false;
-
-					return true;
-				}).ToList();
-
-				if (validPriorities.Count == 0)
+				var targetPriotity = GetMaxTargetPriority(self.Owner, owner, targetTypes, chosenTargetPriority);
+				if (targetPriotity == int.MinValue)
 					continue;
 
 				// Make sure that we can actually fire on the actor
@@ -436,15 +469,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Evaluate whether we want to target this actor
 				var targetRange = (target.CenterPosition - self.CenterPosition).Length;
-				foreach (var ati in validPriorities)
+
+				if (chosenTarget.Type == TargetType.Invalid || chosenTargetPriority < targetPriotity
+					|| (chosenTargetPriority == targetPriotity && targetRange < chosenTargetRange))
 				{
-					if (chosenTarget.Type == TargetType.Invalid || chosenTargetPriority < ati.Priority
-						|| (chosenTargetPriority == ati.Priority && targetRange < chosenTargetRange))
-					{
-						chosenTarget = target;
-						chosenTargetPriority = ati.Priority;
-						chosenTargetRange = targetRange;
-					}
+					chosenTarget = target;
+					chosenTargetPriority = targetPriotity;
+					chosenTargetRange = targetRange;
 				}
 			}
 
