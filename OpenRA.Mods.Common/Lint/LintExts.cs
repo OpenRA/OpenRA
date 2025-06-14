@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Lint
 				return [(string)fieldInfo.GetValue(ruleInfo)];
 
 			if (typeof(IEnumerable<string>).IsAssignableFrom(type))
-				return fieldInfo.GetValue(ruleInfo) as IEnumerable<string>;
+				return fieldInfo.GetValue(ruleInfo) as IEnumerable<string> ?? [];
 
 			if (type == typeof(BooleanExpression) || type == typeof(IntegerExpression))
 			{
