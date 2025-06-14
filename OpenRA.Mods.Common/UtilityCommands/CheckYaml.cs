@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var originalColor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
-			Console.Write("OpenRA.Utility(1,1): Error:");
+			Console.Write("Error: ");
 			Console.ForegroundColor = originalColor;
 			Console.WriteLine(e);
 			++errors;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				var originalColor = Console.ForegroundColor;
 				Console.ForegroundColor = ConsoleColor.Yellow;
-				Console.Write("OpenRA.Utility(1,1): Warning:");
+				Console.Write("Warning: ");
 				Console.ForegroundColor = originalColor;
 				Console.WriteLine(e);
 				++warnings;
