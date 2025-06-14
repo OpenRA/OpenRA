@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 				// bleed only changes here.
 				new ReplaceBaseAttackNotifier(),
+				new RemoveBuildingInfoAllowPlacementOnResources(),
 			]),
 		];
 

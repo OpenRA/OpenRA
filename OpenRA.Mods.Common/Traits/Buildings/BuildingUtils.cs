@@ -84,10 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (bi.AllowInvalidPlacement)
 				return true;
 
-			var resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
-			return bi.Tiles(cell).All(t => world.Map.Contains(t) &&
-				(bi.AllowPlacementOnResources || resourceLayer == null || resourceLayer.GetResource(t).Type == null) &&
-					world.IsCellBuildable(t, ai, bi, toIgnore));
+			return bi.Tiles(cell).All(t => world.Map.Contains(t) && world.IsCellBuildable(t, ai, bi, toIgnore));
 		}
 
 		public static IEnumerable<(CPos Cell, Actor Actor)> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi, Player owner)
