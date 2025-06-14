@@ -969,7 +969,8 @@ namespace OpenRA
 			{
 				Name = "Skirmish Game",
 				Map = map,
-				AdvertiseOnline = false
+				AdvertiseOnline = false,
+				AdvertiseOnLocalNetwork = !isSkirmish
 			};
 
 			// Always connect to local games using the same loopback connection

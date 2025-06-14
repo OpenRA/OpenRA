@@ -48,13 +48,14 @@ namespace OpenRA.Mods.Common.Server
 		[FluentReference]
 		const string GameOffline = "notification-game-offline";
 
-		static readonly Beacon LanGameBeacon;
+		static readonly ushort LanAdvertisePort = (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000);
 		static readonly Dictionary<int, string> MasterServerErrors = new()
 		{
 			{ 1, NoPortForward },
 			{ 2, BlacklistedTitle }
 		};
 
+		Beacon lanGameBeacon;
 		long lastPing = 0;
 		long lastChanged = 0;
 		bool isInitialPing = true;
@@ -62,14 +63,16 @@ namespace OpenRA.Mods.Common.Server
 		volatile bool isBusy;
 		readonly Queue<string> masterServerMessages = [];
 
-		static MasterServerPinger()
+		void CreateLanGameBeacon()
 		{
 			try
 			{
-				LanGameBeacon = new Beacon("OpenRALANGame", (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000));
+				lanGameBeacon?.Stop();
+				lanGameBeacon = new Beacon("OpenRALANGame", LanAdvertisePort);
 			}
 			catch (Exception ex)
 			{
+				lanGameBeacon = null;
 				Log.Write("server", "BeaconLib.Beacon: " + ex.Message);
 			}
 		}
@@ -83,27 +86,34 @@ namespace OpenRA.Mods.Common.Server
 			// Update the master server and LAN clients if something has changed
 			// Note that isBusy is set while the master server ping is running on a
 			// background thread, and limits LAN pings as well as master server pings for simplicity.
-			if (!isBusy && ((lastChanged > lastPing && Game.RunTime - lastPing > RateLimitInterval) || isInitialPing))
+			if ((server.Settings.AdvertiseOnline || server.Settings.AdvertiseOnLocalNetwork)
+				&& !isBusy && ((lastChanged > lastPing && Game.RunTime - lastPing > RateLimitInterval) || isInitialPing))
 			{
 				var gs = new GameServer(server);
 				if (server.Settings.AdvertiseOnline)
 					UpdateMasterServer(server, gs.ToPOSTData(false));
 
-				if (LanGameBeacon != null)
-					LanGameBeacon.BeaconData = gs.ToPOSTData(true);
+				if (server.Settings.AdvertiseOnLocalNetwork && lanGameBeacon != null)
+					lanGameBeacon.BeaconData = gs.ToPOSTData(true);
 
 				lastPing = Game.RunTime;
 			}
 
-			lock (masterServerMessages)
-				while (masterServerMessages.Count > 0)
-					server.SendFluentMessage(masterServerMessages.Dequeue());
+			if (server.Settings.AdvertiseOnline)
+				lock (masterServerMessages)
+					while (masterServerMessages.Count > 0)
+						server.SendFluentMessage(masterServerMessages.Dequeue());
 		}
 
 		void INotifyServerStart.ServerStarted(S server)
 		{
-			if (server.IsMultiplayer && LanGameBeacon != null)
-				LanGameBeacon.Start();
+			if (server.IsMultiplayer && server.Settings.AdvertiseOnLocalNetwork)
+			{
+				if (lanGameBeacon == null)
+					CreateLanGameBeacon();
+
+				lanGameBeacon?.Start();
+			}
 		}
 
 		void INotifyServerShutdown.ServerShutdown(S server)
@@ -115,7 +125,8 @@ namespace OpenRA.Mods.Common.Server
 				UpdateMasterServer(server, gameServer.ToPOSTData(false));
 			}
 
-			LanGameBeacon?.Stop();
+			lanGameBeacon?.Stop();
+			lanGameBeacon = null;
 		}
 
 		public void LobbyInfoSynced(S server)
@@ -130,7 +141,8 @@ namespace OpenRA.Mods.Common.Server
 
 		public void GameEnded(S server)
 		{
-			LanGameBeacon?.Stop();
+			lanGameBeacon?.Stop();
+			lanGameBeacon = null;
 
 			lastChanged = Game.RunTime;
 		}

@@ -15,6 +15,7 @@ Mod="${Mod:-"ra"}"
 Map="${Map:-""}"
 ListenPort="${ListenPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
+AdvertiseOnLocalNetwork="${AdvertiseOnLocalNetwork:-"True"}"
 Password="${Password:-""}"
 RecordReplays="${RecordReplays:-"False"}"
 
@@ -38,6 +39,7 @@ while true; do
      Server.Map="$Map" \
      Server.ListenPort="$ListenPort" \
      Server.AdvertiseOnline="$AdvertiseOnline" \
+     Server.AdvertiseOnLocalNetwork="$AdvertiseOnLocalNetwork" \
      Server.EnableSingleplayer="$EnableSingleplayer" \
      Server.Password="$Password" \
      Server.RecordReplays="$RecordReplays" \

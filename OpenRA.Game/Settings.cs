@@ -53,6 +53,9 @@ namespace OpenRA
 		[Desc("Reports the game to the master server list.")]
 		public bool AdvertiseOnline = true;
 
+		[Desc("Reports the game on the local area network.")]
+		public bool AdvertiseOnLocalNetwork = true;
+
 		[Desc("Locks the game with a password.")]
 		public string Password = "";
 
