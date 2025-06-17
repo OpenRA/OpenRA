@@ -863,33 +863,45 @@ namespace OpenRA
 
 					var haveSomeTimeUntilNextLogic = now < nextLogic;
 					var isTimeToRender = now >= nextRender;
-					if (!Renderer.WindowIsSuspended && ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender))
+					if (!Renderer.WindowIsSuspended)
 					{
-						nextRender = now + renderInterval;
+						if (isTimeToRender || forceRender)
+						{
+							if (haveSomeTimeUntilNextLogic || forceRender)
+								RenderTick();
 
-						// Pick the minimum allowed FPS (the lower between 'minReplayFPS'
-						// and the user's max frame rate) and convert it to maximum time
-						// allowed between screen updates.
-						// We do this before rendering to include the time rendering takes
-						// in this interval.
-						var maxRenderInterval = Math.Max(1000 / MinReplayFps, renderInterval);
-						forcedNextRender = now + maxRenderInterval;
+							nextRender = now + renderInterval;
 
-						RenderTick();
-						renderBeforeNextTick = false;
+							// Pick the minimum allowed FPS (the lower between 'minReplayFPS'
+							// and the user's max frame rate) and convert it to maximum time
+							// allowed between screen updates.
+							// We do this before rendering to include the time rendering takes
+							// in this interval.
+							var maxRenderInterval = Math.Max(1000 / MinReplayFps, renderInterval);
+							forcedNextRender = now + maxRenderInterval;
+
+							renderBeforeNextTick = false;
+						}
 					}
-
-					// Simulate a render tick if it was time to render but we skip actually rendering
-					if (Renderer.WindowIsSuspended && isTimeToRender)
+					else
 					{
-						// Make sure that nextUpdate is set to a proper minimum interval
-						nextRender = now + renderInterval;
+						// Simulate a render tick if it was time to render but we skip actually rendering
+						if (isTimeToRender || forceRender)
+						{
+							// Make sure that nextUpdate is set to a proper minimum interval
+							nextRender = now + renderInterval;
 
-						// Still process SDL events to allow a restore to come through
-						Renderer.Window.PumpInput(new NullInputHandler());
+							// Still process SDL events to allow a restore to come through
+							Renderer.Window.PumpInput(new NullInputHandler());
 
-						// Ensure that we still logic tick despite not rendering
-						renderBeforeNextTick = false;
+							// Ensure that we still logic tick despite not rendering
+							renderBeforeNextTick = false;
+						}
+						else
+						{
+							// Avoid busy wait.
+							Thread.Sleep((int)(nextRender - now));
+						}
 					}
 				}
 				else
