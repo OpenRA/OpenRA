@@ -91,13 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void AddCashTick(Actor self, int amount)
-		{
-			self.World.AddFrameEndTask(w => w.Add(
-				new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(amount), info.DisplayDuration)));
-		}
-
-		void ModifyCash(Actor self, int amount)
+		public virtual void ModifyCash(Actor self, int amount)
 		{
 			if (info.UseResourceStorage)
 			{
@@ -112,7 +106,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (info.ShowTicks && amount != 0)
-				AddCashTick(self, amount);
+				self.World.AddFrameEndTask(w =>
+					w.Add(new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 	}
 }
