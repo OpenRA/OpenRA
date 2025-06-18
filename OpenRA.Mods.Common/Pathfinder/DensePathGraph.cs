@@ -136,20 +136,23 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			if (layer == 0)
 			{
-				foreach (var cml in CustomMovementLayers)
+				if (customMovementLayersEnabledForLocomotor > 0)
 				{
-					if (cml == null || !cml.EnabledForLocomotor(locomotor.Info))
-						continue;
+					foreach (var cml in CustomMovementLayers)
+					{
+						if (cml == null || !cml.EnabledForLocomotor(locomotor.Info))
+							continue;
 
-					var layerPosition = new CPos(position.X, position.Y, cml.Index);
-					if (!IsValidNeighbor(layerPosition))
-						continue;
+						var layerPosition = new CPos(position.X, position.Y, cml.Index);
+						if (!IsValidNeighbor(layerPosition))
+							continue;
 
-					var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
-					if (entryCost != PathGraph.MovementCostForUnreachableCell &&
-						CanEnterNode(position, layerPosition, targetPredicate) &&
-						this[layerPosition].Status != CellStatus.Closed)
-						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
+						var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
+						if (entryCost != PathGraph.MovementCostForUnreachableCell &&
+							CanEnterNode(position, layerPosition, targetPredicate) &&
+							this[layerPosition].Status != CellStatus.Closed)
+							validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
+					}
 				}
 			}
 			else
