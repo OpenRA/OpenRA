@@ -20,8 +20,23 @@ namespace OpenRA.Mods.Common.MapGenerator
 		const int Scale = 1024;
 		const int ScaledSqrt2 = 1448;
 
+		/// <summary>Amplitude is the same for all wavelengths.</summary>
+		public static int WhiteAmplitude(int wavelength) => 1;
+
 		/// <summary>Amplitude proportional to wavelength.</summary>
 		public static int PinkAmplitude(int wavelength) => wavelength;
+
+		/// <summary>
+		/// <code>amplitude = wavelength ** (1 / (2 ** clumpiness))</code>
+		/// Setting clumpiness to 0 is equivalent to pink noise.
+		/// </summary>
+		public static int ClumpinessAmplitude(int wavelength, int clumpiness)
+		{
+			var amplitude = wavelength;
+			for (var i = 0; i < clumpiness; i++)
+				amplitude = Exts.ISqrt(amplitude);
+			return amplitude;
+		}
 
 		/// <summary>
 		/// <para>

@@ -538,22 +538,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 				case Replaceability.None:
 					throw new ArgumentException("Cannot paint: Replaceability.None");
 				case Replaceability.Any:
-					if (this.actorPlans.Count > 0)
-						PaintActors(map, actorPlans, paintAt);
-					else if (tiles.Count > 0)
-						PaintTiles(map, paintAt, random);
-					else
+					if (this.actorPlans.Count == 0 && tiles.Count == 0)
 						throw new ArgumentException("Cannot paint: no tiles or actors");
+
+					PaintTiles(map, paintAt, random);
+					PaintActors(map, actorPlans, paintAt);
+
 					break;
 				case Replaceability.Tile:
 					if (tiles.Count == 0)
 						throw new ArgumentException("Cannot paint: no tiles");
+
 					PaintTiles(map, paintAt, random);
 					PaintActors(map, actorPlans, paintAt);
 					break;
 				case Replaceability.Actor:
 					if (this.actorPlans.Count == 0)
 						throw new ArgumentException("Cannot paint: no actors");
+
 					PaintActors(map, actorPlans, paintAt);
 					break;
 			}

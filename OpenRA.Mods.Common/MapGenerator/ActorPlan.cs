@@ -145,5 +145,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			return CellLayerUtils.CVecToWVec(new CVec(left + right, top + bottom), Map.Grid.Type) / 2;
 		}
+
+		/// <summary>Return the larger of the width or height of the actor's footprint.</summary>
+		public int MaxSpan()
+		{
+			var footprint = Footprint().Select(kv => kv.Key).ToList();
+			var minX = footprint.Min(cpos => cpos.X);
+			var minY = footprint.Min(cpos => cpos.Y);
+			var maxX = footprint.Max(cpos => cpos.X);
+			var maxY = footprint.Max(cpos => cpos.Y);
+			return Math.Max(maxX - minX, maxY - minY) + 1;
+		}
 	}
 }

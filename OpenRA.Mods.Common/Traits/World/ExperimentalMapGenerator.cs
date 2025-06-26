@@ -15,7 +15,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Terrain;
-using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
 using static OpenRA.Mods.Common.Traits.ResourceLayerInfo;
@@ -67,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Options.SelectMany(o => o.GetFluentReferences()).ToList();
 		}
 
-		const int FractionMax = 1000;
+		const int FractionMax = Terraformer.FractionMax;
 		const int EntityBonusMax = 1000000;
 
 		sealed class Parameters
@@ -201,13 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly IReadOnlyDictionary<ushort, IReadOnlyList<MultiBrush>> RepaintTiles;
 
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyDictionary<string, ResourceTypeInfo> ResourceTypes;
-			[FieldLoader.Ignore]
 			public readonly ResourceTypeInfo DefaultResource;
-			[FieldLoader.Ignore]
-			public readonly IReadOnlyDictionary<ResourceTypeInfo, int> ResourceValues;
-			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<(ResourceTypeInfo, byte)> AllowedTerrainResourceCombos;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyDictionary<string, ResourceTypeInfo> ResourceSpawnSeeds;
 			[FieldLoader.LoadUsing(nameof(ResourceSpawnWeightsLoader))]
@@ -218,15 +211,9 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Ignore]
 			public readonly IReadOnlySet<byte> PlayableTerrain;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> PartiallyPlayableTerrain;
-			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> UnplayableTerrain;
-			[FieldLoader.Ignore]
 			public readonly IReadOnlySet<byte> DominantTerrain;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlySet<byte> ZoneableTerrain;
-			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<string> PartiallyPlayableCategories;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyList<string> ClearSegmentTypes;
 			[FieldLoader.Ignore]
@@ -256,22 +243,15 @@ namespace OpenRA.Mods.Common.Traits
 					v => MultiBrush.LoadCollection(map, v.Value) as IReadOnlyList<MultiBrush>);
 				RepaintTiles ??= ImmutableDictionary<ushort, IReadOnlyList<MultiBrush>>.Empty;
 
-				ResourceTypes = map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<ResourceLayerInfo>().ResourceTypes;
-				if (!ResourceTypes.TryGetValue(my.NodeWithKey("DefaultResource").Value.Value, out DefaultResource))
+				var resourceTypes = map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<ResourceLayerInfo>().ResourceTypes;
+				if (!resourceTypes.TryGetValue(my.NodeWithKey("DefaultResource").Value.Value, out DefaultResource))
 					throw new YamlException("DefaultResource is not valid");
 				var playerResourcesInfo = map.Rules.Actors[SystemActors.Player].TraitInfoOrDefault<PlayerResourcesInfo>();
-				ResourceValues = playerResourcesInfo.ResourceValues
-					.ToDictionary(kv => ResourceTypes[kv.Key], kv => kv.Value);
-				AllowedTerrainResourceCombos = ResourceTypes
-					.Values
-					.SelectMany(resourceTypeInfo => resourceTypeInfo.AllowedTerrainTypes
-						.Select(terrainName => (resourceTypeInfo, terrainInfo.GetTerrainIndex(terrainName))))
-					.ToImmutableHashSet();
 				try
 				{
 					ResourceSpawnSeeds = my.NodeWithKey("ResourceSpawnSeeds").Value
 						.ToDictionary(subMy => subMy.Value)
-						.ToDictionary(kv => kv.Key, kv => ResourceTypes[kv.Value]);
+						.ToDictionary(kv => kv.Key, kv => resourceTypes[kv.Value]);
 				}
 				catch (KeyNotFoundException e)
 				{
@@ -306,14 +286,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				ClearTerrain = ParseTerrainIndexes("ClearTerrain");
 				PlayableTerrain = ParseTerrainIndexes("PlayableTerrain");
-				PartiallyPlayableTerrain = ParseTerrainIndexes("PartiallyPlayableTerrain");
-				UnplayableTerrain = ParseTerrainIndexes("UnplayableTerrain");
 				DominantTerrain = ParseTerrainIndexes("DominantTerrain");
 				ZoneableTerrain = ParseTerrainIndexes("ZoneableTerrain");
-
-				PartiallyPlayableCategories = my.NodeWithKey("PartiallyPlayableCategories").Value.Value
-					.Split(',', StringSplitOptions.RemoveEmptyEntries)
-					.ToImmutableHashSet();
 
 				ClearSegmentTypes = ParseSegmentTypes("ClearSegmentTypes");
 				BeachSegmentTypes = ParseSegmentTypes("BeachSegmentTypes");
@@ -475,18 +449,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (Players % symmetryCount != 0)
 					throw new MapGenerationException($"Total number of players must be a multiple of {symmetryCount}");
 			}
-
-			public static (T[] Types, int[] Weights) SplitWeights<T>(IReadOnlyDictionary<T, int> typeWeights)
-			{
-				var types = typeWeights
-					.Select(kv => kv.Key)
-					.Order()
-					.ToArray();
-				var weights = types
-					.Select(type => typeWeights[type])
-					.ToArray();
-				return (types, weights);
-			}
 		}
 
 		public IMapGeneratorSettings GetSettings()
@@ -496,83 +458,41 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Map Generate(ModData modData, MapGenerationArgs args)
 		{
-			const int ExternalBias = 4096;
-
 			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
 			var size = args.Size;
 
 			var map = new Map(modData, terrainInfo, size);
-			var maxTerrainHeight = map.Grid.MaximumTerrainHeight;
-			var tl = new PPos(1, 1 + maxTerrainHeight);
-			var br = new PPos(size.Width - 1, size.Height + maxTerrainHeight - 1);
-			map.SetBounds(tl, br);
-			map.Title = args.Title;
-			map.Author = args.Author;
-			map.RequiresMod = modData.Manifest.Id;
-
-			var minSpan = Math.Min(size.Width, size.Height);
-			var mapCenter1024ths = new int2(size.Width * 512, size.Height * 512);
-			var wMapCenter = CellLayerUtils.Center(map.Tiles);
-			var matrixMapCenter1024ths = CellLayerUtils.CellBounds(map).Size.ToInt2() * 512;
-			var cellBounds = CellLayerUtils.CellBounds(map);
-			var minCSpan = Math.Min(cellBounds.Size.Width, cellBounds.Size.Height);
-			var gridType = map.Grid.Type;
-
 			var actorPlans = new List<ActorPlan>();
 
 			var param = new Parameters(map, args.Settings);
 
-			var externalCircleRadius = minCSpan / 2 - (param.MinimumLandSeaThickness + param.MinimumMountainThickness);
-			if (externalCircleRadius <= 0)
+			var terraformer = new Terraformer(args, map, modData, actorPlans, param.Mirror, param.Rotations);
+
+			var waterIsPlayable = param.PlayableTerrain.Contains(terrainInfo.GetTerrainIndex(new TerrainTile(param.WaterTile, 0)));
+
+			var externalCircleRadius = CellLayerUtils.Radius(map) - new WDist((param.MinimumLandSeaThickness + param.MinimumMountainThickness) * 1024);
+			if (param.ExternalCircularBias != 0 && externalCircleRadius.Length <= 0)
 				throw new MapGenerationException("map is too small for circular shaping");
 
-			var beachPermittedTemplates = TilingPath.PermittedSegments.FromType(param.SegmentedBrushes, param.BeachSegmentTypes);
-			var replaceabilityMap = new Dictionary<TerrainTile, MultiBrush.Replaceability>();
-			var playabilityMap = new Dictionary<TerrainTile, PlayableSpace.Playability>();
-
-			var templatedTerrainInfo = (ITemplatedTerrainInfo)terrainInfo;
-			foreach (var kv in templatedTerrainInfo.Templates)
+			CellLayer<MultiBrush.Replaceability> PlayableToReplaceable()
 			{
-				var id = kv.Key;
-				var template = kv.Value;
-				for (var ti = 0; ti < template.TilesCount; ti++)
-				{
-					if (template[ti] == null)
-						continue;
-					var tile = new TerrainTile(id, (byte)ti);
-					var type = terrainInfo.GetTerrainIndex(tile);
-
-					if (param.PlayableTerrain.Contains(type))
-						playabilityMap[tile] = PlayableSpace.Playability.Playable;
-					else if (param.PartiallyPlayableTerrain.Contains(type))
-						playabilityMap[tile] = PlayableSpace.Playability.Partial;
-					else if (param.UnplayableTerrain.Contains(type))
-						playabilityMap[tile] = PlayableSpace.Playability.Unplayable;
-					else
-						throw new MapGenerationException($"Terrain index {type} has unknown playability.");
-
-					if (id == param.LandTile)
+				var playable = terraformer.CheckSpace(param.PlayableTerrain, true);
+				var basicLand = terraformer.CheckSpace(param.LandTile);
+				var replace = new CellLayer<MultiBrush.Replaceability>(map);
+				foreach (var mpos in map.AllCells.MapCoords)
+					if (playable[mpos])
 					{
-						replaceabilityMap[tile] = MultiBrush.Replaceability.Any;
-					}
-					else if (id == param.WaterTile)
-					{
-						replaceabilityMap[tile] = MultiBrush.Replaceability.Tile;
-					}
-					else
-					{
-						if (playabilityMap[tile] == PlayableSpace.Playability.Unplayable)
-							replaceabilityMap[tile] = MultiBrush.Replaceability.None;
+						if (basicLand[mpos])
+							replace[mpos] = MultiBrush.Replaceability.Any;
 						else
-							replaceabilityMap[tile] = MultiBrush.Replaceability.Actor;
-
-						if (param.PartiallyPlayableCategories.Overlaps(template.Categories)
-							&& playabilityMap[tile] == PlayableSpace.Playability.Unplayable)
-						{
-							playabilityMap[tile] = PlayableSpace.Playability.Partial;
-						}
+							replace[mpos] = MultiBrush.Replaceability.Actor;
 					}
-				}
+					else
+					{
+						replace[mpos] = MultiBrush.Replaceability.None;
+					}
+
+				return replace;
 			}
 
 			// Use `random` to derive separate independent random number generators.
@@ -585,7 +505,7 @@ namespace OpenRA.Mods.Common.Traits
 			// random.Next(). All generators should be created unconditionally.
 			var random = new MersenneTwister(param.Seed);
 
-			var waterRandom = new MersenneTwister(random.Next());
+			var elevationRandom = new MersenneTwister(random.Next());
 			var beachTilingRandom = new MersenneTwister(random.Next());
 			var cliffTilingRandom = new MersenneTwister(random.Next());
 			var forestRandom = new MersenneTwister(random.Next());
@@ -603,197 +523,91 @@ namespace OpenRA.Mods.Common.Traits
 			var decorationTilingRandom = new MersenneTwister(random.Next());
 			var pickAnyRandom = new MersenneTwister(random.Next());
 
-			TerrainTile PickTile(ushort tileType)
-			{
-				if (templatedTerrainInfo.Templates.TryGetValue(tileType, out var template) && template.PickAny)
-					return new TerrainTile(tileType, (byte)random.Next(0, template.TilesCount));
-				else
-					return new TerrainTile(tileType, 0);
-			}
+			terraformer.InitMap();
 
-			foreach (var cell in map.AllCells)
-			{
-				var mpos = cell.ToMPos(gridType);
-				map.Tiles[mpos] = PickTile(param.LandTile);
-				map.Resources[mpos] = new ResourceTile(0, 0);
-				map.Height[mpos] = 0;
-			}
+			foreach (var mpos in map.AllCells.MapCoords)
+				map.Tiles[mpos] = terraformer.PickTile(pickAnyRandom, param.LandTile);
 
-			var elevation = NoiseUtils.SymmetricFractalNoise(
-				waterRandom,
-				cellBounds.Size.ToInt2(),
-				param.Rotations,
-				param.Mirror,
+			var elevation = terraformer.ElevationNoiseMatrix(
+				elevationRandom,
 				param.TerrainFeatureSize,
-				NoiseUtils.PinkAmplitude);
-			MatrixUtils.NormalizeRangeInPlace(elevation, 1024);
+				param.TerrainSmoothing);
 
-			if (param.TerrainSmoothing > 0)
+			Matrix<bool> mapShape;
+			if (param.ExternalCircularBias == 0)
+				mapShape = new Matrix<bool>(CellLayerUtils.CellBounds(map).Size.ToInt2()).Fill(true);
+			else
+				mapShape = CellLayerUtils.ToMatrix(terraformer.CenteredCircle(true, false, externalCircleRadius), false);
+
+			var landPlan = terraformer.SliceElevation(elevation, mapShape, FractionMax - param.Water);
+
+			if (param.ExternalCircularBias > 0)
 			{
-				var radius = param.TerrainSmoothing;
-				elevation = MatrixUtils.BinomialBlur(elevation, radius);
+				for (var n = 0; n < landPlan.Data.Length; n++)
+					landPlan[n] |= !mapShape[n];
+				var ring = terraformer.CenteredCircle(false, true, externalCircleRadius + new WDist(param.MinimumMountainThickness * 1024));
+				var path = TilingPath.QuickCreate(
+					map,
+					param.SegmentedBrushes,
+					CellLayerUtils.BordersToPoints(ring)[0],
+					(param.MinimumMountainThickness - 1) / 2,
+					param.CliffSegmentTypes[0],
+					param.CliffSegmentTypes[0]);
+				var brush = path.Tile(cliffTilingRandom)
+					?? throw new MapGenerationException("Could not fit tiles for exterior circle cliffs");
+				terraformer.PaintTiling(pickAnyRandom, brush);
 			}
 
-			MatrixUtils.CalibrateQuantileInPlace(
-				elevation,
-				0,
-				param.Water, FractionMax);
-
-			if (param.ExternalCircularBias != 0)
-				MatrixUtils.OverCircle(
-					matrix: elevation,
-					centerIn1024ths: mapCenter1024ths,
-					radiusIn1024ths: externalCircleRadius * 1024,
-					outside: true,
-					action: (xy, _) => elevation[xy] = param.ExternalCircularBias * ExternalBias);
-
-			var landPlan = MatrixUtils.BooleanBlotch(
-				elevation.Map(v => v >= 0),
+			landPlan = MatrixUtils.BooleanBlotch(
+				landPlan,
 				param.TerrainSmoothing,
-				param.SmoothingThreshold, FractionMax,
+				param.SmoothingThreshold, /*smoothingThresholdOutOf=*/FractionMax,
 				param.MinimumLandSeaThickness,
-				/*bias=*/param.Water < FractionMax / 2);
+				/*bias=*/param.Water <= FractionMax / 2);
 
 			var beaches = CellLayerUtils.FromMatrixPoints(
 				MatrixUtils.BordersToPoints(landPlan),
 				map.Tiles);
-			var beachesShape = new HashSet<CPos>();
-			if (beaches.Length > 0)
-			{
-				var tiledBeaches = new CPos[beaches.Length][];
-				for (var i = 0; i < beaches.Length; i++)
-				{
-					var beachPath = new TilingPath(
-						map,
-						beaches[i],
-						(param.MinimumLandSeaThickness - 1) / 2,
-						param.BeachSegmentTypes[0],
-						param.BeachSegmentTypes[0],
-						beachPermittedTemplates);
-					beachPath
-						.ExtendEdge(4)
-						.SetAutoEndDeviation()
-						.OptimizeLoop();
-					var brush = beachPath.Tile(beachTilingRandom)
-						?? throw new MapGenerationException("Could not fit tiles for beach");
-					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
-					tiledBeaches[i] = brush.Segment.Points.Select(vec => CPos.Zero + vec).ToArray();
-					foreach (var cvec in brush.Shape)
-						beachesShape.Add(CPos.Zero + cvec);
-				}
-
-				var beachChiralityMatrix = MatrixUtils.PointsChirality(
-					landPlan.Size,
-					CellLayerUtils.ToMatrixPoints(tiledBeaches, map.Tiles));
-				var beachChirality = new CellLayer<int>(map);
-				CellLayerUtils.FromMatrix(beachChirality, beachChiralityMatrix);
-				foreach (var mpos in map.AllCells.MapCoords)
-				{
-					// `map.Tiles[mpos].Type == param.LandTile` avoids overwriting beach tiles.
-					if (beachChirality[mpos] < 0 && !beachesShape.Contains(mpos.ToCPos(map)))
-						map.Tiles[mpos] = PickTile(param.WaterTile);
-				}
-			}
-			else
-			{
-				// There weren't any coastlines
-				var tileType = landPlan[0] ? param.LandTile : param.WaterTile;
-				foreach (var cell in map.AllCells)
-				{
-					var mpos = cell.ToMPos(gridType);
-					map.Tiles[mpos] = PickTile(tileType);
-				}
-			}
-
-			var nonLoopedCliffPermittedTemplates =
-				TilingPath.PermittedSegments.FromInnerAndTerminalTypes(
-					param.SegmentedBrushes, param.CliffSegmentTypes, param.ClearSegmentTypes);
-			var loopedCliffPermittedTemplates =
-				TilingPath.PermittedSegments.FromType(
-					param.SegmentedBrushes, param.CliffSegmentTypes);
-			if (param.ExternalCircularBias > 0)
-			{
-				var cliffRing = new CellLayer<bool>(map);
-				CellLayerUtils.OverCircle(
-					cellLayer: cliffRing,
-					wCenter: wMapCenter,
-					wRadius: (externalCircleRadius + param.MinimumMountainThickness) * 1024,
-					outside: true,
-					action: (mpos, _, _, _) => cliffRing[mpos] = true);
-				foreach (var cliff in CellLayerUtils.BordersToPoints(cliffRing))
-				{
-					var isLoop = cliff[0] == cliff[^1];
-					TilingPath cliffPath;
-					if (isLoop)
-						cliffPath = new TilingPath(
+			var beachPaths = beaches
+				.Select(beach =>
+					TilingPath.QuickCreate(
 							map,
-							cliff,
-							(param.MinimumMountainThickness - 1) / 2,
-							param.CliffSegmentTypes[0],
-							param.CliffSegmentTypes[0],
-							loopedCliffPermittedTemplates);
-					else
-						cliffPath = new TilingPath(
-							map,
-							cliff,
-							(param.MinimumMountainThickness - 1) / 2,
-							param.ClearSegmentTypes[0],
-							param.ClearSegmentTypes[0],
-							nonLoopedCliffPermittedTemplates);
-					cliffPath
-						.ExtendEdge(4)
-						.SetAutoEndDeviation()
-						.OptimizeLoop();
-					var brush = cliffPath.Tile(cliffTilingRandom)
-						?? throw new MapGenerationException("Could not fit tiles for exterior circle cliffs");
-					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
-				}
-			}
+							param.SegmentedBrushes,
+							beach,
+							(param.MinimumLandSeaThickness - 1) / 2,
+							param.BeachSegmentTypes[0],
+							param.BeachSegmentTypes[0])
+								.ExtendEdge(4))
+				.ToArray();
+			var landBeachWater = terraformer.PaintLoopsAndFill(
+				beachTilingRandom,
+				beachPaths,
+				landPlan[0] ? Terraformer.Side.In : Terraformer.Side.Out,
+				[new MultiBrush().WithTemplate(map, param.WaterTile, CVec.Zero)],
+				null)
+					?? throw new MapGenerationException("Could not fit tiles for beach");
 
-			if (param.Mountains > 0 || param.ExternalCircularBias == 1)
+			if (param.Mountains > 0)
 			{
 				var roughnessMatrix = MatrixUtils.GridVariance(
 					elevation,
 					param.RoughnessRadius);
-				MatrixUtils.CalibrateQuantileInPlace(
+				var cliffMask = MatrixUtils.CalibratedBooleanThreshold(
 					roughnessMatrix,
-					0,
-					FractionMax - param.Roughness, FractionMax);
-				var cliffMask = roughnessMatrix.Map(v => v >= 0);
-				var mountainElevation = elevation.Clone();
-				var cliffPlan = landPlan;
-				if (param.ExternalCircularBias > 0)
-					MatrixUtils.OverCircle(
-						matrix: cliffPlan,
-						centerIn1024ths: matrixMapCenter1024ths,
-						radiusIn1024ths: externalCircleRadius * 1024,
-						outside: true,
-						action: (xy, _) => cliffPlan[xy] = false);
+					param.Roughness, FractionMax);
+				var cliffPlan = Matrix<bool>.Zip(landPlan, mapShape, (a, b) => a && b);
 
-				for (var altitude = 1; altitude <= param.MaximumAltitude; altitude++)
+				for (var altitude = 0; altitude < param.MaximumAltitude; altitude++)
 				{
-					// Limit mountain area to the existing mountain space (starting with all available land)
-					var roominess = MatrixUtils.ChebyshevRoom(cliffPlan, true);
-					var available = 0;
-					var total = size.Width * size.Height;
-					for (var n = 0; n < mountainElevation.Data.Length; n++)
-					{
-						if (roominess.Data[n] < param.MinimumTerrainContourSpacing)
-							mountainElevation.Data[n] = -1;
-						else
-							available++;
-
-						total++;
-					}
-
-					MatrixUtils.CalibrateQuantileInPlace(
-						mountainElevation,
-						0,
-						total - available * param.Mountains / FractionMax, total);
+					cliffPlan = terraformer.SliceElevation(
+						elevation,
+						cliffPlan,
+						param.Mountains,
+						param.MinimumTerrainContourSpacing);
 					cliffPlan = MatrixUtils.BooleanBlotch(
-						mountainElevation.Map(v => v >= 0),
+						cliffPlan,
 						param.TerrainSmoothing,
-						param.SmoothingThreshold, FractionMax,
+						param.SmoothingThreshold, /*smoothingThresholdOutOf=*/FractionMax,
 						param.MinimumMountainThickness,
 						/*bias=*/false);
 					var unmaskedCliffs = MatrixUtils.BordersToPoints(cliffPlan);
@@ -804,543 +618,129 @@ namespace OpenRA.Mods.Common.Traits
 						break;
 					foreach (var cliff in cliffs)
 					{
-						var isLoop = cliff[0] == cliff[^1];
-						TilingPath cliffPath;
-						if (isLoop)
-							cliffPath = new TilingPath(
-								map,
-								cliff,
-								(param.MinimumMountainThickness - 1) / 2,
-								param.CliffSegmentTypes[0],
-								param.CliffSegmentTypes[0],
-								loopedCliffPermittedTemplates);
-						else
-							cliffPath = new TilingPath(
-								map,
-								cliff,
-								(param.MinimumMountainThickness - 1) / 2,
-								param.ClearSegmentTypes[0],
-								param.ClearSegmentTypes[0],
-								nonLoopedCliffPermittedTemplates);
-						cliffPath
-							.ExtendEdge(4)
-							.SetAutoEndDeviation()
-							.OptimizeLoop();
+						var cliffPath = TilingPath.QuickCreate(
+							map,
+							param.SegmentedBrushes,
+							cliff,
+							(param.MinimumMountainThickness - 1) / 2,
+							param.CliffSegmentTypes[0],
+							param.ClearSegmentTypes[0])
+								.ExtendEdge(4);
 						var brush = cliffPath.Tile(cliffTilingRandom)
-							?? throw new MapGenerationException("Could not fit tiles for  cliffs");
-						brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
+							?? throw new MapGenerationException("Could not fit tiles for cliffs");
+						terraformer.PaintTiling(pickAnyRandom, brush);
 					}
 				}
 			}
 
 			if (param.Forests > 0)
 			{
-				var forestNoise = new CellLayer<int>(map);
-				NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
+				var space = terraformer.CheckSpace(param.ClearTerrain);
+				var passages = terraformer.PlanPassages(
+					topologyRandom,
+					terraformer.ImproveSymmetry(space, true, (a, b) => a && b),
+					param.ForestCutout,
+					param.MaximumCutoutSpacing);
+				var forestNoise = terraformer.BooleanNoise(
 					forestRandom,
-					forestNoise,
-					param.Rotations,
-					param.Mirror,
 					param.ForestFeatureSize,
-					wavelength => ClumpinessAmplitude(wavelength, param.ForestClumpiness));
-				CellLayerUtils.CalibrateQuantileInPlace(
-					forestNoise,
-					0,
-					FractionMax - param.Forests, FractionMax);
-
-				var forestPlan = new CellLayer<bool>(map);
+					param.Forests,
+					param.ForestClumpiness);
+				var replace = PlayableToReplaceable();
 				foreach (var mpos in map.AllCells.MapCoords)
-					if (param.ClearTerrain.Contains(map.GetTerrainIndex(mpos)) && forestNoise[mpos] >= 0)
-						forestPlan[mpos] = true;
-
-				if (param.ForestCutout > 0)
-				{
-					var space = new CellLayer<bool>(map);
-					foreach (var mpos in map.AllCells.MapCoords)
-						space[mpos] = param.ClearTerrain.Contains(map.GetTerrainIndex(mpos));
-
-					// Improve symmetry.
-					{
-						var newSpace = new CellLayer<bool>(map);
-						Symmetry.RotateAndMirrorOverCPos(
-							space,
-							param.Rotations,
-							param.Mirror,
-							(sources, destination)
-								=> newSpace[destination] =
-									sources.All(source => !space.TryGetValue(source, out var value) || value));
-						space = newSpace;
-					}
-
-					if (param.MaximumCutoutSpacing > 0)
-					{
-						var roominess = new CellLayer<int>(map);
-						CellLayerUtils.ChebyshevRoom(roominess, space, false);
-						foreach (var mpos in map.AllCells.MapCoords)
-							roominess[mpos] = Math.Min(
-								param.MaximumCutoutSpacing,
-								roominess[mpos]);
-
-						while (true)
-						{
-							var (chosenMPos, room) = CellLayerUtils.FindRandomBest(
-								roominess,
-								topologyRandom,
-								(a, b) => a.CompareTo(b));
-							if (room < param.MaximumCutoutSpacing)
-								break;
-
-							var projections = Symmetry.RotateAndMirrorCPos(
-								chosenMPos.ToCPos(map),
-								space,
-								param.Rotations,
-								param.Mirror);
-							foreach (var projection in projections)
-							{
-								if (space.Contains(projection))
-									space[projection] = false;
-								var minX = projection.X - 2 * param.MaximumCutoutSpacing + 1;
-								var minY = projection.Y - 2 * param.MaximumCutoutSpacing + 1;
-								var maxX = projection.X + 2 * param.MaximumCutoutSpacing - 1;
-								var maxY = projection.Y + 2 * param.MaximumCutoutSpacing - 1;
-								for (var y = minY; y <= maxY; y++)
-									for (var x = minX; x <= maxX; x++)
-									{
-										var mpos = new CPos(x, y).ToMPos(map);
-										if (roominess.Contains(mpos))
-											roominess[mpos] = 0;
-									}
-							}
-						}
-					}
-
-					var matrixSpace = CellLayerUtils.ToMatrix(space, false);
-
-					// deflated is grid points, not squares. Has a size of `size + 1`.
-					var deflated = MatrixUtils.DeflateSpace(matrixSpace, false);
-					var kernel = new Matrix<bool>(2 * param.ForestCutout, 2 * param.ForestCutout).Fill(true);
-					var inflated = MatrixUtils.KernelDilateOrErode(deflated.Map(v => v != 0), kernel, new int2(param.ForestCutout - 1, param.ForestCutout - 1), true);
-					var cutout = new CellLayer<bool>(map);
-					CellLayerUtils.FromMatrix(cutout, inflated, true);
-					foreach (var mpos in map.AllCells.MapCoords)
-						if (cutout[mpos])
-							forestPlan[mpos] = false;
-				}
-
-				var replaceable = IdentifyReplaceableTiles(map, replaceabilityMap, null);
-				var forestReplace = new CellLayer<MultiBrush.Replaceability>(map);
-				foreach (var mpos in map.AllCells.MapCoords)
-					if (forestPlan[mpos])
-						forestReplace[mpos] = replaceable[mpos];
-					else
-						forestReplace[mpos] = MultiBrush.Replaceability.None;
-				MultiBrush.PaintArea(map, actorPlans, forestReplace, param.ForestObstacles, forestTilingRandom);
+					if (!forestNoise[mpos] || !space[mpos] || passages[mpos])
+						replace[mpos] = MultiBrush.Replaceability.None;
+				terraformer.PaintArea(forestTilingRandom, replace, param.ForestObstacles);
 			}
 
 			if (param.EnforceSymmetry != 0)
 			{
-				// This is not commutative.
-				bool CheckCompatibility(byte main, byte other)
-				{
-					if (main == other)
-						return true;
-					else if (param.DominantTerrain.Contains(main))
-						return true;
-					else if (param.DominantTerrain.Contains(other))
-						return false;
-					else
-						return param.EnforceSymmetry < 2;
-				}
-
-				var replace = new CellLayer<MultiBrush.Replaceability>(map);
-				Symmetry.RotateAndMirrorOverCPos(
-					replace,
-					param.Rotations,
-					param.Mirror,
-					(CPos[] sources, CPos destination) =>
-					{
-						var main = templatedTerrainInfo.GetTerrainIndex(map.Tiles[destination]);
-						var compatible = sources
-							.Where(replace.Contains)
-							.Select(source => templatedTerrainInfo.GetTerrainIndex(map.Tiles[source]))
-							.All(source => CheckCompatibility(main, source));
-						replace[destination] = compatible ? MultiBrush.Replaceability.None : MultiBrush.Replaceability.Actor;
-					});
-				MultiBrush.PaintArea(map, actorPlans, replace, param.ForestObstacles, symmetryTilingRandom);
+				var asymmetries = terraformer.FindAsymmetries(param.DominantTerrain, true, param.EnforceSymmetry == 2);
+				terraformer.PaintActors(symmetryTilingRandom, asymmetries, param.ForestObstacles);
 			}
 
-			var playableArea = new CellLayer<bool>(map);
+			CellLayer<bool> playable;
 			{
-				var (regions, regionMask, playability) = PlayableSpace.FindPlayableRegions(map, actorPlans, playabilityMap);
-				PlayableSpace.Region largest = null;
-				var disqualifications = new HashSet<int>();
-
 				// For circle-in-mountains, the outside is unplayable and should never count as
 				// the largest/preferred region.
+				CellLayer<bool> poison = null;
 				if (param.ExternalCircularBias > 0)
-				{
-					if (map.Grid.Type != MapGridType.Rectangular)
-						throw new NotImplementedException();
-					CellLayerUtils.OverCircle(
-						cellLayer: regionMask,
-						wCenter: wMapCenter,
-						wRadius: (minSpan - 2) * 512,
-						outside: true,
-						action: (mpos, _, _, _) =>
-							{
-								if (regionMask[mpos] != PlayableSpace.NullRegion)
-									disqualifications.Add(regionMask[mpos]);
-							});
-				}
+					poison = terraformer.CenteredCircle(
+						false, true, CellLayerUtils.Radius(map.Tiles) - new WDist(1024));
 
-				// Disqualify regions that violate any symmetry requirements.
-				{
-					var symmetryScore = new int[regions.Length];
-					void TestSymmetry(CPos[] sources, CPos destination)
-					{
-						var id = regionMask[destination];
-						if (playability[destination] != PlayableSpace.Playability.Playable)
-							return;
-						if (sources.All(source => regionMask.TryGetValue(source, out var sourceId) && sourceId == id))
-							symmetryScore[id]++;
-					}
-
-					Symmetry.RotateAndMirrorOverCPos(
-						regionMask,
-						param.Rotations,
-						param.Mirror,
-						TestSymmetry);
-
-					for (var id = 0; id < symmetryScore.Length; id++)
-						if (symmetryScore[id] < regions[id].PlayableArea / 2)
-							disqualifications.Add(id);
-				}
-
-				foreach (var region in regions)
-				{
-					if (disqualifications.Contains(region.Id))
-						continue;
-					if (largest == null || region.PlayableArea > largest.PlayableArea)
-						largest = region;
-				}
-
-				if (largest == null)
-					throw new MapGenerationException("could not find a playable region");
+				playable = terraformer.ChoosePlayableRegion(
+					terraformer.CheckSpace(param.PlayableTerrain, true, false, true),
+					poison)
+						?? throw new MapGenerationException("could not find a playable region");
 
 				var minimumPlayableSpace = (int)(param.Players * Math.PI * param.SpawnBuildSize * param.SpawnBuildSize);
-				if (largest.PlayableArea < minimumPlayableSpace)
+				if (playable.Count(p => p) < minimumPlayableSpace)
 					throw new MapGenerationException("playable space is too small");
-
-				bool? AdoptPartiallyPlayableIntoLargest(CPos cpos, bool first)
-				{
-					if (first)
-						return false;
-					else if (regionMask[cpos] == largest.Id || playability[cpos] != PlayableSpace.Playability.Partial)
-						return null;
-
-					regionMask[cpos] = largest.Id;
-					largest.Area++;
-					return false;
-				}
-
-				// Adopt any partially playable tiles connected to the largest region into the largest region.
-				// This avoids potentially debris-filling connected oceans for mods where water is unplayable.
-				CellLayerUtils.FloodFill(
-					regionMask,
-					map.AllCells.Where(cpos => regionMask[cpos] == largest.Id).Select(cpos => (cpos, true)),
-					AdoptPartiallyPlayableIntoLargest,
-					DirectionExts.Spread4CVec);
 
 				if (param.DenyWalledAreas)
 				{
 					// Beach tiles are particularly problematic. If they're for unplayable bodies
 					// of water, they should be obliterated. If they're just surrounded by rocks,
 					// trees, etc, they should be filled in with actors.
+					if (waterIsPlayable)
 					{
-						var unplayableWater = new HashSet<CPos>();
-						foreach (var mpos in map.AllCells.MapCoords)
-							if (map.Contains(mpos) &&
-								map.Tiles[mpos].Type == param.WaterTile &&
-								regionMask[mpos] != largest.Id)
-							{
-								var cpos = mpos.ToCPos(gridType);
-								var projections = Symmetry.RotateAndMirrorCPos(
-									cpos, map.Tiles, param.Rotations, param.Mirror);
-								foreach (var projection in projections)
-									if (map.Tiles.Contains(projection) && map.Tiles[projection].Type == param.WaterTile)
-										unplayableWater.Add(projection);
-							}
-
-						bool? ClearWaterBody(CPos cpos, bool _)
-						{
-							var mpos = cpos.ToMPos(gridType);
-							var propagate =
-								beachesShape.Remove(cpos) ||
-								map.Tiles[mpos].Type == param.WaterTile;
-							map.Tiles[mpos] = PickTile(param.LandTile);
-							regionMask[mpos] = PlayableSpace.NullRegion;
-							return propagate ? false : null;
-						}
-
-						CellLayerUtils.FloodFill(
-							map.Tiles,
-							unplayableWater.Select(cpos => (cpos, false)),
-							ClearWaterBody,
-							DirectionExts.Spread4CVec);
+						var mask = CellLayerUtils.Clone(playable);
+						terraformer.ZoneFromOutOfBounds(mask, true);
+						terraformer.FillUnmaskedSideAndBorder(
+							mask,
+							landBeachWater,
+							Terraformer.Side.Out,
+							cpos => map.Tiles[cpos] = terraformer.PickTile(pickAnyRandom, param.LandTile));
 					}
 
-					var replaceable = IdentifyReplaceableTiles(map, replaceabilityMap, actorPlans);
-					var replace = new CellLayer<MultiBrush.Replaceability>(map);
+					var replace = PlayableToReplaceable();
 					foreach (var mpos in map.AllCells.MapCoords)
-						if (regionMask[mpos] == largest.Id || !map.Contains(mpos))
+						if (playable[mpos] || !map.Contains(mpos))
 							replace[mpos] = MultiBrush.Replaceability.None;
-						else
-							replace[mpos] = replaceable[mpos];
 
-					MultiBrush.PaintArea(map, actorPlans, replace, param.UnplayableObstacles, debrisTilingRandom);
+					terraformer.PaintArea(debrisTilingRandom, replace, param.UnplayableObstacles);
 				}
-
-				foreach (var mpos in map.AllCells.MapCoords)
-					playableArea[mpos] = playability[mpos] == PlayableSpace.Playability.Playable && regionMask[mpos] == largest.Id;
 			}
 
 			if (param.Roads)
 			{
-				// For awkward symmetries, we try harder to make sure roads are fairer.
-				// This can degrade the quantity of roads, though.
-				var imperfectSymmetry =
-					param.Mirror != Symmetry.Mirror.None ||
-					param.Rotations == 3 ||
-					param.Rotations >= 5;
-
-				// Enlargement must increase dimensions by multiple of 4 to maximize compatibility
-				// with IsometricRectangular grids, where a non-multiple of 4 would change how the
-				// center aligns with the grid.
-				var enlargedSize = new Size(
-					map.MapSize.Width + (map.MapSize.Width & ~3) + 4,
-					map.MapSize.Height + (map.MapSize.Height & ~3) + 4);
-
-				var space = new CellLayer<bool>(gridType, enlargedSize);
-				space.Clear(true);
-
-				var enlargedOffset =
-					CellLayerUtils.WPosToCPos(CellLayerUtils.Center(space), gridType)
-						- CellLayerUtils.WPosToCPos(CellLayerUtils.Center(map.Tiles), gridType);
-
-				foreach (var cpos in map.AllCells)
-					space[cpos + enlargedOffset] = param.ClearTerrain.Contains(templatedTerrainInfo.GetTerrainIndex(map.Tiles[cpos]));
-
-				foreach (var actorPlan in actorPlans)
-					foreach (var (cpos, _) in actorPlan.Footprint())
-						if (space.Contains(cpos + enlargedOffset))
-							space[cpos + enlargedOffset] = false;
-
-				// Improve symmetry.
-				{
-					var newSpace = new CellLayer<bool>(gridType, enlargedSize);
-					Symmetry.RotateAndMirrorOverCPos(
-						space,
-						param.Rotations,
-						param.Mirror,
-						(sources, destination)
-							=> newSpace[destination] =
-								sources.All(source => !space.TryGetValue(source, out var value) || value));
-					space = newSpace;
-				}
-
-				// TODO: Move to configuration
+				// TODO: Move or collapse into configuration
+				const int RoadMinimumShrinkLength = 12;
 				const int RoadStraightenShrink = 4;
 				const int RoadStraightenGrow = 2;
-				const int RoadMinimumShrinkLength = 12;
 				const int RoadInertialRange = 8;
-				var roadTotalShrink = RoadStraightenShrink + param.RoadShrink;
-				var minimumRoadLengthForPruning = RoadMinimumShrinkLength + 2 * roadTotalShrink;
 
-				var matrixSpace = CellLayerUtils.ToMatrix(space, true);
-				var kernel = new Matrix<bool>(param.RoadSpacing * 2 + 1, param.RoadSpacing * 2 + 1);
-				MatrixUtils.OverCircle(
-					matrix: kernel,
-					centerIn1024ths: kernel.Size * 512,
-					radiusIn1024ths: param.RoadSpacing * 1024,
-					outside: false,
-					action: (xy, _) => kernel[xy] = true);
-				var dilated = MatrixUtils.KernelDilateOrErode(
-					matrixSpace,
-					kernel,
-					new int2(param.RoadSpacing, param.RoadSpacing),
-					false);
-				var deflated = MatrixUtils.DeflateSpace(dilated, true);
-
-				if (imperfectSymmetry)
+				var roadPaths = terraformer.PlanRoads(
+					terraformer.CheckSpace(param.ClearTerrain, true, false),
+					param.RoadSpacing,
+					RoadMinimumShrinkLength + 2 * (RoadStraightenShrink + param.RoadShrink));
+				foreach (var roadPath in roadPaths)
 				{
-					var changing = true;
-					while (changing)
-					{
-						changing = false;
-
-						// Delete short paths.
-						{
-							MatrixUtils.RemoveStubsFromDirectionMapInPlace(deflated);
-							var paths = MatrixUtils.DirectionMapToPaths(deflated);
-							if (paths.Length == 0)
-								break;
-
-							var minLength = paths.Min(p => p.Length);
-							if (minLength < minimumRoadLengthForPruning)
-							{
-								changing = true;
-								var shortPaths = paths
-									.Where(path => path.Length == minLength);
-								foreach (var path in shortPaths)
-									foreach (var point in path)
-										deflated[point] = 0;
-								MatrixUtils.RemoveStubsFromDirectionMapInPlace(deflated);
-							}
-						}
-
-						// Prune asymmetric paths.
-						{
-							const int Dilation = 3;
-							var nearPath = MatrixUtils.KernelDilateOrErode(
-								deflated.Map(v => v != 0),
-								new Matrix<bool>(Dilation * 2 + 1, Dilation * 2 + 1).Fill(true),
-								new int2(Dilation, Dilation),
-								true);
-							var matrixPaths = MatrixUtils.DirectionMapToPaths(deflated);
-							foreach (var path in matrixPaths)
-							{
-								var cposPath = CellLayerUtils.FromMatrixPoints([path], space)[0];
-								var projectedPoints = cposPath
-									.SelectMany(p => Symmetry.RotateAndMirrorCPos(p, space, param.Rotations, param.Mirror))
-									.ToArray();
-								var matrixPoints = CellLayerUtils.ToMatrixPoints([projectedPoints], space)[0];
-								if (!matrixPoints.All(p => !nearPath.ContainsXY(p) || nearPath[p]))
-								{
-									// The path doesn't exist across all symmetries (or isn't consistent enough).
-									changing = true;
-									foreach (var point in path)
-										deflated[point] = 0;
-								}
-							}
-						}
-					}
-				}
-
-				var matrixPointArrays = MatrixUtils.DirectionMapToPathsWithPruning(
-					input: deflated,
-					minimumLength: minimumRoadLengthForPruning,
-					minimumJunctionSeparation: 6,
-					preserveEdgePaths: true);
-				var pointArrays = CellLayerUtils.FromMatrixPoints(matrixPointArrays, space);
-				pointArrays = TilingPath.RetainDisjointPaths(pointArrays);
-				pointArrays = pointArrays.Select(a => a.Select(p => p - enlargedOffset).ToArray()).ToArray();
-
-				var nonLoopedRoadPermittedTemplates =
-					TilingPath.PermittedSegments.FromInnerAndTerminalTypes(
-						param.SegmentedBrushes, param.RoadSegmentTypes, param.ClearSegmentTypes);
-				var loopedRoadPermittedTemplates =
-					TilingPath.PermittedSegments.FromType(
-						param.SegmentedBrushes, param.RoadSegmentTypes);
-
-				foreach (var pointArray in pointArrays)
-				{
-					var isLoop = pointArray[0] == pointArray[^1];
-					TilingPath path;
-					if (isLoop)
-						path = new TilingPath(
-							map,
-							pointArray,
-							param.RoadSpacing - 1,
-							param.RoadSegmentTypes[0],
-							param.RoadSegmentTypes[0],
-							loopedRoadPermittedTemplates);
-					else
-						path = new TilingPath(
-							map,
-							pointArray,
-							param.RoadSpacing - 1,
-							param.ClearSegmentTypes[0],
-							param.ClearSegmentTypes[0],
-							nonLoopedRoadPermittedTemplates);
-
-					path
-						.ChirallyNormalize(cvec => CellLayerUtils.CornerToWPos(cvec, gridType) - wMapCenter)
-						.ExtendEdge(2 * roadTotalShrink + RoadMinimumShrinkLength)
-						.Shrink(roadTotalShrink, RoadMinimumShrinkLength)
-						.InertiallyExtend(RoadStraightenGrow, RoadInertialRange)
-						.SetAutoEndDeviation()
-						.OptimizeLoop()
-						.RetainIfValid();
-
-					// Shrinking may have deleted the path.
-					if (path.Points == null)
+					var tilingPath = TilingPath.QuickCreate(
+						map,
+						param.SegmentedBrushes,
+						roadPath,
+						param.RoadSpacing - 1,
+						param.RoadSegmentTypes[0],
+						param.ClearSegmentTypes[0])
+							.StraightenEnds(
+								RoadStraightenShrink + param.RoadShrink,
+								RoadStraightenGrow,
+								RoadMinimumShrinkLength,
+								RoadInertialRange)
+							.RetainIfValid();
+					if (tilingPath.Points == null)
 						continue;
 
-					var brush = path.Tile(roadTilingRandom)
+					var brush = tilingPath.Tile(roadTilingRandom)
 						?? throw new MapGenerationException("Could not fit tiles for roads");
-					brush.Paint(map, actorPlans, CPos.Zero, MultiBrush.Replaceability.Tile, pickAnyRandom);
+					terraformer.PaintTiling(pickAnyRandom, brush);
 				}
 			}
 
 			if (param.CreateEntities)
 			{
-				var (buildingTypes, buildingWeights) = Parameters.SplitWeights(param.BuildingWeights);
-				var (resourceSpawnTypes, resourceSpawnWeights) = Parameters.SplitWeights(param.ResourceSpawnWeights);
-
-				var projectionSpacing = new CellLayer<int>(map);
-				Symmetry.RotateAndMirrorOverCPos(
-					projectionSpacing,
-					param.Rotations,
-					param.Mirror,
-					(projections, cpos) =>
-						projectionSpacing[cpos] = Symmetry.ProjectionProximity(projections) / 2);
-
-				// Spawn bias tries to move spawns away from the map center and their symmetry
-				// projections.
-				var spawnBiasRadius = Math.Max(1, minSpan * param.CentralSpawnReservationFraction / FractionMax);
-				var spawnBias = new CellLayer<int>(map);
-				spawnBias.Clear(spawnBiasRadius);
-				CellLayerUtils.OverCircle(
-					cellLayer: spawnBias,
-					wCenter: wMapCenter,
-					wRadius: 1024 * spawnBiasRadius,
-					outside: false,
-					action: (mpos, _, _, wrSq) => spawnBias[mpos] = (int)Exts.ISqrt(wrSq) / 1024);
-				foreach (var mpos in map.AllCells.MapCoords)
-					spawnBias[mpos] = Math.Min(spawnBias[mpos], projectionSpacing[mpos]);
-
-				var zoneable = new CellLayer<bool>(map);
-				foreach (var mpos in map.AllCells.MapCoords)
-					zoneable[mpos] = playableArea[mpos] && param.ZoneableTerrain.Contains(templatedTerrainInfo.GetTerrainIndex(map.Tiles[mpos]));
-
-				foreach (var actorPlan in actorPlans)
-					foreach (var cpos in actorPlan.Footprint().Keys)
-						if (map.AllCells.Contains(cpos))
-							zoneable[cpos] = false;
-
-				// Improve symmetry.
-				{
-					var newZoneable = new CellLayer<bool>(map);
-					Symmetry.RotateAndMirrorOverCPos(
-						zoneable,
-						param.Rotations,
-						param.Mirror,
-						(sources, destination)
-							=> newZoneable[destination] =
-								sources.All(source => zoneable.TryGetValue(source, out var value) && value));
-					zoneable = newZoneable;
-				}
-
-				if (param.Rotations > 1 || param.Mirror != Symmetry.Mirror.None)
-				{
-					// Reserve the center of the map - otherwise it will mess with rotations
-					CellLayerUtils.OverCircle(
-						cellLayer: zoneable,
-						wCenter: wMapCenter,
-						wRadius: 1024,
-						outside: false,
-						action: (mpos, _, _, _) => zoneable[mpos] = false);
-				}
+				var zoneable = terraformer.GetZoneable(param.ZoneableTerrain, playable);
 
 				var zoneableArea = zoneable.Count(v => v);
 				var symmetryCount = Symmetry.RotateAndMirrorProjectionCount(param.Rotations, param.Mirror);
@@ -1353,90 +753,36 @@ namespace OpenRA.Mods.Common.Traits
 				var symmetryPlayers = param.Players / symmetryCount;
 				for (var iteration = 0; iteration < symmetryPlayers; iteration++)
 				{
-					var spawnPreference = new CellLayer<int>(map);
-					CellLayerUtils.ChebyshevRoom(spawnPreference, zoneable, false);
-					foreach (var mpos in map.AllCells.MapCoords)
-						if (spawnPreference[mpos] >= param.MinimumSpawnRadius &&
-							projectionSpacing[mpos] * 2 >= param.SpawnReservation + param.MinimumSpawnRadius)
-						{
-							spawnPreference[mpos] = spawnBias[mpos] * Math.Min(param.SpawnRegionSize, spawnPreference[mpos]);
-						}
-						else
-						{
-							spawnPreference[mpos] = 0;
-						}
-
-					var (chosenMPos, chosenValue) = CellLayerUtils.FindRandomBest(
-						spawnPreference,
+					var chosenCPos = terraformer.ChooseSpawnInZoneable(
 						playerRandom,
-						(a, b) => a.CompareTo(b));
-
-					if (chosenValue < 1)
-						throw new MapGenerationException("Not enough room for player spawns");
+						zoneable,
+						param.CentralSpawnReservationFraction,
+						param.MinimumSpawnRadius,
+						param.SpawnRegionSize,
+						param.SpawnReservation)
+							?? throw new MapGenerationException("Not enough room for player spawns");
 
 					var spawn = new ActorPlan(map, "mpspawn")
 					{
-						Location = chosenMPos.ToCPos(gridType),
+						Location = chosenCPos,
 					};
 
-					var preferedRange1024ths = (param.SpawnBuildSize + param.SpawnRegionSize * 2) * 512;
-					var resourceSpawnPreferences = new CellLayer<int>(map);
-					CellLayerUtils.WalkingDistances(
-						resourceSpawnPreferences,
+					var resourceSpawnPreferences = terraformer.TargetWalkingDistance(
+						terraformer.CheckSpace(param.PlayableTerrain, true),
+						terraformer.ErodeZones(zoneable, 1),
+						[chosenCPos],
+						new WDist((param.SpawnBuildSize + param.SpawnRegionSize * 2) * 512),
+						new WDist(param.SpawnRegionSize * 1024));
+					terraformer.AddDistributedActors(
+						playerRandom,
 						zoneable,
-						[chosenMPos.ToCPos(gridType)],
-						param.SpawnRegionSize * 1024);
-					foreach (var mpos in map.AllCells.MapCoords)
-					{
-						var v = resourceSpawnPreferences[mpos];
-						resourceSpawnPreferences[mpos] =
-							((v > preferedRange1024ths ? 2 * preferedRange1024ths - v : v) + 1023) / 1024;
-					}
+						resourceSpawnPreferences,
+						param.ResourceSpawnWeights,
+						param.SpawnResourceSpawns,
+						false,
+						new WDist(param.ResourceSpawnReservation * 1024));
 
-					var resourceSpawns = new List<ActorPlan>();
-					for (var resourceSpawn = 0; resourceSpawn < param.SpawnResourceSpawns; resourceSpawn++)
-					{
-						var (mpos, value) = CellLayerUtils.FindRandomBest(
-							resourceSpawnPreferences,
-							playerRandom,
-							(a, b) => a.CompareTo(b));
-						if (value <= 1)
-							break;
-
-						var resourceSpawnType = resourceSpawnTypes[playerRandom.PickWeighted(resourceSpawnWeights)];
-						var resourceSpawnPlan =
-							new ActorPlan(map, resourceSpawnType)
-							{
-								Location = mpos.ToCPos(gridType)
-							};
-						resourceSpawns.Add(resourceSpawnPlan);
-						CellLayerUtils.OverCircle(
-							cellLayer: resourceSpawnPreferences,
-							wCenter: resourceSpawnPlan.WPosLocation,
-							wRadius: 1024,
-							outside: false,
-							action: (mpos, _, _, _) => resourceSpawnPreferences[mpos] = 0);
-					}
-
-					var projectedSpawns = Symmetry.RotateAndMirrorActorPlan(spawn, param.Rotations, param.Mirror);
-					actorPlans.AddRange(projectedSpawns);
-					foreach (var projectedSpawn in projectedSpawns)
-						CellLayerUtils.OverCircle(
-							cellLayer: zoneable,
-							wCenter: projectedSpawn.WPosLocation,
-							wRadius: param.SpawnReservation * 1024,
-							outside: false,
-							action: (mpos, _, _, _) => zoneable[mpos] = false);
-
-					var projectedResourceSpawns = Symmetry.RotateAndMirrorActorPlans(resourceSpawns, param.Rotations, param.Mirror);
-					actorPlans.AddRange(projectedResourceSpawns);
-					foreach (var projectedResourceSpawn in projectedResourceSpawns)
-						CellLayerUtils.OverCircle(
-							cellLayer: zoneable,
-							wCenter: projectedResourceSpawn.WPosLocation,
-							wRadius: param.ResourceSpawnReservation * 1024,
-							outside: false,
-							action: (mpos, _, _, _) => zoneable[mpos] = false);
+					terraformer.ProjectPlaceDezoneActor(spawn, zoneable, new WDist(param.SpawnReservation * 1024));
 				}
 
 				// Expansions
@@ -1444,478 +790,113 @@ namespace OpenRA.Mods.Common.Traits
 					var resourceSpawnsRemaining = (int)(param.MaximumExpansionResourceSpawns * perSymmetryEntityMultiplier / EntityBonusMax);
 					while (resourceSpawnsRemaining > 0)
 					{
-						var roominess = new CellLayer<int>(map);
-						CellLayerUtils.ChebyshevRoom(roominess, zoneable, false);
-						foreach (var mpos in map.AllCells.MapCoords)
-							roominess[mpos] = Math.Min(
-								param.MaximumExpansionSize + param.ExpansionBorder,
-								Math.Min(roominess[mpos], projectionSpacing[mpos]));
-						var (chosenMPos, chosenValue) = CellLayerUtils.FindRandomBest(
-							roominess,
+						var added = terraformer.AddActorCluster(
 							expansionRandom,
-							(a, b) => a.CompareTo(b));
-						var room = chosenValue - 1;
-						var radius2 = room - param.ExpansionBorder;
-						if (radius2 < param.MinimumExpansionSize)
+							zoneable,
+							param.ResourceSpawnWeights,
+							Math.Min(resourceSpawnsRemaining, expansionRandom.Next(param.MaximumResourceSpawnsPerExpansion) + 1),
+							param.ExpansionInner,
+							param.MinimumExpansionSize,
+							param.MaximumExpansionSize,
+							param.ExpansionBorder,
+							true,
+							new WDist(param.ResourceSpawnReservation * 1024));
+						resourceSpawnsRemaining -= added;
+						if (added == 0)
 							break;
-						if (radius2 > param.MaximumExpansionSize)
-							radius2 = param.MaximumExpansionSize;
-						var radius1 = Math.Min(Math.Min(param.ExpansionInner, room), radius2);
-						var resourceSpawnCount = Math.Min(resourceSpawnsRemaining, expansionRandom.Next(param.MaximumResourceSpawnsPerExpansion) + 1);
-						resourceSpawnsRemaining -= resourceSpawnCount;
-
-						if (radius1 < 1)
-							break;
-
-						var resourceSpawns = new List<ActorPlan>();
-						var resourceSpawnPreferences = new CellLayer<int>(map);
-						var radius1Sq = radius1 * radius1;
-						CellLayerUtils.OverCircle(
-							cellLayer: resourceSpawnPreferences,
-							wCenter: CellLayerUtils.MPosToWPos(chosenMPos, gridType),
-							wRadius: radius2 * 1024,
-							outside: false,
-							action: (mpos, _, _, wrSq) =>
-							{
-								var rSq = (int)(wrSq / (1024 * 1024));
-								resourceSpawnPreferences[mpos] =
-									rSq >= radius1Sq ? rSq : 0;
-							});
-						for (var resourceSpawn = 0; resourceSpawn < resourceSpawnCount; resourceSpawn++)
-						{
-							var mpos = CellLayerUtils.PickWeighted(resourceSpawnPreferences, expansionRandom);
-							var resourceSpawnType = resourceSpawnTypes[playerRandom.PickWeighted(resourceSpawnWeights)];
-							var resourceSpawnPlan =
-								new ActorPlan(map, resourceSpawnType)
-								{
-									Location = mpos.ToCPos(gridType)
-								};
-							resourceSpawns.Add(resourceSpawnPlan);
-							CellLayerUtils.OverCircle(
-								cellLayer: resourceSpawnPreferences,
-								wCenter: resourceSpawnPlan.WPosLocation,
-								wRadius: 1024,
-								outside: false,
-								action: (mpos, _, _, _) => resourceSpawnPreferences[mpos] = 0);
-						}
-
-						var projectedResourceSpawns = Symmetry.RotateAndMirrorActorPlans(resourceSpawns, param.Rotations, param.Mirror);
-						actorPlans.AddRange(projectedResourceSpawns);
-						foreach (var projectedResourceSpawn in projectedResourceSpawns)
-							CellLayerUtils.OverCircle(
-								cellLayer: zoneable,
-								wCenter: projectedResourceSpawn.WPosLocation,
-								wRadius: param.ResourceSpawnReservation * 1024,
-								outside: false,
-								action: (mpos, _, _, _) => zoneable[mpos] = false);
 					}
 				}
 
 				// Neutral buildings
 				{
+					var (buildingTypes, buildingWeights) = Terraformer.SplitDictionary(param.BuildingWeights);
 					var targetBuildingCount =
 						(param.MaximumBuildings != 0)
-							? expansionRandom.Next(
+							? buildingRandom.Next(
 								(int)(param.MinimumBuildings * perSymmetryEntityMultiplier / EntityBonusMax),
 								(int)(param.MaximumBuildings * perSymmetryEntityMultiplier / EntityBonusMax) + 1)
 							: 0;
 					for (var i = 0; i < targetBuildingCount; i++)
-					{
-						var roominess = new CellLayer<int>(map);
-						CellLayerUtils.ChebyshevRoom(roominess, zoneable, false);
-						foreach (var mpos in map.AllCells.MapCoords)
-							roominess[mpos] = Math.Min(
-								3,
-								Math.Min(roominess[mpos], projectionSpacing[mpos]));
-						var (chosenMPos, chosenValue) = CellLayerUtils.FindRandomBest(
-							roominess,
+						terraformer.AddActor(
 							buildingRandom,
-							(a, b) => a.CompareTo(b));
-						if (chosenValue < 3)
-							break;
-						var chosenCPos = chosenMPos.ToCPos(gridType);
-						var typeChoice = buildingRandom.PickWeighted(buildingWeights);
-						var type = buildingTypes[typeChoice];
-						var actorPlan = new ActorPlan(map, type)
-						{
-							WPosCenterLocation = CellLayerUtils.CPosToWPos(chosenCPos, gridType),
-						};
-
-						var projectedBuildings = Symmetry.RotateAndMirrorActorPlan(actorPlan, param.Rotations, param.Mirror);
-						actorPlans.AddRange(projectedBuildings);
-						foreach (var projectedBuilding in projectedBuildings)
-							CellLayerUtils.OverCircle(
-								cellLayer: zoneable,
-								wCenter: projectedBuilding.WPosLocation,
-								wRadius: 2048,
-								outside: false,
-								action: (mpos, _, _, _) => zoneable[mpos] = false);
-					}
+							zoneable,
+							buildingTypes[buildingRandom.PickWeighted(buildingWeights)]);
 				}
 
 				// Grow resources
+				var targetResourceValue = param.ResourcesPerPlayer * entityMultiplier / EntityBonusMax;
+				if (targetResourceValue > 0)
 				{
-					var pattern1024ths = new CellLayer<int>(map);
-					NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
+					var resourcePattern = terraformer.ResourceNoise(
 						resourceRandom,
-						pattern1024ths,
-						param.Rotations,
-						param.Mirror,
 						param.ResourceFeatureSize,
-						wavelength => ClumpinessAmplitude(wavelength, param.OreClumpiness));
-					{
-						CellLayerUtils.CalibrateQuantileInPlace(
-							pattern1024ths,
-							0,
-							0, 1);
-						var max1024ths = pattern1024ths.Max();
-						var uniformity1024ths = param.OreUniformity * 1024 / FractionMax;
-						foreach (var mpos in map.AllCells.MapCoords)
-							pattern1024ths[mpos] = uniformity1024ths + 1024 * pattern1024ths[mpos] / max1024ths;
-					}
+						param.OreClumpiness,
+						param.OreUniformity * 1024 / FractionMax);
 
-					var strengths1024ths = new Dictionary<ResourceTypeInfo, CellLayer<int>>();
-					foreach (var actorPlan in actorPlans)
-					{
-						var type = actorPlan.Reference.Type;
-						if (param.ResourceSpawnWeights.ContainsKey(type))
-						{
-							var resource = param.ResourceSpawnSeeds[type];
-							if (!strengths1024ths.TryGetValue(resource, out var strength1024ths))
-							{
-								strength1024ths = new CellLayer<int>(map);
-								strength1024ths.Clear(1);
-								strengths1024ths.Add(resource, strength1024ths);
-							}
-
-							CellLayerUtils.OverCircle(
-								cellLayer: strength1024ths,
-								wCenter: actorPlan.WPosLocation,
-								wRadius: 16 * 1024,
-								outside: false,
-								action: (mpos, _, _, wrSq) =>
-									strength1024ths[mpos] +=
-										(int)(1024 * 1024 / (1024 + Exts.ISqrt(wrSq))));
-						}
-					}
-
-					var maxStrength1024ths = new CellLayer<int>(map);
-					maxStrength1024ths.Clear(1);
-					var bestResource = new CellLayer<ResourceTypeInfo>(map);
-					bestResource.Clear(param.DefaultResource);
-					foreach (var resourceStrength in strengths1024ths)
-					{
-						var resource = resourceStrength.Key;
-						var strength1024ths = resourceStrength.Value;
-						foreach (var mpos in map.AllCells.MapCoords)
-							if (strength1024ths[mpos] > maxStrength1024ths[mpos])
-							{
-								maxStrength1024ths[mpos] = strength1024ths[mpos];
-								bestResource[mpos] = resource;
-							}
-					}
-
-					// Closer to +inf means "more preferable" for plan.
-					var plan = new CellLayer<int>(map);
-					foreach (var mpos in map.AllCells.MapCoords)
-						plan[mpos] = pattern1024ths[mpos] * maxStrength1024ths[mpos];
-
+					var resourceBiases = new List<Terraformer.ResourceBias>();
 					var wSpawnBuildSizeSq = (long)param.SpawnBuildSize * param.SpawnBuildSize * 1024 * 1024;
-					foreach (var actorPlan in actorPlans)
-						if (actorPlan.Reference.Type == "mpspawn")
-							CellLayerUtils.OverCircle(
-								cellLayer: plan,
-								wCenter: actorPlan.WPosLocation,
-								wRadius: param.SpawnRegionSize * 2 * 1024,
-								outside: false,
-								action: (mpos, _, _, rSq) =>
-									plan[mpos] += (int)(plan[mpos] * param.SpawnResourceBias * wSpawnBuildSizeSq / Math.Max(rSq, 1024 * 1024) / FractionMax));
 
-					foreach (var mpos in map.AllCells.MapCoords)
-						if (!playableArea[mpos] || !param.AllowedTerrainResourceCombos.Contains((bestResource[mpos], map.GetTerrainIndex(mpos))))
-							plan[mpos] = -int.MaxValue;
-
-					foreach (var actorPlan in actorPlans)
-						if (actorPlan.Reference.Type == "mpspawn")
-							CellLayerUtils.OverCircle(
-								cellLayer: plan,
-								wCenter: actorPlan.WPosLocation,
-								wRadius: param.SpawnBuildSize * 1024,
-								outside: false,
-								action: (mpos, _, _, _) => plan[mpos] = -int.MaxValue);
-
-					foreach (var actorPlan in actorPlans)
-						foreach (var (cpos, _) in actorPlan.Footprint())
-							if (plan.Contains(cpos))
-								plan[cpos] = -int.MaxValue;
-
-					// Improve symmetry.
+					// Bias towards resource spawns
+					foreach (var (actorType, resourceType) in param.ResourceSpawnSeeds.OrderBy(kv => kv.Key))
 					{
-						var newPlan = new CellLayer<int>(map);
-						Symmetry.RotateAndMirrorOverCPos(
-							plan,
-							param.Rotations,
-							param.Mirror,
-							(sources, destination)
-								=> newPlan[destination] =
-									sources.Min(source => plan.TryGetValue(source, out var value) ? value : -int.MaxValue));
-						plan = newPlan;
+						resourceBiases.AddRange(
+							terraformer.ActorsOfType(actorType)
+								.Select(a => new Terraformer.ResourceBias(a)
+								{
+									BiasRadius = new WDist(16 * 1024),
+									Bias = (value, rSq) => value + (int)(1024 * 1024 / (1024 + Exts.ISqrt(rSq))),
+									ResourceType = resourceType,
+								}));
 					}
 
-					var remaining = param.ResourcesPerPlayer * entityMultiplier / EntityBonusMax;
+					// Bias towards player spawns, but also reserve an area for base building.
+					resourceBiases.AddRange(
+						terraformer.ActorsOfType("mpspawn")
+							.Select(a => new Terraformer.ResourceBias(a)
+							{
+								ExclusionRadius = new WDist(param.SpawnBuildSize * 1024),
+								BiasRadius = new WDist(param.SpawnRegionSize * 2 * 1024),
+								Bias = (value, rSq) => value + (int)(value * param.SpawnResourceBias * wSpawnBuildSizeSq / Math.Max(rSq, 1024 * 1024) / FractionMax),
+							}));
 
-					// Closer to -inf means "more preferable" for priorities.
-					var priorities = new PriorityArray<int>(
-						plan.Size.Width * plan.Size.Height,
-						int.MaxValue);
-					{
-						var i = 0;
-						foreach (var v in plan)
-							priorities[i++] = -v;
-					}
-
-					int PriorityIndex(MPos mpos) => mpos.V * plan.Size.Width + mpos.U;
-					MPos PriorityMPos(int index)
-					{
-						var v = Math.DivRem(index, plan.Size.Width, out var u);
-						return new MPos(u, v);
-					}
-
-					map.Resources.Clear();
-
-					// Return resource value of a given square.
-					// Matches the logic in ResourceLayer trait.
-					int CheckValue(CPos cpos)
-					{
-						if (!map.Resources.Contains(cpos))
-							return 0;
-						var resource = map.Resources[cpos].Type;
-						if (resource == 0)
-							return 0;
-
-						var resourceType = bestResource[cpos];
-
-						var adjacent = 0;
-						var directions = CVec.Directions;
-						for (var i = 0; i < directions.Length; i++)
-						{
-							var c = cpos + directions[i];
-							if (map.Resources.Contains(c) && map.Resources[c].Type == resource)
-								++adjacent;
-						}
-
-						// We need to have at least one resource in the cell.
-						// HACK: we should not be lerping to 9, as maximum adjacent resources is 8.
-						// HACK: it's too disruptive to fix.
-						var density = Math.Max(int2.Lerp(0, resourceType.MaxDensity, adjacent, 9), 1);
-
-						return param.ResourceValues[resourceType] * density;
-					}
-
-					int CheckValue3By3(CPos cpos)
-					{
-						var total = 0;
-						for (var y = -1; y <= 1; y++)
-							for (var x = -1; x <= 1; x++)
-								total += CheckValue(cpos + new CVec(x, y));
-
-						return total;
-					}
-
-					// Set and return change in overall value.
-					int AddResource(CPos cpos)
-					{
-						var mpos = cpos.ToMPos(gridType);
-						priorities[PriorityIndex(mpos)] = int.MaxValue;
-						zoneable[mpos] = false;
-
-						// Generally shouldn't happen, but perhaps a rotation/mirror related inaccuracy.
-						if (map.Resources[mpos].Type != 0)
-							return 0;
-
-						var resourceType = bestResource[mpos];
-						var oldValue = CheckValue3By3(cpos);
-						map.Resources[mpos] = new ResourceTile(
-							resourceType.ResourceIndex,
-							(byte)resourceType.MaxDensity);
-						var newValue = CheckValue3By3(cpos);
-						return newValue - oldValue;
-					}
-
-					while (remaining > 0)
-					{
-						var n = priorities.GetMinIndex();
-						if (priorities[n] == int.MaxValue)
-							break;
-
-						var chosenMPos = PriorityMPos(n);
-						var chosenCPos = chosenMPos.ToCPos(gridType);
-						foreach (var cpos in Symmetry.RotateAndMirrorCPos(chosenCPos, plan, param.Rotations, param.Mirror))
-							if (map.Resources.Contains(cpos))
-								remaining -= AddResource(cpos);
-					}
+					var (plan, typePlan) = terraformer.PlanResources(
+						resourcePattern,
+						CellLayerUtils.Intersect([playable, terraformer.CheckSpace(null, true)]),
+						param.DefaultResource,
+						resourceBiases);
+					terraformer.GrowResources(
+						plan,
+						typePlan,
+						targetResourceValue);
+					terraformer.ZoneFromResources(zoneable, false);
 				}
 
 				// CivilianBuildings
 				if (param.CivilianBuildings > 0)
 				{
-					var space = new CellLayer<bool>(map);
-					foreach (var mpos in map.AllCells.MapCoords)
-						space[mpos] = param.PlayableTerrain.Contains(templatedTerrainInfo.GetTerrainIndex(map.Tiles[mpos]));
-
-					foreach (var actorPlan in actorPlans)
-						foreach (var (cpos, _) in actorPlan.Footprint())
-							if (space.Contains(cpos))
-								space[cpos] = false;
-
-					var matrixSpace = CellLayerUtils.ToMatrix(space, true);
-					var deflated = MatrixUtils.DeflateSpace(matrixSpace, false);
-					var kernel = new Matrix<bool>(2, 2).Fill(true);
-					var reservedMatrix = MatrixUtils.KernelDilateOrErode(deflated.Map(v => v != 0), kernel, new int2(0, 0), true);
-					var reserved = new CellLayer<bool>(map);
-					CellLayerUtils.FromMatrix(reserved, reservedMatrix, true);
-
-					var decorationNoise = new CellLayer<int>(map);
-					NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
+					var decorationNoise = terraformer.DecorationPattern(
 						decorationRandom,
-						decorationNoise,
-						param.Rotations,
-						param.Mirror,
+						terraformer.CheckSpace(param.PlayableTerrain, true),
+						CellLayerUtils.Intersect([zoneable, terraformer.CheckSpace(param.LandTile)]),
+						param.CivilianBuildings,
 						param.CivilianBuildingsFeatureSize,
-						wavelength => 1);
-
-					var densityNoise = new CellLayer<int>(map);
-					NoiseUtils.SymmetricFractalNoiseIntoCellLayer(
-						decorationRandom,
-						densityNoise,
-						param.Rotations,
-						param.Mirror,
-						1024,
-						NoiseUtils.PinkAmplitude);
-					CellLayerUtils.CalibrateQuantileInPlace(
-						densityNoise,
-						0,
-						FractionMax - param.CivilianBuildingDensity, FractionMax);
-
-					var decorable = new CellLayer<bool>(map);
-					var totalDecorable = 0;
-					foreach (var mpos in map.AllCells.MapCoords)
-					{
-						var isDecorable =
-							map.Tiles[mpos].Type == param.LandTile
-								&& zoneable[mpos] && space[mpos] && !reserved[mpos] && densityNoise[mpos] >= 0;
-						decorable[mpos] = isDecorable;
-						if (isDecorable)
-							totalDecorable++;
-						else
-							decorationNoise[mpos] = -1024 * 1024;
-					}
-
-					var mapArea = map.MapSize.Width * map.MapSize.Height;
-					CellLayerUtils.CalibrateQuantileInPlace(
-						decorationNoise,
-						0,
-						mapArea - totalDecorable * param.CivilianBuildings / FractionMax, mapArea);
-					foreach (var mpos in map.AllCells.MapCoords)
-						if (decorationNoise[mpos] < 0)
-							decorable[mpos] = false;
-
-					for (var i = 0; i < 8; i++)
-					{
-						var (blurred, changes) = MatrixUtils.BooleanBlur(
-							CellLayerUtils.ToMatrix(decorable, false),
-							param.CivilianBuildingDensityRadius,
-							FractionMax - param.MinimumCivilianBuildingDensity, FractionMax);
-						if (changes == 0)
-							break;
-
-						var densityFilter = new CellLayer<bool>(map);
-						CellLayerUtils.FromMatrix(densityFilter, blurred);
-
-						foreach (var mpos in map.AllCells.MapCoords)
-							if (!densityFilter[mpos])
-								decorable[mpos] = false;
-					}
-
-					// Improve symmetry.
-					{
-						var newDecorable = new CellLayer<bool>(map);
-						Symmetry.RotateAndMirrorOverCPos(
-							decorable,
-							param.Rotations,
-							param.Mirror,
-							(sources, destination)
-								=> newDecorable[destination] =
-									sources.All(source => decorable.TryGetValue(source, out var value) && value));
-						decorable = newDecorable;
-					}
-
-					var replace = new CellLayer<MultiBrush.Replaceability>(map);
-					foreach (var mpos in map.AllCells.MapCoords)
-						replace[mpos] = decorable[mpos] ? MultiBrush.Replaceability.Actor : MultiBrush.Replaceability.None;
-
-					MultiBrush.PaintArea(
-						map,
-						actorPlans,
-						replace,
-						param.CivilianBuildingsObstacles,
+						param.CivilianBuildingDensity,
+						param.MinimumCivilianBuildingDensity,
+						param.CivilianBuildingDensityRadius);
+					terraformer.PaintActors(
 						decorationTilingRandom,
+						decorationNoise,
+						param.CivilianBuildingsObstacles,
 						alwaysPreferLargerBrushes: true);
 				}
 			}
 
 			// Cosmetically repaint tiles
-			foreach (var (tile, collection) in param.RepaintTiles.OrderBy(kv => kv.Key))
-			{
-				var replace = new CellLayer<MultiBrush.Replaceability>(map);
-				foreach (var mpos in replace.CellRegion.MapCoords)
-					replace[mpos] =
-						map.Tiles[mpos].Type == tile
-							? MultiBrush.Replaceability.Any
-							: MultiBrush.Replaceability.None;
+			terraformer.RepaintTiles(repaintRandom, param.RepaintTiles);
 
-				MultiBrush.PaintArea(map, actorPlans, replace, collection, repaintRandom);
-			}
-
-			map.PlayerDefinitions = new MapPlayers(map.Rules, param.Players).ToMiniYaml();
-			map.ActorDefinitions = actorPlans
-				.Select((plan, i) => new MiniYamlNode($"Actor{i}", plan.Reference.Save()))
-				.ToImmutableArray();
+			terraformer.BakeMap();
 
 			return map;
-		}
-
-		static CellLayer<MultiBrush.Replaceability> IdentifyReplaceableTiles(
-			Map map,
-			Dictionary<TerrainTile, MultiBrush.Replaceability> replaceabilityMap,
-			IEnumerable<ActorPlan> actorPlans)
-		{
-			var output = new CellLayer<MultiBrush.Replaceability>(map);
-
-			foreach (var mpos in map.AllCells.MapCoords)
-			{
-				var tile = map.Tiles[mpos];
-				var replaceability = MultiBrush.Replaceability.Any;
-				if (replaceabilityMap.TryGetValue(tile, out var value))
-					replaceability = value;
-				output[mpos] = replaceability;
-			}
-
-			if (actorPlans != null)
-				foreach (var actorPlan in actorPlans)
-					foreach (var cpos in actorPlan.Footprint().Keys)
-						if (map.AllCells.Contains(cpos))
-							output[cpos] = MultiBrush.Replaceability.None;
-
-			return output;
-		}
-
-		static int ClumpinessAmplitude(int wavelength, int clumpiness)
-		{
-			var amplitude = wavelength;
-			for (var i = 0; i < clumpiness; i++)
-				amplitude = Exts.ISqrt(amplitude);
-			return amplitude;
 		}
 
 		string IEditorToolInfo.Label => Name;

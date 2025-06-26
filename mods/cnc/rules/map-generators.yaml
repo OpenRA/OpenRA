@@ -23,7 +23,7 @@
 						MaximumAltitude: 8
 						RoughnessRadius: 5
 						Roughness: 500
-						MinimumTerrainContourSpacing: 6
+						MinimumTerrainContourSpacing: 5
 						MinimumCliffLength: 10
 						ForestClumpiness: 1
 						DenyWalledAreas: True
@@ -60,11 +60,8 @@
 							splitblue: BlueTiberium
 						ClearTerrain: Clear
 						PlayableTerrain: Beach,BlueTiberium,Bridge,Clear,Road,Rough,Tiberium,Wall
-						PartiallyPlayableTerrain: River,Tree,Water
-						UnplayableTerrain: Rock
 						DominantTerrain: River,Rock,Tree,Water
 						ZoneableTerrain: Clear,Road
-						PartiallyPlayableCategories: Beach,Road
 						ClearSegmentTypes: Clear
 						BeachSegmentTypes: Beach
 						CliffSegmentTypes: Cliff
@@ -158,16 +155,14 @@
 					Label: label-cnc-map-generator-choice-terrain-type-mountains
 					Settings:
 						Water: 0
-						Mountains: 1000
+						Mountains: 900
 						Roughness: 600
-						MinimumTerrainContourSpacing: 5
 				Choice@MountainLakes:
 					Label: label-cnc-map-generator-choice-terrain-type-mountain-lakes
 					Settings:
 						Water: 200
-						Mountains: 1000
+						Mountains: 900
 						Roughness: 850
-						MinimumTerrainContourSpacing: 5
 			MultiChoiceOption@Shape:
 				Label: label-cnc-map-generator-option-shape
 				Default: Square

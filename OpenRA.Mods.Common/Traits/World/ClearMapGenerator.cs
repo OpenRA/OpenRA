@@ -9,11 +9,9 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.MapGenerator;
-using OpenRA.Mods.Common.Terrain;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -76,43 +74,21 @@ namespace OpenRA.Mods.Common.Traits
 			var random = new MersenneTwister();
 			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
 
-			var map = new Map(modData, terrainInfo, args.Size);
-			var maxTerrainHeight = map.Grid.MaximumTerrainHeight;
-			var tl = new PPos(1, 1 + maxTerrainHeight);
-			var br = new PPos(args.Size.Width - 1, args.Size.Height + maxTerrainHeight - 1);
-			map.SetBounds(tl, br);
-
 			if (!Exts.TryParseUshortInvariant(args.Settings.NodeWithKey("Tile").Value.Value, out var tileType))
 				throw new YamlException("Illegal tile type");
 
-			var tile = new TerrainTile(tileType, 0);
-			if (!terrainInfo.TryGetTerrainInfo(tile, out var _))
+			if (!terrainInfo.TryGetTerrainInfo(new TerrainTile(tileType, 0), out var _))
 				throw new MapGenerationException("Illegal tile type");
 
-			// If the default terrain tile is part of a PickAny template, pick
-			// a random tile index. Otherwise, just use the default tile.
-			Func<TerrainTile> tilePicker;
-			if (map.Rules.TerrainInfo is ITemplatedTerrainInfo templatedTerrainInfo &&
-				templatedTerrainInfo.Templates.TryGetValue(tileType, out var template) &&
-				template.PickAny)
-			{
-				tilePicker = () => new TerrainTile(tileType, (byte)random.Next(0, template.TilesCount));
-			}
-			else
-			{
-				tilePicker = () => tile;
-			}
+			var map = new Map(modData, terrainInfo, args.Size);
+			var terraformer = new Terraformer(args, map, modData, [], Symmetry.Mirror.None, 1);
 
-			foreach (var cell in map.AllCells)
-			{
-				var mpos = cell.ToMPos(map);
-				map.Tiles[mpos] = tilePicker();
-				map.Resources[mpos] = new ResourceTile(0, 0);
-				map.Height[mpos] = 0;
-			}
+			terraformer.InitMap();
 
-			map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
-			map.ActorDefinitions = [];
+			foreach (var mpos in map.AllCells.MapCoords)
+				map.Tiles[mpos] = terraformer.PickTile(random, tileType);
+
+			terraformer.BakeMap();
 
 			return map;
 		}

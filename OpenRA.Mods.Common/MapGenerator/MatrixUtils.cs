@@ -23,6 +23,164 @@ namespace OpenRA.Mods.Common.MapGenerator
 	{
 		public const int MaxBinomialKernelRadius = 10;
 
+		public enum DumpAdjustment
+		{
+			/// <summary>Make no adjustment.</summary>
+			None,
+
+			/// <summary>Normalize the matrix amplitude to the color range.</summary>
+			Normalize,
+
+			/// <summary>
+			/// Normalize the matrix amplitude, but uniformally extend away from zero by a small
+			/// amount to help identify the sign of martix values.
+			/// </summary>
+			Emphasize,
+		}
+
+		public enum GraphMode
+		{
+			/// <summary>
+			/// The plotted value is the latest sequence touching a cell + 1.
+			/// </summary>
+			Identifier,
+
+			/// <summary>
+			/// The plotted value is the (latest) point index in the (latest) sequence touching a
+			/// cell.
+			/// </summary>
+			Gradient,
+
+			/// <summary>The plotted value is the count of points touching a cell.</summary>
+			Accumulate,
+		}
+
+		/// <summary>
+		/// <para>
+		/// Debugging method that prints a matrix to stderr using color only (not value listing).
+		/// </para>
+		/// <para>
+		/// Orange &lt; -255, -255 &lt;= Red &lt; 0, Black == 0, 0 &lt; Blue &lt;= 255,
+		/// 255 &lt; Cyan. Faint green is used for distance markings.
+		/// </para>
+		/// <para>
+		/// The matrix can optionally be preprocessed for easier visual interpretation using a
+		/// DumpAdjustment.
+		/// </para>
+		/// </summary>
+		public static void ColorDump2d(
+			string label,
+			Matrix<int> matrix,
+			DumpAdjustment adjustment = DumpAdjustment.None)
+		{
+			Console.Error.WriteLine($"{label}: {matrix.Size.X} by {matrix.Size.Y}, {matrix.Data.Min()} to {matrix.Data.Max()}");
+
+			switch (adjustment)
+			{
+				case DumpAdjustment.Normalize:
+					matrix = NormalizeRangeInPlace(matrix.Clone(), 255);
+					break;
+				case DumpAdjustment.Emphasize:
+					matrix = NormalizeRangeInPlace(matrix.Clone(), 224)
+						.Map(v => v += Math.Sign(v) * 31);
+					break;
+				default:
+					break;
+			}
+
+			for (var y = 0; y < matrix.Size.Y; y++)
+			{
+				for (var x = 0; x < matrix.Size.X; x++)
+				{
+					var v = matrix[x, y];
+					int r = 0, g = 0, b = 0;
+
+					if (v < -255)
+					{
+						r = 255;
+						g = 192;
+					}
+					else if (v < 0)
+					{
+						r = -v;
+					}
+					else if (v == 0)
+					{
+					}
+					else if (v <= 255)
+					{
+						b = v;
+						g = v / 4;
+					}
+					else
+					{
+						// v > 255
+						b = 255;
+						g = 192;
+					}
+
+					g += (((x & 4) != (y & 4)) ? 1 : 0) * (((x & 16) != (y & 16)) ? 48 : 32);
+
+					Console.Error.Write(string.Format(NumberFormatInfo.InvariantInfo, "\u001b[48;2;{0};{1};{2}m  ", r, g, b));
+				}
+
+				Console.Error.Write("\u001b[0m\n");
+			}
+
+			Console.Error.WriteLine("");
+			Console.Error.Flush();
+		}
+
+		public static void ColorDump2d(
+			string label,
+			Matrix<bool> matrix)
+		{
+			ColorDump2d(label, matrix.Map(v => v ? 255 : -255));
+		}
+
+		/// <summary>
+		/// Debugging method that prints a matrix of enum-like values to stderr, where values are
+		/// mapped to one of 27 different colors. Red, green, and blue values represent base-3
+		/// digits of increasing significance. Unmappable values produce white. A corresponding
+		/// letter of the latin alphabet is also written in the right of cells greater than zero.
+		/// E.g., 21_base10 = 210_base3 = bright blue + medium green + no red, letter U.
+		/// </summary>
+		public static void EnumDump2d(string label, Matrix<int> matrix)
+		{
+			Console.Error.WriteLine($"{label}: {matrix.Size.X} by {matrix.Size.Y}, {matrix.Data.Min()} to {matrix.Data.Max()}");
+			for (var y = 0; y < matrix.Size.Y; y++)
+			{
+				for (var x = 0; x < matrix.Size.X; x++)
+				{
+					var v = matrix[x, y];
+					if (v < 0 || v > 26)
+						v = 26;
+
+					var r = 127 * (v / 1 % 3);
+					var g = 127 * (v / 3 % 3);
+					var b = 127 * (v / 9 % 3);
+					var f = (r + g + b <= 127) ? 37 : 30;
+					var c = v > 0 ? (char)(64 + v) : '.';
+					Console.Error.Write(string.Format(NumberFormatInfo.InvariantInfo, "\u001b[{0};48;2;{1};{2};{3}m {4}", f, r, g, b, c));
+
+					// if (v < 0 || v >= 15)
+					// 	v = 15;
+					// var code = (v < 8 ? 40 : 92) + v;
+					// Console.Error.Write(string.Format(NumberFormatInfo.InvariantInfo, "\u001b[{0}m .", code));
+				}
+
+				Console.Error.Write("\u001b[0m\n");
+			}
+
+			Console.Error.WriteLine("");
+			Console.Error.Flush();
+		}
+
+		public static void EnumDump2d<T>(string label, Matrix<T> matrix) where T : Enum
+		{
+			EnumDump2d(label, matrix.Map(v => Convert.ToInt32(v, NumberFormatInfo.InvariantInfo)));
+		}
+
 		/// <summary>
 		/// Debugging method that prints a matrix to stderr.
 		/// </summary>
@@ -97,6 +255,55 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
+		/// Plot multiple point sequences onto a matrix for debugging visualization. The matrix is
+		/// fit to the shape of all the path.
+		/// </summary>
+		public static Matrix<int> GraphPoints(
+			IEnumerable<IEnumerable<int2>> pointArrays,
+			GraphMode mode = GraphMode.Identifier)
+		{
+			var pointArrayArray = pointArrays.Select(a => a.ToArray()).ToArray();
+			var allPoints = pointArrayArray.SelectMany(p => p).ToArray();
+			if (allPoints.Length == 0)
+				return new Matrix<int>(1, 1).Fill(int.MinValue);
+
+			var topLeft = new int2(allPoints.Min(p => p.X), allPoints.Min(p => p.Y));
+			var bottomRight = new int2(allPoints.Max(p => p.X), allPoints.Max(p => p.Y));
+			var size = bottomRight - topLeft + new int2(1, 1);
+			var matrix = new Matrix<int>(size).Fill(mode == GraphMode.Gradient ? -1 : 0);
+			for (var j = 0; j < pointArrayArray.Length; j++)
+			{
+				var pointArray = pointArrayArray[j];
+				for (var i = 0; i < pointArray.Length; i++)
+					switch (mode)
+					{
+						case GraphMode.Identifier:
+							matrix[pointArray[i] - topLeft] = j + 1;
+							break;
+						case GraphMode.Gradient:
+							matrix[pointArray[i] - topLeft] = i;
+							break;
+						case GraphMode.Accumulate:
+							matrix[pointArray[i] - topLeft]++;
+							break;
+					}
+			}
+
+			return matrix;
+		}
+
+		/// <summary>
+		/// Plot a point sequence onto a matrix for debugging visualization. The matrix is fit to
+		/// the shape of the path.
+		/// </summary>
+		public static Matrix<int> GraphPoints(
+			IEnumerable<int2> points,
+			GraphMode mode = GraphMode.Identifier)
+		{
+			return GraphPoints([points], mode);
+		}
+
+		/// <summary>
 		/// <para>
 		/// Perform a generic flood fill starting at seeds <c>[(xy, prop), ...]</c>.
 		/// </para>
@@ -166,12 +373,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// int.MaxValue.
 		/// </para>
 		/// </summary>
-		public static Matrix<int> WalkingDistances(Matrix<bool> passable, IEnumerable<int2> seeds, int maxDistance)
+		public static Matrix<WDist> WalkingDistances(Matrix<bool> passable, IEnumerable<int2> seeds, WDist maxDistance)
 		{
 			const int Diagonal = 1448;
 			const int Straight = 1024;
 
-			var output = new Matrix<int>(passable.Size).Fill(int.MaxValue);
+			var output = new Matrix<WDist>(passable.Size).Fill(WDist.MaxValue);
 			var unprocessed = new PriorityArray<int>(passable.Size.X * passable.Size.Y, int.MaxValue);
 			foreach (var seed in seeds)
 				unprocessed[passable.Index(seed)] = 0;
@@ -182,11 +389,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var distance = unprocessed[i];
 				var xy = passable.XY(i);
 
-				if (distance > maxDistance)
+				if (distance > maxDistance.Length)
 					break;
 
-				if (distance <= maxDistance && output.ContainsXY(xy))
-					output[xy] = distance;
+				if (distance <= maxDistance.Length && output.ContainsXY(xy))
+					output[xy] = new WDist(distance);
 				unprocessed[i] = int.MaxValue;
 
 				foreach (var (offset, direction) in DirectionExts.Spread8D)
@@ -196,7 +403,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						continue;
 					if (!passable[nextXY])
 						continue;
-					if (output[nextXY] != int.MaxValue)
+					if (output[nextXY] != WDist.MaxValue)
 						continue;
 					int nextDistance;
 					if (direction.IsDiagonal())
@@ -712,8 +919,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
-		/// Uniformally add to or subtract from all cells such that count out of every outOf cells,
-		/// are no greater than the given target value.
+		/// Uniformally add to or subtract from all cells such that the quantile (count/outOf) has at the target value.
+		/// For example, (target: 0, count: 25, outOf: 75) where there are 401 cells would mean
+		/// that 100 cells are no greater than 0, 300 cells are no less than 0, and at least 1 cell
+		/// is 0.
 		/// </summary>
 		public static void CalibrateQuantileInPlace(Matrix<int> matrix, int target, int count, int outOf)
 		{
@@ -722,6 +931,23 @@ namespace OpenRA.Mods.Common.MapGenerator
 			var adjustment = target - sorted[(long)(sorted.Length - 1) * count / outOf];
 			for (var i = 0; i < matrix.Data.Length; i++)
 				matrix[i] += adjustment;
+		}
+
+		/// <summary>
+		/// Return a boolean matrix where true correlates with the largest values in the input,
+		/// such that the fraction of true cells is at least (but approximately) count/outOf.
+		/// </summary>
+		public static Matrix<bool> CalibratedBooleanThreshold(Matrix<int> input, int count, int outOf)
+		{
+			if (count <= 0)
+				return new Matrix<bool>(input.Size);
+			else if (count >= outOf)
+				return new Matrix<bool>(input.Size).Fill(true);
+
+			var sorted = (int[])input.Data.Clone();
+			Array.Sort(sorted);
+			var threshold = sorted[(long)sorted.Length * (outOf - count) / outOf];
+			return input.Map(v => v >= threshold);
 		}
 
 		/// <summary>
@@ -785,12 +1011,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <para>
 		/// Given a set of grid-intersection point arrays, creates a matrix where each cell
 		/// identifies whether the closest points are wrapping around it clockwise or
-		/// counter-clockwise (as defined in MapUtils.Direction).
+		/// counter-clockwise (as defined in MapGenerator.Direction).
 		/// </para>
 		/// <para>
 		/// Positive output values indicate the points are wrapping around it clockwise.
 		/// Negative output values indicate the points are wrapping around it counter-clockwise.
 		/// Outputs can be zero or non-unit magnitude if there are fighting point arrays.
+		/// </para>
+		/// <para>
+		/// If no points are on or close enough to the matrix area, returns null.
 		/// </para>
 		/// </summary>
 		public static Matrix<int> PointsChirality(int2 size, IEnumerable<int2[]> pointArrayArray)
@@ -809,6 +1038,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			foreach (var pointArray in pointArrayArray)
+			{
 				for (var i = 1; i < pointArray.Length; i++)
 				{
 					var from = pointArray[i - 1];
@@ -838,6 +1068,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 							throw new ArgumentException("Unsupported direction for chirality");
 					}
 				}
+			}
+
+			if (seeds.Count == 0)
+				return null;
 
 			int? FillChirality(int2 point, int prop)
 			{

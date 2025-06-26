@@ -241,6 +241,53 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Brushes = permittedTemplates;
 		}
 
+		/// <summary>
+		/// Convenience method to create TilingPaths using common settings.
+		/// Start and end terminal types are the same.
+		/// PermittedSegments are derived from brushes and inner/terminal types.
+		/// Loops will automatically use only the inner type.
+		/// Uses automatic end deviation and loop optimization.
+		/// </summary>
+		public static TilingPath QuickCreate(
+			Map map,
+			IReadOnlyList<MultiBrush> brushes,
+			CPos[] points,
+			int maxDeviation,
+			string innerSegmentType,
+			string terminalSegmentType)
+		{
+			var nonLoopedRoadPermittedTemplates =
+				PermittedSegments.FromInnerAndTerminalTypes(
+					brushes, [innerSegmentType], [terminalSegmentType]);
+			var loopedRoadPermittedTemplates =
+				PermittedSegments.FromType(brushes, [innerSegmentType]);
+
+			var isLoop = points[0] == points[^1];
+			TilingPath path;
+			if (isLoop)
+				path = new TilingPath(
+					map,
+					points,
+					maxDeviation,
+					innerSegmentType,
+					innerSegmentType,
+					loopedRoadPermittedTemplates);
+			else
+				path = new TilingPath(
+					map,
+					points,
+					maxDeviation,
+					terminalSegmentType,
+					terminalSegmentType,
+					nonLoopedRoadPermittedTemplates);
+
+			path
+				.SetAutoEndDeviation()
+				.OptimizeLoop();
+
+			return path;
+		}
+
 		sealed class TilingSegment
 		{
 			public readonly MultiBrush MultiBrush;
@@ -1358,6 +1405,46 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			return true;
+		}
+
+		/// <summary>Applies StraightenEndsPathPoints to this TilingPath, returning this.</summary>
+		public TilingPath StraightenEnds(
+			int shrink,
+			int grow,
+			int minimumLength,
+			int growthInertialRange)
+		{
+			Points = StraightenEndsPathPoints(
+				Points,
+				CellLayerUtils.CellBounds(Map),
+				shrink,
+				grow,
+				minimumLength,
+				growthInertialRange);
+			return this;
+		}
+
+		/// <summary>
+		/// Straighten the start and end of a path by shrinking and regrowing a straight section.
+		/// </summary>
+		/// <param name="points">Points of the path.</param>
+		/// <param name="bounds">Map bounds, used to identify paths touching edges.</param>
+		/// <param name="shrink">Distance to shrink path ends (before regrowing them).</param>
+		/// <param name="grow">Distance to regrow path ends with straightening (after shrinking).</param>
+		/// <param name="minimumLength">The minimum length (after shrinking, before growth) that paths may be.</param>
+		/// <param name="growthInertialRange">How many points are used to decide the regrowth direction.</param>
+		public static CPos[] StraightenEndsPathPoints(
+			CPos[] points,
+			Rectangle bounds,
+			int shrink,
+			int grow,
+			int minimumLength,
+			int growthInertialRange)
+		{
+			points = ExtendEdgePathPoints(points, bounds, 2 * shrink + minimumLength);
+			points = ShrinkPathPoints(points, shrink, minimumLength);
+			points = InertiallyExtendPathPoints(points, grow, growthInertialRange);
+			return points;
 		}
 
 		/// <summary>Set MaxEndDeviation.</summary>
