@@ -12,21 +12,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
 namespace OpenRA
 {
-	static class ListExts
+	static class SpanExts
 	{
-		public static int BinarySearchMany(this List<Actor> list, uint searchFor)
+		public static int BinarySearchMany(this Span<Actor> span, uint searchFor)
 		{
 			var start = 0;
-			var end = list.Count;
+			var end = span.Length;
 			while (start != end)
 			{
 				var mid = (start + end) / 2;
-				if (list[mid].ActorID < searchFor)
+				if (span[mid].ActorID < searchFor)
 					start = mid + 1;
 				else
 					end = mid;
@@ -150,7 +151,8 @@ namespace OpenRA
 
 			public void Add(Actor actor, object trait)
 			{
-				var insertIndex = actors.BinarySearchMany(actor.ActorID + 1);
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var insertIndex = actorsSpan.BinarySearchMany(actor.ActorID + 1);
 				actors.Insert(insertIndex, actor);
 				traits.Insert(insertIndex, (T)trait);
 			}
@@ -167,11 +169,12 @@ namespace OpenRA
 			public T GetOrDefault(Actor actor)
 			{
 				++Queries;
-				var index = actors.BinarySearchMany(actor.ActorID);
-				if (index >= actors.Count || actors[index] != actor)
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var index = actorsSpan.BinarySearchMany(actor.ActorID);
+				if (index >= actorsSpan.Length || actorsSpan[index] != actor)
 					return default;
 
-				if (index + 1 < actors.Count && actors[index + 1] == actor)
+				if (index + 1 < actorsSpan.Length && actorsSpan[index + 1] == actor)
 					throw new InvalidOperationException($"Actor {actor.Info.Name} has multiple traits of type `{typeof(T)}`");
 
 				return traits[index];
@@ -208,7 +211,7 @@ namespace OpenRA
 					Reset();
 				}
 
-				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
+				public void Reset() { index = CollectionsMarshal.AsSpan(actors).BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
 				public readonly T Current => traits[index];
 				readonly object System.Collections.IEnumerator.Current => Current;
@@ -283,12 +286,13 @@ namespace OpenRA
 
 			public void RemoveActor(uint actor)
 			{
-				var startIndex = actors.BinarySearchMany(actor);
-				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var startIndex = actorsSpan.BinarySearchMany(actor);
+				if (startIndex >= actorsSpan.Length || actorsSpan[startIndex].ActorID != actor)
 					return;
 
 				var endIndex = startIndex + 1;
-				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+				while (endIndex < actorsSpan.Length && actorsSpan[endIndex].ActorID == actor)
 					endIndex++;
 
 				var count = endIndex - startIndex;
@@ -298,17 +302,23 @@ namespace OpenRA
 
 			public void ApplyToAll(Action<Actor, T> action)
 			{
-				for (var i = 0; i < actors.Count; i++)
-					action(actors[i], traits[i]);
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var traitsSpan = CollectionsMarshal.AsSpan(traits);
+
+				for (var i = 0; i < actorsSpan.Length; i++)
+					action(actorsSpan[i], traitsSpan[i]);
 			}
 
 			public void ApplyToAllTimed(Action<Actor, T> action, string text)
 			{
 				var start = PerfTickLogger.GetTimestamp();
-				for (var i = 0; i < actors.Count; i++)
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var traitsSpan = CollectionsMarshal.AsSpan(traits);
+
+				for (var i = 0; i < actorsSpan.Length; i++)
 				{
-					var actor = actors[i];
-					var trait = traits[i];
+					var actor = actorsSpan[i];
+					var trait = traitsSpan[i];
 					action(actor, trait);
 
 					start = PerfTickLogger.LogLongTick(start, text, trait);
