@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 						if (s != null)
 						{
 							// Select actors on the screen that have the same selection class as the actor under the mouse cursor
-							var newSelection = SelectionUtils.SelectActorsOnScreen(World, worldRenderer, new HashSet<string> { s.Class }, eligiblePlayers);
+							var newSelection = SelectionUtils.SelectActorsOnScreen(World, worldRenderer, [s.Class], eligiblePlayers);
 
 							World.Selection.Combine(World, newSelection, true, false);
 						}
