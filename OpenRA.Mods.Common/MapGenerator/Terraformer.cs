@@ -74,6 +74,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 			public int Area;
 		}
 
+		public sealed class PathPartitionZone
+		{
+			public bool ShouldTile = true;
+			public string SegmentType = null;
+			public int MinimumLength = 1;
+			public int MaximumDeviation = 0;
+		}
+
 		public enum Side : sbyte
 		{
 			Out = -1,
@@ -1084,6 +1092,433 @@ namespace OpenRA.Mods.Common.MapGenerator
 				slice.Data[n] &= roominess.Data[n] >= minimumRoom;
 
 			return slice;
+		}
+
+		/// <summary>
+		/// If given a looped path, normalizes it such that symmetry projected paths should have
+		/// symmetry projected start/end points. Note that this method isn't meaningful for loops
+		/// which would overlap with their symmetry projections. For non-looped paths, returns the
+		/// input unchanged.
+		/// </summary>
+		public int2[] NormalizeLoopStart(int2[] path)
+		{
+			if (path.Length < 2)
+				throw new ArgumentException("path is too short");
+
+			if (path[0] != path[^1])
+				return path;
+
+			var gridType = Map.Grid.Type;
+			var center = CellLayerUtils.Center(Map);
+
+			var cpath = CellLayerUtils.FromMatrixPoints([path[0..^1]], Map.Tiles)[0];
+			var wpath = cpath
+				.Select(cpos => CellLayerUtils.CornerToWPos(cpos, gridType))
+				.ToList();
+
+			// Choose the closest to the map center and makes it the start/end of the loop.
+			// If there are ties, pick the first closest point that follows from the furthest
+			// point(s), ensuring consistency for symmetries.
+			var distances = wpath.ConvertAll(w => (w - center).LengthSquared);
+			var closest = distances.Min();
+			var furthest = distances.Max();
+			var closestI = distances.IndexOf(furthest);
+			while (distances[closestI] != closest)
+				if (++closestI == distances.Count)
+					closestI = 0;
+
+			return path[closestI..^1].Concat(path[0..(closestI + 1)]).ToArray();
+		}
+
+		/// <summary>
+		/// Given a matrix-style path, divide it into a chain of smaller paths and convert them to
+		/// TilingPaths with segment types that best match a matrix of zones.
+		/// </summary>
+		/// <param name="path">The path to be divided.</param>
+		/// <param name="allZones">The full set of zones, in order of preference for ties.</param>
+		/// <param name="zoneMask">
+		/// Matrix which assigns zones to matching points in the path.
+		/// Null values can be used to describe locations with no zoning preference.
+		/// </param>
+		/// <param name="brushes">Segmented brushes for TilingPath creation.</param>
+		/// <param name="minimumStraight">
+		/// If greater than zero, sub-paths are only allowed to change over in straight sections
+		/// and the starts/ends must be this number of points deep within a straight section.
+		/// </param>
+		public List<TilingPath> PartitionPath(
+			int2[] path,
+			IReadOnlyList<PathPartitionZone> allZones,
+			Matrix<PathPartitionZone> zoneMask,
+			IReadOnlyList<MultiBrush> brushes,
+			int minimumStraight)
+		{
+			// Algorithmic Overview:
+			//
+			// First, find the straight-enough sections that can support changes between sub-paths.
+			// We then find a best fit for subpaths that change over in these straights, according
+			// to their minimum lengths and zone matching.
+			//
+			// A best fit is found using a Dijkstra's Algorithm-based best-first search. (Bottom-up
+			// dynamic programming). The sub problems are just spans of the whole path, and are
+			// built up towards the full path by adding on and scoring sub-paths.
+			//
+			// The minimum cost of a sub-path is the minimum possible number of mismatched zones if
+			// an optimal zone is chosen.
+			//
+			// If there are multiple best solutions (with equal costs), there is a preference to
+			// solutions with more sub-paths.
+			if (allZones.Count == 0)
+				throw new ArgumentException("no zones provided");
+
+			if (path.Length < 2)
+				throw new ArgumentException("path is too short");
+
+			if (minimumStraight < 0)
+				throw new ArgumentException("minimumStraight was not >= 0");
+
+			var isLoop = path[0] == path[^1];
+
+			if (isLoop)
+				path = NormalizeLoopStart(path);
+
+			var zones = new PathPartitionZone[isLoop ? path.Length - 1 : path.Length];
+			for (var i = 0; i < zones.Length; i++)
+			{
+				if (zoneMask.ContainsXY(path[i]))
+					zones[i] = zoneMask[path[i]];
+			}
+
+			// from must be >= 0.
+			IEnumerable<int> Range(int from, int length)
+			{
+				for (var i = 0; i < length; i++)
+					yield return (from + i) % zones.Length;
+			}
+
+			// from must be >= 0.
+			IEnumerable<int> ReverseRange(int from, int length)
+			{
+				for (var i = length - 1; i >= 0; i--)
+					yield return (from + i) % zones.Length;
+			}
+
+			// Can also be used to get lengths
+			int Idx(int i) => (i + zones.Length) % zones.Length;
+
+			int Vote(int from, int length, bool checkMinLength, List<PathPartitionZone> majorities = null)
+			{
+				var votes = new Dictionary<PathPartitionZone, int>();
+				var wildcards = 0;
+				foreach (var i in Range(from, length))
+				{
+					var zone = zones[i];
+
+					if (zone == null)
+					{
+						wildcards++;
+						continue;
+					}
+
+					if (checkMinLength && length < zone.MinimumLength)
+						continue;
+
+					votes.TryGetValue(zone, out var count);
+					votes[zone] = count + 1;
+				}
+
+				if (votes.Count == 0)
+				{
+					if (wildcards == 0)
+						return int.MaxValue;
+
+					if (checkMinLength)
+					{
+						var filteredZones = allZones.Where(r => r.MinimumLength >= length).ToList();
+						if (filteredZones.Count == 0)
+							return int.MaxValue;
+
+						majorities?.AddRange(filteredZones);
+					}
+					else
+					{
+						majorities?.AddRange(allZones);
+					}
+
+					return 0;
+				}
+
+				var best = votes.Values.Max();
+				majorities?.AddRange(
+					votes
+						.Where(kv => kv.Value == best)
+						.Select(kv => kv.Key));
+				return length - best - wildcards;
+			}
+
+			PathPartitionZone fallbackPath;
+
+			List<TilingPath> SinglePath(PathPartitionZone zone)
+			{
+				if (zone.ShouldTile)
+					return [
+						new TilingPath(
+							Map,
+							CellLayerUtils.FromMatrixPoints([path], Map.Tiles)[0],
+							zone.MaximumDeviation,
+							zone.SegmentType,
+							zone.SegmentType,
+							TilingPath.PermittedSegments.FromType(brushes, [zone.SegmentType]))];
+				else
+					return [];
+			}
+
+			{
+				var majorities = new List<PathPartitionZone>();
+				if (Vote(0, zones.Length, false, majorities) == 0)
+					return SinglePath(majorities[0]);
+
+				fallbackPath = majorities[0];
+			}
+
+			var minLength = Math.Max(1, allZones.Min(r => r.MinimumLength));
+
+			if (path.Length < minLength)
+				return SinglePath(fallbackPath);
+
+			var straight = new bool[zones.Length];
+			for (var i = 0; i < zones.Length; i++)
+			{
+				var a = path[Idx(i - 1)];
+				var b = path[Idx(i)];
+				var c = path[Idx(i + 1)];
+				straight[i] = DirectionExts.FromInt2(b - a) == DirectionExts.FromInt2(c - b);
+			}
+
+			if (!isLoop)
+				straight[0] = straight[^1] = true;
+
+			// Note that loops can't be all straight.
+			var validTerminal = new bool[zones.Length];
+			Array.Fill(validTerminal, true);
+			{
+				// Forward run
+				var run = isLoop
+					? ReverseRange(zones.Length - minimumStraight, minimumStraight).TakeWhile(i => straight[i]).Count()
+					: 0;
+				foreach (var i in Range(0, zones.Length))
+				{
+					run = straight[i] ? (run + 1) : 0;
+					validTerminal[i] &= run >= minimumStraight;
+				}
+
+				// Backward run
+				run = isLoop
+					? Range(zones.Length, minimumStraight).TakeWhile(i => straight[i]).Count()
+					: 0;
+				foreach (var i in ReverseRange(0, zones.Length))
+				{
+					run = straight[i] ? (run + 1) : 0;
+					validTerminal[i] &= run >= minimumStraight;
+				}
+			}
+
+			if (!isLoop)
+				validTerminal[0] = validTerminal[^1] = true;
+
+			List<int> validStarts;
+			if (isLoop)
+				validStarts = validTerminal
+					.Select((v, i) => (Valid: v, Index: i))
+					.Where(t => t.Valid)
+					.Select(t => t.Index)
+					.ToList();
+			else
+				validStarts = [0];
+
+			if (validStarts.Count == 0)
+				return SinglePath(fallbackPath);
+
+			var solutions = new List<(int Cost, List<int> Solution)>();
+
+			// An optimization would be to include the start point in a combined search.
+			// This is simpler though.
+			foreach (var offset in validStarts)
+			{
+				var end = path.Length - 1;
+				var costs = new int[end + 1];
+				Array.Fill(costs, int.MaxValue);
+
+				// Find costs
+				{
+					var costPriorities = new PriorityArray<int>(end + 1, int.MaxValue);
+					costPriorities[0] = costs[0] = 0;
+					while (true)
+					{
+						var from = costPriorities.GetMinIndex();
+						var fromCost = costPriorities[from];
+						if (fromCost == int.MaxValue || from == end)
+							break;
+
+						costPriorities[from] = int.MaxValue;
+						var maxLength = end - from;
+						for (var length = minLength; length <= maxLength; length++)
+						{
+							var to = from + length;
+							if (!validTerminal[Idx(offset + to)])
+								continue;
+
+							var mismatch = Vote(offset + from, length, true);
+							if (mismatch == int.MaxValue)
+								continue;
+
+							var toCost = fromCost + mismatch;
+							if (toCost >= costs[to])
+								continue;
+
+							costPriorities[to] = costs[to] = toCost;
+						}
+					}
+				}
+
+				if (costs[end] == int.MaxValue)
+					continue;
+
+				// Work back from costs to solution
+				{
+					List<int> solution = [Idx(offset + end)];
+					var to = end;
+					while (to != 0)
+					{
+						var toCost = costs[to];
+						var maxLength = to;
+						for (var length = minLength; length <= maxLength; length++)
+						{
+							var from = to - length;
+							if (!validTerminal[Idx(offset + from)])
+								continue;
+
+							var mismatch = Vote(offset + from, length, true);
+							if (mismatch == int.MaxValue)
+								continue;
+
+							var fromCost = toCost - mismatch;
+
+							// Use the first found solution.
+							if (fromCost == costs[from])
+							{
+								solution.Add(Idx(offset + from));
+								to = from;
+								break;
+							}
+						}
+					}
+
+					solution.Reverse();
+					solutions.Add((costs[end], solution));
+				}
+			}
+
+			if (solutions.Count == 0)
+				return SinglePath(fallbackPath);
+
+			var bestCost = solutions.Min(t => t.Cost);
+			var bestCostSolutions = solutions.Where(t => t.Cost == bestCost).ToList();
+			var mostBoundaries = bestCostSolutions.Max(t => t.Solution.Count);
+			var boundaries = bestCostSolutions.First(t => t.Solution.Count == mostBoundaries).Solution;
+			var ranges = new List<(int Start, int Length, PathPartitionZone Zone)>();
+			PathPartitionZone lastZone = null;
+			for (var i = 0; i < boundaries.Count - 1; i++)
+			{
+				var from = boundaries[i];
+				var to = boundaries[i + 1];
+				if (from == to)
+					return SinglePath(fallbackPath);
+
+				var length = Idx(to - from);
+				if (length + 1 == path.Length)
+					return SinglePath(fallbackPath);
+
+				var possibleZones = new List<PathPartitionZone>();
+				Vote(from, length, true, possibleZones);
+				if (possibleZones[0] != lastZone)
+					ranges.Add((from, length, possibleZones[0]));
+				else
+					ranges[^1] = (ranges[^1].Start, ranges[^1].Length + length, lastZone);
+
+				lastZone = possibleZones[0];
+			}
+
+			if (isLoop && ranges.Count >= 2 && ranges[0].Zone == ranges[^1].Zone)
+			{
+				ranges[0] = (ranges[^1].Start, ranges[^1].Length + ranges[0].Length, ranges[^1].Zone);
+				ranges.RemoveAt(ranges.Count - 1);
+			}
+
+			if (ranges.Count == 1)
+				return SinglePath(fallbackPath);
+
+			var partitions = new List<TilingPath>();
+			var previousIncludedInterface = isLoop && ranges[^1].Zone.ShouldTile;
+			for (var rangeI = 0; rangeI < ranges.Count; rangeI++)
+			{
+				var (start, length, zone) = ranges[rangeI];
+				if (!zone.ShouldTile)
+				{
+					previousIncludedInterface = false;
+					continue;
+				}
+
+				var innerType = zone.SegmentType;
+				var startType = (!previousIncludedInterface && (isLoop || rangeI > 0))
+					? ranges[(ranges.Count + rangeI - 1) % ranges.Count].Zone.SegmentType
+					: innerType;
+				var endType = (isLoop || rangeI < ranges.Count - 1)
+					? ranges[(rangeI + 1) % ranges.Count].Zone.SegmentType
+					: innerType;
+				Direction? startDirection = (isLoop || rangeI > 0)
+					? DirectionExts.FromInt2(
+						path[(start + 1) % zones.Length]
+							- path[start])
+					: null;
+				Direction? endDirection = (isLoop || rangeI < ranges.Count - 1)
+					? DirectionExts.FromInt2(
+						path[(length + start + 1) % zones.Length]
+							- path[(length + start) % zones.Length])
+					: null;
+
+				var points = Range(start, length + 1)
+					.Select(i => path[i])
+					.ToList();
+
+				var tilingPath = new TilingPath(
+					Map,
+					CellLayerUtils.FromMatrixPoints([points.ToArray()], Map.Tiles)[0],
+					zone.MaximumDeviation,
+					startType,
+					endType,
+					TilingPath.PermittedSegments.FromTypes(brushes, [startType], [innerType], [endType]));
+				tilingPath.Start.Direction = startDirection;
+				tilingPath.End.Direction = endDirection;
+
+				partitions.Add(tilingPath);
+				previousIncludedInterface = true;
+			}
+
+			return partitions;
+		}
+
+		/// <summary>Wrapper around PartitionPath to process multiple paths at once.</summary>
+		public List<TilingPath> PartitionPaths(
+			IEnumerable<int2[]> paths,
+			IReadOnlyList<PathPartitionZone> zones,
+			Matrix<PathPartitionZone> partitionMask,
+			IReadOnlyList<MultiBrush> brushes,
+			int minStraight)
+		{
+			return paths
+				.SelectMany(path => PartitionPath(
+					path, zones, partitionMask, brushes, minStraight))
+				.ToList();
 		}
 
 		/// <summary>

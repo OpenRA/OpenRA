@@ -53,6 +53,7 @@ Rules:
 	d2k|rules/starport.yaml
 	d2k|rules/husks.yaml
 	d2k|rules/arrakis.yaml
+	d2k|rules/map-generators.yaml
 
 Sequences:
 	d2k|sequences/aircraft.yaml

@@ -1,0 +1,328 @@
+^MapGenerators:
+	D2kMapGenerator@d2k:
+		Type: d2k
+		Name: map-generator-d2k
+		Tilesets: ARRAKIS
+		Settings:
+			MultiChoiceOption@hidden_defaults:
+				Choice@hidden_defaults:
+					Settings:
+						Rotations: 1
+						Mirror: None
+						TerrainFeatureSize: 10240
+						SandDetailFeatureSize: 10240
+						DuneFeatureSize: 10240
+						ResourceFeatureSize: 20480
+						TerrainSmoothing: 4
+						DuneSmoothing: 2
+						SmoothingThreshold: 833
+						RockRoughness: 350
+						SandRoughness: 500
+						RoughnessRadius: 5
+						Rock: 350
+						SandCliffs: 500
+						Dunes: 200
+						MinimumRockStraight: 3
+						MinimumSandCliffStraight: 1
+						MinimumRockSandThickness: 6
+						MinimumSandCliffThickness: 5
+						MinimumDuneThickness: 2
+						MinimumRockSmoothLength: 6
+						MinimumSandRockCliffLength: 6
+						MinimumSandSandCliffLength: 6
+						MinimumSandLength: 2
+						SandContourSpacing: 5
+						DuneContourSpacing: 2
+						SandDetail: 200
+						SandDetailClumpiness: 1
+						SandDetailCutout: 2
+						MaximumSandDetailCutoutSpacing: 12
+
+						CreateEntities: True
+						AreaEntityBonus: 0
+						PlayerCountEntityBonus: 1000000
+						MinimumSpawnRockArea: 150
+						CentralSpawnReservationFraction: 250
+						SpawnRegionSize: 12
+						MinimumSpawnRadius: 3
+						SpawnReservation: 16
+						BiasedResourceSpawns: 2
+						ResourceSpawnSpacing: 2
+						UnbiasedResourceSpawns: 5
+						ResourceSpawnReservation: 8
+						ResourcesPerPlayer: 125000
+						ResourceUniformity: 250
+						ResourceClumpiness: 2
+						ResourceSpawn: spicebloom.spawnpoint
+						Resource: Spice
+						WormSpawn: wormspawner
+						WormSpawns: 1
+						WormSpawnReservation: 12
+
+						SandTile: 0
+						RockTile: 266
+						PlayableTerrain: Clear,Concrete,Dune,Rock,Rough,Sand,Spice,SpiceSand,Transition
+						RockZoneableTerrain: Rock
+						SandZoneableTerrain: SpiceSand
+						RockSmoothSegmentType: RockSmooth
+						SandRockCliffSegmentType: SandRockCliff
+						SandSandCliffSegmentType: SandSandCliff
+						SandSegmentType: Sand
+						DuneSegmentType: Dune
+						SandDetailBrushes: Rough-Sand-Detail
+						DuneBrushes: Dune
+			IntegerOption@Seed:
+				Label: label-d2k-map-generator-option-seed
+				Parameter: Seed
+				Default: 0
+			MultiChoiceOption@TerrainType:
+				Label: label-d2k-map-generator-option-terrain-type
+				Priority: 2
+				Default: Rocky
+				Choice@Rocky:
+					Label: label-d2k-map-generator-choice-terrain-type-rocky
+					Settings:
+						TerrainFeatureSize: 10240
+						SandDetailFeatureSize: 10240
+						DuneFeatureSize: 10240
+						RockRoughness: 350
+						SandRoughness: 500
+						Rock: 350
+						SandCliffs: 500
+						Dunes: 200
+						SandDetail: 200
+				Choice@Rough:
+					Label: label-d2k-map-generator-choice-terrain-type-rough
+					Settings:
+						TerrainFeatureSize: 10240
+						SandDetailFeatureSize: 10240
+						DuneFeatureSize: 10240
+						RockRoughness: 300
+						SandRoughness: 300
+						Rock: 300
+						SandCliffs: 500
+						Dunes: 200
+						SandDetail: 200
+				Choice@Flat:
+					Label: label-d2k-map-generator-choice-terrain-type-flat
+					Settings:
+						TerrainFeatureSize: 10240
+						SandDetailFeatureSize: 10240
+						DuneFeatureSize: 10240
+						RockRoughness: 0
+						SandRoughness: 0
+						Rock: 250
+						SandCliffs: 0
+						Dunes: 200
+						SandDetail: 50
+				Choice@Pockets:
+					Label: label-d2k-map-generator-choice-terrain-type-pockets
+					Settings:
+						TerrainFeatureSize: 10240
+						SandDetailFeatureSize: 10240
+						DuneFeatureSize: 10240
+						RockRoughness: 300
+						SandRoughness: 250
+						Rock: 650
+						SandCliffs: 500
+						Dunes: 0
+						SandDetail: 50
+			MultiIntegerChoiceOption@Players:
+				Label: label-d2k-map-generator-option-players
+				Parameter: Players
+				Choices: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+				Default: 2
+				Priority: 1
+			MultiChoiceOption@Symmetry:
+				Label: label-d2k-map-generator-option-symmetry
+				Default: 2Rotations
+				Priority: 1
+				Choice@None:
+					Label: label-d2k-map-generator-choice-mirror-none
+					Settings:
+						Mirror: None
+				Choice@LeftMatchesRight:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-horizontal
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: LeftMatchesRight
+				Choice@TopLeftMatchesBottomRight:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-diagonal-tl
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopLeftMatchesBottomRight
+				Choice@TopMatchesBottom:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-vertical
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopMatchesBottom
+				Choice@TopRightMatchesBottomLeft:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-diagonal-tr
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopRightMatchesBottomLeft
+				Choice@2Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-2-rotations
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Rotations: 2
+				Choice@3Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-3-rotations
+					Players: 3, 6, 9, 12, 15
+					Settings:
+						Rotations: 3
+				Choice@4Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-4-rotations
+					Players: 4, 8, 12, 16
+					Settings:
+						Rotations: 4
+				Choice@5Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-5-rotations
+					Players: 5, 10, 15
+					Settings:
+						Rotations: 5
+				Choice@6Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-6-rotations
+					Players: 6, 12
+					Settings:
+						Rotations: 6
+				Choice@7Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-7-rotations
+					Players: 7, 14
+					Settings:
+						Rotations: 7
+				Choice@8Rotations:
+					Label: label-d2k-map-generator-choice-symmetry-mirror-8-rotations
+					Players: 8, 16
+					Settings:
+						Rotations: 8
+			MultiChoiceOption@Resources:
+				Label: label-d2k-map-generator-option-resources
+				Default: Medium
+				Choice@None:
+					Label: label-d2k-map-generator-choice-resources-none
+					Settings:
+						BiasedResourceSpawns: 0
+						UnbiasedResourceSpawns: 0
+						ResourcesPerPlayer: 0
+				Choice@Low:
+					Label: label-d2k-map-generator-choice-resources-low
+					Settings:
+						BiasedResourceSpawns: 1
+						UnbiasedResourceSpawns: 2
+						ResourcesPerPlayer: 75000
+				Choice@Medium:
+					Label: label-d2k-map-generator-choice-resources-medium
+					Settings:
+						BiasedResourceSpawns: 2
+						UnbiasedResourceSpawns: 4
+						ResourcesPerPlayer: 125000
+				Choice@High:
+					Label: label-d2k-map-generator-choice-resources-high
+					Settings:
+						BiasedResourceSpawns: 3
+						UnbiasedResourceSpawns: 6
+						ResourcesPerPlayer: 150000
+				Choice@VeryHigh:
+					Label: label-d2k-map-generator-choice-resources-very-high
+					Settings:
+						BiasedResourceSpawns: 4
+						UnbiasedResourceSpawns: 8
+						ResourcesPerPlayer: 200000
+				Choice@Full:
+					Label: label-d2k-map-generator-choice-resources-full
+					Settings:
+						BiasedResourceSpawns: 1
+						UnbiasedResourceSpawns: 1000000
+						ResourcesPerPlayer: 1000000000
+			MultiChoiceOption@Worms:
+				Label: label-d2k-map-generator-option-worms
+				Default: Low
+				Choice@None:
+					Label: label-d2k-map-generator-choice-worms-none
+					Settings:
+						WormSpawns: 0
+				Choice@Low:
+					Label: label-d2k-map-generator-choice-worms-low
+					Settings:
+						WormSpawns: 1
+				Choice@Medium:
+					Label: label-d2k-map-generator-choice-worms-medium
+					Settings:
+						WormSpawns: 2
+				Choice@High:
+					Label: label-d2k-map-generator-choice-worms-high
+					Settings:
+						WormSpawns: 4
+			MultiChoiceOption@Density:
+				Label: label-d2k-map-generator-option-density
+				Default: Players
+				Priority: 1
+				Choice@Players:
+					Label: label-d2k-map-generator-choice-density-players
+					Settings:
+						AreaEntityBonus: 0
+						PlayerCountEntityBonus: 1000000
+				Choice@AreaAndPlayers:
+					Label: label-d2k-map-generator-choice-density-area-and-players
+					Settings:
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 500000
+				Choice@AreaVeryLow:
+					Label: label-d2k-map-generator-choice-density-area-very-low
+					Settings:
+						AreaEntityBonus: 100
+						PlayerCountEntityBonus: 0
+				Choice@AreaLow:
+					Label: label-d2k-map-generator-choice-density-area-low
+					Settings:
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 0
+				Choice@AreaMedium:
+					Label: label-d2k-map-generator-choice-density-area-medium
+					Settings:
+						AreaEntityBonus: 400
+						PlayerCountEntityBonus: 0
+				Choice@AreaHigh:
+					Label: label-d2k-map-generator-choice-density-area-high
+					Settings:
+						AreaEntityBonus: 600
+						PlayerCountEntityBonus: 0
+				Choice@AreaVeryHigh:
+					Label: label-d2k-map-generator-choice-density-area-very-high
+					Settings:
+						AreaEntityBonus: 800
+						PlayerCountEntityBonus: 0
+
+	ClearMapGenerator@clear:
+		Type: clear
+		Name: map-generator-clear
+		Tilesets: ARRAKIS
+		Settings:
+			MultiChoiceOption@Tile:
+				Label: label-clear-map-generator-option-tile
+				Choice@Sand:
+					Label: label-clear-map-generator-choice-tile-sand
+					Tileset: ARRAKIS
+					Settings:
+						Tile: 0
+				Choice@Concrete:
+					Label: label-clear-map-generator-choice-tile-concrete
+					Tileset: ARRAKIS
+					Settings:
+						Tile: 88
+				Choice@Dune:
+					Label: label-clear-map-generator-choice-tile-dune
+					Tileset: ARRAKIS
+					Settings:
+						Tile: 241
+				Choice@Rock:
+					Label: label-clear-map-generator-choice-tile-rock
+					Tileset: ARRAKIS
+					Settings:
+						Tile: 266
+				Choice@Platform:
+					Label: label-clear-map-generator-choice-tile-platform
+					Tileset: ARRAKIS
+					Settings:
+						Tile: 1017

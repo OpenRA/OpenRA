@@ -50,6 +50,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 			public readonly ushort Type;
 			public readonly CVec Offset = new(0, 0);
 
+			public TemplateInfo(ushort type)
+			{
+				Type = type;
+			}
+
 			public TemplateInfo(MiniYaml my)
 			{
 				if (string.IsNullOrEmpty(my.Value))
@@ -88,6 +93,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public readonly ImmutableArray<TileInfo> Tiles;
 		public readonly MultiBrushSegment Segment;
 
+		public MultiBrushInfo(TemplateInfo templateInfo)
+		{
+			Weight = MultiBrush.DefaultWeight;
+			Actors = [];
+			BackingTile = null;
+			Templates = [templateInfo];
+			Tiles = [];
+			Segment = null;
+		}
+
 		public MultiBrushInfo(MiniYaml my)
 		{
 			Weight = MultiBrush.DefaultWeight;
@@ -99,7 +114,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				{
 					case "Weight":
 						if (!Exts.TryParseInt32Invariant(node.Value.Value, out Weight))
-							throw new YamlException($"Invalid MultiBrush Weight `${node.Value.Value}`");
+							throw new YamlException($"Invalid MultiBrush Weight `{node.Value.Value}`");
 						break;
 					case "Actor":
 						actors.Add(new ActorInfo(node.Value));
@@ -108,7 +123,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						if (TerrainTile.TryParse(node.Value.Value, out var backingTile))
 							BackingTile = backingTile;
 						else
-							throw new YamlException($"Invalid MultiBrush BackingTile `${node.Value.Value}`");
+							throw new YamlException($"Invalid MultiBrush BackingTile `{node.Value.Value}`");
 						break;
 					case "Template":
 						templates.Add(new TemplateInfo(node.Value));
@@ -134,10 +149,26 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			var brushes = new List<MultiBrushInfo>();
 			foreach (var node in my.Nodes)
-				if (node.Key.Split('@')[0] == "MultiBrush")
-					brushes.Add(new MultiBrushInfo(node.Value));
-				else
-					throw new YamlException($"Expected `MultiBrush@*` but got `{node.Key}`");
+			{
+				switch (node.Key.Split('@')[0])
+				{
+					case "MultiBrush":
+						brushes.Add(new MultiBrushInfo(node.Value));
+						break;
+					case "FromTemplates":
+						foreach (var part in node.Value.Value.Split(","))
+						{
+							if (!Exts.TryParseUshortInvariant(part, out var type))
+								throw new YamlException($"Invalid MultiBrush Template `{part}`");
+							brushes.Add(new MultiBrushInfo(new TemplateInfo(type)));
+						}
+
+						break;
+					default:
+						throw new YamlException($"Invalid MultiBrush collection key `{node.Key}`");
+				}
+			}
+
 			return brushes.ToImmutableArray();
 		}
 	}

@@ -8529,56 +8529,48 @@ MultiBrushCollections:
 			Template: 181
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: RockSmooth.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@245:
 			Template: 189
 			Segment:
 				Start: RockSmooth.U
-				Inner: SandRockCliff
 				End: SandRockCliff.R
-				Points: 2,1, 1,1, 2,1
+				Points: 1,2, 1,1, 2,1
 		MultiBrush@246:
 			Template: 190
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: RockSmooth.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@247:
 			Template: 199
 			Segment:
 				Start: RockSmooth.R
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 0,1, 1,1
 		MultiBrush@248:
 			Template: 193
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: RockSmooth.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@249:
 			Template: 222
 			Segment:
 				Start: RockSmooth.L
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@250:
 			Template: 195
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: RockSmooth.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@251:
 			Template: 198
 			Segment:
 				Start: RockSmooth.D
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@252: # RockRockCliff transition SandRockCliff
@@ -8693,5 +8685,7 @@ MultiBrushCollections:
 				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
-
-
+	Rough-Sand-Detail:
+		FromTemplates: 118,119,120,121,122,124,125,214,249,274,283,287,288,289,332,337,338,354,355,356,357,358,385,403,404,405,406,407,408,409,429,431,434,436,477,482,1021,1024,1025,1026,1027,1028,1029,1030,1046,1047,1048,1049,1050,1051,1052,1053,1054,1059,1061,1062,1063,1064,1069,1070,1078,1079
+	Dune:
+		FromTemplates: 224,230,231,241

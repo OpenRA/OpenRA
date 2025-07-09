@@ -271,3 +271,4 @@ EditorWorld:
 		DefaultStart: RockSmooth
 		DefaultInner: RockSmooth
 		DefaultEnd: RockSmooth
+	Inherits@MapGenerators: ^MapGenerators

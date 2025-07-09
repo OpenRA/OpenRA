@@ -103,6 +103,9 @@ faction-smugglers =
 faction-fremen =
     .name = Fremen
 
+map-generator-d2k = D2K RMG
+map-generator-clear = Clear Terrain
+
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
@@ -665,3 +668,95 @@ bot-vidius =
 
 bot-gladius =
     .name = Gladius
+
+## map-generators.yaml
+label-random-map = Random Map
+label-clear-map-generator-option-tile = Tile
+label-clear-map-generator-choice-tile-sand =
+   .label = Sand
+label-clear-map-generator-choice-tile-concrete =
+   .label = Concrete
+label-clear-map-generator-choice-tile-dune =
+   .label = Dune
+label-clear-map-generator-choice-tile-rock =
+   .label = Rock
+label-clear-map-generator-choice-tile-platform =
+   .label = Platform
+
+label-d2k-map-generator-option-seed = Seed
+label-d2k-map-generator-option-terrain-type = Terrain Type
+label-d2k-map-generator-choice-terrain-type-rocky =
+   .label = Rocky
+label-d2k-map-generator-choice-terrain-type-rough =
+   .label = Rough
+label-d2k-map-generator-choice-terrain-type-flat =
+   .label = Flat
+label-d2k-map-generator-choice-terrain-type-pockets =
+   .label = Pockets
+label-d2k-map-generator-option-players = Players
+
+label-d2k-map-generator-option-symmetry = Symmetry
+label-d2k-map-generator-choice-mirror-none =
+   .label = None
+label-d2k-map-generator-choice-symmetry-mirror-horizontal =
+   .label = Mirror Horizontal
+label-d2k-map-generator-choice-symmetry-mirror-vertical =
+   .label = Mirror Vertical
+label-d2k-map-generator-choice-symmetry-mirror-diagonal-tl =
+   .label = Mirror Diagonal (Top-Left)
+label-d2k-map-generator-choice-symmetry-mirror-diagonal-tr =
+   .label = Mirror Diagonal (Top-Right)
+label-d2k-map-generator-choice-symmetry-mirror-2-rotations =
+   .label = 2 Rotations
+label-d2k-map-generator-choice-symmetry-mirror-3-rotations =
+   .label = 3 Rotations
+label-d2k-map-generator-choice-symmetry-mirror-4-rotations =
+   .label = 4 Rotations
+label-d2k-map-generator-choice-symmetry-mirror-5-rotations =
+   .label = 5 Rotations
+label-d2k-map-generator-choice-symmetry-mirror-6-rotations =
+   .label = 6 Rotations
+label-d2k-map-generator-choice-symmetry-mirror-7-rotations =
+   .label = 7 Rotations
+label-d2k-map-generator-choice-symmetry-mirror-8-rotations =
+   .label = 8 Rotations
+
+label-d2k-map-generator-option-resources = Resources
+label-d2k-map-generator-choice-resources-none =
+   .label = None
+label-d2k-map-generator-choice-resources-low =
+   .label = Low
+label-d2k-map-generator-choice-resources-medium =
+   .label = Medium
+label-d2k-map-generator-choice-resources-high =
+   .label = High
+label-d2k-map-generator-choice-resources-very-high =
+   .label = Very High
+label-d2k-map-generator-choice-resources-full =
+   .label = Full
+
+label-d2k-map-generator-option-worms = Worms
+label-d2k-map-generator-choice-worms-none =
+   .label = None
+label-d2k-map-generator-choice-worms-low =
+   .label = Low
+label-d2k-map-generator-choice-worms-medium =
+   .label = Medium
+label-d2k-map-generator-choice-worms-high =
+   .label = High
+
+label-d2k-map-generator-option-density = Density
+label-d2k-map-generator-choice-density-players =
+   .label = Scale with players
+label-d2k-map-generator-choice-density-area-and-players =
+   .label = Scale with size and players
+label-d2k-map-generator-choice-density-area-very-low =
+   .label = Very Low
+label-d2k-map-generator-choice-density-area-low =
+   .label = Low
+label-d2k-map-generator-choice-density-area-medium =
+   .label = Medium
+label-d2k-map-generator-choice-density-area-high =
+   .label = High
+label-d2k-map-generator-choice-density-area-very-high =
+   .label = Very High
