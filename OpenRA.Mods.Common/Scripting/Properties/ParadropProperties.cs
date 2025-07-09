@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Command transport to paradrop passengers near the target cell.")]
 		public void Paradrop(CPos cell)
 		{
+			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
+				notify.Activated(Self);
+
 			paradrop.SetLZ(cell, true);
 			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 			Self.QueueActivity(new FlyOffMap(Self));
