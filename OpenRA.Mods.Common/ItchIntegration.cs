@@ -11,8 +11,9 @@
 
 using System;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using OpenRA.Support;
 
 namespace OpenRA.Mods.Common
@@ -21,30 +22,31 @@ namespace OpenRA.Mods.Common
 	{
 		sealed class User
 		{
-			[JsonProperty("url")]
+			[JsonPropertyName("url")]
 			public string Url { get; set; }
 
-			[JsonProperty("gamer")]
+			[JsonPropertyName("gamer")]
 			public bool Gamer { get; set; }
 
-			[JsonProperty("id")]
+			[JsonPropertyName("id")]
 			public int Id { get; set; }
 
-			[JsonProperty("press_user")]
+			[JsonPropertyName("press_user")]
 			public bool PressUser { get; set; }
 
-			[JsonProperty("developer")]
+			[JsonPropertyName("developer")]
 			public bool Developer { get; set; }
 
-			[JsonProperty("username")]
+			[JsonPropertyName("username")]
 			public string Username { get; set; }
 
-			[JsonProperty("display_name")]
+			[JsonPropertyName("display_name")]
 			public string DisplayName { get; set; }
 		}
 
 		sealed class Root
 		{
+			[JsonPropertyName("user")]
 			public User User { get; set; }
 		}
 
@@ -64,7 +66,7 @@ namespace OpenRA.Mods.Common
 						var httpResponseMessage = await client.GetAsync("https://itch.io/api/1/jwt/me");
 						httpResponseMessage.EnsureSuccessStatusCode();
 						var result = await httpResponseMessage.Content.ReadAsStringAsync();
-						user = JsonConvert.DeserializeObject<Root>(result).User;
+						user = JsonSerializer.Deserialize<Root>(result)?.User;
 					}
 					catch (Exception e)
 					{
