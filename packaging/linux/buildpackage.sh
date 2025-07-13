@@ -36,8 +36,6 @@ elif [[ ${TAG} == pkgtest* ]]; then
 	SUFFIX="-pkgtest"
 fi
 
-pushd "${TEMPLATE_ROOT}" > /dev/null
-
 if [ ! -d "${OUTPUTDIR}" ]; then
 	echo "Output directory '${OUTPUTDIR}' does not exist.";
 	exit 1
