@@ -167,6 +167,22 @@ Paradrop = function()
 	Trigger.AfterDelay(DateTime.Minutes(ParadropDelays), Paradrop)
 end
 
+GetBomberTargets = function()
+	if Difficulty ~= "hard" then
+		return Greece.GetActorsByTypes({ "apwr", "powr" })
+	end
+
+	local targets = Utils.Where(Greece.GetActors(), function(actor)
+		return
+			actor.HasProperty("Sell") and
+			actor.Type ~= "brik" and
+			actor.Type ~= "sbag" or
+			actor.Type == "pdox"
+	end)
+
+	return targets
+end
+
 SendParabombs = function()
 	local airfield = Airfield1
 	if Airfield1.IsDead or Airfield1.Owner ~= USSR then
@@ -177,14 +193,7 @@ SendParabombs = function()
 		airfield = Airfield2
 	end
 
-	local targets = Utils.Where(Greece.GetActors(), function(actor)
-		return
-			actor.HasProperty("Sell") and
-			actor.Type ~= "brik" and
-			actor.Type ~= "sbag" or
-			actor.Type == "pdox" or
-			actor.Type == "atek"
-	end)
+	local targets = GetBomberTargets()
 
 	if #targets > 0 then
 		airfield.TargetAirstrike(Utils.Random(targets).CenterPosition)
