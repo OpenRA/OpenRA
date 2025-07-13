@@ -68,7 +68,7 @@ actor-tran =
     Fast Infantry Transport Helicopter.
       Unarmed
     .encyclopedia =
-    The chinook is a flying transport capable of carrying a detachement of infantry. It is mostly used to transport commandos or engineers for backline-destruction.
+    The chinook is a flying transport capable of carrying a detachment of infantry. It is mostly used to transport commandos or engineers for backline-destruction.
 
     Like all aircraft, it can be handy in a pinch to crush a commando by landing!
 
@@ -311,7 +311,7 @@ actor-pvice =
       Strong vs Infantry and Buildings
       Weak vs Aircraft
     .encyclopedia =
-    A mutated lifeform created from the strange properties of Tiberium, when infantry units are expose to it.
+    A mutated lifeform created from the strange properties of Tiberium, when infantry units are exposed to it.
 
     They regenerate health quickly and have a short-range Tiberium weapon.
 
