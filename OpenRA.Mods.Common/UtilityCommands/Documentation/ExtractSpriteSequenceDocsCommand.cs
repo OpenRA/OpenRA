@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Newtonsoft.Json;
+using System.Text.Json;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.UtilityCommands.Documentation.Objects;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 				RelatedEnums = DocumentationHelpers.GetRelatedEnumInfos(relatedEnumTypes)
 			};
 
-			return JsonConvert.SerializeObject(result);
+			return JsonSerializer.Serialize(result);
 		}
 	}
 }
