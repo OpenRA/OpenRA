@@ -27,23 +27,25 @@ namespace OpenRA
 			var nodes = new List<MiniYamlNode>();
 			string root = null;
 
-			foreach (var info in FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault))
+			foreach (var fieldInfo in FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault))
 			{
-				if (info.Attribute.DictionaryFromYamlKey)
+				if (fieldInfo.Field.FieldType.IsGenericType && fieldInfo.Field.FieldType.IsAssignableTo(typeof(System.Collections.IDictionary)))
 				{
-					var dict = (System.Collections.IDictionary)info.Field.GetValue(o);
+					var dict = (System.Collections.IDictionary)fieldInfo.Field.GetValue(o);
+					var dictNodes = new List<MiniYamlNode>();
 					foreach (var kvp in dict)
 					{
 						var key = ((System.Collections.DictionaryEntry)kvp).Key;
 						var value = ((System.Collections.DictionaryEntry)kvp).Value;
-
-						nodes.Add(new MiniYamlNode(FormatValue(key), FormatValue(value)));
+						dictNodes.Add(new MiniYamlNode(FormatValue(key), FormatValue(value)));
 					}
+
+					nodes.Add(new MiniYamlNode(fieldInfo.YamlName, "", dictNodes));
 				}
-				else if (info.Attribute.FromYamlKey)
-					root = FormatValue(o, info.Field);
+				else if (fieldInfo.Attribute.FromYamlKey)
+					root = FormatValue(o, fieldInfo.Field);
 				else
-					nodes.Add(new MiniYamlNode(info.YamlName, FormatValue(o, info.Field)));
+					nodes.Add(new MiniYamlNode(fieldInfo.YamlName, FormatValue(o, fieldInfo.Field)));
 			}
 
 			return new MiniYaml(root, nodes);
