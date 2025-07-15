@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -61,13 +60,35 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class MarkerLayerOverlay : IRenderAnnotations, INotifyActorDisposing, IWorldLoaded
 	{
-		public class MarkerLayerFile
+		public class MarkerLayer
 		{
-			public Dictionary<int, List<int>> Tiles { get; set; }
-			public MarkerTileMirrorMode MirrorMode { get; set; }
-			public int NumSides { get; set; }
-			public int AxisAngle { get; set; }
-			public int TileAlpha { get; set; }
+			public readonly Dictionary<int, CPos[]> Tiles;
+			public readonly MarkerTileMirrorMode MirrorMode;
+			public readonly int NumSides;
+			public readonly int AxisAngle;
+			public readonly int TileAlpha;
+
+			public MarkerLayer() { }
+
+			public MarkerLayer(MarkerLayerOverlay markerLayerOverlay)
+			{
+				Tiles = markerLayerOverlay.Tiles.ToDictionary(d => d.Key, d => d.Value.ToArray());
+				MirrorMode = markerLayerOverlay.MirrorMode;
+				NumSides = markerLayerOverlay.NumSides;
+				AxisAngle = markerLayerOverlay.AxisAngle;
+				TileAlpha = markerLayerOverlay.TileAlpha;
+			}
+
+			public static MarkerLayer Deserialize(string path)
+			{
+				var yaml = MiniYaml.FromFile(path).First().Value;
+				return FieldLoader.Load<MarkerLayer>(yaml);
+			}
+
+			public List<MiniYamlNode> Serialize()
+			{
+				return [new("MarkerLayer", FieldSaver.Save(this))];
+			}
 		}
 
 		const double DegreesToRadians = Math.PI / 180;
@@ -134,43 +155,26 @@ namespace OpenRA.Mods.Common.Traits
 				if (string.IsNullOrWhiteSpace(world.Map.Package.Name))
 					return;
 
-				var markerTileFilename = $"{Path.GetFileNameWithoutExtension(world.Map.Package.Name)}.json";
+				var markerTileFilename = $"{Path.GetFileNameWithoutExtension(world.Map.Package.Name)}.yaml";
 				var markerTilePath = Path.Combine(directory, markerTileFilename);
+
 				if (!File.Exists(markerTilePath))
 					return;
 
-				using (var streamReader = new StreamReader(markerTilePath))
-				{
-					var content = streamReader.ReadToEnd();
-					var file = JsonConvert.DeserializeObject<MarkerLayerFile>(content);
+				var file = MarkerLayer.Deserialize(markerTilePath);
 
-					TileAlpha = file.TileAlpha;
-					MirrorMode = file.MirrorMode;
-					NumSides = file.NumSides;
-					AxisAngle = file.AxisAngle;
+				TileAlpha = file.TileAlpha;
+				MirrorMode = file.MirrorMode;
+				NumSides = file.NumSides;
+				AxisAngle = file.AxisAngle;
 
-					var savedTilesHashSetDictionary = file.Tiles.ToDictionary(x => x.Key, x => x.Value.Select(bits => new CPos(bits)).ToHashSet());
-					SetAll(savedTilesHashSetDictionary);
-				}
+				SetAll(file.Tiles.ToDictionary(d => d.Key, d => new HashSet<CPos>(d.Value)));
 			}
 			catch (Exception e)
 			{
 				Log.Write("debug", "Failed to load map editor marker tiles.");
 				Log.Write("debug", e);
 			}
-		}
-
-		public MarkerLayerFile ToFile()
-		{
-			var tilesBitsDictionary = Tiles.ToDictionary(x => x.Key, x => x.Value.Select(cpos => cpos.Bits).ToList());
-			return new MarkerLayerFile
-			{
-				Tiles = tilesBitsDictionary,
-				TileAlpha = TileAlpha,
-				MirrorMode = MirrorMode,
-				NumSides = NumSides,
-				AxisAngle = AxisAngle,
-			};
 		}
 
 		void UpdateTileAlpha()

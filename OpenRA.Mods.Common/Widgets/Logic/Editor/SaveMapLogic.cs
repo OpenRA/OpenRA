@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -347,14 +346,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var directory = Path.Combine(Platform.SupportDir, "Editor", modData.Manifest.Id, mod.Version, "MarkerTiles");
 				Directory.CreateDirectory(directory);
 
-				var markerTilesFile = markerLayerOverlay.ToFile();
-				var markerTilesContent = JsonConvert.SerializeObject(markerTilesFile);
-
-				var markerTileFilename = $"{Path.GetFileNameWithoutExtension(map.Package.Name)}.json";
-				using (var streamWriter = new StreamWriter(Path.Combine(directory, markerTileFilename), false))
-				{
-					streamWriter.Write(markerTilesContent);
-				}
+				var markerTileFilename = $"{Path.GetFileNameWithoutExtension(map.Package.Name)}.yaml";
+				var markerLayer = new MarkerLayerOverlay.MarkerLayer(markerLayerOverlay);
+				markerLayer.Serialize().WriteToFile(Path.Combine(directory, markerTileFilename));
 			}
 			catch (Exception e)
 			{
