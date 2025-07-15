@@ -83,8 +83,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget combatPlayerTemplate;
 		readonly ContainerWidget incomeGraphContainer;
 		readonly ContainerWidget armyValueGraphContainer;
-		readonly LineGraphWidget incomeGraph;
-		readonly LineGraphWidget armyValueGraph;
+		readonly ScrollableLineGraphWidget incomeGraph;
+		readonly ScrollableLineGraphWidget armyValueGraph;
 		readonly ScrollItemWidget teamTemplate;
 		readonly Player[] players;
 		readonly IGrouping<int, Player>[] teams;
@@ -145,10 +145,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			combatPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("COMBAT_PLAYER_TEMPLATE");
 
 			incomeGraphContainer = widget.Get<ContainerWidget>("INCOME_GRAPH_CONTAINER");
-			incomeGraph = incomeGraphContainer.Get<LineGraphWidget>("INCOME_GRAPH");
+			incomeGraph = incomeGraphContainer.Get<ScrollableLineGraphWidget>("INCOME_GRAPH");
 
 			armyValueGraphContainer = widget.Get<ContainerWidget>("ARMY_VALUE_GRAPH_CONTAINER");
-			armyValueGraph = armyValueGraphContainer.Get<LineGraphWidget>("ARMY_VALUE_GRAPH");
+			armyValueGraph = armyValueGraphContainer.Get<ScrollableLineGraphWidget>("ARMY_VALUE_GRAPH");
 
 			teamTemplate = playerStatsPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 
@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			incomeGraphContainer.Visible = true;
 
 			incomeGraph.GetSeries = () =>
-				players.Select(p => new LineGraphSeries(
+				players.Select(p => new ScrollableLineGraphSeries(
 					p.ResolvedPlayerName,
 					p.Color,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).IncomeSamples.Select(s => (float)s)));
@@ -270,7 +270,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			armyValueGraphContainer.Visible = true;
 
 			armyValueGraph.GetSeries = () =>
-				players.Select(p => new LineGraphSeries(
+				players.Select(p => new ScrollableLineGraphSeries(
 					p.ResolvedPlayerName,
 					p.Color,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).ArmySamples.Select(s => (float)s)));

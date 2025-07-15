@@ -1057,7 +1057,7 @@ Container@OBSERVER_WIDGETS:
 							Width: PARENT_WIDTH
 							Height: PARENT_HEIGHT
 							Color: 00000090
-						LineGraph@INCOME_GRAPH:
+						ScrollableLineGraph@INCOME_GRAPH:
 							X: 0
 							Y: 0
 							Width: PARENT_WIDTH - 5
@@ -1070,6 +1070,8 @@ Container@OBSERVER_WIDGETS:
 							YAxisLabel: Earnings
 							LabelFont: TinyBold
 							AxisFont: TinyBold
+							ScrollbarBackground: observer-scrollpanel-button-pressed
+							ScrollbarButton: observer-scrollpanel-button
 				Container@ARMY_VALUE_GRAPH_CONTAINER:
 					X: 0
 					Y: 30
@@ -1083,7 +1085,7 @@ Container@OBSERVER_WIDGETS:
 							Width: PARENT_WIDTH
 							Height: PARENT_HEIGHT
 							Color: 00000090
-						LineGraph@ARMY_VALUE_GRAPH:
+						ScrollableLineGraph@ARMY_VALUE_GRAPH:
 							X: 0
 							Y: 0
 							Width: PARENT_WIDTH - 5
@@ -1096,6 +1098,8 @@ Container@OBSERVER_WIDGETS:
 							YAxisLabel: Army Value
 							LabelFont: TinyBold
 							AxisFont: TinyBold
+							ScrollbarBackground: observer-scrollpanel-button-pressed
+							ScrollbarButton: observer-scrollpanel-button
 		Container@HPF_ROOT:
 			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
 			X: WINDOW_WIDTH - WIDTH - 255

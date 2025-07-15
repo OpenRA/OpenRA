@@ -506,6 +506,10 @@ scrollpanel-decorations:
 	Regions:
 		down: 119, 0, 16, 16
 		up: 102, 0, 16, 16
+		right: 136, 17, 16, 16
+		right-disabled: 153, 17, 16, 16
+		left: 170, 17, 16, 16
+		left-disabled: 187, 17, 16, 16
 
 dropdown-decorations:
 	Inherits: ^Glyphs
