@@ -392,33 +392,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			preview.Clear();
 			Task.Run(() =>
 			{
-				for (var i = 0; i < 5; i++)
+				try
 				{
-					try
-					{
-						var args = settings.Compile(selectedTerrain, size);
-						var map = generator.Generate(modData, args);
+					var args = settings.Compile(selectedTerrain, size);
+					var map = generator.Generate(modData, args);
 
-						// Map UID and preview image are generated on save
-						map.Save(package);
-						args.Uid = map.Uid;
+					// Map UID and preview image are generated on save
+					map.Save(package);
+					args.Uid = map.Uid;
 
-						Game.RunAfterTick(() =>
-						{
-							preview.Update(map);
-							onGenerate(args, package);
-							generating = false;
-						});
-						return;
-					}
-					catch (Exception)
+					Game.RunAfterTick(() =>
 					{
-						// Ignore the exception
-					}
+						preview.Update(map);
+						onGenerate(args, package);
+						generating = false;
+					});
 				}
-
-				failed = true;
-				generating = false;
+				catch (MapGenerationException)
+				{
+					failed = true;
+					generating = false;
+				}
 			});
 		}
 
