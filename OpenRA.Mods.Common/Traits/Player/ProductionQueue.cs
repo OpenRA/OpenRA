@@ -488,7 +488,10 @@ namespace OpenRA.Mods.Common.Traits
 						{
 							// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
 							if (!Queue.Any(i => i.Done && i.Item == unit.Name))
+							{
+								hasPlayedSound = false;
 								return;
+							}
 
 							var isBuilding = unit.HasTraitInfo<BuildingInfo>();
 							if (isBuilding && !hasPlayedSound)
