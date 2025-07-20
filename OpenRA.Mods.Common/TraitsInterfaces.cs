@@ -710,6 +710,21 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	public class EditorActorTextField : EditorActorOption
+	{
+		public readonly Func<EditorActorPreview, string> GetValue;
+		public readonly Action<EditorActorPreview, string> OnChange;
+
+		public EditorActorTextField(string name, int displayOrder,
+			Func<EditorActorPreview, string> getValue,
+			Action<EditorActorPreview, string> onChange)
+			: base(name, displayOrder)
+		{
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
 	[RequireExplicitImplementation]
 	public interface INotifyEditorPlacementInfo : ITraitInfoInterface
 	{

@@ -10,14 +10,41 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows this actor to be 'tagged' with arbitrary strings. Tags must be unique or they will be rejected.")]
-	public class ScriptTagsInfo : TraitInfo
+	public class ScriptTagsInfo : TraitInfo, IEditorActorOptions
 	{
+		[Desc("Display order for the script tags text field in the map editor")]
+		public readonly int EditorScriptTagsDisplayOrder = 5;
+
 		public override object Create(ActorInitializer init) { return new ScriptTags(init, this); }
+
+		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
+		{
+			yield return new EditorActorTextField("Tags", EditorScriptTagsDisplayOrder,
+				actor =>
+				{
+					var init = actor.GetInitOrDefault<ScriptTagsInit>(this);
+					if (init != null)
+						return string.Join(", ", init.Value);
+
+					return "";
+				},
+				(actor, value) =>
+				{
+					var tags = string.IsNullOrWhiteSpace(value)
+						? [] :
+						value.Split(',').Select(t => t.Trim()).Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
+					if (tags.Length == 0)
+						actor.RemoveInit<ScriptTagsInit>(this);
+					else
+						actor.ReplaceInit(new ScriptTagsInit(tags), this);
+				});
+		}
 	}
 
 	public class ScriptTags

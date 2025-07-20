@@ -618,6 +618,20 @@ Container@EDITOR_WORLD_ROOT:
 											Width: 213
 											Height: 25
 											Font: Bold
+								Container@TEXTFIELD_OPTION_TEMPLATE:
+									Width: PARENT_WIDTH
+									Height: 27
+									Children:
+										Label@LABEL:
+											Y: 1
+											Width: 55
+											Height: 25
+											Align: Right
+										TextField@OPTION:
+											X: 69
+											Y: 1
+											Width: 213
+											Height: 25
 						Container@BUTTON_CONTAINER:
 							Y: 75
 							Children:
