@@ -62,10 +62,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var grid = Game.ModData.Manifest.Get<MapGrid>();
 			if (grid.Type != MapGridType.RectangularIsometric)
-				throw new YamlException("IsometricSelectable can only be used in mods that use the RectangularIsometric MapGrid type.");
+				throw new YamlException($"{nameof(IsometricSelectable)} can only be used in mods that use the {nameof(MapGridType.RectangularIsometric)} MapGrid type.");
 
 			if (Height == 0 && DecorationHeight <= 0)
-				throw new YamlException("DecorationHeight must be defined and greater than 0 if Height is 0.");
+				throw new YamlException($"{nameof(DecorationHeight)} must be defined and greater than 0 if Height is 0.");
 		}
 	}
 

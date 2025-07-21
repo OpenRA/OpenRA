@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 			terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 			if (terrainInfo == null)
-				throw new InvalidDataException("EditorTileBrush can only be used with template-based tilesets");
+				throw new InvalidDataException($"{nameof(EditorTileBrush)} can only be used with template-based tilesets");
 
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
