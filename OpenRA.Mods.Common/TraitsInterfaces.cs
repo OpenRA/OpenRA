@@ -768,7 +768,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface ITiledTerrainRendererInfo : ITraitInfoInterface
 	{
-		bool ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError, out DefaultTileCache tileCache);
+		bool ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError, out ITileCache tileCache);
 	}
 
 	[RequireExplicitImplementation]

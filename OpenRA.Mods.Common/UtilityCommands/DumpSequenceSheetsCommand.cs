@@ -94,11 +94,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						if (!ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine, out var tileCache))
 						{
-							sb = tileCache.SheetBuilders[SheetType.Indexed];
+							sb = tileCache.GetSheetBuilder(SheetType.Indexed);
 							foreach (var s in sb.AllSheets)
 								CommitSheet(sb, s, terrainName, palette, ref sheetCount);
 
-							foreach (var s in tileCache.SheetBuilders[SheetType.BGRA].AllSheets)
+							foreach (var s in tileCache.GetSheetBuilder(SheetType.BGRA).AllSheets)
 								CommitSheet(null, s, terrainName, palette, ref sheetCount);
 						}
 					}

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class TerrainRendererInfo : TraitInfo, ITiledTerrainRendererInfo
 	{
-		bool ITiledTerrainRendererInfo.ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError, out DefaultTileCache tileCache)
+		bool ITiledTerrainRendererInfo.ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError, out ITileCache tileCache)
 		{
 			var missingImages = new HashSet<string>();
 			var failed = false;
