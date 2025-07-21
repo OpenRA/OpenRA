@@ -21,7 +21,7 @@ using Color = OpenRA.Primitives.Color;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	public class MarkerLayerOverlayInfo : TraitInfo, IEditorToolInfo
+	public class MarkerLayerOverlayInfo : TraitInfo
 	{
 		[FluentReference]
 		[Desc("The label to show in the tools menu.")]
@@ -53,13 +53,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return new MarkerLayerOverlay(init.Self, this);
 		}
-
-		string IEditorToolInfo.Label => Label;
-		string IEditorToolInfo.PanelWidget => PanelWidget;
 	}
 
-	public class MarkerLayerOverlay : IRenderAnnotations, INotifyActorDisposing, IWorldLoaded
+	public class MarkerLayerOverlay : IEditorTool, IRenderAnnotations, INotifyActorDisposing, IWorldLoaded
 	{
+		public string Label { get; }
+		public string PanelWidget { get; }
+		public TraitInfo TraitInfo { get; }
+		public bool IsEnabled => true;
+
 		public class MarkerLayer
 		{
 			public readonly Dictionary<int, CPos[]> Tiles;
@@ -132,6 +134,8 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 			world = self.World;
 			var map = self.World.Map;
+			Label = info.Label;
+			PanelWidget = info.PanelWidget;
 
 			tileAlpha = info.Alpha;
 			alphaBlendColors = new Color[info.Colors.Length];

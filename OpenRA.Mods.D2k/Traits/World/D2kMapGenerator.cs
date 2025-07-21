@@ -23,7 +23,7 @@ using static OpenRA.Mods.Common.Traits.ResourceLayerInfo;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	public sealed class D2kMapGeneratorInfo : TraitInfo<D2kMapGenerator>, IEditorMapGeneratorInfo, IEditorToolInfo
+	public sealed class D2kMapGeneratorInfo : TraitInfo, IEditorMapGeneratorInfo
 	{
 		[FieldLoader.Require]
 		public readonly string Type = null;
@@ -614,9 +614,24 @@ namespace OpenRA.Mods.D2k.Traits
 			return map;
 		}
 
-		string IEditorToolInfo.Label => Name;
-		string IEditorToolInfo.PanelWidget => PanelWidget;
+		public override object Create(ActorInitializer init)
+		{
+			return new D2kMapGenerator(this);
+		}
 	}
 
-	public class D2kMapGenerator { /* we're only interested in the Info */ }
+	public class D2kMapGenerator : IEditorTool
+	{
+		public string Label { get; }
+		public string PanelWidget { get; }
+		public TraitInfo TraitInfo { get; }
+		public bool IsEnabled => true;
+
+		public D2kMapGenerator(D2kMapGeneratorInfo info)
+		{
+			Label = info.Name;
+			PanelWidget = info.PanelWidget;
+			TraitInfo = info;
+		}
+	}
 }

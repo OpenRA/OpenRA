@@ -23,14 +23,9 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	public sealed class TilingPathToolInfo : TraitInfo, IEditorToolInfo
+	[IncludeStaticFluentReferences(typeof(TilingPathTool))]
+	public sealed class TilingPathToolInfo : TraitInfo
 	{
-		[FluentReference]
-		const string Label = "label-tool-tiling-path";
-
-		[Desc("The widget tree to open when the tool is selected.")]
-		const string PanelWidget = "TILING_PATH_TOOL_PANEL";
-
 		[Desc("The preferred defaults for the start type.")]
 		public readonly string[] DefaultStart = [];
 		[Desc("The preferred defaults for the inner type.")]
@@ -42,13 +37,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return new TilingPathTool(init.Self, this);
 		}
-
-		string IEditorToolInfo.Label => Label;
-		string IEditorToolInfo.PanelWidget => PanelWidget;
 	}
 
-	public sealed class TilingPathTool : IRenderAnnotations, INotifyActorDisposing, IWorldLoaded
+	public sealed class TilingPathTool : IEditorTool, IRenderAnnotations, INotifyActorDisposing, IWorldLoaded
 	{
+		[FluentReference]
+		const string Label = "label-tool-tiling-path";
+
+		[Desc("The widget tree to open when the tool is selected.")]
+		const string PanelWidget = "TILING_PATH_TOOL_PANEL";
+
+		public bool IsEnabled { get; }
+
+		string IEditorTool.Label => Label;
+		string IEditorTool.PanelWidget => PanelWidget;
+		public TraitInfo TraitInfo { get; }
+
 		/// <summary>
 		/// Holds the shape of a path being planned out in the map editor.
 		/// </summary>
@@ -312,9 +316,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		/// <summary>Whether the TilingPathTool can be used.</summary>
-		public readonly bool Available;
-
 		public readonly World World;
 		public WorldRenderer WorldRenderer = null;
 		public readonly ImmutableArray<MultiBrush> SegmentedBrushes;
@@ -338,6 +339,7 @@ namespace OpenRA.Mods.Common.Traits
 		public TilingPathTool(Actor self, TilingPathToolInfo info)
 		{
 			World = self.World;
+			TraitInfo = info;
 
 			var templatedTerrainInfo = World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 			SegmentedBrushes =
@@ -347,9 +349,8 @@ namespace OpenRA.Mods.Common.Traits
 					.Where(multiBrush => multiBrush.Segment != null)
 					.ToImmutableArray();
 
-			Available = SegmentedBrushes.Length > 0;
-
-			if (!Available)
+			IsEnabled = SegmentedBrushes.Length > 0;
+			if (!IsEnabled)
 				return;
 
 			InnerTypes = SegmentedBrushes

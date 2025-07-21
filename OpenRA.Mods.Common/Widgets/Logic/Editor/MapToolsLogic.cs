@@ -26,10 +26,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public MapToolsLogic(Widget widget, World world)
 		{
 			var toolDropdownWidget = widget.Get<DropDownButtonWidget>("TOOLS_DROPDOWN");
-			var tools = world.Map.Rules.Actors[SystemActors.EditorWorld].TraitInfos<IEditorToolInfo>();
+			var tools = world.WorldActor.TraitsImplementing<IEditorTool>();
 			foreach (var tool in tools)
 			{
-				if (tool is IEditorMapGeneratorInfo gi && !gi.Tilesets.Contains(world.Map.Tileset))
+				if (!tool.IsEnabled)
 					continue;
 
 				var panel = Game.LoadWidget(world, tool.PanelWidget, widget, new WidgetArgs() { { "tool", tool } });

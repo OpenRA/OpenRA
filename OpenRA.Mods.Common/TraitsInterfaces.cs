@@ -977,10 +977,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool PathMightExistForLocomotorBlockedByImmovable(Locomotor locomotor, CPos source, CPos target);
 	}
 
-	public interface IEditorToolInfo : ITraitInfoInterface
+	public interface IEditorTool
 	{
 		string Label { get; }
 		string PanelWidget { get; }
+		bool IsEnabled { get; }
+		TraitInfo TraitInfo { get; }
 	}
 
 	public class MapGenerationException : Exception

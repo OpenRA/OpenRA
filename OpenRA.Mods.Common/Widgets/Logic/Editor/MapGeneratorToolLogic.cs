@@ -44,15 +44,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget dropDownSettingTemplate;
 
 		[ObjectCreator.UseCtor]
-		public MapGeneratorToolLogic(Widget widget, World world, WorldRenderer worldRenderer, ModData modData,
-			IEditorMapGeneratorInfo tool)
+		public MapGeneratorToolLogic(Widget widget, World world, WorldRenderer worldRenderer, ModData modData, IEditorTool tool)
 		{
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			this.modData = modData;
-			generator = tool;
+			generator = tool.TraitInfo as IEditorMapGeneratorInfo;
 			settings = generator.GetSettings();
 
 			settingsPanel = widget.Get<ScrollPanelWidget>("SETTINGS_PANEL");

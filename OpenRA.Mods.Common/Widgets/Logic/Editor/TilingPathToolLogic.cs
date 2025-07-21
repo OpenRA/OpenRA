@@ -40,10 +40,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			((ScrollPanelWidget)widget).Layout.AdjustChildren();
 
 			var editCheckbox = widget.Get<CheckboxWidget>("EDIT");
-			editCheckbox.Disabled = !tool.Available;
-			if (!tool.Available)
-				return;
-
 			editCheckbox.IsChecked = () => editorWidget.CurrentBrush is EditorTilingPathBrush;
 			editCheckbox.OnClick = () =>
 				editorWidget.SetBrush(

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (tabType == MenuType.Tools)
 			{
-				var toolsAvailable = world.Map.Rules.Actors[SystemActors.EditorWorld].HasTraitInfo<IEditorToolInfo>();
+				var toolsAvailable = world.WorldActor.TraitsImplementing<IEditorTool>().Any();
 				tab.IsDisabled = () => !toolsAvailable;
 			}
 

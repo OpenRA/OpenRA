@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
 	[Desc("A map generator that clears a map.")]
-	public sealed class ClearMapGeneratorInfo : TraitInfo<ClearMapGenerator>, IEditorMapGeneratorInfo, IEditorToolInfo
+	public sealed class ClearMapGeneratorInfo : TraitInfo, IEditorMapGeneratorInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Human-readable name this generator uses.")]
@@ -93,10 +93,26 @@ namespace OpenRA.Mods.Common.Traits
 			return map;
 		}
 
-		string IEditorToolInfo.Label => Name;
-		string IEditorToolInfo.PanelWidget => PanelWidget;
+		public override object Create(ActorInitializer init)
+		{
+			return new ClearMapGenerator(this);
+		}
+
 		string[] IEditorMapGeneratorInfo.Tilesets => Tilesets;
 	}
 
-	public class ClearMapGenerator { /* we're only interested in the Info */ }
+	public class ClearMapGenerator : IEditorTool
+	{
+		public string Label { get; }
+		public string PanelWidget { get; }
+		public TraitInfo TraitInfo { get; }
+		public bool IsEnabled => true;
+
+		public ClearMapGenerator(ClearMapGeneratorInfo info)
+		{
+			Label = info.Name;
+			PanelWidget = info.PanelWidget;
+			TraitInfo = info;
+		}
+	}
 }
