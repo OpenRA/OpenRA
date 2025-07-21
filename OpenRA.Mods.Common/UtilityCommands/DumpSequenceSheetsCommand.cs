@@ -80,12 +80,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					terrainName += "." + name;
 				}
 
-				var sb = sequence.SpriteCache.SheetBuilders[SheetType.Indexed];
-				foreach (var s in sb.AllSheets)
-					CommitSheet(sb, s, sequencesName, palette, ref sheetCount);
+				var sheetBuilder = sequence.SpriteCache.SheetBuilders[SheetType.Indexed];
+				foreach (var sheet in sheetBuilder.AllSheets)
+					CommitSheet(sheetBuilder, sheet, sequencesName, palette, ref sheetCount);
 
-				foreach (var s in sequence.SpriteCache.SheetBuilders[SheetType.BGRA].AllSheets)
-					CommitSheet(null, s, sequencesName, palette, ref sheetCount);
+				foreach (var sheet in sequence.SpriteCache.SheetBuilders[SheetType.BGRA].AllSheets)
+					CommitSheet(null, sheet, sequencesName, palette, ref sheetCount);
 
 				modData.DefaultTerrainInfo.TryGetValue(sequence.TileSet, out var terrainInfo);
 				if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
@@ -94,12 +94,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						if (!ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine, out var tileCache))
 						{
-							sb = tileCache.GetSheetBuilder(SheetType.Indexed);
-							foreach (var s in sb.AllSheets)
-								CommitSheet(sb, s, terrainName, palette, ref sheetCount);
+							sheetBuilder = tileCache.GetSheetBuilder(SheetType.Indexed);
+							foreach (var sheet in sheetBuilder.AllSheets)
+								CommitSheet(sheetBuilder, sheet, terrainName, palette, ref sheetCount);
 
-							foreach (var s in tileCache.GetSheetBuilder(SheetType.BGRA).AllSheets)
-								CommitSheet(null, s, terrainName, palette, ref sheetCount);
+							foreach (var sheet in tileCache.GetSheetBuilder(SheetType.BGRA).AllSheets)
+								CommitSheet(null, sheet, terrainName, palette, ref sheetCount);
 						}
 					}
 				}
