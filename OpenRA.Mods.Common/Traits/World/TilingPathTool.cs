@@ -318,9 +318,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly World World;
 		public WorldRenderer WorldRenderer = null;
 		public readonly ImmutableArray<MultiBrush> SegmentedBrushes;
-		public readonly ImmutableArray<string> StartTypes;
+		readonly ImmutableArray<string> startTypes;
 		public readonly ImmutableArray<string> InnerTypes;
-		public readonly ImmutableArray<string> EndTypes;
+		readonly ImmutableArray<string> endTypes;
+		public Dictionary<string, ImmutableArray<string>> StartTypesByInner = [];
+		public Dictionary<string, ImmutableArray<string>> EndTypesByInner = [];
+
 		public PathPlan Plan { get; private set; } = null;
 		public string StartType { get; private set; } = null;
 		public string InnerType { get; private set; } = null;
@@ -349,13 +352,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Available)
 				return;
 
-			StartTypes = SegmentedBrushes
-				.Where(b => b.Segment != null)
-				.Select(b => string.Join(".", b.Segment.Start.Split('.').SkipLast(1)))
-				.Distinct()
-				.Order()
-				.ToImmutableArray();
-
 			InnerTypes = SegmentedBrushes
 				.Where(b => b.Segment != null)
 				.SelectMany<MultiBrush, string>(b =>
@@ -366,19 +362,43 @@ namespace OpenRA.Mods.Common.Traits
 				.Order()
 				.ToImmutableArray();
 
-			EndTypes = SegmentedBrushes
-				.Where(b => b.Segment != null)
-				.Select(b => string.Join(".", b.Segment.End.Split('.').SkipLast(1)))
+			foreach (var innerType in InnerTypes)
+			{
+				StartTypesByInner[innerType] = SegmentedBrushes
+					.Where(b => b.Segment != null
+						&& b.Segment.Inner != null
+						? b.Segment.Inner.Split('.')[0] == innerType : (b.Segment.Start.Split('.')[0] == innerType || b.Segment.End.Split('.')[0] == innerType))
+					.Select(b => string.Join(".", b.Segment.Start.Split('.').SkipLast(1)))
+					.Distinct()
+					.Order()
+					.ToImmutableArray();
+
+				EndTypesByInner[innerType] = SegmentedBrushes
+					.Where(b => b.Segment != null
+						&& b.Segment.Inner != null
+						? b.Segment.Inner.Split('.')[0] == innerType : (b.Segment.Start.Split('.')[0] == innerType || b.Segment.End.Split('.')[0] == innerType))
+					.Select(b => string.Join(".", b.Segment.End.Split('.').SkipLast(1)))
+					.Distinct()
+					.Order()
+					.ToImmutableArray();
+			}
+
+			startTypes = StartTypesByInner
+				.SelectMany(kvp => kvp.Value)
 				.Distinct()
 				.Order()
 				.ToImmutableArray();
 
-			StartType = info.DefaultStart
-				.FirstOrDefault(StartTypes.Contains, StartTypes[0]);
+			endTypes = EndTypesByInner
+				.SelectMany(kvp => kvp.Value)
+				.Distinct()
+				.Order()
+				.ToImmutableArray();
+
 			InnerType = info.DefaultInner
 				.FirstOrDefault(InnerTypes.Contains, InnerTypes[0]);
-			EndType = info.DefaultEnd
-				.FirstOrDefault(EndTypes.Contains, EndTypes[0]);
+
+			VerifyTypes(InnerType);
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -416,7 +436,7 @@ namespace OpenRA.Mods.Common.Traits
 			(string Start, string End)[] terminalTypes = [(StartType, EndType)];
 			if (ClosedLoops && plan.Loop)
 			{
-				terminalTypes = StartTypes.Concat(EndTypes)
+				terminalTypes = startTypes.Concat(endTypes)
 					.Distinct()
 					.Where(t => t.Split('.')[0] == InnerType)
 					.Select(t => (t, t))
@@ -451,6 +471,24 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		public void VerifyTypes(string innerType)
+		{
+			var startChoices = StartTypesByInner[innerType];
+			if (startChoices.Length == 0)
+				StartType = "";
+			else if (string.IsNullOrEmpty(StartType) || !startChoices.Contains(StartType))
+				StartType = startChoices[0];
+
+			var endChoices = EndTypesByInner[innerType];
+			if (endChoices.Length == 0)
+				EndType = "";
+			else if (string.IsNullOrEmpty(EndType) || !endChoices.Contains(EndType))
+				EndType = endChoices[0];
+
+			if (string.IsNullOrEmpty(innerType))
+				InnerType = InnerTypes[0];
+		}
+
 		void Update()
 		{
 			EditorBlitSource = TilePlan(Plan);
@@ -471,6 +509,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetInnerType(string value)
 		{
 			InnerType = value;
+			VerifyTypes(value);
 			Update();
 		}
 

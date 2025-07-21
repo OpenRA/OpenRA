@@ -52,15 +52,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						: new EditorTilingPathBrush(tool));
 
 			void SetupDropDown(
-				string name,
+				DropDownButtonWidget dropDown,
 				ImmutableArray<string> choices,
 				Func<string> read,
 				Action<string> write)
 			{
-				var dropDown = widget
-					.Get<ContainerWidget>(name)
-					.Get<DropDownButtonWidget>("DROPDOWN");
-				dropDown.GetText = read;
 				dropDown.OnMouseDown = _ =>
 				{
 					ScrollItemWidget SetupItem(string choice, ScrollItemWidget template)
@@ -76,9 +72,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			SetupDropDown("START_TYPE", tool.StartTypes, () => tool.StartType, tool.SetStartType);
-			SetupDropDown("INNER_TYPE", tool.InnerTypes, () => tool.InnerType, tool.SetInnerType);
-			SetupDropDown("END_TYPE", tool.EndTypes, () => tool.EndType, tool.SetEndType);
+			var startDropdown = widget
+				.Get<ContainerWidget>("START_TYPE")
+				.Get<DropDownButtonWidget>("DROPDOWN");
+			startDropdown.GetText = () => tool.StartType;
+
+			var endDropdown = widget
+				.Get<ContainerWidget>("END_TYPE")
+				.Get<DropDownButtonWidget>("DROPDOWN");
+			endDropdown.GetText = () => tool.EndType;
+
+			var innerDropDown = widget
+				.Get<ContainerWidget>("INNER_TYPE")
+				.Get<DropDownButtonWidget>("DROPDOWN");
+			innerDropDown.GetText = () => tool.InnerType;
+
+			SetupDropDown(startDropdown, tool.StartTypesByInner[tool.InnerType], () => tool.StartType, tool.SetStartType);
+			SetupDropDown(endDropdown, tool.EndTypesByInner[tool.InnerType], () => tool.EndType, tool.SetEndType);
+
+			void PickInnerType(string choice)
+			{
+				tool.SetInnerType(choice);
+				SetupDropDown(startDropdown, tool.StartTypesByInner[choice], () => tool.StartType, tool.SetStartType);
+				SetupDropDown(endDropdown, tool.EndTypesByInner[choice], () => tool.EndType, tool.SetEndType);
+			}
+
+			SetupDropDown(innerDropDown, tool.InnerTypes, () => tool.InnerType, PickInnerType);
 
 			var deviationSlider = widget.Get<ContainerWidget>("DEVIATION").Get<SliderWidget>("SLIDER");
 			deviationSlider.GetValue = () => tool.MaxDeviation;
