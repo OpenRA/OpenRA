@@ -576,8 +576,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (item.Infinite)
 				{
 					item.Infinite = false;
-					for (var i = 1; i < Info.InfiniteBuildLimit; i++)
-						Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete));
+					var order = new Order("StartProduction", Actor, Target.Invalid, true)
+					{
+						TargetString = item.Item,
+						ExtraData = (uint)Info.InfiniteBuildLimit - 1
+					};
+					ResolveOrder(Actor, order);
 				}
 				else
 				{
@@ -601,9 +605,15 @@ namespace OpenRA.Mods.Common.Traits
 		public void EndProduction(ProductionItem item)
 		{
 			Queue.Remove(item);
-
 			if (item.Infinite)
-				Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true });
+			{
+				var order = new Order("StartProduction", Actor, Target.Invalid, true)
+				{
+					TargetString = item.Item,
+					ExtraData = (uint)Info.InfiniteBuildLimit + 1
+				};
+				ResolveOrder(Actor, order);
+			}
 		}
 
 		protected virtual void BeginProduction(ProductionItem item, bool hasPriority)
