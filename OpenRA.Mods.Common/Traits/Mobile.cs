@@ -316,6 +316,9 @@ namespace OpenRA.Mods.Common.Traits
 				.Single(l => l.Info.Name == Info.Locomotor);
 
 			base.Created(self);
+			if (creationRallypoint != null)
+				foreach (var cell in creationRallypoint)
+					self.QueueActivity(new AttackMoveActivity(self, () => MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 		}
 
 		void ITick.Tick(Actor self)
@@ -975,16 +978,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public class LeaveProductionActivity : Activity
 		{
-			readonly Mobile mobile;
 			readonly int delay;
-			readonly CPos[] rallyPoint;
 			readonly ReturnToCellActivity returnToCell;
 
-			public LeaveProductionActivity(Actor self, int delay, CPos[] rallyPoint, ReturnToCellActivity returnToCell)
+			public LeaveProductionActivity(Actor self, int delay, ReturnToCellActivity returnToCell)
 			{
-				mobile = self.Trait<Mobile>();
 				this.delay = delay;
-				this.rallyPoint = rallyPoint;
 				this.returnToCell = returnToCell;
 			}
 
@@ -995,10 +994,6 @@ namespace OpenRA.Mods.Common.Traits
 					QueueChild(returnToCell);
 				else if (delay > 0)
 					QueueChild(new Wait(delay));
-
-				if (rallyPoint != null)
-					foreach (var cell in rallyPoint)
-						QueueChild(new AttackMoveActivity(self, () => mobile.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 			}
 
 			public override IEnumerable<Target> GetTargets(Actor self)
@@ -1021,8 +1016,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			if (returnToCellOnCreation || creationRallypoint != null || creationActivityDelay > 0)
-				return new LeaveProductionActivity(self, creationActivityDelay, creationRallypoint,
+			if (returnToCellOnCreation || creationActivityDelay > 0)
+				return new LeaveProductionActivity(self, creationActivityDelay,
 					returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay, returnToCellOnCreationRecalculateSubCell) : null);
 
 			return null;
