@@ -1077,11 +1077,6 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 	Visible: false
 	Logic: TilingPathToolLogic
 	Children:
-		Checkbox@EDIT:
-			X: 5
-			Width: PARENT_WIDTH - 35
-			Height: 25
-			Text: checkbox-tiling-path-edit
 		Container@START_TYPE:
 			X: 5
 			Width: PARENT_WIDTH - 35

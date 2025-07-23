@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -18,14 +19,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapToolsLogic : ChromeLogic
 	{
+		public static event Action<bool> OnSelected;
+
 		readonly List<Widget> toolPanels = [];
 		readonly Dictionary<Widget, string> toolLabels = [];
+		readonly Widget widget;
 		Widget selectedPanel;
 
 		[ObjectCreator.UseCtor]
 		public MapToolsLogic(Widget widget, World world)
 		{
+			this.widget = widget;
 			var toolDropdownWidget = widget.Get<DropDownButtonWidget>("TOOLS_DROPDOWN");
+			MapEditorTabsLogic.OnTabChanged += SelectedTab;
+
 			var tools = world.WorldActor.TraitsImplementing<IEditorTool>();
 			foreach (var tool in tools)
 			{
@@ -42,6 +49,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			toolDropdownWidget.GetText = () => toolLabels[selectedPanel];
 			if (toolPanels.Count == 1)
 				toolDropdownWidget.Disabled = true;
+		}
+
+		void SelectedTab()
+		{
+			OnSelected?.Invoke(widget.IsVisible());
 		}
 
 		void ShowToolsDropDown(DropDownButtonWidget dropdown)
@@ -68,6 +80,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectedPanel = panel;
 			if (panel != null)
 				selectedPanel.Visible = true;
+
+			OnSelected?.Invoke(widget.IsVisible());
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			MapEditorTabsLogic.OnTabChanged -= SelectedTab;
+
+			base.Dispose(disposing);
 		}
 	}
 }

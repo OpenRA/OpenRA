@@ -24,6 +24,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		typeof(TilingPathToolInfo))]
 	public sealed class TilingPathToolLogic : ChromeLogic
 	{
+		readonly Widget widget;
+		readonly EditorViewportControllerWidget editor;
+		readonly TilingPathTool tool;
+
 		[ObjectCreator.UseCtor]
 		public TilingPathToolLogic(
 			Widget widget,
@@ -32,20 +36,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			WorldRenderer worldRenderer,
 			Dictionary<string, MiniYaml> logicArgs)
 		{
-			var tool = world.WorldActor.Trait<TilingPathTool>();
 			var editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+			tool = world.WorldActor.Trait<TilingPathTool>();
+			this.widget = widget;
+			editor = widget.Parent.Parent.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
-			var editorWidget = widget.Parent.Parent.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			MapToolsLogic.OnSelected += TabSelected;
 
 			((ScrollPanelWidget)widget).Layout.AdjustChildren();
-
-			var editCheckbox = widget.Get<CheckboxWidget>("EDIT");
-			editCheckbox.IsChecked = () => editorWidget.CurrentBrush is EditorTilingPathBrush;
-			editCheckbox.OnClick = () =>
-				editorWidget.SetBrush(
-					editCheckbox.IsChecked()
-						? null
-						: new EditorTilingPathBrush(tool));
 
 			void SetupDropDown(
 				DropDownButtonWidget dropDown,
@@ -121,6 +119,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			paintButton.IsDisabled = () => tool.EditorBlitSource == null;
 			paintButton.OnClick = () => editorActionManager.Add(
 				new PaintTilingPathEditorAction(tool));
+		}
+
+		void TabSelected(bool isVisible)
+		{
+			if (isVisible && widget.IsVisible())
+			{
+				if (editor.CurrentBrush is not EditorTilingPathBrush)
+					editor.SetBrush(new EditorTilingPathBrush(tool));
+			}
+			else if (editor.CurrentBrush is EditorTilingPathBrush)
+			{
+				editor.ClearBrush();
+			}
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			MapToolsLogic.OnSelected -= TabSelected;
+
+			base.Dispose(disposing);
 		}
 	}
 }

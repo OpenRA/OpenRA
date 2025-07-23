@@ -78,7 +78,6 @@ label-marker-mirror-mode = Mirror Mode
 label-marker-axis-angle = Axis Angle
 button-map-generator-generate = Generate
 button-map-generator-generate-random = Generate Random
-checkbox-tiling-path-edit = Enable editing
 label-tiling-path-type-start = Start type
 label-tiling-path-type-inner = Inner type
 label-tiling-path-type-end = End type
