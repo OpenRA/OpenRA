@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool returnToCellOnCreation;
 		readonly bool returnToCellOnCreationRecalculateSubCell = true;
 		readonly int creationActivityDelay;
-		readonly CPos[] creationRallypoint;
+		public readonly CPos[] CreationRallypoints;
 
 		#region IMove CurrentMovementTypes
 		MovementType movementTypes;
@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
-			creationRallypoint = init.GetOrDefault<RallyPointInit>()?.Value;
+			CreationRallypoints = init.GetOrDefault<RallyPointInit>()?.Value;
 		}
 
 		protected override void Created(Actor self)
@@ -316,8 +316,8 @@ namespace OpenRA.Mods.Common.Traits
 				.Single(l => l.Info.Name == Info.Locomotor);
 
 			base.Created(self);
-			if (creationRallypoint != null)
-				foreach (var cell in creationRallypoint)
+			if (CreationRallypoints != null)
+				foreach (var cell in CreationRallypoints)
 					self.QueueActivity(new AttackMoveActivity(self, () => MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 		}
 
