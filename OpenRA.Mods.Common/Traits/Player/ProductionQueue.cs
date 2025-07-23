@@ -440,81 +440,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 				return;
 
-			var rules = self.World.Map.Rules;
 			switch (order.OrderString)
 			{
 				case "StartProduction":
-					var unit = rules.Actors[order.TargetString];
-					var bi = unit.TraitInfo<BuildableInfo>();
-
-					// Not built by this queue
-					if (!bi.Queue.Contains(Info.Type))
-						return;
-
-					// You can't build that
-					if (BuildableItems().All(b => b.Name != order.TargetString))
-						return;
-
-					// Check if the player is trying to build more units that they are allowed
-					var fromLimit = int.MaxValue;
-					if (!developerMode.AllTech)
-					{
-						if (Info.QueueLimit > 0)
-							fromLimit = Info.QueueLimit - Queue.Count;
-
-						if (Info.ItemLimit > 0)
-							fromLimit = Math.Min(fromLimit, Info.ItemLimit - Queue.Count(i => i.Item == order.TargetString));
-
-						if (bi.BuildLimit > 0)
-						{
-							var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
-							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
-							fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
-						}
-
-						if (fromLimit <= 0)
-							return;
-					}
-
-					var cost = GetProductionCost(unit);
-					var time = GetBuildTime(unit, bi);
-					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
-					for (var n = 0; n < amountToBuild; n++)
-					{
-						if (Info.PayUpFront && cost > playerResources.GetCashAndResources())
-							return;
-						var hasPlayedSound = false;
-						BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
-						{
-							// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
-							if (!Queue.Any(i => i.Done && i.Item == unit.Name))
-							{
-								hasPlayedSound = false;
-								return;
-							}
-
-							var isBuilding = unit.HasTraitInfo<BuildingInfo>();
-							if (isBuilding && !hasPlayedSound)
-							{
-								hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-								TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
-							}
-							else if (!isBuilding)
-							{
-								if (BuildUnit(unit))
-								{
-									Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-									TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
-								}
-								else if (!hasPlayedSound && time > 0)
-								{
-									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
-									TextNotificationsManager.AddTransientLine(self.Owner, Info.BlockedTextNotification);
-								}
-							}
-						})), !order.Queued);
-					}
-
+					StartProduction(self, order.TargetString, order.ExtraData, !order.Queued);
 					break;
 				case "PauseProduction":
 					PauseProduction(order.TargetString, order.ExtraData != 0);
@@ -555,6 +484,86 @@ namespace OpenRA.Mods.Common.Traits
 			return Util.ApplyPercentageModifiers(valued.Cost, modifiers);
 		}
 
+		protected virtual void StartProduction(Actor self, string itemName, uint numberToProduce, bool hasPriority = false)
+		{
+			var rules = self.World.Map.Rules;
+			var unit = rules.Actors[itemName];
+			var bi = unit.TraitInfo<BuildableInfo>();
+
+			// Not built by this queue
+			if (!bi.Queue.Contains(Info.Type))
+				return;
+
+			// You can't build that
+			if (BuildableItems().All(b => b.Name != itemName))
+				return;
+
+			var fromLimit = int.MaxValue;
+			var isInfinite = false;
+			if (numberToProduce > Info.InfiniteBuildLimit)
+			{
+				isInfinite = true;
+				fromLimit = 1;
+			}
+
+			// Check if the player is trying to build more units that they are allowed
+			else if (!developerMode.AllTech)
+			{
+				if (Info.QueueLimit > 0)
+					fromLimit = Info.QueueLimit - Queue.Count;
+
+				if (Info.ItemLimit > 0)
+					fromLimit = Math.Min(fromLimit, Info.ItemLimit - Queue.Count(i => i.Item == itemName));
+
+				if (bi.BuildLimit > 0)
+				{
+					var inQueue = Queue.Count(pi => pi.Item == itemName);
+					var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == itemName && a.Owner == self.Owner);
+					fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
+				}
+
+				if (fromLimit <= 0)
+					return;
+			}
+
+			var cost = GetProductionCost(unit);
+			var time = GetBuildTime(unit, bi);
+			var amountToBuild = Math.Min(fromLimit, numberToProduce);
+			for (var n = 0; n < amountToBuild; n++)
+			{
+				if (Info.PayUpFront && cost > playerResources.GetCashAndResources())
+					return;
+				var hasPlayedSound = false;
+				BeginProduction(new ProductionItem(this, itemName, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+				{
+					// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
+					if (!Queue.Any(i => i.Done && i.Item == unit.Name))
+						return;
+
+					var isBuilding = unit.HasTraitInfo<BuildingInfo>();
+					if (isBuilding && !hasPlayedSound)
+					{
+						hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+						TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
+					}
+					else if (!isBuilding)
+					{
+						if (BuildUnit(unit))
+						{
+							Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+							TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
+						}
+						else if (!hasPlayedSound && time > 0)
+						{
+							hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
+							TextNotificationsManager.AddTransientLine(self.Owner, Info.BlockedTextNotification);
+						}
+					}
+				}))
+				{ Infinite = isInfinite }, hasPriority);
+			}
+		}
+
 		protected virtual void PauseProduction(string itemName, bool paused)
 		{
 			Queue.FirstOrDefault(a => a.Item == itemName)?.Pause(paused);
@@ -576,12 +585,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (item.Infinite)
 				{
 					item.Infinite = false;
-					var order = new Order("StartProduction", Actor, Target.Invalid, true)
-					{
-						TargetString = item.Item,
-						ExtraData = (uint)Info.InfiniteBuildLimit - 1
-					};
-					ResolveOrder(Actor, order);
+					StartProduction(Actor, item.Item, (uint)Info.InfiniteBuildLimit - 1);
 				}
 				else
 				{
@@ -606,14 +610,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Queue.Remove(item);
 			if (item.Infinite)
-			{
-				var order = new Order("StartProduction", Actor, Target.Invalid, true)
-				{
-					TargetString = item.Item,
-					ExtraData = (uint)Info.InfiniteBuildLimit + 1
-				};
-				ResolveOrder(Actor, order);
-			}
+				StartProduction(Actor, item.Item, (uint)Info.InfiniteBuildLimit + 1);
 		}
 
 		protected virtual void BeginProduction(ProductionItem item, bool hasPriority)
