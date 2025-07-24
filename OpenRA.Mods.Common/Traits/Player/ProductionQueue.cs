@@ -374,6 +374,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// EndProduction removes the item from the queue, so we enumerate
 			// by index in reverse to avoid issues with index reassignment
+			var cancelledAnItem = false;
 			for (var i = Queue.Count - 1; i >= 0; i--)
 			{
 				if (buildableNames.Contains(Queue[i].Item))
@@ -389,6 +390,13 @@ namespace OpenRA.Mods.Common.Traits
 				// Refund what's been paid so far
 				playerResources.GiveCash(Queue[i].TotalCost - Queue[i].RemainingCost);
 				EndProduction(Queue[i]);
+				cancelledAnItem = true;
+			}
+
+			if (cancelledAnItem)
+			{
+				Game.Sound.PlayNotification(Actor.World.Map.Rules, Actor.Owner, "Speech", Info.CancelledAudio, Actor.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(Actor.Owner, Info.CancelledTextNotification);
 			}
 		}
 
