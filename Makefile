@@ -45,7 +45,6 @@ gameinstalldir ?= $(libdir)/openra
 
 # Toolchain
 CWD = $(shell pwd)
-MSBUILD = msbuild -verbosity:m -nologo
 DOTNET = dotnet
 RM = rm
 RM_R = $(RM) -r
