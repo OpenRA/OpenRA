@@ -302,7 +302,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var offset = map.CellContaining(map.ProjectedTopLeft) - generatedMap.CellContaining(generatedMap.ProjectedTopLeft);
-			var blitSource = new EditorBlitSource(generatedMap.AllCells, previews, tiles);
+			var topLeft = generatedMap.CenterOfCell(generatedMap.AllCells.TopLeft);
+			var blitSource = new EditorBlitSource(topLeft, generatedMap.AllCells, previews, tiles);
 			var editorBlit = new EditorBlit(
 				MapBlitFilters.All,
 				resourceLayer,

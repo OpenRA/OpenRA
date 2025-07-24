@@ -210,13 +210,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderPreview(WorldRenderer wr, TerrainTile tile, WPos origin)
 		{
-			if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
-				yield break;
 			var sprite = tileCache.TileSprite(tile, 0);
-			var offset = map.Offset(new CVec(0, 0), tileInfo.Height);
 			var palette = wr.Palette(terrainInfo.Palette);
 
-			yield return new SpriteRenderable(sprite, origin, offset, 0, palette, 1f, 1f, float3.Ones, TintModifiers.None, false);
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, 1f, 1f, float3.Ones, TintModifiers.None, false);
 		}
 	}
 }

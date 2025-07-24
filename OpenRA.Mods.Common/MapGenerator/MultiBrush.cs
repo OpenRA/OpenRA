@@ -809,6 +809,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						t => new BlitTile(t.Tile, default, null, map.Height[CPos.Zero + t.XY]));
 
 			return new EditorBlitSource(
+				map.CenterOfCell(topLeft),
 				cellRegion,
 				actorPreviews,
 				blitTiles);

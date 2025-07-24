@@ -19,7 +19,11 @@ namespace OpenRA.Mods.Common.EditorBrushes
 {
 	public readonly record struct BlitTile(TerrainTile TerrainTile, ResourceTile ResourceTile, ResourceLayerContents? ResourceLayerContents, byte Height);
 
-	public readonly record struct EditorBlitSource(CellRegion CellRegion, Dictionary<string, EditorActorPreview> Actors, Dictionary<CPos, BlitTile> Tiles);
+	public readonly record struct EditorBlitSource(
+		WPos TopLeft,
+		CellRegion CellRegion,
+		Dictionary<string, EditorActorPreview> Actors,
+		Dictionary<CPos, BlitTile> Tiles);
 
 	[Flags]
 	public enum MapBlitFilters
@@ -97,6 +101,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 
 			var previews = new Dictionary<string, EditorActorPreview>();
 			var tiles = new Dictionary<CPos, BlitTile>();
+			var topLeft = map.CenterOfCell(region.TopLeft);
 
 			foreach (var cell in region.CellCoords)
 			{
@@ -116,7 +121,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 					if (mask == null || preview.Footprint.Keys.Any(mask.Contains))
 						previews.TryAdd(preview.ID, preview);
 
-			return new EditorBlitSource(region, previews, tiles);
+			return new EditorBlitSource(topLeft, region, previews, tiles);
 		}
 
 		void Blit(bool isRevert)
@@ -216,20 +221,15 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			var world = wr.World;
 			var map = world.Map;
 
-			var terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
-			var resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
-
-			var wOffset = map.CenterOfCell(CPos.Zero + offset) - map.CenterOfCell(CPos.Zero);
-
 			if (filters.HasFlag(MapBlitFilters.Terrain))
 			{
+				var terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
 				foreach (var (cpos, tile) in blitSource.Tiles)
 				{
-					var preview =
-						terrainRenderer.RenderPreview(
-							wr,
-							tile.TerrainTile,
-							map.CenterOfCell(cpos + offset));
+					var wOffset = map.Offset(offset + (cpos - blitSource.CellRegion.TopLeft), tile.Height);
+					var pos = new WPos(blitSource.TopLeft.X + wOffset.X, blitSource.TopLeft.Y + wOffset.Y, wOffset.Z);
+					var preview = terrainRenderer.RenderPreview(wr, tile.TerrainTile, pos);
+
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
@@ -237,16 +237,17 @@ namespace OpenRA.Mods.Common.EditorBrushes
 
 			if (filters.HasFlag(MapBlitFilters.Resources))
 			{
+				var resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
 				foreach (var (cpos, tile) in blitSource.Tiles)
 				{
 					if (tile.ResourceLayerContents == null || tile.ResourceLayerContents.Value.Type == null)
 						continue;
 
+					var wOffset = map.Offset(offset + (cpos - blitSource.CellRegion.TopLeft), tile.Height);
+					var pos = new WPos(blitSource.TopLeft.X + wOffset.X, blitSource.TopLeft.Y + wOffset.Y, wOffset.Z);
 					var preview = resourceRenderers
-						.SelectMany(r => r.RenderPreview(
-							wr,
-							tile.ResourceLayerContents.Value.Type,
-							map.CenterOfCell(cpos + offset)));
+						.SelectMany(r => r.RenderPreview(wr, tile.ResourceLayerContents.Value.Type, pos));
+
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
@@ -254,10 +255,12 @@ namespace OpenRA.Mods.Common.EditorBrushes
 
 			if (filters.HasFlag(MapBlitFilters.Actors))
 			{
+				var wOffset = map.Offset(offset, 0);
 				foreach (var (_, editorActorPreview) in blitSource.Actors)
 				{
 					var preview = editorActorPreview.RenderWithOffset(wOffset)
 						.OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
+
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
