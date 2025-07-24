@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void DumpSheets(string terrainName, ImmutablePalette palette, ref int sheetCount);
 	}
 
-	sealed class DumpSequenceSheetsCommand : IUtilityCommand
+	public class DumpSequenceSheetsCommand : IUtilityCommand
 	{
 		static readonly int[] ChannelMasks = [2, 1, 0, 3];
 
