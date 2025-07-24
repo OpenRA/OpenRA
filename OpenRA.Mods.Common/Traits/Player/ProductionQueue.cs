@@ -447,7 +447,6 @@ namespace OpenRA.Mods.Common.Traits
 					break;
 				case "PauseProduction":
 					PauseProduction(order.TargetString, order.ExtraData != 0);
-
 					break;
 				case "CancelProduction":
 					CancelProduction(order.TargetString, order.ExtraData);
