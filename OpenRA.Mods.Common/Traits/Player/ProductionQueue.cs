@@ -500,7 +500,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var fromLimit = int.MaxValue;
 			var isInfinite = false;
-			if (numberToProduce > Info.InfiniteBuildLimit)
+			if (Info.InfiniteBuildLimit >= 0 && numberToProduce > Info.InfiniteBuildLimit)
 			{
 				isInfinite = true;
 				fromLimit = 1;
@@ -531,7 +531,7 @@ namespace OpenRA.Mods.Common.Traits
 			var amountToBuild = Math.Min(fromLimit, numberToProduce);
 			for (var n = 0; n < amountToBuild; n++)
 			{
-				if (Info.PayUpFront && cost > playerResources.GetCashAndResources())
+				if (Info.PayUpFront && cost > playerResources.GetCashAndResources() && !isInfinite)
 					return;
 				var hasPlayedSound = false;
 				BeginProduction(new ProductionItem(this, itemName, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
