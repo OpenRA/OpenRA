@@ -102,6 +102,12 @@ namespace OpenRA.Activities
 				OnFirstRun(self);
 				firstRunCompleted = true;
 				State = ActivityState.Active;
+				foreach (var frc in self.TraitsImplementing<INotifyActivityFirstRunCompleted>())
+				{
+					if (!frc.IsTraitEnabled())
+						continue;
+					frc.OnCompleted(self, this);
+				}
 			}
 
 			if (!firstRunCompleted)

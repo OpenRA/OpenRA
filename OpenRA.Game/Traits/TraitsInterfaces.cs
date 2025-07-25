@@ -625,6 +625,9 @@ namespace OpenRA.Traits
 	public interface ICreationActivity { Activity GetCreationActivity(); }
 
 	[RequireExplicitImplementation]
+	public interface INotifyActivityFirstRunCompleted { void OnCompleted(Actor self, Activity activity); }
+
+	[RequireExplicitImplementation]
 	public interface IObservesVariablesInfo : ITraitInfoInterface { }
 
 	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
