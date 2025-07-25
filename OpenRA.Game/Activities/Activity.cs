@@ -51,7 +51,7 @@ namespace OpenRA.Activities
 		public ActivityState State { get; private set; }
 
 		Activity childActivity;
-		protected Activity ChildActivity
+		public Activity ChildActivity
 		{
 			get => SkipDoneActivities(childActivity);
 			private set => childActivity = value;
