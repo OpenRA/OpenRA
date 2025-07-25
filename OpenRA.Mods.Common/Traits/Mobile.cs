@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool returnToCellOnCreation;
 		readonly bool returnToCellOnCreationRecalculateSubCell = true;
 		readonly int creationActivityDelay;
-		readonly CPos[] creationRallypoint;
+		public readonly CPos[] CreationRallypoints;
 
 		#region IMove CurrentMovementTypes
 		MovementType movementTypes;
@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
-			creationRallypoint = init.GetOrDefault<RallyPointInit>()?.Value;
+			CreationRallypoints = init.GetOrDefault<RallyPointInit>()?.Value;
 		}
 
 		protected override void Created(Actor self)
@@ -1021,8 +1021,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			if (returnToCellOnCreation || creationRallypoint != null || creationActivityDelay > 0)
-				return new LeaveProductionActivity(self, creationActivityDelay, creationRallypoint,
+			if (returnToCellOnCreation || CreationRallypoints != null || creationActivityDelay > 0)
+				return new LeaveProductionActivity(self, creationActivityDelay, CreationRallypoints,
 					returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay, returnToCellOnCreationRecalculateSubCell) : null);
 
 			return null;
