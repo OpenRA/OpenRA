@@ -107,7 +107,14 @@ namespace OpenRA.Widgets
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
-		public static void Draw() { Root.DrawOuter(); }
+		public static bool WidgetsVisible = true;
+		public static void Draw()
+		{
+			if (!WidgetsVisible)
+				return;
+
+			Root.DrawOuter();
+		}
 
 		public static bool HandleInput(MouseInput mi)
 		{

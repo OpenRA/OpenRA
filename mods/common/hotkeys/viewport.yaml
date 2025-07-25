@@ -92,3 +92,13 @@ ResetZoom: PERIOD
 	Description: hotkey-description-resetzoom
 	Types: Viewport
 	Contexts: player, spectator, editor
+
+DisableUserInterface: EQUALS Shift
+	Description: hotkey-description-disableuserinterface
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+DisableAllUserInterface: EQUALS Alt, Shift
+	Description: hotkey-description-disablealluserinterface
+	Types: Viewport
+	Contexts: player, spectator, editor

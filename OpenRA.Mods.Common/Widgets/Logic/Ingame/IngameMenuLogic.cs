@@ -230,6 +230,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				gameInfoPanel.IsVisible = () => !hideMenu;
 			}
+
+			Ui.WidgetsVisible = true;
+			Game.HideCursor = false;
 		}
 
 		public static void OnQuit(World world)
