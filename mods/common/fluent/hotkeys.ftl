@@ -184,3 +184,5 @@ hotkey-description-mapbookmarkrestore04 = Jump to bookmark 4
 hotkey-description-zoomin = Zoom in
 hotkey-description-zoomout = Zoom out
 hotkey-description-resetzoom = Reset zoom
+hotkey-description-disableuserinterface = Disable User Interface
+hotkey-description-disablealluserinterface = Disable Extra User Interface
