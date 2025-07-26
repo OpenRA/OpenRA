@@ -73,6 +73,7 @@ namespace OpenRA.Graphics
 		bool overrideUserScale;
 
 		public Func<float2> ViewportCenterProvider;
+		public event Action ViewportTick;
 
 		public float Zoom
 		{
@@ -185,6 +186,8 @@ namespace OpenRA.Graphics
 
 			if (ViewportCenterProvider != null)
 				Center(ViewportCenterProvider());
+
+			ViewportTick?.Invoke();
 		}
 
 		static float CalculateMinimumZoom(float minHeight, float maxHeight)
