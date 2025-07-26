@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
@@ -70,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{
+			if (!Ui.WidgetsVisible)
+				yield break;
+
 			var selected = self.World.Selection.Contains(self);
 			var regularWorld = self.World.Type == WorldType.Regular;
 			var statusBars = Game.Settings.Game.StatusBars;

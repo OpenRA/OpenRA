@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ShowTargetLines(Actor self)
 		{
-			if (Game.Settings.Game.TargetLines < TargetLinesType.Automatic || self.IsIdle)
+			if (Game.Settings.Game.TargetLines < TargetLinesType.Automatic || self.IsIdle || !Ui.WidgetsVisible)
 				return;
 
 			// Reset the order line timeout.
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldRender(Actor self)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
+			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled || !Ui.WidgetsVisible)
 				return false;
 
 			// Players want to see the lines when in waypoint mode.
