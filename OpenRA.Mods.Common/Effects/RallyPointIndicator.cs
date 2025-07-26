@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Effects
 {
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		IEnumerable<IRenderable> IEffectAnnotation.RenderAnnotation(WorldRenderer wr)
 		{
-			if (Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
+			if (Game.Settings.Game.TargetLines == TargetLinesType.Disabled || !Ui.WidgetsVisible)
 				return SpriteRenderable.None;
 
 			if (!building.IsInWorld || !building.Owner.IsAlliedWith(building.World.LocalPlayer))
