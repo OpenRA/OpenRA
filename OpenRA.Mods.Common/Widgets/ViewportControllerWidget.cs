@@ -147,6 +147,7 @@ namespace OpenRA.Mods.Common.Widgets
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
+			worldRenderer.Viewport.ViewportTick += UpdateCameraTick;
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -180,7 +181,8 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		long lastScrollTime = 0;
-		public override void Draw()
+
+		public void UpdateCameraTick()
 		{
 			if (IsJoystickScrolling)
 			{
@@ -218,12 +220,6 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			UpdateMouseover();
-			base.Draw();
-		}
-
-		public void UpdateMouseover()
-		{
 			TooltipType = WorldTooltipType.None;
 			ActorTooltipExtra = null;
 			var modifiers = Game.GetModifierKeys();
@@ -499,6 +495,12 @@ namespace OpenRA.Mods.Common.Widgets
 				directions |= ScrollDirection.Down;
 
 			return directions;
+		}
+
+		public override void Removed()
+		{
+			worldRenderer.Viewport.ViewportTick -= UpdateCameraTick;
+			base.Removed();
 		}
 	}
 }
