@@ -31,8 +31,12 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Ruleset rules, ModData modData)
 		{
+			var defaultTerrainInfo = modData.DefaultTerrainInfo;
+			if (defaultTerrainInfo == null || defaultTerrainInfo.Count == 0)
+				return;
+
 			// As the map has not been created we need to get MapGrid info directly from manifest.
-			var tileSize = modData.DefaultTerrainInfo.Values.First().TileSize;
+			var tileSize = defaultTerrainInfo.Values.First().TileSize;
 			var tileScale = modData.Manifest.Get<MapGrid>().TileScale;
 			foreach (var actorInfo in rules.Actors)
 			{
