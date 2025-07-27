@@ -52,7 +52,8 @@ namespace OpenRA
 		public readonly string Version;
 		public readonly string Website;
 		public readonly string WebIcon32;
-		[FluentReference]
+
+		[FluentReference(optional: true)]
 		public readonly string WindowTitle;
 		public readonly bool Hidden;
 #pragma warning restore IDE1006 // Naming Styles
