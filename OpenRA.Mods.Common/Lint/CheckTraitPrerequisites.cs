@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 				try
 				{
 					var hasTraits = actorInfo.Value.TraitsInConstructOrder().Any();
-					if (!hasTraits)
+					if (!hasTraits && !Enum.TryParse<SystemActors>(actorInfo.Key, true, out _))
 						emitWarning($"Actor `{actorInfo.Key}` has no traits. Is this intended?");
 				}
 				catch (Exception e)
