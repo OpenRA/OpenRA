@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
@@ -100,6 +101,7 @@ namespace OpenRA.Mods.Common
 		[FieldLoader.Require]
 		public readonly string Mod;
 
+		[IncludeFluentReferences(LintDictionaryReference.Values)]
 		[FieldLoader.LoadUsing(nameof(LoadPackages))]
 		public readonly Dictionary<string, ModPackage> Packages = [];
 
