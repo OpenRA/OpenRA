@@ -100,13 +100,17 @@ function Test-Command
 	}
 
 	Write-Host "Testing mods..." -ForegroundColor Cyan
-	Write-Host "Testing Tiberian Sun mod MiniYAML..." -ForegroundColor Cyan
+	Write-Host "`nTesting Tiberian Sun mod MiniYAML..." -ForegroundColor Cyan
+	InvokeCommand "$utilityPath ts-content --check-yaml"
 	InvokeCommand "$utilityPath ts --check-yaml"
-	Write-Host "Testing Dune 2000 mod MiniYAML..." -ForegroundColor Cyan
+	Write-Host "`nTesting Dune 2000 mod MiniYAML..." -ForegroundColor Cyan
+	InvokeCommand "$utilityPath d2k-content --check-yaml"
 	InvokeCommand "$utilityPath d2k --check-yaml"
-	Write-Host "Testing Tiberian Dawn mod MiniYAML..." -ForegroundColor Cyan
+	Write-Host "`nTesting Tiberian Dawn mod MiniYAML..." -ForegroundColor Cyan
+	InvokeCommand "$utilityPath cnc-content --check-yaml"
 	InvokeCommand "$utilityPath cnc --check-yaml"
-	Write-Host "Testing Red Alert mod MiniYAML..." -ForegroundColor Cyan
+	Write-Host "`nTesting Red Alert mod MiniYAML..." -ForegroundColor Cyan
+	InvokeCommand "$utilityPath ra-content --check-yaml"
 	InvokeCommand "$utilityPath ra --check-yaml"
 }
 
