@@ -87,16 +87,16 @@ Container@AUDIO_PANEL:
 									Text: checkbox-mute-background-music-container.label
 									TooltipText: checkbox-mute-background-music-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
-						Container@MUSIC_VOLUME_CONTAINER:
+						Container@SPEECH_VOLUME_CONTAINER:
 							X: PARENT_WIDTH / 2 + 10
 							Width: PARENT_WIDTH / 2 - 20
 							Children:
-								Label@MUSIC_LABEL:
+								Label@SPEECH_LABEL:
 									Width: PARENT_WIDTH
 									Height: 20
-									Text: label-music-title-volume-container
-								ExponentialSlider@MUSIC_VOLUME:
-									Y: 25
+									Text: label-speech-volume-container
+								ExponentialSlider@SPEECH_VOLUME:
+									Y: 30
 									Width: PARENT_WIDTH
 									Height: 20
 									Ticks: 7
@@ -116,6 +116,23 @@ Container@AUDIO_PANEL:
 									Y: 25
 									Width: PARENT_WIDTH
 									Height: 25
+						Container@MUSIC_VOLUME_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@MUSIC_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-music-title-volume-container
+								ExponentialSlider@MUSIC_VOLUME:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 20
+									Ticks: 7
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
 						Container@VIDEO_VOLUME_CONTAINER:
 							X: PARENT_WIDTH / 2 + 10
 							Width: PARENT_WIDTH / 2 - 20
