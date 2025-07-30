@@ -753,7 +753,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 				{
 					var cpos = paintAt + cvec;
 					if (!replace.Contains(cpos))
-						continue;
+					{
+						// Can't reserve - not in replace layer
+						return Replaceability.None;
+					}
+
 					if (!remaining[cpos])
 					{
 						// Can't reserve - not the right shape
