@@ -56,8 +56,7 @@ namespace OpenRA
 			// (b) Therefore:
 			//  - au + 2bv adds (a + b) to (x, y)
 			//  - a correction factor is added if v is odd
-			var offset = (V & 1) == 1 ? 1 : 0;
-			var y = (V - offset) / 2 - U;
+			var y = (V - (V & 1)) / 2 - U;
 			var x = V - y;
 			return new CPos(x, y);
 		}
