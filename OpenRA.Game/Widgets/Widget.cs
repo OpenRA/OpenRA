@@ -450,9 +450,7 @@ namespace OpenRA.Widgets
 					return true;
 
 			// Do any widgety behavior
-			var handled = HandleKeyPress(e);
-
-			return handled;
+			return HandleKeyPress(e);
 		}
 
 		public virtual bool HandleTextInput(string text) { return false; }
@@ -469,9 +467,7 @@ namespace OpenRA.Widgets
 					return true;
 
 			// Do any widgety behavior (enter text etc)
-			var handled = HandleTextInput(text);
-
-			return handled;
+			return HandleTextInput(text);
 		}
 
 		public virtual void PrepareRenderables() { }
