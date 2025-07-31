@@ -78,17 +78,9 @@ namespace OpenRA
 				return new MPos(X, Y);
 
 			// Convert from RectangularIsometric cell (x, y) position to rectangular map position (u, v)
-			//  - The staggered rows make this fiddly (hint: draw a diagram!)
-			// (a) Consider the relationships:
-			//  - +1x (even -> odd) adds (0, 1) to (u, v)
-			//  - +1x (odd -> even) adds (1, 1) to (u, v)
-			//  - +1y (even -> odd) adds (-1, 1) to (u, v)
-			//  - +1y (odd -> even) adds (0, 1) to (u, v)
-			// (b) Therefore:
-			//  - ax + by adds (a - b)/2 to u (only even increments count)
-			//  - ax + by adds a + b to v
-			var u = (X - Y) / 2;
+			// The staggered rows make this fiddly.
 			var v = X + Y;
+			var u = (v - (v & 1)) / 2 - Y;
 			return new MPos(u, v);
 		}
 
