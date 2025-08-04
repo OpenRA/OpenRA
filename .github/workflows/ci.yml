@@ -2,8 +2,12 @@ name: Continuous Integration
 
 on:
   push:
+    paths-ignore:
+      - '*.md'
   pull_request:
     branches: [ bleed, 'prep-*' ]
+    paths-ignore:
+      - '*.md'
 
 permissions:
   contents: read  #  to fetch code (actions/checkout)
