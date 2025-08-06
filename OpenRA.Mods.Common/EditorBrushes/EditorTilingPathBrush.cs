@@ -203,11 +203,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (tool.EditorBlitSource == null)
 				yield break;
 
+			var stickToGround = tool.EditorBlitSource.Value.Tiles.Count == 0;
 			var preview = EditorBlit.PreviewBlitSource(
 				tool.EditorBlitSource.Value,
 				MapBlitFilters.Terrain | MapBlitFilters.Actors,
 				CVec.Zero,
-				wr);
+				wr,
+				stickToGround);
 			foreach (var renderable in preview)
 				yield return renderable;
 		}

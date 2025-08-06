@@ -274,10 +274,10 @@ namespace OpenRA.Mods.Common.Widgets
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (CurrentDragBounds != null)
+			if (CurrentDragBounds.HasValue)
 			{
-				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, null);
-				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionMainColor, int2.Zero, null);
+				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
+				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
 			}
 		}
 

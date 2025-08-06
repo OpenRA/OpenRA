@@ -22,9 +22,9 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Color color;
 		readonly CellCoordsRegion bounds;
 		readonly int2 altPixelOffset;
-		readonly CPos? offset;
+		readonly CVec offset;
 
-		public EditorSelectionAnnotationRenderable(CellCoordsRegion bounds, Color color, int2 altPixelOffset, CPos? offset)
+		public EditorSelectionAnnotationRenderable(CellCoordsRegion bounds, Color color, int2 altPixelOffset, CVec offset)
 		{
 			this.bounds = bounds;
 			this.color = color;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new EditorSelectionAnnotationRenderable(bounds, color, new int2(vec.X, vec.Y), offset); }
+		public IRenderable OffsetBy(in WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -46,29 +46,27 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			const int Width = 1;
 			var map = wr.World.Map;
-			var originalWPos = map.CenterOfCell(bounds.TopLeft);
-			var wposOffset = offset.HasValue ? map.CenterOfCell(offset.Value) - originalWPos : WVec.Zero;
-
 			foreach (var cellPos in bounds)
 			{
-				var uv = cellPos.ToMPos(map);
+				var pos = cellPos + offset;
+				var uv = pos.ToMPos(map);
 				if (!map.Height.Contains(uv))
 					continue;
 
 				var ramp = map.Grid.Ramps[map.Ramp[uv]];
-				var pos = map.CenterOfCell(cellPos) - new WVec(0, 0, ramp.CenterHeightOffset);
+				var wPos = map.CenterOfCell(pos) - new WVec(0, 0, ramp.CenterHeightOffset);
 
 				foreach (var p in ramp.Polygons)
 				{
 					for (var i = 0; i < p.Length; i++)
 					{
 						var j = (i + 1) % p.Length;
-						var start = pos + p[i];
-						var end = pos + p[j];
+						var start = wPos + p[i];
+						var end = wPos + p[j];
 
 						Game.Renderer.RgbaColorRenderer.DrawLine(
-							wr.Viewport.WorldToViewPx(wr.ScreenPosition(start + wposOffset)) + altPixelOffset,
-							wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end + wposOffset)) + altPixelOffset,
+							wr.Viewport.WorldToViewPx(wr.ScreenPosition(start)) + altPixelOffset,
+							wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end)) + altPixelOffset,
 							Width, color, color);
 					}
 				}

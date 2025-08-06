@@ -139,10 +139,45 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 		}
 
+		/// <summary>Get the WVec representing the same translation as the given CVec, with a height offset.</summary>
+		public static WVec CVecToWVec(CVec cvec, int dz, MapGridType gridType)
+		{
+			switch (gridType)
+			{
+				case MapGridType.Rectangular:
+					return new WVec(
+						cvec.X * 1024,
+						cvec.Y * 1024,
+						0);
+				case MapGridType.RectangularIsometric:
+					return new WVec(
+						(cvec.X - cvec.Y) * 724,
+						(cvec.X + cvec.Y) * 724,
+						724 * dz);
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
 		/// <summary>Get the WPos center of a CPos cell.</summary>
 		public static WPos CPosToWPos(CPos cpos, MapGridType gridType)
 		{
 			var wvec = CVecToWVec(new CVec(cpos.X, cpos.Y), gridType);
+			switch (gridType)
+			{
+				case MapGridType.Rectangular:
+					return new WPos(512, 512, 0) + wvec;
+				case MapGridType.RectangularIsometric:
+					return new WPos(724, 724, 0) + wvec;
+				default:
+					throw new NotImplementedException();
+			}
+		}
+
+		/// <summary>Get the WPos center of a CPos cell with a height offset.</summary>
+		public static WPos CPosToWPos(CPos cpos, int dz, MapGridType gridType)
+		{
+			var wvec = CVecToWVec(new CVec(cpos.X, cpos.Y), dz, gridType);
 			switch (gridType)
 			{
 				case MapGridType.Rectangular:

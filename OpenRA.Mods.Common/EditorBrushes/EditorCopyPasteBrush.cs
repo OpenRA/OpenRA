@@ -90,19 +90,32 @@ namespace OpenRA.Mods.Common.Widgets
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
+			var filters = getCopyFilters();
+			var stickToGround = !filters.HasFlag(MapBlitFilters.Terrain)
+;
 			var preview = EditorBlit.PreviewBlitSource(
 				clipboard,
-				getCopyFilters(),
+				filters,
 				PastePreviewPosition - Region.TopLeft,
-				wr);
+				wr,
+				stickToGround);
 			foreach (var renderable in preview)
 				yield return renderable;
 		}
 
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, PastePreviewPosition);
-			yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.PasteColor, int2.Zero, PastePreviewPosition);
+			yield return new EditorSelectionAnnotationRenderable(
+				Region,
+				editorWidget.SelectionAltColor,
+				editorWidget.SelectionAltOffset,
+				PastePreviewPosition - Region.TopLeft);
+
+			yield return new EditorSelectionAnnotationRenderable(
+				Region,
+				editorWidget.PasteColor,
+				int2.Zero,
+				PastePreviewPosition - Region.TopLeft);
 		}
 
 		public void Tick()

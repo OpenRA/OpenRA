@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 
@@ -110,9 +111,9 @@ namespace OpenRA.Mods.Common.EditorBrushes
 					tiles.Add(
 						cell,
 						new BlitTile(mapTiles[cell],
-						mapResources[cell],
-						resourceLayer?.GetResource(cell),
-						mapHeight[cell]));
+							mapResources[cell],
+							resourceLayer?.GetResource(cell),
+							mapHeight[cell]));
 				}
 			}
 
@@ -221,23 +222,24 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			EditorBlitSource blitSource,
 			MapBlitFilters filters,
 			CVec offset,
-			WorldRenderer wr)
+			WorldRenderer wr,
+			bool stickToGround)
 		{
 			var world = wr.World;
 			var map = world.Map;
-
-			var wOffset = map.CenterOfCell(CPos.Zero + offset) - map.CenterOfCell(CPos.Zero);
+			var mapHeight = map.Height;
+			var mapGrid = map.Grid;
 
 			if (filters.HasFlag(MapBlitFilters.Terrain))
 			{
 				var terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
-				foreach (var (cpos, tile) in blitSource.Tiles)
+				foreach (var (pos, tile) in blitSource.Tiles)
 				{
-					var preview =
-						terrainRenderer.RenderPreview(
-							wr,
-							tile.TerrainTile,
-							map.CenterOfCell(cpos + offset));
+					var cPos = pos + offset;
+					var height = stickToGround ? (mapHeight.TryGetValue(cPos, out var isoHeight) ? isoHeight : byte.MinValue) : tile.Height;
+					var wPos = CellLayerUtils.CPosToWPos(cPos, height, mapGrid.Type);
+					var preview = terrainRenderer.RenderPreview(wr, tile.TerrainTile, wPos);
+
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
@@ -256,11 +258,26 @@ namespace OpenRA.Mods.Common.EditorBrushes
 					if (!filters.HasFlag(MapBlitFilters.Terrain) && !resourceLayer.CanAddResource(tile.ResourceLayerContents.Value.Type, cPos))
 						continue;
 
+					byte height;
+					if (filters.HasFlag(MapBlitFilters.Terrain) && !stickToGround)
+					{
+						// We won't change relative tile height, use the saved value.
+						height = tile.Height;
+					}
+					else
+					{
+						if (!mapHeight.TryGetValue(cPos, out height))
+							height = byte.MinValue;
+
+						// If a tile has inherent height, we know it will raise terrain.
+						if (filters.HasFlag(MapBlitFilters.Terrain) && stickToGround)
+							height += map.Rules.TerrainInfo.GetTerrainInfo(tile.TerrainTile).Height;
+					}
+
+					var wPos = CellLayerUtils.CPosToWPos(cPos, height, mapGrid.Type);
 					var preview = resourceRenderers
-						.SelectMany(r => r.RenderPreview(
-							wr,
-							tile.ResourceLayerContents.Value.Type,
-							map.CenterOfCell(cPos)));
+						.SelectMany(r => r.RenderPreview(wr, tile.ResourceLayerContents.Value.Type, wPos));
+
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
@@ -270,8 +287,20 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			{
 				foreach (var (_, editorActorPreview) in blitSource.Actors)
 				{
+					var useGround = stickToGround;
+					if (!filters.HasFlag(MapBlitFilters.Terrain) || !blitSource.Tiles.ContainsKey(editorActorPreview.Location))
+						useGround = true;
+
+					var wOffset = CellLayerUtils.CVecToWVec(offset, 0, mapGrid.Type);
+					if (useGround)
+					{
+						var actorPos = editorActorPreview.CenterPosition + wOffset;
+						wOffset -= new WVec(0, 0, map.DistanceAboveTerrain(actorPos).Length);
+					}
+
 					var preview = editorActorPreview.RenderWithOffset(wOffset)
 						.OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
+
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
