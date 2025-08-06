@@ -843,7 +843,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			var bottomRight = new CPos(
 				Shape.Max(cvec => cvec.X),
 				Shape.Max(cvec => cvec.Y));
-			var cellRegion = new CellRegion(map.Grid.Type, topLeft, bottomRight);
+			var cellRegion = new CellCoordsRegion(topLeft, bottomRight);
 
 			var actorPreviews = new Dictionary<string, EditorActorPreview>();
 			for (var i = 0; i < actorPlans.Count; i++)

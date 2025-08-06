@@ -176,10 +176,10 @@ namespace OpenRA.Mods.Common.Traits
 				NetWorth += newDensity * newResourceValue;
 		}
 
-		public int CalculateRegionValue(CellRegion sourceRegion)
+		public int CalculateRegionValue(CellCoordsRegion sourceRegion)
 		{
 			var resourceValueInRegion = 0;
-			foreach (var cell in sourceRegion.CellCoords)
+			foreach (var cell in sourceRegion)
 			{
 				var mcell = cell.ToMPos(Map);
 				if (!Map.Resources.Contains(mcell))

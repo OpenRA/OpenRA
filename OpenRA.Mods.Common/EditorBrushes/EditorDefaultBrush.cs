@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class EditorSelection
 	{
-		public CellRegion Area;
+		public CellCoordsRegion? Area;
 		public EditorActorPreview Actor;
 
-		public bool HasSelection => Area != null || Actor != null;
+		public bool HasSelection => Area.HasValue || Actor != null;
 	}
 
 	public sealed class EditorDefaultBrush : IEditorBrush
@@ -54,12 +54,12 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly IResourceLayer resourceLayer;
 		readonly EditorActorLayer actorLayer;
 
-		public CellRegion CurrentDragBounds => selectionBounds ?? Selection.Area;
+		public CellCoordsRegion? CurrentDragBounds => selectionBounds ?? Selection.Area;
 
 		public EditorSelection Selection { get; private set; } = new();
 
 		EditorSelection previousSelection;
-		CellRegion selectionBounds;
+		CellCoordsRegion? selectionBounds;
 		int2? selectionStartLocation;
 		CPos? selectionStartCell;
 		int2 worldPixel;
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void DeleteSelection(MapBlitFilters filters)
 		{
-			if (Selection.Area != null)
-				editorActionManager.Add(new DeleteAreaAction(world.Map, filters, Selection.Area, resourceLayer, actorLayer));
+			if (Selection.Area.HasValue)
+				editorActionManager.Add(new DeleteAreaAction(world.Map, filters, Selection.Area.Value, resourceLayer, actorLayer));
 		}
 
 		public void ClearSelection(bool updateSelectedTab = false)
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets
 				// We've dragged enough to capture more than one cell, make a selection box.
 				if (selectionBounds == null)
 				{
-					selectionBounds = new CellRegion(gridType, topLeft, bottomRight);
+					selectionBounds = new CellCoordsRegion(topLeft, bottomRight);
 
 					// Lose focus on any search boxes so we can always copy/paste.
 					Ui.KeyboardFocusWidget = null;
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets
 				else
 				{
 					// We already have a drag box; resize it
-					selectionBounds = new CellRegion(gridType, topLeft, bottomRight);
+					selectionBounds = new CellCoordsRegion(topLeft, bottomRight);
 				}
 			}
 
@@ -276,8 +276,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (CurrentDragBounds != null)
 			{
-				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, null);
-				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds, editorWidget.SelectionMainColor, int2.Zero, null);
+				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, null);
+				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionMainColor, int2.Zero, null);
 			}
 		}
 
@@ -316,12 +316,12 @@ namespace OpenRA.Mods.Common.Widgets
 				Area = previousSelection.Area
 			};
 
-			if (selection.Area != null)
+			if (selection.Area.HasValue)
 				Text = FluentProvider.GetMessage(SelectedArea,
-					"x", selection.Area.TopLeft.X,
-					"y", selection.Area.TopLeft.Y,
-					"width", selection.Area.BottomRight.X - selection.Area.TopLeft.X,
-					"height", selection.Area.BottomRight.Y - selection.Area.TopLeft.Y);
+					"x", selection.Area.Value.TopLeft.X,
+					"y", selection.Area.Value.TopLeft.Y,
+					"width", selection.Area.Value.BottomRight.X - selection.Area.Value.TopLeft.X,
+					"height", selection.Area.Value.BottomRight.Y - selection.Area.Value.TopLeft.Y);
 			else if (selection.Actor != null)
 				Text = FluentProvider.GetMessage(SelectedActor, "id", selection.Actor.ID);
 			else
@@ -355,10 +355,10 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly MapBlitFilters blitFilters;
 		readonly IResourceLayer resourceLayer;
 		readonly EditorActorLayer editorActorLayer;
-		readonly CellRegion area;
+		readonly CellCoordsRegion area;
 		readonly Map map;
 
-		public DeleteAreaAction(Map map, MapBlitFilters blitFilters, CellRegion area, IResourceLayer resourceLayer, EditorActorLayer editorActorLayer)
+		public DeleteAreaAction(Map map, MapBlitFilters blitFilters, CellCoordsRegion area, IResourceLayer resourceLayer, EditorActorLayer editorActorLayer)
 		{
 			this.map = map;
 			this.blitFilters = blitFilters;
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Clear any existing actors in the paste cells.
 				using (new PerfTimer("RemoveActors", 1))
-					editorActorLayer.RemoveRegion(area.CellCoords);
+					editorActorLayer.RemoveRegion(area);
 			}
 
 			foreach (var tileKeyValuePair in editorBlitSource.Tiles)

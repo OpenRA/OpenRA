@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 {
 	public readonly record struct BlitTile(TerrainTile TerrainTile, ResourceTile ResourceTile, ResourceLayerContents? ResourceLayerContents, byte Height);
 
-	public readonly record struct EditorBlitSource(CellRegion CellRegion, Dictionary<string, EditorActorPreview> Actors, Dictionary<CPos, BlitTile> Tiles);
+	public readonly record struct EditorBlitSource(CellCoordsRegion CellCoords, Dictionary<string, EditorActorPreview> Actors, Dictionary<CPos, BlitTile> Tiles);
 
 	[Flags]
 	public enum MapBlitFilters
@@ -64,18 +64,18 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			this.map = map;
 			this.respectBounds = respectBounds;
 
-			var blitSize = blitSource.CellRegion.BottomRight - blitSource.CellRegion.TopLeft;
+			var blitSize = blitSource.CellCoords.BottomRight - blitSource.CellCoords.TopLeft;
 
 			// Only include into the revert blit stuff which would be modified by the main blit.
 			var mask = GetBlitSourceMask(
-				blitSource, blitPosition - blitSource.CellRegion.TopLeft);
+				blitSource, blitPosition - blitSource.CellCoords.TopLeft);
 
 			commitBlitSource = blitSource;
 			revertBlitSource = CopyRegionContents(
 				map,
 				editorActorLayer,
 				resourceLayer,
-				new CellRegion(map.Grid.Type, blitPosition, blitPosition + blitSize),
+				new CellCoordsRegion(blitPosition, blitPosition + blitSize),
 				blitFilters,
 				mask);
 		}
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			Map map,
 			EditorActorLayer editorActorLayer,
 			IResourceLayer resourceLayer,
-			CellRegion region,
+			CellCoordsRegion region,
 			MapBlitFilters blitFilters,
 			IReadOnlySet<CPos> mask = null)
 		{
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 
 			if (blitFilters.HasFlag(MapBlitFilters.Terrain) || blitFilters.HasFlag(MapBlitFilters.Resources))
 			{
-				foreach (var cell in region.CellCoords)
+				foreach (var cell in region)
 				{
 					if (!mapTiles.Contains(cell) || (mask != null && !mask.Contains(cell)))
 						continue;
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			}
 
 			if (blitFilters.HasFlag(MapBlitFilters.Actors))
-				foreach (var preview in editorActorLayer.PreviewsInCellRegion(region.CellCoords))
+				foreach (var preview in editorActorLayer.PreviewsInCellRegion(region))
 					if (mask == null || preview.Footprint.Keys.Any(mask.Contains))
 						previews.TryAdd(preview.ID, preview);
 
@@ -127,10 +127,10 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		void Blit(bool isRevert)
 		{
 			var source = isRevert ? revertBlitSource : commitBlitSource;
-			var blitPos = isRevert ? source.CellRegion.TopLeft : blitPosition;
-			var blitVec = blitPos - source.CellRegion.TopLeft;
-			var blitSize = source.CellRegion.BottomRight - source.CellRegion.TopLeft;
-			var blitRegion = new CellRegion(map.Grid.Type, blitPos, blitPos + blitSize);
+			var blitPos = isRevert ? source.CellCoords.TopLeft : blitPosition;
+			var blitVec = blitPos - source.CellCoords.TopLeft;
+			var blitSize = source.CellCoords.BottomRight - source.CellCoords.TopLeft;
+			var blitRegion = new CellCoordsRegion(blitPos, blitPos + blitSize);
 
 			if (blitFilters.HasFlag(MapBlitFilters.Actors))
 			{
@@ -148,10 +148,10 @@ namespace OpenRA.Mods.Common.EditorBrushes
 				// - revertBlitSource's mask will overlap all revert actors BUT MAY OVERLAP MORE!
 				//
 				// This means we use the commit mask, not the revert one.
-				var commitBlitVec = blitPosition - commitBlitSource.CellRegion.TopLeft;
+				var commitBlitVec = blitPosition - commitBlitSource.CellCoords.TopLeft;
 				var mask = GetBlitSourceMask(commitBlitSource, commitBlitVec);
 				using (new PerfTimer("RemoveActors", 1))
-					editorActorLayer.RemoveRegion(blitRegion.CellCoords, mask);
+					editorActorLayer.RemoveRegion(blitRegion, mask);
 			}
 
 			foreach (var tileKeyValuePair in source.Tiles)
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		{
 			var mask = new HashSet<CPos>();
 
-			var sourceCellCoords = blitSource.CellRegion.CellCoords;
+			var sourceCellCoords = blitSource.CellCoords;
 
 			foreach (var (cpos, _) in blitSource.Tiles)
 			{

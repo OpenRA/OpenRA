@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var cellBounds = CellLayerUtils.CellBounds(map);
 			var topLeft = new CPos(cellBounds.TopLeft.X, cellBounds.TopLeft.Y);
 			var bottomRight = new CPos(cellBounds.BottomRight.X, cellBounds.BottomRight.Y);
-			var cellRegion = new CellRegion(map.Grid.Type, topLeft, bottomRight);
+			var cellRegion = new CellCoordsRegion(topLeft, bottomRight);
 			var blitSource = new EditorBlitSource(cellRegion, previews, tiles);
 			var editorBlit = new EditorBlit(
 				MapBlitFilters.All,

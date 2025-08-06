@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var areaEditPanel = selectTabContainer.Get("AREA_EDIT_PANEL");
 
 			actorEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Actor != null;
-			areaEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Area != null;
+			areaEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Area.HasValue;
 
 			var copyTerrainCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_TERRAIN_CHECKBOX");
 			var copyResourcesCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_RESOURCES_CHECKBOX");
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var copyButton = widget.Get<ButtonWidget>("COPY_BUTTON");
 			copyButton.OnClick = () => clipboard = CopySelectionContents();
-			copyButton.IsDisabled = () => editor.DefaultBrush.Selection.Area == null;
+			copyButton.IsDisabled = () => !editor.DefaultBrush.Selection.Area.HasValue;
 
 			AreaEditTitle = areaEditPanel.Get<LabelWidget>("AREA_EDIT_TITLE");
 			DiagonalLabel = areaEditPanel.Get<LabelWidget>("DIAGONAL_COUNTER_LABEL");
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map,
 				editorActorLayer,
 				resourceLayer,
-				editor.DefaultBrush.Selection.Area,
+				editor.DefaultBrush.Selection.Area.Value,
 				selectionFilters);
 		}
 
@@ -125,9 +125,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void HandleSelectionChanged()
 		{
-			var selectedRegion = editor.DefaultBrush.Selection.Area;
-			if (selectedRegion == null)
+			if (!editor.DefaultBrush.Selection.Area.HasValue)
 				return;
+
+			var selectedRegion = editor.DefaultBrush.Selection.Area.Value;
 
 			if (editorResourceLayer == null)
 				return;

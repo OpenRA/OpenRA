@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.Graphics
 	public class EditorSelectionAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly Color color;
-		readonly CellRegion bounds;
+		readonly CellCoordsRegion bounds;
 		readonly int2 altPixelOffset;
 		readonly CPos? offset;
 
-		public EditorSelectionAnnotationRenderable(CellRegion bounds, Color color, int2 altPixelOffset, CPos? offset)
+		public EditorSelectionAnnotationRenderable(CellCoordsRegion bounds, Color color, int2 altPixelOffset, CPos? offset)
 		{
 			this.bounds = bounds;
 			this.color = color;
@@ -44,15 +44,12 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			if (bounds == null)
-				return;
-
 			const int Width = 1;
 			var map = wr.World.Map;
 			var originalWPos = map.CenterOfCell(bounds.TopLeft);
 			var wposOffset = offset.HasValue ? map.CenterOfCell(offset.Value) - originalWPos : WVec.Zero;
 
-			foreach (var cellPos in bounds.CellCoords)
+			foreach (var cellPos in bounds)
 			{
 				var uv = cellPos.ToMPos(map);
 				if (!map.Height.Contains(uv))

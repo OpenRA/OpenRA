@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly IResourceLayer resourceLayer;
 		readonly Func<MapBlitFilters> getCopyFilters;
 
-		public CPos? PastePreviewPosition { get; private set; }
+		public CPos PastePreviewPosition { get; private set; }
 
-		public CellRegion Region => clipboard.CellRegion;
+		public CellCoordsRegion Region => clipboard.CellCoords;
 
 		public EditorCopyPasteBrush(
 			EditorViewportControllerWidget editorWidget,
@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			editorActionManager = wr.World.WorldActor.Trait<EditorActionManager>();
 			editorActorLayer = wr.World.WorldActor.Trait<EditorActorLayer>();
+			PastePreviewPosition = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -89,25 +90,19 @@ namespace OpenRA.Mods.Common.Widgets
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (PastePreviewPosition != null)
-			{
-				var preview = EditorBlit.PreviewBlitSource(
-					clipboard,
-					getCopyFilters(),
-					PastePreviewPosition.Value - Region.TopLeft,
-					wr);
-				foreach (var renderable in preview)
-					yield return renderable;
-			}
+			var preview = EditorBlit.PreviewBlitSource(
+				clipboard,
+				getCopyFilters(),
+				PastePreviewPosition - Region.TopLeft,
+				wr);
+			foreach (var renderable in preview)
+				yield return renderable;
 		}
 
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (PastePreviewPosition != null)
-			{
-				yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, PastePreviewPosition);
-				yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.PasteColor, int2.Zero, PastePreviewPosition);
-			}
+			yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, PastePreviewPosition);
+			yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.PasteColor, int2.Zero, PastePreviewPosition);
 		}
 
 		public void Tick()
