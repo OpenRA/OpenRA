@@ -172,8 +172,11 @@ namespace OpenRA.Mods.Common.EditorBrushes
 
 				if (blitFilters.HasFlag(MapBlitFilters.Resources) &&
 					resourceLayerContents.HasValue &&
-					!string.IsNullOrWhiteSpace(resourceLayerContents.Value.Type))
+					!string.IsNullOrWhiteSpace(resourceLayerContents.Value.Type) &&
+					resourceLayer.CanAddResource(resourceLayerContents.Value.Type, position))
+				{
 					resourceLayer.AddResource(resourceLayerContents.Value.Type, position, resourceLayerContents.Value.Density);
+				}
 			}
 
 			if (blitFilters.HasFlag(MapBlitFilters.Actors))
@@ -220,13 +223,11 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			var world = wr.World;
 			var map = world.Map;
 
-			var terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
-			var resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
-
 			var wOffset = map.CenterOfCell(CPos.Zero + offset) - map.CenterOfCell(CPos.Zero);
 
 			if (filters.HasFlag(MapBlitFilters.Terrain))
 			{
+				var terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
 				foreach (var (cpos, tile) in blitSource.Tiles)
 				{
 					var preview =
@@ -241,16 +242,22 @@ namespace OpenRA.Mods.Common.EditorBrushes
 
 			if (filters.HasFlag(MapBlitFilters.Resources))
 			{
-				foreach (var (cpos, tile) in blitSource.Tiles)
+				var resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
+				var resourceLayer = world.WorldActor.Trait<IResourceLayer>();
+				foreach (var (pos, tile) in blitSource.Tiles)
 				{
 					if (tile.ResourceLayerContents == null || tile.ResourceLayerContents.Value.Type == null)
+						continue;
+
+					var cPos = pos + offset;
+					if (!filters.HasFlag(MapBlitFilters.Terrain) && !resourceLayer.CanAddResource(tile.ResourceLayerContents.Value.Type, cPos))
 						continue;
 
 					var preview = resourceRenderers
 						.SelectMany(r => r.RenderPreview(
 							wr,
 							tile.ResourceLayerContents.Value.Type,
-							map.CenterOfCell(cpos + offset)));
+							map.CenterOfCell(cPos)));
 					foreach (var renderable in preview)
 						yield return renderable;
 				}
