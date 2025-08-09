@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
 namespace OpenRA.Support
 {
@@ -99,23 +98,23 @@ namespace OpenRA.Support
 		/// <summary>
 		/// Pick a random index from a list of weights.
 		/// </summary>
-		public int PickWeighted(IReadOnlyList<int> weights)
+		public int PickWeighted(ReadOnlySpan<int> weights)
 		{
 			ulong total = 0;
-			foreach (var weight in weights)
+			for (var i = 0; i < weights.Length; i++)
 			{
+				var weight = weights[i];
 				if (weight < 0)
 					throw new ArgumentException("Found a negative weight.");
 				total += (ulong)weight;
 			}
 
 			if (total == 0)
-				return Next(0, weights.Count);
+				return Next(0, weights.Length);
 
 			var spin = NextUlong() % total;
-			int i;
 			ulong acc = 0;
-			for (i = 0; i < weights.Count; i++)
+			for (var i = 0; i < weights.Length; i++)
 			{
 				acc += (ulong)weights[i];
 				if (spin < acc)
@@ -128,13 +127,13 @@ namespace OpenRA.Support
 		/// <summary>
 		/// Shuffle a portion of a list in place. Has minor biases.
 		/// </summary>
-		public void ShuffleInPlace<T>(IList<T> list, int start, int len)
+		public void ShuffleInPlace<T>(Span<T> span, int start, int len)
 		{
 			for (var i = len; i > 1; i--)
 			{
 				var swap = Next(i);
-				(list[start + i - 1], list[start + swap]) =
-					(list[start + swap], list[start + i - 1]);
+				(span[start + i - 1], span[start + swap]) =
+					(span[start + swap], span[start + i - 1]);
 			}
 		}
 

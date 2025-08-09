@@ -678,7 +678,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						mposCount++;
 					}
 
-				random.ShuffleInPlace(mposes, 0, mposCount);
+				random.ShuffleInPlace(mposes.AsSpan(), 0, mposCount);
 			}
 
 			Replaceability ReserveShape(CPos paintAt, IEnumerable<CVec> shape, Replaceability contract)
