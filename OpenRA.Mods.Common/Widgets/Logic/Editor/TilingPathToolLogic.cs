@@ -62,7 +62,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					}
 
-					dropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", choices.Length * 30, choices, SetupItem);
+					var maxHeight = Math.Min(dropDown.Parent.Bounds.Width, choices.Length * 30);
+					dropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", maxHeight, choices, SetupItem);
 				};
 			}
 
