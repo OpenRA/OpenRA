@@ -3756,49 +3756,49 @@ MultiBrushCollections:
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 4,5, 4,4, 3,4, 3,3, 2,3, 1,3, 1,2, 1,1, 1,0
+				Points: 5,5, 5,4, 4,4, 4,3, 3,3, 3,2, 2,2, 2,1, 2,0
 		MultiBrush@16:
 			Template: 16
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 2,4, 1,4, 1,3, 1,2, 0,2, 0,1, 0,0
+				Points: 3,4, 3,3, 2,3, 2,2, 2,1, 1,1, 1,0
 		MultiBrush@17:
 			Template: 17
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 3,3, 2,3, 2,2, 1,2, 1,1, 1,0
+				Points: 4,3, 4,2, 3,2, 3,1, 2,1, 2,0
 		MultiBrush@18:
 			Template: 18
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 1,3, 1,2, 1,1, 1,0
+				Points: 2,3, 2,2, 2,1, 2,0
 		MultiBrush@19:
 			Template: 19
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 0,1, 0,0
+				Points: 1,1, 1,0
 		MultiBrush@21:
 			Template: 21
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 0,5, 1,5, 1,4, 1,3, 0,3, 0,2, 1,2, 1,1, 2,1, 2,0
+				Points: 1,5, 2,5, 2,4, 2,3, 2,2, 2,1, 3,1, 3,0
 		MultiBrush@22:
 			Template: 22
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 1,4, 0,4, 0,3, 0,2, 0,1, 1,1, 2,1, 3,1, 3,0
+				Points: 2,4, 2,3, 1,3, 1,2, 2,2, 3,2, 3,1, 4,1, 4,0
 		MultiBrush@23:
 			Template: 23
 			Segment:
 				Start: Beach.U
 				End: Beach.U
-				Points: 1,3, 0,3, 0,2, 0,1, 1,1, 2,1, 2,0, 3,0
+				Points: 2,3, 2,2, 2,1, 3,1, 4,1, 4,0
 		MultiBrush@24:
 			Template: 24
 			Segment:
@@ -3870,121 +3870,121 @@ MultiBrushCollections:
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 5,0, 5,1, 4,1, 4,2, 3,2, 3,3, 3,4, 2,4, 2,5
+				Points: 4,0, 4,1, 4,2, 3,2, 3,3, 2,3, 2,4, 1,4, 1,5
 		MultiBrush@37:
 			Template: 37
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 3,0, 3,1, 3,2, 3,3, 2,3, 2,4
+				Points: 2,0, 2,1, 2,2, 2,3, 1,3, 1,4
 		MultiBrush@38:
 			Template: 38
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 3,0, 3,1, 2,1, 2,2, 1,2, 1,3
+				Points: 2,0, 2,1, 2,2, 1,2, 1,3, 0,3
 		MultiBrush@39:
 			Template: 39
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 2,0, 2,1, 2,2, 2,3
+				Points: 1,0, 1,1, 1,2, 1,3
 		MultiBrush@40:
 			Template: 40
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 2,0, 2,1
+				Points: 1,0, 1,1
 		MultiBrush@42:
 			Template: 42
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 2,0, 2,1, 2,2, 2,3, 3,3, 4,3, 4,4, 4,5
+				Points: 1,0, 1,1, 1,2, 1,3, 2,3, 2,4, 3,4, 3,5
 		MultiBrush@43:
 			Template: 43
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 1,0, 1,1, 1,2, 2,2, 2,3, 3,3, 3,4
+				Points: 0,0, 0,1, 0,2, 1,2, 1,3, 2,3, 2,4
 		MultiBrush@44:
 			Template: 44
 			Segment:
 				Start: Beach.D
 				End: Beach.D
-				Points: 1,0, 1,1, 2,1, 3,1, 3,2, 3,3
+				Points: 0,0, 0,1, 1,1, 2,1, 2,2, 2,3
 		MultiBrush@45:
 			Template: 45
 			Segment:
 				Start: Beach.L
 				End: Beach.U
-				Points: 3,1, 3,2, 2,2, 1,2, 1,3, 0,3, 0,2, 0,1, 0,0, 1,0
+				Points: 3,1, 2,1, 1,1, 1,0, 2,0
 		MultiBrush@46:
 			Template: 46
 			Segment:
 				Start: Beach.L
 				End: Beach.U
-				Points: 2,1, 1,1, 0,1, 0,0
+				Points: 2,1, 1,1, 1,0
 		MultiBrush@47:
 			Template: 47
 			Segment:
 				Start: Beach.U
 				End: Beach.R
-				Points: 1,3, 1,2, 1,1, 1,0, 2,0, 2,1, 2,2, 3,2
+				Points: 2,3, 2,2, 3,2
 		MultiBrush@48:
 			Template: 48
 			Segment:
 				Start: Beach.U
 				End: Beach.R
-				Points: 0,2, 1,2, 1,1, 2,1
+				Points: 1,2, 1,1, 2,1
 		MultiBrush@49:
 			Template: 49
 			Segment:
 				Start: Beach.R
 				End: Beach.D
-				Points: 0,2, 1,2, 2,2, 2,3
+				Points: 0,2, 1,2, 1,3
 		MultiBrush@50:
 			Template: 50
 			Segment:
 				Start: Beach.R
 				End: Beach.D
-				Points: 0,1, 1,1, 2,1, 2,2
+				Points: 0,1, 1,1, 1,2
 		MultiBrush@51:
 			Template: 51
 			Segment:
 				Start: Beach.D
 				End: Beach.L
-				Points: 2,0, 2,1, 1,1, 0,1
+				Points: 1,0, 1,1, 0,1
 		MultiBrush@52:
 			Template: 52
 			Segment:
 				Start: Beach.D
 				End: Beach.L
-				Points: 2,0, 1,0, 1,1, 0,1
+				Points: 1,0, 1,1, 0,1
 		MultiBrush@53:
 			Template: 53
 			Segment:
 				Start: Beach.D
 				End: Beach.R
-				Points: 2,0, 2,1, 3,1, 3,2
+				Points: 1,0, 1,1, 2,1, 2,2, 3,2
 		MultiBrush@54:
 			Template: 54
 			Segment:
 				Start: Beach.L
 				End: Beach.D
-				Points: 3,1, 2,1, 2,2, 2,3
+				Points: 3,1, 2,1, 2,2, 1,2, 1,3
 		MultiBrush@55:
 			Template: 55
 			Segment:
 				Start: Beach.U
 				End: Beach.L
-				Points: 1,3, 1,2, 0,2, 0,1
+				Points: 2,3, 2,2, 1,2, 1,1, 0,1
 		MultiBrush@56:
 			Template: 56
 			Segment:
 				Start: Beach.R
 				End: Beach.U
-				Points: 0,2, 0,1, 1,1, 1,0
+				Points: 0,2, 1,2, 1,1, 2,1, 2,0
 		MultiBrush@59:
 			Template: 59
 			Segment:
