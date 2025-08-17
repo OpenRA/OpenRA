@@ -28,11 +28,18 @@ namespace OpenRA.Mods.Common.MapGenerator
 	/// </summary>
 	public sealed class MultiBrushInfo
 	{
+		internal static MiniYamlNode SaveField(string key, MiniYaml value) => new(key, value);
+		internal static MiniYamlNode SaveField(string key, string value) => new(key, new MiniYaml(value));
+		internal static MiniYamlNode SaveField(string key, ushort value) => new(key, new MiniYaml(Exts.ToStringInvariant(value)));
+		internal static MiniYamlNode SaveField(string key, int value) => new(key, new MiniYaml(Exts.ToStringInvariant(value)));
+		internal static MiniYamlNode SaveField(string key, WVec value) => new(key, new MiniYaml(value.ToString()));
+		internal static MiniYamlNode SaveField(string key, CVec value) => new(key, new MiniYaml(value.ToString()));
+
 		public sealed class ActorInfo
 		{
 			[FieldLoader.Ignore]
 			public readonly string Type;
-			public readonly WVec Offset = new(0, 0, 0);
+			public readonly WVec Offset = WVec.Zero;
 
 			public ActorInfo(MiniYaml my)
 			{
@@ -42,13 +49,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 				Type = my.Value;
 				FieldLoader.Load(this, my);
 			}
+
+			public MiniYaml ToMiniYaml()
+			{
+				IEnumerable<MiniYamlNode> Nodes()
+				{
+					if (Offset != WVec.Zero)
+						yield return SaveField("Offset", Offset);
+				}
+
+				return new MiniYaml(Type, Nodes());
+			}
 		}
 
 		public sealed class TemplateInfo
 		{
 			[FieldLoader.Ignore]
 			public readonly ushort Type;
-			public readonly CVec Offset = new(0, 0);
+			public readonly CVec Offset = CVec.Zero;
 
 			public TemplateInfo(ushort type)
 			{
@@ -65,13 +83,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				FieldLoader.Load(this, my);
 			}
+
+			public MiniYaml ToMiniYaml()
+			{
+				IEnumerable<MiniYamlNode> Nodes()
+				{
+					if (Offset != CVec.Zero)
+						yield return SaveField("Offset", Offset);
+				}
+
+				return new MiniYaml(Exts.ToStringInvariant(Type), Nodes());
+			}
 		}
 
 		public sealed class TileInfo
 		{
 			[FieldLoader.Ignore]
 			public readonly TerrainTile Type;
-			public readonly CVec Offset = new(0, 0);
+			public readonly CVec Offset = CVec.Zero;
 
 			public TileInfo(MiniYaml my)
 			{
@@ -83,6 +112,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				FieldLoader.Load(this, my);
 			}
+
+			public MiniYaml ToMiniYaml()
+			{
+				IEnumerable<MiniYamlNode> Nodes()
+				{
+					if (Offset != CVec.Zero)
+						yield return SaveField("Offset", Offset);
+				}
+
+				return new MiniYaml(Type.ToString(), Nodes());
+			}
 		}
 
 		public readonly int Weight;
@@ -93,14 +133,20 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public readonly ImmutableArray<TileInfo> Tiles;
 		public readonly MultiBrushSegment Segment;
 
-		public MultiBrushInfo(TemplateInfo templateInfo)
+		public MultiBrushInfo(
+			int weight = MultiBrush.DefaultWeight,
+			ImmutableArray<ActorInfo>? actors = null,
+			TerrainTile? backingTile = null,
+			ImmutableArray<TemplateInfo>? templates = null,
+			ImmutableArray<TileInfo>? tiles = null,
+			MultiBrushSegment segment = null)
 		{
-			Weight = MultiBrush.DefaultWeight;
-			Actors = [];
-			BackingTile = null;
-			Templates = [templateInfo];
-			Tiles = [];
-			Segment = null;
+			Weight = weight;
+			Actors = actors ?? [];
+			BackingTile = backingTile;
+			Templates = templates ?? [];
+			Tiles = tiles ?? [];
+			Segment = segment;
 		}
 
 		public MultiBrushInfo(MiniYaml my)
@@ -160,7 +206,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 						{
 							if (!Exts.TryParseUshortInvariant(part, out var type))
 								throw new YamlException($"Invalid MultiBrush Template `{part}`");
-							brushes.Add(new MultiBrushInfo(new TemplateInfo(type)));
+							brushes.Add(new MultiBrushInfo(templates: [new TemplateInfo(type)]));
 						}
 
 						break;
@@ -170,6 +216,42 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			return brushes.ToImmutableArray();
+		}
+
+		public MiniYaml ToMiniYaml()
+		{
+			// If there's one then name it like "Actor".
+			// If there's multiple then name them like "Actor@0", "Actor@1", ...
+			IEnumerable<MiniYamlNode> AsNodes(string type, IEnumerable<MiniYaml> iEnumerable)
+			{
+				if (iEnumerable.Count() == 1)
+					return [SaveField(type, iEnumerable.First())];
+				else
+					return iEnumerable.Select((e, i) => SaveField($"{type}@{Exts.ToStringInvariant(i)}", e));
+			}
+
+			IEnumerable<MiniYamlNode> Nodes()
+			{
+				if (Weight != MultiBrush.DefaultWeight)
+					yield return SaveField("Weight", Weight);
+
+				if (BackingTile.HasValue)
+					yield return SaveField("BackingTile", BackingTile.Value.ToString());
+
+				IEnumerable<IEnumerable<MiniYamlNode>> repeated =
+					[
+						AsNodes("Actor", Actors.Select(x => x.ToMiniYaml())),
+						AsNodes("Template", Templates.Select(x => x.ToMiniYaml())),
+						AsNodes("Tile", Tiles.Select(x => x.ToMiniYaml()))
+					];
+				foreach (var node in repeated.SelectMany(x => x))
+					yield return node;
+
+				if (Segment != null)
+					yield return SaveField("Segment", Segment.ToMiniYaml());
+			}
+
+			return new MiniYaml(null, Nodes());
 		}
 	}
 
@@ -235,6 +317,21 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 				Points = [.. points];
 			}
+		}
+
+		public MiniYaml ToMiniYaml()
+		{
+			IEnumerable<MiniYamlNode> Nodes()
+			{
+				yield return MultiBrushInfo.SaveField(nameof(Start), Start);
+				if (Inner != null)
+					yield return MultiBrushInfo.SaveField(nameof(Inner), Inner);
+
+				yield return MultiBrushInfo.SaveField(nameof(End), End);
+				yield return MultiBrushInfo.SaveField(nameof(Points), string.Join(", ", Points));
+			}
+
+			return new MiniYaml(null, Nodes());
 		}
 
 		public static bool MatchesType(string type, string matcher)

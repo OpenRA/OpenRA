@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Widgets
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			if (tool.EditorBlitSource == null)
+			if (tool.EditorBlitSource == null || !tool.ShowPreview)
 				yield break;
 
 			var preview = EditorBlit.PreviewBlitSource(

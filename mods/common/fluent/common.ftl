@@ -1114,3 +1114,6 @@ notification-tiling-path-started = Started tiling path
 notification-tiling-path-updated = Updated tiling path
 notification-tiling-path-reset = Discarded tiling path
 notification-tiling-path-painted = Painted tiling path
+
+## TilingPathTool
+notification-tiling-path-dump-multibrush-success = Copied { $count } MultiBrush definitions to the clipboard.

@@ -43,6 +43,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			MapToolsLogic.OnSelected += TabSelected;
 
+			var developer_widget = widget.Get<ContainerWidget>("DEVELOPER_TOOLS");
+			if (tool.IsDeveloper)
+			{
+				developer_widget.Visible = true;
+
+				var ignoredTileWidget = developer_widget.Get<TextFieldWidget>("IGNORED_TILE");
+				var validUshort = true;
+				ignoredTileWidget.OnTextEdited = () => validUshort = Exts.TryParseUshortInvariant(ignoredTileWidget.Text, out _);
+				ignoredTileWidget.Text = Exts.ToStringInvariant(world.Map.Rules.TerrainInfo.DefaultTerrainTile.Type);
+				bool CanSave()
+					=> tool.Plan != null && validUshort;
+
+				var startOverrideWidget = developer_widget
+					.Get<ContainerWidget>("START_OVERRIDE")
+					.Get<TextFieldWidget>("INPUT");
+				var innerOverrideWidget = developer_widget
+					.Get<ContainerWidget>("INNER_OVERRIDE")
+					.Get<TextFieldWidget>("INPUT");
+				var endOverrideWidget = developer_widget
+					.Get<ContainerWidget>("END_OVERRIDE")
+					.Get<TextFieldWidget>("INPUT");
+
+				var explicitInnerCheckbox = widget.Get<CheckboxWidget>("EXPLICIT_INNER");
+				var explicitInner = false;
+				explicitInnerCheckbox.IsChecked = () => explicitInner;
+				explicitInnerCheckbox.OnClick = () => explicitInner = !explicitInner;
+
+				string NullIfEmpty(string x) => x == "" ? null : x;
+
+				var dumpButton = widget.Get<ButtonWidget>("DUMP");
+				dumpButton.IsDisabled = () => !CanSave();
+				dumpButton.OnClick = () => tool.DumpMultiBrushToClipboard(
+					Exts.ParseUshortInvariant(ignoredTileWidget.Text),
+					NullIfEmpty(startOverrideWidget.Text),
+					NullIfEmpty(innerOverrideWidget.Text),
+					NullIfEmpty(endOverrideWidget.Text),
+					explicitInner);
+			}
+			else
+			{
+				widget.RemoveChild(developer_widget);
+			}
+
 			((ScrollPanelWidget)widget).Layout.AdjustChildren();
 
 			void SetupDropDown(
@@ -101,6 +144,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var closedLoopsCheckbox = widget.Get<CheckboxWidget>("CLOSED_LOOPS");
 			closedLoopsCheckbox.IsChecked = () => tool.ClosedLoops;
 			closedLoopsCheckbox.OnClick = () => tool.SetClosedLoops(!tool.ClosedLoops);
+
+			var showPreviewCheckbox = widget.Get<CheckboxWidget>("SHOW_PREVIEW");
+			showPreviewCheckbox.IsChecked = () => tool.ShowPreview;
+			showPreviewCheckbox.OnClick = () => tool.ShowPreview = !tool.ShowPreview;
 
 			var resetButton = widget.Get<ButtonWidget>("RESET");
 			resetButton.IsDisabled = () => tool.Plan == null;

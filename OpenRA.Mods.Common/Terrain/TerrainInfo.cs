@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.MapGenerator;
 
@@ -100,6 +101,27 @@ namespace OpenRA.Mods.Common.Terrain
 		public bool Contains(int index)
 		{
 			return index >= 0 && index < tileInfo.Length;
+		}
+
+		public bool Contains(CVec offset)
+		{
+			return offset.X >= 0 && offset.Y >= 0 && offset.X < Size.X && offset.Y < Size.Y;
+		}
+
+		public int OffsetToIndex(CVec offset)
+		{
+			if (!Contains(offset))
+				throw new ArgumentException($"offset {offset} is outside of template {Id}");
+
+			return offset.Y * Size.X + offset.X;
+		}
+
+		public CVec IndexToOffset(int index)
+		{
+			if (!Contains(index))
+				throw new ArgumentException($"index {index} not valid for template {Id}");
+
+			return new CVec(index % Size.X, index / Size.Y);
 		}
 
 		public int TilesCount => tileInfo.Length;
