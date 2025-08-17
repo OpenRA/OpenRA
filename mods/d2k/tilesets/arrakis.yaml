@@ -6818,322 +6818,276 @@ MultiBrushCollections:
 			Template: 1152
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,1, 1,1
 		MultiBrush@2:
 			Template: 1151
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,1, 1,1
 		MultiBrush@3:
 			Template: 1145
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,1, 1,1
 		MultiBrush@4:
 			Template: 78
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@5:
 			Template: 77
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@6: # Smooth Down
 			Template: 1150
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 1,0, 0,0
 		MultiBrush@7:
 			Template: 1149
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 1,0, 0,0
 		MultiBrush@8:
 			Template: 1143
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 1,0, 0,0
 		MultiBrush@9:
 			Template: 269
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 2,0, 1,0, 0,0
 		MultiBrush@10: # Smooth Left
 			Template: 73
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 1,1, 1,0
 		MultiBrush@11:
 			Template: 72
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 1,1, 1,0
 		MultiBrush@12:
 			Template: 71
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 1,1, 1,0
 		MultiBrush@13:
 			Template: 75
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@14: #smooth Right
 			Template: 1148
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,0, 0,1
 		MultiBrush@15:
 			Template: 76
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,0, 0,1
 		MultiBrush@16:
 			Template: 67
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,0, 0,1
 		MultiBrush@17:
 			Template: 66
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,0, 0,1
 		MultiBrush@18: # smooth inside
 			Template: 259
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 1,0, 0,0, 0,1
 		MultiBrush@19:
 			Template: 260
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 1,1, 1,0, 0,0
 		MultiBrush@20:
 			Template: 261
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@21:
 			Template: 262
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,0, 0,1, 1,1
 		MultiBrush@22: # outside smooth
 			Template: 1147
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,1
 		MultiBrush@23:
 			Template: 1146
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,1
 		MultiBrush@24:
 			Template: 1144
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 0,0
 		MultiBrush@25:
 			Template: 63
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 1,0
 		MultiBrush@26:
 			Template: 60
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 1,1
 		MultiBrush@27: #SMOOTH DIAGONAL
 			Template: 53
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@28:
 			Template: 37
 			Segment:
 				Start: RockSmooth.U
-				Inner: RockSmooth
 				End: RockSmooth.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@29:
 			Template: 46
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@30:
 			Template: 45
 			Segment:
 				Start: RockSmooth.R
-				Inner: RockSmooth
 				End: RockSmooth.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@31:
 			Template: 44
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 2,0, 1,0, 1,1, 0,1
 		MultiBrush@32:
 			Template: 21
 			Segment:
 				Start: RockSmooth.L
-				Inner: RockSmooth
 				End: RockSmooth.L
 				Points: 2,1, 1,1, 1,0, 0,0
 		MultiBrush@33:
 			Template: 36
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 1,0, 1,1, 0,1, 0,2
 		MultiBrush@34:
 			Template: 32
 			Segment:
 				Start: RockSmooth.D
-				Inner: RockSmooth
 				End: RockSmooth.D
 				Points: 0,0, 0,1, 1,1, 1,2
 		MultiBrush@35: # SandRockCliffs
 			Template: 108
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1
 		MultiBrush@36:
 			Template: 187
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@37:
 			Template: 188
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@38:
 			Template: 182
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@39:
 			Template: 200
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@40:
 			Template: 206
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@41: # SandRock DOWN
 			Template: 258
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 1,1, 0,1
 		MultiBrush@42:
 			Template: 194
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,2, 1,2, 1,1, 0,1
 		MultiBrush@43:
 			Template: 196
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@44:
 			Template: 255
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@45:
 			Template: 256
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@46:
 			Template: 197
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 1,2, 0,2
 		MultiBrush@47:
@@ -7141,7 +7095,6 @@ MultiBrushCollections:
 			Weight: 300
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@48:
@@ -7149,7 +7102,6 @@ MultiBrushCollections:
 			Weight: 500
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@49:
@@ -7157,154 +7109,132 @@ MultiBrushCollections:
 			Weight: 500
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@50: # SandRock RIGHT
 			Template: 110
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1
 		MultiBrush@51:
 			Template: 201
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@52:
 			Template: 203
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@53:
 			Template: 223
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@54:
 			Template: 263
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 2,0, 2,1, 1,1, 1,2
 		MultiBrush@55:
 			Template: 264
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1, 2,1, 2,2
 		MultiBrush@56: # SandRock LEFT
 			Template: 111
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,1, 1,0
 		MultiBrush@57:
 			Template: 202
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@58:
 			Template: 204
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@59:
 			Template: 205
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@60:
 			Template: 191
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@61:
 			Template: 192
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@62: # SandRock angles
 			Template: 179
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 2,1, 1,1, 1,2
 		MultiBrush@63:
 			Template: 180
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 1,2, 1,1, 0,1
 		MultiBrush@64:
 			Template: 185
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@65:
 			Template: 186
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 1,0, 1,1, 2,1
 		MultiBrush@66:
 			Template: 210
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@67:
 			Template: 481
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@68:
 			Template: 211
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@69:
 			Template: 212
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@70:
 			Template: 209
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@71: # SandRock ends
@@ -7367,231 +7297,198 @@ MultiBrushCollections:
 			Template: 107
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 0,1, 1,1
 		MultiBrush@80:
 			Template: 29
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@81:
 			Template: 30
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@82:
 			Template: 39
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@83:
 			Template: 34
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@84:
 			Template: 35
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@85: # SAND-SAND DOWN
 			Template: 12
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@86:
 			Template: 13
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@87:
 			Template: 19
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@88:
 			Template: 106
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 1,1, 0,1
 		MultiBrush@89:
 			Template: 31
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 2,1, 1,1, 1,2, 0,2
 		MultiBrush@90:
 			Template: 33
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 2,2, 1,2, 1,1, 0,1
 		MultiBrush@91: # SAND SAND LEFT
 			Template: 104
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 1,1, 1,0
 		MultiBrush@92:
 			Template: 10
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@93:
 			Template: 11
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@94:
 			Template: 27
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@95:
 			Template: 51
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@96:
 			Template: 52
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@97: # SAND-SAND RIGHT
 			Template: 105
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 1,0, 1,1
 		MultiBrush@98:
 			Template: 26
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@99:
 			Template: 41
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@100:
 			Template: 42
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@101:
 			Template: 49
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 2,0, 2,1, 1,1, 1,2
 		MultiBrush@102:
 			Template: 50
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 1,0, 1,1, 2,1, 2,2
 		MultiBrush@103: #SAND-SAND ANGLES
 			Template: 14
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 2,1, 1,1, 1,2
 		MultiBrush@104:
 			Template: 15
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 1,2, 1,1, 0,1
 		MultiBrush@105:
 			Template: 16
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 1,0, 1,1, 2,1
 		MultiBrush@106:
 			Template: 17
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@107:
 			Template: 38
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandSandCliff
 				End: SandSandCliff.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@108:
 			Template: 40
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandSandCliff
 				End: SandSandCliff.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@109:
 			Template: 20
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@110:
 			Template: 427
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandSandCliff
 				End: SandSandCliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@111:
 			Template: 18
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandSandCliff
 				End: SandSandCliff.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@112: #sand-sand end
@@ -7654,448 +7551,384 @@ MultiBrushCollections:
 			Template: 803
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@121:
 			Template: 804
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@122:
 			Template: 805
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@123:
 			Template: 820
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 0,1, 1,1
 		MultiBrush@124:
 			Template: 827
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@125:
 			Template: 826
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@126: # Rock sand down
 			Template: 800
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@127:
 			Template: 811
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@128:
 			Template: 812
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@129:
 			Template: 821
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 1,1, 0,1
 		MultiBrush@130:
 			Template: 829
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 2,1, 1,1, 1,2, 0,2
 		MultiBrush@131:
 			Template: 828
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 2,2, 1,2, 1,1, 0,1
 		MultiBrush@132: # ROCK SAND RIGHT
 			Template: 801
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@133:
 			Template: 810
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@134:
 			Template: 813
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@135:
 			Template: 818
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 1,0, 1,1
 		MultiBrush@136:
 			Template: 838
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 2,0, 2,1, 1,1, 1,2
 		MultiBrush@137:
 			Template: 839
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 1,0, 1,1, 2,1, 2,2
 		MultiBrush@138: #ROCK SAND LEFT
 			Template: 802
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@139:
 			Template: 808
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@140:
 			Template: 809
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@141:
 			Template: 819
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 1,1, 1,0
 		MultiBrush@142:
 			Template: 840
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@143:
 			Template: 841
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@144: #ROCK SAND ANGLES
 			Template: 822
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@145:
 			Template: 823
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 1,2, 1,1, 0,1
 		MultiBrush@146:
 			Template: 824
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 2,1, 1,1, 1,2
 		MultiBrush@147:
 			Template: 825
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 1,0, 1,1, 2,1
 		MultiBrush@148:
 			Template: 814
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockSandCliff
 				End: RockSandCliff.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@149:
 			Template: 815
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockSandCliff
 				End: RockSandCliff.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@150:
 			Template: 816
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockSandCliff
 				End: RockSandCliff.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@151:
 			Template: 817
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockSandCliff
 				End: RockSandCliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@152: #ROCK ROCK TOP
 			Template: 608
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1
 		MultiBrush@153:
 			Template: 623
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@154:
 			Template: 627
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@155:
 			Template: 628
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@156:
 			Template: 604
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@157:
 			Template: 605
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@158: #ROCK ROCK DOWN
 			Template: 609
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 1,1, 0,1
 		MultiBrush@159:
 			Template: 617
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@160:
 			Template: 618
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@161:
 			Template: 619
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@161:
 			Template: 629
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,2, 1,2, 1,1, 0,1
 		MultiBrush@162:
 			Template: 630
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 1,2, 0,2
 		MultiBrush@163: # ROCK ROCK RIGHT
 			Template: 606
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1
 		MultiBrush@164:
 			Template: 620
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@165:
 			Template: 621
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@166:
 			Template: 622
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@167:
 			Template: 631
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 2,0, 2,1, 1,1, 1,2
 		MultiBrush@168:
 			Template: 632
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 2,1, 2,2
 		MultiBrush@169: # ROCK ROCK LEFT
 			Template: 607
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,1, 1,0
 		MultiBrush@170:
 			Template: 624
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@171:
 			Template: 625
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@172:
 			Template: 626
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@173:
 			Template: 633
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@174:
 			Template: 634
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@175: # ROCK ROCK ANGLES
 			Template: 603
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 1,0, 1,1, 2,1
 		MultiBrush@176:
 			Template: 602
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@177:
 			Template: 601
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 1,2, 1,1, 0,1
 		MultiBrush@178:
 			Template: 600
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 2,1, 1,1, 1,2
 		MultiBrush@179:
 			Template: 613
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@180:
 			Template: 614
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@181:
 			Template: 615
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@182:
 			Template: 616
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@183: # ROCK ROCK END
@@ -8158,371 +7991,318 @@ MultiBrushCollections:
 			Template: 1008
 			Segment:
 				Start: SandPlatform.R
-				Inner: SandPlatform
 				End: SandPlatform.R
 				Points: 0,1, 1,1
 		MultiBrush@192:
 			Template: 1009
 			Segment:
 				Start: SandPlatform.R
-				Inner: SandPlatform
 				End: SandPlatform.R
 				Points: 0,1, 1,1
 		MultiBrush@193:
 			Template: 1014
 			Segment:
 				Start: SandPlatform.L
-				Inner: SandPlatform
 				End: SandPlatform.L
 				Points: 1,0, 0,0
 		MultiBrush@194:
 			Template: 1015
 			Segment:
 				Start: SandPlatform.L
-				Inner: SandPlatform
 				End: SandPlatform.L
 				Points: 1,0, 0,0
 		MultiBrush@195:
 			Template: 1005
 			Segment:
 				Start: SandPlatform.D
-				Inner: SandPlatform
 				End: SandPlatform.D
 				Points: 0,0, 0,1
 		MultiBrush@196:
 			Template: 1006
 			Segment:
 				Start: SandPlatform.D
-				Inner: SandPlatform
 				End: SandPlatform.D
 				Points: 0,0, 0,1
 		MultiBrush@197:
 			Template: 1011
 			Segment:
 				Start: SandPlatform.U
-				Inner: SandPlatform
 				End: SandPlatform.U
 				Points: 1,1, 1,0
 		MultiBrush@198:
 			Template: 1012
 			Segment:
 				Start: SandPlatform.U
-				Inner: SandPlatform
 				End: SandPlatform.U
 				Points: 1,1, 1,0
 		MultiBrush@199:
 			Template: 1000
 			Segment:
 				Start: SandPlatform.L
-				Inner: SandPlatform
 				End: SandPlatform.D
 				Points: 1,0, 0,0, 0,1
 		MultiBrush@200:
 			Template: 1001
 			Segment:
 				Start: SandPlatform.U
-				Inner: SandPlatform
 				End: SandPlatform.L
 				Points: 1,1, 1,0, 0,0
 		MultiBrush@201:
 			Template: 1002
 			Segment:
 				Start: SandPlatform.R
-				Inner: SandPlatform
 				End: SandPlatform.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@202:
 			Template: 1003
 			Segment:
 				Start: SandPlatform.D
-				Inner: SandPlatform
 				End: SandPlatform.R
 				Points: 0,0, 0,1, 1,1
 		MultiBrush@203:
 			Template: 1004
 			Segment:
 				Start: SandPlatform.D
-				Inner: SandPlatform
 				End: SandPlatform.L
 				Points: 0,0
 		MultiBrush@204:
 			Template: 1007
 			Segment:
 				Start: SandPlatform.R
-				Inner: SandPlatform
 				End: SandPlatform.D
 				Points: 0,1
 		MultiBrush@205:
 			Template: 1010
 			Segment:
 				Start: SandPlatform.U
-				Inner: SandPlatform
 				End: SandPlatform.R
 				Points: 1,1
 		MultiBrush@206:
 			Template: 1013
 			Segment:
 				Start: SandPlatform.L
-				Inner: SandPlatform
 				End: SandPlatform.U
 				Points: 1,0
 		MultiBrush@207: # dune tiles
 			Template: 1
 			Segment:
 				Start: Dune.U
-				Inner: Dune
 				End: Dune.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@208:
 			Template: 4
 			Segment:
 				Start: Dune.R
-				Inner: Dune
 				End: Dune.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@209:
 			Template: 5
 			Segment:
 				Start: Dune.R
-				Inner: Dune
 				End: Dune.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@210:
 			Template: 6
 			Segment:
 				Start: Dune.L
-				Inner: Dune
 				End: Dune.L
 				Points: 2,0, 1,0, 1,1, 0,1
 		MultiBrush@211:
 			Template: 229
 			Segment:
 				Start: Dune.D
-				Inner: Dune
 				End: Dune.D
 				Points: 0,0, 0,1, 1,1, 1,2
 		MultiBrush@212:
 			Template: 232
 			Segment:
 				Start: Dune.D
-				Inner: Dune
 				End: Dune.D
 				Points: 1,0, 1,1, 0,1, 0,2
 		MultiBrush@213:
 			Template: 233
 			Segment:
 				Start: Dune.U
-				Inner: Dune
 				End: Dune.R
 				Points: 1,1
 		MultiBrush@214:
 			Template: 234
 			Segment:
 				Start: Dune.R
-				Inner: Dune
 				End: Dune.R
 				Points: 0,1, 1,1
 		MultiBrush@215:
 			Template: 235
 			Segment:
 				Start: Dune.R
-				Inner: Dune
 				End: Dune.D
 				Points: 0,1
 		MultiBrush@216:
 			Template: 236
 			Segment:
 				Start: Dune.D
-				Inner: Dune
 				End: Dune.D
 				Points: 0,0, 0,1
 		MultiBrush@217:
 			Template: 237
 			Segment:
 				Start: Dune.D
-				Inner: Dune
 				End: Dune.L
 				Points: 0,0
 		MultiBrush@218:
 			Template: 238
 			Segment:
 				Start: Dune.L
-				Inner: Dune
 				End: Dune.L
 				Points: 1,0, 0,0
 		MultiBrush@219:
 			Template: 239
 			Segment:
 				Start: Dune.L
-				Inner: Dune
 				End: Dune.U
 				Points: 1,0
 		MultiBrush@220:
 			Template: 240
 			Segment:
 				Start: Dune.U
-				Inner: Dune
 				End: Dune.U
 				Points: 1,1, 1,0
 		MultiBrush@221:
 			Template: 242
 			Segment:
 				Start: Dune.U
-				Inner: Dune
 				End: Dune.L
 				Points: 1,1, 1,0, 0,0
 		MultiBrush@222:
 			Template: 243
 			Segment:
 				Start: Dune.R
-				Inner: Dune
 				End: Dune.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@223:
 			Template: 244
 			Segment:
 				Start: Dune.D
-				Inner: Dune
 				End: Dune.R
 				Points: 0,0, 0,1, 1,1
 		MultiBrush@224:
 			Template: 245
 			Segment:
 				Start: Dune.L
-				Inner: Dune
 				End: Dune.D
 				Points: 1,0, 0,0, 0,1
 		MultiBrush@225:
 			Template: 246
 			Segment:
 				Start: Dune.U
-				Inner: Dune
 				End: Dune.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@226:
 			Template: 246
 			Segment:
 				Start: Dune.U
-				Inner: Dune
 				End: Dune.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@227:
 			Template: 7
 			Segment:
 				Start: Dune.L
-				Inner: Dune
 				End: Dune.L
 				Points: 2,1, 1,1, 1,0, 0,0
 		MultiBrush@228: #transition SandRockCliff to Rock
 			Template: 832
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@229:
 			Template: 833
 			Segment:
 				Start: RockRockCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@230:
 			Template: 831
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@231:
 			Template: 830
 			Segment:
 				Start: RockRockCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1
 		MultiBrush@232:
 			Template: 837
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@233:
 			Template: 836
 			Segment:
 				Start: RockRockCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@234:
 			Template: 834
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@235:
 			Template: 835
 			Segment:
 				Start: RockRockCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@236: #transition SandRockCliff to SandSandCliff
 			Template: 207
 			Segment:
 				Start: SandRockCliff.R
-				Inner: SandRockCliff
 				End: SandSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@237:
 			Template: 208
 			Segment:
 				Start: SandSandCliff.R
-				Inner: SandRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@238:
 			Template: 8
 			Segment:
 				Start: SandRockCliff.D
-				Inner: SandRockCliff
 				End: SandSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@239:
 			Template: 43
 			Segment:
 				Start: SandSandCliff.D
-				Inner: SandRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1
 		MultiBrush@240:
 			Template: 3
 			Segment:
 				Start: SandRockCliff.U
-				Inner: SandRockCliff
 				End: SandSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@241:
 			Template: 2
 			Segment:
 				Start: SandSandCliff.U
-				Inner: SandRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@242:
 			Template: 254
 			Segment:
 				Start: SandRockCliff.L
-				Inner: SandRockCliff
 				End: SandSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@243:
 			Template: 253
 			Segment:
 				Start: SandSandCliff.L
-				Inner: SandRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@244: #transition SandRockCliff to Rock-smooth
@@ -8577,112 +8357,96 @@ MultiBrushCollections:
 			Template: 830
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: SandRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@253:
 			Template: 831
 			Segment:
 				Start: SandRockCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@254:
 			Template: 837
 			Segment:
 				Start: SandRockCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@255:
 			Template: 836
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: SandRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@256:
 			Template: 832
 			Segment:
 				Start: SandRockCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@257:
 			Template: 833
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: SandRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@258:
 			Template: 835
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: SandRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@259:
 			Template: 834
 			Segment:
 				Start: SandRockCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@260: # RockRockCliff transition to sand RockSandCliff
 			Template: 806
 			Segment:
 				Start: RockRockCliff.D
-				Inner: RockRockCliff
 				End: RockSandCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@261:
 			Template: 807
 			Segment:
 				Start: RockSandCliff.D
-				Inner: RockRockCliff
 				End: RockRockCliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@262:
 			Template: 843
 			Segment:
 				Start: RockSandCliff.U
-				Inner: RockRockCliff
 				End: RockRockCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@263:
 			Template: 842
 			Segment:
 				Start: RockRockCliff.U
-				Inner: RockRockCliff
 				End: RockSandCliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@264:
 			Template: 844
 			Segment:
 				Start: RockSandCliff.R
-				Inner: RockRockCliff
 				End: RockRockCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@265:
 			Template: 847
 			Segment:
 				Start: RockRockCliff.R
-				Inner: RockRockCliff
 				End: RockSandCliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@266:
 			Template: 845
 			Segment:
 				Start: RockRockCliff.L
-				Inner: RockRockCliff
 				End: RockSandCliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@267:
 			Template: 846
 			Segment:
 				Start: RockSandCliff.L
-				Inner: RockRockCliff
 				End: RockRockCliff.L
 				Points: 2,1, 1,1, 0,1
 	Rough-Sand-Detail:

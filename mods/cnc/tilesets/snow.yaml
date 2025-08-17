@@ -1793,49 +1793,42 @@ MultiBrushCollections:
 			Template: 3
 			Segment:
 				Start: Beach.L
-				Inner: Beach
 				End: Beach.L
 				Points: 3,1, 2,1, 1,1, 0,1
 		MultiBrush@4:
 			Template: 4
 			Segment:
 				Start: Beach.L
-				Inner: Beach
 				End: Beach.L
 				Points: 3,1, 2,1, 1,1, 0,1
 		MultiBrush@7:
 			Template: 7
 			Segment:
 				Start: Beach.L
-				Inner: Beach
 				End: Beach.L
 				Points: 3,1, 2,1, 1,1, 0,1
 		MultiBrush@9:
 			Template: 9
 			Segment:
 				Start: Beach.R
-				Inner: Beach
 				End: Beach.R
 				Points: 0,2, 1,2, 2,2, 3,2
 		MultiBrush@10:
 			Template: 10
 			Segment:
 				Start: Beach.R
-				Inner: Beach
 				End: Beach.R
 				Points: 0,2, 1,2, 2,2, 3,2
 		MultiBrush@11:
 			Template: 11
 			Segment:
 				Start: Beach.R
-				Inner: Beach
 				End: Beach.R
 				Points: 0,2, 1,2, 2,2, 3,2
 		MultiBrush@12:
 			Template: 12
 			Segment:
 				Start: Beach.R
-				Inner: Beach
 				End: Beach.R
 				Points: 0,2, 1,2, 2,2, 3,2
 		MultiBrush@13:
@@ -1849,35 +1842,30 @@ MultiBrushCollections:
 			Template: 14
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.L
 				Points: 2,2, 1,2, 1,1, 0,1
 		MultiBrush@15:
 			Template: 15
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@16:
 			Template: 16
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@17:
 			Template: 17
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.L
 				Points: 2,1, 1,1, 0,1
 		MultiBrush@18:
 			Template: 18
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.L
 				Points: 2,1, 1,1, 1,2, 0,2
 		MultiBrush@19:
@@ -1898,35 +1886,30 @@ MultiBrushCollections:
 			Template: 21
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.U
 				Points: 2,2, 2,1, 1,1, 1,0
 		MultiBrush@22:
 			Template: 22
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@23:
 			Template: 23
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@24:
 			Template: 24
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.U
 				Points: 1,2, 1,1, 1,0
 		MultiBrush@25:
 			Template: 25
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.U
 				Points: 1,2, 1,1, 2,1, 2,0
 		MultiBrush@26:
@@ -1947,35 +1930,30 @@ MultiBrushCollections:
 			Template: 28
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.R
 				Points: 0,1, 1,1, 1,2, 2,2
 		MultiBrush@29:
 			Template: 29
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@30:
 			Template: 30
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@31:
 			Template: 31
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.R
 				Points: 0,1, 1,1, 2,1
 		MultiBrush@32:
 			Template: 32
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.R
 				Points: 0,2, 1,2, 1,1, 2,1
 		MultiBrush@33:
@@ -1996,35 +1974,30 @@ MultiBrushCollections:
 			Template: 35
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.D
 				Points: 2,0, 2,1, 1,1, 1,2
 		MultiBrush@36:
 			Template: 36
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@37:
 			Template: 37
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@38:
 			Template: 38
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.D
 				Points: 1,0, 1,1, 1,2
 		MultiBrush@39:
 			Template: 39
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.D
 				Points: 1,0, 1,1, 2,1, 2,2
 		MultiBrush@40:
@@ -2038,105 +2011,90 @@ MultiBrushCollections:
 			Template: 41
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@42:
 			Template: 42
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@43:
 			Template: 43
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@44:
 			Template: 44
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@45:
 			Template: 45
 			Segment:
 				Start: Cliff.D
-				Inner: Cliff
 				End: Cliff.R
 				Points: 1,0, 1,1, 2,1
 		MultiBrush@46:
 			Template: 46
 			Segment:
 				Start: Cliff.L
-				Inner: Cliff
 				End: Cliff.D
 				Points: 2,1, 1,1, 1,2
 		MultiBrush@47:
 			Template: 47
 			Segment:
 				Start: Cliff.U
-				Inner: Cliff
 				End: Cliff.L
 				Points: 1,2, 1,1, 0,1
 		MultiBrush@48:
 			Template: 48
 			Segment:
 				Start: Cliff.R
-				Inner: Cliff
 				End: Cliff.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@51:
 			Template: 51
 			Segment:
 				Start: Beach.R
-				Inner: Beach
 				End: Beach.U
 				Points: 0,2, 1,2, 2,2, 2,1, 2,0
 		MultiBrush@52:
 			Template: 52
 			Segment:
 				Start: Beach.D
-				Inner: Beach
 				End: Beach.R
 				Points: 1,0, 1,1, 1,2, 2,2, 3,2
 		MultiBrush@88:
 			Template: 88
 			Segment:
 				Start: Beach.L
-				Inner: Beach
 				End: Beach.L
 				Points: 3,1, 2,1, 1,1, 0,1
 		MultiBrush@89:
 			Template: 89
 			Segment:
 				Start: Beach.D
-				Inner: Beach
 				End: Beach.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@90:
 			Template: 90
 			Segment:
 				Start: Beach.L
-				Inner: Beach
 				End: Beach.D
 				Points: 3,1, 2,1, 1,1, 1,2, 1,3
 		MultiBrush@91:
 			Template: 91
 			Segment:
 				Start: Beach.U
-				Inner: Beach
 				End: Beach.L
 				Points: 2,3, 2,2, 2,1, 1,1, 0,1
 		MultiBrush@92:
 			Template: 92
 			Segment:
 				Start: Beach.L
-				Inner: Beach
 				End: Beach.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@93:
@@ -2605,196 +2563,168 @@ MultiBrushCollections:
 			Template: 136
 			Segment:
 				Start: River.R
-				Inner: River
 				End: River.R
 				Points: 0,2, 1,2, 2,2, 3,2, 4,2, 5,2
 		MultiBrush@136reverse:
 			Template: 136
 			Segment:
 				Start: River.L
-				Inner: River
 				End: River.L
 				Points: 5,2, 4,2, 3,2, 2,2, 1,2, 0,2
 		MultiBrush@137:
 			Template: 137
 			Segment:
 				Start: River.R
-				Inner: River
 				End: River.R
 				Points: 0,2, 1,2, 2,2, 2,1, 3,1, 4,1, 5,1
 		MultiBrush@137reverse:
 			Template: 137
 			Segment:
 				Start: River.L
-				Inner: River
 				End: River.L
 				Points: 5,1, 4,1, 3,1, 2,1, 2,2, 1,2, 0,2
 		MultiBrush@138:
 			Template: 138
 			Segment:
 				Start: River.R
-				Inner: River
 				End: River.R
 				Points: 0,1, 1,1, 1,2, 2,2, 3,2, 3,3, 4,3
 		MultiBrush@138reverse:
 			Template: 138
 			Segment:
 				Start: River.L
-				Inner: River
 				End: River.L
 				Points: 4,3, 3,3, 3,2, 2,2, 1,2, 1,1, 0,1
 		MultiBrush@139:
 			Template: 139
 			Segment:
 				Start: River.R
-				Inner: River
 				End: River.R
 				Points: 0,3, 1,3, 1,2, 2,2, 3,2, 3,1, 4,1
 		MultiBrush@139reverse:
 			Template: 139
 			Segment:
 				Start: River.L
-				Inner: River
 				End: River.L
 				Points: 4,1, 3,1, 3,2, 2,2, 1,2, 1,3, 0,3
 		MultiBrush@140:
 			Template: 140
 			Segment:
 				Start: River.D
-				Inner: River
 				End: River.D
 				Points: 2,0, 2,1, 2,2, 2,3
 		MultiBrush@140reverse:
 			Template: 140
 			Segment:
 				Start: River.U
-				Inner: River
 				End: River.U
 				Points: 2,3, 2,2, 2,1, 2,0
 		MultiBrush@141:
 			Template: 141
 			Segment:
 				Start: River.D
-				Inner: River
 				End: River.D
 				Points: 2,0, 2,1, 2,2
 		MultiBrush@141reverse:
 			Template: 141
 			Segment:
 				Start: River.U
-				Inner: River
 				End: River.U
 				Points: 2,2, 2,1, 2,0
 		MultiBrush@142:
 			Template: 142
 			Segment:
 				Start: River.D
-				Inner: River
 				End: River.D
 				Points: 2,0, 2,1, 2,2
 		MultiBrush@142reverse:
 			Template: 142
 			Segment:
 				Start: River.U
-				Inner: River
 				End: River.U
 				Points: 2,2, 2,1, 2,0
 		MultiBrush@143:
 			Template: 143
 			Segment:
 				Start: River.U
-				Inner: River
 				End: River.R
 				Points: 1,2, 1,1, 2,1
 		MultiBrush@143reverse:
 			Template: 143
 			Segment:
 				Start: River.L
-				Inner: River
 				End: River.D
 				Points: 2,1, 1,1, 1,2
 		MultiBrush@144:
 			Template: 144
 			Segment:
 				Start: River.R
-				Inner: River
 				End: River.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@144reverse:
 			Template: 144
 			Segment:
 				Start: River.U
-				Inner: River
 				End: River.L
 				Points: 1,2, 1,1, 0,1
 		MultiBrush@145:
 			Template: 145
 			Segment:
 				Start: River.L
-				Inner: River
 				End: River.U
 				Points: 2,1, 1,1, 1,0
 		MultiBrush@145reverse:
 			Template: 145
 			Segment:
 				Start: River.D
-				Inner: River
 				End: River.R
 				Points: 1,0, 1,1, 2,1
 		MultiBrush@146:
 			Template: 146
 			Segment:
 				Start: River.D
-				Inner: River
 				End: River.L
 				Points: 1,0, 1,1, 0,1
 		MultiBrush@146reverse:
 			Template: 146
 			Segment:
 				Start: River.R
-				Inner: River
 				End: River.U
 				Points: 0,1, 1,1, 1,0
 		MultiBrush@186:
 			Template: 186
 			Segment:
 				Start: Beach.D
-				Inner: Beach
 				End: Beach.D
 				Points: 1,0, 1,1, 1,2, 1,3
 		MultiBrush@187:
 			Template: 187
 			Segment:
 				Start: Beach.U
-				Inner: Beach
 				End: Beach.U
 				Points: 2,3, 2,2, 2,1, 2,0
 		MultiBrush@189:
 			Template: 189
 			Segment:
 				End: Cliff.L
-				Inner: Cliff
 				Points: 1,1, 0,1
 				Start: Cliff.L
 		MultiBrush@190:
 			Template: 190
 			Segment:
 				End: Cliff.R
-				Inner: Cliff
 				Points: 0,1, 1,1
 				Start: Cliff.R
 		MultiBrush@191:
 			Template: 191
 			Segment:
 				End: Cliff.D
-				Inner: Cliff
 				Points: 1,0, 1,1
 				Start: Cliff.D
 		MultiBrush@192:
 			Template: 192
 			Segment:
 				End: Cliff.U
-				Inner: Cliff
 				Points: 1,1, 1,0
 				Start: Cliff.U
 		MultiBrush@TopRightBeachCorner:
@@ -2806,7 +2736,6 @@ MultiBrushCollections:
 				Offset: 1,1
 			Segment:
 				Start: Beach.R
-				Inner: Beach
 				End: Beach.D
 				Points: 0,1, 1,1, 1,2
 		MultiBrush@TopLeftBeachCorner:
@@ -2820,7 +2749,6 @@ MultiBrushCollections:
 				Offset: 0,0,0
 			Segment:
 				Start: Beach.U
-				Inner: Beach
 				End: Beach.R
 				Points: 1,2, 1,1, 2,1
 	Trees:
