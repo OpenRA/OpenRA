@@ -103,6 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly int TerrainSmoothing = default;
 			[FieldLoader.Require]
 			public readonly int SmoothingThreshold = default;
+			public readonly int MinimumCoastStraight = -1;
 			[FieldLoader.Require]
 			public readonly int MinimumLandSeaThickness = default;
 			[FieldLoader.Require]
@@ -113,8 +114,11 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly int RoughnessRadius = default;
 			[FieldLoader.Require]
 			public readonly int Roughness = default;
+			public readonly int WaterRoughness = 0;
 			[FieldLoader.Require]
 			public readonly int MinimumTerrainContourSpacing = default;
+			public readonly int MinimumBeachLength = 0;
+			public readonly int MinimumWaterCliffLength = 0;
 			[FieldLoader.Require]
 			public readonly int MinimumCliffLength = default;
 			[FieldLoader.Require]
@@ -219,6 +223,8 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyList<string> BeachSegmentTypes;
 			[FieldLoader.Ignore]
+			public readonly IReadOnlyList<string> WaterCliffSegmentTypes;
+			[FieldLoader.Ignore]
 			public readonly IReadOnlyList<string> CliffSegmentTypes;
 			[FieldLoader.Ignore]
 			public readonly IReadOnlyList<string> RoadSegmentTypes;
@@ -291,6 +297,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				ClearSegmentTypes = ParseSegmentTypes("ClearSegmentTypes");
 				BeachSegmentTypes = ParseSegmentTypes("BeachSegmentTypes");
+				if (WaterRoughness > 0)
+					WaterCliffSegmentTypes = ParseSegmentTypes("WaterCliffSegmentTypes");
+
 				CliffSegmentTypes = ParseSegmentTypes("CliffSegmentTypes");
 				RoadSegmentTypes = ParseSegmentTypes("RoadSegmentTypes");
 
@@ -341,6 +350,8 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException("CivilianBuildingsFeatureSize must be >= 1");
 				if (TerrainSmoothing < 0 || TerrainSmoothing > MatrixUtils.MaxBinomialKernelRadius)
 					throw new MapGenerationException($"TerrainSmoothing must be between 0 and {MatrixUtils.MaxBinomialKernelRadius} inclusive");
+				if (WaterRoughness > 0 && MinimumCoastStraight < 0)
+					throw new MapGenerationException("MinimumCoastStraight must be >= 0");
 				if (SmoothingThreshold < (FractionMax + 1) / 2 || SmoothingThreshold > FractionMax)
 					throw new MapGenerationException($"SmoothingThreshold must be between {(FractionMax + 1) / 2} and {FractionMax} inclusive");
 				if (MinimumLandSeaThickness < 1)
@@ -361,12 +372,18 @@ namespace OpenRA.Mods.Common.Traits
 					throw new MapGenerationException($"Mountains must be between 0 and {FractionMax} inclusive");
 				if (Roughness < 0 || Roughness > FractionMax)
 					throw new MapGenerationException("Roughness must be between 0 and {FractionMax}");
+				if (WaterRoughness < 0 || WaterRoughness > FractionMax)
+					throw new MapGenerationException("WaterRoughness must be between 0 and {FractionMax}");
 				if (RoughnessRadius < 1)
 					throw new MapGenerationException("RoughnessRadius must be >= 1");
 				if (MaximumAltitude < 0)
 					throw new MapGenerationException("MaximumAltitude must be >= 0");
 				if (MinimumTerrainContourSpacing < 0)
 					throw new MapGenerationException("MinimumTerrainContourSpacing must be >= 0");
+				if (WaterRoughness > 0 && MinimumBeachLength < 1)
+					throw new MapGenerationException("MinimumBeachLength must be >= 1");
+				if (WaterRoughness > 0 && MinimumCliffLength < 1)
+					throw new MapGenerationException("MinimumWaterCliffLength must be >= 1");
 				if (MinimumCliffLength < 1)
 					throw new MapGenerationException("MinimumCliffLength must be >= 1");
 				if (RoadSpacing < 0)
@@ -506,7 +523,7 @@ namespace OpenRA.Mods.Common.Traits
 			var random = new MersenneTwister(param.Seed);
 
 			var elevationRandom = new MersenneTwister(random.Next());
-			var beachTilingRandom = new MersenneTwister(random.Next());
+			var coastTilingRandom = new MersenneTwister(random.Next());
 			var cliffTilingRandom = new MersenneTwister(random.Next());
 			var forestRandom = new MersenneTwister(random.Next());
 			var forestTilingRandom = new MersenneTwister(random.Next());
@@ -532,6 +549,9 @@ namespace OpenRA.Mods.Common.Traits
 				elevationRandom,
 				param.TerrainFeatureSize,
 				param.TerrainSmoothing);
+			var roughnessMatrix = MatrixUtils.GridVariance(
+				elevation,
+				param.RoughnessRadius);
 
 			Matrix<bool> mapShape;
 			if (param.ExternalCircularBias == 0)
@@ -565,33 +585,65 @@ namespace OpenRA.Mods.Common.Traits
 				param.MinimumLandSeaThickness,
 				/*bias=*/param.Water <= FractionMax / 2);
 
-			var beaches = CellLayerUtils.FromMatrixPoints(
-				MatrixUtils.BordersToPoints(landPlan),
-				map.Tiles);
-			var beachPaths = beaches
-				.Select(beach =>
-					TilingPath.QuickCreate(
-							map,
-							param.SegmentedBrushes,
-							beach,
-							(param.MinimumLandSeaThickness - 1) / 2,
-							param.BeachSegmentTypes[0],
-							param.BeachSegmentTypes[0])
-								.ExtendEdge(4))
-				.ToArray();
-			var landBeachWater = terraformer.PaintLoopsAndFill(
-				beachTilingRandom,
-				beachPaths,
+			var coast = MatrixUtils.BordersToPoints(landPlan);
+			List<TilingPath> coastPaths;
+			if (param.WaterRoughness > 0)
+			{
+				var beachZone = new Terraformer.PathPartitionZone()
+				{
+					RequiredSomewhere = true,
+					SegmentType = param.BeachSegmentTypes[0],
+					MinimumLength = param.MinimumBeachLength,
+					MaximumDeviation = param.MinimumLandSeaThickness - 1,
+				};
+				var waterCliffZone = new Terraformer.PathPartitionZone()
+				{
+					SegmentType = param.WaterCliffSegmentTypes[0],
+					MinimumLength = param.MinimumCliffLength,
+					MaximumDeviation = param.MinimumLandSeaThickness - 1,
+				};
+
+				var waterCliffMask = MatrixUtils.CalibratedBooleanThreshold(
+					roughnessMatrix,
+					param.WaterRoughness, FractionMax);
+				var partitionMask = waterCliffMask.Map(masked => masked ? waterCliffZone : beachZone);
+				coastPaths = terraformer.PartitionPaths(
+					coast,
+					[beachZone, waterCliffZone],
+					partitionMask,
+					param.SegmentedBrushes,
+					param.MinimumCoastStraight);
+
+				foreach (var coastPath in coastPaths)
+					coastPath
+						.OptimizeLoop()
+						.ExtendEdge(4);
+			}
+			else
+			{
+				coastPaths = CellLayerUtils.FromMatrixPoints(coast, map.Tiles)
+					.Select(beach =>
+						TilingPath.QuickCreate(
+								map,
+								param.SegmentedBrushes,
+								beach,
+								param.MinimumLandSeaThickness - 1,
+								param.BeachSegmentTypes[0],
+								param.BeachSegmentTypes[0])
+									.ExtendEdge(4))
+					.ToList();
+			}
+
+			var landCoastWater = terraformer.PaintLoopsAndFill(
+				coastTilingRandom,
+				coastPaths,
 				landPlan[0] ? Terraformer.Side.In : Terraformer.Side.Out,
 				[new MultiBrush().WithTemplate(map, param.WaterTile, CVec.Zero)],
 				null)
-					?? throw new MapGenerationException("Could not fit tiles for beach");
+					?? throw new MapGenerationException("Could not fit tiles for coast");
 
 			if (param.Mountains > 0)
 			{
-				var roughnessMatrix = MatrixUtils.GridVariance(
-					elevation,
-					param.RoughnessRadius);
 				var cliffMask = MatrixUtils.CalibratedBooleanThreshold(
 					roughnessMatrix,
 					param.Roughness, FractionMax);
@@ -679,7 +731,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (param.DenyWalledAreas)
 				{
-					// Beach tiles are particularly problematic. If they're for unplayable bodies
+					// Coast tiles are particularly problematic. If they're for unplayable bodies
 					// of water, they should be obliterated. If they're just surrounded by rocks,
 					// trees, etc, they should be filled in with actors.
 					if (waterIsPlayable)
@@ -688,7 +740,7 @@ namespace OpenRA.Mods.Common.Traits
 						terraformer.ZoneFromOutOfBounds(mask, true);
 						terraformer.FillUnmaskedSideAndBorder(
 							mask,
-							landBeachWater,
+							landCoastWater,
 							Terraformer.Side.Out,
 							cpos => map.Tiles[cpos] = terraformer.PickTile(pickAnyRandom, param.LandTile));
 					}

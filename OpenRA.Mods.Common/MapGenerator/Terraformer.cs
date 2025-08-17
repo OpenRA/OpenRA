@@ -77,6 +77,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public sealed class PathPartitionZone
 		{
 			public bool ShouldTile = true;
+			public bool RequiredSomewhere = false;
 			public string SegmentType = null;
 			public int MinimumLength = 1;
 			public int MaximumDeviation = 0;
@@ -1170,6 +1171,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (allZones.Count == 0)
 				throw new ArgumentException("no zones provided");
 
+			if (allZones.Count(zone => zone.RequiredSomewhere) > 1)
+				throw new ArgumentException("RequiredSomewhere only supported for at most one zone");
+
 			if (path.Length < 2)
 				throw new ArgumentException("path is too short");
 
@@ -1303,6 +1307,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 					return [];
 			}
 
+			if (allZones.Any(zone => zone.RequiredSomewhere))
+			{
+				fallbackPath = allZones.First(zone => zone.RequiredSomewhere);
+			}
+			else
 			{
 				var majorities = new List<PathPartitionZone>();
 				if (Vote(0, zones.Length, false, majorities) == 0)

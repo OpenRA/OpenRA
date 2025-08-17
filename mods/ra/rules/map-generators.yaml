@@ -18,12 +18,16 @@
 						MaximumCutoutSpacing: 12
 						TerrainSmoothing: 4
 						SmoothingThreshold: 833
+						MinimumCoastStraight: 1
 						MinimumLandSeaThickness: 5
 						MinimumMountainThickness: 5
 						MaximumAltitude: 8
 						RoughnessRadius: 5
 						Roughness: 500
+						WaterRoughness: 200
 						MinimumTerrainContourSpacing: 5
+						MinimumBeachLength: 10
+						MinimumWaterCliffLength: 10
 						MinimumCliffLength: 10
 						ForestClumpiness: 1
 						DenyWalledAreas: True
@@ -64,6 +68,7 @@
 						ClearSegmentTypes: Clear
 						BeachSegmentTypes: Beach
 						CliffSegmentTypes: Cliff
+						WaterCliffSegmentTypes: WaterCliff
 						RoadSegmentTypes: Road
 						ForestObstacles: Trees
 						UnplayableObstacles: Obstructions
@@ -74,6 +79,8 @@
 				Choice@desert:
 					Tileset: DESERT
 					Settings:
+						MinimumBeachLength: 15
+						MinimumCoastStraight: 3
 						LandTile: 255
 						WaterTile: 256
 				Choice@temperat:
