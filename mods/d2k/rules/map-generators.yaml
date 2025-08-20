@@ -37,7 +37,7 @@
 						SandDetailClumpiness: 1
 						SandDetailCutout: 2
 						MaximumSandDetailCutoutSpacing: 12
-
+						#
 						CreateEntities: True
 						AreaEntityBonus: 0
 						PlayerCountEntityBonus: 1000000
@@ -58,7 +58,7 @@
 						WormSpawn: wormspawner
 						WormSpawns: 1
 						WormSpawnReservation: 12
-
+						#
 						SandTile: 0
 						RockTile: 266
 						PlayableTerrain: Clear,Concrete,Dune,Rock,Rough,Sand,Spice,SpiceSand,Transition

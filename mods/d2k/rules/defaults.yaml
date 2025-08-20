@@ -780,7 +780,7 @@
 	MapEditorData:
 		Categories: Destroyed Tiles
 
-^DamagedBuildingEffects :
+^DamagedBuildingEffects:
 	GrantConditionOnFaction@atreidesVFX:
 		Condition: atreidesVFX
 		Factions: atreides, fremen

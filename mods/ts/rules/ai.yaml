@@ -11,10 +11,10 @@ Player:
 		RefineryTypes: proc
 	PowerDownBotModule:
 		RequiresCondition: enable-test-ai
-		PowerDownTypes:  garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
 	ResourceMapBotModule:
 		RequiresCondition: enable-test-ai
-		ResourceCreatorTypes:  tibtre01, tibtre02, tibtre03, bigblue, bigblue3
+		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
 		ValuableResourceTypes: Tiberium, BlueTiberium
 		HarvesterTypes: harv
 		RefineryTypes: proc
