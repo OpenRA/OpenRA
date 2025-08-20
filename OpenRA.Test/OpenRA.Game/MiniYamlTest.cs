@@ -859,6 +859,39 @@ Test:
 				"MiniYaml.Merge, duplicate values found for the following keys: Child2: [Child2 (at test-filename:4),Child2 (at test-filename:5)]"));
 		}
 
+		[TestCase(TestName = "Merging may be done on yaml that was not sanitised from comments.")]
+		public void TestMergeComments()
+		{
+			const string BaseYaml = @"
+# Random comment
+T:
+	Test2:
+		MockString:
+			MockString2:
+			MockString3:
+				Child1:
+				# Random comment
+		# Random comment
+		MockString4:
+	# Random comment
+# Random comment
+T:
+	Test2:
+		MockString:
+			-MockString2:
+			MockString3:
+				# Random comment
+				-Child1:
+		# Random comment
+		MockString4:
+	# Random comment
+# Random comment
+";
+
+			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename", false)));
+			Assert.That(Merge, Throws.Nothing, "Merging yaml with comments should not throw an exception.");
+		}
+
 		[TestCase(TestName = "Comments are correctly separated from values")]
 		public void TestEscapedHashInValues()
 		{

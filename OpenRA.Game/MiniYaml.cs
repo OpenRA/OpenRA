@@ -506,6 +506,9 @@ namespace OpenRA
 			var ret = new List<MiniYamlNode>(existingNodes.Count);
 			foreach (var n in existingNodes)
 			{
+				if (n.Key == null)
+					continue;
+
 				if (keys.Add(n.Key))
 					ret.Add(n);
 				else
@@ -529,6 +532,9 @@ namespace OpenRA
 			for (var i = 0; i < nodes.Count; i++)
 			{
 				var node = nodes[i];
+				if (node.Key == null)
+					continue;
+
 				if (node.Key.StartsWith('-'))
 				{
 					if (ret == null)
@@ -599,6 +605,9 @@ namespace OpenRA
 
 			void MergeNode(MiniYamlNode node)
 			{
+				if (node.Key == null)
+					return;
+
 				// Append Removal nodes to the result.
 				// Therefore: we know the remainder of the method deals with a plain node.
 				if (node.Key.StartsWith('-'))
