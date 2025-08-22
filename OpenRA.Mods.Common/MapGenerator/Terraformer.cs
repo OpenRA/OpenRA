@@ -1205,54 +1205,85 @@ namespace OpenRA.Mods.Common.MapGenerator
 			// Can also be used to get lengths
 			int Idx(int i) => (i + zones.Length) % zones.Length;
 
+			var minimumZoneLength = allZones.Min(z => z.MinimumLength);
+
+			// To optimize partition vote counting, we pre-sum all the matches for allZones[i]
+			// within zone[0..j] into partitionAcc[i][j]. This means we can quickly count the
+			// matches between a and b by subtracting partitionAcc[i][a] from partitionAcc[i][b].
+			var partitionAcc = new int[allZones.Count][];
+			for (var i = 0; i < allZones.Count; i++)
+			{
+				partitionAcc[i] = new int[zones.Length + 1];
+				var sum = 0;
+				for (var j = 0; j < zones.Length; j++)
+				{
+					if (zones[j] == allZones[i])
+						sum++;
+					partitionAcc[i][j + 1] = sum;
+				}
+			}
+
+			// This is declared outside of Vote() to avoid unnecessary re-allocations.
+			// The values are not reused across calls.
+			var voteCounts = new int[allZones.Count];
+
+			// Identifies valid zone choices in the given range and returns the cost (amount of
+			// disagreement) for the best choice(s). Optionally provides the winner(s) via the
+			// majorities argument.
+			//
+			// Note that the winner can sometimes be a zone not present within the range if
+			// checkMinLength is enforcing candidates' MinimumLength requirement.
 			int Vote(int from, int length, bool checkMinLength, List<PathPartitionZone> majorities = null)
 			{
-				var votes = new Dictionary<PathPartitionZone, int>();
-				var wildcards = 0;
-				foreach (var i in Range(from, length))
+				const int Unsuitable = -1;
+
+				if (checkMinLength && length < minimumZoneLength)
+					return int.MaxValue;
+
+				from = Idx(from);
+				var to = from + length;
+				if (to > zones.Length)
+					to -= zones.Length;
+
+				var nonWildcards = 0;
+				var best = Unsuitable;
+
+				for (var i = 0; i < allZones.Count; i++)
 				{
-					var zone = zones[i];
-
-					if (zone == null)
+					int count;
+					if (to <= from)
 					{
-						wildcards++;
-						continue;
-					}
-
-					if (checkMinLength && length < zone.MinimumLength)
-						continue;
-
-					votes.TryGetValue(zone, out var count);
-					votes[zone] = count + 1;
-				}
-
-				if (votes.Count == 0)
-				{
-					if (wildcards == 0)
-						return int.MaxValue;
-
-					if (checkMinLength)
-					{
-						var filteredZones = allZones.Where(r => r.MinimumLength >= length).ToList();
-						if (filteredZones.Count == 0)
-							return int.MaxValue;
-
-						majorities?.AddRange(filteredZones);
+						count =
+							partitionAcc[i][zones.Length] - partitionAcc[i][from] +
+							partitionAcc[i][to] - partitionAcc[i][0];
 					}
 					else
 					{
-						majorities?.AddRange(allZones);
+						count = partitionAcc[i][to] - partitionAcc[i][from];
 					}
 
-					return 0;
+					nonWildcards += count;
+					if (checkMinLength && length < allZones[i].MinimumLength)
+					{
+						voteCounts[i] = Unsuitable;
+					}
+					else
+					{
+						voteCounts[i] = count;
+						if (count > best)
+							best = count;
+					}
 				}
 
-				var best = votes.Values.Max();
-				majorities?.AddRange(
-					votes
-						.Where(kv => kv.Value == best)
-						.Select(kv => kv.Key));
-				return length - best - wildcards;
+				if (best == Unsuitable)
+					return int.MaxValue;
+
+				if (majorities != null)
+					for (var i = 0; i < allZones.Count; i++)
+						if (voteCounts[i] == best)
+							majorities.Add(allZones[i]);
+
+				return nonWildcards - best;
 			}
 
 			PathPartitionZone fallbackPath;
@@ -1438,7 +1469,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				if (length + 1 == path.Length)
 					return SinglePath(fallbackPath);
 
-				var possibleZones = new List<PathPartitionZone>();
+				var possibleZones = new List<PathPartitionZone>(allZones.Count);
 				Vote(from, length, true, possibleZones);
 				if (possibleZones[0] != lastZone)
 					ranges.Add((from, length, possibleZones[0]));
