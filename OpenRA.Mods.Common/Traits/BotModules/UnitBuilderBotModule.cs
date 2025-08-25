@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		void IBotNotifyIdleBaseUnits.UpdatedIdleBaseUnits(List<Actor> idleUnits)
+		void IBotNotifyIdleBaseUnits.UpdatedIdleBaseUnits(HashSet<Actor> idleUnits)
 		{
 			idleUnitCount = idleUnits.Count;
 		}

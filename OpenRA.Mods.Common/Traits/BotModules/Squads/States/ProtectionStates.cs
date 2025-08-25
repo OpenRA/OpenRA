@@ -16,7 +16,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 	sealed class UnitsForProtectionIdleState : GroundStateBase, IState
 	{
 		public void Activate(Squad owner) { }
-		public void Tick(Squad owner) { owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionAttackState()); }
+		public void Tick(Squad owner)
+		{
+			if (owner.IsValid)
+				owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionAttackState());
+		}
+
 		public void Deactivate(Squad owner) { }
 	}
 
@@ -71,10 +76,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			GoToRandomOwnBuilding(owner);
+			GoToRandomOwnBuilding(owner, "AttackMove");
 			owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionIdleState());
 		}
 
-		public void Deactivate(Squad owner) { owner.SquadManager.UnregisterSquad(owner); }
+		public void Deactivate(Squad owner) { }
 	}
 }

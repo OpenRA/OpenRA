@@ -265,6 +265,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsIdleState());
 		}
 
-		public void Deactivate(Squad owner) { owner.SquadManager.UnregisterSquad(owner); }
+		public void Deactivate(Squad owner) { SquadManagerBotModule.UnregisterSquad(owner); }
 	}
 }

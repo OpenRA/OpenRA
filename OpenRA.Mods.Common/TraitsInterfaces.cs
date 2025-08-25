@@ -618,7 +618,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IBotNotifyIdleBaseUnits
 	{
-		void UpdatedIdleBaseUnits(List<Actor> idleUnits);
+		void UpdatedIdleBaseUnits(HashSet<Actor> idleUnits);
 	}
 
 	[RequireExplicitImplementation]

@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class StateBase
 	{
-		protected static void GoToRandomOwnBuilding(Squad squad)
+		protected static void GoToRandomOwnBuilding(Squad squad, string order = "Move")
 		{
 			var loc = RandomBuildingLocation(squad);
 			foreach (var a in squad.Units)
-				squad.Bot.QueueOrder(new Order("Move", a, Target.FromCell(squad.World, loc), false));
+				squad.Bot.QueueOrder(new Order(order, a, Target.FromCell(squad.World, loc), false));
 		}
 
 		protected static CPos RandomBuildingLocation(Squad squad)

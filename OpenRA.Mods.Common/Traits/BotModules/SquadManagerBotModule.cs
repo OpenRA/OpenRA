@@ -119,11 +119,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Player Player;
 
 		readonly Predicate<Actor> unitCannotBeOrdered;
-		readonly List<Actor> unitsHangingAroundTheBase = [];
+		Squad protectionSquad;
 
 		// Units that the bot already knows about. Any unit not on this list needs to be given a role.
-		readonly HashSet<Actor> activeUnits = [];
-
 		public List<Squad> Squads = [];
 		readonly Stack<Squad> squadsPendingUpdate = [];
 		readonly ActorIndex.NamesAndTrait<BuildingInfo> constructionYardBuildings;
@@ -198,6 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IBotEnabled.BotEnabled(IBot bot)
 		{
 			this.bot = bot;
+			protectionSquad = new Squad(bot, this, SquadType.Protection);
 		}
 
 		void IBotTick.BotTick(IBot bot)
@@ -319,24 +318,18 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		internal void UnregisterSquad(Squad squad)
-		{
-			activeUnits.ExceptWith(squad.Units);
-			squad.Units.Clear();
-
-			// CleanSquads will remove the squad from the Squads list.
-			// We can't do that here as this is designed to be called from within Squad.Update
-			// and thus would mutate the Squads list we are iterating over.
-		}
+		// CleanSquads will remove the squad from the Squads list.
+		// We can't do that here as this is designed to be called from within Squad.Update
+		// and thus would mutate the Squads list we are iterating over.
+		internal static void UnregisterSquad(Squad squad) => squad.Units.Clear();
 
 		void AssignRolesToIdleUnits(IBot bot)
 		{
 			CleanSquads();
 
-			activeUnits.RemoveWhere(unitCannotBeOrdered);
-			unitsHangingAroundTheBase.RemoveAll(unitCannotBeOrdered);
+			protectionSquad.Units.RemoveWhere(unitCannotBeOrdered);
 			foreach (var n in notifyIdleBaseUnits)
-				n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
+				n.UpdatedIdleBaseUnits(protectionSquad.Units);
 
 			if (--rushTicks <= 0)
 			{
@@ -347,6 +340,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (--attackForceTicks <= 0)
 			{
 				attackForceTicks = Info.AttackForceInterval;
+
+				squadsPendingUpdate.Push(protectionSquad);
 				foreach (var s in Squads)
 					squadsPendingUpdate.Push(s);
 			}
@@ -378,7 +373,7 @@ namespace OpenRA.Mods.Common.Traits
 			var newUnits = World.ActorsHavingTrait<IPositionable>()
 				.Where(a => a.Owner == Player &&
 					!Info.ExcludeFromSquadsTypes.Contains(a.Info.Name) &&
-					!activeUnits.Contains(a));
+					!protectionSquad.Units.Contains(a));
 
 			foreach (var a in newUnits)
 			{
@@ -397,14 +392,12 @@ namespace OpenRA.Mods.Common.Traits
 					ships.Units.Add(a);
 				}
 				else
-					unitsHangingAroundTheBase.Add(a);
-
-				activeUnits.Add(a);
+					protectionSquad.Units.Add(a);
 			}
 
 			// Notifying here rather than inside the loop, should be fine and saves a bunch of notification calls
 			foreach (var n in notifyIdleBaseUnits)
-				n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
+				n.UpdatedIdleBaseUnits(protectionSquad.Units);
 		}
 
 		void CreateAttackForce(IBot bot)
@@ -413,38 +406,29 @@ namespace OpenRA.Mods.Common.Traits
 			// (don't bother leaving any behind for defense)
 			var randomizedSquadSize = Info.SquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
 
-			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
+			if (protectionSquad.Units.Count >= randomizedSquadSize)
 			{
 				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
 
-				attackForce.Units.UnionWith(unitsHangingAroundTheBase);
+				attackForce.Units.UnionWith(protectionSquad.Units);
 
-				unitsHangingAroundTheBase.Clear();
+				protectionSquad.Units.Clear();
 				foreach (var n in notifyIdleBaseUnits)
-					n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
+					n.UpdatedIdleBaseUnits(protectionSquad.Units);
 			}
 		}
 
 		void TryToRushAttack(IBot bot)
 		{
-			var ownUnits = activeUnits
-				.Where(unit =>
-					unit.IsIdle
-					&& unit.Info.HasTraitInfo<AttackBaseInfo>()
-					&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
-					&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)
-					&& !Info.ExcludeFromSquadsTypes.Contains(unit.Info.Name))
-				.ToList();
-
-			if (ownUnits.Count < Info.SquadSize)
+			if (protectionSquad.Units.Count < Info.SquadSize)
 				return;
 
 			var allEnemyBaseBuilder = FindEnemies(
 				constructionYardBuildings.Actors,
-				ownUnits[0])
+				protectionSquad.Units.First())
 				.ToList();
 
-			if (allEnemyBaseBuilder.Count == 0 || ownUnits.Count < Info.SquadSize)
+			if (allEnemyBaseBuilder.Count == 0 || protectionSquad.Units.Count < Info.SquadSize)
 				return;
 
 			foreach (var enemyBaseBuilder in allEnemyBaseBuilder)
@@ -456,41 +440,23 @@ namespace OpenRA.Mods.Common.Traits
 							unit.Info.HasTraitInfo<AttackBaseInfo>()
 							&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
 							&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)),
-					ownUnits[0])
+					protectionSquad.Units.First())
 					.ToList();
 
-				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies.ConvertAll(x => x.Actor)))
+				if (AttackOrFleeFuzzy.Rush.CanAttack(protectionSquad.Units, enemies.ConvertAll(x => x.Actor)))
 				{
 					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : enemyBaseBuilder;
 					var rush = GetSquadOfType(SquadType.Rush);
 					rush ??= RegisterNewSquad(bot, SquadType.Rush, target);
 
-					rush.Units.UnionWith(ownUnits);
+					rush.Units.UnionWith(protectionSquad.Units);
+					protectionSquad.Units.Clear();
+
+					foreach (var n in notifyIdleBaseUnits)
+						n.UpdatedIdleBaseUnits(protectionSquad.Units);
 
 					return;
 				}
-			}
-		}
-
-		void ProtectOwn(IBot bot, Actor attacker)
-		{
-			var protectSq = GetSquadOfType(SquadType.Protection);
-			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
-			protectSq.Units.RemoveWhere(unitCannotBeOrdered);
-
-			if (protectSq.IsValid && !protectSq.IsTargetValid(protectSq.CenterUnit()))
-				protectSq.SetActorToTarget((attacker, WVec.Zero));
-
-			if (!protectSq.IsValid)
-			{
-				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WDist.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit =>
-						unit.Owner == Player
-						&& !Info.ProtectionTypes.Contains(unit.Info.Name)
-						&& unit.Info.HasTraitInfo<AttackBaseInfo>())
-					.WithPathTo(World, attacker.CenterPosition);
-
-				protectSq.Units.UnionWith(ownUnits);
 			}
 		}
 
@@ -511,7 +477,8 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var n in notifyPositionsUpdated)
 					n.UpdatedDefenseCenter(e.Attacker.Location);
 
-				ProtectOwn(bot, e.Attacker);
+				if (protectionSquad.IsValid && !protectionSquad.IsTargetValid(protectionSquad.CenterUnit()))
+					protectionSquad.SetActorToTarget((e.Attacker, WVec.Zero));
 			}
 		}
 
@@ -524,11 +491,7 @@ namespace OpenRA.Mods.Common.Traits
 			[
 				new("Squads", "", Squads.ConvertAll(s => new MiniYamlNode("Squad", s.Serialize()))),
 				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
-					.Where(a => !unitCannotBeOrdered(a))
-					.Select(a => a.ActorID)
-					.ToArray())),
-				new("ActiveUnits", FieldSaver.FormatValue(activeUnits
+				new("UnitsHangingAroundTheBase", FieldSaver.FormatValue(protectionSquad.Units
 					.Where(a => !unitCannotBeOrdered(a))
 					.Select(a => a.ActorID)
 					.ToArray())),
@@ -551,15 +514,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (nodes.TryGetValue("UnitsHangingAroundTheBase", out var unitsHangingAroundTheBaseNode))
 			{
-				unitsHangingAroundTheBase.Clear();
-				unitsHangingAroundTheBase.AddRange(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value)
-					.Select(self.World.GetActorById).Where(a => a != null));
-			}
-
-			if (nodes.TryGetValue("ActiveUnits", out var activeUnitsNode))
-			{
-				activeUnits.Clear();
-				activeUnits.UnionWith(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value)
+				protectionSquad.Units.Clear();
+				protectionSquad.Units.Union(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value)
 					.Select(self.World.GetActorById).Where(a => a != null));
 			}
 
