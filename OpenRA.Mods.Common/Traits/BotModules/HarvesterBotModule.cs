@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Put this on the Player actor. Manages bot harvesters to ensure they always continue harvesting as long as there are resources on the map.")]
-	public class HarvesterBotModuleInfo : ConditionalTraitInfo, NotBefore<IResourceLayerInfo>
+	public class HarvesterBotModuleInfo : ConditionalTraitInfo, NotBefore<IResourceLayerInfo>, NotBefore<ResourceMapBotModuleInfo>
 	{
 		[Desc("Actor types that are considered harvesters. If harvester count drops below RefineryTypes count, a new harvester is built.",
 			"Leave empty to disable harvester replacement. Currently only needed by harvester replacement system.")]
@@ -32,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
 		public readonly int ScanForIdleHarvestersInterval = 50;
 
+		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
+		public readonly int ScanForLowEffectHarvestersInterval = 433;
+
 		[Desc("When an idle harvester cannot find resources, increase the wait to this many scan intervals.")]
 		public readonly int ScanIntervalMultiplerWhenNoResources = 5;
 
@@ -41,10 +44,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("For each enemy within the threat radius, apply the following cost multiplier for every cell that needs to be moved through.")]
 		public readonly int HarvesterEnemyAvoidanceCostMultipler = 20;
 
+		[Desc("How many resource cells should a harvester response for.")]
+		public readonly int ResourceCellsPerHarvester = 4;
+
+		[Desc("How many harvester should player owned at least.")]
+		public readonly int InitialHarvesters = 4;
+
 		public override object Create(ActorInitializer init) { return new HarvesterBotModule(init.Self, this); }
 	}
 
-	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick, INotifyActorDisposing, IWorldLoaded
+	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick, IBotRespondToAttack, INotifyActorDisposing, IWorldLoaded
 	{
 		sealed class HarvesterTraitWrapper
 		{
@@ -77,7 +86,12 @@ namespace OpenRA.Mods.Common.Traits
 		IResourceLayer resourceLayer;
 		ResourceClaimLayer claimLayer;
 		IBotRequestUnitProduction[] requestUnitProduction;
+		ResourceMapBotModule resourceMapModule;
+
+		int scanForLowEffectHarvestersTicks;
 		int scanForIdleHarvestersTicks;
+		int respondToAttackCooldown = 40; // prevent too many responses to the same wave of attacks
+		bool firstTick = true;
 
 		public HarvesterBotModule(Actor self, HarvesterBotModuleInfo info)
 			: base(info)
@@ -123,12 +137,21 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Avoid all AIs scanning for idle harvesters on the same tick, randomize their initial scan delay.
 			scanForIdleHarvestersTicks = world.LocalRandom.Next(Info.ScanForIdleHarvestersInterval);
+			scanForLowEffectHarvestersTicks = world.LocalRandom.Next(Info.ScanForLowEffectHarvestersInterval);
 		}
 
 		void IBotTick.BotTick(IBot bot)
 		{
+			respondToAttackCooldown--;
+
 			if (resourceLayer == null || resourceLayer.IsEmpty)
 				return;
+
+			if (firstTick)
+			{
+				resourceMapModule = bot.Player.PlayerActor.TraitsImplementing<ResourceMapBotModule>().First(t => t.IsTraitEnabled());
+				firstTick = false;
+			}
 
 			// Find idle harvesters and give them orders:
 			// PERF: FindNextResource is expensive, so only perform one search per tick.
@@ -136,14 +159,171 @@ namespace OpenRA.Mods.Common.Traits
 			while (harvestersNeedingOrders.TryPop(out var hno) && !searchedForResources)
 				searchedForResources = HarvestIfAble(bot, hno);
 
-			if (--scanForIdleHarvestersTicks > 0)
+			if (--scanForIdleHarvestersTicks <= 0)
+			{
+				scanForIdleHarvestersTicks = Info.ScanForIdleHarvestersInterval;
+				FindIdleHarvester();
+
+				// Less harvesters than refineries - build a new harvester
+				var unitBuilder = requestUnitProduction.FirstEnabledTraitOrDefault();
+				if (unitBuilder != null && Info.HarvesterTypes.Count > 0)
+				{
+					var harvsNum = AIUtils.CountActorByCommonName(harvestersIndex);
+					var harvCountTooLow = harvsNum < Info.InitialHarvesters || harvsNum < AIUtils.CountActorByCommonName(refineries);
+					if (harvCountTooLow)
+					{
+						var harvesterType = Info.HarvesterTypes.Random(world.LocalRandom);
+						if (unitBuilder.RequestedProductionCount(bot, harvesterType) == 0)
+							unitBuilder.RequestUnitProduction(bot, harvesterType);
+					}
+				}
+			}
+
+			if (--scanForLowEffectHarvestersTicks <= 0)
+			{
+				scanForLowEffectHarvestersTicks = Info.ScanForLowEffectHarvestersInterval;
+				if (resourceMapModule != null)
+					FindAndOrderLowEffectHarvesterOnResourceMap(bot);
+			}
+		}
+
+		void FindAndOrderLowEffectHarvesterOnResourceMap(IBot bot)
+		{
+			CPos? worstEffectIndice = null;
+			var worstEffectHarvesterCount = int.MaxValue;
+
+			var lackHarvesterIndices = new List<(int Attraction, int LackHarvs, CPos ResoueceCenter)>();
+			/*
+			 * indiceSideLengthSquare (which is equal to indiceSideLength * indiceSideLength) is used as the basic unit to calculate the attraction of a candidate,
+			 * we  compare the attraction on the same scale on different factors, such as candidate's distance to current MCV and ally construction yard & refinery within range, etc:
+			 */
+
+			var indiceSideLengthSquare = resourceMapModule.GetIndiceSideLength() * resourceMapModule.GetIndiceSideLength();
+
+			for (var i = 0; i < resourceMapModule.GetIndicesLength(); i++)
+			{
+				var baseIndice = resourceMapModule.GetIndice(i);
+
+				// Initial attraction is indiceSideLengthSquare >> 5
+				var attraction = indiceSideLengthSquare >> 5;
+
+				attraction += baseIndice.ResourceCellsCount - baseIndice.PlayerHarvetserCount * Info.ResourceCellsPerHarvester;
+
+				var lackHarvs = attraction > 0 ? attraction / Info.ResourceCellsPerHarvester : (attraction == 0 && baseIndice.ResourceCellsCount > 0 ? 1 : -1);
+
+				// Reduce the attraction of resource cells count
+				attraction >>= 1;
+
+				if (baseIndice.PlayerRefineryCount <= 0 && lackHarvs > 0)
+					lackHarvs = 1;
+
+				// If there is enemy in indice, reduce attraction by indiceSideLengthSquare << 4
+				// If there is enemy in the nearby indices. reduce attraction by indiceSideLengthSquare >> 5 (equals to initial attraction)
+				if (baseIndice.EnemyBaseCount > 0 || baseIndice.EnemyUnitCount > 0)
+					attraction -= indiceSideLengthSquare << 4;
+				else
+				{
+					var (indiceCount, nearbyEnemyBase, nearbyEnemy) = resourceMapModule.GetNearbyIndicesThreat(i);
+					if (nearbyEnemyBase + nearbyEnemy > 0)
+						attraction -= indiceSideLengthSquare >> 5;
+				}
+
+				if (baseIndice.PlayerRefineryCount > 0)
+					attraction += indiceSideLengthSquare;
+
+				if (baseIndice.ResourceCellsCount > 0 && attraction > 0 && lackHarvs > 0)
+					lackHarvesterIndices.Add((attraction, lackHarvs, baseIndice.ResourceCellsCenter));
+
+				if (lackHarvs < worstEffectHarvesterCount && lackHarvs < 0)
+				{
+					worstEffectHarvesterCount = lackHarvs;
+					worstEffectIndice = baseIndice.IndiceCenter;
+				}
+			}
+
+			if (worstEffectIndice == null)
 				return;
 
+			var harvestersCanAssign = -worstEffectHarvesterCount;
+
+			// Try to find a new resource patch for the worst effect harvester
+			var searchRadius = resourceMapModule.GetIndiceScanRadius();
+
+			var harvesters = world.FindActorsInCircle(world.Map.CenterOfCell(worstEffectIndice.Value), WDist.FromCells(searchRadius))
+				.Where(a => a.Owner == player && resourceMapModule.Info.HarvesterTypes.Contains(a.Info.Name)).ToList();
+
+			var pathDistanceSquareFactor = resourceMapModule.GetIndiceRowCount() * resourceMapModule.GetIndiceRowCount()
+					+ resourceMapModule.GetIndiceColumnCount() * resourceMapModule.GetIndiceColumnCount();
+
+			harvestersCanAssign = Math.Min(harvestersCanAssign, harvesters.Count - 1);
+			if (harvestersCanAssign > 0)
+			{
+				foreach (var (_, lackHarvs, resourceCenter) in
+					lackHarvesterIndices.OrderByDescending(d => d.Attraction - (harvesters[0].Location - d.ResoueceCenter).LengthSquared / pathDistanceSquareFactor))
+				{
+					if (harvestersCanAssign <= 0)
+						break;
+
+					var needHarvs = lackHarvs;
+					var nearbyResources = world.Map.FindTilesInAnnulus(resourceCenter, 0, resourceMapModule.GetIndiceScanRadius())
+					.Where(c => resourceMapModule.Info.ValuableResourceTypes.Contains(resourceLayer.GetResource(c).Type)
+					&& (harvesters[0].Location - resourceCenter).LengthSquared >= (c - harvesters[0].Location).LengthSquared).ToArray();
+
+					if (nearbyResources.Length <= 0 || needHarvs <= 0)
+						continue;
+
+					var usedHarvs = new HashSet<Actor>();
+					foreach (var harv in harvesters)
+					{
+						if (needHarvs <= 0 || harvestersCanAssign <= 0)
+							break;
+
+						var parach = harv.TraitOrDefault<Parachutable>();
+						if (parach != null && parach.IsInAir)
+						{
+							harvestersCanAssign--;
+							usedHarvs.Add(harv);
+							continue;
+						}
+
+						var mobile = harv.TraitOrDefault<Mobile>();
+						if (mobile != null)
+						{
+							var tcell = nearbyResources.Random(world.LocalRandom);
+							if (mobile.PathFinder.PathMightExistForLocomotorBlockedByImmovable(mobile.Locomotor, harv.Location, tcell))
+							{
+								bot.QueueOrder(new Order("Harvest", harv, Target.FromCell(world, tcell), false));
+								needHarvs--;
+								harvestersCanAssign--;
+								usedHarvs.Add(harv);
+							}
+							else
+							{
+								if (needHarvs > 1)
+									needHarvs = 1;
+								else
+									break;
+							}
+						}
+						else
+						{
+							bot.QueueOrder(new Order("Harvest", harv, Target.FromCell(world, nearbyResources.Random(world.LocalRandom)), false));
+							needHarvs--;
+							harvestersCanAssign--;
+							usedHarvs.Add(harv);
+						}
+					}
+
+					harvesters.RemoveAll(usedHarvs.Contains);
+				}
+			}
+		}
+
+		void FindIdleHarvester()
+		{
 			var toRemove = harvesters.Keys.Where(unitCannotBeOrdered).ToList();
 			foreach (var a in toRemove)
 				harvesters.Remove(a);
-
-			scanForIdleHarvestersTicks = Info.ScanForIdleHarvestersInterval;
 
 			// Find new harvesters
 			var newHarvesters = world.ActorsHavingTrait<Harvester>().Where(a => !unitCannotBeOrdered(a) && !harvesters.ContainsKey(a));
@@ -153,21 +333,6 @@ namespace OpenRA.Mods.Common.Traits
 			harvestersNeedingOrders.Clear();
 			foreach (var h in harvesters)
 				harvestersNeedingOrders.Push(h.Value);
-
-			// Less harvesters than refineries - build a new harvester
-			var unitBuilder = requestUnitProduction.FirstEnabledTraitOrDefault();
-			if (unitBuilder != null && Info.HarvesterTypes.Count > 0)
-			{
-				var harvCountTooLow =
-					AIUtils.CountActorByCommonName(harvestersIndex) <
-					AIUtils.CountActorByCommonName(refineries);
-				if (harvCountTooLow)
-				{
-					var harvesterType = Info.HarvesterTypes.Random(world.LocalRandom);
-					if (unitBuilder.RequestedProductionCount(bot, harvesterType) == 0)
-						unitBuilder.RequestUnitProduction(bot, harvesterType);
-				}
-			}
 		}
 
 		// Returns true if FindNextResource was called.
@@ -272,6 +437,26 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (resourceLayer != null)
 				resourceLayer.CellChanged -= ResourceCellChanged;
+		}
+
+		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
+		{
+			if (respondToAttackCooldown > 0 || !Info.HarvesterTypes.Contains(self.Info.Name)
+				|| e.Attacker == null || e.Attacker.IsDead || !e.Attacker.AppearsHostileTo(self))
+				return;
+
+			var parach = self.TraitOrDefault<Parachutable>();
+			if (parach != null && parach.IsInAir)
+				return;
+
+			var dockClientManager = self.Trait<DockClientManager>();
+			if (dockClientManager.ReservedHostActor != null)
+				return;
+
+			respondToAttackCooldown = 30;
+			var scanFromActor = dockClientManager.ClosestDock(null, forceEnter: true, ignoreOccupancy: true)?.Actor;
+			if (scanFromActor != null)
+				bot.QueueOrder(new Order("Dock", self, Target.FromActor(scanFromActor), false));
 		}
 	}
 }

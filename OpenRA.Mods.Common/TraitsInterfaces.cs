@@ -635,6 +635,18 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface IBotBaseExpansion
+	{
+		void UpdateExpansionParams(IBot bot, bool fallback, bool undeployEvenNoBase, Actor mustUndeploy);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotSuggestRefineryProduction
+	{
+		void RequestLocation(CPos refineryLocation, CPos conyardLocation, Actor expandActor);
+	}
+
+	[RequireExplicitImplementation]
 	public interface IEditorActorOptions : ITraitInfoInterface
 	{
 		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);

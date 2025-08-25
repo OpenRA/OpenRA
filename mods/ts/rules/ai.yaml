@@ -9,6 +9,16 @@ Player:
 		RequiresCondition: enable-test-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+	PowerDownBotModule:
+		RequiresCondition: enable-test-ai
+		PowerDownTypes:  garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+	ResourceMapBotModule:
+		RequiresCondition: enable-test-ai
+		ResourceCreatorTypes:  tibtre01, tibtre02, tibtre03, bigblue, bigblue3
+		ValuableResourceTypes: Tiberium, BlueTiberium
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: gacnst, gapowr, gapowrup, napowr, naapwr, gapile, nahand, gaweap, naweap,garadr, naradr, gahpad, nahpad, gatech, natech, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
 	BaseBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		MinimumExcessPower: 30
@@ -18,11 +28,11 @@ Player:
 		ConstructionYardTypes: gacnst
 		RefineryTypes: proc
 		PowerTypes: gapowr, gapowrup, napowr, naapwr
-		BarracksTypes: gapile, nahand
-		VehiclesFactoryTypes: gaweap, naweap
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
+		TechTypes: garadr, naradr, gahpad, nahpad, gatech, natech
 		SiloTypes: gasilo
 		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		SellRefineryNoResourceDistance: 18
 		BuildingLimits:
 			proc: 4
 			gasilo: 2
@@ -105,8 +115,9 @@ Player:
 			harv: 12
 			medic: 3
 			repair: 3
-	McvManagerBotModule@test:
+	McvExpansionManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		McvTypes: mcv
 		ConstructionYardTypes: gacnst
 		McvFactoryTypes: gaweap, naweap
+		MinimumConstructionYardCount: 2

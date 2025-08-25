@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		int cachedBases;
 		int cachedBuildings;
 		int minimumExcessPower;
+		CPos? baseCenterKeepsFailing = null;
 
 		bool itemQueuedThisTick = false;
 
@@ -50,7 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = pr;
 			resourceLayer = rl;
 			Category = category;
-			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
 			if (baseBuilder.Info.NavalProductionTypes.Count == 0)
 				waterState = WaterCheck.DontCheck;
@@ -58,19 +58,41 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(IBot bot, ILookup<string, ProductionQueue> queuesByCategory)
 		{
-			// If failed to place something N consecutive times, wait M ticks until resuming building production
-			if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
+			// If failed to place something N consecutive times, we will try move the MCV
+			// If it is possible.
+			if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts)
 			{
-				var currentBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
-				var baseProviders = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
+				if (baseBuilder.BaseExpansionModules != null && baseCenterKeepsFailing != null)
+				{
+					var stuckConyard = baseBuilder.ConstructionYardBuildings.Actors
+						.Where(a => (a.Location - baseCenterKeepsFailing.Value).LengthSquared <= baseBuilder.Info.MaxBaseRadius * baseBuilder.Info.MaxBaseRadius)
+						.MinByOrDefault(a => (a.Location - baseCenterKeepsFailing.Value).LengthSquared);
 
-				// Only bother resetting failCount if either a) the number of buildings has decreased since last failure M ticks ago,
+					if (stuckConyard != null)
+					{
+						foreach (var be in baseBuilder.BaseExpansionModules)
+							be.UpdateExpansionParams(bot, false, true, stuckConyard);
+					}
+
+					failCount = 0;
+				}
+
+				// Otherwise, only bother resetting failCount if either a) the number of buildings has decreased since last failure M ticks ago,
 				// or b) number of BaseProviders (construction yard or similar) has increased since then.
 				// Otherwise reset failRetryTicks instead to wait again.
-				if (currentBuildings < cachedBuildings || baseProviders > cachedBases)
-					failCount = 0;
-				else
-					failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
+				else if (baseBuilder.BaseExpansionModules == null && --failRetryTicks <= 0)
+				{
+					var currentBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
+					var baseProviders = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
+
+					if (currentBuildings < cachedBuildings || baseProviders > cachedBases)
+						failCount = 0;
+					else
+						failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
+				}
+
+				if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts)
+					return;
 			}
 
 			if (waterState == WaterCheck.NotChecked)
@@ -176,20 +198,21 @@ namespace OpenRA.Mods.Common.Traits
 					else if (baseBuilder.Info.RefineryTypes.Contains(actorInfo.Name))
 						type = BuildingType.Refinery;
 
-					(location, actorVariant) = ChooseBuildLocation(currentBuilding.Item, true, type);
+					(location, baseCenterKeepsFailing, actorVariant) = ChooseBuildLocation(currentBuilding.Item, true, type);
 				}
 
 				if (location == null)
 				{
-					AIUtils.BotDebug($"{player} has nowhere to place {currentBuilding.Item}");
-					bot.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
-					failCount += failCount;
-
 					// If we just reached the maximum fail count, cache the number of current structures
-					if (failCount == baseBuilder.Info.MaximumFailedPlacementAttempts)
+					if (++failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts)
 					{
-						cachedBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
-						cachedBases = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
+						AIUtils.BotDebug($"{player} has nowhere to place {currentBuilding.Item}");
+						bot.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
+						if (baseBuilder.BaseExpansionModules == null)
+						{
+							cachedBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
+							cachedBases = world.ActorsHavingTrait<BaseProvider>().Count(a => a.Owner == player);
+						}
 					}
 				}
 				else
@@ -208,6 +231,26 @@ namespace OpenRA.Mods.Common.Traits
 						ExtraData = queue.Actor.ActorID,
 						SuppressVisualFeedback = true
 					});
+
+					if (baseBuilder.Info.ProductionTypes.Contains(currentBuilding.Item)
+						|| baseBuilder.Info.TechTypes.Contains(currentBuilding.Item) || baseBuilder.Info.RefineryTypes.Contains(currentBuilding.Item))
+					{
+						var numRef = baseBuilder.RefineryBuildings.Actors.Count(a => !a.IsDead) + (baseBuilder.Info.RefineryTypes.Contains(currentBuilding.Item) ? 1 : 0);
+
+						var numProd = baseBuilder.ProductionBuildings.Actors.Count(a => !a.IsDead) + (baseBuilder.Info.ProductionTypes.Contains(currentBuilding.Item) ? 1 : 0);
+
+						var numTech = playerBuildings.Count(a => baseBuilder.Info.TechTypes.Contains(a.Info.Name))
+							+ (baseBuilder.Info.TechTypes.Contains(currentBuilding.Item) ? 1 : 0);
+
+						if (numRef >= baseBuilder.Info.InititalMinimumRefineryCount + baseBuilder.Info.AdditionalMinimumRefineryCount
+							&& numProd > 0 && numProd - baseBuilder.Info.ExpansionTolerate.Random(world.LocalRandom) + numTech >= numRef)
+						{
+							var undeployEvenNoBase = numProd - baseBuilder.Info.ForceExpansionTolerate.Random(world.LocalRandom) + numTech >= numRef;
+
+							foreach (var be in baseBuilder.BaseExpansionModules)
+								be.UpdateExpansionParams(bot, true, undeployEvenNoBase, null);
+						}
+					}
 
 					return true;
 				}
@@ -259,7 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Next is to build up a strong economy
-			if (!baseBuilder.HasAdequateRefineryCount())
+			if (baseBuilder.RequestedRefineries.Count > 0 || !baseBuilder.HasAdequateRefineryCount())
 			{
 				var refinery = GetProducibleBuilding(baseBuilder.Info.RefineryTypes, buildableThings);
 				if (refinery != null && HasSufficientPowerForActor(refinery))
@@ -394,16 +437,16 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		(CPos? Location, int Variant) ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
+		(CPos? Location, CPos? BaseCenter, int Variant) ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
 			var actorInfo = world.Map.Rules.Actors[actorType];
 			var bi = actorInfo.TraitInfoOrDefault<BuildingInfo>();
 
 			if (bi == null)
-				return (null, 0);
+				return (null, null, 0);
 
 			// Find the buildable cell that is closest to pos and centered around center
-			(CPos? Location, int Variant) FindPos(CPos center, CPos target, int minRange, int maxRange)
+			(CPos? Location, CPos Center, int Variant) FindPos(CPos center, CPos target, int minRange, int maxRange)
 			{
 				var actorVariant = 0;
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
@@ -470,10 +513,10 @@ namespace OpenRA.Mods.Common.Traits
 					if (distanceToBaseIsImportant && !vbi.IsCloseEnoughToBase(world, player, variantActorInfo, cell))
 						continue;
 
-					return (cell, actorVariant);
+					return (cell, center, actorVariant);
 				}
 
-				return (null, 0);
+				return (null, center, 0);
 			}
 
 			var baseCenter = baseBuilder.GetRandomBaseCenter();
@@ -493,20 +536,45 @@ namespace OpenRA.Mods.Common.Traits
 
 				case BuildingType.Refinery:
 
+					var requestRef = baseBuilder.RequestedRefineries.Count > 0 ? baseBuilder.RequestedRefineries.Keys.First() : null;
+
 					// Try and place the refinery near a resource field
 					if (resourceLayer != null)
 					{
-						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
-							.Where(a => resourceLayer.GetResource(a).Type != null)
-							.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+						// If we have failed to place to the best refinery point, try and place it near the base center
+						var resourceBaseCenter = failCount > 0 ? baseCenter : (requestRef != null ?
+							baseBuilder.RequestedRefineries[requestRef].ConyardLoc : (baseBuilder.ResourceConyardCenter ?? baseCenter));
 
-						foreach (var r in nearbyResources)
+						var nearbyResources = world.Map
+							.FindTilesInAnnulus(resourceBaseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+							.Where(c => baseBuilder.ResourceMapModule != null ?
+							baseBuilder.ResourceMapModule.Info.ValuableResourceTypes.Contains(resourceLayer.GetResource(c).Type)
+							: resourceLayer.GetResource(c).Type != null);
+
+						var closestRefinery = failCount <= 0
+							? baseBuilder.RefineryBuildings.Actors.Where(a => !a.IsDead)?.ClosestToIgnoringPath(world.Map.CenterOfCell(resourceBaseCenter))
+							: null;
+
+						var resourcesShouldCheck = closestRefinery == null ?
+							nearbyResources.Shuffle(world.LocalRandom) :
+							(requestRef != null ? nearbyResources.OrderBy(c => (c - baseBuilder.RequestedRefineries[requestRef].ResourceLoc).LengthSquared)
+							: nearbyResources.OrderByDescending(c => (c - closestRefinery.Location).LengthSquared))
+							.Take(baseBuilder.Info.MaxResourceCellsToCheck);
+
+						foreach (var r in resourcesShouldCheck)
 						{
-							var found = FindPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+							var found = FindPos(resourceBaseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
 							if (found.Location != null)
+							{
+								if (baseBuilder.RequestedRefineries.Count > 0)
+									baseBuilder.RequestedRefineries.Remove(requestRef);
 								return found;
+							}
 						}
 					}
+
+					if (baseBuilder.RequestedRefineries.Count > 0)
+						baseBuilder.RequestedRefineries.Remove(requestRef);
 
 					// Try and find a free spot somewhere else in the base
 					return FindPos(baseCenter, baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
@@ -517,7 +585,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Can't find a build location
-			return (null, 0);
+			return (null, null, 0);
 		}
 	}
 }

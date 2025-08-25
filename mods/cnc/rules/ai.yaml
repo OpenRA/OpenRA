@@ -82,68 +82,89 @@ Player:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+		InitialHarvesters: 3
+	ResourceMapBotModule:
+		RequiresCondition: enable-hal9001-ai || enable-cabal-ai || enable-watson-ai
+		ResourceCreatorTypes: split2, split3, splitblue
+		ValuableResourceTypes: Tiberium, BlueTiberium
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: fact,pyle,hand,weap,afld,gtwr,gun,atwr,obli,hpad,nuke,nuk2,proc
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Support.Nod, Support.GDI
-		MinimumExcessPower: 30
-		MaximumExcessPower: 150
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 5
+		MinimumExcessPower: 0
+		MaximumExcessPower: 270
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 3
+		MaxBaseRadius: 18
 		ConstructionYardTypes: fact
+		ExpansionTolerate: 0
+		ForceExpansionTolerate: 1
 		RefineryTypes: proc
 		PowerTypes: nuke, nuk2
-		BarracksTypes: pyle, hand
-		VehiclesFactoryTypes: weap, afld
-		ProductionTypes: pyle, hand, weap, afld, hpad
+		TechTypes: hq, tmpl, fix, eye, hpad
+		ProductionTypes: pyle, hand, weap, afld
+		NewProductionCashThreshold: 8000
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
-			proc: 4
 			pyle: 3
 			hand: 3
 			hq: 1
 			weap: 3
 			afld: 3
-			hpad: 0
+			hpad: 1
 			eye: 1
 			tmpl: 1
 			fix: 1
 			silo: 1
 		BuildingFractions:
-			proc: 20
+			nuke: 1
+			proc: 1
 			pyle: 5
 			hand: 5
 			hq: 4
 			weap: 9
 			afld: 9
-			gtwr: 5
-			gun: 5
-			atwr: 9
-			obli: 7
+			gtwr: 6
+			gun: 6
+			atwr: 20
+			obli: 20
 			sam: 7
 			eye: 1
 			tmpl: 1
 			fix: 1
 			hpad: 2
+		BuildingDelays:
+			hq: 4000
+			fix: 4000
+			hpad: 4100
+			gun: 2000
+			gtwr: 2000
+			sam: 3000
 	BaseBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Support.Nod, Support.GDI
-		MinimumExcessPower: 30
+		MinimumExcessPower: 0
 		MaximumExcessPower: 150
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 3
+		MaxBaseRadius: 18
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: nuke,nuk2
-		BarracksTypes: pyle,hand
-		VehiclesFactoryTypes: weap,afld
-		ProductionTypes: pyle,hand,weap,afld,hpad
+		AdditionalMinimumRefineryCount: 0
+		TechTypes: hq, tmpl, fix, eye, hpad
+		ProductionTypes: pyle,hand,weap,afld
+		ExpansionTolerate: 0
+		ForceExpansionTolerate: 0
+		NewProductionCashThreshold: 6000
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
-			proc: 4
 			pyle: 3
 			hand: 3
 			hq: 1
@@ -155,7 +176,8 @@ Player:
 			fix: 1
 			silo: 1
 		BuildingFractions:
-			proc: 17
+			nuke: 1
+			proc: 1
 			pyle: 2
 			hand: 2
 			hq: 1
@@ -170,24 +192,35 @@ Player:
 			tmpl: 1
 			sam: 7
 			fix: 1
+		BuildingDelays:
+			hq: 5000
+			fix: 5000
+			hpad: 6000
+			gun: 2000
+			gtwr: 2000
+			sam: 3000
 	BaseBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Support.Nod, Support.GDI
-		MinimumExcessPower: 30
-		MaximumExcessPower: 210
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 4
+		MinimumExcessPower: 0
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 2
 		ConstructionYardTypes: fact
+		MaxBaseRadius: 18
 		RefineryTypes: proc
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 2
 		PowerTypes: nuke,nuk2
-		BarracksTypes: pyle,hand
-		VehiclesFactoryTypes: weap,afld
-		ProductionTypes: pyle,hand,weap,afld,hpad
+		TechTypes: hq, tmpl, fix, eye, hpad
+		ProductionTypes: pyle,hand,weap,afld
+		ExpansionTolerate: 0
+		ForceExpansionTolerate: 0
+		NewProductionCashThreshold: 7000
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
-			proc: 4
 			pyle: 4
 			hand: 4
 			hq: 1
@@ -199,7 +232,8 @@ Player:
 			fix: 1
 			silo: 1
 		BuildingFractions:
-			proc: 17
+			nuke: 1
+			proc: 1
 			pyle: 7
 			hand: 9
 			hq: 1
@@ -214,18 +248,30 @@ Player:
 			tmpl: 1
 			sam: 7
 			fix: 1
+		BuildingDelays:
+			hq: 4000
+			fix: 4000
+			hpad: 4100
+			gun: 2000
+			gtwr: 2000
+			sam: 3000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
-		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv, a10
+		SquadSize: 50
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
 		IgnoredEnemyTargetTypes: Air
+		RushInterval: 1000
+		MinimumAttackForceDelay: 1000
+		ProtectUnitScanRadius: 30
+		ProtectionScanRadius: 12
 	UnitBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
+		ProductionMinCashRequirement: 750
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
 		UnitsToBuild:
 			e1: 65
@@ -238,6 +284,7 @@ Player:
 			bike: 40
 			ltnk: 25
 			ftnk: 10
+			apc: 10
 			arty: 60
 			stnk: 40
 			jeep: 5
@@ -246,17 +293,27 @@ Player:
 			htnk: 50
 			heli: 5
 			orca: 5
+			mlrs: 1
 		UnitLimits:
 			harv: 8
-	McvManagerBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+			mlrs: 3
+	McvExpansionManagerBotModule@cabal:
+		RequiresCondition: enable-cabal-ai
 		McvTypes: mcv
 		ConstructionYardTypes: fact
 		McvFactoryTypes: weap,afld
+		MinimumConstructionYardCount: 1
+		AdditionalConstructionYardCount: 1
+	McvExpansionManagerBotModule@watson-hal9001:
+		RequiresCondition: enable-watson-ai || enable-hal9001-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap,afld
+		MinimumConstructionYardCount: 1
 	SquadManagerBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv, a10
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
@@ -275,24 +332,28 @@ Player:
 			ftnk: 10
 			arty: 40
 			bike: 10
-			heli: 10
+			heli: 1
 			ltnk: 40
 			stnk: 40
-			orca: 10
-			msam: 50
+			orca: 1
+			msam: 40
 			htnk: 50
 			jeep: 20
 			mtnk: 50
+			mlrs: 1
 		UnitLimits:
 			harv: 8
+			mlrs: 2
 	SquadManagerBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
-		SquadSize: 8
-		ExcludeFromSquadsTypes: harv, mcv, a10
+		SquadSize: 15
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
 		IgnoredEnemyTargetTypes: Air
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
 	UnitBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -319,3 +380,4 @@ Player:
 			orca: 10
 		UnitLimits:
 			harv: 8
+			mlrs: 3

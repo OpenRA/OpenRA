@@ -72,6 +72,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceBaseAttackNotifier(),
 				new RemoveBuildingInfoAllowPlacementOnResources(),
 				new EditorMarkerTileLabels(),
+				new RemoveBarracksTypesAndVehiclesTypesInBaseBuilderBotModule(),
 			]),
 		];
 

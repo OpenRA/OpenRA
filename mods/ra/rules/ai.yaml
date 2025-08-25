@@ -23,6 +23,13 @@ Player:
 	GrantConditionOnBotOwner@naval:
 		Condition: enable-naval-ai
 		Bots: naval
+	ResourceMapBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai
+		ResourceCreatorTypes: mine, gmine
+		ValuableResourceTypes: Ore, Gems
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: pbox,gun,ftur,tsla,agun,barr,tent,weap,afld,hpad,fact,powr,apwr,proc
 	SupportPowerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		Decisions:
@@ -74,45 +81,55 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
-	HarvesterBotModule:
-		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	HarvesterBotModule@rush-naval:
+		RequiresCondition: enable-rush-ai || enable-naval-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+		InitialHarvesters: 2
+	HarvesterBotModule@normal-turtle:
+		RequiresCondition: enable-normal-ai || enable-turtle-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 4
 	BaseBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 0
 		MaximumExcessPower: 160
 		ExcessPowerIncrement: 40
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
-		BarracksTypes: barr,tent
-		VehiclesFactoryTypes: weap
+		ExpansionTolerate: 0
+		ForceExpansionTolerate: 0
+		TechTypes: mslo, dome, atek, stek, fix
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 2
 		ProductionTypes: barr,tent,weap
+		NewProductionCashThreshold: 7000
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
+			barr: 7
+			tent: 7
 			kenn: 1
 			dome: 1
-			weap: 1
+			weap: 4
 			atek: 1
 			stek: 1
 			fix: 1
 		BuildingFractions:
-			proc: 30
-			barr: 1
+			powr: 1
+			proc: 1
+			barr: 3
 			kenn: 1
-			tent: 1
-			weap: 1
-			pbox: 7
-			gun: 7
-			tsla: 5
-			gap: 2
-			ftur: 10
+			tent: 3
+			weap: 4
+			pbox: 3
+			gun: 3
+			tsla: 3
+			gap: 1
+			ftur: 3
 			agun: 5
 			sam: 5
 			atek: 1
@@ -121,28 +138,38 @@ Player:
 			dome: 10
 			mslo: 1
 		BuildingDelays:
-			dome: 4500
+			dome: 7000
+			fix: 3000
+			pbox: 2000
+			gun: 3000
+			ftur: 2000
+			tsla: 3000
+			kenn: 9000
+			atek: 11000
+			stek: 11000
 	BaseBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 0
 		MaximumExcessPower: 200
 		ExcessPowerIncrement: 40
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 2
+		ExpansionTolerate: 1,2
 		PowerTypes: powr,apwr
-		BarracksTypes: barr,tent
-		VehiclesFactoryTypes: weap
-		ProductionTypes: barr,tent,weap,afld,hpad
+		TechTypes: dome, atek, stek, fix, afld, hpad
+		ProductionTypes: barr,tent,weap
+		NewProductionCashThreshold: 8000
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
-			proc: 4
-			barr: 1
-			tent: 1
+			barr: 7
+			tent: 7
 			dome: 1
-			weap: 1
+			weap: 4
 			spen: 1
 			syrd: 1
 			hpad: 4
@@ -152,19 +179,20 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
-			proc: 15
-			tent: 1
-			barr: 1
+			powr: 1
+			proc: 1
+			tent: 3
+			barr: 3
 			kenn: 1
 			dome: 1
-			weap: 6
-			hpad: 4
+			weap: 4
+			hpad: 1
 			spen: 1
 			syrd: 1
-			afld: 4
-			afld.ukraine: 4
-			pbox: 7
-			gun: 7
+			afld: 1
+			afld.ukraine: 1
+			pbox: 9
+			gun: 9
 			ftur: 10
 			tsla: 5
 			gap: 2
@@ -175,24 +203,33 @@ Player:
 			stek: 1
 			mslo: 1
 		BuildingDelays:
-			dome: 3000
+			dome: 6000
+			fix: 3000
+			pbox: 1500
+			gun: 2000
+			ftur: 1500
+			tsla: 2800
+			kenn: 7000
+			spen: 6000
+			syrd: 6000
+			atek: 9000
+			stek: 9000
 	BaseBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 20
 		MaximumExcessPower: 250
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncrement: 20
+		ExcessPowerIncreaseThreshold: 2
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
-		BarracksTypes: barr,tent
-		VehiclesFactoryTypes: weap
-		ProductionTypes: barr,tent,weap,afld,hpad
+		ForceExpansionTolerate: 6, 7, 8
+		TechTypes: dome, atek, stek, fix, afld, hpad
+		ProductionTypes: barr,tent,weap
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
-			proc: 4
 			barr: 1
 			tent: 1
 			kenn: 1
@@ -207,7 +244,8 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
-			proc: 30
+			powr: 1
+			proc: 1
 			tent: 1
 			barr: 1
 			kenn: 1
@@ -217,9 +255,9 @@ Player:
 			afld.ukraine: 2
 			spen: 1
 			syrd: 1
-			pbox: 10
-			gun: 10
-			ftur: 10
+			pbox: 13
+			gun: 12
+			ftur: 13
 			tsla: 7
 			gap: 3
 			fix: 1
@@ -230,18 +268,22 @@ Player:
 			stek: 1
 			mslo: 1
 		BuildingDelays:
-			dome: 3000
+			dome: 5000
+			atek: 7000
+			stek: 7000
+			kenn: 8000
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 0
 		MaximumExcessPower: 400
 		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncreaseThreshold: 3
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
-		BarracksTypes: barr,tent
-		VehiclesFactoryTypes: weap
+		ExpansionTolerate: 99
+		ForceExpansionTolerate: 999
+		TechTypes: mslo, dome, atek, stek, fix
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
@@ -261,6 +303,7 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
+			powr: 1
 			proc: 25
 			dome: 1
 			weap: 1
@@ -283,6 +326,7 @@ Player:
 			dome: 3000
 			fix: 20000
 			tsla: 21000
+			kenn: 4000
 	PowerDownBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		PowerDownTypes: dome,tsla,mslo,agun,sam
@@ -298,11 +342,32 @@ Player:
 		AircraftTargetType: AirborneActor
 		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
 		IgnoredEnemyTargetTypes: AirborneActor
-	McvManagerBotModule:
-		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	McvManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
 		McvTypes: mcv
 		ConstructionYardTypes: fact
 		McvFactoryTypes: weap
+	McvExpansionManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MoveOldConyardFirst: true
+		MinimumConstructionYardCount: 2
+	McvExpansionManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MinimumConstructionYardCount: 2
+	McvExpansionManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MoveOldConyardFirst: false
+		MoveConyardTick: 8000
+		MinimumConstructionYardCount: 2
 	UnitBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		UnitsToBuild:
@@ -310,6 +375,7 @@ Player:
 			e2: 15
 			e3: 30
 			e4: 15
+			e7: 1
 			dog: 15
 			shok: 15
 			harv: 10
@@ -340,6 +406,8 @@ Player:
 		AircraftTargetType: AirborneActor
 		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
 		IgnoredEnemyTargetTypes: AirborneActor
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		UnitsToBuild:
@@ -347,6 +415,7 @@ Player:
 			e2: 15
 			e3: 30
 			e4: 15
+			e7: 1
 			dog: 15
 			shok: 15
 			harv: 15
@@ -386,6 +455,10 @@ Player:
 		AircraftTargetType: AirborneActor
 		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
 		IgnoredEnemyTargetTypes: AirborneActor
+		RushInterval: 100000
+		MinimumAttackForceDelay: 100000
+		ProtectUnitScanRadius: 30
+		ProtectionScanRadius: 15
 	UnitBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		UnitsToBuild:
@@ -393,6 +466,7 @@ Player:
 			e2: 15
 			e3: 30
 			e4: 15
+			e7: 1
 			dog: 15
 			shok: 15
 			harv: 15
@@ -418,9 +492,9 @@ Player:
 			pt: 10
 			mnly: 2
 		UnitLimits:
-			dog: 4
+			dog: 3
 			harv: 8
-			jeep: 4
+			jeep: 2
 			ftrk: 4
 			mnly: 2
 	MinelayerBotModule@turtle:
