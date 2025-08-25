@@ -23,6 +23,9 @@ Player:
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		SiloTypes: gasilo
 		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
+		ValidResourceTypes: BlueTiberium, Tiberium, Veins
+		SellRefineryNoResourceDistance: 18
 		BuildingLimits:
 			proc: 4
 			gasilo: 2
@@ -105,8 +108,14 @@ Player:
 			harv: 12
 			medic: 3
 			repair: 3
-	McvManagerBotModule@test:
+	McvExpansionManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		McvTypes: mcv
 		ConstructionYardTypes: gacnst
 		McvFactoryTypes: gaweap, naweap
+		ProductionTypes: gapile, nahand, gaweap, naweap
+		RefineryTypes: proc
+		FirstMoveConyardTicks: 6000
+		MinimumConstructionYardCount: 2
+		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
+		ValidResourceTypes: BlueTiberium, Tiberium, Veins
