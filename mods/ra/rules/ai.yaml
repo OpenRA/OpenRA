@@ -80,10 +80,10 @@ Player:
 		RefineryTypes: proc
 	BaseBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 0
 		MaximumExcessPower: 160
 		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncreaseThreshold: 3
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
@@ -92,8 +92,9 @@ Player:
 		ProductionTypes: barr,tent,weap
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		ResourceCreatorTypes: mine, gmine
+		ValidResourceTypes: Ore, Gems
 		BuildingLimits:
-			proc: 4
 			barr: 1
 			tent: 1
 			kenn: 1
@@ -103,6 +104,7 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
+			powr: 1
 			proc: 30
 			barr: 1
 			kenn: 1
@@ -122,12 +124,14 @@ Player:
 			mslo: 1
 		BuildingDelays:
 			dome: 4500
+			fix: 3000
+			tsla: 4000
 	BaseBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 0
 		MaximumExcessPower: 200
 		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncreaseThreshold: 3
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
@@ -137,8 +141,9 @@ Player:
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		ResourceCreatorTypes: mine, gmine
+		ValidResourceTypes: Ore, Gems
 		BuildingLimits:
-			proc: 4
 			barr: 1
 			tent: 1
 			dome: 1
@@ -152,6 +157,7 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
+			powr: 1
 			proc: 15
 			tent: 1
 			barr: 1
@@ -176,12 +182,14 @@ Player:
 			mslo: 1
 		BuildingDelays:
 			dome: 3000
+			fix: 3000
+			tsla: 2800
 	BaseBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 20
 		MaximumExcessPower: 250
-		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncrement: 20
+		ExcessPowerIncreaseThreshold: 2
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
@@ -191,8 +199,9 @@ Player:
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		ResourceCreatorTypes: mine, gmine
+		ValidResourceTypes: Ore, Gems
 		BuildingLimits:
-			proc: 4
 			barr: 1
 			tent: 1
 			kenn: 1
@@ -207,6 +216,7 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
+			powr: 1
 			proc: 30
 			tent: 1
 			barr: 1
@@ -233,10 +243,10 @@ Player:
 			dome: 3000
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
-		MinimumExcessPower: 60
+		MinimumExcessPower: 0
 		MaximumExcessPower: 400
 		ExcessPowerIncrement: 40
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncreaseThreshold: 3
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: powr,apwr
@@ -246,6 +256,8 @@ Player:
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		ResourceCreatorTypes: mine, gmine
+		ValidResourceTypes: Ore, Gems
 		BuildingLimits:
 			proc: 3
 			dome: 1
@@ -261,6 +273,7 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
+			powr: 1
 			proc: 25
 			dome: 1
 			weap: 1
@@ -295,11 +308,32 @@ Player:
 		AircraftTargetType: AirborneActor
 		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
 		IgnoredEnemyTargetTypes: AirborneActor
-	McvManagerBotModule:
-		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	McvManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
 		McvTypes: mcv
 		ConstructionYardTypes: fact
 		McvFactoryTypes: weap
+	McvExpansionManagerBotModule@rush-normal:
+		RequiresCondition: enable-rush-ai || enable-normal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		RefineryTypes: proc
+		ProductionTypes: barr,tent,weap
+		FirstMoveConyardTicks: 4200
+		ResourceCreatorTypes: mine, gmine
+		ValidResourceTypes: Ore, Gems
+		MinimumConstructionYardCount: 2
+	McvExpansionManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		RefineryTypes: proc
+		ProductionTypes: barr,tent,weap
+		ResourceCreatorTypes: mine, gmine
+		ValidResourceTypes: Ore, Gems
+		MinimumConstructionYardCount: 2
 	UnitBuilderBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		UnitsToBuild:

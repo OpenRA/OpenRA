@@ -86,20 +86,21 @@ Player:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Support.Nod, Support.GDI
-		MinimumExcessPower: 30
+		MinimumExcessPower: 0
 		MaximumExcessPower: 150
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 5
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 3
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: nuke, nuk2
 		BarracksTypes: pyle, hand
 		VehiclesFactoryTypes: weap, afld
-		ProductionTypes: pyle, hand, weap, afld, hpad
+		ProductionTypes: pyle, hand, weap, afld
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
+		ResourceCreatorTypes: split2, split3, splitblue
+		ValidResourceTypes: Tiberium, BlueTiberium
 		BuildingLimits:
-			proc: 4
 			pyle: 3
 			hand: 3
 			hq: 1
@@ -111,6 +112,7 @@ Player:
 			fix: 1
 			silo: 1
 		BuildingFractions:
+			nuke: 1
 			proc: 20
 			pyle: 5
 			hand: 5
@@ -126,24 +128,32 @@ Player:
 			tmpl: 1
 			fix: 1
 			hpad: 2
+		BuildingDelays:
+			hq: 4000
+			fix: 4000
+			hpad: 4100
+			gun: 2000
+			gtwr: 2000
+			sam: 3000
 	BaseBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Support.Nod, Support.GDI
-		MinimumExcessPower: 30
+		MinimumExcessPower: 0
 		MaximumExcessPower: 150
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 3
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: nuke,nuk2
 		BarracksTypes: pyle,hand
 		VehiclesFactoryTypes: weap,afld
-		ProductionTypes: pyle,hand,weap,afld,hpad
+		ProductionTypes: pyle,hand,weap,afld
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
+		ResourceCreatorTypes: split2, split3, splitblue
+		ValidResourceTypes: Tiberium, BlueTiberium
 		BuildingLimits:
-			proc: 4
 			pyle: 3
 			hand: 3
 			hq: 1
@@ -155,6 +165,7 @@ Player:
 			fix: 1
 			silo: 1
 		BuildingFractions:
+			nuke: 1
 			proc: 17
 			pyle: 2
 			hand: 2
@@ -170,24 +181,32 @@ Player:
 			tmpl: 1
 			sam: 7
 			fix: 1
+		BuildingDelays:
+			hq: 4000
+			fix: 4000
+			hpad: 4100
+			gun: 2000
+			gtwr: 2000
+			sam: 3000
 	BaseBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Support.Nod, Support.GDI
-		MinimumExcessPower: 30
+		MinimumExcessPower: 0
 		MaximumExcessPower: 210
-		ExcessPowerIncrement: 30
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 2
 		ConstructionYardTypes: fact
 		RefineryTypes: proc
 		PowerTypes: nuke,nuk2
 		BarracksTypes: pyle,hand
 		VehiclesFactoryTypes: weap,afld
-		ProductionTypes: pyle,hand,weap,afld,hpad
+		ProductionTypes: pyle,hand,weap,afld
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
+		ResourceCreatorTypes: split2, split3, splitblue
+		ValidResourceTypes: Tiberium, BlueTiberium
 		BuildingLimits:
-			proc: 4
 			pyle: 4
 			hand: 4
 			hq: 1
@@ -199,6 +218,7 @@ Player:
 			fix: 1
 			silo: 1
 		BuildingFractions:
+			nuke: 1
 			proc: 17
 			pyle: 7
 			hand: 9
@@ -214,6 +234,13 @@ Player:
 			tmpl: 1
 			sam: 7
 			fix: 1
+		BuildingDelays:
+			hq: 4000
+			fix: 4000
+			hpad: 4100
+			gun: 2000
+			gtwr: 2000
+			sam: 3000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 	SquadManagerBotModule@cabal:
@@ -248,11 +275,17 @@ Player:
 			orca: 5
 		UnitLimits:
 			harv: 8
-	McvManagerBotModule:
+	McvExpansionManagerBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		McvTypes: mcv
 		ConstructionYardTypes: fact
 		McvFactoryTypes: weap,afld
+		RefineryTypes: proc
+		ProductionTypes: pyle,hand,weap,afld
+		FirstMoveConyardTicks: 4100
+		ResourceCreatorTypes: split2, split3, splitblue
+		ValidResourceTypes: Tiberium, BlueTiberium
+		MinimumConstructionYardCount: 2
 	SquadManagerBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		SquadSize: 15

@@ -82,6 +82,7 @@ Player:
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
 		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
 		BuildingLimits:
 			barracks: 3
 			refinery: 4
@@ -141,6 +142,7 @@ Player:
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
 		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
 		BuildingLimits:
 			barracks: 3
 			refinery: 4
@@ -198,6 +200,7 @@ Player:
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
 		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
 		BuildingLimits:
 			barracks: 3
 			refinery: 4
