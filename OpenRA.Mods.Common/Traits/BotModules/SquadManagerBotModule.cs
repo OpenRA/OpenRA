@@ -117,6 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly World World;
 		public readonly Player Player;
+		const int AttackRespondCoolDown = 20;
 
 		readonly Predicate<Actor> unitCannotBeOrdered;
 		Squad protectionSquad;
@@ -136,6 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 		int assignRolesTicks;
 		int attackForceTicks;
 		int minAttackForceDelayTicks;
+		int attackrespondcooldown = AttackRespondCoolDown;
 
 		public SquadManagerBotModule(Actor self, SquadManagerBotModuleInfo info)
 			: base(info)
@@ -201,6 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
+			attackrespondcooldown--;
 			AssignRolesToIdleUnits(bot);
 		}
 
@@ -469,8 +472,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
 		{
-			if (!IsPreferredEnemyUnit(e.Attacker))
+			if (attackrespondcooldown > 0 || !IsPreferredEnemyUnit(e.Attacker))
 				return;
+
+			attackrespondcooldown = AttackRespondCoolDown;
 
 			if (Info.ProtectionTypes.Contains(self.Info.Name))
 			{
@@ -479,6 +484,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (protectionSquad.IsValid && !protectionSquad.IsTargetValid(protectionSquad.CenterUnit()))
 					protectionSquad.SetActorToTarget((e.Attacker, WVec.Zero));
+			}
+
+			foreach (var s in Squads)
+			{
+				if (s.IsValid)
+				{
+					var centerUnit = s.CenterUnit();
+					if (centerUnit != null && (centerUnit.Location - e.Attacker.Location).LengthSquared <= Info.ProtectUnitScanRadius * Info.ProtectUnitScanRadius)
+						s.SetActorToTarget((e.Attacker, WVec.Zero));
+				}
 			}
 		}
 
