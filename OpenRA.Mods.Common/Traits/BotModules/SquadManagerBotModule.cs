@@ -119,7 +119,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Player Player;
 
 		readonly Predicate<Actor> unitCannotBeOrdered;
-		readonly List<Actor> unitsHangingAroundTheBase = [];
 
 		// Units that the bot already knows about. Any unit not on this list needs to be given a role.
 		readonly HashSet<Actor> activeUnits = [];
@@ -132,12 +131,14 @@ namespace OpenRA.Mods.Common.Traits
 		IBotPositionsUpdated[] notifyPositionsUpdated;
 		IBotNotifyIdleBaseUnits[] notifyIdleBaseUnits;
 
+		List<Actor> unitsHangingAroundTheBase = [];
 		CPos initialBaseCenter;
 
 		int rushTicks;
 		int assignRolesTicks;
 		int attackForceTicks;
 		int minAttackForceDelayTicks;
+		int respondToAttackCooldown = 30; // prevent too many responses to the same wave of attacks
 
 		public SquadManagerBotModule(Actor self, SquadManagerBotModuleInfo info)
 			: base(info)
@@ -202,6 +203,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
+			respondToAttackCooldown--;
+
 			AssignRolesToIdleUnits(bot);
 		}
 
@@ -487,24 +490,47 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ProtectOwn(IBot bot, Actor attacker)
 		{
+			foreach (var s in Squads)
+			{
+				if (s.IsValid && FindEnemies([attacker], s.Units.First()).Any()
+					&& (s.Units.First().Location - attacker.Location).LengthSquared <= Info.ProtectUnitScanRadius * Info.ProtectUnitScanRadius)
+					s.SetActorToTarget((attacker, WVec.Zero));
+			}
+
 			var protectSq = GetSquadOfType(SquadType.Protection);
 			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
 			protectSq.Units.RemoveWhere(unitCannotBeOrdered);
 
+			var unusedUnits = new List<Actor>();
+			foreach (var a in unitsHangingAroundTheBase)
+			{
+				if (unitCannotBeOrdered(a))
+					continue;
+				else if (a.Info.HasTraitInfo<AircraftInfo>())
+				{
+					protectSq.Units.Add(a);
+					continue;
+				}
+
+				var mobile = a.TraitOrDefault<Mobile>();
+				if (mobile == null)
+				{
+					unusedUnits.Add(a);
+					continue;
+				}
+
+				if (FindEnemies([attacker], a).Any())
+					protectSq.Units.Add(a);
+				else
+					unusedUnits.Add(a);
+			}
+
+			unitsHangingAroundTheBase = unusedUnits;
+			foreach (var n in notifyIdleBaseUnits)
+				n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
+
 			if (protectSq.IsValid && !protectSq.IsTargetValid(protectSq.CenterUnit()))
 				protectSq.SetActorToTarget((attacker, WVec.Zero));
-
-			if (!protectSq.IsValid)
-			{
-				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WDist.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit =>
-						unit.Owner == Player
-						&& !Info.ProtectionTypes.Contains(unit.Info.Name)
-						&& unit.Info.HasTraitInfo<AttackBaseInfo>())
-					.WithPathTo(World, attacker.CenterPosition);
-
-				protectSq.Units.UnionWith(ownUnits);
-			}
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -516,16 +542,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
 		{
-			if (!IsPreferredEnemyUnit(e.Attacker))
+			if (respondToAttackCooldown > 0 || !Info.ProtectionTypes.Contains(self.Info.Name) || !IsPreferredEnemyUnit(e.Attacker))
 				return;
 
-			if (Info.ProtectionTypes.Contains(self.Info.Name))
-			{
-				foreach (var n in notifyPositionsUpdated)
-					n.UpdatedDefenseCenter(e.Attacker.Location);
+			respondToAttackCooldown = 20;
+			foreach (var n in notifyPositionsUpdated)
+				n.UpdatedDefenseCenter(e.Attacker.Location);
 
-				ProtectOwn(bot, e.Attacker);
-			}
+			ProtectOwn(bot, e.Attacker);
 		}
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
