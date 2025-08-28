@@ -77,7 +77,8 @@ namespace OpenRA
 
 		Size lastBufferSize = new(-1, -1);
 
-		Rectangle lastWorldViewport = Rectangle.Empty;
+		Rectangle lastWorldViewport;
+		float2 lastViewportLocation;
 		ITexture currentPaletteTexture;
 		int currentPaletteHeight = 0;
 		IBatchRenderer currentBatchRenderer;
@@ -233,7 +234,7 @@ namespace OpenRA
 			lastMaximumViewportSize = size;
 		}
 
-		public void BeginWorld(Rectangle worldViewport)
+		public void BeginWorld(float2 viewportLocation, Size viewportSize)
 		{
 			if (renderType != RenderType.None)
 				throw new InvalidOperationException($"BeginWorld called with renderType = {renderType}, expected RenderType.None.");
@@ -243,28 +244,34 @@ namespace OpenRA
 			if (worldSheet == null)
 				throw new InvalidOperationException("BeginWorld called before SetMaximumViewportSize has been set.");
 
-			if (worldSprite == null || worldViewport.Size != lastWorldViewportSize)
+			var centerLocation = viewportLocation.ToInt2();
+			if (worldSprite == null || viewportSize != lastWorldViewportSize || viewportLocation != lastViewportLocation)
 			{
+				lastViewportLocation = viewportLocation;
+				lastWorldViewportSize = viewportSize;
+
 				// Downscale world rendering if needed to fit within the framebuffer
-				var vw = worldViewport.Size.Width;
-				var vh = worldViewport.Size.Height;
+				var vw = viewportSize.Width;
+				var vh = viewportSize.Height;
 				var bw = worldSheet.Size.Width;
 				var bh = worldSheet.Size.Height;
 				WorldDownscaleFactor = 1;
 				while (vw / WorldDownscaleFactor > bw || vh / WorldDownscaleFactor > bh)
 					WorldDownscaleFactor++;
 
-				var s = new Size(vw / WorldDownscaleFactor, vh / WorldDownscaleFactor);
-				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), TextureChannel.RGBA);
-				lastWorldViewportSize = worldViewport.Size;
+				// We need to add 1 to scroll in order to handle interpixel 0-0.99 fractionalOffset.
+				var s = new Size(vw / WorldDownscaleFactor + 1, vh / WorldDownscaleFactor + 1);
+				var fractionalOffset = centerLocation - viewportLocation;
+				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), 0, fractionalOffset, TextureChannel.RGBA);
 			}
 
 			worldBuffer.Bind();
-
-			if (lastWorldViewport != worldViewport)
+			var rect = new Rectangle(centerLocation, viewportSize);
+			if (lastWorldViewport != rect)
 			{
-				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, WorldDownscaleFactor, depthMargin, worldViewport.Location);
-				lastWorldViewport = worldViewport;
+				var topLeft = centerLocation - viewportSize.ToInt2() / 2;
+				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, WorldDownscaleFactor, depthMargin, topLeft);
+				lastWorldViewport = rect;
 			}
 
 			renderType = RenderType.World;
@@ -282,9 +289,11 @@ namespace OpenRA
 				screenBuffer.Bind();
 
 				var scale = Window.EffectiveWindowScale;
+
+				// We added 1 to worldSprite now we need to subtract.
 				var bufferScale = new float3(
-					(int)(screenSprite.Bounds.Width / scale) / worldSprite.Size.X,
-					(int)(-screenSprite.Bounds.Height / scale) / worldSprite.Size.Y,
+					(int)(screenSprite.Bounds.Width / scale) / (worldSprite.Size.X - 1),
+					(int)(-screenSprite.Bounds.Height / scale) / (worldSprite.Size.Y - 1),
 					1f);
 
 				SpriteRenderer.EnablePixelArtScaling(true);

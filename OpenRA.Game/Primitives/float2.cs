@@ -93,6 +93,21 @@ namespace OpenRA
 		public static float2 Max(float2 a, float2 b) { return new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static float2 Min(float2 a, float2 b) { return new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
+		public float2 Clamp(Rectangle r)
+		{
+			var x = X;
+			var y = Y;
+			if (r.Left > X)
+				x = r.Left;
+			if (r.Top > Y)
+				y = r.Top;
+			if (r.Right < X)
+				x = r.Right;
+			if (r.Bottom < Y)
+				y = r.Bottom;
+			return new float2(x, y);
+		}
+
 		public float LengthSquared => X * X + Y * Y;
 		public float Length => (float)Math.Sqrt(LengthSquared);
 	}

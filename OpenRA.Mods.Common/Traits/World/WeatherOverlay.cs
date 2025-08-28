@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
-			var center = wr.Viewport.CenterLocation;
+			var center = wr.Viewport.CenterLocation.ToInt2();
 			var viewport = new Rectangle(center - new int2(viewportSize) / 2, viewportSize);
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
