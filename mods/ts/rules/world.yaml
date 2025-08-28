@@ -233,6 +233,7 @@
 
 World:
 	Inherits: ^BaseWorld
+	AlwaysVisible: 
 	ChatCommands:
 	DevCommands:
 	AutoSave:

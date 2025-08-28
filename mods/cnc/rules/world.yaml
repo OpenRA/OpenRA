@@ -150,6 +150,7 @@
 
 World:
 	Inherits: ^BaseWorld
+	AlwaysVisible:
 	ChatCommands:
 	DevCommands:
 	DebugVisualizationCommands:
