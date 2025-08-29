@@ -427,24 +427,28 @@ namespace OpenRA.Mods.Common.Traits
 
 		void TryToRushAttack(IBot bot)
 		{
-			var ownUnits = activeUnits
-				.Where(unit =>
-					unit.IsIdle
-					&& unit.Info.HasTraitInfo<AttackBaseInfo>()
-					&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
-					&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)
-					&& !Info.ExcludeFromSquadsTypes.Contains(unit.Info.Name))
-				.ToList();
+			var groundTroopNum = unitsHangingAroundTheBase.Count;
 
-			if (ownUnits.Count < Info.SquadSize)
+			foreach (var s in Squads)
+			{
+				if (s.IsValid && s.Type != SquadType.Air && s.Type != SquadType.Naval)
+					groundTroopNum += s.Units.Count;
+			}
+
+			if (groundTroopNum < Info.SquadSize)
+				return;
+
+			var randomAttackableUnit = unitsHangingAroundTheBase.Where(a => a.Info.HasTraitInfo<AttackBaseInfo>()).RandomOrDefault(World.LocalRandom);
+
+			if (randomAttackableUnit == null)
 				return;
 
 			var allEnemyBaseBuilder = FindEnemies(
 				constructionYardBuildings.Actors,
-				ownUnits[0])
+				randomAttackableUnit)
 				.ToList();
 
-			if (allEnemyBaseBuilder.Count == 0 || ownUnits.Count < Info.SquadSize)
+			if (allEnemyBaseBuilder.Count == 0)
 				return;
 
 			foreach (var enemyBaseBuilder in allEnemyBaseBuilder)
@@ -456,16 +460,25 @@ namespace OpenRA.Mods.Common.Traits
 							unit.Info.HasTraitInfo<AttackBaseInfo>()
 							&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
 							&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)),
-					ownUnits[0])
+					randomAttackableUnit)
 					.ToList();
 
-				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies.ConvertAll(x => x.Actor)))
+				if (AttackOrFleeFuzzy.Rush.CanAttack(unitsHangingAroundTheBase, enemies.ConvertAll(x => x.Actor)))
 				{
 					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : enemyBaseBuilder;
+					foreach (var s in Squads)
+					{
+						if (s.IsValid)
+							s.SetActorToTarget(target);
+					}
+
 					var rush = GetSquadOfType(SquadType.Rush);
 					rush ??= RegisterNewSquad(bot, SquadType.Rush, target);
 
-					rush.Units.UnionWith(ownUnits);
+					rush.Units.UnionWith(unitsHangingAroundTheBase);
+					unitsHangingAroundTheBase.Clear();
+					foreach (var n in notifyIdleBaseUnits)
+						n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
 
 					return;
 				}
