@@ -496,13 +496,24 @@ namespace OpenRA.Mods.Common.Traits
 					// Try and place the refinery near a resource field
 					if (resourceLayer != null)
 					{
-						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
-							.Where(a => resourceLayer.GetResource(a).Type != null)
-							.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+						// If we have failed to place to the best refinery point, try and place it near the base center
+						var resourceCenter = failCount > 0 ? baseCenter : (baseBuilder.ResourceCenter ?? baseCenter);
 
-						foreach (var r in nearbyResources)
+						var nearbyResources = world.Map
+							.FindTilesInAnnulus(resourceCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+							.Where(a => baseBuilder.Info.ValidResourceTypes.Contains(resourceLayer.GetResource(a).Type));
+
+						var closestRefinery = failCount <= 0
+							? baseBuilder.RefineryBuildings.Actors.Where(a => !a.IsDead)?.ClosestToIgnoringPath(world.Map.CenterOfCell(resourceCenter))
+							: null;
+
+						var resourcesShouldCheck = (closestRefinery == null ?
+							nearbyResources.Shuffle(world.LocalRandom) : nearbyResources.OrderByDescending(c => (c - closestRefinery.Location).LengthSquared))
+							.Take(baseBuilder.Info.MaxResourceCellsToCheck);
+
+						foreach (var r in resourcesShouldCheck)
 						{
-							var found = FindPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+							var found = FindPos(resourceCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
 							if (found.Location != null)
 								return found;
 						}
