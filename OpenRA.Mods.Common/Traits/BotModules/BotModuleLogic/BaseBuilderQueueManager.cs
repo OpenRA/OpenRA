@@ -496,13 +496,18 @@ namespace OpenRA.Mods.Common.Traits
 					// Try and place the refinery near a resource field
 					if (resourceLayer != null)
 					{
-						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+						// If we have failed to place to the best refinery point, try and place it near the base center
+						var resourceCenter = failCount > 0 ? baseCenter : (baseBuilder.ResourceCenter ?? baseCenter);
+
+						var nearbyResources = world.Map
+							.FindTilesInAnnulus(resourceCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
 							.Where(a => resourceLayer.GetResource(a).Type != null)
-							.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+							.Shuffle(world.LocalRandom)
+							.Take(baseBuilder.Info.MaxResourceCellsToCheck);
 
 						foreach (var r in nearbyResources)
 						{
-							var found = FindPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+							var found = FindPos(resourceCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
 							if (found.Location != null)
 								return found;
 						}

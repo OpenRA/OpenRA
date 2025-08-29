@@ -139,6 +139,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) between reassigning rally points.")]
 		public readonly int AssignRallyPointsInterval = 100;
 
+		[Desc("Delay (in ticks) between finding a good resource point around conyard to harvest.")]
+		public readonly int CheckBestResourceLocationInterval = 123;
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
@@ -166,9 +169,11 @@ namespace OpenRA.Mods.Common.Traits
 		IPathFinder pathFinder;
 		IBotPositionsUpdated[] positionsUpdatedModules;
 		CPos initialBaseCenter;
+		public CPos? ResourceCenter;
 
 		readonly Stack<TraitPair<RallyPoint>> rallyPoints = [];
 		int assignRallyPointsTicks;
+		int checkBestResourceLocationTicks;
 
 		readonly BaseBuilderQueueManager[] builders;
 		int currentBuilderIndex = 0;
@@ -211,6 +216,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
 			assignRallyPointsTicks = world.LocalRandom.Next(0, Info.AssignRallyPointsInterval);
+			checkBestResourceLocationTicks = world.LocalRandom.Next(0, Info.CheckBestResourceLocationInterval);
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -243,6 +249,31 @@ namespace OpenRA.Mods.Common.Traits
 					if (rp.Actor.Owner == player && !rp.Actor.Disposed)
 						SetRallyPoint(bot, rp);
 				}
+			}
+
+			if (--checkBestResourceLocationTicks <= 0 && resourceLayer != null)
+			{
+				checkBestResourceLocationTicks = Info.CheckBestResourceLocationInterval;
+
+				Actor bestconyard = null;
+				var best = int.MinValue;
+
+				foreach (var conyard in constructionYardBuildings.Actors.Where(a => !a.IsDead))
+				{
+					if (!world.Map.FindTilesInAnnulus(conyard.Location, Info.MinBaseRadius, Info.MaxBaseRadius).Any(a => resourceLayer.GetResource(a).Type != null))
+						continue;
+
+					var suitable = -world.FindActorsInCircle(conyard.CenterPosition, WDist.FromCells(Info.MaxBaseRadius))
+							.Count(a => (a.Owner.IsAlliedWith(player) && Info.RefineryTypes.Contains(a.Info.Name)) || a.Owner.RelationshipWith(player) == PlayerRelationship.Enemy);
+
+					if (suitable > best)
+					{
+						best = suitable;
+						bestconyard = conyard;
+					}
+				}
+
+				ResourceCenter = bestconyard?.Location;
 			}
 
 			BuildingsBeingProduced.Clear();
