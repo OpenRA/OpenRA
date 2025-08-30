@@ -191,11 +191,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (item.ResourcesPaid > 0)
 				{
-					playerResources.GiveResources(item.ResourcesPaid);
+					playerResources.RefundResources(item.ResourcesPaid);
 					item.RemainingCost += item.ResourcesPaid;
 				}
 
-				playerResources.GiveCash(item.TotalCost - item.RemainingCost);
+				playerResources.RefundCash(item.TotalCost - item.RemainingCost);
 			}
 
 			Queue.Clear();
@@ -383,12 +383,12 @@ namespace OpenRA.Mods.Common.Traits
 				// Refund spent resources
 				if (Queue[i].ResourcesPaid > 0)
 				{
-					playerResources.GiveResources(Queue[i].ResourcesPaid);
+					playerResources.RefundResources(Queue[i].ResourcesPaid);
 					Queue[i].RemainingCost += Queue[i].ResourcesPaid;
 				}
 
 				// Refund what's been paid so far
-				playerResources.GiveCash(Queue[i].TotalCost - Queue[i].RemainingCost);
+				playerResources.RefundCash(Queue[i].TotalCost - Queue[i].RemainingCost);
 				EndProduction(Queue[i]);
 				cancelledAnItem = true;
 			}
@@ -592,11 +592,11 @@ namespace OpenRA.Mods.Common.Traits
 					// Refund what has been paid
 					if (item.ResourcesPaid > 0)
 					{
-						playerResources.GiveResources(item.ResourcesPaid);
+						playerResources.RefundResources(item.ResourcesPaid);
 						item.RemainingCost += item.ResourcesPaid;
 					}
 
-					playerResources.GiveCash(item.TotalCost - item.RemainingCost);
+					playerResources.RefundCash(item.TotalCost - item.RemainingCost);
 					EndProduction(item);
 				}
 
@@ -649,11 +649,11 @@ namespace OpenRA.Mods.Common.Traits
 				// Refund what has been paid
 				if (queued[i].ResourcesPaid > 0)
 				{
-					playerResources.GiveResources(queued[i].ResourcesPaid);
+					playerResources.RefundResources(queued[i].ResourcesPaid);
 					queued[i].RemainingCost += queued[i].ResourcesPaid;
 				}
 
-				playerResources.GiveCash(queued[i].TotalCost - queued[i].RemainingCost);
+				playerResources.RefundCash(queued[i].TotalCost - queued[i].RemainingCost);
 				EndProduction(queued[i]);
 			}
 		}

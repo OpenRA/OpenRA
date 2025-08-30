@@ -127,16 +127,29 @@ namespace OpenRA.Mods.Common.Traits
 			return Resources + amount <= ResourceCapacity;
 		}
 
-		public void GiveResources(int num)
+		public void GiveResources(int num, bool isRefund = false)
 		{
 			Resources += num;
-			Earned += num;
+
+			if (!isRefund)
+				Earned += num;
+			else
+				Spent -= num;
 
 			if (Resources > ResourceCapacity)
 			{
-				Earned -= Resources - ResourceCapacity;
+				if (!isRefund)
+					Earned -= Resources - ResourceCapacity;
+				else
+					Spent += Resources - ResourceCapacity;
+
 				Resources = ResourceCapacity;
 			}
+		}
+
+		public void RefundResources(int num)
+		{
+			GiveResources(num, isRefund: true);
 		}
 
 		public bool TakeResources(int num)
@@ -148,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void GiveCash(int num)
+		public void GiveCash(int num, bool isRefund = false)
 		{
 			if (Cash < int.MaxValue)
 			{
@@ -165,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			if (Earned < int.MaxValue)
+			if (!isRefund && Earned < int.MaxValue)
 			{
 				try
 				{
@@ -179,6 +192,25 @@ namespace OpenRA.Mods.Common.Traits
 					Earned = int.MaxValue;
 				}
 			}
+			else if (isRefund && Spent > int.MinValue)
+			{
+				try
+				{
+					checked
+					{
+						Spent -= num;
+					}
+				}
+				catch (OverflowException)
+				{
+					Spent = int.MinValue;
+				}
+			}
+		}
+
+		public void RefundCash(int num)
+		{
+			GiveCash(num, isRefund: true);
 		}
 
 		public bool TakeCash(int num, bool notifyLowFunds = false)

@@ -291,8 +291,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var actorData in ActorsReadyForDelivery)
 				{
-					playerResources.GiveResources(actorData.Resources);
-					playerResources.GiveCash(actorData.Cash);
+					playerResources.RefundResources(actorData.Resources);
+					playerResources.RefundCash(actorData.Cash);
 				}
 
 				ActorsReadyForDelivery.Clear();
@@ -304,8 +304,8 @@ namespace OpenRA.Mods.Common.Traits
 				var actor = ActorsReadyForDelivery.LastOrDefault(actor => actor.Actor.Name == itemName);
 				if (actor.Actor == null)
 					break;
-				playerResources.GiveResources(actor.Resources);
-				playerResources.GiveCash(actor.Cash);
+				playerResources.RefundResources(actor.Resources);
+				playerResources.RefundCash(actor.Cash);
 				ActorsReadyForDelivery.Remove(actor);
 			}
 		}
