@@ -23,7 +23,6 @@ CABHUT:
 		Categories: Bridge
 
 ^LowBridgeRamp:
-	AlwaysVisible:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -171,7 +170,6 @@ LOBRDG_R_SW:
 		Name: actor-lobrdg-r-name
 
 ^ElevatedBridgePlaceholder:
-	AlwaysVisible:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:

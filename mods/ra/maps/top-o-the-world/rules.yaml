@@ -49,7 +49,6 @@ SCAMERA:
 		Range: 5c512
 
 powerproxy.spyplane:
-	AlwaysVisible:
 	AirstrikePower:
 		OrderName: SovietSpyPlane
 		Icon: spyplane

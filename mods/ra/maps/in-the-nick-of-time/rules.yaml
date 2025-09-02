@@ -29,18 +29,15 @@ TRAN.Reinforcement:
 PARADROP1:
 	ParatroopersPower:
 		DropItems: E2, E2, E2, E3, E3
-	AlwaysVisible:
 
 PARADROP2:
 	ParatroopersPower:
 		DropItems: E1, E1, SHOK, E4, E4
-	AlwaysVisible:
 
 PARADROP3:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: 1TNK, 2TNK
-	AlwaysVisible:
 
 V01:
 	SpawnActorOnDeath:

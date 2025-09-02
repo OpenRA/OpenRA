@@ -504,7 +504,7 @@ namespace OpenRA
 				if (!visibilityModifier.IsVisible(this, player))
 					return false;
 
-			return defaultVisibility.IsVisible(this, player);
+			return defaultVisibility?.IsVisible(this, player) ?? true;
 		}
 
 		public BitSet<TargetableType> GetAllTargetTypes()

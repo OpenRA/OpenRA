@@ -535,7 +535,6 @@
 
 ^BuildingPlug:
 	Interactable:
-	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
 		UndeploySounds: cashturn.aud
@@ -1226,7 +1225,6 @@
 		Condition: inside-tunnel
 
 ^TerrainOverlay:
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: False
 	RenderSprites:
@@ -1257,7 +1255,6 @@
 		Dimensions: 3, 3
 		Footprint: ___ ___ ___
 	Targetable:
-	AlwaysVisible:
 	TunnelEntrance:
 	MapEditorData:
 		Categories: Tunnel

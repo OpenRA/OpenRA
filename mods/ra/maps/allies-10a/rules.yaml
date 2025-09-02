@@ -27,7 +27,6 @@ Player:
 PARADROP:
 	ParatroopersPower:
 		DropItems: E1, E1, E1, E2, E2
-	AlwaysVisible:
 
 FCOM:
 	Capturable:

@@ -28,7 +28,6 @@ MONEYCRATE:
 PARATROOPERS:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
-	AlwaysVisible:
 
 MCV:
 	Buildable:

@@ -152,7 +152,6 @@ GACTWR:
 		Height: 48
 
 GACTWR.SOCKET:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-gactwr-socket-name

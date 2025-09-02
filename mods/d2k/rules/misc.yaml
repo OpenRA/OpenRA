@@ -143,7 +143,6 @@ mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-mpspawn-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
@@ -159,7 +158,6 @@ waypoint:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-waypoint-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
@@ -184,7 +182,6 @@ camera:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-camera-name
-	AlwaysVisible:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
@@ -201,7 +198,6 @@ wormspawner:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-wormspawner-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
@@ -213,7 +209,6 @@ wormspawner:
 		Categories: System
 
 upgrade.conyard:
-	AlwaysVisible:
 	Interactable:
 	ScriptTriggers:
 	Tooltip:
@@ -238,7 +233,6 @@ upgrade.conyard:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.barracks:
-	AlwaysVisible:
 	Interactable:
 	ScriptTriggers:
 	Tooltip:
@@ -263,7 +257,6 @@ upgrade.barracks:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.light:
-	AlwaysVisible:
 	Interactable:
 	ScriptTriggers:
 	Tooltip:
@@ -288,7 +281,6 @@ upgrade.light:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.heavy:
-	AlwaysVisible:
 	Interactable:
 	ScriptTriggers:
 	Tooltip:
@@ -314,7 +306,6 @@ upgrade.heavy:
 	ProvidesPrerequisite@upgradename:
 
 upgrade.hightech:
-	AlwaysVisible:
 	Interactable:
 	ScriptTriggers:
 	Tooltip:
@@ -334,7 +325,6 @@ upgrade.hightech:
 	ProvidesPrerequisite@upgradename:
 
 deathhand:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-deathhand.name

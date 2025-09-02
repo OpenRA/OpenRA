@@ -52,7 +52,6 @@ AIHProcUpgrade:
 	StoresResources:
 		Capacity: 25000
 	Interactable:
-	AlwaysVisible:
 
 AINProcUpgrade:
 	ProvidesPrerequisite:
@@ -60,22 +59,18 @@ AINProcUpgrade:
 	StoresResources:
 		Capacity: 15000
 	Interactable:
-	AlwaysVisible:
 
 AiAnyhqPrerequisite:
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Interactable:
-	AlwaysVisible:
 
 AiTmplPrerequisite:
 	ProvidesPrerequisite:
 		Prerequisite: tmpl
 	Interactable:
-	AlwaysVisible:
 
 Astk.proxy:
-	AlwaysVisible:
 	AirstrikePower:
 		StartFullyCharged: True
 		Prerequisites: ~techlevel.superweapons

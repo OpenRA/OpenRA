@@ -1335,25 +1335,21 @@ BRIK:
 		Type: concrete
 
 BARRACKS:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-barracks-name
 
 VEHICLEPRODUCTION:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-vehicleproduction-name
 
 ANYPOWER:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-anypower-name
 
 ANYHQ:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-anyhq-name

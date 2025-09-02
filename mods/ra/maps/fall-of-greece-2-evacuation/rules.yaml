@@ -22,12 +22,10 @@ World:
 PARADROP:
 	ParatroopersPower:
 		DropItems: E1, E1, E1, E2, E2
-	AlwaysVisible:
 
 FLAMERDROP:
 	ParatroopersPower:
 		DropItems: E2, E2, E4, E4, E4
-	AlwaysVisible:
 
 ^CivInfantry:
 	Infiltrates:

@@ -115,13 +115,11 @@ AIHProcUpgrade:
 	ProvidesPrerequisite:
 		Prerequisite: diffhard
 	Interactable:
-	AlwaysVisible:
 
 AINProcUpgrade:
 	ProvidesPrerequisite:
 		Prerequisite: diffnorm
 	Interactable:
-	AlwaysVisible:
 
 HTNK:
 	Buildable:

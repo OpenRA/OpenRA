@@ -39,7 +39,6 @@ Player:
 
 # Spawned on Easy difficulty.
 VillageTargetableSwitch:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 		Prerequisite: village-targetable-switch
 

@@ -231,31 +231,26 @@ GASILO:
 		Palette: pips
 
 ANYPOWER:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-anypower-name
 
 BARRACKS:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-barracks-name
 
 FACTORY:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-factory-name
 
 RADAR:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-radar-name
 
 TECH:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-tech-name

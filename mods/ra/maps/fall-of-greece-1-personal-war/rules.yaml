@@ -18,19 +18,16 @@ INSERTIONDROP:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E7, GNRL
-	AlwaysVisible:
 
 INSERTIONDROPHARD:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E7.noautotarget, GNRL.noautotarget
-	AlwaysVisible:
 
 RIFLEDROP:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E1, E1, E1, E1, E1
-	AlwaysVisible:
 
 LST.Reinforcement:
 	Inherits: LST

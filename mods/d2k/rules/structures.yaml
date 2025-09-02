@@ -1,5 +1,4 @@
 ^concrete:
-	AlwaysVisible:
 	Interactable:
 	D2kBuilding:
 		TerrainTypes: Rock

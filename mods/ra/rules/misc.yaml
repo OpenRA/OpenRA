@@ -182,7 +182,6 @@ CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-camera-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RevealsShroud:
@@ -343,7 +342,6 @@ LAR2:
 		Name: actor-lar2-name
 
 powerproxy.parabombs:
-	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
 		Name: actor-powerproxy-parabombs.name
@@ -363,7 +361,6 @@ powerproxy.parabombs:
 		CircleSequence: circles
 
 powerproxy.sonarpulse:
-	AlwaysVisible:
 	SpawnActorPower:
 		Icon: sonar
 		Name: actor-powerproxy-sonarpulse.name
@@ -385,7 +382,6 @@ powerproxy.sonarpulse:
 		BlockedCursor: move-blocked
 
 powerproxy.paratroopers:
-	AlwaysVisible:
 	ParatroopersPower:
 		Icon: paratroopers
 		Name: actor-powerproxy-paratroopers.name
@@ -403,22 +399,18 @@ powerproxy.paratroopers:
 		CircleSequence: circles
 
 barracks.upgraded:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 
 vehicles.upgraded:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 
 aircraft.upgraded:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-mpspawn-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	WithSpriteBody:
@@ -434,7 +426,6 @@ waypoint:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-waypoint-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	WithSpriteBody:

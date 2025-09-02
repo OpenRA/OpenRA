@@ -36,14 +36,11 @@ namespace OpenRA.Mods.Common.Lint
 				// Catch TypeDictionary errors.
 				try
 				{
-					if (Enum.TryParse<SystemActors>(actorInfo.Key, true, out _))
-						continue;
-
 					var visibilityTypes = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>();
 					var count = visibilityTypes.Count;
 
 					if (count == 0)
-						emitError($"Actor type `{actorInfo.Key}` does not define a default visibility type.");
+						continue;
 					else if (count > 1)
 						emitError(
 							$"Actor type `{actorInfo.Key}` defines multiple default visibility types: " +

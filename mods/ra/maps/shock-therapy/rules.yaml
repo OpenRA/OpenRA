@@ -10,7 +10,6 @@ SHOCKDROP:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: SHOK, SHOK, SHOK, SHOK, SHOK
-	AlwaysVisible:
 
 LST.Reinforcement:
 	Inherits: LST

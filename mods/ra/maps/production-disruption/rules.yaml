@@ -18,7 +18,6 @@ World:
 		Default: normal
 
 powerproxy.chronoshift:
-	AlwaysVisible:
 	ChronoshiftPower:
 		Dimensions: 1, 1
 		Footprint: x
@@ -31,20 +30,17 @@ CHALK1:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E1, E1, E1, E1, E1
-	AlwaysVisible:
 
 CHALK2:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E3, E3, E3, E3, MEDI
-	AlwaysVisible:
 
 CHALK3:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1
 		SquadSize: 4
-	AlwaysVisible:
 
 CTNK:
 	Chronoshiftable:

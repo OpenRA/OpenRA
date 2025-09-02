@@ -2,7 +2,6 @@ spicebloom.spawnpoint:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-spicebloom-spawnpoint-name
-	AlwaysVisible:
 	RenderSpritesEditorOnly:
 		Image: spicebloom.editor
 	WithSpriteBody:

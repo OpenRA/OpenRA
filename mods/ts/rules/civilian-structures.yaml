@@ -1524,7 +1524,6 @@ INGALITE:
 	Interactable:
 	EditorOnlyTooltip:
 		Name: actor-ingalite-name
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:

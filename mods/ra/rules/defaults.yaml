@@ -1128,7 +1128,6 @@
 
 ^Bridge:
 	Inherits@shape: ^1x1Shape
-	AlwaysVisible:
 	Tooltip:
 		Name: meta-bridge-name
 		ShowOwnerRow: false

@@ -83,7 +83,6 @@ GAPOWR:
 		Height: 48
 
 GAPOWR.SOCKET:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-gapowr-socket-name
@@ -702,13 +701,11 @@ GAPLUG:
 		Height: 48
 
 GAPLUG.SOCKET.IONCANNON:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-gaplug-socket-ioncannon-name
 
 GAPLUG.SOCKET.HUNTERSEEKER:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
 		Name: actor-gaplug-socket-hunterseeker-name

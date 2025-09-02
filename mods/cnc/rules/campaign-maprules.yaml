@@ -55,7 +55,6 @@ Player:
 		Type: campaign
 
 airstrike.proxy:
-	AlwaysVisible:
 	AirstrikePower:
 		Icon: airstrike
 		StartFullyCharged: True
