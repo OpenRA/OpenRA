@@ -142,6 +142,21 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) between finding a good resource point around conyard to harvest.")]
 		public readonly int CheckBestResourceLocationInterval = 123;
 
+		[Desc("Interval (in ticks) between checking whether to sell useless refinery. Set negative value to disabled it.")]
+		public readonly int SellRefineryInterval = 6000;
+
+		[Desc("Distance in cells of refineries are too close.")]
+		public readonly int SellRefineryCloseCellDistance = 6;
+
+		[Desc("Distance in cells of refineries are too close.")]
+		public readonly int SellRefineryNoResourceDistance = 12;
+
+		[Desc("Resource types that are considered can be harvested.")]
+		public readonly HashSet<string> ValidResourceTypes = [];
+
+		[Desc("Tells the AI what types are considered resource creator.")]
+		public readonly HashSet<string> ResourceCreatorTypes = [];
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
@@ -174,6 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Stack<TraitPair<RallyPoint>> rallyPoints = [];
 		int assignRallyPointsTicks;
 		int checkBestResourceLocationTicks;
+		int sellRefineryTick;
 
 		readonly BaseBuilderQueueManager[] builders;
 		int currentBuilderIndex = 0;
@@ -217,6 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
 			assignRallyPointsTicks = world.LocalRandom.Next(0, Info.AssignRallyPointsInterval);
 			checkBestResourceLocationTicks = world.LocalRandom.Next(0, Info.CheckBestResourceLocationInterval);
+			sellRefineryTick = world.LocalRandom.Next(0, Info.SellRefineryInterval);
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -260,7 +277,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var conyard in constructionYardBuildings.Actors.Where(a => !a.IsDead))
 				{
-					if (!world.Map.FindTilesInAnnulus(conyard.Location, Info.MinBaseRadius, Info.MaxBaseRadius).Any(a => resourceLayer.GetResource(a).Type != null))
+					if (!world.Map.FindTilesInAnnulus(conyard.Location, Info.MinBaseRadius, Info.MaxBaseRadius)
+						.Any(c => Info.ValidResourceTypes.Contains(resourceLayer.GetResource(c).Type)))
 						continue;
 
 					var suitable = -world.FindActorsInCircle(conyard.CenterPosition, WDist.FromCells(Info.MaxBaseRadius))
@@ -317,6 +335,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			builders[currentBuilderIndex].Tick(bot, queuesByCategory);
+
+			if (Info.SellRefineryInterval >= 0 && --sellRefineryTick <= 0)
+			{
+				SellUselessRefinery(bot);
+				sellRefineryTick = Info.SellRefineryInterval;
+			}
 		}
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
@@ -442,6 +466,36 @@ namespace OpenRA.Mods.Common.Traits
 				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
 				new("DefenseCenter", FieldSaver.FormatValue(DefenseCenter))
 			];
+		}
+
+		void SellUselessRefinery(IBot bot)
+		{
+			// Sell one refinery each time. Perserve at least one refinery
+			var refineries = world.ActorsHavingTrait<Refinery>().Where(a => a.Owner == player).ToArray();
+
+			if (refineries.Length <= 1)
+				return;
+
+			for (var i = 0; i < refineries.Length; i++)
+			{
+				for (var j = i + 1; j < refineries.Length; j++)
+				{
+					if ((refineries[i].Location - refineries[j].Location).LengthSquared <= Info.SellRefineryCloseCellDistance * Info.SellRefineryCloseCellDistance)
+					{
+						bot.QueueOrder(new Order("Sell", refineries[i], Target.FromActor(refineries[i]), false));
+						return;
+					}
+				}
+
+				if (!world.Map.FindTilesInAnnulus(refineries[i].Location, 0, Info.SellRefineryNoResourceDistance)
+					.Any(c => Info.ValidResourceTypes.Contains(resourceLayer.GetResource(c).Type))
+					&& !world.FindActorsInCircle(refineries[i].CenterPosition, WDist.FromCells(Info.SellRefineryNoResourceDistance))
+					.Any(a => Info.ResourceCreatorTypes.Contains(a.Info.Name)))
+				{
+					bot.QueueOrder(new Order("Sell", refineries[i], Target.FromActor(refineries[i]), false));
+					return;
+				}
+			}
 		}
 
 		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)
