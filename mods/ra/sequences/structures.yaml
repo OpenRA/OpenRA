@@ -533,8 +533,8 @@ gun:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	bib:
 		TilesetFilenames:
 			SNOW: mbGUN.sno
@@ -575,9 +575,8 @@ agun:
 		UseClassicFacings: True
 		Offset: 0,-13
 	muzzle:
-		Filename: gunfire2.shp
-		Start: 1
-		Length: 4
+		Filename: gunfire.shp
+		Length: *
 	bib:
 		TilesetFilenames:
 			SNOW: mbAGUN.sno

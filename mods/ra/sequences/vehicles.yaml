@@ -78,7 +78,7 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
+		Filename: gunfire.shp
 		Length: 2
 	icon:
 		Filename: 1tnkicon.shp
@@ -107,8 +107,8 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	icon:
 		Filename: 2tnkicon.shp
 
@@ -136,8 +136,8 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	icon:
 		Filename: 3tnkicon.shp
 
@@ -165,8 +165,8 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	icon:
 		Filename: 4tnkicon.shp
 
@@ -202,8 +202,8 @@ arty:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
+		Filename: gunfire.shp
+		Length: *
 	icon:
 		Filename: artyicon.shp
 
@@ -315,7 +315,7 @@ ftrk:
 		Facings: 32
 		UseClassicFacings: True
 	muzzle:
-		Filename: gunfire2.shp
+		Filename: gunfire.shp
 		Length: 2
 	icon:
 		Filename: ftrkicon.shp
