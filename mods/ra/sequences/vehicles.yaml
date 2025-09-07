@@ -333,9 +333,6 @@ ctnk:
 		Filename: ctnk.shp
 		Facings: 32
 		UseClassicFacings: True
-	muzzle:
-		Filename: gunfire2.shp
-		Length: 5
 	icon:
 		Filename: ctnkicon.shp
 

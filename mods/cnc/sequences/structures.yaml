@@ -657,9 +657,6 @@ atwr:
 		Filename: atwrmake.shp
 		Length: *
 		Tick: 80
-	muzzle:
-		Filename: gunfire2.shp
-		Length: *
 	bib:
 		Filename: mbGTWR.tem
 		TilesetFilenames:
