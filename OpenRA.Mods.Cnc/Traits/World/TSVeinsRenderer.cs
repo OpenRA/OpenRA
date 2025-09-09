@@ -34,10 +34,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Vein sequence name.")]
 		public readonly string Sequence = "veins";
 
-		[PaletteReference]
-		[Desc("Palette used for rendering the resource sprites.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 		[FieldLoader.Require]
 		[FluentReference]
 		[Desc("Resource name used by tooltips.")]
@@ -196,7 +192,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var a in w.Actors)
 				ActorAddedToWorld(a);
 
-			veinPalette = wr.Palette(info.Palette);
+			veinPalette = wr.Palette(veinSequence.GetPalette());
+
 			var first = veinSequence.GetSprite(0);
 			var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
 			spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
@@ -321,7 +318,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void UpdateSpriteLayers(CPos cell, int[] indices)
 		{
 			if (indices != null)
-				spriteLayer.Update(cell, veinSequence, veinPalette, indices.Random(world.LocalRandom));
+				spriteLayer.Update(cell, veinSequence, indices.Random(world.LocalRandom));
 			else
 				spriteLayer.Clear(cell);
 		}
@@ -382,7 +379,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				yield break;
 
 			var sprite = veinSequence.GetSprite(HeavyIndices[0]);
-			var palette = wr.Palette(info.Palette);
+			var palette = veinPalette;
 
 			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, palette, scale);
 		}
@@ -395,7 +392,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var frame = HeavyIndices[0];
 			var sprite = veinSequence.GetSprite(frame);
 			var alpha = veinSequence.GetAlpha(frame);
-			var palette = wr.Palette(info.Palette);
+			var palette = veinPalette;
 
 			var tintModifiers = veinSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, veinSequence.Scale, alpha, float3.Ones, tintModifiers, false);

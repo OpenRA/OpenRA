@@ -44,9 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public FirePort[] Ports { get; private set; }
 
-		[PaletteReference]
-		public readonly string MuzzlePalette = "effect";
-
 		public override object Create(ActorInitializer init) { return new AttackGarrisoned(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -206,11 +203,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
-			var pal = wr.Palette(Info.MuzzlePalette);
-
 			// Display muzzle flashes
 			foreach (var m in muzzles)
-				foreach (var r in m.Render(self, pal))
+				foreach (var r in m.Render(wr, self, self.Owner))
 					yield return r;
 		}
 

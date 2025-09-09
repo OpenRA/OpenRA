@@ -24,9 +24,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sprite used for this actor.")]
 		public readonly string String = "Infantry";
 
-		[PaletteReference(true)]
-		public readonly string IndicatorPalettePrefix = "player";
-
 		public override object Create(ActorInitializer init) { return new GpsDot(this); }
 	}
 

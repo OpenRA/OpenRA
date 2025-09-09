@@ -36,10 +36,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sequence for the level up sprite. Needs to be present on LevelUpImage.")]
 		public readonly string LevelUpSequence = "levelup";
 
-		[PaletteReference]
-		[Desc("Palette for the level up sprite.")]
-		public readonly string LevelUpPalette = "effect";
-
 		[Desc("Multiplier to apply to the Conditions keys. Defaults to the actor's value.")]
 		public readonly int ExperienceModifier = -1;
 
@@ -125,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 					TextNotificationsManager.AddTransientLine(self.Owner, info.LevelUpTextNotification);
 
 					if (info.LevelUpImage != null && info.LevelUpSequence != null)
-						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self, w, info.LevelUpImage, info.LevelUpSequence, info.LevelUpPalette)));
+						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self, w, info.LevelUpImage, info.LevelUpSequence, self.Owner)));
 				}
 			}
 		}

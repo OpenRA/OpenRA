@@ -29,12 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(Sequence))]
 		public readonly string[] FogVariants = ["fog"];
 
-		[PaletteReference]
-		public readonly string ShroudPalette = "shroud";
-
-		[PaletteReference]
-		public readonly string FogPalette = "fog";
-
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 			"corners clockwise from TL; upper four are edges clockwise from top")]
 		public readonly int[] Index = [12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14];
@@ -119,6 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 		Func<PPos, Shroud.CellVisibility> cellVisibility;
 		TerrainSpriteLayer shroudLayer, fogLayer;
 		PaletteReference shroudPaletteReference, fogPaletteReference;
+		readonly string shroudPalette, fogPalette;
 		bool disposed;
 
 		public ShroudRenderer(World world, ShroudRendererInfo info)
@@ -155,6 +150,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var shroudSequence = sequences.GetSequence(info.Sequence, info.ShroudVariants[j]);
 				var fogSequence = sequences.GetSequence(info.Sequence, info.FogVariants[j]);
+				shroudPalette = shroudSequence.GetPalette();
+				fogPalette = fogSequence.GetPalette();
 				for (var i = 0; i < info.Index.Length; i++)
 				{
 					shroudSprites[j * variantStride + i] = (shroudSequence.GetSprite(i), shroudSequence.Scale, shroudSequence.GetAlpha(i));
@@ -221,8 +218,8 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidDataException("Fog sprites must all use the same blend mode.");
 
 			var emptySprite = new Sprite(shroudSprites[0].Sprite.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-			shroudPaletteReference = wr.Palette(info.ShroudPalette);
-			fogPaletteReference = wr.Palette(info.FogPalette);
+			shroudPaletteReference = wr.Palette(shroudPalette);
+			fogPaletteReference = wr.Palette(fogPalette);
 			shroudLayer = new TerrainSpriteLayer(w, wr, emptySprite, shroudBlend, false);
 			fogLayer = new TerrainSpriteLayer(w, wr, emptySprite, fogBlend, false);
 

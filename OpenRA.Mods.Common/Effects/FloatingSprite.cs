@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.Effects
 		readonly WDist[] speed;
 		readonly WDist[] gravity;
 		readonly Animation anim;
+		readonly Player owner;
 
 		readonly bool visibleThroughFog;
 		readonly int turnRate;
 		readonly int randomRate;
-		readonly string palette;
 
 		WPos pos;
 		WVec offset;
@@ -32,11 +32,12 @@ namespace OpenRA.Mods.Common.Effects
 		int ticks;
 		WAngle facing;
 
-		public FloatingSprite(Actor emitter, string image, string[] sequences, string palette, bool isPlayerPalette,
-			int[] lifetime, WDist[] speed, WDist[] gravity, int turnRate, int randomRate, WPos pos, WAngle facing,
-			bool visibleThroughFog = false)
+		public FloatingSprite(Actor emitter, string image, string[] sequences, int[] lifetime, WDist[] speed,
+			WDist[] gravity, int turnRate, int randomRate, WPos pos, WAngle facing, bool visibleThroughFog = false)
 		{
 			var world = emitter.World;
+			owner = emitter.Owner;
+
 			this.pos = pos;
 			this.turnRate = turnRate;
 			this.randomRate = randomRate;
@@ -49,8 +50,6 @@ namespace OpenRA.Mods.Common.Effects
 			anim.PlayRepeating(sequences.Random(world.LocalRandom));
 			world.ScreenMap.Add(this, pos, anim.Image);
 			this.lifetime = Util.RandomInRange(world.LocalRandom, lifetime);
-
-			this.palette = isPlayerPalette ? palette + emitter.Owner.InternalName : palette;
 		}
 
 		public void Tick(World world)
@@ -88,7 +87,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!visibleThroughFog && wr.World.FogObscures(pos))
 				return SpriteRenderable.None;
 
-			return anim.Render(pos, wr.Palette(palette));
+			return anim.Render(wr, pos, owner);
 		}
 	}
 }

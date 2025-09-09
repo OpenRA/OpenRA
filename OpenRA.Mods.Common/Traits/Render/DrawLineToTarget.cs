@@ -34,10 +34,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Width (in pixels) of the queued end node markers.")]
 		public readonly int QueuedMarkerWidth = 2;
 
-		[PaletteReference]
-		[Desc("Palette used for rendering sprites.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 		public override object Create(ActorInitializer init) { return new DrawLineToTarget(this); }
 	}
 
@@ -85,15 +81,16 @@ namespace OpenRA.Mods.Common.Traits
 			return RenderAboveShroud(self, wr);
 		}
 
-		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
+		static IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			var pal = wr.Palette(info.Palette);
 			var a = self.CurrentActivity;
 			for (; a != null; a = a.NextActivity)
 				if (!a.IsCanceling)
 					foreach (var n in a.TargetLineNodes(self))
 						if (n.Tile != null && n.Target.Type != TargetType.Invalid)
-							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, 1f, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+							yield return new SpriteRenderable(
+								n.Tile.GetSprite(0), n.Target.CenterPosition, WVec.Zero, -511,
+								wr.Palette(n.Tile.GetPalette()), 1f, 1f, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable => false;

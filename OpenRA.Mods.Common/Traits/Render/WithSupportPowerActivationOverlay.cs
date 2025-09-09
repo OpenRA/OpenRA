@@ -24,13 +24,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithSupportPowerActivationOverlay(init.Self, this); }
 	}
 
@@ -53,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				() => IsTraitDisabled || !visible,
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
-			rs.Add(anim, info.Palette, info.IsPlayerPalette);
+			rs.Add(anim);
 		}
 
 		void INotifySupportPower.Charged(Actor self) { }

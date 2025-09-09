@@ -137,8 +137,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly ActorInfo ActorInfo;
 		public readonly Animation Icon;
-		public readonly string IconPalette;
-		public readonly bool IconPaletteIsPlayerPalette;
 		public readonly int ProductionQueueOrder;
 		public readonly int BuildPaletteOrder;
 		public readonly TooltipInfo TooltipInfo;
@@ -163,8 +161,6 @@ namespace OpenRA.Mods.Common.Traits
 				var image = rsi.GetImage(actorInfo, owner.Faction.InternalName);
 				Icon = new Animation(owner.World, image);
 				Icon.Play(BuildableInfo.Icon);
-				IconPalette = BuildableInfo.IconPalette;
-				IconPaletteIsPlayerPalette = BuildableInfo.IconPaletteIsPlayerPalette;
 				BuildPaletteOrder = BuildableInfo.BuildPaletteOrder;
 				ProductionQueueOrder = queues.Where(q => BuildableInfo.Queue.Contains(q.Type))
 					.Select(q => q.DisplayOrder)

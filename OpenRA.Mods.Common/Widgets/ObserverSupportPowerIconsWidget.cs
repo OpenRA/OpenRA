@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 				supportPowerIconsIcons.Add(new SupportPowersWidget.SupportPowerIcon { Power = item, Pos = location });
 				supportPowerIconsBounds.Add(new Rectangle((int)location.X, (int)location.Y, (int)iconSize.X, (int)iconSize.Y));
 
-				WidgetUtils.DrawSpriteCentered(icon.Image, worldRenderer.Palette(item.Info.IconPalette), location + 0.5f * iconSize, 0.5f);
+				WidgetUtils.DrawSpriteCentered(icon.Image, worldRenderer.Palette(icon.Palette(player)), location + 0.5f * iconSize, 0.5f);
 
 				var clock = clocks[power.a.Key];
 				clock.PlayFetchIndex(ClockSequence,

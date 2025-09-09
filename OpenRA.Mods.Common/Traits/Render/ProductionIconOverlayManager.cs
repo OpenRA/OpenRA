@@ -32,10 +32,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for the overlay (cannot be animated).")]
 		public readonly string Sequence = null;
 
-		[PaletteReference]
-		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		public readonly string Palette = "chrome";
-
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (rules.Actors[SystemActors.Player].TraitInfos<ProductionIconOverlayManagerInfo>().Any(piom => piom != this && piom.Type == Type))
@@ -49,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly Actor self;
 		readonly Sprite sprite;
-		readonly ProductionIconOverlayManagerInfo info;
+		readonly Animation anim;
 
 		// HACK: TechTree doesn't associate Watcher.Key with the registering ITechTreeElement.
 		// So in a situation where multiple ITechTreeElements register Watchers with the same Key,
@@ -63,11 +59,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			self = init.Self;
 
-			var anim = new Animation(self.World, info.Image);
+			anim = new Animation(self.World, info.Image);
 			anim.Play(info.Sequence);
 			sprite = anim.Image;
-
-			this.info = info;
 
 			prefix = info.Type + ".";
 			var ttc = self.Trait<TechTree>();
@@ -80,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		Sprite IProductionIconOverlay.Sprite => sprite;
-		string IProductionIconOverlay.Palette => info.Palette;
+		string IProductionIconOverlay.Palette => anim.Palette(self.Owner);
 
 		float2 IProductionIconOverlay.Offset(float2 iconSize)
 		{

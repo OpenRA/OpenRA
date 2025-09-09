@@ -112,8 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly GrantExternalConditionPower power;
 			readonly char[] footprint;
 			readonly CVec dimensions;
-			readonly Sprite tile;
-			readonly float alpha;
+			readonly ISpriteSequence tile;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
@@ -130,8 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 				dimensions = power.info.Dimensions;
 
 				var sequence = world.Map.Sequences.GetSequence(power.info.FootprintImage, power.info.FootprintSequence);
-				tile = sequence.GetSprite(0);
-				alpha = sequence.GetAlpha(0);
+				tile = sequence;
 			}
 
 			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -165,10 +163,11 @@ namespace OpenRA.Mods.Common.Traits
 			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+				var pal = wr.Palette(tile.GetPalette());
 
 				foreach (var t in power.CellsMatching(xy, footprint, dimensions))
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile.GetSprite(0), wr.World.Map.CenterOfCell(t),
+						WVec.Zero, -511, pal, 1f, tile.GetAlpha(0), float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
 			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)

@@ -56,12 +56,6 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(Image))]
 		public readonly string[] Sequences = ["particles"];
 
-		[Desc("Which palette to use.")]
-		[PaletteReference(nameof(IsPlayerPalette))]
-		public readonly string Palette = "effect";
-
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new FloatingSpriteEmitter(init.Self, this); }
 	}
 
@@ -117,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				ticks = Util.RandomInRange(self.World.LocalRandom, Info.SpawnFrequency);
 
 				var spawnFacing = (!Info.RandomFacing && facing != null) ? facing.Facing : WAngle.FromFacing(self.World.LocalRandom.Next(256));
-				self.World.AddFrameEndTask(w => w.Add(new FloatingSprite(self, Info.Image, Info.Sequences, Info.Palette, Info.IsPlayerPalette,
+				self.World.AddFrameEndTask(w => w.Add(new FloatingSprite(self, Info.Image, Info.Sequences,
 					Info.Lifetime, Info.Speed, Info.Gravity, Info.TurnRate, Info.RandomRate, self.CenterPosition + offset, spawnFacing)));
 			}
 		}

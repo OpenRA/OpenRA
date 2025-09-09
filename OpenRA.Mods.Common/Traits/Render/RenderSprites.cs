@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	public interface IRenderActorPreviewSpritesInfo : ITraitInfoInterface
 	{
-		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p);
+		IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner);
 	}
 
 	[Desc("Render trait fundament that won't work without additional With* render traits.")]
@@ -33,23 +33,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("A dictionary of faction-specific image overrides.")]
 		public readonly Dictionary<string, string> FactionImages = null;
 
-		[PaletteReference]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[PaletteReference(true)]
-		[Desc("Custom PlayerColorPalette: BaseName")]
-		public readonly string PlayerPalette = "player";
-
 		public override object Create(ActorInitializer init) { return new RenderSprites(init, this); }
 
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
 			var sequences = init.World.Map.Sequences;
 			var faction = init.GetValue<FactionInit, string>(this);
-			var ownerName = init.Get<OwnerInit>().InternalName;
+			var owner = init.Get<OwnerInit>();
 			var image = GetImage(init.Actor, faction);
-			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
 			var facings = 0;
 			var body = init.Actor.TraitInfoOrDefault<BodyOrientationInfo>();
@@ -65,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			foreach (var spi in init.Actor.TraitInfos<IRenderActorPreviewSpritesInfo>())
-				foreach (var preview in spi.RenderPreviewSprites(init, image, facings, palette))
+				foreach (var preview in spi.RenderPreviewSprites(init, image, facings, owner))
 					yield return preview;
 		}
 
@@ -78,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
+	public class RenderSprites : IRender, ITick, IActorPreviewInitModifier
 	{
 		static readonly (DamageState DamageState, string Prefix)[] DamagePrefixes =
 		[
@@ -91,31 +82,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		sealed class AnimationWrapper
 		{
 			public readonly AnimationWithOffset Animation;
-			public readonly string Palette;
-			public readonly bool IsPlayerPalette;
-			public PaletteReference PaletteReference { get; private set; }
 
 			bool cachedVisible;
 			WVec cachedOffset;
 			ISpriteSequence cachedSequence;
 
-			public AnimationWrapper(AnimationWithOffset animation, string palette, bool isPlayerPalette)
+			public AnimationWrapper(AnimationWithOffset animation)
 			{
 				Animation = animation;
-				Palette = palette;
-				IsPlayerPalette = isPlayerPalette;
-			}
-
-			public void CachePalette(WorldRenderer wr, Player owner)
-			{
-				PaletteReference = wr.Palette(IsPlayerPalette ? Palette + owner.InternalName : Palette);
-			}
-
-			public void OwnerChanged()
-			{
-				// Update the palette reference next time we draw
-				if (IsPlayerPalette)
-					PaletteReference = null;
 			}
 
 			public bool IsVisible => Animation.DisableFunc == null || !Animation.DisableFunc();
@@ -167,15 +141,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return cachedImage = Info.GetImage(self.Info, faction);
 		}
 
-		public void UpdatePalette()
-		{
-			foreach (var anim in anims)
-				anim.OwnerChanged();
-		}
-
-		public virtual void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
-		public void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner) { UpdatePalette(); }
-
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			foreach (var a in anims)
@@ -183,13 +148,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (!a.IsVisible)
 					continue;
 
-				if (a.PaletteReference == null)
-				{
-					var owner = self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner : self.Owner;
-					a.CachePalette(wr, owner);
-				}
-
-				foreach (var r in a.Animation.Render(self, a.PaletteReference))
+				var owner = self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner : self.Owner;
+				foreach (var r in a.Animation.Render(wr, self, owner))
 					yield return r;
 			}
 		}
@@ -216,16 +176,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 				self.World.ScreenMap.AddOrUpdate(self);
 		}
 
-		public void Add(AnimationWithOffset anim, string palette = null, bool isPlayerPalette = false)
+		public void Add(AnimationWithOffset anim)
 		{
-			// Use defaults
-			if (palette == null)
-			{
-				palette = Info.Palette ?? Info.PlayerPalette;
-				isPlayerPalette = Info.Palette == null;
-			}
-
-			anims.Add(new AnimationWrapper(anim, palette, isPlayerPalette));
+			anims.Add(new AnimationWrapper(anim));
 		}
 
 		public void Remove(AnimationWithOffset anim)

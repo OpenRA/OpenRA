@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Effects
 	public class SpriteEffect : IEffect, ISpatiallyPartitionable
 	{
 		readonly World world;
-		readonly string palette;
+		readonly Player owner;
 		readonly Animation anim;
 		readonly Func<WPos> posFunc;
 		readonly bool visibleThroughFog;
@@ -30,24 +30,24 @@ namespace OpenRA.Mods.Common.Effects
 
 		// Facing is last on these overloads partially for backwards compatibility with previous main ctor revision
 		// and partially because most effects don't need it. The latter is also the reason for placement of 'delay'.
-		public SpriteEffect(WPos pos, World world, string image, string sequence, string palette,
+		public SpriteEffect(WPos pos, World world, string image, string sequence, Player owner = null,
 			bool visibleThroughFog = false, int delay = 0)
-			: this(() => pos, () => WAngle.Zero, world, image, sequence, palette, visibleThroughFog, delay) { }
+			: this(() => pos, () => WAngle.Zero, world, image, sequence, owner, visibleThroughFog, delay) { }
 
-		public SpriteEffect(Actor actor, World world, string image, string sequence, string palette,
+		public SpriteEffect(Actor actor, World world, string image, string sequence, Player owner = null,
 			bool visibleThroughFog = false, int delay = 0)
-			: this(() => actor.CenterPosition, () => WAngle.Zero, world, image, sequence, palette, visibleThroughFog, delay) { }
+			: this(() => actor.CenterPosition, () => WAngle.Zero, world, image, sequence, owner, visibleThroughFog, delay) { }
 
-		public SpriteEffect(WPos pos, WAngle facing, World world, string image, string sequence, string palette,
+		public SpriteEffect(WPos pos, WAngle facing, World world, string image, string sequence, Player owner = null,
 			bool visibleThroughFog = false, int delay = 0)
-			: this(() => pos, () => facing, world, image, sequence, palette, visibleThroughFog, delay) { }
+			: this(() => pos, () => facing, world, image, sequence, owner, visibleThroughFog, delay) { }
 
-		public SpriteEffect(Func<WPos> posFunc, Func<WAngle> facingFunc, World world, string image, string sequence, string palette,
+		public SpriteEffect(Func<WPos> posFunc, Func<WAngle> facingFunc, World world, string image, string sequence, Player owner = null,
 			bool visibleThroughFog = false, int delay = 0)
 		{
 			this.world = world;
 			this.posFunc = posFunc;
-			this.palette = palette;
+			this.owner = owner;
 			this.sequence = sequence;
 			this.visibleThroughFog = visibleThroughFog;
 			this.delay = delay;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!initialized || (!visibleThroughFog && world.FogObscures(pos)))
 				return SpriteRenderable.None;
 
-			return anim.Render(pos, wr.Palette(palette));
+			return anim.Render(wr, pos, owner);
 		}
 	}
 }

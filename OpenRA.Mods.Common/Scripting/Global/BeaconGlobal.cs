@@ -36,8 +36,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (beacon == null)
 				throw new LuaException("The player actor has no 'PlaceBeacon' trait.");
 
-			var playerBeacon = new Beacon(owner, position, duration, beacon.Palette, beacon.IsPlayerPalette,
-				beacon.BeaconImage, beacon.BeaconSequence, beacon.ArrowSequence, beacon.CircleSequence);
+			var playerBeacon = new Beacon(owner, position, duration, beacon.BeaconImage, beacon.BeaconSequence, beacon.ArrowSequence, beacon.CircleSequence);
 
 			owner.PlayerActor.World.AddFrameEndTask(w => w.Add(playerBeacon));
 

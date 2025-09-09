@@ -24,14 +24,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		public readonly string Sequence = "build-door";
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner)
 		{
 			var anim = new Animation(init.World, image);
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();
 			var offset = bi.CenterOffset(init.World).Y + 512; // Additional 512 units move from center -> top of cell
-			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => offset, p);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => offset, owner);
 		}
 
 		public override object Create(ActorInitializer init) { return new WithProductionDoorOverlay(init.Self, this); }

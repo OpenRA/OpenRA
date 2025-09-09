@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected override PaletteReference GetPalette(Actor self, WorldRenderer wr)
 		{
-			return wr.Palette(info.IsPlayerPalette ? info.Palette + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName : info.Palette);
+			return wr.Palette(anim.Palette(rb.Repairers[shownPlayer % rb.Repairers.Count]));
 		}
 
 		void CycleRepairer()

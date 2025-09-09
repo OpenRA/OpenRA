@@ -18,9 +18,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Renders Ctrl groups using pixel art.")]
 	public class WithSpriteControlGroupDecorationInfo : TraitInfo
 	{
-		[PaletteReference]
-		public readonly string Palette = "chrome";
-
 		public readonly string Image = "pips";
 
 		[SequenceReference(nameof(Image))]
@@ -58,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
 			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) - (0.5f * anim.Image.Size.XY).ToInt2();
-			var palette = wr.Palette(Info.Palette);
+			var palette = wr.Palette(anim.Palette(self.Owner));
 			return
 			[
 				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette)

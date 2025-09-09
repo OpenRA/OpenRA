@@ -36,12 +36,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Parachute closing sequence. Defaults to opening sequence played backwards.")]
 		public readonly string ClosingSequence = null;
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Palette used to render the parachute.")]
-		public readonly string Palette = "player";
-
-		public readonly bool IsPlayerPalette = true;
-
 		[Desc("Parachute position relative to the paradropped unit.")]
 		public readonly WVec Offset = new(0, 0, 384);
 
@@ -63,17 +57,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithParachute(init.Self, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner)
 		{
 			if (!EnabledByDefault)
 				yield break;
 
 			if (image == null)
 				yield break;
-
-			// For this, image must not be null
-			if (Palette != null)
-				p = init.WorldRenderer.Palette(Palette);
 
 			Func<WAngle> facing;
 			var dynamicfacingInit = init.GetOrDefault<DynamicFacingInit>();
@@ -97,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return tmpOffset.Y + tmpOffset.Z + 1;
 			}
 
-			yield return new SpriteActorPreview(anim, Offset, ZOffset, p);
+			yield return new SpriteActorPreview(anim, Offset, ZOffset, owner);
 		}
 	}
 
@@ -134,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			var rs = self.Trait<RenderSprites>();
-			rs.Add(anim, info.Palette, info.IsPlayerPalette);
+			rs.Add(anim);
 
 			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
@@ -178,8 +168,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var dat = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
 			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
-			var palette = wr.Palette(info.Palette);
 			var alpha = shadow.CurrentSequence.GetAlpha(shadow.CurrentFrame);
+			var palette = wr.Palette(shadow.CurrentSequence.ShadowPalette);
 			var tintModifiers = shadow.CurrentSequence.IgnoreWorldTint ? TintModifiers.ReplaceColor | TintModifiers.IgnoreWorldTint : TintModifiers.ReplaceColor;
 			return
 			[

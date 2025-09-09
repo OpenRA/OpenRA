@@ -22,7 +22,6 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Player firedBy;
 		readonly Animation anim;
 		readonly WeaponInfo weapon;
-		readonly string weaponPalette;
 		readonly string upSequence;
 		readonly string downSequence;
 
@@ -36,7 +35,6 @@ namespace OpenRA.Mods.Common.Effects
 		readonly int turn;
 		readonly string trailImage;
 		readonly string[] trailSequences;
-		readonly string trailPalette;
 		readonly int trailInterval;
 		readonly int trailDelay;
 
@@ -46,14 +44,13 @@ namespace OpenRA.Mods.Common.Effects
 		bool isLaunched;
 		bool detonated;
 
-		public NukeLaunch(Player firedBy, string image, WeaponInfo weapon, string weaponPalette, string upSequence, string downSequence,
+		public NukeLaunch(Player firedBy, string image, WeaponInfo weapon, string upSequence, string downSequence,
 			WPos launchPos, WPos targetPos, WDist detonationAltitude, bool removeOnDetonation, WDist velocity, int launchDelay, int impactDelay,
 			bool skipAscent,
-			string trailImage, string[] trailSequences, string trailPalette, bool trailUsePlayerPalette, int trailDelay, int trailInterval)
+			string trailImage, string[] trailSequences, int trailDelay, int trailInterval)
 		{
 			this.firedBy = firedBy;
 			this.weapon = weapon;
-			this.weaponPalette = weaponPalette;
 			this.upSequence = upSequence;
 			this.downSequence = downSequence;
 			this.launchDelay = launchDelay;
@@ -61,9 +58,6 @@ namespace OpenRA.Mods.Common.Effects
 			turn = skipAscent ? 0 : impactDelay / 2;
 			this.trailImage = trailImage;
 			this.trailSequences = trailSequences;
-			this.trailPalette = trailPalette;
-			if (trailUsePlayerPalette)
-				this.trailPalette += firedBy.InternalName;
 
 			this.trailInterval = trailInterval;
 			this.trailDelay = trailDelay;
@@ -121,8 +115,7 @@ namespace OpenRA.Mods.Common.Effects
 				var trailPos = !isDescending ? WPos.LerpQuadratic(ascendSource, ascendTarget, WAngle.Zero, ticks - trailDelay, turn)
 					: WPos.LerpQuadratic(descendSource, descendTarget, WAngle.Zero, ticks - turn - trailDelay, impactDelay - turn);
 
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(trailPos, w, trailImage, trailSequences.Random(world.SharedRandom),
-					trailPalette)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(trailPos, w, trailImage, trailSequences.Random(world.SharedRandom), firedBy)));
 
 				trailTicks = trailInterval;
 			}
@@ -164,7 +157,7 @@ namespace OpenRA.Mods.Common.Effects
 			if (!isLaunched || anim == null)
 				return [];
 
-			return anim.Render(pos, wr.Palette(weaponPalette));
+			return anim.Render(wr, pos, firedBy);
 		}
 
 		public float FractionComplete => ticks * 1f / impactDelay;

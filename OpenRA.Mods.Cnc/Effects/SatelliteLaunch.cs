@@ -44,15 +44,14 @@ namespace OpenRA.Mods.Cnc.Effects
 
 			if (++frame == 19)
 			{
-				var palette = info.SatellitePaletteIsPlayerPalette ? info.SatellitePalette + launcher.Owner.InternalName : info.SatellitePalette;
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(world, pos, info.SatelliteImage, info.SatelliteSequence, palette, info.RevealDelay, launcher.Owner)));
+				world.AddFrameEndTask(
+					w => w.Add(new GpsSatellite(world, pos, info.SatelliteImage, info.SatelliteSequence, launcher.Owner, info.RevealDelay, launcher.Owner)));
 			}
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			var palette = info.DoorPaletteIsPlayerPalette ? info.DoorPalette + launcher.Owner.InternalName : info.DoorPalette;
-			return doors.Render(pos, wr.Palette(palette));
+			return doors.Render(wr, pos, launcher.Owner);
 		}
 	}
 }

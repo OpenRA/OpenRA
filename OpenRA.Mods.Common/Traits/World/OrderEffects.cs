@@ -29,9 +29,6 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		public readonly string TerrainFlashSequence = null;
 
-		[Desc("The palette to use.")]
-		public readonly string TerrainFlashPalette = null;
-
 		[Desc("The type of effect to apply to targeted (frozen) actors. Accepts values Overlay and Tint.")]
 		public readonly ActorFlashType ActorFlashType = ActorFlashType.Overlay;
 
@@ -96,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 				case TargetType.Terrain:
 				{
 					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(
-						target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
+						target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence)));
 					return true;
 				}
 

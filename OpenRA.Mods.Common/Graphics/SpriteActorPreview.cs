@@ -21,26 +21,26 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Animation animation;
 		readonly Func<WVec> offset;
 		readonly Func<int> zOffset;
-		readonly PaletteReference pr;
+		readonly OwnerInit owner;
 
-		public SpriteActorPreview(Animation animation, Func<WVec> offset, Func<int> zOffset, PaletteReference pr)
+		public SpriteActorPreview(Animation animation, Func<WVec> offset, Func<int> zOffset, OwnerInit owner)
 		{
 			this.animation = animation;
 			this.offset = offset;
 			this.zOffset = zOffset;
-			this.pr = pr;
+			this.owner = owner;
 		}
 
 		void IActorPreview.Tick() { animation.Tick(); }
 
 		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
 		{
-			return animation.RenderUI(wr, pos, offset(), zOffset(), pr, scale);
+			return animation.RenderUI(wr, pos, offset(), zOffset(), owner.InternalName, scale);
 		}
 
 		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
 		{
-			return animation.Render(pos, offset(), zOffset(), pr);
+			return animation.Render(wr, pos, offset(), zOffset(), owner);
 		}
 
 		IEnumerable<Rectangle> IActorPreview.ScreenBounds(WorldRenderer wr, WPos pos)

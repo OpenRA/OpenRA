@@ -31,8 +31,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public HotkeyReference Hotkey;
 		public Sprite Sprite;
 		public PaletteReference Palette;
-		public PaletteReference IconClockPalette;
-		public PaletteReference IconDarkenPalette;
 		public float2 Pos;
 		public List<ProductionItem> Queued;
 		public ProductionQueue ProductionQueue;
@@ -66,11 +64,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string ClockAnimation = "clock";
 		public readonly string ClockSequence = "idle";
-		public readonly string ClockPalette = "chrome";
 
 		public readonly string NotBuildableAnimation = "clock";
 		public readonly string NotBuildableSequence = "idle";
-		public readonly string NotBuildablePalette = "chrome";
 
 		public readonly string OverlayFont = "TinyBold";
 		public readonly string SymbolsFont = "Symbols";
@@ -517,17 +513,13 @@ namespace OpenRA.Mods.Common.Widgets
 				var bi = item.TraitInfo<BuildableInfo>();
 				icon.Play(bi.Icon);
 
-				var palette = bi.IconPaletteIsPlayerPalette ? bi.IconPalette + producer.Actor.Owner.InternalName : bi.IconPalette;
-
 				var pi = new ProductionIcon()
 				{
 					Actor = item,
 					Name = item.Name,
 					Hotkey = DisplayedIconCount < HotkeyCount ? hotkeys[DisplayedIconCount] : null,
 					Sprite = icon.Image,
-					Palette = worldRenderer.Palette(palette),
-					IconClockPalette = worldRenderer.Palette(ClockPalette),
-					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
+					Palette = worldRenderer.Palette(icon.Palette(producer.Actor.Owner)),
 					Pos = new float2(rect.Location),
 					Queued = currentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
 					ProductionQueue = currentQueue
@@ -571,10 +563,10 @@ namespace OpenRA.Mods.Common.Widgets
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
 
-					WidgetUtils.DrawSpriteCentered(clock.Image, icon.IconClockPalette, icon.Pos + iconOffset);
+					WidgetUtils.DrawSpriteCentered(clock.Image, worldRenderer.Palette(clock.Palette()), icon.Pos + iconOffset);
 				}
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSpriteCentered(cantBuild.Image, icon.IconDarkenPalette, icon.Pos + iconOffset);
+					WidgetUtils.DrawSpriteCentered(cantBuild.Image, worldRenderer.Palette(cantBuild.Palette()), icon.Pos + iconOffset);
 			}
 
 			Game.Renderer.DisableAntialiasingFilter();

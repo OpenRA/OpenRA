@@ -20,14 +20,14 @@ namespace OpenRA.Mods.Cnc.Effects
 	{
 		readonly Player launcher;
 		readonly Animation anim;
-		readonly string palette;
+		readonly Player owner;
 		readonly int revealDelay;
 		WPos pos;
 		int tick;
 
-		public GpsSatellite(World world, WPos pos, string image, string sequence, string palette, int revealDelay, Player launcher)
+		public GpsSatellite(World world, WPos pos, string image, string sequence, Player owner, int revealDelay, Player launcher)
 		{
-			this.palette = palette;
+			this.owner = owner;
 			this.pos = pos;
 			this.launcher = launcher;
 			this.revealDelay = revealDelay;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(pos, wr.Palette(palette));
+			return anim.Render(wr, pos, owner);
 		}
 	}
 }

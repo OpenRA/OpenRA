@@ -36,9 +36,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for full pips.")]
 		public readonly string FullSequence = "pip-green";
 
-		[PaletteReference]
-		public readonly string Palette = "chrome";
-
 		[Desc("Name(s) of AmmoPool(s) that use this decoration. Leave empty to include all pools.")]
 		public readonly string[] AmmoPools = [];
 
@@ -67,7 +64,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			pips.PlayRepeating(Info.EmptySequence);
 
-			var palette = wr.Palette(Info.Palette);
 			var pipSize = pips.Image.Size.XY.ToInt2();
 			var pipStride = Info.PipStride != int2.Zero ? Info.PipStride : new int2(pipSize.X, 0);
 			screenPos -= pipSize / 2;
@@ -84,6 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			for (var i = 0; i < pipCount; i++)
 			{
 				pips.PlayRepeating(currentAmmo * pipCount > i * totalAmmo ? Info.FullSequence : Info.EmptySequence);
+				var palette = wr.Palette(pips.CurrentSequence.GetPalette(self.Owner.InternalName));
 				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
 
 				screenPos += pipStride;

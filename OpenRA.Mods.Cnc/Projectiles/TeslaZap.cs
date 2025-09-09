@@ -30,10 +30,6 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		[Desc("Sprite sequence to play at the borders.")]
 		public readonly string DimSequence = "dim";
 
-		[PaletteReference]
-		[Desc("The palette used to draw this electric zap.")]
-		public readonly string Palette = "effect";
-
 		[Desc("How many sprite sequences to play at the center.")]
 		public readonly int BrightZaps = 1;
 
@@ -91,7 +87,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			zap = new TeslaZapRenderable(args.Source, info.ZOffset, target - args.Source,
-				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
+				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps);
 
 			yield return zap;
 		}

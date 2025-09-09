@@ -97,10 +97,6 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(EffectImage), allowNullImage: true)]
 		public readonly string UncloakEffectSequence = null;
 
-		[PaletteReference(nameof(EffectPaletteIsPlayerPalette))]
-		public readonly string EffectPalette = "effect";
-		public readonly bool EffectPaletteIsPlayerPalette = false;
-
 		[Desc("Offset for the effect played when cloaking or uncloaking.")]
 		public readonly WVec EffectOffset = WVec.Zero;
 
@@ -245,12 +241,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (Info.EffectImage != null && Info.CloakEffectSequence != null)
 					{
-						var palette = Info.EffectPalette;
-						if (Info.EffectPaletteIsPlayerPalette)
-							palette += self.Owner.InternalName;
-
 						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(
-							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.CloakEffectSequence, palette)));
+							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.CloakEffectSequence, self.Owner)));
 					}
 				}
 			}
@@ -270,12 +262,8 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (Info.EffectImage != null && Info.UncloakEffectSequence != null)
 					{
-						var palette = Info.EffectPalette;
-						if (Info.EffectPaletteIsPlayerPalette)
-							palette += self.Owner.InternalName;
-
 						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(
-							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.UncloakEffectSequence, palette)));
+							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.UncloakEffectSequence, self.Owner)));
 					}
 				}
 			}

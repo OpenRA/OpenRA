@@ -30,6 +30,9 @@ namespace OpenRA.Graphics
 		void ResolveSprites(SpriteCache cache);
 		Sprite GetSprite(int frame);
 		Sprite GetSprite(int frame, WAngle facing);
+		string GetPalette(string owner = null);
+		bool IsPlayerPalette { get; }
+		string ShadowPalette { get; }
 		(Sprite Sprite, WAngle Rotation) GetSpriteWithRotation(int frame, WAngle facing);
 		Sprite GetShadow(int frame, WAngle facing);
 		float GetAlpha(int frame);
@@ -85,6 +88,13 @@ namespace OpenRA.Graphics
 				throw new InvalidOperationException($"Image `{image}` does not have any sequences defined.");
 
 			return sequences.Keys;
+		}
+
+		public IEnumerable<(string Image, string SequenceName, ISpriteSequence Sequence)> AllSequences()
+		{
+			foreach (var image in images)
+				foreach (var sequence in image.Value)
+					yield return (image.Key, sequence.Key, sequence.Value);
 		}
 
 		IReadOnlyDictionary<string, IReadOnlyDictionary<string, ISpriteSequence>> Load(IReadOnlyFileSystem fileSystem, MiniYaml additionalSequences)

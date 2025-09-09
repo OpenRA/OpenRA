@@ -26,9 +26,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference(nameof(Image))]
 		public readonly string[] Sequences = ["idle"];
 
-		[PaletteReference]
-		public readonly string Palette = "effect";
-
 		[Desc("Only leave trail on listed terrain types. Leave empty to leave trail on all terrain types.")]
 		public readonly HashSet<string> TerrainTypes = [];
 
@@ -137,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 						self.World.Map.CenterOfCell(spawnCell);
 
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, spawnFacing, self.World, Info.Image,
-						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog)));
+						Info.Sequences.Random(Game.CosmeticRandom), self.Owner, Info.VisibleThroughFog)));
 
 					previouslySpawned = true;
 					previousSpawnCell = spawnCell;

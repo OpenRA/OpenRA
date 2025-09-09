@@ -108,8 +108,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var iconTopLeft = RenderOrigin + topLeftOffset;
 				var centerPosition = iconTopLeft;
 
-				var palette = unit.IconPaletteIsPlayerPalette ? unit.IconPalette + player.InternalName : unit.IconPalette;
-				WidgetUtils.DrawSpriteCentered(icon.Image, worldRenderer.Palette(palette), centerPosition + 0.5f * iconSize, 0.5f);
+				WidgetUtils.DrawSpriteCentered(
+					icon.Image,
+					worldRenderer.Palette(icon.Palette(player)),
+					centerPosition + 0.5f * iconSize,
+					0.5f);
 
 				armyIcons.Add(new ArmyIcon
 				{

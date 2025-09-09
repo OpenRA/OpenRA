@@ -33,10 +33,6 @@ namespace OpenRA.Mods.Common.Traits
 			[Desc("Randomly chosen image sequences.")]
 			public readonly string[] Sequences = [];
 
-			[PaletteReference]
-			[Desc("Palette used for rendering the resource sprites.")]
-			public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 			[FieldLoader.Require]
 			[Desc("Resource name used by tooltips.")]
 			[FluentReference]
@@ -173,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (rendererCellContents.Type != null)
 				{
 					RenderContents[cell] = rendererCellContents;
-					UpdateRenderedSprite(cell, rendererCellContents);
+					UpdateRenderedSprite(cell, rendererCellContents, wr);
 				}
 			}
 		}
@@ -183,18 +179,18 @@ namespace OpenRA.Mods.Common.Traits
 		protected RendererCellContents CreateRenderCellContents(WorldRenderer wr, ResourceLayerContents contents, CPos cell)
 		{
 			if (contents.Type != null && contents.Density > 0 && Info.ResourceTypes.TryGetValue(contents.Type, out var resourceInfo))
-				return new RendererCellContents(contents.Type, contents.Density, resourceInfo, ChooseVariant(contents.Type, cell), wr.Palette(resourceInfo.Palette));
+				return new RendererCellContents(contents.Type, contents.Density, resourceInfo, ChooseVariant(contents.Type, cell));
 
 			return RendererCellContents.Empty;
 		}
 
-		protected void UpdateSpriteLayers(CPos cell, ISpriteSequence sequence, int frame, PaletteReference palette)
+		protected void UpdateSpriteLayers(CPos cell, ISpriteSequence sequence, int frame, WorldRenderer wr)
 		{
 			// resource.Type is meaningless (and may be null) if resource.Sequence is null
 			if (sequence != null)
 			{
-				shadowLayer?.Update(cell, sequence.GetShadow(frame, WAngle.Zero), palette, 1f, 1f, sequence.IgnoreWorldTint);
-				spriteLayer.Update(cell, sequence, palette, frame);
+				shadowLayer?.Update(cell, sequence.GetShadow(frame, WAngle.Zero), wr.Palette(sequence.ShadowPalette), 1f, 1f, sequence.IgnoreWorldTint);
+				spriteLayer.Update(cell, sequence, frame);
 			}
 			else
 			{
@@ -230,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				RenderContents[cell] = rendererCellContents;
-				UpdateRenderedSprite(cell, rendererCellContents);
+				UpdateRenderedSprite(cell, rendererCellContents, wr);
 				cleanDirty.Enqueue(cell);
 			}
 
@@ -238,13 +234,13 @@ namespace OpenRA.Mods.Common.Traits
 				dirty.Remove(cleanDirty.Dequeue());
 		}
 
-		protected virtual void UpdateRenderedSprite(CPos cell, RendererCellContents content)
+		protected virtual void UpdateRenderedSprite(CPos cell, RendererCellContents content, WorldRenderer wr)
 		{
 			if (content.Density > 0)
 			{
 				var maxDensity = ResourceLayer.GetMaxDensity(content.Type);
 				var frame = int2.Lerp(0, content.Sequence.Length - 1, content.Density, maxDensity);
-				UpdateSpriteLayers(cell, content.Sequence, frame, content.Palette);
+				UpdateSpriteLayers(cell, content.Sequence, frame, wr);
 			}
 			else
 				UpdateSpriteLayers(cell, null, 0, null);
@@ -292,18 +288,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Variants.TryGetValue(resourceType, out var variant))
 				yield break;
 
-			if (!Info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+			if (!Info.ResourceTypes.ContainsKey(resourceType))
 				yield break;
 
 			var sequence = variant.First().Value;
 			var sprite = sequence.GetSprite(sequence.Length - 1);
 			var shadow = sequence.GetShadow(sequence.Length - 1, WAngle.Zero);
-			var palette = wr.Palette(resourceInfo.Palette);
 
 			if (shadow != null)
-				yield return new UISpriteRenderable(shadow, WPos.Zero, origin, 0, palette, scale);
+				yield return new UISpriteRenderable(shadow, WPos.Zero, origin, 0, wr.Palette(sequence.ShadowPalette), scale);
 
-			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, palette, scale);
+			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, wr.Palette(sequence.GetPalette()), scale);
 		}
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderPreview(WorldRenderer wr, string resourceType, WPos origin)
@@ -311,20 +306,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Variants.TryGetValue(resourceType, out var variant))
 				yield break;
 
-			if (!Info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
+			if (!Info.ResourceTypes.ContainsKey(resourceType))
 				yield break;
 
 			var sequence = variant.First().Value;
 			var sprite = sequence.GetSprite(sequence.Length - 1);
 			var shadow = sequence.GetShadow(sequence.Length - 1, WAngle.Zero);
 			var alpha = sequence.GetAlpha(sequence.Length - 1);
-			var palette = wr.Palette(resourceInfo.Palette);
 			var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 
 			if (shadow != null)
-				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+				yield return new SpriteRenderable(
+					shadow, origin, WVec.Zero, 0, wr.Palette(sequence.ShadowPalette),
+					sequence.Scale, alpha, float3.Ones, tintModifiers, false);
 
-			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, wr.Palette(sequence.GetPalette()), sequence.Scale, alpha, float3.Ones, tintModifiers, false);
 		}
 
 		event Action<CPos> IRadarTerrainLayer.CellEntryChanged
@@ -356,19 +352,17 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly string Type;
 			public readonly ResourceRendererInfo.ResourceTypeInfo Info;
 			public readonly ISpriteSequence Sequence;
-			public readonly PaletteReference Palette;
 			public readonly byte Density;
 
 			public static readonly RendererCellContents Empty = default;
 
 			public RendererCellContents(string resourceType, byte density, ResourceRendererInfo.ResourceTypeInfo info,
-				ISpriteSequence sequence, PaletteReference palette)
+				ISpriteSequence sequence)
 			{
 				Type = resourceType;
 				Density = density;
 				Info = info;
 				Sequence = sequence;
-				Palette = palette;
 			}
 
 			public RendererCellContents(RendererCellContents contents, byte density)
@@ -377,7 +371,6 @@ namespace OpenRA.Mods.Common.Traits
 				Density = density;
 				Info = contents.Info;
 				Sequence = contents.Sequence;
-				Palette = contents.Palette;
 			}
 		}
 	}

@@ -55,7 +55,22 @@ namespace OpenRA.Graphics
 
 		public Sprite Image => CurrentSequence.GetSprite(CurrentFrame, facingFunc());
 
-		public IRenderable[] Render(WPos pos, in WVec offset, int zOffset, PaletteReference palette)
+		public string Palette(Player owner = null)
+		{
+			return CurrentSequence.GetPalette(owner?.InternalName);
+		}
+
+		public IRenderable[] Render(WorldRenderer wr, WPos pos, in WVec offset, int zOffset, OwnerInit owner)
+		{
+			return Render(pos, offset, zOffset, wr.Palette(CurrentSequence.GetPalette(owner?.InternalName)));
+		}
+
+		public IRenderable[] Render(WorldRenderer wr, WPos pos, in WVec offset, int zOffset, Player owner)
+		{
+			return Render(pos, offset, zOffset, wr.Palette(CurrentSequence.GetPalette(owner?.InternalName)));
+		}
+
+		IRenderable[] Render(WPos pos, in WVec offset, int zOffset, PaletteReference palette)
 		{
 			var tintModifiers = CurrentSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
@@ -79,19 +94,30 @@ namespace OpenRA.Graphics
 			return [imageRenderable];
 		}
 
-		public IRenderable[] RenderUI(WorldRenderer wr, int2 pos, in WVec offset, int zOffset, PaletteReference palette, float scale = 1f, float rotation = 0f)
+		public IRenderable[] RenderUI(WorldRenderer wr, int2 pos, in WVec offset, int zOffset, string ownerName = null, float scale = 1f, float rotation = 0f)
 		{
 			scale *= CurrentSequence.Scale;
 			var screenOffset = (scale * wr.ScreenVectorComponents(offset)).XY.ToInt2();
 			var imagePos = pos + screenOffset - new int2((int)(scale * Image.Size.X / 2), (int)(scale * Image.Size.Y / 2));
 			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
+			var palette = wr.Palette(CurrentSequence.GetPalette(ownerName));
 			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos, CurrentSequence.ZOffset + zOffset, palette, scale, alpha, rotation);
 
 			var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
 			if (shadow != null)
 			{
 				var shadowPos = pos - new int2((int)(scale * shadow.Size.X / 2), (int)(scale * shadow.Size.Y / 2));
-				var shadowRenderable = new UISpriteRenderable(shadow, WPos.Zero + offset, shadowPos, CurrentSequence.ShadowZOffset + zOffset, palette, scale, 1f, rotation);
+				var shadowPalette = wr.Palette(CurrentSequence.ShadowPalette);
+				var shadowRenderable = new UISpriteRenderable(
+					shadow,
+					WPos.Zero + offset,
+					shadowPos,
+					CurrentSequence.ShadowZOffset + zOffset,
+					shadowPalette,
+					scale,
+					1f,
+					rotation);
+
 				return [shadowRenderable, imageRenderable];
 			}
 
@@ -110,9 +136,9 @@ namespace OpenRA.Graphics
 				xy.Y + (int)(cb.Bottom * scale));
 		}
 
-		public IRenderable[] Render(WPos pos, PaletteReference palette)
+		public IRenderable[] Render(WorldRenderer wr, WPos pos, Player owner = null)
 		{
-			return Render(pos, WVec.Zero, 0, palette);
+			return Render(pos, WVec.Zero, 0, wr.Palette(CurrentSequence.GetPalette(owner?.InternalName)));
 		}
 
 		public void Play(string sequenceName)

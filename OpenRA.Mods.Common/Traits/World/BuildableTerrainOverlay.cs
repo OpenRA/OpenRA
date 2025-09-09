@@ -22,10 +22,6 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		public readonly HashSet<string> AllowedTerrainTypes = null;
 
-		[PaletteReference]
-		[Desc("Palette to use for rendering the sprite.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 		[Desc("Sprite definition.")]
 		public readonly string Image = "overlay";
 
@@ -48,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly World world;
 		readonly Sprite disabledSprite;
 		readonly float disabledSpriteScale;
+		readonly string paletteName;
 
 		public bool Enabled = false;
 		TerrainSpriteLayer render;
@@ -62,6 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var spriteSequence = self.World.Map.Sequences.GetSequence(info.Image, info.Sequence);
 			disabledSprite = spriteSequence.GetSprite(0);
+			paletteName = spriteSequence.GetPalette();
 			disabledSpriteScale = spriteSequence.Scale;
 		}
 
@@ -76,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 				(!info.AllowedTerrainTypes.Contains(w.Map.GetTerrainInfo(c).Type) ||
 				world.Map.Ramp[c] != 0)).ToHashSet();
 
-			palette = wr.Palette(info.Palette);
+			palette = wr.Palette(paletteName);
 
 			foreach (var cell in cells)
 				UpdateTerrainCell(cell);

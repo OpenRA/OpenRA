@@ -44,9 +44,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[SequenceReference(nameof(EntryEffect))]
 		public readonly string EntryEffectSequence = "idle";
 
-		[PaletteReference]
-		public readonly string EntryEffectPalette = "effect";
-
 		[ActorReference]
 		[Desc("Actor to spawn when the attack starts")]
 		public readonly string CameraActor = null;
@@ -178,7 +175,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					else
 					{
 						world.Add(new DropPodImpact(self.Owner, info.WeaponInfo, world, launchLocation, Target.FromCell(world, dropLocation),
-							info.WeaponDelay, info.EntryEffect, info.EntryEffectSequence, info.EntryEffectPalette));
+							info.WeaponDelay, info.EntryEffect, info.EntryEffectSequence));
 
 						world.Add(pod);
 					}

@@ -25,10 +25,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Icon sprite displayed in the support power palette.")]
 		public readonly string Icon = null;
 
-		[PaletteReference]
-		[Desc("Palette used for the icon.")]
-		public readonly string IconPalette = "chrome";
-
 		[FluentReference(optional: true)]
 		public readonly string Name = null;
 
@@ -117,18 +113,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Beacons are only supported on the Airstrike, Paratroopers, and Nuke powers")]
 		public readonly bool DisplayBeacon = false;
 
-		public readonly bool BeaconPaletteIsPlayerPalette = true;
-
-		[PaletteReference(nameof(BeaconPaletteIsPlayerPalette))]
-		public readonly string BeaconPalette = "player";
-
 		public readonly string BeaconImage = "beacon";
 
 		[SequenceReference(nameof(BeaconImage))]
 		public readonly string BeaconPoster = null;
-
-		[PaletteReference]
-		public readonly string BeaconPosterPalette = "chrome";
 
 		[SequenceReference(nameof(BeaconImage))]
 		public readonly string ClockSequence = null;

@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Minelayer : IIssueOrder, IResolveOrder, ISync, IIssueDeployOrder, IOrderVoice, ITick
 	{
 		public readonly MinelayerInfo Info;
-		public readonly Sprite Tile;
+		public readonly ISpriteSequence Tile;
 
 		readonly Actor self;
 
@@ -90,9 +90,9 @@ namespace OpenRA.Mods.Common.Traits
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			var sequences = self.World.Map.Sequences;
 			if (sequences.HasSequence("overlay", $"{Info.TileValidName}-{tileset}"))
-				Tile = sequences.GetSequence("overlay", $"{Info.TileValidName}-{tileset}").GetSprite(0);
+				Tile = sequences.GetSequence("overlay", $"{Info.TileValidName}-{tileset}");
 			else
-				Tile = sequences.GetSequence("overlay", Info.TileValidName).GetSprite(0);
+				Tile = sequences.GetSequence("overlay", Info.TileValidName);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			readonly List<Actor> minelayers;
 			readonly Minelayer minelayer;
-			readonly Sprite validTile, unknownTile, blockedTile;
+			readonly ISpriteSequence validTile, unknownTile, blockedTile;
 			readonly float validAlpha, unknownAlpha, blockedAlpha;
 			readonly CPos minefieldStart;
 			readonly bool queued;
@@ -239,39 +239,39 @@ namespace OpenRA.Mods.Common.Traits
 				if (sequences.HasSequence("overlay", $"{minelayer.Info.TileValidName}-{tileset}"))
 				{
 					var validSequence = sequences.GetSequence("overlay", $"{minelayer.Info.TileValidName}-{tileset}");
-					validTile = validSequence.GetSprite(0);
+					validTile = validSequence;
 					validAlpha = validSequence.GetAlpha(0);
 				}
 				else
 				{
 					var validSequence = sequences.GetSequence("overlay", minelayer.Info.TileValidName);
-					validTile = validSequence.GetSprite(0);
+					validTile = validSequence;
 					validAlpha = validSequence.GetAlpha(0);
 				}
 
 				if (sequences.HasSequence("overlay", $"{minelayer.Info.TileUnknownName}-{tileset}"))
 				{
 					var unknownSequence = sequences.GetSequence("overlay", $"{minelayer.Info.TileUnknownName}-{tileset}");
-					unknownTile = unknownSequence.GetSprite(0);
+					unknownTile = unknownSequence;
 					unknownAlpha = unknownSequence.GetAlpha(0);
 				}
 				else
 				{
 					var unknownSequence = sequences.GetSequence("overlay", minelayer.Info.TileUnknownName);
-					unknownTile = unknownSequence.GetSprite(0);
+					unknownTile = unknownSequence;
 					unknownAlpha = unknownSequence.GetAlpha(0);
 				}
 
 				if (sequences.HasSequence("overlay", $"{minelayer.Info.TileInvalidName}-{tileset}"))
 				{
 					var blockedSequence = sequences.GetSequence("overlay", $"{minelayer.Info.TileInvalidName}-{tileset}");
-					blockedTile = blockedSequence.GetSprite(0);
+					blockedTile = blockedSequence;
 					blockedAlpha = blockedSequence.GetAlpha(0);
 				}
 				else
 				{
 					var blockedSequence = sequences.GetSequence("overlay", minelayer.Info.TileInvalidName);
-					blockedTile = blockedSequence.GetSprite(0);
+					blockedTile = blockedSequence;
 					blockedAlpha = blockedSequence.GetAlpha(0);
 				}
 
@@ -321,7 +321,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				var movement = minelayer.Trait<IPositionable>();
 				var mobile = movement as Mobile;
-				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 				foreach (var c in minefield)
 				{
 					var tile = validTile;
@@ -348,7 +347,17 @@ namespace OpenRA.Mods.Common.Traits
 						alpha = blockedAlpha;
 					}
 
-					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(
+						tile.GetSprite(0),
+						world.Map.CenterOfCell(c),
+						WVec.Zero,
+						-511,
+						wr.Palette(tile.GetPalette()),
+						1f,
+						alpha,
+						float3.Ones,
+						TintModifiers.IgnoreWorldTint,
+						true);
 				}
 			}
 

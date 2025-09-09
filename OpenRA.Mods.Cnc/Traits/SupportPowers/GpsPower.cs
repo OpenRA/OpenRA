@@ -28,24 +28,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		[SequenceReference(nameof(DoorImage))]
 		public readonly string DoorSequence = "active";
 
-		[PaletteReference(nameof(DoorPaletteIsPlayerPalette))]
-		[Desc("Palette to use for rendering the launch animation")]
-		public readonly string DoorPalette = "player";
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool DoorPaletteIsPlayerPalette = true;
-
 		public readonly string SatelliteImage = "sputnik";
 
 		[SequenceReference(nameof(SatelliteImage))]
 		public readonly string SatelliteSequence = "idle";
-
-		[PaletteReference(nameof(SatellitePaletteIsPlayerPalette))]
-		[Desc("Palette to use for rendering the satellite projectile")]
-		public readonly string SatellitePalette = "player";
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool SatellitePaletteIsPlayerPalette = true;
 
 		[Desc("Requires an actor with an online `ProvidesRadar` to show GPS dots.")]
 		public readonly bool RequiresActiveRadar = true;

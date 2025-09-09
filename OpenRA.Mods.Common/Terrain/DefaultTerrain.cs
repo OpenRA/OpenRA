@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Terrain
 		public readonly bool EnableDepth = false;
 		public readonly float MinHeightColorBrightness = 1.0f;
 		public readonly float MaxHeightColorBrightness = 1.0f;
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		public readonly string Palette = "terrain";
 
 		[FieldLoader.Ignore]
 		public readonly IReadOnlyDictionary<ushort, TerrainTemplateInfo> Templates;

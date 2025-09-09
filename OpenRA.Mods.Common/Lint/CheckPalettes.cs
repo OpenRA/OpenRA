@@ -12,24 +12,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	sealed class CheckPalettes : ILintRulesPass, ILintServerMapPass
+	sealed class CheckPalettes : ILintServerMapPass, ILintSequencesPass
 	{
-		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
-		{
-			Run(emitError, rules);
-		}
-
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
 		{
-			Run(emitError, mapRules);
+			using (var sequences = new SequenceSet(map, modData, map.TileSet, map.SequenceDefinitions))
+				Run(emitError, mapRules, sequences);
 		}
 
-		static void Run(Action<string> emitError, Ruleset rules)
+		void ILintSequencesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules, SequenceSet sequences)
+		{
+			Run(emitError, rules, sequences);
+		}
+
+		static void Run(Action<string> emitError, Ruleset rules, SequenceSet sequences)
 		{
 			var palettes = new List<string>();
 			var playerPalettes = new List<string>();
@@ -115,6 +117,32 @@ namespace OpenRA.Mods.Common.Lint
 								emitError($"Undefined palette reference `{reference}` detected at weapon `{weaponInfo.Key}`.");
 						}
 					}
+				}
+			}
+
+			foreach (var (image, sequenceName, sequence) in sequences.AllSequences())
+			{
+				var isPlayerPalette = sequence.IsPlayerPalette;
+				var palette = sequence.GetPalette();
+				var shadowPalette = sequence.ShadowPalette;
+
+				if (palette != null)
+				{
+					if (isPlayerPalette)
+					{
+						if (!playerPalettes.Contains(palette))
+							emitError($"Undefined player palette reference `{palette}` detected at sprite sequence `{image}.{sequenceName}`.");
+					}
+					else
+					{
+						if (!palettes.Contains(palette))
+							emitError($"Undefined palette reference `{palette}` detected at sprite sequence `{image}.{sequenceName}`.");
+					}
+				}
+
+				if (shadowPalette != null && !playerPalettes.Contains(shadowPalette))
+				{
+					emitError($"Undefined player palette reference `{shadowPalette}` detected at sprite sequence `{image}.{sequenceName}`.");
 				}
 			}
 		}

@@ -54,10 +54,6 @@ lobrdg_a_d:
 		TilesetFilenames:
 			TEMPERATE: lobrdg28.tem
 			SNOW: lobrdg28.sno
-	editor:
-		TilesetFilenames:
-			TEMPERATE: lobrdg10.tem
-			SNOW: lobrdg10.sno
 
 lobrdg_b:
 	Inherits: ^bridge
@@ -108,10 +104,6 @@ lobrdg_b_d:
 		TilesetFilenames:
 			TEMPERATE: lobrdg27.tem
 			SNOW: lobrdg27.sno
-	editor:
-		TilesetFilenames:
-			TEMPERATE: lobrdg01.tem
-			SNOW: lobrdg01.sno
 
 lobrdg_r_se:
 	Inherits: ^bridge

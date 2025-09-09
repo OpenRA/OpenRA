@@ -23,14 +23,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
-
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithBuildingPlacedOverlay(init.Self, this); }
 	}
 
@@ -52,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				() => !visible || IsTraitDisabled);
 
 			overlay.PlayThen(info.Sequence, () => visible = false);
-			rs.Add(anim, info.Palette, info.IsPlayerPalette);
+			rs.Add(anim);
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)

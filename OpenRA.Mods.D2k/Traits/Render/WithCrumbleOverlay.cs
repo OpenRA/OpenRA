@@ -23,13 +23,6 @@ namespace OpenRA.Mods.D2k.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "crumble-overlay";
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithCrumbleOverlay(init, this); }
 	}
 
@@ -59,7 +52,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 			if (overlay == null)
 				return;
 
-			renderSprites.Add(animation, info.Palette, info.IsPlayerPalette);
+			renderSprites.Add(animation);
 
 			// Remove the animation once it is complete
 			overlay.PlayThen(info.Sequence, () => self.World.AddFrameEndTask(w => renderSprites.Remove(animation)));

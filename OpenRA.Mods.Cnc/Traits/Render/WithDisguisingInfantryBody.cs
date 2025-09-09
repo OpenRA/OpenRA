@@ -68,8 +68,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 				var sequence = DefaultAnimation.GetRandomExistingSequence(GetDisplayInfo().StandSequences, Game.CosmeticRandom);
 				if (sequence != null)
 					DefaultAnimation.ChangeImage(disguiseImage ?? rs.GetImage(self), sequence);
-
-				rs.UpdatePalette();
 			}
 
 			base.Tick(self);

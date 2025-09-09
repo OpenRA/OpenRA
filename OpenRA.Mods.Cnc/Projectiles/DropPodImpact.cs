@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly Target target;
 		readonly Animation entryAnimation;
 		readonly Player firedBy;
-		readonly string entryPalette;
 		readonly WeaponInfo weapon;
 		readonly WPos launchPos;
 
@@ -29,12 +28,11 @@ namespace OpenRA.Mods.Cnc.Effects
 		bool impacted = false;
 
 		public DropPodImpact(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, in Target target,
-			int delay, string entryEffect, string entrySequence, string entryPalette)
+			int delay, string entryEffect, string entrySequence)
 		{
 			this.target = target;
 			this.firedBy = firedBy;
 			this.weapon = weapon;
-			this.entryPalette = entryPalette;
 			weaponDelay = delay;
 			this.launchPos = launchPos;
 
@@ -66,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return entryAnimation.Render(launchPos, wr.Palette(entryPalette));
+			return entryAnimation.Render(wr, launchPos, firedBy);
 		}
 
 		void Finish(World world)
