@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CRCmodeRefineryUnfavorRange = 12;
 
 		[Desc("Distance in cells that AI try to maintain to the expanding location in deployment.")]
-		public readonly int CRCmodeTryMaintainRange = 8;
+		public readonly int CRCmodeTryMaintainRange = 10;
 
 		[Desc("Distance in cells from center of the resource creator when checking nearby enemy base buildings for MCV expanding location.")]
 		public readonly int CRCmodeEnemyBaseScanRadius = 16;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CRmodeMaxDeployRadius = 20;
 
 		[Desc("Distance in cells that AI try to maintain to the expanding location in deployment.")]
-		public readonly int CRmodeTryMaintainRange = 8;
+		public readonly int CRmodeTryMaintainRange = 10;
 
 		[Desc("Distance in cells from center of the resource indice when checking nearby enemy base buildings for MCV expanding location.",
 			"Recommend to set it equal or bigger than " + nameof(ResourceMapStrideRadius) + "* 1.2.")]
@@ -309,7 +309,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public (CPos? ExpandLocation, int Attraction, CPos? CheckSpot) GetExpansionCenter(Actor mcv, Mobile mobile, bool allowfallback)
+		public (CPos? ExpandLocation, int Attraction, CPos? CheckSpot, int PFCellsCount) GetExpansionCenter(Actor mcv, Mobile mobile, bool allowfallback)
 		{
 			/*
 			 * indiceSideLengthSquare (which is equal to indiceSideLength * indiceSideLength) is used as the basic unit to calculate the attraction of a candidate,
@@ -366,15 +366,33 @@ namespace OpenRA.Mods.Common.Traits
 					CPos? cb_suitablespot = null;
 					CPos? cb_checkspot = null;
 					var cb_best = int.MinValue;
+					var cb_pfcount = -1;
 
 					foreach (var (indiceCenter, value, rescenter) in resourceMapIndices)
 					{
 						if (lastFailedCheckSpot == indiceCenter)
 							continue;
 
-						var attraction = indiceSideLengthSquare >> 3;
+						var attraction = 0;
+						var pfcount = -1;
+						if (mobile == null)
+						{
+							attraction = indiceSideLengthSquare >> 4;
+							attraction -= (rescenter - mcv.Location).LengthSquared / pathDistanceSquareFactor;
+							pfcount = -1;
+						}
+						else
+						{
+							attraction = indiceSideLengthSquare >> 3;
 
-						attraction -= (indiceCenter - mcv.Location).LengthSquared / pathDistanceSquareFactor;
+							var path = pathfinder.FindPathToTargetCells(mcv, mcv.Location, [rescenter], BlockedByActor.Immovable);
+
+							if (path == PathFinder.NoPath)
+								continue;
+
+							pfcount = path.Count;
+							attraction -= pfcount * pfcount / pathDistanceSquareFactor;
+						}
 
 						if (world.FindActorsInCircle(world.Map.CenterOfCell(indiceCenter), WDist.FromCells(Info.CBmodeEnemyBaseScanRadius)).Any(a => !a.Disposed
 							&& (player.RelationshipWith(a.Owner) == PlayerRelationship.Enemy)
@@ -406,10 +424,11 @@ namespace OpenRA.Mods.Common.Traits
 							cb_best = attraction;
 							cb_checkspot = indiceCenter;
 							cb_suitablespot = indiceCenter;
+							cb_pfcount = pfcount;
 						}
 					}
 
-					return (cb_suitablespot ?? mcv.Location, cb_best, cb_checkspot);
+					return (cb_suitablespot ?? mcv.Location, cb_best, cb_checkspot, cb_pfcount);
 
 				/*
 				 * CheckResource mode considers the distance to current MCV, ally construction yard & refinery within range,
@@ -434,6 +453,7 @@ namespace OpenRA.Mods.Common.Traits
 					CPos? cr_suitablespot = null;
 					CPos? cr_checkspot = null;
 					var cr_best = int.MinValue;
+					var cr_pfcount = -1;
 
 					foreach (var (indiceCenter, value, rescenter) in resourceMapIndices)
 					{
@@ -441,21 +461,24 @@ namespace OpenRA.Mods.Common.Traits
 							continue;
 
 						var attraction = 0;
+						var pfcount = 0;
 						if (mobile == null)
 						{
 							attraction = indiceSideLengthSquare >> 4;
 							attraction -= (rescenter - mcv.Location).LengthSquared / pathDistanceSquareFactor;
+							pfcount = -1;
 						}
 						else
 						{
 							attraction = indiceSideLengthSquare >> 3;
 
-							var path = pathfinder.FindPathToTargetCells(mcv, mcv.Location, [rescenter], BlockedByActor.None);
+							var path = pathfinder.FindPathToTargetCells(mcv, mcv.Location, [rescenter], BlockedByActor.Immovable);
 
 							if (path == PathFinder.NoPath)
 								continue;
 
-							attraction -= path.Count * path.Count / pathDistanceSquareFactor;
+							pfcount = path.Count;
+							attraction -= pfcount * pfcount / pathDistanceSquareFactor;
 						}
 
 						// it is better that resource cells takes only half of the indice cells, which give us the place to place building.
@@ -503,18 +526,19 @@ namespace OpenRA.Mods.Common.Traits
 							cr_best = attraction;
 							cr_checkspot = indiceCenter;
 							cr_suitablespot = rescenter;
+							cr_pfcount = pfcount;
 						}
 					}
 
 					if (cr_suitablespot == null)
-						return (null, int.MinValue, null);
+						return (null, int.MinValue, null, -1);
 
 					if (failedAttempts < maxFailedAttempts >> 1)
-						return (cr_suitablespot, cr_best, cr_checkspot);
+						return (cr_suitablespot, cr_best, cr_checkspot, cr_pfcount);
 					else
 						return (world.Map.FindTilesInAnnulus(cr_suitablespot.Value, 0, indiceResourceScanRadius)
 							.Where(c => Info.ValidResourceTypes.Contains(resourceLayer.GetResource(c).Type))
-							.Random(world.LocalRandom), cr_best, cr_checkspot);
+							.Random(world.LocalRandom), cr_best, cr_checkspot, cr_pfcount);
 				/*
 				 * CheckResourceCreator mode considers the distance to current MCV, ally construction yard & refinery within range,
 				 * Attaction has a base value of:
@@ -535,6 +559,7 @@ namespace OpenRA.Mods.Common.Traits
 					CPos? crc_suitablelocation = null;
 					CPos? crc_checkspot = null;
 					var crc_best = int.MinValue;
+					var crc_pfcount = -1;
 
 					foreach (var rescreator in crc_rescreators)
 					{
@@ -542,21 +567,24 @@ namespace OpenRA.Mods.Common.Traits
 							continue;
 
 						var attraction = 0;
+						var pfcount = 0;
 						if (mobile == null)
 						{
 							attraction = (indiceSideLengthSquare >> 3) - (indiceSideLengthSquare >> 5);
 							attraction -= (rescreator.Location - mcv.Location).LengthSquared / pathDistanceSquareFactor;
+							pfcount = -1;
 						}
 						else
 						{
 							attraction = (indiceSideLengthSquare >> 2) - (indiceSideLengthSquare >> 4);
 
-							var path = pathfinder.FindPathToTargetCells(mcv, mcv.Location, [rescreator.Location], BlockedByActor.None);
+							var path = pathfinder.FindPathToTargetCells(mcv, mcv.Location, [rescreator.Location], BlockedByActor.Immovable, ignoreActor: rescreator);
 
 							if (path == PathFinder.NoPath)
 								continue;
 
-							attraction -= path.Count * path.Count / pathDistanceSquareFactor;
+							pfcount = path.Count;
+							attraction -= pfcount * pfcount / pathDistanceSquareFactor;
 						}
 
 						if (world.FindActorsInCircle(rescreator.CenterPosition, WDist.FromCells(Info.CRCmodeEnemyBaseScanRadius)).Any(a => !a.Disposed
@@ -601,13 +629,14 @@ namespace OpenRA.Mods.Common.Traits
 							crc_best = attraction;
 							crc_checkspot = rescreator.Location;
 							crc_suitablelocation = rescreator.Location;
+							crc_pfcount = pfcount;
 						}
 					}
 
-					return (crc_suitablelocation, crc_best, crc_checkspot);
+					return (crc_suitablelocation, crc_best, crc_checkspot, crc_pfcount);
 
 				default:
-					return (null, int.MinValue, null);
+					return (null, int.MinValue, null, -1);
 			}
 		}
 
@@ -773,7 +802,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				var conyards = constructionYards.Actors
-					.Where(a => !a.IsDead)
+					.Where(a => !a.IsDead).OrderBy(a => a.ActorID)
 					.ToList();
 
 				if (conyards.Count > 1)
@@ -829,10 +858,10 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				mobile = mcv.TraitOrDefault<Mobile>();
 
-			var (expandCenter, attraction, checkspot) = GetExpansionCenter(mcv, mobile, allowfallback);
+			var (expandCenter, attraction, checkspot, pfcount) = GetExpansionCenter(mcv, mobile, allowfallback);
 
 			// Find the deployable cell
-			CPos? FindDeployCell(CPos? sourceCell, CPos? targetCell, int minRange, int maxRange, int tryMaintainRange)
+			CPos? FindDeployCell(CPos? sourceCell, CPos? targetCell, int minRange, int maxRange, int tryMaintainRange, int pfcount)
 			{
 				if (!sourceCell.HasValue || !targetCell.HasValue)
 					return null;
@@ -840,7 +869,7 @@ namespace OpenRA.Mods.Common.Traits
 				var target = targetCell.Value;
 				var source = sourceCell.Value;
 
-				var cells = world.Map.FindTilesInAnnulus(target, minRange, maxRange);
+				var cells = world.Map.FindTilesInAnnulus(target, minRange, maxRange).Where(c => world.CanPlaceBuilding(c + offset, actorInfo, bi, null));
 
 				/* First, sort the cells that keep tryMaintainRange to target (meanwhile direction is from center to target) the first to be considered
 				 * by using following code. The idea is to use a linear combination of two distances-square for sorting weight.
@@ -850,50 +879,22 @@ namespace OpenRA.Mods.Common.Traits
 				if (source != target)
 				{
 					var theta = tryMaintainRange;
-					var deta = (target - source).Length - tryMaintainRange;
-					cells = cells.OrderBy(c => deta * (c - target).LengthSquared + theta * (c - source).LengthSquared);
+					var deta = (pfcount < 0 ? (source - target).Length : pfcount) - tryMaintainRange;
+
+					return cells.OrderBy(c =>
+					{
+						var c2target = pathfinder.FindPathToTargetCells(mcv, c, [target], BlockedByActor.Immovable);
+						if (c2target == PathFinder.NoPath)
+							return int.MaxValue;
+						var c2source = (c - source).LengthSquared;
+						return deta * c2target.Count * c2target.Count + theta * c2source;
+					}).FirstOrDefault();
 				}
 				else
-					cells = cells.Shuffle(world.LocalRandom);
-
-				CPos? bestcell = null;
-				foreach (var cell in cells)
-				{
-					if (world.CanPlaceBuilding(cell + offset, actorInfo, bi, null))
-					{
-						bestcell = cell;
-						break;
-					}
-				}
-
-				// If no deployble cell found, return null
-				if (bestcell == null)
-					return null;
-
-				if (source != target && !pathfinder.PathMightExistForLocomotorBlockedByImmovable(mobile.Locomotor, source, bestcell.Value))
-					bestcell = null;
-
-				// If the best deploy cell is not ideal ( >= tryMaintainRange + 2), which means there might be some huge blockers
-				// so we fall back to default behavior, which is the directly closest cell to target
-				if (!bestcell.HasValue || (source != target && (bestcell.Value - target).LengthSquared >= (tryMaintainRange + 2) * (tryMaintainRange + 2)))
-				{
-					cells = cells.OrderBy(c => (c - target).LengthSquared);
-					foreach (var cell in cells)
-					{
-						if (world.CanPlaceBuilding(cell + offset, actorInfo, bi, null))
-						{
-							if (!pathfinder.PathMightExistForLocomotorBlockedByImmovable(mobile.Locomotor, source, cell))
-								return null;
-
-							return (!bestcell.HasValue) || (cell - target).LengthSquared < (bestcell.Value - target).LengthSquared ? cell : bestcell;
-						}
-					}
-				}
-
-				return bestcell;
+					return cells.Shuffle(world.LocalRandom).FirstOrDefault();
 			}
 
-			var bc = FindDeployCell(mcv.Location, expandCenter, mcvDeploymentMinDeployRadius, mcvDeploymentMaxDeployRadius, mcvDeploymentTryMaintainRange);
+			var bc = FindDeployCell(mcv.Location, expandCenter, mcvDeploymentMinDeployRadius, mcvDeploymentMaxDeployRadius, mcvDeploymentTryMaintainRange, pfcount);
 
 			// At last, if the attraction of the found expansion location is good enough (>0) and deploy cell found,
 			// we consider it as a good expansion, otherwise, we consider it as a bad expansion.
