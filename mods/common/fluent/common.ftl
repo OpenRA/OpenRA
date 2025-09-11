@@ -810,7 +810,12 @@ notification-added-resource =
     }
 
 ## EditorTileBrush
-notification-added-tile = Added tile { $id }
+notification-added-tile =
+    { $count ->
+       [one] Added tile { $id }
+      *[other] Added { $count } tiles of type { $id }
+    }
+
 notification-filled-tile = Filled with tile { $id }
 
 ## EditorMarkerLayerBrush
