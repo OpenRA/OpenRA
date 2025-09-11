@@ -782,7 +782,11 @@ options-time-limit =
 notification-time-limit-expired = Time limit has expired.
 
 ## EditorActorBrush
-notification-added-actor = Added { $name } ({ $id })
+notification-added-actors =
+    { $count ->
+       [one] Added { $name } ({ $id })
+      *[other] Added { $count } { $name } actors
+    }
 
 ## EditorCopyPasteBrush
 notification-copied-tiles = Copied { $tiles } tiles
