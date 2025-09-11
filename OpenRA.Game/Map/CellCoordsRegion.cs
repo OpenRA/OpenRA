@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -87,6 +88,31 @@ namespace OpenRA
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		/// <summary>Returns the minimal region that covers at least the specified cells.</summary>
+		public static CellCoordsRegion BoundingRegion(IReadOnlyCollection<CPos> cells)
+		{
+			if (cells == null || cells.Count == 0)
+				throw new ArgumentException("cells must not be null or empty.", nameof(cells));
+
+			var minX = int.MaxValue;
+			var minY = int.MaxValue;
+			var maxX = int.MinValue;
+			var maxY = int.MinValue;
+			foreach (var cell in cells)
+			{
+				if (minX > cell.X)
+					minX = cell.X;
+				if (maxX < cell.X)
+					maxX = cell.X;
+				if (minY > cell.Y)
+					minY = cell.Y;
+				if (maxY < cell.Y)
+					maxY = cell.Y;
+			}
+
+			return new CellCoordsRegion(new CPos(minX, minY), new CPos(maxX, maxY));
 		}
 
 		public CPos TopLeft { get; }

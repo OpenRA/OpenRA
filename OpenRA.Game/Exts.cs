@@ -572,6 +572,11 @@ namespace OpenRA
 			return i.ToString(NumberFormatInfo.InvariantInfo);
 		}
 
+		public static string ToStringInvariant(this uint i)
+		{
+			return i.ToString(NumberFormatInfo.InvariantInfo);
+		}
+
 		public static string ToStringInvariant(this float f)
 		{
 			return f.ToString(NumberFormatInfo.InvariantInfo);

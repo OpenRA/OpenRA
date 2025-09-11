@@ -12,8 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.EditorBrushes
 {
@@ -130,8 +132,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			if (blitFilters.HasFlag(MapBlitFilters.Actors))
 			{
 				// Clear any existing actors in the paste cells.
-				var regionActors = editorActorLayer.PreviewsInCellRegion(blitRegion.CellCoords).ToList();
-
+				//
 				// revertBlitSource's mask may be a superset of the commitBlitSource's mask if
 				// - Its a sparse blit; and
 				// - The revert actors removed by the commit are partially outside of the commit mask.
@@ -146,9 +147,8 @@ namespace OpenRA.Mods.Common.EditorBrushes
 				// This means we use the commit mask, not the revert one.
 				var commitBlitVec = blitPosition - commitBlitSource.CellRegion.TopLeft;
 				var mask = GetBlitSourceMask(commitBlitSource, commitBlitVec);
-				foreach (var regionActor in regionActors)
-					if (regionActor.Footprint.Any(kv => mask.Contains(kv.Key)))
-						editorActorLayer.Remove(regionActor);
+				using (new PerfTimer("RemoveActors", 1))
+					editorActorLayer.RemoveRegion(blitRegion.CellCoords, mask);
 			}
 
 			foreach (var tileKeyValuePair in source.Tiles)
@@ -181,12 +181,13 @@ namespace OpenRA.Mods.Common.EditorBrushes
 				if (isRevert)
 				{
 					// For reverts, just place the original actors back exactly how they were.
-					foreach (var actor in source.Actors.Values)
-						editorActorLayer.Add(actor);
+					using (new PerfTimer("AddActors", 1))
+						editorActorLayer.AddRange(source.Actors.Values.ToArray().AsSpan());
 				}
 				else
 				{
 					// Create copies of the original actors, update their locations, and place.
+					var copies = new List<ActorReference>(source.Actors.Count);
 					foreach (var actorKeyValuePair in source.Actors)
 					{
 						var copy = actorKeyValuePair.Value.Export();
@@ -201,8 +202,11 @@ namespace OpenRA.Mods.Common.EditorBrushes
 							copy.Add(new LocationInit(actorPosition));
 						}
 
-						editorActorLayer.Add(copy);
+						copies.Add(copy);
 					}
+
+					using (new PerfTimer("AddActors", 1))
+						editorActorLayer.AddRange(CollectionsMarshal.AsSpan(copies));
 				}
 			}
 		}
