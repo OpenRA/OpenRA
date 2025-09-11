@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
+		const string ActorPrefix = "Actor";
+		const string PlayerSpawnName = "mpspawn";
+
 		public readonly EditorActorLayerInfo Info;
 		readonly List<EditorActorPreview> previews = [];
 
@@ -152,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				UpdateNeighbours(preview.Footprint);
 
-				if (preview.Type == "mpspawn")
+				if (preview.Type == PlayerSpawnName)
 					SyncMultiplayerCount();
 			}
 		}
@@ -175,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 			preview.RemovedFromEditor();
 			UpdateNeighbours(preview.Footprint);
 
-			if (preview.Info.Name == "mpspawn")
+			if (preview.Info.Name == PlayerSpawnName)
 				SyncMultiplayerCount();
 		}
 
@@ -199,7 +202,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SyncMultiplayerCount()
 		{
-			var newCount = previews.Count(p => p.Info.Name == "mpspawn");
+			var newCount = previews.Count(p => p.Info.Name == PlayerSpawnName);
 			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi", StringComparison.Ordinal)).ToList();
 			foreach (var kv in mp)
 			{
@@ -303,12 +306,12 @@ namespace OpenRA.Mods.Common.Traits
 		string NextActorName()
 		{
 			var id = previews.Count;
-			var possibleName = "Actor" + id.ToStringInvariant();
+			var possibleName = ActorPrefix + id.ToStringInvariant();
 
 			while (previews.Any(p => p.ID == possibleName))
 			{
 				id++;
-				possibleName = "Actor" + id.ToStringInvariant();
+				possibleName = ActorPrefix + id.ToStringInvariant();
 			}
 
 			return possibleName;
