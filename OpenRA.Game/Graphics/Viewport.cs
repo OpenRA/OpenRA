@@ -250,7 +250,7 @@ namespace OpenRA.Graphics
 
 		public CPos ViewToWorld(int2 view)
 		{
-			var world = worldRenderer.Viewport.ViewToWorldPx(view);
+			var world = ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
 			var candidates = CandidateMouseoverCells(world).ToList();
 
@@ -333,6 +333,13 @@ namespace OpenRA.Graphics
 		public void Center(WPos pos)
 		{
 			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
+			cellsDirty = true;
+			allCellsDirty = true;
+		}
+
+		public void Center(float2 pos)
+		{
+			CenterLocation = worldRenderer.ScreenPosition(pos).Clamp(mapBounds);
 			cellsDirty = true;
 			allCellsDirty = true;
 		}

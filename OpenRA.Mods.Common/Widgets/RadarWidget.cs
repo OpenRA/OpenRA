@@ -285,10 +285,12 @@ namespace OpenRA.Mods.Common.Widgets
 			if (world == null || !hasRadar)
 				return null;
 
-			var cell = MinimapPixelToCell(pos);
-			var worldPixel = worldRenderer.ScreenPxPosition(world.Map.CenterOfCell(cell));
-			var location = worldRenderer.Viewport.WorldToViewPx(worldPixel);
+			var worldPos = MinimapPixelToWorldCoords(pos).ToInt2();
+			var wpos = new WPos(worldPos.X, worldPos.Y, 0);
+			var cell = world.Map.CellContaining(wpos);
 
+			var worldPixel = worldRenderer.ScreenPxPosition(wpos);
+			var location = worldRenderer.Viewport.WorldToViewPx(worldPixel);
 			var mi = new MouseInput
 			{
 				Location = location,
@@ -311,33 +313,32 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!hasRadar)
 				return true;
 
-			var cell = MinimapPixelToCell(mi.Location);
-			var pos = world.Map.CenterOfCell(cell);
+			var worldCoords = MinimapPixelToWorldCoords(mi.Location);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move)
 				&& mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 			{
-				worldRenderer.Viewport.Center(pos);
+				worldRenderer.Viewport.Center(worldCoords);
 			}
 
-			if (mi.Event == MouseInputEvent.Down && mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
+			if (mi.Event == MouseInputEvent.Down && mi.Button == Game.Settings.Game.MouseButtonPreference.Action && WorldInteractionController != null)
 			{
+				var worldPos = worldCoords.ToInt2();
+				var wpos = new WPos(worldPos.X, worldPos.Y, 0);
+
 				// fake a mousedown/mouseup here
-				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(pos));
+				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(wpos));
 				var fakemi = new MouseInput
 				{
 					Event = MouseInputEvent.Down,
 					Button = Game.Settings.Game.MouseButtonPreference.Action,
 					Modifiers = mi.Modifiers,
-					Location = location
+					Location = location,
 				};
 
-				if (WorldInteractionController != null)
-				{
-					var controller = Ui.Root.Get<WorldInteractionControllerWidget>(WorldInteractionController);
-					controller.HandleMouseInput(fakemi);
-					fakemi.Event = MouseInputEvent.Up;
-					controller.HandleMouseInput(fakemi);
-				}
+				var controller = Ui.Root.Get<WorldInteractionControllerWidget>(WorldInteractionController);
+				controller.HandleMouseInput(fakemi);
+				fakemi.Event = MouseInputEvent.Up;
+				controller.HandleMouseInput(fakemi);
 			}
 
 			return true;
@@ -477,11 +478,21 @@ namespace OpenRA.Mods.Common.Widgets
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 
-		CPos MinimapPixelToCell(int2 p)
+		float2 MinimapPixelToWorldCoords(int2 pixel)
 		{
-			var u = (int)((p.X - mapRect.X) / (previewScale * cellWidth)) + world.Map.Bounds.Left;
-			var v = (int)((p.Y - mapRect.Y) / previewScale) + world.Map.Bounds.Top;
-			return new MPos(u, v).ToCPos(world.Map);
+			var u = (pixel.X - mapRect.X) / (previewScale * cellWidth) + world.Map.Bounds.Left;
+			var v = (pixel.Y - mapRect.Y) / previewScale + world.Map.Bounds.Top;
+
+			if (world.Map.Grid.Type == MapGridType.Rectangular)
+			{
+				return new float2(1024 * u + 512, 1024 * v + 512);
+			}
+			else
+			{
+				var y = v / 2.0f - u;
+				var x = v - y;
+				return new float2(724 * (x - y), 724 * (x + y));
+			}
 		}
 
 		public override void Removed()

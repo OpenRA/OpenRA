@@ -384,10 +384,20 @@ namespace OpenRA.Graphics
 			Game.Renderer.SetPalette(palette);
 		}
 
-		// Conversion between world and screen coordinates
+		/// <summary>
+		/// Converts a world position to a screen position.
+		/// </summary>
 		public float2 ScreenPosition(WPos pos)
 		{
 			return new float2((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale);
+		}
+
+		/// <summary>
+		/// Converts a world position to a screen position.
+		/// </summary>
+		public float2 ScreenPosition(float2 pos)
+		{
+			return new float2(TileSize.Width * pos.X / TileScale, TileSize.Height * pos.Y / TileScale);
 		}
 
 		public float3 Screen3DPosition(WPos pos)
