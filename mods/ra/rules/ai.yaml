@@ -283,6 +283,9 @@ Player:
 			dome: 3000
 			fix: 20000
 			tsla: 21000
+	PowerDownBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		PowerDownTypes: dome,tsla,mslo,agun,sam
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	SquadManagerBotModule@rush:
