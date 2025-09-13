@@ -359,7 +359,7 @@ namespace OpenRA.Server
 					if (State != ServerState.ShuttingDown)
 					{
 						if (events.TryTake(out var e, 1000))
-							e.Invoke(this);
+							e?.Invoke(this);
 
 						// PERF: Dedicated servers need to drain the action queue to remove references blocking the GC from cleaning up disposed objects.
 						if (Type == ServerType.Dedicated)
