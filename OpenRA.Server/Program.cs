@@ -27,8 +27,10 @@ namespace OpenRA.Server
 			{
 				Run(args);
 			}
-			catch
+			catch (Exception e)
 			{
+				ExceptionHandler.HandleFatalError(e);
+
 				// Flush logs before rethrowing, i.e. allowing the exception to go unhandled.
 				// try-finally won't work - an unhandled exception kills our process without running the finally block!
 				Log.Dispose();
