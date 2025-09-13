@@ -912,7 +912,7 @@ namespace OpenRA.Server
 					frame += OrderLatency;
 					DispatchFrameToClient(conn, conn.PlayerIndex, CreateAckFrame(frame, 1));
 
-					orderBuffer.AddOrderTimestamp(conn.PlayerIndex);
+					orderBuffer?.AddOrderTimestamp(conn.PlayerIndex);
 
 					// Track the last frame for each client so the disconnect handling can write
 					// an EndOfOrders marker with the correct frame number.
