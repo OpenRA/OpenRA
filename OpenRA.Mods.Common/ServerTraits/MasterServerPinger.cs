@@ -79,6 +79,9 @@ namespace OpenRA.Mods.Common.Server
 
 		public void Tick(S server)
 		{
+			if (!server.IsMultiplayer)
+				return;
+
 			// Force an update if the last one was too long ago so the advertisement doesn't time out
 			if (Game.RunTime - lastChanged > MasterPingInterval)
 				lastChanged = Game.RunTime;
