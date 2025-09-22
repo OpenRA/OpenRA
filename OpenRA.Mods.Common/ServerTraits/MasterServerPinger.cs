@@ -63,20 +63,6 @@ namespace OpenRA.Mods.Common.Server
 		volatile bool isBusy;
 		readonly Queue<string> masterServerMessages = [];
 
-		void CreateLanGameBeacon()
-		{
-			try
-			{
-				lanGameBeacon?.Stop();
-				lanGameBeacon = new Beacon("OpenRALANGame", LanAdvertisePort);
-			}
-			catch (Exception ex)
-			{
-				lanGameBeacon = null;
-				Log.Write("server", "BeaconLib.Beacon: " + ex.Message);
-			}
-		}
-
 		public void Tick(S server)
 		{
 			if (!server.IsMultiplayer)
@@ -211,6 +197,20 @@ namespace OpenRA.Mods.Common.Server
 
 				isBusy = false;
 			});
+		}
+
+		void CreateLanGameBeacon()
+		{
+			try
+			{
+				lanGameBeacon?.Stop();
+				lanGameBeacon = new Beacon("OpenRALANGame", LanAdvertisePort);
+			}
+			catch (Exception ex)
+			{
+				lanGameBeacon = null;
+				Log.Write("server", "BeaconLib.Beacon: " + ex.Message);
+			}
 		}
 	}
 }
