@@ -121,6 +121,9 @@ namespace OpenRA.Mods.Common.Server
 
 		void INotifyServerShutdown.ServerShutdown(S server)
 		{
+			if (!server.IsMultiplayer)
+				return;
+
 			if (server.Settings.AdvertiseOnline)
 			{
 				// Announce that the game has ended to remove it from the list.
