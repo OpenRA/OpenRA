@@ -134,11 +134,15 @@ namespace OpenRA.Mods.Common.Activities
 				if (source == AttackSource.AttackMove)
 					return true;
 
-				// AbortOnResupply cancels the current activity (after resupplying) plus any queued activities
 				if (attackAircraft.Info.AbortOnResupply)
+				{
+					// AbortOnResupply cancels the current activity (after resupplying) plus any queued activities
 					NextActivity?.Cancel(self);
+					Queue(new ReturnToBase(self));
+				}
+				else
+					QueueChild(new ReturnToBase(self));
 
-				QueueChild(new ReturnToBase(self));
 				returnToBase = true;
 				return attackAircraft.Info.AbortOnResupply;
 			}
