@@ -321,7 +321,6 @@ Container@EDITOR_WORLD_ROOT:
 								ResourcePreview@LAYER_PREVIEW:
 									X: 4
 									Y: 4
-									Visible: false
 		Container@ACTOR_WIDGETS:
 			X: WINDOW_WIDTH - 320
 			Y: 354
@@ -386,7 +385,6 @@ Container@EDITOR_WORLD_ROOT:
 								ActorPreview@ACTOR_PREVIEW:
 									X: 4
 									Y: 4
-									Visible: true
 		Container@TOOLS_WIDGETS:
 			X: WINDOW_WIDTH - 320
 			Y: 354
