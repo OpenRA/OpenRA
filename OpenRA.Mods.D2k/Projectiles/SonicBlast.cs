@@ -75,6 +75,8 @@ namespace OpenRA.Mods.D2k.Projectiles
 
 		int ticks;
 
+		readonly IProjectileEffect[] effects;
+
 		public SonicBlast(SonicBlastInfo info, ProjectileArgs args)
 		{
 			this.info = info;
@@ -101,6 +103,8 @@ namespace OpenRA.Mods.D2k.Projectiles
 				extraDist = info.MinDistance.Length - dist;
 			target += dir * extraDist / 1024;
 			length = Math.Max((target - pos).Length / speed.Length, 1);
+
+			effects = args.Weapon.ProjectileEffects.Select(c => c.Create(args, () => args.Facing)).ToArray();
 		}
 
 		public void Tick(World world)
@@ -117,17 +121,24 @@ namespace OpenRA.Mods.D2k.Projectiles
 				length = Math.Min(ticks, length);
 			}
 
+			var orientation = new WRot(WAngle.Zero, Common.Util.GetVerticalAngle(args.Source, target), args.CurrentMuzzleFacing());
 			if (ticks % info.DamageInterval == 0)
 			{
 				var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - pos).Length));
 				var warheadArgs = new WarheadArgs(args)
 				{
-					ImpactOrientation = new WRot(WAngle.Zero, Common.Util.GetVerticalAngle(args.Source, target), args.CurrentMuzzleFacing()),
+					ImpactOrientation = orientation,
 					ImpactPosition = pos,
 					DamageModifiers = adjustedModifiers.ToArray(),
 				};
 				args.Weapon.Impact(Target.FromPos(pos), warheadArgs);
+
+				foreach (var c in effects)
+					c.Destroy(world, pos);
 			}
+
+			foreach (var c in effects)
+				c.Tick(world, pos, orientation);
 		}
 
 		int GetFalloff(int distance)
@@ -149,6 +160,9 @@ namespace OpenRA.Mods.D2k.Projectiles
 		{
 			if (!wr.World.FogObscures(pos))
 				return [(new SonicBlastRenderable(renderer, pos))];
+
+			foreach (var c in effects)
+				return c.Render(wr);
 
 			return SpriteRenderable.None;
 		}

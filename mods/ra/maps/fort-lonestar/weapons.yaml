@@ -6,8 +6,6 @@
 		Speed: 204
 		Blockable: false
 		Inaccuracy: 1c682
-		Image: 120MM
-		ContrailLength: 50
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
 		Versus:
@@ -19,6 +17,10 @@
 		Damage: 20000
 	Warhead@3Eff: CreateEffect
 		Explosions: self_destruct
+	Effect@SPRITE: Sprite
+		Image: 120MM
+	Effect@CONTRAIL: Contrail
+		Length: 50
 
 MammothTusk:
 	ReloadDelay: 300
@@ -27,8 +29,6 @@ MammothTusk:
 	Projectile: Missile
 		Blockable: false
 		Speed: 128
-		TrailImage: smokey
-		ContrailLength: 150
 		Inaccuracy: 0c853
 		HorizontalRateOfTurn: 40
 		RangeLimit: 12c0
@@ -44,6 +44,10 @@ MammothTusk:
 		Damage: 25000
 	Warhead@3Eff: CreateEffect
 		Explosions: nuke
+	Effect@CONTRAIL: Contrail
+		Length: 150
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 TankNapalm:
 	ReloadDelay: 40
@@ -54,10 +58,7 @@ TankNapalm:
 	BurstDelays: 1
 	Projectile: Bullet
 		Speed: 426
-		Image: 120MM
 		Inaccuracy: 2c512
-		TrailImage: smokey
-		ContrailLength: 2
 		Blockable: false
 	Warhead: SpreadDamage
 		Spread: 341
@@ -75,13 +76,17 @@ TankNapalm:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: firebl3.aud
+	Effect@SPRITE: Sprite
+		Image: 120MM
+	Effect@CONTRAIL: Contrail
+		Length: 2
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 ParaBomb:
 	ReloadDelay: 5
 	Range: 5c0
 	Projectile: GravityBomb
-		Image: BOMBLET
-		OpenSequence: idle
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Versus:
@@ -94,6 +99,9 @@ ParaBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+	Effect@SPRITE: Sprite
+		Image: BOMBLET
+		StartSequence: idle
 
 155mm:
 	ReloadDelay: 10
@@ -102,12 +110,9 @@ ParaBomb:
 	-Report:
 	Projectile: Bullet
 		Speed: 170
-		TrailImage: fb4
-		Image: fb3
 		Blockable: false
 		LaunchAngle: 30
 		Inaccuracy: 1c682
-		ContrailLength: 2
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			None: 80
@@ -119,6 +124,12 @@ ParaBomb:
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: firebl3.aud
+	Effect@SPRITE: Sprite
+		Image: fb3
+	Effect@CONTRAIL: Contrail
+		Length: 2
+	Effect@EMITTER: Emitter
+		Image: fb4
 
 FLAK-23:
 	ReloadDelay: 10
@@ -148,7 +159,6 @@ SCUD:
 	Range: 7c0
 	ReloadDelay: 280
 	Projectile: Bullet
-		TrailImage: smokey
 		Blockable: false
 		Inaccuracy: 0c426
 		LaunchAngle: 216
@@ -165,6 +175,8 @@ SCUD:
 	Warhead@3Eff: CreateEffect
 		Explosions: nuke
 		ImpactSounds: kaboom1.aud
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 SilencedPPK:
 	Range: 25c0

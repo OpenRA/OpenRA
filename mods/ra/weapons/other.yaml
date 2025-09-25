@@ -28,11 +28,13 @@ FireballLauncher:
 	BurstDelays: 20
 	Projectile: Bullet
 		Speed: 250
-		TrailImage: fb2
-		Image: FB1
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			Light: 50
+	Effect@SPRITE: Sprite
+		Image: FB1
+	Effect@EMITTER: Emitter
+		Image: fb2
 
 Flamer:
 	Inherits: ^FireWeapon
@@ -41,8 +43,6 @@ Flamer:
 	BurstDelays: 1
 	Projectile: Bullet
 		Speed: 170
-		TrailImage: fb4
-		Image: fb3
 		LaunchAngle: 62
 		Inaccuracy: 853
 	Warhead@1Dam: SpreadDamage
@@ -59,13 +59,16 @@ Flamer:
 		Chance: 15
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
+	Effect@SPRITE: Sprite
+		Image: fb3
+	Effect@EMITTER: Emitter
+		Image: fb4
 
 Napalm:
 	Inherits: ^FireWeapon
 	ReloadDelay: 20
 	Range: 4c512
 	Projectile: Bullet
-		Image: BOMBLET
 		Speed: 85
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
@@ -74,6 +77,8 @@ Napalm:
 		Versus:
 			Wood: 100
 			Concrete: 50
+	Effect@SPRITE: Sprite
+		Image: BOMBLET
 
 ^TeslaWeapon:
 	ReloadDelay: 3

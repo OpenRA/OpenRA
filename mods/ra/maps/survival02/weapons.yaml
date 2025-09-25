@@ -3,8 +3,6 @@ ParaBomb:
 	Range: 7c0
 	Report: chute1.aud
 	Projectile: GravityBomb
-		Image: BOMBLET
-		-OpenSequence:
 	Warhead@1Dam: SpreadDamage
 		Spread: 150
 		Damage: 350000
@@ -21,3 +19,6 @@ ParaBomb:
 	Warhead@4EffWater: CreateEffect
 		Explosions: napalm
 		ImpactSounds: firebl3.aud
+	Effect@SPRITE: Sprite
+		Image: BOMBLET
+		-StartSequence:

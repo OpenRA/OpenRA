@@ -3,8 +3,10 @@ FireballLauncher:
 	Burst: 1
 	Projectile: Bullet
 		Speed: 175
-		TrailImage: fb2
+	Effect@SPRITE: Sprite
 		Image: FB1
+	Effect@EMITTER: Emitter
+		Image: fb2
 
 ^MG:
 	Warhead@1Dam: SpreadDamage

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -69,6 +70,14 @@ namespace OpenRA.GameRules
 
 	public interface IProjectile : IEffect { }
 	public interface IProjectileInfo { IProjectile Create(ProjectileArgs args); }
+	public interface IProjectileEffectInfo { IProjectileEffect Create(ProjectileArgs args, Func<WAngle> facing); }
+
+	public interface IProjectileEffect
+	{
+		void Tick(World world, WPos pos, WRot orientation);
+		IEnumerable<IRenderable> Render(WorldRenderer wr);
+		void Destroy(World world, WPos pos);
+	}
 
 	public sealed class WeaponInfo
 	{
@@ -130,6 +139,9 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
 		public readonly List<IWarhead> Warheads = [];
 
+		[FieldLoader.LoadUsing(nameof(LoadProjectileEffects))]
+		public readonly List<IProjectileEffectInfo> ProjectileEffects = [];
+
 		/// <summary>
 		/// This constructor is used solely for documentation generation.
 		/// </summary>
@@ -155,6 +167,22 @@ namespace OpenRA.GameRules
 
 			FieldLoader.Load(ret, proj);
 			return ret;
+		}
+
+		static object LoadProjectileEffects(MiniYaml yaml)
+		{
+			var retList = new List<IProjectileEffectInfo>();
+			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Effect", StringComparison.Ordinal)))
+			{
+				var ret = Game.CreateObject<IProjectileEffectInfo>(node.Value.Value + "ProjectileEffectInfo");
+				if (ret == null)
+					continue;
+
+				FieldLoader.Load(ret, node.Value);
+				retList.Add(ret);
+			}
+
+			return retList;
 		}
 
 		static object LoadWarheads(MiniYaml yaml)

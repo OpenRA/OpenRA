@@ -115,9 +115,7 @@ EMPulseCannon:
 	Projectile: Bullet
 		Speed: 425
 		Blockable: false
-		Shadow: true
 		LaunchAngle: 96
-		Image: pulsball
 	Warhead@1Eff: CreateEffect
 		Explosions: pulse_explosion
 		ImpactActors: false
@@ -127,6 +125,9 @@ EMPulseCannon:
 		Duration: 250
 		Condition: empdisable
 		ValidTargets: Ground, Water, Air, Underground
+	Effect@SPRITE: Sprite
+		Shadow: true
+		Image: pulsball
 
 MEMPulse:
 	Report: mobemp1.aud

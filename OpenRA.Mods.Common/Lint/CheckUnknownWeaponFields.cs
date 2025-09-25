@@ -51,17 +51,8 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var field in weapon.Value.Nodes)
 				{
-					// Removals can never define children or values
 					if (field.Key.StartsWith('-'))
-					{
-						if (field.Value.Nodes.Length > 0)
-							emitError($"{field.Location} `{field.Key}` defines child nodes, which is not valid for removals.");
-
-						if (!string.IsNullOrEmpty(field.Value.Value))
-							emitError($"{field.Location} `{field.Key}` defines a value, which is not valid for removals.");
-
 						continue;
-					}
 
 					var fieldName = NormalizeName(field.Key);
 					if (fieldName == "Projectile" && !string.IsNullOrEmpty(field.Value.Value))
@@ -102,6 +93,30 @@ namespace OpenRA.Mods.Common.Lint
 							var warheadFieldName = NormalizeName(warheadField.Key);
 							if (warheadInfo.GetField(warheadFieldName) == null)
 								emitError($"{warheadField.Location} refers to a warhead field `{warheadFieldName}` that does not exist on `{warheadName}`.");
+						}
+					}
+					else if (fieldName == "Effect")
+					{
+						if (string.IsNullOrEmpty(field.Value.Value))
+						{
+							emitWarning($"{field.Location} does not define a projectile effect type. Skipping unknown field check.");
+							continue;
+						}
+
+						var effectName = NormalizeName(field.Value.Value);
+						var effectInfo = modData.ObjectCreator.FindType(effectName + "ProjectileEffectInfo");
+						if (effectInfo == null)
+						{
+							emitError($"{field.Location} defines unknown projectile effect `{effectName}`.");
+							continue;
+						}
+
+						foreach (var effectField in field.Value.Nodes)
+						{
+							var effectFieldName = NormalizeName(effectField.Key);
+							if (effectInfo.GetField(effectFieldName) == null)
+								emitError(
+									$"{effectField} refers to a projectile effect `{effectFieldName}` that does not exist on `{effectName}`.");
 						}
 					}
 					else if (fieldName != "Inherits" && weaponInfo.GetField(fieldName) == null)

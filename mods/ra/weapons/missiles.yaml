@@ -8,10 +8,7 @@
 		Speed: 213
 		Arm: 2
 		Blockable: false
-		ContrailLength: 10
 		Inaccuracy: 128
-		Image: DRAGON
-		Shadow: True
 		HorizontalRateOfTurn: 20
 		RangeLimit: 6c0
 	Warhead@1Dam: SpreadDamage
@@ -37,6 +34,11 @@
 		ImpactSounds: splash9.aud
 		ValidTargets: Water, Underwater
 		InvalidTargets: Bridge
+	Effect@SPRITE: Sprite
+		Image: DRAGON
+		Shadow: True
+	Effect@CONTRAIL: Contrail
+		Length: 10
 
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
@@ -73,7 +75,8 @@ Maverick:
 Dragon:
 	Inherits: ^AntiGroundMissile
 	Projectile: Missile
-		TrailImage: smokey
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 HellfireAG:
 	Inherits: ^AntiGroundMissile
@@ -147,7 +150,6 @@ Nike:
 	Projectile: Missile
 		Arm: 3
 		Inaccuracy: 0
-		Image: MISSILE
 		HorizontalRateOfTurn: 100
 		RangeLimit: 11c0
 		Speed: 341
@@ -156,6 +158,8 @@ Nike:
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
+	Effect@SPRITE: Sprite
+		Image: MISSILE
 
 RedEye:
 	Inherits: Nike
@@ -214,9 +218,10 @@ APTusk:
 	BurstDelays: 0
 	Projectile: Missile
 		Speed: 298
-		TrailImage: smokey
 		HorizontalRateOfTurn: 40
 		RangeLimit: 7c204
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 APTusk.stnk:
 	Inherits: APTusk
@@ -231,14 +236,11 @@ TorpTube:
 	Burst: 2
 	BurstDelays: 15
 	Projectile: Missile
-		Image: torpedo
 		Arm: 3
 		Speed: 85
-		TrailImage: bubbles
 		HorizontalRateOfTurn: 4
 		RangeLimit: 10c819
 		BoundToTerrainType: Water
-		Palette: shadow
 		MaximumLaunchAngle: 0
 		CruiseAltitude: 0
 	Warhead@1Dam: SpreadDamage
@@ -260,6 +262,11 @@ TorpTube:
 		ImpactSounds: splash9.aud
 		ValidTargets: Water
 		InvalidTargets: Bridge
+	Effect@SPRITE: Sprite
+		Image: torpedo
+		Palette: shadow
+	Effect@EMITTER: Emitter
+		Image: bubbles
 
 ^SubMissileDefault:
 	Inherits: ^AntiGroundMissile
@@ -271,9 +278,6 @@ TorpTube:
 		Inaccuracy: 0c614
 		HorizontalRateOfTurn: 60
 		RangeLimit: 9c0
-		Image: MISSILE
-		TrailImage: smokey
-		ContrailLength: 30
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 2500
@@ -291,6 +295,12 @@ TorpTube:
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
 		ImpactSounds: splash9.aud
+	Effect@SPRITE: Sprite
+		Image: MISSILE
+	Effect@CONTRAIL: Contrail
+		Length: 30
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 SubMissile:
 	Inherits: ^SubMissileDefault
@@ -302,10 +312,13 @@ SubMissile:
 		Blockable: false
 		LaunchAngle: 120
 		Inaccuracy: 0c614
+	Effect@SPRITE: Sprite
 		Image: MISSILE
 		Shadow: True
-		TrailImage: smokey
-		ContrailLength: 30
+	Effect@CONTRAIL: Contrail
+		Length: 30
+	Effect@EMITTER: Emitter
+		Image: smokey
 
 SubMissileAA:
 	Inherits: ^SubMissileDefault
@@ -326,11 +339,7 @@ SCUD:
 	Projectile: Bullet
 		Speed: 170
 		Blockable: false
-		TrailImage: smokey
-		TrailDelay: 5
 		Inaccuracy: 213
-		Image: V2
-		Shadow: True
 		LaunchAngle: 62
 	Warhead@1Dam: SpreadDamage
 		Spread: 341
@@ -350,3 +359,9 @@ SCUD:
 		ImpactSounds: firebl3.aud
 	Warhead@4EffWater: CreateEffect
 		Explosions: large_splash
+	Effect@SPRITE: Sprite
+		Image: V2
+		Shadow: True
+	Effect@EMITTER: Emitter
+		Image: smokey
+		Delay: 5

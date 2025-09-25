@@ -69,6 +69,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new("release-20250330", [
 
 				// bleed only changes here.
+
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new UpdateProjectilesToUseEffects(),
 				new ReplaceBaseAttackNotifier(),
 				new RemoveBuildingInfoAllowPlacementOnResources(),
 				new EditorMarkerTileLabels(),
