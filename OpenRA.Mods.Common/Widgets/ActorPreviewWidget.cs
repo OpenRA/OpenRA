@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ActorPreviewWidget : Widget
 	{
 		public bool Animate = false;
-		public Func<float> GetScale = () => 1f;
+		public float Scale = 1f;
 
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
@@ -59,14 +58,17 @@ namespace OpenRA.Mods.Common.Widgets
 			var r = preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
 			var b = r.Union();
 			IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
-			PreviewOffset = -new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale)) - IdealPreviewSize / 2;
+			var previewTopLeft = new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale));
+			PreviewOffset = previewTopLeft + IdealPreviewSize / 2;
 		}
 
 		IFinalizedRenderable[] renderables;
 		public override void PrepareRenderables()
 		{
-			var scale = GetScale() * viewportSizes.DefaultScale;
-			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+			var scale = Scale * viewportSizes.DefaultScale;
+			var origin = RenderOrigin - new int2(
+				(int)(PreviewOffset.X * scale - RenderBounds.Size.Width / 2),
+				(int)(PreviewOffset.Y * scale - RenderBounds.Size.Height / 2));
 
 			renderables = preview
 				.SelectMany(p => p.RenderUI(worldRenderer, origin, scale))

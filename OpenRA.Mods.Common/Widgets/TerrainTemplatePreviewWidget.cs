@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
@@ -19,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class TerrainTemplatePreviewWidget : Widget
 	{
-		public Func<float> GetScale = () => 1f;
+		public float Scale = 1f;
 
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly WorldRenderer worldRenderer;
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		TerrainTemplateInfo template;
 
-		public int2 PreviewOffset { get; private set; }
+		public int2 PreviewPos { get; private set; }
 		public int2 IdealPreviewSize { get; private set; }
 
 		[ObjectCreator.UseCtor]
@@ -48,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 			viewportSizes = other.viewportSizes;
 			terrainRenderer = other.terrainRenderer;
 			template = other.template;
-			GetScale = other.GetScale;
+			Scale = other.Scale;
 		}
 
 		public override TerrainTemplatePreviewWidget Clone() { return new TerrainTemplatePreviewWidget(this); }
@@ -60,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 			IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
 
 			// Measured from the middle of the widget to the middle of the top-left cell of the template
-			PreviewOffset = -new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale)) - IdealPreviewSize / 2;
+			PreviewPos = new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale));
 		}
 
 		public override void Draw()
@@ -68,8 +67,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (template == null)
 				return;
 
-			var scale = GetScale() * viewportSizes.DefaultScale;
-			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+			var scale = Scale * viewportSizes.DefaultScale;
+			var origin = RenderOrigin - new int2((int)(PreviewPos.X * scale), (int)(PreviewPos.Y * scale));
 
 			foreach (var r in terrainRenderer.RenderUIPreview(worldRenderer, template, origin, scale))
 				r.PrepareRender(worldRenderer).Render(worldRenderer);

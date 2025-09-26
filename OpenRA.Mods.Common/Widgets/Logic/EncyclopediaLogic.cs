@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					typeDictionary.Add(inits);
 
 			previewWidget.SetPreview(actor, typeDictionary);
-			previewWidget.GetScale = () => selectedInfo.Scale;
+			previewWidget.Scale = selectedInfo.Scale;
 
 			if (portraitWidget != null)
 			{

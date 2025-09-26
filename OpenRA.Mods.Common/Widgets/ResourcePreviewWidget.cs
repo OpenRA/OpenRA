@@ -20,7 +20,9 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ResourcePreviewWidget : Widget
 	{
-		public Func<float> GetScale = () => 1f;
+		public float Scale = 1f;
+
+		public Size IdealPreviewSize { get; private set; }
 
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
@@ -29,22 +31,29 @@ namespace OpenRA.Mods.Common.Widgets
 
 		string resourceType;
 		IResourceRenderer resourceRenderer;
+		int2 spriteOffset;
 
-		public string ResourceType
+		public void SetResourceType(string value)
 		{
-			get => resourceType;
+			resourceType = value;
+			if (resourceType != null)
+				resourceRenderer = resourceRenderers.FirstOrDefault(r => r.ResourceTypes.Contains(resourceType));
+			else
+				resourceRenderer = null;
 
-			set
+			var bounds = resourceRenderer?.RenderUIPreview(worldRenderer, resourceType, int2.Zero, viewportSizes.DefaultScale)
+				.FirstOrDefault()
+				.PrepareRender(worldRenderer)
+				?.ScreenBounds(worldRenderer);
+
+			if (bounds != null)
 			{
-				resourceType = value;
-				if (resourceType != null)
-					resourceRenderer = resourceRenderers.FirstOrDefault(r => r.ResourceTypes.Contains(resourceType));
-				else
-					resourceRenderer = null;
+				spriteOffset = -bounds.Value.Location;
+				IdealPreviewSize = bounds.Value.Size;
 			}
+			else
+				IdealPreviewSize = new Size((int)(tileSize.Width * viewportSizes.DefaultScale), (int)(tileSize.Height * viewportSizes.DefaultScale));
 		}
-
-		public Size IdealPreviewSize { get; }
 
 		[ObjectCreator.UseCtor]
 		public ResourcePreviewWidget(ModData modData, WorldRenderer worldRenderer, World world)
@@ -53,15 +62,12 @@ namespace OpenRA.Mods.Common.Widgets
 			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
 			tileSize = world.Map.Rules.TerrainInfo.TileSize;
-			IdealPreviewSize = new Size(
-				(int)(viewportSizes.DefaultScale * tileSize.Width),
-				(int)(viewportSizes.DefaultScale * tileSize.Height));
 		}
 
 		protected ResourcePreviewWidget(ResourcePreviewWidget other)
 			: base(other)
 		{
-			GetScale = other.GetScale;
+			Scale = other.Scale;
 			worldRenderer = other.worldRenderer;
 			viewportSizes = other.viewportSizes;
 			resourceRenderers = other.resourceRenderers;
@@ -78,12 +84,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (resourceRenderer == null)
 				return;
 
-			var scale = GetScale() * viewportSizes.DefaultScale;
-			var origin = RenderOrigin + new int2(
-				(int)(0.5f * (RenderBounds.Size.Width - scale * tileSize.Width)),
-				(int)(0.5f * (RenderBounds.Size.Height - scale * tileSize.Height)));
-
-			foreach (var r in resourceRenderer.RenderUIPreview(worldRenderer, resourceType, origin, scale))
+			var scale = Scale * viewportSizes.DefaultScale;
+			foreach (var r in resourceRenderer.RenderUIPreview(worldRenderer, resourceType, RenderOrigin + spriteOffset, scale))
 				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}
 	}
