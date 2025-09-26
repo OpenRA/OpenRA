@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly byte maxDensity;
 		readonly Color veinRadarColor;
 
-		ISpriteSequence veinSequence;
+		readonly ISpriteSequence veinSequence;
 		PaletteReference veinPalette;
 		TerrainSpriteLayer spriteLayer;
 
@@ -177,6 +177,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			renderIndices = new CellLayer<int[]>(world.Map);
 			borders = new CellLayer<Adjacency>(world.Map);
+
+			veinSequence = self.World.Map.Sequences.GetSequence(info.Image, info.Sequence);
 		}
 
 		void AddDirtyCell(CPos cell, string resourceType)
@@ -194,9 +196,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var a in w.Actors)
 				ActorAddedToWorld(a);
 
-			veinSequence = w.Map.Sequences.GetSequence(info.Image, info.Sequence);
 			veinPalette = wr.Palette(info.Palette);
-
 			var first = veinSequence.GetSprite(0);
 			var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
 			spriteLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);

@@ -116,6 +116,15 @@ namespace OpenRA.Mods.Common.Traits
 			ResourceLayer = self.Trait<IResourceLayer>();
 			ResourceLayer.CellChanged += AddDirtyCell;
 			RenderContents = new CellLayer<RendererCellContents>(self.World.Map);
+
+			var sequences = self.World.Map.Sequences;
+			foreach (var kv in Info.ResourceTypes)
+			{
+				var resourceInfo = kv.Value;
+				var resourceVariants = resourceInfo.Sequences
+					.ToDictionary(v => v, v => sequences.GetSequence(resourceInfo.Image, v));
+				Variants.Add(kv.Key, resourceVariants);
+			}
 		}
 
 		void AddDirtyCell(CPos cell, string resourceType)
@@ -126,14 +135,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var sequences = w.Map.Sequences;
-			foreach (var kv in Info.ResourceTypes)
+			foreach (var kv in Variants)
 			{
-				var resourceInfo = kv.Value;
-				var resourceVariants = resourceInfo.Sequences
-					.ToDictionary(v => v, v => sequences.GetSequence(resourceInfo.Image, v));
-				Variants.Add(kv.Key, resourceVariants);
-
+				var resourceVariants = kv.Value;
 				if (spriteLayer == null)
 				{
 					var first = resourceVariants.First().Value.GetSprite(0);
