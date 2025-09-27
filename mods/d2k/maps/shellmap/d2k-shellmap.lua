@@ -6,15 +6,15 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-AttackGroupSize = {8}
+AttackGroupSize = { 8 }
 AttackDelay = { DateTime.Seconds(2), DateTime.Seconds(4) }
 
 IdlingUnits =
 {
-	Atreides = { },
-	Harkonnen = { },
-	Ordos = { },
-	Corrino = { }
+	Atreides = {},
+	Harkonnen = {},
+	Ordos = {},
+	Corrino = {}
 }
 
 HoldProduction =
@@ -36,22 +36,26 @@ IsAttacking =
 AtreidesInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper", "grenadier", "grenadier" }
 AtreidesVehicleTypes = { "trike", "trike", "quad" }
 AtreidesTankTypes = { "combat_tank_a", "combat_tank_a", "combat_tank_a", "siege_tank" }
-AtreidesStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_a.starport" }
+AtreidesStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport",
+	"combat_tank_a.starport" }
 
 HarkonnenInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper", "mpsardaukar" }
 HarkonnenVehicleTypes = { "trike", "quad", "quad" }
 HarkonnenTankTypes = { "combat_tank_h", "combat_tank_h", "combat_tank_h", "siege_tank" }
-HarkonnenStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_h.starport" }
+HarkonnenStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport",
+	"combat_tank_h.starport" }
 
 OrdosInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper" }
 OrdosVehicleTypes = { "raider", "raider", "quad", "stealth_raider" }
 OrdosTankTypes = { "combat_tank_o", "combat_tank_o", "combat_tank_o", "siege_tank" }
-OrdosStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_o.starport" }
+OrdosStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport",
+	"combat_tank_o.starport" }
 
 CorrinoInfantryTypes = { "light_inf", "trooper", "sardaukar", "sardaukar", "sardaukar", "sardaukar" }
 CorrinoVehicleTypes = { "trike", "quad", "quad" }
 CorrinoTankTypes = { "combat_tank_h", "combat_tank_h", "combat_tank_h", "siege_tank" }
-CorrinoStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport", "combat_tank_h.starport" }
+CorrinoStarportTypes = { "trike.starport", "quad.starport", "siege_tank.starport", "missile_tank.starport",
+	"combat_tank_h.starport" }
 
 Upgrades = { "upgrade.barracks", "upgrade.light", "upgrade.conyard", "upgrade.heavy", "upgrade.hightech" }
 
@@ -80,13 +84,13 @@ Produce = function(house, units)
 		Trigger.AfterDelay(delay, function() Produce(house, units) end)
 
 		if unitCount >= (AttackGroupSize[1] * 2) then
-		    SendAttack(house)
+			SendAttack(house)
 		end
 	end)
 end
 
 SetupAttackGroup = function(house)
-	local units = { }
+	local units = {}
 
 	for i = 0, AttackGroupSize[1], 1 do
 		if #IdlingUnits[house.Name] == 0 then
@@ -125,7 +129,9 @@ end
 SendNewHarv = function(house, waypoint, count)
 	local harvs = house.GetActorsByType("harvester")
 	if #harvs < count then
-		local harvesters = Reinforcements.ReinforceWithTransport(house, "carryall.reinforce", Harvester, waypoint, { waypoint[1] })[2]
+		local harvesters = Reinforcements.ReinforceWithTransport(
+			house, "carryall.reinforce", Harvester, waypoint, { waypoint[1] })[2]
+
 		Utils.Do(harvesters, function(harvester)
 			Trigger.OnAddedToWorld(harvester, function()
 				InitializeHarvester(harvester)
