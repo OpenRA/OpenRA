@@ -19,6 +19,8 @@ World:
 		DisableWorldSounds: true
 	LuaScript:
 		Scripts: utils.lua, d2k-shellmap.lua
+	CameraOvalMover:
+		OvalRadius: 19200, 28800, 0
 
 ^Palettes:
 	-MenuPostProcessEffect:

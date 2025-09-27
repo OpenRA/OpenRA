@@ -170,20 +170,9 @@ ChronoshiftAlliedUnits = function()
 	Trigger.AfterDelay(DateTime.Seconds(60), ChronoshiftAlliedUnits)
 end
 
-Ticks = 0
-Speed = 5
-
-Tick = function()
-	Ticks = Ticks + 1
-
-	local t = (Ticks + 45) % (360 * Speed) * (math.pi / 180) / Speed;
-	Camera.Position = ViewportOrigin + WVec.New(19200 * math.sin(t), 20480 * math.cos(t), 0)
-end
-
 WorldLoaded = function()
 	Allies = Player.GetPlayer("Allies")
 	Soviets = Player.GetPlayer("Soviets")
-	ViewportOrigin = Camera.Position
 
 	SetupAlliedUnits()
 	SetupFactories()

@@ -139,18 +139,6 @@ InitializeHarvester = function(harvester)
 	harvester.FindResources()
 end
 
-Ticks = 0
-Speed = 5
-
-Tick = function()
-	Ticks = Ticks + 1
-
-	if Ticks > 1 or not Map.IsPausedShellmap then
-		local t = (Ticks + 45) % (360 * Speed) * (math.pi / 180) / Speed;
-		Camera.Position = ViewportOrigin + WVec.New(19200 * math.sin(t), 28800 * math.cos(t), 0)
-	end
-end
-
 WorldLoaded = function()
 	Atreides = Player.GetPlayer("Atreides")
 	Harkonnen = Player.GetPlayer("Harkonnen")
@@ -161,8 +149,6 @@ WorldLoaded = function()
 	Reinforcements.Reinforce(Atreides, { "carryall" }, { atr_carry_1.Location })
 	Reinforcements.Reinforce(Atreides, { "carryall" }, { atr_carry_2.Location })
 	Reinforcements.Reinforce(Atreides, { "carryall" }, { atr_carry_3.Location })
-
-	ViewportOrigin = Camera.Position
 
 	Utils.Do(Utils.Take(4, Upgrades), function(upgrade)
 		atr_cyard.Produce(upgrade)
@@ -201,6 +187,4 @@ WorldLoaded = function()
 		Produce(Corrino, CorrinoTankTypes)
 		Produce(Corrino, CorrinoStarportTypes)
 	end)
-
-	Tick()
 end
