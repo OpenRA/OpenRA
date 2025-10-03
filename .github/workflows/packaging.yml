@@ -119,9 +119,30 @@ jobs:
           mkdir -p build/windows
           ./packaging/windows/buildpackage.sh "${GIT_TAG}" "${PWD}/build/windows"
 
+      - name: Upload Installer
+        id: unsigned-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: build/windows/*.exe
+
+      - name: Microsoft Authenticode
+        id: signpath
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ secrets.SIGNPATH_ORGANISATION_ID }}'
+          project-slug: 'OpenRA'
+          signing-policy-slug: 'test-signing'
+          github-artifact-id: '${{ steps.unsigned-artifact.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'build/windows/signed/'
+          parameters: |
+            version: ${{ toJSON(github.ref_name) }}
+
       - name: Upload Packages
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
-          gh release upload ${{ github.ref_name }} build/windows/*
+          gh release upload ${{ github.ref_name }} build/windows/*.zip
+          gh release upload ${{ github.ref_name }} build/windows/signed/*.exe
