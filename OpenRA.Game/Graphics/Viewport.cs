@@ -41,6 +41,8 @@ namespace OpenRA.Graphics
 
 	public class Viewport
 	{
+		public event Action ViewportChanged;
+
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
 		readonly GraphicSettings graphicSettings;
@@ -50,7 +52,18 @@ namespace OpenRA.Graphics
 		readonly Size tileSize;
 
 		// Viewport geometry (world-px)
-		public float2 CenterLocation { get; private set; }
+		float2 centerLocation;
+		public float2 CenterLocation
+		{
+			get => centerLocation;
+			private set
+			{
+				ViewportChanged?.Invoke();
+				centerLocation = value;
+				cellsDirty = true;
+				allCellsDirty = true;
+			}
+		}
 
 		public WPos CenterPosition => worldRenderer.ProjectedPosition(CenterLocation.ToInt2());
 
@@ -342,26 +355,18 @@ namespace OpenRA.Graphics
 		public void Center(WPos pos)
 		{
 			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
-			cellsDirty = true;
-			allCellsDirty = true;
 		}
 
 		public void Center(float2 pos)
 		{
 			CenterLocation = worldRenderer.ScreenPosition(pos).Clamp(mapBounds);
-			cellsDirty = true;
-			allCellsDirty = true;
 		}
 
 		public void Scroll(float2 delta, bool ignoreBorders)
 		{
 			// Convert scroll delta from world-px to viewport-px
-			CenterLocation += 1f / Zoom * delta;
-			cellsDirty = true;
-			allCellsDirty = true;
-
-			if (!ignoreBorders)
-				CenterLocation = CenterLocation.Clamp(mapBounds);
+			var newScroll = CenterLocation + 1f / Zoom * delta;
+			CenterLocation = ignoreBorders ? newScroll : newScroll.Clamp(mapBounds);
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn
