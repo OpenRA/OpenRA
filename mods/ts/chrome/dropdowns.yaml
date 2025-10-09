@@ -96,20 +96,23 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 			X: 2
 			Y: 0
 			Visible: false
+			EnableChildMouseOver: true
 			Children:
 				Image@FLAG:
 					X: 4
 					Y: 6
 					Width: 32
 					Height: 16
-				Label@LABEL:
+				LabelWithTooltip@LABEL:
 					X: 40
-					Width: PARENT_WIDTH
+					Width: PARENT_WIDTH - 42
 					Height: 25
 					Shadow: True
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@NOFLAG_LABEL:
 					X: 5
-					Width: PARENT_WIDTH
+					Width: PARENT_WIDTH - 7
 					Height: 25
 					Shadow: True
 

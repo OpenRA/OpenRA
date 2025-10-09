@@ -319,7 +319,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
 
 			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
@@ -365,7 +365,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
 
 			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
 
 			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
@@ -407,7 +407,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
 
 			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
@@ -428,7 +428,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
 
 			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
@@ -480,7 +480,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			playerName.GetColor = () => Color.White;
 
 			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
@@ -580,7 +580,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => player.Faction.InternalName;
 
-			var playerName = template.Get<LabelWidget>("PLAYER");
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
 			WidgetUtils.BindPlayerNameAndStatus(playerName, player);
 
 			playerName.GetColor = () => player.Color;

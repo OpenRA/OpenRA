@@ -165,7 +165,6 @@ label-mission-accomplished = Accomplished
 label-mission-failed = Failed
 
 ## GameInfoStatsLogic
-label-client-state-disconnected = Gone
 label-mute-player = Mute this player
 label-unmute-player = Unmute this player
 button-kick-player = Kick this player
@@ -862,6 +861,7 @@ notification-desync-compare-logs = Out of sync in frame { $frame }.
 ## WidgetUtils
 label-win-state-won = Won
 label-win-state-lost = Lost
+label-client-state-disconnected = Gone
 
 ## Player
 enumerated-bot-name =

@@ -329,34 +329,44 @@ namespace OpenRA.Mods.Common.Widgets
 			icon.GetSprite = () => cache.Update((button.IsDisabled(), button.Depressed, Ui.MouseOverWidget == button, false, button.IsHighlighted()));
 		}
 
-		public static void BindPlayerNameAndStatus(LabelWidget label, Player p)
+		public static string WithSuffix(string name, WinState winState, Session.ClientState clientState)
 		{
-			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
-			var nameFont = Game.Renderer.Fonts[label.Font];
+			if (clientState == Session.ClientState.Disconnected)
+				return name + " (" + FluentProvider.GetMessage(Gone) + ")";
+
+			if (winState == WinState.Won)
+				return name + " (" + FluentProvider.GetMessage(Won) + ")";
+
+			if (winState == WinState.Lost)
+				return name + " (" + FluentProvider.GetMessage(Lost) + ")";
+
+			return name;
+		}
+
+		public static void BindPlayerNameAndStatus(LabelWithTooltipWidget label, Player p)
+		{
 			var name = new CachedTransform<(WinState WinState, Session.ClientState ClientState), string>(c =>
 			{
-				var text = p.ResolvedPlayerName;
+				var text = WithSuffix(p.ResolvedPlayerName, c.WinState, c.ClientState);
+				var truncatedText = TruncateText(text, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
 
-				var suffix = "";
-				if (c.WinState == WinState.Won)
-					suffix = $" ({FluentProvider.GetMessage(Won)})";
-				else if (c.WinState == WinState.Lost)
-					suffix = $" ({FluentProvider.GetMessage(Lost)})";
+				if (text != truncatedText)
+					label.GetTooltipText = () => text;
+				else
+					label.GetTooltipText = null;
 
-				if (client.State == Session.ClientState.Disconnected)
-					suffix = $" ({FluentProvider.GetMessage(Gone)})";
-
-				text += suffix;
-
-				var size = nameFont.Measure(text) - nameFont.Measure(p.ResolvedPlayerName);
-				return TruncateText(text, label.Bounds.Width - size.X, nameFont);
+				return truncatedText;
 			});
 
+			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
 			label.GetText = () =>
 			{
 				var clientState = client != null ? client.State : Session.ClientState.Ready;
 				return name.Update((p.WinState, clientState));
 			};
+
+			// Trigger a tooltip update.
+			label.GetText();
 		}
 
 		public static void SetupTextNotification(Widget notificationWidget, TextNotification notification, int boxWidth, bool withTimestamp)

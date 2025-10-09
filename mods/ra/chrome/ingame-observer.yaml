@@ -108,14 +108,16 @@ Container@OBSERVER_WIDGETS:
 							Y: 6
 							Width: 32
 							Height: 16
-						Label@LABEL:
+						LabelWithTooltip@LABEL:
 							X: 40
-							Width: PARENT_WIDTH
+							Width: PARENT_WIDTH - 42 - 16
 							Height: 25
 							Shadow: True
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@NOFLAG_LABEL:
 							X: 5
-							Width: PARENT_WIDTH
+							Width: PARENT_WIDTH - 7 - 16
 							Height: 25
 							Shadow: True
 		Image@SIDEBAR_BACKGROUND_BOTTOM:
@@ -685,6 +687,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 705
 							Height: 24
 							Background: scrollitem-nohover
+							EnableChildMouseOver: true
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -703,13 +706,15 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
-								Label@PLAYER:
+								LabelWithTooltip@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
 									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@CASH:
 									X: 160
 									Y: 0
@@ -772,6 +777,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 735
 							Height: 24
 							Background: scrollitem-nohover
+							EnableChildMouseOver: true
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -790,13 +796,15 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
-								Label@PLAYER:
+								LabelWithTooltip@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
 									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@CASH:
 									X: 160
 									Y: 0
@@ -852,6 +860,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 400
 							Height: 24
 							Background: scrollitem-nohover
+							EnableChildMouseOver: true
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -870,13 +879,15 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
-								Label@PLAYER:
+								LabelWithTooltip@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
 									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								ObserverProductionIcons@PRODUCTION_ICONS:
 									X: 160
 									Y: 0
@@ -889,6 +900,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 400
 							Height: 24
 							Background: scrollitem-nohover
+							EnableChildMouseOver: true
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -907,13 +919,15 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
-								Label@PLAYER:
+								LabelWithTooltip@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
 									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
 									X: 160
 									Y: 0
@@ -926,6 +940,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 400
 							Height: 24
 							Background: scrollitem-nohover
+							EnableChildMouseOver: true
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -944,13 +959,15 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
-								Label@PLAYER:
+								LabelWithTooltip@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
 									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								ObserverArmyIcons@ARMY_ICONS:
 									X: 160
 									Y: 0
@@ -963,6 +980,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 760
 							Height: 24
 							Background: scrollitem-nohover
+							EnableChildMouseOver: true
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -981,13 +999,15 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
-								Label@PLAYER:
+								LabelWithTooltip@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
 									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@ASSETS_DESTROYED:
 									X: 160
 									Y: 0
