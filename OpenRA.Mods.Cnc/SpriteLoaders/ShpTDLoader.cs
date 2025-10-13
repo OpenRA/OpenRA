@@ -84,44 +84,56 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public byte[] Data { get; }
 			public bool DisableExportPadding { get { return false; } }
 
-			public TrimmedFrame(ImageHeader header)
+			public TrimmedFrame(ImageHeader header, (int Left, int Top, int Right, int Bottom)? unifiedBounds = null)
 			{
 				var origData = header.Data;
 				var origSize = header.Size;
-				var top = origSize.Height - 1;
-				var bottom = 0;
-				var left = origSize.Width - 1;
-				var right = 0;
 
-				// Scan frame data to find left-, top-, right-, bottom-most
-				// rows/columns with non-zero pixel data.
-				var i = 0;
-				for (var y = 0; y < origSize.Height; y++)
+				int top, bottom, left, right;
+
+				if (unifiedBounds.HasValue)
 				{
-					for (var x = 0; x < origSize.Width; x++, i++)
+					// Use the unified bounds for consistent trimming across all frames
+					(left, top, right, bottom) = unifiedBounds.Value;
+				}
+				else
+				{
+					// Calculate individual frame bounds (original behavior)
+					top = origSize.Height - 1;
+					bottom = 0;
+					left = origSize.Width - 1;
+					right = 0;
+
+					// Scan frame data to find left-, top-, right-, bottom-most
+					// rows/columns with non-zero pixel data.
+					var i = 0;
+					for (var y = 0; y < origSize.Height; y++)
 					{
-						if (origData[i] != 0)
+						for (var x = 0; x < origSize.Width; x++, i++)
 						{
-							top = Math.Min(y, top);
-							bottom = Math.Max(y, bottom);
-							left = Math.Min(x, left);
-							right = Math.Max(x, right);
+							if (origData[i] != 0)
+							{
+								top = Math.Min(y, top);
+								bottom = Math.Max(y, bottom);
+								left = Math.Min(x, left);
+								right = Math.Max(x, right);
+							}
 						}
 					}
+
+					// Keep a 1px empty border to work avoid rounding issues in the GPU shader.
+					if (left > 0)
+						left--;
+
+					if (top > 0)
+						top--;
+
+					if (right < origSize.Width - 1)
+						right++;
+
+					if (bottom < origSize.Height - 1)
+						bottom++;
 				}
-
-				// Keep a 1px empty border to work avoid rounding issues in the GPU shader.
-				if (left > 0)
-					left--;
-
-				if (top > 0)
-					top--;
-
-				if (right < origSize.Width - 1)
-					right++;
-
-				if (bottom < origSize.Height - 1)
-					bottom++;
 
 				var trimmedWidth = right - left + 1;
 				var trimmedHeight = bottom - top + 1;
@@ -237,7 +249,9 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			foreach (var h in headers)
 				Decompress(h);
 
-			Frames = headers.Select(f => (ISpriteFrame)new TrimmedFrame(f)).ToArray();
+			// Calculate unified trimming bounds for all frames to ensure consistent offsets in animations
+			var unifiedBounds = CalculateUnifiedTrimmingBounds(headers);
+			Frames = headers.Select(f => (ISpriteFrame)new TrimmedFrame(f, unifiedBounds)).ToArray();
 		}
 
 		void Decompress(ImageHeader h)
@@ -284,6 +298,74 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			var imageData = new byte[Size.Width * Size.Height];
 			Array.Copy(baseImage, imageData, imageData.Length);
 			return imageData;
+		}
+
+		static (int Left, int Top, int Right, int Bottom) CalculateUnifiedTrimmingBounds(IEnumerable<ImageHeader> headers)
+		{
+			var allHeaders = headers.Where(h => h.Data != null && h.Size.Width > 0 && h.Size.Height > 0).ToList();
+
+			// If we only have one frame or no frames, use individual trimming
+			if (allHeaders.Count <= 1)
+				return (0, 0, 0, 0); // Will trigger individual trimming
+
+			var firstHeader = allHeaders[0];
+			var origSize = firstHeader.Size;
+
+			// Initialize bounds to cover the entire sprite
+			var unifiedTop = origSize.Height - 1;
+			var unifiedBottom = 0;
+			var unifiedLeft = origSize.Width - 1;
+			var unifiedRight = 0;
+
+			// Calculate the union of all frame bounds
+			foreach (var header in allHeaders)
+			{
+				var origData = header.Data;
+				var frameTop = origSize.Height - 1;
+				var frameBottom = 0;
+				var frameLeft = origSize.Width - 1;
+				var frameRight = 0;
+
+				// Scan frame data to find bounds
+				var i = 0;
+				for (var y = 0; y < origSize.Height; y++)
+				{
+					for (var x = 0; x < origSize.Width; x++, i++)
+					{
+						if (origData[i] != 0)
+						{
+							frameTop = Math.Min(y, frameTop);
+							frameBottom = Math.Max(y, frameBottom);
+							frameLeft = Math.Min(x, frameLeft);
+							frameRight = Math.Max(x, frameRight);
+						}
+					}
+				}
+
+				// Update unified bounds to include this frame
+				if (frameTop <= frameBottom && frameLeft <= frameRight)
+				{
+					unifiedTop = Math.Min(unifiedTop, frameTop);
+					unifiedBottom = Math.Max(unifiedBottom, frameBottom);
+					unifiedLeft = Math.Min(unifiedLeft, frameLeft);
+					unifiedRight = Math.Max(unifiedRight, frameRight);
+				}
+			}
+
+			// Keep a 1px empty border to avoid rounding issues in the GPU shader
+			if (unifiedLeft > 0)
+				unifiedLeft--;
+
+			if (unifiedTop > 0)
+				unifiedTop--;
+
+			if (unifiedRight < origSize.Width - 1)
+				unifiedRight++;
+
+			if (unifiedBottom < origSize.Height - 1)
+				unifiedBottom++;
+
+			return (unifiedLeft, unifiedTop, unifiedRight, unifiedBottom);
 		}
 
 		public static void Write(Stream s, Size size, IEnumerable<byte[]> frames)
