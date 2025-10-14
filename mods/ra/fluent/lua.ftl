@@ -48,10 +48,12 @@ destroy-convoys = Eliminate all passing Soviet convoys.
 ## allies-05a
 extract-transport = Get all your forces aboard the transport.
 
+## allies-05abc, proving-grounds
+battlefield-control = Battlefield Control
+
 # allies-05abc
 spy = Spy
 disguise-spy = Commander! You have to disguise me in order to get through the enemy patrols.
-battlefield-control = Battlefield Control
 skip-heroics = Good work! But next time, skip the heroics!
 rescue-tanya = Rescue Tanya.
 eliminate-soviet-units = Eliminate all Soviet units in this area.
@@ -255,6 +257,24 @@ submarine-escapes = The submarine is heading for open sea!
 submarine-construction-complete-in = Submarine construction complete in { $time }
 destroy-soviet-sub-pen = Destroy the Soviet Submarine Pen.
 power-down-tesla-coils = Cut power to the Tesla Coils.
+
+# proving-grounds
+tech-center-survive = The Tech Center must survive.
+regain-control-of-our-naval-base = Regain control of our naval base.
+capture-airfield-before-cruisers = Capture an Airfield before Cruisers arrive.
+wipe-out-intruders-with-new-submarines = Wipe out the Allied intruders with the
+  help of our new submarines.
+naval-base-destroyed = The naval base has been destroyed!
+our-tech-center-destroyed = Our Tech Center has been destroyed!
+our-tech-center-captured = Our Tech Center has been captured!
+cruisers-arrive-in = Cruisers arrive in { $time }
+cruisers-arrived = Cruisers have arrived!
+scouts-mark-the-way-to-bases = Scouts will mark the way to our bases. Find their flares.
+mining-outpost-reached = Mining outpost reached.
+vehicle-depot-reached = Vehicle depot reached. Airfields marked.
+airfields-reached = Airfields reached. Proceed to the final flare.
+unauthorized-naval-units = Unauthorized naval units have entered the area!
+protect-our-tech-center-at-all-costs = Protect our Tech Center at all costs!
 
 ## sarin-gas-1-crackdown, soviet09
 convoy-truck-escaping = Convoy truck attempting to escape!

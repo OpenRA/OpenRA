@@ -1,0 +1,18 @@
+TorpTubeNuclear:
+	Inherits: MiniNuke
+	ReloadDelay: 100
+	Range: 10c512
+	Report: torpedo1.aud
+	ValidTargets: WaterActor, Underwater
+	Burst: 1
+	Projectile: Missile
+		Image: torpedo
+		Arm: 3
+		Speed: 85
+		TrailImage: bubbles
+		HorizontalRateOfTurn: 4
+		RangeLimit: 11c819
+		BoundToTerrainType: Water
+		Palette: shadow
+		MaximumLaunchAngle: 0
+		CruiseAltitude: 0
