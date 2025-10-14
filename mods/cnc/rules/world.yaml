@@ -156,6 +156,7 @@ World:
 	PathFinderOverlay:
 	AutoSave:
 	HierarchicalPathFinderOverlay:
+	ActorMapOverlay:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:

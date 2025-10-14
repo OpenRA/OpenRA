@@ -758,6 +758,9 @@ description-path-debug-overlay = toggles a visualization of path searching.
 ## TerrainGeometryOverlay
 description-terrain-geometry-overlay = toggles the terrain geometry overlay.
 
+## ActorMapOverlay
+description-actor-map-overlay = toggles the actor map overlay.
+
 ## MapOptions, MissionBrowserLogic
 options-game-speed =
     .slowest = Slowest
