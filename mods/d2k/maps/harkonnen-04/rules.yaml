@@ -62,13 +62,17 @@ engineer:
 
 repair_pad:
 	Buildable:
-		Prerequisites: heavy_factory, upgrade.heavy
+		Prerequisites: heavy_factory
 
 mcv:
 	Buildable:
-		Prerequisites: repair_pad, upgrade.heavy
+		Prerequisites: repair_pad
 
 upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
 	Buildable:
 		Prerequisites: ~disabled
 
