@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (firstTick)
 			{
-				resourceMapModule = bot.Player.PlayerActor.TraitsImplementing<ResourceMapBotModule>().First(t => t.IsTraitEnabled());
+				resourceMapModule = bot.Player.PlayerActor.TraitsImplementing<ResourceMapBotModule>().FirstOrDefault(t => t.IsTraitEnabled());
 				firstTick = false;
 			}
 
