@@ -79,6 +79,12 @@ Player:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		HarvesterTypes: harvester
 		RefineryTypes: refinery
+	ResourceMapBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		ValuableResourceTypes: spice
+		ResourceCreatorTypes: spicebloom.spawnpoint, spicebloom
+		HarvesterTypes: harvester
+		EnemyBaseBuildingTypes: construction_yard, refinery, barracks, wind_trap, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret
 	BaseBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		BuildingQueues: Building, Upgrade
