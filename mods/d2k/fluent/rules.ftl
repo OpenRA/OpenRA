@@ -180,7 +180,7 @@ actor-light-inf =
 
         - Explosion Radius: Small
         - Vision: Very small
-        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator
+        - Strong vs Light Infantry, Trooper, Missile tank, Deviator
         - Weak vs Combat tank, Siege tank, Grenadier, Trike, Sonic Tank
 
 actor-engineer =
@@ -196,7 +196,7 @@ actor-engineer =
 
     Engineers are resistant to anti-tank weaponry but are very vulnerable to high-explosives, fire, and small arms.
 
-    Engineer can reactivate destoryed husk to barely functional state. This allow send husk to nearest repair pad for full repair.
+    Engineer can reactivate destroyed husk to barely functional state. This allow send husk to nearest repair pad for full repair.
 
 actor-trooper =
     .name = Trooper
@@ -240,7 +240,7 @@ actor-fremen =
 
         - Explosion Radius: Medium
         - Vision: Small
-        - Strong vs  Quad, Trike, Missile tank, Combat tank, Devastator Buildings, Defenses
+        - Strong vs Quad, Trike, Missile tank, Combat tank, Devastator Buildings, Defenses
         - Weak vs Siege tank, Light Infantry, Grenadier, Sonic Tank
 
 actor-grenadier =
@@ -256,7 +256,7 @@ actor-grenadier =
 
         - Explosion Radius: Large
         - Vision: Small
-        - Strong vs  Light Infantry, Trike, Missile tank, Combat tank, Buildings, Defenses
+        - Strong vs Light Infantry, Trike, Missile tank, Combat tank, Buildings, Defenses
         - Weak vs Siege tank, Combat tank, Sonic Tank, Devastator
 
 actor-sardaukar =
@@ -582,7 +582,7 @@ actor-trike =
 
         - Explosion Radius: Small
         - Vision: Medium
-        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator
+        - Strong vs Light Infantry, Trooper, Missile tank, Deviator
         - Weak vs Combat tank, Siege tank, Grenadier, Sardaukars
 
     Tip: Trike have 0.5 range advantage against light infantry. Move them back as soon as light infantry come too close.
@@ -707,7 +707,7 @@ actor-raider =
 
         - Explosion Radius: small
         - Vision: small
-        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator, Trike
+        - Strong vs Light Infantry, Trooper, Missile tank, Deviator, Trike
         - Weak vs Combat tank, Siege tank, Grenadier, Sardaukars, Quad
 
 actor-stealth-raider =
@@ -723,7 +723,7 @@ actor-stealth-raider =
 
         - Explosion Radius: Small
         - Vision: Small
-        - Strong vs  Light Infantry, Trooper, Missile tank, Deviator, Trike
+        - Strong vs Light Infantry, Trooper, Missile tank, Deviator, Trike
         - Weak vs Combat tank, Siege tank, Grenadier, Sardaukars
 
     Tip: Siege and Missile tanks can shoot beyound they vision. Use Stealth raider to extend they vision so they can shoot at maximum range.
