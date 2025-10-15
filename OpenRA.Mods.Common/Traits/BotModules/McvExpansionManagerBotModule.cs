@@ -467,7 +467,7 @@ namespace OpenRA.Mods.Common.Traits
 
 						foreach (var (othermcv, dest) in activeMCVs)
 						{
-							if (dest == indiceCenter)
+							if (dest == indiceCenter && othermcv != mcv)
 								attraction -= indiceSideLengthSquare << 1;
 						}
 
