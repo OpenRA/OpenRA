@@ -5,6 +5,8 @@ World:
 		WinVideo: flare.vqa
 		LossVideo: nukestok.vqa
 		Briefing: A radical faction of our forces has stolen a biological weapon, threatening to use it on Allied emplacements. Since the weapon is highly unstable, it could destroy us all if released. \n\nThe facility must be destroyed, but the weapon must be neutralized first. Destroy the island's defenses, then use Volkov to assist our scientist in reaching the bio-research center. If either are killed before the weapon is neutralized, the mission is a failure.\n\nOnce the scientist completes his mission, destroy the base.
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
 
 VOLK:
 	Inherits: GNRL
@@ -50,15 +52,29 @@ LST.Reinforcement:
 	RenderSprites:
 		Image: lst
 	Interactable:
+	Cargo:
+		BetweenUnloadDelay: 10
 
 MSLO:
 	Power:
 		Amount: 0
 	-WithColoredOverlay@IDISABLE:
-	-NukePower:
+	NukePower:
+		DisplayTimerRelationships: Neutral
+	ExternalCondition@NODEMO:
+		Condition: demolish-disabled
+	Demolishable:
+		RequiresCondition: !demolish-disabled
+	DamageMultiplier@NODEMO:
+		Modifier: 0
+		RequiresCondition: demolish-disabled
 
 SAM:
 	-WithColoredOverlay@IDISABLE:
+	RevealsShroud:
+		Range: 2c0
+	RevealsShroud@GAPGEN:
+		Range: 2c0
 
 BADR.Bomber:
 	Aircraft:
@@ -68,16 +84,36 @@ BADR.Bomber:
 	RenderSprites:
 		Image: U2
 
+FLARE:
+	Tooltip:
+		Name: actor-gas-name
+
 powerproxy.parabombs:
 	AirstrikePower:
 		DisplayBeacon: False
+
+CAMERA.Bomber:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 12c0
 
 DELPHI:
 	Tooltip:
 		Name: actor-scientist-name
 	Infiltrates:
 		Types: ScientistInfiltrate
+	ExternalCondition:
+		Condition: can-be-targeted
+	Targetable:
+		RequiresCondition: can-be-targeted
 
 BIO:
 	Targetable:
 		TargetTypes: GroundActor, Structure, C4, DetonateAttack, ScientistInfiltrate
+	ExternalCondition@NODEMO:
+		Condition: demolish-disabled
+	Demolishable:
+		RequiresCondition: !demolish-disabled
+	DamageMultiplier@NODEMO:
+		Modifier: 0
+		RequiresCondition: demolish-disabled

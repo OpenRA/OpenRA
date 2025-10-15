@@ -341,6 +341,9 @@ destroy-bio-weapons-lab-missile-silos = Destroy the bio-weapons lab and the miss
 destroy-all-sam-sites-strategic-bombers = Destroy all SAM sites on the island.
     Our strategic bombers will finish the rest.
 
+## situation-critical, soviet-10
+run-for-it = RUN FOR IT!
+
 ## situation-critical, soviet-soldier-volkov-n-chitzkoi
 volkov-survive = Volkov must survive.
 
@@ -393,7 +396,6 @@ destroy-stolen-convoy-truck = Destroy the stolen convoy truck
 defend-forward-command-center = Defend our forward Command Center.
 
 ## soviet-10
-run-for-it = RUN FOR IT!
 convoy-commander = Convoy commander
 we-are-surrounded = We are surrounded!
 corridor-closes-in = Corridor closes in { $time }

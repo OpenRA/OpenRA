@@ -41,7 +41,7 @@ actor-5tnk =
 
 actor-5tnk-husk-name = Husk (Super Tank)
 
-## mousetrap
+## mousetrap, situation-critical
 actor-gas-name = Gas
 
 ## sarin-gas-2-down-under
