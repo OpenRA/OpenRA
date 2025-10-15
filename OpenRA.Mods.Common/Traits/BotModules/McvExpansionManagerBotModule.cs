@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Traits
 			 *
 			 * 2). the weight of friendly construction yard within range: -indiceSideLengthSquare. If it belongs to an ally, -indiceSideLengthSquare/2.
 			 *
-			 * 3). the weight of enemy high threat within range: -indiceSideLengthSquare*8, otherwise -indiceSideLengthSquare/64
+			 * 3). the weight of enemy within range: -indiceSideLengthSquare*8 for base building, otherwise -indiceSideLengthSquare/64
 			 *
 			 * 4). the weight of friendly refinery within range (not for CheckBase mode): -indiceSideLengthSquare. If it belongs to an ally, -indiceSideLengthSquare/2.
 			 *
@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				/*
 				 * CheckBase mode only considers the distance to current MCV, ally construction yard within range and enemy buildings within range.
-				 * Attaction has a base value of indiceSideLengthSquare >> 3 (1/8 of the maximum distance weight, 1/(2*sqrt(2))≈ 1/2.8 of the maximum distance in map)
+				 * Attaction has a base value of indiceSideLengthSquare >> 1 (1/2 of the maximum distance weight, 1/ sqrt(2) ≈ 1/1.4 of maximum euclid distance in map)
 				 */
 				case BotMcvExpansionMode.CheckBase:
 					var cb_conyardlocs = world.ActorsHavingTrait<Building>()
@@ -374,8 +374,8 @@ namespace OpenRA.Mods.Common.Traits
 				/*
 				 * CheckResource mode considers the distance to current MCV, ally construction yard & refinery within range,
 				 * Attaction has a base value of:
-				 * 1. if not Mobile: indiceSideLengthSquare >> 4 (1/16 of the maximum distance weight, = 0.25 of the maximum euclid distance in map)
-				 * 2. if Mobile: indiceSideLengthSquare >> 3 (1/8 of the maximum distance weight, ≈ 0.35 of the maximum euclid distance in map)
+				 * 1. if not Mobile: indiceSideLengthSquare >> 2 (1/4 of the maximum distance weight, = 0.5 of the maximum euclid distance in map)
+				 * 2. if Mobile: indiceSideLengthSquare >> 1 (1/2 of the maximum distance weight, ≈ 0.71 of the maximum euclid distance in map)
 				 */
 				case BotMcvExpansionMode.CheckResource:
 
@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.Traits
 						.Select(a => (a.Location, a.Owner != player))
 						.ToArray();
 
-					// We only take indice has more than half of average indice value (in weight calculation), to skip the indice with very poor resource
+					// We only take indice has more than the half of average indice value (in weight calculation), to skip the indice with very poor resource
 					// when failedAttempts is acceptable.
 					var thresholdRes = 0;
 					for (var i = 0; i < resourceMapModule.GetIndicesLength(); i++)

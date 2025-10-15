@@ -58,8 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Tick(IBot bot, ILookup<string, ProductionQueue> queuesByCategory)
 		{
-			// If failed to place something N consecutive times, we will try move the MCV
-			// If it is possible.
+			// If we can't place any structures, give a nudge to BaseExpansionModules and hope it gets fixed.
 			if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts)
 			{
 				if (baseBuilder.BaseExpansionModules != null && baseCenterKeepsFailing != null)
@@ -77,7 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 					failCount = 0;
 				}
 
-				// Otherwise, only bother resetting failCount if either a) the number of buildings has decreased since last failure M ticks ago,
+				// No BaseExpansionModules exist. Only bother resetting failCount when either
+				// a) the number of buildings has decreased since last failure M ticks ago,
 				// or b) number of BaseProviders (construction yard or similar) has increased since then.
 				// Otherwise reset failRetryTicks instead to wait again.
 				else if (baseBuilder.BaseExpansionModules == null && --failRetryTicks <= 0)
@@ -232,6 +232,8 @@ namespace OpenRA.Mods.Common.Traits
 						SuppressVisualFeedback = true
 					});
 
+					// After succesfuly placing a building, nudge BaseExpansionModules to expand.
+					// We want to avoid expanding too often, so we make a judgement by counting buildings.
 					if (baseBuilder.Info.ProductionTypes.Contains(currentBuilding.Item)
 						|| baseBuilder.Info.TechTypes.Contains(currentBuilding.Item) || baseBuilder.Info.RefineryTypes.Contains(currentBuilding.Item))
 					{
@@ -541,25 +543,35 @@ namespace OpenRA.Mods.Common.Traits
 					// Try and place the refinery near a resource field
 					if (resourceLayer != null)
 					{
-						// If we have failed to place to the best refinery point, try and place it near the base center
-						var resourceBaseCenter = failCount > 0 ? baseCenter : (requestRef != null ?
-							baseBuilder.RequestedRefineries[requestRef].ConyardLoc : (baseBuilder.ResourceConyardCenter ?? baseCenter));
+						// If we have failed to place to the requested refinery point, try and place it near the base center
+						var resourceBaseCenter = failCount > 0 ? baseCenter :
+							(requestRef != null ? baseBuilder.RequestedRefineries[requestRef].ConyardLoc : (baseBuilder.ResourceConyardCenter ?? baseCenter));
 
+						// If we have a ResourceMapModule, only consider the resource types it considers valuable
+						// Otherwise consider any resource type
 						var nearbyResources = world.Map
 							.FindTilesInAnnulus(resourceBaseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
 							.Where(c => baseBuilder.ResourceMapModule != null ?
 							baseBuilder.ResourceMapModule.Info.ValuableResourceTypes.Contains(resourceLayer.GetResource(c).Type)
 							: resourceLayer.GetResource(c).Type != null);
 
+						// Find the closest refinery we have if we have any when not failing to place for the first time
 						var closestRefinery = failCount <= 0
 							? baseBuilder.RefineryBuildings.Actors.Where(a => !a.IsDead)?.ClosestToIgnoringPath(world.Map.CenterOfCell(resourceBaseCenter))
 							: null;
 
-						var resourcesShouldCheck = closestRefinery == null ?
-							nearbyResources.Shuffle(world.LocalRandom) :
-							(requestRef != null ? nearbyResources.OrderBy(c => (c - baseBuilder.RequestedRefineries[requestRef].ResourceLoc).LengthSquared)
-							: nearbyResources.OrderByDescending(c => (c - closestRefinery.Location).LengthSquared))
-							.Take(baseBuilder.Info.MaxResourceCellsToCheck);
+						IEnumerable<CPos> resourcesShouldCheck = null;
+
+						if (closestRefinery == null)
+							resourcesShouldCheck = nearbyResources.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+						else if (requestRef != null)
+						{
+							resourcesShouldCheck = nearbyResources.OrderBy(c => (c - baseBuilder.RequestedRefineries[requestRef].ResourceLoc).LengthSquared)
+								.Take(baseBuilder.Info.MaxResourceCellsToCheck);
+						}
+						else
+							resourcesShouldCheck = nearbyResources.OrderByDescending(c => (c - closestRefinery.Location).LengthSquared)
+								.Take(baseBuilder.Info.MaxResourceCellsToCheck);
 
 						foreach (var r in resourcesShouldCheck)
 						{

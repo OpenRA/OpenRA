@@ -193,9 +193,11 @@ namespace OpenRA.Mods.Common.Traits
 			var worstEffectHarvesterCount = int.MaxValue;
 
 			var lackHarvesterIndices = new List<(int Attraction, int LackHarvs, CPos ResoueceCenter)>();
+
 			/*
 			 * indiceSideLengthSquare (which is equal to indiceSideLength * indiceSideLength) is used as the basic unit to calculate the attraction of a candidate,
-			 * we  compare the attraction on the same scale on different factors, such as candidate's distance to current MCV and ally construction yard & refinery within range, etc:
+			 * we compare the attraction on the same scale on different factors, such as ally refinery within range or threats nearby.
+			 * Note: this function requires an enabled resourceMapModule.
 			 */
 
 			var indiceSideLengthSquare = resourceMapModule.GetIndiceSideLength() * resourceMapModule.GetIndiceSideLength();
