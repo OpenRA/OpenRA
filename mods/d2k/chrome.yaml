@@ -81,7 +81,7 @@ radar-ordos:
 radar-harkonnen:
 	Inherits: ^Chrome
 	Regions:
-		insignia: 227, 127, 100, 100
+		insignia: 227, 127, 100, 90
 
 power-icons:
 	Inherits: ^Glyphs
