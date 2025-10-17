@@ -55,3 +55,6 @@ available to you under the terms of the GNU General Public License
 as published by the Free Software Foundation, either version 3 of
 the License, or (at your option) any later version. For more
 information, see [COPYING](https://github.com/OpenRA/OpenRA/blob/bleed/COPYING).
+
+# Sponsors
+Free code signing on Windows provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
