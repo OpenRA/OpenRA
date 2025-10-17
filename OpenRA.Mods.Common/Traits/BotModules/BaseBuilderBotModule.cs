@@ -251,7 +251,7 @@ namespace OpenRA.Mods.Common.Traits
 			DefenseCenter = newLocation;
 		}
 
-		bool IBotRequestPauseUnitProduction.PauseUnitProduction => !IsTraitDisabled && !HasAdequateRefineryCount();
+		bool IBotRequestPauseUnitProduction.PauseUnitProduction => !IsTraitDisabled && !HasMinimalRefineryCount();
 
 		void IBotTick.BotTick(IBot bot)
 		{
@@ -477,14 +477,16 @@ namespace OpenRA.Mods.Common.Traits
 		// Require at least one refinery, unless we can't build it.
 		public bool HasAdequateRefineryCount() =>
 			Info.RefineryTypes.Count == 0 ||
-			AIUtils.CountActorByCommonName(RefineryBuildings) >= MinimumRefineryCount() ||
+			AIUtils.CountActorByCommonName(RefineryBuildings) >= OptimalRefineryCount() ||
 			AIUtils.CountActorByCommonName(powerBuildings) == 0 ||
 			AIUtils.CountActorByCommonName(ConstructionYardBuildings) == 0;
 
-		int MinimumRefineryCount() =>
+		int OptimalRefineryCount() =>
 			AIUtils.CountActorByCommonName(ProductionBuildings) > 0
 			? Info.InititalMinimumRefineryCount + Info.AdditionalMinimumRefineryCount
 			: Info.InititalMinimumRefineryCount;
+		bool HasMinimalRefineryCount() =>
+			AIUtils.CountActorByCommonName(RefineryBuildings) >= Info.InititalMinimumRefineryCount;
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
 		{
