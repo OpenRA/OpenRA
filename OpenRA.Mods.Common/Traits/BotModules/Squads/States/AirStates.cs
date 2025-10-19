@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 			}
 
-			if (!NearToPosSafely(owner, owner.Target.CenterPosition))
+			if (!NearToPosSafely(owner, owner.Units.ClosestToIgnoringPath(owner.TargetActor).CenterPosition))
 			{
 				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
 				return;
