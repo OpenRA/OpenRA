@@ -42,6 +42,12 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int SampleRate => reader.SampleRate;
 		public float LengthInSeconds { get; }
 		public Stream GetPCMInputStream() { return new OggStream(new OggFormat(this)); }
+		public byte[] GetPCMData()
+		{
+			using var pcmStream = GetPCMInputStream();
+			return pcmStream.ReadAllBytes();
+		}
+
 		public void Dispose() { reader.Dispose(); }
 
 		readonly VorbisReader reader;

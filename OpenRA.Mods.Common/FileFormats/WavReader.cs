@@ -21,9 +21,11 @@ namespace OpenRA.Mods.Common.FileFormats
 	{
 		enum WaveType : short { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
 
-		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out Func<byte[]> pcmDataFactory,
+		out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
 		{
 			result = null;
+			pcmDataFactory = null;
 			channels = -1;
 			sampleBits = -1;
 			sampleRate = -1;
@@ -103,6 +105,13 @@ namespace OpenRA.Mods.Common.FileFormats
 					return new WavStreamMsAdpcm(audioStream, dataSize, blockAlign, chan);
 
 				return audioStream; // Data is already PCM format.
+			};
+
+			var func = result;
+			pcmDataFactory = () =>
+			{
+				using var funcStream = func();
+				return funcStream.ReadAllBytes();
 			};
 
 			return true;

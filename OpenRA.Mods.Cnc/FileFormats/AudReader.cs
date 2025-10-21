@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 	public static class AudReader
 	{
-		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
+		public static bool LoadSound(Stream s, out Func<Stream> result,
+			out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
 		{
 			result = null;
 			var startPosition = s.Position;
