@@ -103,9 +103,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			int dataSize;
 			byte[] inputBuffer;
 
-			int currentSample;
+			short currentSample;
 			int baseOffset;
-			int index;
+			byte index;
 
 			public ImaAdpcmAudStream(Stream stream, int outputSize, int dataSize)
 				: base(stream)

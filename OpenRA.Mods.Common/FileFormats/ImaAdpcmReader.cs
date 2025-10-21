@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Runtime.CompilerServices;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
@@ -30,39 +31,49 @@ namespace OpenRA.Mods.Common.FileFormats
 			16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
 		];
 
-		public static short DecodeImaAdpcmSample(byte b, ref int index, ref int current)
+		/// <summary>
+		/// Decodes a single IMA ADPCM nibble to a PCM sample.
+		/// </summary>
+		/// <remarks>
+		/// Branchless and only the output variables leave registers.
+		/// </remarks>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static short DecodeImaAdpcmSample(byte nibble, ref byte idx, ref short pred)
 		{
-			var sb = (b & 8) != 0;
-			b &= 7;
+			var step = StepTable[idx];
+			var diff = step >> 3;
 
-			var delta = StepTable[index] * b / 4 + StepTable[index] / 8;
-			if (sb)
-				delta = -delta;
+			var mask = nibble & 7;
+			diff += ((mask >> 2) & 1) * step;
+			diff += ((mask >> 1) & 1) * (step >> 1);
+			diff += (mask & 1) * (step >> 2);
 
-			current += delta;
-			if (current > short.MaxValue)
-				current = short.MaxValue;
+			// branchless negation via bitmask
+			var sign = (nibble & 8) != 0 ? -1 : 1;
+			diff *= sign;
 
-			if (current < short.MinValue)
-				current = short.MinValue;
+			var sample = pred + diff;
 
-			index += IndexAdjust[b];
-			if (index < 0)
-				index = 0;
+			// branchless clamping (fast saturating logic)
+			if ((uint)(sample - short.MinValue) > ushort.MaxValue)
+				sample = sample > 0 ? short.MaxValue : short.MinValue;
 
-			if (index > 88)
-				index = 88;
+			pred = (short)sample;
 
-			return (short)current;
+			var newIdx = idx + IndexAdjust[mask];
+			newIdx = newIdx < 0 ? 0 : newIdx > 88 ? 88 : newIdx;
+			idx = (byte)newIdx;
+
+			return pred;
 		}
 
-		public static void LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index, Span<byte> output)
+		public static void LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref byte index, Span<byte> output)
 		{
-			var currentSample = 0;
+			short currentSample = 0;
 			LoadImaAdpcmSound(raw, ref index, ref currentSample, output);
 		}
 
-		public static void LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index, ref int currentSample, Span<byte> output)
+		public static void LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref byte index, ref short currentSample, Span<byte> output)
 		{
 			var dataSize = raw.Length;
 			if (output.Length != raw.Length * 4)
