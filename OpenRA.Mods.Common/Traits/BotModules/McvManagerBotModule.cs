@@ -44,6 +44,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should deployment of additional MCVs be restricted to MaxBaseRadius if explicit deploy locations are missing or occupied?")]
 		public readonly bool RestrictMCVDeploymentFallbackToBase = true;
 
+		[Desc("Build additional MCV if cash is above this.")]
+		public readonly int BuildAdditionalMCVCashAmount = 2000;
+
 		public override object Create(ActorInitializer init) { return new McvManagerBotModule(init.Self, this); }
 	}
 
@@ -70,6 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		CPos initialBaseCenter;
 		int scanInterval;
 		bool firstTick = true;
+		PlayerResources playerResources;
 
 		public McvManagerBotModule(Actor self, McvManagerBotModuleInfo info)
 			: base(info)
@@ -85,6 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			notifyPositionsUpdated = self.Owner.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
 			requestUnitProduction = self.Owner.PlayerActor.TraitsImplementing<IBotRequestUnitProduction>().ToArray();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -126,6 +131,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldBuildMCV()
 		{
+			if (playerResources.GetCashAndResources() <= Info.BuildAdditionalMCVCashAmount)
+				return false;
+
 			// Only build MCV if we don't already have one in the field.
 			var allowedToBuildMCV = AIUtils.CountActorByCommonName(mcvs) == 0;
 			if (!allowedToBuildMCV)
@@ -194,8 +202,13 @@ namespace OpenRA.Mods.Common.Traits
 					cells = cells.Shuffle(world.LocalRandom);
 
 				foreach (var cell in cells)
-					if (world.CanPlaceBuilding(cell + offset, actorInfo, bi, null))
+				{
+					// ensure there are no additional conyard near by
+					var conyardsInRange = world.FindActorsInCircle(world.Map.CenterOfCell(cell), WDist.FromCells(minRange)).Where(
+						a => a.Info.Name == actorType);
+					if (world.CanPlaceBuilding(cell + offset, actorInfo, bi, null) && !conyardsInRange.Any())
 						return cell;
+				}
 
 				return null;
 			}

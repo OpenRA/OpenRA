@@ -31,7 +31,7 @@ Player:
 					Types: Vehicle, Tank, Infantry
 					Attractiveness: 2
 					TargetMetric: Value
-					CheckRadius: 3c0
+					CheckRadius: 4c0
 				Consideration@2:
 					Against: Enemy
 					Types: Structure, Defense
@@ -55,17 +55,23 @@ Player:
 				MinimumAttractiveness: 3500
 				Consideration@1:
 					Against: Enemy
-					Types: Structure, Defense
+					Types: Defense
 					Attractiveness: 10
 					TargetMetric: Value
 					CheckRadius: 5c0
+				Consideration@2:
+					Against: Enemy
+					Types: Structure, Defense
+					Attractiveness: 7
+					TargetMetric: Value
+					CheckRadius: 6c0
 				Consideration@3:
 					Against: Enemy
 					Types: Infantry, Vehicle, Tank, Defense
 					Attractiveness: 5
 					TargetMetric: Value
-					CheckRadius: 4c0
-				Consideration@2:
+					CheckRadius: 6c0
+				Consideration@4:
 					Against: Ally
 					Types: Air, Ground
 					Attractiveness: -10
@@ -79,34 +85,40 @@ Player:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		HarvesterTypes: harvester
 		RefineryTypes: refinery
+		HarvesterEnemyAvoidanceRadius: 7c0
+		InitialHarvesters: 7
 	ResourceMapBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
-		ValuableResourceTypes: spice
+		ValuableResourceTypes: Spice
 		ResourceCreatorTypes: spicebloom.spawnpoint, spicebloom
 		HarvesterTypes: harvester
 		EnemyBaseBuildingTypes: construction_yard, refinery, barracks, wind_trap, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret
 	BaseBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		BuildingQueues: Building, Upgrade
-		MinimumExcessPower: 60
-		MaximumExcessPower: 250
+		MinimumExcessPower: 0
+		MaximumExcessPower: 200
 		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncreaseThreshold: 5
 		MaxBaseRadius: 40
 		ConstructionYardTypes: construction_yard
 		RefineryTypes: refinery
 		PowerTypes: wind_trap
-		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		ProductionTypes: light_factory, heavy_factory, barracks
+		TechTypes: outpost, upgrade.heavy, research_centre, palace, upgrade.hightech
 		SiloTypes: silo
-		DefenseTypes: medium_gun_turret,large_gun_turret
-		SellRefineryInterval: -1
+		DefenseTypes: medium_gun_turret, large_gun_turret
+		SellRefineryNoResourceDistance: 15
+		MaxRefineryPerIndice: 4
+		InititalMinimumRefineryCount: 2
+		AdditionalMinimumRefineryCount: 1
 		BuildingLimits:
 			barracks: 3
-			refinery: 4
+			refinery: 8
 			outpost: 1
 			high_tech_factory: 1
-			light_factory: 2
-			heavy_factory: 2
+			light_factory: 3
+			heavy_factory: 3
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
@@ -116,17 +128,19 @@ Player:
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
+			silo: 20
 		BuildingFractions:
-			barracks: 1
-			refinery: 20
-			medium_gun_turret: 8
+			barracks: 10
+			refinery: 40
+			medium_gun_turret: 20
 			outpost: 1
+			wind_trap: 0
 			high_tech_factory: 1
-			large_gun_turret: 6
-			light_factory: 1
-			heavy_factory: 1
+			large_gun_turret: 8
+			light_factory: 10
+			heavy_factory: 10
 			starport: 1
-			repair_pad: 1
+			repair_pad: 5
 			research_centre: 1
 			palace: 1
 			upgrade.conyard: 1
@@ -135,7 +149,7 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingDelays:
-			upgrade.conyard: 10000
+			upgrade.conyard: 20000
 			repair_pad: 12000
 			outpost: 5000
 			research_centre: 15000
@@ -143,29 +157,32 @@ Player:
 			upgrade.light: 5000
 			starport: 15000
 			upgrade.heavy: 15000
-			medium_gun_turret: 3000
 	BaseBuilderBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
 		BuildingQueues: Building, Upgrade
-		MinimumExcessPower: 60
-		MaximumExcessPower: 250
+		MinimumExcessPower: 0
+		MaximumExcessPower: 200
 		ExcessPowerIncrement: 50
 		ExcessPowerIncreaseThreshold: 4
 		MaxBaseRadius: 40
 		ConstructionYardTypes: construction_yard
 		RefineryTypes: refinery
 		PowerTypes: wind_trap
-		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		ProductionTypes: light_factory, heavy_factory, barracks
 		SiloTypes: silo
-		DefenseTypes: medium_gun_turret,large_gun_turret
-		SellRefineryInterval: -1
+		TechTypes: outpost, upgrade.heavy, research_centre, palace, upgrade.hightech
+		DefenseTypes: medium_gun_turret, large_gun_turret
+		SellRefineryInterval: 5000
+		MaxRefineryPerIndice: 4
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 3
 		BuildingLimits:
 			barracks: 3
-			refinery: 4
+			refinery: 8
 			outpost: 1
 			high_tech_factory: 1
-			light_factory: 2
-			heavy_factory: 2
+			light_factory: 3
+			heavy_factory: 3
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
@@ -175,17 +192,19 @@ Player:
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
+			silo: 20
 		BuildingFractions:
-			barracks: 1
-			refinery: 20
-			medium_gun_turret: 5
+			wind_trap: 0
+			barracks: 20
+			refinery: 30
+			medium_gun_turret: 7
 			outpost: 1
 			high_tech_factory: 1
-			large_gun_turret: 10
-			light_factory: 1
-			heavy_factory: 1
+			large_gun_turret: 15
+			light_factory: 10
+			heavy_factory: 5
 			starport: 1
-			repair_pad: 1
+			repair_pad: 10
 			research_centre: 1
 			palace: 1
 			upgrade.conyard: 1
@@ -194,11 +213,12 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingDelays:
-			upgrade.conyard: 12000
+			upgrade.conyard: 20000
 			repair_pad: 10000
 			outpost: 11000
 			upgrade.barracks: 8000
-			upgrade.heavy: 10000
+			upgrade.heavy: 15000
+			upgrade.light: 10000
 			high_tech_factory: 13000
 			starport: 20000
 	BaseBuilderBotModule@gladius:
@@ -207,22 +227,25 @@ Player:
 		MinimumExcessPower: 60
 		MaximumExcessPower: 250
 		ExcessPowerIncrement: 50
-		ExcessPowerIncreaseThreshold: 4
+		ExcessPowerIncreaseThreshold: 5
 		MaxBaseRadius: 40
 		ConstructionYardTypes: construction_yard
 		RefineryTypes: refinery
 		PowerTypes: wind_trap
-		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		ProductionTypes: light_factory, heavy_factory, barracks
 		SiloTypes: silo
-		DefenseTypes: medium_gun_turret,large_gun_turret
-		SellRefineryInterval: -1
+		TechTypes: outpost, upgrade.heavy, research_centre, palace, upgrade.hightech
+		DefenseTypes: medium_gun_turret, large_gun_turret
+		MaxRefineryPerIndice: 4
+		InititalMinimumRefineryCount: 1
+		AdditionalMinimumRefineryCount: 3
 		BuildingLimits:
 			barracks: 3
-			refinery: 4
+			refinery: 8
 			outpost: 1
 			high_tech_factory: 1
-			light_factory: 2
-			heavy_factory: 2
+			light_factory: 3
+			heavy_factory: 3
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
@@ -232,17 +255,20 @@ Player:
 			upgrade.light: 1
 			upgrade.heavy: 1
 			upgrade.hightech: 1
+			silo: 20
 		BuildingFractions:
-			barracks: 1
-			refinery: 20
-			medium_gun_turret: 4
+			wind_trap: 0
+			barracks: 10
+			refinery: 40
+			medium_gun_turret: 20
 			outpost: 1
 			high_tech_factory: 1
-			large_gun_turret: 12
-			light_factory: 1
-			heavy_factory: 1
-			repair_pad: 1
+			large_gun_turret: 20
+			light_factory: 10
+			heavy_factory: 10
+			repair_pad: 10
 			research_centre: 1
+			starport: 1
 			palace: 1
 			upgrade.conyard: 1
 			upgrade.barracks: 1
@@ -250,9 +276,8 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingDelays:
-			upgrade.conyard: 10000
+			upgrade.conyard: 20000
 			repair_pad: 10000
-			repair_pad.bot: 10000
 			upgrade.barracks: 3500
 			upgrade.heavy: 15000
 			outpost: 12000
@@ -263,15 +288,15 @@ Player:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	SquadManagerBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
-		SquadSize: 8
-		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		SquadSize: 20
+		MaxBaseRadius: 30
+		ExcludeFromSquadsTypes: harvester, harvester.starport, mcv, mcv.starport, carryall, carryall.reinforce, ornithopter
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep, Air, Cliff
 		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
 	UnitBuilderBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+		UnitQueues: Infantry, Vehicle, Armor, Aircraft
 		UnitsToBuild:
 			carryall: 1
 			light_inf: 65
@@ -288,7 +313,7 @@ Player:
 			combat_tank_o.starport: 15
 			sonic_tank: 10
 			devastator: 10
-			deviator: 7
+			deviator: 10
 			trike: 10
 			raider: 10
 			quad: 15
@@ -302,21 +327,27 @@ Player:
 			harvester: 15
 			carryall: 8
 	McvManagerBotModule:
-		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		RequiresCondition: enable-omnius-ai || enable-gladius-ai || enable-vidious-ai
 		McvTypes: mcv
+		MinimumConstructionYardCount: 3
+		MinBaseRadius: 18
+		MaxBaseRadius: 35
+		ScanForNewMcvInterval: 300
+		RestrictMCVDeploymentFallbackToBase: false
 		ConstructionYardTypes: construction_yard
 		McvFactoryTypes: heavy_factory, starport
 	SquadManagerBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
-		SquadSize: 6
+		SquadSize: 15
 		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		RushInterval: 1500
+		ExcludeFromSquadsTypes: harvester, harvester.starport, mcv, mcv.starport, carryall, carryall.reinforce, ornithopter
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep, Air, Cliff
 		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
 	UnitBuilderBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+		UnitQueues: Infantry, Vehicle, Armor, Aircraft
 		UnitsToBuild:
 			carryall: 1
 			light_inf: 65
@@ -348,15 +379,16 @@ Player:
 			carryall: 8
 	SquadManagerBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
-		SquadSize: 10
+		SquadSize: 15
 		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		IdleScanRadius: 15
+		ExcludeFromSquadsTypes: harvester, harvester.starport, mcv, mcv.starport, carryall, carryall.reinforce, ornithopter
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep, Air, Cliff
 		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
 	UnitBuilderBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
-		UnitQueues: Infantry, Vehicle, Armor, Starport, Aircraft
+		UnitQueues: Infantry, Vehicle, Armor, Aircraft
 		UnitsToBuild:
 			carryall: 1
 			light_inf: 65
@@ -373,7 +405,7 @@ Player:
 			combat_tank_o.starport: 15
 			sonic_tank: 10
 			devastator: 10
-			deviator: 7
+			deviator: 10
 			trike: 10
 			raider: 10
 			quad: 15
