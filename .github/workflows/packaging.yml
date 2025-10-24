@@ -121,7 +121,7 @@ jobs:
 
       - name: Upload Installer
         id: unsigned-artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: build/windows/*.exe
 
