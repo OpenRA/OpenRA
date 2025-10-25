@@ -255,6 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool IsEnabledAndInWorld { get; }
 		int ReservationCount { get; }
 		bool CanBeReserved { get; }
+		string DockedClientCondition { get; }
 		WPos DockPosition { get; }
 
 		/// <summary>Can this <paramref name="client"/> dock at this <see cref="IDockHost"/>.</summary>
