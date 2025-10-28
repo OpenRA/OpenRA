@@ -41,7 +41,6 @@ namespace OpenRA.Mods.Common.FileFormats
 			WaveType audioType = 0;
 			var dataOffset = -1L;
 			var dataSize = -1;
-			var uncompressedSize = -1;
 			short blockAlign = -1;
 			while (s.Position < s.Length)
 			{
@@ -53,7 +52,6 @@ namespace OpenRA.Mods.Common.FileFormats
 
 				var blockType = s.ReadASCII(4);
 				var chunkSize = s.ReadUInt32();
-
 				switch (blockType)
 				{
 					case "fmt ":
@@ -71,18 +69,15 @@ namespace OpenRA.Mods.Common.FileFormats
 						lengthInSeconds = (float)(s.Length * 8) / (channels * sampleRate * sampleBits);
 						s.Position += chunkSize - 16; // Ignoring any optional extra params
 						break;
-					case "fact":
-						uncompressedSize = s.ReadInt32();
-						s.Position += chunkSize - 4; // Ignoring other formats than ADPCM, fact chunk not in standard PCM files
-						break;
 					case "data":
 						if (s.Position + chunkSize > s.Length)
 							chunkSize = (uint)(s.Length - s.Position); // Handle defective data chunk size by assuming it's the remainder of the file
 
-						dataOffset = s.Position;
 						dataSize = (int)chunkSize;
-						s.Position += chunkSize;
+						dataOffset = s.Position;
+						s.Position += dataSize;
 						break;
+					case "fact": // This chunk is often wrong, we will recalculate sample count ourselves
 					case "LIST":
 					case "cue ":
 					default:
@@ -103,7 +98,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			{
 				var audioStream = SegmentStream.CreateWithoutOwningStream(s, dataOffset, dataSize);
 				if (audioType == WaveType.ImaAdpcm)
-					return new WavStreamImaAdpcm(audioStream, dataSize, blockAlign, chan, uncompressedSize);
+					return new WavStreamImaAdpcm(audioStream, dataSize, blockAlign, chan);
 				if (audioType == WaveType.MsAdpcm)
 					return new WavStreamMsAdpcm(audioStream, dataSize, blockAlign, chan);
 
@@ -115,24 +110,35 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		sealed class WavStreamImaAdpcm : ReadOnlyAdapterStream
 		{
+			const int SamplesPerGroup = 8;
+			const int BytesPerSample = 2;
+
 			readonly short channels;
 			readonly int numBlocks;
-			readonly int blockDataSize;
+			readonly int inBlockDataSize;
 			readonly int outputSize;
 			readonly byte[] blockData;
 
 			int outOffset;
 			int currentBlock;
 
-			public WavStreamImaAdpcm(Stream stream, int dataSize, short blockAlign, short channels, int uncompressedSize)
+			public WavStreamImaAdpcm(Stream stream, int dataSize, short blockAlign, short channels)
 				: base(stream)
 			{
 				this.channels = channels;
-				numBlocks = dataSize / blockAlign;
-				blockDataSize = blockAlign - channels * 4;
-				outputSize = uncompressedSize * channels * 2;
 
-				blockData = new byte[blockDataSize];
+				var inHeaderSize = 4 * channels;
+				inBlockDataSize = blockAlign - inHeaderSize;
+
+				numBlocks = dataSize / blockAlign;
+				var numGroupsPerBlock = inBlockDataSize / channels / SamplesPerGroup * BytesPerSample;
+
+				var outGroupSize = SamplesPerGroup * BytesPerSample * channels;
+				var outHead = channels * BytesPerSample;
+				var outGroups = numGroupsPerBlock * outGroupSize;
+				outputSize = numBlocks * (outHead + outGroups);
+
+				blockData = new byte[inBlockDataSize];
 			}
 
 			protected override bool BufferData(Stream baseStream, Queue<byte> data)
@@ -166,7 +172,8 @@ namespace OpenRA.Mods.Common.FileFormats
 				var blockDataSpan = blockData.AsSpan();
 				baseStream.ReadBytes(blockDataSpan);
 				var blockOffset = 0;
-				while (blockOffset < blockDataSize)
+				Span<byte> chunk = stackalloc byte[4];
+				while (blockOffset < inBlockDataSize)
 				{
 					for (var c = 0; c < channels; c++)
 					{
