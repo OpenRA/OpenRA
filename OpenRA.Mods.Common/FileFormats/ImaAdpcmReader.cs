@@ -10,7 +10,10 @@
 #endregion
 
 using System;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
@@ -93,6 +96,115 @@ namespace OpenRA.Mods.Common.FileFormats
 				output[offset++] = (byte)t;
 				output[offset++] = (byte)(t >> 8);
 			}
+		}
+
+		public static byte[] ReadData(Stream stream, long dataOffset, int dataSize, short blockAlign, short channels)
+		{
+			const int SamplesPerGroup = 8;
+
+			ArgumentNullException.ThrowIfNull(stream);
+
+			var sourceData = SegmentStream.GetReadableData(stream, dataOffset, dataSize);
+
+			var numBlocks = dataSize / blockAlign;
+
+			var predictorSize = 4 * channels;
+			var blockDataSize = blockAlign - predictorSize;
+
+			// We get two samples per nibble
+			var samplesPerChannel = blockDataSize * 2 / channels;
+
+			// 8 samples from a 4-byte group
+			var groupCount = samplesPerChannel / SamplesPerGroup;
+
+			var predOut = numBlocks * channels * 2;
+			var groupOut = numBlocks * groupCount * channels * SamplesPerGroup * 2;
+			var estimatedOutDataSize = predOut + groupOut;
+
+			var outData = new byte[estimatedOutDataSize];
+
+			// PERF: The output is 16-bit PCM, so we can write bytes as if they were shorts for less CPU churn.
+			var outShorts = MemoryMarshal.Cast<byte, short>(outData.AsSpan());
+
+			// NOTE: decoding a block is sequentually dependent on predictor/index.
+			Span<short> predictor = stackalloc short[channels];
+			Span<byte> index = stackalloc byte[channels];
+
+			// PERF: Avoid bounds checks by using refs.
+			ref var srcRef = ref MemoryMarshal.GetReference(sourceData);
+			ref var outRef = ref MemoryMarshal.GetReference(outShorts);
+			ref var predRef = ref MemoryMarshal.GetReference(predictor);
+			ref var idxRef = ref MemoryMarshal.GetReference(index);
+
+			// Global decoded sample counter
+			var src = 0;
+			var outSample = 0;
+
+			for (var block = 0; block < numBlocks; block++)
+			{
+				// Initial states
+				for (var c = 0; c < channels; c++)
+				{
+					var offset = src + c * 4;
+
+					// Load initial values.
+					var pred = (short)(Unsafe.Add(ref srcRef, offset) | (Unsafe.Add(ref srcRef, offset + 1) << 8));
+					var idx = Unsafe.Add(ref srcRef, offset + 2);
+
+					Unsafe.Add(ref predRef, c) = pred;
+					Unsafe.Add(ref idxRef, c) = idx;
+				}
+
+				src += predictorSize;
+
+				// Write initial predictor samples interleaved
+				for (var c = 0; c < channels; c++)
+					Unsafe.Add(ref outRef, outSample + c) = Unsafe.Add(ref predRef, c);
+
+				outSample += channels;
+
+				for (var iter = 0; iter < groupCount; iter++)
+				{
+					// Decode 8 samples sequentially per channel
+					for (var c = 0; c < channels; c++)
+					{
+						ref var pred = ref Unsafe.Add(ref predRef, c);
+						ref var idx = ref Unsafe.Add(ref idxRef, c);
+
+						var b0 = Unsafe.Add(ref srcRef, src + 0);
+						var b1 = Unsafe.Add(ref srcRef, src + 1);
+						var b2 = Unsafe.Add(ref srcRef, src + 2);
+						var b3 = Unsafe.Add(ref srcRef, src + 3);
+
+						src += 4;
+
+						// PERF: Decode into temporary variables so they could be easily inlined directly to output.
+						var s0 = DecodeImaAdpcmSample((byte)(b0 & 0x0F), ref idx, ref pred);
+						var s1 = DecodeImaAdpcmSample((byte)(b0 >> 4), ref idx, ref pred);
+						var s2 = DecodeImaAdpcmSample((byte)(b1 & 0x0F), ref idx, ref pred);
+						var s3 = DecodeImaAdpcmSample((byte)(b1 >> 4), ref idx, ref pred);
+						var s4 = DecodeImaAdpcmSample((byte)(b2 & 0x0F), ref idx, ref pred);
+						var s5 = DecodeImaAdpcmSample((byte)(b2 >> 4), ref idx, ref pred);
+						var s6 = DecodeImaAdpcmSample((byte)(b3 & 0x0F), ref idx, ref pred);
+						var s7 = DecodeImaAdpcmSample((byte)(b3 >> 4), ref idx, ref pred);
+
+						// Write interleaved samples (one sample per channel)
+						var basePos = outSample + c;
+						Unsafe.Add(ref outRef, basePos + channels * 0) = s0;
+						Unsafe.Add(ref outRef, basePos + channels * 1) = s1;
+						Unsafe.Add(ref outRef, basePos + channels * 2) = s2;
+						Unsafe.Add(ref outRef, basePos + channels * 3) = s3;
+						Unsafe.Add(ref outRef, basePos + channels * 4) = s4;
+						Unsafe.Add(ref outRef, basePos + channels * 5) = s5;
+						Unsafe.Add(ref outRef, basePos + channels * 6) = s6;
+						Unsafe.Add(ref outRef, basePos + channels * 7) = s7;
+					}
+
+					outSample += channels * 8;
+				}
+			}
+
+			return outData;
 		}
 	}
 }
