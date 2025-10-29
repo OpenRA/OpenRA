@@ -114,7 +114,11 @@ LabInfiltrated = function()
 		if not Allies2 then
 			Allies1.Cash = 5000
 		end
-		Media.PlaySpeechNotification(Allies1, "AlliedReinforcementsSouth")
+
+		Utils.Do(Humans, function(player)
+			Media.PlaySpeechNotification(player, "AlliedReinforcementsSouth")
+		end)
+
 		StartTimer()
 		HijackTruck.Destroy()
 		ReinforcementsHaveArrived = true
@@ -236,24 +240,29 @@ CapOre = function(player)
 	end
 end
 
-NewPatrol = function(actorType, start, waypoints)
-	local guard = Actor.Create(actorType, true, { Owner = Soviets, Location = start })
-	guard.Patrol(waypoints, true, Utils.RandomInteger(50, 75))
+NewPatrol = function(actorTypes, waypoints, start)
+	Reinforcements.Reinforce(Soviets, actorTypes, { start }, 0, function(guard)
+		guard.Patrol(waypoints, true, DateTime.Seconds(3))
+	end)
 end
 
 SetupPatrols = function()
-	Utils.Do(Patrol1, function(patrol1) NewPatrol(patrol1, PatrolPoints1[1], PatrolPoints1) end)
-	Utils.Do(Patrol2, function(patrol2) NewPatrol(patrol2, PatrolPoints1[3], PatrolPoints1) end)
-	Utils.Do(Patrol2, function(patrol3) NewPatrol(patrol3, PatrolPoints3[1], PatrolPoints3) end)
-	Utils.Do(Patrol2, function(patrol4) NewPatrol(patrol4, PatrolPoints4[1], PatrolPoints4) end)
+	NewPatrol(Patrol1, PatrolPoints1, PatrolPoints1[1])
+	NewPatrol(Patrol2, PatrolPoints1, PatrolPoints1[3])
+	NewPatrol(Patrol3, PatrolPoints3, PatrolPoints3[1])
+	NewPatrol(Patrol3, PatrolPoints4, PatrolPoints4[1])
 
 	if Difficulty == "hard" then
-		Utils.Do(Patrol3, function(patrol5) NewPatrol(patrol5, PatrolPoints2[1], PatrolPoints2) end)
+		NewPatrol(Patrol3, PatrolPoints2, PatrolPoints2[1])
 	end
 
-	local checkpoint = { BaseGuardTruckPos.Location }
-	Trigger.OnEnteredFootprint(checkpoint, function(a, id)
-		Trigger.RemoveFootprintTrigger(id)
+	local checkpoint = BaseGuardTruckPos.CenterPosition
+	Trigger.OnEnteredProximityTrigger(checkpoint, WDist.FromCells(2), function(a, id)
+		if not a.Owner.IsAlliedWith(Allies) then
+			return
+		end
+
+		Trigger.RemoveProximityTrigger(id)
 		if not BaseGuard.IsDead then
 			BaseGuard.ScriptedMove(BaseGuardMovePos.Location)
 		end
@@ -280,19 +289,19 @@ SecureLabTimer = function()
 end
 
 SovietBaseMaintenanceSetup = function()
-	local sovietbuildings = Utils.Where(Map.NamedActors, function(a)
-		return a.Owner == Soviets and a.HasProperty("StartBuildingRepairs")
+	local sovietBuildings = Utils.Where(Soviets.GetActors(), function(a)
+		return a.HasProperty("StartBuildingRepairs")
 	end)
 
-	Trigger.OnAllKilledOrCaptured(sovietbuildings, function()
+	Trigger.OnAllKilledOrCaptured(sovietBuildings, function()
 		Utils.Do(Humans, function(player)
 			player.MarkCompletedObjective(DestroyBase)
 		end)
 	end)
 
-	Utils.Do(sovietbuildings, function(sovietbuilding)
-		Trigger.OnDamaged(sovietbuilding, function(building)
-			if building.Owner == Soviets and building.Health < building.MaxHealth * 3/4 then
+	Utils.Do(sovietBuildings, function(building)
+		Trigger.OnDamaged(building, function()
+			if not building.IsDead and building.Owner == Soviets and building.Health < building.MaxHealth * 0.75 then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -323,16 +332,13 @@ CheckLabSecured = function()
 		end)
 	end
 
-	local radius = WDist.FromCells(10)
-	local labGuards = Utils.Where(Map.ActorsInCircle(LabWaypoint.CenterPosition, radius), function(a)
-		return a.Owner == Soviets and a.HasProperty("Move")
-	end)
-
-	if #labGuards < 1 then
-		LabSecured = true
+	if #LabGuards.GetGroundAttackers() == 0 and not Lab.IsDead then
 		Utils.Do(Humans, function(player)
 			player.MarkCompletedObjective(SecureLab)
 		end)
+
+		LabSecured = true
+		Lab.Owner = Allies
 		UserInterface.SetMissionText("")
 	end
 end
@@ -349,6 +355,7 @@ WorldLoaded = function()
 	Neutral = Player.GetPlayer("Neutral")
 	Creeps = Player.GetPlayer("Creeps")
 	Soviets = Player.GetPlayer("Soviets")
+	LabGuards = Player.GetPlayer("Lab Guards")
 
 	Allies1 = Player.GetPlayer("Allies1")
 	Allies2 = Player.GetPlayer("Allies2")

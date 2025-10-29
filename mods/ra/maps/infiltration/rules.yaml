@@ -30,11 +30,13 @@ World:
 			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
 			Allies1: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
 			Allies2: 208, 208, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 154, 155, 143
+			Lab Guards: 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223
 	IndexedPlayerPalette@NOSHADOW:
 		PlayerIndex:
 			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
 			Allies1: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
 			Allies2: 208, 208, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 154, 155, 143
+			Lab Guards: 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223
 
 MISS:
 	Targetable:
@@ -62,7 +64,7 @@ SPY.Strong:
 	Health:
 		HP: 10000
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	Infiltrates:
 		Types: MissionObjective
 	CaptureManager:
@@ -89,6 +91,7 @@ TRUK.Hijackable:
 		Prerequisites: ~disabled
 	Mobile:
 		RequiresCondition: mobile && !being-captured
+		Voice: Move
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -104,9 +107,10 @@ TRUK.Hijackable:
 		Image: TRUK
 		Palette: truk-soviets
 	RevealsShroud:
-		Range: 6c0
+		Range: 7c0
 	Voiced:
 		VoiceSet: SpyVoice
+		RequiresCondition: mobile
 
 E7:
 	Buildable:
