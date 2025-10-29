@@ -41,7 +41,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: Allies2, Allies
-		Enemies: Soviets
+		Enemies: Soviets, Lab Guards
 	PlayerReference@Allies2:
 		Name: Allies2
 		AllowBots: False
@@ -53,20 +53,28 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Allies: Allies1, Allies
-		Enemies: Soviets
+		Enemies: Soviets, Lab Guards
 	PlayerReference@Allies:
 		Name: Allies
 		Faction: allies
 		Color: 5CC1A3
 		Allies: Allies1, Allies2
-		Enemies: Soviets
+		Enemies: Soviets, Lab Guards
 		Bot: campaign
 	PlayerReference@Soviets:
 		Name: Soviets
+		Bot: campaign
 		Faction: soviet
 		Color: FE1100
+		Allies: Lab Guards
 		Enemies: Allies1, Allies2, Allies, Creeps
+	PlayerReference@Lab Guards:
+		Name: Lab Guards
 		Bot: campaign
+		Faction: soviet
+		Color: FF8800
+		Allies: Soviets
+		Enemies: Allies1, Allies2, Allies, Creeps
 
 Actors:
 	Actor2: v07
@@ -182,7 +190,7 @@ Actors:
 		Owner: Soviets
 	Lab: miss
 		Location: 34,30
-		Owner: Soviets
+		Owner: Lab Guards
 	LabWaypoint: waypoint
 		Location: 34,30
 		Owner: Neutral
@@ -210,9 +218,11 @@ Actors:
 	Actor494: e4
 		Location: 98,38
 		Owner: Soviets
+		Facing: 512
 	Actor495: e4
 		Location: 48,34
 		Owner: Soviets
+		Facing: 896
 	Actor58: brik
 		Location: 32,28
 		Owner: Soviets
@@ -221,7 +231,8 @@ Actors:
 		Owner: Soviets
 	Actor110: e1
 		Location: 33,28
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 512
 	Actor60: apwr
 		Location: 44,46
 		Owner: Soviets
@@ -242,10 +253,11 @@ Actors:
 		Owner: Soviets
 	Actor263: 3tnk
 		Location: 37,35
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 384
 	Actor138: e2
 		Location: 39,37
-		Owner: Soviets
+		Owner: Lab Guards
 	Actor99: brik
 		Location: 32,32
 		Owner: Soviets
@@ -282,6 +294,7 @@ Actors:
 	Actor121: e1
 		Location: 100,21
 		Owner: Soviets
+		Facing: 384
 	Actor59: sam
 		Location: 47,60
 		Owner: Soviets
@@ -356,7 +369,8 @@ Actors:
 		Owner: Soviets
 	Actor452: e4
 		Location: 34,32
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 384
 	Actor112: fenc
 		Location: 96,39
 		Owner: Soviets
@@ -366,6 +380,7 @@ Actors:
 	Actor126: e1
 		Location: 109,22
 		Owner: Soviets
+		Facing: 768
 	Actor107: hpad
 		Location: 36,42
 		Owner: Soviets
@@ -402,12 +417,15 @@ Actors:
 	Actor120: e1
 		Location: 107,41
 		Owner: Soviets
+		Facing: 256
 	Actor119: e1
 		Location: 99,41
 		Owner: Soviets
+		Facing: 512
 	Actor279: dog
 		Location: 101,38
 		Owner: Soviets
+		Facing: 256
 	Actor151: fenc
 		Location: 111,39
 		Owner: Soviets
@@ -483,6 +501,7 @@ Actors:
 	Actor147: e1
 		Location: 92,23
 		Owner: Soviets
+		Facing: 512
 	Actor118: ftur
 		Location: 99,40
 		Owner: Soviets
@@ -526,6 +545,7 @@ Actors:
 	Actor161: e1
 		Location: 22,42
 		Owner: Soviets
+		Facing: 256
 	Actor162: t12
 		Location: 22,39
 		Owner: Neutral
@@ -714,6 +734,7 @@ Actors:
 	Actor227: e1
 		Location: 98,28
 		Owner: Soviets
+		Facing: 384
 	Actor226: fenc
 		Location: 95,35
 		Owner: Soviets
@@ -726,6 +747,7 @@ Actors:
 	Actor144: 4tnk
 		Location: 42,58
 		Owner: Soviets
+		Facing: 896
 	Actor52: hpad
 		Location: 83,65
 		Owner: Soviets
@@ -735,6 +757,7 @@ Actors:
 	Actor231: e1
 		Location: 104,40
 		Owner: Soviets
+		Facing: 512
 	Actor238: sbag
 		Location: 65,37
 		Owner: Soviets
@@ -778,51 +801,64 @@ Actors:
 	Actor247: e1
 		Location: 69,34
 		Owner: Soviets
+		Facing: 384
 	Actor248: e1
 		Location: 57,35
 		Owner: Soviets
+		Facing: 756
 	Actor249: e1
 		Location: 59,33
 		Owner: Soviets
+		Facing: 384
 	Actor250: e1
 		Location: 47,31
 		Owner: Soviets
+		Facing: 896
 	Actor251: e1
 		Location: 42,38
 		Owner: Soviets
+		Facing: 384
 	Actor252: e1
 		Location: 46,38
 		Owner: Soviets
 	Actor253: e1
 		Location: 49,27
 		Owner: Soviets
+		Facing: 768
 	Actor254: e1
 		Location: 37,64
 		Owner: Soviets
+		Facing: 384
 	Actor255: e1
 		Location: 32,63
 		Owner: Soviets
+		Facing: 512
 	Actor256: e1
 		Location: 40,58
 		Owner: Soviets
 	Actor257: e1
 		Location: 44,61
 		Owner: Soviets
+		Facing: 512
 	Actor322: v2rl
 		Location: 36,57
 		Owner: Soviets
+		Facing: 384
 	Actor259: e1
 		Location: 43,48
 		Owner: Soviets
+		Facing: 128
 	Actor260: e1
 		Location: 37,45
 		Owner: Soviets
 	Actor261: e1
 		Location: 31,40
 		Owner: Soviets
+		Facing: 640
 	Actor262: e1
 		Location: 37,31
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 896
 	Actor17: brik
 		Location: 37,28
 		Owner: Soviets
@@ -836,18 +872,22 @@ Actors:
 	Actor268: dog
 		Location: 64,34
 		Owner: Soviets
+		Facing: 640
 	Actor269: dog
 		Location: 44,38
 		Owner: Soviets
+		Facing: 896
 	Actor180: apwr
 		Location: 31,59
 		Owner: Soviets
 	Actor270: dog
 		Location: 43,60
 		Owner: Soviets
+		Facing: 640
 	Actor265: 3tnk
 		Location: 90,46
 		Owner: Soviets
+		Facing: 512
 	Actor271: dog
 		Location: 37,40
 		Owner: Soviets
@@ -930,6 +970,7 @@ Actors:
 	Actor300: dog
 		Location: 41,49
 		Owner: Soviets
+		Facing: 512
 	Actor338: ss
 		Location: 57,64
 		Owner: Soviets
@@ -972,57 +1013,74 @@ Actors:
 	Actor317: e2
 		Location: 106,26
 		Owner: Soviets
+		Facing: 256
 	Actor318: e2
 		Location: 94,20
 		Owner: Soviets
+		Facing: 256
 	Actor319: e3
 		Location: 97,29
 		Owner: Soviets
+		Facing: 896
 	Actor320: e3
 		Location: 109,27
 		Owner: Soviets
+		Facing: 368
 	Actor321: e3
 		Location: 48,36
 		Owner: Soviets
+		Facing: 768
 	Actor267: dog
 		Location: 35,61
 		Owner: Soviets
 	Actor323: e3
 		Location: 30,43
 		Owner: Soviets
+		Facing: 256
 	Actor324: e3
 		Location: 38,30
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 384
 	Actor325: e2
 		Location: 32,36
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 640
 	Actor326: e2
 		Location: 62,35
 		Owner: Soviets
+		Facing: 768
 	Actor327: e2
 		Location: 37,48
 		Owner: Soviets
+		Facing: 896
 	Actor329: e2
 		Location: 46,28
 		Owner: Soviets
+		Facing: 640
 	Actor330: e2
 		Location: 35,67
 		Owner: Soviets
+		Facing: 640
 	Actor331: e1
 		Location: 27,78
 		Owner: Soviets
+		Facing: 384
 	Actor332: e2
 		Location: 29,79
 		Owner: Soviets
+		Facing: 512
 	Actor333: e1
 		Location: 75,22
 		Owner: Soviets
+		Facing: 384
 	Actor334: e2
 		Location: 101,29
 		Owner: Soviets
+		Facing: 256
 	Actor335: e2
 		Location: 77,20
 		Owner: Soviets
+		Facing: 640
 	SpyReinforcementsExitPoint: waypoint
 		Location: 48,111
 		Owner: Neutral
@@ -1038,12 +1096,14 @@ Actors:
 	Actor339: e1
 		Location: 21,35
 		Owner: Soviets
+		Facing: 384
 	Actor342: v05
 		Location: 68,88
 		Owner: Creeps
 	Actor341: e1
 		Location: 24,27
 		Owner: Soviets
+		Facing: 128
 	Actor344: v08
 		Location: 65,99
 		Owner: Creeps
@@ -1110,9 +1170,11 @@ Actors:
 	Actor343: e1
 		Location: 28,49
 		Owner: Soviets
+		Facing: 384
 	Actor367: e1
 		Location: 27,60
 		Owner: Soviets
+		Facing: 256
 	Actor368: t02
 		Location: 75,92
 		Owner: Neutral
@@ -1137,12 +1199,15 @@ Actors:
 	Actor375: e1
 		Location: 89,47
 		Owner: Soviets
+		Facing: 384
 	Actor376: e1
 		Location: 91,46
 		Owner: Soviets
+		Facing: 512
 	Actor377: dog
 		Location: 91,48
 		Owner: Soviets
+		Facing: 128
 	Actor378: t10
 		Location: 81,74
 		Owner: Neutral
@@ -1185,30 +1250,38 @@ Actors:
 	Actor392: e1
 		Location: 83,69
 		Owner: Soviets
+		Facing: 640
 	Actor393: e1
 		Location: 90,76
 		Owner: Soviets
+		Facing: 512
 	Actor394: e1
 		Location: 92,67
 		Owner: Soviets
+		Facing: 640
 	Actor395: e2
 		Location: 88,67
 		Owner: Soviets
+		Facing: 384
 	Actor396: e2
 		Location: 85,75
 		Owner: Soviets
+		Facing: 640
 	Actor397: e1
 		Location: 96,72
 		Owner: Soviets
+		Facing: 256
 	Actor398: e1
 		Location: 89,71
 		Owner: Soviets
+		Facing: 384
 	Actor399: tsla
 		Location: 94,22
 		Owner: Soviets
 	Actor400: e1
 		Location: 49,66
 		Owner: Soviets
+		Facing: 640
 	Actor402: ftur
 		Location: 26,40
 		Owner: Soviets
@@ -1267,12 +1340,15 @@ Actors:
 	Actor409: e1
 		Location: 76,59
 		Owner: Soviets
+		Facing: 512
 	Actor410: v2rl
 		Location: 74,59
 		Owner: Soviets
+		Facing: 384
 	Actor3: dog
 		Location: 74,52
 		Owner: Soviets
+		Facing: 384
 	Actor416: dog
 		Location: 82,73
 		Owner: Soviets
@@ -1297,18 +1373,23 @@ Actors:
 	Actor303: e2
 		Location: 100,38
 		Owner: Soviets
+		Facing: 384
 	Actor408: dog
 		Location: 108,42
 		Owner: Soviets
+		Facing: 640
 	Actor418: dog
 		Location: 109,74
 		Owner: Soviets
+		Facing: 384
 	Actor419: e1
 		Location: 108,75
 		Owner: Soviets
+		Facing: 512
 	Actor420: e1
 		Location: 110,75
 		Owner: Soviets
+		Facing: 384
 	Actor421: sbag
 		Location: 108,73
 		Owner: Soviets
@@ -1339,12 +1420,15 @@ Actors:
 	Actor425: dog
 		Location: 79,22
 		Owner: Soviets
+		Facing: 128
 	Actor426: dog
 		Location: 93,19
 		Owner: Soviets
+		Facing: 128
 	Actor427: dog
 		Location: 104,24
 		Owner: Soviets
+		Facing: 0
 	HijackTruck: truk.hijackable
 		Location: 99,34
 		Owner: Soviets
@@ -1352,6 +1436,7 @@ Actors:
 	BaseGuard: e1
 		Location: 63,36
 		Owner: Soviets
+		Facing: 896
 	Actor429: cycl
 		Location: 63,33
 		Owner: Soviets
@@ -1377,35 +1462,42 @@ Actors:
 		Location: 62,37
 		Owner: Neutral
 	BaseGuardTruckPos: waypoint
-		Location: 64,36
+		Location: 64,35
 		Owner: Neutral
 	Actor411: e2
 		Location: 73,53
 		Owner: Soviets
+		Facing: 128
 	Actor434: e1
 		Location: 94,54
 		Owner: Soviets
+		Facing: 512
 	Actor435: dog
 		Location: 95,54
 		Owner: Soviets
+		Facing: 384
 	Actor436: e1
 		Location: 82,44
 		Owner: Soviets
+		Facing: 640
 	Actor437: e1
 		Location: 80,43
 		Owner: Soviets
 	Actor438: dog
 		Location: 81,43
 		Owner: Soviets
+		Facing: 256
 	Actor439: e1
 		Location: 109,48
 		Owner: Soviets
 	Actor440: dog
 		Location: 108,48
 		Owner: Soviets
+		Facing: 896
 	Actor441: 3tnk
 		Location: 108,47
 		Owner: Soviets
+		Facing: 256
 	Actor442: brl3
 		Location: 82,65
 		Owner: Soviets
@@ -1435,7 +1527,8 @@ Actors:
 		Owner: Soviets
 	Actor454: e2
 		Location: 38,32
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 512
 	Actor451: barl
 		Location: 108,29
 		Owner: Soviets
@@ -1451,6 +1544,7 @@ Actors:
 	Actor456: e1
 		Location: 85,66
 		Owner: Soviets
+		Facing: 0
 	Actor457: t06
 		Location: 101,92
 		Owner: Neutral
@@ -1460,6 +1554,7 @@ Actors:
 	Actor459: e1
 		Location: 79,102
 		Owner: Soviets
+		Facing: 384
 	Actor460: sbag
 		Location: 80,103
 		Owner: Soviets
@@ -1509,6 +1604,7 @@ Actors:
 	Actor461: e2
 		Location: 78,97
 		Owner: Soviets
+		Facing: 256
 	Actor481: fenc
 		Location: 82,99
 		Owner: Soviets
@@ -1578,27 +1674,35 @@ Actors:
 	Actor306: e2
 		Location: 43,56
 		Owner: Soviets
+		Facing: 512
 	Actor365: e3
 		Location: 40,54
 		Owner: Soviets
+		Facing: 384
 	Actor388: e1
 		Location: 38,50
 		Owner: Soviets
+		Facing: 384
 	Actor389: e1
 		Location: 48,58
 		Owner: Soviets
+		Facing: 640
 	Actor390: e2
 		Location: 42,43
 		Owner: Soviets
+		Facing: 384
 	Actor491: e1
 		Location: 42,41
 		Owner: Soviets
+		Facing: 896
 	Actor492: e1
 		Location: 35,35
-		Owner: Soviets
+		Owner: Lab Guards
+		Facing: 512
 	BridgeTank: 3tnk
 		Location: 76,20
 		Owner: Soviets
+		Facing: 512
 	BridgeAttackPoint: waypoint
 		Location: 74,25
 		Owner: Neutral
@@ -1617,15 +1721,18 @@ Actors:
 	Actor496: e4
 		Location: 57,38
 		Owner: Soviets
+		Facing: 384
 	Actor497: e4
 		Location: 38,60
 		Owner: Soviets
 	Actor498: apc
 		Location: 78,99
 		Owner: Soviets
+		Facing: 512
 	Actor499: 3tnk
 		Location: 106,23
 		Owner: Soviets
+		Facing: 384
 	Actor500: sbag
 		Location: 44,30
 		Owner: Soviets
@@ -1647,6 +1754,7 @@ Actors:
 	Actor506: e3
 		Location: 43,31
 		Owner: Soviets
+		Facing: 512
 	Actor507: brik
 		Location: 104,36
 		Owner: Soviets
@@ -1668,6 +1776,7 @@ Actors:
 	Actor513: e1
 		Location: 110,34
 		Owner: Soviets
+		Facing: 640
 	PatrolPoint31: waypoint
 		Location: 79,71
 		Owner: Neutral
