@@ -492,8 +492,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var s in Squads)
 			{
-				if (s.IsValid && FindEnemies([attacker], s.Units.First()).Any()
-					&& (s.Units.First().Location - attacker.Location).LengthSquared <= Info.ProtectUnitScanRadius * Info.ProtectUnitScanRadius)
+				var livingUnitInSquad = s.Units.FirstOrDefault(x => !x.IsDead);
+				if (livingUnitInSquad == null)
+					continue;
+				if (s.IsValid && FindEnemies([attacker], livingUnitInSquad).Any()
+					&& (livingUnitInSquad.Location - attacker.Location).LengthSquared <= Info.ProtectUnitScanRadius * Info.ProtectUnitScanRadius)
 					s.SetActorToTarget((attacker, WVec.Zero));
 			}
 
