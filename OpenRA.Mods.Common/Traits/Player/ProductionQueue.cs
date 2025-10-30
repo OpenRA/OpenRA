@@ -592,7 +592,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (item.Infinite)
 				{
 					item.Infinite = false;
-					StartProduction(item.Item, (uint)Info.InfiniteBuildLimit - 1);
+					var amount = Math.Max(0, Info.InfiniteBuildLimit - 1);
+					StartProduction(item.Item, (uint)amount);
 				}
 				else
 				{
