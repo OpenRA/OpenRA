@@ -74,6 +74,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveBuildingInfoAllowPlacementOnResources(),
 				new EditorMarkerTileLabels(),
 				new RemoveBarracksTypesAndVehiclesTypesInBaseBuilderBotModule(),
+				new RemoveAlwaysVisible(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new WithDamageOverlayPropertyRename(),
