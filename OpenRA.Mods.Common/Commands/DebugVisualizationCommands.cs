@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,19 +18,36 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Commands
 {
 	[TraitLocation(SystemActors.World)]
+	[IncludeStaticFluentReferences(typeof(DebugVisualizationCommands))]
 	[Desc("Enables visualization commands via the chatbox. Attach this to the world actor.")]
 	public class DebugVisualizationCommandsInfo : TraitInfo<DebugVisualizationCommands> { }
 
 	public class DebugVisualizationCommands : IChatCommand, IWorldLoaded
 	{
-		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers = new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
-		{
-			{ "combat-geometry", ("toggles combat geometry overlay.", CombatGeometry) },
-			{ "render-geometry", ("toggles render geometry overlay.", RenderGeometry) },
-			{ "screen-map", ("toggles screen map overlay.", ScreenMap) },
-			{ "depth-buffer", ("toggles depth buffer overlay.", DepthBuffer) },
-			{ "actor-tags", ("toggles actor tags overlay.", ActorTags) },
-		};
+		[FluentReference]
+		const string CombatGeometryDescription = "description-combat-geometry";
+
+		[FluentReference]
+		const string RenderGeometryDescription = "description-render-geometry";
+
+		[FluentReference]
+		const string ScreenMapOverlayDescription = "description-screen-map-overlay";
+
+		[FluentReference]
+		const string DepthBufferDescription = "description-depth-buffer";
+
+		[FluentReference]
+		const string ActorTagsOverlayDescripition = "description-actor-tags-overlay";
+
+		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers =
+			new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
+			{
+				{ "combat-geometry", (CombatGeometryDescription, CombatGeometry) },
+				{ "render-geometry", (RenderGeometryDescription, RenderGeometry) },
+				{ "screen-map", (ScreenMapOverlayDescription, ScreenMap) },
+				{ "depth-buffer", (DepthBufferDescription, DepthBuffer) },
+				{ "actor-tags", (ActorTagsOverlayDescripition, ActorTags) },
+			};
 
 		DebugVisualizations debugVis;
 		DeveloperMode devMode;

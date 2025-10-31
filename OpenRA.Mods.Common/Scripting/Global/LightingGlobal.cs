@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,48 +18,50 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Lighting")]
 	public class LightingGlobal : ScriptGlobal
 	{
-		readonly IEnumerable<FlashPaletteEffect> flashPaletteEffects;
-		readonly GlobalLightingPaletteEffect lighting;
-		readonly bool hasLighting;
+		readonly IEnumerable<FlashPostProcessEffect> flashEffects;
+		readonly TintPostProcessEffect tintEffect;
 
 		public LightingGlobal(ScriptContext context)
 			: base(context)
 		{
-			flashPaletteEffects = context.World.WorldActor.TraitsImplementing<FlashPaletteEffect>();
-			lighting = context.World.WorldActor.TraitOrDefault<GlobalLightingPaletteEffect>();
-			hasLighting = lighting != null;
+			flashEffects = context.World.WorldActor.TraitsImplementing<FlashPostProcessEffect>();
+			tintEffect = context.World.WorldActor.TraitOrDefault<TintPostProcessEffect>();
 		}
 
-		[Desc("Controls the `" + nameof(FlashPaletteEffect) + "` trait.")]
+		[Desc("Controls the `" + nameof(FlashPostProcessEffect) + "` trait.")]
 		public void Flash(string type = null, int ticks = -1)
 		{
-			foreach (var effect in flashPaletteEffects)
+			foreach (var effect in flashEffects)
 				if (effect.Info.Type == type)
 					effect.Enable(ticks);
 		}
 
+		[Desc("Red component (0-1).")]
 		public double Red
 		{
-			get => hasLighting ? lighting.Red : 1d;
-			set { if (hasLighting) lighting.Red = (float)value; }
+			get => tintEffect?.Red ?? 1;
+			set { if (tintEffect != null) tintEffect.Red = (float)value; }
 		}
 
+		[Desc("Green component (0-1).")]
 		public double Green
 		{
-			get => hasLighting ? lighting.Green : 1d;
-			set { if (hasLighting) lighting.Green = (float)value; }
+			get => tintEffect?.Green ?? 1;
+			set { if (tintEffect != null) tintEffect.Green = (float)value; }
 		}
 
+		[Desc("Blue component (0-1).")]
 		public double Blue
 		{
-			get => hasLighting ? lighting.Blue : 1d;
-			set { if (hasLighting) lighting.Blue = (float)value; }
+			get => tintEffect?.Blue ?? 1;
+			set { if (tintEffect != null) tintEffect.Blue = (float)value; }
 		}
 
+		[Desc("Strength of the lighting (0-1).")]
 		public double Ambient
 		{
-			get => hasLighting ? lighting.Ambient : 1d;
-			set { if (hasLighting) lighting.Ambient = (float)value; }
+			get => tintEffect?.Ambient ?? 1;
+			set { if (tintEffect != null) tintEffect.Ambient = (float)value; }
 		}
 	}
 }

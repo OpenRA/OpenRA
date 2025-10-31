@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,18 +17,21 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Blinks the actor and captor when it is being captured.")]
-	class CapturableProgressBlinkInfo : ConditionalTraitInfo, Requires<CapturableInfo>
+	sealed class CapturableProgressBlinkInfo : ConditionalTraitInfo, Requires<CapturableInfo>
 	{
 		[Desc("Number of ticks to wait between repeating blinks.")]
 		public readonly int Interval = 50;
 
+		[Desc("Sound to play at the same time the actor blinks.")]
+		public readonly string Sound = null;
+
 		public override object Create(ActorInitializer init) { return new CapturableProgressBlink(this); }
 	}
 
-	class CapturableProgressBlink : ConditionalTrait<CapturableProgressBlinkInfo>, ITick, ICaptureProgressWatcher
+	sealed class CapturableProgressBlink : ConditionalTrait<CapturableProgressBlinkInfo>, ITick, ICaptureProgressWatcher
 	{
-		List<Player> captorOwners = new List<Player>();
-		HashSet<Actor> captors = new HashSet<Actor>();
+		readonly List<Player> captorOwners = [];
+		readonly HashSet<Actor> captors = [];
 		int tick = 0;
 
 		public CapturableProgressBlink(CapturableProgressBlinkInfo info)
@@ -68,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var captor in captors)
 					if (captor.Owner == captorOwner)
 						self.World.Add(new FlashTarget(captor, captorOwner.Color));
+
+				if (Info.Sound != null)
+					Game.Sound.Play(SoundType.World, Info.Sound, self.CenterPosition);
 			}
 
 			if (++tick >= Info.Interval)

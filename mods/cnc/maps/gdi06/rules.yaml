@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, gdi06.lua
+		Scripts: campaign.lua, utils.lua, gdi06.lua
 	MusicPlaylist:
 		BackgroundMusic: rain-ambient
 		StartingMusic: rain
@@ -16,13 +16,13 @@ World:
 		ParticleColors: 304074, 28386C, 202C60, 182C54
 		LineTailAlphaValue: 150
 		ParticleSize: 1, 1
-	GlobalLightingPaletteEffect:
+	TintPostProcessEffect:
 		Red: 0.75
 		Green: 0.85
 		Blue: 1.5
 		Ambient: 0.45
 	MissionData:
-		Briefing: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** so that the base is incapacitated. Get in, hit it, and get the **** out.
+		Briefing: Use a GDI Commando to infiltrate the Nod base. **** ** destroy the ******** to incapacitate the base. Get in, hit it, and get the **** out.
 		BriefingVideo: gdi6.vqa
 		StartVideo: nitejump.vqa
 		WinVideo: sabotage.vqa
@@ -32,11 +32,12 @@ World:
 		ShortGameCheckboxEnabled: True
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:

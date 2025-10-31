@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,12 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Determines what projectiles to block based on their allegiance to the wall owner.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
-		public override object Create(ActorInitializer init) { return new BlocksProjectiles(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new BlocksProjectiles(this); }
 	}
 
 	public class BlocksProjectiles : ConditionalTrait<BlocksProjectilesInfo>, IBlocksProjectiles
 	{
-		public BlocksProjectiles(Actor self, BlocksProjectilesInfo info)
+		public BlocksProjectiles(BlocksProjectilesInfo info)
 			: base(info) { }
 
 		WDist IBlocksProjectiles.BlockingHeight => Info.Height;
@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Common.Traits
 					.Where(Exts.IsTraitEnabled).Where(t => t.ValidRelationships.HasRelationship(a.Owner.RelationshipWith(owner)))
 					.ToList();
 
-				if (!blockers.Any())
+				if (blockers.Count == 0)
 					continue;
 
-				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);
+				var hitPos = start.MinimumPointLineProjection(end, a.CenterPosition);
 				var dat = world.Map.DistanceAboveTerrain(hitPos);
 				if ((hitPos - start).Length < length && blockers.Any(t => t.BlockingHeight > dat))
 				{

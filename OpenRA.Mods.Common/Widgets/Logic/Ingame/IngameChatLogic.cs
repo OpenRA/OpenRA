@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Commands;
@@ -22,50 +21,82 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	[ChromeLogicArgsHotkeys("OpenTeamChat", "OpenGeneralChat")]
-	public class IngameChatLogic : ChromeLogic
+	public class IngameChatLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
-		readonly OrderManager orderManager;
+		[FluentReference]
+		const string TeamChat = "button-team-chat";
+
+		[FluentReference]
+		const string GeneralChat = "button-general-chat";
+
+		[FluentReference("seconds")]
+		const string ChatAvailability = "label-chat-availability";
+
+		[FluentReference]
+		const string ChatDisabled = "label-chat-disabled";
+
 		readonly Ruleset modRules;
+		readonly World world;
 
 		readonly ContainerWidget chatOverlay;
-		readonly ChatDisplayWidget chatOverlayDisplay;
+		readonly TextNotificationsDisplayWidget chatOverlayDisplay;
 
 		readonly ContainerWidget chatChrome;
 		readonly ScrollPanelWidget chatScrollPanel;
-		readonly ContainerWidget chatTemplate;
 		readonly TextFieldWidget chatText;
+		readonly CachedTransform<int, string> chatAvailableIn;
+		readonly string chatDisabled;
+		readonly Dictionary<TextNotificationPool, Widget> templates = [];
 
-		readonly INotifyChat[] chatTraits;
-
-		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
+		readonly TabCompletionLogic tabCompletion = new();
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
-		TextNotification lastLine;
-		int repetitions;
+		bool chatEnabled;
+
+		readonly bool isMenuChat;
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
-			this.orderManager = orderManager;
 			modRules = modData.DefaultRules;
+			this.isMenuChat = isMenuChat;
+			this.world = world;
 
-			chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
-
+			var chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
 			var isObserver = orderManager.LocalClient != null && orderManager.LocalClient.IsObserver;
 			var alwaysDisabled = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1;
 			var disableTeamChat = alwaysDisabled || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			var teamChat = !disableTeamChat;
 
-			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().SelectMany(x => x.Commands.Keys).ToList();
-			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+			var teamMessage = FluentProvider.GetMessage(TeamChat);
+			var allMessage = FluentProvider.GetMessage(GeneralChat);
+
+			chatDisabled = FluentProvider.GetMessage(ChatDisabled);
+
+			// Only execute this once, the first time this widget is loaded
+			if (TextNotificationsManager.MutedPlayers.Count == 0)
+				foreach (var c in orderManager.LobbyInfo.Clients)
+					TextNotificationsManager.MutedPlayers.Add(c.Index, false);
+
+			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().ToArray().SelectMany(x => x.Commands.Keys);
+			tabCompletion.Names = orderManager.LobbyInfo.Clients.Where(c => !c.IsBot).Select(c => c.Name).Distinct().ToList();
+
+			if (logicArgs.TryGetValue("Templates", out var templateIds))
+			{
+				foreach (var item in templateIds.Nodes)
+				{
+					var key = FieldLoader.GetValue<TextNotificationPool>("key", item.Key);
+					templates[key] = Ui.LoadWidget(item.Value.Value, null, []);
+				}
+			}
 
 			var chatPanel = (ContainerWidget)widget;
 			chatOverlay = chatPanel.GetOrNull<ContainerWidget>("CHAT_OVERLAY");
 			if (chatOverlay != null)
 			{
-				chatOverlayDisplay = chatOverlay.Get<ChatDisplayWidget>("CHAT_DISPLAY");
+				chatOverlayDisplay = chatOverlay.Get<TextNotificationsDisplayWidget>("CHAT_DISPLAY");
 				chatOverlay.Visible = false;
 			}
 
@@ -73,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatChrome.Visible = true;
 
 			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
-			chatMode.GetText = () => teamChat && !disableTeamChat ? "Team" : "All";
+			chatMode.GetText = () => teamChat && !disableTeamChat ? teamMessage : allMessage;
 			chatMode.OnClick = () => teamChat ^= true;
 
 			// Enable teamchat if we are a player and die,
@@ -82,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				chatMode.IsDisabled = () =>
 				{
-					if (world.IsGameOver)
+					if (world.IsGameOver || !chatEnabled)
 						return true;
 
 					// The game is over for us, join spectator team chat
@@ -100,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 			else
-				chatMode.IsDisabled = () => disableTeamChat;
+				chatMode.IsDisabled = () => disableTeamChat || !chatEnabled;
 
 			// Disable team chat after the game ended
 			world.GameOver += () => disableTeamChat = true;
@@ -112,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
 				{
-					if (!chatText.Text.StartsWith("/", StringComparison.Ordinal))
+					if (!chatText.Text.StartsWith('/'))
 					{
 						// This should never happen, but avoid a crash if it does somehow (chat will just stay open)
 						if (!isObserver && orderManager.LocalClient == null && world.LocalPlayer == null)
@@ -163,6 +194,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
+			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetMessage(ChatAvailability, "seconds", x));
+
 			if (!isMenuChat)
 			{
 				var openTeamChatKey = new HotkeyReference();
@@ -176,7 +209,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
 				chatClose.OnClick += CloseChat;
 
-				chatPanel.OnKeyPress = e =>
+				var openChatKeyListener = chatPanel.Get<LogicKeyListenerWidget>("OPEN_CHAT_KEY_LISTENER");
+
+				openChatKeyListener.AddHandler(e =>
 				{
 					if (e.Event == KeyInputEvent.Up)
 						return false;
@@ -190,20 +225,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					return false;
-				};
+				});
 			}
 
 			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");
-			chatTemplate = chatScrollPanel.Get<ContainerWidget>("CHAT_TEMPLATE");
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			foreach (var chatLine in orderManager.NotificationsCache)
-				AddChatLine(chatLine, true);
+			foreach (var notification in TextNotificationsManager.Notifications)
+				if (IsNotificationEligible(notification))
+					AddNotification(notification, true);
 
-			orderManager.AddTextNotification += AddChatLineWrapper;
-
-			chatText.IsDisabled = () => world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays;
+			chatText.IsDisabled = () => !chatEnabled || (world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays);
 
 			if (!isMenuChat)
 			{
@@ -248,85 +281,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.ResetTooltips();
 		}
 
-		public void AddChatLineWrapper(TextNotification chatLine)
+		void INotificationHandler<TextNotification>.Handle(TextNotification notification)
 		{
-			var chatLineToDisplay = chatLine;
+			if (!IsNotificationEligible(notification))
+				return;
 
-			if (chatLine.CanIncrementOnDuplicate() && chatLine.Equals(lastLine))
-			{
-				repetitions++;
-				chatLineToDisplay = new TextNotification(
-					chatLine.Pool,
-					chatLine.Prefix,
-					$"{chatLine.Text} ({repetitions + 1})",
-					chatLine.PrefixColor,
-					chatLine.TextColor);
+			if (notification.ClientId != TextNotificationsManager.SystemClientId && TextNotificationsManager.MutedPlayers[notification.ClientId])
+				return;
 
-				chatScrollPanel.RemoveChild(chatScrollPanel.Children[chatScrollPanel.Children.Count - 1]);
-				chatOverlayDisplay?.RemoveMostRecentLine();
-			}
-			else
-				repetitions = 0;
-
-			lastLine = chatLine;
-
-			chatOverlayDisplay?.AddLine(chatLineToDisplay);
+			if (!IsNotificationMuted(notification))
+				chatOverlayDisplay?.AddNotification(notification);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
-			AddChatLine(chatLineToDisplay, chatOverlay == null);
+			AddNotification(notification, chatOverlay == null);
 		}
 
-		void AddChatLine(TextNotification chatLine, bool suppressSound)
+		void AddNotification(TextNotification notification, bool suppressSound)
 		{
-			var template = chatTemplate.Clone();
-			var nameLabel = template.Get<LabelWidget>("NAME");
-			var textLabel = template.Get<LabelWidget>("TEXT");
-
-			var name = "";
-			if (!string.IsNullOrEmpty(chatLine.Prefix))
-				name = chatLine.Prefix + ":";
-
-			var font = Game.Renderer.Fonts[nameLabel.Font];
-			var nameSize = font.Measure(chatLine.Prefix);
-
-			nameLabel.GetColor = () => chatLine.PrefixColor;
-			nameLabel.GetText = () => name;
-			nameLabel.Bounds.Width = nameSize.X;
-
-			textLabel.GetColor = () => chatLine.TextColor;
-			textLabel.Bounds.X += nameSize.X;
-			textLabel.Bounds.Width -= nameSize.X;
-
-			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
-			var text = WidgetUtils.WrapText(chatLine.Text, textLabel.Bounds.Width, font);
-			textLabel.GetText = () => text;
-			var dh = font.Measure(text).Y - textLabel.Bounds.Height;
-			if (dh > 0)
-			{
-				textLabel.Bounds.Height += dh;
-				template.Bounds.Height += dh;
-			}
+			var chatLine = templates[notification.Pool].Clone();
+			WidgetUtils.SetupTextNotification(chatLine, notification, chatScrollPanel.Bounds.Width - chatScrollPanel.ScrollbarWidth, isMenuChat && !world.IsReplay);
 
 			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;
-			chatScrollPanel.AddChild(template);
+			chatScrollPanel.AddChild(chatLine);
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
-			if (!suppressSound)
+			if (!suppressSound && !IsNotificationMuted(notification))
 				Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
 		}
 
-		bool disposed = false;
-		protected override void Dispose(bool disposing)
+		public override void Tick()
 		{
-			if (!disposed)
-			{
-				orderManager.AddTextNotification -= AddChatLineWrapper;
-				disposed = true;
-			}
+			var chatWasEnabled = chatEnabled;
+			chatEnabled = world.IsReplay || (Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue);
 
-			base.Dispose(disposing);
+			if (chatEnabled && !chatWasEnabled)
+			{
+				chatText.Text = "";
+				if (Ui.KeyboardFocusWidget == null && chatChrome.Visible)
+					chatText.TakeKeyboardFocus();
+			}
+			else if (!chatEnabled)
+			{
+				var remaining = 0;
+				if (TextNotificationsManager.ChatDisabledUntil != uint.MaxValue)
+					remaining = (int)(TextNotificationsManager.ChatDisabledUntil - Game.RunTime + 999) / 1000;
+
+				chatText.Text = remaining == 0 ? chatDisabled : chatAvailableIn.Update(remaining);
+			}
+		}
+
+		static bool IsNotificationEligible(TextNotification notification)
+		{
+			return notification.Pool == TextNotificationPool.Chat ||
+				notification.Pool == TextNotificationPool.System ||
+				notification.Pool == TextNotificationPool.Mission;
+		}
+
+		bool IsNotificationMuted(TextNotification notification)
+		{
+			return Game.Settings.Game.HideReplayChat && world.IsReplay && notification.ClientId != TextNotificationsManager.SystemClientId;
 		}
 	}
 }

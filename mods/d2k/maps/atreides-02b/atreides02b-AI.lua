@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -24,11 +24,11 @@ AttackDelays =
 HarkonnenInfantryTypes = { "light_inf" }
 
 ActivateAI = function()
-	IdlingUnits[harkonnen] = { }
-	DefendAndRepairBase(harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
+	IdlingUnits[Harkonnen] = { }
+	DefendAndRepairBase(Harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
 
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local toBuild = function() return HarkonnenInfantryTypes end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
-	ProduceUnits(harkonnen, HBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Harkonnen, HBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

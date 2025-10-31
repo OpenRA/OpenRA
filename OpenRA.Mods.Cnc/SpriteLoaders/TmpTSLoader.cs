@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
 	public class TmpTSLoader : ISpriteLoader
 	{
-		class TmpTSDepthFrame : ISpriteFrame
+		sealed class TmpTSDepthFrame : ISpriteFrame
 		{
 			readonly TmpTSFrame parent;
 
@@ -34,12 +34,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			}
 		}
 
-		class TmpTSFrame : ISpriteFrame
+		sealed class TmpTSFrame : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
-			public Size Size { get; private set; }
+			public Size Size { get; }
 			public Size FrameSize => Size;
-			public float2 Offset { get; private set; }
+			public float2 Offset { get; }
 			public byte[] Data { get; set; }
 			public byte[] DepthData { get; set; }
 			public bool DisableExportPadding => false;
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					}
 				}
 				else
-					Data = new byte[0];
+					Data = [];
 			}
 		}
 
@@ -119,14 +119,13 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			for (var j = 0; j < size.Height; j++)
 			{
 				var start = (j - frameBounds.Y) * frameBounds.Width + (size.Width - width) / 2 - frameBounds.X;
-				for (var i = 0; i < width; i++)
-					data[start + i] = s.ReadUInt8();
+				s.ReadBytes(data, start, width);
 
 				width += (j < size.Height / 2 - 1 ? 1 : -1) * 4;
 			}
 		}
 
-		bool IsTmpTS(Stream s)
+		static bool IsTmpTS(Stream s)
 		{
 			var start = s.Position;
 			s.Position += 8;
@@ -151,7 +150,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return test == sx * sy / 2 + 52;
 		}
 
-		ISpriteFrame[] ParseFrames(Stream s)
+		static ISpriteFrame[] ParseFrames(Stream s)
 		{
 			var start = s.Position;
 			var templateWidth = s.ReadUInt32();

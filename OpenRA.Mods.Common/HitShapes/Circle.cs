@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.HitShapes
 		public WDist OuterRadius => Radius;
 
 		[FieldLoader.Require]
-		public readonly WDist Radius = new WDist(426);
+		public readonly WDist Radius = new(426);
 
 		[Desc("Defines the top offset relative to the actor's center.")]
 		public readonly int VerticalTopOffset = 0;

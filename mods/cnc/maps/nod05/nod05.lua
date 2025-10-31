@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -24,6 +24,8 @@ GDI8Units = { ['e2'] = 5 }
 AllUnits = { GDI1Units, GDI2Units, GDI3Units, GDI4Units, GDI5Units, GDI6Units, GDI7Units, GDI8Units }
 
 AirstrikeDelay = DateTime.Minutes(1) + DateTime.Seconds(40)
+
+SamSiteGoal = 3
 
 DelyCellTriggerActivator = { CPos.New(29,30), CPos.New(28,30), CPos.New(27,30), CPos.New(26,30), CPos.New(25,30), CPos.New(24,30), CPos.New(23,30), CPos.New(22,30), CPos.New(21,30), CPos.New(29,29), CPos.New(28,29), CPos.New(27,29), CPos.New(26,29), CPos.New(25,29), CPos.New(24,29), CPos.New(23,29), CPos.New(22,29) }
 DelzCellTriggerActivator = { CPos.New(29,27), CPos.New(28,27), CPos.New(27,27), CPos.New(26,27), CPos.New(25,27), CPos.New(24,27), CPos.New(29,26), CPos.New(28,26), CPos.New(27,26), CPos.New(26,26), CPos.New(25,26), CPos.New(24,26) }
@@ -112,9 +114,10 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	BuildSAMObjective = Nod.AddObjective("Build 3 SAMs.")
-	DestroyGDI = Nod.AddObjective("Destroy the GDI base.")
-	GDIObjective = GDI.AddObjective("Kill all enemies.")
+	local localBuildSAMs = UserInterface.GetFluentMessage("build-sams", { ["sams"] = SamSiteGoal })
+	BuildSAMObjective = AddPrimaryObjective(Nod, localBuildSAMs)
+	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-base")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 
 	Trigger.AfterDelay(AirstrikeDelay, SendGDIAirstrike)
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(30), SendGDI2Units)
@@ -195,5 +198,5 @@ end
 
 CheckForSams = function(Nod)
 	local sams = Nod.GetActorsByType("sam")
-	return #sams >= 3
+	return #sams >= SamSiteGoal
 end

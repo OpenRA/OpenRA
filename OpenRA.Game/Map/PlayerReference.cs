@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,7 +35,7 @@ namespace OpenRA
 		/// <summary>
 		/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera
 		/// location or choose the map edge for reinforcements.
-		/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index
+		/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index.
 		/// </summary>
 		public CPos HomeLocation = CPos.Zero;
 
@@ -53,8 +53,8 @@ namespace OpenRA
 		public bool LockHandicap = false;
 		public int Handicap = 0;
 
-		public string[] Allies = { };
-		public string[] Enemies = { };
+		public string[] Allies = [];
+		public string[] Enemies = [];
 
 		public PlayerReference() { }
 		public PlayerReference(MiniYaml my) { FieldLoader.Load(this, my); }

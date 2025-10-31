@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("How often the cash ticks can appear.")]
 		public readonly int TickRate = 10;
 
-		public override object Create(ActorInitializer init) { return new ResourcePurifier(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ResourcePurifier(this); }
 	}
 
 	public class ResourcePurifier : ConditionalTrait<ResourcePurifierInfo>, INotifyResourceAccepted, ITick, INotifyOwnerChanged
@@ -42,10 +42,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		int currentDisplayTick;
 		int currentDisplayValue;
 
-		public ResourcePurifier(Actor self, ResourcePurifierInfo info)
+		public ResourcePurifier(ResourcePurifierInfo info)
 			: base(info)
 		{
-			modifier = new int[] { Info.Modifier };
+			modifier = [Info.Modifier];
 			currentDisplayTick = Info.TickRate;
 		}
 
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var temp = currentDisplayValue;
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-					self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(temp), Info.TickLifetime)));
+					self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(temp), Info.TickLifetime)));
 
 				currentDisplayTick = Info.TickRate;
 				currentDisplayValue = 0;

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,11 +18,25 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {
-	public class D2kMapImporter
+	public sealed class D2kMapImporter
 	{
 		const int MapCordonWidth = 2;
 
-		public static Dictionary<int, (string Actor, string Owner)> ActorDataByActorCode = new Dictionary<int, (string, string)>
+		// PlayerReference colors in D2k missions only affect chat text and minimap colors because actors use specific palette colors.
+		// So using the colors from the original game's minimap.
+		public static Dictionary<string, (string Faction, Color Color)> PlayerReferenceDataByPlayerName = new()
+		{
+			{ "Neutral", ("Random", Color.White) },
+			{ "Atreides", ("atreides", Color.FromArgb(90, 115, 148)) },
+			{ "Harkonnen", ("harkonnen", Color.FromArgb(214, 74, 66)) },
+			{ "Ordos", ("ordos", Color.FromArgb(90, 148, 115)) },
+			{ "Corrino", ("corrino", Color.FromArgb(115, 0, 123)) },
+			{ "Fremen", ("fremen", Color.FromArgb(132, 132, 132)) },
+			{ "Smugglers", ("smuggler", Color.FromArgb(123, 41, 16)) },
+			{ "Mercenaries", ("mercenary", Color.FromArgb(156, 132, 8)) }
+		};
+
+		public static Dictionary<int, (string Actor, string Owner)> ActorDataByActorCode = new()
 		{
 			{ 20, ("wormspawner", "Creeps") },
 			{ 23, ("mpspawn", "Neutral") },
@@ -312,7 +326,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			if (terrainInfo == null)
 				throw new InvalidDataException("The D2k map importer requires the DefaultTerrain parser.");
 
-			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			map = new Map(Game.ModData, terrainInfo, new Size(mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth))
 			{
 				Title = Path.GetFileNameWithoutExtension(mapFile),
 				Author = "Westwood Studios"
@@ -327,7 +341,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			tileSetsFromYaml = terrainInfo.Templates.Where(t =>
 			{
 				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
-				return templateInfo.Frames != null && templateInfo.Images[0].ToLowerInvariant() == tilesetName.ToLowerInvariant();
+				return templateInfo.Frames != null && string.Equals(templateInfo.Images[0], tilesetName, StringComparison.InvariantCultureIgnoreCase);
 			}).Select(ts => ts.Value).ToList();
 
 			var players = new MapPlayers(map.Rules, playerCount);
@@ -336,6 +350,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		void FillMap()
 		{
+			var actorNodes = new List<MiniYamlNode>();
+			var playerNodes = new List<MiniYamlNode>();
 			while (stream.Position < stream.Length)
 			{
 				var tileInfo = stream.ReadUInt16();
@@ -353,32 +369,53 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					map.Resources[locationOnMap] = new ResourceTile(1, 2);
 
 				// Actors
-				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))
+				if (ActorDataByActorCode.TryGetValue(tileSpecialInfo, out var kvp))
 				{
-					var kvp = ActorDataByActorCode[tileSpecialInfo];
 					if (!rules.Actors.ContainsKey(kvp.Actor.ToLowerInvariant()))
-						throw new InvalidOperationException($"Actor with name {kvp.Actor} could not be found in the rules YAML file!");
-
-					var a = new ActorReference(kvp.Actor)
+						Console.WriteLine($"Ignoring unknown actor type: `{kvp.Actor.ToLowerInvariant()}`");
+					else
 					{
-						new LocationInit(locationOnMap),
-						new OwnerInit(kvp.Owner)
-					};
+						var a = new ActorReference(kvp.Actor)
+						{
+							new LocationInit(locationOnMap),
+							new OwnerInit(kvp.Owner)
+						};
 
-					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
+						actorNodes.Add(new MiniYamlNode("Actor" + (map.ActorDefinitions.Count + actorNodes.Count), a.Save()));
 
-					if (kvp.Actor == "mpspawn")
-						playerCount++;
+						if (map.PlayerDefinitions.Concat(playerNodes).All(
+							x => x.Value.NodeWithKey("Name").Value.Value != kvp.Owner))
+						{
+							var playerInfo = PlayerReferenceDataByPlayerName[kvp.Owner];
+							var playerReference = new PlayerReference
+							{
+								Name = kvp.Owner,
+								OwnsWorld = kvp.Owner == "Neutral",
+								NonCombatant = kvp.Owner == "Neutral",
+								Faction = playerInfo.Faction,
+								Color = playerInfo.Color
+							};
+
+							var node = new MiniYamlNode($"{nameof(PlayerReference)}@{kvp.Owner}", FieldSaver.SaveDifferences(playerReference, new PlayerReference()));
+							playerNodes.Add(node);
+						}
+
+						if (kvp.Actor == "mpspawn")
+							playerCount++;
+					}
 				}
 			}
+
+			map.ActorDefinitions = map.ActorDefinitions.Concat(actorNodes).ToArray();
+			map.PlayerDefinitions = map.PlayerDefinitions.Concat(playerNodes).ToArray();
 		}
 
 		CPos GetCurrentTilePositionOnMap()
 		{
 			var tileIndex = (int)stream.Position / 4 - 2;
 
-			var x = (tileIndex % mapSize.Width) + MapCordonWidth;
-			var y = (tileIndex / mapSize.Width) + MapCordonWidth;
+			var x = tileIndex % mapSize.Width + MapCordonWidth;
+			var y = tileIndex / mapSize.Width + MapCordonWidth;
 
 			return new CPos(x, y);
 		}
@@ -386,7 +423,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		TerrainTile GetTile(int tileIndex)
 		{
 			// Some tiles are duplicates of other tiles, just on a different tileset
-			if (tilesetName.ToLowerInvariant() == "bloxbgbs.r8")
+			if (string.Equals(tilesetName, "bloxbgbs.r8", StringComparison.InvariantCultureIgnoreCase))
 			{
 				if (tileIndex == 355)
 					return new TerrainTile(441, 0);
@@ -395,19 +432,19 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					return new TerrainTile(442, 0);
 			}
 
-			if (tilesetName.ToLowerInvariant() == "bloxtree.r8")
+			if (string.Equals(tilesetName, "bloxtree.r8", StringComparison.InvariantCultureIgnoreCase))
 			{
 				var indices = new[] { 683, 684, 685, 706, 703, 704, 705, 726, 723, 724, 725, 746, 743, 744, 745, 747 };
 				for (var i = 0; i < 16; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(474, (byte)i);
 
-				indices = new[] { 369, 370, 389, 390 };
+				indices = [369, 370, 389, 390];
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(117, (byte)i);
 
-				indices = new[] { 661, 662, 681, 682 };
+				indices = [661, 662, 681, 682];
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(251, (byte)i);
@@ -416,7 +453,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					return new TerrainTile(215, 0);
 			}
 
-			if (tilesetName.ToLowerInvariant() == "bloxwast.r8")
+			if (string.Equals(tilesetName, "bloxwast.r8", StringComparison.InvariantCultureIgnoreCase))
 			{
 				if (tileIndex == 342)
 					return new TerrainTile(250, 0);
@@ -456,12 +493,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					if (tileIndex == indices[i])
 						return new TerrainTile(308, (byte)i);
 
-				indices = new[] { 660, 661, 662, 680, 681, 682 };
+				indices = [660, 661, 662, 680, 681, 682];
 				for (var i = 0; i < 6; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(443, (byte)i);
 
-				indices = new[] { 609, 610, 629, 630 };
+				indices = [609, 610, 629, 630];
 				for (var i = 0; i < 4; i++)
 					if (tileIndex == indices[i])
 						return new TerrainTile(251, (byte)i);
@@ -472,17 +509,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			// HACK: The arrakis.yaml tileset file seems to be missing some tiles, so just get a replacement for them
 			// Also used for duplicate tiles that are taken from only tileset
-			if (template == null)
+			// Just get a template that contains a tile with the same ID as requested
+			template ??= terrainInfo.Templates.FirstOrDefault(t =>
 			{
-				// Just get a template that contains a tile with the same ID as requested
-				var templates = terrainInfo.Templates.Where(t =>
-				{
-					var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
-					return templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex);
-				});
-				if (templates.Any())
-					template = templates.First().Value;
-			}
+				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
+				return templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex);
+			}).Value;
 
 			if (template == null)
 			{
@@ -493,7 +525,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			var templateIndex = template.Id;
-			var frameIndex = Array.IndexOf(((DefaultTerrainTemplateInfo)template).Frames, tileIndex);
+			var frameIndex = ((DefaultTerrainTemplateInfo)template).Frames.IndexOf(tileIndex);
 
 			return new TerrainTile(templateIndex, (byte)((frameIndex == -1) ? 0 : frameIndex));
 		}

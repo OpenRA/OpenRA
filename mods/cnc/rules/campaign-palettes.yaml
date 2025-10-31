@@ -1,5 +1,8 @@
 ^Palettes:
 	-PlayerColorPalette:
+	-PlayerColorShift:
+	-PlayerColorPalette@derricks:
+	-PlayerColorShift@derricks:
 	IndexedPlayerPalette:
 		BasePalette: terrain
 		RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
@@ -15,6 +18,32 @@
 			GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
 			Nod: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
 			Neutral: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@derricks:
+		BasePalette: terrain
+		BaseName: derrick
+		RemapIndex:  176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 171, 173, 144, 145
+		PlayerIndex:
+			GDI:     176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 179, 180, 188, 180
+			Nod:     127, 126, 125, 124, 122,  46, 120,  47, 125, 124, 123, 122,  42, 121, 120, 120, 124, 122,  42, 122
+			Neutral: 192, 164, 132, 155, 133, 197, 112,  12, 163, 132, 155, 133, 134, 197, 154, 198, 155, 133, 134, 133
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			GDI: 0.777, -0.196, 1, 0.29, 0.37
+			Nod: 0.667, 0.185, 1, 0.2892156, 0.37
+			Neutral: 0.777, -0.196, 1, 0.29, 0.37
+	FixedPlayerColorShift@units:
+		BasePalette: player-units
+		PlayerIndex:
+			GDI: 0.777, -0.196, 1, 0.29, 0.37
+			Nod: 0.306, -0.655, 1, 0.29, 0.37
+			Neutral: 0.777, -0.196, 1, 0.29, 0.37
+	FixedPlayerColorShift@derricks:
+		BasePalette: derrick
+		PlayerIndex:
+			GDI: 0.777, -0.196, 1, 0.05, 0.15
+			Nod: 0.667, 0.185, 1, 0.05, 0.15
+			Neutral: 0.777, -0.196, 1, 0.05, 0.15
 
 ^Vehicle:
 	RenderSprites:
@@ -42,13 +71,13 @@ C17:
 	RenderSprites:
 		PlayerPalette: player-units
 	Contrail@1:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 	Contrail@2:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 	Contrail@3:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 	Contrail@4:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 
 HARV:
 	RenderSprites:

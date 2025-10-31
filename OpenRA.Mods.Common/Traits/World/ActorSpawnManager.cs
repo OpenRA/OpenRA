@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,8 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -27,18 +25,22 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum number of actors.")]
 		public readonly int Maximum = 4;
 
-		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.\nIf 2 values are provided they are used as a range from which a value is randomly selected.")]
-		public readonly int[] SpawnInterval = { 6000 };
+		[Desc("Initial delay before first actor is spawn")]
+		public readonly int InitialDelay = 0;
+
+		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.",
+			"If 2 values are provided they are used as a range from which a value is randomly selected.")]
+		public readonly int[] SpawnInterval = [6000];
 
 		[FieldLoader.Require]
 		[ActorReference]
 		[Desc("Name of the actor that will be randomly picked to spawn.")]
-		public readonly string[] Actors = { };
+		public readonly string[] Actors = [];
 
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly HashSet<string> Types = new HashSet<string>() { };
+		public readonly HashSet<string> Types = [];
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException($"{nameof(ActorSpawnManager)}.{nameof(SpawnInterval)}'s value(s) must not be less than 0");
 		}
 
-		public override object Create(ActorInitializer init) { return new ActorSpawnManager(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ActorSpawnManager(this); }
 	}
 
 	public class ActorSpawnManager : ConditionalTrait<ActorSpawnManagerInfo>, ITick
@@ -63,9 +65,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool enabled;
 		int spawnCountdown;
+		int initialDelay;
 		int actorsPresent;
 
-		public ActorSpawnManager(Actor self, ActorSpawnManagerInfo info)
+		public ActorSpawnManager(ActorSpawnManagerInfo info)
 			: base(info)
 		{
 			this.info = info;
@@ -77,9 +80,18 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
+		protected override void TraitEnabled(Actor self)
+		{
+			initialDelay = info.InitialDelay;
+			spawnCountdown = 0;
+		}
+
 		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled || !enabled)
+				return;
+
+			if (--initialDelay > 0)
 				return;
 
 			if (info.Maximum < 1 || actorsPresent >= info.Maximum)
@@ -93,24 +105,27 @@ namespace OpenRA.Mods.Common.Traits
 			if (spawnPoint == null)
 				return;
 
-			spawnCountdown = Util.RandomDelay(self.World, info.SpawnInterval);
+			spawnCountdown = Util.RandomInRange(self.World.SharedRandom, info.SpawnInterval);
 
 			do
 			{
 				// Always spawn at least one actor, plus
 				// however many needed to reach the minimum.
 				SpawnActor(self, spawnPoint);
+
+				// choose new random SpawnPoint for each actor
+				spawnPoint = GetRandomSpawnPoint(self.World, self.World.SharedRandom);
 			}
 			while (actorsPresent < info.Minimum);
 		}
 
 		WPos SpawnActor(Actor self, Actor spawnPoint)
 		{
-			self.World.AddFrameEndTask(w => w.CreateActor(info.Actors.Random(self.World.SharedRandom), new TypeDictionary
-			{
+			self.World.AddFrameEndTask(w => w.CreateActor(info.Actors.Random(self.World.SharedRandom),
+			[
 				new OwnerInit(w.Players.First(x => x.PlayerName == info.Owner)),
 				new LocationInit(spawnPoint.Location)
-			}));
+			]));
 
 			actorsPresent++;
 
@@ -120,10 +135,10 @@ namespace OpenRA.Mods.Common.Traits
 		Actor GetRandomSpawnPoint(World world, Support.MersenneTwister random)
 		{
 			var spawnPointActors = world.ActorsWithTrait<ActorSpawner>()
-				.Where(x => !x.Trait.IsTraitDisabled && (info.Types.Overlaps(x.Trait.Types) || !x.Trait.Types.Any()))
+				.Where(x => !x.Trait.IsTraitDisabled && (info.Types.Overlaps(x.Trait.Types) || x.Trait.Types.Count == 0))
 				.ToArray();
 
-			return spawnPointActors.Any() ? spawnPointActors.Random(random).Actor : null;
+			return spawnPointActors.Length > 0 ? spawnPointActors.Random(random).Actor : null;
 		}
 
 		public void DecreaseActorCount()

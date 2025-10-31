@@ -1,4 +1,5 @@
 oilb.husk: oilb
-	idle: oilb
+	idle:
+		Filename: oilb.shp
 		Start: 1
 		Offset: 0,-6

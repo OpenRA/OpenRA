@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Network;
@@ -25,84 +27,92 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorActorLayerInfo : TraitInfo, ICreatePlayersInfo
 	{
-		[Desc("Size of partition bins (world pixels)")]
+		[Desc("Size of partition bins (world pixels).")]
 		public readonly int BinSize = 250;
+
+		[Desc("Facing of new actors.")]
+		public readonly WAngle DefaultActorFacing = new(384);
 
 		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom)
 		{
-			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor");
+			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor.");
 		}
 
-		public override object Create(ActorInitializer init) { return new EditorActorLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EditorActorLayer(this); }
 	}
 
 	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
-		readonly EditorActorLayerInfo info;
-		readonly List<EditorActorPreview> previews = new List<EditorActorPreview>();
-		readonly Dictionary<CPos, List<EditorActorPreview>> cellMap = new Dictionary<CPos, List<EditorActorPreview>>();
+		const string ActorPrefix = "Actor";
+		const string PlayerSpawnName = "mpspawn";
 
+		public readonly EditorActorLayerInfo Info;
+		readonly List<EditorActorPreview> previews = [];
+		readonly HashSet<uint> previewIds = [];
+
+		int2 cellOffset;
+		SpatiallyPartitioned<EditorActorPreview> cellMap;
 		SpatiallyPartitioned<EditorActorPreview> screenMap;
 		WorldRenderer worldRenderer;
 
 		public MapPlayers Players { get; private set; }
+		PlayerReference worldOwner;
 
-		public EditorActorLayer(Actor self, EditorActorLayerInfo info)
+		public EditorActorLayer(EditorActorLayerInfo info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
 		void ICreatePlayers.CreatePlayers(World w, MersenneTwister playerRandom)
 		{
-			if (w.Type != WorldType.Editor)
-				return;
-
 			Players = new MapPlayers(w.Map.PlayerDefinitions);
 
-			var worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
+			worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
 			w.SetWorldOwner(new Player(w, null, worldOwner, playerRandom));
 		}
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			if (world.Type != WorldType.Editor)
-				return;
-
 			worldRenderer = wr;
 
 			foreach (var pr in Players.Players.Values)
 				wr.UpdatePalettesForPlayer(pr.Name, pr.Color, false);
 
-			var ts = world.Map.Grid.TileSize;
-			var width = world.Map.MapSize.X * ts.Width;
-			var height = world.Map.MapSize.Y * ts.Height;
-			screenMap = new SpatiallyPartitioned<EditorActorPreview>(width, height, info.BinSize);
+			cellOffset = new int2(world.Map.AllCells.Min(c => c.X), world.Map.AllCells.Min((c) => c.Y));
+			var cellOffsetMax = new int2(world.Map.AllCells.Max(c => c.X), world.Map.AllCells.Max((c) => c.Y));
+			var mapCellSize = cellOffsetMax - cellOffset;
+			var ts = world.Map.Rules.TerrainInfo.TileSize;
+			cellMap = new SpatiallyPartitioned<EditorActorPreview>(
+				mapCellSize.X, mapCellSize.Y, Exts.IntegerDivisionRoundingAwayFromZero(Info.BinSize, ts.Width));
 
-			foreach (var kv in world.Map.ActorDefinitions)
-				Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.ToDictionary()), true);
+			var width = world.Map.MapSize.Width * ts.Width;
+			var height = world.Map.MapSize.Height * ts.Height;
+			screenMap = new SpatiallyPartitioned<EditorActorPreview>(width, height, Info.BinSize);
 
-			// Update neighbours in one pass
-			foreach (var p in previews)
-				UpdateNeighbours(p.Footprint);
+			var names = new string[world.Map.ActorDefinitions.Count];
+			var references = new List<ActorReference>(world.Map.ActorDefinitions.Count);
+
+			for (var i = 0; i < world.Map.ActorDefinitions.Count; i++)
+			{
+				var kv = world.Map.ActorDefinitions.ElementAt(i);
+				names[i] = kv.Key;
+				references.Add(new ActorReference(kv.Value.Value, kv.Value.ToDictionary()));
+			}
+
+			AddRange(CollectionsMarshal.AsSpan(references), names);
 		}
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return;
-
 			foreach (var p in previews)
 				p.Tick();
 		}
 
-		static readonly IEnumerable<IRenderable> NoRenderables = Enumerable.Empty<IRenderable>();
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return NoRenderables;
-
-			return PreviewsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
-				.SelectMany(p => p.Render());
+			foreach (var p in PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight))
+				foreach (var r in p.Render())
+					yield return r;
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
@@ -113,93 +123,199 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (wr.World.Type != WorldType.Editor)
-				return NoRenderables;
-
-			return PreviewsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.SelectMany(p => p.RenderAnnotations());
 		}
 
 		bool IRenderAnnotations.SpatiallyPartitionable => false;
 
-		public EditorActorPreview Add(ActorReference reference) { return Add(NextActorName(), reference); }
-
-		public EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
+		IEnumerable<CPos> OccupiedCells(EditorActorPreview preview)
 		{
-			var owner = Players.Players[reference.Get<OwnerInit>().InternalName];
-			var preview = new EditorActorPreview(worldRenderer, id, reference, owner);
+			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
+			if (preview.Footprint.Count == 0)
+				return [worldRenderer.World.Map.CellContaining(preview.CenterPosition)];
+			return preview.Footprint.Keys;
+		}
 
-			Add(preview, initialSetup);
+		PlayerReference GetOrAddOwner(ActorReference reference)
+		{
+			// If an actor's doesn't have a valid owner transfer ownership to neutral
+			var ownerInit = reference.Get<OwnerInit>();
+			if (!Players.Players.TryGetValue(ownerInit.InternalName, out var owner))
+			{
+				owner = worldOwner;
+				reference.Replace(new OwnerInit(worldOwner.Name));
+			}
 
+			return owner;
+		}
+
+		public EditorActorPreview Add(ActorReference reference)
+		{
+			var owner = GetOrAddOwner(reference);
+			var preview = new EditorActorPreview(worldRenderer, NextActorName(), reference, owner);
+			Add(preview);
 			return preview;
 		}
 
-		public void Add(EditorActorPreview preview, bool initialSetup = false)
+		public void AddRange(ReadOnlySpan<ActorReference> references, ReadOnlySpan<string> names)
+		{
+			if (names.Length != references.Length)
+				throw new ArgumentException("Member name count must match reference count.");
+
+			var newPreviews = new EditorActorPreview[names.Length];
+			using (new PerfTimer("CreatePreviews"))
+			{
+				for (var i = 0; i < names.Length; i++)
+				{
+					var id = names[i];
+					var reference = references[i];
+					var owner = GetOrAddOwner(reference);
+
+					newPreviews[i] = new EditorActorPreview(worldRenderer, id, reference, owner);
+				}
+			}
+
+			AddRange(newPreviews);
+		}
+
+		public void AddRange(ReadOnlySpan<ActorReference> references)
+		{
+			AddRange(references, NextActorNames(references.Length));
+		}
+
+		public void Add(EditorActorPreview preview)
 		{
 			previews.Add(preview);
+			if (TryGetActorId(preview.ID, out var id))
+				previewIds.Add(id);
+
 			if (!preview.Bounds.IsEmpty)
 				screenMap.Add(preview, preview.Bounds);
 
-			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
-			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
-			if (!footprint.Any())
-				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
+			var cellFootprintBounds = OccupiedCells(preview).Select(
+				cell => new Rectangle(cell.X - cellOffset.X, cell.Y - cellOffset.Y, 1, 1)).Union();
 
-			foreach (var cell in footprint)
-				AddPreviewLocation(preview, cell);
+			cellMap.Add(preview, cellFootprintBounds);
 
 			preview.AddedToEditor();
+			UpdateNeighbours(preview.Footprint);
 
-			if (!initialSetup)
+			if (preview.Type == PlayerSpawnName)
+				SyncMultiplayerCount();
+		}
+
+		public void AddRange(ReadOnlySpan<EditorActorPreview> newPreviews)
+		{
+			previews.AddRange(newPreviews);
+			previewIds.EnsureCapacity(previews.Count * 2);
+
+			foreach (var preview in newPreviews)
 			{
-				UpdateNeighbours(preview.Footprint);
+				if (TryGetActorId(preview.ID, out var id))
+					previewIds.Add(id);
 
-				if (preview.Type == "mpspawn")
-					SyncMultiplayerCount();
+				if (!preview.Bounds.IsEmpty)
+					screenMap.Add(preview, preview.Bounds);
+
+				var cellFootprintBounds = OccupiedCells(preview)
+					.Select(cell => new Rectangle(cell.X - cellOffset.X, cell.Y - cellOffset.Y, 1, 1)).Union();
+
+				cellMap.Add(preview, cellFootprintBounds);
+
+				preview.AddedToEditor();
 			}
+
+			using (new PerfTimer("UpdateNeighbours"))
+				UpdateNeighbours(newPreviews);
+
+			SyncMultiplayerCount();
 		}
 
 		public void Remove(EditorActorPreview preview)
 		{
 			previews.Remove(preview);
+			if (TryGetActorId(preview.ID, out var id))
+				previewIds.Remove(id);
+
 			screenMap.Remove(preview);
 
-			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
-			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
-			if (!footprint.Any())
-				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
-
-			foreach (var cell in footprint)
-			{
-				if (!cellMap.TryGetValue(cell, out var list))
-					continue;
-
-				list.Remove(preview);
-
-				if (!list.Any())
-					cellMap.Remove(cell);
-			}
+			cellMap.Remove(preview);
 
 			preview.RemovedFromEditor();
 			UpdateNeighbours(preview.Footprint);
 
-			if (preview.Info.Name == "mpspawn")
+			if (preview.Info.Name == PlayerSpawnName)
 				SyncMultiplayerCount();
+		}
+
+		public void RemoveRange(ReadOnlySpan<EditorActorPreview> removePreviews)
+		{
+			foreach (var preview in removePreviews)
+			{
+				previews.Remove(preview);
+				if (TryGetActorId(preview.ID, out var id))
+					previewIds.Remove(id);
+
+				screenMap.Remove(preview);
+				cellMap.Remove(preview);
+			}
+
+			using (new PerfTimer("RemovedFromEditor", 1))
+				foreach (var preview in removePreviews)
+					preview.RemovedFromEditor();
+
+			using (new PerfTimer("UpdateNeighbours", 1))
+				UpdateNeighbours(removePreviews);
+
+			SyncMultiplayerCount();
+		}
+
+		public void RemoveRegion(CellCoordsRegion region)
+		{
+			RemoveRange(PreviewsInCellRegion(region).ToArray().AsSpan());
+		}
+
+		public void RemoveRegion(CellCoordsRegion region, HashSet<CPos> mask)
+		{
+			RemoveRange(PreviewsInCellRegion(region).Where(p => mask.Overlaps(p.Footprint.Keys)).ToArray().AsSpan());
+		}
+
+		public void MoveActor(EditorActorPreview preview, CPos location)
+		{
+			Remove(preview);
+			preview.ReplaceInit(new LocationInit(location));
+			var ios = preview.Info.TraitInfoOrDefault<IOccupySpaceInfo>();
+			if (ios != null && ios.SharesCell)
+			{
+				var actorSubCell = FreeSubCellAt(location);
+				if (actorSubCell == SubCell.Invalid)
+					preview.RemoveInit<SubCellInit>();
+				else
+					preview.ReplaceInit(new SubCellInit(actorSubCell));
+			}
+
+			preview.UpdateFromMove();
+			Add(preview);
 		}
 
 		void SyncMultiplayerCount()
 		{
-			var newCount = previews.Count(p => p.Info.Name == "mpspawn");
-			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi")).ToList();
-			foreach (var kv in mp)
+			var newCount = previews.Count(p => p.Info.Name == PlayerSpawnName);
+			var playersChanged = false;
+			foreach (var kv in Players.Players)
 			{
+				if (!kv.Key.StartsWith("Multi", StringComparison.Ordinal))
+					continue;
+
 				var name = kv.Key;
-				var index = int.Parse(name.Substring(5));
+				var index = Exts.ParseInt32Invariant(name[5..]);
 
 				if (index >= newCount)
 				{
 					Players.Players.Remove(name);
 					OnPlayerRemoved();
+					playersChanged = true;
 				}
 			}
 
@@ -213,74 +329,89 @@ namespace OpenRA.Mods.Common.Traits
 					Name = $"Multi{index}",
 					Faction = "Random",
 					Playable = true,
-					Enemies = new[] { "Creeps" }
+					Enemies = ["Creeps"]
 				};
 
 				Players.Players.Add(pr.Name, pr);
 				worldRenderer.UpdatePalettesForPlayer(pr.Name, pr.Color, true);
+				playersChanged = true;
 			}
+
+			if (!playersChanged)
+				return;
 
 			var creeps = Players.Players.Keys.FirstOrDefault(p => p == "Creeps");
 			if (!string.IsNullOrEmpty(creeps))
 				Players.Players[creeps].Enemies = Players.Players.Keys.Where(p => !Players.Players[p].NonCombatant).ToArray();
 		}
 
+		void UpdateNeighbours(ReadOnlySpan<EditorActorPreview> previews)
+		{
+			var cells = new HashSet<CPos>(previews.Length * 6);
+			foreach (var preview in previews)
+				cells.UnionWith(Util.ExpandFootprint(preview.Footprint.Keys, true));
+
+			if (cells.Count == 0)
+				return;
+
+			var bounds = CellCoordsRegion.BoundingRegion(cells);
+			var touchedPreviews = PreviewsInCellRegion(bounds)
+				.Where(p => cells.Overlaps(p.Footprint.Keys));
+
+			foreach (var p in touchedPreviews)
+				p.ReplaceInit(new RuntimeNeighbourInit(NeighbouringPreviews(p.Footprint)));
+		}
+
 		void UpdateNeighbours(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
 			// Include actors inside the footprint too
 			var cells = Util.ExpandFootprint(footprint.Keys, true);
-			foreach (var p in cells.SelectMany(c => PreviewsAt(c)))
+			foreach (var p in cells.SelectMany(PreviewsAtCell))
 				p.ReplaceInit(new RuntimeNeighbourInit(NeighbouringPreviews(p.Footprint)));
-		}
-
-		void AddPreviewLocation(EditorActorPreview preview, CPos location)
-		{
-			if (!cellMap.TryGetValue(location, out var list))
-			{
-				list = new List<EditorActorPreview>();
-				cellMap.Add(location, list);
-			}
-
-			list.Add(preview);
 		}
 
 		Dictionary<CPos, string[]> NeighbouringPreviews(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
 			var cells = Util.ExpandFootprint(footprint.Keys, true).Except(footprint.Keys);
-			return cells.ToDictionary(c => c, c => PreviewsAt(c).Select(p => p.Info.Name).ToArray());
+			return cells.ToDictionary(c => c, c => PreviewsAtCell(c).Select(p => p.Info.Name).ToArray());
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsInBox(int2 a, int2 b)
+		public IEnumerable<EditorActorPreview> PreviewsInScreenBox(int2 a, int2 b)
 		{
-			return screenMap.InBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
+			return PreviewsInScreenBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsInBox(Rectangle r)
+		public IEnumerable<EditorActorPreview> PreviewsInScreenBox(Rectangle r)
 		{
 			return screenMap.InBox(r);
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsAt(CPos cell)
+		public IEnumerable<EditorActorPreview> PreviewsInCellRegion(CellCoordsRegion region)
 		{
-			if (cellMap.TryGetValue(cell, out var list))
-				return list;
+			return cellMap.InBox(Rectangle.FromLTRB(
+				region.TopLeft.X - cellOffset.X,
+				region.TopLeft.Y - cellOffset.Y,
+				region.BottomRight.X - cellOffset.X + 1,
+				region.BottomRight.Y - cellOffset.Y + 1))
+				.Where(p => OccupiedCells(p).Any(region.Contains));
+		}
 
-			return Enumerable.Empty<EditorActorPreview>();
+		public IEnumerable<EditorActorPreview> PreviewsAtCell(CPos cell)
+		{
+			return cellMap.At(new int2(cell.X - cellOffset.X, cell.Y - cellOffset.Y))
+				.Where(p => OccupiedCells(p).Any(fp => fp == cell));
 		}
 
 		public SubCell FreeSubCellAt(CPos cell)
 		{
 			var map = worldRenderer.World.Map;
-			var previews = PreviewsAt(cell).ToList();
-			if (!previews.Any())
+			var previews = PreviewsAtCell(cell).ToArray();
+			if (previews.Length == 0)
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 			{
-				var blocked = previews.Any(p =>
-				{
-					return p.Footprint.TryGetValue(cell, out var s) && s == (SubCell)i;
-				});
+				var blocked = previews.Any(p => p.Footprint.TryGetValue(cell, out var s) && s == (SubCell)i);
 
 				if (!blocked)
 					return (SubCell)i;
@@ -289,25 +420,39 @@ namespace OpenRA.Mods.Common.Traits
 			return SubCell.Invalid;
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsAt(int2 worldPx)
+		public IEnumerable<EditorActorPreview> PreviewsAtWorldPixel(int2 worldPx)
 		{
 			return screenMap.At(worldPx);
 		}
 
 		public Action OnPlayerRemoved = () => { };
 
+		static bool TryGetActorId(string name, out uint id)
+		{
+			id = 0;
+			return name.StartsWith(ActorPrefix, StringComparison.Ordinal)
+				&& uint.TryParse(name.AsSpan(5), NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out id);
+		}
+
 		string NextActorName()
 		{
-			var id = previews.Count;
-			var possibleName = "Actor" + id.ToString();
+			var currentId = 0u;
+			while (previewIds.Contains(currentId))
+				currentId++;
 
-			while (previews.Any(p => p.ID == possibleName))
-			{
-				id++;
-				possibleName = "Actor" + id.ToString();
-			}
+			return ActorPrefix + currentId.ToStringInvariant();
+		}
 
-			return possibleName;
+		ReadOnlySpan<string> NextActorNames(int count)
+		{
+			var newNamesCount = 0u;
+			var newNames = new string[count];
+
+			for (var currentId = 0u; newNamesCount < count; currentId++)
+				if (!previewIds.Contains(currentId))
+					newNames[newNamesCount++] = ActorPrefix + currentId.ToStringInvariant();
+
+			return newNames;
 		}
 
 		public List<MiniYamlNode> Save()
@@ -321,9 +466,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
 		{
-			foreach (var previewsForCell in cellMap)
-				foreach (var preview in previewsForCell.Value)
-					destinationBuffer.Add((previewsForCell.Key, preview.RadarColor));
+			foreach (var preview in cellMap.Keys)
+				foreach (var cell in OccupiedCells(preview))
+					destinationBuffer.Add((cell, preview.RadarColor));
 		}
 
 		public EditorActorPreview this[string id]

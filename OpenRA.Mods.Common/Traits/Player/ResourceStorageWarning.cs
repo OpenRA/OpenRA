@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,8 +24,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Threshold = 80;
 
 		[NotificationReference("Speech")]
-		[Desc("The speech to play for the warning.")]
+		[Desc("Speech to play for the warning.")]
 		public readonly string Notification = "SilosNeeded";
+
+		[FluentReference(optional: true)]
+		[Desc("Text to display for the warning.")]
+		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new ResourceStorageWarning(init.Self, this); }
 	}
@@ -50,7 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 				var owner = self.Owner;
 
 				if (resources.Resources > info.Threshold * resources.ResourceCapacity / 100)
+				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", info.Notification, owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(owner, info.TextNotification);
+				}
 
 				lastSiloAdviceTime = Game.RunTime;
 			}

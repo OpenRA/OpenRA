@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,27 +15,38 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class InfiltrateForSupportPowerInfo : TraitInfo
+	sealed class InfiltrateForSupportPowerInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
 		public readonly string Proxy = null;
 
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
-		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> Types = default;
+
+		[Desc("Experience to grant to the infiltrating player.")]
+		public readonly int PlayerExperience = 0;
 
 		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when technology gets stolen.")]
 		public readonly string InfiltratedNotification = null;
 
+		[FluentReference(optional: true)]
+		[Desc("Text notification the victim will see when technology gets stolen.")]
+		public readonly string InfiltratedTextNotification = null;
+
 		[NotificationReference("Speech")]
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
 
+		[FluentReference(optional: true)]
+		[Desc("Text notification the perpetrator will see after successful infiltration.")]
+		public readonly string InfiltrationTextNotification = null;
+
 		public override object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
 
-	class InfiltrateForSupportPower : INotifyInfiltrated
+	sealed class InfiltrateForSupportPower : INotifyInfiltrated
 	{
 		readonly InfiltrateForSupportPowerInfo info;
 
@@ -55,10 +66,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (info.InfiltrationNotification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, infiltrator.Owner, "Speech", info.InfiltrationNotification, infiltrator.Owner.Faction.InternalName);
 
-			infiltrator.World.AddFrameEndTask(w => w.CreateActor(info.Proxy, new TypeDictionary
-			{
+			TextNotificationsManager.AddTransientLine(self.Owner, info.InfiltratedTextNotification);
+			TextNotificationsManager.AddTransientLine(infiltrator.Owner, info.InfiltrationTextNotification);
+
+			infiltrator.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(info.PlayerExperience);
+
+			infiltrator.World.AddFrameEndTask(w => w.CreateActor(info.Proxy,
+			[
 				new OwnerInit(infiltrator.Owner)
-			}));
+			]));
 		}
 	}
 }

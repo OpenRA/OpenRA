@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -17,8 +16,17 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoObjectivesLogic : ChromeLogic
+	sealed class GameInfoObjectivesLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string InProgress = "label-mission-in-progress";
+
+		[FluentReference]
+		const string Accomplished = "label-mission-accomplished";
+
+		[FluentReference]
+		const string Failed = "label-mission-failed";
+
 		readonly ContainerWidget template;
 
 		[ObjectCreator.UseCtor]
@@ -43,22 +51,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var missionStatus = widget.Get<LabelWidget>("MISSION_STATUS");
-			missionStatus.GetText = () => player.WinState == WinState.Undefined ? "In progress" :
-				player.WinState == WinState.Won ? "Accomplished" : "Failed";
+			var inProgress = FluentProvider.GetMessage(InProgress);
+			var accomplished = FluentProvider.GetMessage(Accomplished);
+			var failed = FluentProvider.GetMessage(Failed);
+			missionStatus.GetText = () => player.WinState == WinState.Undefined ? inProgress :
+				player.WinState == WinState.Won ? accomplished : failed;
 			missionStatus.GetColor = () => player.WinState == WinState.Undefined ? Color.White :
 				player.WinState == WinState.Won ? Color.LimeGreen : Color.Red;
 
 			PopulateObjectivesList(mo, objectivesPanel, template);
 
-			Action<Player, bool> redrawObjectives = (p, _) =>
+			void RedrawObjectives(Player p, bool _)
 			{
 				if (p == player)
 					PopulateObjectivesList(mo, objectivesPanel, template);
-			};
-			mo.ObjectiveAdded += redrawObjectives;
+			}
+
+			mo.ObjectiveAdded += RedrawObjectives;
 		}
 
-		void PopulateObjectivesList(MissionObjectives mo, ScrollPanelWidget parent, ContainerWidget template)
+		static void PopulateObjectivesList(MissionObjectives mo, ScrollPanelWidget parent, ContainerWidget template)
 		{
 			parent.RemoveChildren();
 
@@ -70,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var checkbox = widget.Get<CheckboxWidget>("OBJECTIVE_STATUS");
 				checkbox.IsChecked = () => objective.State != ObjectiveState.Incomplete;
-				checkbox.GetCheckType = () => objective.State == ObjectiveState.Completed ? "checked" : "crossed";
+				checkbox.GetCheckmark = () => objective.State == ObjectiveState.Completed ? "tick" : "cross";
 				checkbox.GetText = () => objective.Description;
 
 				parent.AddChild(widget);

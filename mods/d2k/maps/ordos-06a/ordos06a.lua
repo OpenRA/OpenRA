@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -141,16 +141,17 @@ ContrabandTimes =
 	hard = DateTime.Minutes(7)
 }
 
+IxianReinforcementsHaveArrived = UserInterface.GetFluentMessage("ixian-reinforcements-arrived")
 SendContraband = function()
-	Media.PlaySpeechNotification(player, "Reinforce")
+	Media.PlaySpeechNotification(Ordos, "Reinforce")
 
 	for i = 0, 6 do
-		local c = player.Color
+		local c = Ordos.Color
 		if i % 2 == 0 then
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Ixian reinforcements have arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(IxianReinforcementsHaveArrived, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
 		TimerTicks = ContrabandTimes[Difficulty]
@@ -158,7 +159,7 @@ SendContraband = function()
 
 	local entryPath = { CPos.New(82, OStarport.Location.Y + 1), OStarport.Location + CVec.New(1, 1) }
 	local exitPath = { CPos.New(2, OStarport.Location.Y + 1) }
-	Reinforcements.ReinforceWithTransport(player, "frigate", IxianReinforcements[Difficulty], entryPath, exitPath)
+	Reinforcements.ReinforceWithTransport(Ordos, "frigate", IxianReinforcements[Difficulty], entryPath, exitPath)
 end
 
 Hunt = function(house)
@@ -179,23 +180,23 @@ CheckHarvester = function(house)
 end
 
 Tick = function()
-	if not player.IsObjectiveCompleted(KillAtreides) and atreides.HasNoRequiredUnits() then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
-		player.MarkCompletedObjective(KillAtreides)
-		DestroyCarryalls(atreides)
+	if not Ordos.IsObjectiveCompleted(KillAtreides) and Atreides.HasNoRequiredUnits() then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("atreides-annihilated"), Mentat)
+		Ordos.MarkCompletedObjective(KillAtreides)
+		DestroyCarryalls(Atreides)
 
-		if player.IsObjectiveCompleted(KillHarkonnen) then
-			player.MarkCompletedObjective(GuardStarport)
+		if Ordos.IsObjectiveCompleted(KillHarkonnen) then
+			Ordos.MarkCompletedObjective(GuardStarport)
 		end
 	end
 
-	if not player.IsObjectiveCompleted(KillHarkonnen) and harkonnen.HasNoRequiredUnits() then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
-		player.MarkCompletedObjective(KillHarkonnen)
-		DestroyCarryalls(harkonnen)
+	if not Ordos.IsObjectiveCompleted(KillHarkonnen) and Harkonnen.HasNoRequiredUnits() then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("harkonnen-annihilated"), Mentat)
+		Ordos.MarkCompletedObjective(KillHarkonnen)
+		DestroyCarryalls(Harkonnen)
 
-		if player.IsObjectiveCompleted(KillAtreides) then
-			player.MarkCompletedObjective(GuardStarport)
+		if Ordos.IsObjectiveCompleted(KillAtreides) then
+			Ordos.MarkCompletedObjective(GuardStarport)
 		end
 	end
 
@@ -204,72 +205,74 @@ Tick = function()
 
 		if TimerTicks == 0 then
 			if not FirstIxiansArrived then
-				Media.DisplayMessage("Deliveries beginning to arrive. Massive reinforcements expected!", "Mentat")
+				Media.DisplayMessage(UserInterface.GetFluentMessage("deliveries-arriving-massive-reinforcements"), Mentat)
 			end
 
 			FirstIxiansArrived = true
 			SendContraband()
-		else
-			local text = "Initial"
+		elseif (TimerTicks % DateTime.Seconds(1)) == 0 then
+			local time = Utils.FormatTime(TimerTicks)
+			local reinforcementsText = UserInterface.GetFluentMessage("initial-reinforcements-arrive-in", { ["time"] = time })
 			if FirstIxiansArrived then
-				text = "Additional"
+				reinforcementsText = UserInterface.GetFluentMessage("additional-reinforcements-arrive-in", { ["time"] = time })
 			end
 
-			UserInterface.SetMissionText(text .. " reinforcements will arrive in " .. Utils.FormatTime(TimerTicks), player.Color)
+			UserInterface.SetMissionText(reinforcementsText, Ordos.Color)
 		end
 	end
 
-	CheckHarvester(atreides)
-	CheckHarvester(harkonnen)
+	CheckHarvester(Atreides)
+	CheckHarvester(Harkonnen)
 end
 
 WorldLoaded = function()
-	atreides = Player.GetPlayer("Atreides")
-	harkonnen = Player.GetPlayer("Harkonnen")
-	player = Player.GetPlayer("Ordos")
+	Atreides = Player.GetPlayer("Atreides")
+	Harkonnen = Player.GetPlayer("Harkonnen")
+	Ordos = Player.GetPlayer("Ordos")
 
-	InitObjectives(player)
-	GuardStarport = player.AddObjective("Defend the Starport.")
-	KillAtreides = player.AddObjective("Destroy the Atreides.")
-	KillHarkonnen = player.AddObjective("Destroy the Harkonnen.")
+	InitObjectives(Ordos)
+	GuardStarport = AddPrimaryObjective(Ordos, "defend-starport")
+	KillAtreides = AddPrimaryObjective(Ordos, "destroy-atreides")
+	KillHarkonnen = AddPrimaryObjective(Ordos, "destroy-harkonnen")
 
 	Camera.Position = OConyard.CenterPosition
 	EnemyAttackLocations = { OConyard.Location, OStarport.Location }
 
 	Trigger.OnRemovedFromWorld(OStarport, function()
-		player.MarkFailedObjective(GuardStarport)
+		Ordos.MarkFailedObjective(GuardStarport)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		TimerTicks = InitialContrabandTimes[Difficulty]
-		Media.DisplayMessage("The first batch of Ixian reinforcements will arrive in " .. Utils.FormatTime(TimerTicks) .. ".", "Mentat")
+		local time = Utils.FormatTime(TimerTicks)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("ixian-reinforcements-in", { ["time"] = time }), Mentat)
 	end)
 
-	Hunt(atreides)
-	Hunt(harkonnen)
+	Hunt(Atreides)
+	Hunt(Harkonnen)
 
 	local atreidesPath = function() return Utils.Random(AtreidesPaths) end
 	local harkonnenPath = function() return Utils.Random(HarkonnenPaths) end
-	local atreidesCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
-	local harkonnenCondition = function() return player.IsObjectiveCompleted(KillHarkonnen) end
+	local atreidesCondition = function() return Ordos.IsObjectiveCompleted(KillAtreides) end
+	local harkonnenCondition = function() return Ordos.IsObjectiveCompleted(KillHarkonnen) end
 	local huntFunction = function(unit)
 		unit.AttackMove(Utils.Random(EnemyAttackLocations))
 		IdleHunt(unit)
 	end
 	local announcementFunction = function()
-		Media.DisplayMessage("Enemy reinforcements have arrived.", "Mentat")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("enemy-reinforcements-arrived"), Mentat)
 	end
 
-	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], atreidesPath, AtreidesReinforcements[Difficulty], atreidesCondition, huntFunction, announcementFunction)
+	SendCarryallReinforcements(Atreides, 0, AtreidesAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], atreidesPath, AtreidesReinforcements[Difficulty], atreidesCondition, huntFunction, announcementFunction)
 
 	Trigger.AfterDelay(Utils.RandomInteger(DateTime.Seconds(45), DateTime.Minutes(1) + DateTime.Seconds(15)), function()
-		SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], harkonnenPath, HarkonnenReinforcements[Difficulty], harkonnenCondition, huntFunction, announcementFunction)
+		SendCarryallReinforcements(Harkonnen, 0, HarkonnenAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], harkonnenPath, HarkonnenReinforcements[Difficulty], harkonnenCondition, huntFunction, announcementFunction)
 	end)
 
-	Actor.Create("upgrade.barracks", true, { Owner = atreides })
-	Actor.Create("upgrade.light", true, { Owner = atreides })
-	Actor.Create("upgrade.heavy", true, { Owner = atreides })
-	Actor.Create("upgrade.barracks", true, { Owner = harkonnen })
-	Actor.Create("upgrade.heavy", true, { Owner = harkonnen })
+	Actor.Create("upgrade.barracks", true, { Owner = Atreides })
+	Actor.Create("upgrade.light", true, { Owner = Atreides })
+	Actor.Create("upgrade.heavy", true, { Owner = Atreides })
+	Actor.Create("upgrade.barracks", true, { Owner = Harkonnen })
+	Actor.Create("upgrade.heavy", true, { Owner = Harkonnen })
 	Trigger.AfterDelay(0, ActivateAI)
 end

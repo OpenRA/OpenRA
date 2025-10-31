@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ConvertSpriteToPngCommand : IUtilityCommand
+	sealed class ConvertSpriteToPngCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--png";
 
@@ -35,16 +35,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var modData = Game.ModData = utility.ModData;
 
 			var src = args[1];
-			var shadowIndex = new int[] { };
+			var shadowIndex = Array.Empty<int>();
 			if (args.Contains("--noshadow"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 3);
-				shadowIndex[shadowIndex.Length - 1] = 1;
-				shadowIndex[shadowIndex.Length - 2] = 3;
-				shadowIndex[shadowIndex.Length - 3] = 4;
+				shadowIndex[^1] = 1;
+				shadowIndex[^2] = 3;
+				shadowIndex[^3] = 4;
 			}
 
-			var palette = new ImmutablePalette(args[2], new[] { 0 }, shadowIndex);
+			var palette = new ImmutablePalette(args[2], [0], shadowIndex);
 			var palColors = new Color[Palette.Size];
 			for (var i = 0; i < Palette.Size; i++)
 				palColors[i] = palette.GetColor(i);
@@ -71,15 +71,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var pngData = frame.Data;
 				if (frameSize != frame.Size)
 				{
+					var width = Math.Min(frame.Size.Width, frameSize.Width - offset.X);
+					var height = Math.Min(frame.Size.Height, frameSize.Height - offset.Y);
 					pngData = new byte[frameSize.Width * frameSize.Height];
-					for (var i = 0; i < frame.Size.Height; i++)
-						Buffer.BlockCopy(frame.Data, i * frame.Size.Width,
-							pngData, (i + offset.Y) * frameSize.Width + offset.X,
-							frame.Size.Width);
+					for (var h = 0; h < height; h++)
+						Array.Copy(
+							frame.Data, h * frame.Size.Width,
+							pngData, (h + offset.Y) * frameSize.Width + offset.X,
+							width);
 				}
 
 				var png = new Png(pngData, SpriteFrameType.Indexed8, frameSize.Width, frameSize.Height, palColors);
-				png.Save($"{prefix}-{(count++):D4}.png");
+				png.Save($"{prefix}-{count++:D4}.png");
 			}
 
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);

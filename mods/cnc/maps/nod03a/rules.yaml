@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod03a.lua
+		Scripts: campaign.lua, utils.lua, nod03a.lua
 	MusicPlaylist:
 		StartingMusic: chrg226m
 		VictoryMusic: nod_win1
@@ -20,7 +20,7 @@ HQ:
 		Prerequisites: ~disabled
 	Tooltip:
 	Buildable:
-		Description: Provides an overview of the battlefield.\nRequires power to operate.
+		Description: actor-hq-description
 
 CYCL:
 	Buildable:
@@ -96,7 +96,7 @@ RMBO:
 
 MISS:
 	Tooltip:
-		Name: Prison
+		Name: actor-prison-name
 	CaptureManager:
 	Capturable:
 		Types: building

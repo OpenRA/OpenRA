@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -31,9 +31,9 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	GDIObjective = GDI.AddObjective("Kill all enemies.")
-	BuildBase = Nod.AddObjective("Build a base.")
-	DestroyGDI = Nod.AddObjective("Destroy all GDI units.")
+	GDIObjective = AddPrimaryObjective(GDI, "")
+	BuildBaseObjective = AddPrimaryObjective(Nod, "build-base")
+	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-units")
 
 	Utils.Do({ Refinery, Yard }, function(actor)
 		Trigger.OnDamaged(actor, function()
@@ -97,7 +97,7 @@ Tick = function()
 		Nod.MarkCompletedObjective(DestroyGDI)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(BuildBase) and CheckForBase(Nod, NodBaseBuildings) then
-		Nod.MarkCompletedObjective(BuildBase)
+	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(BuildBaseObjective) and CheckForBase(Nod, NodBaseBuildings) then
+		Nod.MarkCompletedObjective(BuildBaseObjective)
 	end
 end

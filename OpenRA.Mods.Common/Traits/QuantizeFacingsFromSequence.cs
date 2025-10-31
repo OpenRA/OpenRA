@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,13 +23,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Defines sequence to derive facings from.")]
 		public readonly string Sequence = "idle";
 
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race)
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceSet sequences, string faction)
 		{
 			if (string.IsNullOrEmpty(Sequence))
-				throw new InvalidOperationException("Actor " + ai.Name + " is missing sequence to quantize facings from.");
+				throw new InvalidOperationException($"Actor {ai.Name} is missing sequence to quantize facings from.");
 
 			var rsi = ai.TraitInfo<RenderSpritesInfo>();
-			return sequenceProvider.GetSequence(rsi.GetImage(ai, sequenceProvider, race), Sequence).Facings;
+			var image = rsi.GetImage(ai, faction);
+			var facings = sequences.GetSequence(image, Sequence).Facings;
+			if (facings == 0)
+				throw new InvalidOperationException(
+					$"Actor {ai.Name} defines a quantized body orientation with zero facings. Faction: {faction} Image: {image} Sequence: {Sequence}");
+			return facings;
 		}
 
 		public override object Create(ActorInitializer init) { return new QuantizeFacingsFromSequence(this); }

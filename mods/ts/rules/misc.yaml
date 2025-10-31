@@ -1,8 +1,7 @@
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (multiplayer player starting point)
-	AlwaysVisible:
+		Name: actor-mpspawn-name
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
@@ -17,8 +16,7 @@ mpspawn:
 waypoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (waypoint for scripted behavior)
-	AlwaysVisible:
+		Name: actor-waypoint-name
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
@@ -28,26 +26,37 @@ waypoint:
 	MapEditorData:
 		Categories: System
 
-mmch.colorpicker:
-	Inherits: MMCH
-	Mobile:
-		InitialFacing: 640
-	WithFacingSpriteBody:
-		Sequence: walk
+harv.colorpicker:
+	Inherits: HARV
 	-Buildable:
 	-MapEditorData:
 	RenderVoxels:
-		Image: mmch
+		Image: harv
 		Palette: colorpicker
-	RenderSprites:
-		Image: mmch
+		Scale: 18
+
+hvr.colorpicker:
+	Inherits: HVR
+	-Buildable:
+	-MapEditorData:
+	RenderVoxels:
+		Image: hvr
 		Palette: colorpicker
+		Scale: 18
+
+stnk.colorpicker:
+	Inherits: STNK
+	-Buildable:
+	-MapEditorData:
+	RenderVoxels:
+		Image: stnk
+		Palette: colorpicker
+		Scale: 18
 
 CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals area to owner)
-	AlwaysVisible:
+		Name: actor-camera-name
 	RenderSpritesEditorOnly:
 	WithSpriteBody:
 	BodyOrientation:
@@ -81,7 +90,7 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Sequence: reveal-map
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv

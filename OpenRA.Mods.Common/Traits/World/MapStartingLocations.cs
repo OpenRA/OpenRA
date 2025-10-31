@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,11 +25,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WDist InitialExploreRange = WDist.FromCells(5);
 
+		[FluentReference]
 		[Desc("Descriptive label for the spawn positions checkbox in the lobby.")]
-		public readonly string SeparateTeamSpawnsCheckboxLabel = "Separate Team Spawns";
+		public readonly string SeparateTeamSpawnsCheckboxLabel = "checkbox-separate-team-spawns.label";
 
+		[FluentReference]
 		[Desc("Tooltip description for the spawn positions checkbox in the lobby.")]
-		public readonly string SeparateTeamSpawnsCheckboxDescription = "Players without assigned spawn points will start as far as possible from enemy players";
+		public readonly string SeparateTeamSpawnsCheckboxDescription = "checkbox-separate-team-spawns.description";
 
 		[Desc("Default value of the spawn positions checkbox in the lobby.")]
 		public readonly bool SeparateTeamSpawnsCheckboxEnabled = true;
@@ -48,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyBooleanOption(
+				map,
 				"separateteamspawns",
 				SeparateTeamSpawnsCheckboxLabel,
 				SeparateTeamSpawnsCheckboxDescription,
@@ -57,20 +60,22 @@ namespace OpenRA.Mods.Common.Traits
 				SeparateTeamSpawnsCheckboxLocked);
 		}
 
-		class AssignSpawnLocationsState
+		sealed class AssignSpawnLocationsState
 		{
 			public CPos[] SpawnLocations;
 			public List<int> AvailableSpawnPoints;
-			public readonly Dictionary<int, Session.Client> OccupiedSpawnPoints = new Dictionary<int, Session.Client>();
+			public readonly Dictionary<int, Session.Client> OccupiedSpawnPoints = [];
 		}
 
 		object IAssignSpawnPointsInfo.InitializeState(MapPreview map, Session lobbyInfo)
 		{
-			var state = new AssignSpawnLocationsState();
+			var state = new AssignSpawnLocationsState
+			{
+				// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
+				SpawnLocations = map.SpawnPoints,
+				AvailableSpawnPoints = LobbyUtils.AvailableSpawnPoints(map.SpawnPoints.Length, lobbyInfo)
+			};
 
-			// Initialize the list of unoccupied spawn points for AssignSpawnLocations to pick from
-			state.SpawnLocations = map.SpawnPoints;
-			state.AvailableSpawnPoints = LobbyUtils.AvailableSpawnPoints(map.SpawnPoints.Length, lobbyInfo);
 			foreach (var kv in lobbyInfo.Slots)
 			{
 				var client = lobbyInfo.ClientInSlot(kv.Key);
@@ -107,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class MapStartingLocations : IWorldLoaded, INotifyCreated, IAssignSpawnPoints
 	{
 		readonly MapStartingLocationsInfo info;
-		readonly Dictionary<int, Session.Client> occupiedSpawnPoints = new Dictionary<int, Session.Client>();
+		readonly Dictionary<int, Session.Client> occupiedSpawnPoints = [];
 		bool separateTeamSpawns;
 		CPos[] spawnLocations;
 		List<int> availableSpawnPoints;
@@ -182,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var q in world.Players)
 					if (p.IsAlliedWith(q))
-						q.Shroud.ExploreProjectedCells(world, cells);
+						q.Shroud.ExploreProjectedCells(cells);
 			}
 		}
 	}

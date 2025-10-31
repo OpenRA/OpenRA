@@ -45,5 +45,19 @@
 			"args": ["Game.Mod=ts", "Engine.EngineDir=.."],
 			"preLaunchTask": "build",
 		},
+		{
+			"name": "Launch Utility",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceRoot}/bin/OpenRA.Utility.dll",
+			"windows": {
+				"program": "${workspaceRoot}/bin/OpenRA.Utility.exe",
+			},
+			"args": ["all", "--docs", "{DEV_VERSION}"],
+			"env": {
+				"ENGINE_DIR": ".."
+			},
+			"preLaunchTask": "build",
+		},
 	]
 }

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -80,7 +80,7 @@ Tick = function()
 		Spain.MarkCompletedObjective(KillAll)
 	end
 
-	if Hive1Gassed and Hive2Gassed and Hive3Gassed and Hive4Gassed and Hive5Gassed and Hive6Gassed and Hive7Gassed then
+	if HiveGassed[1] and HiveGassed[2] and HiveGassed[3] and HiveGassed[4] and HiveGassed[5] and HiveGassed[6] and HiveGassed[7] then
 		Spain.MarkCompletedObjective(GasNests)
 		SendAnts()
 	end
@@ -92,26 +92,11 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	England = Player.GetPlayer("England")
 
-	Trigger.OnObjectiveAdded(Spain, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Spain)
 
-	EatSpain = BadGuy.AddObjective("For the Swarm!")
-	GasNests = Spain.AddObjective("Gas every ant nest.")
-	KillAll = Spain.AddObjective("Kill every ant lurking above ground.")
-
-	Trigger.OnObjectiveCompleted(Spain, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Spain, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Spain, function()
-		Media.PlaySpeechNotification(Spain, "Lose")
-	end)
-	Trigger.OnPlayerWon(Spain, function()
-		Media.PlaySpeechNotification(Spain, "Win")
-	end)
+	EatSpain = AddPrimaryObjective(BadGuy, "")
+	GasNests = AddPrimaryObjective(Spain, "gas-every-ant-nest")
+	KillAll = AddPrimaryObjective(Spain, "kill-every-ant-above-ground")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	Start()

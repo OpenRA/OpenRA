@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,51 +35,46 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If > 0, restrict the number of times that this condition can be granted by any source.")]
 		public readonly int TotalCap = 0;
 
-		public override object Create(ActorInitializer init) { return new ExternalCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ExternalCondition(this); }
 	}
 
-	public class ExternalCondition : ITick, INotifyCreated
+	public class ExternalCondition : ITick, INotifyCreated, INotifyOwnerChanged
 	{
-		readonly struct TimedToken
+		readonly struct TimedToken(int token, Actor self, object source, int duration)
 		{
-			public readonly int Expires;
-			public readonly int Token;
-			public readonly object Source;
-
-			public TimedToken(int token, Actor self, object source, int duration)
-			{
-				Token = token;
-				Expires = self.World.WorldTick + duration;
-				Source = source;
-			}
+			public readonly int Expires = self.World.WorldTick + duration;
+			public readonly int Token = token;
+			public readonly object Source = source;
 		}
 
 		public readonly ExternalConditionInfo Info;
-		readonly Dictionary<object, HashSet<int>> permanentTokens = new Dictionary<object, HashSet<int>>();
+		readonly Dictionary<object, HashSet<int>> permanentTokens = [];
 
 		// Tokens are sorted on insert/remove by ascending expiry time
-		readonly List<TimedToken> timedTokens = new List<TimedToken>();
+		readonly List<TimedToken> timedTokens = [];
 		IConditionTimerWatcher[] watchers;
 		int duration;
 		int expires;
 
-		public ExternalCondition(Actor self, ExternalConditionInfo info)
+		public ExternalCondition(ExternalConditionInfo info)
 		{
 			Info = info;
 		}
 
-		public bool CanGrantCondition(Actor self, object source)
+		public bool CanGrantCondition(object source)
 		{
 			if (source == null)
 				return false;
 
 			// Timed tokens do not count towards the source cap: the condition with the shortest
 			// remaining duration can always be revoked to make room.
-			if (Info.SourceCap > 0)
-				if (permanentTokens.TryGetValue(source, out var permanentTokensForSource) && permanentTokensForSource.Count >= Info.SourceCap)
-					return false;
+			if (Info.SourceCap > 0 &&
+				permanentTokens.TryGetValue(source, out var permanentTokensForSource) &&
+				permanentTokensForSource.Count >= Info.SourceCap)
+				return false;
 
-			if (Info.TotalCap > 0 && permanentTokens.Values.Sum(t => t.Count) >= Info.TotalCap)
+			if (Info.TotalCap > 0 &&
+				permanentTokens.Values.Sum(t => t.Count) >= Info.TotalCap)
 				return false;
 
 			return true;
@@ -87,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GrantCondition(Actor self, object source, int duration = 0, int remaining = 0)
 		{
-			if (!CanGrantCondition(self, source))
+			if (!CanGrantCondition(source))
 				return Actor.InvalidConditionToken;
 
 			var token = self.GrantCondition(Info.Condition);
@@ -121,17 +116,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.TotalCap > 0)
 				{
 					var totalCount = permanentTokens.Values.Sum(t => t.Count) + timedTokens.Count;
-					if (totalCount >= Info.TotalCap)
+					if (totalCount >= Info.TotalCap && timedTokens.Count > 0)
 					{
-						// Prefer tokens from the same source
-						if (timedTokens.Count > 0)
-						{
-							var expire = timedTokens[0].Token;
-							if (self.TokenValid(expire))
-								self.RevokeCondition(expire);
+						var expire = timedTokens[0].Token;
+						if (self.TokenValid(expire))
+							self.RevokeCondition(expire);
 
-							timedTokens.RemoveAt(0);
-						}
+						timedTokens.RemoveAt(0);
 					}
 				}
 
@@ -149,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 			else if (permanent == null)
-				permanentTokens.Add(source, new HashSet<int> { token });
+				permanentTokens.Add(source, [token]);
 			else
 				permanent.Add(token);
 
@@ -225,6 +216,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool Notifies(IConditionTimerWatcher watcher) { return watcher.Condition == Info.Condition; }
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			foreach (var pair in self.World.ActorsWithTrait<INotifyProximityOwnerChanged>())
+				pair.Trait.OnProximityOwnerChanged(self, oldOwner, newOwner);
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{

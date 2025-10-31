@@ -1,19 +1,20 @@
 World:
 	LuaScript:
-		Scripts: allies05c.lua, allies05c-AI.lua, campaign-global.lua
+		Scripts: campaign.lua, utils.lua, allies05c.lua, allies05c-AI.lua
 	MissionData:
 		BriefingVideo: ally5.vqa
 		WinVideo: tanya2.vqa
 		LossVideo: grvestne.vqa
 		StartVideo: tanya1.vqa
-		Briefing: Rescue Tanya.\n\nOnce disguised, your spy can move past any enemy unit, except dogs, without being detected. Direct him into the weapons factory located at a nearby Soviet Base where he will hijack a truck and free Tanya.\n\nWith Tanya's help, take out the air defenses on the island and a Chinook will arrive to rescue her.\n\nThen destroy all remaining Soviet buildings and units.
+		Briefing: Rescue Tanya.\n\nOnce disguised, your spy can move past any enemy unit, except dogs, without being detected. Direct him into the weapons factory located at a nearby Soviet base where he can hijack a truck and free Tanya.\n\nWith Tanya's help, take out the air defenses on the island so a Chinook can arrive to rescue her.\n\nThen destroy all remaining Soviet buildings and units.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Camera.Small:
@@ -94,7 +95,7 @@ WEAP.infiltratable:
 
 MISS:
 	Tooltip:
-		Name: Prison
+		Name: actor-prison-name
 	Targetable:
 		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Mission Objectives
 	AttackOmni:

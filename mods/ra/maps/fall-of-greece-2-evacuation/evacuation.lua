@@ -1,12 +1,11 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 AlliedReinforcementsA = { "jeep", "jeep" }
 AlliedReinforcementsB = { "e1", "e1", "e1", "e3", "e3" }
 AlliedReinforcementsC = { "jeep", "mcv" }
@@ -178,6 +177,12 @@ VillageSetup = function()
 	end)
 end
 
+SetCivilianEvacuatedText = function()
+	local civiliansEvacuated = UserInterface.GetFluentMessage("civilians-evacuated",
+		{ ["evacuated"] = CiviliansEvacuated, ["threshold"] = CiviliansEvacuatedThreshold })
+	UserInterface.SetMissionText(civiliansEvacuated, TextColor)
+end
+
 CiviliansEvacuatedThreshold =
 {
 	hard = 20,
@@ -195,7 +200,7 @@ CiviliansKilled = 0
 EvacuateCivilians = function()
 	Trigger.OnInfiltrated(SafeHouse, function()
 		CiviliansEvacuated = CiviliansEvacuated + 1
-		UserInterface.SetMissionText(CiviliansEvacuated .. "/" .. CiviliansEvacuatedThreshold .. " civilians evacuated.", TextColor)
+		SetCivilianEvacuatedText()
 	end)
 
 	Trigger.OnKilled(SafeHouse, function()
@@ -210,7 +215,7 @@ EvacuateCivilians = function()
 
 	Trigger.OnAllKilled(enemyBase, function()
 		Media.PlaySoundNotification(Allies, "AlertBleep")
-		Media.DisplayMessage("Alfa Niner this is Pegasus. We are on site and ready to assist with the evacuation.", "Chinook pilot")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("chinook-assist-evacuation"), UserInterface.GetFluentMessage("chinook-pilot"))
 		Reinforcements.Reinforce(Allies, { "tran" }, { ChinookEntry.Location, ChinookLZ.Location })
 	end)
 end
@@ -234,39 +239,23 @@ WorldLoaded = function()
 	Allies = Player.GetPlayer("Allies")
 	USSR = Player.GetPlayer("USSR")
 
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Allies)
 
-	if Map.LobbyOption("difficulty") == "easy" then
-		RescueCivilians = Allies.AddObjective("Evacuate at least half of the civilians to the island\nshelter.")
-	elseif Map.LobbyOption("difficulty") == "normal" then
-		RescueCivilians = Allies.AddObjective("Evacuate at least three quarters of the civilians to\nthe island shelter.")
+	if Difficulty == "easy" then
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civilians-island-shelter-easy")
+	elseif Difficulty == "normal" then
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civilians-island-shelter-normal")
 	else
-		RescueCivilians = Allies.AddObjective("Evacuate all civilians to the island shelter.")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civilians-island-shelter-hard")
 	end
 
-	ClearWaterway = Allies.AddObjective("Clear the area of enemy submarine activity.", "Secondary", false)
-	SovietObj = USSR.AddObjective("Defeat Allies.")
-
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Lose")
-	end)
-	Trigger.OnPlayerWon(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Win")
-	end)
+	ClearWaterway = AddSecondaryObjective(Allies, "clear-enemy-submarines")
+	SovietObj = AddPrimaryObjective(USSR, "")
 
 	CiviliansEvacuatedThreshold = CiviliansEvacuatedThreshold[Difficulty]
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]
 	TextColor = Allies.Color
-	UserInterface.SetMissionText(CiviliansEvacuated .. "/" .. CiviliansEvacuatedThreshold .. " civilians evacuated.", TextColor)
+	SetCivilianEvacuatedText()
 	StandardDrop = Actor.Create("paradrop", false, { Owner = USSR })
 	FlamerDrop = Actor.Create("flamerdrop", false, { Owner = USSR })
 	Camera.Position = DefaultCameraPosition.CenterPosition

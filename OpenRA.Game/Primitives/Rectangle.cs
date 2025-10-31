@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,13 +13,12 @@ using System;
 
 namespace OpenRA.Primitives
 {
-	public struct Rectangle : IEquatable<Rectangle>
+	public readonly struct Rectangle : IEquatable<Rectangle>
 	{
-		// TODO: Make these readonly: this will require a lot of changes to the UI logic
-		public int X;
-		public int Y;
-		public int Width;
-		public int Height;
+		public readonly int X;
+		public readonly int Y;
+		public readonly int Width;
+		public readonly int Height;
 		public static readonly Rectangle Empty;
 
 		public static Rectangle FromLTRB(int left, int top, int right, int bottom)
@@ -34,7 +33,7 @@ namespace OpenRA.Primitives
 
 		public static bool operator ==(Rectangle left, Rectangle right)
 		{
-			return left.Location == right.Location && left.Size == right.Size;
+			return left.X == right.X && left.Y == right.Y && left.Width == right.Width && left.Height == right.Height;
 		}
 
 		public static bool operator !=(Rectangle left, Rectangle right)
@@ -58,53 +57,53 @@ namespace OpenRA.Primitives
 			Height = size.Height;
 		}
 
-		public int Left => X;
-		public int Right => X + Width;
-		public int Top => Y;
-		public int Bottom => Y + Height;
-		public bool IsEmpty => X == 0 && Y == 0 && Width == 0 && Height == 0;
-		public int2 Location => new int2(X, Y);
-		public Size Size => new Size(Width, Height);
+		public readonly int Left => X;
+		public readonly int Right => X + Width;
+		public readonly int Top => Y;
+		public readonly int Bottom => Y + Height;
+		public readonly bool IsEmpty => X == 0 && Y == 0 && Width == 0 && Height == 0;
+		public readonly int2 Location => new(X, Y);
+		public readonly Size Size => new(Width, Height);
 
-		public int2 TopLeft => Location;
-		public int2 TopRight => new int2(X + Width, Y);
-		public int2 BottomLeft => new int2(X, Y + Height);
-		public int2 BottomRight => new int2(X + Width, Y + Height);
+		public readonly int2 TopLeft => Location;
+		public readonly int2 TopRight => new(X + Width, Y);
+		public readonly int2 BottomLeft => new(X, Y + Height);
+		public readonly int2 BottomRight => new(X + Width, Y + Height);
 
-		public bool Contains(int x, int y)
+		public readonly bool Contains(int x, int y)
 		{
 			return x >= Left && x < Right && y >= Top && y < Bottom;
 		}
 
-		public bool Contains(int2 pt)
+		public readonly bool Contains(int2 pt)
 		{
 			return Contains(pt.X, pt.Y);
 		}
 
-		public bool Equals(Rectangle other)
+		public readonly bool Equals(Rectangle other)
 		{
 			return this == other;
 		}
 
-		public override bool Equals(object obj)
+		public override readonly bool Equals(object obj)
 		{
-			if (!(obj is Rectangle))
+			if (obj is not Rectangle)
 				return false;
 
 			return this == (Rectangle)obj;
 		}
 
-		public override int GetHashCode()
+		public override readonly int GetHashCode()
 		{
 			return Height + Width ^ X + Y;
 		}
 
-		public bool IntersectsWith(Rectangle rect)
+		public readonly bool IntersectsWith(Rectangle rect)
 		{
 			return Left < rect.Right && Right > rect.Left && Top < rect.Bottom && Bottom > rect.Top;
 		}
 
-		bool IntersectsWithInclusive(Rectangle r)
+		readonly bool IntersectsWithInclusive(Rectangle r)
 		{
 			return Left <= r.Right && Right >= r.Left && Top <= r.Bottom && Bottom >= r.Top;
 		}
@@ -117,14 +116,14 @@ namespace OpenRA.Primitives
 			return FromLTRB(Math.Max(a.Left, b.Left), Math.Max(a.Top, b.Top), Math.Min(a.Right, b.Right), Math.Min(a.Bottom, b.Bottom));
 		}
 
-		public bool Contains(Rectangle rect)
+		public readonly bool Contains(Rectangle rect)
 		{
 			return rect == Intersect(this, rect);
 		}
 
 		public static Rectangle operator *(int a, Rectangle b) { return new Rectangle(a * b.X, a * b.Y, a * b.Width, a * b.Height); }
 
-		public override string ToString()
+		public override readonly string ToString()
 		{
 			return $"{X},{Y},{Width},{Height}";
 		}

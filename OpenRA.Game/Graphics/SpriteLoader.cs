@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,10 +9,7 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
@@ -21,24 +18,34 @@ namespace OpenRA.Graphics
 	/// <summary>
 	/// Describes the format of the pixel data in a ISpriteFrame.
 	/// Note that the channel order is defined for little-endian bytes, so BGRA corresponds
-	/// to a 32bit ARGB value, such as that returned by Color.ToArgb()!
+	/// to a 32bit ARGB value, such as that returned by Color.ToArgb().
 	/// </summary>
 	public enum SpriteFrameType
 	{
-		// 8 bit index into an external palette
+		/// <summary>
+		/// 8 bit index into an external palette.
+		/// </summary>
 		Indexed8,
 
-		// 32 bit color such as returned by Color.ToArgb() or the bmp file format
-		// (remember that little-endian systems place the little bits in the first byte!)
+		/// <summary>
+		/// 32 bit color such as returned by Color.ToArgb() or the bmp file format
+		/// (remember that little-endian systems place the little bits in the first byte).
+		/// </summary>
 		Bgra32,
 
-		// Like BGRA, but without an alpha channel
+		/// <summary>
+		/// Like BGRA, but without an alpha channel.
+		/// </summary>
 		Bgr24,
 
-		// 32 bit color in big-endian format, like png
+		/// <summary>
+		/// 32 bit color in big-endian format, like png.
+		/// </summary>
 		Rgba32,
 
-		// Like RGBA, but without an alpha channel
+		/// <summary>
+		/// Like RGBA, but without an alpha channel.
+		/// </summary>
 		Rgb24
 	}
 
@@ -65,94 +72,6 @@ namespace OpenRA.Graphics
 		float2 Offset { get; }
 		byte[] Data { get; }
 		bool DisableExportPadding { get; }
-	}
-
-	public class SpriteCache
-	{
-		public readonly Cache<SheetType, SheetBuilder> SheetBuilders;
-		readonly ISpriteLoader[] loaders;
-		readonly IReadOnlyFileSystem fileSystem;
-
-		readonly Dictionary<string, List<Sprite[]>> sprites = new Dictionary<string, List<Sprite[]>>();
-		readonly Dictionary<string, ISpriteFrame[]> unloadedFrames = new Dictionary<string, ISpriteFrame[]>();
-		readonly Dictionary<string, TypeDictionary> metadata = new Dictionary<string, TypeDictionary>();
-
-		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders)
-		{
-			SheetBuilders = new Cache<SheetType, SheetBuilder>(t => new SheetBuilder(t));
-
-			this.fileSystem = fileSystem;
-			this.loaders = loaders;
-		}
-
-		/// <summary>
-		/// Returns the first set of sprites with the given filename.
-		/// If getUsedFrames is defined then the indices returned by the function call
-		/// are guaranteed to be loaded.  The value of other indices in the returned
-		/// array are undefined and should never be accessed.
-		/// </summary>
-		public Sprite[] this[string filename, Func<int, IEnumerable<int>> getUsedFrames = null]
-		{
-			get
-			{
-				var allSprites = sprites.GetOrAdd(filename);
-				var sprite = allSprites.FirstOrDefault();
-
-				if (!unloadedFrames.TryGetValue(filename, out var unloaded))
-					unloaded = null;
-
-				// This is the first time that the file has been requested
-				// Load all of the frames into the unused buffer and initialize
-				// the loaded cache (initially empty)
-				if (sprite == null)
-				{
-					unloaded = FrameLoader.GetFrames(fileSystem, filename, loaders, out var fileMetadata);
-					unloadedFrames[filename] = unloaded;
-					metadata[filename] = fileMetadata;
-
-					sprite = new Sprite[unloaded.Length];
-					allSprites.Add(sprite);
-				}
-
-				// HACK: The sequence code relies on side-effects from getUsedFrames
-				var indices = getUsedFrames != null ? getUsedFrames(sprite.Length) :
-					Enumerable.Range(0, sprite.Length);
-
-				// Load any unused frames into the SheetBuilder
-				if (unloaded != null)
-				{
-					foreach (var i in indices)
-					{
-						if (unloaded[i] != null)
-						{
-							sprite[i] = SheetBuilders[SheetBuilder.FrameTypeToSheetType(unloaded[i].Type)].Add(unloaded[i]);
-							unloaded[i] = null;
-						}
-					}
-
-					// All frames have been loaded
-					if (unloaded.All(f => f == null))
-						unloadedFrames.Remove(filename);
-				}
-
-				return sprite;
-			}
-		}
-
-		/// <summary>
-		/// Returns a TypeDictionary containing any metadata defined by the frame
-		/// or null if the frame does not define metadata.
-		/// </summary>
-		public TypeDictionary FrameMetadata(string filename)
-		{
-			if (!metadata.TryGetValue(filename, out var fileMetadata))
-			{
-				FrameLoader.GetFrames(fileSystem, filename, loaders, out fileMetadata);
-				metadata[filename] = fileMetadata;
-			}
-
-			return fileMetadata;
-		}
 	}
 
 	public class FrameCache

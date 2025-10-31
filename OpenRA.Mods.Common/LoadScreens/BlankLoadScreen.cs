@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.Common.FileSystem;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
 
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				}
 				catch { }
 
-				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.LoadShellMap))
+				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.ModData, Game.LoadShellMap))
 					Game.JoinReplay(Launch.Replay);
 
 				if (replayMeta != null)
@@ -126,21 +126,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (graphicSettings.GLProfile != GLProfile.Automatic && graphicSettings.GLProfile != Game.Renderer.GLProfile)
 				graphicSettings.GLProfile = GLProfile.Automatic;
 
-			// If a ModContent section is defined then we need to make sure that the
-			// required content is installed or switch to the defined content installer.
-			if (!ModData.Manifest.Contains<ModContent>())
+			if (ModData.FileSystemLoader is not IFileSystemExternalContent content)
 				return true;
 
-			var content = ModData.Manifest.Get<ModContent>();
-			var contentInstalled = content.Packages
-				.Where(p => p.Value.Required)
-				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
-
-			if (contentInstalled)
-				return true;
-
-			Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + ModData.Manifest.Id }));
-			return false;
+			return !content.InstallContentIfRequired(ModData);
 		}
 	}
 }

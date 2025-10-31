@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: d2k
 
@@ -34,14 +34,14 @@ Players:
 		Playable: true
 		Faction: atreides
 		LockFaction: true
-		Color: 9191FF
+		Color: 5A7394
 		LockColor: true
 		Enemies: Harkonnen, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Faction: harkonnen
 		LockFaction: true
-		Color: FE0000
+		Color: D64A42
 		LockColor: true
 		Enemies: Atreides, Creeps
 		Bot: campaign
@@ -112,3 +112,5 @@ Actors:
 		Owner: Neutral
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
+
+FluentMessages: d2k|fluent/lua.ftl, d2k|fluent/campaign.ftl

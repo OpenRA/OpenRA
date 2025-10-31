@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -28,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = "resources";
 
 		[Desc("Remap these indices to pre-defined colors.")]
-		public readonly int[] RemapIndex = { };
+		public readonly int[] RemapIndex = [];
 
 		[Desc("The fixed color to remap.")]
 		public readonly Color Color;
@@ -39,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new FixedColorPalette(this); }
 	}
 
-	public class FixedColorPalette : ILoadsPalettes
+	public class FixedColorPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly FixedColorPaletteInfo info;
 
@@ -50,10 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			var (_, h, s, _) = info.Color.ToAhsv();
-
-			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
+			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, info.Color);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
 		}
+
+		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 }

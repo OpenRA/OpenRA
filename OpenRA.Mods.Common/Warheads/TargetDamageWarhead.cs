@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,14 +9,13 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Apply damage to the targeted actor.")]
 	public class TargetDamageWarhead : DamageWarhead
 	{
 		[Desc("Damage will be applied to actors in this area. A value of zero means only targeted actor will be damaged.")]
@@ -29,27 +28,39 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var debugVis = firedBy.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 			if (debugVis != null && debugVis.CombatGeometry)
-				firedBy.World.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, new[] { WDist.Zero, Spread }, DebugOverlayColor);
+				firedBy.World.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, [WDist.Zero, Spread], DebugOverlayColor);
 
 			foreach (var victim in firedBy.World.FindActorsOnCircle(pos, Spread))
 			{
 				if (!IsValidAgainst(victim, firedBy))
 					continue;
 
-				var closestActiveShape = victim.TraitsImplementing<HitShape>()
-					.Where(Exts.IsTraitEnabled)
-					.Select(s => (HitShape: s, Distance: s.DistanceFromEdge(victim, pos)))
-					.MinByOrDefault(s => s.Distance);
+				HitShape closestActiveShape = null;
+				var closestDistance = int.MaxValue;
+
+				// PERF: Avoid using TraitsImplementing<HitShape> that needs to find the actor in the trait dictionary.
+				foreach (var targetPos in victim.EnabledTargetablePositions)
+				{
+					if (targetPos is HitShape hitshape)
+					{
+						var distance = hitshape.DistanceFromEdge(victim, pos).Length;
+						if (distance < closestDistance)
+						{
+							closestDistance = distance;
+							closestActiveShape = hitshape;
+						}
+					}
+				}
 
 				// Cannot be damaged without an active HitShape.
-				if (closestActiveShape.HitShape == null)
+				if (closestActiveShape == null)
 					continue;
 
 				// Cannot be damaged if HitShape is outside Spread.
-				if (closestActiveShape.Distance > Spread)
+				if (closestDistance > Spread.Length)
 					continue;
 
-				InflictDamage(victim, firedBy, closestActiveShape.HitShape, args);
+				InflictDamage(victim, firedBy, closestActiveShape, args);
 			}
 		}
 	}

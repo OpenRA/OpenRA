@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly CachedTransform<string, (string Text, bool Highlighted)[]> textComponents;
 
 		[ObjectCreator.UseCtor]
-		public LabelWithHighlightWidget()
-			: base()
+		public LabelWithHighlightWidget(ModData modData)
+			: base(modData)
 		{
 			textComponents = new CachedTransform<string, (string, bool)[]>(MakeComponents);
 		}
@@ -39,25 +39,25 @@ namespace OpenRA.Mods.Common.Widgets
 		(string, bool)[] MakeComponents(string text)
 		{
 			var components = new List<(string, bool)>();
-			foreach (var l in text.Split(new[] { "\\n" }, StringSplitOptions.None))
+			foreach (var l in text.Split("\\n", StringSplitOptions.None))
 			{
 				var line = l;
 
 				while (line.Length > 0)
 				{
-					var highlightStart = line.IndexOf('{');
-					var highlightEnd = line.IndexOf('}', 0);
+					var highlightStart = line.IndexOf('<');
+					var highlightEnd = line.IndexOf('>', 0);
 
 					if (highlightStart > 0 && highlightEnd > highlightStart)
 					{
 						// Normal line segment before highlight
-						var lineNormal = line.Substring(0, highlightStart);
+						var lineNormal = line[..highlightStart];
 						components.Add((lineNormal, false));
 
 						// Highlight line segment
-						var lineHighlight = line.Substring(highlightStart + 1, highlightEnd - highlightStart - 1);
+						var lineHighlight = line[(highlightStart + 1)..highlightEnd];
 						components.Add((lineHighlight, true));
-						line = line.Substring(highlightEnd + 1);
+						line = line[(highlightEnd + 1)..];
 					}
 					else
 					{
@@ -81,6 +81,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override Widget Clone() { return new LabelWithHighlightWidget(this); }
+		public override LabelWithHighlightWidget Clone() { return new LabelWithHighlightWidget(this); }
 	}
 }

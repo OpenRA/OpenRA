@@ -1,0 +1,20 @@
+World:
+	LuaScript:
+		Scripts: allies10b.lua, campaign.lua, utils.lua
+	MissionData:
+		StartVideo: elevator.vqa
+		WinVideo: dud.vqa
+		LossVideo: trinity.vqa
+		Briefing: Now that the complex has been infiltrated, the launch control centers must be deactivated. Get your engineers to the control centers and deactivate them before the missiles reach their targets.\n\nEnemy technicians can help in locating the control centers if they are kept alive.
+
+3TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+4TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+CHAN:
+	Targetable:
+		TargetTypes: GroundActor, Infantry, NoAutoTarget

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Adds the hard-coded shroud palette to the game")]
-	class ShroudPaletteInfo : TraitInfo
+	sealed class ShroudPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}
 
-	class ShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class ShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly ShroudPaletteInfo info;
 
@@ -42,28 +42,28 @@ namespace OpenRA.Mods.Cnc.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var c = info.Fog ? Fog : Shroud;
-			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (uint)c[i % 8].ToArgb())));
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => c[i % 8].ToArgb())));
 		}
 
-		static readonly Color[] Fog = new[]
-		{
+		static readonly Color[] Fog =
+		[
 			Color.FromArgb(0, 0, 0, 0),
 			Color.Green, Color.Blue, Color.Yellow,
 			Color.FromArgb(128, 0, 0, 0),
 			Color.FromArgb(96, 0, 0, 0),
 			Color.FromArgb(64, 0, 0, 0),
 			Color.FromArgb(32, 0, 0, 0)
-		};
+		];
 
-		static readonly Color[] Shroud = new[]
-		{
+		static readonly Color[] Shroud =
+		[
 			Color.FromArgb(0, 0, 0, 0),
 			Color.Green, Color.Blue, Color.Yellow,
 			Color.Black,
 			Color.FromArgb(160, 0, 0, 0),
 			Color.FromArgb(128, 0, 0, 0),
 			Color.FromArgb(64, 0, 0, 0)
-		};
+		];
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}

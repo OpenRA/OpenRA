@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
-using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -23,7 +22,7 @@ namespace OpenRA
 	{
 		// .NET does not support unloading assemblies, so mod libraries will leak across mod changes.
 		// This tracks the assemblies that have been loaded since game start so that we don't load multiple copies
-		static readonly Dictionary<string, Assembly> ResolvedAssemblies = new Dictionary<string, Assembly>();
+		static readonly Dictionary<string, Assembly> ResolvedAssemblies = [];
 
 		readonly Cache<string, Type> typeCache;
 		readonly Cache<Type, ConstructorInfo> ctorCache;
@@ -35,51 +34,30 @@ namespace OpenRA
 			ctorCache = new Cache<Type, ConstructorInfo>(GetCtor);
 
 			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
-			// Assemblies can only be loaded from directories to avoid circular dependencies on package loaders.
+			// Assemblies must exist in the game binary directory next to the main game executable.
 			var assemblyList = new List<Assembly>() { typeof(Game).Assembly };
-			foreach (var path in manifest.Assemblies)
-			{
-				var resolvedPath = FileSystem.FileSystem.ResolveAssemblyPath(path, manifest, mods);
-				if (resolvedPath == null)
-					throw new FileNotFoundException($"Assembly `{path}` not found.");
-
-				LoadAssembly(assemblyList, resolvedPath);
-			}
+			foreach (var filename in manifest.Assemblies)
+				LoadAssembly(assemblyList, Path.Combine(Platform.BinDir, filename));
 
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => (asm, ns))).ToArray();
 		}
 
-		void LoadAssembly(List<Assembly> assemblyList, string resolvedPath)
+		static void LoadAssembly(List<Assembly> assemblyList, string resolvedPath)
 		{
 			// .NET doesn't provide any way of querying the metadata of an assembly without either:
 			//   (a) loading duplicate data into the application domain, breaking the world.
 			//   (b) crashing if the assembly has already been loaded.
 			// We can't check the internal name of the assembly, so we'll work off the data instead
-			var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
+			string hash;
+			using (var stream = File.OpenRead(resolvedPath))
+				hash = CryptoUtil.SHA1Hash(stream);
 
 			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
 			{
-#if MONO
-				assembly = Assembly.LoadFile(resolvedPath);
-				ResolvedAssemblies.Add(hash, assembly);
-
-				// Allow mods to use libraries.
-				var assemblyPath = Path.GetDirectoryName(resolvedPath);
-				if (assemblyPath != null)
-				{
-					foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
-					{
-						var depedencyPath = Path.Combine(assemblyPath, referencedAssembly.Name + ".dll");
-						if (File.Exists(depedencyPath))
-							LoadAssembly(assemblyList, depedencyPath);
-					}
-				}
-#else
-				var loader = new AssemblyLoader(resolvedPath);
+				var loader = new Support.AssemblyLoader(resolvedPath);
 				assembly = loader.LoadDefaultAssembly();
 				ResolvedAssemblies.Add(hash, assembly);
-#endif
 			}
 
 			assemblyList.Add(assembly);
@@ -99,7 +77,7 @@ namespace OpenRA
 
 		public T CreateObject<T>(string className)
 		{
-			return CreateObject<T>(className, new Dictionary<string, object>());
+			return CreateObject<T>(className, []);
 		}
 
 		public T CreateObject<T>(string className, Dictionary<string, object> args)
@@ -113,7 +91,7 @@ namespace OpenRA
 				else
 					throw new InvalidOperationException($"Cannot locate type: {className}");
 
-				return default(T);
+				return default;
 			}
 
 			var ctor = ctorCache[type];
@@ -132,16 +110,16 @@ namespace OpenRA
 
 		public ConstructorInfo GetCtor(Type type)
 		{
-			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-			var ctors = type.GetConstructors(flags).Where(x => x.HasAttribute<UseCtorAttribute>());
-			if (ctors.Count() > 1)
+			const BindingFlags Flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+			var ctors = type.GetConstructors(Flags).Where(x => x.HasAttribute<UseCtorAttribute>()).ToList();
+			if (ctors.Count > 1)
 				throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
 			return ctors.FirstOrDefault();
 		}
 
 		public object CreateBasic(Type type)
 		{
-			return type.GetConstructor(new Type[0]).Invoke(new object[0]);
+			return type.GetConstructor([]).Invoke([]);
 		}
 
 		public object CreateUsingArgs(ConstructorInfo ctor, Dictionary<string, object> args)
@@ -151,8 +129,8 @@ namespace OpenRA
 			for (var i = 0; i < p.Length; i++)
 			{
 				var key = p[i].Name;
-				if (!args.ContainsKey(key)) throw new InvalidOperationException($"ObjectCreator: key `{key}' not found");
-				a[i] = args[key];
+				if (!args.TryGetValue(key, out var arg)) throw new InvalidOperationException($"ObjectCreator: key `{key}' not found");
+				a[i] = arg;
 			}
 
 			return ctor.Invoke(a);
@@ -170,17 +148,20 @@ namespace OpenRA
 				.SelectMany(ma => ma.GetTypes());
 		}
 
+		public TLoader GetLoader<TLoader>(string format, string name)
+		{
+			var loader = FindType(format + "Loader");
+			if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
+				throw new InvalidOperationException($"Unable to find a {name} loader for type '{format}'.");
+
+			return (TLoader)CreateBasic(loader);
+		}
+
 		public TLoader[] GetLoaders<TLoader>(IEnumerable<string> formats, string name)
 		{
 			var loaders = new List<TLoader>();
 			foreach (var format in formats)
-			{
-				var loader = FindType(format + "Loader");
-				if (loader == null || !loader.GetInterfaces().Contains(typeof(TLoader)))
-					throw new InvalidOperationException($"Unable to find a {name} loader for type '{format}'.");
-
-				loaders.Add((TLoader)CreateBasic(loader));
-			}
+				loaders.Add(GetLoader<TLoader>(format, name));
 
 			return loaders.ToArray();
 		}

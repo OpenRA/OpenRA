@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,13 +10,13 @@
 #endregion
 
 using System;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CheckMissingSprites : IUtilityCommand
+	sealed class CheckMissingSprites : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--check-missing-sprites";
 
@@ -38,30 +38,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// any tilesets from being checked further.
 			try
 			{
-				// DefaultSequences is a dictionary of tileset: SequenceProvider
-				// so we can also use this to key our tileset checks
-				foreach (var kv in modData.DefaultSequences)
+				foreach (var (tileset, terrainInfo) in modData.DefaultTerrainInfo)
 				{
 					try
 					{
-						Console.WriteLine("Tileset: " + kv.Key);
-						var terrainInfo = modData.DefaultTerrainInfo[kv.Key];
-
+						Console.WriteLine("Tileset: " + tileset);
 						if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
-							foreach (var r in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
-								failed |= r.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
+							foreach (var ttr in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
+								failed |= ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
 
-						foreach (var image in kv.Value.Images)
+						var sequences = new SequenceSet(modData.DefaultFileSystem, modData, tileset, null);
+						sequences.SpriteCache.LoadReservations(modData);
+						foreach (var (filename, location) in sequences.SpriteCache.MissingFiles)
 						{
-							foreach (var sequence in kv.Value.Sequences(image))
-							{
-								var s = kv.Value.GetSequence(image, sequence) as FileNotFoundSequence;
-								if (s == null)
-									continue;
-
-								Console.WriteLine("\tSequence `{0}.{1}` references sprite `{2}` that does not exist.", image, sequence, s.Filename);
-								failed = true;
-							}
+							Console.WriteLine($"\t{location}: {filename} not found");
+							failed = true;
 						}
 					}
 					catch (YamlException e)

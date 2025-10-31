@@ -4,12 +4,11 @@ MCV:
 	Valued:
 		Cost: 3000
 	Tooltip:
-		Name: Mobile Construction Vehicle
+		Name: actor-mcv.name
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq, ~techlevel.medium, fix
 		Queue: Vehicle.GDI, Vehicle.Nod
-		Description: Deploys into another Construction Yard.\n  Unarmed
+		Description: actor-mcv.description
 	Selectable:
 		DecorationBounds: 1536, 1536
 	Mobile:
@@ -17,6 +16,12 @@ MCV:
 		Locomotor: heavywheeled
 	Health:
 		HP: 120000
+	Encyclopedia:
+		Description: actor-mcv.encyclopedia
+		Order: 80
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
 	Repairable:
 		HpPerStep: 1819
 	Armor:
@@ -29,6 +34,8 @@ MCV:
 		Facing: 432
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
+		NoTransformTextNotification: notification-cannot-deploy-here
+		Voice: Unload
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -44,28 +51,37 @@ HARV:
 	Valued:
 		Cost: 1100
 	Tooltip:
-		Name: Harvester
-		GenericName: Harvester
+		Name: actor-harv.name
+		GenericName: actor-harv.generic-name
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Queue: Vehicle.GDI, Vehicle.Nod
-		Description: Collects Tiberium for processing.\n  Unarmed
+		Description: actor-harv.description
 	Selectable:
 		DecorationBounds: 1536, 1536
 	Harvester:
 		Resources: Tiberium, BlueTiberium
-		Capacity: 20
 		BaleLoadDelay: 12
 		BaleUnloadDelay: 6
 		SearchFromProcRadius: 15
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-tiberium
+	StoresResources:
+		Capacity: 20
+		Resources: Tiberium, BlueTiberium
+	DockClientManager:
 	Mobile:
 		Speed: 72
 	Health:
 		HP: 62500
+	Encyclopedia:
+		Description: actor-harv.encyclopedia
+		Order: 90
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
 	Repairable:
 		HpPerStep: 2584
 	Armor:
@@ -74,19 +90,20 @@ HARV:
 		Range: 4c0
 	ActorLostNotification:
 		Notification: HarvesterLost
+		TextNotification: notification-harvester-lost
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
 	WithHarvestAnimation:
 	WithDockingAnimation:
-	Explodes@EMPTY:
+	FireWarheadsOnDeath@EMPTY:
 		Weapon: UnitExplodeHarvEmpty
 		EmptyWeapon: UnitExplodeHarvEmpty
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
 		RequiresSelection: true
@@ -104,20 +121,26 @@ APC:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: APC
+		Name: actor-apc.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
 		Queue: Vehicle.GDI
-		Description: Armed infantry transport.\nCan attack Aircraft.\n  Strong vs Vehicles\n  Weak vs Infantry
+		Description: actor-apc.description
 	Mobile:
 		TurnSpeed: 20
 		Speed: 128
 		PauseOnCondition: notmobile
 	Health:
 		HP: 19000
+	Encyclopedia:
+		Description: actor-apc.encyclopedia
+		Order: 100
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
 	Repairable:
 		HpPerStep: 1440
 	Armor:
@@ -152,7 +175,10 @@ APC:
 		RevokeDelay: 18
 		RevokeOnNewTarget: False
 		RevokeAll: True
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 		RequiresCondition: !attack-air
@@ -162,8 +188,9 @@ APC:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
+		UnloadVoice: Unload
 		LoadingCondition: notmobile
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeBig
 		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
@@ -179,14 +206,14 @@ ARTY:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Artillery
+		Name: actor-arty.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
-		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles and Buildings
+		Description: actor-arty.description
 	Mobile:
 		TurnSpeed: 16
 		Speed: 72
@@ -202,9 +229,19 @@ ARTY:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-arty.encyclopedia
+		Order: 110
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		Voice: Attack
+		FacingTolerance: 0
+	AttackMove:
+		Voice: Attack
 	WithMuzzleOverlay:
 	AutoTarget:
 		InitialStanceAI: Defend
@@ -212,10 +249,9 @@ ARTY:
 		Actor: ARTY.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: ArtilleryShell
-		EmptyWeapon: UnitExplode
-		LoadedChance: 75
+		EmptyWeapon: ArtilleryShell
 
 FTNK:
 	Inherits: ^Tank
@@ -225,14 +261,14 @@ FTNK:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Flame Tank
+		Name: actor-ftnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
-		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings and Vehicles\n  Weak vs Tanks
+		Description: actor-ftnk.description
 	Mobile:
 		TurnSpeed: 28
 		Speed: 92
@@ -248,9 +284,19 @@ FTNK:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-ftnk.encyclopedia
+		Order: 120
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
 	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	AttackMove:
+		Voice: Attack
 	WithMuzzleOverlay:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
 	SpawnActorOnDeath:
@@ -266,14 +312,14 @@ BGGY:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Nod Buggy
+		Name: actor-bggy.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
 		Queue: Vehicle.Nod
-		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: actor-bggy.description
 	Mobile:
 		TurnSpeed: 40
 		Speed: 170
@@ -292,7 +338,16 @@ BGGY:
 		Weapon: MachineGun
 		LocalOffset: 171,0,43
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-bggy.encyclopedia
+		Order: 130
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
@@ -308,14 +363,14 @@ BIKE:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Recon Bike
+		Name: actor-bike.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
 		Queue: Vehicle.Nod
-		Description: Fast scout vehicle, armed with\nrockets.\nCan attack Aircraft.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
+		Description: actor-bike.description
 	Mobile:
 		TurnSpeed: 40
 		Speed: 192
@@ -332,7 +387,17 @@ BIKE:
 		Weapon: BikeRockets
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
+	Encyclopedia:
+		Description: actor-bike.encyclopedia
+		Order: 140
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
 	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	AttackMove:
+		Voice: Attack
 	SpawnActorOnDeath:
 		Actor: BIKE.Husk
 		OwnerType: InternalName
@@ -346,14 +411,14 @@ JEEP:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Hum-Vee
+		Name: actor-jeep.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
 		Queue: Vehicle.GDI
-		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: actor-jeep.description
 	Mobile:
 		TurnSpeed: 40
 		Speed: 145
@@ -372,7 +437,16 @@ JEEP:
 		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-jeep.encyclopedia
+		Order: 150
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
@@ -388,19 +462,19 @@ LTNK:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Light Tank
+		Name: actor-ltnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
-		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry
+		Description: actor-ltnk.description
 	Mobile:
 		TurnSpeed: 28
 		Speed: 102
 	Health:
-		HP: 34000
+		HP: 32000
 	Repairable:
 		HpPerStep: 2062
 	Armor:
@@ -415,7 +489,16 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-ltnk.encyclopedia
+		Order: 160
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	SpawnActorOnDeath:
@@ -431,14 +514,14 @@ MTNK:
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: Medium Tank
+		Name: actor-mtnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
-		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry
+		Description: actor-mtnk.description
 	Mobile:
 		Speed: 72
 	Health:
@@ -457,10 +540,19 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-mtnk.encyclopedia
+		Order: 170
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeBig
 		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
@@ -478,18 +570,18 @@ HTNK:
 	Valued:
 		Cost: 1800
 	Tooltip:
-		Name: Mammoth Tank
+		Name: actor-htnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: eye, ~techlevel.high
 		Queue: Vehicle.GDI
-		Description: Heavily armored GDI Tank.\nCan attack Aircraft.\n  Strong vs Everything
+		Description: actor-htnk.description
 	Mobile:
 		Locomotor: heavytracked
 		Speed: 46
-		TurnSpeed: 12
+		TurnSpeed: 14
 	Health:
 		HP: 87000
 	Repairable:
@@ -500,7 +592,7 @@ HTNK:
 		Range: 6c0
 	WithSpriteTurret:
 	Turreted:
-		TurnSpeed: 12
+		TurnSpeed: 14
 	Armament@PRIMARY:
 		Weapon: 120mmDual
 		LocalOffset: 900,180,340, 900,-180,340
@@ -514,14 +606,23 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 10
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-htnk.encyclopedia
+		Order: 180
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
+	AttackMove:
+		Voice: Attack
 	AttackTurreted:
+		Voice: Attack
 	WithMuzzleOverlay:
 	ChangesHealth:
 		Step: 500
 		Delay: 10
 		StartIfBelow: 50
 		DamageCooldown: 200
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMech
 		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
@@ -539,14 +640,14 @@ MSAM:
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: Rocket Launcher
+		Name: actor-msam.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.GDI
-		Description: Long range rocket artillery.\n  Strong vs all Ground units.
+		Description: actor-msam.description
 	Mobile:
 		Speed: 72
 		TurnSpeed: 16
@@ -557,22 +658,32 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5c0
+		Range: 6c0
 	Turreted:
 		TurnSpeed: 512
 		Offset: -256,0,128
-	Armament@PRIMARY:
+	Armament:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
+	Encyclopedia:
+		Description: actor-msam.encyclopedia
+		Order: 190
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		Voice: Attack
+		FacingTolerance: 0
+	AttackMove:
+		Voice: Attack
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMech
 		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
@@ -590,14 +701,14 @@ MLRS:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Mobile S.A.M.
+		Name: actor-mlrs.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Vehicle.Nod
-		Description: Powerful anti-air unit.\nCannot attack Ground units.
+		Description: actor-mlrs.description
 	Mobile:
 		Speed: 92
 		TurnSpeed: 28
@@ -616,6 +727,12 @@ MLRS:
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
+	Encyclopedia:
+		Description: actor-mlrs.encyclopedia
+		Order: 200
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
 	AmmoPool:
 		Ammo: 2
 		AmmoCondition: ammo
@@ -646,14 +763,14 @@ STNK:
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: Stealth Tank
+		Name: actor-stnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Vehicle.Nod
-		Description: Long-range missile tank that can cloak.\nCan attack Aircraft.\nHas weak armor. Can be spotted by infantry and defense structures.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry.
+		Description: actor-stnk.description
 	Mobile:
 		Locomotor: heavywheeled
 		TurnSpeed: 40
@@ -669,10 +786,12 @@ STNK:
 	RevealsShroud:
 		Range: 7c0
 	Cloak:
-		InitialDelay: 90
-		CloakDelay: 90
+		InitialDelay: 85
+		CloakDelay: 85
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
+		CloakStyle: Palette
+		CloakedPalette: cloak
 		UncloakOn: Attack, Unload, Dock, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
@@ -684,11 +803,21 @@ STNK:
 	Armament@SECONDARY:
 		Weapon: 227mm.stnkAA
 		LocalOffset: 213,43,128, 213,-43,128
+	Encyclopedia:
+		Description: actor-stnk.encyclopedia
+		Order: 210
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: NodUnits
 	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	AttackMove:
+		Voice: Attack
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeStealthTank
 		EmptyWeapon: UnitExplodeStealthTank
 	SpawnActorOnDeath:
@@ -702,7 +831,7 @@ MHQ:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Mobile HQ
+		Name: actor-mhq.name
 	Health:
 		HP: 20000
 	Armor:
@@ -715,7 +844,7 @@ MHQ:
 		Sequence: spinner
 		Offset: -256,0,256
 	Buildable:
-		Description: Mobile base of operations
+		Description: actor-mhq.description
 
 TRUCK:
 	Inherits: ^Vehicle
@@ -725,11 +854,11 @@ TRUCK:
 		BuildPaletteOrder: 35
 		Prerequisites: vehicleproduction
 		BuildDuration: 500
-		Description: Transports cash to other players.\n  Builds fast\n  Unarmed
+		Description: actor-truck.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Supply Truck
+		Name: actor-truck.name
 	Health:
 		HP: 11000
 	Armor:
@@ -738,9 +867,15 @@ TRUCK:
 		Speed: 113
 	RevealsShroud:
 		Range: 4c0
+	Encyclopedia:
+		Description: actor-truck.encyclopedia
+		Order: 220
+		Category: Vehicles
+		Scale: 3
+		PreviewOwner: GDI
 	DeliversCash:
 		Payload: 1000
-		PlayerExperience: 100
+		PlayerExperience: 10
 	SpawnActorOnDeath:
 		Actor: TRUCK.Husk
 		OwnerType: InternalName

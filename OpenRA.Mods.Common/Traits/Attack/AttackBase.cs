@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Warheads;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
-		public readonly string[] Armaments = { "primary", "secondary" };
+		public readonly string[] Armaments = ["primary", "secondary"];
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid target.")]
@@ -54,7 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Voice = "Action";
 
 		[Desc("Tolerance for attack angle. Range [0, 512], 512 covers 360 degrees.")]
-		public readonly WAngle FacingTolerance = new WAngle(512);
+		public readonly WAngle FacingTolerance = new(512);
+
+		[Desc("When enabled, show the target cursor on terrain cells even without force-fire.")]
+		public readonly bool TargetTerrainWithoutForceFire = false;
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -64,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException("Facing tolerance must be in range of [0, 512], 512 covers 360 degrees.");
 		}
 
-		public override abstract object Create(ActorInitializer init);
+		public abstract override object Create(ActorInitializer init);
 	}
 
 	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
@@ -86,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool wasAiming;
 
-		public AttackBase(Actor self, AttackBaseInfo info)
+		protected AttackBase(Actor self, AttackBaseInfo info)
 			: base(info)
 		{
 			this.self = self;
@@ -95,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			positionable = self.TraitOrDefault<IPositionable>();
+			positionable = self.OccupiesSpace as IPositionable;
 			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
 			getArmaments = InitializeGetArmaments(self);
@@ -155,8 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// PERF: Mobile implements IPositionable, so we can use 'as' to save a trait look-up here.
-			var mobile = positionable as Mobile;
-			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
+			if (positionable is Mobile mobile && !mobile.CanInteractWithGroundLayer(self))
 				return false;
 
 			return true;
@@ -178,8 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					yield break;
 
-				var armament = Armaments.FirstOrDefault(a => a.Weapon.Warheads.Any(w => (w is DamageWarhead)));
-				if (armament == null)
+				if (!Armaments.Any())
 					yield break;
 
 				yield return new AttackOrderTargeter(this, 6);
@@ -226,7 +226,8 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == attackOrderName || order.OrderString == forceAttackOrderName ? Info.Voice : null;
 		}
 
-		public abstract Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
+		public abstract Activity GetAttackActivity(
+			Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null);
 
 		public bool HasAnyValidWeapons(in Target t, bool checkForCenterTargetingWeapons = false, bool reloadingIsInvalid = false)
 		{
@@ -250,7 +251,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WPos GetTargetPosition(WPos pos, in Target target)
 		{
-			return HasAnyValidWeapons(target, true) ? target.CenterPosition : target.Positions.PositionClosestTo(pos);
+			return HasAnyValidWeapons(target, true) ? target.CenterPosition : target.Positions.ClosestToIgnoringPath(pos);
 		}
 
 		public WDist GetMinimumRange()
@@ -364,8 +365,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// If force-fire is not used, and the target requires force-firing or the target is
 			// terrain or invalid, no armaments can be used
-			if (!forceAttack && (t.Type == TargetType.Terrain || t.Type == TargetType.Invalid || t.RequiresForceFire))
-				return Enumerable.Empty<Armament>();
+			if (!forceAttack && ((t.Type == TargetType.Terrain && !Info.TargetTerrainWithoutForceFire) || t.Type == TargetType.Invalid || t.RequiresForceFire))
+				return [];
 
 			// Get target's owner; in case of terrain or invalid target there will be no problems
 			// with owner == null since forceFire will have to be true in this part of the method
@@ -414,7 +415,7 @@ namespace OpenRA.Mods.Common.Traits
 			return stances;
 		}
 
-		class AttackOrderTargeter : IOrderTargeter
+		sealed class AttackOrderTargeter : IOrderTargeter
 		{
 			readonly AttackBase ab;
 
@@ -426,7 +427,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			public string OrderID { get; private set; }
-			public int OrderPriority { get; private set; }
+			public int OrderPriority { get; }
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			bool CanTargetActor(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
@@ -448,16 +449,15 @@ namespace OpenRA.Mods.Common.Traits
 					modifiers |= TargetModifiers.ForceAttack;
 
 				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);
-				var armaments = ab.ChooseArmamentsForTarget(target, forceAttack);
-				if (!armaments.Any())
-					return false;
 
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
-				armaments = armaments.OrderByDescending(x => x.MaxRange());
-				var a = armaments.FirstOrDefault(x => !x.IsTraitPaused);
+				var a = ab.ChooseArmamentsForTarget(target, forceAttack)
+					.OrderBy(x => x.IsTraitPaused)
+					.ThenByDescending(x => x.MaxRange())
+					.FirstOrDefault();
 				if (a == null)
-					a = armaments.First();
+					return false;
 
 				var outOfRange = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
 					(!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors);
@@ -474,28 +474,28 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
+			bool CanTargetLocation(Actor self, CPos location, TargetModifiers modifiers, ref string cursor)
 			{
 				if (!self.World.Map.Contains(location))
 					return false;
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				// Targeting the terrain is only possible with force-attack modifier
-				if (modifiers.HasModifier(TargetModifiers.ForceMove) || !modifiers.HasModifier(TargetModifiers.ForceAttack))
+				// Targeting the terrain is only possible with force-attack modifier or when TargetTerrainWithoutForceFire is set
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) ||
+					!(ab.Info.TargetTerrainWithoutForceFire || modifiers.HasModifier(TargetModifiers.ForceAttack)))
 					return false;
 
 				var target = Target.FromCell(self.World, location);
-				var armaments = ab.ChooseArmamentsForTarget(target, true);
-				if (!armaments.Any())
-					return false;
 
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
-				armaments = armaments.OrderByDescending(x => x.MaxRange());
-				var a = armaments.FirstOrDefault(x => !x.IsTraitPaused);
+				var a = ab.ChooseArmamentsForTarget(target, true)
+					.OrderBy(x => x.IsTraitPaused)
+					.ThenByDescending(x => x.MaxRange())
+					.FirstOrDefault();
 				if (a == null)
-					a = armaments.First();
+					return false;
 
 				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
@@ -505,7 +505,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				switch (target.Type)
 				{
@@ -513,13 +513,13 @@ namespace OpenRA.Mods.Common.Traits
 					case TargetType.FrozenActor:
 						return CanTargetActor(self, target, ref modifiers, ref cursor);
 					case TargetType.Terrain:
-						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), othersAtTarget, modifiers, ref cursor);
+						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), modifiers, ref cursor);
 					default:
 						return false;
 				}
 			}
 
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 		}
 	}
 }

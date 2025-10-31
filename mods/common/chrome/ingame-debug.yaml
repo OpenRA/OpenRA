@@ -1,137 +1,139 @@
 Container@DEBUG_PANEL:
 	Logic: DebugMenuLogic
 	Y: 10
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		Label@TITLE:
-			Y: 26
+			Y: 16
 			Font: Bold
-			Text: Debug Options
+			Text: label-debug-panel-title
 			Align: Center
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
+			Height: 20
 		Checkbox@INSTANT_BUILD:
 			X: 45
 			Y: 45
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Instant Build Speed
+			Text: checkbox-debug-panel-instant-build
 		Checkbox@ENABLE_TECH:
 			X: 45
 			Y: 75
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Build Everything
+			Text: checkbox-debug-panel-enable-tech
 		Checkbox@BUILD_ANYWHERE:
 			X: 45
 			Y: 105
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Build Anywhere
+			Text: checkbox-debug-panel-build-anywhere
 		Checkbox@UNLIMITED_POWER:
 			X: 290
 			Y: 45
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Unlimited Power
+			Text: checkbox-debug-panel-unlimited-power
 		Checkbox@INSTANT_CHARGE:
 			X: 290
 			Y: 75
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Instant Charge Time
+			Text: checkbox-debug-panel-instant-charge
 		Checkbox@DISABLE_VISIBILITY_CHECKS:
 			X: 290
 			Y: 105
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Disable Visibility Checks
+			Text: checkbox-debug-panel-disable-visibility-checks
 		Button@GIVE_CASH:
 			X: 90
 			Y: 150
 			Width: 140
 			Height: 30
 			Font: Bold
-			Text: Give $20,000
+			Text: button-debug-panel-give-cash
 		Button@GROW_RESOURCES:
 			X: 271
 			Y: 150
 			Width: 140
 			Height: 30
 			Font: Bold
-			Text: Grow Resources
+			Text: button-debug-panel-grow-resources
 		Button@GIVE_EXPLORATION:
 			X: 90
 			Y: 200
 			Width: 140
 			Height: 30
 			Font: Bold
-			Text: Clear Shroud
+			Text: button-debug-panel-give-exploration
 		Button@RESET_EXPLORATION:
 			X: 271
 			Y: 200
 			Width: 140
 			Height: 30
 			Font: Bold
-			Text: Reset Shroud
+			Text: button-debug-panel-reset-exploration
 		Label@VISUALIZATIONS_TITLE:
-			Y: 256
+			Y: 246
 			Font: Bold
-			Text: Visualizations
+			Text: label-debug-panel-visualizations-title
 			Align: Center
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
+			Height: 20
 		Checkbox@SHOW_UNIT_PATHS:
 			X: 45
 			Y: 275
 			Width: 200
 			Height: 20
 			Font: Regular
-			Text: Show Unit Paths
+			Text: checkbox-debug-panel-show-unit-paths
 		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
 			X: 45
 			Y: 305
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show Custom Terrain
+			Text: checkbox-debug-panel-show-customterrain-overlay
 		Checkbox@SHOW_ACTOR_TAGS:
 			X: 45
 			Y: 335
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show Actor Tags
+			Text: checkbox-debug-panel-show-actor-tags
 		Checkbox@SHOW_COMBATOVERLAY:
 			X: 290
 			Y: 275
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show Combat Geometry
+			Text: checkbox-debug-panel-show-combatoverlay
 		Checkbox@SHOW_GEOMETRY:
 			X: 290
 			Y: 305
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show Render Geometry
+			Text: checkbox-debug-panel-show-geometry
 		Checkbox@SHOW_TERRAIN_OVERLAY:
 			X: 290
 			Y: 335
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show Terrain Geometry
+			Text: checkbox-debug-panel-show-terrain-overlay
 		Checkbox@SHOW_SCREENMAP:
 			X: 290
 			Y: 365
 			Height: 20
 			Width: 200
 			Font: Regular
-			Text: Show Screen Map
+			Text: checkbox-debug-panel-show-screenmap

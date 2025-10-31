@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,32 +27,40 @@ namespace OpenRA.Graphics
 		{
 			var d = info.ToDictionary();
 
-			Start = Exts.ParseIntegerInvariant(d["Start"].Value);
+			Start = Exts.ParseInt32Invariant(d["Start"].Value);
 			Palette = palette;
 			Name = name;
 
-			Frames = cache[cursorSrc].Skip(Start).ToArray();
+			var cursorSprites = cache[cursorSrc];
+			Frames = cursorSprites.Skip(Start).ToArray();
 
-			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
+			if ((d.TryGetValue("Length", out var yaml) && yaml.Value == "*") ||
+				(d.TryGetValue("End", out yaml) && yaml.Value == "*"))
 				Length = Frames.Length;
-			else if (d.ContainsKey("Length"))
-				Length = Exts.ParseIntegerInvariant(d["Length"].Value);
-			else if (d.ContainsKey("End"))
-				Length = Exts.ParseIntegerInvariant(d["End"].Value) - Start;
+			else if (d.TryGetValue("Length", out yaml))
+				Length = Exts.ParseInt32Invariant(yaml.Value);
+			else if (d.TryGetValue("End", out yaml))
+				Length = Exts.ParseInt32Invariant(yaml.Value) - Start;
 			else
 				Length = 1;
 
 			Frames = Frames.Take(Length).ToArray();
 
-			if (d.ContainsKey("X"))
+			if (Start > cursorSprites.Length)
+				throw new YamlException($"Cursor {name}: {nameof(Start)} is greater than the length of the sprite sequence.");
+
+			if (Length > cursorSprites.Length)
+				throw new YamlException($"Cursor {name}: {nameof(Length)} is greater than the length of the sprite sequence.");
+
+			if (d.TryGetValue("X", out yaml))
 			{
-				Exts.TryParseIntegerInvariant(d["X"].Value, out var x);
+				Exts.TryParseInt32Invariant(yaml.Value, out var x);
 				Hotspot = Hotspot.WithX(x);
 			}
 
-			if (d.ContainsKey("Y"))
+			if (d.TryGetValue("Y", out yaml))
 			{
-				Exts.TryParseIntegerInvariant(d["Y"].Value, out var y);
+				Exts.TryParseInt32Invariant(yaml.Value, out var y);
 				Hotspot = Hotspot.WithY(y);
 			}
 		}

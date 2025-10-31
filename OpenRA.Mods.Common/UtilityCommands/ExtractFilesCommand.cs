@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractFilesCommand : IUtilityCommand
+	sealed class ExtractFilesCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--extract";
 
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 2;
 		}
 
-		[Desc("Extract files from mod packages to the current directory")]
+		[Desc("FILENAME", "[FILENAME...]", "Extract files from mod packages to the current directory")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var files = args.Skip(1);

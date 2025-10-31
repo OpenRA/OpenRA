@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,9 +21,9 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string TooltipTemplate;
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 
-		public string TooltipFormat = "";
+		public CachedTransform<(float, float), string> TooltipTextCached;
 		public ResourceBarOrientation Orientation = ResourceBarOrientation.Vertical;
 		public string IndicatorCollection = "sidebar-bits";
 		public string IndicatorImage = "indicator";
@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<float> GetProvided = () => 0;
 		public Func<float> GetUsed = () => 0;
 		public Func<Color> GetBarColor = () => Color.White;
-		EWMA providedLerp = new EWMA(0.3f);
-		EWMA usedLerp = new EWMA(0.3f);
+		readonly EWMA providedLerp = new(0.3f);
+		readonly EWMA usedLerp = new(0.3f);
 		readonly World world;
 		Sprite indicator;
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (TooltipContainer == null)
 				return;
 
-			Func<string> getText = () => TooltipFormat.F(GetUsed(), GetProvided());
+			Func<string> getText = () => TooltipTextCached.Update((GetUsed(), GetProvided()));
 			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText }, { "world", world } });
 		}
 

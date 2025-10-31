@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -48,14 +48,14 @@ SendBGAttackGroup = function()
 end
 
 ProduceBadGuyInfantry = function()
-	if BadGuyRax.IsDead or BadGuyRax.Owner ~= badguy then
+	if BadGuyRax.IsDead or BadGuyRax.Owner ~= BadGuy then
 		return
 	end
 
-	badguy.Build({ Utils.Random(SovietInfantry) }, function(units)
+	BadGuy.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceBadGuyInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyInfantry)
 	end)
 end
 
@@ -74,31 +74,31 @@ SendAttackGroup = function()
 end
 
 ProduceUSSRInfantry = function()
-	if USSRRax.IsDead or USSRRax.Owner ~= ussr then
+	if USSRRax.IsDead or USSRRax.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietInfantry) }, function(units)
+	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRInfantry)
 	end)
 end
 
 ProduceVehicles = function()
-	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= ussr then
+	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietVehicles) }, function(units)
+	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
 GroundWaves = function()
-	Reinforcements.Reinforce(ussr, Utils.Random(GroundAttackUnits), Utils.Random(GroundAttackPaths), 0, function(unit)
+	Reinforcements.Reinforce(USSR, Utils.Random(GroundAttackUnits), Utils.Random(GroundAttackPaths), 0, function(unit)
 		unit.Hunt()
 	end)
 
@@ -106,8 +106,7 @@ GroundWaves = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	GroundWavesDelays = GroundWavesDelays[difficulty]
+	GroundWavesDelays = GroundWavesDelays[Difficulty]
 
 	ProduceBadGuyInfantry()
 	ProduceUSSRInfantry()

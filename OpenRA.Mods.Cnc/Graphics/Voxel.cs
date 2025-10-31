@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			t[14] *= l.Scale * (l.Bounds[5] - l.Bounds[2]) / l.Size[2];
 
 			// Center, flip and scale
-			t = OpenRA.Graphics.Util.MatrixMultiply(t, OpenRA.Graphics.Util.TranslationMatrix(l.Bounds[0], l.Bounds[1], l.Bounds[2]));
-			t = OpenRA.Graphics.Util.MatrixMultiply(OpenRA.Graphics.Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale), t);
+			t = Util.MatrixMultiply(t, Util.TranslationMatrix(l.Bounds[0], l.Bounds[1], l.Bounds[2]));
+			t = Util.MatrixMultiply(Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale), t);
 
 			return t;
 		}
@@ -90,12 +90,12 @@ namespace OpenRA.Mods.Cnc.Graphics
 			get
 			{
 				return limbData.Select(a => a.Size.Select(b => a.Scale * b).ToArray())
-					.Aggregate((a, b) => new float[]
-					{
+					.Aggregate((a, b) =>
+					[
 						Math.Max(a[0], b[0]),
 						Math.Max(a[1], b[1]),
 						Math.Max(a[2], b[2])
-					});
+					]);
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 				};
 
 				// Calculate limb bounding box
-				var bb = OpenRA.Graphics.Util.MatrixAABBMultiply(TransformationMatrix(j, frame), b);
+				var bb = Util.MatrixAABBMultiply(TransformationMatrix(j, frame), b);
 				for (var i = 0; i < 3; i++)
 				{
 					ret[i] = Math.Min(ret[i], bb[i]);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Projectiles
 	public class LaserZapInfo : IProjectileInfo
 	{
 		[Desc("The width of the zap.")]
-		public readonly WDist Width = new WDist(86);
+		public readonly WDist Width = new(86);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
@@ -52,7 +52,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		[Desc("Controls the way inaccuracy is calculated. Possible values are " +
+			"'Maximum' - scale from 0 to max with range, " +
+			"'PerCellIncrement' - scale from 0 with range, " +
+			"'Absolute' - use set value regardless of range.")]
 		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Beam can be blocked.")]
@@ -62,7 +65,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly bool SecondaryBeam = false;
 
 		[Desc("The width of the zap.")]
-		public readonly WDist SecondaryBeamWidth = new WDist(86);
+		public readonly WDist SecondaryBeamWidth = new(86);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape SecondaryBeamShape = BeamRenderableShape.Cylindrical;
@@ -98,7 +101,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
+			var c = UsePlayerColor ? args.SourceActor.OwnerColor() : Color;
 			return new LaserZap(this, args, c);
 		}
 	}
@@ -126,7 +129,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			this.args = args;
 			this.info = info;
 			this.color = color;
-			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.Owner.Color : info.SecondaryBeamColor;
+			secondaryColor = info.SecondaryBeamUsePlayerColor ? args.SourceActor.OwnerColor() : info.SecondaryBeamColor;
 			target = args.PassiveTarget;
 			source = args.Source;
 
@@ -155,7 +158,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(source);
+				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.ClosestToIgnoringPath(source);
 
 			// Check for blocking actors
 			if (info.Blockable && BlocksProjectiles.AnyBlockingActorsBetween(world, args.SourceActor.Owner, source, target, info.Width, out var blockedPos))

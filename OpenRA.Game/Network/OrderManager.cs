@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,16 +22,25 @@ namespace OpenRA.Network
 	{
 		const OrderPacket ClientDisconnected = null;
 
-		readonly SyncReport syncReport;
-		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new Dictionary<int, Queue<(int, OrderPacket)>>();
-		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new Dictionary<int, (int, ulong)>();
+		[FluentReference("frame")]
+		const string DesyncCompareLogs = "notification-desync-compare-logs";
 
-		public Session LobbyInfo = new Session();
+		readonly SyncReport syncReport;
+		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = [];
+		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = [];
+
+		public Session LobbyInfo = new();
+
+		/// <summary>Null when watching a replay.</summary>
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
+		public int OrderQueueLength => pendingOrders.Count > 0 ? pendingOrders.Min(q => q.Value.Count) : 0;
 
 		public string ServerError = null;
 		public bool AuthenticationFailed = false;
+
+		// The default null means "no map restriction" while an empty set means "all maps restricted"
+		public HashSet<string> ServerMapPool = null;
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
@@ -39,31 +48,35 @@ namespace OpenRA.Network
 		public TickTime LastTickTime;
 
 		public bool GameStarted => NetFrameNumber != 0;
-		public IConnection Connection { get; private set; }
+		public IConnection Connection { get; }
 
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
-		readonly List<Order> localOrders = new List<Order>();
-		readonly List<Order> localImmediateOrders = new List<Order>();
+		readonly List<Order> localOrders = [];
+		readonly List<Order> localImmediateOrders = [];
 
-		readonly List<ClientOrder> processClientOrders = new List<ClientOrder>();
-		readonly List<int> processClientsToRemove = new List<int>();
-
-		readonly List<TextNotification> notificationsCache = new List<TextNotification>();
-
-		public IReadOnlyList<TextNotification> NotificationsCache => notificationsCache;
+		readonly List<ClientOrder> processClientOrders = [];
+		readonly List<int> processClientsToRemove = [];
 
 		bool disposed;
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
+		float tickScale = 1f;
+
+		/// <summary>
+		/// Indicates if the world state of other players or a replay has diverged from the local state.
+		/// The game cannot reliably continue in this condition and is unusable.
+		/// </summary>
+		/// <remarks>Should only be set in <see cref="OutOfSync"/>.</remarks>
+		public bool IsOutOfSync { get; private set; } = false;
 
 		public struct ClientOrder
 		{
 			public int Client;
 			public Order Order;
 
-			public override string ToString()
+			public override readonly string ToString()
 			{
 				return $"ClientId: {Client} {Order}";
 			}
@@ -71,8 +84,14 @@ namespace OpenRA.Network
 
 		void OutOfSync(int frame)
 		{
+			if (IsOutOfSync)
+				return;
+
 			syncReport.DumpSyncReport(frame);
-			throw new InvalidOperationException($"Out of sync in frame {frame}.\n Compare syncreport.log with other players.");
+			World.OutOfSync();
+			IsOutOfSync = true;
+
+			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, "frame", frame);
 		}
 
 		public void StartGame()
@@ -86,7 +105,7 @@ namespace OpenRA.Network
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
-			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
+			generateSyncReport = Connection is not ReplayConnection && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
 			LocalFrameNumber = 0;
@@ -99,7 +118,6 @@ namespace OpenRA.Network
 		{
 			Connection = conn;
 			syncReport = new SyncReport(this);
-			AddTextNotification += CacheTextNotification;
 
 			LastTickTime = new TickTime(() => SuggestedTimestep, Game.RunTime);
 		}
@@ -116,12 +134,6 @@ namespace OpenRA.Network
 				localImmediateOrders.Add(order);
 			else
 				localOrders.Add(order);
-		}
-
-		public Action<TextNotification> AddTextNotification = (notification) => { };
-		void CacheTextNotification(TextNotification notification)
-		{
-			notificationsCache.Add(notification);
 		}
 
 		void SendImmediateOrders()
@@ -156,6 +168,11 @@ namespace OpenRA.Network
 				syncForFrame.Add(sync.Frame, (sync.SyncHash, sync.DefeatState));
 		}
 
+		public void ReceiveTickScale(float scale)
+		{
+			tickScale = scale;
+		}
+
 		public void ReceiveImmediateOrders(int clientId, OrderPacket orders)
 		{
 			foreach (var o in orders.GetOrders(World))
@@ -183,7 +200,7 @@ namespace OpenRA.Network
 
 		bool IsReadyForNextFrame => GameStarted && pendingOrders.All(p => p.Value.Count > 0);
 
-		int SuggestedTimestep
+		public int SuggestedTimestep
 		{
 			get
 			{
@@ -195,6 +212,9 @@ namespace OpenRA.Network
 
 				if (World.IsReplay)
 					return World.ReplayTimestep;
+
+				if (tickScale != 1f)
+					return Math.Max((int)(tickScale * World.Timestep), 1);
 
 				return World.Timestep;
 			}
@@ -280,7 +300,7 @@ namespace OpenRA.Network
 		{
 			var shouldTick = true;
 
-			if (IsNetTick)
+			if (IsNetFrame)
 			{
 				// Check whether or not we will be ready for a tick next frame
 				// We don't need to include ourselves in the equation because we can always generate orders this frame
@@ -293,7 +313,7 @@ namespace OpenRA.Network
 			}
 
 			var willTick = shouldTick;
-			if (willTick && IsNetTick)
+			if (willTick && IsNetFrame)
 			{
 				willTick = IsReadyForNextFrame;
 				if (willTick)
@@ -306,6 +326,8 @@ namespace OpenRA.Network
 			return willTick;
 		}
 
-		bool IsNetTick => LocalFrameNumber % Game.NetTickScale == 0;
+		// The server may request clients to batch multiple frames worth of orders into a single packet
+		// to improve robustness against network jitter at the expense of input latency
+		bool IsNetFrame => LocalFrameNumber % LobbyInfo.GlobalSettings.NetFrameInterval == 0;
 	}
 }

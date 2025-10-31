@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool finishedApproach;
 
 		public Land(Actor self, WAngle? facing = null, Color? targetLineColor = null)
-			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, null)
+			: this(self, Target.Invalid, new WDist(-1), WVec.Zero, facing, targetLineColor: targetLineColor)
 		{
 			assignTargetOnFirstRun = true;
 		}
@@ -54,11 +55,11 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = self.Trait<Aircraft>();
 			this.target = target;
 			this.offset = offset;
-			this.clearCells = clearCells ?? new CPos[0];
+			this.clearCells = clearCells ?? [];
 			this.landRange = landRange.Length >= 0 ? landRange : aircraft.Info.LandRange;
 			this.targetLineColor = targetLineColor;
 
-			// NOTE: desiredFacing = -1 means we should not prefer any particular facing and instead just
+			// NOTE: Assigning null to desiredFacing means we should not prefer any particular facing and instead just
 			// use whatever facing gives us the most direct path to the landing site.
 			if (!facing.HasValue && aircraft.Info.TurnToLand)
 				desiredFacing = aircraft.Info.InitialFacing;
@@ -130,6 +131,9 @@ namespace OpenRA.Mods.Common.Activities
 					target = Target.FromCell(self.World, newLocation.Value);
 					targetPosition = target.CenterPosition + offset;
 					landingCell = self.World.Map.CellContaining(targetPosition);
+
+					if ((targetPosition - pos).LengthSquared == 0)
+						return true;
 				}
 			}
 
@@ -211,7 +215,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!landingInitiated)
 			{
-				var blockingCells = clearCells.Append(landingCell);
+				var blockingCells = clearCells.Append(landingCell).ToList();
 
 				if (!aircraft.CanLand(blockingCells, target.Actor))
 				{
@@ -225,6 +229,9 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (aircraft.Info.LandingSounds.Length > 0)
 					Game.Sound.Play(SoundType.World, aircraft.Info.LandingSounds, self.World, aircraft.CenterPosition);
+
+				foreach (var notify in self.TraitsImplementing<INotifyLanding>())
+					notify.Landing(self);
 
 				aircraft.AddInfluence(landingCell);
 				aircraft.EnteringCell(self);

@@ -13,6 +13,9 @@ Allied Campaign:
 	allies-08a
 	allies-08b
 	allies-09a
+	allies-10a
+	allies-10b
+	allies-13
 Soviet Campaign:
 	soviet-01
 	soviet-02a
@@ -30,6 +33,8 @@ Soviet Campaign:
 	soviet-10
 	soviet-11a
 	soviet-11b
+	soviet-13a
+	soviet-13b
 Counterstrike Allied Missions:
 	sarin-gas-1-crackdown
 	sarin-gas-2-down-under
@@ -39,12 +44,15 @@ Counterstrike Allied Missions:
 	siberian-conflict-1-fresh-tracks
 	siberian-conflict-3-wasteland
 Counterstrike Soviet Missions:
+	mousetrap
+	proving-grounds
 	soviet-soldier-volkov-n-chitzkoi
 	top-o-the-world
 Aftermath Allied Missions:
 	in-the-nick-of-time
 	production-disruption
 	monster-tank-madness
+	negotiations
 Aftermath Soviet Missions:
 	shock-therapy
 	situation-critical

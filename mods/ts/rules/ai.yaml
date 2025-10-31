@@ -1,6 +1,6 @@
 Player:
-	ModularBot@TestAI:
-		Name: Test AI
+	ModularBot@bot-test-ai:
+		Name: bot-test-ai.name
 		Type: test
 	GrantConditionOnBotOwner@test:
 		Condition: enable-test-ai
@@ -9,6 +9,16 @@ Player:
 		RequiresCondition: enable-test-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
+	PowerDownBotModule:
+		RequiresCondition: enable-test-ai
+		PowerDownTypes:  garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+	ResourceMapBotModule:
+		RequiresCondition: enable-test-ai
+		ResourceCreatorTypes:  tibtre01, tibtre02, tibtre03, bigblue, bigblue3
+		ValuableResourceTypes: Tiberium, BlueTiberium
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: gacnst, gapowr, gapowrup, napowr, naapwr, gapile, nahand, gaweap, naweap,garadr, naradr, gahpad, nahpad, gatech, natech, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
 	BaseBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		MinimumExcessPower: 30
@@ -18,10 +28,11 @@ Player:
 		ConstructionYardTypes: gacnst
 		RefineryTypes: proc
 		PowerTypes: gapowr, gapowrup, napowr, naapwr
-		BarracksTypes: gapile, nahand
-		VehiclesFactoryTypes: gaweap, naweap
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
+		TechTypes: garadr, naradr, gahpad, nahpad, gatech, natech
 		SiloTypes: gasilo
+		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		SellRefineryNoResourceDistance: 18
 		BuildingLimits:
 			proc: 4
 			gasilo: 2
@@ -70,8 +81,11 @@ Player:
 	SquadManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
 		ConstructionYardTypes: gacnst
+		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
+		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
+		IgnoredEnemyTargetTypes: Air
 	UnitBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		UnitQueues: Vehicle, Infantry, Air
@@ -101,8 +115,9 @@ Player:
 			harv: 12
 			medic: 3
 			repair: 3
-	McvManagerBotModule@test:
+	McvExpansionManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		McvTypes: mcv
 		ConstructionYardTypes: gacnst
 		McvFactoryTypes: gaweap, naweap
+		MinimumConstructionYardCount: 2

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -45,7 +45,7 @@ HunterTeam = { "1tnk", "1tnk", "1tnk", "1tnk", "2tnk", "2tnk", "arty" }
 StartTimer = false
 TimerColor = Player.GetPlayer("USSR").Color
 TimerTicks = DateTime.Minutes(9)
-ticked = TimerTicks
+Ticked = TimerTicks
 StartTimerDelay =
 {
 	easy = DateTime.Minutes(5),
@@ -144,10 +144,10 @@ MissionSetup = function()
 	end)
 
 	Trigger.OnEnteredFootprint(LightVehicleAttackTrigger, function(unit, id)
-		if not attackTriggered and unit.Type == "3tnk" then
+		if not AttackTriggered and unit.Type == "3tnk" then
 			Trigger.RemoveFootprintTrigger(id)
-			attackTriggered = true
-			
+			AttackTriggered = true
+
 			Utils.Do(LightVehicleAttack, function(unit)
 				if not unit.IsDead then
 					IdleHunt(unit)
@@ -157,9 +157,9 @@ MissionSetup = function()
 	end)
 
 	Trigger.OnEnteredFootprint(EngiDropTriggerArea, function(unit, id)
-		if unit.Owner == USSR and not dropTriggered then
+		if unit.Owner == USSR and not DropTriggered then
 			Trigger.RemoveFootprintTrigger(id)
-			dropTriggered = true
+			DropTriggered = true
 
 			Media.PlaySpeechNotification(USSR, "SignalFlare")
 			local engiFlare = Actor.Create("flare", true, { Owner = USSR, Location = EngiDropLZ.Location })
@@ -174,10 +174,10 @@ MissionSetup = function()
 	end)
 
 	Trigger.OnEnteredFootprint(ChinookAmbushTrigger, function(unit, id)
-		if not chinookTriggered and unit.Owner == USSR then
+		if not ChinookTriggered and unit.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
-			chinookTriggered = true
-			
+			ChinookTriggered = true
+
 			local chalk = Reinforcements.ReinforceWithTransport(Greece, "tran", ChinookChalk , ChinookPath, { ChinookPath[1] })[2]
 			Utils.Do(chalk, function(unit)
 				Trigger.OnAddedToWorld(unit, IdleHunt)
@@ -224,7 +224,7 @@ ClosestActorTo = function(actors, target)
 	local closestActor = nil
 	Utils.Do(actors, function(actor)
 		local offset = actor.Location - target.Location
-		distSq = offset.X * offset.X + offset.Y * offset.Y
+		local distSq = offset.X * offset.X + offset.Y * offset.Y
 		if closestActor == nil or distSq < closestDistSq then
 			closestDistSq = distSq
 			closestActor = actor
@@ -237,7 +237,7 @@ end
 RunForIt = function()
 	Running = true
 	Media.PlaySoundNotification(USSR, "AlertBleep")
-	Media.DisplayMessage("RUN FOR IT!", "Convoy commander")
+	Media.DisplayMessage(UserInterface.GetFluentMessage("run-for-it"), UserInterface.GetFluentMessage("convoy-commander"))
 	Utils.Do(Trucks, function(truck)
 		if not truck.IsDead then
 			truck.Stop()
@@ -248,7 +248,6 @@ RunForIt = function()
 	end)
 end
 
-IdleHunt = function(actor) if not actor.IsDead then Trigger.OnIdle(actor, actor.Hunt) end end
 SendHunters = function()
 	Media.PlaySpeechNotification(USSR, "AlliedForcesApproaching")
 	local Hunters1 = Reinforcements.Reinforce(Greece, HunterTeam, { ConvoyEntry.Location, TrucksStop.Location })
@@ -275,6 +274,7 @@ StartTimerFunction = function()
 	end)
 end
 
+WeAreSurrounded = UserInterface.GetFluentMessage("we-are-surrounded")
 FinishTimer = function()
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -282,20 +282,23 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("We're surrounded!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(WeAreSurrounded, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
 
 Tick = function()
 	if StartTimer then
-		if ticked > 0 then
-			UserInterface.SetMissionText("Corridor closes in " .. Utils.FormatTime(ticked), TimerColor)
-			ticked = ticked - 1
-		elseif ticked == 0 then
+		if Ticked > 0 then
+			if (Ticked % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.GetFluentMessage("corridor-closes-in", { ["time"] = Utils.FormatTime(Ticked) })
+				UserInterface.SetMissionText(Timer, TimerColor)
+			end
+			Ticked = Ticked - 1
+		elseif Ticked == 0 then
 			FinishTimer()
 			SendHunters()
-			ticked = ticked - 1
+			Ticked = Ticked - 1
 		end
 	end
 
@@ -309,36 +312,15 @@ WorldLoaded = function()
 	Greece = Player.GetPlayer("Greece")
 	Turkey = Player.GetPlayer("Turkey")
 
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(USSR)
 
-	EscortTrucks = USSR.AddObjective("Escort the convoy through the mountain pass.")
-	ProtectEveryTruck = USSR.AddObjective("Do not lose a single truck.", "Secondary", false)
-	SaveMigs = USSR.AddObjective("Do not squander any of our new MiG aircraft.", "Secondary", false)
-	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
+	EscortTrucks = AddPrimaryObjective(USSR, "escort-convoy-mountain-pass")
+	ProtectEveryTruck = AddSecondaryObjective(USSR, "protect-every-truck")
+	SaveMigs = AddSecondaryObjective(USSR, "save-migs")
+	BeatUSSR = AddPrimaryObjective(Greece, "")
 
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
-
-	difficulty = Map.LobbyOption("difficulty")
-	ConvoyEscort = ConvoyEscort[difficulty]
-	StartTimerDelay = StartTimerDelay[difficulty]
+	ConvoyEscort = ConvoyEscort[Difficulty]
+	StartTimerDelay = StartTimerDelay[Difficulty]
 
 	MissionStart()
 	MissionSetup()

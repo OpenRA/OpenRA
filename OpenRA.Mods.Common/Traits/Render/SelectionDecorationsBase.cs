@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,11 +27,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IDecoration[] decorations;
 		IDecoration[] selectedDecorations;
 
-		protected readonly SelectionDecorationsBaseInfo info;
+		protected readonly SelectionDecorationsBaseInfo Info;
 
-		public SelectionDecorationsBase(SelectionDecorationsBaseInfo info)
+		DeveloperMode developerMode;
+
+		protected SelectionDecorationsBase(SelectionDecorationsBaseInfo info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -40,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			decorations = selectedDecorations.Where(d => !d.RequiresSelection).ToArray();
 		}
 
-		IEnumerable<WPos> ActivityTargetPath(Actor self)
+		static IEnumerable<WPos> ActivityTargetPath(Actor self)
 		{
 			if (!self.IsInWorld || self.IsDead)
 				yield break;
@@ -59,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return DrawDecorations(self, wr);
 		}
@@ -69,7 +71,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{
 			var selected = self.World.Selection.Contains(self);
-			var rollover = self.World.Selection.RolloverContains(self);
 			var regularWorld = self.World.Type == WorldType.Regular;
 			var statusBars = Game.Settings.Game.StatusBars;
 
@@ -77,24 +78,34 @@ namespace OpenRA.Mods.Common.Traits.Render
 			//  * actor is selected / in active drag rectangle / under the mouse
 			//  * status bar preference is set to "always show"
 			//  * status bar preference is set to "when damaged" and actor is damaged
-			var displayHealth = selected || rollover || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
+			var displayHealth = selected || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
 				|| (regularWorld && statusBars == StatusBarsType.DamageShow && self.GetDamageState() != DamageState.Undamaged);
 
 			// Extra bars are shown when:
 			//  * actor is selected / in active drag rectangle / under the mouse
 			//  * status bar preference is set to "always show" or "when damaged"
-			var displayExtra = selected || rollover || (regularWorld && statusBars != StatusBarsType.Standard);
+			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
+
+			// PERF: Only search rollover enumerable if needed.
+			if (!displayHealth || !displayExtra)
+				if (self.World.Selection.RolloverContains(self))
+					displayHealth = displayExtra = true;
 
 			if (selected)
-				foreach (var r in RenderSelectionBox(self, wr, info.SelectionBoxColor))
+				foreach (var r in RenderSelectionBox(self, wr, Info.SelectionBoxColor))
 					yield return r;
 
 			if (displayHealth || displayExtra)
 				foreach (var r in RenderSelectionBars(self, wr, displayHealth, displayExtra))
 					yield return r;
 
-			if (selected && self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
-				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green);
+			if (selected && self.World.LocalPlayer != null)
+			{
+				developerMode ??= self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+
+				if (developerMode.PathDebug)
+					yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green, 1, 2);
+			}
 
 			// Hide decorations for spectators that zoom out further than the normal minimum level
 			// This avoids graphical glitches with pip rows and icons overlapping the selection box

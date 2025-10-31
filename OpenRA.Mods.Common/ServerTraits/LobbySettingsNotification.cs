@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class LobbySettingsNotification : ServerTrait, IClientJoined
 	{
+		[FluentReference("name", "value")]
+		const string NotificationLobbyOption = "notification-lobby-option";
+
 		public void ClientJoined(OpenRA.Server.Server server, Connection conn)
 		{
 			lock (server.LobbyInfo)
@@ -31,11 +34,9 @@ namespace OpenRA.Mods.Common.Server
 					.ToDictionary(o => o.Id, o => o);
 
 				foreach (var kv in server.LobbyInfo.GlobalSettings.LobbyOptions)
-				{
 					if (!defaults.LobbyOptions.TryGetValue(kv.Key, out var def) || kv.Value.Value != def.Value)
 						if (options.TryGetValue(kv.Key, out var option))
-							server.SendOrderTo(conn, "Message", option.Name + ": " + option.Values[kv.Value.Value]);
-				}
+							server.SendFluentMessageTo(conn, NotificationLobbyOption, ["name", option.Name, "value", option.Values[kv.Value.Value]]);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -8,6 +8,8 @@
  * information, see COPYING.
  */
 #endregion
+
+using System;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
@@ -18,10 +20,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 	public static class CRC32
 	{
 		/// <summary>
-		/// The CRC32 lookup table
+		/// The CRC32 lookup table.
 		/// </summary>
-		static uint[] lookUp = new uint[256]
-		{
+		static readonly uint[] LookUp =
+		[
 			0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA,
 			0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3,
 			0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E, 0x97D2D988,
@@ -86,50 +88,35 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			0xBAD03605, 0xCDD70693, 0x54DE5729, 0x23D967BF,
 			0xB3667A2E, 0xC4614AB8, 0x5D681B02, 0x2A6F2B94,
 			0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D
-		};
+		];
 
 		/// <summary>
-		/// A fast (native) CRC32 implementation that can be used on a regular byte arrays.
+		/// A CRC32 implementation that can be used on spans of bytes.
 		/// </summary>
 		/// <param name="data">The data from which to calculate the checksum.</param>
-		/// <param name="polynomial">The polynomial.</param>
+		/// <param name="polynomial">The polynomial to XOR with.</param>
 		/// <returns>
 		/// The calculated checksum.
 		/// </returns>
-		public static uint Calculate(byte[] data, uint polynomial)
+		public static uint Calculate(ReadOnlySpan<byte> data, uint polynomial)
 		{
 			var crc = polynomial;
 			for (var i = 0; i < data.Length; i++)
-				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ data[i]];
+				crc = (crc >> 8) ^ LookUp[(crc & 0xFF) ^ data[i]];
 			crc ^= polynomial;
 			return crc;
-		}
-
-		public static uint Calculate(byte[] data)
-		{
-			return Calculate(data, 0xFFFFFFFF);
 		}
 
 		/// <summary>
-		/// A fast (native) CRC32 implementation that can be used on a pinned byte array using
-		/// default polynomial.
+		/// A CRC32 implementation that can be used on spans of bytes, with default polynomial.
 		/// </summary>
-		/// <param name="data">		[in,out] If non-null, the.</param>
-		/// <param name="len">		The length of the data.</param>
-		/// <param name="polynomial">The polynomial to XOR with.</param>
-		/// <returns>The calculated checksum.</returns>
-		public static unsafe uint Calculate(byte* data, uint len, uint polynomial)
+		/// <param name="data">The data from which to calculate the checksum.</param>
+		/// <returns>
+		/// The calculated checksum.
+		/// </returns>
+		public static uint Calculate(ReadOnlySpan<byte> data)
 		{
-			var crc = polynomial;
-			for (var i = 0; i < len; i++)
-				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ *data++];
-			crc ^= polynomial;
-			return crc;
-		}
-
-		public static unsafe uint Calculate(byte* data, uint len)
-		{
-			return Calculate(data, len, 0xFFFFFFFF);
+			return Calculate(data, 0xFFFFFFFF);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor gives experience to a GainsExperience actor when they are killed.")]
-	class GivesExperienceInfo : TraitInfo
+	sealed class GivesExperienceInfo : TraitInfo
 	{
 		[Desc("If -1, use the value of the unit cost.")]
 		public readonly int Experience = -1;
@@ -30,17 +30,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage of the `Experience` value that is being granted to the player owning the killing actor.")]
 		public readonly int PlayerExperienceModifier = 0;
 
-		public override object Create(ActorInitializer init) { return new GivesExperience(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GivesExperience(this); }
 	}
 
-	class GivesExperience : INotifyKilled, INotifyCreated
+	sealed class GivesExperience : INotifyKilled, INotifyCreated
 	{
 		readonly GivesExperienceInfo info;
 
 		int exp;
 		IEnumerable<int> experienceModifiers;
 
-		public GivesExperience(Actor self, GivesExperienceInfo info)
+		public GivesExperience(GivesExperienceInfo info)
 		{
 			this.info = info;
 		}
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			e.Attacker.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()
-				?.GiveExperience(Util.ApplyPercentageModifiers(exp, new[] { info.PlayerExperienceModifier }));
+				?.GiveExperience(Util.ApplyPercentageModifiers(exp, [info.PlayerExperienceModifier]));
 		}
 	}
 }

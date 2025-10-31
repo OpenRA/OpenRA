@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -132,12 +132,36 @@ namespace OpenRA.Graphics
 		{
 			if (!Buffered)
 				return;
+
 			dirty = true;
 			releaseBufferOnCommit = true;
 
 			// Commit data from the buffer to the texture, allowing the buffer to be released and reclaimed by GC.
 			if (Game.Renderer != null)
 				GetTexture();
+		}
+
+		public bool ReleaseBufferAndTryTransferTo(Sheet destination)
+		{
+			if (Size != destination.Size)
+				throw new ArgumentException("Destination sheet does not have the same size", nameof(destination));
+
+			var buffer = data;
+			ReleaseBuffer();
+
+			// We aren't committing data to the GPU, so let's not delete our data.
+			if (Game.Renderer == null)
+				return false;
+
+			// Only transfer if the destination has no data that would be lost by overwriting.
+			if (buffer != null && destination.data == null && destination.texture == null)
+			{
+				Array.Clear(buffer, 0, buffer.Length);
+				destination.data = buffer;
+				return true;
+			}
+
+			return false;
 		}
 
 		public void Dispose()

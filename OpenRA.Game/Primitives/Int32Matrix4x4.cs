@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -58,7 +58,7 @@ namespace OpenRA
 		public override int GetHashCode() { return M11 ^ M22 ^ M33 ^ M44; }
 
 		public bool Equals(Int32Matrix4x4 other) { return other == this; }
-		public override bool Equals(object obj) { return obj is Int32Matrix4x4 && Equals((Int32Matrix4x4)obj); }
+		public override bool Equals(object obj) { return obj is Int32Matrix4x4 matrix && Equals(matrix); }
 
 		public override string ToString()
 		{

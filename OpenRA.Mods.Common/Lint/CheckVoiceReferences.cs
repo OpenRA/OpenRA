@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,16 +29,16 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<VoiceSetReferenceAttribute>());
+					var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<VoiceSetReferenceAttribute>);
 					foreach (var field in fields)
 					{
-						var voiceSets = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var voiceSets = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var voiceSet in voiceSets)
 						{
 							if (string.IsNullOrEmpty(voiceSet))
@@ -51,23 +51,23 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckVoices(ActorInfo actorInfo, Action<string> emitError, Ruleset rules, string voiceSet)
+		static void CheckVoices(ActorInfo actorInfo, Action<string> emitError, Ruleset rules, string voiceSet)
 		{
 			var soundInfo = rules.Voices[voiceSet.ToLowerInvariant()];
 
 			foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 			{
-				var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<VoiceReferenceAttribute>());
+				var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<VoiceReferenceAttribute>);
 				foreach (var field in fields)
 				{
-					var voices = LintExts.GetFieldValues(traitInfo, field, emitError);
+					var voices = LintExts.GetFieldValues(traitInfo, field);
 					foreach (var voice in voices)
 					{
 						if (string.IsNullOrEmpty(voice))
 							continue;
 
-						if (!soundInfo.Voices.Keys.Contains(voice))
-							emitError($"Actor {actorInfo.Name} using voice set {voiceSet} does not define {voice} voice required by {traitInfo}.");
+						if (!soundInfo.Voices.ContainsKey(voice))
+							emitError($"Actor `{actorInfo.Name}` using voice set `{voiceSet}` does not define `{voice}` voice required by `{traitInfo}`.");
 					}
 				}
 			}

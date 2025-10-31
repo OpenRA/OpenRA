@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,9 +18,7 @@ namespace OpenRA.Mods.Common.Graphics
 	public class UITextRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly SpriteFont font;
-		readonly WPos effectiveWorldPos;
 		readonly int2 screenPos;
-		readonly int zOffset;
 		readonly Color color;
 		readonly Color bgDark;
 		readonly Color bgLight;
@@ -29,9 +27,9 @@ namespace OpenRA.Mods.Common.Graphics
 		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
 		{
 			this.font = font;
-			this.effectiveWorldPos = effectiveWorldPos;
+			Pos = effectiveWorldPos;
 			this.screenPos = screenPos;
-			this.zOffset = zOffset;
+			ZOffset = zOffset;
 			this.color = color;
 			this.bgDark = bgDark;
 			this.bgLight = bgLight;
@@ -42,14 +40,15 @@ namespace OpenRA.Mods.Common.Graphics
 			: this(font, effectiveWorldPos, screenPos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
-				text) { }
+				text)
+		{ }
 
-		public WPos Pos => effectiveWorldPos;
-		public int ZOffset => zOffset;
+		public WPos Pos { get; }
+		public int ZOffset { get; }
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new UITextRenderable(font, effectiveWorldPos, screenPos, zOffset, color, text); }
-		public IRenderable OffsetBy(in WVec vec) { return new UITextRenderable(font, effectiveWorldPos + vec, screenPos, zOffset, color, text); }
+		public IRenderable WithZOffset(int newOffset) { return new UITextRenderable(font, Pos, screenPos, ZOffset, color, text); }
+		public IRenderable OffsetBy(in WVec vec) { return new UITextRenderable(font, Pos + vec, screenPos, ZOffset, color, text); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

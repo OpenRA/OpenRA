@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,14 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows bridges to be targeted for demolition and repair.")]
-	class LegacyBridgeHutInfo : TraitInfo, IDemolishableInfo
+	public class LegacyBridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return false; } // TODO: bridges don't support frozen under fog
 
-		public override object Create(ActorInitializer init) { return new LegacyBridgeHut(init, this); }
+		public override object Create(ActorInitializer init) { return new LegacyBridgeHut(init); }
 	}
 
-	class LegacyBridgeHut : IDemolishable
+	public class LegacyBridgeHut : IDemolishable
 	{
 		public Bridge FirstBridge { get; private set; }
 		public Bridge Bridge { get; private set; }
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Repairing => repairDirections > 0;
 		int repairDirections = 0;
 
-		public LegacyBridgeHut(ActorInitializer init, LegacyBridgeHutInfo info)
+		public LegacyBridgeHut(ActorInitializer init)
 		{
 			var bridge = init.Get<ParentActorInit>().Value;
 			init.World.AddFrameEndTask(_ =>

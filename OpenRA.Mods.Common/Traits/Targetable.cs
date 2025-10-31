@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,17 +22,17 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> TargetTypes;
 		public BitSet<TargetableType> GetTargetTypes() { return TargetTypes; }
 
-		public bool RequiresForceFire = false;
+		public readonly bool RequiresForceFire = false;
 
-		public override object Create(ActorInitializer init) { return new Targetable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Targetable(this); }
 	}
 
 	public class Targetable : ConditionalTrait<TargetableInfo>, ITargetable
 	{
-		protected static readonly string[] None = new string[] { };
+		protected static readonly string[] None = [];
 		protected Cloak[] cloaks;
 
-		public Targetable(Actor self, TargetableInfo info)
+		public Targetable(TargetableInfo info)
 			: base(info) { }
 
 		protected override void Created(Actor self)
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return false;
 
-			if (!cloaks.Any() || (!viewer.IsDead && viewer.Info.HasTraitInfo<IgnoresCloakInfo>()))
+			if (cloaks.Length == 0 || (!viewer.IsDead && viewer.Info.HasTraitInfo<IgnoresCloakInfo>()))
 				return true;
 
 			return cloaks.All(c => c.IsTraitDisabled || c.IsVisible(self, viewer.Owner));

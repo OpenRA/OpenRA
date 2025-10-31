@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,6 +17,7 @@ namespace OpenRA.Traits
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class FactionInfo : TraitInfo<Faction>
 	{
+		[FluentReference]
 		[Desc("This is the name exposed to the players.")]
 		public readonly string Name = null;
 
@@ -24,11 +25,13 @@ namespace OpenRA.Traits
 		public readonly string InternalName = null;
 
 		[Desc("Pick a random faction as the player's faction out of this list.")]
-		public readonly HashSet<string> RandomFactionMembers = new HashSet<string>();
+		public readonly HashSet<string> RandomFactionMembers = [];
 
 		[Desc("The side that the faction belongs to. For example, England belongs to the 'Allies' side.")]
 		public readonly string Side = null;
 
+		[FluentReference(optional: true)]
+		[Desc("This is shown in the lobby as a tooltip.")]
 		public readonly string Description = null;
 
 		public readonly bool Selectable = true;

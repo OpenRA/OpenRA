@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -78,61 +78,66 @@ AtreidesBaseBuildings = { "barracks", "light_factory" }
 AtreidesUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 MessageCheck = function(index)
-	return #player.GetActorsByType(AtreidesBaseBuildings[index]) > 0 and not player.HasPrerequisites({ AtreidesUpgrades[index] })
+	return #Atreides.GetActorsByType(AtreidesBaseBuildings[index]) > 0 and not Atreides.HasPrerequisites({ AtreidesUpgrades[index] })
 end
 
+CachedResources = -1
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		ordos.MarkCompletedObjective(KillAtreides)
+	if Atreides.HasNoRequiredUnits() then
+		Ordos.MarkCompletedObjective(KillAtreides)
 	end
 
-	if ordos.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
-		player.MarkCompletedObjective(KillOrdos)
+	if Ordos.HasNoRequiredUnits() and not Atreides.IsObjectiveCompleted(KillOrdos) then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("ordos-annihilated"), Mentat)
+		Atreides.MarkCompletedObjective(KillOrdos)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos] then
-		local units = ordos.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[Ordos] then
+		local units = Ordos.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos] = false
-			ProtectHarvester(units[1], ordos, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[Ordos] = false
+			ProtectHarvester(units[1], Ordos, AttackGroupSize[Difficulty])
 		end
 	end
 
-	if player.Resources > SpiceToHarvest - 1 then
-		player.MarkCompletedObjective(GatherSpice)
+	if Atreides.Resources > SpiceToHarvest - 1 then
+		Atreides.MarkCompletedObjective(GatherSpice)
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("upgrade-barracks-light-factory"), Mentat)
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
+	if Atreides.Resources ~= CachedResources then
+		local harvestedResources = UserInterface.GetFluentMessage("harvested-resources",
+			{ ["harvested"] = Atreides.Resources, ["goal"] = SpiceToHarvest })
+		UserInterface.SetMissionText(harvestedResources)
+		CachedResources = Atreides.Resources
+	end
 end
 
 WorldLoaded = function()
-	ordos = Player.GetPlayer("Ordos")
-	player = Player.GetPlayer("Atreides")
+	Ordos = Player.GetPlayer("Ordos")
+	Atreides = Player.GetPlayer("Atreides")
 
 	SpiceToHarvest = ToHarvest[Difficulty]
 
-	InitObjectives(player)
-	KillAtreides = ordos.AddPrimaryObjective("Kill all Atreides units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
-	KillOrdos = player.AddSecondaryObjective("Eliminate all Ordos units and reinforcements\nin the area.")
+	InitObjectives(Atreides)
+	KillAtreides = AddPrimaryObjective(Ordos, "")
+	local harvestSpice = UserInterface.GetFluentMessage("harvest-spice", { ["spice"] = SpiceToHarvest })
+	GatherSpice = AddPrimaryObjective(Atreides, harvestSpice)
+	KillOrdos = AddSecondaryObjective(Atreides, "eliminate-ordos-units-reinforcements")
 
 	Camera.Position = AConyard.CenterPosition
 
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
-			if player.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+			if Atreides.ResourceCapacity < SpiceToHarvest then
+				Media.DisplayMessage(UserInterface.GetFluentMessage("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
-					ordos.MarkCompletedObjective(KillAtreides)
+					Ordos.MarkCompletedObjective(KillAtreides)
 				end)
-
-				return true
 			end
 		end)
 	end
@@ -144,31 +149,31 @@ WorldLoaded = function()
 			return
 		end
 
-		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == player end)
+		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == Atreides end)
 		if #refs == 0 then
-			ordos.MarkCompletedObjective(KillAtreides)
+			Ordos.MarkCompletedObjective(KillAtreides)
 		else
 			Trigger.OnAllRemovedFromWorld(refs, function()
-				ordos.MarkCompletedObjective(KillAtreides)
+				Ordos.MarkCompletedObjective(KillAtreides)
 			end)
 
-			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == player end)
+			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == Atreides end)
 			Utils.Do(refs, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 			Utils.Do(silos, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 		end
 	end)
 
 	Trigger.OnAllKilled(OrdosBase, function()
-		Utils.Do(ordos.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Ordos.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return OrdosPaths[1] end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillOrdos) end
-	SendCarryallReinforcements(ordos, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition)
+	local waveCondition = function() return Atreides.IsObjectiveCompleted(KillOrdos) end
+	SendCarryallReinforcements(Ordos, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition)
 	ActivateAI()
 
 	Trigger.AfterDelay(DateTime.Minutes(2) + DateTime.Seconds(30), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
-		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", AtreidesReinforcements, AtreidesPath, { AtreidesPath[1] })
+		Media.PlaySpeechNotification(Atreides, "Reinforce")
+		Reinforcements.ReinforceWithTransport(Atreides, "carryall.reinforce", AtreidesReinforcements, AtreidesPath, { AtreidesPath[1] })
 	end)
 end

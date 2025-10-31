@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,13 +9,12 @@
  */
 #endregion
 
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Gives a supportpower to the collector.")]
-	class SupportPowerCrateActionInfo : CrateActionInfo
+	sealed class SupportPowerCrateActionInfo : CrateActionInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -25,9 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.Self, this); }
 	}
 
-	class SupportPowerCrateAction : CrateAction
+	sealed class SupportPowerCrateAction : CrateAction
 	{
-		SupportPowerCrateActionInfo info;
+		readonly SupportPowerCrateActionInfo info;
 		public SupportPowerCrateAction(Actor self, SupportPowerCrateActionInfo info)
 			: base(self, info)
 		{
@@ -38,10 +37,10 @@ namespace OpenRA.Mods.Common.Traits
 		// We want neither of these properties for crate power proxies.
 		public override void Activate(Actor collector)
 		{
-			collector.World.AddFrameEndTask(w => w.CreateActor(info.Proxy, new TypeDictionary
-			{
+			collector.World.AddFrameEndTask(w => w.CreateActor(info.Proxy,
+			[
 				new OwnerInit(collector.Owner)
-			}));
+			]));
 
 			base.Activate(collector);
 		}

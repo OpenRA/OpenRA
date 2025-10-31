@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,8 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("Implements the charge-then-burst attack logic specific to the RA tesla coil.")]
-	class AttackTeslaInfo : AttackBaseInfo
+	[Desc("Implements the charge-then-burst attack logic specific to the RA Tesla coil.")]
+	sealed class AttackTeslaInfo : AttackBaseInfo
 	{
 		[Desc("How many charges this actor has to attack with, once charged.")]
 		public readonly int MaxCharges = 1;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.Self, this); }
 	}
 
-	class AttackTesla : AttackBase, ITick, INotifyAttack
+	sealed class AttackTesla : AttackBase, ITick, INotifyAttack
 	{
 		readonly AttackTeslaInfo info;
 
@@ -78,12 +78,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(
+			Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new ChargeAttack(this, newTarget, forceAttack, targetLineColor);
 		}
 
-		class ChargeAttack : Activity, IActivityNotifyStanceChanged
+		sealed class ChargeAttack : Activity, IActivityNotifyStanceChanged
 		{
 			readonly AttackTesla attack;
 			readonly Target target;
@@ -144,7 +145,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		class ChargeFire : Activity
+		sealed class ChargeFire : Activity
 		{
 			readonly AttackTesla attack;
 			readonly Target target;

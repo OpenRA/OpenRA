@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -8,6 +8,8 @@
  * information, see COPYING.
  */
 #endregion
+
+using System;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
@@ -24,8 +26,8 @@ namespace OpenRA.Mods.Common.FileFormats
 				if (cmd == 0)
 				{
 					var count = r.ReadByte();
-					while (count-- > 0)
-						dest[destIndex++] = 0;
+					Array.Clear(dest, destIndex, count);
+					destIndex += count;
 				}
 				else
 					dest[destIndex++] = cmd;

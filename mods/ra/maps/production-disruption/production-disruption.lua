@@ -1,11 +1,12 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+FlameWallRevealed = false
 TimerTicks = DateTime.Minutes(12)
 LSTType = "lst.reinforcement"
 RifleSquad1 = { Rifle1, Rifle2, Rifle3 }
@@ -16,44 +17,45 @@ DemoEngiPath = { WaterEntry1.Location, Beach1.Location }
 DemoEngiTeam = { "dtrk", "dtrk", "e6", "e6", "e6" }
 SovietWaterEntry1 = { WaterEntry2.Location, Beach2.Location }
 SovietWaterEntry2 = { WaterEntry2.Location, Beach3.Location }
-SovietSquad = { "e1", "e1", "e1", "e4", "e4" }
+SovietSquad = { "e1", "e1", "e2", "e4", "e4" }
 V2Squad = { "v2rl", "v2rl" }
 SubEscapePath = { SubPath1, SubPath2, SubPath3 }
 
 MissionStart = function()
-	LZCamera = Actor.Create("camera", true, { Owner = Greece, Location = LZ.Location })
-	Chalk1.TargetParatroopers(LZ.CenterPosition, Angle.New(740))
-	if Map.LobbyOption("difficulty") == "normal" then
-		Actor.Create("tsla", true, { Owner = USSR, Location = EasyCamera.Location })
+	if Difficulty == "normal" then
+		local northCoil = Actor.Create("tsla", true, { Owner = USSR, Location = EasyCamera.Location })
 		Actor.Create("4tnk", true, { Owner = USSR, Facing = Angle.South, Location = Mammoth.Location })
 		Actor.Create("4tnk", true, { Owner = USSR, Facing = Angle.South, Location = Mammoth.Location + CVec.New(1,0) })
 		Actor.Create("v2rl", true, { Owner = USSR, Facing = Angle.South, Location = V2.Location })
+		-- Avoid leaving infantry stranded on the island.
+		northCoil.GrantCondition("no-actors-on-sell")
 	end
 
+	SpawnTemporaryCamera(SouthLZ.Location, DateTime.Seconds(15))
+	Chalk1.TargetParatroopers(SouthLZ.CenterPosition, Angle.New(740))
+
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Chalk2.TargetParatroopers(LZ.CenterPosition, Angle.New(780))
+		Chalk2.TargetParatroopers(SouthLZ.CenterPosition, Angle.New(780))
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
 		UnitsArrived = true
-		TeslaCamera = Actor.Create("camera", true, { Owner = Greece, Location = TeslaCam.Location })
+		SpawnTemporaryCamera(TeslaCam.Location, DateTime.Seconds(10))
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(10), function()
-		LZCamera.Destroy()
 		Utils.Do(RifleSquad1, function(actor)
 			if not actor.IsDead then
-				actor.AttackMove(LZ.Location)
+				actor.AttackMove(SouthLZ.Location)
 				IdleHunt(actor)
 			end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		TeslaCamera.Destroy()
 		Utils.Do(RifleSquad2, function(actor)
 			if not actor.IsDead then
-				actor.AttackMove(LZ.Location)
+				actor.AttackMove(SouthLZ.Location)
 				IdleHunt(actor)
 			end
 		end)
@@ -61,43 +63,104 @@ MissionStart = function()
 end
 
 SetupTriggers = function()
-	Trigger.OnDamaged(SubPen, function()
-		Utils.Do(Heavys, function(actor)
-			if not actor.IsDead then
-				IdleHunt(actor)
-			end
-		end)
-	end)
+	SetupFlameWall()
+	SetupNorthBase()
 
 	Trigger.OnKilled(Church, function()
 		Actor.Create("healcrate", true, { Owner = Greece, Location = ChurchCrate.Location })
 	end)
 
 	Trigger.OnKilled(ObjectiveDome, function()
-		if not DomeCaptured == true then
+		if not DomeCaptured then
 			Greece.MarkFailedObjective(CaptureDome)
 		end
 	end)
 
-	Trigger.OnAllKilled(FlameTowerWall, function()
-		DomeCam = Actor.Create("camera", true, { Owner = Greece, Location = RadarCam.Location })
-		Trigger.AfterDelay(DateTime.Seconds(5), function()
-			DomeCam.Destroy()
+	-- Avoid notifications unless part of the the northern base is captured.
+	Greece.PlayLowPowerNotification = false
+	local notifiers = Utils.Where(USSR.GetActors(), function(actor)
+		return actor.HasProperty("StartBuildingRepairs")
+	end)
+
+	Utils.Do(notifiers, function(n)
+		Trigger.OnCapture(n, function()
+			Greece.PlayLowPowerNotification = true
 		end)
 	end)
+end
+
+SetupFlameWall = function()
+	Trigger.OnAllKilled(FlameTowerWall, function()
+		SpawnTemporaryCamera(RadarCam.Location, DateTime.Seconds(5))
+	end)
+
+	-- Give some warning if they are not yet revealed by the power cut.
+	Trigger.OnEnteredProximityTrigger(FlameCam.CenterPosition, WDist.FromCells(8), function(actor, id)
+		if FlameWallRevealed then
+			Trigger.RemoveProximityTrigger(id)
+			return
+		end
+
+		if actor.Owner == Greece then
+			FlameWallRevealed = true
+			Trigger.RemoveProximityTrigger(id)
+			SpawnTemporaryCamera(FlameCam.Location, DateTime.Seconds(10))
+		end
+	end)
+end
+
+SetupNorthBase = function()
+	local bombsPrepared = false
+	local tanksAlerted = false
 
 	Trigger.OnKilledOrCaptured(SubPen, function()
 		Greece.MarkCompletedObjective(StopProduction)
+	end)
+
+	Trigger.OnDamaged(SubPen, function(_, attacker)
+		if tanksAlerted or attacker.Type == "badr.bomber" then
+			return
+		end
+
+		tanksAlerted = true
+		Utils.Do(Heavys, IdleHunt)
+	end)
+
+	Trigger.OnKilledOrCaptured(ForwardCommand, function()
+		StartFireSale()
+		-- The original mission used four waypoints (7-10) for drops.
+		-- For simplicity, a four-Badger team will target the middle.
+		Chalk3.TargetParatroopers(NorthLZ.CenterPosition, Angle.New(927))
+
+		Trigger.AfterDelay(DateTime.Seconds(2), function()
+			Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+		end)
+
+		if not bombsPrepared then
+			bombsPrepared = true
+			BombNorthBase()
+		end
+	end)
+
+	Trigger.OnAllKilledOrCaptured(USSR.GetActorsByType("sam"), function()
+		if not bombsPrepared then
+			bombsPrepared = true
+			BombNorthBase()
+		end
 	end)
 end
 
 PowerDown = false
 PowerDownTeslas = function()
 	if not PowerDown then
-		CaptureDome = Greece.AddObjective("Capture the enemy radar dome.", "Secondary", false)
+		CaptureDome = AddSecondaryObjective(Greece, "capture-enemy-radar-dome")
 		Greece.MarkCompletedObjective(PowerDownTeslaCoils)
-		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+		Media.PlaySoundNotification(Greece, "RadarDown")
 		PowerDown = true
+
+		Trigger.AfterDelay(DateTime.Seconds(1), function()
+			Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+		end)
 
 		local bridge = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "bridge1" end)[1]
 		if not bridge.IsDead then
@@ -117,34 +180,56 @@ PowerDownTeslas = function()
 		Trigger.OnCapture(ObjectiveDome, function()
 			DomeCaptured = true
 			Greece.MarkCompletedObjective(CaptureDome)
-			SendChronos()
-		end)
 
-		FlameTowersCam = Actor.Create("camera", true, { Owner = Greece, Location = FlameCam.Location })
-		Trigger.AfterDelay(DateTime.Seconds(10), function()
-			FlameTowersCam.Destroy()
-		end)
-	end
-end
-
-SendChronos = function()
-	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		local sovietWaterSquad1 = Reinforcements.ReinforceWithTransport(USSR, "lst", SovietSquad, { WaterEntry2.Location, Beach2.Location }, { WaterEntry2.Location })[2]
-		Utils.Do(sovietWaterSquad1, function(a)
-			Trigger.OnAddedToWorld(a, function()
-				IdleHunt(a)
+			Trigger.AfterDelay(DateTime.Seconds(3), function()
+				SendChronos()
+				SendWaterSquads()
+				Actor.Create("camera", true, { Owner = Greece, Location = EasyCamera.Location })
 			end)
 		end)
 
-		Actor.Create("ctnk", true, { Owner = Greece, Location = ChronoSpawn1.Location })
-		Actor.Create("ctnk", true, { Owner = Greece, Location = ChronoSpawn2.Location })
-		Actor.Create("ctnk", true, { Owner = Greece, Location = ChronoSpawn3.Location })
-		Actor.Create("camera", true, { Owner = Greece, Location = EasyCamera.Location })
-		Media.PlaySound("chrono2.aud")
+		if not FlameWallRevealed then
+			FlameWallRevealed = true
+			SpawnTemporaryCamera(FlameCam.Location, DateTime.Seconds(10))
+		end
+	end
+end
+
+BombNorthBase = function()
+	local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = Greece })
+	proxy.TargetAirstrike(BomberTarget1.CenterPosition, Angle.New(970))
+	proxy.TargetAirstrike(BomberTarget2.CenterPosition, Angle.New(932))
+	proxy.Destroy()
+end
+
+SendChronos = function()
+	local payload = { }
+	local proxy = Actor.Create("powerproxy.chronoshift", false, { Owner = Greece })
+	local spawns =
+	{
+		{ cell = ChronoSpawn2.Location, facing = Angle.NorthWest },
+		{ cell = ChronoSpawn1.Location, facing = Angle.NorthEast },
+		{ cell = ChronoSpawn3.Location, facing = Angle.South }
+	}
+
+	Utils.Do(spawns, function(spawn)
+		local tank = Actor.Create("ctnk", true, { Owner = Greece, Facing = spawn.facing })
+		payload[tank] = spawn.cell
+	end)
+
+	Media.PlaySound("chrono2.aud")
+	proxy.Chronoshift(payload)
+	proxy.Destroy()
+end
+
+SendWaterSquads = function()
+	local sovietWaterSquad1 = Reinforcements.ReinforceWithTransport(USSR, LSTType, SovietSquad, { WaterEntry2.Location, Beach2.Location }, { WaterEntry2.Location })[2]
+	Utils.Do(sovietWaterSquad1, function(a)
+		Trigger.OnAddedToWorld(a, IdleHunt)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		local sovietWaterSquad2 = Reinforcements.ReinforceWithTransport(USSR, "lst", SovietSquad, { WaterEntry2.Location, Beach3.Location }, { WaterEntry2.Location })[2]
+		local sovietWaterSquad2 = Reinforcements.ReinforceWithTransport(USSR, LSTType, SovietSquad, { WaterEntry2.Location, Beach3.Location }, { WaterEntry2.Location })[2]
 		Utils.Do(sovietWaterSquad2, function(a)
 			Trigger.OnAddedToWorld(a, function()
 				a.AttackMove(FlameCam.Location)
@@ -154,7 +239,7 @@ SendChronos = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(13), function()
-		local sovietWaterSquad2 = Reinforcements.ReinforceWithTransport(USSR, "lst", V2Squad, { WaterEntry2.Location, Beach2.Location }, { WaterEntry2.Location })[2]
+		local sovietWaterSquad2 = Reinforcements.ReinforceWithTransport(USSR, LSTType, V2Squad, { WaterEntry2.Location, Beach2.Location }, { WaterEntry2.Location })[2]
 		Utils.Do(sovietWaterSquad2, function(a)
 			Trigger.OnAddedToWorld(a, function()
 				a.AttackMove(FlameCam.Location)
@@ -167,7 +252,7 @@ end
 MissileSubEscape = function()
 	local missileSub = Actor.Create("msub", true, { Owner = USSR, Location = MissileSubSpawn.Location })
 	Actor.Create("camera", true, { Owner = Greece, Location = SubPath2.Location })
-	DestroySub = Greece.AddPrimaryObjective("Destroy the submarine before it escapes!.")
+	DestroySub = AddPrimaryObjective(Greece, "destroy-escaping-submarine")
 
 	Utils.Do(SubEscapePath, function(waypoint)
 		missileSub.Move(waypoint.Location)
@@ -185,21 +270,54 @@ MissileSubEscape = function()
 	end)
 end
 
+StartFireSale = function()
+	local structures = Utils.Where(USSR.GetActors(), function(actor)
+		return actor.HasProperty("StartBuildingRepairs")
+	end)
+
+	if #structures == 0 then
+		return
+	end
+
+	SpawnTemporaryCamera(BomberTarget1.Location, DateTime.Seconds(5))
+	SpawnTemporaryCamera(BomberTarget2.Location, DateTime.Seconds(5))
+
+	Utils.Do(structures, function(building)
+		building.Sell()
+	end)
+
+	Trigger.OnAllRemovedFromWorld(structures, function()
+		Utils.Do(USSR.GetGroundAttackers(), IdleHunt)
+	end)
+end
+
+SpawnTemporaryCamera = function(location, duration)
+	local camera = Actor.Create("camera", true, { Owner = Greece, Location = location })
+
+	Trigger.AfterDelay(duration, function()
+		if camera.IsInWorld then
+			camera.Destroy()
+		end
+	end)
+end
+
 FinishTimer = function()
+	local submarineEscapes = UserInterface.GetFluentMessage("submarine-escapes")
+
 	for i = 0, 5 do
 		local c = TimerColor
 		if i % 2 == 0 then
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The sub is heading for open sea!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(submarineEscapes, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
 
 UnitsArrived = false
 TimerFinished = false
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
 	if BadGuy.PowerState ~= "Normal" then
 		PowerDownTeslas()
@@ -209,10 +327,14 @@ Tick = function()
 		USSR.MarkCompletedObjective(EscapeWithSub)
 	end
 
-	if ticked > 0 then
-		UserInterface.SetMissionText("Submarine completes in " .. Utils.FormatTime(ticked), TimerColor)
-		ticked = ticked - 1
-	elseif ticked == 0 and not TimerFinished then
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.GetFluentMessage("submarine-construction-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
+		Ticked = Ticked - 1
+	elseif Ticked == 0 and not TimerFinished then
+		FinishTimer()
 		MissileSubEscape()
 		TimerFinished = true
 	end
@@ -223,26 +345,11 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
 
-	EscapeWithSub = USSR.AddObjective("Get a missile sub to open waters.")
-	StopProduction = Greece.AddObjective("Destroy the Soviet sub pen.")
-	PowerDownTeslaCoils = Greece.AddObjective("Take down power to the tesla coils.")
+	EscapeWithSub = AddPrimaryObjective(USSR, "")
+	StopProduction = AddPrimaryObjective(Greece, "destroy-soviet-sub-pen")
+	PowerDownTeslaCoils = AddPrimaryObjective(Greece, "power-down-tesla-coils")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
+	InitObjectives(Greece)
 
 	Trigger.AfterDelay(DateTime.Minutes(2), function()
 		Media.PlaySpeechNotification(Greece, "TenMinutesRemaining")
@@ -261,6 +368,7 @@ WorldLoaded = function()
 	TimerColor = USSR.Color
 	Chalk1 = Actor.Create("chalk1", false, { Owner = Greece })
 	Chalk2 = Actor.Create("chalk2", false, { Owner = Greece })
+	Chalk3 = Actor.Create("chalk3", false, { Owner = Greece })
 	MissionStart()
 	SetupTriggers()
 end

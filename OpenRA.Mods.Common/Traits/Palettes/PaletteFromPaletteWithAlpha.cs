@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Create a palette by applying alpha transparency to another palette.")]
-	class PaletteFromPaletteWithAlphaInfo : TraitInfo
+	sealed class PaletteFromPaletteWithAlphaInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PaletteFromPaletteWithAlpha(this); }
 	}
 
-	class PaletteFromPaletteWithAlpha : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromPaletteWithAlpha : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly PaletteFromPaletteWithAlphaInfo info;
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 
-	class AlphaPaletteRemap : IPaletteRemap
+	sealed class AlphaPaletteRemap : IPaletteRemap
 	{
 		readonly float alpha;
 		readonly bool premultiply;

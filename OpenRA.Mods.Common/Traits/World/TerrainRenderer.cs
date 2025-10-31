@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,14 +26,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var missingImages = new HashSet<string>();
 			var failed = false;
-			Action<uint, string> onMissingImage = (id, f) =>
+			void OnMissingImage(uint id, string f)
 			{
 				onError($"\tTemplate `{id}` references sprite `{f}` that does not exist.");
 				missingImages.Add(f);
 				failed = true;
-			};
+			}
 
-			var tileCache = new DefaultTileCache((DefaultTerrain)terrainInfo, onMissingImage);
+			var tileCache = new DefaultTileCache((DefaultTerrain)terrainInfo, OnMissingImage);
 			foreach (var t in terrainInfo.Templates)
 			{
 				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			map = world.Map;
 			terrainInfo = map.Rules.TerrainInfo as DefaultTerrain;
 			if (terrainInfo == null)
-				throw new InvalidDataException("TerrainRenderer can only be used with the DefaultTerrain parser");
+				throw new InvalidDataException($"{nameof(TerrainRenderer)} can only be used with the {nameof(DefaultTerrain)} parser");
 
 			tileCache = new DefaultTileCache(terrainInfo);
 		}
@@ -133,14 +133,14 @@ namespace OpenRA.Mods.Common.Traits
 		Rectangle ITiledTerrainRenderer.TemplateBounds(TerrainTemplateInfo template)
 		{
 			Rectangle? templateRect = null;
-			var tileSize = map.Grid.TileSize;
+			var tileSize = map.Rules.TerrainInfo.TileSize;
 
 			var i = 0;
 			for (var y = 0; y < template.Size.Y; y++)
 			{
 				for (var x = 0; x < template.Size.X; x++)
 				{
-					var tile = new TerrainTile(template.Id, (byte)(i++));
+					var tile = new TerrainTile(template.Id, (byte)i++);
 					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 
@@ -159,10 +159,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo t, int2 origin, float scale)
 		{
-			if (!(t is DefaultTerrainTemplateInfo template))
+			if (t is not DefaultTerrainTemplateInfo template)
 				yield break;
 
-			var ts = map.Grid.TileSize;
+			var ts = map.Rules.TerrainInfo.TileSize;
 			var gridType = map.Grid.Type;
 
 			var i = 0;
@@ -177,17 +177,17 @@ namespace OpenRA.Mods.Common.Traits
 					var sprite = tileCache.TileSprite(tile, 0);
 					var u = gridType == MapGridType.Rectangular ? x : (x - y) / 2f;
 					var v = gridType == MapGridType.Rectangular ? y : (x + y) / 2f;
-					var offset = (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size.XY).ToInt2();
+					var offset = scale * (new float2(u * ts.Width, (v - 0.5f * tileInfo.Height) * ts.Height) - 0.5f * sprite.Size.XY);
 					var palette = template.Palette ?? terrainInfo.Palette;
 
-					yield return new UISpriteRenderable(sprite, WPos.Zero, origin + offset, 0, wr.Palette(palette), scale);
+					yield return new UISpriteRenderable(sprite, WPos.Zero, origin + offset.ToInt2(), 0, wr.Palette(palette), scale);
 				}
 			}
 		}
 
 		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderPreview(WorldRenderer wr, TerrainTemplateInfo t, WPos origin)
 		{
-			if (!(t is DefaultTerrainTemplateInfo template))
+			if (t is not DefaultTerrainTemplateInfo template)
 				yield break;
 
 			var i = 0;
@@ -206,6 +206,17 @@ namespace OpenRA.Mods.Common.Traits
 					yield return new SpriteRenderable(sprite, origin, offset, 0, palette, 1f, 1f, float3.Ones, TintModifiers.None, false);
 				}
 			}
+		}
+
+		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderPreview(WorldRenderer wr, TerrainTile tile, WPos origin)
+		{
+			if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
+				yield break;
+			var sprite = tileCache.TileSprite(tile, 0);
+			var offset = map.Offset(new CVec(0, 0), tileInfo.Height);
+			var palette = wr.Palette(terrainInfo.Palette);
+
+			yield return new SpriteRenderable(sprite, origin, offset, 0, palette, 1f, 1f, float3.Ones, TintModifiers.None, false);
 		}
 	}
 }

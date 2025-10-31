@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -30,7 +30,7 @@ SubAttackGroupSize =
 	normal = 2,
 	hard = 3
 }
-InfantryUnits = 
+InfantryUnits =
 {
 	hard = { "e1", "e2", "e2", "e4", "e4" },
 	normal = { "e1", "e1", "e2", "e2", "e4" },
@@ -180,13 +180,12 @@ Paradrop = function()
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	WTransUnits = WTransUnits[difficulty]
-	WTransDelays = WTransDelays[difficulty]
-	SubAttackGroupSize = SubAttackGroupSize[difficulty]
-	InfantryUnits = InfantryUnits[difficulty]
-	ProductionInterval = ProductionInterval[difficulty]
-	ParadropDelay = ParadropDelay[difficulty]
+	WTransUnits = WTransUnits[Difficulty]
+	WTransDelays = WTransDelays[Difficulty]
+	SubAttackGroupSize = SubAttackGroupSize[Difficulty]
+	InfantryUnits = InfantryUnits[Difficulty]
+	ProductionInterval = ProductionInterval[Difficulty]
+	ParadropDelay = ParadropDelay[Difficulty]
 	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)

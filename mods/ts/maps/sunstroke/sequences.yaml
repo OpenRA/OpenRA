@@ -1,5 +1,7 @@
 slav:
-	icon: xxicon
+	icon:
+		Filename: xxicon.shp
 
 4tnk:
-	icon: xxicon
+	icon:
+		Filename: xxicon.shp

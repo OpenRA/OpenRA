@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.D2k.Activities
 {
 	enum AttackState { Uninitialized, Burrowed, Attacking }
 
-	class SwallowActor : Activity
+	sealed class SwallowActor : Activity
 	{
 		const int NearEnough = 1;
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.D2k.Activities
 			swallow = self.Trait<AttackSwallow>();
 		}
 
-		bool AttackTargets(Actor self, IEnumerable<Actor> targets)
+		bool AttackTargets(Actor self, IReadOnlyCollection<Actor> targets)
 		{
 			var targetLocation = target.Actor.Location;
 			foreach (var t in targets)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Activities
 					{
 						var insurance = targetClose.Owner.PlayerActor.TraitOrDefault<HarvesterInsurance>();
 						if (insurance != null)
-							self.World.AddFrameEndTask(__ => insurance.TryActivate());
+							self.World.AddFrameEndTask(w => insurance.TryActivate());
 					}
 				});
 			}
@@ -76,21 +76,17 @@ namespace OpenRA.Mods.D2k.Activities
 			positionable.SetPosition(self, targetLocation);
 
 			var attackPosition = self.CenterPosition;
-			var affectedPlayers = targets.Select(x => x.Owner).Distinct().ToList();
+			var affectedPlayers = targets.Select(x => x.Owner).ToHashSet();
 			Game.Sound.Play(SoundType.World, swallow.Info.WormAttackSound, self.CenterPosition);
 
 			foreach (var player in affectedPlayers)
-				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
+				self.World.AddFrameEndTask(w => w.Add(
+					new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
-			var barrel = armament.CheckFire(self, facing, target);
-			if (barrel == null)
-				return false;
+			if (affectedPlayers.Contains(self.World.LocalPlayer))
+				TextNotificationsManager.AddTransientLine(self.World.LocalPlayer, swallow.Info.WormAttackTextNotification);
 
-			// armament.CheckFire already calls INotifyAttack.PreparingAttack
-			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
-				notify.Attacking(self, target, armament, barrel);
-
-			return true;
+			return armament.CheckFire(self, facing, target);
 		}
 
 		public override bool Tick(Actor self)
@@ -126,9 +122,10 @@ namespace OpenRA.Mods.D2k.Activities
 					}
 
 					var targets = self.World.ActorMap.GetActorsAt(targetLocation)
-						.Where(t => !t.Equals(self) && weapon.IsValidAgainst(t, self));
+						.Where(t => !t.Equals(self) && weapon.IsValidAgainst(t, self))
+						.ToList();
 
-					if (!targets.Any())
+					if (targets.Count == 0)
 					{
 						RevokeCondition(self);
 						return true;

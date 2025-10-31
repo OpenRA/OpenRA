@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,14 +14,12 @@ using System.Net.Http;
 
 namespace OpenRA.Support
 {
-	public class HttpClientFactory
+	public static class HttpClientFactory
 	{
-#if !MONO
 		const int MaxConnectionPerServer = 20;
 		static readonly TimeSpan ConnectionLifeTime = TimeSpan.FromMinutes(1);
-#endif
 
-		static readonly Lazy<HttpMessageHandler> Handler = new Lazy<HttpMessageHandler>(GetHandler);
+		static readonly Lazy<HttpMessageHandler> Handler = new(GetHandler);
 
 		public static HttpClient Create()
 		{
@@ -30,7 +28,6 @@ namespace OpenRA.Support
 
 		static HttpMessageHandler GetHandler()
 		{
-#if !MONO
 			return new SocketsHttpHandler
 			{
 				// https://github.com/dotnet/corefx/issues/26895
@@ -40,9 +37,6 @@ namespace OpenRA.Support
 				PooledConnectionIdleTimeout = ConnectionLifeTime,
 				MaxConnectionsPerServer = MaxConnectionPerServer
 			};
-#else
-			return new HttpClientHandler();
-#endif
 		}
 	}
 }

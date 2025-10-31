@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -2130,10 +2130,10 @@ Actors:
 	GroundAttackWpt1: waypoint
 		Location: 29,64
 		Owner: Soviets
-	MCVInsertLocation: waypoint
+	MCVEntry: waypoint
 		Location: 71,143
 		Owner: Allies
-	MCVDeployLocation: waypoint
+	MCVRally: waypoint
 		Location: 73,133
 		Owner: Allies
 	AlliedAreaTopLeft: waypoint
@@ -2199,7 +2199,12 @@ Actors:
 	BaseRearAttackWpt3: waypoint
 		Location: 129,57
 		Owner: Soviets
+	BeachheadFlare: waypoint
+		Owner: Neutral
+		Location: 130,89
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
 Weapons: weapons.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

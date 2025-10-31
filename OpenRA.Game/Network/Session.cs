@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,21 +15,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using OpenRA.Primitives;
-using OpenRA.Server;
 
 namespace OpenRA.Network
 {
 	public class Session
 	{
-		public List<Client> Clients = new List<Client>();
-		public List<ClientPing> ClientPings = new List<ClientPing>();
+		public List<Client> Clients = [];
 
 		// Keyed by the PlayerReference id that the slot corresponds to
-		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
+		public Dictionary<string, Slot> Slots = [];
 
-		public HashSet<int> DisabledSpawnPoints = new HashSet<int>();
+		public HashSet<int> DisabledSpawnPoints = [];
 
-		public Global GlobalSettings = new Global();
+		public Global GlobalSettings = new();
 
 		public static string AnonymizeIP(IPAddress ip)
 		{
@@ -43,13 +41,13 @@ namespace OpenRA.Network
 			return null;
 		}
 
-		public static Session Deserialize(string data)
+		public static Session Deserialize(string data, string name)
 		{
 			try
 			{
 				var session = new Session();
 
-				var nodes = MiniYaml.FromString(data);
+				var nodes = MiniYaml.FromString(data, name);
 				foreach (var node in nodes)
 				{
 					var strings = node.Key.Split('@');
@@ -58,10 +56,6 @@ namespace OpenRA.Network
 					{
 						case "Client":
 							session.Clients.Add(Client.Deserialize(node.Value));
-							break;
-
-						case "ClientPing":
-							session.ClientPings.Add(ClientPing.Deserialize(node.Value));
 							break;
 
 						case "GlobalSettings":
@@ -122,6 +116,8 @@ namespace OpenRA.Network
 
 		public enum ClientState { NotReady, Invalid, Ready, Disconnected = 1000 }
 
+		public enum ConnectionQuality { Good, Moderate, Poor }
+
 		public class Client
 		{
 			public static Client Deserialize(MiniYaml data)
@@ -142,6 +138,7 @@ namespace OpenRA.Network
 			public string IPAddress;
 			public string AnonymizedIPAddress;
 			public string Location;
+			public ConnectionQuality ConnectionQuality = ConnectionQuality.Good;
 
 			public ClientState State = ClientState.Invalid;
 			public int Team;
@@ -161,29 +158,6 @@ namespace OpenRA.Network
 			public MiniYamlNode Serialize()
 			{
 				return new MiniYamlNode($"Client@{Index}", FieldSaver.Save(this));
-			}
-		}
-
-		public ClientPing PingFromClient(Client client)
-		{
-			return ClientPings.SingleOrDefault(p => p.Index == client.Index);
-		}
-
-		public class ClientPing
-		{
-			public int Index;
-			public long Latency = -1;
-			public long LatencyJitter = -1;
-			public long[] LatencyHistory = { };
-
-			public static ClientPing Deserialize(MiniYaml data)
-			{
-				return FieldLoader.Load<ClientPing>(data);
-			}
-
-			public MiniYamlNode Serialize()
-			{
-				return new MiniYamlNode($"ClientPing@{Index}", FieldSaver.Save(this));
 			}
 		}
 
@@ -243,14 +217,17 @@ namespace OpenRA.Network
 			public bool Dedicated;
 			public bool GameSavesEnabled;
 
+			// 120ms network frame interval for 40ms local tick
+			public int NetFrameInterval = 3;
+
 			[FieldLoader.Ignore]
-			public Dictionary<string, LobbyOptionState> LobbyOptions = new Dictionary<string, LobbyOptionState>();
+			public Dictionary<string, LobbyOptionState> LobbyOptions = [];
 
 			public static Global Deserialize(MiniYaml data)
 			{
 				var gs = FieldLoader.Load<Global>(data);
 
-				var optionsNode = data.Nodes.FirstOrDefault(n => n.Key == "Options");
+				var optionsNode = data.NodeWithKeyOrDefault("Options");
 				if (optionsNode != null)
 					foreach (var n in optionsNode.Value.Nodes)
 						gs.LobbyOptions[n.Key] = FieldLoader.Load<LobbyOptionState>(n.Value);
@@ -261,8 +238,9 @@ namespace OpenRA.Network
 			public MiniYamlNode Serialize()
 			{
 				var data = new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
-				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value))).ToList();
-				data.Value.Nodes.Add(new MiniYamlNode("Options", new MiniYaml(null, options)));
+				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value)));
+				data = data.WithValue(data.Value.WithNodesAppended(
+					[new MiniYamlNode("Options", new MiniYaml(null, options))]));
 				return data;
 			}
 
@@ -287,14 +265,11 @@ namespace OpenRA.Network
 		{
 			var sessionData = new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("DisabledSpawnPoints", FieldSaver.FormatValue(DisabledSpawnPoints))
+				new("DisabledSpawnPoints", FieldSaver.FormatValue(DisabledSpawnPoints))
 			};
 
 			foreach (var client in Clients)
 				sessionData.Add(client.Serialize());
-
-			foreach (var clientPing in ClientPings)
-				sessionData.Add(clientPing.Serialize());
 
 			foreach (var slot in Slots)
 				sessionData.Add(slot.Value.Serialize());

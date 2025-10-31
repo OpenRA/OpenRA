@@ -5,16 +5,24 @@ World:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	MapCreeps:
+		CheckboxVisible: False
 		CheckboxLocked: True
 		CheckboxEnabled: False
 	MapBuildRadius:
+		AllyBuildRadiusCheckboxVisible: False
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxLocked: True
 		BuildRadiusCheckboxEnabled: True
 	MapOptions:
+		ShortGameCheckboxVisible: False
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+		TechLevelDropdownVisible: False
+		TechLevelDropdownLocked: True
+	TimeLimitManager:
+		TimeLimitDropdownVisible: False
 
 Player:
 	-ConquestVictoryConditions:
@@ -22,31 +30,47 @@ Player:
 		EarlyGameOver: true
 		GameOverDelay: 3000
 	Shroud:
+		FogCheckboxVisible: False
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
+		ExploredMapCheckboxVisible: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
+		DefaultCashDropdownVisible: False
 		DefaultCashDropdownLocked: True
 		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: False
+		Locked: True
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		Enabled: False
+		Locked: True
+		Visible: False
+	DeveloperMode:
+		CheckboxVisible: False
 	ModularBot@CampaignAI:
-		Name: Campaign Player AI
+		Name: bot-campaign-ai.name
 		Type: campaign
 
 airstrike.proxy:
-	AlwaysVisible:
 	AirstrikePower:
 		Icon: airstrike
 		StartFullyCharged: True
 		ChargeInterval: 3000
 		SquadSize: 3
 		QuantizedFacings: 8
-		Description: Air Strike
-		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		Name: actor-hq.airstrikepower-name
+		Description: actor-hq.airstrikepower-description
 		EndChargeSpeechNotification: AirstrikeReady
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: EnemyPlanesApproaching
+		EndChargeTextNotification: notification-airstrike-ready
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		IncomingTextNotification: notification-enemy-planes-approaching
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike
@@ -60,7 +84,7 @@ airstrike.proxy:
 MoneyCrate:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Money Crate
+		Name: actor-moneycrate-name
 	GiveCashCrateAction:
 		Amount: 2000
 		Sequence: dollar
@@ -71,3 +95,8 @@ MoneyCrate:
 TRUCK:
 	Buildable:
 		Prerequisites: ~disabled
+
+MISS:
+	Inherits: ^CivBuilding
+	RevealsShroud:
+		Range: 3c0

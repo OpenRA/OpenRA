@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LobbyOptionsLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string NotAvailable = "label-not-available";
+
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
 		readonly Widget checkboxRowTemplate;
@@ -83,43 +87,54 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var option in allOptions.Where(o => o is LobbyBooleanOption))
 			{
-				if (!checkboxColumns.Any())
+				if (checkboxColumns.Count == 0)
 				{
 					row = checkboxRowTemplate.Clone();
 					row.Bounds.Y = optionsContainer.Bounds.Height;
 					optionsContainer.Bounds.Height += row.Bounds.Height;
 					foreach (var child in row.Children)
-						if (child is CheckboxWidget)
-							checkboxColumns.Enqueue((CheckboxWidget)child);
+						if (child is CheckboxWidget childCheckbox)
+							checkboxColumns.Enqueue(childCheckbox);
 
 					optionsContainer.AddChild(row);
 				}
 
 				var checkbox = checkboxColumns.Dequeue();
-				var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
-					gs => gs.LobbyOptions[option.Id]);
+				var optionEnabled = new PredictedCachedTransform<Session.Global, bool>(
+					gs => gs.LobbyOptions[option.Id].IsEnabled);
+
+				var optionLocked = new CachedTransform<Session.Global, bool>(
+					gs => gs.LobbyOptions[option.Id].IsLocked);
 
 				checkbox.GetText = () => option.Name;
 				if (option.Description != null)
-					checkbox.GetTooltipText = () => option.Description;
+				{
+					var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
+					checkbox.GetTooltipText = () => text;
+					checkbox.GetTooltipDesc = () => desc;
+				}
 
 				checkbox.IsVisible = () => true;
-				checkbox.IsChecked = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled;
-				checkbox.IsDisabled = () => configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
-				checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
-					$"option {option.Id} {!optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled}"));
+				checkbox.IsChecked = () => optionEnabled.Update(orderManager.LobbyInfo.GlobalSettings);
+				checkbox.IsDisabled = () => configurationDisabled() || optionLocked.Update(orderManager.LobbyInfo.GlobalSettings);
+				checkbox.OnClick = () =>
+				{
+					var state = !optionEnabled.Update(orderManager.LobbyInfo.GlobalSettings);
+					orderManager.IssueOrder(Order.Command($"option {option.Id} {state}"));
+					optionEnabled.Predict(state);
+				};
 			}
 
-			foreach (var option in allOptions.Where(o => !(o is LobbyBooleanOption)))
+			foreach (var option in allOptions.Where(o => o is not LobbyBooleanOption))
 			{
-				if (!dropdownColumns.Any())
+				if (dropdownColumns.Count == 0)
 				{
-					row = dropdownRowTemplate.Clone() as Widget;
+					row = dropdownRowTemplate.Clone();
 					row.Bounds.Y = optionsContainer.Bounds.Height;
 					optionsContainer.Bounds.Height += row.Bounds.Height;
 					foreach (var child in row.Children)
-						if (child is DropDownButtonWidget)
-							dropdownColumns.Enqueue((DropDownButtonWidget)child);
+						if (child is DropDownButtonWidget dropDown)
+							dropdownColumns.Enqueue(dropDown);
 
 					optionsContainer.AddChild(row);
 				}
@@ -131,45 +146,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var getOptionLabel = new CachedTransform<string, string>(id =>
 				{
 					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return "Not Available";
+						return FluentProvider.GetMessage(NotAvailable);
 
 					return value;
 				});
 
 				dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
 				if (option.Description != null)
-					dropdown.GetTooltipText = () => option.Description;
+				{
+					var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
+					dropdown.GetTooltipText = () => text;
+					dropdown.GetTooltipDesc = () => desc;
+				}
+
 				dropdown.IsVisible = () => true;
 				dropdown.IsDisabled = () => configurationDisabled() ||
 					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
 
 				dropdown.OnMouseDown = _ =>
 				{
-					Func<KeyValuePair<string, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (c, template) =>
+					ScrollItemWidget SetupItem(KeyValuePair<string, string> c, ScrollItemWidget template)
 					{
-						Func<bool> isSelected = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
-						Action onClick = () => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+						bool IsSelected() => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
+						void OnClick() => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
 
-						var item = ScrollItemWidget.Setup(template, isSelected, onClick);
+						var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
 						return item;
-					};
+					}
 
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count() * 30, option.Values, setupItem);
+					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
 				};
 
 				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
 				if (label != null)
 				{
-					label.GetText = () => option.Name;
+					label.GetText = () => option.Name + ":";
 					label.IsVisible = () => true;
 				}
 			}
 
 			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
 			optionsContainer.Bounds.Y = yMargin;
-			if (panel.ContentHeight < panel.Bounds.Height)
-				optionsContainer.Bounds.Y += (panel.Bounds.Height - panel.ContentHeight) / 2;
 
 			panel.ScrollToTop();
 		}

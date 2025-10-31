@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -42,11 +42,12 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ProximityExternalCondition(init.Self, this); }
 	}
 
-	public class ProximityExternalCondition : ConditionalTrait<ProximityExternalConditionInfo>, ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction
+	public class ProximityExternalCondition : ConditionalTrait<ProximityExternalConditionInfo>,
+		ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction, INotifyProximityOwnerChanged
 	{
 		readonly Actor self;
 
-		readonly Dictionary<Actor, int> tokens = new Dictionary<Actor, int>();
+		readonly Dictionary<Actor, int> tokens = [];
 
 		int proximityTrigger;
 		WPos cachedPosition;
@@ -115,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var external = a.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(a, self));
+				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(self));
 
 			if (external != null)
 				tokens[a] = external.GrantCondition(a, self);
@@ -123,23 +124,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init)
 		{
-			// If the produced Actor doesn't occupy space, it can't be in range
+			// If the produced Actor doesn't occupy space, it can't be in range.
 			if (produced.OccupiesSpace == null)
 				return;
 
-			// We don't grant conditions when disabled
+			// We don't grant conditions when disabled.
 			if (IsTraitDisabled)
 				return;
 
-			// Work around for actors produced within the region not triggering until the second tick
+			// Work around for actors produced within the region not triggering until the second tick.
 			if ((produced.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= Info.Range.LengthSquared)
 			{
-				var stance = self.Owner.RelationshipWith(produced.Owner);
-				if (!Info.ValidRelationships.HasRelationship(stance))
+				if (!Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(produced.Owner)))
 					return;
 
 				var external = produced.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(produced, self));
+					.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(self));
 
 				if (external != null)
 					tokens[produced] = external.GrantCondition(produced, self);
@@ -158,6 +158,37 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var external in a.TraitsImplementing<ExternalCondition>())
 				if (external.TryRevokeCondition(a, self, token))
 					break;
+		}
+
+		void INotifyProximityOwnerChanged.OnProximityOwnerChanged(Actor actor, Player oldOwner, Player newOwner)
+		{
+			// If the Actor doesn't occupy space, it can't be in range.
+			if (actor.OccupiesSpace == null)
+				return;
+
+			// We don't grant conditions when disabled.
+			if (IsTraitDisabled)
+				return;
+
+			// Work around for actors changing owner within the region.
+			if ((actor.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= Info.Range.LengthSquared)
+			{
+				var hasRelationship = Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(actor.Owner));
+				var contains = tokens.TryGetValue(actor, out var token);
+				if (hasRelationship && !contains)
+				{
+					var external = actor.TraitsImplementing<ExternalCondition>().FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(self));
+					if (external != null)
+						tokens[actor] = external.GrantCondition(actor, self);
+				}
+				else if (!hasRelationship && contains)
+				{
+					tokens.Remove(actor);
+					foreach (var external in actor.TraitsImplementing<ExternalCondition>())
+						if (external.TryRevokeCondition(actor, self, token))
+							break;
+				}
+			}
 		}
 	}
 }

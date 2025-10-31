@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Threading.Tasks;
 using OpenRA.Support;
 
@@ -41,20 +40,24 @@ namespace OpenRA.Mods.Common
 					{ "version", Game.ModData.Manifest.Metadata.Version }
 				}.ToString();
 
-				var client = HttpClientFactory.Create();
-
-				var httpResponseMessage = await client.GetAsync(queryURL);
-				var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
-				var status = ModVersionStatus.Latest;
-				switch (result)
+				try
 				{
-					case "outdated": status = ModVersionStatus.Outdated; break;
-					case "unknown": status = ModVersionStatus.Unknown; break;
-					case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
-				}
+					var client = HttpClientFactory.Create();
 
-				Game.RunAfterTick(() => ModVersionStatus = status);
+					var httpResponseMessage = await client.GetAsync(queryURL);
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+					var status = ModVersionStatus.Latest;
+					switch (result)
+					{
+						case "outdated": status = ModVersionStatus.Outdated; break;
+						case "unknown": status = ModVersionStatus.Unknown; break;
+						case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
+					}
+
+					Game.RunAfterTick(() => ModVersionStatus = status);
+				}
+				catch { }
 			});
 		}
 	}

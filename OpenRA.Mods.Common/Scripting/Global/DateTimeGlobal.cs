@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("True on the 31st of October.")]
+		[Obsolete("Use CurrentMonth and CurrentDay instead.")]
 		public bool IsHalloween => DateTime.Today.Month == 10 && DateTime.Today.Day == 31;
 
 		[Desc("Get the current game time (in ticks).")]
@@ -42,6 +43,19 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			return seconds * ticksPerSecond;
 		}
+
+		[Desc("Get the current year (1-9999).")]
+		public int CurrentYear => DateTime.Now.Year;
+		[Desc("Get the current month (1-12).")]
+		public int CurrentMonth => DateTime.Now.Month;
+		[Desc("Get the current day (1-31).")]
+		public int CurrentDay => DateTime.Now.Day;
+		[Desc("Get the current hour (0-23).")]
+		public int CurrentHour => DateTime.Now.Hour;
+		[Desc("Get the current minute (0-59).")]
+		public int CurrentMinute => DateTime.Now.Minute;
+		[Desc("Get the current second (0-59).")]
+		public int CurrentSecond => DateTime.Now.Second;
 
 		[Desc("Converts the number of minutes into game time (ticks).")]
 		public int Minutes(int minutes)

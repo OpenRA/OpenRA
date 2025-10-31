@@ -1,12 +1,11 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 IslandSamSites = { SAM01, SAM02 }
 NodBase = { PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4, PowerPlant5, Refinery, HandOfNod, Silo1, Silo2, Silo3, Silo4, ConYard, CommCenter }
@@ -100,7 +99,7 @@ WorldLoaded = function()
 		KillCounterHuntThreshold = 20
 	end
 
-	DestroyObjective = GDI.AddObjective("Destroy the Nod ********.")
+	DestroyObjective = AddPrimaryObjective(GDI, "destroy-nod-building")
 
 	Trigger.OnKilled(Airfield, function()
 		GDI.MarkCompletedObjective(DestroyObjective)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,12 +17,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
+	[IncludeStaticFluentReferences(typeof(OpenMapAction))]
 	public class EditorActionManagerInfo : TraitInfo<EditorActionManager> { }
 
 	public class EditorActionManager : IWorldLoaded
 	{
-		readonly Stack<EditorActionContainer> undoStack = new Stack<EditorActionContainer>();
-		readonly Stack<EditorActionContainer> redoStack = new Stack<EditorActionContainer>();
+		readonly Stack<EditorActionContainer> undoStack = [];
+		readonly Stack<EditorActionContainer> redoStack = [];
 
 		public event Action<EditorActionContainer> ItemAdded;
 		public event Action<EditorActionContainer> ItemRemoved;
@@ -31,10 +32,12 @@ namespace OpenRA.Mods.Common.Traits
 		int nextId;
 
 		public bool Modified;
+		public bool SaveFailed;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			Add(new OpenMapAction());
+			Modified = false;
 		}
 
 		public void Add(IEditorAction editorAction)
@@ -142,15 +145,19 @@ namespace OpenRA.Mods.Common.Traits
 		string Text { get; }
 	}
 
-	class OpenMapAction : IEditorAction
+	sealed class OpenMapAction : IEditorAction
 	{
+		[FluentReference]
+		const string Opened = "notification-opened";
+
 		public OpenMapAction()
 		{
-			Text = "Opened";
+			Text = FluentProvider.GetMessage(Opened);
 		}
 
 		public void Execute()
 		{
+			Do();
 		}
 
 		public void Do()
@@ -161,15 +168,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 		}
 
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		public EditorActionStatus Status { get; set; }
 	}
 
 	public class EditorActionContainer
 	{
-		public int Id { get; private set; }
-		public IEditorAction Action { get; private set; }
+		public int Id { get; }
+		public IEditorAction Action { get; }
 		public EditorActionStatus Status { get; set; }
 
 		public EditorActionContainer(int id, IEditorAction action)

@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -465,4 +465,8 @@ Rules: rules.yaml
 
 Weapons: weapons.yaml
 
+Sequences: sequences.yaml
+
 Music: music.yaml
+
+FluentMessages: ra|fluent/lua.ftl, map.ftl

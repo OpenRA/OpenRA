@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -26,11 +27,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageInterval = 0;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[FieldLoader.Require]
 		[Desc("Terrain types where the actor will take damage.")]
-		public readonly string[] Terrain = { };
+		public readonly string[] Terrain = [];
 
 		public override object Create(ActorInitializer init) { return new DamagedByTerrain(this); }
 	}

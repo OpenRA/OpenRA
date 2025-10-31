@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Channels;
@@ -25,26 +26,16 @@ namespace OpenRA
 		public TextWriter Writer;
 	}
 
-	readonly struct ChannelData
-	{
-		public readonly string Channel;
-		public readonly string Text;
-
-		public ChannelData(string channel, string text)
-		{
-			Text = text;
-			Channel = channel;
-		}
-	}
+	readonly record struct ChannelData(string Channel, string Text);
 
 	public static class Log
 	{
 		const int CreateLogFileMaxRetryCount = 128;
 
-		static readonly ConcurrentDictionary<string, ChannelInfo> Channels = new ConcurrentDictionary<string, ChannelInfo>();
+		static readonly ConcurrentDictionary<string, ChannelInfo> Channels = [];
 		static readonly Channel<ChannelData> Channel;
 		static readonly ChannelWriter<ChannelData> ChannelWriter;
-		static readonly CancellationTokenSource CancellationToken = new CancellationTokenSource();
+		static readonly CancellationTokenSource CancellationToken = new();
 
 		static readonly TimeSpan FlushInterval = TimeSpan.FromSeconds(5);
 		static readonly Timer Timer;
@@ -110,7 +101,7 @@ namespace OpenRA
 				writer.WriteLine(item.Text);
 			else
 			{
-				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
+				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat, CultureInfo.CurrentCulture);
 				writer.WriteLine("[{0}] {1}", timestamp, item.Text);
 			}
 		}
@@ -171,9 +162,9 @@ namespace OpenRA
 			ChannelWriter.TryWrite(new ChannelData(channelName, value));
 		}
 
-		public static void Write(string channelName, string format, params object[] args)
+		public static void Write(string channelName, Exception e)
 		{
-            ChannelWriter.TryWrite(new ChannelData(channelName, format.F(args)));
+			ChannelWriter.TryWrite(new ChannelData(channelName, $"{e.Message}{Environment.NewLine}{e.StackTrace}"));
 		}
 
 		public static void Dispose()

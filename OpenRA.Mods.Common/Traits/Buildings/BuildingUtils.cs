@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -46,8 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (r.IsTraitDisabled)
 							continue;
 
-						if (acceptedReplacements == null)
-							acceptedReplacements = new HashSet<string>();
+						acceptedReplacements ??= [];
 
 						acceptedReplacements.UnionWith(r.Info.Types);
 					}
@@ -86,16 +84,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (bi.AllowInvalidPlacement)
 				return true;
 
-			var resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
-			return bi.Tiles(cell).All(t => world.Map.Contains(t) &&
-				(bi.AllowPlacementOnResources || resourceLayer == null || resourceLayer.GetResource(t).Type == null) &&
-					world.IsCellBuildable(t, ai, bi, toIgnore));
+			return bi.Tiles(cell).All(t => world.Map.Contains(t) && world.IsCellBuildable(t, ai, bi, toIgnore));
 		}
 
 		public static IEnumerable<(CPos Cell, Actor Actor)> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi, Player owner)
 		{
 			var lbi = ai.TraitInfo<LineBuildInfo>();
-			var topLeft = cell;	// 1x1 assumption!
+			var topLeft = cell; // 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, ai, bi))
 				yield return (topLeft, null);
@@ -103,8 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Start at place location, search outwards
 			// TODO: First make it work, then make it nice
 			var vecs = new[] { new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1) };
-			int[] dirs = { 0, 0, 0, 0 };
-			Actor[] connectors = { null, null, null, null };
+			int[] dirs = [0, 0, 0, 0];
+			Actor[] connectors = [null, null, null, null];
 
 			for (var d = 0; d < 4; d++)
 			{
@@ -113,9 +108,17 @@ namespace OpenRA.Mods.Common.Traits
 					if (dirs[d] != 0)
 						continue;
 
+					var segmentInfo = ai;
+					var segmentBuildingInfo = bi;
+					if (!string.IsNullOrEmpty(lbi.SegmentType))
+					{
+						segmentInfo = world.Map.Rules.Actors[lbi.SegmentType];
+						segmentBuildingInfo = segmentInfo.TraitInfo<BuildingInfo>();
+					}
+
 					// Continue the search if the cell is empty or not visible
 					var c = topLeft + i * vecs[d];
-					if (world.IsCellBuildable(c, ai, bi) || !owner.Shroud.IsExplored(c))
+					if (world.IsCellBuildable(c, segmentInfo, segmentBuildingInfo) || !owner.Shroud.IsExplored(c))
 						continue;
 
 					// Cell contains an actor. Is it the type we want?

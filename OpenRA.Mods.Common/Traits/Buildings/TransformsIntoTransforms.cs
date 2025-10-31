@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,12 +20,12 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public override object Create(ActorInitializer init) { return new TransformsIntoTransforms(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TransformsIntoTransforms(this); }
 	}
 
 	public class TransformsIntoTransforms : ConditionalTrait<TransformsIntoTransformsInfo>, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
-		public TransformsIntoTransforms(Actor self, TransformsIntoTransformsInfo info)
+		public TransformsIntoTransforms(TransformsIntoTransformsInfo info)
 			: base(info) { }
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
@@ -36,11 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 			// The DeployTransform order does not have a position associated with it,
 			// so we can only queue a new transformation if something else has
 			// already triggered the undeploy.
-			if (!order.Queued || !(self.CurrentActivity is Transform currentTransform))
+			if (!order.Queued || self.CurrentActivity is not Transform currentTransform)
 				return;
-
-			if (!order.Queued)
-				currentTransform.NextActivity?.Cancel(self);
 
 			currentTransform.Queue(new IssueOrderAfterTransform("DeployTransform", order.Target));
 

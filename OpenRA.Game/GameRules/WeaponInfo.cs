@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ namespace OpenRA.GameRules
 	public class WarheadArgs
 	{
 		public WeaponInfo Weapon;
-		public int[] DamageModifiers = { };
+		public int[] DamageModifiers = [];
 		public WPos? Source;
 		public WRot ImpactOrientation;
 		public WPos ImpactPosition;
@@ -99,21 +99,24 @@ namespace OpenRA.GameRules
 		[Desc("Number of shots in a single ammo magazine.")]
 		public readonly int Burst = 1;
 
+		[Desc("Can this weapon target the attacker itself?")]
+		public readonly bool CanTargetSelf = false;
+
 		[Desc("What types of targets are affected.")]
-		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water");
+		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
 
-		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+		static readonly BitSet<TargetableType> TargetTypeAir = new("Air");
 
 		[Desc("If weapon is not directly targeting an actor and targeted position is above this altitude,",
 			"the weapon will ignore terrain target types and only check TargetTypeAir for validity.")]
-		public readonly WDist AirThreshold = new WDist(128);
+		public readonly WDist AirThreshold = new(128);
 
 		[Desc("Delay in ticks between firing shots from the same ammo magazine. If one entry, it will be used for all bursts.",
 			"If multiple entries, their number needs to match Burst - 1.")]
-		public readonly int[] BurstDelays = { 5 };
+		public readonly int[] BurstDelays = [5];
 
 		[Desc("The minimum range the weapon can fire.")]
 		public readonly WDist MinRange = WDist.Zero;
@@ -125,21 +128,31 @@ namespace OpenRA.GameRules
 		public readonly IProjectileInfo Projectile;
 
 		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
-		public readonly List<IWarhead> Warheads = new List<IWarhead>();
+		public readonly List<IWarhead> Warheads = [];
 
-		public WeaponInfo(string name, MiniYaml content)
+		/// <summary>
+		/// This constructor is used solely for documentation generation.
+		/// </summary>
+		public WeaponInfo() { }
+
+		public WeaponInfo(MiniYaml content)
 		{
 			// Resolve any weapon-level yaml inheritance or removals
 			// HACK: The "Defaults" sequence syntax prevents us from doing this generally during yaml parsing
-			content.Nodes = MiniYaml.Merge(new[] { content.Nodes });
+			content = content.WithNodes(MiniYaml.Merge([content.Nodes]));
 			FieldLoader.Load(this, content);
 		}
 
 		static object LoadProjectile(MiniYaml yaml)
 		{
-			if (!yaml.ToDictionary().TryGetValue("Projectile", out var proj))
+			var proj = yaml.NodeWithKeyOrDefault("Projectile")?.Value;
+			if (proj == null)
 				return null;
+
 			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
+			if (ret == null)
+				return null;
+
 			FieldLoader.Load(ret, proj);
 			return ret;
 		}
@@ -147,9 +160,12 @@ namespace OpenRA.GameRules
 		static object LoadWarheads(MiniYaml yaml)
 		{
 			var retList = new List<IWarhead>();
-			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead")))
+			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead", StringComparison.Ordinal)))
 			{
 				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
+				if (ret == null)
+					continue;
+
 				FieldLoader.Load(ret, node.Value);
 				retList.Add(ret);
 			}
@@ -194,29 +210,24 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the actor.</summary>
 		public bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
-			var targetTypes = victim.GetEnabledTargetTypes();
-
-			if (!IsValidTarget(targetTypes))
+			if (!CanTargetSelf && victim == firedBy)
 				return false;
 
-			// PERF: Avoid LINQ.
-			foreach (var warhead in Warheads)
-				if (warhead.IsValidAgainst(victim, firedBy))
-					return true;
+			var targetTypes = victim.GetEnabledTargetTypes();
 
-			return false;
+			return IsValidTarget(targetTypes);
 		}
 
 		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
-			if (!IsValidTarget(victim.TargetTypes))
+			if (!victim.IsValid)
 				return false;
 
-			if (!Warheads.Any(w => w.IsValidAgainst(victim, firedBy)))
+			if (!CanTargetSelf && victim.Actor == firedBy)
 				return false;
 
-			return true;
+			return IsValidTarget(victim.TargetTypes);
 		}
 
 		/// <summary>Applies all the weapon's warheads to the target.</summary>

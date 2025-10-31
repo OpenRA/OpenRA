@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -31,31 +31,11 @@ end
 WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	Greece = Player.GetPlayer("Greece")
-	
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
 
-	DestroyNavalBase = USSR.AddPrimaryObjective("Destroy all Allied units and structures.")
-	BeatSoviets = Greece.AddPrimaryObjective("Destroy all Soviet troops.")
-	
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(USSR)
 
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
+	DestroyNavalBase = AddPrimaryObjective(USSR, "destroy-allied-units-structures")
+	BeatSoviets = AddPrimaryObjective(Greece, "")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	InitialSovietReinforcements()

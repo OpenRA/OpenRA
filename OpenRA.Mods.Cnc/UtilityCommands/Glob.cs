@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,8 +19,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 	{
 		public static bool Enabled = true;
 
-		static readonly char[] GlobChars = new char[] { '*', '?' };
-		static readonly char[] DirectorySeparators = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+		static readonly char[] GlobChars = ['*', '?'];
+		static readonly char[] DirectorySeparators = [Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar];
 
 		static bool NeedsExpansion(string filePath)
 		{
@@ -46,11 +46,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var index = filePath.IndexOfAny(DirectorySeparators, startIndex);
 				if (index == -1)
 				{
-					parts.Add(filePath.Substring(startIndex));
+					parts.Add(filePath[startIndex..]);
 					break;
 				}
 
-				parts.Add(filePath.Substring(startIndex, index - startIndex + 1));
+				parts.Add(filePath[startIndex..index]);
 				startIndex = index + 1;
 			}
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			if (parts.Count == 0
 				|| (parts[0][0] != Path.DirectorySeparatorChar
 				&& parts[0][0] != Path.AltDirectorySeparatorChar
-				&& parts[0].Contains(':') == false
+				&& !parts[0].Contains(':')
 				&& parts[0] != "." + Path.DirectorySeparatorChar
 				&& parts[0] != "." + Path.AltDirectorySeparatorChar
 				&& parts[0] != ".." + Path.DirectorySeparatorChar
@@ -73,13 +73,13 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				parts.Insert(0, "." + Path.DirectorySeparatorChar);
 
 			// If the last entry ends with a directory separator, append a '*'
-			if (parts[parts.Count - 1][parts[parts.Count - 1].Length - 1] == Path.DirectorySeparatorChar
-				|| parts[parts.Count - 1][parts[parts.Count - 1].Length - 1] == Path.AltDirectorySeparatorChar)
+			if (parts[^1][^1] == Path.DirectorySeparatorChar
+				|| parts[^1][^1] == Path.AltDirectorySeparatorChar)
 				parts.Add("*");
 
 			var root = parts[0];
 			var dirs = parts.Skip(1).Take(parts.Count - 2).ToList();
-			var file = parts[parts.Count - 1];
+			var file = parts[^1];
 
 			foreach (var path in Expand(root, dirs, 0, file))
 				yield return path;
@@ -105,8 +105,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				}
 				else
 				{
-					if (dir[dir.Length - 1] == Path.DirectorySeparatorChar || dir[dir.Length - 1] == Path.AltDirectorySeparatorChar)
-						dir = dir.Substring(0, dir.Length - 1);
+					if (dir[^1] == Path.DirectorySeparatorChar || dir[^1] == Path.AltDirectorySeparatorChar)
+						dir = dir[..^1];
 					foreach (var subDir in Directory.EnumerateDirectories(basePath, dir, SearchOption.TopDirectoryOnly))
 						foreach (var s in Expand(subDir, dirs, dirIndex + 1, file))
 							yield return s;

@@ -1,22 +1,26 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, controlledburn.lua, controlledburn-AI.lua
+		Scripts: campaign.lua, utils.lua, controlledburn.lua, controlledburn-AI.lua
 	MissionData:
 		WinVideo: apcescpe.vqa
 		LossVideo: tesla.vqa
-		Briefing: We have infiltrated the Soviet's Sarin facility. However, the main entrance is guarded by a wall of Tesla coils. We can't move a large force in until they are taken down.\n\nInfiltrate the power grid to the east or destroy its power plants. Once done, reinforcements will arrive.\n\nDestroy the Soviet compound, but capture all of the Sarin processor buildings intact -- we can't have a chemical spill.
+		Briefing: We have infiltrated the Soviets' Sarin facility. However, the main entrance is guarded by a wall of Tesla coils. We can't move a large force in until they are taken down.\n\nInfiltrate the power grid to the east or destroy the power plants. Once done, reinforcements will arrive.\n\nDestroy the Soviet compound, but capture all of the Sarin processor buildings intact -- we can't risk a chemical spill.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:
 	PlayerResources:
 		DefaultCash: 7500
+
+HARV:
+	-MustBeDestroyed:
 
 APC:
 	Buildable:
@@ -52,7 +56,7 @@ ATEK:
 
 BIO:
 	Tooltip:
-		Name: Sarin Processing Plant
+		Name: actor-sarin-processing-plant-name
 
 E7:
 	Buildable:

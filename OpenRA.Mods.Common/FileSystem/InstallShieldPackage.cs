@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,22 +22,12 @@ namespace OpenRA.Mods.Common.FileSystem
 	{
 		public sealed class InstallShieldPackage : IReadOnlyPackage
 		{
-			public readonly struct Entry
-			{
-				public readonly uint Offset;
-				public readonly uint Length;
+			public readonly record struct Entry(uint Offset, uint Length);
 
-				public Entry(uint offset, uint length)
-				{
-					Offset = offset;
-					Length = length;
-				}
-			}
-
-			public string Name { get; private set; }
+			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Dictionary<string, Entry> index;
 			readonly Stream s;
 			readonly long dataStart = 255;
 
@@ -49,11 +39,11 @@ namespace OpenRA.Mods.Common.FileSystem
 				try
 				{
 					// Parse package header
-					/*var signature = */s.ReadUInt32();
+					s.ReadUInt32(); // signature
 					s.Position += 8;
-					/*var FileCount = */s.ReadUInt16();
+					s.ReadUInt16(); // FileCount
 					s.Position += 4;
-					/*var ArchiveSize = */s.ReadUInt32();
+					s.ReadUInt32(); // ArchiveSize
 					s.Position += 19;
 					var tocAddress = s.ReadInt32();
 					s.Position += 4;
@@ -63,7 +53,8 @@ namespace OpenRA.Mods.Common.FileSystem
 					s.Position = tocAddress;
 
 					// Parse directories
-					var directories = new Dictionary<string, uint>();
+					var directories = new Dictionary<string, uint>(dirCount);
+					var totalFileCount = 0;
 					for (var i = 0; i < dirCount; i++)
 					{
 						// Parse directory header
@@ -73,14 +64,18 @@ namespace OpenRA.Mods.Common.FileSystem
 						var dirName = s.ReadASCII(nameLength);
 
 						// Skip to the end of the chunk
-						s.ReadBytes(chunkSize - nameLength - 6);
+						s.Position += chunkSize - nameLength - 6;
 						directories.Add(dirName, fileCount);
+						totalFileCount += fileCount;
 					}
 
 					// Parse files
+					index = new Dictionary<string, Entry>(totalFileCount);
 					foreach (var dir in directories)
 						for (var i = 0; i < dir.Value; i++)
 							ParseFile(dir.Key);
+
+					index.TrimExcess();
 				}
 				catch
 				{
@@ -97,7 +92,7 @@ namespace OpenRA.Mods.Common.FileSystem
 				s.Position += 12;
 				var chunkSize = s.ReadUInt16();
 				s.Position += 4;
-				var nameLength = s.ReadByte();
+				var nameLength = s.ReadUInt8();
 				var fileName = dirName + "\\" + s.ReadASCII(nameLength);
 
 				// Use index syntax to overwrite any duplicate entries with the last value

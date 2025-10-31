@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ThrowsParticleInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
+	sealed class ThrowsParticleInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string Anim = null;
@@ -25,10 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec Offset = WVec.Zero;
 
 		[Desc("Minimum distance to throw the particle")]
-		public readonly WDist MinThrowRange = new WDist(256);
+		public readonly WDist MinThrowRange = new(256);
 
 		[Desc("Maximum distance to throw the particle")]
-		public readonly WDist MaxThrowRange = new WDist(768);
+		public readonly WDist MaxThrowRange = new(768);
 
 		[Desc("Minimum angle to throw the particle")]
 		public readonly WAngle MinThrowAngle = WAngle.FromDegrees(30);
@@ -40,24 +40,24 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Velocity = 75;
 
 		[Desc("Speed at which the particle turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(60);
+		public readonly WAngle TurnSpeed = new(60);
 
 		public override object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
 
-	class ThrowsParticle : ITick
+	sealed class ThrowsParticle : ITick
 	{
 		WVec pos;
-		WVec initialPos;
-		WVec finalPos;
-		WAngle angle;
+		readonly WVec initialPos;
+		readonly WVec finalPos;
+		readonly WAngle angle;
 
 		int tick = 0;
-		int length;
+		readonly int length;
 
 		WAngle facing;
 		WAngle rotation;
-		int direction;
+		readonly int direction;
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			var throwRotation = WRot.FromYaw(new WAngle(Game.CosmeticRandom.Next(1024)));
 			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Length, info.MaxThrowRange.Length);
 
-			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromYaw(bodyFacing)));
+			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(WRot.FromYaw(bodyFacing)));
 			finalPos = initialPos + new WVec(throwDistance, 0, 0).Rotate(throwRotation);
 			angle = new WAngle(Game.CosmeticRandom.Next(info.MinThrowAngle.Angle, info.MaxThrowAngle.Angle));
 			length = (finalPos - initialPos).Length / info.Velocity;

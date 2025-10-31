@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -41,10 +41,10 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	KillNikoomba = Nod.AddObjective("Kill Nikoomba.")
-	DestroyVillage = Nod.AddObjective("Destroy the village.")
-	DestroyGDI = Nod.AddObjective("Destroy all GDI troops in the area.", "Secondary", false)
-	GDIObjective = GDI.AddObjective("Eliminate all Nod forces.")
+	KillNikoomba = AddPrimaryObjective(Nod, "kill-nikoomba")
+	DestroyVillage = AddPrimaryObjective(Nod, "destroy-village")
+	DestroyGDI = AddSecondaryObjective(Nod, "destroy-gdi-troops-area")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 
 	Trigger.OnKilled(Nikoomba, function()
 		Nod.MarkCompletedObjective(KillNikoomba)

@@ -1,0 +1,400 @@
+Background@MODCONTENT_BACKGROUND:
+	Logic: ModContentLogic
+	Background: background
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+
+Background@CONTENT_PANEL:
+	Logic: ModContentInstallerLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 500
+	Height: 290
+	Background: panel-bg
+	Children:
+		Background@RULE:
+			X: 30
+			Y: 50
+			Width: 440
+			Height: 150
+			Background: panel-rule
+		Label@TITLE:
+			X: 0
+			Y: 14
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-content-panel-title
+			Align: Center
+			Font: MediumBold
+		Label@HEADER_LABEL:
+			X: 30
+			Y: 66
+			Width: PARENT_WIDTH - 60
+			Height: 16
+			Text: modcontent-header
+			Align: Center
+			WordWrap: true
+		ScrollPanel@PACKAGES:
+			X: 30
+			Y: 84
+			Width: PARENT_WIDTH - 60
+			Height: 137
+			TopBottomSpacing: 4
+			ItemSpacing: 2
+			BorderWidth: 2
+			Children:
+				Container@PACKAGE_TEMPLATE:
+					X: 6
+					Width: PARENT_WIDTH - 16
+					Height: 23
+					Children:
+						Label@TITLE:
+							Width: 275
+							Height: 23
+						Label@REQUIRED:
+							X: 185
+							Width: 90
+							Height: 23
+							Align: Center
+							Font: Bold
+							TextColor: CC0000
+							Text: label-package-template-required
+						Image@SOURCE:
+							X: 275
+							Y: 2
+							Width: 20
+							Height: 20
+							ImageCollection: modcontent
+							ImageName: cdicon
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SOURCE_TOOLTIP
+						Button@DOWNLOAD:
+							X: 304
+							Y: 0
+							Width: 100
+							Height: 23
+							Background: button-highlighted-thin
+							Text: button-package-template-download
+						Label@INSTALLED:
+							X: 304
+							Width: 100
+							Height: 23
+							Align: Center
+							Font: Bold
+							TextColor: 00CC00
+							Text: label-package-template-installed
+						Label@REQUIRES_SOURCE:
+							X: 304
+							Width: 100
+							Height: 23
+							Align: Center
+							Font: Bold
+							TextColor: DDDDDD
+							Text: label-package-template-requires-source
+		Button@CHECK_SOURCE_BUTTON:
+			X: 30
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 200
+			Height: 32
+			Text: button-content-panel-check-source
+			Font: Bold
+		Button@BACK_BUTTON:
+			X: PARENT_WIDTH - 140
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Text: button-back
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
+
+Background@SOURCE_TOOLTIP:
+	Logic: ModContentSourceTooltipLogic
+	Background: panel-thinborder
+	Height: 25
+	Children:
+		Label@DESCRIPTION:
+			X: 5
+			Height: 23
+			Font: Bold
+			Text: label-source-tooltip-description
+		Container@SOURCES:
+			Y: 15
+			Width: PARENT_WIDTH - 10
+			Height: 7 # used as bottom margin
+			Children:
+				Label@SOURCE_TEMPLATE:
+					X: 20
+					Height: 14
+					Font: TinyBold
+
+Background@INFO_TOOLTIP:
+	Logic: SimpleTooltipLogic
+	Background: panel-thinborder
+	Height: 25
+	Children:
+		Container@LINE_HEIGHT:
+			Y: 2
+			Height: 19
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+
+Container@PACKAGE_DOWNLOAD_PANEL:
+	Logic: DownloadPackageLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 500
+	Height: 177
+	Children:
+		Background:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: panel-bg
+		Background@RULE:
+			X: 30
+			Y: 50
+			Width: 440
+			Height: 150
+			Background: panel-rule
+		Label@TITLE:
+			X: 0
+			Y: 12
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+			Font: MediumBold
+		ProgressBar@PROGRESS_BAR:
+			X: 30
+			Y: 64
+			Width: PARENT_WIDTH - 60
+			Height: 16
+			BarMargin: 0, 0
+		Label@STATUS_LABEL:
+			X: 30
+			Y: 85
+			Width: PARENT_WIDTH - 60
+			Height: 25
+			Align: Left
+		Button@RETRY_BUTTON:
+			X: 30
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 120
+			Height: 32
+			Visible: false
+			Text: button-retry
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_WIDTH - 30 - WIDTH
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Text: button-cancel
+			Font: Bold
+			Key: escape
+
+Background@SOURCE_INSTALL_PANEL:
+	Logic: InstallFromSourceLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 500
+	Height: 177
+	Background: panel-bg
+	Children:
+		Background@RULE:
+			X: 30
+			Y: 50
+			Width: 440
+			Height: 150
+			Background: panel-rule
+		Label@TITLE:
+			Y: 12
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+			Font: MediumBold
+		Container@PROGRESS:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X: 30
+					Y: 60
+					Width: PARENT_WIDTH - 60
+					Height: 16
+					BarMargin: 0, 0
+				Label@PROGRESS_MESSAGE:
+					X: 30
+					Y: 80
+					Width: PARENT_WIDTH - 60
+					Height: 25
+					Align: Left
+		Container@MESSAGE:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Height: 157
+			Visible: false
+			Children:
+				Label@MESSAGE_MESSAGE:
+					Y: 65
+					Width: PARENT_WIDTH
+					Height: 25
+					Align: Center
+		Container@LIST:
+			Width: PARENT_WIDTH
+			Height: 338
+			Visible: false
+			Children:
+				Label@LIST_MESSAGE:
+					Y: 65
+					Width: PARENT_WIDTH
+					Height: 16
+					Align: Center
+				ScrollPanel@LIST_PANEL:
+					X: 30
+					Y: 99
+					Width: PARENT_WIDTH - 60
+					Height: 170
+					TopBottomSpacing: 4
+					ItemSpacing: 2
+					BorderWidth: 2
+					Children:
+						Container@LIST_HEADER_TEMPLATE:
+							X: 6
+							Width: PARENT_WIDTH - 12 - 24
+							Height: 14
+							Children:
+								Background@TOP_RULE:
+									Width: PARENT_WIDTH
+									Height: 1
+									Background: panel-rule
+								Label@LABEL:
+									Y: 3
+									Width: PARENT_WIDTH
+									Height: 10
+									Font: TinyBold
+									Align: Center
+								Background@BOTTOM_RULE:
+									Y: 16
+									Width: PARENT_WIDTH
+									Height: 1
+									Background: panel-rule
+						Label@LABEL_LIST_TEMPLATE:
+							X: 6
+							Width: PARENT_WIDTH - 16
+							Height: 23
+						Container@CHECKBOX_LIST_TEMPLATE:
+							X: 6
+							Width: PARENT_WIDTH - 16
+							Height: 23
+							Children:
+								Checkbox@PACKAGE_CHECKBOX:
+									X: 6
+									Width: PARENT_WIDTH - 16
+									Height: 23
+									Children:
+								Image@PACKAGE_INFO:
+									X: 275
+									Y: 2
+									Width: 20
+									Height: 20
+									Visible: false
+									ImageCollection: modcontent
+									ImageName: cdicon
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: INFO_TOOLTIP
+		Button@PRIMARY_BUTTON:
+			X: 30
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Font: Bold
+			Key: return
+		Button@SECONDARY_BUTTON:
+			X: PARENT_WIDTH - 140
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
+
+Background@CONTENT_PROMPT_PANEL:
+	Logic: ModContentPromptLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 500
+	Height: 140
+	Background: panel-bg
+	Children:
+		Background@RULE:
+			X: 30
+			Y: 50
+			Width: 440
+			Height: 150
+			Background: panel-rule
+		Label@TITLE:
+			X: 0
+			Y: 12
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-content-prompt-panel-title
+			Align: Center
+			Font: MediumBold
+		Label@HEADER_LABEL:
+			X: 30
+			Y: 65
+			Width: PARENT_WIDTH - 60
+			Height: 16
+			Text: modcontent-installprompt
+			Align: Center
+			WordWrap: true
+		Button@ADVANCED_BUTTON:
+			X: 30
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 140
+			Height: 32
+			Text: button-content-prompt-panel-advanced
+			Font: Bold
+		Button@QUICK_BUTTON:
+			X: 185
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Text: button-content-prompt-panel-quick
+			Font: Bold
+		Button@QUIT_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 30
+			Y: PARENT_HEIGHT - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Text: button-quit
+			Font: Bold
+			Key: escape
+
+
+Background@BUTTON_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: panel-thinborder
+	Height: 25
+	Children:
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold

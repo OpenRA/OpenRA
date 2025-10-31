@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -69,39 +69,39 @@ namespace OpenRA.Mods.Common.HitShapes
 			var topRight = new int2(BottomRight.X, TopLeft.Y);
 			var bottomLeft = new int2(TopLeft.X, BottomRight.Y);
 			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
-			OuterRadius = new WDist(corners.Select(x => x.Length).Max());
+			OuterRadius = new WDist(corners.Max(x => x.Length));
 
-			combatOverlayVertsTop = new WVec[]
-			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
-			};
+			combatOverlayVertsTop =
+			[
+				new(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalTopOffset),
+			];
 
-			combatOverlayVertsBottom = new WVec[]
-			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
-			};
+			combatOverlayVertsBottom =
+			[
+				new(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+			];
 
-			combatOverlayVertsSide1 = new WVec[]
-			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
-			};
+			combatOverlayVertsSide1 =
+			[
+				new(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalTopOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+			];
 
-			combatOverlayVertsSide2 = new WVec[]
-			{
-				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-			};
+			combatOverlayVertsSide2 =
+			[
+				new(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
+			];
 		}
 
 		public WDist DistanceFromEdge(in WVec v)

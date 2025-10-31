@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,16 +18,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Bot that uses BotModules.")]
+	[TraitLocation(SystemActors.Player)]
 	public sealed class ModularBotInfo : TraitInfo, IBotInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Internal id for this bot.")]
 		public readonly string Type = null;
 
+		[FluentReference]
 		[Desc("Human-readable name this bot uses.")]
-		public readonly string Name = "Unnamed Bot";
+		public readonly string Name = null;
 
-		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). Excess orders remain queued for subsequent ticks.")]
+		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). " +
+			"Excess orders remain queued for subsequent ticks.")]
 		public readonly int MinOrderQuotientPerTick = 5;
 
 		string IBotInfo.Type => Type;
@@ -43,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly ModularBotInfo info;
 		readonly World world;
-		readonly Queue<Order> orders = new Queue<Order>();
+		readonly Queue<Order> orders = [];
 
 		Player player;
 

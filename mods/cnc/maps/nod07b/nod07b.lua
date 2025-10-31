@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -43,9 +43,11 @@ Atk2 = { CPos.New(16, 52), CPos.New(15, 52), CPos.New(14, 52), CPos.New(13, 52),
 Atk3 = { CPos.New(53, 58), CPos.New(52, 58), CPos.New(51, 58), CPos.New(53, 57), CPos.New(52, 57), CPos.New(51, 57), CPos.New(53, 56), CPos.New(52, 56), CPos.New(51, 56), CPos.New(53, 55), CPos.New(52, 55), CPos.New(51, 55) }
 Atk4 = { CPos.New(54, 47), CPos.New(53, 47), CPos.New(52, 47), CPos.New(51, 47), CPos.New(43, 47), CPos.New(54, 46), CPos.New(53, 46), CPos.New(52, 46), CPos.New(51, 46), CPos.New(50, 46), CPos.New(43, 46), CPos.New(42, 46), CPos.New(41, 46), CPos.New(43, 45), CPos.New(42, 45), CPos.New(41, 45), CPos.New(43, 44), CPos.New(42, 44), CPos.New(41, 44), CPos.New(43, 43), CPos.New(42, 43), CPos.New(41, 43), CPos.New(43, 42) }
 
+SamSiteGoal = 3
+
 CaptureStructures = function(actor)
 	for i = 1, #WhitelistedStructures do
-		structures = Nod.GetActorsByType(WhitelistedStructures[i])
+		local structures = Nod.GetActorsByType(WhitelistedStructures[i])
 		if #structures > 0 and not actor.IsDead and not structures[1].IsDead then
 			actor.Capture(structures[1])
 			return
@@ -55,7 +57,7 @@ end
 
 CheckForSams = function()
 	local sams = Nod.GetActorsByType("sam")
-	return #sams >= 3
+	return #sams >= SamSiteGoal
 end
 
 InsertNodUnits = function()
@@ -121,32 +123,32 @@ SendReinforcementsWave = function(team)
 end
 
 Trigger.OnEnteredFootprint(Atk1, function(a, id)
-	if not atk1Trigger and a.Owner == Nod then
-		atk1Trigger = true
+	if not Atk1Triggered and a.Owner == Nod then
+		Atk1Triggered = true
 		SendAttackWave(GDI5)
 		Trigger.RemoveFootprintTrigger(id)
 	end
 end)
 
 Trigger.OnEnteredFootprint(Atk2, function(a, id)
-	if not atk2Trigger and a.Owner == Nod then
-		atk2Trigger = true
+	if not Atk2Triggered and a.Owner == Nod then
+		Atk2Triggered = true
 		SendAttackWave(GDI4)
 		Trigger.RemoveFootprintTrigger(id)
 	end
 end)
 
 Trigger.OnEnteredFootprint(Atk3, function(a, id)
-	if not atk3Trigger and a.Owner == Nod then
-		atk3Trigger = true
+	if not Atk3Triggered and a.Owner == Nod then
+		Atk3Triggered = true
 		SendAttackWave(GDI6)
 		Trigger.RemoveFootprintTrigger(id)
 	end
 end)
 
 Trigger.OnEnteredFootprint(Atk4, function(a, id)
-	if not atk4Trigger and a.Owner == Nod then
-		atk4Trigger = true
+	if not Atk4Triggered and a.Owner == Nod then
+		Atk4Triggered = true
 		SendReinforcementsWave(GDI1)
 		Trigger.RemoveFootprintTrigger(id)
 	end
@@ -169,8 +171,9 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	EliminateGDI = Nod.AddObjective("Eliminate all GDI forces in the area.")
-	BuildSAMs = Nod.AddObjective("Build 3 SAMs to fend off the GDI bombers.", "Secondary", false)
+	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
+	local buildSAMs = UserInterface.GetFluentMessage("build-sams", { ["sams"] = SamSiteGoal })
+	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
 end
 
 Tick = function()

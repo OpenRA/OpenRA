@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,11 +11,13 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class TerrainTunnelLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
+	[TraitLocation(SystemActors.World)]
+	public class TerrainTunnelLayerInfo : TraitInfo, ILobbyCustomRulesIgnore, ICustomMovementLayerInfo
 	{
 		[Desc("Terrain type used by cells outside any tunnel footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";
@@ -28,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Map map;
 		readonly CellLayer<WPos> cellCenters;
 		readonly CellLayer<byte> terrainIndices;
-		readonly HashSet<CPos> portals = new HashSet<CPos>();
+		readonly HashSet<CPos> portals = [];
 		bool enabled;
 
 		public TerrainTunnelLayer(Actor self, TerrainTunnelLayerInfo info)
@@ -41,7 +43,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			var domainIndex = world.WorldActor.Trait<DomainIndex>();
 			var cellHeight = world.Map.CellHeightStep.Length;
 			foreach (var tti in world.WorldActor.Info.TraitInfos<TerrainTunnelInfo>())
 			{
@@ -58,7 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var portal = tti.PortalCells();
-				domainIndex.AddFixedConnection(portal);
 				foreach (var c in portal)
 				{
 					// Need to explicitly set both default and tunnel layers, otherwise the .Contains check will fail
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool ICustomMovementLayer.EnabledForActor(ActorInfo a, LocomotorInfo li) { return enabled; }
+		bool ICustomMovementLayer.EnabledForLocomotor(LocomotorInfo li) { return enabled; }
 		byte ICustomMovementLayer.Index => CustomMovementLayerType.Tunnel;
 		bool ICustomMovementLayer.InteractsWithDefaultLayer => false;
 		bool ICustomMovementLayer.ReturnToGroundLayerOnIdle => true;
@@ -78,14 +78,14 @@ namespace OpenRA.Mods.Common.Traits
 			return cellCenters[cell];
 		}
 
-		int ICustomMovementLayer.EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
+		short ICustomMovementLayer.EntryMovementCost(LocomotorInfo li, CPos cell)
 		{
-			return portals.Contains(cell) ? 0 : int.MaxValue;
+			return portals.Contains(cell) ? (short)0 : PathGraph.MovementCostForUnreachableCell;
 		}
 
-		int ICustomMovementLayer.ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell)
+		short ICustomMovementLayer.ExitMovementCost(LocomotorInfo li, CPos cell)
 		{
-			return portals.Contains(cell) ? 0 : int.MaxValue;
+			return portals.Contains(cell) ? (short)0 : PathGraph.MovementCostForUnreachableCell;
 		}
 
 		byte ICustomMovementLayer.GetTerrainIndex(CPos cell)

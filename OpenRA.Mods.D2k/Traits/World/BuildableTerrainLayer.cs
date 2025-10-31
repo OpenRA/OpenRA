@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class BuildableTerrainLayer : IRenderOverlay, IWorldLoaded, ITickRender, IRadarTerrainLayer, INotifyActorDisposing
 	{
 		readonly BuildableTerrainLayerInfo info;
-		readonly Dictionary<CPos, TerrainTile?> dirty = new Dictionary<CPos, TerrainTile?>();
+		readonly Dictionary<CPos, TerrainTile?> dirty = [];
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly World world;
 		readonly CellLayer<int> strength;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			render = new TerrainSpriteLayer(w, wr, terrainRenderer.MissingTile, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
+			render = new TerrainSpriteLayer(w, wr, terrainRenderer.MissingTile, BlendMode.Alpha, true);
 			paletteReference = wr.Palette(info.Palette);
 		}
 
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (world.ActorMap.GetActorsAt(cell).Any(a => a.TraitOrDefault<Building>() != null))
 				return;
 
-			strength[cell] = strength[cell] - damage;
+			strength[cell] -= damage;
 			if (strength[cell] < 1)
 				RemoveTile(cell);
 		}

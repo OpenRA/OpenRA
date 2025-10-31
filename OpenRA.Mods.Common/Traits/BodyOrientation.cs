@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class BodyOrientationInfo : TraitInfo
 	{
-		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait.")]
+		[Desc("Number of facings for gameplay calculations. -1 indicates auto-detection from another trait. 0 disables quantization.")]
 		public readonly int QuantizedFacings = -1;
 
 		[Desc("Camera pitch for rotation calculations.")]
@@ -52,6 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WAngle QuantizeFacing(WAngle facing, int facings)
 		{
+			// Quantization disabled
+			if (facings == 0)
+				return facing;
+
 			return Util.QuantizeFacing(facing, facings);
 		}
 
@@ -90,7 +94,11 @@ namespace OpenRA.Mods.Common.Traits
 						throw new InvalidOperationException("Actor type '" + self.Info.Name + "' does not define a quantized body orientation.");
 				}
 
-				return qboi.QuantizedBodyFacings(self.Info, self.World.Map.Rules.Sequences, faction);
+				var facings = qboi.QuantizedBodyFacings(self.Info, self.World.Map.Sequences, faction);
+				if (facings == 0)
+					throw new InvalidOperationException($"Actor {self.Info.Name} defines a quantized body orientation from {qboi.GetType().Name} with zero facings.");
+
+				return facings;
 			});
 		}
 
@@ -101,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			return info.LocalToWorld(vec);
 		}
 
-		public WRot QuantizeOrientation(Actor self, in WRot orientation)
+		public WRot QuantizeOrientation(in WRot orientation)
 		{
 			return info.QuantizeOrientation(orientation, quantizedFacings.Value);
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 	public abstract class Warhead : IWarhead
 	{
 		[Desc("What types of targets are affected.")]
-		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water");
+		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
@@ -38,8 +38,11 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Can this warhead affect the actor that fired it.")]
 		public readonly bool AffectsParent = false;
 
-		[Desc("If impact is above this altitude, warheads that would affect terrain ignore terrain target types (and either do nothing or perform their own checks).")]
-		public readonly WDist AirThreshold = new WDist(128);
+		[Desc(
+			"If impact is above this altitude, " +
+			"warheads that would affect terrain ignore terrain target types " +
+			"(and either do nothing or perform their own checks).")]
+		public readonly WDist AirThreshold = new(128);
 
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]
 		public readonly int Delay = 0;

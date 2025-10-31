@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -55,27 +55,26 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var facing = init.GetFacing();
-			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
-			Func<WVec> offset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
-			Func<int> zOffset = () =>
+			WRot Orientation() => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
+			WVec Offset() => body.LocalToWorld(t.Offset.Rotate(Orientation()));
+			int ZOffset()
 			{
-				var tmpOffset = offset();
+				var tmpOffset = Offset();
 				return -(tmpOffset.Y + tmpOffset.Z) + 1;
-			};
+			}
 
 			if (IsPlayerPalette)
 				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().InternalName);
 			else if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
-			yield return new SpriteActorPreview(anim, offset, zOffset, p);
+			yield return new SpriteActorPreview(anim, Offset, ZOffset, p);
 		}
 	}
 
 	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
-		readonly RenderSprites rs;
 		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
@@ -83,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
 		{
-			rs = self.Trait<RenderSprites>();
+			var rs = self.Trait<RenderSprites>();
 			body = self.Trait<BodyOrientation>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);

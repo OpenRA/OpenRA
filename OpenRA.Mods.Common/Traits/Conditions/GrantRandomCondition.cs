@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Conditions
@@ -22,21 +21,21 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 		[Desc("List of conditions to grant from.")]
 		public readonly string[] Conditions = null;
 
-		public override object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantRandomCondition(this); }
 	}
 
 	public class GrantRandomCondition : INotifyCreated
 	{
 		readonly GrantRandomConditionInfo info;
 
-		public GrantRandomCondition(Actor self, GrantRandomConditionInfo info)
+		public GrantRandomCondition(GrantRandomConditionInfo info)
 		{
 			this.info = info;
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			if (!info.Conditions.Any())
+			if (info.Conditions.Length == 0)
 				return;
 
 			var condition = info.Conditions.Random(self.World.SharedRandom);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -38,10 +38,10 @@ namespace OpenRA.Traits
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
 		readonly ICreatesFrozenActors frozenTrait;
-		readonly Player viewer;
 		readonly Shroud shroud;
-		readonly List<WPos> targetablePositions = new List<WPos>();
+		readonly List<WPos> targetablePositions = [];
 
+		public Player Viewer { get; }
 		public Player Owner { get; private set; }
 		public BitSet<TargetableType> TargetTypes { get; private set; }
 		public IEnumerable<WPos> TargetablePositions => targetablePositions;
@@ -54,26 +54,29 @@ namespace OpenRA.Traits
 		public DamageState DamageState { get; private set; }
 		readonly IHealth health;
 
+		readonly IVisibilityModifier[] visibilityModifiers;
+
 		// The Visible flag is tied directly to the actor visibility under the fog.
 		// If Visible is true, the actor is made invisible (via FrozenUnderFog/IDefaultVisibility)
 		// and this FrozenActor is rendered instead.
 		// The Hidden flag covers the edge case that occurs when the backing actor was last "seen"
-		// to be cloaked or otherwise not CanBeViewedByPlayer()ed. Setting Visible to true when
-		// the actor is hidden under the fog would leak the actors position via the tooltips and
-		// AutoTargetability, and keeping Visible as false would cause the actor to be rendered
-		// under the fog.
-		public bool Visible = true;
-		public bool Hidden = false;
+		// but not actually visible because a visibility modifier hid the actor. Setting Visible to
+		// true when the actor is hidden under the fog would leak the actors position via the
+		// tooltips and AutoTargetability, and keeping Visible as false would cause the actor to be
+		// rendered under the fog.
+		public bool Visible { get; private set; } = true;
+		public bool Hidden { get; private set; } = false;
 
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
+		public bool UpdateVisibilityNextTick { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
 		public Rectangle[] ScreenBounds = NoBounds;
 
 		public Polygon MouseBounds = Polygon.Empty;
 
-		static readonly IRenderable[] NoRenderables = new IRenderable[0];
-		static readonly Rectangle[] NoBounds = new Rectangle[0];
+		static readonly IRenderable[] NoRenderables = [];
+		static readonly Rectangle[] NoBounds = [];
 
 		int flashTicks;
 		TintModifiers flashModifiers;
@@ -84,7 +87,7 @@ namespace OpenRA.Traits
 		{
 			this.actor = actor;
 			this.frozenTrait = frozenTrait;
-			this.viewer = viewer;
+			Viewer = viewer;
 			shroud = viewer.Shroud;
 			NeedRenderables = startsRevealed;
 
@@ -94,20 +97,17 @@ namespace OpenRA.Traits
 				.ToArray();
 
 			if (Footprint.Length == 0)
-				throw new ArgumentException(("This frozen actor has no footprint.\n" +
-					"Actor Name: {0}\n" +
-					"Actor Location: {1}\n" +
-					"Input footprint: [{2}]\n" +
-					"Input footprint (after shroud.Contains): [{3}]")
-					.F(actor.Info.Name,
-					actor.Location.ToString(),
-					footprint.Select(p => p.ToString()).JoinWith("|"),
-					footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")));
+				throw new ArgumentException("This frozen actor has no footprint.\n" +
+					$"Actor Name: {actor.Info.Name}\n" +
+					$"Actor Location: {actor.Location}\n" +
+					$"Input footprint: [{footprint.Select(p => p.ToString()).JoinWith("|")}]\n" +
+					$"Input footprint (after shroud.Contains): [{footprint.Select(p => shroud.Contains(p).ToString()).JoinWith("|")}]");
 
 			CenterPosition = actor.CenterPosition;
 
 			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
 			health = actor.TraitOrDefault<IHealth>();
+			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
 			UpdateVisibility();
 		}
@@ -116,7 +116,6 @@ namespace OpenRA.Traits
 		public bool IsValid => Owner != null;
 		public ActorInfo Info => actor.Info;
 		public Actor Actor => !actor.IsDead ? actor : null;
-		public Player Viewer => viewer;
 
 		public void RefreshState()
 		{
@@ -124,7 +123,6 @@ namespace OpenRA.Traits
 			TargetTypes = actor.GetEnabledTargetTypes();
 			targetablePositions.Clear();
 			targetablePositions.AddRange(actor.GetTargetablePositions());
-			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
 			if (health != null)
 			{
@@ -140,14 +138,32 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public void RefreshHidden()
+		{
+			Hidden = false;
+			foreach (var visibilityModifier in visibilityModifiers)
+			{
+				if (!visibilityModifier.IsVisible(actor, Viewer))
+				{
+					Hidden = true;
+					break;
+				}
+			}
+		}
+
 		public void Tick()
 		{
 			if (flashTicks > 0)
 				flashTicks--;
+
+			if (UpdateVisibilityNextTick)
+				UpdateVisibility();
 		}
 
-		public void UpdateVisibility()
+		void UpdateVisibility()
 		{
+			UpdateVisibilityNextTick = false;
+
 			var wasVisible = Visible;
 			Shrouded = true;
 			Visible = true;
@@ -155,14 +171,15 @@ namespace OpenRA.Traits
 			// PERF: Avoid LINQ.
 			foreach (var puv in Footprint)
 			{
-				if (shroud.IsVisible(puv))
+				var cv = shroud.GetVisibility(puv);
+				if (cv.HasFlag(Shroud.CellVisibility.Visible))
 				{
 					Visible = false;
 					Shrouded = false;
 					break;
 				}
 
-				if (Shrouded && shroud.IsExplored(puv))
+				if (Shrouded && cv.HasFlag(Shroud.CellVisibility.Explored))
 					Shrouded = false;
 			}
 
@@ -195,7 +212,7 @@ namespace OpenRA.Traits
 			flashAlpha = null;
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render()
 		{
 			if (Shrouded)
 				return NoRenderables;
@@ -217,7 +234,7 @@ namespace OpenRA.Traits
 			return Renderables;
 		}
 
-		public bool HasRenderables => !Shrouded && Renderables.Any();
+		public bool HasRenderables => !Shrouded && Renderables.Length > 0;
 
 		public override string ToString()
 		{
@@ -237,37 +254,40 @@ namespace OpenRA.Traits
 		readonly World world;
 		readonly Player owner;
 		readonly Dictionary<uint, FrozenActor> frozenActorsById;
-		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
-		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
+		readonly SpatiallyPartitioned<FrozenActor> partitionedFrozenActors;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{
 			binSize = info.BinSize;
 			world = self.World;
 			owner = self.Owner;
-			frozenActorsById = new Dictionary<uint, FrozenActor>();
+			frozenActorsById = [];
 
-			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
-				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
+			partitionedFrozenActors = new SpatiallyPartitioned<FrozenActor>(
+				world.Map.MapSize.Width, world.Map.MapSize.Height, binSize);
 
-			self.Trait<Shroud>().OnShroudChanged += uv => dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.At(new int2(uv.U, uv.V)));
+			self.Trait<Shroud>().OnShroudChanged += uv =>
+			{
+				foreach (var fa in partitionedFrozenActors.At(new int2(uv.U, uv.V)))
+					fa.UpdateVisibilityNextTick = true;
+			};
 		}
 
 		public void Add(FrozenActor fa)
 		{
 			frozenActorsById.Add(fa.ID, fa);
 			world.ScreenMap.AddOrUpdate(owner, fa);
-			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
+			partitionedFrozenActors.Add(fa, FootprintBounds(fa));
 		}
 
 		public void Remove(FrozenActor fa)
 		{
-			partitionedFrozenActorIds.Remove(fa.ID);
+			partitionedFrozenActors.Remove(fa);
 			world.ScreenMap.Remove(owner, fa);
 			frozenActorsById.Remove(fa.ID);
 		}
 
-		Rectangle FootprintBounds(FrozenActor fa)
+		static Rectangle FootprintBounds(FrozenActor fa)
 		{
 			var p1 = fa.Footprint[0];
 			var minU = p1.U;
@@ -292,7 +312,7 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			var frozenActorsToRemove = new List<FrozenActor>();
+			List<FrozenActor> frozenActorsToRemove = null;
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
@@ -304,26 +324,26 @@ namespace OpenRA.Traits
 
 				var frozenActor = kvp.Value;
 				frozenActor.Tick();
-				if (dirtyFrozenActorIds.Contains(id))
-					frozenActor.UpdateVisibility();
 
 				if (frozenActor.Visible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
+				{
+					frozenActorsToRemove ??= [];
 					frozenActorsToRemove.Add(frozenActor);
+				}
 			}
 
-			dirtyFrozenActorIds.Clear();
-
-			foreach (var fa in frozenActorsToRemove)
-				Remove(fa);
+			if (frozenActorsToRemove != null)
+				foreach (var fa in frozenActorsToRemove)
+					Remove(fa);
 		}
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.Where(f => f.Visible)
-				.SelectMany(ff => ff.Render(wr));
+				.SelectMany(ff => ff.Render());
 		}
 
 		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)
@@ -344,8 +364,7 @@ namespace OpenRA.Traits
 		{
 			var tl = region.TopLeft;
 			var br = region.BottomRight;
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
-				.Select(FromID)
+			return partitionedFrozenActors.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
 				.Where(fa => fa.IsValid && (!onlyVisible || fa.Visible));
 		}
 
@@ -357,8 +376,7 @@ namespace OpenRA.Traits
 			var br = centerCell + new CVec(cellRange, cellRange);
 
 			// Target ranges are calculated in 2D, so ignore height differences
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
-				.Select(FromID)
+			return partitionedFrozenActors.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
 				.Where(fa => fa.IsValid &&
 					(!onlyVisible || fa.Visible) &&
 					(fa.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);

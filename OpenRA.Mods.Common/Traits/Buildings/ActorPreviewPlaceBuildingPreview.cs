@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,6 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -33,6 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Footprint types to draw above the actor preview.")]
 		public readonly PlaceBuildingCellType FootprintOverPreview = PlaceBuildingCellType.Invalid;
+
+		[Desc("Custom ZOffset of the rendered building preview.")]
+		public readonly int ZOffset = 0;
 
 		protected override IPlaceBuildingPreview CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
 		{
@@ -53,11 +55,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IActorPreview[] preview;
 
 		public ActorPreviewPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, ActorPreviewPlaceBuildingPreviewInfo info, TypeDictionary init)
-			: base(wr, ai, info, init)
+			: base(wr, ai, info)
 		{
 			this.info = info;
-			var previewInit = new ActorPreviewInitializer(actorInfo, wr, init);
-			preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
+			var previewInit = new ActorPreviewInitializer(ActorInfo, wr, init);
+			preview = ActorInfo.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(previewInit))
 				.ToArray();
 		}
@@ -73,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override IEnumerable<IRenderable> RenderInner(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)
 		{
-			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
+			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + CenterOffset;
 			var previewRenderables = preview
 				.SelectMany(p => p.Render(wr, centerPosition));
 
@@ -83,10 +85,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var r in previewRenderables.OrderBy(WorldRenderer.RenderableZPositionComparisonKey))
 			{
+				var renderable = r;
 				if (info.PreviewAlpha < 1f && r is IModifyableRenderable mr)
-					yield return mr.WithAlpha(mr.Alpha * info.PreviewAlpha);
-				else
-					yield return r;
+					renderable = mr.WithAlpha(mr.Alpha * info.PreviewAlpha);
+
+				if (info.ZOffset != 0)
+					renderable = renderable.WithZOffset(info.ZOffset);
+
+				yield return renderable;
 			}
 
 			if (info.FootprintOverPreview != PlaceBuildingCellType.None)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,12 +13,11 @@ using OpenRA.GameRules;
 using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
+	sealed class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
 	{
 		[ActorReference]
 		[Desc("Actor to spawn when the attack starts")]
@@ -62,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class IonCannonPower : SupportPower
+	sealed class IonCannonPower : SupportPower
 	{
 		readonly IonCannonPowerInfo info;
 
@@ -91,11 +90,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (info.CameraActor == null)
 					return;
 
-				var camera = w.CreateActor(info.CameraActor, new TypeDictionary
-				{
+				var camera = w.CreateActor(info.CameraActor,
+				[
 					new LocationInit(self.World.Map.CellContaining(target.CenterPosition)),
 					new OwnerInit(self.Owner),
-				});
+				]);
 
 				camera.QueueActivity(new Wait(info.CameraRemoveDelay));
 				camera.QueueActivity(new RemoveSelf());

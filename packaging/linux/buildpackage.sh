@@ -1,6 +1,7 @@
 #!/bin/bash
 # OpenRA packaging script for Linux (AppImage)
-set -e
+
+set -o errexit -o pipefail || exit $?
 
 command -v tar >/dev/null 2>&1 || { echo >&2 "Linux packaging requires tar."; exit 1; }
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Linux packaging requires curl or wget."; exit 1; }
@@ -13,7 +14,8 @@ if [ $# -eq "0" ]; then
 fi
 
 # Set the working dir to the location of this script
-cd "$(dirname "$0")" || exit 1
+HERE=$(dirname "$0")
+cd "${HERE}"
 . ../functions.sh
 
 TAG="$1"
@@ -34,8 +36,6 @@ elif [[ ${TAG} == pkgtest* ]]; then
 	SUFFIX="-pkgtest"
 fi
 
-pushd "${TEMPLATE_ROOT}" > /dev/null || exit 1
-
 if [ ! -d "${OUTPUTDIR}" ]; then
 	echo "Output directory '${OUTPUTDIR}' does not exist.";
 	exit 1
@@ -44,9 +44,9 @@ fi
 # Add native libraries
 echo "Downloading appimagetool"
 if command -v curl >/dev/null 2>&1; then
-	curl -s -L -O https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
+	curl -s -L -O https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 else
-	wget -cq https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage || exit 3
+	wget -cq https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 fi
 
 chmod a+x appimagetool-x86_64.AppImage
@@ -65,10 +65,10 @@ build_appimage() {
 		IS_D2K="True"
 	fi
 
-	install_assemblies "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "net5" "True" "True" "${IS_D2K}"
+	install_assemblies "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "True" "True" "${IS_D2K}"
 	install_data "${SRCDIR}" "${APPDIR}/usr/lib/openra" "${MOD_ID}"
 	set_engine_version "${TAG}" "${APPDIR}/usr/lib/openra"
-	set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/modcontent/mod.yaml"
+	set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}-content/mod.yaml"
 
 	# Add launcher and icons
 	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/AppRun"
@@ -110,7 +110,7 @@ build_appimage() {
 
 	# Embed update metadata if (and only if) compiled on GitHub Actions
 	if [ -n "${GITHUB_REPOSITORY}" ]; then
-		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream -u "zsync|https://master.openra.net/appimagecheck?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream -u "zsync|https://master.openra.net/appimagecheck.zsync?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 		zsyncmake -u "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
 	else
 		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"

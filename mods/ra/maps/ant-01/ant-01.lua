@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -12,11 +12,10 @@ baseDiscovered = false
 AtEndGame = false
 
 --Basic Vars
-DifficultySetting = Map.LobbyOption("difficulty")
 TimerColor = Player.GetPlayer("Spain").Color
 InsertionHelicopterType = "tran.insertion"
 TimerTicks = DateTime.Minutes(18) -- 18 minutes is roughly 30 mins in the original game
-ticks = TimerTicks
+Ticks = TimerTicks
 
 --Table Vars
 TankPath = { waypoint12.Location, waypoint13.Location }
@@ -35,13 +34,14 @@ SendInsertionHelicopter = function()
 	Reinforcements.ReinforceWithTransport(Allies, InsertionHelicopterType, ChopperTeam, InsertionPath, { waypoint4.Location })
 end
 
+AlliedForcesHaveArrived = UserInterface.GetFluentMessage("allied-forces-have-arrived")
 FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
 		if i % 2 == 0 then
 			c = HSLColor.White
 		end
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Allied forces have arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(AlliedForcesHaveArrived, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
@@ -60,7 +60,7 @@ DiscoveredAlliedBase = function(actor, discoverer)
 
 		--Need to delay this so we don't fail mission before obj added
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			SurviveObjective = Allies.AddObjective("Defend outpost until reinforcements arrive.")
+			SurviveObjective = AddPrimaryObjective(Allies, "defend-outpost-until-reinforcements-arrive")
 			SetupTimeNotifications()
 			Trigger.OnAllRemovedFromWorld(AlliedBase, function()
 				Allies.MarkFailedObjective(SurviveObjective)
@@ -104,26 +104,29 @@ SetupTimeNotifications = function()
 end
 
 GetTicks = function()
-	return ticks
+	return Ticks
 end
 
 Tick = function()
 	if SurviveObjective ~= nil then
-		if ticks > 0 then
-			if ticks == DateTime.Minutes(17) then
+		if Ticks > 0 then
+			if Ticks == DateTime.Minutes(17) then
 				StartAntAttack()
-			elseif ticks == DateTime.Minutes(15) then
+			elseif Ticks == DateTime.Minutes(15) then
 				SendInsertionHelicopter()
-			elseif ticks == DateTime.Minutes(12) then
+			elseif Ticks == DateTime.Minutes(12) then
 				StartAntAttack()
-			elseif ticks == DateTime.Minutes(6) then
+			elseif Ticks == DateTime.Minutes(6) then
 				StartAntAttack()
-			elseif ticks == DateTime.Minutes(1) then
+			elseif Ticks == DateTime.Minutes(1) then
 				EndAntAttack()
 			end
 
-			ticks = ticks - 1;
-			UserInterface.SetMissionText("Reinforcements arrive in " .. Utils.FormatTime(ticks), TimerColor)
+			Ticks = Ticks - 1;
+			if (Ticks % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.GetFluentMessage("reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticks) })
+				UserInterface.SetMissionText(Timer, TimerColor)
+			end
 		else
 			if not AtEndGame then
 				Media.PlaySpeechNotification(Allies, "SecondObjectiveMet")
@@ -133,17 +136,15 @@ Tick = function()
 				SendTanks()
 				Trigger.AfterDelay(DateTime.Seconds(2), function() TimerExpired() end)
 			end
-			ticks = ticks - 1
+			Ticks = Ticks - 1
 		end
 	end
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+AddObjectives = function()
+	InitObjectives(Allies)
 
-	DiscoverObjective = Allies.AddObjective("Find the outpost.")
+	DiscoverObjective = AddPrimaryObjective(Allies, "find-outpost")
 
 	Utils.Do(AlliedBase, function(actor)
 		Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)
@@ -155,21 +156,6 @@ InitObjectives = function()
 		Creeps.GetActorsByType("harv")[1].Stop()
 	end)
 
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "MissionFailed")
-	end)
-
-	Trigger.OnPlayerWon(Allies, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionAccomplished")  end)
-	end)
-
 	Camera.Position = Ranger.CenterPosition
 end
 
@@ -177,7 +163,7 @@ WorldLoaded = function()
 	Allies = Player.GetPlayer("Spain")
 	AntMan = Player.GetPlayer("AntMan")
 	Creeps = Player.GetPlayer("Creeps")
-	InitObjectives()
+	AddObjectives()
 	Trigger.OnKilled(MoneyDerrick, function()
 		Actor.Create("moneycrate", true, { Owner = Allies, Location = MoneyDerrick.Location + CVec.New(1,0) })
 	end)

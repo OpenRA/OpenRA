@@ -17,22 +17,23 @@ World:
 		ParticleColors: 304074, 28386C, 202C60, 182C54
 		LineTailAlphaValue: 150
 		ParticleSize: 1, 1
-	GlobalLightingPaletteEffect:
+	TintPostProcessEffect:
 		Red: 0.75
 		Green: 0.85
 		Blue: 1.5
 		Ambient: 0.45
 	MusicPlaylist:
 		BackgroundMusic: rain
-	FlashPaletteEffect@LIGHTNINGSTRIKE:
+	FlashPostProcessEffect@LIGHTNINGSTRIKE:
 		Type: LightningStrike
 	LuaScript:
-		Scripts: fort-lonestar.lua, fort-lonestar-AI.lua
+		Scripts: campaign.lua, fort-lonestar.lua, fort-lonestar-AI.lua
 	MapBuildRadius:
 		AllyBuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxVisible: False
 	SpawnStartingUnits:
 		DropdownVisible: False
+		DropdownLocked: True
 	MapOptions:
 		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
@@ -42,15 +43,15 @@ World:
 		ShortGameCheckboxVisible: False
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
-		Description: Change the difficulty of the mission
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			hard: Hard (4P)
-			normal: Normal (3P)
-			easy: Easy (2P)
-			veryeasy: Very Easy (1P)
-			tough: Real tough guy
-			endless: Endless mode
+			hard: options-difficulty.hard4p
+			normal: options-difficulty.normal3p
+			easy: options-difficulty.easy2p
+			veryeasy: options-difficulty.veryeasy1p
+			tough: options-difficulty.tough
+			endless: options-difficulty.endless
 		Default: hard
 		DisplayOrder: 5
 	MapStartingLocations:
@@ -87,7 +88,7 @@ FORTCRATE:
 	ExplodeCrateAction@bigboom:
 		Weapon: SCUD
 		SelectionShares: 5
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 1000
 		Units: mobiletent
@@ -113,7 +114,7 @@ Player:
 	-ModularBot@NavalAI:
 	-ModularBot@TurtleAI:
 	DummyBot@LonestarAI:
-		Name: Lonestar AI
+		Name: bot-lonestarai-name
 		Type: lonestar
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Visible: False
@@ -142,7 +143,7 @@ MOBILETENT:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mobile Tent
+		Name: actor-mobiletent-name
 	Selectable:
 		DecorationBounds: 896, 896
 	SelectionDecorations:
@@ -164,6 +165,7 @@ MOBILETENT:
 		Facing: 384
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
+		NoTransformTextNotification: notification-cannot-deploy-here
 	RenderSprites:
 		Image: TRUK
 
@@ -226,7 +228,7 @@ E2:
 		Prerequisites: barracks
 	Valued:
 		Cost: 40
-	Explodes:
+	FireWarheadsOnDeath:
 		Chance: 20
 
 E3:
@@ -272,12 +274,59 @@ SHOK:
 		Cost: 150
 
 SNIPER:
+	Inherits: ^Soldier
 	Valued:
 		Cost: 200
+	Tooltip:
+		Name: actor-sniper.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
 	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 80
 		Prerequisites: barracks
+		Description: actor-sniper.description
 	Health:
 		HP: 20000
+	Passenger:
+		CustomPipType: red
+	RevealsShroud:
+		Range: 6c0
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Infantry
+	Armament@PRIMARY:
+		Weapon: Sniper
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Sniper
+		MuzzleSequence: garrison-muzzle
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		RequiresCondition: !parachute
+	WithInfantryBody@PARACHUTE:
+		RequiresCondition: parachute
+		Palette: player-noshadow
+		IsPlayerPalette: true
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 120
+		CloakSound:
+		UncloakSound:
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
+		PauseOnCondition: cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	-MustBeDestroyed:
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: barracks.upgraded
 
 SNIPER.soviets:
 	Inherits: SNIPER
@@ -334,7 +383,7 @@ V2RL:
 		RecoilRecovery: 0c7
 	Armament@SECONDARY:
 		Recoil: 2
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: napalm
 		EmptyWeapon: napalm
 	ChangesHealth:
@@ -344,7 +393,7 @@ V2RL:
 
 powerproxy.parabombs:
 	AirstrikePower:
-		LongDesc: A MiG bomber drops a load of parachuted bombs on your target.
+		Description: actor-powerproxy-parabombs-description
 		CameraRemoveDelay: 50
 
 BADR.Bomber:
@@ -355,7 +404,7 @@ BADR.Bomber:
 	AmmoPool:
 		Ammo: 30
 	Tooltip:
-		Name: MiG Bomber
+		Name: actor-mig-bomber-name
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	RenderSprites:

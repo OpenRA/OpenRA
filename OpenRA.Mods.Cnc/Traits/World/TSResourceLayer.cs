@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,21 +18,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class TSResourceLayerInfo : ResourceLayerInfo
+	[TraitLocation(SystemActors.World)]
+	sealed class TSResourceLayerInfo : ResourceLayerInfo
 	{
 		public readonly string VeinType = "Veins";
 
 		[ActorReference]
 		[Desc("Actor types that should be treated as veins for adjacency.")]
-		public readonly HashSet<string> VeinholeActors = new HashSet<string> { };
+		public readonly HashSet<string> VeinholeActors = [];
 
 		public override object Create(ActorInitializer init) { return new TSResourceLayer(init.Self, this); }
 	}
 
-	class TSResourceLayer : ResourceLayer, INotifyActorDisposing
+	sealed class TSResourceLayer : ResourceLayer, INotifyActorDisposing
 	{
 		readonly TSResourceLayerInfo info;
-		readonly HashSet<CPos> veinholeCells = new HashSet<CPos>();
+		readonly HashSet<CPos> veinholeCells = [];
 
 		public TSResourceLayer(Actor self, TSResourceLayerInfo info)
 			: base(self, info)
@@ -73,6 +74,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidResourceNeighbour(CPos cell, CPos neighbour)
 		{
+			if (!Map.Contains(neighbour))
+				return false;
+
 			// Non-vein resources are not allowed in the cardinal neighbours to
 			// an already existing vein cell
 			return Content[neighbour].Type != info.VeinType;
@@ -80,6 +84,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidVeinNeighbour(CPos cell, CPos neighbour)
 		{
+			if (!Map.Contains(neighbour))
+				return false;
+
 			// Cell is automatically valid if it contains a veinhole actor
 			if (veinholeCells.Contains(neighbour))
 				return true;
@@ -111,8 +118,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			// Ensure there is space for the vein border tiles (not needed on ramps)
 			var check = resourceType == info.VeinType ? (Func<CPos, CPos, bool>)IsValidVeinNeighbour : IsValidResourceNeighbour;
-			var blockedByNeighbours = Map.Ramp[cell] == 0 && !Common.Util.ExpandFootprint(cell, false)
-				.All(c => check(cell, c));
+			var blockedByNeighbours = Map.Ramp[cell] == 0 && !Common.Util.ExpandFootprint(cell, false).All(c => check(cell, c));
 
 			return !blockedByNeighbours && (resourceType == info.VeinType || !BuildingInfluence.AnyBuildingAt(cell));
 		}

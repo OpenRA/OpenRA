@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,8 +17,7 @@ namespace OpenRA.Primitives
 {
 	static class LongBitSetAllocator<T> where T : class
 	{
-		static readonly Cache<string, long> Bits = new Cache<string, long>(Allocate);
-		static long allBits = 1;
+		static readonly Cache<string, long> Bits = new(Allocate);
 		static long nextBits = 1;
 
 		static long Allocate(string value)
@@ -26,7 +25,6 @@ namespace OpenRA.Primitives
 			lock (Bits)
 			{
 				var bits = nextBits;
-				allBits |= bits;
 				nextBits <<= 1;
 
 				if (nextBits == 0)
@@ -87,11 +85,9 @@ namespace OpenRA.Primitives
 				nextBits = 1;
 			}
 		}
-
-		public static long Mask => allBits;
 	}
 
-	// Opitmized BitSet to be used only when guaranteed to be no more than 64 values.
+	// Optimized BitSet to be used only when guaranteed to be no more than 64 values.
 	public readonly struct LongBitSet<T> : IEnumerable<string>, IEquatable<LongBitSet<T>> where T : class
 	{
 		readonly long bits;
@@ -103,7 +99,7 @@ namespace OpenRA.Primitives
 
 		public static LongBitSet<T> FromStringsNoAlloc(string[] values)
 		{
-			return new LongBitSet<T>(LongBitSetAllocator<T>.GetBitsNoAlloc(values)) { };
+			return new LongBitSet<T>(LongBitSetAllocator<T>.GetBitsNoAlloc(values));
 		}
 
 		public static void Reset()
@@ -113,15 +109,14 @@ namespace OpenRA.Primitives
 
 		public override string ToString()
 		{
-			return BitSetAllocator<T>.GetStrings(bits).JoinWith(",");
+			return LongBitSetAllocator<T>.GetStrings(bits).JoinWith(",");
 		}
 
 		public static bool operator ==(LongBitSet<T> me, LongBitSet<T> other) { return me.bits == other.bits; }
 		public static bool operator !=(LongBitSet<T> me, LongBitSet<T> other) { return !(me == other); }
-		public static LongBitSet<T> operator ~(LongBitSet<T> me) { return new LongBitSet<T>(me.bits ^ LongBitSetAllocator<T>.Mask); }
 
 		public bool Equals(LongBitSet<T> other) { return other == this; }
-		public override bool Equals(object obj) { return obj is LongBitSet<T> && Equals((LongBitSet<T>)obj); }
+		public override bool Equals(object obj) { return obj is LongBitSet<T> set && Equals(set); }
 		public override int GetHashCode() { return bits.GetHashCode(); }
 
 		public bool IsEmpty => bits == 0;
@@ -158,12 +153,12 @@ namespace OpenRA.Primitives
 
 		public bool Contains(string value)
 		{
-			return BitSetAllocator<T>.BitsContainString(bits, value);
+			return LongBitSetAllocator<T>.BitsContainString(bits, value);
 		}
 
 		public IEnumerator<string> GetEnumerator()
 		{
-			return BitSetAllocator<T>.GetStrings(bits).GetEnumerator();
+			return LongBitSetAllocator<T>.GetStrings(bits).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

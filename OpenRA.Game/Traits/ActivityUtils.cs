@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,21 +19,19 @@ namespace OpenRA.Traits
 		public static Activity RunActivity(Actor self, Activity act)
 		{
 			// PERF: This is a hot path and must run with minimal added overhead.
-			// If there are no activities we can bail straight away and save ourselves the overhead of setting up the perf logging.
 			if (act == null)
 				return act;
 
-			var perfLogger = new PerfTickLogger();
-			perfLogger.Start();
-			while (act != null)
+			var start = PerfTickLogger.GetTimestamp();
+			do
 			{
 				var prev = act;
 				act = act.TickOuter(self);
-				perfLogger.LogTickAndRestartTimer("Activity", prev);
-
+				start = PerfTickLogger.LogLongTick(start, "Activity", prev);
 				if (act == prev)
 					break;
 			}
+			while (act != null);
 
 			return act;
 		}

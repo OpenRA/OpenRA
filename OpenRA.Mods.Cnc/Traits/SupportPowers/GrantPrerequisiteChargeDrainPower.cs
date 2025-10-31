@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class GrantPrerequisiteChargeDrainPower : SupportPower, ITechTreePrerequisite, INotifyOwnerChanged
 	{
 		readonly GrantPrerequisiteChargeDrainPowerInfo info;
+		readonly string[] prerequisites;
 		TechTree techTree;
 		bool active;
 
@@ -50,6 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			: base(self, info)
 		{
 			this.info = info;
+			prerequisites = [info.Prerequisite];
 		}
 
 		protected override void Created(Actor self)
@@ -65,33 +67,24 @@ namespace OpenRA.Mods.Cnc.Traits
 			active = false;
 		}
 
-		public override SupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
+		public override DischargeableSupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
 		{
 			return new DischargeableSupportPowerInstance(key, info, manager);
 		}
 
-		public void Activate(Actor self, SupportPowerInstance instance)
+		public void Activate(Actor self)
 		{
 			active = true;
 			techTree.ActorChanged(self);
 		}
 
-		public void Deactivate(Actor self, SupportPowerInstance instance)
+		public void Deactivate(Actor self)
 		{
 			active = false;
 			techTree.ActorChanged(self);
 		}
 
-		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites
-		{
-			get
-			{
-				if (!active)
-					yield break;
-
-				yield return info.Prerequisite;
-			}
-		}
+		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites => active ? prerequisites : Enumerable.Empty<string>();
 
 		public class DischargeableSupportPowerInstance : SupportPowerInstance
 		{
@@ -119,7 +112,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					available = false;
 
 				foreach (var p in Instances)
-					((GrantPrerequisiteChargeDrainPower)p).Deactivate(p.Self, this);
+					((GrantPrerequisiteChargeDrainPower)p).Deactivate(p.Self);
 			}
 
 			public override void Tick()
@@ -178,24 +171,25 @@ namespace OpenRA.Mods.Cnc.Traits
 				power.PlayLaunchSounds();
 
 				foreach (var p in Instances)
-					((GrantPrerequisiteChargeDrainPower)p).Activate(p.Self, this);
+					((GrantPrerequisiteChargeDrainPower)p).Activate(p.Self);
 			}
 
 			public override string IconOverlayTextOverride()
 			{
-				if (!Active)
-					return null;
-
-				var info = (GrantPrerequisiteChargeDrainPowerInfo)Info;
-				return active ? info.ActiveText : available ? info.AvailableText : null;
+				return GetTextOverride();
 			}
 
 			public override string TooltipTimeTextOverride()
 			{
-				if (!Active)
+				return GetTextOverride();
+			}
+
+			string GetTextOverride()
+			{
+				// NB: Info might return null if there are no instances
+				if (!Active || Info is not GrantPrerequisiteChargeDrainPowerInfo info)
 					return null;
 
-				var info = (GrantPrerequisiteChargeDrainPowerInfo)Info;
 				return active ? info.ActiveText : available ? info.AvailableText : null;
 			}
 		}

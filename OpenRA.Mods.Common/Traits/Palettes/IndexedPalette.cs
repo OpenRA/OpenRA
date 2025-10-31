@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -32,11 +32,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Indices from BasePalette to be swapped with ReplaceIndex.")]
-		public readonly int[] Index = { };
+		public readonly int[] Index = [];
 
 		[FieldLoader.Require]
 		[Desc("Indices from BasePalette to replace from Index.")]
-		public readonly int[] ReplaceIndex = { };
+		public readonly int[] ReplaceIndex = [];
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
@@ -69,8 +69,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class IndexedColorRemap : IPaletteRemap
 	{
-		Dictionary<int, int> replacements = new Dictionary<int, int>();
-		IPalette basePalette;
+		readonly Dictionary<int, int> replacements = [];
+		readonly IPalette basePalette;
 
 		public IndexedColorRemap(IPalette basePalette, int[] ramp, int[] remap)
 		{

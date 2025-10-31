@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,33 +15,33 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Plays a looping audio file at the actor position. Attach this to the `World` actor to cover the whole map.")]
-	class AmbientSoundInfo : ConditionalTraitInfo
+	sealed class AmbientSoundInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly string[] SoundFiles = null;
 
 		[Desc("Initial delay (in ticks) before playing the sound for the first time.",
 			"Two values indicate a random delay range.")]
-		public readonly int[] Delay = { 0 };
+		public readonly int[] Delay = [0];
 
 		[Desc("Interval between playing the sound (in ticks).",
 			"Two values indicate a random delay range.")]
-		public readonly int[] Interval = { 0 };
+		public readonly int[] Interval = [0];
 
 		public override object Create(ActorInitializer init) { return new AmbientSound(init.Self, this); }
 	}
 
-	class AmbientSound : ConditionalTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
+	sealed class AmbientSound : ConditionalTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
 	{
 		readonly bool loop;
-		HashSet<ISound> currentSounds = new HashSet<ISound>();
+		readonly HashSet<ISound> currentSounds = [];
 		WPos cachedPosition;
 		int delay;
 
 		public AmbientSound(Actor self, AmbientSoundInfo info)
 			: base(info)
 		{
-			delay = Util.RandomDelay(self.World, info.Delay);
+			delay = Util.RandomInRange(self.World.SharedRandom, info.Delay);
 			loop = Info.Interval.Length == 0 || (Info.Interval.Length == 1 && Info.Interval[0] == 0);
 		}
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			{
 				StartSound(self);
 				if (!loop)
-					delay = Util.RandomDelay(self.World, Info.Interval);
+					delay = Util.RandomInRange(self.World.SharedRandom, Info.Interval);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 			currentSounds.Clear();
 		}
 
-		protected override void TraitEnabled(Actor self) { delay = Util.RandomDelay(self.World, Info.Delay); }
+		protected override void TraitEnabled(Actor self) { delay = Util.RandomInRange(self.World.SharedRandom, Info.Delay); }
 		protected override void TraitDisabled(Actor self) { StopSound(); }
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self) { StopSound(); }

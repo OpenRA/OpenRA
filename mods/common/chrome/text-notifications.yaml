@@ -1,0 +1,55 @@
+Container@CHAT_LINE_TEMPLATE:
+	Width: PARENT_WIDTH
+	Height: 16
+	Children:
+		Label@TIME:
+			X: 5
+			Width: 37
+			Height: 16
+			Shadow: True
+		Label@PREFIX:
+			X: 5
+			Height: 16
+			Shadow: True
+		Label@TEXT:
+			X: 5
+			Height: 16
+			WordWrap: True
+			Shadow: True
+
+Container@SYSTEM_LINE_TEMPLATE:
+	Width: PARENT_WIDTH
+	Height: 16
+	Children:
+		Label@TIME:
+			X: 5
+			Width: 37
+			Height: 16
+			Shadow: True
+		Label@PREFIX:
+			X: 5
+			Height: 16
+			Shadow: True
+			TextColor: FFFF00
+		Label@TEXT:
+			X: 5
+			Height: 16
+			WordWrap: True
+			Shadow: True
+			TextColor: FFFF00
+
+Container@TRANSIENT_LINE_TEMPLATE:
+	Width: PARENT_WIDTH
+	Height: 16
+	Children:
+		Label@TIME:
+			X: 5
+			Width: 37
+			Height: 16
+			Shadow: True
+		Label@TEXT:
+			X: 5
+			Height: 16
+			WordWrap: True
+			Shadow: True
+			TextColor: AFEEEE

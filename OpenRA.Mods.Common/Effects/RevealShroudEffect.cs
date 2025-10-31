@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class RevealShroudEffect : IEffect
 	{
-		static readonly PPos[] NoCells = { };
+		static readonly PPos[] NoCells = [];
 
 		readonly WPos pos;
 		readonly Player player;
@@ -43,11 +43,19 @@ namespace OpenRA.Mods.Common.Effects
 
 		void AddCellsToPlayerShroud(Player p, PPos[] uv)
 		{
-			if (validStances.HasRelationship(player.RelationshipWith(p)))
-				p.Shroud.AddSource(this, sourceType, uv);
+			if (!validStances.HasRelationship(player.RelationshipWith(p)))
+				return;
+
+			p.Shroud.AddSource(this, sourceType, uv);
 		}
 
-		void RemoveCellsFromPlayerShroud(Player p) { p.Shroud.RemoveSource(this); }
+		void RemoveCellsFromPlayerShroud(Player p)
+		{
+			if (!validStances.HasRelationship(player.RelationshipWith(p)))
+				return;
+
+			p.Shroud.RemoveSource(this);
+		}
 
 		PPos[] ProjectedCells(World world)
 		{

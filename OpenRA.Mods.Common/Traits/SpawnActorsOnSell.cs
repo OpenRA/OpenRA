@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -24,12 +23,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[FieldLoader.Require]
-		[Desc("Actor types to spawn on sell. Be sure to use lowercase.")]
+		[Desc("Actor types to spawn on sell, amount and type based on ValuePercent. Be sure to use lowercase.")]
 		public readonly string[] ActorTypes = null;
+
+		[ActorReference]
+		[Desc("Actors to spawn on sell. Be sure to use lowercase.")]
+		public readonly string[] GuaranteedActorTypes = [];
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
-		public readonly HashSet<string> Factions = new HashSet<string>();
+		public readonly HashSet<string> Factions = [];
 
 		public override object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
 	}
@@ -72,6 +75,42 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var eligibleLocations = buildingInfo.Tiles(self.Location).ToList();
+
+			if (eligibleLocations.Count == 0)
+				return;
+
+			if (Info.GuaranteedActorTypes.Length > 0)
+			{
+				var guaranteedActorTypes = Info.GuaranteedActorTypes.Select(a =>
+				{
+					var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
+					return new
+					{
+						Name = a,
+						Cost = av?.Cost ?? 0
+					};
+				}).ToList();
+
+				while (eligibleLocations.Count > 0 && guaranteedActorTypes.Count > 0)
+				{
+					var at = guaranteedActorTypes.Random(self.World.SharedRandom);
+					var loc = eligibleLocations.Random(self.World.SharedRandom);
+
+					eligibleLocations.Remove(loc);
+					guaranteedActorTypes.Remove(at);
+					dudesValue -= at.Cost;
+
+					self.World.AddFrameEndTask(w => w.CreateActor(at.Name,
+					[
+						new LocationInit(loc),
+						new OwnerInit(self.Owner),
+					]));
+				}
+
+				if (eligibleLocations.Count == 0)
+					return;
+			}
+
 			var actorTypes = Info.ActorTypes.Select(a =>
 			{
 				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
@@ -90,11 +129,11 @@ namespace OpenRA.Mods.Common.Traits
 				eligibleLocations.Remove(loc);
 				dudesValue -= at.Cost;
 
-				self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary
-				{
+				self.World.AddFrameEndTask(w => w.CreateActor(at.Name,
+				[
 					new LocationInit(loc),
 					new OwnerInit(self.Owner),
-				}));
+				]));
 			}
 		}
 

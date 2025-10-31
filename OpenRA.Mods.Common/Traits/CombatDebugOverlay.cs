@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.CombatGeometry || self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return RenderAnnotations(self, wr);
 		}
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var s in shapes)
 			{
-				foreach (var a in s.RenderDebugAnnotations(self, wr))
+				foreach (var a in s.RenderDebugAnnotations(self))
 					yield return a;
 
 				foreach (var r in s.RenderDebugOverlay(self, wr))
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Fire ports on garrisonable structures
 			if (attack is AttackGarrisoned garrison)
 			{
-				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
+				var bodyOrientation = coords.Value.QuantizeOrientation(self.Orientation);
 				foreach (var p in garrison.Info.Ports)
 				{
 					var pos = self.CenterPosition + coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 			var maxHP = healthInfo.MaxHP > 0 ? healthInfo.MaxHP : 1;
 			var damageText = $"{-e.Damage.Value} ({e.Damage.Value * 100 / maxHP}%)";
 
-			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color, damageText, 30)));
+			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.OwnerColor(), damageText, 30)));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,22 +18,22 @@ namespace OpenRA.Mods.Common.Traits
 	public class AcceptsDeliveredCashInfo : TraitInfo
 	{
 		[Desc("Accepted `DeliversCash` types. Leave empty to accept all types.")]
-		public readonly HashSet<string> ValidTypes = new HashSet<string>();
+		public readonly HashSet<string> ValidTypes = [];
 
 		[Desc("Player relationships the owner of the delivering actor needs.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
-		public readonly string[] Sounds = { };
+		public readonly string[] Sounds = [];
 
-		public override object Create(ActorInitializer init) { return new AcceptsDeliveredCash(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AcceptsDeliveredCash(this); }
 	}
 
 	public class AcceptsDeliveredCash : INotifyCashTransfer
 	{
 		readonly AcceptsDeliveredCashInfo info;
 
-		public AcceptsDeliveredCash(Actor self, AcceptsDeliveredCashInfo info)
+		public AcceptsDeliveredCash(AcceptsDeliveredCashInfo info)
 		{
 			this.info = info;
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,17 +35,17 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Screen-space offsets to apply when defined conditions are enabled.",
 			"A dictionary of [condition string]: [x, y offset].")]
-		public readonly Dictionary<BooleanExpression, int2> Offsets = new Dictionary<BooleanExpression, int2>();
+		public readonly Dictionary<BooleanExpression, int2> Offsets = [];
 
 		[Desc("The number of ticks that each step in the blink pattern in active.")]
 		public readonly int BlinkInterval = 5;
 
 		[Desc("A pattern of ticks (BlinkInterval long) where the decoration is visible or hidden.")]
-		public readonly BlinkState[] BlinkPattern = { };
+		public readonly BlinkState[] BlinkPattern = [];
 
 		[Desc("Override blink conditions to use when defined conditions are enabled.",
 			"A dictionary of [condition string]: [pattern].")]
-		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = new Dictionary<BooleanExpression, BlinkState[]>();
+		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = [];
 
 		[ConsumedConditionReference]
 		public IEnumerable<string> ConsumedConditions
@@ -56,14 +56,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public abstract class WithDecorationBase<InfoType> : ConditionalTrait<InfoType>, IDecoration where InfoType : WithDecorationBaseInfo
 	{
-		protected readonly Actor self;
+		protected readonly Actor Self;
 		int2 conditionalOffset;
 		BlinkState[] blinkPattern;
 
-		public WithDecorationBase(Actor self, InfoType info)
+		protected WithDecorationBase(Actor self, InfoType info)
 			: base(info)
 		{
-			this.self = self;
+			Self = self;
 			blinkPattern = info.BlinkPattern;
 		}
 
@@ -72,9 +72,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.World.FogObscures(self))
 				return false;
 
-			if (blinkPattern != null && blinkPattern.Any())
+			if (blinkPattern != null && blinkPattern.Length > 0)
 			{
-				var i = (self.World.WorldTick / Info.BlinkInterval) % blinkPattern.Length;
+				var i = self.World.WorldTick / Info.BlinkInterval % blinkPattern.Length;
 				if (blinkPattern[i] != BlinkState.On)
 					return false;
 			}
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) + conditionalOffset;
 			return RenderDecoration(self, wr, screenPos);

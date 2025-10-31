@@ -17,7 +17,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 5000
-		ValidTargets: GroundActor, WaterActor, AirborneActor
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 10
 			Wood: 74
@@ -41,6 +41,10 @@
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
 	ValidTargets: AirborneActor
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor
+		Versus:
+			Light: 100
 	Warhead@3Eff: CreateEffect
 		ImpactActors: false
 
@@ -58,7 +62,6 @@ Maverick:
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
-		InvalidTargets: AirborneActor
 		Damage: 7000
 		Versus:
 			None: 30
@@ -74,10 +77,10 @@ Dragon:
 
 HellfireAG:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 30
+	ReloadDelay: 34
 	MinRange: 1c256
 	Burst: 2
-	BurstDelays: 7
+	BurstDelays: 10
 	Projectile: Missile
 		Speed: 256
 		HorizontalRateOfTurn: 40
@@ -104,11 +107,7 @@ HellfireAA:
 		RangeLimit: 7c0
 		CloseEnough: 0c600
 	Warhead@1Dam: SpreadDamage
-		Damage: 4000
-		ValidTargets: AirborneActor
-		Versus:
-			Wood: 75
-			Light: 75
+		Damage: 3000
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 
@@ -123,6 +122,7 @@ MammothTusk:
 		HorizontalRateOfTurn: 60
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor, Infantry
 		Spread: 256
 		Damage: 5000
 		Versus:
@@ -149,13 +149,10 @@ Nike:
 		Inaccuracy: 0
 		Image: MISSILE
 		HorizontalRateOfTurn: 100
-		RangeLimit: 9c0
+		RangeLimit: 11c0
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
-		Damage: 5000
-		ValidTargets: AirborneActor
-		Versus:
-			Light: 90
+		Damage: 4500
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
@@ -167,11 +164,9 @@ RedEye:
 		Inaccuracy: 0
 		HorizontalRateOfTurn: 80
 		Speed: 298
+		RangeLimit: 9c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 4000
-		ValidTargets: AirborneActor
-		Versus:
-			Light: 60
+		Damage: 2400
 
 Stinger:
 	Inherits: ^AntiGroundMissile
@@ -192,7 +187,7 @@ Stinger:
 		Versus:
 			None: 36
 			Wood: 88
-			Light: 88
+			Light: 66
 			Heavy: 120
 			Concrete: 60
 
@@ -202,6 +197,11 @@ StingerAA:
 	Projectile: Missile
 		Speed: 255
 		CloseEnough: 298
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor
+		Damage: 1650
+		Versus:
+			Light: 100
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
@@ -210,6 +210,8 @@ APTusk:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
 	Range: 6c0
+	Burst: 2
+	BurstDelays: 0
 	Projectile: Missile
 		Speed: 298
 		TrailImage: smokey
@@ -219,6 +221,7 @@ APTusk:
 APTusk.stnk:
 	Inherits: APTusk
 	ReloadDelay: 100
+	Burst: 1
 
 TorpTube:
 	ReloadDelay: 100
@@ -226,7 +229,7 @@ TorpTube:
 	Report: torpedo1.aud
 	ValidTargets: Water, WaterActor, Underwater, Bridge
 	Burst: 2
-	BurstDelays: 20
+	BurstDelays: 15
 	Projectile: Missile
 		Image: torpedo
 		Arm: 3
@@ -276,9 +279,9 @@ TorpTube:
 		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
-			None: 40
+			None: 80
 			Wood: 50
-			Light: 30
+			Light: 48
 			Heavy: 30
 			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
@@ -295,7 +298,7 @@ SubMissile:
 	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
-		Speed: 162
+		Speed: 215
 		Blockable: false
 		LaunchAngle: 120
 		Inaccuracy: 0c614
@@ -308,11 +311,14 @@ SubMissileAA:
 	Inherits: ^SubMissileDefault
 	ValidTargets: AirborneActor
 	Warhead@1Dam: SpreadDamage
-		Damage: 1500
+		ValidTargets: AirborneActor
+		Damage: 450
+		Versus:
+			Light: 100
 
 SCUD:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 240
+	ReloadDelay: 215
 	Range: 10c0
 	MinRange: 4c0
 	Report: missile1.aud

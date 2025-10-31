@@ -7,6 +7,7 @@ Player:
 
 World:
 	-CrateSpawner:
+	-AutoSave:
 	-SpawnStartingUnits:
 	-MapStartingLocations:
 	ActorSpawnManager:
@@ -17,7 +18,12 @@ World:
 		AllowMuteBackgroundMusic: true
 		DisableWorldSounds: true
 	LuaScript:
-		Scripts: d2k-shellmap.lua
+		Scripts: utils.lua, d2k-shellmap.lua
+	CameraOvalMover:
+		OvalRadius: 19200, 28800, 0
+
+^Palettes:
+	-MenuPostProcessEffect:
 
 ^ExistsInWorld:
 	-GivesExperience:
@@ -25,6 +31,10 @@ World:
 ^Building:
 	DamageMultiplier@UNKILLABLE:
 		Modifier: 0
+
+^Vehicle:
+	WithDecoration@CARRYALL:
+		RequiresSelection: true
 
 wall:
 	DamageMultiplier@UNKILLABLE:

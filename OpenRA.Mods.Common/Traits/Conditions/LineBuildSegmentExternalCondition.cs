@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,15 +22,15 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to apply. Must be included in the target actor's ExternalConditions list.")]
 		public readonly string Condition = null;
 
-		public override object Create(ActorInitializer init) { return new LineBuildSegmentExternalCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new LineBuildSegmentExternalCondition(this); }
 	}
 
 	public class LineBuildSegmentExternalCondition : ConditionalTrait<LineBuildSegmentExternalConditionInfo>, INotifyLineBuildSegmentsChanged
 	{
-		readonly HashSet<Actor> segments = new HashSet<Actor>();
-		readonly Dictionary<Actor, int> tokens = new Dictionary<Actor, int>();
+		readonly HashSet<Actor> segments = [];
+		readonly Dictionary<Actor, int> tokens = [];
 
-		public LineBuildSegmentExternalCondition(Actor self, LineBuildSegmentExternalConditionInfo info)
+		public LineBuildSegmentExternalCondition(LineBuildSegmentExternalConditionInfo info)
 			: base(info) { }
 
 		void GrantCondition(Actor self, Actor segment)
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var external = segment.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(segment, self));
+				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(segment));
 
 			if (external != null)
 				tokens[segment] = external.GrantCondition(segment, self);

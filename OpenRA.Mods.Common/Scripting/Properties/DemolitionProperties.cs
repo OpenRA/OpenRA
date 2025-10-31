@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,7 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Activities;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -19,12 +19,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Combat")]
 	public class DemolitionProperties : ScriptActorProperties, Requires<IMoveInfo>, Requires<DemolitionInfo>
 	{
-		readonly DemolitionInfo info;
+		readonly Demolition[] demolitions;
 
 		public DemolitionProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			info = Self.Info.TraitInfo<DemolitionInfo>();
+			demolitions = Self.TraitsImplementing<Demolition>().ToArray();
 		}
 
 		[ScriptActorPropertyActivity]
@@ -32,8 +32,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public void Demolish(Actor target)
 		{
 			// NB: Scripted actions get no visible targetlines.
-			Self.QueueActivity(new Demolish(Self, Target.FromActor(target), info.EnterBehaviour, info.DetonationDelay,
-				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes, null));
+			var demolition = demolitions.FirstEnabledConditionalTraitOrDefault();
+			if (demolition != null)
+				Self.QueueActivity(demolition.GetDemolishActivity(Self, Target.FromActor(target), null));
 		}
 	}
 }

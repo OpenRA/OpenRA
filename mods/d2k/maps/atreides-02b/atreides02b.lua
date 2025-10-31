@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -65,31 +65,31 @@ HarkonnenAttackWaves =
 }
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		harkonnen.MarkCompletedObjective(KillAtreides)
+	if Atreides.HasNoRequiredUnits() then
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
-		player.MarkCompletedObjective(KillHarkonnen)
+	if Harkonnen.HasNoRequiredUnits() and not Atreides.IsObjectiveCompleted(KillHarkonnen) then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("harkonnen-annihilated"), Mentat)
+		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 end
 
 WorldLoaded = function()
-	harkonnen = Player.GetPlayer("Harkonnen")
-	player = Player.GetPlayer("Atreides")
+	Harkonnen = Player.GetPlayer("Harkonnen")
+	Atreides = Player.GetPlayer("Atreides")
 
-	InitObjectives(player)
-	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
-	KillHarkonnen = player.AddPrimaryObjective("Destroy all Harkonnen forces.")
+	InitObjectives(Atreides)
+	KillAtreides = AddPrimaryObjective(Harkonnen, "")
+	KillHarkonnen = AddPrimaryObjective(Atreides, "destroy-harkonnen-forces")
 
 	Camera.Position = AConyard.CenterPosition
 
 	Trigger.OnAllKilled(HarkonnenBase, function()
-		Utils.Do(harkonnen.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Harkonnen.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return Utils.Random(HarkonnenAttackPaths) end
-	SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty])
+	SendCarryallReinforcements(Harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty])
 	Trigger.AfterDelay(0, ActivateAI)
 end

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -40,14 +39,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteControlGroupDecoration : IDecoration
 	{
 		public readonly WithSpriteControlGroupDecorationInfo Info;
-		readonly Actor self;
 		readonly Animation anim;
 
 		public WithSpriteControlGroupDecoration(Actor self, WithSpriteControlGroupDecorationInfo info)
 		{
 			Info = info;
-			this.self = self;
-
 			anim = new Animation(self.World, Info.Image);
 		}
 
@@ -55,18 +51,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
-			var group = self.World.Selection.GetControlGroupForActor(self);
+			var group = self.World.ControlGroups.GetControlGroupForActor(self);
 			if (group == null)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			anim.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
 			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) - (0.5f * anim.Image.Size.XY).ToInt2();
 			var palette = wr.Palette(Info.Palette);
-			return new IRenderable[]
-			{
+			return
+			[
 				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette)
-			};
+			];
 		}
 	}
 }

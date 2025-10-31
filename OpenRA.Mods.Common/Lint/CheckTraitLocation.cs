@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Linq;
-using DiscordRPC.Helper;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -24,17 +23,17 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var traitLocation = traitInfo.GetType().GetCustomAttributes<TraitLocationAttribute>(true).FirstOrDefault();
+					var traitLocation = Utility.GetCustomAttributes<TraitLocationAttribute>(traitInfo.GetType(), true).FirstOrDefault();
 					if (traitLocation == null)
 						continue;
 
 					if (!Enum.TryParse(actorInfo.Key, true, out SystemActors systemActor) || !traitLocation.SystemActors.HasFlag(systemActor))
 					{
-						// Remove the "Info" suffix
+						// Remove the "Info" suffix.
 						var traitName = traitInfo.GetType().Name;
-						traitName = traitName.Remove(traitName.Length - 4);
+						traitName = traitName[..^4];
 						var locations = traitLocation.SystemActors.ToString().Replace(", ", " or ");
-						emitError($"{traitName} does not belong on {actorInfo.Key}. It is a system trait meant for {locations}.");
+						emitError($"`{traitName}` does not belong on `{actorInfo.Key}`. It is a system trait meant for {locations}.");
 					}
 				}
 			}

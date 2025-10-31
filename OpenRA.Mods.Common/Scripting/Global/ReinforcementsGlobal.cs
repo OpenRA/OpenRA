@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,12 +25,9 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Reinforcements")]
 	public class ReinforcementsGlobal : ScriptGlobal
 	{
-		readonly DomainIndex domainIndex;
-
 		public ReinforcementsGlobal(ScriptContext context)
 			: base(context)
 		{
-			domainIndex = context.World.WorldActor.Trait<DomainIndex>();
 		}
 
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
@@ -38,9 +35,10 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out var ai))
 				throw new LuaException($"Unknown actor type '{actorType}'");
 
-			var initDict = new TypeDictionary();
-
-			initDict.Add(new OwnerInit(owner));
+			var initDict = new TypeDictionary
+			{
+				new OwnerInit(owner)
+			};
 
 			if (entryLocation.HasValue)
 			{
@@ -57,10 +55,15 @@ namespace OpenRA.Mods.Common.Scripting
 				initDict.Add(new FacingInit(facing));
 			}
 
-			return Context.World.CreateActor(addToWorld, actorType, initDict);
+			// The actor must be added to the world at the end of the tick.
+			var a = Context.World.CreateActor(false, actorType, initDict);
+			if (addToWorld)
+				Context.World.AddFrameEndTask(w => w.Add(a));
+
+			return a;
 		}
 
-		void Move(Actor actor, CPos dest)
+		static void Move(Actor actor, CPos dest)
 		{
 			var move = actor.TraitOrDefault<IMove>();
 			if (move == null)
@@ -73,15 +76,16 @@ namespace OpenRA.Mods.Common.Scripting
 			"The first member of the entryPath array will be the units' spawnpoint, " +
 			"while the last one will be their destination. If actionFunc is given, " +
 			"it will be executed once a unit has reached its destination. actionFunc " +
-			"will be called as actionFunc(Actor actor). " +
+			"will be called as actionFunc(a: actor). " +
 			"Returns a table containing the deployed units.")]
-		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25, LuaFunction actionFunc = null)
+		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25,
+			[ScriptEmmyTypeOverride("fun(a: actor)")] LuaFunction actionFunc = null)
 		{
 			var actors = new List<Actor>();
 			for (var i = 0; i < actorTypes.Length; i++)
 			{
 				var af = actionFunc != null ? (LuaFunction)actionFunc.CopyReference() : null;
-				var actor = CreateActor(owner, actorTypes[i], false, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
+				var actor = CreateActor(owner, actorTypes[i], false, entryPath[0], entryPath.Length > 1 ? entryPath[1] : null);
 				actors.Add(actor);
 
 				var actionDelay = i * interval;
@@ -112,15 +116,20 @@ namespace OpenRA.Mods.Common.Scripting
 			"has reached the destination, it will unload its cargo unless a custom actionFunc has " +
 			"been supplied. Afterwards, the transport will follow the exitPath and leave the map, " +
 			"unless a custom exitFunc has been supplied. actionFunc will be called as " +
-			"actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport). " +
+			"actionFunc(transport: actor, cargo: actor[]). exitFunc will be called as exitFunc(transport: actor). " +
 			"dropRange determines how many cells away the transport will try to land " +
 			"if the actual destination is blocked (if the transport is an aircraft). " +
 			"Returns a table in which the first value is the transport, " +
 			"and the second a table containing the deployed units.")]
-		public LuaTable ReinforceWithTransport(Player owner, string actorType, string[] cargoTypes, CPos[] entryPath, CPos[] exitPath = null,
-			LuaFunction actionFunc = null, LuaFunction exitFunc = null, int dropRange = 3)
+		[return: ScriptEmmyTypeOverride("{ [1]: actor, [2]: actor[] }")]
+		public LuaTable ReinforceWithTransport(Player owner, string actorType,
+			[ScriptEmmyTypeOverride("string[]|nil")] string[] cargoTypes,
+			CPos[] entryPath, CPos[] exitPath = null,
+			[ScriptEmmyTypeOverride("fun(transport: actor, cargo: actor[])")] LuaFunction actionFunc = null,
+			[ScriptEmmyTypeOverride("fun(transport: actor)")] LuaFunction exitFunc = null,
+			int dropRange = 3)
 		{
-			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
+			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : null);
 			var cargo = transport.TraitOrDefault<Cargo>();
 
 			var passengers = new List<Actor>();
@@ -154,7 +163,7 @@ namespace OpenRA.Mods.Common.Scripting
 				// Scripted cargo aircraft must turn to default position before unloading.
 				// TODO: pass facing through UnloadCargo instead.
 				if (aircraft != null)
-					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath.Last()), WDist.FromCells(dropRange), aircraft.Info.InitialFacing));
+					transport.QueueActivity(new Land(transport, Target.FromCell(transport.World, entryPath[^1]), WDist.FromCells(dropRange)));
 
 				if (cargo != null)
 					transport.QueueActivity(new UnloadCargo(transport, WDist.FromCells(dropRange)));

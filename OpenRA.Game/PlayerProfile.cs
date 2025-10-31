@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -31,7 +30,7 @@ namespace OpenRA
 		{
 			var badges = new List<PlayerBadge>();
 
-			var badgesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Badges");
+			var badgesNode = yaml.NodeWithKeyOrDefault("Badges");
 			if (badgesNode != null)
 			{
 				var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
@@ -55,19 +54,5 @@ namespace OpenRA
 		}
 	}
 
-	public class PlayerBadge
-	{
-		public readonly string Label;
-		public readonly string Icon;
-		public readonly string Icon2x;
-		public readonly string Icon3x;
-
-		public PlayerBadge(string label, string icon, string icon2x, string icon3x)
-		{
-			Label = label;
-			Icon = icon;
-			Icon2x = icon2x;
-			Icon3x = icon3x;
-		}
-	}
+	public record PlayerBadge(string Label, string Icon, string Icon2x, string Icon3x);
 }

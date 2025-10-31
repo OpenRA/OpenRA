@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("When killed, this actor causes the attacking player to receive money.")]
-	class GivesBountyInfo : ConditionalTraitInfo
+	sealed class GivesBountyInfo : ConditionalTraitInfo
 	{
 		[Desc("Percentage of the killed actor's Cost or CustomSellValue to be given.")]
 		public readonly int Percentage = 10;
@@ -31,14 +31,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("DeathTypes for which a bounty should be granted.",
 			"Use an empty list (the default) to allow all DeathTypes.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		public override object Create(ActorInitializer init) { return new GivesBounty(this); }
 	}
 
-	class GivesBounty : ConditionalTrait<GivesBountyInfo>, INotifyKilled, INotifyPassengerEntered, INotifyPassengerExited
+	sealed class GivesBounty : ConditionalTrait<GivesBountyInfo>, INotifyKilled, INotifyPassengerEntered, INotifyPassengerExited
 	{
-		Dictionary<Actor, GivesBounty[]> passengerBounties = new Dictionary<Actor, GivesBounty[]>();
+		readonly Dictionary<Actor, GivesBounty[]> passengerBounties = [];
 
 		public GivesBounty(GivesBountyInfo info)
 			: base(info) { }
@@ -72,7 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var displayedBounty = GetDisplayedBountyValue(self);
 			if (Info.ShowBounty && self.IsInWorld && displayedBounty != 0 && e.Attacker.Owner.IsAlliedWith(self.World.RenderPlayer))
-				e.Attacker.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color, FloatingText.FormatCashTick(displayedBounty), 30)));
+				e.Attacker.World.AddFrameEndTask(
+					w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.OwnerColor(), FloatingText.FormatCashTick(displayedBounty), 30)));
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().ChangeCash(GetBountyValue(self));
 		}

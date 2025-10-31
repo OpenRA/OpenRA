@@ -1,9 +1,9 @@
 ^BaseWorld:
 	Inherits: ^Palettes
-	AlwaysVisible:
 	ActorMap:
 	ScreenMap:
 	Selection:
+	ControlGroups:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: map
@@ -87,83 +87,83 @@
 		TerrainSpeeds:
 			Water: 100
 			Beach: 70
-	Locomotor@IMMOBILE:
-		Name: immobile
-		TerrainSpeeds:
 	TerrainRenderer:
+	ChronoVortexRenderer:
 	ShroudRenderer:
 		FogVariants: shroud
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
-	Faction@0:
-		Name: Allies
+	Faction@allies:
+		Name: faction-allies.name
 		InternalName: allies
 		Side: Allies
 		Selectable: False
-	Faction@1:
-		Name: England
+	Faction@england:
+		Name: faction-england.name
 		InternalName: england
 		Side: Allies
-		Description: England: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
-	Faction@2:
-		Name: France
+		Description: faction-england.description
+	Faction@france:
+		Name: faction-france.name
 		InternalName: france
 		Side: Allies
-		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Phase Transport
-	Faction@3:
-		Name: Germany
+		Description: faction-france.description
+	Faction@germany:
+		Name: faction-germany.name
 		InternalName: germany
 		Side: Allies
-		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
-	Faction@4:
-		Name: Soviet
+		Description: faction-germany.description
+	Faction@soviet:
+		Name: faction-soviet.name
 		InternalName: soviet
 		Side: Soviet
 		Selectable: False
-	Faction@5:
-		Name: Russia
+	Faction@russia:
+		Name: faction-russia.name
 		InternalName: russia
 		Side: Soviet
-		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
-	Faction@6:
-		Name: Ukraine
+		Description: faction-russia.description
+	Faction@ukraine:
+		Name: faction-ukraine.name
 		InternalName: ukraine
 		Side: Soviet
-		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
+		Description: faction-ukraine.description
 	Faction@random:
-		Name: Any
+		Name: faction-random.name
 		InternalName: Random
 		RandomFactionMembers: RandomAllies, RandomSoviet
 		Side: Random
-		Description: Random Country\nA random country will be chosen when the game starts.
+		Description: faction-random.description
 	Faction@randomallies:
-		Name: Allies
+		Name: faction-randomallies.name
 		InternalName: RandomAllies
 		RandomFactionMembers: england, france, germany
 		Side: Random
-		Description: Random Allied Country\nA random Allied country will be chosen when the game starts.
+		Description: faction-randomallies.description
 	Faction@randomsoviet:
-		Name: Soviet
+		Name: faction-randomsoviet.name
 		InternalName: RandomSoviet
 		RandomFactionMembers: russia, ukraine
 		Side: Random
-		Description: Random Soviet Country\nA random Soviet country will be chosen when the game starts.
+		Description: faction-randomsoviet.description
 	ResourceRenderer:
 		ResourceTypes:
 			Ore:
 				Sequences: gold01, gold02, gold03, gold04
 				Palette: player
-				Name: Valuable Minerals
+				Name: resource-minerals
 			Gems:
 				Sequences: gem01, gem02, gem03, gem04
 				Palette: player
-				Name: Valuable Minerals
+				Name: resource-minerals
 
 World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
 	DebugVisualizationCommands:
+	PathFinderOverlay:
+	HierarchicalPathFinderOverlay:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:
@@ -182,19 +182,20 @@ World:
 		WaterChance: 20
 		InitialSpawnDelay: 1500
 		CheckboxDisplayOrder: 1
-	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches
 		SmokeChance: 50
-		SmokeImage: smoke_m
-		SmokeSequences: idle
+		SmokeImage: scorch_flames
+		SmokeSequences: large_flame, medium_flame, small_flame
+		MaxSmokeOffsetDistance: 341
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
 		SmokeChance: 25
 		SmokeImage: smoke_m
 		SmokeSequences: idle
+		MaxSmokeOffsetDistance: 213
 	ResourceLayer:
 		RecalculateResourceDensity: true
 		ResourceTypes:
@@ -209,6 +210,11 @@ World:
 				AllowedTerrainTypes: Clear, Road
 				MaxDensity: 3
 	ResourceClaimLayer:
+	WithResourceAnimation@GEMS:
+		Types: Gems
+		Image: twinkle
+		Sequences: twinkle1, twinkle2, twinkle3
+		Palette: effect
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
@@ -217,16 +223,16 @@ World:
 	MapOptions:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
-		GameSpeedDropdownDisplayOrder: 3
+		GameSpeedDropdownDisplayOrder: 1
 	CreateMapPlayers:
 	StartingUnits@mcvonly:
 		Class: none
-		ClassName: MCV Only
+		ClassName: options-starting-units.mcv-only
 		Factions: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
 	StartingUnits@lightallies:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
@@ -234,7 +240,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@lightsoviet:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
@@ -242,7 +248,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavyallies:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
@@ -250,7 +256,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavysoviet:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
@@ -259,7 +265,6 @@ World:
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	SpawnStartingUnits:
-		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
@@ -269,7 +274,10 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
+	CellTriggerOverlay:
+	AutoSave:
 	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
 		TimeLimitWarnings:
 			40: FourtyMinutesRemaining
 			30: ThirtyMinutesRemaining
@@ -282,8 +290,7 @@ World:
 			1: WarningOneMinuteRemaining
 	ColorPickerManager:
 		PreviewActor: fact.colorpicker
-		PresetHues: 0, 0.125, 0.22, 0.375, 0.5, 0.56, 0.8, 0.88, 0, 0.15, 0.235, 0.4, 0.47, 0.55, 0.75, 0.85
-		PresetSaturations: 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.4, 0.5, 0.4, 0.5, 0.4, 0.5, 0.4, 0.5
+		PresetColors: 391D1D, 98331F, F57606, F50606, DDB8FF, ACF218, 06F739, F2BC18, 200738, 280DF6, 79F2AA, 34BA93, F861A4, C718F2, 79CEF2, 2F86F2
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
@@ -306,8 +313,13 @@ EditorWorld:
 				TerrainType: Gems
 				AllowedTerrainTypes: Clear, Road
 				MaxDensity: 3
-	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Clear, Road
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: Clear
+		DefaultInner: Beach
+		DefaultEnd: Clear
+	Inherits@MapGenerators: ^MapGenerators

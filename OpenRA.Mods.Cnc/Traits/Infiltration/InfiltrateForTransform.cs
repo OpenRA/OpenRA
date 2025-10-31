@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Transform into a different actor type.")]
-	class InfiltrateForTransformInfo : TraitInfo
+	sealed class InfiltrateForTransformInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -28,13 +28,16 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool SkipMakeAnims = true;
 
+		[Desc("Experience to grant to the infiltrating player.")]
+		public readonly int PlayerExperience = 0;
+
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
-		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> Types = default;
 
 		public override object Create(ActorInitializer init) { return new InfiltrateForTransform(init, this); }
 	}
 
-	class InfiltrateForTransform : INotifyInfiltrated
+	sealed class InfiltrateForTransform : INotifyInfiltrated
 	{
 		readonly InfiltrateForTransformInfo info;
 		readonly string faction;
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.Types.Overlaps(types))
 				return;
 
-			var transform = new Transform(self, info.IntoActor)
+			var transform = new Transform(info.IntoActor)
 			{
 				ForceHealthPercentage = info.ForceHealthPercentage,
 				Faction = faction,
@@ -60,6 +63,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			var facing = self.TraitOrDefault<IFacing>();
 			if (facing != null)
 				transform.Facing = facing.Facing;
+
+			infiltrator.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(info.PlayerExperience);
 
 			self.QueueActivity(false, transform);
 		}

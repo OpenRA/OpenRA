@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,11 +18,14 @@ namespace OpenRA.Mods.Common.Traits
 	public class RejectsOrdersInfo : ConditionalTraitInfo
 	{
 		[Desc("Explicit list of rejected orders. Leave empty to reject all minus those listed under Except.")]
-		public readonly HashSet<string> Reject = new HashSet<string>();
+		public readonly HashSet<string> Reject = [];
 
 		[Desc("List of orders that should *not* be rejected.",
 			"Also overrides other instances of this trait's Reject fields.")]
-		public readonly HashSet<string> Except = new HashSet<string>();
+		public readonly HashSet<string> Except = [];
+
+		[Desc("Remove current and all queued orders from the actor when this trait is enabled.")]
+		public readonly bool RemoveOrders = false;
 
 		public override object Create(ActorInitializer init) { return new RejectsOrders(this); }
 	}
@@ -34,20 +37,35 @@ namespace OpenRA.Mods.Common.Traits
 
 		public RejectsOrders(RejectsOrdersInfo info)
 			: base(info) { }
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (Info.RemoveOrders)
+				self.CancelActivity();
+		}
 	}
 
 	public static class RejectsOrdersExts
 	{
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
-			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToArray();
-			if (!rejectsOrdersTraits.Any())
+			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(t => !t.IsTraitDisabled).ToArray();
+			if (rejectsOrdersTraits.Length == 0)
 				return true;
 
-			var reject = rejectsOrdersTraits.SelectMany(t => t.Reject);
-			var except = rejectsOrdersTraits.SelectMany(t => t.Except);
+			foreach (var rejectsOrdersTrait in rejectsOrdersTraits)
+				if (rejectsOrdersTrait.Except.Contains(orderString))
+					return true;
 
-			return except.Contains(orderString) || (reject.Any() && !reject.Contains(orderString));
+			var anyRejects = false;
+			foreach (var rejectsOrdersTrait in rejectsOrdersTraits)
+			{
+				anyRejects = anyRejects || rejectsOrdersTrait.Reject.Count > 0;
+				if (rejectsOrdersTrait.Reject.Contains(orderString))
+					return false;
+			}
+
+			return anyRejects;
 		}
 	}
 }

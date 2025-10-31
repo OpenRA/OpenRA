@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithDockedOverlay(init.Self, this); }
 	}
 
-	public class WithDockedOverlay : PausableConditionalTrait<WithDockedOverlayInfo>, INotifyDocking
+	public class WithDockedOverlay : PausableConditionalTrait<WithDockedOverlayInfo>, INotifyDockHost
 	{
 		readonly AnimationWithOffset anim;
 		bool docked;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.Play(info.Sequence);
 
 			anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => IsTraitDisabled || !docked);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				anim.Animation.PlayThen(Info.Sequence, PlayDockingOverlay);
 		}
 
-		void INotifyDocking.Docked(Actor self, Actor harvester) { docked = true; PlayDockingOverlay(); }
-		void INotifyDocking.Undocked(Actor self, Actor harvester) { docked = false; }
+		void INotifyDockHost.Docked(Actor self, Actor client) { docked = true; PlayDockingOverlay(); }
+		void INotifyDockHost.Undocked(Actor self, Actor client) { docked = false; }
 	}
 }

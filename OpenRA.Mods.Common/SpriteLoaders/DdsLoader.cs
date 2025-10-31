@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -45,13 +45,13 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 	public class DdsSprite
 	{
-		class DdsFrame : ISpriteFrame
+		sealed class DdsFrame : ISpriteFrame
 		{
-			public SpriteFrameType Type { get; private set; }
-			public Size Size { get; private set; }
+			public SpriteFrameType Type { get; }
+			public Size Size { get; }
 			public Size FrameSize => Size;
 			public float2 Offset => float2.Zero;
-			public byte[] Data { get; private set; }
+			public byte[] Data { get; }
 			public bool DisableExportPadding => false;
 
 			public DdsFrame(Stream stream)
@@ -71,11 +71,11 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
+		public IReadOnlyList<ISpriteFrame> Frames { get; }
 
 		public DdsSprite(Stream stream)
 		{
-			Frames = new ISpriteFrame[] { new DdsFrame(stream) };
+			Frames = [new DdsFrame(stream)];
 		}
 	}
 }

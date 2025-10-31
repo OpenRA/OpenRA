@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,10 +21,18 @@ namespace OpenRA
 
 		public ActorInfoDictionary(IReadOnlyDictionary<string, ActorInfo> dict)
 		{
-			if (dict == null)
-				throw new ArgumentNullException(nameof(dict));
+			ArgumentNullException.ThrowIfNull(dict);
 
 			this.dict = new Dictionary<string, ActorInfo>(dict);
+
+			// Include an empty entry for each system actor to guarantee that
+			// they will be defined even if not specified in the mod yaml
+			foreach (var systemActor in Enum.GetValues<SystemActors>())
+			{
+				var key = systemActor.ToString().ToLowerInvariant();
+				if (!dict.ContainsKey(key))
+					this.dict[key] = new ActorInfo(key);
+			}
 		}
 
 		public bool ContainsKey(string key) => dict.ContainsKey(key);

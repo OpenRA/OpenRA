@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -19,6 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ProductionTooltipLogic : ChromeLogic
 	{
+		[FluentReference("prerequisites")]
+		const string Requires = "label-requires";
+
 		[ObjectCreator.UseCtor]
 		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Player player, Func<ProductionIcon> getTooltipIcon)
 		{
@@ -45,10 +49,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
 			var formatBuildTime = new CachedTransform<int, string>(time => WidgetUtils.FormatTime(time, world.Timestep));
-			var requiresFormat = requiresLabel.Text;
 
 			ActorInfo lastActor = null;
-			Hotkey lastHotkey = Hotkey.Invalid;
+			var lastHotkey = Hotkey.Invalid;
 			var lastPowerState = pm?.PowerState ?? PowerState.Normal;
 			var descLabelY = descLabel.Bounds.Y;
 			var descLabelPadding = descLabel.Bounds.Height;
@@ -66,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
-				var name = tooltip?.Name ?? actor.Name;
+				var name = tooltip != null ? FluentProvider.GetMessage(tooltip.Name) : actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
 
 				var cost = 0;
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						cost = valued.Cost;
 				}
 
-				nameLabel.Text = name;
+				nameLabel.GetText = () => name;
 
 				var nameSize = font.Measure(name);
 				var hotkeyWidth = 0;
@@ -90,18 +93,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var hotkeyText = $"({hotkey.DisplayString()})";
 
 					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
-					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.GetText = () => hotkeyText;
 					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
 				}
 
-				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
-					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
+				var prereqs = buildable.Prerequisites
+					.Select(a => ActorName(mapRules, a))
+					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'))
+					.ToList();
 
 				var requiresSize = int2.Zero;
-				if (prereqs.Any())
+				if (prereqs.Count > 0)
 				{
-					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
-					requiresSize = requiresFont.Measure(requiresLabel.Text);
+					var requiresText = FluentProvider.GetMessage(Requires, "prerequisites", prereqs.JoinWith(", "));
+					requiresLabel.GetText = () => requiresText;
+					requiresSize = requiresFont.Measure(requiresText);
 					requiresLabel.Visible = true;
 					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
 				}
@@ -115,27 +121,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (pm != null)
 				{
 					var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);
-					powerLabel.Text = power.ToString();
-					powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
+					var powerText = power.ToString(NumberFormatInfo.CurrentInfo);
+					powerLabel.GetText = () => powerText;
+					powerLabel.GetColor = () => (pm.PowerProvided - pm.PowerDrained >= -power || power > 0)
 						? Color.White : Color.Red;
 					powerLabel.Visible = power != 0;
 					powerIcon.Visible = power != 0;
-					powerSize = font.Measure(powerLabel.Text);
+					powerSize = font.Measure(powerText);
 				}
 
 				var buildTime = tooltipIcon.ProductionQueue?.GetBuildTime(actor, buildable) ?? 0;
 				var timeModifier = pm != null && pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerModifier : 100;
 
-				timeLabel.Text = formatBuildTime.Update((buildTime * timeModifier) / 100);
-				timeLabel.TextColor = (pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerModifier > 100) ? Color.Red : Color.White;
-				var timeSize = font.Measure(timeLabel.Text);
+				var timeText = formatBuildTime.Update(buildTime * timeModifier / 100);
+				timeLabel.GetText = () => timeText;
+				timeLabel.TextColor =
+					(pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerModifier > 100)
+						? Color.Red
+						: Color.White;
+				var timeSize = font.Measure(timeText);
 
-				costLabel.Text = cost.ToString();
-				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost ? Color.White : Color.Red;
-				var costSize = font.Measure(costLabel.Text);
+				var costText = cost.ToString(NumberFormatInfo.CurrentInfo);
+				costLabel.GetText = () => costText;
+				costLabel.GetColor = () => pr.GetCashAndResources() >= cost ? Color.White : Color.Red;
+				var costSize = font.Measure(costText);
 
-				descLabel.Text = buildable.Description.Replace("\\n", "\n");
-				var descSize = descFont.Measure(descLabel.Text);
+				var desc = string.IsNullOrEmpty(buildable.Description) ? "" : FluentProvider.GetMessage(buildable.Description);
+				descLabel.GetText = () => desc;
+				var descSize = descFont.Measure(desc);
 				descLabel.Bounds.Width = descSize.X;
 				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
 
@@ -167,7 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				if (actorTooltip != null)
-					return actorTooltip.Name;
+					return FluentProvider.GetMessage(actorTooltip.Name);
 			}
 
 			return a;

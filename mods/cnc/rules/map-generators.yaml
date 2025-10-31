@@ -1,0 +1,440 @@
+^MapGenerators:
+	ExperimentalMapGenerator@experimental:
+		Type: experimental
+		Name: map-generator-experimental
+		Tilesets: DESERT, SNOW, TEMPERAT, WINTER
+		Settings:
+			MultiChoiceOption@hidden_defaults:
+				Choice@hidden_defaults:
+					Settings:
+						TerrainFeatureSize: 20480
+						ForestFeatureSize: 20480
+						ResourceFeatureSize: 20480
+						CivilianBuildingsFeatureSize: 10240
+						Water: 0
+						Mountains: 100
+						Forests: 25
+						ForestCutout: 2
+						MaximumCutoutSpacing: 12
+						TerrainSmoothing: 4
+						SmoothingThreshold: 833
+						MinimumLandSeaThickness: 5
+						MinimumMountainThickness: 5
+						MaximumAltitude: 8
+						RoughnessRadius: 5
+						Roughness: 500
+						MinimumTerrainContourSpacing: 5
+						MinimumCliffLength: 10
+						ForestClumpiness: 1
+						DenyWalledAreas: True
+						EnforceSymmetry: 0
+						Roads: True
+						RoadSpacing: 5
+						RoadShrink: 0
+						CreateEntities: True
+						CentralSpawnReservationFraction: 250
+						ResourceSpawnReservation: 8
+						SpawnRegionSize: 12
+						SpawnBuildSize: 8
+						MinimumSpawnRadius: 5
+						SpawnResourceSpawns: 3
+						SpawnReservation: 16
+						SpawnResourceBias: 1050
+						ResourcesPerPlayer: 50000
+						OreUniformity: 500
+						OreClumpiness: 1
+						MaximumExpansionResourceSpawns: 5
+						MaximumResourceSpawnsPerExpansion: 2
+						MinimumExpansionSize: 2
+						MaximumExpansionSize: 12
+						ExpansionInner: 2
+						ExpansionBorder: 1
+						CivilianBuildings: 125
+						CivilianBuildingDensity: 500
+						MinimumCivilianBuildingDensity: 90
+						CivilianBuildingDensityRadius: 3
+						DefaultResource: Tiberium
+						ResourceSpawnSeeds:
+							split2: Tiberium
+							split3: Tiberium
+							splitblue: BlueTiberium
+						ClearTerrain: Clear
+						PlayableTerrain: Beach,BlueTiberium,Bridge,Clear,Road,Rough,Tiberium,Wall
+						DominantTerrain: River,Rock,Tree,Water
+						ZoneableTerrain: Clear,Road
+						ClearSegmentTypes: Clear
+						BeachSegmentTypes: Beach
+						CliffSegmentTypes: Cliff
+						RoadSegmentTypes: Road
+						ForestObstacles: Trees
+						UnplayableObstacles: Obstructions
+						CivilianBuildingsObstacles: CivilianBuildings
+						Mirror: None
+						Rotations: 1
+			MultiChoiceOption@hidden_tileset_overrides:
+				Choice@common:
+					Tileset: DESERT,SNOW,TEMPERAT
+					Settings:
+						LandTile: 255
+						WaterTile: 1
+						RepaintTiles:
+							1: Water
+				Choice@winter:
+					Tileset: WINTER
+					Settings:
+						LandTile: 255
+						WaterTile: 1
+						RepaintTiles:
+							255: Snow
+							1: Water
+			IntegerOption@Seed:
+				Label: label-cnc-map-generator-option-seed
+				Parameter: Seed
+				Default: 0
+			MultiChoiceOption@TerrainType:
+				Label: label-cnc-map-generator-option-terrain-type
+				Priority: 2
+				Default: Gardens,Rocky
+				Choice@Lakes:
+					Label: label-cnc-map-generator-choice-terrain-type-lakes
+					Settings:
+						Water: 200
+				Choice@Puddles:
+					Label: label-cnc-map-generator-choice-terrain-type-puddles
+					Settings:
+						Water: 100
+				Choice@Gardens:
+					Label: label-cnc-map-generator-choice-terrain-type-gardens
+					Settings:
+						Water: 50
+						Forests: 300
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						RoadSpacing: 3
+						RoadShrink: 4
+				Choice@Plains:
+					Label: label-cnc-map-generator-choice-terrain-type-plains
+					Settings:
+						Water: 0
+						CivilianBuildings: 100
+				Choice@Parks:
+					Label: label-cnc-map-generator-choice-terrain-type-parks
+					Settings:
+						Water: 0
+						Forests: 100
+						CivilianBuildings: 100
+				Choice@Woodlands:
+					Label: label-cnc-map-generator-choice-terrain-type-woodlands
+					Settings:
+						Water: 0
+						Forests: 400
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						RoadSpacing: 3
+						RoadShrink: 4
+				Choice@Overgrown:
+					Label: label-cnc-map-generator-choice-terrain-type-overgrown
+					Settings:
+						Water: 0
+						Forests: 500
+						EnforceSymmetry: 2
+						Mountains: 500
+						Roughness: 250
+				Choice@Rocky:
+					Label: label-cnc-map-generator-choice-terrain-type-rocky
+					Settings:
+						Water: 0
+						Forests: 300
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						Mountains: 500
+						Roughness: 250
+						RoadSpacing: 3
+						RoadShrink: 4
+				Choice@Mountains:
+					Label: label-cnc-map-generator-choice-terrain-type-mountains
+					Settings:
+						Water: 0
+						Mountains: 900
+						Roughness: 600
+				Choice@MountainLakes:
+					Label: label-cnc-map-generator-choice-terrain-type-mountain-lakes
+					Settings:
+						Water: 200
+						Mountains: 900
+						Roughness: 850
+			MultiChoiceOption@Shape:
+				Label: label-cnc-map-generator-option-shape
+				Default: Square
+				Priority: 1
+				Choice@Square:
+					Label: label-cnc-map-generator-choice-shape-square
+					Settings:
+						ExternalCircularBias: 0
+				Choice@CircleMountain:
+					Label: label-cnc-map-generator-choice-shape-circle-mountain
+					Settings:
+						ExternalCircularBias: 1
+				Choice@CircleWater:
+					Label: label-cnc-map-generator-choice-shape-circle-water
+					Settings:
+						ExternalCircularBias: -1
+			MultiIntegerChoiceOption@Players:
+				Label: label-cnc-map-generator-option-players
+				Parameter: Players
+				Choices: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+				Default: 2
+				Priority: 1
+			MultiChoiceOption@Symmetry:
+				Label: label-cnc-map-generator-option-symmetry
+				Default: 2Rotations
+				Priority: 1
+				Choice@None:
+					Label: label-cnc-map-generator-choice-mirror-none
+					Settings:
+						Mirror: None
+				Choice@LeftMatchesRight:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-horizontal
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: LeftMatchesRight
+				Choice@TopLeftMatchesBottomRight:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-diagonal-tl
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopLeftMatchesBottomRight
+				Choice@TopMatchesBottom:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-vertical
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopMatchesBottom
+				Choice@TopRightMatchesBottomLeft:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-diagonal-tr
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopRightMatchesBottomLeft
+				Choice@2Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-2-rotations
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Rotations: 2
+				Choice@3Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-3-rotations
+					Players: 3, 6, 9, 12, 15
+					Settings:
+						Rotations: 3
+				Choice@4Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-4-rotations
+					Players: 4, 8, 12, 16
+					Settings:
+						Rotations: 4
+				Choice@5Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-5-rotations
+					Players: 5, 10, 15
+					Settings:
+						Rotations: 5
+				Choice@6Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-6-rotations
+					Players: 6, 12
+					Settings:
+						Rotations: 6
+				Choice@7Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-7-rotations
+					Players: 7, 14
+					Settings:
+						Rotations: 7
+				Choice@8Rotations:
+					Label: label-cnc-map-generator-choice-symmetry-mirror-8-rotations
+					Players: 8, 16
+					Settings:
+						Rotations: 8
+			MultiChoiceOption@Resources:
+				Label: label-cnc-map-generator-option-resources
+				Default: Medium
+				Choice@None:
+					Label: label-cnc-map-generator-choice-resources-none
+					Settings:
+						SpawnResourceSpawns: 0
+						ResourcesPerPlayer: 0
+						ResourceSpawnWeights:
+						MaximumExpansionResourceSpawns: 0
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@Low:
+					Label: label-cnc-map-generator-choice-resources-low
+					Settings:
+						SpawnResourceSpawns: 1
+						ResourcesPerPlayer: 18750
+						ResourceSpawnWeights:
+							split2: 1
+							split3: 1
+						MaximumExpansionResourceSpawns: 2
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@Medium:
+					Label: label-cnc-map-generator-choice-resources-medium
+					Settings:
+						SpawnResourceSpawns: 2
+						ResourcesPerPlayer: 37500
+						ResourceSpawnWeights:
+							split2: 95
+							split3: 95
+							splitblue: 10
+						MaximumExpansionResourceSpawns: 3
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@High:
+					Label: label-cnc-map-generator-choice-resources-high
+					Settings:
+						SpawnResourceSpawns: 3
+						ResourcesPerPlayer: 56250
+						ResourceSpawnWeights:
+							split2: 9
+							split3: 9
+							splitblue: 2
+						MaximumExpansionResourceSpawns: 5
+						MaximumResourceSpawnsPerExpansion: 2
+				Choice@VeryHigh:
+					Label: label-cnc-map-generator-choice-resources-very-high
+					Settings:
+						SpawnResourceSpawns: 4
+						ResourcesPerPlayer: 75000
+						ResourceSpawnWeights:
+							split2: 8
+							split3: 8
+							splitblue: 4
+						MaximumExpansionResourceSpawns: 8
+						MaximumResourceSpawnsPerExpansion: 2
+				Choice@Full:
+					Label: label-cnc-map-generator-choice-resources-full
+					Settings:
+						SpawnResourceSpawns: 0
+						ResourcesPerPlayer: 1000000000
+						ResourceSpawnWeights:
+						MaximumExpansionResourceSpawns: 0
+						MaximumResourceSpawnsPerExpansion: 1
+			MultiChoiceOption@Buildings:
+				Label: label-cnc-map-generator-option-buildings
+				Default: Standard
+				Choice@None:
+					Label: label-cnc-map-generator-choice-buildings-none
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 0
+						BuildingWeights:
+				Choice@Standard:
+					Label: label-cnc-map-generator-choice-buildings-standard
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 3
+						BuildingWeights:
+							hosp: 2
+							miss: 1
+							bio: 1
+							v19: 9
+				Choice@OilOnly:
+					Label: label-cnc-map-generator-choice-buildings-oil-only
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 3
+						BuildingWeights:
+							v19: 1
+				Choice@OilRush:
+					Label: label-cnc-map-generator-choice-buildings-oil-rush
+					Settings:
+						MinimumBuildings: 8
+						MaximumBuildings: 10
+						BuildingWeights:
+							v19: 1
+			MultiChoiceOption@Density:
+				Label: label-cnc-map-generator-option-density
+				Default: Players
+				Priority: 1
+				Choice@Players:
+					Label: label-cnc-map-generator-choice-density-players
+					Settings:
+						AreaEntityBonus: 0
+						PlayerCountEntityBonus: 1000000
+				Choice@AreaAndPlayers:
+					Label: label-cnc-map-generator-choice-density-area-and-players
+					Settings:
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 500000
+				Choice@AreaVeryLow:
+					Label: label-cnc-map-generator-choice-density-area-very-low
+					Settings:
+						AreaEntityBonus: 100
+						PlayerCountEntityBonus: 0
+				Choice@AreaLow:
+					Label: label-cnc-map-generator-choice-density-area-low
+					Settings:
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 0
+				Choice@AreaMedium:
+					Label: label-cnc-map-generator-choice-density-area-medium
+					Settings:
+						AreaEntityBonus: 400
+						PlayerCountEntityBonus: 0
+				Choice@AreaHigh:
+					Label: label-cnc-map-generator-choice-density-area-high
+					Settings:
+						AreaEntityBonus: 600
+						PlayerCountEntityBonus: 0
+				Choice@AreaVeryHigh:
+					Label: label-cnc-map-generator-choice-density-area-very-high
+					Settings:
+						AreaEntityBonus: 800
+						PlayerCountEntityBonus: 0
+			MultiChoiceOption@CivilianDensity:
+				Label: label-cnc-map-generator-option-civilian-density
+				Default: Default
+				Priority: 3
+				Choice@Default:
+					Label: label-cnc-map-generator-choice-civilian-density-default
+					Settings:
+				Choice@None:
+					Label: label-cnc-map-generator-choice-civilian-density-none
+					Settings:
+						CivilianBuildings: 0
+				Choice@Low:
+					Label: label-cnc-map-generator-choice-civilian-density-low
+					Settings:
+						CivilianBuildings: 75
+				Choice@Medium:
+					Label: label-cnc-map-generator-choice-civilian-density-medium
+					Settings:
+						CivilianBuildings: 125
+				Choice@High:
+					Label: label-cnc-map-generator-choice-civilian-density-high
+					Settings:
+						CivilianBuildings: 250
+				Choice@VeryHigh:
+					Label: label-cnc-map-generator-choice-civilian-density-very-high
+					Settings:
+						CivilianBuildings: 500
+				Choice@Max:
+					Label: label-cnc-map-generator-choice-civilian-density-max
+					Settings:
+						CivilianBuildings: 1000
+			BooleanOption@DenyWalledArea:
+				Label: label-cnc-map-generator-option-deny-walled-areas
+				Parameter: DenyWalledAreas
+				Default: True
+				Priority: 1
+			BooleanOption@Roads:
+				Label: label-cnc-map-generator-option-roads
+				Parameter: Roads
+				Default: True
+				Priority: 1
+	ClearMapGenerator@clear:
+		Type: clear
+		Name: map-generator-clear
+		Tilesets: DESERT, SNOW, TEMPERAT, WINTER
+		Settings:
+			MultiChoiceOption@Tile:
+				Label: label-clear-map-generator-option-tile
+				Choice@CommonClear:
+					Label: label-clear-map-generator-choice-tile-clear
+					Settings:
+						Tile: 255
+				Choice@CommonWater:
+					Label: label-clear-map-generator-choice-tile-water
+					Settings:
+						Tile: 1

@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, harkonnen06a.lua, harkonnen06a-AI.lua
+		Scripts: campaign.lua, utils.lua, harkonnen06a.lua, harkonnen06a-AI.lua
 	MissionData:
 		Briefing: The weak Ordos are no match for Harkonnen troops. However, smuggled Ixian technologies may upset this balance of power.\n\nThis cannot be allowed to happen. Establish a base on the plain, locate the Ordos Starport and destroy or capture it before the expensive shipments of Ixian weaponry begin to arrive. Time is short - the transports have already entered the system.
 		BriefingVideo: H_BR06_E.VQA
@@ -12,11 +12,12 @@ World:
 		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: easy
 
 ^Palettes:
@@ -28,6 +29,15 @@ World:
 			Smugglers - Enemy to Harkonnen: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 			Smugglers - Enemy to Ordos: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 			Smugglers - Enemy to Both: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Ordos Main Base: 0.060, -0.275, 1, 0.32, 0.34
+			Ordos Small Base: 0.060, -0.275, 1, 0.32, 0.34
+			Smugglers - Neutral: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Harkonnen: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Ordos: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Both: -0.318, 0.047, 1, 0.32, 0.34
 
 carryall.reinforce:
 	Cargo:

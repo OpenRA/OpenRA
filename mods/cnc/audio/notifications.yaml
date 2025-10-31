@@ -43,6 +43,7 @@ Speech:
 		StartGame:
 		GameLoaded:
 		GameSaved:
+		StructureSold:
 		Training: bldging1
 		UnitDestroyed: dead1
 		UnitLost: unitlost
@@ -54,22 +55,30 @@ Sounds:
 	Notifications:
 		Appear: appear1
 		Beacon: bleep2
+			InterruptType: Interrupt
 		Beepy2: beepy2
 		Beepy3: beepy3
 		Beepy6: beepy6
 		CashTickDown: tone16
+			InterruptType: Overlap
 		CashTickUp: tone15
 			VolumeModifier: 0.33
+			InterruptType: Overlap
 		ChatLine: scold1
+			InterruptType: Interrupt
+		LobbyOptionChanged: beepy3
+			InterruptType: Interrupt
+		PlayerLeft: country1
+			InterruptType: Interrupt
 		ClickDisabledSound: scold2
+			InterruptType: Overlap
 		ClickSound: button
+			InterruptType: Overlap
 		Cloak: trans1
 		Clock: clock1
 		Construction: constru2
 		Country1: country1
 		Country4: country4
-		DisablePower: bleep11
-		EnablePower: bleep12
 		HeavyDoor: hvydoor1
 		Keystroke: keystrok
 		LevelUp: text2
@@ -77,11 +86,6 @@ Sounds:
 		RadarDown: powrdn1
 		RadarUp: comcntr1
 		Sell: cashturn
-		SignalFlare: flare1
-		SignalFlareEast: flaree1
-		SignalFlareNorth: flaren1
-		SignalFlareSouth: flares1
-		SignalFlareWest: flarew1
 		Target1: target1
 		Target2: target2
 		Target3: target3

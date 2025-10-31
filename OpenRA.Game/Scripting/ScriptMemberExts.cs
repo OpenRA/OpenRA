@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ namespace OpenRA.Scripting
 {
 	public static class ScriptMemberExts
 	{
-		static readonly Dictionary<string, string> LuaTypeNameReplacements = new Dictionary<string, string>()
+		static readonly Dictionary<string, string> LuaTypeNameReplacements = new()
 		{
 			{ "Void", "void" },
 			{ "Int32", "int" },
@@ -32,7 +32,7 @@ namespace OpenRA.Scripting
 				ret = t.Name;
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
-				ret = $"{t.GetGenericArguments().Select(p => p.Name).First()}?";
+				ret = $"{t.GetGenericArguments()[0].LuaDocString()}?";
 
 			return ret;
 		}

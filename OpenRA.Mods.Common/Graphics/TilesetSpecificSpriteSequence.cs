@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,70 +17,78 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class TilesetSpecificSpriteSequenceLoader : DefaultSpriteSequenceLoader
 	{
-		public readonly string DefaultSpriteExtension = ".shp";
-		public readonly Dictionary<string, string> TilesetExtensions = new Dictionary<string, string>();
-		public readonly Dictionary<string, string> TilesetCodes = new Dictionary<string, string>();
-
 		public TilesetSpecificSpriteSequenceLoader(ModData modData)
-			: base(modData)
+			: base(modData) { }
+
+		public override TilesetSpecificSpriteSequence CreateSequence(
+			ModData modData, string tileSet, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
-			var metadata = modData.Manifest.Get<SpriteSequenceFormat>().Metadata;
-			if (metadata.TryGetValue("DefaultSpriteExtension", out var yaml))
-				DefaultSpriteExtension = yaml.Value;
-
-			if (metadata.TryGetValue("TilesetExtensions", out yaml))
-				TilesetExtensions = yaml.ToDictionary(kv => kv.Value);
-
-			if (metadata.TryGetValue("TilesetCodes", out yaml))
-				TilesetCodes = yaml.ToDictionary(kv => kv.Value);
-		}
-
-		public override ISpriteSequence CreateSequence(ModData modData, string tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)
-		{
-			return new TilesetSpecificSpriteSequence(modData, tileSet, cache, this, sequence, animation, info);
+			return new TilesetSpecificSpriteSequence(cache, this, image, sequence, data, defaults);
 		}
 	}
 
+	[Desc("A sprite sequence that can have tileset-specific variants.")]
 	public class TilesetSpecificSpriteSequence : DefaultSpriteSequence
 	{
-		public TilesetSpecificSpriteSequence(ModData modData, string tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
-			: base(modData, tileSet, cache, loader, sequence, animation, info) { }
+		[Desc("Dictionary of <tileset name>: filename to override the Filename key.")]
+		static readonly SpriteSequenceField<Dictionary<string, string>> TilesetFilenames = new(nameof(TilesetFilenames), null);
 
-		string ResolveTilesetId(string tileSet, Dictionary<string, MiniYaml> d)
+		[Desc("Dictionary of <tileset name>: <filename pattern> to override the FilenamePattern key.")]
+		static readonly SpriteSequenceField<Dictionary<string, string>> TilesetFilenamesPattern = new(nameof(TilesetFilenamesPattern), null);
+
+		public TilesetSpecificSpriteSequence(SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
+			: base(cache, loader, image, sequence, data, defaults) { }
+
+		protected override IEnumerable<ReservationInfo> ParseFilenames(ModData modData, string tileset, int[] frames, MiniYaml data, MiniYaml defaults)
 		{
-			if (d.TryGetValue("TilesetOverrides", out var yaml))
+			var tilesetFilenamesPatternNode = data.NodeWithKeyOrDefault(TilesetFilenamesPattern.Key) ?? defaults.NodeWithKeyOrDefault(TilesetFilenamesPattern.Key);
+			if (tilesetFilenamesPatternNode != null)
 			{
-				var tsNode = yaml.Nodes.FirstOrDefault(n => n.Key == tileSet);
-				if (tsNode != null)
-					tileSet = tsNode.Value.Value;
+				var tilesetNode = tilesetFilenamesPatternNode.Value.NodeWithKeyOrDefault(tileset);
+				if (tilesetNode != null)
+				{
+					var patternStart = LoadField("Start", 0, tilesetNode.Value);
+					var patternCount = LoadField("Count", 1, tilesetNode.Value);
+
+					return Enumerable.Range(patternStart, patternCount).Select(i =>
+						new ReservationInfo(tilesetNode.Value.Value.FormatInvariant(i), FirstFrame, FirstFrame, tilesetNode.Location));
+				}
 			}
 
-			return tileSet;
+			var node = data.NodeWithKeyOrDefault(TilesetFilenames.Key) ?? defaults.NodeWithKeyOrDefault(TilesetFilenames.Key);
+			if (node != null)
+			{
+				var tilesetNode = node.Value.NodeWithKeyOrDefault(tileset);
+				if (tilesetNode != null)
+				{
+					var loadFrames = CalculateFrameIndices(start, length, stride ?? length ?? 0, facings, frames, transpose, reverseFacings, shadowStart);
+					return [new ReservationInfo(tilesetNode.Value.Value, loadFrames, frames, tilesetNode.Location)];
+				}
+			}
+
+			return base.ParseFilenames(modData, tileset, frames, data, defaults);
 		}
 
-		protected override string GetSpriteSrc(ModData modData, string tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
+		protected override IEnumerable<ReservationInfo> ParseCombineFilenames(ModData modData, string tileset, int[] frames, MiniYaml data)
 		{
-			var loader = (TilesetSpecificSpriteSequenceLoader)Loader;
-
-			var spriteName = sprite ?? sequence;
-
-			if (LoadField(d, "UseTilesetCode", false))
+			var node = data.NodeWithKeyOrDefault(TilesetFilenames.Key);
+			if (node != null)
 			{
-				if (loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out var code))
-					spriteName = spriteName.Substring(0, 1) + code + spriteName.Substring(2, spriteName.Length - 2);
+				var tilesetNode = node.Value.NodeWithKeyOrDefault(tileset);
+				if (tilesetNode != null)
+				{
+					if (frames == null && LoadField<string>("Length", null, data) != "*")
+					{
+						var subStart = LoadField("Start", 0, data);
+						var subLength = LoadField("Length", 1, data);
+						frames = Exts.MakeArray(subLength, i => subStart + i);
+					}
+
+					return [new ReservationInfo(tilesetNode.Value.Value, frames, frames, tilesetNode.Location)];
+				}
 			}
 
-			if (LoadField(d, "AddExtension", true))
-			{
-				var useTilesetExtension = LoadField(d, "UseTilesetExtension", false);
-
-				if (useTilesetExtension && loader.TilesetExtensions.TryGetValue(ResolveTilesetId(tileSet, d), out var tilesetExtension))
-					return spriteName + tilesetExtension;
-
-				return spriteName + loader.DefaultSpriteExtension;
-			}
-
-			return spriteName;
+			return base.ParseCombineFilenames(modData, tileset, frames, data);
 		}
 	}
 }

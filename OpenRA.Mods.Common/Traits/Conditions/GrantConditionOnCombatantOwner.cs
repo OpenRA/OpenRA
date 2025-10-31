@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant.")]
 		public readonly string Condition = null;
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnCombatantOwner(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnCombatantOwner(this); }
 	}
 
 	public class GrantConditionOnCombatantOwner : INotifyCreated, INotifyOwnerChanged
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int conditionToken = Actor.InvalidConditionToken;
 
-		public GrantConditionOnCombatantOwner(Actor self, GrantConditionOnCombatantOwnerInfo info)
+		public GrantConditionOnCombatantOwner(GrantConditionOnCombatantOwnerInfo info)
 		{
 			this.info = info;
 		}

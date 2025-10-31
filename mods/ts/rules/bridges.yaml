@@ -1,7 +1,7 @@
 CABHUT:
 	Inherits: ^BasicBuilding
 	Tooltip:
-		Name: Bridge repair hut
+		Name: actor-cabhut-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -16,14 +16,13 @@ CABHUT:
 	Interactable:
 	SelectionDecorations:
 	-Demolishable:
-	-Explodes:
+	-FireWarheadsOnDeath:
 	-FrozenUnderFog:
 	HiddenUnderShroud:
 	MapEditorData:
 		Categories: Bridge
 
 ^LowBridgeRamp:
-	AlwaysVisible:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -36,7 +35,7 @@ CABHUT:
 		UseClassicPerspectiveFudge: false
 		QuantizedFacings: 1
 	Tooltip:
-		Name: Bridge
+		Name: meta-lowbridgeramp-name
 	MapEditorData:
 		Categories: Bridge
 	Interactable:
@@ -76,7 +75,7 @@ LOBRDG_A:
 LOBRDG_A_D:
 	Inherits: LOBRDG_A
 	EditorOnlyTooltip:
-		Name: Dead Bridge
+		Name: actor-lobrdg-d-name
 	-GroundLevelBridge:
 	-AppearsOnRadar:
 	BridgePlaceholder:
@@ -115,7 +114,7 @@ LOBRDG_B:
 LOBRDG_B_D:
 	Inherits: LOBRDG_B
 	EditorOnlyTooltip:
-		Name: Dead Bridge
+		Name: actor-lobrdg-d-name
 	-GroundLevelBridge:
 	-AppearsOnRadar:
 	BridgePlaceholder:
@@ -138,7 +137,7 @@ LOBRDG_R_SE:
 	BridgePlaceholder:
 		NeighbourOffsets: -1,1
 	EditorOnlyTooltip:
-		Name: Bridge Ramp
+		Name: actor-lobrdg-r-name
 
 LOBRDG_R_NW:
 	Inherits: ^LowBridgeRamp
@@ -148,7 +147,7 @@ LOBRDG_R_NW:
 	BridgePlaceholder:
 		NeighbourOffsets: 1,1
 	EditorOnlyTooltip:
-		Name: Bridge Ramp
+		Name: actor-lobrdg-r-name
 
 LOBRDG_R_NE:
 	Inherits: ^LowBridgeRamp
@@ -158,7 +157,7 @@ LOBRDG_R_NE:
 	BridgePlaceholder:
 		NeighbourOffsets: 1,1
 	EditorOnlyTooltip:
-		Name: Bridge Ramp
+		Name: actor-lobrdg-r-name
 
 LOBRDG_R_SW:
 	Inherits: ^LowBridgeRamp
@@ -168,10 +167,9 @@ LOBRDG_R_SW:
 	BridgePlaceholder:
 		NeighbourOffsets: 1,-1
 	EditorOnlyTooltip:
-		Name: Bridge Ramp
+		Name: actor-lobrdg-r-name
 
 ^ElevatedBridgePlaceholder:
-	AlwaysVisible:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -184,7 +182,7 @@ LOBRDG_R_SW:
 		UseClassicPerspectiveFudge: false
 		QuantizedFacings: 1
 	Tooltip:
-		Name: Bridge
+		Name: meta-elevatedbridgeplaceholder-name
 	Immobile:
 		OccupiesSpace: false
 	MapEditorData:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Required for `GpsPower`. Attach this to the player actor.")]
-	class GpsWatcherInfo : TraitInfo
+	sealed class GpsWatcherInfo : TraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
 	}
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
-	class GpsWatcher : ISync, IPreventsShroudReset
+	sealed class GpsWatcher : ISync, IPreventsShroudReset
 	{
 		[Sync]
 		public bool Launched { get; private set; }
@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		readonly Player owner;
 
-		readonly List<Actor> actors = new List<Actor>();
-		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = new HashSet<TraitPair<IOnGpsRefreshed>>();
+		readonly List<Actor> actors = [];
+		readonly HashSet<TraitPair<IOnGpsRefreshed>> notifyOnRefresh = [];
 
 		public GpsWatcher(Player owner)
 		{
@@ -80,13 +80,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			var wasGranted = Granted;
 			var wasGrantedAllies = GrantedAllies;
-			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner));
+			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner)).ToList();
 
 			Granted = actors.Count > 0 && Launched;
 			GrantedAllies = allyWatchers.Any(w => w.Trait.Granted);
 
-			var allyLaunched = allyWatchers.Any(w => w.Trait.Launched);
-			if ((Launched || allyLaunched) && !explored)
+			if (!explored && (Launched || allyWatchers.Any(w => w.Trait.Launched)))
 			{
 				explored = true;
 				owner.Shroud.ExploreAll();

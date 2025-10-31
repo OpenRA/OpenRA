@@ -1,22 +1,24 @@
 ^BaseWorld:
 	Inherits: ^Palettes
-	AlwaysVisible:
 	ScreenMap:
 	ActorMap:
 	Selection:
+	ControlGroups:
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: score
 	TerrainGeometryOverlay:
 	DebugVisualizations:
 	TerrainRenderer:
+	SonicBlastRenderer:
 	ShroudRenderer:
 		ShroudVariants: shrouda, shroudb, shroudc, shroudd
 		FogVariants: foga, fogb, fogc, fogd
+		ShroudPalette: d2k
+		FogPalette: d2k
 		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
 		OverrideFullShroud: shroudfull
 		OverrideFullFog: fogfull
-		ShroudBlend: Multiply
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate, spicebloom
@@ -75,36 +77,36 @@
 			SpiceSand: 100
 			Spice: 100
 	Faction@Random:
-		Name: Any
+		Name: faction-random.name
 		InternalName: Random
 		RandomFactionMembers: atreides, harkonnen, ordos
-		Description: Random House\nA random house will be chosen when the game starts.
+		Description: faction-random.description
 	Faction@Atreides:
-		Name: Atreides
+		Name: faction-atreides.name
 		InternalName: atreides
-		Description: House Atreides\nThe noble Atreides, from the water world of Caladan,\nrely on their ornithopters to ensure air superiority.\nThey have allied themselves with the Fremen, the fearsome\nnative warriors of Dune that can move undetected in battle.\n\nFaction Variations:\n    - Combat tanks are balanced in terms of speed and durability\n\nSpecial Units:\n    - Grenadier\n    - Fremen\n    - Sonic Tank\n\nSuperweapon:\n    - Airstrike
+		Description: faction-atreides.description
 	Faction@Harkonnen:
-		Name: Harkonnen
+		Name: faction-harkonnen.name
 		InternalName: harkonnen
-		Description: House Harkonnen\nThe evil Harkonnen will stop at nothing to gain control of the spice.\nThey rely on brute force and atomic weapons to achieve their goals:\nwealth, and the destruction of House Atreides.\n\nFaction Variations:\n    - Combat Tanks are more durable but slower \n\nSpecial Units:\n    - Sardaukar\n    - Devastator\n\nSuperweapon: \n    - Death Hand Missile
+		Description: faction-harkonnen.description
 	Faction@Ordos:
-		Name: Ordos
+		Name: faction-ordos.name
 		InternalName: ordos
-		Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.\n\nFaction Variations: \n    - Trikes are replaced by Raider Trikes\n    - Combat Tanks are faster but less durable\n\nSpecial Units:\n    - Raider Trike\n    - Stealth Raider Trike\n    - Saboteur\n    - Deviator
+		Description: faction-ordos.description
 	Faction@Corrino:
-		Name: Corrino
+		Name: faction-corrino.name
 		InternalName: corrino
 		Selectable: false
 	Faction@Mercenaries:
-		Name: Mercenaries
+		Name: faction-mercenaries.name
 		InternalName: mercenary
 		Selectable: false
 	Faction@Smugglers:
-		Name: Smugglers
+		Name: faction-smugglers.name
 		InternalName: smuggler
 		Selectable: false
 	Faction@Fremen:
-		Name: Fremen
+		Name: faction-fremen.name
 		InternalName: fremen
 		Selectable: false
 	D2kResourceRenderer:
@@ -112,21 +114,25 @@
 			Spice:
 				Sequences: spicea, spiceb, spicec, spiced
 				Palette: d2k
-				Name: Spice
+				Name: resource-spice
 
 World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
 	DebugVisualizationCommands:
+	PathFinderOverlay:
+	HierarchicalPathFinderOverlay:
 	PlayerCommands:
 	HelpCommand:
+	AutoSave:
 	ScreenShaker:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
 	ActorSpawnManager:
 		Actors: sandworm
+		InitialDelay: 9000
 	CrateSpawner:
 		Minimum: 0
 		Maximum: 2
@@ -135,7 +141,6 @@ World:
 		ValidGround: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		InitialSpawnDelay: 1500
 		CheckboxDisplayOrder: 1
-	DomainIndex:
 	WarheadDebugOverlay:
 	BuildableTerrainLayer:
 	ResourceLayer:
@@ -155,8 +160,8 @@ World:
 		Type: SandCrater
 		Sequence: sandcraters
 	MapCreeps:
-		CheckboxLabel: Worms
-		CheckboxDescription: Worms roam the map and devour unprepared forces
+		CheckboxLabel: dropdown-map-worms.label
+		CheckboxDescription: dropdown-map-worms.description
 		CheckboxDisplayOrder: 5
 	SpawnMapActors:
 	MapBuildRadius:
@@ -165,65 +170,70 @@ World:
 	MapOptions:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
-		GameSpeedDropdownDisplayOrder: 3
+		GameSpeedDropdownDisplayOrder: 1
 	CreateMapPlayers:
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	StartingUnits@mcv:
 		Class: none
-		ClassName: MCV Only
+		ClassName: options-starting-units.mcv-only
 		BaseActor: mcv
+		Factions: atreides, ordos, harkonnen
+	StartingUnits@Carryall:
+		Class: carryall
+		ClassName: options-starting-units.carryall
+		BaseActor: mcv
+		SupportActors: carryall
 		Factions: atreides, ordos, harkonnen
 	StartingUnits@lightatreides:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: atreides
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@lightharkonnen:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: harkonnen
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@lightordos:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: ordos
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@heavyatreides:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: atreides
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@heavyharkonnen:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: harkonnen
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	StartingUnits@heavyordos:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: ordos
 		BaseActor: mcv
-		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank, carryall
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnStartingUnits:
-		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
@@ -233,16 +243,20 @@ World:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:
 	ScriptTriggers:
+	CellTriggerOverlay:
 	StartGameNotification:
+	FlashPostProcessEffect:
+		Type: flash
+		Color: E2DD8F4D
 	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
 	ColorPickerManager:
 		PreviewActor: carryall.colorpicker
-		PresetHues: 0, 0.13, 0.18, 0.3, 0.475, 0.625, 0.82, 0.89, 0.97, 0.05, 0.23, 0.375, 0.525, 0.6, 0.75, 0.85
-		PresetSaturations: 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.5, 0.35, 0.4, 0.4, 0.5, 0.5, 0.4, 0.35
+		PresetColors: F21818, FFAE00, FFF830, 44F218, 39C46F, 498221, F2798F, E118F2, 9023CD, 392929, 200738, F218A8, DDB8FF, 184FF2, 2F86F2, 76D2F8
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
-		TerrainFlashPalette: moveflash
+		TerrainFlashPalette: effect
 
 EditorWorld:
 	Inherits: ^BaseWorld
@@ -256,8 +270,13 @@ EditorWorld:
 				TerrainType: Spice
 				AllowedTerrainTypes: SpiceSand
 				MaxDensity: 20
-	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Rock, Concrete
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: RockSmooth
+		DefaultInner: RockSmooth
+		DefaultEnd: RockSmooth
+	Inherits@MapGenerators: ^MapGenerators

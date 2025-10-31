@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,18 +17,21 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 {
 	public class VqaLoader : IVideoLoader
 	{
-		public bool TryParseVideo(Stream s, out IVideo video)
+		public bool TryParseVideo(Stream s, bool useFramePadding, out IVideo video)
 		{
 			video = null;
+
+			if (s.Length == 0)
+				return false;
 
 			if (!IsWestwoodVqa(s))
 				return false;
 
-			video = new VqaReader(s);
+			video = new VqaVideo(s, useFramePadding);
 			return true;
 		}
 
-		bool IsWestwoodVqa(Stream s)
+		static bool IsWestwoodVqa(Stream s)
 		{
 			var start = s.Position;
 

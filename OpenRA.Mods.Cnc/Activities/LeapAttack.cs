@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly bool allowMovement;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -47,11 +48,12 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.allowMovement = allowMovement;
 			this.forceAttack = forceAttack;
 			mobile = self.Trait<Mobile>();
+			moveCooldownHelper = new MoveCooldownHelper(self.World, mobile);
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
 			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
-			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				|| target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 				lastVisibleMinRange = attack.GetMinimumRangeVersusTarget(target);
@@ -92,6 +94,10 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
+			var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+			if (result != null)
+				return result.Value;
+
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
@@ -104,6 +110,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (!allowMovement || lastVisibleMaxRange == WDist.Zero || lastVisibleMaxRange < lastVisibleMinRange)
 					return true;
 
+				moveCooldownHelper.NotifyMoveQueued();
 				QueueChild(mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red));
 				return false;
 			}
@@ -138,7 +145,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				return false;
 			}
 
-			QueueChild(new Leap(self, target, mobile, targetMobile, info.Speed.Length, attack, edible));
+			QueueChild(new Leap(target, mobile, targetMobile, info.Speed.Length, attack, edible));
 
 			// Re-queue the child activities to kill the target if it didn't die in one go
 			return false;

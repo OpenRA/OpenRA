@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,7 +30,7 @@ namespace OpenRA.Platforms.Default
 				if (surface == IntPtr.Zero)
 					throw new InvalidDataException($"Failed to create surface: {SDL.SDL_GetError()}");
 
-				var sur = (SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL.SDL_Surface));
+				var sur = Marshal.PtrToStructure<SDL.SDL_Surface>(surface);
 				Marshal.Copy(data, 0, sur.pixels, data.Length);
 
 				// This call very occasionally fails on Windows, but often works when retried.
@@ -50,7 +50,7 @@ namespace OpenRA.Platforms.Default
 			GC.SuppressFinalize(this);
 		}
 
-		void Dispose(bool disposing)
+		void Dispose(bool _)
 		{
 			if (Cursor != IntPtr.Zero)
 			{
@@ -63,6 +63,11 @@ namespace OpenRA.Platforms.Default
 				SDL.SDL_FreeSurface(surface);
 				surface = IntPtr.Zero;
 			}
+		}
+
+		~Sdl2HardwareCursor()
+		{
+			Dispose(false);
 		}
 	}
 }

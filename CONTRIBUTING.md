@@ -16,7 +16,7 @@ Help us keep OpenRA open and inclusive. Please read and follow our [Code of Cond
 
 * [Coding standard](https://github.com/OpenRA/OpenRA/wiki/Coding-Standard)
 * [Branches and Releases](https://github.com/OpenRA/OpenRA/wiki/Branches-and-Releases)
-* [Licensing](http://www.gnu.org/licenses/quick-guide-gplv3.html)
+* [Licensing](https://www.gnu.org/licenses/quick-guide-gplv3.html)
 
 Please `git rebase` to the latest revision of the bleed branch.
 
@@ -24,6 +24,6 @@ Don't forget to add yourself to [AUTHORS](https://github.com/OpenRA/OpenRA/blob/
 
 Please propose a [CHANGELOG](https://github.com/OpenRA/OpenRA/wiki/CHANGELOG) entry in the pull-request comments.
 
-While your pull-request is in review it will be helpful if you join [IRC](irc://chat.freenode.net/openra) to discuss the changes.
+While your pull-request is in review it will be helpful if you join [Discord](https://discord.openra.net) or [IRC](ircs://irc.libera.chat:6697/openra) to discuss the changes.
 
 See also the in-depth guide on [contributing](https://github.com/OpenRA/OpenRA/wiki/Contributing) to the OpenRA project.

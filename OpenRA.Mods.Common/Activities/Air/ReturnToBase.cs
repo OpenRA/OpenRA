@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 					&& a.Owner == self.Owner
 					&& rearmInfo.RearmActors.Contains(a.Info.Name)
 					&& (!unreservedOnly || Reservable.IsAvailableFor(a, self)))
-				.ClosestTo(self);
+				.ClosestToWithPathFrom(self);
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				// Prevent an infinite loop in case we'd return to the activity that called ReturnToBase in the first place. Go idle instead.
-				self.CancelActivity();
+				QueueChild(new FlyIdle(self, aircraft.Info.NumberOfTicksToVerifyAvailableAirport));
 				return true;
 			}
 
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 
 				aircraft.MakeReservation(dest);
-				QueueChild(new Land(self, Target.FromActor(dest), offset, facing, Color.Green));
+				QueueChild(aircraft.MoveOntoTarget(self, Target.FromActor(dest), offset, facing, Color.Green));
 				QueueChild(new Resupply(self, dest, WDist.Zero, alwaysLand));
 				return true;
 			}

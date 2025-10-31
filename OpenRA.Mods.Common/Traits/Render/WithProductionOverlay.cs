@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithProductionOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
 	{
 		[Desc("Queues that should be producing for this overlay to render.")]
-		public readonly HashSet<string> Queues = new HashSet<string>();
+		public readonly HashSet<string> Queues = [];
 
 		[SequenceReference]
 		[Desc("Sequence name to use")]
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.PlayRepeating(info.Sequence);
 
 			var anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => !IsProducing || IsTraitDisabled);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
@@ -76,16 +76,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			// Per-actor production
 			queues = self.TraitsImplementing<ProductionQueue>()
-				.Where(q => productionInfos.Any(p => p.Produces.Contains(q.Info.Type)))
-				.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
+				.Where(q =>
+					productionInfos.Any(p => p.Produces.Contains(q.Info.Type)) &&
+					(Info.Queues.Count == 0 || Info.Queues.Contains(q.Info.Type)))
 				.ToArray();
 
-			if (!queues.Any())
+			if (queues.Length == 0)
 			{
 				// Player-wide production
 				queues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.Where(q => productionInfos.Any(p => p.Produces.Contains(q.Info.Type)))
-					.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
+					.Where(q =>
+						productionInfos.Any(p => p.Produces.Contains(q.Info.Type)) &&
+						(Info.Queues.Count == 0 || Info.Queues.Contains(q.Info.Type)))
 					.ToArray();
 			}
 		}

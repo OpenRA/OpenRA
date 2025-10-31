@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -35,16 +34,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Width (in pixels) of the queued end node markers.")]
 		public readonly int QueuedMarkerWidth = 2;
 
-		public override object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
+		[PaletteReference]
+		[Desc("Palette used for rendering sprites.")]
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
+		public override object Create(ActorInitializer init) { return new DrawLineToTarget(this); }
 	}
 
 	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
-		readonly List<IRenderable> renderableCache = new List<IRenderable>();
+		readonly List<IRenderable> renderableCache = [];
 		long lifetime;
 
-		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
+		public DrawLineToTarget(DrawLineToTargetInfo info)
 		{
 			this.info = info;
 		}
@@ -77,14 +80,14 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			if (!ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			return RenderAboveShroud(self, wr);
 		}
 
 		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
-			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+			var pal = wr.Palette(info.Palette);
 			var a = self.CurrentActivity;
 			for (; a != null; a = a.NextActivity)
 				if (!a.IsCanceling)
@@ -98,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (!ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			renderableCache.Clear();
 			var prev = self.CenterPosition;
@@ -116,14 +119,14 @@ namespace OpenRA.Mods.Common.Traits
 						var markerWidth = renderableCache.Count > 0 ? info.QueuedMarkerWidth : info.MarkerWidth;
 
 						var pos = n.Target.CenterPosition;
-						renderableCache.Add(new TargetLineRenderable(new[] { prev, pos }, n.Color, lineWidth, markerWidth));
+						renderableCache.Add(new TargetLineRenderable([prev, pos], n.Color, lineWidth, markerWidth));
 						prev = pos;
 					}
 				}
 			}
 
 			if (renderableCache.Count == 0)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			// Reverse draw order so target markers are drawn on top of the next line
 			renderableCache.Reverse();

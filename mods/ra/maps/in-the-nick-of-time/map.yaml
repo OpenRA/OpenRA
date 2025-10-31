@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -26,11 +26,13 @@ Players:
 		Faction: england
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Enemies: Greece
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Greece
@@ -955,3 +957,5 @@ Actors:
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

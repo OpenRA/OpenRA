@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,9 @@
 #endregion
 
 using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Video;
@@ -19,55 +22,113 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class VideoPlayerWidget : Widget
 	{
-		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
+		public Hotkey CancelKey = new(Keycode.ESCAPE, Modifiers.None);
 		public float AspectRatio = 1.2f;
 		public bool DrawOverlay = true;
 		public bool Skippable = true;
 
-		public bool Paused => paused;
-		public IVideo Video => video;
+		public bool Paused => !playTime.IsRunning;
+		public IVideo Video { get; private set; } = null;
 
 		Sprite videoSprite, overlaySprite;
 		Sheet overlaySheet;
-		IVideo video = null;
-		string cachedVideo;
+		string cachedVideoFileName;
 		float invLength;
 		float2 videoOrigin, videoSize;
 		float2 overlayOrigin, overlaySize;
 		float overlayScale;
-		bool stopped;
-		bool paused;
+		readonly Stopwatch playTime = new();
+		int textureWidth;
+		int textureHeight;
+		Sheet videoSheet;
 
 		Action onComplete;
 
-		public void Load(string filename)
+		/// <summary>
+		/// Tries to load a video from the specified file and play it. Does nothing if the file name matches the already loaded video.
+		/// </summary>
+		/// <param name="filename">Name of the file, including the extension.</param>
+		public void LoadAndPlay(string filename)
 		{
-			if (filename == cachedVideo)
+			if (filename == cachedVideoFileName)
 				return;
 
-			var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), Game.ModData.VideoLoaders);
-			Open(video);
-
-			cachedVideo = filename;
+			cachedVideoFileName = filename;
+			var stream = Game.ModData.DefaultFileSystem.Open(filename);
+			var video = VideoLoader.GetVideo(stream, true, Game.ModData.VideoLoaders);
+			Play(video);
 		}
 
-		public void Open(IVideo video)
+		/// <summary>
+		/// Tries to load a video from the specified file and play it. Does nothing if the file name matches the already loaded video.
+		/// </summary>
+		/// <param name="filename">Name of the file, including the extension.</param>
+		/// <param name="after">Action to perform after the video ends.</param>
+		public void LoadAndPlayAsync(string filename, Action after)
 		{
-			this.video = video;
+			if (filename == cachedVideoFileName)
+				return;
 
-			stopped = true;
-			paused = true;
+			cachedVideoFileName = filename;
+
+			if (Video != null)
+				CloseVideo();
+
+			Task.Run(() =>
+			{
+				try
+				{
+					var stream = Game.ModData.DefaultFileSystem.Open(filename);
+					var video = VideoLoader.GetVideo(stream, true, Game.ModData.VideoLoaders);
+
+					// Safeguard against race conditions with two videos being loaded at the same time - prefer to play only the last one.
+					if (filename != cachedVideoFileName)
+					{
+						after();
+						return;
+					}
+
+					Game.RunAfterTick(() =>
+					{
+						Play(video);
+						PlayThen(() =>
+						{
+							after();
+							CloseVideo();
+						});
+					});
+				}
+				catch (FileNotFoundException)
+				{
+					after();
+				}
+			});
+		}
+
+		/// <summary>
+		/// Plays the given <see cref="IVideo"/>.
+		/// </summary>
+		/// <param name="video">An <see cref="IVideo"/> instance.</param>
+		public void Play(IVideo video)
+		{
+			Video = video;
+
+			if (video == null)
+				return;
+
+			playTime.Reset();
 			Game.Sound.StopVideo();
 			onComplete = () => { };
 
-			invLength = video.Framerate * 1f / video.Frames;
+			invLength = video.Framerate * 1f / video.FrameCount;
 
-			var size = Math.Max(video.Width, video.Height);
-			var textureSize = Exts.NextPowerOf2(size);
-			var videoSheet = new Sheet(SheetType.BGRA, new Size(textureSize, textureSize));
+			textureWidth = Exts.NextPowerOf2(video.Width);
+			textureHeight = Exts.NextPowerOf2(video.Height);
+			videoSheet?.Dispose();
+			videoSheet = new Sheet(SheetType.BGRA, new Size(textureWidth, textureHeight));
 
 			videoSheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
-			videoSheet.GetTexture().SetData(video.FrameData);
+			videoSheet.GetTexture().SetData(video.CurrentFrameData, textureWidth, textureHeight);
 
 			videoSprite = new Sprite(videoSheet,
 				new Rectangle(
@@ -88,34 +149,36 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (video == null)
+			if (Video == null)
 				return;
 
-			if (!stopped && !paused)
+			if (!Paused)
 			{
-				var nextFrame = 0;
-				if (video.HasAudio && !Game.Sound.DummyEngine)
-					nextFrame = (int)float2.Lerp(0, video.Frames, Game.Sound.VideoSeekPosition * invLength);
+				int nextFrame;
+				if (Video.HasAudio && !Game.Sound.DummyEngine)
+					nextFrame = (int)float2.Lerp(0, Video.FrameCount, Game.Sound.VideoSeekPosition * invLength);
 				else
-					nextFrame = video.CurrentFrame + 1;
+					nextFrame = (int)float2.Lerp(0, Video.FrameCount, (float)playTime.Elapsed.TotalSeconds * invLength);
 
 				// Without the 2nd check the sound playback sometimes ends before the final frame is displayed which causes the player to be stuck on the first frame
-				if (nextFrame > video.Frames || nextFrame < video.CurrentFrame)
+				if (nextFrame > Video.FrameCount || nextFrame < Video.CurrentFrameIndex)
 				{
 					Stop();
 					return;
 				}
 
 				var skippedFrames = 0;
-				while (nextFrame > video.CurrentFrame)
+				while (nextFrame > Video.CurrentFrameIndex)
 				{
-					video.AdvanceFrame();
-					videoSprite.Sheet.GetTexture().SetData(video.FrameData);
+					Video.AdvanceFrame();
 					skippedFrames++;
 				}
 
+				if (skippedFrames > 0)
+					videoSprite.Sheet.GetTexture().SetData(Video.CurrentFrameData, textureWidth, textureHeight);
+
 				if (skippedFrames > 1)
-					Log.Write("perf", "VqaPlayer : {0} skipped {1} frames at position {2}", cachedVideo, skippedFrames, video.CurrentFrame);
+					Log.Write("perf", $"{nameof(VideoPlayerWidget)}: {cachedVideoFileName} skipped {skippedFrames} frames at position {Video.CurrentFrameIndex}");
 			}
 
 			WidgetUtils.DrawSprite(videoSprite, videoOrigin, videoSize);
@@ -136,8 +199,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 					// Calculate the scan line height by converting the video scale (copied from Open()) to screen
 					// pixels, halving it (scan lines cover half the pixel height), and rounding to the nearest integer.
-					var videoScale = Math.Min((float)RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
+					var videoScale = Math.Min((float)RenderBounds.Width / Video.Width, RenderBounds.Height / (Video.Height * AspectRatio));
 					var halfRowHeight = (int)(videoScale * scale / 2 + 0.5f);
+
+					// If the video is "too tightly packed" into the player and there is no room for drawing an overlay disable it.
+					if (halfRowHeight == 0)
+					{
+						DrawOverlay = false;
+						return;
+					}
 
 					// The overlay can be minimally stored in a 1px column which is stretched to cover the full screen
 					var overlayHeight = (int)(RenderBounds.Height * scale / halfRowHeight);
@@ -188,44 +258,56 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void PlayThen(Action after)
 		{
-			if (video == null)
+			if (Video == null)
 				return;
 
 			onComplete = after;
-			if (stopped && video.HasAudio)
-				Game.Sound.PlayVideo(video.AudioData, video.AudioChannels, video.SampleBits, video.SampleRate);
+			if (playTime.ElapsedTicks == 0 && Video.HasAudio)
+				Game.Sound.PlayVideo(Video.AudioData, Video.AudioChannels, Video.SampleBits, Video.SampleRate);
 			else
 				Game.Sound.PlayVideo();
 
-			stopped = paused = false;
+			playTime.Start();
 		}
 
 		public void Pause()
 		{
-			if (stopped || paused || video == null)
+			if (Paused || Video == null)
 				return;
 
-			paused = true;
+			playTime.Stop();
 			Game.Sound.PauseVideo();
 		}
 
 		public void Stop()
 		{
-			if (stopped || video == null)
+			if (Video == null)
 				return;
 
-			stopped = true;
-			paused = true;
+			playTime.Reset();
 			Game.Sound.StopVideo();
-			video.Reset();
-			videoSprite.Sheet.GetTexture().SetData(video.FrameData);
-			Game.RunAfterTick(onComplete);
+			Video.Reset();
+			videoSprite.Sheet.GetTexture().SetData(Video.CurrentFrameData, textureWidth, textureHeight);
+			Game.RunAfterTick(() =>
+			{
+				if (onComplete != null)
+				{
+					onComplete();
+					onComplete = null;
+				}
+			});
 		}
 
 		public void CloseVideo()
 		{
 			Stop();
-			video = null;
+			Video = null;
+		}
+
+		public override void Removed()
+		{
+			videoSheet?.Dispose();
+			overlaySheet?.Dispose();
 		}
 	}
 }

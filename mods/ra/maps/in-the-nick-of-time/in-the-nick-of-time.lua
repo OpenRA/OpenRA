@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -88,11 +88,11 @@ AlliedReinforcements = function()
 				Trigger.OnAllKilled(houseSquad, function()
 					if not AlliesHouse.IsDead then
 						Media.PlaySoundNotification(Greece, "AlertBleep")
-						Media.DisplayMessage("Friendlies coming out!", "Medic")
+						Media.DisplayMessage(UserInterface.GetFluentMessage("friendlies-coming-out"), UserInterface.GetFluentMessage("medic"))
 						Reinforcements.Reinforce(Greece, AlliedHouseSquad, { VillageSpawnAllies.Location, VillageRally.Location }, 0)
 					end
 				end)
-			end				
+			end
 		end
 	end)
 
@@ -129,7 +129,7 @@ AlliedReinforcements = function()
 
 			Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
 			local chinookChalk2 = Reinforcements.ReinforceWithTransport(Greece, "tran.reinforcement", NorthChinookChalk, NorthChinookPath, { NorthChinookPath[1] })
-			InfantryProduction()
+			ProduceInfantry()
 			TankProduction()
 		end
 	end)
@@ -183,7 +183,7 @@ AlliedReinforcements = function()
 
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
-				Media.DisplayMessage("Commander, we're detecting Soviet transports headed your way. Get those scientists back to the extraction point in the southeast!", "LANDCOM 16")
+				Media.DisplayMessage(UserInterface.GetFluentMessage("get-scientists-evacuation-point"), UserInterface.GetFluentMessage("landcom-16-capitalized"))
 				local northTeam = Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", NorthWaterTeam, NorthWaterPath1, { NorthWaterPath1[1] })
 			end)
 
@@ -266,7 +266,7 @@ AttackGroupSize = 4
 ProductionDelay = DateTime.Seconds(10)
 IdlingUnits = { }
 
-InfantryProduction = function()
+ProduceInfantry = function()
 	if (Tent1.IsDead or Tent1.Owner ~= USSR) and (Tent2.IsDead or Tent2.Owner ~= USSR) then
 		return
 	end
@@ -275,7 +275,7 @@ InfantryProduction = function()
 
 	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(ProductionDelay, InfantryProduction)
+		Trigger.AfterDelay(ProductionDelay, ProduceInfantry)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -323,7 +323,7 @@ LoseTriggers = function()
 	Trigger.OnKilled(ForwardCommand, function()
 		if not ScientistsFreed then
 			Greece.MarkFailedObjective(RescueScientists)
-			Media.DisplayMessage("The scientists were in the Command Center!", "LANDCOM 16")
+			Media.DisplayMessage(UserInterface.GetFluentMessage("scientists-killed-in-command-center"), UserInterface.GetFluentMessage("landcom-16-capitalized"))
 		end
 	end)
 
@@ -336,17 +336,20 @@ LoseTriggers = function()
 	end)
 end
 
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
 	if Greece.HasNoRequiredUnits() and UnitsArrived then
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 
-	if ticked > 0 then
-		UserInterface.SetMissionText("Chronosphere explodes in " .. Utils.FormatTime(ticked), TimerColor)
-		ticked = ticked - 1
-	elseif ticked == 0 then
-		UserInterface.SetMissionText("We're too late!", USSR.Color)
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.GetFluentMessage("chronosphere-explodes-in", { ["time"] = Utils.FormatTime(Ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
+		Ticked = Ticked - 1
+	elseif Ticked == 0 then
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("too-late"), USSR.Color)
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 end
@@ -356,25 +359,10 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	GoodGuy = Player.GetPlayer("GoodGuy")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Greece)
 
-	SovietObj = USSR.AddObjective("Defeat Allies.")
-	RescueScientists = Greece.AddObjective("Rescue the scientists and escort them back to the\nextraction point.")
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
+	SovietObj = AddPrimaryObjective(USSR, "")
+	RescueScientists = AddPrimaryObjective(Greece, "rescue-scientists-extraction-point")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	Paradrop1 = Actor.Create("paradrop1", false, { Owner = USSR })

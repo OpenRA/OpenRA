@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,18 +21,18 @@ namespace OpenRA
 		public readonly Size Size;
 		public readonly MapGridType GridType;
 
-		protected readonly T[] entries;
-		protected readonly Rectangle bounds;
+		protected readonly T[] Entries;
+		protected readonly Rectangle Bounds;
 
-		public CellLayerBase(Map map)
-			: this(map.Grid.Type, new Size(map.MapSize.X, map.MapSize.Y)) { }
+		protected CellLayerBase(Map map)
+			: this(map.Grid.Type, map.MapSize) { }
 
-		public CellLayerBase(MapGridType gridType, Size size)
+		protected CellLayerBase(MapGridType gridType, Size size)
 		{
 			Size = size;
-			bounds = new Rectangle(0, 0, Size.Width, Size.Height);
+			Bounds = new Rectangle(0, 0, Size.Width, Size.Height);
 			GridType = gridType;
-			entries = new T[size.Width * size.Height];
+			Entries = new T[size.Width * size.Height];
 		}
 
 		public virtual void CopyValuesFrom(CellLayerBase<T> anotherLayer)
@@ -40,19 +40,24 @@ namespace OpenRA
 			if (Size != anotherLayer.Size || GridType != anotherLayer.GridType)
 				throw new ArgumentException("Layers must have a matching size and shape (grid type).", nameof(anotherLayer));
 
-			Array.Copy(anotherLayer.entries, entries, entries.Length);
+			Array.Copy(anotherLayer.Entries, Entries, Entries.Length);
 		}
 
-		/// <summary>Clears the layer contents with a known value</summary>
-		public void Clear(T clearValue)
+		/// <summary>Clears the layer contents with their default value.</summary>
+		public virtual void Clear()
 		{
-			for (var i = 0; i < entries.Length; i++)
-				entries[i] = clearValue;
+			Array.Clear(Entries, 0, Entries.Length);
+		}
+
+		/// <summary>Clears the layer contents with a known value.</summary>
+		public virtual void Clear(T clearValue)
+		{
+			Array.Fill(Entries, clearValue);
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return ((IEnumerable<T>)entries).GetEnumerator();
+			return ((IEnumerable<T>)Entries).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

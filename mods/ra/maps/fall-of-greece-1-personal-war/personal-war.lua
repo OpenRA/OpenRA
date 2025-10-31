@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ FootprintTrigger12 = { CPos.New(35, 39), CPos.New(35, 40), CPos.New(35, 41), CPo
 ExtractionHelicopterType = "tran"
 ExtractionPath = { ChinookEntry.Location, ExtractionPoint.Location }
 
-lstReinforcements =
+LstReinforcements =
 {
 	first =
 	{
@@ -62,7 +62,7 @@ MissionStart = function()
 			local insertionFlare = Actor.Create("flare", true, { Owner = Allies, Location = LightFlare.Location })
 			Trigger.AfterDelay(DateTime.Seconds(2), function()
 				FlareBoy.AttackMove(FlareBoyAttack.Location)
-				if Map.LobbyOption("difficulty") == "normal" then
+				if Difficulty == "normal" then
 					local normalDrop = InsertionDrop.TargetParatroopers(InsertionPoint.CenterPosition, Angle.New(892))
 					Utils.Do(normalDrop, function(a)
 						Trigger.OnPassengerExited(a, function(t,p)
@@ -77,9 +77,9 @@ MissionStart = function()
 							VIPs[#VIPs + 1] = p
 							FailTrigger()
 						end)
-					end)		
+					end)
 					Trigger.AfterDelay(DateTime.Seconds(6), function()
-						Media.DisplayMessage("Commander, there are several civilians in the area.\nWe'll need you to call out targets.", "Tanya")
+						Media.DisplayMessage(UserInterface.GetFluentMessage("civilians-manual-targeting"), UserInterface.GetFluentMessage("tanya"))
 					end)
 				end
 			end)
@@ -95,7 +95,7 @@ FailTrigger = function()
 	Trigger.OnAnyKilled(VIPs, function()
 		Allies.MarkFailedObjective(ProtectVIPs)
 	end)
-end	
+end
 
 FootprintTriggers = function()
 	local foot1Triggered
@@ -184,7 +184,7 @@ FootprintTriggers = function()
 			foot5Triggered = true
 
 			Media.PlaySoundNotification(Allies, "AlertBleep")
-			Media.DisplayMessage("Alfa Niner this is Lima One Six. Be advised, Soviet aircraft and armor moving into your AO.", "Headquarters")
+			Media.DisplayMessage(UserInterface.GetFluentMessage("soviet-aircraft-armor-moving-in"), UserInterface.GetFluentMessage("headquarters"))
 			Utils.Do(Trigger5Team, function(actor)
 				if not actor.IsDead then
 					actor.AttackMove(TacticalNuke1.Location)
@@ -205,10 +205,10 @@ FootprintTriggers = function()
 
 			Trigger.AfterDelay(DateTime.Seconds(20), function()
 				Media.PlaySoundNotification(Allies, "AlertBuzzer")
-				Media.DisplayMessage("Extraction point is compromised. Evacuate the base!", "Headquarters")
+				Media.DisplayMessage(UserInterface.GetFluentMessage("extraction-point-compromised-evacuate-base"), UserInterface.GetFluentMessage("headquarters"))
 				local defenders = Reinforcements.Reinforce(England, TentTeam, { Tent.Location, TentMove.Location }, 0)
 				Utils.Do(defenders, IdleHunt)
-				if Map.LobbyOption("difficulty") == "hard" then
+				if Difficulty == "hard" then
 					Trigger.AfterDelay(DateTime.Seconds(30), function()
 						local wave2 = Reinforcements.Reinforce(USSR, SovietAttackers, { BaseAttackersSpawn.Location, SovietAttack.Location })
 						Utils.Do(wave2, IdleHunt)
@@ -230,7 +230,7 @@ FootprintTriggers = function()
 			end)
 
 			Trigger.AfterDelay(DateTime.Seconds(50), function()
-				Media.DisplayMessage("We've set up a new extraction point to the Northwest.", "Headquarters")
+				Media.DisplayMessage(UserInterface.GetFluentMessage("new-extraction-point-northwest"), UserInterface.GetFluentMessage("headquarters"))
 			end)
 		end
 	end)
@@ -241,7 +241,7 @@ FootprintTriggers = function()
 			Trigger.RemoveFootprintTrigger(id)
 			foot6Triggered = true
 
-			local reinforcement = lstReinforcements.first
+			local reinforcement = LstReinforcements.first
 			Media.PlaySpeechNotification(Allies, "ReinforcementsArrived")
 			Reinforcements.ReinforceWithTransport(Allies, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
 		end
@@ -313,8 +313,12 @@ FootprintTriggers = function()
 				trig9camera.Destroy()
 			end)
 
-			Utils.Do(BridgeMammoths, function(actor)
-				actor.AttackMove(MammysGo.Location)
+			Utils.Do(BridgeMammoths, function(mammoth)
+				if mammoth.IsDead then
+					return
+				end
+
+				mammoth.AttackMove(MammysGo.Location)
 			end)
 		end
 	end)
@@ -334,6 +338,10 @@ FootprintTriggers = function()
 			Actor.Create("camera", true, { Owner = Allies, Location = ExtractionPoint.Location })
 			SendExtractionHelicopter()
 
+			if HealCrateTruck.IsDead then
+				return
+			end
+
 			HealCrateTruck.Move(TruckGo.Location)
 		end
 	end)
@@ -349,7 +357,7 @@ FootprintTriggers = function()
 				trig11camera.Destroy()
 			end)
 
-			local reinforcement = lstReinforcements.second
+			local reinforcement = LstReinforcements.second
 			Media.PlaySpeechNotification(Allies, "ReinforcementsArrived")
 			Reinforcements.ReinforceWithTransport(Allies, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
 		end
@@ -362,12 +370,12 @@ FootprintTriggers = function()
 			foot12Triggered = true
 
 			Media.PlaySoundNotification(Allies, "AlertBleep")
-			Media.DisplayMessage("Stalin will pay for what he has done today!\nI will bury him with my own hands!", "Stavros")
+			Media.DisplayMessage(UserInterface.GetFluentMessage("stalin-will-pay"), UserInterface.GetFluentMessage("stavros"))
 		end
 	end)
 end
 
-SetupTriggers = function()	
+SetupTriggers = function()
 	Utils.Do(USSR.GetGroundAttackers(), function(unit)
 		Trigger.OnDamaged(unit, function() IdleHunt(unit) end)
 	end)
@@ -451,7 +459,7 @@ SovBaseAttack = function()
 			end
 		end)
 
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			local barracksTeam = Reinforcements.Reinforce(USSR, RaxTeam, { SovRaxSpawn.Location, SovBaseCam.Location }, 0)
 			Utils.Do(barracksTeam, IdleHunt)
 		end
@@ -490,27 +498,11 @@ WorldLoaded = function()
 	England = Player.GetPlayer("England")
 	Civilians = Player.GetPlayer("GreekCivilians")
 
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Allies)
 
-	SovietObj = USSR.AddObjective("Kill Stavros.")
-	ProtectVIPs = Allies.AddObjective("Keep Stavros and Tanya alive.")
-	ExtractStavros = Allies.AddObjective("Get Stavros and Tanya to the extraction helicopter.")
-
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Lose")
-	end)
-	Trigger.OnPlayerWon(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Win")
-	end)
+	SovietObj = AddPrimaryObjective(USSR, "")
+	ProtectVIPs = AddPrimaryObjective(Allies, "keep-stavros-tanya-alive")
+	ExtractStavros = AddPrimaryObjective(Allies, "get-tanya-stavros-helicopter")
 
 	InsertionDrop = Actor.Create("insertiondrop", false, { Owner = Allies })
 	InsertionDropHard = Actor.Create("insertiondrophard", false, { Owner = Allies })

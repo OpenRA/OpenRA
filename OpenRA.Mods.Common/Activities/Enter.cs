@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly IMove move;
 		readonly Color? targetLineColor;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -37,24 +38,25 @@ namespace OpenRA.Mods.Common.Activities
 			this.target = target;
 			this.targetLineColor = targetLineColor;
 			ChildHasPriority = false;
+			moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile) { RetryIfDestinationBlocked = true };
 		}
 
 		/// <summary>
 		/// Called early in the activity tick to allow subclasses to update state.
-		/// Call Cancel(self, true) if it is no longer valid to enter
+		/// Call Cancel(self, true) if it is no longer valid to enter.
 		/// </summary>
 		protected virtual void TickInner(Actor self, in Target target, bool targetIsDeadOrHiddenActor) { }
 
 		/// <summary>
 		/// Called when the actor is ready to transition from approaching to entering the target actor.
 		/// Return true to start entering, or false to wait in the WaitingToEnter state.
-		/// Call Cancel(self, true) before returning false if it is no longer valid to enter
+		/// Call Cancel(self, true) before returning false if it is no longer valid to enter.
 		/// </summary>
 		protected virtual bool TryStartEnter(Actor self, Actor targetActor) { return true; }
 
 		/// <summary>
 		/// Called when the actor has entered the target actor.
-		/// Actor will be be Killed/Disposed or they will enter/exit unharmed.
+		/// Actor will be Killed/Disposed or they will enter/exit unharmed.
 		/// Depends on either the EnterBehaviour of the actor or the requirements of an overriding function.
 		/// </summary>
 		protected virtual void OnEnterComplete(Actor self, Actor targetActor) { }
@@ -66,7 +68,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 				lastVisibleTarget = Target.FromTargetPositions(target);
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
 			// Cancel immediately if the target died while we were entering it
@@ -79,6 +80,10 @@ namespace OpenRA.Mods.Common.Activities
 			// the next state or next activity
 			if (!TickChild(self))
 				return false;
+
+			var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+			if (result != null)
+				return result.Value;
 
 			// Note that lastState refers to what we have just *finished* doing
 			switch (lastState)
@@ -98,6 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (target.Type != TargetType.Invalid && !move.CanEnterTargetNow(self, target))
 					{
 						// Target lines are managed by this trait, so we do not pass targetLineColor
+						moveCooldownHelper.NotifyMoveQueued();
 						var initialTargetPosition = (useLastVisibleTarget ? lastVisibleTarget : target).CenterPosition;
 						QueueChild(move.MoveToTarget(self, target, initialTargetPosition));
 						return false;
@@ -111,6 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 					// Are we ready to move into the target?
 					if (TryStartEnter(self, target.Actor))
 					{
+						moveCooldownHelper.NotifyMoveQueued();
 						lastState = EnterState.Entering;
 						QueueChild(move.MoveIntoTarget(self, target));
 						return false;
@@ -127,7 +134,7 @@ namespace OpenRA.Mods.Common.Activities
 				case EnterState.Entering:
 				{
 					// Check that we reached the requested position
-					var targetPos = target.Positions.PositionClosestTo(self.CenterPosition);
+					var targetPos = target.Positions.ClosestToIgnoringPath(self.CenterPosition);
 					if (!IsCanceling && self.CenterPosition == targetPos && target.Type == TargetType.Actor)
 						OnEnterComplete(self, target.Actor);
 
@@ -137,6 +144,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				case EnterState.Exiting:
 				{
+					moveCooldownHelper.NotifyMoveQueued();
 					QueueChild(move.ReturnToCell(self));
 					lastState = EnterState.Finished;
 					return false;

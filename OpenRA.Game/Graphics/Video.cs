@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,21 +9,20 @@
  */
 #endregion
 
-using System;
-using OpenRA.FileSystem;
-using OpenRA.Primitives;
-
 namespace OpenRA.Video
 {
 	public interface IVideo
 	{
-		ushort Frames { get; }
+		ushort FrameCount { get; }
 		byte Framerate { get; }
 		ushort Width { get; }
 		ushort Height { get; }
-		uint[,] FrameData { get; }
 
-		int CurrentFrame { get; }
+		/// <summary>
+		/// Current frame color data in 32-bit BGRA.
+		/// </summary>
+		byte[] CurrentFrameData { get; }
+		int CurrentFrameIndex { get; }
 		void AdvanceFrame();
 
 		bool HasAudio { get; }

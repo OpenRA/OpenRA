@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,9 +27,16 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Length of time (in ticks) to display a location ping in the minimap.")]
 		public readonly int RadarPingDuration = 250;
 
+		[Desc("Exclude damage types (defined on the warheads) that trigger Notification.")]
+		public readonly BitSet<DamageType> ExcludeDamageTypes = default;
+
 		[NotificationReference("Speech")]
-		[Desc("The audio notification type to play.")]
-		public string Notification = "HarvesterAttack";
+		[Desc("Speech notification type to play.")]
+		public readonly string Notification = "HarvesterAttack";
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display.")]
+		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
 	}
@@ -50,8 +57,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
+			if (!info.ExcludeDamageTypes.IsEmpty && e.Damage.DamageTypes.Overlaps(info.ExcludeDamageTypes))
+				return;
+
 			// Don't track self-damage
 			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
+				return;
+
+			// Don't track healing
+			if (e.Damage.Value < 0)
 				return;
 
 			// Only track last hit against our harvesters
@@ -61,6 +75,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Game.RunTime > lastAttackTime + info.NotifyInterval)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(self.Owner, info.TextNotification);
+
 				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 
 				lastAttackTime = Game.RunTime;

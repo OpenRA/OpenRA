@@ -1,11 +1,11 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, gdi08a.lua, gdi08a-AI.lua
+		Scripts: campaign.lua, utils.lua, gdi08a.lua, gdi08a-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: gdi_win1
 	MissionData:
-		Briefing: U.N. Sanction has cut funding to the Global Defense Initiative. Field Units are helpless.\n\nUse the repair facility to keep your units in the field long enough to destroy the Nod base in this region.\n\nAll Nod units and structures must be destroyed.
+		Briefing: UN Sanctions have cut funding to the Global Defense Initiative, leaving field units helpless.\n\nUse the repair facility to keep your units in the field long enough to destroy the Nod base in the region.\n\nAll Nod units and structures must be destroyed.
 		BriefingVideo: gdi8a.vqa
 		BackgroundVideo: tbrinfo1.vqa
 		WinVideo: paratrop.vqa
@@ -117,15 +117,15 @@ GTWR:
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 GUN:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 C3:
 	Tooltip:
-		Name: Farmer Mike
+		Name: actor-c3-name
 
 SAM:
 	Buildable:
@@ -147,7 +147,7 @@ HQ:
 	Tooltip:
 	-AirstrikePower:
 	Buildable:
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: actor-hq-description
 
 AFLD:
 	RallyPoint:

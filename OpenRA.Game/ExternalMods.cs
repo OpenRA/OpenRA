@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,7 +27,6 @@ namespace OpenRA
 	{
 		public readonly string Id;
 		public readonly string Version;
-		public readonly string Title;
 		public readonly string LaunchPath;
 		public readonly string[] LaunchArgs;
 		public Sprite Icon { get; internal set; }
@@ -41,7 +40,7 @@ namespace OpenRA
 
 	public class ExternalMods : IReadOnlyDictionary<string, ExternalMod>
 	{
-		readonly Dictionary<string, ExternalMod> mods = new Dictionary<string, ExternalMod>();
+		readonly Dictionary<string, ExternalMod> mods = [];
 		readonly SheetBuilder sheetBuilder;
 
 		Sheet CreateSheet()
@@ -66,12 +65,8 @@ namespace OpenRA
 			// Several types of support directory types are available, depending on
 			// how the player has installed and launched the game.
 			// Read registration metadata from all of them
-			var sources = Enum.GetValues(typeof(SupportDirType))
-				.Cast<SupportDirType>()
-				.Select(t => Platform.GetSupportDir(t))
-				.Distinct();
-
-			foreach (var source in sources)
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			foreach (var source in GetSupportDirs(ModRegistration.User | ModRegistration.System))
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 				if (!Directory.Exists(metadataPath))
@@ -81,13 +76,13 @@ namespace OpenRA
 				{
 					try
 					{
-						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
+						var yaml = MiniYaml.FromFile(path, stringPool: stringPool).First().Value;
 						LoadMod(yaml, path);
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
-						Log.Write("debug", e.ToString());
+						Log.Write("debug", $"Failed to parse mod metadata file '{path}'");
+						Log.Write("debug", e);
 					}
 				}
 			}
@@ -99,17 +94,17 @@ namespace OpenRA
 
 			if (sheetBuilder != null)
 			{
-				var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
+				var iconNode = yaml.NodeWithKeyOrDefault("Icon");
 				if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
 					using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
 						mod.Icon = sheetBuilder.Add(new Png(stream));
 
-				var icon2xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon2x");
+				var icon2xNode = yaml.NodeWithKeyOrDefault("Icon2x");
 				if (icon2xNode != null && !string.IsNullOrEmpty(icon2xNode.Value.Value))
 					using (var stream = new MemoryStream(Convert.FromBase64String(icon2xNode.Value.Value)))
 						mod.Icon2x = sheetBuilder.Add(new Png(stream), 1f / 2);
 
-				var icon3xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon3x");
+				var icon3xNode = yaml.NodeWithKeyOrDefault("Icon3x");
 				if (icon3xNode != null && !string.IsNullOrEmpty(icon3xNode.Value.Value))
 					using (var stream = new MemoryStream(Convert.FromBase64String(icon3xNode.Value.Value)))
 						mod.Icon3x = sheetBuilder.Add(new Png(stream), 1f / 3);
@@ -127,28 +122,31 @@ namespace OpenRA
 				return;
 
 			var key = ExternalMod.MakeKey(mod);
-			var yaml = new MiniYamlNode("Registration", new MiniYaml("", new List<MiniYamlNode>()
-			{
+			var yaml = new MiniYamlNode("Registration", new MiniYaml("",
+			[
 				new MiniYamlNode("Id", mod.Id),
 				new MiniYamlNode("Version", mod.Metadata.Version),
-				new MiniYamlNode("Title", mod.Metadata.Title),
 				new MiniYamlNode("LaunchPath", launchPath),
 				new MiniYamlNode("LaunchArgs", new[] { "Game.Mod=" + mod.Id }.Concat(launchArgs).JoinWith(", "))
-			}));
+			]));
+
+			var iconNodes = new List<MiniYamlNode>();
 
 			using (var stream = mod.Package.GetStream("icon.png"))
 				if (stream != null)
-					yaml.Value.Nodes.Add(new MiniYamlNode("Icon", Convert.ToBase64String(stream.ReadAllBytes())));
+					iconNodes.Add(new MiniYamlNode("Icon", Convert.ToBase64String(stream.ReadAllBytes())));
 
 			using (var stream = mod.Package.GetStream("icon-2x.png"))
 				if (stream != null)
-					yaml.Value.Nodes.Add(new MiniYamlNode("Icon2x", Convert.ToBase64String(stream.ReadAllBytes())));
+					iconNodes.Add(new MiniYamlNode("Icon2x", Convert.ToBase64String(stream.ReadAllBytes())));
 
 			using (var stream = mod.Package.GetStream("icon-3x.png"))
 				if (stream != null)
-					yaml.Value.Nodes.Add(new MiniYamlNode("Icon3x", Convert.ToBase64String(stream.ReadAllBytes())));
+					iconNodes.Add(new MiniYamlNode("Icon3x", Convert.ToBase64String(stream.ReadAllBytes())));
 
-			var sources = new List<string>();
+			yaml = yaml.WithValue(yaml.Value.WithNodesAppended(iconNodes));
+
+			var sources = new HashSet<string>();
 			if (registration.HasFlag(ModRegistration.System))
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
@@ -167,7 +165,7 @@ namespace OpenRA
 			LoadMod(yaml.Value, forceRegistration: true);
 
 			var lines = new List<MiniYamlNode> { yaml }.ToLines().ToArray();
-			foreach (var source in sources.Distinct())
+			foreach (var source in sources)
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 
@@ -179,35 +177,23 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Log.Write("debug", "Failed to register current mod metadata");
-					Log.Write("debug", e.ToString());
+					Log.Write("debug", e);
 				}
 			}
 		}
 
 		/// <summary>
 		/// Removes invalid mod registrations:
-		/// * LaunchPath no longer exists
-		/// * LaunchPath and mod id matches the active mod, but the version is different
-		/// * Filename doesn't match internal key
-		/// * Fails to parse as a mod registration
+		/// <list type="bullet">
+		/// <item>LaunchPath no longer exists.</item>
+		/// <item>LaunchPath and mod id matches the active mod, but the version is different.</item>
+		/// <item>Filename doesn't match internal key.</item>
+		/// <item>Fails to parse as a mod registration.</item>
+		/// </list>
 		/// </summary>
-		internal void ClearInvalidRegistrations(ExternalMod activeMod, ModRegistration registration)
+		internal void ClearInvalidRegistrations(ModRegistration registration)
 		{
-			var sources = new List<string>();
-			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.GetSupportDir(SupportDirType.System));
-
-			if (registration.HasFlag(ModRegistration.User))
-			{
-				// User support dir may be using the modern or legacy value, or overridden by the user
-				// Add all the possibilities and let the .Distinct() below ignore the duplicates
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
-				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
-				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
-			}
-
-			var activeModKey = ExternalMod.MakeKey(activeMod);
-			foreach (var source in sources.Distinct())
+			foreach (var source in GetSupportDirs(registration))
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 				if (!Directory.Exists(metadataPath))
@@ -218,23 +204,20 @@ namespace OpenRA
 					string modKey = null;
 					try
 					{
-						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
+						var yaml = MiniYaml.FromFile(path).First().Value;
 						var m = FieldLoader.Load<ExternalMod>(yaml);
 						modKey = ExternalMod.MakeKey(m);
 
-						// Continue to the next entry if it is the active mod (even if the LaunchPath is bogus)
-						if (modKey == activeModKey)
-							continue;
-
 						// Continue to the next entry if this one is valid
-						if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey &&
-							!(activeMod != null && m.LaunchPath == activeMod.LaunchPath && m.Id == activeMod.Id && m.Version != activeMod.Version))
+						// HACK: Explicitly invalidate paths to OpenRA.dll to clean up bogus metadata files
+						// that were created after the initial migration from .NET Framework to Core/5.
+						if (File.Exists(m.LaunchPath) && Path.GetFileNameWithoutExtension(path) == modKey && Path.GetExtension(m.LaunchPath) != ".dll")
 							continue;
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
-						Log.Write("debug", e.ToString());
+						Log.Write("debug", $"Failed to parse mod metadata file '{path}'");
+						Log.Write("debug", e);
 					}
 
 					// Remove from the ingame mod switcher
@@ -245,12 +228,12 @@ namespace OpenRA
 					try
 					{
 						File.Delete(path);
-						Log.Write("debug", "Removed invalid mod metadata file '{0}'", path);
+						Log.Write("debug", $"Removed invalid mod metadata file '{path}'");
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
-						Log.Write("debug", e.ToString());
+						Log.Write("debug", $"Failed to remove mod metadata file '{path}'");
+						Log.Write("debug", e);
 					}
 				}
 			}
@@ -258,23 +241,10 @@ namespace OpenRA
 
 		internal void Unregister(Manifest mod, ModRegistration registration)
 		{
-			var sources = new List<string>();
-			if (registration.HasFlag(ModRegistration.System))
-				sources.Add(Platform.GetSupportDir(SupportDirType.System));
-
-			if (registration.HasFlag(ModRegistration.User))
-			{
-				// User support dir may be using the modern or legacy value, or overridden by the user
-				// Add all the possibilities and let the .Distinct() below ignore the duplicates
-				sources.Add(Platform.GetSupportDir(SupportDirType.User));
-				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
-				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
-			}
-
 			var key = ExternalMod.MakeKey(mod);
 			mods.Remove(key);
 
-			foreach (var source in sources.Distinct())
+			foreach (var source in GetSupportDirs(registration))
 			{
 				var path = Path.Combine(source, "ModMetadata", key + ".yaml");
 				try
@@ -284,10 +254,28 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
-					Log.Write("debug", e.ToString());
+					Log.Write("debug", $"Failed to remove mod metadata file '{path}'");
+					Log.Write("debug", e);
 				}
 			}
+		}
+
+		static IEnumerable<string> GetSupportDirs(ModRegistration registration)
+		{
+			var sources = new HashSet<string>(4);
+			if (registration.HasFlag(ModRegistration.System))
+				sources.Add(Platform.GetSupportDir(SupportDirType.System));
+
+			if (registration.HasFlag(ModRegistration.User))
+			{
+				// User support dir may be using the modern or legacy value, or overridden by the user
+				// Add all the possibilities and let the HashSet ignore the duplicates
+				sources.Add(Platform.GetSupportDir(SupportDirType.User));
+				sources.Add(Platform.GetSupportDir(SupportDirType.ModernUser));
+				sources.Add(Platform.GetSupportDir(SupportDirType.LegacyUser));
+			}
+
+			return sources;
 		}
 
 		public ExternalMod this[string key] => mods[key];

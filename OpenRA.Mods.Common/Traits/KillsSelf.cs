@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,16 +14,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class KillsSelfInfo : ConditionalTraitInfo
+	sealed class KillsSelfInfo : ConditionalTraitInfo
 	{
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
 		public readonly bool RemoveInstead = false;
 
 		[Desc("The amount of time (in ticks) before the actor dies. Two values indicate a range between which a random value is chosen.")]
-		public readonly int[] Delay = { 0 };
+		public readonly int[] Delay = [0];
 
 		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant moments before suiciding.")]
@@ -32,14 +32,14 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
 
-	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
+	sealed class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{
 		int lifetime;
 
 		public KillsSelf(Actor self, KillsSelfInfo info)
 			: base(info)
 		{
-			lifetime = Util.RandomDelay(self.World, info.Delay);
+			lifetime = Util.RandomInRange(self.World.SharedRandom, info.Delay);
 		}
 
 		protected override void TraitEnabled(Actor self)

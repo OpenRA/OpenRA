@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -119,31 +119,11 @@ WorldLoaded = function()
 	Germany = Player.GetPlayer("Germany")
 	Greece = Player.GetPlayer("Greece")
 
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(USSR)
 
-	KillAll = USSR.AddObjective("Destroy all Allied units and structures.")
-	DestroyVillageObjective = USSR.AddObjective("Destroy the village of Allied sympathizers.", "Secondary", false)
-	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
-
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
+	KillAll = AddPrimaryObjective(USSR, "destroy-allied-units-structures")
+	DestroyVillageObjective = AddSecondaryObjective(USSR, "destroy-allied-sympathizers-village")
+	BeatUSSR = AddPrimaryObjective(Greece, "")
 
 	AddEastReinforcementTrigger()
 	AddSouthReinforcementTrigger()

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class MadTankInfo : TraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
+	sealed class MadTankInfo : TraitInfo, IRulesetLoaded, Requires<FireWarheadsOnDeathInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
 		[SequenceReference]
 		public readonly string ThumpSequence = "piston";
@@ -59,10 +59,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		public WeaponInfo DetonationWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this trait causes to self while self-destructing. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[CursorReference]
-		[Desc("Cursor to display when targetting.")]
+		[Desc("Cursor to display when targeting.")]
 		public readonly string AttackCursor = "attack";
 
 		[CursorReference]
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	sealed class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly MadTankInfo info;
 
@@ -102,7 +102,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
-				yield return new TargetTypeOrderTargeter(new BitSet<TargetableType>("DetonateAttack"), "DetonateAttack", 5, info.AttackCursor, true, false) { ForceAttack = false };
+				yield return
+					new TargetTypeOrderTargeter(new BitSet<TargetableType>("DetonateAttack"), "DetonateAttack", 5, info.AttackCursor, true, false)
+					{ ForceAttack = false };
 
 				if (!initiated)
 					yield return new DeployOrderTargeter("Detonate", 5, () => info.DeployCursor);
@@ -143,7 +145,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.QueueActivity(order.Queued, new DetonationSequence(self, this));
 		}
 
-		class DetonationSequence : Activity
+		sealed class DetonationSequence : Activity
 		{
 			readonly Actor self;
 			readonly MadTank mad;
@@ -203,13 +205,10 @@ namespace OpenRA.Mods.Cnc.Traits
 					mad.initiated = true;
 				}
 
-				if (++ticks % mad.info.ThumpInterval == 0)
+				if (++ticks % mad.info.ThumpInterval == 0 && mad.info.ThumpDamageWeapon != null)
 				{
-					if (mad.info.ThumpDamageWeapon != null)
-					{
-						// Use .FromPos since this weapon needs to affect more than just the MadTank actor
-						mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
-					}
+					// Use .FromPos since this weapon needs to affect more than just the MadTank actor
+					mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
 				}
 
 				if (ticks == mad.info.ChargeDelay)
@@ -244,12 +243,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			void EjectDriver()
 			{
-				var driver = self.World.CreateActor(mad.info.DriverActor.ToLowerInvariant(), new TypeDictionary
-				{
+				var driver = self.World.CreateActor(mad.info.DriverActor.ToLowerInvariant(),
+				[
 					new LocationInit(self.Location),
 					new OwnerInit(self.Owner)
-				});
-				driver.TraitOrDefault<Mobile>()?.Nudge(driver);
+				]);
+				driver.QueueActivity(false, new Nudge(driver));
 			}
 		}
 	}

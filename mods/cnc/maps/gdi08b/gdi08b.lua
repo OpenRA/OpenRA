@@ -1,13 +1,11 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-
-Difficulty = Map.LobbyOption("difficulty")
 
 SamSites = { sam1, sam2, sam3, sam4, sam5 }
 
@@ -74,7 +72,7 @@ SendWaves = function(counter, Waves)
 end
 
 SendHeli = function(heli)
-	units = Reinforcements.ReinforceWithTransport(Nod, "tran", heli.types, heli.entry, { heli.entry[1] })
+	local units = Reinforcements.ReinforceWithTransport(Nod, "tran", heli.types, heli.entry, { heli.entry[1] })
 	Utils.Do(units[2], function(actor)
 		actor.Hunt()
 		Trigger.OnIdle(actor, actor.Hunt)
@@ -86,12 +84,12 @@ SendHeli = function(heli)
 end
 
 MoveInitialArty = function(arty, waypoints)
-	units = { arty }
+	local units = { arty }
 	MoveAndIdle(units, waypoints)
 end
 
 TankTerror = function(tank)
-	units = { tank }
+	local units = { tank }
 	MoveAndHunt(units, WaypointGroupVillageLeft)
 end
 
@@ -105,38 +103,22 @@ WorldLoaded = function()
 
 	StartAI()
 
-	Trigger.OnObjectiveAdded(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(GDI)
 
-	Trigger.OnObjectiveCompleted(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-
-	Trigger.OnObjectiveFailed(GDI, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerWon(GDI, function()
-		Media.PlaySpeechNotification(Nod, "Win")
-	end)
-
-	Trigger.OnPlayerLost(GDI, function()
-		Media.PlaySpeechNotification(Nod, "Lose")
-	end)
-
-	ProtectMoebius = GDI.AddObjective("Protect Dr. Mobius.")
+	ProtectMoebius = AddPrimaryObjective(GDI, "protect-mobius")
 	Trigger.OnKilled(DrMoebius, function()
 		GDI.MarkFailedObjective(ProtectMoebius)
 	end)
-	
-	ProtectHospital = GDI.AddObjective("Protect the Hospital.")
+
+	ProtectHospital = AddPrimaryObjective(GDI, "protect-hospital")
 	Trigger.OnKilled(Hospital, function()
 		GDI.MarkFailedObjective(ProtectHospital)
 	end)
-	
+
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]
-	ProtectCivilians = GDI.AddObjective("Keep at least " .. 14 - CiviliansKilledThreshold .. " out of 14 Civilians alive.")
+	local civilians = 14 - CiviliansKilledThreshold
+	local keepCiviliansAlive = UserInterface.GetFluentMessage("keep-civilians-alive", { ["civilians"] = civilians })
+	ProtectCivilians = AddPrimaryObjective(GDI, keepCiviliansAlive)
 	Utils.Do(Civilians, function(civilian)
 		Trigger.OnKilled(civilian, function()
 			CivilianCasualties = CivilianCasualties + 1
@@ -145,12 +127,12 @@ WorldLoaded = function()
 			end
 		end)
 	end)
-	
-	SecureArea = GDI.AddObjective("Destroy the Nod bases.")
 
-	KillGDI = Nod.AddObjective("Kill all enemies!")
-	
-	AirSupport = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
+	SecureArea = AddPrimaryObjective(GDI, "destroy-nod-bases")
+
+	KillGDI = AddPrimaryObjective(Nod, "")
+
+	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(AirSupport)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })
@@ -161,20 +143,20 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), function() SendWaves(1, AutoAttackWaves) end)
 	Trigger.AfterDelay(DateTime.Minutes(2), function() ProduceInfantry(handofnod) end)
 	Trigger.AfterDelay(DateTime.Minutes(3), function() ProduceVehicle(nodairfield) end)
-	
+
 	local InitialArrivingUnits =
-	{ 
+	{
 		{ units = { Actor252, Actor253, Actor223, Actor225, Actor222, Actor258, Actor259, Actor260, Actor261, Actor254, Actor255, Actor256, Actor257 }, distance = -1 },
 		{ units = { Actor218, Actor220, Actor224, Actor226 }, distance = -2 },
 		{ units = { gdiAPC1 }, distance = -3 }
 	}
-	
+
 	Utils.Do(InitialArrivingUnits, function(group)
 		Utils.Do(group.units, function(unit)
 			unit.Move(unit.Location + CVec.New(0, group.distance), 0)
 		end)
 	end)
-	
+
 	Utils.Do(NodHelis, function(heli)
 		if heli.delay == DateTime.Seconds(0) then -- heli1 comes only when specific units are killed, see below
 			return

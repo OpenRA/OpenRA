@@ -15,6 +15,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
+		LevelUpTextNotification: notification-unit-promoted
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
@@ -125,11 +126,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Defense
+		ValidTargets: Infantry, Vehicle, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Structure, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@CREEPS:
 		ValidTargets: Creep
@@ -152,16 +153,24 @@
 		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
+^AutoTargetVehicleAssaultMove:
+	Inherits: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@VEHICLES:
+		ValidTargets: Vehicle
+		InvalidTargets: Infantry, Structure, Defense
+		RequiresCondition: bot-owned
+		Priority: 10
+
 ^AutoTargetAll:
 	AutoTarget:
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Air, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@CREEPS:
 		ValidTargets: Creep
@@ -189,13 +198,21 @@
 	HandicapDamageMultiplier:
 	HandicapProductionTimeMultiplier:
 
+^CliffAvalanche:
+	ExternalCondition@rockAvalanche:
+		Condition: rock_avalanche
+	KillsSelf@rockAvalanche:
+		RequiresCondition: rock_avalanche
+		DamageTypes: SmallExplosionDeath
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	Inherits@avalancheKill: ^CliffAvalanche
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-vehicle-generic-name
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -205,13 +222,20 @@
 		PauseOnCondition: notmobile
 	Selectable:
 		Bounds: 1024, 1024
+	ExternalCondition@deviatorInfluence:
+		Condition: unit-captured
 	Targetable:
 		TargetTypes: Ground, Vehicle, C4
+		RequiresCondition: !unit-captured
+	Targetable@CAPTURED:
+		TargetTypes: Ground, CapturedUnit
+		RequiresCondition: unit-captured
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	Repairable:
 		RepairActors: repair_pad
 	Guard:
@@ -219,6 +243,20 @@
 	Guardable:
 	WithFacingSpriteBody:
 	Demolishable:
+		Condition: being-demolished
+	AmbientSound@onBeingDemolished:
+		SoundFiles: O_SCONF2.AUD
+		RequiresCondition: being-demolished
+	FireWarheadsOnDeath@sabotuerDemolition:
+		RequiresCondition: being-demolished
+		Type: CenterPosition
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
+	FireProjectilesOnDeath@OnsabotuerDemolition:
+		Weapons: Debris2, Debris3, Debris4, ExplosiveDebris
+		Pieces: 3, 7
+		Range: 3c512, 6c0
+		RequiresCondition: being-demolished
 	TemporaryOwnerManager:
 	MustBeDestroyed:
 	Voiced:
@@ -232,7 +270,6 @@
 		Margin: 7, 9
 		Sequence: pickup-indicator
 		RequiresCondition: carryall-reserved
-	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
 		Radius: 2c512
@@ -246,24 +283,40 @@
 	SpeedMultiplier@HEAVYDAMAGE:
 		RequiresCondition: heavy-damage
 		Modifier: 75
+	FloatingSpriteEmitter@SMOKE:
+		RequiresCondition: heavy-damage
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 5, 10
+		RandomFacing: true
+		RandomRate: 4
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: 500
 
 ^Tank:
 	Inherits: ^Vehicle
 	Mobile:
 		Locomotor: tank
+	GrantConditionOnDamageState@HEAVY:
+		ValidDamageStates: Critical
+	SpawnActorOnDeath:
+		RequiresCondition: !being-demolished
 
 ^Husk:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
-		HP: 750
+		HP: 8000
 	Armor:
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
 		AlwaysVisibleRelationships: None
 	Tooltip:
-		GenericName: Destroyed Unit
+		GenericName: meta-husk-generic-name
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -276,32 +329,56 @@
 	Inherits: ^Husk
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
+		Locomotor: tank
 	Targetable:
-		TargetTypes: Ground, Vehicle
+		TargetTypes: Ground, Vehicle, Husk
 		RequiresForceFire: true
-	WithColoredOverlay@IDISABLE:
-		Color: 000000B4
-	Explodes:
+	WithColoredOverlay@husk:
+		Color: 00000060
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
+	CaptureManager:
+	Capturable:
+		Types: husk
 	WithIdleOverlay@Burns:
 		Image: fire
 		Sequence: 1
 		IsDecoration: True
+		RequiresCondition: decoration1 || decoration3
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 2, 10
+		RandomFacing: true
+		RandomRate: 4
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: 1500
+		RequiresCondition: decoration2 || decoration3
 	ChangesHealth:
-		Step: -10
+		Step: -27
 		StartIfBelow: 101
 		Delay: 4
+	GrantRandomCondition:
+		Conditions: decoration1, decoration2, decoration3
+	TransformOnCapture:
+		ForceHealthPercentage: 5
+	InfiltrateForTransform:
+		Types: Husk
+		ForceHealthPercentage: 5
 
 ^AircraftHusk:
 	Inherits: ^Husk
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-aircrafthusk-generic-name
 	WithShadow:
 	FallsToEarth:
 		MaximumSpinSpeed: 0
 		Moves: True
-		Explosion: UnitExplodeLarge
+		Explosion: ExplosionAircraft
 	-MapEditorData:
 
 ^Infantry:
@@ -310,8 +387,9 @@
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	Inherits@avalancheKill: ^CliffAvalanche
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-infantry-generic-name
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -337,7 +415,7 @@
 		IdleSequences: idle1, idle2
 	TakeCover:
 		DamageModifiers:
-			Prone50Percent: 50
+			Prone80Percent: 80
 		DamageTriggers: TriggerProne
 		ProneOffset: 300,0,0
 	WithDeathAnimation:
@@ -352,6 +430,7 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	Crushable:
 		CrushSound: CRUSH1.WAV
 	Guard:
@@ -367,7 +446,6 @@
 			Rough: 80
 	Voiced:
 		VoiceSet: InfantryVoice
-	RevealOnFire:
 	RevealOnDeath:
 		Duration: 100
 	HitShape:
@@ -376,6 +454,7 @@
 	MapEditorData:
 		Categories: Infantry
 	AttackFrontal:
+		FacingTolerance: 0
 
 ^Plane:
 	Inherits@1: ^ExistsInWorld
@@ -383,16 +462,15 @@
 	Inherits@handicaps: ^PlayerHandicaps
 	Interactable:
 	Tooltip:
-		GenericName: Unit
-	Huntable:
+		GenericName: meta-plane-generic-name
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:
 		UseLocation: true
 	HiddenUnderFog:
 		Type: GroundPosition
-		AlwaysVisibleRelationships: None
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	AttackMove:
 	WithFacingSpriteBody:
 	WithShadow:
@@ -408,7 +486,7 @@
 	Inherits@selection: ^SelectableBuilding
 	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
-		GenericName: Structure
+		GenericName: meta-building-generic-name
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -441,32 +519,44 @@
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	Explodes:
+	FireWarheadsOnDeath:
 		Type: Footprint
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
 		RepairStep: 500
-		PlayerExperience: 25
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	SpawnActorsOnSell:
 		ActorTypes: light_inf
+		GuaranteedActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	FrozenUnderFog:
 	CaptureNotification:
+		TextNotification: notification-enemy-building-captured
+		LoseTextNotification: notification-one-of-our-buildings-has-been-captured
 	ActorLostNotification:
 		Notification: BuildingLost
+		TextNotification: notification-building-lost
 	ShakeOnDeath:
 	Demolishable:
 		Condition: being-demolished
+	AmbientSound@onBeingDemolished:
+		SoundFiles: O_SCONF2.AUD
+		RequiresCondition: being-demolished
+	FireWarheadsOnDeath@sabotuerDemolition:
+		RequiresCondition: being-demolished
+		Type: CenterPosition
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
 	Sellable:
 		RequiresCondition: !build-incomplete && !being-demolished
 		SellSounds: BUILD1.WAV
 		Notification: StructureSold
 	Guardable:
 		Range: 3c0
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
 		Range: 1c512, 4c0
@@ -494,10 +584,10 @@
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
 	AttackTurreted:
-		RequiresCondition: !build-incomplete
+		PauseOnCondition: build-incomplete
 	RenderRangeCircle:
 	DetectCloaked:
-		Range: 1c768
+		Range: 4c768
 	-GivesBuildableArea:
 	WithMakeAnimation:
 		BodyNames: make
@@ -509,13 +599,12 @@
 		RequiresCondition: !build-incomplete
 	LineBuildNode:
 		Types: turret
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris, Debris3
 		Pieces: 2, 2
 		Range: 2c0, 4c0
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	RevealOnFire:
 	Targetable:
 		TargetTypes: Ground, C4, Structure, Defense
 	MapEditorData:
@@ -556,6 +645,7 @@
 		Modifier: 0
 	RepairableBuilding:
 		RepairCondition: repairing
+		RepairStep: 500
 	WithBuildingRepairDecoration:
 		Offsets:
 			powerdown: -10, 0
@@ -600,6 +690,7 @@
 		PrimaryCondition: primary
 		ProductionQueues: Building
 		SelectionNotification: PrimaryBuildingSelected
+		SelectionTextNotification: notification-primary-building-selected
 	WithTextDecoration@primary:
 		RequiresCondition: primary
 		Position: Top
@@ -617,3 +708,189 @@
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
+
+^UndestroyableTile:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	FrozenUnderFog:
+	WithSpriteBody:
+	Building:
+		TerrainTypes: Rock, Concrete, Cliff, Sand, Rock, Transition, Spice, SpiceSand, Dune,
+	Health:
+		HP: 30000
+	Armor:
+		Type: invulnerable
+	HitShape:
+		UseTargetableCellsOffsets: false
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	MapEditorData:
+		Categories: Tile actors
+	Interactable:
+
+^DestroyableTile:
+	Inherits: ^UndestroyableTile
+	Targetable:
+		TargetTypes: Ground, Cliff
+		RequiresForceFire: true
+	Armor:
+		Type: wall
+	Health:
+		HP: 30000
+	OwnerLostAction:
+		Action: ChangeOwner
+		Owner: Neutral
+	HitShape:
+		UseTargetableCellsOffsets: true
+	FireWarheadsOnDeath:
+		Type: CenterPosition
+		Weapon: cliffExplode
+		EmptyWeapon: cliffExplode
+	MapEditorData:
+		Categories: Destroable Tiles
+	Tooltip:
+		GenericName: meta-destroyabletile.generic-name
+		Name: meta-destroyabletile.name
+
+^DestroyedTile:
+	Inherits: ^UndestroyableTile
+	CaptureManager:
+	Building:
+	OwnerLostAction:
+		Action: ChangeOwner
+		Owner: Neutral
+	Tooltip:
+		GenericName: meta-destroyedtile.generic-name
+		Name: meta-destroyedtile.name
+	CaptureManager:
+	CapturableProgressBar:
+	CapturableProgressBlink:
+		Interval: 30
+	Capturable:
+		Types: cliff
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1048, -1048
+			BottomRight: 1024, 1054
+	Targetable:
+		TargetTypes: Ground, Cliff
+		RequiresForceFire: true
+	MapEditorData:
+		Categories: Destroyed Tiles
+
+^DamagedBuildingEffects :
+	GrantConditionOnFaction@atreidesVFX:
+		Condition: atreidesVFX
+		Factions: atreides, fremen
+	GrantConditionOnFaction@harkonnenVFX:
+		Condition: harkonnenVFX
+		Factions: harkonnen, corrino
+	GrantConditionOnFaction@ordosVFX:
+		Condition: ordosVFX
+		Factions: ordos, mercenary, smuggler
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		RequiresCondition: heavy-damage && atreidesVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 5
+		Gravity: 60
+		SpawnFrequency: 2, 5
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1300
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		RequiresCondition: heavy-damage && atreidesVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 900
+	WithDamageOverlay@Fire1_Atreides:
+		RequiresCondition: atreidesVFX
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	WithDamageOverlay@Fire2_atreides:
+		RequiresCondition: atreidesVFX
+		Image: fire
+		LoopSequence: 2
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		RequiresCondition: heavy-damage && harkonnenVFX
+		Image: smoke3
+		Lifetime: 20,25
+		Speed: 5
+		Gravity: 60
+		SpawnFrequency: 3, 7
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1300
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		RequiresCondition: heavy-damage && harkonnenVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 900
+	WithDamageOverlay@Fire1Harkonnen:
+		RequiresCondition: harkonnenVFX
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 10
+		InitialDelay: 0, 25
+	WithDamageOverlay@Fire2Harkonnen:
+		RequiresCondition: harkonnenVFX
+		Image: fire
+		LoopSequence: 2
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		RequiresCondition: heavy-damage && ordosVFX
+		Image: smoke3
+		Lifetime: 20,25
+		Speed: 7
+		Gravity: 60
+		SpawnFrequency: 3, 8
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1300
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		RequiresCondition: heavy-damage && ordosVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 900
+	WithDamageOverlay@Fire1Ordos:
+		RequiresCondition: ordosVFX
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	WithDamageOverlay@Fire2Ordos:
+		RequiresCondition: ordosVFX
+		Image: fire
+		LoopSequence: 2
+		LoopCount: 20, 30
+		InitialDelay: 0, 25

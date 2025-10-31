@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -44,7 +44,7 @@ ProduceUSSRInfantry = function()
 	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRInfantry)
 	end)
 end
 
@@ -56,7 +56,7 @@ ProduceUSSRVehicles = function()
 	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRVehicles)
 	end)
 end
 
@@ -73,7 +73,7 @@ ProduceAircraft = function()
 
 		local alive = Utils.Where(Planes, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
 		InitializeAttackAircraft(plane, Greece)
@@ -94,7 +94,8 @@ ActivateAI = function()
 	Trigger.AfterDelay(DateTime.Minutes(2), ProduceUSSRVehicles)
 	Trigger.AfterDelay(DateTime.Minutes(4), ProduceAircraft)
 
-	Trigger.OnAllKilled(SovietProduction, function()
+	local intactProduction = Utils.Where(SovietProduction, function(self) return not self.IsDead end)
+	Trigger.OnAllKilled(intactProduction, function()
 		Utils.Do(USSR.GetGroundAttackers(), IdleHunt)
 	end)
 end

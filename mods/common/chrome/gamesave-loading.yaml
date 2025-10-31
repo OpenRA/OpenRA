@@ -1,35 +1,35 @@
 Container@GAMESAVE_LOADING_SCREEN:
 	Logic: GameSaveLoadingLogic
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
 	Children:
 		LogicKeyListener@CANCEL_HANDLER:
 		Background@STRIPE:
-			Y: (WINDOW_BOTTOM - HEIGHT) / 2
-			Width: WINDOW_RIGHT
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
+			Width: WINDOW_WIDTH
 			Height: 256
 			Background: loadscreen-stripe
 		Image@LOGO:
-			X: (WINDOW_RIGHT - 256) / 2
-			Y: (WINDOW_BOTTOM - 256) / 2
+			X: (WINDOW_WIDTH - 256) / 2
+			Y: (WINDOW_HEIGHT - 256) / 2
 			ImageCollection: logos
 			ImageName: logo
 		Label@TITLE:
-			Width: WINDOW_RIGHT
-			Y: 3 * WINDOW_BOTTOM / 4 - 29
+			Width: WINDOW_WIDTH
+			Y: 3 * WINDOW_HEIGHT / 4 - 29
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Loading Saved Game
+			Text: label-gamesave-loading-screen-title
 		ProgressBar@PROGRESS:
-			X: (WINDOW_RIGHT - 500) / 2
-			Y: 3 * WINDOW_BOTTOM / 4
+			X: (WINDOW_WIDTH - 500) / 2
+			Y: 3 * WINDOW_HEIGHT / 4
 			Width: 500
 			Height: 20
 		Label@DESC:
-			Width: WINDOW_RIGHT
-			Y: 3 * WINDOW_BOTTOM / 4 + 19
+			Width: WINDOW_WIDTH
+			Y: 3 * WINDOW_HEIGHT / 4 + 19
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: Press Escape to cancel loading and return to the main menu
+			Text: label-gamesave-loading-screen-desc

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,14 +12,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Primitives
 {
-	public class TypeDictionary : IEnumerable
+	public class TypeDictionary : IEnumerable<object>
 	{
-		static readonly Func<Type, List<object>> CreateList = type => new List<object>();
-		readonly Dictionary<Type, List<object>> data = new Dictionary<Type, List<object>>();
+		static readonly Func<Type, ITypeContainer> CreateTypeContainer = t =>
+			(ITypeContainer)typeof(TypeContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
+
+		readonly Dictionary<Type, ITypeContainer> data = [];
+
+		ITypeContainer InnerGet(Type t)
+		{
+			return data.GetOrAdd(t, CreateTypeContainer);
+		}
 
 		public void Add(object val)
 		{
@@ -33,7 +39,7 @@ namespace OpenRA.Primitives
 
 		void InnerAdd(Type t, object val)
 		{
-			data.GetOrAdd(t, CreateList).Add(val);
+			InnerGet(t).Add(val);
 		}
 
 		public bool Contains<T>()
@@ -48,36 +54,34 @@ namespace OpenRA.Primitives
 
 		public T Get<T>()
 		{
-			return (T)Get(typeof(T), true);
+			return Get<T>(true);
 		}
 
 		public T GetOrDefault<T>()
 		{
-			var result = Get(typeof(T), false);
-			if (result == null)
-				return default(T);
-			return (T)result;
+			return Get<T>(false);
 		}
 
-		object Get(Type t, bool throwsIfMissing)
+		T Get<T>(bool throwsIfMissing)
 		{
-			if (!data.TryGetValue(t, out var ret))
+			if (!data.TryGetValue(typeof(T), out var container))
 			{
 				if (throwsIfMissing)
-					throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{t}`");
-				return null;
+					throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
+				return default;
 			}
 
-			if (ret.Count > 1)
-				throw new InvalidOperationException($"TypeDictionary contains multiple instances of type `{t}`");
-			return ret[0];
+			var list = ((TypeContainer<T>)container).Objects;
+			if (list.Count > 1)
+				throw new InvalidOperationException($"TypeDictionary contains multiple instances of type `{typeof(T)}`");
+			return list[0];
 		}
 
-		public IEnumerable<T> WithInterface<T>()
+		public IReadOnlyCollection<T> WithInterface<T>()
 		{
-			if (data.TryGetValue(typeof(T), out var objs))
-				return objs.Cast<T>();
-			return new T[0];
+			if (data.TryGetValue(typeof(T), out var container))
+				return ((TypeContainer<T>)container).Objects;
+			return [];
 		}
 
 		public void Remove<T>(T val)
@@ -92,22 +96,59 @@ namespace OpenRA.Primitives
 
 		void InnerRemove(Type t, object val)
 		{
-			if (!data.TryGetValue(t, out var objs))
+			if (!data.TryGetValue(t, out var container))
 				return;
-			objs.Remove(val);
-			if (objs.Count == 0)
+
+			container.Remove(val);
+			if (container.Count == 0)
 				data.Remove(t);
 		}
 
 		public void TrimExcess()
 		{
-			foreach (var objs in data.Values)
-				objs.TrimExcess();
+			data.TrimExcess();
+			foreach (var t in data.Keys)
+				InnerGet(t).TrimExcess();
 		}
 
-		public IEnumerator GetEnumerator()
+		public IEnumerator<object> GetEnumerator()
 		{
 			return WithInterface<object>().GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		interface ITypeContainer
+		{
+			int Count { get; }
+			void Add(object value);
+			void Remove(object value);
+			void TrimExcess();
+		}
+
+		sealed class TypeContainer<T> : ITypeContainer
+		{
+			public List<T> Objects { get; } = [];
+
+			public int Count => Objects.Count;
+
+			public void Add(object value)
+			{
+				Objects.Add((T)value);
+			}
+
+			public void Remove(object value)
+			{
+				Objects.Remove((T)value);
+			}
+
+			public void TrimExcess()
+			{
+				Objects.TrimExcess();
+			}
 		}
 	}
 

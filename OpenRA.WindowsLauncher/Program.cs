@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,7 +21,7 @@ using SDL2;
 
 namespace OpenRA.WindowsLauncher
 {
-	class WindowsLauncher
+	sealed class WindowsLauncher
 	{
 		[DllImport("user32.dll")]
 		static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -52,7 +52,7 @@ namespace OpenRA.WindowsLauncher
 				}
 			}
 
-			if (args.Any(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
+			if (Array.Exists(args, x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
 				return RunGame(args);
 
 			return RunInnerLauncher(args);
@@ -80,19 +80,20 @@ namespace OpenRA.WindowsLauncher
 			}
 			finally
 			{
+				// Flushing logs in finally block is okay here, as the catch block handles the exception.
 				Log.Dispose();
 			}
 		}
 
 		static int RunInnerLauncher(string[] args)
 		{
-			var launcherPath = Process.GetCurrentProcess().MainModule.FileName;
+			var launcherPath = Environment.ProcessPath;
 			var launcherArgs = args.ToList();
 
-			if (!launcherArgs.Any(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
+			if (!launcherArgs.Exists(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
 				launcherArgs.Add("Engine.LaunchPath=\"" + launcherPath + "\"");
 
-			if (!launcherArgs.Any(x => x.StartsWith("Game.Mod=", StringComparison.Ordinal)))
+			if (!launcherArgs.Exists(x => x.StartsWith("Game.Mod=", StringComparison.Ordinal)))
 				launcherArgs.Add("Game.Mod=" + modID);
 
 			var psi = new ProcessStartInfo(launcherPath, string.Join(" ", launcherArgs));
@@ -143,7 +144,7 @@ namespace OpenRA.WindowsLauncher
 				flags = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
 				title = "Fatal Error",
 				message = displayName + " has encountered a fatal error and must close.\nRefer to the crash logs and FAQ for more information.",
-				buttons = new[] { quit, viewFaq, viewLogs },
+				buttons = [quit, viewFaq, viewLogs],
 				numbuttons = 3
 			};
 
@@ -167,7 +168,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						Process.Start(faqUrl);
+						SDL.SDL_OpenURL(faqUrl);
 					}
 					catch { }
 					break;
@@ -177,7 +178,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						Process.Start(Path.Combine(Platform.SupportDir, "Logs"));
+						SDL.SDL_OpenURL(Path.Combine(Platform.SupportDir, "Logs"));
 					}
 					catch { }
 					break;

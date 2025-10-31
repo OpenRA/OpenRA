@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckCursors : ILintRulesPass, ILintServerMapPass
+	sealed class CheckCursors : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
@@ -29,15 +29,15 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, modData, mapRules);
 		}
 
-		void Run(Action<string> emitError, ModData modData, Ruleset rules)
+		static void Run(Action<string> emitError, ModData modData, Ruleset rules)
 		{
 			var fileSystem = modData.DefaultFileSystem;
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));
-			var nodesDict = new MiniYaml(null, sequenceYaml).ToDictionary();
+			var cursorsYaml = new MiniYaml(null, sequenceYaml).NodeWithKey("Cursors").Value;
 
 			// Avoid using CursorProvider as it attempts to load palettes from the file system.
 			var cursors = new List<string>();
-			foreach (var s in nodesDict["Cursors"].Nodes)
+			foreach (var s in cursorsYaml.Nodes)
 				foreach (var sequence in s.Value.Nodes)
 					cursors.Add(sequence.Key);
 
@@ -45,19 +45,19 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields();
+					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields)
 					{
-						var cursorReference = field.GetCustomAttributes<CursorReferenceAttribute>(true).FirstOrDefault();
+						var cursorReference = Utility.GetCustomAttributes<CursorReferenceAttribute>(field, true).FirstOrDefault();
 						if (cursorReference == null)
 							continue;
 
-						var cursor = LintExts.GetFieldValues(traitInfo, field, emitError, cursorReference.DictionaryReference).FirstOrDefault();
+						var cursor = LintExts.GetFieldValues(traitInfo, field, cursorReference.DictionaryReference).FirstOrDefault();
 						if (string.IsNullOrEmpty(cursor))
 							continue;
 
 						if (!cursors.Contains(cursor))
-							emitError($"Undefined cursor {cursor} for actor {actorInfo.Value.Name} with trait {traitInfo}.");
+							emitError($"Undefined cursor `{cursor}` for actor `{actorInfo.Value.Name}` with trait `{traitInfo}`.");
 					}
 				}
 			}

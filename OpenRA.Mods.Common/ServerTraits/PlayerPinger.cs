@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,12 +17,21 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class PlayerPinger : ServerTrait, ITick
 	{
-		static readonly int PingInterval = 5000; // Ping every 5 seconds
-		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
-		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
+		[FluentReference]
+		const string PlayerDropped = "notification-player-dropped";
 
-		// TickTimeout is in microseconds
-		public int TickTimeout => PingInterval * 100;
+		[FluentReference("player")]
+		const string ConnectionProblems = "notification-connection-problems";
+
+		[FluentReference("player")]
+		const string Timeout = "notification-timeout-dropped";
+
+		[FluentReference("player", "timeout")]
+		const string TimeoutIn = "notification-timeout-dropped-in";
+
+		const int PingInterval = 5000; // Ping every 5 seconds
+		const int ConnReportInterval = 20000; // Report every 20 seconds
+		const int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
 
 		long lastPing = 0;
 		long lastConnReport = 0;
@@ -40,13 +49,7 @@ namespace OpenRA.Mods.Common.Server
 				lock (server.LobbyInfo)
 					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
 
-				if (nonBotClientCount < 2 && server.Type != ServerType.Dedicated)
-				{
-					foreach (var c in server.Conns.ToList())
-						if (c.Validated)
-							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
-				}
-				else
+				if (nonBotClientCount >= 2 || server.Type == ServerType.Dedicated)
 				{
 					foreach (var c in server.Conns.ToList())
 					{
@@ -57,22 +60,21 @@ namespace OpenRA.Mods.Common.Server
 						if (client == null)
 						{
 							server.DropClient(c);
-							server.SendMessage("A player has been dropped after timing out.");
+							server.SendFluentMessage(PlayerDropped);
 							continue;
 						}
 
 						if (c.TimeSinceLastResponse < ConnTimeout)
 						{
-							server.SendOrderTo(c, "Ping", Game.RunTime.ToString());
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
-								server.SendMessage(client.Name + " is experiencing connection problems.");
+								server.SendFluentMessage(ConnectionProblems, "player", client.Name);
 								c.TimeoutMessageShown = true;
 							}
 						}
 						else
 						{
-							server.SendMessage(client.Name + " has been dropped after timing out.");
+							server.SendFluentMessage(Timeout, "player", client.Name);
 							server.DropClient(c);
 						}
 					}
@@ -89,7 +91,10 @@ namespace OpenRA.Mods.Common.Server
 						{
 							var client = server.GetClient(c);
 							if (client != null)
-								server.SendMessage($"{client.Name} will be dropped in {(ConnTimeout - c.TimeSinceLastResponse) / 1000} seconds.");
+							{
+								var timeout = (ConnTimeout - c.TimeSinceLastResponse) / 1000;
+								server.SendFluentMessage(TimeoutIn, "player", client.Name, "timeout", timeout);
+							}
 						}
 					}
 				}

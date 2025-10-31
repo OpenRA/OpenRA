@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -73,14 +73,15 @@ namespace OpenRA.Mods.Common.Scripting
 			return Self.HasScriptProperty(name);
 		}
 
-		[Desc("Render a target flash on the actor. If set, 'asPlayer'",
-			"defines which player palette to use. Duration is in ticks.")]
-		public void Flash(int duration = 4, Player asPlayer = null)
+		[Desc("Render a target flash on the actor.")]
+		public void Flash(Color color, int count = 2, int interval = 2, int delay = 0)
 		{
-			Self.World.Add(new FlashTarget(Self, asPlayer?.Color ?? Color.White, duration));
+			// TODO: We can't use floats with Lua, so use the default 0.5f here
+			Self.World.Add(new FlashTarget(Self, color, 0.5f, count, interval, delay));
 		}
 
-		[Desc("The effective owner of the actor.")]
+		[Desc("The effective (displayed) owner of the actor. " +
+			"This may differ from the true owner in some cases, such as disguised actors.")]
 		public Player EffectiveOwner
 		{
 			get
@@ -96,7 +97,6 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("General")]
 	public class GeneralProperties : ScriptActorProperties
 	{
-		readonly IFacing facing;
 		readonly AutoTarget autotarget;
 		readonly ScriptTags scriptTags;
 		readonly Tooltip[] tooltips;
@@ -104,28 +104,9 @@ namespace OpenRA.Mods.Common.Scripting
 		public GeneralProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			facing = self.TraitOrDefault<IFacing>();
 			autotarget = self.TraitOrDefault<AutoTarget>();
 			scriptTags = self.TraitOrDefault<ScriptTags>();
 			tooltips = self.TraitsImplementing<Tooltip>().ToArray();
-		}
-
-		[Desc("The actor position in cell coordinates.")]
-		public CPos Location => Self.Location;
-
-		[Desc("The actor position in world coordinates.")]
-		public WPos CenterPosition => Self.CenterPosition;
-
-		[Desc("The direction that the actor is facing.")]
-		public WAngle Facing
-		{
-			get
-			{
-				if (facing == null)
-					throw new LuaException($"Actor '{Self}' doesn't define a facing");
-
-				return facing.Facing;
-			}
 		}
 
 		[ScriptActorPropertyActivity]
@@ -137,7 +118,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Run an arbitrary Lua function.")]
-		public void CallFunc(LuaFunction func)
+		public void CallFunc([ScriptEmmyTypeOverride("fun()")] LuaFunction func)
 		{
 			Self.QueueActivity(new CallLuaFunc(func, Context));
 		}
@@ -175,7 +156,6 @@ namespace OpenRA.Mods.Common.Scripting
 				if (!Enum<UnitStance>.TryParse(value, true, out var stance))
 					throw new LuaException($"Unknown stance type '{value}'");
 
-				autotarget.PredictedStance = stance;
 				autotarget.SetStance(Self, stance);
 			}
 		}
@@ -185,9 +165,11 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			get
 			{
-				var tooltip = tooltips.FirstEnabledTraitOrDefault();
+				var tooltip = tooltips.FirstEnabledConditionalTraitOrDefault();
+				if (tooltip == null)
+					return null;
 
-				return tooltip?.Info.Name;
+				return FluentProvider.GetMessage(tooltip.Info.Name);
 			}
 		}
 
@@ -211,5 +193,33 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			return IsTaggable && scriptTags.HasTag(tag);
 		}
+	}
+
+	[ScriptPropertyGroup("General")]
+	public class LocationProperties : ScriptActorProperties, Requires<IOccupySpaceInfo>
+	{
+		public LocationProperties(ScriptContext context, Actor self)
+			: base(context, self) { }
+
+		[Desc("The actor position in cell coordinates.")]
+		public CPos Location => Self.Location;
+
+		[Desc("The actor position in world coordinates.")]
+		public WPos CenterPosition => Self.CenterPosition;
+	}
+
+	[ScriptPropertyGroup("General")]
+	public class FacingProperties : ScriptActorProperties, Requires<IFacingInfo>
+	{
+		readonly IFacing facing;
+
+		public FacingProperties(ScriptContext context, Actor self)
+			: base(context, self)
+		{
+			facing = self.Trait<IFacing>();
+		}
+
+		[Desc("The direction that the actor is facing.")]
+		public WAngle Facing => facing.Facing;
 	}
 }

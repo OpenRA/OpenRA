@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 
 			public readonly int[] PanelRegion = null;
 			public readonly PanelSides PanelSides = PanelSides.All;
-			public readonly Dictionary<string, Rectangle> Regions = new Dictionary<string, Rectangle>();
+			public readonly Dictionary<string, Rectangle> Regions = [];
 		}
 
 		public static IReadOnlyDictionary<string, Collection> Collections => collections;
@@ -71,17 +71,18 @@ namespace OpenRA.Graphics
 				dpiScale = Game.Renderer.WindowScale;
 
 			fileSystem = modData.DefaultFileSystem;
-			collections = new Dictionary<string, Collection>();
-			cachedSheets = new Dictionary<string, (Sheet, int)>();
-			cachedSprites = new Dictionary<string, Dictionary<string, Sprite>>();
-			cachedPanelSprites = new Dictionary<string, Sprite[]>();
-			cachedCollectionSheets = new Dictionary<Collection, (Sheet, int)>();
+			collections = [];
+			cachedSheets = [];
+			cachedSprites = [];
+			cachedPanelSprites = [];
+			cachedCollectionSheets = [];
 
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
-				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));
+				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool)));
 
 			foreach (var c in chrome)
-				if (!c.Key.StartsWith("^", StringComparison.Ordinal))
+				if (!c.Key.StartsWith('^'))
 					LoadCollection(c.Key, c.Value);
 		}
 
@@ -100,9 +101,7 @@ namespace OpenRA.Graphics
 
 		static void LoadCollection(string name, MiniYaml yaml)
 		{
-			if (Game.ModData.LoadScreen != null)
-				Game.ModData.LoadScreen.Display();
-
+			Game.ModData.LoadScreen?.Display();
 			collections.Add(name, FieldLoader.Load<Collection>(yaml));
 		}
 
@@ -145,6 +144,15 @@ namespace OpenRA.Graphics
 
 		public static Sprite GetImage(string collectionName, string imageName)
 		{
+			var image = TryGetImage(collectionName, imageName);
+			if (image == null)
+				throw new ArgumentException($"Sprite `{collectionName}/{imageName}` was not found.");
+
+			return image;
+		}
+
+		public static Sprite TryGetImage(string collectionName, string imageName)
+		{
 			if (string.IsNullOrEmpty(collectionName))
 				return null;
 
@@ -153,10 +161,7 @@ namespace OpenRA.Graphics
 				return sprite;
 
 			if (!collections.TryGetValue(collectionName, out var collection))
-			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
 				return null;
-			}
 
 			if (!collection.Regions.TryGetValue(imageName, out var mi))
 				return null;
@@ -165,7 +170,7 @@ namespace OpenRA.Graphics
 			var sheetDensity = SheetForCollection(collection);
 			if (cachedCollection == null)
 			{
-				cachedCollection = new Dictionary<string, Sprite>();
+				cachedCollection = [];
 				cachedSprites.Add(collectionName, cachedCollection);
 			}
 
@@ -177,6 +182,15 @@ namespace OpenRA.Graphics
 
 		public static Sprite[] GetPanelImages(string collectionName)
 		{
+			var panel = TryGetPanelImages(collectionName);
+			if (panel == null)
+				throw new ArgumentException($"Panel `{collectionName}` was not found.");
+
+			return panel;
+		}
+
+		public static Sprite[] TryGetPanelImages(string collectionName)
+		{
 			if (string.IsNullOrEmpty(collectionName))
 				return null;
 
@@ -185,17 +199,14 @@ namespace OpenRA.Graphics
 				return cachedSprites;
 
 			if (!collections.TryGetValue(collectionName, out var collection))
-			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
 				return null;
-			}
 
 			Sprite[] sprites;
 			if (collection.PanelRegion != null)
 			{
 				if (collection.PanelRegion.Length != 8)
 				{
-					Log.Write("debug", "Collection '{0}' does not define a valid PanelRegion", collectionName);
+					Log.Write("debug", $"Collection '{collectionName}' does not define a valid PanelRegion");
 					return null;
 				}
 
@@ -217,24 +228,33 @@ namespace OpenRA.Graphics
 					(PanelSides.Bottom | PanelSides.Right, new Rectangle(pr[0] + pr[2] + pr[4], pr[1] + pr[3] + pr[5], pr[6], pr[7]))
 				};
 
-				sprites = sides.Select(x => ps.HasSide(x.PanelSides) ? new Sprite(sheetDensity.Sheet, sheetDensity.Density * x.Bounds, TextureChannel.RGBA, 1f / sheetDensity.Density) : null)
+				sprites = sides
+					.Select(x =>
+						ps.HasSide(x.PanelSides)
+							? new Sprite(sheetDensity.Sheet, sheetDensity.Density * x.Bounds, TextureChannel.RGBA, 1f / sheetDensity.Density)
+							: null)
 					.ToArray();
 			}
 			else
 			{
+				// PERF: We don't need to search for images if there are no definitions.
+				// PERF: It's more efficient to send an empty array rather than an array of 9 nulls.
+				if (collection.Regions.Count == 0)
+					return [];
+
 				// Support manual definitions for unusual dialog layouts
-				sprites = new[]
-				{
-					GetImage(collectionName, "corner-tl"),
-					GetImage(collectionName, "border-t"),
-					GetImage(collectionName, "corner-tr"),
-					GetImage(collectionName, "border-l"),
-					GetImage(collectionName, "background"),
-					GetImage(collectionName, "border-r"),
-					GetImage(collectionName, "corner-bl"),
-					GetImage(collectionName, "border-b"),
-					GetImage(collectionName, "corner-br")
-				};
+				sprites =
+				[
+					TryGetImage(collectionName, "corner-tl"),
+					TryGetImage(collectionName, "border-t"),
+					TryGetImage(collectionName, "corner-tr"),
+					TryGetImage(collectionName, "border-l"),
+					TryGetImage(collectionName, "background"),
+					TryGetImage(collectionName, "border-r"),
+					TryGetImage(collectionName, "corner-bl"),
+					TryGetImage(collectionName, "border-b"),
+					TryGetImage(collectionName, "corner-br")
+				];
 			}
 
 			cachedPanelSprites.Add(collectionName, sprites);
@@ -248,13 +268,13 @@ namespace OpenRA.Graphics
 
 			if (!collections.TryGetValue(collectionName, out var collection))
 			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
+				Log.Write("debug", $"Could not find collection '{collectionName}'");
 				return new Size(0, 0);
 			}
 
 			if (collection.PanelRegion == null || collection.PanelRegion.Length != 8)
 			{
-				Log.Write("debug", "Collection '{0}' does not define a valid PanelRegion", collectionName);
+				Log.Write("debug", $"Collection '{collectionName}' does not define a valid PanelRegion");
 				return new Size(0, 0);
 			}
 

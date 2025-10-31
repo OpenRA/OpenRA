@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,12 +19,11 @@ namespace OpenRA.Primitives
 	/// </summary>
 	public class ActionQueue
 	{
-		readonly List<DelayedAction> actions = new List<DelayedAction>();
+		readonly List<DelayedAction> actions = [];
 
 		public void Add(Action a, long desiredTime)
 		{
-			if (a == null)
-				throw new ArgumentNullException(nameof(a));
+			ArgumentNullException.ThrowIfNull(a);
 
 			lock (actions)
 			{
@@ -56,17 +55,27 @@ namespace OpenRA.Primitives
 		int Index(DelayedAction action)
 		{
 			// Returns the index of the next action with a strictly greater time.
-			var index = actions.BinarySearch(action);
+			var index = actions.BinarySearch(action, DelayedAction.TimeComparer);
 			if (index < 0)
 				return ~index;
-			while (index < actions.Count && action.CompareTo(actions[index]) >= 0)
+			while (index < actions.Count && DelayedAction.TimeComparer.Compare(action, actions[index]) >= 0)
 				index++;
 			return index;
 		}
 	}
 
-	readonly struct DelayedAction : IComparable<DelayedAction>
+	readonly struct DelayedAction
 	{
+		sealed class DelayedActionTimeComparer : IComparer<DelayedAction>
+		{
+			public int Compare(DelayedAction x, DelayedAction y)
+			{
+				return x.Time.CompareTo(y.Time);
+			}
+		}
+
+		public static IComparer<DelayedAction> TimeComparer = new DelayedActionTimeComparer();
+
 		public readonly long Time;
 		public readonly Action Action;
 
@@ -74,11 +83,6 @@ namespace OpenRA.Primitives
 		{
 			Action = action;
 			Time = time;
-		}
-
-		public int CompareTo(DelayedAction other)
-		{
-			return Time.CompareTo(other.Time);
 		}
 
 		public override string ToString()

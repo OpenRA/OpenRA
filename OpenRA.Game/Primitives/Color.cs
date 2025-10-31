@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA.Primitives
 {
 	public readonly struct Color : IEquatable<Color>, IScriptBindable
 	{
-		readonly long argb;
+		readonly uint argb;
 
 		public static Color FromArgb(int red, int green, int blue)
 		{
@@ -26,7 +26,7 @@ namespace OpenRA.Primitives
 
 		public static Color FromArgb(int alpha, int red, int green, int blue)
 		{
-			return new Color(((byte)alpha << 24) + ((byte)red << 16) + ((byte)green << 8) + (byte)blue);
+			return new Color((uint)(((byte)alpha << 24) + ((byte)red << 16) + ((byte)green << 8) + (byte)blue));
 		}
 
 		public static Color FromAhsl(int alpha, float h, float s, float l)
@@ -49,20 +49,20 @@ namespace OpenRA.Primitives
 			return FromAhsv(255, h, s, v);
 		}
 
-		public (float A, float H, float S, float V) ToAhsv()
+		public (int A, float H, float S, float V) ToAhsv()
 		{
 			var (h, s, v) = RgbToHsv(R, G, B);
 			return (A, h, s, v);
 		}
 
-		Color(long argb)
+		Color(uint argb)
 		{
 			this.argb = argb;
 		}
 
-		public int ToArgb()
+		public uint ToArgb()
 		{
-			return (int)argb;
+			return argb;
 		}
 
 		public static Color FromArgb(int alpha, Color baseColor)
@@ -70,25 +70,20 @@ namespace OpenRA.Primitives
 			return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
 		}
 
-		public static Color FromArgb(int argb)
-		{
-			return FromArgb((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb);
-		}
-
 		public static Color FromArgb(uint argb)
 		{
-			return FromArgb((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb);
+			return new Color(argb);
 		}
 
 		static float SrgbToLinear(float c)
 		{
-			// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+			// Standard gamma conversion equation: see e.g. https://entropymine.com/imageworsener/srgbformula/
 			return c <= 0.04045f ? c / 12.92f : (float)Math.Pow((c + 0.055f) / 1.055f, 2.4f);
 		}
 
 		static float LinearToSrgb(float c)
 		{
-			// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+			// Standard gamma conversion equation: see e.g. https://entropymine.com/imageworsener/srgbformula/
 			return c <= 0.0031308f ? c * 12.92f : 1.055f * (float)Math.Pow(c, 1.0f / 2.4f) - 0.055f;
 		}
 
@@ -154,7 +149,7 @@ namespace OpenRA.Primitives
 
 			// Wrap negative values into [0-1)
 			if (h < 0)
-				h += 1;
+				h++;
 
 			var s = delta / rgbMax;
 			return (h, s, v);
@@ -168,13 +163,13 @@ namespace OpenRA.Primitives
 				return false;
 
 			byte alpha = 255;
-			if (!byte.TryParse(value.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var red)
-			    || !byte.TryParse(value.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var green)
-			    || !byte.TryParse(value.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var blue))
+			if (!byte.TryParse(value.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var red)
+				|| !byte.TryParse(value.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var green)
+				|| !byte.TryParse(value.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var blue))
 				return false;
 
 			if (value.Length == 8
-			    && !byte.TryParse(value.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
+				&& !byte.TryParse(value.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
 				return false;
 
 			color = FromArgb(alpha, red, green, blue);
@@ -210,7 +205,7 @@ namespace OpenRA.Primitives
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Color))
+			if (obj is not Color)
 				return false;
 
 			return this == (Color)obj;
@@ -224,9 +219,9 @@ namespace OpenRA.Primitives
 		public override string ToString()
 		{
 			if (A == 255)
-				return R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
+				return CryptoUtil.ToHex([R, G, B]);
 
-			return R.ToString("X2") + G.ToString("X2") + B.ToString("X2") + A.ToString("X2");
+			return CryptoUtil.ToHex([R, G, B, A]);
 		}
 
 		public static Color Transparent => FromArgb(0x00FFFFFF);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -20,11 +21,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this tech level.")]
 		public readonly string Id;
 
+		[FluentReference]
 		[Desc("Name shown in the lobby options.")]
 		public readonly string Name;
 
 		[Desc("Prerequisites to grant when this tech level is active.")]
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = [];
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
@@ -34,13 +36,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProvidesTechPrerequisite : ITechTreePrerequisite
 	{
 		readonly ProvidesTechPrerequisiteInfo info;
-		bool enabled;
-
-		static readonly string[] NoPrerequisites = new string[0];
+		readonly bool enabled;
 
 		public string Name => info.Name;
 
-		public IEnumerable<string> ProvidesPrerequisites => enabled ? info.Prerequisites : NoPrerequisites;
+		public IEnumerable<string> ProvidesPrerequisites => enabled ? info.Prerequisites : Enumerable.Empty<string>();
 
 		public ProvidesTechPrerequisite(ProvidesTechPrerequisiteInfo info, ActorInitializer init)
 		{

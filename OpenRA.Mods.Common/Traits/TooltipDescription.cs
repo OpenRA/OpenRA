@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,8 +16,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Additional info shown in the battlefield tooltip.")]
 	public class TooltipDescriptionInfo : ConditionalTraitInfo
 	{
+		[FieldLoader.Require]
+		[FluentReference]
 		[Desc("Text shown in tooltip.")]
-		public readonly string Description = "";
+		public readonly string Description;
 
 		[Desc("Player relationships who can view the description.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
@@ -35,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
+			TooltipText = FluentProvider.GetMessage(info.Description);
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
@@ -49,6 +52,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.ValidRelationships.HasRelationship(Owner.RelationshipWith(forPlayer));
 		}
 
-		public string TooltipText => Info.Description;
+		public string TooltipText { get; }
 	}
 }

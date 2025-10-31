@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,7 +21,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProductionAirdropInfo : ProductionInfo
 	{
 		[NotificationReference("Speech")]
+		[Desc("Speech notification to play when a unit is delivered.")]
 		public readonly string ReadyAudio = "Reinforce";
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display when a unit is delivered.")]
+		public readonly string ReadyTextNotification = null;
 
 		[FieldLoader.Require]
 		[ActorReference(typeof(AircraftInfo))]
@@ -32,12 +37,21 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool BaselineSpawn = false;
 
 		[Desc("Direction the aircraft should face to land.")]
-		public readonly WAngle Facing = new WAngle(256);
+		public readonly WAngle Facing = new(256);
+
+		[Desc("Tick that aircraft should wait before producing.")]
+		public readonly int WaitTickBeforeProduce = 0;
+
+		[Desc("Tick that aircraft should wait after producing.")]
+		public readonly int WaitTickAfterProduce = 0;
+
+		[Desc("Offset the aircraft used for landing.")]
+		public readonly WVec LandOffset = WVec.Zero;
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
-	class ProductionAirdrop : Production
+	sealed class ProductionAirdrop : Production
 	{
 		public ProductionAirdrop(ActorInitializer init, ProductionAirdropInfo info)
 			: base(init, info) { }
@@ -61,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				var bounds = map.Bounds;
 				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
 				var spawnVec = owner.HomeLocation - center;
-				startPos = owner.HomeLocation + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
+				startPos = owner.HomeLocation + spawnVec * Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared));
 				endPos = startPos;
 				var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
 				spawnFacing = spawnDirection.Yaw;
@@ -86,24 +100,26 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!self.IsInWorld || self.IsDead)
 				{
-					owner.PlayerActor.Trait<PlayerResources>().GiveCash(refundableValue);
+					owner.PlayerActor.Trait<PlayerResources>().RefundCash(refundableValue);
 					return;
 				}
 
-				var actor = w.CreateActor(info.ActorType, new TypeDictionary
-				{
+				var actor = w.CreateActor(info.ActorType,
+				[
 					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, aircraftInfo.CruiseAltitude)),
 					new OwnerInit(owner),
 					new FacingInit(spawnFacing)
-				});
+				]);
 
 				var exitCell = self.Location + exit.ExitCell;
-				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, info.Facing, clearCells: new CPos[1] { exitCell }));
+				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, info.LandOffset, info.Facing, clearCells: [exitCell]));
+				if (info.WaitTickBeforeProduce > 0)
+					actor.QueueActivity(new Wait(info.WaitTickBeforeProduce));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
 					{
-						owner.PlayerActor.Trait<PlayerResources>().GiveCash(refundableValue);
+						owner.PlayerActor.Trait<PlayerResources>().RefundCash(refundableValue);
 						return;
 					}
 
@@ -112,8 +128,10 @@ namespace OpenRA.Mods.Common.Traits
 
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, productionType, inits));
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(self.Owner, info.ReadyTextNotification);
 				}));
-
+				if (info.WaitTickAfterProduce > 0)
+					actor.QueueActivity(new Wait(info.WaitTickAfterProduce));
 				actor.QueueActivity(new FlyOffMap(actor, Target.FromCell(w, endPos)));
 				actor.QueueActivity(new RemoveSelf());
 			});

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,20 +16,21 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	public class CloakPaletteEffectInfo : TraitInfo<CloakPaletteEffect> { }
 
 	public class CloakPaletteEffect : IPaletteModifier, ITick
 	{
 		float t = 0;
-		string paletteName = "cloak";
+		readonly string paletteName = "cloak";
 
-		Color[] colors =
-		{
+		readonly Color[] colors =
+		[
 			Color.FromArgb(55, 205, 205, 220),
 			Color.FromArgb(120, 205, 205, 230),
 			Color.FromArgb(192, 180, 180, 255),
 			Color.FromArgb(178, 205, 250, 220),
-		};
+		];
 
 		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b)
 		{

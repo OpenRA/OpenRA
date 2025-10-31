@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -26,23 +27,25 @@ namespace OpenRA
 			var nodes = new List<MiniYamlNode>();
 			string root = null;
 
-			foreach (var info in FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault))
+			foreach (var fieldInfo in FieldLoader.GetTypeLoadInfo(o.GetType(), includePrivateByDefault))
 			{
-				if (info.Attribute.DictionaryFromYamlKey)
+				if (fieldInfo.Field.FieldType.IsGenericType && fieldInfo.Field.FieldType.IsAssignableTo(typeof(System.Collections.IDictionary)))
 				{
-					var dict = (System.Collections.IDictionary)info.Field.GetValue(o);
+					var dict = (System.Collections.IDictionary)fieldInfo.Field.GetValue(o);
+					var dictNodes = new List<MiniYamlNode>();
 					foreach (var kvp in dict)
 					{
 						var key = ((System.Collections.DictionaryEntry)kvp).Key;
 						var value = ((System.Collections.DictionaryEntry)kvp).Value;
-
-						nodes.Add(new MiniYamlNode(FormatValue(key), FormatValue(value)));
+						dictNodes.Add(new MiniYamlNode(FormatValue(key), FormatValue(value)));
 					}
+
+					nodes.Add(new MiniYamlNode(fieldInfo.YamlName, "", dictNodes));
 				}
-				else if (info.Attribute.FromYamlKey)
-					root = FormatValue(o, info.Field);
+				else if (fieldInfo.Attribute.FromYamlKey)
+					root = FormatValue(o, fieldInfo.Field);
 				else
-					nodes.Add(new MiniYamlNode(info.YamlName, FormatValue(o, info.Field)));
+					nodes.Add(new MiniYamlNode(fieldInfo.YamlName, FormatValue(o, fieldInfo.Field)));
 			}
 
 			return new MiniYaml(root, nodes);
@@ -58,7 +61,7 @@ namespace OpenRA
 
 			return new MiniYaml(
 				null,
-				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))).ToList());
+				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))));
 		}
 
 		public static MiniYamlNode SaveField(object o, string field)
@@ -84,7 +87,7 @@ namespace OpenRA
 			// This is only for documentation generation
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
-				var result = "";
+				var result = new StringBuilder();
 				var dict = (System.Collections.IDictionary)v;
 				foreach (var kvp in dict)
 				{
@@ -94,10 +97,10 @@ namespace OpenRA
 					var formattedKey = FormatValue(key);
 					var formattedValue = FormatValue(value);
 
-					result += $"{formattedKey}: {formattedValue}{Environment.NewLine}";
+					result.Append(CultureInfo.InvariantCulture, $"{formattedKey}: {formattedValue}{Environment.NewLine}");
 				}
 
-				return result;
+				return result.ToString();
 			}
 
 			if (v is DateTime d)

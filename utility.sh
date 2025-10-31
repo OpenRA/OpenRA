@@ -1,8 +1,6 @@
 #!/bin/sh
-if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= bin/OpenRA.Utility.dll)" = "0" ]; then
-	RUNTIME_LAUNCHER="mono --debug"
-else
-	RUNTIME_LAUNCHER="dotnet"
-fi
+set -o errexit || exit $?
 
-ENGINE_DIR=.. ${RUNTIME_LAUNCHER} bin/OpenRA.Utility.dll "$@"
+ENGINEDIR=$(dirname "$0")
+
+ENGINE_DIR=.. dotnet "${ENGINEDIR}/bin/OpenRA.Utility.dll" "$@"

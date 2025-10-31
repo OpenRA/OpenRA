@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -34,50 +34,63 @@ namespace OpenRA.Mods.Common
 							.Any(availableCells => availableCells > 0);
 		}
 
-		public static IEnumerable<ProductionQueue> FindQueues(Player player, string category)
+		public static ILookup<string, ProductionQueue> FindQueuesByCategory(Player player)
 		{
 			return player.World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category && a.Trait.Enabled)
-				.Select(a => a.Trait);
+				.Where(a => a.Actor.Owner == player && a.Trait.Enabled)
+				.Select(a => a.Trait)
+				.ToLookup(pq => pq.Info.Type);
 		}
 
-		public static IEnumerable<Actor> GetActorsWithTrait<T>(World world)
+		public static int CountActorsWithNameAndTrait<T>(string actorName, Player owner)
 		{
-			return world.ActorsHavingTrait<T>();
+			return owner.World.ActorsHavingTrait<T>().Count(a => a.Owner == owner && a.Info.Name == actorName);
 		}
 
-		public static int CountActorsWithTrait<T>(string actorName, Player owner)
+		public static int CountActorByCommonName<TTraitInfo>(
+			ActorIndex.OwnerAndNamesAndTrait<TTraitInfo> actorIndex) where TTraitInfo : ITraitInfoInterface
 		{
-			return GetActorsWithTrait<T>(owner.World).Count(a => a.Owner == owner && a.Info.Name == actorName);
+			return actorIndex.Actors.Count(a => !a.IsDead);
 		}
 
-		public static int CountActorByCommonName(HashSet<string> commonNames, Player owner)
-		{
-			return owner.World.Actors.Count(a => !a.IsDead && a.Owner == owner &&
-				commonNames.Contains(a.Info.Name));
-		}
-
-		public static int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
-		{
-			return GetActorsWithTrait<Building>(owner.World)
-				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
-		}
-
-		public static List<Actor> FindEnemiesByCommonName(HashSet<string> commonNames, Player player)
-		{
-			return player.World.Actors.Where(a => !a.IsDead && player.RelationshipWith(a.Owner) == PlayerRelationship.Enemy &&
-				commonNames.Contains(a.Info.Name)).ToList();
-		}
-
-		public static ActorInfo GetInfoByCommonName(HashSet<string> names, Player owner)
-		{
-			return owner.World.Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(owner.World.LocalRandom).Value;
-		}
-
-		public static void BotDebug(string s, params object[] args)
+		public static void BotDebug(string format, params object[] args)
 		{
 			if (Game.Settings.Debug.BotDebug)
-				TextNotificationsManager.Debug(s, args);
+				TextNotificationsManager.Debug(format, args);
+		}
+
+		public static IEnumerable<Order> ClearBlockersOrders(List<CPos> tiles, Player owner, Actor ignoreActor = null)
+		{
+			var world = owner.World;
+			var adjacentTiles = Util.ExpandFootprint(tiles, true).Except(tiles)
+				.Where(world.Map.Contains).ToList();
+
+			var blockers = tiles.SelectMany(world.ActorMap.GetActorsAt)
+				.Where(a => a.Owner == owner && a.IsIdle && (ignoreActor == null || a != ignoreActor))
+				.Select(a => new TraitPair<IMove>(a, a.TraitOrDefault<IMove>()))
+				.Where(x => x.Trait != null);
+
+			foreach (var blocker in blockers)
+			{
+				CPos moveCell;
+				if (blocker.Trait is Mobile mobile)
+				{
+					var availableCells = adjacentTiles.Where(t => mobile.CanEnterCell(t)).ToList();
+					if (availableCells.Count == 0)
+						continue;
+
+					moveCell = blocker.Actor.ClosestCell(availableCells);
+				}
+				else if (blocker.Trait is Aircraft)
+					moveCell = blocker.Actor.Location;
+				else
+					continue;
+
+				yield return new Order("Move", blocker.Actor, Target.FromCell(world, moveCell), false)
+				{
+					SuppressVisualFeedback = true
+				};
+			}
 		}
 	}
 }

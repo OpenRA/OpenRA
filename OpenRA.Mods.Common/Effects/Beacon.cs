@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud
 	{
-		static readonly int MaxArrowHeight = 512;
+		const int MaxArrowHeight = 512;
 
 		readonly Player owner;
 		readonly WPos position;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (clockFraction != null)
 				{
 					clock = new Animation(owner.World, posterCollection);
-					clock.PlayFetchIndex(clockSequence, () => Exts.Clamp((int)(clockFraction() * (clock.CurrentSequence.Length - 1)), 0, clock.CurrentSequence.Length - 1));
+					clock.PlayFetchIndex(clockSequence, () => ((int)(clockFraction() * (clock.CurrentSequence.Length - 1))).Clamp(0, clock.CurrentSequence.Length - 1));
 				}
 			}
 		}

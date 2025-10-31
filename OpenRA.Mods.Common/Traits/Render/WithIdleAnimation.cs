@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,10 +19,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		[SequenceReference]
 		[Desc("Sequence names to use.")]
-		public readonly string[] Sequences = { "active" };
+		public readonly string[] Sequences = ["active"];
 
 		[Desc("The amount of time (in ticks) between animations. Two values indicate a range between which a random value is chosen.")]
-		public readonly int[] Interval = { 750 };
+		public readonly int[] Interval = [750];
 
 		[Desc("Which sprite body to play the animation on.")]
 		public readonly string Body = "body";
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(info)
 		{
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
-			ticks = Util.RandomDelay(self.World, info.Interval);
+			ticks = Util.RandomInRange(self.World.SharedRandom, info.Interval);
 		}
 
 		void ITick.Tick(Actor self)
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (--ticks <= 0)
 			{
 				wsb.PlayCustomAnimation(self, Info.Sequences.Random(Game.CosmeticRandom));
-				ticks = Util.RandomDelay(self.World, Info.Interval);
+				ticks = Util.RandomInRange(self.World.SharedRandom, Info.Interval);
 			}
 		}
 

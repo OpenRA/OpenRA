@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -307,3 +307,5 @@ Actors:
 Rules: rules.yaml
 
 Sequences: sequences.yaml
+
+FluentMessages: map.ftl

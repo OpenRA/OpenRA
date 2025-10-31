@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -26,28 +25,31 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string DescriptiveName;
 		public readonly ActorInfo Info;
-		public readonly WPos CenterPosition;
-		public readonly IReadOnlyDictionary<CPos, SubCell> Footprint;
-		public readonly Rectangle Bounds;
-		public readonly SelectionBoxAnnotationRenderable SelectionBox;
 
 		public string Tooltip =>
-			(tooltip == null ? " < " + Info.Name + " >" : tooltip.Name) + "\n" + Owner.Name + " (" + Owner.Faction + ")"
+			(tooltip == null ? " < " + Info.Name + " >" : FluentProvider.GetMessage(tooltip.Name)) + "\n" + Owner.Name + " (" + Owner.Faction + ")"
 			+ "\nID: " + ID + "\nType: " + Info.Name;
 
 		public string Type => reference.Type;
 
-		public string ID { get; set; }
+		public string ID { get; }
 		public PlayerReference Owner { get; set; }
-		public SubCell SubCell { get; private set; }
+		public WPos CenterPosition { get; set; }
+		public IReadOnlyDictionary<CPos, SubCell> Footprint { get; private set; }
+		public Rectangle Bounds { get; private set; }
 		public bool Selected { get; set; }
-		public readonly Color RadarColor;
+		public Color RadarColor { get; private set; }
+		public CPos Location { get; private set; }
 
+		readonly RadarColorFromTerrainInfo terrainRadarColorInfo;
 		readonly WorldRenderer worldRenderer;
 		readonly TooltipInfoBase tooltip;
-		IActorPreview[] previews;
 		readonly ActorReference reference;
-		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new Dictionary<INotifyEditorPlacementInfo, object>();
+		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = [];
+		readonly Action<CPos> onCellEntryChanged;
+
+		SelectionBoxAnnotationRenderable selectionBox;
+		IActorPreview[] previews;
 
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
 		{
@@ -66,34 +68,65 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out Info))
 				throw new InvalidDataException($"Actor {id} of unknown type {reference.Type.ToLowerInvariant()}");
 
-			CenterPosition = PreviewPosition(world, reference);
-
-			var location = reference.Get<LocationInit>().Value;
-			var ios = Info.TraitInfoOrDefault<IOccupySpaceInfo>();
-
-			var subCellInit = reference.GetOrDefault<SubCellInit>();
-			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
-
-			var radarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
-			RadarColor = radarColorInfo == null ? owner.Color : radarColorInfo.GetColorFromTerrain(world);
-
-			Footprint = ios?.OccupiedCells(Info, location, subCell) ?? new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
+			GenerateFootprint();
+			UpdateFromCellChange(null);
 
 			tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase
 				?? Info.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 
 			DescriptiveName = tooltip != null ? tooltip.Name : Info.Name;
 
-			GeneratePreviews();
+			terrainRadarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
+			UpdateRadarColor();
 
-			// Bounds are fixed from the initial render.
-			// If this is a problem, then we may need to fetch the area from somewhere else
+			onCellEntryChanged = cell => UpdateFromCellChange(cell);
+		}
+
+		public EditorActorPreview WithId(string id)
+		{
+			return new EditorActorPreview(worldRenderer, id, reference.Clone(), Owner);
+		}
+
+		void UpdateFromCellChange(CPos? cellChanged)
+		{
+			if (cellChanged != null && !Footprint.ContainsKey(cellChanged.Value))
+				return;
+
+			CenterPosition = PreviewPosition(worldRenderer.World, reference);
+			GeneratePreviews();
+			GenerateBounds();
+		}
+
+		void GenerateBounds()
+		{
 			var r = previews.SelectMany(p => p.ScreenBounds(worldRenderer, CenterPosition));
 
 			Bounds = r.Union();
 
-			SelectionBox = new SelectionBoxAnnotationRenderable(new WPos(CenterPosition.X, CenterPosition.Y, 8192),
+			selectionBox = new SelectionBoxAnnotationRenderable(new WPos(CenterPosition.X, CenterPosition.Y, 8192),
 				new Rectangle(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height), Color.White);
+		}
+
+		void GenerateFootprint()
+		{
+			Location = reference.Get<LocationInit>().Value;
+			var ios = Info.TraitInfoOrDefault<IOccupySpaceInfo>();
+			var subCellInit = reference.GetOrDefault<SubCellInit>();
+			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
+
+			var occupiedCells = ios?.OccupiedCells(Info, Location, subCell);
+			if (occupiedCells == null || occupiedCells.Count == 0)
+				Footprint = new Dictionary<CPos, SubCell>() { { Location, SubCell.FullCell } };
+			else
+				Footprint = occupiedCells;
+		}
+
+		void GeneratePreviews()
+		{
+			var init = new ActorPreviewInitializer(reference, worldRenderer);
+			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
+				.SelectMany(rpi => rpi.RenderPreview(init))
+				.ToArray();
 		}
 
 		public void Tick()
@@ -104,38 +137,64 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> Render()
 		{
-			var items = previews.SelectMany(p => p.Render(worldRenderer, CenterPosition));
+			return RenderAt(CenterPosition);
+		}
+
+		public IEnumerable<IRenderable> RenderWithOffset(WVec offset)
+		{
+			return RenderAt(CenterPosition + offset);
+		}
+
+		public IEnumerable<IRenderable> RenderAt(WPos centerPosition)
+		{
 			if (Selected)
 			{
-				var overlay = items.Where(r => !r.IsDecoration && r is IModifyableRenderable)
-					.Select(r =>
+				foreach (var p in previews)
+				{
+					foreach (var r in p.Render(worldRenderer, centerPosition))
 					{
-						var mr = (IModifyableRenderable)r;
-						return mr.WithTint(float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
-					});
-
-				return items.Concat(overlay);
+						yield return r;
+						if (!r.IsDecoration && r is IModifyableRenderable mr)
+							yield return mr.WithTint(float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor)
+								.WithAlpha(0.5f);
+					}
+				}
 			}
-
-			return items;
+			else
+				foreach (var p in previews)
+					foreach (var r in p.Render(worldRenderer, centerPosition))
+						yield return r;
 		}
 
 		public IEnumerable<IRenderable> RenderAnnotations()
 		{
 			if (Selected)
-				yield return SelectionBox;
+				yield return selectionBox;
+		}
+
+		public void UpdateFromMove()
+		{
+			CenterPosition = PreviewPosition(worldRenderer.World, reference);
+			GenerateFootprint();
+			GenerateBounds();
 		}
 
 		public void AddedToEditor()
 		{
 			foreach (var notify in Info.TraitInfos<INotifyEditorPlacementInfo>())
 				editorData[notify] = notify.AddedToEditor(this, worldRenderer.World);
+
+			worldRenderer.World.Map.Height.CellEntryChanged += onCellEntryChanged;
+			worldRenderer.World.Map.Ramp.CellEntryChanged += onCellEntryChanged;
 		}
 
 		public void RemovedFromEditor()
 		{
 			foreach (var kv in editorData)
 				kv.Key.RemovedFromEditor(this, worldRenderer.World, kv.Value);
+
+			worldRenderer.World.Map.Height.CellEntryChanged -= onCellEntryChanged;
+			worldRenderer.World.Map.Ramp.CellEntryChanged -= onCellEntryChanged;
 		}
 
 		public void AddInit<T>(T init) where T : ActorInit
@@ -174,7 +233,7 @@ namespace OpenRA.Mods.Common.Traits
 			return reference.GetOrDefault<T>(info);
 		}
 
-		public IEnumerable<T> GetInits<T>() where T : ActorInit
+		public IReadOnlyCollection<T> GetInits<T>() where T : ActorInit
 		{
 			return reference.GetAll<T>();
 		}
@@ -186,12 +245,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ReplaceInit<T>(T init) where T : ActorInit, ISingleInstanceInit
 		{
-			var original = reference.GetOrDefault<T>();
-			if (original != null)
-				reference.Remove(original);
-
-			reference.Add(init);
+			reference.Replace(init);
 			GeneratePreviews();
+			UpdateRadarColor();
 		}
 
 		public void RemoveInit<T>() where T : ActorInit, ISingleInstanceInit
@@ -202,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public MiniYaml Save()
 		{
-			Func<object, bool> saveInit = init =>
+			bool SaveInit(ActorInit init)
 			{
 				if (init is FactionInit factionInit && factionInit.Value == Owner.Faction)
 					return false;
@@ -213,9 +269,9 @@ namespace OpenRA.Mods.Common.Traits
 				// TODO: Other default values will need to be filtered
 				// here after we have built a properties panel
 				return true;
-			};
+			}
 
-			return reference.Save(saveInit);
+			return reference.Save(SaveInit);
 		}
 
 		WPos PreviewPosition(World world, ActorReference actor)
@@ -244,12 +300,9 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidDataException($"Actor {ID} must define Location or CenterPosition");
 		}
 
-		void GeneratePreviews()
+		void UpdateRadarColor()
 		{
-			var init = new ActorPreviewInitializer(reference, worldRenderer);
-			previews = Info.TraitInfos<IRenderActorPreviewInfo>()
-				.SelectMany(rpi => rpi.RenderPreview(init))
-				.ToArray();
+			RadarColor = terrainRadarColorInfo == null ? Owner.Color : terrainRadarColorInfo.GetColorFromTerrain(worldRenderer.World);
 		}
 
 		public ActorReference Export()
@@ -264,7 +317,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Equals(EditorActorPreview other)
 		{
-			if (ReferenceEquals(null, other))
+			if (other is null)
 				return false;
 			if (ReferenceEquals(this, other))
 				return true;
@@ -274,7 +327,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj))
+			if (obj is null)
 				return false;
 			if (ReferenceEquals(this, obj))
 				return true;

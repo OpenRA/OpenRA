@@ -2,8 +2,15 @@ Container@PLAYER_WIDGETS:
 	Logic: LoadIngameChatLogic
 	Children:
 		Container@CHAT_ROOT:
-		LogicKeyListener@CONTROLGROUP_KEYHANDLER:
-			Logic: ControlGroupLogic
+		LogicKeyListener@PLAYER_KEYHANDLER:
+			Logic: RemoveFromControlGroupHotkeyLogic
+				RemoveFromControlGroupKey: RemoveFromControlGroup
+		ControlGroups@CONTROLGROUPS:
+			SelectGroupKeyPrefix: ControlGroupSelect
+			CreateGroupKeyPrefix: ControlGroupCreate
+			AddToGroupKeyPrefix: ControlGroupAddTo
+			CombineWithGroupKeyPrefix: ControlGroupCombineWith
+			JumpToGroupKeyPrefix: ControlGroupJumpTo
 		LogicTicker@SIDEBAR_TICKER:
 		Container@SUPPORT_POWERS:
 			Logic: SupportPowerBinLogic
@@ -14,8 +21,8 @@ Container@PLAYER_WIDGETS:
 					IconSize: 62, 46
 					IconSpriteOffset: -1, -1
 					TooltipContainer: TOOLTIP_CONTAINER
-					ReadyText: READY
-					HoldText: ON HOLD
+					ReadyText: supportpowers-support-powers-palette.ready
+					HoldText: supportpowers-support-powers-palette.hold
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
 				Container@PALETTE_FOREGROUND:
@@ -35,15 +42,16 @@ Container@PLAYER_WIDGETS:
 			Order: Descending
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
-			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Width: 416
+			Y: WINDOW_HEIGHT - HEIGHT - 5
+			Width: 434
 			Height: 44
 			ImageCollection: commandbar
 			ImageName: background
+			ClickThrough: False
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 14
-			Y: WINDOW_BOTTOM - HEIGHT - 14
+			Y: WINDOW_HEIGHT - HEIGHT - 14
 			Width: 275
 			Height: 26
 			Children:
@@ -56,8 +64,8 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					Key: AttackMove
 					DisableKeySound: true
-					TooltipText: Attack Move
-					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold {(Ctrl)} while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.
+					TooltipText: button-command-bar-attack-move.tooltip
+					TooltipDesc: button-command-bar-attack-move.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -74,8 +82,8 @@ Container@PLAYER_WIDGETS:
 					VisualHeight: 0
 					Background: command-button
 					DisableKeySound: true
-					TooltipText: Force Move
-					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Helicopters will land at the target location\n - Chrono Tanks will teleport towards the target location\n\nLeft-click icon then right-click on target.\nHold {(Alt)} to activate temporarily while commanding units.
+					TooltipText: button-command-bar-force-move.tooltip
+					TooltipDesc: button-command-bar-force-move.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -92,8 +100,8 @@ Container@PLAYER_WIDGETS:
 					VisualHeight: 0
 					Background: command-button
 					DisableKeySound: true
-					TooltipText: Force Attack
-					TooltipDesc: Selected units will attack the targeted unit or location\n - Default activity for the target is suppressed\n - Allows targeting of own or ally forces\n - Long-range artillery units will always target the\n   location, ignoring units and buildings\n\nLeft-click icon then right-click on target.\nHold {(Ctrl)} to activate temporarily while commanding units.
+					TooltipText: button-command-bar-force-attack.tooltip
+					TooltipDesc: button-command-bar-force-attack.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -111,8 +119,8 @@ Container@PLAYER_WIDGETS:
 					Background: command-button
 					Key: Guard
 					DisableKeySound: true
-					TooltipText: Guard
-					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
+					TooltipText: button-command-bar-guard.tooltip
+					TooltipDesc: button-command-bar-guard.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -130,8 +138,8 @@ Container@PLAYER_WIDGETS:
 					Key: Deploy
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Deploy
-					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Construction Yards will re-pack into a MCV\n - Transports will unload their passengers\n - Demolition Trucks and MAD Tanks will self-destruct\n - Minelayers will deploy a mine\n - Aircraft will return to base\n\nActs immediately on selected units.
+					TooltipText: button-command-bar-deploy.tooltip
+					TooltipDesc: button-command-bar-deploy.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -149,8 +157,8 @@ Container@PLAYER_WIDGETS:
 					Key: Scatter
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Scatter
-					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
+					TooltipText: button-command-bar-scatter.tooltip
+					TooltipDesc: button-command-bar-scatter.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -168,8 +176,8 @@ Container@PLAYER_WIDGETS:
 					Key: Stop
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Stop
-					TooltipDesc: Selected units will stop their current activity.\n\nActs immediately on selected units.
+					TooltipText: button-command-bar-stop.tooltip
+					TooltipDesc: button-command-bar-stop.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -185,8 +193,8 @@ Container@PLAYER_WIDGETS:
 					VisualHeight: 0
 					Background: command-button
 					DisableKeySound: true
-					TooltipText: Waypoint Mode
-					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold {(Shift)} to activate temporarily while commanding units.
+					TooltipText: button-command-bar-queue-orders.tooltip
+					TooltipDesc: button-command-bar-queue-orders.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -198,7 +206,7 @@ Container@PLAYER_WIDGETS:
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
 			X: 294
-			Y: WINDOW_BOTTOM - HEIGHT - 14
+			Y: WINDOW_HEIGHT - HEIGHT - 14
 			Width: 138
 			Height: 26
 			Children:
@@ -211,8 +219,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceAttackAnything
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Attack Anything Stance
-					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
+					TooltipText: button-stance-bar-attackanything.tooltip
+					TooltipDesc: button-stance-bar-attackanything.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -230,8 +238,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceDefend
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Defend Stance
-					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
+					TooltipText: button-stance-bar-defend.tooltip
+					TooltipDesc: button-stance-bar-defend.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -249,8 +257,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceReturnFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Return Fire Stance
-					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
+					TooltipText: button-stance-bar-returnfire.tooltip
+					TooltipDesc: button-stance-bar-returnfire.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -268,8 +276,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceHoldFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Hold Fire Stance
-					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
+					TooltipText: button-stance-bar-holdfire.tooltip
+					TooltipDesc: button-stance-bar-holdfire.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -279,27 +287,27 @@ Container@PLAYER_WIDGETS:
 							ImageName: hold-fire
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
-			X: WINDOW_RIGHT - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 260
 			Y: 10
 			Width: 200
 			Height: 25
 			Children:
 				Image@ICON:
-					X: PARENT_RIGHT - WIDTH
+					X: PARENT_WIDTH - WIDTH
 					Y: 1
 					Width: 24
 					Height: 24
 					ImageCollection: sidebar-bits
 					ImageName: indicator-muted
 				Label@LABEL:
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					Height: 25
 					Align: Right
-					Text: Audio Muted
+					Text: label-mute-indicator
 					Contrast: true
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddFactionSuffixLogic
-			X: WINDOW_RIGHT - 250
+			X: WINDOW_WIDTH - 250
 			Y: 10
 			Width: 238
 			Height: 262
@@ -318,7 +326,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							Background: sidebar-button
 							Key: PlaceBeacon
-							TooltipText: Place Beacon
+							TooltipText: button-top-buttons-beacon-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -333,7 +341,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							Background: sidebar-button
 							Key: Sell
-							TooltipText: Sell
+							TooltipText: button-top-buttons-sell-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -348,7 +356,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							Background: sidebar-button
 							Key: PowerDown
-							TooltipText: Power Down
+							TooltipText: button-top-buttons-power-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -363,7 +371,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							Background: sidebar-button
 							Key: Repair
-							TooltipText: Repair
+							TooltipText: button-top-buttons-repair-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							VisualHeight: 0
 							Children:
@@ -378,7 +386,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							Background: sidebar-button
 							Key: escape
-							TooltipText: Options
+							TooltipText: button-top-buttons-options-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							DisableWorldSounds: true
 							VisualHeight: 0
@@ -416,21 +424,25 @@ Container@PLAYER_WIDGETS:
 							Skippable: false
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
-			X: WINDOW_RIGHT - 250
+			X: WINDOW_WIDTH - 250
 			Y: 300
 			Width: 238
 			Height: 250
 			Children:
 				Container@PALETTE_BACKGROUND:
 					Children:
-						Image@ROW_TEMPLATE:
-							Logic: AddFactionSuffixLogic
-							X: 40
-							Width: 190
+						Container@ROW_TEMPLATE:
+							Width: 238
 							Height: 47
 							ClickThrough: false
-							ImageCollection: sidebar
-							ImageName: background-iconbg
+							Children:
+								Image@ROW_BGND:
+									Logic: AddFactionSuffixLogic
+									X: 40
+									Width: 190
+									Height: 47
+									ImageCollection: sidebar
+									ImageName: background-iconbg
 						Image@BOTTOM_CAP:
 							Logic: AddFactionSuffixLogic
 							Width: 238
@@ -443,8 +455,8 @@ Container@PLAYER_WIDGETS:
 					X: 42
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
-					ReadyText: READY
-					HoldText: ON HOLD
+					ReadyText: productionpalette-sidebar-production-palette.ready
+					HoldText: productionpalette-sidebar-production-palette.hold
 					IconSize: 62, 46
 					IconMargin: 1, 1
 					IconSpriteOffset: -1, -1
@@ -472,7 +484,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Buildings
+							TooltipText: button-production-types-building-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Building
 							Key: ProductionTypeBuilding
@@ -488,7 +500,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Defense
+							TooltipText: button-production-types-defense-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Defense
 							Key: ProductionTypeDefense
@@ -504,7 +516,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Infantry
+							TooltipText: button-production-types-infantry-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Infantry
 							Key: ProductionTypeInfantry
@@ -520,7 +532,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Vehicles
+							TooltipText: button-production-types-vehicle-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Vehicle
 							Key: ProductionTypeVehicle
@@ -536,7 +548,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Aircraft
+							TooltipText: button-production-types-aircraft-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Aircraft
 							Key: ProductionTypeAircraft
@@ -552,7 +564,7 @@ Container@PLAYER_WIDGETS:
 							Height: 28
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Naval
+							TooltipText: button-production-types-naval-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							ProductionGroup: Ship
 							Key: ProductionTypeNaval
@@ -568,7 +580,7 @@ Container@PLAYER_WIDGETS:
 							Height: 22
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Scroll up
+							TooltipText: button-production-types-scroll-up-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:
@@ -583,7 +595,7 @@ Container@PLAYER_WIDGETS:
 							Height: 22
 							VisualHeight: 0
 							Background: sidebar-button
-							TooltipText: Scroll down
+							TooltipText: button-production-types-scroll-down-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:
@@ -593,10 +605,10 @@ Container@PLAYER_WIDGETS:
 									ImageName: down
 		Image@SIDEBAR_MONEYBIN:
 			Logic: AddFactionSuffixLogic
-			X: WINDOW_RIGHT - 250
+			X: WINDOW_WIDTH - 250
 			Y: 272
 			Width: 238
-			Height: 27
+			Height: 28
 			ImageCollection: sidebar
 			ImageName: background-moneybin
 			ClickThrough: false
@@ -605,7 +617,7 @@ Container@PLAYER_WIDGETS:
 					Logic: GameTimerLogic
 					X: 3
 					Y: 3
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 23
 					Align: Center
 					Font: TinyBold
@@ -616,29 +628,32 @@ Container@PLAYER_WIDGETS:
 					Width: 50
 					Height: 23
 					Font: Bold
-					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
 						Image@CASH_ICON:
-							X: 0-21
+							X: -21
 							Y: 4
 							ImageCollection: cash-icons
 							ImageName: cash-normal
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
-					X: PARENT_RIGHT - WIDTH - 30
+					X: PARENT_WIDTH - WIDTH - 30
 					Y: 2
 					Width: 50
 					Height: 23
 					Align: Right
 					Font: Bold
-					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
 						Image@POWER_ICON:
-							X: PARENT_RIGHT + 4
+							X: PARENT_WIDTH + 4
 							Y: 4
 							ImageCollection: power-icons
 							ImageName: power-normal
+		Container@HPF_ROOT:
+			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
+			X: WINDOW_WIDTH - WIDTH - 260
+			Y: 40
+			Width: 175

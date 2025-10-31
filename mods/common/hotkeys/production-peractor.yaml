@@ -1,7 +1,0 @@
-NextProductionTab: PAGEDOWN
-	Description: Next tab
-	Types: Production, Player
-
-PreviousProductionTab: PAGEUP
-	Description: Previous tab
-	Types: Production, Player

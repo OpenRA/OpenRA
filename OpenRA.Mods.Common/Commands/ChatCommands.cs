@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,36 +10,38 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Commands
 {
 	[TraitLocation(SystemActors.World)]
+	[IncludeStaticFluentReferences(typeof(ChatCommands))]
 	[Desc("Enables commands triggered by typing them into the chatbox. Attach this to the world actor.")]
 	public class ChatCommandsInfo : TraitInfo<ChatCommands> { }
 
 	public class ChatCommands : INotifyChat
 	{
-		public Dictionary<string, IChatCommand> Commands { get; private set; }
+		[FluentReference("name")]
+		const string InvalidCommand = "notification-invalid-command";
+
+		public Dictionary<string, IChatCommand> Commands { get; }
 
 		public ChatCommands()
 		{
-			Commands = new Dictionary<string, IChatCommand>();
+			Commands = [];
 		}
 
 		public bool OnChat(string playername, string message)
 		{
-			if (message.StartsWith("/"))
+			if (message.StartsWith('/'))
 			{
-				var name = message.Substring(1).Split(' ')[0].ToLowerInvariant();
-				var command = Commands.FirstOrDefault(x => x.Key == name);
+				var name = message[1..].Split(' ')[0].ToLowerInvariant();
 
-				if (command.Value != null)
-					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length).Trim());
+				if (Commands.TryGetValue(name, out var command))
+					command.InvokeCommand(name, message[(1 + name.Length)..].Trim());
 				else
-					TextNotificationsManager.Debug("{0} is not a valid command.", name);
+					TextNotificationsManager.Debug(FluentProvider.GetMessage(InvalidCommand, "name", name));
 
 				return false;
 			}

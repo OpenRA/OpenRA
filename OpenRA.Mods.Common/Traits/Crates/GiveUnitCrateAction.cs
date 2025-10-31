@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		[FieldLoader.Require]
 		[Desc("The list of units to spawn.")]
-		public readonly string[] Units = { };
+		public readonly string[] Units = [];
 
 		[Desc("Factions that are allowed to trigger this action.")]
-		public readonly HashSet<string> ValidFactions = new HashSet<string>();
+		public readonly HashSet<string> ValidFactions = [];
 
 		[Desc("Override the owner of the newly spawned unit: e.g. Creeps or Neutral")]
 		public readonly string Owner = null;
@@ -37,15 +36,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly GiveUnitCrateActionInfo info;
-		readonly List<CPos> usedCells = new List<CPos>();
 
 		public GiveUnitCrateAction(Actor self, GiveUnitCrateActionInfo info)
 			: base(self, info)
 		{
 			this.self = self;
 			this.info = info;
-			if (!info.Units.Any())
-				throw new YamlException("A GiveUnitCrateAction does not specify any units to give. This might be because the yaml is referring to 'Unit' rather than 'Units'.");
+			if (info.Units.Length == 0)
+				throw new YamlException(
+					"A GiveUnitCrateAction does not specify any units to give. " +
+					"This might be because the yaml is referring to 'Unit' rather than 'Units'.");
 		}
 
 		public bool CanGiveTo(Actor collector)
@@ -53,13 +53,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (collector.Owner.NonCombatant)
 				return false;
 
-			if (info.ValidFactions.Any() && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
+			if (info.ValidFactions.Count > 0 && !info.ValidFactions.Contains(collector.Owner.Faction.InternalName))
 				return false;
 
-			foreach (string unit in info.Units)
+			var pathFinder = collector.World.WorldActor.TraitOrDefault<IPathFinder>();
+			var locomotorsByName = collector.World.WorldActor.TraitsImplementing<Locomotor>().ToDictionary(l => l.Info.Name);
+			foreach (var unit in info.Units)
 			{
 				// avoid dumping tanks in the sea, and ships on dry land.
-				if (!GetSuitableCells(collector.Location, unit).Any())
+				if (!GetSuitableCells(collector.Location, unit, pathFinder, locomotorsByName).Any())
 					return false;
 			}
 
@@ -76,43 +78,60 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var u in info.Units)
+			collector.World.AddFrameEndTask(w =>
 			{
-				var unit = u; // avoiding access to modified closure
-
-				var location = ChooseEmptyCellNear(collector, unit);
-				if (location != null)
+				var pathFinder = w.WorldActor.TraitOrDefault<IPathFinder>();
+				var locomotorsByName = w.WorldActor.TraitsImplementing<Locomotor>().ToDictionary(l => l.Info.Name);
+				foreach (var unit in info.Units)
 				{
-					usedCells.Add(location.Value);
-					collector.World.AddFrameEndTask(
-					w => w.CreateActor(unit, new TypeDictionary
+					var location = ChooseEmptyCellNear(collector, unit, pathFinder, locomotorsByName);
+					if (location != null)
 					{
-						new LocationInit(location.Value),
-						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
-					}));
+						var actor = w.CreateActor(unit,
+						[
+							new LocationInit(location.Value),
+							new OwnerInit(info.Owner ?? collector.Owner.InternalName)
+						]);
+
+						// Set the subcell and make sure to crush actors beneath.
+						var positionable = actor.OccupiesSpace as IPositionable;
+						positionable.SetPosition(actor, location.Value, positionable.GetAvailableSubCell(location.Value, ignoreActor: actor));
+					}
 				}
-			}
+			});
 
 			base.Activate(collector);
 		}
 
-		IEnumerable<CPos> GetSuitableCells(CPos near, string unitName)
+		IEnumerable<CPos> GetSuitableCells(CPos near, string unitName, IPathFinder pathFinder, Dictionary<string, Locomotor> locomotorsByName)
 		{
-			var ip = self.World.Map.Rules.Actors[unitName].TraitInfo<IPositionableInfo>();
+			var actorRules = self.World.Map.Rules.Actors[unitName];
 
-			for (var i = -1; i < 2; i++)
-				for (var j = -1; j < 2; j++)
-					if (ip.CanEnterCell(self.World, self, near + new CVec(i, j)))
+			Locomotor locomotor = null;
+			if (pathFinder != null)
+			{
+				var locomotorName = actorRules.TraitInfoOrDefault<MobileInfo>()?.Locomotor;
+				locomotor = locomotorName != null ? locomotorsByName[locomotorName] : null;
+			}
+
+			var ip = actorRules.TraitInfo<IPositionableInfo>();
+			for (var i = -1; i <= 1; i++)
+			{
+				for (var j = -1; j <= 1; j++)
+				{
+					var cell = near + new CVec(i, j);
+					if (ip.CanEnterCell(self.World, self, cell) &&
+						(locomotor == null || pathFinder.PathMightExistForLocomotorBlockedByImmovable(locomotor, cell, near)))
 						yield return near + new CVec(i, j);
+				}
+			}
 		}
 
-		CPos? ChooseEmptyCellNear(Actor a, string unit)
+		CPos? ChooseEmptyCellNear(Actor a, string unit, IPathFinder pathFinder, Dictionary<string, Locomotor> locomotorsByName)
 		{
-			var possibleCells = GetSuitableCells(a.Location, unit).Where(c => !usedCells.Contains(c)).ToList();
-			if (possibleCells.Count == 0)
-				return null;
-
-			return possibleCells.Random(self.World.SharedRandom);
+			return GetSuitableCells(a.Location, unit, pathFinder, locomotorsByName)
+				.Cast<CPos?>()
+				.RandomOrDefault(self.World.SharedRandom);
 		}
 	}
 }

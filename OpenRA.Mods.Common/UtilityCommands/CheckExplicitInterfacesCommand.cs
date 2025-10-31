@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -40,13 +40,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var interfaces = implementingType.GetInterfaces();
 				foreach (var interfaceType in interfaces)
 				{
-					if (!interfaceType.HasAttribute<RequireExplicitImplementationAttribute>())
+					if (!Utility.HasAttribute<RequireExplicitImplementationAttribute>(interfaceType))
 						continue;
 
 					var interfaceMembers = interfaceType.GetMembers();
 					foreach (var interfaceMember in interfaceMembers)
 					{
-						if (interfaceMember.Name.StartsWith("get_") || interfaceMember.Name.StartsWith("set_") || interfaceMember.Name.StartsWith("add_") || interfaceMember.Name.StartsWith("remove_"))
+						if (interfaceMember.Name.StartsWith("get_", StringComparison.Ordinal) ||
+							interfaceMember.Name.StartsWith("set_", StringComparison.Ordinal) ||
+							interfaceMember.Name.StartsWith("add_", StringComparison.Ordinal) ||
+							interfaceMember.Name.StartsWith("remove_", StringComparison.Ordinal))
 							continue;
 
 						var interfaceMethod = interfaceMember as MethodInfo;
@@ -104,19 +107,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (violationCount > 0)
 			{
-				Console.WriteLine("Explicit interface violations: {0}", violationCount);
+				Console.WriteLine($"Explicit interface violations: {violationCount}");
 				Environment.Exit(1);
 			}
 		}
 
 		static bool IsExplicitInterfaceProperty(PropertyInfo pi)
 		{
-			return pi.Name.Contains(".");
+			return pi.Name.Contains('.');
 		}
 
 		void OnViolation(Type implementor, Type interfaceType, MemberInfo violator)
 		{
-			Console.WriteLine("{0} must explicitly implement the interface member {1}.{2}", implementor.Name, interfaceType.Name, violator.Name);
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine($"{implementor.Name} must explicitly implement the interface member {interfaceType.Name}.{violator.Name}");
+			Console.ForegroundColor = originalColor;
 			violationCount++;
 		}
 	}

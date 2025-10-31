@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,13 +29,17 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ChuteSound = null;
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when dropping the unit.")]
+		[Desc("Speech notification to play when dropping the unit.")]
 		public readonly string ReadyAudio = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display when dropping the unit.")]
+		public readonly string ReadyTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new ProductionParadrop(init, this); }
 	}
 
-	class ProductionParadrop : Production
+	sealed class ProductionParadrop : Production
 	{
 		readonly Lazy<RallyPoint> rp;
 
@@ -70,24 +74,24 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (!self.IsInWorld || self.IsDead)
 				{
-					owner.PlayerActor.Trait<PlayerResources>().GiveCash(refundableValue);
+					owner.PlayerActor.Trait<PlayerResources>().RefundCash(refundableValue);
 					return;
 				}
 
 				var altitude = self.World.Map.Rules.Actors[actorType].TraitInfo<AircraftInfo>().CruiseAltitude;
-				var actor = w.CreateActor(actorType, new TypeDictionary
-				{
+				var actor = w.CreateActor(actorType,
+				[
 					new CenterPositionInit(w.Map.CenterOfCell(startPos) + new WVec(WDist.Zero, WDist.Zero, altitude)),
 					new OwnerInit(owner),
 					new FacingInit(new WAngle(256)),
-				});
+				]);
 
 				actor.QueueActivity(new Fly(actor, Target.FromCell(w, dropPos)));
 				actor.QueueActivity(new CallFunc(() =>
 				{
 					if (!self.IsInWorld || self.IsDead)
 					{
-						owner.PlayerActor.Trait<PlayerResources>().GiveCash(refundableValue);
+						owner.PlayerActor.Trait<PlayerResources>().RefundCash(refundableValue);
 						return;
 					}
 
@@ -97,6 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit?.Info, productionType, inits));
 					Game.Sound.Play(SoundType.World, info.ChuteSound, self.CenterPosition);
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(self.Owner, info.ReadyTextNotification);
 				}));
 
 				actor.QueueActivity(new Fly(actor, Target.FromCell(w, endPos)));
@@ -132,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var initialFacing = (exitinfo != null && exitinfo.Facing.HasValue) ? exitinfo.Facing.Value : (to - spawn).Yaw;
 
-				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : new List<CPos> { exit };
+				exitLocations = rp.Value != null && rp.Value.Path.Count > 0 ? rp.Value.Path : [exit];
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));

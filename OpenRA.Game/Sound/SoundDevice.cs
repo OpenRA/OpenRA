@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,19 +28,11 @@ namespace OpenRA
 		void StopAllSounds();
 		void SetListenerPosition(WPos position);
 		void SetSoundVolume(float volume, ISound music, ISound video);
+		void SetSoundLooping(bool looping, ISound sound);
+		void SetSoundPosition(ISound sound, WPos position);
 	}
 
-	public class SoundDevice
-	{
-		public readonly string Device;
-		public readonly string Label;
-
-		public SoundDevice(string device, string label)
-		{
-			Device = device;
-			Label = label;
-		}
-	}
+	public record SoundDevice(string Device, string Label);
 
 	public interface ISoundSource : IDisposable { }
 

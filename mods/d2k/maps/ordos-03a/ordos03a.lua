@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -77,55 +77,55 @@ OrdosBaseBuildings = { "barracks", "light_factory" }
 OrdosUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 MessageCheck = function(index)
-	return #player.GetActorsByType(OrdosBaseBuildings[index]) > 0 and not player.HasPrerequisites({ OrdosUpgrades[index] })
+	return #Ordos.GetActorsByType(OrdosBaseBuildings[index]) > 0 and not Ordos.HasPrerequisites({ OrdosUpgrades[index] })
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		harkonnen.MarkCompletedObjective(KillOrdos)
+	if Ordos.HasNoRequiredUnits() then
+		Harkonnen.MarkCompletedObjective(KillOrdos)
 	end
 
-	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
-		player.MarkCompletedObjective(KillHarkonnen)
+	if Harkonnen.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillHarkonnen) then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("harkonnen-annihilated"), Mentat)
+		Ordos.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[harkonnen] then
-		local units = harkonnen.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[Harkonnen] then
+		local units = Harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[harkonnen] = false
-			ProtectHarvester(units[1], harkonnen, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[Harkonnen] = false
+			ProtectHarvester(units[1], Harkonnen, AttackGroupSize[Difficulty])
 		end
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("upgrade-barracks-light-factory"), Mentat)
 	end
 end
 
 WorldLoaded = function()
-	harkonnen = Player.GetPlayer("Harkonnen")
-	player = Player.GetPlayer("Ordos")
+	Harkonnen = Player.GetPlayer("Harkonnen")
+	Ordos = Player.GetPlayer("Ordos")
 
-	InitObjectives(player)
-	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	KillHarkonnen = player.AddPrimaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
+	InitObjectives(Ordos)
+	KillOrdos = AddPrimaryObjective(Harkonnen, "")
+	KillHarkonnen = AddPrimaryObjective(Ordos, "eliminate-harkonnen-units-reinforcements")
 
 	Camera.Position = OConyard.CenterPosition
 
 	Trigger.OnAllKilled(HarkonnenBase, function()
-		Utils.Do(harkonnen.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Harkonnen.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return Utils.Random(HarkonnenPaths) end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillHarkonnen) end
-	SendCarryallReinforcements(harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty], waveCondition)
+	local waveCondition = function() return Ordos.IsObjectiveCompleted(KillHarkonnen) end
+	SendCarryallReinforcements(Harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty], waveCondition)
 	ActivateAI()
 
 	Trigger.AfterDelay(DateTime.Minutes(2) + DateTime.Seconds(30), function()
-		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", OrdosReinforcements, OrdosPath, { OrdosPath[1] })
+		Reinforcements.ReinforceWithTransport(Ordos, "carryall.reinforce", OrdosReinforcements, OrdosPath, { OrdosPath[1] })
 	end)
 
-	TriggerCarryallReinforcements(player, harkonnen, HarkonnenBaseAreaTrigger, HarkonnenHunters, HarkonnenHunterPath)
+	TriggerCarryallReinforcements(Ordos, Harkonnen, HarkonnenBaseAreaTrigger, HarkonnenHunters, HarkonnenHunterPath)
 end

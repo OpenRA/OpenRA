@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,19 +15,19 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualize the progress of this actor being captured.")]
-	class CaptureProgressBarInfo : ConditionalTraitInfo, Requires<CapturesInfo>
+	sealed class CaptureProgressBarInfo : ConditionalTraitInfo, Requires<CapturesInfo>
 	{
 		public readonly Color Color = Color.Orange;
 
-		public override object Create(ActorInitializer init) { return new CaptureProgressBar(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CaptureProgressBar(this); }
 	}
 
-	class CaptureProgressBar : ConditionalTrait<CaptureProgressBarInfo>, ISelectionBar, ICaptureProgressWatcher
+	sealed class CaptureProgressBar : ConditionalTrait<CaptureProgressBarInfo>, ISelectionBar, ICaptureProgressWatcher
 	{
 		int current;
 		int total;
 
-		public CaptureProgressBar(Actor self, CaptureProgressBarInfo info)
+		public CaptureProgressBar(CaptureProgressBarInfo info)
 			: base(info) { }
 
 		void ICaptureProgressWatcher.Update(Actor self, Actor captor, Actor target, int current, int total)

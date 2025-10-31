@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ namespace OpenRA.Primitives
 {
 	public readonly struct Polygon
 	{
-		public static readonly Polygon Empty = new Polygon(Rectangle.Empty);
+		public static readonly Polygon Empty = new(Rectangle.Empty);
 
 		public readonly Rectangle BoundingRect;
 		public readonly int2[] Vertices;
@@ -25,7 +25,7 @@ namespace OpenRA.Primitives
 		public Polygon(Rectangle bounds)
 		{
 			BoundingRect = bounds;
-			Vertices = new[] { bounds.TopLeft, bounds.BottomLeft, bounds.BottomRight, bounds.TopRight };
+			Vertices = [bounds.TopLeft, bounds.BottomLeft, bounds.BottomRight, bounds.TopRight];
 			isRectangle = true;
 		}
 
@@ -66,7 +66,9 @@ namespace OpenRA.Primitives
 
 		public bool IntersectsWith(Rectangle rect)
 		{
-			var intersectsBoundingRect = BoundingRect.Left < rect.Right && BoundingRect.Right > rect.Left && BoundingRect.Top < rect.Bottom && BoundingRect.Bottom > rect.Top;
+			var intersectsBoundingRect =
+				BoundingRect.Left < rect.Right && BoundingRect.Right > rect.Left &&
+				BoundingRect.Top < rect.Bottom && BoundingRect.Bottom > rect.Top;
 			if (isRectangle)
 				return intersectsBoundingRect;
 
@@ -75,15 +77,17 @@ namespace OpenRA.Primitives
 				return false;
 
 			// Easy case 2: Rect and bounding box intersect in a cross shape
-			if ((rect.Left <= BoundingRect.Left && rect.Right >= BoundingRect.Right) || (rect.Top <= BoundingRect.Top && rect.Bottom >= BoundingRect.Bottom))
+			if ((rect.Left <= BoundingRect.Left && rect.Right >= BoundingRect.Right) ||
+				(rect.Top <= BoundingRect.Top && rect.Bottom >= BoundingRect.Bottom))
 				return true;
 
 			// Easy case 3: Corner of rect is inside the polygon
-			if (Vertices.PolygonContains(rect.TopLeft) || Vertices.PolygonContains(rect.TopRight) || Vertices.PolygonContains(rect.BottomLeft) || Vertices.PolygonContains(rect.BottomRight))
+			if (Vertices.PolygonContains(rect.TopLeft) || Vertices.PolygonContains(rect.TopRight) ||
+				Vertices.PolygonContains(rect.BottomLeft) || Vertices.PolygonContains(rect.BottomRight))
 				return true;
 
 			// Easy case 4: Polygon vertex is inside rect
-			if (Vertices.Any(p => rect.Contains(p)))
+			if (Vertices.Any(rect.Contains))
 				return true;
 
 			// Hard case: check intersection of every line segment pair

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -59,13 +59,13 @@ Paradrop = function()
 	Trigger.AfterDelay(Utils.RandomInteger(ParadropDelay[1], ParadropDelay[2]), function()
 		local aircraft = PowerProxy.TargetParatroopers(Utils.Random(ParadropLZs))
 		Utils.Do(aircraft, function(a)
-			Trigger.OnPassengerExited(a, function(t, p)
+			Trigger.OnPassengerExited(a, function(_, p)
 				IdleHunt(p)
 			end)
 		end)
 
 		Paradropped = Paradropped + 1
-		if Paradropped <= ParadropWaves[Map.LobbyOption("difficulty")] then
+		if Paradropped <= ParadropWaves[Difficulty] then
 			Paradrop()
 		end
 	end)
@@ -75,7 +75,7 @@ ConvoysSent = 0
 SendConvoys = function()
 	Trigger.AfterDelay(Utils.RandomInteger(ConvoyDelay[1], ConvoyDelay[2]), function()
 		local path = Utils.Random(ConvoyRallyPoints)
-		local units = Reinforcements.Reinforce(ussr, Utils.Random(ConvoyUnits), { path[1] })
+		local units = Reinforcements.Reinforce(USSR, Utils.Random(ConvoyUnits), { path[1] })
 		local lastWaypoint = path[#path]
 
 		Utils.Do(units, function(unit)
@@ -98,14 +98,14 @@ SendConvoys = function()
 		end)
 
 		local id = Trigger.OnEnteredFootprint({ lastWaypoint }, function(a, id)
-			if a.Owner == ussr and Utils.Any(units, function(unit) return unit == a end) then
+			if a.Owner == USSR and Utils.Any(units, function(unit) return unit == a end) then
 
 				-- We are at our destination and thus don't care about other queued actions anymore
 				a.Stop()
 				a.Destroy()
 
 				if a.Type == "truk" then
-					player.MarkFailedObjective(DestroyConvoys)
+					Greece.MarkFailedObjective(DestroyConvoys)
 				end
 			end
 		end)
@@ -114,69 +114,47 @@ SendConvoys = function()
 			Trigger.RemoveFootprintTrigger(id)
 
 			ConvoysSent = ConvoysSent + 1
-			if ConvoysSent <= Convoys[Map.LobbyOption("difficulty")] then
+			if ConvoysSent <= Convoys[Difficulty] then
 				SendConvoys()
 			else
-				player.MarkCompletedObjective(DestroyConvoys)
+				Greece.MarkCompletedObjective(DestroyConvoys)
 			end
 		end)
 
-		Media.PlaySpeechNotification(player, "ConvoyApproaching")
+		Media.PlaySpeechNotification(Greece, "ConvoyApproaching")
 	end)
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(KillUSSR)
+	if Greece.HasNoRequiredUnits() then
+		Greece.MarkFailedObjective(KillUSSR)
 	end
 
-	if ussr.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(KillUSSR)
+	if USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(KillUSSR)
 
 		-- We don't care about future convoys anymore
-		player.MarkCompletedObjective(DestroyConvoys)
+		Greece.MarkCompletedObjective(DestroyConvoys)
 	end
 end
 
-InitObjectives = function()
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	KillUSSR = player.AddObjective("Destroy all Soviet units and buildings in this region.")
-	DestroyConvoys = player.AddObjective("Eliminate all passing Soviet convoys.", "Secondary", false)
-
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "MissionAccomplished")
-		end)
-	end)
+AddObjectives = function()
+	KillUSSR = AddPrimaryObjective(Greece, "destroy-soviet-units-buildings")
+	DestroyConvoys = AddSecondaryObjective(Greece, "destroy-convoys")
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Greece")
-	ussr = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
 
 	Camera.Position = AlliedConyard.CenterPosition
 
-	InitObjectives()
+	InitObjectives(Greece)
+	AddObjectives()
 
-	local difficulty = Map.LobbyOption("difficulty")
-	ConvoyDelay = ConvoyDelays[difficulty]
-	ParadropDelay = ParadropDelays[difficulty]
-	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
+	ConvoyDelay = ConvoyDelays[Difficulty]
+	ParadropDelay = ParadropDelays[Difficulty]
+	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 	Paradrop()
 	SendConvoys()
 

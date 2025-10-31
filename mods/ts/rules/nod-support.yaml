@@ -1,13 +1,13 @@
 NAWALL:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 20
 		Prerequisites: ~structures.nod, ~techlevel.low
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+		Description: actor-nawall.description
 	-SoundOnDamageTransition:
 	Tooltip:
-		Name: Concrete Wall
+		Name: actor-nawall.name
 	Health:
 		HP: 22500
 	Armor:
@@ -22,22 +22,22 @@ NAWALL:
 NAGATE_A:
 	Inherits: ^Gate_A
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 40
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
-		Name: Nod Gate
+		Name: actor-nagate-a-name
 	Replacement:
 		ReplaceableTypes: NodGate
 
 NAGATE_B:
 	Inherits: ^Gate_B
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 60
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
-		Name: Nod Gate
+		Name: actor-nagate-b-name
 	Replacement:
 		ReplaceableTypes: NodGate
 
@@ -45,14 +45,14 @@ NAPOST:
 	Inherits: ^Building
 	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 150
 		Prerequisites: naapwr, ~structures.nod
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+		Description: actor-napost.description
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Laser Fence
+		Name: actor-napost.name
 	Health:
 		HP: 30000
 	Armor:
@@ -92,7 +92,7 @@ NAPOST:
 NAFNCE:
 	Inherits: ^Wall
 	Tooltip:
-		Name: Laser Fence
+		Name: actor-nafnce-name
 	LineBuild:
 		NodeTypes: laserfence
 	LineBuildNode:
@@ -106,6 +106,9 @@ NAFNCE:
 	EnergyWall:
 		ActiveCondition: active-posts == 2
 		Weapon: LaserFence
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+	RequiresBuildableArea:
+		Adjacent: 4
 	GrantConditionOnLineBuildDirection@X:
 		Direction: X
 		Condition: laserfence-direction-x
@@ -153,11 +156,11 @@ NAFNCE:
 		RequiresCondition: active-posts == 2
 	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post
 		Modifier: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BuildingExplosions
 		EmptyWeapon: BuildingExplosions
 		Type: Footprint
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Weapons: SmallDebris
 		Pieces: 0, 1
 		Range: 2c0, 5c0
@@ -165,18 +168,18 @@ NAFNCE:
 		Bounds: 1448, 1448
 
 NALASR:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Laser Turret
+		Name: actor-nalasr.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 		BuildPaletteOrder: 90
-		Description: Basic base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
+		Description: actor-nalasr.description
 	Health:
 		HP: 50000
 	Armor:
@@ -191,8 +194,7 @@ NALASR:
 		Offset: 298,-171,288
 		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: !build-incomplete
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || build-incomplete
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
@@ -205,19 +207,19 @@ NALASR:
 		QuantizedFacings: 0
 
 NAOBEL:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Inherits@SHAPE: ^2x2Shape
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Obelisk of Light
+		Name: actor-naobel.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 160
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
-		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs Ground units\n  Weak vs Aircraft
+		Description: actor-naobel.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -231,8 +233,7 @@ NAOBEL:
 		Weapon: ObeliskLaserFire
 		LocalOffset: 1980,297,1131
 	AttackCharges:
-		RequiresCondition: !build-incomplete
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || build-incomplete
 		ChargeLevel: 65
 		ChargingCondition: charging
 	AmbientSound:
@@ -250,18 +251,18 @@ NAOBEL:
 		Amount: -150
 
 NASAM:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: S.A.M. Site
+		Name: actor-nasam.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		BuildPaletteOrder: 100
-		Description: Nod Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
+		Description: actor-nasam.description
 	Health:
 		HP: 60000
 	Armor:
@@ -275,8 +276,7 @@ NASAM:
 		InitialFacing: 896
 		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: !build-incomplete
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || build-incomplete
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
 		Recoils: false

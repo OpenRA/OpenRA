@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,19 +14,18 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Orders;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	/// <summary> Contains all functions that are unit-specific. </summary>
+	/// <summary>Contains all functions that are unit-specific.</summary>
 	public class CommandBarLogic : ChromeLogic
 	{
 		readonly World world;
 
 		int selectionHash;
-		Actor[] selectedActors = { };
+		Actor[] selectedActors = [];
 		bool attackMoveDisabled = true;
 		bool forceMoveDisabled = true;
 		bool forceAttackDisabled = true;
@@ -39,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int scatterHighlighted;
 		int stopHighlighted;
 
-		TraitPair<IIssueDeployOrder>[] selectedDeploys = { };
+		TraitPair<IIssueDeployOrder>[] selectedDeploys = [];
 
 		[ObjectCreator.UseCtor]
 		public CommandBarLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
@@ -47,8 +46,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 
 			var highlightOnButtonPress = false;
-			if (logicArgs.ContainsKey("HighlightOnButtonPress"))
-				highlightOnButtonPress = FieldLoader.GetValue<bool>("HighlightOnButtonPress", logicArgs["HighlightOnButtonPress"].Value);
+			if (logicArgs.TryGetValue("HighlightOnButtonPress", out var entry))
+				highlightOnButtonPress = FieldLoader.GetValue<bool>("HighlightOnButtonPress", entry.Value);
 
 			var attackMoveButton = widget.GetOrNull<ButtonWidget>("ATTACK_MOVE");
 			if (attackMoveButton != null)
@@ -58,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 				attackMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return attackMoveDisabled; };
 				attackMoveButton.IsHighlighted = () => world.OrderGenerator is AttackMoveOrderGenerator;
 
-				Action<bool> toggle = allowCancel =>
+				void Toggle(bool allowCancel)
 				{
 					if (attackMoveButton.IsHighlighted())
 					{
@@ -67,10 +66,10 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 					else
 						world.OrderGenerator = new AttackMoveOrderGenerator(selectedActors, Game.Settings.Game.MouseButtonPreference.Action);
-				};
+				}
 
-				attackMoveButton.OnClick = () => toggle(true);
-				attackMoveButton.OnKeyPress = _ => toggle(false);
+				attackMoveButton.OnClick = () => Toggle(true);
+				attackMoveButton.OnKeyPress = _ => Toggle(false);
 			}
 
 			var forceMoveButton = widget.GetOrNull<ButtonWidget>("FORCE_MOVE");
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				forceAttackButton.IsDisabled = () => { UpdateStateIfNecessary(); return forceAttackDisabled; };
 				forceAttackButton.IsHighlighted = () => !forceAttackButton.IsDisabled() && IsForceModifiersActive(Modifiers.Ctrl)
-					&& !(world.OrderGenerator is AttackMoveOrderGenerator);
+					&& world.OrderGenerator is not AttackMoveOrderGenerator;
 
 				forceAttackButton.OnClick = () =>
 				{
@@ -115,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				guardButton.IsDisabled = () => { UpdateStateIfNecessary(); return guardDisabled; };
 				guardButton.IsHighlighted = () => world.OrderGenerator is GuardOrderGenerator;
 
-				Action<bool> toggle = allowCancel =>
+				void Toggle(bool allowCancel)
 				{
 					if (guardButton.IsHighlighted())
 					{
@@ -125,10 +124,10 @@ namespace OpenRA.Mods.Common.Widgets
 					else
 						world.OrderGenerator = new GuardOrderGenerator(selectedActors,
 							"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
-				};
+				}
 
-				guardButton.OnClick = () => toggle(true);
-				guardButton.OnKeyPress = _ => toggle(false);
+				guardButton.OnClick = () => Toggle(true);
+				guardButton.OnKeyPress = _ => Toggle(false);
 			}
 
 			var scatterButton = widget.GetOrNull<ButtonWidget>("SCATTER");
@@ -143,7 +142,8 @@ namespace OpenRA.Mods.Common.Widgets
 					if (highlightOnButtonPress)
 						scatterHighlighted = 2;
 
-					PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
+					var queued = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+					PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, queued));
 				};
 
 				scatterButton.OnKeyPress = ki => { scatterHighlighted = 2; scatterButton.OnClick(); };
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var keyOverrides = widget.GetOrNull<LogicKeyListenerWidget>("MODIFIER_OVERRIDES");
 			if (keyOverrides != null)
 			{
-				var noShiftButtons = new[] { guardButton, deployButton, attackMoveButton };
+				var noShiftButtons = new[] { guardButton, deployButton, scatterButton, attackMoveButton };
 				var keyUpButtons = new[] { guardButton, attackMoveButton };
 				keyOverrides.AddHandler(e =>
 				{
@@ -276,10 +276,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (world.OrderGenerator is ForceModifiersOrderGenerator fmog && fmog.Modifiers.HasFlag(modifiers))
 				return true;
 
-			if (world.OrderGenerator is UnitOrderGenerator uog && Game.GetModifierKeys().HasFlag(modifiers))
-				return true;
-
-			return false;
+			return world.OrderGenerator is UnitOrderGenerator && Game.GetModifierKeys().HasFlag(modifiers);
 		}
 
 		void UpdateStateIfNecessary()
@@ -320,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var o in orders)
 				world.IssueOrder(o);
 
-			world.PlayVoiceForOrders(orders);
+			orders.PlayVoiceForOrders();
 		}
 
 		void PerformDeployOrderOnSelection(bool queued)
@@ -336,7 +333,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var o in orders)
 				world.IssueOrder(o);
 
-			world.PlayVoiceForOrders(orders);
+			orders.PlayVoiceForOrders();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -1318,3 +1318,5 @@ Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/c
 Weapons: weapons.yaml
 
 Notifications: notifications.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

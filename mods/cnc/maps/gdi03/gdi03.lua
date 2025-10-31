@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -60,8 +60,8 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	DestroyNod = GDI.AddObjective("Eliminate all Nod forces in the area.")
-	local airSupportObjective = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
+	DestroyNod = AddPrimaryObjective(GDI, "eliminate-nod")
+	local airSupportObjective = AddSecondaryObjective(GDI, "destroy-sams")
 
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(airSupportObjective)

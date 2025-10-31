@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 		sealed class PakFile : IReadOnlyPackage
 		{
-			public string Name { get; private set; }
+			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Dictionary<string, Entry> index = [];
 			readonly Stream stream;
 
 			public PakFile(Stream stream, string filename)
@@ -50,12 +50,11 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						var length = (next == 0 ? (uint)stream.Length : next) - offset;
 
 						// Ignore duplicate files
-						if (index.ContainsKey(file))
-							continue;
-
-						index.Add(file, new Entry { Offset = offset, Length = length, Filename = file });
-						offset = next;
+						if (index.TryAdd(file, new Entry { Offset = offset, Length = length, Filename = file }))
+							offset = next;
 					}
+
+					index.TrimExcess();
 				}
 				catch
 				{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class RemapShpCommand : IUtilityCommand
+	sealed class RemapShpCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--remap";
 
@@ -50,15 +50,15 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			Game.ModData = destModData;
 			var destPaletteInfo = destModData.DefaultRules.Actors[SystemActors.Player].TraitInfo<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;
-			var shadowIndex = new int[] { };
+			var shadowIndex = Array.Empty<int>();
 
 			// the remap range is always 16 entries, but their location and order changes
 			for (var i = 0; i < 16; i++)
 				remap[srcRemapIndex[i]] = destRemapIndex[i];
 
 			// map everything else to the best match based on channel-wise distance
-			var srcPalette = new ImmutablePalette(args[1].Split(':')[1], new[] { 0 }, shadowIndex);
-			var destPalette = new ImmutablePalette(args[2].Split(':')[1], new[] { 0 }, shadowIndex);
+			var srcPalette = new ImmutablePalette(args[1].Split(':')[1], [0], shadowIndex);
+			var destPalette = new ImmutablePalette(args[2].Split(':')[1], [0], shadowIndex);
 
 			for (var i = 0; i < Palette.Size; i++)
 				if (!remap.ContainsKey(i))
@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		static int ColorDistance(uint a, uint b)
 		{
-			var ca = Color.FromArgb((int)a);
-			var cb = Color.FromArgb((int)b);
+			var ca = Color.FromArgb(a);
+			var cb = Color.FromArgb(b);
 
 			return Math.Abs(ca.R - cb.R) +
 				Math.Abs(ca.G - cb.G) +

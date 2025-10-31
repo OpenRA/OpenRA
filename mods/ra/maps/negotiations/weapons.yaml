@@ -1,0 +1,12 @@
+# Like original, avoid hitting targets besides the southeast flame turret.
+HellfireAG:
+	ValidTargets: Structure
+
+# The default explosion can kill the prison barrels, freeing all hostages.
+# The original spread seems closer to half the default.
+# Clipped the last two damage warheads to avoid this.
+MiniNuke:
+	Warhead@7Dam_areanuke2: SpreadDamage
+		Spread: 2c512
+	Warhead@10Dam_areanuke3: SpreadDamage
+		Spread: 2c512

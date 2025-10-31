@@ -6,15 +6,16 @@ Player:
 
 World:
 	MissionData:
-		Briefing: One of our outposts is under heavy attack by a nearby Soviet base. Einstein, Tanya and many of our forces have been evacuated via helicopters, but those were shot down on the other side of the river. Fortunately they survived the crash, but are now in enemy territory. Tanya and the rest of the surviving forces need to fight their way out of there. The air defenses must be eliminated before another Search & Rescue helicopter can arrive.\n\nMeanwhile, the forces remaining at the base need to fend off the Soviet attacks.\n
+		Briefing: One of our outposts is under heavy attack from a nearby Soviet base. Einstein, Tanya and many of our forces were evacuated by helicopter, but were shot down on the other side of the river. Fortunately they survived the crash, but are now stranded in enemy territory and must fight their way out. The air defenses must be eliminated before another Search & Rescue helicopter can arrive.\n\nMeanwhile, those left at the base need to fend off Soviet attacks.\n
 	LuaScript:
-		Scripts: campaign-global.lua, evacuation.lua
+		Scripts: campaign.lua, utils.lua, evacuation.lua
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
 		Default: normal
 	TimeLimitManager:
 		TimeLimitLocked: True
@@ -22,7 +23,11 @@ World:
 ^Palettes:
 	IndexedPlayerPalette:
 		PlayerIndex:
-			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
+			Allies1: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
+			Allies2: 208, 208, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 154, 155, 143
+	IndexedPlayerPalette@NOSHADOW:
+		PlayerIndex:
 			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
 			Allies1: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
 			Allies2: 208, 208, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 154, 155, 143

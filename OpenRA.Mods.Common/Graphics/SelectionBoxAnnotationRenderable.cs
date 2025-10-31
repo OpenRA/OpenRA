@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,6 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class SelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
-		readonly WPos pos;
 		readonly Rectangle decorationBounds;
 		readonly Color color;
 
@@ -25,18 +24,18 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public SelectionBoxAnnotationRenderable(WPos pos, Rectangle decorationBounds, Color color)
 		{
-			this.pos = pos;
+			Pos = pos;
 			this.decorationBounds = decorationBounds;
 			this.color = color;
 		}
 
-		public WPos Pos => pos;
+		public WPos Pos { get; }
 
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new SelectionBoxAnnotationRenderable(pos + vec, decorationBounds, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new SelectionBoxAnnotationRenderable(Pos + vec, decorationBounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -50,10 +49,10 @@ namespace OpenRA.Mods.Common.Graphics
 			var v = new float2(0, 4);
 
 			var cr = Game.Renderer.RgbaColorRenderer;
-			cr.DrawLine(new float3[] { tl + u, tl, tl + v }, 1, color, true);
-			cr.DrawLine(new float3[] { tr - u, tr, tr + v }, 1, color, true);
-			cr.DrawLine(new float3[] { br - u, br, br - v }, 1, color, true);
-			cr.DrawLine(new float3[] { bl + u, bl, bl - v }, 1, color, true);
+			cr.DrawLine([tl + u, tl, tl + v], 1, color, true);
+			cr.DrawLine([tr - u, tr, tr + v], 1, color, true);
+			cr.DrawLine([br - u, br, br - v], 1, color, true);
+			cr.DrawLine([bl + u, bl, bl - v], 1, color, true);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,17 +18,19 @@ namespace OpenRA
 {
 	public class WidgetLoader
 	{
-		readonly Dictionary<string, MiniYamlNode> widgets = new Dictionary<string, MiniYamlNode>();
+		readonly Dictionary<string, MiniYamlNode> widgets = [];
 		readonly ModData modData;
 
 		public WidgetLoader(ModData modData)
 		{
 			this.modData = modData;
 
-			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromStream(modData.DefaultFileSystem.Open(a), a)))
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			foreach (var file in modData.Manifest.ChromeLayout.Select(
+				a => MiniYaml.FromStream(modData.DefaultFileSystem.Open(a), a, stringPool: stringPool)))
 				foreach (var w in file)
 				{
-					var key = w.Key.Substring(w.Key.IndexOf('@') + 1);
+					var key = w.Key[(w.Key.IndexOf('@') + 1)..];
 					if (widgets.ContainsKey(key))
 						throw new InvalidDataException($"Widget has duplicate Key `{w.Key}` at {w.Location}");
 					widgets.Add(key, w);
@@ -52,7 +54,7 @@ namespace OpenRA
 
 			parent?.AddChild(widget);
 
-			if (node.Key.Contains("@"))
+			if (node.Key.Contains('@'))
 				FieldLoader.LoadField(widget, "Id", node.Key.Split('@')[1]);
 
 			foreach (var child in node.Value.Nodes)
@@ -66,7 +68,7 @@ namespace OpenRA
 					foreach (var c in child.Value.Nodes)
 						LoadWidget(args, widget, c);
 
-			var logicNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Logic");
+			var logicNode = node.Value.NodeWithKeyOrDefault("Logic");
 			var logic = logicNode?.Value.ToDictionary();
 			args.Add("logicArgs", logic);
 

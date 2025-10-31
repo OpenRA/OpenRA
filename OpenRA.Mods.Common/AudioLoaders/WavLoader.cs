@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 {
 	public class WavLoader : ISoundLoader
 	{
-		bool IsWave(Stream s)
+		static bool IsWave(Stream s)
 		{
 			var start = s.Position;
 			var type = s.ReadASCII(4);
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int Channels => channels;
 		public int SampleBits => sampleBits;
 		public int SampleRate => sampleRate;
-		public float LengthInSeconds => WavReader.WaveLength(sourceStream);
+		public float LengthInSeconds => lengthInSeconds;
 		public Stream GetPCMInputStream() { return wavStreamFactory(); }
 		public void Dispose() { sourceStream.Dispose(); }
 
@@ -62,12 +62,13 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		readonly short channels;
 		readonly int sampleBits;
 		readonly int sampleRate;
+		readonly float lengthInSeconds;
 
 		public WavFormat(Stream stream)
 		{
 			sourceStream = stream;
 
-			if (!WavReader.LoadSound(stream, out wavStreamFactory, out channels, out sampleBits, out sampleRate))
+			if (!WavReader.LoadSound(stream, out wavStreamFactory, out channels, out sampleBits, out sampleRate, out lengthInSeconds))
 				throw new InvalidDataException();
 		}
 	}

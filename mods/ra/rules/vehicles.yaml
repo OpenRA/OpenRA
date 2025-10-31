@@ -6,11 +6,11 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 230
 		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
-		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
+		Description: actor-v2rl.description
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: V2 Rocket Launcher
+		Name: actor-v2rl.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -33,6 +33,7 @@ V2RL:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		FacingTolerance: 0
 	WithFacingSpriteBody:
 		RequiresCondition: !reloading
 		Name: loaded
@@ -40,12 +41,15 @@ V2RL:
 		RequiresCondition: reloading
 		Sequence: empty-idle
 		Name: reloading
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: V2Explode
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 1TNK:
 	Inherits: ^TrackedVehicle
@@ -55,16 +59,16 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Prerequisites: ~vehicles.allies, ~techlevel.low
-		Description: Fast tank, good for scouting.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
+		Description: actor-1tnk.description
 	Valued:
 		Cost: 700
 	Tooltip:
-		Name: Light Tank
-		GenericName: Tank
+		Name: actor-1tnk.name
+		GenericName: actor-1tnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 26000
+		HP: 23000
 	Armor:
 		Type: Heavy
 	Mobile:
@@ -88,6 +92,9 @@ V2RL:
 	WithSpriteTurret:
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 2TNK:
 	Inherits: ^TrackedVehicle
@@ -97,12 +104,12 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 220
 		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
-		Description: Allied Main Battle Tank.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-2tnk.description
 	Valued:
 		Cost: 850
 	Tooltip:
-		Name: Medium Tank
-		GenericName: Tank
+		Name: actor-2tnk.name
+		GenericName: actor-2tnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -134,6 +141,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 3TNK:
 	Inherits: ^TrackedVehicle
@@ -143,12 +153,12 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 220
 		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
-		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-3tnk.description
 	Valued:
 		Cost: 1150
 	Tooltip:
-		Name: Heavy Tank
-		GenericName: Tank
+		Name: actor-3tnk.name
+		GenericName: actor-3tnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -156,7 +166,7 @@ V2RL:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 60
+		Speed: 64
 	RevealsShroud:
 		MinRange: 4c0
 		Range: 6c0
@@ -180,6 +190,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 4TNK:
 	Inherits: ^TrackedVehicle
@@ -189,12 +202,12 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 320
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
-		Description: Big and slow tank, with anti-air capability.\nCan crush concrete walls.\n  Strong vs Vehicles, Infantry, Aircraft\n  Weak vs Nothing
+		Description: actor-4tnk.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mammoth Tank
-		GenericName: Tank
+		Name: actor-4tnk.name
+		GenericName: actor-4tnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -239,6 +252,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1877, 1621, 0, -170
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 ARTY:
 	Inherits: ^TrackedVehicle
@@ -248,11 +264,11 @@ ARTY:
 		Queue: Vehicle
 		BuildPaletteOrder: 230
 		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft
+		Description: actor-arty.description
 	Valued:
 		Cost: 850
 	Tooltip:
-		Name: Artillery
+		Name: actor-arty.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -276,12 +292,16 @@ ARTY:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		FacingTolerance: 0
 	WithMuzzleOverlay:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: ArtilleryExplode
 		EmptyWeapon: UnitExplodeSmall
 		LoadedChance: 75
 	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: vehicles.upgraded
 
 HARV:
@@ -291,22 +311,25 @@ HARV:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: proc, ~techlevel.infonly
-		Description: Collects Ore and Gems for processing.\n  Unarmed
+		Description: actor-harv.description
 	Valued:
 		Cost: 1100
 	Tooltip:
-		Name: Ore Truck
-		GenericName: Harvester
+		Name: actor-harv.name
+		GenericName: actor-harv.generic-name
 	Selectable:
 		DecorationBounds: 1792, 1792
 	Harvester:
-		Capacity: 20
 		Resources: Ore,Gems
 		BaleUnloadDelay: 1
 		SearchFromProcRadius: 15
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-ore
+	StoresResources:
+		Capacity: 20
+		Resources: Ore,Gems
+	DockClientManager:
 	Health:
 		HP: 60000
 	Armor:
@@ -330,13 +353,13 @@ HARV:
 		Delay: 25
 		StartIfBelow: 50
 		DamageCooldown: 500
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: !no-ore
 		Weapon: OreExplosion
 	WithHarvesterSpriteBody:
 		ImageByFullness: harvempty, harvhalf, harv
 	-WithFacingSpriteBody:
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
 		RequiresSelection: true
@@ -353,11 +376,11 @@ MCV:
 		BuildPaletteOrder: 210
 		Prerequisites: fix, ~techlevel.medium
 		BuildDurationModifier: 50
-		Description: Deploys into another Construction Yard.\n  Unarmed
+		Description: actor-mcv.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mobile Construction Vehicle
+		Name: actor-mcv.name
 	Selectable:
 		DecorationBounds: 1792, 1792
 	Health:
@@ -375,6 +398,7 @@ MCV:
 		Facing: 384
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
+		NoTransformTextNotification: notification-cannot-deploy-here
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
@@ -392,11 +416,11 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: ~vehicles.allies, ~techlevel.low
-		Description: Fast scout & anti-infantry vehicle.\nCan carry one infantry.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		Description: actor-jeep.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Ranger
+		Name: actor-jeep.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -405,11 +429,11 @@ JEEP:
 		Type: Light
 	Mobile:
 		TurnSpeed: 40
-		Speed: 170
+		Speed: 164
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
 		MinRange: 4c0
-		Range: 8c0
+		Range: 7c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
@@ -429,6 +453,9 @@ JEEP:
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 APC:
 	Inherits: ^TrackedVehicle
@@ -439,11 +466,11 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 120
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
-		Description: Tough infantry transport.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-apc.description
 	Valued:
 		Cost: 850
 	Tooltip:
-		Name: Armored Personnel Carrier
+		Name: actor-apc.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -464,6 +491,7 @@ APC:
 		LocalOffset: 85,0,171
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		FacingTolerance: 0
 	WithMuzzleOverlay:
 	Cargo:
 		Types: Infantry
@@ -471,19 +499,23 @@ APC:
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 MNLY:
 	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 310
 		Prerequisites: fix, ~techlevel.medium
-		Description: Lays mines to destroy\nunwary enemy units.\nCan detect mines.\n  Unarmed
+		Description: actor-mnly.description
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Minelayer
+		Name: actor-mnly.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -508,9 +540,9 @@ MNLY:
 		RearmSound: minelay1.aud
 	DetectCloaked:
 		Range: 5c0
-		CloakTypes: Mine
+		DetectionTypes: Mine
 	RenderDetectionCircle:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: ATMine
 	RenderSprites:
 		Image: MNLY
@@ -530,11 +562,11 @@ TRUK:
 		Queue: Vehicle
 		BuildPaletteOrder: 410
 		Prerequisites: ~techlevel.low
-		Description: Transports cash to other players.\n  Unarmed
+		Description: actor-truk.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Supply Truck
+		Name: actor-truk.name
 	Health:
 		HP: 11000
 	Armor:
@@ -545,7 +577,7 @@ TRUK:
 		Range: 4c0
 	DeliversCash:
 		Payload: 500
-		PlayerExperience: 50
+		PlayerExperience: 5
 	SpawnActorOnDeath:
 		Actor: moneycrate
 
@@ -555,11 +587,11 @@ MGG:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
 		Prerequisites: atek, ~vehicles.england, ~techlevel.high
-		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
+		Description: actor-mgg.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Mobile Gap Generator
+		Name: actor-mgg.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -578,7 +610,7 @@ MGG:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	CreatesShroud:
-		Range: 6c0
+		Range: 7c0
 	RenderShroudCircle:
 	SpawnActorOnDeath:
 		Actor: MGG.Husk
@@ -588,14 +620,14 @@ MRJ:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Mobile Radar Jammer
+		Name: actor-mrj.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 320
 		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
-		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\n  Unarmed
+		Description: actor-mrj.description
 	Health:
 		HP: 22000
 	Armor:
@@ -628,12 +660,12 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
 		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
-		Description: Tank with mounted Tesla coil.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft
+		Description: actor-ttnk.description
 	Valued:
 		Cost: 1350
 	Tooltip:
-		Name: Tesla Tank
-		GenericName: Tank
+		Name: actor-ttnk.name
+		GenericName: actor-ttnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -659,6 +691,9 @@ TTNK:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1280, 1280
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 FTRK:
 	Inherits: ^Vehicle
@@ -668,11 +703,11 @@ FTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: ~vehicles.soviet, ~techlevel.low
-		Description: Mobile unit with mounted Flak cannon.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Tanks
+		Description: actor-ftrk.description
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Mobile Flak
+		Name: actor-ftrk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -708,6 +743,9 @@ FTRK:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 DTRK:
 	Inherits: ^Vehicle
@@ -715,28 +753,28 @@ DTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
 		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.high
-		Description: Truck with actively armed nuclear\nexplosives. Has very weak armor.
+		Description: actor-dtrk.description
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Demolition Truck
+		Name: actor-dtrk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 5000
+		HP: 2800
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 72
+		Speed: 67
 	RevealsShroud:
 		Range: 4c0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 		DamageSource: Killer
 	AttackFrontal:
 		FacingTolerance: 512
-	Armament@PRIMARY:
+	Armament:
 		Weapon: DemoTruckTargeting
 	GrantConditionOnAttack:
 		Condition: triggered
@@ -756,12 +794,12 @@ CTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
 		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
-		Description: Armed with anti-ground missiles.\nTeleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft\n  Special ability: Can teleport
+		Description: actor-ctnk.description
 	Valued:
 		Cost: 1350
 	Tooltip:
-		Name: Chrono Tank
-		GenericName: Tank
+		Name: actor-ctnk.name
+		GenericName: actor-ctnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -777,21 +815,21 @@ CTNK:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Armament@PRIMARY:
+	Armament:
 		Weapon: APTusk
-		LocalOffset: -160,-276,232
-		LocalYaw: 60
-	Armament@SECONDARY:
-		Weapon: APTusk
-		LocalOffset: -160,276,232
-		LocalYaw: -60
+		LocalOffset: -160,-276,232, -160,276,232
+		LocalYaw: 60, -60
 	AttackFrontal:
+		FacingTolerance: 0
 	PortableChrono:
 		ChargeDelay: 250
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1280, 1280
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 QTNK:
 	Inherits: ^TrackedVehicle
@@ -799,12 +837,12 @@ QTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 420
 		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
-		Description: Deals seismic damage to nearby vehicles\nand structures.\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
+		Description: actor-qtnk.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: MAD Tank
-		GenericName: Tank
+		Name: actor-qtnk.name
+		GenericName: actor-qtnk.generic-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -842,11 +880,11 @@ STNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 330
 		Prerequisites: atek, ~vehicles.france, ~techlevel.high
-		Description: Lightly armored infantry transport which\ncan cloak. Armed with anti-ground missiles.\n  Strong vs Light armor\n  Weak vs Infantry, Tanks, Aircraft
+		Description: actor-stnk.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Phase Transport
+		Name: actor-stnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -882,12 +920,14 @@ STNK:
 		CloakDelay: 175
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
-		UncloakOn: Attack, Unload, Heal, Dock
+		UncloakOn: Attack, Load, Unload, Heal, Dock
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	-MustBeDestroyed:
 	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: vehicles.upgraded

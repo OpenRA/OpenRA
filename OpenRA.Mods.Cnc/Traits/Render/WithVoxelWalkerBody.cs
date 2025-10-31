@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,13 +14,13 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	public class WithVoxelWalkerBodyInfo : TraitInfo, IRenderActorPreviewVoxelsInfo,  Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
+	public class WithVoxelWalkerBodyInfo : PausableConditionalTraitInfo,
+		IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<IMoveInfo>, Requires<IFacingInfo>
 	{
 		public readonly string Sequence = "idle";
 
@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public readonly bool ShowShadow = true;
 		public override object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(IModelCache cache,
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
-			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
+			var model = cache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var frame = init.GetValue<BodyAnimationFrameInit, uint>(this, 0);
 
@@ -44,39 +44,42 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelWalkerBody : ITick, IActorPreviewInitModifier, IAutoMouseBounds
+	public class WithVoxelWalkerBody : PausableConditionalTrait<WithVoxelWalkerBodyInfo>, ITick, IActorPreviewInitModifier, IAutoMouseBounds
 	{
-		readonly WithVoxelWalkerBodyInfo info;
 		readonly IMove movement;
 		readonly ModelAnimation modelAnimation;
 		readonly RenderVoxels rv;
 
-		uint tick, frame, frames;
+		uint tick, frame;
+		readonly uint frames;
 
 		public WithVoxelWalkerBody(Actor self, WithVoxelWalkerBodyInfo info)
+			: base(info)
 		{
-			this.info = info;
 			movement = self.Trait<IMove>();
 
 			var body = self.Trait<BodyOrientation>();
 			rv = self.Trait<RenderVoxels>();
 
-			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
+			var model = rv.Renderer.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = model.Frames;
 			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
-				() => body.QuantizeOrientation(self, self.Orientation),
-				() => false, () => frame, info.ShowShadow);
+				() => body.QuantizeOrientation(self.Orientation),
+				() => IsTraitDisabled, () => frame, info.ShowShadow);
 
 			rv.Add(modelAnimation);
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return;
+
 			if (movement.CurrentMovementTypes.HasMovementType(MovementType.Horizontal)
 				|| movement.CurrentMovementTypes.HasMovementType(MovementType.Turn))
 				tick++;
 
-			if (tick < info.TickRate)
+			if (tick < Info.TickRate)
 				return;
 
 			tick = 0;

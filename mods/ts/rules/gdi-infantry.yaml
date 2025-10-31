@@ -7,11 +7,11 @@ E2:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Prerequisites: ~gapile, ~techlevel.low
-		Description: Infantry armed with special explosive discs.\n  Strong vs Buildings, Infantry\n  Weak vs Vehicles, Aircraft
+		Description: actor-e2.description
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Disc Thrower
+		Name: actor-e2.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -26,6 +26,7 @@ E2:
 		ProneOffset: 160,128,-555
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 	RevealsShroud:
@@ -49,14 +50,14 @@ MEDIC:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Medic
+		Name: actor-medic.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Prerequisites: ~gapile, ~techlevel.low
-		Description: Heals nearby infantry.\n  Unarmed
+		Description: actor-medic.description
 	Voiced:
 		VoiceSet: Medic
 	RevealsShroud:
@@ -77,6 +78,7 @@ MEDIC:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Infantry
 	AttackFrontal:
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: heal
 	ChangesHealth:
@@ -93,14 +95,14 @@ JUMPJET:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Jumpjet Infantry
+		Name: actor-jumpjet.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
 		Prerequisites: ~gapile, garadr, ~techlevel.medium
-		Description: Airborne soldier.\n  Strong vs Infantry, Aircraft\n  Weak vs Vehicles
+		Description: actor-jumpjet.description
 	Voiced:
 		VoiceSet: JumpJet
 	Mobile:
@@ -119,6 +121,7 @@ JUMPJET:
 	-Crushable:
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		RequiresCondition: !airborne
 		DefaultAttackSequence: attack
@@ -135,6 +138,11 @@ JUMPJET:
 		StandSequences: flying-muzzle
 		MoveSequence: flying-muzzle
 		Palette: muzzle
+	AppearsOnRadar:
+		ValidRelationships: Ally
+	AppearsOnRadar@ENEMY:
+		ValidRelationships: Neutral, Enemy
+		RequiresCondition: !rank-elite
 	-TakeCover:
 	Hovers:
 		RequiresCondition: airborne
@@ -185,7 +193,7 @@ JUMPJET.Husk:
 		Type: GroundPosition
 	ScriptTriggers:
 	Tooltip:
-		Name: Jumpjet Infantry
+		Name: actor-jumpjet-husk-name
 	FallsToEarth:
 		Velocity: 86
 		Explosion:
@@ -219,7 +227,7 @@ GHOST:
 	Valued:
 		Cost: 1750
 	Tooltip:
-		Name: Ghost Stalker
+		Name: actor-ghost.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -227,7 +235,7 @@ GHOST:
 		BuildPaletteOrder: 90
 		Prerequisites: ~gapile, gatech, ~techlevel.high
 		BuildLimit: 1
-		Description: Elite commando infantry, armed with\na railgun and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles, Aircraft\n  Special Ability: Destroy Building with C4\nMaximum 1 can be trained.
+		Description: actor-ghost.description
 	Voiced:
 		VoiceSet: Ghost
 	Armor:
@@ -248,6 +256,7 @@ GHOST:
 		CrushSound: squishy2.aud
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	Demolition:
 		DetonationDelay: 45
 		Voice: Attack

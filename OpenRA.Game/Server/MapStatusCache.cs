@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ namespace OpenRA.Server
 
 	public class MapStatusCache
 	{
-		readonly Dictionary<MapPreview, Session.MapStatus> cache = new Dictionary<MapPreview, Session.MapStatus>();
+		readonly Dictionary<MapPreview, Session.MapStatus> cache = [];
 		readonly Action<string, Session.MapStatus> onStatusChanged;
 		readonly bool enableRemoteLinting;
 		readonly ModData modData;
@@ -37,24 +37,24 @@ namespace OpenRA.Server
 			var status = cache[map];
 			var failed = false;
 
-			Action<string> onLintFailure = message =>
+			void OnLintFailure(string message)
 			{
-				Log.Write("server", "Map {0} failed lint with error: {1}", map.Title, message);
+				Log.Write("server", $"Map {map.Title} failed lint with error: {message}");
 				failed = true;
-			};
+			}
 
-			Action<string> onLintWarning = _ => { };
+			void OnLintWarning(string _) { }
 
 			foreach (var customMapPassType in modData.ObjectCreator.GetTypesImplementing<ILintServerMapPass>())
 			{
 				try
 				{
 					var customMapPass = (ILintServerMapPass)modData.ObjectCreator.CreateBasic(customMapPassType);
-					customMapPass.Run(onLintFailure, onLintWarning, modData, map, rules);
+					customMapPass.Run(OnLintFailure, OnLintWarning, modData, map, rules);
 				}
 				catch (Exception e)
 				{
-					onLintFailure(e.ToString());
+					OnLintFailure(e.ToString());
 				}
 			}
 
@@ -84,13 +84,13 @@ namespace OpenRA.Server
 				}
 				catch (Exception e)
 				{
-					Log.Write("server", "Failed to load rules for `{0}` with error :{1}", map.Title, e.Message);
+					Log.Write("server", $"Failed to load rules for `{map.Title}` with error: {e.Message}");
 					status = Session.MapStatus.Incompatible;
 				}
 
 				if (map.Players.Players.Count > MapPlayers.MaximumPlayerCount)
 				{
-					Log.Write("server", "Failed to load `{0}`: Player count exceeds maximum ({1}/{2}).", map.Title, map.Players.Players.Count, MapPlayers.MaximumPlayerCount);
+					Log.Write("server", $"Failed to load `{map.Title}`: Player count exceeds maximum ({map.Players.Players.Count}/{MapPlayers.MaximumPlayerCount}).");
 					status = Session.MapStatus.Incompatible;
 				}
 

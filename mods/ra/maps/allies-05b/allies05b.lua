@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -50,7 +50,7 @@ SendSpy = function()
 	Trigger.OnKilled(Spy, function() USSR.MarkCompletedObjective(USSRObj) end)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Commander! You have to disguise me in order to get through the enemy patrols.", "Spy")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("disguise-spy"), UserInterface.GetFluentMessage("spy"))
 		if SpecialCameras then
 			SpyCameraA = Actor.Create("camera", true, { Owner = Greece, Location = SpyCamera1.Location })
 			SpyCameraB = Actor.Create("camera", true, { Owner = Greece, Location = SpyCamera2.Location })
@@ -239,7 +239,7 @@ FreeTanya = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+			Media.DisplayMessage(UserInterface.GetFluentMessage("tanya-rules-of-engagement"), UserInterface.GetFluentMessage("tanya"))
 		end)
 	end
 
@@ -254,7 +254,7 @@ FreeTanya = function()
 		end)
 	end)
 
-	KillSams = Greece.AddObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
+	KillSams = AddPrimaryObjective(Greece, "destroy-sam-sites-blocker")
 	Trigger.OnKilled(Tanya, function() USSR.MarkCompletedObjective(USSRObj) end)
 
 	if not SpecialCameras and PrisonCamera and PrisonCamera.IsInWorld then
@@ -318,7 +318,7 @@ InitTriggers = function()
 		end
 
 		if not Greece.IsObjectiveCompleted(InfWarfactory) then
-			Media.DisplayMessage("Good work! But next time skip the heroics!", "Battlefield Control")
+			Media.DisplayMessage(UserInterface.GetFluentMessage("skip-heroics"), UserInterface.GetFluentMessage("battlefield-control"))
 			Greece.MarkCompletedObjective(InfWarfactory)
 		end
 
@@ -386,39 +386,23 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	GoodGuy = Player.GetPlayer("GoodGuy")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Greece)
 
-	USSRObj = USSR.AddObjective("Deny the Allies.")
-	MainObj = Greece.AddObjective("Rescue Tanya.")
-	KillAll = Greece.AddObjective("Eliminate all Soviet units in this area.")
-	InfWarfactory = Greece.AddObjective("Infiltrate the Soviet warfactory.", "Secondary", false)
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
+	USSRObj = AddPrimaryObjective(USSR, "")
+	MainObj = AddPrimaryObjective(Greece, "rescue-tanya")
+	KillAll = AddPrimaryObjective(Greece, "eliminate-soviet-units")
+	InfWarfactory = AddSecondaryObjective(Greece, "infiltrate-warfactory")
 
 	InitTriggers()
 	SendSpy()
 	ChurchFootprint()
 
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		TanyaType = "e7"
 		ReinforceCash = 5000
 		USSR.Cash = 8000
 		SpecialCameras = true
-	elseif Map.LobbyOption("difficulty") == "normal" then
+	elseif Difficulty == "normal" then
 		TanyaType = "e7.noautotarget"
 		ReinforceCash = 2250
 		USSR.Cash = 15000

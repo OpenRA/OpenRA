@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ namespace OpenRA.Network
 {
 	public enum NatStatus { Enabled, Disabled, NotSupported }
 
-	public class Nat
+	public static class Nat
 	{
 		public static NatStatus Status => NatUtility.IsSearching ? natDevice != null ? NatStatus.Enabled : NatStatus.NotSupported : NatStatus.Disabled;
 
@@ -39,7 +39,7 @@ namespace OpenRA.Network
 			initialized = true;
 		}
 
-		static readonly SemaphoreSlim Locker = new SemaphoreSlim(1, 1);
+		static readonly SemaphoreSlim Locker = new(1, 1);
 
 		static async void DeviceFound(object sender, DeviceEventArgs args)
 		{
@@ -49,8 +49,8 @@ namespace OpenRA.Network
 				// Only interact with one at a time. Some support both UPnP and NAT-PMP.
 				natDevice = args.Device;
 
-				Log.Write("nat", "Device found: {0}", natDevice.DeviceEndpoint);
-				Log.Write("nat", "Type: {0}", natDevice.NatProtocol);
+				Log.Write("nat", $"Device found: {natDevice.DeviceEndpoint}");
+				Log.Write("nat", $"Type: {natDevice.NatProtocol}");
 			}
 			finally
 			{
@@ -71,8 +71,8 @@ namespace OpenRA.Network
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Port forwarding failed: {0}", e.Message);
-				Log.Write("nat", e.StackTrace);
+				Log.Write("nat", "Port forwarding failed.");
+				Log.Write("nat", e);
 				return false;
 			}
 
@@ -90,8 +90,8 @@ namespace OpenRA.Network
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Port removal failed: {0}", e.Message);
-				Log.Write("nat", e.StackTrace);
+				Log.Write("nat", "Port removal failed.");
+				Log.Write("nat", e);
 				return false;
 			}
 

@@ -1,6 +1,5 @@
 ^tibtree:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -12, 12
 	idle:
 		ShadowStart: 11
@@ -12,28 +11,42 @@
 
 tibtre01:
 	Inherits: ^tibtree
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: tibtre01.tem
+			SNOW: tibtre01.sno
 
 tibtre02:
 	Inherits: ^tibtree
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: tibtre02.tem
+			SNOW: tibtre02.sno
 
 tibtre03:
 	Inherits: ^tibtree
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: tibtre03.tem
+			SNOW: tibtre03.sno
 
 bigblue:
 	Defaults:
 		Offset: 0, 0, 12
-	idle: bigblue2
+	idle:
+		Filename: bigblue2.shp
 		ShadowStart: 10
-	active: bigblue2
+	active:
+		Filename: bigblue2.shp
 		Start: 1
 		Length: 9
 		ShadowStart: 11
 		Tick: 160
 
 bigblue3:
-	Defaults: bigblue3.tem
+	Defaults:
+		Filename: bigblue3.tem
 		Offset: 0, -12, 12
-		AddExtension: false
 	idle:
 		ShadowStart: 10
 	active:
@@ -45,152 +58,263 @@ bigblue3:
 ^tree:
 	idle:
 		ShadowStart: 1
-		UseTilesetExtension: true
 		Offset: 0, -12, 12
 
 tree01:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree01.tem
+			SNOW: tree01.sno
 
 tree02:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree02.tem
+			SNOW: tree02.sno
 
 tree03:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree03.tem
+			SNOW: tree03.sno
 
 tree04:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree04.tem
+			SNOW: tree04.sno
 
 tree05:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree05.tem
+			SNOW: tree05.sno
 
 tree06:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree06.tem
+			SNOW: tree06.sno
 
 tree07:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree07.tem
+			SNOW: tree07.sno
 
 tree08:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree08.tem
+			SNOW: tree08.sno
 
 tree09:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree09.tem
+			SNOW: tree09.sno
 
 tree10:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree10.tem
+			SNOW: tree10.sno
 
 tree11:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree11.tem
+			SNOW: tree11.sno
 
 tree12:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree12.tem
+			SNOW: tree12.sno
 
 tree13:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree13.tem
+			SNOW: tree13.sno
 
 tree14:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree14.tem
+			SNOW: tree14.sno
 
 tree15:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree15.tem
+			SNOW: tree15.sno
 
 tree16:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree16.tem
+			SNOW: tree16.sno
 
 tree17:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree17.tem
+			SNOW: tree17.sno
 
 tree18:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree18.tem
+			SNOW: tree18.sno
 
 tree19:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree19.tem
+			SNOW: tree19.sno
 
 tree20:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree20.tem
+			SNOW: tree20.sno
 
 tree21:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree21.tem
+			SNOW: tree21.sno
 
 tree22:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree22.tem
+			SNOW: tree22.sno
 
 tree23:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree23.tem
+			SNOW: tree23.sno
 
 tree24:
 	Inherits: ^tree
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tree24.tem
+			SNOW: tree24.sno
 
 tree25:
 	Inherits: ^tree
-
-^fona:
-	Inherits: ^tree
 	idle:
-		AddExtension: false
+		TilesetFilenames:
+			TEMPERATE: tree25.tem
+			SNOW: tree25.sno
 
 fona01:
-	Inherits: ^fona
-	Defaults: fona01.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona01.tem
 
 fona02:
-	Inherits: ^fona
-	Defaults: fona02.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona02.tem
 
 fona03:
-	Inherits: ^fona
-	Defaults: fona03.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona03.tem
 
 fona04:
-	Inherits: ^fona
-	Defaults: fona04.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona04.tem
 
 fona05:
-	Inherits: ^fona
-	Defaults: fona05.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona05.tem
 
 fona06:
-	Inherits: ^fona
-	Defaults: fona06.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona06.tem
 
 fona07:
-	Inherits: ^fona
-	Defaults: fona07.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona07.tem
 
 fona08:
-	Inherits: ^fona
-	Defaults: fona08.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona08.tem
 
 fona09:
-	Inherits: ^fona
-	Defaults: fona09.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona09.tem
 
 fona10:
-	Inherits: ^fona
-	Defaults: fona10.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona10.tem
 
 fona11:
-	Inherits: ^fona
-	Defaults: fona11.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona11.tem
 
 fona12:
-	Inherits: ^fona
-	Defaults: fona12.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona12.tem
 
 fona13:
-	Inherits: ^fona
-	Defaults: fona13.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona13.tem
 
 fona14:
-	Inherits: ^fona
-	Defaults: fona14.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona14.tem
 
 fona15:
-	Inherits: ^fona
-	Defaults: fona15.tem
+	Inherits: ^tree
+	idle:
+		Filename: fona15.tem
 
 veinhole:
 	idle:
+		TilesetFilenames:
+			TEMPERATE: veinhole.tem
+			SNOW: veinhole.sno
 		ShadowStart: 1
-		UseTilesetExtension: true
 		Offset: 0, -36, 1
 		ZRamp: 1

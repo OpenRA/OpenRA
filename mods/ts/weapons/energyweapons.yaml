@@ -57,6 +57,7 @@ SonicZap:
 	ReloadDelay: 180
 	Range: 6c0
 	Report: sonic4.aud
+	ValidTargets: Ground, Trees
 	Projectile: AreaBeam
 		Speed: 0c128
 		Duration: 90
@@ -74,6 +75,7 @@ SonicZap:
 		Damage: 800
 		AffectsParent: false
 		ValidRelationships: Neutral, Enemy
+		ValidTargets: Ground, Trees
 		Versus:
 			Heavy: 80
 			Concrete: 60
@@ -85,6 +87,7 @@ SonicZap:
 		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
 		AffectsParent: false
 		ValidRelationships: Ally
+		ValidTargets: Ground, Trees
 		Versus:
 			Heavy: 80
 			Concrete: 60
@@ -113,6 +116,7 @@ SonicZap:
 
 CyCannon:
 	Inherits: ^EnergyBlast
+	ValidTargets: Ground, Trees
 	Projectile: Missile
 		MaximumLaunchSpeed: 192
 		Blockable: false
@@ -124,6 +128,7 @@ CyCannon:
 		RangeLimit: 8c0
 		TerrainHeightAware: true
 	Warhead@1Dam: SpreadDamage
+		ValidTargets: Ground, Trees
 		Spread: 43
 		Damage: 12000
 		Versus:
@@ -133,6 +138,8 @@ CyCannon:
 			Heavy: 150
 			Concrete: 80
 		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
+	Warhead@2Eff: CreateEffect
+		ValidTargets: Ground, Trees
 
 Proton:
 	Inherits: ^EnergyBlast

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,29 +28,34 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Demolishable(this); }
 	}
 
-	public class Demolishable : ConditionalTrait<DemolishableInfo>, IDemolishable, ITick
+	public class Demolishable : ConditionalTrait<DemolishableInfo>, IDemolishable, ITick, INotifyOwnerChanged
 	{
-		class DemolishAction
+		sealed class DemolishAction(Actor saboteur, int delay, int token, BitSet<DamageType> damageTypes)
 		{
-			public readonly Actor Saboteur;
-			public readonly int Token;
-			public int Delay;
-			public readonly BitSet<DamageType> DamageTypes;
-
-			public DemolishAction(Actor saboteur, int delay, int token, BitSet<DamageType> damageTypes)
-			{
-				Saboteur = saboteur;
-				Delay = delay;
-				Token = token;
-				DamageTypes = damageTypes;
-			}
+			public readonly Actor Saboteur = saboteur;
+			public readonly int Token = token;
+			public int Delay = delay;
+			public readonly BitSet<DamageType> DamageTypes = damageTypes;
 		}
 
-		List<DemolishAction> actions = new List<DemolishAction>();
-		List<DemolishAction> removeActions = new List<DemolishAction>();
+		readonly List<DemolishAction> actions = [];
+		readonly List<DemolishAction> removeActions = [];
+		IDamageModifier[] damageModifiers;
 
 		public Demolishable(DemolishableInfo info)
 			: base(info) { }
+
+		protected override void Created(Actor self)
+		{
+			damageModifiers = self.TraitsImplementing<IDamageModifier>()
+				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>()).ToArray();
+		}
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			damageModifiers = self.TraitsImplementing<IDamageModifier>()
+				.Concat(newOwner.PlayerActor.TraitsImplementing<IDamageModifier>()).ToArray();
+		}
 
 		bool IDemolishable.IsValidTarget(Actor self, Actor saboteur)
 		{
@@ -68,18 +73,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || actions.Count == 0)
 				return;
 
 			foreach (var a in actions)
 			{
 				if (a.Delay-- <= 0)
 				{
-					var modifiers = self.TraitsImplementing<IDamageModifier>()
-						.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
-						.Select(t => t.GetDamageModifier(self, null));
-
-					if (Util.ApplyPercentageModifiers(100, modifiers) > 0)
+					if (Util.ApplyPercentageModifiers(100, damageModifiers.Select(t => t.GetDamageModifier(self, null))) > 0)
 						self.Kill(a.Saboteur, a.DamageTypes);
 					else if (a.Token != Actor.InvalidConditionToken)
 					{

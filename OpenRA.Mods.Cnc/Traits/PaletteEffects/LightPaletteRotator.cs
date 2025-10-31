@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,10 +17,10 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Palette effect used for blinking \"animations\" on actors.")]
-	class LightPaletteRotatorInfo : TraitInfo
+	sealed class LightPaletteRotatorInfo : TraitInfo
 	{
 		[Desc("Palettes this effect should not apply to.")]
-		public readonly HashSet<string> ExcludePalettes = new HashSet<string>();
+		public readonly HashSet<string> ExcludePalettes = [];
 
 		[Desc("'Speed' at which the effect cycles through palette indices.")]
 		public readonly float TimeStep = .5f;
@@ -29,12 +29,12 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int ModifyIndex = 103;
 
 		[Desc("Palette indices to rotate through.")]
-		public readonly int[] RotationIndices = { 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 238, 237, 236, 235, 234, 233, 232, 231 };
+		public readonly int[] RotationIndices = [230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 238, 237, 236, 235, 234, 233, 232, 231];
 
 		public override object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
 	}
 
-	class LightPaletteRotator : ITick, IPaletteModifier
+	sealed class LightPaletteRotator : ITick, IPaletteModifier
 	{
 		readonly LightPaletteRotatorInfo info;
 		float t = 0;

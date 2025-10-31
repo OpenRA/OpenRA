@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,14 +25,14 @@ namespace OpenRA.Mods.Cnc.FileSystem
 	{
 		public sealed class MixFile : IReadOnlyPackage
 		{
-			public string Name { get; private set; }
+			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Dictionary<string, PackageEntry> index;
 			readonly long dataStart;
 			readonly Stream s;
 
-			public MixFile(Stream s, string filename, HashSet<string> allPossibleFilenames)
+			public MixFile(Stream s, string filename, string[] globalFilenames)
 			{
 				Name = filename;
 				this.s = s;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 					index = ParseIndex(entries.ToDictionaryWithConflictLog(x => x.Hash,
 						$"{filename} ({(isCncMix ? "C&C" : "RA/TS/RA2")} format, Encrypted: {isEncrypted}, DataStart: {dataStart})",
-						null, x => $"(offs={x.Offset}, len={x.Length})"), allPossibleFilenames);
+						null, x => $"(offs={x.Offset}, len={x.Length})"), globalFilenames);
 				}
 				catch (Exception)
 				{
@@ -64,10 +64,9 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				}
 			}
 
-			Dictionary<string, PackageEntry> ParseIndex(Dictionary<uint, PackageEntry> entries, HashSet<string> allPossibleFilenames)
+			Dictionary<string, PackageEntry> ParseIndex(Dictionary<uint, PackageEntry> entries, string[] globalFilenames)
 			{
-				var classicIndex = new Dictionary<string, PackageEntry>();
-				var crcIndex = new Dictionary<string, PackageEntry>();
+				var allPossibleFilenames = new HashSet<string>(globalFilenames);
 
 				// Try and find a local mix database
 				var dbNameClassic = PackageEntry.HashFilename("local mix database.dat", PackageHashType.Classic);
@@ -79,13 +78,16 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						using (var content = GetContent(kv.Value))
 						{
 							var db = new XccLocalDatabase(content);
-							foreach (var e in db.Entries)
-								allPossibleFilenames.Add(e);
+							allPossibleFilenames.EnsureCapacity(allPossibleFilenames.Count + db.Entries.Length);
+							allPossibleFilenames.UnionWith(db.Entries);
 						}
 
 						break;
 					}
 				}
+
+				var classicIndex = new Dictionary<string, PackageEntry>(entries.Count);
+				var crcIndex = new Dictionary<string, PackageEntry>(entries.Count);
 
 				foreach (var filename in allPossibleFilenames)
 				{
@@ -105,6 +107,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if (unknown > 0)
 					Log.Write("debug", $"{Name}: failed to resolve filenames for {unknown} unknown hashes");
 
+				bestIndex.TrimExcess();
 				return bestIndex;
 			}
 
@@ -112,7 +115,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			{
 				s.Seek(offset, SeekOrigin.Begin);
 				var numFiles = s.ReadUInt16();
-				/*uint dataSize = */s.ReadUInt32();
+				s.ReadUInt32(); // dataSize
 
 				var items = new List<PackageEntry>();
 				for (var i = 0; i < numFiles; i++)
@@ -164,7 +167,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if (count < 0)
 					throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 
-				if (offset + (count * 2) > s.Length)
+				if (offset + count * 2 > s.Length)
 					throw new ArgumentException($"Bytes to read {count * 2} and offset {offset} greater than stream length {s.Length}.");
 
 				s.Seek(offset, SeekOrigin.Begin);
@@ -223,6 +226,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			}
 		}
 
+		string[] globalFilenames;
+
 		bool IPackageLoader.TryParsePackage(Stream s, string filename, FS context, out IReadOnlyPackage package)
 		{
 			if (!filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
@@ -232,13 +237,11 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			}
 
 			// Load the global mix database
-			var allPossibleFilenames = new HashSet<string>();
-			if (context.TryOpen("global mix database.dat", out var mixDatabase))
+			if (globalFilenames == null && context.TryOpen("global mix database.dat", out var mixDatabase))
 				using (var db = new XccGlobalDatabase(mixDatabase))
-					foreach (var e in db.Entries)
-						allPossibleFilenames.Add(e);
+					globalFilenames = db.Entries.ToHashSet().ToArray();
 
-			package = new MixFile(s, filename, allPossibleFilenames);
+			package = new MixFile(s, filename, globalFilenames ?? []);
 			return true;
 		}
 	}

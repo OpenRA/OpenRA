@@ -10,5 +10,5 @@ contact_links:
     url: https://discord.openra.net/
     about: Join the community Discord server for community discussion and support.
   - name: OpenRA IRC Channel
-    url: https://webchat.freenode.net/#openra
-    about: Join our development IRC channel on freenode for discussion of development topics.
+    url: https://web.libera.chat/#openra
+    about: Join our development IRC channel on Libera for discussion of development topics.

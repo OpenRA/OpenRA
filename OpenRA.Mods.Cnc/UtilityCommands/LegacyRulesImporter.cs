@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class LegacyRulesImporter : IUtilityCommand
+	sealed class LegacyRulesImporter : IUtilityCommand
 	{
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
@@ -130,7 +130,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					Console.WriteLine("\t\tIntoActor: " + undeploysInto);
 				}
 
-				if (artIni.Sections.Any(s => s.Name == building.ToLowerInvariant()))
+				var buildingLower = building.ToLowerInvariant();
+				if (artIni.Sections.Any(s => s.Name == buildingLower))
 				{
 					var artSection = artIni.GetSection(building);
 
@@ -138,7 +139,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					if (!string.IsNullOrEmpty(foundation))
 					{
 						var dimensions = foundation.Split('x');
-						if (dimensions.First() == "0" || dimensions.Last() == "0")
+						if (dimensions[0] == "0" || dimensions[^1] == "0")
 							Console.WriteLine("\tImmobile:\n \t\tOccupiesSpace: False");
 						else
 						{
@@ -148,13 +149,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 							if (!string.IsNullOrEmpty(adjacent))
 								Console.WriteLine("\t\tAdjacent: " + adjacent);
 
-							Console.WriteLine("\t\tDimensions: " + dimensions.First() + "," + dimensions.Last());
+							Console.WriteLine("\t\tDimensions: " + dimensions[0] + "," + dimensions[^1]);
 
 							Console.Write("\t\tFootprint:");
-							var width = 0;
-							int.TryParse(dimensions.First(), out width);
-							var height = 0;
-							int.TryParse(dimensions.Last(), out height);
+							int.TryParse(dimensions[0], out var width);
+							int.TryParse(dimensions[^1], out var height);
 							for (var y = 0; y < height; y++)
 							{
 								Console.Write(" ");

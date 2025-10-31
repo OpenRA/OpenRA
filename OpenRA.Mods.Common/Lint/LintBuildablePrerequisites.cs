@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class LintBuildablePrerequisites : ILintRulesPass, ILintServerMapPass
+	sealed class LintBuildablePrerequisites : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
@@ -28,19 +28,26 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			var providedPrereqs = rules.Actors.SelectMany(a => a.Value.TraitInfos<ITechTreePrerequisiteInfo>().SelectMany(p => p.Prerequisites(a.Value)));
 
-			// TODO: this check is case insensitive while the real check in-game is not
-			foreach (var i in rules.Actors)
+			// TODO: this check is case insensitive while the real check in-game is not.
+			foreach (var actorInfo in rules.Actors)
 			{
-				var bi = i.Value.TraitInfoOrDefault<BuildableInfo>();
-				if (bi != null)
-					foreach (var prereq in bi.Prerequisites)
-						if (!prereq.StartsWith("~disabled"))
-							if (!providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
-								emitError($"Buildable actor {i.Key} has prereq {prereq} not provided by anything.");
+				// Catch TypeDictionary errors.
+				try
+				{
+					var bi = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
+					if (bi != null)
+						foreach (var prereq in bi.Prerequisites)
+							if (!prereq.StartsWith("~disabled", StringComparison.Ordinal) && !providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
+								emitError($"Buildable actor `{actorInfo.Key}` has prereq `{prereq}` not provided by anything.");
+				}
+				catch (InvalidOperationException e)
+				{
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+				}
 			}
 		}
 	}

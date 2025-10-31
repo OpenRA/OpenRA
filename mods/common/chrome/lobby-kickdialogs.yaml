@@ -1,140 +1,140 @@
 Background@KICK_CLIENT_DIALOG:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Logic: KickClientLogic
 	Background: dialog3
 	Children:
 		Label@TITLE:
 			Y: 41
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
 			Align: Center
 		Label@TEXTA:
 			Y: 68
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: You may also apply a temporary ban, preventing
+			Text: label-kick-client-dialog-text-a
 		Label@TEXTB:
 			Y: 86
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: them from joining for the remainder of this game.
+			Text: label-kick-client-dialog-text-b
 		Checkbox@PREVENT_REJOINING_CHECKBOX:
-			X: (PARENT_RIGHT - WIDTH) / 2
+			X: (PARENT_WIDTH - WIDTH) / 2
 			Y: 120
 			Width: 150
 			Height: 20
-			Text: Temporarily Ban
+			Text: checkbox-kick-client-dialog-prevent-rejoining
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 + 75
+			X: (PARENT_WIDTH - WIDTH) / 2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Kick
+			Text: button-kick-client-dialog
 			Font: Bold
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 - 75
+			X: (PARENT_WIDTH - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: button-cancel
 			Font: Bold
 
 Background@KICK_SPECTATORS_DIALOG:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Logic: KickSpectatorsLogic
 	Background: dialog3
 	Children:
 		Label@TITLE:
 			Y: 41
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Kick Spectators
+			Text: label-kick-spectators-dialog-title
 		Label@TEXT:
 			Y: 86
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 + 75
+			X: (PARENT_WIDTH - WIDTH) / 2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Ok
+			Text: button-kick-spectators-dialog-ok
 			Font: Bold
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 - 75
+			X: (PARENT_WIDTH - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: button-cancel
 			Font: Bold
 
 Background@FORCE_START_DIALOG:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Background: dialog3
 	Children:
 		Label@TITLE:
 			Y: 41
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Start Game?
+			Text: label-force-start-dialog-title
 		Label@TEXTA:
 			Y: 68
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: One or more players are not yet ready.
+			Text: label-force-start-dialog-text-a
 		Label@TEXTB:
 			Y: 86
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: Are you sure that you want to force start the game?
+			Text: label-force-start-dialog-text-b
 		Container@KICK_WARNING:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Children:
 				Label@KICK_WARNING_A:
 					X: 0
 					Y: 107
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: One or more clients are missing the selected
+					Text: label-kick-warning-a
 				Label@KICK_WARNING_B:
 					X: 0
 					Y: 124
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: map, and will be kicked from the server.
+					Text: label-kick-warning-b
 		Button@OK_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 + 75
+			X: (PARENT_WIDTH - WIDTH) / 2 + 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Start
+			Text: button-force-start-dialog-start
 			Font: Bold
 		Button@CANCEL_BUTTON:
-			X: (PARENT_RIGHT - WIDTH) / 2 - 75
+			X: (PARENT_WIDTH - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: button-cancel
 			Font: Bold

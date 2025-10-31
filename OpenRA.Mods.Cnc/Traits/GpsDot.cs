@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Show an indicator revealing the actor underneath the fog when a GPSWatcher is activated.")]
-	class GpsDotInfo : TraitInfo
+	sealed class GpsDotInfo : TraitInfo
 	{
 		[Desc("Sprite collection for symbols.")]
 		public readonly string Image = "gpsdot";
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new GpsDot(this); }
 	}
 
-	class GpsDot : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
+	sealed class GpsDot : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly GpsDotInfo info;
 		GpsDotEffect effect;

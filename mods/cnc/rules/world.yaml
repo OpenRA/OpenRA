@@ -1,9 +1,9 @@
 ^BaseWorld:
-	AlwaysVisible:
 	Inherits: ^Palettes
 	ScreenMap:
 	ActorMap:
 	Selection:
+	ControlGroups:
 	MusicPlaylist:
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
@@ -11,10 +11,11 @@
 	TerrainRenderer:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
-		ShroudVariants: typea, typeb, typec, typed
-		FogVariants: typea, typeb, typec, typed
-		OverrideFullShroud: full
-		OverrideFullFog: full
+		ShroudVariants: shroud-typea, shroud-typeb, shroud-typec, shroud-typed
+		OverrideFullShroud: shroud-full
+		FogVariants: fog-typea, fog-typeb, fog-typec, fog-typed
+		OverrideFullFog: fog-full
+		FogPalette: shroud
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate
@@ -104,6 +105,7 @@
 			River: 100
 	Locomotor@CRITTER:
 		Name: critter
+		Crushes: crate
 		TerrainSpeeds:
 			Clear: 100
 			Rough: 89
@@ -112,35 +114,48 @@
 			Tiberium: 78
 			BlueTiberium: 78
 			Beach: 89
+	Locomotor@VISC:
+		Name: visc
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 89
 	Faction@Random:
-		Name: Any
+		Name: faction-random.name
 		InternalName: Random
 		RandomFactionMembers: gdi, nod
-		Description: Random Faction\nA random faction will be chosen when the game starts.
+		Description: faction-random.description
 	Faction@gdi:
-		Name: GDI
+		Name: faction-gdi.name
 		InternalName: gdi
-		Description: Global Defense Initiative\nThe GDI is an international military branch of the United Nations tasked\nwith keeping world peace. Commanding the combined forces of the world's\nmost powerful nations, they possess an unmatched arsenal of high-tech weaponry.
+		Description: faction-gdi.description
 	Faction@nod:
-		Name: Nod
+		Name: faction-nod.name
 		InternalName: nod
-		Description: Brotherhood of Nod\nThe Brotherhood is a religious cult centered around their leader Kane\nand the alien substance Tiberium. They utilize stealth technology\nand guerilla tactics to defeat those who oppose them.
+		Description: faction-nod.description
 	ResourceRenderer:
 		ResourceTypes:
 			Tiberium:
 				Sequences: ti1, ti2, ti3, ti4, ti5, ti6, ti7, ti8, ti9, ti10, ti11, ti12
 				Palette: staticterrain
-				Name: Tiberium
+				Name: resource-tiberium
 			BlueTiberium:
-				Sequences: bti1, bti2, bti3, bti4, bti5, bti6, bti7, bti8, bti9, bti10, bti11, bti12
+				Sequences: ti1, ti2, ti3, ti4, ti5, ti6, ti7, ti8, ti9, ti10, ti11, ti12
 				Palette: bluetiberium
-				Name: Tiberium
+				Name: resource-tiberium
 
 World:
 	Inherits: ^BaseWorld
 	ChatCommands:
 	DevCommands:
 	DebugVisualizationCommands:
+	PathFinderOverlay:
+	AutoSave:
+	HierarchicalPathFinderOverlay:
 	PlayerCommands:
 	HelpCommand:
 	ScreenShaker:
@@ -149,19 +164,20 @@ World:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
-	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches
 		SmokeChance: 50
-		SmokeImage: smoke_m
-		SmokeSequences: idle
+		SmokeImage: scorch_flames
+		SmokeSequences: large_flame, medium_flame, small_flame
+		MaxSmokeOffsetDistance: 341
 	SmudgeLayer@CRATER:
 		Type: Crater
 		Sequence: craters
 		SmokeChance: 25
 		SmokeImage: smoke_m
 		SmokeSequences: idle
+		MaxSmokeOffsetDistance: 213
 	ResourceLayer:
 		RecalculateResourceDensity: true
 		ResourceTypes:
@@ -189,53 +205,52 @@ World:
 	MapOptions:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
-		GameSpeedDropdownDisplayOrder: 3
+		GameSpeedDropdownDisplayOrder: 1
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	CreateMapPlayers:
 	StartingUnits@mcvonly:
 		Class: none
-		ClassName: MCV Only
+		ClassName: options-starting-units.mcv-only
 		Factions: gdi, nod
 		BaseActor: mcv
 	StartingUnits@defaultgdia:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	StartingUnits@defaultnoda:
 		Class: light
-		ClassName: Light Support
+		ClassName: options-starting-units.light-support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,e3,bggy
 	StartingUnits@heavynoda:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
 	StartingUnits@heavynodb:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
 	StartingUnits@heavygdia:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
 	StartingUnits@heavygdib:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: options-starting-units.heavy-support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnStartingUnits:
-		DropdownDisplayOrder: 0
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
@@ -252,11 +267,12 @@ World:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MENU_BACKGROUND
 	ScriptTriggers:
+	CellTriggerOverlay:
 	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
 	ColorPickerManager:
 		PreviewActor: fact.colorpicker
-		PresetHues: 0, 0.125, 0.185, 0.4, 0.54, 0.66, 0.79, 0.875, 0, 0.14, 0.23, 0.43, 0.54, 0.625, 0.77, 0.85
-		PresetSaturations: 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.4, 0.5, 0.4, 0.5, 0.4, 0.5, 0.4, 0.5
+		PresetColors: F21818, FF7A22, F2BC18, F8D3B3, CDF291, DAF218, 18F26F, 12B572, F279E6, 502048, 391D1D, BA18F2, F218BC, 1821F2, 328DFF, 78DBF8
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
@@ -279,8 +295,13 @@ EditorWorld:
 				TerrainType: BlueTiberium
 				AllowedTerrainTypes: Clear, Road
 				MaxDensity: 12
-	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Clear, Road
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: Clear
+		DefaultInner: Beach
+		DefaultEnd: Clear
+	Inherits@MapGenerators: ^MapGenerators

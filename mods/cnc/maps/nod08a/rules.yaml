@@ -1,11 +1,11 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod08a.lua, nod08a-AI.lua
+		Scripts: campaign.lua, utils.lua, nod08a.lua, nod08a-AI.lua
 	MusicPlaylist:
 		StartingMusic: linefire
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: Since we are low on troops, you will have to make use of all available resources.\n\n Locate the abandoned GDI base in the area and restore it to operational status. Once that is done, use GDI's own weapons against them.\n\nBe sure that no GDI forces remain alive.
+		Briefing: Given our limited number of troops, you must make use of all available resources.\n\nFind the abandoned GDI base in the area and bring it back online. Once operational, use GDI's own weapons against them.\n\nEnsure that no GDI forces survive.
 		BackgroundVideo: tiberfx.vqa
 		BriefingVideo: nod8.vqa
 		LossVideo: nodlose.vqa
@@ -117,11 +117,11 @@ HELI:
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 GTWR:
 	Buildable:
-		Queue: Defence.GDI
+		Queue: Support.GDI
 
 A10.IN:
 	Inherits: A10

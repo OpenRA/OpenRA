@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			SoundCount = s.ReadInt32();
 
-			Entries = new List<IdxEntry>();
+			Entries = [];
 
 			for (var i = 0; i < SoundCount; i++)
 				Entries.Add(new IdxEntry(s));

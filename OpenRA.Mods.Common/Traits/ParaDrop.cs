@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -81,10 +81,10 @@ namespace OpenRA.Mods.Common.Traits
 				OnExitedDropRange(self);
 
 			// Are we able to drop the next trooper?
-			if (!inDropRange || cargo.IsEmpty(self) || !self.World.Map.Contains(self.Location))
+			if (!inDropRange || cargo.IsEmpty() || !self.World.Map.Contains(self.Location))
 				return;
 
-			var dropActor = cargo.Peek(self);
+			var dropActor = cargo.Peek();
 			var dropPositionable = dropActor.Trait<IPositionable>();
 			var dropCell = self.Location;
 			var dropSubCell = dropPositionable.GetAvailableSubCell(dropCell);

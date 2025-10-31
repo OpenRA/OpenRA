@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -21,16 +21,16 @@ SovietBase = { SovietConyard, SovietRefinery, SovietPower1, SovietPower2, Soviet
 
 IdlingUnits = { }
 
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	DateTime.TimeLimit = DateTime.Minutes(10) + DateTime.Seconds(3)
 
-elseif Map.LobbyOption("difficulty") == "normal" then
+elseif Difficulty == "normal" then
 	DateTime.TimeLimit = DateTime.Minutes(5) + DateTime.Seconds(3)
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
 	InfantryDelay = DateTime.Seconds(18)
 	AttackGroupSize = 5
 
-elseif Map.LobbyOption("difficulty") == "hard" then
+elseif Difficulty == "hard" then
 	DateTime.TimeLimit = DateTime.Minutes(3) + DateTime.Seconds(3)
 	InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
 	InfantryDelay = DateTime.Seconds(10)
@@ -50,37 +50,43 @@ else
 end
 
 SendJeepReinforcements = function()
-	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
-	Reinforcements.Reinforce(player, JeepReinforcements, JeepPath, DateTime.Seconds(1))
+	Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+	Reinforcements.Reinforce(Greece, JeepReinforcements, JeepPath, DateTime.Seconds(1))
 end
 
 RunInitialActivities = function()
 	Harvester.FindResources()
 	Trigger.OnKilled(Harvester, function() HarvesterKilled = true end)
 
+	ScheduleEarlyAttackers()
+
 	Trigger.OnAllKilled(PathGuards, function()
-		player.MarkCompletedObjective(SecureObjective)
+		Greece.MarkCompletedObjective(SecureObjective)
 		SendTrucks()
 	end)
 
 	Trigger.OnAllKilled(SovietBase, function()
-		Utils.Do(ussr.GetGroundAttackers(), function(unit)
-			if not Utils.Any(PathGuards, function(pg) return pg == unit end) then
-				Trigger.OnIdle(unit, unit.Hunt)
+		local livePathGuards = Utils.Where(PathGuards, function(pg) return not pg.IsDead end)
+
+		Utils.Do(USSR.GetGroundAttackers(), function(unit)
+			if Utils.Any(livePathGuards, function(pg) return pg == unit end) then
+				return
 			end
+
+			Trigger.OnIdle(unit, unit.Hunt)
 		end)
 	end)
 
 	if InfantryTypes then
-		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
+		Trigger.AfterDelay(InfantryDelay, ProduceInfantry)
 	end
 
 	if VehicleTypes then
-		Trigger.AfterDelay(VehicleDelay, VehicleProduction)
+		Trigger.AfterDelay(VehicleDelay, ProduceVehicles)
 	end
 end
 
-InfantryProduction = function()
+ProduceInfantry = function()
 	if SovietBarracks.IsDead then
 		return
 	end
@@ -88,12 +94,12 @@ InfantryProduction = function()
 	local toBuild = { Utils.Random(InfantryTypes) }
 
 	if SovietKennel.IsDead and toBuild == "dog" then
-		toBuild = "e1"
+		toBuild = { "e1" }
 	end
 
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
+		Trigger.AfterDelay(InfantryDelay, ProduceInfantry)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -101,26 +107,26 @@ InfantryProduction = function()
 	end)
 end
 
-VehicleProduction = function()
+ProduceVehicles = function()
 	if SovietWarfactory.IsDead then
 		return
 	end
 
 	if HarvesterKilled then
-		ussr.Build({ "harv" }, function(harv)
+		USSR.Build({ "harv" }, function(harv)
 			harv[1].FindResources()
 			Trigger.OnKilled(harv[1], function() HarvesterKilled = true end)
 
 			HarvesterKilled = false
-			VehicleProduction()
+			ProduceVehicles()
 		end)
 		return
 	end
 
 	local toBuild = { Utils.Random(VehicleTypes) }
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(VehicleDelay, VehicleProduction)
+		Trigger.AfterDelay(VehicleDelay, ProduceVehicles)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -141,7 +147,7 @@ SendAttack = function()
 	end
 
 	Utils.Do(units, function(unit)
-		if Map.LobbyOption("difficulty") ~= "tough" then
+		if Difficulty ~= "tough" then
 			unit.AttackMove(DeployPoint.Location)
 		end
 		Trigger.OnIdle(unit, unit.Hunt)
@@ -149,14 +155,14 @@ SendAttack = function()
 end
 
 Tick = function()
-	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
+	USSR.Resources = USSR.Resources - (0.01 * USSR.ResourceCapacity / 25)
 
-	if ussr.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(ConquestObjective)
+	if USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(ConquestObjective)
 	end
 
-	if player.HasNoRequiredUnits() then
-		ussr.MarkCompletedObjective(ussrObj)
+	if Greece.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(USSRobjective)
 	end
 end
 
@@ -168,7 +174,9 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The convoy arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function()
+			UserInterface.SetMissionText(UserInterface.GetFluentMessage("convoy-arrived"), c)
+		end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -180,70 +188,90 @@ SendTrucks = function()
 
 		DateTime.TimeLimit = 0
 		UserInterface.SetMissionText("")
-		ConvoyObjective = player.AddObjective("Escort the convoy.")
+		ConvoyObjective = AddPrimaryObjective(Greece, "escort-convoy")
 
-		Media.PlaySpeechNotification(player, "ConvoyApproaching")
+		Media.PlaySpeechNotification(Greece, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			ConvoyUnharmed = true
-			local trucks = Reinforcements.Reinforce(england, TruckReinforcements, TruckPath, DateTime.Seconds(1),
+			local trucks = Reinforcements.Reinforce(England, TruckReinforcements, TruckPath, DateTime.Seconds(1),
 				function(truck)
 					Trigger.OnIdle(truck, function() truck.Move(TruckExitPoint.Location) end)
 				end)
-			count = 0
+			local count = 0
 			Trigger.OnEnteredFootprint( { TruckExitPoint.Location }, function(a, id)
-				if a.Owner == england then
+				if a.Owner == England then
 					count = count + 1
 					a.Destroy()
 					if count == 3 then
-						player.MarkCompletedObjective(ConvoyObjective)
+						Greece.MarkCompletedObjective(ConvoyObjective)
 						Trigger.RemoveFootprintTrigger(id)
 					end
 				end
 			end)
-			Trigger.OnAnyKilled(trucks, ConvoyCasualites)
+			Trigger.OnAnyKilled(trucks, ConvoyCasualties)
 		end)
 	end
 end
 
-ConvoyCasualites = function()
-	Media.PlaySpeechNotification(player, "ConvoyUnitLost")
+ConvoyCasualties = function()
+	Media.PlaySpeechNotification(Greece, "ConvoyUnitLost")
 	if ConvoyUnharmed then
 		ConvoyUnharmed = false
-		Trigger.AfterDelay(DateTime.Seconds(1), function() player.MarkFailedObjective(ConvoyObjective) end)
+		Trigger.AfterDelay(DateTime.Seconds(1), function() Greece.MarkFailedObjective(ConvoyObjective) end)
 	end
 end
 
+ScheduleEarlyAttackers = function()
+	if Difficulty == "tough" then
+		Trigger.AfterDelay(DateTime.Seconds(12), SendEarlyAttackers)
+		return
+	end
+
+	Trigger.AfterDelay(DateTime.Seconds(6), function()
+		if not Greece.HasPrerequisites({ "anypower" }) then
+			ScheduleEarlyAttackers()
+			return
+		end
+
+		SendEarlyAttackers()
+	end)
+end
+
+SendEarlyAttackers = function()
+	local team = { EarlyAttacker1, EarlyAttacker2, EarlyAttacker3, EarlyAttacker4 }
+	local dogTargets = Greece.GetActorsByType("e1")
+
+	Utils.Do(team, function(member)
+		if member.IsDead then
+			return
+		end
+
+		-- Get attack dogs sprinting.
+		if member.Type == "dog" and #dogTargets > 0 then
+			member.Attack(Utils.Random(dogTargets))
+		end
+
+		Trigger.OnIdle(member, member.Hunt)
+	end)
+end
+
 WorldLoaded = function()
-	player = Player.GetPlayer("Greece")
-	england = Player.GetPlayer("England")
-	ussr = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	England = Player.GetPlayer("England")
+	USSR = Player.GetPlayer("USSR")
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "MissionFailed")
-	end)
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "MissionAccomplished")
-	end)
+	InitObjectives(Greece)
 
-	ussrObj = ussr.AddObjective("Deny the allies!")
+	USSRobjective = AddPrimaryObjective(USSR, "")
 
-	SecureObjective = player.AddObjective("Secure the convoy's path.")
-	ConquestObjective = player.AddObjective("Eliminate the entire soviet presence in this area.")
+	SecureObjective = AddPrimaryObjective(Greece, "secure-convoy")
+	ConquestObjective = AddPrimaryObjective(Greece, "eliminate-soviets")
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionTimerInitialised") end)
 
 	RunInitialActivities()
 
-	Reinforcements.Reinforce(player, ConstructionVehicleReinforcements, ConstructionVehiclePath)
+	Reinforcements.Reinforce(Greece, ConstructionVehicleReinforcements, ConstructionVehiclePath)
 	Trigger.AfterDelay(DateTime.Seconds(5), SendJeepReinforcements)
 	Trigger.AfterDelay(DateTime.Seconds(10), SendJeepReinforcements)
 
@@ -253,5 +281,5 @@ WorldLoaded = function()
 	end)
 
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
-	TimerColor = player.Color
+	TimerColor = Greece.Color
 end

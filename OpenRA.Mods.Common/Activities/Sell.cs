@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,12 +16,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class Sell : Activity
+	sealed class Sell : Activity
 	{
 		readonly IHealth health;
 		readonly SellableInfo sellableInfo;
 		readonly PlayerResources playerResources;
-		bool showTicks;
+		readonly bool showTicks;
 
 		public Sell(Actor self, bool showTicks)
 		{
@@ -37,18 +37,19 @@ namespace OpenRA.Mods.Common.Activities
 			var sellValue = self.GetSellValue();
 
 			// Cast to long to avoid overflow when multiplying by the health
-			var hp = health != null ? (long)health.HP : 1L;
-			var maxHP = health != null ? (long)health.MaxHP : 1L;
-			var refund = (int)((sellValue * sellableInfo.RefundPercent * hp) / (100 * maxHP));
+			var hp = health != null ? health.HP : 1L;
+			var maxHP = health != null ? health.MaxHP : 1L;
+			var refund = (int)(sellValue * sellableInfo.RefundPercent * hp / (100 * maxHP));
 			refund = playerResources.ChangeCash(refund);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
 
 			if (showTicks && refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(refund), 30)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(refund), 30)));
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", sellableInfo.Notification, self.Owner.Faction.InternalName);
+			TextNotificationsManager.AddTransientLine(self.Owner, sellableInfo.TextNotification);
 
 			self.Dispose();
 			return false;

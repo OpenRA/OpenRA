@@ -1,75 +1,94 @@
 MapScrollUp: UP
-	Description: Scroll up
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapscrollup
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapScrollDown: DOWN
-	Description: Scroll down
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapscrolldown
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapScrollLeft: LEFT
-	Description: Scroll left
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapscrollleft
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapScrollRight: RIGHT
-	Description: Scroll right
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapscrollright
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapJumpToTopEdge: UP Alt
-	Description: Jump to top edge
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapjumptotopedge
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapJumpToBottomEdge: DOWN Alt
-	Description: Jump to bottom edge
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapjumptobottomedge
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapJumpToLeftEdge: LEFT Alt
-	Description: Jump to left edge
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapjumptoleftedge
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapJumpToRightEdge: RIGHT Alt
-	Description: Jump to right edge
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapjumptorightedge
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkSave01: Q Ctrl
-	Description: Record bookmark 1
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarksave01
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkRestore01: Q Alt
-	Description: Jump to bookmark 1
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarkrestore01
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkSave02: W Ctrl
-	Description: Record bookmark 2
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarksave02
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkRestore02: W Alt
-	Description: Jump to bookmark 2
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarkrestore02
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkSave03: E Ctrl
-	Description: Record bookmark 3
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarksave03
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkRestore03: E Alt
-	Description: Jump to bookmark 3
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarkrestore03
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkSave04: R Ctrl
-	Description: Record bookmark 4
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarksave04
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 MapBookmarkRestore04: R Alt
-	Description: Jump to bookmark 4
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-mapbookmarkrestore04
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 ZoomIn: RIGHTBRACKET
-	Description: Zoom in
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-zoomin
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 ZoomOut: LEFTBRACKET
-	Description: Zoom out
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-zoomout
+	Types: Viewport
+	Contexts: player, spectator, editor
 
 ResetZoom: PERIOD
-	Description: Reset zoom
-	Types: Viewport, Player, Spectator
+	Description: hotkey-description-resetzoom
+	Types: Viewport
+	Contexts: player, spectator, editor

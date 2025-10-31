@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,17 +30,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Every time another production building of the same queue is",
 			"constructed, the build times of all actors in the queue",
 			"modified by a percentage of the original time.")]
-		public readonly int[] BuildingCountBuildTimeMultipliers = { 100, 85, 75, 65, 60, 55, 50 };
+		public readonly int[] BuildingCountBuildTimeMultipliers = [100, 86, 75, 67, 60, 55, 50];
 
 		[Desc("Build time modifier multiplied by the number of parallel production for producing different actors at the same time.")]
-		public readonly int[] ParallelPenaltyBuildTimeMultipliers = { 100, 116, 133, 150, 166, 183, 200, 216, 233, 250 };
+		public readonly int[] ParallelPenaltyBuildTimeMultipliers = [100, 116, 133, 150, 166, 183, 200, 216, 233, 250];
 
 		public override object Create(ActorInitializer init) { return new ClassicParallelProductionQueue(init, this); }
 	}
 
 	public class ClassicParallelProductionQueue : ProductionQueue
 	{
-		static readonly ActorInfo[] NoItems = { };
+		static readonly ActorInfo[] NoItems = [];
 
 		readonly Actor self;
 		readonly ClassicParallelProductionQueueInfo info;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		int penalty;
 
 		public ClassicParallelProductionQueue(ActorInitializer init, ClassicParallelProductionQueueInfo info)
-			: base(init, init.Self, info)
+			: base(init, info)
 		{
 			self = init.Self;
 			this.info = info;
@@ -133,15 +133,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override TraitPair<Production> MostLikelyProducer()
 		{
-			var productionActors = self.World.ActorsWithTrait<Production>()
+			var productionActor = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
 					&& !x.Trait.IsTraitDisabled && x.Trait.Info.Produces.Contains(Info.Type))
-				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
+				.OrderBy(x => x.Trait.IsTraitPaused)
+				.ThenByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID)
-				.ToList();
+				.FirstOrDefault();
 
-			var unpaused = productionActors.FirstOrDefault(a => !a.Trait.IsTraitPaused);
-			return unpaused.Trait != null ? unpaused : productionActors.FirstOrDefault();
+			return productionActor;
 		}
 
 		protected override bool BuildUnit(ActorInfo unit)
@@ -159,14 +159,10 @@ namespace OpenRA.Mods.Common.Traits
 				.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
 				.ThenByDescending(x => x.Actor.ActorID);
 
-			if (!producers.Any())
-			{
-				CancelProduction(unit.Name, 1);
-				return false;
-			}
-
+			var anyProducers = false;
 			foreach (var p in producers)
 			{
+				anyProducers = true;
 				if (p.Trait.IsTraitPaused)
 					continue;
 
@@ -184,6 +180,9 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
+			if (!anyProducers)
+				CancelProduction(unit.Name, 1);
+
 			return false;
 		}
 
@@ -191,6 +190,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Ignore `hasPriority` as it's not relevant in parallel production context.
 			base.BeginProduction(item, false);
+		}
+
+		protected override void PauseProduction(string itemName, bool paused)
+		{
+			foreach (var item in Queue.Where(a => a.Item == itemName))
+				item.Pause(paused);
 		}
 
 		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi)
@@ -208,7 +213,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Count(p => !p.Trait.IsTraitDisabled && !p.Trait.IsTraitPaused && p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
 
 				var speedModifier = selfsameProductionsCount.Clamp(1, info.BuildingCountBuildTimeMultipliers.Length) - 1;
-				time = (time * info.BuildingCountBuildTimeMultipliers[speedModifier]) / 100;
+				time = time * info.BuildingCountBuildTimeMultipliers[speedModifier] / 100;
 			}
 
 			return time;
@@ -220,7 +225,9 @@ namespace OpenRA.Mods.Common.Traits
 				.GroupBy(i => i.Item)
 				.ToList()
 				.Count;
-			return item.RemainingTimeActual * parallelBuilds * info.ParallelPenaltyBuildTimeMultipliers[Math.Min(parallelBuilds - 1, info.ParallelPenaltyBuildTimeMultipliers.Length - 1)] / 100;
+			return item.RemainingTimeActual *
+				parallelBuilds *
+				info.ParallelPenaltyBuildTimeMultipliers[Math.Min(parallelBuilds - 1, info.ParallelPenaltyBuildTimeMultipliers.Length - 1)] / 100;
 		}
 	}
 }

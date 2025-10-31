@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -24,7 +24,7 @@ MissionStart = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(45), function()
-		Media.DisplayMessage("Commander, the truck has stopped at a nearby allied base.\nAllied radio intercepts say the truck has orders to flee the battlefield\nif any Soviet units approach the base.")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("truck-stopped-near-allied-base"))
 	end)
 
 	Trigger.OnKilled(StolenTruck, function()
@@ -40,7 +40,7 @@ end
 Trigger.OnEnteredProximityTrigger(TruckAlarm.CenterPosition, WDist.FromCells(11), function(actor, triggerflee)
 	if actor.Owner == USSR and actor.Type ~= "badr" and actor.Type ~= "u2" and actor.Type ~= "camera.spyplane" then
 		Trigger.RemoveProximityTrigger(triggerflee)
-		Media.DisplayMessage("The convoy truck is attempting to escape!")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("convoy-truck-escaping"))
 		EscapeCamera = Actor.Create("camera", true, { Owner = USSR, Location = TruckAlarm.Location })
 		Media.PlaySoundNotification(USSR, "AlertBleep")
 		Utils.Do(TruckEscape, function(waypoint)
@@ -77,30 +77,10 @@ WorldLoaded = function()
 	Germany = Player.GetPlayer("Germany")
 	Greece = Player.GetPlayer("Greece")
 
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(USSR)
 
-	DestroyTruck = USSR.AddObjective("Destroy the stolen convoy truck.\nDo not let it escape.")
-	DefendCommand = USSR.AddObjective("Defend our forward command center.")
-
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
+	DestroyTruck = AddPrimaryObjective(USSR, "destroy-stolen-convoy-truck")
+	DefendCommand = AddPrimaryObjective(USSR, "defend-forward-command-center")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RepairStep = 7;
 
 		[Desc("Damage types used for the repair.")]
-		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> RepairDamageTypes = default;
 
 		[Desc("The percentage repair bonus applied with increasing numbers of repairers.")]
-		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };
+		public readonly int[] RepairBonuses = [100, 150, 175, 200, 220, 240, 260, 280, 300];
 
 		// TODO: This should be replaced with a pause condition
 		[Desc("Cancel the repair state when the trait is disabled.")]
@@ -47,7 +47,19 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string RepairCondition = null;
 
 		[NotificationReference("Speech")]
+		[Desc("Voice line to play when repairs are started.")]
 		public readonly string RepairingNotification = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Transient text message to display when repairs are started.")]
+		public readonly string RepairingTextNotification = null;
+
+		[NotificationReference("Speech")]
+		[Desc("Speech notification to play when the repair process is aborted.")]
+		public readonly string RepairingStoppedNotification = null;
+
+		[Desc("Text notification to display when the repair process is aborted.")]
+		public readonly string RepairingStoppedTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
@@ -56,10 +68,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
-		readonly Stack<int> repairTokens = new Stack<int>();
+		readonly Stack<int> repairTokens = [];
 		int remainingTicks;
 
-		public readonly List<Player> Repairers = new List<Player>();
+		public readonly List<Player> Repairers = [];
 		public bool RepairActive { get; private set; }
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
@@ -103,6 +115,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (Repairers.Remove(player))
 			{
 				UpdateCondition(self);
+				if (Repairers.Count == 0)
+				{
+					Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingStoppedNotification, player.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(self.Owner, Info.RepairingStoppedTextNotification);
+				}
+
 				return;
 			}
 
@@ -111,7 +129,10 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Repairers.Add(player);
+
 			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
+			TextNotificationsManager.AddTransientLine(self.Owner, Info.RepairingTextNotification);
+
 			UpdateCondition(self);
 		}
 
@@ -146,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 				var hpToRepair = Math.Min(Info.RepairStep, health.MaxHP - health.HP);
 
 				// Cast to long to avoid overflow when multiplying by the health
-				var cost = Math.Max(1, (int)(((long)hpToRepair * Info.RepairPercent * buildingValue) / (health.MaxHP * 100L)));
+				var cost = Math.Max(1, (int)((long)hpToRepair * Info.RepairPercent * buildingValue / (health.MaxHP * 100L)));
 
 				// TakeCash will return false if the player can't pay, and will stop him from contributing this Tick
 				var activePlayers = Repairers.Count(player => player.PlayerActor.Trait<PlayerResources>().TakeCash(cost, true));
@@ -167,13 +188,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (health.DamageState == DamageState.Undamaged)
 				{
-					Repairers.Do(r =>
-					{
-						if (r == self.Owner)
-							return;
-
-						r.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
-					});
+					foreach (var repairer in Repairers)
+						if (repairer != self.Owner)
+							repairer.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
 
 					Repairers.Clear();
 					RepairActive = false;

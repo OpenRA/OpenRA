@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -68,7 +68,8 @@ namespace OpenRA.Mods.Common.Scripting
 		[ScriptActorPropertyActivity]
 		[Desc("Mark an objective as failed.  This needs the objective ID returned " +
 			"by AddObjective as argument.  Secondary objectives do not have any " +
-			"influence whatsoever on the outcome of the game.")]
+			"influence whatsoever on the outcome of the game. " +
+			"It is possible to mark a completed objective as a failure.")]
 		public void MarkFailedObjective(int id)
 		{
 			if (id < 0 || id >= mo.Objectives.Count)

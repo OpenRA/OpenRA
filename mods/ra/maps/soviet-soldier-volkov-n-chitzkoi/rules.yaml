@@ -1,17 +1,18 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, soviet-soldier-volkov-n-chitzkoi.lua, soviet-soldier-volkov-n-chitzkoi-AI.lua
+		Scripts: campaign.lua, utils.lua, soviet-soldier-volkov-n-chitzkoi.lua, soviet-soldier-volkov-n-chitzkoi-AI.lua
 	MissionData:
 		Briefing: The Allies have stolen a new armor plating from us. With it, they can make structures nearly invulnerable. Their processing plant must be destroyed.\n\nFor this critical mission, we are allowing you access to Soldier Volkov. Use him and his cybernetic dog to sabotage the Allied control center, allowing our units in the southeast access to the alloy facility.\n\nThe mission is a success when Volkov destroys the control center, and our units destroy the alloy facility.\n
 		WinVideo: grvestne.vqa
 		LossVideo: sovcemet.vqa
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 E7:
@@ -23,6 +24,10 @@ E7:
 2TNK:
 	Buildable:
 		Prerequisites: ~vehicles.allies, ~techlevel.medium
+
+CA:
+	Buildable:
+		Prerequisites: ~syrd
 
 C2:
 	Inherits@2: ^ArmedCivilian
@@ -68,8 +73,8 @@ AFAC:
 	Health:
 		HP: 400000
 	Tooltip:
-		Name: Alloy Facility
-		GenericName: Alloy Facility
+		Name: actor-afac.name
+		GenericName: actor-afac.generic-name
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
 	RenderSprites:
@@ -78,8 +83,8 @@ AFAC:
 CCEN:
 	Inherits: ATEK
 	Tooltip:
-		Name: Control Center
-		GenericName: Control Center
+		Name: actor-ccen.name
+		GenericName: actor-ccen.generic-name
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
 	GpsPower:
@@ -94,7 +99,7 @@ HGUN:
 	Valued:
 		Cost: 2800
 	Tooltip:
-		Name: Heavy Turret Prototype
+		Name: actor-hgun-name
 	Health:
 		HP: 350000
 	Armor:
@@ -111,8 +116,8 @@ ZKOI:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Chitzkoi
-		GenericName: Cyborg Dog
+		Name: actor-zkoi.name
+		GenericName: actor-zkoi.generic-name
 	Health:
 		HP: 100000
 	-Crushable:
@@ -128,7 +133,7 @@ VOLK:
 	Valued:
 		Cost: 3000
 	Tooltip:
-		Name: Volkov
+		Name: actor-volk-name
 	Health:
 		HP: 250000
 	Armor:
@@ -141,6 +146,7 @@ VOLK:
 		Voice: Action
 	AttackFrontal:
 		Voice: Action
+		FacingTolerance: 0
 	AttackMove:
 		Voice: Action
 	Passenger:

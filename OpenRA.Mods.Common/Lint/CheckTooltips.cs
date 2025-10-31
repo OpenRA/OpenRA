@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckTooltips : ILintRulesPass, ILintServerMapPass
+	sealed class CheckTooltips : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
@@ -28,17 +28,25 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var buildable = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
-				if (buildable == null)
-					continue;
+				// Catch TypeDictionary errors.
+				try
+				{
+					var buildable = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
+					if (buildable == null)
+						continue;
 
-				var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
-				if (tooltip == null)
-					emitError("The following buildable actor has no (enabled) Tooltip: " + actorInfo.Key);
+					var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
+					if (tooltip == null)
+						emitError($"The following buildable actor has no (enabled) Tooltip: `{actorInfo.Key}`.");
+				}
+				catch (InvalidOperationException e)
+				{
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
+				}
 			}
 		}
 	}

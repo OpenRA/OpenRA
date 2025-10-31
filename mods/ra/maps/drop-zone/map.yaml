@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -160,3 +160,5 @@ Actors:
 Rules: rules.yaml
 
 Weapons: weapons.yaml
+
+FluentMessages: map.ftl

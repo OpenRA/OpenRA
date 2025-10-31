@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Display the time remaining until the next cash is given by actor's CashTrickler trait.")]
-	class CashTricklerBarInfo : TraitInfo, Requires<CashTricklerInfo>
+	sealed class CashTricklerBarInfo : TraitInfo, Requires<CashTricklerInfo>
 	{
 		[Desc("Defines to which players the bar is to be shown.")]
 		public readonly PlayerRelationship DisplayRelationships = PlayerRelationship.Ally;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new CashTricklerBar(init.Self, this); }
 	}
 
-	class CashTricklerBar : ISelectionBar
+	sealed class CashTricklerBar : ISelectionBar
 	{
 		readonly Actor self;
 		readonly CashTricklerBarInfo info;

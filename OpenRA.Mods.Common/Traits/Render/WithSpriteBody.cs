@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -64,7 +64,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, IAutoMouseBounds
 	{
 		public readonly Animation DefaultAnimation;
-		readonly RenderSprites rs;
 		readonly Animation boundsAnimation;
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
@@ -73,20 +72,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info, Func<WAngle> baseFacing)
 			: base(info)
 		{
-			rs = init.Self.Trait<RenderSprites>();
+			var self = init.Self;
 
-			Func<bool> paused = () => IsTraitPaused &&
-				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
+			var rs = self.Trait<RenderSprites>();
+
+			bool Paused() => IsTraitPaused &&
+				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, Info.Sequence);
 
 			Func<WVec> subtractDAT = null;
 			if (info.ForceToGround)
-				subtractDAT = () => new WVec(0, 0, -init.Self.World.Map.DistanceAboveTerrain(init.Self.CenterPosition).Length);
+				subtractDAT = () => new WVec(0, 0, -self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length);
 
-			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
+			DefaultAnimation = new Animation(init.World, rs.GetImage(self), baseFacing, Paused);
 			rs.Add(new AnimationWithOffset(DefaultAnimation, subtractDAT, () => IsTraitDisabled), info.Palette, info.IsPlayerPalette);
 
 			// Cache the bounds from the default sequence to avoid flickering when the animation changes
-			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, paused);
+			boundsAnimation = new Animation(init.World, rs.GetImage(self), baseFacing, Paused);
 			boundsAnimation.PlayRepeating(info.Sequence);
 		}
 

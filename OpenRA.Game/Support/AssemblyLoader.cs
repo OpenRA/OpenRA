@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,9 +9,7 @@
  */
 #endregion
 
-// Not used/usable on Mono. Only used for Dotnet Core.
 // Based on https://github.com/natemcmaster/DotNetCorePlugins and used under the terms of the Apache 2.0 license
-#if !MONO
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -53,8 +51,8 @@ namespace OpenRA.Support
 
 	public class AssemblyLoadContextBuilder
 	{
-		readonly Dictionary<string, ManagedLibrary> managedLibraries = new Dictionary<string, ManagedLibrary>(StringComparer.Ordinal);
-		readonly Dictionary<string, NativeLibrary> nativeLibraries = new Dictionary<string, NativeLibrary>(StringComparer.Ordinal);
+		readonly Dictionary<string, ManagedLibrary> managedLibraries = new(StringComparer.Ordinal);
+		readonly Dictionary<string, NativeLibrary> nativeLibraries = new(StringComparer.Ordinal);
 		string basePath;
 
 		public AssemblyLoadContext Build()
@@ -97,7 +95,7 @@ namespace OpenRA.Support
 		}
 	}
 
-	class ManagedLoadContext : AssemblyLoadContext
+	sealed class ManagedLoadContext : AssemblyLoadContext
 	{
 		readonly string basePath;
 		readonly Dictionary<string, ManagedLibrary> managedAssemblies;
@@ -107,34 +105,34 @@ namespace OpenRA.Support
 		static readonly string[] NativeLibraryPrefixes;
 
 		static readonly string[] ManagedAssemblyExtensions =
-		{
+		[
 			".dll",
 			".ni.dll",
 			".exe",
 			".ni.exe"
-		};
+		];
 
 		static ManagedLoadContext()
 		{
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
-				NativeLibraryPrefixes = new[] { "" };
-				NativeLibraryExtensions = new[] { ".dll" };
+				NativeLibraryPrefixes = [""];
+				NativeLibraryExtensions = [".dll"];
 			}
 			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
-				NativeLibraryPrefixes = new[] { "", "lib", };
-				NativeLibraryExtensions = new[] { ".dylib" };
+				NativeLibraryPrefixes = ["", "lib",];
+				NativeLibraryExtensions = [".dylib"];
 			}
 			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
 			{
-				NativeLibraryPrefixes = new[] { "", "lib" };
-				NativeLibraryExtensions = new[] { ".so", ".so.1" };
+				NativeLibraryPrefixes = ["", "lib"];
+				NativeLibraryExtensions = [".so", ".so.1"];
 			}
 			else
 			{
-				NativeLibraryPrefixes = Array.Empty<string>();
-				NativeLibraryExtensions = Array.Empty<string>();
+				NativeLibraryPrefixes = [];
+				NativeLibraryExtensions = [];
 			}
 		}
 
@@ -265,12 +263,14 @@ namespace OpenRA.Support
 
 		public static AssemblyLoadContextBuilder AddDependencyContext(this AssemblyLoadContextBuilder builder, string depsFilePath)
 		{
-			var reader = new DependencyContextJsonReader();
-			using (var file = File.OpenRead(depsFilePath))
+			using (var reader = new DependencyContextJsonReader())
 			{
-				var deps = reader.Read(file);
-				builder.SetBaseDirectory(Path.GetDirectoryName(depsFilePath));
-				builder.AddDependencyContext(deps);
+				using (var file = File.OpenRead(depsFilePath))
+				{
+					var deps = reader.Read(file);
+					builder.SetBaseDirectory(Path.GetDirectoryName(depsFilePath));
+					builder.AddDependencyContext(deps);
+				}
 			}
 
 			return builder;
@@ -306,11 +306,11 @@ namespace OpenRA.Support
 
 		public static AssemblyLoadContextBuilder AddDependencyContext(this AssemblyLoadContextBuilder builder, DependencyContext dependencyContext)
 		{
-			var ridGraph = dependencyContext.RuntimeGraph.Any()
+			var ridGraph = dependencyContext.RuntimeGraph.Count > 0
 				? dependencyContext.RuntimeGraph
 				: DependencyContext.Default.RuntimeGraph;
 
-			var rid = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.GetRuntimeIdentifier();
+			var rid = RuntimeInformation.RuntimeIdentifier;
 			var fallbackRid = GetFallbackRid();
 			var fallbackGraph = ridGraph.FirstOrDefault(g => g.Runtime == rid)
 								?? ridGraph.FirstOrDefault(g => g.Runtime == fallbackRid)
@@ -344,10 +344,10 @@ namespace OpenRA.Support
 
 		static IEnumerable<string> GetRids(RuntimeFallbacks runtimeGraph)
 		{
-			return Enumerable.Concat(new[] { runtimeGraph.Runtime }, runtimeGraph?.Fallbacks ?? Enumerable.Empty<string>());
+			return Enumerable.Concat([runtimeGraph.Runtime], runtimeGraph?.Fallbacks ?? Enumerable.Empty<string>());
 		}
 
-		static IEnumerable<string> SelectAssets(IEnumerable<string> rids, IEnumerable<RuntimeAssetGroup> groups)
+		static IEnumerable<string> SelectAssets(IEnumerable<string> rids, IReadOnlyCollection<RuntimeAssetGroup> groups)
 		{
 			foreach (var rid in rids)
 			{
@@ -360,4 +360,3 @@ namespace OpenRA.Support
 		}
 	}
 }
-#endif

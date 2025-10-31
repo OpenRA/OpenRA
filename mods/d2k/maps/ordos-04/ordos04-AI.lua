@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -31,14 +31,14 @@ SmugglerTankType = { "combat_tank_o" }
 
 InitAIUnits = function(house)
 	LastHarvesterEaten[house] = true
-	IdlingUnits[house] = Reinforcements.Reinforce(house, InitialReinforcements[house.Name], InitialReinforcementsPaths[house.Name])
+	IdlingUnits[house] = Reinforcements.Reinforce(house, InitialReinforcements[house.InternalName], InitialReinforcementsPaths[house.InternalName])
 
-	DefendAndRepairBase(house, Base[house.Name], 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(house, Base[house.InternalName], 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	InitAIUnits(harkonnen)
-	InitAIUnits(smuggler)
+	InitAIUnits(Harkonnen)
+	InitAIUnits(Smuggler)
 
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return { Utils.Random(EnemyInfantryTypes) } end
@@ -48,11 +48,11 @@ ActivateAI = function()
 	local sTanksToBuild = function() return SmugglerTankType end
 	local attackTresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(harkonnen, HLightFactory, delay, hVehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(harkonnen, HHeavyFactory, delay, hTanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Harkonnen, HLightFactory, delay, hVehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Harkonnen, HHeavyFactory, delay, hTanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 
-	ProduceUnits(smuggler, SBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(smuggler, SLightFactory, delay, sVehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(smuggler, SHeavyFactory, delay, sTanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Smuggler, SBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Smuggler, SLightFactory, delay, sVehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Smuggler, SHeavyFactory, delay, sTanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 end

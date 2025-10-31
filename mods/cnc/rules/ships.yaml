@@ -6,7 +6,7 @@ BOAT:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Gunboat
+		Name: actor-boat-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -24,7 +24,10 @@ BOAT:
 	Armament:
 		Weapon: BoatMissile
 		LocalOffset: 85,-85,0, 85,85,0
+	AttackMove:
+		Voice: Attack
 	AttackTDGunboatTurreted:
+		Voice: Attack
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 2
@@ -55,7 +58,7 @@ LST:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Landing Craft
+		Name: actor-lst-name
 	Mobile:
 		Locomotor: lcraft
 		InitialFacing: 0
@@ -79,6 +82,7 @@ LST:
 	Cargo:
 		Types: disabled
 		MaxWeight: 5
+		UnloadVoice: Unload
 		PassengerFacing: 0
 		LoadingCondition: notmobile
 	RejectsOrders:

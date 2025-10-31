@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -35,13 +36,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			else
 			{
-				ipField.Text = text.Substring(0, last);
-				portField.Text = text.Substring(last + 1);
+				ipField.Text = text[..last];
+				portField.Text = text[(last + 1)..];
 			}
 
-			panel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			var joinButton = panel.Get<ButtonWidget>("JOIN_BUTTON");
+
+			joinButton.IsDisabled = () => string.IsNullOrEmpty(ipField.Text);
+
+			joinButton.OnClick = () =>
 			{
-				var port = Exts.WithDefault(1234, () => Exts.ParseIntegerInvariant(portField.Text));
+				if (!int.TryParse(portField.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var port))
+					port = 1234;
 
 				Game.Settings.Player.LastServer = $"{ipField.Text}:{port}";
 				Game.Settings.Save();

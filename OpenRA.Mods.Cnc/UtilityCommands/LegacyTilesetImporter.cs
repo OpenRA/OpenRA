@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportLegacyTilesetCommand : IUtilityCommand
+	sealed class ImportLegacyTilesetCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--tileset-import";
 
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			var file = new IniFile(File.Open(args[1], FileMode.Open));
 			var extension = args[2];
-			var tileSize = utility.ModData.Manifest.Get<MapGrid>().TileSize;
+			var tileSize = utility.ModData.DefaultTerrainInfo.Values.First().TileSize;
 
 			var templateIndex = 0;
 
@@ -63,8 +64,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			metadata.AppendLine("General:");
 
 			var name = args.Length > 3 ? args[3] : Path.GetFileNameWithoutExtension(args[2]);
-			metadata.AppendLine($"\tName: {name}");
-			metadata.AppendLine($"\tId: {name.ToUpperInvariant()}");
+			metadata.AppendLine(CultureInfo.InvariantCulture, $"\tName: {name}");
+			metadata.AppendLine(CultureInfo.InvariantCulture, $"\tId: {name.ToUpperInvariant()}");
 			metadata.AppendLine("\tHeightDebugColors: 00000080, 00004480, 00008880, 0000CC80, 0000FF80, 4400CC80," +
 				" 88008880, CC004480, FF110080, FF550080, FF990080, FFDD0080, DDFF0080, 99FF0080, 55FF0080, 11FF0080");
 
@@ -79,7 +80,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				{
 					var section = file.GetSection($"TileSet{tilesetGroupIndex:D4}");
 
-					var sectionCount = int.Parse(section.GetValue("TilesInSet", "1"));
+					var sectionCount = Exts.ParseInt32Invariant(section.GetValue("TilesInSet", "1"));
 					var sectionFilename = section.GetValue("FileName", "").ToLowerInvariant();
 					var sectionCategory = section.GetValue("SetName", "");
 					if (!string.IsNullOrEmpty(sectionCategory) && sectionFilename != "blank")
@@ -94,15 +95,16 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 						using (var s = modData.DefaultFileSystem.Open(templateFilename))
 						{
-							data.AppendLine($"\tTemplate@{templateIndex}:");
-							data.AppendLine($"\t\tCategories: {sectionCategory}");
+							data.AppendLine(CultureInfo.InvariantCulture, $"\tTemplate@{templateIndex}:");
+							data.AppendLine(CultureInfo.InvariantCulture, $"\t\tCategories: {sectionCategory}");
 							usedCategories.Add(sectionCategory);
 
-							data.AppendLine($"\t\tId: {templateIndex}");
+							data.AppendLine(CultureInfo.InvariantCulture, $"\t\tId: {templateIndex}");
 
-							var images = new List<string>();
-
-							images.Add($"{sectionFilename}{i:D2}.{extension}");
+							var images = new List<string>
+							{
+								$"{sectionFilename}{i:D2}.{extension}"
+							};
 							for (var v = 'a'; v <= 'z'; v++)
 							{
 								var variant = $"{sectionFilename}{i:D2}{v}.{extension}";
@@ -110,17 +112,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 									images.Add(variant);
 							}
 
-							data.AppendLine($"\t\tImages: {images.JoinWith(", ")}");
+							data.AppendLine(CultureInfo.InvariantCulture, $"\t\tImages: {images.JoinWith(", ")}");
 
 							var templateWidth = s.ReadUInt32();
 							var templateHeight = s.ReadUInt32();
-							/* var tileWidth = */s.ReadInt32();
-							/* var tileHeight = */s.ReadInt32();
+							s.ReadInt32(); // tileWidth
+							s.ReadInt32(); // tileHeight
 							var offsets = new uint[templateWidth * templateHeight];
 							for (var j = 0; j < offsets.Length; j++)
 								offsets[j] = s.ReadUInt32();
 
-							data.AppendLine($"\t\tSize: {templateWidth}, {templateHeight}");
+							data.AppendLine(CultureInfo.InvariantCulture, $"\t\tSize: {templateWidth}, {templateHeight}");
 							data.AppendLine("\t\tTiles:");
 
 							for (var j = 0; j < offsets.Length; j++)
@@ -136,16 +138,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 								if (terrainType >= terrainTypes.Length)
 									throw new InvalidDataException($"Unknown terrain type {terrainType} in {templateFilename}");
 
-								data.AppendLine($"\t\t\t{j}: {terrainTypes[terrainType]}");
+								data.AppendLine(CultureInfo.InvariantCulture, $"\t\t\t{j}: {terrainTypes[terrainType]}");
 								if (height != 0)
-									data.AppendLine($"\t\t\t\tHeight: {height}");
+									data.AppendLine(CultureInfo.InvariantCulture, $"\t\t\t\tHeight: {height}");
 
 								if (rampType != 0)
-									data.AppendLine($"\t\t\t\tRampType: {rampType}");
+									data.AppendLine(CultureInfo.InvariantCulture, $"\t\t\t\tRampType: {rampType}");
 
-								data.AppendLine($"\t\t\t\tMinColor: {s.ReadUInt8():X2}{s.ReadUInt8():X2}{s.ReadUInt8():X2}");
-								data.AppendLine($"\t\t\t\tMaxColor: {s.ReadUInt8():X2}{s.ReadUInt8():X2}{s.ReadUInt8():X2}");
-								data.AppendLine($"\t\t\t\tZOffset: {(-tileSize.Height / 2.0f)}");
+								data.AppendLine(CultureInfo.InvariantCulture, $"\t\t\t\tMinColor: {s.ReadUInt8():X2}{s.ReadUInt8():X2}{s.ReadUInt8():X2}");
+								data.AppendLine(CultureInfo.InvariantCulture, $"\t\t\t\tMaxColor: {s.ReadUInt8():X2}{s.ReadUInt8():X2}{s.ReadUInt8():X2}");
+								var zOffset = -tileSize.Height / 2.0f;
+								data.AppendLine(CultureInfo.InvariantCulture, $"\t\t\t\tZOffset: {zOffset}");
 								data.AppendLine("\t\t\t\tZRamp: 0");
 							}
 						}
@@ -166,11 +169,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			metadata.AppendLine();
 
 			metadata.AppendLine("Terrain:");
-			terrainTypes = terrainTypes.Distinct().ToArray();
-			foreach (var terrainType in terrainTypes)
+			foreach (var terrainType in terrainTypes.Distinct())
 			{
-				metadata.AppendLine($"\tTerrainType@{terrainType}:");
-				metadata.AppendLine($"\t\tType: {terrainType}");
+				metadata.AppendLine(CultureInfo.InvariantCulture, $"\tTerrainType@{terrainType}:");
+				metadata.AppendLine(CultureInfo.InvariantCulture, $"\t\tType: {terrainType}");
 
 				if (terrainType == "Water")
 					metadata.AppendLine("\t\tTargetTypes: Water");

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -50,22 +49,21 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.Play(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			var facing = init.GetFacing();
-			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
-			Func<WVec> turretOffset = () => body.LocalToWorld(t.Offset.Rotate(orientation()));
-			Func<int> zOffset = () =>
+			WRot Orientation() => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
+			WVec TurretOffset() => body.LocalToWorld(t.Offset.Rotate(Orientation()));
+			int ZOffset()
 			{
-				var tmpOffset = turretOffset();
+				var tmpOffset = TurretOffset();
 				return -(tmpOffset.Y + tmpOffset.Z) + 1;
-			};
+			}
 
-			yield return new SpriteActorPreview(anim, turretOffset, zOffset, p);
+			yield return new SpriteActorPreview(anim, TurretOffset, ZOffset, p);
 		}
 	}
 
 	public class WithSpriteBarrel : ConditionalTrait<WithSpriteBarrelInfo>
 	{
 		public readonly Animation DefaultAnimation;
-		readonly RenderSprites rs;
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
@@ -81,11 +79,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
-			rs = self.Trait<RenderSprites>();
+			var rs = self.Trait<RenderSprites>();
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.WorldOrientation.Yaw);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 			rs.Add(new AnimationWithOffset(
-				DefaultAnimation, () => BarrelOffset(), () => IsTraitDisabled, p => RenderUtils.ZOffsetFromCenter(self, p, 0)));
+				DefaultAnimation, BarrelOffset, () => IsTraitDisabled, p => RenderUtils.ZOffsetFromCenter(self, p, 0)));
 
 			// Restrict turret facings to match the sprite
 			turreted.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;

@@ -1,5 +1,5 @@
 General:
-	Name: Temperate
+	Name: tileset-temperat
 	Id: TEMPERAT
 	SheetSize: 1024
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
@@ -2720,8 +2720,6 @@ Templates:
 			8: Rock
 			9: Rock
 			12: Rough
-			13: Clear
-			14: Clear
 	Template@382:
 		Id: 382
 		Images: bridge1x.tem
@@ -3226,7 +3224,7 @@ Templates:
 			2: Clear
 			9: Clear
 			10: Road
-			11: Rock
+			11: Clear
 	Template@520:
 		Id: 520
 		Images: sbridge1.tem
@@ -3417,12 +3415,12 @@ Templates:
 		Size: 4,4
 		Categories: Bridge
 		Tiles:
-			0: Clear
-			3: Rock
+			0: Rough
+			3: Rough
 			4: Road
 			7: Road
-			8: Clear
-			11: Rock
+			8: Rough
+			11: Rough
 			12: Clear
 			13: River
 			14: River
@@ -3684,3 +3682,1694 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+
+MultiBrushCollections:
+	Segmented:
+		MultiBrush@3:
+			Template: 3
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 4,1, 4,2, 3,2, 2,2, 1,2, 1,3, 0,3
+		MultiBrush@4:
+			Template: 4
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 5,1, 5,2, 4,2, 4,3, 3,3, 3,4, 2,4, 1,4, 1,3, 0,3
+		MultiBrush@5:
+			Template: 5
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 3,2, 2,2, 1,2, 1,3, 0,3
+		MultiBrush@6:
+			Template: 6
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@7:
+			Template: 7
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@8:
+			Template: 8
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@9:
+			Template: 9
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@10:
+			Template: 10
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 1,1, 0,1
+		MultiBrush@12:
+			Template: 12
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 5,4, 4,4, 4,3, 3,3, 2,3, 1,3, 1,2, 0,2, 0,1
+		MultiBrush@13:
+			Template: 13
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 4,3, 4,4, 3,4, 3,3, 2,3, 2,2, 1,2, 1,1, 0,1
+		MultiBrush@14:
+			Template: 14
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,3, 2,3, 2,2, 1,2, 1,1, 0,1
+		MultiBrush@15:
+			Template: 15
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 5,5, 5,4, 4,4, 4,3, 3,3, 3,2, 2,2, 2,1, 2,0
+		MultiBrush@16:
+			Template: 16
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 3,4, 3,3, 2,3, 2,2, 2,1, 1,1, 1,0
+		MultiBrush@17:
+			Template: 17
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 4,3, 4,2, 3,2, 3,1, 2,1, 2,0
+		MultiBrush@18:
+			Template: 18
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 2,3, 2,2, 2,1, 2,0
+		MultiBrush@19:
+			Template: 19
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 1,1, 1,0
+		MultiBrush@21:
+			Template: 21
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 1,5, 2,5, 2,4, 2,3, 2,2, 2,1, 3,1, 3,0
+		MultiBrush@22:
+			Template: 22
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 2,4, 2,3, 1,3, 1,2, 2,2, 3,2, 3,1, 4,1, 4,0
+		MultiBrush@23:
+			Template: 23
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 2,3, 2,2, 2,1, 3,1, 4,1, 4,0
+		MultiBrush@24:
+			Template: 24
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 2,3, 3,3, 4,3, 4,4, 5,4, 6,4
+		MultiBrush@25:
+			Template: 25
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,1, 1,1, 2,1, 2,2, 3,2, 3,3, 4,3, 5,3, 5,4
+		MultiBrush@26:
+			Template: 26
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,1, 1,1, 1,2, 2,2, 3,2, 3,3
+		MultiBrush@27:
+			Template: 27
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@28:
+			Template: 28
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@29:
+			Template: 29
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@30:
+			Template: 30
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@31:
+			Template: 31
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,1, 1,1
+		MultiBrush@33:
+			Template: 33
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,4, 1,4, 2,4, 3,4, 3,3, 3,2, 4,2, 4,1, 5,1, 6,1
+		MultiBrush@34:
+			Template: 34
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,3, 1,3, 1,2, 2,2, 2,1, 3,1, 4,1
+		MultiBrush@35:
+			Template: 35
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,3, 0,2, 1,2, 1,1, 2,1, 3,1
+		MultiBrush@36:
+			Template: 36
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 4,0, 4,1, 4,2, 3,2, 3,3, 2,3, 2,4, 1,4, 1,5
+		MultiBrush@37:
+			Template: 37
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 2,0, 2,1, 2,2, 2,3, 1,3, 1,4
+		MultiBrush@38:
+			Template: 38
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 2,0, 2,1, 2,2, 1,2, 1,3, 0,3
+		MultiBrush@39:
+			Template: 39
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 1,0, 1,1, 1,2, 1,3
+		MultiBrush@40:
+			Template: 40
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 1,0, 1,1
+		MultiBrush@42:
+			Template: 42
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 1,0, 1,1, 1,2, 1,3, 2,3, 2,4, 3,4, 3,5
+		MultiBrush@43:
+			Template: 43
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 0,0, 0,1, 0,2, 1,2, 1,3, 2,3, 2,4
+		MultiBrush@44:
+			Template: 44
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 0,0, 0,1, 1,1, 2,1, 2,2, 2,3
+		MultiBrush@45:
+			Template: 45
+			Segment:
+				Start: Beach.L
+				End: Beach.U
+				Points: 3,1, 2,1, 1,1, 1,0, 2,0
+		MultiBrush@46:
+			Template: 46
+			Segment:
+				Start: Beach.L
+				End: Beach.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@47:
+			Template: 47
+			Segment:
+				Start: Beach.U
+				End: Beach.R
+				Points: 2,3, 2,2, 3,2
+		MultiBrush@48:
+			Template: 48
+			Segment:
+				Start: Beach.U
+				End: Beach.R
+				Points: 1,2, 1,1, 2,1
+		MultiBrush@49:
+			Template: 49
+			Segment:
+				Start: Beach.R
+				End: Beach.D
+				Points: 0,2, 1,2, 1,3
+		MultiBrush@50:
+			Template: 50
+			Segment:
+				Start: Beach.R
+				End: Beach.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@51:
+			Template: 51
+			Segment:
+				Start: Beach.D
+				End: Beach.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@52:
+			Template: 52
+			Segment:
+				Start: Beach.D
+				End: Beach.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@53:
+			Template: 53
+			Segment:
+				Start: Beach.D
+				End: Beach.R
+				Points: 1,0, 1,1, 2,1, 2,2, 3,2
+		MultiBrush@54:
+			Template: 54
+			Segment:
+				Start: Beach.L
+				End: Beach.D
+				Points: 3,1, 2,1, 2,2, 1,2, 1,3
+		MultiBrush@55:
+			Template: 55
+			Segment:
+				Start: Beach.U
+				End: Beach.L
+				Points: 2,3, 2,2, 1,2, 1,1, 0,1
+		MultiBrush@56:
+			Template: 56
+			Segment:
+				Start: Beach.R
+				End: Beach.U
+				Points: 0,2, 1,2, 1,1, 2,1, 2,0
+		MultiBrush@59:
+			Template: 59
+			Segment:
+				Start: WaterCliff.L
+				End: Beach.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@60:
+			Template: 60
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.L
+				Points: 2,2, 1,2, 1,1, 0,1
+		MultiBrush@61:
+			Template: 61
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@62:
+			Template: 62
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@63:
+			Template: 63
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@64:
+			Template: 64
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.L
+				Points: 2,1, 1,1, 1,2, 0,2
+		MultiBrush@65:
+			Template: 65
+			Segment:
+				Start: Beach.L
+				End: WaterCliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@66:
+			Template: 66
+			Segment:
+				Start: WaterCliff.U
+				End: Beach.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@67:
+			Template: 67
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.U
+				Points: 2,2, 2,1, 1,1, 1,0
+		MultiBrush@68:
+			Template: 68
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@69:
+			Template: 69
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@70:
+			Template: 70
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@71:
+			Template: 71
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.U
+				Points: 1,2, 1,1, 2,1, 2,0
+		MultiBrush@72:
+			Template: 72
+			Segment:
+				Start: Beach.U
+				End: WaterCliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@73:
+			Template: 73
+			Segment:
+				Start: Beach.R
+				End: WaterCliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@74:
+			Template: 74
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.R
+				Points: 0,1, 1,1, 1,2, 2,2
+		MultiBrush@75:
+			Template: 75
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@76:
+			Template: 76
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@77:
+			Template: 77
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@78:
+			Template: 78
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.R
+				Points: 0,2, 1,2, 1,1, 2,1
+		MultiBrush@79:
+			Template: 79
+			Segment:
+				Start: WaterCliff.R
+				End: Beach.R
+				Points: 0,1, 1,1
+		MultiBrush@80:
+			Template: 80
+			Segment:
+				Start: Beach.D
+				End: WaterCliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@81:
+			Template: 81
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.D
+				Points: 2,0, 2,1, 1,1, 1,2
+		MultiBrush@82:
+			Template: 82
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@83:
+			Template: 83
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@84:
+			Template: 84
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@85:
+			Template: 85
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.D
+				Points: 1,0, 1,1, 2,1, 2,2
+		MultiBrush@86:
+			Template: 86
+			Segment:
+				Start: WaterCliff.D
+				End: Beach.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@87:
+			Template: 87
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@88:
+			Template: 88
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.R
+				Points: 1,2, 1,1, 2,1
+		MultiBrush@89:
+			Template: 89
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@90:
+			Template: 90
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@91:
+			Template: 91
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.R
+				Points: 1,0, 1,1, 2,1
+		MultiBrush@92:
+			Template: 92
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.D
+				Points: 2,1, 1,1, 1,2
+		MultiBrush@93:
+			Template: 93
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.L
+				Points: 1,2, 1,1, 0,1
+		MultiBrush@94:
+			Template: 94
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.U
+				Points: 0,1, 1,1, 1,0
+		MultiBrush@112:
+			Template: 112
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2, 5,2
+		MultiBrush@112reverse:
+			Template: 112
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 5,2, 4,2, 3,2, 2,2, 1,2, 0,2
+		MultiBrush@113:
+			Template: 113
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,2, 1,2, 2,2, 2,1, 3,1, 4,1, 5,1
+		MultiBrush@113reverse:
+			Template: 113
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 5,1, 4,1, 3,1, 2,1, 2,2, 1,2, 0,2
+		MultiBrush@114:
+			Template: 114
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,1, 1,1, 1,2, 2,2, 3,2, 3,3, 4,3
+		MultiBrush@114reverse:
+			Template: 114
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 4,3, 3,3, 3,2, 2,2, 1,2, 1,1, 0,1
+		MultiBrush@115:
+			Template: 115
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,3, 1,3, 1,2, 2,2, 3,2, 3,1, 4,1
+		MultiBrush@115reverse:
+			Template: 115
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 4,1, 3,1, 3,2, 2,2, 1,2, 1,3, 0,3
+		MultiBrush@116:
+			Template: 116
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 2,0, 2,1, 2,2, 2,3
+		MultiBrush@116reverse:
+			Template: 116
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 2,3, 2,2, 2,1, 2,0
+		MultiBrush@117:
+			Template: 117
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 2,0, 2,1, 2,2
+		MultiBrush@117reverse:
+			Template: 117
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 2,2, 2,1, 2,0
+		MultiBrush@118:
+			Template: 118
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 2,0, 2,1, 2,2
+		MultiBrush@118reverse:
+			Template: 118
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 2,2, 2,1, 2,0
+		MultiBrush@119:
+			Template: 119
+			Segment:
+				Start: River.U
+				End: River.R
+				Points: 1,2, 1,1, 2,1
+		MultiBrush@119reverse:
+			Template: 119
+			Segment:
+				Start: River.L
+				End: River.D
+				Points: 2,1, 1,1, 1,2
+		MultiBrush@120:
+			Template: 120
+			Segment:
+				Start: River.R
+				End: River.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@120reverse:
+			Template: 120
+			Segment:
+				Start: River.U
+				End: River.L
+				Points: 1,2, 1,1, 0,1
+		MultiBrush@121:
+			Template: 121
+			Segment:
+				Start: River.L
+				End: River.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@121reverse:
+			Template: 121
+			Segment:
+				Start: River.D
+				End: River.R
+				Points: 1,0, 1,1, 2,1
+		MultiBrush@122:
+			Template: 122
+			Segment:
+				Start: River.D
+				End: River.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@122reverse:
+			Template: 122
+			Segment:
+				Start: River.R
+				End: River.U
+				Points: 0,1, 1,1, 1,0
+		MultiBrush@135:
+			Template: 135
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Clear.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@136:
+			Template: 136
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,2, 1,2, 1,1, 0,1
+		MultiBrush@137:
+			Template: 137
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@138:
+			Template: 138
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@139:
+			Template: 139
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@140:
+			Template: 140
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 1,2, 0,2
+		MultiBrush@141:
+			Template: 141
+			Segment:
+				Start: Clear.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@142:
+			Template: 142
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Clear.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@143:
+			Template: 143
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 2,2, 2,1, 1,1, 1,0
+		MultiBrush@144:
+			Template: 144
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@145:
+			Template: 145
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@146:
+			Template: 146
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@147:
+			Template: 147
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 2,1, 2,0
+		MultiBrush@148:
+			Template: 148
+			Segment:
+				Start: Clear.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@149:
+			Template: 149
+			Segment:
+				Start: Clear.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@150:
+			Template: 150
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 1,2, 2,2
+		MultiBrush@151:
+			Template: 151
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@152:
+			Template: 152
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@153:
+			Template: 153
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@154:
+			Template: 154
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,2, 1,2, 1,1, 2,1
+		MultiBrush@155:
+			Template: 155
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Clear.R
+				Points: 0,1, 1,1
+		MultiBrush@156:
+			Template: 156
+			Segment:
+				Start: Clear.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1
+		MultiBrush@157:
+			Template: 157
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 2,0, 2,1, 1,1, 1,2
+		MultiBrush@158:
+			Template: 158
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@159:
+			Template: 159
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@160:
+			Template: 160
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@161:
+			Template: 161
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 2,1, 2,2
+		MultiBrush@162:
+			Template: 162
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Clear.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@163:
+			Template: 163
+			Segment:
+				Start: Cliff.L
+				End: Cliff.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@164:
+			Template: 164
+			Segment:
+				Start: Cliff.U
+				End: Cliff.R
+				Points: 1,2, 1,1, 2,1
+		MultiBrush@165:
+			Template: 165
+			Segment:
+				Start: Cliff.R
+				End: Cliff.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@166:
+			Template: 166
+			Segment:
+				Start: Cliff.D
+				End: Cliff.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@167:
+			Template: 167
+			Segment:
+				Start: Cliff.D
+				End: Cliff.R
+				Points: 1,0, 1,1, 2,1
+		MultiBrush@168:
+			Template: 168
+			Segment:
+				Start: Cliff.L
+				End: Cliff.D
+				Points: 2,1, 1,1, 1,2
+		MultiBrush@169:
+			Template: 169
+			Segment:
+				Start: Cliff.U
+				End: Cliff.L
+				Points: 1,2, 1,1, 0,1
+		MultiBrush@170:
+			Template: 170
+			Segment:
+				Start: Cliff.R
+				End: Cliff.U
+				Points: 0,1, 1,1, 1,0
+		MultiBrush@173:
+			Template: 173
+			Segment:
+				End: Clear.D
+				Inner: Road
+				Points: 1,0, 1,1
+				Start: Road.Main.D
+		MultiBrush@173reverse:
+			Template: 173
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,1, 2,0
+				Start: Clear.U
+		MultiBrush@174:
+			Template: 174
+			Segment:
+				End: Clear.L
+				Inner: Road
+				Points: 2,0, 1,0
+				Start: Road.Main.L
+		MultiBrush@174reverse:
+			Template: 174
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 1,1, 2,1
+				Start: Clear.R
+		MultiBrush@175:
+			Template: 175
+			Segment:
+				End: Clear.U
+				Inner: Road
+				Points: 1,2, 1,1
+				Start: Road.Main.U
+		MultiBrush@175reverse:
+			Template: 175
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,1, 0,2
+				Start: Clear.D
+		MultiBrush@176:
+			Template: 176
+			Segment:
+				End: Clear.R
+				Inner: Road
+				Points: 0,2, 1,2
+				Start: Road.Main.R
+		MultiBrush@176reverse:
+			Template: 176
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,1, 0,1
+				Start: Clear.L
+		MultiBrush@177:
+			Template: 177
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 1,1, 0,1, 0,2, 0,3, 0,4, 1,4
+				Start: Road.Main.D
+		MultiBrush@177reverse:
+			Template: 177
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,4, 2,3, 1,3, 1,2, 2,2, 2,1, 2,0
+				Start: Road.Main.U
+		MultiBrush@178:
+			Template: 178
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 0,3
+				Start: Road.Main.D
+		MultiBrush@178reverse:
+			Template: 178
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 1,3, 1,2, 1,1, 1,0
+				Start: Road.Main.U
+		MultiBrush@179:
+			Template: 179
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 1,1, 1,2
+				Start: Road.Main.D
+		MultiBrush@179reverse:
+			Template: 179
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,2, 2,1, 2,0
+				Start: Road.Main.U
+		MultiBrush@180:
+			Template: 180
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 1,1, 1,2
+				Start: Road.Main.D
+		MultiBrush@180reverse:
+			Template: 180
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,2, 2,1, 2,0
+				Start: Road.Main.U
+		MultiBrush@181:
+			Template: 181
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2
+				Start: Road.Main.R
+		MultiBrush@181reverse:
+			Template: 181
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 4,1, 3,1, 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@182:
+			Template: 182
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2
+				Start: Road.Main.R
+		MultiBrush@182reverse:
+			Template: 182
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 4,1, 3,1, 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@183:
+			Template: 183
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2
+				Start: Road.Main.R
+		MultiBrush@183reverse:
+			Template: 183
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@184:
+			Template: 184
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2
+				Start: Road.Main.R
+		MultiBrush@184reverse:
+			Template: 184
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@185:
+			Template: 185
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,1, 1,1, 1,2, 2,2, 2,3, 3,3, 4,3
+				Start: Road.Main.R
+		MultiBrush@185reverse:
+			Template: 185
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 4,2, 3,2, 3,1, 2,1, 2,0, 1,0, 0,0
+				Start: Road.Main.L
+		MultiBrush@192:
+			Template: 192
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 1,2, 1,3, 2,3, 3,3
+				Start: Road.Main.D
+		MultiBrush@192reverse:
+			Template: 192
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 3,2, 2,2, 2,1, 1,1, 1,0
+				Start: Road.Main.L
+		MultiBrush@193:
+			Template: 193
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 2,2, 2,1, 3,1
+				Start: Road.Main.U
+		MultiBrush@193reverse:
+			Template: 193
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 3,0, 2,0, 1,0, 1,1, 1,2
+				Start: Road.Main.L
+		MultiBrush@194:
+			Template: 194
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,2, 1,2, 1,3
+				Start: Road.Main.R
+		MultiBrush@194reverse:
+			Template: 194
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,3, 2,2, 2,1, 1,1, 0,1
+				Start: Road.Main.U
+		MultiBrush@195:
+			Template: 195
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 0,3, 1,3, 2,3, 2,2, 2,1, 2,0
+				Start: Road.Main.R
+		MultiBrush@195reverse:
+			Template: 195
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,0, 1,1, 1,2, 0,2
+				Start: Road.Main.D
+		MultiBrush@196:
+			Template: 196
+			Segment:
+				End: Road.Out.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 1,3, 2,3
+				Start: Road.In.RD
+		MultiBrush@196reverse:
+			Template: 196
+			Segment:
+				End: Road.Out.LU
+				Inner: Road
+				Points: 3,2, 3,1, 2,1, 2,0, 1,0
+				Start: Road.In.LU
+		MultiBrush@197:
+			Template: 197
+			Segment:
+				End: Road.Out.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 1,3, 2,3
+				Start: Road.In.RD
+		MultiBrush@197reverse:
+			Template: 197
+			Segment:
+				End: Road.Out.LU
+				Inner: Road
+				Points: 3,2, 3,1, 2,1, 2,0, 1,0
+				Start: Road.In.LU
+		MultiBrush@198:
+			Template: 198
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2
+				Start: Road.Out.RD
+		MultiBrush@198reverse:
+			Template: 198
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 2,1, 2,0, 1,0
+				Start: Road.Out.LU
+		MultiBrush@199:
+			Template: 199
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2
+				Start: Road.Out.RD
+		MultiBrush@199reverse:
+			Template: 199
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 2,1, 2,0, 1,0
+				Start: Road.Out.LU
+		MultiBrush@200:
+			Template: 200
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,1, 1,1, 1,2
+				Start: Road.Main.R
+		MultiBrush@200reverse:
+			Template: 200
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,1, 2,0, 1,0, 0,0
+				Start: Road.Out.LU
+		MultiBrush@201:
+			Template: 201
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 1,2
+				Start: Road.Main.D
+		MultiBrush@201reverse:
+			Template: 201
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,1, 1,1, 1,0
+				Start: Road.Out.LU
+		MultiBrush@203:
+			Template: 203
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 2,2
+				Start: Road.Out.RD
+		MultiBrush@203reverse:
+			Template: 203
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 2,1, 1,1, 1,0
+				Start: Road.Main.L
+		MultiBrush@204:
+			Template: 204
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,1, 0,2
+				Start: Road.Out.RD
+		MultiBrush@204reverse:
+			Template: 204
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 1,2, 1,1, 1,0
+				Start: Road.Main.U
+		MultiBrush@206:
+			Template: 206
+			Segment:
+				End: Road.Out.RU
+				Inner: Road
+				Points: 1,3, 2,3, 2,2, 3,2, 3,1
+				Start: Road.In.RU
+		MultiBrush@206reverse:
+			Template: 206
+			Segment:
+				End: Road.Out.LD
+				Inner: Road
+				Points: 2,0, 1,0, 1,1, 0,1, 0,2
+				Start: Road.In.LD
+		MultiBrush@207:
+			Template: 207
+			Segment:
+				End: Road.Out.RU
+				Inner: Road
+				Points: 1,3, 2,3, 2,2, 3,2, 3,1
+				Start: Road.In.RU
+		MultiBrush@207reverse:
+			Template: 207
+			Segment:
+				End: Road.Out.LD
+				Inner: Road
+				Points: 2,0, 1,0, 1,1, 0,1, 0,2
+				Start: Road.In.LD
+		MultiBrush@208:
+			Template: 208
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 1,2, 2,2, 2,1
+				Start: Road.Out.RU
+		MultiBrush@208reverse:
+			Template: 208
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 1,0, 0,0, 0,1
+				Start: Road.Out.LD
+		MultiBrush@209:
+			Template: 209
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 1,2, 2,2, 2,1
+				Start: Road.Out.RU
+		MultiBrush@209reverse:
+			Template: 209
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 1,0, 0,0, 0,1
+				Start: Road.Out.LD
+		MultiBrush@210:
+			Template: 210
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 1,2, 1,1, 2,1
+				Start: Road.Out.RU
+		MultiBrush@210reverse:
+			Template: 210
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 2,0, 1,0, 0,0, 0,1
+				Start: Road.Main.L
+		MultiBrush@211:
+			Template: 211
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 1,2, 2,2, 2,1, 2,0
+				Start: Road.Out.RU
+		MultiBrush@211reverse:
+			Template: 211
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 1,0, 1,1, 0,1
+				Start: Road.Main.D
+		MultiBrush@213:
+			Template: 213
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 2,1
+				Start: Road.Main.R
+		MultiBrush@213reverse:
+			Template: 213
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,0, 1,1, 0,1
+				Start: Road.Out.LD
+		MultiBrush@214:
+			Template: 214
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 1,2, 1,1, 2,1
+				Start: Road.Main.U
+		MultiBrush@214reverse:
+			Template: 214
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 0,0, 0,1, 0,2
+				Start: Road.Out.LD
+		MultiBrush@227:
+			Template: 227
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,0, 0,1
+				Start: Road.Main.D
+		MultiBrush@227reverse:
+			Template: 227
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 1,1, 1,0
+				Start: Road.Main.U
+		MultiBrush@228:
+			Template: 228
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,1, 1,1
+				Start: Road.Main.R
+		MultiBrush@228reverse:
+			Template: 228
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,0, 0,0
+				Start: Road.Main.L
+		MultiBrush@229:
+			Template: 229
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,1, 1,1
+		MultiBrush@229reverse:
+			Template: 229
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 1,1, 0,1
+		MultiBrush@230:
+			Template: 230
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 1,0, 1,1
+		MultiBrush@230reverse:
+			Template: 230
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 1,1, 1,0
+		MultiBrush@401:
+			Template: 401
+			Segment:
+				End: Cliff.L
+				Points: 1,1, 0,1
+				Start: Cliff.L
+		MultiBrush@402:
+			Template: 402
+			Segment:
+				End: Cliff.R
+				Points: 0,1, 1,1
+				Start: Cliff.R
+		MultiBrush@403:
+			Template: 403
+			Segment:
+				End: Cliff.D
+				Points: 1,0, 1,1
+				Start: Cliff.D
+		MultiBrush@404:
+			Template: 404
+			Segment:
+				End: Cliff.U
+				Points: 1,1, 1,0
+				Start: Cliff.U
+		MultiBrush@405:
+			Template: 405
+			Segment:
+				Start: WaterCliff.L
+				End: WaterCliff.L
+				Points: 1,1, 0,1
+		MultiBrush@406:
+			Template: 406
+			Segment:
+				Start: WaterCliff.R
+				End: WaterCliff.R
+				Points: 0,1, 1,1
+		MultiBrush@407:
+			Template: 407
+			Segment:
+				Start: WaterCliff.D
+				End: WaterCliff.D
+				Points: 1,0, 1,1
+		MultiBrush@408:
+			Template: 408
+			Segment:
+				Start: WaterCliff.U
+				End: WaterCliff.U
+				Points: 1,1, 1,0
+	Trees:
+		MultiBrush@t01:
+			Actor: t01
+		MultiBrush@t02:
+			Actor: t02
+		MultiBrush@t03:
+			Actor: t03
+		MultiBrush@t05:
+			Actor: t05
+		MultiBrush@t06:
+			Actor: t06
+		MultiBrush@t07:
+			Actor: t07
+		MultiBrush@t08:
+			Actor: t08
+		MultiBrush@t10:
+			Actor: t10
+		MultiBrush@t11:
+			Actor: t11
+		MultiBrush@t12:
+			Actor: t12
+		MultiBrush@t13:
+			Actor: t13
+		MultiBrush@t14:
+			Actor: t14
+		MultiBrush@t15:
+			Actor: t15
+		MultiBrush@t16:
+			Actor: t16
+		MultiBrush@t17:
+			Actor: t17
+		MultiBrush@tc01:
+			Actor: tc01
+		MultiBrush@tc02:
+			Actor: tc02
+		MultiBrush@tc03:
+			Actor: tc03
+		MultiBrush@tc04:
+			Actor: tc04
+		MultiBrush@tc05:
+			Actor: tc05
+		MultiBrush@t01.husk:
+			Actor: t01.husk
+			Weight: 100
+		MultiBrush@t02.husk:
+			Actor: t02.husk
+			Weight: 100
+		MultiBrush@t03.husk:
+			Actor: t03.husk
+			Weight: 100
+		MultiBrush@t05.husk:
+			Actor: t05.husk
+			Weight: 100
+		MultiBrush@t06.husk:
+			Actor: t06.husk
+			Weight: 100
+		MultiBrush@t07.husk:
+			Actor: t07.husk
+			Weight: 100
+		MultiBrush@t08.husk:
+			Actor: t08.husk
+			Weight: 100
+		MultiBrush@t10.husk:
+			Actor: t10.husk
+			Weight: 100
+		MultiBrush@t11.husk:
+			Actor: t11.husk
+			Weight: 100
+		MultiBrush@t12.husk:
+			Actor: t12.husk
+			Weight: 100
+		MultiBrush@t13.husk:
+			Actor: t13.husk
+			Weight: 100
+		MultiBrush@t14.husk:
+			Actor: t14.husk
+			Weight: 100
+		MultiBrush@t15.husk:
+			Actor: t15.husk
+			Weight: 100
+		MultiBrush@t16.husk:
+			Actor: t16.husk
+			Weight: 100
+		MultiBrush@t17.husk:
+			Actor: t17.husk
+			Weight: 100
+		MultiBrush@tc01.husk:
+			Actor: tc01.husk
+			Weight: 100
+		MultiBrush@tc02.husk:
+			Actor: tc02.husk
+			Weight: 100
+		MultiBrush@tc03.husk:
+			Actor: tc03.husk
+			Weight: 100
+		MultiBrush@tc04.husk:
+			Actor: tc04.husk
+			Weight: 100
+		MultiBrush@tc05.husk:
+			Actor: tc05.husk
+			Weight: 100
+	Obstructions:
+		MultiBrush@97:
+			Template: 97
+		MultiBrush@98:
+			Template: 98
+		MultiBrush@99:
+			Template: 99
+		MultiBrush@217:
+			Template: 217
+		MultiBrush@218:
+			Template: 218
+		MultiBrush@219:
+			Template: 219
+		MultiBrush@220:
+			Template: 220
+		MultiBrush@221:
+			Template: 221
+		MultiBrush@222:
+			Template: 222
+		MultiBrush@223:
+			Template: 223
+		MultiBrush@224:
+			Template: 224
+		MultiBrush@225:
+			Template: 225
+		MultiBrush@226:
+			Template: 226
+		MultiBrush@103:
+			Template: 103
+		MultiBrush@104:
+			Template: 104
+		MultiBrush@105:
+			Template: 105
+			Weight: 50
+		MultiBrush@106:
+			Template: 106
+			Weight: 50
+		MultiBrush@109:
+			Template: 109
+		MultiBrush@110:
+			Template: 110
+		MultiBrush@t01:
+			Actor: t01
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t02:
+			Actor: t02
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t03:
+			Actor: t03
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t05:
+			Actor: t05
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t06:
+			Actor: t06
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t07:
+			Actor: t07
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t08:
+			Actor: t08
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t10:
+			Actor: t10
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t11:
+			Actor: t11
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t12:
+			Actor: t12
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t13:
+			Actor: t13
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t14:
+			Actor: t14
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t15:
+			Actor: t15
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t16:
+			Actor: t16
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@t17:
+			Actor: t17
+			BackingTile: 255,0
+			Weight: 100
+		MultiBrush@580:
+			Template: 580
+			Weight: 100
+		MultiBrush@581:
+			Template: 581
+			Weight: 100
+		MultiBrush@582:
+			Template: 582
+			Weight: 100
+		MultiBrush@583:
+			Template: 583
+			Weight: 100
+		MultiBrush@584:
+			Template: 584
+			Weight: 100
+		MultiBrush@585:
+			Template: 585
+			Weight: 100
+		MultiBrush@586:
+			Template: 586
+			Weight: 100
+		MultiBrush@587:
+			Template: 587
+			Weight: 100
+		MultiBrush@588:
+			Template: 588
+			Weight: 100
+	CivilianBuildings:
+		MultiBrush@v01:
+			Actor: v01
+		MultiBrush@v02:
+			Actor: v02
+		MultiBrush@v03:
+			Actor: v03
+		MultiBrush@v04:
+			Actor: v04
+		MultiBrush@v05:
+			Actor: v05
+		MultiBrush@v06:
+			Actor: v06
+		MultiBrush@v07:
+			Actor: v07
+		MultiBrush@v08:
+			Actor: v08
+		MultiBrush@v09:
+			Actor: v09
+		MultiBrush@v10:
+			Actor: v10
+		MultiBrush@v11:
+			Actor: v11
+		MultiBrush@asianhut:
+			Actor: asianhut

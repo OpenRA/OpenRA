@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -22,12 +21,13 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor self;
 		readonly Cargo cargo;
-		readonly INotifyUnload[] notifiers;
+		readonly INotifyUnloadCargo[] notifiers;
 		readonly bool unloadAll;
 		readonly Aircraft aircraft;
 		readonly Mobile mobile;
 		readonly bool assignTargetOnFirstRun;
 		readonly WDist unloadRange;
+		int delayBetweenUnloads = 0;
 
 		Target destination;
 		bool takeOffAfterUnload;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();
-			notifiers = self.TraitsImplementing<INotifyUnload>().ToArray();
+			notifiers = self.TraitsImplementing<INotifyUnloadCargo>().ToArray();
 			this.unloadAll = unloadAll;
 			aircraft = self.TraitOrDefault<Aircraft>();
 			mobile = self.TraitOrDefault<Mobile>();
@@ -54,10 +54,9 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			var pos = passenger.Trait<IPositionable>();
 
-			return cargo.CurrentAdjacentCells
+			return cargo.CurrentAdjacentCells()
 				.Shuffle(self.World.SharedRandom)
-				.Select(c => (c, pos.GetAvailableSubCell(c)))
-				.Cast<(CPos, SubCell SubCell)?>()
+				.Select(c => ((CPos Cell, SubCell SubCell)?)(c, pos.GetAvailableSubCell(c)))
 				.FirstOrDefault(s => s.Value.SubCell != SubCell.Invalid);
 		}
 
@@ -66,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = passenger.Trait<IPositionable>();
 
 			// Find the cells that are blocked by transient actors
-			return cargo.CurrentAdjacentCells
+			return cargo.CurrentAdjacentCells()
 				.Where(c => pos.CanEnterCell(c, null, BlockedByActor.All) != pos.CanEnterCell(c, null, BlockedByActor.None));
 		}
 
@@ -93,15 +92,22 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			if (IsCanceling || cargo.IsEmpty(self))
+			if (IsCanceling || cargo.IsEmpty())
 				return true;
 
 			if (cargo.CanUnload())
 			{
+				if (delayBetweenUnloads > 0)
+				{
+					delayBetweenUnloads--;
+					return false;
+				}
+
+				delayBetweenUnloads = cargo.Info.BetweenUnloadDelay;
 				foreach (var inu in notifiers)
 					inu.Unloading(self);
 
-				var actor = cargo.Peek(self);
+				var actor = cargo.Peek();
 				var spawn = self.CenterPosition;
 
 				var exitSubCell = ChooseExitSubCell(actor);
@@ -120,11 +126,12 @@ namespace OpenRA.Mods.Common.Activities
 
 					var move = actor.Trait<IMove>();
 					var pos = actor.Trait<IPositionable>();
+					var passenger = actor.Trait<Passenger>();
 
 					pos.SetPosition(actor, exitSubCell.Value.Cell, exitSubCell.Value.SubCell);
 					pos.SetCenterPosition(actor, spawn);
 
-					actor.CancelActivity();
+					passenger.OnBeforeAddedToWorld(actor);
 					w.Add(actor);
 				});
 			}

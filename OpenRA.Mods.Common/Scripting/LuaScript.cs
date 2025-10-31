@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,10 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Part of the new Lua API.")]
-	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>
+	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>, NotBefore<SpawnStartingUnitsInfo>
 	{
-		public readonly HashSet<string> Scripts = new HashSet<string>();
+		[Desc("File names with location relative to the map.")]
+		public readonly HashSet<string> Scripts = [];
 
 		public override object Create(ActorInitializer init) { return new LuaScript(this); }
 	}
@@ -29,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 	public class LuaScript : ITick, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly LuaScriptInfo info;
-		ScriptContext context;
+		public ScriptContext Context;
 		bool disposed;
 
 		public LuaScript(LuaScriptInfo info)
@@ -40,13 +42,13 @@ namespace OpenRA.Mods.Common.Scripting
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer worldRenderer)
 		{
 			var scripts = info.Scripts ?? Enumerable.Empty<string>();
-			context = new ScriptContext(world, worldRenderer, scripts);
-			context.WorldLoaded();
+			Context = new ScriptContext(world, worldRenderer, scripts);
+			Context.WorldLoaded();
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			context.Tick(self);
+			Context.Tick();
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
@@ -54,11 +56,11 @@ namespace OpenRA.Mods.Common.Scripting
 			if (disposed)
 				return;
 
-			context?.Dispose();
+			Context?.Dispose();
 
 			disposed = true;
 		}
 
-		public bool FatalErrorOccurred => context.FatalErrorOccurred;
+		public bool FatalErrorOccurred => Context.FatalErrorOccurred;
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -29,21 +30,29 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Offset = CVec.Zero;
 
 		[Desc("Facing that the actor must face before transforming.")]
-		public readonly WAngle Facing = new WAngle(384);
+		public readonly WAngle Facing = new(384);
 
 		[Desc("Sounds to play when transforming.")]
-		public readonly string[] TransformSounds = { };
+		public readonly string[] TransformSounds = [];
 
 		[Desc("Sounds to play when the transformation is blocked.")]
-		public readonly string[] NoTransformSounds = { };
+		public readonly string[] NoTransformSounds = [];
 
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when transforming.")]
+		[Desc("Speech notification to play when transforming.")]
 		public readonly string TransformNotification = null;
 
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display when transforming.")]
+		public readonly string TransformTextNotification = null;
+
 		[NotificationReference("Speech")]
-		[Desc("Notification to play when the transformation is blocked.")]
+		[Desc("Speech notification to play when the transformation is blocked.")]
 		public readonly string NoTransformNotification = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display when the transformation is blocked.")]
+		public readonly string NoTransformTextNotification = null;
 
 		[CursorReference]
 		[Desc("Cursor to display when able to (un)deploy the actor.")]
@@ -88,14 +97,20 @@ namespace OpenRA.Mods.Common.Traits
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
-		public Activity GetTransformActivity(Actor self)
+		IEnumerable<Order> ClearBlockersOrders(CPos topLeft)
 		{
-			return new Transform(self, Info.IntoActor)
+			return AIUtils.ClearBlockersOrders(buildingInfo.Tiles(topLeft).ToList(), self.Owner, self);
+		}
+
+		public Activity GetTransformActivity()
+		{
+			return new Transform(Info.IntoActor)
 			{
 				Offset = Info.Offset,
 				Facing = Info.Facing,
 				Sounds = Info.TransformSounds,
 				Notification = Info.TransformNotification,
+				TextNotification = Info.TransformTextNotification,
 				Faction = faction
 			};
 		}
@@ -129,17 +144,21 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!queued && !CanDeploy())
 			{
+				foreach (var order in ClearBlockersOrders(self.Location + Info.Offset))
+					self.World.IssueOrder(order);
+
 				// Only play the "Cannot deploy here" audio
 				// for non-queued orders
 				foreach (var s in Info.NoTransformSounds)
 					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.NoTransformNotification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(self.Owner, Info.NoTransformTextNotification);
 
 				return;
 			}
 
-			self.QueueActivity(queued, GetTransformActivity(self));
+			self.QueueActivity(queued, GetTransformActivity());
 		}
 
 		public void ResolveOrder(Actor self, Order order)

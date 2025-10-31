@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,17 +26,20 @@ namespace OpenRA.Mods.Common.Activities
 		readonly BodyOrientation carryableBody;
 
 		readonly int delay;
+		readonly Color? targetLineColor;
 
 		// TODO: Expose this to yaml
 		readonly WDist targetLockRange = WDist.FromCells(4);
 
 		enum PickupState { Intercept, LockCarryable, Pickup }
 		PickupState state = PickupState.Intercept;
+		bool reserveFailed;
 
-		public PickupUnit(Actor self, Actor cargo, int delay)
+		public PickupUnit(Actor self, Actor cargo, int delay, Color? targetLineColor)
 		{
 			this.cargo = cargo;
 			this.delay = delay;
+			this.targetLineColor = targetLineColor;
 			carryable = cargo.Trait<Carryable>();
 			carryableFacing = cargo.Trait<IFacing>();
 			carryableBody = cargo.Trait<BodyOrientation>();
@@ -49,8 +52,11 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			// The cargo might have become invalid while we were moving towards it.
-			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+			if (cargo.IsDead || carryable.IsTraitDisabled || carryall.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+			{
+				reserveFailed = true;
 				return;
+			}
 
 			if (carryall.ReserveCarryable(self, cargo))
 			{
@@ -59,43 +65,39 @@ namespace OpenRA.Mods.Common.Activities
 				QueueChild(new Fly(self, Target.FromActor(cargo)));
 				QueueChild(new FlyIdle(self, idleTurn: false));
 			}
+			else
+				reserveFailed = true;
 		}
 
 		public override bool Tick(Actor self)
 		{
-			if (cargo != carryall.Carryable)
+			if (IsCanceling || reserveFailed)
 				return true;
 
-			if (IsCanceling)
+			if (cargo.IsDead || carryable.IsTraitDisabled || carryall.IsTraitDisabled || !cargo.AppearsFriendlyTo(self) || cargo != carryall.Carryable)
 			{
-				if (carryall.State == Carryall.CarryallState.Reserved)
-					carryall.UnreserveCarryable(self);
-
-				return true;
-			}
-
-			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
-			{
-				carryall.UnreserveCarryable(self);
-				return true;
+				Cancel(self, true);
+				return false;
 			}
 
 			// Wait until we are near the target before we try to lock it
-			var distSq = (cargo.CenterPosition - self.CenterPosition).HorizontalLengthSquared;
-			if (state == PickupState.Intercept && distSq <= targetLockRange.LengthSquared)
+			if (state == PickupState.Intercept && (cargo.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= targetLockRange.LengthSquared)
 				state = PickupState.LockCarryable;
 
 			if (state == PickupState.LockCarryable)
 			{
 				var lockResponse = carryable.LockForPickup(cargo, self);
 				if (lockResponse == LockResponse.Failed)
-					Cancel(self);
+				{
+					Cancel(self, true);
+					return false;
+				}
 				else if (lockResponse == LockResponse.Success)
 				{
 					// Pickup position and facing are now known - swap the fly/wait activity with Land
 					ChildActivity.Cancel(self);
 
-					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(self, cargo.Orientation));
+					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(cargo.Orientation));
 					QueueChild(new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing));
 
 					// Pause briefly before attachment for visual effect
@@ -110,16 +112,45 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			// Return once we are in the pickup state and the pickup activities have completed
+			// Return once we are in the pickup state and the pickup activities have completed.
 			return TickChild(self) && state == PickupState.Pickup;
+		}
+
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			base.Cancel(self, keepQueue);
+
+			// We are safe to bail here as base won't set IsCanceling to true if not interruptible.
+			if (!IsInterruptible)
+				return;
+
+			// This nulls carryall storage, so to avoid deleting units make sure it is not called while carrying one.
+			if (carryall.State == Carryall.CarryallState.Reserved)
+				carryall.UnreserveCarryable(self);
+
+			// TakeOff is not interruptible, but this activity is. To deal with it we bail. We transfer
+			// priority both to dispose of this activity and to make sure TakeOff is not disposed with it.
+			if (ChildActivity is TakeOff)
+			{
+				ChildHasPriority = true;
+				return;
+			}
+
+			// Make sure we run the TakeOff activity if we are / have landed.
+			if (self.Trait<Aircraft>().HasInfluence())
+			{
+				ChildHasPriority = true;
+				QueueChild(new TakeOff(self));
+			}
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(Target.FromActor(cargo), carryall.Info.TargetLineColor);
+			if (targetLineColor != null)
+				yield return new TargetLineNode(Target.FromActor(cargo), targetLineColor.Value);
 		}
 
-		class AttachUnit : Activity
+		sealed class AttachUnit : Activity
 		{
 			readonly Actor cargo;
 			readonly Carryable carryable;
@@ -135,13 +166,13 @@ namespace OpenRA.Mods.Common.Activities
 			protected override void OnFirstRun(Actor self)
 			{
 				// The cargo might have become invalid while we were moving towards it.
-				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || carryall.IsTraitDisabled || carryall.Carryable != cargo || !cargo.AppearsFriendlyTo(self))
 					return;
 
 				self.World.AddFrameEndTask(w =>
 				{
 					cargo.World.Remove(cargo);
-					carryable.Attached(cargo);
+					carryable.Attached(cargo, self);
 					carryall.AttachCarryable(self, cargo);
 				});
 			}

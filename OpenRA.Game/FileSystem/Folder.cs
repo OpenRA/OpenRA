@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,39 +18,41 @@ namespace OpenRA.FileSystem
 {
 	public sealed class Folder : IReadWritePackage
 	{
-		readonly string path;
+		public string Name { get; }
 
 		public Folder(string path)
 		{
-			this.path = path;
+			Name = path;
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 		}
-
-		public string Name => path;
 
 		public IEnumerable<string> Contents
 		{
 			get
 			{
 				// Order may vary on different file systems and it matters for hashing.
-				return Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly)
-					.Concat(Directory.GetDirectories(path))
+				return Directory.GetFiles(Name, "*", SearchOption.TopDirectoryOnly)
+					.Concat(Directory.GetDirectories(Name))
 					.Select(Path.GetFileName)
-					.OrderBy(f => f);
+					.Order();
 			}
 		}
 
 		public Stream GetStream(string filename)
 		{
-			try { return File.OpenRead(Path.Combine(path, filename)); }
+			var combined = Path.Combine(Name, filename);
+			if (!File.Exists(combined))
+				return null;
+
+			try { return File.OpenRead(combined); }
 			catch { return null; }
 		}
 
 		public bool Contains(string filename)
 		{
-			var combined = Path.Combine(path, filename);
-			return combined.StartsWith(path, StringComparison.Ordinal) && File.Exists(combined);
+			var combined = Path.Combine(Name, filename);
+			return combined.StartsWith(Name, StringComparison.Ordinal) && File.Exists(combined);
 		}
 
 		public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
@@ -82,7 +84,7 @@ namespace OpenRA.FileSystem
 			// in FileSystem.OpenPackage.  Their internal name therefore contains the
 			// full parent path too.  We need to be careful to not add a second path
 			// prefix to these hacked packages.
-			var filePath = filename.StartsWith(path) ? filename : Path.Combine(path, filename);
+			var filePath = filename.StartsWith(Name, StringComparison.Ordinal) ? filename : Path.Combine(Name, filename);
 
 			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 			using (var s = File.Create(filePath))
@@ -96,7 +98,7 @@ namespace OpenRA.FileSystem
 			// in FileSystem.OpenPackage.  Their internal name therefore contains the
 			// full parent path too.  We need to be careful to not add a second path
 			// prefix to these hacked packages.
-			var filePath = filename.StartsWith(path) ? filename : Path.Combine(path, filename);
+			var filePath = filename.StartsWith(Name, StringComparison.Ordinal) ? filename : Path.Combine(Name, filename);
 			if (Directory.Exists(filePath))
 				Directory.Delete(filePath, true);
 			else if (File.Exists(filePath))

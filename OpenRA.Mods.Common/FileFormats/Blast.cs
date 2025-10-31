@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,11 +22,11 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class Blast
 	{
-		public static readonly int MAXBITS = 13; // maximum code length
-		public static readonly int MAXWIN = 4096; // maximum window size
+		public const int MAXBITS = 13; // maximum code length
+		public const int MAXWIN = 4096; // maximum window size
 
-		static byte[] litlen =
-		{
+		static readonly byte[] LitLen =
+		[
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
 			10, 8, 12, 10, 12, 10, 8, 23, 8, 9,
 			7, 6, 7, 8, 7, 6, 55, 8, 23, 24,
@@ -37,31 +37,31 @@ namespace OpenRA.Mods.Common.FileFormats
 			6, 21, 6, 10, 53, 8, 7, 24, 10, 27,
 			44, 253, 253, 253, 252, 252, 252, 13, 12, 45,
 			12, 45, 12, 61, 12, 45, 44, 173
-		};
+		];
 
 		// bit lengths of length codes 0..15
-		static byte[] lenlen = { 2, 35, 36, 53, 38, 23 };
+		static readonly byte[] LenLen = [2, 35, 36, 53, 38, 23];
 
 		// bit lengths of distance codes 0..63
-		static byte[] distlen = { 2, 20, 53, 230, 247, 151, 248 };
+		static readonly byte[] DistLen = [2, 20, 53, 230, 247, 151, 248];
 
 		// base for length codes
-		static short[] lengthbase =
-		{
+		static readonly short[] LengthBase =
+		[
 			3, 2, 4, 5, 6, 7, 8, 9, 10, 12,
 			16, 24, 40, 72, 136, 264
-		};
+		];
 
 		// extra bits for length codes
-		static byte[] extra =
-		{
+		static readonly byte[] Extra =
+		[
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
-		};
+		];
 
-		static Huffman litcode = new Huffman(litlen, litlen.Length, 256);
-		static Huffman lencode = new Huffman(lenlen, lenlen.Length, 16);
-		static Huffman distcode = new Huffman(distlen, distlen.Length, 64);
+		static readonly Huffman LitCode = new(LitLen, 256);
+		static readonly Huffman LenCode = new(LenLen, 16);
+		static readonly Huffman DistCode = new(DistLen, 64);
 
 		/// <summary>PKWare Compression Library stream.</summary>
 		/// <param name="input">Compressed input stream.</param>
@@ -98,8 +98,8 @@ namespace OpenRA.Mods.Common.FileFormats
 				if (br.ReadBits(1) == 1)
 				{
 					// Length
-					var symbol = Decode(lencode, br);
-					var len = lengthbase[symbol] + br.ReadBits(extra[symbol]);
+					var symbol = Decode(LenCode, br);
+					var len = LengthBase[symbol] + br.ReadBits(Extra[symbol]);
 
 					// Magic number for "done"
 					if (len == 519)
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 					// Distance
 					symbol = len == 2 ? 2 : dict;
-					var dist = Decode(distcode, br) << symbol;
+					var dist = Decode(DistCode, br) << symbol;
 					dist += br.ReadBits(symbol);
 					dist++;
 
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				else
 				{
 					// literal value
-					var symbol = encodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
+					var symbol = encodedLiterals ? Decode(LitCode, br) : br.ReadBits(8);
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)
 					{
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		}
 	}
 
-	class BitReader
+	sealed class BitReader
 	{
 		readonly Stream stream;
 		byte bitBuffer = 0;
@@ -214,8 +214,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		public int ReadBits(int count)
 		{
 			var ret = 0;
-			var filled = 0;
-			while (filled < count)
+			for (var filled = 0; filled < count; filled++)
 			{
 				if (bitCount == 0)
 				{
@@ -226,7 +225,6 @@ namespace OpenRA.Mods.Common.FileFormats
 				ret |= (bitBuffer & 1) << filled;
 				bitBuffer >>= 1;
 				bitCount--;
-				filled++;
 			}
 
 			return ret;
@@ -242,12 +240,12 @@ namespace OpenRA.Mods.Common.FileFormats
 	 * codes.  Those tables are the number of codes of each length, and the symbols
 	 * sorted by length, retaining their original order within each length.
 	 */
-	class Huffman
+	sealed class Huffman
 	{
 		public short[] Count; // number of symbols of each length
 		public short[] Symbol; // canonically ordered symbols
 
-		public Huffman(byte[] rep, int n, short symbolCount)
+		public Huffman(byte[] rep, short symbolCount)
 		{
 			var length = new short[256]; // code lengths
 			var s = 0; // current symbol
@@ -262,7 +260,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				while (--num > 0);
 			}
 
-			n = s;
+			var n = s;
 
 			// count number of codes of each length
 			Count = new short[Blast.MAXBITS + 1];
@@ -277,8 +275,8 @@ namespace OpenRA.Mods.Common.FileFormats
 			var left = 1; // one possible code of zero length
 			for (var len = 1; len <= Blast.MAXBITS; len++)
 			{
-				left <<= 1;	// one more bit, double codes left
-				left -= Count[len];	// deduct count from possible codes
+				left <<= 1; // one more bit, double codes left
+				left -= Count[len]; // deduct count from possible codes
 				if (left < 0)
 					throw new InvalidDataException("over subscribed code set");
 			}

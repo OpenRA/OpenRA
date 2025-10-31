@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -67,20 +67,49 @@ namespace OpenRA.Mods.Common.Graphics
 			if (facingInfo == null)
 				return () => WRot.None;
 
-			// Dynamic facing takes priority
-			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
-			if (dynamicInit != null)
+			WAngle facing;
+
+			var mobileInfo = Actor.TraitInfoOrDefault<MobileInfo>();
+			var location = reference.GetOrDefault<LocationInit>();
+			if (location == null || mobileInfo == null || mobileInfo.TerrainOrientationAdjustmentMargin.Length < 0)
 			{
-				// TODO: Account for terrain slope
-				var getFacing = dynamicInit.Value;
-				return () => WRot.FromYaw(getFacing());
+				// Dynamic facing takes priority.
+				var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
+				if (dynamicInit != null)
+				{
+					var getFacing = dynamicInit.Value;
+					return () => WRot.FromYaw(getFacing());
+				}
+				else
+				{
+					// Fall back to initial actor facing if an Init isn't available.
+					var facingInit = reference.GetOrDefault<FacingInit>();
+					facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
+					return () => WRot.FromYaw(facing);
+				}
 			}
 
-			// Fall back to initial actor facing if an Init isn't available
-			var facingInit = reference.GetOrDefault<FacingInit>();
-			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
-			var orientation = WRot.FromYaw(facing);
-			return () => orientation;
+			var orientationInit = reference.GetOrDefault<TerrainOrientationInit>();
+			var terrainOrientation = orientationInit != null ? orientationInit.Value : World.Map.TerrainOrientation(location.Value);
+			var normalVector = new WVec(0, 0, 1024).Rotate(terrainOrientation);
+
+			// Duplicated as to make more efficient delegates.
+			{
+				// Dynamic facing takes priority.
+				var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
+				if (dynamicInit != null)
+				{
+					var getFacing = dynamicInit.Value;
+					return () => terrainOrientation + new WRot(normalVector, getFacing());
+				}
+				else
+				{
+					// Fall back to initial actor facing if an Init isn't available.
+					var facingInit = reference.GetOrDefault<FacingInit>();
+					facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
+					return () => terrainOrientation + new WRot(normalVector, facing);
+				}
+			}
 		}
 
 		public Func<WAngle> GetFacing()

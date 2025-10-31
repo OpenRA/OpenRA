@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,14 +11,16 @@
 
 using System;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Terrain;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class NewMapLogic : ChromeLogic
 	{
-		Widget panel;
+		readonly Widget panel;
 
 		[ObjectCreator.UseCtor]
 		public NewMapLogic(Action onExit, Action<string> onSelect, Widget widget, World world, ModData modData)
@@ -27,20 +29,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
+			var selectedTerrain = modData.DefaultTerrainInfo.Values.First();
 			var tilesetDropDown = panel.Get<DropDownButtonWidget>("TILESET");
-			var tilesets = modData.DefaultTerrainInfo.Keys;
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+			ScrollItemWidget SetupItem(ITerrainInfo option, ScrollItemWidget template)
 			{
 				var item = ScrollItemWidget.Setup(template,
-					() => tilesetDropDown.Text == option,
-					() => { tilesetDropDown.Text = option; });
-				item.Get<LabelWidget>("LABEL").GetText = () => option;
-				return item;
-			};
+					() => selectedTerrain == option,
+					() => selectedTerrain = option);
 
-			tilesetDropDown.Text = tilesets.First();
+				var itemLabel = FluentProvider.GetMessage(option.Name);
+				item.Get<LabelWidget>("LABEL").GetText = () => itemLabel;
+				return item;
+			}
+
+			var label = new CachedTransform<ITerrainInfo, string>(ti => FluentProvider.GetMessage(ti.Name));
+			tilesetDropDown.GetText = () => label.Update(selectedTerrain);
 			tilesetDropDown.OnClick = () =>
-				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, setupItem);
+				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, modData.DefaultTerrainInfo.Values, SetupItem);
 
 			var widthTextField = panel.Get<TextFieldWidget>("WIDTH");
 			var heightTextField = panel.Get<TextFieldWidget>("HEIGHT");
@@ -56,8 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				height = Math.Max(2, height);
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
-				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.Text];
-				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
+				var map = new Map(Game.ModData, selectedTerrain, new Size(width + 2, height + maxTerrainHeight + 2));
 
 				var tl = new PPos(1, 1 + maxTerrainHeight);
 				var br = new PPos(width, height + maxTerrainHeight);
@@ -68,24 +72,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
 					notifyMapCreated.MapCreated(map);
 
-				Action<string> afterSave = uid =>
-				{
-					// HACK: Work around a synced-code change check.
-					// It's not clear why this is needed here, but not in the other places that load maps.
-					Game.RunAfterTick(() => Game.LoadEditor(uid));
-
-					Ui.CloseWindow();
-					onSelect(uid);
-				};
-
-				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
-				{
-					{ "onSave", afterSave },
-					{ "onExit", () => { Ui.CloseWindow(); onExit(); } },
-					{ "map", map },
-					{ "playerDefinitions", map.PlayerDefinitions },
-					{ "actorDefinitions", map.ActorDefinitions }
-				});
+				var package = new ZipFileLoader.ReadWriteZipFile();
+				map.Save(package);
+				map = new Map(modData, package);
+				Game.LoadEditor(map);
+				Ui.CloseWindow();
+				onSelect(map.Uid);
 			};
 		}
 	}

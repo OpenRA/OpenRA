@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class HotkeyEntryWidget : Widget
+	public class HotkeyEntryWidget : InputWidget
 	{
 		public Hotkey Key;
 
@@ -27,7 +27,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action<KeyInput> OnEscKey = _ => { };
 		public Action OnLoseFocus = () => { };
 
-		public Func<bool> IsDisabled = () => false;
 		public Func<bool> IsValid = () => false;
 		public string Font = ChromeMetrics.Get<string>("HotkeyFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("HotkeyColor");
@@ -43,11 +42,6 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorDisabled = widget.TextColorDisabled;
 			TextColorInvalid = widget.TextColorInvalid;
 			VisualHeight = widget.VisualHeight;
-		}
-
-		public override bool TakeKeyboardFocus()
-		{
-			return base.TakeKeyboardFocus();
 		}
 
 		public override bool YieldKeyboardFocus()
@@ -82,13 +76,13 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		static readonly Keycode[] IgnoreKeys = new Keycode[]
-		{
+		static readonly Keycode[] IgnoreKeys =
+		[
 			Keycode.RSHIFT, Keycode.LSHIFT,
 			Keycode.RCTRL, Keycode.LCTRL,
 			Keycode.RALT, Keycode.LALT,
 			Keycode.RGUI, Keycode.LGUI,
-		};
+		];
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
@@ -163,6 +157,6 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Renderer.DisableScissor();
 		}
 
-		public override Widget Clone() { return new HotkeyEntryWidget(this); }
+		public override HotkeyEntryWidget Clone() { return new HotkeyEntryWidget(this); }
 	}
 }

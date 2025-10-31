@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,10 +24,11 @@ namespace OpenRA.Graphics
 		public CursorProvider(ModData modData)
 		{
 			var fileSystem = modData.DefaultFileSystem;
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
-				s => MiniYaml.FromStream(fileSystem.Open(s), s)));
+				s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool)));
 
-			var nodesDict = new MiniYaml(null, sequenceYaml).ToDictionary();
+			var cursorsYaml = new MiniYaml(null, sequenceYaml).NodeWithKey("Cursors").Value;
 
 			// Overwrite previous definitions if there are duplicates
 			var pals = new Dictionary<string, IProvidesCursorPaletteInfo>();
@@ -35,14 +36,14 @@ namespace OpenRA.Graphics
 				if (p.Palette != null)
 					pals[p.Palette] = p;
 
-			Palettes = nodesDict["Cursors"].Nodes.Select(n => n.Value.Value)
+			Palettes = cursorsYaml.Nodes.Select(n => n.Value.Value)
 				.Where(p => p != null)
 				.Distinct()
 				.ToDictionary(p => p, p => pals[p].ReadPalette(modData.DefaultFileSystem));
 
 			var frameCache = new FrameCache(fileSystem, modData.SpriteLoaders);
 			var cursors = new Dictionary<string, CursorSequence>();
-			foreach (var s in nodesDict["Cursors"].Nodes)
+			foreach (var s in cursorsYaml.Nodes)
 				foreach (var sequence in s.Value.Nodes)
 					cursors.Add(sequence.Key, new CursorSequence(frameCache, sequence.Key, s.Key, s.Value.Value, sequence.Value));
 

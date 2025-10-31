@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,8 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
+	[Desc("Provides a signature on the minimap.")]
 	public class AppearsOnRadarInfo : ConditionalTraitInfo
 	{
+		[Desc("Use center position instead of occupied cells.")]
 		public readonly bool UseLocation = false;
 
 		[Desc("Player relationships who can view this actor on radar.")]
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			if (IsTraitDisabled || (viewer != null && !Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(viewer))))
 				return;
 
-			var color = Game.Settings.Game.UsePlayerStanceColors ? self.Owner.PlayerRelationshipColor(self) : self.Owner.Color;
+			var color = self.OwnerColor();
 			if (modifier != null)
 				color = modifier.RadarColorOverride(self, color);
 

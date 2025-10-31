@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -44,10 +44,10 @@ MissionStart = function()
 		TroopsArrived = true
 	end)
 
-	InfantryProduction()
+	ProduceInfantry()
 end
 
-InfantryProduction = function()
+ProduceInfantry = function()
 	if (SETent1.IsDead or SETent1.Owner ~= Greece) and (SETent2.IsDead or SETent2.Owner ~= Greece) then
 		return
 	end
@@ -56,7 +56,7 @@ InfantryProduction = function()
 
 	Greece.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
+		Trigger.AfterDelay(InfantryDelay, ProduceInfantry)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -120,7 +120,7 @@ MissionTriggers = function()
 				end
 			end)
 			Trigger.AfterDelay(DateTime.Seconds(3), function()
-				if not NEVillage3.IsDead then					
+				if not NEVillage3.IsDead then
 					Reinforcements.Reinforce(Spain, Utils.Random(CivSquads), { NECivSpawn3.Location, CivRallyNW.Location }, 0)
 				end
 				if not NEVillage4.IsDead then
@@ -249,7 +249,7 @@ MissionTriggers = function()
 				if not SWVillage3.IsDead then
 					Reinforcements.Reinforce(Spain, Utils.Random(CivSquads), { SWCivSpawn3.Location, CivRallySE.Location }, 0)
 				end
-				if not SWVillage4.IsDead then				
+				if not SWVillage4.IsDead then
 					Reinforcements.Reinforce(Spain, Utils.Random(CivSquads), { SWCivSpawn4.Location, CivRallyNW.Location }, 0)
 				end
 			end)
@@ -307,31 +307,11 @@ WorldLoaded = function()
 	GoodGuy = Player.GetPlayer("GoodGuy")
 	Spain = Player.GetPlayer("Spain")
 
-	Trigger.OnObjectiveAdded(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(USSR)
 
-	BeatRussia = Greece.AddObjective("Stop Ivan.")
-	KillAll = USSR.AddObjective("Destroy all that oppose us.")
-	CaptureDome = USSR.AddObjective("Capture the enemy radar dome.", "Secondary", false)
-
-	Trigger.OnObjectiveCompleted(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(USSR, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(USSR, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
-		end)
-	end)
+	BeatRussia = AddPrimaryObjective(Greece, "")
+	KillAll = AddPrimaryObjective(USSR, "destroy-opposition")
+	CaptureDome = AddSecondaryObjective(USSR, "capture-enemy-radar-dome")
 
 	Camera.Position = LZ.CenterPosition
 	ShockDrop = Actor.Create("shockdrop", false, { Owner = USSR })

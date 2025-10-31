@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,21 +11,30 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
 using OpenRA.Network;
-using OpenRA.Support;
 
 namespace OpenRA.Server
 {
-	class Program
+	sealed class Program
 	{
 		static void Main(string[] args)
 		{
 			try
 			{
 				Run(args);
+			}
+			catch (Exception e)
+			{
+				ExceptionHandler.HandleFatalError(e);
+
+				// Flush logs before rethrowing, i.e. allowing the exception to go unhandled.
+				// try-finally won't work - an unhandled exception kills our process without running the finally block!
+				Log.Dispose();
+				throw;
 			}
 			finally
 			{
@@ -54,10 +63,10 @@ namespace OpenRA.Server
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
 			var modID = arguments.GetValue("Game.Mod", null);
-			var explicitModPaths = new string[0];
+			var explicitModPaths = Array.Empty<string>();
 			if (modID != null && (File.Exists(modID) || Directory.Exists(modID)))
 			{
-				explicitModPaths = new[] { modID };
+				explicitModPaths = [modID];
 				modID = Path.GetFileNameWithoutExtension(modID);
 			}
 
@@ -74,20 +83,19 @@ namespace OpenRA.Server
 			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
 			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?
 				FieldLoader.GetValue<string[]>("MOD_SEARCH_PATHS", envModSearchPaths) :
-				new[] { Path.Combine(Platform.EngineDir, "mods") };
+				[Path.Combine(Platform.EngineDir, "mods")];
 
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
-			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), modID);
+			WriteLineWithTimeStamp($"Starting dedicated server for mod: {modID}");
 			while (true)
 			{
 				// HACK: The engine code *still* assumes that Game.ModData is set
 				var modData = Game.ModData = new ModData(mods[modID], mods);
+				modData.MapCache.LoadPreviewImages = false; // PERF: Server doesn't need previews, save memory by not loading them.
 				modData.MapCache.LoadMaps();
 
-				settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
-
-				var endpoints = new List<IPEndPoint> { new IPEndPoint(IPAddress.IPv6Any, settings.ListenPort), new IPEndPoint(IPAddress.Any, settings.ListenPort) };
+				var endpoints = new List<IPEndPoint> { new(IPAddress.IPv6Any, settings.ListenPort), new(IPAddress.Any, settings.ListenPort) };
 				var server = new Server(endpoints, settings, modData, ServerType.Dedicated);
 
 				GC.Collect();
@@ -96,15 +104,20 @@ namespace OpenRA.Server
 					Thread.Sleep(1000);
 					if (server.State == ServerState.GameStarted && server.Conns.Count < 1)
 					{
-						Console.WriteLine("[{0}] No one is playing, shutting down...", DateTime.Now.ToString(settings.TimestampFormat));
+						WriteLineWithTimeStamp("No one is playing, shutting down...");
 						server.Shutdown();
 						break;
 					}
 				}
 
 				modData.Dispose();
-				Console.WriteLine("[{0}] Starting a new server instance...", DateTime.Now.ToString(settings.TimestampFormat));
+				WriteLineWithTimeStamp("Starting a new server instance...");
 			}
+		}
+
+		static void WriteLineWithTimeStamp(string line)
+		{
+			Console.WriteLine($"[{DateTime.Now.ToString(Game.Settings.Server.TimestampFormat, CultureInfo.CurrentCulture)}] {line}");
 		}
 	}
 }

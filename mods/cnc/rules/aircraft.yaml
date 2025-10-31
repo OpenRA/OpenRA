@@ -4,25 +4,31 @@ TRAN:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Chinook Transport
+		Name: actor-tran.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
-		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+		Description: actor-tran.description
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 150
 		AltitudeVelocity: 0c100
 	Health:
-		HP: 9000
+		HP: 12500
 	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 10c0
 		Type: GroundPosition
+	Encyclopedia:
+		Description: actor-tran.encyclopedia
+		Order: 230
+		Scale: 3
+		Category: Aircraft
+		PreviewOwner: GDI
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,85
 		Sequence: rotor
@@ -42,6 +48,7 @@ TRAN:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 10
+		UnloadVoice: Unload
 		AfterUnloadDelay: 40
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
@@ -55,14 +62,14 @@ HELI:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Apache Longbow
+		Name: actor-heli.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
+		Description: actor-heli.description
 	Aircraft:
 		TurnSpeed: 28
 		Speed: 180
@@ -84,6 +91,14 @@ HELI:
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: actor-heli.encyclopedia
+		Order: 240
+		Scale: 3
+		Category: Aircraft
+		PreviewOwner: NodUnits
+	AttackMove:
+		Voice: Attack
 	AutoTarget:
 		ScanRadius: 4
 	AttackAircraft:
@@ -91,6 +106,7 @@ HELI:
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
+		Voice: Attack
 	AmmoPool:
 		Ammo: 10
 		AmmoCondition: ammo
@@ -106,8 +122,8 @@ HELI:
 	SpawnActorOnDeath:
 		Actor: HELI.Husk
 	ReloadAmmoPool:
-		Delay: 40
-		Count: 1
+		Delay: 70
+		Count: 2
 	Selectable:
 		DecorationBounds: 1280, 1024
 	WithAmmoPipsDecoration:
@@ -123,19 +139,19 @@ ORCA:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Orca
+		Name: actor-orca.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: actor-orca.description
 	Aircraft:
 		TurnSpeed: 28
 		Speed: 186
 	Health:
-		HP: 9000
+		HP: 10000
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -149,6 +165,14 @@ ORCA:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: actor-orca.encyclopedia
+		Order: 250
+		Scale: 3
+		Category: Aircraft
+		PreviewOwner: GDI
+	AttackMove:
+		Voice: Attack
 	AutoTarget:
 		ScanRadius: 5
 	AttackAircraft:
@@ -156,6 +180,7 @@ ORCA:
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
+		Voice: Attack
 	AmmoPool:
 		Ammo: 6
 		AmmoCondition: ammo
@@ -178,7 +203,7 @@ C17:
 	Inherits@TRANSPORT: ^Transport
 	Interactable:
 	Tooltip:
-		Name: Supply Aircraft
+		Name: actor-c17-name
 	Valued:
 		Cost: 2000
 	UpdatesPlayerStatistics:
@@ -201,27 +226,33 @@ C17:
 	Cloak:
 		InitialDelay: 0
 		CloakDelay: 0
-		CloakTypes: C17
+		CloakStyle: Palette
+		CloakedPalette: cloak
+		DetectionTypes: C17
 		RequiresCondition: global-C17-stealth
 	Contrail@1:
 		Offset: -261,-650,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -85,-384,0
 		TrailLength: 16
+		StartColorAlpha: 128
 	Contrail@3:
 		Offset: -85,384,0
 		TrailLength: 16
+		StartColorAlpha: 128
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	-MapEditorData:
 
 A10:
 	Inherits: ^Plane
 	Interactable:
 	Tooltip:
-		Name: A10 Bomber
+		Name: actor-a10-name
 	Valued:
 		Cost: 2000
 	UpdatesPlayerStatistics:
@@ -232,6 +263,7 @@ A10:
 		Repulsable: False
 	AttackBomber:
 		Armaments: gun, bombs
+		FacingTolerance: 8
 	Armament@GUNS:
 		Name: gun
 		Weapon: Vulcan
@@ -244,15 +276,17 @@ A10:
 	Contrail@1:
 		Offset: -640,171,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	-MapEditorData:
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Chinook Transport
+		Name: actor-tran-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 140
@@ -271,7 +305,7 @@ TRAN.Husk:
 HELI.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Apache Longbow
+		Name: actor-heli-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 186
@@ -287,7 +321,7 @@ HELI.Husk:
 ORCA.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Orca
+		Name: actor-orca-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 186

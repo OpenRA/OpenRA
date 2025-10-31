@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to actors which should regenerate or lose health points over time.")]
-	class ChangesHealthInfo : ConditionalTraitInfo, Requires<IHealthInfo>
+	sealed class ChangesHealthInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Absolute amount of health points added in each step.",
 			"Use negative values to apply damage.")]
@@ -36,12 +36,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageCooldown = 0;
 
 		[Desc("Apply the health change when encountering these damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public override object Create(ActorInitializer init) { return new ChangesHealth(init.Self, this); }
 	}
 
-	class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage
+	sealed class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage, ISync
 	{
 		readonly IHealth health;
 

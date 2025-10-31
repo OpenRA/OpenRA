@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -96,13 +96,13 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	SecureArea = GDI.AddObjective("Destroy the Nod strike force.")
-	KillGDI = Nod.AddObjective("Kill all enemies!")
+	SecureArea = AddPrimaryObjective(GDI, "destroy-nod-force")
+	KillGDI = AddPrimaryObjective(Nod, "")
 
-	RepairAssets = GDI.AddObjective("Repair GDI base and vehicles.", "Secondary", false)
+	RepairAssets = AddSecondaryObjective(GDI, "repair-base-vehicles")
 	Trigger.AfterDelay(DateTime.Seconds(5), function() CheckRepairGDIAssetsObjective() end)
 
-	AirSupport = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
+	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(AirSupport)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })

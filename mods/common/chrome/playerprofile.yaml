@@ -4,217 +4,217 @@ Container@LOCAL_PROFILE_PANEL:
 	Height: 100
 	Children:
 		Background@PROFILE_HEADER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 50
 			Background: dialog2
 			Children:
 				Label@PROFILE_NAME:
 					X: 10
 					Y: 5
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
 					Height: 25
 					Font: MediumBold
 				Label@PROFILE_RANK:
 					X: 10
 					Y: 24
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
 					Height: 25
 					Font: TinyBold
 				Button@DESTROY_KEY:
-					X: PARENT_RIGHT - 70
+					X: PARENT_WIDTH - 70
 					Y: 15
 					Width: 60
 					Height: 20
 					Font: TinyBold
-					Text: Logout
+					Text: button-profile-header-logout
 		Background@BADGES_CONTAINER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Y: 48
 			Visible: false
 			Background: dialog3
 		Background@GENERATE_KEYS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: dialog2
 			Children:
 				Label@DESC_A:
 					Y: 5
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: Connect to a forum account to identify
+					Text: label-generate-keys-desc-a
 				Label@DESC_B:
 					Y: 21
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: yourself to other players, join private
+					Text: label-generate-keys-desc-b
 				Label@DESC_C:
 					Y: 37
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: servers, and display badges.
+					Text: label-generate-keys-desc-c
 				Button@GENERATE_KEY:
-					X: (PARENT_RIGHT - WIDTH) / 2
+					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 70
 					Width: 240
 					Height: 20
 					Font: TinyBold
-					Text: Connect to an OpenRA forum account
+					Text: button-generate-keys-key
 		Background@GENERATING_KEYS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: dialog2
 			Children:
 				Label@DESC_A:
 					Y: 13
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: Generating authentication key pair.
+					Text: label-generating-keys-desc-a
 				Label@DESC_B:
 					Y: 29
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: This will take several seconds...
+					Text: label-generating-keys-desc-b
 				ProgressBar:
-					X: (PARENT_RIGHT - WIDTH) / 2
+					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 70
 					Width: 240
 					Height: 20
 					Indeterminate: true
 		Background@REGISTER_FINGERPRINT:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: dialog2
 			Children:
 				Label@DESC_A:
 					Y: 2
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: An authentication key has been copied to your
+					Text: label-register-fingerprint-desc-a
 				Label@DESC_B:
 					Y: 18
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: clipboard. Add this to your User Control Panel
+					Text: label-register-fingerprint-desc-b
 				Label@DESC_C:
 					Y: 34
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: on the OpenRA forum then press Continue.
+					Text: label-register-fingerprint-desc-c
 				Button@DELETE_KEY:
 					X: 15
 					Y: 70
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: Cancel
+					Text: button-cancel
 				Button@CHECK_KEY:
 					X: 185
 					Y: 70
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: Continue
+					Text: button-continue
 		Background@CHECKING_FINGERPRINT:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: dialog2
 			Children:
 				Label@DESC_A:
 					Y: 13
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: Querying account details from
+					Text: label-checking-fingerprint-desc-a
 				Label@DESC_B:
 					Y: 29
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: the OpenRA forum...
+					Text: label-checking-fingerprint-desc-b
 				ProgressBar:
-					X: (PARENT_RIGHT - WIDTH) / 2
+					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 70
 					Width: 240
 					Height: 20
 					Indeterminate: true
 		Background@FINGERPRINT_NOT_FOUND:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: dialog2
 			Children:
 				Label@DESC_A:
 					Y: 13
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: Your authentication key is not connected
+					Text: label-fingerprint-not-found-desc-a
 				Label@DESC_B:
 					Y: 29
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: to an OpenRA forum account.
+					Text: label-fingerprint-not-found-desc-b
 				Button@FINGERPRINT_NOT_FOUND_CONTINUE:
 					X: 185
 					Y: 70
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: Back
+					Text: button-back
 		Background@CONNECTION_ERROR:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: dialog2
 			Children:
 				Label@DESC_A:
 					Y: 13
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: Failed to connect to the OpenRA forum.
+					Text: label-connection-error-desc-a
 				Label@DESC_B:
 					Y: 29
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Small
 					Align: Center
-					Text: Please check your internet connection.
+					Text: label-connection-error-desc-b
 				Button@CONNECTION_ERROR_RETRY:
 					X: 185
 					Y: 70
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: Retry
+					Text: button-retry
 
 Container@PLAYER_PROFILE_BADGES_INSERT:
 	Logic: PlayerProfileBadgesLogic
-	Width: PARENT_RIGHT
+	Width: PARENT_WIDTH
 	Height: 110
 	Children:
 		Container@BADGE_TEMPLATE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Children:
 				Badge@ICON:
@@ -225,6 +225,6 @@ Container@PLAYER_PROFILE_BADGES_INSERT:
 				Label@LABEL:
 					X: 36
 					Y: 2
-					Width: PARENT_RIGHT - 60
+					Width: PARENT_WIDTH - 60
 					Height: 24
 					Font: Bold

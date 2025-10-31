@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -24,9 +23,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("List of required prerequisites.")]
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = [];
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisite(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisite(this); }
 	}
 
 	public class GrantConditionOnPrerequisite : INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOwnerChanged
@@ -37,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		GrantConditionOnPrerequisiteManager globalManager;
 		int conditionToken = Actor.InvalidConditionToken;
 
-		public GrantConditionOnPrerequisite(Actor self, GrantConditionOnPrerequisiteInfo info)
+		public GrantConditionOnPrerequisite(GrantConditionOnPrerequisiteInfo info)
 		{
 			this.info = info;
 		}
@@ -49,13 +48,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			if (info.Prerequisites.Any())
+			if (info.Prerequisites.Length > 0)
 				globalManager.Register(self, this, info.Prerequisites);
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			if (info.Prerequisites.Any())
+			if (info.Prerequisites.Length > 0)
 				globalManager.Unregister(self, this, info.Prerequisites);
 		}
 

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MusicPlaylist(init.World, this); }
 	}
 
-	public class MusicPlaylist : INotifyActorDisposing, IGameOver, IWorldLoaded, INotifyGameLoaded
+	public class MusicPlaylist : INotifyActorDisposing, IGameOver, IPostWorldLoaded, INotifyGameLoaded
 	{
 		readonly MusicPlaylistInfo info;
 		readonly World world;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
-			IsMusicAvailable = playlist.Any();
+			IsMusicAvailable = playlist.Length > 0;
 			AllowMuteBackgroundMusic = info.AllowMuteBackgroundMusic;
 
 			if (SongExists(info.BackgroundMusic))
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		void IPostWorldLoaded.PostWorldLoaded(World world, WorldRenderer wr)
 		{
 			// Reset any bogus pre-existing state
 			Game.Sound.DisableWorldSounds = info.DisableWorldSounds;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				&& world.Map.Rules.Music[song].Exists;
 		}
 
-		bool SongExists(MusicInfo song)
+		static bool SongExists(MusicInfo song)
 		{
 			return song != null && song.Exists;
 		}
@@ -162,13 +162,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (!SongExists(currentSong) || (CurrentSongIsBackground && IsBackgroundMusicMuted))
 				return;
 
-			Game.Sound.PlayMusicThen(currentSong, () =>
-			{
-				if (!CurrentSongIsBackground && !Game.Settings.Sound.Repeat)
-					currentSong = GetNextSong();
+			Game.Sound.PlayMusicThen(currentSong, PlayNextSong);
+		}
 
-				Play();
-			});
+		void PlayNextSong()
+		{
+			if (!CurrentSongIsBackground)
+				currentSong = GetNextSong();
+
+			Play();
 		}
 
 		public void Play(MusicInfo music)

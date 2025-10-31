@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,23 +21,13 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 	{
 		sealed class D2kSoundResources : IReadOnlyPackage
 		{
-			readonly struct Entry
-			{
-				public readonly uint Offset;
-				public readonly uint Length;
+			readonly record struct Entry(uint Offset, uint Length);
 
-				public Entry(uint offset, uint length)
-				{
-					Offset = offset;
-					Length = length;
-				}
-			}
-
-			public string Name { get; private set; }
+			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Stream s;
-			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Dictionary<string, Entry> index = [];
 
 			public D2kSoundResources(Stream s, string filename)
 			{
@@ -54,6 +44,8 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 						var length = s.ReadUInt32();
 						index.Add(name, new Entry(offset, length));
 					}
+
+					index.TrimExcess();
 				}
 				catch
 				{

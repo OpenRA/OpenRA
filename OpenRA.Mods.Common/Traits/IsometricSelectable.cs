@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -62,10 +62,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var grid = Game.ModData.Manifest.Get<MapGrid>();
 			if (grid.Type != MapGridType.RectangularIsometric)
-				throw new YamlException("IsometricSelectable can only be used in mods that use the RectangularIsometric MapGrid type.");
+				throw new YamlException($"{nameof(IsometricSelectable)} can only be used in mods that use the {nameof(MapGridType.RectangularIsometric)} MapGrid type.");
 
 			if (Height == 0 && DecorationHeight <= 0)
-				throw new YamlException("DecorationHeight must be defined and greater than 0 if Height is 0.");
+				throw new YamlException($"{nameof(DecorationHeight)} must be defined and greater than 0 if Height is 0.");
 		}
 	}
 
@@ -116,10 +116,10 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (height == 0)
-				return new Polygon(new[] { top, left, bottom, right });
+				return new Polygon([top, left, bottom, right]);
 
 			var h = new int2(0, height);
-			return new Polygon(new[] { top - h, left - h, left, bottom, right, right - h });
+			return new Polygon([top - h, left - h, left, bottom, right, right - h]);
 		}
 
 		public Polygon Bounds(Actor self, WorldRenderer wr)

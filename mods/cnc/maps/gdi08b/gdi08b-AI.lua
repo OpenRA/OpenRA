@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -94,10 +94,10 @@ ProduceHarvester = function(building)
 	if building.IsDead or building.Owner ~= Nod then
 		return
 	end
-	if not buildingHarvester then
-		buildingHarvester = true
+	if not BuildingHarvester then
+		BuildingHarvester = true
 		building.Build(HarvesterProductionType, function()
-			buildingHarvester = false
+			BuildingHarvester = false
 		end)
 	end
 end
@@ -158,7 +158,6 @@ ProduceVehicle = function(building)
 		VehicleAttackGroup[#VehicleAttackGroup + 1] = unit[1]
 
 		if #VehicleAttackGroup >= VehicleGroupSize[Difficulty] then
-			
 			MoveAndHunt(VehicleAttackGroup, Path)
 			VehicleAttackGroup = { }
 			Trigger.AfterDelay(VehicleProductionCooldown[Difficulty], function() ProduceArty(building) end)

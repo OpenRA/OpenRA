@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,9 +18,9 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public abstract class GlobalButtonOrderGenerator<T> : OrderGenerator
 	{
-		string order;
+		readonly string order;
 
-		public GlobalButtonOrderGenerator(string order)
+		protected GlobalButtonOrderGenerator(string order)
 		{
 			this.order = order;
 		}
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		protected virtual bool IsValidTrait(T t)
 		{
-			return Exts.IsTraitEnabled(t);
+			return t.IsTraitEnabled();
 		}
 
 		protected IEnumerable<Order> OrderInner(World world, MouseInput mi)
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var cursor = OrderInner(world, mi)
 				.SelectMany(o => o.Subject.TraitsImplementing<Sellable>())
-				.Where(Exts.IsTraitEnabled)
+				.Where(t => !t.IsTraitDisabled)
 				.Select(si => si.Info.Cursor)
 				.FirstOrDefault();
 

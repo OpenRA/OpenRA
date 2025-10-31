@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,12 +30,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
-		public readonly Dictionary<string, BooleanExpression> Requirements = new Dictionary<string, BooleanExpression>();
+		public readonly Dictionary<string, BooleanExpression> Requirements = [];
 
 		[Desc("Options to display in the map editor.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the label that is displayed in the actor editor dropdown.")]
-		public readonly Dictionary<string, string> EditorOptions = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> EditorOptions = [];
 
 		[Desc("Label to use for an empty plug socket.")]
 		public readonly string EmptyOption = "Empty";
@@ -54,13 +54,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
-			if (!EditorOptions.Any())
+			if (EditorOptions.Count == 0)
 				yield break;
 
 			// Make sure the no-plug option is always available
 			EditorOptions[""] = EmptyOption;
-			yield return new EditorActorDropdown("Plug", EditorDisplayOrder, EditorOptions,
-				actor =>
+			yield return new EditorActorDropdown("Plug", EditorDisplayOrder, _ => EditorOptions,
+				(actor, _) =>
 				{
 					var init = actor.GetInitOrDefault<PlugInit>(this);
 					return init?.Value ?? "";
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly string initialPlug;
 		int conditionToken = Actor.InvalidConditionToken;
-		Dictionary<string, bool> plugTypesAvailability = null;
+		readonly Dictionary<string, bool> plugTypesAvailability = null;
 
 		string active;
 
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.Requirements.Count > 0)
 			{
-				plugTypesAvailability = new Dictionary<string, bool>();
+				plugTypesAvailability = [];
 				foreach (var plug in info.Requirements)
 					plugTypesAvailability[plug.Key] = true;
 			}
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 				EnablePlug(self, initialPlug);
 		}
 
-		public bool AcceptsPlug(Actor self, string type)
+		public bool AcceptsPlug(string type)
 		{
 			if (!Info.Conditions.ContainsKey(type))
 				return false;

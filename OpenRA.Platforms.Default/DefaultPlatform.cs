@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,9 +16,10 @@ namespace OpenRA.Platforms.Default
 {
 	public class DefaultPlatform : IPlatform
 	{
-		public IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize, int videoDisplay, GLProfile profile, bool enableLegacyGL)
+		public IPlatformWindow CreateWindow(
+			Size size, WindowMode windowMode, float scaleModifier, int vertexBatchSize, int indexBatchSize, int videoDisplay, GLProfile profile)
 		{
-			return new Sdl2PlatformWindow(size, windowMode, scaleModifier, batchSize, videoDisplay, profile, enableLegacyGL);
+			return new Sdl2PlatformWindow(size, windowMode, scaleModifier, vertexBatchSize, indexBatchSize, videoDisplay, profile);
 		}
 
 		public ISoundEngine CreateSound(string device)
@@ -29,8 +30,9 @@ namespace OpenRA.Platforms.Default
 			}
 			catch (InvalidOperationException e)
 			{
-				Log.Write("sound", "Failed to initialize OpenAL device. Error was {0}", e);
-				return new DummySoundEngine(device);
+				Log.Write("sound", "Failed to initialize OpenAL device. Error was");
+				Log.Write("sound", e);
+				return new DummySoundEngine();
 			}
 		}
 

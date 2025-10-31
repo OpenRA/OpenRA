@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ SendAttack = function(owner, size)
 	Utils.Do(units, IdleHunt)
 
 	if #units > 0 then
-		Media.DisplayMessage("Harkonnen units approaching!", "Fremen Leader")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("harkonnen-units-approaching"), UserInterface.GetFluentMessage("fremen-leader"))
 	end
 
 	Trigger.OnAllRemovedFromWorld(units, function()
@@ -46,13 +46,13 @@ SendAttack = function(owner, size)
 end
 
 InitAIUnits = function()
-	IdlingUnits[harkonnen] = Reinforcements.Reinforce(harkonnen, InitialHarkonnenReinforcements, HarkonnenPaths[1])
+	IdlingUnits[Harkonnen] = Reinforcements.Reinforce(Harkonnen, InitialHarkonnenReinforcements, HarkonnenPaths[1])
 
-	DefendAndRepairBase(harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	LastHarvesterEaten[harkonnen] = true
+	LastHarvesterEaten[Harkonnen] = true
 	InitAIUnits()
 	FremenProduction()
 
@@ -61,6 +61,6 @@ ActivateAI = function()
 	local tanksToBuild = function() return HarkonnenTankType end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(harkonnen, HarkonnenBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(harkonnen, HarkonnenHeavyFact, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Harkonnen, HarkonnenBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Harkonnen, HarkonnenHeavyFact, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,18 +14,18 @@ using System.Linq;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns units when collected.", "Adjust selection shares when player has no base.")]
-	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo
+	sealed class GiveBaseBuilderCrateActionInfo : GiveUnitCrateActionInfo
 	{
-		[Desc("The selection shares to use if the collector has no base.")]
-		public int NoBaseSelectionShares = 1000;
+		[Desc("The selection shares to use if the collector has no actor with `" + nameof(BaseBuilding) + ".")]
+		public readonly int NoBaseSelectionShares = 1000;
 
-		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GiveBaseBuilderCrateAction(init.Self, this); }
 	}
 
-	class GiveMcvCrateAction : GiveUnitCrateAction
+	sealed class GiveBaseBuilderCrateAction : GiveUnitCrateAction
 	{
-		readonly GiveMcvCrateActionInfo info;
-		public GiveMcvCrateAction(Actor self, GiveMcvCrateActionInfo info)
+		readonly GiveBaseBuilderCrateActionInfo info;
+		public GiveBaseBuilderCrateAction(Actor self, GiveBaseBuilderCrateActionInfo info)
 			: base(self, info)
 		{
 			this.info = info;

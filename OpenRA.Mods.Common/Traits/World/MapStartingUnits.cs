@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,11 +21,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal class ID.")]
 		public readonly string Class = "none";
 
+		[FluentReference]
 		[Desc("Exposed via the UI to the player.")]
 		public readonly string ClassName = "Unlabeled";
 
 		[Desc("Only available when selecting one of these factions.", "Leave empty for no restrictions.")]
-		public readonly HashSet<string> Factions = new HashSet<string>();
+		public readonly HashSet<string> Factions = [];
 
 		[Desc("The actor at the center, usually the mobile construction vehicle.")]
 		[ActorReference]
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("A group of units ready to defend or scout.")]
 		[ActorReference]
-		public readonly string[] SupportActors = { };
+		public readonly string[] SupportActors = [];
 
 		[Desc("Inner radius for spawning support actors")]
 		public readonly int InnerSupportRadius = 2;

@@ -1,13 +1,10 @@
 spicebloom.spawnpoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: Spice Bloom spawnpoint
-	AlwaysVisible:
+		Name: actor-spicebloom-spawnpoint-name
 	RenderSpritesEditorOnly:
-		Image: spicebloom
-		Palette: effect50alpha
+		Image: spicebloom.editor
 	WithSpriteBody:
-		Sequence: grow3
 	BodyOrientation:
 		QuantizedFacings: 1
 	GrantConditionOnTerrain:
@@ -15,11 +12,13 @@ spicebloom.spawnpoint:
 		TerrainTypes: SpiceSand
 	KillsSelf:
 		RequiresCondition: clearsand
-		Delay: 1750, 3250
+		Delay: 3000, 3250
 	SpawnActorOnDeath:
 		Actor: spicebloom
 	Health:
 		HP: 100000
+	Armor:
+		Type: invulnerable
 	Immobile:
 		OccupiesSpace: false
 	HitShape:
@@ -38,10 +37,10 @@ spicebloom:
 	AppearsOnRadar:
 		UseLocation: true
 	Tooltip:
-		Name: Spice Bloom
+		Name: actor-spicebloom-name
 	SpiceBloom:
 		Weapon: SpiceExplosion
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BloomExplosion
 		EmptyWeapon: BloomExplosion
 	Crushable:
@@ -74,7 +73,7 @@ sandworm:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Tooltip:
-		Name: Sandworm
+		Name: actor-sandworm-name
 	Health:
 		HP: 100000
 	HitShape:
@@ -113,6 +112,7 @@ sandworm:
 	IgnoresCloak:
 	AnnounceOnSeen:
 		Notification: WormSign
+		TextNotification: notification-worm-sign
 		PingRadar: True
 	RevealsShroud:
 		Range: 5c0
@@ -133,18 +133,19 @@ sandworm:
 sietch:
 	Inherits: ^Building
 	Tooltip:
-		Name: Fremen Sietch
-	D2kBuilding:
+		Name: actor-sietch-name
+	-D2kBuilding:
+	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
-		DamageTerrainTypes:
 	Health:
 		HP: 60000
 	Armor:
 		Type: wood
 	RevealsShroud:
 		Range: 10c0
+	-AmbientSound@onBeingDemolished:
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:
@@ -155,3 +156,101 @@ sietch:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:
 	-WithBuildingRepairDecoration:
+	-FireWarheadsOnDeath@sabotuerDemolition:
+
+pass01_destroyable_bottom:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_bottom
+	Building:
+		Dimensions: 3,3
+		Footprint: === X=X X=X
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 900
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_bottom
+
+pass01_destroyed_bottom:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_bottom
+	Building:
+		Dimensions: 3,3
+		Footprint: === xxx xxx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_bottom
+
+pass01_destroyable_left:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_left
+	HitShape:
+		Type: Rectangle
+			TopLeft: -700, -512
+			BottomRight: 712, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: XX= === XX=
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_left
+
+
+pass01_destroyed_left:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_left
+	Building:
+		Dimensions: 3,3
+		Footprint: xx= xx= xx=
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_left
+
+pass01_destroyable_right:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_right
+	HitShape:
+		Type: Rectangle
+			TopLeft: -700, -512
+			BottomRight: 700, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: =XX === =XX
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_right
+
+pass01_destroyed_right:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_right
+	Building:
+		Dimensions: 3,3
+		Footprint: =xx =xx =xx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_right
+
+pass01_destroyable_top:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_top
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -900
+			BottomRight: 512, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: X=X X=X ===
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_top
+
+pass01_destroyed_top:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_top
+	Building:
+		Dimensions: 3,3
+		Footprint: XxX xxx xxx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_top

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,19 +19,51 @@ namespace OpenRA
 {
 	public static class WorldUtils
 	{
-		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)
+		/// <summary>
+		/// From the given <paramref name="actors"/>, select the one nearest the given <paramref name="actor"/> by
+		/// comparing their <see cref="Actor.CenterPosition"/>. No check is done to see if a path exists.
+		/// </summary>
+		public static Actor ClosestToIgnoringPath(this IEnumerable<Actor> actors, Actor actor)
 		{
-			return actors.ClosestTo(a.CenterPosition);
+			return actors.ClosestToIgnoringPath(actor.CenterPosition);
 		}
 
-		public static Actor ClosestTo(this IEnumerable<Actor> actors, WPos pos)
+		/// <summary>
+		/// From the given <paramref name="actors"/>, select the one nearest the given <paramref name="position"/> by
+		/// comparing the <see cref="Actor.CenterPosition"/>. No check is done to see if a path exists.
+		/// </summary>
+		public static Actor ClosestToIgnoringPath(this IEnumerable<Actor> actors, WPos position)
 		{
-			return actors.MinByOrDefault(a => (a.CenterPosition - pos).LengthSquared);
+			return actors.MinByOrDefault(a => (a.CenterPosition - position).LengthSquared);
 		}
 
-		public static WPos PositionClosestTo(this IEnumerable<WPos> positions, WPos pos)
+		/// <summary>
+		/// From the given <paramref name="items"/> that can be projected to <see cref="Actor"/>,
+		/// select the one nearest the given <paramref name="actor"/> by
+		/// comparing their <see cref="Actor.CenterPosition"/>. No check is done to see if a path exists.
+		/// </summary>
+		public static T ClosestToIgnoringPath<T>(IEnumerable<T> items, Func<T, Actor> selector, Actor actor)
 		{
-			return positions.MinByOrDefault(p => (p - pos).LengthSquared);
+			return ClosestToIgnoringPath(items, selector, actor.CenterPosition);
+		}
+
+		/// <summary>
+		/// From the given <paramref name="items"/> that can be projected to <see cref="Actor"/>,
+		/// select the one nearest the given <paramref name="position"/> by
+		/// comparing the <see cref="Actor.CenterPosition"/>. No check is done to see if a path exists.
+		/// </summary>
+		public static T ClosestToIgnoringPath<T>(IEnumerable<T> items, Func<T, Actor> selector, WPos position)
+		{
+			return items.MinByOrDefault(x => (selector(x).CenterPosition - position).LengthSquared);
+		}
+
+		/// <summary>
+		/// From the given <paramref name="positions"/>, select the one nearest the given <paramref name="position"/>.
+		/// No check is done to see if a path exists, as an actor is required for that.
+		/// </summary>
+		public static WPos ClosestToIgnoringPath(this IEnumerable<WPos> positions, WPos position)
+		{
+			return positions.MinByOrDefault(p => (p - position).LengthSquared);
 		}
 
 		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WDist r)
@@ -66,14 +98,13 @@ namespace OpenRA
 		{
 			// PERF: This is a hot path and must run with minimal added overhead, so we enumerate manually
 			// to allow us to call PerfTickLogger only once per iteration in the normal case.
-			var perfLogger = new PerfTickLogger();
 			using (var enumerator = e.GetEnumerator())
 			{
-				perfLogger.Start();
+				var start = PerfTickLogger.GetTimestamp();
 				while (enumerator.MoveNext())
 				{
 					a(enumerator.Current);
-					perfLogger.LogTickAndRestartTimer(text, enumerator.Current);
+					start = PerfTickLogger.LogLongTick(start, text, enumerator.Current);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[Desc("Types of damage that this trait causes to self when 'ExplodeInstead' is true",
 			"or the return-to-origin is blocked. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
 
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				// work around the cancellation bug.
 				// HACK: this is manipulating private internal actor state
 				if (self.CurrentActivity is Move)
-					typeof(Actor).GetProperty("CurrentActivity").SetValue(self, null);
+					typeof(Actor).GetProperty(nameof(Actor.CurrentActivity)).SetValue(self, null);
 
 				// The actor is killed using Info.DamageTypes if the teleport fails
 				self.QueueActivity(false, new Teleport(chronosphere ?? self, Origin, null, true, killCargo, Info.ChronoshiftSound,
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override void Created(Actor self)
 		{
-			iPositionable = self.TraitOrDefault<IPositionable>();
+			iPositionable = self.OccupiesSpace as IPositionable;
 			base.Created(self);
 		}
 
@@ -182,19 +182,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 	}
 
-	public class ChronoshiftReturnInit : CompositeActorInit, ISingleInstanceInit
+	public class ChronoshiftReturnInit(int ticks, int duration, CPos origin, Actor chronosphere) : CompositeActorInit, ISingleInstanceInit
 	{
-		public readonly int Ticks;
-		public readonly int Duration;
-		public readonly CPos Origin;
-		public readonly ActorInitActorReference Chronosphere;
-
-		public ChronoshiftReturnInit(int ticks, int duration, CPos origin, Actor chronosphere)
-		{
-			Ticks = ticks;
-			Duration = duration;
-			Origin = origin;
-			Chronosphere = chronosphere;
-		}
+		public readonly int Ticks = ticks;
+		public readonly int Duration = duration;
+		public readonly CPos Origin = origin;
+		public readonly ActorInitActorReference Chronosphere = chronosphere;
 	}
 }

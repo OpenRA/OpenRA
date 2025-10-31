@@ -5,21 +5,20 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugSymbols>true</DebugSymbols>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EngineRootPath Condition="'$(EngineRootPath)' == ''">..</EngineRootPath>
     <OutputPath>$(EngineRootPath)/bin</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <CodeAnalysisRuleSet>$(EngineRootPath)/OpenRA.ruleset</CodeAnalysisRuleSet>
     <Nullable>disable</Nullable>
+    <Product>OpenRA</Product>
+    <Copyright>Copyright (c) The OpenRA Developers and Contributors</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework Condition="'$(Mono)' == ''">net5.0</TargetFramework>
-    <TargetFramework Condition="'$(Mono)' != ''">netstandard2.1</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -31,6 +30,12 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
+    <!-- Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Enabling GenerateDocumentationFile is required for IDE0005 (Remove unnecessary import)
+      rule to run in command line builds. https://github.com/dotnet/roslyn/issues/41640
+      Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -45,10 +50,10 @@
     </ItemGroup>
   </Target>
 
-  <!-- StyleCop -->
+  <!-- StyleCop/Roslynator -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
-    <AdditionalFiles Include="$(EngineRootPath)/stylecop.json" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.13.0" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.13.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

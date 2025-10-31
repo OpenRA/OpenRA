@@ -24,6 +24,8 @@ whatlurk: What Lurks
 maps: Map Selection
 	Hidden: true
 #Firestorm
+fsmap: Firestorm Map Selection
+	Hidden: true
 dmachine: Deploy Machines
 elusive: Elusive
 hacker: Hacker

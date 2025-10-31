@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		[Desc("Controls the way inaccuracy is calculated. Possible values are " +
+			"'Maximum' - scale from 0 to max with range, " +
+			"'PerCellIncrement' - scale from 0 with range, " +
+			"'Absolute' - use set value regardless of range.")]
 		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
@@ -41,7 +44,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ZOffset = 0;
 
 		[Desc("The width of the main trajectory. (\"beam\").")]
-		public readonly WDist BeamWidth = new WDist(86);
+		public readonly WDist BeamWidth = new(86);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape BeamShape = BeamRenderableShape.Cylindrical;
@@ -57,13 +60,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int BeamAlphaDeltaPerTick = -8;
 
 		[Desc("Thickness of the helix")]
-		public readonly WDist HelixThickness = new WDist(32);
+		public readonly WDist HelixThickness = new(32);
 
 		[Desc("The radius of the spiral effect. (WDist)")]
-		public readonly WDist HelixRadius = new WDist(64);
+		public readonly WDist HelixRadius = new(64);
 
 		[Desc("Height of one complete helix turn, measured parallel to the axis of the helix (WDist)")]
-		public readonly WDist HelixPitch = new WDist(512);
+		public readonly WDist HelixPitch = new(512);
 
 		[Desc("Helix radius gets + this value per tick during drawing")]
 		public readonly int HelixRadiusDeltaPerTick = 8;
@@ -72,7 +75,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int HelixAlphaDeltaPerTick = -8;
 
 		[Desc("Helix spins by this much over time each tick.")]
-		public readonly WAngle HelixAngleDeltaPerTick = new WAngle(16);
+		public readonly WAngle HelixAngleDeltaPerTick = new(16);
 
 		[Desc("Draw each cycle of helix with this many quantization steps")]
 		public readonly int QuantizationCount = 16;
@@ -95,8 +98,8 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.Owner.Color) : BeamColor;
-			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.Owner.Color) : HelixColor;
+			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.OwnerColor()) : BeamColor;
+			var hc = HelixPlayerColor ? Color.FromArgb(HelixColor.A, args.SourceActor.OwnerColor()) : HelixColor;
 			return new Railgun(args, this, bc, hc);
 		}
 	}
@@ -159,7 +162,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Forward step, pointing from src to target.
 			// QuantizationCont * forwardStep == One cycle of beam in src2target direction.
-			ForwardStep = (info.HelixPitch.Length * SourceToTarget) / (info.QuantizationCount * SourceToTarget.Length);
+			ForwardStep = info.HelixPitch.Length * SourceToTarget / (info.QuantizationCount * SourceToTarget.Length);
 
 			// An easy vector to find which is perpendicular vector to forwardStep, with 0 Z component
 			LeftVector = new WVec(ForwardStep.Y, -ForwardStep.X, 0);
@@ -179,7 +182,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			CycleCount = SourceToTarget.Length / info.HelixPitch.Length;
 			if (SourceToTarget.Length % info.HelixPitch.Length != 0)
-				CycleCount += 1; // math.ceil, int version.
+				CycleCount++; // math.ceil, int version.
 
 			// Using ForwardStep * CycleCount, the helix and the main beam gets "out of sync"
 			// if drawn from source to target. Instead, the main beam is drawn from source to end point of helix.

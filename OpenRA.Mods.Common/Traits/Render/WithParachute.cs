@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -44,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly bool IsPlayerPalette = true;
 
 		[Desc("Parachute position relative to the paradropped unit.")]
-		public readonly WVec Offset = new WVec(0, 0, 384);
+		public readonly WVec Offset = new(0, 0, 384);
 
 		[Desc("The image that contains the shadow sequence for the paradropped unit.")]
 		public readonly string ShadowImage = null;
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Shadow position relative to the paradropped unit's intended landing position.")]
-		public readonly WVec ShadowOffset = new WVec(0, 128, 0);
+		public readonly WVec ShadowOffset = new(0, 128, 0);
 
 		[Desc("Z-offset to apply on the shadow sequence.")]
 		public readonly int ShadowZOffset = 0;
@@ -90,15 +89,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.PlayThen(OpeningSequence, () => anim.PlayRepeating(Sequence));
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			Func<WRot> orientation = () => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
-			Func<WVec> offset = () => body.LocalToWorld(Offset.Rotate(orientation()));
-			Func<int> zOffset = () =>
+			WRot Orientation() => body.QuantizeOrientation(WRot.FromYaw(facing()), facings);
+			WVec Offset() => body.LocalToWorld(this.Offset.Rotate(Orientation()));
+			int ZOffset()
 			{
-				var tmpOffset = offset();
+				var tmpOffset = Offset();
 				return tmpOffset.Y + tmpOffset.Z + 1;
-			};
+			}
 
-			yield return new SpriteActorPreview(anim, offset, zOffset, p);
+			yield return new SpriteActorPreview(anim, Offset, ZOffset, p);
 		}
 	}
 
@@ -130,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var overlay = new Animation(self.World, info.Image);
 			var body = self.Trait<BodyOrientation>();
 			anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => IsTraitDisabled && !renderProlonged,
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
@@ -169,36 +168,39 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
 			if (info.ShadowImage == null)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld)
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			if (self.World.FogObscures(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			var dat = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
 			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
 			var palette = wr.Palette(info.Palette);
 			var alpha = shadow.CurrentSequence.GetAlpha(shadow.CurrentFrame);
 			var tintModifiers = shadow.CurrentSequence.IgnoreWorldTint ? TintModifiers.ReplaceColor | TintModifiers.IgnoreWorldTint : TintModifiers.ReplaceColor;
-			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, shadowAlpha * alpha, shadowColor, tintModifiers, true) };
+			return
+			[
+				new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, shadowAlpha * alpha, shadowColor, tintModifiers, true)
+			];
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)
 		{
 			if (info.ShadowImage == null)
-				return Enumerable.Empty<Rectangle>();
+				return [];
 
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld)
-				return Enumerable.Empty<Rectangle>();
+				return [];
 
 			if (self.World.FogObscures(self))
-				return Enumerable.Empty<Rectangle>();
+				return [];
 
 			var dat = self.World.Map.DistanceAboveTerrain(self.CenterPosition);
 			var pos = self.CenterPosition - new WVec(0, 0, dat.Length);
-			return new Rectangle[] { shadow.ScreenBounds(wr, pos, info.ShadowOffset) };
+			return [shadow.ScreenBounds(wr, pos, info.ShadowOffset)];
 		}
 	}
 }

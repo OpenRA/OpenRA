@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -17,7 +18,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Play an animation when a unit exits or blocks the exit after production finished.")]
-	class WithProductionDoorOverlayInfo : ConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<BuildingInfo>
+	sealed class WithProductionDoorOverlayInfo : ConditionalTraitInfo,
+		IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<BuildingInfo>
 	{
 		[SequenceReference]
 		public readonly string Sequence = "build-door";
@@ -35,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithProductionDoorOverlay(init.Self, this); }
 	}
 
-	class WithProductionDoorOverlay : ConditionalTrait<WithProductionDoorOverlayInfo>, ITick, INotifyProduction, INotifyDamageStateChanged
+	sealed class WithProductionDoorOverlay : ConditionalTrait<WithProductionDoorOverlayInfo>, ITick, INotifyProduction, INotifyDamageStateChanged
 	{
 		readonly Animation door;
 		int desiredFrame;
@@ -61,7 +63,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (exitingActor == null)
 				return;
 
-			if (!exitingActor.IsInWorld || exitingActor.Location != openExit || !(exitingActor.CurrentActivity is Mobile.ReturnToCellActivity))
+			if (!exitingActor.IsInWorld || exitingActor.Location != openExit
+				|| (!exitingActor.CurrentActivity?.ActivitiesImplementing<Mobile.ReturnToCellActivity>().Any() ?? true))
 			{
 				desiredFrame = 0;
 				exitingActor = null;

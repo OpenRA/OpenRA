@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SupportPowerTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<SupportPowersWidget.SupportPowerIcon> getTooltipIcon, World world)
+		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer,
+			Func<SupportPowersWidget.SupportPowerIcon> getTooltipIcon, World world)
 		{
 			widget.IsVisible = () => getTooltipIcon() != null && getTooltipIcon().Power.Info != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var timeOffset = timeLabel.Bounds.X;
 
 			SupportPowerInstance lastPower = null;
-			Hotkey lastHotkey = Hotkey.Invalid;
+			var lastHotkey = Hotkey.Invalid;
 			var lastRemainingSeconds = 0;
 
 			tooltipContainer.BeforeRender = () =>
@@ -53,23 +54,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (sp == lastPower && hotkey == lastHotkey && lastRemainingSeconds == remainingSeconds)
 					return;
 
-				nameLabel.Text = sp.Info.Description;
-				var nameSize = nameFont.Measure(nameLabel.Text);
+				nameLabel.GetText = () => sp.Name;
+				var nameSize = nameFont.Measure(sp.Name);
 
-				descLabel.Text = sp.Info.LongDesc.Replace("\\n", "\n");
-				var descSize = descFont.Measure(descLabel.Text);
+				descLabel.GetText = () => sp.Description;
+				var descSize = descFont.Measure(sp.Description);
 
-				var customLabel = sp.TooltipTimeTextOverride();
-				if (customLabel == null)
+				var timeText = sp.TooltipTimeTextOverride();
+				if (timeText == null)
 				{
 					var remaining = WidgetUtils.FormatTime(sp.RemainingTicks, world.Timestep);
 					var total = WidgetUtils.FormatTime(sp.Info.ChargeInterval, world.Timestep);
-					timeLabel.Text = $"{remaining} / {total}";
+					timeText = $"{remaining} / {total}";
 				}
-				else
-					timeLabel.Text = customLabel;
 
-				var timeSize = timeFont.Measure(timeLabel.Text);
+				timeLabel.GetText = () => timeText;
+				var timeSize = timeFont.Measure(timeText);
 				var hotkeyWidth = 0;
 				hotkeyLabel.Visible = hotkey.IsValid();
 				if (hotkeyLabel.Visible)
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var hotkeyText = $"({hotkey.DisplayString()})";
 
 					hotkeyWidth = hotkeyFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
-					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.GetText = () => hotkeyText;
 					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
 				}
 

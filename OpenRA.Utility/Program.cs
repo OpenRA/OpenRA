@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,13 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace OpenRA
 {
 	using UtilityActions = Dictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>>;
 
-	[Serializable]
 	public class NoSuchCommandException : Exception
 	{
 		public readonly string Command;
@@ -28,21 +26,22 @@ namespace OpenRA
 		{
 			Command = command;
 		}
-
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-			info.AddValue("Command", Command);
-		}
 	}
 
-	class Program
+	sealed class Program
 	{
 		static void Main(string[] args)
 		{
 			try
 			{
 				Run(args);
+			}
+			catch
+			{
+				// Flush logs before rethrowing, i.e. allowing the exception to go unhandled.
+				// try-finally won't work - an unhandled exception kills our process without running the finally block!
+				Log.Dispose();
+				throw;
 			}
 			finally
 			{
@@ -64,19 +63,19 @@ namespace OpenRA
 			var envModSearchPaths = Environment.GetEnvironmentVariable("MOD_SEARCH_PATHS");
 			var modSearchPaths = !string.IsNullOrWhiteSpace(envModSearchPaths) ?
 				FieldLoader.GetValue<string[]>("MOD_SEARCH_PATHS", envModSearchPaths) :
-				new[] { Path.Combine(Platform.EngineDir, "mods") };
+				[Path.Combine(Platform.EngineDir, "mods")];
 
 			if (args.Length == 0)
 			{
-				PrintUsage(new InstalledMods(modSearchPaths, new string[0]), null);
+				PrintUsage(new InstalledMods(modSearchPaths, []), null);
 				return;
 			}
 
 			var modId = args[0];
-			var explicitModPaths = new string[0];
+			var explicitModPaths = Array.Empty<string>();
 			if (File.Exists(modId) || Directory.Exists(modId))
 			{
-				explicitModPaths = new[] { modId };
+				explicitModPaths = [modId];
 				modId = Path.GetFileNameWithoutExtension(modId);
 			}
 
@@ -107,11 +106,11 @@ namespace OpenRA
 			try
 			{
 				var command = args[0];
-				if (!actions.ContainsKey(command))
+				if (!actions.TryGetValue(command, out var kvp))
 					throw new NoSuchCommandException(command);
 
-				var action = actions[command].Key;
-				var validateActionArgs = actions[command].Value;
+				var action = kvp.Key;
+				var validateActionArgs = kvp.Value;
 
 				if (validateActionArgs.Invoke(args))
 				{
@@ -119,18 +118,23 @@ namespace OpenRA
 				}
 				else
 				{
-					Console.WriteLine("Invalid arguments for '{0}'", command);
+					Console.WriteLine($"Invalid arguments for '{command}'");
 					GetActionUsage(command, action);
+					Environment.Exit(1);
 				}
 			}
 			catch (Exception e)
 			{
 				Log.AddChannel("utility", "utility.log");
-				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
-				Log.Write("utility", "{0}", e);
+				Log.Write("utility", $"Received args: {args.JoinWith(" ")}");
+				Log.Write("utility", e);
 
 				if (e is NoSuchCommandException)
+				{
 					Console.WriteLine(e.Message);
+					Log.Dispose(); // Flush logs before we terminate the process.
+					Environment.Exit(1);
+				}
 				else
 				{
 					Console.WriteLine("Error: Utility application crashed. See utility.log for details");
@@ -148,7 +152,7 @@ namespace OpenRA
 			if (actions == null)
 				return;
 
-			var keys = actions.Keys.OrderBy(x => x);
+			var keys = actions.Keys.Order();
 
 			foreach (var key in keys)
 			{
@@ -158,16 +162,16 @@ namespace OpenRA
 
 		static void GetActionUsage(string key, Action<Utility, string[]> action)
 		{
-			var descParts = action.Method.GetCustomAttributes<DescAttribute>(true)
+			var descParts = Utility.GetCustomAttributes<DescAttribute>(action.Method, true)
 					.SelectMany(d => d.Lines).ToArray();
 
 			if (descParts.Length == 0)
 				return;
 
 			var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
-			var desc = descParts[descParts.Length - 1];
+			var desc = descParts[^1];
 
-			Console.WriteLine("  {0} {1}{3}  {2}{3}", key, args, desc, Environment.NewLine);
+			Console.WriteLine($"  {key} {args}{Environment.NewLine}  {desc}{Environment.NewLine}");
 		}
 	}
 }

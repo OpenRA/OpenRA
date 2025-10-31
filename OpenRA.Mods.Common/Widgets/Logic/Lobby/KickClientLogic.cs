@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,12 +14,16 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class KickClientLogic : ChromeLogic
+	sealed class KickClientLogic : ChromeLogic
 	{
+		[FluentReference("player")]
+		const string KickClient = "dialog-kick-client.prompt";
+
 		[ObjectCreator.UseCtor]
 		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
 		{
-			widget.Get<LabelWidget>("TITLE").GetText = () => $"Kick {clientName}?";
+			var kickMessage = FluentProvider.GetMessage(KickClient, "player", clientName);
+			widget.Get<LabelWidget>("TITLE").GetText = () => kickMessage;
 
 			var tempBan = false;
 			var preventRejoiningCheckbox = widget.Get<CheckboxWidget>("PREVENT_REJOINING_CHECKBOX");

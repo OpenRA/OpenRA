@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[FieldLoader.Require]
-		public readonly HashSet<string> DockActors = new HashSet<string> { };
+		public readonly HashSet<string> DockActors = [];
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 						AircraftCanEnter,
 						target => Reservable.IsAvailableFor(target, self));
 
-					yield return new AircraftMoveOrderTargeter(self, this);
+					yield return new AircraftMoveOrderTargeter(this);
 				}
 			}
 		}
@@ -121,6 +121,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.OrderString == "Move")
 			{
+				if (!order.Target.IsValidFor(self))
+					return;
+
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
@@ -144,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Manually manage the inner activity queue
-			var activity = currentTransform ?? transform.GetTransformActivity(self);
+			var activity = currentTransform ?? transform.GetTransformActivity();
 			if (!order.Queued)
 				activity.NextActivity?.Cancel(self);
 
@@ -178,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class AircraftMoveOrderTargeter : IOrderTargeter
+		sealed class AircraftMoveOrderTargeter : IOrderTargeter
 		{
 			readonly TransformsIntoAircraft aircraft;
 
@@ -191,16 +194,16 @@ namespace OpenRA.Mods.Common.Traits
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
 
-			public AircraftMoveOrderTargeter(Actor self, TransformsIntoAircraft aircraft)
+			public AircraftMoveOrderTargeter(TransformsIntoAircraft aircraft)
 			{
 				this.aircraft = aircraft;
 			}
 
 			public string OrderID => "Move";
 			public int OrderPriority => 4;
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 
-			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain || (aircraft.Info.RequiresForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;

@@ -134,6 +134,7 @@ Grenade:
 	ReloadDelay: 60
 	Range: 4c512
 	-Report:
+	ValidTargets: Ground, Trees
 	Projectile: Bullet
 		Speed: 226
 		Blockable: true
@@ -150,6 +151,8 @@ Grenade:
 			Light: 70
 			Concrete: 28
 		DamageTypes: Prone70Percent, TriggerProne, ExplosionDeath
+		ValidTargets: Ground, Trees
 	Warhead@2Eff: CreateEffect
 		Explosions: small_grey_explosion
 		ImpactSounds: expnew13.aud
+		ValidTargets: Ground, Trees

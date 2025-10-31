@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,15 +10,12 @@
 #endregion
 
 using System;
-using System.IO;
 using Eluant;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
-using OpenRA.Video;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -38,13 +35,13 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Play an announcer voice listed in notifications.yaml")]
 		public void PlaySpeechNotification(Player player, string notification)
 		{
-			Game.Sound.PlayNotification(world.Map.Rules, player, "Speech", notification, player != null ? player.Faction.InternalName : null);
+			Game.Sound.PlayNotification(world.Map.Rules, player, "Speech", notification, player?.Faction.InternalName);
 		}
 
 		[Desc("Play a sound listed in notifications.yaml")]
 		public void PlaySoundNotification(Player player, string notification)
 		{
-			Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player != null ? player.Faction.InternalName : null);
+			Game.Sound.PlayNotification(world.Map.Rules, player, "Sounds", notification, player?.Faction.InternalName);
 		}
 
 		[Desc("Play a sound file")]
@@ -55,34 +52,17 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]
-		public void PlayMusic(string track = null, LuaFunction func = null)
+		public void PlayMusic(string track = null, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
 			if (!playlist.IsMusicAvailable)
 				return;
 
-			var musicInfo = !string.IsNullOrEmpty(track) ? GetMusicTrack(track)
+			var musicInfo = !string.IsNullOrEmpty(track)
+				? GetMusicTrack(track)
 				: playlist.GetNextSong();
 
-			if (func != null)
-			{
-				var f = (LuaFunction)func.CopyReference();
-				Action onComplete = () =>
-				{
-					try
-					{
-						using (f)
-							f.Call().Dispose();
-					}
-					catch (LuaException e)
-					{
-						Context.FatalError(e.Message);
-					}
-				};
-
-				playlist.Play(musicInfo, onComplete);
-			}
-			else
-				playlist.Play(musicInfo);
+			var onComplete = WrapOnPlayComplete(onPlayComplete);
+			playlist.Play(musicInfo, onComplete);
 		}
 
 		[Desc("Play track defined in music.yaml or map.yaml as background music." +
@@ -113,88 +93,37 @@ namespace OpenRA.Mods.Common.Scripting
 			playlist.Stop();
 		}
 
-		[Desc("Play a VQA video fullscreen. File name has to include the file extension.")]
-		public void PlayMovieFullscreen(string movie, LuaFunction func = null)
+		[Desc("Play a video fullscreen. File name has to include the file extension.")]
+		public void PlayMovieFullscreen(string videoFileName, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
-			Action onCompleteFullscreen;
-			if (func != null)
-			{
-				var f = (LuaFunction)func.CopyReference();
-				onCompleteFullscreen = () =>
-				{
-					try
-					{
-						using (f)
-							f.Call().Dispose();
-					}
-					catch (LuaException e)
-					{
-						Context.FatalError(e.Message);
-					}
-				};
-			}
-			else
-				onCompleteFullscreen = () => { };
-
-			Media.PlayFMVFullscreen(world, movie, onCompleteFullscreen);
+			var onComplete = WrapOnPlayComplete(onPlayComplete);
+			Media.PlayFMVFullscreen(world, videoFileName, onComplete);
 		}
 
-		[Desc("Play a VQA video in the radar window. File name has to include the file extension. " +
-			"Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
-		public bool PlayMovieInRadar(string movie, LuaFunction playComplete = null)
+		[Desc("Play a video in the radar window. File name has to include the file extension.")]
+		public void PlayMovieInRadar(string videoFileName, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
-			Action onCompleteRadar;
-			if (playComplete != null)
-			{
-				var f = (LuaFunction)playComplete.CopyReference();
-				onCompleteRadar = () =>
-				{
-					try
-					{
-						using (f)
-							f.Call().Dispose();
-					}
-					catch (LuaException e)
-					{
-						Context.FatalError(e.Message);
-					}
-				};
-			}
-			else
-				onCompleteRadar = () => { };
-
-			Stream s;
-			try
-			{
-				s = world.Map.Open(movie);
-			}
-			catch (FileNotFoundException e)
-			{
-				Log.Write("lua", "Couldn't play movie {0}! File doesn't exist.", e.FileName);
-				onCompleteRadar();
-				return false;
-			}
-
-			AsyncLoader l = new AsyncLoader(Media.LoadVideo);
-			IAsyncResult ar = l.BeginInvoke(s, null, null);
-			Action onLoadComplete = () =>
-			{
-				Media.StopFMVInRadar();
-				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(l.EndInvoke(ar), onCompleteRadar));
-			};
-
-			world.AddFrameEndTask(w => w.Add(new AsyncAction(ar, onLoadComplete)));
-			return true;
+			var onComplete = WrapOnPlayComplete(onPlayComplete);
+			Media.PlayFMVInRadar(videoFileName, onComplete);
 		}
 
-		[Desc("Display a text message to the player.")]
+		[Desc("Display a text message to all players.")]
 		public void DisplayMessage(string text, string prefix = "Mission", Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
-			var c = color.HasValue ? color.Value : Color.White;
-			TextNotificationsManager.AddChatLine(prefix, text, c);
+			var c = color ?? Color.White;
+			TextNotificationsManager.AddMissionLine(prefix, text, c);
+		}
+
+		[Desc("Display a text message only to this player.")]
+		public void DisplayMessageToPlayer(Player player, string text, string prefix = "Mission", Color? color = null)
+		{
+			if (world.LocalPlayer != player)
+				return;
+
+			DisplayMessage(text, prefix, color);
 		}
 
 		[Desc("Display a system message to the player. If 'prefix' is nil the default system prefix is used.")]
@@ -210,12 +139,12 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
-		public void Debug(string text)
+		public void Debug(string format)
 		{
-			if (string.IsNullOrEmpty(text) || !Game.Settings.Debug.LuaDebug)
+			if (string.IsNullOrEmpty(format) || !Game.Settings.Debug.LuaDebug)
 				return;
 
-			TextNotificationsManager.Debug(text);
+			TextNotificationsManager.Debug(format);
 		}
 
 		[Desc("Display a text message at the specified location.")]
@@ -224,10 +153,30 @@ namespace OpenRA.Mods.Common.Scripting
 			if (string.IsNullOrEmpty(text) || !world.Map.Contains(world.Map.CellContaining(position)))
 				return;
 
-			var c = color.HasValue ? color.Value : Color.White;
+			var c = color ?? Color.White;
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
 		}
 
-		public delegate IVideo AsyncLoader(Stream s);
+		Action WrapOnPlayComplete(LuaFunction onPlayComplete)
+		{
+			if (onPlayComplete != null)
+			{
+				var f = (LuaFunction)onPlayComplete.CopyReference();
+				return () =>
+				{
+					try
+					{
+						using (f)
+							f.Call().Dispose();
+					}
+					catch (LuaException e)
+					{
+						Context.FatalError(e);
+					}
+				};
+			}
+			else
+				return () => { };
+		}
 	}
 }

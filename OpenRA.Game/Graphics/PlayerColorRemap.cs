@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -21,12 +20,14 @@ namespace OpenRA.Graphics
 		readonly int[] remapIndices;
 		readonly float hue;
 		readonly float saturation;
+		readonly float value;
 
-		public PlayerColorRemap(int[] remapIndices, float hue, float saturation)
+		public PlayerColorRemap(int[] remapIndices, Color color)
 		{
 			this.remapIndices = remapIndices;
-			this.hue = hue;
-			this.saturation = saturation;
+
+			var (r, g, b) = color.ToLinear();
+			(hue, saturation, value) = Color.RgbToHsv(r, g, b);
 		}
 
 		public Color GetRemappedColor(Color original, int index)
@@ -43,7 +44,7 @@ namespace OpenRA.Graphics
 			var value = Math.Max(Math.Max(r, g), b);
 
 			// Construct the new RGB color
-			(r, g, b) = Color.HsvToRgb(hue, saturation, value);
+			(r, g, b) = Color.HsvToRgb(hue, saturation, value * this.value);
 
 			// Convert linear back to SRGB and pre-multiply by the alpha
 			return Color.FromLinear(original.A, r, g, b);

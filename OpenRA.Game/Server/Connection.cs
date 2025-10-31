@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -19,13 +21,17 @@ using System.Threading;
 
 namespace OpenRA.Server
 {
-	public class Connection : IDisposable
+	public sealed class Connection : IDisposable
 	{
 		public const int MaxOrderLength = 131072;
+
+		// Cap ping history at 15 seconds as a balance between expiring stale state and having enough data for decent statistics
+		const int MaxPingSamples = 15;
 
 		public readonly int PlayerIndex;
 		public readonly string AuthToken;
 		public readonly EndPoint EndPoint;
+		public readonly Stopwatch ConnectionTimer = Stopwatch.StartNew();
 
 		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
 
@@ -35,11 +41,12 @@ namespace OpenRA.Server
 
 		long lastReceivedTime = 0;
 
-		readonly BlockingCollection<byte[]> sendQueue = new BlockingCollection<byte[]>();
+		readonly BlockingCollection<byte[]> sendQueue = [];
+		readonly Queue<int> pingHistory = [];
 
-		public Connection(Socket socket, int playerIndex, string authToken, Action<Connection, int, byte[]> onPacket, Action<Connection> onDisconnect)
+		public Connection(Server server, Socket socket, string authToken)
 		{
-			PlayerIndex = playerIndex;
+			PlayerIndex = server.ChooseFreePlayerIndex();
 			AuthToken = authToken;
 			EndPoint = socket.RemoteEndPoint;
 
@@ -47,12 +54,23 @@ namespace OpenRA.Server
 			{
 				Name = $"Client communication ({EndPoint}",
 				IsBackground = true
-			}.Start((socket, onPacket, onDisconnect));
+			}.Start((server, socket));
+		}
+
+		static byte[] CreatePingFrame()
+		{
+			var ms = new MemoryStream(21);
+			ms.Write(13);
+			ms.Write(0);
+			ms.Write(0);
+			ms.WriteByte((byte)OrderType.Ping);
+			ms.Write(Game.RunTime);
+			return ms.GetBuffer();
 		}
 
 		void SendReceiveLoop(object s)
 		{
-			var (socket, onPacket, onDisconnect) = (ValueTuple<Socket, Action<Connection, int, byte[]>, Action<Connection>>)s;
+			var (server, socket) = ((Server, Socket))s;
 			socket.Blocking = false;
 			socket.NoDelay = true;
 
@@ -61,6 +79,7 @@ namespace OpenRA.Server
 			var state = ReceiveState.Header;
 			var expectLength = 8;
 			var frame = 0;
+			var lastPingSent = Stopwatch.StartNew();
 
 			try
 			{
@@ -96,7 +115,7 @@ namespace OpenRA.Server
 									frame = BitConverter.ToInt32(bytes, 4);
 									state = ReceiveState.Data;
 
-									if (expectLength < 0 || expectLength > MaxOrderLength)
+									if (expectLength < 0 || (server.IsMultiplayer && expectLength > MaxOrderLength))
 									{
 										Log.Write("server", $"Closing socket connection to {EndPoint} because of excessive order length: {expectLength}");
 										return;
@@ -107,7 +126,19 @@ namespace OpenRA.Server
 
 								case ReceiveState.Data:
 								{
-									onPacket(this, frame, bytes);
+									// Ping packets are sent and processed internally within this thread to reduce
+									// server-introduced latencies from polling loops
+									if (expectLength == 10 && bytes[0] == (byte)OrderType.Ping)
+									{
+										if (pingHistory.Count == MaxPingSamples)
+											pingHistory.Dequeue();
+
+										pingHistory.Enqueue((int)(Game.RunTime - BitConverter.ToInt64(bytes, 1)));
+										server.OnConnectionPing(this, pingHistory.ToArray(), bytes[9]);
+									}
+									else
+										server.OnConnectionPacket(this, frame, bytes);
+
 									expectLength = 8;
 									state = ReceiveState.Header;
 
@@ -121,6 +152,10 @@ namespace OpenRA.Server
 					if (sendQueue.IsCompleted)
 						return;
 
+					// Regularly check player ping
+					if (lastPingSent.ElapsedMilliseconds > 1000 && TrySendData(CreatePingFrame()))
+						lastPingSent.Restart();
+
 					// Send all data immediately, we will block again on read
 					while (sendQueue.TryTake(out var data, 0))
 					{
@@ -133,7 +168,7 @@ namespace OpenRA.Server
 							var sent = socket.Send(data, start, length - start, SocketFlags.None, out var error);
 							if (error == SocketError.WouldBlock)
 							{
-								Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+								Log.Write("server", $"Non-blocking send of {length - start} bytes failed. Falling back to blocking send.");
 								socket.Blocking = true;
 								sent = socket.Send(data, start, length - start, SocketFlags.None);
 								socket.Blocking = false;
@@ -152,14 +187,26 @@ namespace OpenRA.Server
 			}
 			finally
 			{
-				onDisconnect(this);
+				server.OnConnectionDisconnect(this);
 				socket.Dispose();
 			}
 		}
 
-		public void SendData(byte[] data)
+		public bool TrySendData(byte[] data)
 		{
-			sendQueue.Add(data);
+			if (sendQueue.IsAddingCompleted)
+				return false;
+
+			try
+			{
+				sendQueue.Add(data);
+				return true;
+			}
+			catch (InvalidOperationException)
+			{
+				// Occurs if the collection is marked completed for adding by another thread.
+				return false;
+			}
 		}
 
 		public void Dispose()

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSpriteBodies : ILintRulesPass, ILintServerMapPass
+	sealed class CheckSpriteBodies : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
@@ -28,14 +28,16 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var wsbs = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>();
-				foreach (var wsb in wsbs)
-					if (wsbs.Any(w => w != wsb && w.Name == wsb.Name))
-						emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {wsb.Name}!");
+				var duplicateNames = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>()
+					.GroupBy(wsb => wsb.Name)
+					.Where(g => g.Count() > 1)
+					.Select(g => g.Key);
+				foreach (var duplicateName in duplicateNames)
+					emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {duplicateName}.");
 			}
 		}
 	}

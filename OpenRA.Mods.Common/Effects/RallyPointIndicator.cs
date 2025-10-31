@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Animation flag;
 		readonly Animation circles;
 
-		List<WPos> targetLineNodes = new List<WPos> { };
+		readonly List<WPos> targetLineNodes = [];
 		List<CPos> cachedLocations;
 
 		public RallyPointIndicator(Actor building, RallyPoint rp)
@@ -34,11 +34,17 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (rp.Info.Image != null)
 			{
-				flag = new Animation(building.World, rp.Info.Image);
-				flag.PlayRepeating(rp.Info.FlagSequence);
+				if (rp.Info.FlagSequence != null)
+				{
+					flag = new Animation(building.World, rp.Info.Image);
+					flag.PlayRepeating(rp.Info.FlagSequence);
+				}
 
-				circles = new Animation(building.World, rp.Info.Image);
-				circles.Play(rp.Info.CirclesSequence);
+				if (rp.Info.CirclesSequence != null)
+				{
+					circles = new Animation(building.World, rp.Info.Image);
+					circles.Play(rp.Info.CirclesSequence);
+				}
 			}
 
 			UpdateTargetLineNodes(building.World);
@@ -63,7 +69,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		void UpdateTargetLineNodes(World world)
 		{
-			cachedLocations = new List<CPos>(rp.Path);
+			cachedLocations = rp.Path.ToList();
 			targetLineNodes.Clear();
 			foreach (var c in cachedLocations)
 				targetLineNodes.Add(world.Map.CenterOfCell(c));
@@ -90,10 +96,10 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				var palette = wr.Palette(rp.PaletteName);
 				if (circles != null)
-					renderables = renderables.Concat(circles.Render(targetLineNodes.Last(), palette));
+					renderables = renderables.Concat(circles.Render(targetLineNodes[^1], palette));
 
 				if (flag != null)
-					renderables = renderables.Concat(flag.Render(targetLineNodes.Last(), palette));
+					renderables = renderables.Concat(flag.Render(targetLineNodes[^1], palette));
 			}
 
 			return renderables;
@@ -113,17 +119,17 @@ namespace OpenRA.Mods.Common.Effects
 			if (targetLineNodes.Count == 0)
 				return SpriteRenderable.None;
 
-			return RenderInner(wr);
+			return RenderInner();
 		}
 
-		IEnumerable<IRenderable> RenderInner(WorldRenderer wr)
+		IEnumerable<IRenderable> RenderInner()
 		{
 			var prev = targetLineNodes[0];
 			foreach (var pos in targetLineNodes.Skip(1))
 			{
 				var targetLine = new[] { prev, pos };
 				prev = pos;
-				yield return new TargetLineRenderable(targetLine, building.Owner.Color, rp.Info.LineWidth);
+				yield return new TargetLineRenderable(targetLine, building.OwnerColor(), rp.Info.LineWidth, 1);
 			}
 		}
 	}

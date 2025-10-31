@@ -1,12 +1,11 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 if Difficulty == "easy" then
 	Rambo = "rmbo.easy"
@@ -33,7 +32,7 @@ end
 CreateScientist = function()
 	local scientist = Actor.Create("CHAN", true, { Owner = GDI, Location = ScientistLocation.Location })
 
-	KillScientistObjective = Nod.AddObjective("Kill the GDI scientist.")
+	KillScientistObjective = AddPrimaryObjective(Nod, "kill-gdi-scientist")
 	Nod.MarkCompletedObjective(DestroyTechCenterObjective)
 
 	Trigger.OnKilled(scientist, function()
@@ -55,7 +54,7 @@ WorldLoaded = function()
 		RepairBuilding(GDI, building, 0.75)
 	end)
 
-	DestroyTechCenterObjective = Nod.AddObjective("Destroy the GDI R&D center.")
+	DestroyTechCenterObjective = AddPrimaryObjective(Nod, "destroy-tech-center")
 
 	Actor.Create(Rambo, true, { Owner = Nod, Location = RamboLocation.Location })
 

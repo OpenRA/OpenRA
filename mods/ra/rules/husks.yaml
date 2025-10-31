@@ -1,7 +1,7 @@
 2TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Medium Tank)
+		Name: actor-2tnk-husk-name
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -14,7 +14,7 @@
 3TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Heavy Tank)
+		Name: actor-3tnk-husk-name
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -26,8 +26,10 @@
 
 4TNK.Husk:
 	Inherits: ^Husk
+	Husk:
+		Locomotor: heavytracked
 	Tooltip:
-		Name: Husk (Mammoth Tank)
+		Name: actor-4tnk-husk-name
 	ThrowsParticle@turret:
 		Anim: turret
 	TransformOnCapture:
@@ -40,7 +42,7 @@
 HARV.FullHusk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Ore Truck)
+		Name: actor-harv-fullhusk-name
 	TransformOnCapture:
 		IntoActor: harv
 	InfiltrateForTransform:
@@ -51,7 +53,7 @@ HARV.FullHusk:
 HARV.EmptyHusk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Ore Truck)
+		Name: actor-harv-emptyhusk-name
 	TransformOnCapture:
 		IntoActor: harv
 	InfiltrateForTransform:
@@ -62,7 +64,7 @@ HARV.EmptyHusk:
 MCV.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Mobile Construction Vehicle)
+		Name: actor-mcv-husk-name
 	TransformOnCapture:
 		IntoActor: mcv
 	InfiltrateForTransform:
@@ -72,8 +74,10 @@ MCV.Husk:
 
 MGG.Husk:
 	Inherits: ^Husk
+	Husk:
+		Locomotor: wheeled
 	Tooltip:
-		Name: Husk (Mobile Gap Generator)
+		Name: actor-mgg-husk-name
 	ThrowsParticle@spinner:
 		Anim: spinner-idle
 		Offset: -299,0,171
@@ -87,7 +91,7 @@ MGG.Husk:
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Chinook
+		Name: actor-tran-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 149
@@ -111,7 +115,7 @@ TRAN.Husk:
 TRAN.Husk1:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Chinook)
+		Name: actor-tran-husk1-name
 	RenderSprites:
 		Image: tran1husk
 	-Capturable:
@@ -121,7 +125,7 @@ TRAN.Husk1:
 TRAN.Husk2:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Chinook)
+		Name: actor-tran-husk2-name
 	RenderSprites:
 		Image: tran2husk
 	-Capturable:
@@ -131,7 +135,7 @@ TRAN.Husk2:
 BADR.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
-		Name: Badger
+		Name: actor-badr-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 149
@@ -154,7 +158,7 @@ BADR.Husk:
 MIG.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
-		Name: MiG Attack Plane
+		Name: actor-mig-husk-name
 	Contrail@1:
 		Offset: -598,-683,0
 	Contrail@2:
@@ -182,7 +186,7 @@ MIG.Husk:
 YAK.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
-		Name: Yak Attack Plane
+		Name: actor-yak-husk-name
 	Contrail:
 		Offset: -853,0,0
 	Aircraft:
@@ -208,7 +212,7 @@ YAK.Husk:
 HELI.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Longbow
+		Name: actor-heli-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 149
@@ -237,7 +241,7 @@ HELI.Husk:
 HIND.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Hind
+		Name: actor-hind-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 112
@@ -265,7 +269,7 @@ HIND.Husk:
 U2.Husk:
 	Inherits: ^PlaneHusk
 	Tooltip:
-		Name: Husk (Spy Plane)
+		Name: actor-u2-husk-name
 	Aircraft:
 		TurnSpeed: 28
 		Speed: 373
@@ -456,7 +460,7 @@ TC05.Husk:
 MH60.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Black Hawk
+		Name: actor-mh60-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 112

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -49,7 +49,7 @@ namespace OpenRA
 			return self.TraitsImplementing<IVoiced>().Any(x => x.HasVoice(self, voice));
 		}
 
-		public static void PlayVoiceForOrders(this World w, Order[] orders)
+		public static void PlayVoiceForOrders(this Order[] orders)
 		{
 			// Find the first actor with a phrase to say
 			foreach (var o in orders)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,11 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 			"Strafe: Perform a fixed-length attack run on the target.")]
 		public readonly AirAttackType AttackType = AirAttackType.Default;
 
-		[Desc("Distance the strafing aircraft makes to a target before turning for another pass. When set to WDist.Zero this defaults to the maximum armament range.")]
+		[Desc(
+			"Distance the strafing aircraft makes to a target before turning for another pass. " +
+			"When set to WDist.Zero this defaults to the maximum armament range.")]
 		public readonly WDist StrafeRunLength = WDist.Zero;
-
-		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this to 'false' will make the actor resume attack after reloading.")]
-		public readonly bool AbortOnResupply = true;
 
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
@@ -48,7 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(
+			Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new FlyAttack(self, source, newTarget, forceAttack, targetLineColor);
 		}

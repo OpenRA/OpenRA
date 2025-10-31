@@ -1,20 +1,21 @@
 Container@MULTIPLAYER_CREATESERVER_PANEL:
 	Logic: ServerCreationLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT - 15) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT - 15) / 2
 	Width: 530
 	Height: 275
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Create Server
+			Text: label-multiplayer-createserver-panel-title
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 35
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				Label@SERVER_NAME_LABEL:
@@ -22,7 +23,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Width: 105
 					Height: 25
 					Align: Right
-					Text: Server Name:
+					Text: label-bg-server-name
 				TextField@SERVER_NAME:
 					X: 110
 					Y: 15
@@ -35,7 +36,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Width: 105
 					Height: 25
 					Align: Right
-					Text: Password:
+					Text: label-bg-password
 				PasswordField@PASSWORD:
 					X: 110
 					Y: 50
@@ -48,13 +49,13 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Width: 105
 					Height: 25
 					Align: Left
-					Text: (optional)
+					Text: label-bg-after-password
 				Label@LISTEN_PORT_LABEL:
 					Y: 84
 					Width: 105
 					Height: 25
 					Align: Right
-					Text: Port:
+					Text: label-bg-listen-port
 				TextField@LISTEN_PORT:
 					X: 110
 					Y: 85
@@ -69,7 +70,7 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Width: 150
 					Height: 20
 					Font: Regular
-					Text: Advertise Online
+					Text: checkbox-bg-advertise
 				Label@NOTICES_HEADER_A:
 					X: 15
 					Y: 125
@@ -91,29 +92,29 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 				Container@NOTICES_LAN:
 					X: 20
 					Y: 145
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Children:
 						Label@ADVERTISING:
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - Game will be advertised to the Local Area Network only.
+							Text: label-notices-lan-advertising
 						Label@FIREWALL:
 							Y: 12
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You must manually configure your firewall to allow connections.
+							Text: label-notices-lan-firewall
 						Label@PORTFORWARD_A:
 							Y: 24
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - Players can connect using Direct IP from the Internet if you
+							Text: label-notices-lan-portforward-a
 						Label@PORTFORWARD_B:
 							X: 7
 							Y: 36
@@ -121,33 +122,33 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: manually configure port forwarding on your router.
+							Text: label-notices-lan-portforward-b
 				Container@NOTICES_NO_UPNP:
 					X: 20
 					Y: 145
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Children:
 						Label@ADVERTISING:
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - Game will be advertised to the Local Area Network and Internet.
+							Text: label-notices-no-upnp-advertising
 						Label@FIREWALL:
 							Y: 12
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You must manually configure your firewall to allow connections.
+							Text: label-notices-no-upnp-firewall
 						Label@PORTFORWARD_A:
 							Y: 24
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You must manually configure your router to allow and forward
+							Text: label-notices-no-upnp-portforward-a
 						Label@PORTFORWARD_B:
 							X: 7
 							Y: 36
@@ -155,14 +156,14 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: connections to your local IP and Port.
+							Text: label-notices-no-upnp-portforward-b
 						Label@SETTINGS_A:
 							Y: 48
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You can enable UPnP/NAT-PMP (if supported by your router)
+							Text: label-notices-no-upnp-settings-a
 						Label@SETTINGS_B:
 							X: 7
 							Y: 60
@@ -170,93 +171,62 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text:  in the Advanced tab of the settings menu.
+							Text: label-notices-no-upnp-settings-b
 				Container@NOTICES_UPNP:
 					X: 20
 					Y: 145
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Children:
 						Label@ADVERTISING:
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - Game will be advertised to the Local Area Network and Internet.
+							Text: label-notices-upnp-advertising
 						Label@FIREWALL:
 							Y: 12
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You must manually configure your firewall to allow connections.
+							Text: label-notices-upnp-firewall
 						Label@PORTFORWARD_A:
 							Y: 24
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - Game will automatically configure port forwarding.
+							Text: label-notices-upnp-portforward-a
 						Label@SETTINGS_A:
 							Y: 36
 							Width: 305
 							Height: 25
 							Font: Tiny
 							Align: Left
-							Text: - You can disable UPnP/NAT-PMP in the settings menu.
-				Background@MAP_BG:
-					X: PARENT_RIGHT - 189
+							Text: label-notices-upnp-settings-a
+				Container@MAP_PREVIEW_ROOT:
+					X: PARENT_WIDTH - 189
 					Y: 15
 					Width: 174
-					Height: 174
-					Background: panel-gray
-					Children:
-						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_RIGHT - 2
-				LabelWithTooltip@MAP_TITLE:
-					X: PARENT_RIGHT - 189
-					Y: 187
-					Width: 174
-					Height: 25
-					Font: Bold
-					Align: Center
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
-				Label@MAP_TYPE:
-					X: PARENT_RIGHT - 189
-					Y: 202
-					Width: 174
-					Height: 25
-					Font: TinyBold
-					Align: Center
-					IgnoreMouseOver: true
-				Label@MAP_AUTHOR:
-					X: PARENT_RIGHT - 189
-					Y: 215
-					Width: 174
-					Height: 25
-					Font: Tiny
-					Align: Center
+					Height: 250
 		Button@BACK_BUTTON:
 			Key: return
-			Y: PARENT_BOTTOM - 36
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
-			Text: Back
+			Text: button-back
 		Button@MAP_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 150
-			Y: PARENT_BOTTOM - 36
+			X: PARENT_WIDTH - WIDTH - 150
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
-			Text: Change Map
+			Text: button-multiplayer-createserver-panel-change-map
 		Button@CREATE_BUTTON:
 			Key: return
-			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 36
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
-			Text: Create
+			Text: button-multiplayer-createserver-panel-create
 		TooltipContainer@TOOLTIP_CONTAINER:

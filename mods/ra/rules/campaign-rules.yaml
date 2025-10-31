@@ -4,34 +4,58 @@ Player:
 		EarlyGameOver: true
 		GameOverDelay: 3000
 	Shroud:
+		FogCheckboxVisible: False
 		FogCheckboxLocked: True
 		FogCheckboxEnabled: True
+		ExploredMapCheckboxVisible: False
 		ExploredMapCheckboxLocked: True
 		ExploredMapCheckboxEnabled: False
 	PlayerResources:
+		DefaultCashDropdownVisible: False
 		DefaultCashDropdownLocked: True
 		DefaultCash: 0
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+		Locked: True
+		Visible: False
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
+		Enabled: False
+		Locked: True
+		Visible: False
+	DeveloperMode:
+		CheckboxVisible: False
 	ModularBot@CampaignAI:
-		Name: Campaign Player AI
+		Name: bot-campaign-ai.name
 		Type: campaign
 
 World:
 	CrateSpawner:
 		CheckboxEnabled: False
 		CheckboxLocked: True
+		CheckboxVisible: False
 	-SpawnStartingUnits:
 	-MapStartingLocations:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	MapBuildRadius:
+		AllyBuildRadiusCheckboxVisible: False
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
 		BuildRadiusCheckboxLocked: True
 		BuildRadiusCheckboxEnabled: True
 	MapOptions:
-		TechLevelDropdownLocked: True
+		ShortGameCheckboxVisible: False
 		ShortGameCheckboxLocked: True
 		ShortGameCheckboxEnabled: False
+		TechLevelDropdownVisible: False
+		TechLevelDropdownLocked: True
+	TimeLimitManager:
+		TimeLimitDropdownVisible: False
 
 E7:
 	-Crushable:
@@ -60,7 +84,7 @@ HARV:
 
 MONEYCRATE:
 	Tooltip:
-		Name: Crate
+		Name: actor-crate-name
 	GiveCashCrateAction:
 		Amount: 2000
 
@@ -72,7 +96,7 @@ FCOM:
 		Range: 0
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 25
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	WithBuildingRepairDecoration:
 		Image: allyrepair

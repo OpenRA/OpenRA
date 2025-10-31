@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -54,7 +54,7 @@ SendGDIReinforcements = function()
 			if GDIReinforcementsLeft > 0 then
 				GDIReinforcementsLeft = GDIReinforcementsLeft - 1
 				Trigger.AfterDelay(DateTime.Seconds(5), function()
-					Media.DisplayMessage("APC squads in reserve: " .. GDIReinforcementsLeft, "Battlefield Control")
+					Media.DisplayMessage(UserInterface.GetFluentMessage("apcs-left", { ["apcs"] = GDIReinforcementsLeft }), UserInterface.GetFluentMessage("battlefield-control"))
 					SendGDIReinforcements()
 				end)
 			end
@@ -95,7 +95,7 @@ Tick = function()
 end
 
 SetupWorld = function()
-	Utils.Do(Nod.GetGroundAttackers(Nod), function(unit)
+	Utils.Do(Nod.GetGroundAttackers(), function(unit)
 		Trigger.OnKilled(unit, NodUnitKilled)
 	end)
 
@@ -113,8 +113,9 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	GDIObjective = GDI.AddObjective("Retrieve the crate with the stolen rods.")
-	ReinforcementsObjective = GDI.AddObjective("Eliminate " .. KillsUntilReinforcements .. " Nod units for reinforcements.", "Secondary", false)
+	GDIObjective = AddPrimaryObjective(GDI, "retrieve-rods")
+	local eliminateReinforcements = UserInterface.GetFluentMessage("eliminate-reinforcements", { ["kills"] = KillsUntilReinforcements })
+	ReinforcementsObjective = AddSecondaryObjective(GDI, eliminateReinforcements)
 
 	BuildNod()
 	Utils.Do(NodHelis, function(heli)
@@ -122,16 +123,16 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(AutoTrigger, function(a, id)
-		if not autoTrigger and a.Owner == GDI then
-			autoTrigger = true
+		if not AutoTriggered and a.Owner == GDI then
+			AutoTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			BuildAuto()
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(GDIHeliTrigger, function(a, id)
-		if not gdiHeliTrigger and a.Owner == GDI then
-			gdiHeliTrigger = true
+		if not GDIHeliTriggered and a.Owner == GDI then
+			GDIHeliTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			Reinforcements.ReinforceWithTransport(GDI, "tran", nil, { GDIHeliEntry.Location, GDIHeliLZ.Location })
 		end

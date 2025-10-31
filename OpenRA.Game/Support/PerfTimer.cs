@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,23 +24,24 @@ namespace OpenRA.Support
 		const string IndentationString = "|   ";
 		const string FormatSeperation = " ms ";
 		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
+		static readonly string FormatStringLongTick = "{0," + Digits + ":0}" + FormatSeperation + "[{1}] {2}: {3}";
 		readonly string name;
-		readonly float thresholdMs;
+		readonly long thresholdTicks;
 		readonly byte depth;
 		readonly PerfTimer parent;
 		List<PerfTimer> children;
 		long ticks;
 
-		static ThreadLocal<PerfTimer> parentThreadLocal = new ThreadLocal<PerfTimer>();
+		static readonly ThreadLocal<PerfTimer> ParentThreadLocal = new();
 
 		public PerfTimer(string name, float thresholdMs = 0)
 		{
 			this.name = name;
-			this.thresholdMs = thresholdMs;
+			thresholdTicks = MillisToTicks(thresholdMs);
 
-			parent = parentThreadLocal.Value;
+			parent = ParentThreadLocal.Value;
 			depth = parent == null ? (byte)0 : (byte)(parent.depth + 1);
-			parentThreadLocal.Value = this;
+			ParentThreadLocal.Value = this;
 
 			ticks = Stopwatch.GetTimestamp();
 		}
@@ -49,14 +50,13 @@ namespace OpenRA.Support
 		{
 			ticks = Stopwatch.GetTimestamp() - ticks;
 
-			parentThreadLocal.Value = parent;
+			ParentThreadLocal.Value = parent;
 
 			if (parent == null)
 				Write();
-			else if (ElapsedMs > thresholdMs)
+			else if (ticks > thresholdTicks)
 			{
-				if (parent.children == null)
-					parent.children = new List<PerfTimer>();
+				parent.children ??= [];
 				parent.children.Add(this);
 			}
 		}
@@ -68,10 +68,15 @@ namespace OpenRA.Support
 				Log.Write("perf", GetHeader(Indentation, name));
 				foreach (var child in children)
 					child.Write();
-				Log.Write("perf", FormatString, ElapsedMs, GetFooter(Indentation));
+				Log.Write("perf", FormatString.FormatInvariant(ElapsedMs, GetFooter(Indentation)));
 			}
-			else if (ElapsedMs >= thresholdMs)
-				Log.Write("perf", FormatString, ElapsedMs, Indentation + name);
+			else if (ticks >= thresholdTicks)
+				Log.Write("perf", FormatString.FormatInvariant(ElapsedMs, Indentation + name));
+		}
+
+		public static long MillisToTicks(float millis)
+		{
+			return (long)(Stopwatch.Frequency * millis / 1000f);
 		}
 
 		float ElapsedMs => 1000f * ticks / Stopwatch.Frequency;
@@ -80,12 +85,12 @@ namespace OpenRA.Support
 		{
 			var type = item.GetType();
 			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
-			Log.Write("perf", FormatString,
+			Log.Write("perf", FormatStringLongTick.FormatInvariant(
 				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
-				"[" + Game.LocalTick + "] " + name + ": " + label);
+				Game.LocalTick,
+				name,
+				label));
 		}
-
-		public static long LongTickThresholdInStopwatchTicks => (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
 
 		#region Formatting helpers
 		static string GetHeader(string indentation, string label)

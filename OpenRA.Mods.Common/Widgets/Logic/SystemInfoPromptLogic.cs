@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,36 +11,31 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1203:ConstantsMustAppearBeforeFields",
-		Justification = "SystemInformation version should be defined next to the dictionary it refers to.")]
 	public class SystemInfoPromptLogic : ChromeLogic
 	{
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 4;
+		const int SystemInformationVersion = 6;
 
 		static Dictionary<string, (string Label, string Value)> GetSystemInformation()
 		{
-			var lang = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
-			return new Dictionary<string, (string, string)>()
+			return new Dictionary<string, (string, string)>
 			{
 				{ "id", ("Anonymous ID", Game.Settings.Debug.UUID) },
 				{ "platform", ("OS Type", Platform.CurrentPlatform.ToString()) },
-				{ "os", ("OS Version", Environment.OSVersion.ToString()) },
-				{ "x64", ("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
-				{ "x64process", ("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
+				{ "os", ("OS Version", Platform.OperatingSystem) },
+				{ "arch", ("Architecture", Platform.CurrentArchitecture.ToString()) },
 				{ "runtime", (".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", ("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "windowsize", ("Window Size", $"{Game.Renderer.NativeResolution.Width}x{Game.Renderer.NativeResolution.Height}") },
 				{ "windowscale", ("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "uiscale", ("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
-				{ "lang", ("System Language", lang) }
+				{ "lang", ("System Language", CultureInfo.InstalledUICulture.TwoLetterISOLanguageName) }
 			};
 		}
 
@@ -55,9 +50,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return "";
 
 			return $"&sysinfoversion={SystemInformationVersion}&"
-			       + GetSystemInformation()
-				       .Select(kv => kv.Key + "=" + Uri.EscapeUriString(kv.Value.Value))
-				       .JoinWith("&");
+				+ GetSystemInformation()
+					.Select(kv => kv.Key + "=" + Uri.EscapeDataString(kv.Value.Value))
+					.JoinWith("&");
 		}
 
 		[ObjectCreator.UseCtor]
@@ -71,10 +66,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var template = sysInfoData.Get<LabelWidget>("DATA_TEMPLATE");
 			sysInfoData.RemoveChildren();
 
-			foreach (var info in GetSystemInformation().Values)
+			foreach (var (name, value) in GetSystemInformation().Values)
 			{
-				var label = template.Clone() as LabelWidget;
-				var text = info.Label + ": " + info.Value;
+				var label = template.Clone();
+				var text = name + ": " + value;
 				label.GetText = () => text;
 				sysInfoData.AddChild(label);
 			}

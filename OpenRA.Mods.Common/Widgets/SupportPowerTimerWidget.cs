@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,11 +21,14 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SupportPowerTimerWidget : Widget
 	{
+		[FluentReference("player", "support-power", "time")]
+		const string Format = "support-power-timer";
+
 		public readonly string Font = "Bold";
-		public readonly string Format = "{0}: {1}";
 		public readonly TextAlign Align = TextAlign.Left;
 		public readonly TimerOrder Order = TimerOrder.Descending;
 
+		readonly SpriteFont font;
 		readonly IEnumerable<SupportPowerInstance> powers;
 		readonly Color bgDark, bgLight;
 		(string Text, Color Color)[] texts;
@@ -35,10 +39,11 @@ namespace OpenRA.Mods.Common.Widgets
 			powers = world.ActorsWithTrait<SupportPowerManager>()
 				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
-				.Where(p => p.Instances.Any() && p.Info.DisplayTimerRelationships != PlayerRelationship.None && !p.Disabled);
+				.Where(p => p.Instances.Count > 0 && p.Info.DisplayTimerRelationships != PlayerRelationship.None && !p.Disabled);
 
 			bgDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 			bgLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
+			font = Game.Renderer.Fonts[Font];
 		}
 
 		public override void Tick()
@@ -54,13 +59,12 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var self = p.Instances[0].Self;
 				var time = WidgetUtils.FormatTime(p.RemainingTicks, false, self.World.Timestep);
-				var text = Format.F(p.Info.Description, time);
-				var playerColor = self.Owner.Color;
+				var text = FluentProvider.GetMessage(Format,
+					"player", self.Owner.ResolvedPlayerName,
+					"support-power", p.Name,
+					"time", time);
 
-				if (Game.Settings.Game.UsePlayerStanceColors)
-					playerColor = self.Owner.PlayerRelationshipColor(self);
-
-				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
+				var color = !p.Ready || Game.LocalTick % 50 < 25 ? self.OwnerColor() : Color.White;
 
 				return (text, color);
 			}).ToArray();
@@ -74,9 +78,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var y = 0;
 			foreach (var t in texts)
 			{
-				var font = Game.Renderer.Fonts[Font];
 				var textSize = font.Measure(t.Text);
-				var location = new float2(Bounds.Location) + new float2(0, y);
+				var location = new float2(Bounds.X, Bounds.Y + y);
 
 				if (Align == TextAlign.Center)
 					location += new int2((Bounds.Width - textSize.X) / 2, 0);

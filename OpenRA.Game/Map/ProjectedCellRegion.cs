@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -59,7 +59,7 @@ namespace OpenRA
 		/// this does not validate whether individual map cells are actually
 		/// projected inside the region.
 		/// </summary>
-		public MapCoordsRegion CandidateMapCoords => new MapCoordsRegion(mapTopLeft, mapBottomRight);
+		public MapCoordsRegion CandidateMapCoords => new(mapTopLeft, mapBottomRight);
 
 		public ProjectedCellRegionEnumerator GetEnumerator()
 		{
@@ -83,24 +83,22 @@ namespace OpenRA
 			// Current position, in projected map coordinates
 			int u, v;
 
-			PPos current;
-
 			public ProjectedCellRegionEnumerator(ProjectedCellRegion region)
 				: this()
 			{
 				r = region;
 				Reset();
-				current = new PPos(u, v);
+				Current = new PPos(u, v);
 			}
 
 			public bool MoveNext()
 			{
-				u += 1;
+				u++;
 
 				// Check for column overflow
 				if (u > r.BottomRight.U)
 				{
-					v += 1;
+					v++;
 					u = r.TopLeft.U;
 
 					// Check for row overflow
@@ -108,7 +106,7 @@ namespace OpenRA
 						return false;
 				}
 
-				current = new PPos(u, v);
+				Current = new PPos(u, v);
 				return true;
 			}
 
@@ -119,9 +117,9 @@ namespace OpenRA
 				v = r.TopLeft.V;
 			}
 
-			public PPos Current => current;
-			object IEnumerator.Current => Current;
-			public void Dispose() { }
+			public PPos Current { get; private set; }
+			readonly object IEnumerator.Current => Current;
+			public readonly void Dispose() { }
 		}
 	}
 }

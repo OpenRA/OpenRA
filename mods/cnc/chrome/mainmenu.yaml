@@ -1,6 +1,6 @@
 Container@MENU_BACKGROUND:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
 	Logic: MainMenuLogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
@@ -14,47 +14,48 @@ Container@MENU_BACKGROUND:
 		Container@SHELLMAP_DECORATIONS:
 			Children:
 				Image@NOD:
-					X: WINDOW_RIGHT / 2 - 384
-					Y: (WINDOW_BOTTOM - 256) / 2
+					X: WINDOW_WIDTH / 2 - 384
+					Y: (WINDOW_HEIGHT - 256) / 2
 					ImageCollection: logos
 					ImageName: nod-load
 				Image@GDI:
-					X: WINDOW_RIGHT / 2 + 128
-					Y: (WINDOW_BOTTOM - 256) / 2
+					X: WINDOW_WIDTH / 2 + 128
+					Y: (WINDOW_HEIGHT - 256) / 2
 					ImageCollection: logos
 					ImageName: gdi-load
 		Image@EVA:
-			X: WINDOW_RIGHT - 128 - 43
+			X: WINDOW_WIDTH - 128 - 43
 			Y: 43
 			Width: 128
 			Height: 64
 			ImageCollection: logos
 			ImageName: eva
 		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT - 128 - 43
+			Logic: VersionLabelLogic
+			X: WINDOW_WIDTH - 128 - 43
 			Y: 116
 			Width: 128
 			Align: Center
 			Shadow: true
 		Background@BORDER:
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
 			Background: shellmapborder
 		Container@MENUS:
-			X: (WINDOW_RIGHT - WIDTH) / 2
-			Y: WINDOW_BOTTOM - 33 - HEIGHT - 10
+			X: (WINDOW_WIDTH - WIDTH) / 2
+			Y: WINDOW_HEIGHT - 33 - HEIGHT - 10
 			Width: 890
 			Height: 35
 			Children:
 				Container@MAIN_MENU:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
 							Y: 0 - 28
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
-							Text: Main Menu
+							Text: label-main-menu-mainmenu-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -63,47 +64,47 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Singleplayer
+							Text: label-singleplayer-title
 						Button@MULTIPLAYER_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Multiplayer
+							Text: label-multiplayer-title
 						Button@SETTINGS_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Settings
+							Text: button-settings-title
 						Button@EXTRAS_BUTTON:
 							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Extras
+							Text: button-extras-title
 						Button@CONTENT_BUTTON:
 							X: 600
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Manage Content
+							Text: button-main-menu-content
 						Button@QUIT_BUTTON:
 							X: 750
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Quit
+							Text: button-quit
 				Container@SINGLEPLAYER_MENU:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Visible: False
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
 							X: 0
 							Y: 0 - 28
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
-							Text: Singleplayer
+							Text: label-singleplayer-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -112,36 +113,42 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Skirmish
+							Text: button-singleplayer-menu-skirmish
 						Button@MISSIONS_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Missions
+							Text: label-missions-title
 						Button@LOAD_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Load
-						Button@BACK_BUTTON:
-							Key: escape
+							Text: button-singleplayer-menu-load
+						Button@ENCYCLOPEDIA_BUTTON:
 							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Back
+							Text: label-encyclopedia-title
+						Button@BACK_BUTTON:
+							Key: escape
+							X: 600
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: button-back
 				Container@EXTRAS_MENU:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Visible: False
 					Children:
 						Label@EXTRAS_MENU_TITLE:
 							X: 0
 							Y: 0 - 28
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
-							Text: Extras
+							Text: button-extras-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -150,49 +157,49 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Replays
+							Text: button-extras-menu-replays
 						Button@MUSIC_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Music
+							Text: label-music-title
 						Button@MAP_EDITOR_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Map Editor
+							Text: label-map-editor-title
 							Font: Bold
 						Button@ASSETBROWSER_BUTTON:
 							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Asset Browser
+							Text: button-extras-menu-assetbrowser
 						Button@CREDITS_BUTTON:
 							X: 600
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Credits
+							Text: label-credits-title
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 750
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Back
+							Text: button-back
 				Container@MAP_EDITOR_MENU:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Visible: False
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
 							X: 0
 							Y: 0 - 28
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
-							Text: Map Editor
+							Text: label-map-editor-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -201,61 +208,61 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: New Map
+							Text: button-map-editor-new-map
 							Font: Bold
 						Button@LOAD_MAP_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Load Map
+							Text: button-map-editor-load-map
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Back
+							Text: button-back
 							Font: Bold
 							Key: escape
 		Container@NEWS_BG:
 			Children:
 				DropDownButton@NEWS_BUTTON:
-					X: (WINDOW_RIGHT - WIDTH) / 2
+					X: (WINDOW_WIDTH - WIDTH) / 2
 					Y: 50
 					Width: 400
 					Height: 25
-					Text: Battlefield News
+					Text: dropdownbutton-news-bg-button
 					Font: Bold
 		Container@UPDATE_NOTICE:
-			X: (WINDOW_RIGHT - WIDTH) / 2
+			X: (WINDOW_WIDTH - WIDTH) / 2
 			Y: 75
 			Width: 128
 			Children:
 				Label@A:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 					Shadow: true
-					Text: You are running an outdated version of OpenRA.
+					Text: label-update-notice-a
 				Label@B:
 					Y: 20
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 					Shadow: true
-					Text: Download the latest version from www.openra.net
+					Text: label-update-notice-b
 		Container@PERFORMANCE_INFO:
 			Logic: PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X: WINDOW_RIGHT - WIDTH - 25
-					Y: WINDOW_BOTTOM - HEIGHT - 100
+					X: WINDOW_WIDTH - WIDTH - 25
+					Y: WINDOW_HEIGHT - HEIGHT - 100
 					Width: 170
 					Contrast: true
 					VAlign: Top
 				Background@GRAPH_BG:
-					X: WINDOW_RIGHT - WIDTH - 31
+					X: WINDOW_WIDTH - WIDTH - 31
 					Y: 31
 					Width: 220
 					Height: 220
@@ -267,5 +274,6 @@ Container@MENU_BACKGROUND:
 							Width: 200
 							Height: 200
 		Container@PLAYER_PROFILE_CONTAINER:
+			Logic: LoadLocalPlayerProfileLogic
 			X: 31
 			Y: 31

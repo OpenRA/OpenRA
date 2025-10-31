@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -30,16 +29,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxMoveDelay = 0;
 
 		[Desc("The terrain types that this actor should avoid wandering on to.")]
-		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> AvoidTerrainTypes = [];
 
 		public override object Create(ActorInitializer init) { return new Wanders(init.Self, this); }
 	}
 
 	public class Wanders : ConditionalTrait<WandersInfo>, INotifyIdle, INotifyBecomingIdle
 	{
-		readonly Actor self;
 		readonly WandersInfo info;
-		IResolveOrder move;
+		readonly IMoveInfo moveInfo;
+		protected readonly IMove Move;
 
 		int countdown;
 		int ticksIdle;
@@ -48,17 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 		public Wanders(Actor self, WandersInfo info)
 			: base(info)
 		{
-			this.self = self;
 			this.info = info;
 			effectiveMoveRadius = info.WanderMoveRadius;
 			countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
-		}
-
-		protected override void Created(Actor self)
-		{
-			move = self.Trait<IMove>() as IResolveOrder;
-
-			base.Created(self);
+			Move = self.Trait<IMove>();
+			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 		}
 
 		protected virtual void OnBecomingIdle(Actor self)
@@ -79,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--countdown > 0)
 				return;
 
-			var targetCell = PickTargetLocation();
+			var targetCell = PickTargetLocation(self);
 			if (targetCell.HasValue)
 				DoAction(self, targetCell.Value);
 		}
@@ -89,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			TickIdle(self);
 		}
 
-		CPos? PickTargetLocation()
+		CPos? PickTargetLocation(Actor self)
 		{
 			var target = self.CenterPosition + new WVec(0, -1024 * effectiveMoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255)));
 			var targetCell = self.World.Map.CellContaining(target);
@@ -119,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void DoAction(Actor self, CPos targetCell)
 		{
-			move.ResolveOrder(self, new Order("Move", self, Target.FromCell(self.World, targetCell), false));
+			self.QueueActivity(Move.MoveTo(targetCell, targetLineColor: moveInfo.GetTargetLineColor()));
 		}
 	}
 }

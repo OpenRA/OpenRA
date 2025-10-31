@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,14 +17,17 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.Player)]
+	[IncludeStaticFluentReferences(typeof(DeveloperMode))]
 	[Desc("Attach this to the player actor.")]
 	public class DeveloperModeInfo : TraitInfo, ILobbyOptions
 	{
+		[FluentReference]
 		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
-		public readonly string CheckboxLabel = "Debug Menu";
+		public readonly string CheckboxLabel = "checkbox-debug-menu.label";
 
+		[FluentReference]
 		[Desc("Tooltip description for the developer mode checkbox in the lobby.")]
-		public readonly string CheckboxDescription = "Enables cheats and developer commands";
+		public readonly string CheckboxDescription = "checkbox-debug-menu.description";
 
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
 		public readonly bool CheckboxEnabled = false;
@@ -64,7 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
+			yield return new LobbyBooleanOption(map, "cheats",
+				CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
 		public override object Create(ActorInitializer init) { return new DeveloperMode(this); }
@@ -72,6 +76,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
 	{
+		[FluentReference("cheat", "player", "suffix")]
+		const string CheatUsed = "notification-cheat-used";
+
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }
 
@@ -138,13 +145,9 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (enableAll)
 					{
-						self.Owner.Shroud.ExploreAll();
-
 						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 						self.Trait<PlayerResources>().ChangeCash(amount);
 					}
-					else
-						self.Owner.Shroud.ResetExploration();
 
 					self.Owner.Shroud.Disabled = DisableShroud;
 					if (self.World.LocalPlayer == self.Owner)
@@ -273,7 +276,10 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			TextNotificationsManager.Debug("Cheat used: {0} by {1}{2}", order.OrderString, self.Owner.PlayerName, debugSuffix);
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatUsed,
+				"cheat", order.OrderString,
+				"player", self.Owner.ResolvedPlayerName,
+				"suffix", debugSuffix));
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;

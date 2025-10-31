@@ -1,0 +1,92 @@
+EditorUndo: Z Ctrl
+	Description: hotkey-description-editorundo
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: Z Meta
+
+EditorRedo: Y Ctrl
+	Description: hotkey-description-editorredo
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: Z Meta, Shift
+		Linux: Z Ctrl, Shift
+
+EditorCopy: C Ctrl
+	Description: hotkey-description-editorcopy
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: C Meta
+
+EditorQuickSave: S Ctrl
+	Description: hotkey-description-editorquicksave
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: S Meta
+
+EditorPaste: V Ctrl
+	Description: hotkey-description-editorpaste
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: V Meta
+
+EditorDeleteSelection: DELETE
+	Description: hotkey-description-editordeleteselection
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: BACKSPACE
+
+EditorSelectTab: E
+	Description: hotkey-description-editorselecttab
+	Types: Editor
+	Contexts: editor
+
+EditorTilesTab: R
+	Description: hotkey-description-editortilestab
+	Types: Editor
+	Contexts: editor
+
+EditorOverlaysTab: T
+	Description: hotkey-description-editoroverlaystab
+	Types: Editor
+	Contexts: editor
+
+EditorActorsTab: Y
+	Description: hotkey-description-editoractorstab
+	Types: Editor
+	Contexts: editor
+
+EditorToolsTab: U
+	Description: hotkey-description-editortoolstab
+	Types: Editor
+	Contexts: editor
+
+EditorHistoryTab: I
+	Description: hotkey-description-editorhistorytab
+	Types: Editor
+	Contexts: editor
+
+EditorSettingsTab: O
+	Description: hotkey-description-editorsettingstab
+	Types: Editor
+	Contexts: editor
+
+EditorToggleGridOverlay: F1
+	Description: hotkey-description-editortogglegridoverlay
+	Types: Editor
+	Contexts: editor
+
+EditorToggleBuildableOverlay: F2
+	Description: hotkey-description-editortogglebuildableoverlay
+	Types: Editor
+	Contexts: editor
+
+EditorToggleMarkerOverlay: F3
+	Description: hotkey-description-editortogglemarkeroverlay
+	Types: Editor
+	Contexts: editor

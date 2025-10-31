@@ -3,17 +3,15 @@ Metadata:
 	Version: {DEV_VERSION}
 	Hidden: true
 
-Packages:
-	^EngineDir
+FileSystem: DefaultFileSystem
+	Packages:
+		^EngineDir
 
 Cursors:
 
 Chrome:
 
-Assemblies:
-	^BinDir|OpenRA.Mods.Common.dll
-	^BinDir|OpenRA.Mods.Cnc.dll
-	^BinDir|OpenRA.Mods.D2k.dll
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll, OpenRA.Mods.D2k.dll
 
 ChromeLayout:
 
@@ -32,8 +30,6 @@ SpriteFormats:
 TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: DefaultSpriteSequence
-
-ModelSequenceFormat: PlaceholderModelSequence
 
 DiscordService:
 	ApplicationId: 699222659766026240

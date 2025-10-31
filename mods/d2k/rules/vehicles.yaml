@@ -2,16 +2,16 @@ mcv:
 	Inherits: ^Tank
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
-		Prerequisites: repair_pad, upgrade.heavy, ~techlevel.medium
+		Prerequisites: repair_pad, ~techlevel.medium
 		Queue: Armor
 		BuildPaletteOrder: 110
 		BuildDuration: 750
 		BuildDurationModifier: 100
-		Description: Deploys into another Construction Yard\n  Unarmed
+		Description: actor-mcv.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mobile Construction Vehicle
+		Name: actor-mcv.name
 	Selectable:
 		Class: mcv
 		DecorationBounds: 1344, 1344
@@ -19,6 +19,10 @@ mcv:
 		HP: 45000
 	Armor:
 		Type: light
+	Encyclopedia:
+		Description: actor-mcv.encyclopedia
+		Order: 180
+		Category: Units
 	Mobile:
 		Speed: 31
 	RevealsShroud:
@@ -26,7 +30,7 @@ mcv:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	Transforms:
@@ -35,6 +39,7 @@ mcv:
 		Offset: -1,-1
 		TransformSounds: BUILD1.WAV
 		NoTransformNotification: CannotDeploy
+		NoTransformTextNotification: notification-cannot-deploy-here
 	SpawnActorOnDeath:
 		Actor: mcv.husk
 		OwnerType: InternalName
@@ -45,7 +50,6 @@ mcv:
 		Step: 50
 		Delay: 3
 		StartIfBelow: 50
-	-RevealOnFire:
 
 harvester:
 	Inherits: ^Tank
@@ -56,39 +60,47 @@ harvester:
 		BuildPaletteOrder: 10
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Collects Spice for processing\n  Unarmed
+		Description: actor-harvester.description
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Spice Harvester
+		Name: actor-harvester.name
 	Selectable:
 		Class: harvester
 		DecorationBounds: 1344, 1344
 	Harvester:
-		Capacity: 28
 		HarvestFacings: 8
 		Resources: Spice
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 15
+		EmptyCondition: harvester-empty
+	StoresResources:
+		Capacity: 28
+		Resources: Spice
+	DockClientManager:
 	CarryableHarvester:
 	Health:
 		HP: 45000
 	Armor:
 		Type: harvester
+	Encyclopedia:
+		Description: actor-harvester.encyclopedia
+		Order: 130
+		Category: Units
 	Mobile:
 		Speed: 43
 	RevealsShroud:
 		Range: 3c768
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: harvester.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+		RequiresCondition: harvester-empty
 	WithHarvestOverlay:
-		Palette: effect50alpha
 	WithDockingAnimation:
 	AttractsWorms:
 		Intensity: 700
@@ -96,12 +108,22 @@ harvester:
 		Step: 50
 		Delay: 3
 		StartIfBelow: 50
-	-RevealOnFire:
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 1, 4
 		RequiresSelection: true
 		PipCount: 7
+	-SpeedMultiplier@HEAVYDAMAGE:
+	FireProjectilesOnDeath@ShrapnelNotEmpty:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 3, 5
+		Range: 1c0, 6c0
+		RequiresCondition: !harvester-empty
+	FireProjectilesOnDeath@throwSpice:
+		Weapons: SpiceExplosion
+		Pieces: 1, 3
+		Range: 1c0, 5c0
+		RequiresCondition: !harvester-empty
 
 trike:
 	Inherits: ^Vehicle
@@ -113,11 +135,11 @@ trike:
 		Prerequisites: ~light.trike
 		BuildDuration: 225
 		BuildDurationModifier: 100
-		Description: Fast scout\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: actor-trike.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Trike
+		Name: actor-trike.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Selectable:
@@ -126,21 +148,23 @@ trike:
 		HP: 9000
 	Armor:
 		Type: wood
+	Encyclopedia:
+		Description: actor-trike.encyclopedia
+		Order: 90
+		Category: Units
 	Mobile:
 		TurnSpeed: 40
 		Speed: 128
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c512
 	WithMuzzleOverlay:
-	Armament@damage:
+	Armament:
 		Weapon: HMG
-		LocalOffset: 180,0,110
-	Armament@muzzle:
-		Weapon: HMG_muzzle
-		LocalOffset: -544,0,0
+		LocalOffset: 100,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
-	Explodes:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
@@ -156,11 +180,11 @@ quad:
 		BuildPaletteOrder: 20
 		BuildDuration: 321
 		BuildDurationModifier: 100
-		Description: Missile Scout\n  Strong vs Vehicles\n  Weak vs Infantry
+		Description: actor-quad.description
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Missile Quad
+		Name: actor-quad.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -175,8 +199,13 @@ quad:
 	Armament:
 		Weapon: Rocket
 		LocalOffset: 128,64,64, 128,-64,64
+	Encyclopedia:
+		Description: actor-quad.encyclopedia
+		Order: 110
+		Category: Units
 	AttackFrontal:
-	Explodes:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
@@ -192,21 +221,25 @@ siege_tank:
 		Queue: Armor
 		Prerequisites: upgrade.heavy, ~techlevel.medium
 		BuildPaletteOrder: 50
-		BuildDuration: 375
+		BuildDuration: 475
 		BuildDurationModifier: 100
-		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
+		Description: actor-siege-tank.description
 	Valued:
-		Cost: 700
+		Cost: 800
 	Tooltip:
-		Name: Siege Tank
+		Name: actor-siege-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 12000
+		HP: 11500
 	Armor:
 		Type: light
+	Encyclopedia:
+		Description: actor-siege-tank.encyclopedia
+		Order: 170
+		Category: Units
 	Mobile:
-		Speed: 43
+		Speed: 40
 		TurnSpeed: 12
 	RevealsShroud:
 		Range: 6c768
@@ -220,11 +253,14 @@ siege_tank:
 		LocalOffset: 512,0,320
 		MuzzleSequence: muzzle
 	AttackFrontal:
+		FacingTolerance: 0
+		ForceFireIgnoresActors: True
+		TargetFrozenActors: True
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
-		Weapon: UnitExplodeMed
-		EmptyWeapon: UnitExplodeMed
+	FireWarheadsOnDeath:
+		Weapon: SiegeExplode
+		EmptyWeapon: SiegeExplode
 	AutoTarget:
 		InitialStanceAI: Defend
 	Selectable:
@@ -235,13 +271,17 @@ siege_tank:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
+	FireProjectilesOnDeath:
+		Weapons: Debris3, Debris
+		Pieces: 0,2
+		Range: 2c0, 3c0
 
 missile_tank:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Tooltip:
-		Name: Missile Tank
+		Name: actor-missile-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -250,25 +290,32 @@ missile_tank:
 		BuildPaletteOrder: 60
 		BuildDuration: 512
 		BuildDurationModifier: 100
-		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings, Aircraft\n  Weak vs Infantry
+		Description: actor-missile-tank.description
 	Valued:
 		Cost: 900
 	Mobile:
-		Speed: 64
+		Speed: 60
 		TurnSpeed: 20
 	Health:
 		HP: 13000
 	Armor:
 		Type: wood
+	Encyclopedia:
+		Description: actor-missile-tank.encyclopedia
+		Order: 190
+		Category: Units
 	RevealsShroud:
 		Range: 6c768
 	Armament:
 		Weapon: mtank_pri
 		LocalOffset: -128,128,171, -128,-128,171
 	AttackFrontal:
+		FacingTolerance: 0
+		ForceFireIgnoresActors: True
+		TargetFrozenActors: True
 	AutoTarget:
 		InitialStanceAI: Defend
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	Selectable:
@@ -279,6 +326,14 @@ missile_tank:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
+	FireProjectilesOnDeath@02:
+		Weapons: Debris3, Debris
+		Pieces: 0,2
+		Range: 2c0, 3c0
+	FireProjectilesOnDeath@03:
+		Weapons: DebrisMissile
+		Pieces: 0,2
+		Range: 4c0, 6c0
 
 sonic_tank:
 	Inherits: ^Vehicle
@@ -288,13 +343,13 @@ sonic_tank:
 		Queue: Armor
 		BuildPaletteOrder: 100
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
-		BuildDuration: 562
+		BuildDuration: 600
 		BuildDurationModifier: 100
-		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-sonic-tank.description
 	Valued:
-		Cost: 1000
+		Cost: 1100
 	Tooltip:
-		Name: Sonic Tank
+		Name: actor-sonic-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -309,8 +364,13 @@ sonic_tank:
 	Armament:
 		Weapon: Sound
 		LocalOffset: 600,0,427
+	Encyclopedia:
+		Description: actor-sonic-tank.encyclopedia
+		Order: 200
+		Category: Units
 	AttackFrontal:
-	Explodes:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -330,11 +390,11 @@ devastator:
 		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery
+		Description: actor-devastator.description
 	Valued:
-		Cost: 1050
+		Cost: 1200
 	Tooltip:
-		Name: Devastator
+		Name: actor-devastator.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -346,19 +406,24 @@ devastator:
 		Speed: 31
 		Locomotor: devastator
 		RequiresCondition: !overload
-		PauseOnCondition: notmobile
+		PauseOnCondition: notmobile || being-demolished
 	AutoCarryable:
 		RequiresCondition: !overload
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c512
 	Armament:
 		Weapon: DevBullet
 		LocalOffset: 640,0,32
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-devastator.encyclopedia
+		Order: 220
+		Category: Units
 	AttackFrontal:
+		FacingTolerance: 0
 	WithMuzzleOverlay:
 		IgnoreOffset: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 		RequiresCondition: !overload
@@ -366,13 +431,15 @@ devastator:
 		Actor: devastator.husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	Explodes@OVERLOAD:
+		RequiresCondition: !meltdown
+	FireWarheadsOnDeath@OVERLOAD:
 		Weapon: PlasmaExplosion
 		EmptyWeapon: PlasmaExplosion
 		RequiresCondition: meltdown
 	GrantConditionOnDeploy@REACTOR:
 		DeployedCondition: overload
 		PauseOnCondition: overload
+		RequiresCondition: !unit-captured
 	WithIdleOverlay@OVERLOAD:
 		Sequence: active
 		RequiresCondition: overload
@@ -380,17 +447,30 @@ devastator:
 		Sequence: active-2
 		RequiresCondition: overload
 	KillsSelf@MELTDOWN:
-		Delay: 240
+		Delay: 150
 		RequiresCondition: overload
 		GrantsCondition: meltdown
+	AmbientSound@onMeltDown:
+		SoundFiles: DEVASTATORMELTDOWN.WAV
+		RequiresCondition: overload
+		Interval: 250
 	AttractsWorms:
 		Intensity: 700
 	ChangesHealth:
-		Step: 50
+		Step: 40
 		Delay: 3
 		StartIfBelow: 50
 	Selectable:
 		DecorationBounds: 1408, 1216, 0, 0
+	FireProjectilesOnDeath@OnMeldown:
+		Weapons: Debris2, Debris3, Debris4
+		Pieces: 7, 15
+		Range: 3c512, 6c0
+		RequiresCondition: meltdown
+	FireProjectilesOnDeath@standart:
+		Weapons: Debris, ExplosiveDebris
+		Pieces: 1, 2
+		RequiresCondition: !meltdown
 
 raider:
 	Inherits: ^Vehicle
@@ -400,34 +480,36 @@ raider:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~light.raider
-		BuildDuration: 225
+		BuildDuration: 255
 		BuildDurationModifier: 100
-		Description: Improved Scout\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
+		Description: actor-raider.description
 	Valued:
-		Cost: 350
+		Cost: 330
 	Tooltip:
-		Name: Raider Trike
+		Name: actor-raider.name
+	Encyclopedia:
+		Description: actor-raider.encyclopedia
+		Order: 100
+		Category: Units
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 10000
+		HP: 9200
 	Armor:
 		Type: wood
 	Mobile:
 		TurnSpeed: 40
-		Speed: 149
+		Speed: 140
 	RevealsShroud:
 		Range: 4c768
 	WithMuzzleOverlay:
-	Armament@damage:
+	Armament:
 		Weapon: HMGo
-		LocalOffset: 170,0,0
-	Armament@muzzle:
-		Weapon: HMGo_muzzle
-		LocalOffset: 170,0,0
 		MuzzleSequence: muzzle
+		LocalOffset: 100,0,0
 	AttackFrontal:
-	Explodes:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
@@ -438,24 +520,29 @@ stealth_raider:
 	Buildable:
 		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
 		BuildPaletteOrder: 30
-		BuildDuration: 225
+		BuildDuration: 275
 		BuildDurationModifier: 100
-		Description: Invisible Raider Trike\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
+		Description: actor-stealth-raider.description
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Stealth Raider Trike
+		Name: actor-stealth-raider.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
+	Health:
+		HP: 10000
+	Encyclopedia:
+		Description: actor-stealth-raider.encyclopedia
+		Order: 120
+		Category: Units
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
@@ -464,11 +551,11 @@ stealth_raider:
 deviator:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@AUTOTARGET: ^AutoTargetVehicleAssaultMove
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Deviator
+		Name: actor-deviator.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -477,28 +564,33 @@ deviator:
 		Prerequisites: ~heavy.ordos, research_centre, ~techlevel.high
 		BuildDuration: 562
 		BuildDurationModifier: 100
-		Description: Fires a warhead which changes\nthe allegiance of enemy vehicles
+		Description: actor-deviator.description
 	Mobile:
 		TurnSpeed: 12
 		Speed: 53
 	Health:
-		HP: 11000
+		HP: 12500
 	Armor:
 		Type: wood
+	Encyclopedia:
+		Description: actor-deviator.encyclopedia
+		Order: 210
+		Category: Units
 	RevealsShroud:
-		Range: 4c768
+		Range: 6c0
 	Armament:
 		Weapon: DeviatorMissile
 		LocalOffset: -299,0,85
 	AttackFrontal:
+		FacingTolerance: 0
 	AutoTarget:
 		InitialStanceAI: Defend
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: deviator.husk
-		OwnerType: InternalName
+		OwnerType: Victim
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
@@ -512,15 +604,13 @@ deviator:
 		BuildPaletteOrder: 40
 		BuildDuration: 432
 		BuildDurationModifier: 100
-		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry
+		Description: meta-combat-tank-description
 	Valued:
 		Cost: 700
-	Tooltip:
-		Name: Combat Tank
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 21000
+		HP: 22000
 	Armor:
 		Type: heavy
 	Mobile:
@@ -540,7 +630,7 @@ deviator:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	Selectable:
@@ -550,9 +640,19 @@ deviator:
 	SpawnActorOnDeath:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	FireProjectilesOnDeath:
+		Weapons: Debris, Debris2, Debris3
+		Pieces: 0, 2
+		Range: 2c0, 4c0
 
 combat_tank_a:
 	Inherits: ^combat_tank
+	Tooltip:
+		Name: actor-combat-tank-a.name
+	Encyclopedia:
+		Description: actor-combat-tank-a.encyclopedia
+		Order: 140
+		Category: Units
 	Buildable:
 		Prerequisites: ~heavy.atreides_combat
 	Armament:
@@ -562,6 +662,12 @@ combat_tank_a:
 
 combat_tank_h:
 	Inherits: ^combat_tank
+	Tooltip:
+		Name: actor-combat-tank-h.name
+	Encyclopedia:
+		Description: actor-combat-tank-h.encyclopedia
+		Order: 160
+		Category: Units
 	Buildable:
 		Prerequisites: ~heavy.harkonnen_combat
 	Armament:
@@ -569,21 +675,27 @@ combat_tank_h:
 	Mobile:
 		Speed: 64
 	Health:
-		HP: 27000
+		HP: 28500
 	SpawnActorOnDeath:
 		Actor: combat_tank_h.husk
 
 combat_tank_o:
 	Inherits: ^combat_tank
+	Tooltip:
+		Name: actor-combat-tank-o.name
 	Buildable:
 		Prerequisites: ~heavy.ordos_combat
 	Turreted:
 		TurnSpeed: 20
+	Encyclopedia:
+		Description: actor-combat-tank-o.encyclopedia
+		Order: 150
+		Category: Units
 	Armament:
 		Weapon: 80mm_O
 	Mobile:
 		Speed: 85
 	Health:
-		HP: 18000
+		HP: 19000
 	SpawnActorOnDeath:
 		Actor: combat_tank_o.husk

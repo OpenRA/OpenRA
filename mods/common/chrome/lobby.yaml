@@ -1,18 +1,25 @@
 Background@SERVER_LOBBY:
 	Logic: LobbyLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+		ChatTemplates:
+			Chat: CHAT_LINE_TEMPLATE
+			Join: SYSTEM_LINE_TEMPLATE
+			Leave: SYSTEM_LINE_TEMPLATE
+			System: SYSTEM_LINE_TEMPLATE
+			Mission: CHAT_LINE_TEMPLATE
+			Feedback: TRANSIENT_LINE_TEMPLATE
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 900
 	Height: 600
 	Children:
 		Label@SERVER_NAME:
 			Y: 16
 			Align: Center
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
 		Container@MAP_PREVIEW_ROOT:
-			X: PARENT_RIGHT - 20 - WIDTH
+			X: PARENT_WIDTH - 20 - WIDTH
 			Y: 67
 			Width: 174
 			Height: 250
@@ -22,7 +29,14 @@ Background@SERVER_LOBBY:
 			Width: 185
 			Height: 25
 			Font: Bold
-			Text: Slot Admin
+			Text: dropdownbutton-server-lobby-slots
+		Button@RESET_OPTIONS_BUTTON:
+			X: 20
+			Y: 291
+			Width: 185
+			Height: 25
+			Font: Bold
+			Text: button-server-lobby-reset-options
 		Container@SKIRMISH_TABS:
 			X: 695 - WIDTH
 			Width: 486
@@ -33,21 +47,21 @@ Background@SERVER_LOBBY:
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: Players
+					Text: button-skirmish-tabs-players-tab
 				Button@OPTIONS_TAB:
 					X: 162
 					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: Options
+					Text: button-skirmish-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 2*162
+					X: 2 * 162
 					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: Music
+					Text: label-music-title
 		Container@MULTIPLAYER_TABS:
 			X: 695 - WIDTH
 			Width: 486
@@ -58,100 +72,78 @@ Background@SERVER_LOBBY:
 					Width: 121
 					Height: 31
 					Font: Bold
-					Text: Players
+					Text: button-multiplayer-tabs-players-tab
 				Button@OPTIONS_TAB:
 					X: 121
 					Y: 285
 					Width: 122
 					Height: 31
 					Font: Bold
-					Text: Options
+					Text: button-multiplayer-tabs-options-tab
 				Button@MUSIC_TAB:
 					X: 243
 					Y: 285
 					Width: 121
 					Height: 31
 					Font: Bold
-					Text: Music
+					Text: label-music-title
 				Button@SERVERS_TAB:
 					X: 364
 					Y: 285
 					Width: 122
 					Height: 31
 					Font: Bold
-					Text: Servers
+					Text: button-multiplayer-tabs-servers-tab
 		Container@TOP_PANELS_ROOT:
 			X: 20
 			Y: 67
 			Width: 675
 			Height: 219
 		Button@CHANGEMAP_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
+			X: PARENT_WIDTH - WIDTH - 20
 			Y: 291
 			Width: 174
 			Height: 25
-			Text: Change Map
+			Text: button-server-lobby-changemap
 			Font: Bold
 		Container@LOBBYCHAT:
 			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
-			Width: PARENT_RIGHT - 40
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: PARENT_WIDTH - 40
 			Height: 259
 			Children:
 				ScrollPanel@CHAT_DISPLAY:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 30
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 30
 					TopBottomSpacing: 2
 					ItemSpacing: 2
-					Children:
-						Container@CHAT_TEMPLATE:
-							X: 2
-							Width: PARENT_RIGHT - 27
-							Height: 16
-							Children:
-								Label@TIME:
-									X: 3
-									Width: 50
-									Height: 16
-									Shadow: True
-								Label@NAME:
-									X: 45
-									Width: 50
-									Height: 16
-									Shadow: True
-								Label@TEXT:
-									X: 55
-									Width: PARENT_RIGHT - 60
-									Height: 16
-									WordWrap: true
-									Shadow: True
 				Button@CHAT_MODE:
-					Y: PARENT_BOTTOM - HEIGHT
+					Y: PARENT_HEIGHT - HEIGHT
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: button-lobbychat-chat-mode.label
 					Font: Bold
-					Key: Tab SHIFT
-					TooltipText: Toggle chat mode
+					Key: ToggleChatMode
+					TooltipText: button-lobbychat-chat-mode.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
 					X: 55
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: PARENT_RIGHT - 260 - 55
+					Y: PARENT_HEIGHT - HEIGHT
+					Width: PARENT_WIDTH - 260 - 55
 					Height: 25
 		Button@START_GAME_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 150
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			X: PARENT_WIDTH - WIDTH - 150
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 120
 			Height: 25
-			Text: Start Game
+			Text: button-server-lobby-start-game
 			Font: Bold
 		Button@DISCONNECT_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 120
 			Height: 25
-			Text: Leave Game
+			Text: button-server-lobby-disconnect
 			Font: Bold
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:

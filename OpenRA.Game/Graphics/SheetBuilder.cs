@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	[Serializable]
 	public class SheetOverflowException : Exception
 	{
 		public SheetOverflowException(string message)
@@ -34,14 +33,15 @@ namespace OpenRA.Graphics
 	public sealed class SheetBuilder : IDisposable
 	{
 		public readonly SheetType Type;
-		readonly List<Sheet> sheets = new List<Sheet>();
+		readonly List<Sheet> sheets = [];
 		readonly Func<Sheet> allocateSheet;
 		readonly int margin;
-
-		Sheet current;
-		TextureChannel channel;
 		int rowHeight = 0;
 		int2 p;
+
+		public Sheet Current { get; private set; }
+		public TextureChannel CurrentChannel { get; private set; }
+		public IEnumerable<Sheet> AllSheets => sheets;
 
 		public static Sheet AllocateSheet(SheetType type, int sheetSize)
 		{
@@ -73,33 +73,37 @@ namespace OpenRA.Graphics
 
 		public SheetBuilder(SheetType t, Func<Sheet> allocateSheet, int margin = 1)
 		{
-			channel = t == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
+			CurrentChannel = t == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 			Type = t;
-			current = allocateSheet();
-			sheets.Add(current);
 			this.allocateSheet = allocateSheet;
 			this.margin = margin;
 		}
 
-		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset); }
-		public Sprite Add(byte[] src, SpriteFrameType type, Size size) { return Add(src, type, size, 0, float3.Zero); }
-		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset)
+		public Sprite Add(ISpriteFrame frame, bool premultiplied = false) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset, premultiplied); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size, bool premultiplied = false) { return Add(src, type, size, 0, float3.Zero, premultiplied); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset, bool premultiplied = false)
 		{
+			if (Current == null)
+			{
+				Current = allocateSheet();
+				sheets.Add(Current);
+			}
+
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
-				return new Sprite(current, Rectangle.Empty, 0, spriteOffset, channel, BlendMode.Alpha);
+				return new Sprite(Current, Rectangle.Empty, 0, spriteOffset, CurrentChannel, BlendMode.Alpha);
 
 			var rect = Allocate(size, zRamp, spriteOffset);
-			Util.FastCopyIntoChannel(rect, src, type);
-			current.CommitBufferedData();
+			Util.FastCopyIntoChannel(rect, src, type, premultiplied);
+			Current.CommitBufferedData();
 			return rect;
 		}
 
 		public Sprite Add(Png src, float scale = 1f)
 		{
-			var rect = Allocate(new Size(src.Width, src.Height),  scale);
+			var rect = Allocate(new Size(src.Width, src.Height), scale);
 			Util.FastCopyIntoSprite(rect, src);
-			current.CommitBufferedData();
+			Current.CommitBufferedData();
 			return rect;
 		}
 
@@ -115,7 +119,13 @@ namespace OpenRA.Graphics
 		public Sprite Allocate(Size imageSize, float scale = 1f) { return Allocate(imageSize, 0, float3.Zero, scale); }
 		public Sprite Allocate(Size imageSize, float zRamp, in float3 spriteOffset, float scale = 1f)
 		{
-			if (imageSize.Width + p.X + margin > current.Size.Width)
+			if (Current == null)
+			{
+				Current = allocateSheet();
+				sheets.Add(Current);
+			}
+
+			if (imageSize.Width + p.X + margin > Current.Size.Width)
 			{
 				p = new int2(0, p.Y + rowHeight + margin);
 				rowHeight = imageSize.Height;
@@ -124,32 +134,35 @@ namespace OpenRA.Graphics
 			if (imageSize.Height > rowHeight)
 				rowHeight = imageSize.Height;
 
-			if (p.Y + imageSize.Height + margin > current.Size.Height)
+			if (p.Y + imageSize.Height + margin > Current.Size.Height)
 			{
-				var next = NextChannel(channel);
+				var next = NextChannel(CurrentChannel);
 				if (next == null)
 				{
-					current.ReleaseBuffer();
-					current = allocateSheet();
-					sheets.Add(current);
-					channel = Type == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
+					var previous = Current;
+					Current = allocateSheet();
+
+					// Reuse the backing buffer between sheets where possible.
+					// This avoids allocating additional buffers which the GC must clean up.
+					previous.ReleaseBufferAndTryTransferTo(Current);
+
+					sheets.Add(Current);
+					CurrentChannel = Type == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 				}
 				else
-					channel = next.Value;
+					CurrentChannel = next.Value;
 
 				rowHeight = imageSize.Height;
 				p = int2.Zero;
 			}
 
-			var rect = new Sprite(current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha, scale);
+			var rect = new Sprite(
+				Current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height),
+				zRamp, spriteOffset, CurrentChannel, BlendMode.Alpha, scale);
 			p += new int2(imageSize.Width + margin, 0);
 
 			return rect;
 		}
-
-		public Sheet Current => current;
-		public TextureChannel CurrentChannel => channel;
-		public IEnumerable<Sheet> AllSheets => sheets;
 
 		public void Dispose()
 		{

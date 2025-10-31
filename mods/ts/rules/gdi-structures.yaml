@@ -5,11 +5,11 @@ GAPOWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~structures.gdi, ~techlevel.low
-		Description: Provides power for other structures.
+		Description: actor-gapowr.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: GDI Power Plant
+		Name: actor-gapowr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -83,22 +83,21 @@ GAPOWR:
 		Height: 48
 
 GAPOWR.SOCKET:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: GDI Power Plant socket
+		Name: actor-gapowr-socket-name
 
 GAPOWRUP:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 150
 	Tooltip:
-		Name: Power Turbine
+		Name: actor-gapowrup.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: gapowr.socket, ~structures.gdi, ~techlevel.medium
-		Description: Provides extra power generation.
+		Description: actor-gapowrup.description
 	Plug:
 		Type: powrup
 	Power:
@@ -112,11 +111,11 @@ GAPILE:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
-		Description: Produces infantry.
+		Description: actor-gapile.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: GDI Barracks
+		Name: actor-gapile.name
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -134,6 +133,9 @@ GAPILE:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -512,768,0
 		ExitCell: 1,2
@@ -205,14 +207,14 @@ GAWEAP:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: GDI War Factory
+		Name: actor-gaweap.name
 	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
-		Description: Produces vehicles.
+		Description: actor-gaweap.description
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
@@ -228,6 +230,9 @@ GAWEAP:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -280,12 +285,12 @@ GAHPAD:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Helipad
+		Name: actor-gahpad.name
 	Buildable:
 		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
-		Description: Produces, rearms and\nrepairs helicopters.
+		Description: actor-gahpad.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -303,6 +308,9 @@ GAHPAD:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
@@ -310,8 +318,11 @@ GAHPAD:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
-		PlayerExperience: 15
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
+		StartRepairingTextNotification: notification-repairing
+		FinishRepairingNotification: UnitRepaired
+		FinishRepairingTextNotification: notification-unit-repaired
 	ProductionBar:
 		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
@@ -339,12 +350,12 @@ GADEPT:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Service Depot
+		Name: actor-gadept.name
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
-		Description: Repairs vehicles.
+		Description: actor-gadept.description
 	Building:
 		Footprint: =+= x++ x+=
 		Dimensions: 3,3
@@ -357,12 +368,18 @@ GADEPT:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
-		PlayerExperience: 15
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
+		StartRepairingTextNotification: notification-repairing
+		FinishRepairingNotification: UnitRepaired
+		FinishRepairingTextNotification: notification-unit-repaired
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	WithIdleOverlay@LIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-light
@@ -413,6 +430,11 @@ GADEPT:
 		FactionImages:
 			gdi: gadept.gdi
 			nod: gadept.nod
+	GrantConditionOnHostDock:
+		Condition: serving
+		AfterDockDuration: 20
+	Sellable:
+		RequiresCondition: !serving && !build-incomplete && !being-demolished
 
 GARADR:
 	Inherits: ^Building
@@ -422,11 +444,11 @@ GARADR:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
+		Description: actor-garadr.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: GDI Radar
+		Name: actor-garadr.name
 	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -439,6 +461,7 @@ GARADR:
 	ProvidesRadar:
 		RequiresCondition: !disabled && !empdisable
 	InfiltrateForExploration:
+		PlayerExperience: 10
 	DetectCloaked:
 		Range: 10c0
 	RenderDetectionCircle:
@@ -465,11 +488,11 @@ GATECH:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
-		Description: Provides access to advanced GDI technologies.
+		Description: actor-gatech.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: GDI Tech Center
+		Name: actor-gatech.name
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -504,12 +527,12 @@ GAPLUG:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: GDI Upgrade Center
+		Name: actor-gaplug.name
 	Buildable:
 		BuildPaletteOrder: 110
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
-		Description: Can be upgraded for additional technology.
+		Description: actor-gaplug.description
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
@@ -540,10 +563,12 @@ GAPLUG:
 		EffectSequence: ionring
 		WeaponDelay: 0
 		ChargeInterval: 12750
-		Description: Ion Cannon
-		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		Name: actor-gaplug.ioncannonpower-name
+		Description: actor-gaplug.ioncannonpower-description
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
+		EndChargeTextNotification: notification-ion-cannon-ready
+		SelectTargetTextNotification: notification-select-target
 		DisplayRadarPing: True
 		CameraActor: camera
 	DropPodsPower:
@@ -551,9 +576,10 @@ GAPLUG:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.droppoda || plug.droppodb
 		Icon: droppods
-		Description: Drop Pods
-		LongDesc: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
+		Name: actor-gaplug.droppodspower-name
+		Description: actor-gaplug.droppodspower-description
 		SelectTargetSpeechNotification: SelectTarget
+		SelectTargetTextNotification: notification-select-target
 		DisplayRadarPing: true
 		ChargeInterval: 10000
 		UnitTypes: DPOD2E1, DPOD2E2
@@ -561,8 +587,8 @@ GAPLUG:
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
-		Description: Hunter Seeker
-		LongDesc: Releases a drone that will acquire and destroy an enemy target.
+		Name: actor-gaplug.produceactorpower-name
+		Description: actor-gaplug.produceactorpower-description
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker
@@ -675,28 +701,26 @@ GAPLUG:
 		Height: 48
 
 GAPLUG.SOCKET.IONCANNON:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: GDI Upgrade Center socket
+		Name: actor-gaplug-socket-ioncannon-name
 
 GAPLUG.SOCKET.HUNTERSEEKER:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: GDI Upgrade Center socket
+		Name: actor-gaplug-socket-hunterseeker-name
 
 GAPLUG2:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Seeker Control
+		Name: actor-gaplug2.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: gaplug.socket.hunterseeker, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the hunter-seeker droid.
+		Description: actor-gaplug2.description
 	Plug:
 		Type: plug.hunterseeker
 	Power:
@@ -707,12 +731,12 @@ GAPLUG3:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Ion Cannon Uplink
+		Name: actor-gaplug3.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
 		Prerequisites: gaplug.socket.ioncannon, gatech, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the Ion Cannon.
+		Description: actor-gaplug3.description
 	Plug:
 		Type: plug.ioncannon
 	Power:
@@ -723,13 +747,69 @@ GAPLUG4:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Drop Pod Node
+		Name: actor-gaplug4.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 180
 		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the Drop Pod Reinforcements.
+		Description: actor-gaplug4.description
 	Plug:
 		Type: plug.droppod
 	Power:
 		Amount: -20
+
+GAFIRE:
+	Inherits: ^Building
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^3x2Shape
+	Buildable:
+		BuildPaletteOrder: 190
+		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
+		Queue: Building
+		Description: actor-gafire.description
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: actor-gafire.name
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	Health:
+		HP: 100000
+	WithIdleOverlay@lights:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: true
+	WithIdleOverlay@lights-bright:
+		RequiresCondition: !build-incomplete && !empdisable && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithSwitchableOverlay@active-nobright:
+		RequiresCondition: !build-incomplete
+		EnabledSequence: active
+		SwitchingSequence: switching
+		DisabledSequence: disabled
+		PauseOnCondition: empdisable || disabled
+		Palette: player-nobright
+		IsPlayerPalette: true
+		SwitchingLevel: 20
+		SwitchingLevelOnSpawn: 20
+	WithSwitchableOverlay@active-bright:
+		RequiresCondition: !build-incomplete
+		EnabledSequence: active-bright
+		PauseOnCondition: empdisable || disabled
+		Palette: bright
+		IsDecoration: true
+		SwitchingLevel: 20
+		SwitchingLevelOnSpawn: 20
+	Power:
+		Amount: -100
+	ProvidesPrerequisite@buildingname:
+	RequiresBuildableArea:
+		AreaTypes: building
+	MustBeDestroyed:
+		RequiredForShortGame: false

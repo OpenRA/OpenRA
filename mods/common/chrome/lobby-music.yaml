@@ -1,36 +1,36 @@
 Container@LOBBY_MUSIC_BIN:
 	Logic: MusicPlayerLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Container@LABEL_CONTAINER:
 			Y: 0 - 24
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Children:
 				Label@MUSIC:
 					Width: 268
 					Height: 25
-					Text: Music
+					Text: label-music-title
 					Align: Center
 					Font: Bold
 				Label@TITLE:
 					X: 278
 					Width: 230
 					Height: 25
-					Text: Track
+					Text: label-container-title
 					Font: Bold
 				Label@LENGTH:
-					X: PARENT_RIGHT - 80
+					X: PARENT_WIDTH - 80
 					Height: 25
 					Width: 50
-					Text: Length
+					Text: label-music-controls-length
 					Font: Bold
 					Align: Right
 		Background@CONTROLS:
 			Background: dialog3
 			Width: 268
-			Height: PARENT_BOTTOM
+			Height: PARENT_HEIGHT
 			Children:
 				Label@MUTE_LABEL:
 					X: 45
@@ -40,17 +40,17 @@ Container@LOBBY_MUSIC_BIN:
 					Font: Small
 				Label@TITLE_LABEL:
 					Y: 46
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 					Font: Bold
 				Label@TIME_LABEL:
 					Y: 66
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 				Container@BUTTONS:
-					X: (PARENT_RIGHT - WIDTH) / 2
+					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 100
 					Width: 131
 					Children:
@@ -115,33 +115,33 @@ Container@LOBBY_MUSIC_BIN:
 					Width: 85
 					Height: 20
 					Font: Regular
-					Text: Shuffle
+					Text: checkbox-music-controls-shuffle
 				Checkbox@REPEAT:
-					X: PARENT_RIGHT - 15 - WIDTH
+					X: PARENT_WIDTH - 15 - WIDTH
 					Y: 150
 					Width: 70
 					Height: 20
 					Font: Regular
-					Text: Loop
+					Text: checkbox-music-controls-loop
 				Label@VOLUME_LABEL:
 					Y: 181
 					Width: 65
 					Height: 25
 					Align: Right
-					Text: Volume:
+					Text: label-music-controls-volume
 				ExponentialSlider@MUSIC_SLIDER:
 					X: 70
 					Y: 186
-					Width: PARENT_RIGHT - 80
+					Width: PARENT_WIDTH - 80
 					Height: 20
 					Ticks: 7
 		ScrollPanel@MUSIC_LIST:
 			X: 268
-			Width: PARENT_RIGHT - 268
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH - 268
+			Height: PARENT_HEIGHT
 			Children:
 				ScrollItem@MUSIC_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_WIDTH - 27
 					Height: 25
 					X: 2
 					Visible: false
@@ -149,36 +149,36 @@ Container@LOBBY_MUSIC_BIN:
 					Children:
 						LabelWithTooltip@TITLE:
 							X: 10
-							Width: PARENT_RIGHT - 50
+							Width: PARENT_WIDTH - 50
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LENGTH:
-							X: PARENT_RIGHT - 60
+							X: PARENT_WIDTH - 60
 							Width: 50
 							Height: 25
 							Align: Right
 		Container@NO_MUSIC_LABEL:
 			X: 268
-			Width: PARENT_RIGHT - 268
+			Width: PARENT_WIDTH - 268
 			Visible: false
 			Children:
 				Label@TITLE:
 					Y: 76
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 25
 					Font: Bold
 					Align: Center
-					Text: Music Not Installed
+					Text: label-no-music-title
 				Label@DESCA:
 					Y: 96
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 25
 					Align: Center
-					Text: The game music can be installed
+					Text: label-no-music-desc-a
 				Label@DESCB:
 					Y: 116
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 25
 					Align: Center
-					Text: from the "Manage Content" menu.
+					Text: label-no-music-desc-b

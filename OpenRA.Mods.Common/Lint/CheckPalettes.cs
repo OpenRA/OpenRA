@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckPalettes : ILintRulesPass, ILintServerMapPass
+	sealed class CheckPalettes : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
@@ -29,34 +29,33 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			var palettes = new List<string>();
 			var playerPalettes = new List<string>();
-			GetPalettes(emitError, rules, palettes, playerPalettes);
+			GetPalettes(rules, palettes, playerPalettes, emitError);
 
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
+					var fields = Utility.GetFields(traitInfo.GetType());
+					foreach (var field in fields)
 					{
+						var paletteReference = Utility.GetCustomAttributes<PaletteReferenceAttribute>(field, true).FirstOrDefault();
+						if (paletteReference == null)
+							continue;
+
 						var isPlayerPalette = false;
-
-						var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).FirstOrDefault();
-						if (paletteReference != null)
+						if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
 						{
-							if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
-							{
-								var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
-								isPlayerPalette = (bool)fieldInfo.GetValue(traitInfo);
-							}
-							else
-								isPlayerPalette = paletteReference.IsPlayerPalette;
+							var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
+							isPlayerPalette = (bool)fieldInfo.GetValue(traitInfo);
 						}
+						else
+							isPlayerPalette = paletteReference.IsPlayerPalette;
 
-						var references = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var references = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var reference in references)
 						{
 							if (string.IsNullOrEmpty(reference))
@@ -65,12 +64,12 @@ namespace OpenRA.Mods.Common.Lint
 							if (isPlayerPalette)
 							{
 								if (!playerPalettes.Contains(reference))
-									emitError($"Undefined player palette reference {reference} detected at {traitInfo} for {actorInfo.Key}");
+									emitError($"Undefined player palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Key}`");
 							}
 							else
 							{
 								if (!palettes.Contains(reference))
-									emitError($"Undefined palette reference {reference} detected at {traitInfo} for {actorInfo.Key}");
+									emitError($"Undefined palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Key}`");
 							}
 						}
 					}
@@ -83,24 +82,23 @@ namespace OpenRA.Mods.Common.Lint
 				if (projectileInfo == null)
 					continue;
 
-				var fields = projectileInfo.GetType().GetFields();
-				foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
+				var fields = Utility.GetFields(projectileInfo.GetType());
+				foreach (var field in fields)
 				{
+					var paletteReference = Utility.GetCustomAttributes<PaletteReferenceAttribute>(field, true).FirstOrDefault();
+					if (paletteReference == null)
+						continue;
+
 					var isPlayerPalette = false;
-
-					var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).First();
-					if (paletteReference != null)
+					if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
 					{
-						if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
-						{
-							var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
-							isPlayerPalette = (bool)fieldInfo.GetValue(projectileInfo);
-						}
-						else
-							isPlayerPalette = paletteReference.IsPlayerPalette;
+						var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
+						isPlayerPalette = (bool)fieldInfo.GetValue(projectileInfo);
 					}
+					else
+						isPlayerPalette = paletteReference.IsPlayerPalette;
 
-					var references = LintExts.GetFieldValues(projectileInfo, field, emitError);
+					var references = LintExts.GetFieldValues(projectileInfo, field);
 					foreach (var reference in references)
 					{
 						if (string.IsNullOrEmpty(reference))
@@ -109,35 +107,67 @@ namespace OpenRA.Mods.Common.Lint
 						if (isPlayerPalette)
 						{
 							if (!playerPalettes.Contains(reference))
-								emitError($"Undefined player palette reference {reference} detected at weapon {weaponInfo.Key}.");
+								emitError($"Undefined player palette reference `{reference}` detected at weapon `{weaponInfo.Key}`.");
 						}
 						else
 						{
 							if (!palettes.Contains(reference))
-								emitError($"Undefined palette reference {reference} detected at weapon {weaponInfo.Key}.");
+								emitError($"Undefined palette reference `{reference}` detected at weapon `{weaponInfo.Key}`.");
 						}
 					}
 				}
 			}
 		}
 
-		void GetPalettes(Action<string> emitError, Ruleset rules, List<string> palettes, List<string> playerPalettes)
+		static void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes, Action<string> emitError)
 		{
-			foreach (var actorInfo in rules.Actors)
+			// Palettes are only defined on the world actor.
+			var worldActorInfo = rules.Actors[SystemActors.World];
+			var tilesetPalettes = new List<(string Tileset, string PaletteName)>();
+			foreach (var traitInfo in worldActorInfo.TraitInfos<TraitInfo>())
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				var fields = Utility.GetFields(traitInfo.GetType());
+				foreach (var field in fields)
 				{
-					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<PaletteDefinitionAttribute>()))
+					var paletteDefinition = Utility.GetCustomAttributes<PaletteDefinitionAttribute>(field, true).FirstOrDefault();
+					if (paletteDefinition == null)
+						continue;
+
+					var values = LintExts.GetFieldValues(traitInfo, field);
+					foreach (var value in values)
 					{
-						var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).First();
-						var values = LintExts.GetFieldValues(traitInfo, field, emitError);
-						foreach (var value in values)
+						if (paletteDefinition.IsPlayerPalette)
 						{
-							if (paletteDefinition.IsPlayerPalette)
-								playerPalettes.Add(value);
+							if (playerPalettes.Contains(value))
+								emitError($"Duplicate player palette definition for palette name `{value}`.");
+
+							playerPalettes.Add(value);
+						}
+						else
+						{
+							// Tileset-specific palettes can share a name, so check combinations.
+							// NOTE: This does not check PaletteFromGimpOrJascFile!
+							if (traitInfo is ITilesetSpecificPaletteInfo tilesetSpecificPaletteInfo && tilesetSpecificPaletteInfo.Tileset != null)
+							{
+								var tilesetPalette = (tilesetSpecificPaletteInfo.Tileset, value);
+								if (tilesetPalettes.Contains(tilesetPalette))
+									emitError($"Duplicate palette definition for palette name `{value}`.");
+								else
+								{
+									tilesetPalettes.Add(tilesetPalette);
+
+									// Only add the basic palette name once.
+									if (!palettes.Contains(value))
+										palettes.Add(value);
+								}
+							}
 							else
+							{
+								if (palettes.Contains(value))
+									emitError($"Duplicate palette definition for palette name `{value}`.");
+
 								palettes.Add(value);
+							}
 						}
 					}
 				}

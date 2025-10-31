@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -38,9 +38,9 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	DestroySAMs = GDI.AddObjective("Destroy the SAM sites protecting the Obelisk.")
-	DestroyObelisk = GDI.AddObjective("Destroy the Obelisk.")
-	DestroyBiotechCenter = GDI.AddObjective("Destroy the biotech facility.")
+	DestroySAMs = AddPrimaryObjective(GDI, "destroy-obelisk-sams")
+	DestroyObelisk = AddPrimaryObjective(GDI, "destroy-obelisk")
+	DestroyBiotechCenter = AddPrimaryObjective(GDI, "destroy-biotech")
 
 	Trigger.OnAllKilled(SamSites, function()
 		AirSupport = Actor.Create("airstrike.proxy", true, { Owner = GDI })

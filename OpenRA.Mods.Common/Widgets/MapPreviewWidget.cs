@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(Session.Client client)
 		{
 			Color = client.Color;
-			PlayerName = client.Name;
+			PlayerName = client.IsBot ? FluentProvider.GetMessage(client.Name) : client.Name;
 			Team = client.Team;
 			Faction = client.Faction;
 			SpawnPoint = client.SpawnPoint;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(GameInformation.Player player)
 		{
 			Color = player.Color;
-			PlayerName = player.Name;
+			PlayerName = player.IsBot ? FluentProvider.GetMessage(player.Name) : player.Name;
 			Team = player.Team;
 			Faction = player.FactionId;
 			SpawnPoint = player.SpawnPoint;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(GameClient player, bool suppressFaction)
 		{
 			Color = player.Color;
-			PlayerName = player.Name;
+			PlayerName = player.IsBot ? FluentProvider.GetMessage(player.Name) : player.Name;
 			Team = player.Team;
 			Faction = !suppressFaction ? player.Faction : null;
 			SpawnPoint = player.SpawnPoint;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class MapPreviewWidget : Widget
 	{
-		static readonly int[] NoDisabledSpawnPoints = Array.Empty<int>();
+		static readonly int[] NoDisabledSpawnPoints = [];
 
 		public readonly bool IgnoreMouseInput = false;
 		public readonly bool ShowSpawnPoints = true;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int2 spawnLabelOffset;
 
 		public Func<MapPreview> Preview = () => null;
-		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => new Dictionary<int, SpawnOccupant>();
+		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => [];
 		public Func<IEnumerable<int>> DisabledSpawnPoints = () => NoDisabledSpawnPoints;
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public int TooltipSpawnIndex = -1;
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
 		}
 
-		public override Widget Clone() { return new MapPreviewWidget(this); }
+		public override MapPreviewWidget Clone() { return new MapPreviewWidget(this); }
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Odd rows are shifted right by 1px
 			if ((point.V & 1) == 1)
-				dx += 1;
+				dx++;
 
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
 		}
@@ -212,7 +212,13 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					if (occupied)
-						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), occupant.Color);
+						WidgetUtils.FillEllipseWithColor(
+							new Rectangle(
+								pos.X - offset.X + 1,
+								pos.Y - offset.Y + 1,
+								(int)sprite.Size.X - 2,
+								(int)sprite.Size.Y - 2),
+							occupant.Color);
 
 					WidgetUtils.DrawSprite(sprite, pos - offset);
 

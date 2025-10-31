@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,16 +11,29 @@
 
 using System;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SpawnSelectorTooltipLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string DisabledSpawn = "label-disabled-spawn";
+
+		[FluentReference]
+		const string AvailableSpawn = "label-available-spawn";
+
+		[FluentReference("team")]
+		const string TeamNumber = "label-team-name";
+
+		readonly CachedTransform<int, string> teamMessage;
+
 		[ObjectCreator.UseCtor]
-		public SpawnSelectorTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview, bool showUnoccupiedSpawnpoints)
+		public SpawnSelectorTooltipLogic(Widget widget, ModData modData,
+			TooltipContainerWidget tooltipContainer, MapPreviewWidget preview, bool showUnoccupiedSpawnpoints)
 		{
-			bool showTooltip = true;
+			var showTooltip = true;
 			widget.IsVisible = () => preview.TooltipSpawnIndex != -1 && showTooltip;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
@@ -36,6 +49,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
+			teamMessage = new CachedTransform<int, string>(t => FluentProvider.GetMessage(TeamNumber, "team", t));
+			var disabledSpawn = FluentProvider.GetMessage(DisabledSpawn);
+			var availableSpawn = FluentProvider.GetMessage(AvailableSpawn);
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -58,7 +74,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return;
 					}
 
-					labelText = preview.DisabledSpawnPoints().Contains(preview.TooltipSpawnIndex) ? "Disabled spawn" : "Available spawn";
+					labelText = preview.DisabledSpawnPoints().Contains(preview.TooltipSpawnIndex)
+						? disabledSpawn
+						: availableSpawn;
+
 					playerFaction = null;
 					playerTeam = 0;
 					widget.Bounds.Height = singleHeight;
@@ -75,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
-			team.GetText = () => $"Team {playerTeam}";
+			team.GetText = () => playerTeam > 0 ? teamMessage.Update(playerTeam) : "";
 			team.IsVisible = () => playerTeam > 0;
 		}
 	}

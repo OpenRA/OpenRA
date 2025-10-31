@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -51,7 +51,7 @@ SendGDIReinforcements = function()
 			if GDIReinforcementsLeft > 0 then
 				GDIReinforcementsLeft = GDIReinforcementsLeft - 1
 				Trigger.AfterDelay(DateTime.Seconds(5), function()
-					Media.DisplayMessage("APC squads in reserve: " .. GDIReinforcementsLeft, "Battlefield Control")
+					Media.DisplayMessage(UserInterface.GetFluentMessage("apcs-left", { ["apcs"] = GDIReinforcementsLeft }), UserInterface.GetFluentMessage("battlefield-control"))
 					SendGDIReinforcements()
 				end)
 			end
@@ -104,22 +104,23 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	GDIObjective = GDI.AddObjective("Retrieve the crate with the stolen rods.")
-	ReinforcementsObjective = GDI.AddObjective("Eliminate " .. KillsUntilReinforcements .. " Nod units for reinforcements.", "Secondary", false)
+	GDIObjective = AddPrimaryObjective(GDI, "retrieve-rods")
+	local eliminateReinforcements = UserInterface.GetFluentMessage("eliminate-reinforcements", { ["kills"] = KillsUntilReinforcements })
+	ReinforcementsObjective = AddSecondaryObjective(GDI, eliminateReinforcements)
 
 	SetupWorld()
 
 	Trigger.OnExitedFootprint(BhndTrigger, function(a, id)
-		if not bhndTrigger and a.Owner == GDI then
-			bhndTrigger = true
+		if not BhndTriggered and a.Owner == GDI then
+			BhndTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendHeli(NodHeli)
 		end
 	end)
 
 	Trigger.OnExitedFootprint(Atk1Trigger, function(a, id)
-		if not atk1Trigger and a.Owner == GDI then
-			atk1Trigger = true
+		if not Atk1Triggered and a.Owner == GDI then
+			Atk1Triggered = true
 			Trigger.RemoveFootprintTrigger(id)
 
 			Build(NodxUnits, false, function(actor)
@@ -131,8 +132,8 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(Atk2Trigger, function(a, id)
-		if not atk2Trigger and a.Owner == GDI then
-			atk2Trigger = true
+		if not Atk2Triggered and a.Owner == GDI then
+			Atk2Triggered = true
 			Trigger.RemoveFootprintTrigger(id)
 
 			Build(NodxUnits, false, function(actor)
@@ -144,24 +145,20 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(AutoTrigger, function(a, id)
-		if not autoTrigger and a.Owner == GDI then
-			autoTrigger = true
+		if not AutoTriggered and a.Owner == GDI then
+			AutoTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 
 			Build(AutoUnits, true, function(actor)
 				Trigger.OnKilled(actor, NodUnitKilled)
 				IdleHunt(actor)
 			end)
-
-			Trigger.AfterDelay(DateTime.Seconds(4), function()
-				IdleHunt(tank)
-			end)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(GDIHeliTrigger, function(a, id)
-		if not gdiHeliTrigger and a.Owner == GDI then
-			gdiHeliTrigger = true
+		if not GDIHeliTriggered and a.Owner == GDI then
+			GDIHeliTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			Reinforcements.ReinforceWithTransport(GDI, "tran", nil, { HeliEntry.Location, GDIHeliLZ.Location })
 		end

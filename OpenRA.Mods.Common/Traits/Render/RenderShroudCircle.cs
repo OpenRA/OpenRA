@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class RenderShroudCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo
+	sealed class RenderShroudCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Color of the circle.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Cyan);
@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
+			if (!EnabledByDefault)
+				return [];
+
 			var localRange = ai.TraitInfos<CreatesShroudInfo>()
 				.Where(csi => csi.EnabledByDefault)
 				.Select(csi => csi.Range)
@@ -50,34 +53,40 @@ namespace OpenRA.Mods.Common.Traits
 				BorderWidth);
 
 			var otherRangeRenderables = w.ActorsWithTrait<RenderShroudCircle>()
-				.SelectMany(a => a.Trait.RangeCircleRenderables(a.Actor, wr));
+				.SelectMany(a => a.Trait.RangeCircleRenderables(a.Actor));
 
 			return otherRangeRenderables.Append(localRangeRenderable);
 		}
 
-		public override object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderShroudCircle(this); }
 	}
 
-	class RenderShroudCircle : INotifyCreated, IRenderAnnotationsWhenSelected
+	sealed class RenderShroudCircle : ConditionalTrait<RenderShroudCircleInfo>, INotifyCreated, IRenderAnnotationsWhenSelected
 	{
 		readonly RenderShroudCircleInfo info;
 		WDist range;
 
-		public RenderShroudCircle(Actor self, RenderShroudCircleInfo info)
+		public RenderShroudCircle(RenderShroudCircleInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			range = self.TraitsImplementing<CreatesShroud>()
 				.Select(cs => cs.Info.Range)
 				.DefaultIfEmpty(WDist.Zero)
 				.Max();
+
+			base.Created(self);
 		}
 
-		public IEnumerable<IRenderable> RangeCircleRenderables(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RangeCircleRenderables(Actor self)
 		{
+			if (IsTraitDisabled)
+				yield break;
+
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
@@ -93,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RangeCircleRenderables(self, wr);
+			return RangeCircleRenderables(self);
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;

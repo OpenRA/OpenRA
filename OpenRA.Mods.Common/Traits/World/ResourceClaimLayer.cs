@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,28 +21,31 @@ namespace OpenRA.Mods.Common.Traits
 
 	public sealed class ResourceClaimLayer
 	{
-		readonly Dictionary<CPos, List<Actor>> claimByCell = new Dictionary<CPos, List<Actor>>(32);
-		readonly Dictionary<Actor, CPos> claimByActor = new Dictionary<Actor, CPos>(32);
+		readonly Dictionary<CPos, List<Actor>> claimByCell = new(32);
+		readonly Dictionary<Actor, CPos> claimByActor = new(32);
 
 		/// <summary>
 		/// Attempt to reserve the resource in a cell for the given actor.
 		/// </summary>
 		public bool TryClaimCell(Actor claimer, CPos cell)
 		{
-			var claimers = claimByCell.GetOrAdd(cell);
+			if (claimByCell.TryGetValue(cell, out var claimers))
+			{
+				// Clean up any stale claims
+				claimers.RemoveAll(a => a.IsDead);
 
-			// Clean up any stale claims
-			claimers.RemoveAll(a => a.IsDead);
-
-			// Prevent harvesters from the player or their allies fighting over the same cell
-			if (claimers.Any(c => c != claimer && claimer.Owner.IsAlliedWith(c.Owner)))
-				return false;
+				// Prevent harvesters from the player or their allies fighting over the same cell
+				if (claimers.Any(c => c != claimer && claimer.Owner.IsAlliedWith(c.Owner)))
+					return false;
+			}
 
 			// Remove the actor's last claim, if it has one
-			if (claimByActor.TryGetValue(claimer, out var lastClaim))
-				claimByCell.GetOrAdd(lastClaim).Remove(claimer);
+			if (claimByActor.TryGetValue(claimer, out var lastClaim) &&
+				claimByCell.TryGetValue(lastClaim, out var lastClaimers))
+				lastClaimers.Remove(claimer);
 
-			claimers.Add(claimer);
+			if (claimers == null)
+				claimByCell.Add(cell, claimers = []);
 			claimByActor[claimer] = cell;
 			return true;
 		}
@@ -52,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		public bool CanClaimCell(Actor claimer, CPos cell)
 		{
-			return !claimByCell.GetOrAdd(cell)
-				.Any(c => c != claimer && !c.IsDead && claimer.Owner.IsAlliedWith(c.Owner));
+			return !claimByCell.TryGetValue(cell, out var claimers) ||
+				!claimers.Any(c => c != claimer && !c.IsDead && claimer.Owner.IsAlliedWith(c.Owner));
 		}
 
 		/// <summary>
@@ -61,8 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		public void RemoveClaim(Actor claimer)
 		{
-			if (claimByActor.TryGetValue(claimer, out var lastClaim))
-				claimByCell.GetOrAdd(lastClaim).Remove(claimer);
+			if (claimByActor.TryGetValue(claimer, out var lastClaim) &&
+				claimByCell.TryGetValue(lastClaim, out var lastClaimers))
+				lastClaimers.Remove(claimer);
 
 			claimByActor.Remove(claimer);
 		}

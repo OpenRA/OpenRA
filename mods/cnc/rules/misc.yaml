@@ -20,7 +20,7 @@ CRATE:
 		SelectionShares: 5
 		Sequence: cloak
 		Condition: cloak-crate-collected
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 50
 		Units: mcv
@@ -38,20 +38,19 @@ CRATE:
 WCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Wooden Crate
+		Name: actor-wcrate-name
 	RenderSprites:
 		Image: wcrate
 
 SCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Steel Crate
+		Name: actor-scrate-name
 
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (multiplayer player starting point)
-	AlwaysVisible:
+		Name: actor-mpspawn-name
 	Immobile:
 		OccupiesSpace: false
 	WithSpriteBody:
@@ -66,8 +65,7 @@ mpspawn:
 waypoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (waypoint for scripted behavior)
-	AlwaysVisible:
+		Name: actor-waypoint-name
 	Immobile:
 		OccupiesSpace: false
 	WithSpriteBody:
@@ -81,6 +79,8 @@ fact.colorpicker:
 	Inherits: FACT
 	-Buildable:
 	-MapEditorData:
+	-BaseBuilding:
+	-Encyclopedia:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
@@ -88,8 +88,7 @@ fact.colorpicker:
 CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals area to owner)
-	AlwaysVisible:
+		Name: actor-camera-name
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 	BodyOrientation:
@@ -105,8 +104,7 @@ CAMERA:
 CAMERA.small:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals small area to owner)
-	AlwaysVisible:
+		Name: actor-camera-small-name
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
 		Image: camera
@@ -137,7 +135,7 @@ FLARE:
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
-		Name: Flare
+		Name: actor-flare-name
 		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1

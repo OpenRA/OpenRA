@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -43,58 +43,64 @@ namespace OpenRA
 		}
 	}
 
-	public sealed class ModelSequenceFormat : IGlobalModData
-	{
-		public readonly string Type;
-		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
-		public ModelSequenceFormat(MiniYaml yaml)
-		{
-			Type = yaml.Value;
-			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
-		}
-	}
-
 	public class ModMetadata
 	{
-		public string Title;
-		public string Version;
-		public string Website;
-		public string WebIcon32;
-		public string WindowTitle;
-		public bool Hidden;
+		// FieldLoader used here, must matching naming in YAML.
+#pragma warning disable IDE1006 // Naming Styles
+		[FluentReference]
+		public readonly string Title;
+		public readonly string Version;
+		public readonly string Website;
+		public readonly string WebIcon32;
+
+		[FluentReference(optional: true)]
+		public readonly string WindowTitle;
+		public readonly bool Hidden;
+#pragma warning restore IDE1006 // Naming Styles
+
+		public string TitleTranslated => FluentProvider.GetMessage(Title);
+		public string WindowTitleTranslated => WindowTitle != null ? FluentProvider.GetMessage(WindowTitle) : null;
 	}
 
-	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
-	public class Manifest : IDisposable
+	/// <summary>Describes what is to be loaded in order to run a mod.</summary>
+	public sealed class Manifest : IDisposable
 	{
 		public readonly string Id;
 		public readonly IReadOnlyPackage Package;
 		public readonly ModMetadata Metadata;
 		public readonly string[]
 			Rules, ServerTraits,
-			Sequences, ModelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Translations, TileSets,
+			Sequences, ModelSequences, Cursors, Chrome, ChromeLayout,
+			Weapons, Voices, Notifications, Music, FluentMessages, TileSets,
 			ChromeMetrics, MapCompatibility, Missions, Hotkeys;
 
-		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
+		public readonly MiniYaml FileSystem;
 		public readonly MiniYaml LoadScreen;
+		public readonly string DefaultOrderGenerator;
 
-		public readonly string[] SoundFormats = { };
-		public readonly string[] SpriteFormats = { };
-		public readonly string[] PackageFormats = { };
-		public readonly string[] VideoFormats = { };
+		public readonly string[] Assemblies = [];
+		public readonly string[] SoundFormats = [];
+		public readonly string[] SpriteFormats = [];
+		public readonly string[] PackageFormats = [];
+		public readonly string[] VideoFormats = [];
+		public readonly int FontSheetSize = 512;
+		public readonly int CursorSheetSize = 512;
+
+		// TODO: This should be controlled by a user-selected translation bundle!
+		public readonly string FluentCulture = "en";
+		public readonly bool AllowUnusedFluentMessagesInExternalPackages = true;
 
 		readonly string[] reservedModuleNames =
-		{
-			"Include", "Metadata", "Folders", "MapFolders", "Packages", "Rules",
+		[
+			"Include", "Metadata", "FileSystem", "MapFolders", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
-			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
-			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats"
-		};
+			"Voices", "Notifications", "Music", "FluentMessages", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
+			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
+			"RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "FontSheetSize", "CursorSheetSize"
+		];
 
-		readonly TypeDictionary modules = new TypeDictionary();
+		readonly TypeDictionary modules = [];
 		readonly Dictionary<string, MiniYaml> yaml;
 
 		bool customDataLoaded;
@@ -104,7 +110,8 @@ namespace OpenRA
 			Id = modId;
 			Package = package;
 
-			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml");
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), $"{package.Name}:mod.yaml", stringPool: stringPool).ToList();
 			for (var i = nodes.Count - 1; i >= 0; i--)
 			{
 				if (nodes[i].Key != "Include")
@@ -117,32 +124,31 @@ namespace OpenRA
 					throw new YamlException($"{nodes[i].Location}: File `{filename}` not found.");
 
 				nodes.RemoveAt(i);
-				nodes.InsertRange(i, MiniYaml.FromStream(contents, filename));
+				nodes.InsertRange(i, MiniYaml.FromStream(contents, $"{package.Name}:{filename}", stringPool: stringPool));
 			}
 
 			// Merge inherited overrides
-			yaml = new MiniYaml(null, MiniYaml.Merge(new[] { nodes })).ToDictionary();
+			yaml = new MiniYaml(null, MiniYaml.Merge([nodes])).ToDictionary();
 
 			Metadata = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 
 			// TODO: Use fieldloader
 			MapFolders = YamlDictionary(yaml, "MapFolders");
 
-			if (yaml.TryGetValue("Packages", out var packages))
-				Packages = packages.ToDictionary(x => x.Value);
+			if (!yaml.TryGetValue("FileSystem", out FileSystem))
+				throw new InvalidDataException("`FileSystem` section is not defined.");
 
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");
 			ModelSequences = YamlList(yaml, "ModelSequences");
 			Cursors = YamlList(yaml, "Cursors");
 			Chrome = YamlList(yaml, "Chrome");
-			Assemblies = YamlList(yaml, "Assemblies");
 			ChromeLayout = YamlList(yaml, "ChromeLayout");
 			Weapons = YamlList(yaml, "Weapons");
 			Voices = YamlList(yaml, "Voices");
 			Notifications = YamlList(yaml, "Notifications");
 			Music = YamlList(yaml, "Music");
-			Translations = YamlList(yaml, "Translations");
+			FluentMessages = YamlList(yaml, "FluentMessages");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			Missions = YamlList(yaml, "Missions");
@@ -156,22 +162,38 @@ namespace OpenRA
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string> { Id };
 
-			if (yaml.ContainsKey("SupportsMapsFrom"))
-				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
+			if (yaml.TryGetValue("SupportsMapsFrom", out var entry))
+				compat.AddRange(entry.Value.Split(',').Select(c => c.Trim()));
 
 			MapCompatibility = compat.ToArray();
 
-			if (yaml.ContainsKey("PackageFormats"))
-				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", yaml["PackageFormats"].Value);
+			if (yaml.TryGetValue("DefaultOrderGenerator", out entry))
+				DefaultOrderGenerator = entry.Value;
 
-			if (yaml.ContainsKey("SoundFormats"))
-				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", yaml["SoundFormats"].Value);
+			if (yaml.TryGetValue("Assemblies", out entry))
+				Assemblies = FieldLoader.GetValue<string[]>("Assemblies", entry.Value);
 
-			if (yaml.ContainsKey("SpriteFormats"))
-				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
+			if (yaml.TryGetValue("PackageFormats", out entry))
+				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", entry.Value);
 
-			if (yaml.ContainsKey("VideoFormats"))
-				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", yaml["VideoFormats"].Value);
+			if (yaml.TryGetValue("SoundFormats", out entry))
+				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", entry.Value);
+
+			if (yaml.TryGetValue("SpriteFormats", out entry))
+				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", entry.Value);
+
+			if (yaml.TryGetValue("VideoFormats", out entry))
+				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", entry.Value);
+
+			if (yaml.TryGetValue("AllowUnusedFluentMessagesInExternalPackages", out entry))
+				AllowUnusedFluentMessagesInExternalPackages =
+					FieldLoader.GetValue<bool>("AllowUnusedFluentMessagesInExternalPackages", entry.Value);
+
+			if (yaml.TryGetValue("FontSheetSize", out entry))
+				FontSheetSize = FieldLoader.GetValue<int>("FontSheetSize", entry.Value);
+
+			if (yaml.TryGetValue("CursorSheetSize", out entry))
+				CursorSheetSize = FieldLoader.GetValue<int>("CursorSheetSize", entry.Value);
 		}
 
 		public void LoadCustomData(ObjectCreator oc)
@@ -186,11 +208,11 @@ namespace OpenRA
 					throw new InvalidDataException($"`{kv.Key}` is not a valid mod manifest entry.");
 
 				IGlobalModData module;
-				var ctor = t.GetConstructor(new[] { typeof(MiniYaml) });
+				var ctor = t.GetConstructor([typeof(MiniYaml)]);
 				if (ctor != null)
 				{
 					// Class has opted-in to DIY initialization
-					module = (IGlobalModData)ctor.Invoke(new object[] { kv.Value });
+					module = (IGlobalModData)ctor.Invoke([kv.Value]);
 				}
 				else
 				{
@@ -205,20 +227,20 @@ namespace OpenRA
 			customDataLoaded = true;
 		}
 
-		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key, bool parsePaths = false)
+		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
 		{
-			if (!yaml.ContainsKey(key))
-				return new string[] { };
+			if (!yaml.TryGetValue(key, out var value))
+				return [];
 
-			return yaml[key].ToDictionary().Keys.ToArray();
+			return value.Nodes.Select(n => n.Key).ToArray();
 		}
 
 		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
-			if (!yaml.ContainsKey(key))
+			if (!yaml.TryGetValue(key, out var value))
 				return new Dictionary<string, string>();
 
-			return yaml[key].ToDictionary(my => my.Value);
+			return value.ToDictionary(my => my.Value);
 		}
 
 		public bool Contains<T>() where T : IGlobalModData
@@ -258,11 +280,11 @@ namespace OpenRA
 			}
 
 			IGlobalModData module;
-			var ctor = t.GetConstructor(new[] { typeof(MiniYaml) });
+			var ctor = t.GetConstructor([typeof(MiniYaml)]);
 			if (ctor != null)
 			{
 				// Class has opted-in to DIY initialization
-				module = (IGlobalModData)ctor.Invoke(new object[] { data.Value });
+				module = (IGlobalModData)ctor.Invoke([data.Value]);
 			}
 			else
 			{

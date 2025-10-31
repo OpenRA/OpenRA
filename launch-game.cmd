@@ -1,6 +1,6 @@
 @echo off
 title OpenRA
-for %%x in (%*) do (
+for /F "delims==\ " %%x in ("%*") do (
   if "%%~x" EQU "Game.Mod" (goto launch)
 )
 
@@ -17,10 +17,12 @@ echo.
 goto choosemod
 
 :launchmod
-bin\OpenRA.exe Engine.EngineDir=".." Game.Mod=%mod% %*
+cd %~dp0%
+bin\OpenRA.exe Engine.EngineDir=".." Engine.LaunchPath="%~dpf0" Game.Mod=%mod% %*
 goto end
 :launch
-bin\OpenRA.exe Engine.EngineDir=".." %*
+cd %~dp0%
+bin\OpenRA.exe Engine.EngineDir=".." Engine.LaunchPath="%~dpf0" %*
 
 :end
 if %errorlevel% neq 0 goto crashdialog

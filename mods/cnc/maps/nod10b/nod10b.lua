@@ -1,12 +1,11 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 if Difficulty == "easy" then
 	Rambo = "rmbo.easy"
@@ -37,9 +36,9 @@ DeliverCommando = function()
 	end)
 
 	Trigger.OnPlayerWon(Nod, function(Nod)
-        if not rambo.IsDead then
-            Nod.MarkCompletedObjective(KeepRamboAliveObjective)
-        end
+		if not rambo.IsDead then
+		    Nod.MarkCompletedObjective(KeepRamboAliveObjective)
+		end
 	end)
 end
 
@@ -53,10 +52,10 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	GDIObjective = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	WarFactoryObjective = Nod.AddPrimaryObjective("Destroy or capture the Weapons Factory.")
-	DestroyTanksObjective = Nod.AddPrimaryObjective("Destroy the Mammoth tanks in the R&D base.")
-	KeepRamboAliveObjective = Nod.AddObjective("Keep your Commando alive.", "Secondary", false)
+	GDIObjective = AddPrimaryObjective(GDI, "")
+	WarFactoryObjective = AddPrimaryObjective(Nod, "destroy-capture-warfactory")
+	DestroyTanksObjective = AddPrimaryObjective(Nod, "destroy-mammoth-tanks")
+	KeepRamboAliveObjective = AddSecondaryObjective(Nod, "keep-commando-alive")
 
 	Trigger.OnKilledOrCaptured(WeaponsFactory, function()
 		Nod.MarkCompletedObjective(WarFactoryObjective)
@@ -70,7 +69,7 @@ WorldLoaded = function()
 
 	Utils.Do(Mammoths, function(mammoth)
 		mammoth.Stance = "HoldFire"
-    end)
+	end)
 
 	Utils.Do(MediumTanks, function(tank)
 		Trigger.OnDamaged(tank, function()
@@ -85,7 +84,7 @@ WorldLoaded = function()
 				end
 			end)
 		end)
-    end)
+	end)
 
 	Utils.Do(Grenadiers, function(grenadier)
 		Trigger.OnDamaged(grenadier, function()
@@ -100,11 +99,11 @@ WorldLoaded = function()
 				end
 			end)
 		end)
-    end)
+	end)
 
 	Utils.Do(GDIBuildings, function(building)
 		RepairBuilding(GDI, building, 0.75)
-    end)
+	end)
 
 	Trigger.OnEnteredFootprint({ NorthEntrance.Location }, function(a, id)
 		if a.Owner == Nod then
@@ -126,7 +125,7 @@ WorldLoaded = function()
 
 	Utils.Do(Riflemen, function(rifleman)
 		rifleman.Patrol(RiflemenPatrolPath)
-    end)
+	end)
 
 	PatrollingMammoth.Patrol(MammothPatrolPath)
 end

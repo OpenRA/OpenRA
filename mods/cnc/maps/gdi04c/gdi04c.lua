@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,6 @@ GDIReinforcementsPart2 = { "e2", "e2", "e2", "e2", "e2" }
 TownAttackWave1 = { "bggy", "bggy" }
 TownAttackWave2 = { "ltnk", "ltnk" }
 TownAttackWave3 = { "e1", "e1", "e1", "e3", "e3", "e3" }
-TownAttackWpts = { waypoint1, waypoint2 }
 
 Civvie1Wpts = { CivvieWpts1, CivvieWpts2 }
 Civvie2Wpts = { CivvieWpts3, CivvieWpts1, CivvieWpts4, CivvieWpts5, CivvieWpts6, CivvieWpts7, CivvieWpts8, CivvieWpts9, CivvieWpts10, CivvieWpts11 }
@@ -41,7 +40,6 @@ end
 
 TownAttackAction = function(actor)
 	Trigger.OnIdle(actor, TownAttackersIdleAction)
-	FollowWaypoints(actor, TownAttackWpts)
 end
 
 AttackTown = function()
@@ -75,21 +73,21 @@ WorldLoaded = function()
 		GDI.MarkFailedObjective(DefendTown)
 	end)
 
-	NodObjective = Nod.AddPrimaryObjective("Destroy all GDI troops.")
-	DefendTown = GDI.AddPrimaryObjective("Defend the town of Białystok.")
-	EliminateNod = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	NodObjective = AddPrimaryObjective(Nod, "")
+	DefendTown = AddPrimaryObjective(GDI, "defend-bialystok")
+	EliminateNod = AddPrimaryObjective(GDI, "eliminate-nod")
 
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
-		if not townAttackTrigger and a.Owner == GDI then
-			townAttackTrigger = true
+		if not TownAttackTriggered and a.Owner == GDI then
+			TownAttackTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			AttackTown()
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(GDIReinforcementsTrigger, function(a, id)
-		if not gdiReinforcementsTrigger and a.Owner == GDI then
-			gdiReinforcementsTrigger = true
+		if not GDIReinforcementsTriggered and a.Owner == GDI then
+			GDIReinforcementsTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendGDIReinforcements()
 		end

@@ -3,6 +3,7 @@ World:
 		Scripts: oil-spill.lua
 	SpawnStartingUnits:
 		DropdownVisible: False
+		DropdownLocked: True
 	StartingUnits@mcvonly:
 		BaseActor: fcom
 
@@ -17,7 +18,7 @@ FCOM:
 		Produces: Building, Defense
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 25
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	WithBuildingRepairDecoration:
 		Image: allyrepair
@@ -53,7 +54,7 @@ OILB.Husk:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Husk (Oil Derrick)
+		Name: actor-oilb-husk-name
 	CaptureManager:
 	Capturable:
 		Types: building-husk
@@ -67,13 +68,13 @@ E6:
 	Captures@husk:
 		RequiresCondition: !global-reusable-engineers
 		CaptureTypes: building-husk
-		PlayerExperience: 25
+		PlayerExperience: 10
 		CaptureDelay: 200
 		EnterCursor: goldwrench
 	Captures@husk-reusable:
 		RequiresCondition: global-reusable-engineers
 		CaptureTypes: building-husk
-		PlayerExperience: 25
+		PlayerExperience: 10
 		CaptureDelay: 375
 		EnterCursor: goldwrench
 		ConsumedByCapture: False

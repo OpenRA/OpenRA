@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ namespace OpenRA.Platforms.Default
 			return defaultDevices.Concat(physicalDevices).ToArray();
 		}
 
-		class PoolSlot
+		sealed class PoolSlot
 		{
 			public bool IsActive;
 			public int FrameStarted;
@@ -49,9 +49,12 @@ namespace OpenRA.Platforms.Default
 		const int MaxInstancesPerFrame = 3;
 		const int GroupDistance = 2730;
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
-		const int PoolSize = 32;
 
-		readonly Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>(PoolSize);
+		// https://github.com/kcat/openal-soft/issues/580
+		// https://github.com/kcat/openal-soft/blob/b6aa73b26004afe63d83097f2f91ecda9bc25cb9/alc/alc.cpp#L3191-L3203
+		const int PoolSize = 256;
+
+		readonly Dictionary<uint, PoolSlot> sourcePool = new(PoolSize);
 		float volume = 1f;
 		IntPtr device;
 		IntPtr context;
@@ -65,15 +68,15 @@ namespace OpenRA.Platforms.Default
 			var devicesPtr = ALC10.alcGetString(IntPtr.Zero, type);
 			if (devicesPtr == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
 			{
-				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
-				return new string[0];
+				Log.Write("sound", $"Failed to query OpenAL device list using {label}");
+				return [];
 			}
 
 			var devices = new List<string>();
 			var buffer = new List<byte>();
 			var offset = 0;
 
-			while (true)
+			do
 			{
 				var b = Marshal.ReadByte(devicesPtr, offset++);
 				if (b != 0)
@@ -85,11 +88,8 @@ namespace OpenRA.Platforms.Default
 				// A null indicates termination of that string, so add that to our list.
 				devices.Add(Encoding.UTF8.GetString(buffer.ToArray()));
 				buffer.Clear();
-
-				// Two successive nulls indicates the end of the list.
-				if (Marshal.ReadByte(devicesPtr, offset) == 0)
-					break;
 			}
+			while (Marshal.ReadByte(devicesPtr, offset) != 0); // Two successive nulls indicates the end of the list.
 
 			return devices.ToArray();
 		}
@@ -103,7 +103,7 @@ namespace OpenRA.Platforms.Default
 			if (ALC11.alcIsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATION_EXT"))
 				return QueryDevices("ALC_ENUMERATION_EXT", ALC10.ALC_DEVICE_SPECIFIER);
 
-			return new string[] { };
+			return [];
 		}
 
 		internal static int MakeALFormat(int channels, int bits)
@@ -137,11 +137,10 @@ namespace OpenRA.Platforms.Default
 
 			for (var i = 0; i < PoolSize; i++)
 			{
-				var source = 0U;
-				AL10.alGenSources(1, out source);
+				AL10.alGenSources(1, out var source);
 				if (AL10.alGetError() != AL10.AL_NO_ERROR)
 				{
-					Log.Write("sound", "Failed generating OpenAL source {0}", i);
+					Log.Write("sound", $"Failed generating OpenAL source {i}");
 					return;
 				}
 
@@ -171,6 +170,15 @@ namespace OpenRA.Platforms.Default
 					freeSources.Add(freeSource);
 					AL10.alSourceRewind(freeSource);
 					AL10.alSourcei(freeSource, AL10.AL_BUFFER, 0);
+
+					// Make sure we can accurately determine the end of the original sound,
+					// even if the source is immediately reused.
+					sound.UnbindSource();
+
+					var slot = kv.Value;
+					slot.SoundSource = null;
+					slot.Sound = null;
+					slot.IsActive = false;
 				}
 			}
 
@@ -178,14 +186,6 @@ namespace OpenRA.Platforms.Default
 			{
 				source = 0;
 				return false;
-			}
-
-			foreach (var freeSource in freeSources)
-			{
-				var slot = sourcePool[freeSource];
-				slot.SoundSource = null;
-				slot.Sound = null;
-				slot.IsActive = false;
 			}
 
 			source = freeSources[0];
@@ -278,7 +278,7 @@ namespace OpenRA.Platforms.Default
 
 		public void PauseSound(ISound sound, bool paused)
 		{
-			if (sound == null)
+			if (sound == null || sound.Complete)
 				return;
 
 			var source = ((OpenAlSound)sound).Source;
@@ -291,7 +291,7 @@ namespace OpenRA.Platforms.Default
 				PauseSound(source, paused);
 		}
 
-		void PauseSound(uint source, bool paused)
+		static void PauseSound(uint source, bool paused)
 		{
 			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out var state);
 			if (paused)
@@ -345,6 +345,16 @@ namespace OpenRA.Platforms.Default
 			AL10.alListenerf(EFX.AL_METERS_PER_UNIT, .01f);
 		}
 
+		public void SetSoundLooping(bool looping, ISound sound)
+		{
+			((OpenAlSound)sound)?.SetLooping(looping);
+		}
+
+		public void SetSoundPosition(ISound sound, WPos position)
+		{
+			((OpenAlSound)sound)?.SetPosition(position);
+		}
+
 		~OpenAlSoundEngine()
 		{
 			Dispose(false);
@@ -358,7 +368,13 @@ namespace OpenRA.Platforms.Default
 
 		void Dispose(bool disposing)
 		{
-			StopAllSounds();
+			if (disposing)
+				StopAllSounds();
+
+			if (sourcePool.Count > 0)
+				AL10.alDeleteSources(PoolSize, sourcePool.Keys.ToArray());
+
+			sourcePool.Clear();
 
 			if (context != IntPtr.Zero)
 			{
@@ -375,13 +391,13 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class OpenAlSoundSource : ISoundSource
+	sealed class OpenAlSoundSource : ISoundSource
 	{
 		uint buffer;
 		bool disposed;
 
 		public uint Buffer => buffer;
-		public int SampleRate { get; private set; }
+		public int SampleRate { get; }
 
 		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
 		{
@@ -390,7 +406,7 @@ namespace OpenRA.Platforms.Default
 			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, byteCount, sampleRate);
 		}
 
-		protected virtual void Dispose(bool disposing)
+		void Dispose(bool _)
 		{
 			if (!disposed)
 			{
@@ -413,8 +429,10 @@ namespace OpenRA.Platforms.Default
 
 	class OpenAlSound : ISound
 	{
-		public readonly uint Source;
+		internal uint Source { get; private set; }
 		protected readonly float SampleRate;
+
+		bool done;
 
 		public OpenAlSound(uint source, bool looping, bool relative, WPos pos, float volume, int sampleRate, uint buffer)
 			: this(source, looping, relative, pos, volume, sampleRate)
@@ -439,16 +457,39 @@ namespace OpenRA.Platforms.Default
 			AL10.alSourcef(source, AL10.AL_MAX_DISTANCE, 136533);
 		}
 
+		internal void UnbindSource()
+		{
+			done = true;
+			Source = uint.MaxValue;
+		}
+
 		public float Volume
 		{
-			get { AL10.alGetSourcef(Source, AL10.AL_GAIN, out var volume); return volume; }
-			set => AL10.alSourcef(Source, AL10.AL_GAIN, value);
+			get
+			{
+				if (done)
+					return float.NaN;
+
+				AL10.alGetSourcef(Source, AL10.AL_GAIN, out var volume);
+				return volume;
+			}
+
+			set
+			{
+				if (done)
+					return;
+
+				AL10.alSourcef(Source, AL10.AL_GAIN, value);
+			}
 		}
 
 		public virtual float SeekPosition
 		{
 			get
 			{
+				if (done)
+					return float.NaN;
+
 				AL10.alGetSourcei(Source, AL11.AL_SAMPLE_OFFSET, out var sampleOffset);
 				return sampleOffset / SampleRate;
 			}
@@ -458,6 +499,9 @@ namespace OpenRA.Platforms.Default
 		{
 			get
 			{
+				if (done)
+					return true;
+
 				AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 				return state == AL10.AL_STOPPED;
 			}
@@ -465,11 +509,17 @@ namespace OpenRA.Platforms.Default
 
 		public void SetPosition(WPos pos)
 		{
+			if (done)
+				return;
+
 			AL10.alSource3f(Source, AL10.AL_POSITION, pos.X, pos.Y, pos.Z);
 		}
 
 		protected void StopSource()
 		{
+			if (done)
+				return;
+
 			AL10.alGetSourcei(Source, AL10.AL_SOURCE_STATE, out var state);
 			if (state == AL10.AL_PLAYING || state == AL10.AL_PAUSED)
 				AL10.alSourceStop(Source);
@@ -477,15 +527,26 @@ namespace OpenRA.Platforms.Default
 
 		public virtual void Stop()
 		{
+			if (done)
+				return;
+
 			StopSource();
 			AL10.alSourcei(Source, AL10.AL_BUFFER, 0);
 		}
+
+		public void SetLooping(bool looping)
+		{
+			if (done)
+				return;
+
+			AL10.alSourcei(Source, AL10.AL_LOOPING, looping ? AL10.AL_TRUE : AL10.AL_FALSE);
+		}
 	}
 
-	class OpenAlAsyncLoadSound : OpenAlSound
+	sealed class OpenAlAsyncLoadSound : OpenAlSound
 	{
 		static readonly byte[] SilentData = new byte[2];
-		readonly CancellationTokenSource cts = new CancellationTokenSource();
+		readonly CancellationTokenSource cts = new();
 		readonly Task playTask;
 
 		public OpenAlAsyncLoadSound(uint source, bool looping, bool relative, WPos pos, float volume, int channels, int sampleBits, int sampleRate, Stream stream)

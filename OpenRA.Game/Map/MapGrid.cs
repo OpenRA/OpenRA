@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -29,50 +28,53 @@ namespace OpenRA
 		public readonly WVec[][] Polygons;
 		public readonly WRot Orientation;
 
-		public CellRamp(MapGridType type, WRot orientation, RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low, RampCornerHeight br = RampCornerHeight.Low,  RampCornerHeight bl = RampCornerHeight.Low, RampSplit split = RampSplit.Flat)
+		public CellRamp(MapGridType type, WRot orientation,
+			RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low,
+			RampCornerHeight br = RampCornerHeight.Low, RampCornerHeight bl = RampCornerHeight.Low,
+			RampSplit split = RampSplit.Flat)
 		{
 			Orientation = orientation;
 			if (type == MapGridType.RectangularIsometric)
 			{
-				Corners = new[]
-				{
+				Corners =
+				[
 					new WVec(0, -724, 724 * (int)tl),
 					new WVec(724, 0, 724 * (int)tr),
 					new WVec(0, 724, 724 * (int)br),
 					new WVec(-724, 0, 724 * (int)bl),
-				};
+				];
 			}
 			else
 			{
-				Corners = new[]
-				{
+				Corners =
+				[
 					new WVec(-512, -512, 512 * (int)tl),
 					new WVec(512, -512, 512 * (int)tr),
 					new WVec(512, 512, 512 * (int)br),
 					new WVec(-512, 512, 512 * (int)bl)
-				};
+				];
 			}
 
 			if (split == RampSplit.X)
 			{
-				Polygons = new[]
-				{
-					new[] { Corners[0], Corners[1], Corners[3] },
-					new[] { Corners[1], Corners[2], Corners[3] }
-				};
+				Polygons =
+				[
+					[Corners[0], Corners[1], Corners[3]],
+					[Corners[1], Corners[2], Corners[3]]
+				];
 			}
 			else if (split == RampSplit.Y)
 			{
-				Polygons = new[]
-				{
-					new[] { Corners[0], Corners[1], Corners[2] },
-					new[] { Corners[0], Corners[2], Corners[3] }
-				};
+				Polygons =
+				[
+					[Corners[0], Corners[1], Corners[2]],
+					[Corners[0], Corners[2], Corners[3]]
+				];
 			}
 			else
-				Polygons = new[] { Corners };
+				Polygons = [Corners];
 
-			// Initial value must be asigned before HeightOffset can be called
+			// Initial value must be assigned before HeightOffset can be called
 			CenterHeightOffset = 0;
 			CenterHeightOffset = HeightOffset(0, 0);
 		}
@@ -103,7 +105,6 @@ namespace OpenRA
 	public class MapGrid : IGlobalModData
 	{
 		public readonly MapGridType Type = MapGridType.Rectangular;
-		public readonly Size TileSize = new Size(24, 24);
 		public readonly byte MaximumTerrainHeight = 0;
 		public readonly SubCell DefaultSubCell = (SubCell)byte.MaxValue;
 
@@ -112,22 +113,26 @@ namespace OpenRA
 		public readonly bool EnableDepthBuffer = false;
 
 		public readonly WVec[] SubCellOffsets =
-		{
-			new WVec(0, 0, 0),       // full cell - index 0
-			new WVec(-299, -256, 0), // top left - index 1
-			new WVec(256, -256, 0),  // top right - index 2
-			new WVec(0, 0, 0),       // center - index 3
-			new WVec(-299, 256, 0),  // bottom left - index 4
-			new WVec(256, 256, 0),   // bottom right - index 5
-		};
+		[
+			new(0, 0, 0),       // full cell - index 0
+			new(-299, -256, 0), // top left - index 1
+			new(256, -256, 0),  // top right - index 2
+			new(0, 0, 0),       // center - index 3
+			new(-299, 256, 0),  // bottom left - index 4
+			new(256, 256, 0),   // bottom right - index 5
+		];
 
-		public CellRamp[] Ramps { get; private set; }
+		public CellRamp[] Ramps { get; }
 
 		internal readonly CVec[][] TilesByDistance;
+
+		public int TileScale { get; }
 
 		public MapGrid(MiniYaml yaml)
 		{
 			FieldLoader.Load(this, yaml);
+
+			TileScale = Type == MapGridType.RectangularIsometric ? 1448 : 1024;
 
 			// The default subcell index defaults to the middle entry
 			var defaultSubCellIndex = (byte)DefaultSubCell;
@@ -152,8 +157,9 @@ namespace OpenRA
 			var halfBackward = -halfForward;
 
 			// Slope types are hardcoded following the convention from the TS and RA2 map format
-			Ramps = new[]
-			{
+			Ramps =
+			[
+
 				// Flat
 				new CellRamp(Type, WRot.None),
 
@@ -186,7 +192,7 @@ namespace OpenRA
 				new CellRamp(Type, WRot.None, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.Y),
 				new CellRamp(Type, WRot.None, tr: RampCornerHeight.Half, bl: RampCornerHeight.Half, split: RampSplit.X),
 				new CellRamp(Type, WRot.None, tl: RampCornerHeight.Half, br: RampCornerHeight.Half, split: RampSplit.X),
-			};
+			];
 
 			TilesByDistance = CreateTilesByDistance();
 		}
@@ -195,7 +201,7 @@ namespace OpenRA
 		{
 			var ts = new List<CVec>[MaximumTileSearchRange + 1];
 			for (var i = 0; i < MaximumTileSearchRange + 1; i++)
-				ts[i] = new List<CVec>();
+				ts[i] = [];
 
 			for (var j = -MaximumTileSearchRange; j <= MaximumTileSearchRange; j++)
 				for (var i = -MaximumTileSearchRange; i <= MaximumTileSearchRange; i++)

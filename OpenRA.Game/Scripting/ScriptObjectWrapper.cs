@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Eluant;
 using Eluant.ObjectBinding;
@@ -21,16 +22,32 @@ namespace OpenRA.Scripting
 		protected abstract string MemberNotFoundError(string memberName);
 
 		protected readonly ScriptContext Context;
-		Dictionary<string, ScriptMemberWrapper> members;
+		readonly Dictionary<string, ScriptMemberWrapper> members = [];
 
-		public ScriptObjectWrapper(ScriptContext context)
+		protected ScriptObjectWrapper(ScriptContext context)
 		{
 			Context = context;
 		}
 
-		protected void Bind(IEnumerable<object> clrObjects)
+		protected static object[] CreateObjects(Type[] types, object[] constructorArgs)
 		{
-			members = new Dictionary<string, ScriptMemberWrapper>();
+			var i = 0;
+			var argTypes = new Type[constructorArgs.Length];
+			foreach (var ca in constructorArgs)
+				argTypes[i++] = ca.GetType();
+
+			var objects = new object[types.Length];
+			i = 0;
+			foreach (var type in types)
+				objects[i++] = type.GetConstructor(argTypes).Invoke(constructorArgs);
+
+			return objects;
+		}
+
+		protected void Bind(object[] clrObjects)
+		{
+			members.Clear();
+
 			foreach (var obj in clrObjects)
 			{
 				var wrappable = ScriptMemberWrapper.WrappableMembers(obj.GetType());
@@ -42,6 +59,14 @@ namespace OpenRA.Scripting
 					members.Add(m.Name, new ScriptMemberWrapper(Context, obj, m));
 				}
 			}
+		}
+
+		protected void Unbind(Type targetType)
+		{
+			// NOTE: In newer versions of .NET modifying the collection by calling Remove while iterating over it is valid
+			foreach (var m in members)
+				if (targetType == m.Value.Target.GetType())
+					members.Remove(m.Key);
 		}
 
 		public bool ContainsKey(string key) { return members.ContainsKey(key); }
@@ -63,7 +88,7 @@ namespace OpenRA.Scripting
 				if (!members.TryGetValue(name, out var wrapper))
 					throw new LuaException(MemberNotFoundError(name));
 
-				wrapper.Set(runtime, value);
+				wrapper.Set(value);
 			}
 		}
 	}

@@ -1,99 +1,145 @@
 Container@AUDIO_PANEL:
 	Logic: AudioSettingsLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
-		Label@AUDIO_TITLE:
-			Y: 21
-			Width: PARENT_RIGHT
-			Font: Bold
-			Text: Audio
-			Align: Center
-		Label@NO_AUDIO_DEVICE:
-			Y: 50
-			Width: PARENT_RIGHT
-			Align: Center
-			Text: Audio controls require an active sound device
-		Container@AUDIO_CONTROLS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+		ScrollPanel@SETTINGS_SCROLLPANEL:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 5
+			ItemSpacing: 10
 			Children:
-				Checkbox@CASH_TICKS:
-					X: 15
-					Y: 43
-					Width: 200
+				Background@AUDIO_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-audio-section-header
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
 					Height: 20
-					Font: Regular
-					Text: Cash Ticks
-				Checkbox@MUTE_SOUND:
-					X: 15
-					Y: 73
-					Width: 200
+					Children:
+						Container@NO_AUDIO_DEVICE_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH - 10
+							Children:
+								Label@NO_AUDIO_DEVICE:
+									Width: PARENT_WIDTH
+									Height: 20
+									Align: Center
+									Text: label-no-audio-device-container
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@CASH_TICKS_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@CASH_TICKS:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-cash-ticks-container
+						Container@MUTE_SOUND_CONTAINER:
+							X: 10
+							Y: 30
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@MUTE_SOUND:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-mute-sound-container
+						Container@SOUND_VOLUME_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@SOUND_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-sound-volume-container
+								ExponentialSlider@SOUND_VOLUME:
+									Y: 30
+									Width: PARENT_WIDTH
+									Height: 20
+									Ticks: 7
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@MUTE_BACKGROUND_MUSIC_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@MUTE_BACKGROUND_MUSIC:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-mute-background-music-container.label
+									TooltipText: checkbox-mute-background-music-container.tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+						Container@MUSIC_VOLUME_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@MUSIC_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-music-title-volume-container
+								ExponentialSlider@MUSIC_VOLUME:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 20
+									Ticks: 7
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@AUDIO_DEVICE_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@AUDIO_DEVICE_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-audio-device-container
+								DropDownButton@AUDIO_DEVICE:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+						Container@VIDEO_VOLUME_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@VIDEO_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-video-volume-container
+								ExponentialSlider@VIDEO_VOLUME:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 20
+									Ticks: 7
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
 					Height: 20
-					Font: Regular
-					Text: Mute Sound
-				Checkbox@MUTE_BACKGROUND_MUSIC:
-					X: 15
-					Y: 103
-					Width: 200
-					Height: 20
-					Font: Regular
-					Text: Mute Background Music
-				Label@SOUND_LABEL:
-					X: PARENT_RIGHT - WIDTH - 270
-					Y: 40
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: Sound Volume:
-				ExponentialSlider@SOUND_VOLUME:
-					X: PARENT_RIGHT - WIDTH - 15
-					Y: 45
-					Width: 250
-					Height: 20
-					Ticks: 7
-				Label@MUSIC_LABEL:
-					X: PARENT_RIGHT - WIDTH - 270
-					Y: 70
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: Music Volume:
-				ExponentialSlider@MUSIC_VOLUME:
-					X: PARENT_RIGHT - WIDTH - 15
-					Y: 75
-					Width: 250
-					Height: 20
-					Ticks: 7
-				Label@VIDEO_LABEL:
-					X: PARENT_RIGHT - WIDTH - 270
-					Y: 100
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: Video Volume:
-				ExponentialSlider@VIDEO_VOLUME:
-					X: PARENT_RIGHT - WIDTH - 15
-					Y: 105
-					Width: 250
-					Height: 20
-					Ticks: 7
-		Label@AUDIO_DEVICE_LABEL:
-			X: 190 - WIDTH - 5
-			Y: 240
-			Width: 75
-			Height: 25
-			Align: Right
-			Text: Audio Device:
-		DropDownButton@AUDIO_DEVICE:
-			X: 190
-			Y: 240
-			Width: 300
-			Height: 25
-		Label@AUDIO_DEVICE_DESC:
-			Y: 261
-			Width: PARENT_RIGHT
-			Height: 25
-			Font: Tiny
-			Align: Center
-			Text: Device changes will be applied after the game is restarted
+					Children:
+						Container@RESTART_REQUIRED_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH - 10
+							Children:
+								Label@AUDIO_RESTART_REQUIRED_DESC:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Tiny
+									Align: Center
+									Text: label-restart-required-container-audio-desc

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoBriefingLogic : ChromeLogic
+	sealed class GameInfoBriefingLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public GameInfoBriefingLogic(Widget widget, ModData modData, World world)
@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var missionData = world.Map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null)
 			{
-				var text = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);
-				mapDescription.Text = text;
+				var text = WidgetUtils.WrapText(missionData.Briefing?.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);
+				mapDescription.GetText = () => text;
 				mapDescription.Bounds.Height = mapFont.Measure(text).Y;
 				mapDescriptionPanel.ScrollToTop();
 				mapDescriptionPanel.Layout.AdjustChildren();

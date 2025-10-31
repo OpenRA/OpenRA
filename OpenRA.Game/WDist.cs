@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,14 +21,17 @@ namespace OpenRA
 	/// <summary>
 	/// 1d world distance - 1024 units = 1 cell.
 	/// </summary>
-	public readonly struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding
+	public readonly struct WDist : IComparable, IComparable<WDist>, IEquatable<WDist>, IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaUnaryMinusBinding,
+		ILuaMultiplicationBinding, ILuaDivisionBinding, ILuaLessThanBinding, ILuaLessThanOrEqualToBinding,
+		ILuaTableBinding, ILuaToStringBinding
 	{
 		public readonly int Length;
 		public long LengthSquared => (long)Length * Length;
 
 		public WDist(int r) { Length = r; }
-		public static readonly WDist Zero = new WDist(0);
-		public static readonly WDist MaxValue = new WDist(int.MaxValue);
+		public static readonly WDist Zero = new(0);
+		public static readonly WDist MaxValue = new(int.MaxValue);
 		public static WDist FromCells(int cells) { return new WDist(1024 * cells); }
 
 		public static WDist operator +(WDist a, WDist b) { return new WDist(a.Length + b.Length); }
@@ -66,17 +69,17 @@ namespace OpenRA
 			s = s.ToLowerInvariant();
 			var components = s.Split('c');
 			var cell = 0;
-			var subcell = 0;
+			int subcell;
 
 			switch (components.Length)
 			{
 				case 2:
-					if (!Exts.TryParseIntegerInvariant(components[0], out cell) ||
-						!Exts.TryParseIntegerInvariant(components[1], out subcell))
+					if (!Exts.TryParseInt32Invariant(components[0], out cell) ||
+						!Exts.TryParseInt32Invariant(components[1], out subcell))
 						return false;
 					break;
 				case 1:
-					if (!Exts.TryParseIntegerInvariant(components[0], out subcell))
+					if (!Exts.TryParseInt32Invariant(components[0], out subcell))
 						return false;
 					break;
 				default: return false;
@@ -93,11 +96,11 @@ namespace OpenRA
 		public override int GetHashCode() { return Length.GetHashCode(); }
 
 		public bool Equals(WDist other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WDist && Equals((WDist)obj); }
+		public override bool Equals(object obj) { return obj is WDist dist && Equals(dist); }
 
 		public int CompareTo(object obj)
 		{
-			if (!(obj is WDist))
+			if (obj is not WDist)
 				return 1;
 			return Length.CompareTo(((WDist)obj).Length);
 		}
@@ -107,7 +110,7 @@ namespace OpenRA
 		public override string ToString()
 		{
 			var absLength = Math.Abs(Length);
-			var absValue = (absLength / 1024).ToString() + "c" + (absLength % 1024).ToString();
+			var absValue = (absLength / 1024).ToStringInvariant() + "c" + (absLength % 1024).ToStringInvariant();
 			return Length < 0 ? "-" + absValue : absValue;
 		}
 
@@ -136,6 +139,40 @@ namespace OpenRA
 			return a == b;
 		}
 
+		public LuaValue Minus(LuaRuntime runtime) => new LuaCustomClrObject(-this);
+
+		public LuaValue Multiply(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out int b))
+				throw new LuaException("Attempted to call WDist.Multiply(WDist, integer) with invalid arguments.");
+
+			return new LuaCustomClrObject(a * b);
+		}
+
+		public LuaValue Divide(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out int b))
+				throw new LuaException("Attempted to call WDist.Divide(WDist, integer) with invalid arguments.");
+
+			return new LuaCustomClrObject(a / b);
+		}
+
+		public LuaValue LessThan(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out WDist b))
+				throw new LuaException("Attempted to call WDist.LessThan(WDist, WDist) with invalid arguments.");
+
+			return a < b;
+		}
+
+		public LuaValue LessThanOrEqualTo(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WDist a) || !right.TryGetClrValue(out WDist b))
+				throw new LuaException("Attempted to call WDist.LessThanOrEqualTo(WDist, WDist) with invalid arguments.");
+
+			return a <= b;
+		}
+
 		public LuaValue this[LuaRuntime runtime, LuaValue key]
 		{
 			get
@@ -143,13 +180,15 @@ namespace OpenRA
 				switch (key.ToString())
 				{
 					case "Length": return Length;
-					case "Range": TextNotificationsManager.Debug("WDist.Range is deprecated. Use WDist.Length instead"); return Length;
 					default: throw new LuaException($"WDist does not define a member '{key}'");
 				}
 			}
 
 			set => throw new LuaException("WDist is read-only. Use WDist.New to create a new value");
 		}
+
+		public LuaValue ToString(LuaRuntime runtime) => ToString();
+
 		#endregion
 	}
 }

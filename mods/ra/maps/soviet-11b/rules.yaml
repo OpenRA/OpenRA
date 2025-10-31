@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, soviet11b.lua, soviet11b-AI.lua
+		Scripts: campaign.lua, utils.lua, soviet11b.lua, soviet11b-AI.lua
 	MissionData:
 		BriefingVideo: soviet11.vqa
 		WinVideo: sitduck.vqa
@@ -9,11 +9,12 @@ World:
 		Briefing: Intelligence indicates that a large portion of the Allied Naval Fleet will stop for refueling at a base in this area. Destroy the fleet and the base. Beware the long range of their cruisers.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:
@@ -25,6 +26,9 @@ AFLD:
 		Prerequisites: aircraft.soviet
 	ParatroopersPower@paratroopers:
 		DropItems: E1,E1,E1,E2,E2
+
+HELI:
+	-MustBeDestroyed:
 
 ATEK:
 	Buildable:
@@ -81,7 +85,7 @@ E3:
 CA:
 	Buildable:
 		Prerequisites: ~syrd, dome
-    
+
 HELI:
 	Buildable:
 		Prerequisites: ~hpad

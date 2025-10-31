@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,10 +18,10 @@ namespace OpenRA.Graphics
 {
 	public class RgbaColorRenderer
 	{
-		static readonly float3 Offset = new float3(0.5f, 0.5f, 0f);
+		static readonly float3 Offset = new(0.5f, 0.5f, 0f);
 
 		readonly SpriteRenderer parent;
-		readonly Vertex[] vertices = new Vertex[6];
+		readonly Vertex[] vertices = new Vertex[4];
 
 		public RgbaColorRenderer(SpriteRenderer parent)
 		{
@@ -45,14 +45,12 @@ namespace OpenRA.Graphics
 			var eb = endColor.B / 255.0f;
 			var ea = endColor.A / 255.0f;
 
-			vertices[0] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
-			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0, 0);
-			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[3] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[4] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[5] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[0] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0);
+			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0);
+			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0);
+			vertices[3] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0);
 
-			parent.DrawRGBAVertices(vertices, blendMode);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		public void DrawLine(in float3 start, in float3 end, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
@@ -66,21 +64,19 @@ namespace OpenRA.Graphics
 			var b = color.B / 255.0f;
 			var a = color.A / 255.0f;
 
-			vertices[0] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
-			vertices[1] = new Vertex(start + corner + Offset, r, g, b, a, 0, 0);
-			vertices[2] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[3] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[4] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
-			vertices[5] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
-			parent.DrawRGBAVertices(vertices, blendMode);
+			vertices[0] = new Vertex(start - corner + Offset, r, g, b, a, 0);
+			vertices[1] = new Vertex(start + corner + Offset, r, g, b, a, 0);
+			vertices[2] = new Vertex(end + corner + Offset, r, g, b, a, 0);
+			vertices[3] = new Vertex(end - corner + Offset, r, g, b, a, 0);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		/// <summary>
 		/// Calculate the 2D intersection of two lines.
 		/// Will behave badly if the lines are parallel.
-		/// Z position is the average of a and b (ignores actual intersection point if it exists)
+		/// Z position is the average of a and b (ignores actual intersection point if it exists).
 		/// </summary>
-		float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
+		static float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
 		{
 			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
 			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);
@@ -138,7 +134,7 @@ namespace OpenRA.Graphics
 			// Segment is part of closed loop
 			if (closed)
 			{
-				var prev = points[points.Length - 1];
+				var prev = points[^1];
 				var prevDir = (start - prev) / (start - prev).XY.Length;
 				var prevCorner = width / 2 * new float3(-prevDir.Y, prevDir.X, prevDir.Z);
 				ca = IntersectionOf(start - prevCorner, prevDir, start - corner, dir);
@@ -157,13 +153,11 @@ namespace OpenRA.Graphics
 				var cd = closed || i < limit - 1 ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
 
 				// Fill segment
-				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
-				vertices[1] = new Vertex(cb + Offset, r, g, b, a, 0, 0);
-				vertices[2] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
-				vertices[3] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
-				vertices[4] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
-				vertices[5] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
-				parent.DrawRGBAVertices(vertices, blendMode);
+				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0);
+				vertices[1] = new Vertex(cb + Offset, r, g, b, a, 0);
+				vertices[2] = new Vertex(cc + Offset, r, g, b, a, 0);
+				vertices[3] = new Vertex(cd + Offset, r, g, b, a, 0);
+				parent.DrawRGBAQuad(vertices, blendMode);
 
 				// Advance line segment
 				end = next;
@@ -197,21 +191,7 @@ namespace OpenRA.Graphics
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
 			var bl = new float3(tl.X, br.Y, br.Z);
-			DrawPolygon(new[] { tl, tr, br, bl }, width, color, blendMode);
-		}
-
-		public void FillTriangle(in float3 a, in float3 b, in float3 c, Color color, BlendMode blendMode = BlendMode.Alpha)
-		{
-			color = Util.PremultiplyAlpha(color);
-			var cr = color.R / 255.0f;
-			var cg = color.G / 255.0f;
-			var cb = color.B / 255.0f;
-			var ca = color.A / 255.0f;
-
-			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			parent.DrawRGBAVertices(vertices, blendMode);
+			DrawPolygon([tl, tr, br, bl], width, color, blendMode);
 		}
 
 		public void FillRect(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
@@ -229,25 +209,22 @@ namespace OpenRA.Graphics
 			var cb = color.B / 255.0f;
 			var ca = color.A / 255.0f;
 
-			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[3] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[4] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[5] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			parent.DrawRGBAVertices(vertices, blendMode);
+			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0);
+			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0);
+			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0);
+			vertices[3] = new Vertex(d + Offset, cr, cg, cb, ca, 0);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
-		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
+		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d,
+			Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
 		{
 			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
 			vertices[1] = VertexWithColor(b + Offset, topRightColor);
 			vertices[2] = VertexWithColor(c + Offset, bottomRightColor);
-			vertices[3] = VertexWithColor(c + Offset, bottomRightColor);
-			vertices[4] = VertexWithColor(d + Offset, bottomLeftColor);
-			vertices[5] = VertexWithColor(a + Offset, topLeftColor);
+			vertices[3] = VertexWithColor(d + Offset, bottomLeftColor);
 
-			parent.DrawRGBAVertices(vertices, blendMode);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		static Vertex VertexWithColor(in float3 xyz, Color color)
@@ -258,10 +235,10 @@ namespace OpenRA.Graphics
 			var cb = color.B / 255.0f;
 			var ca = color.A / 255.0f;
 
-			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
+			return new Vertex(xyz, cr, cg, cb, ca, 0);
 		}
 
-		public void FillEllipse(in float3 tl, in float3 br, Color color, int vertices = 32, BlendMode blendMode = BlendMode.Alpha)
+		public void FillEllipse(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			// TODO: Create an ellipse polygon instead
 			var a = (br.X - tl.X) / 2;

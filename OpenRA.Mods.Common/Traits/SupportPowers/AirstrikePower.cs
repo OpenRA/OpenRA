@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,44 +14,43 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AirstrikePowerInfo : SupportPowerInfo
+	[Desc("Support power that spawns a group of aircraft and orders them to deliver an airstrike.")]
+	public class AirstrikePowerInfo : DirectionalSupportPowerInfo
 	{
 		[ActorReference(typeof(AircraftInfo))]
+		[Desc("Aircraft used to deliver the airstrike.")]
 		public readonly string UnitType = "badr.bomber";
-		public readonly int SquadSize = 1;
-		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
 
+		[Desc("Number of aircraft to use in an airstrike formation.")]
+		public readonly int SquadSize = 1;
+
+		[Desc("Offset vector between the aircraft in a formation.")]
+		public readonly WVec SquadOffset = new(-1536, 1536, 0);
+
+		[Desc("Number of different possible facings of the aircraft (used only for choosing a random direction to spawn from.)")]
 		public readonly int QuantizedFacings = 32;
-		public readonly WDist Cordon = new WDist(5120);
+
+		[Desc("Additional distance from the map edge to spawn the aircraft.")]
+		public readonly WDist Cordon = new(5120);
 
 		[ActorReference]
-		[Desc("Actor to spawn when the aircraft start attacking")]
+		[Desc("Actor to spawn when the aircraft start attacking.")]
 		public readonly string CameraActor = null;
 
-		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
+		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking.")]
 		public readonly int CameraRemoveDelay = 25;
 
-		[Desc("Enables the player directional targeting")]
-		public readonly bool UseDirectionalTarget = false;
-
-		[Desc("Animation used to render the direction arrows.")]
-		public readonly string DirectionArrowAnimation = null;
-
-		[Desc("Palette for direction cursor animation.")]
-		public readonly string DirectionArrowPalette = "chrome";
-
-		[Desc("Weapon range offset to apply during the beacon clock calculation")]
+		[Desc("Weapon range offset to apply during the beacon clock calculation.")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}
 
-	public class AirstrikePower : SupportPower
+	public class AirstrikePower : DirectionalSupportPower
 	{
 		readonly AirstrikePowerInfo info;
 
@@ -59,14 +58,6 @@ namespace OpenRA.Mods.Common.Traits
 			: base(self, info)
 		{
 			this.info = info;
-		}
-
-		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
-		{
-			if (info.UseDirectionalTarget)
-				self.World.OrderGenerator = new SelectDirectionalTarget(self.World, order, manager, Info.Cursor, info.DirectionArrowAnimation, info.DirectionArrowPalette);
-			else
-				base.SelectTarget(self, order, manager);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -86,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 			var altitude = self.World.Map.Rules.Actors[info.UnitType].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
 			var attackRotation = WRot.FromYaw(facing.Value);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
-			target = target + new WVec(0, 0, altitude);
+			target += new WVec(0, 0, altitude);
 			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
 			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
@@ -94,36 +85,36 @@ namespace OpenRA.Mods.Common.Traits
 			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
 
-			Action<Actor> onEnterRange = a =>
+			void OnEnterRange(Actor a)
 			{
 				// Spawn a camera and remove the beacon when the first plane enters the target area
 				if (info.CameraActor != null && camera == null && !aircraftInRange.Any(kv => kv.Value))
 				{
 					self.World.AddFrameEndTask(w =>
 					{
-						camera = w.CreateActor(info.CameraActor, new TypeDictionary
-						{
+						camera = w.CreateActor(info.CameraActor,
+						[
 							new LocationInit(self.World.Map.CellContaining(target)),
 							new OwnerInit(self.Owner),
-						});
+						]);
 					});
 				}
 
 				RemoveBeacon(beacon);
 
 				aircraftInRange[a] = true;
-			};
+			}
 
-			Action<Actor> onExitRange = a =>
+			void OnExitRange(Actor a)
 			{
 				aircraftInRange[a] = false;
 
 				// Remove the camera when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 					RemoveCamera(camera);
-			};
+			}
 
-			Action<Actor> onRemovedFromWorld = a =>
+			void OnRemovedFromWorld(Actor a)
 			{
 				aircraftInRange[a] = false;
 
@@ -135,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 					RemoveCamera(camera);
 					RemoveBeacon(beacon);
 				}
-			};
+			}
 
 			// Create the actors immediately so they can be returned
 			for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
@@ -148,21 +139,21 @@ namespace OpenRA.Mods.Common.Traits
 				var so = info.SquadOffset;
 				var spawnOffset = new WVec(i * so.Y, -Math.Abs(i) * so.X, 0).Rotate(attackRotation);
 				var targetOffset = new WVec(i * so.Y, 0, 0).Rotate(attackRotation);
-				var a = self.World.CreateActor(false, info.UnitType, new TypeDictionary
-				{
+				var a = self.World.CreateActor(false, info.UnitType,
+				[
 					new CenterPositionInit(startEdge + spawnOffset),
 					new OwnerInit(self.Owner),
 					new FacingInit(facing.Value),
-				});
+				]);
 
 				aircraft.Add(a);
 				aircraftInRange.Add(a, false);
 
 				var attack = a.Trait<AttackBomber>();
-				attack.SetTarget(self.World, target + targetOffset);
-				attack.OnEnteredAttackRange += onEnterRange;
-				attack.OnExitedAttackRange += onExitRange;
-				attack.OnRemovedFromWorld += onRemovedFromWorld;
+				attack.SetTarget(target + targetOffset);
+				attack.OnEnteredAttackRange += OnEnterRange;
+				attack.OnExitedAttackRange += OnExitRange;
+				attack.OnRemovedFromWorld += OnRemovedFromWorld;
 			}
 
 			self.World.AddFrameEndTask(w =>
@@ -223,7 +214,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			camera.QueueActivity(new Wait(info.CameraRemoveDelay));
 			camera.QueueActivity(new RemoveSelf());
-			camera = null;
 		}
 
 		void RemoveBeacon(Beacon beacon)
@@ -231,11 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (beacon == null)
 				return;
 
-			Self.World.AddFrameEndTask(w =>
-			{
-				w.Remove(beacon);
-				beacon = null;
-			});
+			Self.World.AddFrameEndTask(w => w.Remove(beacon));
 		}
 	}
 }

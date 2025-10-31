@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,27 +17,40 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Projectiles
 {
+	[Desc("Instant-hit projectile used to create electricity-like effects.")]
 	public class TeslaZapInfo : IProjectileInfo
 	{
 		public readonly string Image = "litning";
 
 		[SequenceReference(nameof(Image))]
+		[Desc("Sprite sequence to play at the center.")]
 		public readonly string BrightSequence = "bright";
 
 		[SequenceReference(nameof(Image))]
+		[Desc("Sprite sequence to play at the borders.")]
 		public readonly string DimSequence = "dim";
 
 		[PaletteReference]
+		[Desc("The palette used to draw this electric zap.")]
 		public readonly string Palette = "effect";
 
+		[Desc("How many sprite sequences to play at the center.")]
 		public readonly int BrightZaps = 1;
+
+		[Desc("How many sprite sequences to play at the borders.")]
 		public readonly int DimZaps = 2;
 
+		[Desc("How long (in ticks) to play the sprite sequences.")]
 		public readonly int Duration = 2;
 
+		[Desc("How long (in ticks) until applying damage. Can't be longer than `" + nameof(Duration) + "`")]
 		public readonly int DamageDuration = 1;
 
+		[Desc("Follow the targeted actor when it moves.")]
 		public readonly bool TrackTarget = true;
+
+		[Desc("Controls Z sorting.")]
+		public readonly int ZOffset = 0;
 
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
@@ -69,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 			// Zap tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
-				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+				target = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.ClosestToIgnoringPath(args.Source);
 
 			if (damageDuration-- > 0)
 				args.Weapon.Impact(Target.FromPos(target), new WarheadArgs(args));
@@ -77,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			zap = new TeslaZapRenderable(args.Source, 0, target - args.Source,
+			zap = new TeslaZapRenderable(args.Source, info.ZOffset, target - args.Source,
 				info.Image, info.BrightSequence, info.BrightZaps, info.DimSequence, info.DimZaps, info.Palette);
 
 			yield return zap;

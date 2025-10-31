@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -106,8 +106,8 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	KillCivilians = Nod.AddObjective("Destroy the village and kill all civilians.")
-	KillGDI = Nod.AddObjective("Kill all GDI units in the area.", "Secondary", false)
+	KillCivilians = AddPrimaryObjective(Nod, "destroy-village-kill-civilians")
+	KillGDI = AddSecondaryObjective(Nod, "kill-gdi-units")
 
 	Camera.Position = CameraPoint.CenterPosition
 

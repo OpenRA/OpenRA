@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class AppearsOnMapPreviewInfo : TraitInfo<AppearsOnMapPreview>, IMapPreviewSignatureInfo, Requires<IOccupySpaceInfo>
 	{
 		[Desc("Use this color to render the actor, instead of owner player color.")]
-		public readonly Color Color = default(Color);
+		public readonly Color Color = default;
 
 		[Desc("Use this terrain color to render the actor, instead of owner player color.",
 			"Overrides `Color` if both set.")]
 		public readonly string Terrain = null;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{
 			Color color;
 			if (!string.IsNullOrEmpty(Terrain))
@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				var owner = map.PlayerDefinitions.Single(p => s.Get<OwnerInit>().InternalName == p.Value.Nodes.Last(k => k.Key == "Name").Value.Value);
-				var colorValue = owner.Value.Nodes.Where(n => n.Key == "Color");
-				var ownerColor = colorValue.Any() ? colorValue.First().Value.Value : "FFFFFF";
+				var colorValue = owner.Value.NodeWithKeyOrDefault("Color");
+				var ownerColor = colorValue?.Value.Value ?? "FFFFFF";
 				Color.TryParse(ownerColor, out color);
 			}
 

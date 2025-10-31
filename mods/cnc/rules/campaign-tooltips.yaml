@@ -66,6 +66,8 @@ MISS:
 	Tooltip:
 		GenericVisibility: None
 		ShowOwnerRow: False
+	-TooltipDescription@ally:
+	-TooltipDescription@other:
 
 BIO:
 	-TooltipDescription@ally:

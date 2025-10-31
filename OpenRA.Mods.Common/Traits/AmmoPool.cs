@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = "primary";
 
 		[Desc("Name(s) of armament(s) that use this pool.")]
-		public readonly string[] Armaments = { "primary", "secondary" };
+		public readonly string[] Armaments = ["primary", "secondary"];
 
 		[Desc("How much ammo does this pool contain when fully loaded.")]
 		public readonly int Ammo = 1;
@@ -44,13 +44,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self for each ammo point in this pool.")]
 		public readonly string AmmoCondition = null;
 
-		public override object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AmmoPool(this); }
 	}
 
 	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
 	{
 		public readonly AmmoPoolInfo Info;
-		readonly Stack<int> tokens = new Stack<int>();
+		readonly Stack<int> tokens = [];
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync]
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool HasAmmo => CurrentAmmoCount > 0;
 		public bool HasFullAmmo => CurrentAmmoCount == Info.Ammo;
 
-		public AmmoPool(Actor self, AmmoPoolInfo info)
+		public AmmoPool(AmmoPoolInfo info)
 		{
 			Info = info;
 			CurrentAmmoCount = Info.InitialAmmo < Info.Ammo && Info.InitialAmmo >= 0 ? Info.InitialAmmo : Info.Ammo;

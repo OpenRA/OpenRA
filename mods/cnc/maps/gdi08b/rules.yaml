@@ -1,11 +1,11 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, gdi08b.lua, gdi08b-AI.lua
+		Scripts: campaign.lua, utils.lua, gdi08b.lua, gdi08b-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: gdi_win1
 	MissionData:
-		Briefing: Dr. Mobius is establishing a Hospital to treat the civilians in the region who are falling ill due to exposure to Tiberium.\n\nProtect Mobius and the civilians.\n\nEliminate Nod presence in the area.
+		Briefing: Dr. Mobius is setting up a Hospital to treat civilians in the region who are falling ill from Tiberium exposure.\n\nProtect Mobius and the civilians.\n\nEliminate Nod presence in the area.
 		BackgroundVideo: tbrinfo1.vqa
 		StartVideo: desolat.vqa
 		LossVideo: gdilose.vqa
@@ -13,11 +13,12 @@ World:
 		BriefingVideo: gdi8b.vqa
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 		Locked: false
 	MapOptions:
@@ -152,11 +153,11 @@ CYCL:
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 GUN:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 airstrike.proxy:
 	AirstrikePower:
@@ -167,7 +168,7 @@ HQ:
 	Tooltip:
 	-AirstrikePower:
 	Buildable:
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: actor-hq-description
 
 ^CivInfantry:
 	Health:
@@ -177,4 +178,5 @@ HQ:
 		MaxMoveDelay: 1000
 	ActorLostNotification:
 		Notification: CivilianKilled
+		TextNotification: civilian-killed
 		NotifyAll: true

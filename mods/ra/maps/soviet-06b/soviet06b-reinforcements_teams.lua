@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -43,25 +43,26 @@ EnemyPaths =
 	{ EnemyEntry2.Location, EnemyRally2.Location }
 }
 
-wave = 0
-SendEnemies = function()
-	Trigger.AfterDelay(EnemyAttackDelay[Map.LobbyOption("difficulty")], function()
-
-		wave = wave + 1
-		if wave > 3 then
-			wave = 1
+Wave = 0
+SendReinforcements = function()
+	Trigger.AfterDelay(EnemyAttackDelay[Difficulty], function()
+		if Dome.IsDead or Dome.Owner ~= Greece then
+			return
 		end
 
-		if wave == 1 then
-			local units = Reinforcements.ReinforceWithTransport(enemy, "tran", EnemyReinforcements[Map.LobbyOption("difficulty")][wave], EnemyPaths[1], { EnemyPaths[1][1] })[2]
+		Wave = Wave + 1
+		if Wave > 3 then
+			Wave = 1
+		end
+
+		if Wave == 1 then
+			local units = Reinforcements.ReinforceWithTransport(Greece, "tran", EnemyReinforcements[Difficulty][Wave], EnemyPaths[1], { EnemyPaths[1][1] })[2]
 			Utils.Do(units, IdleHunt)
 		else
-			local units = Reinforcements.ReinforceWithTransport(enemy, "lst", EnemyReinforcements[Map.LobbyOption("difficulty")][wave], EnemyPaths[2], { EnemyPaths[2][1] })[2]
+			local units = Reinforcements.ReinforceWithTransport(Greece, "lst", EnemyReinforcements[Difficulty][Wave], EnemyPaths[2], { EnemyPaths[2][1] })[2]
 			Utils.Do(units, IdleHunt)
 		end
 
-		if not Dome.IsDead then
-			SendEnemies()
-		end
+		SendReinforcements()
 	end)
 end

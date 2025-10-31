@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using NUnit.Framework;
 using OpenRA.Support;
@@ -20,7 +19,7 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class VariableExpressionTest
 	{
-		IReadOnlyDictionary<string, int> testValues = new Dictionary<string, int>
+		readonly IReadOnlyDictionary<string, int> testValues = new Dictionary<string, int>
 		{
 			{ "t", 5 },
 			{ "t-1", 7 },
@@ -30,30 +29,24 @@ namespace OpenRA.Test
 
 		void AssertFalse(string expression)
 		{
-			Assert.False(new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.That(new BooleanExpression(expression).Evaluate(testValues), Is.False, expression);
 		}
 
 		void AssertTrue(string expression)
 		{
-			Assert.True(new BooleanExpression(expression).Evaluate(testValues), expression);
+			Assert.That(new BooleanExpression(expression).Evaluate(testValues), Is.True, expression);
 		}
 
 		void AssertValue(string expression, int value)
 		{
-			Assert.AreEqual(value, new IntegerExpression(expression).Evaluate(testValues), expression);
-		}
-
-		void AssertParseFailure(string expression)
-		{
-			Assert.Throws(typeof(InvalidDataException), () => new IntegerExpression(expression).Evaluate(testValues), expression);
+			Assert.That(value, Is.EqualTo(new IntegerExpression(expression).Evaluate(testValues)), expression);
 		}
 
 		void AssertParseFailure(string expression, string errorMessage)
 		{
-			var actualErrorMessage = Assert.Throws(typeof(InvalidDataException),
-				() => new IntegerExpression(expression).Evaluate(testValues),
-				expression).Message;
-			Assert.AreEqual(errorMessage, actualErrorMessage, expression + "   ===>   " + actualErrorMessage);
+			var actualErrorMessage = Assert.Throws<InvalidDataException>(
+				() => new IntegerExpression(expression).Evaluate(testValues), expression).Message;
+			Assert.That(errorMessage, Is.EqualTo(actualErrorMessage), expression + "   ===>   " + actualErrorMessage);
 		}
 
 		[TestCase(TestName = "Numbers")]
@@ -355,7 +348,7 @@ namespace OpenRA.Test
 			AssertParseFailure("t -1", "Missing binary operation before `-1` at index 2");
 		}
 
-		[TestCase(TestName = "Test mixed charaters at end of identifier parser errors")]
+		[TestCase(TestName = "Test mixed characters at end of identifier parser errors")]
 		public void TestParseMixedEndErrors()
 		{
 			AssertParseFailure("t- 1", "Invalid identifier end character at index 1 for `t-`");

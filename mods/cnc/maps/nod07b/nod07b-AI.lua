@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -68,10 +68,10 @@ CheckForHarvester = function()
 end
 
 ProduceHarvester = function(building)
-	if not buildingHarvester then
-		buildingHarvester = true
+	if not BuildingHarvester then
+		BuildingHarvester = true
 		building.Build(HarvesterProductionType, function()
-			buildingHarvester = false
+			BuildingHarvester = false
 		end)
 	end
 end
@@ -139,23 +139,23 @@ Trigger.OnAllKilledOrCaptured(GDIBase, function()
 	Utils.Do(GDI.GetGroundAttackers(), IdleHunt)
 end)
 
-Trigger.OnKilled(GDIProc, function(building)
+Trigger.OnKilled(GDIProc, function()
 	BuildBuilding(BaseProc, GDICYard)
 end)
 
-Trigger.OnKilled(GDINuke1, function(building)
+Trigger.OnKilled(GDINuke1, function()
 	BuildBuilding(BaseNuke1, GDICYard)
 end)
 
-Trigger.OnKilled(GDINuke2, function(building)
+Trigger.OnKilled(GDINuke2, function()
 	BuildBuilding(BaseNuke2, GDICYard)
 end)
 
-Trigger.OnKilled(GDINuke3, function(building)
+Trigger.OnKilled(GDINuke3, function()
 	BuildBuilding(BaseNuke3, GDICYard)
 end)
 
-Trigger.OnKilled(GDIPyle, function(building)
+Trigger.OnKilled(GDIPyle, function()
 	BuildBuilding(InfantryProduction, GDICYard)
 end)
 

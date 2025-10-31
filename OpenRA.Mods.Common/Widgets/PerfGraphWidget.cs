@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,12 +25,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var origin = new float2(rect.Right, rect.Bottom);
 			var basis = new float2(-rect.Width / 100, -rect.Height / 100);
 
-			cr.DrawLine(new[]
-			{
+			cr.DrawLine(
+			[
 				new float3(rect.Left, rect.Top, 0),
 				new float3(rect.Left, rect.Bottom, 0),
 				new float3(rect.Right, rect.Bottom, 0)
-			}, 1, Color.White);
+			], 1, Color.White);
 
 			cr.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, 1, Color.White);
 

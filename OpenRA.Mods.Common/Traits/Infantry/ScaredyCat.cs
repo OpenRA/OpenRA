@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Makes the unit automatically run around when taking damage.")]
-	class ScaredyCatInfo : TraitInfo, Requires<MobileInfo>
+	sealed class ScaredyCatInfo : TraitInfo, Requires<MobileInfo>
 	{
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
 		public readonly int PanicChance = 100;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int AttackPanicChance = 20;
 
 		[Desc("The terrain types that this actor should avoid running on to while panicking.")]
-		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> AvoidTerrainTypes = [];
 
 		[SequenceReference(prefix: true)]
 		public readonly string PanicSequencePrefix = "panic-";
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }
 	}
 
-	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
+	sealed class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
 	{
 		readonly ScaredyCatInfo info;
 		readonly Mobile mobile;

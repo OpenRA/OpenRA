@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			[SequenceReference(nameof(Image))]
 			[Desc("Randomly chosen image sequences.")]
-			public readonly string[] Sequences = { };
+			public readonly string[] Sequences = [];
 
 			[PaletteReference]
 			[Desc("Palette used for rendering the resource sprites.")]
@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			[FieldLoader.Require]
 			[Desc("Resource name used by tooltips.")]
+			[FluentReference]
 			public readonly string Name = null;
 
 			public ResourceTypeInfo(MiniYaml yaml)
@@ -47,6 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		[IncludeFluentReferences(LintDictionaryReference.Values)]
 		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
 		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
 
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected static object LoadResourceTypes(MiniYaml yaml)
 		{
 			var ret = new Dictionary<string, ResourceTypeInfo>();
-			var resources = yaml.Nodes.FirstOrDefault(n => n.Key == "ResourceTypes");
+			var resources = yaml.NodeWithKeyOrDefault("ResourceTypes");
 			if (resources != null)
 				foreach (var r in resources.Value.Nodes)
 					ret[r.Key] = new ResourceTypeInfo(r.Value);
@@ -62,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{
 			var resourceLayer = ai.TraitInfoOrDefault<IResourceLayerInfo>();
 			if (resourceLayer == null)
@@ -79,9 +81,9 @@ namespace OpenRA.Mods.Common.Traits
 				colors.Add(resourceIndex, info.Color);
 			}
 
-			for (var i = 0; i < map.MapSize.X; i++)
+			for (var i = 0; i < map.MapSize.Width; i++)
 			{
-				for (var j = 0; j < map.MapSize.Y; j++)
+				for (var j = 0; j < map.MapSize.Height; j++)
 				{
 					var cell = new MPos(i, j);
 					if (colors.TryGetValue(map.Resources[cell].Type, out var color))
@@ -98,11 +100,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly ResourceRendererInfo Info;
 		protected readonly IResourceLayer ResourceLayer;
 		protected readonly CellLayer<RendererCellContents> RenderContents;
-		protected readonly Dictionary<string, Dictionary<string, ISpriteSequence>> Variants = new Dictionary<string, Dictionary<string, ISpriteSequence>>();
+		protected readonly Dictionary<string, Dictionary<string, ISpriteSequence>> Variants = [];
 		protected readonly World World;
 
-		readonly HashSet<CPos> dirty = new HashSet<CPos>();
-		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
+		readonly HashSet<CPos> dirty = [];
+		readonly Queue<CPos> cleanDirty = [];
 		TerrainSpriteLayer shadowLayer;
 		TerrainSpriteLayer spriteLayer;
 		bool disposed;
@@ -124,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var sequences = w.Map.Rules.Sequences;
+			var sequences = w.Map.Sequences;
 			foreach (var kv in Info.ResourceTypes)
 			{
 				var resourceInfo = kv.Value;
@@ -141,12 +143,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (shadowLayer == null)
 				{
-					var firstWithShadow = resourceVariants.Values.FirstOrDefault(v => v.ShadowStart > 0);
-					if (firstWithShadow != null)
+					var firstShadow = resourceVariants.Values
+						.Select(v => v.GetShadow(0, WAngle.Zero))
+						.FirstOrDefault(s => s != null);
+					if (firstShadow != null)
 					{
-						var first = firstWithShadow.GetShadow(0, WAngle.Zero);
-						var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-						shadowLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
+						var emptySprite = new Sprite(firstShadow.Sheet, Rectangle.Empty, TextureChannel.Alpha);
+						shadowLayer = new TerrainSpriteLayer(w, wr, emptySprite, firstShadow.BlendMode, wr.World.Type != WorldType.Editor);
 					}
 				}
 
@@ -265,7 +268,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual string GetRenderedResourceType(CPos cell) { return RenderContents[cell].Type; }
 
-		protected virtual string GetRenderedResourceTooltip(CPos cell) { return RenderContents[cell].Info?.Name; }
+		protected virtual string GetRenderedResourceTooltip(CPos cell)
+		{
+			var info = RenderContents[cell].Info;
+			if (info == null)
+				return null;
+
+			return FluentProvider.GetMessage(info.Name);
+		}
 
 		IEnumerable<string> IResourceRenderer.ResourceTypes => Info.ResourceTypes.Keys;
 
@@ -343,11 +353,12 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly ResourceRendererInfo.ResourceTypeInfo Info;
 			public readonly ISpriteSequence Sequence;
 			public readonly PaletteReference Palette;
-			public readonly int Density;
+			public readonly byte Density;
 
 			public static readonly RendererCellContents Empty = default;
 
-			public RendererCellContents(string resourceType, int density, ResourceRendererInfo.ResourceTypeInfo info, ISpriteSequence sequence, PaletteReference palette)
+			public RendererCellContents(string resourceType, byte density, ResourceRendererInfo.ResourceTypeInfo info,
+				ISpriteSequence sequence, PaletteReference palette)
 			{
 				Type = resourceType;
 				Density = density;
@@ -356,7 +367,7 @@ namespace OpenRA.Mods.Common.Traits
 				Palette = palette;
 			}
 
-			public RendererCellContents(RendererCellContents contents, int density)
+			public RendererCellContents(RendererCellContents contents, byte density)
 			{
 				Type = contents.Type;
 				Density = density;

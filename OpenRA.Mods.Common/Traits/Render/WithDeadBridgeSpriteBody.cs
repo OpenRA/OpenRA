@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -17,10 +18,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
+	sealed class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		[ActorReference]
-		public readonly string[] RampActors = { };
+		public readonly string[] RampActors = [];
 
 		[Desc("Offset to search for the 'A' neighbour")]
 		public readonly CVec AOffset = CVec.Zero;
@@ -29,13 +30,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly CVec BOffset = CVec.Zero;
 
 		[SequenceReference]
-		public readonly string[] ARampSequences = { "aramp" };
+		public readonly string[] ARampSequences = ["aramp"];
 
 		[SequenceReference]
-		public readonly string[] BRampSequences = { "bramp" };
+		public readonly string[] BRampSequences = ["bramp"];
 
 		[SequenceReference]
-		public readonly string[] ABRampSequences = { "abramp" };
+		public readonly string[] ABRampSequences = ["abramp"];
 
 		[SequenceReference]
 		[Desc("Placeholder sequence to use in the map editor.")]
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithDeadBridgeSpriteBody : WithSpriteBody
+	sealed class WithDeadBridgeSpriteBody : WithSpriteBody
 	{
 		readonly WithDeadBridgeSpriteBodyInfo bridgeInfo;
 		readonly BridgeLayer bridgeLayer;
@@ -91,11 +92,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var bRamp = bridgeInfo.BOffset != CVec.Zero && RampExists(self, bridgeInfo.BOffset);
 
 				var sequence = DefaultAnimation.CurrentSequence.Name;
-				if (aRamp && bRamp && bridgeInfo.ABRampSequences.Any())
+				if (aRamp && bRamp && bridgeInfo.ABRampSequences.Length > 0)
 					sequence = bridgeInfo.ABRampSequences.Random(Game.CosmeticRandom);
-				else if (aRamp && bridgeInfo.ARampSequences.Any())
+				else if (aRamp && bridgeInfo.ARampSequences.Length > 0)
 					sequence = bridgeInfo.ARampSequences.Random(Game.CosmeticRandom);
-				else if (bRamp && bridgeInfo.BRampSequences.Any())
+				else if (bRamp && bridgeInfo.BRampSequences.Length > 0)
 					sequence = bridgeInfo.BRampSequences.Random(Game.CosmeticRandom);
 
 				DefaultAnimation.PlayRepeating(NormalizeSequence(self, sequence));

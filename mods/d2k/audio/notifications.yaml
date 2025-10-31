@@ -67,12 +67,20 @@ Sounds:
 		DisablePower: POWRDN1
 		EnablePower: POWRUP1
 		CashTickUp: CASHTIK1
+			InterruptType: Overlap
 		CashTickDown: CASHTIK1
+			InterruptType: Overlap
 		LevelUp: SCORTIK1
 		ChatLine: CHAT1
+			InterruptType: Interrupt
+		LeaveLobby: CHAT1REVERSE
 		BuildPaletteOpen: BUTTON1
 		BuildPaletteClose: BUTTON1
 		TabClick: SIDEBAR1
+			InterruptType: Overlap
 		ClickSound: BUTTON1
+			InterruptType: Overlap
 		ClickDisabledSound: ENDLIST1
-		Beacon: CHAT1
+			InterruptType: Overlap
+		Beacon: MULTI1
+			InterruptType: Interrupt

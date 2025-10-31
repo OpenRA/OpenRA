@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition while the trait is active.")]
-	class GrantConditionOnFactionInfo : ConditionalTraitInfo
+	sealed class GrantConditionOnFactionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[Desc("Only grant this condition for certain factions.")]
-		public readonly HashSet<string> Factions = new HashSet<string>();
+		public readonly HashSet<string> Factions = [];
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantConditionOnFaction(init, this); }
 	}
 
-	class GrantConditionOnFaction : ConditionalTrait<GrantConditionOnFactionInfo>, INotifyOwnerChanged
+	sealed class GrantConditionOnFaction : ConditionalTrait<GrantConditionOnFactionInfo>, INotifyOwnerChanged
 	{
 		int conditionToken = Actor.InvalidConditionToken;
 		string faction;

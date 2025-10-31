@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,7 @@
 
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	public class DebugLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public DebugLogic(Widget widget, OrderManager orderManager, World world, WorldRenderer worldRenderer)
+		public DebugLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var geometryOverlay = world.WorldActor.TraitOrDefault<TerrainGeometryOverlay>();
 			if (geometryOverlay != null)

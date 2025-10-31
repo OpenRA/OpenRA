@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -49,6 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly CashTricklerInfo info;
 		PlayerResources resources;
+		Cloak[] cloaks;
+
 		[Sync]
 		public int Ticks { get; private set; }
 
@@ -62,6 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			resources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			cloaks = self.TraitsImplementing<Cloak>().ToArray();
 
 			base.Created(self);
 		}
@@ -88,13 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void AddCashTick(Actor self, int amount)
-		{
-			self.World.AddFrameEndTask(w => w.Add(
-				new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
-		}
-
-		void ModifyCash(Actor self, int amount)
+		public virtual void ModifyCash(Actor self, int amount)
 		{
 			if (info.UseResourceStorage)
 			{
@@ -105,8 +102,12 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				amount = resources.ChangeCash(amount);
 
+			if (cloaks.Length != 0 && !cloaks.Any(c => c.IsVisible(self, self.World.RenderPlayer)))
+				return;
+
 			if (info.ShowTicks && amount != 0)
-				AddCashTick(self, amount);
+				self.World.AddFrameEndTask(w =>
+					w.Add(new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 	}
 }

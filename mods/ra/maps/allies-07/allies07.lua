@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,7 @@ ClearSubActivityTriggerActivator = { Sub1, Sub2, Sub3, Sub4, Sub5, Sub6, Sub7, S
 AlliedGunboats = { "pt", "pt", "pt" }
 BeachRifles = { BeachRifle1, BeachRifle2, BeachRifle3, BeachRifle4 }
 
-lstReinforcements =
+LstReinforcements =
 {
 	first =
 	{
@@ -27,7 +27,7 @@ lstReinforcements =
 	}
 }
 
-if Map.LobbyOption("difficulty") == "easy" then
+if Difficulty == "easy" then
 	ActivateAIDelay = DateTime.Minutes(1)
 else
 	ActivateAIDelay = DateTime.Seconds(30)
@@ -42,15 +42,15 @@ RaidTwoPath = { RaidTwoEntry.Location, RaidTwoLanding.Location }
 StartTimer = false
 TimerColor = Player.GetPlayer("USSR").Color
 TimerTicks = DateTime.Minutes(10)
-ticked = TimerTicks
+Ticked = TimerTicks
 StartTimerDelay = DateTime.Minutes(5)
 
 InitialAlliedReinforcements = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Reinforcements.Reinforce(greece, AlliedGunboats, { GunboatEntry.Location, waypoint42.Location }, 2)
-		Media.PlaySpeechNotification(greece, "ReinforcementsArrived")
-		local reinforcement = lstReinforcements.first
-		Reinforcements.ReinforceWithTransport(greece, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
+		Reinforcements.Reinforce(Greece, AlliedGunboats, { GunboatEntry.Location, waypoint42.Location }, 2)
+		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+		local reinforcement = LstReinforcements.first
+		Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
 	end)
 end
 
@@ -64,29 +64,29 @@ end
 
 SecondAlliedLanding = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
-		Media.PlaySpeechNotification(greece, "ReinforcementsArrived")
-		local reinforcement = lstReinforcements.second
-		Reinforcements.ReinforceWithTransport(greece, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
+		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+		local reinforcement = LstReinforcements.second
+		Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
 	end)
 end
 
 CaptureRadarDome = function()
 	Trigger.OnKilled(RadarDome, function()
-		greece.MarkFailedObjective(CaptureRadarDomeObj)
+		Greece.MarkFailedObjective(CaptureRadarDomeObj)
 	end)
 
 	Trigger.OnCapture(RadarDome, function()
-		greece.MarkCompletedObjective(CaptureRadarDomeObj)
+		Greece.MarkCompletedObjective(CaptureRadarDomeObj)
 		BaseRaids()
 	end)
 end
 
 BaseRaids = function()
-	if Map.LobbyOption("difficulty") == "easy" then
+	if Difficulty == "easy" then
 		return
 	else
 		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay1[1], BaseRaidDelay1[2]), function()
-			local raiders = Reinforcements.ReinforceWithTransport(ussr, "lst", RaidingParty, RaidOnePath, { RaidOneEntry.Location })[2]
+			local raiders = Reinforcements.ReinforceWithTransport(USSR, "lst", RaidingParty, RaidOnePath, { RaidOneEntry.Location })[2]
 			Utils.Do(raiders, function(a)
 				Trigger.OnAddedToWorld(a, function()
 					a.AttackMove(PlayerBase.Location)
@@ -96,7 +96,7 @@ BaseRaids = function()
 		end)
 
 		Trigger.AfterDelay(Utils.RandomInteger(BaseRaidDelay2[1], BaseRaidDelay2[2]), function()
-			local raiders = Reinforcements.ReinforceWithTransport(ussr, "lst", RaidingParty, RaidTwoPath, { RaidTwoEntry.Location })[2]
+			local raiders = Reinforcements.ReinforceWithTransport(USSR, "lst", RaidingParty, RaidTwoPath, { RaidTwoEntry.Location })[2]
 			Utils.Do(raiders, function(a)
 				Trigger.OnAddedToWorld(a, function()
 					a.AttackMove(PlayerBase.Location)
@@ -108,12 +108,13 @@ BaseRaids = function()
 end
 
 StartTimerFunction = function()
-	if Map.LobbyOption("difficulty") == "hard" then
+	if Difficulty == "hard" then
 		StartTimer = true
-		Media.PlaySpeechNotification(greece, "TimerStarted")
+		Media.PlaySpeechNotification(Greece, "TimerStarted")
 	end
 end
 
+EnemyApproaching = UserInterface.GetFluentMessage("enemy-approaching")
 FinishTimer = function()
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -121,7 +122,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Enemy approaching", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(EnemyApproaching, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -137,10 +138,10 @@ BattalionWays =
 }
 
 SendArmoredBattalion = function()
-	Media.PlaySpeechNotification(greece, "EnemyUnitsApproaching")
+	Media.PlaySpeechNotification(Greece, "EnemyUnitsApproaching")
 	Utils.Do(BattalionWays, function(way)
 		local units = { "3tnk", "3tnk", "3tnk", "4tnk", "4tnk" }
-		local armor = Reinforcements.ReinforceWithTransport(ussr, "lst", units , way, { way[2], way[1] })[2]
+		local armor = Reinforcements.ReinforceWithTransport(USSR, "lst", units , way, { way[2], way[1] })[2]
 		Utils.Do(armor, function(a)
 			Trigger.OnAddedToWorld(a, function()
 				a.AttackMove(PlayerBase.Location)
@@ -151,64 +152,50 @@ SendArmoredBattalion = function()
 end
 
 DestroySubPensCompleted = function()
-	greece.MarkCompletedObjective(DestroySubPens)
+	Greece.MarkCompletedObjective(DestroySubPens)
 end
 
 ClearSubActivityCompleted = function()
-	greece.MarkCompletedObjective(ClearSubActivity)
+	Greece.MarkCompletedObjective(ClearSubActivity)
 end
 
 Tick = function()
-	ussr.Cash = 5000
-	badguy.Cash = 500
+	USSR.Cash = 5000
+	BadGuy.Cash = 500
 
 	if StartTimer then
-		if ticked > 0 then
-			UserInterface.SetMissionText("Soviet armored battalion arrives in " .. Utils.FormatTime(ticked), TimerColor)
-			ticked = ticked - 1
-		elseif ticked == 0 then
+		if Ticked > 0 then
+			if (Ticked % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.GetFluentMessage("soviet-armored-battalion-arrives-in", { ["time"] = Utils.FormatTime(Ticked) })
+				UserInterface.SetMissionText(Timer, TimerColor)
+			end
+			Ticked = Ticked - 1
+		elseif Ticked == 0 then
 			FinishTimer()
 			SendArmoredBattalion()
-			ticked = ticked - 1
+			Ticked = Ticked - 1
 		end
 	end
 
-	if greece.HasNoRequiredUnits() then
-		ussr.MarkCompletedObjective(BeatAllies)
+	if Greece.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(BeatAllies)
 	end
 end
 
 WorldLoaded = function()
-	greece = Player.GetPlayer("Greece")
-	ussr = Player.GetPlayer("USSR")
-	badguy = Player.GetPlayer("BadGuy")
+	Greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	BadGuy = Player.GetPlayer("BadGuy")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	CaptureRadarDomeObj = greece.AddObjective("Capture the Radar Dome.")
-	DestroySubPens = greece.AddObjective("Destroy all Soviet Sub Pens")
-	ClearSubActivity = greece.AddObjective("Clear the area of all sub activity", "Secondary", false)
-	BeatAllies = ussr.AddObjective("Defeat the Allied forces.")
+	InitObjectives(Greece)
+	CaptureRadarDomeObj = AddPrimaryObjective(Greece, "capture-radar-dome")
+	DestroySubPens = AddPrimaryObjective(Greece, "destroy-all-soviet-sub-pens")
+	ClearSubActivity = AddSecondaryObjective(Greece, "clear-area-all-subs")
+	BeatAllies = AddPrimaryObjective(USSR, "")
 
-	Trigger.OnObjectiveCompleted(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(greece, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(greece, "MissionFailed")
-		end)
-	end)
-	Trigger.OnPlayerWon(greece, function()
-		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(greece, "MissionAccomplished")
-		end)
-	end)
-
-	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
+	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 
 	InitialAlliedReinforcements()
 	SecondAlliedLanding()

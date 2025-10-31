@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 
 		public static Color GetColor(this IPalette palette, int index)
 		{
-			return Color.FromArgb((int)palette[index]);
+			return Color.FromArgb(palette[index]);
 		}
 
 		public static IPalette AsReadOnly(this IPalette palette)
@@ -40,9 +40,9 @@ namespace OpenRA.Graphics
 			return new ReadOnlyPalette(palette);
 		}
 
-		class ReadOnlyPalette : IPalette
+		sealed class ReadOnlyPalette : IPalette
 		{
-			IPalette palette;
+			readonly IPalette palette;
 			public ReadOnlyPalette(IPalette palette) { this.palette = palette; }
 			public uint this[int index] => palette[index];
 
@@ -103,12 +103,12 @@ namespace OpenRA.Graphics
 			: this(p)
 		{
 			for (var i = 0; i < Palette.Size; i++)
-				colors[i] = (uint)r.GetRemappedColor(this.GetColor(i), i).ToArgb();
+				colors[i] = r.GetRemappedColor(this.GetColor(i), i).ToArgb();
 		}
 
 		public ImmutablePalette(IPalette p)
 		{
-			for (int i = 0; i < Palette.Size; i++)
+			for (var i = 0; i < Palette.Size; i++)
 				colors[i] = p[i];
 		}
 
@@ -142,7 +142,7 @@ namespace OpenRA.Graphics
 
 		public void SetColor(int index, Color color)
 		{
-			colors[index] = (uint)color.ToArgb();
+			colors[index] = color.ToArgb();
 		}
 
 		public void SetFromPalette(IPalette p)
@@ -153,7 +153,7 @@ namespace OpenRA.Graphics
 		public void ApplyRemap(IPaletteRemap r)
 		{
 			for (var i = 0; i < Palette.Size; i++)
-				colors[i] = (uint)r.GetRemappedColor(this.GetColor(i), i).ToArgb();
+				colors[i] = r.GetRemappedColor(this.GetColor(i), i).ToArgb();
 		}
 	}
 }

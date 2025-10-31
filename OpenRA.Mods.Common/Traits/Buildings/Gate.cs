@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TransitionDelay = 33;
 
 		[Desc("Blocks bullets scaled to open value.")]
-		public readonly WDist BlocksProjectilesHeight = new WDist(640);
+		public readonly WDist BlocksProjectilesHeight = new(640);
 
 		[Desc("Determines what projectiles to block based on their allegiance to the gate owner.")]
 		public readonly PlayerRelationship BlocksProjectilesValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			blockedPositions = Enumerable.Empty<CPos>();
+			blockedPositions = [];
 		}
 
 		bool CanRemoveBlockage(Actor self, Actor blocking)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			return blockedPositions.Any(loc => self.World.ActorMap.GetActorsAt(loc).Any(a => a != self));
 		}
 
-		WDist IBlocksProjectiles.BlockingHeight => new WDist(Info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
+		WDist IBlocksProjectiles.BlockingHeight => new(Info.BlocksProjectilesHeight.Length * (OpenPosition - Position) / OpenPosition);
 
 		PlayerRelationship IBlocksProjectiles.ValidRelationships => Info.BlocksProjectilesValidRelationships;
 	}

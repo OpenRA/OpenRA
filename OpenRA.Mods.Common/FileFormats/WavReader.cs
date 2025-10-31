@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,14 +18,15 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class WavReader
 	{
-		enum WaveType { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
+		enum WaveType : short { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
 
-		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate)
+		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
 		{
 			result = null;
 			channels = -1;
 			sampleBits = -1;
 			sampleRate = -1;
+			lengthInSeconds = -1;
 
 			var type = s.ReadASCII(4);
 			if (type != "RIFF")
@@ -44,20 +45,21 @@ namespace OpenRA.Mods.Common.FileFormats
 			while (s.Position < s.Length)
 			{
 				if ((s.Position & 1) == 1)
-					s.ReadByte(); // Alignment
+					s.ReadUInt8(); // Alignment
 
 				if (s.Position == s.Length)
 					break; // Break if we aligned with end of stream
 
 				var blockType = s.ReadASCII(4);
+				var chunkSize = s.ReadUInt32();
+
 				switch (blockType)
 				{
 					case "fmt ":
-						var fmtChunkSize = s.ReadInt32();
 						var audioFormat = s.ReadInt16();
 						audioType = (WaveType)audioFormat;
 
-						if (!Enum.IsDefined(typeof(WaveType), audioType))
+						if (!Enum.IsDefined(audioType))
 							throw new NotSupportedException($"Compression type {audioFormat} is not supported.");
 
 						channels = s.ReadInt16();
@@ -65,25 +67,25 @@ namespace OpenRA.Mods.Common.FileFormats
 						s.ReadInt32(); // Byte Rate
 						blockAlign = s.ReadInt16();
 						sampleBits = s.ReadInt16();
-						s.ReadBytes(fmtChunkSize - 16);
+						lengthInSeconds = (float)(s.Length * 8) / (channels * sampleRate * sampleBits);
+						s.Position += chunkSize - 16; // Ignoring any optional extra params
 						break;
 					case "fact":
-						var chunkSize = s.ReadInt32();
 						uncompressedSize = s.ReadInt32();
-						s.ReadBytes(chunkSize - 4);
+						s.Position += chunkSize - 4; // Ignoring other formats than ADPCM, fact chunk not in standard PCM files
 						break;
 					case "data":
-						dataSize = s.ReadInt32();
+						if (s.Position + chunkSize > s.Length)
+							chunkSize = (uint)(s.Length - s.Position); // Handle defective data chunk size by assuming it's the remainder of the file
+
 						dataOffset = s.Position;
-						s.Position += dataSize;
+						dataSize = (int)chunkSize;
+						s.Position += chunkSize;
 						break;
 					case "LIST":
 					case "cue ":
-						var listCueChunkSize = s.ReadInt32();
-						s.ReadBytes(listCueChunkSize);
-						break;
 					default:
-						s.Position = s.Length; // Skip to end of stream
+						s.Position += chunkSize; // Ignoring chunks we don't want to/know how to handle
 						break;
 				}
 			}
@@ -107,25 +109,6 @@ namespace OpenRA.Mods.Common.FileFormats
 			return true;
 		}
 
-		public static float WaveLength(Stream s)
-		{
-			s.Position = 12;
-			var fmt = s.ReadASCII(4);
-
-			if (fmt != "fmt ")
-				return 0;
-
-			s.Position = 22;
-			var channels = s.ReadInt16();
-			var sampleRate = s.ReadInt32();
-
-			s.Position = 34;
-			var bitsPerSample = s.ReadInt16();
-			var length = s.Length * 8;
-
-			return length / (channels * sampleRate * bitsPerSample);
-		}
-
 		sealed class WavStreamImaAdpcm : ReadOnlyAdapterStream
 		{
 			readonly short channels;
@@ -144,7 +127,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			{
 				this.channels = channels;
 				numBlocks = dataSize / blockAlign;
-				blockDataSize = blockAlign - (channels * 4);
+				blockDataSize = blockAlign - channels * 4;
 				outputSize = uncompressedSize * channels * 2;
 				predictor = new int[channels];
 				index = new int[channels];
@@ -173,12 +156,13 @@ namespace OpenRA.Mods.Common.FileFormats
 
 				// Decode and output remaining data in this block
 				var blockOffset = 0;
+				Span<byte> chunk = stackalloc byte[4];
 				while (blockOffset < blockDataSize)
 				{
 					for (var c = 0; c < channels; c++)
 					{
 						// Decode 4 bytes (to 16 bytes of output) per channel
-						var chunk = baseStream.ReadBytes(4);
+						baseStream.ReadBytes(chunk);
 						var decoded = ImaAdpcmReader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
 
 						// Interleave output, one sample per channel
@@ -213,14 +197,14 @@ namespace OpenRA.Mods.Common.FileFormats
 		public sealed class WavStreamMsAdpcm : ReadOnlyAdapterStream
 		{
 			static readonly int[] AdaptationTable =
-			{
+			[
 				230, 230, 230, 230, 307, 409, 512, 614,
 				768, 614, 512, 409, 307, 230, 230, 230
-			};
+			];
 
-			static readonly int[] AdaptCoeff1 = { 256, 512, 0, 192, 240, 460, 392 };
+			static readonly int[] AdaptCoeff1 = [256, 512, 0, 192, 240, 460, 392];
 
-			static readonly int[] AdaptCoeff2 = { 0, -256, 0, 64, 0, -208, -232 };
+			static readonly int[] AdaptCoeff2 = [0, -256, 0, 64, 0, -208, -232];
 
 			readonly short channels;
 			readonly int blockDataSize;
@@ -269,13 +253,20 @@ namespace OpenRA.Mods.Common.FileFormats
 					WriteSample(DecodeNibble((short)((bytecode >> 4) & 0x0F), bpred[0], ref chanIdelta[0], ref s1[0], ref s2[0]), data);
 
 					// Decode the second nibble, for stereo this will be the right channel
-					WriteSample(DecodeNibble((short)(bytecode & 0x0F), bpred[channelNumber], ref chanIdelta[channelNumber], ref s1[channelNumber], ref s2[channelNumber]), data);
+					WriteSample(
+						DecodeNibble(
+							(short)(bytecode & 0x0F),
+							bpred[channelNumber],
+							ref chanIdelta[channelNumber],
+							ref s1[channelNumber],
+							ref s2[channelNumber]),
+						data);
 				}
 
 				return ++currentBlock >= numBlocks;
 			}
 
-			short WriteSample(short t, Queue<byte> data)
+			static short WriteSample(short t, Queue<byte> data)
 			{
 				data.Enqueue((byte)t);
 				data.Enqueue((byte)(t >> 8));
@@ -283,9 +274,9 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 
 			// This code contains elements from libsndfile
-			short DecodeNibble(short nibble, byte bpred, ref short idelta, ref short s1, ref short s2)
+			static short DecodeNibble(short nibble, byte bpred, ref short idelta, ref short s1, ref short s2)
 			{
-				var predict = ((s1 * AdaptCoeff1[bpred]) + (s2 * AdaptCoeff2[bpred])) >> 8;
+				var predict = (s1 * AdaptCoeff1[bpred] + s2 * AdaptCoeff2[bpred]) >> 8;
 
 				var twosCompliment = (nibble & 0x8) > 0
 					? nibble - 0x10

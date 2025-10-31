@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	// TODO: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo
+	sealed class RenderJammerCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Range circle color.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Red);
@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
+			if (!EnabledByDefault)
+				yield break;
+
 			var jamsMissiles = ai.TraitInfoOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
 			{
@@ -56,17 +59,21 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RenderJammerCircle(this); }
 	}
 
-	class RenderJammerCircle : IRenderAnnotationsWhenSelected
+	sealed class RenderJammerCircle : ConditionalTrait<RenderJammerCircleInfo>, IRenderAnnotationsWhenSelected
 	{
 		readonly RenderJammerCircleInfo info;
 
 		public RenderJammerCircle(RenderJammerCircleInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				yield break;
+
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 

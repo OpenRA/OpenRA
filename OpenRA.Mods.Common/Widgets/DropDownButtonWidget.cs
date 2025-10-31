@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
-		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getMarkerImage;
-		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getSeparatorImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(ModData modData)
@@ -56,21 +56,26 @@ namespace OpenRA.Mods.Common.Widgets
 			var isDisabled = IsDisabled();
 			var isHover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 
-			if (getMarkerImage == null)
-				getMarkerImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
+			getMarkerImage ??= WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
 
-			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false));
-			WidgetUtils.DrawSprite(arrowImage, stateOffset + new float2(rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2), rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
+			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
+			WidgetUtils.DrawSprite(
+				arrowImage,
+				stateOffset + new float2(
+					rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2),
+					rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
 
-			if (getSeparatorImage == null)
-				getSeparatorImage = WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
+			getSeparatorImage ??= WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
 
-			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false));
+			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			if (separatorImage != null)
-				WidgetUtils.DrawSprite(separatorImage, stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
+				WidgetUtils.DrawSprite(
+					separatorImage,
+					stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4,
+					rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
 		}
 
-		public override Widget Clone() { return new DropDownButtonWidget(this); }
+		public override DropDownButtonWidget Clone() { return new DropDownButtonWidget(this); }
 
 		// This is crap
 		public override int UsableWidth => Bounds.Width - Bounds.Height; /* space for button */
@@ -107,8 +112,11 @@ namespace OpenRA.Mods.Common.Widgets
 			panel = p;
 
 			// Mask to prevent any clicks from being sent to other widgets
-			fullscreenMask = new MaskWidget();
-			fullscreenMask.Bounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height);
+			fullscreenMask = new MaskWidget
+			{
+				Bounds = new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+			};
+
 			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();
@@ -126,9 +134,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
 			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
-				panelY -= (Bounds.Height + oldBounds.Height);
+				panelY -= Bounds.Height + oldBounds.Height;
 
-			panel.Bounds = new Rectangle(
+			panel.Bounds = new WidgetBounds(
 				panelX,
 				panelY,
 				oldBounds.Width,
@@ -138,7 +146,8 @@ namespace OpenRA.Mods.Common.Widgets
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
 		}
 
-		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		public void ShowDropDown<T>(
+			string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
@@ -160,7 +169,8 @@ namespace OpenRA.Mods.Common.Widgets
 			AttachPanel(panel);
 		}
 
-		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		public void ShowDropDown<T>(
+			string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
@@ -174,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var group = kv.Key;
 				if (group.Length > 0 && headerTemplate != null)
 				{
-					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
+					var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
 					header.Get<LabelWidget>("LABEL").GetText = () => group;
 					panel.AddChild(header);
 				}
@@ -218,6 +228,6 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override string GetCursor(int2 pos) { return null; }
-		public override Widget Clone() { return new MaskWidget(this); }
+		public override MaskWidget Clone() { return new MaskWidget(this); }
 	}
 }

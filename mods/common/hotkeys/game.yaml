@@ -1,111 +1,134 @@
 CycleBase: H
-	Description: Jump to base
-	Types: World, Player, Spectator
+	Description: hotkey-description-cyclebase
+	Types: World
+	Contexts: player, spectator
 
 ToLastEvent: SPACE
-	Description: Jump to last radar event
-	Types: World, Player, Spectator
+	Description: hotkey-description-tolastevent
+	Types: World
+	Contexts: player, spectator
 
 ToSelection: HOME
-	Description: Jump to selection
-	Types: World, Player, Spectator
+	Description: hotkey-description-toselection
+	Types: World
+	Contexts: player, spectator
 
 SelectAllUnits: Q
-	Description: Select all combat units
-	Types: World, Player, Spectator
+	Description: hotkey-description-selectallunits
+	Types: World
+	Contexts: player, spectator
 
 SelectUnitsByType: W
-	Description: Select units by type
-	Types: World, Player, Spectator
+	Description: hotkey-description-selectunitsbytype
+	Types: World
+	Contexts: player, spectator
 
 CycleHarvesters: N
-	Description: Cycle Harvesters
-	Types: World, Player, Spectator
-
-RemoveFromControlGroup:
-	Description: Remove from control group
-	Types: World, Player
+	Description: hotkey-description-cycleharvesters
+	Types: World
+	Contexts: player, spectator
 
 Pause: PAUSE
-	Description: Pause / Unpause
-	Types: World, Player, Spectator
+	Description: hotkey-description-pause
+	Types: World
+	Contexts: player, spectator
 
 Sell: Z
-	Description: Sell mode
-	Types: OrderGenerator, Player
+	Description: hotkey-description-sell
+	Types: OrderGenerator
+	Contexts: player
 
 Repair: C
-	Description: Repair mode
-	Types: OrderGenerator, Player
+	Description: hotkey-description-repair
+	Types: OrderGenerator
+	Contexts: player
 
 PlaceBeacon: B
-	Description: Place beacon
-	Types: OrderGenerator, Player, Spectator
+	Description: hotkey-description-placebeacon
+	Types: OrderGenerator
+	Contexts: player
 
 CycleStatusBars: COMMA
-	Description: Cycle status bars display
-	Types: World, Player, Spectator
+	Description: hotkey-description-cyclestatusbars
+	Types: World
+	Contexts: player, spectator
 
 ToggleMute: M
-	Description: Toggle audio mute
-	Types: World, Menu, Player, Spectator
+	Description: hotkey-description-togglemute
+	Types: World
+	Contexts: menu, player, spectator
 
-TogglePlayerStanceColor: COMMA Ctrl
-	Description: Toggle player stance colors
-	Types: World, Player, Spectator
+TogglePlayerStanceColor:
+	Description: hotkey-description-toggleplayerstancecolor
+	Types: World
+	Contexts: player, spectator
 
 TakeScreenshot: P Ctrl
-	Description: Take screenshot
-	Types: World, Menu, Player, Spectator
+	Description: hotkey-description-takescreenshot
+	Types: World
+	Contexts: menu, player, spectator
 
 AttackMove: A
-	Description: Attack Move
-	Types: Unit, Player
+	Description: hotkey-description-attackmove
+	Types: Unit
+	Contexts: player
 
 Stop: S
-	Description: Stop
-	Types: Unit, Player
+	Description: hotkey-description-stop
+	Types: Unit
+	Contexts: player
 
 Scatter: X Ctrl
-	Description: Scatter
-	Types: Unit, Player
+	Description: hotkey-description-scatter
+	Types: Unit
+	Contexts: player
 
 Deploy: F
-	Description: Deploy
-	Types: Unit, Player
+	Description: hotkey-description-deploy
+	Types: Unit
+	Contexts: player
 
 Guard: D
-	Description: Guard
-	Types: Unit, Player
+	Description: hotkey-description-guard
+	Types: Unit
+	Contexts: player
 
 StanceAttackAnything: A Alt
-	Description: Attack anything
-	Types: Stance, Player
+	Description: hotkey-description-stanceattackanything
+	Types: Stance
+	Contexts: player
 
 StanceDefend: S Alt
-	Description: Defend
-	Types: Stance, Player
+	Description: hotkey-description-stancedefend
+	Types: Stance
+	Contexts: player
 
 StanceReturnFire: D Alt
-	Description: Return fire
-	Types: Stance, Player
+	Description: hotkey-description-stancereturnfire
+	Types: Stance
+	Contexts: player
 
 StanceHoldFire: F Alt
-	Description: Hold fire
-	Types: Stance, Player
+	Description: hotkey-description-stanceholdfire
+	Types: Stance
+	Contexts: player
 
 StopMusic: AUDIOSTOP
-	Description: Stop
-	Types: Music, Player, Spectator
+	Description: hotkey-description-stopmusic
+	Types: Music
+	Contexts: menu, player, spectator
 
 PauseMusic: AUDIOPLAY
-	Description: Pause or Resume
-	Types: Music, Player, Spectator
+	Description: hotkey-description-pausemusic
+	Types: Music
+	Contexts: menu, player, spectator
 
 PrevMusic: AUDIOPREV
-	Description: Previous
-	Types: Music, Player, Spectator
+	Description: hotkey-description-prevmusic
+	Types: Music
+	Contexts: menu, player, spectator
 
 NextMusic: AUDIONEXT
-	Description: Next
-	Types: Music, Player, Spectator
+	Description: hotkey-description-nextmusic
+	Types: Music
+	Contexts: menu, player, spectator

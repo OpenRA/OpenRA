@@ -184,6 +184,12 @@ BarrelCluster:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 
+BridgeExplode:
+	Inherits: VisualExplode
+	Warhead@2Eff: CreateEffect
+		Explosions: large_napalm
+		ValidTargets: Bridge, Ground, Water
+
 ATMine:
 	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
@@ -271,7 +277,7 @@ CrateNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 5
-	Warhead@7FlashEffect: FlashPaletteEffect
+	Warhead@7FlashEffect: FlashEffect
 		Duration: 20
 		FlashType: Nuke
 
@@ -283,7 +289,7 @@ MiniNuke:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
-			Wood: 25
+			Wood: 40
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -300,7 +306,7 @@ MiniNuke:
 		Delay: 5
 		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
-			Wood: 50
+			Wood: 55
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -345,6 +351,6 @@ MiniNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 15
-	Warhead@14FlashEffect: FlashPaletteEffect
+	Warhead@14FlashEffect: FlashEffect
 		Duration: 20
 		FlashType: Nuke

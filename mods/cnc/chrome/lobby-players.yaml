@@ -1,64 +1,64 @@
 Container@LOBBY_PLAYER_BIN:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
 			Y: 0 - 24
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
-				Label@NAME:
+				Label@LABEL_LOBBY_NAME:
 					Width: 200
 					Height: 25
-					Text: Player
+					Text: label-lobby-players-player
 					Align: Center
 					Font: Bold
-				Label@COLOR:
+				Label@LABEL_LOBBY_COLOR:
 					X: 210
 					Width: 94
 					Height: 25
-					Text: Color
+					Text: label-lobby-players-color
 					Align: Center
 					Font: Bold
-				Label@FACTION:
+				Label@LABEL_LOBBY_FACTION:
 					X: 309
 					Width: 120
 					Height: 25
-					Text: Faction
+					Text: label-lobby-players-faction
 					Align: Center
 					Font: Bold
-				Label@TEAM:
-					X: 460-25
+				Label@LABEL_LOBBY_TEAM:
+					X: 460 - 25
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: label-lobby-players-team
 					Align: Center
 					Font: Bold
-				Label@HANDICAP:
+				Label@LABEL_LOBBY_HANDICAP:
 					X: 491
 					Width: 75
 					Height: 25
-					Text: Handicap
+					Text: label-lobby-players-handicap
 					Align: Center
 					Font: Bold
-				Label@SPAWN:
+				Label@LABEL_LOBBY_SPAWN:
 					X: 571
 					Width: 50
 					Height: 25
-					Text: Spawn
+					Text: label-lobby-players-spawn
 					Align: Left
 					Font: Bold
-				Label@STATUS:
+				Label@LABEL_LOBBY_STATUS:
 					X: 627
-					Width: 20
+					Width: 20 + 24
 					Height: 25
-					Text: Ready
+					Text: label-lobby-players-ready
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
@@ -78,8 +78,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -110,7 +110,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 190
 							Height: 25
-							Text: Name
+							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
 						DropDownButton@COLOR:
@@ -123,8 +123,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@COLORBLOCK:
 									X: 5
 									Y: 6
-									Width: PARENT_RIGHT - 35
-									Height: PARENT_BOTTOM - 12
+									Width: PARENT_WIDTH - 35
+									Height: PARENT_HEIGHT - 12
 						DropDownButton@FACTION:
 							X: 309
 							Width: 120
@@ -141,9 +141,9 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 16
 								Label@FACTIONNAME:
 									X: 40
-									Width: 60
+									Width: 50
 									Height: 25
-									Text: Faction
+									Text: label-lobby-players-faction
 						DropDownButton@TEAM_DROPDOWN:
 							X: 435
 							Width: 50
@@ -155,7 +155,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 571
 							Width: 50
@@ -166,7 +166,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
@@ -191,8 +191,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -252,12 +252,12 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 15
 								Label@FACTIONNAME:
 									X: 40
-									Width: 60
+									Width: 50
 									Height: 25
-									Text: Faction
+									Text: label-lobby-players-faction
 						Label@TEAM:
-							X: 435
-							Width: 25
+							X: 425
+							Width: 45
 							Height: 25
 							Align: Center
 						DropDownButton@TEAM_DROPDOWN:
@@ -277,7 +277,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
 						Label@SPAWN:
 							X: 571
 							Width: 25
@@ -294,7 +294,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 				Container@TEMPLATE_EMPTY:
@@ -307,7 +307,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 190
 							Height: 25
-							Text: Name
+							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
 						Label@NAME:
@@ -319,7 +319,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 438
 							Height: 25
-							Text: Play in this slot
+							Text: button-lobby-players-join
 							Font: Regular
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
@@ -337,8 +337,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -368,7 +368,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 441
 							Height: 25
-							Text: Spectator
+							Text: label-lobby-players-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -376,7 +376,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
@@ -401,8 +401,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -449,7 +449,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 441
 							Height: 25
-							Text: Spectator
+							Text: label-lobby-players-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -457,7 +457,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 				Container@TEMPLATE_NEW_SPECTATOR:
@@ -471,10 +471,10 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 190
 							Height: 20
 							Font: Regular
-							Text: Allow Spectators?
+							Text: checkbox-lobby-players-new-spectator-toggle
 						Button@SPECTATE:
 							X: 210
 							Width: 438
 							Height: 25
-							Text: Spectate
+							Text: button-lobby-players-spectate
 							Font: Regular

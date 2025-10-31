@@ -20,7 +20,7 @@ VolkovWeapon:
 			Light: 60
 			Heavy: 25
 			Concrete: 50
-		ValidTargets: Barrel, Infantry, Vehicle, Mine
+		ValidTargets: Barrel, Infantry, Ship, Vehicle, Mine
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater

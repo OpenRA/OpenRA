@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public enum RangeCircleVisibility { Always, WhenSelected }
 
 	[Desc("Renders an arbitrary circle when selected or placing a structure")]
-	class WithRangeCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
+	sealed class WithRangeCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Type of range circle. used to decide which circles to draw on other structures during building placement.")]
 		public readonly string Type = null;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 				foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
 					if (a.Trait.Info.Type == Type)
-						foreach (var r in a.Trait.RenderRangeCircle(a.Actor, wr, RangeCircleVisibility.WhenSelected))
+						foreach (var r in a.Trait.RenderRangeCircle(a.Actor, RangeCircleVisibility.WhenSelected))
 							yield return r;
 			}
 		}
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithRangeCircle(init.Self, this); }
 	}
 
-	class WithRangeCircle : ConditionalTrait<WithRangeCircleInfo>, IRenderAnnotationsWhenSelected, IRenderAnnotations
+	sealed class WithRangeCircle : ConditionalTrait<WithRangeCircleInfo>, IRenderAnnotationsWhenSelected, IRenderAnnotations
 	{
 		readonly Actor self;
 
@@ -95,14 +95,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, WorldRenderer wr, RangeCircleVisibility visibility)
+		public IEnumerable<IRenderable> RenderRangeCircle(Actor self, RangeCircleVisibility visibility)
 		{
 			if (Info.Visible == visibility && Visible)
 				yield return new RangeCircleAnnotationRenderable(
 					self.CenterPosition,
 					Info.Range,
 					0,
-					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
+					Info.UsePlayerColor ? self.OwnerColor() : Info.Color,
 					Info.Width,
 					Info.BorderColor,
 					Info.BorderWidth);
@@ -110,14 +110,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RenderRangeCircle(self, wr, RangeCircleVisibility.WhenSelected);
+			return RenderRangeCircle(self, RangeCircleVisibility.WhenSelected);
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RenderRangeCircle(self, wr, RangeCircleVisibility.Always);
+			return RenderRangeCircle(self, RangeCircleVisibility.Always);
 		}
 
 		bool IRenderAnnotations.SpatiallyPartitionable => false;

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,28 +22,28 @@ namespace OpenRA.Graphics
 			this.parent = parent;
 		}
 
-		public void DrawSprite(Sprite s, in float3 location, in float3 scale)
+		public void DrawSprite(Sprite s, in float3 location, in float3 scale, float rotation = 0f)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, 0, location, scale);
+			parent.DrawSprite(s, 0, location, scale, rotation);
 		}
 
-		public void DrawSprite(Sprite s, in float3 location, float scale = 1f)
+		public void DrawSprite(Sprite s, in float3 location, float scale = 1f, float rotation = 0f)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, 0, location, scale);
+			parent.DrawSprite(s, 0, location, scale, rotation);
 		}
 
-		public void DrawSprite(Sprite s, in float3 location, float scale, in float3 tint, float alpha)
+		public void DrawSprite(Sprite s, in float3 location, float scale, in float3 tint, float alpha, float rotation = 0f)
 		{
 			if (s.Channel != TextureChannel.RGBA)
 				throw new InvalidOperationException("DrawRGBASprite requires a RGBA sprite.");
 
-			parent.DrawSprite(s, 0, location, scale, tint, alpha);
+			parent.DrawSprite(s, 0, location, scale, tint, alpha, rotation);
 		}
 
 		public void DrawSprite(Sprite s, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)

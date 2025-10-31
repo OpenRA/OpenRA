@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Cnc.FileSystem
 	{
 		sealed class BigFile : IReadOnlyPackage
 		{
-			public string Name { get; private set; }
+			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Dictionary<string, Entry> index;
 			readonly Stream s;
 
 			public BigFile(Stream s, string filename)
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 				try
 				{
-					/* var signature = */ s.ReadASCII(4);
+					s.ReadASCII(4); // signature
 
 					// Total archive size.
 					s.ReadUInt32();
@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					// and we don't have to try seeking there since the entries typically start next in EA's .big files.
 					s.ReadUInt32();
 
+					index = new Dictionary<string, Entry>((int)entryCount);
 					for (var i = 0; i < entryCount; i++)
 					{
 						var entry = new Entry(s);
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				}
 			}
 
-			class Entry
+			sealed class Entry
 			{
 				public readonly uint Offset;
 				public readonly uint Size;

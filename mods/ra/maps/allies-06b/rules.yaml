@@ -4,22 +4,23 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, allies06b.lua, allies06b-AI.lua
+		Scripts: campaign.lua, utils.lua, allies06b.lua, allies06b-AI.lua
 	MissionData:
 		BriefingVideo: ally6.vqa
 		WinVideo: allymorf.vqa
 		LossVideo: overrun.vqa
 		StartVideo: mcv.vqa
-		Briefing: Priority one is to establish a base and get your spy into one of the Soviet Tech Centers in the base across the gulf.\nData on the Iron Curtain is in there and we need it.\n\nOnce you get the data complete your mission...\nWipe out everything.
+		Briefing: Priority one is to establish a base and get your spy into one of the Soviet Tech Centers across the gulf.\nData on the Iron Curtain is in there and we need it.\n\nOnce you get the data, complete your mission...\nWipe out everything.
 	MapOptions:
 		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 powerproxy.paratroopers:
@@ -31,6 +32,10 @@ powerproxy.paratroopers:
 		Prerequisites: ~vehicles.soviet
 
 ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
 	Buildable:
 		Prerequisites: ~disabled
 

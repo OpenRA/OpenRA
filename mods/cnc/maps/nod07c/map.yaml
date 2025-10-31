@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: cnc
 
@@ -708,7 +708,7 @@ Actors:
 		Location: 49,52
 		Owner: GDI
 		ScriptTags: GDIBuilding
-	GDIBuilding5: nuke
+	GDIBuilding5: nuk2
 		Location: 56,53
 		Owner: GDI
 		ScriptTags: GDIBuilding
@@ -771,3 +771,5 @@ Actors:
 		Location: 50,27
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
+
+FluentMessages: cnc|fluent/lua.ftl, cnc|fluent/campaign.ftl

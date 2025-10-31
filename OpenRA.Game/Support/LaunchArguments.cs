@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -37,8 +37,8 @@ namespace OpenRA
 				return;
 
 			foreach (var f in GetType().GetFields())
-				if (args.Contains("Launch" + "." + f.Name))
-					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
+				if (args.Contains("Launch." + f.Name))
+					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch." + f.Name, ""));
 		}
 
 		public ConnectionTarget GetConnectEndPoint()
@@ -60,7 +60,7 @@ namespace OpenRA
 			}
 			catch (Exception ex)
 			{
-				Log.Write("client", "Failed to parse Launch.URI or Launch.Connect: {0}", ex.Message);
+				Log.Write("client", $"Failed to parse Launch.URI or Launch.Connect: {ex.Message}");
 				return null;
 			}
 		}

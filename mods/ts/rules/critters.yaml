@@ -6,7 +6,7 @@ DOGGIE:
 	MapEditorData:
 		Categories: Critter
 	Tooltip:
-		Name: Tiberian Fiend
+		Name: actor-doggie-name
 	Health:
 		HP: 25000
 	Selectable:
@@ -27,6 +27,7 @@ DOGGIE:
 		Weapon: FiendShard
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelay: 200
@@ -59,7 +60,7 @@ DOGGIE:
 VISC_SML:
 	Inherits: ^Visceroid
 	Tooltip:
-		Name: Baby Visceroid
+		Name: actor-visc-sml-name
 	Health:
 		HP: 20000
 	AttackWander:
@@ -74,6 +75,8 @@ VISC_SML:
 		CrushClasses: visceroid-fusing
 		WarnProbability: 0
 		CrushedByFriendlies: True
+	AutoCrusher:
+		CrushClasses: visceroid-fusing
 	TransformCrusherOnCrush:
 		IntoActor: visc_lrg
 		CrushClasses: visceroid-fusing
@@ -83,7 +86,7 @@ VISC_LRG:
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
-		Name: Adult Visceroid
+		Name: actor-visc-lrg-name
 	Health:
 		HP: 50000
 	Armor:
@@ -97,6 +100,7 @@ VISC_LRG:
 		ScanRadius: 5
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	AttackWander:
 		WanderMoveRadius: 2
 		MinMoveDelay: 25
@@ -111,7 +115,7 @@ JFISH:
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
-		Name: Tiberium Floater
+		Name: actor-jfish-name
 	Health:
 		HP: 50000
 	RevealsShroud:
@@ -125,6 +129,7 @@ JFISH:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
+		FacingTolerance: 0
 	AttackWander:
 		WanderMoveRadius: 6
 		MinMoveDelay: 250

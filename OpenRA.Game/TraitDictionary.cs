@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,21 +12,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
 namespace OpenRA
 {
-	static class ListExts
+	static class SpanExts
 	{
-		public static int BinarySearchMany(this List<Actor> list, uint searchFor)
+		public static int BinarySearchMany(this Span<Actor> span, uint searchFor)
 		{
 			var start = 0;
-			var end = list.Count;
+			var end = span.Length;
 			while (start != end)
 			{
 				var mid = (start + end) / 2;
-				if (list[mid].ActorID < searchFor)
+				if (span[mid].ActorID < searchFor)
 					start = mid + 1;
 				else
 					end = mid;
@@ -39,12 +40,12 @@ namespace OpenRA
 	/// <summary>
 	/// Provides efficient ways to query a set of actors by their traits.
 	/// </summary>
-	class TraitDictionary
+	sealed class TraitDictionary
 	{
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
 			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		readonly Dictionary<Type, ITraitContainer> traits = new Dictionary<Type, ITraitContainer>();
+		readonly Dictionary<Type, ITraitContainer> traits = [];
 
 		ITraitContainer InnerGet(Type t)
 		{
@@ -60,7 +61,7 @@ namespace OpenRA
 		{
 			Log.AddChannel("traitreport", "traitreport.log");
 			foreach (var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0))
-				Log.Write("traitreport", "{0}: {1}", t.Key.Name, t.Value.Queries);
+				Log.Write("traitreport", $"{t.Key.Name}: {t.Value.Queries}");
 		}
 
 		public void AddTrait(Actor actor, object val)
@@ -141,17 +142,17 @@ namespace OpenRA
 			int Queries { get; }
 		}
 
-		class TraitContainer<T> : ITraitContainer
+		sealed class TraitContainer<T> : ITraitContainer
 		{
-			readonly List<Actor> actors = new List<Actor>();
-			readonly List<T> traits = new List<T>();
-			readonly PerfTickLogger perfLogger = new PerfTickLogger();
+			readonly List<Actor> actors = [];
+			readonly List<T> traits = [];
 
 			public int Queries { get; private set; }
 
 			public void Add(Actor actor, object trait)
 			{
-				var insertIndex = actors.BinarySearchMany(actor.ActorID + 1);
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var insertIndex = actorsSpan.BinarySearchMany(actor.ActorID + 1);
 				actors.Insert(insertIndex, actor);
 				traits.Insert(insertIndex, (T)trait);
 			}
@@ -168,11 +169,12 @@ namespace OpenRA
 			public T GetOrDefault(Actor actor)
 			{
 				++Queries;
-				var index = actors.BinarySearchMany(actor.ActorID);
-				if (index >= actors.Count || actors[index] != actor)
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var index = actorsSpan.BinarySearchMany(actor.ActorID);
+				if (index >= actorsSpan.Length || actorsSpan[index] != actor)
 					return default;
 
-				if (index + 1 < actors.Count && actors[index + 1] == actor)
+				if (index + 1 < actorsSpan.Length && actorsSpan[index + 1] == actor)
 					throw new InvalidOperationException($"Actor {actor.Info.Name} has multiple traits of type `{typeof(T)}`");
 
 				return traits[index];
@@ -185,7 +187,7 @@ namespace OpenRA
 				return new MultipleEnumerable(this, actor);
 			}
 
-			class MultipleEnumerable : IEnumerable<T>
+			sealed class MultipleEnumerable : IEnumerable<T>
 			{
 				readonly TraitContainer<T> container;
 				readonly uint actor;
@@ -209,11 +211,11 @@ namespace OpenRA
 					Reset();
 				}
 
-				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
+				public void Reset() { index = CollectionsMarshal.AsSpan(actors).BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
-				public T Current => traits[index];
-				object System.Collections.IEnumerator.Current => Current;
-				public void Dispose() { }
+				public readonly T Current => traits[index];
+				readonly object System.Collections.IEnumerator.Current => Current;
+				public readonly void Dispose() { }
 			}
 
 			public IEnumerable<TraitPair<T>> All()
@@ -277,19 +279,20 @@ namespace OpenRA
 
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
-				public TraitPair<T> Current => new TraitPair<T>(actors[index], traits[index]);
-				object System.Collections.IEnumerator.Current => Current;
-				public void Dispose() { }
+				public readonly TraitPair<T> Current => new(actors[index], traits[index]);
+				readonly object System.Collections.IEnumerator.Current => Current;
+				public readonly void Dispose() { }
 			}
 
 			public void RemoveActor(uint actor)
 			{
-				var startIndex = actors.BinarySearchMany(actor);
-				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var startIndex = actorsSpan.BinarySearchMany(actor);
+				if (startIndex >= actorsSpan.Length || actorsSpan[startIndex].ActorID != actor)
 					return;
 
 				var endIndex = startIndex + 1;
-				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+				while (endIndex < actorsSpan.Length && actorsSpan[endIndex].ActorID == actor)
 					endIndex++;
 
 				var count = endIndex - startIndex;
@@ -299,20 +302,26 @@ namespace OpenRA
 
 			public void ApplyToAll(Action<Actor, T> action)
 			{
-				for (var i = 0; i < actors.Count; i++)
-					action(actors[i], traits[i]);
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var traitsSpan = CollectionsMarshal.AsSpan(traits);
+
+				for (var i = 0; i < actorsSpan.Length; i++)
+					action(actorsSpan[i], traitsSpan[i]);
 			}
 
 			public void ApplyToAllTimed(Action<Actor, T> action, string text)
 			{
-				perfLogger.Start();
-				for (var i = 0; i < actors.Count; i++)
+				var start = PerfTickLogger.GetTimestamp();
+				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var traitsSpan = CollectionsMarshal.AsSpan(traits);
+
+				for (var i = 0; i < actorsSpan.Length; i++)
 				{
-					var actor = actors[i];
-					var trait = traits[i];
+					var actor = actorsSpan[i];
+					var trait = traitsSpan[i];
 					action(actor, trait);
 
-					perfLogger.LogTickAndRestartTimer(text, trait);
+					start = PerfTickLogger.LogLongTick(start, text, trait);
 				}
 			}
 		}

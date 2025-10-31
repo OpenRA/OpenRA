@@ -1,29 +1,30 @@
 Container@DIRECTCONNECT_PANEL:
 	Logic: DirectConnectLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 370
 	Height: 125
 	Children:
-		Label@TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+		Label@DIRECTCONNECT_LABEL_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Connect to Server
+			Text: label-directconnect-panel-title
 		Background@bg:
 			Width: 370
 			Height: 90
 			Background: panel-black
 			Children:
 				Label@ADDRESS_LABEL:
-					X: 50
+					X: 20
 					Y: 14
-					Width: 95
+					Width: 125
 					Height: 25
 					Align: Right
-					Text: Address:
+					Text: label-bg-address
 				TextField@IP:
 					X: 150
 					Y: 15
@@ -35,7 +36,7 @@ Container@DIRECTCONNECT_PANEL:
 					Width: 95
 					Height: 25
 					Align: Right
-					Text: Port:
+					Text: label-bg-port
 				TextField@PORT:
 					X: 150
 					Y: 50
@@ -48,11 +49,11 @@ Container@DIRECTCONNECT_PANEL:
 			Y: 89
 			Width: 140
 			Height: 35
-			Text: Back
+			Text: button-cancel
 		Button@JOIN_BUTTON:
 			Key: return
 			X: 230
 			Y: 89
 			Width: 140
 			Height: 35
-			Text: Join
+			Text: button-directconnect-panel-join

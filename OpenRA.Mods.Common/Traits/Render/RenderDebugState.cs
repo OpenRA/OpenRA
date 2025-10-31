@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,28 +13,25 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Displays the actor's type and ID above the actor.")]
-	class RenderDebugStateInfo : TraitInfo
+	sealed class RenderDebugStateInfo : TraitInfo
 	{
 		public readonly string Font = "TinyBold";
 
 		public override object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
 	}
 
-	class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, INotifyCreated, IRenderAnnotationsWhenSelected
+	sealed class RenderDebugState : INotifyAddedToWorld, INotifyCreated, IRenderAnnotationsWhenSelected
 	{
 		readonly DebugVisualizations debugVis;
 		readonly SpriteFont font;
-		readonly Actor self;
 		readonly WVec offset;
-		SquadManagerBotModule ai;
+		SquadManagerBotModule[] squadManagerModules;
 
-		Color color;
 		string tagString;
 
 		public RenderDebugState(Actor self, RenderDebugStateInfo info)
@@ -43,8 +40,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var yOffset = buildingInfo?.Dimensions.Y ?? 1;
 			offset = new WVec(0, 512 * yOffset, 0);
 
-			this.self = self;
-			color = GetColor();
 			font = Game.Renderer.Fonts[info.Font];
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
@@ -52,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyCreated.Created(Actor self)
 		{
-			ai = self.Owner.PlayerActor.TraitsImplementing<SquadManagerBotModule>().FirstOrDefault(Exts.IsTraitEnabled);
+			squadManagerModules = self.Owner.PlayerActor.TraitsImplementing<SquadManagerBotModule>().ToArray();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -60,21 +55,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			tagString = self.ToString();
 		}
 
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
-		{
-			color = GetColor();
-		}
-
-		Color GetColor()
-		{
-			return self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner.Color : self.Owner.Color;
-		}
-
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.ActorTags)
 				yield break;
 
+			var color = self.OwnerColor();
 			yield return new TextAnnotationRenderable(font, self.CenterPosition - offset, 0, color, tagString);
 
 			// Get the actor's activity.
@@ -86,11 +72,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!self.Owner.IsBot)
 				yield break;
 
-			if (ai == null)
-				yield break;
-
-			var squads = ai.Squads;
-			var squad = squads.FirstOrDefault(x => x.Units.Contains(self));
+			var squads = squadManagerModules.FirstEnabledConditionalTraitOrDefault()?.Squads;
+			var squad = squads?.FirstOrDefault(x => x.Units.Contains(self));
 			if (squad == null)
 				yield break;
 

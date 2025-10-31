@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -40,8 +41,15 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || (deploy.DeployState != DeployState.Deployed && moving))
 				return true;
 
-			QueueChild(new DeployInner(self, deploy));
+			QueueChild(new DeployInner(deploy));
 			return true;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (NextActivity != null)
+				foreach (var n in NextActivity.TargetLineNodes(self))
+					yield return n;
 		}
 	}
 
@@ -50,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly GrantConditionOnDeploy deployment;
 		bool initiated;
 
-		public DeployInner(Actor self, GrantConditionOnDeploy deployment)
+		public DeployInner(GrantConditionOnDeploy deployment)
 		{
 			this.deployment = deployment;
 

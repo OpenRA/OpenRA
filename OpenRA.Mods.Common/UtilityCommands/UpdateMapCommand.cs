@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,9 +18,7 @@ using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
-
-	class UpdateMapCommand : IUtilityCommand
+	sealed class UpdateMapCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--update-map";
 
@@ -37,10 +35,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
 			var folder = new Folder(Platform.EngineDir);
-			if (!(folder.OpenPackage(args[1], modData.ModFiles) is IReadWritePackage package))
+			if (folder.OpenPackage(args[1], modData.ModFiles) is not IReadWritePackage package)
 				throw new FileNotFoundException(args[1]);
 
-			IEnumerable<UpdateRule> rules = null;
+			IReadOnlyCollection<UpdateRule> rules = null;
 			if (args.Length > 2)
 				rules = UpdatePath.FromSource(modData.ObjectCreator, args[2]);
 
@@ -70,7 +68,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("   Individual Rules:");
 				foreach (var kv in ruleGroups)
 				{
-					if (!kv.Value.Any())
+					if (kv.Value.Count == 0)
 						continue;
 
 					Console.WriteLine("      " + kv.Key + ":");
@@ -79,9 +77,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var other = UpdatePath.KnownRules(modData.ObjectCreator)
-					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)));
+					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)))
+					.ToList();
 
-				if (other.Any())
+				if (other.Count != 0)
 				{
 					Console.WriteLine("      Other:");
 					foreach (var r in other)
@@ -102,48 +101,56 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var externalFilenames = new HashSet<string>();
 			foreach (var rule in rules)
 			{
-				Console.WriteLine("{0}: {1}", rule.GetType().Name, rule.Name);
-				var mapFiles = new YamlFileSet();
-				var manualSteps = new List<string>();
-
+				Console.WriteLine($"{rule.GetType().Name}: {rule.Name}");
 				Console.Write("   Updating map... ");
 
 				try
 				{
-					manualSteps = UpdateUtils.UpdateMap(modData, mapPackage, rule, out mapFiles, externalFilenames);
+					var manualSteps = UpdateUtils.UpdateMap(modData, mapPackage, rule, out var mapFiles, externalFilenames);
+
+					// Files are saved after each successful automated rule update
+					mapFiles.Save();
+
+					var originalColor = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.WriteLine("COMPLETE");
+					Console.ForegroundColor = originalColor;
+
+					if (manualSteps.Count > 0)
+					{
+						Console.ForegroundColor = ConsoleColor.Yellow;
+						Console.WriteLine("   Manual changes are required to complete this update:");
+						Console.ForegroundColor = originalColor;
+						foreach (var manualStep in manualSteps)
+							Console.WriteLine("    * " + manualStep.Replace("\n", "\n      "));
+					}
 				}
 				catch (Exception ex)
 				{
+					var originalColor = Console.ForegroundColor;
+					Console.ForegroundColor = ConsoleColor.Red;
 					Console.WriteLine("FAILED");
+					Console.ForegroundColor = originalColor;
 
 					Console.WriteLine();
 					Console.WriteLine("   The automated changes for this rule were not applied because of an error.");
 					Console.WriteLine("   After the issue reported below is resolved you should run the updater");
-					Console.WriteLine("   with SOURCE set to {0} to retry these changes", rule.GetType().Name);
+					Console.WriteLine($"   with SOURCE set to {rule.GetType().Name} to retry these changes");
 					Console.WriteLine();
 					Console.WriteLine("   The exception reported was:");
 					Console.WriteLine("     " + ex.ToString().Replace("\n", "\n     "));
 					continue;
 				}
 
-				// Files are saved after each successful automated rule update
-				mapFiles.Save();
-				Console.WriteLine("COMPLETE");
-
-				if (manualSteps.Any())
-				{
-					Console.WriteLine("   Manual changes are required to complete this update:");
-					foreach (var manualStep in manualSteps)
-						Console.WriteLine("    * " + manualStep.Replace("\n", "\n      "));
-				}
-
 				Console.WriteLine();
 			}
 
-			if (externalFilenames.Any())
+			if (externalFilenames.Count > 0)
 			{
+				Console.WriteLine();
 				Console.WriteLine("The following shared yaml files referenced by the map have been ignored:");
 				Console.WriteLine(UpdateUtils.FormatMessageList(externalFilenames));
+				Console.WriteLine();
 				Console.WriteLine("These files are assumed to have already been updated by the --update-mod command");
 				Console.WriteLine();
 			}

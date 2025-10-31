@@ -1,0 +1,239 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, proving-grounds.lua
+	MissionData:
+		WinVideo: sovtstar.vqa
+		LossVideo: allymorf.vqa
+		Briefing: Information on our new Advanced Tactical Submarine was leaked to the Allies and they have invaded our territory, determined to stop us. You must destroy them.\n\nRegain control of our bases as they are revealed by the signal flares. Do not let any Allied attacks stop you.\n\nWe have received word that a detachment of cruisers is on its way here. Once you recover the sub pen, use the new ATS to prevent the cruisers from destroying our operation.
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
+
+CAMERA.Small:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+
+CAMERA.Spotter:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 0c512
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+		DisplayBeacon: false
+		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
+		ReinforcementsArrivedTextNotification: notification-reinforcements-have-arrived	
+	KillsSelf:
+		RemoveInstead: true
+		Delay: 5
+
+powerproxy.flametroopers:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E4,E1,E1,E1,E4
+		SquadSize: 2
+
+# Prevents accidental crate collection by Allied soldiers.
+crateblocker:
+	Immobile:
+		OccupiesSpace: true
+	Crushable:
+		WarnProbability: 0
+		CrushClasses: crate
+		CrushedByFriendlies: false
+
+HEALCRATE:
+	FreeActor:
+		Actor: crateblocker
+
+MONEYCRATE:
+	FreeActor:
+		Actor: crateblocker
+
+E1.WideScan:
+	Inherits: E1
+	Buildable:
+		Prerequisites: ~disabled
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E1
+
+E3.WideScan:
+	Inherits: E3
+	RevealsShroud:
+		Range: 7c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E3
+
+E3.VehicleHunter:
+	Inherits: E3
+	AutoTargetPriority@VEHICLES:
+		Priority: 5
+		ValidTargets: Vehicle
+	RenderSprites:
+		Image: E3
+
+E6:
+	Captures@QUICKAFLD:
+		CaptureTypes: airfield
+		PlayerExperience: 10
+		CaptureDelay: 100
+
+E7:
+	AutoTarget:
+		InitialStanceAI: ReturnFire
+
+APC.TechGuard:
+	Inherits: APC
+	Cargo:
+		InitialUnits: e1,e1,e2,e4,e4
+	RenderSprites:
+		Image: APC
+
+1TNK.WideScan:
+	Inherits: 1TNK
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: 1TNK
+
+2TNK.WideScan:
+	Inherits: 2TNK
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: 2TNK
+
+AFLD:
+	AirstrikePower@parabombs:
+		Prerequisites: ~disabled
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E2,E2
+	Capturable@QUICKAFLD:
+		Types: airfield
+	Buildable:
+		Prerequisites: ~disabled
+
+FACT:
+	AnnounceOnSeen:
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+	GrantExternalConditionPower@IRONCURTAIN:
+		ChargeInterval: 6000
+
+SPEN:
+	AnnounceOnSeen:
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+	GrantConditionOnBotOwner@BOTCAPTURED:
+		Condition: bot-captured
+		Bots: campaign
+	Sellable:
+		RequiresCondition: bot-captured && !being-demolished && !being-captured
+
+HARV:
+	GrantConditionOnBotOwner@BADGUY:
+		Condition: unclaimed
+		Bots: campaign
+	Targetable:
+		RequiresCondition: !unclaimed
+	Mobile:
+		PauseOnCondition: unclaimed || being-captured
+	Harvester:
+		RequiresCondition: !unclaimed
+
+CA:
+	RevealsShroud:
+		Range: 11c0
+	Buildable:
+		Prerequisites: ~disabled
+	Mobile:
+		Speed: 44
+
+DD.Escort:
+	Inherits: DD
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 9c0
+	AutoTarget:
+		ScanRadius: 8
+		InitialStanceAI: Defend
+	RenderSprites:
+		Image: DD
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+SS:
+	Armament:
+		Weapon: TorpTubeNuclear
+	AutoTarget:
+		InitialStance: HoldFire
+	Buildable:
+		Prerequisites: ~spen, ~stek
+	Tooltip:
+		Name: actor-ats-name
+	WithProductionIconOverlay:
+		Types: Veterancy
+	FirepowerMultiplier:
+		Modifier: 15
+
+HELI:
+	Aircraft:
+		NumberOfTicksToVerifyAvailableAirport: 25
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled

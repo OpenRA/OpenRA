@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	public class WithTeslaChargeOverlay : INotifyTeslaCharging, INotifyDamageStateChanged, INotifySold
 	{
 		readonly Animation overlay;
-		readonly RenderSprites renderSprites;
 		readonly WithTeslaChargeOverlayInfo info;
 
 		bool charging;
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		{
 			this.info = info;
 
-			renderSprites = init.Self.Trait<RenderSprites>();
+			var renderSprites = init.Self.Trait<RenderSprites>();
 
 			overlay = new Animation(init.World, renderSprites.GetImage(init.Self));
 

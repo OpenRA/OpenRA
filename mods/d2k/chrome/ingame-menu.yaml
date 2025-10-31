@@ -1,33 +1,34 @@
 Container@INGAME_MENU:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
 	Logic: IngameMenuLogic
-		Buttons: RESUME, LOAD_GAME, SAVE_GAME, SETTINGS, MUSIC, SURRENDER, RESTART, ABORT_MISSION, SAVE_MAP, EXIT_EDITOR
+		Buttons: RESUME, LOAD_GAME, SAVE_GAME, SETTINGS, MUSIC, SURRENDER, RESTART, BACK_TO_EDITOR, ABORT_MISSION, SAVE_MAP, PLAY_MAP, EXIT_EDITOR
 		ButtonStride: 0, 40
 	Children:
 		Label@VERSION_LABEL:
-			X: WINDOW_RIGHT - 10
-			Y: WINDOW_BOTTOM - 19
+			Logic: VersionLabelLogic
+			X: WINDOW_WIDTH - 10
+			Y: WINDOW_HEIGHT - 19
 			Align: Right
 			Font: Regular
 			Contrast: True
 		Container@PANEL_ROOT:
 		Background@MENU_BUTTONS:
-			X: 13 + (WINDOW_RIGHT - 522) / 4 - WIDTH / 2
-			Y: (WINDOW_BOTTOM - HEIGHT) / 2
+			X: 13 + (WINDOW_WIDTH - 522) / 4 - WIDTH / 2
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
 			Width: 200
 			Height: 120
 			Children:
 				Label@LABEL_TITLE:
-					X: (PARENT_RIGHT - WIDTH) / 2
+					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 21
 					Width: 200
 					Height: 30
-					Text: Options
+					Text: label-menu-buttons-title
 					Align: Center
 					Font: Bold
 				Button@BUTTON_TEMPLATE:
-					X: (PARENT_RIGHT - WIDTH) / 2
+					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 60
 					Width: 140
 					Height: 30

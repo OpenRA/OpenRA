@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,8 +18,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class WorldTooltipLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string UnrevealedTerrain = "label-unrevealed-terrain";
+
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
+		public WorldTooltipLogic(Widget widget, ModData modData, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
 		{
 			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
 			var label = widget.Get<LabelWidget>("LABEL");
@@ -41,6 +44,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var extraHeightOnDouble = extras.Bounds.Y;
 			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
+			var unrevealedTerrain = FluentProvider.GetMessage(UnrevealedTerrain);
+
 			tooltipContainer.BeforeRender = () =>
 			{
 				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
@@ -54,30 +59,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				switch (viewport.TooltipType)
 				{
 					case WorldTooltipType.Unexplored:
-						labelText = "Unrevealed Terrain";
+						labelText = unrevealedTerrain;
 						break;
 					case WorldTooltipType.Resource:
 						labelText = viewport.ResourceTooltip;
 						break;
 					case WorldTooltipType.Actor:
-						{
-							o = viewport.ActorTooltip.Owner;
-							showOwner = o != null && !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
+					{
+						o = viewport.ActorTooltip.Owner;
+						showOwner = o != null && !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
-							var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.RelationshipWith(world.RenderPlayer);
-							labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
-							break;
-						}
+						if (showOwner)
+							ownerColor = o.Color;
+
+						var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.RelationshipWith(world.RenderPlayer);
+						labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
+						break;
+					}
 
 					case WorldTooltipType.FrozenActor:
-						{
-							o = viewport.FrozenActorTooltip.TooltipOwner;
-							showOwner = o != null && !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
+					{
+						o = viewport.FrozenActorTooltip.TooltipOwner;
+						showOwner = o != null && !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
-							var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.RelationshipWith(world.RenderPlayer);
-							labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
-							break;
-						}
+						if (showOwner)
+							ownerColor = o.Color;
+
+						var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.RelationshipWith(world.RenderPlayer);
+						labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
+						break;
+					}
 				}
 
 				if (viewport.ActorTooltipExtra != null)
@@ -101,8 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (showOwner)
 				{
 					flagFaction = o.Faction.InternalName;
-					ownerName = o.PlayerName;
-					ownerColor = o.Color;
+					ownerName = o.ResolvedPlayerName;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
 						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,17 +20,16 @@ namespace OpenRA.Network
 		public string Version;
 		public string AuthToken;
 
-		public static HandshakeRequest Deserialize(string data)
+		public static HandshakeRequest Deserialize(string data, string name)
 		{
 			var handshake = new HandshakeRequest();
-			FieldLoader.Load(handshake, MiniYaml.FromString(data).First().Value);
+			FieldLoader.Load(handshake, MiniYaml.FromString(data, name).First().Value);
 			return handshake;
 		}
 
 		public string Serialize()
 		{
-			var data = new List<MiniYamlNode>();
-			data.Add(new MiniYamlNode("Handshake", FieldSaver.Save(this)));
+			var data = new List<MiniYamlNode> { new("Handshake", FieldSaver.Save(this)) };
 			return data.WriteToString();
 		}
 	}
@@ -52,12 +51,14 @@ namespace OpenRA.Network
 		[FieldLoader.Ignore]
 		public Session.Client Client;
 
-		public static HandshakeResponse Deserialize(string data)
+		public static HandshakeResponse Deserialize(string data, string name)
 		{
-			var handshake = new HandshakeResponse();
-			handshake.Client = new Session.Client();
+			var handshake = new HandshakeResponse
+			{
+				Client = new Session.Client()
+			};
 
-			var ys = MiniYaml.FromString(data);
+			var ys = MiniYaml.FromString(data, name);
 			foreach (var y in ys)
 			{
 				switch (y.Key)
@@ -76,10 +77,12 @@ namespace OpenRA.Network
 
 		public string Serialize()
 		{
-			var data = new List<MiniYamlNode>();
-			data.Add(new MiniYamlNode("Handshake", null,
-				new[] { "Mod", "Version", "Password", "Fingerprint", "AuthSignature", "OrdersProtocol" }.Select(p => FieldSaver.SaveField(this, p)).ToList()));
-			data.Add(new MiniYamlNode("Client", FieldSaver.Save(Client)));
+			var data = new List<MiniYamlNode>
+			{
+				new("Handshake", null,
+					new[] { "Mod", "Version", "Password", "Fingerprint", "AuthSignature", "OrdersProtocol" }.Select(p => FieldSaver.SaveField(this, p)).ToList()),
+				new("Client", FieldSaver.Save(Client))
+			};
 
 			return data.WriteToString();
 		}

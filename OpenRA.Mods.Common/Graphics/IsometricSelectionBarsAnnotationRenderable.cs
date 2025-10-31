@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,36 +25,32 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly Color DarkEmptyColor = Color.FromArgb(160, 15, 15, 15);
 		static readonly Color DarkenColor = Color.FromArgb(24, 0, 0, 0);
 		static readonly Color LightenColor = Color.FromArgb(24, 255, 255, 255);
-
-		readonly WPos pos;
 		readonly Actor actor;
-		readonly bool displayHealth;
-		readonly bool displayExtra;
 		readonly Polygon bounds;
 
 		public IsometricSelectionBarsAnnotationRenderable(Actor actor, Polygon bounds, bool displayHealth, bool displayExtra)
 			: this(actor.CenterPosition, actor, bounds)
 		{
-			this.displayHealth = displayHealth;
-			this.displayExtra = displayExtra;
+			DisplayHealth = displayHealth;
+			DisplayExtra = displayExtra;
 		}
 
 		public IsometricSelectionBarsAnnotationRenderable(WPos pos, Actor actor, Polygon bounds)
 		{
-			this.pos = pos;
+			Pos = pos;
 			this.actor = actor;
 			this.bounds = bounds;
 		}
 
-		public WPos Pos => pos;
-		public bool DisplayHealth => displayHealth;
-		public bool DisplayExtra => displayExtra;
+		public WPos Pos { get; }
+		public bool DisplayHealth { get; }
+		public bool DisplayExtra { get; }
 
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBarsAnnotationRenderable(pos + vec, actor, bounds); }
+		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBarsAnnotationRenderable(Pos + vec, actor, bounds); }
 		public IRenderable AsDecoration() { return this; }
 
 		void DrawExtraBars(WorldRenderer wr)
@@ -128,11 +124,8 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
-		Color GetHealthColor(IHealth health)
+		static Color GetHealthColor(IHealth health)
 		{
-			if (Game.Settings.Game.UsePlayerStanceColors)
-				return actor.Owner.PlayerRelationshipColor(actor);
-
 			return health.DamageState == DamageState.Critical ? Color.Red :
 				health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
 		}
@@ -151,7 +144,7 @@ namespace OpenRA.Mods.Common.Graphics
 					return;
 
 				var displayValue = health.DisplayHP != health.HP ? (float?)health.DisplayHP / health.MaxHP : null;
-				DrawBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0,  displayValue, Color.OrangeRed);
+				DrawBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0, displayValue, Color.OrangeRed);
 			}
 
 			if (DisplayExtra)

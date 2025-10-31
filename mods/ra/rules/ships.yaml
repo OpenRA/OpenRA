@@ -1,16 +1,16 @@
 SS:
-	Inherits: ^Ship
+	Inherits: ^Submarine
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 30
 		Prerequisites: ~spen, ~techlevel.low
-		Description: Submerged anti-ship unit\narmed with torpedoes.\nCan detect other submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft\n  Special Ability: Submerge
+		Description: actor-ss.description
 	Valued:
 		Cost: 950
 	Tooltip:
-		Name: Submarine
+		Name: actor-ss.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -18,7 +18,7 @@ SS:
 	Armor:
 		Type: Light
 	Mobile:
-		TurnSpeed: 16
+		TurnSpeed: 20
 		Speed: 78
 	RevealsShroud:
 		MinRange: 5c0
@@ -26,58 +26,40 @@ SS:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Targetable:
-		TargetTypes: WaterActor, Ship, Submarine, Repair
-		RequiresCondition: !underwater
-	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Submarine
-		RequiresCondition: underwater
-	Cloak:
-		CloakTypes: Underwater
-		InitialDelay: 0
-		CloakDelay: 50
-		CloakSound: subshow1.aud
-		UncloakSound: subshow1.aud
-		CloakedCondition: underwater
-		Palette: submerged
-		PauseOnCondition: cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
-		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Armament:
 		Weapon: TorpTube
 		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
+		FacingTolerance: 0
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: WaterActor, Underwater
 		InvalidTargets: NoAutoTarget, Structure
 	AutoTargetPriority@ATTACKANYTHING:
 		ValidTargets: WaterActor, Underwater
 	DetectCloaked:
-		CloakTypes: Underwater
-		Range: 4c0
+		DetectionTypes: Underwater
+		Range: 5c0
 	RenderDetectionCircle:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
-	-MustBeDestroyed:
 	Selectable:
 		DecorationBounds: 1621, 1621
 
 MSUB:
-	Inherits: ^Ship
+	Inherits: ^Submarine
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Buildable:
 		Queue: Ship
 		BuildAtProductionType: Submarine
 		BuildPaletteOrder: 60
 		Prerequisites: ~spen, stek, ~techlevel.high
-		Description: Submerged anti-ground siege unit\nwith anti-air capabilities.\nCan detect other submarines.\n  Strong vs Buildings, Ground units, Aircraft\n  Weak vs Naval units\n  Special Ability: Submerge
+		Description: actor-msub.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Missile Submarine
+		Name: actor-msub.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -93,24 +75,8 @@ MSUB:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 5c0
-	Targetable:
-		TargetTypes: WaterActor, Ship, Submarine, Repair
-		RequiresCondition: !underwater
-	Targetable@UNDERWATER:
-		TargetTypes: Underwater, Submarine
-		RequiresCondition: underwater
 	Cloak:
-		CloakTypes: Underwater
-		InitialDelay: 0
 		CloakDelay: 100
-		CloakSound: subshow1.aud
-		UncloakSound: subshow1.aud
-		CloakedCondition: underwater
-		Palette: submerged
-		PauseOnCondition: cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
-		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
 	Armament@PRIMARY:
 		Weapon: SubMissile
 		LocalOffset: 0,-171,0, 0,171,0
@@ -122,17 +88,17 @@ MSUB:
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
+		FacingTolerance: 0
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
-	-MustBeDestroyed:
 	Selectable:
 		DecorationBounds: 1877, 1877
 
@@ -144,11 +110,11 @@ DD:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 40
 		Prerequisites: ~syrd, dome, ~techlevel.medium
-		Description: Fast multi-role ship.\nCan detect submarines.\n  Strong vs Naval units, Vehicles, Aircraft\n  Weak vs Infantry
+		Description: actor-dd.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Destroyer
+		Name: actor-dd.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -159,11 +125,11 @@ DD:
 		TurnSpeed: 28
 		Speed: 92
 	RevealsShroud:
-		MinRange: 5c0
-		Range: 6c0
+		MinRange: 4c0
+		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 5c0
+		Range: 4c0
 	Turreted:
 		TurnSpeed: 28
 		Offset: 469,0,128
@@ -182,7 +148,7 @@ DD:
 	AttackTurreted:
 	WithSpriteTurret:
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
 	Selectable:
@@ -196,11 +162,11 @@ CA:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 50
 		Prerequisites: ~syrd, atek, ~techlevel.high
-		Description: Very slow long-range ship.\n  Strong vs Buildings, Ground units\n  Weak vs Naval units, Aircraft
+		Description: actor-ca.description
 	Valued:
 		Cost: 2400
 	Tooltip:
-		Name: Cruiser
+		Name: actor-ca.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -258,20 +224,20 @@ LST:
 		Queue: Ship
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.low
-		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
+		Description: actor-lst.description
 	Valued:
-		Cost: 700
+		Cost: 500
 	Tooltip:
-		Name: Transport
+		Name: actor-lst.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 35000
+		HP: 40000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Locomotor: lcraft
-		Speed: 128
+		Speed: 115
 		PauseOnCondition: notmobile
 	RevealsShroud:
 		MinRange: 5c0
@@ -298,11 +264,11 @@ PT:
 		BuildAtProductionType: Boat
 		BuildPaletteOrder: 20
 		Prerequisites: ~syrd, ~techlevel.low
-		Description: Light scout & support ship.\nCan detect submarines.\n  Strong vs Naval units\n  Weak vs Ground units, Aircraft
+		Description: actor-pt.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Gunboat
+		Name: actor-pt.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -313,11 +279,11 @@ PT:
 		TurnSpeed: 28
 		Speed: 142
 	RevealsShroud:
-		MinRange: 5c0
-		Range: 7c0
+		MinRange: 6c0
+		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 5c0
+		Range: 6c0
 	Turreted:
 		TurnSpeed: 28
 		Offset: 512,0,0
@@ -333,7 +299,7 @@ PT:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
 	Selectable:

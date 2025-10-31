@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RevealsMap(this); }
 	}
 
-	public class RevealsMap : ConditionalTrait<RevealsMapInfo>, INotifyKilled, INotifyActorDisposing
+	public class RevealsMap : ConditionalTrait<RevealsMapInfo>, INotifyKilled, INotifyActorDisposing, INotifyOwnerChanged
 	{
 		readonly Shroud.SourceType type;
 
@@ -44,32 +44,55 @@ namespace OpenRA.Mods.Common.Traits
 			p.Shroud.AddSource(this, type, uv);
 		}
 
-		protected void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveSource(this); }
+		protected void RemoveCellsFromPlayerShroud(Actor self, Player p)
+		{
+			if (!Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(p)))
+				return;
+
+			p.Shroud.RemoveSource(this);
+		}
 
 		protected PPos[] ProjectedCells(Actor self)
 		{
 			return self.World.Map.ProjectedCells;
 		}
 
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			if (!IsTraitDisabled)
+			{
+				var cells = ProjectedCells(self);
+				foreach (var player in self.World.Players)
+				{
+					RemoveCellsFromPlayerShroud(self, player);
+					AddCellsToPlayerShroud(self, player, cells);
+				}
+			}
+		}
+
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
-			RemoveCellsFromPlayerShroud(self, self.Owner);
+			foreach (var player in self.World.Players)
+				RemoveCellsFromPlayerShroud(self, player);
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
-			RemoveCellsFromPlayerShroud(self, self.Owner);
+			foreach (var player in self.World.Players)
+				RemoveCellsFromPlayerShroud(self, player);
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
+			var cells = ProjectedCells(self);
 			foreach (var player in self.World.Players)
-				AddCellsToPlayerShroud(self, player, ProjectedCells(self));
+				AddCellsToPlayerShroud(self, player, cells);
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
-			RemoveCellsFromPlayerShroud(self, self.Owner);
+			foreach (var player in self.World.Players)
+				RemoveCellsFromPlayerShroud(self, player);
 		}
 	}
 }

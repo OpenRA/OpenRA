@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Grants a condition on the collector.")]
+	[Desc("Grants a condition to the collector and nearby units.")]
 	public class GrantExternalConditionCrateActionInfo : CrateActionInfo
 	{
 		[FieldLoader.Require]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Duration = 0;
 
 		[Desc("The range to search for extra collectors in.", "Extra collectors will also be granted the crate action.")]
-		public readonly WDist Range = new WDist(3);
+		public readonly WDist Range = new(3);
 
 		[Desc("The maximum number of extra collectors to grant the crate action to.", "-1 = no limit")]
 		public readonly int MaxExtraCollectors = 4;
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool AcceptsCondition(Actor a)
 		{
 			return a.TraitsImplementing<ExternalCondition>()
-				.Any(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
+				.Any(t => t.Info.Condition == info.Condition && t.CanGrantCondition(self));
 		}
 
 		public override int GetSelectionShares(Actor collector)
@@ -60,38 +60,37 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
+			if (collector.IsInWorld && !collector.IsDead)
+				GrantCondition(collector);
+
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, info.Range)
-				.Where(a => a != self && a != collector && a.Owner == collector.Owner && AcceptsCondition(a));
+				.Where(a => a != self && a != collector && a.IsInWorld && !a.IsDead && a.Owner == collector.Owner && AcceptsCondition(a))
+				.OrderBy(a => (a.CenterPosition - self.CenterPosition).LengthSquared);
 
-			if (info.MaxExtraCollectors > -1)
-				actorsInRange = actorsInRange.Take(info.MaxExtraCollectors);
-
-			collector.World.AddFrameEndTask(w =>
-			{
-				foreach (var a in actorsInRange.Append(collector))
-				{
-					if (!a.IsInWorld || a.IsDead)
-						continue;
-
-					var externals = a.TraitsImplementing<ExternalCondition>()
-						.Where(t => t.Info.Condition == info.Condition);
-
-					ExternalCondition external = null;
-					for (var n = 0; n < info.Levels; n++)
-					{
-						if (external == null || !external.CanGrantCondition(a, self))
-						{
-							external = externals.FirstOrDefault(t => t.CanGrantCondition(a, self));
-							if (external == null)
-								break;
-						}
-
-						external.GrantCondition(a, self, info.Duration);
-					}
-				}
-			});
+			foreach (var a in info.MaxExtraCollectors > -1 ? actorsInRange.Take(info.MaxExtraCollectors) : actorsInRange)
+				GrantCondition(a);
 
 			base.Activate(collector);
+		}
+
+		void GrantCondition(Actor actor)
+		{
+			var externals = actor.TraitsImplementing<ExternalCondition>()
+				.Where(t => t.Info.Condition == info.Condition)
+				.ToList();
+
+			ExternalCondition external = null;
+			for (var n = 0; n < info.Levels; n++)
+			{
+				if (external == null || !external.CanGrantCondition(self))
+				{
+					external = externals.FirstOrDefault(t => t.CanGrantCondition(self));
+					if (external == null)
+						break;
+				}
+
+				external.GrantCondition(actor, self, info.Duration);
+			}
 		}
 	}
 }

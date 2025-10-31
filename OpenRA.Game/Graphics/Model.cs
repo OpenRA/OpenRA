@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,9 +10,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using OpenRA.FileSystem;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -26,69 +25,27 @@ namespace OpenRA.Graphics
 		float[] Bounds(uint frame);
 		ModelRenderData RenderData(uint section);
 
-		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model</summary>
+		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model.</summary>
 		Rectangle AggregateBounds { get; }
 	}
 
-	public readonly struct ModelRenderData
+	public interface IModelWidget
 	{
-		public readonly int Start;
-		public readonly int Count;
-		public readonly Sheet Sheet;
-
-		public ModelRenderData(int start, int count, Sheet sheet)
-		{
-			Start = start;
-			Count = count;
-			Sheet = sheet;
-		}
+		string Palette { get; }
+		float Scale { get; }
+		void Setup(Func<bool> isVisible, Func<string> getPalette, Func<string> getPlayerPalette,
+			Func<float> getScale, Func<IModel> getVoxel, Func<WRot> getRotation);
 	}
 
-	public interface IModelCache : IDisposable
+	public readonly record struct ModelRenderData(int Start, int Count, Sheet Sheet);
+
+	public interface IModelCacheInfo : ITraitInfoInterface { }
+
+	public interface IModelCache
 	{
 		IModel GetModel(string model);
 		IModel GetModelSequence(string model, string sequence);
 		bool HasModelSequence(string model, string sequence);
-		IVertexBuffer<Vertex> VertexBuffer { get; }
-	}
-
-	public interface IModelSequenceLoader
-	{
-		Action<string> OnMissingModelError { get; set; }
-		IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions);
-	}
-
-	public class PlaceholderModelSequenceLoader : IModelSequenceLoader
-	{
-		public Action<string> OnMissingModelError { get; set; }
-
-		class PlaceholderModelCache : IModelCache
-		{
-			public IVertexBuffer<Vertex> VertexBuffer => throw new NotImplementedException();
-
-			public void Dispose() { }
-
-			public IModel GetModel(string model)
-			{
-				throw new NotImplementedException();
-			}
-
-			public IModel GetModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-
-			public bool HasModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public PlaceholderModelSequenceLoader(ModData modData) { }
-
-		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions)
-		{
-			return new PlaceholderModelCache();
-		}
+		IVertexBuffer<ModelVertex> VertexBuffer { get; }
 	}
 }

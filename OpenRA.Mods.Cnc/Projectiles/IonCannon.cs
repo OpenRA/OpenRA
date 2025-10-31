@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -38,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			anim = new Animation(world, effect);
 			anim.PlayThen(sequence, () => Finish(world));
 
-			if (weapon.Report != null && weapon.Report.Any())
+			if (weapon.Report != null && weapon.Report.Length > 0)
 				Game.Sound.Play(SoundType.World, weapon.Report, world, launchPos);
 		}
 

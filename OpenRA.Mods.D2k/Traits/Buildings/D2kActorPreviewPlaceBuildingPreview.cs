@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -24,23 +23,23 @@ namespace OpenRA.Mods.D2k.Traits
 	public class D2kActorPreviewPlaceBuildingPreviewInfo : ActorPreviewPlaceBuildingPreviewInfo
 	{
 		[Desc("Terrain types that should show the 'unsafe' footprint tile.")]
-		public readonly HashSet<string> UnsafeTerrainTypes = new HashSet<string> { "Rock" };
+		public readonly HashSet<string> UnsafeTerrainTypes = ["Rock"];
 
 		[Desc("Only check for 'unsafe' footprint tiles when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = { };
+		public readonly string[] RequiresPrerequisites = [];
 
 		[Desc("Sprite image to use for the overlay.")]
 		public readonly string Image = "overlay";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for valid cells.")]
 		public readonly string TileValidName = "build-valid";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for invalid cells.")]
 		public readonly string TileInvalidName = "build-invalid";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for blocked cells.")]
 		public readonly string TileUnsafeName = "build-unsafe";
 
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class D2kActorPreviewPlaceBuildingPreview { }
 
-	class D2kActorPreviewPlaceBuildingPreviewPreview : ActorPreviewPlaceBuildingPreviewPreview
+	sealed class D2kActorPreviewPlaceBuildingPreviewPreview : ActorPreviewPlaceBuildingPreviewPreview
 	{
 		readonly D2kActorPreviewPlaceBuildingPreviewInfo info;
 		readonly bool checkUnsafeTiles;
@@ -71,10 +70,10 @@ namespace OpenRA.Mods.D2k.Traits
 			this.info = info;
 
 			var world = wr.World;
-			var sequences = world.Map.Rules.Sequences;
+			var sequences = world.Map.Sequences;
 
 			var techTree = init.Get<OwnerInit>().Value(world).PlayerActor.Trait<TechTree>();
-			checkUnsafeTiles = info.RequiresPrerequisites.Any() && techTree.HasPrerequisites(info.RequiresPrerequisites);
+			checkUnsafeTiles = info.RequiresPrerequisites.Length > 0 && techTree.HasPrerequisites(info.RequiresPrerequisites);
 
 			var validSequence = sequences.GetSequence(info.Image, info.TileValidName);
 			validTile = validSequence.GetSprite(0);
@@ -104,7 +103,12 @@ namespace OpenRA.Mods.D2k.Traits
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var isUnsafe = checkUnsafeTiles && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type);
+				var isUnsafe =
+					checkUnsafeTiles &&
+					wr.World.Map.Contains(c.Key) &&
+					candidateSafeTiles.Contains(c.Key) &&
+					info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type);
+
 				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : isUnsafe ? unsafeTile : validTile;
 				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : isUnsafe ? unsafeAlpha : validAlpha;
 

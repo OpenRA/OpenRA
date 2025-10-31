@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load a PNG and use its embedded palette.")]
-	class PaletteFromPngInfo : TraitInfo, IProvidesCursorPaletteInfo
+	sealed class PaletteFromPngInfo : TraitInfo, ITilesetSpecificPaletteInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Filename = null;
 
 		[Desc("Map listed indices to shadow. Ignores previous color.")]
-		public readonly int[] ShadowIndex = { };
+		public readonly int[] ShadowIndex = [];
 
 		public readonly bool AllowModifiers = true;
 
@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CursorPalette = false;
 
 		public override object Create(ActorInitializer init) { return new PaletteFromPng(init.World, this); }
+
+		string ITilesetSpecificPaletteInfo.Tileset => Tileset;
 
 		string IProvidesCursorPaletteInfo.Palette => CursorPalette ? Name : null;
 
@@ -56,13 +58,13 @@ namespace OpenRA.Mods.Common.Traits
 			var colors = new uint[Palette.Size];
 
 			for (var i = 0; i < png.Palette.Length; i++)
-				colors[i] = (uint)png.Palette[i].ToArgb();
+				colors[i] = png.Palette[i].ToArgb();
 
 			return new ImmutablePalette(colors);
 		}
 	}
 
-	class PaletteFromPng : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromPng : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromPngInfo info;
@@ -74,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			if (info.Tileset != null && info.Tileset.ToLowerInvariant() != world.Map.Tileset.ToLowerInvariant())
+			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				return;
 
 			wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);

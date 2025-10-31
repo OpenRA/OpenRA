@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public string ClockPalette = "chrome";
 		public Func<Player> GetPlayer;
 
-		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = new List<SupportPowersWidget.SupportPowerIcon>();
-		readonly List<Rectangle> supportPowerIconsBounds = new List<Rectangle>();
+		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = [];
+		readonly List<Rectangle> supportPowerIconsBounds = [];
 		Animation icon;
 		int lastIconIdx;
 		int currentTooltipToken;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
-			clocks = new Dictionary<string, Animation>();
+			clocks = [];
 
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 					clocks.Add(power.a.Key, new Animation(world, ClockAnimation));
 			}
 
-			Bounds.Width = powers.Count() * (IconWidth + IconSpacing);
+			Bounds.Width = powers.Count * (IconWidth + IconSpacing);
 
 			Game.Renderer.EnableAntialiasingFilter();
 
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return WidgetUtils.FormatTime(item.RemainingTicks, timestep);
 		}
 
-		public override Widget Clone()
+		public override ObserverSupportPowerIconsWidget Clone()
 		{
 			return new ObserverSupportPowerIconsWidget(this);
 		}
@@ -175,7 +175,10 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			if (TooltipIcon != null && lastIconIdx < supportPowerIconsBounds.Count && supportPowerIconsIcons[lastIconIdx].Power == TooltipIcon.Power && supportPowerIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
+			if (TooltipIcon != null &&
+				lastIconIdx < supportPowerIconsBounds.Count &&
+				supportPowerIconsIcons[lastIconIdx].Power == TooltipIcon.Power &&
+				supportPowerIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
 				return;
 
 			for (var i = 0; i < supportPowerIconsBounds.Count; i++)

@@ -1,74 +1,75 @@
 Container@LOBBY_SERVERS_BIN:
 	Logic: ServerListLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		Container@LABEL_CONTAINER:
 			Y: 0 - 24
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Children:
 				Label@NAME:
 					X: 5
 					Width: 355
 					Height: 25
-					Text: Server
+					Text: label-container-server
 					Align: Center
 					Font: Bold
 				Label@PLAYERS:
 					X: 390
 					Width: 85
 					Height: 25
-					Text: Players
+					Text: label-container-players
 					Font: Bold
 				Label@LOCATION:
 					X: 480
 					Width: 110
 					Height: 25
-					Text: Location
+					Text: label-container-location
 					Font: Bold
 				Label@STATUS:
 					X: 595
 					Width: 50
 					Height: 25
-					Text: Status
+					Text: label-container-status
 					Font: Bold
 		LogicTicker@NOTICE_WATCHER:
 		Container@NOTICE_CONTAINER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 19
 			Children:
 				Background@bg:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 20
 					Background: panel-black
 					Children:
 						Label@OUTDATED_VERSION_LABEL:
 							X: 5
-							Width: PARENT_RIGHT-10
+							Width: PARENT_WIDTH - 10
 							Height: 18
 							Align: Center
-							Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
+							Text: label-bg-outdated-version
 							Font: TinyBold
 						Label@UNKNOWN_VERSION_LABEL:
 							X: 5
-							Width: PARENT_RIGHT-10
+							Width: PARENT_WIDTH - 10
 							Height: 18
 							Align: Center
-							Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
+							Text: label-bg-unknown-version
 							Font: TinyBold
 						Label@PLAYTEST_AVAILABLE_LABEL:
 							X: 5
-							Width: PARENT_RIGHT-10
+							Width: PARENT_WIDTH - 10
 							Height: 18
 							Align: Center
-							Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
+							Text: label-bg-playtest-available
 							Font: TinyBold
 		ScrollPanel@SERVER_LIST:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Background: scrollheader
+					Width: PARENT_WIDTH - 27
 					Height: 20
 					X: 2
 					Visible: false
@@ -76,11 +77,11 @@ Container@LOBBY_SERVERS_BIN:
 						Label@LABEL:
 							Y: 0 - 1
 							Font: TinyBold
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
 							Align: Center
 				ScrollItem@SERVER_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_WIDTH - 27
 					Height: 25
 					X: 2
 					EnableChildMouseOver: True
@@ -99,7 +100,7 @@ Container@LOBBY_SERVERS_BIN:
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-							TooltipText: Requires Password
+							TooltipText: image-lobby-servers-bin-password-protected-tooltip
 						Image@REQUIRES_AUTHENTICATION:
 							X: 372
 							Y: 6
@@ -108,7 +109,7 @@ Container@LOBBY_SERVERS_BIN:
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-							TooltipText: Requires OpenRA forum account
+							TooltipText: image-lobby-servers-bin-requires-authentication-tooltip
 						LabelWithTooltip@PLAYERS:
 							X: 390
 							Width: 85
@@ -124,21 +125,21 @@ Container@LOBBY_SERVERS_BIN:
 							Width: 50
 							Height: 25
 		Label@PROGRESS_LABEL:
-			Y: (PARENT_BOTTOM - HEIGHT) / 2
-			Width: PARENT_RIGHT
+			Y: (PARENT_HEIGHT - HEIGHT) / 2
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
 			Align: Center
 			Visible: false
 		DropDownButton@FILTERS_DROPDOWNBUTTON:
-			Y: PARENT_BOTTOM + 5
+			Y: PARENT_HEIGHT + 5
 			Width: 180
 			Height: 25
-			Text: Filter Games
+			Text: dropdownbutton-lobby-servers-bin-filters
 			Font: Bold
 		Button@RELOAD_BUTTON:
 			X: 185
-			Y: PARENT_BOTTOM + 5
+			Y: PARENT_HEIGHT + 5
 			Width: 26
 			Height: 25
 			Children:
@@ -153,24 +154,24 @@ Container@LOBBY_SERVERS_BIN:
 					Children:
 						LogicTicker@ANIMATION:
 		Container@SELECTED_SERVER:
-			X: PARENT_RIGHT + 14
+			X: PARENT_WIDTH + 14
 			Width: 174
 			Height: 280
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 174
 					Background: panel-gray
 					Children:
 						MapPreview@SELECTED_MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							Width: PARENT_WIDTH - 2
+							Height: PARENT_HEIGHT - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@SELECTED_MAP:
 					Y: 172
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
 					Align: Center
@@ -178,25 +179,25 @@ Container@LOBBY_SERVERS_BIN:
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@SELECTED_IP:
 					Y: 187
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 				Label@SELECTED_STATUS:
 					Y: 203
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 				Label@SELECTED_MOD_VERSION:
 					Y: 216
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 				Label@SELECTED_PLAYERS:
 					Y: 229
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center

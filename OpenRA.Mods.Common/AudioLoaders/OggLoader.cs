@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int SampleBits => 16;
 		public int Channels => reader.Channels;
 		public int SampleRate => reader.SampleRate;
-		public float LengthInSeconds => (float)reader.TotalTime.TotalSeconds;
+		public float LengthInSeconds { get; }
 		public Stream GetPCMInputStream() { return new OggStream(new OggFormat(this)); }
 		public void Dispose() { reader.Dispose(); }
 
@@ -49,14 +49,23 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 		public OggFormat(Stream stream)
 		{
-			this.stream = stream;
-			reader = new VorbisReader(stream);
+			var startPosition = stream.Position;
+			try
+			{
+				this.stream = stream;
+				reader = new VorbisReader(stream, false);
+				LengthInSeconds = (float)reader.TotalTime.TotalSeconds;
+			}
+			finally
+			{
+				stream.Position = startPosition;
+			}
 		}
 
 		OggFormat(OggFormat cloneFrom)
 		{
 			stream = SegmentStream.CreateWithoutOwningStream(cloneFrom.stream, 0, (int)cloneFrom.stream.Length);
-			reader = new VorbisReader(stream)
+			reader = new VorbisReader(stream, false)
 			{
 				// Tell NVorbis to clip samples so we don't have to range-check during reading.
 				ClipSamples = true
@@ -67,9 +76,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		{
 			readonly OggFormat format;
 
-			// This buffer can be static because it can only be used by 1 instance per thread.
-			[ThreadStatic]
-			static float[] conversionBuffer = null;
+			float[] conversionBuffer;
 
 			public OggStream(OggFormat format)
 			{
@@ -90,26 +97,28 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			public override int Read(byte[] buffer, int offset, int count)
 			{
+				return Read(buffer.AsSpan(offset, count));
+			}
+
+			public override int Read(Span<byte> buffer)
+			{
 				// Adjust count so it is in 16-bit samples instead of bytes.
-				count /= 2;
+				var count = buffer.Length / 2;
 
 				// Make sure we don't have an odd count.
 				count -= count % format.reader.Channels;
 
-				// Get the buffer, creating a new one if none exists or the existing one is too small.
-				var floatBuffer = conversionBuffer ?? (conversionBuffer = new float[count]);
-				if (floatBuffer.Length < count)
-					floatBuffer = conversionBuffer = new float[count];
+				var floatBuffer = EnsureArraySize(ref conversionBuffer, count);
 
 				// Let NVorbis do the actual reading.
-				var samples = format.reader.ReadSamples(floatBuffer, offset, count);
+				var samples = format.reader.ReadSamples(floatBuffer);
 
 				// Move the data back to the request buffer and convert to 16-bit signed samples for OpenAL.
 				for (var i = 0; i < samples; i++)
 				{
 					var conversion = (short)(floatBuffer[i] * 32767);
-					buffer[offset++] = (byte)(conversion & 255);
-					buffer[offset++] = (byte)(conversion >> 8);
+					buffer[i * 2 + 0] = (byte)(conversion & 255);
+					buffer[i * 2 + 1] = (byte)(conversion >> 8);
 				}
 
 				// Adjust count back to bytes.
@@ -120,6 +129,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 			public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
 			public override void SetLength(long value) { throw new NotImplementedException(); }
 			public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+			public override void Write(ReadOnlySpan<byte> buffer) { throw new NotImplementedException(); }
 
 			protected override void Dispose(bool disposing)
 			{
@@ -127,6 +137,13 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					format.reader.Dispose();
 
 				base.Dispose(disposing);
+			}
+
+			static Span<float> EnsureArraySize(ref float[] array, int desiredSize)
+			{
+				if (array == null || array.Length < desiredSize)
+					array = new float[desiredSize];
+				return array.AsSpan(..desiredSize);
 			}
 		}
 	}

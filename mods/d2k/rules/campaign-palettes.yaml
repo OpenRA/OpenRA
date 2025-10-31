@@ -1,7 +1,6 @@
 ^Palettes:
 	-PlayerColorPalette:
-	-PaletteFromPlayerPaletteWithAlpha@deviatorgas:
-	-PaletteFromPlayerPaletteWithAlpha@cloak:
+	-PlayerColorShift:
 	IndexedPlayerPalette:
 		BasePalette: d2k
 		BaseName: player
@@ -16,12 +15,15 @@
 			Mercenaries: 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224
 			Neutral: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 			Creeps: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
-	PaletteFromPlayerPaletteWithAlpha@DeviatorGas:
-		BaseName: deviatorgas
+	FixedPlayerColorShift:
 		BasePalette: player
-		Alpha: 0.68
-		Premultiply: false
-	PaletteFromPlayerPaletteWithAlpha@Cloak:
-		BaseName: cloak
-		BasePalette: player
-		Alpha: 0.55
+		PlayerIndex:
+			Atreides: 0.274, -0.275, 1, 0.32, 0.34
+			Harkonnen: -0.329, -0.006, 1, 0.32, 0.34
+			Ordos: 0.060, -0.275, 1, 0.32, 0.34
+			Corrino: 0.477, 0.075, 1, 0.32, 0.34
+			Fremen: -0.333, -0.925, 1, 0.32, 0.34
+			Smugglers: -0.318, 0.047, 1, 0.32, 0.34
+			Mercenaries: -0.219, 0.067, 1, 0.32, 0.34
+			Neutral: -0.277, -0.133, 1, 0.32, 0.34
+			Creeps: -0.277, -0.133, 1, 0.32, 0.34

@@ -56,12 +56,6 @@
 		G: 0
 		B: 0
 		A: 140
-	PaletteFromRGBA@submerged:
-		Name: submerged
-		R: 0
-		G: 0
-		B: 0
-		A: 140
 	PaletteFromRGBA@moveflash:
 		Name: moveflash
 		R: 255
@@ -80,11 +74,8 @@
 		BaseName: player-noshadow
 		BasePalette: player-noshadow
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
-	PaletteFromPlayerPaletteWithAlpha@cloak:
-		BaseName: cloak
-		BasePalette: player
-		Alpha: 0.55
-	MenuPaletteEffect:
+	MenuPostProcessEffect:
+		FadeInLength: 4
 	RotationPaletteEffect@defaultwater:
 		Palettes: terrain
 		ExcludeTilesets: DESERT
@@ -99,8 +90,8 @@
 		RotationBase: 32
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect, desert
-	ChronoshiftPaletteEffect:
-	FlashPaletteEffect@NUKE:
+	ChronoshiftPostProcessEffect:
+	FlashPostProcessEffect@NUKE:
 		Type: Nuke
 	IndexedPalette@CIV2:
 		Name: civilian2

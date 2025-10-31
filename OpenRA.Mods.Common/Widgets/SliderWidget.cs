@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,9 +16,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class SliderWidget : Widget
+	public class SliderWidget : InputWidget
 	{
-		public Func<bool> IsDisabled = () => false;
 		public event Action<float> OnChange = _ => { };
 		public int Ticks = 0;
 		public int TrackHeight = 5;
@@ -96,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return (int)(0.5f * RenderBounds.Height + (RenderBounds.Width - RenderBounds.Height) * (x - MinimumValue) / (MaximumValue - MinimumValue));
 		}
 
-		public override Widget Clone() { return new SliderWidget(this); }
+		public override SliderWidget Clone() { return new SliderWidget(this); }
 
 		Rectangle ThumbRect
 		{
@@ -129,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 			for (var i = 0; i < Ticks; i++)
 			{
 				var tickPos = new float2(
-					trackOrigin + (i * (trackRect.Width - (int)tick.Size.X) / (Ticks - 1)) - tick.Size.X / 2,
+					trackOrigin + i * (trackRect.Width - (int)tick.Size.X) / (Ticks - 1) - tick.Size.X / 2,
 					trackRect.Bottom);
 
 				WidgetUtils.DrawSprite(tick, tickPos);

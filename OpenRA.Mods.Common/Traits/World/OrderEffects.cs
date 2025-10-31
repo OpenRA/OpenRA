@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float ActorFlashOverlayAlpha = 0.5f;
 
 		[Desc("The tint to apply when ActorFlashType is Tint.")]
-		public readonly float3 ActorFlashTint = new float3(1.4f, 1.4f, 1.4f);
+		public readonly float3 ActorFlashTint = new(1.4f, 1.4f, 1.4f);
 
 		[Desc("Number of times to flash (frozen) actors.")]
 		public readonly int ActorFlashCount = 2;
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		bool INotifyOrderIssued.OrderIssued(World world, Target target)
+		bool INotifyOrderIssued.OrderIssued(World world, string orderString, Target target)
 		{
 			switch (target.Type)
 			{
@@ -95,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				case TargetType.Terrain:
 				{
-					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
+					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(
+						target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
 					return true;
 				}
 

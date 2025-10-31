@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Types of buildable area this actor gives.")]
-		public readonly HashSet<string> AreaTypes = new HashSet<string>();
+		public readonly HashSet<string> AreaTypes = [];
 
 		public override object Create(ActorInitializer init) { return new GivesBuildableArea(this); }
 	}
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public GivesBuildableArea(GivesBuildableAreaInfo info)
 			: base(info) { }
 
-		readonly HashSet<string> noAreaTypes = new HashSet<string>();
+		readonly HashSet<string> noAreaTypes = [];
 
 		public HashSet<string> AreaTypes => !IsTraitDisabled ? Info.AreaTypes : noAreaTypes;
 	}

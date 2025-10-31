@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,11 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Spawn a sprite with sound.")]
 	public class CreateEffectWarhead : Warhead
 	{
 		[SequenceReference(nameof(Image), allowNullImage: true)]
 		[Desc("List of explosion sequences that can be used.")]
-		public readonly string[] Explosions = new string[0];
+		public readonly string[] Explosions = [];
 
 		[Desc("Image containing explosion effect sequence.")]
 		public readonly string Image = "explosion";
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly bool ForceDisplayAtGroundLevel = false;
 
 		[Desc("List of sounds that can be played on impact.")]
-		public readonly string[] ImpactSounds = new string[0];
+		public readonly string[] ImpactSounds = [];
 
 		[Desc("Chance of impact sound to play.")]
 		public readonly int ImpactSoundChance = 100;
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("The maximum inaccuracy of the effect spawn position relative to actual impact position.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+		static readonly BitSet<TargetableType> TargetTypeAir = new("Air");
 
 		/// <summary>Checks if there are any actors at impact position and if the warhead is valid against any of them.</summary>
 		ImpactActorType ActorTypeAtImpact(World world, WPos pos, Actor firedBy)
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!AffectsParent && victim == firedBy)
 					continue;
 
-				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(t => !t.IsTraitDisabled);
 				if (!activeShapes.Any(s => s.DistanceFromEdge(victim, pos).Length <= 0))
 					continue;
 

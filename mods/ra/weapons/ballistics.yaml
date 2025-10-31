@@ -156,9 +156,8 @@ TurretGun:
 	Range: 5c512
 	Report: cannon2.aud
 	InvalidTargets: Underwater
-	Projectile: Bullet
-		Speed: 426
 	Warhead@1Dam: SpreadDamage
+		Spread: 256
 		Damage: 2500
 		Versus:
 			None: 28
@@ -202,10 +201,10 @@ DepthCharge:
 		Inaccuracy: 128
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
-		Damage: 8000
+		Damage: 6000
 		ValidTargets: Submarine
 		Versus:
-			Light: 75
+			Light: 100
 		DamageTypes: ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion

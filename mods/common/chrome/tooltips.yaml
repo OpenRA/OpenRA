@@ -121,24 +121,40 @@ Background@LATENCY_TOOLTIP:
 		Label@LATENCY_PREFIX:
 			X: 7
 			Y: 3
+			Width: 200
 			Height: 26
 			Font: Bold
-			Text: Latency:
+			Text: label-latency-tooltip-prefix
 		Label@LATENCY:
 			Y: 3
 			Height: 26
+			Font: Bold
+
+Background@BOT_TOOLTIP:
+	Logic: BotTooltipLogic
+	Background: dialog4
+	Height: 30
+	Width: 300
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Text: label-bot-player-tooltip-name
+			Width: 290
+			Height: 24
 			Font: Bold
 
 Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Logic: AnonymousProfileTooltipLogic
 	Background: dialog4
 	Height: 30
-	Width: 200
+	Width: 300
 	Children:
 		Label@NAME:
 			X: 7
 			Y: 2
-			Text: Anonymous Player
+			Text: label-anonymous-player-tooltip-name
+			Width: 290
 			Height: 24
 			Font: MediumBold
 		Label@LOCATION:
@@ -168,8 +184,9 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 					ImageName: admin
 				Label@LABEL:
 					X: 10
+					Width: 200
 					Height: 12
-					Text: Game Admin
+					Text: label-game-admin
 					Font: TinyBold
 
 Background@REGISTERED_PLAYER_TOOLTIP:
@@ -178,7 +195,7 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 	Background: dialog4
 	Children:
 		Container@HEADER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Children:
 				Container@PROFILE_HEADER:
 					Height: 43
@@ -186,19 +203,19 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 						Label@PROFILE_NAME:
 							X: 7
 							Y: 2
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 24
 							Font: MediumBold
 						Label@PROFILE_RANK:
 							X: 7
 							Y: 24
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 12
 							Font: TinyBold
 						Container@GAME_ADMIN:
 							X: 7
 							Y: 36
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 12
 							Visible: False
 							Children:
@@ -211,20 +228,21 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 								Label@LABEL:
 									X: 10
 									Y: 1
+									Width: 200
 									Height: 12
-									Text: Game Admin
+									Text: label-game-admin
 									Font: TinyBold
 				Container@MESSAGE_HEADER:
 					Height: 26
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Children:
 						Label@MESSAGE:
 							X: 7
-							Width: PARENT_RIGHT - 14
+							Width: PARENT_WIDTH - 14
 							Height: 23
 							Font: Bold
 		Container@BADGES_CONTAINER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Visible: false
 			Children:
 				Background@SEPARATOR:
@@ -254,7 +272,6 @@ Background@PRODUCTION_TOOLTIP:
 			Y: 26
 			Height: 15
 			Font: TinyBold
-			Text: Requires {0}
 		Label@DESC:
 			X: 7
 			Y: 27

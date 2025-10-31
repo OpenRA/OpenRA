@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,14 +21,13 @@ namespace OpenRA.Primitives
 	/// </summary>
 	public abstract class ReadOnlyAdapterStream : Stream
 	{
-		readonly Queue<byte> data = new Queue<byte>(1024);
+		readonly Queue<byte> data = new(1024);
 		readonly Stream baseStream;
 		bool baseStreamEmpty;
 
 		protected ReadOnlyAdapterStream(Stream stream)
 		{
-			if (stream == null)
-				throw new ArgumentNullException(nameof(stream));
+			ArgumentNullException.ThrowIfNull(stream);
 			if (!stream.CanRead)
 				throw new ArgumentException("stream must be readable.", nameof(stream));
 
@@ -51,6 +50,7 @@ namespace OpenRA.Primitives
 		public sealed override void SetLength(long value) { throw new NotSupportedException(); }
 		public sealed override void WriteByte(byte value) { throw new NotSupportedException(); }
 		public sealed override void Write(byte[] buffer, int offset, int count) { throw new NotSupportedException(); }
+		public override void Write(ReadOnlySpan<byte> buffer) { throw new NotSupportedException(); }
 		public sealed override void Flush() { throw new NotSupportedException(); }
 
 		public sealed override int ReadByte()
@@ -70,31 +70,36 @@ namespace OpenRA.Primitives
 
 		public sealed override int Read(byte[] buffer, int offset, int count)
 		{
-			var copied = 0;
-			ConsumeData(buffer, offset, count, ref copied);
+			return Read(buffer.AsSpan(offset, count));
+		}
 
-			while (copied < count && !baseStreamEmpty)
+		public override int Read(Span<byte> buffer)
+		{
+			var copied = 0;
+			ConsumeData(buffer, ref copied);
+
+			while (copied < buffer.Length && !baseStreamEmpty)
 			{
 				baseStreamEmpty = BufferData(baseStream, data);
-				ConsumeData(buffer, offset, count, ref copied);
+				ConsumeData(buffer, ref copied);
 			}
 
 			return copied;
 		}
 
 		/// <summary>
-		/// Reads data into a buffer, which will be used to satisfy <see cref="ReadByte()"/> and
-		/// <see cref="Read(byte[], int, int)"/> calls.
+		/// Reads data into a buffer, which will be used to satisfy <see cref="ReadByte()"/>,
+		/// <see cref="Read(byte[], int, int)"/> and <see cref="Read(Span{byte})"/> calls.
 		/// </summary>
 		/// <param name="baseStream">The source stream from which bytes should be read.</param>
 		/// <param name="data">The queue where bytes should be enqueued. Do not dequeue from this buffer.</param>
 		/// <returns>Return true if all data has been read; otherwise, false.</returns>
 		protected abstract bool BufferData(Stream baseStream, Queue<byte> data);
 
-		void ConsumeData(byte[] buffer, int offset, int count, ref int copied)
+		void ConsumeData(Span<byte> buffer, ref int copied)
 		{
-			while (copied < count && data.Count > 0)
-				buffer[offset + copied++] = data.Dequeue();
+			while (copied < buffer.Length && data.Count > 0)
+				buffer[copied++] = data.Dequeue();
 		}
 
 		protected override void Dispose(bool disposing)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -18,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Creates a single color palette without any base palette file.")]
-	class PaletteFromRGBAInfo : TraitInfo
+	sealed class PaletteFromRGBAInfo : TraitInfo, ITilesetSpecificPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
-		[Desc("internal palette name")]
+		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
 		[Desc("If defined, load the palette only for this tileset.")]
@@ -45,10 +46,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Index set to be fully transparent/invisible.")]
 		public readonly int TransparentIndex = 0;
 
+		string ITilesetSpecificPaletteInfo.Tileset => Tileset;
+
 		public override object Create(ActorInitializer init) { return new PaletteFromRGBA(init.World, this); }
 	}
 
-	class PaletteFromRGBA : ILoadsPalettes
+	sealed class PaletteFromRGBA : ILoadsPalettes
 	{
 		readonly World world;
 		readonly PaletteFromRGBAInfo info;
@@ -61,14 +64,14 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			// Enable palette only for a specific tileset
-			if (info.Tileset != null && info.Tileset.ToLowerInvariant() != world.Map.Tileset.ToLowerInvariant())
+			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				return;
 
 			var a = info.A / 255f;
 			var r = (int)(a * info.R + 0.5f).Clamp(0, 255);
 			var g = (int)(a * info.G + 0.5f).Clamp(0, 255);
 			var b = (int)(a * info.B + 0.5f).Clamp(0, 255);
-			var c = (uint)Color.FromArgb(info.A, r, g, b).ToArgb();
+			var c = Color.FromArgb(info.A, r, g, b).ToArgb();
 			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == info.TransparentIndex) ? 0 : c)), info.AllowModifiers);
 		}
 	}

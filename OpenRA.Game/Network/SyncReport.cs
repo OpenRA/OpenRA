@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,10 +19,10 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	class SyncReport
+	sealed class SyncReport
 	{
-		const int NumSyncReports = 5;
-		static Cache<Type, TypeInfo> typeInfoCache = new Cache<Type, TypeInfo>(t => new TypeInfo(t));
+		const int NumSyncReports = 7;
+		static readonly Cache<Type, TypeInfo> TypeInfoCache = new(t => new TypeInfo(t));
 
 		readonly OrderManager orderManager;
 
@@ -33,8 +33,8 @@ namespace OpenRA.Network
 		{
 			var type = sync.GetType();
 			TypeInfo typeInfo;
-			lock (typeInfoCache)
-				typeInfo = typeInfoCache[type];
+			lock (TypeInfoCache)
+				typeInfo = TypeInfoCache[type];
 			var values = new Values(typeInfo.Names.Length);
 			var index = 0;
 
@@ -104,25 +104,34 @@ namespace OpenRA.Network
 
 		internal void DumpSyncReport(int frame)
 		{
-			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
+			var timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture);
+
+			var reportName = $"syncreport-{timestamp}-{orderManager.LocalClient?.Index}.log";
+
 			Log.AddChannel("sync", reportName);
 
+			var recordedFrames = new List<int>();
+			var desyncFrameFound = false;
 			foreach (var r in syncReports)
 			{
+				recordedFrames.Add(r.Frame);
 				if (r.Frame == frame)
 				{
+					desyncFrameFound = true;
 					var mod = Game.ModData.Manifest.Metadata;
-					Log.Write("sync", "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
-					Log.Write("sync", "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
-					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
-					Log.Write("sync", "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
+					Log.Write("sync", $"Player: {Game.Settings.Player.Name} ({Platform.CurrentPlatform} {Environment.OSVersion} {Platform.RuntimeVersion})");
+					if (Game.IsHost)
+						Log.Write("sync", "Player is host.");
+					Log.Write("sync", $"Game ID: {orderManager.LobbyInfo.GlobalSettings.GameUid} (Mod: {mod.TitleTranslated} at Version {mod.Version})");
+					Log.Write("sync", $"Sync for net frame {r.Frame} -------------");
+					Log.Write("sync", $"SharedRandom: {r.SyncedRandom} (#{r.TotalCount})");
 					Log.Write("sync", "Synced Traits:");
 					foreach (var a in r.Traits)
 					{
 						Log.Write("sync", $"\t {a.ActorID} {a.Type} {a.Owner} {a.Trait} ({a.Hash})");
 
 						var nvp = a.NamesValues;
-						for (int i = 0; i < nvp.Names.Length; i++)
+						for (var i = 0; i < nvp.Names.Length; i++)
 							if (nvp.Values[i] != null)
 								Log.Write("sync", $"\t\t {nvp.Names[i]}: {nvp.Values[i]}");
 					}
@@ -130,33 +139,36 @@ namespace OpenRA.Network
 					Log.Write("sync", "Synced Effects:");
 					foreach (var e in r.Effects)
 					{
-						Log.Write("sync", "\t {0} ({1})", e.Name, e.Hash);
+						Log.Write("sync", $"\t {e.Name} ({e.Hash})");
 
 						var nvp = e.NamesValues;
-						for (int i = 0; i < nvp.Names.Length; i++)
+						for (var i = 0; i < nvp.Names.Length; i++)
 							if (nvp.Values[i] != null)
 								Log.Write("sync", $"\t\t {nvp.Names[i]}: {nvp.Values[i]}");
 					}
 
 					Log.Write("sync", "Orders Issued:");
 					foreach (var o in r.Orders)
-						Log.Write("sync", "\t {0}", o.ToString());
-
-					return;
+						Log.Write("sync", $"\t {o}");
 				}
 			}
 
-			Log.Write("sync", "No sync report available!");
+			Log.Write("sync", "Sync Report System Info:");
+			Log.Write("sync", $"Out of sync frame: {frame}");
+			Log.Write("sync", "Recorded frames: " + string.Join(",", recordedFrames));
+
+			if (!desyncFrameFound)
+				Log.Write("sync", $"Recorded frames do not contain the frame {frame}. No sync report available!");
 		}
 
-		class Report
+		sealed class Report
 		{
 			public int Frame;
 			public int SyncedRandom;
 			public int TotalCount;
-			public List<TraitReport> Traits = new List<TraitReport>();
-			public List<EffectReport> Effects = new List<EffectReport>();
-			public List<OrderManager.ClientOrder> Orders = new List<OrderManager.ClientOrder>();
+			public readonly List<TraitReport> Traits = [];
+			public readonly List<EffectReport> Effects = [];
+			public readonly List<OrderManager.ClientOrder> Orders = [];
 		}
 
 		struct TraitReport
@@ -176,7 +188,7 @@ namespace OpenRA.Network
 			public (string[] Names, Values Values) NamesValues;
 		}
 
-		struct TypeInfo
+		readonly struct TypeInfo
 		{
 			static readonly ParameterExpression SyncParam = Expression.Parameter(typeof(ISync), "sync");
 			static readonly ConstantExpression NullString = Expression.Constant(null, typeof(string));
@@ -189,11 +201,15 @@ namespace OpenRA.Network
 			public TypeInfo(Type type)
 			{
 				const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-				var fields = type.GetFields(Flags).Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>());
-				var properties = type.GetProperties(Flags).Where(pi => pi.HasAttribute<SyncAttribute>());
+				var fields = type.GetFields(Flags)
+					.Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>())
+					.ToList();
+				var properties = type.GetProperties(Flags)
+					.Where(pi => pi.HasAttribute<SyncAttribute>())
+					.ToList();
 
 				foreach (var prop in properties)
-					if (!prop.CanRead || prop.GetIndexParameters().Any())
+					if (!prop.CanRead || prop.GetIndexParameters().Length > 0)
 						throw new InvalidOperationException(
 							"Properties using the Sync attribute must be readable and must not use index parameters.\n" +
 							"Invalid Property: " + prop.DeclaringType.FullName + "." + prop.Name);
@@ -222,11 +238,11 @@ namespace OpenRA.Network
 						// PERF: If the member is a Boolean, we can also avoid the allocation caused by boxing it.
 						// Instead, we can just return the resulting strings directly.
 						var getBoolString = Expression.Condition(getMember, TrueString, FalseString);
-						return Expression.Lambda<Func<ISync, string>>(getBoolString, name, new[] { SyncParam }).Compile();
+						return Expression.Lambda<Func<ISync, string>>(getBoolString, name, [SyncParam]).Compile();
 					}
 
 					var boxedCopy = Expression.Convert(getMember, typeof(object));
-					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, new[] { SyncParam }).Compile();
+					return Expression.Lambda<Func<ISync, object>>(boxedCopy, name, [SyncParam]).Compile();
 				}
 
 				// For reference types, we have to call ToString right away to get a snapshot of the value. We cannot
@@ -238,7 +254,7 @@ namespace OpenRA.Network
 			{
 				// The lambda generated is shown below.
 				// TSync is actual type of the ISync object. Foo is a field or property with the Sync attribute applied.
-				var toString = memberType.GetMethod("ToString", Type.EmptyTypes);
+				var toString = memberType.GetMethod(nameof(object.ToString), Type.EmptyTypes);
 				Expression getString;
 				if (memberType.IsValueType)
 				{
@@ -250,13 +266,13 @@ namespace OpenRA.Network
 					// (ISync sync) => { var foo = ((TSync)sync).Foo; return foo == null ? null : foo.ToString(); }
 					var memberVariable = Expression.Variable(memberType, getMember.Member.Name);
 					var assignMemberVariable = Expression.Assign(memberVariable, getMember);
-					var member = Expression.Block(new[] { memberVariable }, assignMemberVariable);
+					var member = Expression.Block([memberVariable], assignMemberVariable);
 					getString = Expression.Call(member, toString);
 					var nullMember = Expression.Constant(null, memberType);
 					getString = Expression.Condition(Expression.Equal(member, nullMember), NullString, getString);
 				}
 
-				return Expression.Lambda<Func<ISync, string>>(getString, name, new[] { SyncParam }).Compile();
+				return Expression.Lambda<Func<ISync, string>>(getString, name, [SyncParam]).Compile();
 			}
 		}
 
@@ -266,7 +282,7 @@ namespace OpenRA.Network
 		/// </summary>
 		struct Values
 		{
-			static readonly object Sentinel = new object();
+			static readonly object Sentinel = new();
 
 			object item1OrArray;
 			object item2OrSentinel;
@@ -288,7 +304,7 @@ namespace OpenRA.Network
 
 			public object this[int index]
 			{
-				get
+				readonly get
 				{
 					if (item2OrSentinel == Sentinel)
 						return ((object[])item1OrArray)[index];

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,8 +22,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Interval (in milliseconds) at which to warn the player of low power.")]
 		public readonly int AdviceInterval = 10000;
 
+		[Desc("The speech notification to play when the player is low power.")]
 		[NotificationReference("Speech")]
 		public readonly string SpeechNotification = null;
+
+		[Desc("The text notification to display when the player is low power.")]
+		[FluentReference(optional: true)]
+		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
@@ -34,26 +39,23 @@ namespace OpenRA.Mods.Common.Traits
 		readonly PowerManagerInfo info;
 		readonly DeveloperMode devMode;
 
-		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
+		readonly Dictionary<Actor, int> powerDrain = [];
 
 		[Sync]
-		int totalProvided;
-
-		public int PowerProvided => totalProvided;
+		public int PowerProvided { get; private set; }
 
 		[Sync]
-		int totalDrained;
+		public int PowerDrained { get; private set; }
 
-		public int PowerDrained => totalDrained;
-
-		public int ExcessPower => totalProvided - totalDrained;
+		public int ExcessPower => PowerProvided - PowerDrained;
 
 		public int PowerOutageRemainingTicks { get; private set; }
 		public int PowerOutageTotalTicks { get; private set; }
+		public bool PlayLowPowerNotification { get; set; }
 
 		long lastPowerAdviceTime;
-		bool isLowPower = false;
-		bool wasLowPower = false;
+		bool isLowPower;
+		bool wasLowPower;
 		bool wasHackEnabled;
 
 		public PowerManager(Actor self, PowerManagerInfo info)
@@ -63,6 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			devMode = self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
+			PlayLowPowerNotification = info.AdviceInterval > 0;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -70,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Map placed actors will query an inconsistent power state when they are created
 			// (it will depend on the order that they are spawned by the world)
 			// Tell them to query the correct state once the world has been fully created
-			self.World.AddFrameEndTask(w => UpdatePowerRequiringActors());
+			self.World.AddFrameEndTask(_ => UpdatePowerRequiringActors());
 		}
 
 		public void UpdateActor(Actor a)
@@ -89,14 +92,14 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (old > 0)
-				totalProvided -= old;
+				PowerProvided -= old;
 			else if (old < 0)
-				totalDrained += old;
+				PowerDrained += old;
 
 			if (amount > 0)
-				totalProvided += amount;
+				PowerProvided += amount;
 			else if (amount < 0)
-				totalDrained -= amount;
+				PowerDrained -= amount;
 
 			UpdatePowerState();
 		}
@@ -115,9 +118,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (amount > 0)
-				totalProvided -= amount;
+				PowerProvided -= amount;
 			else if (amount < 0)
-				totalDrained += amount;
+				PowerDrained += amount;
 
 			UpdatePowerState();
 		}
@@ -140,17 +143,17 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (wasHackEnabled != devMode.UnlimitedPower)
 			{
-				totalProvided = 0;
-				totalDrained = 0;
+				PowerProvided = 0;
+				PowerDrained = 0;
 
 				if (!devMode.UnlimitedPower)
 				{
 					foreach (var kv in powerDrain)
 					{
 						if (kv.Value > 0)
-							totalProvided += kv.Value;
+							PowerProvided += kv.Value;
 						else if (kv.Value < 0)
-							totalDrained -= kv.Value;
+							PowerDrained -= kv.Value;
 					}
 				}
 
@@ -158,9 +161,11 @@ namespace OpenRA.Mods.Common.Traits
 				UpdatePowerState();
 			}
 
-			if (isLowPower && Game.RunTime > lastPowerAdviceTime + info.AdviceInterval)
+			if (PlayLowPowerNotification && isLowPower && Game.RunTime > lastPowerAdviceTime + info.AdviceInterval)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(self.Owner, info.TextNotification);
+
 				lastPowerAdviceTime = Game.RunTime;
 			}
 

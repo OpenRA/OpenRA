@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -154,10 +154,10 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	LocateNodBase = Nod.AddObjective("Locate the Nod base.")
-	CaptureGDIOutpost = Nod.AddObjective("Capture the GDI outpost.")
-	NodObjective3 = Nod.AddObjective("Eliminate all GDI forces in the area.")
-	GDIObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	LocateNodBase = AddPrimaryObjective(Nod, "locate-nod-base")
+	CaptureGDIOutpost = AddPrimaryObjective(Nod, "capture-gdi-outpost")
+	NodObjective3 = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 end
 
 Tick = function()

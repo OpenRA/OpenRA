@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -41,10 +41,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			var bases = world.ActorsHavingTrait<BaseBuilding>()
 				.Where(a => a.Owner == player)
+				.OrderByDescending(a => a.IsPrimaryBuilding())
+				.ThenBy(a => a.ActorID)
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
-			if (!bases.Any())
+			if (bases.Count == 0)
 			{
 				var building = world.ActorsHavingTrait<Building>()
 					.FirstOrDefault(a => a.Owner == player && a.Info.HasTraitInfo<SelectableInfo>());
@@ -53,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				if (building == null)
 					return true;
 
-				selection.Combine(world, new Actor[] { building }, false, true);
+				selection.Combine(world, [building], false, true);
 				viewport.Center(selection.Actors);
 				return true;
 			}
@@ -63,10 +65,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.Skip(1)
 				.FirstOrDefault();
 
-			if (next == null)
-				next = bases.First();
+			next ??= bases[0];
 
-			selection.Combine(world, new Actor[] { next }, false, true);
+			selection.Combine(world, [next], false, true);
 			viewport.Center(selection.Actors);
 
 			return true;

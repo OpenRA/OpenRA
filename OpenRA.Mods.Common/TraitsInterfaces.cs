@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,8 +15,11 @@ using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Terrain;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -35,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IQuantizeBodyOrientationInfo : ITraitInfoInterface
 	{
-		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
+		int QuantizedBodyFacings(ActorInfo ai, SequenceSet sequences, string faction);
 	}
 
 	public interface IPlaceBuildingDecorationInfo : ITraitInfoInterface
@@ -57,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyOrderIssued
 	{
-		bool OrderIssued(World world, Target target);
+		bool OrderIssued(World world, string orderString, Target target);
 	}
 
 	[RequireExplicitImplementation]
@@ -90,16 +93,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		bool IsValidTarget(Actor self, Actor saboteur);
 		void Demolish(Actor self, Actor saboteur, int delay, BitSet<DamageType> damageTypes);
-	}
-
-	// Type tag for crush class bits
-	public class CrushClass { }
-
-	[RequireExplicitImplementation]
-	public interface ICrushable
-	{
-		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
-		LongBitSet<PlayerBitMask> CrushableBy(Actor self, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
@@ -141,11 +134,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyBeingResupplied
-	{
-		void StartingResupply(Actor self, Actor host);
-		void StoppingResupply(Actor self, Actor host);
-	}
+	public interface INotifyTakeOff { void TakeOff(Actor self); }
+	[RequireExplicitImplementation]
+	public interface INotifyLanding { void Landing(Actor self); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
@@ -157,7 +148,26 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
 	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
-	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyMineLaying
+	{
+		void MineLaying(Actor self, CPos location);
+		void MineLaid(Actor self, Actor mine);
+		void MineLayingCanceled(Actor self, CPos location);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyDockHost { void Docked(Actor self, Actor client); void Undocked(Actor self, Actor client); }
+	[RequireExplicitImplementation]
+	public interface INotifyDockClient { void Docked(Actor self, Actor host); void Undocked(Actor self, Actor host); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyDockClientMoving
+	{
+		void MovingToDock(Actor self, Actor hostActor, IDockHost host);
+		void MovementCancelled(Actor self);
+	}
 
 	[RequireExplicitImplementation]
 	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }
@@ -165,6 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes); }
+	public interface INotifyProximityOwnerChanged { void OnProximityOwnerChanged(Actor actor, Player oldOwner, Player newOwner); }
 	public interface INotifyDiscovered { void OnDiscovered(Actor self, Player discoverer, bool playNotification); }
 	public interface IRenderActorPreviewInfo : ITraitInfoInterface { IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init); }
 	public interface ICruiseAltitudeInfo : ITraitInfoInterface { WDist GetCruiseAltitude(); }
@@ -191,18 +202,89 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
 
-	public interface INotifyHarvesterAction
+	public interface INotifyHarvestAction
 	{
-		void MovingToResources(Actor self, CPos targetCell);
-		void MovingToRefinery(Actor self, Actor refineryActor);
-		void MovementCancelled(Actor self);
 		void Harvested(Actor self, string resourceType);
-		void Docked();
-		void Undocked();
+		void MovingToResources(Actor self, CPos targetCell);
+		void MovementCancelled(Actor self);
+	}
+
+	public interface IDockClientInfo : ITraitInfoInterface { }
+
+	public interface IDockClient
+	{
+		BitSet<DockType> GetDockType { get; }
+
+		/// <summary>When null, the client should act as if it can dock but never do.</summary>
+		DockClientManager DockClientManager { get; }
+		void OnDockStarted(Actor self, Actor hostActor, IDockHost host);
+		bool OnDockTick(Actor self, Actor hostActor, IDockHost dock);
+		void OnDockCompleted(Actor self, Actor hostActor, IDockHost host);
+
+		/// <summary>Are we allowed to dock.</summary>
+		/// <remarks>
+		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// </remarks>
+		bool CanDock(BitSet<DockType> type, bool forceEnter = false);
+
+		/// <summary>Are we allowed to dock to this <paramref name="host"/>.</summary>
+		/// <remarks>
+		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// </remarks>
+		bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false);
+
+		/// <summary>Are we allowed to give a docking order for this <paramref name="host"/>.</summary>
+		/// <remarks>
+		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// </remarks>
+		bool CanQueueDockAt(Actor hostActor, IDockHost host, bool forceEnter, bool isQueued);
+	}
+
+	public interface IDockHostInfo : ITraitInfoInterface { }
+
+	public interface IDockHost
+	{
+		BitSet<DockType> GetDockType { get; }
+
+		/// <summary>Use this function instead of ConditionalTrait.IsTraitDisabled.</summary>
+		bool IsEnabledAndInWorld { get; }
+		int ReservationCount { get; }
+		bool CanBeReserved { get; }
+		WPos DockPosition { get; }
+
+		/// <summary>Can this <paramref name="client"/> dock at this <see cref="IDockHost"/>.</summary>
+		/// <remarks>
+		/// Does not check <see cref="DockType"/>.
+		/// Does not check if <see cref="IDockClient"/> is enabled.
+		/// Does not check if <see cref="DockClientManager"/> is enabled.
+		/// </remarks>
+		bool IsDockingPossible(Actor clientActor, IDockClient client, bool ignoreReservations = false);
+		bool Reserve(Actor self, DockClientManager client);
+		void UnreserveAll();
+		void Unreserve(DockClientManager client);
+		void OnDockStarted(Actor self, Actor clientActor, DockClientManager client);
+		void OnDockCompleted(Actor self, Actor clientActor, DockClientManager client);
+
+		/// <summary>If <paramref name="client"/> is not in range of <see cref="IDockHost"/> queues a child move activity and returns true. If in range returns false.</summary>
+		bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper);
+
+		/// <summary>Should be called when in range of <see cref="IDockHost"/>.</summary>
+		void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
+	}
+
+	public interface IDockClientManagerInfo : ITraitInfoInterface { }
+
+	[RequireExplicitImplementation]
+	public interface INotifyLoadCargo
+	{
+		void Loading(Actor self);
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyUnload
+	public interface INotifyUnloadCargo
 	{
 		void Unloading(Actor self);
 	}
@@ -264,13 +346,15 @@ namespace OpenRA.Mods.Common.Traits
 		void Undeploy(Actor self, bool skipMakeAnim);
 	}
 
-	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{
-		void OnDock(Actor harv, DeliverResources dockOrder);
-		int AcceptResources(string resourceType, int count = 1);
-		CVec DeliveryOffset { get; }
-		bool AllowDocking { get; }
+		int AcceptResources(Actor self, string resourceType, int count = 1);
+	}
+
+	public interface IDockClientBody
+	{
+		void PlayDockAnimation(Actor self, Action after);
+		void PlayReverseDockAnimation(Actor self, Action after);
 	}
 
 	public interface IProvidesAssetBrowserPalettes
@@ -282,6 +366,19 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IProvidesAssetBrowserColorPickerPalettes
 	{
 		IEnumerable<string> ColorPickerPaletteNames { get; }
+	}
+
+	public interface IColorPickerManagerInfo : ITraitInfoInterface
+	{
+		(float SMin, float SMax) SaturationRange { get; }
+		(float VMin, float VMax) ValueRange { get; }
+		event Action<Color> OnColorPickerColorUpdate;
+		Color[] PresetColors { get; }
+		Color RandomPresetColor(MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors);
+		Color RandomValidColor(MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors);
+		Color MakeValid(
+			Color color, MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors, Action<string> onError = null);
+		void ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit);
 	}
 
 	public interface ICallForTransport
@@ -309,9 +406,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface IDisableAutoTarget
+	public interface IOverrideAutoTarget
 	{
-		bool DisableAutoTarget(Actor self);
+		bool TryGetAutoTargetOverride(Actor self, out Target target);
 	}
 
 	[RequireExplicitImplementation]
@@ -325,14 +422,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IActorPreviewInitModifier
 	{
 		void ModifyActorPreviewInit(Actor self, TypeDictionary inits);
-	}
-
-	[RequireExplicitImplementation]
-	public interface INotifyRearm
-	{
-		void RearmingStarted(Actor host, Actor other);
-		void Rearming(Actor host, Actor other);
-		void RearmingFinished(Actor host, Actor other);
 	}
 
 	[RequireExplicitImplementation]
@@ -403,13 +492,15 @@ namespace OpenRA.Mods.Common.Traits
 		bool InteractsWithDefaultLayer { get; }
 		bool ReturnToGroundLayerOnIdle { get; }
 
-		bool EnabledForActor(ActorInfo a, LocomotorInfo li);
-		int EntryMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
-		int ExitMovementCost(ActorInfo a, LocomotorInfo li, CPos cell);
+		bool EnabledForLocomotor(LocomotorInfo li);
+		short EntryMovementCost(LocomotorInfo li, CPos cell);
+		short ExitMovementCost(LocomotorInfo li, CPos cell);
 
 		byte GetTerrainIndex(CPos cell);
 		WPos CenterOfCell(CPos cell);
 	}
+
+	public interface ICustomMovementLayerInfo : ITraitInfoInterface { }
 
 	// For traits that want to be exposed to the "Deploy" UI button / hotkey
 	[RequireExplicitImplementation]
@@ -441,6 +532,8 @@ namespace OpenRA.Mods.Common.Traits
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity ReturnToCell(Actor self);
 		Activity MoveIntoTarget(Actor self, in Target target);
+		Activity MoveOntoTarget(Actor self, in Target target, in WVec offset,
+			WAngle? facing, Color? targetLineColor = null);
 		Activity LocalMove(Actor self, WPos fromPos, WPos toPos);
 		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);
@@ -542,6 +635,18 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface IBotBaseExpansion
+	{
+		void UpdateExpansionParams(IBot bot, bool fallback, bool undeployEvenNoBase, Actor mustUndeploy);
+	}
+
+	[RequireExplicitImplementation]
+	public interface IBotSuggestRefineryProduction
+	{
+		void RequestLocation(CPos refineryLocation, CPos conyardLocation, Actor expandActor);
+	}
+
+	[RequireExplicitImplementation]
 	public interface IEditorActorOptions : ITraitInfoInterface
 	{
 		IEnumerable<EditorActorOption> ActorOptions(ActorInfo ai, World world);
@@ -552,7 +657,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name;
 		public readonly int DisplayOrder;
 
-		public EditorActorOption(string name, int displayOrder)
+		protected EditorActorOption(string name, int displayOrder)
 		{
 			Name = name;
 			DisplayOrder = displayOrder;
@@ -598,17 +703,35 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class EditorActorDropdown : EditorActorOption
 	{
-		public readonly Dictionary<string, string> Labels;
+		public readonly Func<EditorActorPreview, Dictionary<string, string>> GetLabels;
+		public readonly Func<EditorActorPreview, Dictionary<string, string>, string> GetValue;
+		public readonly Action<EditorActorPreview, string> OnChange;
+
+		/// <summary>
+		/// Creates dropdown for editing actor's metadata with dynamically created items.
+		/// </summary>
+		public EditorActorDropdown(string name, int displayOrder,
+			Func<EditorActorPreview, Dictionary<string, string>> getLabels,
+			Func<EditorActorPreview, Dictionary<string, string>, string> getValue,
+			Action<EditorActorPreview, string> onChange)
+			: base(name, displayOrder)
+		{
+			GetLabels = getLabels;
+			GetValue = getValue;
+			OnChange = onChange;
+		}
+	}
+
+	public class EditorActorTextField : EditorActorOption
+	{
 		public readonly Func<EditorActorPreview, string> GetValue;
 		public readonly Action<EditorActorPreview, string> OnChange;
 
-		public EditorActorDropdown(string name, int displayOrder,
-			Dictionary<string, string> labels,
+		public EditorActorTextField(string name, int displayOrder,
 			Func<EditorActorPreview, string> getValue,
 			Action<EditorActorPreview, string> onChange)
 			: base(name, displayOrder)
 		{
-			Labels = labels;
 			GetValue = getValue;
 			OnChange = onChange;
 		}
@@ -634,6 +757,14 @@ namespace OpenRA.Mods.Common.Traits
 		Horizontal = 1,
 		Vertical = 2,
 		Turn = 4
+	}
+
+	public enum MoveResult
+	{
+		InProgress,
+		CompleteCanceled,
+		CompleteDestinationReached,
+		CompleteDestinationBlocked,
 	}
 
 	[RequireExplicitImplementation]
@@ -675,6 +806,7 @@ namespace OpenRA.Mods.Common.Traits
 		Rectangle TemplateBounds(TerrainTemplateInfo template);
 		IEnumerable<IRenderable> RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo template, int2 origin, float scale);
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
+		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTile tile, WPos origin);
 	}
 
 	public interface IResourceLayerInfo : ITraitInfoInterface
@@ -688,10 +820,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		event Action<CPos, string> CellChanged;
 		ResourceLayerContents GetResource(CPos cell);
-		int GetMaxDensity(string resourceType);
-		bool CanAddResource(string resourceType, CPos cell, int amount = 1);
-		int AddResource(string resourceType, CPos cell, int amount = 1);
-		int RemoveResource(string resourceType, CPos cell, int amount = 1);
+		byte GetMaxDensity(string resourceType);
+		bool CanAddResource(string resourceType, CPos cell, byte amount = 1);
+		int AddResource(string resourceType, CPos cell, byte amount = 1);
+		int RemoveResource(string resourceType, CPos cell, byte amount = 1);
 		void ClearResources(CPos cell);
 
 		bool IsVisible(CPos cell);
@@ -714,5 +846,181 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		event Action<CPos> CellEntryChanged;
 		bool TryGetTerrainColorPair(MPos uv, out (Color Left, Color Right) value);
+	}
+
+	/// <summary>
+	/// When performing locomotion or pathfinding related checks,
+	/// determines whether the blocking rules will be applied when encountering other actors.
+	/// </summary>
+	public enum BlockedByActor
+	{
+		/// <summary>
+		/// Actors on the map are ignored, as if they were not present.
+		/// An actor can only be blocked by impassable terrain.
+		/// An actor can never be blocked by other actors. The blocking rules will never be evaluated.
+		/// </summary>
+		None,
+
+		/// <summary>
+		/// Actors on the map that are moving, or moveable &amp; allied are ignored.
+		/// An actor is Immovable is any of the following applies:
+		/// <list type="bullet">
+		/// <item>Lacks the <see cref="Mobile"/> trait.</item>
+		/// <item>The <see cref="Mobile"/> trait has <see cref="ConditionalTrait{MobileInfo}.IsTraitDisabled"/> or
+		/// <see cref="PausableConditionalTrait{MobileInfo}.IsTraitPaused"/> as true.</item>
+		/// <item>The <see cref="Mobile"/> trait has <see cref="Mobile.IsImmovable"/> as true.</item>
+		/// </list>
+		/// Note the above definition means an actor can be Movable, but may not be Moving, i.e. it is Stationary.
+		/// Actors are allied if their owners have the <see cref="PlayerRelationship.Ally"/> relationship.
+		/// An actor can be blocked by impassable terrain.
+		/// An actor can be blocked by immovable actors *if* they are deemed as blocking by the blocking rules.
+		/// An actor can be blocked by an actor capable of moving, if it is not an ally and *if* they are deemed as
+		/// blocking by the blocking rules.
+		/// An actor can never be blocked by an allied actor capable of moving, even if the other actor is stationary.
+		/// An actor can never be blocked by a moving actor.
+		/// </summary>
+		Immovable,
+
+		/// <summary>
+		/// Actors on the map that are moving are ignored.
+		/// An actor is moving if both of the following apply:
+		/// <list type="bullet">
+		/// <item>It is a Moveable actor (see <see cref="Immovable"/>).</item>
+		/// <item><see cref="Mobile.CurrentMovementTypes"/> contains the flag <see cref="MovementType.Horizontal"/>.</item>
+		/// </list>
+		/// Otherwise the actor is deemed to be Stationary.
+		/// An actor can be blocked by impassable terrain.
+		/// An actor can be blocked by immovable actors and stationary actors *if* they are deemed as blocking by the
+		/// blocking rules.
+		/// An actor can never be blocked by a moving actor.
+		/// </summary>
+		Stationary,
+
+		/// <summary>
+		/// Actors on the map are not ignored.
+		/// An actor can be blocked by impassable terrain.
+		/// An actor can be blocked by immovable actors, stationary actors and moving actors *if* they are deemed as
+		/// blocking by the blocking rules.
+		/// </summary>
+		All
+	}
+
+	public interface IPositionableInfo : IOccupySpaceInfo
+	{
+		bool CanEnterCell(World world, Actor self, CPos cell,
+			SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
+	}
+
+	public interface IPositionable : IOccupySpace
+	{
+		bool CanExistInCell(CPos location);
+		bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any);
+		bool CanEnterCell(CPos location, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
+		SubCell GetValidSubCell(SubCell preferred = SubCell.Any);
+		SubCell GetAvailableSubCell(CPos location,
+			SubCell preferredSubCell = SubCell.Any, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
+		void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any);
+		void SetPosition(Actor self, WPos pos);
+		void SetCenterPosition(Actor self, WPos pos);
+	}
+
+	public interface IPathFinder
+	{
+		/// <summary>
+		/// Calculates a path for the actor from multiple possible sources to target.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between a source and the target is returned.
+		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.
+		/// Call <see cref="FindPathToTargetCells"/> instead.</remarks>
+		List<CPos> FindPathToTargetCell(
+			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true);
+
+		/// <summary>
+		/// Calculates a path for the actor from source to multiple possible targets.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between the source and a target is returned.
+		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.
+		/// Call <see cref="FindPathToTargetCell"/> instead.</remarks>
+		List<CPos> FindPathToTargetCells(
+			Actor self, CPos source, IEnumerable<CPos> targets, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true);
+
+		/// <summary>
+		/// Calculates a path for the actor from multiple possible sources, whilst searching for an acceptable target.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between a source and a discovered target is returned.
+		/// </summary>
+		List<CPos> FindPathToTargetCellByPredicate(
+			Actor self, IEnumerable<CPos> sources, Func<CPos, bool> targetPredicate, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true);
+
+		/// <summary>
+		/// Determines if a path exists between source and target.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// This would apply for any actor using the given <see cref="Locomotor"/>.
+		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.</remarks>
+		bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target);
+
+		/// <summary>
+		/// Determines if a path exists between source and target.
+		/// Terrain and immovable actors are taken into account,
+		/// i.e. as if <see cref="BlockedByActor.Immovable"/> was given.
+		/// Implementations are permitted to only account for a subset of actors, for performance.
+		/// This would apply for any actor using the given <see cref="Locomotor"/>.
+		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.
+		/// If this method returns false, there is guaranteed to be no path.
+		/// If it returns true, there *might* be a path.
+		/// </remarks>
+		bool PathMightExistForLocomotorBlockedByImmovable(Locomotor locomotor, CPos source, CPos target);
+	}
+
+	public interface IEditorTool
+	{
+		string Label { get; }
+		string PanelWidget { get; }
+		bool IsEnabled { get; }
+		TraitInfo TraitInfo { get; }
+	}
+
+	public class MapGenerationException : Exception
+	{
+		public MapGenerationException(string message)
+			: base(message) { }
+		public MapGenerationException(string message, Exception inner)
+			: base(message, inner) { }
+	}
+
+	public interface IMapGeneratorSettings
+	{
+		List<MapGeneratorOption> Options { get; }
+
+		int PlayerCount { get; }
+
+		void Randomize(MersenneTwister random);
+
+		void Initialize(MapGenerationArgs args);
+
+		MapGenerationArgs Compile(ITerrainInfo terrainInfo, Size size);
+	}
+
+	public interface IEditorMapGeneratorInfo : IMapGeneratorInfo
+	{
+		string[] Tilesets { get; }
+		IMapGeneratorSettings GetSettings();
 	}
 }

@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -53,61 +53,66 @@ OrdosEntryPath = { OrdosWaypoint.Location, OrdosRally.Location }
 
 Messages =
 {
-	"Build a concrete foundation before placing your buildings.",
-	"Build a Wind Trap for power.",
-	"Build a Refinery to collect Spice.",
-	"Build a Silo to store additional Spice."
+	UserInterface.GetFluentMessage("build-concrete"),
+	UserInterface.GetFluentMessage("build-wind-trap"),
+	UserInterface.GetFluentMessage("build-refinery"),
+	UserInterface.GetFluentMessage("build-silo")
 }
 
+CachedResources = -1
 Tick = function()
-	if HarkonnenArrived and harkonnen.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(KillHarkonnen)
+	if HarkonnenArrived and Harkonnen.HasNoRequiredUnits() then
+		Ordos.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if player.Resources > SpiceToHarvest - 1 then
-		player.MarkCompletedObjective(GatherSpice)
+	if Ordos.Resources > SpiceToHarvest - 1 then
+		Ordos.MarkCompletedObjective(GatherSpice)
 	end
 
 	-- player has no Wind Trap
-	if (player.PowerProvided <= 20 or player.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
+	if (Ordos.PowerProvided <= 20 or Ordos.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		HasPower = false
-		Media.DisplayMessage(Messages[2], "Mentat")
+		Media.DisplayMessage(Messages[2], Mentat)
 	else
 		HasPower = true
 	end
 
 	-- player has no Refinery and no Silos
-	if HasPower and player.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[3], "Mentat")
+	if HasPower and Ordos.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
+		Media.DisplayMessage(Messages[3], Mentat)
 	end
 
-	if HasPower and player.Resources > player.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[4], "Mentat")
+	if HasPower and Ordos.Resources > Ordos.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
+		Media.DisplayMessage(Messages[4], Mentat)
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
+	if Ordos.Resources ~= CachedResources then
+		local harvestedResources = UserInterface.GetFluentMessage("harvested-resources",
+			{ ["harvested"] = Ordos.Resources, ["goal"] = SpiceToHarvest })
+		UserInterface.SetMissionText(harvestedResources)
+		CachedResources = Ordos.Resources
+	end
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Ordos")
-	harkonnen = Player.GetPlayer("Harkonnen")
+	Ordos = Player.GetPlayer("Ordos")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
 	SpiceToHarvest = ToHarvest[Difficulty]
 
-	InitObjectives(player)
-	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
-	KillHarkonnen = player.AddSecondaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
+	InitObjectives(Ordos)
+	KillOrdos = AddPrimaryObjective(Harkonnen, "")
+	local harvestSpice = UserInterface.GetFluentMessage("harvest-spice", { ["spice"] = SpiceToHarvest })
+	GatherSpice = AddPrimaryObjective(Ordos, harvestSpice)
+	KillHarkonnen = AddSecondaryObjective(Ordos, "eliminate-harkonnen-units-reinforcements")
 
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
-			if player.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+			if Ordos.ResourceCapacity < SpiceToHarvest then
+				Media.DisplayMessage(UserInterface.GetFluentMessage("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
-					harkonnen.MarkCompletedObjective(KillAtreides)
+					Harkonnen.MarkCompletedObjective(KillAtreides)
 				end)
-
-				return true
 			end
 		end)
 	end
@@ -119,26 +124,26 @@ WorldLoaded = function()
 			return
 		end
 
-		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == player end)
+		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == Ordos end)
 
 		if #refs == 0 then
-			harkonnen.MarkCompletedObjective(KillOrdos)
+			Harkonnen.MarkCompletedObjective(KillOrdos)
 		else
 			Trigger.OnAllRemovedFromWorld(refs, function()
-				harkonnen.MarkCompletedObjective(KillOrdos)
+				Harkonnen.MarkCompletedObjective(KillOrdos)
 			end)
 
-			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == player end)
+			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == Ordos end)
 			Utils.Do(refs, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 			Utils.Do(silos, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 		end
 	end)
 
-	Media.DisplayMessage(Messages[1], "Mentat")
+	Media.DisplayMessage(Messages[1], Mentat)
 
 	Trigger.AfterDelay(DateTime.Seconds(25), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
-		Reinforcements.Reinforce(player, OrdosReinforcements, OrdosEntryPath)
+		Media.PlaySpeechNotification(Ordos, "Reinforce")
+		Reinforcements.Reinforce(Ordos, OrdosReinforcements, OrdosEntryPath)
 	end)
 
 	WavesLeft = HarkonnenAttackWaves[Difficulty]
@@ -152,7 +157,7 @@ SendReinforcements = function()
 	if HarkonnenAttackDelay < 0 then HarkonnenAttackDelay = 0 end
 
 	Trigger.AfterDelay(delay, function()
-		Reinforcements.Reinforce(harkonnen, Utils.Random(units), { Utils.Random(HarkonnenEntryWaypoints) }, 10, IdleHunt)
+		Reinforcements.Reinforce(Harkonnen, Utils.Random(units), { Utils.Random(HarkonnenEntryWaypoints) }, 10, IdleHunt)
 
 		WavesLeft = WavesLeft - 1
 		if WavesLeft == 0 then

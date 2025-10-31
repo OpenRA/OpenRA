@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,7 @@
 #region Additional Copyright & License Information
 /*
  * C# port of the crude minilzo source version 2.06 by Frank Razenberg
- * The full LZO package can be found at http://www.oberhumer.com/opensource/lzo/
+ * The full LZO package can be found at https://www.oberhumer.com/opensource/lzo/
  *
  * Beware, you should never want to see C# code like this. You were warned.
  * I simply ran the MSVC preprocessor on the original source, changed the datatypes
@@ -61,7 +61,7 @@
  *
  * Markus F.X.J. Oberhumer
  * <markus@oberhumer.com>
- * http://www.oberhumer.com/opensource/lzo/
+ * https://www.oberhumer.com/opensource/lzo/
  */
 #endregion
 
@@ -77,12 +77,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			byte* ip;
 			uint t;
 			byte* mPos;
-			byte* ipEnd = @in + inLen;
+			var ipEnd = @in + inLen;
 			outLen = 0;
 			op = @out;
 			ip = @in;
-			bool gtFirstLiteralRun = false;
-			bool gtMatchDone = false;
+			var gtFirstLiteralRun = false;
+			var gtMatchDone = false;
 			if (*ip > 17)
 			{
 				t = (uint)(*ip++ - 17);
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						}
 
 						mPos = op - 1;
-						mPos -= (*(ushort*)(void*)ip) >> 2;
+						mPos -= (*(ushort*)ip) >> 2;
 						ip += 2;
 					}
 					else if (t >= 16)
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						goto match_done;
 					}
 
-					if (t >= 2 * 4 - (3 - 1) && (op - mPos) >= 4)
+					if (t >= 2 * 4 - (3 - 1) && op - mPos >= 4)
 					{
 						*(uint*)op = *(uint*)mPos;
 						op += 4; mPos += 4; t -= 4 - (3 - 1);
@@ -250,7 +250,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					{
 						*op++ = *ip++;
 						if (t > 2)
-							(*op++) = *ip++;
+						{
+							*op++ = *ip++;
+						}
 					}
 
 					t = *ip++;

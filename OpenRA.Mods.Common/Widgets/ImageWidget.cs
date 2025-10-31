@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -25,19 +26,27 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool ClickThrough = true;
 		public Func<string> GetImageName;
 		public Func<string> GetImageCollection;
+		public Func<Sprite> GetSprite;
 
+		[FluentReference]
 		public string TooltipText;
 
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		public Func<string> GetTooltipText;
+
+		readonly CachedTransform<(string, string), Sprite> getImageCache = new(
+			((string Collection, string Image) args) => ChromeProvider.GetImage(args.Collection, args.Image));
 
 		public ImageWidget()
 		{
 			GetImageName = () => ImageName;
 			GetImageCollection = () => ImageCollection;
-			GetTooltipText = () => TooltipText;
+			var tooltipCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetMessage(s) : "");
+			GetTooltipText = () => tooltipCache.Update(TooltipText);
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
 		}
 
 		protected ImageWidget(ImageWidget other)
@@ -54,20 +63,15 @@ namespace OpenRA.Mods.Common.Widgets
 			GetTooltipText = other.GetTooltipText;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
 		}
 
-		public override Widget Clone() { return new ImageWidget(this); }
+		public override ImageWidget Clone() { return new ImageWidget(this); }
 
 		public override void Draw()
 		{
-			var name = GetImageName();
-			var collection = GetImageCollection();
-
-			var sprite = ChromeProvider.GetImage(collection, name);
-			if (sprite == null)
-				throw new ArgumentException($"Sprite {collection}/{name} was not found.");
-
-			WidgetUtils.DrawSprite(sprite, RenderOrigin);
+			WidgetUtils.DrawSprite(GetSprite(), RenderOrigin);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

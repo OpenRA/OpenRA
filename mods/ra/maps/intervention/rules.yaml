@@ -1,38 +1,40 @@
 Player:
 	PlayerResources:
-		DefaultCash: 2000
+		DefaultCash: 2400
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, intervention.lua
+		Scripts: campaign.lua, utils.lua, intervention.lua
 	MissionData:
-		Briefing: The Soviet Air Force is flying air raids against a civilian village.\n\nWe have to do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters building. The enemy base is heavily guarded, though.  You will not have enough time to build a force big enough to overpower the Soviet defences. You will have to find a way to sneak in!\n\nGood luck, Commander!\n
+		Briefing: The Soviet Air Force is conducting air raids on a civilian village.\n\nWe must do everything in our power to stop them!\n\nYour job is to establish a base on the mainland ASAP. We can prevent the village's destruction by capturing the enemy's Air Force Headquarters. The enemy base is heavily guarded. You won't have time to build a force big enough to overpower the Soviet defenses. Find a way to sneak in!\n\nGood luck, Commander!\n
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
-
-^Palettes:
-	IndexedPlayerPalette:
-		PlayerIndex:
-			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
-			Allies: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
-			Allies1: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
-			Allies2: 208, 208, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 154, 155, 143
 
 CAMERA:
 	RevealsShroud:
 		Range: 18c0
 
+CAMERA.hq:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 8c0
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
+
 MISS:
 	Tooltip:
-		Name: Soviet Air Force HQ
+		Name: actor-air-force-hq-name
 	Capturable:
 		Types: building
-		ValidRelationships: Enemy
 	CaptureManager:
 
 TENT:
@@ -50,10 +52,9 @@ WEAP:
 		Prerequisite: givefix
 
 MAINLAND:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Reach the mainland
+		Name: actor-mainland-name
 	ProvidesPrerequisite:
 		Prerequisite: mainland
 
@@ -66,10 +67,9 @@ FIX:
 		Prerequisites: givefix
 
 GIVEFIX:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Weapons Factory or Helipad
+		Name: actor-givefix-name
 
 MIG.SCRIPTED:
 	Inherits: MIG
@@ -81,6 +81,7 @@ MIG.SCRIPTED:
 		Ammo: 2
 	Aircraft:
 		IdleBehavior: LeaveMapAtClosestEdge
+		NumberOfTicksToVerifyAvailableAirport: 25
 
 HELI:
 	Buildable:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -17,21 +16,21 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Produce a unit on the closest map edge cell and move into the world.")]
-	class ProductionFromMapEdgeInfo : ProductionInfo
+	sealed class ProductionFromMapEdgeInfo : ProductionInfo
 	{
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
-	class ProductionFromMapEdge : Production
+	sealed class ProductionFromMapEdge : Production
 	{
 		readonly CPos? spawnLocation;
-		readonly DomainIndex domainIndex;
+		readonly IPathFinder pathFinder;
 		RallyPoint rp;
 
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
 			: base(init, info)
 		{
-			domainIndex = init.Self.World.WorldActor.Trait<DomainIndex>();
+			pathFinder = init.Self.World.WorldActor.Trait<IPathFinder>();
 
 			var spawnLocationInit = init.GetOrDefault<ProductionSpawnLocationInit>(info);
 			if (spawnLocationInit != null)
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
 			var mobileInfo = producee.TraitInfoOrDefault<MobileInfo>();
 
-			var destinations = rp != null && rp.Path.Count > 0 ? rp.Path : new List<CPos> { self.Location };
+			var destinations = rp != null && rp.Path.Count > 0 ? rp.Path : [self.Location];
 
 			var location = spawnLocation;
 			if (!location.HasValue)
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>().First(l => l.Info.Name == mobileInfo.Locomotor);
 					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
-						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destinations[0], locomotor));
+						c => mobileInfo.CanEnterCell(self.World, null, c) && pathFinder.PathExistsForLocomotor(locomotor, c, destinations[0]));
 				}
 			}
 

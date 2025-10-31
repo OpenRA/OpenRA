@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,21 +15,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 
 namespace OpenRA
 {
 	public class InstalledMods : IReadOnlyDictionary<string, Manifest>
 	{
 		readonly Dictionary<string, Manifest> mods;
-		readonly SheetBuilder sheetBuilder;
 
 		/// <summary>Initializes the collection of locally installed mods.</summary>
 		/// <param name="searchPaths">Filesystem paths to search for mod packages.</param>
 		/// <param name="explicitPaths">Filesystem paths to additional mod packages.</param>
 		public InstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
 		{
-			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
 			mods = GetInstalledMods(searchPaths, explicitPaths);
 		}
 
@@ -57,7 +54,7 @@ namespace OpenRA
 			return mods;
 		}
 
-		Manifest LoadMod(string id, string path)
+		static Manifest LoadMod(string id, string path)
 		{
 			IReadOnlyPackage package = null;
 			try
@@ -82,7 +79,7 @@ namespace OpenRA
 			return null;
 		}
 
-		Dictionary<string, Manifest> GetInstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
+		static Dictionary<string, Manifest> GetInstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
 		{
 			var ret = new Dictionary<string, Manifest>();
 			var candidates = GetCandidateMods(searchPaths)

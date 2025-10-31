@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -26,29 +26,29 @@ RunInitialActivities = function()
 		end
 	end)
 
-	Reinforcements.Reinforce(player, SovietMCV, SovietStartToBasePath, 0, function(mcv)
+	Reinforcements.Reinforce(USSR, SovietMCV, SovietStartToBasePath, 0, function(mcv)
 		mcv.Move(StartCamPoint.Location)
 	end)
-	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+	Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 
-	Trigger.OnKilled(Barr, function(building)
+	Trigger.OnKilled(Barr, function()
 		BaseBarracks.exists = false
 	end)
 
-	Trigger.OnKilled(Proc, function(building)
+	Trigger.OnKilled(Proc, function()
 		BaseProc.exists = false
 	end)
 
-	Trigger.OnKilled(Weap, function(building)
+	Trigger.OnKilled(Weap, function()
 		BaseWeaponsFactory.exists = false
 	end)
 
 	Trigger.OnEnteredFootprint(VillageCamArea, function(actor, id)
-		if actor.Owner == player then
+		if actor.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
 
 			if not AllVillagersDead then
-				VillageCamera = Actor.Create("camera", true, { Owner = player, Location = VillagePoint.Location })
+				VillageCamera = Actor.Create("camera", true, { Owner = USSR, Location = VillagePoint.Location })
 			end
 		end
 	end)
@@ -91,7 +91,7 @@ RunInitialActivities = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), ProduceInfantry)
 	Trigger.AfterDelay(DateTime.Minutes(2), ProduceArmor)
 
-	if Map.LobbyOption("difficulty") == "hard" or Map.LobbyOption("difficulty") == "normal" then
+	if Difficulty == "hard" or Difficulty == "normal" then
 		Trigger.AfterDelay(DateTime.Seconds(15), ReinfInf)
 	end
 	Trigger.AfterDelay(DateTime.Minutes(1), ReinfInf)
@@ -101,11 +101,11 @@ end
 
 Tick = function()
 	if Greece.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(KillAll)
-		player.MarkCompletedObjective(KillRadar)
+		USSR.MarkCompletedObjective(KillAll)
+		USSR.MarkCompletedObjective(KillRadar)
 	end
 
-	if player.HasNoRequiredUnits() then
+	if USSR.HasNoRequiredUnits() then
 		Greece.MarkCompletedObjective(BeatUSSR)
 	end
 
@@ -116,9 +116,9 @@ Tick = function()
 
 	if RCheck then
 		RCheck = false
-		if Map.LobbyOption("difficulty") == "hard" then
+		if Difficulty == "hard" then
 			Trigger.AfterDelay(DateTime.Seconds(150), ReinfArmor)
-		elseif Map.LobbyOption("difficulty") == "normal" then
+		elseif Difficulty == "normal" then
 			Trigger.AfterDelay(DateTime.Minutes(5), ReinfArmor)
 		else
 			Trigger.AfterDelay(DateTime.Minutes(8), ReinfArmor)
@@ -127,36 +127,20 @@ Tick = function()
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
+	USSR = Player.GetPlayer("USSR")
 	Greece = Player.GetPlayer("Greece")
 
 	RunInitialActivities()
 
-	Trigger.OnObjectiveAdded(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(player, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(USSR)
 
-	KillAll = player.AddObjective("Defeat the Allied forces.")
-	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
-	KillRadar = player.AddObjective("Destroy Allied Radar Dome to stop enemy\nreinforcements.", "Secondary", false)
-
-	Trigger.OnPlayerLost(player, function()
-		Media.PlaySpeechNotification(player, "Lose")
-	end)
-
-	Trigger.OnPlayerWon(player, function()
-		Media.PlaySpeechNotification(player, "Win")
-	end)
+	KillAll = AddPrimaryObjective(USSR, "defeat-allied-forces")
+	BeatUSSR = AddPrimaryObjective(Greece, "")
+	KillRadar = AddSecondaryObjective(USSR, "destroy-radar-dome-reinforcements")
 
 	Trigger.OnKilled(RadarDome, function()
-		player.MarkCompletedObjective(KillRadar)
-		Media.PlaySpeechNotification(player, "ObjectiveMet")
+		USSR.MarkCompletedObjective(KillRadar)
+		Media.PlaySpeechNotification(USSR, "ObjectiveMet")
 	end)
 
 	Camera.Position = StartCamPoint.CenterPosition

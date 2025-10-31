@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,8 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("This actor can grant experience levels equal to it's own current level via entering to other actors with the `" + nameof(AcceptsDeliveredExperience) + "` trait.")]
-	class DeliversExperienceInfo : TraitInfo, Requires<GainsExperienceInfo>
+	[Desc("This actor can grant experience levels equal to it's own current level " +
+		"via entering to other actors with the `" + nameof(AcceptsDeliveredExperience) + "` trait.")]
+	sealed class DeliversExperienceInfo : TraitInfo, Requires<GainsExperienceInfo>
 	{
 		[Desc("The amount of experience the donating player receives.")]
 		public readonly int PlayerExperience = 0;
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DeliversExperience(init, this); }
 	}
 
-	class DeliversExperience : IIssueOrder, IResolveOrder, IOrderVoice
+	sealed class DeliversExperience : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly DeliversExperienceInfo info;
 		readonly Actor self;
@@ -95,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			self.ShowTargetLines();
 		}
 
-		public class DeliversExperienceOrderTargeter : UnitOrderTargeter
+		public sealed class DeliversExperienceOrderTargeter : UnitOrderTargeter
 		{
 			public DeliversExperienceOrderTargeter(DeliversExperienceInfo info)
 				: base("DeliverExperience", 5, info.Cursor, true, true) { }

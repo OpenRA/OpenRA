@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
+	sealed class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
@@ -38,11 +38,10 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithGunboatBody(init, this); }
 	}
 
-	class WithGunboatBody : WithSpriteBody, ITick
+	sealed class WithGunboatBody : WithSpriteBody, ITick
 	{
 		readonly WithGunboatBodyInfo info;
 		readonly Animation wake;
-		readonly RenderSprites rs;
 		readonly IFacing facing;
 		readonly Turreted turret;
 
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
 			this.info = info;
-			rs = init.Self.Trait<RenderSprites>();
+			var rs = init.Self.Trait<RenderSprites>();
 			facing = init.Self.Trait<IFacing>();
 			var name = rs.GetImage(init.Self);
 			turret = init.Self.TraitsImplementing<Turreted>()

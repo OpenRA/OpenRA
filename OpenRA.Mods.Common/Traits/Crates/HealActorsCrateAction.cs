@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,15 +16,15 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Heals all actors that belong to the owner of the collector.")]
-	class HealActorsCrateActionInfo : CrateActionInfo
+	sealed class HealActorsCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The target type(s) of the actors this crate action will heal. Leave empty to heal all actors.")]
-		public readonly BitSet<TargetableType> TargetTypes = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> TargetTypes = default;
 
 		public override object Create(ActorInitializer init) { return new HealActorsCrateAction(init.Self, this); }
 	}
 
-	class HealActorsCrateAction : CrateAction
+	sealed class HealActorsCrateAction : CrateAction
 	{
 		readonly HealActorsCrateActionInfo info;
 

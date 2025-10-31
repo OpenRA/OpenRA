@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,24 +16,24 @@ namespace OpenRA.Mods.Cnc.FileFormats
 {
 	/* TODO: Convert this direct C port into readable code. */
 
-	class BlowfishKeyProvider
+	sealed class BlowfishKeyProvider
 	{
 		const string PublicKeyString = "AihRvNoIbTn85FZRYNZRcT+i6KpU+maCsEqr3Q5q+LDB5tH7Tz2qQ38V";
 
-		class PublicKey
+		sealed class PublicKey
 		{
-			public uint[] KeyOne = new uint[64];
-			public uint[] KeyTwo = new uint[64];
+			public readonly uint[] KeyOne = new uint[64];
+			public readonly uint[] KeyTwo = new uint[64];
 			public uint Len;
 		}
 
-		PublicKey pubkey = new PublicKey();
+		readonly PublicKey pubkey = new();
 
-		uint[] globOne = new uint[64];
+		readonly uint[] globOne = new uint[64];
 		uint globOneBitLen, globOneLenXTwo;
-		uint[] globTwo = new uint[130];
-		uint[] globOneHigh = new uint[4];
-		uint[] globOneHighInv = new uint[4];
+		readonly uint[] globTwo = new uint[130];
+		readonly uint[] globOneHigh = new uint[4];
+		readonly uint[] globOneHighInv = new uint[4];
 		uint globOneHighBitLen;
 		uint globOneHighInvLow, globOneHighInvHigh;
 
@@ -90,9 +90,14 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		static uint LenBigNum(uint[] n, uint len)
 		{
-			uint i;
-			i = len - 1;
-			while ((i >= 0) && (n[i] == 0)) i--;
+			if (len == 0)
+				return 0;
+
+			var i = len;
+			while (n[--i] == 0)
+				if (i == 0)
+					return 0; // all zero
+
 			return i + 1;
 		}
 
@@ -145,12 +150,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			{
 				for (i = 0; i < len - i2; i++) n[i] = n[i + i2];
 				for (; i < len; i++) n[i] = 0;
-				bits = bits % 32;
+				bits %= 32;
 			}
 
 			if (bits == 0) return;
 			for (i = 0; i < len - 1; i++) n[i] = (n[i] >> bits) | (n[i + 1] << (32 - bits));
-			n[i] = n[i] >> bits;
+			n[i] >>= bits;
 		}
 
 		static void ShlBigNum(uint[] n, int bits, int len)
@@ -162,7 +167,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			{
 				for (i = len - 1; i > i2; i--) n[i] = n[i - i2];
 				for (; i > 0; i--) n[i] = 0;
-				bits = bits % 32;
+				bits %= 32;
 			}
 
 			if (bits == 0) return;
@@ -225,13 +230,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			uint nTwoByteLen, bit;
 			int nTwoBitLen;
 
-			var j = 0;
-
 			InitBigNum(nTmp, 0, len);
 			InitBigNum(n1, 0, len);
 			nTwoBitLen = (int)BitLenBigNum(n2, len);
 			bit = 1U << (nTwoBitLen % 32);
-			j = ((nTwoBitLen + 32) / 32) - 1;
+			var j = (nTwoBitLen + 32) / 32 - 1;
 			nTwoByteLen = (uint)((nTwoBitLen - 1) / 32) * 4;
 			nTmp[nTwoByteLen / 4] |= 1U << ((nTwoBitLen - 1) & 0x1f);
 
@@ -287,24 +290,21 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		static unsafe void MulBignumWord(ushort* pn1, uint[] n2, uint mul, uint len)
 		{
 			uint i, tmp;
-			unsafe
+			fixed (uint* tempPn2 = &n2[0])
 			{
-				fixed (uint* tempPn2 = &n2[0])
+				var pn2 = (ushort*)tempPn2;
+
+				tmp = 0;
+				for (i = 0; i < len; i++)
 				{
-					var pn2 = (ushort*)tempPn2;
-
-					tmp = 0;
-					for (i = 0; i < len; i++)
-					{
-						tmp = mul * (*pn2) + (*pn1) + tmp;
-						*pn1 = (ushort)tmp;
-						pn1++;
-						pn2++;
-						tmp >>= 16;
-					}
-
-					*pn1 += (ushort)tmp;
+					tmp = mul * *pn2 + *pn1 + tmp;
+					*pn1 = (ushort)tmp;
+					pn1++;
+					pn2++;
+					tmp >>= 16;
 				}
+
+				*pn1 += (ushort)tmp;
 			}
 		}
 
@@ -374,8 +374,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						IncrementBigNum(globTwo, len * 2 + 1);
 						NegBigNum(globTwo, len * 2 + 1);
 						lenDiff = globTwoXtwo + 1 - globOneLenXTwo;
-						var esi = ((ushort*)g2) + (1 + globTwoXtwo - globOneLenXTwo);
-						var edi = ((ushort*)g2) + (globTwoXtwo + 1);
+						var esi = (ushort*)g2 + (1 + globTwoXtwo - globOneLenXTwo);
+						var edi = (ushort*)g2 + (globTwoXtwo + 1);
 						for (; lenDiff != 0; lenDiff--)
 						{
 							edi--;
@@ -384,11 +384,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							if (tmp > 0)
 							{
 								MulBignumWord(esi, globOne, tmp, 2 * len);
-								if ((*edi & 0x8000) == 0)
-								{
-									if (SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len) != 0)
-										(*edi)--;
-								}
+								if ((*edi & 0x8000) == 0 && SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len) != 0)
+									(*edi)--;
 							}
 						}
 

@@ -89,7 +89,7 @@ C10:
 	RenderSprites:
 		Image: C1
 	Tooltip:
-		Name: Scientist
+		Name: actor-c10-name
 	WithInfantryBody:
 		Palette: civilian10
 	WithDeathAnimation:
@@ -103,7 +103,7 @@ TECN:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
 	Tooltip:
-		Name: Technician
+		Name: actor-tecn-name
 	Selectable:
 		Class: Technician
 	RenderSprites:
@@ -113,7 +113,7 @@ TECN2:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
 	Tooltip:
-		Name: Technician
+		Name: actor-tecn2-name
 	Selectable:
 		Class: Technician
 	RenderSprites:
@@ -140,12 +140,12 @@ FCOM:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Forward Command
+		Name: actor-fcom.name
 	TooltipDescription@ally:
-		Description: Provides buildable area.
+		Description: actor-fcom.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to give buildable area.
+		Description: actor-fcom.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	RevealsShroud:
 		MinRange: 4c0
@@ -165,7 +165,7 @@ FCOM:
 	BaseProvider:
 		PauseOnCondition: being-captured
 		Range: 8c0
-	EngineerRepairable:
+	InstantlyRepairable:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
@@ -191,14 +191,14 @@ HOSP:
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:
-	EngineerRepairable:
+	InstantlyRepairable:
 	Tooltip:
-		Name: Hospital
+		Name: actor-hosp.name
 	TooltipDescription@ally:
-		Description: Provides infantry with self-healing.
+		Description: actor-hosp.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable self-healing for infantry.
+		Description: actor-hosp.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	RevealsShroud:
 		Range: 4c0
@@ -218,7 +218,7 @@ V01:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Church
+		Name: actor-v01-name
 	RevealsShroud:
 		Range: 10c0
 	MapEditorData:
@@ -355,7 +355,7 @@ V19:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Oil Pump
+		Name: actor-v19-name
 	SpawnActorOnDeath:
 		Actor: V19.Husk
 	Targetable:
@@ -366,7 +366,7 @@ V19.Husk:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Husk (Oil Pump)
+		Name: actor-v19-husk-name
 	WithSpriteBody:
 	WithIdleOverlay:
 		StartSequence: fire-start
@@ -376,8 +376,8 @@ V19.Husk:
 	-Demolishable:
 	-HitShape:
 	-Health:
-	-Explodes:
-	-Explodes@CIVPANIC:
+	-FireWarheadsOnDeath:
+	-FireWarheadsOnDeath@CIVPANIC:
 	Interactable:
 
 BARL:
@@ -385,10 +385,10 @@ BARL:
 	-Selectable:
 	Health:
 		HP: 1000
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 	Tooltip:
-		Name: Explosive Barrel
+		Name: actor-barl-name
 		ShowOwnerRow: False
 	Armor:
 		Type: None
@@ -407,10 +407,10 @@ BRL3:
 	-Selectable:
 	Health:
 		HP: 1000
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 	Tooltip:
-		Name: Explosive Barrel
+		Name: actor-brl3-name
 		ShowOwnerRow: False
 	Armor:
 		Type: None
@@ -459,12 +459,12 @@ MISS:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Communications Center
+		Name: actor-miss.name
 	TooltipDescription@ally:
-		Description: Provides range of vision.
+		Description: actor-miss.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to give visual range.
+		Description: actor-miss.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	WithBuildingBib:
 	CaptureManager:
@@ -472,7 +472,7 @@ MISS:
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:
-	EngineerRepairable:
+	InstantlyRepairable:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -498,14 +498,14 @@ BIO:
 	Capturable:
 		Types: building
 	CapturableProgressBar:
-	EngineerRepairable:
+	InstantlyRepairable:
 	Tooltip:
-		Name: Biological Lab
+		Name: actor-bio.name
 	TooltipDescription@ally:
-		Description: Provides prerequisite for Bio-Lab units.
+		Description: actor-bio.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to produce Bio-Lab units.
+		Description: actor-bio.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -538,20 +538,20 @@ OILB:
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:
-	EngineerRepairable:
+	InstantlyRepairable:
 	CashTrickler:
 		Interval: 375
 		Amount: 100
 		RequiresCondition: enabled
 	Tooltip:
-		Name: Oil Derrick
+		Name: actor-oilb.name
 	TooltipDescription@ally:
-		Description: Provides additional funds.
+		Description: actor-oilb.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to receive additional funds.
+		Description: actor-oilb.capturable-desc
 		ValidRelationships: Neutral, Enemy
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 	GpsDot:
 		String: Oil
@@ -564,6 +564,7 @@ OILB:
 
 BR1:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 235
 		DamagedTemplate: 236
@@ -572,9 +573,18 @@ BR1:
 	FreeActor:
 		Actor: bridgehut
 		SpawnOffset: 2,0
+		RequiresCondition: !desert-bridge
+	FreeActor@DESERT:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+		RequiresCondition: desert-bridge
+	GrantConditionOnTileSet@DESERT:
+		Condition: desert-bridge
+		TileSets: DESERT
 
 BR2:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 238
 		DamagedTemplate: 239
@@ -583,9 +593,18 @@ BR2:
 	FreeActor:
 		Actor: bridgehut
 		SpawnOffset: 1,1
+		RequiresCondition: !desert-bridge
+	FreeActor@DESERT:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+		RequiresCondition: desert-bridge
+	GrantConditionOnTileSet@DESERT:
+		Condition: desert-bridge
+		TileSets: DESERT
 
 BR3:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Long: true
 		ShorePieces: br1,br2
@@ -600,6 +619,7 @@ BR3:
 
 BRIDGE1:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 131
 		DamagedTemplate: 378
@@ -618,6 +638,7 @@ BRIDGE1:
 
 BRIDGE2:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 133
 		DamagedTemplate: 379
@@ -636,6 +657,7 @@ BRIDGE2:
 
 BRIDGE3:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 620
 		DamagedTemplate: 621
@@ -654,6 +676,7 @@ BRIDGE3:
 
 BRIDGE4:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 624
 		DamagedTemplate: 625
@@ -672,6 +695,7 @@ BRIDGE4:
 
 SBRIDGE1:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 520
 		DamagedTemplate: 521
@@ -690,6 +714,7 @@ SBRIDGE1:
 
 SBRIDGE2:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 531
 		DamagedTemplate: 532
@@ -708,6 +733,7 @@ SBRIDGE2:
 
 SBRIDGE3:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 523
 		DamagedTemplate: 524
@@ -721,6 +747,7 @@ SBRIDGE3:
 
 SBRIDGE4:
 	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
 	Bridge:
 		Template: 527
 		DamagedTemplate: 528
@@ -733,7 +760,6 @@ SBRIDGE4:
 		SpawnOffset: 2,1
 
 BRIDGEHUT:
-	AlwaysVisible:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
@@ -745,7 +771,6 @@ BRIDGEHUT:
 		TargetTypes: BridgeHut, C4
 
 BRIDGEHUT.small:
-	AlwaysVisible:
 	Building:
 		Footprint: _
 		Dimensions: 1,1
@@ -813,7 +838,7 @@ V25:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Church
+		Name: actor-v25-name
 	RevealsShroud:
 		Range: 10c0
 	HitShape:
@@ -925,7 +950,7 @@ LHUS:
 	Selectable:
 		Bounds: 1024, 2048, 0, -682
 	Tooltip:
-		Name: Lighthouse
+		Name: actor-lhus-name
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -938,7 +963,7 @@ WINDMILL:
 		Bounds: 1024, 1024, 0, -597
 		DecorationBounds: 1536, 1536, 0, -597
 	Tooltip:
-		Name: Windmill
+		Name: actor-windmill-name
 	Building:
 		Footprint: x
 		Dimensions: 1,1

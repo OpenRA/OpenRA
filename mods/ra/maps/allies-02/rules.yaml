@@ -4,9 +4,9 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: allies02.lua, campaign-global.lua
+		Scripts: campaign.lua, utils.lua, allies02.lua
 	MissionData:
-		Briefing: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
+		Briefing: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short, so work quickly.
 		BriefingVideo: ally2.vqa
 		StartVideo: mcv.vqa
 		WinVideo: montpass.vqa
@@ -16,12 +16,13 @@ World:
 			60,79: cr1,0
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
-			tough: Real tough guy
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+			tough: options-difficulty.tough
 		Default: normal
 	TimeLimitManager:
 		CountdownLabel: MISSION_TEXT
@@ -62,10 +63,6 @@ BRIK:
 		Prerequisites: ~disabled
 
 HBOX:
-	Buildable:
-		Prerequisites: ~disabled
-
-PBOX:
 	Buildable:
 		Prerequisites: ~disabled
 

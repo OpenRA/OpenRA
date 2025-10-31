@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -65,8 +64,9 @@ namespace OpenRA.Mods.Common.Traits
 			var carryable = cargo.Trait<Carryable>();
 			carryable.Reserve(cargo, carrier);
 
-			carrier.Trait<Carryall>().AttachCarryable(carrier, cargo);
-			carrier.QueueActivity(new DeliverUnit(carrier, Target.FromCell(self.World, location), info.DeliveryRange));
+			var carryall = carrier.Trait<Carryall>();
+			carryall.AttachCarryable(carrier, cargo);
+			carrier.QueueActivity(new DeliverUnit(carrier, Target.FromCell(self.World, location), info.DeliveryRange, carryall.Info.TargetLineColor));
 			carrier.QueueActivity(new Fly(carrier, Target.FromCell(self.World, self.World.Map.ChooseRandomEdgeCell(self.World.SharedRandom))));
 			carrier.QueueActivity(new RemoveSelf());
 
@@ -90,19 +90,19 @@ namespace OpenRA.Mods.Common.Traits
 				spawn += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
 			// Create delivery actor
-			carrier = self.World.CreateActor(false, deliveringActorName, new TypeDictionary
-			{
+			carrier = self.World.CreateActor(false, deliveringActorName,
+			[
 				new LocationInit(location),
 				new CenterPositionInit(spawn),
 				new OwnerInit(self.Owner),
 				new FacingInit(initialFacing)
-			});
+			]);
 
 			// Create delivered actor
-			cargo = self.World.CreateActor(false, actorName, new TypeDictionary
-			{
+			cargo = self.World.CreateActor(false, actorName,
+			[
 				new OwnerInit(self.Owner),
-			});
+			]);
 		}
 	}
 }

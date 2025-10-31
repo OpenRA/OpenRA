@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -66,8 +66,10 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Failed to load keys: {0}", e);
-				Log.Write("debug", "Failed to load player keypair from `{0}` with exception: {1}", filePath, e);
+				Console.WriteLine("Failed to load keys:");
+				Console.WriteLine(e);
+				Log.Write("debug", $"Failed to load player keypair from `{filePath}` with exception:");
+				Log.Write("debug", e);
 			}
 		}
 
@@ -82,16 +84,17 @@ namespace OpenRA
 				{
 					var client = HttpClientFactory.Create();
 
-					var httpResponseMessage = await client.GetAsync(playerDatabase.Profile + Fingerprint);
-					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+					var url = playerDatabase.Profile + Fingerprint;
+					var httpResponseMessage = await client.GetAsync(url);
+					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-					var yaml = MiniYaml.FromString(result).First();
+					var yaml = MiniYaml.FromStream(result, url).First();
 					if (yaml.Key == "Player")
 					{
 						innerData = FieldLoader.Load<PlayerProfile>(yaml.Value);
 						if (innerData.KeyRevoked)
 						{
-							Log.Write("debug", "Revoking key with fingerprint {0}", Fingerprint);
+							Log.Write("debug", $"Revoking key with fingerprint {Fingerprint}");
 							DeleteKeypair();
 						}
 						else
@@ -102,7 +105,8 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to parse player data result with exception: {0}", e);
+					Log.Write("debug", "Failed to parse player data result with exception:");
+					Log.Write("debug", e);
 					innerState = LinkState.ConnectionFailed;
 				}
 				finally
@@ -136,8 +140,10 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to generate keypair with exception: {1}", e);
-					Console.WriteLine("Key generation failed: {0}", e);
+					Log.Write("debug", "Failed to generate keypair with exception:");
+					Log.Write("debug", e);
+					Console.WriteLine("Key generation failed:");
+					Console.WriteLine(e);
 
 					innerState = LinkState.Uninitialized;
 				}
@@ -152,12 +158,14 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to delete keypair with exception: {1}", e);
-				Console.WriteLine("Key deletion failed: {0}", e);
+				Log.Write("debug", "Failed to delete keypair with exception:");
+				Log.Write("debug", e);
+				Console.WriteLine("Key deletion failed:");
+				Console.WriteLine(e);
 			}
 
 			innerState = LinkState.Uninitialized;
-			parameters = default(RSAParameters);
+			parameters = default;
 			innerFingerprint = null;
 			innerData = null;
 		}

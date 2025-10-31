@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public abstract class CommonSelectorLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string None = "options-common-selector.none";
+
+		[FluentReference]
+		const string SearchResults = "options-common-selector.search-results";
+
+		[FluentReference]
+		const string All = "options-common-selector.all";
+
+		[FluentReference]
+		const string Multiple = "options-common-selector.multiple";
+
 		protected readonly Widget Widget;
+		protected readonly ModData ModData;
 		protected readonly TextFieldWidget SearchTextField;
 		protected readonly World World;
 		protected readonly WorldRenderer WorldRenderer;
@@ -27,18 +40,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected readonly ScrollPanelWidget Panel;
 		protected readonly ScrollItemWidget ItemTemplate;
 
-		protected readonly HashSet<string> SelectedCategories = new HashSet<string>();
-		protected readonly List<string> FilteredCategories = new List<string>();
+		protected readonly HashSet<string> SelectedCategories = [];
+		protected readonly List<string> FilteredCategories = [];
 
 		protected string[] allCategories;
 		protected string searchFilter;
 
-		public CommonSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
+		protected CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{
 			Widget = widget;
+			ModData = modData;
 			World = world;
 			WorldRenderer = worldRenderer;
-			Editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			Editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			Panel = widget.Get<ScrollPanelWidget>(templateListId);
 			ItemTemplate = Panel.Get<ScrollItemWidget>(previewTemplateId);
 			Panel.Layout = new GridLayout(Panel);
@@ -57,22 +71,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
+			Editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
+
+			var none = FluentProvider.GetMessage(None);
+			var searchResults = FluentProvider.GetMessage(SearchResults);
+			var all = FluentProvider.GetMessage(All);
+			var multiple = FluentProvider.GetMessage(Multiple);
+
 			var categorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
 			categorySelector.GetText = () =>
 			{
 				if (SelectedCategories.Count == 0)
-					return "None";
+					return none;
 
 				if (!string.IsNullOrEmpty(searchFilter))
-					return "Search Results";
+					return searchResults;
 
 				if (SelectedCategories.Count == 1)
 					return SelectedCategories.First();
 
 				if (SelectedCategories.Count == allCategories.Length)
-					return "All";
+					return all;
 
-				return "Multiple";
+				return multiple;
 			};
 
 			categorySelector.OnMouseDown = _ =>
@@ -84,9 +105,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
+		protected override void Dispose(bool disposing)
+		{
+			Editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
+
+			base.Dispose(disposing);
+		}
+
+		void HandleSelectionChanged()
+		{
+			SearchTextField.YieldKeyboardFocus();
+		}
+
 		protected Widget CreateCategoriesPanel(ScrollPanelWidget panel)
 		{
-			var categoriesPanel = Ui.LoadWidget("CATEGORY_FILTER_PANEL", null, new WidgetArgs());
+			var categoriesPanel = Ui.LoadWidget("CATEGORY_FILTER_PANEL", null, []);
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
 			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");
@@ -112,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var categoryHeight = 5 + selectButtons.Bounds.Height;
 			foreach (var cat in FilteredCategories)
 			{
-				var category = (CheckboxWidget)categoryTemplate.Clone();
+				var category = categoryTemplate.Clone();
 				category.GetText = () => cat;
 				category.IsChecked = () => SelectedCategories.Contains(cat);
 				category.IsVisible = () => true;

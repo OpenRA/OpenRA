@@ -1,0 +1,59 @@
+Container@GAMEPLAY_PANEL:
+	Logic: GameplaySettingsLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		ScrollPanel@SETTINGS_SCROLLPANEL:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 5
+			ItemSpacing: 10
+			Children:
+				Background@INPUT_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-game-play-section-header
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@AUTO_SAVE_INTERVAL_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput@AUTO_SAVE_INTERVAL_DROP_DOWN_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: auto-save-interval-label
+									For: AUTO_SAVE_INTERVAL_DROP_DOWN
+								DropDownButton@AUTO_SAVE_INTERVAL_DROP_DOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									Font: Regular
+						Container@AUTO_SAVE_NO_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput@AUTO_SAVE_FILE_NUMBER_DROP_DOWN_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: auto-save-max-file-number-label
+									For: AUTO_SAVE_FILE_NUMBER_DROP_DOWN
+								DropDownButton@AUTO_SAVE_FILE_NUMBER_DROP_DOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									Font: Regular

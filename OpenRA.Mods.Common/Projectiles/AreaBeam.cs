@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,10 +21,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
+	[Desc("Beam projectile that travels in a straight line.")]
 	public class AreaBeamInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate a randomly picked velocity per beam.")]
-		public readonly WDist[] Speed = { new WDist(128) };
+		public readonly WDist[] Speed = [new(128)];
 
 		[Desc("The maximum duration (in ticks) of each beam burst.")]
 		public readonly int Duration = 10;
@@ -33,24 +34,30 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int DamageInterval = 3;
 
 		[Desc("The width of the beam.")]
-		public readonly WDist Width = new WDist(512);
+		public readonly WDist Width = new(512);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
 
 		[Desc("How far beyond the target the projectile keeps on travelling.")]
-		public readonly WDist BeyondTargetRange = new WDist(0);
+		public readonly WDist BeyondTargetRange = new(0);
+
+		[Desc("The minimum distance the beam travels.")]
+		public readonly WDist MinDistance = WDist.Zero;
 
 		[Desc("Damage modifier applied at each range step.")]
-		public readonly int[] Falloff = { 100, 100 };
+		public readonly int[] Falloff = [100, 100];
 
 		[Desc("Ranges at which each Falloff step is defined.")]
-		public readonly WDist[] Range = { WDist.Zero, new WDist(int.MaxValue) };
+		public readonly WDist[] Range = [WDist.Zero, new(int.MaxValue)];
 
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		[Desc("Controls the way inaccuracy is calculated. Possible values are 'Maximum' - scale from 0 to max with range, 'PerCellIncrement' - scale from 0 with range and 'Absolute' - use set value regardless of range.")]
+		[Desc("Controls the way inaccuracy is calculated. Possible values are " +
+			"'Maximum' - scale from 0 to max with range, " +
+			"'PerCellIncrement' - scale from 0 with range, " +
+			"'Absolute' - use set value regardless of range.")]
 		public readonly InaccuracyType InaccuracyType = InaccuracyType.Maximum;
 
 		[Desc("Can this projectile be blocked when hitting actors with an IBlocksProjectiles trait.")]
@@ -73,7 +80,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		public IProjectile Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
+			var c = UsePlayerColor ? args.SourceActor.OwnerColor() : Color;
 			return new AreaBeam(this, args, c);
 		}
 	}
@@ -85,6 +92,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly AttackBase actorAttackBase;
 		readonly Color color;
 		readonly WDist speed;
+		readonly WDist weaponRange;
 
 		[Sync]
 		WPos headPos;
@@ -134,9 +142,22 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Update the target position with the range we shoot beyond the target by
 			// I.e. we can deliberately overshoot, so aim for that position
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
-			target += dir * info.BeyondTargetRange.Length / 1024;
+			var dist = (args.SourceActor.CenterPosition - target).Length;
+			int extraDist;
+			if (info.MinDistance.Length > dist)
+			{
+				if (info.MinDistance.Length - dist < info.BeyondTargetRange.Length)
+					extraDist = info.BeyondTargetRange.Length;
+				else
+					extraDist = info.MinDistance.Length - dist;
+			}
+			else
+				extraDist = info.BeyondTargetRange.Length;
+
+			target += dir * extraDist / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
+			weaponRange = new WDist(Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers));
 		}
 
 		void TrackTarget()
@@ -146,12 +167,12 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (args.GuidedTarget.IsValidFor(args.SourceActor))
 			{
-				var guidedTargetPos = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.PositionClosestTo(args.Source);
+				var guidedTargetPos = args.Weapon.TargetActorCenter ? args.GuidedTarget.CenterPosition : args.GuidedTarget.Positions.ClosestToIgnoringPath(args.Source);
 				var targetDistance = new WDist((guidedTargetPos - args.Source).Length);
 
 				// Only continue tracking target if it's within weapon range +
 				// BeyondTargetRange to avoid edge case stuttering (start firing and immediately stop again).
-				if (targetDistance > args.Weapon.Range + info.BeyondTargetRange)
+				if (targetDistance > weaponRange + info.BeyondTargetRange)
 					StopTargeting();
 				else
 				{
@@ -192,7 +213,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			// Allow for leniency to avoid edge case stuttering (start firing and immediately stop again).
-			var outOfWeaponRange = args.Weapon.Range + info.BeyondTargetRange < new WDist((args.PassiveTarget - args.Source).Length);
+			var outOfWeaponRange = weaponRange + info.BeyondTargetRange < new WDist((args.PassiveTarget - args.Source).Length);
 
 			// While the head is travelling, the tail must start to follow Duration ticks later.
 			// Alternatively, also stop emitting the beam if source actor dies or is ordered to stop.
@@ -251,7 +272,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!IsBeamComplete && info.RenderBeam && !(wr.World.FogObscures(tailPos) && wr.World.FogObscures(headPos)))
 			{
 				var beamRender = new BeamRenderable(headPos, info.ZOffset, tailPos - headPos, info.Shape, info.Width, color);
-				return new[] { (IRenderable)beamRender };
+				return [beamRender];
 			}
 
 			return SpriteRenderable.None;

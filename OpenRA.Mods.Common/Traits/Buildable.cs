@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 			"This can be prefixed with ! to invert the prerequisite (disabling production if the prerequisite is available)",
 			"and/or ~ to hide the actor from the production palette if the prerequisite is not available.",
 			"Prerequisites are granted by actors with the ProvidesPrerequisite trait.")]
-		public readonly string[] Prerequisites = { };
+		public readonly string[] Prerequisites = [];
 
 		[Desc("Production queue(s) that can produce this.")]
-		public readonly HashSet<string> Queue = new HashSet<string>();
+		public readonly HashSet<string> Queue = [];
 
 		[Desc("Override the production structure type (from the Production Produces list) that this unit should be built at.")]
 		public readonly string BuildAtProductionType = null;
@@ -55,7 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int BuildPaletteOrder = 9999;
 
 		[Desc("Text shown in the production tooltip.")]
-		public readonly string Description = "";
+		[FluentReference(optional: true)]
+		public readonly string Description;
 
 		public static string GetInitialFaction(ActorInfo ai, string defaultFaction)
 		{

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,21 +13,25 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Can be carried by units with the trait `Carryall`.")]
+	[Desc("Can be carried by units with the trait `" + nameof(Carryall) + "`.")]
 	public class AutoCarryableInfo : CarryableInfo
 	{
 		[Desc("Required distance away from destination before requesting a pickup. Default is 6 cells.")]
 		public readonly WDist MinDistance = WDist.FromCells(6);
 
-		public override object Create(ActorInitializer init) { return new AutoCarryable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AutoCarryable(this); }
 	}
 
 	public class AutoCarryable : Carryable, ICallForTransport
 	{
 		readonly AutoCarryableInfo info;
+		bool autoReserved = false;
 
-		public AutoCarryable(Actor self, AutoCarryableInfo info)
-			: base(self, info)
+		public CPos? Destination { get; private set; }
+		public bool WantsTransport => Destination != null && !IsTraitDisabled;
+
+		public AutoCarryable(AutoCarryableInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
@@ -35,23 +39,23 @@ namespace OpenRA.Mods.Common.Traits
 		public WDist MinimumDistance => info.MinDistance;
 
 		// No longer want to be carried
-		void ICallForTransport.MovementCancelled(Actor self) { MovementCancelled(self); }
+		void ICallForTransport.MovementCancelled(Actor self) { MovementCancelled(); }
 		void ICallForTransport.RequestTransport(Actor self, CPos destination) { RequestTransport(self, destination); }
 
-		void MovementCancelled(Actor self)
+		void MovementCancelled()
 		{
 			if (state == State.Locked)
 				return;
 
 			Destination = null;
+			autoReserved = false;
 
 			// TODO: We could implement something like a carrier.Trait<Carryall>().CancelTransportNotify(self) and call it here
 		}
 
 		void RequestTransport(Actor self, CPos destination)
 		{
-			var delta = self.World.Map.CenterOfCell(destination) - self.CenterPosition;
-			if (delta.HorizontalLengthSquared < info.MinDistance.LengthSquared)
+			if (!IsValidAutoCarryDistance(self, destination))
 			{
 				Destination = null;
 				return;
@@ -63,13 +67,15 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Inform all idle carriers
-			var carriers = self.World.ActorsWithTrait<Carryall>()
-				.Where(c => c.Trait.State == Carryall.CarryallState.Idle && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
+			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
+				.Where(c =>
+					c.Trait.State == Carryall.CarryallState.Idle && !c.Trait.IsTraitDisabled &&
+					c.Trait.EnableAutoCarry && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Enumerate idle carriers to find the first that is able to transport us
 			foreach (var carrier in carriers)
-				if (carrier.Trait.RequestTransportNotify(carrier.Actor, self, destination))
+				if (carrier.Trait.RequestTransportNotify(carrier.Actor, self))
 					return;
 		}
 
@@ -84,38 +90,66 @@ namespace OpenRA.Mods.Common.Traits
 			base.Detached(self);
 		}
 
-		public override bool Reserve(Actor self, Actor carrier)
+		public bool AutoReserve(Actor self, Actor carrier)
 		{
 			if (Reserved || !WantsTransport)
 				return false;
 
-			var delta = self.World.Map.CenterOfCell(Destination.Value) - self.CenterPosition;
-			if (delta.HorizontalLengthSquared < info.MinDistance.LengthSquared)
+			if (!IsValidAutoCarryDistance(self, Destination.Value))
 			{
 				// Cancel pickup
-				MovementCancelled(self);
+				MovementCancelled();
 				return false;
 			}
 
-			return base.Reserve(self, carrier);
+			if (Reserve(self, carrier))
+			{
+				autoReserved = true;
+				return true;
+			}
+
+			return false;
 		}
 
 		// Prepare for transport pickup
 		public override LockResponse LockForPickup(Actor self, Actor carrier)
 		{
-			if ((state == State.Locked && Carrier != carrier) || !WantsTransport)
+			if (state == State.Locked && Carrier != carrier)
 				return LockResponse.Failed;
 
-			// Last chance to change our mind...
-			var delta = self.World.Map.CenterOfCell(Destination.Value) - self.CenterPosition;
-			if (delta.HorizontalLengthSquared < info.MinDistance.LengthSquared)
+			// When "autoReserved" is true, the carrying operation is given by auto command
+			// we still need to check the validity of "Destination" to ensure an effective trip.
+			if (autoReserved)
 			{
-				// Cancel pickup
-				MovementCancelled(self);
-				return LockResponse.Failed;
+				if (!WantsTransport)
+				{
+					// Cancel pickup
+					MovementCancelled();
+					return LockResponse.Failed;
+				}
+
+				if (!IsValidAutoCarryDistance(self, Destination.Value))
+				{
+					// Cancel pickup
+					MovementCancelled();
+					return LockResponse.Failed;
+				}
+
+				// Reset "autoReserved" as we finished the check
+				autoReserved = false;
 			}
 
 			return base.LockForPickup(self, carrier);
+		}
+
+		bool IsValidAutoCarryDistance(Actor self, CPos destination)
+		{
+			if (Mobile == null)
+				return false;
+
+			// TODO: change the check here to pathfinding distance in the future
+			return (self.World.Map.CenterOfCell(destination) - self.CenterPosition).HorizontalLengthSquared >= info.MinDistance.LengthSquared
+				|| !Mobile.PathFinder.PathExistsForLocomotor(Mobile.Locomotor, self.Location, destination);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = ["idle"];
 
 		[PaletteReference]
 		public readonly string Palette = "effect";
 
 		[Desc("Only leave trail on listed terrain types. Leave empty to leave trail on all terrain types.")]
-		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> TerrainTypes = [];
 
 		[Desc("Accepts values: Cell to draw the trail sprite in the center of the current cell,",
 			"CenterPosition to draw the trail sprite at the current position.")]
@@ -56,22 +56,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int StartDelay = 0;
 
 		[Desc("Trail spawn positions relative to actor position. (forward, right, up) triples")]
-		public readonly WVec[] Offsets = { WVec.Zero };
+		public readonly WVec[] Offsets = [WVec.Zero];
 
 		[Desc("Should the trail spawn relative to last position or current position?")]
 		public readonly bool SpawnAtLastPosition = true;
 
-		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new LeavesTrails(this); }
 	}
 
-	public class LeavesTrails : ConditionalTrait<LeavesTrailsInfo>, ITick
+	public class LeavesTrails : ConditionalTrait<LeavesTrailsInfo>, ITick, INotifyAddedToWorld
 	{
 		BodyOrientation body;
 		IFacing facing;
 		WAngle cachedFacing;
 		int cachedInterval;
 
-		public LeavesTrails(Actor self, LeavesTrailsInfo info)
+		public LeavesTrails(LeavesTrailsInfo info)
 			: base(info)
 		{
 			cachedInterval = Info.StartDelay;
@@ -93,9 +93,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		bool wasStationary;
 		bool isMoving;
 
+		bool previouslySpawned;
+		CPos previousSpawnCell;
+		WAngle previousSpawnFacing;
+
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled)
+			if (!self.IsInWorld || IsTraitDisabled)
 				return;
 
 			wasStationary = !isMoving;
@@ -120,17 +124,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (++offset >= Info.Offsets.Length)
 					offset = 0;
 
-				var offsetRotation = Info.Offsets[offset].Rotate(body.QuantizeOrientation(self, self.Orientation));
-				var spawnPosition = Info.SpawnAtLastPosition ? cachedPosition : self.CenterPosition;
+				if (Info.TerrainTypes.Count == 0 || Info.TerrainTypes.Contains(type))
+				{
+					var spawnFacing = Info.SpawnAtLastPosition ? cachedFacing : facing?.Facing ?? WAngle.Zero;
 
-				var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + body.LocalToWorld(offsetRotation) :
-					self.World.Map.CenterOfCell(spawnCell);
+					if (previouslySpawned && previousSpawnCell == spawnCell)
+						spawnFacing = previousSpawnFacing;
 
-				var spawnFacing = Info.SpawnAtLastPosition ? cachedFacing : facing?.Facing ?? WAngle.Zero;
+					var offsetRotation = Info.Offsets[offset].Rotate(body.QuantizeOrientation(self.Orientation));
+					var spawnPosition = Info.SpawnAtLastPosition ? cachedPosition : self.CenterPosition;
+					var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + body.LocalToWorld(offsetRotation) :
+						self.World.Map.CenterOfCell(spawnCell);
 
-				if ((Info.TerrainTypes.Count == 0 || Info.TerrainTypes.Contains(type)) && !string.IsNullOrEmpty(Info.Image))
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, spawnFacing, self.World, Info.Image,
 						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog)));
+
+					previouslySpawned = true;
+					previousSpawnCell = spawnCell;
+					previousSpawnFacing = spawnFacing;
+				}
 
 				cachedPosition = self.CenterPosition;
 				cachedFacing = facing?.Facing ?? WAngle.Zero;
@@ -141,6 +153,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		protected override void TraitEnabled(Actor self)
+		{
+			cachedPosition = self.CenterPosition;
+		}
+
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
 		}

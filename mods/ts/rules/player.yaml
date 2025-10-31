@@ -1,5 +1,4 @@
 ^BasePlayer:
-	AlwaysVisible:
 	Shroud:
 	PlayerResources:
 		ResourceValues:
@@ -20,18 +19,22 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
+		ReadyTextNotification: notification-construction-complete
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: True
-	ClassicProductionQueue@Defense:
-		Type: Defense
+	ClassicProductionQueue@Support:
+		Type: Support
 		DisplayOrder: 1
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
+		ReadyTextNotification: notification-construction-complete
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -42,7 +45,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -53,7 +58,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -64,7 +71,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -72,6 +81,8 @@ Player:
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: notification-new-construction-options
+		CannotPlaceTextNotification: notification-cannot-deploy-here
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
@@ -81,9 +92,11 @@ Player:
 	ConquestVictoryConditions:
 	PowerManager:
 		SpeechNotification: LowPower
+		TextNotification: notification-low-power
 	AllyRepair:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: notification-insufficient-funds
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
 	DeveloperMode:
@@ -93,15 +106,23 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
-		Label: Redeployable MCVs
-		Description: Allow undeploying Construction Yard
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	FrozenActorLayer:
-	BaseAttackNotifier:
+	DamageNotifier:
+		ValidTargets: Building
+		Notification: BaseAttack
+		TextNotification: notification-base-under-attack
+		AllyTextNotification: notification-ally-under-attack
 		AllyNotification: OurAllyIsUnderAttack
+	DamageNotifier@Unit:
+		InvalidTargets: Building
+		NotifyInterval: 10000
 	HarvesterAttackNotifier:
+		TextNotification: notification-harvester-under-attack
 	PlayerStatistics:
 	PlaceBeacon:
 		Palette: effect
@@ -110,22 +131,23 @@ Player:
 		ArrowSequence:
 		CircleSequence:
 	ProvidesTechPrerequisite@low:
-		Name: Low
+		Name: options-tech-level.low
 		Prerequisites: techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: Medium
+		Name: options-tech-level.medium
 		Prerequisites: techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@nosuper:
-		Name: No Powers
+		Name: options-tech-level.no-powers
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
 		Id: nopowers
 	ProvidesTechPrerequisite@all:
-		Name: Unrestricted
+		Name: options-tech-level.unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	ResourceStorageWarning:
+		TextNotification: notification-silos-needed
 	PlayerExperience:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:

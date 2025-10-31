@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Condition = null;
 
 		[Desc("Apply to sprite bodies with these names.")]
-		public readonly string[] BodyNames = { "body" };
+		public readonly string[] BodyNames = ["body"];
 
 		public override object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (token == Actor.InvalidConditionToken)
 				token = self.GrantCondition(info.Condition);
 
-			var wsb = wsbs.FirstEnabledTraitOrDefault();
+			var wsb = wsbs.FirstEnabledConditionalTraitOrDefault();
 
 			if (wsb == null)
 				return;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 
 			foreach (var overlay in overlays)
-				overlay.Forward(self);
+				overlay.Forward();
 		}
 
 		public void Reverse(Actor self, Action onComplete)
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (token == Actor.InvalidConditionToken)
 				token = self.GrantCondition(info.Condition);
 
-			var wsb = wsbs.FirstEnabledTraitOrDefault();
+			var wsb = wsbs.FirstEnabledConditionalTraitOrDefault();
 
 			if (wsb == null)
 				return;
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 
 			foreach (var overlay in overlays)
-				overlay.Reverse(self);
+				overlay.Reverse();
 		}
 
 		public void Reverse(Actor self, Activity activity, bool queued = true)
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				// (sell/transform/etc) runs. This causes visual glitches that we attempt to minimize
 				// by forcing the animation to frame 0 and regranting the make condition.
 				// These workarounds will break the actor if the followup activity doesn't dispose it!
-				wsbs.FirstEnabledTraitOrDefault()?.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+				wsbs.FirstEnabledConditionalTraitOrDefault()?.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
 				token = self.GrantCondition(info.Condition);
 
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			});
 
 			foreach (var overlay in overlays)
-				overlay.Reverse(self);
+				overlay.Reverse();
 		}
 
 		// TODO: Make this use Forward instead
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			foreach (var overlay in overlays)
-				overlay.Forward(self);
+				overlay.Forward();
 		}
 
 		// TODO: Make this use Reverse instead
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 
 			foreach (var overlay in overlays)
-				overlay.Reverse(self);
+				overlay.Reverse();
 		}
 	}
 }

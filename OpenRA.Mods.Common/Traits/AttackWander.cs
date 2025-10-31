@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,18 +9,19 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Will AttackMove to a random location within MoveRadius when idle.",
 		"This conflicts with player orders and should only be added to animal creeps.")]
-	class AttackWanderInfo : WandersInfo, Requires<AttackMoveInfo>
+	sealed class AttackWanderInfo : WandersInfo, Requires<AttackMoveInfo>
 	{
 		public override object Create(ActorInitializer init) { return new AttackWander(init.Self, this); }
 	}
 
-	class AttackWander : Wanders
+	sealed class AttackWander : Wanders
 	{
 		readonly AttackMove attackMove;
 
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void DoAction(Actor self, CPos targetCell)
 		{
-			attackMove.ResolveOrder(self, new Order("AttackMove", self, Target.FromCell(self.World, targetCell), false));
+			self.QueueActivity(new AttackMoveActivity(self, () => Move.MoveTo(targetCell, targetLineColor: attackMove.Info.TargetLineColor), false));
 		}
 	}
 }

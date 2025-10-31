@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,16 +16,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Manages AI capturing logic.")]
 	public class CaptureManagerBotModuleInfo : ConditionalTraitInfo
 	{
 		[Desc("Actor types that can capture other actors (via `Captures`).",
 			"Leave this empty to disable capturing.")]
-		public readonly HashSet<string> CapturingActorTypes = new HashSet<string>();
+		public readonly HashSet<string> CapturingActorTypes = [];
 
 		[Desc("Actor types that can be targeted for capturing.",
 			"Leave this empty to include all actors.")]
-		public readonly HashSet<string> CapturableActorTypes = new HashSet<string>();
+		public readonly HashSet<string> CapturableActorTypes = [];
 
 		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
 		public readonly int MinimumCaptureDelay = 375;
@@ -43,17 +44,18 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CaptureManagerBotModule(init.Self, this); }
 	}
 
-	public class CaptureManagerBotModule : ConditionalTrait<CaptureManagerBotModuleInfo>, IBotTick
+	public class CaptureManagerBotModule : ConditionalTrait<CaptureManagerBotModuleInfo>, IBotTick, INotifyActorDisposing
 	{
 		readonly World world;
 		readonly Player player;
-		readonly Func<Actor, bool> isEnemyUnit;
 		readonly Predicate<Actor> unitCannotBeOrderedOrIsIdle;
 		readonly int maximumCaptureTargetOptions;
 		int minCaptureDelayTicks;
 
 		// Units that the bot already knows about and has given a capture order. Any unit not on this list needs to be given a new order.
-		List<Actor> activeCapturers = new List<Actor>();
+		readonly List<Actor> activeCapturers = [];
+
+		readonly ActorIndex.OwnerAndNamesAndTrait<CapturesInfo> capturingActors;
 
 		public CaptureManagerBotModule(Actor self, CaptureManagerBotModuleInfo info)
 			: base(info)
@@ -64,14 +66,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (world.Type == WorldType.Editor)
 				return;
 
-			isEnemyUnit = unit =>
-				player.RelationshipWith(unit.Owner) == PlayerRelationship.Enemy
-					&& !unit.Info.HasTraitInfo<HuskInfo>()
-					&& unit.Info.HasTraitInfo<ITargetableInfo>();
-
 			unitCannotBeOrderedOrIsIdle = a => a.Owner != player || a.IsDead || !a.IsInWorld || a.IsIdle;
 
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
+
+			capturingActors = new ActorIndex.OwnerAndNamesAndTrait<CapturesInfo>(world, Info.CapturingActorTypes, player);
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -87,16 +86,6 @@ namespace OpenRA.Mods.Common.Traits
 				minCaptureDelayTicks = Info.MinimumCaptureDelay;
 				QueueCaptureOrders(bot);
 			}
-		}
-
-		internal Actor FindClosestEnemy(WPos pos)
-		{
-			return world.Actors.Where(isEnemyUnit).ClosestTo(pos);
-		}
-
-		internal Actor FindClosestEnemy(WPos pos, WDist radius)
-		{
-			return world.FindActorsInCircle(pos, radius).Where(isEnemyUnit).ClosestTo(pos);
 		}
 
 		IEnumerable<Actor> GetVisibleActorsBelongingToPlayer(Player owner)
@@ -115,16 +104,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void QueueCaptureOrders(IBot bot)
 		{
-			if (!Info.CapturingActorTypes.Any() || player.WinState != WinState.Undefined)
+			if (Info.CapturingActorTypes.Count == 0 || player.WinState != WinState.Undefined)
 				return;
 
 			activeCapturers.RemoveAll(unitCannotBeOrderedOrIsIdle);
 
-			var newUnits = world.ActorsHavingTrait<IPositionable>()
-				.Where(a => a.Owner == player && !activeCapturers.Contains(a));
-
-			var capturers = newUnits
-				.Where(a => a.IsIdle && Info.CapturingActorTypes.Contains(a.Info.Name) && a.Info.HasTraitInfo<CapturesInfo>())
+			var capturers = capturingActors.Actors
+				.Where(a => a.IsIdle && a.Info.HasTraitInfo<IPositionableInfo>() && !activeCapturers.Contains(a))
 				.Select(a => new TraitPair<CaptureManager>(a, a.TraitOrDefault<CaptureManager>()))
 				.Where(tp => tp.Trait != null)
 				.ToArray();
@@ -146,20 +132,21 @@ namespace OpenRA.Mods.Common.Traits
 					if (captureManager == null)
 						return false;
 
-					return capturers.Any(tp => captureManager.CanBeTargetedBy(target, tp.Actor, tp.Trait));
+					return capturers.Any(tp => tp.Trait.CanTarget(captureManager));
 				})
 				.OrderByDescending(target => target.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
-			if (Info.CapturableActorTypes.Any())
+			if (Info.CapturableActorTypes.Count > 0)
 				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Info.Name.ToLowerInvariant()));
 
-			if (!capturableTargetOptions.Any())
+			var capturableTargetOptionsList = capturableTargetOptions.ToList();
+			if (capturableTargetOptionsList.Count == 0)
 				return;
 
 			foreach (var capturer in capturers)
 			{
-				var targetActor = capturableTargetOptions.MinByOrDefault(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
+				var targetActor = capturableTargetOptionsList.ClosestToWithPathFrom(capturer.Actor);
 				if (targetActor == null)
 					continue;
 
@@ -167,6 +154,11 @@ namespace OpenRA.Mods.Common.Traits
 				AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", player.ClientIndex, capturer.Actor, targetActor);
 				activeCapturers.Add(capturer.Actor);
 			}
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			capturingActors.Dispose();
 		}
 	}
 }

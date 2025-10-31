@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
-using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Platforms.Default
@@ -25,12 +24,13 @@ namespace OpenRA.Platforms.Default
 	sealed class ThreadedGraphicsContext : IGraphicsContext
 	{
 		// PERF: Maintain several object pools to reduce allocations.
-		readonly Stack<Vertex[]> verticesPool = new Stack<Vertex[]>();
-		readonly Stack<Message> messagePool = new Stack<Message>();
-		readonly Queue<Message> messages = new Queue<Message>();
+		readonly Dictionary<Type, object> vertexBufferPools = [];
+		readonly Stack<Message> messagePool = [];
+		readonly Queue<Message> messages = [];
 
-		public readonly int BatchSize;
-		readonly object syncObject = new object();
+		public readonly int VertexBatchSize;
+		public readonly int IndexBatchSize;
+		readonly object syncObject = new();
 		readonly Thread renderThread;
 		volatile ExceptionDispatchInfo messageException;
 
@@ -45,15 +45,19 @@ namespace OpenRA.Platforms.Default
 		Func<ITexture> getCreateTexture;
 		Func<object, IFrameBuffer> getCreateFrameBuffer;
 		Func<object, IShader> getCreateShader;
-		Func<object, IVertexBuffer<Vertex>> getCreateVertexBuffer;
+		Func<object, object> getCreateEmptyVertexBuffer;
+		Func<object, object> getCreateVertexBuffer;
+		Func<object, IIndexBuffer> getCreateIndexBuffer;
 		Action<object> doDrawPrimitives;
+		Action<object> doDrawElements;
 		Action<object> doEnableScissor;
 		Action<object> doSetBlendMode;
 		Action<object> doSetVSync;
 
-		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int batchSize)
+		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int vertexBatchSize, int indexBatchSize)
 		{
-			BatchSize = batchSize;
+			VertexBatchSize = vertexBatchSize;
+			IndexBatchSize = indexBatchSize;
 			renderThread = new Thread(RenderThread)
 			{
 				Name = "ThreadedGraphicsContext RenderThread",
@@ -78,36 +82,63 @@ namespace OpenRA.Platforms.Default
 					context.InitializeOpenGL();
 
 					doClear = () => { context.Clear(); return null; };
-					doClearDepthBuffer = () => context.ClearDepthBuffer();
-					doDisableDepthBuffer = () => context.DisableDepthBuffer();
-					doEnableDepthBuffer = () => context.EnableDepthBuffer();
-					doDisableScissor = () => context.DisableScissor();
-					doPresent = () => context.Present();
+					doClearDepthBuffer = context.ClearDepthBuffer;
+					doDisableDepthBuffer = context.DisableDepthBuffer;
+					doEnableDepthBuffer = context.EnableDepthBuffer;
+					doDisableScissor = context.DisableScissor;
+					doPresent = context.Present;
 					getGLVersion = () => context.GLVersion;
 					getCreateTexture = () => new ThreadedTexture(this, (ITextureInternal)context.CreateTexture());
 					getCreateFrameBuffer =
 						tuple =>
 						{
-							var t = (ValueTuple<Size, Color>)tuple;
+							var t = ((Size, Color))tuple;
 							return new ThreadedFrameBuffer(this,
 								context.CreateFrameBuffer(t.Item1, (ITextureInternal)CreateTexture(), t.Item2));
 						};
-					getCreateShader = name => new ThreadedShader(this, context.CreateShader((string)name));
-					getCreateVertexBuffer = length => new ThreadedVertexBuffer(this, context.CreateVertexBuffer((int)length));
+					getCreateShader = bindings => new ThreadedShader(this, context.CreateShader((IShaderBindings)bindings));
+					getCreateEmptyVertexBuffer =
+						tuple =>
+						{
+							(object t, var type) = ((int, Type))tuple;
+							var vertexBuffer = context.GetType()
+								.GetMethod(nameof(CreateEmptyVertexBuffer))
+								.MakeGenericMethod(type)
+								.Invoke(context, [t]);
+
+							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
+						};
+					getCreateVertexBuffer =
+						tuple =>
+						{
+							var (array, dynamic, type) = ((object, bool, Type))tuple;
+							var vertexBuffer = context.GetType()
+								.GetMethod(nameof(CreateVertexBuffer))
+								.MakeGenericMethod(type)
+								.Invoke(context, [array, dynamic]);
+							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
+						};
+					getCreateIndexBuffer = indices => new ThreadedIndexBuffer(this, context.CreateIndexBuffer((uint[])indices));
 					doDrawPrimitives =
-						 tuple =>
-						 {
-							 var t = (ValueTuple<PrimitiveType, int, int>)tuple;
-							 context.DrawPrimitives(t.Item1, t.Item2, t.Item3);
-						 };
+						tuple =>
+						{
+							var t = ((PrimitiveType, int, int))tuple;
+							context.DrawPrimitives(t.Item1, t.Item2, t.Item3);
+						};
+					doDrawElements =
+						tuple =>
+						{
+							var t = ((int, int))tuple;
+							context.DrawElements(t.Item1, t.Item2);
+						};
 					doEnableScissor =
 						tuple =>
 						{
-							var t = (ValueTuple<int, int, int, int>)tuple;
+							var t = ((int, int, int, int))tuple;
 							context.EnableScissor(t.Item1, t.Item2, t.Item3, t.Item4);
 						};
-					doSetBlendMode = mode => { context.SetBlendMode((BlendMode)mode); };
-					doSetVSync = enabled => { context.SetVSyncEnabled((bool)enabled); };
+					doSetBlendMode = mode => context.SetBlendMode((BlendMode)mode);
+					doSetVSync = enabled => context.SetVSyncEnabled((bool)enabled);
 
 					Monitor.Pulse(syncObject);
 				}
@@ -139,30 +170,41 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		internal Vertex[] GetVertices(int size)
+		internal T[] GetVertices<T>(int size)
 		{
-			lock (verticesPool)
-				if (size <= BatchSize && verticesPool.Count > 0)
-					return verticesPool.Pop();
+			lock (vertexBufferPools)
+			{
+				Stack<T[]> pool;
+				if (!vertexBufferPools.TryGetValue(typeof(T), out var poolObject))
+				{
+					pool = new Stack<T[]>();
+					vertexBufferPools.Add(typeof(T), pool);
+				}
+				else
+					pool = (Stack<T[]>)poolObject;
 
-			return new Vertex[size < BatchSize ? BatchSize : size];
+				if (size <= VertexBatchSize && pool.Count > 0)
+					return pool.Pop();
+			}
+
+			return new T[size < VertexBatchSize ? VertexBatchSize : size];
 		}
 
-		internal void ReturnVertices(Vertex[] vertices)
+		internal void ReturnVertices<T>(T[] vertices)
 		{
-			if (vertices.Length == BatchSize)
-				lock (verticesPool)
-					verticesPool.Push(vertices);
+			if (vertices.Length == VertexBatchSize)
+				lock (vertexBufferPools)
+					((Stack<T[]>)vertexBufferPools[typeof(T)]).Push(vertices);
 		}
 
-		class Message
+		sealed class Message
 		{
 			public Message(ThreadedGraphicsContext device)
 			{
 				this.device = device;
 			}
 
-			readonly AutoResetEvent completed = new AutoResetEvent(false);
+			readonly AutoResetEvent completed = new(false);
 			readonly ThreadedGraphicsContext device;
 			volatile Action action;
 			volatile Action<object> actionWithParam;
@@ -389,9 +431,9 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateFrameBuffer, (s, clearColor));
 		}
 
-		public IShader CreateShader(string name)
+		public IShader CreateShader(IShaderBindings bindings)
 		{
-			return Send(getCreateShader, name);
+			return Send(getCreateShader, bindings);
 		}
 
 		public ITexture CreateTexture()
@@ -399,9 +441,24 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateTexture);
 		}
 
-		public IVertexBuffer<Vertex> CreateVertexBuffer(int length)
+		public IVertexBuffer<T> CreateEmptyVertexBuffer<T>(int size) where T : struct
 		{
-			return Send(getCreateVertexBuffer, length);
+			return (IVertexBuffer<T>)Send(getCreateEmptyVertexBuffer, (size, typeof(T)));
+		}
+
+		public IVertexBuffer<T> CreateVertexBuffer<T>(T[] data, bool dynamic = true) where T : struct
+		{
+			return (IVertexBuffer<T>)Send(getCreateVertexBuffer, ((object)data, dynamic, typeof(T)));
+		}
+
+		public IIndexBuffer CreateIndexBuffer(uint[] indices)
+		{
+			return Send(getCreateIndexBuffer, indices);
+		}
+
+		public T[] CreateVertices<T>(int size) where T : struct
+		{
+			return GetVertices<T>(size);
 		}
 
 		public void DisableDepthBuffer()
@@ -417,6 +474,11 @@ namespace OpenRA.Platforms.Default
 		public void DrawPrimitives(PrimitiveType type, int firstVertex, int numVertices)
 		{
 			Post(doDrawPrimitives, (type, firstVertex, numVertices));
+		}
+
+		public void DrawElements(int numIndices, int offset)
+		{
+			Post(doDrawElements, (numIndices, offset));
 		}
 
 		public void EnableDepthBuffer()
@@ -445,7 +507,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedFrameBuffer : IFrameBuffer
+	sealed class ThreadedFrameBuffer : IFrameBuffer
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Func<ITexture> getTexture;
@@ -495,7 +557,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedVertexBuffer : IVertexBuffer<Vertex>
+	sealed class ThreadedVertexBuffer<T> : IVertexBuffer<T> where T : struct
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Action bind;
@@ -504,12 +566,24 @@ namespace OpenRA.Platforms.Default
 		readonly Func<object, object> setData3;
 		readonly Action dispose;
 
-		public ThreadedVertexBuffer(ThreadedGraphicsContext device, IVertexBuffer<Vertex> vertexBuffer)
+		public ThreadedVertexBuffer(ThreadedGraphicsContext device, IVertexBuffer<T> vertexBuffer)
 		{
 			this.device = device;
 			bind = vertexBuffer.Bind;
-			setData1 = tuple => { var t = (ValueTuple<Vertex[], int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2); device.ReturnVertices(t.Item1); };
-			setData2 = tuple => { var t = (ValueTuple<Vertex[], int, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3, t.Item4); device.ReturnVertices(t.Item1); };
+			setData1 = tuple =>
+			{
+				var t = ((T[], int))tuple;
+				vertexBuffer.SetData(t.Item1, t.Item2);
+				device.ReturnVertices(t.Item1);
+			};
+
+			setData2 = tuple =>
+			{
+				var t = ((T[], int, int, int))tuple;
+				vertexBuffer.SetData(t.Item1, t.Item2, t.Item3, t.Item4);
+				device.ReturnVertices(t.Item1);
+			};
+
 			setData3 = tuple => { setData2(tuple); return null; };
 			dispose = vertexBuffer.Dispose;
 		}
@@ -519,19 +593,29 @@ namespace OpenRA.Platforms.Default
 			device.Post(bind);
 		}
 
-		public void SetData(Vertex[] vertices, int length)
+		public void SetData(T[] vertices, int length)
 		{
-			var buffer = device.GetVertices(length);
+			var buffer = device.GetVertices<T>(length);
 			Array.Copy(vertices, buffer, length);
 			device.Post(setData1, (buffer, length));
 		}
 
-		public void SetData(Vertex[] vertices, int offset, int start, int length)
+		/// <summary>
+		/// PERF: The vertices array is passed without copying to the render thread. Upon return `vertices` may reference another
+		/// array object of at least the same size - containing random values.
+		/// </summary>
+		public void SetData(ref T[] vertices, int length)
 		{
-			if (length <= device.BatchSize)
+			device.Post(setData1, (vertices, length));
+			vertices = device.GetVertices<T>(vertices.Length);
+		}
+
+		public void SetData(T[] vertices, int offset, int start, int length)
+		{
+			if (length <= device.VertexBatchSize)
 			{
 				// If we are able to use a buffer without allocation, post a message to avoid blocking.
-				var buffer = device.GetVertices(length);
+				var buffer = device.GetVertices<T>(length);
 				Array.Copy(vertices, offset, buffer, 0, length);
 				device.Post(setData2, (buffer, 0, start, length));
 			}
@@ -548,40 +632,63 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedTexture : ITextureInternal
+	sealed class ThreadedIndexBuffer : IIndexBuffer
 	{
 		readonly ThreadedGraphicsContext device;
-		readonly uint id;
+		readonly Action bind;
+		readonly Action dispose;
+
+		public ThreadedIndexBuffer(ThreadedGraphicsContext device, IIndexBuffer indexBuffer)
+		{
+			this.device = device;
+			bind = indexBuffer.Bind;
+			dispose = indexBuffer.Dispose;
+		}
+
+		public void Bind()
+		{
+			device.Post(bind);
+		}
+
+		public void Dispose()
+		{
+			device.Post(dispose);
+		}
+	}
+
+	sealed class ThreadedTexture : ITextureInternal
+	{
+		readonly ThreadedGraphicsContext device;
 		readonly Func<object> getScaleFilter;
 		readonly Action<object> setScaleFilter;
 		readonly Func<object> getSize;
 		readonly Action<object> setEmpty;
 		readonly Func<byte[]> getData;
-		readonly Func<object, object> setData1;
-		readonly Action<object> setData2;
-		readonly Func<object, object> setData3;
-		readonly Action<object> setData4;
-		readonly Func<object, object> setData5;
+		readonly Action<object> setData1;
+		readonly Func<object, object> setData2;
+		readonly Action<object> setData3;
+		readonly Func<object, object> setData4;
+		readonly Action<object> setData5;
 		readonly Action dispose;
 
 		public ThreadedTexture(ThreadedGraphicsContext device, ITextureInternal texture)
 		{
 			this.device = device;
-			id = texture.ID;
+			ID = texture.ID;
 			getScaleFilter = () => texture.ScaleFilter;
 			setScaleFilter = value => texture.ScaleFilter = (TextureScaleFilter)value;
 			getSize = () => texture.Size;
-			setEmpty = tuple => { var t = (ValueTuple<int, int>)tuple; texture.SetEmpty(t.Item1, t.Item2); };
-			getData = () => texture.GetData();
-			setData1 = colors => { texture.SetData((uint[,])colors); return null; };
-			setData2 = tuple => { var t = (ValueTuple<byte[], int, int>)tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
-			setData3 = tuple => { setData2(tuple); return null; };
-			setData4 = tuple => { var t = (ValueTuple<float[], int, int>)tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };
-			setData5 = tuple => { setData4(tuple); return null; };
+			setEmpty = tuple => { var t = ((int, int))tuple; texture.SetEmpty(t.Item1, t.Item2); };
+			getData = texture.GetData;
+			setData1 = tuple => { var t = ((byte[], int, int))tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
+			setData2 = tuple => { setData1(tuple); return null; };
+			setData3 = tuple => { var t = ((float[], int, int))tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };
+			setData4 = tuple => { setData3(tuple); return null; };
+			setData5 = rect => texture.SetDataFromReadBuffer((Rectangle)rect);
 			dispose = texture.Dispose;
 		}
 
-		public uint ID => id;
+		public uint ID { get; }
 
 		public TextureScaleFilter ScaleFilter
 		{
@@ -602,12 +709,6 @@ namespace OpenRA.Platforms.Default
 			return device.Send(getData);
 		}
 
-		public void SetData(uint[,] colors)
-		{
-			// We can't return until we are finished with the data, so we must Send here.
-			device.Send(setData1, colors);
-		}
-
 		public void SetData(byte[] colors, int width, int height)
 		{
 			// Objects 85000 bytes or more will be directly allocated in the Large Object Heap (LOH).
@@ -617,13 +718,13 @@ namespace OpenRA.Platforms.Default
 				// If we are able to create a small array the GC can collect easily, post a message to avoid blocking.
 				var temp = new byte[colors.Length];
 				Array.Copy(colors, temp, temp.Length);
-				device.Post(setData2, (temp, width, height));
+				device.Post(setData1, (temp, width, height));
 			}
 			else
 			{
 				// If the length is large and would result in an array on the Large Object Heap (LOH),
 				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
-				device.Send(setData3, (colors, width, height));
+				device.Send(setData2, (colors, width, height));
 			}
 		}
 
@@ -636,14 +737,19 @@ namespace OpenRA.Platforms.Default
 				// If we are able to create a small array the GC can collect easily, post a message to avoid blocking.
 				var temp = new float[data.Length];
 				Array.Copy(data, temp, temp.Length);
-				device.Post(setData4, (temp, width, height));
+				device.Post(setData3, (temp, width, height));
 			}
 			else
 			{
 				// If the length is large and would result in an array on the Large Object Heap (LOH),
 				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
-				device.Send(setData5, (data, width, height));
+				device.Send(setData4, (data, width, height));
 			}
+		}
+
+		public void SetDataFromReadBuffer(Rectangle rect)
+		{
+			device.Post(setData5, rect);
 		}
 
 		public void Dispose()
@@ -652,7 +758,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedShader : IShader
+	sealed class ThreadedShader : IShader
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Action prepareRender;
@@ -663,18 +769,25 @@ namespace OpenRA.Platforms.Default
 		readonly Action<object> setVec2;
 		readonly Action<object> setVec3;
 		readonly Action<object> setVec4;
+		readonly Action bind;
 
 		public ThreadedShader(ThreadedGraphicsContext device, IShader shader)
 		{
 			this.device = device;
+			bind = shader.Bind;
 			prepareRender = shader.PrepareRender;
-			setBool = tuple => { var t = (ValueTuple<string, bool>)tuple; shader.SetBool(t.Item1, t.Item2); };
-			setMatrix = tuple => { var t = (ValueTuple<string, float[]>)tuple; shader.SetMatrix(t.Item1, t.Item2); };
-			setTexture = tuple => { var t = (ValueTuple<string, ITexture>)tuple; shader.SetTexture(t.Item1, t.Item2); };
-			setVec1 = tuple => { var t = (ValueTuple<string, float>)tuple; shader.SetVec(t.Item1, t.Item2); };
-			setVec2 = tuple => { var t = (ValueTuple<string, float[], int>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
-			setVec3 = tuple => { var t = (ValueTuple<string, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
-			setVec4 = tuple => { var t = (ValueTuple<string, float, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
+			setBool = tuple => { var t = ((string, bool))tuple; shader.SetBool(t.Item1, t.Item2); };
+			setMatrix = tuple => { var t = ((string, float[]))tuple; shader.SetMatrix(t.Item1, t.Item2); };
+			setTexture = tuple => { var t = ((string, ITexture))tuple; shader.SetTexture(t.Item1, t.Item2); };
+			setVec1 = tuple => { var t = ((string, float))tuple; shader.SetVec(t.Item1, t.Item2); };
+			setVec2 = tuple => { var t = ((string, float[], int))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
+			setVec3 = tuple => { var t = ((string, float, float))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
+			setVec4 = tuple => { var t = ((string, float, float, float))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
+		}
+
+		public void Bind()
+		{
+			device.Post(bind);
 		}
 
 		public void PrepareRender()

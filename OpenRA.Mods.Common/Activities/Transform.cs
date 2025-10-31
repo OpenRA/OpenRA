@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,14 +22,15 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		public readonly string ToActor;
 		public CVec Offset = CVec.Zero;
-		public WAngle Facing = new WAngle(384);
-		public string[] Sounds = { };
+		public WAngle Facing = new(384);
+		public string[] Sounds = [];
 		public string Notification = null;
+		public string TextNotification = null;
 		public int ForceHealthPercentage = 0;
 		public bool SkipMakeAnims = false;
 		public string Faction = null;
 
-		public Transform(Actor self, string toActor)
+		public Transform(string toActor)
 		{
 			ToActor = toActor;
 		}
@@ -64,15 +65,15 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Wait forever
 				QueueChild(new WaitFor(() => false));
-				makeAnimation.Reverse(self, () => DoTransform(self));
+				makeAnimation.Reverse(self, () => DoTransform(self, transforms, makeAnimation));
 				return false;
 			}
 
-			DoTransform(self);
+			DoTransform(self, transforms, null);
 			return true;
 		}
 
-		void DoTransform(Actor self)
+		void DoTransform(Actor self, Transforms transforms, WithMakeAnimation makeAnimation)
 		{
 			// This activity may be buried as a child within one or more parents
 			// We need to consider the top-level activities when transferring orders to the new actor!
@@ -83,17 +84,32 @@ namespace OpenRA.Mods.Common.Activities
 				if (self.IsDead || self.WillDispose)
 					return;
 
+				// Prevent deployment in bogus locations
+				if (transforms != null && !transforms.CanDeploy())
+				{
+					if (!SkipMakeAnims && makeAnimation != null)
+						makeAnimation.Forward(self, () => { IsInterruptible = true; Cancel(self, true); });
+					else
+					{
+						IsInterruptible = true;
+						Cancel(self, true);
+					}
+
+					return;
+				}
+
 				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
 					nt.OnTransform(self);
 
 				var selected = w.Selection.Contains(self);
-				var controlgroup = w.Selection.GetControlGroupForActor(self);
+				var controlgroup = w.ControlGroups.GetControlGroupForActor(self);
 
 				self.Dispose();
 				foreach (var s in Sounds)
 					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s, self.CenterPosition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Notification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(self.Owner, TextNotification);
 
 				var init = new TypeDictionary
 				{
@@ -140,12 +156,12 @@ namespace OpenRA.Mods.Common.Activities
 					w.Selection.Add(a);
 
 				if (controlgroup.HasValue)
-					w.Selection.AddToControlGroup(a, controlgroup.Value);
+					w.ControlGroups.AddToControlGroup(a, controlgroup.Value);
 			});
 		}
 	}
 
-	class IssueOrderAfterTransform : Activity
+	sealed class IssueOrderAfterTransform : Activity
 	{
 		readonly string orderString;
 		readonly Target target;

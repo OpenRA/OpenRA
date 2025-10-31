@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,10 @@ namespace OpenRA
 	public static class CryptoUtil
 	{
 		// Fixed byte pattern for the OID header
-		static readonly byte[] OIDHeader = { 0x30, 0xD, 0x6, 0x9, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0xD, 0x1, 0x1, 0x1, 0x5, 0x0 };
+		static readonly byte[] OIDHeader = [0x30, 0xD, 0x6, 0x9, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0xD, 0x1, 0x1, 0x1, 0x5, 0x0];
+
+		static readonly char[] HexUpperAlphabet = "0123456789ABCDEF".ToArray();
+		static readonly char[] HexLowerAlphabet = "0123456789abcdef".ToArray();
 
 		public static string PublicKeyFingerprint(RSAParameters parameters)
 		{
@@ -53,33 +56,33 @@ namespace OpenRA
 				using (var s = new MemoryStream(data))
 				{
 					// SEQUENCE
-					s.ReadByte();
+					s.ReadUInt8();
 					ReadTLVLength(s);
 
 					// SEQUENCE -> fixed header junk
-					s.ReadByte();
+					s.ReadUInt8();
 					var headerLength = ReadTLVLength(s);
 					s.Position += headerLength;
 
 					// SEQUENCE -> BIT_STRING
-					s.ReadByte();
+					s.ReadUInt8();
 					ReadTLVLength(s);
-					s.ReadByte();
+					s.ReadUInt8();
 
 					// SEQUENCE -> BIT_STRING -> SEQUENCE
-					s.ReadByte();
+					s.ReadUInt8();
 					ReadTLVLength(s);
 
 					// SEQUENCE -> BIT_STRING -> SEQUENCE -> INTEGER (modulus)
-					s.ReadByte();
+					s.ReadUInt8();
 					var modulusLength = ReadTLVLength(s);
-					s.ReadByte();
+					s.ReadUInt8();
 					var modulus = s.ReadBytes(modulusLength - 1);
 
 					// SEQUENCE -> BIT_STRING -> SEQUENCE -> INTEGER (exponent)
-					s.ReadByte();
+					s.ReadUInt8();
 					var exponentLength = ReadTLVLength(s);
-					s.ReadByte();
+					s.ReadUInt8();
 					var exponent = s.ReadBytes(exponentLength - 1);
 
 					return new RSAParameters
@@ -158,13 +161,13 @@ namespace OpenRA
 
 		static int ReadTLVLength(Stream s)
 		{
-			var length = s.ReadByte();
+			var length = s.ReadUInt8();
 			if (length < 0x80)
 				return length;
 
-			var data = new byte[4];
-			s.ReadBytes(data, 0, Math.Min(length & 0x7F, 4));
-			return BitConverter.ToInt32(data.ToArray(), 0);
+			Span<byte> data = stackalloc byte[4];
+			s.ReadBytes(data[..Math.Min(length & 0x7F, 4)]);
+			return BitConverter.ToInt32(data);
 		}
 
 		static int TripletFullLength(int dataLength)
@@ -187,8 +190,10 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to decrypt string with exception: {0}", e);
-				Console.WriteLine("String decryption failed: {0}", e);
+				Log.Write("debug", "Failed to decrypt string with exception:");
+				Log.Write("debug", e);
+				Console.WriteLine("String decryption failed:");
+				Console.WriteLine(e);
 				return null;
 			}
 		}
@@ -205,14 +210,15 @@ namespace OpenRA
 				using (var rsa = new RSACryptoServiceProvider())
 				{
 					rsa.ImportParameters(parameters);
-					using (var csp = SHA1.Create())
-						return Convert.ToBase64String(rsa.SignHash(csp.ComputeHash(data), CryptoConfig.MapNameToOID("SHA1")));
+					return Convert.ToBase64String(rsa.SignHash(SHA1.HashData(data), CryptoConfig.MapNameToOID("SHA1")));
 				}
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to sign string with exception: {0}", e);
-				Console.WriteLine("String signing failed: {0}", e);
+				Log.Write("debug", "Failed to sign string with exception");
+				Log.Write("debug", e);
+				Console.WriteLine("String signing failed:");
+				Console.WriteLine(e);
 				return null;
 			}
 		}
@@ -229,33 +235,57 @@ namespace OpenRA
 				using (var rsa = new RSACryptoServiceProvider())
 				{
 					rsa.ImportParameters(parameters);
-					using (var csp = SHA1.Create())
-						return rsa.VerifyHash(csp.ComputeHash(data), CryptoConfig.MapNameToOID("SHA1"), Convert.FromBase64String(signature));
+					return rsa.VerifyHash(SHA1.HashData(data), CryptoConfig.MapNameToOID("SHA1"), Convert.FromBase64String(signature));
 				}
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to verify signature with exception: {0}", e);
-				Console.WriteLine("Signature validation failed: {0}", e);
+				Log.Write("debug", "Failed to verify signature with exception:");
+				Log.Write("debug", e);
+				Console.WriteLine("Signature validation failed:");
+				Console.WriteLine(e);
 				return false;
 			}
 		}
 
 		public static string SHA1Hash(Stream data)
 		{
-			using (var csp = SHA1.Create())
-				return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+			return ToHex(SHA1.HashData(data), true);
 		}
 
 		public static string SHA1Hash(byte[] data)
 		{
-			using (var csp = SHA1.Create())
-				return new string(csp.ComputeHash(data).SelectMany(a => a.ToString("x2")).ToArray());
+			return ToHex(SHA1.HashData(data), true);
 		}
 
 		public static string SHA1Hash(string data)
 		{
 			return SHA1Hash(Encoding.UTF8.GetBytes(data));
+		}
+
+		public static string ToHex(ReadOnlySpan<byte> source, bool lowerCase = false)
+		{
+			if (source.Length == 0)
+				return string.Empty;
+
+			// excessively avoid stack overflow if source is too large (considering that we're allocating a new string)
+			var buffer = source.Length <= 256 ? stackalloc char[source.Length * 2] : new char[source.Length * 2];
+			return ToHexInternal(source, buffer, lowerCase);
+		}
+
+		static string ToHexInternal(ReadOnlySpan<byte> source, Span<char> buffer, bool lowerCase)
+		{
+			var sourceIndex = 0;
+			var alphabet = lowerCase ? HexLowerAlphabet : HexUpperAlphabet;
+
+			for (var i = 0; i < buffer.Length; i += 2)
+			{
+				var b = source[sourceIndex++];
+				buffer[i] = alphabet[b >> 4];
+				buffer[i + 1] = alphabet[b & 0xF];
+			}
+
+			return new string(buffer);
 		}
 	}
 }

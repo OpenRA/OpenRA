@@ -1,3 +1,4 @@
+
 ^Chrome:
 	Image: chrome.png
 	Image2x: chrome-2x.png
@@ -205,15 +206,32 @@ scrollpanel-button-gdi-disabled:
 scrollpanel-button-gdi-pressed:
 	Inherits: button-gdi-pressed
 
+scrollitem:
+
 scrollitem-hover:
 	Inherits: button
 
-scrollitem-selected:
+scrollitem-pressed:
+	Inherits: button-hover
+
+scrollitem-highlighted:
 	Inherits: button-pressed
 
-scrollitem-nohover:
-	Inherits: ^Chrome
+scrollitem-highlighted-hover:
+	Inherits: button-highlighted-pressed
 
+scrollitem-highlighted-pressed:
+	Inherits: button-highlighted-pressed
+
+scrollitem-nohover:
+
+scrollitem-nohover-highlighted:
+
+scrollheader:
+	Inherits: button
+
+scrollheader-highlighted:
+	Inherits: button
 
 #
 # Slider
@@ -263,6 +281,22 @@ checkbox-highlighted-disabled:
 
 checkbox-highlighted-pressed:
 	Inherits: button-highlighted-pressed
+
+checkbox-toggle:
+
+checkbox-toggle-hover:
+	Inherits: checkbox
+
+checkbox-toggle-pressed:
+	Inherits: checkbox-pressed
+
+checkbox-toggle-highlighted:
+
+checkbox-toggle-highlighted-hover:
+	Inherits: checkbox-highlighted
+
+checkbox-toggle-highlighted-pressed:
+	Inherits: checkbox-highlighted-pressed
 
 #
 # Panels
@@ -375,6 +409,7 @@ lobby-bits:
 		admin-anonymous: 802, 51, 16, 16
 		player-registered: 785, 51, 16, 16
 		player-anonymous: 819, 51, 16, 16
+		bot: 938, 51, 16, 16
 
 reload-icon:
 	Inherits: ^Chrome
@@ -393,13 +428,40 @@ reload-icon:
 		disabled-10: 955, 34, 16, 16
 		disabled-11: 972, 34, 16, 16
 
-checkbox-bits:
+checkmark-tick:
 	Inherits: ^Chrome
 	Regions:
 		checked: 972, 17, 16, 16
+		checked-pressed: 989, 17, 16, 16
 		checked-disabled: 989, 17, 16, 16
-		crossed: 972, 0, 16, 16
-		crossed-disabled: 989, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 989, 17, 16, 16
+
+checkmark-tick-highlighted:
+	Inherits: checkmark-tick
+
+checkmark-cross:
+	Inherits: ^Chrome
+	Regions:
+		checked: 972, 0, 16, 16
+		checked-pressed: 989, 0, 16, 16
+		checked-disabled: 989, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 989, 0, 16, 16
+
+checkmark-cross-highlighted:
+	Inherits: checkmark-cross
+
+checkmark-mute:
+	Inherits: ^Chrome
+	Regions:
+		unchecked: 989, 34, 16, 16
+		unchecked-pressed: 1006, 34, 16, 16
+		checked: 1006, 34, 16, 16
+		checked-pressed: 989, 34, 16, 16
+
+checkmark-mute-highlighted:
+	Inherits: checkmark-mute
 
 flags:
 	Inherits: ^Chrome
@@ -448,6 +510,9 @@ dropdown-separators:
 		separator-pressed: 129, 34, 1, 19
 		separator-disabled: 161, 34, 1, 19
 
+separator:
+	Inherits: button
+
 #
 # Common chrome
 # ===
@@ -481,9 +546,9 @@ production-icons:
 		building: 768, 68, 16, 16
 		building-disabled: 768, 85, 16, 16
 		building-alert: 768, 102, 16, 16
-		defence: 785, 68, 16, 16
-		defence-disabled: 785, 85, 16, 16
-		defence-alert: 785, 102, 16, 16
+		support: 785, 68, 16, 16
+		support-disabled: 785, 85, 16, 16
+		support-alert: 785, 102, 16, 16
 		infantry: 802, 68, 16, 16
 		infantry-disabled: 802, 85, 16, 16
 		infantry-alert: 802, 102, 16, 16
@@ -530,44 +595,52 @@ stance-icons:
 	Regions:
 		attack-anything: 768, 119, 16, 16
 		attack-anything-disabled: 768, 136, 16, 16
-		attack-anything-active: 768, 153, 16, 16
 		defend: 785, 119, 16, 16
 		defend-disabled: 785, 136, 16, 16
-		defend-active: 785, 153, 16, 16
 		return-fire: 802, 119, 16, 16
 		return-fire-disabled: 802, 136, 16, 16
-		return-fire-active: 802, 153, 16, 16
 		hold-fire: 819, 119, 16, 16
 		hold-fire-disabled: 819, 136, 16, 16
-		hold-fire-active: 819, 153, 16, 16
+
+stance-icons-highlighted:
+	Inherits: stance-icons
+	Regions:
+		attack-anything: 768, 153, 16, 16
+		defend: 785, 153, 16, 16
+		return-fire: 802, 153, 16, 16
+		hold-fire: 819, 153, 16, 16
 
 command-icons:
 	Inherits: ^Chrome
 	Regions:
 		attack-move: 768, 246, 24, 24
 		attack-move-disabled: 768, 271, 24, 24
-		attack-move-active: 768, 296, 24, 24
 		force-move: 793, 246, 24, 24
 		force-move-disabled: 793, 271, 24, 24
-		force-move-active: 793, 296, 24, 24
 		force-attack: 818, 246, 24, 24
 		force-attack-disabled: 818, 271, 24, 24
-		force-attack-active: 818, 296, 24, 24
 		guard: 843, 246, 24, 24
 		guard-disabled: 843, 271, 24, 24
-		guard-active: 843, 296, 24, 24
 		deploy: 868, 246, 24, 24
 		deploy-disabled: 868, 271, 24, 24
-		deploy-active: 868, 296, 24, 24
 		scatter: 893, 246, 24, 24
 		scatter-disabled: 893, 271, 24, 24
-		scatter-active: 893, 296, 24, 24
 		stop: 918, 246, 24, 24
 		stop-disabled: 918, 271, 24, 24
-		stop-active: 918, 296, 24, 24
 		queue-orders: 943, 246, 24, 24
 		queue-orders-disabled: 943, 271, 24, 24
-		queue-orders-active: 943, 296, 24, 24
+
+command-icons-highlighted:
+	Inherits: command-icons
+	Regions:
+		attack-move: 768, 296, 24, 24
+		force-move: 793, 296, 24, 24
+		force-attack: 818, 296, 24, 24
+		guard: 843, 296, 24, 24
+		deploy: 868, 296, 24, 24
+		scatter: 893, 296, 24, 24
+		stop: 918, 296, 24, 24
+		queue-orders: 943, 296, 24, 24
 
 #
 # NOD chrome
@@ -678,3 +751,19 @@ chrome-radar-gdi:
 	Inherits: ^Chrome
 	Regions:
 		logo: 644, 320, 132, 132
+
+editor:
+	Inherits: ^Chrome
+	Regions:
+		select: 802, 170, 16, 16
+		tiles: 768, 170, 16, 16
+		overlays: 785, 170, 16, 16
+		actors: 802, 68, 16, 16
+		tools: 904, 68, 16, 16
+		history: 904, 51, 16, 16
+		erase: 818, 170, 16, 16
+
+encyclopedia:
+	Image: encyclopedia/scanlines.png
+	Regions:
+		scanlines: 0, 0, 600, 320

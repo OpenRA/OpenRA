@@ -6,14 +6,8 @@
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 2000
+		Damage: 900
 		ValidTargets: AirborneActor
-		Versus:
-			None: 40
-			Wood: 10
-			Light: 60
-			Heavy: 10
-			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion_air
@@ -25,19 +19,11 @@ ZSU-23:
 	BurstDelays: 0
 	ReloadDelay: 6
 	Range: 10c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 1200
-		Versus:
-			None: 25
-			Wood: 75
-			Light: 75
-			Heavy: 100
-			Concrete: 50
 
 FLAK-23-AA:
 	Inherits: ^AACannon
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor, GroundActor, WaterActor
+		Damage: 1200
 
 FLAK-23-AG:
 	Inherits: ^AACannon
@@ -46,7 +32,14 @@ FLAK-23-AG:
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage
+		Damage: 2000
 		ValidTargets: AirborneActor, GroundActor, WaterActor
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
 	Warhead@2Eff: CreateEffect
 		Explosions: flak_explosion_ground
 		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
@@ -56,7 +49,7 @@ FLAK-23-AG:
 		InvalidTargets: Bridge
 
 ^HeavyMG:
-	ReloadDelay: 30
+	ReloadDelay: 35
 	Range: 6c0
 	Report: gun13.aud
 	ValidTargets: Ground, Water, GroundActor, WaterActor
@@ -217,6 +210,8 @@ Vulcan:
 
 ChainGun:
 	Inherits: ^HeavyMG
+	Burst: 2
+	BurstDelays: 0
 	ReloadDelay: 10
 	Range: 5c0
 	MinRange: 0c768
@@ -228,9 +223,11 @@ ChainGun:
 
 ChainGun.Yak:
 	Inherits: ^HeavyMG
+	Burst: 2
+	BurstDelays: 0
 	ReloadDelay: 3
 	Range: 5c0
-	MinRange: 3c0
+	MinRange: 2c512
 	Projectile: InstantHit
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
@@ -332,11 +329,4 @@ Colt45:
 	ReloadDelay: 7
 	Range: 7c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 5000
-
-Sniper:
-	Inherits: ^SnipeWeapon
-	ReloadDelay: 70
-	Range: 10c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 14000
+		Damage: 10000

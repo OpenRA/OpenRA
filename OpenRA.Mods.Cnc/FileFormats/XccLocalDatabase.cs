@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			using (var writer = new BinaryWriter(data))
 			{
 				writer.Write(Encoding.ASCII.GetBytes("XCC by Olaf van der Spek"));
-				writer.Write(new byte[] { 0x1A, 0x04, 0x17, 0x27, 0x10, 0x19, 0x80, 0x00 });
+				writer.Write([0x1A, 0x04, 0x17, 0x27, 0x10, 0x19, 0x80, 0x00]);
 
 				writer.Write(Entries.Sum(e => e.Length) + Entries.Length + 52); // Size
 				writer.Write(0); // Type

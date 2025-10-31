@@ -1,27 +1,39 @@
 Container@SCRIPT_ERROR_PANEL:
-	Height: PARENT_BOTTOM
-	Width: PARENT_RIGHT
+	Height: PARENT_HEIGHT
+	Width: PARENT_WIDTH
+	Logic: ScriptErrorLogic
 	Children:
 		Label@DESCA:
 			X: 15
 			Y: 16
-			Width: PARENT_RIGHT - 30
+			Width: PARENT_WIDTH - 30
 			Height: 20
 			Font: Bold
 			Align: Center
-			Text: The map script has encountered a fatal error
+			Text: label-script-error-panel-desc-a
 		Label@DESCB:
 			X: 15
 			Y: 46
-			Width: PARENT_RIGHT - 30
+			Width: PARENT_WIDTH - 30
 			Height: 20
 			Font: Regular
-			WordWrap: true
-			Text: The details of the error have been saved to lua.log in the logs directory.
+			Align: Center
+			Text: label-script-error-panel-desc-b
 		Label@DESCC:
 			X: 15
 			Y: 66
-			Width: PARENT_RIGHT - 30
+			Width: PARENT_WIDTH - 30
 			Height: 20
 			Font: Regular
-			Text: Please send this file to the map author so that they can fix this issue.
+			Align: Center
+			Text: label-script-error-panel-desc-c
+		ScrollPanel@SCRIPT_ERROR_MESSAGE_PANEL:
+			X: 20
+			Y: 96
+			Width: PARENT_WIDTH - 40
+			Height: 300
+			Children:
+				Label@SCRIPT_ERROR_MESSAGE:
+					X: 4
+					Y: 2
+					Width: PARENT_WIDTH - 32

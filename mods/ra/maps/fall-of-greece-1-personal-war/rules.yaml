@@ -1,35 +1,33 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, personal-war.lua
+		Scripts: campaign.lua, utils.lua, personal-war.lua
 	MissionData:
 		WinVideo: toofar.vqa
 		LossVideo: bmap.vqa
-		Briefing: With the fighting fast approaching Athens, Stavros has insisted that he be allowed to survey the damage in his own hometown in Greece.\n\nYou must escort Stavros through the town and to a nearby friendly outpost. Once you reach it, evacuate Stavros to safety.\n\nIf anything should happen, get Stavros to safety any way possible. He must be kept alive.
+		Briefing: With the fighting fast approaching Athens, Stavros insists on surveying the damage in his hometown in Greece.\n\nYou must escort Stavros through the town to a nearby friendly outpost. Once you reach it, evacuate him to safety.\n\nIf anything should happen, get Stavros to safety by any means necessary. He must be kept alive.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			normal: Normal
-			hard: Hard
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 INSERTIONDROP:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E7, GNRL
-	AlwaysVisible:
 
 INSERTIONDROPHARD:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E7.noautotarget, GNRL.noautotarget
-	AlwaysVisible:
 
 RIFLEDROP:
 	ParatroopersPower:
 		DisplayBeacon: False
 		DropItems: E1, E1, E1, E1, E1
-	AlwaysVisible:
 
 LST.Reinforcement:
 	Inherits: LST
@@ -44,7 +42,7 @@ GNRL:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Stavros
+		Name: actor-stavros-name
 	Armament:
 		Weapon: SilencedPPK
 	Passenger:
@@ -85,7 +83,7 @@ BADR.Bomber:
 	Aircraft:
 		Speed: 373
 	Tooltip:
-		Name: Strategic Bomber
+		Name: actor-strategic-bomber-name
 	RenderSprites:
 		Image: U2
 

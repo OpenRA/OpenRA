@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,13 +17,13 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	public class SoundOnDamageTransitionInfo : TraitInfo
 	{
 		[Desc("Play a random sound from this list when damaged.")]
-		public readonly string[] DamagedSounds = { };
+		public readonly string[] DamagedSounds = [];
 
 		[Desc("Play a random sound from this list when destroyed.")]
-		public readonly string[] DestroyedSounds = { };
+		public readonly string[] DestroyedSounds = [];
 
 		[Desc("DamageType(s) that trigger the sounds. Leave empty to always trigger a sound.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public override object Create(ActorInitializer init) { return new SoundOnDamageTransition(this); }
 	}

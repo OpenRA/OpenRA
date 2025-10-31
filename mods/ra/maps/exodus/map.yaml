@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -1382,4 +1382,6 @@ Actors:
 		Owner: Soviets
 		Location: 130,45
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, ra|rules/coop-missions-rules.yaml, rules.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

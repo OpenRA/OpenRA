@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	[Desc("Interacts with the TemporaryOwnerManager trait.")]
+	[Desc("Interacts with the `" + nameof(TemporaryOwnerManager) + "` trait.")]
 	public class ChangeOwnerWarhead : Warhead
 	{
 		[Desc("Duration of the owner change (in ticks). Set to 0 to make it permanent.")]
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{
 			var firedBy = args.SourceActor;
-			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :
+			var actors = target.Type == TargetType.Actor ? [target.Actor] :
 				firedBy.World.FindActorsInCircle(target.CenterPosition, Range);
 
 			foreach (var a in actors)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,9 +18,9 @@ using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
+	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNodeBuilder>)>;
 
-	class UpdateModCommand : IUtilityCommand
+	sealed class UpdateModCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--update-mod";
 
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
 
-			IEnumerable<UpdateRule> rules = null;
+			IReadOnlyCollection<UpdateRule> rules = null;
 			if (args.Length > 1)
 				rules = UpdatePath.FromSource(modData.ObjectCreator, args[1]);
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("   Individual Rules:");
 				foreach (var kv in ruleGroups)
 				{
-					if (!kv.Value.Any())
+					if (kv.Value.Count == 0)
 						continue;
 
 					Console.WriteLine("      " + kv.Key + ":");
@@ -71,9 +71,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var other = UpdatePath.KnownRules(modData.ObjectCreator)
-					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)));
+					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)))
+					.ToList();
 
-				if (other.Any())
+				if (other.Count != 0)
 				{
 					Console.WriteLine("      Other:");
 					foreach (var r in other)
@@ -111,9 +112,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				PrintSummary(rules, args.Contains("--detailed"));
 		}
 
-		public static void PrintSummary(IEnumerable<UpdateRule> rules, bool detailed)
+		public static void PrintSummary(IReadOnlyCollection<UpdateRule> rules, bool detailed)
 		{
-			var count = rules.Count();
+			var count = rules.Count;
 			if (count == 1)
 				Console.WriteLine("Found 1 API change:");
 			else
@@ -150,6 +151,36 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(format, args);
 		}
 
+		static void LogSuccess(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine(format, args);
+			Console.ForegroundColor = originalColor;
+		}
+
+		static void LogError(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine(format, args);
+			Console.ForegroundColor = originalColor;
+		}
+
+		static void LogWarning(StreamWriter logWriter, string format, params object[] args)
+		{
+			logWriter.WriteLine(format, args);
+
+			var originalColor = Console.ForegroundColor;
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine(format, args);
+			Console.ForegroundColor = originalColor;
+		}
+
 		static void LogLine(StreamWriter logWriter)
 		{
 			logWriter.WriteLine();
@@ -167,20 +198,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var rule in rules)
 			{
 				var manualSteps = new List<string>();
-				var allFiles = new YamlFileSet();
+				YamlFileSet allFiles;
 
-				LogLine(logWriter, "{0}: {1}", rule.GetType().Name, rule.Name);
+				LogLine(logWriter, $"{rule.GetType().Name}: {rule.Name}");
 
 				try
 				{
 					Log(logWriter, "   Updating mod... ");
 					manualSteps.AddRange(UpdateUtils.UpdateMod(modData, rule, out allFiles, externalFilenames));
-					LogLine(logWriter, "COMPLETE");
+					LogSuccess(logWriter, "COMPLETE");
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine("FAILED");
-
+					LogError(logWriter, "FAILED");
 					LogLine(logWriter);
 					LogLine(logWriter, "   The automated changes for this rule were not applied because of an error.");
 					LogLine(logWriter, "   After the issue reported below is resolved you should run the updater");
@@ -205,12 +235,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out var mapFiles, mapExternalFilenames);
 							allFiles.AddRange(mapFiles);
 
-							if (mapSteps.Any())
+							if (mapSteps.Count > 0)
 								manualSteps.Add("Map: " + package.Name + ":\n" + UpdateUtils.FormatMessageList(mapSteps));
 						}
 						catch (Exception ex)
 						{
-							LogLine(logWriter, "FAILED");
+							LogError(logWriter, "FAILED");
 							LogLine(logWriter);
 							LogLine(logWriter, "   The automated changes for this rule were not applied because of an error.");
 							LogLine(logWriter, "   After the issue reported below is resolved you should run the updater");
@@ -229,7 +259,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapsFailed)
 						continue;
 
-					LogLine(logWriter, "COMPLETE");
+					LogSuccess(logWriter, "COMPLETE");
 				}
 				else
 					LogLine(logWriter, "SKIPPED");
@@ -237,19 +267,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Files are saved after each successful automated rule update
 				allFiles.Save();
 
-				if (manualSteps.Any())
+				if (manualSteps.Count > 0)
 				{
-					LogLine(logWriter, "   Manual changes are required to complete this update:");
+					LogWarning(logWriter, "   Manual changes are required to complete this update:");
 					LogLine(logWriter, UpdateUtils.FormatMessageList(manualSteps, 1));
 				}
 
 				LogLine(logWriter);
 			}
 
-			if (externalFilenames.Any())
+			if (externalFilenames.Count > 0)
 			{
+				LogLine(logWriter);
 				LogLine(logWriter, "The following external mod files have been ignored:");
 				LogLine(logWriter, UpdateUtils.FormatMessageList(externalFilenames));
+				LogLine(logWriter);
 				LogLine(logWriter, "These files should be updated by running --update-mod on the referenced mod(s)");
 				LogLine(logWriter);
 			}

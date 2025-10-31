@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,13 +12,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.Primitives;
+using System.Runtime.CompilerServices;
 
 namespace OpenRA.Graphics
 {
 	public sealed class TerrainSpriteLayer : IDisposable
 	{
-		static readonly int[] CornerVertexMap = { 0, 1, 2, 2, 3, 0 };
+		// PERF: we can reuse the IndexBuffer as all layers have the same size.
+		static readonly ConditionalWeakTable<World, IndexBufferRc> IndexBuffers = [];
+		readonly IndexBufferRc indexBufferWrapper;
 
 		public readonly BlendMode BlendMode;
 
@@ -28,8 +30,9 @@ namespace OpenRA.Graphics
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] vertices;
 		readonly bool[] ignoreTint;
-		readonly HashSet<int> dirtyRows = new HashSet<int>();
-		readonly int rowStride;
+		readonly HashSet<int> dirtyRows = [];
+		readonly int indexRowStride;
+		readonly int vertexRowStride;
 		readonly bool restrictToBounds;
 
 		readonly WorldRenderer worldRenderer;
@@ -44,19 +47,25 @@ namespace OpenRA.Graphics
 			this.emptySprite = emptySprite;
 			sheets = new Sheet[SpriteRenderer.SheetCount];
 			BlendMode = blendMode;
-
 			map = world.Map;
-			rowStride = 6 * map.MapSize.X;
 
-			vertices = new Vertex[rowStride * map.MapSize.Y];
-			palettes = new PaletteReference[map.MapSize.X * map.MapSize.Y];
-			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
+			vertexRowStride = 4 * map.MapSize.Width;
+			vertices = new Vertex[vertexRowStride * map.MapSize.Height];
+			vertexBuffer = Game.Renderer.Context.CreateEmptyVertexBuffer<Vertex>(vertices.Length);
 
+			indexRowStride = 6 * map.MapSize.Width;
+			lock (IndexBuffers)
+			{
+				indexBufferWrapper = IndexBuffers.GetValue(world, world => new IndexBufferRc(world));
+				indexBufferWrapper.AddRef();
+			}
+
+			palettes = new PaletteReference[map.MapSize.Width * map.MapSize.Height];
 			wr.PaletteInvalidated += UpdatePaletteIndices;
 
 			if (wr.TerrainLighting != null)
 			{
-				ignoreTint = new bool[rowStride * map.MapSize.Y];
+				ignoreTint = new bool[vertexRowStride * map.MapSize.Height];
 				wr.TerrainLighting.CellChanged += UpdateTint;
 			}
 		}
@@ -66,11 +75,12 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < vertices.Length; i++)
 			{
 				var v = vertices[i];
-				var p = palettes[i / 6]?.TextureIndex ?? 0;
-				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, p, v.C, v.R, v.G, v.B, v.A);
+				var p = palettes[i / 4]?.TextureIndex ?? 0;
+				var c = (uint)((p & 0xFFFF) << 16) | (v.C & 0xFFFF);
+				vertices[i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, c, v.R, v.G, v.B, v.A);
 			}
 
-			for (var row = 0; row < map.MapSize.Y; row++)
+			for (var row = 0; row < map.MapSize.Height; row++)
 				dirtyRows.Add(row);
 		}
 
@@ -98,13 +108,13 @@ namespace OpenRA.Graphics
 
 		void UpdateTint(MPos uv)
 		{
-			var offset = rowStride * uv.V + 6 * uv.U;
+			var offset = vertexRowStride * uv.V + 4 * uv.U;
 			if (ignoreTint[offset])
 			{
-				for (var i = 0; i < 6; i++)
+				for (var i = 0; i < 4; i++)
 				{
 					var v = vertices[offset + i];
-					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * float3.Ones, v.A);
+					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.C, v.A * float3.Ones, v.A);
 				}
 
 				return;
@@ -115,7 +125,7 @@ namespace OpenRA.Graphics
 			// transparent for isometric tiles
 			var tl = worldRenderer.TerrainLighting;
 			var pos = map.CenterOfCell(uv.ToCPos(map));
-			var step = map.Grid.Type == MapGridType.RectangularIsometric ? 724 : 512;
+			var step = map.Grid.TileScale / 2;
 			var weights = new[]
 			{
 				tl.TintAt(pos + new WVec(-step, -step, 0)),
@@ -126,10 +136,10 @@ namespace OpenRA.Graphics
 
 			// Apply tint directly to the underlying vertices
 			// This saves us from having to re-query the sprite information, which has not changed
-			for (var i = 0; i < 6; i++)
+			for (var i = 0; i < 4; i++)
 			{
 				var v = vertices[offset + i];
-				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * weights[CornerVertexMap[i]], v.A);
+				vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.C, v.A * weights[i], v.A);
 			}
 
 			dirtyRows.Add(uv.V);
@@ -181,9 +191,9 @@ namespace OpenRA.Graphics
 			if (!map.Tiles.Contains(uv))
 				return;
 
-			var offset = rowStride * uv.V + 6 * uv.U;
+			var offset = vertexRowStride * uv.V + 4 * uv.U;
 			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, alpha * float3.Ones, alpha);
-			palettes[uv.V * map.MapSize.X + uv.U] = palette;
+			palettes[uv.V * map.MapSize.Width + uv.U] = palette;
 
 			if (worldRenderer.TerrainLighting != null)
 			{
@@ -199,8 +209,8 @@ namespace OpenRA.Graphics
 			var cells = restrictToBounds ? viewport.VisibleCellsInsideBounds : viewport.AllVisibleCells;
 
 			// Only draw the rows that are visible.
-			var firstRow = cells.CandidateMapCoords.TopLeft.V.Clamp(0, map.MapSize.Y);
-			var lastRow = (cells.CandidateMapCoords.BottomRight.V + 1).Clamp(firstRow, map.MapSize.Y);
+			var firstRow = cells.CandidateMapCoords.TopLeft.V.Clamp(0, map.MapSize.Height);
+			var lastRow = (cells.CandidateMapCoords.BottomRight.V + 1).Clamp(firstRow, map.MapSize.Height);
 
 			Game.Renderer.Flush();
 
@@ -210,13 +220,13 @@ namespace OpenRA.Graphics
 				if (!dirtyRows.Remove(row))
 					continue;
 
-				var rowOffset = rowStride * row;
-				vertexBuffer.SetData(vertices, rowOffset, rowOffset, rowStride);
+				var rowOffset = vertexRowStride * row;
+				vertexBuffer.SetData(vertices, rowOffset, rowOffset, vertexRowStride);
 			}
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
-				vertexBuffer, rowStride * firstRow, rowStride * (lastRow - firstRow),
-				PrimitiveType.TriangleList, sheets, BlendMode);
+				vertexBuffer, indexBufferWrapper.Buffer, indexRowStride * firstRow,
+				indexRowStride * (lastRow - firstRow), sheets, BlendMode);
 
 			Game.Renderer.Flush();
 		}
@@ -228,6 +238,30 @@ namespace OpenRA.Graphics
 				worldRenderer.TerrainLighting.CellChanged -= UpdateTint;
 
 			vertexBuffer.Dispose();
+
+			lock (IndexBuffers)
+				indexBufferWrapper.Dispose();
+		}
+
+		sealed class IndexBufferRc : IDisposable
+		{
+			public IIndexBuffer Buffer;
+			int count;
+
+			public IndexBufferRc(World world)
+			{
+				Buffer = Game.Renderer.Context.CreateIndexBuffer(
+					Util.CreateQuadIndices(world.Map.MapSize.Width * world.Map.MapSize.Height));
+			}
+
+			public void AddRef() { count++; }
+
+			public void Dispose()
+			{
+				count--;
+				if (count == 0)
+					Buffer.Dispose();
+			}
 		}
 	}
 }

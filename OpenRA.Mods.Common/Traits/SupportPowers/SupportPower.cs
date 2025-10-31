@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -29,8 +29,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for the icon.")]
 		public readonly string IconPalette = "chrome";
 
-		public readonly string Description = "";
-		public readonly string LongDesc = "";
+		[FluentReference(optional: true)]
+		public readonly string Name = null;
+
+		[FluentReference(optional: true)]
+		public readonly string Description = null;
 
 		[Desc("Allow multiple instances of the same support power.")]
 		public readonly bool AllowMultiple = false;
@@ -42,40 +45,71 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display for using this support power.")]
 		public readonly string Cursor = "ability";
 
+		[CursorReference]
+		[Desc("Cursor when unable to activate on this position. ")]
+		public readonly string BlockedCursor = "generic-blocked";
+
 		[Desc("If set to true, the support power will be fully charged when it becomes available. " +
 			"Normal rules apply for subsequent charges.")]
 		public readonly bool StartFullyCharged = false;
-		public readonly string[] Prerequisites = { };
+
+		public readonly string[] Prerequisites = [];
+
+		public readonly string DetectedSound = null;
+
+		[NotificationReference("Speech")]
+		public readonly string DetectedSpeechNotification = null;
+
+		[FluentReference(optional: true)]
+		public readonly string DetectedTextNotification = null;
 
 		public readonly string BeginChargeSound = null;
 
 		[NotificationReference("Speech")]
 		public readonly string BeginChargeSpeechNotification = null;
 
+		[FluentReference(optional: true)]
+		public readonly string BeginChargeTextNotification = null;
+
 		public readonly string EndChargeSound = null;
 
 		[NotificationReference("Speech")]
 		public readonly string EndChargeSpeechNotification = null;
+
+		[FluentReference(optional: true)]
+		public readonly string EndChargeTextNotification = null;
 
 		public readonly string SelectTargetSound = null;
 
 		[NotificationReference("Speech")]
 		public readonly string SelectTargetSpeechNotification = null;
 
+		[FluentReference(optional: true)]
+		public readonly string SelectTargetTextNotification = null;
+
 		public readonly string InsufficientPowerSound = null;
 
 		[NotificationReference("Speech")]
 		public readonly string InsufficientPowerSpeechNotification = null;
+
+		[FluentReference(optional: true)]
+		public readonly string InsufficientPowerTextNotification = null;
 
 		public readonly string LaunchSound = null;
 
 		[NotificationReference("Speech")]
 		public readonly string LaunchSpeechNotification = null;
 
+		[FluentReference(optional: true)]
+		public readonly string LaunchTextNotification = null;
+
 		public readonly string IncomingSound = null;
 
 		[NotificationReference("Speech")]
 		public readonly string IncomingSpeechNotification = null;
+
+		[FluentReference(optional: true)]
+		public readonly string IncomingTextNotification = null;
 
 		[Desc("Defines to which players the timer is shown.")]
 		public readonly PlayerRelationship DisplayTimerRelationships = PlayerRelationship.None;
@@ -121,20 +155,33 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sort order for the support power palette. Smaller numbers are presented earlier.")]
 		public readonly int SupportPowerPaletteOrder = 9999;
 
-		public SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
+		protected SupportPowerInfo() { OrderName = GetType().Name + "Order"; }
 	}
 
-	public class SupportPower : PausableConditionalTrait<SupportPowerInfo>
+	public abstract class SupportPower : PausableConditionalTrait<SupportPowerInfo>
 	{
 		public readonly Actor Self;
 		readonly SupportPowerInfo info;
 		protected RadarPing ping;
 
-		public SupportPower(Actor self, SupportPowerInfo info)
+		protected SupportPower(Actor self, SupportPowerInfo info)
 			: base(info)
 		{
 			Self = self;
 			this.info = info;
+		}
+
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+
+			var player = self.World.LocalPlayer;
+			if (player != null && player != self.Owner)
+			{
+				Game.Sound.Play(SoundType.UI, Info.DetectedSound);
+				Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", info.DetectedSpeechNotification, player.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(player, info.DetectedTextNotification);
+			}
 		}
 
 		public virtual SupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
@@ -147,6 +194,8 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayToPlayer(SoundType.UI, self.Owner, Info.BeginChargeSound);
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.BeginChargeSpeechNotification, self.Owner.Faction.InternalName);
+
+			TextNotificationsManager.AddTransientLine(self.Owner, Info.BeginChargeTextNotification);
 		}
 
 		public virtual void Charged(Actor self, string key)
@@ -155,13 +204,15 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.EndChargeSpeechNotification, self.Owner.Faction.InternalName);
 
+			TextNotificationsManager.AddTransientLine(self.Owner, Info.EndChargeTextNotification);
+
 			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
 				notify.Charged(self);
 		}
 
 		public virtual void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			self.World.OrderGenerator = new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
+			self.World.OrderGenerator = new SelectGenericPowerTarget(order, manager, info, MouseButton.Left);
 		}
 
 		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)
@@ -181,14 +232,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void PlayLaunchSounds()
 		{
-			var renderPlayer = Self.World.RenderPlayer;
-			var isAllied = Self.Owner.IsAlliedWith(renderPlayer);
+			var localPlayer = Self.World.LocalPlayer;
+			if (localPlayer == null || localPlayer.Spectating)
+				return;
+
+			var isAllied = Self.Owner.IsAlliedWith(localPlayer);
 			Game.Sound.Play(SoundType.UI, isAllied ? Info.LaunchSound : Info.IncomingSound);
 
-			// IsAlliedWith returns true if renderPlayer is null, so we are safe here.
-			var toPlayer = isAllied ? renderPlayer ?? Self.Owner : renderPlayer;
 			var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
-			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
+			Game.Sound.PlayNotification(Self.World.Map.Rules, localPlayer, "Speech", speech, localPlayer.Faction.InternalName);
+
+			var text = isAllied ? Info.LaunchTextNotification : Info.IncomingTextNotification;
+			TextNotificationsManager.AddTransientLine(localPlayer, text);
 		}
 
 		public IEnumerable<CPos> CellsMatching(CPos location, char[] footprint, CVec dimensions)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,13 +16,12 @@ using System.Reflection;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSyncAnnotations : ILintPass
+	sealed class CheckSyncAnnotations : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
 			var modTypes = modData.ObjectCreator.GetTypes();
-			CheckTypesWithSyncableMembersImplementSyncInterface(modTypes, emitWarning);
-			CheckTypesImplementingSyncInterfaceHaveSyncableMembers(modTypes, emitWarning);
+			CheckTypes(modTypes, emitWarning);
 		}
 
 		static readonly Type SyncInterface = typeof(ISync);
@@ -37,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 			const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 			while (type != null)
 			{
-				if (((MemberInfo[])type.GetFields(Flags)).Concat(type.GetProperties(Flags)).Any(x => x.HasAttribute<SyncAttribute>()))
+				if (((MemberInfo[])type.GetFields(Flags)).Concat(type.GetProperties(Flags)).Any(Utility.HasAttribute<SyncAttribute>))
 					return true;
 				type = type.BaseType;
 			}
@@ -45,18 +44,18 @@ namespace OpenRA.Mods.Common.Lint
 			return false;
 		}
 
-		static void CheckTypesWithSyncableMembersImplementSyncInterface(IEnumerable<Type> types, Action<string> emitWarning)
+		static void CheckTypes(IEnumerable<Type> types, Action<string> emitWarning)
 		{
 			foreach (var type in types)
-				if (!TypeImplementsSync(type) && AnyTypeMemberIsSynced(type))
-					emitWarning($"{type.FullName} has members with the Sync attribute but does not implement ISync");
-		}
+			{
+				var typeImplementsSync = TypeImplementsSync(type);
+				var anyTypeMemberIsSynced = AnyTypeMemberIsSynced(type);
 
-		static void CheckTypesImplementingSyncInterfaceHaveSyncableMembers(IEnumerable<Type> types, Action<string> emitWarning)
-		{
-			foreach (var type in types)
-				if (TypeImplementsSync(type) && !AnyTypeMemberIsSynced(type))
+				if (!typeImplementsSync && anyTypeMemberIsSynced)
+					emitWarning($"{type.FullName} has members with the Sync attribute but does not implement ISync.");
+				else if (typeImplementsSync && !anyTypeMemberIsSynced)
 					emitWarning($"{type.FullName} implements ISync but does not use the Sync attribute on any members.");
+			}
 		}
 	}
 }

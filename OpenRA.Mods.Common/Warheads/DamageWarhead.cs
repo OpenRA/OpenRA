@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int Damage = 0;
 
 		[Desc("Types of damage that this warhead causes. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
-		[Desc("Damage percentage versus each armortype.")]
-		public readonly Dictionary<string, int> Versus = new Dictionary<string, int>();
+		[Desc("Damage percentage versus each armor type.")]
+		public readonly Dictionary<string, int> Versus = [];
 
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{
@@ -50,8 +50,14 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(victim, firedBy))
 					return;
 
-				var closestActiveShape = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled)
-					.MinByOrDefault(t => t.DistanceFromEdge(victim, victim.CenterPosition));
+				// PERF: Avoid using TraitsImplementing<HitShape> that needs to find the actor in the trait dictionary.
+				var closestActiveShape = (HitShape)victim.EnabledTargetablePositions.MinByOrDefault(t =>
+				{
+					if (t is HitShape h)
+						return h.DistanceFromEdge(victim, victim.CenterPosition);
+					else
+						return WDist.MaxValue;
+				});
 
 				// Cannot be damaged without an active HitShape
 				if (closestActiveShape == null)

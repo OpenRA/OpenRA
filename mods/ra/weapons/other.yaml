@@ -1,6 +1,6 @@
 ^FireWeapon:
 	ValidTargets: Ground, Water, GroundActor, WaterActor, Trees
-	ReloadDelay: 65
+	ReloadDelay: 70
 	Range: 5c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
@@ -55,6 +55,8 @@ Flamer:
 			Light: 40
 			Heavy: 20
 			Concrete: 10
+	Warhead@2Smu: LeaveSmudge
+		Chance: 15
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 
@@ -111,7 +113,7 @@ TTankZap:
 DogJaw:
 	ValidTargets: Infantry
 	ReloadDelay: 10
-	Range: 2c0
+	Range: 3c0
 	Report: dogg5p.aud
 	TargetActorCenter: true
 	Projectile: InstantHit
@@ -128,7 +130,11 @@ Heal:
 	ValidTargets: Heal
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
+	Warhead@1Eff: FlashTargetsInRadius
+		Radius: 1065
+		ValidRelationships: Ally
+		ValidTargets: Heal
+	Warhead@2Dam: SpreadDamage
 		Spread: 213
 		Damage: -5000
 		ValidRelationships: Ally
@@ -139,7 +145,9 @@ Repair:
 	Inherits: Heal
 	Report: fixit1.aud
 	ValidTargets: Repair
-	Warhead@1Dam: SpreadDamage
+	Warhead@1Eff: FlashTargetsInRadius
+		ValidTargets: Repair
+	Warhead@2Dam: SpreadDamage
 		Damage: -2000
 		ValidTargets: Repair
 

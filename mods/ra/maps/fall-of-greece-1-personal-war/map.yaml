@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -26,6 +26,7 @@ Players:
 		Faction: allies
 	PlayerReference@England:
 		Name: England
+		Bot: campaign
 		Faction: allies
 		Color: A0F08C
 		Allies: GreekCivilians, Allies
@@ -50,12 +51,14 @@ Players:
 		Allies: England
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: BadGuy
 		Enemies: England, GreekCivilians, Allies
 	PlayerReference@BadGuy:
 		Name: BadGuy
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR
@@ -533,7 +536,7 @@ Actors:
 	Actor156: t16
 		Location: 61,84
 		Owner: Neutral
-	Actor391: flare
+	NorthBridgeFlare: flare
 		Location: 81,41
 		Owner: England
 	Actor157: apwr
@@ -1304,7 +1307,27 @@ Actors:
 	ChinookEntry: waypoint
 		Owner: Neutral
 		Location: 22,39
+	Actor387: fenc
+		Location: 35,83
+		Owner: BadGuy
+	Actor388: fenc
+		Location: 36,83
+		Owner: BadGuy
+	Actor389: fenc
+		Location: 37,83
+		Owner: BadGuy
+	Actor390: fenc
+		Location: 35,87
+		Owner: BadGuy
+	Actor391: fenc
+		Location: 36,87
+		Owner: BadGuy
+	Actor392: fenc
+		Location: 37,87
+		Owner: BadGuy
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
 Weapons: weapons.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

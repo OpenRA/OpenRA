@@ -248,7 +248,7 @@ ICE01:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Ice Floe
+		Name: actor-ice01-name
 	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
@@ -261,7 +261,7 @@ ICE02:
 		Footprint: x x
 		Dimensions: 1,2
 	Tooltip:
-		Name: Ice Floe
+		Name: actor-ice02-name
 	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
@@ -274,7 +274,7 @@ ICE03:
 		Footprint: xx
 		Dimensions: 2,1
 	Tooltip:
-		Name: Ice Floe
+		Name: actor-ice03-name
 	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
@@ -284,7 +284,7 @@ ICE04:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Ice Floe
+		Name: actor-ice04-name
 	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
@@ -294,7 +294,7 @@ ICE05:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Ice Floe
+		Name: actor-ice05-name
 	MapEditorData:
 		RequireTilesets: SNOW
 		Categories: Decoration
@@ -346,7 +346,7 @@ UTILPOL1:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Utility Pole
+		Name: actor-utilpol1-name
 	MapEditorData:
 		Categories: Decoration
 
@@ -355,7 +355,7 @@ UTILPOL2:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Utility Pole
+		Name: actor-utilpol2-name
 	MapEditorData:
 		Categories: Decoration
 
@@ -367,7 +367,7 @@ TANKTRAP1:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
-		Name: Tank Trap
+		Name: actor-tanktrap1-name
 	MapEditorData:
 		RequireTilesets: TEMPERAT, SNOW, DESERT, INTERIOR
 
@@ -379,6 +379,6 @@ TANKTRAP2:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
-		Name: Tank Trap
+		Name: actor-tanktrap2-name
 	MapEditorData:
 		RequireTilesets: TEMPERAT, SNOW, DESERT, INTERIOR

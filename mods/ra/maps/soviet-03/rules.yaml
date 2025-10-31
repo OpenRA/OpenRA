@@ -1,19 +1,20 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, soviet03.lua
+		Scripts: campaign.lua, utils.lua, soviet03.lua
 	MissionData:
-		Briefing: A spy who has compromised the security of one of the northern sarin gas sites has been traced back to Lund, Sweden, by Nadia's intelligence groups.\n\nHe has been marked for death and a squad of Soviet troops was dispatched to the location to hunt him down.
+		Briefing: A spy who compromised the security of a northern sarin gas site has been traced back to Lund, Sweden, by Nadia's intelligence groups.\n\nHe has been marked for death and a squad of Soviet troops has been dispatched to to hunt him down.
 		BriefingVideo: soviet3.vqa
 		StartVideo: search.vqa
 		WinVideo: execute.vqa
 		LossVideo: take_off.vqa
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:

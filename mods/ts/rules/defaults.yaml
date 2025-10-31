@@ -17,6 +17,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
+		LevelUpTextNotification: notification-unit-promoted
 		Conditions:
 			500: rank
 			1000: rank
@@ -64,6 +65,7 @@
 		Image: rank
 		Sequence: veteran
 		Palette: ra
+		ValidRelationships: Ally, Enemy, Neutral
 	WithDecoration@ELITE:
 		RequiresCondition: rank-elite
 		Position: BottomRight
@@ -71,6 +73,7 @@
 		Image: rank
 		Sequence: elite
 		Palette: ra
+		ValidRelationships: Ally, Enemy, Neutral
 
 ^InfantryExperienceHospitalOverrides:
 	WithDecoration@VETERAN:
@@ -126,10 +129,10 @@
 		RequiresCondition: cloakgenerator || crate-cloak
 		InitialDelay: 0
 		CloakDelay: 90
-		IsPlayerPalette: true
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal, SupportPower
+		CloakType: nod-stealth
 	ExternalCondition@CLOAKGENERATOR:
 		Condition: cloakgenerator
 	ExternalCondition@CRATE-CLOAK:
@@ -140,11 +143,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Support
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Support
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetGroundAssaultMove:
@@ -167,11 +170,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Support
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Support
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAllAssaultMove:
@@ -338,20 +341,20 @@
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
 	WithSpriteBody:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BuildingExplosions
 		EmptyWeapon: BuildingExplosions
 		Type: Footprint
-	EngineerRepairable:
+	InstantlyRepairable:
 	ShakeOnDeath:
 	Guardable:
 		Range: 3c0
 	Demolishable:
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Weapons: SmallDebris
 		Pieces: 2, 4
 		Range: 2c0, 5c0
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
@@ -370,22 +373,25 @@
 		Types: building
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 25
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
 	SpawnActorsOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
+		GuaranteedActorTypes: e1
 		Factions: gdi
 	SpawnActorsOnSell@nod:
 		ActorTypes: e1, e1, e1, e3, e3
+		GuaranteedActorTypes: e1
 		Factions: nod
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	OwnerLostAction:
 		Action: Kill
 	CaptureNotification:
+		TextNotification: notification-building-captured
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
@@ -394,9 +400,9 @@
 		Notification: StructureSold
 	WithMakeAnimation:
 		Condition: build-incomplete
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 3, 5
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 3
 	WithBuildingRepairDecoration:
 		Image: allyrepair
@@ -446,9 +452,9 @@
 		HP: 40000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 1, 3
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 1, 1
 	MapEditorData:
 		Categories: Billboard
@@ -456,7 +462,7 @@
 ^Crate:
 	HiddenUnderFog:
 	Tooltip:
-		Name: Crate
+		Name: meta-crate-name
 	Crate:
 		Duration: 4500
 		TerrainTypes: Clear, Rough, Sand, Road, DirtRoad, Tiberium, BlueTiberium, Veins, Green, Pavement
@@ -529,7 +535,6 @@
 
 ^BuildingPlug:
 	Interactable:
-	AlwaysVisible:
 	Building:
 		BuildSounds: place2.aud
 		UndeploySounds: cashturn.aud
@@ -593,6 +598,7 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	DamagedByTerrain:
 		Terrain: Tiberium, BlueTiberium
 		Damage: 200
@@ -719,7 +725,7 @@
 		Weapon: CyborgExplode
 		DamageState: Critical
 		TriggerOnlyOnce: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: CyborgExplode
 		EmptyWeapon: CyborgExplode
 	DeathSounds:
@@ -756,7 +762,7 @@
 	Voiced:
 		VoiceSet: Civilian
 	Tooltip:
-		Name: Civilian
+		Name: meta-civilianinfantry-name
 	ScaredyCat:
 	Wanders:
 		MinMoveDelay: 150
@@ -804,6 +810,7 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	CaptureManager:
 		BeingCapturedCondition: being-captured
 	Capturable:
@@ -814,12 +821,12 @@
 	Guardable:
 	BodyOrientation:
 		CameraPitch: 85
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	MustBeDestroyed:
 	RenderSprites:
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
@@ -853,6 +860,16 @@
 		Sequence: vehicle
 		Palette: player
 		IsPlayerPalette: true
+	Sellable:
+		SellSounds: cashturn.aud
+		Cursor: sell2
+		Notification: UnitSold
+		TextNotification: notification-unit-sold
+		RequiresCondition: unit.sellable
+	GrantConditionOnClientDock@Sellable:
+		Condition: unit.sellable
+		AfterDockDuration: 20
+		DockHostNames: gadept
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -920,6 +937,7 @@
 		Voice: Move
 		MoveIntoShroud: false
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	BodyOrientation:
 		QuantizedFacings: 0
 		CameraPitch: 85
@@ -939,6 +957,16 @@
 		RequiresCondition: cruising
 		BobDistance: -64
 		InitialHeight: 64
+	Sellable:
+		SellSounds: cashturn.aud
+		Cursor: sell2
+		Notification: UnitSold
+		TextNotification: notification-unit-sold
+		RequiresCondition: unit.sellable
+	GrantConditionOnClientDock@Sellable:
+		Condition: unit.sellable
+		AfterDockDuration: 20
+		DockHostNames: gadept
 
 ^EMPableAircraft:
 	Inherits: ^Aircraft
@@ -966,7 +994,7 @@
 	ScriptTriggers:
 	Interactable:
 	Tooltip:
-		GenericName: Destroyed Aircraft
+		GenericName: meta-aircrafthusk-generic-name
 	FallsToEarth:
 		Moves: true
 		Velocity: 112
@@ -1011,7 +1039,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Tooltip:
-		Name: Blossom Tree
+		Name: meta-blossomtree-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -1034,8 +1062,9 @@
 
 ^Tree:
 	Inherits@1: ^SpriteActor
+	Inherits@2: ^ExistsInWorld
 	Interactable:
-	HiddenUnderShroud:
+	FrozenUnderFog:
 	RenderSprites:
 		Palette: terraindecoration
 	WithSpriteBody:
@@ -1043,11 +1072,39 @@
 		Footprint: x
 		Dimensions: 1, 1
 	Tooltip:
-		Name: Tree
+		Name: meta-tree-name
 	MapEditorData:
 		Categories: Tree
 	RequiresSpecificOwners:
 		ValidOwnerNames: Neutral
+	HitShape:
+	Health:
+		HP: 200000
+	Armor:
+		Type: Wood
+	Targetable:
+		TargetTypes: Trees, NoAutoTarget
+	GrantConditionOnDamageState@Small:
+		Condition: small-fire
+		ValidDamageStates: Medium
+	GrantConditionOnDamageState@Large:
+		Condition: large-fire
+		ValidDamageStates: Heavy, Critical
+	WithIdleOverlay@SmallFire:
+		Image: fire2
+		Palette: effect
+		RequiresCondition: small-fire
+	WithIdleOverlay@LargeFire:
+		Image: fire1
+		Palette: effect
+		RequiresCondition: large-fire
+	SpreadsCondition@Fire:
+		RequiresCondition: small-fire || large-fire
+		SpreadCondition: burning
+	ChangesHealth:
+		StartIfBelow: 101
+		Step: -500
+		RequiresCondition: small-fire || large-fire || burning
 
 ^Rock:
 	Inherits@1: ^SpriteActor
@@ -1060,7 +1117,7 @@
 		Footprint: x
 		Dimensions: 1, 1
 	Tooltip:
-		Name: Rock
+		Name: meta-rock-name
 	MapEditorData:
 		Categories: Decoration
 	RequiresSpecificOwners:
@@ -1084,19 +1141,19 @@
 ^Box:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Box
+		Name: meta-box-name
 
 ^Drum:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Drum
+		Name: meta-drum-name
 
 ^Palette:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Palette
+		Name: meta-palette-name
 
-^Defense:
+^Support:
 	Inherits: ^Building
 	Inherits@selection: ^SelectableCombatBuilding
 	-GivesBuildableArea:
@@ -1107,11 +1164,11 @@
 	DetectCloaked:
 		Range: 5c0
 	Targetable:
-		TargetTypes: Ground, Building, C4, Defense
+		TargetTypes: Ground, Building, C4, Support
 	-Capturable:
 	RevealOnFire:
 	MapEditorData:
-		Categories: Defense
+		Categories: Support
 	-CommandBarBlacklist:
 
 ^Train:
@@ -1154,10 +1211,10 @@
 	BodyOrientation:
 		CameraPitch: 85
 		QuantizedFacings: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
@@ -1168,7 +1225,6 @@
 		Condition: inside-tunnel
 
 ^TerrainOverlay:
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: False
 	RenderSprites:
@@ -1181,7 +1237,7 @@
 ^Railway:
 	Inherits: ^TerrainOverlay
 	EditorOnlyTooltip:
-		Name: Railway
+		Name: meta-railway-name
 	ChangesTerrain:
 		TerrainType: Rail
 	MapEditorData:
@@ -1199,7 +1255,6 @@
 		Dimensions: 3, 3
 		Footprint: ___ ___ ___
 	Targetable:
-	AlwaysVisible:
 	TunnelEntrance:
 	MapEditorData:
 		Categories: Tunnel
@@ -1227,7 +1282,7 @@
 		OpenSequence: open
 	Tooltip:
 	Buildable:
-		Description: Automated barrier that opens for allied units.
+		Description: meta-gate-description
 	HitShape:
 		Type: Rectangle
 			LocalYaw: -128
@@ -1397,6 +1452,7 @@
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
+		SelectionTextNotification: notification-primary-building-selected
 	WithTextDecoration@primary:
 		RequiresCondition: primary
 		Position: Top

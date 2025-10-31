@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.IO;
-using System.Linq;
 using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Video;
 
@@ -18,18 +17,21 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 {
 	public class WsaLoader : IVideoLoader
 	{
-		public bool TryParseVideo(Stream s, out IVideo video)
+		public bool TryParseVideo(Stream s, bool useFramePadding, out IVideo video)
 		{
 			video = null;
+
+			if (s.Length == 0)
+				return false;
 
 			if (!IsWsa(s))
 				return false;
 
-			video = new WsaReader(s);
+			video = new WsaVideo(s, useFramePadding);
 			return true;
 		}
 
-		bool IsWsa(Stream s)
+		static bool IsWsa(Stream s)
 		{
 			var start = s.Position;
 
@@ -37,15 +39,15 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			if (frames <= 1) // TODO: find a better way to differentiate .shp icons
 				return false;
 
-			var x = s.ReadUInt16();
-			var y = s.ReadUInt16();
+			s.ReadUInt16(); // x
+			s.ReadUInt16(); // y
 			var width = s.ReadUInt16();
 			var height = s.ReadUInt16();
 
 			if (width <= 0 || height <= 0)
 				return false;
 
-			var delta = s.ReadUInt16() + 37;
+			s.ReadUInt16(); // delta (+37)
 
 			var flags = s.ReadUInt16();
 
@@ -55,14 +57,14 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 
 			if (flags == 1)
 			{
-				var palette = StreamExts.ReadBytes(s, 768);
+				s.ReadBytes(768); // palette
 				for (var i = 0; i < offsets.Length; i++)
 					offsets[i] += 768;
 			}
 
 			s.Position = start;
 
-			return s.Length == offsets.Last();
+			return s.Length == offsets[^1];
 		}
 	}
 }

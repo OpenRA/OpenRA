@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -24,18 +23,20 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
-		[Desc("Weapon to use for the impact.",
-			"Also image to use for the missile.")]
+		[Desc("Weapon to use for the impact.")]
 		public readonly string MissileWeapon = "";
 
 		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
 		public readonly int MissileDelay = 0;
 
-		[SequenceReference(nameof(MissileWeapon))]
+		[Desc("Image to use for the missile.")]
+		public readonly string MissileImage = null;
+
+		[SequenceReference(nameof(MissileImage))]
 		[Desc("Sprite sequence for the ascending missile.")]
 		public readonly string MissileUp = "up";
 
-		[SequenceReference(nameof(MissileWeapon))]
+		[SequenceReference(nameof(MissileImage))]
 		[Desc("Sprite sequence for the descending missile.")]
 		public readonly string MissileDown = "down";
 
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[SequenceReference(nameof(TrailImage), allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		public readonly string[] TrailSequences = { };
+		public readonly string[] TrailSequences = [];
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 1;
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int FlightDelay = 400;
 
 		[Desc("Visual ascent velocity in WDist / tick.")]
-		public readonly WDist FlightVelocity = new WDist(512);
+		public readonly WDist FlightVelocity = new(512);
 
 		[Desc("Descend immediately on the target.")]
 		public readonly bool SkipAscent = false;
@@ -123,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (!string.IsNullOrEmpty(TrailImage) && !TrailSequences.Any())
+			if (!string.IsNullOrEmpty(TrailImage) && TrailSequences.Length == 0)
 				throw new YamlException("At least one entry in TrailSequences must be defined when TrailImage is defined.");
 
 			var weaponToLower = (MissileWeapon ?? string.Empty).ToLowerInvariant();
@@ -136,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class NukePower : SupportPower
+	sealed class NukePower : SupportPower
 	{
 		readonly NukePowerInfo info;
 		BodyOrientation body;
@@ -167,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 			var skipAscent = info.SkipAscent || body == null;
 			var launchPos = skipAscent ? WPos.Zero : self.CenterPosition + body.LocalToWorld(info.SpawnOffset);
 
-			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
+			var missile = new NukeLaunch(self.Owner, info.MissileImage, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				launchPos,
 				targetPosition, info.DetonationAltitude, info.RemoveMissileOnDetonation,
 				info.FlightVelocity, info.MissileDelay, info.FlightDelay, skipAscent,
@@ -202,10 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.BeaconDelay,
 					info.FlightDelay - info.BeaconRemoveAdvance);
 
-				self.World.AddFrameEndTask(w =>
-				{
-					w.Add(beacon);
-				});
+				self.World.AddFrameEndTask(w => w.Add(beacon));
 			}
 		}
 
@@ -220,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly NukePowerInfo info;
 
 		public SelectNukePowerTarget(string order, SupportPowerManager manager, NukePowerInfo info, MouseButton button)
-			: base(order, manager, info.Cursor, button)
+			: base(order, manager, info, button)
 		{
 			this.info = info;
 		}

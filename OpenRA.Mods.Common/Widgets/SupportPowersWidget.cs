@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,13 +22,15 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
-		public readonly string ReadyText = "";
+		[FluentReference]
+		public string ReadyText = "";
 
-		public readonly string HoldText = "";
+		[FluentReference]
+		public string HoldText = "";
 
 		public readonly string OverlayFont = "TinyBold";
 
-		public readonly int2 IconSize = new int2(64, 48);
+		public readonly int2 IconSize = new(64, 48);
 		public readonly int IconMargin = 10;
 		public readonly int2 IconSpriteOffset = int2.Zero;
 
@@ -54,11 +56,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Animation icon;
 		Animation clock;
-		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
+		Dictionary<Rectangle, SupportPowerIcon> icons = [];
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		public Func<SupportPowerIcon> GetTooltipIcon;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		HotkeyReference[] hotkeys;
 
 		Rectangle eventBounds;
@@ -67,25 +69,25 @@ namespace OpenRA.Mods.Common.Widgets
 		float2 iconOffset, holdOffset, readyOffset, timeOffset;
 
 		[CustomLintableHotkeyNames]
-		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
+		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError)
 		{
 			var prefix = "";
-			var prefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyPrefix");
+			var prefixNode = widgetNode.Value.NodeWithKeyOrDefault("HotkeyPrefix");
 			if (prefixNode != null)
 				prefix = prefixNode.Value.Value;
 
 			var count = 0;
-			var countNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyCount");
+			var countNode = widgetNode.Value.NodeWithKeyOrDefault("HotkeyCount");
 			if (countNode != null)
 				count = FieldLoader.GetValue<int>("HotkeyCount", countNode.Value.Value);
 
 			if (count == 0)
-				return new string[0];
+				return [];
 
 			if (string.IsNullOrEmpty(prefix))
 				emitError($"{widgetNode.Location} must define HotkeyPrefix if HotkeyCount > 0.");
 
-			return Exts.MakeArray(count, i => prefix + (i + 1).ToString("D2"));
+			return Exts.MakeArray(count, i => prefix + (i + 1).ToStringInvariant("D2"));
 		}
 
 		[ObjectCreator.UseCtor]
@@ -97,8 +99,6 @@ namespace OpenRA.Mods.Common.Widgets
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-
-			clock = new Animation(world, ClockAnimation);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -106,13 +106,18 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			overlayFont = Game.Renderer.Fonts[OverlayFont];
 
 			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
+
+			HoldText = FluentProvider.GetMessage(HoldText);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			ReadyText = FluentProvider.GetMessage(ReadyText);
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+
+			clock = new Animation(worldRenderer.World, ClockAnimation);
 		}
 
 		public class SupportPowerIcon
@@ -127,7 +132,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void RefreshIcons()
 		{
-			icons = new Dictionary<Rectangle, SupportPowerIcon>();
+			icons = [];
 			var powers = spm.Powers.Values.Where(p => !p.Disabled)
 				.OrderBy(p => p.Info.SupportPowerPaletteOrder);
 
@@ -173,6 +178,8 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Sound.PlayToPlayer(SoundType.UI, spm.Self.Owner, clicked.Power.Info.InsufficientPowerSound);
 				Game.Sound.PlayNotification(spm.Self.World.Map.Rules, spm.Self.Owner, "Speech",
 					clicked.Power.Info.InsufficientPowerSpeechNotification, spm.Self.Owner.Faction.InternalName);
+
+				TextNotificationsManager.AddTransientLine(spm.Self.Owner, clicked.Power.Info.InsufficientPowerTextNotification);
 			}
 			else
 				clicked.Power.Target();

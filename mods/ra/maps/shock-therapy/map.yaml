@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -26,18 +26,21 @@ Players:
 		Faction: england
 	PlayerReference@Spain:
 		Name: Spain
+		Bot: campaign
 		Faction: allies
 		Color: F6D679
 		Allies: Greece, GoodGuy
 		Enemies: USSR
 	PlayerReference@Greece:
 		Name: Greece
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Spain, GoodGuy
 		Enemies: USSR
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F6
 		Allies: Spain, Greece
@@ -996,3 +999,5 @@ Actors:
 		Owner: Neutral
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

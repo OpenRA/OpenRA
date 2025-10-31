@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 
 	public class WaitFor : Activity
 	{
-		Func<bool> f;
+		readonly Func<bool> f;
 
 		public WaitFor(Func<bool> f) { this.f = f; }
 		public WaitFor(Func<bool> f, bool interruptible)

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -30,14 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 	public class BuildingInfo : TraitInfo, IOccupySpaceInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
-		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> TerrainTypes = [];
 
 		[Desc("x means cell is blocked, capital X means blocked but not counting as targetable, ",
 			"= means part of the footprint but passable, _ means completely empty.")]
 		[FieldLoader.LoadUsing(nameof(LoadFootprint))]
 		public readonly Dictionary<CVec, FootprintCellType> Footprint;
 
-		public readonly CVec Dimensions = new CVec(1, 1);
+		public readonly CVec Dimensions = new(1, 1);
 
 		[Desc("Shift center of the actor by this offset.")]
 		public readonly WVec LocalCenterOffset = WVec.Zero;
@@ -45,8 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool RequiresBaseProvider = false;
 
 		public readonly bool AllowInvalidPlacement = false;
-
-		public readonly bool AllowPlacementOnResources = false;
 
 		[Desc("Clear smudges from underneath the building footprint.")]
 		public readonly bool RemoveSmudgesOnBuild = true;
@@ -57,18 +54,18 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Clear smudges from underneath the building footprint on transform.")]
 		public readonly bool RemoveSmudgesOnTransform = true;
 
-		public readonly string[] BuildSounds = { };
+		public readonly string[] BuildSounds = [];
 
-		public readonly string[] UndeploySounds = { };
+		public readonly string[] UndeploySounds = [];
 
 		public override object Create(ActorInitializer init) { return new Building(init, this); }
 
 		protected static object LoadFootprint(MiniYaml yaml)
 		{
-			var footprintYaml = yaml.Nodes.FirstOrDefault(n => n.Key == "Footprint");
-			var footprintChars = footprintYaml?.Value.Value.Where(x => !char.IsWhiteSpace(x)).ToArray() ?? new[] { 'x' };
+			var footprintYaml = yaml.NodeWithKeyOrDefault("Footprint");
+			var footprintChars = footprintYaml?.Value.Value.Where(x => !char.IsWhiteSpace(x)).ToArray() ?? ['x'];
 
-			var dimensionsYaml = yaml.Nodes.FirstOrDefault(n => n.Key == "Dimensions");
+			var dimensionsYaml = yaml.NodeWithKeyOrDefault("Dimensions");
 			var dim = dimensionsYaml != null ? FieldLoader.GetValue<CVec>("Dimensions", dimensionsYaml.Value.Value) : new CVec(1, 1);
 
 			if (footprintChars.Length != dim.X * dim.Y)
@@ -154,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec CenterOffset(World w)
 		{
 			var off = (w.Map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
-			return (off - new WVec(0, 0, off.Z)) + LocalCenterOffset;
+			return off - new WVec(0, 0, off.Z) + LocalCenterOffset;
 		}
 
 		public BaseProvider FindBaseProvider(World world, Player p, CPos topLeft)
@@ -260,7 +257,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!RequiresBaseProvider)
 				return SpriteRenderable.None;
 
-			return w.ActorsWithTrait<BaseProvider>().SelectMany(a => a.Trait.RangeCircleRenderables(wr));
+			return w.ActorsWithTrait<BaseProvider>().SelectMany(a => a.Trait.RangeCircleRenderables());
 		}
 	}
 
@@ -268,24 +265,21 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
-
-		[Sync]
-		readonly CPos topLeft;
-
 		readonly Actor self;
 		readonly BuildingInfluence influence;
 
-		(CPos, SubCell)[] occupiedCells;
-		(CPos, SubCell)[] targetableCells;
-		CPos[] transitOnlyCells;
+		readonly (CPos, SubCell)[] occupiedCells;
+		readonly (CPos, SubCell)[] targetableCells;
+		readonly CPos[] transitOnlyCells;
 
-		public CPos TopLeft => topLeft;
-		public WPos CenterPosition { get; private set; }
+		[Sync]
+		public CPos TopLeft { get; }
+		public WPos CenterPosition { get; }
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
 			self = init.Self;
-			topLeft = init.GetValue<LocationInit, CPos>();
+			TopLeft = init.GetValue<LocationInit, CPos>();
 			Info = info;
 			influence = self.World.WorldActor.Trait<BuildingInfluence>();
 
@@ -297,7 +291,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			transitOnlyCells = Info.TransitOnlyTiles(TopLeft).ToArray();
 
-			CenterPosition = init.World.Map.CenterOfCell(topLeft) + Info.CenterOffset(init.World);
+			CenterPosition = init.World.Map.CenterOfCell(TopLeft) + Info.CenterOffset(init.World);
 		}
 
 		public (CPos, SubCell)[] OccupiedCells() { return occupiedCells; }

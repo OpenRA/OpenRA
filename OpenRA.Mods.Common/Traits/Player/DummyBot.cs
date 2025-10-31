@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,10 +14,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("A placeholder bot that doesn't do anything.")]
+	[TraitLocation(SystemActors.Player)]
 	public sealed class DummyBotInfo : TraitInfo, IBotInfo
 	{
+		[FieldLoader.Require]
+		[FluentReference]
 		[Desc("Human-readable name this bot uses.")]
-		public readonly string Name = "Unnamed Bot";
+		public readonly string Name = null;
 
 		[FieldLoader.Require]
 		[Desc("Internal id for this bot.")]

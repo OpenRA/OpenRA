@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mimic a built-in type alias.")]
 	public readonly struct int2 : IEquatable<int2>
 	{
 		public readonly int X, Y;
@@ -37,7 +37,7 @@ namespace OpenRA
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public bool Equals(int2 other) { return this == other; }
-		public override bool Equals(object obj) { return obj is int2 && Equals((int2)obj); }
+		public override bool Equals(object obj) { return obj is int2 vec && Equals(vec); }
 
 		public override string ToString() { return X + "," + Y; }
 
@@ -59,7 +59,7 @@ namespace OpenRA
 		public static int2 Max(int2 a, int2 b) { return new int2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static int2 Min(int2 a, int2 b) { return new int2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
-		public static readonly int2 Zero = new int2(0, 0);
+		public static readonly int2 Zero = new(0, 0);
 		public float2 ToFloat2() { return new float2(X, Y); }
 
 		// Change endianness of a uint32

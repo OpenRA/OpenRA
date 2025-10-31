@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,6 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.Player)]
+	[IncludeStaticFluentReferences(typeof(ConquestVictoryConditions))]
 	public class ConquestVictoryConditionsInfo : TraitInfo, Requires<MissionObjectivesInfo>
 	{
 		[Desc("Delay for the end game notification in milliseconds.")]
@@ -32,6 +33,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ConquestVictoryConditions : ITick, INotifyWinStateChanged, INotifyTimeLimit
 	{
+		[FluentReference("player")]
+		const string PlayerIsVictorious = "notification-player-is-victorious";
+
+		[FluentReference("player")]
+		const string PlayerIsDefeated = "notification-player-is-defeated";
+
 		readonly ConquestVictoryConditionsInfo info;
 		readonly MissionObjectives mo;
 		readonly bool shortGame;
@@ -57,8 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 				mo.MarkFailed(self.Owner, objectiveID);
 
 			// Players, NonCombatants, and IsAlliedWith are all fixed once the game starts, so we can cache the result.
-			if (otherPlayers == null)
-				otherPlayers = self.World.Players.Where(p => !p.NonCombatant && !p.IsAlliedWith(self.Owner)).ToArray();
+			otherPlayers ??= self.World.Players.Where(p => !p.NonCombatant && !p.IsAlliedWith(self.Owner)).ToArray();
 
 			if (otherPlayers.Length == 0) return;
 
@@ -76,13 +82,14 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var myTeam = self.World.LobbyInfo.ClientWithIndex(self.Owner.ClientIndex).Team;
-			var teams = self.World.Players.Where(p => !p.NonCombatant && p.Playable)
+			var victoriousTeam = self.World.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => (Player: p, PlayerStatistics: p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
 				.OrderByDescending(p => p.PlayerStatistics?.Experience ?? 0)
 				.GroupBy(p => (self.World.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0));
+				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0))
+				.First();
 
-			if (teams.First().Key == myTeam && (myTeam != 0 || teams.First().First().Player == self.Owner))
+			if (victoriousTeam.Key == myTeam && (myTeam != 0 || victoriousTeam.First().Player == self.Owner))
 			{
 				mo.MarkCompleted(self.Owner, objectiveID);
 				return;
@@ -99,11 +106,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			TextNotificationsManager.AddSystemLine(player.PlayerName + " is defeated.");
+			TextNotificationsManager.AddSystemLine(PlayerIsDefeated, "player", player.ResolvedPlayerName);
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
+				{
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.LoseNotification, player.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(player, mo.Info.LoseTextNotification);
+				}
 			});
 		}
 
@@ -112,11 +122,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			TextNotificationsManager.AddSystemLine(player.PlayerName + " is victorious.");
+			TextNotificationsManager.AddSystemLine(PlayerIsVictorious, "player", player.ResolvedPlayerName);
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
+				{
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.WinNotification, player.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(player, mo.Info.WinTextNotification);
+				}
 			});
 		}
 	}

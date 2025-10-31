@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -38,38 +38,46 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, emitWarning, map.Players, map.Visibility, map.WorldActorInfo, map.SpawnPoints);
 		}
 
-		void Run(Action<string> emitError, Action<string> emitWarning, MapPlayers players, MapVisibility visibility, ActorInfo worldActorInfo, CPos[] spawnPoints)
+		static void Run(Action<string> emitError, Action<string> emitWarning,
+			MapPlayers players, MapVisibility visibility, ActorInfo worldActorInfo, CPos[] spawnPoints)
 		{
 			if (players.Players.Count > 64)
 				emitError("Defining more than 64 players is not allowed.");
 
+			var playablePlayerFound = false;
 			var worldOwnerFound = false;
 			var playerNames = players.Players.Values.Select(p => p.Name).ToHashSet();
 			foreach (var player in players.Players.Values)
 			{
 				foreach (var ally in player.Allies)
 					if (!playerNames.Contains(ally))
-						emitError($"Allies contains player {ally} that is not in list.");
+						emitError($"The player `{player.Name}` allies list contains an invalid player `{ally}`.");
 
 				foreach (var enemy in player.Enemies)
 					if (!playerNames.Contains(enemy))
-						emitError($"Enemies contains player {enemy} that is not in list.");
+						emitError($"The player `{player.Name}` enemy list contains an invalid player `{enemy}`.");
+
+				if (player.Playable)
+					playablePlayerFound = true;
 
 				if (player.OwnsWorld)
 				{
 					worldOwnerFound = true;
-					if (player.Enemies.Any() || player.Allies.Any())
-						emitWarning($"The player {player.Name} owning the world should not have any allies or enemies.");
+					if (player.Enemies.Length > 0 || player.Allies.Length > 0)
+						emitWarning($"The player `{player.Name}` owning the world should not have any allies or enemies.");
 
 					if (player.Playable)
-						emitError($"The player {player.Name} owning the world can't be playable.");
+						emitError($"The player `{player.Name}` owning the world can't be playable.");
 				}
 				else if (visibility == MapVisibility.MissionSelector && player.Playable && !player.LockFaction)
 				{
 					// Missions must lock the faction of the player to force the server to override the default Random faction
-					emitError($"The player {player.Name} must specify LockFaction: True.");
+					emitError($"The player `{player.Name}` must specify LockFaction: True.");
 				}
 			}
+
+			if (!playablePlayerFound && visibility != MapVisibility.Shellmap)
+				emitError("Found no playable player.");
 
 			if (!worldOwnerFound)
 				emitError("Found no player owning the world.");
@@ -77,16 +85,17 @@ namespace OpenRA.Mods.Common.Lint
 			var factions = worldActorInfo.TraitInfos<FactionInfo>().Select(f => f.InternalName).ToHashSet();
 			foreach (var player in players.Players.Values)
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))
-					emitError($"Invalid faction {player.Faction} chosen for player {player.Name}.");
+					emitError($"Invalid faction `{player.Faction}` chosen for player `{player.Name}`.");
 
 			if (worldActorInfo.HasTraitInfo<MapStartingLocationsInfo>())
 			{
 				var playerCount = players.Players.Count(p => p.Value.Playable);
 				if (playerCount > spawnPoints.Length)
-					emitError($"The map allows {playerCount} possible players, but defines only {spawnPoints.Length} spawn points");
+					emitError($"The map allows {playerCount} possible players, but defines only {spawnPoints.Length} spawn points.");
 
-				if (spawnPoints.Distinct().Count() != spawnPoints.Length)
-					emitError("Duplicate spawn point locations detected.");
+				foreach (var spawn in spawnPoints.GroupBy(x => x))
+					if (spawn.Count() > 1)
+						emitError($"Duplicate spawn point location detected at `{spawn.Key}`.");
 			}
 		}
 	}

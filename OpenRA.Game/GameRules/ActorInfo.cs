@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,7 +22,7 @@ namespace OpenRA
 	/// </summary>
 	public class ActorInfo
 	{
-		public const string AbstractActorPrefix = "^";
+		public const char AbstractActorPrefix = '^';
 		public const char TraitInstanceSeparator = '@';
 
 		/// <summary>
@@ -32,8 +32,8 @@ namespace OpenRA
 		/// You can remove inherited traits by adding a - in front of them as in -TraitName: to inherit everything, but this trait.
 		/// </summary>
 		public readonly string Name;
-		readonly TypeDictionary traits = new TypeDictionary();
-		List<TraitInfo> constructOrderCache = null;
+		readonly TypeDictionary traits = [];
+		TraitInfo[] constructOrderCache = null;
 
 		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)
 		{
@@ -110,45 +110,59 @@ namespace OpenRA
 			{
 				Trait = i,
 				Type = i.GetType(),
-				Dependencies = PrerequisitesOf(i).ToList()
+				Dependencies = PrerequisitesOf(i).ToList(),
+				OptionalDependencies = OptionalPrerequisitesOf(i).ToList()
 			}).ToList();
 
-			var resolved = source.Where(s => !s.Dependencies.Any()).ToList();
-			var unresolved = source.Except(resolved);
+			var resolved = source.Where(s => s.Dependencies.Count == 0 && s.OptionalDependencies.Count == 0).ToList();
+			var unresolved = source.ToHashSet();
+			unresolved.ExceptWith(resolved);
 
-			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
+			static bool AreResolvable(Type a, Type b) => a.IsAssignableFrom(b);
 
 			// This query detects which unresolved traits can be immediately resolved as all their direct dependencies are met.
 			var more = unresolved.Where(u =>
 				u.Dependencies.All(d => // To be resolvable, all dependencies must be satisfied according to the following conditions:
-					resolved.Exists(r => testResolve(d, r.Type)) && // There must exist a resolved trait that meets the dependency.
-					!unresolved.Any(u1 => testResolve(d, u1.Type)))); // All matching traits that meet this dependency must be resolved first.
+					resolved.Exists(r => AreResolvable(d, r.Type)) && // There must exist a resolved trait that meets the dependency.
+					!unresolved.Any(u1 => AreResolvable(d, u1.Type))) && // All matching traits that meet this dependency must be resolved first.
+				u.OptionalDependencies.All(d => // To be resolvable, all optional dependencies must be satisfied according to the following condition:
+					!unresolved.Any(u1 => AreResolvable(d, u1.Type)))); // All matching traits that meet this optional dependencies must be resolved first.
 
 			// Continue resolving traits as long as possible.
 			// Each time we resolve some traits, this means dependencies for other traits may then be possible to satisfy in the next pass.
-			while (more.Any())
-				resolved.AddRange(more);
-
-			if (unresolved.Any())
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
+			var readyToResolve = more.ToList();
+			while (readyToResolve.Count != 0)
 			{
-				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\r\n";
-				var missing = unresolved.SelectMany(u => u.Dependencies.Where(d => !source.Any(s => testResolve(d, s.Type)))).Distinct();
+				resolved.AddRange(readyToResolve);
+				unresolved.ExceptWith(readyToResolve);
+				readyToResolve.Clear();
+				readyToResolve.AddRange(more);
+			}
+#pragma warning restore CA1851
 
-				exceptionString += "Missing:\r\n";
+			if (unresolved.Count != 0)
+			{
+				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\n";
+				var missing = unresolved.SelectMany(u => u.Dependencies.Where(d => !source.Any(s => AreResolvable(d, s.Type)))).Distinct();
+
+				exceptionString += "Missing:\n";
 				foreach (var m in missing)
-					exceptionString += m + " \r\n";
+					exceptionString += m + " \n";
 
-				exceptionString += "Unresolved:\r\n";
+				exceptionString += "Unresolved:\n";
 				foreach (var u in unresolved)
 				{
 					var deps = u.Dependencies.Where(d => !resolved.Exists(r => r.Type == d));
-					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
+					var optDeps = u.OptionalDependencies.Where(d => !resolved.Exists(r => r.Type == d));
+					var allDeps = string.Join(", ", deps.Select(o => o.ToString()).Concat(optDeps.Select(o => $"[{o}]")));
+					exceptionString += $"{u.Type}: {{ {allDeps} }}\n";
 				}
 
 				throw new YamlException(exceptionString);
 			}
 
-			constructOrderCache = resolved.Select(r => r.Trait).ToList();
+			constructOrderCache = resolved.Select(r => r.Trait).ToArray();
 			return constructOrderCache;
 		}
 
@@ -161,10 +175,19 @@ namespace OpenRA
 				.Select(t => t.GetGenericArguments()[0]);
 		}
 
+		public static IEnumerable<Type> OptionalPrerequisitesOf(TraitInfo info)
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(NotBefore<>))
+				.Select(t => t.GetGenericArguments()[0]);
+		}
+
 		public bool HasTraitInfo<T>() where T : ITraitInfoInterface { return traits.Contains<T>(); }
 		public T TraitInfo<T>() where T : ITraitInfoInterface { return traits.Get<T>(); }
 		public T TraitInfoOrDefault<T>() where T : ITraitInfoInterface { return traits.GetOrDefault<T>(); }
-		public IEnumerable<T> TraitInfos<T>() where T : ITraitInfoInterface { return traits.WithInterface<T>(); }
+		public IReadOnlyCollection<T> TraitInfos<T>() where T : ITraitInfoInterface { return traits.WithInterface<T>(); }
 
 		public BitSet<TargetableType> GetAllTargetTypes()
 		{

@@ -1,4 +1,4 @@
-; Copyright 2007-2021 OpenRA developers (see AUTHORS)
+; Copyright (c) The OpenRA Developers and Contributors
 ; This file is part of OpenRA.
 ;
 ;  OpenRA is free software: you can redistribute it and/or modify
@@ -12,7 +12,7 @@
 ;  GNU General Public License for more details.
 ;
 ;  You should have received a copy of the GNU General Public License
-;  along with OpenRA.  If not, see <http://www.gnu.org/licenses/>.
+;  along with OpenRA.  If not, see <https://www.gnu.org/licenses/>.
 
 !include "MUI2.nsh"
 !include "FileFunc.nsh"
@@ -122,10 +122,13 @@ Section "Game" GAME
 	RMDir /r "$INSTDIR\mods"
 	SetOutPath "$INSTDIR\mods"
 	File /r "${SRCDIR}\mods\common"
+	File /r "${SRCDIR}\mods\common-content"
 	File /r "${SRCDIR}\mods\cnc"
+	File /r "${SRCDIR}\mods\cnc-content"
 	File /r "${SRCDIR}\mods\d2k"
+	File /r "${SRCDIR}\mods\d2k-content"
 	File /r "${SRCDIR}\mods\ra"
-	File /r "${SRCDIR}\mods\modcontent"
+	File /r "${SRCDIR}\mods\ra-content"
 
 	SetOutPath "$INSTDIR"
 	File "${SRCDIR}\*.exe"
@@ -149,9 +152,6 @@ Section "Game" GAME
 		CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Dune 2000${SUFFIX}.lnk" $OUTDIR\Dune2000.exe "" \
 			"$OUTDIR\Dune2000.exe" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
-
-	SetOutPath "$INSTDIR\lua"
-	File "${SRCDIR}\lua\*.lua"
 
 	SetOutPath "$INSTDIR\glsl"
 	File "${SRCDIR}\glsl\*.frag"
@@ -196,7 +196,7 @@ Section "-Uninstaller"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "InstallLocation" "$INSTDIR"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "DisplayIcon" "$INSTDIR\ra.ico"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "Publisher" "OpenRA developers"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "URLInfoAbout" "http://openra.net"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "URLInfoAbout" "https://openra.net"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "DisplayVersion" "${TAG}"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "NoModify" "1"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}" "NoRepair" "1"
@@ -211,7 +211,6 @@ Function ${UN}Clean
 	RMDir /r $INSTDIR\mods
 	RMDir /r $INSTDIR\maps
 	RMDir /r $INSTDIR\glsl
-	RMDir /r $INSTDIR\lua
 	Delete $INSTDIR\*.exe
 	Delete $INSTDIR\*.dll
 	Delete $INSTDIR\*.ico
@@ -225,6 +224,10 @@ Function ${UN}Clean
 	Delete $INSTDIR\IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 
 	RMDir /r $INSTDIR\Support
+
+	!ifndef USE_PROGRAMFILES32
+		SetRegView 64
+	!endif
 
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}"
 	DeleteRegKey HKLM "Software\Classes\openra-ra-${TAG}"

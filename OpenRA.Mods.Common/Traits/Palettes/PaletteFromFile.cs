@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
@@ -18,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load VGA palette (.pal) registers.")]
-	class PaletteFromFileInfo : TraitInfo, IProvidesCursorPaletteInfo
+	sealed class PaletteFromFileInfo : TraitInfo, ITilesetSpecificPaletteInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
-		[Desc("internal palette name")]
+		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
 		[Desc("If defined, load the palette only for this tileset.")]
@@ -33,10 +34,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Filename = null;
 
 		[Desc("Map listed indices to transparent. Ignores previous color.")]
-		public readonly int[] TransparentIndex = { 0 };
+		public readonly int[] TransparentIndex = [0];
 
 		[Desc("Map listed indices to shadow. Ignores previous color.")]
-		public readonly int[] ShadowIndex = { };
+		public readonly int[] ShadowIndex = [];
 
 		public readonly bool AllowModifiers = true;
 
@@ -44,6 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CursorPalette = false;
 
 		public override object Create(ActorInitializer init) { return new PaletteFromFile(init.World, this); }
+
+		string ITilesetSpecificPaletteInfo.Tileset => Tileset;
 
 		string IProvidesCursorPaletteInfo.Palette => CursorPalette ? Name : null;
 
@@ -53,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class PaletteFromFile : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromFile : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromFileInfo info;
@@ -65,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
+			if (info.Tileset == null || string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
 		}
 

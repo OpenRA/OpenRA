@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,39 +10,44 @@
 #endregion
 
 using System;
+using System.Globalization;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameCashCounterLogic : ChromeLogic
 	{
+		[FluentReference("usage", "capacity")]
+		const string SiloUsage = "label-silo-usage";
+
 		const float DisplayFracPerFrame = .07f;
 		const int DisplayDeltaPerFrame = 37;
 
 		readonly World world;
 		readonly Player player;
 		readonly PlayerResources playerResources;
-		readonly string cashLabel;
+		readonly LabelWithTooltipWidget cashLabel;
+		readonly CachedTransform<(int Resources, int Capacity), string> siloUsageTooltipCache;
 
 		int nextCashTickTime = 0;
 		int displayResources;
-		string displayLabel;
+
+		string siloUsageTooltip = "";
 
 		[ObjectCreator.UseCtor]
-		public IngameCashCounterLogic(Widget widget, World world)
+		public IngameCashCounterLogic(Widget widget, ModData modData, World world)
 		{
-			var cash = widget.Get<LabelWithTooltipWidget>("CASH");
-
 			this.world = world;
 			player = world.LocalPlayer;
 			playerResources = player.PlayerActor.Trait<PlayerResources>();
-			displayResources = playerResources.Cash + playerResources.Resources;
-			cashLabel = cash.Text;
-			displayLabel = cashLabel.F(displayResources);
+			displayResources = playerResources.GetCashAndResources();
 
-			cash.GetText = () => displayLabel;
-			cash.GetTooltipText = () => $"Silo Usage: {playerResources.Resources}/{playerResources.ResourceCapacity}";
+			siloUsageTooltipCache = new CachedTransform<(int Resources, int Capacity), string>(x =>
+				FluentProvider.GetMessage(SiloUsage, "usage", x.Resources, "capacity", x.Capacity));
+			cashLabel = widget.Get<LabelWithTooltipWidget>("CASH");
+			cashLabel.GetTooltipText = () => siloUsageTooltip;
 		}
 
 		public override void Tick()
@@ -50,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (nextCashTickTime > 0)
 				nextCashTickTime--;
 
-			var actual = playerResources.Cash + playerResources.Resources;
+			var actual = playerResources.GetCashAndResources();
 
 			var diff = Math.Abs(actual - displayResources);
 			var move = Math.Min(Math.Max((int)(diff * DisplayFracPerFrame), DisplayDeltaPerFrame), diff);
@@ -73,7 +78,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			displayLabel = cashLabel.F(displayResources);
+			siloUsageTooltip = siloUsageTooltipCache.Update((playerResources.Resources, playerResources.ResourceCapacity));
+			var displayResourcesText = displayResources.ToString(CultureInfo.CurrentCulture);
+			cashLabel.GetText = () => displayResourcesText;
 		}
 	}
 }

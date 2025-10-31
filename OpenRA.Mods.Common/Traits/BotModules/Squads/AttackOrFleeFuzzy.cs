@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,17 +20,17 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	sealed class AttackOrFleeFuzzy
 	{
-		static readonly string[] DefaultRulesNormalOwnHealth = new[]
-		{
+		static readonly string[] DefaultRulesNormalOwnHealth =
+		[
 			"if ((OwnHealth is Normal) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
 			"then AttackOrFlee is Attack"
-		};
+		];
 
-		static readonly string[] DefaultRulesInjuredOwnHealth = new[]
-		{
+		static readonly string[] DefaultRulesInjuredOwnHealth =
+		[
 			"if ((OwnHealth is Injured) " +
 			"and (EnemyHealth is NearDead) " +
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
@@ -60,10 +60,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
 			"and (RelativeSpeed is Slow)) " +
 			"then AttackOrFlee is Attack"
-		};
+		];
 
-		static readonly string[] DefaultRulesNearDeadOwnHealth = new[]
-		{
+		static readonly string[] DefaultRulesNearDeadOwnHealth =
+		[
 			"if ((OwnHealth is NearDead) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured)) " +
 			"and ((RelativeAttackPower is Equal) or (RelativeAttackPower is Strong)) " +
@@ -93,11 +93,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"and (RelativeAttackPower is Equal) " +
 			"and (RelativeSpeed is Fast) " +
 			"then AttackOrFlee is Flee"
-		};
+		];
 
-		public static readonly AttackOrFleeFuzzy Default = new AttackOrFleeFuzzy(null, null, null);
-		public static readonly AttackOrFleeFuzzy Rush = new AttackOrFleeFuzzy(new[]
-		{
+		public static readonly AttackOrFleeFuzzy Default = new(null, null, null);
+		public static readonly AttackOrFleeFuzzy Rush = new(
+		[
 			"if ((OwnHealth is Normal) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 			"and (RelativeAttackPower is Strong) " +
@@ -109,9 +109,9 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal)) " +
 			"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
 			"then AttackOrFlee is Flee"
-		}, null, null);
+		], null, null);
 
-		readonly MamdaniFuzzySystem fuzzyEngine = new MamdaniFuzzySystem();
+		readonly MamdaniFuzzySystem fuzzyEngine = new();
 
 		public AttackOrFleeFuzzy(
 			IEnumerable<string> rulesForNormalOwnHealth,
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			fuzzyEngine.Rules.Add(fuzzyEngine.ParseRule(rule));
 		}
 
-		public bool CanAttack(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
+		public bool CanAttack(IReadOnlyCollection<Actor> ownUnits, IReadOnlyCollection<Actor> enemyUnits)
 		{
 			double attackChance;
 			var inputValues = new Dictionary<FuzzyVariable, double>();
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return !double.IsNaN(attackChance) && attackChance < 30.0;
 		}
 
-		static float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
+		static float NormalizedHealth(IEnumerable<Actor> actors, int normalizeByValue)
 		{
 			var sumOfMaxHp = 0;
 			var sumOfHp = 0;
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return (int)((long)sumOfHp * normalizeByValue / sumOfMaxHp);
 		}
 
-		static float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
+		static float RelativePower(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBaseInfo>, a =>
 			{
@@ -218,28 +218,28 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					var totalReloadDelay = arm.Weapon.ReloadDelay + (arm.Weapon.BurstDelays[0] * (burst - 1)).Clamp(1, 200);
 					var damageWarheads = arm.Weapon.Warheads.OfType<DamageWarhead>();
 					foreach (var warhead in damageWarheads)
-						sumOfDamage += (warhead.Damage * burst / totalReloadDelay) * 100;
+						sumOfDamage += warhead.Damage * burst / totalReloadDelay * 100;
 				}
 
 				return sumOfDamage;
 			});
 		}
 
-		static float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
+		static float RelativeSpeed(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Info.TraitInfo<MobileInfo>().Speed);
 		}
 
-		static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,
-					Func<IEnumerable<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
+		static float RelativeValue(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy, float normalizeByValue,
+					Func<IReadOnlyCollection<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
 		{
-			if (!enemy.Any())
+			if (enemy.Count == 0)
 				return 999.0f;
 
-			if (!own.Any())
+			if (own.Count == 0)
 				return 0.0f;
 
-			var relative = (relativeFunc(own, getValue) / relativeFunc(enemy, getValue)) * normalizeByValue;
+			var relative = relativeFunc(own, getValue) / relativeFunc(enemy, getValue) * normalizeByValue;
 			return relative.Clamp(0.0f, 999.0f);
 		}
 

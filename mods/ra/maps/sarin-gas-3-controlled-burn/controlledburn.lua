@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ SetupTriggers = function()
 		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(trigger1)
 			local baseCamera = Actor.Create("camera", true, { Owner = Greece, Location = BaseCam.Location })
-			if Map.LobbyOption("difficulty") == "hard" then
+			if Difficulty == "hard" then
 				Reinforcements.Reinforce(BadGuy, RaxTeam, { BadGuyRaxSpawn.Location, BaseCam.Location }, 0)
 			end
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
@@ -66,17 +66,24 @@ SetupTriggers = function()
 	Trigger.OnAllKilledOrCaptured(SarinPlants, function()
 		Greece.MarkCompletedObjective(CaptureSarin)
 	end)
+
+	Trigger.OnEnteredProximityTrigger(AlliesMove.CenterPosition, WDist.FromCells(3), function(actor, id)
+		if actor.Owner == Greece then
+			Trigger.RemoveProximityTrigger(id)
+			Media.PlaySpeechNotification(Greece, "SignalFlareSouth")
+		end
+	end)
 end
 
 MCVArrived = false
 MCVArrivedTick = false
 PowerDownTeslas = function()
 	if not MCVArrived then
-		CaptureSarin = Greece.AddObjective("Capture all Sarin processing plants intact.")
-		KillBase = Greece.AddObjective("Destroy the enemy compound.")
+		CaptureSarin = AddPrimaryObjective(Greece, "capture-sarin-plants-intact")
+		KillBase = AddPrimaryObjective(Greece, "destroy-enemy-compound")
 		Greece.MarkCompletedObjective(TakeOutPower)
 		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
-		Reinforcements.Reinforce(Greece, MCVReinforcements[Map.LobbyOption("difficulty")], { AlliesSpawn.Location, AlliesMove.Location })
+		Reinforcements.Reinforce(Greece, MCVReinforcements[Difficulty], { AlliesSpawn.Location, AlliesMove.Location })
 		local baseFlare = Actor.Create("flare", true, { Owner = Greece, Location = AlliedBase.Location })
 		Actor.Create("proc", true, { Owner = USSR, Location = Proc1.Location })
 		Actor.Create("proc", true, { Owner = USSR, Location = Proc2.Location })
@@ -85,6 +92,7 @@ PowerDownTeslas = function()
 
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			MCVArrivedTick = true
+			PrepareFinishingHunt(USSR)
 		end)
 
 		Trigger.AfterDelay(DateTime.Seconds(60), function()
@@ -97,6 +105,25 @@ PowerDownTeslas = function()
 			ActivateAI()
 		end)
 	end
+end
+
+PrepareFinishingHunt = function(player)
+	local buildings = GetBaseBuildings(player)
+
+	Trigger.OnAllKilledOrCaptured(buildings, function()
+		Utils.Do(player.GetGroundAttackers(), function(actor)
+			actor.Stop()
+			IdleHunt(actor)
+		end)
+	end)
+end
+
+GetBaseBuildings = function(player)
+	-- Excludes the unrepairable sarin plants, which is desired anyway.
+	local buildings = Utils.Where(player.GetActors(), function(actor)
+		return actor.HasProperty("StartBuildingRepairs")
+	end)
+	return buildings
 end
 
 Tick = function()
@@ -121,25 +148,10 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
 
-	SovietObj = USSR.AddObjective("Defeat the Allies.")
-	TakeOutPower = Greece.AddObjective("Bring down the power of the base to the east.")
+	SovietObj = AddPrimaryObjective(USSR, "")
+	TakeOutPower = AddPrimaryObjective(Greece, "cut-power-east")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-	Trigger.OnPlayerLost(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Lose")
-	end)
-	Trigger.OnPlayerWon(Greece, function()
-		Media.PlaySpeechNotification(Greece, "Win")
-	end)
+	InitObjectives(Greece)
 
 	StartSpy.DisguiseAsType("e1", BadGuy)
 	Camera.Position = DefaultCameraPosition.CenterPosition

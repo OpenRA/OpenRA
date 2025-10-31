@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Seek out and attack nearby targets.")]
+		[Desc("Ignoring visibility, find the closest hostile target and attack move to within 2 cells of it.")]
 		public void Hunt()
 		{
 			Self.QueueActivity(new Hunt(Self));
@@ -63,8 +63,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Patrol along a set of given waypoints until a condition becomes true. " +
-			"The actor will wait for `wait` ticks at each waypoint.")]
-		public void PatrolUntil(CPos[] waypoints, LuaFunction func, int wait = 0)
+			"The actor will wait for `wait` ticks at each waypoint. " +
+			"The callback function will be called as func(self: actor):boolean.")]
+		public void PatrolUntil(CPos[] waypoints, [ScriptEmmyTypeOverride("fun(self: actor):boolean")] LuaFunction func, int wait = 0)
 		{
 			Patrol(waypoints, false, wait);
 
@@ -91,10 +92,10 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var target = Target.FromActor(targetActor);
 			if (!target.IsValidFor(Self))
-				Log.Write("lua", "{1} is an invalid target for {0}!", Self, targetActor);
+				Log.Write("lua", $"{targetActor} is an invalid target for {Self}!");
 
 			if (!targetActor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !targetActor.CanBeViewedByPlayer(Self.Owner))
-				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
+				Log.Write("lua", $"{targetActor} is not revealed for player {Self.Owner}!");
 
 			foreach (var attack in attackBases)
 				attack.AttackTarget(target, AttackSource.Default, true, allowMove, forceAttack);

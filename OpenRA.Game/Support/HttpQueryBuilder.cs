@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,14 +12,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace OpenRA.Support
 {
-	public class HttpQueryBuilder : IEnumerable
+	public class HttpQueryBuilder : IEnumerable<KeyValuePair<string, string>>
 	{
 		readonly string url;
-		readonly List<Parameter> parameters = new List<Parameter>();
+		readonly List<KeyValuePair<string, string>> parameters = [];
 
 		public HttpQueryBuilder(string url)
 		{
@@ -28,34 +29,31 @@ namespace OpenRA.Support
 
 		public void Add(string name, object value)
 		{
-			parameters.Add(new Parameter
-			{
-				Name = name,
-				Value = Uri.EscapeUriString(value.ToString())
-			});
+			parameters.Add(KeyValuePair.Create(
+				name,
+				Uri.EscapeDataString(value.ToString())));
 		}
 
 		public override string ToString()
 		{
 			var builder = new StringBuilder(url);
 
-			builder.Append("?");
+			builder.Append('?');
 
 			foreach (var parameter in parameters)
-				builder.Append($"{parameter.Name}={parameter.Value}&");
+				builder.Append(CultureInfo.InvariantCulture, $"{parameter.Key}={parameter.Value}&");
 
 			return builder.ToString();
 		}
 
-		class Parameter
+		public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
 		{
-			public string Name { get; set; }
-			public string Value { get; set; }
+			return parameters.GetEnumerator();
 		}
 
-		public IEnumerator GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return GetEnumerator();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.AudioLoaders
@@ -40,7 +39,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 	{
 		public int SampleBits => 8;
 		public int Channels => 1;
-		public int SampleRate { get; private set; }
+		public int SampleRate { get; }
 		public float LengthInSeconds => (float)totalSamples / SampleRate;
 		public Stream GetPCMInputStream() { return new VocStream(new VocFormat(this)); }
 		public void Dispose() { stream.Dispose(); }
@@ -116,15 +115,15 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		{
 			var vfh = VocFileHeader.Read(stream);
 
-			if (!vfh.Description.StartsWith("Creative Voice File"))
+			if (!vfh.Description.StartsWith("Creative Voice File", StringComparison.Ordinal))
 				throw new InvalidDataException("Voc header description not recognized");
 			if (vfh.DatablockOffset != 26)
 				throw new InvalidDataException("Voc header offset is wrong");
 			if (vfh.Version < 0x0100 || vfh.Version >= 0x0200)
-				throw new InvalidDataException("Voc header version " + vfh.Version.ToString("X") + " not supported");
+				throw new InvalidDataException("Voc header version " + vfh.Version.ToStringInvariant("X") + " not supported");
 			if (vfh.ID != ~vfh.Version + 0x1234)
 				throw new InvalidDataException("Voc header id is bogus - expected: " +
-					(~vfh.Version + 0x1234).ToString("X") + " but value is : " + vfh.ID.ToString("X"));
+					(~vfh.Version + 0x1234).ToStringInvariant("X") + " but value is : " + vfh.ID.ToStringInvariant("X"));
 		}
 
 		static int GetSampleRateFromVocRate(int vocSampleRate)
@@ -150,7 +149,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				var block = default(VocBlock);
 				try
 				{
-					block.Code = stream.ReadByte();
+					block.Code = stream.ReadUInt8();
 					block.Length = 0;
 				}
 				catch (EndOfStreamException)
@@ -162,62 +161,62 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				if (block.Code == 0 || block.Code > 9)
 					break;
 
-				block.Length = stream.ReadByte();
-				block.Length |= stream.ReadByte() << 8;
-				block.Length |= stream.ReadByte() << 16;
+				block.Length = stream.ReadUInt8();
+				block.Length |= stream.ReadUInt8() << 8;
+				block.Length |= stream.ReadUInt8() << 16;
 
 				var skip = 0;
 				switch (block.Code)
 				{
 					// Sound data
 					case 1:
+					{
+						if (block.Length < 2)
+							throw new InvalidDataException("Invalid sound data block length in voc file");
+						var freqDiv = stream.ReadUInt8();
+						block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
+						var codec = stream.ReadUInt8();
+						if (codec != 0)
+							throw new InvalidDataException("Unhandled codec used in voc file");
+						skip = block.Length - 2;
+						block.SampleBlock.Samples = skip;
+						block.SampleBlock.Offset = stream.Position;
+
+						// See if last block contained additional information
+						if (blockList.Count > 0)
 						{
-							if (block.Length < 2)
-								throw new InvalidDataException("Invalid sound data block length in voc file");
-							var freqDiv = stream.ReadByte();
-							block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
-							var codec = stream.ReadByte();
-							if (codec != 0)
-								throw new InvalidDataException("Unhandled codec used in voc file");
-							skip = block.Length - 2;
-							block.SampleBlock.Samples = skip;
-							block.SampleBlock.Offset = stream.Position;
-
-							// See if last block contained additional information
-							if (blockList.Count > 0)
+							var b = blockList[^1];
+							if (b.Code == 8)
 							{
-								var b = blockList.Last();
-								if (b.Code == 8)
-								{
-									block.SampleBlock.Rate = b.SampleBlock.Rate;
-									blockList.Remove(b);
-								}
+								block.SampleBlock.Rate = b.SampleBlock.Rate;
+								blockList.Remove(b);
 							}
-
-							sampleRate = Math.Max(sampleRate, block.SampleBlock.Rate);
-							break;
 						}
+
+						sampleRate = Math.Max(sampleRate, block.SampleBlock.Rate);
+						break;
+					}
 
 					// Silence
 					case 3:
-						{
-							if (block.Length != 3)
-								throw new InvalidDataException("Invalid silence block length in voc file");
-							block.SampleBlock.Offset = 0;
-							block.SampleBlock.Samples = stream.ReadUInt16() + 1;
-							var freqDiv = stream.ReadByte();
-							block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
-							break;
-						}
+					{
+						if (block.Length != 3)
+							throw new InvalidDataException("Invalid silence block length in voc file");
+						block.SampleBlock.Offset = 0;
+						block.SampleBlock.Samples = stream.ReadUInt16() + 1;
+						var freqDiv = stream.ReadUInt8();
+						block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
+						break;
+					}
 
 					// Repeat start
 					case 6:
-						{
-							if (block.Length != 2)
-								throw new InvalidDataException("Invalid repeat start block length in voc file");
-							block.LoopBlock.Count = stream.ReadUInt16() + 1;
-							break;
-						}
+					{
+						if (block.Length != 2)
+							throw new InvalidDataException("Invalid repeat start block length in voc file");
+						block.LoopBlock.Count = stream.ReadUInt16() + 1;
+						break;
+					}
 
 					// Repeat end
 					case 7:
@@ -225,23 +224,23 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 					// Extra info
 					case 8:
-						{
-							if (block.Length != 4)
-								throw new InvalidDataException("Invalid info block length in voc file");
-							int freqDiv = stream.ReadUInt16();
-							if (freqDiv == 65536)
-								throw new InvalidDataException("Invalid frequency divisor 65536 in voc file");
-							var codec = stream.ReadByte();
-							if (codec != 0)
-								throw new InvalidDataException("Unhandled codec used in voc file");
-							var channels = stream.ReadByte() + 1;
-							if (channels != 1)
-								throw new InvalidDataException("Unhandled number of channels in voc file");
-							block.SampleBlock.Offset = 0;
-							block.SampleBlock.Samples = 0;
-							block.SampleBlock.Rate = (int)(256000000L / (65536L - freqDiv));
-							break;
-						}
+					{
+						if (block.Length != 4)
+							throw new InvalidDataException("Invalid info block length in voc file");
+						int freqDiv = stream.ReadUInt16();
+						if (freqDiv == 65536)
+							throw new InvalidDataException("Invalid frequency divisor 65536 in voc file");
+						var codec = stream.ReadUInt8();
+						if (codec != 0)
+							throw new InvalidDataException("Unhandled codec used in voc file");
+						var channels = stream.ReadUInt8() + 1;
+						if (channels != 1)
+							throw new InvalidDataException("Unhandled number of channels in voc file");
+						block.SampleBlock.Offset = 0;
+						block.SampleBlock.Samples = 0;
+						block.SampleBlock.Rate = (int)(256000000L / (65536L - freqDiv));
+						break;
+					}
 
 					// Sound data (New format)
 					case 9:
@@ -332,18 +331,16 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			}
 		}
 
-		int Read(byte[] buffer, int offset, int count)
+		int Read(Span<byte> buffer)
 		{
 			var bytesWritten = 0;
-			var samplesLeft = Math.Min(count, buffer.Length - offset);
-			while (samplesLeft > 0)
+			while (buffer.Length > 0)
 			{
-				var len = FillBuffer(samplesLeft);
+				var len = FillBuffer(buffer.Length);
 				if (len == 0)
 					break;
-				Buffer.BlockCopy(this.buffer, 0, buffer, offset, len);
-				samplesLeft -= len;
-				offset += len;
+				this.buffer.AsSpan(..len).CopyTo(buffer);
+				buffer = buffer[len..];
 				bytesWritten += len;
 			}
 
@@ -372,13 +369,19 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 			public override int Read(byte[] buffer, int offset, int count)
 			{
-				return format.Read(buffer, offset, count);
+				return Read(buffer.AsSpan(offset, count));
+			}
+
+			public override int Read(Span<byte> buffer)
+			{
+				return format.Read(buffer);
 			}
 
 			public override void Flush() { throw new NotImplementedException(); }
 			public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
 			public override void SetLength(long value) { throw new NotImplementedException(); }
 			public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+			public override void Write(ReadOnlySpan<byte> buffer) { throw new NotImplementedException(); }
 
 			protected override void Dispose(bool disposing)
 			{

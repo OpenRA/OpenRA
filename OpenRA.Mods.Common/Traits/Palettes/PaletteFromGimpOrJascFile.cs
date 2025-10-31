@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load a GIMP .gpl or JASC .pal palette file. Supports per-color alpha.")]
-	class PaletteFromGimpOrJascFileInfo : TraitInfo, IProvidesCursorPaletteInfo
+	sealed class PaletteFromGimpOrJascFileInfo : TraitInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Defines for which tileset IDs this palette should be loaded.",
 			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
-		public readonly HashSet<string> Tilesets = new HashSet<string>();
+		public readonly HashSet<string> Tilesets = [];
 
 		[Desc("Don't load palette for these tileset IDs.")]
-		public readonly HashSet<string> ExcludeTilesets = new HashSet<string>();
+		public readonly HashSet<string> ExcludeTilesets = [];
 
 		[FieldLoader.Require]
 		[Desc("Name of the file to load.")]
@@ -89,17 +89,17 @@ namespace OpenRA.Mods.Common.Traits
 
 						// Check if color has a (valid) alpha value.
 						// Note: We can't throw on "rgba.Length > 3 but parse failed", because in GIMP palettes the 'invalid' value is probably a color name string.
-						var noAlpha = rgba.Length > 3 ? !byte.TryParse(rgba[3], out a) : true;
+						var noAlpha = rgba.Length <= 3 || !byte.TryParse(rgba[3], out a);
 
 						// Index should be completely transparent/background color
 						if (i == TransparentIndex)
 							colors[i] = 0;
 						else if (noAlpha)
-							colors[i] = (uint)Color.FromArgb(r, g, b).ToArgb();
+							colors[i] = Color.FromArgb(r, g, b).ToArgb();
 						else if (Premultiply)
-							colors[i] = (uint)Color.FromArgb(a, r * a / 255, g * a / 255, b * a / 255).ToArgb();
+							colors[i] = Color.FromArgb(a, r * a / 255, g * a / 255, b * a / 255).ToArgb();
 						else
-							colors[i] = (uint)Color.FromArgb(a, r, g, b).ToArgb();
+							colors[i] = Color.FromArgb(a, r, g, b).ToArgb();
 
 						i++;
 					}
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class PaletteFromGimpOrJascFile : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromGimpOrJascFile : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromGimpOrJascFileInfo info;

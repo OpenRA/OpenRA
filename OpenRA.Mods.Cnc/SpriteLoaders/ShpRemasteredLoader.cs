@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -48,15 +48,15 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 	public class ShpRemasteredSprite
 	{
-		static readonly Regex FilenameRegex = new Regex(@"^(?<prefix>.+?[\-_])(?<frame>\d{4})\.tga$");
-		static readonly Regex MetaRegex = new Regex(@"^\{""size"":\[(?<width>\d+),(?<height>\d+)\],""crop"":\[(?<left>\d+),(?<top>\d+),(?<right>\d+),(?<bottom>\d+)\]\}$");
+		static readonly Regex FilenameRegex = new(@"^(?<prefix>.+?[\-_])(?<frame>\d{4})\.tga$");
+		static readonly Regex MetaRegex = new(@"^\{""size"":\[(?<width>\d+),(?<height>\d+)\],""crop"":\[(?<left>\d+),(?<top>\d+),(?<right>\d+),(?<bottom>\d+)\]\}$");
 
-		int ParseGroup(Match match, string group)
+		static int ParseGroup(Match match, string group)
 		{
-			return int.Parse(match.Groups[group].Value);
+			return Exts.ParseInt32Invariant(match.Groups[group].Value);
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
+		public IReadOnlyList<ISpriteFrame> Frames { get; }
 
 		public ShpRemasteredSprite(Stream stream)
 		{
@@ -71,13 +71,12 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					continue;
 
 				var prefix = match.Groups["prefix"].Value;
-				if (framePrefix == null)
-					framePrefix = prefix;
+				framePrefix ??= prefix;
 
 				if (prefix != framePrefix)
 					throw new InvalidDataException($"Frame prefix mismatch: `{prefix}` != `{framePrefix}`");
 
-				frameCount = Math.Max(frameCount, int.Parse(match.Groups["frame"].Value) + 1);
+				frameCount = Math.Max(frameCount, Exts.ParseInt32Invariant(match.Groups["frame"].Value) + 1);
 			}
 
 			var frames = new ISpriteFrame[frameCount];
@@ -98,14 +97,18 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					var metaStream = metaEntry != null ? container.GetInputStream(metaEntry) : null;
 					if (metaStream != null)
 					{
-						var meta = MetaRegex.Match(metaStream.ReadAllText());
+						string metaText;
+						using (metaStream)
+						using (var metaReader = new StreamReader(metaStream, bufferSize: 64))
+							metaText = metaReader.ReadToEnd();
+
+						var meta = MetaRegex.Match(metaText);
 						var crop = Rectangle.FromLTRB(
 							ParseGroup(meta, "left"), ParseGroup(meta, "top"),
 							ParseGroup(meta, "right"), ParseGroup(meta, "bottom"));
 
 						var frameSize = new Size(ParseGroup(meta, "width"), ParseGroup(meta, "height"));
 						frames[i] = new TgaSprite.TgaFrame(tgaStream, frameSize, crop);
-						metaStream.Dispose();
 					}
 					else
 						frames[i] = new TgaSprite.TgaFrame(tgaStream);

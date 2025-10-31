@@ -1,4 +1,5 @@
 FireballLauncher:
+	ValidTargets: Ground, Trees
 	ReloadDelay: 50
 	Range: 4c256
 	Report: flamtnk1.aud
@@ -11,6 +12,7 @@ FireballLauncher:
 	Warhead@1Dam: SpreadDamage
 		Spread: 288
 		Falloff: 100, 50, 25, 12, 6, 3, 0
+		ValidTargets: Ground, Trees
 		Damage: 2500
 		Versus:
 			None: 600
@@ -29,6 +31,7 @@ Bomb:
 	BurstDelays: 6
 	Range: 2c512
 	TargetActorCenter: true
+	ValidTargets: Ground, Trees
 	Projectile: GravityBomb
 		Velocity: 72, 0, -90
 		Acceleration: 0, 0, -8
@@ -46,10 +49,11 @@ Bomb:
 			Heavy: 32
 			Concrete: 100
 		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+		ValidTargets: Ground, Trees
 	Warhead@2Eff: CreateEffect
 		Explosions: large_explosion
 		ImpactSounds: expnew09.aud
-		ValidTargets: Ground, Air
+		ValidTargets: Ground, Trees, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
 		ExplosionPalette: player

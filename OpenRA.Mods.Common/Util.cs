@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -28,25 +29,32 @@ namespace OpenRA.Mods.Common
 		public static int TickFacing(int facing, int desiredFacing, int rot)
 		{
 			var leftTurn = (facing - desiredFacing) & 0xFF;
-			var rightTurn = (desiredFacing - facing) & 0xFF;
-			if (Math.Min(leftTurn, rightTurn) < rot)
+			if (leftTurn < rot)
 				return desiredFacing & 0xFF;
-			else if (rightTurn < leftTurn)
+
+			var rightTurn = (desiredFacing - facing) & 0xFF;
+			if (rightTurn < rot)
+				return desiredFacing & 0xFF;
+
+			if (rightTurn < leftTurn)
 				return (facing + rot) & 0xFF;
-			else
-				return (facing - rot) & 0xFF;
+
+			return (facing - rot) & 0xFF;
 		}
 
 		/// <summary>
 		/// Adds step angle units to facing in the direction that takes it closer to desiredFacing.
 		/// If facing is already within step of desiredFacing then desiredFacing is returned.
-		/// Step is given as an integer to allow negative values (step away from the desired facing)
+		/// Step is given as an integer to allow negative values (step away from the desired facing).
 		/// </summary>
 		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, WAngle step)
 		{
 			var leftTurn = (facing - desiredFacing).Angle;
+			if (leftTurn < step.Angle)
+				return desiredFacing;
+
 			var rightTurn = (desiredFacing - facing).Angle;
-			if (leftTurn < step.Angle || rightTurn < step.Angle)
+			if (rightTurn < step.Angle)
 				return desiredFacing;
 
 			return rightTurn < leftTurn ? facing + step : facing - step;
@@ -54,7 +62,7 @@ namespace OpenRA.Mods.Common
 
 		/// <summary>
 		/// Determines whether desiredFacing is clockwise (-1) or anticlockwise (+1) of facing.
-		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise
+		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise.
 		/// </summary>
 		public static int GetTurnDirection(WAngle facing, WAngle desiredFacing)
 		{
@@ -67,18 +75,36 @@ namespace OpenRA.Mods.Common
 		/// </summary>
 		public static int IndexFacing(WAngle facing, int numFrames)
 		{
+			// 1024 here is the max angle, so we divide the max angle by the total number of facings (numFrames)
 			var step = 1024 / numFrames;
 			var a = (facing.Angle + step / 2) & 1023;
 			return a / step;
 		}
 
-		/// <summary>Rounds the given facing value to the nearest quantized step.</summary>
-		public static WAngle QuantizeFacing(WAngle facing, int steps)
+		/// <summary>
+		/// Returns the remainder angle after rounding to the nearest whole step / facing.
+		/// </summary>
+		public static WAngle AngleDiffToStep(WAngle facing, int numFrames)
 		{
-			return new WAngle(IndexFacing(facing, steps) * (1024 / steps));
+			var step = 1024 / numFrames;
+			var a = (facing.Angle + step / 2) & 1023;
+			return new WAngle(a % step - step / 2);
 		}
 
-		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255</summary>
+		/// <summary>Returns the angle that the closest facing sprite should be rotated by to achieve the closest interpolated facing.</summary>
+		public static WAngle GetInterpolatedFacingRotation(WAngle facing, int facings, int interpolatedFacings)
+		{
+			var step = 1024 / interpolatedFacings;
+			return new WAngle(AngleDiffToStep(facing, facings).Angle / step * step);
+		}
+
+		/// <summary>Rounds the given facing value to the nearest quantized facing.</summary>
+		public static WAngle QuantizeFacing(WAngle facing, int facings)
+		{
+			return new WAngle(IndexFacing(facing, facings) * (1024 / facings));
+		}
+
+		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255.</summary>
 		public static int NormalizeFacing(int f)
 		{
 			if (f >= 0)
@@ -124,14 +150,12 @@ namespace OpenRA.Mods.Common
 			for (var i = 0; i < items.Length - 1; i++)
 			{
 				var j = random.Next(items.Length - i);
-				var item = items[i + j];
-				items[i + j] = items[i];
-				items[i] = item;
-				yield return item;
+				(items[i], items[i + j]) = (items[i + j], items[i]);
+				yield return items[i];
 			}
 
 			if (items.Length > 0)
-				yield return items[items.Length - 1];
+				yield return items[^1];
 		}
 
 		static IEnumerable<CPos> Neighbours(CPos c, bool allowDiagonal)
@@ -169,7 +193,7 @@ namespace OpenRA.Mods.Common
 
 		public static IEnumerable<CPos> AdjacentCells(World w, in Target target)
 		{
-			var cells = target.Positions.Select(p => w.Map.CellContaining(p)).Distinct();
+			var cells = target.Positions.Select(w.Map.CellContaining).Distinct();
 			return ExpandFootprint(cells, true);
 		}
 
@@ -198,7 +222,7 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
-		public static int RandomDelay(World world, int[] range)
+		public static int RandomInRange(MersenneTwister random, int[] range)
 		{
 			if (range.Length == 0)
 				return 0;
@@ -206,18 +230,53 @@ namespace OpenRA.Mods.Common
 			if (range.Length == 1)
 				return range[0];
 
-			return world.SharedRandom.Next(range[0], range[1]);
+			return random.Next(range[0], range[1]);
+		}
+
+		public static string InternalTypeName(Type t)
+		{
+			return t.IsGenericType
+				? $"{t.Name[..t.Name.IndexOf('`')]}<{string.Join(", ", t.GenericTypeArguments.Select(arg => arg.Name))}>"
+				: t.Name;
+		}
+
+		public static WDist RandomDistance(MersenneTwister random, WDist[] distance)
+		{
+			if (distance.Length == 0)
+				return WDist.Zero;
+
+			if (distance.Length == 1)
+				return distance[0];
+
+			return new WDist(random.Next(distance[0].Length, distance[1].Length));
+		}
+
+		public static WVec RandomVector(MersenneTwister random, WVec[] vector)
+		{
+			if (vector.Length == 0)
+				return WVec.Zero;
+
+			if (vector.Length == 1)
+				return vector[0];
+
+			var x = random.Next(vector[0].X, vector[1].X);
+			var y = random.Next(vector[0].Y, vector[1].Y);
+			var z = random.Next(vector[0].Z, vector[1].Z);
+			return new WVec(x, y, z);
 		}
 
 		public static string FriendlyTypeName(Type t)
 		{
+			if (t.IsEnum)
+				return $"{t.Name} (enum)";
+
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
 				return $"Set of {t.GetGenericArguments().Select(FriendlyTypeName).First()}";
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
 				var args = t.GetGenericArguments().Select(FriendlyTypeName).ToArray();
-				return $"Dictionary with Key: {args[0]}, Value {args[1]}";
+				return $"Dictionary with Key: {args[0]}, Value: {args[1]}";
 			}
 
 			if (t.IsSubclassOf(typeof(Array)))
@@ -272,6 +331,23 @@ namespace OpenRA.Mods.Common
 				return "Warhead";
 
 			return t.Name;
+		}
+
+		public static string GetAttributeParameterValue(CustomAttributeTypedArgument value)
+		{
+			if (value.ArgumentType.IsEnum)
+				return Enum.Parse(value.ArgumentType, value.Value.ToString()).ToString();
+
+			if (value.ArgumentType == typeof(Type) && value.Value != null)
+				return (value.Value as Type).Name;
+
+			if (value.ArgumentType.IsArray)
+			{
+				var names = (value.Value as IReadOnlyCollection<CustomAttributeTypedArgument>).Select(x => (x.Value as Type).Name);
+				return string.Join(", ", names);
+			}
+
+			return value.Value?.ToString();
 		}
 
 		public static int GetProjectileInaccuracy(int baseInaccuracy, InaccuracyType inaccuracyType, ProjectileArgs args)

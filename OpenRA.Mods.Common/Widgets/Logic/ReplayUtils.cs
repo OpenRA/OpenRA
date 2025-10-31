@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,46 +16,63 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public static class ReplayUtils
 	{
+		[FluentReference]
+		const string IncompatibleReplayTitle = "dialog-incompatible-replay.title";
+
+		[FluentReference]
+		const string IncompatibleReplayPrompt = "dialog-incompatible-replay.prompt";
+
+		[FluentReference]
+		const string IncompatibleReplayAccept = "dialog-incompatible-replay.confirm";
+
+		[FluentReference]
+		const string UnknownVersion = "dialog-incompatible-replay.prompt-unknown-version";
+
+		[FluentReference]
+		const string UnknownMod = "dialog-incompatible-replay.prompt-unknown-mod";
+
+		[FluentReference("mod")]
+		const string UnvailableMod = "dialog-incompatible-replay.prompt-unavailable-mod";
+
+		[FluentReference("version")]
+		const string IncompatibleVersion = "dialog-incompatible-replay.prompt-incompatible-version";
+
+		[FluentReference("map")]
+		const string UnvailableMap = "dialog-incompatible-replay.prompt-unavailable-map";
+
 		static readonly Action DoNothing = () => { };
 
-		public static bool PromptConfirmReplayCompatibility(ReplayMetadata replayMeta, Action onCancel = null)
+		public static bool PromptConfirmReplayCompatibility(ReplayMetadata replayMeta, ModData modData, Action onCancel = null)
 		{
-			if (onCancel == null)
-				onCancel = DoNothing;
+			onCancel ??= DoNothing;
 
 			if (replayMeta == null)
-			{
-				ConfirmationDialogs.ButtonPrompt("Incompatible Replay", "Replay metadata could not be read.", onCancel: onCancel);
-				return false;
-			}
+				return IncompatibleReplayDialog(modData, onCancel, IncompatibleReplayPrompt);
 
 			var version = replayMeta.GameInfo.Version;
 			if (version == null)
-				return IncompatibleReplayDialog("unknown version", version, onCancel);
+				return IncompatibleReplayDialog(modData, onCancel, UnknownVersion);
 
 			var mod = replayMeta.GameInfo.Mod;
 			if (mod == null)
-				return IncompatibleReplayDialog("unknown mod", mod, onCancel);
+				return IncompatibleReplayDialog(modData, onCancel, UnknownMod);
 
 			if (!Game.Mods.ContainsKey(mod))
-				return IncompatibleReplayDialog("unavailable mod", mod, onCancel);
+				return IncompatibleReplayDialog(modData, onCancel, UnvailableMod, "mod", mod);
 
 			if (Game.Mods[mod].Metadata.Version != version)
-				return IncompatibleReplayDialog("incompatible version", version, onCancel);
+				return IncompatibleReplayDialog(modData, onCancel, IncompatibleVersion, "version", version);
 
 			if (replayMeta.GameInfo.MapPreview.Status != MapStatus.Available)
-				return IncompatibleReplayDialog("unavailable map", replayMeta.GameInfo.MapUid,  onCancel);
+				return IncompatibleReplayDialog(modData, onCancel, UnvailableMap, "map", replayMeta.GameInfo.MapUid);
 
 			return true;
 		}
 
-		static bool IncompatibleReplayDialog(string type, string name, Action onCancel)
+		static bool IncompatibleReplayDialog(ModData modData, Action onCancel, string text, params object[] args)
 		{
-			var error = "It was recorded with an " + type;
-			error += string.IsNullOrEmpty(name) ? "." : $":\n{name}";
-
-			ConfirmationDialogs.ButtonPrompt("Incompatible Replay", error, onCancel: onCancel);
-
+			ConfirmationDialogs.ButtonPrompt(
+				modData, IncompatibleReplayTitle, text, textArguments: args, onCancel: onCancel, cancelText: IncompatibleReplayAccept);
 			return false;
 		}
 	}

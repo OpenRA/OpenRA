@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,15 +22,14 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class Sdl2PlatformWindow : ThreadAffine, IPlatformWindow
 	{
-		readonly IGraphicsContext context;
 		readonly Sdl2Input input;
 
-		public IGraphicsContext Context => context;
+		public IGraphicsContext Context { get; }
 
 		readonly IntPtr window;
 		bool disposed;
 
-		readonly object syncObject = new object();
+		readonly object syncObject = new();
 		readonly Size windowSize;
 		Size surfaceSize;
 		float windowScale = 1f;
@@ -127,14 +126,14 @@ namespace OpenRA.Platforms.Default
 		[DllImport("libX11")]
 		static extern IntPtr XInternAtom(IntPtr display, string atom_name, bool only_if_exists);
 
-		[DllImport("libX11", CharSet=CharSet.Ansi)]
+		[DllImport("libX11", CharSet = CharSet.Ansi)]
 		static extern int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, IntPtr mode, string data, int elements);
 
 		[DllImport("libX11")]
 		static extern IntPtr XFlush(IntPtr display);
 
 		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode,
-			float scaleModifier, int batchSize, int videoDisplay, GLProfile requestProfile, bool enableLegacyGL)
+			float scaleModifier, int vertexBatchSize, int indexBatchSize, int videoDisplay, GLProfile requestProfile)
 		{
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
@@ -148,24 +147,28 @@ namespace OpenRA.Platforms.Default
 				// Decide which OpenGL profile to use.
 				// Prefer standard GL over GLES provided by the native driver
 				var testProfiles = new List<GLProfile> { GLProfile.ANGLE, GLProfile.Modern, GLProfile.Embedded };
-				if (enableLegacyGL)
-					testProfiles.Add(GLProfile.Legacy);
-
+				var errorLog = new List<string>();
 				supportedProfiles = testProfiles
-					.Where(CanCreateGLWindow)
+					.Where(profile => CanCreateGLWindow(profile, errorLog))
 					.ToArray();
 
-				if (!supportedProfiles.Any())
-					throw new InvalidOperationException("No supported OpenGL profiles were found.");
+				if (supportedProfiles.Length == 0)
+				{
+					foreach (var error in errorLog)
+						Log.Write("graphics", error);
 
-				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles.First();
+					throw new InvalidOperationException("No supported OpenGL profiles were found.");
+				}
+
+				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles[0];
 
 				// Note: This must be called after the CanCreateGLWindow checks above,
 				// which needs to create and destroy its own SDL contexts as a workaround for specific buggy drivers
-				SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
-				SetSDLAttributes(profile);
+				if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) != 0)
+					Log.Write("graphics", $"SDL initialisation failed: {SDL.SDL_GetError()}");
 
-				Console.WriteLine("Using SDL 2 with OpenGL ({0}) renderer", profile);
+				SetSDLAttributes(profile);
+				Console.WriteLine($"Using SDL 2 with OpenGL ({profile}) renderer");
 				if (videoDisplay < 0 || videoDisplay >= DisplayCount)
 					videoDisplay = 0;
 
@@ -193,21 +196,24 @@ namespace OpenRA.Platforms.Default
 						// Attempt to automatically detect DPI
 						try
 						{
-							var psi = new ProcessStartInfo("/usr/bin/xrdb", "-query");
-							psi.UseShellExecute = false;
-							psi.RedirectStandardOutput = true;
+							var psi = new ProcessStartInfo("/usr/bin/xrdb", "-query")
+							{
+								UseShellExecute = false,
+								RedirectStandardOutput = true
+							};
+
 							var p = Process.Start(psi);
 							var lines = p.StandardOutput.ReadToEnd().Split('\n');
 
 							foreach (var line in lines)
-								if (line.StartsWith("Xft.dpi") && int.TryParse(line.Substring(8), out var dpi))
+								if (line.StartsWith("Xft.dpi", StringComparison.Ordinal) && int.TryParse(line.AsSpan(8), out var dpi))
 									windowScale = dpi / 96f;
 						}
 						catch { }
 					}
 				}
 
-				Console.WriteLine("Desktop resolution: {0}x{1}", display.w, display.h);
+				Console.WriteLine($"Desktop resolution: {display.w}x{display.h}");
 				if (requestEffectiveWindowSize.Width == 0 && requestEffectiveWindowSize.Height == 0)
 				{
 					Console.WriteLine("No custom resolution provided, using desktop resolution");
@@ -216,41 +222,18 @@ namespace OpenRA.Platforms.Default
 				else
 					surfaceSize = windowSize = new Size((int)(requestEffectiveWindowSize.Width * windowScale), (int)(requestEffectiveWindowSize.Height * windowScale));
 
-				Console.WriteLine("Using resolution: {0}x{1}", windowSize.Width, windowSize.Height);
+				Console.WriteLine($"Using resolution: {windowSize.Width}x{windowSize.Height}");
 
-				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
+				const SDL.SDL_WindowFlags WindowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
 
 				// HiDPI doesn't work properly on OSX with (legacy) fullscreen mode
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
-					windowSize.Width, windowSize.Height, windowFlags);
+					windowSize.Width, windowSize.Height, WindowFlags);
 
-				if (Platform.CurrentPlatform == PlatformType.OSX)
-				{
-					// Work around an issue in macOS's GL backend where the window remains permanently black
-					// (if dark mode is enabled) unless we drain the event queue before initializing GL
-					while (SDL.SDL_PollEvent(out var e) != 0)
-					{
-						// We can safely ignore all mouse/keyboard events and window size changes
-						// (these will be caught in the window setup below), but do need to process focus
-						if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT)
-						{
-							switch (e.window.windowEvent)
-							{
-								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_LOST:
-									HasInputFocus = false;
-									break;
-
-								case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
-									HasInputFocus = true;
-									break;
-							}
-						}
-					}
-				}
-				else if (Platform.CurrentPlatform == PlatformType.Linux)
+				if (Platform.CurrentPlatform == PlatformType.Linux)
 				{
 					// The KDE task switcher limits itself to the 128px icon unless we
 					// set an X11 _KDE_NET_WM_DESKTOP_FILE property on the window
@@ -288,11 +271,13 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
 					surfaceSize = new Size(width, height);
 					windowScale = width * 1f / windowSize.Width;
+
+					// SDL expects OpenGL Context to be on the main thread on OSX by default.
+					// If this hint isn't set, window management calls will deadlock.
+					SDL.SDL_SetHint(SDL.SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH, "1");
 				}
 				else
 					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
-
-				Console.WriteLine("Using window scale {0:F2}", windowScale);
 
 				if (Game.Settings.Game.LockMouseWindow)
 					GrabWindowMouseFocus();
@@ -318,9 +303,39 @@ namespace OpenRA.Platforms.Default
 				}
 				else if (windowMode == WindowMode.PseudoFullscreen)
 				{
+					// Gnome >= 44 does not consider SDL_WINDOW_FULLSCREEN_DESKTOP to be borderless!
+					// This must be called before SetWindowFullscreen for the workaround to function.
+					if (Platform.CurrentPlatform == PlatformType.Linux)
+						SDL.SDL_SetWindowBordered(Window, SDL.SDL_bool.SDL_FALSE);
+
 					SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
+
+					if (Platform.CurrentPlatform == PlatformType.OSX)
+					{
+						// Activating SDL_WINDOW_FULLSCREEN_DESKTOP on a display with a notch will automatically
+						// reduce the window height and align the top-left of the window to the safe area.
+						//
+						// SDL (as of version 2.26) does not contain an API to query the safeAreaInsets before
+						// the window is created. We work around this by checking the window height after going
+						// fullscreen, and recalculating our sizes to match the new window geometry.
+						//
+						// This workaround will become redundant once window resizing is implemented.
+						SDL.SDL_GetWindowSize(Window, out var width, out var height);
+						if (height != windowSize.Height)
+						{
+							windowSize = new Size(width, height);
+
+							SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
+							surfaceSize = new Size(width, height);
+							windowScale = width * 1f / windowSize.Width;
+
+							Console.WriteLine($"Using new resolution: {windowSize.Width}x{windowSize.Height}");
+						}
+					}
 				}
+
+				Console.WriteLine($"Using window scale {windowScale:F2}");
 			}
 
 			// Run graphics rendering on a dedicated thread.
@@ -331,18 +346,18 @@ namespace OpenRA.Platforms.Default
 			{
 				var ctx = new Sdl2GraphicsContext(this);
 				ctx.InitializeOpenGL();
-				context = ctx;
+				Context = ctx;
 			}
 			else
-				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
+				Context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), vertexBatchSize, indexBatchSize);
 
-			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
+			Context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
 		}
 
-		byte[] DoublePixelData(byte[] data, Size size)
+		static byte[] DoublePixelData(byte[] data, Size size)
 		{
 			var scaledData = new byte[4 * data.Length];
 			for (var y = 0; y < size.Height; y++)
@@ -457,7 +472,7 @@ namespace OpenRA.Platforms.Default
 
 			disposed = true;
 
-			context?.Dispose();
+			Context?.Dispose();
 
 			if (Window != IntPtr.Zero)
 				SDL.SDL_DestroyWindow(Window);
@@ -489,13 +504,13 @@ namespace OpenRA.Platforms.Default
 		public string GetClipboardText()
 		{
 			VerifyThreadAffinity();
-			return input.GetClipboardText();
+			return Sdl2Input.GetClipboardText();
 		}
 
 		public bool SetClipboardText(string text)
 		{
 			VerifyThreadAffinity();
-			return input.SetClipboardText(text);
+			return Sdl2Input.SetClipboardText(text);
 		}
 
 		static void SetSDLAttributes(GLProfile profile)
@@ -523,25 +538,28 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 0);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
 					break;
-				case GLProfile.Legacy:
-					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 1);
-					break;
 			}
 		}
 
-		static bool CanCreateGLWindow(GLProfile profile)
+		static bool CanCreateGLWindow(GLProfile profile, List<string> errorLog)
 		{
 			// Implementation inspired by TestIndividualGLVersion from Veldrid
 
 			// Need to create and destroy its own SDL contexts as a workaround for specific buggy drivers
-			SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
+			if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) != 0)
+			{
+				// Continue to harvest additional SDL errors below
+				errorLog.Add($"{profile}: SDL init failed: {SDL.SDL_GetError()}");
+				SDL.SDL_ClearError();
+			}
+
 			SetSDLAttributes(profile);
 
-			var flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
-			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, flags);
+			const SDL.SDL_WindowFlags Flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
+			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, Flags);
 			if (window == IntPtr.Zero || !string.IsNullOrEmpty(SDL.SDL_GetError()))
 			{
+				errorLog.Add($"{profile}: SDL window creation failed: {SDL.SDL_GetError()}");
 				SDL.SDL_ClearError();
 				SDL.SDL_Quit();
 				return false;
@@ -550,6 +568,7 @@ namespace OpenRA.Platforms.Default
 			var context = SDL.SDL_GL_CreateContext(window);
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 			{
+				errorLog.Add($"{profile}: GL context creation failed: {SDL.SDL_GetError()}");
 				SDL.SDL_ClearError();
 				SDL.SDL_DestroyWindow(window);
 				SDL.SDL_Quit();
@@ -562,6 +581,8 @@ namespace OpenRA.Platforms.Default
 			{
 				var isAngle = SDL.SDL_GL_ExtensionSupported("GL_ANGLE_texture_usage") == SDL.SDL_bool.SDL_TRUE;
 				success = isAngle ^ (profile != GLProfile.ANGLE);
+				if (!success)
+					errorLog.Add(isAngle ? "GL profile is ANGLE" : "GL profile is Embedded");
 			}
 
 			SDL.SDL_GL_DeleteContext(context);

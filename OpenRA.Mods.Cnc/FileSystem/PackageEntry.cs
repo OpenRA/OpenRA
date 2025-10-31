@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using OpenRA.Mods.Cnc.FileFormats;
 
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 		public override string ToString()
 		{
-			if (names.TryGetValue(Hash, out var filename))
+			if (Names.TryGetValue(Hash, out var filename))
 				return $"{filename} - offset 0x{Offset:x8} - length 0x{Length:x8}";
 			else
 				return $"0x{Hash:x8} - offset 0x{Offset:x8} - length 0x{Length:x8}";
@@ -57,54 +58,61 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 		public static uint HashFilename(string name, PackageHashType type)
 		{
+			var padding = name.Length % 4 != 0 ? 4 - name.Length % 4 : 0;
+			var paddedLength = name.Length + padding;
+
+			// Avoid stack overflows by only allocating small buffers on the stack, and larger ones on the heap.
+			// 64 chars covers most real filenames.
+			var upperPaddedName = paddedLength < 64 ? stackalloc char[paddedLength] : new char[paddedLength];
+			name.AsSpan().ToUpperInvariant(upperPaddedName);
+
 			switch (type)
 			{
 				case PackageHashType.Classic:
-					{
-						name = name.ToUpperInvariant();
-						if (name.Length % 4 != 0)
-							name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
+				{
+					for (var p = 0; p < padding; p++)
+						upperPaddedName[paddedLength - 1 - p] = '\0';
 
-						var result = 0u;
-						var data = Encoding.ASCII.GetBytes(name);
-						var i = 0;
-						while (i < data.Length)
-						{
-							var next = (uint)(data[i++] | data[i++] << 8 | data[i++] << 16 | data[i++] << 24);
-							result = ((result << 1) | (result >> 31)) + next;
-						}
+					var asciiBytes = paddedLength < 64 ? stackalloc byte[paddedLength] : new byte[paddedLength];
+					Encoding.ASCII.GetBytes(upperPaddedName, asciiBytes);
 
-						return result;
-					}
+					var data = MemoryMarshal.Cast<byte, uint>(asciiBytes);
+					var result = 0u;
+					foreach (var next in data)
+						result = ((result << 1) | (result >> 31)) + next;
+
+					return result;
+				}
 
 				case PackageHashType.CRC32:
+				{
+					var length = name.Length;
+					var lengthRoundedDownToFour = length / 4 * 4;
+					if (length != lengthRoundedDownToFour)
 					{
-						name = name.ToUpperInvariant();
-						var l = name.Length;
-						var a = l >> 2;
-						if ((l & 3) != 0)
-						{
-							name += (char)(l - (a << 2));
-							var i = 3 - (l & 3);
-							while (i-- != 0)
-								name += name[a << 2];
-						}
-
-						return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
+						upperPaddedName[length] = (char)(length - lengthRoundedDownToFour);
+						for (var p = 1; p < padding; p++)
+							upperPaddedName[length + p] = upperPaddedName[lengthRoundedDownToFour];
 					}
+
+					var asciiBytes = paddedLength < 64 ? stackalloc byte[paddedLength] : new byte[paddedLength];
+					Encoding.ASCII.GetBytes(upperPaddedName, asciiBytes);
+
+					return CRC32.Calculate(asciiBytes);
+				}
 
 				default: throw new NotImplementedException($"Unknown hash type `{type}`");
 			}
 		}
 
-		static Dictionary<uint, string> names = new Dictionary<uint, string>();
+		static readonly Dictionary<uint, string> Names = [];
 
 		public static void AddStandardName(string s)
 		{
 			var hash = HashFilename(s, PackageHashType.Classic); // RA1 and TD
-			names.Add(hash, s);
+			Names.Add(hash, s);
 			var crcHash = HashFilename(s, PackageHashType.CRC32); // TS
-			names.Add(crcHash, s);
+			Names.Add(crcHash, s);
 		}
 	}
 }

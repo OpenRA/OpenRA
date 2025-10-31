@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
-	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithEmbeddedTurretSpriteBodyInfo>
+	sealed class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithEmbeddedTurretSpriteBodyInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public readonly int CloseDelay = 125;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
-	class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
+	sealed class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		int idleTicks = 0;
 		PopupState state = PopupState.Open;
-		bool skippedMakeAnimation;
+		readonly bool skippedMakeAnimation;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
 			: base(init.Self, info)

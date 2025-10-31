@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,14 +17,14 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 {
 	public class AudLoader : ISoundLoader
 	{
-		bool IsAud(Stream s)
+		static bool IsAud(Stream s)
 		{
 			var start = s.Position;
 			s.Position += 11;
 			var readFormat = s.ReadByte();
 			s.Position = start;
 
-			return readFormat == (int)SoundFormat.ImaAdpcm;
+			return readFormat == (int)SoundFormat.ImaAdpcm || readFormat == (int)SoundFormat.WestwoodCompressed;
 		}
 
 		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		public int Channels => channels;
 		public int SampleBits => sampleBits;
 		public int SampleRate => sampleRate;
-		public float LengthInSeconds => AudReader.SoundLength(sourceStream);
+		public float LengthInSeconds => lengthInSeconds;
 		public Stream GetPCMInputStream() { return audStreamFactory(); }
 		public void Dispose() { sourceStream.Dispose(); }
 
@@ -61,12 +61,13 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		readonly int channels;
 		readonly int sampleBits;
 		readonly int sampleRate;
+		readonly float lengthInSeconds;
 
 		public AudFormat(Stream stream)
 		{
 			sourceStream = stream;
 
-			if (!AudReader.LoadSound(stream, out audStreamFactory, out sampleRate, out sampleBits, out channels))
+			if (!AudReader.LoadSound(stream, out audStreamFactory, out sampleRate, out sampleBits, out channels, out lengthInSeconds))
 				throw new InvalidDataException();
 		}
 	}

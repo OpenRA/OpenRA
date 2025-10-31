@@ -24,6 +24,7 @@
 			Wood: 116
 			Light: 140
 			Heavy: 140
+			Concrete: 140
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Crater
@@ -57,11 +58,13 @@ Dragon:
 			None: 140
 			Wood: 140
 			Heavy: 104
+			Concrete: 104
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 
 Rockets:
 	Inherits: ^MissileWeapon
+	ReloadDelay: 55
 
 BikeRockets:
 	Inherits: ^MissileWeapon
@@ -77,6 +80,7 @@ BikeRockets:
 			Wood: 92
 			Light: 124
 			Heavy: 124
+			Concrete: 124
 
 OrcaAGMissiles:
 	Inherits: ^MissileWeapon
@@ -96,17 +100,19 @@ OrcaAGMissiles:
 			Wood: 112
 			Light: 112
 			Heavy: 84
+			Concrete: 84
 
 OrcaAAMissiles:
 	Inherits: OrcaAGMissiles
 	ValidTargets: Air
 	Projectile: Missile
 		Arm: 0
-		Speed: 298
+		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
+		Damage: 2100
 		Versus:
-			Light: 84
+			Light: 100
 	-Warhead@2Smu:
 
 MammothMissiles:
@@ -128,6 +134,7 @@ MammothMissiles:
 			Wood: 66
 			Light: 90
 			Heavy: 44
+			Concrete: 44
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
 		ImpactSounds: xplobig4.aud
@@ -140,7 +147,7 @@ MammothMissiles:
 	Range: 11c0
 	MinRange: 3c0
 	Burst: 4
-	BurstDelays: 4
+	BurstDelays: 0, 4, 0
 	Report: rocket1.aud
 	ValidTargets: Ground, Water
 	TargetActorCenter: true
@@ -163,6 +170,7 @@ MammothMissiles:
 			Wood: 60
 			Light: 100
 			Heavy: 48
+			Concrete: 48
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
 		ImpactSounds: xplobig4.aud
@@ -187,6 +195,7 @@ MammothMissiles:
 			Wood: 75
 			Light: 100
 			Heavy: 90
+			Concrete: 90
 
 227mm.stnkAA:
 	Inherits: 227mm.stnk
@@ -213,6 +222,7 @@ BoatMissile:
 			Wood: 75
 			Light: 60
 			Heavy: 25
+			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
@@ -222,7 +232,9 @@ BoatMissile:
 
 TowerMissile:
 	Inherits: ^MissileWeapon
-	ReloadDelay: 15
+	ReloadDelay: 30
+	Burst: 2
+	BurstDelays: 8
 	Range: 7c0
 	Report: rocket2.aud
 	ValidTargets: Ground, Water
@@ -232,19 +244,24 @@ TowerMissile:
 		RangeLimit: 8c409
 	Warhead@1Dam: SpreadDamage
 		Spread: 483
+		Damage: 3000
 		ValidTargets: Ground
 		Versus:
 			None: 52
 			Wood: 24
 			Light: 100
 			Heavy: 100
+			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
-		Explosions: med_frag
+		Explosions: big_frag
+		ImpactSounds: xplobig4.aud
 
 TowerAAMissile:
 	Inherits: ^MissileWeapon
-	ReloadDelay: 15
+	ReloadDelay: 30
+	Burst: 2
+	BurstDelays: 8
 	Range: 8c0
 	Report: rocket2.aud
 	ValidTargets: Air
@@ -257,8 +274,9 @@ TowerAAMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
 		ValidTargets: Air
+		Damage: 3500
 		Versus:
-			Light: 140
+			Light: 100
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
@@ -281,10 +299,7 @@ Patriot:
 		Damage: 5000
 		ValidTargets: Air
 		Versus:
-			None: 20
-			Wood: 84
 			Light: 100
-			Heavy: 74
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: poof

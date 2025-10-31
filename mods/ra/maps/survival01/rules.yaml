@@ -4,22 +4,25 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, survival01.lua
+		Scripts: campaign.lua, utils.lua, survival01.lua
 	MissionData:
-		Briefing: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nTHE SOVIETS STARTED HEAVY ATTACKS AT OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
+		Briefing: LANDCOM 66 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A34\n\nSOVIETS HAVE LAUNCHED HEAVY ATTACKS ON OUR POSITION.\n SURVIVE AND HOLD THE BASE UNTIL OUR FRENCH ALLIES ARRIVE.\n\nCONFIRMATION CODE 5593.\n\nTRANSMISSION ENDS.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 ^Palettes:
 	IndexedPlayerPalette:
 		PlayerIndex:
-			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
+	IndexedPlayerPalette@NOSHADOW:
+		PlayerIndex:
 			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
 
 powerproxy.paratroopers:

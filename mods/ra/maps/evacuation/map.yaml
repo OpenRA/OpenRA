@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: ra
 
@@ -1600,7 +1600,7 @@ Actors:
 		Location: 26,100
 		Owner: Neutral
 	ParabombPoint1: waypoint
-		Location: 39,105
+		Location: 42,106
 		Owner: Neutral
 	ParabombPoint2: waypoint
 		Location: 39,108
@@ -1755,4 +1755,6 @@ Actors:
 		Owner: Soviets
 		ScriptTags: TownAttacker
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, ra|rules/coop-missions-rules.yaml, rules.yaml
+
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

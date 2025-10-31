@@ -3,7 +3,8 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			Width: PARENT_RIGHT - 27
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -11,11 +12,11 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -23,7 +24,38 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
+					Height: 25
+
+ScrollPanel@LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: panel-black
+	Children:
+		ScrollItem@HEADER:
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 13
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: BUTTON_TOOLTIP
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_WIDTH - 20
 					Height: 25
 
 ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
@@ -31,7 +63,7 @@ ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -39,7 +71,7 @@ ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
 					Height: 25
 					Align: Left
 
@@ -48,8 +80,8 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			BaseName: scrollheader
-			Width: PARENT_RIGHT - 27
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -57,11 +89,11 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -75,7 +107,7 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 					Height: 16
 				Label@LABEL:
 					X: 40
-					Width: 60
+					Width: 50
 					Height: 25
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
@@ -83,7 +115,7 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -91,7 +123,7 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 0
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 
@@ -100,7 +132,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -108,7 +140,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 0
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 
@@ -117,7 +149,8 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
-			Width: PARENT_RIGHT - 27
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -125,11 +158,11 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -142,31 +175,32 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Height: 16
 				Label@LABEL:
 					X: 40
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Shadow: True
 				Label@NOFLAG_LABEL:
 					X: 5
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Shadow: True
 
 Background@THREEBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 500
 	Height: 41
 	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
 		Label@PROMPT_TEXT:
 			Y: 22
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 20
 			Font: Bold
 			Align: Center
@@ -176,7 +210,7 @@ Background@THREEBUTTON_PROMPT:
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: Confirm
+			Text: button-prompt-confirm
 			Visible: false
 		Button@OTHER_BUTTON:
 			Key: r
@@ -184,32 +218,33 @@ Background@THREEBUTTON_PROMPT:
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: Restart
+			Text: button-prompt-other
 			Visible: false
 		Button@CANCEL_BUTTON:
 			Key: escape
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: Cancel
+			Text: button-cancel
 			Visible: false
 
 Background@TWOBUTTON_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 370
 	Height: 31
 	Background: panel-black
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
 		Label@PROMPT_TEXT:
 			Y: 17
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 20
 			Font: Bold
 			Align: Center
@@ -218,7 +253,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: 30
 			Width: 140
 			Height: 35
-			Text: Cancel
+			Text: button-cancel
 			Visible: false
 		Button@CONFIRM_BUTTON:
 			Key: return
@@ -226,52 +261,53 @@ Background@TWOBUTTON_PROMPT:
 			Y: 30
 			Width: 140
 			Height: 35
-			Text: Confirm
+			Text: button-prompt-confirm
 			Visible: false
 
 Container@TEXT_INPUT_PROMPT:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 370
 	Height: 80
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
 		Background@bg:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 80
 			Background: panel-black
 			Children:
 				Label@PROMPT_TEXT:
 					X: 20
 					Y: 12
-					Width: PARENT_RIGHT - 40
+					Width: PARENT_WIDTH - 40
 					Height: 25
 					Font: Bold
 					Align: Center
 				TextField@INPUT_TEXT:
 					X: 20
 					Y: 40
-					Width: PARENT_RIGHT - 40
+					Width: PARENT_WIDTH - 40
 					Height: 25
 		Button@ACCEPT_BUTTON:
-			X: PARENT_RIGHT - 160
-			Y: PARENT_BOTTOM - 1
+			X: PARENT_WIDTH - 160
+			Y: PARENT_HEIGHT - 1
 			Width: 160
 			Height: 34
-			Text: OK
+			Text: button-text-input-prompt-accept
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
 			X: 0
-			Y: PARENT_BOTTOM - 1
+			Y: PARENT_HEIGHT - 1
 			Width: 160
 			Height: 35
-			Text: Cancel
+			Text: button-cancel
 			Font: Bold
 			Key: escape
 
@@ -279,35 +315,32 @@ ScrollPanel@NEWS_PANEL:
 	Width: 400
 	Height: 265
 	Background: panel-black
-	TopBottomSpacing: 5
+	TopBottomSpacing: 10
 	ItemSpacing: 5
 	Children:
 		Container@NEWS_ITEM_TEMPLATE:
 			X: 10
-			Y: 5
-			Width: PARENT_RIGHT - 40
-			Height: 45
+			Width: PARENT_WIDTH - 40
+			Height: 40
 			Children:
 				Label@TITLE:
-					Y: 1
-					Width: PARENT_RIGHT
-					Height: 25
+					Width: PARENT_WIDTH
+					Height: 20
 					Align: Center
 					Font: Bold
 				Label@AUTHOR_DATETIME:
-					Y: 26
-					Width: PARENT_RIGHT
+					Y: 21
+					Width: PARENT_WIDTH
 					Height: 15
 					Align: Center
-					Text: by {0} at {1}
 					Font: TinyBold
 				Label@CONTENT:
-					Y: 46
-					Width: PARENT_RIGHT
+					Y: 40
+					Width: PARENT_WIDTH
 		Label@NEWS_STATUS:
 			X: 80
 			Y: 1
-			Width: PARENT_RIGHT - 80 - 80 - 24
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH - 80 - 80 - 24
+			Height: PARENT_HEIGHT
 			Align: Center
 			VAlign: Middle

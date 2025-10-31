@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckNotifications : ILintRulesPass, ILintServerMapPass
+	sealed class CheckNotifications : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{
@@ -29,17 +29,17 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<NotificationReferenceAttribute>()))
+					var fields = Utility.GetFields(traitInfo.GetType());
+					foreach (var field in fields.Where(Utility.HasAttribute<NotificationReferenceAttribute>))
 					{
 						string type = null;
-						var notificationReference = field.GetCustomAttributes<NotificationReferenceAttribute>(true).First();
+						var notificationReference = Utility.GetCustomAttributes<NotificationReferenceAttribute>(field, true).First();
 						if (!string.IsNullOrEmpty(notificationReference.NotificationTypeFieldName))
 						{
 							var fieldInfo = fields.First(f => f.Name == notificationReference.NotificationTypeFieldName);
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Lint
 						else
 							type = notificationReference.NotificationType;
 
-						var notifications = LintExts.GetFieldValues(traitInfo, field, emitError);
+						var notifications = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var notification in notifications)
 						{
 							if (string.IsNullOrEmpty(notification))
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Lint
 
 							if (string.IsNullOrEmpty(type) || !rules.Notifications.TryGetValue(type.ToLowerInvariant(), out var soundInfo) ||
 								!soundInfo.Notifications.ContainsKey(notification))
-								emitError($"Undefined notification reference {type ?? "(null)"}.{notification} detected at {traitInfo.GetType().Name} for {actorInfo.Key}");
+								emitError($"Undefined notification reference `{type ?? "(null)"}.{notification}` detected at `{traitInfo.GetType().Name}` for `{actorInfo.Key}`.");
 						}
 					}
 				}

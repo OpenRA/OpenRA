@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -21,10 +21,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IPositionable positionable;
 		readonly IDisabledTrait disableable;
-		WPos start, end;
-		int length;
+		readonly WPos start;
+		readonly WPos end;
+		readonly int length;
 		int ticks = 0;
-		WAngle? desiredFacing;
+		readonly WAngle? desiredFacing;
 
 		public Drag(Actor self, WPos start, WPos end, int length, WAngle? facing = null)
 		{

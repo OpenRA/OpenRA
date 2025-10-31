@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -52,25 +51,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(self, info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
-			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
+			color = info.UsePlayerColor ? self.OwnerColor() : info.Color;
 		}
 
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
-				return Enumerable.Empty<IRenderable>();
+				return [];
 
 			var size = font.Measure(Info.Text);
-			return new IRenderable[]
-			{
+			return
+			[
 				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, color, Info.Text)
-			};
+			];
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (Info.UsePlayerColor)
-				color = newOwner.Color;
+				color = self.OwnerColor();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public enum RangeCircleMode { Maximum, Minimum }
 
 	[Desc("Draw a circle indicating my weapon's range.")]
-	class RenderRangeCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo, IRulesetLoaded, Requires<AttackBaseInfo>
+	sealed class RenderRangeCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo, IRulesetLoaded, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var otherRanges = w.ActorsWithTrait<RenderRangeCircle>()
 				.Where(a => a.Trait.Info.RangeCircleType == RangeCircleType)
-				.SelectMany(a => a.Trait.RangeCircleRenderables(wr));
+				.SelectMany(a => a.Trait.RangeCircleRenderables());
 
 			return otherRanges.Append(localRange);
 		}
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class RenderRangeCircle : IRenderAnnotationsWhenSelected
+	sealed class RenderRangeCircle : IRenderAnnotationsWhenSelected
 	{
 		public readonly RenderRangeCircleInfo Info;
 		readonly Actor self;
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			attack = self.Trait<AttackBase>();
 		}
 
-		public IEnumerable<IRenderable> RangeCircleRenderables(WorldRenderer wr)
+		public IEnumerable<IRenderable> RangeCircleRenderables()
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RangeCircleRenderables(wr);
+			return RangeCircleRenderables();
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;

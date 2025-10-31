@@ -47,6 +47,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
+		LevelUpTextNotification: notification-unit-promoted
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
@@ -267,15 +268,17 @@
 	AttackMove:
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	ProximityCaptor:
 		Types: Vehicle
 	GpsDot:
 		String: Vehicle
 	WithDamageOverlay:
+		StartSequence: start
 	Guard:
 	Guardable:
 	Tooltip:
-		GenericName: Vehicle
+		GenericName: meta-vehicle-generic-name
 	CaptureManager:
 		BeingCapturedCondition: being-captured
 	Capturable:
@@ -283,7 +286,9 @@
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
+		TextNotification: notification-unit-stolen
 		LoseNotification: UnitLost
+		LoseTextNotification: notification-unit-lost
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
@@ -291,7 +296,7 @@
 		FallRate: 26
 		KilledOnImpassableTerrain: true
 		ParachutingCondition: parachute
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	WithFacingSpriteBody:
@@ -367,6 +372,7 @@
 		RequiresCondition: disable-experience
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: notification-unit-lost
 	GpsDot:
 		String: Infantry
 	Crushable:
@@ -374,7 +380,7 @@
 	Guard:
 	Guardable:
 	Tooltip:
-		GenericName: Soldier
+		GenericName: meta-infantry-generic-name
 	ChangesHealth@HOSPITAL:
 		Step: 500
 		Delay: 100
@@ -433,8 +439,8 @@
 		Categories: Infantry
 	EdibleByLeap:
 	DetectCloaked:
-		CloakTypes: Cloak
-		Range: 1c0
+		DetectionTypes: Cloak
+		Range: 1c512
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -446,10 +452,12 @@
 		DamageModifiers:
 			Prone50Percent: 50
 		DamageTriggers: TriggerProne
+		Duration: 50
 	WithInfantryBody:
 		IdleSequences: idle1,idle2
 		StandSequences: stand,stand2
 	AttackFrontal:
+		FacingTolerance: 0
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -458,7 +466,7 @@
 	Valued:
 		Cost: 10
 	Tooltip:
-		Name: Civilian
+		Name: meta-civinfantry-name
 		GenericVisibility: None
 	RevealsShroud:
 		Range: 3c0
@@ -472,6 +480,10 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+	WithInfantryBody:
+		IdleSequences: idle1
+		MinIdleDelay: 60
+		MaxIdleDelay: 220
 	MapEditorData:
 		Categories: Civilian infantry
 
@@ -479,8 +491,13 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Armament:
 		Weapon: Pistol
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Pistol
 	AttackFrontal:
+		FacingTolerance: 0
 	WithInfantryBody:
+		IdleSequences: idle1,idle2
 		DefaultAttackSequence: shoot
 
 ^Ship:
@@ -511,6 +528,7 @@
 	AttackMove:
 	ActorLostNotification:
 		Notification: NavalUnitLost
+		TextNotification: notification-naval-unit-lost
 	ProximityCaptor:
 		Types: Ship
 	Chronoshiftable:
@@ -519,13 +537,14 @@
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
-	Explodes:
+		StartSequence: start
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
 	Guard:
 	Guardable:
 	Tooltip:
-		GenericName: Ship
+		GenericName: meta-ship-generic-name
 	MustBeDestroyed:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
@@ -535,13 +554,37 @@
 	WithFacingSpriteBody:
 	HitShape:
 
+^Submarine:
+	Inherits: ^Ship
+	Targetable:
+		TargetTypes: WaterActor, Ship, Submarine, Repair
+		RequiresCondition: !underwater
+	Targetable@UNDERWATER:
+		TargetTypes: Underwater, Submarine
+		RequiresCondition: underwater
+	Cloak:
+		DetectionTypes: Underwater
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakStyle: Color
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
+		CloakedCondition: underwater
+		PauseOnCondition: cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	-MustBeDestroyed:
+	WithDamageOverlay:
+		MinimumDamageState: Critical
+		StartSequence: start
+
 ^NeutralPlane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@4: ^SpriteActor
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
-	Huntable:
 	OwnerLostAction:
 		Action: Kill
 	Armor:
@@ -572,6 +615,7 @@
 	Guardable:
 	ActorLostNotification:
 		Notification: AirUnitLost
+		TextNotification: notification-airborne-unit-lost
 	ProximityCaptor:
 		Types: Plane
 	EjectOnDeath:
@@ -584,7 +628,7 @@
 	GpsDot:
 		String: Plane
 	Tooltip:
-		GenericName: Plane
+		GenericName: meta-neutralplane-generic-name
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -597,7 +641,7 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplode
 		RequiresCondition: !airborne
 	CaptureManager:
@@ -606,18 +650,21 @@
 		RequiresCondition: !airborne
 	CaptureNotification:
 		Notification: UnitStolen
+		TextNotification: notification-unit-stolen
 		LoseNotification: UnitLost
+		LoseTextNotification: notification-unit-lost
 
 ^Plane:
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
+	Huntable:
 	Repairable:
 		RepairActors: fix
 
 ^Helicopter:
 	Inherits: ^Plane
 	Tooltip:
-		GenericName: Helicopter
+		GenericName: meta-helicopter-generic-name
 	Aircraft:
 		CanHover: True
 		CruisingCondition: cruising
@@ -659,11 +706,12 @@
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
 	WithSpriteBody:
-	Explodes:
+	FireWarheadsOnDeath:
 		Type: Footprint
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	CaptureNotification:
+		TextNotification: notification-structure-captured
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
@@ -672,7 +720,7 @@
 	FrozenUnderFog:
 	FrozenUnderFogUpdatedByGps:
 	Tooltip:
-		GenericName: Structure
+		GenericName: meta-basicbuilding-generic-name
 	Demolishable:
 	MapEditorData:
 		Categories: Building
@@ -688,9 +736,9 @@
 		AreaTypes: building, fake
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 25
+		PlayerExperience: 5
 		RepairingNotification: Repairing
-	EngineerRepairable:
+	InstantlyRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
 		Condition: build-incomplete
@@ -703,6 +751,7 @@
 	CapturableProgressBlink:
 	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn2
+		GuaranteedActorTypes: e1
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	GpsDot:
@@ -737,7 +786,7 @@
 	-GivesBuildableArea:
 	-AcceptsDeliveredCash:
 	RenderRangeCircle:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
 	MapEditorData:
@@ -793,8 +842,6 @@
 		Terrain: Wall
 	MapEditorData:
 		Categories: Wall
-	UpdatesPlayerStatistics:
-		AddToAssetsValue: false
 
 ^TechBuilding:
 	Inherits: ^BasicBuilding
@@ -804,7 +851,7 @@
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Civilian Building
+		Name: meta-techbuilding-name
 		GenericVisibility: None
 	FrozenUnderFog:
 	MapEditorData:
@@ -818,7 +865,7 @@
 		AreaTypes: fake
 	Health:
 		HP: 10000
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: Demolish
 		DamageThreshold: 70
 	RevealsShroud:
@@ -850,10 +897,10 @@
 	-Selectable:
 	Health:
 		HP: 1000
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplode
 	Tooltip:
-		Name: Ammo Box
+		Name: meta-ammobox-name
 	Targetable:
 		TargetTypes: GroundActor, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
@@ -870,21 +917,21 @@
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: SmallBuildingExplode
-	Explodes@CIVPANIC:
+	FireWarheadsOnDeath@CIVPANIC:
 		Weapon: CivPanicExplosion
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-HitShape:
 	-Health:
-	-Explodes:
-	-Explodes@CIVPANIC:
+	-FireWarheadsOnDeath:
+	-FireWarheadsOnDeath@CIVPANIC:
 	-Selectable:
 	-ScriptTriggers:
 	Tooltip:
-		Name: Field
+		Name: meta-civfield-name
 	-Targetable:
 	-Demolishable:
 	MapEditorData:
@@ -900,12 +947,12 @@
 		Condition: winter
 		TileSets: SNOW
 	Tooltip@WINTER:
-		Name: Igloo
+		Name: meta-civhaystackorigloo.winter-name
 		RequiresCondition: winter
 		GenericVisibility: None
 		ShowOwnerRow: false
 	Tooltip@SUMMER:
-		Name: Haystacks
+		Name: meta-civhaystackorigloo.summer-name
 		RequiresCondition: !winter
 		GenericVisibility: None
 		ShowOwnerRow: false
@@ -915,7 +962,7 @@
 	Inherits@shape: ^1x1Shape
 	Interactable:
 	Tooltip:
-		Name: Tree
+		Name: meta-tree-name
 		ShowOwnerRow: false
 	RenderSprites:
 		Palette: terrain
@@ -940,18 +987,30 @@
 		Palette: effect
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
+		StartSequence: start
+		LoopCount: 1, 5
+		InitialDelay: 0, 25
+		EndSequence: end
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
 		Palette: effect
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
+		StartSequence: start
+		LoopCount: 1, 5
+		InitialDelay: 0, 25
+		EndSequence: end
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
 		Palette: effect
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
+		StartSequence: start
+		LoopCount: 1, 5
+		InitialDelay: 0, 25
+		EndSequence: end
 	HiddenUnderShroud:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
@@ -974,7 +1033,7 @@
 		Dimensions: 1,1
 	WithSpriteBody:
 	Tooltip:
-		Name: Tree (Burnt)
+		Name: meta-treehusk-name
 		ShowOwnerRow: false
 	HiddenUnderShroud:
 	MapEditorData:
@@ -987,7 +1046,7 @@
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Boxes
+		Name: meta-box-name
 	MapEditorData:
 		-ExcludeTilesets:
 		Categories: Decoration
@@ -1012,6 +1071,7 @@
 	Inherits@2: ^ClassicFacingSpriteActor
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
+		Locomotor: tracked
 	WithIdleOverlay@Burns:
 		Image: fire
 		Sequence: 1
@@ -1025,12 +1085,11 @@
 	CaptureManager:
 	Capturable:
 		Types: husk
-		ValidRelationships: Enemy, Neutral
 	TransformOnCapture:
-		ForceHealthPercentage: 25
+		ForceHealthPercentage: 15
 	InfiltrateForTransform:
 		Types: Husk
-		ForceHealthPercentage: 25
+		ForceHealthPercentage: 15
 	WithColoredOverlay@IDISABLE:
 		Color: 000000B4
 	Targetable:
@@ -1038,7 +1097,7 @@
 		RequiresForceFire: true
 	Chronoshiftable:
 	Tooltip:
-		GenericName: Destroyed Vehicle
+		GenericName: meta-husk-generic-name
 
 ^PlaneHusk:
 	Inherits: ^BasicHusk
@@ -1049,7 +1108,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Tooltip:
-		GenericName: Destroyed Plane
+		GenericName: meta-planehusk-generic-name
 	Aircraft:
 	FallsToEarth:
 		Moves: True
@@ -1070,7 +1129,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Tooltip:
-		GenericName: Destroyed Helicopter
+		GenericName: meta-helicopterhusk-generic-name
 	Aircraft:
 		CanHover: True
 		VTOL: true
@@ -1084,9 +1143,8 @@
 
 ^Bridge:
 	Inherits@shape: ^1x1Shape
-	AlwaysVisible:
 	Tooltip:
-		Name: Bridge
+		Name: meta-bridge-name
 		ShowOwnerRow: false
 	Targetable:
 		TargetTypes: GroundActor, WaterActor, Bridge
@@ -1107,11 +1165,21 @@
 		Duration: 15
 		Intensity: 6
 
+^ExplosiveBridge:
+	ExplosionOnDamageTransition@DAMAGED:
+		DamageState: Heavy
+		Weapon: BridgeExplode
+	ExplosionOnDamageTransition@COLLAPSED:
+		DamageState: Dead
+		Weapon: BridgeExplode
+	SoundOnDamageTransition:
+		DestroyedSounds: crmble2.aud
+
 ^Rock:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Tooltip:
-		Name: Rock
+		Name: meta-rock-name
 		ShowOwnerRow: false
 	RenderSprites:
 		Palette: desert
@@ -1144,8 +1212,8 @@
 		Bounds: 1024, 1024
 	HiddenUnderFog:
 	Tooltip:
-		Name: Crate
-		GenericName: Crate
+		Name: meta-crate.name
+		GenericName: meta-crate.generic-name
 		ShowOwnerRow: false
 	Crate:
 		Duration: 4500
@@ -1184,18 +1252,20 @@
 		AvoidFriendly: false
 		BlockFriendly: false
 	Health:
-		HP: 10000
+		HP: 5000
 		NotifyAppliedDamage: false
+	FireWarheadsOnDeath:
+		DamageSource: Parent
 	Armor:
 		Type: Light
 	Cloak:
 		CloakSound:
 		UncloakSound:
-		Palette:
-		CloakTypes: Mine
+		CloakStyle: None
+		DetectionTypes: Mine
 		InitialDelay: 0
 	Tooltip:
-		Name: Mine
+		Name: meta-mine-name
 	Targetable:
 		TargetTypes: GroundActor, Mine
 	Immobile:
@@ -1253,6 +1323,7 @@
 		Condition: power-outage
 	InfiltrateForPowerOutage:
 		Types: SpyInfiltrate
+		PlayerExperience: 10
 	Power:
 		RequiresCondition: !disabled
 
@@ -1306,6 +1377,7 @@
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
+		SelectionTextNotification: notification-primary-building-selected
 	WithDecoration@primary:
 		RequiresCondition: primary
 		Position: Top

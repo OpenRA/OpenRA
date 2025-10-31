@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,10 +19,11 @@ namespace OpenRA
 	/// <summary>
 	/// 1D angle - 1024 units = 360 degrees.
 	/// </summary>
-	public readonly struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
+	public readonly struct WAngle : IEquatable<WAngle>, IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, ILuaToStringBinding
 	{
 		public readonly int Angle;
-		public int AngleSquared => (int)Angle * Angle;
+		public int AngleSquared => Angle * Angle;
 
 		public WAngle(int a)
 		{
@@ -31,7 +32,7 @@ namespace OpenRA
 				Angle += 1024;
 		}
 
-		public static readonly WAngle Zero = new WAngle(0);
+		public static readonly WAngle Zero = new(0);
 		public static WAngle FromFacing(int facing) { return new WAngle(facing * 4); }
 		public static WAngle FromDegrees(int degrees) { return new WAngle(degrees * 1024 / 360); }
 		public static WAngle operator +(WAngle a, WAngle b) { return new WAngle(a.Angle + b.Angle); }
@@ -39,12 +40,12 @@ namespace OpenRA
 		public static WAngle operator -(WAngle a) { return new WAngle(-a.Angle); }
 
 		public static bool operator ==(WAngle me, WAngle other) { return me.Angle == other.Angle; }
-		public static bool operator !=(WAngle me, WAngle other) { return !(me == other); }
+		public static bool operator !=(WAngle me, WAngle other) { return me.Angle != other.Angle; }
 
 		public override int GetHashCode() { return Angle.GetHashCode(); }
 
 		public bool Equals(WAngle other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WAngle && Equals((WAngle)obj); }
+		public override bool Equals(object obj) { return obj is WAngle angle && Equals(angle); }
 
 		public int Facing => Angle / 4;
 
@@ -102,7 +103,7 @@ namespace OpenRA
 
 		/// <summary>
 		/// Find the index of CosineTable that has the value closest to the given value.
-		/// The first or last index will be returned for values above or below the valid range
+		/// The first or last index will be returned for values above or below the valid range.
 		/// </summary>
 		static int ClosestCosineIndex(int value)
 		{
@@ -168,10 +169,10 @@ namespace OpenRA
 		public float RendererRadians() { return (float)(Angle * Math.PI / 512f); }
 		public float RendererDegrees() { return Angle * 0.3515625f; }
 
-		public override string ToString() { return Angle.ToString(); }
+		public override string ToString() { return Angle.ToStringInvariant(); }
 
 		static readonly int[] CosineTable =
-		{
+		[
 			1024, 1023, 1023, 1023, 1023, 1023, 1023, 1023, 1022, 1022, 1022, 1021,
 			1021, 1020, 1020, 1019, 1019, 1018, 1017, 1017, 1016, 1015, 1014, 1013,
 			1012, 1011, 1010, 1009, 1008, 1007, 1006, 1005, 1004, 1003, 1001, 1000,
@@ -191,10 +192,10 @@ namespace OpenRA
 			236, 230, 224, 218, 212, 205, 199, 193, 187, 181, 175, 168, 162, 156,
 			150, 144, 137, 131, 125, 119, 112, 106, 100, 94, 87, 81, 75, 69, 62,
 			56, 50, 43, 37, 31, 25, 18, 12, 6, 0
-		};
+		];
 
 		static readonly int[] TanTable =
-		{
+		[
 			0, 6, 12, 18, 25, 31, 37, 44, 50, 56, 62, 69, 75, 81, 88, 94, 100, 107,
 			113, 119, 126, 132, 139, 145, 151, 158, 164, 171, 177, 184, 190, 197,
 			203, 210, 216, 223, 229, 236, 243, 249, 256, 263, 269, 276, 283, 290,
@@ -215,42 +216,38 @@ namespace OpenRA
 			5499, 5693, 5901, 6124, 6364, 6622, 6903, 7207, 7539, 7902, 8302, 8743,
 			9233, 9781, 10396, 11094, 11891, 12810, 13882, 15148, 16667, 18524, 20843,
 			23826, 27801, 33366, 41713, 55622, 83438, 166883, int.MaxValue
-		};
+		];
 
 		#region Scripting interface
 
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WAngle a))
-				throw new LuaException($"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
-
-			if (right.TryGetClrValue(out int c))
-			{
-				TextNotificationsManager.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
-				return new LuaCustomClrObject(a + FromFacing(c));
-			}
+				throw new LuaException(
+					"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a + b);
 
-			throw new LuaException($"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+			throw new LuaException(
+				"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments " +
+				$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 		}
 
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WAngle a))
-				throw new LuaException($"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
-
-			if (right.TryGetClrValue(out int c))
-			{
-				TextNotificationsManager.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
-				return new LuaCustomClrObject(a - FromFacing(c));
-			}
+				throw new LuaException(
+					"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a - b);
 
-			throw new LuaException($"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+			throw new LuaException(
+				"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments " +
+				$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
@@ -260,6 +257,22 @@ namespace OpenRA
 
 			return a == b;
 		}
+
+		public LuaValue this[LuaRuntime runtime, LuaValue key]
+		{
+			get
+			{
+				switch (key.ToString())
+				{
+					case "Angle": return Angle;
+					default: throw new LuaException($"WAngle does not define a member '{key}'");
+				}
+			}
+
+			set => throw new LuaException("WAngle is read-only. Use Angle.New to create a new value");
+		}
+
+		public LuaValue ToString(LuaRuntime runtime) => ToString();
 
 		#endregion
 	}

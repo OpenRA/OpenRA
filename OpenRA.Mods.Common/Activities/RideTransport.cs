@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class RideTransport : Enter
+	sealed class RideTransport : Enter
 	{
 		readonly Passenger passenger;
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Make sure we can still enter the transport
 			// (but not before, because this may stop the actor in the middle of nowhere)
-			if (enterCargo == null || !passenger.Reserve(self, enterCargo))
+			if (enterCargo == null || enterCargo.IsTraitDisabled || !passenger.Reserve(self, enterCargo))
 			{
 				Cancel(self, true);
 				return false;
@@ -47,6 +47,12 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			return true;
+		}
+
+		protected override void TickInner(Actor self, in Target target, bool targetIsDeadOrHiddenActor)
+		{
+			if (enterCargo != null && enterCargo.IsTraitDisabled)
+				Cancel(self, true);
 		}
 
 		protected override void OnEnterComplete(Actor self, Actor targetActor)
@@ -61,8 +67,11 @@ namespace OpenRA.Mods.Common.Activities
 				if (targetActor != enterActor)
 					return;
 
-				if (!enterCargo.CanLoad(enterActor, self))
+				if (!enterCargo.CanLoad(self))
 					return;
+
+				foreach (var inl in targetActor.TraitsImplementing<INotifyLoadCargo>())
+					inl.Loading(self);
 
 				enterCargo.Load(enterActor, self);
 				w.Remove(self);

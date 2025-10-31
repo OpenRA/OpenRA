@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -81,17 +81,22 @@ namespace OpenRA.Primitives
 
 		public override int Read(byte[] buffer, int offset, int count)
 		{
+			return Read(buffer.AsSpan(offset, count));
+		}
+
+		public override int Read(Span<byte> buffer)
+		{
 			int bytesRead;
 
 			if (position >= Stream1.Length)
-				bytesRead = Stream2.Read(buffer, offset, count);
-			else if (count > Stream1.Length)
+				bytesRead = Stream2.Read(buffer);
+			else if (buffer.Length > Stream1.Length)
 			{
-				bytesRead = Stream1.Read(buffer, offset, (int)Stream1.Length);
-				bytesRead += Stream2.Read(buffer, (int)Stream1.Length, count - (int)Stream1.Length);
+				bytesRead = Stream1.Read(buffer[..(int)Stream1.Length]);
+				bytesRead += Stream2.Read(buffer[(int)Stream1.Length..]);
 			}
 			else
-				bytesRead = Stream1.Read(buffer, offset, count);
+				bytesRead = Stream1.Read(buffer);
 
 			position += bytesRead;
 
@@ -104,6 +109,11 @@ namespace OpenRA.Primitives
 		}
 
 		public override void Write(byte[] buffer, int offset, int count)
+		{
+			throw new NotSupportedException();
+		}
+
+		public override void Write(ReadOnlySpan<byte> buffer)
 		{
 			throw new NotSupportedException();
 		}

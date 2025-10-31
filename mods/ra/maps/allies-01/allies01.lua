@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -25,7 +25,7 @@ SendInsertionHelicopter = function()
 	local tanya = passengers[1]
 	Trigger.OnKilled(tanya, TanyaKilledInAction)
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
-		Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tanya-rules-of-engagement"), UserInterface.GetFluentMessage("tanya"))
 	end)
 end
 
@@ -80,7 +80,7 @@ LabGuardsKilled = function()
 				Media.PlaySoundNotification(Greece, "AlertBuzzer")
 			end)
 		end
-		Utils.Do(sovietArmy, function(a)
+		Utils.Do(SovietArmy, function(a)
 			if not a.IsDead and a.HasProperty("Hunt") then
 				Trigger.OnIdle(a, a.Hunt)
 			end
@@ -89,18 +89,18 @@ LabGuardsKilled = function()
 end
 
 SendExtractionHelicopter = function()
-	heli = Reinforcements.ReinforceWithTransport(Greece, ExtractionHelicopterType, nil, ExtractionPath)[1]
-	if not einstein.IsDead then
-		Trigger.OnRemovedFromWorld(einstein, EvacuateHelicopter)
+	Heli = Reinforcements.ReinforceWithTransport(Greece, ExtractionHelicopterType, nil, ExtractionPath)[1]
+	if not Einstein.IsDead then
+		Trigger.OnRemovedFromWorld(Einstein, EvacuateHelicopter)
 	end
-	Trigger.OnKilled(heli, RescueFailed)
-	Trigger.OnRemovedFromWorld(heli, HelicopterGone)
+	Trigger.OnKilled(Heli, RescueFailed)
+	Trigger.OnRemovedFromWorld(Heli, HelicopterGone)
 end
 
 EvacuateHelicopter = function()
-	if heli.HasPassengers then
-		heli.Move(ExtractionExitPoint.Location)
-		heli.Destroy()
+	if Heli.HasPassengers then
+		Heli.Move(ExtractionExitPoint.Location)
+		Heli.Destroy()
 	end
 end
 
@@ -114,7 +114,7 @@ SendCruisers = function()
 end
 
 LabDestroyed = function()
-	if not einstein then
+	if not Einstein then
 		RescueFailed()
 	end
 end
@@ -136,7 +136,7 @@ end
 CiviliansKilled = function()
 	Greece.MarkFailedObjective(CivilProtectionObjective)
 	Media.PlaySpeechNotification(Greece, "ObjectiveNotMet")
-	collateralDamage = true
+	CollateralDamage = true
 end
 
 LostMate = function()
@@ -148,15 +148,15 @@ end
 CreateEinstein = function()
 	Greece.MarkCompletedObjective(FindEinsteinObjective)
 	Media.PlaySpeechNotification(Greece, "ObjectiveMet")
-	einstein = Actor.Create(EinsteinType, true, { Location = EinsteinSpawnPoint.Location, Owner = Greece })
-	einstein.Scatter()
-	Trigger.OnKilled(einstein, RescueFailed)
-	ExtractObjective = Greece.AddObjective("Wait for the helicopter and extract Einstein.")
+	Einstein = Actor.Create(EinsteinType, true, { Location = EinsteinSpawnPoint.Location, Owner = Greece })
+	Einstein.Scatter()
+	Trigger.OnKilled(Einstein, RescueFailed)
+	ExtractObjective = AddPrimaryObjective(Greece, "extract-einstein-helicopter")
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Greece, "TargetFreed") end)
 end
 
 HelicopterGone = function()
-	if not heli.IsDead then
+	if not Heli.IsDead then
 		Media.PlaySpeechNotification(Greece, "TargetRescued")
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Greece.MarkCompletedObjective(ExtractObjective)
@@ -164,19 +164,11 @@ HelicopterGone = function()
 			if not Greece.IsObjectiveFailed(TanyaSurviveObjective) then
 				Greece.MarkCompletedObjective(TanyaSurviveObjective)
 			end
-			if not collateralDamage then
+			if not CollateralDamage then
 				Greece.MarkCompletedObjective(CivilProtectionObjective)
 			end
 		end)
 	end
-end
-
-MissionAccomplished = function()
-	Media.PlaySpeechNotification(Greece, "MissionAccomplished")
-end
-
-MissionFailed = function()
-	Media.PlaySpeechNotification(Greece, "MissionFailed")
 end
 
 SetUnitStances = function()
@@ -196,35 +188,24 @@ WorldLoaded = function()
 	England = Player.GetPlayer("England")
 	USSR = Player.GetPlayer("USSR")
 
-	Trigger.OnObjectiveAdded(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
-	Trigger.OnObjectiveCompleted(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Greece, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
+	InitObjectives(Greece)
 
-	Trigger.OnPlayerLost(Greece, MissionFailed)
-	Trigger.OnPlayerWon(Greece, MissionAccomplished)
-
-	FindEinsteinObjective = Greece.AddObjective("Find Einstein.")
-	TanyaSurviveObjective = Greece.AddObjective("Tanya must survive.")
-	EinsteinSurviveObjective = Greece.AddObjective("Einstein must survive.")
-	CivilProtectionObjective = Greece.AddObjective("Protect all civilians.", "Secondary", false)
+	FindEinsteinObjective = AddPrimaryObjective(Greece, "find-einstein")
+	TanyaSurviveObjective = AddPrimaryObjective(Greece, "tanya-survive")
+	EinsteinSurviveObjective = AddPrimaryObjective(Greece, "einstein-survive")
+	CivilProtectionObjective = AddSecondaryObjective(Greece, "protect-civilians")
 
 	RunInitialActivities()
 
 	Trigger.OnKilled(Lab, LabDestroyed)
 	Trigger.OnKilled(OilPump, OilPumpDestroyed)
 
-	sovietArmy = USSR.GetGroundAttackers()
+	SovietArmy = USSR.GetGroundAttackers()
 
 	Trigger.OnAllKilled(LabGuardsTeam, LabGuardsKilled)
 
-	collateralDamage = false
-	civilianTeam = { Civilian1, Civilian2 }
+	CollateralDamage = false
+	local civilianTeam = { Civilian1, Civilian2 }
 	Trigger.OnAnyKilled(civilianTeam, CiviliansKilled)
 	Trigger.OnKilled(Civilian1, LostMate)
 

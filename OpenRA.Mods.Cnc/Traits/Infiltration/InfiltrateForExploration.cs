@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,27 +17,38 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Steal and reset the owner's exploration.")]
-	class InfiltrateForExplorationInfo : TraitInfo
+	sealed class InfiltrateForExplorationInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
-		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> Types = default;
+
+		[Desc("Experience to grant to the infiltrating player.")]
+		public readonly int PlayerExperience = 0;
 
 		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when they get sabotaged.")]
 		public readonly string InfiltratedNotification = null;
 
+		[FluentReference(optional: true)]
+		[Desc("Text notification the victim will see when they get sabotaged.")]
+		public readonly string InfiltratedTextNotification = null;
+
 		[NotificationReference("Speech")]
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
 
-		public override object Create(ActorInitializer init) { return new InfiltrateForExploration(init.Self, this); }
+		[FluentReference(optional: true)]
+		[Desc("Text notification the perpetrator will see after successful infiltration.")]
+		public readonly string InfiltrationTextNotification = null;
+
+		public override object Create(ActorInitializer init) { return new InfiltrateForExploration(this); }
 	}
 
-	class InfiltrateForExploration : INotifyInfiltrated
+	sealed class InfiltrateForExploration : INotifyInfiltrated
 	{
 		readonly InfiltrateForExplorationInfo info;
 
-		public InfiltrateForExploration(Actor self, InfiltrateForExplorationInfo info)
+		public InfiltrateForExploration(InfiltrateForExplorationInfo info)
 		{
 			this.info = info;
 		}
@@ -52,6 +63,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (info.InfiltrationNotification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, infiltrator.Owner, "Speech", info.InfiltrationNotification, infiltrator.Owner.Faction.InternalName);
+
+			TextNotificationsManager.AddTransientLine(self.Owner, info.InfiltratedTextNotification);
+			TextNotificationsManager.AddTransientLine(infiltrator.Owner, info.InfiltrationTextNotification);
+
+			infiltrator.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(info.PlayerExperience);
 
 			infiltrator.Owner.Shroud.Explore(self.Owner.Shroud);
 			var preventReset = self.Owner.PlayerActor.TraitsImplementing<IPreventsShroudReset>()

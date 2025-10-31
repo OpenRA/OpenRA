@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public ActorGlobal(ScriptContext context)
 			: base(context) { }
 
-		ActorInit CreateInit(string initName, LuaValue value)
+		static ActorInit CreateInit(string initName, LuaValue value)
 		{
 			// Find the requested type
 			var initInstance = initName.Split(ActorInfo.TraitInstanceSeparator);
@@ -36,9 +36,9 @@ namespace OpenRA.Mods.Common.Scripting
 				throw new LuaException($"Unknown initializer type '{initInstance[0]}'");
 
 			// Construct the ActorInit.
-			var init = (ActorInit)FormatterServices.GetUninitializedObject(initType);
+			var init = (ActorInit)RuntimeHelpers.GetUninitializedObject(initType);
 			if (initInstance.Length > 1)
-				initType.GetField("InstanceName").SetValue(init, initInstance[1]);
+				initType.GetField(nameof(ActorInit.InstanceName)).SetValue(init, initInstance[1]);
 
 			if (value is LuaTable tableValue && init is CompositeActorInit compositeInit)
 			{
@@ -71,19 +71,9 @@ namespace OpenRA.Mods.Common.Scripting
 				return init;
 			}
 
-			// HACK: Backward compatibility for legacy int facings
-			if (init is FacingInit facingInit)
-			{
-				if (value.TryGetClrValue(out int facing))
-				{
-					facingInit.Initialize(WAngle.FromFacing(facing));
-					TextNotificationsManager.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
-					return facingInit;
-				}
-			}
-
 			var initializers = initType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1);
+				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1)
+				.ToList();
 
 			foreach (var initializer in initializers)
 			{
@@ -94,7 +84,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (!value.TryGetClrValue(valueType, out var clrValue))
 					continue;
 
-				initializer.Invoke(init, new[] { clrValue });
+				initializer.Invoke(init, [clrValue]);
 
 				return init;
 			}
@@ -104,7 +94,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Create a new actor. initTable specifies a list of key-value pairs that defines the initial parameters for the actor's traits.")]
-		public Actor Create(string type, bool addToWorld, LuaTable initTable)
+		public Actor Create(string type, bool addToWorld, [ScriptEmmyTypeOverride("initTable")] LuaTable initTable)
 		{
 			var initDict = new TypeDictionary();
 
@@ -186,6 +176,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return pi != null ? pi.GetCruiseAltitude().Length : 0;
 		}
 
+		[Desc("Returns the cost of the requested unit given by the Valued trait.")]
 		public int Cost(string type)
 		{
 			if (!Context.World.Map.Rules.Actors.TryGetValue(type, out var ai))

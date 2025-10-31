@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,15 +17,23 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	public class CaptureNotificationInfo : TraitInfo
 	{
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play to the new owner.")]
+		[Desc("Speech notification to play to the new owner.")]
 		public readonly string Notification = "BuildingCaptured";
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display to the new owner.")]
+		public readonly string TextNotification = null;
 
 		[Desc("Specifies if Notification is played with the voice of the new owners faction.")]
 		public readonly bool NewOwnerVoice = true;
 
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play to the old owner.")]
+		[Desc("Speech notification to play to the old owner.")]
 		public readonly string LoseNotification = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display to the old owner.")]
+		public readonly string LoseTextNotification = null;
 
 		[Desc("Specifies if LoseNotification is played with the voice of the new owners faction.")]
 		public readonly bool LoseNewOwnerVoice = false;
@@ -45,9 +53,11 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		{
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);
+			TextNotificationsManager.AddTransientLine(newOwner, info.TextNotification);
 
 			var loseFaction = info.LoseNewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, oldOwner, "Speech", info.LoseNotification, loseFaction);
+			TextNotificationsManager.AddTransientLine(oldOwner, info.LoseTextNotification);
 		}
 	}
 }

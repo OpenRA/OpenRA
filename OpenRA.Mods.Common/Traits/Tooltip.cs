@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,7 +15,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class TooltipInfoBase : ConditionalTraitInfo, Requires<IMouseBoundsInfo>
 	{
-		public readonly string Name = "";
+		[FieldLoader.Require]
+		[FluentReference]
+		public readonly string Name;
 	}
 
 	[Desc("Shown in map editor.")]
@@ -29,19 +31,23 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("An optional generic name (i.e. \"Soldier\" or \"Structure\")" +
 			"to be shown to chosen players.")]
-		public readonly string GenericName = null;
+		[FluentReference(optional: true)]
+		public readonly string GenericName;
 
 		[Desc("Prefix generic tooltip name with 'Ally/Neutral/EnemyPrefix'.")]
 		public readonly bool GenericStancePrefix = true;
 
 		[Desc("Prefix to display in the tooltip for allied units.")]
-		public readonly string AllyPrefix = "Allied";
+		[FluentReference(optional: true)]
+		public readonly string AllyPrefix = "label-tooltip-prefix.ally";
 
 		[Desc("Prefix to display in the tooltip for neutral units.")]
-		public readonly string NeutralPrefix = null;
+		[FluentReference(optional: true)]
+		public readonly string NeutralPrefix;
 
 		[Desc("Prefix to display in the tooltip for enemy units.")]
-		public readonly string EnemyPrefix = "Enemy";
+		[FluentReference(optional: true)]
+		public readonly string EnemyPrefix = "label-tooltip-prefix.enemy";
 
 		[Desc("Player stances that the generic name should be shown to.")]
 		public readonly PlayerRelationship GenericVisibility = PlayerRelationship.None;
@@ -54,18 +60,22 @@ namespace OpenRA.Mods.Common.Traits
 		public string TooltipForPlayerStance(PlayerRelationship relationship)
 		{
 			if (relationship == PlayerRelationship.None || !GenericVisibility.HasRelationship(relationship))
-				return Name;
+				return FluentProvider.GetMessage(Name);
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(AllyPrefix) && relationship == PlayerRelationship.Ally)
-				return AllyPrefix + " " + GenericName;
+			var genericName = string.IsNullOrEmpty(GenericName) ? "" : FluentProvider.GetMessage(GenericName);
+			if (GenericStancePrefix)
+			{
+				if (!string.IsNullOrEmpty(AllyPrefix) && relationship == PlayerRelationship.Ally)
+					return FluentProvider.GetMessage(AllyPrefix) + " " + genericName;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(NeutralPrefix) && relationship == PlayerRelationship.Neutral)
-				return NeutralPrefix + " " + GenericName;
+				if (!string.IsNullOrEmpty(NeutralPrefix) && relationship == PlayerRelationship.Neutral)
+					return FluentProvider.GetMessage(NeutralPrefix) + " " + genericName;
 
-			if (GenericStancePrefix && !string.IsNullOrEmpty(EnemyPrefix) && relationship == PlayerRelationship.Enemy)
-				return EnemyPrefix + " " + GenericName;
+				if (!string.IsNullOrEmpty(EnemyPrefix) && relationship == PlayerRelationship.Enemy)
+					return FluentProvider.GetMessage(EnemyPrefix) + " " + genericName;
+			}
 
-			return GenericName;
+			return genericName;
 		}
 
 		public bool IsOwnerRowVisible => ShowOwnerRow;

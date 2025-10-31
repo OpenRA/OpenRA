@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,13 +27,13 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly bool killOnFailure;
 		readonly BitSet<DamageType> killDamageTypes;
 		CPos destination;
-		bool killCargo;
-		bool screenFlash;
-		string sound;
+		readonly bool killCargo;
+		readonly bool screenFlash;
+		readonly string sound;
 
 		public Teleport(Actor teleporter, CPos destination, int? maximumDistance,
 			bool killCargo, bool screenFlash, string sound, bool interruptable = true,
-			bool killOnFailure = false, BitSet<DamageType> killDamageTypes = default(BitSet<DamageType>))
+			bool killOnFailure = false, BitSet<DamageType> killDamageTypes = default)
 		{
 			var max = teleporter.World.Map.Grid.MaximumTileSearchRange;
 			if (maximumDistance > max)
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				var cargo = self.TraitOrDefault<Cargo>();
 				if (cargo != null && teleporter != null)
 				{
-					while (!cargo.IsEmpty(self))
+					while (!cargo.IsEmpty())
 					{
 						var a = cargo.Unload(self);
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			// Trigger screen desaturate effect
 			if (screenFlash)
-				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
+				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPostProcessEffect>())
 					a.Trait.Enable();
 
 			if (teleporter != null && self != teleporter && !teleporter.Disposed)
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (teleporter == null)
 				return null;
 
-			var restrictTo = maximumDistance == null ? null : self.World.Map.FindTilesInCircle(self.Location, maximumDistance.Value);
+			var restrictTo = maximumDistance == null ? null : self.World.Map.FindTilesInCircle(self.Location, maximumDistance.Value).ToHashSet();
 
 			if (maximumDistance != null)
 				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
@@ -129,11 +129,11 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (pos.CanEnterCell(destination) && teleporter.Owner.Shroud.IsExplored(destination))
 				return destination;
 
-			var max = maximumDistance != null ? maximumDistance.Value : teleporter.World.Map.Grid.MaximumTileSearchRange;
+			var max = maximumDistance ?? teleporter.World.Map.Grid.MaximumTileSearchRange;
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
 				if (teleporter.Owner.Shroud.IsExplored(tile)
-					&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
+					&& (restrictTo == null || restrictTo.Contains(tile))
 					&& pos.CanEnterCell(tile))
 					return tile;
 			}

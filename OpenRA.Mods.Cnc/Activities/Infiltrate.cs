@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	class Infiltrate : Enter
+	sealed class Infiltrate : Enter
 	{
 		readonly Infiltrates infiltrates;
 		readonly INotifyInfiltration[] notifiers;
@@ -64,12 +64,11 @@ namespace OpenRA.Mods.Cnc.Activities
 			foreach (var t in targetActor.TraitsImplementing<INotifyInfiltrated>())
 				t.Infiltrated(targetActor, self, infiltrates.Info.Types);
 
-			var exp = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
-			exp?.GiveExperience(infiltrates.Info.PlayerExperience);
-
 			if (!string.IsNullOrEmpty(infiltrates.Info.Notification))
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 					infiltrates.Info.Notification, self.Owner.Faction.InternalName);
+
+			TextNotificationsManager.AddTransientLine(self.Owner, infiltrates.Info.TextNotification);
 
 			if (infiltrates.Info.EnterBehaviour == EnterBehaviour.Dispose)
 				self.Dispose();

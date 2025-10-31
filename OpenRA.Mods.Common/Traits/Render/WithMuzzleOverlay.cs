@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders the MuzzleSequence from the Armament trait.")]
-	class WithMuzzleOverlayInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
+	public sealed class WithMuzzleOverlayInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
 	{
 		[Desc("Ignore the weapon position, and always draw relative to the center of the actor")]
 		public readonly bool IgnoreOffset = false;
@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithMuzzleOverlay(init.Self, this); }
 	}
 
-	class WithMuzzleOverlay : ConditionalTrait<WithMuzzleOverlayInfo>, INotifyAttack, IRender, ITick
+	public sealed class WithMuzzleOverlay : ConditionalTrait<WithMuzzleOverlayInfo>, INotifyAttack, IRender, ITick
 	{
-		readonly Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
-		readonly Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
+		readonly Dictionary<Barrel, bool> visible = [];
+		readonly Dictionary<Barrel, AnimationWithOffset> anims = [];
 		readonly Func<WAngle> getFacing;
 		readonly Armament[] armaments;
 
@@ -59,7 +59,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 					else
 						getFacing = () => WAngle.Zero;
 
-					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing);
+					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing)
+					{
+						IsDecoration = true
+					};
+
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,
@@ -93,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					if (anim.DisableFunc != null && anim.DisableFunc())
 						continue;
 
-					foreach (var r in anim.Render(self, wr, palette))
+					foreach (var r in anim.Render(self, palette))
 						yield return r;
 				}
 			}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -80,14 +80,13 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return false;
 		}
 
-		protected virtual bool ShouldFlee(Squad squad, Func<IEnumerable<Actor>, bool> flee)
+		protected virtual bool ShouldFlee(Squad squad, Func<IReadOnlyCollection<Actor>, bool> flee)
 		{
 			if (!squad.IsValid)
 				return false;
 
-			var randomSquadUnit = squad.Units.Random(squad.Random);
 			var dangerRadius = squad.SquadManager.Info.DangerScanRadius;
-			var units = squad.World.FindActorsInCircle(randomSquadUnit.CenterPosition, WDist.FromCells(dangerRadius)).ToList();
+			var units = squad.World.FindActorsInCircle(squad.CenterPosition(), WDist.FromCells(dangerRadius)).ToList();
 
 			// If there are any own buildings within the DangerRadius, don't flee
 			// PERF: Avoid LINQ
@@ -95,8 +94,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				if (u.Owner == squad.Bot.Player && u.Info.HasTraitInfo<BuildingInfo>())
 					return false;
 
-			var enemyAroundUnit = units.Where(unit => squad.SquadManager.IsPreferredEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>());
-			if (!enemyAroundUnit.Any())
+			var enemyAroundUnit = units
+				.Where(unit => squad.SquadManager.IsPreferredEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>())
+				.ToList();
+			if (enemyAroundUnit.Count == 0)
 				return false;
 
 			return flee(enemyAroundUnit);
@@ -104,21 +105,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		protected static bool IsRearming(Actor a)
 		{
-			if (a.IsIdle)
-				return false;
-
-			var activity = a.CurrentActivity;
-			if (activity.GetType() == typeof(Resupply))
-				return true;
-
-			var next = activity.NextActivity;
-			if (next == null)
-				return false;
-
-			if (next.GetType() == typeof(Resupply))
-				return true;
-
-			return false;
+			return !a.IsIdle && (a.CurrentActivity.ActivitiesImplementing<Resupply>().Any() || a.CurrentActivity.ActivitiesImplementing<ReturnToBase>().Any());
 		}
 
 		protected static bool FullAmmo(IEnumerable<AmmoPool> ammoPools)

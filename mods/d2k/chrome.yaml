@@ -17,7 +17,9 @@ sidebar:
 	Regions:
 		background-top: 0, 0, 226, 295
 		background-iconrow: 0, 295, 226, 48
-		background-bottom: 0, 343, 226, 13
+		background-bottom: 0, 343, 226, 28
+		purchase-button: 226, 281, 125, 29
+
 
 sidebar-button:
 	Inherits: ^Chrome
@@ -79,7 +81,7 @@ radar-ordos:
 radar-harkonnen:
 	Inherits: ^Chrome
 	Regions:
-		insignia: 227, 127, 100, 100
+		insignia: 227, 127, 100, 90
 
 power-icons:
 	Inherits: ^Glyphs
@@ -115,40 +117,31 @@ production-icons:
 order-icons:
 	Inherits: ^Chrome
 	Regions:
-		debug: 10, 357, 34, 35
-		debug-disabled: 10, 393, 34, 35
-		debug-active: 10, 430, 34, 35
-		guard: 49, 357, 34, 35
-		guard-disabled: 49, 393, 34, 35
-		guard-active: 49, 430, 34, 35
-		repair: 88, 357, 34, 35
-		repair-disabled: 88, 393, 34, 35
-		repair-active: 88, 430, 34, 35
-		sell: 127, 357, 34, 35
-		sell-disabled: 127, 393, 34, 35
-		sell-active: 127, 430, 34, 35
-		options: 165, 357, 40, 38
-		options-disabled: 165, 393, 40, 38
-		options-active: 165, 430, 40, 38
-		beacon: 209, 357, 36, 35
-		beacon-disabled: 209, 393, 36, 35
-		beacon-active: 209, 430, 36, 35
-		power: 248, 357, 34, 35
-		power-disabled: 248, 393, 36, 35
-		power-active: 248, 430, 36, 35
-		diplomacy: 287, 357, 36, 35
-		diplomacy-disabled: 287, 393, 36, 35
-		diplomacy-active: 287, 430, 36, 35
+		repair: 238, 357, 34, 35
+		repair-disabled: 238, 393, 34, 35
+		repair-active: 238, 430, 34, 35
+		sell: 277, 357, 34, 35
+		sell-disabled: 277, 393, 34, 35
+		sell-active: 277, 430, 34, 35
+		options: 315, 357, 40, 38
+		options-disabled: 315, 393, 40, 38
+		options-active: 315, 430, 40, 38
+		beacon: 359, 357, 36, 35
+		beacon-disabled: 359, 393, 36, 35
+		beacon-active: 359, 430, 36, 35
+		power: 398, 357, 34, 35
+		power-disabled: 398, 393, 36, 35
+		power-active: 398, 430, 36, 35
 
 command-button:
 	Inherits: ^Chrome
-	PanelRegion: 331, 427, 0, 0, 34, 41, 0, 0
+	PanelRegion: 232, 312, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-hover:
 	Inherits: command-button
 command-button-pressed:
 	Inherits: ^Chrome
-	PanelRegion: 401, 427, 0, 0, 34, 41, 0, 0
+	PanelRegion: 301, 312, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-highlighted:
 	Inherits: command-button-pressed
@@ -158,7 +151,7 @@ command-button-highlighted-pressed:
 	Inherits: command-button-pressed
 command-button-disabled:
 	Inherits: ^Chrome
-	PanelRegion: 366, 427, 0, 0, 34, 41, 0, 0
+	PanelRegion: 266, 312, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-highlighted-disabled:
 	Inherits: command-button-disabled
@@ -183,21 +176,28 @@ command-icons:
 		queue-orders: 486, 196, 26, 26
 		queue-orders-disabled: 486, 222, 26, 26
 
+command-icons-highlighted:
+	Inherits: command-icons
+
 stance-icons:
 	Inherits: ^Chrome
 	Regions:
 		attack-anything: 416, 248, 16, 16
 		attack-anything-disabled: 432, 248, 16, 16
-		attack-anything-active: 448, 248, 16, 16
 		defend: 464, 248, 16, 16
 		defend-disabled: 480, 248, 16, 16
-		defend-active: 496, 248, 16, 16
 		return-fire: 416, 264, 16, 16
 		return-fire-disabled: 432, 264, 16, 16
-		return-fire-active: 448, 264, 16, 16
 		hold-fire: 464, 264, 16, 16
 		hold-fire-disabled: 480, 264, 16, 16
-		hold-fire-active: 496, 264, 16, 16
+
+stance-icons-highlighted:
+	Inherits: stance-icons
+	Regions:
+		attack-anything: 448, 248, 16, 16
+		defend: 496, 248, 16, 16
+		return-fire: 448, 264, 16, 16
+		hold-fire: 496, 264, 16, 16
 
 flags:
 	Inherits: ^Glyphs
@@ -238,6 +238,12 @@ dialog4:
 	Inherits: ^Dialog
 	PanelRegion: 512, 387, 6, 6, 52, 52, 6, 6
 
+# Dummy definition, partial copy of dialog because the widget definition in `common` expects it with this name.
+dialog5:
+	Inherits: ^Dialog
+	Regions:
+		background: 1, 1, 478, 478
+
 lobby-bits:
 	Inherits: ^Glyphs
 	Regions:
@@ -256,6 +262,7 @@ lobby-bits:
 		admin-anonymous: 34, 51, 16, 16
 		player-registered: 17, 51, 16, 16
 		player-anonymous: 51, 51, 16, 16
+		bot: 170, 51, 16, 16
 
 reload-icon:
 	Inherits: ^Glyphs
@@ -289,6 +296,33 @@ progressbar-bg:
 
 progressbar-thumb:
 	Inherits: button
+
+button-purchase:
+	Inherits: ^Chrome
+	PanelRegion: 226, 281, 0, 0, 125, 29,0 ,0
+
+button-purchase-disabled:
+	Inherits: button-purchase
+
+button-purchase-hover:
+	Inherits: ^Chrome
+	PanelRegion: 226, 252, 0, 0, 125, 29,0 ,0
+
+button-purchase-highlighted:
+	Inherits: button-purchase-hover
+
+button-purchase-highlighted-hover:
+	Inherits: button-purchase-hover
+
+button-purchase-pressed:
+	Inherits: ^Chrome
+	PanelRegion: 226, 223, 0, 0, 125, 29,0 ,0
+
+button-purchase-highlighted-pressed:
+	Inherits: button-purchase-pressed
+
+button-purchase-highlighted-disabled:
+	Inherits: button-purchase
 
 button:
 	Inherits: ^Dialog
@@ -368,22 +402,50 @@ slider-thumb-pressed:
 	Inherits: button-pressed
 
 slider-thumb-disabled:
-	Inherits: button
+	Inherits: button-disabled
 
 checkbox:
 	Inherits: button-pressed
 
-checkbox-bits:
+checkmark-tick:
 	Inherits: ^Glyphs
 	Regions:
 		checked: 187, 0, 16, 16
-		checked-disabled: 204, 0, 16, 16
-		crossed: 221, 0, 16, 16
-		crossed-disabled: 238, 0, 16, 16
+		checked-pressed: 204, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 204, 0, 16, 16
+
+checkmark-tick-highlighted:
+	Inherits: checkmark-tick
+
+checkmark-cross:
+	Inherits: ^Glyphs
+	Regions:
+		checked: 221, 0, 16, 16
+		checked-pressed: 238, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 238, 0, 16, 16
+
+checkmark-cross-highlighted:
+	Inherits: checkmark-cross
+
+checkmark-mute:
+	Inherits: ^Glyphs
+	Regions:
+		unchecked: 221, 34, 16, 16
+		unchecked-pressed: 238, 34, 16, 16
+		checked: 238, 34, 16, 16
+		checked-pressed: 221, 34, 16, 16
+
+checkmark-mute-highlighted:
+	Inherits: checkmark-mute
 
 checkbox-hover:
 	Inherits: ^Dialog
 	PanelRegion: 641, 129, 2, 2, 122, 122, 2, 2
+
+checkbox-pressed:
+	Inherits: checkbox-hover
 
 # Same as a button-disabled-pressed
 checkbox-disabled:
@@ -396,26 +458,58 @@ checkbox-highlighted:
 checkbox-highlighted-hover:
 	Inherits: checkbox-highlighted
 
+checkbox-highlighted-pressed:
+	Inherits: checkbox-highlighted
+
 checkbox-highlighted-disabled:
 	Inherits: checkbox-disabled
 
-scrollitem-selected:
-	Inherits: button-pressed
+checkbox-toggle:
+
+checkbox-toggle-hover:
+	Inherits: button
+
+checkbox-toggle-pressed:
+	Inherits: checkbox-pressed
+
+checkbox-toggle-highlighted:
+
+checkbox-toggle-highlighted-hover:
+	Inherits: button-highlighted
+
+checkbox-toggle-highlighted-pressed:
+	Inherits: checkbox-highlighted-pressed
+
+scrollitem:
 
 scrollitem-hover:
 	Inherits: button
 
-scrollheader-selected:
-	Inherits: button
+scrollitem-pressed:
+	Inherits: button-hover
+
+scrollitem-highlighted:
+	Inherits: button-pressed
 
 scrollitem-nohover:
-	Inherits: ^Dialog
+
+scrollitem-nohover-highlighted:
+
+scrollheader:
+	Inherits: button
+
+scrollheader-highlighted:
+	Inherits: button
 
 scrollpanel-decorations:
 	Inherits: ^Glyphs
 	Regions:
 		down: 119, 0, 16, 16
 		up: 102, 0, 16, 16
+		right: 136, 17, 16, 16
+		right-disabled: 153, 17, 16, 16
+		left: 170, 17, 16, 16
+		left-disabled: 187, 17, 16, 16
 
 dropdown-decorations:
 	Inherits: ^Glyphs
@@ -430,6 +524,9 @@ dropdown-separators:
 		separator-pressed: 641, 2, 1, 19
 		separator-disabled: 513, 258, 1, 19
 
+separator:
+	Inherits: button
+
 logos:
 	Inherits: ^LoadScreen
 	Regions:
@@ -439,3 +536,14 @@ loadscreen-stripe:
 	Inherits: ^LoadScreen
 	PanelRegion: 258, 0, 0, 0, 253, 256, 0, 0
 	PanelSides: Center
+
+editor:
+	Inherits: ^Glyphs
+	Regions:
+		select: 51, 144, 16, 16
+		tiles: 0, 144, 16, 16
+		overlays: 17, 144, 16, 16
+		actors: 34, 68, 16, 16
+		tools: 34, 144, 16, 16
+		history: 136, 51, 16, 16
+		erase: 67, 144, 16, 16

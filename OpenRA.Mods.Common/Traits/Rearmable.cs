@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,15 +20,15 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		[FieldLoader.Require]
 		[Desc("Actors that this actor can dock to and get rearmed by.")]
-		public readonly HashSet<string> RearmActors = new HashSet<string> { };
+		public readonly HashSet<string> RearmActors = [];
 
 		[Desc("Name(s) of AmmoPool(s) that use this trait to rearm.")]
-		public readonly HashSet<string> AmmoPools = new HashSet<string> { "primary" };
+		public readonly HashSet<string> AmmoPools = ["primary"];
 
 		public override object Create(ActorInitializer init) { return new Rearmable(this); }
 	}
 
-	public class Rearmable : INotifyCreated, INotifyResupply
+	public class Rearmable : INotifyCreated, INotifyDockClient
 	{
 		public readonly RearmableInfo Info;
 
@@ -44,17 +44,37 @@ namespace OpenRA.Mods.Common.Traits
 			RearmableAmmoPools = self.TraitsImplementing<AmmoPool>().Where(p => Info.AmmoPools.Contains(p.Info.Name)).ToArray();
 		}
 
-		void INotifyResupply.BeforeResupply(Actor self, Actor target, ResupplyType types)
+		void INotifyDockClient.Docked(Actor self, Actor dock)
 		{
-			if (!types.HasFlag(ResupplyType.Rearm))
-				return;
-
 			// Reset the ReloadDelay to avoid any issues with early cancellation
 			// from previous reload attempts (explicit order, host building died, etc).
 			foreach (var pool in RearmableAmmoPools)
 				pool.RemainingTicks = pool.Info.ReloadDelay;
 		}
 
-		void INotifyResupply.ResupplyTick(Actor self, Actor target, ResupplyType types) { }
+		void INotifyDockClient.Undocked(Actor self, Actor dock) { }
+
+		public bool RearmTick(Actor self)
+		{
+			var rearmComplete = true;
+			foreach (var ammoPool in RearmableAmmoPools)
+			{
+				if (!ammoPool.HasFullAmmo)
+				{
+					if (--ammoPool.RemainingTicks <= 0)
+					{
+						ammoPool.RemainingTicks = ammoPool.Info.ReloadDelay;
+						if (!string.IsNullOrEmpty(ammoPool.Info.RearmSound))
+							Game.Sound.PlayToPlayer(SoundType.World, self.Owner, ammoPool.Info.RearmSound, self.CenterPosition);
+
+						ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
+					}
+
+					rearmComplete = false;
+				}
+			}
+
+			return rearmComplete;
+		}
 	}
 }

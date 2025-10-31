@@ -5,11 +5,11 @@ NAPOWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~structures.nod, ~techlevel.low
-		Description: Provides power for other structures.
+		Description: actor-napowr.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Nod Power Plant
+		Name: actor-napowr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -48,11 +48,11 @@ NAAPWR:
 		Queue: Building
 		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.nod, ~techlevel.medium
-		Description: Provides twice as much power as\nthe normal Power Plant.
+		Description: actor-naapwr.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Advanced Power Plant
+		Name: actor-naapwr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -93,11 +93,11 @@ NAHAND:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.nod, ~techlevel.low
-		Description: Produces infantry.
+		Description: actor-nahand.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Hand of Nod
+		Name: actor-nahand.name
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -160,6 +160,9 @@ NAHAND:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
@@ -184,14 +187,14 @@ NAWEAP:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Nod War Factory
+		Name: actor-naweap.name
 	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
-		Description: Produces vehicles.
+		Description: actor-naweap.description
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
@@ -207,6 +210,9 @@ NAWEAP:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -244,12 +250,12 @@ NAHPAD:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Helipad
+		Name: actor-nahpad.name
 	Buildable:
 		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
-		Description: Produces, rearms and\nrepairs helicopters.
+		Description: actor-nahpad.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -267,6 +273,9 @@ NAHPAD:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
+		CirclesSequence:
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
@@ -274,8 +283,11 @@ NAHPAD:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
-		PlayerExperience: 15
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
+		StartRepairingTextNotification: notification-repairing
+		FinishRepairingNotification: UnitRepaired
+		FinishRepairingTextNotification: notification-unit-repaired
 	ProductionBar:
 		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
@@ -307,11 +319,11 @@ NARADR:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
+		Description: actor-naradr.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Nod Radar
+		Name: actor-naradr.name
 	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -324,6 +336,7 @@ NARADR:
 	ProvidesRadar:
 		RequiresCondition: !disabled && !empdisable
 	InfiltrateForExploration:
+		PlayerExperience: 10
 	DetectCloaked:
 		Range: 10c0
 	RenderDetectionCircle:
@@ -350,11 +363,11 @@ NATECH:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: naweap, naradr, ~structures.nod, ~techlevel.medium
-		Description: Provides access to advanced Nod technologies.
+		Description: actor-natech.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Nod Tech Center
+		Name: actor-natech.name
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -389,12 +402,13 @@ NASTLH:
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Stealth Generator
+		Name: actor-nastlh.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
-		Description: Generates a cloaking field\nto hide your forces from the enemy.
+		Description: actor-nastlh.description
+	ProvidesPrerequisite@buildingname:
 	Building:
 		Footprint: xxx XXX
 		Dimensions: 3,2
@@ -431,12 +445,12 @@ NATMPL:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
-		Description: Provides access to advanced Nod technologies.
+		Description: actor-natmpl.description
 	ProvidesPrerequisite@buildingname:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Temple of Nod
+		Name: actor-natmpl.name
 	Building:
 		Footprint: xxxx xxxx xxxX
 		Dimensions: 4,3
@@ -462,8 +476,8 @@ NATMPL:
 		Palette: bright
 	ProduceActorPower:
 		PauseOnCondition: empdisable || disabled
-		Description: Hunter Seeker
-		LongDesc: Releases a drone that will acquire and destroy an enemy target.
+		Name: actor-natmpl.produceactorpower-name
+		Description: actor-natmpl.produceactorpower-description
 		Prerequisites: ~techlevel.superweapons
 		Icon: hunterseeker
 		Actors: hunter
@@ -486,11 +500,11 @@ NAMISL:
 		BuildPaletteOrder: 120
 		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
-		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
+		Description: actor-namisl.description
 	Valued:
 		Cost: 1300
 	Tooltip:
-		Name: Nod Missile Silo
+		Name: actor-namisl.name
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -520,13 +534,17 @@ NAMISL:
 		Cursor: nuke
 		Icon: clustermissile
 		ChargeInterval: 13500
-		Description: Cluster Missile
-		LongDesc: Launches an explosive cluster warhead\nat a target location.
+		Name: actor-namisl.nukepower-name
+		Description: actor-namisl.nukepower-description
 		EndChargeSpeechNotification: ClusterMissileReady
 		SelectTargetSpeechNotification: SelectTarget
 		IncomingSpeechNotification: MissileLaunchDetected
+		EndChargeTextNotification: notification-cluster-missile-ready
+		SelectTargetTextNotification: notification-select-target
+		IncomingTextNotification: notification-missile-launch-detected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
+		MissileImage: ClusterMissile
 		MissileDelay: 18
 		DetonationAltitude: 5c0
 		SpawnOffset: 0, 0c128, 0c512
@@ -556,13 +574,13 @@ NAWAST:
 	Valued:
 		Cost: 1600
 	Tooltip:
-		Name: Waste Refinery
+		Name: actor-nawast.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
-		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
+		Description: actor-nawast.description
 	Building:
 		Footprint: Xx+ xx+ Xx+
 		Dimensions: 3,3
@@ -571,10 +589,12 @@ NAWAST:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	TiberianSunRefinery:
+	Refinery:
+	DockHost:
+		Type: UnloadWeed
 		DockAngle: 640
-		DockOffset: 2,1
-	StoresResources:
+		DockOffset: 724,724,0
+	StoresPlayerResources:
 		Capacity: 56
 	Power:
 		Amount: -40

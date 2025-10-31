@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,18 +27,18 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly ModData modData;
 		readonly IEnumerable<IResourceRenderer> resourceRenderers;
 
-		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
-		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
+		public readonly HotkeyReference ZoomInKey = new();
+		public readonly HotkeyReference ZoomOutKey = new();
 
-		public readonly HotkeyReference ScrollUpKey = new HotkeyReference();
-		public readonly HotkeyReference ScrollDownKey = new HotkeyReference();
-		public readonly HotkeyReference ScrollLeftKey = new HotkeyReference();
-		public readonly HotkeyReference ScrollRightKey = new HotkeyReference();
+		public readonly HotkeyReference ScrollUpKey = new();
+		public readonly HotkeyReference ScrollDownKey = new();
+		public readonly HotkeyReference ScrollLeftKey = new();
+		public readonly HotkeyReference ScrollRightKey = new();
 
-		public readonly HotkeyReference JumpToTopEdgeKey = new HotkeyReference();
-		public readonly HotkeyReference JumpToBottomEdgeKey = new HotkeyReference();
-		public readonly HotkeyReference JumpToLeftEdgeKey = new HotkeyReference();
-		public readonly HotkeyReference JumpToRightEdgeKey = new HotkeyReference();
+		public readonly HotkeyReference JumpToTopEdgeKey = new();
+		public readonly HotkeyReference JumpToBottomEdgeKey = new();
+		public readonly HotkeyReference JumpToLeftEdgeKey = new();
+		public readonly HotkeyReference JumpToRightEdgeKey = new();
 
 		// Note: LinterHotkeyNames assumes that these are disabled by default
 		public readonly string BookmarkSaveKeyPrefix = null;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public string ResourceTooltip { get; private set; }
 
-		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
+		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new()
 		{
 			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
 			{ ScrollDirection.Up | ScrollDirection.Right, "scroll-tr" },
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, "scroll-r" },
 		};
 
-		static readonly Dictionary<ScrollDirection, string> JoystickCursors = new Dictionary<ScrollDirection, string>
+		static readonly Dictionary<ScrollDirection, string> JoystickCursors = new()
 		{
 			{ ScrollDirection.Up | ScrollDirection.Left, "joystick-tl-blocked" },
 			{ ScrollDirection.Up | ScrollDirection.Right, "joystick-tr-blocked" },
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, "joystick-r-blocked" },
 		};
 
-		static readonly Dictionary<ScrollDirection, float2> ScrollOffsets = new Dictionary<ScrollDirection, float2>
+		static readonly Dictionary<ScrollDirection, float2> ScrollOffsets = new()
 		{
 			{ ScrollDirection.Up, new float2(0, -1) },
 			{ ScrollDirection.Down, new float2(0, 1) },
@@ -102,20 +102,20 @@ namespace OpenRA.Mods.Common.Widgets
 		WPos?[] bookmarkPositions;
 
 		[CustomLintableHotkeyNames]
-		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
+		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError)
 		{
 			var savePrefix = "";
-			var savePrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "BookmarkSaveKeyPrefix");
+			var savePrefixNode = widgetNode.Value.NodeWithKeyOrDefault("BookmarkSaveKeyPrefix");
 			if (savePrefixNode != null)
 				savePrefix = savePrefixNode.Value.Value;
 
 			var restorePrefix = "";
-			var restorePrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "BookmarkRestoreKeyPrefix");
+			var restorePrefixNode = widgetNode.Value.NodeWithKeyOrDefault("BookmarkRestoreKeyPrefix");
 			if (restorePrefixNode != null)
 				restorePrefix = restorePrefixNode.Value.Value;
 
 			var count = 0;
-			var countNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "BookmarkKeyCount");
+			var countNode = widgetNode.Value.NodeWithKeyOrDefault("BookmarkKeyCount");
 			if (countNode != null)
 				count = FieldLoader.GetValue<int>("BookmarkKeyCount", countNode.Value.Value);
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			for (var i = 0; i < count; i++)
 			{
-				var suffix = (i + 1).ToString("D2");
+				var suffix = (i + 1).ToStringInvariant("D2");
 				yield return savePrefix + suffix;
 				yield return restorePrefix + suffix;
 			}
@@ -153,10 +153,10 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			saveBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => modData.Hotkeys[BookmarkSaveKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[BookmarkSaveKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			restoreBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			bookmarkPositions = new WPos?[BookmarkKeyCount];
 		}
@@ -195,6 +195,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (Game.Settings.Game.ViewportEdgeScroll && Game.Renderer.WindowHasInputFocus)
 					edgeDirections = CheckForDirections();
 
+				if (Ui.KeyboardFocusWidget != null)
+					keyboardDirections = ScrollDirection.None;
+
 				if (keyboardDirections != ScrollDirection.None || edgeDirections != ScrollDirection.None)
 				{
 					var scroll = float2.Zero;
@@ -207,7 +210,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var deltaScale = Math.Min(Game.RunTime - lastScrollTime, 25f);
 
 					var length = Math.Max(1, scroll.Length);
-					scroll *= (deltaScale / (25 * length)) * Game.Settings.Game.ViewportEdgeScrollStep;
+					scroll *= deltaScale / (25 * length) * Game.Settings.Game.ViewportEdgeScrollStep;
 
 					worldRenderer.Viewport.Scroll(scroll, false);
 					lastScrollTime = Game.RunTime;
@@ -400,7 +403,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var key = Hotkey.FromKeyInput(e);
 
-			Func<HotkeyReference, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
+			bool HandleMapScrollKey(HotkeyReference hotkey, ScrollDirection scrollDirection)
 			{
 				var isHotkey = false;
 				var keyValue = hotkey.GetValue();
@@ -411,10 +414,10 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				return isHotkey;
-			};
+			}
 
-			if (handleMapScrollKey(ScrollUpKey, ScrollDirection.Up) || handleMapScrollKey(ScrollDownKey, ScrollDirection.Down)
-				|| handleMapScrollKey(ScrollLeftKey, ScrollDirection.Left) || handleMapScrollKey(ScrollRightKey, ScrollDirection.Right))
+			if (HandleMapScrollKey(ScrollUpKey, ScrollDirection.Up) || HandleMapScrollKey(ScrollDownKey, ScrollDirection.Down)
+				|| HandleMapScrollKey(ScrollLeftKey, ScrollDirection.Left) || HandleMapScrollKey(ScrollRightKey, ScrollDirection.Right))
 				return true;
 
 			if (e.Event != KeyInputEvent.Down)
@@ -481,7 +484,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return world.OrderGenerator.HandleKeyPress(e);
 		}
 
-		ScrollDirection CheckForDirections()
+		static ScrollDirection CheckForDirections()
 		{
 			var margin = Game.Settings.Game.ViewportEdgeScrollMargin;
 			var directions = ScrollDirection.None;

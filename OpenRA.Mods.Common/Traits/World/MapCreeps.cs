@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,11 +18,13 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.World)]
 	public class MapCreepsInfo : TraitInfo, ILobbyOptions
 	{
+		[FluentReference]
 		[Desc("Descriptive label for the creeps checkbox in the lobby.")]
-		public readonly string CheckboxLabel = "Creep Actors";
+		public readonly string CheckboxLabel = "dropdown-map-creeps.label";
 
+		[FluentReference]
 		[Desc("Tooltip description for the creeps checkbox in the lobby.")]
-		public readonly string CheckboxDescription = "Hostile forces spawn on the battlefield";
+		public readonly string CheckboxDescription = "dropdown-map-creeps.description";
 
 		[Desc("Default value of the creeps checkbox in the lobby.")]
 		public readonly bool CheckboxEnabled = true;
@@ -38,7 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("creeps", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
+			yield return new LobbyBooleanOption(map, "creeps",
+				CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
 		}
 
 		public override object Create(ActorInitializer init) { return new MapCreeps(this); }

@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "OpenRA.Utility": {
+      "commandName": "Project",
+      "commandLineArgs": "all --docs {DEV_VERSION}",
+      "environmentVariables": {
+        "ENGINE_DIR": ".."
+      }
+    }
+  }
+}

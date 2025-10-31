@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,13 +17,13 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Bridge actor that can't be passed underneath.")]
-	class GroundLevelBridgeInfo : TraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<IHealthInfo>
+	sealed class GroundLevelBridgeInfo : TraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<IHealthInfo>
 	{
 		public readonly string TerrainType = "Bridge";
 
 		public readonly string Type = "GroundLevelBridge";
 
-		public readonly CVec[] NeighbourOffsets = { };
+		public readonly CVec[] NeighbourOffsets = [];
 
 		[WeaponReference]
 		[Desc("The name of the weapon to use when demolishing the bridge")]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this bridge causes to units over/in path of it while being destroyed/repaired. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GroundLevelBridge(init.Self, this); }
 	}
 
-	class GroundLevelBridge : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
+	sealed class GroundLevelBridge : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly GroundLevelBridgeInfo Info;
 		readonly Actor self;
@@ -69,8 +69,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var cell in cells)
 				self.World.Map.CustomTerrain[cell] = terrainIndex;
-
-			self.World.WorldActor.TraitOrDefault<DomainIndex>()?.UpdateCells(self.World, cells);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)

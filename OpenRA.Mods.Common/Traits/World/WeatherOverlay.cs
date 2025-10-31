@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Adds a particle-based overlay.")]
-	public class WeatherOverlayInfo : TraitInfo, ILobbyCustomRulesIgnore
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
+	public class WeatherOverlayInfo : ConditionalTraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Average number of particles per 100x100 px square.")]
 		public readonly int ParticleDensityFactor = 8;
@@ -27,10 +28,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ChangingWindLevel = true;
 
 		[Desc("The levels of wind intensity (particles x-axis movement in px/tick).")]
-		public readonly int[] WindLevels = { -12, -7, -5, 0, 5, 7, 12 };
+		public readonly int[] WindLevels = [-12, -7, -5, 0, 5, 7, 12];
 
 		[Desc("Works only if ChangingWindLevel is enabled. Min. and max. ticks needed to change the WindLevel.")]
-		public readonly int[] WindTick = { 150, 550 };
+		public readonly int[] WindTick = [150, 550];
 
 		[Desc("Hard or soft fading between the WindLevels.")]
 		public readonly bool InstantWindChanges = false;
@@ -39,39 +40,48 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool UseSquares = true;
 
 		[Desc("Size / width of the particle in px.")]
-		public readonly int[] ParticleSize = { 1, 3 };
+		public readonly int[] ParticleSize = [1, 3];
 
 		[Desc("Scatters falling direction on the x-axis. Scatter min. and max. value in px/tick.")]
-		public readonly int[] ScatterDirection = { -1, 1 };
+		public readonly int[] ScatterDirection = [-1, 1];
 
 		[Desc("Min. and max. speed at which particles fall in px/tick.")]
-		public readonly float[] Gravity = { 2.5f, 5f };
+		public readonly float[] Gravity = [2.5f, 5f];
 
 		[Desc("The current offset value for the swing movement. SwingOffset min. and max. value in px/tick.")]
-		public readonly float[] SwingOffset = { 2.5f, 3.5f };
+		public readonly float[] SwingOffset = [2.5f, 3.5f];
 
 		[Desc("The value that particles swing to the side each update. SwingSpeed min. and max. value in px/tick.")]
-		public readonly float[] SwingSpeed = { 0.0025f, 0.06f };
+		public readonly float[] SwingSpeed = [0.0025f, 0.06f];
 
 		[Desc("The value range that can be swung to the left or right. SwingAmplitude min. and max. value in px/tick.")]
-		public readonly float[] SwingAmplitude = { 1.0f, 1.5f };
+		public readonly float[] SwingAmplitude = [1.0f, 1.5f];
 
 		[Desc("The randomly selected rgb(a) hex colors for the particles. Use this order: rrggbb[aa], rrggbb[aa], ...")]
 		public readonly Color[] ParticleColors =
-		{
+		[
 			Color.FromArgb(236, 236, 236),
 			Color.FromArgb(228, 228, 228),
 			Color.FromArgb(208, 208, 208),
 			Color.FromArgb(188, 188, 188)
-		};
+		];
 
 		[Desc("Works only with line enabled and can be used to fade out the tail of the line like a contrail.")]
 		public readonly byte LineTailAlphaValue = 200;
 
+		[Desc("Time to fade out once the trait becomes disabled.")]
+		public readonly int FadeOutTicks = 1000;
+
+		[Desc("Time to fade in once the trait becomes enabled.")]
+		public readonly int FadeInTicks = 1000;
+
+		[Desc("Percentage of the initial particle when enabled and the game start.")]
+		public readonly int InitialParticlePercentage = 100;
+
 		public override object Create(ActorInitializer init) { return new WeatherOverlay(init.World, this); }
 	}
 
-	public class WeatherOverlay : ITick, IRenderAboveWorld, INotifyViewportZoomExtentsChanged
+	public class WeatherOverlay : ConditionalTrait<WeatherOverlayInfo>, ITick, IRenderAboveWorld, INotifyViewportZoomExtentsChanged
 	{
 		readonly struct Particle
 		{
@@ -132,8 +142,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		readonly WeatherOverlayInfo info;
 		readonly World world;
+		readonly int fadeInTick;
+		readonly int fadeOutTick;
 
 		float windStrength;
 		int targetWindStrengthIndex;
@@ -141,14 +152,19 @@ namespace OpenRA.Mods.Common.Traits
 		Particle[] particles;
 		Size viewportSize;
 		long lastRender;
+		bool initialTick = true;
+		int fadingInTick;
+		int fadingOutTick;
 
 		public WeatherOverlay(World world, WeatherOverlayInfo info)
+			: base(info)
 		{
-			this.info = info;
 			this.world = world;
 			targetWindStrengthIndex = info.ChangingWindLevel ? world.LocalRandom.Next(info.WindLevels.Length) : 0;
 			windUpdateCountdown = world.LocalRandom.Next(info.WindTick[0], info.WindTick[1]);
 			windStrength = info.WindLevels[targetWindStrengthIndex];
+			fadeInTick = info.FadeInTicks > 0 ? info.FadeInTicks : 1;
+			fadeOutTick = info.FadeOutTicks > 0 ? info.FadeOutTicks : 1;
 		}
 
 		void INotifyViewportZoomExtentsChanged.ViewportZoomExtentsChanged(float minZoom, float maxZoom)
@@ -158,30 +174,60 @@ namespace OpenRA.Mods.Common.Traits
 			viewportSize = new Size(s.X, s.Y);
 
 			// Randomly distribute particles within the initial viewport
-			var particleCount = viewportSize.Width * viewportSize.Height * info.ParticleDensityFactor / 10000;
+			var particleCount = viewportSize.Width * viewportSize.Height * Info.ParticleDensityFactor / 10000;
 			particles = new Particle[particleCount];
 			var rect = new Rectangle(int2.Zero, viewportSize);
 			for (var i = 0; i < particles.Length; i++)
-				particles[i] = new Particle(info, world.LocalRandom, rect);
+				particles[i] = new Particle(Info, world.LocalRandom, rect);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (!initialTick)
+				fadingInTick = (fadeOutTick - fadingOutTick) * 1000 * fadeInTick / fadeOutTick / 1000;
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			if (!initialTick)
+				fadingOutTick = (fadeInTick - fadingInTick) * 1000 * fadeOutTick / fadeInTick / 1000;
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			if (!info.ChangingWindLevel || info.WindLevels.Length == 1)
+			if (initialTick)
+			{
+				initialTick = false;
+				var initialPercentage = Exts.Clamp(Info.InitialParticlePercentage, 0, 100);
+				if (IsTraitDisabled)
+					fadingOutTick = fadeOutTick * (100 - initialPercentage) / 100;
+				else
+					fadingInTick = fadeInTick * initialPercentage / 100;
+			}
+
+			if (IsTraitDisabled)
+			{
+				if (fadingOutTick < fadeOutTick)
+					fadingOutTick++;
+			}
+			else if (fadingInTick < fadeInTick)
+				fadingInTick++;
+
+			if (!Info.ChangingWindLevel || Info.WindLevels.Length == 1)
 				return;
 
 			if (--windUpdateCountdown <= 0)
 			{
-				windUpdateCountdown = self.World.LocalRandom.Next(info.WindTick[0], info.WindTick[1]);
+				windUpdateCountdown = self.World.LocalRandom.Next(Info.WindTick[0], Info.WindTick[1]);
 				if (targetWindStrengthIndex > 0 && self.World.LocalRandom.Next(2) == 1)
 					targetWindStrengthIndex--;
-				else if (targetWindStrengthIndex < info.WindLevels.Length - 1)
+				else if (targetWindStrengthIndex < Info.WindLevels.Length - 1)
 					targetWindStrengthIndex++;
 			}
 
 			// Fading the wind in little steps towards the TargetWindOffset
-			var targetWindLevel = info.WindLevels[targetWindStrengthIndex];
-			if (info.InstantWindChanges)
+			var targetWindLevel = Info.WindLevels[targetWindStrengthIndex];
+			if (Info.InstantWindChanges)
 				windStrength = targetWindLevel;
 			else if (Math.Abs(windStrength - targetWindLevel) > 0.01f)
 			{
@@ -194,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
-			var center = wr.Viewport.CenterLocation;
+			var center = wr.Viewport.CenterLocation.ToInt2();
 			var viewport = new Rectangle(center - new int2(viewportSize) / 2, viewportSize);
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
@@ -204,7 +250,9 @@ namespace OpenRA.Mods.Common.Traits
 			var tickFraction = Math.Min((runtime - lastRender) * 1f / world.Timestep, 1);
 			lastRender = runtime;
 
-			for (var i = 0; i < particles.Length; i++)
+			var spawnNum = particles.Length * (IsTraitDisabled ? (fadeOutTick - fadingOutTick) * 1000 / fadeOutTick : fadingInTick * 1000 / fadeInTick) / 1000;
+
+			for (var i = 0; i < spawnNum; i++)
 			{
 				// Simulate wind and gravity effects on the particle
 				var p = particles[i];
@@ -237,7 +285,7 @@ namespace OpenRA.Mods.Common.Traits
 				// Render the particle
 				// We must provide a z coordinate to stop the GL near and far Z limits from culling the geometry
 				var a = new float3(p.Pos.X, p.Pos.Y, p.Pos.Y);
-				if (info.UseSquares)
+				if (Info.UseSquares)
 				{
 					var b = a + new float2(p.Size, p.Size);
 					wcr.FillRect(a, b, p.Color);

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,14 +28,22 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Type = null;
 
 		[NotificationReference("Speech")]
-		[Desc("Notification played when production is activated.",
+		[Desc("Speech notification played when production is activated.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = null;
 
+		[FluentReference(optional: true)]
+		[Desc("Text notification displayed when production is activated.")]
+		public readonly string ReadyTextNotification = null;
+
 		[NotificationReference("Speech")]
-		[Desc("Notification played when the exit is jammed.",
+		[Desc("Speech notification played when the exit is jammed.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification displayed when the exit is jammed.")]
+		public readonly string BlockedTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new ProduceActorPower(init, this); }
 	}
@@ -91,9 +99,15 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (activated)
+			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, manager.Self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(manager.Self.Owner, info.ReadyTextNotification);
+			}
 			else
+			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, manager.Self.Owner, "Speech", info.BlockedAudio, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(manager.Self.Owner, info.BlockedTextNotification);
+			}
 		}
 	}
 }

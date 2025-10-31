@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
@@ -33,12 +34,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string PrimaryCondition = null;
 
 		[NotificationReference("Speech")]
-		[Desc("The speech notification to play when selecting a primary building.")]
+		[Desc("Speech notification to play when selecting a primary building.")]
 		public readonly string SelectionNotification = null;
+
+		[FluentReference(optional: true)]
+		[Desc("Text notification to display when selecting a primary building.")]
+		public readonly string SelectionTextNotification = null;
 
 		[Desc("List of production queues for which the primary flag should be set.",
 			"If empty, the list given in the `Produces` property of the `" + nameof(Production) + "` trait will be used.")]
-		public readonly string[] ProductionQueues = { };
+		public readonly string[] ProductionQueues = [];
 
 		[CursorReference]
 		[Desc("Cursor to display when setting the primary building.")]
@@ -112,6 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 					primaryToken = self.GrantCondition(Info.PrimaryCondition);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.SelectionNotification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(self.Owner, Info.SelectionTextNotification);
 			}
 			else if (primaryToken != Actor.InvalidConditionToken)
 				primaryToken = self.RevokeCondition(primaryToken);

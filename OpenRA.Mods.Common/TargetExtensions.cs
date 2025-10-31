@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common
 		/// <summary>
 		/// Update (Frozen)Actor targets to account for visibility changes or actor replacement.
 		/// If the target actor becomes hidden without a FrozenActor, the target is invalidated.
-		/// /// </summary>
+		/// </summary>
 		public static Target RecalculateInvalidatingHiddenTargets(this Target t, Player viewer)
 		{
-			var updated = t.Recalculate(viewer, out bool targetIsHiddenActor);
+			var updated = t.Recalculate(viewer, out var targetIsHiddenActor);
 			return targetIsHiddenActor ? Target.Invalid : updated;
 		}
 

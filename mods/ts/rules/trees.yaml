@@ -10,7 +10,7 @@ TIBTRE03:
 BIGBLUE:
 	Inherits: ^BlossomTree
 	Tooltip:
-		Name: Large Blue Tiberium Crystal
+		Name: actor-bigblue-name
 	RenderSprites:
 		Palette: bluetiberium
 	RadarColorFromTerrain:
@@ -112,7 +112,7 @@ VEINHOLE:
 		QuantizedFacings: 1
 	AppearsOnRadar:
 	Tooltip:
-		Name: Veinhole
+		Name: actor-veinhole-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -125,7 +125,7 @@ VEINHOLE:
 	MapEditorData:
 		RequireTilesets: TEMPERATE
 	Tooltip:
-		Name: Tiberian Flora
+		Name: meta-tibflora-name
 
 FONA01:
 	Inherits: ^TibFlora

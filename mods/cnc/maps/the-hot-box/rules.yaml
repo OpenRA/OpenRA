@@ -17,6 +17,9 @@ World:
 		BuildRadiusCheckboxEnabled: True
 		BuildRadiusCheckboxVisible: False
 	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
 		TechLevelDropdownLocked: True
 		TechLevelDropdownVisible: False
 		TechLevel: unrestricted
@@ -63,4 +66,8 @@ Player:
 		DefaultCashDropdownVisible: False
 		DefaultCash: 5000
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		Enabled: False
+		Locked: True
 		Visible: False

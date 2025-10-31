@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Tracks neutral and enemy actors' visibility and notifies the player.",
 		"Attach this to the player actor. The actors to track need the 'AnnounceOnSeen' trait.")]
-	class EnemyWatcherInfo : TraitInfo
+	sealed class EnemyWatcherInfo : TraitInfo
 	{
 		[Desc("Interval in ticks between scanning for enemies.")]
 		public readonly int ScanInterval = 25;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EnemyWatcher(this); }
 	}
 
-	class EnemyWatcher : ITick
+	sealed class EnemyWatcher : ITick
 	{
 		readonly EnemyWatcherInfo info;
 		readonly HashSet<Player> discoveredPlayers;
@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EnemyWatcher(EnemyWatcherInfo info)
 		{
-			lastKnownActorIds = new HashSet<uint>();
-			discoveredPlayers = new HashSet<Player>();
+			lastKnownActorIds = [];
+			discoveredPlayers = [];
 			this.info = info;
 			rescanInterval = 0;
 			ticksBeforeNextNotification = 0;
@@ -67,8 +67,8 @@ namespace OpenRA.Mods.Common.Traits
 			rescanInterval = info.ScanInterval;
 
 			announcedAny = false;
-			visibleActorIds = new HashSet<uint>();
-			playedNotifications = new HashSet<string>();
+			visibleActorIds = [];
+			playedNotifications = [];
 
 			foreach (var actor in self.World.ActorsWithTrait<AnnounceOnSeen>())
 			{
@@ -89,8 +89,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (lastKnownActorIds.Contains(actor.Actor.ActorID))
 					continue;
 
-				// Should we play a sound notification?
-				var playNotification = !playedNotifications.Contains(actor.Trait.Info.Notification) && ticksBeforeNextNotification <= 0;
+				// Should we play a notification?
+				var notificationId = $"{actor.Trait.Info.Notification} {actor.Trait.Info.TextNotification}";
+				var playNotification = !playedNotifications.Contains(notificationId) && ticksBeforeNextNotification <= 0;
 
 				// Notify the actor that he has been discovered
 				foreach (var trait in actor.Actor.TraitsImplementing<INotifyDiscovered>())
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!playNotification)
 					continue;
 
-				playedNotifications.Add(actor.Trait.Info.Notification);
+				playedNotifications.Add(notificationId);
 				announcedAny = true;
 			}
 

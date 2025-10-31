@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly World world;
 		IRadarTerrainLayer[] radarTerrainLayers;
-		CellLayer<(int, int)> terrainColor;
+		CellLayer<(uint, uint)> terrainColor;
 		readonly Shroud shroud;
 
 		public event Action<MPos> CellTerrainColorChanged = null;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			radarTerrainLayers = w.WorldActor.TraitsImplementing<IRadarTerrainLayer>().ToArray();
-			terrainColor = new CellLayer<(int, int)>(w.Map);
+			terrainColor = new CellLayer<(uint, uint)>(w.Map);
 
 			w.AddFrameEndTask(_ =>
 			{
@@ -82,16 +82,16 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		public (int Left, int Right) this[MPos uv] => terrainColor[uv];
+		public (uint Left, uint Right) this[MPos uv] => terrainColor[uv];
 
-		public static (int Left, int Right) GetColor(Map map, IRadarTerrainLayer[] radarTerrainLayers, MPos uv)
+		public static (uint Left, uint Right) GetColor(Map map, IRadarTerrainLayer[] radarTerrainLayers, MPos uv)
 		{
 			foreach (var rtl in radarTerrainLayers)
 				if (rtl.TryGetTerrainColorPair(uv, out var c))
 					return (c.Left.ToArgb(), c.Right.ToArgb());
 
-			var tc = map.GetTerrainColorPair(uv);
-			return (tc.Left.ToArgb(), tc.Right.ToArgb());
+			var (left, right) = map.GetTerrainColorPair(uv);
+			return (left.ToArgb(), right.ToArgb());
 		}
 	}
 }

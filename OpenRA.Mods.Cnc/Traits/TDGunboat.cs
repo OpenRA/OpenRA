@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common;
@@ -25,10 +24,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Speed = 28;
 
 		[Desc("Facing to use when actor spawns. Only 256 and 768 supported.")]
-		public readonly WAngle InitialFacing = new WAngle(256);
+		public readonly WAngle InitialFacing = new(256);
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc). Only 256 and 768 supported.")]
-		public readonly WAngle PreviewFacing = new WAngle(256);
+		public readonly WAngle PreviewFacing = new(256);
 
 		public override object Create(ActorInitializer init) { return new TDGunboat(init, this); }
 
@@ -48,7 +47,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		bool IOccupySpaceInfo.SharesCell => false;
 
 		// Used to determine if actor can spawn
-		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell,
+			SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			return world.Map.Contains(cell);
 		}
@@ -59,22 +59,20 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly TDGunboatInfo Info;
 		readonly Actor self;
-		static readonly WAngle Left = new WAngle(256);
-		static readonly WAngle Right = new WAngle(768);
+		static readonly WAngle Left = new(256);
+		static readonly WAngle Right = new(768);
 
 		IEnumerable<int> speedModifiers;
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
-		WRot orientation;
-
 		[Sync]
 		public WAngle Facing
 		{
-			get => orientation.Yaw;
-			set => orientation = orientation.WithYaw(value);
+			get => Orientation.Yaw;
+			set => Orientation = Orientation.WithYaw(value);
 		}
 
-		public WRot Orientation => orientation;
+		public WRot Orientation { get; private set; }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }
@@ -142,16 +140,16 @@ namespace OpenRA.Mods.Cnc.Traits
 			Facing = Facing == Left ? Right : Left;
 		}
 
-		int MovementSpeed => OpenRA.Mods.Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers);
+		int MovementSpeed => Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers);
 
-		public (CPos, SubCell)[] OccupiedCells() { return new[] { (TopLeft, SubCell.FullCell) }; }
+		public (CPos, SubCell)[] OccupiedCells() { return [(TopLeft, SubCell.FullCell)]; }
 
 		WVec MoveStep(WAngle facing)
 		{
 			return MoveStep(MovementSpeed, facing);
 		}
 
-		WVec MoveStep(int speed, WAngle facing)
+		static WVec MoveStep(int speed, WAngle facing)
 		{
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(facing));
 			return speed * dir / 1024;
@@ -199,16 +197,24 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 
 		public Activity MoveTo(CPos cell, int nearEnough = 0, Actor ignoreActor = null,
-			bool evaluateNearestMovableCell = false, Color? targetLineColor = null) { return null; }
+			bool evaluateNearestMovableCell = false, Color? targetLineColor = null)
+		{ return null; }
 		public Activity MoveWithinRange(in Target target, WDist range,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		{ return null; }
 		public Activity MoveWithinRange(in Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		{ return null; }
 		public Activity MoveFollow(Actor self, in Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		{ return null; }
 		public Activity ReturnToCell(Actor self) { return null; }
 		public Activity MoveToTarget(Actor self, in Target target,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null) { return null; }
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		{ return null; }
+		public Activity MoveOntoTarget(Actor self, in Target target, in WVec offset,
+			WAngle? facing, Color? targetLineColor = null)
+		{ return null; }
 		public Activity MoveIntoTarget(Actor self, in Target target) { return null; }
 		public Activity LocalMove(Actor self, WPos fromPos, WPos toPos) { return null; }
 

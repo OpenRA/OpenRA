@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[Desc("Play a random sound from this list when enabled.")]
-		public readonly string[] EnabledSounds = { };
+		public readonly string[] EnabledSounds = [];
 
 		[Desc("Play a random sound from this list when disabled.")]
-		public readonly string[] DisabledSounds = { };
+		public readonly string[] DisabledSounds = [];
 
 		[Desc("Minimum level of health at which to grant the condition.")]
 		public readonly int MinHP = 0;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Non-positive values will make it use Health.HP.")]
 		public readonly int MaxHP = 0;
 
-		[Desc("Is the condition irrevokable once it has been granted?")]
+		[Desc("Is the condition irrevocable once it has been granted?")]
 		public readonly bool GrantPermanently = false;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnHealth(init.Self, this); }

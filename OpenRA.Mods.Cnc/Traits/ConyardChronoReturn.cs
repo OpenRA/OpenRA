@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -25,13 +25,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		"Otherwise, a vortex animation is played and damage is dealt each tick, ignoring modifiers.")]
 	public class ConyardChronoReturnInfo : TraitInfo, Requires<HealthInfo>, Requires<WithSpriteBodyInfo>, IObservesVariablesInfo
 	{
-		[SequenceReference]
-		[Desc("Sequence name with the baked-in vortex animation")]
-		public readonly string Sequence = "pdox";
-
-		[Desc("Sprite body to play the vortex animation on.")]
-		public readonly string Body = "body";
-
 		[GrantedConditionReference]
 		[Desc("Condition to grant while the vortex animation plays.")]
 		public readonly string Condition = null;
@@ -40,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Damage = 1000;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which to teleport a replacement actor instead of triggering the vortex.")]
@@ -51,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string OriginalActor = "mcv";
 
 		[Desc("Facing of the returned actor.")]
-		public readonly WAngle Facing = new WAngle(384);
+		public readonly WAngle Facing = new(384);
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
 
@@ -65,7 +58,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly ConyardChronoReturnInfo info;
-		readonly WithSpriteBody wsb;
 		readonly Health health;
 		readonly Actor self;
 		readonly string faction;
@@ -73,7 +65,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		int conditionToken = Actor.InvalidConditionToken;
 
 		Actor chronosphere;
-		int duration;
+		readonly int duration;
 		bool returnOriginal;
 		bool selling;
 
@@ -81,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		int returnTicks = 0;
 
 		[Sync]
-		CPos origin;
+		readonly CPos origin;
 
 		[Sync]
 		bool triggered;
@@ -92,8 +84,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			self = init.Self;
 
 			health = self.Trait<Health>();
-
-			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
 
 			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>();
@@ -127,16 +117,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			triggered = true;
 
-			// Don't override the selling animation
-			if (selling)
-				return;
-
-			wsb.PlayCustomAnimation(self, info.Sequence, () =>
+			self.World.AddFrameEndTask(w => w.Add(new ConyardChronoVortex(self, () =>
 			{
 				triggered = false;
-				if (conditionToken != Actor.InvalidConditionToken)
+				if (conditionToken != Actor.InvalidConditionToken && !self.Disposed)
 					conditionToken = self.RevokeCondition(conditionToken);
-			});
+			})));
 		}
 
 		CPos? ChooseBestDestinationCell(MobileInfo mobileInfo, CPos destination)
@@ -158,7 +144,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void ReturnToOrigin()
 		{
 			var selected = self.World.Selection.Contains(self);
-			var controlgroup = self.World.Selection.GetControlGroupForActor(self);
+			var controlgroup = self.World.ControlGroups.GetControlGroupForActor(self);
 			var mobileInfo = self.World.Map.Rules.Actors[info.OriginalActor].TraitInfo<MobileInfo>();
 			var destination = ChooseBestDestinationCell(mobileInfo, origin);
 
@@ -190,7 +176,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.World.Selection.Add(a);
 
 			if (controlgroup.HasValue)
-				self.World.Selection.AddToControlGroup(a, controlgroup.Value);
+				self.World.ControlGroups.AddToControlGroup(a, controlgroup.Value);
 
 			Game.Sound.Play(SoundType.World, info.ChronoshiftSound, self.World.Map.CenterOfCell(destination.Value));
 			self.Dispose();
@@ -213,7 +199,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				TriggerVortex();
 
 			// Trigger screen desaturate effect
-			foreach (var cpa in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
+			foreach (var cpa in self.World.ActorsWithTrait<ChronoshiftPostProcessEffect>())
 				cpa.Trait.Enable();
 
 			Game.Sound.Play(SoundType.World, info.ChronoshiftSound, self.CenterPosition);

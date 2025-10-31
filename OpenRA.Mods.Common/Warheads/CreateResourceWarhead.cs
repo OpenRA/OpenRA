@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,17 +9,17 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Creates resources in a circle.")]
 	public class CreateResourceWarhead : Warhead
 	{
 		[Desc("Size of the area. The resources are seeded within this area.", "Provide 2 values for a ring effect (outer/inner).")]
-		public readonly int[] Size = { 0, 0 };
+		public readonly int[] Size = [0, 0];
 
 		[Desc("Will this splatter resources and which?")]
 		[FieldLoader.Require]
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!resourceLayer.CanAddResource(AddsResourceType, cell))
 					continue;
 
-				var splash = world.SharedRandom.Next(1, maxDensity - resourceLayer.GetResource(cell).Density);
+				var splash = (byte)world.SharedRandom.Next(1, maxDensity - resourceLayer.GetResource(cell).Density);
 				resourceLayer.AddResource(AddsResourceType, cell, splash);
 			}
 		}

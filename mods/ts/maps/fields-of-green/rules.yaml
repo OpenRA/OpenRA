@@ -9,6 +9,7 @@ World:
 	-CrateSpawner:
 	-StartGameNotification:
 	-SpawnStartingUnits:
+	-AutoSave:
 	-MapStartingLocations:
 	LuaScript:
 		Scripts: fields-of-green.lua
@@ -16,6 +17,9 @@ World:
 		BackgroundMusic: intro
 		DisableWorldSounds: true
 		AllowMuteBackgroundMusic: true
+
+^Palettes:
+	-MenuPostProcessEffect:
 
 ^BaseWorld:
 	TerrainLighting:

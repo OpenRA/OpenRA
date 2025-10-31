@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,7 +18,7 @@ namespace OpenRA.Primitives
 {
 	static class BitSetAllocator<T> where T : class
 	{
-		static readonly Cache<string, BitSetIndex> Bits = new Cache<string, BitSetIndex>(Allocate);
+		static readonly Cache<string, BitSetIndex> Bits = new(Allocate);
 		static BitSetIndex nextBits = 1;
 
 		static BitSetIndex Allocate(string value)
@@ -86,7 +86,7 @@ namespace OpenRA.Primitives
 
 		public static BitSet<T> FromStringsNoAlloc(string[] values)
 		{
-			return new BitSet<T>(BitSetAllocator<T>.GetBitsNoAlloc(values)) { };
+			return new BitSet<T>(BitSetAllocator<T>.GetBitsNoAlloc(values));
 		}
 
 		public override string ToString()
@@ -98,7 +98,7 @@ namespace OpenRA.Primitives
 		public static bool operator !=(BitSet<T> me, BitSet<T> other) { return !(me == other); }
 
 		public bool Equals(BitSet<T> other) { return other == this; }
-		public override bool Equals(object obj) { return obj is BitSet<T> && Equals((BitSet<T>)obj); }
+		public override bool Equals(object obj) { return obj is BitSet<T> bitSet && Equals(bitSet); }
 		public override int GetHashCode() { return bits.GetHashCode(); }
 
 		public bool IsEmpty => bits == 0;

@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, atreides04.lua, atreides04-AI.lua
+		Scripts: campaign.lua, utils.lua, atreides04.lua, atreides04-AI.lua
 	MissionData:
 		Briefing: Our scouts have discovered the hidden Fremen base. The Harkonnen blockade of the Fremen must be broken.\n\nPowerful Harkonnen forces to the South are massing for an assault on the Fremen. Heavy forces have been allocated to you to smash through the Harkonnen fortifications and come to the aid of the Fremen.\n\nGood luck.\n
 		BriefingVideo: A_BR04_E.VQA
@@ -12,11 +12,12 @@ World:
 		TechLevel: low
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: easy
 
 carryall.reinforce:
@@ -61,19 +62,22 @@ engineer:
 
 repair_pad:
 	Buildable:
-		Prerequisites: heavy_factory, upgrade.heavy
+		Prerequisites: heavy_factory
 
 mcv:
 	Buildable:
-		Prerequisites: repair_pad, upgrade.heavy
+		Prerequisites: repair_pad
 
 upgrade.conyard:
 	Buildable:
 		Prerequisites: ~disabled
 
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled
+
 # HACK: AI units can't attack the sietch if it was on a real rock
 tile475:
-	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
 	RenderSprites:
@@ -91,7 +95,6 @@ tile475:
 
 # Placed after the sietch is destroyed so that the cliff is still unpassable
 invisibleBlocker:
-	AlwaysVisible:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

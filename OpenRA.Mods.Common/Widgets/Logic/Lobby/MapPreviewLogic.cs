@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -13,230 +13,309 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapPreviewLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string Connecting = "label-connecting";
+
+		[FluentReference("size")]
+		const string Downloading = "label-downloading-map";
+
+		[FluentReference("size", "progress")]
+		const string DownloadingPercentage = "label-downloading-map-progress";
+
+		[FluentReference]
+		const string RetryInstall = "button-retry-install";
+
+		[FluentReference]
+		const string RetrySearch = "button-retry-search";
+
+		[FluentReference("author")]
+		const string CreatedBy = "label-created-by";
+
 		readonly int blinkTickLength = 10;
-		bool installHighlighted;
+		readonly Dictionary<PreviewStatus, Widget[]> previewWidgets = [];
+		readonly Func<(MapPreview Map, Session.MapStatus Status)> getMap;
+
+		enum PreviewStatus
+		{
+			Unknown,
+			Playable,
+			Incompatible,
+			Validating,
+			Generating,
+			DownloadAvailable,
+			Searching,
+			Downloading,
+			DownloadError,
+			Unavailable,
+			UpdateAvailable,
+			UpdateDownloadAvailable,
+		}
+
+		PreviewStatus currentStatus;
+		bool blink;
 		int blinkTick;
+		readonly ButtonWidget retryButton;
+		bool mapUpdateAvailable = false;
 
 		[ObjectCreator.UseCtor]
-		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<(MapPreview Map, Session.MapStatus Status)> getMap,
+		internal MapPreviewLogic(Widget widget, ModData modData, Func<(MapPreview Map, Session.MapStatus Status)> getMap,
 			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
-			Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+			bool mapUpdatesEnabled, Action<string> onMapUpdate, Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
 		{
+			this.getMap = getMap;
+
+			Widget SetupMapPreview(Widget parent)
+			{
+				var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
+				preview.Preview = () => getMap().Map;
+				if (onMouseDown != null)
+					preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
+
+				if (getSpawnOccupants != null)
+					preview.SpawnOccupants = getSpawnOccupants;
+
+				if (getDisabledSpawnPoints != null)
+					preview.DisabledSpawnPoints = getDisabledSpawnPoints;
+
+				preview.ShowUnoccupiedSpawnpoints = showUnoccupiedSpawnpoints;
+
+				var titleLabel = parent.Get<LabelWithTooltipWidget>("MAP_TITLE");
+				titleLabel.IsVisible = () => getMap().Map != MapCache.UnknownMap;
+				var font = Game.Renderer.Fonts[titleLabel.Font];
+				var titleCache = new CachedTransform<string, string>(str =>
+				{
+					var truncatedText = WidgetUtils.TruncateText(str, titleLabel.Bounds.Width, font);
+
+					if (str != truncatedText)
+						titleLabel.GetTooltipText = () => str;
+					else
+						titleLabel.GetTooltipText = null;
+
+					return truncatedText;
+				});
+
+				titleLabel.GetText = () => titleCache.Update(getMap().Map.Title);
+
+				return parent;
+			}
+
+			var authorCache = new CachedTransform<string, string>(
+				text => FluentProvider.GetMessage(CreatedBy, "author", text));
+
+			Widget SetupAuthorAndMapType(Widget parent)
+			{
+				var typeLabel = parent.Get<LabelWidget>("MAP_TYPE");
+				var typeCache = new CachedTransform<string[], string>(c => c.FirstOrDefault() ?? "");
+
+				typeLabel.GetText = () => typeCache.Update(getMap().Map.Categories);
+
+				var authorLabel = parent.Get<LabelWidget>("MAP_AUTHOR");
+				var font = Game.Renderer.Fonts[authorLabel.Font];
+				var truncateCache = new CachedTransform<string, string>(author =>
+					WidgetUtils.TruncateText(authorCache.Update(author), authorLabel.Bounds.Width, font));
+
+				authorLabel.GetText = () => truncateCache.Update(getMap().Map.Author);
+
+				return parent;
+			}
+
 			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
 
-			var available = widget.GetOrNull("MAP_AVAILABLE");
-			if (available != null)
+			Widget SetUpInstallButton(Widget parent)
 			{
-				available.IsVisible = () =>
-				{
-					var (map, serverStatus) = getMap();
-					var isPlayable = (serverStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
-					return map.Status == MapStatus.Available && isPlayable;
-				};
-
-				SetupWidgets(available, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+				var button = parent.Get<ButtonWidget>("MAP_INSTALL");
+				button.IsHighlighted = () => blink;
+				button.OnClick = () => getMap().Map.Install(mapRepository);
+				return parent;
 			}
 
-			var invalid = widget.GetOrNull("MAP_INVALID");
-			if (invalid != null)
+			var updateButton = widget.Get<ButtonWidget>("MAP_UPDATE");
+			updateButton.IsHighlighted = () => blink;
+			updateButton.OnClick = () =>
 			{
-				invalid.IsVisible = () =>
-				{
-					var (map, serverStatus) = getMap();
-					return map.Status == MapStatus.Available && (serverStatus & Session.MapStatus.Incompatible) != 0;
-				};
+				var uid = getMap().Map.Uid;
+				var newUid = modData.MapCache.GetUpdatedMap(uid);
+				if (newUid != null && newUid != uid)
+					onMapUpdate(newUid);
+			};
 
-				SetupWidgets(invalid, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
-			}
-
-			var validating = widget.GetOrNull("MAP_VALIDATING");
-			if (validating != null)
+			Widget SetUpDownloadProgress(Widget parent)
 			{
-				validating.IsVisible = () =>
-				{
-					var (map, serverStatus) = getMap();
-					return map.Status == MapStatus.Available && (serverStatus & Session.MapStatus.Validating) != 0;
-				};
+				var progressbar = parent.Get<ProgressBarWidget>("MAP_PROGRESSBAR");
+				progressbar.IsIndeterminate = () => getMap().Map.DownloadPercentage == 0;
+				progressbar.GetPercentage = () => getMap().Map.DownloadPercentage;
 
-				SetupWidgets(validating, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
-			}
-
-			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
-			if (download != null)
-			{
-				download.IsVisible = () => getMap().Map.Status == MapStatus.DownloadAvailable;
-
-				SetupWidgets(download, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
-
-				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
-				if (install != null)
-				{
-					install.OnClick = () =>
-					{
-						getMap().Map.Install(mapRepository, () =>
-						{
-							if (orderManager != null)
-								Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command($"state {Session.ClientState.NotReady}")));
-						});
-					};
-
-					install.IsHighlighted = () => installHighlighted;
-				}
-			}
-
-			var progress = widget.GetOrNull("MAP_PROGRESS");
-			if (progress != null)
-			{
-				progress.IsVisible = () =>
+				var downloadingLabel = parent.Get<LabelWidget>("MAP_STATUS_DOWNLOADING");
+				downloadingLabel.GetText = () =>
 				{
 					var (map, _) = getMap();
-					return map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable;
+					if (map.DownloadBytes == 0)
+						return FluentProvider.GetMessage(Connecting);
+
+					// Server does not provide the total file length.
+					if (map.DownloadPercentage == 0)
+						return FluentProvider.GetMessage(Downloading, "size", map.DownloadBytes / 1024);
+
+					return FluentProvider.GetMessage(DownloadingPercentage, "size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage);
 				};
 
-				SetupWidgets(progress, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
-
-				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
-				if (statusSearching != null)
-				{
-					statusSearching.IsVisible = () =>
-					{
-						var (map, _) = getMap();
-						return map.Status == MapStatus.Searching;
-					};
-				}
-
-				var statusUnavailable = progress.GetOrNull("MAP_STATUS_UNAVAILABLE");
-				if (statusUnavailable != null)
-				{
-					statusUnavailable.IsVisible = () =>
-					{
-						var (map, _) = getMap();
-						return map.Status == MapStatus.Unavailable && map != MapCache.UnknownMap;
-					};
-				}
-
-				var statusError = progress.GetOrNull("MAP_STATUS_ERROR");
-				if (statusError != null)
-					statusError.IsVisible = () => getMap().Map.Status == MapStatus.DownloadError;
-
-				var statusDownloading = progress.GetOrNull<LabelWidget>("MAP_STATUS_DOWNLOADING");
-				if (statusDownloading != null)
-				{
-					statusDownloading.IsVisible = () => getMap().Map.Status == MapStatus.Downloading;
-
-					statusDownloading.GetText = () =>
-					{
-						var (map, _) = getMap();
-						if (map.DownloadBytes == 0)
-							return "Connecting...";
-
-						// Server does not provide the total file length
-						if (map.DownloadPercentage == 0)
-							return $"Downloading {map.DownloadBytes / 1024} kB";
-
-						return $"Downloading {map.DownloadBytes / 1024} kB ({map.DownloadPercentage}%)";
-					};
-				}
-
-				var retry = progress.GetOrNull<ButtonWidget>("MAP_RETRY");
-				if (retry != null)
-				{
-					retry.IsVisible = () =>
-					{
-						var (map, _) = getMap();
-						return (map.Status == MapStatus.DownloadError || map.Status == MapStatus.Unavailable) && map != MapCache.UnknownMap;
-					};
-
-					retry.OnClick = () =>
-					{
-						var (map, _) = getMap();
-						if (map.Status == MapStatus.DownloadError)
-						{
-							map.Install(mapRepository, () =>
-							{
-								if (orderManager != null)
-									Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command($"state {Session.ClientState.NotReady}")));
-							});
-						}
-						else if (map.Status == MapStatus.Unavailable)
-							modData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { map.Uid });
-					};
-
-					retry.GetText = () => getMap().Map.Status == MapStatus.DownloadError ? "Retry Install" : "Retry Search";
-				}
-
-				var progressbar = progress.GetOrNull<ProgressBarWidget>("MAP_PROGRESSBAR");
-				if (progressbar != null)
-				{
-					progressbar.IsIndeterminate = () => getMap().Map.DownloadPercentage == 0;
-					progressbar.GetPercentage = () => getMap().Map.DownloadPercentage;
-					progressbar.IsVisible = () => getMap().Map.Status == MapStatus.Downloading;
-				}
+				return parent;
 			}
+
+			retryButton = widget.Get<ButtonWidget>("MAP_RETRY");
+			retryButton.OnClick = () =>
+			{
+				retryTriggered = true;
+				var (map, _) = getMap();
+
+				var uid = modData.MapCache.GetUpdatedMap(map.Uid);
+				mapUpdateAvailable = mapUpdatesEnabled && uid != null && map.Uid != uid;
+
+				if (map.Status == MapStatus.DownloadError)
+					map.Install(mapRepository);
+				else if (map.Status == MapStatus.Unavailable)
+					modData.MapCache.QueryRemoteMapDetails(mapRepository, [map.Uid]);
+			};
+
+			var retryInstall = FluentProvider.GetMessage(RetryInstall);
+			var retrySearch = FluentProvider.GetMessage(RetrySearch);
+			retryButton.GetText = () => getMap().Map.Status == MapStatus.DownloadError ? retryInstall : retrySearch;
+
+			var previewLarge = SetupMapPreview(widget.Get("MAP_LARGE"));
+			var previewSmall = SetupMapPreview(widget.Get("MAP_SMALL"));
+
+			// Widgets to be made visible.
+			previewWidgets[PreviewStatus.Unknown] =
+				[previewLarge];
+			previewWidgets[PreviewStatus.Playable] =
+				[previewLarge, SetupAuthorAndMapType(widget.Get("MAP_AVAILABLE"))];
+			previewWidgets[PreviewStatus.Incompatible] =
+				[previewLarge, widget.Get("MAP_INCOMPATIBLE")];
+			previewWidgets[PreviewStatus.Validating] =
+				[previewSmall, widget.Get("MAP_VALIDATING")];
+			previewWidgets[PreviewStatus.Generating] =
+				[previewSmall, widget.Get("MAP_GENERATING")];
+			previewWidgets[PreviewStatus.UpdateAvailable] =
+				[previewSmall, widget.Get("MAP_UPDATE_AVAILABLE"), updateButton];
+			previewWidgets[PreviewStatus.DownloadAvailable] =
+				[previewSmall, SetUpInstallButton(SetupAuthorAndMapType(widget.Get("MAP_DOWNLOAD_AVAILABLE")))];
+			previewWidgets[PreviewStatus.UpdateDownloadAvailable] =
+				[previewSmall, SetUpInstallButton(widget.Get("MAP_UPDATE_DOWNLOAD_AVAILABLE")), updateButton];
+			previewWidgets[PreviewStatus.Searching] =
+				[previewSmall, widget.Get("MAP_SEARCHING")];
+			previewWidgets[PreviewStatus.Downloading] =
+				[previewSmall, SetUpDownloadProgress(widget.Get("MAP_DOWNLOADING"))];
+			previewWidgets[PreviewStatus.Unavailable] =
+				[previewSmall, widget.Get("MAP_UNAVAILABLE"), retryButton];
+			previewWidgets[PreviewStatus.DownloadError] =
+				[previewSmall, widget.Get("MAP_ERROR"), retryButton];
+
+			// Hide all widgets.
+			foreach (var preview in previewWidgets)
+				foreach (var p in preview.Value)
+					p.IsVisible = () => false;
 		}
+
+		Widget[] visibleWidgets = [];
+
+		void UpdateVisibility()
+		{
+			foreach (var widget in visibleWidgets)
+				widget.IsVisible = () => false;
+
+			visibleWidgets = previewWidgets[currentStatus];
+			foreach (var widget in visibleWidgets)
+				widget.IsVisible = () => true;
+		}
+
+		bool retryTriggered = false;
 
 		public override void Tick()
 		{
 			if (++blinkTick >= blinkTickLength)
 			{
-				installHighlighted ^= true;
+				blink ^= true;
 				blinkTick = 0;
 			}
-		}
 
-		void SetupWidgets(Widget parent,
-			Func<(MapPreview Map, Session.MapStatus Status)> getMap,
-			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown,
-			Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
-			Func<HashSet<int>> getDisabledSpawnPoints,
-			bool showUnoccupiedSpawnpoints)
-		{
-			var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
-			preview.Preview = () => getMap().Map;
-			preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
-			preview.SpawnOccupants = getSpawnOccupants;
-			preview.DisabledSpawnPoints = getDisabledSpawnPoints;
-			preview.ShowUnoccupiedSpawnpoints = showUnoccupiedSpawnpoints;
+			var (map, serverStatus) = getMap();
 
-			var titleLabel = parent.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
-			if (titleLabel != null)
+			// Combine Session.MapStatus and MapStatus into PreviewStatus.
+			PreviewStatus? status = null;
+			if (map == MapCache.UnknownMap)
+				status = PreviewStatus.Unknown;
+			else
 			{
-				titleLabel.IsVisible = () => getMap().Map != MapCache.UnknownMap;
-				var font = Game.Renderer.Fonts[titleLabel.Font];
-				var title = new CachedTransform<MapPreview, string>(m =>
+				switch (map.Status)
 				{
-					var truncated = WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font);
+					case MapStatus.Available:
+						if (serverStatus.HasFlag(Session.MapStatus.Playable))
+							status = PreviewStatus.Playable;
+						else if (serverStatus.HasFlag(Session.MapStatus.Incompatible))
+							status = PreviewStatus.Incompatible;
+						else if (serverStatus.HasFlag(Session.MapStatus.Validating))
+							status = PreviewStatus.Validating;
+						else
+							return;
+						break;
+					case MapStatus.DownloadAvailable:
+						if (mapUpdateAvailable)
+							status = PreviewStatus.UpdateDownloadAvailable;
+						else
+							status = PreviewStatus.DownloadAvailable;
+						break;
+					case MapStatus.Searching:
+						status = PreviewStatus.Searching;
+						break;
+					case MapStatus.Generating:
+						status = PreviewStatus.Generating;
+						break;
+					case MapStatus.Unavailable:
+						if (mapUpdateAvailable)
+							status = PreviewStatus.UpdateAvailable;
+						else
+							status = PreviewStatus.Unavailable;
+						break;
+					case MapStatus.DownloadError:
+						status = PreviewStatus.DownloadError;
+						break;
+					case MapStatus.Downloading:
+						status = PreviewStatus.Downloading;
+						break;
+				}
+			}
 
-					if (m.Title != truncated)
-						titleLabel.GetTooltipText = () => m.Title;
+			// Trigger only on status change.
+			if (status != null && status != currentStatus)
+			{
+				// When a map becomes invalid, make sure the `Retry` button is triggered.
+				if (status == PreviewStatus.Unavailable || status == PreviewStatus.UpdateAvailable)
+				{
+					if (retryTriggered)
+						retryTriggered = false;
 					else
-						titleLabel.GetTooltipText = null;
+					{
+						retryButton.OnClick();
+						if (map.Status == MapStatus.Searching)
+							status = PreviewStatus.Searching;
+						else if (mapUpdateAvailable)
+							status = PreviewStatus.UpdateAvailable;
+						else
+							status = PreviewStatus.Unavailable;
+					}
+				}
+				else if (status != PreviewStatus.Searching)
+					retryTriggered = false;
 
-					return truncated;
-				});
-				titleLabel.GetText = () => title.Update(getMap().Map);
-			}
-
-			var typeLabel = parent.GetOrNull<LabelWidget>("MAP_TYPE");
-			if (typeLabel != null)
-			{
-				var type = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
-				typeLabel.GetText = () => type.Update(getMap().Map);
-			}
-
-			var authorLabel = parent.GetOrNull<LabelWidget>("MAP_AUTHOR");
-			if (authorLabel != null)
-			{
-				var font = Game.Renderer.Fonts[authorLabel.Font];
-				var author = new CachedTransform<MapPreview, string>(
-					m => WidgetUtils.TruncateText($"Created by {m.Author}", authorLabel.Bounds.Width, font));
-				authorLabel.GetText = () => author.Update(getMap().Map);
+				currentStatus = status.Value;
+				UpdateVisibility();
 			}
 		}
 	}

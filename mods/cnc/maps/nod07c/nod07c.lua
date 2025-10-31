@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -141,11 +141,11 @@ WorldLoaded = function()
 		end
 	end)
 
-	CaptureHelipad = Nod.AddObjective("Capture the GDI helipad.")
-	NoCaptureObjective = Nod.AddObjective("Don't capture or destroy any other\nGDI main building.")
-	UseOrcaObjective = Nod.AddObjective("Use the GDI orca to wreak havoc at the village.")
-	DistractGuardsObjective = Nod.AddObjective("Distract the guards by attacking the\nmain entrance with your vehicles.", "Secondary", false)
-	GDIObjective = GDI.AddObjective("Kill all enemies.")
+	CaptureHelipad = AddPrimaryObjective(Nod, "capture-gdi-helipad")
+	NoCaptureObjective = AddPrimaryObjective(Nod, "do-not-capture-or-destroy")
+	UseOrcaObjective = AddPrimaryObjective(Nod, "orca-wreak-havoc")
+	DistractGuardsObjective = AddSecondaryObjective(Nod, "distract-guards")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 end
 
 Tick = function()

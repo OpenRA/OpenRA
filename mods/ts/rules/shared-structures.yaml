@@ -9,7 +9,7 @@ GACNST:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		Description: Builds base structures.
+		Description: actor-gacnst.description
 	Health:
 		HP: 150000
 	Armor:
@@ -18,12 +18,12 @@ GACNST:
 		Range: 5c0
 		MaxHeightDelta: 3
 	Production:
-		Produces: Building,Defense
+		Produces: Building,Support
 		PauseOnCondition: empdisable
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Construction Yard
+		Name: actor-gacnst.name
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -60,8 +60,8 @@ GACNST:
 		Prerequisites: global-factundeploy
 	ProductionBar@Building:
 		ProductionType: Building
-	ProductionBar@Defense:
-		ProductionType: Defense
+	ProductionBar@Support:
+		ProductionType: Support
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top
@@ -105,12 +105,12 @@ PROC:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Tiberium Refinery
+		Name: actor-proc.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~techlevel.low
-		Description: Processes raw Tiberium\ninto useable resources.
+		Description: actor-proc.description
 	Building:
 		Footprint: xxX+ xx++ xxX+
 		Dimensions: 4,3
@@ -119,11 +119,13 @@ PROC:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	TiberianSunRefinery:
-		DockAngle: 640
-		DockOffset: 2,1
+	Refinery:
 		DiscardExcessResources: true
-	StoresResources:
+	DockHost:
+		Type: Unload
+		DockAngle: 640
+		DockOffset: 362,362,0
+	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
@@ -159,7 +161,7 @@ PROC:
 			nod: proc.nod
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 	WithResourceStoragePipsDecoration:
@@ -179,11 +181,11 @@ GASILO:
 		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: proc, ~techlevel.low
-		Description: Stores excess Tiberium.
+		Description: actor-gasilo.description
 	Valued:
 		Cost: 150
 	Tooltip:
-		Name: Silo
+		Name: actor-gasilo.name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -209,13 +211,13 @@ GASILO:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-bright
 		Palette: bright
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 1500
 	Power:
 		Amount: -10
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 	WithResourceStoragePipsDecoration:
@@ -229,31 +231,26 @@ GASILO:
 		Palette: pips
 
 ANYPOWER:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Power Plant
+		Name: actor-anypower-name
 
 BARRACKS:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Infantry Production
+		Name: actor-barracks-name
 
 FACTORY:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Vehicle Production
+		Name: actor-factory-name
 
 RADAR:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Radar
+		Name: actor-radar-name
 
 TECH:
-	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Tech Center
+		Name: actor-tech-name

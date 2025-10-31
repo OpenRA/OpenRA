@@ -6,13 +6,13 @@ MINV:
 			soviet: minp
 			russia: minp
 			ukraine: minp
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: ATMine
 
 # Only kept for backwards-compatibility with existing and imported maps, use MINV instead
 MINP:
 	Inherits: MINV
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: APMine
 
 CRATE:
@@ -44,7 +44,8 @@ CRATE:
 		MaxAmount: 5
 		MinAmount: 1
 		MaxDuplicateValue: 1500
-	GiveMcvCrateAction:
+		ValidTargets: GroundActor, WaterActor, Submarine
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv
@@ -148,7 +149,7 @@ CRATE:
 MONEYCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Money Crate
+		Name: actor-moneycrate-name
 	GiveCashCrateAction:
 		Amount: 500
 		SelectionShares: 1
@@ -159,7 +160,7 @@ MONEYCRATE:
 HEALCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Heal Crate
+		Name: actor-healcrate-name
 	HealActorsCrateAction:
 		Sound: heal2.aud
 		SelectionShares: 1
@@ -168,20 +169,19 @@ HEALCRATE:
 WCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Wooden Crate
+		Name: actor-wcrate-name
 	RenderSprites:
 		Image: wcrate
 
 SCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Steel Crate
+		Name: actor-scrate-name
 
 CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals area to owner)
-	AlwaysVisible:
+		Name: actor-camera-name
 	Immobile:
 		OccupiesSpace: false
 	RevealsShroud:
@@ -198,22 +198,22 @@ CAMERA:
 camera.paradrop:
 	Inherits: CAMERA
 	EditorOnlyTooltip:
-		Name: (support power proxy camera)
+		Name: actor-camera-paradrop-name
 	RevealsShroud:
 		Range: 6c0
 
 camera.spyplane:
 	Inherits: CAMERA
 	EditorOnlyTooltip:
-		Name: (support power proxy camera)
+		Name: actor-camera-spyplane-name
 
 SONAR:
 	Inherits: camera.spyplane
 	EditorOnlyTooltip:
-		Name: (support power proxy camera)
+		Name: actor-sonar-name
 	-RevealsShroud:
 	DetectCloaked:
-		CloakTypes: Underwater
+		DetectionTypes: Underwater
 		Range: 10c0
 
 FLARE:
@@ -232,7 +232,7 @@ FLARE:
 		Type: CenterPosition
 	Interactable:
 	Tooltip:
-		Name: Flare
+		Name: actor-flare-name
 		ShowOwnerRow: false
 	MapEditorData:
 		Categories: Decoration
@@ -242,7 +242,7 @@ MINE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Ore Mine
+		Name: actor-mine-name
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
@@ -265,7 +265,7 @@ GMINE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Gem Mine
+		Name: actor-gmine-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -289,7 +289,7 @@ RAILMINE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Abandoned Mine
+		Name: actor-railmine-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -308,7 +308,7 @@ QUEE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Queen Ant
+		Name: actor-quee-name
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -324,7 +324,7 @@ LAR1:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Ant Larva
+		Name: actor-lar1-name
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -339,18 +339,18 @@ LAR1:
 LAR2:
 	Inherits@1: LAR1
 	Tooltip:
-		Name: Ant Larvae
+		Name: actor-lar2-name
 
 powerproxy.parabombs:
-	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
-		Description: Parabombs (Single Use)
-		LongDesc: A Badger drops a load of parachuted bombs on your target.
+		Name: actor-powerproxy-parabombs.name
+		Description: actor-powerproxy-parabombs.description
 		OneShot: true
 		AllowMultiple: true
 		UnitType: badr.bomber
 		SelectTargetSpeechNotification: SelectTarget
+		SelectTargetTextNotification: notification-select-target
 		QuantizedFacings: 8
 		DisplayBeacon: True
 		BeaconPoster: pbmbicon
@@ -361,14 +361,15 @@ powerproxy.parabombs:
 		CircleSequence: circles
 
 powerproxy.sonarpulse:
-	AlwaysVisible:
 	SpawnActorPower:
 		Icon: sonar
-		Description: Sonar Pulse
-		LongDesc: Reveals all submarines in the vicinity for a \nshort time.
+		Name: actor-powerproxy-sonarpulse.name
+		Description: actor-powerproxy-sonarpulse.description
 		ChargeInterval: 750
 		EndChargeSpeechNotification: SonarPulseReady
 		SelectTargetSpeechNotification: SelectTarget
+		EndChargeTextNotification: notification-sonar-pulse-ready
+		SelectTargetTextNotification: notification-select-target
 		Actor: sonar
 		Terrain: Water
 		AllowUnderShroud: false
@@ -378,15 +379,16 @@ powerproxy.sonarpulse:
 		EffectPalette: moveflash
 		SupportPowerPaletteOrder: 80
 		EffectSequence: idle
+		BlockedCursor: move-blocked
 
 powerproxy.paratroopers:
-	AlwaysVisible:
 	ParatroopersPower:
 		Icon: paratroopers
-		Description: Paratroopers
-		LongDesc: A Badger drops a squad of infantry\nanywhere on the map.
+		Name: actor-powerproxy-paratroopers.name
+		Description: actor-powerproxy-paratroopers.description
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSpeechNotification: SelectTarget
+		SelectTargetTextNotification: notification-select-target
 		AllowImpassableCells: false
 		QuantizedFacings: 8
 		CameraActor: camera.paradrop
@@ -397,22 +399,18 @@ powerproxy.paratroopers:
 		CircleSequence: circles
 
 barracks.upgraded:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 
 vehicles.upgraded:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 
 aircraft.upgraded:
-	AlwaysVisible:
 	ProvidesPrerequisite:
 
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (multiplayer player starting point)
-	AlwaysVisible:
+		Name: actor-mpspawn-name
 	Immobile:
 		OccupiesSpace: false
 	WithSpriteBody:
@@ -427,8 +425,7 @@ mpspawn:
 waypoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (waypoint for scripted behavior)
-	AlwaysVisible:
+		Name: actor-waypoint-name
 	Immobile:
 		OccupiesSpace: false
 	WithSpriteBody:
@@ -442,6 +439,7 @@ fact.colorpicker:
 	Inherits: FACT
 	-Buildable:
 	-MapEditorData:
+	-BaseBuilding:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
@@ -452,12 +450,12 @@ CTFLAG:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
-		Name: Flag
+		Name: actor-ctflag-name
 	WithBuildingBib:
 		HasMinibib: true
 	-HitShape:
 	-Health:
-	-Explodes:
+	-FireWarheadsOnDeath:
 	-Selectable:
 	-Targetable:
 	MapEditorData:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,20 +15,20 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class ParallelProductionQueueInfo : ProductionQueueInfo
 	{
-		public override object Create(ActorInitializer init) { return new ParallelProductionQueue(init, init.Self.Owner.PlayerActor, this); }
+		public override object Create(ActorInitializer init) { return new ParallelProductionQueue(init, this); }
 	}
 
 	public class ParallelProductionQueue : ProductionQueue
 	{
-		public ParallelProductionQueue(ActorInitializer init, Actor playerActor, ParallelProductionQueueInfo info)
-			: base(init, playerActor, info) { }
+		public ParallelProductionQueue(ActorInitializer init, ParallelProductionQueueInfo info)
+			: base(init, info) { }
 
 		protected override void TickInner(Actor self, bool allProductionPaused)
 		{
 			CancelUnbuildableItems();
 
 			var item = Queue.FirstOrDefault(i => !i.Paused);
-			if (item == null)
+			if (item == null || allProductionPaused)
 				return;
 
 			var before = item.RemainingTime;
@@ -54,6 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Ignore `hasPriority` as it's not relevant in parallel production context.
 			base.BeginProduction(item, false);
+		}
+
+		protected override void PauseProduction(string itemName, bool paused)
+		{
+			foreach (var item in Queue.Where(a => a.Item == itemName))
+				item.Pause(paused);
 		}
 
 		public override int RemainingTimeActual(ProductionItem item)

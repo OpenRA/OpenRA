@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -54,7 +54,7 @@ namespace OpenRA
 			// Traits tagged with an instance name prefer inits with the same name.
 			// If a more specific init is not available, fall back to an unnamed init.
 			// If duplicate inits are defined, take the last to match standard yaml override expectations
-			if (info != null && !string.IsNullOrEmpty(info.InstanceName))
+			if (!string.IsNullOrEmpty(info?.InstanceName))
 				return inits.LastOrDefault(i => i.InstanceName == info.InstanceName) ??
 					inits.LastOrDefault(i => string.IsNullOrEmpty(i.InstanceName));
 
@@ -66,7 +66,7 @@ namespace OpenRA
 		{
 			var init = GetOrDefault<T>(info);
 			if (init == null)
-			    throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
+				throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
 
 			return init;
 		}
@@ -140,7 +140,7 @@ namespace OpenRA
 
 	public abstract class ValueActorInit<T> : ActorInit
 	{
-		protected readonly T value;
+		readonly T value;
 
 		protected ValueActorInit(TraitInfo info, T value)
 			: base(info.InstanceName) { this.value = value; }
@@ -154,14 +154,14 @@ namespace OpenRA
 
 		public virtual void Initialize(MiniYaml yaml)
 		{
-			Initialize((T)FieldLoader.GetValue(nameof(value), typeof(T), yaml.Value));
+			Initialize(FieldLoader.GetValue<T>(nameof(value), yaml.Value));
 		}
 
 		public virtual void Initialize(T value)
 		{
-			var field = GetType().GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance);
-			if (field != null)
-				field.SetValue(this, value);
+			typeof(ValueActorInit<T>)
+				.GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance)
+				?.SetValue(this, value);
 		}
 
 		public override MiniYaml Save()
@@ -175,8 +175,7 @@ namespace OpenRA
 		protected CompositeActorInit(TraitInfo info)
 			: base(info.InstanceName) { }
 
-		protected CompositeActorInit()
-			: base() { }
+		protected CompositeActorInit() { }
 
 		public virtual void Initialize(MiniYaml yaml)
 		{
@@ -217,16 +216,14 @@ namespace OpenRA
 		}
 	}
 
-	public class LocationInit : ValueActorInit<CPos>, ISingleInstanceInit
+	public class LocationInit(CPos value) : ValueActorInit<CPos>(value), ISingleInstanceInit
 	{
-		public LocationInit(CPos value)
-			: base(value) { }
 	}
 
 	public class OwnerInit : ActorInit, ISingleInstanceInit
 	{
 		public readonly string InternalName;
-		protected readonly Player value;
+		readonly Player value;
 
 		public OwnerInit(Player value)
 		{
@@ -246,16 +243,16 @@ namespace OpenRA
 
 		public void Initialize(MiniYaml yaml)
 		{
-			var field = GetType().GetField(nameof(InternalName), BindingFlags.Public | BindingFlags.Instance);
-			if (field != null)
-				field.SetValue(this, yaml.Value);
+			typeof(OwnerInit)
+				.GetField(nameof(InternalName), BindingFlags.Public | BindingFlags.Instance)
+				?.SetValue(this, yaml.Value);
 		}
 
 		public void Initialize(Player player)
 		{
-			var field = GetType().GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance);
-			if (field != null)
-				field.SetValue(this, player);
+			typeof(OwnerInit)
+				.GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance)
+				?.SetValue(this, player);
 		}
 
 		public override MiniYaml Save()

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,24 +12,21 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
 	public sealed class ReplayConnection : IConnection
 	{
-		class Chunk
+		sealed class Chunk
 		{
 			public int Frame;
 			public (int ClientId, byte[] Packet)[] Packets;
 		}
 
-		readonly Queue<Chunk> chunks = new Queue<Chunk>();
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
-		readonly Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
+		readonly Queue<Chunk> chunks = [];
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = [];
 		readonly int orderLatency;
-		int ordersFrame;
 
 		public readonly int TickCount;
 		public readonly int FinalGameTick;
@@ -59,9 +56,6 @@ namespace OpenRA.Network
 					var frame = BitConverter.ToInt32(packet, 0);
 					packets.Add((client, packet));
 
-					if (frame != int.MaxValue && (!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
-						lastClientsFrame[client] = frame;
-
 					if (packet.Length > 4 && (packet[4] == (byte)OrderType.Disconnect || packet[4] == (byte)OrderType.SyncHash))
 						continue;
 
@@ -75,7 +69,7 @@ namespace OpenRA.Network
 								if (o.OrderString == "StartGame")
 									IsValid = true;
 								else if (o.OrderString == "SyncInfo" && !IsValid)
-									LobbyInfo = Session.Deserialize(o.TargetString);
+									LobbyInfo = Session.Deserialize(o.TargetString, o.OrderString);
 							}
 						}
 					}
@@ -91,37 +85,11 @@ namespace OpenRA.Network
 						TickCount = Math.Max(TickCount, frame);
 					}
 				}
-
-				var lastClientToDisconnect = lastClientsFrame.MaxBy(kvp => kvp.Value).Key;
-
-				// 2nd parse : replace all disconnect packets without frame with real
-				// disconnect frame
-				// NOTE: to modify/remove if a reconnect feature is set
-				foreach (var tmpChunk in chunks)
-				{
-					foreach (var tmpPacketPair in tmpChunk.Packets)
-					{
-						var client = tmpPacketPair.ClientId;
-
-						// Don't replace the final disconnection packet - we still want this to end the replay.
-						if (client == lastClientToDisconnect)
-							continue;
-
-						var packet = tmpPacketPair.Packet;
-						if (packet.Length == Order.DisconnectOrderLength + 4 && packet[4] == (byte)OrderType.Disconnect)
-						{
-							var lastClientFrame = lastClientsFrame[client];
-							var lastFramePacket = BitConverter.GetBytes(lastClientFrame);
-							Array.Copy(lastFramePacket, packet, lastFramePacket.Length);
-						}
-					}
-				}
 			}
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
 			var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
 			orderLatency = gameSpeeds.Speeds[gameSpeedName].OrderLatency;
-			ordersFrame = orderLatency;
 		}
 
 		void IConnection.StartGame() { }
@@ -133,9 +101,6 @@ namespace OpenRA.Network
 		void IConnection.SendSync(int frame, int syncHash, ulong defeatState)
 		{
 			sync.Enqueue((frame, syncHash, defeatState));
-
-			// Store the current frame so Receive() can return the next chunk of orders.
-			ordersFrame = frame + orderLatency;
 		}
 
 		void IConnection.Receive(OrderManager orderManager)
@@ -143,7 +108,7 @@ namespace OpenRA.Network
 			while (sync.Count != 0)
 				orderManager.ReceiveSync(sync.Dequeue());
 
-			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
+			while (chunks.Count != 0 && chunks.Peek().Frame <= orderManager.NetFrameNumber + orderLatency)
 			{
 				foreach (var o in chunks.Dequeue().Packets)
 				{

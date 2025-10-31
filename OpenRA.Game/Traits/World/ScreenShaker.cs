@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,8 +19,8 @@ namespace OpenRA.Traits
 	[TraitLocation(SystemActors.World)]
 	public class ScreenShakerInfo : TraitInfo
 	{
-		public readonly float2 MinMultiplier = new float2(-3, -3);
-		public readonly float2 MaxMultiplier = new float2(3, 3);
+		public readonly float2 MinMultiplier = new(-3, -3);
+		public readonly float2 MaxMultiplier = new(3, 3);
 
 		public override object Create(ActorInitializer init) { return new ScreenShaker(this); }
 	}
@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 	{
 		readonly ScreenShakerInfo info;
 		WorldRenderer worldRenderer;
-		List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
+		readonly List<ShakeEffect> shakeEffects = [];
 		int ticks = 0;
 
 		public ScreenShaker(ScreenShakerInfo info)
@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (shakeEffects.Any())
+			if (shakeEffects.Count > 0)
 			{
 				worldRenderer.Viewport.Scroll(GetScrollOffset(), true);
 				shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);
@@ -63,8 +63,8 @@ namespace OpenRA.Traits
 		float2 GetScrollOffset()
 		{
 			return GetMultiplier() * GetIntensity() * new float2(
-				(float)Math.Sin((ticks * 2 * Math.PI) / 4),
-				(float)Math.Cos((ticks * 2 * Math.PI) / 5));
+				(float)Math.Sin(ticks * 2 * Math.PI / 4),
+				(float)Math.Cos(ticks * 2 * Math.PI / 5));
 		}
 
 		float2 GetMultiplier()

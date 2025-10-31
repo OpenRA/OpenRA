@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -46,6 +46,16 @@ namespace OpenRA.Primitives
 
 		public bool IsEmpty => Width == 0 && Height == 0;
 
+		public int2 ToInt2()
+		{
+			return new(Width, Height);
+		}
+
+		public static Size FromInt2(int2 xy)
+		{
+			return new(xy.X, xy.Y);
+		}
+
 		public bool Equals(Size other)
 		{
 			return this == other;
@@ -53,7 +63,7 @@ namespace OpenRA.Primitives
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Size))
+			if (obj is not Size)
 				return false;
 
 			return this == (Size)obj;
@@ -64,9 +74,6 @@ namespace OpenRA.Primitives
 			return Width ^ Height;
 		}
 
-		public override string ToString()
-		{
-			return $"{{Width={Width}, Height={Height}}}";
-		}
+		public override string ToString() { return Width + "," + Height; }
 	}
 }

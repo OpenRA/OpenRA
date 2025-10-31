@@ -6,11 +6,11 @@ light_inf:
 		BuildPaletteOrder: 10
 		BuildDuration: 62
 		BuildDurationModifier: 100
-		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
+		Description: actor-light-inf.description
 	Valued:
 		Cost: 50
 	Tooltip:
-		Name: Light Infantry
+		Name: actor-light-inf.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -19,6 +19,10 @@ light_inf:
 		Speed: 43
 	Armament:
 		Weapon: LMG
+	Encyclopedia:
+		Description: actor-light-inf.encyclopedia
+		Order: 0
+		Category: Units
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -27,15 +31,15 @@ engineer:
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 80
 		Prerequisites: upgrade.barracks, ~techlevel.medium
-		BuildDuration: 125
+		BuildDuration: 150
 		BuildDurationModifier: 100
-		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
+		Description: actor-engineer.description
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Engineer
+		Name: actor-engineer.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -44,12 +48,25 @@ engineer:
 		Range: 2c768
 	Mobile:
 		Speed: 31
-	EngineerRepair:
 	CaptureManager:
 	Captures:
 		CaptureTypes: building
-		PlayerExperience: 50
-	-RevealOnFire:
+		PlayerExperience: 10
+	Captures@Husk:
+		CaptureTypes: husk
+		PlayerExperience: 10
+	Infiltrates:
+		Types: Husk
+		ValidRelationships: Ally
+	Captures@Cliff:
+		CaptureTypes: cliff
+		ConsumedByCapture: false
+		CaptureDelay: 150
+		ValidRelationships: Enemy, Neutral, Ally
+	Encyclopedia:
+		Description: actor-engineer.encyclopedia
+		Order: 30
+		Category: Units
 	Voiced:
 		VoiceSet: EngineerVoice
 	-AttackFrontal:
@@ -61,13 +78,13 @@ trooper:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Prerequisites: upgrade.barracks, ~techlevel.medium
-		BuildDuration: 85
+		BuildDuration: 124
 		BuildDurationModifier: 100
-		Description: Anti-tank infantry\n  Strong vs Tanks\n  Weak vs Infantry, Artillery
+		Description: actor-trooper.description
 	Valued:
-		Cost: 90
+		Cost: 100
 	Tooltip:
-		Name: Trooper
+		Name: actor-trooper.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -79,6 +96,10 @@ trooper:
 	Armament:
 		Weapon: Bazooka
 		LocalOffset: 128,0,256
+	Encyclopedia:
+		Description: actor-trooper.encyclopedia
+		Order: 10
+		Category: Units
 	TakeCover:
 		ProneOffset: 324,0,-204
 	WithInfantryBody:
@@ -86,18 +107,17 @@ trooper:
 
 thumper:
 	Inherits: ^Infantry
-	-RevealOnFire:
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 100
 		Prerequisites: upgrade.barracks, ~techlevel.high
 		BuildDuration: 125
 		BuildDurationModifier: 100
-		Description: Attracts nearby worms when deployed\n  Unarmed
+		Description: actor-thumper.description
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Thumper Infantry
+		Name: actor-thumper.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -106,12 +126,18 @@ thumper:
 		Range: 2c768
 	Mobile:
 		Speed: 43
-		RequiresCondition: undeployed
+		RequireForceMoveCondition: !undeployed
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
 		Facing: 512
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
+		SmartDeploy: true
+	Encyclopedia:
+		Description: actor-thumper.encyclopedia
+		Order: 40
+		Category: Units
 	WithInfantryBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@DEPLOYED:
@@ -136,14 +162,14 @@ fremen:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
-		Name: Fremen
+		Name: actor-fremen.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
 		Prerequisites: ~disabled
-		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
+		Description: actor-fremen.description
 	Mobile:
 		Speed: 43
 	Valued:
@@ -160,13 +186,16 @@ fremen:
 		Weapon: Fremen_S
 	Armament@SECONDARY:
 		Weapon: Fremen_L
+	Encyclopedia:
+		Description: actor-fremen.encyclopedia
+		Order: 70
+		Category: Units
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
@@ -184,11 +213,11 @@ grenadier:
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
 		BuildDuration: 94
 		BuildDurationModifier: 100
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Description: actor-grenadier.description
 	Valued:
 		Cost: 80
 	Tooltip:
-		Name: Grenadier
+		Name: actor-grenadier.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -199,11 +228,15 @@ grenadier:
 		Weapon: grenade
 		LocalOffset: 192,0,224
 		FireDelay: 3
+	Encyclopedia:
+		Description: actor-grenadier.encyclopedia
+		Order: 50
+		Category: Units
 	TakeCover:
 		ProneOffset: 96,100,-64
 	WithInfantryBody:
 		DefaultAttackSequence: throw
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: GrenDeath
 		EmptyWeapon: GrenDeath
 
@@ -216,11 +249,11 @@ sardaukar:
 		Prerequisites: ~palace.sardaukar, ~techlevel.high
 		BuildDuration: 94
 		BuildDurationModifier: 100
-		Description: Elite assault infantry of Corrino\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-sardaukar.description
 	Valued:
 		Cost: 120
 	Tooltip:
-		Name: Sardaukar
+		Name: actor-sardaukar.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -235,9 +268,13 @@ sardaukar:
 		Weapon: M_LMG
 	Armament@SECONDARY:
 		Weapon: M_HMG
+	Encyclopedia:
+		Description: actor-sardaukar.encyclopedia
+		Order: 60
+		Category: Units
 	Voiced:
 		VoiceSet: GenericVoice
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: SardDeath
 		EmptyWeapon: SardDeath
 		Chance: 100
@@ -250,7 +287,7 @@ mpsardaukar:
 		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.medium
 		BuildDuration: 160
 		BuildDurationModifier: 100
-		Description: Elite assault infantry of Harkonnen\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-mpsardaukar-description
 	Valued:
 		Cost: 200
 	Armament@PRIMARY:
@@ -259,41 +296,77 @@ mpsardaukar:
 		Weapon: M_HMG_H
 	RenderSprites:
 		Image: sardaukar
+	UpdatesPlayerStatistics:
+		OverrideActor: sardaukar
 
 saboteur:
 	Inherits: ^Infantry
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
-		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Description: actor-saboteur.description
 	Valued:
 		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
-		Name: Saboteur
+		Name: actor-saboteur.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 4000
+		HP: 5000
+	Encyclopedia:
+		Description: actor-saboteur.encyclopedia
+		Order: 80
+		Category: Units
 	Mobile:
 		Speed: 43
+		PauseOnCondition: triggered
 	Demolition:
-		DetonationDelay: 0
-		Flashes: 0
+		DetonationDelay: 50
+		Flashes: 3
 		EnterBehaviour: Suicide
-	-RevealOnFire:
 	Cloak:
-		InitialDelay: 85
-		CloakDelay: 85
+		InitialDelay: 100
+		CloakDelay: 100
 		CloakSound: STEALTH1.WAV
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move, Damage, Heal
-		IsPlayerPalette: true
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
+		RequiresCondition: !triggered
+	FireWarheadsOnDeath@Selfkill:
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
+		RequiresCondition: kamikadze
+	GrantConditionOnDeploy:
+		DeployCursor: c4
+		DeployedCondition: triggered
+		PauseOnCondition: triggered
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
+	KillsSelf@SuicideKillCount:
+		Delay: 45
+		RequiresCondition: triggered
+		GrantsCondition: kamikadze
+	TakeCover:
+		RequiresCondition: triggered
 	Voiced:
 		VoiceSet: SaboteurVoice
+	RevealsShroud:
+		Range: 4c768
+	Crushable:
+		WarnProbability: 95
+	WithInfantryBody:
+		RequiresCondition: !triggered
+	WithIdleOverlay:
+		Sequence: active
+		RequiresCondition: triggered
+	WithIdleOverlay@prone:
+		StartSequence: standup
+		Sequence: prone-stand
+		RequiresCondition: triggered
 	-AttackFrontal:
 
 nsfremen:
@@ -302,8 +375,10 @@ nsfremen:
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: ~disabled
-		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-nsfremen-description
 	RenderSprites:
 		Image: fremen
 	-Cloak:
 	-GrantConditionOnDamageState@UNCLOAK:
+	UpdatesPlayerStatistics:
+		OverrideActor: fremen

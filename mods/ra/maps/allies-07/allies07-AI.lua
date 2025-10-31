@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -64,14 +64,14 @@ SendBGAttackGroup = function()
 end
 
 ProduceBadGuyInfantry = function()
-	if BadGuyRax.IsDead or BadGuyRax.Owner ~= badguy then
+	if BadGuyRax.IsDead or BadGuyRax.Owner ~= BadGuy then
 		return
 	end
 
-	badguy.Build({ Utils.Random(SovietInfantry) }, function(units)
+	BadGuy.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceBadGuyInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyInfantry)
 	end)
 end
 
@@ -90,35 +90,35 @@ SendAttackGroup = function()
 end
 
 ProduceUSSRInfantry = function()
-	if USSRRax.IsDead or USSRRax.Owner ~= ussr then
+	if USSRRax.IsDead or USSRRax.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietInfantry) }, function(units)
+	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceUSSRInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRInfantry)
 	end)
 end
 
 ProduceVehicles = function()
-	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= ussr then
+	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietVehicles) }, function(units)
+	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
 ProduceAircraft = function()
-	if (Airfield1.IsDead or Airfield1.Owner ~= ussr) and (Airfield2.IsDead or Airfield2.Owner ~= ussr) and (Airfield3.IsDead or Airfield3.Owner ~= ussr) and (Airfield4.IsDead or Airfield4.Owner ~= ussr) then
+	if (Airfield1.IsDead or Airfield1.Owner ~= USSR) and (Airfield2.IsDead or Airfield2.Owner ~= USSR) and (Airfield3.IsDead or Airfield3.Owner ~= USSR) and (Airfield4.IsDead or Airfield4.Owner ~= USSR) then
 		return
 	end
 
-	ussr.Build(SovietAircraftType, function(units)
+	USSR.Build(SovietAircraftType, function(units)
 		local yak = units[1]
 		Yaks[#Yaks + 1] = yak
 
@@ -126,21 +126,20 @@ ProduceAircraft = function()
 
 		local alive = Utils.Where(Yaks, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
-		InitializeAttackAircraft(yak, greece)
+		InitializeAttackAircraft(yak, Greece)
 	end)
 end
 
 ActivateAI = function()
-	local difficulty = Map.LobbyOption("difficulty")
-	SovietVehicles = SovietVehicles[difficulty]
+	SovietVehicles = SovietVehicles[Difficulty]
 
-	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("StartBuildingRepairs") end)
+	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == USSR and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)

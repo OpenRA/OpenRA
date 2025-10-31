@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					Transforms[c + 15] = 1;
 
 					for (var k = 0; k < 12; k++)
-						Transforms[c + ids[k]] = s.ReadFloat();
+						Transforms[c + ids[k]] = s.ReadSingle();
 
 					Array.Copy(Transforms, 16 * (LimbCount * j + i), testMatrix, 0, 16);
-					if (OpenRA.Graphics.Util.MatrixInverse(testMatrix) == null)
+					if (Util.MatrixInverse(testMatrix) == null)
 						throw new InvalidDataException(
 							$"The transformation matrix for HVA file `{fileName}` section {i} frame {j} is invalid because it is not invertible!");
 				}

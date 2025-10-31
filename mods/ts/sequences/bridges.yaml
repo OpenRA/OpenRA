@@ -1,97 +1,200 @@
 ^bridge:
 	Defaults:
 		ZOffset: -1c511
-		UseTilesetExtension: true
 		Start: 1
 		ZRamp: 1
 		Offset: 0, 0, 1
 
 lobrdg_a:
 	Inherits: ^bridge
-	idle: lobrdg10
-	idle2: lobrdg11
-	idle3: lobrdg12
-	idle4: lobrdg13
-	adead: lobrdg15
-	bdead: lobrdg14
-	abdead: lobrdg16
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg10.tem
+			SNOW: lobrdg10.sno
+	idle2:
+		TilesetFilenames:
+			TEMPERATE: lobrdg11.tem
+			SNOW: lobrdg11.sno
+	idle3:
+		TilesetFilenames:
+			TEMPERATE: lobrdg12.tem
+			SNOW: lobrdg12.sno
+	idle4:
+		TilesetFilenames:
+			TEMPERATE: lobrdg13.tem
+			SNOW: lobrdg13.sno
+	adead:
+		TilesetFilenames:
+			TEMPERATE: lobrdg15.tem
+			SNOW: lobrdg15.sno
+	bdead:
+		TilesetFilenames:
+			TEMPERATE: lobrdg14.tem
+			SNOW: lobrdg14.sno
+	abdead:
+		TilesetFilenames:
+			TEMPERATE: lobrdg16.tem
+			SNOW: lobrdg16.sno
 
 lobrdg_a_d:
 	Inherits: ^bridge
-	idle: lobrdg28
-	aramp: lobrdg17
-	bramp: lobrdg18
-	abramp: lobrdg28
-	editor: lobrdg10
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg28.tem
+			SNOW: lobrdg28.sno
+	aramp:
+		TilesetFilenames:
+			TEMPERATE: lobrdg17.tem
+			SNOW: lobrdg17.sno
+	bramp:
+		TilesetFilenames:
+			TEMPERATE: lobrdg18.tem
+			SNOW: lobrdg18.sno
+	abramp:
+		TilesetFilenames:
+			TEMPERATE: lobrdg28.tem
+			SNOW: lobrdg28.sno
+	editor:
+		TilesetFilenames:
+			TEMPERATE: lobrdg10.tem
+			SNOW: lobrdg10.sno
 
 lobrdg_b:
 	Inherits: ^bridge
-	idle: lobrdg01
-	idle2: lobrdg02
-	idle3: lobrdg03
-	idle4: lobrdg04
-	adead: lobrdg05
-	bdead: lobrdg06
-	abdead: lobrdg07
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg01.tem
+			SNOW: lobrdg01.sno
+	idle2:
+		TilesetFilenames:
+			TEMPERATE: lobrdg02.tem
+			SNOW: lobrdg02.sno
+	idle3:
+		TilesetFilenames:
+			TEMPERATE: lobrdg03.tem
+			SNOW: lobrdg03.sno
+	idle4:
+		TilesetFilenames:
+			TEMPERATE: lobrdg04.tem
+			SNOW: lobrdg04.sno
+	adead:
+		TilesetFilenames:
+			TEMPERATE: lobrdg05.tem
+			SNOW: lobrdg05.sno
+	bdead:
+		TilesetFilenames:
+			TEMPERATE: lobrdg06.tem
+			SNOW: lobrdg06.sno
+	abdead:
+		TilesetFilenames:
+			TEMPERATE: lobrdg07.tem
+			SNOW: lobrdg07.sno
 
 lobrdg_b_d:
 	Inherits: ^bridge
-	idle: lobrdg27
-	aramp: lobrdg08
-	bramp: lobrdg09
-	abramp: lobrdg27
-	editor: lobrdg01
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg27.tem
+			SNOW: lobrdg27.sno
+	aramp:
+		TilesetFilenames:
+			TEMPERATE: lobrdg08.tem
+			SNOW: lobrdg08.sno
+	bramp:
+		TilesetFilenames:
+			TEMPERATE: lobrdg09.tem
+			SNOW: lobrdg09.sno
+	abramp:
+		TilesetFilenames:
+			TEMPERATE: lobrdg27.tem
+			SNOW: lobrdg27.sno
+	editor:
+		TilesetFilenames:
+			TEMPERATE: lobrdg01.tem
+			SNOW: lobrdg01.sno
 
 lobrdg_r_se:
 	Inherits: ^bridge
-	idle: lobrdg19
-	damaged-idle: lobrdg20
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg19.tem
+			SNOW: lobrdg19.sno
+	damaged-idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg20.tem
+			SNOW: lobrdg20.sno
 
 lobrdg_r_nw:
 	Inherits: ^bridge
-	idle: lobrdg21
-	damaged-idle: lobrdg22
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg21.tem
+			SNOW: lobrdg21.sno
+	damaged-idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg22.tem
+			SNOW: lobrdg22.sno
 
 lobrdg_r_ne:
 	Inherits: ^bridge
-	idle: lobrdg23
-	damaged-idle: lobrdg24
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg23.tem
+			SNOW: lobrdg23.sno
+	damaged-idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg24.tem
+			SNOW: lobrdg24.sno
 
 lobrdg_r_sw:
 	Inherits: ^bridge
-	idle: lobrdg25
-	damaged-idle: lobrdg26
+	idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg25.tem
+			SNOW: lobrdg25.sno
+	damaged-idle:
+		TilesetFilenames:
+			TEMPERATE: lobrdg26.tem
+			SNOW: lobrdg26.sno
 
 bridge1:
-	idle: bridge
+	idle:
+		TilesetFilenames:
+			TEMPERATE: bridge.tem
+			SNOW: bridge.sno
 		# Disabled to avoid glitches until shadow rendering is fixed
 		# ShadowStart: 18
-		UseTilesetExtension: true
 		ZRamp: 1
 		Offset: 0, -13, 49
 
 bridge2:
-	idle: bridge
+	idle:
+		TilesetFilenames:
+			TEMPERATE: bridge.tem
+			SNOW: bridge.sno
 		Start: 9
 		# Disabled to avoid glitches until shadow rendering is fixed
 		# ShadowStart: 27
-		UseTilesetExtension: true
 		ZRamp: 1
 		Offset: 0, -25, 49
 
 railbrdg1:
-	idle: railbrdg
+	idle:
+		TilesetFilenames:
+			TEMPERATE: railbrdg.tem
+			SNOW: railbrdg.sno
 		# Disabled to avoid glitches until shadow rendering is fixed
 		# ShadowStart: 18
-		UseTilesetExtension: true
 		ZRamp: 1
 		Offset: 0, -13, 49
 
 railbrdg2:
-	idle: railbrdg
+	idle:
+		TilesetFilenames:
+			TEMPERATE: railbrdg.tem
+			SNOW: railbrdg.sno
 		Start: 9
 		# Disabled to avoid glitches until shadow rendering is fixed
 		# ShadowStart: 27
-		UseTilesetExtension: true
 		ZRamp: 1
 		Offset: 0, -25, 49

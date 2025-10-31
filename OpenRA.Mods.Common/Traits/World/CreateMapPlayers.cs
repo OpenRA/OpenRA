@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom)
 		{
-			var factions = map.WorldActorInfo.TraitInfos<FactionInfo>().ToArray();
+			var factions = map.WorldActorInfo.TraitInfos<FactionInfo>();
 			var assignSpawnLocations = map.WorldActorInfo.TraitInfoOrDefault<IAssignSpawnPointsInfo>();
 			var spawnState = assignSpawnLocations?.InitializeState(map, lobbyInfo);
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Create the regular playable players.
-			var bots = map.PlayerActorInfo.TraitInfos<IBotInfo>().ToArray();
+			var bots = map.PlayerActorInfo.TraitInfos<IBotInfo>();
 
 			foreach (var kv in lobbyInfo.Slots)
 			{
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				var player = new GameInformation.Player
 				{
 					ClientIndex = client.Index,
-					Name = Player.ResolvePlayerName(client, lobbyInfo.Clients, bots),
+					Name = client.Name,
 					IsHuman = client.Bot == null,
 					IsBot = client.Bot != null,
 					FactionName = resolvedFaction.Name,
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 					Team = client.Team,
 					Handicap = client.Handicap,
 					SpawnPoint = resolvedSpawnPoint,
-					IsRandomFaction = clientFaction.RandomFactionMembers.Any(),
+					IsRandomFaction = clientFaction.RandomFactionMembers.Count > 0,
 					IsRandomSpawnPoint = client.SpawnPoint == 0,
 					Fingerprint = client.Fingerprint,
 				};

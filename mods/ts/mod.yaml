@@ -1,54 +1,46 @@
 Metadata:
-	Title: Tiberian Sun
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/ts_32x32.png
-	WindowTitle: OpenRA - Tiberian Sun
+	WindowTitle: mod-windowtitle
 
 PackageFormats: Mix
 
-Packages:
-	~^SupportDir|Content/ts
-	~^SupportDir|Content/ts/firestorm
-	^EngineDir
-	$ts: ts
-	^EngineDir|mods/common: common
-
-	# Tiberian Sun
-	~scores.mix
-	~sidenc01.mix
-	~sidenc02.mix
-	~e01scd01.mix
-	~e01scd02.mix
-	~movies01.mix
-	~movies02.mix
-	~sidecd01.mix
-	~sidecd02.mix
-	~cache.mix
-	~conquer.mix
-	~isosnow.mix
-	~isotemp.mix
-	~local.mix
-	~sidec01.mix: sidebar-gdi
-	~sidec02.mix: sidebar-nod
-	~sno.mix
-	~snow.mix
-	~sounds.mix
-	~speech01.mix: speech-gdi
-	~speech02.mix: speech-nod
-	~tem.mix
-	~temperat.mix
-	# Firestorm
-	~scores01.mix
-	~expand01.mix
-	~sounds01.mix
-	~e01sc01.mix
-	~e01sc02.mix
-	~e01vox01.mix
-	~e01vox02.mix
-	~ecache01.mix
-	ts|bits
-	ts|uibits
+FileSystem: ContentInstallerFileSystem
+	SystemPackages:
+		^EngineDir
+		$ts: ts
+		^EngineDir|mods/common: common
+		~^SupportDir|Content/ts: content
+		ts|uibits
+	ContentPackages:
+		content|cache.mix
+		content|conquer.mix
+		content|isosnow.mix
+		content|isotemp.mix
+		content|local.mix
+		content|sidec01.mix: sidebar-gdi
+		content|sidec02.mix: sidebar-nod
+		content|sno.mix
+		content|snow.mix
+		content|sounds.mix
+		content|speech01.mix: speech-gdi
+		content|speech02.mix: speech-nod
+		content|tem.mix
+		content|temperat.mix
+		~content|scores.mix
+		content|firestorm
+		content|firestorm/sounds01.mix
+		content|firestorm/e01sc01.mix
+		content|firestorm/e01sc02.mix
+		content|firestorm/e01vox01.mix
+		content|firestorm/e01vox02.mix
+		content|firestorm/ecache01.mix
+		~content|firestorm/scores01.mix
+		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
+		ts|bits
+	ContentInstallerMod: ts-content
 
 MapFolders:
 	ts|maps: System
@@ -111,11 +103,10 @@ TileSets:
 	ts|tilesets/snow.yaml
 
 MapGrid:
-	TileSize: 48,24
 	EnableDepthBuffer: True
 	Type: RectangularIsometric
 	MaximumTerrainHeight: 16
-	SubCellOffsets: 0,0,0, -362,181,0, 0,-128,0, 362,181,0
+	SubCellOffsets: 0,0,0, -362,0,0, 0,362,0, 362,0,0
 	DefaultSubCell: 2
 
 Cursors:
@@ -124,13 +115,12 @@ Cursors:
 Chrome:
 	ts|chrome.yaml
 
-Assemblies:
-	^BinDir|OpenRA.Mods.Common.dll
-	^BinDir|OpenRA.Mods.Cnc.dll
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml
 	common|chrome/ingame-chat.yaml
+	ts|chrome/ingame-transients.yaml
 	common|chrome/ingame-fmvplayer.yaml
 	common|chrome/ingame-menu.yaml
 	common|chrome/ingame-info.yaml
@@ -138,10 +128,12 @@ ChromeLayout:
 	common|chrome/ingame-infobriefing.yaml
 	common|chrome/ingame-infoobjectives.yaml
 	common|chrome/ingame-infostats.yaml
+	common|chrome/ingame-info-lobby-options.yaml
 	ts|chrome/ingame-observer.yaml
 	ts|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
 	ts|chrome/ingame-debug.yaml
+	common|chrome/ingame-debug-hpf.yaml
 	common|chrome/ingame-debuginfo.yaml
 	common|chrome/ingame-infochat.yaml
 	common|chrome/mainmenu.yaml
@@ -149,6 +141,7 @@ ChromeLayout:
 	ts|chrome/mainmenu-prerelease-notification.yaml
 	common|chrome/settings.yaml
 	common|chrome/settings-display.yaml
+	common|chrome/settings-gameplay.yaml
 	common|chrome/settings-audio.yaml
 	common|chrome/settings-input.yaml
 	ts|chrome/settings-hotkeys.yaml
@@ -175,10 +168,23 @@ ChromeLayout:
 	ts|chrome/dropdowns.yaml
 	common|chrome/musicplayer.yaml
 	common|chrome/tooltips.yaml
-	common|chrome/assetbrowser.yaml
+	ts|chrome/assetbrowser.yaml
 	common|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
+	common|chrome/text-notifications.yaml
+
+FluentMessages:
+	common|fluent/common.ftl
+	common|fluent/chrome.ftl
+	common|fluent/hotkeys.ftl
+	common|fluent/rules.ftl
+	ts|fluent/ts.ftl
+	ts|fluent/chrome.ftl
+	ts|fluent/hotkeys.ftl
+	ts|fluent/rules.ftl
+
+AllowUnusedFluentMessagesInExternalPackages: false
 
 Voices:
 	ts|audio/voices.yaml
@@ -198,14 +204,16 @@ Hotkeys:
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
 	common|hotkeys/chat.yaml
+	common|hotkeys/editor.yaml
+	common|hotkeys/control-groups.yaml
 	ts|hotkeys.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ts|uibits/loadscreen.png
-	Text: Updating EVA installation..., Changing perspective...
 
 ServerTraits:
 	LobbyCommands
+	SkirmishLogic
 	PlayerPinger
 	MasterServerPinger
 	LobbySettingsNotification
@@ -248,6 +256,8 @@ Fonts:
 		Size: 32
 		Ascender: 24
 
+DefaultOrderGenerator: UnitOrderGenerator
+
 SupportsMapsFrom: ts
 
 SoundFormats: Aud, Wav
@@ -259,75 +269,40 @@ VideoFormats: Vqa
 TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
-	TilesetExtensions:
-		TEMPERATE: .tem
-		SNOW: .sno
-	TilesetCodes:
-		TEMPERATE: t
-		SNOW: a
-
-ModelSequenceFormat: VoxelModelSequence
 
 AssetBrowser:
-	SupportedExtensions: .shp, .tem, .sno, .vqa, .vxl
+	SpriteExtensions: .shp, .tem, .sno
+	ModelExtensions: .vxl
+	AudioExtensions: .aud, .wav
+	VideoExtensions: .vqa
 
 GameSpeeds:
 	DefaultSpeed: default
 	Speeds:
 		slowest:
-			Name: Slowest
+			Name: options-game-speed.slowest
 			Timestep: 80
 			OrderLatency: 2
 		slower:
-			Name: Slower
+			Name: options-game-speed.slower
 			Timestep: 50
 			OrderLatency: 3
 		default:
-			Name: Normal
+			Name: options-game-speed.normal
 			Timestep: 40
 			OrderLatency: 3
 		fast:
-			Name: Fast
+			Name: options-game-speed.fast
 			Timestep: 35
 			OrderLatency: 4
 		faster:
-			Name: Faster
+			Name: options-game-speed.faster
 			Timestep: 30
 			OrderLatency: 4
 		fastest:
-			Name: Fastest
+			Name: options-game-speed.fastest
 			Timestep: 20
 			OrderLatency: 6
-
-ModContent:
-	InstallPromptMessage: Tiberian Sun requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2012 Tiberian Sun freeware release.\n\nAdvanced Install includes options for copying the music, videos, and\nother content from an original game disc or digital installation.
-	QuickDownload: quickinstall
-	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
-	Packages:
-		tibsun: Base Game Files
-			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
-			Required: true
-			Download: basefiles
-		tibsun-music: Base Game Music
-			TestFiles: ^SupportDir|Content/ts/scores.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
-		fstorm: Firestorm Expansion Files
-			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
-			Sources: tfd, origin, fstorm
-			Required: true
-			Download: fstorm
-		fstorm-music: Firestorm Expansion Music
-			Sources: tfd, origin, fstorm
-			TestFiles: ^SupportDir|Content/ts/firestorm/scores01.mix
-	Downloads:
-		ts|installer/downloads.yaml
-	Sources:
-		ts|installer/downloads.yaml
-		ts|installer/firestorm.yaml
-		ts|installer/firstdecade.yaml
-		ts|installer/origin.yaml
-		ts|installer/tibsun.yaml
 
 DiscordService:
 	ApplicationId: 712713986558394399

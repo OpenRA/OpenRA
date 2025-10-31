@@ -1,0 +1,8 @@
+# General dumping-ground for UI element sizes, etc.
+
+Metrics:
+	ButtonDepth: 0
+	ButtonFont: Bold
+	ChatLineSound: ChatLine
+	ClickDisabledSound: ClickDisabledSound
+	ClickSound: ClickSound

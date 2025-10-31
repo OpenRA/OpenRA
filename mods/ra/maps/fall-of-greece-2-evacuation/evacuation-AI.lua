@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -51,7 +51,7 @@ ProduceInfantry = function()
 	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceInfantry)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceInfantry)
 	end)
 end
 
@@ -63,7 +63,7 @@ ProduceVehicles = function()
 	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
-		Trigger.AfterDelay(ProductionInterval[Map.LobbyOption("difficulty")], ProduceVehicles)
+		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
 	end)
 end
 
@@ -80,7 +80,7 @@ ProduceAircraft = function()
 
 		local alive = Utils.Where(Yaks, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Map.LobbyOption("difficulty")] / 2), ProduceAircraft)
+			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
 		InitializeAttackAircraft(yak, Allies)

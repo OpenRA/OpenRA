@@ -4,17 +4,18 @@ Player:
 World:
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 	LuaScript:
-		Scripts: ant-01.lua, ant-attack.lua, campaign-global.lua
+		Scripts: campaign.lua, utils.lua, ant-01.lua, ant-attack.lua
 	MissionData:
 		BackgroundVideo: antintro.vqa
-		Briefing: We've lost contact with one of our outposts. Before it went off-line, we recieved a brief communique about giant ants. We're unsure what to make of this report, so we want you to investigate.  \n\nScout the area, bring the outpost back on-line, and report your findings. If there is a threat, reinforcements will be sent in to help you.  \n\nKeep the base functional and radio contact open -- we don't want to lose the outpost again.
+		Briefing: We've lost contact with one of our outposts. Before it went offline, we received a brief communique about giant ants. We're unsure what to make of this report, so we need you to investigate.  \n\nScout the area, bring the outpost back online, and report your findings. If there is a threat, reinforcements will be sent in to help you.  \n\nKeep the base operational and maintain radio contact -- losing this outpost again is not an option.
 
 ^Palettes:
 	IndexedPlayerPalette@scoutant:
@@ -76,10 +77,6 @@ STNK:
 		Prerequisites: ~disabled
 
 SPY:
-	Buildable:
-		Prerequisites: ~disabled
-
-SNIPER:
 	Buildable:
 		Prerequisites: ~disabled
 

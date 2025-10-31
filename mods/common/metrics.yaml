@@ -8,7 +8,6 @@ Metrics:
 	ButtonTextContrastColorLight: 7F7F7F
 	ButtonTextContrastRadius: 1
 	ButtonTextShadow: false
-	CheckboxPressedState: false
 	GameStartedColor: FFA500
 	HotkeyColor: FFFFFF
 	HotkeyColorDisabled: 808080
@@ -30,6 +29,7 @@ Metrics:
 	SpawnLabelOffset: 0,1
 	TextColor: FFFFFF
 	TextHighlightColor: FFFF00
+	TextDisabledColor: 808080
 	TextContrast: false
 	TextContrastColorDark: 000000
 	TextContrastColorLight: 7F7F7F
@@ -47,10 +47,11 @@ Metrics:
 	NoticeSuccessColor: 00FF00
 	NoticeErrorColor: FF0000
 	ChatLineSound: ChatLine
+	PlayerJoinedSound: ChatLine
+	LobbyOptionChangedSound: ChatLine
+	PlayerLeftSound: ChatLine
 	ClickDisabledSound: ClickDisabledSound
 	ClickSound: ClickSound
-	ChatMessageColor: FFFFFF
-	SystemMessageColor: FFFF00
 	NormalSelectionColor: FFFFFF
 	AltSelectionColor: 00FFFF
 	CtrlSelectionColor: FFFF00

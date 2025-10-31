@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,75 +11,95 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using OpenRA.FileSystem;
 using OpenRA.Widgets;
-using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentLogic : ChromeLogic
 	{
+		[ObjectCreator.UseCtor]
+		public ModContentLogic(ModData modData)
+		{
+			var content = modData.Manifest.Get<ModContent>();
+			if (!IsModInstalled(content))
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(content.Mod, new Arguments())) },
+					{ "content", content },
+				};
+
+				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
+			}
+			else
+			{
+				var widgetArgs = new WidgetArgs
+				{
+					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(content.Mod, new Arguments())) },
+					{ "content", content },
+				};
+
+				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);
+			}
+		}
+
+		static bool IsModInstalled(ModContent content)
+		{
+			return content.Packages
+				.Where(p => p.Value.Required)
+				.All(p => p.Value.TestFiles.All(f => File.Exists(Platform.ResolvePath(f))));
+		}
+	}
+
+	public class ModContentInstallerLogic : ChromeLogic
+	{
+		[FluentReference]
+		const string ManualInstall = "button-manual-install";
+
 		readonly ModContent content;
 		readonly ScrollPanelWidget scrollPanel;
 		readonly Widget template;
 
-		readonly Dictionary<string, ModContent.ModSource> sources = new Dictionary<string, ModContent.ModSource>();
-		readonly Dictionary<string, ModContent.ModDownload> downloads = new Dictionary<string, ModContent.ModDownload>();
+		readonly Dictionary<string, ModContent.ModSource> sources = [];
+		readonly Dictionary<string, ModContent.ModDownload> downloads = [];
 
-		bool discAvailable;
+		bool sourceAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, ModData modData, Manifest mod, ModContent content, Action onCancel)
+		public ModContentInstallerLogic(ModData modData, Widget widget, ModContent content, Action onCancel)
 		{
 			this.content = content;
 
 			var panel = widget.Get("CONTENT_PANEL");
 
-			var modObjectCreator = new ObjectCreator(mod, Game.Mods);
-			var modPackageLoaders = modObjectCreator.GetLoaders<IPackageLoader>(mod.PackageFormats, "package");
-			var modFileSystem = new FS(mod.Id, Game.Mods, modPackageLoaders);
-			modFileSystem.LoadFromManifest(mod);
-
-			var sourceYaml = MiniYaml.Load(modFileSystem, content.Sources, null);
+			var sourceYaml = MiniYaml.Load(modData.DefaultFileSystem, content.Sources, null);
 			foreach (var s in sourceYaml)
 				sources.Add(s.Key, new ModContent.ModSource(s.Value));
 
-			var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
+			var downloadYaml = MiniYaml.Load(modData.DefaultFileSystem, content.Downloads, null);
 			foreach (var d in downloadYaml)
 				downloads.Add(d.Key, new ModContent.ModDownload(d.Value));
 
-			modFileSystem.UnmountAll();
-
 			scrollPanel = panel.Get<ScrollPanelWidget>("PACKAGES");
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");
-
-			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
-			var headerLines = !string.IsNullOrEmpty(content.HeaderMessage) ? content.HeaderMessage.Replace("\\n", "\n").Split('\n') : new string[0];
-			var headerHeight = 0;
-			foreach (var l in headerLines)
-			{
-				var line = (LabelWidget)headerTemplate.Clone();
-				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
-				panel.AddChild(line);
-
-				headerHeight += headerTemplate.Bounds.Height;
-			}
+			var headerLabel = panel.Get<LabelWidget>("HEADER_LABEL");
+			headerLabel.IncreaseHeightToFitCurrentText();
+			var headerHeight = headerLabel.Bounds.Height;
 
 			panel.Bounds.Height += headerHeight;
 			panel.Bounds.Y -= headerHeight / 2;
 			scrollPanel.Bounds.Y += headerHeight;
 
-			var discButton = panel.Get<ButtonWidget>("CHECK_DISC_BUTTON");
-			discButton.Bounds.Y += headerHeight;
-			discButton.IsVisible = () => discAvailable;
+			var sourceButton = panel.Get<ButtonWidget>("CHECK_SOURCE_BUTTON");
+			sourceButton.Bounds.Y += headerHeight;
+			sourceButton.IsVisible = () => sourceAvailable;
 
-			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
+			sourceButton.OnClick = () => Ui.OpenWindow("SOURCE_INSTALL_PANEL", new WidgetArgs
 			{
-				{ "afterInstall", () => { } },
 				{ "sources", sources },
-				{ "content", content }
+				{ "content", content },
 			});
 
 			var backButton = panel.Get<ButtonWidget>("BACK_BUTTON");
@@ -103,16 +123,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var container = template.Clone();
 				var titleWidget = container.Get<LabelWidget>("TITLE");
-				var title = p.Value.Title;
+				var title = FluentProvider.GetMessage(p.Value.Title);
 				titleWidget.GetText = () => title;
 
 				var requiredWidget = container.Get<LabelWidget>("REQUIRED");
 				requiredWidget.IsVisible = () => p.Value.Required;
 
-				var sourceWidget = container.Get<ImageWidget>("DISC");
-				var sourceTitles = p.Value.Sources.Select(s => sources[s].Title).Distinct();
-				var sourceList = sourceTitles.JoinWith("\n");
-				var isSourceAvailable = sourceTitles.Any();
+				var sourceWidget = container.Get<ImageWidget>("SOURCE");
+				var sourceList = p.Value.Sources.Select(s => sources[s].Title).Distinct().JoinWith("\n");
+				var isSourceAvailable = sourceList.Length != 0;
 				sourceWidget.GetTooltipText = () => sourceList;
 				sourceWidget.IsVisible = () => isSourceAvailable;
 
@@ -135,15 +154,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var installedWidget = container.Get<LabelWidget>("INSTALLED");
 				installedWidget.IsVisible = () => installed;
 
-				var requiresDiscWidget = container.Get<LabelWidget>("REQUIRES_DISC");
-				requiresDiscWidget.IsVisible = () => !installed && !downloadEnabled;
+				var requiresSourceWidget = container.Get<LabelWidget>("REQUIRES_SOURCE");
+				requiresSourceWidget.IsVisible = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
-					requiresDiscWidget.GetText = () => "Manual Install";
+				{
+					var manualInstall = FluentProvider.GetMessage(ManualInstall);
+					requiresSourceWidget.GetText = () => manualInstall;
+				}
 
 				scrollPanel.AddChild(container);
 			}
 
-			discAvailable = content.Packages.Values.Any(p => p.Sources.Any() && !p.IsInstalled());
+			sourceAvailable = content.Packages.Values.Any(p => p.Sources.Length > 0 && !p.IsInstalled());
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,12 +14,16 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class KickSpectatorsLogic : ChromeLogic
+	sealed class KickSpectatorsLogic : ChromeLogic
 	{
+		[FluentReference("count")]
+		const string KickSpectators = "dialog-kick-spectators.prompt";
+
 		[ObjectCreator.UseCtor]
 		public KickSpectatorsLogic(Widget widget, int clientCount, Action okPressed, Action cancelPressed)
 		{
-			widget.Get<LabelWidget>("TEXT").GetText = () => $"Are you sure you want to kick {clientCount} spectators?";
+			var kickMessage = FluentProvider.GetMessage(KickSpectators, "count", clientCount);
+			widget.Get<LabelWidget>("TEXT").GetText = () => kickMessage;
 
 			widget.Get<ButtonWidget>("OK_BUTTON").OnClick = () =>
 			{

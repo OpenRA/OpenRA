@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -43,11 +43,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			else if (widget is ProductionTabsWidget ptw)
 			{
-				ptw.Button += suffix;
+				ptw.ArrowButton += suffix;
+				ptw.TabButton += suffix;
+
+				// TODO: This isn't functional, ProductionTabsWidget's caches aren't updated with the new values.
+				ptw.Decorations += suffix;
 				ptw.Background += suffix;
 			}
 			else
-				throw new InvalidOperationException("AddFactionSuffixLogic only supports ButtonWidget, ImageWidget, BackgroundWidget, TextFieldWidget, ScrollPanelWidget and ProductionTabsWidget");
+				throw new InvalidOperationException(
+					"AddFactionSuffixLogic only supports ButtonWidget, ImageWidget, BackgroundWidget, TextFieldWidget, ScrollPanelWidget and ProductionTabsWidget");
 		}
 	}
 }

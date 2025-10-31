@@ -1,17 +1,15 @@
 tc04:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: tc04.tem
+		TilesetFilenames:
+			SNOW: tc04.sno
 	idle:
 
 tc04.husk:
-	Defaults: tc04
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: tc04.tem
+		TilesetFilenames:
+			SNOW: tc04.sno
 	idle:
 		Start: 1
 	dead:
@@ -21,18 +19,16 @@ tc04.husk:
 
 tc05:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: tc05.tem
+		TilesetFilenames:
+			SNOW: tc05.sno
 	idle:
 
 tc05.husk:
-	Defaults: tc05
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: tc05.tem
+		TilesetFilenames:
+			SNOW: tc05.sno
 	idle:
 		Start: 1
 	dead:
@@ -42,18 +38,16 @@ tc05.husk:
 
 tc03:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: tc03.tem
+		TilesetFilenames:
+			SNOW: tc03.sno
 	idle:
 
 tc03.husk:
-	Defaults: tc03
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: tc03.tem
+		TilesetFilenames:
+			SNOW: tc03.sno
 	idle:
 		Start: 1
 	dead:
@@ -63,18 +57,16 @@ tc03.husk:
 
 tc02:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: tc02.tem
+		TilesetFilenames:
+			SNOW: tc02.sno
 	idle:
 
 tc02.husk:
-	Defaults: tc02
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: tc02.tem
+		TilesetFilenames:
+			SNOW: tc02.sno
 	idle:
 		Start: 1
 	dead:
@@ -84,16 +76,18 @@ tc02.husk:
 
 tc01:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			INTERIOR: TEMPERAT
+		Filename: tc01.tem
+		TilesetFilenames:
+			SNOW: tc01.sno
+			DESERT: tc01.des
 	idle:
 
 tc01.husk:
-	Defaults: tc01
-		UseTilesetExtension: true
-		TilesetOverrides:
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: tc01.tem
+		TilesetFilenames:
+			SNOW: tc01.sno
+			DESERT: tc01.des
 	idle:
 		Start: 1
 	dead:
@@ -103,18 +97,16 @@ tc01.husk:
 
 t17:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t17.tem
+		TilesetFilenames:
+			SNOW: t17.sno
 	idle:
 
 t17.husk:
-	Defaults: t17
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t17.tem
+		TilesetFilenames:
+			SNOW: t17.sno
 	idle:
 		Start: 1
 	dead:
@@ -124,18 +116,16 @@ t17.husk:
 
 t16:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t16.tem
+		TilesetFilenames:
+			SNOW: t16.sno
 	idle:
 
 t16.husk:
-	Defaults: t16
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t16.tem
+		TilesetFilenames:
+			SNOW: t16.sno
 	idle:
 		Start: 1
 	dead:
@@ -144,19 +134,17 @@ t16.husk:
 		Tick: 80
 
 t15:
-	Defaults: t15
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t15.tem
+		TilesetFilenames:
+			SNOW: t15.sno
 	idle:
 
 t15.husk:
-	Defaults: t15
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t15.tem
+		TilesetFilenames:
+			SNOW: t15.sno
 	idle:
 		Start: 1
 	dead:
@@ -166,18 +154,16 @@ t15.husk:
 
 t14:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t14.tem
+		TilesetFilenames:
+			SNOW: t14.sno
 	idle:
 
 t14.husk:
-	Defaults: t14
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t14.tem
+		TilesetFilenames:
+			SNOW: t14.sno
 	idle:
 		Start: 1
 	dead:
@@ -187,18 +173,16 @@ t14.husk:
 
 t13:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t13.tem
+		TilesetFilenames:
+			SNOW: t13.sno
 	idle:
 
 t13.husk:
-	Defaults: t13
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t13.tem
+		TilesetFilenames:
+			SNOW: t13.sno
 	idle:
 		Start: 1
 	dead:
@@ -208,18 +192,16 @@ t13.husk:
 
 t12:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t12.tem
+		TilesetFilenames:
+			SNOW: t12.sno
 	idle:
 
 t12.husk:
-	Defaults: t12
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t12.tem
+		TilesetFilenames:
+			SNOW: t12.sno
 	idle:
 		Start: 1
 	dead:
@@ -229,18 +211,16 @@ t12.husk:
 
 t11:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t11.tem
+		TilesetFilenames:
+			SNOW: t11.sno
 	idle:
 
 t11.husk:
-	Defaults: t11
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t11.tem
+		TilesetFilenames:
+			SNOW: t11.sno
 	idle:
 		Start: 1
 	dead:
@@ -250,18 +230,16 @@ t11.husk:
 
 t10:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t10.tem
+		TilesetFilenames:
+			SNOW: t10.sno
 	idle:
 
 t10.husk:
-	Defaults: t10
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t10.tem
+		TilesetFilenames:
+			SNOW: t10.sno
 	idle:
 		Start: 1
 	dead:
@@ -271,16 +249,18 @@ t10.husk:
 
 t08:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			INTERIOR: TEMPERAT
+		Filename: t08.tem
+		TilesetFilenames:
+			SNOW: t08.sno
+			DESERT: t08.des
 	idle:
 
 t08.husk:
-	Defaults: t08
-		UseTilesetExtension: true
-		TilesetOverrides:
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t08.tem
+		TilesetFilenames:
+			SNOW: t08.sno
+			DESERT: t08.des
 	idle:
 		Start: 1
 	dead:
@@ -290,18 +270,16 @@ t08.husk:
 
 t07:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t07.tem
+		TilesetFilenames:
+			SNOW: t07.sno
 	idle:
 
 t07.husk:
-	Defaults: t07
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t07.tem
+		TilesetFilenames:
+			SNOW: t07.sno
 	idle:
 		Start: 1
 	dead:
@@ -311,18 +289,16 @@ t07.husk:
 
 t06:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t06.tem
+		TilesetFilenames:
+			SNOW: t06.sno
 	idle:
 
 t06.husk:
-	Defaults: t06
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t06.tem
+		TilesetFilenames:
+			SNOW: t06.sno
 	idle:
 		Start: 1
 	dead:
@@ -332,18 +308,16 @@ t06.husk:
 
 t05:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t05.tem
+		TilesetFilenames:
+			SNOW: t05.sno
 	idle:
 
 t05.husk:
-	Defaults: t05
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t05.tem
+		TilesetFilenames:
+			SNOW: t05.sno
 	idle:
 		Start: 1
 	dead:
@@ -353,18 +327,16 @@ t05.husk:
 
 t03:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t03.tem
+		TilesetFilenames:
+			SNOW: t03.sno
 	idle:
 
 t03.husk:
-	Defaults: t03
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t03.tem
+		TilesetFilenames:
+			SNOW: t03.sno
 	idle:
 		Start: 1
 	dead:
@@ -374,18 +346,16 @@ t03.husk:
 
 t02:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t02.tem
+		TilesetFilenames:
+			SNOW: t02.sno
 	idle:
 
 t02.husk:
-	Defaults: t02
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t02.tem
+		TilesetFilenames:
+			SNOW: t02.sno
 	idle:
 		Start: 1
 	dead:
@@ -395,18 +365,16 @@ t02.husk:
 
 t01:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: t01.tem
+		TilesetFilenames:
+			SNOW: t01.sno
 	idle:
 
 t01.husk:
-	Defaults: t01
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+	Defaults:
+		Filename: t01.tem
+		TilesetFilenames:
+			SNOW: t01.sno
 	idle:
 		Start: 1
 	dead:
@@ -415,66 +383,62 @@ t01.husk:
 		Tick: 80
 
 ice01:
-	idle: ice01.sno
+	idle:
+		Filename: ice01.sno
 		Length: *
-		AddExtension: false
 
 ice02:
-	idle: ice02.sno
+	idle:
+		Filename: ice02.sno
 		Length: *
-		AddExtension: false
 
 ice03:
-	idle: ice03.sno
+	idle:
+		Filename: ice03.sno
 		Length: *
-		AddExtension: false
 
 ice04:
-	idle: ice04.sno
+	idle:
+		Filename: ice04.sno
 		Length: *
-		AddExtension: false
 
 ice05:
-	idle: ice05.sno
+	idle:
+		Filename: ice05.sno
 		Length: *
-		AddExtension: false
 
 v01:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v01.tem
+		TilesetFilenames:
+			SNOW: v01.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v02:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v02.tem
+		TilesetFilenames:
+			SNOW: v02.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v03:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v03.tem
+		TilesetFilenames:
+			SNOW: v03.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v04:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v04.tem
+		TilesetFilenames:
+			SNOW: v04.sno
 	idle:
 	damaged-idle:
 		Start: 2
@@ -485,80 +449,72 @@ v04:
 
 v05:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v05.tem
+		TilesetFilenames:
+			SNOW: v05.sno
 	idle:
 	damaged-idle:
 		Start: 2
 
 v06:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v06.tem
+		TilesetFilenames:
+			SNOW: v06.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v07:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v07.tem
+		TilesetFilenames:
+			SNOW: v07.sno
 	idle:
 	damaged-idle:
 		Start: 2
 
 v08:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v08.tem
+		TilesetFilenames:
+			SNOW: v08.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v09:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v09.tem
+		TilesetFilenames:
+			SNOW: v09.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v10:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v10.tem
+		TilesetFilenames:
+			SNOW: v10.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v11:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v11.tem
+		TilesetFilenames:
+			SNOW: v11.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v12:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v12.tem
+		TilesetFilenames:
+			SNOW: v12.sno
 	idle:
 		ZOffset: -2c512
 	damaged-idle:
@@ -567,20 +523,18 @@ v12:
 
 v13:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v13.tem
+		TilesetFilenames:
+			SNOW: v13.sno
 	idle:
 	damaged-idle:
 		Start: 1
 
 v14:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v14.tem
+		TilesetFilenames:
+			SNOW: v14.sno
 	idle:
 		ZOffset: -2c512
 	damaged-idle:
@@ -589,10 +543,9 @@ v14:
 
 v15:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v15.tem
+		TilesetFilenames:
+			SNOW: v15.sno
 	idle:
 		ZOffset: -2c512
 	damaged-idle:
@@ -601,10 +554,9 @@ v15:
 
 v16:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v16.tem
+		TilesetFilenames:
+			SNOW: v16.sno
 	idle:
 		ZOffset: -2c512
 	damaged-idle:
@@ -613,10 +565,9 @@ v16:
 
 v17:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v17.tem
+		TilesetFilenames:
+			SNOW: v17.sno
 	idle:
 		ZOffset: -2c512
 	damaged-idle:
@@ -625,10 +576,9 @@ v17:
 
 v18:
 	Defaults:
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
+		Filename: v18.tem
+		TilesetFilenames:
+			SNOW: v18.sno
 	idle:
 		ZOffset: -2c512
 	damaged-idle:
@@ -636,32 +586,38 @@ v18:
 		ZOffset: -2c512
 
 rice:
-	Defaults:
-		AddExtension: false
-	idle: rice.tem
+	idle:
+		Filename: rice.tem
 		ZOffset: -2c512
-	damaged-idle: rice.tem
+	damaged-idle:
+		Filename: rice.tem
 		Start: 1
 		ZOffset: -2c512
 
 v19:
 	idle:
+		Filename: v19.shp
 		Length: 14
 
 v19.husk:
-	idle: v19
+	idle:
+		Filename: v19.shp
 		Start: 28
-	fire-start: flmspt
+	fire-start:
+		Filename: flmspt.shp
 		Length: *
 		Offset: 7,-15
 		ZOffset: 1
-	fire-loop: flmspt
+	fire-loop:
+		Filename: flmspt.shp
 		Start: 50
 		Length: *
 		Offset: 7,-15
 		ZOffset: 1
 
 utilpol1:
+	Defaults:
+		Filename: utilpol1.shp
 	idle:
 	damaged-idle:
 		Start: 1
@@ -669,6 +625,8 @@ utilpol1:
 		Start: 1
 
 utilpol2:
+	Defaults:
+		Filename: utilpol2.shp
 	idle:
 	damaged-idle:
 		Start: 1
@@ -677,30 +635,41 @@ utilpol2:
 
 ammobox1:
 	idle:
+		Filename: ammobox1.shp
 
 ammobox2:
 	idle:
+		Filename: ammobox2.shp
 
 ammobox3:
 	idle:
+		Filename: ammobox3.shp
 
 tanktrap1:
 	idle:
+		Filename: tanktrap1.shp
 
 tanktrap2:
 	idle:
+		Filename: tanktrap2.shp
 
 rushouse:
+	Defaults:
+		Filename: rushouse.shp
 	idle:
 	damaged-idle:
 		Start: 1
 
 asianhut:
+	Defaults:
+		Filename: asianhut.shp
 	idle:
 	damaged-idle:
 		Start: 1
 
 barb:
+	Defaults:
+		Filename: barb.shp
 	idle:
 		Length: 16
 	damaged-idle:
@@ -708,6 +677,8 @@ barb:
 		Length: 16
 
 wood:
+	Defaults:
+		Filename: wood.shp
 	idle:
 		Length: 16
 	damaged-idle:
@@ -716,250 +687,252 @@ wood:
 
 barl:
 	idle:
+		Filename: barl.shp
 
 brl3:
 	idle:
+		Filename: brl3.shp
 
 # Interior Terrain
 boxes01:
-	idle: boxes01.int
-		AddExtension: false
+	idle:
+		Filename: boxes01.int
 
 boxes02:
-	idle: boxes02.int
-		AddExtension: false
+	idle:
+		Filename: boxes02.int
 
 boxes03:
-	idle: boxes03.int
-		AddExtension: false
+	idle:
+		Filename: boxes03.int
 
 boxes04:
-	idle: boxes04.int
-		AddExtension: false
+	idle:
+		Filename: boxes04.int
 
 boxes05:
-	idle: boxes05.int
-		AddExtension: false
+	idle:
+		Filename: boxes05.int
 
 boxes06:
-	idle: boxes06.int
-		AddExtension: false
+	idle:
+		Filename: boxes06.int
 
 boxes07:
-	idle: boxes07.int
-		AddExtension: false
+	idle:
+		Filename: boxes07.int
 
 boxes08:
-	idle: boxes08.int
-		AddExtension: false
+	idle:
+		Filename: boxes08.int
 
 boxes09:
-	idle: boxes09.int
-		AddExtension: false
+	idle:
+		Filename: boxes09.int
 
 # Desert Terrain Expansion
 rock1:
-	idle: rock1.des
-		AddExtension: false
+	idle:
+		Filename: rock1.des
 
 rock2:
-	idle: rock2.des
-		AddExtension: false
+	idle:
+		Filename: rock2.des
 
 rock3:
-	idle: rock3.des
-		AddExtension: false
+	idle:
+		Filename: rock3.des
 
 rock4:
-	idle: rock4.des
-		AddExtension: false
+	idle:
+		Filename: rock4.des
 
 rock5:
-	idle: rock5.des
-		AddExtension: false
+	idle:
+		Filename: rock5.des
 
 rock6:
-	idle: rock6.des
-		AddExtension: false
+	idle:
+		Filename: rock6.des
 
 rock7:
-	idle: rock7.des
-		AddExtension: false
+	idle:
+		Filename: rock7.des
 
 t04:
-	Defaults:
-		AddExtension: false
-	idle: t04.des
+	idle:
+		Filename: t04.des
 
 t04.husk:
-	Defaults: t04.des
-		AddExtension: false
+	Defaults:
+		Filename: t04.des
 	idle:
 		Start: 1
-	dead: t04.des
+	dead:
+		Filename: t04.des
 		Start: 2
 		Length: 8
 		Tick: 80
 
 t09:
-	Defaults:
-		AddExtension: false
-	idle: t09.des
+	idle:
+		Filename: t09.des
 
 t09.husk:
-	Defaults: t09
-		AddExtension: false
-	idle: t09.des
+	idle:
+		Filename: t09.des
 		Start: 1
-	dead: t09.des
+	dead:
+		Filename: t09.des
 		Start: 2
 		Length: 8
 		Tick: 80
 
 v20:
-	Defaults:
-		AddExtension: false
-	idle: v20.des
+	idle:
+		Filename: v20.des
 		Length: 3
 		Tick: 120
-	damaged-idle: v20.des
+	damaged-idle:
+		Filename: v20.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v21:
-	Defaults:
-		AddExtension: false
-	idle: v21.des
+	idle:
+		Filename: v21.des
 		Length: 3
 		Tick: 120
-	damaged-idle: v21.des
+	damaged-idle:
+		Filename: v21.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v22:
-	Defaults:
-		AddExtension: false
-	idle: v22.des
+	idle:
+		Filename: v22.des
 		Length: 3
 		Tick: 120
-	damaged-idle: v22.des
+	damaged-idle:
+		Filename: v22.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v23:
-	Defaults:
-		AddExtension: false
-	idle: v23.des
+	idle:
+		Filename: v23.des
 		Length: 3
 		Tick: 120
-	damaged-idle: v23.des
+	damaged-idle:
+		Filename: v23.des
 		Start: 3
 		Length: 3
 		Tick: 120
 
 v24:
-	Defaults:
-		AddExtension: false
-	idle: v24.des
-	damaged-idle: v24.des
+	idle:
+		Filename: v24.des
+	damaged-idle:
+		Filename: v24.des
 		Start: 1
 
 v25:
-	Defaults:
-		AddExtension: false
-	idle: v25.des
-	damaged-idle: v25.des
+	idle:
+		Filename: v25.des
+	damaged-idle:
+		Filename: v25.des
 		Start: 1
 
 v26:
-	Defaults:
-		AddExtension: false
-	idle: v26.des
-	damaged-idle: v26.des
+	idle:
+		Filename: v26.des
+	damaged-idle:
+		Filename: v26.des
 		Start: 1
 
 v27:
-	Defaults:
-		AddExtension: false
-	idle: v27.des
-	damaged-idle: v27.des
+	idle:
+		Filename: v27.des
+	damaged-idle:
+		Filename: v27.des
 		Start: 1
 
 v28:
-	Defaults:
-		AddExtension: false
-	idle: v28.des
-	damaged-idle: v28.des
+	idle:
+		Filename: v28.des
+	damaged-idle:
+		Filename: v28.des
 		Start: 1
 
 v29:
-	Defaults:
-		AddExtension: false
-	idle: v29.des
-	damaged-idle: v29.des
+	idle:
+		Filename: v29.des
+	damaged-idle:
+		Filename: v29.des
 		Start: 1
 
 v30:
-	Defaults:
-		AddExtension: false
-	idle: v30.des
-	damaged-idle: v30.des
+	idle:
+		Filename: v30.des
+	damaged-idle:
+		Filename: v30.des
 		Start: 2
 
 v31:
-	Defaults:
-		AddExtension: false
-	idle: v31.des
-	damaged-idle: v31.des
+	idle:
+		Filename: v31.des
+	damaged-idle:
+		Filename: v31.des
 		Start: 1
 
 v32:
-	Defaults:
-		AddExtension: false
-	idle: v32.des
-	damaged-idle: v32.des
+	idle:
+		Filename: v32.des
+	damaged-idle:
+		Filename: v32.des
 		Start: 1
 
 v33:
-	Defaults:
-		AddExtension: false
-	idle: v33.des
-	damaged-idle: v33.des
+	idle:
+		Filename: v33.des
+	damaged-idle:
+		Filename: v33.des
 		Start: 1
 
 v34:
-	Defaults:
-		AddExtension: false
-	idle: v34.des
-	damaged-idle: v34.des
+	idle:
+		Filename: v34.des
+	damaged-idle:
+		Filename: v34.des
 		Start: 1
 
 v35:
-	Defaults:
-		AddExtension: false
-	idle: v35.des
-	damaged-idle: v35.des
+	idle:
+		Filename: v35.des
+	damaged-idle:
+		Filename: v35.des
 		Start: 1
 
 v36:
-	Defaults:
-		AddExtension: false
-	idle: v36.des
-	damaged-idle: v36.des
+	idle:
+		Filename: v36.des
+	damaged-idle:
+		Filename: v36.des
 		Start: 1
 
 v37:
-	Defaults:
-		AddExtension: false
-	idle: v37.des
-	damaged-idle: v37.des
+	idle:
+		Filename: v37.des
+	damaged-idle:
+		Filename: v37.des
 		Start: 1
 
 snowhut:
 	Defaults:
+		Filename: snowhut.shp
 		Offset: 0,-5
 		Scale: 0.7
 	idle:
@@ -971,6 +944,7 @@ snowhut:
 
 lhus:
 	Defaults:
+		Filename: lhus.shp
 		Offset: 0,-16
 	idle:
 		Length: 16
@@ -982,6 +956,7 @@ lhus:
 
 windmill:
 	Defaults:
+		Filename: windmill.shp
 		Offset: 0,-16
 	idle:
 		Length: 8

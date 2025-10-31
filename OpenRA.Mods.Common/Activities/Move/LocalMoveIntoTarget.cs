@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnFirstRun(Actor self)
 		{
-			targetStartPos = target.Positions.PositionClosestTo(self.CenterPosition);
+			targetStartPos = target.Positions.ClosestToIgnoringPath(self.CenterPosition);
 		}
 
 		public override bool Tick(Actor self)
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			var currentPos = self.CenterPosition;
-			var targetPos = target.Positions.PositionClosestTo(currentPos);
+			var targetPos = target.Positions.ClosestToIgnoringPath(currentPos);
 
 			// Give up if the target has moved too far
 			if (targetMovementThreshold > WDist.Zero && (targetPos - targetStartPos).LengthSquared > targetMovementThreshold.LengthSquared)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Can complete the move in this step
-			var speed = mobile.MovementSpeedForCell(self, self.Location);
+			var speed = mobile.MovementSpeedForCell(self.Location);
 			if (delta.LengthSquared <= speed * speed)
 			{
 				mobile.SetCenterPosition(self, targetPos);

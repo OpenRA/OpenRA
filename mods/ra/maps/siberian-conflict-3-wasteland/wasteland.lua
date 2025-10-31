@@ -1,5 +1,5 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
@@ -44,7 +44,7 @@ Tick = function()
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 
-	if USSR.HasNoRequiredUnits() then
+	if USSR.HasNoRequiredUnits() and BadGuy.HasNoRequiredUnits() then
 		Allies.MarkCompletedObjective(DestroyAll)
 	end
 end
@@ -54,26 +54,10 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
 
-	Trigger.OnObjectiveAdded(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "New " .. string.lower(p.GetObjectiveType(id)) .. " objective")
-	end)
+	InitObjectives(Allies)
 
-	SovietObj = USSR.AddObjective("Stop the Allies")
-	DestroyAll = Allies.AddObjective("Destroy all Soviet units and structures.")
-
-	Trigger.OnObjectiveCompleted(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective completed")
-	end)
-	Trigger.OnObjectiveFailed(Allies, function(p, id)
-		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective failed")
-	end)
-
-	Trigger.OnPlayerLost(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Lose")
-	end)
-	Trigger.OnPlayerWon(Allies, function()
-		Media.PlaySpeechNotification(Allies, "Win")
-	end)
+	SovietObj = AddPrimaryObjective(USSR, "")
+	DestroyAll = AddPrimaryObjective(Allies, "destroy-soviet-units-infrastructure")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	PowerProxy = Actor.Create("paratroopers", false, { Owner = BadGuy })

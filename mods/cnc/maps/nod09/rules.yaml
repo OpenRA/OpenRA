@@ -1,11 +1,11 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod09.lua, nod09-AI.lua
+		Scripts: campaign.lua, utils.lua, nod09.lua, nod09-AI.lua
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: GDI is attempting to retake Egypt.\n\nUse every available resource in your efforts to stop them.\n\nThe populace has once again swayed in support of GDI forces, so show no mercy in dealing with the villagers.
+		Briefing: GDI is attempting to retake Egypt.\n\nUse every available resource to stop their advance.\n\nThe local populace has once again sided with GDI forces, so show no mercy to the villagers.
 		LossVideo: banner.vqa
 		BriefingVideo: nod9.vqa
 	SmudgeLayer@SCORCH:
@@ -29,11 +29,12 @@ World:
 			7,54: cr1,0
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:
@@ -65,7 +66,7 @@ EYE:
 
 GUN:
 	Buildable:
-		Queue: Defence.Nod
+		Queue: Support.Nod
 
 OBLI:
 	Buildable:
@@ -117,11 +118,11 @@ STNK:
 
 GTWR:
 	Buildable:
-		Queue: Defence.GDI
+		Queue: Support.GDI
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 HQ:
 	AirstrikePower:

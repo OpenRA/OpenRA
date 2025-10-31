@@ -4,8 +4,9 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, monster-tank-madness.lua
-	-StartGameNotification:
+		Scripts: campaign.lua, utils.lua, monster-tank-madness.lua
+	StartGameNotification:
+		Notification:
 	MissionData:
 		Briefing: Dr. Demitri, creator of a Soviet Super Tank, wants to defect.\n\nWe planned to extract him while the Soviets were testing their new weapon, but something has gone wrong.\n\nThe Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south.\n\nFind our outpost and start repairs on it, then find and evacuate Demitri.\n\nAs for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.\n
 		WinVideo: sovbatl.vqa
@@ -23,7 +24,7 @@ World:
 
 ^ExplodingCivBuilding:
 	Inherits: ^CivBuilding
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
 
@@ -78,14 +79,14 @@ V11.exploding:
 		Image: V11
 
 V19:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
 
 DEMITRI:
 	Inherits: DELPHI
 	Tooltip:
-		Name: Dr. Demitri
+		Name: actor-demitri-name
 	Passenger:
 		CargoType: Demitri
 	RenderSprites:
@@ -120,8 +121,8 @@ PBOX:
 	Valued:
 		Cost: 10000
 	Tooltip:
-		Name: Super Tank
-		GenericName: Super Tank
+		Name: actor-5tnk.name
+		GenericName: actor-5tnk.generic-name
 	Health:
 		HP: 2000000
 	Armor:
@@ -155,7 +156,7 @@ PBOX:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 	SpawnActorOnDeath:
@@ -173,7 +174,7 @@ PBOX:
 5TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Super Tank)
+		Name: actor-5tnk-husk-name
 	ThrowsParticle@turret:
 		Anim: turret
 	Health:
@@ -279,6 +280,10 @@ STEK:
 		Prerequisites: ~disabled
 
 4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
 	Buildable:
 		Prerequisites: ~disabled
 

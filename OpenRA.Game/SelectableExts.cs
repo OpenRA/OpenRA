@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -62,10 +62,7 @@ namespace OpenRA.Traits
 
 		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, int2 selectionPixel, Modifiers modifiers)
 		{
-			if (!actors.Any())
-				return null;
-
-			return actors.MaxBy(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel, modifiers)).Actor;
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel, modifiers)).Actor;
 		}
 
 		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel, Modifiers modifiers)
@@ -90,7 +87,7 @@ namespace OpenRA.Traits
 			return info.SelectionPriority(modifiers) - (long)pixelDistance << 16;
 		}
 
-		static readonly Actor[] NoActors = { };
+		static readonly Actor[] NoActors = [];
 
 		public static IEnumerable<Actor> SubsetWithHighestSelectionPriority(this IEnumerable<Actor> actors, Modifiers modifiers)
 		{

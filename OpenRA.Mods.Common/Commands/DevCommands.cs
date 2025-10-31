@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,28 +19,80 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Commands
 {
 	[TraitLocation(SystemActors.World)]
+	[IncludeStaticFluentReferences(typeof(DevCommands))]
 	[Desc("Enables developer cheats via the chatbox. Attach this to the world actor.")]
 	public class DevCommandsInfo : TraitInfo<DevCommands> { }
 
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
+		[FluentReference]
+		const string CheatsDisabled = "notification-cheats-disabled";
+
+		[FluentReference]
+		const string InvalidCashAmount = "notification-invalid-cash-amount";
+
+		[FluentReference]
+		const string ToggleVisiblityDescription = "description-toggle-visibility";
+
+		[FluentReference]
+		const string GiveCashDescription = "description-give-cash";
+
+		[FluentReference]
+		const string GiveCashAllDescription = "description-give-cash-all";
+
+		[FluentReference]
+		const string InstantBuildingDescription = "description-instant-building";
+
+		[FluentReference]
+		const string BuildAnywhereDescription = "description-build-anywhere";
+
+		[FluentReference]
+		const string UnlimitedPowerDescription = "description-unlimited-power";
+
+		[FluentReference]
+		const string EnableTechDescription = "description-enable-tech";
+
+		[FluentReference]
+		const string FastChargeDescription = "description-fast-charge";
+
+		[FluentReference]
+		const string DevCheatAllDescription = "description-dev-cheat-all";
+
+		[FluentReference]
+		const string DevCrashDescription = "description-dev-crash";
+
+		[FluentReference]
+		const string LevelUpActorDescription = "description-levelup-actor";
+
+		[FluentReference]
+		const string PlayerExperienceDescription = "description-player-experience";
+
+		[FluentReference]
+		const string PowerOutageDescription = "description-power-outage";
+
+		[FluentReference]
+		const string KillSelectedActorsDescription = "description-kill-selected-actors";
+
+		[FluentReference]
+		const string DisposeSelectedActorsDescription = "description-dispose-selected-actors";
+
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{
-			{ "visibility", ("toggles visibility checks and minimap.", Visibility) },
-			{ "give-cash", ("gives the default or specified amount of money.", GiveCash) },
-			{ "give-cash-all", ("gives the default or specified amount of money to all players and ai.", GiveCashAll) },
-			{ "instant-build", ("toggles instant building.", InstantBuild) },
-			{ "build-anywhere", ("toggles you the ability to build anywhere.", BuildAnywhere) },
-			{ "unlimited-power", ("toggles infinite power.", UnlimitedPower) },
-			{ "enable-tech", ("toggles the ability to build everything.", EnableTech) },
-			{ "fast-charge", ("toggles almost instant support power charging.", FastCharge) },
-			{ "all", ("toggles all cheats and gives you some cash for your trouble.", All) },
-			{ "crash", ("crashes the game.", Crash) },
-			{ "levelup", ("adds a specified number of levels to the selected actors.", LevelUp) },
-			{ "player-experience", ("adds a specified amount of player experience to the owner(s) of selected actors.", PlayerExperience) },
-			{ "power-outage", ("causes owner(s) of selected actors to have a 5 second power outage.", PowerOutage) },
-			{ "kill", ("kills selected actors.", Kill) },
-			{ "dispose", ("disposes selected actors.", Dispose) }
+			{ "visibility", (ToggleVisiblityDescription, Visibility) },
+			{ "give-cash", (GiveCashDescription, GiveCash) },
+			{ "give-cash-all", (GiveCashAllDescription, GiveCashAll) },
+			{ "instant-build", (InstantBuildingDescription, InstantBuild) },
+			{ "build-anywhere", (BuildAnywhereDescription, BuildAnywhere) },
+			{ "unlimited-power", (UnlimitedPowerDescription, UnlimitedPower) },
+			{ "enable-tech", (EnableTechDescription, EnableTech) },
+			{ "fast-charge", (FastChargeDescription, FastCharge) },
+			{ "all", (DevCheatAllDescription, All) },
+			{ "crash", (DevCrashDescription, Crash) },
+			{ "levelup", (LevelUpActorDescription, LevelUp) },
+			{ "player-experience", (PlayerExperienceDescription, PlayerExperience) },
+			{ "power-outage", (PowerOutageDescription, PowerOutage) },
+			{ "kill", (KillSelectedActorsDescription, Kill) },
+			{ "dispose", (DisposeSelectedActorsDescription, Dispose) }
 		};
 
 		World world;
@@ -70,7 +122,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			if (!developerMode.Enabled)
 			{
-				TextNotificationsManager.Debug("Cheats are disabled.");
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatsDisabled));
 				return;
 			}
 
@@ -92,8 +144,15 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			var giveCashOrder = new Order(command, world.LocalPlayer.PlayerActor, false);
 
-			if (int.TryParse(arg, out var cash))
+			if (string.IsNullOrEmpty(arg))
+				giveCashOrder.ExtraData = 0;
+			else if (int.TryParse(arg, out var cash))
 				giveCashOrder.ExtraData = (uint)cash;
+			else
+			{
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(InvalidCashAmount));
+				return;
+			}
 
 			world.IssueOrder(giveCashOrder);
 		}
@@ -196,7 +255,6 @@ namespace OpenRA.Mods.Common.Commands
 			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}
 
-		[Serializable]
-		class DevException : Exception { }
+		public class DevException : Exception { }
 	}
 }

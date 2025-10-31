@@ -12,7 +12,7 @@ Debris:
 		BounceRangeModifier: 20
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 512
+		Spread: 0c756
 		Falloff: 100, 0
 		Versus:
 			none: 20
@@ -25,7 +25,7 @@ Debris:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+		DamageTypes: TriggerProne, SmallExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
@@ -41,7 +41,6 @@ Debris2:
 	Projectile: Bullet
 		Image: shrapnel2
 		TrailImage: small_trail
-		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
@@ -57,7 +56,7 @@ Debris2:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: TriggerProne, ExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 	Warhead@4Concrete: DamagesConcrete
@@ -70,6 +69,7 @@ Debris3:
 		TrailImage: small_trail2
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
+		Spread: 1c512
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 1350
 
@@ -78,3 +78,20 @@ Debris4:
 	Projectile: Bullet
 		Image: shrapnel4
 		TrailImage: large_trail
+	Warhead@1Dam: SpreadDamage
+		Spread: 2c0
+
+DebrisMissile:
+	Inherits: ^Missile
+	-Report:
+	Projectile: Missile
+		HorizontalRateOfTurn: 20
+		MinimumLaunchAngle: 120
+		MaximumLaunchAngle: 250
+		VerticalRateOfTurn: 20
+		CruiseAltitude: 0
+		ExplodeWhenEmpty: false
+		Speed: 250
+	Warhead@1Dam: SpreadDamage
+		Spread: 1c0
+		Damage: 2000

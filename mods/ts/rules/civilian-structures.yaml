@@ -2,7 +2,7 @@ ABAN01:
 	Inherits: ^CivBuilding
 	Inherits@SHAPE: ^2x6Shape
 	Tooltip:
-		Name: WS Logging Company
+		Name: actor-aban01-name
 	Building:
 		Footprint: xx xx xx xx xx XX
 		Dimensions: 2, 6
@@ -12,9 +12,9 @@ ABAN01:
 		HP: 60000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -23,7 +23,7 @@ ABAN02:
 	Inherits: ^CivBuilding
 	Inherits@SHAPE: ^5x3Shape
 	Tooltip:
-		Name: Panullo Hacienda
+		Name: actor-aban02-name
 	Building:
 		Footprint: xxxxx xxxxx XXXxX
 		Dimensions: 5, 3
@@ -33,9 +33,9 @@ ABAN02:
 		HP: 60000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 48
@@ -44,7 +44,7 @@ ABAN03:
 	Inherits: ^CivBuilding
 	Inherits@SHAPE: ^2x5Shape
 	Tooltip:
-		Name: Abandoned Factory
+		Name: actor-aban03-name
 	Building:
 		Footprint: xx xx xx xx XX
 		Dimensions: 2, 5
@@ -54,9 +54,9 @@ ABAN03:
 		HP: 50000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 48
@@ -65,7 +65,7 @@ ABAN04:
 	Inherits: ^CivBuilding
 	Inherits@SHAPE: ^4x2Shape
 	Tooltip:
-		Name: City Hall
+		Name: actor-aban04-name
 	Building:
 		Footprint: xxxX xxxX
 		Dimensions: 4, 2
@@ -75,9 +75,9 @@ ABAN04:
 		HP: 40000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 4, 7
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 3
 
 ABAN05:
@@ -88,7 +88,7 @@ ABAN05:
 			TopLeft: -1536, -1024
 			BottomRight: 768, 1024
 	Tooltip:
-		Name: Hunting Lodge
+		Name: actor-aban05-name
 	Building:
 		Footprint: xxX xxX
 		Dimensions: 3, 2
@@ -103,7 +103,7 @@ ABAN06:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Local Inn & Lodging
+		Name: actor-aban06-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -118,7 +118,7 @@ ABAN07:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Church
+		Name: actor-aban07-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -133,7 +133,7 @@ ABAN08:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Abandoned Warehouse
+		Name: actor-aban08-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -148,7 +148,7 @@ ABAN09:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Tall's Residence
+		Name: actor-aban09-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -163,7 +163,7 @@ ABAN10:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Denzil's Last Chance Motel
+		Name: actor-aban10-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -178,7 +178,7 @@ ABAN11:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Miele Manor
+		Name: actor-aban11-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -193,7 +193,7 @@ ABAN12:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Kettler's Place
+		Name: actor-aban12-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -207,7 +207,7 @@ ABAN12:
 ABAN13:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Long's Home
+		Name: actor-aban13-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -221,7 +221,7 @@ ABAN13:
 ABAN14:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Local Store
+		Name: actor-aban14-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -235,7 +235,7 @@ ABAN14:
 ABAN15:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Adam's House
+		Name: actor-aban15-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -250,7 +250,7 @@ ABAN16:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Gas Station
+		Name: actor-aban16-name
 	Building:
 		Footprint: xx xX
 		Dimensions: 2, 2
@@ -264,7 +264,7 @@ ABAN16:
 ABAN17:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Gas Pumps
+		Name: actor-aban17-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -278,7 +278,7 @@ ABAN17:
 ABAN18:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Gas Station Sign
+		Name: actor-aban18-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -292,7 +292,7 @@ ABAN18:
 AMMOCRAT:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Ammo Crates
+		Name: actor-ammocrat-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -306,27 +306,27 @@ AMMOCRAT:
 BBOARD01:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Eat at Rade's Roadhouse
+		Name: actor-bboard01-name
 
 BBOARD02:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Drink YEO-CA Cola!
+		Name: actor-bboard02-name
 
 BBOARD03:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Hamburgers $.99
+		Name: actor-bboard03-name
 
 BBOARD04:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Visit Scenic Las Vegas
+		Name: actor-bboard04-name
 
 BBOARD05:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Rooms $29 a nite
+		Name: actor-bboard05-name
 
 BBOARD06:
 	Inherits: ^CivBillboard
@@ -335,7 +335,7 @@ BBOARD06:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -128,-192,0, 128,192,0
 	Tooltip:
-		Name: Kaspm's Tiberium Warhouse
+		Name: actor-bboard06-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -347,7 +347,7 @@ BBOARD07:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -128,-192,0, 128,192,0
 	Tooltip:
-		Name: Alkaline's Battery Superstore
+		Name: actor-bboard07-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -359,7 +359,7 @@ BBOARD08:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -128,-192,0, 128,192,0
 	Tooltip:
-		Name: Alex-gators petshop just ahead!
+		Name: actor-bboard08-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -367,27 +367,27 @@ BBOARD08:
 BBOARD09:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: TacticX games rock!
+		Name: actor-bboard09-name
 
 BBOARD10:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: WW Surf and Turf hits the spot!
+		Name: actor-bboard10-name
 
 BBOARD11:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Only 11 miles to Zydeko's cafe!
+		Name: actor-bboard11-name
 
 BBOARD12:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: No escape from Archer's Asylum!
+		Name: actor-bboard12-name
 
 BBOARD13:
 	Inherits: ^CivBillboard
 	Tooltip:
-		Name: Stop in at Hewitt's hair salon
+		Name: actor-bboard13-name
 
 BBOARD14:
 	Inherits: ^CivBillboard
@@ -396,7 +396,7 @@ BBOARD14:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -128,192,0, 128,-192,0
 	Tooltip:
-		Name: Billy Bob's Harvester school
+		Name: actor-bboard14-name
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
@@ -408,7 +408,7 @@ BBOARD15:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -128,192,0, 128,-192,0
 	Tooltip:
-		Name: Pannullo's hacienda es bueno
+		Name: actor-bboard15-name
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
@@ -420,7 +420,7 @@ BBOARD16:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: -128,192,0, 128,-192,0
 	Tooltip:
-		Name: Join GDI: We save lives.
+		Name: actor-bboard16-name
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
@@ -429,7 +429,7 @@ CA0001:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x3Shape
 	Tooltip:
-		Name: Rade's Roadhouse
+		Name: actor-ca0001-name
 	Building:
 		Footprint: xxX xxX XXX
 		Dimensions: 3, 3
@@ -437,16 +437,16 @@ CA0001:
 		Type: heavy
 	Health:
 		HP: 40000
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 
 CA0002:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x3Shape
 	Tooltip:
-		Name: Sandberg and Son's
+		Name: actor-ca0002-name
 	Building:
 		Footprint: xxX xxx Xxx
 		Dimensions: 3, 3
@@ -454,16 +454,16 @@ CA0002:
 		Type: heavy
 	Health:
 		HP: 40000
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 
 CA0003:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Temp Housing
+		Name: actor-ca0003-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -476,7 +476,7 @@ CA0004:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Waystation
+		Name: actor-ca0004-name
 	Building:
 		Footprint: xx xX
 		Dimensions: 2, 2
@@ -489,7 +489,7 @@ CA0005:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^1x2Shape
 	Tooltip:
-		Name: Ferbie's 4 Sale
+		Name: actor-ca0005-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -502,7 +502,7 @@ CA0006:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^1x2Shape
 	Tooltip:
-		Name: Deluxe Accomodations
+		Name: actor-ca0006-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -515,7 +515,7 @@ CA0007:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^1x2Shape
 	Tooltip:
-		Name: Field Generator
+		Name: actor-ca0007-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -528,7 +528,7 @@ CA0008:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x3Shape
 	Tooltip:
-		Name: Subterranean Dwelling
+		Name: actor-ca0008-name
 	Building:
 		Footprint: xX xX xx
 		Dimensions: 2, 3
@@ -541,7 +541,7 @@ CA0009:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x3Shape
 	Tooltip:
-		Name: Subterranean Dwelling
+		Name: actor-ca0009-name
 	Building:
 		Footprint: xX xx xX
 		Dimensions: 2, 3
@@ -554,7 +554,7 @@ CA0010:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Leary Traveller Inn
+		Name: actor-ca0010-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -567,7 +567,7 @@ CA0011:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^1x2Shape
 	Tooltip:
-		Name: Water Tank
+		Name: actor-ca0011-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -580,7 +580,7 @@ CA0012:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^1x2Shape
 	Tooltip:
-		Name: Greenhouse
+		Name: actor-ca0012-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -595,7 +595,7 @@ CA0013:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x1Shape
 	Tooltip:
-		Name: Water Purifier
+		Name: actor-ca0013-name
 	Building:
 		Footprint: xx
 		Dimensions: 2, 1
@@ -609,7 +609,7 @@ CA0013:
 CA0014:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Observation Tower
+		Name: actor-ca0014-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -623,7 +623,7 @@ CA0014:
 CA0015:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Port-A-Shack
+		Name: actor-ca0015-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -635,7 +635,7 @@ CA0015:
 CA0016:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Port-A-Shack Deluxe
+		Name: actor-ca0016-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -649,7 +649,7 @@ CA0016:
 CA0017:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Energy Transformer
+		Name: actor-ca0017-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -667,7 +667,7 @@ CA0018:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -512,-512,0
 	Tooltip:
-		Name: Solar Panel
+		Name: actor-ca0018-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -685,7 +685,7 @@ CA0019:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, -512,-512,0
 	Tooltip:
-		Name: Solar Panel
+		Name: actor-ca0019-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -703,7 +703,7 @@ CA0020:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 512,512,0
 	Tooltip:
-		Name: Solar Panel
+		Name: actor-ca0020-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -721,7 +721,7 @@ CA0021:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 512,512,0
 	Tooltip:
-		Name: Solar Panel
+		Name: actor-ca0021-name
 	Building:
 		Footprint: x x
 		Dimensions: 1, 2
@@ -736,7 +736,7 @@ CAARAY:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Civilian Array
+		Name: actor-caaray-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -755,9 +755,9 @@ CAARAY:
 	WithIdleOverlay@LIGHT-bright:
 		Sequence: idle-light-bright
 		Palette: bright
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 7
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -766,7 +766,7 @@ CAARMR:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x4Shape
 	Tooltip:
-		Name: Civilian Armory
+		Name: actor-caarmr-name
 	Building:
 		Footprint: xxxx xxxx xxxx xxxx
 		Dimensions: 4, 4
@@ -781,15 +781,15 @@ CAARMR:
 	CaptureManager:
 	Capturable:
 		Types: building
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 6, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 
 CACRSH01:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Crash Site
+		Name: actor-cacrsh01-name
 
 CACRSH02:
 	Inherits: CACRSH01
@@ -807,12 +807,12 @@ CAHOSP:
 	Inherits: ^BasicBuilding
 	Inherits@shape: ^3x4Shape
 	Tooltip:
-		Name: Civilian Hospital
+		Name: actor-cahosp.name
 	TooltipDescription@ally:
-		Description: Provides infantry with self-healing.
+		Description: actor-cahosp.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable self-healing for infantry.
+		Description: actor-cahosp.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	Building:
 		Footprint: XxX xxx xxx xxx
@@ -827,10 +827,11 @@ CAHOSP:
 	Capturable:
 		Types: building
 	CaptureNotification:
+		TextNotification: notification-building-captured
 	ProvidesPrerequisite@BuildingName:
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	MapEditorData:
 		Categories: Civilian building
@@ -841,7 +842,7 @@ CAPYR01:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Pyramid
+		Name: actor-capyr01-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -858,7 +859,7 @@ CAPYR02:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x4Shape
 	Tooltip:
-		Name: Pyramid
+		Name: actor-capyr02-name
 	Building:
 		Footprint: xxxx xxxx xxxx xxxx
 		Dimensions: 4, 4
@@ -868,9 +869,9 @@ CAPYR02:
 		HP: 40000
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 6, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 96
@@ -879,7 +880,7 @@ CAPYR03:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x4Shape
 	Tooltip:
-		Name: Pyramid
+		Name: actor-capyr03-name
 	Building:
 		Footprint: xxxx xxxx xxxx xxxx
 		Dimensions: 4, 4
@@ -889,9 +890,9 @@ CAPYR03:
 		HP: 40000
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 6, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 96
@@ -900,7 +901,7 @@ CITY01:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x2Shape
 	Tooltip:
-		Name: Connelly Court Apts.
+		Name: actor-city01-name
 	Building:
 		Footprint: xxxX XxxX
 		Dimensions: 4, 2
@@ -910,9 +911,9 @@ CITY01:
 		HP: 40000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -921,7 +922,7 @@ CITY02:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x3Shape
 	Tooltip:
-		Name: Lightner's Luxury Suites
+		Name: actor-city02-name
 	Building:
 		Footprint: xx xx xx
 		Dimensions: 2, 3
@@ -931,9 +932,9 @@ CITY02:
 		HP: 70000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -942,7 +943,7 @@ CITY03:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x2Shape
 	Tooltip:
-		Name: Office Building
+		Name: actor-city03-name
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3, 2
@@ -952,9 +953,9 @@ CITY03:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 48
@@ -963,7 +964,7 @@ CITY04:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x2Shape
 	Tooltip:
-		Name: Westwood Stock Exchange
+		Name: actor-city04-name
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3, 2
@@ -973,9 +974,9 @@ CITY04:
 		HP: 60000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -984,7 +985,7 @@ CITY05:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x2Shape
 	Tooltip:
-		Name: Daily Sun Times
+		Name: actor-city05-name
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3, 2
@@ -994,9 +995,9 @@ CITY05:
 		HP: 60000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 96
@@ -1005,7 +1006,7 @@ CITY06:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x2Shape
 	Tooltip:
-		Name: YEO-CA Cola Corp.
+		Name: actor-city06-name
 	Building:
 		Footprint: xxxx XxxX
 		Dimensions: 4, 2
@@ -1015,9 +1016,9 @@ CITY06:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 72
@@ -1026,7 +1027,7 @@ CITY07:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x2Shape
 	Tooltip:
-		Name: Urban Housing
+		Name: actor-city07-name
 	Building:
 		Footprint: xxxx xxxx
 		Dimensions: 4, 2
@@ -1036,9 +1037,9 @@ CITY07:
 		HP: 40000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 60
@@ -1047,7 +1048,7 @@ CITY08:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Yee's Discount Liquor
+		Name: actor-city08-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -1062,7 +1063,7 @@ CITY09:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Abandoned Warehouse
+		Name: actor-city09-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -1079,7 +1080,7 @@ CITY10:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Urban Storefront
+		Name: actor-city10-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -1096,7 +1097,7 @@ CITY11:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Ambrose Lounge
+		Name: actor-city11-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -1113,7 +1114,7 @@ CITY12:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Bostic Tower
+		Name: actor-city12-name
 	Building:
 		Footprint: xX xx
 		Dimensions: 2, 2
@@ -1130,7 +1131,7 @@ CITY13:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Hewitt Hair Salon
+		Name: actor-city13-name
 	Building:
 		Footprint: xX Xx
 		Dimensions: 2, 2
@@ -1146,7 +1147,7 @@ CITY13:
 CITY14:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Business Offices
+		Name: actor-city14-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -1163,7 +1164,7 @@ CITY15:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x2Shape
 	Tooltip:
-		Name: 2nd National Bank
+		Name: actor-city15-name
 	Building:
 		Footprint: xxxX xxxX
 		Dimensions: 4, 2
@@ -1173,16 +1174,16 @@ CITY15:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 
 CITY16:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x2Shape
 	Tooltip:
-		Name: Highrise Hotel
+		Name: actor-city16-name
 	Building:
 		Footprint: xxxx xxxx
 		Dimensions: 4, 2
@@ -1192,9 +1193,9 @@ CITY16:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 72
@@ -1203,7 +1204,7 @@ CITY17:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x3Shape
 	Tooltip:
-		Name: The Projects
+		Name: actor-city17-name
 	Building:
 		Footprint: XxxX xxxx xxxX
 		Dimensions: 4, 3
@@ -1213,9 +1214,9 @@ CITY17:
 		HP: 30000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 108
@@ -1224,7 +1225,7 @@ CITY18:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^3x5Shape
 	Tooltip:
-		Name: Archer Asylum
+		Name: actor-city18-name
 	Building:
 		Footprint: xxx xxx xxx xxx xxX
 		Dimensions: 3, 5
@@ -1234,9 +1235,9 @@ CITY18:
 		HP: 60000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 8, 12
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 5, 7
 	IsometricSelectable:
 		Height: 72
@@ -1245,7 +1246,7 @@ CITY19:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Fill'er Up-Pump'N'Go
+		Name: actor-city19-name
 	Building:
 		Footprint: xx xX
 		Dimensions: 2, 2
@@ -1259,7 +1260,7 @@ CITY19:
 CITY20:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Gas Pump
+		Name: actor-city20-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -1273,7 +1274,7 @@ CITY20:
 CITY21:
 	Inherits: ^CivBuilding
 	Tooltip:
-		Name: Gas Station Sign
+		Name: actor-city21-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -1288,7 +1289,7 @@ CITY22:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x2Shape
 	Tooltip:
-		Name: Church
+		Name: actor-city22-name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -1305,7 +1306,7 @@ CTDAM:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^2x5Shape
 	Tooltip:
-		Name: Hydroelectric Dam
+		Name: actor-ctdam-name
 	Building:
 		Footprint: xx xx xx xx xx
 		Dimensions: 2, 5
@@ -1327,16 +1328,16 @@ CTDAM:
 		Sequence: idle-water-a
 	WithIdleOverlay@WATER-B:
 		Sequence: idle-water-b
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 
 CTVEGA:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x4Shape
 	Tooltip:
-		Name: Vega's Pyramid
+		Name: actor-ctvega-name
 	Building:
 		Footprint: xxxx xxxx xxxx xxxx
 		Dimensions: 4, 4
@@ -1346,9 +1347,9 @@ CTVEGA:
 		HP: 10000
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 72
@@ -1359,7 +1360,7 @@ GAKODK:
 	HitShape:
 		TargetableOffsets: 0,0,0, -512,512,0, -950,1024,0
 	Tooltip:
-		Name: GDI Kodiak
+		Name: actor-gakodk-name
 	Building:
 		Footprint: xxXX xxXX
 		Dimensions: 4, 2
@@ -1394,12 +1395,12 @@ GAKODK:
 GAOLDCC1:
 	Inherits: ^OldBase
 	Tooltip:
-		Name: Old Construction Yard
+		Name: actor-gaoldcc1-name
 
 GAOLDCC2:
 	Inherits: ^OldBase
 	Tooltip:
-		Name: Old Temple
+		Name: actor-gaoldcc2-name
 	Building:
 		Footprint: xx xX
 	IsometricSelectable:
@@ -1408,43 +1409,43 @@ GAOLDCC2:
 GAOLDCC3:
 	Inherits: ^OldBase
 	Tooltip:
-		Name: Old Weapons Factory
+		Name: actor-gaoldcc3-name
 	IsometricSelectable:
 		Height: 36
 
 GAOLDCC4:
 	Inherits: ^OldBase
 	Tooltip:
-		Name: Old Refinery
+		Name: actor-gaoldcc4-name
 	IsometricSelectable:
 		Height: 36
 
 GAOLDCC5:
 	Inherits: ^OldBase
 	Tooltip:
-		Name: Old Advanced Power Plant
+		Name: actor-gaoldcc5-name
 
 GAOLDCC6:
 	Inherits: ^OldBase
 	Tooltip:
-		Name: Old Silos
+		Name: actor-gaoldcc6-name
 	Building:
 		Footprint: xX Xx
 
 GASAND:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+		Description: actor-gasand.description
 	SoundOnDamageTransition:
 		DamagedSounds: sandbag1.aud
 		DestroyedSounds: sandbag1.aud
 	Valued:
 		Cost: 25
 	Tooltip:
-		Name: Sandbags
+		Name: actor-gasand.name
 	Health:
 		HP: 25000
 	Armor:
@@ -1462,7 +1463,7 @@ GASPOT:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Light Tower
+		Name: actor-gaspot-name
 	Building:
 		Footprint: x
 		Dimensions: 1, 1
@@ -1488,7 +1489,7 @@ GALITE:
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Light Post
+		Name: actor-galite-name
 	RenderSprites:
 		Image: galite
 		Palette: terraindecoration
@@ -1522,8 +1523,7 @@ GALITE:
 INGALITE:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (Invisible Light Post)
-	AlwaysVisible:
+		Name: actor-ingalite-name
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
@@ -1546,7 +1546,7 @@ INGALITE:
 NEGLAMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Negative Light Post)
+		Name: actor-neglamp-name
 	TerrainLightSource:
 		Range: 13c688
 		Intensity: -0.15
@@ -1557,7 +1557,7 @@ NEGLAMP:
 REDLAMP:
 	Inherits: GALITE
 	Tooltip:
-		Name: Red Light Post
+		Name: actor-redlamp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1568,7 +1568,7 @@ REDLAMP:
 NEGRED:
 	Inherits: GALITE
 	Tooltip:
-		Name: Negative Red Light Post
+		Name: actor-negred-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: -0.05
@@ -1579,7 +1579,7 @@ NEGRED:
 GRENLAMP:
 	Inherits: GALITE
 	Tooltip:
-		Name: Green Light Post
+		Name: actor-grenlamp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1590,7 +1590,7 @@ GRENLAMP:
 BLUELAMP:
 	Inherits: GALITE
 	Tooltip:
-		Name: Blue Light Post
+		Name: actor-bluelamp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1601,7 +1601,7 @@ BLUELAMP:
 YELWLAMP:
 	Inherits: GALITE
 	Tooltip:
-		Name: Yellow Light Post
+		Name: actor-yelwlamp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1612,7 +1612,7 @@ YELWLAMP:
 INYELWLAMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Yellow Light Post)
+		Name: actor-inyelwlamp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1623,7 +1623,7 @@ INYELWLAMP:
 PURPLAMP:
 	Inherits: GALITE
 	Tooltip:
-		Name: Purple Light Post
+		Name: actor-purplamp-name
 	TerrainLightSource:
 		Range: 11c736
 		Intensity: 0.01
@@ -1634,7 +1634,7 @@ PURPLAMP:
 INPURPLAMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Purple Light Post)
+		Name: actor-inpurplamp-name
 	TerrainLightSource:
 		Range: 11c736
 		Intensity: 0.01
@@ -1645,7 +1645,7 @@ INPURPLAMP:
 INORANLAMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Orange Light Post)
+		Name: actor-inoranlamp-name
 	TerrainLightSource:
 		Range: 11c736
 		Intensity: 0.01
@@ -1656,7 +1656,7 @@ INORANLAMP:
 INGRNLMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Green Light Post)
+		Name: actor-ingrnlmp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1667,7 +1667,7 @@ INGRNLMP:
 INREDLMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Red Light Post)
+		Name: actor-inredlmp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1678,7 +1678,7 @@ INREDLMP:
 INBLULMP:
 	Inherits: INGALITE
 	EditorOnlyTooltip:
-		Name: (Invisible Blue Light Post)
+		Name: actor-inblulmp-name
 	TerrainLightSource:
 		Range: 15c640
 		Intensity: 0.01
@@ -1698,7 +1698,7 @@ GAICBM:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Deployed ICBM
+		Name: actor-gaicbm-name
 	-GivesBuildableArea:
 	Health:
 		HP: 40000
@@ -1723,7 +1723,7 @@ NAMNTK:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^1x3Shape
 	Tooltip:
-		Name: NOD Montauk
+		Name: actor-namntk-name
 	Building:
 		Footprint: x x x
 		Dimensions: 1, 3
@@ -1747,7 +1747,7 @@ NTPYRA:
 	Inherits: ^CivBuilding
 	Inherits@shape: ^4x4Shape
 	Tooltip:
-		Name: Nod Pyramid
+		Name: actor-ntpyra-name
 	Building:
 		Footprint: xxxx xxxx xxxx xxxx
 		Dimensions: 4, 4
@@ -1761,9 +1761,9 @@ NTPYRA:
 		Palette: player
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 5
 	IsometricSelectable:
 		Height: 72
@@ -1777,16 +1777,16 @@ UFO:
 	RenderSprites:
 		Palette: terraindecoration
 	Tooltip:
-		Name: Scrin Ship
+		Name: actor-ufo-name
 	Health:
 		HP: 100000
 	Armor:
 		Type: Heavy
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 9, 12
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 6, 8
 	IsometricSelectable:
 		Height: 144

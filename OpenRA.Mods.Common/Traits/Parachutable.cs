@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool KilledOnImpassableTerrain = true;
 
 		[Desc("Types of damage that this trait causes to self when 'KilledOnImpassableTerrain' is true. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string WaterCorpsePalette = "effect";
 
 		[Desc("Terrain types on which to display WaterCorpseSequence.")]
-		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
+		public readonly HashSet<string> WaterTerrainTypes = ["Water"];
 
 		public readonly string WaterImpactSound = null;
 

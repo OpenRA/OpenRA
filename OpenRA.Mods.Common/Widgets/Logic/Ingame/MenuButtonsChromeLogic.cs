@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,8 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -22,13 +20,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 		readonly Widget worldRoot;
 		readonly Widget menuRoot;
-		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
 
 		bool disableSystemButtons;
 		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonsChromeLogic(Widget widget, ModData modData, World world, Dictionary<string, MiniYaml> logicArgs)
+		public MenuButtonsChromeLogic(Widget widget, World world)
 		{
 			this.world = world;
 
@@ -54,16 +51,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (lp != null)
 				{
-					Action<Player, bool> startBlinking = (player, inhibitAnnouncement) =>
+					void StartBlinking(Player player, bool inhibitAnnouncement)
 					{
 						if (!inhibitAnnouncement && player == world.LocalPlayer)
 							blinking = true;
-					};
+					}
 
 					var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
 
 					if (mo != null)
-						mo.ObjectiveAdded += startBlinking;
+						mo.ObjectiveAdded += StartBlinking;
 				}
 			}
 
@@ -82,9 +79,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "initialPanel", IngameInfoPanel.Debug }
 				});
 			}
-
-			if (logicArgs.TryGetValue("ClickSound", out var yaml))
-				clickSound = yaml.Value;
 		}
 
 		void OpenMenuPanel(MenuButtonWidget button, WidgetArgs widgetArgs = null)
@@ -107,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (button.DisableWorldSounds)
 				Game.Sound.DisableWorldSounds = true;
 
-			widgetArgs = widgetArgs ?? new WidgetArgs();
+			widgetArgs ??= [];
 			widgetArgs.Add("onExit", () =>
 			{
 				if (button.HideIngameUI)

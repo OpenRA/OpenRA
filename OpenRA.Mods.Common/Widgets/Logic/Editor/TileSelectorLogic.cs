@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,18 +10,22 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[IncludeStaticFluentReferences(
+		typeof(PaintTileEditorAction),
+		typeof(FloodFillEditorAction),
+		typeof(CommonSelectorLogic))]
 	public class TileSelectorLogic : CommonSelectorLogic
 	{
-		class TileSelectorTemplate
+		sealed class TileSelectorTemplate
 		{
 			public readonly TerrainTemplateInfo Template;
 			public readonly string[] Categories;
@@ -32,30 +36,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Template = template;
 				Categories = template.Categories;
-				Tooltip = template.Id.ToString();
-				SearchTerms = new[] { Tooltip };
+				Tooltip = template.Id.ToString(NumberFormatInfo.CurrentInfo);
+				SearchTerms = [Tooltip];
 			}
 		}
 
 		readonly ITemplatedTerrainInfo terrainInfo;
-		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly TileSelectorTemplate[] allTemplates;
-		readonly EditorCursorLayer editorCursor;
 
 		[ObjectCreator.UseCtor]
-		public TileSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
-			: base(widget, world, worldRenderer, "TILETEMPLATE_LIST", "TILEPREVIEW_TEMPLATE")
+		public TileSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer)
+			: base(widget, modData, world, worldRenderer, "TILETEMPLATE_LIST", "TILEPREVIEW_TEMPLATE")
 		{
 			terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 			if (terrainInfo == null)
 				throw new InvalidDataException("TileSelectorLogic requires a template-based tileset.");
 
-			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
-			if (terrainRenderer == null)
-				throw new InvalidDataException("TileSelectorLogic requires a tile-based terrain renderer.");
-
 			allTemplates = terrainInfo.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
-			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
 			allCategories = allTemplates.SelectMany(t => t.Categories)
 				.Distinct()
@@ -76,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!string.IsNullOrEmpty(searchFilter))
 					FilteredCategories.AddRange(
 						allTemplates.Where(t => t.SearchTerms.Any(
-							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+							s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 						.SelectMany(t => t.Categories)
 						.Distinct()
 						.OrderBy(CategoryOrder));
@@ -98,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void InitializePreviews()
 		{
 			Panel.RemoveChildren();
-			if (!SelectedCategories.Any())
+			if (SelectedCategories.Count == 0)
 				return;
 
 			foreach (var t in allTemplates)
@@ -106,27 +103,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!SelectedCategories.Overlaps(t.Categories))
 					continue;
 
-				if (!string.IsNullOrEmpty(searchFilter) && !t.SearchTerms.Any(s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+				if (!string.IsNullOrEmpty(searchFilter) &&
+					!t.SearchTerms.Any(s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 					continue;
 
 				var tileId = t.Template.Id;
 				var item = ScrollItemWidget.Setup(ItemTemplate,
-					() => editorCursor.Type == EditorCursorType.TerrainTemplate && editorCursor.TerrainTemplate.Id == tileId,
+					() => Editor.CurrentBrush is EditorTileBrush editorCursor && editorCursor.TerrainTemplate.Id == tileId,
 					() => Editor.SetBrush(new EditorTileBrush(Editor, tileId, WorldRenderer)));
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
-				var template = terrainInfo.Templates[tileId];
-				var bounds = terrainRenderer.TemplateBounds(template);
+				preview.SetTemplate(terrainInfo.Templates[tileId]);
 
 				// Scale templates to fit within the panel
 				var scale = 1f;
-				while (scale * bounds.Width > ItemTemplate.Bounds.Width)
-					scale /= 2;
+				if (scale * preview.IdealPreviewSize.X > ItemTemplate.Bounds.Width)
+					scale = (ItemTemplate.Bounds.Width - Panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
 
-				preview.Template = template;
 				preview.GetScale = () => scale;
-				preview.Bounds.Width = (int)(scale * bounds.Width);
-				preview.Bounds.Height = (int)(scale * bounds.Height);
+				preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.X);
+				preview.Bounds.Height = (int)(scale * preview.IdealPreviewSize.Y);
 
 				item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
 				item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;

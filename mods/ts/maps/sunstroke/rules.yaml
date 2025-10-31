@@ -1,12 +1,12 @@
 World:
 	ElevatedBridgeLayer:
 	ElevatedBridgePlaceholder@1:
-		Location: 60, -26
+		Location: 69, -19
 		Height: 5
 		Orientation: Y
 		Length: 8
 	ElevatedBridgePlaceholder@2:
-		Location: 139, -10
+		Location: 148, -3
 		Height: 5
 		Orientation: Y
 		Length: 19
@@ -38,18 +38,19 @@ GAOLDCC3:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaoldcc3
-		Description: Heavy tank\nwith double barreled gun.
+		Description: actor-4tnk-description
 
 SLAV:
 	Tooltip:
-		Name: Black Hand Rifleman
+		Name: actor-slav.name
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaoldcc2
-		Description: Religious loyalist\narmed with sniper rifle.
+		Description: actor-slav.description
 	AttackFrontal:
 		Voice: Attack
+		FacingTolerance: 0
 	Armament:
 		Weapon: Sniper
 

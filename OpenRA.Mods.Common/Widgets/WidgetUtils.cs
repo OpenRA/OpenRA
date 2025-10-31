@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -20,7 +20,17 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public static class WidgetUtils
 	{
-		public static string GetStatefulImageName(string baseName, bool disabled = false, bool pressed = false, bool hover = false, bool focused = false)
+		[FluentReference]
+		const string Gone = "label-client-state-disconnected";
+
+		[FluentReference]
+		const string Won = "label-win-state-won";
+
+		[FluentReference]
+		const string Lost = "label-win-state-lost";
+
+		public static string GetStatefulImageName(
+			string baseName, bool disabled = false, bool pressed = false, bool hover = false, bool focused = false)
 		{
 			var suffix = disabled ? "-disabled" :
 				focused ? "-focused" :
@@ -31,13 +41,28 @@ namespace OpenRA.Mods.Common.Widgets
 			return baseName + suffix;
 		}
 
-		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> GetCachedStatefulImage(string collection, string baseName)
+		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite>
+			GetCachedStatefulImage(string collection, string imageName)
 		{
-			return new CachedTransform<(bool, bool, bool, bool), Sprite>(
-				((bool Disabled, bool Pressed, bool Hover, bool Focused) args) =>
+			return new CachedTransform<(bool, bool, bool, bool, bool), Sprite>(
+				((bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted) args) =>
 					{
-						var imageName = GetStatefulImageName(baseName, args.Disabled, args.Pressed, args.Hover, args.Focused);
-						return ChromeProvider.GetImage(collection, imageName) ?? ChromeProvider.GetImage(collection, baseName);
+						var collectionName = collection + (args.Highlighted ? "-highlighted" : "");
+						var variantImageName = GetStatefulImageName(imageName, args.Disabled, args.Pressed, args.Hover, args.Focused);
+						return ChromeProvider.TryGetImage(collectionName, variantImageName) ?? ChromeProvider.GetImage(collectionName, imageName);
+					});
+		}
+
+		// TODO: refactor buttons and related UI to use this function
+		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite[]>
+			GetCachedStatefulPanelImages(string collection)
+		{
+			return new CachedTransform<(bool, bool, bool, bool, bool), Sprite[]>(
+				((bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted) args) =>
+					{
+						var collectionName = collection + (args.Highlighted ? "-highlighted" : "");
+						var variantCollectionName = GetStatefulImageName(collectionName, args.Disabled, args.Pressed, args.Hover, args.Focused);
+						return ChromeProvider.TryGetPanelImages(variantCollectionName) ?? ChromeProvider.GetPanelImages(collectionName);
 					});
 		}
 
@@ -65,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void DrawPanel(string collection, Rectangle bounds)
 		{
-			var sprites = ChromeProvider.GetPanelImages(collection);
+			var sprites = ChromeProvider.TryGetPanelImages(collection);
 			if (sprites != null)
 				DrawPanel(bounds, sprites);
 		}
@@ -236,7 +261,7 @@ namespace OpenRA.Mods.Common.Widgets
 						if (spaceIndex == -1)
 							break;
 
-						var fragmentWidth = font.Measure(line.Substring(0, spaceIndex)).X;
+						var fragmentWidth = font.Measure(line[..spaceIndex]).X;
 						if (fragmentWidth > width)
 							break;
 
@@ -245,8 +270,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (start > 0)
 					{
-						lines[i] = line.Substring(0, start - 1);
-						lines.Insert(i + 1, line.Substring(start));
+						lines[i] = line[..(start - 1)];
+						lines.Insert(i + 1, line[start..]);
 					}
 				}
 
@@ -265,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var trimmed = text;
 			while (trimmedWidth > width && trimmed.Length > 3)
 			{
-				trimmed = text.Substring(0, trimmed.Length - 4) + "...";
+				trimmed = text[..(trimmed.Length - 4)] + "...";
 				trimmedWidth = font.Measure(trimmed).X;
 			}
 
@@ -300,95 +325,94 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var icon = button.Get<ImageWidget>("ICON");
 
-			var hasActiveImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active") != null;
-			var hasActiveDisabledImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-disabled") != null;
-			var hasActivePressedImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-pressed") != null;
-			var hasActiveHoverImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-active-hover") != null;
-
-			var hasImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName) != null;
-			var hasDisabledImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-disabled") != null;
-			var hasPressedImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-pressed") != null;
-			var hasHoverImage = ChromeProvider.GetImage(icon.ImageCollection, icon.ImageName + "-hover") != null;
-
-			icon.GetImageName = () =>
-			{
-				var isActive = button.IsHighlighted();
-				var isDisabled = button.IsDisabled();
-				var isPressed = button.Depressed;
-				var isHovered = Ui.MouseOverWidget == button;
-
-				var baseName = button.IsHighlighted() ? icon.ImageName + "-active" : icon.ImageName;
-				var stateName = WidgetUtils.GetStatefulImageName(baseName, isDisabled, isPressed, isHovered);
-
-				if (isActive)
-				{
-					if (isDisabled)
-						return hasActiveDisabledImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
-					else if (isPressed)
-						return hasActivePressedImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
-					else if (isHovered)
-						return hasActiveHoverImage ? stateName : hasActiveImage ? baseName : icon.ImageName;
-					else
-						return hasActiveImage ? baseName : icon.ImageName;
-				}
-				else
-				{
-					if (isDisabled)
-						return hasDisabledImage ? stateName : baseName;
-					else if (isPressed)
-						return hasPressedImage ? stateName : baseName;
-					else if (isHovered)
-						return hasHoverImage ? stateName : baseName;
-					else
-						return baseName;
-				}
-			};
+			var cache = GetCachedStatefulImage(icon.ImageCollection, icon.ImageName);
+			icon.GetSprite = () => cache.Update((button.IsDisabled(), button.Depressed, Ui.MouseOverWidget == button, false, button.IsHighlighted()));
 		}
 
 		public static void BindPlayerNameAndStatus(LabelWidget label, Player p)
 		{
 			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
 			var nameFont = Game.Renderer.Fonts[label.Font];
-			var name = new CachedTransform<(string Name, WinState WinState, Session.ClientState ClientState), string>(c =>
+			var name = new CachedTransform<(WinState WinState, Session.ClientState ClientState), string>(c =>
 			{
-				var suffix = c.WinState == WinState.Undefined ? "" : " (" + c.Item2 + ")";
-				if (c.ClientState == Session.ClientState.Disconnected)
-					suffix = " (Gone)";
+				var text = p.ResolvedPlayerName;
 
-				return TruncateText(c.Name, label.Bounds.Width - nameFont.Measure(suffix).X, nameFont) + suffix;
+				var suffix = "";
+				if (c.WinState == WinState.Won)
+					suffix = $" ({FluentProvider.GetMessage(Won)})";
+				else if (c.WinState == WinState.Lost)
+					suffix = $" ({FluentProvider.GetMessage(Lost)})";
+
+				if (client.State == Session.ClientState.Disconnected)
+					suffix = $" ({FluentProvider.GetMessage(Gone)})";
+
+				text += suffix;
+
+				var size = nameFont.Measure(text) - nameFont.Measure(p.ResolvedPlayerName);
+				return TruncateText(text, label.Bounds.Width - size.X, nameFont);
 			});
 
 			label.GetText = () =>
 			{
 				var clientState = client != null ? client.State : Session.ClientState.Ready;
-				return name.Update((p.PlayerName, p.WinState, clientState));
+				return name.Update((p.WinState, clientState));
 			};
 		}
-	}
 
-	public class CachedTransform<T, U>
-	{
-		readonly Func<T, U> transform;
-
-		bool initialized;
-		T lastInput;
-		U lastOutput;
-
-		public CachedTransform(Func<T, U> transform)
+		public static void SetupTextNotification(Widget notificationWidget, TextNotification notification, int boxWidth, bool withTimestamp)
 		{
-			this.transform = transform;
-		}
+			var timeLabel = notificationWidget.GetOrNull<LabelWidget>("TIME");
+			var prefixLabel = notificationWidget.GetOrNull<LabelWidget>("PREFIX");
+			var textLabel = notificationWidget.Get<LabelWidget>("TEXT");
 
-		public U Update(T input)
-		{
-			if (initialized && ((input == null && lastInput == null) || (input != null && input.Equals(lastInput))))
-				return lastOutput;
+			var textFont = Game.Renderer.Fonts[textLabel.Font];
+			var textWidth = boxWidth - notificationWidget.Bounds.X - textLabel.Bounds.X;
 
-			lastInput = input;
-			lastOutput = transform(input);
-			initialized = true;
+			var hasPrefix = !string.IsNullOrEmpty(notification.Prefix) && prefixLabel != null;
+			var timeOffset = 0;
 
-			return lastOutput;
+			if (withTimestamp && timeLabel != null)
+			{
+				var time = $"{notification.Time.Hour:D2}:{notification.Time.Minute:D2}";
+				timeOffset = timeLabel.Bounds.Width + timeLabel.Bounds.X;
+
+				timeLabel.GetText = () => time;
+
+				textWidth -= timeOffset;
+				textLabel.Bounds.X += timeOffset;
+
+				if (hasPrefix)
+					prefixLabel.Bounds.X += timeOffset;
+			}
+
+			if (hasPrefix)
+			{
+				var prefix = notification.Prefix + ":";
+				var prefixSize = Game.Renderer.Fonts[prefixLabel.Font].Measure(prefix);
+				var prefixOffset = prefixSize.X + prefixLabel.Bounds.X;
+
+				prefixLabel.GetColor = () => notification.PrefixColor ?? prefixLabel.TextColor;
+				prefixLabel.GetText = () => prefix;
+				prefixLabel.Bounds.Width = prefixSize.X;
+
+				textWidth -= prefixOffset;
+				textLabel.Bounds.X += prefixOffset - timeOffset;
+			}
+
+			textLabel.GetColor = () => notification.TextColor ?? textLabel.TextColor;
+			textLabel.Bounds.Width = textWidth;
+
+			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
+			var text = WrapText(notification.Text, textLabel.Bounds.Width, textFont);
+			textLabel.GetText = () => text;
+			var dh = textFont.Measure(text).Y - textLabel.Bounds.Height;
+			if (dh > 0)
+			{
+				textLabel.Bounds.Height += dh;
+				notificationWidget.Bounds.Height += dh;
+			}
+
+			notificationWidget.Bounds.Width = boxWidth - notificationWidget.Bounds.X;
 		}
 	}
 }

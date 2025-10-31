@@ -7,8 +7,8 @@ Windows
 =======
 
 Compiling OpenRA requires the following dependencies:
-* [Windows PowerShell >= 4.0](http://microsoft.com/powershell) (included by default in recent Windows 10 versions)
-* [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0) (or via Visual Studio)
+* [Windows PowerShell >= 4.0](https://microsoft.com/powershell) (included by default in recent Windows 10 versions)
+* [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) (or via Visual Studio)
 
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with `dotnet` or use the Makefile analogue command `make all` scripted in PowerShell syntax.
 
@@ -17,15 +17,13 @@ Run the game with `launch-game.cmd`. It can be handed arguments that specify the
 Linux
 =====
 
-.NET 5 or Mono (version 6.4 or later) is required to compile OpenRA. We recommend using .NET 5 when possible, as Mono is poorly packaged by most Linux distributions (e.g. missing the required `msbuild` toolchain), and has been deprecated as a standalone project.
+.NET 8 is required to compile OpenRA. The [.NET 8 download page](https://dotnet.microsoft.com/download/dotnet/8.0) provides repositories for various package managers and binary releases for several architectures.
 
-The [.NET 5 download page](https://dotnet.microsoft.com/download/dotnet/5.0) provides repositories for various package managers and binary releases for several architectures. If you prefer to use Mono, we suggest adding the [upstream repository](https://www.mono-project.com/download/stable/#download-lin) for your distro to obtain the latest version and the `msbuild` toolchain.
-
-To compile OpenRA, run `make` from the command line (or `make RUNTIME=mono` if using Mono). After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
+To compile OpenRA, run `make` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
 
 The default behaviour on the x86_64 architecture is to download several pre-compiled native libraries using the Nuget packaging manager. If you prefer to use system libraries, compile instead using `make TARGETPLATFORM=unix-generic`.
 
-If you choose to use system libraries, or your system is not x86_64, you will need to install [SDL 2](https://www.libsdl.org/download-2.0.php), [FreeType](http://gnuwin32.sourceforge.net/packages/freetype.htm), [OpenAL](https://openal-soft.org/), and [liblua 5.1](http://luabinaries.sourceforge.net/download.html) before compiling OpenRA.
+If you choose to use system libraries, or your system is not x86_64, you will need to install [SDL 2](https://www.libsdl.org/download-2.0.php), [FreeType](https://gnuwin32.sourceforge.net/packages/freetype.htm), [OpenAL](https://openal-soft.org/), and [liblua 5.1](https://luabinaries.sourceforge.net/download.html) before compiling OpenRA.
 
 These can be installed using your package manager on various distros:
 
@@ -78,6 +76,6 @@ Type `sudo make install` for system-wide installation. Run `sudo make install-li
 macOS
 =====
 
-[.NET 5](https://dotnet.microsoft.com/download/dotnet/5.0) or [Mono](https://www.mono-project.com/download/stable/#download-mac) (version 6.4 or later) is required to compile OpenRA. We recommend using .NET 5 unless you are running a very old version of macOS (10.9 through 10.12).
+[.NET 8](https://dotnet.microsoft.com/download/dotnet/8.0) is required to compile OpenRA.
 
-To compile OpenRA, run `make` from the command line (or `make RUNTIME=mono` if using Mono). Run with `./launch-game.sh`.
+To compile OpenRA, run `make` from the command line. Run with `./launch-game.sh`.

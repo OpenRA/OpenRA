@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -11,23 +11,18 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
 	sealed class CellInfoLayerPool
 	{
 		const int MaxPoolSize = 4;
-		readonly Stack<CellLayer<CellInfo>> pool = new Stack<CellLayer<CellInfo>>(MaxPoolSize);
-		readonly CellLayer<CellInfo> defaultLayer;
+		readonly Stack<CellLayer<CellInfo>> pool = new(MaxPoolSize);
+		readonly Map map;
 
 		public CellInfoLayerPool(Map map)
 		{
-			defaultLayer =
-				CellLayer<CellInfo>.CreateInstance(
-					mpos => new CellInfo(int.MaxValue, int.MaxValue, mpos.ToCPos(map), CellStatus.Unvisited),
-					new Size(map.MapSize.X, map.MapSize.Y),
-					map.Grid.Type);
+			this.map = map;
 		}
 
 		public PooledCellInfoLayer Get()
@@ -42,23 +37,28 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (pool.Count > 0)
 					layer = pool.Pop();
 
+			// As the default value of CellInfo represents an Unvisited location,
+			// we don't need to initialize the values in the layer,
+			// we can just clear them to the defaults.
 			if (layer == null)
-				layer = new CellLayer<CellInfo>(defaultLayer.GridType, defaultLayer.Size);
-			layer.CopyValuesFrom(defaultLayer);
+				layer = new CellLayer<CellInfo>(map);
+			else
+				layer.Clear();
+
 			return layer;
 		}
 
 		void ReturnLayer(CellLayer<CellInfo> layer)
 		{
 			lock (pool)
-			   if (pool.Count < MaxPoolSize)
+				if (pool.Count < MaxPoolSize)
 					pool.Push(layer);
 		}
 
-		public class PooledCellInfoLayer : IDisposable
+		public sealed class PooledCellInfoLayer : IDisposable
 		{
 			CellInfoLayerPool layerPool;
-			List<CellLayer<CellInfo>> layers = new List<CellLayer<CellInfo>>();
+			List<CellLayer<CellInfo>> layers = [];
 
 			public PooledCellInfoLayer(CellInfoLayerPool layerPool)
 			{

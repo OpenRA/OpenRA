@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -98,7 +98,7 @@ namespace OpenRA.Test
 		{
 			// Rectangle like above,
 			// Note: The calculations don't match for all, but do have a tolerance of 1.
-			shape = new PolygonShape(new int2[] { new int2(-123, -456), new int2(100, -456), new int2(100, 100), new int2(-123, 100) });
+			shape = new PolygonShape([new(-123, -456), new(100, -456), new(100, 100), new(-123, 100)]);
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -121,7 +121,7 @@ namespace OpenRA.Test
 
 			// Rectangle like above but reverse order
 			// Note: The calculations don't match for all, but do have a tolerance of 1.
-			shape = new PolygonShape(new int2[] { new int2(-123, 100), new int2(100, 100), new int2(100, -456), new int2(-123, -456) });
+			shape = new PolygonShape([new(-123, 100), new(100, 100), new(100, -456), new(-123, -456)]);
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -143,7 +143,7 @@ namespace OpenRA.Test
 				Is.EqualTo(877));
 
 			// Right triangle taken from above by removing a point
-			shape = new PolygonShape(new int2[] { new int2(-123, -456), new int2(100, -456), new int2(100, 100) });
+			shape = new PolygonShape([new(-123, -456), new(100, -456), new(100, 100)]);
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -171,7 +171,7 @@ namespace OpenRA.Test
 				Is.EqualTo(878));
 
 			// Right triangle taken from above but reverse order
-			shape = new PolygonShape(new int2[] { new int2(100, 100), new int2(100, -456), new int2(-123, -456) });
+			shape = new PolygonShape([new(100, 100), new(100, -456), new(-123, -456)]);
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,
@@ -199,12 +199,12 @@ namespace OpenRA.Test
 				Is.EqualTo(878));
 
 			// Plus shaped dodecagon
-			shape = new PolygonShape(new[]
-			{
+			shape = new PolygonShape(
+			[
 				new int2(-511, -1535), new int2(511, -1535), new int2(511, -511), new int2(1535, -511),
 				new int2(1535, 511), new int2(511, 511), new int2(511, 1535), new int2(-511, 1535),
 				new int2(-511, 511), new int2(-1535, 511), new int2(-1535, -511), new int2(-511, -511)
-			});
+			]);
 			shape.Initialize();
 
 			Assert.That(shape.DistanceFromEdge(new WVec(10, 10, 0)).Length,

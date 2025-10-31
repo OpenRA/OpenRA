@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,14 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	class WithBridgeSpriteBodyInfo : WithSpriteBodyInfo
+	sealed class WithBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		public readonly string Type = "GroundLevelBridge";
 
@@ -29,16 +28,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[SequenceReference]
 		[Desc("Sequences to use when both neighbours are alive.")]
-		public readonly string[] Sequences = { "idle" };
+		public readonly string[] Sequences = ["idle"];
 
 		[SequenceReference]
-		public readonly string[] ADestroyedSequences = { "adestroyed" };
+		public readonly string[] ADestroyedSequences = ["adestroyed"];
 
 		[SequenceReference]
-		public readonly string[] BDestroyedSequences = { "bdestroyed" };
+		public readonly string[] BDestroyedSequences = ["bdestroyed"];
 
 		[SequenceReference]
-		public readonly string[] ABDestroyedSequences = { "abdestroyed" };
+		public readonly string[] ABDestroyedSequences = ["abdestroyed"];
 
 		public override object Create(ActorInitializer init) { return new WithBridgeSpriteBody(init, this); }
 
@@ -48,13 +47,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var anim = new Animation(init.World, image);
-			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequences.First()), () => 0);
+			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequences[0]), () => 0);
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);
 		}
 	}
 
-	class WithBridgeSpriteBody : WithSpriteBody, INotifyRemovedFromWorld
+	sealed class WithBridgeSpriteBody : WithSpriteBody, INotifyRemovedFromWorld
 	{
 		readonly WithBridgeSpriteBodyInfo bridgeInfo;
 		readonly BridgeLayer bridgeLayer;
@@ -106,11 +105,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var bDestroyed = bridgeInfo.BOffset != CVec.Zero && NeighbourIsDestroyed(bridgeInfo.BOffset);
 
 				var sequence = DefaultAnimation.CurrentSequence.Name;
-				if (aDestroyed && bDestroyed && bridgeInfo.ABDestroyedSequences.Any())
+				if (aDestroyed && bDestroyed && bridgeInfo.ABDestroyedSequences.Length > 0)
 					sequence = bridgeInfo.ABDestroyedSequences.Random(Game.CosmeticRandom);
-				else if (aDestroyed && bridgeInfo.ADestroyedSequences.Any())
+				else if (aDestroyed && bridgeInfo.ADestroyedSequences.Length > 0)
 					sequence = bridgeInfo.ADestroyedSequences.Random(Game.CosmeticRandom);
-				else if (bDestroyed && bridgeInfo.BDestroyedSequences.Any())
+				else if (bDestroyed && bridgeInfo.BDestroyedSequences.Length > 0)
 					sequence = bridgeInfo.BDestroyedSequences.Random(Game.CosmeticRandom);
 				else
 					sequence = bridgeInfo.Sequences.Random(Game.CosmeticRandom);

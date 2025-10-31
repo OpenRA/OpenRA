@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -18,11 +18,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
 	public class MapBuildRadiusInfo : TraitInfo, ILobbyOptions
 	{
+		[FluentReference]
 		[Desc("Descriptive label for the ally build radius checkbox in the lobby.")]
-		public readonly string AllyBuildRadiusCheckboxLabel = "Build off Allies";
+		public readonly string AllyBuildRadiusCheckboxLabel = "checkbox-ally-build-radius.label";
 
+		[FluentReference]
 		[Desc("Tooltip description for the ally build radius checkbox in the lobby.")]
-		public readonly string AllyBuildRadiusCheckboxDescription = "Allow allies to place structures inside your build area";
+		public readonly string AllyBuildRadiusCheckboxDescription = "checkbox-ally-build-radius.description";
 
 		[Desc("Default value of the ally build radius checkbox in the lobby.")]
 		public readonly bool AllyBuildRadiusCheckboxEnabled = true;
@@ -36,11 +38,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the ally build radius checkbox in the lobby.")]
 		public readonly int AllyBuildRadiusCheckboxDisplayOrder = 0;
 
+		[FluentReference]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
-		public readonly string BuildRadiusCheckboxLabel = "Limit Build Area";
+		public readonly string BuildRadiusCheckboxLabel = "checkbox-build-radius.label";
 
+		[FluentReference]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
-		public readonly string BuildRadiusCheckboxDescription = "Limits structure placement to areas around Construction Yards";
+		public readonly string BuildRadiusCheckboxDescription = "checkbox-build-radius.description";
 
 		[Desc("Default value of the build radius checkbox in the lobby.")]
 		public readonly bool BuildRadiusCheckboxEnabled = true;
@@ -56,10 +60,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("allybuild", AllyBuildRadiusCheckboxLabel, AllyBuildRadiusCheckboxDescription,
+			yield return new LobbyBooleanOption(map, "allybuild", AllyBuildRadiusCheckboxLabel, AllyBuildRadiusCheckboxDescription,
 				AllyBuildRadiusCheckboxVisible, AllyBuildRadiusCheckboxDisplayOrder, AllyBuildRadiusCheckboxEnabled, AllyBuildRadiusCheckboxLocked);
 
-			yield return new LobbyBooleanOption("buildradius", BuildRadiusCheckboxLabel, BuildRadiusCheckboxDescription,
+			yield return new LobbyBooleanOption(map, "buildradius", BuildRadiusCheckboxLabel, BuildRadiusCheckboxDescription,
 				BuildRadiusCheckboxVisible, BuildRadiusCheckboxDisplayOrder, BuildRadiusCheckboxEnabled, BuildRadiusCheckboxLocked);
 		}
 

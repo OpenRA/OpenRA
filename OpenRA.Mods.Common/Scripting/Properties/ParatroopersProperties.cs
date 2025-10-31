@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -30,15 +30,10 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Activate the actor's Paratroopers Power. Returns the aircraft that will drop the reinforcements.")]
 		public Actor[] TargetParatroopers(WPos target, WAngle? facing = null)
 		{
-			var actors = pp.SendParatroopers(Self, target, facing);
-			return actors.Aircraft;
-		}
+			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
+				notify.Activated(Self);
 
-		[Desc("Activate the actor's Paratroopers Power. Returns the aircraft that will drop the reinforcements. DEPRECATED! Will be removed.")]
-		public Actor[] ActivateParatroopers(WPos target, int facing = -1)
-		{
-			TextNotificationsManager.Debug("SendParatroopersFrom is deprecated. Use TargetParatroopers instead.");
-			var actors = pp.SendParatroopers(Self, target, facing == -1 ? (WAngle?)null : WAngle.FromFacing(facing));
+			var actors = pp.SendParatroopers(Self, target, facing);
 			return actors.Aircraft;
 		}
 	}

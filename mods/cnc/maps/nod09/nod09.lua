@@ -1,12 +1,11 @@
 --[[
-   Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+   Copyright (c) The OpenRA Developers and Contributors
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-Difficulty = Map.LobbyOption("difficulty")
 
 if Difficulty == "easy" then
 	Rambo = "rmbo.easy"
@@ -15,6 +14,8 @@ elseif Difficulty == "hard" then
 else
 	Rambo = "rmbo"
 end
+
+SamSiteGoal = 3
 
 WaypointGroup1 = { waypoint0, waypoint3, waypoint2, waypoint4, waypoint5, waypoint7 }
 WaypointGroup2 = { waypoint0, waypoint3, waypoint2, waypoint4, waypoint5, waypoint6 }
@@ -49,7 +50,7 @@ AirstrikeDelay = DateTime.Minutes(2) + DateTime.Seconds(30)
 
 CheckForSams = function(Nod)
 	local sams = Nod.GetActorsByType("sam")
-	return #sams >= 3
+	return #sams >= SamSiteGoal
 end
 
 SendGDIAirstrike = function(hq, delay)
@@ -190,13 +191,14 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	SecureFirstLanding = Nod.AddObjective("Secure the first landing zone.")
-	SecureSecondLanding = Nod.AddObjective("Secure the second landing zone.")
-	LocateNodBase = Nod.AddObjective("Locate the Nod base.")
-	CaptureRefinery = Nod.AddObjective("Capture the refinery.")
-	EliminateGDI = Nod.AddObjective("Eliminate all GDI forces in the area.")
-	BuildSAMs = Nod.AddObjective("Build 3 SAMs to fend off the GDI bombers.", "Secondary", false)
-	GDIObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	SecureFirstLanding = AddPrimaryObjective(Nod, "secure-first-landing-zone")
+	SecureSecondLanding = AddPrimaryObjective(Nod, "secure-second-landing-zone")
+	LocateNodBase = AddPrimaryObjective(Nod, "locate-nod-base")
+	CaptureRefinery = AddPrimaryObjective(Nod, "capture-refinery")
+	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
+	local buildSAMs = UserInterface.GetFluentMessage("build-sams", { ["sams"] = SamSiteGoal })
+	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
+	GDIObjective = AddPrimaryObjective(GDI, "")
 end
 
 Tick = function()

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -15,12 +15,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor is crushable.")]
-	class CrushableInfo : ConditionalTraitInfo
+	sealed class CrushableInfo : ConditionalTraitInfo
 	{
 		[Desc("Sound to play when being crushed.")]
 		public readonly string CrushSound = null;
 		[Desc("Which crush classes does this actor belong to.")]
-		public readonly BitSet<CrushClass> CrushClasses = new BitSet<CrushClass>("infantry");
+		public readonly BitSet<CrushClass> CrushClasses = new("infantry");
 		[Desc("Probability of mobile actors noticing and evading a crush attempt.")]
 		public readonly int WarnProbability = 75;
 		[Desc("Will friendly units just crush me instead of pathing around.")]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
 	}
 
-	class Crushable : ConditionalTrait<CrushableInfo>, ICrushable, INotifyCrushed
+	sealed class Crushable : ConditionalTrait<CrushableInfo>, ICrushable, INotifyCrushed
 	{
 		readonly Actor self;
 
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var mobile = self.TraitOrDefault<Mobile>();
 			if (mobile != null && self.World.SharedRandom.Next(100) <= Info.WarnProbability)
-				mobile.Nudge(crusher);
+				self.QueueActivity(false, new Nudge(crusher));
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.Play(SoundType.World, Info.CrushSound, crusher.CenterPosition);
 
 			var crusherMobile = crusher.TraitOrDefault<Mobile>();
-			self.Kill(crusher, crusherMobile != null ? crusherMobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
+			self.Kill(crusher, crusherMobile != null ? crusherMobile.Info.LocomotorInfo.CrushDamageTypes : default);
 		}
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
@@ -67,19 +67,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
 		{
-			if (IsTraitDisabled || !self.IsAtGroundLevel() || !Info.CrushClasses.Overlaps(crushClasses))
+			if (IsTraitDisabled || !Info.CrushClasses.Overlaps(crushClasses))
 				return self.World.NoPlayersMask;
 
-			return Info.CrushedByFriendlies ? self.World.AllPlayersMask : ~self.Owner.AlliedPlayersMask;
+			return Info.CrushedByFriendlies ? self.World.AllPlayersMask : self.World.AllPlayersMask.Except(self.Owner.AlliedPlayersMask);
 		}
 
 		bool CrushableInner(BitSet<CrushClass> crushClasses, Player crushOwner)
 		{
 			if (IsTraitDisabled)
-				return false;
-
-			// Only make actor crushable if it is on the ground.
-			if (!self.IsAtGroundLevel())
 				return false;
 
 			if (!Info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))

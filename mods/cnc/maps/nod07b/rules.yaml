@@ -1,11 +1,11 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod07b.lua, nod07b-AI.lua
+		Scripts: campaign.lua, utils.lua, nod07b.lua, nod07b-AI.lua
 	MusicPlaylist:
 		StartingMusic: justdoit
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: The Brotherhood has located a huge field of Tiberium in the area.\n\nThe nearby village has laid claim to the field.\n\nEliminate the villagers, as to prevent any infection of our own workers.\n\nGDI forces are reported to be minimal, so elimination of them is of secondary importance.
+		Briefing: The Brotherhood has located a huge field of Tiberium in the area.\n\nThe nearby village has laid claim to the field.\n\nEliminate the villagers, to prevent any risk of infection to our workers.\n\nGDI forces are reported to be minimal, so their elimination is of secondary importance.
 		BriefingVideo: nod7a.vqa
 		StartVideo: tankgo.vqa
 		LossVideo: visor.vqa
@@ -116,11 +116,11 @@ FIX:
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 GTWR:
 	Buildable:
-		Queue: Defence.GDI
+		Queue: Support.GDI
 
 HQ:
 	AirstrikePower:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Grant an external condition to hit actors.")]
 	public class GrantExternalConditionWarhead : Warhead
 	{
 		[FieldLoader.Require]
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.Common.Warheads
 			if (target.Type == TargetType.Invalid)
 				return;
 
-			var actors = target.Type == TargetType.Actor ? new[] { target.Actor } :
+			var actors = target.Type == TargetType.Actor ? [target.Actor] :
 				firedBy.World.FindActorsInCircle(target.CenterPosition, Range);
 
 			foreach (var a in actors)
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				a.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(a, firedBy))
+					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(firedBy))
 					?.GrantCondition(a, firedBy, Duration);
 			}
 		}

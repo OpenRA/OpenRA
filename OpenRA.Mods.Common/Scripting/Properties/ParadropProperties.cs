@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Command transport to paradrop passengers near the target cell.")]
 		public void Paradrop(CPos cell)
 		{
+			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
+				notify.Activated(Self);
+
 			paradrop.SetLZ(cell, true);
 			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
 			Self.QueueActivity(new FlyOffMap(Self));

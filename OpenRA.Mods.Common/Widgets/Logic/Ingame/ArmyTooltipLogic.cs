@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -38,15 +38,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var tooltip = armyUnit.TooltipInfo;
-				var name = tooltip?.Name ?? armyUnit.ActorInfo.Name;
+				var name = tooltip != null ? FluentProvider.GetMessage(tooltip.Name) : armyUnit.ActorInfo.Name;
 				var buildable = armyUnit.BuildableInfo;
 
-				nameLabel.Text = name;
-
+				nameLabel.GetText = () => name;
 				var nameSize = font.Measure(name);
 
-				descLabel.Text = buildable.Description.Replace("\\n", "\n");
-				var descSize = descFont.Measure(descLabel.Text);
+				var desc = string.IsNullOrEmpty(buildable.Description) ? "" : FluentProvider.GetMessage(buildable.Description);
+				descLabel.GetText = () => desc;
+				var descSize = descFont.Measure(desc);
 				descLabel.Bounds.Width = descSize.X;
 				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
 

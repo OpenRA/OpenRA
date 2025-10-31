@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = "primary";
 
 		[Desc("Speed at which the turret turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(512);
+		public readonly WAngle TurnSpeed = new(512);
 
 		public readonly WAngle InitialFacing = WAngle.Zero;
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (turretFacingInit != null)
 			{
 				var facing = turretFacingInit.Value;
-				return bodyFacing != null ? (Func<WAngle>)(() => bodyFacing() + facing) : () => facing;
+				return bodyFacing != null ? () => bodyFacing() + facing : () => facing;
 			}
 
 			var dynamicFacingInit = init.GetOrDefault<DynamicTurretFacingInit>(info);
@@ -115,13 +115,13 @@ namespace OpenRA.Mods.Common.Traits
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var turretFacing = LocalFacingFromInit(init);
 
-			Func<WRot> world = () => WRot.FromYaw(turretFacing()).Rotate(orientation());
+			WRot World() => WRot.FromYaw(turretFacing()).Rotate(orientation());
 			if (facings == 0)
-				return world;
+				return World;
 
 			// Quantize orientation to match a rendered sprite
 			// Implies no pitch or roll
-			return () => WRot.FromYaw(body.QuantizeFacing(world().Yaw, facings));
+			return () => WRot.FromYaw(body.QuantizeFacing(World().Yaw, facings));
 		}
 
 		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
@@ -132,9 +132,19 @@ namespace OpenRA.Mods.Common.Traits
 		AttackTurreted attack;
 		IFacing facing;
 		BodyOrientation body;
+		int quantizedFacings;
 
 		[Sync]
-		public int QuantizedFacings = 0;
+		public int QuantizedFacings
+		{
+			get => quantizedFacings;
+			set
+			{
+				if (value == 0)
+					throw new ArgumentOutOfRangeException(nameof(value), value, "Expected nonzero facings for turret.");
+				quantizedFacings = value;
+			}
+		}
 
 		WVec desiredDirection;
 		int realignTick = 0;
@@ -282,7 +292,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Turret offset in world-space
 		public WVec Position(Actor self)
 		{
-			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = body.QuantizeOrientation(self.Orientation);
 			return body.LocalToWorld(Offset.Rotate(bodyOrientation));
 		}
 

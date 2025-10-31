@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Amount = 0;
 
 		[Desc("Award cash only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
-		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
+		public readonly BitSet<CaptureType> CaptureTypes = default;
 
 		public override object Create(ActorInitializer init) { return new GivesCashOnCapture(this); }
 	}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			self.World.AddFrameEndTask(w => w.Add(
-				new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
+				new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 	}
 }

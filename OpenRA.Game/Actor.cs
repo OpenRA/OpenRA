@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -35,6 +35,9 @@ namespace OpenRA
 
 	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
+		/// <summary>Value used to represent an invalid token.</summary>
+		public const int InvalidConditionToken = -1;
+
 		internal readonly struct SyncHash
 		{
 			public readonly ISync Trait;
@@ -65,9 +68,15 @@ namespace OpenRA
 		public int Generation;
 		public Actor ReplacedByActor;
 
-		public IEffectiveOwner EffectiveOwner { get; private set; }
-		public IOccupySpace OccupiesSpace { get; private set; }
-		public ITargetable[] Targetables { get; private set; }
+		public IEffectiveOwner EffectiveOwner { get; }
+		public IOccupySpace OccupiesSpace { get; }
+		public ITargetable[] Targetables { get; }
+		public IEnumerable<ITargetablePositions> EnabledTargetablePositions { get; }
+		readonly ICrushable[] crushables;
+		public ICrushable[] Crushables
+		{
+			get => crushables ?? throw new InvalidOperationException($"Crushables for {Info.Name} are not initialized.");
+		}
 
 		public bool IsIdle => CurrentActivity == null;
 		public bool IsDead => Disposed || (health != null && health.IsDead);
@@ -77,32 +86,29 @@ namespace OpenRA
 
 		public WRot Orientation => facing?.Orientation ?? WRot.None;
 
-		/// <summary>Value used to represent an invalid token.</summary>
-		public static readonly int InvalidConditionToken = -1;
-
-		class ConditionState
+		sealed class ConditionState
 		{
 			/// <summary>Delegates that have registered to be notified when this condition changes.</summary>
-			public readonly List<VariableObserverNotifier> Notifiers = new List<VariableObserverNotifier>();
+			public readonly List<VariableObserverNotifier> Notifiers = [];
 
 			/// <summary>Unique integers identifying granted instances of the condition.</summary>
-			public readonly HashSet<int> Tokens = new HashSet<int>();
+			public readonly HashSet<int> Tokens = [];
 		}
 
-		readonly Dictionary<string, ConditionState> conditionStates = new Dictionary<string, ConditionState>();
+		readonly Dictionary<string, ConditionState> conditionStates = [];
 
 		/// <summary>Each granted condition receives a unique token that is used when revoking.</summary>
-		readonly Dictionary<int, string> conditionTokens = new Dictionary<int, string>();
+		readonly Dictionary<int, string> conditionTokens = [];
 
 		int nextConditionToken = 1;
 
 		/// <summary>Cache of condition -> enabled state for quick evaluation of token counter conditions.</summary>
-		readonly Dictionary<string, int> conditionCache = new Dictionary<string, int>();
+		readonly Dictionary<string, int> conditionCache = [];
 
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		readonly IReadOnlyDictionary<string, int> readOnlyConditionCache;
 
-		internal SyncHash[] SyncHashes { get; private set; }
+		internal SyncHash[] SyncHashes { get; }
 
 		readonly IFacing facing;
 		readonly IHealth health;
@@ -114,10 +120,8 @@ namespace OpenRA
 		readonly IDefaultVisibility defaultVisibility;
 		readonly INotifyBecomingIdle[] becomingIdles;
 		readonly INotifyIdle[] tickIdles;
-		readonly IEnumerable<ITargetablePositions> enabledTargetablePositions;
-		WPos[] staticTargetablePositions;
+		readonly IEnumerable<WPos> enabledTargetableWorldPositions;
 		bool created;
-		bool setStaticTargetablePositions;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -146,7 +150,6 @@ namespace OpenRA
 
 				Info = world.Map.Rules.Actors[name];
 
-				IPositionable positionable = null;
 				var resolveOrdersList = new List<IResolveOrder>();
 				var renderModifiersList = new List<IRenderModifier>();
 				var rendersList = new List<IRender>();
@@ -157,6 +160,7 @@ namespace OpenRA
 				var targetablesList = new List<ITargetable>();
 				var targetablePositionsList = new List<ITargetablePositions>();
 				var syncHashesList = new List<SyncHash>();
+				var crushablesList = new List<ICrushable>();
 
 				foreach (var traitInfo in Info.TraitsInConstructOrder())
 				{
@@ -168,7 +172,6 @@ namespace OpenRA
 					// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
 					// Note: The blocks are required to limit the scope of the t's, so we make an exception to our normal style
 					// rules for spacing in order to keep these assignments compact and readable.
-					{ if (trait is IPositionable t) positionable = t; }
 					{ if (trait is IOccupySpace t) OccupiesSpace = t; }
 					{ if (trait is IEffectiveOwner t) EffectiveOwner = t; }
 					{ if (trait is IFacing t) facing = t; }
@@ -184,6 +187,7 @@ namespace OpenRA
 					{ if (trait is ITargetable t) targetablesList.Add(t); }
 					{ if (trait is ITargetablePositions t) targetablePositionsList.Add(t); }
 					{ if (trait is ISync t) syncHashesList.Add(new SyncHash(t)); }
+					{ if (trait is ICrushable t) crushablesList.Add(t); }
 				}
 
 				resolveOrders = resolveOrdersList.ToArray();
@@ -195,10 +199,10 @@ namespace OpenRA
 				tickIdles = tickIdlesList.ToArray();
 				Targetables = targetablesList.ToArray();
 				var targetablePositions = targetablePositionsList.ToArray();
-				enabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
+				EnabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
+				enabledTargetableWorldPositions = EnabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
 				SyncHashes = syncHashesList.ToArray();
-
-				setStaticTargetablePositions = positionable == null && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled);
+				crushables = crushablesList.ToArray();
 			}
 		}
 
@@ -232,11 +236,6 @@ namespace OpenRA
 			// Update all traits with their initial condition state
 			foreach (var notify in allObserverNotifiers)
 				notify(this, readOnlyConditionCache);
-
-			// All actors that can move or teleport should have IPositionable, if not it's pretty safe to assume the actor is completely immobile and
-			// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
-			if (setStaticTargetablePositions)
-				staticTargetablePositions = enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
 
 			// TODO: Other traits may need initialization after being notified of initial condition state.
 
@@ -490,7 +489,7 @@ namespace OpenRA
 			health.InflictDamage(this, attacker, damage, false);
 		}
 
-		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default(BitSet<DamageType>))
+		public void Kill(Actor attacker, BitSet<DamageType> damageTypes = default)
 		{
 			if (Disposed || health == null)
 				return;
@@ -505,7 +504,7 @@ namespace OpenRA
 				if (!visibilityModifier.IsVisible(this, player))
 					return false;
 
-			return defaultVisibility.IsVisible(this, player);
+			return defaultVisibility?.IsVisible(this, player) ?? true;
 		}
 
 		public BitSet<TargetableType> GetAllTargetTypes()
@@ -539,20 +538,17 @@ namespace OpenRA
 
 		public IEnumerable<WPos> GetTargetablePositions()
 		{
-			if (staticTargetablePositions != null)
-				return staticTargetablePositions;
+			if (EnabledTargetablePositions.Any())
+				return enabledTargetableWorldPositions;
 
-			if (enabledTargetablePositions.Any())
-				return enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
-
-			return new[] { CenterPosition };
+			return [CenterPosition];
 		}
 
 		#region Conditions
 
 		void UpdateConditionState(string condition, int token, bool isRevoke)
 		{
-			ConditionState conditionState = conditionStates.GetOrAdd(condition);
+			var conditionState = conditionStates.GetOrAdd(condition);
 
 			if (isRevoke)
 				conditionState.Tokens.Remove(token);
@@ -599,7 +595,7 @@ namespace OpenRA
 			return InvalidConditionToken;
 		}
 
-		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>
+		/// <summary>Returns whether the specified token is valid for RevokeCondition.</summary>
 		public bool TokenValid(int token)
 		{
 			return conditionTokens.ContainsKey(token);
@@ -612,8 +608,7 @@ namespace OpenRA
 		Lazy<ScriptActorInterface> luaInterface;
 		public void OnScriptBind(ScriptContext context)
 		{
-			if (luaInterface == null)
-				luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
+			luaInterface ??= Exts.Lazy(() => new ScriptActorInterface(context, this));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]

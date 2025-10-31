@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	class ActionQueueTest
+	sealed class ActionQueueTest
 	{
 		[TestCase(TestName = "ActionQueue performs actions in order of time, then insertion order.")]
 		public void ActionsArePerformedOrderedByTimeThenByInsertionOrder()
@@ -36,7 +36,7 @@ namespace OpenRA.Test
 			queue.PerformActions(1);
 			queue.PerformActions(2);
 			queue.PerformActions(3);
-			if (!list.SequenceEqual(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }))
+			if (!list.SequenceEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]))
 				Assert.Fail("Actions were not performed in the correct order. Actual order was: " + string.Join(", ", list));
 		}
 	}

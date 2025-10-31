@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign-global.lua, nod01.lua
+		Scripts: campaign.lua, utils.lua, nod01.lua
 	MusicPlaylist:
 		StartingMusic: nomercy
 		VictoryMusic: nod_win1
@@ -24,7 +24,7 @@ Player:
 
 C10:
 	Tooltip:
-		Name: Nikoomba
+		Name: actor-c10-name
 
 ^Bridge:
 	DamageMultiplier@INVULNERABLE:

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -119,12 +119,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var graphBottomOffset = Padding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight;
 			var height = rect.Height - (graphBottomOffset + Padding);
 
-			var maxValue = series.Select(p => p.Points).SelectMany(d => d).Concat(new[] { 0f }).Max();
+			var maxValue = series.Select(p => p.Points).SelectMany(d => d).Concat([0f]).Max();
 			var longestName = series.Select(s => s.Key).OrderByDescending(s => s.Length).FirstOrDefault() ?? "";
 
 			var scale = 200 / Math.Max(5000, (float)Math.Ceiling(maxValue / 1000) * 1000);
 
-			var widthMaxValue = labelFont.Measure(GetYAxisValueFormat().F(height / scale)).X;
+			var widthMaxValue = labelFont.Measure(GetYAxisValueFormat().FormatCurrent(height / scale)).X;
 			var widthLongestName = labelFont.Measure(longestName).X;
 
 			// y axis label
@@ -145,6 +145,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var origin = new float2(rect.Left, rect.Bottom);
 
 			var keyOffset = 0;
+
+			// added sorting so that names appear in order of highest value to lowest value
+			series = series.OrderByDescending(s => s.Points.LastOrDefault()).ToList();
+
 			foreach (var s in series)
 			{
 				var key = s.Key;
@@ -164,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets
 						}), 1, color);
 
 					if (lastPoint != 0f)
-						labelFont.DrawTextWithShadow(GetValueFormat().F(lastPoint), graphOrigin + new float2(lastX * xStep, -lastPoint * scale - 2),
+						labelFont.DrawTextWithShadow(GetValueFormat().FormatCurrent(lastPoint), graphOrigin + new float2(lastX * xStep, -lastPoint * scale - 2),
 							color, BackgroundColorDark, BackgroundColorLight, 1);
 				}
 
@@ -174,7 +178,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			// Draw x axis
-			axisFont.DrawTextWithShadow(xAxisLabel, new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+			axisFont.DrawTextWithShadow(xAxisLabel,
+				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)),
+				Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 
 			// TODO: make this stuff not draw outside of the RenderBounds
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
@@ -183,26 +189,32 @@ namespace OpenRA.Mods.Common.Widgets
 				if (n % XAxisTicksPerLabel != 0)
 					continue;
 
-				var xAxisText = GetXAxisValueFormat().F(n / XAxisTicksPerLabel);
+				var xAxisText = GetXAxisValueFormat().FormatCurrent(n / XAxisTicksPerLabel);
 				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
-				var xLocation = x - (xAxisTickTextWidth / 2);
-				labelFont.DrawTextWithShadow(xAxisText, graphOrigin + new float2(xLocation, 2), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+				var xLocation = x - xAxisTickTextWidth / 2;
+				labelFont.DrawTextWithShadow(xAxisText,
+					graphOrigin + new float2(xLocation, 2),
+					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Draw y axis
-			axisFont.DrawTextWithShadow(yAxisLabel,  new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)), Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
+			axisFont.DrawTextWithShadow(yAxisLabel,
+				new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)),
+				Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
 
 			for (var y = GetDisplayFirstYAxisValue() ? 0 : yStep; y <= height; y += yStep)
 			{
 				var yValue = y / scale;
 				cr.DrawLine(graphOrigin + new float2(0, -y), graphOrigin + new float2(5, -y), 1, Color.White);
-				var text = GetYAxisValueFormat().F(yValue);
+				var text = GetYAxisValueFormat().FormatCurrent(yValue);
 
 				var textWidth = labelFont.Measure(text);
 
 				var yLocation = y + (textWidth.Y + labelFont.TopOffset) / 2;
 
-				labelFont.DrawTextWithShadow(text, graphOrigin + new float2(-(textWidth.X + 3), -yLocation), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+				labelFont.DrawTextWithShadow(text,
+					graphOrigin + new float2(-(textWidth.X + 3), -yLocation),
+					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Bottom line
@@ -212,23 +224,11 @@ namespace OpenRA.Mods.Common.Widgets
 			cr.DrawLine(graphOrigin, graphOrigin + new float2(0, -height), 1, Color.White);
 		}
 
-		public override Widget Clone()
+		public override LineGraphWidget Clone()
 		{
 			return new LineGraphWidget(this);
 		}
 	}
 
-	public class LineGraphSeries
-	{
-		public string Key;
-		public Color Color;
-		public IEnumerable<float> Points;
-
-		public LineGraphSeries(string key, Color color, IEnumerable<float> points)
-		{
-			Key = key;
-			Color = color;
-			Points = points;
-		}
-	}
+	public record LineGraphSeries(string Key, Color Color, IEnumerable<float> Points);
 }

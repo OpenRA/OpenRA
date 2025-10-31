@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -19,10 +19,10 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Changes the visual Z position periodically.")]
-	public class HoversInfo : ConditionalTraitInfo, Requires<IMoveInfo>
+	public class HoversInfo : ConditionalTraitInfo
 	{
 		[Desc("Maximum visual Z axis distance relative to actual position + InitialHeight.")]
-		public readonly WDist BobDistance = new WDist(-43);
+		public readonly WDist BobDistance = new(-43);
 
 		[Desc("Actual altitude of actor needs to be this or higher to enable hover effect.")]
 		public readonly WDist MinHoveringAltitude = WDist.Zero;
@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int RiseTicks = 20;
 
 		[Desc("Initial Z axis modifier relative to actual position.")]
-		public readonly WDist InitialHeight = new WDist(43);
+		public readonly WDist InitialHeight = new(43);
 
-		public override object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new Hovers(this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -69,9 +69,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly int fallTickHeight;
 
 		int ticks;
-		WVec worldVisualOffset;
 
-		public Hovers(HoversInfo info, Actor self)
+		[Sync]
+		public WVec WorldVisualOffset { get; private set; }
+
+		public Hovers(HoversInfo info)
 			: base(info)
 		{
 			this.info = info;
@@ -85,32 +87,30 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (IsTraitDisabled)
 			{
-				if (worldVisualOffset.Z < 0)
+				if (WorldVisualOffset.Z < 0)
 					return;
 
-				var fallTicks = worldVisualOffset.Z / fallTickHeight - 1;
-				worldVisualOffset = new WVec(0, 0, fallTickHeight * fallTicks);
+				var fallTicks = WorldVisualOffset.Z / fallTickHeight - 1;
+				WorldVisualOffset = new WVec(0, 0, fallTickHeight * fallTicks);
 			}
 			else
-				ticks++;
-		}
-
-		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
-		{
-			if (!IsTraitDisabled)
 			{
 				var visualOffset = self.World.Map.DistanceAboveTerrain(self.CenterPosition) >= info.MinHoveringAltitude
 					? new WAngle(ticks % (info.Ticks * 4) * stepPercentage).Sin() : 0;
 				var currentHeight = info.BobDistance.Length * visualOffset / 1024 + info.InitialHeight.Length;
 
 				// This part rises the actor up from disabled state
-				if (worldVisualOffset.Z < currentHeight)
-					currentHeight = Math.Min(worldVisualOffset.Z + info.InitialHeight.Length / info.RiseTicks, currentHeight);
+				if (WorldVisualOffset.Z < currentHeight)
+					currentHeight = Math.Min(WorldVisualOffset.Z + info.InitialHeight.Length / info.RiseTicks, currentHeight);
 
-				worldVisualOffset = new WVec(0, 0, currentHeight);
+				WorldVisualOffset = new WVec(0, 0, currentHeight);
+				ticks++;
 			}
+		}
 
-			return r.Select(a => a.OffsetBy(worldVisualOffset));
+		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		{
+			return r.Select(a => a.OffsetBy(WorldVisualOffset));
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)

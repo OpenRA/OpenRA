@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CreateManPage : IUtilityCommand
+	sealed class CreateManPage : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--man-page";
 
@@ -38,13 +38,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(".SH OPTIONS");
 
 			var sections = Game.Settings.Sections;
-			sections.Add("Launch", new LaunchArguments(new Arguments(new string[0])));
+			sections.Add("Launch", new LaunchArguments(new Arguments([])));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
-				var fields = section.Value.GetType().GetFields();
+				var fields = Utility.GetFields(section.Value.GetType());
 				foreach (var field in fields)
 				{
-					if (!field.HasAttribute<DescAttribute>())
+					if (!Utility.HasAttribute<DescAttribute>(field))
 						continue;
 
 					Console.WriteLine(".TP");
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					else
 						Console.WriteLine();
 
-					var lines = field.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
+					var lines = Utility.GetCustomAttributes<DescAttribute>(field, false).SelectMany(d => d.Lines);
 					foreach (var line in lines)
 						Console.WriteLine(line);
 				}
@@ -65,9 +65,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(".SH FILES");
 			Console.WriteLine("Settings are stored in the ~/.openra user folder.");
 			Console.WriteLine(".SH BUGS");
-			Console.WriteLine("Known issues are tracked at http://bugs.openra.net");
+			Console.WriteLine("Known issues are tracked at https://bugs.openra.net");
 			Console.WriteLine(".SH COPYRIGHT");
-			Console.WriteLine("Copyright 2007-2021 The OpenRA Developers (see AUTHORS)");
+			Console.WriteLine("Copyright (c) The OpenRA Developers and Contributors");
 			Console.WriteLine("This manual is part of OpenRA, which is free software. It is GNU GPL v3 licensed. See COPYING for details.");
 		}
 	}

@@ -1,8 +1,12 @@
 lst:
-	muzzle: minigun
+	Defaults:
+		Filename: lst.shp
+	muzzle:
+		Filename: minigun.shp
 		Start: 0
 		Length: 6
 		Facings: 8
-	turret: mgun
+	turret:
+		Filename: mgun.shp
 		Start: 0
 		Facings: 32

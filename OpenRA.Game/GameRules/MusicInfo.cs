@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.IO;
 using OpenRA.FileSystem;
 
 namespace OpenRA.GameRules
@@ -29,14 +28,14 @@ namespace OpenRA.GameRules
 			Title = value.Value;
 
 			var nd = value.ToDictionary();
-			if (nd.ContainsKey("Hidden"))
-				bool.TryParse(nd["Hidden"].Value, out Hidden);
+			if (nd.TryGetValue("Hidden", out var yaml))
+				bool.TryParse(yaml.Value, out Hidden);
 
-			if (nd.ContainsKey("VolumeModifier"))
-				VolumeModifier = FieldLoader.GetValue<float>("VolumeModifier", nd["VolumeModifier"].Value);
+			if (nd.TryGetValue("VolumeModifier", out yaml))
+				VolumeModifier = FieldLoader.GetValue<float>("VolumeModifier", yaml.Value);
 
-			var ext = nd.ContainsKey("Extension") ? nd["Extension"].Value : "aud";
-			Filename = (nd.ContainsKey("Filename") ? nd["Filename"].Value : key) + "." + ext;
+			var ext = nd.TryGetValue("Extension", out yaml) ? yaml.Value : "aud";
+			Filename = (nd.TryGetValue("Filename", out yaml) ? yaml.Value : key) + "." + ext;
 		}
 
 		public void Load(IReadOnlyFileSystem fileSystem)

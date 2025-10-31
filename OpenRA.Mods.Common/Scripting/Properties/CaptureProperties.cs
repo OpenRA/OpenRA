@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,7 +9,6 @@
  */
 #endregion
 
-using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
@@ -31,12 +30,18 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Captures the target actor.")]
 		public void Capture(Actor target)
 		{
-			var targetManager = target.TraitOrDefault<CaptureManager>();
-			if (targetManager == null || !targetManager.CanBeTargetedBy(target, Self, captureManager))
-				throw new LuaException($"Actor '{Self}' cannot capture actor '{target}'!");
+			if (!CanCapture(target))
+				return;
 
 			// NB: Scripted actions get no visible targetlines.
 			Self.QueueActivity(new CaptureActor(Self, Target.FromActor(target), null));
+		}
+
+		[Desc("Checks if the target actor can be captured.")]
+		public bool CanCapture(Actor target)
+		{
+			var targetManager = target.TraitOrDefault<CaptureManager>();
+			return targetManager != null && captureManager.CanTarget(targetManager);
 		}
 	}
 }

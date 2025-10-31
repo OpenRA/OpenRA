@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -47,10 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					return true;
 				},
-				(actor, value) =>
-				{
-					actor.ReplaceInit(new FreeActorInit(this, value), this);
-				});
+				(actor, value) => actor.ReplaceInit(new FreeActorInit(this, value), this));
 		}
 
 		public override object Create(ActorInitializer init) { return new FreeActor(init, this); }
@@ -75,13 +71,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				w.CreateActor(Info.Actor, new TypeDictionary
-				{
+				w.CreateActor(Info.Actor,
+				[
 					new ParentActorInit(self),
 					new LocationInit(self.Location + Info.SpawnOffset),
 					new OwnerInit(self.Owner),
 					new FacingInit(Info.Facing),
-				});
+				]);
 			});
 		}
 	}

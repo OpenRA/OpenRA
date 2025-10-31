@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 """A simple GTK3 graphical dialog helper that can be used as a fallback if zenity is not available
    Compatible with python 2 or 3 with the gi bindings.
 
@@ -43,6 +43,6 @@ if __name__ == "__main__":
     parser.add_argument('--text', type=str, required=False, default='')
     args = parser.parse_args()
     if args.type == 'question':
-        Question(args.title, args.text.replace('\\n', '\n'))
+        Question(args.title, args.text)
     elif args.type == 'error':
-        Error(args.title, args.text.replace('\\n', '\n'))
+        Error(args.title, args.text)

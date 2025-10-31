@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -17,19 +17,13 @@ namespace OpenRA.Network
 	{
 		readonly Func<int> timestep;
 
-		long lastTickTime;
-
 		public TickTime(Func<int> timestep, long lastTickTime)
 		{
 			this.timestep = timestep;
-			this.lastTickTime = lastTickTime;
+			Value = lastTickTime;
 		}
 
-		public long Value
-		{
-			get => lastTickTime;
-			set => lastTickTime = value;
-		}
+		public long Value { get; set; }
 
 		public bool ShouldAdvance(long tick)
 		{
@@ -38,18 +32,18 @@ namespace OpenRA.Network
 			if (i == 0)
 				return false;
 
-			var tickDelta = tick - lastTickTime;
+			var tickDelta = tick - Value;
 			return tickDelta >= i;
 		}
 
 		public void AdvanceTickTime(long tick)
 		{
-			var tickDelta = tick - lastTickTime;
+			var tickDelta = tick - Value;
 
 			var currentTimestep = timestep();
 
-			var integralTickTimestep = (tickDelta / currentTimestep) * currentTimestep;
-			lastTickTime += integralTickTimestep >= Game.TimestepJankThreshold
+			var integralTickTimestep = tickDelta / currentTimestep * currentTimestep;
+			Value += integralTickTimestep >= Game.TimestepJankThreshold
 				? integralTickTimestep
 				: currentTimestep;
 		}

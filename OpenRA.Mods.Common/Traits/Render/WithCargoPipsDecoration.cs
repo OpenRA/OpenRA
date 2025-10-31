@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[SequenceReference(nameof(Image), dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Pip sequence to use for specific passenger actors.")]
-		public readonly Dictionary<string, string> CustomPipSequences = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> CustomPipSequences = [];
 
 		[PaletteReference]
 		public readonly string Palette = "chrome";

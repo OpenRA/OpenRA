@@ -1,12 +1,15 @@
 lst:
-	idle: lst
+	idle:
+		Filename: lst.shp
 		Start: 0
 		Facings: 1
 		ZOffset: -1024
-	icon: lsticnh.tem
-		AddExtension: False
+	icon:
+		Filename: lsticnh.tem
 
 boat:
+	Defaults:
+		Filename: boat.shp
 	left:
 		Facings: 32
 	damaged-left:
@@ -15,7 +18,8 @@ boat:
 	critical-left:
 		Start: 64
 		Facings: 32
-	wake-left: wake
+	wake-left:
+		Filename: wake.shp
 		Start: 6
 		Length: 6
 		Offset: 1,2
@@ -29,9 +33,10 @@ boat:
 	critical-right:
 		Start: 160
 		Facings: 32
-	wake-right: wake
+	wake-right:
+		Filename: wake.shp
 		Length: 6
 		Offset: -1,2
 		Tick: 120
-	icon: boaticnh.tem
-		AddExtension: False
+	icon:
+		Filename: boaticnh.tem

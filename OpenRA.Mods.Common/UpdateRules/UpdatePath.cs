@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -10,13 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using OpenRA.Mods.Common.UpdateRules.Rules;
 
 namespace OpenRA.Mods.Common.UpdateRules
 {
-	public class UpdatePath
+	public sealed class UpdatePath
 	{
 		// Define known update paths from stable tags to the current bleed tip
 		//
@@ -30,84 +29,65 @@ namespace OpenRA.Mods.Common.UpdateRules
 		// can be merged back into bleed by replacing the forking-playtest-to-bleed path
 		// with the prep playtest-to-playtest-to-release paths and finally a new/modified
 		// release-to-bleed path.
-		[SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:ParameterMustNotSpanMultipleLines",
-			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
-		{
-			new UpdatePath("release-20191117", "release-20200202", new UpdateRule[]
-			{
-				new ReplaceAttackTypeStrafe()
-			}),
+		[
+			new("release-20230225", "release-20231010",
+			[
+				new TextNotificationsDisplayWidgetRemoveTime(),
+				new RenameEngineerRepair(),
+				new ProductionTabsWidgetAddTabButtonCollection(),
+				new RemoveTSRefinery(),
+				new RenameMcvCrateAction(),
+				new RenameContrailWidth(),
+				new RemoveExperienceFromInfiltrates(),
+				new AddColorPickerValueRange(),
 
-			new UpdatePath("release-20200202", "release-20200503", new UpdateRule[]
-			{
-				new RemoveYesNo(),
-				new RemoveInitialFacingHardcoding(),
-				new RemoveAirdropActorTypeDefault(),
-				new RenameProneTime(),
-				new RemoveWithPermanentInjury(),
-				new AddResourceRenderer(),
-				new ReformatChromeProvider(),
-				new RenameSpins(),
-				new CreateScreenShakeWarhead(),
-				new RenameRallyPointPath(),
-			}),
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new ExplicitSequenceFilenames(),
+				new RemoveSequenceHasEmbeddedPalette(),
+				new RemoveNegativeSequenceLength(),
+			]),
 
-			new UpdatePath("release-20200503", "playtest-20201213", new UpdateRule[]
-			{
-				// Prep only changes here
-				new AddPipDecorationTraits(),
-				new ModernizeDecorationTraits(),
-				new RenameHealCrateAction(),
-				new RenameInfiltrationNotifications(),
-				new MoveClassicFacingFudge(),
-				new RenameWithNukeLaunch(),
-				new SpawnActorPowerDefaultEffect(),
-				new RemoveConditionManager(),
-				new ConvertSupportPowerRangesToFootprint(),
-				new UpdateTilesetColors(),
-				new UpdateMapInits(),
-				new CreateFlashPaletteEffectWarhead(),
-				new ChangeTargetLineDelayToMilliseconds(),
-				new ReplaceFacingAngles(),
-				new RenameSelfHealing(),
-				new ReplaceBurns(),
-				new RemoveMuzzleSplitFacings(),
-				new RenameStances(),
-				new RemoveTurnToDock(),
-				new RenameSmudgeSmokeFields(),
-				new RenameCircleContrast(),
-				new SplitDamagedByTerrain(),
-				new RemoveLaysTerrain(),
-			}),
+			new("release-20231010", "release-20250303",
+			[
+				new RemoveValidRelationsFromCapturable(),
+				new ExtractResourceStorageFromHarvester(),
+				new ReplacePaletteModifiers(),
+				new RemoveConyardChronoReturnAnimation(),
+				new RemoveEditorSelectionLayerProperties(),
+				new AddMarkerLayerOverlay(),
+				new AddSupportPowerBlockedCursor(),
+				new MovePreviewFacing(),
+				new RenameOnDeath(),
+				new RemoveParentTopParentLeftSubstitutions(),
+				new RenameWidgetSubstitutions(),
 
-			new UpdatePath("playtest-20201213", new UpdateRule[]
-			{
-				// Bleed only changes here
-				new RenameMPTraits(),
-				new RemovePlayerHighlightPalette(),
-				new ReplaceWithColoredOverlayPalette(),
-				new RemoveRenderSpritesScale(),
-				new RemovePlaceBuildingPalette(),
-				new ReplaceShadowPalette(),
-				new ReplaceResourceValueModifiers(),
-				new RemoveResourceType(),
-				new ConvertBoundsToWDist(),
-				new RemoveSmokeTrailWhenDamaged(),
-				new ReplaceCrateSecondsWithTicks(),
-				new UseMillisecondsForSounds(),
-			})
-		};
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new ReplaceCloakPalette(),
+				new AbstractDocking(),
+			]),
+			new("release-20250303", "release-20250330", []),
+			new("release-20250330", [
 
-		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
+				// bleed only changes here.
+				new ReplaceBaseAttackNotifier(),
+				new RemoveBuildingInfoAllowPlacementOnResources(),
+				new EditorMarkerTileLabels(),
+				new RemoveBarracksTypesAndVehiclesTypesInBaseBuilderBotModule(),
+
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new WithDamageOverlayPropertyRename(),
+			]),
+		];
+
+		public static IReadOnlyCollection<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
 		{
 			// Use reflection to identify types
 			var namedType = objectCreator.FindType(source);
 			if (namedType != null && namedType.IsSubclassOf(typeof(UpdateRule)))
-				return new[] { (UpdateRule)objectCreator.CreateBasic(namedType) };
+				return [(UpdateRule)objectCreator.CreateBasic(namedType)];
 
-			var namedPath = Paths.FirstOrDefault(p => p.source == source);
-			return namedPath != null ? namedPath.Rules(chain) : null;
+			return Paths.FirstOrDefault(p => p.source == source)?.Rules(chain);
 		}
 
 		public static IEnumerable<string> KnownPaths { get { return Paths.Select(p => p.source); } }
@@ -129,12 +109,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 			this.chainToSource = chainToSource;
 		}
 
-		IEnumerable<UpdateRule> Rules(bool chain = true)
+		IReadOnlyCollection<UpdateRule> Rules(bool chain = true)
 		{
 			if (chainToSource != null && chain)
 			{
 				var child = Paths.First(p => p.source == chainToSource);
-				return rules.Concat(child.Rules(chain));
+				return rules.Concat(child.Rules(chain)).ToList();
 			}
 
 			return rules;

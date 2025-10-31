@@ -1,4 +1,4 @@
-MapFormat: 11
+MapFormat: 12
 
 RequiresMod: d2k
 
@@ -35,14 +35,14 @@ Players:
 		LockFaction: True
 		Faction: ordos
 		LockColor: True
-		Color: B3EAA5
+		Color: 5A9473
 		Enemies: Harkonnen, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Enemies: Ordos, Creeps
 		Bot: campaign
 
@@ -103,3 +103,5 @@ Actors:
 		Location: 24,2
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
+
+FluentMessages: d2k|fluent/lua.ftl, d2k|fluent/campaign.ftl

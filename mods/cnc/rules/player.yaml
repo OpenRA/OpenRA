@@ -1,5 +1,4 @@
 ^BasePlayer:
-	AlwaysVisible:
 	Shroud:
 	PlayerResources:
 		ResourceValues:
@@ -14,6 +13,8 @@ Player:
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: notification-new-construction-options
+		CannotPlaceTextNotification: notification-cannot-deploy-here
 	TechTree:
 	SupportPowerManager:
 	ScriptTriggers:
@@ -24,6 +25,7 @@ Player:
 	ConquestVictoryConditions:
 	PowerManager:
 		SpeechNotification: LowPower
+		TextNotification: notification-low-power
 	AllyRepair:
 	PlayerResources:
 		CashTickUpNotification: CashTickUp
@@ -32,20 +34,27 @@ Player:
 		DefaultCash: 7500
 	DeveloperMode:
 		CheckboxDisplayOrder: 9
-	BaseAttackNotifier:
+	DamageNotifier:
+		ValidTargets: Structure
+		Notification: BaseAttack
+		TextNotification: notification-base-under-attack
+		AllyTextNotification: notification-ally-under-attack
+	DamageNotifier@Unit:
+		InvalidTargets: Structure
+		NotifyInterval: 10000
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
-		Label: Redeployable MCVs
-		Description: Allow undeploying Construction Yard
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
 		ID: C17-Stealth
-		Label: Stealth Deliveries
-		Description: Nod's delivery plane is cloaked
+		Label: checkbox-stealth-deliveries.label
+		Description: checkbox-stealth-deliveries.description
 		Enabled: False
 		DisplayOrder: 8
 		Prerequisites: global-C17-stealth
@@ -53,23 +62,24 @@ Player:
 	FrozenActorLayer:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@low:
-		Name: Low
+		Name: options-tech-level.low
 		Prerequisites: techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: Medium
+		Name: options-tech-level.medium
 		Prerequisites: techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@nosuper:
-		Name: No Powers
+		Name: options-tech-level.no-powers
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
 		Id: nopowers
 	ProvidesTechPrerequisite@all:
-		Name: Unrestricted
+		Name: options-tech-level.unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	GrantConditionOnPrerequisiteManager:
 	ResourceStorageWarning:
+		TextNotification: notification-silos-needed
 	PlayerExperience:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:
