@@ -76,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget dropdownSettingTemplate;
 		readonly Widget tilesetSetting;
 		readonly Widget sizeSetting;
+		readonly Widget parentWidget;
 		readonly ZipFileLoader.ReadWriteZipFile package;
 
 		ITerrainInfo selectedTerrain;
@@ -84,12 +85,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		volatile bool generating;
 		volatile bool failed;
+		bool initialGenerationDone;
 
 		[ObjectCreator.UseCtor]
 		internal MapGeneratorLogic(Widget widget, ModData modData, MapGenerationArgs initialSettings, Action<MapGenerationArgs, IReadWritePackage> onGenerate)
 		{
 			this.modData = modData;
 			this.onGenerate = onGenerate;
+			parentWidget = widget.Parent;
 			package = new ZipFileLoader.ReadWriteZipFile();
 
 			generator = modData.DefaultRules.Actors[SystemActors.EditorWorld].TraitInfos<IEditorMapGeneratorInfo>().First();
@@ -217,10 +220,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (map.Status == MapStatus.Available)
 				{
 					preview.Update(map);
+					initialGenerationDone = true;
 					onGenerate(initialSettings, null);
 				}
-				else
-					GenerateMap();
 			}
 			else
 			{
@@ -228,6 +230,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				settings.Randomize(Game.CosmeticRandom);
 				RandomizeSize();
 				RefreshSettings();
+			}
+		}
+
+		public override void Tick()
+		{
+			if (!initialGenerationDone && !generating && parentWidget.IsVisible())
+			{
+				initialGenerationDone = true;
 				GenerateMap();
 			}
 		}
