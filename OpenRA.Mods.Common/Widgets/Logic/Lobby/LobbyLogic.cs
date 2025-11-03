@@ -684,10 +684,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.Concat(map.WorldActorInfo.TraitInfos<ILobbyOptions>())
 				.SelectMany(t => t.LobbyOptions(map));
 
-			lobbyOptions = orderManager.LobbyInfo.GlobalSettings.LobbyOptions;
+			var newLobbyOptions = orderManager.LobbyInfo.GlobalSettings.LobbyOptions;
 			foreach (var o in allOptions)
-				if (lobbyOptions.TryGetValue(o.Id, out var s) && s.Value != o.DefaultValue)
+				if (newLobbyOptions.TryGetValue(o.Id, out var s) && (lobbyOptions.TryGetValue(o.Id, out var old) ? s.Value != old.Value : s.Value != o.DefaultValue))
 					TextNotificationsManager.AddSystemLine(OptionValue, "name", o.Name, "value", o.Label(s.Value));
+
+			lobbyOptions = newLobbyOptions;
 		}
 
 		void UpdateCurrentMap()
