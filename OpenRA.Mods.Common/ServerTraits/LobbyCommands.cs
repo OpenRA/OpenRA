@@ -657,10 +657,6 @@ namespace OpenRA.Mods.Common.Server
 							server.SendFluentMessage(TwoHumansRequired);
 						else if (server.Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 							server.SendFluentMessage(MapBotsDisabled);
-
-						var briefing = MissionBriefingOrDefault(server);
-						if (briefing != null)
-							server.SendMessage(briefing);
 					}
 				}
 
@@ -1452,15 +1448,6 @@ namespace OpenRA.Mods.Common.Server
 			return !validFactions.Contains(askedFaction) ? "Random" : askedFaction;
 		}
 
-		static string MissionBriefingOrDefault(S server)
-		{
-			var missionData = server.Map.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
-			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
-				return missionData.Briefing.Replace("\\n", "\n");
-
-			return null;
-		}
-
 		public void ClientJoined(S server, Connection conn)
 		{
 			lock (server.LobbyInfo)
@@ -1473,13 +1460,6 @@ namespace OpenRA.Mods.Common.Server
 				// Validate whether color is allowed and get an alternative if it isn't
 				if (client.Slot != null && !server.LobbyInfo.Slots[client.Slot].LockColor)
 					client.Color = SanitizePlayerColor(server, client.Color, client.Index);
-
-				// Report any custom map details
-				// HACK: this isn't the best place for this to live, but if we move it somewhere else
-				// then we need a larger hack to hook the map change event.
-				var briefing = MissionBriefingOrDefault(server);
-				if (briefing != null)
-					server.SendOrderTo(conn, "Message", briefing);
 			}
 		}
 
