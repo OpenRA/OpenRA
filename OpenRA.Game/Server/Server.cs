@@ -949,14 +949,6 @@ namespace OpenRA.Server
 			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString(order, data, true).Serialize());
 		}
 
-		public void SendMessage(string text)
-		{
-			DispatchServerOrdersToClients(Order.FromTargetString("Message", text, true));
-
-			if (Type == ServerType.Dedicated)
-				WriteLineWithTimeStamp(text);
-		}
-
 		public void SendFluentMessage(string key, params object[] args)
 		{
 			var text = FluentMessage.Serialize(key, args);

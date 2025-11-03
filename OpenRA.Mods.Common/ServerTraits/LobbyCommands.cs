@@ -327,7 +327,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (server.LobbyInfo.Slots.All(sl => server.LobbyInfo.ClientInSlot(sl.Key) == null))
 				{
-					server.SendOrderTo(conn, "Message", NoStartWithoutPlayers);
+					server.SendFluentMessageTo(conn, NoStartWithoutPlayers);
 					return true;
 				}
 
