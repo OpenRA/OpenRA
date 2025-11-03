@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget dropdownSettingTemplate;
 		readonly Widget tilesetSetting;
 		readonly Widget sizeSetting;
-		readonly IReadWritePackage package;
+		readonly ZipFileLoader.ReadWriteZipFile package;
 
 		ITerrainInfo selectedTerrain;
 		string selectedSize;
