@@ -399,7 +399,7 @@ namespace OpenRA.Server
 
 				Conns.Clear();
 			})
-			{ IsBackground = true }.Start();
+			{ IsBackground = true, Name = "ServerThread" }.Start();
 		}
 
 		int nextPlayerIndex;
