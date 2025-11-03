@@ -640,9 +640,9 @@ namespace OpenRA.Mods.Common.Server
 
 						server.LobbyInfo.DisabledSpawnPoints.Clear();
 
-						server.SyncLobbyInfo();
-
 						server.SendFluentMessage(ChangedMap, "player", client.Name, "map", server.Map.Title);
+
+						server.SyncLobbyInfo();
 
 						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							server.SendFluentMessage(CustomRules);
