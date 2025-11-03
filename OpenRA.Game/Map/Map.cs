@@ -282,8 +282,12 @@ namespace OpenRA
 
 				// Take the SHA1
 				if (streams.Count == 0)
+#pragma warning disable ide0004
+					// Although code analysis marks this cast as redundant, without it
+					// some versions of dotnet 8 may yield a compilation error
+					// alledgely due to method call ambiguity, this is likely undesired behavior
 					return CryptoUtil.SHA1Hash((byte[])[]);
-
+#pragma warning restore ide0004
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)
 					merged = new MergedStream(merged, streams[i]);
