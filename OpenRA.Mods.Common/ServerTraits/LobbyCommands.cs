@@ -111,17 +111,11 @@ namespace OpenRA.Mods.Common.Server
 		[FluentReference]
 		const string InvalidConfigurationCommand = "notification-invalid-configuration-command";
 
-		[FluentReference("option")]
-		const string OptionLocked = "notification-option-locked";
-
 		[FluentReference("player", "map")]
 		const string ChangedMap = "notification-changed-map";
 
 		[FluentReference]
 		const string MapBotsDisabled = "notification-map-bots-disabled";
-
-		[FluentReference("player", "name", "value")]
-		const string ValueChanged = "notification-option-changed";
 
 		[FluentReference]
 		const string NoMoveSpectators = "notification-admin-move-spectators";
@@ -721,15 +715,9 @@ namespace OpenRA.Mods.Common.Server
 
 				var split = s.Split(' ');
 				if (split.Length < 2 || !options.TryGetValue(split[0], out var option) ||
-					!option.Values.ContainsKey(split[1]))
+					option.IsLocked || !option.Values.ContainsKey(split[1]))
 				{
 					server.SendFluentMessageTo(conn, InvalidConfigurationCommand);
-					return true;
-				}
-
-				if (option.IsLocked)
-				{
-					server.SendFluentMessageTo(conn, OptionLocked, ["option", option.Name]);
 					return true;
 				}
 
@@ -746,8 +734,6 @@ namespace OpenRA.Mods.Common.Server
 				oo.Value = oo.PreferredValue = split[1];
 
 				server.SyncLobbyGlobalSettings();
-				server.SendFluentMessage(ValueChanged, "player", client.Name, "name", option.Name, "value", option.Label(split[1]));
-
 				foreach (var c in server.LobbyInfo.Clients)
 					c.State = Session.ClientState.NotReady;
 
@@ -767,28 +753,16 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var allOptions = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+				server.LobbyInfo.GlobalSettings.LobbyOptions = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
 					.Concat(server.Map.WorldActorInfo.TraitInfos<ILobbyOptions>())
-					.SelectMany(t => t.LobbyOptions(server.Map));
-
-				var options = new Dictionary<string, Session.LobbyOptionState>();
-				foreach (var o in allOptions)
-				{
-					if (o.DefaultValue != server.LobbyInfo.GlobalSettings.LobbyOptions[o.Id].Value)
-						server.SendFluentMessage(ValueChanged,
-							"player", client.Name,
-							"name", o.Name,
-							"value", o.Label(o.DefaultValue));
-
-					options[o.Id] = new Session.LobbyOptionState
+					.SelectMany(t => t.LobbyOptions(server.Map))
+					.ToDictionary(o => o.Id, o => new Session.LobbyOptionState
 					{
 						IsLocked = o.IsLocked,
 						Value = o.DefaultValue,
 						PreferredValue = o.DefaultValue
-					};
-				}
+					});
 
-				server.LobbyInfo.GlobalSettings.LobbyOptions = options;
 				server.SyncLobbyGlobalSettings();
 
 				foreach (var c in server.LobbyInfo.Clients)

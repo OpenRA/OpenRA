@@ -60,6 +60,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string ChatDisabled = "label-chat-disabled";
 
+		[FluentReference("name", "value")]
+		const string OptionValue = "notification-lobby-option";
+
+		[FluentReference("name", "value")]
+		const string OptionChanged = "notification-lobby-option-changed";
+
 		static readonly Action DoNothing = () => { };
 
 		readonly ModData modData;
@@ -108,6 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool resetOptionsButtonEnabled;
 		bool mapAvailable;
 		Dictionary<int, SpawnOccupant> spawnOccupants = [];
+		Dictionary<string, Session.LobbyOptionState> lobbyOptions = [];
 
 		readonly string chatLineSound;
 		readonly string playerJoinedSound;
@@ -672,6 +679,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var missionData = map.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
 				TextNotificationsManager.AddSystemLine(missionData.Briefing.Replace("\\n", "\n"));
+
+			var allOptions = map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+				.Concat(map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+				.SelectMany(t => t.LobbyOptions(map));
+
+			lobbyOptions = orderManager.LobbyInfo.GlobalSettings.LobbyOptions;
+			foreach (var o in allOptions)
+				if (lobbyOptions.TryGetValue(o.Id, out var s) && s.Value != o.DefaultValue)
+					TextNotificationsManager.AddSystemLine(OptionValue, "name", o.Name, "value", o.Label(s.Value));
 		}
 
 		void UpdateCurrentMap()
@@ -959,6 +975,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.OrderBy(o => o.DisplayOrder)
 				.ToArray();
 
+			var updated = orderManager.LobbyInfo.GlobalSettings.LobbyOptions;
+			foreach (var o in mapOptions)
+			{
+				var value = o.DefaultValue;
+				if (lobbyOptions.TryGetValue(o.Id, out var oo))
+					value = oo.Value;
+
+				var updatedValue = o.DefaultValue;
+				if (updated.TryGetValue(o.Id, out var uo))
+					updatedValue = uo.Value;
+
+				if (updatedValue != value)
+					TextNotificationsManager.AddSystemLine(OptionChanged, "name", o.Name, "value", o.Label(updatedValue));
+			}
+
+			lobbyOptions = updated;
 			resetOptionsButtonEnabled = mapOptions.Any(o => o.DefaultValue != serverOptions[o.Id].Value);
 		}
 

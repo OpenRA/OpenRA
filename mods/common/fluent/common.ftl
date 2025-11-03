@@ -29,7 +29,6 @@ notification-unknown-map = Map was not found on server.
 notification-searching-map = Searching for map on the Resource Center...
 notification-admin-change-configuration = Only the host can change the configuration.
 notification-changed-map = { $player } changed the map to { $map }.
-notification-option-changed = { $player } changed { $name } to { $value }.
 notification-you-were-kicked = You have been kicked from the server.
 notification-admin-kicked = { $admin } kicked { $player } from the server.
 notification-kicked = { $player } was kicked from the server.
@@ -57,7 +56,6 @@ notification-you-were-banned = You have been banned from the server.
 notification-you-were-temp-banned = You have been temporarily banned from the server.
 notification-game-full = The game is full.
 notification-new-admin = { $player } is now the admin.
-notification-option-locked = { $option } cannot be changed.
 notification-invalid-configuration-command = Invalid configuration command.
 notification-admin-option = Only the host can set that option.
 notification-error-number-teams = Could not parse the number of teams: { $raw }.
@@ -82,9 +80,6 @@ notification-blacklisted-server-name = Server name contains a blacklisted word.
 notification-requires-authentication = Server requires players to have an OpenRA forum account.
 notification-no-permission-to-join = You do not have permission to join this server.
 notification-slot-closed = Your slot was closed by the host.
-
-## LobbySettingsNotification
-notification-lobby-option = { $name }: { $value }.
 
 ## ServerOrders, UnitOrders
 notification-joined = { $player } has joined the game.
@@ -206,6 +201,10 @@ label-chat-availability =
 
 ## LobbyLogic, ServerListLogic
 label-bot-player = AI Player
+
+## LobbyLogic
+notification-lobby-option = { $name }: { $value }.
+notification-lobby-option-changed = { $name } changed to { $value }.
 
 ## IngameMenuLogic
 menu-ingame =
