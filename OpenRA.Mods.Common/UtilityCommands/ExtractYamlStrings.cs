@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
-			return true;
+			return args.Length <= 2;
 		}
 
-		[Desc("Extract fluent strings that are not yet localized.")]
+		[Desc("[FILENAME]", "Extract fluent strings that are not yet localized.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -46,6 +46,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					t => Utility.GetFields(t).Where(Utility.HasAttribute<FluentReferenceAttribute>).Select(f => f.Name).ToArray())
 				.Where(t => t.Value.Length > 0)
 				.ToDictionary(t => t.Key, t => t.Value);
+
+			// Extract from a specific map.
+			if (args.Length == 2)
+			{
+				var mapPath = args[1];
+				var resolved = Platform.ResolvePath(mapPath);
+
+				using (var package = (IReadWritePackage)modData.ModFiles.OpenPackage(resolved))
+					ExtractFromMap(package, modData, traitInfos);
+
+				return;
+			}
 
 			var modRules = UpdateUtils.LoadModYaml(modData, UpdateUtils.FilterExternalFiles(modData, modData.Manifest.Rules, []));
 
@@ -68,37 +80,39 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			ExtractFromFile(Path.Combine(fluentPackage.Name, "rules.ftl"), modRules, traitInfos);
 			modRules.Save();
 
-			// Extract from maps.
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
+				ExtractFromMap(package, modData, traitInfos);
+		}
+
+		static void ExtractFromMap(IReadWritePackage package, ModData modData, Dictionary<string, string[]> traitInfos)
+		{
+			using (var mapStream = package.GetStream("map.yaml"))
 			{
-				using (var mapStream = package.GetStream("map.yaml"))
+				if (mapStream == null)
+					return;
+
+				var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false).ToList());
+				var mapRules = new YamlFileSet() { (package, "map.yaml", yaml.Nodes) };
+
+				var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
+				if (mapRulesNode != null)
+					mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, []));
+
+				const string Mapftl = "map.ftl";
+				ExtractFromFile(Path.Combine(package.Name, Mapftl), mapRules, traitInfos, () =>
 				{
-					if (mapStream == null)
-						continue;
-
-					var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false).ToList());
-					var mapRules = new YamlFileSet() { (package, "map.yaml", yaml.Nodes) };
-
-					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
-					if (mapRulesNode != null)
-						mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, []));
-
-					const string Mapftl = "map.ftl";
-					ExtractFromFile(Path.Combine(package.Name, Mapftl), mapRules, traitInfos, () =>
+					var node = yaml.NodeWithKeyOrDefault("FluentMessages");
+					if (node != null)
 					{
-						var node = yaml.NodeWithKeyOrDefault("FluentMessages");
-						if (node != null)
-						{
-							var value = node.NodeValue<string[]>();
-							if (!value.Contains(Mapftl))
-								node.Value.Value = string.Join(", ", value.Concat([Mapftl]).ToArray());
-						}
-						else
-							yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentMessages", Mapftl));
-					});
+						var value = node.NodeValue<string[]>();
+						if (!value.Contains(Mapftl))
+							node.Value.Value = string.Join(", ", value.Concat([Mapftl]).ToArray());
+					}
+					else
+						yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentMessages", Mapftl));
+				});
 
-					mapRules.Save();
-				}
+				mapRules.Save();
 			}
 		}
 
