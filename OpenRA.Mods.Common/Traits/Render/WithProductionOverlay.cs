@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithProductionOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
 	{
 		[Desc("Queues that should be producing for this overlay to render.")]
-		public readonly FrozenSet<string> Queues = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Queues = [];
 
 		[SequenceReference]
 		[Desc("Sequence name to use")]

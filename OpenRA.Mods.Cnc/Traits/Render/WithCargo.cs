@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public readonly ImmutableArray<WVec> LocalOffset = [WVec.Zero];
 
 		[Desc("Passenger CargoType to display.")]
-		public readonly FrozenSet<string> DisplayTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> DisplayTypes = [];
 
 		public override object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}

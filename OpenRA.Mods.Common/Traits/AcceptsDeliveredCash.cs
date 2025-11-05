@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AcceptsDeliveredCashInfo : TraitInfo
 	{
 		[Desc("Accepted `DeliversCash` types. Leave empty to accept all types.")]
-		public readonly FrozenSet<string> ValidTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ValidTypes = [];
 
 		[Desc("Player relationships the owner of the delivering actor needs.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;

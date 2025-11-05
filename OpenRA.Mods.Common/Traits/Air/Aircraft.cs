@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
 
-		public readonly FrozenSet<string> LandableTerrainTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> LandableTerrainTypes = [];
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;

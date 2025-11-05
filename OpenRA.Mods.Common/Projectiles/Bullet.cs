@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly string BounceSound = null;
 
 		[Desc("Terrain where the projectile explodes instead of bouncing.")]
-		public readonly FrozenSet<string> InvalidBounceTerrain = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> InvalidBounceTerrain = [];
 
 		[Desc("Trigger the explosion if the projectile touches an actor thats owner has these player relationships.")]
 		public readonly PlayerRelationship ValidBounceBlockerRelationships = PlayerRelationship.Enemy | PlayerRelationship.Neutral;

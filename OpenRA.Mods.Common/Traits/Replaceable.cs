@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Replacement types this Replaceable actor accepts.")]
-		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Types = [];
 
 		public override object Create(ActorInitializer init) { return new Replaceable(this); }
 	}

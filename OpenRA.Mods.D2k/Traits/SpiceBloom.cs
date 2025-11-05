@@ -38,7 +38,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string ResourceType = "Spice";
 
 		[Desc("Spice blooms only grow on these terrain types.")]
-		public readonly FrozenSet<string> GrowthTerrainTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> GrowthTerrainTypes = [];
 
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]

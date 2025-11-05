@@ -20,20 +20,20 @@ namespace OpenRA.Mods.Common.Traits
 	public class ResourceMapBotModuleInfo : ConditionalTraitInfo, NotBefore<IResourceLayerInfo>
 	{
 		[Desc("Harvestable and valuable resource types.")]
-		public readonly FrozenSet<string> ValuableResourceTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ValuableResourceTypes = [];
 
 		[Desc("Tells the AI what types are considered resource creator.")]
-		public readonly FrozenSet<string> ResourceCreatorTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ResourceCreatorTypes = [];
 
 		[Desc($"Actor types that are considered refineries for {nameof(HarvesterTypes)}.")]
-		public readonly FrozenSet<string> RefineryTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> RefineryTypes = [];
 
 		[Desc($"Actor types that are considered harvesters for {nameof(ValuableResourceTypes)}.")]
-		public readonly FrozenSet<string> HarvesterTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> HarvesterTypes = [];
 
 		[Desc("Actor types that are considered to be the base building for expansion. Other enemy units will also be recorded",
 			"Defence and production building is suggested")]
-		public readonly FrozenSet<string> EnemyBaseBuildingTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> EnemyBaseBuildingTypes = [];
 
 		[Desc("Delay (in ticks) for updating the indicies.")]
 		public readonly int UpdateResourceMapInverval = 67;

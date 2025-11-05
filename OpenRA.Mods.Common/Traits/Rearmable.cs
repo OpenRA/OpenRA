@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		[FieldLoader.Require]
 		[Desc("Actors that this actor can dock to and get rearmed by.")]
-		public readonly FrozenSet<string> RearmActors = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> RearmActors = [];
 
 		[Desc("Name(s) of AmmoPool(s) that use this trait to rearm.")]
 		public readonly FrozenSet<string> AmmoPools = new HashSet<string> { "primary" }.ToFrozenSet();

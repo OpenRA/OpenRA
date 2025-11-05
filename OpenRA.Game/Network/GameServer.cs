@@ -136,7 +136,7 @@ namespace OpenRA.Network
 		public readonly ImmutableArray<GameClient> Clients;
 
 		/// <summary>The list of spawnpoints that are disabled for this game.</summary>
-		public readonly FrozenSet<int> DisabledSpawnPoints = FrozenSet<int>.Empty;
+		public readonly FrozenSet<int> DisabledSpawnPoints = [];
 
 		public string ModLabel => $"{ModTitle} ({Version})";
 
@@ -231,7 +231,7 @@ namespace OpenRA.Network
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);
 			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Count > 0;
 			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToImmutableArray();
-			DisabledSpawnPoints = server.LobbyInfo.DisabledSpawnPoints?.ToFrozenSet() ?? FrozenSet<int>.Empty;
+			DisabledSpawnPoints = server.LobbyInfo.DisabledSpawnPoints?.ToFrozenSet() ?? [];
 		}
 
 		public string ToPOSTData(bool lanGame)

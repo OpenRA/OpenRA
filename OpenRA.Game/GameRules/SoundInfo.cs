@@ -24,8 +24,8 @@ namespace OpenRA.GameRules
 		public readonly FrozenDictionary<string, ImmutableArray<string>> Notifications = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 		public readonly string DefaultVariant = ".aud";
 		public readonly string DefaultPrefix = "";
-		public readonly FrozenSet<string> DisableVariants = FrozenSet<string>.Empty;
-		public readonly FrozenSet<string> DisablePrefixes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> DisableVariants = [];
+		public readonly FrozenSet<string> DisablePrefixes = [];
 
 		public readonly Lazy<FrozenDictionary<string, SoundPool>> VoicePools;
 		public readonly Lazy<FrozenDictionary<string, SoundPool>> NotificationsPools;

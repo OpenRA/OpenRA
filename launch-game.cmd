@@ -18,11 +18,11 @@ goto choosemod
 
 :launchmod
 cd %~dp0%
-bin\OpenRA.exe Engine.EngineDir=".." Engine.LaunchPath="%~dpf0" Game.Mod=%mod% %*
+dotnet bin\OpenRA.dll -- Engine.EngineDir=".." Engine.LaunchPath="%~dpf0" Game.Mod=%mod% %*
 goto end
 :launch
 cd %~dp0%
-bin\OpenRA.exe Engine.EngineDir=".." Engine.LaunchPath="%~dpf0" %*
+dotnet bin\OpenRA.dll -- Engine.EngineDir=".." Engine.LaunchPath="%~dpf0" %*
 
 :end
 if %errorlevel% neq 0 goto crashdialog

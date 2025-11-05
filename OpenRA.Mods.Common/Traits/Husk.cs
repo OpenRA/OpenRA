@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
 	public class HuskInfo : TraitInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo, IRulesetLoaded
 	{
-		public readonly FrozenSet<string> AllowedTerrain = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> AllowedTerrain = [];
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly WAngle PreviewFacing = new(384);

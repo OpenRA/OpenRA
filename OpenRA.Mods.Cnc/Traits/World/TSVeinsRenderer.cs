@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[ActorReference]
 		[Desc("Actor types that should be treated as veins for adjacency.")]
-		public readonly FrozenSet<string> VeinholeActors = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> VeinholeActors = [];
 
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{

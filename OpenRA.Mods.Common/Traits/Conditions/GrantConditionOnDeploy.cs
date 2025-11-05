@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string DeployedCondition = null;
 
 		[Desc("The terrain types that this actor can deploy on. Leave empty to allow any.")]
-		public readonly FrozenSet<string> AllowedTerrainTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> AllowedTerrainTypes = [];
 
 		[Desc("Can this actor deploy on slopes?")]
 		public readonly bool CanDeployOnRamps = false;

@@ -23,28 +23,28 @@ namespace OpenRA.Mods.Common.Traits
 	public class BaseBuilderBotModuleInfo : ConditionalTraitInfo, NotBefore<ResourceMapBotModuleInfo>, NotBefore<IResourceLayerInfo>
 	{
 		[Desc("Tells the AI what building types are considered construction yards.")]
-		public readonly FrozenSet<string> ConstructionYardTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ConstructionYardTypes = [];
 
 		[Desc("Tells the AI what building types are considered refineries.")]
-		public readonly FrozenSet<string> RefineryTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> RefineryTypes = [];
 
 		[Desc("Tells the AI what building types are considered power plants.")]
-		public readonly FrozenSet<string> PowerTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> PowerTypes = [];
 
 		[Desc("Tells the AI what building types are considered production facilities.")]
-		public readonly FrozenSet<string> ProductionTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ProductionTypes = [];
 
 		[Desc("Tells the AI what building types are considered tech buildings.")]
-		public readonly FrozenSet<string> TechTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> TechTypes = [];
 
 		[Desc("Tells the AI what building types are considered naval production facilities.")]
-		public readonly FrozenSet<string> NavalProductionTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> NavalProductionTypes = [];
 
 		[Desc("Tells the AI what building types are considered silos (resource storage).")]
-		public readonly FrozenSet<string> SiloTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> SiloTypes = [];
 
 		[Desc("Tells the AI what building types are considered defenses.")]
-		public readonly FrozenSet<string> DefenseTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> DefenseTypes = [];
 
 		[Desc("Production queues AI uses for buildings.")]
 		public readonly FrozenSet<string> BuildingQueues = new HashSet<string> { "Building" }.ToFrozenSet();

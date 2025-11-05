@@ -25,27 +25,27 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[Desc("Actor types that are valid for naval squads.")]
-		public readonly FrozenSet<string> NavalUnitsTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> NavalUnitsTypes = [];
 
 		[ActorReference]
 		[Desc("Actor types that are excluded from ground attacks.")]
-		public readonly FrozenSet<string> AirUnitsTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> AirUnitsTypes = [];
 
 		[ActorReference]
 		[Desc("Actor types that should generally be excluded from attack squads.")]
-		public readonly FrozenSet<string> ExcludeFromSquadsTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ExcludeFromSquadsTypes = [];
 
 		[ActorReference]
 		[Desc("Actor types that are considered construction yards (base builders).")]
-		public readonly FrozenSet<string> ConstructionYardTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ConstructionYardTypes = [];
 
 		[ActorReference]
 		[Desc("Enemy building types around which to scan for targets for naval squads.")]
-		public readonly FrozenSet<string> NavalProductionTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> NavalProductionTypes = [];
 
 		[ActorReference]
 		[Desc("Own actor types that are prioritized when defending.")]
-		public readonly FrozenSet<string> ProtectionTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ProtectionTypes = [];
 
 		[Desc("Target types are used for identifying aircraft.")]
 		public readonly BitSet<TargetableType> AircraftTargetType = new("Air");

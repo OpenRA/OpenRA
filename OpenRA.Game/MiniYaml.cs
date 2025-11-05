@@ -423,7 +423,7 @@ namespace OpenRA
 
 			// Resolve any top-level removals (e.g. removing whole actor blocks)
 			var nodes = new MiniYaml("", resolved.Select(kv => new MiniYamlNode(kv.Key, kv.Value)));
-			var result = ResolveInherits(nodes, tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation>.Empty);
+			var result = ResolveInherits(nodes, tree, []);
 			return result as List<MiniYamlNode> ?? result.ToList();
 		}
 

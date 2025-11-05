@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[ActorReference]
 		[Desc("Actor types that should be treated as veins for adjacency.")]
-		public readonly FrozenSet<string> VeinholeActors = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> VeinholeActors = [];
 
 		public override object Create(ActorInitializer init) { return new TSResourceLayer(init.Self, this); }
 	}

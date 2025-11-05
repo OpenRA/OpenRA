@@ -25,10 +25,10 @@ namespace OpenRA
 		[FluentReference]
 		public readonly string Description = "";
 
-		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Types = [];
 
 		[FluentReference]
-		public readonly FrozenSet<string> Contexts = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Contexts = [];
 
 		public readonly bool Readonly = false;
 		public bool HasDuplicates { get; internal set; }

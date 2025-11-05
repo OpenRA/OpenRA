@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ImmutableArray<string> Prerequisites = [];
 
 		[Desc("Production queue(s) that can produce this.")]
-		public readonly FrozenSet<string> Queue = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Queue = [];
 
 		[Desc("Override the production structure type (from the Production Produces list) that this unit should be built at.")]
 		public readonly string BuildAtProductionType = null;
