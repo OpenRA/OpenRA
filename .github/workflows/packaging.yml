@@ -64,10 +64,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v7
 
-      - name: Install .NET 8.0
+      - name: Install .NET 10.0
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Prepare Environment
         run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
@@ -93,10 +93,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v7
 
-      - name: Install .NET 8.0
+      - name: Install .NET 10.0
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Prepare Environment
         run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
@@ -127,10 +127,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v7
 
-      - name: Install .NET 8.0
+      - name: Install .NET 10.0
         uses: actions/setup-dotnet@v6
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Prepare Environment
         run: |
