@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
-		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Factions = [];
 
 		public override object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
 	}

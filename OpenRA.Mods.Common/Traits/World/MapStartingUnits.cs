@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string ClassName = "Unlabeled";
 
 		[Desc("Only available when selecting one of these factions.", "Leave empty for no restrictions.")]
-		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Factions = [];
 
 		[Desc("The actor at the center, usually the mobile construction vehicle.")]
 		[ActorReference]

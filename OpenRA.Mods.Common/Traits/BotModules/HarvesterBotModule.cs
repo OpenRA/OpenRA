@@ -25,10 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Actor types that are considered harvesters. If harvester count drops below RefineryTypes count, a new harvester is built.",
 			"Leave empty to disable harvester replacement. Currently only needed by harvester replacement system.")]
-		public readonly FrozenSet<string> HarvesterTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> HarvesterTypes = [];
 
 		[Desc("Actor types that are counted as refineries. Currently only needed by harvester replacement system.")]
-		public readonly FrozenSet<string> RefineryTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> RefineryTypes = [];
 
 		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
 		public readonly int ScanForIdleHarvestersInterval = 50;

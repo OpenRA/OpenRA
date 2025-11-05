@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Replacement type (matched against Types in Replaceable).")]
-		public readonly FrozenSet<string> ReplaceableTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ReplaceableTypes = [];
 	}
 
 	public class Replacement { }

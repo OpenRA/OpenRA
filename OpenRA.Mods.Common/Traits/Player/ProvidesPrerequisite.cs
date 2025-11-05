@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ImmutableArray<string> RequiresPrerequisites = [];
 
 		[Desc("Only grant this prerequisite for certain factions.")]
-		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Factions = [];
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;

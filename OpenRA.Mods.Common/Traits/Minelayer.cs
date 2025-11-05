@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string TileUnknownName = "build-unknown";
 
 		[Desc("Only allow laying mines on listed terrain types. Leave empty to allow all terrain types.")]
-		public readonly FrozenSet<string> TerrainTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> TerrainTypes = [];
 
 		[CursorReference]
 		[Desc("Cursor to display when able to lay a mine.")]

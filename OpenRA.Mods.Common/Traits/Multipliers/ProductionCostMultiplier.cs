@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ImmutableArray<string> Prerequisites = [];
 
 		[Desc("Queues that this cost will apply.")]
-		public readonly FrozenSet<string> Queue = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Queue = [];
 
 		int IProductionCostModifierInfo.GetProductionCostModifier(TechTree techTree, string queue)
 		{

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("Which factions this crate action can occur for.")]
-		public readonly FrozenSet<string> ValidFactions = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ValidFactions = [];
 
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;

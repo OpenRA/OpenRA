@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Types = [];
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

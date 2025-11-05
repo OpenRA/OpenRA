@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	sealed class LightPaletteRotatorInfo : TraitInfo
 	{
 		[Desc("Palettes this effect should not apply to.")]
-		public readonly FrozenSet<string> ExcludePalettes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ExcludePalettes = [];
 
 		[Desc("'Speed' at which the effect cycles through palette indices.")]
 		public readonly float TimeStep = .5f;

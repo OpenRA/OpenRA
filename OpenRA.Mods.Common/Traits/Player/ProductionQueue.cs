@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Group = null;
 
 		[Desc("Only enable this queue for certain factions.")]
-		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Factions = [];
 
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;

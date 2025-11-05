@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxWeight = 0;
 
 		[Desc("`Passenger.CargoType`s that can be loaded into this actor.")]
-		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Types = [];
 
 		[Desc("A list of actor types that are initially spawned into this actor.")]
 		public readonly ImmutableArray<string> InitialUnits = [];
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool EjectOnDeath = false;
 
 		[Desc("Terrain types that this actor is allowed to eject actors onto. Leave empty for all terrain types.")]
-		public readonly FrozenSet<string> UnloadTerrainTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> UnloadTerrainTypes = [];
 
 		[VoiceReference]
 		[Desc("Voice to play when ordered to unload the passengers.")]

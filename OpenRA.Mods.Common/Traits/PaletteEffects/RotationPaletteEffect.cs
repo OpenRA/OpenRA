@@ -23,17 +23,17 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Defines to which palettes this effect should be applied to.",
 			"If none specified, it applies to all palettes not explicitly excluded.")]
-		public readonly FrozenSet<string> Palettes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Palettes = [];
 
 		[Desc("Defines for which tileset IDs this effect should be loaded.",
 			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
-		public readonly FrozenSet<string> Tilesets = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Tilesets = [];
 
 		[Desc("Defines which palettes should be excluded from this effect.")]
-		public readonly FrozenSet<string> ExcludePalettes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ExcludePalettes = [];
 
 		[Desc("Don't apply the effect for these tileset IDs.")]
-		public readonly FrozenSet<string> ExcludeTilesets = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ExcludeTilesets = [];
 
 		[Desc("Palette index of first RotationRange color.")]
 		public readonly int RotationBase = 0x60;

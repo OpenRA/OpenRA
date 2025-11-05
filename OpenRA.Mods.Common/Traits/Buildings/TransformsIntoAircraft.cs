@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[FieldLoader.Require]
-		public readonly FrozenSet<string> DockActors = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> DockActors = [];
 
 		[VoiceReference]
 		public readonly string Voice = "Action";

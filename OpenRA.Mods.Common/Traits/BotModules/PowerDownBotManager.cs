@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Interval = 150;
 
 		[Desc("Actors that allow this module to toggle")]
-		public readonly FrozenSet<string> PowerDownTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> PowerDownTypes = [];
 
 		[Desc("Order used by " + nameof(ToggleConditionOnOrderInfo) + " for powerdown on toggled actor.")]
 		public readonly string PowerDownOrder = "PowerDown";

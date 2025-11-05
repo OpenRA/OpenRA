@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly WDist DistanceAboveTerrain = new(756);
 
 		[Desc("Only play on these terrain types.")]
-		public readonly FrozenSet<string> TerrainTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> TerrainTypes = [];
 
 		public override object Create(ActorInitializer init) { return new WithAircraftLandingEffect(this); }
 	}

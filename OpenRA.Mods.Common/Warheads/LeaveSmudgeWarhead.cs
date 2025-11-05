@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly ImmutableArray<int> Size = [0, 0];
 
 		[Desc("Type of smudge to apply to terrain.")]
-		public readonly FrozenSet<string> SmudgeType = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> SmudgeType = [];
 
 		[Desc("Percentage chance the smudge is created.")]
 		public readonly int Chance = 100;

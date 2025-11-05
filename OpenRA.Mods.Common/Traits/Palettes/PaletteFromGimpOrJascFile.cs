@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Defines for which tileset IDs this palette should be loaded.",
 			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
-		public readonly FrozenSet<string> Tilesets = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Tilesets = [];
 
 		[Desc("Don't load palette for these tileset IDs.")]
-		public readonly FrozenSet<string> ExcludeTilesets = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ExcludeTilesets = [];
 
 		[FieldLoader.Require]
 		[Desc("Name of the file to load.")]

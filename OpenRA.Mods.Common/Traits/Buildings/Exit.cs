@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle? Facing = null;
 
 		[Desc("Type tags on this exit.")]
-		public readonly FrozenSet<string> ProductionTypes = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> ProductionTypes = [];
 
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;

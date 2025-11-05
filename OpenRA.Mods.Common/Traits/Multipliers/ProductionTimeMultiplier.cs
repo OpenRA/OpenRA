@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ImmutableArray<string> Prerequisites = [];
 
 		[Desc("Queues that this time will apply.")]
-		public readonly FrozenSet<string> Queue = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Queue = [];
 
 		int IProductionTimeModifierInfo.GetProductionTimeModifier(TechTree techTree, string queue)
 		{

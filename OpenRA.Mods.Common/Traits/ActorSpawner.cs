@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ActorSpawnerInfo : ConditionalTraitInfo
 	{
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> Types = [];
 
 		public override object Create(ActorInitializer init) { return new ActorSpawner(this); }
 	}

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[FieldLoader.Require]
-		public readonly FrozenSet<string> RepairActors = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> RepairActors = [];
 
 		public readonly WDist CloseEnough = WDist.FromCells(4);
 
