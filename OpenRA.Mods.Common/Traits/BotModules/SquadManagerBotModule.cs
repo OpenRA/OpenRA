@@ -115,6 +115,8 @@ namespace OpenRA.Mods.Common.Traits
 			return randomConstructionYard?.Location ?? initialBaseCenter;
 		}
 
+		const int MaxRespondToAttackCooldown = 30;
+
 		public readonly World World;
 		public readonly Player Player;
 
@@ -134,11 +136,13 @@ namespace OpenRA.Mods.Common.Traits
 		List<Actor> unitsHangingAroundTheBase = [];
 		CPos initialBaseCenter;
 
+		Actor protectFrom;
+
 		int rushTicks;
 		int assignRolesTicks;
 		int attackForceTicks;
 		int minAttackForceDelayTicks;
-		int respondToAttackCooldown = 30; // prevent too many responses to the same wave of attacks
+		int respondToAttackCooldown = MaxRespondToAttackCooldown; // prevent too many responses to the same wave of attacks
 
 		public SquadManagerBotModule(Actor self, SquadManagerBotModuleInfo info)
 			: base(info)
@@ -203,8 +207,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
-			respondToAttackCooldown--;
-
 			AssignRolesToIdleUnits(bot);
 		}
 
@@ -374,6 +376,9 @@ namespace OpenRA.Mods.Common.Traits
 				minAttackForceDelayTicks = Info.MinimumAttackForceDelay;
 				CreateAttackForce(bot);
 			}
+
+			if (respondToAttackCooldown-- == MaxRespondToAttackCooldown)
+				ProtectOwn(bot, protectFrom);
 		}
 
 		void FindNewUnits(IBot bot)
@@ -490,6 +495,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ProtectOwn(IBot bot, Actor attacker)
 		{
+			if (!IsPreferredEnemyUnit(attacker))
+				return;
+
 			foreach (var s in Squads)
 			{
 				if (s.IsValid && FindEnemies([attacker], s.Units.First()).Any()
@@ -499,14 +507,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			var protectSq = GetSquadOfType(SquadType.Protection);
 			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
-			protectSq.Units.RemoveWhere(unitCannotBeOrdered);
 
 			var unusedUnits = new List<Actor>();
 			foreach (var a in unitsHangingAroundTheBase)
 			{
-				if (unitCannotBeOrdered(a))
-					continue;
-				else if (a.Info.HasTraitInfo<AircraftInfo>())
+				if (a.Info.HasTraitInfo<AircraftInfo>() && !Info.AirUnitsTypes.Contains(a.Info.Name))
 				{
 					protectSq.Units.Add(a);
 					continue;
@@ -545,11 +550,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (respondToAttackCooldown > 0 || !Info.ProtectionTypes.Contains(self.Info.Name) || !IsPreferredEnemyUnit(e.Attacker))
 				return;
 
-			respondToAttackCooldown = 20;
+			respondToAttackCooldown = MaxRespondToAttackCooldown;
 			foreach (var n in notifyPositionsUpdated)
 				n.UpdatedDefenseCenter(e.Attacker.Location);
 
-			ProtectOwn(bot, e.Attacker);
+			protectFrom = e.Attacker;
 		}
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
