@@ -431,6 +431,7 @@ IRON:
 		HasMinibib: true
 	GrantExternalConditionPower@IRONCURTAIN:
 		PauseOnCondition: disabled
+		OrderName: ironcurtain
 		Icon: invuln
 		ChargeInterval: 3000
 		Name: actor-iron.grantexternalconditionpower-ironcurtain-name

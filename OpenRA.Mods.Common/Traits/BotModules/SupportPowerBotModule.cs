@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.LoadUsing(nameof(LoadDecisions))]
 		public readonly ImmutableArray<SupportPowerDecision> Decisions = [];
 
+		[Desc("The interval of checking support powers when attacked.")]
+		public int RespondToAttackCoolDown = 31;
+
 		static object LoadDecisions(MiniYaml yaml)
 		{
 			var ret = new List<SupportPowerDecision>();
@@ -38,14 +41,16 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SupportPowerBotModule(init.Self, this); }
 	}
 
-	public class SupportPowerBotModule : ConditionalTrait<SupportPowerBotModuleInfo>, IBotTick, IGameSaveTraitData
+	public class SupportPowerBotModule : ConditionalTrait<SupportPowerBotModuleInfo>, IBotTick, IBotRespondToAttack, IGameSaveTraitData
 	{
 		readonly World world;
 		readonly Player player;
 		readonly Dictionary<SupportPowerInstance, int> waitingPowers = [];
 		readonly Dictionary<string, SupportPowerDecision> powerDecisions = [];
+		readonly Dictionary<string, SupportPowerDecision> powerDecisionsWhenAttacked = [];
 		readonly List<SupportPowerInstance> stalePowers = [];
 		SupportPowerManager supportPowerManager;
+		int attackedcooldown;
 
 		public SupportPowerBotModule(Actor self, SupportPowerBotModuleInfo info)
 			: base(info)
@@ -62,11 +67,30 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self)
 		{
 			foreach (var decision in Info.Decisions)
-				powerDecisions.Add(decision.OrderName, decision);
+			{
+				switch (decision.DecisionMode)
+				{
+					case BotSupportPowerTriggerMode.OnAttacked:
+						powerDecisionsWhenAttacked.Add(decision.OrderName, decision);
+						break;
+
+					case BotSupportPowerTriggerMode.Periodically:
+						powerDecisions.Add(decision.OrderName, decision);
+						break;
+
+					default:
+						break;
+				}
+			}
 		}
 
 		void IBotTick.BotTick(IBot bot)
 		{
+			attackedcooldown--;
+
+			// We only check one support power per tick, as the support power check here is expensive,
+			// which will go through all map cells in coarse and fine scans.
+			var supportPowerNotChecked = true;
 			foreach (var sp in supportPowerManager.Powers.Values)
 			{
 				if (sp.Disabled)
@@ -74,47 +98,138 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Add power to dictionary if not in delay dictionary yet
 				waitingPowers.TryAdd(sp, 0);
-
 				if (waitingPowers[sp] > 0)
 					waitingPowers[sp]--;
 
 				// If we have recently tried and failed to find a use location for a power, then do not try again until later
-				var isDelayed = waitingPowers[sp] > 0;
-				if (sp.Ready && !isDelayed && powerDecisions.TryGetValue(sp.Info.OrderName, out var powerDecision))
+				if (supportPowerNotChecked && sp.Ready && waitingPowers[sp] <= 0 && powerDecisions.TryGetValue(sp.Info.OrderName, out var powerDecision))
 				{
-					if (powerDecision == null)
+					var strategyName = powerDecision.GetRandomStrategy(world.LocalRandom.Next());
+
+					WPos? targetPosition = null;
+					WPos? extraPosition = null;
+					Actor actorNeedsPosition = null;
+					supportPowerNotChecked = false;
+					waitingPowers[sp] += powerDecision.GetNextScanTime(world, Info.Decisions.Length);
+
+					if (powerDecision.CheckTargetLocationFirst)
 					{
-						AIUtils.BotDebug($"{player.ResolvedPlayerName} couldn't find powerDecision for {sp.Info.OrderName}");
-						continue;
+						if (powerDecision.NeedsConsiderTargetPosition(strategyName))
+						{
+							var targetLocation = FindCoarseAttackLocationToSupportPower(powerDecision, strategyName, false);
+							if (targetLocation == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable coarse target location for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+
+							// Found a target location, check for precise target
+							(targetPosition, actorNeedsPosition) = FindFineAttackPositionToSupportPower(powerDecision, targetLocation.Value, strategyName, false);
+							if (targetPosition == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final target position for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+						}
+
+						if (powerDecision.NeedsConsiderExtraLocation(strategyName))
+						{
+							if (actorNeedsPosition == null && powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor)
+							{
+								AIUtils.BotDebug(
+									$"{player.ResolvedPlayerName} can't find suitable target location actor for extra location for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+
+							var extraLocation = FindCoarseAttackLocationToSupportPower(powerDecision, strategyName, true);
+							if (extraLocation == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable coarse extra location for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+
+							// Found a target location, check for precise target
+							(extraPosition, _) = FindFineAttackPositionToSupportPower(powerDecision, extraLocation.Value, strategyName, true, actorNeedsPosition);
+							if (extraPosition == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final extra position for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+						}
 					}
-
-					var attackLocation = FindCoarseAttackLocationToSupportPower(sp);
-					if (attackLocation == null)
+					else
 					{
-						AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable coarse attack location for support power {sp.Info.OrderName}. Delaying rescan.");
-						waitingPowers[sp] += powerDecision.GetNextScanTime(world);
+						if (powerDecision.NeedsConsiderExtraLocation(strategyName))
+						{
+							var extraLocation = FindCoarseAttackLocationToSupportPower(powerDecision, strategyName, true);
+							if (extraLocation == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable coarse extra location for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
 
-						continue;
-					}
+							// Found a target location, check for precise target
+							(extraPosition, actorNeedsPosition) = FindFineAttackPositionToSupportPower(powerDecision, extraLocation.Value, strategyName, true);
+							if (extraPosition == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final extra position for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+						}
 
-					// Found a target location, check for precise target
-					attackLocation = FindFineAttackLocationToSupportPower(sp, (CPos)attackLocation);
-					if (attackLocation == null)
-					{
-						AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final attack location for support power {sp.Info.OrderName}. Delaying rescan.");
-						waitingPowers[sp] += powerDecision.GetNextScanTime(world);
+						if (powerDecision.NeedsConsiderTargetPosition(strategyName))
+						{
+							if (actorNeedsPosition == null && powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor)
+							{
+								AIUtils.BotDebug(
+									$"{player.ResolvedPlayerName} can't find suitable extra location actor for target location for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
 
-						continue;
+							var targetLocation = FindCoarseAttackLocationToSupportPower(powerDecision, strategyName, false);
+							if (targetLocation == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable coarse target location for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+
+							// Found a target location, check for precise target
+							(targetPosition, _) = FindFineAttackPositionToSupportPower(powerDecision, targetLocation.Value, strategyName, false, actorNeedsPosition);
+							if (targetPosition == null)
+							{
+								AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final target position for support power {sp.Info.OrderName}. Delaying rescan.");
+								continue;
+							}
+						}
 					}
 
 					// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
-					AIUtils.BotDebug($"{player.ResolvedPlayerName} found new target location {attackLocation} for support power {sp.Info.OrderName}.");
-					waitingPowers[sp] += 10;
+					AIUtils.BotDebug($"{player.ResolvedPlayerName} found new target position {(targetPosition != null ? targetPosition.Value.ToString() : "null")}" +
+						$"and extra location {(extraPosition != null ? extraPosition.Value.ToString() : "null")} for support power {sp.Info.OrderName}.");
+
+					var order = new Order(sp.Key, supportPowerManager.Self, false);
+
+					if (powerDecision.NeedsConsiderTargetPosition(strategyName))
+					{
+						if (targetPosition != null)
+							order = new Order(sp.Key, supportPowerManager.Self, Target.FromPos(targetPosition.Value), false);
+						else
+							continue;
+					}
+
+					order.SuppressVisualFeedback = true;
+					order.ExtraData = powerDecision.ExtraData;
+
+					if (powerDecision.NeedsConsiderExtraLocation(strategyName))
+					{
+						if (extraPosition != null)
+							order.ExtraLocation = world.Map.CellContaining(extraPosition.Value);
+						else
+							continue;
+					}
 
 					// Note: SelectDirectionalTarget uses uint.MaxValue in ExtraData to indicate that the player did not pick a direction.
-					bot.QueueOrder(
-						new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false)
-						{ SuppressVisualFeedback = true, ExtraData = uint.MaxValue });
+					bot.QueueOrder(order);
 				}
 			}
 
@@ -126,15 +241,130 @@ namespace OpenRA.Mods.Common.Traits
 			stalePowers.Clear();
 		}
 
-		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
-		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower)
+		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
 		{
-			var powerDecision = powerDecisions[readyPower.Info.OrderName];
-			if (powerDecision == null)
+			// Only consider enmey attack
+			if (attackedcooldown < 0 && self != null && !self.IsDead && self.IsInWorld && e.Attacker.AppearsHostileTo(self))
 			{
-				AIUtils.BotDebug($"{player.ResolvedPlayerName} couldn't find powerDecision for {readyPower.Info.OrderName}");
-				return null;
+				attackedcooldown = Info.RespondToAttackCoolDown;
+				foreach (var sp in supportPowerManager.Powers.Values)
+				{
+					// Note: We only check one support power per tick, as the support power check here may be expensive
+					if (!sp.Disabled && sp.Ready && waitingPowers[sp] <= 0 && powerDecisionsWhenAttacked.TryGetValue(sp.Info.OrderName, out var powerDecision))
+					{
+						// Add power to dictionary if not in delay dictionary yet
+						waitingPowers.TryAdd(sp, 0);
+
+						var strategyName = powerDecision.GetRandomStrategy(world.LocalRandom.Next());
+
+						if (strategyName != null && powerDecision.GetAttractiveness(self, player, strategyName) <= 0)
+							continue;
+
+						waitingPowers[sp] += powerDecision.GetNextScanTime(world, Info.Decisions.Length);
+
+						WPos? targetPosition = null;
+						WPos? extraPosition = null;
+						Actor actorNeedsPosition = null;
+
+						// Found a target location, check for precise target
+						if (powerDecision.CheckTargetLocationFirst)
+						{
+							if (powerDecision.NeedsConsiderTargetPosition(strategyName))
+							{
+								(targetPosition, actorNeedsPosition) = FindFineAttackPositionToSupportPower(powerDecision, self.Location, strategyName, false);
+								if (targetPosition == null)
+								{
+									AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final target position for support power {sp.Info.OrderName}. Delaying rescan.");
+									break;
+								}
+							}
+
+							if (powerDecision.NeedsConsiderExtraLocation(strategyName))
+							{
+								if (actorNeedsPosition == null && powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor)
+								{
+									AIUtils.BotDebug(
+										$"{player.ResolvedPlayerName} can't find suitable target location actor for extra location for support power {sp.Info.OrderName}. Delaying rescan.");
+									break;
+								}
+
+								(extraPosition, _) = FindFineAttackPositionToSupportPower(powerDecision, self.Location, strategyName, true, actorNeedsPosition);
+								if (extraPosition == null)
+								{
+									AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final extra position for support power {sp.Info.OrderName}. Delaying rescan.");
+									break;
+								}
+							}
+						}
+						else
+						{
+							if (powerDecision.NeedsConsiderExtraLocation(strategyName))
+							{
+								(extraPosition, actorNeedsPosition) = FindFineAttackPositionToSupportPower(powerDecision, self.Location, strategyName, true);
+								if (extraPosition == null)
+								{
+									AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final extra position for support power {sp.Info.OrderName}. Delaying rescan.");
+									break;
+								}
+							}
+
+							if (powerDecision.NeedsConsiderTargetPosition(strategyName))
+							{
+								if (actorNeedsPosition == null && powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor)
+								{
+									AIUtils.BotDebug(
+										$"{player.ResolvedPlayerName} can't find suitable extra location actor for target location for support power {sp.Info.OrderName}. Delaying rescan.");
+									break;
+								}
+
+								(targetPosition, _) = FindFineAttackPositionToSupportPower(powerDecision, self.Location, strategyName, false, actorNeedsPosition);
+								if (targetPosition == null)
+								{
+									AIUtils.BotDebug($"{player.ResolvedPlayerName} can't find suitable final target position for support power {sp.Info.OrderName}. Delaying rescan.");
+									break;
+								}
+							}
+						}
+
+						// Valid target found, delay by a few ticks to avoid rescanning before power fires via order
+						AIUtils.BotDebug($"{player.ResolvedPlayerName} found new target position {(targetPosition != null ? targetPosition.Value.ToString() : "null")}" +
+							$"and extra location {(extraPosition != null ? extraPosition.Value.ToString() : "null")} for support power {sp.Info.OrderName}.");
+
+						var order = new Order(sp.Key, supportPowerManager.Self, false);
+
+						if (powerDecision.NeedsConsiderTargetPosition(strategyName))
+						{
+							if (targetPosition != null)
+								order = new Order(sp.Key, supportPowerManager.Self, Target.FromPos(targetPosition.Value), false);
+							else
+								continue;
+						}
+
+						order.SuppressVisualFeedback = true;
+						order.ExtraData = powerDecision.ExtraData;
+
+						if (powerDecision.NeedsConsiderExtraLocation(strategyName))
+						{
+							if (extraPosition != null)
+								order.ExtraLocation = world.Map.CellContaining(extraPosition.Value);
+							else
+								continue;
+						}
+
+						// Note: SelectDirectionalTarget uses uint.MaxValue in ExtraData to indicate that the player did not pick a direction.
+						bot.QueueOrder(order);
+						break;
+					}
+				}
 			}
+		}
+
+		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
+		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerDecision powerDecision, string strategyName, bool asExtraPos)
+		{
+			if ((asExtraPos && powerDecision.Considerations[strategyName].ExtraPositionConsiderations.Count == 0)
+				|| (!asExtraPos && powerDecision.Considerations[strategyName].TargetPositionConsiderations.Count == 0))
+				return null;
 
 			var map = world.Map;
 			var checkRadius = powerDecision.CoarseScanRadius;
@@ -155,7 +385,8 @@ namespace OpenRA.Mods.Common.Traits
 					var targets = world.ActorMap.ActorsInBox(wtl, wbr);
 
 					var frozenTargets = player.FrozenActorLayer != null ? player.FrozenActorLayer.FrozenActorsInRegion(region) : [];
-					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player) + powerDecision.GetAttractiveness(frozenTargets, player);
+					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player, strategyName, asExtraPos)
+						+ powerDecision.GetAttractiveness(frozenTargets, player, strategyName, asExtraPos);
 					if (consideredAttractiveness < powerDecision.MinimumAttractiveness)
 						continue;
 
@@ -175,17 +406,22 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Detail scans an area, evaluating positions.</summary>
-		CPos? FindFineAttackLocationToSupportPower(SupportPowerInstance readyPower, CPos checkPos, int extendedRange = 1)
+		(WPos? BestPos, Actor BestActor) FindFineAttackPositionToSupportPower(
+			SupportPowerDecision powerDecision,
+			CPos checkPos,
+			string strategyName,
+			bool asExtraPos,
+			Actor actorNeedsPlace = null,
+			int extendedRange = 1)
 		{
-			CPos? bestLocation = null;
-			var bestAttractiveness = 0;
-			var powerDecision = powerDecisions[readyPower.Info.OrderName];
-			if (powerDecision == null)
-			{
-				AIUtils.BotDebug($"{player.ResolvedPlayerName} couldn't find powerDecision for {readyPower.Info.OrderName}");
-				return null;
-			}
+			if ((asExtraPos && powerDecision.Considerations[strategyName].ExtraPositionConsiderations.Count == 0)
+				|| (!asExtraPos && powerDecision.Considerations[strategyName].TargetPositionConsiderations.Count == 0))
+				return (null, null);
 
+			WPos? bestPos = null;
+			Actor bestActor = null;
+
+			var bestAttractiveness = powerDecision.MinimumAttractiveness;
 			var checkRadius = powerDecision.CoarseScanRadius;
 			var fineCheck = powerDecision.FineScanRadius;
 			for (var i = 0 - extendedRange; i <= checkRadius + extendedRange; i += fineCheck)
@@ -197,17 +433,65 @@ namespace OpenRA.Mods.Common.Traits
 					var y = checkPos.Y + j;
 					var pos = world.Map.CenterOfCell(new CPos(x, y));
 					var consideredAttractiveness = 0;
-					consideredAttractiveness += powerDecision.GetAttractiveness(pos, player);
 
-					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
+					var (attractiveness, targetActor, frozenTarget) = powerDecision.GetAttractiveness(pos, player, strategyName, asExtraPos);
+
+					consideredAttractiveness += attractiveness;
+
+					if (consideredAttractiveness < bestAttractiveness)
 						continue;
 
 					bestAttractiveness = consideredAttractiveness;
-					bestLocation = new CPos(x, y);
+
+					if ((powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.ActorLocation && asExtraPos)
+						|| (powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.ActorLocation && !asExtraPos))
+					{
+						if (targetActor == null)
+						{
+							if (frozenTarget == null)
+								continue;
+
+							bestPos = frozenTarget.CenterPosition;
+						}
+						else
+						{
+							bestPos = world.Map.CenterOfCell(targetActor.Location);
+							bestActor = targetActor;
+						}
+					}
+					else if ((powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.ActorCenter && asExtraPos)
+						|| (powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.ActorCenter && !asExtraPos))
+					{
+						if (targetActor == null)
+						{
+							if (frozenTarget == null)
+								continue;
+
+							bestPos = frozenTarget.CenterPosition;
+						}
+						else
+						{
+							bestPos = targetActor.CenterPosition;
+							bestActor = targetActor;
+						}
+					}
+					else if ((powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor && asExtraPos)
+						|| (powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor && !asExtraPos))
+					{
+						var cell = world.Map.FindTilesInAnnulus(new CPos(x, y), 0, fineCheck).Shuffle(world.LocalRandom)
+							.FirstOrDefault(c => actorNeedsPlace?.TraitOrDefault<IPositionable>()?.CanEnterCell(c) ?? false);
+
+						if (cell == CPos.Zero)
+							continue;
+
+						bestPos = world.Map.CenterOfCell(cell);
+					}
+					else
+						bestPos = world.Map.CenterOfCell(new CPos(x, y));
 				}
 			}
 
-			return bestLocation;
+			return (bestPos, bestActor);
 		}
 
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
