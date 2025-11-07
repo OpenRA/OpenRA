@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -78,11 +80,35 @@ namespace OpenRA
 			if (t.IsArray && t.GetArrayRank() == 1)
 				return ((Array)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 
-			if (t.IsGenericType && (t.GetGenericTypeDefinition() == typeof(HashSet<>) || t.GetGenericTypeDefinition() == typeof(List<>)))
+			if (t.IsGenericType &&
+				t.GetGenericTypeDefinition() == typeof(ImmutableArray<>))
+			{
+				try
+				{
+					return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
+				}
+				catch (InvalidOperationException)
+				{
+					return "";
+				}
+			}
+
+			if (t.IsGenericType &&
+				(t.GetGenericTypeDefinition() == typeof(List<>) ||
+				t.GetGenericTypeDefinition() == typeof(HashSet<>) ||
+				t.GetGenericTypeDefinition()
+					.BaseTypes()
+					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+					.Any(bt => bt == typeof(FrozenSet<>))))
 				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 
 			// This is only for documentation generation
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			if (t.IsGenericType &&
+				(t.GetGenericTypeDefinition() == typeof(Dictionary<,>) ||
+				t.GetGenericTypeDefinition()
+					.BaseTypes()
+					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+					.Any(bt => bt == typeof(FrozenDictionary<,>))))
 			{
 				var result = new StringBuilder();
 				var dict = (System.Collections.IDictionary)v;

@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -99,6 +101,9 @@ namespace OpenRA
 				{ typeof(HashSet<>), ParseHashSetOrList },
 				{ typeof(List<>), ParseHashSetOrList },
 				{ typeof(Dictionary<,>), ParseDictionary },
+				{ typeof(ImmutableArray<>), ParseImmutableArray },
+				{ typeof(FrozenSet<>), ParseFrozenSet },
+				{ typeof(FrozenDictionary<,>), ParseFrozenDictionary },
 				{ typeof(BitSet<>), ParseBitSet },
 				{ typeof(Nullable<>), ParseNullable },
 			};
@@ -106,6 +111,24 @@ namespace OpenRA
 		static readonly object BoxedTrue = true;
 		static readonly object BoxedFalse = false;
 		static readonly object[] BoxedInts = Exts.MakeArray(33, i => (object)i);
+
+		static readonly MethodInfo ToImmutableArray =
+			typeof(ImmutableArray)
+			.GetMethods()
+			.Single(m =>
+				m.Name == nameof(ImmutableArray.ToImmutableArray) &&
+				m.GetParameters()?.First().ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+		static readonly MethodInfo ToFrozenSet =
+			typeof(FrozenSet)
+			.GetMethod(nameof(FrozenSet.ToFrozenSet));
+
+		static readonly MethodInfo ToFrozenDictionary =
+			typeof(FrozenDictionary)
+			.GetMethods()
+			.Single(m =>
+				m.Name == nameof(FrozenDictionary.ToFrozenDictionary) &&
+				m.GetParameters().Length == 2);
 
 		static object ParseInt(string fieldName, Type fieldType, string value)
 		{
@@ -508,6 +531,24 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
+		static object ParseArray(string fieldName, Type fieldType, string value)
+		{
+			var elementType = fieldType.GetElementType();
+
+			if (value == null)
+				return typeof(Array)
+					.GetMethod(nameof(Array.Empty))
+					.MakeGenericMethod(elementType)
+					.Invoke(null, null);
+
+			var parts = value.Split(Comma, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+			var ret = Array.CreateInstance(elementType, parts.Length);
+			for (var i = 0; i < parts.Length; i++)
+				ret.SetValue(GetValue(fieldName, elementType, parts[i]), i);
+			return ret;
+		}
+
 		static object ParseHashSetOrList(string fieldName, Type fieldType, string value, MiniYaml yaml)
 		{
 			if (value == null)
@@ -544,6 +585,66 @@ namespace OpenRA
 			}
 
 			return dict;
+		}
+
+		static object ParseImmutableArray(string fieldName, Type fieldType, string value, MiniYaml yaml)
+		{
+			var typeArgs = fieldType.GenericTypeArguments;
+
+			if (value == null)
+				return typeof(ImmutableArray<>).MakeGenericType(typeArgs)
+					.GetField(nameof(ImmutableArray<object>.Empty))
+					.GetValue(null);
+
+			object array;
+			if (typeArgs[0] == typeof(WVec))
+				array = ParseWVecArray(fieldName, typeArgs[0].MakeArrayType(), value);
+			else if (typeArgs[0] == typeof(CPos))
+				array = ParseCPosArray(fieldName, typeArgs[0].MakeArrayType(), value);
+			else if (typeArgs[0] == typeof(CVec))
+				array = ParseCVecArray(fieldName, typeArgs[0].MakeArrayType(), value);
+			else if (typeArgs[0] == typeof(int2))
+				array = ParseInt2Array(fieldName, typeArgs[0].MakeArrayType(), value);
+			else
+				array = ParseArray(fieldName, typeArgs[0].MakeArrayType(), value);
+
+			var toImmutableArray = ToImmutableArray.MakeGenericMethod(typeArgs);
+
+			return toImmutableArray.Invoke(null, [array]);
+		}
+
+		static object ParseFrozenSet(string fieldName, Type fieldType, string value, MiniYaml yaml)
+		{
+			var typeArgs = fieldType.GenericTypeArguments;
+
+			if (value == null)
+				return typeof(FrozenSet<>).MakeGenericType(typeArgs)
+					.GetProperty(nameof(FrozenSet<object>.Empty))
+					.GetValue(null);
+
+			var set =
+				ParseHashSetOrList(fieldName, typeof(HashSet<>).MakeGenericType(typeArgs), value, yaml);
+
+			var toFrozenSet = ToFrozenSet.MakeGenericMethod(typeArgs);
+
+			return toFrozenSet.Invoke(null, [set, null]);
+		}
+
+		static object ParseFrozenDictionary(string fieldName, Type fieldType, string value, MiniYaml yaml)
+		{
+			var typeArgs = fieldType.GenericTypeArguments;
+
+			if (yaml == null)
+				return typeof(FrozenDictionary<,>).MakeGenericType(typeArgs)
+					.GetProperty(nameof(FrozenDictionary<object, object>.Empty))
+					.GetValue(null);
+
+			var dict =
+				ParseDictionary(fieldName, typeof(Dictionary<,>).MakeGenericType(typeArgs), value, yaml);
+
+			var toFrozenDict = ToFrozenDictionary.MakeGenericMethod(typeArgs);
+
+			return toFrozenDict.Invoke(null, [dict, null]);
 		}
 
 		static object ParseBitSet(string fieldName, Type fieldType, string value, MiniYaml yaml)
@@ -685,17 +786,7 @@ namespace OpenRA
 					return parseFunc(fieldName, fieldType, value);
 
 				if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
-				{
-					if (value == null)
-						return Array.CreateInstance(fieldType.GetElementType(), 0);
-
-					var parts = value.Split(Comma, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-					var ret = Array.CreateInstance(fieldType.GetElementType(), parts.Length);
-					for (var i = 0; i < parts.Length; i++)
-						ret.SetValue(GetValue(fieldName, fieldType.GetElementType(), parts[i]), i);
-					return ret;
-				}
+					return ParseArray(fieldName, fieldType, value);
 
 				if (fieldType.IsEnum)
 					return ParseEnum(fieldName, fieldType, value);

@@ -36,19 +36,26 @@ namespace OpenRA.Mods.Common.Lint
 				return expr != null ? expr.Variables : [];
 			}
 
-			if (type.IsGenericType &&
-				(type.GetGenericTypeDefinition() == typeof(Dictionary<,>) ||
-				type.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>)))
+			Type dictionaryInterface = null;
+			if (type.IsGenericType)
+			{
+				if (type.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>))
+					dictionaryInterface = type;
+				else
+					dictionaryInterface = type.GetInterface(typeof(IReadOnlyDictionary<,>).FullName);
+			}
+
+			if (dictionaryInterface != null)
 			{
 				// Use an intermediate list to cover the unlikely case where both keys and values are lintable.
 				var dictionaryValues = new List<string>();
-				if (dictionaryReference.HasFlag(LintDictionaryReference.Keys) && type.GenericTypeArguments[0] == typeof(string))
+				if (dictionaryReference.HasFlag(LintDictionaryReference.Keys) && dictionaryInterface.GenericTypeArguments[0] == typeof(string))
 					dictionaryValues.AddRange((IEnumerable<string>)((IDictionary)fieldInfo.GetValue(ruleInfo)).Keys);
 
-				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && type.GenericTypeArguments[1] == typeof(string))
+				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && dictionaryInterface.GenericTypeArguments[1] == typeof(string))
 					dictionaryValues.AddRange((IEnumerable<string>)((IDictionary)fieldInfo.GetValue(ruleInfo)).Values);
 
-				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && type.GenericTypeArguments[1] == typeof(IEnumerable<string>))
+				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && dictionaryInterface.GenericTypeArguments[1] == typeof(IEnumerable<string>))
 					foreach (var row in (IEnumerable<IEnumerable<string>>)((IDictionary)fieldInfo.GetValue(ruleInfo)).Values)
 						dictionaryValues.AddRange(row);
 
@@ -58,9 +65,6 @@ namespace OpenRA.Mods.Common.Lint
 			var supportedTypes = new[]
 			{
 				"string", "IEnumerable<string>",
-				"Dictionary<string, T> (LintDictionaryReference.Keys)",
-				"Dictionary<T, string> (LintDictionaryReference.Values)",
-				"Dictionary<T, IEnumerable<string>> (LintDictionaryReference.Values)",
 				"IReadOnlyDictionary<string, T> (LintDictionaryReference.Keys)",
 				"IReadOnlyDictionary<T, string> (LintDictionaryReference.Values)",
 				"IReadOnlyDictionary<T, IEnumerable<string>> (LintDictionaryReference.Values)",
@@ -88,17 +92,26 @@ namespace OpenRA.Mods.Common.Lint
 				return expr != null ? expr.Variables : [];
 			}
 
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			Type dictionaryInterface = null;
+			if (type.IsGenericType)
+			{
+				if (type.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>))
+					dictionaryInterface = type;
+				else
+					dictionaryInterface = type.GetInterface(typeof(IReadOnlyDictionary<,>).FullName);
+			}
+
+			if (dictionaryInterface != null)
 			{
 				// Use an intermediate list to cover the unlikely case where both keys and values are lintable.
 				var dictionaryValues = new List<string>();
-				if (dictionaryReference.HasFlag(LintDictionaryReference.Keys) && type.GenericTypeArguments[0] == typeof(string))
+				if (dictionaryReference.HasFlag(LintDictionaryReference.Keys) && dictionaryInterface.GenericTypeArguments[0] == typeof(string))
 					dictionaryValues.AddRange((IEnumerable<string>)((IDictionary)propertyInfo.GetValue(ruleInfo)).Keys);
 
-				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && type.GenericTypeArguments[1] == typeof(string))
+				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && dictionaryInterface.GenericTypeArguments[1] == typeof(string))
 					dictionaryValues.AddRange((IEnumerable<string>)((IDictionary)propertyInfo.GetValue(ruleInfo)).Values);
 
-				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && type.GenericTypeArguments[1] == typeof(IEnumerable<string>))
+				if (dictionaryReference.HasFlag(LintDictionaryReference.Values) && dictionaryInterface.GenericTypeArguments[1] == typeof(IEnumerable<string>))
 					foreach (var row in (IEnumerable<IEnumerable<string>>)((IDictionary)propertyInfo.GetValue(ruleInfo)).Values)
 						dictionaryValues.AddRange(row);
 
@@ -108,9 +121,9 @@ namespace OpenRA.Mods.Common.Lint
 			var supportedTypes = new[]
 			{
 				"string", "IEnumerable<string>",
-				"Dictionary<string, T> (LintDictionaryReference.Keys)",
-				"Dictionary<T, string> (LintDictionaryReference.Values)",
-				"Dictionary<T, IEnumerable<string>> (LintDictionaryReference.Values)",
+				"IReadOnlyDictionary<string, T> (LintDictionaryReference.Keys)",
+				"IReadOnlyDictionary<T, string> (LintDictionaryReference.Values)",
+				"IReadOnlyDictionary<T, IEnumerable<string>> (LintDictionaryReference.Values)",
 				"BooleanExpression", "IntegerExpression"
 			};
 

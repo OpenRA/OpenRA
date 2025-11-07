@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
@@ -113,6 +115,38 @@ namespace OpenRA.Test
 			Assert.That(actual, Is.EqualTo("1,2, 3,4, 5,6"));
 		}
 
+		[Test]
+		public void FormatValue_WVecImmutableArray()
+		{
+			var actual = FieldSaver.FormatValue(new WVec[] { new(1, 2, 3), new(4, 5, 6) }.ToImmutableArray());
+
+			Assert.That(actual, Is.EqualTo("1,2,3, 4,5,6"));
+		}
+
+		[Test]
+		public void FormatValue_CPosImmutableArray()
+		{
+			var actual = FieldSaver.FormatValue(new CPos[] { new(1, 2), new(3, 4), new(5, 6) }.ToImmutableArray());
+
+			Assert.That(actual, Is.EqualTo("1,2, 3,4, 5,6"));
+		}
+
+		[Test]
+		public void FormatValue_CVecImmutableArray()
+		{
+			var actual = FieldSaver.FormatValue(new CVec[] { new(1, 2), new(3, 4), new(5, 6) }.ToImmutableArray());
+
+			Assert.That(actual, Is.EqualTo("1,2, 3,4, 5,6"));
+		}
+
+		[Test]
+		public void FormatValue_int2ImmutableArray()
+		{
+			var actual = FieldSaver.FormatValue(new int2[] { new(1, 2), new(3, 4), new(5, 6) }.ToImmutableArray());
+
+			Assert.That(actual, Is.EqualTo("1,2, 3,4, 5,6"));
+		}
+
 		[TestCase(null, "")]
 		[TestCase(123, "123")]
 		public void FormatValue_Nullable(int? input, string expected)
@@ -177,6 +211,50 @@ namespace OpenRA.Test
 		public void FormatValue_Dictionary()
 		{
 			var input = new Dictionary<int, int> { { 12, 34 }, { 56, 78 } };
+
+			var actual = FieldSaver.FormatValue(input);
+
+			Assert.That(actual, Is.EqualTo($"12: 34{Environment.NewLine}56: 78{Environment.NewLine}"));
+		}
+
+		[TestCase(null, "")]
+		[TestCase(new int[] { }, "")]
+		[TestCase(new int[] { 1 }, "1")]
+		[TestCase(new int[] { 1, 2, 3 }, "1, 2, 3")]
+		[TestCase(new int[] { 1, 1, 2, 2, 3 }, "1, 1, 2, 2, 3")]
+		[TestCase(new int[] { 1, 1, 1, 1 }, "1, 1, 1, 1")]
+		public void FormatValue_ImmutableArray(int[] input, string expected)
+		{
+			var actual = FieldSaver.FormatValue(input?.ToImmutableArray());
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void FormatValue_ImmutableArray_Default()
+		{
+			var actual = FieldSaver.FormatValue(default(ImmutableArray<int>));
+
+			Assert.That(actual, Is.Empty);
+		}
+
+		[TestCase(null, "")]
+		[TestCase(new int[] { }, "")]
+		[TestCase(new int[] { 1 }, "1")]
+		[TestCase(new int[] { 1, 2, 3 }, "1, 2, 3")]
+		[TestCase(new int[] { 1, 1, 2, 2, 3 }, "1, 2, 3")]
+		[TestCase(new int[] { 1, 1, 1, 1 }, "1")]
+		public void FormatValue_FrozenSet(int[] input, string expected)
+		{
+			var actual = FieldSaver.FormatValue(input?.ToFrozenSet());
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void FormatValue_FrozenDictionary()
+		{
+			var input = new Dictionary<int, int> { { 12, 34 }, { 56, 78 } }.ToFrozenDictionary();
 
 			var actual = FieldSaver.FormatValue(input);
 

@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -276,6 +278,14 @@ namespace OpenRA.Test
 		}
 
 		[Test]
+		public void GetValue_NullString()
+		{
+			var actual = FieldLoader.GetValue<string>("field", null);
+
+			Assert.That(actual, Is.Null);
+		}
+
+		[Test]
 		public void GetValue_BooleanExpression()
 		{
 			var actual = FieldLoader.GetValue<BooleanExpression>("field", "  true  ");
@@ -372,6 +382,38 @@ namespace OpenRA.Test
 			Assert.That(actual, Is.EqualTo(new int2[] { new(1, 2), new(3, 4), new(5, 6) }));
 		}
 
+		[Test]
+		public void GetValue_WVecImmutableArray()
+		{
+			var actual = FieldLoader.GetValue<ImmutableArray<WVec>>("field", " 1 , 2 , 3 , 4 , 5 , 6 , , ");
+
+			Assert.That(actual, Is.EqualTo(new WVec[] { new(1, 2, 3), new(4, 5, 6) }));
+		}
+
+		[Test]
+		public void GetValue_CPosImmutableArray()
+		{
+			var actual = FieldLoader.GetValue<ImmutableArray<CPos>>("field", " 1 , 2 , 3 , 4 , 5 , 6 , , ");
+
+			Assert.That(actual, Is.EqualTo(new CPos[] { new(1, 2), new(3, 4), new(5, 6) }));
+		}
+
+		[Test]
+		public void GetValue_CVecImmutableArray()
+		{
+			var actual = FieldLoader.GetValue<ImmutableArray<CVec>>("field", " 1 , 2 , 3 , 4 , 5 , 6 , , ");
+
+			Assert.That(actual, Is.EqualTo(new CVec[] { new(1, 2), new(3, 4), new(5, 6) }));
+		}
+
+		[Test]
+		public void GetValue_int2ImmutableArray()
+		{
+			var actual = FieldLoader.GetValue<ImmutableArray<int2>>("field", " 1 , 2 , 3 , 4 , 5 , 6 , , ");
+
+			Assert.That(actual, Is.EqualTo(new int2[] { new(1, 2), new(3, 4), new(5, 6) }));
+		}
+
 		[TestCase(null, null)]
 		[TestCase("", null)]
 		[TestCase("123", 123)]
@@ -459,9 +501,54 @@ namespace OpenRA.Test
 			Assert.That(actual, Is.Empty);
 		}
 
+		[TestCase(null, new int[] { })]
+		[TestCase("", new int[] { })]
+		[TestCase("1", new int[] { 1 })]
+		[TestCase("1,2,3", new int[] { 1, 2, 3 })]
+		[TestCase("1,,3", new int[] { 1, 3 })]
+		[TestCase(" 1 , 2 , 3 ", new int[] { 1, 2, 3 })]
+		[TestCase(" 1 ,  , 3 ", new int[] { 1, 3 })]
+		[TestCase("1,1,2,2,3", new int[] { 1, 1, 2, 2, 3 })]
+		[TestCase("1,1,1,1", new int[] { 1, 1, 1, 1 })]
+		public void GetValue_ImmutableArray(string input, int[] expected)
+		{
+			var actual = FieldLoader.GetValue<ImmutableArray<int>>("field", input);
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[TestCase(null, new int[] { })]
+		[TestCase("", new int[] { })]
+		[TestCase("1", new int[] { 1 })]
+		[TestCase("1,2,3", new int[] { 1, 2, 3 })]
+		[TestCase("1,,3", new int[] { 1, 3 })]
+		[TestCase(" 1 , 2 , 3 ", new int[] { 1, 2, 3 })]
+		[TestCase(" 1 ,  , 3 ", new int[] { 1, 3 })]
+		[TestCase("1,1,2,2,3", new int[] { 1, 2, 3 })]
+		[TestCase("1,1,1,1", new int[] { 1 })]
+		public void GetValue_FrozenSet(string input, int[] expected)
+		{
+			var actual = FieldLoader.GetValue<FrozenSet<int>>("field", input);
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("1")]
+		[TestCase("1,2")]
+		public void GetValue_FrozenDictionary(string input)
+		{
+			var actual = FieldLoader.GetValue<FrozenDictionary<int, int>>("field", input);
+
+			Assert.That(actual, Is.Empty);
+		}
+
 		[TestCase(TypeArgs = [typeof(int[][])])]
 		[TestCase(TypeArgs = [typeof(List<List<int>>)])]
 		[TestCase(TypeArgs = [typeof(HashSet<HashSet<int>>)])]
+		[TestCase(TypeArgs = [typeof(ImmutableArray<ImmutableArray<int>>)])]
+		[TestCase(TypeArgs = [typeof(FrozenSet<FrozenSet<int>>)])]
 		public void GetValue_NestedCollections<T>()
 		{
 			var actual = FieldLoader.GetValue<T>("field", "1,2,3");
@@ -577,6 +664,33 @@ namespace OpenRA.Test
 				[
 					new MiniYamlNode(
 						nameof(LoadDictionaryTarget.Dictionary),
+						new MiniYaml(
+							null,
+							[
+								new MiniYamlNode("12", "34"),
+								new MiniYamlNode("56", "78")
+							]))
+				]);
+
+			FieldLoader.Load(target, yaml);
+
+			Assert.That(target.Dictionary, Is.EquivalentTo(new Dictionary<int, int> { { 12, 34 }, { 56, 78 } }));
+		}
+
+		sealed class LoadFrozenDictionaryTarget
+		{
+			public FrozenDictionary<int, int> Dictionary;
+		}
+
+		[Test]
+		public void Load_FrozenDictionary()
+		{
+			var target = new LoadFrozenDictionaryTarget();
+			var yaml = new MiniYaml(
+				null,
+				[
+					new MiniYamlNode(
+						nameof(LoadFrozenDictionaryTarget.Dictionary),
 						new MiniYaml(
 							null,
 							[

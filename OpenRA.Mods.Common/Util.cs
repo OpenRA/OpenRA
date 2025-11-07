@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -270,10 +271,20 @@ namespace OpenRA.Mods.Common
 			if (t.IsEnum)
 				return $"{t.Name} (enum)";
 
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
+			if (t.IsGenericType &&
+				(t.GetGenericTypeDefinition() == typeof(HashSet<>) ||
+				t.GetGenericTypeDefinition()
+					.BaseTypes()
+					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+					.Any(bt => bt == typeof(FrozenSet<>))))
 				return $"Set of {t.GetGenericArguments().Select(FriendlyTypeName).First()}";
 
-			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+			if (t.IsGenericType &&
+				(t.GetGenericTypeDefinition() == typeof(Dictionary<,>) ||
+				t.GetGenericTypeDefinition()
+					.BaseTypes()
+					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+					.Any(bt => bt == typeof(FrozenDictionary<,>))))
 			{
 				var args = t.GetGenericArguments().Select(FriendlyTypeName).ToArray();
 				return $"Dictionary with Key: {args[0]}, Value: {args[1]}";
