@@ -23,21 +23,22 @@ Player:
 			Airstrike:
 				OrderName: AirstrikePowerInfoOrder
 				MinimumAttractiveness: 2000
+				TargetLocationMode: ActorCenter
 				Consideration@1:
 					Against: Enemy
-					Types: Vehicle, Infantry
+					ValidTargetTypes: Vehicle, Infantry
 					Attractiveness: 3
 					TargetMetric: Value
 					CheckRadius: 2c0
 				Consideration@2:
 					Against: Ally
-					Types: Ground, Water
+					ValidTargetTypes: Ground, Water
 					Attractiveness: -20
 					TargetMetric: Value
 					CheckRadius: 2c0
 				Consideration@3:
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
 					Attractiveness: 1
 					TargetMetric: Value
 					CheckRadius: 2c0
@@ -47,19 +48,19 @@ Player:
 				FineScanRadius: 2
 				Consideration@1:
 					Against: Enemy
-					Types: Air, Tank, Vehicle, Infantry, Water
+					ValidTargetTypes: Air, Tank, Vehicle, Infantry, Water
 					Attractiveness: 2
 					TargetMetric: Value
 					CheckRadius: 2c0
 				Consideration@2:
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
 					Attractiveness: 1
 					TargetMetric: Value
 					CheckRadius: 2c0
 				Consideration@3:
 					Against: Ally
-					Types: Ground, Water
+					ValidTargetTypes: Ground, Water
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 3c0
@@ -68,13 +69,13 @@ Player:
 				MinimumAttractiveness: 3000
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
 					Attractiveness: 1
 					TargetMetric: Value
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Ally
-					Types: Air, Ground, Water
+					ValidTargetTypes: Air, Ground, Water
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0

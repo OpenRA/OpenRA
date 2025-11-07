@@ -33,51 +33,350 @@ Player:
 	SupportPowerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		Decisions:
+			ioncurtain:
+				OrderName: ironcurtain
+				DecisionMode: OnAttacked
+				TargetLocationMode: ActorCenter
+				VisibilityCheck: false
+				CoarseScanRadius: 8 ##triggered by OnAttacked
+				MinimumAttractiveness: 100
+				Consideration@1:
+					AgainstOwnActors: true
+					ValidTargetTypes: Structure, Vehicle
+					InvalidActorTypes: dtrk
+					Attractiveness: 150
+					TargetMetric: HealthLoss
+					CheckRadius: 1c512
+				Consideration@2:
+					Against: Ally
+					ValidTargetTypes: Infantry
+					Attractiveness: -20
+					TargetMetric: None
+					CheckRadius: 1c512
+				Consideration@4:
+					Against: Enemy
+					ValidTargetTypes: Structure, Vehicle
+					Attractiveness: -40
+					CheckRadius: 1c512
+			chronoshift:
+				OrderName: Chronoshift
+				CheckTargetLocationFirst: false
+				TargetLocationMode: CellCanBeEnteredByTargetedActor
+				ExtraLocationMode: ActorLocation
+				MinimumAttractiveness: 10000
+				VisibilityCheck: false
+				FineScanRadius: 4
+				## steal enemy harvester\mcv
+				Consideration@enemy-harvester-extraloc1:
+					StrategyName: harvester-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@enemy-harvester-target1:
+					StrategyName: harvester-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## steal enemy vehicles
+				Consideration@enemy-vehicles-extraloc1:
+					StrategyName: vehicles-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidTargetTypes: Vehicle
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@enemy-vehicles-target1:
+					StrategyName: vehicles-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 50
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## teleport vehicles to attack weak spot (harv)
+				Consideration@ally-harv-assualt-extraloc1:
+					StrategyName: harv-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@ally-harv-assualt-target1:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-harv-assualt-target2:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport vehicles to attack weak spot (structure)
+				Consideration@ally-structure-assualt-extraloc1:
+					StrategyName: structure-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk, v2rl, arty, msub,ca
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@ally-structure-assualt-target1:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-structure-assualt-target2:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport mcv for expansion
+				Consideration@ally-mcv-expansion-extraloc1:
+					StrategyName: ally-expansion-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: mcv
+					Attractiveness: 14000 ## Teleport will kill conyard HP below 50%
+					TargetMetric: Health
+					CheckRadius: 1c512
+				Consideration@ally-mcv-expansion-target1:
+					StrategyName: ally-expansion-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					InvalidActorTypes: harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target2:
+					StrategyName: ally-expansion-magic
+					Against: Ally
+					ValidActorTypes: mcv, proc, fact
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target3:
+					StrategyName: ally-expansion-magic
+					Against: Ally, Neutral, Enemy
+					ValidActorTypes: mine, gmine
+					Attractiveness: 10001
+					TargetMetric: None
+					CheckRadius: 8c0
+			advancedchronoshift:
+				OrderName: AdvancedChronoshift
+				CheckTargetLocationFirst: false
+				TargetLocationMode: CellCanBeEnteredByTargetedActor
+				ExtraLocationMode: ActorLocation
+				VisibilityCheck: false
+				MinimumAttractiveness: 10000
+				FineScanRadius: 4
+				## steal enemy harvester\mcv
+				Consideration@enemy-harvester-extraloc1:
+					StrategyName: harvester-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@enemy-harvester-target1:
+					StrategyName: harvester-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## steal enemy vehicles
+				Consideration@enemy-vehicles-extraloc1:
+					StrategyName: vehicles-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidTargetTypes: Vehicle
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@enemy-vehicles-target1:
+					StrategyName: vehicles-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 50
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## teleport vehicles to attack weak spot (harv)
+				Consideration@ally-harv-assualt-extraloc1:
+					StrategyName: harv-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@ally-harv-assualt-target1:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-harv-assualt-target2:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport vehicles to attack weak spot (structure)
+				Consideration@ally-structure-assualt-extraloc1:
+					StrategyName: structure-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk, v2rl, arty, msub,ca
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@ally-structure-assualt-target1:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-structure-assualt-target2:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport mcv for expansion
+				Consideration@ally-mcv-expansion-extraloc1:
+					StrategyName: ally-expansion-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: mcv
+					Attractiveness: 14000 ## Teleport will kill conyard HP below 50%
+					TargetMetric: Health
+					CheckRadius: 2c512
+				Consideration@ally-mcv-expansion-target1:
+					StrategyName: ally-expansion-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					InvalidActorTypes: harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target2:
+					StrategyName: ally-expansion-magic
+					Against: Ally
+					ValidActorTypes: mcv, proc, fact
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target3:
+					StrategyName: ally-expansion-magic
+					Against: Ally, Neutral, Enemy
+					ValidActorTypes: mine, gmine
+					Attractiveness: 100001
+					TargetMetric: None
+					CheckRadius: 8c0
 			spyplane:
 				OrderName: SovietSpyPlane
 				MinimumAttractiveness: 1
+				TargetLocationMode: ActorCenter
+				VisibilityCheck: false
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
 					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Enemy
+					ValidTargetTypes: Structure
+					Attractiveness: 100
 					TargetMetric: None
 					CheckRadius: 5c0
 			paratroopers:
 				OrderName: SovietParatroopers
-				MinimumAttractiveness: 5
-				Consideration@1:
+				MinimumAttractiveness: 3
+				VisibilityCheck: false
+				FineScanRadius: 4
+				## paratroopers attack weak spot (structure)
+				Consideration@assualt1:
+					StrategyName: structure-assualt
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
+					InvalidActorTypes: ftur, pbox, hbox, tsla
 					Attractiveness: 1
 					TargetMetric: None
 					CheckRadius: 8c0
-				Consideration@2:
+				Consideration@assualt2:
+					StrategyName: structure-assualt
 					Against: Enemy
-					Types: Water
+					ValidTargetTypes: Water, Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
 					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+				## paratroopers reinforce the expansion
+				Consideration@reinforce1:
+					StrategyName: reinforce-expansion
+					Against: Ally
+					ValidActorTypes: proc, fact
+					Attractiveness: 2
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@reinforce2:
+					StrategyName: reinforce-expansion
+					Against: Ally
+					ValidTargetTypes: Vehicle, Infantry
+					InvalidActorTypes: mcv, harv
+					Attractiveness: -3
 					TargetMetric: None
 					CheckRadius: 8c0
 			parabombs:
 				OrderName: UkraineParabombs
-				MinimumAttractiveness: 1
+				TargetLocationMode: ActorCenter
+				MinimumAttractiveness: 4000
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
 					Attractiveness: 1
-					TargetMetric: None
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Enemy
+					ValidTargetTypes: Structure
+					Attractiveness: 2
+					TargetMetric: Value
 					CheckRadius: 5c0
 			nukepower:
 				OrderName: NukePowerInfoOrder
 				MinimumAttractiveness: 3000
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
 					Attractiveness: 1
 					TargetMetric: Value
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Ally
-					Types: Air, Ground, Water
+					ValidTargetTypes: Air, Ground, Water
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
@@ -115,6 +414,9 @@ Player:
 			kenn: 1
 			dome: 1
 			weap: 4
+			hpad: 1
+			afld: 1
+			afld.ukraine: 1
 			atek: 1
 			stek: 1
 			fix: 1
@@ -125,6 +427,9 @@ Player:
 			kenn: 1
 			tent: 3
 			weap: 4
+			hpad: 1
+			afld: 1
+			afld.ukraine: 1
 			pbox: 3
 			gun: 3
 			tsla: 3
@@ -137,6 +442,8 @@ Player:
 			fix: 1
 			dome: 10
 			mslo: 1
+			iron: 1
+			pdox: 1
 		BuildingDelays:
 			dome: 7000
 			fix: 3000
@@ -202,6 +509,8 @@ Player:
 			atek: 1
 			stek: 1
 			mslo: 1
+			iron: 1
+			pdox: 1
 		BuildingDelays:
 			dome: 6000
 			fix: 3000
@@ -267,6 +576,8 @@ Player:
 			atek: 1
 			stek: 1
 			mslo: 1
+			iron: 1
+			pdox: 1
 		BuildingDelays:
 			dome: 5000
 			atek: 7000
@@ -322,6 +633,8 @@ Player:
 			agun: 5
 			sam: 5
 			mslo: 1
+			iron: 1
+			pdox: 1
 		BuildingDelays:
 			dome: 3000
 			fix: 20000
@@ -329,7 +642,7 @@ Player:
 			kenn: 4000
 	PowerDownBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
-		PowerDownTypes: dome,tsla,mslo,agun,sam
+		PowerDownTypes: dome,tsla,mslo,agun,sam, gap, iron, pdox
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	SquadManagerBotModule@rush:
