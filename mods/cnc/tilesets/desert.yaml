@@ -3396,6 +3396,27 @@ MultiBrushCollections:
 			Actor: rock6
 		MultiBrush@rock7:
 			Actor: rock7
+	Clear:
+		MultiBrush@Nothing:
+			Weight: 200000
+		MultiBrush@71:
+			Template: 71
+		MultiBrush@72:
+			Template: 72
+		MultiBrush@73:
+			Template: 73
+		MultiBrush@221:
+			Template: 221
+		MultiBrush@Pebbles2:
+			Tile: 99,0
+		MultiBrush@Pebbles3:
+			Tile: 99,2
+		MultiBrush@Pebbles5:
+			Tile: 106,3
+		MultiBrush@Pebbles6:
+			Tile: 108,0
+		MultiBrush@Pebbles7:
+			Tile: 114,6
 	Water:
 		MultiBrush@1:
 			Template: 1

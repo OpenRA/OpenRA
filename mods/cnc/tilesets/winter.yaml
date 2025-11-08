@@ -2959,9 +2959,13 @@ MultiBrushCollections:
 			Actor: t17
 			BackingTile: 255,0
 			Weight: 200
-	Snow:
+	Clear:
 		MultiBrush@Nothing:
 			Weight: 100000
+		MultiBrush@73:
+			Template: 73
+		MultiBrush@74:
+			Template: 74
 		MultiBrush@81:
 			Template: 81
 		MultiBrush@181:
@@ -2989,6 +2993,9 @@ MultiBrushCollections:
 			Template: 76
 		MultiBrush@77:
 			Template: 77
+		MultiBrush@Pebbles1:
+			Tile: 11,0
+			Weight: 50
 	CivilianBuildings:
 		MultiBrush@v01:
 			Actor: v01
