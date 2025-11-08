@@ -73,6 +73,7 @@ Rules:
 	ts|rules/shared-vehicles.yaml
 	ts|rules/trees.yaml
 	ts|rules/bridges.yaml
+	ts|rules/map-generators.yaml
 
 Weapons:
 	ts|weapons/ballisticweapons.yaml
