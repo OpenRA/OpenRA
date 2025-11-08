@@ -17,7 +17,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 {
 	/// <summary>
 	/// Utilities for simple directions and adjacency. Note that coordinate systems might not agree
-	/// as to which directions are conceptually left/right or up/down.
+	/// as to which directions are conceptually left/right or up/down. Direction is typically used
+	/// with the CPos coordinate system.
 	/// </summary>
 	public enum Direction
 	{
@@ -142,18 +143,6 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			if (direction >= Direction.R && direction <= Direction.RU)
 				return Spread8CVec[(int)direction];
-			else
-				throw new ArgumentException("bad direction");
-		}
-
-		/// <summary>
-		/// Convert a non-none direction to a WVec offset. Assumes that
-		/// WVec(1, 0, 0) corresponds to Direction.R.
-		/// </summary>
-		public static WVec ToWVec(this Direction direction)
-		{
-			if (direction >= Direction.R && direction <= Direction.RU)
-				return new WVec(Spread8[(int)direction].X, Spread8[(int)direction].Y, 0);
 			else
 				throw new ArgumentException("bad direction");
 		}

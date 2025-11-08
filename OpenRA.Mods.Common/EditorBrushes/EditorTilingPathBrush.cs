@@ -220,7 +220,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var mainColor = tool.EditorBlitSource != null ? Color.Cyan : Color.Red;
 
-			var gridType = worldRenderer.World.Map.Grid.Type;
+			var map = worldRenderer.World.Map;
+			var gridType = map.Grid.Type;
 			WPos CornerOfCell(CPos cpos) => CellLayerUtils.CornerToWPos(cpos, gridType);
 
 			var points = plan.Points();
@@ -250,7 +251,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (plan.AutoEnd != Direction.None)
 				yield return new CircleAnnotationRenderable(
-					CornerOfCell(plan.LastPoint) + plan.AutoEnd.ToWVec() * 768,
+					CornerOfCell(plan.LastPoint) + map.Offset(plan.AutoEnd.ToCVec(), 0) * 768 / 1024,
 					new WDist(256),
 					2,
 					plan.End != Direction.None ? Color.Magenta : Color.Gray,
@@ -258,7 +259,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (plan.AutoStart != Direction.None)
 				yield return new CircleAnnotationRenderable(
-					CornerOfCell(plan.FirstPoint) - plan.AutoStart.ToWVec() * 768,
+					CornerOfCell(plan.FirstPoint) - map.Offset(plan.AutoStart.ToCVec(), 0) * 768 / 1024,
 					new WDist(256),
 					2,
 					plan.Start != Direction.None ? Color.Magenta : Color.Gray,
