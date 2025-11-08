@@ -358,7 +358,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 			// order for a transition to be allowed at all, it must satisfy some constraints:
 			//
 			// - It must not regress backward along the path (but no immediate progress is OK).
-			// - If it makes exactly zero progress, it must end facing towards increasing progress.
+			// - If it makes exactly zero progress, it must not end facing towards overall
+			//   decreasing progress or strictly neutral progress (neither earliest or latest
+			//   closest points differ).
 			// - It must not deviate at any point in the segment beyond MaxDeviation from the path.
 			// - It must not skip to much later path points (which may be within MaxDeviation).
 			//
@@ -738,7 +740,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 					lowProgressionAcc = Progress(lowProgress[point.X, point.Y], lowProgress[pointNext.X, pointNext.Y]);
 					highProgressionAcc = Progress(highProgress[point.X, point.Y], highProgress[pointNext.X, pointNext.Y]);
-					if (lowProgressionAcc < 0 || highProgressionAcc < 0 || (lowProgressionAcc == 0 && highProgressionAcc == 0))
+					if ((lowProgressionAcc <= 0 && highProgressionAcc <= 0) || lowProgressionAcc + highProgressionAcc < 0)
 						return MaxCost;
 				}
 
