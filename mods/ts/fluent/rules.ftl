@@ -53,6 +53,9 @@ faction-nod =
      and the alien substance Tiberium. They employ stealth technology
      and guerrilla tactics to defeat those who oppose them.
 
+map-generator-ts = Map Generator
+map-generator-clear = Clear Terrain
+
 ## Structures
 notification-construction-complete = Construction complete.
 notification-unit-ready = Unit ready.
@@ -827,3 +830,169 @@ actor-cahosp =
 ## ai.yaml
 bot-test-ai =
     .name = Test AI
+
+## map-generators.yaml
+label-random-map = Random Map
+label-clear-map-generator-option-tile = Tile
+label-clear-map-generator-choice-tile-clear =
+   .label = Clear
+label-clear-map-generator-choice-tile-snow =
+   .label = Snow
+label-clear-map-generator-choice-tile-blank =
+   .label = Blank
+label-clear-map-generator-choice-tile-rough =
+   .label = Rough
+label-clear-map-generator-choice-tile-water =
+   .label = Water
+label-clear-map-generator-choice-tile-ground01 =
+   .label = Ground 01
+label-clear-map-generator-choice-tile-sand =
+   .label = Sand
+label-clear-map-generator-choice-tile-green =
+   .label = Green
+label-clear-map-generator-choice-tile-pavement =
+   .label = Pavement
+label-clear-map-generator-choice-tile-crystal =
+   .label = Crystal
+label-clear-map-generator-choice-tile-swamp =
+   .label = Swamp
+label-clear-map-generator-choice-tile-rock =
+   .label = Rock
+label-clear-map-generator-choice-tile-bluemold =
+   .label = Blue Mold
+label-clear-map-generator-choice-tile-grey =
+   .label = Grey
+
+label-ts-map-generator-option-seed = Seed
+
+label-ts-map-generator-option-terrain-type = Terrain Type
+label-ts-map-generator-choice-terrain-type-lakes =
+   .label = Lakes
+   .description = Open spaces with moderately sized lakes
+label-ts-map-generator-choice-terrain-type-puddles =
+   .label = Puddles
+   .description = Open spaces with small ponds
+label-ts-map-generator-choice-terrain-type-gardens =
+   .label = Gardens
+   .description = Featureful terrain with ponds, cliffs, and forests
+label-ts-map-generator-choice-terrain-type-plots =
+   .label = Plots
+   .description = Loosely-packed terrain with ponds, cliffs, and forests
+label-ts-map-generator-choice-terrain-type-plains =
+   .label = Plains
+   .description = Open spaces with sparse trees and cliffs
+label-ts-map-generator-choice-terrain-type-parks =
+   .label = Parks
+   .description = Open spaces with light forestry and occasional cliffs
+label-ts-map-generator-choice-terrain-type-woodlands =
+   .label = Woodlands
+   .description = Moderate forestry with occasional cliffs
+label-ts-map-generator-choice-terrain-type-overgrown =
+   .label = Overgrown
+   .description = Narrow passages, dense forestry and moderate cliffs
+label-ts-map-generator-choice-terrain-type-rocky =
+   .label = Rocky
+   .description = Moderate cliffs with light forestry
+label-ts-map-generator-choice-terrain-type-mountains =
+   .label = Mountains
+   .description = Many long cliffs
+label-ts-map-generator-choice-terrain-type-mountain-lakes =
+   .label = Mountain Lakes
+   .description = Lakes and many long cliffs
+
+label-ts-map-generator-option-symmetry = Symmetry
+label-ts-map-generator-choice-mirror-none =
+   .label = None
+label-ts-map-generator-choice-symmetry-mirror-horizontal =
+   .label = Mirror Horizontal
+label-ts-map-generator-choice-symmetry-mirror-vertical =
+   .label = Mirror Vertical
+label-ts-map-generator-choice-symmetry-mirror-diagonal-tl =
+   .label = Mirror Diagonal (Top-Left)
+label-ts-map-generator-choice-symmetry-mirror-diagonal-tr =
+   .label = Mirror Diagonal (Top-Right)
+label-ts-map-generator-choice-symmetry-mirror-2-rotations =
+   .label = 2 Rotations
+label-ts-map-generator-choice-symmetry-mirror-3-rotations =
+   .label = 3 Rotations
+label-ts-map-generator-choice-symmetry-mirror-4-rotations =
+   .label = 4 Rotations
+label-ts-map-generator-choice-symmetry-mirror-5-rotations =
+   .label = 5 Rotations
+label-ts-map-generator-choice-symmetry-mirror-6-rotations =
+   .label = 6 Rotations
+label-ts-map-generator-choice-symmetry-mirror-7-rotations =
+   .label = 7 Rotations
+label-ts-map-generator-choice-symmetry-mirror-8-rotations =
+   .label = 8 Rotations
+
+label-ts-map-generator-option-players = Players
+
+label-ts-map-generator-option-resources = Resources
+label-ts-map-generator-choice-resources-none =
+   .label = None
+label-ts-map-generator-choice-resources-low =
+   .label = Low
+label-ts-map-generator-choice-resources-medium =
+   .label = Medium
+label-ts-map-generator-choice-resources-high =
+   .label = High
+label-ts-map-generator-choice-resources-very-high =
+   .label = Very High
+label-ts-map-generator-choice-resources-full =
+   .label = Oreful
+
+label-ts-map-generator-option-buildings = Veinholes
+label-ts-map-generator-choice-buildings-none =
+   .label = None
+   .description = No veinholes
+label-ts-map-generator-choice-buildings-veinholes =
+   .label = Veinholes
+   .description = Standard number of veinholes
+label-ts-map-generator-choice-buildings-more-veinholes =
+   .label = More Veinholes
+   .description = Doubled number of veinholes
+
+label-ts-map-generator-option-density = Expansion Opportunities
+label-ts-map-generator-choice-density-players =
+   .label = Scale with players
+label-ts-map-generator-choice-density-area-and-players =
+   .label = Scale with size and players
+label-ts-map-generator-choice-density-area-very-low =
+   .label = Very Low
+label-ts-map-generator-choice-density-area-low =
+   .label = Low
+label-ts-map-generator-choice-density-area-medium =
+   .label = Medium
+label-ts-map-generator-choice-density-area-high =
+   .label = High
+label-ts-map-generator-choice-density-area-very-high =
+   .label = Very High
+
+label-ts-map-generator-option-civilian-density = Civilian Density
+label-ts-map-generator-choice-civilian-density-default =
+   .label = Default
+label-ts-map-generator-choice-civilian-density-none =
+   .label = None
+label-ts-map-generator-choice-civilian-density-low =
+   .label = Low
+label-ts-map-generator-choice-civilian-density-medium =
+   .label = Medium
+label-ts-map-generator-choice-civilian-density-high =
+   .label = High
+label-ts-map-generator-choice-civilian-density-very-high =
+   .label = Very High
+label-ts-map-generator-choice-civilian-density-max =
+   .label = Maximum
+
+label-ts-map-generator-option-coastlines = Coastlines
+label-ts-map-generator-choice-coastlines-beaches =
+   .label = Beaches
+label-ts-map-generator-choice-coastlines-sunken-beaches =
+   .label = Sunken Beaches
+label-ts-map-generator-choice-coastlines-cliffs =
+   .label = Cliffs
+label-ts-map-generator-choice-coastlines-mixed =
+   .label = Mixed
+
+label-ts-map-generator-option-deny-walled-areas = Obstruct walled areas

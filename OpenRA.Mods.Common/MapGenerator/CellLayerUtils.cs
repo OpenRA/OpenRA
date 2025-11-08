@@ -656,6 +656,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return Aggregate(layers, (a, b) => a && b);
 		}
 
+		/// <summary>Return logical AND / conjunction / intersection of layers.</summary>
+		public static CellLayer<bool> Union(IEnumerable<CellLayer<bool>> layers)
+		{
+			return Aggregate(layers, (a, b) => a || b);
+		}
+
 		/// <summary>
 		/// Return the difference of layers. Each cell is true if and only if something appears
 		/// only in the first layer.

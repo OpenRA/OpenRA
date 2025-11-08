@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.MapGenerator
 {
@@ -196,6 +197,25 @@ namespace OpenRA.Mods.Common.MapGenerator
 			for (var i = 0; i < a.Data.Length; i++)
 				matrix.Data[i] = func(a.Data[i], b.Data[i]);
 			return matrix;
+		}
+
+		/// <summary>
+		/// Copy the underlying data from one matrix to another similar matrix.
+		/// </summary>
+		public void CopyTo(Matrix<T> destination)
+		{
+			if (Size != destination.Size)
+				throw new ArgumentException("source and destination have different size");
+
+			Data.CopyTo(destination.Data, 0);
+		}
+
+		/// <summary>Return an IEnumerable over the coordinates and values.</summary>
+		public IEnumerable<(int2 Xy, T Value)> Enumerate()
+		{
+			for (var y = 0; y < Size.Y; y++)
+				for (var x = 0; x < Size.X; x++)
+					yield return (new int2(x, y), this[x, y]);
 		}
 	}
 }
