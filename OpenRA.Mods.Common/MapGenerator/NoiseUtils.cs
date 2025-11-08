@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			MersenneTwister random,
 			CellLayer<int> cellLayer,
 			int rotations,
-			Symmetry.Mirror mirror,
+			Symmetry.WMirror wmirror,
 			int featureSize,
 			Func<int, int> ampFunc)
 		{
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				random,
 				size,
 				rotations,
-				mirror,
+				wmirror.ForCPos(),
 				featureSize,
 				ampFunc);
 			CellLayerUtils.FromMatrix(cellLayer, noise);

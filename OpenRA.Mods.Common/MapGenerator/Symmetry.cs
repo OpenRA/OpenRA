@@ -18,23 +18,64 @@ namespace OpenRA.Mods.Common.MapGenerator
 {
 	public static class Symmetry
 	{
-		/// <summary>Trivial mirroring configurations defined in world space.</summary>
+		/// <summary>
+		/// Trivial mirroring configurations. These are not tied to a specific coordinate system.
+		/// </summary>
 		public enum Mirror
 		{
 			/// <summary>No mirror.</summary>
 			None = 0,
 
-			/// <summary>Match low X with high X in WPos space.</summary>
+			/// <summary>Match low X with high X.</summary>
 			LeftMatchesRight = 1,
 
-			/// <summary>Match low X, low Y with high X, high Y in WPos space.</summary>
+			/// <summary>Match low X, low Y with high X, high Y.</summary>
 			TopLeftMatchesBottomRight = 2,
 
-			/// <summary>Match low Y with high Y in WPos space.</summary>
+			/// <summary>Match low Y with high Y.</summary>
 			TopMatchesBottom = 3,
 
-			/// <summary>Match low X, high Y with high X, low Y in WPos space.</summary>
+			/// <summary>Match low X, high Y with high X, low Y.</summary>
 			TopRightMatchesBottomLeft = 4,
+		}
+
+		/// <summary>
+		/// Wraps a mirror defined in terms of WPos space and provides conversions to appropriate
+		/// coordinate systems.
+		/// </summary>
+		public readonly struct WMirror
+		{
+			readonly Mirror mirror;
+			readonly MapGridType gridType;
+
+			/// <summary>Create a WMirror.</summary>
+			/// <param name="mirror">Mirror relative to WPos space.</param>
+			/// <param name="gridType">Map grid type used for conversions.</param>
+			public WMirror(Mirror mirror, MapGridType gridType)
+			{
+				this.mirror = mirror;
+				this.gridType = gridType;
+			}
+
+			public bool HasMirror => mirror != Mirror.None;
+
+			/// <summary>Return a Mirror relative to the WPos coordinate system.</summary>
+			public Mirror ForWPos()
+			{
+				return mirror;
+			}
+
+			/// <summary>Return a Mirror relative to the CPos coordinate system.</summary>
+			public Mirror ForCPos()
+			{
+				if (mirror == Mirror.None)
+					return Mirror.None;
+
+				if (gridType == MapGridType.RectangularIsometric)
+					return (Mirror)((((int)mirror + 2) & 0b11) + 1);
+
+				return mirror;
+			}
 		}
 
 		public static bool TryParseMirror(string s, out Mirror mirror) => Enum.TryParse(s, out mirror);
@@ -71,10 +112,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 		}
 
-		public static WPos MirrorWPosAround(Mirror mirror, WPos original, WPos center)
+		public static WPos MirrorWPosAround(WMirror wmirror, WPos original, WPos center)
 		{
 			var result = MirrorPointAround(
-				mirror,
+				wmirror.ForWPos(),
 				new int2(original.X, original.Y),
 				new int2(center.X, center.Y));
 			return new WPos(result.X, result.Y, original.Z);
@@ -91,9 +132,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 			WPos original,
 			WPos center,
 			int rotations,
-			Mirror mirror)
+			WMirror wmirror)
 		{
-			var projections = new WPos[RotateAndMirrorProjectionCount(rotations, mirror)];
+			var projections = new WPos[RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos())];
 			var projectionIndex = 0;
 
 			for (var rotation = 0; rotation < rotations; rotation++)
@@ -109,8 +150,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 				var projection = new WPos(projX, projY, original.Z);
 				projections[projectionIndex++] = projection;
 
-				if (mirror != Mirror.None)
-					projections[projectionIndex++] = MirrorWPosAround(mirror, projection, center);
+				if (wmirror.HasMirror)
+					projections[projectionIndex++] = MirrorWPosAround(wmirror, projection, center);
 			}
 
 			return projections;
@@ -120,24 +161,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 			WPos original,
 			CellLayer<T> cellLayer,
 			int rotations,
-			Mirror mirror)
+			WMirror wmirror)
 		{
 			return RotateAndMirrorWPosAround(
 				original,
 				CellLayerUtils.Center(cellLayer),
 				rotations,
-				mirror);
+				wmirror);
 		}
 
 		public static CPos[] RotateAndMirrorCPos<T>(
 			CPos original,
 			CellLayer<T> cellLayer,
 			int rotations,
-			Mirror mirror)
+			WMirror wmirror)
 		{
-			var cposProjections = new CPos[RotateAndMirrorProjectionCount(rotations, mirror)];
+			var cposProjections = new CPos[RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos())];
 			var wpos = CellLayerUtils.CPosToWPos(original, cellLayer.GridType);
-			var wposProjections = RotateAndMirrorWPos(wpos, cellLayer, rotations, mirror);
+			var wposProjections = RotateAndMirrorWPos(wpos, cellLayer, rotations, wmirror);
 			for (var i = 0; i < wposProjections.Length; i++)
 				cposProjections[i] = CellLayerUtils.WPosToCPos(wposProjections[i], cellLayer.GridType);
 			return cposProjections;
@@ -222,12 +263,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public static ImmutableArray<ActorPlan> RotateAndMirrorActorPlans(
 			IReadOnlyList<ActorPlan> originals,
 			int rotations,
-			Mirror mirror)
+			WMirror wmirror)
 		{
 			var projections = new List<ActorPlan>(
-				originals.Count * RotateAndMirrorProjectionCount(rotations, mirror));
+				originals.Count * RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos()));
 			foreach (var original in originals)
-				projections.AddRange(RotateAndMirrorActorPlan(original, rotations, mirror));
+				projections.AddRange(RotateAndMirrorActorPlan(original, rotations, wmirror));
 
 			return projections.ToImmutableArray();
 		}
@@ -239,14 +280,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public static ImmutableArray<ActorPlan> RotateAndMirrorActorPlan(
 			ActorPlan original,
 			int rotations,
-			Mirror mirror)
+			WMirror wmirror)
 		{
-			var projections = new List<ActorPlan>(RotateAndMirrorProjectionCount(rotations, mirror));
+			var projections = new List<ActorPlan>(RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos()));
 			var points = RotateAndMirrorWPos(
 				original.WPosCenterLocation,
 				original.Map.Tiles,
 				rotations,
-				mirror);
+				wmirror);
 			foreach (var point in points)
 			{
 				var plan = original.Clone();
@@ -266,7 +307,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public static void RotateAndMirrorOverCPos<T>(
 			CellLayer<T> cellLayer,
 			int rotations,
-			Mirror mirror,
+			WMirror wmirror,
 			Action<CPos[], CPos> action)
 		{
 			var size = cellLayer.Size;
@@ -274,7 +315,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				for (var u = 0; u < size.Width; u++)
 				{
 					var original = new MPos(u, v).ToCPos(cellLayer.GridType);
-					var projections = RotateAndMirrorCPos(original, cellLayer, rotations, mirror);
+					var projections = RotateAndMirrorCPos(original, cellLayer, rotations, wmirror);
 					action(projections, original);
 				}
 		}
