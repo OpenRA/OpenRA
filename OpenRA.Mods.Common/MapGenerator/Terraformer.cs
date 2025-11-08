@@ -934,9 +934,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <summary>Wrapper around MultiBrush.Paint for path tiling results.</summary>
 		public void PaintTiling(
 			MersenneTwister random,
-			MultiBrush brush)
+			MultiBrush brush,
+			short? heightOffset = null)
 		{
-			brush.Paint(Map, ActorPlans, CPos.Zero, MultiBrush.Replaceability.Any, random);
+			brush.Paint(Map, ActorPlans, CPos.Zero, heightOffset, MultiBrush.Replaceability.Any, random);
 		}
 
 		/// <summary>
@@ -1574,13 +1575,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <param name="outside">If non-null, these MultiBrushes are painted over outside regions.</param>
 		/// <param name="inside">If non-null, these MultiBrushes are painted over inside regions.</param>
 		/// <param name="replaceMask">Optional replaceability constraints for filling. Ignored for path tiling.</param>
+		/// <param name="heightOffset">Optional explicit height to paint at. Otherwise a height is picked automatically.</param>
 		public CellLayer<Side> PaintLoopsAndFill(
 			MersenneTwister random,
 			IReadOnlyList<TilingPath> tilingPaths,
 			Side fallback,
 			IReadOnlyList<MultiBrush> outside,
 			IReadOnlyList<MultiBrush> inside,
-			CellLayer<MultiBrush.Replaceability> replaceMask = null)
+			CellLayer<MultiBrush.Replaceability> replaceMask = null,
+			short? heightOffset = null)
 		{
 			CheckHasMapShapeOrNull(replaceMask);
 
@@ -1595,7 +1598,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			foreach (var tiling in tilings)
-				tiling.Paint(Map, ActorPlans, CPos.Zero, MultiBrush.Replaceability.Any, random);
+				tiling.Paint(Map, ActorPlans, CPos.Zero, heightOffset, MultiBrush.Replaceability.Any, random);
 
 			if (inside == null && outside == null)
 				return null;

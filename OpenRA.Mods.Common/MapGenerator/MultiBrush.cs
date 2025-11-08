@@ -302,18 +302,24 @@ namespace OpenRA.Mods.Common.MapGenerator
 			public readonly byte MinIndex;
 			public readonly byte MaxIndex;
 
-			public TileRange(ushort type, byte minIndex, byte maxIndex)
+			// Height is relative, so can be negative.
+			public readonly short HeightOffset;
+			public readonly byte Ramp;
+
+			public TileRange(ushort type, byte minIndex, byte maxIndex, short heightOffset, byte ramp)
 			{
 				Type = type;
 				MinIndex = minIndex;
 				MaxIndex = maxIndex;
+				HeightOffset = heightOffset;
+				Ramp = ramp;
 			}
 
-			public TileRange(ushort type, byte index)
-				: this(type, index, index) { }
+			public TileRange(ushort type, byte index, short heightOffset, byte ramp)
+				: this(type, index, index, heightOffset, ramp) { }
 
-			public TileRange(TerrainTile tile)
-				: this(tile.Type, tile.Index) { }
+			public TileRange(TerrainTile tile, short heightOffset, byte ramp)
+				: this(tile.Type, tile.Index, heightOffset, ramp) { }
 
 			/// <summary>Pick a non-randomized tile.</summary>
 			public TerrainTile DefaultTile => new(Type, MinIndex);
@@ -327,6 +333,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 					return DefaultTile;
 
 				return new TerrainTile(Type, (byte)random.Next(MinIndex, MaxIndex + 1));
+			}
+
+			/// <summary>Create a copy of this TileRange, adding an additional heightOffset.</summary>
+			public TileRange WithHeightOffset(short heightOffset)
+			{
+				return new(Type, MinIndex, MaxIndex, (short)(HeightOffset + heightOffset), Ramp);
 			}
 		}
 
@@ -352,6 +364,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// rectangular bounds of the MultiBrush.
 		/// </summary>
 		public CVec FirstCell => GetShape()[0];
+
+		public IEnumerable<(CVec XY, short Height, byte Ramp)> GetHeightsAndRamps()
+		{
+			return tiles.Select(t => (t.XY, t.TileRange.HeightOffset, t.TileRange.Ramp));
+		}
 
 		public Replaceability Contract()
 		{
@@ -461,19 +478,32 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// default, it will be auto-offset such that the first tile is
 		/// under (0, 0).
 		/// </summary>
-		public MultiBrush WithTemplate(Map map, ushort templateId, CVec offset)
+		public MultiBrush WithTemplate(Map map, ushort templateId, CVec offset, short heightOffset = 0)
 		{
-			var tileset = map.Rules.TerrainInfo as ITemplatedTerrainInfo;
-			if (!tileset.Templates.TryGetValue(templateId, out var templateInfo))
-				throw new ArgumentException($"Map's tileset does not contain template with ID {templateId}.");
-			return WithTemplate(templateInfo, offset);
+			var itti = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			return WithTemplate(itti, templateId, offset, heightOffset);
 		}
 
-		public MultiBrush WithTemplate(TerrainTemplateInfo templateInfo, CVec offset)
+		public MultiBrush WithTemplate(ITemplatedTerrainInfo itti, ushort templateId, CVec offset, short heightOffset = 0)
+		{
+			if (!itti.Templates.TryGetValue(templateId, out var templateInfo))
+				throw new ArgumentException($"Tileset does not contain template with ID {templateId}.");
+			return WithTemplate(templateInfo, offset, heightOffset);
+		}
+
+		public MultiBrush WithTemplate(TerrainTemplateInfo templateInfo, CVec offset, short heightOffset = 0)
 		{
 			if (templateInfo.PickAny)
 			{
-				tiles.Add((offset, new(templateInfo.Id, 0, (byte)(templateInfo.TilesCount - 1))));
+				// Assume that single tiles have equal height.
+				tiles.Add((
+					offset,
+					new(
+						templateInfo.Id,
+						0,
+						(byte)(templateInfo.TilesCount - 1),
+						(short)(templateInfo[0].Height + heightOffset),
+						templateInfo[0].RampType)));
 			}
 			else
 			{
@@ -482,7 +512,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 					{
 						var i = y * templateInfo.Size.X + x;
 						if (templateInfo[i] != null)
-							tiles.Add((new CVec(x, y) + offset, new(templateInfo.Id, (byte)i)));
+							tiles.Add((
+								new CVec(x, y) + offset,
+								new(
+									templateInfo.Id,
+									(byte)i,
+									(short)(templateInfo[i].Height + heightOffset),
+									templateInfo[i].RampType)));
 					}
 			}
 
@@ -494,9 +530,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Add a single tile, optionally with a given offset. By default, it
 		/// will be positioned under (0, 0).
 		/// </summary>
-		public MultiBrush WithTile(TerrainTile tile, CVec offset)
+		public MultiBrush WithTile(TerrainTile tile, CVec offset, short heightOffset = 0, byte ramp = 0)
 		{
-			tiles.Add((offset, new(tile)));
+			tiles.Add((offset, new(tile, heightOffset, ramp)));
 			shape = null;
 			return this;
 		}
@@ -518,7 +554,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (Area == 0)
 				throw new InvalidOperationException("No area");
 			foreach (var xy in shape)
-				tiles.Add((xy, new(tile)));
+				tiles.Add((xy, new(tile, 0, 0)));
 
 			return this;
 		}
@@ -545,7 +581,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Add the tiles and actors from another MultiBrush into this one at a given offset.
 		/// (Does not copy segments.)
 		/// </summary>
-		public void MergeFrom(MultiBrush other, CVec at, MapGridType mapGridType)
+		public void MergeFrom(MultiBrush other, CVec at, MapGridType mapGridType, short heightOffset = 0)
 		{
 			foreach (var original in other.actorPlans)
 			{
@@ -555,13 +591,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			foreach (var (xy, tile) in other.tiles)
-				tiles.Add((xy + at, tile));
+				tiles.Add((xy + at, tile.WithHeightOffset(heightOffset)));
 
 			shape = null;
 		}
 
 		/// <summary>
 		/// <para>Paint tiles onto the map and/or add actors to actorPlans at the given location.</para>
+		/// <para>A specific height offset can be supplied, else one will be assumed from the map.</para>
 		/// <para>contract specifies whether tiles or actors are allowed to be painted.</para>
 		/// <para>An optional MersenneTwister can be provided to vary randomizable elements.</para>
 		/// <para>If nothing could be painted, throws ArgumentException.</para>
@@ -570,9 +607,27 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Map map,
 			List<ActorPlan> actorPlans,
 			CPos paintAt,
+			short? heightOffset,
 			Replaceability contract,
 			MersenneTwister random)
 		{
+			short finalHeightOffset = 0;
+			if (heightOffset.HasValue)
+			{
+				finalHeightOffset = heightOffset.Value;
+			}
+			else
+			{
+				foreach (var cpos in Shape)
+				{
+					if (map.Height.Contains(paintAt + cpos))
+					{
+						finalHeightOffset = map.Height[paintAt + cpos];
+						break;
+					}
+				}
+			}
+
 			switch (contract)
 			{
 				case Replaceability.None:
@@ -581,7 +636,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					if (this.actorPlans.Count == 0 && tiles.Count == 0)
 						throw new ArgumentException("Cannot paint: no tiles or actors");
 
-					PaintTiles(map, paintAt, random);
+					PaintTiles(map, paintAt, finalHeightOffset, random);
 					PaintActors(map, actorPlans, paintAt);
 
 					break;
@@ -589,7 +644,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					if (tiles.Count == 0)
 						throw new ArgumentException("Cannot paint: no tiles");
 
-					PaintTiles(map, paintAt, random);
+					PaintTiles(map, paintAt, finalHeightOffset, random);
 					PaintActors(map, actorPlans, paintAt);
 					break;
 				case Replaceability.Actor:
@@ -601,13 +656,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 		}
 
-		void PaintTiles(Map map, CPos paintAt, MersenneTwister random)
+		void PaintTiles(Map map, CPos paintAt, short heightOffset, MersenneTwister random)
 		{
 			foreach (var (xy, tile) in tiles)
 			{
 				var mpos = (paintAt + xy).ToMPos(map);
 				if (map.Tiles.Contains(mpos))
+				{
+					// map.Ramp does not need to be updated here.
 					map.Tiles[mpos] = tile.Pick(random);
+					map.Height[mpos] = (byte)Math.Clamp(tile.HeightOffset + heightOffset, byte.MinValue, byte.MaxValue);
+				}
 			}
 		}
 
@@ -633,7 +692,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 			CellLayer<Replaceability> replace,
 			IReadOnlyList<MultiBrush> availableBrushes,
 			MersenneTwister random,
-			bool alwaysPreferLargerBrushes = false)
+			bool alwaysPreferLargerBrushes = false,
+			short? heightOffset = null)
 		{
 			var brushesByAreaDict = new Dictionary<int, List<MultiBrush>>();
 			foreach (var brush in availableBrushes)
@@ -745,7 +805,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					var paintAt = mpos.ToCPos(map) - brush.FirstCell;
 					var contract = ReserveShape(paintAt, brush.Shape, brush.Contract());
 					if (contract != Replaceability.None)
-						brush.Paint(map, actorPlans, paintAt, contract, random);
+						brush.Paint(map, actorPlans, paintAt, heightOffset, contract, random);
 
 					remainingQuota -= brushArea;
 					if (remainingQuota <= 0)
@@ -763,7 +823,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public EditorBlitSource ToEditorBlitSource(
 			WorldRenderer worldRenderer,
 			MersenneTwister random,
-			PlayerReference defaultActorOwner = null)
+			PlayerReference defaultActorOwner = null,
+			short heightOffset = 0)
 		{
 			var world = worldRenderer.World;
 			var map = world.Map;
@@ -812,10 +873,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 				tiles
 					.Where(t => map.Tiles.Contains(CPos.Zero + t.XY))
 					.DistinctBy(t => t.XY)
-					.Select(t => (t.XY, Tile: t.TileRange.Pick(random)))
+					.Select(t => (t.XY, Tile: t.TileRange.Pick(random), t.TileRange.HeightOffset))
 					.ToDictionary(
 						t => CPos.Zero + t.XY,
-						t => new BlitTile(t.Tile, default, null, map.Height[CPos.Zero + t.XY]));
+						t => new BlitTile(t.Tile, default, null, (byte)Math.Clamp(heightOffset + t.HeightOffset, byte.MinValue, byte.MaxValue)));
 
 			return new EditorBlitSource(
 				cellRegion,
