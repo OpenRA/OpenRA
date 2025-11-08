@@ -136,16 +136,21 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var map = world.Map;
-			var checkRadius = powerDecision.CoarseScanRadius;
+			var scanIndiceSideLength = powerDecision.CoarseScanRadius * 141 / 100; // CoarseScanRadius * sqrt(2);
 			var suitableLocations = new List<(MPos UV, int Attractiveness)>();
 			var totalAttractiveness = 0;
 
-			for (var i = 0; i < map.MapSize.Width; i += checkRadius)
+			var actualMapWidth = map.Bounds.Width;
+			var actualMapHeight = map.Bounds.Height;
+			var xoffset = map.Bounds.X;
+			var yoffset = map.Bounds.Y;
+
+			for (var i = 0; i < actualMapWidth; i += scanIndiceSideLength)
 			{
-				for (var j = 0; j < map.MapSize.Height; j += checkRadius)
+				for (var j = 0; j < actualMapHeight; j += scanIndiceSideLength)
 				{
-					var tl = new MPos(i, j);
-					var br = new MPos(i + checkRadius, j + checkRadius);
+					var tl = new MPos(i + xoffset, j + yoffset);
+					var br = new MPos(i + xoffset + scanIndiceSideLength, j + yoffset + scanIndiceSideLength);
 					var region = new CellRegion(map.Grid.Type, tl, br);
 
 					// HACK: The AI code should not be messing with raw coordinate transformations
@@ -185,13 +190,13 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 			}
 
-			var checkRadius = powerDecision.CoarseScanRadius;
-			var fineCheck = powerDecision.FineScanRadius;
-			for (var i = 0 - extendedRange; i <= checkRadius + extendedRange; i += fineCheck)
+			var scanIndiceSideLength = powerDecision.CoarseScanRadius * 141 / 100; // CoarseScanRadius * sqrt(2);
+			var fineScanIndiceSideLength = powerDecision.FineScanRadius * 141 / 100; // FineScanRadius * sqrt(2);
+			for (var i = 0 - extendedRange; i <= scanIndiceSideLength + extendedRange; i += fineScanIndiceSideLength)
 			{
 				var x = checkPos.X + i;
 
-				for (var j = 0 - extendedRange; j <= checkRadius + extendedRange; j += fineCheck)
+				for (var j = 0 - extendedRange; j <= scanIndiceSideLength + extendedRange; j += fineScanIndiceSideLength)
 				{
 					var y = checkPos.Y + j;
 					var pos = world.Map.CenterOfCell(new CPos(x, y));
