@@ -3256,186 +3256,23 @@ MultiBrushCollections:
 				Points: 1,1, 1,0
 				Start: Cliff.U
 	Trees:
-		MultiBrush@57:
-			Template: 57
-		MultiBrush@58:
-			Template: 58
-		MultiBrush@59:
-			Template: 59
-		MultiBrush@60:
-			Template: 60
-		MultiBrush@61:
-			Template: 61
-		MultiBrush@62:
-			Template: 62
-		MultiBrush@63:
-			Template: 63
-		MultiBrush@64:
-			Template: 64
-		MultiBrush@65:
-			Template: 65
-		MultiBrush@66:
-			Template: 66
-		MultiBrush@t04:
-			Actor: t04
-		MultiBrush@t08:
-			Actor: t08
-		MultiBrush@t09:
-			Actor: t09
-		MultiBrush@t18:
-			Actor: t18
-		MultiBrush@t04.husk:
-			Actor: t04.husk
-			Weight: 100
-		MultiBrush@t08.husk:
-			Actor: t08.husk
-			Weight: 100
-		MultiBrush@t09.husk:
-			Actor: t09.husk
-			Weight: 100
-		MultiBrush@t18.husk:
-			Actor: t18.husk
+		FromTemplates@1: 57,58,59,60,61,62,63,64,65,66
+		FromActors@2: t04,t08,t09,t18
+		FromActors@3: t04.husk,t08.husk,t09.husk,t18.husk
 			Weight: 100
 	Obstructions:
-		MultiBrush@82:
-			Template: 82
-		MultiBrush@83:
-			Template: 83
-		MultiBrush@85:
-			Template: 85
-		MultiBrush@86:
-			Template: 86
-		MultiBrush@87:
-			Template: 87
-		MultiBrush@217:
-			Template: 217
-		MultiBrush@57:
-			Template: 57
+		FromTemplates@1: 67,68,69,70,82,83,85,86,87,217,220
+		FromTemplates@2: 57,58,59,60,61,62,63,64,65,66
 			Weight: 500
-		MultiBrush@58:
-			Template: 58
-			Weight: 500
-		MultiBrush@59:
-			Template: 59
-			Weight: 500
-		MultiBrush@60:
-			Template: 60
-			Weight: 500
-		MultiBrush@61:
-			Template: 61
-			Weight: 500
-		MultiBrush@62:
-			Template: 62
-			Weight: 500
-		MultiBrush@63:
-			Template: 63
-			Weight: 500
-		MultiBrush@64:
-			Template: 64
-			Weight: 500
-		MultiBrush@65:
-			Template: 65
-			Weight: 500
-		MultiBrush@66:
-			Template: 66
-			Weight: 500
-		MultiBrush@67:
-			Template: 67
-		MultiBrush@68:
-			Template: 68
-		MultiBrush@69:
-			Template: 69
-		MultiBrush@70:
-			Template: 70
-		MultiBrush@220:
-			Template: 220
-		MultiBrush@t04:
-			Actor: t04
+		FromActors@3: t04,t08,t09,t18,t04.husk,t08.husk,t09.husk,t18.husk
 			BackingTile: 255,0
 			Weight: 100
-		MultiBrush@t08:
-			Actor: t08
-			BackingTile: 255,0
+		FromActors@4: rock1,rock2,rock4,rock5,rock6,rock7
+		FromActors@5: rock3
 			Weight: 100
-		MultiBrush@t09:
-			Actor: t09
-			BackingTile: 255,0
-			Weight: 100
-		MultiBrush@t18:
-			Actor: t18
-			BackingTile: 255,0
-			Weight: 100
-		MultiBrush@t04.husk:
-			Actor: t04.husk
-			BackingTile: 255,0
-			Weight: 100
-		MultiBrush@t08.husk:
-			Actor: t08.husk
-			BackingTile: 255,0
-			Weight: 100
-		MultiBrush@t09.husk:
-			Actor: t09.husk
-			BackingTile: 255,0
-			Weight: 100
-		MultiBrush@t18.husk:
-			Actor: t18.husk
-			BackingTile: 255,0
-			Weight: 100
-		MultiBrush@rock1:
-			Actor: rock1
-		MultiBrush@rock2:
-			Actor: rock2
-		MultiBrush@rock3:
-			Actor: rock3
-			Weight: 100
-		MultiBrush@rock4:
-			Actor: rock4
-		MultiBrush@rock5:
-			Actor: rock5
-		MultiBrush@rock6:
-			Actor: rock6
-		MultiBrush@rock7:
-			Actor: rock7
 	Water:
-		MultiBrush@1:
-			Template: 1
+		FromTemplates@1: 1
 			Weight: 100
-		MultiBrush@76:
-			Template: 76
-		MultiBrush@77:
-			Template: 77
+		FromTemplates@2: 76,77
 	CivilianBuildings:
-		MultiBrush@v20:
-			Actor: v20
-		MultiBrush@v21:
-			Actor: v21
-		MultiBrush@v22:
-			Actor: v22
-		MultiBrush@v23:
-			Actor: v23
-		MultiBrush@v24:
-			Actor: v24
-		MultiBrush@v25:
-			Actor: v25
-		MultiBrush@v26:
-			Actor: v26
-		MultiBrush@v27:
-			Actor: v27
-		MultiBrush@v28:
-			Actor: v28
-		MultiBrush@v29:
-			Actor: v29
-		MultiBrush@v30:
-			Actor: v30
-		MultiBrush@v31:
-			Actor: v31
-		MultiBrush@v32:
-			Actor: v32
-		MultiBrush@v33:
-			Actor: v33
-		MultiBrush@v34:
-			Actor: v34
-		MultiBrush@v35:
-			Actor: v35
-		MultiBrush@v36:
-			Actor: v36
+		FromActors@1: v20,v21,v22,v23,v24,v25,v26,v27,v28,v29,v30,v31,v32,v33,v34,v35,v36

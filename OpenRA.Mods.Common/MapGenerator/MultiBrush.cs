@@ -32,7 +32,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			[FieldLoader.Ignore]
 			public readonly string Type;
-			public readonly WVec Offset = new(0, 0, 0);
+			public readonly WVec Offset = WVec.Zero;
+
+			public ActorInfo(string type)
+			{
+				Type = type;
+			}
 
 			public ActorInfo(MiniYaml my)
 			{
@@ -48,7 +53,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			[FieldLoader.Ignore]
 			public readonly ushort Type;
-			public readonly CVec Offset = new(0, 0);
+			public readonly CVec Offset = CVec.Zero;
 
 			public TemplateInfo(ushort type)
 			{
@@ -71,7 +76,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			[FieldLoader.Ignore]
 			public readonly TerrainTile Type;
-			public readonly CVec Offset = new(0, 0);
+			public readonly CVec Offset = CVec.Zero;
 
 			public TileInfo(MiniYaml my)
 			{
@@ -93,23 +98,22 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public readonly ImmutableArray<TileInfo> Tiles;
 		public readonly MultiBrushSegment Segment;
 
-		public MultiBrushInfo(TemplateInfo templateInfo)
+		public MultiBrushInfo(
+			MiniYaml my = null,
+			int weight = MultiBrush.DefaultWeight,
+			IEnumerable<ActorInfo> actors = null,
+			TerrainTile? backingTile = null,
+			IEnumerable<TemplateInfo> templates = null,
+			IEnumerable<TileInfo> tiles = null,
+			MultiBrushSegment segment = null)
 		{
-			Weight = MultiBrush.DefaultWeight;
-			Actors = [];
-			BackingTile = null;
-			Templates = [templateInfo];
-			Tiles = [];
-			Segment = null;
-		}
-
-		public MultiBrushInfo(MiniYaml my)
-		{
-			Weight = MultiBrush.DefaultWeight;
-			var actors = new List<ActorInfo>();
-			var templates = new List<TemplateInfo>();
-			var tiles = new List<TileInfo>();
-			foreach (var node in my.Nodes)
+			Weight = weight;
+			var actorsAcc = (actors ?? []).ToList();
+			BackingTile = backingTile;
+			var templatesAcc = (templates ?? []).ToList();
+			var tilesAcc = (tiles ?? []).ToList();
+			Segment = segment;
+			foreach (var node in my?.Nodes ?? [])
 				switch (node.Key.Split('@')[0])
 				{
 					case "Weight":
@@ -117,19 +121,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 							throw new YamlException($"Invalid MultiBrush Weight `{node.Value.Value}`");
 						break;
 					case "Actor":
-						actors.Add(new ActorInfo(node.Value));
+						actorsAcc.Add(new ActorInfo(node.Value));
 						break;
 					case "BackingTile":
-						if (TerrainTile.TryParse(node.Value.Value, out var backingTile))
-							BackingTile = backingTile;
+						if (TerrainTile.TryParse(node.Value.Value, out var bt))
+							BackingTile = bt;
 						else
 							throw new YamlException($"Invalid MultiBrush BackingTile `{node.Value.Value}`");
 						break;
 					case "Template":
-						templates.Add(new TemplateInfo(node.Value));
+						templatesAcc.Add(new TemplateInfo(node.Value));
 						break;
 					case "Tile":
-						tiles.Add(new TileInfo(node.Value));
+						tilesAcc.Add(new TileInfo(node.Value));
 						break;
 					case "Segment":
 						if (Segment != null)
@@ -140,9 +144,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 						throw new YamlException($"Unrecognized MultiBrush key {node.Key.Split('@')[0]}");
 				}
 
-			Actors = [.. actors];
-			Templates = [.. templates];
-			Tiles = [.. tiles];
+			Actors = [.. actorsAcc];
+			Templates = [.. templatesAcc];
+			Tiles = [.. tilesAcc];
 		}
 
 		public static ImmutableArray<MultiBrushInfo> ParseCollection(MiniYaml my)
@@ -156,12 +160,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 						brushes.Add(new MultiBrushInfo(node.Value));
 						break;
 					case "FromTemplates":
-						foreach (var part in node.Value.Value.Split(","))
-						{
-							if (!Exts.TryParseUshortInvariant(part, out var type))
-								throw new YamlException($"Invalid MultiBrush Template `{part}`");
-							brushes.Add(new MultiBrushInfo(new TemplateInfo(type)));
-						}
+						foreach (var template in FieldLoader.GetValue<List<ushort>>(node.Key, node.Value.Value))
+							brushes.Add(new MultiBrushInfo(
+								my: node.Value,
+								templates: [new TemplateInfo(template)]));
+
+						break;
+					case "FromActors":
+						foreach (var actor in FieldLoader.GetValue<List<string>>(node.Key, node.Value.Value))
+							brushes.Add(new MultiBrushInfo(
+								my: node.Value,
+								actors: [new ActorInfo(actor)]));
 
 						break;
 					default:
