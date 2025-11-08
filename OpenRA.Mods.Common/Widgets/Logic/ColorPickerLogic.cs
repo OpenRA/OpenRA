@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -168,7 +169,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						.Where(c => c != mixer.Color)
 						.Append(mixer.Color)
 						.Reverse().Take(paletteCustomRows * paletteCols).Reverse()
-						.ToArray();
+						.ToImmutableArray();
 					Game.Settings.Save();
 
 					// Flash the palette tab to show players that something has happened

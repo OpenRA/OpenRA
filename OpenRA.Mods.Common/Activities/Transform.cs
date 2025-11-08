@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		public readonly string ToActor;
 		public CVec Offset = CVec.Zero;
 		public WAngle Facing = new(384);
-		public string[] Sounds = [];
+		public ImmutableArray<string> Sounds = [];
 		public string Notification = null;
 		public string TextNotification = null;
 		public int ForceHealthPercentage = 0;

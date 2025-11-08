@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 				}
 
-				foreach (var kv in c.Value.Regions)
+				foreach (var kv in c.Value.Regions.OrderBy(kvp => kvp.Key))
 				{
 					var r = kv.Value;
 					regions.Add($"[\"{c.Key}.{kv.Key}\",{r.X},{r.Y},{r.Width},{r.Height}]");

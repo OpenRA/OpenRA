@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference]
 		[FieldLoader.Require]
 		[Desc("Weapons to fire.")]
-		public readonly string[] Weapons = [];
+		public readonly ImmutableArray<string> Weapons = [];
 
 		[Desc("How long (in ticks) to wait before the first detonation.")]
 		public readonly int StartCooldown = 0;
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init) { return new FireWarheads(this); }
 
-		public WeaponInfo[] WeaponInfos { get; private set; }
+		public ImmutableArray<WeaponInfo> WeaponInfos { get; private set; }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 					throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
 				return weapon;
-			}).ToArray();
+			}).ToImmutableArray();
 		}
 	}
 

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string AttackAnythingCondition = null;
 
 		[FieldLoader.Ignore]
-		public readonly Dictionary<UnitStance, string> ConditionByStance = [];
+		public FrozenDictionary<UnitStance, string> ConditionByStance = FrozenDictionary<UnitStance, string>.Empty;
 
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;
@@ -89,17 +90,20 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.RulesetLoaded(rules, info);
 
+			var conditionByStance = new Dictionary<UnitStance, string>();
 			if (HoldFireCondition != null)
-				ConditionByStance[UnitStance.HoldFire] = HoldFireCondition;
+				conditionByStance[UnitStance.HoldFire] = HoldFireCondition;
 
 			if (ReturnFireCondition != null)
-				ConditionByStance[UnitStance.ReturnFire] = ReturnFireCondition;
+				conditionByStance[UnitStance.ReturnFire] = ReturnFireCondition;
 
 			if (DefendCondition != null)
-				ConditionByStance[UnitStance.Defend] = DefendCondition;
+				conditionByStance[UnitStance.Defend] = DefendCondition;
 
 			if (AttackAnythingCondition != null)
-				ConditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
+				conditionByStance[UnitStance.AttackAnything] = AttackAnythingCondition;
+
+			ConditionByStance = conditionByStance.ToFrozenDictionary();
 		}
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)

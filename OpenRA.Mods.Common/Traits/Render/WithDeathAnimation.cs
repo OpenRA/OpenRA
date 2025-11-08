@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Death animations to use for each damage type (defined on the warheads).",
 			"Is only used if UseDeathTypeSuffix is `True`.")]
-		public readonly Dictionary<string, string[]> DeathTypes = [];
+		public readonly FrozenDictionary<string, ImmutableArray<string>> DeathTypes = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 
 		[SequenceReference]
 		[Desc("Sequence to use when the actor is killed by some non-standard means (e.g. suicide).")]

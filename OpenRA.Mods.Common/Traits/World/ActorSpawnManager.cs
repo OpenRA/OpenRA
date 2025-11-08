@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -30,17 +31,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.",
 			"If 2 values are provided they are used as a range from which a value is randomly selected.")]
-		public readonly int[] SpawnInterval = [6000];
+		public readonly ImmutableArray<int> SpawnInterval = [6000];
 
 		[FieldLoader.Require]
 		[ActorReference]
 		[Desc("Name of the actor that will be randomly picked to spawn.")]
-		public readonly string[] Actors = [];
+		public readonly ImmutableArray<string> Actors = [];
 
 		public readonly string Owner = "Creeps";
 
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly HashSet<string> Types = [];
+		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

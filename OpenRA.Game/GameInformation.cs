@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -41,7 +42,7 @@ namespace OpenRA
 		public TimeSpan Duration => EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero;
 
 		public IList<Player> Players { get; }
-		public HashSet<int> DisabledSpawnPoints = [];
+		public FrozenSet<int> DisabledSpawnPoints = FrozenSet<int>.Empty;
 
 		public MapPreview MapPreview
 		{

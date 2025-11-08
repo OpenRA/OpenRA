@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -18,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackTurretedInfo : AttackFollowInfo, Requires<TurretedInfo>
 	{
 		[Desc("Turret names")]
-		public readonly string[] Turrets = ["primary"];
+		public readonly ImmutableArray<string> Turrets = ["primary"];
 
 		public override object Create(ActorInitializer init) { return new AttackTurreted(init.Self, this); }
 	}

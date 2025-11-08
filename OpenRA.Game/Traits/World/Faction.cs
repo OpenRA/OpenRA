@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 
 namespace OpenRA.Traits
 {
@@ -25,7 +25,7 @@ namespace OpenRA.Traits
 		public readonly string InternalName = null;
 
 		[Desc("Pick a random faction as the player's faction out of this list.")]
-		public readonly HashSet<string> RandomFactionMembers = [];
+		public readonly FrozenSet<string> RandomFactionMembers = FrozenSet<string>.Empty;
 
 		[Desc("The side that the faction belongs to. For example, England belongs to the 'Allies' side.")]
 		public readonly string Side = null;

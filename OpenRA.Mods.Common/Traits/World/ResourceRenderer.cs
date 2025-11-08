@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -31,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			[FieldLoader.Require]
 			[SequenceReference(nameof(Image))]
 			[Desc("Randomly chosen image sequences.")]
-			public readonly string[] Sequences = [];
+			public readonly ImmutableArray<string> Sequences = [];
 
 			[PaletteReference]
 			[Desc("Palette used for rendering the resource sprites.")]
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[IncludeFluentReferences(LintDictionaryReference.Values)]
 		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
-		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
+		public readonly FrozenDictionary<string, ResourceTypeInfo> ResourceTypes = null;
 
 		// Copied from ResourceLayerInfo
 		protected static object LoadResourceTypes(MiniYaml yaml)
@@ -61,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var r in resources.Value.Nodes)
 					ret[r.Key] = new ResourceTypeInfo(r.Value);
 
-			return ret;
+			return ret.ToFrozenDictionary();
 		}
 
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)

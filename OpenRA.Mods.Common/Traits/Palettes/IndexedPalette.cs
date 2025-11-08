@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -32,11 +33,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Indices from BasePalette to be swapped with ReplaceIndex.")]
-		public readonly int[] Index = [];
+		public readonly ImmutableArray<int> Index = [];
 
 		[FieldLoader.Require]
 		[Desc("Indices from BasePalette to replace from Index.")]
-		public readonly int[] ReplaceIndex = [];
+		public readonly ImmutableArray<int> ReplaceIndex = [];
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<int, int> replacements = [];
 		readonly IPalette basePalette;
 
-		public IndexedColorRemap(IPalette basePalette, int[] ramp, int[] remap)
+		public IndexedColorRemap(IPalette basePalette, ImmutableArray<int> ramp, ImmutableArray<int> remap)
 		{
 			this.basePalette = basePalette;
 			if (ramp.Length != remap.Length)

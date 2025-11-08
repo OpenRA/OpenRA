@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			public readonly int Shard;
 			public readonly int ShardCount;
 			public readonly ImmutableArray<string> Variables;
-			public readonly ImmutableDictionary<string, ImmutableArray<string>> Choices;
+			public readonly FrozenDictionary<string, ImmutableArray<string>> Choices;
 
 			Configuration(
 				string mapGeneratorName,
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				int shard,
 				int shardCount,
 				ImmutableArray<string> variables,
-				ImmutableDictionary<string, ImmutableArray<string>> choices)
+				FrozenDictionary<string, ImmutableArray<string>> choices)
 			{
 				MapGeneratorType = mapGeneratorName;
 				NoDefaults = noDefaults;
@@ -176,7 +177,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					shard,
 					shardCount,
 					variables.ToImmutableArray(),
-					choices.ToImmutableDictionary());
+					choices.ToFrozenDictionary());
 			}
 		}
 

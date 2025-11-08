@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace OpenRA.Primitives
@@ -19,7 +20,7 @@ namespace OpenRA.Primitives
 		public static readonly Polygon Empty = new(Rectangle.Empty);
 
 		public readonly Rectangle BoundingRect;
-		public readonly int2[] Vertices;
+		public readonly ImmutableArray<int2> Vertices;
 		readonly bool isRectangle;
 
 		public Polygon(Rectangle bounds)
@@ -29,7 +30,7 @@ namespace OpenRA.Primitives
 			isRectangle = true;
 		}
 
-		public Polygon(int2[] vertices)
+		public Polygon(ImmutableArray<int2> vertices)
 		{
 			if (vertices != null && vertices.Length > 0)
 			{
@@ -53,7 +54,7 @@ namespace OpenRA.Primitives
 			{
 				isRectangle = true;
 				BoundingRect = Rectangle.Empty;
-				Vertices = Exts.MakeArray(4, _ => int2.Zero);
+				Vertices = Exts.MakeArray(4, _ => int2.Zero).ToImmutableArray();
 			}
 		}
 

@@ -9,8 +9,7 @@
  */
 #endregion
 
-using System;
-using System.Linq;
+using System.Collections.Immutable;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -47,11 +46,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TimeDelay = 0;
 
 		[Desc("Only allow this crate action when the collector has these prerequisites")]
-		public readonly string[] Prerequisites = [];
+		public readonly ImmutableArray<string> Prerequisites = [];
 
 		[ActorReference]
 		[Desc("Actor types that this crate action will not occur for.")]
-		public readonly string[] ExcludedActorTypes = [];
+		public readonly ImmutableArray<string> ExcludedActorTypes = [];
 
 		public override object Create(ActorInitializer init) { return new CrateAction(init.Self, this); }
 	}

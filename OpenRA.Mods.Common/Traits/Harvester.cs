@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HarvestFacings = 0;
 
 		[Desc("Which resources it can harvest.")]
-		public readonly string[] Resources = [];
+		public readonly ImmutableArray<string> Resources = [];
 
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;

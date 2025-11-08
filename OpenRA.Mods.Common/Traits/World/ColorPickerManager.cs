@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
@@ -34,16 +36,16 @@ namespace OpenRA.Mods.Common.Traits
 		const string InvalidPlayerColor = "notification-invalid-player-color";
 
 		[Desc("Minimum and maximum saturation levels that are valid for use.")]
-		public readonly float[] HsvSaturationRange = [0.3f, 0.95f];
+		public readonly ImmutableArray<float> HsvSaturationRange = [0.3f, 0.95f];
 
 		[Desc("Minimum and maximum value levels that are valid for use.")]
-		public readonly float[] HsvValueRange = [0.3f, 0.95f];
+		public readonly ImmutableArray<float> HsvValueRange = [0.3f, 0.95f];
 
 		[Desc("Perceptual color threshold for determining whether two colors are too similar.")]
 		public readonly int SimilarityThreshold = 0x50;
 
 		[Desc("List of colors to be displayed in the palette tab.")]
-		public readonly Color[] PresetColors = [];
+		public readonly ImmutableArray<Color> PresetColors = [];
 
 		[ActorReference]
 		[Desc("Actor type to show in the color picker. This can be overridden for specific factions with FactionPreviewActors.")]
@@ -52,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Actor type to show in the color picker for specific factions. Overrides PreviewActor.",
 			"A dictionary of [faction name]: [actor name].")]
-		public readonly Dictionary<string, string> FactionPreviewActors = [];
+		public readonly FrozenDictionary<string, string> FactionPreviewActors = FrozenDictionary<string, string>.Empty;
 
 		public bool IsInvalidColor(Color color, IEnumerable<Color> candidateBlockers)
 		{
@@ -131,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 		(float SMin, float SMax) IColorPickerManagerInfo.SaturationRange => (HsvSaturationRange[0], HsvSaturationRange[1]);
 		(float VMin, float VMax) IColorPickerManagerInfo.ValueRange => (HsvValueRange[0], HsvValueRange[1]);
 
-		Color[] IColorPickerManagerInfo.PresetColors => PresetColors;
+		ImmutableArray<Color> IColorPickerManagerInfo.PresetColors => PresetColors;
 
 		Color IColorPickerManagerInfo.RandomPresetColor(
 			MersenneTwister random,

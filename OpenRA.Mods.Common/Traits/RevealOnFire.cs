@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Linq;
+using System.Collections.Immutable;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class RevealOnFireInfo : ConditionalTraitInfo
 	{
 		[Desc("The armament types which trigger revealing.")]
-		public readonly string[] ArmamentNames = ["primary", "secondary"];
+		public readonly ImmutableArray<string> ArmamentNames = ["primary", "secondary"];
 
 		[Desc("Player relationships relative to the target player this actor will be revealed to during firing.")]
 		public readonly PlayerRelationship RevealForRelationships = PlayerRelationship.Ally;

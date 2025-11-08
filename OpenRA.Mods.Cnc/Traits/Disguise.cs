@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when disguised as specified actor.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> DisguisedAsConditions = [];
+		public readonly FrozenDictionary<string, string> DisguisedAsConditions = FrozenDictionary<string, string>.Empty;
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid actor to disguise as.")]

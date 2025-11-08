@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -21,10 +23,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithCrateBodyInfo : TraitInfo, Requires<RenderSpritesInfo>, IRenderActorPreviewSpritesInfo
 	{
 		[Desc("Easteregg sequences to use in December.")]
-		public readonly string[] XmasImages = [];
+		public readonly ImmutableArray<string> XmasImages = [];
 
 		[Desc("Terrain types on which to display WaterSequence.")]
-		public readonly HashSet<string> WaterTerrainTypes = ["Water"];
+		public readonly FrozenSet<string> WaterTerrainTypes = new HashSet<string> { "Water" }.ToFrozenSet();
 
 		[SequenceReference]
 		public readonly string IdleSequence = "idle";

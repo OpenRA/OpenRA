@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[Desc("Only grant this condition for certain factions.")]
-		public readonly HashSet<string> Factions = [];
+		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;

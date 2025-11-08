@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenRA.FileSystem;
@@ -268,7 +269,7 @@ namespace OpenRA
 
 			if (mapRules.Value != null)
 			{
-				var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
+				var mapFiles = FieldLoader.GetValue<ImmutableArray<string>>("value", mapRules.Value);
 				foreach (var f in mapFiles)
 					if (AnyFlaggedTraits(modData, MiniYaml.FromStream(fileSystem.Open(f), f)))
 						return true;

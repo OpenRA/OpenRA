@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[Desc("The actors to grant condition for. If empty condition will be granted for all actors.")]
-		public readonly HashSet<string> Actors = [];
+		public readonly FrozenSet<string> Actors = FrozenSet<string>.Empty;
 
 		[Desc("How long condition is applies for. Use -1 for infinite.")]
 		public readonly int Duration = -1;

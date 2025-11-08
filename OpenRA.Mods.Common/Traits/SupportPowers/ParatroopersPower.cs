@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference(typeof(PassengerInfo))]
 		[Desc("Troops to be delivered.  They will be distributed between the planes if SquadSize > 1.")]
-		public readonly string[] DropItems = [];
+		public readonly ImmutableArray<string> DropItems = [];
 
 		[Desc("Risks stuck units when they don't have the Paratrooper trait.")]
 		public readonly bool AllowImpassableCells = false;

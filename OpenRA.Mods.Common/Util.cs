@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -223,7 +224,7 @@ namespace OpenRA.Mods.Common
 			}
 		}
 
-		public static int RandomInRange(MersenneTwister random, int[] range)
+		public static int RandomInRange(MersenneTwister random, ImmutableArray<int> range)
 		{
 			if (range.Length == 0)
 				return 0;
@@ -241,7 +242,7 @@ namespace OpenRA.Mods.Common
 				: t.Name;
 		}
 
-		public static WDist RandomDistance(MersenneTwister random, WDist[] distance)
+		public static WDist RandomDistance(MersenneTwister random, ImmutableArray<WDist> distance)
 		{
 			if (distance.Length == 0)
 				return WDist.Zero;
@@ -252,7 +253,7 @@ namespace OpenRA.Mods.Common
 			return new WDist(random.Next(distance[0].Length, distance[1].Length));
 		}
 
-		public static WVec RandomVector(MersenneTwister random, WVec[] vector)
+		public static WVec RandomVector(MersenneTwister random, ImmutableArray<WVec> vector)
 		{
 			if (vector.Length == 0)
 				return WVec.Zero;

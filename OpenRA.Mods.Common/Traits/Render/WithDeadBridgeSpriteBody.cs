@@ -9,9 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -21,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		[ActorReference]
-		public readonly string[] RampActors = [];
+		public readonly ImmutableArray<string> RampActors = [];
 
 		[Desc("Offset to search for the 'A' neighbour")]
 		public readonly CVec AOffset = CVec.Zero;
@@ -30,13 +29,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly CVec BOffset = CVec.Zero;
 
 		[SequenceReference]
-		public readonly string[] ARampSequences = ["aramp"];
+		public readonly ImmutableArray<string> ARampSequences = ["aramp"];
 
 		[SequenceReference]
-		public readonly string[] BRampSequences = ["bramp"];
+		public readonly ImmutableArray<string> BRampSequences = ["bramp"];
 
 		[SequenceReference]
-		public readonly string[] ABRampSequences = ["abramp"];
+		public readonly ImmutableArray<string> ABRampSequences = ["abramp"];
 
 		[SequenceReference]
 		[Desc("Placeholder sequence to use in the map editor.")]

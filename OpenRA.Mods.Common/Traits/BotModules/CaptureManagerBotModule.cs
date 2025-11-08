@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -22,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Actor types that can capture other actors (via `Captures`).",
 			"Leave this empty to disable capturing.")]
-		public readonly HashSet<string> CapturingActorTypes = [];
+		public readonly FrozenSet<string> CapturingActorTypes = FrozenSet<string>.Empty;
 
 		[Desc("Actor types that can be targeted for capturing.",
 			"Leave this empty to include all actors.")]
-		public readonly HashSet<string> CapturableActorTypes = [];
+		public readonly FrozenSet<string> CapturableActorTypes = FrozenSet<string>.Empty;
 
 		[Desc("Minimum delay (in ticks) between trying to capture with CapturingActorTypes.")]
 		public readonly int MinimumCaptureDelay = 375;

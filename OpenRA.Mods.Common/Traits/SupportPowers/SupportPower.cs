@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Normal rules apply for subsequent charges.")]
 		public readonly bool StartFullyCharged = false;
 
-		public readonly string[] Prerequisites = [];
+		public readonly ImmutableArray<string> Prerequisites = [];
 
 		public readonly string DetectedSound = null;
 

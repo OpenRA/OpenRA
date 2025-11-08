@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -23,13 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class McvExpansionManagerBotModuleInfo : ConditionalTraitInfo, Requires<ResourceMapBotModuleInfo>, NotBefore<ResourceMapBotModuleInfo>
 	{
 		[Desc("Actor types that are considered MCVs (deploy into base builders).")]
-		public readonly HashSet<string> McvTypes = [];
+		public readonly FrozenSet<string> McvTypes = FrozenSet<string>.Empty;
 
 		[Desc("Actor types that are considered construction yards (base builders).")]
-		public readonly HashSet<string> ConstructionYardTypes = [];
+		public readonly FrozenSet<string> ConstructionYardTypes = FrozenSet<string>.Empty;
 
 		[Desc("Actor types that are able to produce MCVs.")]
-		public readonly HashSet<string> McvFactoryTypes = [];
+		public readonly FrozenSet<string> McvFactoryTypes = FrozenSet<string>.Empty;
 
 		[Desc("Try to maintain at least this many ConstructionYardTypes, build an MCV if number is below this.")]
 		public readonly int MinimumConstructionYardCount = 1;

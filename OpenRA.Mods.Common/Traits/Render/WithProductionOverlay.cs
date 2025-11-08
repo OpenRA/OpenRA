@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithProductionOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>, Requires<ProductionInfo>
 	{
 		[Desc("Queues that should be producing for this overlay to render.")]
-		public readonly HashSet<string> Queues = [];
+		public readonly FrozenSet<string> Queues = FrozenSet<string>.Empty;
 
 		[SequenceReference]
 		[Desc("Sequence name to use")]

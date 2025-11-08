@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Prerequisites to grant when this checkbox is enabled.")]
-		public readonly HashSet<string> Prerequisites = [];
+		public readonly FrozenSet<string> Prerequisites = FrozenSet<string>.Empty;
 
 		IEnumerable<string> ITechTreePrerequisiteInfo.Prerequisites(ActorInfo info) { return Prerequisites; }
 
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LobbyPrerequisiteCheckbox : INotifyCreated, ITechTreePrerequisite
 	{
 		readonly LobbyPrerequisiteCheckboxInfo info;
-		HashSet<string> prerequisites = [];
+		FrozenSet<string> prerequisites = FrozenSet<string>.Empty;
 
 		public LobbyPrerequisiteCheckbox(LobbyPrerequisiteCheckboxInfo info)
 		{

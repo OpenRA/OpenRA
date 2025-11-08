@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[ActorReference]
 		[Desc("Actor types that should be treated as veins for adjacency.")]
-		public readonly HashSet<string> VeinholeActors = [];
+		public readonly FrozenSet<string> VeinholeActors = FrozenSet<string>.Empty;
 
 		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -342,7 +343,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var creeps = Players.Players.Keys.FirstOrDefault(p => p == "Creeps");
 			if (!string.IsNullOrEmpty(creeps))
-				Players.Players[creeps].Enemies = Players.Players.Keys.Where(p => !Players.Players[p].NonCombatant).ToArray();
+				Players.Players[creeps].Enemies = Players.Players.Keys.Where(p => !Players.Players[p].NonCombatant).ToImmutableArray();
 		}
 
 		void UpdateNeighbours(ReadOnlySpan<EditorActorPreview> previews)

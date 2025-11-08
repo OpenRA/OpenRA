@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Interval = 150;
 
 		[Desc("Actors that allow this module to toggle")]
-		public readonly HashSet<string> PowerDownTypes = [];
+		public readonly FrozenSet<string> PowerDownTypes = FrozenSet<string>.Empty;
 
 		[Desc("Order used by " + nameof(ToggleConditionOnOrderInfo) + " for powerdown on toggled actor.")]
 		public readonly string PowerDownOrder = "PowerDown";

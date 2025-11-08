@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -250,7 +251,7 @@ namespace OpenRA.Graphics
 			return sequences.GetSequence(Name, sequenceName);
 		}
 
-		public string GetRandomExistingSequence(string[] sequences, MersenneTwister random)
+		public string GetRandomExistingSequence(ImmutableArray<string> sequences, MersenneTwister random)
 		{
 			return sequences.Where(HasSequence).RandomOrDefault(random);
 		}

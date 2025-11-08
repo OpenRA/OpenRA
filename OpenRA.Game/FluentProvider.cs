@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.Text;
 using OpenRA.FileSystem;
 
@@ -29,9 +30,9 @@ namespace OpenRA
 				modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modData.Manifest.FluentMessages, fileSystem);
 				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
 				{
-					var files = Array.Empty<string>();
+					var files = ImmutableArray<string>.Empty;
 					if (map.FluentMessageDefinitions.Value != null)
-						files = FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value);
+						files = FieldLoader.GetValue<ImmutableArray<string>>("value", map.FluentMessageDefinitions.Value);
 
 					string text = null;
 					if (map.FluentMessageDefinitions.Nodes.Length > 0)

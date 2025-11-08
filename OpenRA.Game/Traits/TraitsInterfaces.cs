@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -175,7 +176,7 @@ namespace OpenRA.Traits
 	[RequireExplicitImplementation]
 	public interface IStoresResourcesInfo : ITraitInfoInterface
 	{
-		string[] ResourceTypes { get; }
+		ImmutableArray<string> ResourceTypes { get; }
 	}
 
 	public interface IStoresResources
@@ -505,12 +506,12 @@ namespace OpenRA.Traits
 
 	public interface IControlGroupsInfo : ITraitInfoInterface
 	{
-		string[] Groups { get; }
+		ImmutableArray<string> Groups { get; }
 	}
 
 	public interface IControlGroups
 	{
-		string[] Groups { get; }
+		ImmutableArray<string> Groups { get; }
 
 		void SelectControlGroup(int group);
 		void CreateControlGroup(int group);

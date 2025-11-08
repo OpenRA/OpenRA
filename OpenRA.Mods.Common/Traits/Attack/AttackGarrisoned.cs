@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
@@ -32,17 +33,17 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Fire port offsets in local coordinates.")]
-		public readonly WVec[] PortOffsets = null;
+		public readonly ImmutableArray<WVec> PortOffsets = default;
 
 		[FieldLoader.Require]
 		[Desc("Fire port yaw angles.")]
-		public readonly WAngle[] PortYaws = null;
+		public readonly ImmutableArray<WAngle> PortYaws = default;
 
 		[FieldLoader.Require]
 		[Desc("Fire port yaw cone angle.")]
-		public readonly WAngle[] PortCones = null;
+		public readonly ImmutableArray<WAngle> PortCones = default;
 
-		public FirePort[] Ports { get; private set; }
+		public ImmutableArray<FirePort> Ports { get; private set; }
 
 		[PaletteReference]
 		public readonly string MuzzlePalette = "effect";
@@ -59,17 +60,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (PortCones.Length != PortOffsets.Length)
 				throw new YamlException("PortCones must define an angle for each port.");
 
-			Ports = new FirePort[PortOffsets.Length];
+			var ports = new FirePort[PortOffsets.Length];
 
 			for (var i = 0; i < PortOffsets.Length; i++)
 			{
-				Ports[i] = new FirePort
+				ports[i] = new FirePort
 				{
 					Offset = PortOffsets[i],
 					Yaw = PortYaws[i],
 					Cone = PortCones[i],
 				};
 			}
+
+			Ports = ports.ToImmutableArray();
 
 			base.RulesetLoaded(rules, ai);
 		}

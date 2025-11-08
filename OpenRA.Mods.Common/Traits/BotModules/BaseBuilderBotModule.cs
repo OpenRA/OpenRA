@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -21,34 +23,34 @@ namespace OpenRA.Mods.Common.Traits
 	public class BaseBuilderBotModuleInfo : ConditionalTraitInfo, NotBefore<ResourceMapBotModuleInfo>, NotBefore<IResourceLayerInfo>
 	{
 		[Desc("Tells the AI what building types are considered construction yards.")]
-		public readonly HashSet<string> ConstructionYardTypes = [];
+		public readonly FrozenSet<string> ConstructionYardTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered refineries.")]
-		public readonly HashSet<string> RefineryTypes = [];
+		public readonly FrozenSet<string> RefineryTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered power plants.")]
-		public readonly HashSet<string> PowerTypes = [];
+		public readonly FrozenSet<string> PowerTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered production facilities.")]
-		public readonly HashSet<string> ProductionTypes = [];
+		public readonly FrozenSet<string> ProductionTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered tech buildings.")]
-		public readonly HashSet<string> TechTypes = [];
+		public readonly FrozenSet<string> TechTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered naval production facilities.")]
-		public readonly HashSet<string> NavalProductionTypes = [];
+		public readonly FrozenSet<string> NavalProductionTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered silos (resource storage).")]
-		public readonly HashSet<string> SiloTypes = [];
+		public readonly FrozenSet<string> SiloTypes = FrozenSet<string>.Empty;
 
 		[Desc("Tells the AI what building types are considered defenses.")]
-		public readonly HashSet<string> DefenseTypes = [];
+		public readonly FrozenSet<string> DefenseTypes = FrozenSet<string>.Empty;
 
 		[Desc("Production queues AI uses for buildings.")]
-		public readonly HashSet<string> BuildingQueues = ["Building"];
+		public readonly FrozenSet<string> BuildingQueues = new HashSet<string> { "Building" }.ToFrozenSet();
 
 		[Desc("Production queues AI uses for defenses.")]
-		public readonly HashSet<string> DefenseQueues = ["Defense"];
+		public readonly FrozenSet<string> DefenseQueues = new HashSet<string> { "Defense" }.ToFrozenSet();
 
 		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
 		public readonly int MinBaseRadius = 2;
@@ -122,16 +124,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int CheckForWaterRadius = 8;
 
 		[Desc("Terrain types which are considered water for base building purposes.")]
-		public readonly HashSet<string> WaterTerrainTypes = ["Water"];
+		public readonly FrozenSet<string> WaterTerrainTypes = new HashSet<string> { "Water" }.ToFrozenSet();
 
 		[Desc("What buildings to the AI should build.", "What integer percentage of the total base must be this type of building.")]
-		public readonly Dictionary<string, int> BuildingFractions = null;
+		public readonly FrozenDictionary<string, int> BuildingFractions = null;
 
 		[Desc("What buildings should the AI have a maximum limit to build.")]
-		public readonly Dictionary<string, int> BuildingLimits = null;
+		public readonly FrozenDictionary<string, int> BuildingLimits = null;
 
 		[Desc("When should the AI start building specific buildings.")]
-		public readonly Dictionary<string, int> BuildingDelays = null;
+		public readonly FrozenDictionary<string, int> BuildingDelays = null;
 
 		[Desc("Only queue construction of a new structure when above this requirement.")]
 		public readonly int ProductionMinCashRequirement = 500;
@@ -155,10 +157,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxRefineryPerIndice = 2;
 
 		[Desc($"AI will move mcv when those numbers of refinery <= productions + tech - {nameof(ExpansionTolerate)}.")]
-		public readonly int[] ExpansionTolerate = [0, 1];
+		public readonly ImmutableArray<int> ExpansionTolerate = [0, 1];
 
 		[Desc($"AI will move the only mcv when those numbers of refinery <= productions + tech - {nameof(ForceExpansionTolerate)}.")]
-		public readonly int[] ForceExpansionTolerate = [2, 3];
+		public readonly ImmutableArray<int> ForceExpansionTolerate = [2, 3];
 
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}

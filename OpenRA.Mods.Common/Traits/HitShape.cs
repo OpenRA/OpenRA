@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = null;
 
 		[Desc("Create a targetable position for each offset listed here (relative to CenterPosition).")]
-		public readonly WVec[] TargetableOffsets = [WVec.Zero];
+		public readonly ImmutableArray<WVec> TargetableOffsets = [WVec.Zero];
 
 		[Desc("Create a targetable position at the center of each occupied cell. Stacks with TargetableOffsets.")]
 		public readonly bool UseTargetableCellsOffsets = false;

@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.Terrain;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Terrain types where the actor will take damage.")]
-		public readonly string[] DamageTerrainTypes = ["Rock"];
+		public readonly ImmutableArray<string> DamageTerrainTypes = ["Rock"];
 
 		[Desc("Percentage health below which the actor will not receive further damage.")]
 		public readonly int DamageThreshold = 50;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		public readonly ushort ConcreteTemplate = 88;
 
 		[Desc("List of required prerequisites to place a terrain template.")]
-		public readonly string[] ConcretePrerequisites = [];
+		public readonly ImmutableArray<string> ConcretePrerequisites = [];
 
 		public override object Create(ActorInitializer init) { return new D2kBuilding(init, this); }
 	}

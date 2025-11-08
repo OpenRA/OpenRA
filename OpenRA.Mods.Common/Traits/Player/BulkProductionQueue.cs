@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[NotificationReference("Speech")]
 		[Desc("Notifications to play when the delivery actor is on its way. Last notification is played when the actors to deliver are spawned on the map.")]
-		public readonly string[] DeliveryProgressNotifications = [];
+		public readonly ImmutableArray<string> DeliveryProgressNotifications = [];
 
 		public override object Create(ActorInitializer init) { return new BulkProductionQueue(init, this); }
 	}

@@ -27,11 +27,11 @@ namespace OpenRA.Mods.Common.Traits
 	public sealed class TilingPathToolInfo : TraitInfo
 	{
 		[Desc("The preferred defaults for the start type.")]
-		public readonly string[] DefaultStart = [];
+		public readonly ImmutableArray<string> DefaultStart = [];
 		[Desc("The preferred defaults for the inner type.")]
-		public readonly string[] DefaultInner = [];
+		public readonly ImmutableArray<string> DefaultInner = [];
 		[Desc("The preferred defaults for the end type.")]
-		public readonly string[] DefaultEnd = [];
+		public readonly ImmutableArray<string> DefaultEnd = [];
 
 		public override object Create(ActorInitializer init)
 		{

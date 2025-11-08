@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		[CursorReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc($"Cursor to display when able to dock at target actor. Overrides the default cursor specified in {nameof(EnterCursor)}",
 			"A dictionary of [DockType]: [cursor name].")]
-		public readonly Dictionary<string, string> EnterCursorOverrides = [];
+		public readonly FrozenDictionary<string, string> EnterCursorOverrides = FrozenDictionary<string, string>.Empty;
 
 		[CursorReference]
 		[Desc("Cursor to display when unable to dock at target actor.")]

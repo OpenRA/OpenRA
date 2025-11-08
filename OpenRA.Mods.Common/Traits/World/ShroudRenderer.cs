@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -24,10 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Sequence = "shroud";
 		[SequenceReference(nameof(Sequence))]
-		public readonly string[] ShroudVariants = ["shroud"];
+		public readonly ImmutableArray<string> ShroudVariants = ["shroud"];
 
 		[SequenceReference(nameof(Sequence))]
-		public readonly string[] FogVariants = ["fog"];
+		public readonly ImmutableArray<string> FogVariants = ["fog"];
 
 		[PaletteReference]
 		public readonly string ShroudPalette = "shroud";
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Bitfield of shroud directions for each frame. Lower four bits are",
 			"corners clockwise from TL; upper four are edges clockwise from top")]
-		public readonly int[] Index = [12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14];
+		public readonly ImmutableArray<int> Index = [12, 9, 8, 3, 1, 6, 4, 2, 13, 11, 7, 14];
 
 		[Desc("Use the upper four bits when calculating frame")]
 		public readonly bool UseExtendedIndex = false;

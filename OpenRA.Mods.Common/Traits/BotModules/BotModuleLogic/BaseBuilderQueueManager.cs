@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -261,7 +262,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		ActorInfo GetProducibleBuilding(HashSet<string> actors, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
+		ActorInfo GetProducibleBuilding(FrozenSet<string> actors, IEnumerable<ActorInfo> buildables, Func<ActorInfo, int> orderBy = null)
 		{
 			var available = buildables.Where(actor =>
 			{

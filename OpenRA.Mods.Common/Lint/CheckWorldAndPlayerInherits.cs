@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.UpdateRules;
@@ -47,8 +48,8 @@ namespace OpenRA.Mods.Common.Lint
 			var files = modData.Manifest.Rules.AsEnumerable();
 			if (ruleDefinitions.Value != null)
 			{
-				var mapFiles = FieldLoader.GetValue<string[]>("value", ruleDefinitions.Value);
-				files = files.Append(mapFiles);
+				var mapFiles = FieldLoader.GetValue<ImmutableArray<string>>("value", ruleDefinitions.Value);
+				files = files.Concat(mapFiles);
 			}
 
 			var nodes = new List<MiniYamlNode>();

@@ -10,6 +10,7 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.D2k.Projectiles
 	public class SonicBlastInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate a randomly picked velocity per blast.")]
-		public readonly WDist[] Speed = [new(128)];
+		public readonly ImmutableArray<WDist> Speed = [new(128)];
 
 		[Desc("The number of ticks between the blast causing warhead impacts in its area of effect.")]
 		public readonly int DamageInterval = 1;
@@ -37,10 +38,10 @@ namespace OpenRA.Mods.D2k.Projectiles
 		public readonly WDist Width = new(650);
 
 		[Desc("Damage modifier applied at each range step.")]
-		public readonly int[] Falloff = [100, 100];
+		public readonly ImmutableArray<int> Falloff = [100, 100];
 
 		[Desc("Ranges at which each Falloff step is defined.")]
-		public readonly WDist[] Range = [WDist.Zero, new(int.MaxValue)];
+		public readonly ImmutableArray<WDist> Range = [WDist.Zero, new(int.MaxValue)];
 
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;

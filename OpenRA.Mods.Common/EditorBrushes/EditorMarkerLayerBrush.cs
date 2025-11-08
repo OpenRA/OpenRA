@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -234,13 +235,13 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; }
 
 		readonly MarkerLayerOverlay markerLayerOverlay;
-		readonly ImmutableDictionary<int, ImmutableArray<CPos>> tiles;
+		readonly FrozenDictionary<int, ImmutableArray<CPos>> tiles;
 
 		public ClearAllMarkerTilesEditorAction(
 			MarkerLayerOverlay markerLayerOverlay)
 		{
 			this.markerLayerOverlay = markerLayerOverlay;
-			tiles = markerLayerOverlay.Tiles.ToImmutableDictionary(t => t.Key, t => t.Value.ToImmutableArray());
+			tiles = markerLayerOverlay.Tiles.ToFrozenDictionary(t => t.Key, t => t.Value.ToImmutableArray());
 			var allTilesCount = tiles.Values.Sum(x => x.Length);
 
 			Text = FluentProvider.GetMessage(ClearedAllMarkerTiles, "count", allTilesCount);

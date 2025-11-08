@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
@@ -47,9 +49,9 @@ namespace OpenRA.Graphics
 			public readonly string Image2x = null;
 			public readonly string Image3x = null;
 
-			public readonly int[] PanelRegion = null;
+			public readonly ImmutableArray<int> PanelRegion = default;
 			public readonly PanelSides PanelSides = PanelSides.All;
-			public readonly Dictionary<string, Rectangle> Regions = [];
+			public readonly FrozenDictionary<string, Rectangle> Regions = FrozenDictionary<string, Rectangle>.Empty;
 		}
 
 		public static IReadOnlyDictionary<string, Collection> Collections => collections;

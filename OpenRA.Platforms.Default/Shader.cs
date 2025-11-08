@@ -217,13 +217,13 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		public void SetVec(string name, float[] vec, int length)
+		public void SetVec(string name, ReadOnlyMemory<float> vec, int length)
 		{
 			VerifyThreadAffinity();
 			var param = uniformCache[name];
 			unsafe
 			{
-				fixed (float* pVec = vec)
+				fixed (float* pVec = vec.Span)
 				{
 					var ptr = new IntPtr(pVec);
 					switch (length)

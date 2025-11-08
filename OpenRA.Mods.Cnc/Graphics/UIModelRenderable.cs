@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Traits;
@@ -25,15 +26,15 @@ namespace OpenRA.Mods.Cnc.Graphics
 		readonly int2 screenPos;
 		readonly WRot camera;
 		readonly WRot lightSource;
-		readonly float[] lightAmbientColor;
-		readonly float[] lightDiffuseColor;
+		readonly ImmutableArray<float> lightAmbientColor;
+		readonly ImmutableArray<float> lightDiffuseColor;
 		readonly PaletteReference normalsPalette;
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
 
 		public UIModelRenderable(
 			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos effectiveWorldPos, int2 screenPos, int zOffset,
-			in WRot camera, float scale, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			in WRot camera, float scale, in WRot lightSource, ImmutableArray<float> lightAmbientColor, ImmutableArray<float> lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
 			this.renderer = renderer;

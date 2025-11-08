@@ -10,37 +10,38 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 
 namespace OpenRA.GameRules
 {
 	public class SoundInfo
 	{
-		public readonly Dictionary<string, string[]> Variants = [];
-		public readonly Dictionary<string, string[]> Prefixes = [];
-		public readonly Dictionary<string, string[]> Voices = [];
-		public readonly Dictionary<string, string[]> Notifications = [];
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Variants = FrozenDictionary<string, ImmutableArray<string>>.Empty;
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Prefixes = FrozenDictionary<string, ImmutableArray<string>>.Empty;
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Voices = FrozenDictionary<string, ImmutableArray<string>>.Empty;
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Notifications = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 		public readonly string DefaultVariant = ".aud";
 		public readonly string DefaultPrefix = "";
-		public readonly HashSet<string> DisableVariants = [];
-		public readonly HashSet<string> DisablePrefixes = [];
+		public readonly FrozenSet<string> DisableVariants = FrozenSet<string>.Empty;
+		public readonly FrozenSet<string> DisablePrefixes = FrozenSet<string>.Empty;
 
-		public readonly Lazy<Dictionary<string, SoundPool>> VoicePools;
-		public readonly Lazy<Dictionary<string, SoundPool>> NotificationsPools;
+		public readonly Lazy<FrozenDictionary<string, SoundPool>> VoicePools;
+		public readonly Lazy<FrozenDictionary<string, SoundPool>> NotificationsPools;
 
 		public SoundInfo(MiniYaml y)
 		{
 			FieldLoader.Load(this, y);
 
-			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, SoundPool.DefaultInterruptType, a.Value)));
+			VoicePools = Exts.Lazy(() => Voices.ToFrozenDictionary(a => a.Key, a => new SoundPool(1f, SoundPool.DefaultInterruptType, a.Value)));
 			NotificationsPools = Exts.Lazy(() => ParseSoundPool(y, "Notifications"));
 		}
 
-		static Dictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
+		static FrozenDictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
 		{
-			var ret = new Dictionary<string, SoundPool>();
 			var classifiction = y.NodeWithKey(key);
+			var ret = new Dictionary<string, SoundPool>(classifiction.Value.Nodes.Length);
 			foreach (var t in classifiction.Value.Nodes)
 			{
 				var volumeModifier = 1f;
@@ -53,12 +54,12 @@ namespace OpenRA.GameRules
 				if (interruptTypeNode != null)
 					interruptType = FieldLoader.GetValue<SoundPool.InterruptType>(interruptTypeNode.Key, interruptTypeNode.Value.Value);
 
-				var names = FieldLoader.GetValue<string[]>(t.Key, t.Value.Value);
+				var names = FieldLoader.GetValue<ImmutableArray<string>>(t.Key, t.Value.Value);
 				var sp = new SoundPool(volumeModifier, interruptType, names);
 				ret.Add(t.Key, sp);
 			}
 
-			return ret;
+			return ret.ToFrozenDictionary();
 		}
 	}
 
@@ -68,10 +69,10 @@ namespace OpenRA.GameRules
 		public const InterruptType DefaultInterruptType = InterruptType.DoNotPlay;
 		public readonly float VolumeModifier;
 		public readonly InterruptType Type;
-		readonly string[] clips;
+		readonly ImmutableArray<string> clips;
 		readonly List<string> liveclips = [];
 
-		public SoundPool(float volumeModifier, InterruptType interruptType, params string[] clips)
+		public SoundPool(float volumeModifier, InterruptType interruptType, ImmutableArray<string> clips)
 		{
 			VolumeModifier = volumeModifier;
 			Type = interruptType;

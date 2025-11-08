@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -20,13 +21,13 @@ namespace OpenRA.Mods.Common.Warheads
 	public class DestroyResourceWarhead : Warhead
 	{
 		[Desc("Size of the area. The resources are removed within this area.", "Provide 2 values for a ring effect (outer/inner).")]
-		public readonly int[] Size = [0, 0];
+		public readonly ImmutableArray<int> Size = [0, 0];
 
 		[Desc("Amount of resources to be removed. If zero, all resources within the area will be removed.")]
 		public readonly byte ResourceAmount = 0;
 
 		[Desc("Resource types to remove with this warhead.", "If empty, all resource types will be removed.")]
-		public readonly HashSet<string> ResourceTypes = [];
+		public readonly FrozenSet<string> ResourceTypes = FrozenSet<string>.Empty;
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{

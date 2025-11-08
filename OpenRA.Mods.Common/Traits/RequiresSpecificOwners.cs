@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Only allow players listed here as owners.")]
 		[FieldLoader.Require]
-		public readonly HashSet<string> ValidOwnerNames = [];
+		public readonly FrozenSet<string> ValidOwnerNames = FrozenSet<string>.Empty;
 	}
 
 	public class RequiresSpecificOwners { }

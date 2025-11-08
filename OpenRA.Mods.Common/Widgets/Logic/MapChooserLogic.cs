@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -112,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget widget;
 		readonly DropDownButtonWidget gameModeDropdown;
 		readonly ModData modData;
-		readonly HashSet<string> remoteMapPool;
+		readonly FrozenSet<string> remoteMapPool;
 		readonly ScrollItemWidget itemTemplate;
 		readonly MapVisibility filter;
 
@@ -138,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Func<MapPreview, long> orderByFunc;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic(Widget widget, ModData modData, string initialMap, MapGenerationArgs initialGeneratedMap, HashSet<string> remoteMapPool,
+		internal MapChooserLogic(Widget widget, ModData modData, string initialMap, MapGenerationArgs initialGeneratedMap, FrozenSet<string> remoteMapPool,
 			MapClassification initialTab, Action onExit, Action<string> onSelect, Action<MapGenerationArgs> onSelectGenerated, MapVisibility filter)
 		{
 			this.widget = widget;

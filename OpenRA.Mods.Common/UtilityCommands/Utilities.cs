@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	public static class Utilities
 	{
 		public static MiniYamlNode GetTopLevelNodeByKey(ModData modData, string key,
-			Func<Manifest, string[]> manifestPropertySelector,
+			Func<Manifest, ImmutableArray<string>> manifestPropertySelector,
 			Func<Map, MiniYaml> mapPropertySelector = null,
 			string mapPath = null)
 		{

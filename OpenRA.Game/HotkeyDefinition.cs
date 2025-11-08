@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace OpenRA
@@ -24,10 +25,10 @@ namespace OpenRA
 		[FluentReference]
 		public readonly string Description = "";
 
-		public readonly HashSet<string> Types = [];
+		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
 
 		[FluentReference]
-		public readonly HashSet<string> Contexts = [];
+		public readonly FrozenSet<string> Contexts = FrozenSet<string>.Empty;
 
 		public readonly bool Readonly = false;
 		public bool HasDuplicates { get; internal set; }
@@ -45,11 +46,11 @@ namespace OpenRA
 				Description = descriptionYaml.Value;
 
 			if (nodeDict.TryGetValue("Types", out var typesYaml))
-				Types = FieldLoader.GetValue<HashSet<string>>("Types", typesYaml.Value);
+				Types = FieldLoader.GetValue<FrozenSet<string>>("Types", typesYaml.Value);
 
 			if (nodeDict.TryGetValue("Contexts", out var contextYaml))
-				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextYaml.Value)
-					.Select(c => ContextFluentPrefix + "." + c).ToHashSet();
+				Contexts = FieldLoader.GetValue<ImmutableArray<string>>("Contexts", contextYaml.Value)
+					.Select(c => ContextFluentPrefix + "." + c).ToFrozenSet();
 
 			if (nodeDict.TryGetValue("Platform", out var platformYaml))
 			{

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		sealed class TileSelectorTemplate
 		{
 			public readonly TerrainTemplateInfo Template;
-			public readonly string[] Categories;
+			public readonly ImmutableArray<string> Categories;
 			public readonly string[] SearchTerms;
 			public readonly string Tooltip;
 

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -44,8 +45,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	public sealed class ModelRenderer : IDisposable, IRenderer, INotifyActorDisposing
 	{
 		// Static constants
-		static readonly float[] ShadowDiffuse = [0, 0, 0];
-		static readonly float[] ShadowAmbient = [1, 1, 1];
+		static readonly ImmutableArray<float> ShadowDiffuse = [0, 0, 0];
+		static readonly ImmutableArray<float> ShadowAmbient = [1, 1, 1];
 		static readonly float2 SpritePadding = new(2, 2);
 		static readonly float[] ZeroVector = [0, 0, 0, 1];
 		static readonly float[] ZVector = [0, 0, 1, 1];
@@ -94,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public ModelRenderProxy RenderAsync(
 			WorldRenderer wr, IEnumerable<ModelAnimation> models, in WRot camera, float scale,
-			in WRot groundOrientation, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			in WRot groundOrientation, in WRot lightSource, ImmutableArray<float> lightAmbientColor, ImmutableArray<float> lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
 			if (!isInFrame)
@@ -281,15 +282,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			ModelRenderData renderData,
 			IModelCache cache,
 			float[] t, float[] lightDirection,
-			float[] ambientLight, float[] diffuseLight,
+			ImmutableArray<float> ambientLight, ImmutableArray<float> diffuseLight,
 			float colorPaletteTextureIndex, float normalsPaletteTextureIndex)
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
 			shader.SetVec("Palettes", colorPaletteTextureIndex, normalsPaletteTextureIndex);
 			shader.SetMatrix("TransformMatrix", t);
 			shader.SetVec("LightDirection", lightDirection, 4);
-			shader.SetVec("AmbientLight", ambientLight, 3);
-			shader.SetVec("DiffuseLight", diffuseLight, 3);
+			shader.SetVec("AmbientLight", ambientLight.AsMemory(), 3);
+			shader.SetVec("DiffuseLight", diffuseLight.AsMemory(), 3);
 
 			shader.PrepareRender();
 			renderer.DrawBatch(cache.VertexBuffer, shader, renderData.Start, renderData.Count, PrimitiveType.TriangleList);

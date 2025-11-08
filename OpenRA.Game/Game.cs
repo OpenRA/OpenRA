@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -415,7 +416,7 @@ namespace OpenRA
 
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
 			var modSearchPaths = modSearchArg != null ?
-				FieldLoader.GetValue<string[]>("Engine.ModsPath", modSearchArg) :
+				FieldLoader.GetValue<ImmutableArray<string>>("Engine.ModsPath", modSearchArg) :
 				[Path.Combine(Platform.EngineDir, "mods")];
 
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);

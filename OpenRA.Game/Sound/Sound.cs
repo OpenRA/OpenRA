@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -165,12 +166,12 @@ namespace OpenRA
 		public ISound PlayLooped(SoundType type, string name) { return Play(type, null, name, true, WPos.Zero, 1f, true); }
 		public ISound PlayLooped(SoundType type, string name, WPos pos) { return Play(type, null, name, false, pos, 1f, true); }
 
-		public ISound Play(SoundType type, string[] names, World world, Player player = null, float volumeModifier = 1f)
+		public ISound Play(SoundType type, ImmutableArray<string> names, World world, Player player = null, float volumeModifier = 1f)
 		{
 			return Play(type, player, names.Random(world.LocalRandom), true, WPos.Zero, volumeModifier);
 		}
 
-		public ISound Play(SoundType type, string[] names, World world, WPos pos, Player player = null, float volumeModifier = 1f)
+		public ISound Play(SoundType type, ImmutableArray<string> names, World world, WPos pos, Player player = null, float volumeModifier = 1f)
 		{
 			return Play(type, player, names.Random(world.LocalRandom), false, pos, volumeModifier);
 		}
@@ -399,9 +400,9 @@ namespace OpenRA
 			if (variant != null)
 			{
 				if (rules.Variants.TryGetValue(variant, out var v) && !rules.DisableVariants.Contains(definition))
-					suffix = v[id % v.Length];
+					suffix = v[(int)(id % v.Length)];
 				if (rules.Prefixes.TryGetValue(variant, out var p) && !rules.DisablePrefixes.Contains(definition))
-					prefix = p[id % p.Length];
+					prefix = p[(int)(id % p.Length)];
 			}
 
 			var name = prefix + clip + suffix;

@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Primitives;
@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class BridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		[Desc("Bridge types to act on")]
-		public readonly string[] Types = ["GroundLevelBridge"];
+		public readonly ImmutableArray<string> Types = ["GroundLevelBridge"];
 
 		[Desc("Offsets to look for adjacent bridges to act on")]
-		public readonly CVec[] NeighbourOffsets = [];
+		public readonly ImmutableArray<CVec> NeighbourOffsets = [];
 
 		[Desc("Delay between each segment repair step")]
 		public readonly int RepairPropagationDelay = 20;

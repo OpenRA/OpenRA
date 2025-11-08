@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Scripting;
@@ -200,7 +201,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (logicArgs.TryGetValue("Buttons", out var buttonsNode))
 			{
-				var buttonIds = FieldLoader.GetValue<string[]>("Buttons", buttonsNode.Value);
+				var buttonIds = FieldLoader.GetValue<ImmutableArray<string>>("Buttons", buttonsNode.Value);
 				foreach (var button in buttonIds)
 					if (buttonHandlers.TryGetValue(button, out var createHandler))
 						createHandler();

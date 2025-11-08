@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -22,16 +24,16 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class TSTiberiumRendererInfo : ResourceRendererInfo
 	{
 		[Desc("Sequences to use for ramp type 1.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp1Sequences = [];
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Ramp1Sequences = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 
 		[Desc("Sequences to use for ramp type 2.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp2Sequences = [];
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Ramp2Sequences = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 
 		[Desc("Sequences to use for ramp type 3.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp3Sequences = [];
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Ramp3Sequences = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 
 		[Desc("Sequences to use for ramp type 4.", "Dictionary of [resource type]: [list of sequences].")]
-		public readonly Dictionary<string, string[]> Ramp4Sequences = [];
+		public readonly FrozenDictionary<string, ImmutableArray<string>> Ramp4Sequences = FrozenDictionary<string, ImmutableArray<string>>.Empty;
 
 		public override object Create(ActorInitializer init) { return new TSTiberiumRenderer(init.Self, this); }
 	}
@@ -52,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			world = self.World;
 		}
 
-		void LoadVariants(Dictionary<string, string[]> rampSequences, Dictionary<string, Dictionary<string, ISpriteSequence>> rampVariants)
+		void LoadVariants(FrozenDictionary<string, ImmutableArray<string>> rampSequences, Dictionary<string, Dictionary<string, ISpriteSequence>> rampVariants)
 		{
 			var sequences = world.Map.Sequences;
 			foreach (var kv in rampSequences)

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -302,7 +303,7 @@ namespace OpenRA
 			foreach (var player in Players)
 				gameInfo.AddPlayer(player, OrderManager.LobbyInfo);
 
-			gameInfo.DisabledSpawnPoints = OrderManager.LobbyInfo.DisabledSpawnPoints;
+			gameInfo.DisabledSpawnPoints = OrderManager.LobbyInfo.DisabledSpawnPoints.ToFrozenSet();
 
 			gameInfo.StartTimeUtc = DateTime.UtcNow;
 

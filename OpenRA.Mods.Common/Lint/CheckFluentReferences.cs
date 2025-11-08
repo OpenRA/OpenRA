@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var context in usedKeys.EmptyKeyContexts)
 				emitWarning($"Empty key in map ftl files required by {context}");
 
-			var mapMessages = FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value);
+			var mapMessages = FieldLoader.GetValue<ImmutableArray<string>>("value", map.FluentMessageDefinitions.Value);
 			var modMessages = modData.Manifest.FluentMessages;
 
 			// For maps we don't warn on unused keys. They might be unused on *this* map,
@@ -363,7 +364,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				if (childNode.Key == "Logic")
 				{
-					foreach (var logicName in FieldLoader.GetValue<string[]>(childNode.Key, childNode.Value.Value))
+					foreach (var logicName in FieldLoader.GetValue<ImmutableArray<string>>(childNode.Key, childNode.Value.Value))
 					{
 						var logicType = modData.ObjectCreator.FindType(logicName);
 						if (logicType == null)

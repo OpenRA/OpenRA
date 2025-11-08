@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -167,8 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return occupants;
 			});
 
-			var noSpawns = new HashSet<int>();
-			var disabledSpawnPoints = new CachedTransform<ReplayMetadata, HashSet<int>>(r => r.GameInfo.DisabledSpawnPoints ?? noSpawns);
+			var disabledSpawnPoints = new CachedTransform<ReplayMetadata, FrozenSet<int>>(r => r.GameInfo.DisabledSpawnPoints ?? FrozenSet<int>.Empty);
 
 			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
 			{
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, Session.MapStatus.Playable)) },
 				{ "onMouseDown", null },
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants.Update(selectedReplay)) },
-				{ "getDisabledSpawnPoints", (Func<HashSet<int>>)(() => disabledSpawnPoints.Update(selectedReplay)) },
+				{ "getDisabledSpawnPoints", (Func<FrozenSet<int>>)(() => disabledSpawnPoints.Update(selectedReplay)) },
 				{ "showUnoccupiedSpawnpoints", false },
 				{ "mapUpdatesEnabled", false },
 				{ "onMapUpdate", (Action<string>)(_ => { }) },

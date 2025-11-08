@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Server;
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Lint
 				spawns.Add(s.Get<LocationInit>().Value);
 			}
 
-			Run(emitError, emitWarning, players, map.Visibility, map.Rules.Actors[SystemActors.World], spawns.ToArray());
+			Run(emitError, emitWarning, players, map.Visibility, map.Rules.Actors[SystemActors.World], spawns.ToImmutableArray());
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		static void Run(Action<string> emitError, Action<string> emitWarning,
-			MapPlayers players, MapVisibility visibility, ActorInfo worldActorInfo, CPos[] spawnPoints)
+			MapPlayers players, MapVisibility visibility, ActorInfo worldActorInfo, ImmutableArray<CPos> spawnPoints)
 		{
 			if (players.Players.Count > 64)
 				emitError("Defining more than 64 players is not allowed.");

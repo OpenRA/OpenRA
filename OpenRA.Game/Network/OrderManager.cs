@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace OpenRA.Network
 		public bool AuthenticationFailed = false;
 
 		// The default null means "no map restriction" while an empty set means "all maps restricted"
-		public HashSet<string> ServerMapPool = null;
+		public FrozenSet<string> ServerMapPool = null;
 
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;

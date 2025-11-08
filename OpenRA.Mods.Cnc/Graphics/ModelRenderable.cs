@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Traits;
@@ -24,15 +25,15 @@ namespace OpenRA.Mods.Cnc.Graphics
 		readonly IEnumerable<ModelAnimation> models;
 		readonly WRot camera;
 		readonly WRot lightSource;
-		readonly float[] lightAmbientColor;
-		readonly float[] lightDiffuseColor;
+		readonly ImmutableArray<float> lightAmbientColor;
+		readonly ImmutableArray<float> lightDiffuseColor;
 		readonly PaletteReference normalsPalette;
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
 
 		public ModelRenderable(
 			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
-			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			in WRot lightSource, ImmutableArray<float> lightAmbientColor, ImmutableArray<float> lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 			: this(renderer, models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public ModelRenderable(
 			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
-			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
+			in WRot lightSource, ImmutableArray<float> lightAmbientColor, ImmutableArray<float> lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow,
 			float alpha, in float3 tint, TintModifiers tintModifiers)
 		{

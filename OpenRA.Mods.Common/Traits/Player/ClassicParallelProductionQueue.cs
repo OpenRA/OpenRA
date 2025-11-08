@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -30,10 +31,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Every time another production building of the same queue is",
 			"constructed, the build times of all actors in the queue",
 			"modified by a percentage of the original time.")]
-		public readonly int[] BuildingCountBuildTimeMultipliers = [100, 86, 75, 67, 60, 55, 50];
+		public readonly ImmutableArray<int> BuildingCountBuildTimeMultipliers = [100, 86, 75, 67, 60, 55, 50];
 
 		[Desc("Build time modifier multiplied by the number of parallel production for producing different actors at the same time.")]
-		public readonly int[] ParallelPenaltyBuildTimeMultipliers = [100, 116, 133, 150, 166, 183, 200, 216, 233, 250];
+		public readonly ImmutableArray<int> ParallelPenaltyBuildTimeMultipliers = [100, 116, 133, 150, 166, 183, 200, 216, 233, 250];
 
 		public override object Create(ActorInitializer init) { return new ClassicParallelProductionQueue(init, this); }
 	}

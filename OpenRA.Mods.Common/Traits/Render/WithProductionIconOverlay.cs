@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithProductionIconOverlayInfo : TraitInfo<WithProductionIconOverlay>, IRulesetLoaded
 	{
 		[FieldLoader.Require]
-		public readonly string[] Types = [];
+		public readonly ImmutableArray<string> Types = [];
 
-		public readonly string[] Prerequisites = [];
+		public readonly ImmutableArray<string> Prerequisites = [];
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

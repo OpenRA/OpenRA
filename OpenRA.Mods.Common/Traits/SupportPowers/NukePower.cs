@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[SequenceReference(nameof(TrailImage), allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
-		public readonly string[] TrailSequences = [];
+		public readonly ImmutableArray<string> TrailSequences = [];
 
 		[Desc("Interval in ticks between each spawned Trail animation.")]
 		public readonly int TrailInterval = 1;
@@ -117,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float CircleBorderWidth = 3;
 
 		[Desc("Render circles based on these distance ranges while targeting.")]
-		public readonly WDist[] CircleRanges = null;
+		public readonly ImmutableArray<WDist> CircleRanges = default;
 
 		public WeaponInfo WeaponInfo { get; private set; }
 

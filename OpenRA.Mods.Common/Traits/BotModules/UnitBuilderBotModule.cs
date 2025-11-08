@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -28,16 +30,16 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int IdleBaseUnitsMaximum = -1;
 
 		[Desc("Production queues AI uses for producing units.")]
-		public readonly string[] UnitQueues = ["Vehicle", "Infantry", "Plane", "Ship", "Aircraft"];
+		public readonly ImmutableArray<string> UnitQueues = ["Vehicle", "Infantry", "Plane", "Ship", "Aircraft"];
 
 		[Desc("What units to the AI should build.", "What relative share of the total army must be this type of unit.")]
-		public readonly Dictionary<string, int> UnitsToBuild = null;
+		public readonly FrozenDictionary<string, int> UnitsToBuild = null;
 
 		[Desc("What units should the AI have a maximum limit to train.")]
-		public readonly Dictionary<string, int> UnitLimits = null;
+		public readonly FrozenDictionary<string, int> UnitLimits = null;
 
 		[Desc("When should the AI start train specific units.")]
-		public readonly Dictionary<string, int> UnitDelays = null;
+		public readonly FrozenDictionary<string, int> UnitDelays = null;
 
 		[Desc("Only queue construction of a new unit when above this requirement.")]
 		public readonly int ProductionMinCashRequirement = 500;
@@ -253,7 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (queuedBuildRequestsNode != null)
 			{
 				queuedBuildRequests.Clear();
-				queuedBuildRequests.AddRange(FieldLoader.GetValue<string[]>("QueuedBuildRequests", queuedBuildRequestsNode.Value.Value));
+				queuedBuildRequests.AddRange(FieldLoader.GetValue<ImmutableArray<string>>("QueuedBuildRequests", queuedBuildRequestsNode.Value.Value));
 			}
 
 			var idleUnitCountNode = data.NodeWithKeyOrDefault("IdleUnitCount");

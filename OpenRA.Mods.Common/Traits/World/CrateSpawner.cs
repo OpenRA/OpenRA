@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
@@ -53,20 +55,20 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int InitialSpawnDelay = 0;
 
 		[Desc("Which terrain types can we drop on?")]
-		public readonly HashSet<string> ValidGround = ["Clear", "Rough", "Road", "Ore", "Beach"];
+		public readonly FrozenSet<string> ValidGround = new HashSet<string> { "Clear", "Rough", "Road", "Ore", "Beach" }.ToFrozenSet();
 
 		[Desc("Which terrain types count as water?")]
-		public readonly HashSet<string> ValidWater = ["Water"];
+		public readonly FrozenSet<string> ValidWater = new HashSet<string> { "Water" }.ToFrozenSet();
 
 		[Desc("Chance of generating a water crate instead of a land crate.")]
 		public readonly int WaterChance = 20;
 
 		[ActorReference]
 		[Desc("Crate actors to drop.")]
-		public readonly string[] CrateActors = ["crate"];
+		public readonly ImmutableArray<string> CrateActors = ["crate"];
 
 		[Desc("Chance of each crate actor spawning.")]
-		public readonly int[] CrateActorShares = [10];
+		public readonly ImmutableArray<int> CrateActorShares = [10];
 
 		[ActorReference]
 		[Desc("If a DeliveryAircraft: is specified, then this actor will deliver crates.")]

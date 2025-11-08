@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ActorSpawnerInfo : ConditionalTraitInfo
 	{
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly HashSet<string> Types = [];
+		public readonly FrozenSet<string> Types = FrozenSet<string>.Empty;
 
 		public override object Create(ActorInitializer init) { return new ActorSpawner(this); }
 	}
@@ -27,6 +27,6 @@ namespace OpenRA.Mods.Common.Traits
 		public ActorSpawner(ActorSpawnerInfo info)
 			: base(info) { }
 
-		public HashSet<string> Types => Info.Types;
+		public FrozenSet<string> Types => Info.Types;
 	}
 }

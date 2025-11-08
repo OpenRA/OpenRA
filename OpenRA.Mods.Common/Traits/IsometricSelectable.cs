@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -23,14 +24,14 @@ namespace OpenRA.Mods.Common.Traits
 			"If null, the engine will guess an appropriate size based on the building's footprint.",
 			"The first two numbers define the width and depth of the footprint rectangle.",
 			"The (optional) second two numbers define an x and y offset from the actor center.")]
-		public readonly int[] Bounds = null;
+		public readonly ImmutableArray<int> Bounds = default;
 
 		[Desc("Height above the footprint for the top of the interaction rectangle.")]
 		public readonly int Height = 24;
 
 		[Desc("Defines a custom rectangle for Decorations (e.g. the selection box).",
 			"If null, Bounds will be used instead.")]
-		public readonly int[] DecorationBounds = null;
+		public readonly ImmutableArray<int> DecorationBounds = default;
 
 		[Desc("Defines a custom height for Decorations (e.g. the selection box).",
 			"If < 0, Height will be used instead.",
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 		}
 
-		Polygon Bounds(Actor self, WorldRenderer wr, int[] bounds, int height)
+		Polygon Bounds(Actor self, WorldRenderer wr, ImmutableArray<int> bounds, int height)
 		{
 			int2 left, right, top, bottom;
 			if (bounds != null)
@@ -129,7 +130,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Polygon DecorationBounds(Actor self, WorldRenderer wr)
 		{
-			return Bounds(self, wr, info.DecorationBounds ?? info.Bounds, info.DecorationHeight >= 0 ? info.DecorationHeight : info.Height);
+			return Bounds(
+				self,
+				wr,
+				info.DecorationBounds != null ? info.DecorationBounds : info.Bounds,
+				info.DecorationHeight >= 0 ? info.DecorationHeight : info.Height);
 		}
 
 		Polygon IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)

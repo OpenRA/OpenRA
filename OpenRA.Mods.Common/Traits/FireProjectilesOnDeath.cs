@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference]
 		[FieldLoader.Require]
 		[Desc("The weapons used for shrapnel.")]
-		public readonly string[] Weapons = [];
+		public readonly ImmutableArray<string> Weapons = [];
 
 		[Desc("What damage type needs to kill the actor to trigger the firing of projectiles? " +
 			"Leave empty to ignore damage types.")]
@@ -35,12 +36,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaximumDamage = int.MaxValue;
 
 		[Desc("The amount of pieces of shrapnel to expel. Two values indicate a range.")]
-		public readonly int[] Pieces = [3, 10];
+		public readonly ImmutableArray<int> Pieces = [3, 10];
 
 		[Desc("The minimum and maximum distances the shrapnel may travel.")]
-		public readonly WDist[] Range = [WDist.FromCells(2), WDist.FromCells(5)];
+		public readonly ImmutableArray<WDist> Range = [WDist.FromCells(2), WDist.FromCells(5)];
 
-		public WeaponInfo[] WeaponInfos { get; private set; }
+		public ImmutableArray<WeaponInfo> WeaponInfos { get; private set; }
 
 		public override object Create(ActorInitializer actor) { return new FireProjectilesOnDeath(this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 					throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
 				return weapon;
-			}).ToArray();
+			}).ToImmutableArray();
 		}
 	}
 

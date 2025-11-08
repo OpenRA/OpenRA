@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[FieldLoader.Require]
-		public readonly HashSet<string> RepairActors = [];
+		public readonly FrozenSet<string> RepairActors = FrozenSet<string>.Empty;
 
 		public readonly WDist CloseEnough = WDist.FromCells(4);
 

@@ -117,7 +117,7 @@ namespace OpenRA
 
 		public readonly bool EnableDepthBuffer = false;
 
-		public readonly WVec[] SubCellOffsets =
+		public readonly ImmutableArray<WVec> SubCellOffsets =
 		[
 			new(0, 0, 0),       // full cell - index 0
 			new(-299, -256, 0), // top left - index 1
@@ -127,9 +127,9 @@ namespace OpenRA
 			new(256, 256, 0),   // bottom right - index 5
 		];
 
-		public CellRamp[] Ramps { get; }
+		public ImmutableArray<CellRamp> Ramps { get; }
 
-		internal readonly CVec[][] TilesByDistance;
+		internal readonly ImmutableArray<ImmutableArray<CVec>> TilesByDistance;
 
 		public int TileScale { get; }
 
@@ -202,7 +202,7 @@ namespace OpenRA
 			TilesByDistance = CreateTilesByDistance();
 		}
 
-		CVec[][] CreateTilesByDistance()
+		ImmutableArray<ImmutableArray<CVec>> CreateTilesByDistance()
 		{
 			var ts = new List<CVec>[MaximumTileSearchRange + 1];
 			for (var i = 0; i < MaximumTileSearchRange + 1; i++)
@@ -238,7 +238,7 @@ namespace OpenRA
 				});
 			}
 
-			return ts.Select(list => list.ToArray()).ToArray();
+			return ts.Select(list => list.ToImmutableArray()).ToImmutableArray();
 		}
 
 		public WVec OffsetOfSubCell(SubCell subCell)

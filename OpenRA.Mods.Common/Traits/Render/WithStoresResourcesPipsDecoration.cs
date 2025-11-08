@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[SequenceReference(nameof(Image), dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Pip sequence to use for specific resource types.")]
-		public readonly Dictionary<string, string> ResourceSequences = [];
+		public readonly FrozenDictionary<string, string> ResourceSequences = FrozenDictionary<string, string>.Empty;
 
 		[PaletteReference]
 		public readonly string Palette = "chrome";

@@ -1951,7 +1951,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			var allowedTerrainResourceCombos = resourceTypes
 				.SelectMany(resourceTypeInfo => resourceTypeInfo.AllowedTerrainTypes
 					.Select(terrainName => (resourceTypeInfo, terrainInfo.GetTerrainIndex(terrainName))))
-				.ToImmutableHashSet();
+				.ToHashSet();
 
 			var strengths = new Dictionary<ResourceTypeInfo, CellLayer<int>>();
 			foreach (var resourceType in resourceTypes)

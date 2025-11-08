@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -192,7 +193,7 @@ namespace OpenRA
 		public bool LockPreview;
 		public Rectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
-		public string[] Categories = ["Conquest"];
+		public ImmutableArray<string> Categories = ["Conquest"];
 
 		public Size MapSize { get; private set; }
 

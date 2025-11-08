@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -32,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string DeployedCondition = null;
 
 		[Desc("The terrain types that this actor can deploy on. Leave empty to allow any.")]
-		public readonly HashSet<string> AllowedTerrainTypes = [];
+		public readonly FrozenSet<string> AllowedTerrainTypes = FrozenSet<string>.Empty;
 
 		[Desc("Can this actor deploy on slopes?")]
 		public readonly bool CanDeployOnRamps = false;
@@ -52,10 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle? Facing = null;
 
 		[Desc("Play a randomly selected sound from this list when deploying.")]
-		public readonly string[] DeploySounds = null;
+		public readonly ImmutableArray<string> DeploySounds = default;
 
 		[Desc("Play a randomly selected sound from this list when undeploying.")]
-		public readonly string[] UndeploySounds = null;
+		public readonly ImmutableArray<string> UndeploySounds = default;
 
 		[Desc("Skip make/deploy animation?")]
 		public readonly bool SkipMakeAnimation = false;

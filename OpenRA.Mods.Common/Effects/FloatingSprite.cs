@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 
@@ -17,8 +18,8 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public sealed class FloatingSprite : IEffect, ISpatiallyPartitionable
 	{
-		readonly WDist[] speed;
-		readonly WDist[] gravity;
+		readonly ImmutableArray<WDist> speed;
+		readonly ImmutableArray<WDist> gravity;
 		readonly Animation anim;
 
 		readonly bool visibleThroughFog;
@@ -32,8 +33,8 @@ namespace OpenRA.Mods.Common.Effects
 		int ticks;
 		WAngle facing;
 
-		public FloatingSprite(Actor emitter, string image, string[] sequences, string palette, bool isPlayerPalette,
-			int[] lifetime, WDist[] speed, WDist[] gravity, int turnRate, int randomRate, WPos pos, WAngle facing,
+		public FloatingSprite(Actor emitter, string image, ImmutableArray<string> sequences, string palette, bool isPlayerPalette,
+			ImmutableArray<int> lifetime, ImmutableArray<WDist> speed, ImmutableArray<WDist> gravity, int turnRate, int randomRate, WPos pos, WAngle facing,
 			bool visibleThroughFog = false)
 		{
 			var world = emitter.World;

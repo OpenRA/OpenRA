@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -22,17 +23,17 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Defines to which palettes this effect should be applied to.",
 			"If none specified, it applies to all palettes not explicitly excluded.")]
-		public readonly HashSet<string> Palettes = [];
+		public readonly FrozenSet<string> Palettes = FrozenSet<string>.Empty;
 
 		[Desc("Defines for which tileset IDs this effect should be loaded.",
 			"If none specified, it applies to all tileset IDs not explicitly excluded.")]
-		public readonly HashSet<string> Tilesets = [];
+		public readonly FrozenSet<string> Tilesets = FrozenSet<string>.Empty;
 
 		[Desc("Defines which palettes should be excluded from this effect.")]
-		public readonly HashSet<string> ExcludePalettes = [];
+		public readonly FrozenSet<string> ExcludePalettes = FrozenSet<string>.Empty;
 
 		[Desc("Don't apply the effect for these tileset IDs.")]
-		public readonly HashSet<string> ExcludeTilesets = [];
+		public readonly FrozenSet<string> ExcludeTilesets = FrozenSet<string>.Empty;
 
 		[Desc("Palette index of first RotationRange color.")]
 		public readonly int RotationBase = 0x60;
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		static bool StartsWithAny(string name, HashSet<string> prefixes)
+		static bool StartsWithAny(string name, FrozenSet<string> prefixes)
 		{
 			// PERF: Avoid LINQ.
 			foreach (var pref in prefixes)

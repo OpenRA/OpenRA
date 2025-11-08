@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets.Logic;
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		sealed class AssignSpawnLocationsState
 		{
-			public CPos[] SpawnLocations;
+			public ImmutableArray<CPos> SpawnLocations;
 			public List<int> AvailableSpawnPoints;
 			public readonly Dictionary<int, Session.Client> OccupiedSpawnPoints = [];
 		}

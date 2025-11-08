@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Graphics;
@@ -208,8 +209,8 @@ namespace OpenRA.Widgets
 		public IntegerExpression Y;
 		public IntegerExpression Width;
 		public IntegerExpression Height;
-		public string[] Logic = [];
-		public ChromeLogic[] LogicObjects { get; private set; }
+		public ImmutableArray<string> Logic = [];
+		public ImmutableArray<ChromeLogic> LogicObjects { get; private set; }
 		public bool Visible = true;
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
@@ -307,7 +308,7 @@ namespace OpenRA.Widgets
 			args["widget"] = this;
 
 			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<ChromeLogic>(l, args))
-				.ToArray();
+				.ToImmutableArray();
 
 			foreach (var logicObject in LogicObjects)
 				Ui.Subscribe(logicObject);

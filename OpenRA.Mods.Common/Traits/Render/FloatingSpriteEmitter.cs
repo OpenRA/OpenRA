@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("The time between individual particle creation. Two values mean actual lifetime will vary between them.")]
-		public readonly int[] Lifetime;
+		public readonly ImmutableArray<int> Lifetime;
 
 		[FieldLoader.Require]
 		[Desc("The time in ticks until stop spawning. -1 means forever.")]
@@ -29,13 +30,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ResetOnDamaged = true;
 
 		[Desc("Randomised offset for the particle emitter.")]
-		public readonly WVec[] Offset = [WVec.Zero];
+		public readonly ImmutableArray<WVec> Offset = [WVec.Zero];
 
 		[Desc("Randomized particle forward movement.")]
-		public readonly WDist[] Speed = [WDist.Zero];
+		public readonly ImmutableArray<WDist> Speed = [WDist.Zero];
 
 		[Desc("Randomized particle gravity.")]
-		public readonly WDist[] Gravity = [WDist.Zero];
+		public readonly ImmutableArray<WDist> Gravity = [WDist.Zero];
 
 		[Desc("Randomize particle facing.")]
 		public readonly bool RandomFacing = true;
@@ -47,14 +48,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RandomRate = 4;
 
 		[Desc("How many particles should spawn. Two values for a random range.")]
-		public readonly int[] SpawnFrequency = [1];
+		public readonly ImmutableArray<int> SpawnFrequency = [1];
 
 		[Desc("Which image to use.")]
 		public readonly string Image = "smoke";
 
 		[Desc("Which sequence to use.")]
 		[SequenceReference(nameof(Image))]
-		public readonly string[] Sequences = ["particles"];
+		public readonly ImmutableArray<string> Sequences = ["particles"];
 
 		[Desc("Which palette to use.")]
 		[PaletteReference(nameof(IsPlayerPalette))]

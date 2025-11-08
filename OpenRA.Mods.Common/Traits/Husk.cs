@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
 	public class HuskInfo : TraitInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo, IRulesetLoaded
 	{
-		public readonly HashSet<string> AllowedTerrain = [];
+		public readonly FrozenSet<string> AllowedTerrain = FrozenSet<string>.Empty;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly WAngle PreviewFacing = new(384);

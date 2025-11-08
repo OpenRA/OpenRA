@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Server;
@@ -115,7 +116,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (weaponDefinitions == null)
 				return;
 
-			var mapFiles = FieldLoader.GetValue<string[]>("value", weaponDefinitions.Value);
+			var mapFiles = FieldLoader.GetValue<ImmutableArray<string>>("value", weaponDefinitions.Value);
 			foreach (var f in mapFiles)
 				CheckWeapons(MiniYaml.FromStream(fileSystem.Open(f), f), emitError, emitWarning, modData);
 

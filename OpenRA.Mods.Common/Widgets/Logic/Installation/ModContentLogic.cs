@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				scrollPanel.AddChild(container);
 			}
 
-			sourceAvailable = content.Packages.Values.Any(p => p.Sources.Length > 0 && !p.IsInstalled());
+			sourceAvailable = content.Packages.Select(kvp => kvp.Value).Any(p => p.Sources.Length > 0 && !p.IsInstalled());
 		}
 	}
 }

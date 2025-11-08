@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,10 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[Desc("Play a random sound from this list when enabled.")]
-		public readonly string[] EnabledSounds = [];
+		public readonly ImmutableArray<string> EnabledSounds = [];
 
 		[Desc("Play a random sound from this list when disabled.")]
-		public readonly string[] DisabledSounds = [];
+		public readonly ImmutableArray<string> DisabledSounds = [];
 
 		[Desc("Minimum level of health at which to grant the condition.")]
 		public readonly int MinHP = 0;

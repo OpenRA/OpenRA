@@ -10,19 +10,19 @@
 #endregion
 
 using System;
-using System.Linq;
+using System.Collections.Immutable;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
 	public class PlayerColorRemap : IPaletteRemap
 	{
-		readonly int[] remapIndices;
+		readonly ImmutableArray<int> remapIndices;
 		readonly float hue;
 		readonly float saturation;
 		readonly float value;
 
-		public PlayerColorRemap(int[] remapIndices, Color color)
+		public PlayerColorRemap(ImmutableArray<int> remapIndices, Color color)
 		{
 			this.remapIndices = remapIndices;
 

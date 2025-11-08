@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -21,10 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Prerequisite = null;
 
 		[Desc("Only grant this prerequisite when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = [];
+		public readonly ImmutableArray<string> RequiresPrerequisites = [];
 
 		[Desc("Only grant this prerequisite for certain factions.")]
-		public readonly HashSet<string> Factions = [];
+		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;

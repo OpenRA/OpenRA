@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Duration = 0;
 
 		[Desc("Allowed to land on.")]
-		public readonly HashSet<string> TerrainTypes = [];
+		public readonly FrozenSet<string> TerrainTypes = FrozenSet<string>.Empty;
 
 		[Desc("Define actors that can collect crates by setting this into the Crushes field from the Mobile trait.")]
 		public readonly string CrushClass = "crate";

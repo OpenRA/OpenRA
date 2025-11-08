@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Every time another production building of the same queue is",
 			"constructed, the build times of all actors in the queue",
 			"decreased by a percentage of the original time.")]
-		public readonly int[] BuildTimeSpeedReduction = [100, 86, 75, 67, 60, 55, 50];
+		public readonly ImmutableArray<int> BuildTimeSpeedReduction = [100, 86, 75, 67, 60, 55, 50];
 
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init, this); }
 	}

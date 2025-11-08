@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithGateSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<GateInfo>
 	{
 		[Desc("Cells (outside the gate footprint) that contain wall cells that can connect to the gate")]
-		public readonly CVec[] WallConnections = [];
+		public readonly ImmutableArray<CVec> WallConnections = [];
 
 		[Desc("Wall type for connections")]
 		public readonly string Type = "wall";

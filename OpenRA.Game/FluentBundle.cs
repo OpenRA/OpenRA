@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using Linguini.Bundle;
@@ -87,19 +88,19 @@ namespace OpenRA
 	{
 		readonly Linguini.Bundle.FluentBundle bundle;
 
-		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem)
+		public FluentBundle(string culture, ImmutableArray<string> paths, IReadOnlyFileSystem fileSystem)
 			: this(culture, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
 
-		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, string text)
+		public FluentBundle(string culture, ImmutableArray<string> paths, IReadOnlyFileSystem fileSystem, string text)
 			: this(culture, paths, fileSystem, text, error => Log.Write("debug", error.Message)) { }
 
-		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+		public FluentBundle(string culture, ImmutableArray<string> paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 			: this(culture, paths, fileSystem, null, onError) { }
 
 		public FluentBundle(string culture, string text, Action<ParseError> onError)
-			: this(culture, null, null, text, onError) { }
+			: this(culture, default, null, text, onError) { }
 
-		public FluentBundle(string culture, string[] paths, IReadOnlyFileSystem fileSystem, string text, Action<ParseError> onError)
+		public FluentBundle(string culture, ImmutableArray<string> paths, IReadOnlyFileSystem fileSystem, string text, Action<ParseError> onError)
 		{
 			bundle = LinguiniBuilder.Builder()
 				.CultureInfo(new CultureInfo(culture))

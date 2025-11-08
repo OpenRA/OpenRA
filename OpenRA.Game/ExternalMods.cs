@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -28,7 +29,7 @@ namespace OpenRA
 		public readonly string Id;
 		public readonly string Version;
 		public readonly string LaunchPath;
-		public readonly string[] LaunchArgs;
+		public readonly ImmutableArray<string> LaunchArgs;
 		public Sprite Icon { get; internal set; }
 		public Sprite Icon2x { get; internal set; }
 		public Sprite Icon3x { get; internal set; }

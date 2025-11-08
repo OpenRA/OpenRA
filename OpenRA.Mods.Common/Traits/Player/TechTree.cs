@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 				w.Update(ownedPrerequisites);
 		}
 
-		public void Add(string key, string[] prerequisites, int limit, ITechTreeElement tte)
+		public void Add(string key, ImmutableArray<string> prerequisites, int limit, ITechTreeElement tte)
 		{
 			watchers.Add(new Watcher(key, prerequisites, limit, tte));
 		}
@@ -119,13 +120,13 @@ namespace OpenRA.Mods.Common.Traits
 			public ITechTreeElement RegisteredBy { get; }
 
 			// Strings may be either actor type, or "alternate name" key
-			readonly string[] prerequisites;
+			readonly ImmutableArray<string> prerequisites;
 			bool hasPrerequisites;
 			readonly int limit;
 			bool hidden;
 			bool initialized = false;
 
-			public Watcher(string key, string[] prerequisites, int limit, ITechTreeElement watcher)
+			public Watcher(string key, ImmutableArray<string> prerequisites, int limit, ITechTreeElement watcher)
 			{
 				Key = key;
 				this.prerequisites = prerequisites;

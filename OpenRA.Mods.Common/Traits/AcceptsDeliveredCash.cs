@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,13 +19,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class AcceptsDeliveredCashInfo : TraitInfo
 	{
 		[Desc("Accepted `DeliversCash` types. Leave empty to accept all types.")]
-		public readonly HashSet<string> ValidTypes = [];
+		public readonly FrozenSet<string> ValidTypes = FrozenSet<string>.Empty;
 
 		[Desc("Player relationships the owner of the delivering actor needs.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
 		[Desc("Play a randomly selected sound from this list when accepting cash.")]
-		public readonly string[] Sounds = [];
+		public readonly ImmutableArray<string> Sounds = [];
 
 		public override object Create(ActorInitializer init) { return new AcceptsDeliveredCash(this); }
 	}

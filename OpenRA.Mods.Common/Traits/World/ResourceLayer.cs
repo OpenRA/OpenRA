@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			[FieldLoader.Require]
 			[Desc("Terrain types that this resource can spawn on.")]
-			public readonly HashSet<string> AllowedTerrainTypes = null;
+			public readonly FrozenSet<string> AllowedTerrainTypes = null;
 
 			[Desc("Maximum number of resource units allowed in a single cell.")]
 			public readonly byte MaxDensity = 10;
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
-		public readonly Dictionary<string, ResourceTypeInfo> ResourceTypes = null;
+		public readonly FrozenDictionary<string, ResourceTypeInfo> ResourceTypes = null;
 
 		[Desc("Override the density saved in maps with values calculated based on the number of neighbouring resource cells.")]
 		public readonly bool RecalculateResourceDensity = false;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var r in resources.Value.Nodes)
 					ret[r.Key] = new ResourceTypeInfo(r.Value);
 
-			return ret;
+			return ret.ToFrozenDictionary();
 		}
 
 		bool IResourceLayerInfo.TryGetTerrainType(string resourceType, out string terrainType)

@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class ReloadArmamentsBarInfo : TraitInfo
 	{
 		[Desc("Armament names")]
-		public readonly string[] Armaments = ["primary", "secondary"];
+		public readonly ImmutableArray<string> Armaments = ["primary", "secondary"];
 
 		public readonly Color Color = Color.Red;
 

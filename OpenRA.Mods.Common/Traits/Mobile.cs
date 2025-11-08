@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		[CursorReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Cursor overrides to display for specific terrain types.",
 			"A dictionary of [terrain type]: [cursor name].")]
-		public readonly Dictionary<string, string> TerrainCursors = [];
+		public readonly FrozenDictionary<string, string> TerrainCursors = FrozenDictionary<string, string>.Empty;
 
 		[CursorReference]
 		[Desc("Cursor to display when a move order cannot be issued at target location.")]

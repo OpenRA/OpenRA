@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 
 						if (remap != default)
 						{
-							var r = new PlayerColorRemap(Enumerable.Range(240, 16).ToArray(), remap);
+							var r = new PlayerColorRemap(Enumerable.Range(240, 16).ToImmutableArray(), remap);
 							for (var i = 240; i < 256; i++)
 								palette[i] = r.GetRemappedColor(Color.FromArgb(palette[i]), i).ToArgb();
 						}

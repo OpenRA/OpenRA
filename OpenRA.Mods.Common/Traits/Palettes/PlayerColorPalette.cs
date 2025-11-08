@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string BaseName = "player";
 
 		[Desc("Remap these indices to player colors.")]
-		public readonly int[] RemapIndex = [];
+		public readonly ImmutableArray<int> RemapIndex = [];
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
-			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, color);
+			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToImmutableArray() : info.RemapIndex, color);
 			var pal = new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap);
 			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
 		}

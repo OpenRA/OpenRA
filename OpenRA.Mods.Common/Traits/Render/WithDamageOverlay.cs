@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -34,11 +35,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("How many times should " + nameof(LoopSequence),
 			" be played? A range can be provided to be randomly chosen from.")]
-		public readonly int[] LoopCount = [1, 3];
+		public readonly ImmutableArray<int> LoopCount = [1, 3];
 
 		[Desc("Initial delay before animation is enabled",
 			"Two values indicate a random delay range.")]
-		public readonly int[] InitialDelay = [0];
+		public readonly ImmutableArray<int> InitialDelay = [0];
 
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]

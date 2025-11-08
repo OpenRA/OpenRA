@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
@@ -20,13 +21,13 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int Intensity = 0;
 
 		[Desc("Noise percentage at Range step away from the actor.")]
-		public readonly int[] Falloff = [100, 100, 25, 11, 6, 4, 3, 2, 1, 0];
+		public readonly ImmutableArray<int> Falloff = [100, 100, 25, 11, 6, 4, 3, 2, 1, 0];
 
 		[Desc("Range between falloff steps.")]
 		public readonly WDist Spread = new(3072);
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public readonly WDist[] Range = null;
+		public readonly ImmutableArray<WDist> Range = default;
 
 		public override object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}
@@ -34,14 +35,14 @@ namespace OpenRA.Mods.D2k.Traits
 	public class AttractsWorms : ConditionalTrait<AttractsWormsInfo>
 	{
 		readonly Actor self;
-		readonly WDist[] effectiveRange;
+		readonly ImmutableArray<WDist> effectiveRange;
 
 		public AttractsWorms(ActorInitializer init, AttractsWormsInfo info)
 			: base(info)
 		{
 			self = init.Self;
 
-			effectiveRange = info.Range ?? Exts.MakeArray(info.Falloff.Length, i => i * info.Spread);
+			effectiveRange = info.Range != null ? info.Range : Exts.MakeArray(info.Falloff.Length, i => i * info.Spread).ToImmutableArray();
 		}
 
 		int GetNoisePercentageAtDistance(int distance)

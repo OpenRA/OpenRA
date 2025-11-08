@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	public abstract class AttackBaseInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Armament names")]
-		public readonly string[] Armaments = ["primary", "secondary"];
+		public readonly ImmutableArray<string> Armaments = ["primary", "secondary"];
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid target.")]

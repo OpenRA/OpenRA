@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -49,10 +50,10 @@ namespace OpenRA
 	{
 		public readonly string title;
 		public readonly string author;
-		public readonly string[] categories;
+		public readonly ImmutableArray<string> categories;
 		public readonly int players;
 		public readonly Rectangle bounds;
-		public readonly short[] spawnpoints = [];
+		public readonly ImmutableArray<short> spawnpoints = [];
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
@@ -70,12 +71,12 @@ namespace OpenRA
 		{
 			public int MapFormat;
 			public string Title;
-			public string[] Categories;
+			public ImmutableArray<string> Categories;
 			public string Author;
 			public string TileSet;
 			public MapPlayers Players;
 			public int PlayerCount;
-			public CPos[] SpawnPoints;
+			public ImmutableArray<CPos> SpawnPoints;
 			public MapGridType GridType;
 			public Rectangle Bounds;
 			public Png Preview;
@@ -129,9 +130,9 @@ namespace OpenRA
 				{
 					if (FluentMessageDefinitions != null)
 					{
-						var files = Array.Empty<string>();
+						var files = ImmutableArray<string>.Empty;
 						if (FluentMessageDefinitions.Value != null)
-							files = FieldLoader.GetValue<string[]>("value", FluentMessageDefinitions.Value);
+							files = FieldLoader.GetValue<ImmutableArray<string>>("value", FluentMessageDefinitions.Value);
 
 						string text = null;
 						if (FluentMessageDefinitions.Nodes.Length > 0)
@@ -157,8 +158,8 @@ namespace OpenRA
 						var files = Enumerable.Empty<string>();
 						if (RuleDefinitions.Value != null)
 						{
-							var mapFiles = FieldLoader.GetValue<string[]>("value", RuleDefinitions.Value);
-							files = files.Append(mapFiles);
+							var mapFiles = FieldLoader.GetValue<ImmutableArray<string>>("value", RuleDefinitions.Value);
+							files = files.Concat(mapFiles);
 						}
 
 						var stringPool = new HashSet<string>(); // Reuse common strings in YAML
@@ -196,7 +197,6 @@ namespace OpenRA
 			}
 		}
 
-		static readonly CPos[] NoSpawns = [];
 		readonly object syncRoot = new();
 		readonly MapCache cache;
 		readonly ModData modData;
@@ -238,12 +238,12 @@ namespace OpenRA
 
 		public int MapFormat => innerData.MapFormat;
 		public string Title => innerData.Title;
-		public string[] Categories => innerData.Categories;
+		public ImmutableArray<string> Categories => innerData.Categories;
 		public string Author => innerData.Author;
 		public string TileSet => innerData.TileSet;
 		public MapPlayers Players => innerData.Players;
 		public int PlayerCount => innerData.PlayerCount;
-		public CPos[] SpawnPoints => innerData.SpawnPoints;
+		public ImmutableArray<CPos> SpawnPoints => innerData.SpawnPoints;
 		public MapGridType GridType => innerData.GridType;
 		public Rectangle Bounds => innerData.Bounds;
 		public Png Preview => innerData.Preview;
@@ -341,7 +341,7 @@ namespace OpenRA
 				TileSet = "unknown",
 				Players = null,
 				PlayerCount = 0,
-				SpawnPoints = NoSpawns,
+				SpawnPoints = [],
 				GridType = gridType,
 				Bounds = Rectangle.Empty,
 				Preview = null,
@@ -397,7 +397,7 @@ namespace OpenRA
 				newData.Title = temp.Value;
 
 			if (yaml.TryGetValue("Categories", out temp))
-				newData.Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
+				newData.Categories = FieldLoader.GetValue<ImmutableArray<string>>("Categories", temp.Value);
 
 			if (yaml.TryGetValue("Tileset", out temp))
 				newData.TileSet = temp.Value;
@@ -433,7 +433,7 @@ namespace OpenRA
 						spawns.Add(s.Get<LocationInit>().Value);
 					}
 
-					newData.SpawnPoints = spawns.ToArray();
+					newData.SpawnPoints = spawns.ToImmutableArray();
 				}
 				else
 					newData.SpawnPoints = [];
@@ -526,7 +526,7 @@ namespace OpenRA
 					var spawns = new CPos[r.spawnpoints.Length / 2];
 					for (var j = 0; j < r.spawnpoints.Length; j += 2)
 						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
-					newData.SpawnPoints = spawns;
+					newData.SpawnPoints = spawns.ToImmutableArray();
 					newData.GridType = r.map_grid_type;
 					if (cache.LoadPreviewImages)
 					{

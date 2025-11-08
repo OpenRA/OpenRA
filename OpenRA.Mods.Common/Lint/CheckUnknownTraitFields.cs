@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.FileSystem;
 using OpenRA.Server;
 
@@ -94,7 +95,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (ruleDefinitions == null)
 				return;
 
-			var mapFiles = FieldLoader.GetValue<string[]>("value", ruleDefinitions.Value);
+			var mapFiles = FieldLoader.GetValue<ImmutableArray<string>>("value", ruleDefinitions.Value);
 			foreach (var f in mapFiles)
 				CheckActors(MiniYaml.FromStream(fileSystem.Open(f), f), emitError, modData);
 

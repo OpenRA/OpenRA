@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
@@ -23,10 +25,10 @@ namespace OpenRA.Mods.D2k.Traits
 	public class D2kActorPreviewPlaceBuildingPreviewInfo : ActorPreviewPlaceBuildingPreviewInfo
 	{
 		[Desc("Terrain types that should show the 'unsafe' footprint tile.")]
-		public readonly HashSet<string> UnsafeTerrainTypes = ["Rock"];
+		public readonly FrozenSet<string> UnsafeTerrainTypes = new HashSet<string> { "Rock" }.ToFrozenSet();
 
 		[Desc("Only check for 'unsafe' footprint tiles when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = [];
+		public readonly ImmutableArray<string> RequiresPrerequisites = [];
 
 		[Desc("Sprite image to use for the overlay.")]
 		public readonly string Image = "overlay";

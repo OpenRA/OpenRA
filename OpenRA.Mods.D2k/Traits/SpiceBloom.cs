@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
@@ -25,28 +27,28 @@ namespace OpenRA.Mods.D2k.Traits
 	public class SpiceBloomInfo : TraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>
 	{
 		[SequenceReference]
-		public readonly string[] GrowthSequences = ["grow1", "grow2", "grow3"];
+		public readonly ImmutableArray<string> GrowthSequences = ["grow1", "grow2", "grow3"];
 
 		[SequenceReference]
 		public readonly string SpurtSequence = "spurt";
 
 		[Desc("The range of time (in ticks) that the spicebloom will take to grow until it blows up.")]
-		public readonly int[] Lifetime = [2000, 3000];
+		public readonly ImmutableArray<int> Lifetime = [2000, 3000];
 
 		public readonly string ResourceType = "Spice";
 
 		[Desc("Spice blooms only grow on these terrain types.")]
-		public readonly HashSet<string> GrowthTerrainTypes = [];
+		public readonly FrozenSet<string> GrowthTerrainTypes = FrozenSet<string>.Empty;
 
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]
 		public readonly string Weapon = null;
 
 		[Desc("The number of times to fire Weapon at the minimum and maximum actor age.")]
-		public readonly int[] Bursts = [4, 12];
+		public readonly ImmutableArray<int> Bursts = [4, 12];
 
 		[Desc("The minimum and maximum distance in cells that spice may be expelled.")]
-		public readonly int[] Range = [3, 5];
+		public readonly ImmutableArray<int> Range = [3, 5];
 
 		[Desc("Delay between each burst. (in Ticks)")]
 		public readonly int BurstInterval = 1;

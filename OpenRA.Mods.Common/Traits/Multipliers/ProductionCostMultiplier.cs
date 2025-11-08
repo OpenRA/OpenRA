@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -21,10 +22,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Multiplier = 100;
 
 		[Desc("Only apply this cost change if owner has these prerequisites.")]
-		public readonly string[] Prerequisites = [];
+		public readonly ImmutableArray<string> Prerequisites = [];
 
 		[Desc("Queues that this cost will apply.")]
-		public readonly HashSet<string> Queue = [];
+		public readonly FrozenSet<string> Queue = FrozenSet<string>.Empty;
 
 		int IProductionCostModifierInfo.GetProductionCostModifier(TechTree techTree, string queue)
 		{

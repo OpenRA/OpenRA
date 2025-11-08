@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -1298,13 +1299,13 @@ namespace OpenRA.Mods.Common.Server
 				return;
 
 			var mapCache = server.ModData.MapCache;
-			if (server.Settings.MapPool.Length > 0)
-				server.MapPool = server.Settings.MapPool.ToHashSet();
+			if (server.Settings.MapPool.Count > 0)
+				server.MapPool = server.Settings.MapPool;
 			else if (!server.Settings.QueryMapRepository)
 				server.MapPool = mapCache
 					.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.Lobby))
 					.Select(p => p.Uid)
-					.ToHashSet();
+					.ToFrozenSet();
 			else
 				return;
 

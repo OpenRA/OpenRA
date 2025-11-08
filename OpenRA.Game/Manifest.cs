@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -68,22 +70,22 @@ namespace OpenRA
 		public readonly string Id;
 		public readonly IReadOnlyPackage Package;
 		public readonly ModMetadata Metadata;
-		public readonly string[]
+		public readonly ImmutableArray<string>
 			Rules, ServerTraits,
 			Sequences, ModelSequences, Cursors, Chrome, ChromeLayout,
 			Weapons, Voices, Notifications, Music, FluentMessages, TileSets,
 			ChromeMetrics, MapCompatibility, Missions, Hotkeys;
 
-		public readonly IReadOnlyDictionary<string, string> MapFolders;
+		public readonly FrozenDictionary<string, string> MapFolders;
 		public readonly MiniYaml FileSystem;
 		public readonly MiniYaml LoadScreen;
 		public readonly string DefaultOrderGenerator;
 
-		public readonly string[] Assemblies = [];
-		public readonly string[] SoundFormats = [];
-		public readonly string[] SpriteFormats = [];
-		public readonly string[] PackageFormats = [];
-		public readonly string[] VideoFormats = [];
+		public readonly ImmutableArray<string> Assemblies = [];
+		public readonly ImmutableArray<string> SoundFormats = [];
+		public readonly ImmutableArray<string> SpriteFormats = [];
+		public readonly ImmutableArray<string> PackageFormats = [];
+		public readonly ImmutableArray<string> VideoFormats = [];
 		public readonly int FontSheetSize = 512;
 		public readonly int CursorSheetSize = 512;
 
@@ -91,14 +93,14 @@ namespace OpenRA
 		public readonly string FluentCulture = "en";
 		public readonly bool AllowUnusedFluentMessagesInExternalPackages = true;
 
-		readonly string[] reservedModuleNames =
-		[
+		static readonly FrozenSet<string> ReservedModuleNames = new HashSet<string>
+		{
 			"Include", "Metadata", "FileSystem", "MapFolders", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "FluentMessages", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
 			"RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "FontSheetSize", "CursorSheetSize"
-		];
+		}.ToFrozenSet();
 
 		readonly TypeDictionary modules = [];
 		readonly Dictionary<string, MiniYaml> yaml;
@@ -165,25 +167,25 @@ namespace OpenRA
 			if (yaml.TryGetValue("SupportsMapsFrom", out var entry))
 				compat.AddRange(entry.Value.Split(',').Select(c => c.Trim()));
 
-			MapCompatibility = compat.ToArray();
+			MapCompatibility = compat.ToImmutableArray();
 
 			if (yaml.TryGetValue("DefaultOrderGenerator", out entry))
 				DefaultOrderGenerator = entry.Value;
 
 			if (yaml.TryGetValue("Assemblies", out entry))
-				Assemblies = FieldLoader.GetValue<string[]>("Assemblies", entry.Value);
+				Assemblies = FieldLoader.GetValue<ImmutableArray<string>>("Assemblies", entry.Value);
 
 			if (yaml.TryGetValue("PackageFormats", out entry))
-				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", entry.Value);
+				PackageFormats = FieldLoader.GetValue<ImmutableArray<string>>("PackageFormats", entry.Value);
 
 			if (yaml.TryGetValue("SoundFormats", out entry))
-				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", entry.Value);
+				SoundFormats = FieldLoader.GetValue<ImmutableArray<string>>("SoundFormats", entry.Value);
 
 			if (yaml.TryGetValue("SpriteFormats", out entry))
-				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", entry.Value);
+				SpriteFormats = FieldLoader.GetValue<ImmutableArray<string>>("SpriteFormats", entry.Value);
 
 			if (yaml.TryGetValue("VideoFormats", out entry))
-				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", entry.Value);
+				VideoFormats = FieldLoader.GetValue<ImmutableArray<string>>("VideoFormats", entry.Value);
 
 			if (yaml.TryGetValue("AllowUnusedFluentMessagesInExternalPackages", out entry))
 				AllowUnusedFluentMessagesInExternalPackages =
@@ -200,7 +202,7 @@ namespace OpenRA
 		{
 			foreach (var kv in yaml)
 			{
-				if (reservedModuleNames.Contains(kv.Key))
+				if (ReservedModuleNames.Contains(kv.Key))
 					continue;
 
 				var t = oc.FindType(kv.Key);
@@ -227,20 +229,20 @@ namespace OpenRA
 			customDataLoaded = true;
 		}
 
-		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
+		static ImmutableArray<string> YamlList(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.TryGetValue(key, out var value))
 				return [];
 
-			return value.Nodes.Select(n => n.Key).ToArray();
+			return value.Nodes.Select(n => n.Key).ToImmutableArray();
 		}
 
-		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
+		static FrozenDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
 			if (!yaml.TryGetValue(key, out var value))
-				return new Dictionary<string, string>();
+				return FrozenDictionary<string, string>.Empty;
 
-			return value.ToDictionary(my => my.Value);
+			return value.ToDictionary(my => my.Value).ToFrozenDictionary();
 		}
 
 		public bool Contains<T>() where T : IGlobalModData

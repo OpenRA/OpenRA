@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		[ActorReference(typeof(BuildingInfo))]
 		[Desc("Variant actors that can be cycled between when placing a structure.")]
-		public readonly string[] Actors = null;
+		public readonly ImmutableArray<string> Actors = default;
 
 		[Desc("Facing of the non-variant actor, followed by facings for each variant actor. The length equals the length of Actors + 1.")]
-		public readonly WAngle[] Facings = null;
+		public readonly ImmutableArray<WAngle> Facings = default;
 
 		public override object Create(ActorInitializer init) { return new PlaceBuildingVariants(); }
 	}

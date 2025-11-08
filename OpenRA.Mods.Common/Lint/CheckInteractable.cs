@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		static bool HasInvalidBounds(WDist[] bounds, Size tileSize, int tileScale)
+		static bool HasInvalidBounds(ImmutableArray<WDist> bounds, Size tileSize, int tileScale)
 		{
 			if (bounds == null)
 				return false;

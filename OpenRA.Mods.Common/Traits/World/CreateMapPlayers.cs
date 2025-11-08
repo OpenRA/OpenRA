@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Support;
@@ -128,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 				NonCombatant = true,
 				Spectating = true,
 				Faction = "Random",
-				Allies = worldPlayers.Where(p => !p.NonCombatant && p.Playable).Select(p => p.InternalName).ToArray()
+				Allies = worldPlayers.Where(p => !p.NonCombatant && p.Playable).Select(p => p.InternalName).ToImmutableArray()
 			}, playerRandom));
 
 			w.SetPlayers(worldPlayers, localPlayer);

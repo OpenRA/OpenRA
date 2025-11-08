@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Warheads
 	public class CreateResourceWarhead : Warhead
 	{
 		[Desc("Size of the area. The resources are seeded within this area.", "Provide 2 values for a ring effect (outer/inner).")]
-		public readonly int[] Size = [0, 0];
+		public readonly ImmutableArray<int> Size = [0, 0];
 
 		[Desc("Will this splatter resources and which?")]
 		[FieldLoader.Require]

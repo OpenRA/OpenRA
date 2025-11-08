@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		internal MapPreviewLogic(Widget widget, ModData modData, Func<(MapPreview Map, Session.MapStatus Status)> getMap,
 			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
-			bool mapUpdatesEnabled, Action<string> onMapUpdate, Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+			bool mapUpdatesEnabled, Action<string> onMapUpdate, Func<IReadOnlySet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
 		{
 			this.getMap = getMap;
 
@@ -112,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Widget SetupAuthorAndMapType(Widget parent)
 			{
 				var typeLabel = parent.Get<LabelWidget>("MAP_TYPE");
-				var typeCache = new CachedTransform<string[], string>(c => c.FirstOrDefault() ?? "");
+				var typeCache = new CachedTransform<ImmutableArray<string>, string>(c => c.FirstOrDefault() ?? "");
 
 				typeLabel.GetText = () => typeCache.Update(getMap().Map.Categories);
 

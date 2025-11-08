@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[Desc("A dictionary of faction-specific image overrides.")]
-		public readonly Dictionary<string, string> FactionImages = null;
+		public readonly FrozenDictionary<string, string> FactionImages = null;
 
 		[PaletteReference]
 		[Desc("Custom palette name")]

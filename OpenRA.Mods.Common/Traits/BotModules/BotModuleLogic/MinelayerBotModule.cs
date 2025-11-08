@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference(typeof(MinelayerInfo))]
 		[Desc("Actors with " + nameof(Minelayer) + "trait.")]
-		public readonly HashSet<string> MinelayingActorTypes = default;
+		public readonly FrozenSet<string> MinelayingActorTypes = default;
 
 		[Desc("Find this amount of suitable actors and lay mine to a location.")]
 		public readonly int MaxPerAssign = 1;

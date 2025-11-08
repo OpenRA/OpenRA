@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.LoadUsing(nameof(LoadConsiderations))]
 		[Desc("The decisions associated with this power")]
-		public readonly List<Consideration> Considerations = [];
+		public readonly ImmutableArray<Consideration> Considerations = [];
 
 		[Desc("Minimum ticks to wait until next Decision scan attempt.")]
 		public readonly int MinimumScanTimeInterval = 250;
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (d.Key.Split('@')[0] == "Consideration")
 					ret.Add(new Consideration(d.Value));
 
-			return ret;
+			return ret.ToImmutableArray();
 		}
 
 		/// <summary>Evaluates the attractiveness of a position according to all considerations.</summary>

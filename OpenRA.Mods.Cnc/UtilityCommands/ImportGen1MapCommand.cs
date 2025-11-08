@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -394,8 +395,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				switch (s.Key)
 				{
 					case "Allies":
-						pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToArray();
-						pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToArray();
+						pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToImmutableArray();
+						pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToImmutableArray();
 						break;
 					default:
 						Console.WriteLine("Ignoring unknown {0}={1} for player {2}", s.Key, s.Value, pr.Name);

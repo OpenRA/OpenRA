@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string currentContext = AnyContext;
 		readonly HashSet<string> contexts = [AnyContext];
-		readonly Dictionary<string, HashSet<string>> hotkeyGroups = [];
+		readonly Dictionary<string, FrozenSet<string>> hotkeyGroups = [];
 		TextFieldWidget filterInput;
 
 		Widget headerTemplate;
@@ -155,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var typesNode = hg.Value.NodeWithKeyOrDefault("Types");
 					if (typesNode != null)
-						hotkeyGroups.Add(hg.Key, FieldLoader.GetValue<HashSet<string>>("Types", typesNode.Value.Value));
+						hotkeyGroups.Add(hg.Key, FieldLoader.GetValue<FrozenSet<string>>("Types", typesNode.Value.Value));
 				}
 
 				InitHotkeyRemapDialog(panel);

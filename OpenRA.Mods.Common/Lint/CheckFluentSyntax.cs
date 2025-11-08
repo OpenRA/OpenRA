@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (map.FluentMessageDefinitions == null)
 				return;
 
-			Run(emitError, emitWarning, map, FieldLoader.GetValue<string[]>("value", map.FluentMessageDefinitions.Value));
+			Run(emitError, emitWarning, map, FieldLoader.GetValue<ImmutableArray<string>>("value", map.FluentMessageDefinitions.Value));
 		}
 
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)

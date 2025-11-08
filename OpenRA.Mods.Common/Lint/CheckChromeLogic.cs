@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Lint
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Common.Lint
 
 				if (node.Key == "Logic")
 				{
-					var typeNames = FieldLoader.GetValue<string[]>(node.Key, node.Value.Value);
+					var typeNames = FieldLoader.GetValue<ImmutableArray<string>>(node.Key, node.Value.Value);
 					foreach (var typeName in typeNames)
 					{
 						var type = Game.ModData.ObjectCreator.FindType(typeName);

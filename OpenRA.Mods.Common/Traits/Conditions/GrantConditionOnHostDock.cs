@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int AfterDockDuration = 0;
 
 		[Desc("Client actor type(s) leading to the condition being granted. Leave empty for allowing all clients by default.")]
-		public readonly HashSet<string> DockClientNames = null;
+		public readonly FrozenSet<string> DockClientNames = null;
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnHostDock(this); }
 	}

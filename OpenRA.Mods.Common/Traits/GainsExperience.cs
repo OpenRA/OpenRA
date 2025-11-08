@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant at each level.",
 			"Key is the XP requirements for each level as a percentage of our own value.",
 			"Value is the condition to grant.")]
-		public readonly Dictionary<int, string> Conditions = null;
+		public readonly FrozenDictionary<int, string> Conditions = null;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterConditions => Conditions.Values;

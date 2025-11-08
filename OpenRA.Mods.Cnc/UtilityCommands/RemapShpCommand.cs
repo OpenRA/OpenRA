@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			Game.ModData = destModData;
 			var destPaletteInfo = destModData.DefaultRules.Actors[SystemActors.Player].TraitInfo<PlayerColorPaletteInfo>();
 			var destRemapIndex = destPaletteInfo.RemapIndex;
-			var shadowIndex = Array.Empty<int>();
+			var shadowIndex = ImmutableArray<int>.Empty;
 
 			// the remap range is always 16 entries, but their location and order changes
 			for (var i = 0; i < 16; i++)

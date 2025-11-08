@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
@@ -83,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
 
-		public readonly HashSet<string> LandableTerrainTypes = [];
+		public readonly FrozenSet<string> LandableTerrainTypes = FrozenSet<string>.Empty;
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
@@ -142,10 +144,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist AltitudeVelocity = new(43);
 
 		[Desc("Sounds to play when the actor is taking off.")]
-		public readonly string[] TakeoffSounds = [];
+		public readonly ImmutableArray<string> TakeoffSounds = [];
 
 		[Desc("Sounds to play when the actor is landing.")]
-		public readonly string[] LandingSounds = [];
+		public readonly ImmutableArray<string> LandingSounds = [];
 
 		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
 		public readonly WDist WaitDistanceFromResupplyBase = new(3072);

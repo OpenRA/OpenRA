@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Traits;
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Condition = null;
 
 		[Desc("Apply to sprite bodies with these names.")]
-		public readonly string[] BodyNames = ["body"];
+		public readonly ImmutableArray<string> BodyNames = ["body"];
 
 		public override object Create(ActorInitializer init) { return new WithMakeAnimation(init, this); }
 	}

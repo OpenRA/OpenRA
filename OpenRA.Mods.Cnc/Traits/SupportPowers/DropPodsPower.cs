@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Cnc.Effects;
@@ -26,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[FieldLoader.Require]
 		[Desc("Drop pod unit")]
 		[ActorReference([typeof(AircraftInfo), typeof(FallsToEarthInfo)])]
-		public readonly string[] UnitTypes = null;
+		public readonly ImmutableArray<string> UnitTypes = default;
 
 		[Desc("Number of drop pods spawned.")]
 		public readonly int2 Drops = new(5, 8);
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly DropPodsPowerInfo info;
 		readonly string[] unitTypes;
 		readonly Dictionary<string, Func<CPos, WPos>> getLaunchLocation = [];
-		readonly Dictionary<string, HashSet<string>> landableTerrainTypes = [];
+		readonly Dictionary<string, FrozenSet<string>> landableTerrainTypes = [];
 
 		public DropPodsPower(Actor self, DropPodsPowerInfo info)
 			: base(self, info)

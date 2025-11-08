@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = "resources";
 
 		[Desc("Remap these indices to pre-defined colors.")]
-		public readonly int[] RemapIndex = [];
+		public readonly ImmutableArray<int> RemapIndex = [];
 
 		[Desc("The fixed color to remap.")]
 		public readonly Color Color;
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, info.Color);
+			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToImmutableArray() : info.RemapIndex, info.Color);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
 		}
 

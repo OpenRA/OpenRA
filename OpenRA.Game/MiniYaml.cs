@@ -678,8 +678,8 @@ namespace OpenRA
 		{
 			if (mapRules != null && mapRules.Value != null)
 			{
-				var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
-				files = files.Append(mapFiles);
+				var mapFiles = FieldLoader.GetValue<ImmutableArray<string>>("value", mapRules.Value);
+				files = files.Concat(mapFiles);
 			}
 
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML

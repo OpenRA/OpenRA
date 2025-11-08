@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing(nameof(LoadDecisions))]
-		public readonly List<SupportPowerDecision> Decisions = [];
+		public readonly ImmutableArray<SupportPowerDecision> Decisions = [];
 
 		static object LoadDecisions(MiniYaml yaml)
 		{
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var d in decisions.Value.Nodes)
 					ret.Add(new SupportPowerDecision(d.Value));
 
-			return ret;
+			return ret.ToImmutableArray();
 		}
 
 		public override object Create(ActorInitializer init) { return new SupportPowerBotModule(init.Self, this); }

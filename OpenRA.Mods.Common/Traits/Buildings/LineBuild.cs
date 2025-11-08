@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Range = 5;
 
 		[Desc("LineBuildNode 'Types' to attach to.")]
-		public readonly HashSet<string> NodeTypes = ["wall"];
+		public readonly FrozenSet<string> NodeTypes = new HashSet<string> { "wall" }.ToFrozenSet();
 
 		[ActorReference(typeof(LineBuildInfo))]
 		[Desc("Actor type for line-built segments (defaults to same actor).")]

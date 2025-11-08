@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -24,15 +25,15 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference]
 		[FieldLoader.Require]
 		[Desc("Actor types to spawn on sell, amount and type based on ValuePercent. Be sure to use lowercase.")]
-		public readonly string[] ActorTypes = null;
+		public readonly ImmutableArray<string> ActorTypes = default;
 
 		[ActorReference]
 		[Desc("Actors to spawn on sell. Be sure to use lowercase.")]
-		public readonly string[] GuaranteedActorTypes = [];
+		public readonly ImmutableArray<string> GuaranteedActorTypes = [];
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
-		public readonly HashSet<string> Factions = [];
+		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
 
 		public override object Create(ActorInitializer init) { return new SpawnActorsOnSell(init.Self, this); }
 	}

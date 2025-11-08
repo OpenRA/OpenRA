@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when this actor is loaded inside specified transport.",
 			"A dictionary of [actor name]: [condition].")]
-		public readonly Dictionary<string, string> CargoConditions = [];
+		public readonly FrozenDictionary<string, string> CargoConditions = FrozenDictionary<string, string>.Empty;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterCargoConditions => CargoConditions.Values;

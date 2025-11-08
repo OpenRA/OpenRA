@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = null;
 
 		[SequenceReference(nameof(Image))]
-		public readonly string[] Sequences = ["idle"];
+		public readonly ImmutableArray<string> Sequences = ["idle"];
 
 		[PaletteReference]
 		public readonly string Palette = "effect";
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly WDist DistanceAboveTerrain = new(756);
 
 		[Desc("Only play on these terrain types.")]
-		public readonly HashSet<string> TerrainTypes = [];
+		public readonly FrozenSet<string> TerrainTypes = FrozenSet<string>.Empty;
 
 		public override object Create(ActorInitializer init) { return new WithAircraftLandingEffect(this); }
 	}

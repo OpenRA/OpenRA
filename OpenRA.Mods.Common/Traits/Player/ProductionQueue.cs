@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Group = null;
 
 		[Desc("Only enable this queue for certain factions.")]
-		public readonly HashSet<string> Factions = [];
+		public readonly FrozenSet<string> Factions = FrozenSet<string>.Empty;
 
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;

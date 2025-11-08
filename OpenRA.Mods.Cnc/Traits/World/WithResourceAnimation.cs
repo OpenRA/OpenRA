@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common;
@@ -26,13 +28,13 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Resource types to animate.")]
-		public readonly HashSet<string> Types = null;
+		public readonly FrozenSet<string> Types = null;
 
 		[Desc("The percentage of resource cells to play the animation on.", "Use two values to randomize between them.")]
-		public readonly int[] Ratio = [1, 10];
+		public readonly ImmutableArray<int> Ratio = [1, 10];
 
 		[Desc("Tick interval between two animation spawning.", "Use two values to randomize between them.")]
-		public readonly int[] Interval = [200, 500];
+		public readonly ImmutableArray<int> Interval = [200, 500];
 
 		[FieldLoader.Require]
 		[Desc("Animation image.")]
@@ -40,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[SequenceReference(nameof(Image))]
 		[Desc("Randomly select one of these sequences to render.")]
-		public readonly string[] Sequences = ["idle"];
+		public readonly ImmutableArray<string> Sequences = ["idle"];
 
 		[PaletteReference]
 		[Desc("Animation palette.")]

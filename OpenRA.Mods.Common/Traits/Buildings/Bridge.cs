@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Terrain;
@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ushort DestroyedPlusSouthTemplate = 0;
 		public readonly ushort DestroyedPlusBothTemplate = 0;
 
-		public readonly string[] ShorePieces = ["br1", "br2"];
-		public readonly int[] NorthOffset = null;
-		public readonly int[] SouthOffset = null;
+		public readonly ImmutableArray<string> ShorePieces = ["br1", "br2"];
+		public readonly ImmutableArray<int> NorthOffset = default;
+		public readonly ImmutableArray<int> SouthOffset = default;
 
 		[WeaponReference]
 		[Desc("The name of the weapon to use when demolishing the bridge")]
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public LegacyBridgeHut GetHut(int index) { return huts[index]; }
-		public Bridge GetNeighbor(int[] offset, LegacyBridgeLayer bridges)
+		public Bridge GetNeighbor(ImmutableArray<int> offset, LegacyBridgeLayer bridges)
 		{
 			if (offset == null)
 				return null;

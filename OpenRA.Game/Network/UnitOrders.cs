@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Server;
@@ -67,11 +68,11 @@ namespace OpenRA.Network
 					{
 						var message = new FluentMessage(node.Value);
 						if (message.Key == Joined)
-							TextNotificationsManager.AddPlayerJoinedLine(message.Key, message.Arguments);
+							TextNotificationsManager.AddPlayerJoinedLine(message.Key, message.Arguments.ToArray());
 						else if (message.Key == Left)
-							TextNotificationsManager.AddPlayerLeftLine(message.Key, message.Arguments);
+							TextNotificationsManager.AddPlayerLeftLine(message.Key, message.Arguments.ToArray());
 						else
-							TextNotificationsManager.AddSystemLine(message.Key, message.Arguments);
+							TextNotificationsManager.AddSystemLine(message.Key, message.Arguments.ToArray());
 					}
 
 					break;
@@ -385,7 +386,7 @@ namespace OpenRA.Network
 
 				case "SyncMapPool":
 				{
-					orderManager.ServerMapPool = FieldLoader.GetValue<HashSet<string>>("SyncMapPool", order.TargetString);
+					orderManager.ServerMapPool = FieldLoader.GetValue<FrozenSet<string>>("SyncMapPool", order.TargetString);
 					break;
 				}
 

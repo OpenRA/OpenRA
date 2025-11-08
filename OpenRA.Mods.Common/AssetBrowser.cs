@@ -9,13 +9,15 @@
  */
 #endregion
 
+using System.Collections.Immutable;
+
 namespace OpenRA
 {
 	public class AssetBrowser : IGlobalModData
 	{
-		public readonly string[] SpriteExtensions = [];
-		public readonly string[] ModelExtensions = [];
-		public readonly string[] AudioExtensions = [];
-		public readonly string[] VideoExtensions = [];
+		public readonly ImmutableArray<string> SpriteExtensions = [];
+		public readonly ImmutableArray<string> ModelExtensions = [];
+		public readonly ImmutableArray<string> AudioExtensions = [];
+		public readonly ImmutableArray<string> VideoExtensions = [];
 	}
 }

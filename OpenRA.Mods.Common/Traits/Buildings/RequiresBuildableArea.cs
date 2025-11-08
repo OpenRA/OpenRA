@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Types of buildable are this actor requires.")]
-		public readonly HashSet<string> AreaTypes = [];
+		public readonly FrozenSet<string> AreaTypes = FrozenSet<string>.Empty;
 
 		[Desc("Maximum range from the actor with 'GivesBuildableArea' this can be placed at.")]
 		public readonly int Adjacent = 2;

@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,10 +20,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class LineBuildNodeInfo : TraitInfo<LineBuildNode>
 	{
 		[Desc("This actor is of LineBuild 'NodeType'...")]
-		public readonly HashSet<string> Types = ["wall"];
+		public readonly FrozenSet<string> Types = new HashSet<string> { "wall" }.ToFrozenSet();
 
 		[Desc("Cells (outside the footprint) that contain cells that can connect to this actor.")]
-		public readonly CVec[] Connections = [new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1)];
+		public readonly ImmutableArray<CVec> Connections = [new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1)];
 	}
 
 	public class LineBuildNode { }

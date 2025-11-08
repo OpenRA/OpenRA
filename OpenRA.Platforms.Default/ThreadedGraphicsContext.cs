@@ -815,7 +815,7 @@ namespace OpenRA.Platforms.Default
 			device.Post(setVec1, (name, x));
 		}
 
-		public void SetVec(string name, float[] vec, int length)
+		public void SetVec(string name, ReadOnlyMemory<float> vec, int length)
 		{
 			device.Post(setVec2, (name, vec, length));
 		}

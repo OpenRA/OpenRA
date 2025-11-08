@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Immutable;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Adjacency = 1;
 
 		[Desc("The range of time (in ticks) until the transformation starts.")]
-		public readonly int[] Delay = [1000, 3000];
+		public readonly ImmutableArray<int> Delay = [1000, 3000];
 
 		public override object Create(ActorInitializer init) { return new TransformsNearResources(init.Self, this); }
 	}

@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int LifeTime = 250;
 
 		[Desc("Only allow this to be spawned on this terrain.")]
-		public readonly string[] Terrain = null;
+		public readonly ImmutableArray<string> Terrain = default;
 
 		public readonly bool AllowUnderShroud = true;
 

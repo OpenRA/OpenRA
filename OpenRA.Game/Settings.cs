@@ -10,7 +10,9 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
@@ -69,16 +71,16 @@ namespace OpenRA
 		public string Map = null;
 
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
-		public string[] Ban = [];
+		public FrozenSet<string> Ban = FrozenSet<string>.Empty;
 
 		[Desc("For dedicated servers only, allow anonymous clients to join.")]
 		public bool RequireAuthentication = false;
 
 		[Desc("For dedicated servers only, if non-empty, only allow authenticated players with these profile IDs to join.")]
-		public int[] ProfileIDWhitelist = [];
+		public FrozenSet<int> ProfileIDWhitelist = FrozenSet<int>.Empty;
 
 		[Desc("For dedicated servers only, if non-empty, always reject players with these user IDs from joining.")]
-		public int[] ProfileIDBlacklist = [];
+		public FrozenSet<int> ProfileIDBlacklist = FrozenSet<int>.Empty;
 
 		[Desc("For dedicated servers only, controls whether a game can be started with just one human player in the lobby.")]
 		public bool EnableSingleplayer = false;
@@ -105,7 +107,7 @@ namespace OpenRA
 		public bool EnableLintChecks = true;
 
 		[Desc("For dedicated servers only, a comma separated list of map uids that are allowed to be used.")]
-		public string[] MapPool = [];
+		public FrozenSet<string> MapPool = FrozenSet<string>.Empty;
 
 		[Desc("Delay in milliseconds before newly joined players can send chat messages.")]
 		public int FloodLimitJoinCooldown = 5000;
@@ -251,7 +253,7 @@ namespace OpenRA
 		public string Name = "Commander";
 		public Color Color = Color.FromArgb(200, 32, 32);
 		public string LastServer = "localhost:1234";
-		public Color[] CustomColors = [];
+		public ImmutableArray<Color> CustomColors = [];
 	}
 
 	public class SinglePlayerGameSettings

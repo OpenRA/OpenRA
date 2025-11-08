@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.FileSystem
@@ -22,7 +23,21 @@ namespace OpenRA.Mods.Common.FileSystem
 
 	public class DefaultFileSystemLoader : IFileSystemLoader
 	{
-		public readonly Dictionary<string, string> Packages = null;
+		[FieldLoader.LoadUsing(nameof(LoadPackages))]
+		public readonly ImmutableArray<KeyValuePair<string, string>> Packages = default;
+
+		static object LoadPackages(MiniYaml yaml)
+		{
+			var packageNode = yaml.NodeWithKeyOrDefault(nameof(Packages));
+			if (packageNode == null)
+				return default(ImmutableArray<KeyValuePair<string, string>>);
+
+			var packages = new List<KeyValuePair<string, string>>(packageNode.Value.Nodes.Length);
+			foreach (var node in packageNode.Value.Nodes)
+				packages.Add(KeyValuePair.Create(node.Key, node.Value.Value));
+
+			return packages.ToImmutableArray();
+		}
 
 		public void Mount(OpenRA.FileSystem.FileSystem fileSystem, ObjectCreator objectCreator)
 		{

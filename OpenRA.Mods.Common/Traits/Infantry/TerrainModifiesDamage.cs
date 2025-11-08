@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Damage percentage for specific terrain types. 120 = 120%, 80 = 80%, etc.")]
-		public readonly Dictionary<string, int> TerrainModifier = null;
+		public readonly FrozenDictionary<string, int> TerrainModifier = null;
 
 		[Desc("Modify healing damage? For example: A friendly medic.")]
 		public readonly bool ModifyHealing = false;

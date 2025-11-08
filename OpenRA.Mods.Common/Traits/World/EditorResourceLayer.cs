@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorResourceLayerInfo : TraitInfo, IResourceLayerInfo
 	{
 		[FieldLoader.LoadUsing(nameof(LoadResourceTypes))]
-		public readonly Dictionary<string, ResourceLayerInfo.ResourceTypeInfo> ResourceTypes = null;
+		public readonly FrozenDictionary<string, ResourceLayerInfo.ResourceTypeInfo> ResourceTypes = null;
 
 		// Copied from ResourceLayerInfo
 		protected static object LoadResourceTypes(MiniYaml yaml)
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var r in resources.Value.Nodes)
 					ret[r.Key] = new ResourceLayerInfo.ResourceTypeInfo(r.Value);
 
-			return ret;
+			return ret.ToFrozenDictionary();
 		}
 
 		[Desc("Override the density saved in maps with values calculated based on the number of neighbouring resource cells.")]
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly Map Map;
 		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
 		protected readonly CellLayer<ResourceLayerContents> Tiles;
-		protected Dictionary<string, int> resourceValues;
+		protected FrozenDictionary<string, int> resourceValues;
 
 		public int NetWorth { get; protected set; }
 
@@ -109,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			var playerResourcesInfo = w.Map.Rules.Actors[SystemActors.Player].TraitInfoOrDefault<PlayerResourcesInfo>();
-			resourceValues = playerResourcesInfo?.ResourceValues ?? [];
+			resourceValues = playerResourcesInfo?.ResourceValues ?? FrozenDictionary<string, int>.Empty;
 
 			foreach (var cell in Map.AllCells)
 				UpdateCell(cell);

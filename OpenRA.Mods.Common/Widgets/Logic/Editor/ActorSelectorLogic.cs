@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("actorType")]
 		const string ActorTypeTooltip = "label-actor-type";
 
-		sealed record ActorSelectorActor(ActorInfo Actor, string[] Categories, string[] SearchTerms, string Tooltip);
+		sealed record ActorSelectorActor(ActorInfo Actor, ImmutableArray<string> Categories, string[] SearchTerms, string Tooltip);
 
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly Ruleset mapRules;

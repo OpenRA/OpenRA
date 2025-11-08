@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("Which factions this crate action can occur for.")]
-		public readonly HashSet<string> ValidFactions = [];
+		public readonly FrozenSet<string> ValidFactions = FrozenSet<string>.Empty;
 
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;

@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly short JumpjetTransitionCost = 0;
 
 		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
-		public readonly HashSet<string> JumpjetTransitionTerrainTypes = [];
+		public readonly FrozenSet<string> JumpjetTransitionTerrainTypes = FrozenSet<string>.Empty;
 
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool JumpjetTransitionOnRamps = true;

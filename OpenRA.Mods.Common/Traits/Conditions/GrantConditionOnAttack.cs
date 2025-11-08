@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,11 +24,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Condition = null;
 
 		[Desc("Name of the armaments that grant this condition.")]
-		public readonly HashSet<string> ArmamentNames = ["primary"];
+		public readonly FrozenSet<string> ArmamentNames = new HashSet<string> { "primary" }.ToFrozenSet();
 
 		[Desc("Shots required to apply an instance of the condition. If there are more instances of the condition granted than values listed,",
 			"the last value is used for all following instances beyond the defined range.")]
-		public readonly int[] RequiredShotsPerInstance = [1];
+		public readonly ImmutableArray<int> RequiredShotsPerInstance = [1];
 
 		[Desc("Maximum instances of the condition to grant.")]
 		public readonly int MaximumInstances = 1;

@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("List of production queues for which the primary flag should be set.",
 			"If empty, the list given in the `Produces` property of the `" + nameof(Production) + "` trait will be used.")]
-		public readonly string[] ProductionQueues = [];
+		public readonly ImmutableArray<string> ProductionQueues = [];
 
 		[CursorReference]
 		[Desc("Cursor to display when setting the primary building.")]

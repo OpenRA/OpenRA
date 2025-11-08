@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Support;
@@ -25,17 +26,17 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Conditions to grant for each accepted plug type.",
 			"Key is the plug type.",
 			"Value is the condition that is granted when the plug is enabled.")]
-		public readonly Dictionary<string, string> Conditions = null;
+		public readonly FrozenDictionary<string, string> Conditions = null;
 
 		[Desc("Requirements for accepting a plug type.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the condition expression defining the requirements to place the plug.")]
-		public readonly Dictionary<string, BooleanExpression> Requirements = [];
+		public readonly FrozenDictionary<string, BooleanExpression> Requirements = FrozenDictionary<string, BooleanExpression>.Empty;
 
 		[Desc("Options to display in the map editor.",
 			"Key is the plug type that the requirements applies to.",
 			"Value is the label that is displayed in the actor editor dropdown.")]
-		public readonly Dictionary<string, string> EditorOptions = [];
+		public readonly FrozenDictionary<string, string> EditorOptions = FrozenDictionary<string, string>.Empty;
 
 		[Desc("Label to use for an empty plug socket.")]
 		public readonly string EmptyOption = "Empty";
@@ -58,8 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			// Make sure the no-plug option is always available
-			EditorOptions[""] = EmptyOption;
-			yield return new EditorActorDropdown("Plug", EditorDisplayOrder, _ => EditorOptions,
+			var editorOptions = EditorOptions.ToDictionary();
+			editorOptions[""] = EmptyOption;
+			yield return new EditorActorDropdown("Plug", EditorDisplayOrder, _ => editorOptions,
 				(actor, _) =>
 				{
 					var init = actor.GetInitOrDefault<PlugInit>(this);

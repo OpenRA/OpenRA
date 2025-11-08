@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -46,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[SequenceReference(nameof(SmokeImage), allowNullImage: true)]
 		[Desc("Smoke sprite sequences randomly chosen from")]
-		public readonly string[] SmokeSequences = [];
+		public readonly ImmutableArray<string> SmokeSequences = [];
 
 		[PaletteReference]
 		public readonly string SmokePalette = "effect";
@@ -55,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[FieldLoader.LoadUsing(nameof(LoadInitialSmudges))]
-		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
+		public readonly FrozenDictionary<CPos, MapSmudge> InitialSmudges;
 
 		public static object LoadInitialSmudges(MiniYaml yaml)
 		{
@@ -77,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			return smudges;
+			return smudges.ToFrozenDictionary();
 		}
 
 		public override object Create(ActorInitializer init) { return new SmudgeLayer(init.Self, this); }

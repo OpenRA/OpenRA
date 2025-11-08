@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -85,16 +86,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public class MapGeneratorDropdownChoice
 		{
 			public readonly string Label = null;
-			public readonly string[] Tileset = null;
-			public readonly int[] Players = null;
+			public readonly ImmutableArray<string> Tileset = default;
+			public readonly ImmutableArray<int> Players = default;
 
 			[FieldLoader.LoadUsing(nameof(LoadSettings))]
 			[FieldLoader.Require]
-			public readonly ImmutableList<MiniYamlNode> Settings = null;
+			public readonly ImmutableArray<MiniYamlNode> Settings = default;
 
-			static ImmutableList<MiniYamlNode> LoadSettings(MiniYaml yaml)
+			static object LoadSettings(MiniYaml yaml)
 			{
-				return yaml.NodeWithKey("Settings").Value.Nodes.ToImmutableList();
+				return yaml.NodeWithKey("Settings").Value.Nodes.ToImmutableArray();
 			}
 		}
 
@@ -114,7 +115,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return ret;
 		}
 
-		public readonly string[] Default = null;
+		public readonly ImmutableArray<string> Default = default;
 		string value = null;
 
 		public MapGeneratorMultiChoiceOption(string id, MiniYaml yaml)
@@ -126,7 +127,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (validChoices.Contains(value))
 				return Choices[value].Settings;
 
-			var fallback = Default?.FirstOrDefault(validChoices.Contains) ?? validChoices.FirstOrDefault();
+			var fallback = Default != null ? Default.FirstOrDefault(validChoices.Contains) : validChoices.FirstOrDefault();
 			return fallback != null ? Choices[fallback].Settings : [];
 		}
 
@@ -146,8 +147,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			return Choices
 				.Where(kv =>
-					(kv.Value.Tileset?.Contains(terrainInfo.Id) ?? true) &&
-					(kv.Value.Players?.Contains(playerCount) ?? true))
+					(kv.Value.Tileset == null || kv.Value.Tileset.Contains(terrainInfo.Id)) &&
+					(kv.Value.Players == null || kv.Value.Players.Contains(playerCount)))
 				.Select(kv => kv.Key)
 				.ToList();
 		}
@@ -177,7 +178,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public readonly string Parameter = null;
 
 		[FieldLoader.Require]
-		public readonly int[] Choices = null;
+		public readonly ImmutableArray<int> Choices = default;
 
 		public readonly int? Default = null;
 		int value;
@@ -185,7 +186,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MapGeneratorMultiIntegerChoiceOption(string id, MiniYaml yaml)
 			: base(id, yaml)
 		{
-			Value = Default ?? Choices?.First() ?? 0;
+			Value = Default ?? (Choices != null ? Choices[0] : 0);
 		}
 
 		public int Value
@@ -210,7 +211,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 	{
 		sealed class MapGenerationArgsWithOptions : MapGenerationArgs
 		{
-			public Dictionary<string, string> Options = [];
+			public FrozenDictionary<string, string> Options = FrozenDictionary<string, string>.Empty;
 		}
 
 		readonly IMapGeneratorInfo generatorInfo;
@@ -218,6 +219,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MapGeneratorSettings(IMapGeneratorInfo generatorInfo, MiniYaml yaml)
 		{
 			this.generatorInfo = generatorInfo;
+
+			var options = new List<MapGeneratorOption>();
 			foreach (var node in yaml.Nodes)
 			{
 				var split = node.Key.Split('@');
@@ -225,17 +228,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 					continue;
 
 				if (split[0] == "BooleanOption")
-					Options.Add(new MapGeneratorBooleanOption(split[1], node.Value));
+					options.Add(new MapGeneratorBooleanOption(split[1], node.Value));
 				else if (split[0] == "IntegerOption")
-					Options.Add(new MapGeneratorIntegerOption(split[1], node.Value));
+					options.Add(new MapGeneratorIntegerOption(split[1], node.Value));
 				else if (split[0] == "MultiIntegerChoiceOption")
-					Options.Add(new MapGeneratorMultiIntegerChoiceOption(split[1], node.Value));
+					options.Add(new MapGeneratorMultiIntegerChoiceOption(split[1], node.Value));
 				else if (split[0] == "MultiChoiceOption")
-					Options.Add(new MapGeneratorMultiChoiceOption(split[1], node.Value));
+					options.Add(new MapGeneratorMultiChoiceOption(split[1], node.Value));
 			}
+
+			Options = options.ToImmutableArray();
 		}
 
-		public List<MapGeneratorOption> Options { get; } = [];
+		public ImmutableArray<MapGeneratorOption> Options { get; } = [];
 
 		public void Randomize(MersenneTwister random)
 		{
@@ -306,7 +311,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				Title = FluentProvider.GetMessage(generatorInfo.MapTitle),
 				Author = FluentProvider.GetMessage(generatorInfo.Name),
 				Settings = new MiniYaml(null, MiniYaml.Merge(layers)),
-				Options = options
+				Options = options.ToFrozenDictionary()
 			};
 		}
 	}

@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Scripting
 	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>, NotBefore<SpawnStartingUnitsInfo>
 	{
 		[Desc("File names with location relative to the map.")]
-		public readonly HashSet<string> Scripts = [];
+		public readonly FrozenSet<string> Scripts = FrozenSet<string>.Empty;
 
 		public override object Create(ActorInitializer init) { return new LuaScript(this); }
 	}

@@ -597,10 +597,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 			var pathStart = points[0];
 			var pathEnd = points[^1];
 			var orderedPermittedBrushes = Brushes.All.ToImmutableArray();
-			var permittedBrushes = orderedPermittedBrushes.ToImmutableHashSet();
-			var permittedStartBrushes = Brushes.Start.ToImmutableHashSet();
-			var permittedInnerBrushes = Brushes.Inner.ToImmutableHashSet();
-			var permittedEndBrushes = Brushes.End.ToImmutableHashSet();
+			var permittedStartBrushes = Brushes.Start.ToHashSet();
+			var permittedInnerBrushes = Brushes.Inner.ToHashSet();
+			var permittedEndBrushes = Brushes.End.ToHashSet();
 
 			const int MaxCost = int.MaxValue;
 			var segmentTypeToId = new Dictionary<string, int>();

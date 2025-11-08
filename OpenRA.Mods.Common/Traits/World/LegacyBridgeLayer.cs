@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LegacyBridgeLayerInfo : TraitInfo
 	{
 		[ActorReference]
-		public readonly string[] Bridges = ["bridge1", "bridge2"];
+		public readonly ImmutableArray<string> Bridges = ["bridge1", "bridge2"];
 
 		public override object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
 	}

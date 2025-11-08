@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using OpenRA.Primitives;
 
@@ -64,18 +65,18 @@ namespace OpenRA.Graphics
 			Buffer.BlockCopy(colors, 0, destination, destinationOffset * 4, Palette.Size * 4);
 		}
 
-		public ImmutablePalette(string filename, int[] remapTransparent, int[] remap)
+		public ImmutablePalette(string filename, ImmutableArray<int> remapTransparent, ImmutableArray<int> remap)
 		{
 			using (var s = File.OpenRead(filename))
 				LoadFromStream(s, remapTransparent, remap);
 		}
 
-		public ImmutablePalette(Stream s, int[] remapTransparent, int[] remapShadow)
+		public ImmutablePalette(Stream s, ImmutableArray<int> remapTransparent, ImmutableArray<int> remapShadow)
 		{
 			LoadFromStream(s, remapTransparent, remapShadow);
 		}
 
-		void LoadFromStream(Stream s, int[] remapTransparent, int[] remapShadow)
+		void LoadFromStream(Stream s, ImmutableArray<int> remapTransparent, ImmutableArray<int> remapShadow)
 		{
 			using (var reader = new BinaryReader(s))
 				for (var i = 0; i < Palette.Size; i++)

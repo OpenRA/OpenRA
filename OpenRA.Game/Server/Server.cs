@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -132,7 +133,7 @@ namespace OpenRA.Server
 		public MapPreview Map;
 		public readonly MapStatusCache MapStatusCache;
 		public GameSave GameSave;
-		public HashSet<string> MapPool;
+		public FrozenSet<string> MapPool;
 
 		// Default to the next frame for ServerType.Local - MP servers take the value from the selected GameSpeed.
 		public int OrderLatency = 1;
@@ -661,9 +662,9 @@ namespace OpenRA.Server
 
 						events.Add(new CallbackEvent(() =>
 						{
-							var notAuthenticated = Type == ServerType.Dedicated && profile == null && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Length > 0);
+							var notAuthenticated = Type == ServerType.Dedicated && profile == null && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Count > 0);
 							var blacklisted = Type == ServerType.Dedicated && profile != null && Settings.ProfileIDBlacklist.Contains(profile.ProfileID);
-							var notWhitelisted = Type == ServerType.Dedicated && Settings.ProfileIDWhitelist.Length > 0 &&
+							var notWhitelisted = Type == ServerType.Dedicated && Settings.ProfileIDWhitelist.Count > 0 &&
 								(profile == null || !Settings.ProfileIDWhitelist.Contains(profile.ProfileID));
 
 							if (notAuthenticated)
@@ -689,7 +690,7 @@ namespace OpenRA.Server
 				}
 				else
 				{
-					if (Type == ServerType.Dedicated && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Length > 0))
+					if (Type == ServerType.Dedicated && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Count > 0))
 					{
 						Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not authenticated.");
 						SendOrderTo(newConn, "ServerError", RequiresAuthentication);

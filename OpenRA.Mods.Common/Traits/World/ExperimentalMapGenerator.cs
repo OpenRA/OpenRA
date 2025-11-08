@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Tilesets that are compatible with this map generator.")]
-		public readonly string[] Tilesets = null;
+		public readonly ImmutableArray<string> Tilesets = default;
 
 		[FluentReference]
 		[Desc("The title to use for generated maps.")]
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		// This is purely of interest to the linter.
 		[FieldLoader.LoadUsing(nameof(FluentReferencesLoader))]
 		[FluentReference]
-		public readonly List<string> FluentReferences = null;
+		public readonly ImmutableArray<string> FluentReferences = default;
 
 		[FieldLoader.LoadUsing(nameof(SettingsLoader))]
 		public readonly MiniYaml Settings;
@@ -53,17 +54,17 @@ namespace OpenRA.Mods.Common.Traits
 		string IMapGeneratorInfo.Type => Type;
 		string IMapGeneratorInfo.Name => Name;
 		string IMapGeneratorInfo.MapTitle => MapTitle;
-		string[] IEditorMapGeneratorInfo.Tilesets => Tilesets;
+		ImmutableArray<string> IEditorMapGeneratorInfo.Tilesets => Tilesets;
 
 		static MiniYaml SettingsLoader(MiniYaml my)
 		{
 			return my.NodeWithKey("Settings").Value;
 		}
 
-		static List<string> FluentReferencesLoader(MiniYaml my)
+		static object FluentReferencesLoader(MiniYaml my)
 		{
 			return new MapGeneratorSettings(null, my.NodeWithKey("Settings").Value)
-				.Options.SelectMany(o => o.GetFluentReferences()).ToList();
+				.Options.SelectMany(o => o.GetFluentReferences()).ToImmutableArray();
 		}
 
 		const int FractionMax = Terraformer.FractionMax;
@@ -280,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 					return my.NodeWithKey(key).Value.Value
 						.Split(',', StringSplitOptions.RemoveEmptyEntries)
 						.Select(terrainInfo.GetTerrainIndex)
-						.ToImmutableHashSet();
+						.ToFrozenSet();
 				}
 
 				IReadOnlyList<string> ParseSegmentTypes(string key)

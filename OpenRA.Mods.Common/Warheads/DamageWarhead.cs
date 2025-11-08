@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Frozen;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Damage percentage versus each armor type.")]
-		public readonly Dictionary<string, int> Versus = [];
+		public readonly FrozenDictionary<string, int> Versus = FrozenDictionary<string, int>.Empty;
 
 		public override bool IsValidAgainst(Actor victim, Actor firedBy)
 		{

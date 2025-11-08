@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FluentReference(LintDictionaryReference.Keys)]
 		[Desc("A list of colors to be used for drawing.")]
-		public readonly Dictionary<string, Color> Colors = new()
+		public readonly FrozenDictionary<string, Color> Colors = new Dictionary<string, Color>
 		{
 			{ "notification-added-marker-tiles-markers.red", Color.FromArgb(255, 0, 0) },
 			{ "notification-added-marker-tiles-markers.orange", Color.FromArgb(255, 127, 0) },
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			{ "notification-added-marker-tiles-markers.blue", Color.FromArgb(0, 42, 255) },
 			{ "notification-added-marker-tiles-markers.purple", Color.FromArgb(165, 0, 255) },
 			{ "notification-added-marker-tiles-markers.magenta", Color.FromArgb(255, 0, 220) }
-		};
+		}.ToFrozenDictionary();
 
 		[Desc("Default alpha blend.")]
 		public readonly int Alpha = 85;
@@ -174,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 				NumSides = file.NumSides;
 				AxisAngle = file.AxisAngle;
 
-				SetAll(file.Tiles.ToImmutableDictionary(d => d.Key, d => d.Value.ToImmutableArray()));
+				SetAll(file.Tiles.ToFrozenDictionary(d => d.Key, d => d.Value.ToImmutableArray()));
 			}
 			catch (Exception e)
 			{
@@ -204,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 			Tiles.Clear();
 		}
 
-		public void SetAll(IImmutableDictionary<int, ImmutableArray<CPos>> newTiles)
+		public void SetAll(FrozenDictionary<int, ImmutableArray<CPos>> newTiles)
 		{
 			ClearAll();
 

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
 
@@ -268,7 +269,7 @@ namespace OpenRA.Graphics
 				{
 					var ramp = map.Grid.Ramps[map.Ramp.Contains(uv) ? map.Ramp[uv] : 0];
 					var pos = map.CenterOfCell(uv.ToCPos(map)) - new WVec(0, 0, ramp.CenterHeightOffset);
-					var screen = ramp.Corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
+					var screen = ramp.Corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToImmutableArray();
 					if (screen.PolygonContains(world))
 						return uv.ToCPos(map);
 				}

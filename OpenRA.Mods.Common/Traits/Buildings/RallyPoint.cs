@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool IsPlayerPalette = true;
 
 		[Desc("A list of 0 or more offsets defining the initial rally point path.")]
-		public readonly CVec[] Path = [];
+		public readonly ImmutableArray<CVec> Path = [];
 
 		[NotificationReference("Speech")]
 		[Desc("Speech notification to play when setting a new rallypoint.")]
