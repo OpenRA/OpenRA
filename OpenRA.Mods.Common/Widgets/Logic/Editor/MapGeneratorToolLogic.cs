@@ -261,8 +261,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var map = world.Map;
 			var terrainInfo = modData.DefaultTerrainInfo[map.Tileset];
-			var size = new Size(map.Bounds.Width + 2, map.Bounds.Height + 2);
-			var args = settings.Compile(terrainInfo, size);
+			var args = settings.Compile(terrainInfo, map.MapSize);
 
 			// Run main generator logic. May throw.
 			var generateStopwatch = Stopwatch.StartNew();
@@ -301,12 +300,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				previews.Add(kv.Key, preview);
 			}
 
-			var offset = map.CellContaining(map.ProjectedTopLeft) - generatedMap.CellContaining(generatedMap.ProjectedTopLeft);
-			var blitSource = new EditorBlitSource(generatedMap.AllCells, previews, tiles);
+			var cellBounds = CellLayerUtils.CellBounds(map);
+			var topLeft = new CPos(cellBounds.TopLeft.X, cellBounds.TopLeft.Y);
+			var bottomRight = new CPos(cellBounds.BottomRight.X, cellBounds.BottomRight.Y);
+			var cellRegion = new CellRegion(map.Grid.Type, topLeft, bottomRight);
+			var blitSource = new EditorBlitSource(cellRegion, previews, tiles);
 			var editorBlit = new EditorBlit(
 				MapBlitFilters.All,
 				resourceLayer,
-				new CPos(offset.X, offset.Y),
+				topLeft,
 				map,
 				blitSource,
 				editorActorLayer,

@@ -747,7 +747,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var replace = PlayableToReplaceable();
 					foreach (var mpos in map.AllCells.MapCoords)
-						if (playable[mpos] || !map.Contains(mpos))
+						if (playable[mpos] || !map.Bounds.Contains(mpos.U, mpos.V))
 							replace[mpos] = MultiBrush.Replaceability.None;
 
 					terraformer.PaintArea(debrisTilingRandom, replace, param.UnplayableObstacles);

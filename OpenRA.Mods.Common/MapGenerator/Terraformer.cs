@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			var maxTerrainHeight = Map.Grid.MaximumTerrainHeight;
 			var tl = new PPos(1, 1 + maxTerrainHeight);
-			var br = new PPos(Map.MapSize.Width - 2, Map.MapSize.Height + maxTerrainHeight - 2);
+			var br = new PPos(Map.MapSize.Width - 2, Map.MapSize.Height - maxTerrainHeight - 2);
 			Map.SetBounds(tl, br);
 			Map.Title = MapGenerationArgs.Title;
 			Map.Author = MapGenerationArgs.Author;
@@ -185,12 +185,26 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// Commits draft data to the map, such as player and actor definitions.
+		/// This may trigger some initialization of map data structures that could become invalid
+		/// if further edits to the map are made.
 		/// </summary>
 		public void BakeMap()
 		{
 			var playerCount = ActorsOfType("mpspawn").Count();
 			Map.PlayerDefinitions = new MapPlayers(Map.Rules, playerCount).ToMiniYaml();
+
+			// Return true iff any of the actors projected footprint satisfies Map.Contains(PPos).
+			// Note that this is not the same as Map.Tiles.Contains or Map.Bounds.Contains.
+			// Note that calling this initializes cell projections.
+			bool HasProjectedFootprintInMap(ActorPlan plan)
+			{
+				return plan.Footprint()
+					.SelectMany(f => Map.ProjectedCellsCovering(f.Key.ToMPos(Map)))
+					.Any(Map.Contains);
+			}
+
 			Map.ActorDefinitions = ActorPlans
+				.Where(HasProjectedFootprintInMap)
 				.Select((plan, i) => new MiniYamlNode($"Actor{i}", plan.Reference.Save()))
 				.ToImmutableArray();
 		}
@@ -261,10 +275,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 					zoneable[mpos] = value;
 		}
 
+		/// <summary>
+		/// Zone based on Map.Bounds.Contains. This is stricter than Map.Contains, ignoring height.
+		/// </summary>
 		public void ZoneFromOutOfBounds<T>(CellLayer<T> zoneable, T value)
 		{
 			foreach (var mpos in Map.AllCells.MapCoords)
-				if (!Map.Contains(mpos))
+				if (!Map.Bounds.Contains(mpos.U, mpos.V))
 					zoneable[mpos] = value;
 		}
 
@@ -1687,10 +1704,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 				throw new ArgumentException("fillSide was not In or Out");
 
 			var notFillSide = fillSide == Side.In ? Side.Out : Side.In;
-			var fillSeeds = CellLayerUtils.Create(Map, (MPos mpos) =>
+			var fillSeeds = CellLayerUtils.Create(Map, mpos =>
 				sides[mpos] == fillSide &&
 				!mask[mpos] &&
-				Map.Contains(mpos));
+				Map.Bounds.Contains(mpos.U, mpos.V));
 			fillSeeds = ImproveSymmetry(fillSeeds, false, (a, b) => a || b);
 			var fillable = CellLayerUtils.Map(sides, side => side != notFillSide);
 			CellLayerUtils.SimpleFloodFill(

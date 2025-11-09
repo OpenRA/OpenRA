@@ -234,9 +234,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void RandomizeSize()
 		{
+			var mapGrid = modData.Manifest.Get<MapGrid>();
 			var sizeRange = MapSizes[selectedSize];
 			var width = Game.CosmeticRandom.Next(sizeRange.X, sizeRange.Y);
-			size = new Size(width + 2, width + 2);
+			var height =
+				mapGrid.Type == MapGridType.RectangularIsometric
+					? width * 2
+					: width;
+
+			size = new Size(width + 2, height + mapGrid.MaximumTerrainHeight * 2 + 2);
 		}
 
 		void RefreshSettings()
