@@ -1191,3 +1191,91 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 			Width: PARENT_WIDTH - 35
 			Height: 25
 			Text: button-tiling-path-paint
+		Checkbox@SHOW_PREVIEW:
+			X: 5
+			Width: PARENT_WIDTH - 35
+			Height: 25
+			Text: checkbox-tiling-path-show-preview
+		Container@DEVELOPER_TOOLS:
+			Visible: False
+			X: 5
+			Width: PARENT_WIDTH - 35
+			Height: 295
+			Children:
+				Background@HEADER:
+					Width: PARENT_WIDTH
+					Height: 15
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-tiling-path-developer
+				LabelForInput@LABEL_IGNORED:
+					Y: 20
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: label-tiling-path-ignored-tile
+					For: IGNORED_TILE
+				TextField@IGNORED_TILE:
+					Y: 45
+					Width: PARENT_WIDTH
+					Height: 25
+				Container@START_OVERRIDE:
+					Y: 75
+					Width: PARENT_WIDTH - 35
+					Height: 50
+					Children:
+						LabelForInput@LABEL:
+							Y: 0
+							Width: PARENT_WIDTH
+							Height: 20
+							Text: label-tiling-path-override-start
+							For: INPUT
+						TextField@INPUT:
+							Y: 20
+							Width: PARENT_WIDTH
+							Height: 25
+				Container@INNER_OVERRIDE:
+					Y: 130
+					Width: PARENT_WIDTH - 35
+					Height: 50
+					Children:
+						LabelForInput@LABEL:
+							Y: 0
+							Width: PARENT_WIDTH
+							Height: 20
+							Text: label-tiling-path-override-inner
+							For: INPUT
+						TextField@INPUT:
+							Y: 20
+							Width: PARENT_WIDTH
+							Height: 25
+				Container@END_OVERRIDE:
+					Y: 185
+					Width: PARENT_WIDTH - 35
+					Height: 50
+					Children:
+						LabelForInput@LABEL:
+							Y: 0
+							Width: PARENT_WIDTH
+							Height: 20
+							Text: label-tiling-path-override-end
+							For: INPUT
+						TextField@INPUT:
+							Y: 20
+							Width: PARENT_WIDTH
+							Height: 25
+				Checkbox@EXPLICIT_INNER:
+					Y: 240
+					Width: PARENT_WIDTH - 35
+					Height: 25
+					Text: checkbox-tiling-path-explicit-inner
+				Button@DUMP:
+					Y: 270
+					Width: PARENT_WIDTH
+					Height: 25
+					Text: button-tiling-path-dump

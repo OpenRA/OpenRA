@@ -83,6 +83,14 @@ button-tiling-path-reverse = Reverse path
 button-tiling-path-reset = Discard path
 button-tiling-path-randomize = Re-randomize tiling
 button-tiling-path-paint = Paint tiling to map
+checkbox-tiling-path-show-preview = Show preview
+label-tiling-path-developer = Developer Tools
+label-tiling-path-ignored-tile = Ignored tile ID
+label-tiling-path-override-start = Start override
+label-tiling-path-override-inner = Inner override
+label-tiling-path-override-end = End override
+checkbox-tiling-path-explicit-inner = Explicit inner type
+button-tiling-path-dump = Dump to clipboard
 
 button-map-editor-tab-container-select-tooltip = Selection
 button-map-editor-tab-container-tiles-tooltip = Tiles

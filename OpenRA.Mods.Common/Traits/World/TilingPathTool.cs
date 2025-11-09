@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] DefaultInner = [];
 		[Desc("The preferred defaults for the end type.")]
 		public readonly string[] DefaultEnd = [];
+		[Desc("Whether to show developer tools for deriving MultiBrush definitions.")]
+		public readonly bool? Developer;
 
 		public override object Create(ActorInitializer init)
 		{
@@ -43,11 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FluentReference]
 		const string Label = "label-tool-tiling-path";
+		[FluentReference]
+		const string DumpMultiBrushSuccess = "notification-tiling-path-dump-multibrush-success";
 
 		[Desc("The widget tree to open when the tool is selected.")]
 		const string PanelWidget = "TILING_PATH_TOOL_PANEL";
 
 		public bool IsEnabled { get; }
+		public bool IsDeveloper { get; }
 
 		string IEditorTool.Label => Label;
 		string IEditorTool.PanelWidget => PanelWidget;
@@ -332,6 +337,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool ClosedLoops { get; private set; } = true;
 		public int RandomSeed { get; private set; } = 0;
 		public int MaxDeviation { get; private set; } = 5;
+		public bool ShowPreview = true;
 		public EditorBlitSource? EditorBlitSource { get; private set; } = null;
 
 		bool disposed;
@@ -340,6 +346,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			World = self.World;
 			TraitInfo = info;
+
+			IsDeveloper = info.Developer ?? Game.ModData.Manifest.Metadata.Version == "{DEV_VERSION}";
 
 			var templatedTerrainInfo = World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 			SegmentedBrushes =
@@ -536,6 +544,113 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			MaxDeviation = value;
 			Update();
+		}
+
+		public void DumpMultiBrushToClipboard(
+			ushort ignoredTile,
+			string startOverride,
+			string innerOverride,
+			string endOverride,
+			bool explicitInnerType)
+		{
+			var templatedTerrainInfo = World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+
+			var multiBrushInfos = new Dictionary<ushort, MultiBrushInfo>();
+
+			CVec[] corners = [
+				new CVec(0, 0),
+				new CVec(1, 0),
+				new CVec(0, 1),
+				new CVec(1, 1)
+			];
+
+			var planPoints = Plan.Points();
+
+			var templatesToProcess = planPoints
+				.SelectMany(cpos => corners.Select(corner => cpos - corner))
+				.Distinct()
+				.Where(World.Map.Tiles.Contains)
+				.Select(cpos =>
+				{
+					var tile = World.Map.Tiles[cpos];
+					var template = templatedTerrainInfo.Templates[tile.Type];
+					return (CPos: cpos - template.IndexToOffset(tile.Index), Template: template);
+				})
+				.Where(tuple => tuple.Template.Id != ignoredTile)
+				.Distinct()
+				.ToList();
+
+			foreach (var (cpos, tti) in templatesToProcess)
+			{
+				var bounds = new CellCoordsRegion(cpos, cpos + new CVec(tti.Size.X, tti.Size.Y));
+				var points = planPoints
+					.Where(bounds.Contains)
+					.Select(p => p - cpos)
+					.Where(cvec => corners.Any(corner => tti.Contains(cvec - corner) && tti[tti.OffsetToIndex(cvec - corner)] != null))
+					.ToImmutableArray();
+				var pointSet = points.ToHashSet();
+
+				var pointIndices = planPoints
+					.Select((p, i) => (CVec: p - cpos, Index: i))
+					.Where(tuple => pointSet.Contains(tuple.CVec))
+					.Select(tuple => tuple.Index)
+					.ToList();
+
+				var consecutive = pointIndices.Count == pointIndices[^1] - pointIndices[0] + 1;
+
+				if (!consecutive)
+					continue;
+
+				var firstI = pointIndices[0];
+				var lastI = pointIndices[^1];
+
+				var startType =
+					firstI == 0
+						? (startOverride ?? StartType)
+						: (innerOverride ?? InnerType);
+				var innerType =
+					explicitInnerType
+						? (innerOverride ?? InnerType)
+						: null;
+				var endType =
+					lastI == planPoints.Length - 1
+						? (endOverride ?? EndType)
+						: (innerOverride ?? InnerType);
+				var startDirection =
+					firstI == 0
+						? Plan.AutoStart
+						: DirectionExts.FromCVec(planPoints[firstI] - planPoints[firstI - 1]);
+				var endDirection =
+					lastI == planPoints.Length - 1
+						? Plan.AutoEnd
+						: DirectionExts.FromCVec(planPoints[lastI + 1] - planPoints[lastI]);
+
+				multiBrushInfos[tti.Id] = new MultiBrushInfo(
+					templates: [new MultiBrushInfo.TemplateInfo(tti.Id)],
+					segment: new MultiBrushSegment(
+						$"{startType}.{startDirection}",
+						innerType,
+						$"{endType}.{endDirection}",
+						points));
+			}
+
+			IEnumerable<MiniYamlNode> my =
+				[
+					new MiniYamlNode(
+						"MultiBrushCollections", new MiniYaml(null,
+							[
+								new MiniYamlNode("Segmented", new MiniYaml(null,
+									multiBrushInfos
+										.OrderBy(kv => kv.Key)
+										.Select(kv => new MiniYamlNode(
+											$"MultiBrush@{Exts.ToStringInvariant(kv.Key)}",
+											kv.Value.ToMiniYaml()))))
+							]))
+				];
+
+			Game.SetClipboardText(my.WriteToString());
+			TextNotificationsManager.AddFeedbackLine(
+				FluentProvider.GetMessage(DumpMultiBrushSuccess, "count", multiBrushInfos.Count));
 		}
 	}
 }
