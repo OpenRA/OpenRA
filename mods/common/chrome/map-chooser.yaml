@@ -187,6 +187,7 @@ Background@MAPCHOOSER_PANEL:
 			Text: button-back
 			Font: Bold
 			Key: escape
+		Container@DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 
@@ -288,5 +289,4 @@ Container@MAPCHOOSER_GENERATE_PANEL:
 							Y: 20
 							Width: PARENT_WIDTH - 20
 							Height: 25
-							PanelRoot: GENERATOR_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
-		Container@GENERATOR_DROPDOWN_PANEL_ROOT:
+							PanelRoot: DROPDOWN_PANEL_ROOT
