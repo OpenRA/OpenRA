@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Traits
 			 *
 			 * 2). the weight of friendly construction yard within range: -indiceSideLengthSquare. If it belongs to an ally, -indiceSideLengthSquare/2.
 			 *
-			 * 3). the weight of enemy within range: -indiceSideLengthSquare*8 for base building, otherwise -indiceSideLengthSquare/64
+			 * 3). the weight of enemy within range: -indiceSideLengthSquare*16 for base building, otherwise -indiceSideLengthSquare/64
 			 *
 			 * 4). the weight of friendly refinery within range (not for CheckBase mode): -indiceSideLengthSquare. If it belongs to an ally, -indiceSideLengthSquare/2.
 			 *
@@ -510,10 +510,10 @@ namespace OpenRA.Mods.Common.Traits
 			var indiceEnemyUnitThreat = Math.Max(baseIndice.EnemyUnitCount - baseIndice.FriendlyUnitCount, 0);
 
 			if (indiceCount == 0)
-				return (indiceEnemyUnitThreat * indiceSideLengthSquare >> 6) + (indiceEnemyBaseThreat * indiceSideLengthSquare << 3);
+				return (indiceEnemyUnitThreat * indiceSideLengthSquare >> 6) + (indiceEnemyBaseThreat * indiceSideLengthSquare << 4);
 
 			return ((indiceEnemyUnitThreat + nearbyEnemyThreat / indiceCount) * indiceSideLengthSquare >> 6) +
-							((indiceEnemyBaseThreat + nearbyEnemyBaseThreat / indiceCount) * indiceSideLengthSquare << 3);
+							((indiceEnemyBaseThreat + nearbyEnemyBaseThreat / indiceCount) * indiceSideLengthSquare << 4);
 		}
 
 		void IBotTick.BotTick(IBot bot)
