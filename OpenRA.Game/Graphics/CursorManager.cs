@@ -283,11 +283,8 @@ namespace OpenRA.Graphics
 			{
 				for (var i = 0; i < c.Cursors.Length; i++)
 				{
-					if (c.Cursors[i] != null)
-					{
-						c.Cursors[i].Dispose();
-						c.Cursors[i] = null;
-					}
+					c.Cursors[i]?.Dispose();
+					c.Cursors[i] = null;
 				}
 			}
 		}

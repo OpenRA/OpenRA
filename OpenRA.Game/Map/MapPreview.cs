@@ -663,11 +663,8 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			if (package != null)
-			{
-				package.Dispose();
-				package = null;
-			}
+			package?.Dispose();
+			package = null;
 		}
 
 		public void Delete()
