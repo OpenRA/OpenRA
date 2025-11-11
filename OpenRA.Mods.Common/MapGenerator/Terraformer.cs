@@ -427,7 +427,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				incompatibilities,
 				Rotations,
 				Mirror,
-				(CPos[] sources, CPos destination) =>
+				(sources, destination) =>
 				{
 					if (!dominant[destination])
 						incompatibilities[destination] = sources

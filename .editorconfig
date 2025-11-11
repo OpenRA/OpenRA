@@ -330,6 +330,10 @@ dotnet_diagnostic.IDE0304.severity = warning
 # From above, uses dotnet_style_prefer_collection_expression
 dotnet_diagnostic.IDE0305.severity = silent
 
+# IDE0350 Use implicitly typed lambda
+#csharp_style_prefer_implicitly_typed_lambda_expression = true
+dotnet_diagnostic.IDE0350.severity = warning
+
 ## Field preferences
 
 # IDE0044 Add readonly modifier

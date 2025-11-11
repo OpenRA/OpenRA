@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		static float RelativeSpeed(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy)
 		{
-			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Info.TraitInfo<MobileInfo>().Speed);
+			return RelativeValue(own, enemy, 100, Average<MobileInfo>, a => a.Info.TraitInfo<MobileInfo>().Speed);
 		}
 
 		static float RelativeValue(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy, float normalizeByValue,
