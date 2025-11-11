@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string Modern = "options-control-scheme.modern";
 
 		[FluentReference]
+		const string OtherRTS = "options-control-scheme.otherrts";
+
+		[FluentReference]
 		const string Disabled = "options-mouse-scroll-type.disabled";
 
 		[FluentReference]
@@ -36,15 +39,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Joystick = "options-mouse-scroll-type.joystick";
 
-		readonly string classic;
-		readonly string modern;
 		readonly GameSettings gameSettings;
+
+		readonly Dictionary<MouseControlStyle, string> controlTypes;
 
 		[ObjectCreator.UseCtor]
 		public InputSettingsLogic(ModData modData, SettingsLogic settingsLogic, string panelID, string label)
 		{
-			classic = FluentProvider.GetMessage(Classic);
-			modern = FluentProvider.GetMessage(Modern);
+			controlTypes = new Dictionary<MouseControlStyle, string>
+			{
+				{ MouseControlStyle.Classic, FluentProvider.GetMessage(Classic) },
+				{ MouseControlStyle.Modern, FluentProvider.GetMessage(Modern) },
+				{ MouseControlStyle.OtherRTS, FluentProvider.GetMessage(OtherRTS) },
+			};
 			gameSettings = modData.GetSettings<GameSettings>();
 
 			settingsLogic.RegisterSettingsPanel(panelID, label, InitPanel, ResetPanel);
@@ -62,8 +69,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gameSettings, "UIScrollSpeed");
 
 			var mouseControlDropdown = panel.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => ShowMouseControlDropdown(mouseControlDropdown, gameSettings);
-			mouseControlDropdown.GetText = () => gameSettings.UseClassicMouseStyle ? classic : modern;
+			mouseControlDropdown.OnMouseDown = _ => ShowMouseControlDropdown(mouseControlDropdown, controlTypes, gameSettings);
+			mouseControlDropdown.GetText = () => controlTypes[gameSettings.MouseControlStyle];
 
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL_TYPE_DROPDOWN");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gameSettings);
@@ -74,18 +81,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 #pragma warning restore IDE0200
 
 			var mouseControlDescClassic = panel.Get("MOUSE_CONTROL_DESC_CLASSIC");
-			mouseControlDescClassic.IsVisible = () => gameSettings.UseClassicMouseStyle;
+			mouseControlDescClassic.IsVisible = () => gameSettings.MouseControlStyle == MouseControlStyle.Classic;
 
 			var mouseControlDescModern = panel.Get("MOUSE_CONTROL_DESC_MODERN");
-			mouseControlDescModern.IsVisible = () => !gameSettings.UseClassicMouseStyle;
+			mouseControlDescModern.IsVisible = () => gameSettings.MouseControlStyle == MouseControlStyle.Modern;
 
-			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
+			var mouseControlDescOtherRTS = panel.Get("MOUSE_CONTROL_DESC_OTHERRTS");
+			mouseControlDescOtherRTS.IsVisible = () => gameSettings.MouseControlStyle == MouseControlStyle.OtherRTS;
+
+			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern, mouseControlDescOtherRTS })
 			{
 				var classicScrollRight = container.Get("DESC_SCROLL_RIGHT");
-				classicScrollRight.IsVisible = () => gameSettings.UseClassicMouseStyle ^ gameSettings.UseAlternateScrollButton;
+				classicScrollRight.IsVisible = () => (gameSettings.MouseControlStyle == MouseControlStyle.Classic) ^ gameSettings.UseAlternateScrollButton;
 
 				var classicScrollMiddle = container.Get("DESC_SCROLL_MIDDLE");
-				classicScrollMiddle.IsVisible = () => !gameSettings.UseClassicMouseStyle ^ gameSettings.UseAlternateScrollButton;
+				classicScrollMiddle.IsVisible = () => (gameSettings.MouseControlStyle != MouseControlStyle.Classic) ^ gameSettings.UseAlternateScrollButton;
 
 				var zoomDesc = container.Get("DESC_ZOOM");
 				zoomDesc.IsVisible = () => gameSettings.ZoomModifier == Modifiers.None;
@@ -133,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return () =>
 			{
-				gameSettings.UseClassicMouseStyle = defaultGameSettings.UseClassicMouseStyle;
+				gameSettings.MouseControlStyle = defaultGameSettings.MouseControlStyle;
 				gameSettings.MouseScroll = defaultGameSettings.MouseScroll;
 				gameSettings.UseAlternateScrollButton = defaultGameSettings.UseAlternateScrollButton;
 				gameSettings.LockMouseWindow = defaultGameSettings.LockMouseWindow;
@@ -150,24 +160,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		public static void ShowMouseControlDropdown(DropDownButtonWidget dropdown, GameSettings gameSettings)
+		public static void ShowMouseControlDropdown(DropDownButtonWidget dropdown, Dictionary<MouseControlStyle, string> controlTypes, GameSettings gameSettings)
 		{
-			var options = new Dictionary<string, bool>()
-			{
-				{ FluentProvider.GetMessage(Classic), true },
-				{ FluentProvider.GetMessage(Modern), false },
-			};
-
-			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
+			ScrollItemWidget SetupItem(MouseControlStyle o, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => gameSettings.UseClassicMouseStyle == options[o],
-					() => gameSettings.UseClassicMouseStyle = options[o]);
-				item.Get<LabelWidget>("LABEL").GetText = () => o;
+					() => gameSettings.MouseControlStyle == o,
+					() => gameSettings.MouseControlStyle = o);
+
+				var label = controlTypes[o];
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, controlTypes.Keys, SetupItem);
 		}
 
 		static void ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings gameSettings)

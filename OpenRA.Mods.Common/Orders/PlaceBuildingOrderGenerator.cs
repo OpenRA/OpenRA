@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Orders
 			viewport = worldRenderer.Viewport;
 			gameSettings = Game.Settings.Game;
 
-			if (gameSettings.UseClassicMouseStyle)
+			if (gameSettings.MouseControlStyle == MouseControlStyle.Classic)
 				world.Selection.Clear();
 
 			var variants = new List<VariantWrapper>()

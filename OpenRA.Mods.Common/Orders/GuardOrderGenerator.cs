@@ -31,14 +31,8 @@ namespace OpenRA.Mods.Common.Orders
 			this.subjects = subjects;
 		}
 
-		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (mi.Button != ActionButton)
-			{
-				world.CancelInputMode();
-				yield break;
-			}
-
 			var target = FriendlyGuardableUnits(world, mi).FirstOrDefault();
 			if (target == null)
 				yield break;

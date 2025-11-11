@@ -26,14 +26,16 @@ namespace OpenRA.Mods.Common.Orders
 			this.cancelOnFirstUse = cancelOnFirstUse;
 		}
 
-		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Modifiers |= Modifiers;
 			if ((cancelOnFirstUse && !mi.Modifiers.HasModifier(Modifiers.Shift)) || mi.Button == CancelButton)
 				world.CancelInputMode();
 
-			return base.Order(world, cell, worldPixel, mi);
+			return base.OrderInner(world, cell, worldPixel, mi);
 		}
+
+		public override bool ClearSelectionOnLeftClick => false;
 
 		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{

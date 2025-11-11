@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class IntroductionPromptLogic : ChromeLogic
 	{
 		// Increment the version number when adding new stats
-		const int IntroductionVersion = 1;
+		const int IntroductionVersion = 2;
 
 		[FluentReference]
 		const string Classic = "options-control-scheme.classic";
@@ -28,8 +29,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Modern = "options-control-scheme.modern";
 
-		readonly string classic;
-		readonly string modern;
+		[FluentReference]
+		const string OtherRTS = "options-control-scheme.otherrts";
 
 		public static bool ShouldShowPrompt()
 		{
@@ -43,8 +44,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var graphicSettings = modData.GetSettings<GraphicSettings>();
 			var gameSettings = modData.GetSettings<GameSettings>();
 
-			classic = FluentProvider.GetMessage(Classic);
-			modern = FluentProvider.GetMessage(Modern);
+			var controlTypes = new Dictionary<MouseControlStyle, string>
+			{
+				{ MouseControlStyle.Classic, FluentProvider.GetMessage(Classic) },
+				{ MouseControlStyle.Modern, FluentProvider.GetMessage(Modern) },
+				{ MouseControlStyle.OtherRTS, FluentProvider.GetMessage(OtherRTS) },
+			};
+
+			if (gameSettings.IntroductionPromptVersion < 2)
+			{
+				// UseClassicMouseStyle boolean was replaced by MouseControlStyle enum to support additional control styles
+				var classicMouseStyleNode = gameSettings.Yaml.NodeWithKeyOrDefault("UseClassicMouseStyle");
+				if (classicMouseStyleNode != null)
+				{
+					var useClassicMouseStyle = FieldLoader.GetValue<bool>("UseClassicMouseStyle", classicMouseStyleNode.Value.Value);
+					gameSettings.MouseControlStyle = useClassicMouseStyle ? MouseControlStyle.Classic : MouseControlStyle.Modern;
+				}
+			}
 
 			var escPressed = false;
 			var nameTextfield = widget.Get<TextFieldWidget>("PLAYERNAME");
@@ -82,22 +98,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var mouseControlDescClassic = widget.Get("MOUSE_CONTROL_DESC_CLASSIC");
-			mouseControlDescClassic.IsVisible = () => gameSettings.UseClassicMouseStyle;
+			mouseControlDescClassic.IsVisible = () => gameSettings.MouseControlStyle == MouseControlStyle.Classic;
 
 			var mouseControlDescModern = widget.Get("MOUSE_CONTROL_DESC_MODERN");
-			mouseControlDescModern.IsVisible = () => !gameSettings.UseClassicMouseStyle;
+			mouseControlDescModern.IsVisible = () => gameSettings.MouseControlStyle == MouseControlStyle.Modern;
+
+			var mouseControlDescOtherRTS = widget.Get("MOUSE_CONTROL_DESC_OTHERRTS");
+			mouseControlDescOtherRTS.IsVisible = () => gameSettings.MouseControlStyle == MouseControlStyle.OtherRTS;
 
 			var mouseControlDropdown = widget.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gameSettings);
-			mouseControlDropdown.GetText = () => gameSettings.UseClassicMouseStyle ? classic : modern;
+			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, controlTypes, gameSettings);
+			mouseControlDropdown.GetText = () => controlTypes[gameSettings.MouseControlStyle];
 
-			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
+			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern, mouseControlDescOtherRTS })
 			{
 				var classicScrollRight = container.Get("DESC_SCROLL_RIGHT");
-				classicScrollRight.IsVisible = () => gameSettings.UseClassicMouseStyle ^ gameSettings.UseAlternateScrollButton;
+				classicScrollRight.IsVisible = () => (gameSettings.MouseControlStyle == MouseControlStyle.Classic) ^ gameSettings.UseAlternateScrollButton;
 
 				var classicScrollMiddle = container.Get("DESC_SCROLL_MIDDLE");
-				classicScrollMiddle.IsVisible = () => !gameSettings.UseClassicMouseStyle ^ gameSettings.UseAlternateScrollButton;
+				classicScrollMiddle.IsVisible = () => (gameSettings.MouseControlStyle != MouseControlStyle.Classic) ^ gameSettings.UseAlternateScrollButton;
 
 				var zoomDesc = container.Get("DESC_ZOOM");
 				zoomDesc.IsVisible = () => gameSettings.ZoomModifier == Modifiers.None;

@@ -3,7 +3,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 700
-	Height: 525
+	Height: 541
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_WIDTH
@@ -134,49 +134,119 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-commands
-								LabelWithHighlight@DESC_BUILDINGS:
+								LabelWithHighlight@DESC_ORDERS:
 									Y: 34
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-classic-orders
+								LabelWithHighlight@DESC_BUILDINGS:
+									Y: 51
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-buildings
 								LabelWithHighlight@DESC_SUPPORT:
-									Y: 51
+									Y: 68
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-support
 								LabelWithHighlight@DESC_ZOOM:
-									Y: 68
+									Y: 85
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-zoom
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
-									Y: 68
+									Y: 85
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-zoom-modifier
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
-									Y: 85
+									Y: 102
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-scroll-right
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
-									Y: 85
+									Y: 102
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-scroll-middle
 								Label@DESC_EDGESCROLL:
 									X: 9
-									Y: 102
+									Y: 118
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-edgescroll
+						Container@MOUSE_CONTROL_DESC_OTHERRTS:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelWithHighlight@DESC_SELECTION:
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-selection
+								LabelWithHighlight@DESC_COMMANDS:
+									Y: 17
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-commands
+								LabelWithHighlight@DESC_ORDERS:
+									Y: 34
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-orders
+								LabelWithHighlight@DESC_BUILDINGS:
+									Y: 51
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-buildings
+								LabelWithHighlight@DESC_SUPPORT:
+									Y: 68
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-support
+								LabelWithHighlight@DESC_ZOOM:
+									Y: 85
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-zoom
+								LabelWithHighlight@DESC_ZOOM_MODIFIER:
+									Y: 85
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-zoom-modifier
+								LabelWithHighlight@DESC_SCROLL_RIGHT:
+									Y: 102
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-scroll-right
+								LabelWithHighlight@DESC_SCROLL_MIDDLE:
+									Y: 102
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-scroll-middle
+								Label@DESC_EDGESCROLL:
+									X: 9
+									Y: 118
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-otherrts-edgescroll
 						Container@MOUSE_CONTROL_DESC_MODERN:
 							X: PARENT_WIDTH / 2 + 10
 							Width: PARENT_WIDTH / 2 - 20
@@ -192,45 +262,51 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-commands
-								LabelWithHighlight@DESC_BUILDINGS:
+								LabelWithHighlight@DESC_ORDERS:
 									Y: 34
+									Width: PARENT_WIDTH
+									Height: 16
+									Font: Small
+									Text: label-mouse-control-desc-modern-orders
+								LabelWithHighlight@DESC_BUILDINGS:
+									Y: 51
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-buildings
 								LabelWithHighlight@DESC_SUPPORT:
-									Y: 51
+									Y: 68
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-support
 								LabelWithHighlight@DESC_ZOOM:
-									Y: 68
+									Y: 85
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-zoom
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
-									Y: 68
+									Y: 85
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-zoom-modifier
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
-									Y: 85
+									Y: 102
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-scroll-right
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
-									Y: 85
+									Y: 102
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-scroll-middle
 								Label@DESC_EDGESCROLL:
 									X: 9
-									Y: 102
+									Y: 118
 									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
@@ -249,7 +325,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 									Font: Regular
 									Text: checkbox-edgescroll-container
 				Container@SPACER:
-					Height: 30
+					Height: 46
 				Background@DISPLAY_SECTION_HEADER:
 					X: 5
 					Width: PARENT_WIDTH - 10

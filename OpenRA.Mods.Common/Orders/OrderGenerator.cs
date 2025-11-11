@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Orders
 		protected abstract MouseActionType ActionType { get; }
 		readonly GameSettings gameSettings;
 
-		protected OrderGenerator(World world, bool classicClearSelection = true)
+		protected OrderGenerator(World world)
 		{
 			gameSettings = Game.Settings.Game;
-			if (classicClearSelection && gameSettings.UseClassicMouseStyle)
+			if (gameSettings.MouseControlStyle == MouseControlStyle.Classic)
 				world.Selection.Clear();
 		}
 

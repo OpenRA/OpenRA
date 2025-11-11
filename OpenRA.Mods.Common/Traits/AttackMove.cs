@@ -115,14 +115,8 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 		}
 
-		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			if (mi.Button != ActionButton)
-			{
-				world.CancelInputMode();
-				yield break;
-			}
-
 			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 			if (!queued)
 				world.CancelInputMode();

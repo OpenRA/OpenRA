@@ -86,7 +86,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			mousePos = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
 
-			var useClassicMouseStyle = gameSettings.UseClassicMouseStyle;
+			var useClassicMouseStyle = gameSettings.MouseControlStyle == MouseControlStyle.Classic;
+			var actionButton = World.OrderGenerator.ActionButton;
+
 			var multiClick = mi.MultiTapCount >= 2;
 
 			if (World.OrderGenerator is not UnitOrderGenerator uog)
@@ -102,15 +104,18 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!TakeMouseFocus(mi))
 					return false;
 
-				dragStart = mousePos;
-				isDragging = true;
+				if (useClassicMouseStyle || actionButton != MouseButton.Left)
+				{
+					dragStart = mousePos;
+					isDragging = true;
+				}
 			}
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (useClassicMouseStyle && HasMouseFocus &&
-					!IsValidDragbox && World.Selection.Actors.Count != 0 &&
-					!multiClick && uog.InputOverridesSelection(World, mousePos, mi))
+				if (((useClassicMouseStyle && !multiClick) || (!useClassicMouseStyle && actionButton == MouseButton.Left))
+					&& HasMouseFocus && !IsValidDragbox && World.Selection.Actors.Count != 0
+					&& uog.InputOverridesSelection(World, mousePos, mi))
 				{
 					// Order units instead of selecting
 					ApplyOrders(World, mi);
@@ -167,7 +172,7 @@ namespace OpenRA.Mods.Common.Widgets
 				// Don't do anything while selecting
 				if (!IsValidDragbox)
 				{
-					if (useClassicMouseStyle)
+					if (useClassicMouseStyle && uog.ClearSelectionOnLeftClick)
 						World.Selection.Clear();
 
 					ApplyOrders(World, mi);

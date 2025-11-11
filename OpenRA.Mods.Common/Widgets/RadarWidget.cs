@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly int cellWidth;
 		readonly int previewWidth;
 		readonly int previewHeight;
+		readonly string worldSelectCursor = ChromeMetrics.Get<string>("WorldSelectCursor");
 		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
 		readonly GameSettings gameSettings;
 
@@ -52,6 +53,8 @@ namespace OpenRA.Mods.Common.Widgets
 		int frame;
 		bool hasRadar;
 		bool cachedEnabled;
+		bool isMinimapMoving;
+		MouseButton minimapMoveButton;
 
 		float previewScale = 0;
 		int2 previewOrigin = int2.Zero;
@@ -303,6 +306,7 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 
 			var cursor = world.OrderGenerator.GetCursor(world, cell, worldPixel, mi);
+
 			if (cursor == null)
 				return worldDefaultCursor;
 
@@ -318,13 +322,14 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 
 			var worldCoords = MinimapPixelToWorldCoords(mi.Location);
-			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move)
-				&& mi.Button == gameSettings.ResolveCancelButton(MouseActionType.Contextual))
+			if ((mi.Event == MouseInputEvent.Down && mi.Button != world.OrderGenerator.ActionButton) ||
+				(mi.Event == MouseInputEvent.Move && isMinimapMoving && mi.Button == minimapMoveButton))
 			{
 				worldRenderer.Viewport.Center(worldCoords);
+				isMinimapMoving = true;
+				minimapMoveButton = mi.Button;
 			}
-
-			if (mi.Event == MouseInputEvent.Down && mi.Button == gameSettings.ResolveActionButton(MouseActionType.Contextual) && WorldInteractionController != null)
+			else if (mi.Event == MouseInputEvent.Down && WorldInteractionController != null)
 			{
 				var worldPos = worldCoords.ToInt2();
 				var wpos = new WPos(worldPos.X, worldPos.Y, 0);
@@ -343,6 +348,11 @@ namespace OpenRA.Mods.Common.Widgets
 				controller.HandleMouseInput(fakemi);
 				fakemi.Event = MouseInputEvent.Up;
 				controller.HandleMouseInput(fakemi);
+			}
+			else if (mi.Event == MouseInputEvent.Up && mi.Button == minimapMoveButton)
+			{
+				isMinimapMoving = false;
+				minimapMoveButton = MouseButton.None;
 			}
 
 			return true;

@@ -20,6 +20,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
+	public enum MouseControlStyle { Classic, Modern, OtherRTS }
 	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
 	public enum StatusBarsType { Standard, DamageShow, AlwaysShow }
 	public enum TargetLinesType { Disabled, Manual, Automatic }
@@ -319,6 +320,7 @@ namespace OpenRA
 		public int ViewportEdgeScrollMargin = 5;
 
 		public bool LockMouseWindow = false;
+		public MouseControlStyle MouseControlStyle = MouseControlStyle.Modern;
 		public MouseScrollType MouseScroll = MouseScrollType.Joystick;
 		public float ViewportEdgeScrollStep = 30f;
 		public float UIScrollSpeed = 50f;
@@ -326,7 +328,6 @@ namespace OpenRA
 		public int SelectionDeadzone = 24;
 		public int MouseScrollDeadzone = 8;
 
-		public bool UseClassicMouseStyle = false;
 		public bool UseAlternateScrollButton = false;
 
 		public bool HideReplayChat = false;
@@ -361,8 +362,9 @@ namespace OpenRA
 			switch (actionType)
 			{
 				case MouseActionType.ConfirmOrder:
+					return MouseControlStyle == MouseControlStyle.Modern ? MouseButton.Right : MouseButton.Left;
 				case MouseActionType.Contextual:
-					return UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right;
+					return MouseControlStyle == MouseControlStyle.Classic ? MouseButton.Left : MouseButton.Right;
 				default: return MouseButton.Left;
 			}
 		}
