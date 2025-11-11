@@ -229,6 +229,10 @@ dotnet_diagnostic.IDE0100.severity = warning
 # No options
 dotnet_diagnostic.IDE0120.severity = warning
 
+# IDE0121 Simplify LINQ type check and cast
+# No options
+dotnet_diagnostic.IDE0121.severity = warning
+
 # IDE0130 Namespace does not match folder structure
 #dotnet_style_namespace_match_folder = true
 # This rule doesn't appear to work (never reports violations)
@@ -330,9 +334,21 @@ dotnet_diagnostic.IDE0304.severity = warning
 # From above, uses dotnet_style_prefer_collection_expression
 dotnet_diagnostic.IDE0305.severity = silent
 
+# IDE0306 Use collection expression for new
+# From above, uses dotnet_style_prefer_collection_expression
+dotnet_diagnostic.IDE0306.severity = warning
+
+# IDE0340 Use unbound generic type
+#csharp_style_prefer_unbound_generic_type_in_nameof = true
+dotnet_diagnostic.IDE0340.severity = silent # Requires C# 14
+
 # IDE0350 Use implicitly typed lambda
 #csharp_style_prefer_implicitly_typed_lambda_expression = true
 dotnet_diagnostic.IDE0350.severity = warning
+
+# IDE0360 Simplify property accessor
+#csharp_style_prefer_simple_property_accessors = true
+dotnet_diagnostic.IDE0360.severity = silent # Requires C# 13
 
 ## Field preferences
 
@@ -376,6 +392,10 @@ dotnet_diagnostic.IDE0251.severity = warning
 # IDE0320 Make anonymous function static
 #csharp_prefer_static_anonymous_function = true
 dotnet_diagnostic.IDE0320.severity = warning
+
+# IDE0380 Remove unnecessary 'unsafe' modifier
+# No options
+dotnet_diagnostic.IDE0380.severity = warning
 
 ## Null-checking preferences
 
@@ -437,6 +457,10 @@ dotnet_diagnostic.IDE0170.severity = warning
 # IDE0079 Remove unnecessary suppression
 #dotnet_remove_unnecessary_suppression_exclusions = none
 dotnet_diagnostic.IDE0079.severity = warning
+
+# IDE0370 Remove unnecessary suppression (null-forgiving operator)
+# No options
+dotnet_diagnostic.IDE0370.severity = warning
 
 ## 'this' and 'Me' preferences
 
@@ -784,6 +808,9 @@ dotnet_diagnostic.CA1514.severity = warning
 # Consider making public types internal.
 dotnet_diagnostic.CA1515.severity = warning
 
+# Use cross-platform intrinsics.
+dotnet_diagnostic.CA1516.severity = warning
+
 ### Naming Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/naming-warnings
 
@@ -949,6 +976,18 @@ dotnet_diagnostic.CA1871.severity = warning
 # Prefer 'Convert.ToHexString' and 'Convert.ToHexStringLower' over call chains based on 'BitConverter.ToString'.
 dotnet_diagnostic.CA1872.severity = warning
 
+# Avoid potentially expensive logging.
+dotnet_diagnostic.CA1873.severity = warning
+
+# Use 'Regex.IsMatch'.
+dotnet_diagnostic.CA1874.severity = warning
+
+# Use Use 'Regex.Count'.
+dotnet_diagnostic.CA1875.severity = warning
+
+# Use 'Path.Combine' or 'Path.Join' overloads.
+dotnet_diagnostic.CA1877.severity = warning
+
 ### Reliability Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/reliability-warnings
 
@@ -979,8 +1018,17 @@ dotnet_diagnostic.CA2021.severity = warning
 # Avoid inexact read with Stream.Read.
 dotnet_diagnostic.CA2022.severity = warning
 
+# Invalid braces in message template.
+dotnet_diagnostic.CA2023.severity = warning
+
 # Do not use StreamReader.EndOfStream in async methods.
 dotnet_diagnostic.CA2024.severity = warning
+
+# Do not pass 'IDisposable' instances into unawaited tasks.
+dotnet_diagnostic.CA2025.severity = warning
+
+# Prefer JsonElement.Parse over JsonDocument.Parse().RootElement.
+dotnet_diagnostic.CA2026.severity = warning
 
 ### Security Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/security-warnings
