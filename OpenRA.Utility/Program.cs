@@ -18,7 +18,7 @@ namespace OpenRA
 {
 	using UtilityActions = Dictionary<string, KeyValuePair<Action<Utility, string[]>, Func<string[], bool>>>;
 
-	public class NoSuchCommandException : Exception
+	sealed class NoSuchCommandException : Exception
 	{
 		public readonly string Command;
 		public NoSuchCommandException(string command)

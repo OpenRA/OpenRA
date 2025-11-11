@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class CPosTest
+	sealed class CPosTest
 	{
 		[TestCase(TestName = "Packing x,y and layer into int")]
 		public void PackUnpackBits()

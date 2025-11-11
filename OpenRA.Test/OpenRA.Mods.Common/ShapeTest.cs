@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.HitShapes;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class ShapeTest
+	sealed class ShapeTest
 	{
 		IHitShape shape;
 

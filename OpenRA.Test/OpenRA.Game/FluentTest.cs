@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class FluentTest
+	sealed class FluentTest
 	{
 		readonly string pluralForms = @"
 label-players = {$player ->

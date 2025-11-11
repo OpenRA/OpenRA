@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class PngTests
+	sealed class PngTests
 	{
 		[Test]
 		public void Save_ShouldProduceValidPngFile()
@@ -128,6 +128,8 @@ namespace OpenRA.Test
 			}
 		}
 
+		[Test]
+		[Ignore("Failing test should be fixed")]
 		public void PngConstructor_CompressionMethodNotSupported_ThrowsInvalidDataException()
 		{
 			// Arrange

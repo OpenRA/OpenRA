@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class OrderTest
+	sealed class OrderTest
 	{
 		static byte[] RoundTripOrder(byte[] bytes)
 		{

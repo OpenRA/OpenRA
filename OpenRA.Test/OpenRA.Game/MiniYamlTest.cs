@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class MiniYamlTest
+	sealed class MiniYamlTest
 	{
 		[TestCase(TestName = "Parse tree roundtrips")]
 		public void TestParseRoundtrip()

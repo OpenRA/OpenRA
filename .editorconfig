@@ -781,6 +781,9 @@ dotnet_diagnostic.CA1513.severity = warning
 # Avoid redundant length argument.
 dotnet_diagnostic.CA1514.severity = warning
 
+# Consider making public types internal.
+dotnet_diagnostic.CA1515.severity = warning
+
 ### Naming Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/naming-warnings
 

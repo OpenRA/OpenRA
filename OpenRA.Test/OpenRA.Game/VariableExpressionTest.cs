@@ -17,7 +17,7 @@ using OpenRA.Support;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class VariableExpressionTest
+	sealed class VariableExpressionTest
 	{
 		readonly IReadOnlyDictionary<string, int> testValues = new Dictionary<string, int>
 		{

@@ -36,7 +36,7 @@ namespace OpenRA.Test
 	sealed class MockLInfo : MockTraitInfo, NotBefore<MockJInfo> { }
 
 	[TestFixture]
-	public class ActorInfoTest
+	sealed class ActorInfoTest
 	{
 		[TestCase(TestName = "Trait ordering sorts in dependency order correctly")]
 		public void TraitOrderingSortsCorrectly()

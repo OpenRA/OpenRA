@@ -16,7 +16,7 @@ using NUnit.Framework;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	public class CoordinateTest
+	sealed class CoordinateTest
 	{
 		[TestCase(TestName = "Test CPos to MPos conversion and back again.")]
 		public void CPosConversionRoundtrip()
