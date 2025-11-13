@@ -1,0 +1,88 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: Refi test
+
+Author: Your name here
+
+Tileset: ARRAKIS
+
+MapSize: 66,66
+
+Bounds: 1,1,64,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 29,39
+	Actor1: refinery_nw
+		Owner: Multi0
+		Location: 38,36
+		FreeActor: False
+	Actor2: refinery
+		Owner: Multi0
+		Location: 38,39
+		FreeActor: False
+	Actor3: wind_trap
+		Owner: Multi0
+		Location: 32,36
+	Actor4: wind_trap
+		Owner: Multi0
+		Location: 30,36
+	Actor6: wind_trap
+		Owner: Multi0
+		Location: 30,39
+	Actor7: wind_trap
+		Owner: Multi0
+		Location: 32,39
+	Actor9: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 39,34
+	Actor10: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 43,38
+	Actor11: construction_yard
+		Owner: Multi0
+		Location: 31,43
+	Actor12: refinery_ne
+		Owner: Multi0
+		Location: 38,41
+	Actor13: refinery_sw
+		Owner: Multi0
+		Location: 38,44
+	Actor5: light_inf
+		Owner: Multi0
+		Facing: 384
+		Location: 37,39
+		SubCell: 3
+	Actor8: light_inf
+		Owner: Multi0
+		Facing: 384
+		Location: 37,43
+		SubCell: 3
+
+Rules: rules.yaml
