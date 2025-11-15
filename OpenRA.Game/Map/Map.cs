@@ -111,7 +111,7 @@ namespace OpenRA
 				else if (type == Type.MiniYaml)
 					field.SetValue(map, node.Value);
 				else
-					FieldLoader.LoadField(map, fieldName, node.Value.Value);
+					FieldLoader.LoadFieldOrProperty(map, fieldName, node.Value.Value);
 			}
 
 			if (property != null)
@@ -121,7 +121,7 @@ namespace OpenRA
 				else if (type == Type.MiniYaml)
 					property.SetValue(map, node.Value, null);
 				else
-					FieldLoader.LoadField(map, fieldName, node.Value.Value);
+					FieldLoader.LoadFieldOrProperty(map, fieldName, node.Value.Value);
 			}
 		}
 

@@ -24,7 +24,9 @@ namespace OpenRA.Mods.Common.Server
 	{
 		sealed class SkirmishSlot
 		{
-			[FieldLoader.Serialize(FromYamlKey = true)]
+			static string LoadSlot(MiniYaml yaml) => yaml.Value;
+
+			[FieldLoader.LoadUsing(nameof(LoadSlot))]
 			public readonly string Slot;
 			public readonly Color Color;
 			public readonly string Faction;
@@ -53,6 +55,12 @@ namespace OpenRA.Mods.Common.Server
 				c.SpawnPoint = s.SpawnPoint;
 				c.Team = s.Team;
 				c.Handicap = s.Handicap;
+			}
+
+			public MiniYaml ToYaml()
+			{
+				var yaml = FieldSaver.Save(this);
+				return yaml.WithValue(Slot).WithNodes(yaml.Nodes.RemoveAll(n => n.Key == nameof(Slot)));
 			}
 		}
 
@@ -156,9 +164,9 @@ namespace OpenRA.Mods.Common.Server
 				new("Map", server.LobbyInfo.GlobalSettings.Map),
 				new("Options", new MiniYaml("", server.LobbyInfo.GlobalSettings.LobbyOptions
 					.Select(kv => new MiniYamlNode(kv.Key, kv.Value.Value)))),
-				new("Player", FieldSaver.Save(new SkirmishSlot(playerClient))),
+				new("Player", new SkirmishSlot(playerClient).ToYaml()),
 				new("Bots", new MiniYaml("", server.LobbyInfo.Clients.Where(c => c.IsBot)
-					.Select(b => new MiniYamlNode(b.Bot, FieldSaver.Save(new SkirmishSlot(b))))))
+					.Select(b => new MiniYamlNode(b.Bot, new SkirmishSlot(b).ToYaml()))))
 			}.WriteToFile(path);
 		}
 

@@ -369,7 +369,7 @@ namespace OpenRA
 				foreach (var kv in Sections)
 					foreach (var f in kv.Value.GetType().GetFields())
 						if (args.Contains(kv.Key + "." + f.Name))
-							FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
+							FieldLoader.LoadFieldOrProperty(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
 			}
 			finally
 			{

@@ -581,6 +581,8 @@ namespace OpenRA.Support
 			Expression = expression;
 		}
 
+		public override string ToString() => Expression;
+
 		Expression Build(ExpressionType resultType)
 		{
 			var tokens = new List<Token>();

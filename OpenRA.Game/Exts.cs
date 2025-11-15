@@ -548,7 +548,7 @@ namespace OpenRA
 
 		public static bool TryParseFloatOrPercentInvariant(string s, out float f)
 		{
-			if (float.TryParse(s.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out f))
+			if (float.TryParse(s?.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out f))
 			{
 				f *= s.Contains('%') ? 0.01f : 1f;
 				return true;

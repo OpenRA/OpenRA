@@ -158,6 +158,9 @@ namespace OpenRA.Primitives
 		public static bool TryParse(string value, out Color color)
 		{
 			color = default;
+			if (value == null)
+				return false;
+
 			value = value.Trim();
 			if (value.Length != 6 && value.Length != 8)
 				return false;
