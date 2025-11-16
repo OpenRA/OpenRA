@@ -117,6 +117,7 @@ Player:
 		InsufficientFundsTextNotification: notification-insufficient-funds
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
+		SelectableCash: 2500, 5000, 10000, 2000000
 	DeveloperMode:
 		CheckboxDisplayOrder: 10
 	GpsWatcher:
