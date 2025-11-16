@@ -107,6 +107,7 @@ Player:
 		TechTypes: hq, tmpl, fix, eye, hpad
 		ProductionTypes: pyle, hand, weap, afld
 		NewProductionCashThreshold: 8000
+		NewTechCashThreshold: 8000
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
@@ -162,6 +163,7 @@ Player:
 		ExpansionTolerate: 0
 		ForceExpansionTolerate: 0
 		NewProductionCashThreshold: 6000
+		NewTechCashThreshold: 6000
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
@@ -218,6 +220,7 @@ Player:
 		ExpansionTolerate: 0
 		ForceExpansionTolerate: 0
 		NewProductionCashThreshold: 7000
+		NewTechCashThreshold: 7000
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:

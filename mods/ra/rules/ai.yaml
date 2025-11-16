@@ -107,6 +107,7 @@ Player:
 		AdditionalMinimumRefineryCount: 2
 		ProductionTypes: barr,tent,weap
 		NewProductionCashThreshold: 7000
+		NewTechCashThreshold: 7000
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
@@ -162,6 +163,7 @@ Player:
 		TechTypes: dome, atek, stek, fix, afld, hpad
 		ProductionTypes: barr,tent,weap
 		NewProductionCashThreshold: 8000
+		NewTechCashThreshold: 8000
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
@@ -227,6 +229,8 @@ Player:
 		TechTypes: dome, atek, stek, fix, afld, hpad
 		ProductionTypes: barr,tent,weap
 		NavalProductionTypes: spen, syrd
+		NewProductionCashThreshold: 8000
+		NewTechCashThreshold: 8000
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
@@ -286,6 +290,8 @@ Player:
 		TechTypes: mslo, dome, atek, stek, fix
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
+		NewProductionCashThreshold: 8000
+		NewTechCashThreshold: 8000
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:

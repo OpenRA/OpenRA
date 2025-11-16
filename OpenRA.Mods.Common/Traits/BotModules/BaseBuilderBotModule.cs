@@ -110,6 +110,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Try to build another production building if there is too much cash.")]
 		public readonly int NewProductionCashThreshold = 5000;
 
+		[Desc("Try to build another tech building if there is too much cash.")]
+		public readonly int NewTechCashThreshold = 5000;
+
+		[Desc("Try to build another tech building if there is enough production buildings.")]
+		public readonly int MinProductionRequiredForTechBuilding = 4;
+
 		[Desc("Radius in cells around a factory scanned for rally points by the AI.")]
 		public readonly int RallyPointScanRadius = 8;
 

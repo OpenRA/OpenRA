@@ -320,8 +320,17 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			// Make sure that we can spend as fast as we are earning
-			if (baseBuilder.Info.NewProductionCashThreshold > 0 && playerResources.GetCashAndResources() > baseBuilder.Info.NewProductionCashThreshold)
+			// Make sure that we can spend as fast as we are earning, by building production or tech buildings
+			var shouldBuildProduction =
+				baseBuilder.Info.NewProductionCashThreshold > 0 && playerResources.GetCashAndResources() > baseBuilder.Info.NewProductionCashThreshold;
+
+			var shouldBuildTech = baseBuilder.Info.NewTechCashThreshold > 0 && playerResources.GetCashAndResources() > baseBuilder.Info.NewTechCashThreshold
+				&& AIUtils.CountActorByCommonName(baseBuilder.ProductionBuildings) >= baseBuilder.Info.MinProductionRequiredForTechBuilding;
+
+			// When both are needed, randomly pick one to avoid always building the same type first
+			shouldBuildProduction = shouldBuildTech && shouldBuildProduction ? world.LocalRandom.Next(2) == 0 : shouldBuildProduction;
+
+			if (shouldBuildProduction)
 			{
 				var production = GetProducibleBuilding(baseBuilder.Info.ProductionTypes, buildableThings);
 				if (production != null && HasSufficientPowerForActor(production))
@@ -331,6 +340,22 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (power != null && production != null && !HasSufficientPowerForActor(production))
+				{
+					AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
+					return power;
+				}
+			}
+
+			if (shouldBuildTech)
+			{
+				var tech = GetProducibleBuilding(baseBuilder.Info.TechTypes, buildableThings);
+				if (tech != null && HasSufficientPowerForActor(tech))
+				{
+					AIUtils.BotDebug("{0} decided to build {1}: Priority override (tech)", queue.Actor.Owner, tech.Name);
+					return tech;
+				}
+
+				if (power != null && tech != null && !HasSufficientPowerForActor(tech))
 				{
 					AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
 					return power;
