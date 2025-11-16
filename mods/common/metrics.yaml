@@ -21,7 +21,7 @@ Metrics:
 	PlayerStanceColorAllies: FFFF00
 	PlayerStanceColorEnemies: FF0000
 	PlayerStanceColorNeutrals: D2B48C
-	PlayerStanceColorSelf: 32CD32
+	PlayerStanceColorSelf: 3232CD
 	ProtectedGameColor: FF0000
 	SpawnColor: FFFFFF
 	SpawnContrastColor: 000000
