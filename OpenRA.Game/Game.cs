@@ -554,15 +554,14 @@ namespace OpenRA
 
 		static string ChooseShellmap()
 		{
-			var shellmaps = ModData.MapCache
+			var shellmap = ModData.MapCache
 				.Where(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Shellmap))
-				.Select(m => m.Uid);
+				.RandomOrDefault(CosmeticRandom);
 
-			var shellmap = shellmaps.RandomOrDefault(CosmeticRandom);
 			if (shellmap == null)
 				throw new InvalidDataException("No valid shellmaps available");
 
-			return shellmap;
+			return shellmap.Uid;
 		}
 
 		public static void SwitchToExternalMod(ExternalMod mod, string[] launchArguments = null, Action onFailed = null)

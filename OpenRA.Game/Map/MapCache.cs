@@ -31,15 +31,13 @@ namespace OpenRA
 		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = [];
 		public bool LoadPreviewImages = true;
 
-		readonly Cache<string, MapPreview> previews;
+		readonly ConcurrentCache<string, MapPreview> previews;
 		readonly ModData modData;
 		readonly SheetBuilder sheetBuilder;
 		Thread previewLoaderThread;
 		bool previewLoaderThreadShutDown = true;
 		readonly object syncRoot = new();
 		readonly Queue<MapPreview> generateMinimap = [];
-
-		public HashSet<string> StringPool { get; } = [];
 
 		readonly List<MapDirectoryTracker> mapDirectoryTrackers = [];
 
@@ -72,7 +70,7 @@ namespace OpenRA
 			this.modData = modData;
 
 			var gridType = Exts.Lazy(() => modData.Manifest.Get<MapGrid>().Type);
-			previews = new Cache<string, MapPreview>(uid => new MapPreview(modData, uid, gridType.Value, this));
+			previews = new ConcurrentCache<string, MapPreview>(uid => new MapPreview(modData, uid, gridType.Value, this));
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
 		}
 
@@ -87,6 +85,8 @@ namespace OpenRA
 			// Utility mod that does not support maps
 			if (!modData.Manifest.Contains<MapGrid>())
 				return;
+
+			var nonSystemMaps = new List<(string Map, IReadOnlyPackage Key, MapClassification Value)>();
 
 			// Enumerate map directories
 			foreach (var kv in modData.Manifest.MapFolders)
@@ -119,20 +119,32 @@ namespace OpenRA
 				}
 
 				mapLocations.Add(package, classification);
+				if (classification != MapClassification.System)
+					foreach (var map in package.Contents)
+						nonSystemMaps.Add((map, package, classification));
+
 				mapDirectoryTrackers.Add(new MapDirectoryTracker(package, classification));
 			}
 
 			// PERF: Load the mod YAML once outside the loop, and reuse it when resolving each maps custom YAML.
 			var modDataRules = modData.GetRulesYaml();
 			var gridType = modData.Manifest.Get<MapGrid>().Type;
-			foreach (var kv in MapLocations)
-			{
-				foreach (var map in kv.Key.Contents)
-					LoadMapInternal(map, kv.Key, kv.Value, null, gridType, modDataRules);
-			}
 
-			// We only want to track maps in runtime, not at loadtime
-			LastModifiedMap = null;
+			// Make sure we don't move forward until shellmap is loaded.
+			foreach (var item in mapLocations)
+				if (item.Value == MapClassification.System)
+					foreach (var map in item.Key.Contents)
+						LoadMapInternal(map, item.Key, MapClassification.System, null, gridType, modDataRules);
+
+			// No need to wait on user maps.
+			Task.Run(() =>
+			{
+				using (new PerfTimer("LoadMapsAsync"))
+				{
+					foreach (var (map, key, classification) in nonSystemMaps)
+						LoadMapInternal(map, key, classification, null, gridType, modDataRules);
+				}
+			});
 		}
 
 		public void LoadMap(string map, IReadOnlyPackage package, MapClassification classification, string oldMap)
