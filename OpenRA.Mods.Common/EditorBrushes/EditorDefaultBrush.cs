@@ -31,6 +31,11 @@ namespace OpenRA.Mods.Common.Widgets
 		IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr);
 	}
 
+	public interface IKeyHandlingEditorBrush : IEditorBrush
+	{
+		bool HandleKeyPress(KeyInput ki);
+	}
+
 	public class EditorSelection
 	{
 		public CellRegion Area;

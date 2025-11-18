@@ -125,6 +125,13 @@ button-select-categories-buttons-none = None
 
 label-tool-marker-tiles = Marker Tiles
 label-tool-tiling-path = Path Tiler
+label-tool-height = Height
+
+label-height-brush-size = Brush size
+label-height-up = Up
+label-height-down = Down
+label-height-circle = Circle
+label-height-paint = Paint
 
 ## gamesave-browser.yaml
 label-gamesave-browser-panel-load-title = Load game
