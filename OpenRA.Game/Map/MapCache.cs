@@ -93,7 +93,7 @@ namespace OpenRA
 			{
 				var name = kv.Key;
 				var classification = string.IsNullOrEmpty(kv.Value)
-					? MapClassification.Unknown : Enum<MapClassification>.Parse(kv.Value);
+					? MapClassification.Unknown : Enum.Parse<MapClassification>(kv.Value);
 
 				IReadOnlyPackage package;
 				var optional = name.StartsWith('~');

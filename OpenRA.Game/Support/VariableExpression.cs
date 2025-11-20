@@ -212,9 +212,9 @@ namespace OpenRA.Support
 
 		static IEnumerable<TokenTypeInfo> CreateTokenTypeInfoEnumeration()
 		{
-			for (var i = 0; i <= (int)TokenType.Invalid; i++)
+			for (var tt = TokenType.False; tt <= TokenType.Invalid; tt++)
 			{
-				switch ((TokenType)i)
+				switch (tt)
 				{
 					case TokenType.Invalid:
 						yield return new TokenTypeInfo("(<INVALID>)", Precedence.Invalid);
@@ -287,7 +287,7 @@ namespace OpenRA.Support
 						continue;
 				}
 
-				throw new InvalidProgramException($"CreateTokenTypeInfoEnumeration is missing a TokenTypeInfo entry for TokenType.{Enum<TokenType>.GetValues()[i]}");
+				throw new InvalidProgramException($"CreateTokenTypeInfoEnumeration is missing a TokenTypeInfo entry for TokenType.{tt}");
 			}
 		}
 
@@ -741,8 +741,8 @@ namespace OpenRA.Support
 
 				throw new InvalidProgramException(
 					"Unable to convert " +
-					$"ExpressionType.{Enum<ExpressionType>.GetValues()[(int)fromType]} to " +
-					$"ExpressionType.{Enum<ExpressionType>.GetValues()[(int)toType]}");
+					$"ExpressionType.{fromType} to " +
+					$"ExpressionType.{toType}");
 			}
 
 			public Expression Pop(ExpressionType type)
@@ -941,7 +941,7 @@ namespace OpenRA.Support
 						default:
 							throw new InvalidProgramException(
 								"ConditionExpression.Compiler.Compile() is missing an expression builder for " +
-								$"TokenType.{Enum<TokenType>.GetValues()[(int)t.Type]}");
+								$"TokenType.{t.Type}");
 					}
 				}
 

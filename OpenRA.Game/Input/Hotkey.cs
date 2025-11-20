@@ -27,25 +27,21 @@ namespace OpenRA
 		public static bool TryParse(string s, out Hotkey result)
 		{
 			result = Invalid;
-			if (string.IsNullOrWhiteSpace(s))
+			if (s == null)
 				return false;
 
-			var parts = s.Split(' ');
+			Span<Range> ranges = stackalloc Range[2];
+			var span = s.AsSpan();
+			var count = span.Split(ranges, ' ');
+			if (count == 0)
+				return false;
 
-			if (!Enum<Keycode>.TryParse(parts[0], true, out var key))
-			{
-				if (!int.TryParse(parts[0], out var c))
-					return false;
-				key = (Keycode)c;
-			}
+			if (!Enum.TryParse(span[ranges[0]], true, out Keycode key))
+				return false;
 
 			var mods = Modifiers.None;
-			if (parts.Length >= 2)
-			{
-				var modString = s[s.IndexOf(' ')..];
-				if (!Enum<Modifiers>.TryParse(modString, true, out mods))
-					return false;
-			}
+			if (count == 2 && !Enum.TryParse(span[ranges[1]], true, out mods))
+				return false;
 
 			result = new Hotkey(key, mods);
 			return true;

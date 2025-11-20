@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Activities;
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (autotarget == null)
 					return;
 
-				if (!Enum<UnitStance>.TryParse(value, true, out var stance))
+				if (!Enum.TryParse<UnitStance>(value, true, out var stance))
 					throw new LuaException($"Unknown stance type '{value}'");
 
 				autotarget.SetStance(Self, stance);

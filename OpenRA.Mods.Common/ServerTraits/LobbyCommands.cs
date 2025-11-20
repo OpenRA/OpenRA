@@ -298,7 +298,7 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				if (!Enum<Session.ClientState>.TryParse(s, false, out var state))
+				if (!Enum.TryParse<Session.ClientState>(s, out var state))
 				{
 					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "state"]);
 
