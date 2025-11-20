@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Prepare Environment
         run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install .NET 8.0
         uses: actions/setup-dotnet@v5
@@ -68,7 +68,7 @@ jobs:
     runs-on: macos-13
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install .NET 8.0
         uses: actions/setup-dotnet@v5
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install .NET 8.0
         uses: actions/setup-dotnet@v5
