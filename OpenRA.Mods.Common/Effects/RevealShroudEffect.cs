@@ -49,13 +49,7 @@ namespace OpenRA.Mods.Common.Effects
 			p.Shroud.AddSource(this, sourceType, uv);
 		}
 
-		void RemoveCellsFromPlayerShroud(Player p)
-		{
-			if (!validStances.HasRelationship(player.RelationshipWith(p)))
-				return;
-
-			p.Shroud.RemoveSource(this);
-		}
+		void RemoveCellsFromPlayerShroud(Player p) { p.Shroud.RemoveSource(this); }
 
 		PPos[] ProjectedCells(World world)
 		{
