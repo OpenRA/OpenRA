@@ -54,9 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			var exitLocations = new List<CPos>();
 
 			// Clone the initializer dictionary for the new actor
-			var td = new TypeDictionary();
-			foreach (var init in inits)
-				td.Add(init);
+			var td = new TypeDictionary(inits);
 
 			if (exitinfo != null && self.OccupiesSpace != null && producee.HasTraitInfo<IOccupySpaceInfo>())
 			{

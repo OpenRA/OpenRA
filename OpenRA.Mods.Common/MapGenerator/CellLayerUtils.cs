@@ -561,11 +561,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Func<CPos, P, P?> filler,
 			ImmutableArray<CVec> spread) where P : struct
 		{
+			var current = new List<(CPos CPos, P Prop)>();
 			var next = seeds.ToList();
 			while (next.Count != 0)
 			{
-				var current = next;
-				next = [];
+				(next, current) = (current, next);
+				next.Clear();
 				foreach (var (source, prop) in current)
 				{
 					var newProp = filler(source, prop);

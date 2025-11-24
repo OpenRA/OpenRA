@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EditorActorLayer(this); }
 	}
 
-	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
+	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations, INotifyActorDisposing
 	{
 		const string ActorPrefix = "Actor";
 		const string PlayerSpawnName = "mpspawn";
@@ -101,6 +101,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			AddRange(CollectionsMarshal.AsSpan(references), names);
+
+			world.Map.Height.CellEntryChanged += UpdatePreviewsOnMapChange;
+			world.Map.Ramp.CellEntryChanged += UpdatePreviewsOnMapChange;
 		}
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
@@ -400,7 +403,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<EditorActorPreview> PreviewsAtCell(CPos cell)
 		{
 			return cellMap.At(new int2(cell.X - cellOffset.X, cell.Y - cellOffset.Y))
-				.Where(p => OccupiedCells(p).Any(fp => fp == cell));
+				.Where(p => OccupiedCells(p).Contains(cell));
 		}
 
 		public SubCell FreeSubCellAt(CPos cell)
@@ -424,6 +427,12 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<EditorActorPreview> PreviewsAtWorldPixel(int2 worldPx)
 		{
 			return screenMap.At(worldPx);
+		}
+
+		void UpdatePreviewsOnMapChange(CPos changedCell)
+		{
+			foreach (var preview in PreviewsAtCell(changedCell))
+				preview.UpdateFromCellChange();
 		}
 
 		public Action OnPlayerRemoved = () => { };
@@ -470,6 +479,12 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var preview in cellMap.Keys)
 				foreach (var cell in OccupiedCells(preview))
 					destinationBuffer.Add((cell, preview.RadarColor));
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			self.World.Map.Height.CellEntryChanged -= UpdatePreviewsOnMapChange;
+			self.World.Map.Ramp.CellEntryChanged -= UpdatePreviewsOnMapChange;
 		}
 
 		public EditorActorPreview this[string id]

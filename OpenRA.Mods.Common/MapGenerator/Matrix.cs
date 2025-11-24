@@ -57,9 +57,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public int Index(int x, int y)
 		{
 			if (!ContainsXY(x, y))
-				throw new IndexOutOfRangeException(
-					$"({x}, {y}) is out of bounds for a matrix of size ({Size.X}, {Size.Y})");
+				ThrowIndexOutOfRangeException(x, y);
 			return y * Size.X + x;
+		}
+
+		void ThrowIndexOutOfRangeException(int x, int y)
+		{
+			throw new IndexOutOfRangeException(
+				$"({x}, {y}) is out of bounds for a matrix of size ({Size.X}, {Size.Y})");
 		}
 
 		/// <summary>

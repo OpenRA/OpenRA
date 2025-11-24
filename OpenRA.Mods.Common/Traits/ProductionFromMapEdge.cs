@@ -82,13 +82,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				var td = new TypeDictionary();
-				foreach (var init in inits)
-					td.Add(init);
-
-				td.Add(new LocationInit(location.Value));
-				td.Add(new CenterPositionInit(pos));
-				td.Add(new FacingInit(initialFacing));
+				var td = new TypeDictionary(inits)
+				{
+					new LocationInit(location.Value),
+					new CenterPositionInit(pos),
+					new FacingInit(initialFacing)
+				};
 
 				var newUnit = self.World.CreateActor(producee.Name, td);
 

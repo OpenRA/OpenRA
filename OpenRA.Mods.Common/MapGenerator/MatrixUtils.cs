@@ -345,11 +345,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Func<int2, P, P?> filler,
 			ImmutableArray<int2> spread) where P : struct
 		{
+			var current = new List<(int2 XY, P Prop)>();
 			var next = seeds.ToList();
 			while (next.Count != 0)
 			{
-				var current = next;
-				next = [];
+				(next, current) = (current, next);
+				next.Clear();
 				foreach (var (source, prop) in current)
 				{
 					var newProp = filler(source, prop);

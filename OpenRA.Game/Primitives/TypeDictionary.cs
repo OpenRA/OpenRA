@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Primitives
 {
@@ -20,7 +21,17 @@ namespace OpenRA.Primitives
 		static readonly Func<Type, ITypeContainer> CreateTypeContainer = t =>
 			(ITypeContainer)typeof(TypeContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		readonly Dictionary<Type, ITypeContainer> data = [];
+		readonly Dictionary<Type, ITypeContainer> data;
+
+		public TypeDictionary()
+		{
+			data = [];
+		}
+
+		public TypeDictionary(TypeDictionary cloneFrom)
+		{
+			data = cloneFrom.data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Clone());
+		}
 
 		ITypeContainer InnerGet(Type t)
 		{
@@ -127,11 +138,12 @@ namespace OpenRA.Primitives
 			void Add(object value);
 			void Remove(object value);
 			void TrimExcess();
+			ITypeContainer Clone();
 		}
 
 		sealed class TypeContainer<T> : ITypeContainer
 		{
-			public List<T> Objects { get; } = [];
+			public List<T> Objects { get; private init; } = [];
 
 			public int Count => Objects.Count;
 
@@ -148,6 +160,11 @@ namespace OpenRA.Primitives
 			public void TrimExcess()
 			{
 				Objects.TrimExcess();
+			}
+
+			public ITypeContainer Clone()
+			{
+				return new TypeContainer<T>() { Objects = Objects.ToList() };
 			}
 		}
 	}

@@ -122,9 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 			var altitude = self.World.Map.Rules.Actors[actorType].TraitInfo<AircraftInfo>().CruiseAltitude;
 
 			// Clone the initializer dictionary for the new actor
-			var td = new TypeDictionary();
-			foreach (var init in inits)
-				td.Add(init);
+			var td = new TypeDictionary(inits);
 
 			if (self.OccupiesSpace != null)
 			{

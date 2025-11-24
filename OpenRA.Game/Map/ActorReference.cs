@@ -54,13 +54,8 @@ namespace OpenRA
 		public ActorReference(string type, TypeDictionary inits)
 		{
 			Type = type;
-			initDict = new Lazy<TypeDictionary>(() =>
-			{
-				var dict = new TypeDictionary();
-				foreach (var i in inits)
-					dict.Add(i);
-				return dict;
-			});
+			var initsClone = new TypeDictionary(inits);
+			initDict = Exts.Lazy(() => initsClone);
 		}
 
 		static ActorInit LoadInit(string initName, MiniYaml initYaml)
@@ -110,11 +105,7 @@ namespace OpenRA
 
 		public ActorReference Clone()
 		{
-			var clone = new ActorReference(Type);
-			foreach (var init in initDict.Value)
-				clone.initDict.Value.Add(init);
-
-			return clone;
+			return new ActorReference(Type, initDict.Value);
 		}
 
 		public void Add(ActorInit init)
