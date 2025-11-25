@@ -35,8 +35,8 @@ PlayerMCVActor = nil
 PlayerInfantry = {}
 EnemyActors = {}
 
--- Mentat speaker
-Mentat = "Mentat"
+-- Mentat speaker (from fluent)
+Mentat = nil
 
 -- Tick function - runs every game tick
 Tick = function()
@@ -47,6 +47,9 @@ end
 WorldLoaded = function()
 	Atreides = Player.GetPlayer("Atreides")
 	Harkonnen = Player.GetPlayer("Harkonnen")
+
+	-- Get localized Mentat string
+	Mentat = UserInterface.GetFluentMessage("mentat")
 
 	-- Center camera on player's MCV (named actor from map.yaml)
 	Camera.Position = PlayerMCV.CenterPosition
@@ -116,23 +119,25 @@ StartObjective = function(objectiveNum)
 	elseif objectiveNum == 5 then
 		Objective5_DeployMCV()
 	elseif objectiveNum == 6 then
-		Objective6_BuildPower()
+		Objective6_PlaceConcrete()
 	elseif objectiveNum == 7 then
-		Objective7_BuildRefinery()
+		Objective7_BuildPower()
 	elseif objectiveNum == 8 then
-		Objective8_Harvesting()
+		Objective8_BuildRefinery()
 	elseif objectiveNum == 9 then
-		Objective9_BuildBarracks()
+		Objective9_Harvesting()
 	elseif objectiveNum == 10 then
-		Objective10_TrainInfantry()
+		Objective10_BuildBarracks()
 	elseif objectiveNum == 11 then
-		Objective11_BuildLightFactory()
+		Objective11_TrainInfantry()
 	elseif objectiveNum == 12 then
-		Objective12_BuildVehicles()
+		Objective12_BuildLightFactory()
 	elseif objectiveNum == 13 then
-		Objective13_Combat()
+		Objective13_BuildVehicles()
 	elseif objectiveNum == 14 then
-		Objective14_Victory()
+		Objective14_Combat()
+	elseif objectiveNum == 15 then
+		Objective15_Victory()
 	end
 end
 
@@ -161,21 +166,23 @@ CheckObjectiveCompletion = function()
 	elseif CurrentObjective == 5 then
 		Check5_DeployMCV()
 	elseif CurrentObjective == 6 then
-		Check6_BuildPower()
+		Check6_PlaceConcrete()
 	elseif CurrentObjective == 7 then
-		Check7_BuildRefinery()
+		Check7_BuildPower()
 	elseif CurrentObjective == 8 then
-		Check8_Harvesting()
+		Check8_BuildRefinery()
 	elseif CurrentObjective == 9 then
-		Check9_BuildBarracks()
+		Check9_Harvesting()
 	elseif CurrentObjective == 10 then
-		Check10_TrainInfantry()
+		Check10_BuildBarracks()
 	elseif CurrentObjective == 11 then
-		Check11_BuildLightFactory()
+		Check11_TrainInfantry()
 	elseif CurrentObjective == 12 then
-		Check12_BuildVehicles()
+		Check12_BuildLightFactory()
 	elseif CurrentObjective == 13 then
-		Check13_Combat()
+		Check13_BuildVehicles()
+	elseif CurrentObjective == 14 then
+		Check14_Combat()
 	end
 end
 
@@ -183,20 +190,20 @@ end
 -- OBJECTIVE 1: Camera Movement
 --============================================================================
 Objective1_CameraMovement = function()
-	Media.DisplayMessage("Welcome to Arrakis, Commander!", Mentat)
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-welcome"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Use the ARROW KEYS to scroll around the map.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-camera-scroll"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Press H to quickly jump back to your base.", Mentat)
-		UserInterface.SetMissionText("Scroll around with Arrow Keys, then press H")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-camera-home"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-camera"))
 	end)
 end
 
 Check1_CameraMovement = function()
-	-- Complete after player has had time to practice (15 seconds)
-	if DateTime.GameTime - ObjectiveStartTime > DateTime.Seconds(15) then
-		Media.DisplayMessage("Good! You've learned to navigate the battlefield.", Mentat)
+	-- Complete after player has had time to practice (10 seconds)
+	if DateTime.GameTime - ObjectiveStartTime > DateTime.Seconds(10) then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-camera-complete"), Mentat)
 		CompleteObjective()
 	end
 end
@@ -205,20 +212,20 @@ end
 -- OBJECTIVE 2: Unit Selection
 --============================================================================
 Objective2_UnitSelection = function()
-	Media.DisplayMessage("Now let's learn to select units.", Mentat)
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-select-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Media.DisplayMessage("LEFT-CLICK on a unit to select it.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-select-click"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Media.DisplayMessage("CLICK and DRAG to select multiple units.", Mentat)
-		UserInterface.SetMissionText("Select your Light Infantry units")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-select-drag"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-select"))
 	end)
 end
 
 Check2_UnitSelection = function()
 	-- Complete after player has had time to practice (12 seconds)
 	if DateTime.GameTime - ObjectiveStartTime > DateTime.Seconds(12) then
-		Media.DisplayMessage("Excellent! You can now select your troops.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-select-complete"), Mentat)
 		CompleteObjective()
 	end
 end
@@ -227,47 +234,42 @@ end
 -- OBJECTIVE 3: Unit Movement
 --============================================================================
 Objective3_UnitMovement = function()
-	Media.DisplayMessage("With units selected, RIGHT-CLICK to move them.", Mentat)
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-move-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Move your infantry to the marked rally point.", Mentat)
-		UserInterface.SetMissionText("Move your units to the rally point (near 15,20)")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-move-practice"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-move"))
+	end)
+
+	-- Auto-complete after time since movement detection is complex
+	Trigger.AfterDelay(DateTime.Seconds(10), function()
+		if not ObjectiveCompleted[3] then
+			Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-move-complete"), Mentat)
+			CompleteObjective()
+		end
 	end)
 end
 
 Check3_UnitMovement = function()
-	-- Check if any player infantry is near rally point (15,20)
-	local infantry = Atreides.GetActorsByType("light_inf")
-	local rallyPoint = CPos.New(15, 20)
-
-	for _, unit in ipairs(infantry) do
-		if not unit.IsDead then
-			local dist = (unit.Location - rallyPoint).Length
-			if dist < 6 then
-				Media.DisplayMessage("Well done! Your units followed orders.", Mentat)
-				CompleteObjective()
-				return
-			end
-		end
-	end
+	-- Time-based completion handled in objective function
 end
 
 --============================================================================
 -- OBJECTIVE 4: Control Groups
 --============================================================================
 Objective4_ControlGroups = function()
-	Media.DisplayMessage("Control groups let you quickly select units.", Mentat)
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-control-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Select units, then press CTRL+1 to assign group 1.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-control-create"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Press 1 to reselect that group anytime!", Mentat)
-		UserInterface.SetMissionText("Create control group 1 with your infantry (Ctrl+1)")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-control-select"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-control"))
 	end)
 
 	-- Auto-complete after time since we can't detect control group creation
-	Trigger.AfterDelay(DateTime.Seconds(12), function()
+	Trigger.AfterDelay(DateTime.Seconds(10), function()
 		if not ObjectiveCompleted[4] then
-			Media.DisplayMessage("Control groups will be essential in battle.", Mentat)
+			Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-control-complete"), Mentat)
 			CompleteObjective()
 		end
 	end)
@@ -277,216 +279,243 @@ end
 -- OBJECTIVE 5: Deploy MCV
 --============================================================================
 Objective5_DeployMCV = function()
-	Media.DisplayMessage("Your MCV (Mobile Construction Vehicle) is your mobile base.", Mentat)
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-mcv-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Select the MCV and press D to deploy it.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-mcv-deploy"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("This creates your Construction Yard!", Mentat)
-		UserInterface.SetMissionText("Deploy your MCV (select it, press D)")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-mcv-creates"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-mcv"))
 	end)
 end
 
 Check5_DeployMCV = function()
 	local conyards = Atreides.GetActorsByType("construction_yard")
 	if #conyards > 0 then
-		Media.DisplayMessage("Your Construction Yard is ready!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-mcv-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 6: Build Wind Trap (Power)
+-- OBJECTIVE 6: Place Concrete Slabs
 --============================================================================
-Objective6_BuildPower = function()
-	Media.DisplayMessage("Excellent! Now you can construct buildings.", Mentat)
+Objective6_PlaceConcrete = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-concrete-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("TIP: Place concrete slabs before buildings to prevent damage!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-concrete-protect"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Click the Wind Trap icon in the sidebar to build power.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-concrete-click"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
-		Media.DisplayMessage("Then left-click on the map to place it near your base.", Mentat)
-		UserInterface.SetMissionText("Build a Wind Trap for power")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-concrete-place"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-concrete"))
+	end)
+
+	-- Auto-complete after time since concrete actors self-destruct into terrain
+	Trigger.AfterDelay(DateTime.Seconds(18), function()
+		if not ObjectiveCompleted[6] then
+			Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-concrete-complete"), Mentat)
+			CompleteObjective()
+		end
 	end)
 end
 
-Check6_BuildPower = function()
+Check6_PlaceConcrete = function()
+	-- Time-based completion handled in objective function
+	-- (Concrete actors self-destruct and become terrain, so we can't count them)
+end
+
+--============================================================================
+-- OBJECTIVE 7: Build Wind Trap (Power)
+--============================================================================
+Objective7_BuildPower = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-power-intro"), Mentat)
+	Trigger.AfterDelay(DateTime.Seconds(3), function()
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-power-click"), Mentat)
+	end)
+	Trigger.AfterDelay(DateTime.Seconds(6), function()
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-power-place"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-power"))
+	end)
+end
+
+Check7_BuildPower = function()
 	local windtraps = Atreides.GetActorsByType("wind_trap")
 	if #windtraps > 0 then
-		Media.DisplayMessage("Power is flowing to your base!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-power-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 7: Build Refinery
+-- OBJECTIVE 8: Build Refinery
 --============================================================================
-Objective7_BuildRefinery = function()
-	Media.DisplayMessage("Wind Traps provide power for your base.", Mentat)
+Objective8_BuildRefinery = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-refinery-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Now build a Refinery to collect Spice!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-refinery-build"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Spice is the source of all credits on Arrakis.", Mentat)
-		UserInterface.SetMissionText("Build a Refinery")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-refinery-spice"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-refinery"))
 	end)
 end
 
-Check7_BuildRefinery = function()
+Check8_BuildRefinery = function()
 	local refineries = Atreides.GetActorsByType("refinery")
 	if #refineries > 0 then
-		Media.DisplayMessage("Your Refinery is operational!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-refinery-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 8: Harvesting
+-- OBJECTIVE 9: Harvesting
 --============================================================================
-Objective8_Harvesting = function()
-	Media.DisplayMessage("Your Harvester will automatically collect Spice.", Mentat)
+Objective9_Harvesting = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-harvest-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("The orange Spice fields are your source of income.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-harvest-fields"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Wait for your Harvester to deliver a load of Spice.", Mentat)
-		UserInterface.SetMissionText("Wait for Harvester to collect Spice")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-harvest-wait"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-harvest"))
 
 		-- Record starting resources
 		HarvestingStartResources = Atreides.Resources
 	end)
 end
 
-Check8_Harvesting = function()
+Check9_Harvesting = function()
 	local gained = Atreides.Resources - HarvestingStartResources
 	if gained >= HarvestingGoal then
-		Media.DisplayMessage("Credits are flowing in! You can now build more.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-harvest-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 9: Build Barracks
+-- OBJECTIVE 10: Build Barracks
 --============================================================================
-Objective9_BuildBarracks = function()
-	Media.DisplayMessage("To train soldiers, you need a Barracks.", Mentat)
+Objective10_BuildBarracks = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-barracks-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Build a Barracks from the sidebar.", Mentat)
-		UserInterface.SetMissionText("Build a Barracks")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-barracks-build"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-barracks"))
 	end)
 end
 
-Check9_BuildBarracks = function()
+Check10_BuildBarracks = function()
 	local barracks = Atreides.GetActorsByType("barracks")
 	if #barracks > 0 then
-		Media.DisplayMessage("Your Barracks is ready to train infantry!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-barracks-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 10: Train Infantry
+-- OBJECTIVE 11: Train Infantry
 --============================================================================
-Objective10_TrainInfantry = function()
-	Media.DisplayMessage("Click the Light Infantry icon to start training.", Mentat)
+Objective11_TrainInfantry = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-infantry-click"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Train at least 4 Light Infantry soldiers.", Mentat)
-		UserInterface.SetMissionText("Train 4 Light Infantry")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-infantry-train"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-infantry"))
 	end)
 end
 
-Check10_TrainInfantry = function()
+Check11_TrainInfantry = function()
 	local infantry = Atreides.GetActorsByType("light_inf")
 	-- Player started with 3, need 4 more = 7 total
 	if #infantry >= 7 then
-		Media.DisplayMessage("Your squad is growing stronger!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-infantry-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 11: Build Light Factory
+-- OBJECTIVE 12: Build Light Factory
 --============================================================================
-Objective11_BuildLightFactory = function()
-	Media.DisplayMessage("Infantry alone won't win battles.", Mentat)
+Objective12_BuildLightFactory = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-factory-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Build a Light Factory for vehicles!", Mentat)
-		UserInterface.SetMissionText("Build a Light Factory")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-factory-build"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-factory"))
 	end)
 end
 
-Check11_BuildLightFactory = function()
+Check12_BuildLightFactory = function()
 	local factories = Atreides.GetActorsByType("light_factory")
 	if #factories > 0 then
-		Media.DisplayMessage("Vehicle production is now available!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-factory-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 12: Build Vehicles
+-- OBJECTIVE 13: Build Vehicles
 --============================================================================
-Objective12_BuildVehicles = function()
-	Media.DisplayMessage("Trikes are fast scout vehicles.", Mentat)
+Objective13_BuildVehicles = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-vehicle-intro"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Build at least 3 Trikes for your army.", Mentat)
-		UserInterface.SetMissionText("Build 3 Trikes")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-vehicle-build"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-vehicle"))
 	end)
 end
 
-Check12_BuildVehicles = function()
+Check13_BuildVehicles = function()
 	local trikes = Atreides.GetActorsByType("trike")
 	if #trikes >= 3 then
-		Media.DisplayMessage("Your mechanized force is ready!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-vehicle-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 13: Combat
+-- OBJECTIVE 14: Combat
 --============================================================================
-Objective13_Combat = function()
-	Media.DisplayMessage("Your army is ready, Commander!", Mentat)
+Objective14_Combat = function()
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-combat-ready"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("The Harkonnen have forces to the southeast.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-combat-enemy"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Select your combat units and attack!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-combat-select"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
-		Media.DisplayMessage("Right-click on enemies to attack them.", Mentat)
-		UserInterface.SetMissionText("Destroy the Harkonnen forces!")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-combat-attack"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-combat"))
 	end)
 end
 
-Check13_Combat = function()
+Check14_Combat = function()
 	-- Check if all enemy combat units are destroyed
 	local enemyUnits = Harkonnen.GetActorsByTypes({ "light_inf", "trike", "combat_tank_h" })
 
 	if #enemyUnits == 0 then
-		Media.DisplayMessage("The Harkonnen forces have been destroyed!", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-combat-complete"), Mentat)
 		CompleteObjective()
 	end
 end
 
 --============================================================================
--- OBJECTIVE 14: Victory
+-- OBJECTIVE 15: Victory
 --============================================================================
 TutorialObjective = nil
 
-Objective14_Victory = function()
+Objective15_Victory = function()
 	-- Add the mission objective for win condition
-	TutorialObjective = Atreides.AddObjective("Complete the tutorial")
+	TutorialObjective = Atreides.AddObjective(UserInterface.GetFluentMessage("tutorial-complete-objective"))
 
-	Media.DisplayMessage("VICTORY! You have completed the tutorial!", Mentat)
+	Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-victory"), Mentat)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("You now know the basics of Dune 2000.", Mentat)
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-victory-basics"), Mentat)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		Media.DisplayMessage("Try a Skirmish or Campaign mission next!", Mentat)
-		UserInterface.SetMissionText("Tutorial Complete!")
+		Media.DisplayMessage(UserInterface.GetFluentMessage("tutorial-victory-next"), Mentat)
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("tutorial-mission-text-victory"))
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(10), function()
 		Atreides.MarkCompletedObjective(TutorialObjective)

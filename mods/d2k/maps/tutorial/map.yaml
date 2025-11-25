@@ -64,26 +64,41 @@ Actors:
 		Location: 10,14
 		Owner: Atreides
 
-	EnemyInfantry1: light_inf
-		Location: 40,55
+	# Harkonnen base (non-violent - no turrets, no unit production)
+	EnemyConyard: construction_yard
+		Location: 38,55
 		Owner: Harkonnen
-	EnemyInfantry2: light_inf
+	EnemyWindTrap1: wind_trap
+		Location: 35,55
+		Owner: Harkonnen
+	EnemyWindTrap2: wind_trap
+		Location: 35,58
+		Owner: Harkonnen
+	EnemyBarracks: barracks
 		Location: 41,55
 		Owner: Harkonnen
+
+	# Harkonnen defense force (passive until attacked)
+	EnemyInfantry1: light_inf
+		Location: 40,60
+		Owner: Harkonnen
+	EnemyInfantry2: light_inf
+		Location: 41,60
+		Owner: Harkonnen
 	EnemyInfantry3: light_inf
-		Location: 42,55
+		Location: 42,60
 		Owner: Harkonnen
 	EnemyInfantry4: light_inf
-		Location: 43,55
+		Location: 43,60
 		Owner: Harkonnen
 	EnemyTrike1: trike
-		Location: 40,57
+		Location: 40,62
 		Owner: Harkonnen
 	EnemyTrike2: trike
-		Location: 42,57
+		Location: 42,62
 		Owner: Harkonnen
 	EnemyTank: combat_tank_h
-		Location: 41,59
+		Location: 41,64
 		Owner: Harkonnen
 
 	RallyPoint: waypoint

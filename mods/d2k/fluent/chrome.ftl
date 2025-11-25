@@ -7,7 +7,7 @@ button-singleplayer-menu-tutorial = Tutorial
 ## Tutorial Resume Dialog
 dialog-tutorial-resume =
     .title = Tutorial
-    .prompt = A tutorial save was found. Would you like to resume or start over?
+    .prompt = Resume your previous tutorial or start over?
     .resume = Resume
     .start-new = Start New
 
