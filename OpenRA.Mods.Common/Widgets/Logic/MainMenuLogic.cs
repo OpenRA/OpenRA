@@ -36,6 +36,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("author", "datetime")]
 		const string AuthorDateTime = "label-author-datetime";
 
+		[FluentReference]
+		const string TutorialResumeTitle = "dialog-tutorial-resume.title";
+
+		[FluentReference]
+		const string TutorialResumePrompt = "dialog-tutorial-resume.prompt";
+
+		[FluentReference]
+		const string TutorialResumeButton = "dialog-tutorial-resume.resume";
+
+		[FluentReference]
+		const string TutorialStartNewButton = "dialog-tutorial-resume.start-new";
+
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
@@ -127,6 +139,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var skirmishButton = singleplayerMenu.Get<ButtonWidget>("SKIRMISH_BUTTON");
 			skirmishButton.OnClick = StartSkirmishGame;
 			skirmishButton.Disabled = !hasMaps;
+
+			var tutorialButton = singleplayerMenu.GetOrNull<ButtonWidget>("TUTORIAL_BUTTON");
+			if (tutorialButton != null)
+			{
+				var tutorialMap = modData.MapCache.FirstOrDefault(m =>
+					m.Status == MapStatus.Available &&
+					m.Visibility.HasFlag(MapVisibility.MissionSelector) &&
+					m.Title == "Tutorial");
+
+				tutorialButton.Disabled = tutorialMap == null;
+				tutorialButton.OnClick = () =>
+				{
+					if (tutorialMap == null)
+						return;
+
+					var tutorialSave = FindTutorialSave(modData, tutorialMap.Uid);
+					if (tutorialSave != null)
+					{
+						ConfirmationDialogs.ButtonPrompt(modData,
+							title: TutorialResumeTitle,
+							text: TutorialResumePrompt,
+							onConfirm: () => LoadTutorialSave(tutorialSave, tutorialMap.Uid),
+							confirmText: TutorialResumeButton,
+							onCancel: () => StartNewTutorial(tutorialMap.Uid),
+							cancelText: TutorialStartNewButton);
+					}
+					else
+						StartNewTutorial(tutorialMap.Uid);
+				};
+			}
 
 			var loadButton = singleplayerMenu.Get<ButtonWidget>("LOAD_BUTTON");
 			loadButton.IsDisabled = () => !GameSaveBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
@@ -528,6 +570,66 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "isSavePanel", false },
 				{ "world", null }
 			});
+		}
+
+		static string FindTutorialSave(ModData modData, string tutorialMapUid)
+		{
+			var baseSavePath = Path.Combine(Platform.SupportDir, "Saves", modData.Manifest.Id, modData.Manifest.Metadata.Version);
+			if (!Directory.Exists(baseSavePath))
+				return null;
+
+			var savePaths = Directory.GetFiles(baseSavePath, "*.orasav", SearchOption.AllDirectories)
+				.OrderByDescending(File.GetLastWriteTime);
+
+			foreach (var savePath in savePaths)
+			{
+				try
+				{
+					var save = new GameSave(savePath);
+					if (save.GlobalSettings.Map == tutorialMapUid)
+						return savePath;
+				}
+				catch
+				{
+					// Skip invalid save files
+				}
+			}
+
+			return null;
+		}
+
+		void StartNewTutorial(string tutorialMapUid)
+		{
+			SwitchMenu(MenuType.None);
+			Game.BeforeGameStart += OnTutorialStart;
+
+			var orders = new List<Order>
+			{
+				Order.Command($"state {Session.ClientState.Ready}")
+			};
+
+			Game.CreateAndStartLocalServer(tutorialMapUid, orders);
+		}
+
+		void LoadTutorialSave(string savePath, string tutorialMapUid)
+		{
+			SwitchMenu(MenuType.None);
+			Game.BeforeGameStart += OnTutorialStart;
+
+			var orders = new List<Order>
+			{
+				Order.FromTargetString("LoadGameSave", Path.GetFileName(savePath), true),
+				Order.Command($"state {Session.ClientState.Ready}")
+			};
+
+			Game.CreateAndStartLocalServer(tutorialMapUid, orders);
+		}
+
+		void OnTutorialStart()
+		{
+			RemoveShellmapUI();
+			lastGameState = MenuPanel.Missions;
+			Game.BeforeGameStart -= OnTutorialStart;
 		}
 
 		protected override void Dispose(bool disposing)
