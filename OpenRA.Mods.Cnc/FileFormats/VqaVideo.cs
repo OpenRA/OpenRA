@@ -225,23 +225,25 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				}
 			}
 
+			static byte[] GetAudioData(bool compressed, MemoryStream audio, ref int adpcmIndex)
+			{
+				var audioArray = audio.ToArray();
+				if (!compressed)
+					return audioArray;
+
+				var result = new byte[audio.Length * 4];
+				ImaAdpcmReader.LoadImaAdpcmSound(audioArray, ref adpcmIndex, result);
+				return result;
+			}
+
 			if (AudioChannels == 1)
-				AudioData = compressed ? ImaAdpcmReader.LoadImaAdpcmSound(audio1.ToArray(), ref adpcmIndex) : audio1.ToArray();
+				AudioData = GetAudioData(compressed, audio1, ref adpcmIndex);
 			else
 			{
-				byte[] leftData, rightData;
-				if (!compressed)
-				{
-					leftData = audio1.ToArray();
-					rightData = audio2.ToArray();
-				}
-				else
-				{
-					adpcmIndex = 0;
-					leftData = ImaAdpcmReader.LoadImaAdpcmSound(audio1.ToArray(), ref adpcmIndex);
-					adpcmIndex = 0;
-					rightData = ImaAdpcmReader.LoadImaAdpcmSound(audio2.ToArray(), ref adpcmIndex);
-				}
+				adpcmIndex = 0;
+				var leftData = GetAudioData(compressed, audio1, ref adpcmIndex);
+				adpcmIndex = 0;
+				var rightData = GetAudioData(compressed, audio2, ref adpcmIndex);
 
 				AudioData = new byte[rightData.Length + leftData.Length];
 				var rightIndex = 0;

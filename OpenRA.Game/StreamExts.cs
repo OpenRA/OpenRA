@@ -13,7 +13,6 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -178,13 +177,9 @@ namespace OpenRA
 				if (s.CanSeek)
 					return s.ReadBytes((int)(s.Length - s.Position));
 
-				var bytes = new List<byte>();
-				var buffer = new byte[1024];
-				int count;
-				while ((count = s.Read(buffer, 0, buffer.Length)) > 0)
-					bytes.AddRange(buffer.Take(count));
-
-				return bytes.ToArray();
+				using var ms = new MemoryStream();
+				s.CopyTo(ms);
+				return ms.Capacity == ms.Length ? ms.GetBuffer() : ms.ToArray();
 			}
 		}
 

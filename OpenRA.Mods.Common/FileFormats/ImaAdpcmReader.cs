@@ -56,18 +56,18 @@ namespace OpenRA.Mods.Common.FileFormats
 			return (short)current;
 		}
 
-		public static byte[] LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index)
+		public static void LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index, Span<byte> output)
 		{
 			var currentSample = 0;
-			return LoadImaAdpcmSound(raw, ref index, ref currentSample);
+			LoadImaAdpcmSound(raw, ref index, ref currentSample, output);
 		}
 
-		public static byte[] LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index, ref int currentSample)
+		public static void LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index, ref int currentSample, Span<byte> output)
 		{
 			var dataSize = raw.Length;
-			var outputSize = raw.Length * 4;
+			if (output.Length != raw.Length * 4)
+				throw new ArgumentException($"{nameof(output)} must be 4 times the length of {nameof(raw)}.", nameof(output));
 
-			var output = new byte[outputSize];
 			var offset = 0;
 
 			while (dataSize-- > 0)
@@ -82,8 +82,6 @@ namespace OpenRA.Mods.Common.FileFormats
 				output[offset++] = (byte)t;
 				output[offset++] = (byte)(t >> 8);
 			}
-
-			return output;
 		}
 	}
 }

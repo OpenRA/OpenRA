@@ -101,6 +101,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		{
 			readonly int outputSize;
 			int dataSize;
+			byte[] inputBuffer;
 
 			int currentSample;
 			int baseOffset;
@@ -121,9 +122,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					return true;
 
 				var chunk = AudChunk.Read(baseStream);
+				var input = EnsureArraySize(ref inputBuffer, chunk.CompressedSize);
+				baseStream.ReadBytes(input);
+
 				for (var n = 0; n < chunk.CompressedSize; n++)
 				{
-					var b = baseStream.ReadUInt8();
+					var b = input[n];
 
 					var t = ImaAdpcmReader.DecodeImaAdpcmSample(b, ref index, ref currentSample);
 					data.Enqueue((byte)t);
@@ -143,6 +147,13 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				dataSize -= 8 + chunk.CompressedSize;
 
 				return dataSize <= 0;
+			}
+
+			static Span<byte> EnsureArraySize(ref byte[] array, int desiredSize)
+			{
+				if (array == null || array.Length < desiredSize)
+					array = new byte[desiredSize];
+				return array.AsSpan(..desiredSize);
 			}
 		}
 
