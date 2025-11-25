@@ -20,7 +20,7 @@ Container@MAINMENU:
 			X: 13 + (WINDOW_WIDTH - 522) / 4 - WIDTH / 2
 			Y: WINDOW_HEIGHT / 2 - HEIGHT / 2
 			Width: 200
-			Height: 320
+			Height: 360
 			Children:
 				Background@MAIN_MENU:
 					Width: PARENT_WIDTH
@@ -102,16 +102,23 @@ Container@MAINMENU:
 							Height: 30
 							Text: label-missions-title
 							Font: Bold
-						Button@LOAD_BUTTON:
+						Button@TUTORIAL_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 140
+							Width: 140
+							Height: 30
+							Text: button-singleplayer-menu-tutorial
+							Font: Bold
+						Button@LOAD_BUTTON:
+							X: PARENT_WIDTH / 2 - WIDTH / 2
+							Y: 180
 							Width: 140
 							Height: 30
 							Text: button-singleplayer-menu-load
 							Font: Bold
 						Button@ENCYCLOPEDIA_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 180
+							Y: 220
 							Width: 140
 							Height: 30
 							Text: label-mentat-title
@@ -119,7 +126,7 @@ Container@MAINMENU:
 						Button@BACK_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Key: escape
-							Y: 260
+							Y: 300
 							Width: 140
 							Height: 30
 							Text: button-back

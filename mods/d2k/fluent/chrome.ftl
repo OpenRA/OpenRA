@@ -1,6 +1,16 @@
 ## encyclopedia.yaml, mainmenu.yaml
 label-mentat-title = Mentat
 
+## mainmenu.yaml
+button-singleplayer-menu-tutorial = Tutorial
+
+## Tutorial Resume Dialog
+dialog-tutorial-resume =
+    .title = Tutorial
+    .prompt = A tutorial save was found. Would you like to resume or start over?
+    .resume = Resume
+    .start-new = Start New
+
 ## ingame-menu.yaml
 label-menu-buttons-title = Options
 
