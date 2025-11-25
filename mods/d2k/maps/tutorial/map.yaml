@@ -1,0 +1,102 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: Tutorial
+
+Author: OpenRA Team
+
+Tileset: ARRAKIS
+
+MapSize: 52,72
+
+Bounds: 2,2,48,68
+
+Visibility: MissionSelector
+
+Categories: Tutorial
+
+LockPreview: True
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Atreides, Harkonnen
+	PlayerReference@Atreides:
+		Name: Atreides
+		Playable: True
+		Faction: atreides
+		LockFaction: True
+		Color: 2A6DC8
+		LockColor: True
+		Enemies: Harkonnen, Creeps
+	PlayerReference@Harkonnen:
+		Name: Harkonnen
+		Faction: harkonnen
+		LockFaction: True
+		Color: C82A2A
+		LockColor: True
+		Enemies: Atreides, Creeps
+		Bot: campaign
+
+Actors:
+	PlayerSpawn: mpspawn
+		Location: 9,11
+		Owner: Neutral
+
+	PlayerMCV: mcv
+		Location: 10,12
+		Owner: Atreides
+	PlayerInfantry1: light_inf
+		Location: 8,14
+		Owner: Atreides
+	PlayerInfantry2: light_inf
+		Location: 9,14
+		Owner: Atreides
+	PlayerInfantry3: light_inf
+		Location: 10,14
+		Owner: Atreides
+
+	EnemyInfantry1: light_inf
+		Location: 40,55
+		Owner: Harkonnen
+	EnemyInfantry2: light_inf
+		Location: 41,55
+		Owner: Harkonnen
+	EnemyInfantry3: light_inf
+		Location: 42,55
+		Owner: Harkonnen
+	EnemyInfantry4: light_inf
+		Location: 43,55
+		Owner: Harkonnen
+	EnemyTrike1: trike
+		Location: 40,57
+		Owner: Harkonnen
+	EnemyTrike2: trike
+		Location: 42,57
+		Owner: Harkonnen
+	EnemyTank: combat_tank_h
+		Location: 41,59
+		Owner: Harkonnen
+
+	RallyPoint: waypoint
+		Location: 15,20
+		Owner: Neutral
+
+	Spice1: spicebloom.spawnpoint
+		Location: 18,26
+		Owner: Neutral
+	Spice2: spicebloom.spawnpoint
+		Location: 26,32
+		Owner: Neutral
+
+Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
+
+FluentMessages: d2k|fluent/lua.ftl, d2k|fluent/tutorial.ftl

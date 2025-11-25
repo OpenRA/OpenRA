@@ -1,0 +1,9 @@
+Player:
+	PlayerResources:
+		DefaultCash: 3000
+
+World:
+	LuaScript:
+		Scripts: tutorial.lua
+	MissionData:
+		Briefing: Welcome to Dune 2000! This tutorial will teach you the basics of commanding your forces on Arrakis. You will learn camera controls, unit selection, base building, resource harvesting, and combat.
