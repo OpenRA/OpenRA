@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -61,6 +62,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Ui.CloseWindow();
 				menuRoot.RemoveChildren();
 
+				// Handle AI Battle game over - show results immediately
+				if (AIBattleState.IsAIBattle)
+				{
+					// Give a short delay so the user can see the final state
+					Game.RunAfterDelay(1500, () =>
+					{
+						if (!Game.IsCurrentWorld(world))
+							return;
+
+						// Capture results before leaving
+						CaptureAIBattleResults(world);
+
+						// Disconnect and show results
+						Game.Disconnect();
+						Ui.ResetAll();
+						ShowAIBattleResults();
+					});
+					return;
+				}
+
 				if (world.LocalPlayer != null)
 				{
 					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
@@ -78,5 +99,82 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Sync.RunUnsynced(world, optionsButton.OnClick);
 			};
 		}
+
+		static void CaptureAIBattleResults(World world)
+		{
+			var results = new AIBattleResults
+			{
+				DurationTicks = world.WorldTick,
+				Timestep = world.Timestep
+			};
+
+			foreach (var player in world.Players.Where(p => p.IsBot && !p.NonCombatant))
+			{
+				var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
+				var resources = player.PlayerActor.TraitOrDefault<PlayerResources>();
+
+				var playerStats = new AIPlayerStats
+				{
+					Name = player.ResolvedPlayerName,
+					Faction = player.Faction.InternalName,
+					Team = world.LobbyInfo.ClientWithIndex(player.ClientIndex)?.Team ?? 0,
+					IsWinner = player.WinState == WinState.Won,
+					UnitsKilled = stats?.UnitsKilled ?? 0,
+					UnitsDead = stats?.UnitsDead ?? 0,
+					BuildingsKilled = stats?.BuildingsKilled ?? 0,
+					BuildingsDead = stats?.BuildingsDead ?? 0,
+					KillsCost = stats?.KillsCost ?? 0,
+					DeathsCost = stats?.DeathsCost ?? 0,
+					Earned = resources?.Earned ?? 0,
+					Spent = resources?.Spent ?? 0,
+					ArmyValue = stats?.ArmyValue ?? 0
+				};
+
+				if (playerStats.IsWinner)
+				{
+					results.WinnerName = playerStats.Name;
+					results.WinnerFaction = playerStats.Faction;
+				}
+
+				results.PlayerStats.Add(playerStats);
+			}
+
+			// If no winner yet, determine by most kills value
+			if (results.WinnerName == null && results.PlayerStats.Count > 0)
+			{
+				var bestPlayer = results.PlayerStats.OrderByDescending(p => p.KillsCost).First();
+				results.WinnerName = bestPlayer.Name;
+				results.WinnerFaction = bestPlayer.Faction;
+			}
+
+			AIBattleManager.LastResults = results;
+		}
+
+		static void ShowAIBattleResults()
+		{
+			// Capture the replay path now that the connection is closed
+			CaptureAIBattleReplayPath();
+
+			AIBattleState.Reset();
+
+			// Set the state so MainMenuLogic.OpenMenuBasedOnLastGame opens the results panel
+			MainMenuLogic.SetLastGameState(MainMenuLogic.MenuPanelType.AIBattleResults);
+
+			Game.LoadShellMap();
+		}
+
+		static void CaptureAIBattleReplayPath()
+		{
+			var mod = Game.ModData.Manifest;
+			var replayDir = System.IO.Path.Combine(Platform.SupportDir, "Replays", mod.Id, mod.Metadata.Version);
+			if (System.IO.Directory.Exists(replayDir))
+			{
+				var latestReplay = System.IO.Directory.GetFiles(replayDir, "*.orarep")
+					.OrderByDescending(f => System.IO.File.GetCreationTime(f))
+					.FirstOrDefault();
+				AIBattleManager.LastReplayPath = latestReplay;
+			}
+		}
 	}
 }
+

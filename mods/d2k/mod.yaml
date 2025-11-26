@@ -126,6 +126,9 @@ ChromeLayout:
 	d2k|chrome/tooltips.yaml
 	common|chrome/assetbrowser.yaml
 	d2k|chrome/missionbrowser.yaml
+	d2k|chrome/aibattle.yaml
+	d2k|chrome/aibattle-results.yaml
+	d2k|chrome/ingame-aibattle-replay.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
 	common|chrome/replaybrowser.yaml

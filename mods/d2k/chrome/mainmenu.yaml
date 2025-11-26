@@ -20,7 +20,7 @@ Container@MAINMENU:
 			X: 13 + (WINDOW_WIDTH - 522) / 4 - WIDTH / 2
 			Y: WINDOW_HEIGHT / 2 - HEIGHT / 2
 			Width: 200
-			Height: 320
+			Height: 360
 			Children:
 				Background@MAIN_MENU:
 					Width: PARENT_WIDTH
@@ -116,10 +116,17 @@ Container@MAINMENU:
 							Height: 30
 							Text: label-mentat-title
 							Font: Bold
+						Button@AI_BATTLE_BUTTON:
+							X: PARENT_WIDTH / 2 - WIDTH / 2
+							Y: 220
+							Width: 140
+							Height: 30
+							Text: button-ai-battle
+							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Key: escape
-							Y: 260
+							Y: 300
 							Width: 140
 							Height: 30
 							Text: button-back

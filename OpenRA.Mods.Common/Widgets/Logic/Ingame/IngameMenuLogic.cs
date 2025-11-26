@@ -233,6 +233,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static void OnQuit(World world)
 		{
+			// Capture AI Battle statistics before leaving if this is an AI Battle
+			if (AIBattleState.IsAIBattle)
+				CaptureAIBattleResults(world);
+
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			if (world.Type == WorldType.Regular)
 			{
@@ -254,7 +258,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Game.Disconnect();
 				Ui.ResetAll();
-				Game.LoadShellMap();
+				if (AIBattleState.IsAIBattle)
+					ShowAIBattleResults();
+				else
+					Game.LoadShellMap();
 				return;
 			}
 
@@ -276,8 +283,91 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Game.Disconnect();
 				Ui.ResetAll();
-				Game.LoadShellMap();
+				if (AIBattleState.IsAIBattle)
+					ShowAIBattleResults();
+				else
+					Game.LoadShellMap();
 			});
+		}
+
+		static void CaptureAIBattleResults(World world)
+		{
+			var results = new AIBattleResults
+			{
+				DurationTicks = world.WorldTick,
+				Timestep = world.Timestep
+			};
+
+			foreach (var player in world.Players.Where(p => p.IsBot && !p.NonCombatant))
+			{
+				var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
+				var resources = player.PlayerActor.TraitOrDefault<PlayerResources>();
+
+				var playerStats = new AIPlayerStats
+				{
+					Name = player.ResolvedPlayerName,
+					Faction = player.Faction.InternalName,
+					Team = world.LobbyInfo.ClientWithIndex(player.ClientIndex)?.Team ?? 0,
+					IsWinner = player.WinState == WinState.Won,
+					UnitsKilled = stats?.UnitsKilled ?? 0,
+					UnitsDead = stats?.UnitsDead ?? 0,
+					BuildingsKilled = stats?.BuildingsKilled ?? 0,
+					BuildingsDead = stats?.BuildingsDead ?? 0,
+					KillsCost = stats?.KillsCost ?? 0,
+					DeathsCost = stats?.DeathsCost ?? 0,
+					Earned = resources?.Earned ?? 0,
+					Spent = resources?.Spent ?? 0,
+					ArmyValue = stats?.ArmyValue ?? 0
+				};
+
+				if (playerStats.IsWinner)
+				{
+					results.WinnerName = playerStats.Name;
+					results.WinnerFaction = playerStats.Faction;
+				}
+
+				results.PlayerStats.Add(playerStats);
+			}
+
+			// If no winner yet, determine by most kills value
+			if (results.WinnerName == null && results.PlayerStats.Count > 0)
+			{
+				var bestPlayer = results.PlayerStats.OrderByDescending(p => p.KillsCost).First();
+				results.WinnerName = bestPlayer.Name;
+				results.WinnerFaction = bestPlayer.Faction;
+			}
+
+			AIBattleManager.LastResults = results;
+			// Note: Replay path will be captured later in ShowAIBattleResults after Disconnect()
+		}
+
+		static void CaptureAIBattleReplayPath()
+		{
+			// Try to find the replay file
+			// Replays are stored in SupportDir/Replays/{modId}/{version}/
+			// This is called after Game.Disconnect() so the replay file should be finalized
+			var mod = Game.ModData.Manifest;
+			var replayDir = System.IO.Path.Combine(Platform.SupportDir, "Replays", mod.Id, mod.Metadata.Version);
+			if (System.IO.Directory.Exists(replayDir))
+			{
+				var latestReplay = System.IO.Directory.GetFiles(replayDir, "*.orarep")
+					.OrderByDescending(f => System.IO.File.GetCreationTime(f))
+					.FirstOrDefault();
+				AIBattleManager.LastReplayPath = latestReplay;
+			}
+		}
+
+		static void ShowAIBattleResults()
+		{
+			// Capture the replay path now that the connection is closed and replay file is finalized
+			CaptureAIBattleReplayPath();
+
+			AIBattleState.Reset();
+
+			// Set the state so MainMenuLogic.OpenMenuBasedOnLastGame opens the results panel
+			MainMenuLogic.SetLastGameState(MainMenuLogic.MenuPanelType.AIBattleResults);
+
+			Game.LoadShellMap();
 		}
 
 		void ShowMenu()

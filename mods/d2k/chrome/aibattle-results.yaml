@@ -1,0 +1,172 @@
+Background@AI_BATTLE_RESULTS_PANEL:
+	Logic: AIBattleResultsLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 750
+	Height: 550
+	Children:
+		Label@TITLE:
+			Y: 20
+			Width: PARENT_WIDTH
+			Height: 35
+			Font: BigBold
+			Align: Center
+			Text: label-ai-battle-results-title
+		Container@WINNER_SECTION:
+			Y: 65
+			Width: PARENT_WIDTH
+			Height: 60
+			Children:
+				Label@WINNER_LABEL:
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-ai-battle-winner
+				Label@WINNER_NAME:
+					Y: 28
+					Width: PARENT_WIDTH
+					Height: 30
+					Font: MediumBold
+					Align: Center
+		Container@DURATION_SECTION:
+			Y: 130
+			Width: PARENT_WIDTH
+			Height: 30
+			Children:
+				Label@DURATION_LABEL:
+					X: PARENT_WIDTH / 2 - 120
+					Width: 120
+					Height: 25
+					Font: Bold
+					Align: Right
+					Text: label-ai-battle-duration
+				Label@DURATION_VALUE:
+					X: PARENT_WIDTH / 2 + 5
+					Width: 100
+					Height: 25
+					Font: Regular
+		Container@STATS_HEADERS:
+			X: 25
+			Y: 170
+			Width: PARENT_WIDTH - 50
+			Height: 30
+			Children:
+				Label@COL_PLAYER:
+					Width: 140
+					Height: 25
+					Font: Bold
+					Text: label-stats-player
+				Label@COL_KILLS:
+					X: 145
+					Width: 70
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-basic-stats-kills-header
+				Label@COL_DEATHS:
+					X: 220
+					Width: 70
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-basic-stats-deaths-header
+				Label@COL_DAMAGE:
+					X: 295
+					Width: 90
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-ai-battle-damage
+				Label@COL_EARNED:
+					X: 390
+					Width: 90
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-economy-stats-earned-header
+				Label@COL_SPENT:
+					X: 485
+					Width: 90
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-economy-stats-spent-header
+				Label@COL_ARMY:
+					X: 580
+					Width: 100
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-economy-stats-assets-header
+		ScrollPanel@STATS_PANEL:
+			X: 20
+			Y: 200
+			Width: PARENT_WIDTH - 40
+			Height: 270
+			TopBottomSpacing: 5
+			Children:
+				Container@PLAYER_TEMPLATE:
+					Width: PARENT_WIDTH - 27
+					Height: 35
+					Visible: false
+					Children:
+						Label@PLAYER_NAME:
+							X: 5
+							Y: 5
+							Width: 140
+							Height: 25
+						Label@PLAYER_KILLS:
+							X: 145
+							Y: 5
+							Width: 70
+							Height: 25
+							Align: Center
+						Label@PLAYER_DEATHS:
+							X: 220
+							Y: 5
+							Width: 70
+							Height: 25
+							Align: Center
+						Label@PLAYER_DAMAGE:
+							X: 295
+							Y: 5
+							Width: 90
+							Height: 25
+							Align: Center
+						Label@PLAYER_EARNED:
+							X: 390
+							Y: 5
+							Width: 90
+							Height: 25
+							Align: Center
+						Label@PLAYER_SPENT:
+							X: 485
+							Y: 5
+							Width: 90
+							Height: 25
+							Align: Center
+						Label@PLAYER_ARMY:
+							X: 580
+							Y: 5
+							Width: 100
+							Height: 25
+							Align: Center
+		Container@BUTTONS:
+			Y: 490
+			Width: PARENT_WIDTH
+			Height: 50
+			Children:
+				Button@BACK_BUTTON:
+					X: 20
+					Width: 150
+					Height: 40
+					Font: Bold
+					Text: button-back
+					Key: escape
+				Button@REPLAY_BUTTON:
+					X: PARENT_WIDTH - 190
+					Width: 170
+					Height: 40
+					Font: Bold
+					Text: button-ai-battle-watch-replay

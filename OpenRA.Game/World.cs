@@ -461,6 +461,31 @@ namespace OpenRA
 				ApplyToActorsWithTraitTimed<ITick>((actor, trait) => trait.Tick(actor), "Trait");
 
 				effects.DoTimed(e => e.Tick(this), "Effect");
+
+				// Handle AI Battle replay fast-forward: check if we've reached the target tick
+				if (IsReplay && AIBattleFastForwardState.IsFastForwarding)
+				{
+					if (WorldTick >= AIBattleFastForwardState.TargetTick)
+					{
+						// Reached target, restore normal speed
+						ReplayTimestep = Timestep;
+						AIBattleFastForwardState.Reset();
+
+						// Restore render player if this was a rewind operation
+						if (AIBattleRewindState.IsRewinding)
+						{
+							var restorePlayer = AIBattleRewindState.RestoreRenderPlayer;
+							if (!string.IsNullOrEmpty(restorePlayer))
+								RenderPlayer = Players.FirstOrDefault(p => p.InternalName == restorePlayer);
+							AIBattleRewindState.Reset();
+						}
+					}
+					else
+					{
+						// Continue at max speed
+						ReplayTimestep = 1;
+					}
+				}
 			}
 
 			while (frameEndActions.Count != 0)

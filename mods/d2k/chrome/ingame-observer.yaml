@@ -1,5 +1,5 @@
 Container@OBSERVER_WIDGETS:
-	Logic: MenuButtonsChromeLogic, LoadIngameChatLogic
+	Logic: MenuButtonsChromeLogic, LoadIngameChatLogic, AIBattleObserverLogic
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
@@ -181,6 +181,112 @@ Container@OBSERVER_WIDGETS:
 							TooltipText: button-replay-player-maximum.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Text: button-replay-player-maximum.label
+							Font: TinyBold
+				Container@AI_BATTLE_SPEED_CONTROLS:
+					Y: 39
+					Width: 250
+					Height: 60
+					Visible: false
+					Children:
+						Button@BUTTON_PAUSE:
+							X: 15
+							Y: 5
+							Width: 26
+							Height: 26
+							TooltipText: button-ai-battle-pause-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PAUSE:
+									X: 5
+									Y: 5
+									ImageCollection: music
+									ImageName: pause
+						Button@BUTTON_PLAY:
+							X: 15
+							Y: 5
+							Width: 26
+							Height: 26
+							TooltipText: button-ai-battle-play-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PLAY:
+									X: 5
+									Y: 5
+									ImageCollection: music
+									ImageName: play
+						Button@BUTTON_1X:
+							X: 50
+							Y: 8
+							Width: 30
+							Height: 20
+							TooltipText: button-ai-battle-1x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-1x.label
+							Font: TinyBold
+						Button@BUTTON_2X:
+							X: 85
+							Y: 8
+							Width: 30
+							Height: 20
+							TooltipText: button-ai-battle-2x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-2x.label
+							Font: TinyBold
+						Button@BUTTON_4X:
+							X: 120
+							Y: 8
+							Width: 30
+							Height: 20
+							TooltipText: button-ai-battle-4x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-4x.label
+							Font: TinyBold
+						Button@BUTTON_8X:
+							X: 155
+							Y: 8
+							Width: 30
+							Height: 20
+							TooltipText: button-ai-battle-8x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-8x.label
+							Font: TinyBold
+						Button@BUTTON_16X:
+							X: 190
+							Y: 8
+							Width: 35
+							Height: 20
+							TooltipText: button-ai-battle-16x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-16x.label
+							Font: TinyBold
+						Button@BUTTON_32X:
+							X: 50
+							Y: 33
+							Width: 35
+							Height: 20
+							TooltipText: button-ai-battle-32x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-32x.label
+							Font: TinyBold
+						Button@BUTTON_64X:
+							X: 90
+							Y: 33
+							Width: 35
+							Height: 20
+							TooltipText: button-ai-battle-64x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-64x.label
+							Font: TinyBold
+						Button@BUTTON_128X:
+							X: 130
+							Y: 33
+							Width: 40
+							Height: 20
+							TooltipText: button-ai-battle-128x-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-128x.label
 							Font: TinyBold
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic

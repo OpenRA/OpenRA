@@ -1,0 +1,216 @@
+# AI Battle Replay UI with Timeline Scrubber
+# This is loaded on top of the standard observer UI when viewing AI Battle replays
+
+Container@AI_BATTLE_REPLAY_OVERLAY:
+	Logic: AIBattleReplayLogic
+	X: 0
+	Y: 0
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		# Bottom timeline bar
+		Container@TIMELINE_BAR:
+			X: 0
+			Y: PARENT_HEIGHT - 100
+			Width: PARENT_WIDTH
+			Height: 100
+			Children:
+				ColorBlock@TIMELINE_BG:
+					X: 0
+					Y: 0
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Color: 00000090
+				Label@TITLE:
+					X: 20
+					Y: 5
+					Width: 200
+					Height: 20
+					Font: Bold
+					Text: label-ai-battle-replay-title
+					Contrast: true
+				TimelineScrubber@TIMELINE:
+					X: 20
+					Y: 25
+					Width: PARENT_WIDTH - 40
+					Height: 40
+				Label@REWIND_STATUS:
+					X: PARENT_WIDTH / 2 - 100
+					Y: 5
+					Width: 200
+					Height: 20
+					Font: Bold
+					Align: Center
+					TextColor: FFAA00
+					Contrast: true
+				Container@SPEED_CONTROLS:
+					X: 20
+					Y: 70
+					Width: 350
+					Height: 25
+					Children:
+						Button@BUTTON_PAUSE:
+							X: 0
+							Y: 0
+							Width: 26
+							Height: 25
+							TooltipText: button-replay-player-pause-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PAUSE:
+									X: 5
+									Y: 5
+									ImageCollection: music
+									ImageName: pause
+						Button@BUTTON_PLAY:
+							X: 0
+							Y: 0
+							Width: 26
+							Height: 25
+							TooltipText: button-replay-player-play-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							IgnoreChildMouseOver: true
+							Children:
+								Image@IMAGE_PLAY:
+									X: 5
+									Y: 5
+									ImageCollection: music
+									ImageName: play
+						Button@BUTTON_SLOW:
+							X: 35
+							Y: 0
+							Width: 40
+							Height: 25
+							TooltipText: button-replay-player-slow.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-replay-player-slow.label
+							Font: TinyBold
+						Button@BUTTON_1X:
+							X: 80
+							Y: 0
+							Width: 40
+							Height: 25
+							TooltipText: button-replay-player-regular.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-replay-player-regular.label
+							Font: TinyBold
+						Button@BUTTON_2X:
+							X: 125
+							Y: 0
+							Width: 40
+							Height: 25
+							TooltipText: button-replay-player-fast.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-replay-player-fast.label
+							Font: TinyBold
+						Button@BUTTON_4X:
+							X: 170
+							Y: 0
+							Width: 40
+							Height: 25
+							TooltipText: button-ai-battle-4x.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-ai-battle-4x.label
+							Font: TinyBold
+						Button@BUTTON_MAX:
+							X: 215
+							Y: 0
+							Width: 40
+							Height: 25
+							TooltipText: button-replay-player-maximum.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							Text: button-replay-player-maximum.label
+							Font: TinyBold
+				DropDownButton@SHROUD_SELECTOR:
+					X: PARENT_WIDTH - 270
+					Y: 70
+					Width: 130
+					Height: 25
+					Font: Bold
+				Button@BUTTON_STATS:
+					X: PARENT_WIDTH - 130
+					Y: 70
+					Width: 50
+					Height: 25
+					Font: Bold
+					Text: label-ai-battle-stats
+				Button@BUTTON_MENU:
+					X: PARENT_WIDTH - 70
+					Y: 70
+					Width: 50
+					Height: 25
+					Font: Bold
+					Text: button-back
+		# Stats overlay panel
+		Container@STATS_OVERLAY:
+			X: PARENT_WIDTH - 320
+			Y: 50
+			Width: 300
+			Height: 350
+			Visible: false
+			Children:
+				ColorBlock@STATS_BG:
+					X: 0
+					Y: 0
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Color: 000000C0
+				Label@STATS_TITLE:
+					X: 10
+					Y: 10
+					Width: PARENT_WIDTH - 20
+					Height: 25
+					Font: Bold
+					Text: label-ai-battle-statistics
+					Contrast: true
+				ScrollPanel@STATS_LIST:
+					X: 5
+					Y: 40
+					Width: PARENT_WIDTH - 10
+					Height: PARENT_HEIGHT - 50
+					TopBottomSpacing: 5
+					Children:
+						Container@STAT_PLAYER_TEMPLATE:
+							X: 0
+							Y: 0
+							Width: PARENT_WIDTH - 30
+							Height: 80
+							Visible: false
+							Children:
+								Label@PLAYER_NAME:
+									X: 5
+									Y: 5
+									Width: PARENT_WIDTH - 10
+									Height: 20
+									Font: Bold
+								Label@STAT_KILLS:
+									X: 10
+									Y: 25
+									Width: 130
+									Height: 15
+									Font: Small
+								Label@STAT_DEATHS:
+									X: 145
+									Y: 25
+									Width: 130
+									Height: 15
+									Font: Small
+								Label@STAT_ARMY:
+									X: 10
+									Y: 42
+									Width: 130
+									Height: 15
+									Font: Small
+								Label@STAT_INCOME:
+									X: 145
+									Y: 42
+									Width: 130
+									Height: 15
+									Font: Small
+								Label@STAT_RESOURCES:
+									X: 10
+									Y: 59
+									Width: 270
+									Height: 15
+									Font: Small

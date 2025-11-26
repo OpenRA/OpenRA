@@ -104,6 +104,9 @@ namespace OpenRA
 
 		public static void JoinReplay(string replayFile)
 		{
+			// Check if this is a rewind operation (replay restart to reach an earlier tick)
+			// The AIBattleRewindState and AIBattleFastForwardState are set up before this call
+			// to coordinate the restart-and-fast-forward rewind mechanism
 			JoinInner(new OrderManager(new ReplayConnection(replayFile)));
 		}
 
@@ -820,7 +823,9 @@ namespace OpenRA
 				var logicWorld = worldRenderer?.World;
 
 				// ReplayTimestep = 0 means the replay is paused: we need to keep logicInterval as UI.Timestep to avoid breakage
-				if (logicWorld != null && (!logicWorld.IsReplay || logicWorld.ReplayTimestep != 0))
+				// Similarly, AIBattleState.GetEffectiveTimestep() = 0 means the AI battle is paused
+				var aiBattlePaused = AIBattleState.IsAIBattle && AIBattleState.IsPaused;
+				if (logicWorld != null && (!logicWorld.IsReplay || logicWorld.ReplayTimestep != 0) && !aiBattlePaused)
 					logicInterval = logicWorld == OrderManager.World ? OrderManager.SuggestedTimestep : logicWorld.Timestep;
 
 				// Ideal time between screen updates
@@ -854,7 +859,10 @@ namespace OpenRA
 					{
 						nextLogic += logicInterval;
 
-						LogicTick();
+						// For AI Battle mode at very high speeds (>32x), run multiple logic ticks per frame
+						var ticksPerFrame = AIBattleState.IsAIBattle ? AIBattleState.GetTicksPerFrame() : 1;
+						for (var i = 0; i < ticksPerFrame; i++)
+							LogicTick();
 
 						// Force at least one render per tick during regular gameplay
 						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
@@ -951,6 +959,15 @@ namespace OpenRA
 			OrderManager.Dispose();
 			CloseServer();
 			JoinLocal();
+
+			// Reset AI Battle state if leaving AI Battle mode
+			// Don't reset during rewind operations (which involve disconnect + rejoin)
+			if (AIBattleState.IsAIBattle && !AIBattleRewindState.IsRewinding)
+			{
+				AIBattleState.Reset();
+				AIBattleRewindState.Reset();
+				AIBattleFastForwardState.Reset();
+			}
 		}
 
 		public static void CloseServer()

@@ -38,7 +38,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
 
-		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
+		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves, AIBattleResults }
+
+		// Public type alias for external access to MenuPanel enum
+		public enum MenuPanelType { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves, AIBattleResults }
 
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
@@ -52,6 +55,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static bool fetchedNews;
 
 		protected static MenuPanel lastGameState = MenuPanel.None;
+
+		/// <summary>
+		/// Allows external code to set which panel should be opened when returning to the main menu.
+		/// Used by AI Battle results to show the results panel after the shell map loads.
+		/// </summary>
+		public static void SetLastGameState(MenuPanelType panel)
+		{
+			lastGameState = (MenuPanel)panel;
+		}
 
 		bool newsOpen;
 
@@ -135,6 +147,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var encyclopediaButton = singleplayerMenu.GetOrNull<ButtonWidget>("ENCYCLOPEDIA_BUTTON");
 			if (encyclopediaButton != null)
 				encyclopediaButton.OnClick = OpenEncyclopediaPanel;
+
+			var aiBattleButton = singleplayerMenu.GetOrNull<ButtonWidget>("AI_BATTLE_BUTTON");
+			if (aiBattleButton != null)
+				aiBattleButton.OnClick = OpenAIBattlePanel;
 
 			singleplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
 
@@ -486,6 +502,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
+		void OpenAIBattlePanel()
+		{
+			SwitchMenu(MenuType.None);
+			Game.OpenWindow("AI_BATTLE_PANEL", new WidgetArgs
+			{
+				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) }
+			});
+		}
+
 		void OpenSkirmishLobbyPanel()
 		{
 			SwitchMenu(MenuType.None);
@@ -568,6 +593,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				case MenuPanel.GameSaves:
 					SwitchMenu(MenuType.Singleplayer);
+					break;
+
+				case MenuPanel.AIBattleResults:
+					Ui.OpenWindow("AI_BATTLE_RESULTS_PANEL", new WidgetArgs
+					{
+						{ "modData", modData }
+					});
 					break;
 			}
 

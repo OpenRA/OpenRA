@@ -213,6 +213,10 @@ namespace OpenRA.Network
 				if (World.IsReplay)
 					return World.ReplayTimestep;
 
+				// AI Battle mode uses adjustable speed
+				if (AIBattleState.IsAIBattle)
+					return AIBattleState.GetEffectiveTimestep();
+
 				if (tickScale != 1f)
 					return Math.Max((int)(tickScale * World.Timestep), 1);
 

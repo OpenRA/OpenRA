@@ -1,0 +1,203 @@
+Background@AI_BATTLE_PANEL:
+	Logic: AIBattleLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 600
+	Children:
+		Label@TITLE:
+			Y: 20
+			Width: PARENT_WIDTH
+			Height: 35
+			Font: Bold
+			Align: Center
+			Text: label-ai-battle-title
+		Container@MAP_SECTION:
+			X: 20
+			Y: 70
+			Width: 280
+			Height: 420
+			Children:
+				Label@MAP_LABEL:
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+					Text: label-ai-battle-map
+				Background@MAP_PREVIEW_BG:
+					Y: 30
+					Width: 260
+					Height: 200
+					Background: dialog3
+					Children:
+						MapPreview@MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_WIDTH - 2
+							Height: PARENT_HEIGHT - 2
+							IgnoreMouseOver: True
+							ShowSpawnPoints: True
+				Button@MAP_BUTTON:
+					Y: 240
+					Width: 260
+					Height: 30
+					Font: Bold
+					Text: button-ai-battle-change-map
+				Container@GAME_OPTIONS:
+					Y: 285
+					Width: 260
+					Height: 130
+					Children:
+						Label@OPTIONS_LABEL:
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Bold
+							Text: label-ai-battle-game-options
+						Checkbox@EXPLORED_CHECKBOX:
+							Y: 28
+							Width: PARENT_WIDTH
+							Height: 20
+							Text: label-ai-battle-explored-map
+							TooltipText: tooltip-ai-battle-explored-map
+						Checkbox@FOG_CHECKBOX:
+							Y: 52
+							Width: PARENT_WIDTH
+							Height: 20
+							Text: label-ai-battle-fog-of-war
+							TooltipText: tooltip-ai-battle-fog-of-war
+						Container@CASH_ROW:
+							Y: 78
+							Width: PARENT_WIDTH
+							Height: 30
+							Children:
+								Label@CASH_LABEL:
+									Width: 100
+									Height: 25
+									Text: label-ai-battle-starting-cash
+								DropDownButton@CASH_DROPDOWN:
+									X: 100
+									Width: 100
+									Height: 25
+									Font: Regular
+						Container@SPEED_ROW:
+							Y: 106
+							Width: PARENT_WIDTH
+							Height: 30
+							Children:
+								Label@SPEED_LABEL:
+									Width: 100
+									Height: 25
+									Text: label-ai-battle-game-speed
+								DropDownButton@GAME_SPEED_DROPDOWN:
+									X: 100
+									Width: 100
+									Height: 25
+									Font: Regular
+		Container@AI_SECTION:
+			X: 320
+			Y: 70
+			Width: 560
+			Height: 420
+			Children:
+				Label@AI_LABEL:
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+					Text: label-ai-battle-players
+				Container@AI_HEADERS:
+					Y: 30
+					Width: PARENT_WIDTH
+					Height: 25
+					Children:
+						Label@HEADER_SLOT:
+							X: 10
+							Width: 25
+							Height: 20
+							Font: Bold
+							Text: #
+						Label@HEADER_AI:
+							X: 40
+							Width: 130
+							Height: 20
+							Font: Bold
+							Text: label-ai-battle-header-ai
+						Label@HEADER_FACTION:
+							X: 180
+							Width: 120
+							Height: 20
+							Font: Bold
+							Text: label-ai-battle-header-faction
+						Label@HEADER_TEAM:
+							X: 310
+							Width: 60
+							Height: 20
+							Font: Bold
+							Text: label-ai-battle-header-team
+				ScrollPanel@AI_SLOTS_CONTAINER:
+					Y: 55
+					Width: PARENT_WIDTH
+					Height: 310
+					TopBottomSpacing: 5
+				Container@AI_SLOT_TEMPLATE:
+					Width: PARENT_WIDTH - 30
+					Height: 35
+					Visible: false
+					Children:
+						Label@SLOT_NUMBER:
+							X: 10
+							Y: 8
+							Width: 25
+							Height: 20
+							Font: Bold
+						DropDownButton@BOT_DROPDOWN:
+							X: 40
+							Y: 2
+							Width: 130
+							Height: 30
+							Font: Regular
+						DropDownButton@FACTION_DROPDOWN:
+							X: 180
+							Y: 2
+							Width: 120
+							Height: 30
+							Font: Regular
+						DropDownButton@TEAM_DROPDOWN:
+							X: 310
+							Y: 2
+							Width: 60
+							Height: 30
+							Font: Regular
+		Container@OPTIONS_SECTION:
+			X: 320
+			Y: 500
+			Width: 560
+			Height: 40
+			Children:
+				Label@SPEED_LABEL:
+					Y: 5
+					Width: 160
+					Height: 25
+					Font: Bold
+					Text: label-ai-battle-sim-speed
+				DropDownButton@SPEED_DROPDOWN:
+					X: 170
+					Width: 80
+					Height: 30
+					Font: Regular
+		Container@BUTTONS:
+			Y: 545
+			Width: PARENT_WIDTH
+			Height: 50
+			Children:
+				Button@BACK_BUTTON:
+					X: 20
+					Width: 150
+					Height: 40
+					Font: Bold
+					Text: button-back
+					Key: escape
+				Button@START_BUTTON:
+					X: PARENT_WIDTH - 170
+					Width: 150
+					Height: 40
+					Font: Bold
+					Text: button-ai-battle-start
