@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Globalization;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var stats in sortedStats)
 			{
-				var row = (ContainerWidget)template.Clone();
+				var row = template.Clone();
 				row.IsVisible = () => true;
 
 				var nameLabel = row.Get<LabelWidget>("PLAYER_NAME");
@@ -65,11 +66,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var killsLabel = row.Get<LabelWidget>("PLAYER_KILLS");
 				var kills = stats.UnitsKilled + stats.BuildingsKilled;
-				killsLabel.GetText = () => kills.ToString();
+				var killsText = kills.ToString(CultureInfo.InvariantCulture);
+				killsLabel.GetText = () => killsText;
 
 				var deathsLabel = row.Get<LabelWidget>("PLAYER_DEATHS");
 				var deaths = stats.UnitsDead + stats.BuildingsDead;
-				deathsLabel.GetText = () => deaths.ToString();
+				var deathsText = deaths.ToString(CultureInfo.InvariantCulture);
+				deathsLabel.GetText = () => deathsText;
 
 				var damageLabel = row.Get<LabelWidget>("PLAYER_DAMAGE");
 				var damage = stats.KillsCost;

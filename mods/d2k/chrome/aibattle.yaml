@@ -113,7 +113,7 @@ Background@AI_BATTLE_PANEL:
 							Width: 25
 							Height: 20
 							Font: Bold
-							Text: #
+							Text: label-ai-battle-header-slot
 						Label@HEADER_AI:
 							X: 40
 							Width: 130

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
@@ -33,9 +34,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool fogOfWar = true;
 		int startingCash = 5000;
 		string gameSpeed = "default";
-
-		[FluentReference]
-		const string AIBattleTitle = "label-ai-battle-title";
 
 		public sealed class AISlotConfig
 		{
@@ -85,11 +83,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "remoteMapPool", null },
 					{ "initialTab", MapClassification.System },
 					{ "onExit", () => { } },
-					{ "onSelect", (Action<string>)(uid =>
 					{
-						selectedMap = modData.MapCache[uid];
-						RebuildAISlots();
-					})},
+						"onSelect",
+						(Action<string>)(uid =>
+						{
+							selectedMap = modData.MapCache[uid];
+							RebuildAISlots();
+						})
+					},
 					{ "onSelectGenerated", null },
 					{ "filter", MapVisibility.Lobby },
 				});
@@ -129,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					BotType = botTypes.FirstOrDefault()?.Type ?? "normal",
 					Faction = factions.Count > 0 ? factions[i % factions.Count].InternalName : "Random",
-					Team = (i % maxTeams) + 1, // Alternate teams within valid range
+					Team = i % maxTeams + 1, // Alternate teams within valid range
 				};
 				aiSlots.Add(slot);
 
@@ -218,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Fallback to type with first letter capitalized
 				if (!string.IsNullOrEmpty(Type))
-					return char.ToUpper(Type[0]) + Type[1..];
+					return char.ToUpper(Type[0], CultureInfo.InvariantCulture) + Type[1..];
 
 				return "AI";
 			}
@@ -235,7 +236,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Slot number label
 			var slotLabel = widget.Get<LabelWidget>("SLOT_NUMBER");
 			var slotNum = index + 1;
-			slotLabel.GetText = () => slotNum.ToString();
+			slotLabel.GetText = () => slotNum.ToString(CultureInfo.InvariantCulture);
 
 			// AI Type dropdown - show display name
 			var botDropdown = widget.Get<DropDownButtonWidget>("BOT_DROPDOWN");
@@ -281,7 +282,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Team dropdown - limited to valid teams based on player count
 			var teamDropdown = widget.Get<DropDownButtonWidget>("TEAM_DROPDOWN");
-			teamDropdown.GetText = () => slot.Team == 0 ? "-" : slot.Team.ToString();
+			teamDropdown.GetText = () => slot.Team == 0 ? "-" : slot.Team.ToString(CultureInfo.InvariantCulture);
 			teamDropdown.OnClick = () =>
 			{
 				// Teams: 0 (no team), then 1 through maxTeams
@@ -289,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ScrollItemWidget SetupItem(int t, ScrollItemWidget itemTemplate)
 				{
 					var item = ScrollItemWidget.Setup(itemTemplate, () => slot.Team == t, () => slot.Team = t);
-					var teamLabel = t == 0 ? "-" : t.ToString();
+					var teamLabel = t == 0 ? "-" : t.ToString(CultureInfo.InvariantCulture);
 					item.Get<LabelWidget>("LABEL").GetText = () => teamLabel;
 					return item;
 				}
@@ -362,19 +363,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.ToArray();
 
 			// Build orders to configure the AI battle
-			var orders = new List<Order>();
+			var orders = new List<Order>
+			{
+				// Enable singleplayer mode (allows no human players in slots)
+				Order.Command("option singleplayer True"),
 
-			// Enable singleplayer mode (allows no human players in slots)
-			orders.Add(Order.Command("option singleplayer True"));
+				// Set game options
+				Order.Command($"option explored {exploredMap}"),
+				Order.Command($"option fog {fogOfWar}"),
+				Order.Command($"option startingcash {startingCash}"),
+				Order.Command($"option gamespeed {gameSpeed}"),
 
-			// Set game options
-			orders.Add(Order.Command($"option explored {exploredMap}"));
-			orders.Add(Order.Command($"option fog {fogOfWar}"));
-			orders.Add(Order.Command($"option startingcash {startingCash}"));
-			orders.Add(Order.Command($"option gamespeed {gameSpeed}"));
-
-			// Make the local player a spectator (they will observe the AI battle)
-			orders.Add(Order.Command("spectate"));
+				// Make the local player a spectator (they will observe the AI battle)
+				Order.Command("spectate"),
+			};
 
 			// Add bots to each slot
 			for (var i = 0; i < aiSlots.Count && i < slots.Length; i++)
@@ -396,7 +398,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Game.CreateAndStartLocalServer(selectedMap.Uid, orders);
 		}
-
 	}
 
 	public sealed class AIBattleConfig

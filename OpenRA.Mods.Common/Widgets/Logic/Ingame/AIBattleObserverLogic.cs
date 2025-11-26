@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Load the AI Battle replay overlay when viewing AI Battle replays
 			if (AIBattleState.IsAIBattle && world.IsReplay)
-				Game.LoadWidget(world, "AI_BATTLE_REPLAY_OVERLAY", Ui.Root, new WidgetArgs());
+				Game.LoadWidget(world, "AI_BATTLE_REPLAY_OVERLAY", Ui.Root, []);
 		}
 
 		void SetupSpeedControls(Widget widget)
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupSpeedButton(container, "BUTTON_128X", 128);
 		}
 
-		void SetupSpeedButton(Widget container, string buttonId, int speed)
+		static void SetupSpeedButton(Widget container, string buttonId, int speed)
 		{
 			var button = container.GetOrNull<ButtonWidget>(buttonId);
 			if (button == null)

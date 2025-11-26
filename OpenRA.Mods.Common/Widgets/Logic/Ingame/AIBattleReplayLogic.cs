@@ -24,6 +24,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	/// </summary>
 	public class AIBattleReplayLogic : ChromeLogic
 	{
+		[FluentReference("time")]
+		const string LabelRewinding = "label-ai-battle-rewinding";
+
+		[FluentReference("time")]
+		const string LabelSeeking = "label-ai-battle-seeking";
+
+		[FluentReference]
+		const string LabelNoFog = "label-no-fog";
+
+		[FluentReference]
+		const string LabelCombinedVision = "label-combined-vision";
+
 		readonly World world;
 		readonly OrderManager orderManager;
 		readonly int originalTimestep;
@@ -81,13 +93,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (AIBattleRewindState.IsRewinding)
 					{
 						var targetTime = WidgetUtils.FormatTime(AIBattleRewindState.TargetTick, originalTimestep);
-						return FluentProvider.GetMessage("label-ai-battle-rewinding", "time", targetTime);
+						return FluentProvider.GetMessage(LabelRewinding, "time", targetTime);
 					}
 
 					if (AIBattleFastForwardState.IsFastForwarding)
 					{
 						var targetTime = WidgetUtils.FormatTime(AIBattleFastForwardState.TargetTick, originalTimestep);
-						return FluentProvider.GetMessage("label-ai-battle-seeking", "time", targetTime);
+						return FluentProvider.GetMessage(LabelSeeking, "time", targetTime);
 					}
 
 					return "";
@@ -192,9 +204,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			shroudSelector.GetText = () =>
 			{
 				if (world.RenderPlayer == null)
-					return FluentProvider.GetMessage("label-no-fog");
+					return FluentProvider.GetMessage(LabelNoFog);
 				if (world.RenderPlayer == everyonePlayer)
-					return FluentProvider.GetMessage("label-combined-vision");
+					return FluentProvider.GetMessage(LabelCombinedVision);
 				return world.RenderPlayer.ResolvedPlayerName;
 			};
 
@@ -205,7 +217,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// No Fog option
 					new()
 					{
-						Title = FluentProvider.GetMessage("label-no-fog"),
+						Title = FluentProvider.GetMessage(LabelNoFog),
 						OnClick = () => world.RenderPlayer = null,
 						IsSelected = () => world.RenderPlayer == null
 					}
@@ -216,7 +228,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					options.Add(new DropDownOption
 					{
-						Title = FluentProvider.GetMessage("label-combined-vision"),
+						Title = FluentProvider.GetMessage(LabelCombinedVision),
 						OnClick = () => world.RenderPlayer = everyonePlayer,
 						IsSelected = () => world.RenderPlayer == everyonePlayer
 					});

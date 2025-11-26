@@ -201,6 +201,7 @@ label-ai-battle-players = AI Players
 label-ai-battle-sim-speed = Simulation Speed
 button-ai-battle-change-map = Change Map
 button-ai-battle-start = Start Battle
+label-ai-battle-header-slot = #
 label-ai-battle-header-ai = AI
 label-ai-battle-header-faction = Faction
 label-ai-battle-header-team = Team
@@ -211,7 +212,6 @@ label-ai-battle-starting-cash = Starting Cash:
 label-ai-battle-game-speed = Game Speed:
 tooltip-ai-battle-explored-map = Players will start with the map fully revealed
 tooltip-ai-battle-fog-of-war = Enable fog of war (enemy units hidden when not in view)
-tooltip-ai-battle-game-speed = Base game tick rate. Affects AI decision timing and game pacing. Normal is recommended for fair AI battles.
 
 ## AI Battle speed controls (ingame-observer.yaml)
 button-ai-battle-pause-tooltip = Pause simulation
@@ -227,11 +227,9 @@ button-ai-battle-64x-tooltip = Near maximum playback (64x speed)
 button-ai-battle-128x-tooltip = Maximum playback speed (128x)
 
 button-ai-battle-1x =
-    .tooltip = Real-time playback (1x speed)
     .label = 1x
 
 button-ai-battle-2x =
-    .tooltip = Fast playback (2x speed)
     .label = 2x
 
 button-ai-battle-4x =
@@ -239,23 +237,18 @@ button-ai-battle-4x =
     .label = 4x
 
 button-ai-battle-8x =
-    .tooltip = Very fast playback (8x speed)
     .label = 8x
 
 button-ai-battle-16x =
-    .tooltip = Ultra fast playback (16x speed)
     .label = 16x
 
 button-ai-battle-32x =
-    .tooltip = Extreme playback (32x speed)
     .label = 32x
 
 button-ai-battle-64x =
-    .tooltip = Near maximum playback (64x speed)
     .label = 64x
 
 button-ai-battle-128x =
-    .tooltip = Maximum playback speed (128x)
     .label = 128x
 
 ## aibattle-results.yaml
