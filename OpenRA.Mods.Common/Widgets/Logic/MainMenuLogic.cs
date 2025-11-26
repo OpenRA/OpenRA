@@ -36,16 +36,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("author", "datetime")]
 		const string AuthorDateTime = "label-author-datetime";
 
-		[FluentReference]
+		[FluentReference(optional: true)]
 		const string TutorialResumeTitle = "dialog-tutorial-resume.title";
 
-		[FluentReference]
+		[FluentReference(optional: true)]
 		const string TutorialResumePrompt = "dialog-tutorial-resume.prompt";
 
-		[FluentReference]
+		[FluentReference(optional: true)]
 		const string TutorialResumeButton = "dialog-tutorial-resume.resume";
 
-		[FluentReference]
+		[FluentReference(optional: true)]
 		const string TutorialStartNewButton = "dialog-tutorial-resume.start-new";
 
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
