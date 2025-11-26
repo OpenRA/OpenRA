@@ -205,3 +205,10 @@ button-mainmenu-prerelease-notification-continue = I Understand
 
 ## settings-hotkeys.yaml
 hotkey-group-depth-preview-debug = Depth Preview Debug
+
+## mainmenu.yaml (Tutorial)
+dialog-tutorial-resume =
+    .title = Resume Tutorial
+    .prompt = You have a saved tutorial in progress. Would you like to resume or start a new tutorial?
+    .resume = Resume
+    .start-new = Start New

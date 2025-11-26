@@ -282,7 +282,7 @@ namespace OpenRA
 
 				// Take the SHA1
 				if (streams.Count == 0)
-					return CryptoUtil.SHA1Hash(Array.Empty<byte>());
+					return CryptoUtil.SHA1Hash((byte[])[]);
 
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)

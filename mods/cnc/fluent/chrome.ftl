@@ -762,3 +762,10 @@ label-bot-player-tooltip-name = Bot
 label-bot-managed-by-tooltip = Bot managed by { $name }
 label-game-admin = Game Admin
 
+## mainmenu.yaml (Tutorial)
+dialog-tutorial-resume =
+    .title = Resume Tutorial
+    .prompt = You have a saved tutorial in progress. Would you like to resume or start a new tutorial?
+    .resume = Resume
+    .start-new = Start New
+

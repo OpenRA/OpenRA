@@ -2,6 +2,13 @@
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
 
+## mainmenu.yaml (Tutorial)
+dialog-tutorial-resume =
+    .title = Resume Tutorial
+    .prompt = You have a saved tutorial in progress. Would you like to resume or start a new tutorial?
+    .resume = Resume
+    .start-new = Start New
+
 ## ingame-observer.yaml
 button-observer-widgets-pause-tooltip = Pause
 button-observer-widgets-play-tooltip = Play

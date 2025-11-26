@@ -143,7 +143,6 @@ FluentMessages:
 	d2k|fluent/chrome.ftl
 	d2k|fluent/hotkeys.ftl
 	d2k|fluent/rules.ftl
-	d2k|fluent/tutorial.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
 
