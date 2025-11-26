@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 					attraction -= indiceSideLengthSquare << 4;
 				else
 				{
-					var (indiceCount, nearbyEnemyBase, nearbyEnemy) = resourceMapModule.GetNearbyIndicesThreat(i);
+					var (indiceCount, nearbyEnemy, nearbyEnemyBase) = resourceMapModule.GetNearbyIndicesThreat(i);
 					if (nearbyEnemyBase + nearbyEnemy > 0)
 						attraction -= indiceSideLengthSquare >> 5;
 				}
