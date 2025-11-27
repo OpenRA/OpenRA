@@ -2,6 +2,7 @@ Player:
 	ModularBot@bot-test-ai:
 		Name: bot-test-ai.name
 		Type: test
+		HighPriorityOrders: PlaceBuilding
 	GrantConditionOnBotOwner@test:
 		Condition: enable-test-ai
 		Bots: test

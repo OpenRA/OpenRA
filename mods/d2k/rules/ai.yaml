@@ -2,12 +2,15 @@ Player:
 	ModularBot@Omnius:
 		Name: bot-omnius.name
 		Type: omnius
+		HighPriorityOrders: PlaceBuilding
 	ModularBot@Vidius:
 		Name: bot-vidius.name
 		Type: vidious
+		HighPriorityOrders: PlaceBuilding
 	ModularBot@Gladius:
 		Name: bot-gladius.name
 		Type: gladius
+		HighPriorityOrders: PlaceBuilding
 	GrantConditionOnBotOwner@omnius:
 		Condition: enable-omnius-ai
 		Bots: omnius
