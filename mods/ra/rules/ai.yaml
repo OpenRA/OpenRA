@@ -2,15 +2,19 @@ Player:
 	ModularBot@RushAI:
 		Name: bot-rush-ai.name
 		Type: rush
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	ModularBot@NormalAI:
 		Name: bot-normal-ai.name
 		Type: normal
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	ModularBot@TurtleAI:
 		Name: bot-turtle-ai.name
 		Type: turtle
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	ModularBot@NavalAI:
 		Name: bot-naval-ai.name
 		Type: naval
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	GrantConditionOnBotOwner@rush:
 		Condition: enable-rush-ai
 		Bots: rush

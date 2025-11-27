@@ -2,12 +2,15 @@ Player:
 	ModularBot@Cabal:
 		Name: bot-cabal.name
 		Type: cabal
+		HighPriorityOrders: PlaceBuilding
 	ModularBot@Watson:
 		Name: bot-watson.name
 		Type: watson
+		HighPriorityOrders: PlaceBuilding
 	ModularBot@HAL9001:
 		Name: bot-hal9001.name
 		Type: hal9001
+		HighPriorityOrders: PlaceBuilding
 	GrantConditionOnBotOwner@cabal:
 		Condition: enable-cabal-ai
 		Bots: cabal
