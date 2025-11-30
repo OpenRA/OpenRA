@@ -5,8 +5,8 @@ objective-completed = Objective Completed
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New primary objective
-new-secondary-objective = New secondary objective
+new-primary-objective = New Primary Objective
+new-secondary-objective = New Secondary Objective
 
 mentat = Mentat
 
