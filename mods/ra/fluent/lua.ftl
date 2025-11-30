@@ -212,8 +212,8 @@ capture-air-force-hq = Find and capture the enemy Air Force HQ.
 ## monster-tank-madness
 find-demitri = Find Dr. Demitri. He is likely hiding in the village
     to the far south.
-reprogram-super-tanks = Reprogram the super tanks by sending a spy
-    into the Soviet radar dome.
+reprogram-super-tanks = Reprogram the Super Tanks by infiltrating
+    the Soviet Radar Dome with a spy.
 defend-outpost = Defend and repair our outpost.
 super-tank-self-destruct-t-minus-3 = In 3 minutes the super tanks will self-destruct.
 evacuate-demitri = Evacuate Dr. Demitri with the helicopter waiting
