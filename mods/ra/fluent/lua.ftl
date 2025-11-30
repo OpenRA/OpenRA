@@ -46,7 +46,7 @@ destroy-soviet-units-buildings = Destroy all Soviet units and buildings in this 
 destroy-convoys = Eliminate all passing Soviet convoys.
 
 ## allies-05a
-extract-transport = Get all your forces into the transport.
+extract-transport = Get all your forces aboard the transport.
 
 # allies-05abc
 spy = Spy
