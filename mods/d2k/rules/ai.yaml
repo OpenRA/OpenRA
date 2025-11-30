@@ -261,6 +261,7 @@ Player:
 			medium_gun_turret: 5000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		RepairAllBuildingsCoolDown: -1
 	SquadManagerBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		SquadSize: 8
