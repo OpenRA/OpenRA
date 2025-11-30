@@ -197,7 +197,7 @@ rescue-scientists-extraction-point = Rescue the scientists and escort them back 
 too-late = We're too late!
 
 ## infiltration
-secure-laboratory-guards = Secure the laboratory by eliminating its guards.
+secure-laboratory-guards = Eliminate the guards to secure the laboratory.
 destroy-remaining-soviet-presence = Destroy the remaining Soviet presence.
 infiltrate-laboratory = Infiltrate the laboratory with a spy undetected.
 secure-lab-in = Secure lab in: { $time }
