@@ -186,7 +186,7 @@ lonestar-ai-sold-its-walls = Lonestar AI { $id } sold its walls for better comba
 ## in-the-nick-of-time
 friendlies-coming-out = Friendlies coming out!
 medic = Medic
-get-scientists-evacuation-point = Commander, we're detecting Soviet transports headed your way. Get those scientists back to the extraction point in the southeast!
+get-scientists-evacuation-point = Commander, we're detecting Soviet transports headed your way. Get the scientists back to the extraction point in the southeast!
 landcom-16-capitalized = LANDCOM 16
 scientists-killed-in-command-center = The scientists were in the Command Center!
 chronosphere-explodes-in = Chronosphere explodes in { $time }
