@@ -339,7 +339,7 @@ time-remaining = Time Remaining: { $time }
 
 ## soviet-04ab, soviet-08ab, soviet-10
 destroy-radar-dome-reinforcements = Destroy the Allied Radar Dome to prevent
-    enemy reinforcements.
+     reinforcements.
 
 ## soviet05
 allied-mcv-island = Allied MCV detected moving towards the island.
