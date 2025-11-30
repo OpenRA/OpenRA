@@ -218,14 +218,14 @@ defend-outpost = Defend and repair our outpost.
 super-tank-self-destruct-t-minus-3 = In 3 minutes the super tanks will self-destruct.
 evacuate-demitri = Evacuate Dr. Demitri with the helicopter waiting
     at our outpost.
-super-tank-self-destruct-in = The super tanks will self-destruct in { $time }
-super-tanks-destroyed = The super tanks have been destroyed!
-eliminate-super-tanks = Destroy all remaining super tanks.
+super-tank-self-destruct-in = The Super Tanks will self-destruct in { $time }
+super-tanks-destroyed = The Super Tanks have been destroyed!
+eliminate-super-tanks = Destroy all remaining Super Tanks.
 steal-money-outpost = Use the Thief to steal funds from the nearby outpost.
 cross-river = Secure transportation to the mainland.
 find-outpost-and-repair = Find our outpost and start repairs.
 evacuate-civilian-hospital = Evacuate all civilians from the hospital.
-demitri-extracted-super-tanks-destroyed = Dr. Demitri has been safely extracted, and the super tanks have been dealt with.
+demitri-extracted-super-tanks-destroyed = Dr. Demitri has been safely extracted, and the Super Tanks have been dealt with.
 
 ## mousetrap
 all-engineers-killed = All engineers have been killed.
@@ -242,7 +242,7 @@ guide-thank-you = Thank you! I'll help you get into town!
 guide-follow-me = Follow me!
 guide-patrol-coming = Uh oh, a patrol is coming this way.
 guide-come-this-way = Come this way! Hurry!
-guide-safe-to-move = It's safe to move now. Let's go.
+guide-safe-to-move = It's safe now. Let's go.
 hostage-dies-in = Hostage dies in { $time }
 keep-all-hostages-alive = Keep all hostages alive.
 
@@ -253,8 +253,8 @@ capture-enemy-radar-dome = Capture the enemy Radar Dome.
 destroy-escaping-submarine = Destroy the submarine before it escapes!
 submarine-escapes = The submarine is heading for open sea!
 submarine-construction-complete-in = Submarine construction complete in { $time }
-destroy-soviet-sub-pen = Destroy the Soviet sub pen.
-power-down-tesla-coils = Cut power to the tesla coils.
+destroy-soviet-sub-pen = Destroy the Soviet Sub Pen.
+power-down-tesla-coils = Cut power to the Tesla Coils.
 
 ## sarin-gas-1-crackdown, soviet09
 convoy-truck-escaping = Convoy truck attempting to escape!
@@ -262,7 +262,7 @@ convoy-truck-escaping = Convoy truck attempting to escape!
 ## sarin-gas-1-crackdown
 prevent-soviet-trucks-escaping = Prevent the Soviet convoy trucks from escaping.
 clear-sector-soviet-presence = Clear the sector of all Soviet presence.
-infiltrate-radar-reveal-escape-routes = Infiltrate the Soviet Radar Dome to reveal truck
+infiltrate-radar-reveal-escape-routes = Infiltrate the Soviet Radar Dome to reveal convoy
     escape routes.
 
 ## sarin-gas-2-down-under, situation-critical
@@ -282,14 +282,14 @@ prepare-to-fire = Prepare to Fire!
 fire = Fire!
 thanks-for-rescue = Thanks for the rescue!
 move-nuclear-outside = The Soviets have an unstable nuclear device stored here.
-     I need to move it out of the facility!
+     Help me move it out of the facility!
 exit-clear-hopefully = I hope the exit is clear!
-reach-eastern-exit = Reach the eastern exit of the facility.
+reach-eastern-exit = Reach the eastern facility.
 free-tanya-keep-alive = Free Tanya and keep her alive.
 kill-soviet-officers-scientists = Kill all Soviet officers and scientists.
-steal-soviet-mammoth-tank = Steal a Soviet mammoth tank.
-no-casualties = Do not lose a single soldier or civilian
-    under your command.
+steal-soviet-mammoth-tank = Steal a Soviet Mammoth Tank.
+no-casualties = Ensure no soldier or civilian
+    under your command is lost.
 
 ## sarin-gas-3-controlled-burn
 capture-sarin-plants-intact = Capture all Sarin processing plants intact.
