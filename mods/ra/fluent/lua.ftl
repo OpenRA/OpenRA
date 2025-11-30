@@ -436,6 +436,6 @@ waystation-must-not-be-destroyed = The waystation must not be destroyed.
 destroy-aa-guns-enable-air-support = Destroy all the AA Guns to enable air support.
 find-destroy-bridge-stop-allied-reinforcements = Find and destroy the bridge the Allies are using
     to bring reinforcements into the area.
-air-support-t-minus-3 = Very good, comrade General! Our air units are en route
+air-support-t-minus-3 = Very good, Comrade General! Our air units are en route
     and should reach your area in approximately three minutes.
 allied-ground-reinforcements-stopped = This should stop the Allied forces from getting their ground reinforcements.
