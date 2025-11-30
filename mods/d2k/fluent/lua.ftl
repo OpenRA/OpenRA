@@ -56,7 +56,7 @@ fremen-sietch-under-attack = The Fremen Sietch is under attack!
 smugglers-annihilated = The Smugglers have been annihilated!
 
 ## atreides-05
-incoming-mercenary-force = Incoming hostile Mercenary forces detected.
+incoming-mercenary-force = Hostile mercenary force incoming.
 contraband-has-arrived = The contraband has arrived!
 contraband-confiscated = Contraband has arrived and been confiscated.
 contraband-not-confiscated = The Smuggler contraband has arrived, but confiscation is impossible due to the heavy defenses of the Starport.
