@@ -27,7 +27,7 @@ tanya-survive = Tanya must survive.
 escort-convoy = Escort the convoy.
 
 ## allies-02
-convoy-arrived = The convoy has arrived!
+convoy-arrived = The Convoy has arrived!
 secure-convoy = Secure the convoy's path.
 eliminate-soviets = Eliminate the entire Soviet presence in this area.
 
