@@ -338,7 +338,7 @@ scavenge-civilian-buildings = Scavenge civilian buildings for supplies.
 time-remaining = Time Remaining: { $time }
 
 ## soviet-04ab, soviet-08ab, soviet-10
-destroy-radar-dome-reinforcements = Destroy the Allied Radar Dome to stop
+destroy-radar-dome-reinforcements = Destroy the Allied Radar Dome to prevent
     enemy reinforcements.
 
 ## soviet05
@@ -348,7 +348,7 @@ allied-expansion-movement-detected = Allied MCV movement detected.
 coordinates-allied-expansion-discovered = Allied expansion base discovered.
 
 ## soviet06ab
-destroy-capture-radar-dome-reinforcements = Destroy or capture the Allied radar dome to stop
+destroy-capture-radar-dome-reinforcements = Destroy or capture the Allied Radar Dome to stop
     enemy reinforcements.
 keep-trucks-alive = Keep all trucks alive.
 
@@ -368,9 +368,9 @@ destroy-allied-sympathizers-village = Destroy the village of Allied sympathizers
 truck-stopped-near-allied-base = Commander, the truck has stopped at a nearby Allied base.
     Allied radio intercepts say the truck has orders to flee the battlefield if any Soviet units approach the base.
 
-destroy-stolen-convoy-truck = Destroy the stolen convoy truck.
-    Do not let it escape.
-defend-forward-command-center = Defend our forward command center.
+destroy-stolen-convoy-truck = Destroy the stolen convoy truck
+    - don't let it escape.
+defend-forward-command-center = Defend our forward Command Center.
 
 ## soviet-10
 run-for-it = RUN FOR IT!
@@ -378,14 +378,14 @@ convoy-commander = Convoy commander
 we-are-surrounded = We are surrounded!
 corridor-closes-in = Corridor closes in { $time }
 escort-convoy-mountain-pass = Escort the convoy through the mountain pass.
-protect-every-truck = Do not lose a single truck.
+protect-every-truck = Ensure no truck is lost.
 save-migs = Do not squander any of our new MiG aircraft.
 
 ## soviet-11b
 destroy-allied-naval-base = Destroy the Allied naval base.
 
 ## soviet-13a, soviet13b
-chrono-trap-triggered = We failed to take the trap offline!
+chrono-trap-triggered = We failed to disable the trap!
 destroy-allied-radar-sites = Destroy the Allied radar sites before approaching
     the Chronosphere.
 capture-the-chronosphere = Capture the Chronosphere.
@@ -402,18 +402,18 @@ rebuild-chitzkoi = We can rebuild Chitzkoi - we have the technology.
 
 ## survival01
 french-reinforcements-arrive-in = French reinforcements arrive in { $time }
-french-allies-arrived = Our french allies have arrived!
-takeover-reinforcements-kill-remaining-soviet-forces = Take control of French reinforcements and
+french-allies-arrived = Our French allies have arrived!
+takeover-reinforcements-kill-remaining-soviet-forces = Take command of French reinforcements and
     kill all remaining Soviet forces.
 takeover-reinforcements-dismantle-soviet-base = Use French reinforcements to dismantle the nearby Soviet base.
 enforce-position-hold-until-reinforcements = Hold your position and withstand the onslaught
     until reinforcements arrive.
 destroy-two-sams-before-reinforcements = Destroy the two SAM sites before reinforcements
     arrive.
-soviets-blocking-gps = The Soviets are blocking our GPS. We need to investigate their new technology.
+soviets-blocking-gps = The Soviets are blocking our GPS - we need to investigate their new technology.
 capture-hold-soviet-airbase-northeast = Capture and hold the Soviet airbase
     in the northeast.
-french-survived-dismantled-soviet-presence = The French forces have survived and dismantled the Soviet presence in the area!
+french-survived-dismantled-soviet-presence = The French forces have survived and dismantled the Soviet presence!
 kill-remaining-soviet-forces = Kill all remaining Soviet forces.
 dismantle-nearby-soviet-base = Dismantle the nearby Soviet base.
 
@@ -424,9 +424,9 @@ reinforced-position-initiate-counter-attack = Excellent work Commander! We have 
 incoming-report = Incoming Report
 destroy-remaining-soviet-forces-area = Destroy the remaining Soviet forces in the area.
 soviet-reinforcements-arrived = Soviet reinforcements have arrived!
-repair-bridges-for-reinforcement = Commander! The Soviets destroyed the bridges to cut off our reinforcements. Repair them for additional reinforcements.
+repair-bridges-for-reinforcement = Commander! The Soviets destroyed the bridges to cut off our support. Repair them for additional reinforcements.
 repair-two-southern-bridges = Repair the two southern bridges.
-enforce-position-hold-out-onslaught = Fortify your position and hold out against the onslaught.
+enforce-position-hold-out-onslaught = Fortify your position and hold off the onslaught.
 remaining-soviet-presence-destroyed = We have destroyed the remaining Soviet presence!
 soviet-reinforcements-approaching = Soviet reinforcements are approaching!
 
@@ -438,4 +438,4 @@ find-destroy-bridge-stop-allied-reinforcements = Find and destroy the bridge the
     to bring reinforcements into the area.
 air-support-t-minus-3 = Very good, Comrade General! Our air units are en route
     and should reach your area in approximately three minutes.
-allied-ground-reinforcements-stopped = This should stop the Allied forces from getting their ground reinforcements.
+allied-ground-reinforcements-stopped = This should stop the Allied forces from getting further ground reinforcements.
