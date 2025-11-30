@@ -5,8 +5,8 @@ objective-completed = Objective Completed
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New Primary objective
-new-secondary-objective = New Secondary objective
+new-primary-objective = New Primary Objective
+new-secondary-objective = New Secondary Objective
 
 # cnc64gdi01
 destroy-obelisk-sams = Destroy the SAM sites protecting the Obelisk.
