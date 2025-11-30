@@ -316,9 +316,9 @@ volkov = Volkov
 missiles-launch-in = Missiles launch in { $time }
 kill-power = Bring the base to low power. Volkov will arrive
     once the defenses are down.
-infiltrate-bio-weapons-lab-scientist = Infiltrate the bio-weapons lab with the scientist.
-destroy-bio-weapons-lab-missile-silos = Destroy the bio-weapons lab and missile silos.
-destroy-all-sam-sites-strategic-bombers = Destroy all SAM sites on the island.
+infiltrate-bio-weapons-lab-scientist = Infiltrate the Bio-Weapons Lab with the scientist.
+destroy-bio-weapons-lab-missile-silos = Destroy the Bio-Weapons Lab and Missile Silos.
+destroy-all-sam-sites-strategic-bombers = Destroy all SAM Sites on the island.
     Our strategic bombers will finish the rest.
 
 ## situation-critical, soviet-soldier-volkov-n-chitzkoi
