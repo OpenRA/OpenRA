@@ -150,7 +150,7 @@ take-out-the-soviet-power-grid = Disable the Soviet power grid.
 units-evacuated = { $evacuated } / { $threshold } units evacuated.
 evacuate-units = Evacuate { $threshold } units.
 destroy-nearby-soviet-airbases = Destroy the nearby Soviet airbases.
-evacuate-at-least-one-gap-generator = Save at least one mobile gap generator.
+evacuate-at-least-one-gap-generator = Save at least one Mobile Gap Generator.
 transferring-funds = Transferring funds.
 co-commander-missing = Co-Commander is missing
 
