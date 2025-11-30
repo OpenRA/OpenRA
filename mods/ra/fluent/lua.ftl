@@ -281,8 +281,8 @@ soviet-officer = Soviet Officer
 prepare-to-fire = Prepare to Fire!
 fire = Fire!
 thanks-for-rescue = Thanks for the rescue!
-move-nuclear-outside = The Soviets have an unstable nuclear device stored here.
-     Help me move it out of the facility!
+move-nuclear-outside = The Soviets have an unstable nuclear device stored here
+    - help me move it out of the facility!
 exit-clear-hopefully = I hope the exit is clear!
 reach-eastern-exit = Reach the eastern facility exit.
 free-tanya-keep-alive = Free Tanya and keep her alive.
