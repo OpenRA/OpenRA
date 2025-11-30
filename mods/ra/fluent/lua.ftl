@@ -365,7 +365,10 @@ time-until-meltdown = Time until Meltdown: { $time }
 destroy-allied-sympathizers-village = Destroy the village of Allied sympathizers.
 
 ## soviet-09
-truck-stopped-near-allied-base = Radio intercepts indicate the truck has orders to flee if any Soviet units approach.
+truck-stopped-near-allied-base = Commander, the truck has stopped at a nearby Allied base.
+
+
+    Radio intercepts indicate the truck has orders to flee if any Soviet units approach.
 
 destroy-stolen-convoy-truck = Destroy the stolen convoy truck
     - don't let it escape.
