@@ -1,6 +1,6 @@
 ## campaign.lua
-objective-failed = Objective failed
-objective-completed = Objective completed
+objective-failed = Objective Failed
+objective-completed = Objective Completed
 
 primary = Primary
 secondary = Secondary
