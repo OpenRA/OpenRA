@@ -303,8 +303,8 @@ destroy-opposition = Destroy all who oppose us.
 first-trucks-entering = First trucks entering your AO.
 first-trucks-arrive-in = First trucks arrive in { $time }
 destroy-soviet-convoy = Destroy all Soviet convoy trucks.
-destroy-bridges-slow-convoy = Destroy the nearby bridges to slow
-    the convoys down.
+destroy-bridges-slow-convoy = Demolish the nearby bridges to slow down
+    the convoys.
 
 ## siberian-conflict-3-wasteland, negotiations
 destroy-soviet-units-infrastructure = Destroy all Soviet units and structures.
