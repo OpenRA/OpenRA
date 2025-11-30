@@ -207,7 +207,7 @@ soviet-research-lab-not-secured-in-time = The Soviet research laboratory was not
 percentage-village-destroyed = { $percentage }% of the village destroyed.
 save-village = Save the village.
 mcv-main-island = Get your MCV to the main island.
-capture-air-force-hq = Locate and capture the enemy Air Force HQ.
+capture-air-force-hq = Find and capture the enemy Air Force HQ.
 
 ## monster-tank-madness
 find-demitri = Find Dr. Demitri. He is likely hiding in the village
