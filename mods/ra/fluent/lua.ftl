@@ -284,7 +284,7 @@ thanks-for-rescue = Thanks for the rescue!
 move-nuclear-outside = The Soviets have an unstable nuclear device stored here.
      Help me move it out of the facility!
 exit-clear-hopefully = I hope the exit is clear!
-reach-eastern-exit = Reach the eastern facility.
+reach-eastern-exit = Reach the eastern facility exit.
 free-tanya-keep-alive = Free Tanya and keep her alive.
 kill-soviet-officers-scientists = Kill all Soviet officers and scientists.
 steal-soviet-mammoth-tank = Steal a Soviet Mammoth Tank.
