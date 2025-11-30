@@ -99,7 +99,7 @@ chronosphere-needs-power = The Chronosphere must have power when the
 ## allies09a
 extract-kosygin = Extract Kosygin and
     get him back to your base.
-infiltrate-soviet-command-center-contact-kosygin = Infiltrate the Soviet command center and
+infiltrate-soviet-command-center-contact-kosygin = Infiltrate the Soviet Command Center and
     contact Kosygin.
 kosygin-must-survive = Kosygin must survive.
 
