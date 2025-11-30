@@ -300,7 +300,7 @@ cut-power-east = Cut the power to the eastern base.
 destroy-opposition = Destroy all who oppose us.
 
 ## siberian-conflict-1-fresh-tracks
-first-trucks-entering = The first trucks are entering your AO.
+first-trucks-entering = First trucks entering your AO.
 first-trucks-arrive-in = First trucks arrive in { $time }
 destroy-soviet-convoy = Destroy all Soviet convoy trucks.
 destroy-bridges-slow-convoy = Destroy the nearby bridges to slow
