@@ -253,7 +253,7 @@ capture-enemy-radar-dome = Capture the enemy Radar Dome.
 destroy-escaping-submarine = Destroy the submarine before it escapes!
 submarine-escapes = The submarine is heading for open sea!
 submarine-construction-complete-in = Submarine construction complete in { $time }
-destroy-soviet-sub-pen = Destroy the Soviet Sub Pen.
+destroy-soviet-sub-pen = Destroy the Soviet Submarine Pen.
 power-down-tesla-coils = Cut power to the Tesla Coils.
 
 ## sarin-gas-1-crackdown, soviet09
