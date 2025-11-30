@@ -146,7 +146,7 @@ take-civilians-money-crates = Find all the civilians' money; they won't be needi
 quickly-destroy-ion-cannon = Disable the GDI Ion Cannon before it fires twice.
 nod-soldier = Nod Soldier
 civilians-running = Hey, those civilians... where are they going?
-destroy-ion-cannon-advice = The GDI are preparing their ion cannon. Don't let them get comfortable using it.
+destroy-ion-cannon-advice = The GDI are preparing their Ion Cannon. Don't let them get comfortable using it.
 village-destruction-warning = Be careful, commander. The GDI won't stay idle while we burn the entire village.
 
 ## twist-of-fate
