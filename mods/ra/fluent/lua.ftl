@@ -55,7 +55,7 @@ battlefield-control = Battlefield Control
 skip-heroics = Good work! But next time, skip the heroics!
 rescue-tanya = Rescue Tanya.
 eliminate-soviet-units = Eliminate all Soviet units in this area.
-infiltrate-warfactory = Infiltrate the Soviet war factory.
+infiltrate-warfactory = Infiltrate the Soviet War Factory.
 destroy-sam-sites-blocker = Destroy all four SAM Sites blocking
     our reinforcements' helicopter from landing.
 
