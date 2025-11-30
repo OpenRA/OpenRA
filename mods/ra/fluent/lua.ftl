@@ -294,7 +294,7 @@ no-casualties = Ensure no soldier or civilian
 ## sarin-gas-3-controlled-burn
 capture-sarin-plants-intact = Capture all Sarin processing plants intact.
 destroy-enemy-compound = Destroy the enemy compound.
-cut-power-east = Cut the power to the base to the east.
+cut-power-east = Cut the power to the eastern base.
 
 ## shock-therapy
 destroy-opposition = Destroy all who oppose us.
