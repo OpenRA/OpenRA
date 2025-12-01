@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.MapGenerator;
@@ -77,15 +78,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget tilesetSetting;
 		readonly Widget sizeSetting;
 		readonly Widget parentWidget;
-		readonly ZipFileLoader.ReadWriteZipFile package;
 
 		ITerrainInfo selectedTerrain;
 		string selectedSize;
 		Size size;
-
-		volatile bool generating;
-		volatile bool failed;
 		bool initialGenerationDone;
+
+		volatile bool failed;
+		volatile uint generationCounter = 0;
+		volatile uint lastGeneration = 0;
+
+		bool IsGenerating => lastGeneration != generationCounter;
 
 		[ObjectCreator.UseCtor]
 		internal MapGeneratorLogic(Widget widget, ModData modData, MapGenerationArgs initialSettings, Action<MapGenerationArgs, IReadWritePackage> onGenerate)
@@ -93,7 +96,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onGenerate = onGenerate;
 			parentWidget = widget.Parent;
-			package = new ZipFileLoader.ReadWriteZipFile();
 
 			generator = modData.DefaultRules.Actors[SystemActors.EditorWorld].TraitInfos<IEditorMapGeneratorInfo>().First();
 			settings = generator.GetSettings();
@@ -103,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var title = new CachedTransform<string, string>(id => FluentProvider.GetMessage(id));
 			var previewTitleLabel = widget.Get<LabelWidget>("TITLE");
-			previewTitleLabel.GetText = () => title.Update(generating ? Generating : failed ? GenerationFailed : RandomMap);
+			previewTitleLabel.GetText = () => title.Update(IsGenerating ? Generating : failed ? GenerationFailed : RandomMap);
 
 			var previewDetailsLabel = widget.GetOrNull<LabelWidget>("DETAILS");
 			if (previewDetailsLabel != null)
@@ -196,7 +198,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var generateButton = widget.Get<ButtonWidget>("BUTTON_GENERATE");
-			generateButton.IsDisabled = () => generating;
+			generateButton.IsDisabled = () => IsGenerating;
 			generateButton.OnClick = () =>
 			{
 				settings.Randomize(Game.CosmeticRandom);
@@ -235,7 +237,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public override void Tick()
 		{
-			if (!initialGenerationDone && !generating && parentWidget.IsVisible())
+			if (!initialGenerationDone && !IsGenerating && parentWidget.IsVisible())
 			{
 				initialGenerationDone = true;
 				GenerateMap();
@@ -402,46 +404,56 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void GenerateMap()
 		{
-			generating = true;
-			onGenerate(null, null);
+			var currentGeneration = Interlocked.Increment(ref generationCounter);
+
 			failed = false;
+			onGenerate(null, null);
 			preview.Clear();
+
 			Task.Run(() =>
 			{
+				// Tasks don't run in parallel, so we may be able to cancel some outdated requests here.
+				if (currentGeneration != generationCounter)
+					return;
+
+				MapGenerationArgs args;
+				Map map;
 				try
 				{
-					var args = settings.Compile(selectedTerrain, size);
-					var map = generator.Generate(modData, args);
-
-					// Map UID and preview image are generated on save
-					map.Save(package);
-					args.Uid = map.Uid;
-
-					Game.RunAfterTick(() =>
-					{
-						preview.Update(map);
-						onGenerate(args, package);
-						generating = false;
-					});
+					args = settings.Compile(selectedTerrain, size);
+					map = generator.Generate(modData, args);
 				}
 				catch (MapGenerationException)
 				{
-					failed = true;
-					generating = false;
+					// We are the lastest generation request, mark as failed.
+					if (currentGeneration == generationCounter)
+					{
+						lastGeneration = currentGeneration;
+						failed = true;
+					}
+
+					return;
 				}
+
+				// Need to invoke widgets from the main thread.
+				Game.RunAfterTick(() =>
+				{
+					// A newer generation will be set after us, discard.
+					if (currentGeneration == generationCounter)
+					{
+						var package = new ZipFileLoader.ReadWriteZipFile();
+						map.Save(package);
+
+						args.Uid = map.Uid;
+
+						preview.Update(map);
+						lastGeneration = currentGeneration;
+
+						// `onGenerate` assumed to take ownership of package here.
+						onGenerate(args, package);
+					}
+				});
 			});
-		}
-
-		bool disposed;
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && !disposed)
-			{
-				disposed = true;
-				package.Dispose();
-			}
-
-			base.Dispose(disposing);
 		}
 	}
 }

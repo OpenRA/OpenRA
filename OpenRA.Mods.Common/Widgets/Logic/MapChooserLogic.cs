@@ -151,22 +151,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var approving = new Action(() =>
 			{
+				// CloseWindow will dispose this logic, so take ownership of the package.
+				var package = generatedMapPackage;
+				generatedMapPackage = null;
+
 				Ui.CloseWindow();
 				if (currentTab == MapClassification.Generated && generatedMapArgs != null)
 				{
 					// PERF: Add the map directly into the map cache to allow an instant map switch for the local player
 					var p = modData.MapCache[generatedMapArgs.Uid];
-					if (p.Status != MapStatus.Available && generatedMapPackage is ZipFileLoader.ReadWriteZipFile zipPackage)
+					if (p.Status != MapStatus.Available && package is ZipFileLoader.ReadWriteZipFile zipPackage)
 					{
-						// The original package will be disposed, so take a deep copy
-						var package = ZipFileLoader.ReadWriteZipFile.FromBase64String(zipPackage.ToBase64String());
-						p.UpdateFromMap(package, MapClassification.Generated);
+						p.UpdateFromMap(zipPackage, MapClassification.Generated);
+
+						// UpdateFromMap took ownership of the package.
+						package = null;
 					}
 
 					onSelectGenerated?.Invoke(generatedMapArgs);
 				}
 				else
 					onSelect?.Invoke(selectedUid);
+
+				package?.Dispose();
 			});
 
 			var canceling = new Action(() => { Ui.CloseWindow(); onExit(); });
@@ -411,6 +418,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					"onGenerate", (Action<MapGenerationArgs, IReadWritePackage>)((args, package) =>
 					{
 						generatedMapArgs = args;
+						generatedMapPackage?.Dispose();
 						generatedMapPackage = package;
 					})
 				}
@@ -640,6 +648,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void Dispose(bool disposing)
 		{
 			disposed = true;
+
+			generatedMapPackage?.Dispose();
+			generatedMapPackage = null;
+
 			base.Dispose(disposing);
 		}
 	}
