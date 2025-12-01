@@ -322,5 +322,10 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		{
 			return commitBlitSource.Tiles.Count;
 		}
+
+		public int ActorCount()
+		{
+			return commitBlitSource.Actors.Count;
+		}
 	}
 }

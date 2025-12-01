@@ -784,11 +784,9 @@ notification-time-limit-expired = Time limit has expired.
 notification-added-actor = Added { $name } ({ $id })
 
 ## EditorCopyPasteBrush
-notification-copied-tiles =
-    { $count ->
-       [one] Copied one tile
-      *[other] Copied { $count } tiles
-    }
+notification-copied-tiles = Copied { $tiles } tiles
+notification-copied-actors = Copied { $actors } actors
+notification-copied-tiles-actors = Copied { $tiles } tiles and { $actors } actors
 
 ## EditorDefaultBrush
 notification-selected-area = Selected area { $x },{ $y } ({ $width },{ $height })
