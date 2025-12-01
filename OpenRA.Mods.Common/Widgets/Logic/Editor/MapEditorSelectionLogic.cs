@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => selectionFilters));
 			};
 
-			pasteButton.IsDisabled = () => clipboard == null;
+			pasteButton.IsDisabled = () => clipboard == null || (clipboard.Value.Actors.Count == 0 && clipboard.Value.Tiles.Count == 0);
 			pasteButton.IsHighlighted = () => editor.CurrentBrush is EditorCopyPasteBrush;
 
 			var deleteAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_DELETE_BUTTON");
