@@ -100,17 +100,20 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			var previews = new Dictionary<string, EditorActorPreview>();
 			var tiles = new Dictionary<CPos, BlitTile>();
 
-			foreach (var cell in region.CellCoords)
+			if (blitFilters.HasFlag(MapBlitFilters.Terrain) || blitFilters.HasFlag(MapBlitFilters.Resources))
 			{
-				if (!mapTiles.Contains(cell) || (mask != null && !mask.Contains(cell)))
-					continue;
+				foreach (var cell in region.CellCoords)
+				{
+					if (!mapTiles.Contains(cell) || (mask != null && !mask.Contains(cell)))
+						continue;
 
-				tiles.Add(
-					cell,
-					new BlitTile(mapTiles[cell],
-					mapResources[cell],
-					resourceLayer?.GetResource(cell),
-					mapHeight[cell]));
+					tiles.Add(
+						cell,
+						new BlitTile(mapTiles[cell],
+						mapResources[cell],
+						resourceLayer?.GetResource(cell),
+						mapHeight[cell]));
+				}
 			}
 
 			if (blitFilters.HasFlag(MapBlitFilters.Actors))
