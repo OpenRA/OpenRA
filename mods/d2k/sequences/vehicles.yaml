@@ -11,7 +11,6 @@ mcv:
 		Start: 4284
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 mcv.husk:
 	idle:
@@ -40,7 +39,6 @@ harvester:
 		ZOffset: 1
 		Alpha: 0.5
 		Palette: effect
-		IsPlayerPalette: False
 	dock:
 		Filename: DATA.R16
 		Start: 3623
@@ -59,7 +57,6 @@ harvester:
 		Start: 4280
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 harvester.husk:
 	idle:
@@ -214,13 +211,11 @@ trike:
 		Length: 7
 		BlendMode: Additive
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4277
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 quad:
 	idle:
@@ -235,7 +230,6 @@ quad:
 		Start: 4279
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 siege_tank:
 	idle:
@@ -258,13 +252,11 @@ siege_tank:
 		Length: 3
 		BlendMode: Additive
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4287
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 siege_tank.husk:
 	idle:
@@ -297,7 +289,6 @@ missile_tank:
 		Start: 4285
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 missile_tank.husk:
 	idle:
@@ -350,7 +341,6 @@ sonic_tank:
 		Start: 4288
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 sonic_tank.husk:
 	idle:
@@ -412,13 +402,11 @@ combat_tank_a:
 		Facings: -32
 		BlendMode: Additive
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4281
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 combat_tank_a.husk:
 	idle:
@@ -460,13 +448,11 @@ combat_tank_h:
 		Facings: -32
 		BlendMode: Additive
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4282
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 combat_tank_h.husk:
 	idle:
@@ -508,13 +494,11 @@ combat_tank_o:
 		Facings: -32
 		BlendMode: Additive
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4283
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 combat_tank_o.husk:
 	idle:
@@ -549,7 +533,6 @@ devastator:
 		Facings: -32
 		BlendMode: Additive
 		Palette: effect
-		IsPlayerPalette: False
 	active:
 		Filename: DATA.R16
 		Start: 3839
@@ -571,7 +554,6 @@ devastator:
 		Start: 4289
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 devastator.husk:
 	idle:
@@ -597,10 +579,8 @@ raider:
 		Start: 4278
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 	muzzle:
 		Palette: effect
-		IsPlayerPalette: False
 
 stealth_raider:
 	Inherits: trike
@@ -616,10 +596,8 @@ stealth_raider:
 		Start: 4298
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 	muzzle:
 		Palette: effect
-		IsPlayerPalette: False
 
 deviator:
 	idle:
@@ -634,7 +612,6 @@ deviator:
 		Start: 4286
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 deviator.husk:
 	idle:

@@ -2,61 +2,8 @@ slav:
 	icon:
 		Filename: xxicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	run:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	idle1:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	idle2:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	stand:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	attack:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	attack-muzzle:
-		Palette: muzzle
-		IsPlayerPalette: False
-	prone-run:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	prone-stand:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	prone-attack:
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	prone-attack-muzzle:
-		Palette: muzzle
-		IsPlayerPalette: False
-	die-twirling:
-		Palette: player
-		IsPlayerPalette: True
-	die-flying:
-		Palette: player
-		IsPlayerPalette: True
-	die-exploding:
-		Palette: effect
-		IsPlayerPalette: False
-	die-melting:
-		Palette: ra
-		IsPlayerPalette: False
-	die-crushed:
-		Palette: player
-		IsPlayerPalette: True
 
 4tnk:
 	icon:
 		Filename: xxicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
-	muzzle:
-		Palette: effect
-		IsPlayerPalette: False

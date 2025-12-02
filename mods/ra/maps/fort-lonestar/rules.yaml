@@ -305,10 +305,11 @@ SNIPER:
 		Weapon: Sniper
 		MuzzleSequence: garrison-muzzle
 	WithInfantryBody:
-		DefaultAttackSequence: shoot
 		RequiresCondition: !parachute
+		DefaultAttackSequence: shoot
 	WithInfantryBody@PARACHUTE:
 		RequiresCondition: parachute
+		StandSequences: stand-noshadow
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120

@@ -14,56 +14,47 @@ explosion:
 		Start: 3682
 		Length: 4
 		Palette: effect
-		IsPlayerPalette: False
 	small_explosion:
 		Filename: DATA.R16
 		Start: 3656
 		Length: 15
 		Palette: effect
-		IsPlayerPalette: False
 	med_explosion:
 		Filename: DATA.R16
 		Start: 3643
 		Length: 12
 		Palette: effect
-		IsPlayerPalette: False
 	tiny_explosion:
 		Filename: DATA.R16
 		Start: 3639
 		Length: 4
 		Palette: effect
-		IsPlayerPalette: False
 	nuke:
 		Filename: DATA.R16
 		Start: 4218
 		Length: 14
 		Palette: effect
-		IsPlayerPalette: False
 	self_destruct:
 		Filename: DATA.R16
 		Start: 3686
 		Length: 15
 		BlendMode: Alpha
 		Palette: effect
-		IsPlayerPalette: False
 	building:
 		Filename: DATA.R16
 		Start: 3701
 		Length: 22
 		Palette: effect
-		IsPlayerPalette: False
 	large_explosion:
 		Filename: DATA.R16
 		Start: 4241
 		Length: 22
 		Palette: effect
-		IsPlayerPalette: False
 	small_napalm:
 		Filename: DATA.R16
 		Start: 3674
 		Length: 8
 		Palette: effect
-		IsPlayerPalette: False
 	rocket_explosion:
 		Filename: DATA.R16
 		Start: 3634
@@ -71,14 +62,12 @@ explosion:
 		BlendMode: Alpha
 		Alpha: 0.5
 		Palette: effect
-		IsPlayerPalette: False
 	shockwave:
 		Filename: DATA.R16
 		Start: 3940
 		Length: 6
 		Tick: 120
 		Palette: effect
-		IsPlayerPalette: False
 	deviator:
 		Filename: DATA.R16
 		Start: 3765
@@ -103,14 +92,12 @@ explosion:
 		Tick: 120
 		BlendMode: Alpha
 		Palette: effect
-		IsPlayerPalette: False
 	devastator:
 		Filename: DATA.R16
 		Start: 3947
 		Length: 17
 		Tick: 120
 		Palette: effect
-		IsPlayerPalette: False
 
 large_trail:
 	idle:
@@ -121,7 +108,6 @@ large_trail:
 		BlendMode: Additive
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 small_trail:
 	idle:
@@ -133,7 +119,6 @@ small_trail:
 		ZOffset: 1023
 		Alpha: 0.5
 		Palette: effect
-		IsPlayerPalette: False
 
 small_trail2:
 	idle:
@@ -145,7 +130,6 @@ small_trail2:
 		ZOffset: 1023
 		Alpha: 0.5
 		Palette: effect
-		IsPlayerPalette: False
 
 bazooka_trail:
 	idle:
@@ -165,7 +149,6 @@ bazooka_trail2:
 		ZOffset: 1023
 		Alpha: 0.5
 		Palette: effect
-		IsPlayerPalette: False
 
 deviator_trail:
 	idle:
@@ -196,17 +179,14 @@ sandtrail:
 	traila:
 		Filename: sandtrail.shp
 		Palette: effect
-		IsPlayerPalette: False
 	trailb:
 		Filename: sandtrail.shp
 		Frames: 2, 6, 4, 5, 0, 1, 3, 7
 		Palette: effect
-		IsPlayerPalette: False
 	trailc:
 		Filename: sandtrail.shp
 		Frames: 7, 4, 6, 5, 2, 0, 3, 1
 		Palette: effect
-		IsPlayerPalette: False
 
 pips:
 	groups:
@@ -215,36 +195,30 @@ pips:
 		Frames: 18, 19, 20, 21, 22, 23, 24, 25, 26, 17
 		Offset: 3, 3
 		Palette: chrome
-		IsPlayerPalette: False
 	pickup-indicator:
 		Filename: DATA.R16
 		Start: 112
 		Offset: -9, -9
 		Palette: chrome
-		IsPlayerPalette: False
 	pip-empty:
 		Filename: DATA.R16
 		Start: 15
 		Palette: chrome
-		IsPlayerPalette: False
 	pip-green:
 		Filename: DATA.R16
 		Start: 16
 		Palette: chrome
-		IsPlayerPalette: False
 	tag-upgraded:
 		Filename: DATA.R16
 		Start: 110
 		Offset: -8,-8
 		Palette: chrome
-		IsPlayerPalette: False
 
 clock:
 	idle:
 		Filename: clock.shp
 		Length: *
 		Palette: chrome
-		IsPlayerPalette: False
 
 powerdown:
 	disabled:
@@ -259,28 +233,23 @@ poweroff:
 		Tick: 160
 		ZOffset: 2047
 		Palette: chrome
-		IsPlayerPalette: False
 
 rank:
 	rank-veteran-1:
 		Filename: rank.shp
 		Palette: effect
-		IsPlayerPalette: False
 	rank-veteran-2:
 		Filename: rank.shp
 		Start: 1
 		Palette: effect
-		IsPlayerPalette: False
 	rank-veteran-3:
 		Filename: rank.shp
 		Start: 2
 		Palette: effect
-		IsPlayerPalette: False
 	rank-elite:
 		Filename: rank.shp
 		Start: 3
 		Palette: effect
-		IsPlayerPalette: False
 
 overlay:
 	Defaults:
@@ -288,16 +257,13 @@ overlay:
 		Offset: -16,-16
 	build-valid:
 		Palette: terrain
-		IsPlayerPalette: False
 	build-unsafe:
 		Filename: concfoot.shp
 		Offset: 0, 0
 		Palette: terrain
-		IsPlayerPalette: False
 	build-invalid:
 		Start: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	target-select:
 		Start: 2
 	target-valid:
@@ -349,7 +315,6 @@ rpg:
 		Facings: -32
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 120mm:
 	idle:
@@ -358,7 +323,6 @@ rpg:
 		BlendMode: Additive
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 155mm:
 	idle:
@@ -366,7 +330,6 @@ rpg:
 		Start: 3329
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 crate-effects:
 	Defaults:
@@ -381,19 +344,16 @@ crate-effects:
 		Length: 18
 		Alpha: 0.5
 		Palette: effect
-		IsPlayerPalette: False
 	hide-map:
 		Filename: DATA.R16
 		Frames: 4217, 4216, 4215, 4214, 4213, 4212, 4211, 4210, 4209, 4208, 4207, 4206, 4205, 4204, 4203, 4202, 4201, 4200
 		Length: 18
 		Palette: effect
-		IsPlayerPalette: False
 	levelup:
 		Filename: levelup.shp
 		Length: *
 		Tick: 200
 		Palette: effect
-		IsPlayerPalette: False
 	cloak:
 		Filename: DATA.R16
 		Start: 4164
@@ -417,7 +377,6 @@ missile:
 		Facings: -32
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 missile2:
 	idle:
@@ -426,7 +385,6 @@ missile2:
 		Facings: -32
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 deathhand:
 	up:
@@ -434,23 +392,18 @@ deathhand:
 		Start: 2147
 		ZOffset: 1023
 		Offset: 2,0
-		Palette: player
-		IsPlayerPalette: True
 		Palette: effect
-		IsPlayerPalette: False
 	down:
 		Filename: DATA.R16
 		Start: 2148
 		ZOffset: 1023
 		Offset: -1,0
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4296
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 fire:
 	1:
@@ -518,7 +471,6 @@ smoke3:
 		Tick: 140
 		BlendMode: Subtractive
 		Palette: effect
-		IsPlayerPalette: False
 
 bombs:
 	idle:
@@ -527,7 +479,6 @@ bombs:
 		Length: 4
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 grenade:
 	idle:
@@ -537,7 +488,6 @@ grenade:
 		Tick: 80
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 shrapnel:
 	idle:
@@ -546,7 +496,6 @@ shrapnel:
 		Length: 4
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 shrapnel2:
 	idle:
@@ -555,7 +504,6 @@ shrapnel2:
 		Length: 1
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 shrapnel3:
 	idle:
@@ -564,7 +512,6 @@ shrapnel3:
 		Length: 8
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 shrapnel4:
 	idle:
@@ -573,7 +520,6 @@ shrapnel4:
 		Length: 1
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 mpspawn:
 	idle:
@@ -627,7 +573,6 @@ doubleblastbullet:
 		BlendMode: Additive
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 icon:
 	ornistrike:
@@ -635,25 +580,21 @@ icon:
 		Start: 4292
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 	fremen:
 		Filename: DATA.R16
 		Start: 4293
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 	saboteur:
 		Filename: DATA.R16
 		Start: 4295
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 	deathhand:
 		Filename: DATA.R16
 		Start: 4296
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 crate:
 	idle:
@@ -662,7 +603,6 @@ crate:
 		ZOffset: -511
 		Offset: -16,-16
 		Palette: effect
-		IsPlayerPalette: False
 
 spicebloom:
 	grow0:
@@ -726,7 +666,6 @@ moveflsh:
 		BlendMode: Subtractive
 		ZOffset: 2047
 		Palette: effect
-		IsPlayerPalette: False
 
 resources:
 	spicea:
@@ -735,28 +674,24 @@ resources:
 		Length: 51
 		Offset: -16,-16
 		Palette: d2k
-		IsPlayerPalette: False
 	spiceb:
 		Filename: BLOXBASE.R16
 		Frames: 749, 301, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 301
 		Length: 51
 		Offset: -16,-16
 		Palette: d2k
-		IsPlayerPalette: False
 	spicec:
 		Filename: BLOXBASE.R16
 		Frames: 793, 320, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 320
 		Length: 51
 		Offset: -16,-16
 		Palette: d2k
-		IsPlayerPalette: False
 	spiced:
 		Filename: BLOXBASE.R16
 		Frames: 748, 321, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 321
 		Length: 51
 		Offset: -16,-16
 		Palette: d2k
-		IsPlayerPalette: False
 
 shroud:
 	Defaults:
@@ -768,54 +703,44 @@ shroud:
 	shrouda:
 		Start: 40
 		Palette: d2k
-		IsPlayerPalette: False
 	shroudb:
 		Start: 56
 		Palette: d2k
-		IsPlayerPalette: False
 	shroudc:
 		Start: 72
 		Palette: d2k
-		IsPlayerPalette: False
 	shroudd:
 		Start: 88
 		Palette: d2k
-		IsPlayerPalette: False
 	shroudfull:
 		Filename: shroud.png
 		Length: 1
 		Palette: d2k
-		IsPlayerPalette: False
 	foga:
 		Start: 40
 		ConvertShroudToFog: true
 		BlendMode: Multiply
 		Palette: d2k
-		IsPlayerPalette: False
 	fogb:
 		Start: 56
 		ConvertShroudToFog: true
 		BlendMode: Multiply
 		Palette: d2k
-		IsPlayerPalette: False
 	fogc:
 		Start: 72
 		ConvertShroudToFog: true
 		BlendMode: Multiply
 		Palette: d2k
-		IsPlayerPalette: False
 	fogd:
 		Start: 88
 		ConvertShroudToFog: true
 		BlendMode: Multiply
 		Palette: d2k
-		IsPlayerPalette: False
 	fogfull:
 		Filename: fog.png
 		Length: 1
 		BlendMode: Multiply
 		Palette: d2k
-		IsPlayerPalette: False
 
 rockcraters:
 	rockcrater1:
@@ -824,14 +749,12 @@ rockcraters:
 		Length: 16
 		Offset: -16,-16
 		Palette: terrain
-		IsPlayerPalette: False
 	rockcrater2:
 		Filename: DATA.R16
 		Start: 130
 		Length: 16
 		Offset: -16,-16
 		Palette: terrain
-		IsPlayerPalette: False
 
 sandcraters:
 	sandcrater1:
@@ -840,14 +763,12 @@ sandcraters:
 		Length: 16
 		Offset: -16,-16
 		Palette: terrain
-		IsPlayerPalette: False
 	sandcrater2:
 		Filename: DATA.R16
 		Start: 162
 		Length: 16
 		Offset: -16,-16
 		Palette: terrain
-		IsPlayerPalette: False
 
 ornidirection:
 	arrow-t:
@@ -855,49 +776,41 @@ ornidirection:
 		Start: 112
 		Offset: -25, -53, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-tr:
 		Filename: MOUSE.R16
 		Start: 120
 		Offset: 6, -47, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-r:
 		Filename: MOUSE.R16
 		Start: 128
 		Offset: 17, -26, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-br:
 		Filename: MOUSE.R16
 		Start: 136
 		Offset: 6, -1, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-b:
 		Filename: MOUSE.R16
 		Start: 148
 		Offset: -25, 7, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-bl:
 		Filename: MOUSE.R16
 		Start: 156
 		Offset: -52, -3, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-l:
 		Filename: MOUSE.R16
 		Start: 164
 		Offset: -61, -26, 0
 		Palette: chrome
-		IsPlayerPalette: False
 	arrow-tl:
 		Filename: MOUSE.R16
 		Start: 172
 		Offset: -52, -44, 0
 		Palette: chrome
-		IsPlayerPalette: False
 
 null:
 	idle:

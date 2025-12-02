@@ -17,8 +17,6 @@ e1:
 		Tick: 100
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
@@ -43,8 +41,6 @@ e1:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	liedown:
 		Start: 128
@@ -187,8 +183,6 @@ e3:
 		Tick: 120
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
@@ -278,8 +272,6 @@ e3:
 		Tick: 120
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-shoot:
 		Start: 192
 		Length: 10
@@ -309,8 +301,6 @@ e6:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	parachute:
 		Start: 210
@@ -395,8 +385,6 @@ e6:
 		Tick: 100
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	icon:
 		Filename: e6icon.shp
 		Palette: chrome
@@ -409,6 +397,8 @@ medi:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	run:
@@ -417,8 +407,6 @@ medi:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	heal:
 		Start: 56
@@ -490,16 +478,12 @@ medi:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	icon:
 		Filename: mediicon.shp
@@ -513,6 +497,8 @@ mech:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	run:
@@ -521,8 +507,6 @@ mech:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	repair:
 		Start: 56
@@ -594,16 +578,12 @@ mech:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	icon:
 		Filename: mechicon.shp
@@ -628,8 +608,6 @@ e2:
 		Facings: 8
 		Tick: 80
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	throw:
 		Start: 64
@@ -720,8 +698,6 @@ e2:
 		Tick: 80
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-throw:
 		Start: 288
 		Length: 12
@@ -740,6 +716,8 @@ dog:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	walk:
@@ -755,8 +733,6 @@ dog:
 		Facings: 8
 		Tick: 80
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	eat:
 		Start: 104
@@ -838,8 +814,6 @@ spy:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
@@ -851,8 +825,6 @@ spy:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	shoot:
 		Start: 64
@@ -926,8 +898,6 @@ spy:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-stand2:
 		Start: 144
 		Stride: 4
@@ -940,8 +910,6 @@ spy:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	prone-shoot:
 		Start: 192
@@ -961,6 +929,8 @@ thf:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	run:
@@ -969,8 +939,6 @@ thf:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	idle:
 		Start: 120
@@ -1047,6 +1015,8 @@ e7:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	run:
@@ -1055,8 +1025,6 @@ e7:
 		Facings: 8
 		Tick: 80
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	shoot-left:
 		Filename:
@@ -1184,16 +1152,12 @@ e7:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-run:
 		Start: 128
 		Length: 4
 		Facings: 8
 		Tick: 80
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	prone-shoot-left:
 		Frames: 179, 177, 185, 184, 192, 191, 200, 198, 206, 205, 213, 212, 220, 219, 228, 226
@@ -1237,8 +1201,6 @@ e4:
 		Facings: 8
 		Tick: 120
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	shoot:
 		Start: 64
@@ -1329,8 +1291,6 @@ e4:
 		Tick: 120
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-shoot:
 		Start: 256
 		Length: 16
@@ -1349,6 +1309,8 @@ gnrl:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	run:
@@ -1357,8 +1319,6 @@ gnrl:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	shoot:
 		Start: 56
@@ -1372,16 +1332,12 @@ gnrl:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	prone-run:
 		Start: 104
 		Length: 4
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	standup:
 		Start: 136
@@ -1467,8 +1423,6 @@ shok:
 		Tick: 120
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
@@ -1493,8 +1447,6 @@ shok:
 		Facings: 8
 		Tick: 120
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	liedown:
 		Start: 192
@@ -1582,180 +1534,48 @@ shok:
 c1:
 	Defaults:
 		Filename: c1.shp
+		Palette: player
+		IsPlayerPalette: True
 	stand:
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	panic-stand:
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	shoot:
 		Start: 120
 		Length: 4
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian7
-		IsPlayerPalette: False
 	idle1:
 		Start: 104
 		Length: 9
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	idle2:
 		Start: 114
 		Length: 6
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian7
-		IsPlayerPalette: False
 	die1:
 		Start: 152
 		Length: 8
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	die2:
 		Start: 160
 		Length: 8
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	die3:
 		Start: 168
 		Length: 12
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	die4:
 		Start: 168
 		Length: 12
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	die5:
 		Start: 180
 		Length: 18
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1763,20 +1583,6 @@ c1:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1791,50 +1597,26 @@ c1:
 		Length: 6
 		Facings: 8
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian2
-		IsPlayerPalette: False
-		Palette: civilian6
-		IsPlayerPalette: False
-		Palette: civilian7
-		IsPlayerPalette: False
-		Palette: civilian8
-		IsPlayerPalette: False
-		Palette: civilian9
-		IsPlayerPalette: False
-		Palette: civilian10
-		IsPlayerPalette: False
 
 c2:
+	Inherits: c1
+	Defaults:
+		Palette: civilian2
+		IsPlayerPalette: False
+
+c3:
 	Defaults:
 		Filename: c2.shp
+		Palette: player
+		IsPlayerPalette: True
 	stand:
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	panic-stand:
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	shoot:
 		Start: 120
 		Length: 4
@@ -1843,12 +1625,6 @@ c2:
 		Start: 104
 		Length: 9
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	idle2:
 		Start: 114
 		Length: 6
@@ -1857,52 +1633,22 @@ c2:
 		Start: 152
 		Length: 8
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	die2:
 		Start: 160
 		Length: 8
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	die3:
 		Start: 168
 		Length: 12
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	die4:
 		Start: 168
 		Length: 12
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	die5:
 		Start: 180
 		Length: 18
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1910,12 +1656,6 @@ c2:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
-		Palette: civilian4
-		IsPlayerPalette: False
-		Palette: civilian5
-		IsPlayerPalette: False
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1930,11 +1670,46 @@ c2:
 		Length: 6
 		Facings: 8
 		Tick: 80
-		Palette: player
-		IsPlayerPalette: True
+
+c4:
+	Inherits: c3
+	Defaults:
 		Palette: civilian4
 		IsPlayerPalette: False
+
+c5:
+	Inherits: c3
+	Defaults:
 		Palette: civilian5
+		IsPlayerPalette: False
+
+c6:
+	Inherits: c1
+	Defaults:
+		Palette: civilian6
+		IsPlayerPalette: False
+
+c7:
+	Inherits: c1
+	Defaults:
+		Palette: civilian7
+		IsPlayerPalette: False
+
+c8:
+	Inherits: c1
+	Defaults:
+		Palette: civilian8
+		IsPlayerPalette: False
+c9:
+	Inherits: c1
+	Defaults:
+		Palette: civilian9
+		IsPlayerPalette: False
+
+c10:
+	Inherits: c1
+	Defaults:
+		Palette: civilian10
 		IsPlayerPalette: False
 
 c11:
@@ -2272,6 +2047,8 @@ zombie:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	stand2:
@@ -2285,8 +2062,6 @@ zombie:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	bite:
 		Start: 64

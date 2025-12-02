@@ -4,8 +4,6 @@ C1:
 
 C2:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
 	WithInfantryBody:
 	WithDeathAnimation:
 
@@ -13,64 +11,34 @@ C3:
 	Inherits: ^CivInfantry
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
-	RenderSprites:
-		Image: C2
 
 C4:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C2
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C5:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C2
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C6:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C7:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C8:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C9:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C10:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
 	Tooltip:
 		Name: actor-c10-name
-	WithInfantryBody:
-	WithDeathAnimation:
 
 C11:
 	Inherits: ^CivInfantry
@@ -93,9 +61,7 @@ TECN2:
 	Selectable:
 		Class: Technician
 	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-	WithDeathAnimation:
+		Image: C7
 
 FCOM:
 	Inherits: ^TechBuilding

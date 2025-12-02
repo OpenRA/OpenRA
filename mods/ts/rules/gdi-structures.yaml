@@ -378,9 +378,9 @@ GADEPT:
 	WithRepairOverlay@CRANE-BRIGHT:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
-		StartSequence: crane-start
+		StartSequence: crane-start-bright
 		Sequence: crane-loop-bright
-		EndSequence: crane-end
+		EndSequence: crane-end-bright
 	WithRepairOverlay@PLATFORM:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: platform

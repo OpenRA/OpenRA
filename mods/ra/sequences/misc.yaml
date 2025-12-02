@@ -334,8 +334,6 @@ smoke_m:
 		ZOffset: 512
 		Palette: effect
 		IsPlayerPalette: False
-		Palette: player
-		IsPlayerPalette: True
 	start:
 		Length: 49
 		Offset: 2, -5
@@ -345,8 +343,8 @@ smoke_m:
 		Length: 42
 		Offset: 2, -5
 		ZOffset: 512
-		Palette: player
-		IsPlayerPalette: True
+		Palette: effect
+		IsPlayerPalette: False
 
 scorch_flames:
 	large_flame:
@@ -1172,17 +1170,15 @@ overlay:
 		Palette: terrain
 		IsPlayerPalette: False
 	target-valid:
-		Palette: chrome
+		Palette: terrain
 		IsPlayerPalette: False
 	target-select:
 		Start: 1
 		Palette: terrain
 		IsPlayerPalette: False
-		Palette: chrome
-		IsPlayerPalette: False
 	target-invalid:
 		Start: 2
-		Palette: chrome
+		Palette: terrain
 		IsPlayerPalette: False
 
 editor-overlay:
@@ -1250,6 +1246,9 @@ shroud:
 		Length: *
 		Palette: shroud
 		IsPlayerPalette: False
+	fog:
+		Filename: shadow.shp
+		Length: *
 		Palette: fog
 		IsPlayerPalette: False
 

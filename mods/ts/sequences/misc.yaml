@@ -8,7 +8,6 @@ overlay:
 	build-invalid:
 		Start: 1
 		Palette: ra
-		IsPlayerPalette: False
 	target-select:
 
 editor-overlay:
@@ -27,7 +26,6 @@ poweroff:
 		Tick: 160
 		ZOffset: 2047
 		Palette: mouse
-		IsPlayerPalette: False
 
 allyrepair:
 	repair:
@@ -36,7 +34,6 @@ allyrepair:
 		Tick: 160
 		ZOffset: 2047
 		Palette: mouse
-		IsPlayerPalette: False
 
 rallypoint:
 	flag:
@@ -45,7 +42,6 @@ rallypoint:
 		Length: 8
 		ZOffset: 3072
 		Palette: mouse
-		IsPlayerPalette: False
 
 beacon:
 	idle:
@@ -54,7 +50,6 @@ beacon:
 		Tick: 200
 		ZOffset: 2047
 		Palette: effect
-		IsPlayerPalette: False
 
 crate:
 	idle:
@@ -64,7 +59,6 @@ crate:
 		ShadowStart: 1
 		Offset: 0, -10, 10
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crate-effects:
 	Defaults:
@@ -73,50 +67,40 @@ crate-effects:
 	dollar:
 		Filename: money.shp
 		Palette: effect
-		IsPlayerPalette: False
 	reveal-map:
 		Filename: reveal.shp
 		Palette: effect
-		IsPlayerPalette: False
 	hide-map:
 		Filename: shroudx.shp
 		Palette: effect
-		IsPlayerPalette: False
 	firepower:
 		Filename: firepowr.shp
 		Palette: effect
-		IsPlayerPalette: False
 	armor:
 		Filename: armor.shp
 		Palette: effect
-		IsPlayerPalette: False
 	stealth:
 		Filename: cloak.shp
 		Palette: effect
-		IsPlayerPalette: False
 	heal:
 		Filename: healall.shp
 		Palette: effect
-		IsPlayerPalette: False
 	nuke:
 		Filename: mltimisl.shp
 	levelup:
 		Filename: veteran.shp
 		Palette: effect
-		IsPlayerPalette: False
 
 rank:
 	veteran:
 		Filename: pips.shp
 		Start: 7
 		Palette: ra
-		IsPlayerPalette: False
 	elite:
 		Filename: pips.shp
 		Start: 8
 		Offset: 3, 3
 		Palette: ra
-		IsPlayerPalette: False
 
 mpspawn:
 	idle:
@@ -150,14 +134,12 @@ clock:
 		Filename: gclock2.shp
 		Length: *
 		Palette: iconclock
-		IsPlayerPalette: False
 
 darken:
 	idle:
 		Filename: gclock2.shp
 		Length: 1
 		Palette: chromewithshadow
-		IsPlayerPalette: False
 
 pips:
 	Defaults:
@@ -165,21 +147,17 @@ pips:
 	medic:
 		Start: 6
 		Palette: pips
-		IsPlayerPalette: False
 	pip-empty:
 		Filename: pips2.shp
 		Palette: pips
-		IsPlayerPalette: False
 	pip-green:
 		Filename: pips2.shp
 		Start: 1
 		Palette: pips
-		IsPlayerPalette: False
 	pip-yellow:
 		Filename: pips2.shp
 		Start: 2
 		Palette: pips
-		IsPlayerPalette: False
 	pip-gray:
 		Filename: pips2.shp
 		Start: 3
@@ -187,36 +165,29 @@ pips:
 		Filename: pips2.shp
 		Start: 4
 		Palette: pips
-		IsPlayerPalette: False
 	pip-blue:
 		Filename: pips2.shp
 		Start: 5
 		Palette: pips
-		IsPlayerPalette: False
 	pip-ammo:
 		Filename: ammopips.shp
 		Palette: pips
-		IsPlayerPalette: False
 	pip-ammoempty:
 		Filename: ammopips.shp
 		Start: 1
 		Palette: pips
-		IsPlayerPalette: False
 	pip-disguise:
 		Filename: pip-disguise.shp
 		Length: *
 		Tick: 300
 		Offset: 0, -6
 		Palette: pips
-		IsPlayerPalette: False
 	# TODO:
 	pip-empty-building:
 		Palette: pips
-		IsPlayerPalette: False
 	pip-green-building:
 		Start: 1
 		Palette: pips
-		IsPlayerPalette: False
 	pip-yellow-building:
 		Start: 2
 	pip-gray-building:
@@ -224,7 +195,6 @@ pips:
 	pip-red-building:
 		Start: 4
 		Palette: pips
-		IsPlayerPalette: False
 	pip-blue-building:
 		Start: 5
 
@@ -239,77 +209,66 @@ explosion:
 		Filename: twlt070.shp
 		Offset: 0, 0, 36
 		Palette: effect
-		IsPlayerPalette: False
 	ionring:
 		Filename: ring1.shp
 		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	ionbeam:
 		Filename: ionbeam.shp
 		Offset: 0, -60, 60
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	ionbeam2:
 		Filename: ionbeam.shp
 		Offset: 0, -180, 60
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	ionbeam3:
 		Filename: ionbeam.shp
 		Offset: 0, -300, 60
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	ionbeam4:
 		Filename: ionbeam.shp
 		Offset: 0, -420, 60
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	ionbeam5:
 		Filename: ionbeam.shp
 		Offset: 0, -540, 60
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	ionbeam6:
 		Filename: ionbeam.shp
 		Offset: 0, -660, 60
 		Tick: 100
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	pulse_explosion:
 		Filename: pulsefx2.shp
 		BlendMode: Additive
 		ZRamp: 1
 		Tick: 80
 		Palette: effect
-		IsPlayerPalette: False
 	pulse_explosion_small:
 		Filename: mempfx.shp
 		BlendMode: Additive
 		ZRamp: 1
 		Tick: 11
 		Palette: effect
-		IsPlayerPalette: False
 	small_watersplash:
 		Filename: h2o_exp2.shp
 		IgnoreWorldTint: False
 		AlphaFade: False
 		Alpha: 0.5
 		Palette: player
-		IsPlayerPalette: False
 	large_watersplash:
 		Filename: h2o_exp1.shp
 		Offset: 0, 0, 39
@@ -320,26 +279,21 @@ explosion:
 		Filename: w_piff.shp
 		IgnoreWorldTint: False
 		Palette: ra
-		IsPlayerPalette: False
 	water_piffs:
 		Filename: w_piffs.shp
 		IgnoreWorldTint: False
 		Palette: ra
-		IsPlayerPalette: False
 	piff:
 		Filename: piff.shp
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	piffs:
 		Filename: piffpiff.shp
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	small_explosion:
 		Filename: explosml.shp
 		Palette: effect
-		IsPlayerPalette: False
 	medium_explosion:
 		Filename: explomed.shp
 		Offset: 0, 0, 27
@@ -347,21 +301,17 @@ explosion:
 		Filename: explolrg.shp
 		Offset: 0, 0, 31
 		Palette: effect
-		IsPlayerPalette: False
 	tiny_bang:
 		Filename: s_bang16.shp
 	small_bang:
 		Filename: s_bang24.shp
 		Palette: effect
-		IsPlayerPalette: False
 	medium_bang:
 		Filename: s_bang34.shp
 		Palette: effect
-		IsPlayerPalette: False
 	large_bang:
 		Filename: s_bang48.shp
 		Palette: effect
-		IsPlayerPalette: False
 	tiny_brnl:
 		Filename: s_brnl20.shp
 	small_brnl:
@@ -369,12 +319,10 @@ explosion:
 	medium_brnl:
 		Filename: s_brnl40.shp
 		Palette: effect
-		IsPlayerPalette: False
 	large_brnl:
 		Filename: s_brnl58.shp
 		Offset: 0, 0, 30
 		Palette: effect
-		IsPlayerPalette: False
 	tiny_tumu:
 		Filename: s_tumu22.shp
 	small_tumu:
@@ -385,44 +333,35 @@ explosion:
 		Filename: s_tumu60.shp
 		Offset: 0, 0, 31
 		Palette: effect
-		IsPlayerPalette: False
 	tiny_clsn:
 		Filename: s_clsn16.shp
 	small_clsn:
 		Filename: s_clsn22.shp
 		Palette: effect
-		IsPlayerPalette: False
 	medium_clsn:
 		Filename: s_clsn30.shp
 		Palette: effect
-		IsPlayerPalette: False
 	large_clsn:
 		Filename: s_clsn42.shp
 		Palette: effect
-		IsPlayerPalette: False
 	verylarge_clsn:
 		Filename: s_clsn58.shp
 		Offset: 0, 0, 30
 		Palette: effect
-		IsPlayerPalette: False
 	tiny_twlt:
 		Filename: twlt026.shp
 		Palette: effect
-		IsPlayerPalette: False
 	small_twlt:
 		Filename: twlt036.shp
 		Palette: effect
-		IsPlayerPalette: False
 	medium_twlt:
 		Filename: twlt050.shp
 		Offset: 0, 0, 26
 		Palette: effect
-		IsPlayerPalette: False
 	large_twlt:
 		Filename: twlt070.shp
 		Offset: 0, 0, 36
 		Palette: effect
-		IsPlayerPalette: False
 	verylarge_twlt:
 		Filename: twlt100.shp
 		Offset: 0, 0, 51
@@ -433,7 +372,6 @@ explosion:
 		Filename: xgrysml2.shp
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	medium_grey_explosion:
 		Filename: xgrymed1.shp
 		IgnoreWorldTint: False
@@ -441,35 +379,30 @@ explosion:
 		Filename: xgrymed2.shp
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	droppod_explosion:
 		Filename: droppod.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	droppod2_explosion:
 		Filename: droppod2.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	droppody_explosion:
 		Filename: droppody.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 	droppody2_explosion:
 		Filename: droppody2.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
 		Palette: effect
-		IsPlayerPalette: False
 
 discus:
 	idle:
@@ -478,7 +411,6 @@ discus:
 		ZOffset: 1023
 		Offset: 0, 0, 12
 		Palette: effect
-		IsPlayerPalette: False
 
 canister:
 	idle:
@@ -487,7 +419,6 @@ canister:
 		ZOffset: 1023
 		Offset: 0, 0, 12
 		Palette: player
-		IsPlayerPalette: False
 
 pulsball:
 	idle:
@@ -497,7 +428,6 @@ pulsball:
 		ZOffset: 1023
 		Offset: 0, 0, 24
 		Palette: effect
-		IsPlayerPalette: False
 
 dragon:
 	idle:
@@ -506,7 +436,6 @@ dragon:
 		ZOffset: 1023
 		Offset: 0, 0, 6
 		Palette: ra
-		IsPlayerPalette: False
 
 crystal4:
 	idle:
@@ -518,7 +447,6 @@ crystal4:
 		ZOffset: 1023
 		Offset: 0, 0, 6
 		Palette: greentiberium
-		IsPlayerPalette: False
 
 120mm:
 	idle:
@@ -526,7 +454,6 @@ crystal4:
 		ZOffset: 1023
 		Offset: 0, 0, 4
 		Palette: ra
-		IsPlayerPalette: False
 
 torpedo:
 	idle:
@@ -536,7 +463,6 @@ torpedo:
 		Offset: 0, 0, 8
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 
 flameall:
 	idle:
@@ -549,7 +475,6 @@ flameall:
 		IgnoreWorldTint: True
 		Alpha: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1
 		Palette: effect
-		IsPlayerPalette: False
 
 largesmoke:
 	idle:
@@ -559,7 +484,6 @@ largesmoke:
 		Offset: 0, 0, 24
 		AlphaFade: True
 		Palette: effect
-		IsPlayerPalette: False
 
 smallsmoke:
 	idle:
@@ -585,7 +509,6 @@ small_smoke_trail:
 		Offset: 0, 0, 24
 		AlphaFade: True
 		Palette: effect
-		IsPlayerPalette: False
 
 largefire:
 	idle:
@@ -595,7 +518,6 @@ largefire:
 		Alpha: 0.5
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 
 mediumfire:
 	idle:
@@ -605,7 +527,6 @@ mediumfire:
 		Alpha: 0.5
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 
 smallfire:
 	idle:
@@ -615,7 +536,6 @@ smallfire:
 		Alpha: 0.5
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 
 tinyfire:
 	idle:
@@ -634,7 +554,6 @@ moveflsh:
 		ZRamp: 1
 		AlphaFade: True
 		Palette: moveflash
-		IsPlayerPalette: False
 
 wake:
 	idle:
@@ -646,7 +565,6 @@ wake:
 		Offset: 0, 0, 1
 		AlphaFade: True
 		Palette: effect
-		IsPlayerPalette: False
 
 resources:
 	Defaults:
@@ -655,166 +573,206 @@ resources:
 		Offset: 0, -12, 1
 		ZRamp: 1
 		IgnoreWorldTint: true
-	tib01:
+	tib01g:
 		TilesetFilenames:
 			TEMPERATE: tib01.tem
 			SNOW: tib01.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib01b:
+		TilesetFilenames:
+			TEMPERATE: tib01.tem
+			SNOW: tib01.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib02:
+	tib02g:
 		TilesetFilenames:
 			TEMPERATE: tib02.tem
 			SNOW: tib02.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib02b:
+		TilesetFilenames:
+			TEMPERATE: tib02.tem
+			SNOW: tib02.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib03:
+	tib03g:
 		TilesetFilenames:
 			TEMPERATE: tib03.tem
 			SNOW: tib03.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib03b:
+		TilesetFilenames:
+			TEMPERATE: tib03.tem
+			SNOW: tib03.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib04:
+	tib04g:
 		TilesetFilenames:
 			TEMPERATE: tib04.tem
 			SNOW: tib04.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib04b:
+		TilesetFilenames:
+			TEMPERATE: tib04.tem
+			SNOW: tib04.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib05:
+	tib05g:
 		TilesetFilenames:
 			TEMPERATE: tib05.tem
 			SNOW: tib05.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib05b:
+		TilesetFilenames:
+			TEMPERATE: tib05.tem
+			SNOW: tib05.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib06:
+	tib06g:
 		TilesetFilenames:
 			TEMPERATE: tib06.tem
 			SNOW: tib06.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib06b:
+		TilesetFilenames:
+			TEMPERATE: tib06.tem
+			SNOW: tib06.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib07:
+	tib07g:
 		TilesetFilenames:
 			TEMPERATE: tib07.tem
 			SNOW: tib07.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib07b:
+		TilesetFilenames:
+			TEMPERATE: tib07.tem
+			SNOW: tib07.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib08:
+	tib08g:
 		TilesetFilenames:
 			TEMPERATE: tib08.tem
 			SNOW: tib08.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib08b:
+		TilesetFilenames:
+			TEMPERATE: tib08.tem
+			SNOW: tib08.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib09:
+	tib09g:
 		TilesetFilenames:
 			TEMPERATE: tib09.tem
 			SNOW: tib09.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib09b:
+		TilesetFilenames:
+			TEMPERATE: tib09.tem
+			SNOW: tib09.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib10:
+	tib10g:
 		TilesetFilenames:
 			TEMPERATE: tib10.tem
 			SNOW: tib10.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib10b:
+		TilesetFilenames:
+			TEMPERATE: tib10.tem
+			SNOW: tib10.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib11:
+	tib11g:
 		TilesetFilenames:
 			TEMPERATE: tib11.tem
 			SNOW: tib11.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib11b:
+		TilesetFilenames:
+			TEMPERATE: tib11.tem
+			SNOW: tib11.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib12:
+	tib12g:
 		TilesetFilenames:
 			TEMPERATE: tib12.tem
 			SNOW: tib12.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib12b:
+		TilesetFilenames:
+			TEMPERATE: tib12.tem
+			SNOW: tib12.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib13:
+	tib13g:
 		TilesetFilenames:
 			TEMPERATE: tib13.tem
 			SNOW: tib13.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib13b:
+		TilesetFilenames:
+			TEMPERATE: tib13.tem
+			SNOW: tib13.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib14:
+	tib14g:
 		TilesetFilenames:
 			TEMPERATE: tib14.tem
 			SNOW: tib14.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib14b:
+		TilesetFilenames:
+			TEMPERATE: tib14.tem
+			SNOW: tib14.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib15:
+	tib15g:
 		TilesetFilenames:
 			TEMPERATE: tib15.tem
 			SNOW: tib15.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib15b:
+		TilesetFilenames:
+			TEMPERATE: tib15.tem
+			SNOW: tib15.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib16:
+	tib16g:
 		TilesetFilenames:
 			TEMPERATE: tib16.tem
 			SNOW: tib16.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib16b:
+		TilesetFilenames:
+			TEMPERATE: tib16.tem
+			SNOW: tib16.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib17:
+	tib17g:
 		TilesetFilenames:
 			TEMPERATE: tib17.tem
 			SNOW: tib17.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib17b:
+		TilesetFilenames:
+			TEMPERATE: tib17.tem
+			SNOW: tib17.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib18:
+	tib18g:
 		TilesetFilenames:
 			TEMPERATE: tib18.tem
 			SNOW: tib18.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib18b:
+		TilesetFilenames:
+			TEMPERATE: tib18.tem
+			SNOW: tib18.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib19:
+	tib19g:
 		TilesetFilenames:
 			TEMPERATE: tib19.tem
 			SNOW: tib19.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib19b:
+		TilesetFilenames:
+			TEMPERATE: tib19.tem
+			SNOW: tib19.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
-	tib20:
+	tib20g:
 		TilesetFilenames:
 			TEMPERATE: tib20.tem
 			SNOW: tib20.sno
 		Palette: greentiberium
-		IsPlayerPalette: False
+	tib20b:
+		TilesetFilenames:
+			TEMPERATE: tib20.tem
+			SNOW: tib20.sno
 		Palette: bluetiberium
-		IsPlayerPalette: False
 	veins:
 		TilesetFilenames:
 			TEMPERATE: veins.tem
@@ -823,7 +781,6 @@ resources:
 		ShadowStart: -1
 		IgnoreWorldTint: false
 		Palette: player
-		IsPlayerPalette: False
 
 veins:
 	idle:
@@ -834,7 +791,6 @@ veins:
 		ZOffset: 1023
 		Offset: 0, -12, 24
 		Palette: player
-		IsPlayerPalette: False
 
 shroud:
 	Defaults:
@@ -844,220 +800,183 @@ shroud:
 	shroud:
 		Length: *
 		Palette: shroud
-		IsPlayerPalette: False
 	fog:
 		Filename: fog.shp
 		Length: *
 		Palette: shroud
-		IsPlayerPalette: False
 
 smallscorches:
 	Defaults:
 		Offset: 0, -12, 1
 		ZRamp: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	sc1:
 		TilesetFilenames:
 			TEMPERATE: burnt01.tem
 			SNOW: burnt01.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc2:
 		TilesetFilenames:
 			TEMPERATE: burnt02.tem
 			SNOW: burnt02.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc3:
 		TilesetFilenames:
 			TEMPERATE: burnt03.tem
 			SNOW: burnt03.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc4:
 		TilesetFilenames:
 			TEMPERATE: burnt04.tem
 			SNOW: burnt04.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc5:
 		TilesetFilenames:
 			TEMPERATE: burnt05.tem
 			SNOW: burnt05.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc6:
 		TilesetFilenames:
 			TEMPERATE: burnt06.tem
 			SNOW: burnt06.sno
 		Palette: terrain
-		IsPlayerPalette: False
 
 mediumscorches:
 	Defaults:
 		Offset: 0, -18, 1
 		ZRamp: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	sc7:
 		TilesetFilenames:
 			TEMPERATE: burnt07.tem
 			SNOW: burnt07.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc8:
 		TilesetFilenames:
 			TEMPERATE: burnt08.tem
 			SNOW: burnt08.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc9:
 		TilesetFilenames:
 			TEMPERATE: burnt09.tem
 			SNOW: burnt09.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc10:
 		TilesetFilenames:
 			TEMPERATE: burnt10.tem
 			SNOW: burnt10.sno
 		Palette: terrain
-		IsPlayerPalette: False
 
 largescorches:
 	Defaults:
 		Offset: 0, -24, 1
 		ZRamp: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	sc11:
 		TilesetFilenames:
 			TEMPERATE: burnt11.tem
 			SNOW: burnt11.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	sc12:
 		TilesetFilenames:
 			TEMPERATE: burnt12.tem
 			SNOW: burnt12.sno
 		Palette: terrain
-		IsPlayerPalette: False
 
 smallcraters:
 	Defaults:
 		Offset: 0, -12, 1
 		ZRamp: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	cr1:
 		TilesetFilenames:
 			TEMPERATE: crater01.tem
 			SNOW: crater01.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr2:
 		TilesetFilenames:
 			TEMPERATE: crater02.tem
 			SNOW: crater02.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr3:
 		TilesetFilenames:
 			TEMPERATE: crater03.tem
 			SNOW: crater03.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr4:
 		TilesetFilenames:
 			TEMPERATE: crater04.tem
 			SNOW: crater04.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr5:
 		TilesetFilenames:
 			TEMPERATE: crater05.tem
 			SNOW: crater05.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr6:
 		TilesetFilenames:
 			TEMPERATE: crater06.tem
 			SNOW: crater06.sno
 		Palette: terrain
-		IsPlayerPalette: False
 
 mediumcraters:
 	Defaults:
 		Offset: 0, -12, 1
 		ZRamp: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	cr7:
 		TilesetFilenames:
 			TEMPERATE: crater07.tem
 			SNOW: crater07.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr8:
 		TilesetFilenames:
 			TEMPERATE: crater08.tem
 			SNOW: crater08.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr9:
 		TilesetFilenames:
 			TEMPERATE: crater09.tem
 			SNOW: crater09.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr10:
 		TilesetFilenames:
 			TEMPERATE: crater10.tem
 			SNOW: crater10.sno
 		Palette: terrain
-		IsPlayerPalette: False
 
 largecraters:
 	Defaults:
 		Offset: 0, -24, 1
 		ZRamp: 1
 		Palette: terrain
-		IsPlayerPalette: False
 	cr11:
 		TilesetFilenames:
 			TEMPERATE: crater11.tem
 			SNOW: crater11.sno
 		Palette: terrain
-		IsPlayerPalette: False
 	cr12:
 		TilesetFilenames:
 			TEMPERATE: crater12.tem
 			SNOW: crater12.sno
 		Palette: terrain
-		IsPlayerPalette: False
 
 icon:
 	clustermissile:
 		Filename: mltiicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	ioncannon:
 		Filename: ioncicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	hunterseeker:
 		Filename: detnicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	emp:
 		Filename: pulsicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	droppods:
 		Filename: podsicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 clustermissile:
 	up: # TODO: use voxel
@@ -1065,20 +984,17 @@ clustermissile:
 		Frames: 0
 		Length: 1
 		Palette: effect
-		IsPlayerPalette: False
 	down: # TODO: use voxel
 		Filename: mltimisl-placeholder.shp
 		Frames: 1
 		Length: 1
 		Palette: effect
-		IsPlayerPalette: False
 
 ^rock:
 	idle:
 		ShadowStart: 1
 		Offset: 0, -12
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 trock01:
 	Inherits: ^rock
@@ -1087,7 +1003,6 @@ trock01:
 			TEMPERATE: trock01.tem
 			SNOW: trock01.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 trock02:
 	Inherits: ^rock
@@ -1096,7 +1011,6 @@ trock02:
 			TEMPERATE: trock02.tem
 			SNOW: trock02.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 trock03:
 	Inherits: ^rock
@@ -1105,7 +1019,6 @@ trock03:
 			TEMPERATE: trock03.tem
 			SNOW: trock03.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 trock04:
 	Inherits: ^rock
@@ -1114,7 +1027,6 @@ trock04:
 			TEMPERATE: trock04.tem
 			SNOW: trock04.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 trock05:
 	Inherits: ^rock
@@ -1123,7 +1035,6 @@ trock05:
 			TEMPERATE: trock05.tem
 			SNOW: trock05.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 srock01:
 	Inherits: ^rock
@@ -1132,7 +1043,6 @@ srock01:
 			TEMPERATE: srock01.tem
 			SNOW: srock01.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 srock02:
 	Inherits: ^rock
@@ -1141,7 +1051,6 @@ srock02:
 			TEMPERATE: srock02.tem
 			SNOW: srock02.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 srock03:
 	Inherits: ^rock
@@ -1150,7 +1059,6 @@ srock03:
 			TEMPERATE: srock03.tem
 			SNOW: srock03.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 srock04:
 	Inherits: ^rock
@@ -1159,7 +1067,6 @@ srock04:
 			TEMPERATE: srock04.tem
 			SNOW: srock04.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 srock05:
 	Inherits: ^rock
@@ -1168,7 +1075,6 @@ srock05:
 			TEMPERATE: srock05.tem
 			SNOW: srock05.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 dbrissm:
 	Defaults:
@@ -1177,43 +1083,33 @@ dbrissm:
 	1:
 		Filename: dbris1sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	2:
 		Filename: dbris2sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	3:
 		Filename: dbris3sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	4:
 		Filename: dbris4sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	5:
 		Filename: dbris5sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	6:
 		Filename: dbris6sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	7:
 		Filename: dbris7sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	8:
 		Filename: dbris8sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	9:
 		Filename: dbris9sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 	10:
 		Filename: dbrs10sm.shp
 		Palette: effect
-		IsPlayerPalette: False
 
 dbrislg:
 	Defaults:
@@ -1222,141 +1118,117 @@ dbrislg:
 	1:
 		Filename: dbris1lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	2:
 		Filename: dbris2lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	3:
 		Filename: dbris3lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	4:
 		Filename: dbris4lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	5:
 		Filename: dbris5lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	6:
 		Filename: dbris6lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	7:
 		Filename: dbris7lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	8:
 		Filename: dbris8lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	9:
 		Filename: dbris9lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 	10:
 		Filename: dbrs10lg.shp
 		Palette: effect
-		IsPlayerPalette: False
 
 ^crate:
 	idle:
 		Offset: 0, 0, 12
 		DepthSprite: isodepth.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat01:
 	Inherits: ^crate
 	idle:
 		Filename: crat01.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat02:
 	Inherits: ^crate
 	idle:
 		Filename: crat02.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat03:
 	Inherits: ^crate
 	idle:
 		Filename: crat03.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat04:
 	Inherits: ^crate
 	idle:
 		Filename: crat04.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat0a:
 	Inherits: ^crate
 	idle:
 		Filename: crat0a.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat0b:
 	Inherits: ^crate
 	idle:
 		Filename: crat0b.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 crat0c:
 	Inherits: ^crate
 	idle:
 		Filename: crat0c.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 drum01:
 	Inherits: ^crate
 	idle:
 		Filename: drum01.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 drum02:
 	Inherits: ^crate
 	idle:
 		Filename: drum02.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 palet01:
 	Inherits: ^crate
 	idle:
 		Filename: palet01.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 palet02:
 	Inherits: ^crate
 	idle:
 		Filename: palet02.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 palet03:
 	Inherits: ^crate
 	idle:
 		Filename: palet03.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 palet04:
 	Inherits: ^crate
 	idle:
 		Filename: palet04.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ^tracks:
 	idle:
@@ -1371,7 +1243,6 @@ tracks01:
 			TEMPERATE: tracks01.tem
 			SNOW: tracks01.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks02:
 	Inherits: ^tracks
@@ -1380,7 +1251,6 @@ tracks02:
 			TEMPERATE: tracks02.tem
 			SNOW: tracks02.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks03:
 	Inherits: ^tracks
@@ -1389,7 +1259,6 @@ tracks03:
 			TEMPERATE: tracks03.tem
 			SNOW: tracks03.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks04:
 	Inherits: ^tracks
@@ -1398,7 +1267,6 @@ tracks04:
 			TEMPERATE: tracks04.tem
 			SNOW: tracks04.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks05:
 	Inherits: ^tracks
@@ -1407,7 +1275,6 @@ tracks05:
 			TEMPERATE: tracks05.tem
 			SNOW: tracks05.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks06:
 	Inherits: ^tracks
@@ -1416,7 +1283,6 @@ tracks06:
 			TEMPERATE: tracks06.tem
 			SNOW: tracks06.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks07:
 	Inherits: ^tracks
@@ -1425,7 +1291,6 @@ tracks07:
 			TEMPERATE: tracks07.tem
 			SNOW: tracks07.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks08:
 	Inherits: ^tracks
@@ -1434,7 +1299,6 @@ tracks08:
 			TEMPERATE: tracks08.tem
 			SNOW: tracks08.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks09:
 	Inherits: ^tracks
@@ -1443,7 +1307,6 @@ tracks09:
 			TEMPERATE: tracks09.tem
 			SNOW: tracks09.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks10:
 	Inherits: ^tracks
@@ -1452,7 +1315,6 @@ tracks10:
 			TEMPERATE: tracks10.tem
 			SNOW: tracks10.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks11:
 	Inherits: ^tracks
@@ -1461,7 +1323,6 @@ tracks11:
 			TEMPERATE: tracks11.tem
 			SNOW: tracks11.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks12:
 	Inherits: ^tracks
@@ -1470,7 +1331,6 @@ tracks12:
 			TEMPERATE: tracks12.tem
 			SNOW: tracks12.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks13:
 	Inherits: ^tracks
@@ -1479,7 +1339,6 @@ tracks13:
 			TEMPERATE: tracks13.tem
 			SNOW: tracks13.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks14:
 	Inherits: ^tracks
@@ -1488,7 +1347,6 @@ tracks14:
 			TEMPERATE: tracks14.tem
 			SNOW: tracks14.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks15:
 	Inherits: ^tracks
@@ -1497,7 +1355,6 @@ tracks15:
 			TEMPERATE: tracks15.tem
 			SNOW: tracks15.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tracks16:
 	Inherits: ^tracks
@@ -1506,7 +1363,6 @@ tracks16:
 			TEMPERATE: tracks16.tem
 			SNOW: tracks16.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ^tuntop:
 	idle:
@@ -1520,7 +1376,6 @@ tuntop01:
 			SNOW: tuntop01.sno
 		Offset: 24, -49, 48
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tuntop02:
 	Inherits: ^tuntop
@@ -1530,7 +1385,6 @@ tuntop02:
 			SNOW: tuntop02.sno
 		Offset: -24, -49, 48
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tuntop03:
 	Inherits: ^tuntop
@@ -1540,7 +1394,6 @@ tuntop03:
 			SNOW: tuntop03.sno
 		Offset: 24, -49, 49
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 tuntop04:
 	Inherits: ^tuntop
@@ -1550,7 +1403,6 @@ tuntop04:
 			SNOW: tuntop04.sno
 		Offset: -24, -49, 49
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 dig:
 	idle:
@@ -1559,7 +1411,6 @@ dig:
 		ZOffset: 511
 		Offset: 0, 0, 24
 		Palette: effect
-		IsPlayerPalette: False
 
 typeglyphs:
 	Defaults:
@@ -1587,7 +1438,6 @@ podring:
 		Length: *
 		AlphaFade: True
 		Palette: effect
-		IsPlayerPalette: False
 
 fire1:
 	idle-overlay:
@@ -1597,7 +1447,6 @@ fire1:
 		Offset: 0, -24, 24
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 fire2:
 	idle-overlay:
@@ -1607,7 +1456,6 @@ fire2:
 		Offset: 0, -18, 18
 		ZOffset: 1023
 		Palette: effect
-		IsPlayerPalette: False
 
 caryland:
 	idle:
@@ -1619,7 +1467,6 @@ caryland:
 		Offset: 0, 0, 1
 		BlendMode: Translucent
 		Palette: effect
-		IsPlayerPalette: False
 
 dropland:
 	idle:
@@ -1631,4 +1478,3 @@ dropland:
 		Offset: 0, 0, 1
 		BlendMode: Translucent
 		Palette: effect
-		IsPlayerPalette: False

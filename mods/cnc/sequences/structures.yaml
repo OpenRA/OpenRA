@@ -5,31 +5,23 @@ fact:
 		Start: 4
 		Length: 20
 		Tick: 100
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	idle:
 		Length: 4
 		Tick: 100
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	damaged-idle:
 		Start: 24
 		Length: 4
 		Tick: 100
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	damaged-build:
 		Start: 28
 		Length: 20
 		Tick: 100
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	dead:
@@ -41,8 +33,6 @@ fact:
 		Filename: factmake.shp
 		Length: *
 		Tick: 80
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	bib:
@@ -53,10 +43,14 @@ fact:
 			TEMPERAT: bib2.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: facticnh.shp
 		Palette: chrome
+
+fact.colorpicker:
+	Inherits: fact
+	idle:
+		Palette: colorpicker
 		IsPlayerPalette: False
 
 nuke:
@@ -92,11 +86,9 @@ nuke:
 			TEMPERAT: bib3.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: nukeicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 proc:
 	Defaults:
@@ -148,11 +140,9 @@ proc:
 			TEMPERAT: bib2.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: procicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 silo:
 	Defaults:
@@ -193,11 +183,9 @@ silo:
 		Length: *
 		Offset: 0,1
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: siloicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 hand:
 	Defaults:
@@ -230,12 +218,10 @@ hand:
 		Length: *
 		Offset: 0,0
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: handicnh.tem
 		Offset: 0,0
 		Palette: chrome
-		IsPlayerPalette: False
 
 pyle:
 	Defaults:
@@ -272,11 +258,9 @@ pyle:
 			TEMPERAT: bib3.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: pyleicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 weap:
 	Defaults:
@@ -313,7 +297,6 @@ weap:
 		Filename: weapmake.shp
 		Start: 19
 		Palette: terrain
-		IsPlayerPalette: False
 	make:
 		Filename: weapmake.shp
 		Length: *
@@ -329,12 +312,10 @@ weap:
 		Length: *
 		Offset: 0,0
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: weapicnh.tem
 		Offset: 0,0
 		Palette: chrome
-		IsPlayerPalette: False
 
 afld:
 	Defaults:
@@ -396,11 +377,9 @@ afld:
 			TEMPERAT: bib1.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: afldicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 hq:
 	Defaults:
@@ -435,11 +414,9 @@ hq:
 			TEMPERAT: bib3.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: hqicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 nuk2:
 	Defaults:
@@ -474,11 +451,9 @@ nuk2:
 			TEMPERAT: bib3.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: nuk2icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 hpad:
 	Defaults:
@@ -521,7 +496,6 @@ hpad:
 	icon:
 		Filename: hpadicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 fix:
 	Defaults:
@@ -565,11 +539,9 @@ fix:
 		Length: *
 		Offset: 0,-9
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: fixicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 eye:
 	Defaults:
@@ -604,11 +576,9 @@ eye:
 			TEMPERAT: bib3.tem
 		Length: *
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: eyeicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 tmpl:
 	Defaults:
@@ -657,12 +627,10 @@ tmpl:
 		Length: *
 		Offset: 0,0
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: tmplicnh.tem
 		Offset: 0,0
 		Palette: chrome
-		IsPlayerPalette: False
 
 obli:
 	Defaults:
@@ -700,12 +668,10 @@ obli:
 		Length: *
 		Offset: -1,-3
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: obliicnh.tem
 		Offset: 0,0
 		Palette: chrome
-		IsPlayerPalette: False
 
 brik:
 	Defaults:
@@ -713,32 +679,26 @@ brik:
 	idle:
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	scratched-idle:
 		Start: 16
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 32
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	icon:
 		Filename: brikicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 sbag:
 	idle:
 		Filename: sbag.shp
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	icon:
 		Filename: sbagicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 cycl:
 	Defaults:
@@ -746,16 +706,13 @@ cycl:
 	idle:
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	icon:
 		Filename: cyclicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 barb:
 	Defaults:
@@ -763,12 +720,10 @@ barb:
 	idle:
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 
 wood:
 	Defaults:
@@ -776,12 +731,10 @@ wood:
 	idle:
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
 		Palette: staticterrain
-		IsPlayerPalette: False
 
 gun:
 	Defaults:
@@ -819,7 +772,6 @@ gun:
 		Filename: gunfire2.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	bib:
 		Filename: mbGUN.tem
 		TilesetFilenames:
@@ -827,11 +779,9 @@ gun:
 		Length: *
 		Offset: -1,-1
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: gunicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 sam:
 	Defaults:
@@ -888,7 +838,6 @@ sam:
 	place:
 		Start: 0
 		Palette: terrain
-		IsPlayerPalette: False
 	make:
 		Filename: sammake.shp
 		Length: 20
@@ -900,11 +849,9 @@ sam:
 		Length: 18
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: samicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 gtwr:
 	Defaults:
@@ -933,7 +880,6 @@ gtwr:
 		Length: 6
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	bib:
 		Filename: mbGTWR.tem
 		TilesetFilenames:
@@ -941,11 +887,9 @@ gtwr:
 		Length: *
 		Offset: 0,-2
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: gtwricnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 atwr:
 	Defaults:
@@ -979,12 +923,10 @@ atwr:
 		Length: *
 		Offset: -3,0
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: atwricnh.tem
 		Offset: 0,0
 		Palette: chrome
-		IsPlayerPalette: False
 
 hosp:
 	Defaults:
@@ -1013,7 +955,6 @@ hosp:
 		Length: *
 		Offset: 0,1
 		Palette: terrain
-		IsPlayerPalette: False
 
 hosp.husk:
 	idle:
@@ -1028,7 +969,6 @@ hosp.husk:
 		Length: *
 		Offset: 0,1
 		Palette: terrain
-		IsPlayerPalette: False
 
 bio:
 	Defaults:
@@ -1078,11 +1018,9 @@ miss:
 		Length: *
 		Offset: 0,1
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: missicnh.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 miss.husk:
 	idle:

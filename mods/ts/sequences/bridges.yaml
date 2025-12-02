@@ -12,43 +12,36 @@ lobrdg_a:
 			TEMPERATE: lobrdg10.tem
 			SNOW: lobrdg10.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle2:
 		TilesetFilenames:
 			TEMPERATE: lobrdg11.tem
 			SNOW: lobrdg11.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle3:
 		TilesetFilenames:
 			TEMPERATE: lobrdg12.tem
 			SNOW: lobrdg12.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle4:
 		TilesetFilenames:
 			TEMPERATE: lobrdg13.tem
 			SNOW: lobrdg13.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	adead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg15.tem
 			SNOW: lobrdg15.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	bdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg14.tem
 			SNOW: lobrdg14.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	abdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg16.tem
 			SNOW: lobrdg16.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 lobrdg_a_d:
 	Inherits: ^bridge
@@ -57,7 +50,6 @@ lobrdg_a_d:
 			TEMPERATE: lobrdg28.tem
 			SNOW: lobrdg28.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	aramp:
 		TilesetFilenames:
 			TEMPERATE: lobrdg17.tem
@@ -78,43 +70,36 @@ lobrdg_b:
 			TEMPERATE: lobrdg01.tem
 			SNOW: lobrdg01.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle2:
 		TilesetFilenames:
 			TEMPERATE: lobrdg02.tem
 			SNOW: lobrdg02.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle3:
 		TilesetFilenames:
 			TEMPERATE: lobrdg03.tem
 			SNOW: lobrdg03.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle4:
 		TilesetFilenames:
 			TEMPERATE: lobrdg04.tem
 			SNOW: lobrdg04.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	adead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg05.tem
 			SNOW: lobrdg05.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	bdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg06.tem
 			SNOW: lobrdg06.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	abdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg07.tem
 			SNOW: lobrdg07.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 lobrdg_b_d:
 	Inherits: ^bridge
@@ -123,7 +108,6 @@ lobrdg_b_d:
 			TEMPERATE: lobrdg27.tem
 			SNOW: lobrdg27.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	aramp:
 		TilesetFilenames:
 			TEMPERATE: lobrdg08.tem
@@ -144,13 +128,11 @@ lobrdg_r_se:
 			TEMPERATE: lobrdg19.tem
 			SNOW: lobrdg19.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg20.tem
 			SNOW: lobrdg20.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 lobrdg_r_nw:
 	Inherits: ^bridge
@@ -159,13 +141,11 @@ lobrdg_r_nw:
 			TEMPERATE: lobrdg21.tem
 			SNOW: lobrdg21.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg22.tem
 			SNOW: lobrdg22.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 lobrdg_r_ne:
 	Inherits: ^bridge
@@ -174,13 +154,11 @@ lobrdg_r_ne:
 			TEMPERATE: lobrdg23.tem
 			SNOW: lobrdg23.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg24.tem
 			SNOW: lobrdg24.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 lobrdg_r_sw:
 	Inherits: ^bridge
@@ -189,13 +167,11 @@ lobrdg_r_sw:
 			TEMPERATE: lobrdg25.tem
 			SNOW: lobrdg25.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg26.tem
 			SNOW: lobrdg26.sno
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bridge1:
 	idle:
@@ -207,7 +183,6 @@ bridge1:
 		ZRamp: 1
 		Offset: 0, -13, 49
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bridge2:
 	idle:
@@ -220,7 +195,6 @@ bridge2:
 		ZRamp: 1
 		Offset: 0, -25, 49
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 railbrdg1:
 	idle:
@@ -232,7 +206,6 @@ railbrdg1:
 		ZRamp: 1
 		Offset: 0, -13, 49
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 railbrdg2:
 	idle:
@@ -245,4 +218,3 @@ railbrdg2:
 		ZRamp: 1
 		Offset: 0, -25, 49
 		Palette: terraindecoration
-		IsPlayerPalette: False

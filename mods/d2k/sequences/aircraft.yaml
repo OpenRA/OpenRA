@@ -4,8 +4,6 @@ carryall:
 		Start: 1923
 		Facings: -32
 		Remap: 54F94B
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	icon:
@@ -13,6 +11,11 @@ carryall:
 		Start: 4290
 		Offset: -30,-24
 		Palette: chrome
+
+carryall.colorpicker:
+	Inherits: carryall
+	idle:
+		Palette: colorpicker
 		IsPlayerPalette: False
 
 ornithopter:
@@ -31,7 +34,6 @@ ornithopter:
 		Start: 4292
 		Offset: -30,-24
 		Palette: chrome
-		IsPlayerPalette: False
 
 frigate:
 	idle:

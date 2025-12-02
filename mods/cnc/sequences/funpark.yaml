@@ -4,7 +4,6 @@ steg:
 	stand:
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -13,22 +12,18 @@ steg:
 		Length: 8
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 12
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	die:
 		Start: 176
 		Length: 22
 		Palette: terrain
-		IsPlayerPalette: False
 	icon:
 		Filename: stegicnh.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 trex:
 	Defaults:
@@ -36,7 +31,6 @@ trex:
 	stand:
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -45,13 +39,11 @@ trex:
 		Length: 8
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 8
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	die:
 		Start: 144
 		Length: 40
@@ -60,7 +52,6 @@ trex:
 	icon:
 		Filename: trexicnh.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 tric:
 	Defaults:
@@ -68,7 +59,6 @@ tric:
 	stand:
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -77,13 +67,11 @@ tric:
 		Length: 8
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 12
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	die:
 		Start: 176
 		Length: 20
@@ -92,7 +80,6 @@ tric:
 	icon:
 		Filename: tricicnh.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 rapt:
 	Defaults:
@@ -100,7 +87,6 @@ rapt:
 	stand:
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -109,13 +95,11 @@ rapt:
 		Length: 8
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 8
 		Facings: 8
 		Palette: terrain
-		IsPlayerPalette: False
 	die:
 		Start: 144
 		Length: 40
@@ -124,4 +108,3 @@ rapt:
 	icon:
 		Filename: rapticnh.shp
 		Palette: chrome
-		IsPlayerPalette: False

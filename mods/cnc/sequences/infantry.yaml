@@ -41,7 +41,6 @@ vice:
 		Facings: 8
 		Length: 13
 		Palette: effect
-		IsPlayerPalette: False
 	die:
 		Filename: chemball.shp
 		Length: *
@@ -60,13 +59,11 @@ pvice:
 		IsPlayerPalette: True
 	muzzle:
 		Palette: effect
-		IsPlayerPalette: False
 	die:
 		Palette: player
 		IsPlayerPalette: True
 	icon:
 		Palette: chrome
-		IsPlayerPalette: False
 
 e1:
 	Defaults:
@@ -211,7 +208,6 @@ e1:
 	icon:
 		Filename: e1icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 e2:
 	Defaults:
@@ -343,7 +339,6 @@ e2:
 	icon:
 		Filename: e2icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 e3:
 	Defaults:
@@ -475,7 +470,6 @@ e3:
 	icon:
 		Filename: e3icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 e4:
 	Defaults:
@@ -642,11 +636,9 @@ e4:
 		Facings: 8
 		Length: 13
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: e4icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 e5:
 	Defaults:
@@ -813,11 +805,9 @@ e5:
 		Facings: 8
 		Length: 13
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: e5icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 e6:
 	Defaults:
@@ -937,7 +927,6 @@ e6:
 	icon:
 		Filename: e6icnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 rmbo:
 	Defaults:
@@ -1075,4 +1064,3 @@ rmbo:
 	icon:
 		Filename: rmboicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False

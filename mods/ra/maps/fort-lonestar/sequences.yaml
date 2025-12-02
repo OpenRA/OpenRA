@@ -5,6 +5,8 @@ sniper:
 		Facings: 8
 		Palette: player
 		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
 		Palette: player-noshadow
 		IsPlayerPalette: True
 	stand2:
@@ -19,8 +21,6 @@ sniper:
 		Tick: 100
 		Palette: player
 		IsPlayerPalette: True
-		Palette: player-noshadow
-		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
@@ -32,8 +32,6 @@ sniper:
 		Stride: 4
 		Facings: 8
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	prone-stand2:
 		Start: 208
@@ -47,8 +45,6 @@ sniper:
 		Facings: 8
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: True
-		Palette: player-noshadow
 		IsPlayerPalette: True
 	liedown:
 		Start: 192

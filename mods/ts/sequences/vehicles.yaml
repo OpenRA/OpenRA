@@ -5,36 +5,25 @@
 		Length: *
 		BlendMode: Additive
 		IgnoreWorldTint: True
+		Palette: effect
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sidebar-gdi|mcvicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 mcv.nod:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sidebar-nod|mcvicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 apc:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: apcicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 harv.gdi:
 	Inherits: ^VehicleOverlays
@@ -44,14 +33,9 @@ harv.gdi:
 		ZRamp: 1
 		Offset: 0, 0, 1
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-gdi|harvicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 harv.nod:
 	Inherits: ^VehicleOverlays
@@ -61,24 +45,15 @@ harv.nod:
 		ZRamp: 1
 		Offset: 0, 0, 1
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-nod|harvicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 hvr:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: hovricon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 4tnk:
 	Inherits: ^VehicleOverlays
@@ -87,10 +62,6 @@ hvr:
 		Length: *
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 lpst.gdi:
 	Inherits: ^VehicleOverlays
@@ -137,27 +108,20 @@ lpst.gdi:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-gdi|lpsticon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 lpst.nod:
 	Inherits: lpst.gdi
 	icon:
 		Filename: sidebar-nod|lpsticon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	idle:
 		Palette: playertem
 		IsPlayerPalette: True
 	emp-overlay:
 		Palette: effect
-		IsPlayerPalette: False
 	make:
 		Palette: playertem
 		IsPlayerPalette: True
@@ -166,24 +130,18 @@ lpst.nod:
 		IsPlayerPalette: True
 	idle-lights-bright:
 		Palette: bright
-		IsPlayerPalette: False
 
 repair:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: rboticon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 art2:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: artyicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	idle:
 		TilesetFilenames:
 			TEMPERATE: gtarty.shp
@@ -219,40 +177,24 @@ art2:
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 weed:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: weedicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 hmec:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: hmecicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 bike:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: cyclicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 bggy:
 	Inherits: ^VehicleOverlays
@@ -288,45 +230,28 @@ bggy:
 		Length: 6
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: bggyicon.shp
 		Offset: 0, 0
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 sapc:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sapcicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 subtank:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: subticon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 sonic:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: soniicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 ttnk:
 	Inherits: ^VehicleOverlays
@@ -356,24 +281,15 @@ ttnk:
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: tickicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 stnk:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: stnkicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 mmch:
 	Defaults:
@@ -404,21 +320,15 @@ mmch:
 		Offset: 0, 0, 12
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: mmchicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 jugg:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: juggicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	stand:
 		Filename: jugger.shp
 		Facings: -8
@@ -466,10 +376,6 @@ jugg:
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 gghunt:
 	Inherits: ^VehicleOverlays
@@ -514,91 +420,51 @@ smech:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	icon:
 		Filename: smchicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 mobilemp:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: mempicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 trucka:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 truckb:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 icbm:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 bus:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 pick:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 car:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 wini:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 locomotive:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 traincar:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 cargocar:
 	Inherits: ^VehicleOverlays
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 mstl:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: mstlicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	idle:
 		Filename: mstl.shp
 		ShadowStart: 3
@@ -619,6 +485,3 @@ mstl:
 		Offset: 0, -15, 15
 		Palette: playertem
 		IsPlayerPalette: True
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False

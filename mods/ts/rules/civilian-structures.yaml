@@ -1509,7 +1509,7 @@ INGALITE:
 	Immobile:
 		OccupiesSpace: false
 	RenderSpritesEditorOnly:
-		Image: galite
+		Image: galite-editor
 	WithSpriteBody:
 	BodyOrientation:
 		QuantizedFacings: 1

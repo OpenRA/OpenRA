@@ -85,7 +85,6 @@ e1.gdi:
 	icon:
 		Filename: sidebar-gdi|e1icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -103,7 +102,6 @@ e1.gdi:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -115,7 +113,6 @@ e1.gdi:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -124,10 +121,8 @@ e1.gdi:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -140,7 +135,6 @@ e1.nod:
 	icon:
 		Filename: sidebar-nod|e1icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -158,7 +152,6 @@ e1.nod:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -170,7 +163,6 @@ e1.nod:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -179,10 +171,8 @@ e1.nod:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -195,7 +185,6 @@ e2:
 	icon:
 		Filename: e2icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -213,7 +202,6 @@ e2:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -225,7 +213,6 @@ e2:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -234,10 +221,8 @@ e2:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -250,7 +235,6 @@ e3:
 	icon:
 		Filename: e4icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -268,7 +252,6 @@ e3:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -280,7 +263,6 @@ e3:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -289,10 +271,8 @@ e3:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -304,7 +284,6 @@ engineer.gdi:
 	icon:
 		Filename: sidebar-gdi|engnicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -331,10 +310,8 @@ engineer.gdi:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -346,7 +323,6 @@ engineer.nod:
 	icon:
 		Filename: sidebar-nod|engnicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -373,10 +349,8 @@ engineer.nod:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -405,7 +379,6 @@ umagon:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -417,7 +390,6 @@ umagon:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -426,10 +398,8 @@ umagon:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -442,7 +412,6 @@ ghost:
 	icon:
 		Filename: gosticon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -460,7 +429,6 @@ ghost:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -472,7 +440,6 @@ ghost:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -481,10 +448,8 @@ ghost:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -496,7 +461,6 @@ mhijack:
 	icon:
 		Filename: chamicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -523,10 +487,8 @@ mhijack:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -563,10 +525,8 @@ chamspy:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -595,7 +555,6 @@ mutant:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -607,7 +566,6 @@ mutant:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -616,10 +574,8 @@ mutant:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -648,7 +604,6 @@ mwmn:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -660,7 +615,6 @@ mwmn:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -669,10 +623,8 @@ mwmn:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -701,7 +653,6 @@ mutant3:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: bright
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nobright
 		IsPlayerPalette: True
@@ -713,7 +664,6 @@ mutant3:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: bright
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -722,10 +672,8 @@ mutant3:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -762,10 +710,8 @@ tratos:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -792,7 +738,6 @@ oxanna:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -804,7 +749,6 @@ oxanna:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -813,10 +757,8 @@ oxanna:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -843,7 +785,6 @@ slav:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-run:
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
@@ -855,7 +796,6 @@ slav:
 		IsPlayerPalette: True
 	prone-attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling:
 		Palette: player
 		IsPlayerPalette: True
@@ -864,10 +804,8 @@ slav:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -890,7 +828,6 @@ civ1:
 		ShadowStart: 456
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	panic-run:
 		Start: 86
 		Length: 6
@@ -917,10 +854,8 @@ civ1:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -955,10 +890,8 @@ civ2:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -968,23 +901,15 @@ civ3:
 	Defaults:
 		Filename: civ3.shp
 	run:
-		Palette: player
-		IsPlayerPalette: True
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
 	stand:
-		Palette: player
-		IsPlayerPalette: True
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
 	panic-run:
-		Palette: player
-		IsPlayerPalette: True
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
 	panic-stand:
-		Palette: player
-		IsPlayerPalette: True
 		Palette: player-nomuzzle
 		IsPlayerPalette: True
 	die-twirling:
@@ -995,10 +920,8 @@ civ3:
 		IsPlayerPalette: True
 	die-exploding:
 		Palette: effect
-		IsPlayerPalette: False
 	die-melting:
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Palette: player
 		IsPlayerPalette: True
@@ -1007,7 +930,6 @@ civ3:
 		IsPlayerPalette: True
 	attack-muzzle:
 		Palette: muzzle
-		IsPlayerPalette: False
 
 cyborg:
 	Defaults:
@@ -1065,7 +987,6 @@ cyborg:
 		Facings: 8
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	crippled-attack:
 		Start: 212
 		Length: 6
@@ -1079,7 +1000,6 @@ cyborg:
 		Facings: 8
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		Length: *
@@ -1087,11 +1007,9 @@ cyborg:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: cybiicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 cyc2:
 	Defaults:
@@ -1150,7 +1068,6 @@ cyc2:
 		ShadowStart: 520
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	crippled-attack:
 		Start: 260
 		Length: 6
@@ -1165,7 +1082,6 @@ cyc2:
 		ShadowStart: 568
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		Length: *
@@ -1173,11 +1089,9 @@ cyc2:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: cybcicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 medic:
 	Defaults:
@@ -1238,7 +1152,6 @@ medic:
 		Filename: s_bang34.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	die-crushed:
 		Start: 159
 		Length: 5
@@ -1263,11 +1176,9 @@ medic:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: mediicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 jumpjet:
 	Defaults:
@@ -1319,7 +1230,6 @@ jumpjet:
 		Start: 292
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	die-twirling: # TODO: animation for falling from sky starts at 436
 		Start: 445
 		Length: 6
@@ -1346,7 +1256,6 @@ jumpjet:
 		Filename: s_bang34.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	die-crushed:
 		Start: 450
 		ShadowStart: 901
@@ -1367,7 +1276,6 @@ jumpjet:
 		Facings: 8
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	flying-attack:
 		Start: 388
 		Facings: 8
@@ -1381,7 +1289,6 @@ jumpjet:
 		Length: 6
 		IgnoreWorldTint: True
 		Palette: muzzle
-		IsPlayerPalette: False
 	prone-attack:
 		Start: 212
 		Length: 6
@@ -1402,11 +1309,9 @@ jumpjet:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: jjeticon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 weedguy:
 	Defaults:
@@ -1482,7 +1387,6 @@ weedguy:
 		Length: 11
 		ShadowStart: 368
 		Palette: effect
-		IsPlayerPalette: False
 	die-burning:
 		Start: 177
 		Length: 20
@@ -1494,7 +1398,6 @@ weedguy:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Palette: ra
-		IsPlayerPalette: False
 	die-crushed:
 		Start: 174
 		Length: 3

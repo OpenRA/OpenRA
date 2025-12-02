@@ -8,7 +8,6 @@ mcv:
 	icon:
 		Filename: mcvicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 mcv.destroyed:
 	idle:
@@ -47,7 +46,6 @@ harv:
 	icon:
 		Filename: harvicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 harv.destroyed:
 	idle:
@@ -77,11 +75,9 @@ bggy:
 		Length: 6
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: bggyicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 bggy.destroyed:
 	idle:
@@ -116,11 +112,9 @@ mtnk:
 		Filename: gunfire2.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: mtnkicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 mtnk.destroyed:
 	idle:
@@ -157,11 +151,9 @@ ltnk:
 		Filename: gunfire2.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: ltnkicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 ltnk.destroyed:
 	idle:
@@ -198,11 +190,9 @@ htnk:
 		Filename: gunfire2.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: htnkicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 htnk.destroyed:
 	idle:
@@ -240,11 +230,9 @@ jeep:
 		Length: 6
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: jeepicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 jeep.destroyed:
 	idle:
@@ -271,7 +259,6 @@ bike:
 	icon:
 		Filename: bikeicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 bike.destroyed:
 	idle:
@@ -326,11 +313,9 @@ ftnk:
 		Facings: 8
 		Length: 13
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: ftnkicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 ftnk.destroyed:
 	idle:
@@ -357,7 +342,6 @@ mhq:
 	icon:
 		Filename: mhqicnh.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 msam:
 	Defaults:
@@ -384,7 +368,6 @@ msam:
 	icon:
 		Filename: msamicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 msam.destroyed:
 	idle:
@@ -432,7 +415,6 @@ mlrs:
 	icon:
 		Filename: mlrsicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 mlrs.destroyed:
 	idle:
@@ -461,7 +443,6 @@ stnk:
 	icon:
 		Filename: stnkicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 stnk.destroyed:
 	idle:
@@ -483,11 +464,9 @@ arty:
 		Filename: gunfire2.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: artyicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 arty.destroyed:
 	idle:
@@ -522,14 +501,12 @@ apc:
 		Length: 6
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	muzzle-air:
 		Filename: apcmuz.shp
 		Length: 3
 		Stride: 6
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	close:
 		Start: 32
 		Length: 3
@@ -538,7 +515,6 @@ apc:
 	icon:
 		Filename: apcicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 apc.destroyed:
 	idle:
@@ -563,7 +539,6 @@ truck:
 	icon:
 		Filename: truckicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 truck.destroyed:
 	idle:

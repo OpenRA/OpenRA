@@ -105,14 +105,12 @@ light_inf:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4272
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 trooper:
 	Defaults:
@@ -220,14 +218,12 @@ trooper:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4273
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 engineer:
 	Defaults:
@@ -320,14 +316,12 @@ engineer:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4274
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 thumper:
 	Defaults:
@@ -442,14 +436,12 @@ thumper:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4275
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 fremen:
 	Defaults:
@@ -558,14 +550,12 @@ fremen:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4293
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 saboteur:
 	Defaults:
@@ -668,14 +658,12 @@ saboteur:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4295
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 sardaukar:
 	Defaults:
@@ -786,14 +774,12 @@ sardaukar:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4276
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 grenadier:
 	Defaults:
@@ -866,7 +852,6 @@ grenadier:
 		ZOffset: -511
 		Remap: 00000000
 		Palette: effect
-		IsPlayerPalette: False
 	prone-stand:
 		Filename: DATA.R16
 		Start: 2622
@@ -898,7 +883,6 @@ grenadier:
 		Offset: -30,-24
 		Remap: 00000000
 		Palette: chrome
-		IsPlayerPalette: False
 
 sandworm:
 	mouth:

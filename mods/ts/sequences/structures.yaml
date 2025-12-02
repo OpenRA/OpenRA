@@ -36,7 +36,6 @@ gacnst:
 		IgnoreWorldTint: True
 		ZOffset: 1023
 		Palette: bright
-		IsPlayerPalette: False
 	crane-overlay:
 		TilesetFilenames:
 			TEMPERATE: gtcnst_d.shp
@@ -78,7 +77,6 @@ gacnst:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-top:
 		TilesetFilenames:
 			TEMPERATE: gtcnst_c.shp
@@ -97,7 +95,6 @@ gacnst:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-side:
 		TilesetFilenames:
 			TEMPERATE: gtcnst_a.shp
@@ -127,7 +124,6 @@ gacnst:
 		Length: 10
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		TilesetFilenames:
@@ -138,14 +134,12 @@ gacnst:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: facticon.shp
 		TilesetFilenames:
 		Offset: 0,0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gapowr:
 	Defaults:
@@ -185,7 +179,6 @@ gapowr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: gtpowr_a.shp
@@ -204,7 +197,6 @@ gapowr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-plug:
 		TilesetFilenames:
 			TEMPERATE: gtpowr_b.shp
@@ -273,7 +265,6 @@ gapowr:
 		ShadowStart: 20
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		TilesetFilenames:
@@ -284,14 +275,12 @@ gapowr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: powricon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gapowrup:
 	place:
@@ -301,11 +290,9 @@ gapowrup:
 		Length: 11
 		Tick: 200
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: turbicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 gapile:
 	Defaults:
@@ -347,7 +334,6 @@ gapile:
 		ZOffset: 1023
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-light-bright:
 		TilesetFilenames:
 			TEMPERATE: gtpile_b.shp
@@ -356,7 +342,6 @@ gapile:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-flag:
 		TilesetFilenames:
 			TEMPERATE: gtpile_c.shp
@@ -392,14 +377,12 @@ gapile:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: brrkicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gaweap:
 	Defaults:
@@ -471,7 +454,6 @@ gaweap:
 		ZOffset: 2048
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-lights-red:
 		TilesetFilenames:
 			TEMPERATE: gtweap_b.shp
@@ -490,7 +472,6 @@ gaweap:
 		ZOffset: 2048
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-turbines:
 		TilesetFilenames:
 			TEMPERATE: gtweap_c.shp
@@ -546,7 +527,6 @@ gaweap:
 		DepthSpriteOffset: -12, 0
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		Length: *
@@ -556,13 +536,11 @@ gaweap:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: weapicon.shp
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 napowr:
 	Defaults:
@@ -602,7 +580,6 @@ napowr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: ntpowr_a.shp
@@ -621,7 +598,6 @@ napowr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: ntpowrmk.shp
@@ -640,14 +616,12 @@ napowr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: npwricon.shp
 		TilesetFilenames:
 		Offset: 0, 0, 25
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 naapwr:
 	Defaults:
@@ -688,7 +662,6 @@ naapwr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: ntapwr_a.shp
@@ -707,7 +680,6 @@ naapwr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: ntapwrmk.shp
@@ -726,14 +698,12 @@ naapwr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: apwricon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nahand:
 	Defaults:
@@ -767,7 +737,6 @@ nahand:
 		ZOffset: 1023
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: nthand_b.shp
@@ -776,7 +745,6 @@ nahand:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: nthand_b.shp
@@ -786,7 +754,6 @@ nahand:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: nthandmk.shp
@@ -805,14 +772,12 @@ nahand:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: handicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 naweap:
 	Defaults:
@@ -886,7 +851,6 @@ naweap:
 		ZOffset: 2048
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: ntweap_a.shp
@@ -907,7 +871,6 @@ naweap:
 		ZOffset: 2048
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	build-door:
 		TilesetFilenames:
 			TEMPERATE: ntweap_b.shp
@@ -947,13 +910,11 @@ naweap:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: nwepicon.shp
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 naradr:
 	Defaults:
@@ -1012,14 +973,12 @@ naradr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: nradicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 natech:
 	Defaults:
@@ -1059,7 +1018,6 @@ natech:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: nttech_a.shp
@@ -1078,7 +1036,6 @@ natech:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: nttechmk.shp
@@ -1097,14 +1054,12 @@ natech:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: ntchicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 natmpl:
 	Defaults:
@@ -1145,7 +1100,6 @@ natmpl:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: nttmplmk.shp
@@ -1164,14 +1118,12 @@ natmpl:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: tmplicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 garadr:
 	Defaults:
@@ -1232,14 +1184,12 @@ garadr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: radricon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gatech:
 	Defaults:
@@ -1280,7 +1230,6 @@ gatech:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: gttech_a.shp
@@ -1299,7 +1248,6 @@ gatech:
 		Tick: 240
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gttechmk.shp
@@ -1318,14 +1266,12 @@ gatech:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: techicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gasand:
 	Defaults:
@@ -1351,7 +1297,6 @@ gasand:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gawall:
 	Defaults:
@@ -1383,7 +1328,6 @@ gawall:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gagate_a:
 	Defaults:
@@ -1438,14 +1382,12 @@ gagate_a:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: gateicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gagate_b:
 	Defaults:
@@ -1500,14 +1442,12 @@ gagate_b:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: gat2icon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nagate_a:
 	Defaults:
@@ -1567,14 +1507,12 @@ nagate_a:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: ngaticon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nagate_b:
 	Defaults:
@@ -1630,14 +1568,12 @@ nagate_b:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: nga2icon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 napost:
 	Defaults:
@@ -1666,7 +1602,6 @@ napost:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: ntpost_b.shp
@@ -1677,7 +1612,6 @@ napost:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	chainoflights:
 		TilesetFilenames:
 			TEMPERATE: ntpost_a.shp
@@ -1698,7 +1632,6 @@ napost:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-chainoflights:
 		TilesetFilenames:
 			TEMPERATE: ntpost_a.shp
@@ -1719,7 +1652,6 @@ napost:
 		Tick: 80
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Tick: 400
@@ -1745,14 +1677,12 @@ napost:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: lasricon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nafnce:
 	Defaults:
@@ -1791,7 +1721,6 @@ nafnce:
 		DepthSpriteOffset: -12, 0
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	enabled-y:
 		Frames: 7,5,7,5,6,4,6,4,7,5,7,5,6,4,6,4
 		Length: 16
@@ -1804,7 +1733,6 @@ nafnce:
 		DepthSpriteOffset: 12, 0
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		TilesetFilenames:
@@ -1845,7 +1773,6 @@ nawall:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gaicbm:
 	Defaults:
@@ -1874,7 +1801,6 @@ gaicbm:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gticbmmk.shp
@@ -1941,14 +1867,12 @@ naobel:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: obliicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nalasr:
 	Defaults:
@@ -1990,14 +1914,12 @@ nalasr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: plticon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nasam:
 	Defaults:
@@ -2051,13 +1973,11 @@ nasam:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: samicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		Palette: chrome
-		IsPlayerPalette: False
 
 napuls.gdi:
 	Defaults:
@@ -2105,14 +2025,12 @@ napuls.gdi:
 		BlendMode: Additive
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-gdi|empicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 napuls.nod:
 	Defaults:
@@ -2161,14 +2079,12 @@ napuls.nod:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-nod|empicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nastlh:
 	Defaults:
@@ -2228,14 +2144,12 @@ nastlh:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: clckicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gactwr:
 	Defaults:
@@ -2280,7 +2194,6 @@ gactwr:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtctwrmk.shp
@@ -2297,7 +2210,6 @@ gactwr:
 		ZOffset: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	turret-vulcan:
 		TilesetFilenames:
 			TEMPERATE: gtctwr_b.shp
@@ -2350,7 +2262,6 @@ gactwr:
 		Offset: 0, 0, 12
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		TilesetFilenames:
@@ -2361,14 +2272,12 @@ gactwr:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: towricon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gavulc:
 	place:
@@ -2378,11 +2287,9 @@ gavulc:
 		Offset: 0, -12, 12
 		Start: 28
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: twr1icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 garock:
 	place:
@@ -2392,11 +2299,9 @@ garock:
 		Offset: 0, -12, 12
 		Start: 28
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: twr2icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 gacsam:
 	place:
@@ -2406,11 +2311,9 @@ gacsam:
 		Offset: 0, -12, 12
 		Start: 28
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: twr3icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 gahpad:
 	Defaults:
@@ -2495,7 +2398,6 @@ gahpad:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: gthpad_a.shp
@@ -2520,7 +2422,6 @@ gahpad:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gthpadmk.shp
@@ -2542,13 +2443,11 @@ gahpad:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: heliicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		Palette: chrome
-		IsPlayerPalette: False
 
 nahpad:
 	Defaults:
@@ -2631,7 +2530,6 @@ nahpad:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: nthpad_a.shp
@@ -2654,7 +2552,6 @@ nahpad:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: nthpadmk.shp
@@ -2675,13 +2572,11 @@ nahpad:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: nhpdicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		Palette: chrome
-		IsPlayerPalette: False
 
 proc.gdi:
 	Defaults:
@@ -2723,7 +2618,6 @@ proc.gdi:
 		Length: *
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	unload-overlay:
 		TilesetFilenames:
 			TEMPERATE: ntrefn_a.shp
@@ -2748,7 +2642,6 @@ proc.gdi:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	bib:
 		TilesetFilenames:
 			TEMPERATE: ntrefnbb.shp
@@ -2790,14 +2683,12 @@ proc.gdi:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-gdi|reficon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 proc.nod:
 	Defaults:
@@ -2839,7 +2730,6 @@ proc.nod:
 		Length: *
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	unload-overlay:
 		TilesetFilenames:
 			TEMPERATE: ntrefn_a.shp
@@ -2864,7 +2754,6 @@ proc.nod:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	bib:
 		TilesetFilenames:
 			TEMPERATE: ntrefnbb.shp
@@ -2906,14 +2795,12 @@ proc.nod:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-nod|reficon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 nawast:
 	Defaults:
@@ -2975,7 +2862,6 @@ nawast:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: ntwast_b.shp
@@ -2985,7 +2871,6 @@ nawast:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	bib:
 		TilesetFilenames:
 			TEMPERATE: ntwastbb.shp
@@ -3026,14 +2911,12 @@ nawast:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: wasticon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gasilo.gdi:
 	Defaults:
@@ -3092,7 +2975,6 @@ gasilo.gdi:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: gtsilo_b.shp
@@ -3102,7 +2984,6 @@ gasilo.gdi:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtsilomk.shp
@@ -3121,14 +3002,12 @@ gasilo.gdi:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-gdi|siloicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gasilo.nod:
 	Defaults:
@@ -3187,7 +3066,6 @@ gasilo.nod:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: gtsilo_b.shp
@@ -3197,7 +3075,6 @@ gasilo.nod:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtsilomk.shp
@@ -3216,14 +3093,12 @@ gasilo.nod:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-nod|siloicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gadept.gdi:
 	Defaults:
@@ -3303,7 +3178,6 @@ gadept.gdi:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	circuits:
 		TilesetFilenames:
 			TEMPERATE: gtdept_a.shp
@@ -3324,7 +3198,6 @@ gadept.gdi:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-circuits:
 		TilesetFilenames:
 			TEMPERATE: gtdept_a.shp
@@ -3347,7 +3220,6 @@ gadept.gdi:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	crane-start:
 		TilesetFilenames:
 			TEMPERATE: gtdept_c.shp
@@ -3358,8 +3230,15 @@ gadept.gdi:
 		DepthSprite: isodepth.shp
 		Palette: player-nobright
 		IsPlayerPalette: True
+	crane-start-bright:
+		TilesetFilenames:
+			TEMPERATE: gtdept_c.shp
+			SNOW: gadept_c.shp
+		Length: 6
+		Offset: 0, -36, 12
+		Tick: 60
+		DepthSprite: isodepth.shp
 		Palette: bright
-		IsPlayerPalette: False
 	crane-loop:
 		TilesetFilenames:
 			TEMPERATE: gtdept_c.shp
@@ -3382,8 +3261,17 @@ gadept.gdi:
 		DepthSprite: isodepth.shp
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	crane-end:
+		TilesetFilenames:
+			TEMPERATE: gtdept_c.shp
+			SNOW: gadept_c.shp
+		Start: 10
+		Length: 6
+		Offset: 0, -36, 12
+		Tick: 60
+		DepthSprite: isodepth.shp
+		Palette: bright
+	crane-end-bright:
 		TilesetFilenames:
 			TEMPERATE: gtdept_c.shp
 			SNOW: gadept_c.shp
@@ -3394,8 +3282,6 @@ gadept.gdi:
 		DepthSprite: isodepth.shp
 		Palette: player-nobright
 		IsPlayerPalette: True
-		Palette: bright
-		IsPlayerPalette: False
 	platform:
 		TilesetFilenames:
 			TEMPERATE: gtdept_d.shp
@@ -3435,13 +3321,11 @@ gadept.gdi:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-gdi|fixicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		Palette: chrome
-		IsPlayerPalette: False
 
 gadept.nod:
 	Defaults:
@@ -3521,7 +3405,6 @@ gadept.nod:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	circuits:
 		TilesetFilenames:
 			TEMPERATE: gtdept_a.shp
@@ -3542,7 +3425,6 @@ gadept.nod:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-circuits:
 		TilesetFilenames:
 			TEMPERATE: gtdept_a.shp
@@ -3565,7 +3447,6 @@ gadept.nod:
 		ZRamp: 1
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	crane-start:
 		TilesetFilenames:
 			TEMPERATE: gtdept_c.shp
@@ -3576,8 +3457,15 @@ gadept.nod:
 		DepthSprite: isodepth.shp
 		Palette: player-nobright
 		IsPlayerPalette: True
+	crane-start-bright:
+		TilesetFilenames:
+			TEMPERATE: gtdept_c.shp
+			SNOW: gadept_c.shp
+		Length: 6
+		Offset: 0, -36, 12
+		Tick: 60
+		DepthSprite: isodepth.shp
 		Palette: bright
-		IsPlayerPalette: False
 	crane-loop:
 		TilesetFilenames:
 			TEMPERATE: gtdept_c.shp
@@ -3600,7 +3488,6 @@ gadept.nod:
 		DepthSprite: isodepth.shp
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	crane-end:
 		TilesetFilenames:
 			TEMPERATE: gtdept_c.shp
@@ -3612,8 +3499,16 @@ gadept.nod:
 		Tick: 60
 		Palette: player-nobright
 		IsPlayerPalette: True
+	crane-end-bright:
+		TilesetFilenames:
+			TEMPERATE: gtdept_c.shp
+			SNOW: gadept_c.shp
+		Start: 10
+		Length: 6
+		Offset: 0, -36, 12
+		DepthSprite: isodepth.shp
+		Tick: 60
 		Palette: bright
-		IsPlayerPalette: False
 	platform:
 		TilesetFilenames:
 			TEMPERATE: gtdept_d.shp
@@ -3653,13 +3548,11 @@ gadept.nod:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: sidebar-nod|fixicon.shp
 		TilesetFilenames:
 		Offset: 76, 66
 		Palette: chrome
-		IsPlayerPalette: False
 
 namisl:
 	Defaults:
@@ -3696,7 +3589,6 @@ namisl:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		TilesetFilenames:
 			TEMPERATE: ntmisl_b.shp
@@ -3715,7 +3607,6 @@ namisl:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: ntmislmk.shp
@@ -3772,14 +3663,12 @@ namisl:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: msslicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gaplug:
 	Defaults:
@@ -3829,7 +3718,6 @@ gaplug:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: gtplug_b.shp
@@ -3839,7 +3727,6 @@ gaplug:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-strip:
 		TilesetFilenames:
 			TEMPERATE: gtplug_c.shp
@@ -3909,7 +3796,6 @@ gaplug:
 		Offset: -12, -42, 30
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-hunterseekerb:
 		TilesetFilenames:
 			TEMPERATE: gtplug_e.shp
@@ -3926,7 +3812,6 @@ gaplug:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-droppoda:
 		TilesetFilenames:
 			TEMPERATE: gtplug_d.shp
@@ -3945,7 +3830,6 @@ gaplug:
 		Offset: -12, -42, 30
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-droppodb:
 		TilesetFilenames:
 			TEMPERATE: gtplug_d.shp
@@ -3962,7 +3846,6 @@ gaplug:
 		Tick: 120
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtplugmk.shp
@@ -3981,14 +3864,12 @@ gaplug:
 		IgnoreWorldTint: True
 		DepthSprite:
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: plugicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 		Palette: chrome
-		IsPlayerPalette: False
 
 gaplug2:
 	place:
@@ -4000,11 +3881,9 @@ gaplug2:
 		Length: 14
 		Tick: 120
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: rad2icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 gaplug3:
 	place:
@@ -4016,11 +3895,9 @@ gaplug3:
 		Length: 14
 		Tick: 120
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: rad3icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 gaplug4:
 	place:
@@ -4032,11 +3909,9 @@ gaplug4:
 		Length: 14
 		Tick: 120
 		Palette: ra
-		IsPlayerPalette: False
 	icon:
 		Filename: rad1icon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 
 gafire:
 	Defaults:
@@ -4066,7 +3941,6 @@ gafire:
 		Length: 16
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	active:
 		TilesetFilenames:
 			TEMPERATE: gtfire_a.shp
@@ -4104,7 +3978,6 @@ gafire:
 		Tick: 240
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtfiremk.shp
@@ -4121,10 +3994,8 @@ gafire:
 		ZOffset: 512
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: fsdicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		Palette: chrome
-		IsPlayerPalette: False

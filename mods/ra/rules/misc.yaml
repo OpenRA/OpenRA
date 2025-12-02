@@ -436,7 +436,7 @@ fact.colorpicker:
 	-MapEditorData:
 	-BaseBuilding:
 	RenderSprites:
-		Image: fact
+		Image: fact.colorpicker
 
 CTFLAG:
 	Inherits: ^TechBuilding

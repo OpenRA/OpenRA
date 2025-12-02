@@ -3,47 +3,30 @@ orca:
 	icon:
 		Filename: orcaicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 orcab:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: obmbicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 trnsport:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: otrnicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 scrin:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: proicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 apache:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: apchicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
 	rotor:
 		Filename: harpyrotor.shp
 		Start: 32
@@ -61,19 +44,12 @@ apache:
 		Tick: 50
 		Palette: player
 		IsPlayerPalette: True
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 orcatran:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: crryicon.shp
 		Palette: chrome
-		IsPlayerPalette: False
-	emp-overlay:
-		Palette: effect
-		IsPlayerPalette: False
 
 pod:
 	Inherits: ^VehicleOverlays

@@ -7,14 +7,12 @@ doggie:
 		Facings: 8
 		ShadowStart: 119
 		Palette: greentiberium
-		IsPlayerPalette: False
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		ShadowStart: 127
 		Palette: greentiberium
-		IsPlayerPalette: False
 	attack:
 		Start: 56
 		Length: 4
@@ -25,12 +23,10 @@ doggie:
 		Length: 2
 		ShadowStart: 207
 		Palette: greentiberium
-		IsPlayerPalette: False
 	hide:
 		Start: 90
 		ShadowStart: 209
 		Palette: greentiberium
-		IsPlayerPalette: False
 	idle1:
 		Start: 91
 		Length: 8
@@ -51,7 +47,6 @@ doggie:
 		Filename: s_bang34.shp
 		Length: *
 		Palette: effect
-		IsPlayerPalette: False
 	die-crushed:
 		Start: 105
 		Length: 4
@@ -72,7 +67,6 @@ doggie:
 		Length: 10
 		ShadowStart: 228
 		Palette: ra
-		IsPlayerPalette: False
 
 vissml:
 	idle:
@@ -120,7 +114,6 @@ floater:
 		Tick: 100
 		Offset: 0, 0, 16
 		Palette: player-nobright
-		IsPlayerPalette: False
 	attack:
 		Length: 16
 		Start: 16
@@ -128,7 +121,6 @@ floater:
 		Tick: 100
 		Offset: 0, 0, 16
 		Palette: player-nobright
-		IsPlayerPalette: False
 	attack-shock:
 		Length: 16
 		Start: 16
@@ -136,4 +128,3 @@ floater:
 		Offset: 0, 0, 16
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False

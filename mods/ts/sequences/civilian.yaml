@@ -5,7 +5,6 @@ ammocrat:
 		ShadowStart: 2
 		Offset: 0, -12, 12
 		Palette: player
-		IsPlayerPalette: False
 
 ^abanbase:
 	Defaults:
@@ -62,10 +61,8 @@ aban01:
 		Filename: aban01.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban02:
 	Inherits: ^aban5x3
@@ -73,10 +70,8 @@ aban02:
 		Filename: aban02.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban03:
 	Inherits: ^aban2x5
@@ -84,10 +79,8 @@ aban03:
 		Filename: aban03.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban04:
 	Inherits: ^aban4x2
@@ -95,10 +88,8 @@ aban04:
 		Filename: aban04.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban05:
 	Inherits: ^aban3x2
@@ -106,10 +97,8 @@ aban05:
 		Filename: aban05.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban06:
 	Inherits: ^aban2x2
@@ -117,10 +106,8 @@ aban06:
 		Filename: aban06.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban07:
 	Inherits: ^aban2x2
@@ -128,10 +115,8 @@ aban07:
 		Filename: aban07.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban08:
 	Inherits: ^aban2x2
@@ -139,10 +124,8 @@ aban08:
 		Filename: aban08.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban09:
 	Inherits: ^aban2x2
@@ -151,10 +134,8 @@ aban09:
 		Offset: 2, -20, 24
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban10:
 	Inherits: ^aban2x2
@@ -162,10 +143,8 @@ aban10:
 		Filename: aban10.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban11:
 	Inherits: ^aban2x2
@@ -174,10 +153,8 @@ aban11:
 		Offset: 0, -20, 24
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban12:
 	Inherits: ^aban2x2
@@ -186,10 +163,8 @@ aban12:
 		Offset: 2, -22, 24
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban13:
 	Inherits: ^aban1x1
@@ -198,10 +173,8 @@ aban13:
 		Offset: 0, -10, 12
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban14:
 	Inherits: ^aban1x1
@@ -209,10 +182,8 @@ aban14:
 		Filename: aban14.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban15:
 	Inherits: ^aban1x1
@@ -221,10 +192,8 @@ aban15:
 		Offset: 0, -10, 12
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban16:
 	Inherits: ^aban2x2
@@ -232,10 +201,8 @@ aban16:
 		Filename: aban16.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban17:
 	Inherits: ^aban1x1
@@ -243,10 +210,8 @@ aban17:
 		Filename: aban17.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 aban18:
 	Inherits: ^aban1x1
@@ -254,10 +219,8 @@ aban18:
 		Filename: aban18.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ^bboard1x1:
 	Defaults:
@@ -292,10 +255,8 @@ bboard01:
 		Filename: bboard01.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard02:
 	Inherits: ^bboard1x1
@@ -303,10 +264,8 @@ bboard02:
 		Filename: bboard02.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard03:
 	Inherits: ^bboard1x1
@@ -314,10 +273,8 @@ bboard03:
 		Filename: bboard03.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard04:
 	Inherits: ^bboard1x1
@@ -325,10 +282,8 @@ bboard04:
 		Filename: bboard04.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard05:
 	Inherits: ^bboard1x1
@@ -336,10 +291,8 @@ bboard05:
 		Filename: bboard05.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard06:
 	Inherits: ^bboard1x2
@@ -347,10 +300,8 @@ bboard06:
 		Filename: bboard06.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard07:
 	Inherits: ^bboard1x2
@@ -358,10 +309,8 @@ bboard07:
 		Filename: bboard07.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard08:
 	Inherits: ^bboard1x2
@@ -369,10 +318,8 @@ bboard08:
 		Filename: bboard08.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard09:
 	Inherits: ^bboard1x1
@@ -380,10 +327,8 @@ bboard09:
 		Filename: bboard09.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard10:
 	Inherits: ^bboard1x1
@@ -391,10 +336,8 @@ bboard10:
 		Filename: bboard10.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard11:
 	Inherits: ^bboard1x1
@@ -402,10 +345,8 @@ bboard11:
 		Filename: bboard11.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard12:
 	Inherits: ^bboard1x1
@@ -413,10 +354,8 @@ bboard12:
 		Filename: bboard12.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard13:
 	Inherits: ^bboard1x1
@@ -424,10 +363,8 @@ bboard13:
 		Filename: bboard13.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard14:
 	Inherits: ^bboard2x1
@@ -435,10 +372,8 @@ bboard14:
 		Filename: bboard14.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard15:
 	Inherits: ^bboard2x1
@@ -446,10 +381,8 @@ bboard15:
 		Filename: bboard15.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 bboard16:
 	Inherits: ^bboard2x1
@@ -457,10 +390,8 @@ bboard16:
 		Filename: bboard16.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ^cabase:
 	Defaults:
@@ -512,10 +443,8 @@ ca0001:
 			SNOW: ca0001.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0002:
 	Inherits: ^ca3x3
@@ -525,10 +454,8 @@ ca0002:
 			SNOW: ca0002.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0003:
 	Inherits: ^ca2x2
@@ -538,10 +465,8 @@ ca0003:
 			SNOW: ca0003.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0004:
 	Inherits: ^ca2x2
@@ -551,10 +476,8 @@ ca0004:
 			SNOW: ca0004.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0005:
 	Inherits: ^ca1x2
@@ -564,10 +487,8 @@ ca0005:
 			SNOW: ca0005.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0006:
 	Inherits: ^ca1x2
@@ -577,10 +498,8 @@ ca0006:
 			SNOW: ca0006.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0007:
 	Inherits: ^ca1x2
@@ -590,10 +509,8 @@ ca0007:
 			SNOW: ca0007.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0008:
 	Inherits: ^ca2x3
@@ -603,10 +520,8 @@ ca0008:
 			SNOW: ca0008.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0009:
 	Inherits: ^ca2x3
@@ -616,10 +531,8 @@ ca0009:
 			SNOW: ca0009.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0010:
 	Inherits: ^ca2x2
@@ -629,10 +542,8 @@ ca0010:
 			SNOW: ca0010.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0011:
 	Inherits: ^ca1x2
@@ -642,10 +553,8 @@ ca0011:
 			SNOW: ca0011.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0012:
 	Inherits: ^ca1x2
@@ -655,10 +564,8 @@ ca0012:
 			SNOW: ca0012.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0013:
 	Inherits: ^ca2x1
@@ -668,10 +575,8 @@ ca0013:
 			SNOW: ca0013.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0014:
 	Inherits: ^ca1x1
@@ -681,10 +586,8 @@ ca0014:
 			SNOW: ca0014.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0015:
 	Inherits: ^ca1x1
@@ -694,10 +597,8 @@ ca0015:
 			SNOW: ca0015.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0016:
 	Inherits: ^ca1x1
@@ -707,10 +608,8 @@ ca0016:
 			SNOW: ca0016.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0017:
 	Inherits: ^ca1x1
@@ -720,10 +619,8 @@ ca0017:
 			SNOW: ca0017.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0018:
 	Inherits: ^ca1x2
@@ -733,10 +630,8 @@ ca0018:
 			SNOW: ca0018.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0019:
 	Inherits: ^ca1x2
@@ -746,10 +641,8 @@ ca0019:
 			SNOW: ca0019.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0020:
 	Inherits: ^ca1x2
@@ -759,10 +652,8 @@ ca0020:
 			SNOW: ca0020.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ca0021:
 	Inherits: ^ca1x2
@@ -772,10 +663,8 @@ ca0021:
 			SNOW: ca0021.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 caarmr:
 	Defaults:
@@ -785,19 +674,16 @@ caarmr:
 		Filename: ctarmr.shp
 		ShadowStart: 3
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle:
 		Filename: ctarmr.shp
 		Start: 1
 		ShadowStart: 4
 		Palette: player
-		IsPlayerPalette: False
 	critical-idle:
 		Filename: ctarmr.shp
 		Start: 2
 		ShadowStart: 5
 		Palette: player
-		IsPlayerPalette: False
 
 caaray:
 	Defaults:
@@ -807,51 +693,43 @@ caaray:
 		Filename: ctaray.shp
 		ShadowStart: 3
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle:
 		Filename: ctaray.shp
 		Start: 1
 		ShadowStart: 4
 		Palette: player
-		IsPlayerPalette: False
 	critical-idle:
 		Filename: ctaray.shp
 		Start: 2
 		ShadowStart: 5
 		Palette: player
-		IsPlayerPalette: False
 	idle-satellite:
 		Filename: ctaray_a.shp
 		Length: 16
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: False
 	idle-radar:
 		Filename: ctaray_b.shp
 		Length: 16
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: False
 	idle-scanner:
 		Filename: ctaray_c.shp
 		Length: 16
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle-scanner:
 		Filename: ctaray_c.shp
 		Start: 16
 		Length: 16
 		Tick: 100
 		Palette: player
-		IsPlayerPalette: False
 	idle-light-bright:
 		Filename: ctaray_d.shp
 		Length: 12
 		Tick: 100
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-light-bright:
 		Filename: ctaray_d.shp
 		Start: 12
@@ -859,7 +737,6 @@ caaray:
 		Tick: 100
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 
 cabhut:
 	idle:
@@ -870,7 +747,6 @@ cabhut:
 		Offset: 0, -12, 12
 		ShadowStart: 1
 		Palette: player
-		IsPlayerPalette: False
 
 ^cacrsh:
 	idle:
@@ -883,7 +759,6 @@ cacrsh01:
 			TEMPERATE: ctcrsh01.shp
 			SNOW: cacrsh01.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 cacrsh02:
 	Inherits: ^cacrsh
@@ -892,7 +767,6 @@ cacrsh02:
 			TEMPERATE: ctcrsh02.shp
 			SNOW: cacrsh02.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 cacrsh03:
 	Inherits: ^cacrsh
@@ -901,7 +775,6 @@ cacrsh03:
 			TEMPERATE: ctcrsh03.shp
 			SNOW: cacrsh03.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 cacrsh04:
 	Inherits: ^cacrsh
@@ -910,7 +783,6 @@ cacrsh04:
 			TEMPERATE: ctcrsh04.shp
 			SNOW: cacrsh04.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 cacrsh05:
 	Inherits: ^cacrsh
@@ -919,7 +791,6 @@ cacrsh05:
 			TEMPERATE: ctcrsh05.shp
 			SNOW: cacrsh05.shp
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 cahosp:
 	Defaults:
@@ -932,17 +803,14 @@ cahosp:
 	idle:
 		ShadowStart: 3
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		Palette: player
-		IsPlayerPalette: False
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
 		Palette: player
-		IsPlayerPalette: False
 
 capyr01:
 	idle:
@@ -951,7 +819,6 @@ capyr01:
 		ShadowStart: 1
 		Offset: 0, -24, 24
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 capyr02:
 	idle:
@@ -960,7 +827,6 @@ capyr02:
 		ShadowStart: 1
 		Offset: 0, -48, 48
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 capyr03:
 	idle:
@@ -969,7 +835,6 @@ capyr03:
 		ShadowStart: 1
 		Offset: 0, -48, 48
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ^city1x1:
 	Inherits: ^cabase
@@ -1018,10 +883,8 @@ city01:
 		Offset: -12, -30, 36
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city02:
 	Inherits: ^city2x3
@@ -1029,10 +892,8 @@ city02:
 		Filename: city02.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city03:
 	Inherits: ^city3x2
@@ -1040,10 +901,8 @@ city03:
 		Filename: city03.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city04:
 	Inherits: ^city3x2
@@ -1051,10 +910,8 @@ city04:
 		Filename: city04.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city05:
 	Inherits: ^city3x2
@@ -1062,10 +919,8 @@ city05:
 		Filename: city05.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city06:
 	Inherits: ^city4x2
@@ -1073,10 +928,8 @@ city06:
 		Filename: city06.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city07:
 	Inherits: ^city4x2
@@ -1085,10 +938,8 @@ city07:
 		Offset: -12, -30, 36
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city08:
 	Inherits: ^city2x2
@@ -1096,10 +947,8 @@ city08:
 		Filename: city08.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city09:
 	Inherits: ^city2x2
@@ -1107,10 +956,8 @@ city09:
 		Filename: city09.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city10:
 	Inherits: ^city2x2
@@ -1118,10 +965,8 @@ city10:
 		Filename: city10.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city11:
 	Inherits: ^city2x2
@@ -1129,10 +974,8 @@ city11:
 		Filename: city11.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city12:
 	Inherits: ^city2x2
@@ -1140,10 +983,8 @@ city12:
 		Filename: city12.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city13:
 	Inherits: ^city2x2
@@ -1151,10 +992,8 @@ city13:
 		Filename: city13.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city14:
 	Inherits: ^city1x1
@@ -1162,10 +1001,8 @@ city14:
 		Filename: city14.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city15:
 	Inherits: ^city4x2
@@ -1173,10 +1010,8 @@ city15:
 		Filename: city15.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city16:
 	Inherits: ^city4x2
@@ -1185,10 +1020,8 @@ city16:
 		Offset: -24, -30, 36
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city17:
 	Inherits: ^city4x3
@@ -1196,10 +1029,8 @@ city17:
 		Filename: city17.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city18:
 	Inherits: ^city3x5
@@ -1207,10 +1038,8 @@ city18:
 		Filename: city18.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city19:
 	Inherits: ^city2x2
@@ -1218,10 +1047,8 @@ city19:
 		Filename: city19.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city20:
 	Inherits: ^city1x1
@@ -1229,10 +1056,8 @@ city20:
 		Filename: city20.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city21:
 	Inherits: ^city1x1
@@ -1240,10 +1065,8 @@ city21:
 		Filename: city21.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 city22:
 	Inherits: ^city2x2
@@ -1251,10 +1074,8 @@ city22:
 		Filename: city22.shp
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ctdam:
 	Defaults:
@@ -1262,18 +1083,15 @@ ctdam:
 		Offset: 36,-42, 42
 	idle:
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle-lights-bright:
 		Filename: ctdam_a.shp
 		Length: 10
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		Filename: ctdam_a.shp
 		Start: 10
@@ -1281,34 +1099,29 @@ ctdam:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	idle-water-a:
 		Filename: ctdam_b.shp
 		Length: 8
 		Tick: 200
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle-water-a:
 		Filename: ctdam_b.shp
 		Start: 8
 		Length: 8
 		Tick: 200
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	idle-water-b:
 		Filename: ctdam_b.shp
 		Start: 16
 		Length: 8
 		Tick: 200
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle-water-b:
 		Filename: ctdam_b.shp
 		Start: 24
 		Length: 8
 		Tick: 200
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ctvega:
 	Defaults:
@@ -1318,17 +1131,14 @@ ctvega:
 	idle:
 		ShadowStart: 3
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		Palette: terraindecoration
-		IsPlayerPalette: False
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
 		Palette: terraindecoration
-		IsPlayerPalette: False
 
 ^gaoldcc:
 	idle:
@@ -1401,17 +1211,14 @@ gakodk:
 	idle:
 		ShadowStart: 3
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		Palette: player
-		IsPlayerPalette: False
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
 		Palette: player
-		IsPlayerPalette: False
 	large-lights:
 		TilesetFilenames:
 			TEMPERATE: gtkodk_a.shp
@@ -1428,7 +1235,6 @@ gakodk:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-large-lights:
 		TilesetFilenames:
 			TEMPERATE: gtkodk_a.shp
@@ -1447,7 +1253,6 @@ gakodk:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	small-light:
 		TilesetFilenames:
 			TEMPERATE: gtkodk_b.shp
@@ -1464,7 +1269,6 @@ gakodk:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	small-lights:
 		TilesetFilenames:
 			TEMPERATE: gtkodk_c.shp
@@ -1481,7 +1285,6 @@ gakodk:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-small-lights:
 		TilesetFilenames:
 			TEMPERATE: gtkodk_c.shp
@@ -1500,7 +1303,6 @@ gakodk:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 
 gaspot:
 	Defaults:
@@ -1532,7 +1334,6 @@ gaspot:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	damaged-idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: gtspot_a.shp
@@ -1542,7 +1343,6 @@ gaspot:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtspotmk.shp
@@ -1561,7 +1361,6 @@ gaspot:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: spoticon.shp
 		TilesetFilenames:
@@ -1578,9 +1377,6 @@ galite:
 			SNOW: galite.shp
 		ShadowStart: 2
 		Palette: terraindecoration
-		IsPlayerPalette: False
-		Palette: terrainalpha
-		IsPlayerPalette: False
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: gtlite.shp
@@ -1588,9 +1384,6 @@ galite:
 		Start: 1
 		ShadowStart: 3
 		Palette: terraindecoration
-		IsPlayerPalette: False
-		Palette: terrainalpha
-		IsPlayerPalette: False
 	lighting:
 		Filename: alphatst.shp
 		BlendMode: DoubleMultiplicative
@@ -1600,7 +1393,6 @@ galite:
 		ZRamp: 1
 		ZOffset: 10240
 		Palette: alpha
-		IsPlayerPalette: False
 	emp-overlay:
 		Filename: emp_fx01.shp
 		Length: *
@@ -1610,11 +1402,17 @@ galite:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: liteicon.shp
 		Offset: 0, 0
 		DepthSprite:
+
+galite-editor:
+	Inherits: galite
+	idle:
+		Palette: terrainalpha
+	damaged-idle:
+		Palette: terrainalpha
 
 namntk:
 	Defaults:
@@ -1627,17 +1425,14 @@ namntk:
 	idle:
 		ShadowStart: 3
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		Palette: player
-		IsPlayerPalette: False
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
 		Palette: player
-		IsPlayerPalette: False
 	idle-lights:
 		TilesetFilenames:
 			TEMPERATE: ntmntk_a.shp
@@ -1654,7 +1449,6 @@ namntk:
 		Tick: 200
 		IgnoreWorldTint: True
 		Palette: bright
-		IsPlayerPalette: False
 
 ntpyra:
 	Defaults:
@@ -1664,30 +1458,25 @@ ntpyra:
 	idle:
 		ShadowStart: 3
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
 		Palette: player
-		IsPlayerPalette: False
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
 		Palette: player
-		IsPlayerPalette: False
 	idle-lights:
 		Filename: ntpyra_a.shp
 		Length: 16
 		Tick: 200
 		Palette: player
-		IsPlayerPalette: False
 	damaged-idle-lights:
 		Filename: ntpyra_a.shp
 		Start: 16
 		Length: 16
 		Tick: 200
 		Palette: player
-		IsPlayerPalette: False
 
 ufo:
 	idle:
@@ -1695,4 +1484,3 @@ ufo:
 		DepthSprite: isodepth.shp
 		Offset: -24, -60, 60
 		Palette: terraindecoration
-		IsPlayerPalette: False

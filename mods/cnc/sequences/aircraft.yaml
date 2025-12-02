@@ -46,7 +46,6 @@ tran:
 	icon:
 		Filename: tranicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 heli:
 	idle:
@@ -71,11 +70,9 @@ heli:
 		Length: 6
 		Facings: 8
 		Palette: effect
-		IsPlayerPalette: False
 	icon:
 		Filename: heliicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 orca:
 	Defaults:
@@ -91,7 +88,6 @@ orca:
 	icon:
 		Filename: orcaicnh.tem
 		Palette: chrome
-		IsPlayerPalette: False
 
 a10:
 	idle:

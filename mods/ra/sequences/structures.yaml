@@ -97,35 +97,25 @@ fact:
 	Defaults:
 		Filename: fact.shp
 	idle:
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	make:
 		Filename: factmake.shp
 		Length: *
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	build:
 		Start: 1
 		Length: 25
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	damaged-idle:
 		Start: 26
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	damaged-build:
 		Start: 27
 		Length: 25
-		Palette: colorpicker
-		IsPlayerPalette: False
 		Palette: player
 		IsPlayerPalette: True
 	dead:
@@ -150,6 +140,12 @@ fact:
 		Palette: chrome
 		IsPlayerPalette: False
 
+fact.colorpicker:
+	Inherits: fact
+	idle:
+		Palette: colorpicker
+		IsPlayerPalette: False
+
 proc:
 	Defaults:
 		Filename: proc.shp
@@ -157,15 +153,15 @@ proc:
 		ZOffset: -1c511
 		Palette: player
 		IsPlayerPalette: True
-		Palette: terrain
-		IsPlayerPalette: False
+	place:
+		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
 		ZOffset: -1c511
 		Palette: player
 		IsPlayerPalette: True
-		Palette: terrain
-		IsPlayerPalette: False
 	idle-top:
 		Filename: proctop.shp
 		ZOffset: 0

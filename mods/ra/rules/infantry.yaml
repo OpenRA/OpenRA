@@ -57,6 +57,7 @@ DOG:
 		MoveSequence: run
 		RequiresCondition: run && !parachute
 	WithInfantryBody@PARACHUTE:
+		IdleSequences: stand-noshadow
 		RequiresCondition: parachute
 	SpeedMultiplier:
 		Modifier: 150
@@ -425,6 +426,7 @@ E7:
 		StandSequences: stand
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
 	ExternalCondition@PRODUCED:
 		Condition: produced
@@ -474,6 +476,7 @@ MEDI:
 		DefaultAttackSequence: heal
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
 	Voiced:
 		VoiceSet: MedicVoice
@@ -528,6 +531,7 @@ MECH:
 		StandSequences: stand
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
 	Voiced:
 		VoiceSet: MechanicVoice
@@ -592,6 +596,7 @@ GNRL:
 		IdleSequences: idle1
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
 
 THF:
@@ -631,6 +636,7 @@ THF:
 		StandSequences: stand
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
 	Crushable:
 		WarnProbability: 95
@@ -726,6 +732,7 @@ Zombie:
 		IdleSequences: idle1
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
 	Armament:
 		Weapon: claw
