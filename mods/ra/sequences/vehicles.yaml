@@ -3,8 +3,12 @@ mcv:
 		Filename: mcv.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mcvicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 mcvhusk:
 	idle:
@@ -12,14 +16,20 @@ mcvhusk:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 
 truk:
 	idle:
 		Filename: truk.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: trukicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 harv:
 	Defaults:
@@ -27,31 +37,47 @@ harv:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	harvest:
 		Start: 32
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	dock:
 		Filename: harv.shp
 		Start: 96
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	dock-loop:
 		Filename: harv.shp
 		Start: 104
 		Length: 7
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: harvicon.shp
 		Start: 0
+		Palette: chrome
+		IsPlayerPalette: False
 
 harvempty:
 	Inherits: harv
 	Defaults:
 		Filename: harvempty.shp
+	idle:
+		Palette: player
+		IsPlayerPalette: True
 
 harvhalf:
 	Inherits: harv
 	Defaults:
 		Filename: harvhalf.shp
+	idle:
+		Palette: player
+		IsPlayerPalette: True
 
 hhusk:
 	idle:
@@ -59,6 +85,8 @@ hhusk:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 
 hhusk2:
 	idle:
@@ -66,6 +94,8 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 
 1tnk:
 	Defaults:
@@ -73,15 +103,23 @@ hhusk2:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 2
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: 1tnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 1tnk.destroyed:
 	idle:
@@ -102,15 +140,23 @@ hhusk2:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: 2tnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 2tnk.destroyed:
 	idle:
@@ -118,12 +164,16 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: 2tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 3tnk:
 	Defaults:
@@ -131,15 +181,23 @@ hhusk2:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: 3tnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 3tnk.destroyed:
 	idle:
@@ -147,12 +205,16 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: 3tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 4tnk:
 	Defaults:
@@ -160,15 +222,23 @@ hhusk2:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: 4tnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 4tnk.destroyed:
 	idle:
@@ -176,12 +246,16 @@ hhusk2:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: 4tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 v2rl:
 	Defaults:
@@ -189,23 +263,35 @@ v2rl:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	empty-idle:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: v2rlicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 arty:
 	idle:
 		Filename: arty.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: artyicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 jeep:
 	Defaults:
@@ -213,16 +299,24 @@ jeep:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: jeepicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 apc:
 	Defaults:
@@ -230,10 +324,14 @@ apc:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	open:
 		Start: 32
 		Length: 3
@@ -241,14 +339,20 @@ apc:
 		Start: 32
 	icon:
 		Filename: apcicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 mnly:
 	idle:
 		Filename: mnly.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mnlyicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 mrj:
 	Defaults:
@@ -256,11 +360,17 @@ mrj:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	spinner:
 		Start: 32
 		Length: 32
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mrjicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 mgg:
 	Defaults:
@@ -268,14 +378,20 @@ mgg:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	spinner:
 		Start: 32
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	spinner-idle:
 		Start: 32
 		Length: 1
 	icon:
 		Filename: mggicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 mgg.destroyed:
 	idle:
@@ -283,6 +399,8 @@ mgg.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	spinner:
 		Filename: mgg.shp
 		Start: 32
@@ -291,6 +409,8 @@ mgg.destroyed:
 	spinner-idle:
 		Filename: mgg.shp
 		Start: 32
+		Palette: player
+		IsPlayerPalette: True
 
 ttnk:
 	Defaults:
@@ -298,11 +418,17 @@ ttnk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	spinner:
 		Start: 32
 		Length: 32
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: ttnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 ftrk:
 	Defaults:
@@ -310,34 +436,50 @@ ftrk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 2
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: ftrkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 dtrk:
 	idle:
 		Filename: dtrk.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: dtrkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 ctnk:
 	idle:
 		Filename: ctnk.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
 	icon:
 		Filename: ctnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 qtnk:
 	Defaults:
@@ -345,12 +487,16 @@ qtnk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	piston:
 		Start: 32
 		Facings: 8
 		Length: 8
 	icon:
 		Filename: qtnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 stnk:
 	Defaults:
@@ -358,9 +504,15 @@ stnk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 38
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: stnkicon.shp
+		Palette: chrome
+		IsPlayerPalette: False

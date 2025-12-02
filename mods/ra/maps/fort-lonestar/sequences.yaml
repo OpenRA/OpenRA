@@ -3,31 +3,53 @@ sniper:
 		Filename: sniper.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	liedown:
 		Start: 192
 		Length: 2
@@ -40,34 +62,50 @@ sniper:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 399
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 416
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 424
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 432
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 440
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 452
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -75,6 +113,8 @@ sniper:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -82,10 +122,16 @@ sniper:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	garrison-muzzle:
 		Filename: minigun.shp
 		Length: 3
 		Stride: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: snipericon.shp
+		Palette: chrome
+		IsPlayerPalette: False

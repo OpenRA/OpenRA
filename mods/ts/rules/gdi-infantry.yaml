@@ -130,14 +130,11 @@ JUMPJET:
 		DefaultAttackSequence: flying-attack
 		StandSequences: flying
 		MoveSequence: flying
-		Palette: player-nomuzzle
-		IsPlayerPalette: true
 	WithInfantryBody@flying-muzzle:
 		RequiresCondition: airborne
 		DefaultAttackSequence: flying-attack-muzzle
 		StandSequences: flying-muzzle
 		MoveSequence: flying-muzzle
-		Palette: muzzle
 	AppearsOnRadar:
 		ValidRelationships: Ally
 	AppearsOnRadar@ENEMY:

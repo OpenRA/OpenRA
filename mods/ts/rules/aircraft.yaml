@@ -34,7 +34,6 @@ DPOD:
 		Margin: 4, 5
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
-		Palette: pips
 
 DPOD2:
 	Inherits@2: ^ExistsInWorld
@@ -179,7 +178,6 @@ ORCA:
 		Margin: 4, 5
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
-		Palette: pips
 
 ORCAB:
 	Inherits: ^EMPableAircraft
@@ -247,7 +245,6 @@ ORCAB:
 		PipCount: 2
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
-		Palette: pips
 	AppearsOnRadar:
 		ValidRelationships: Ally
 	AppearsOnRadar@ENEMY:
@@ -408,7 +405,6 @@ SCRIN:
 		PipCount: 3
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
-		Palette: pips
 	AppearsOnRadar:
 		ValidRelationships: Ally
 	AppearsOnRadar@ENEMY:
@@ -485,7 +481,6 @@ APACHE:
 		PipCount: 4
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
-		Palette: pips
 	WithShadow:
 	WithVoxelBody:
 		ShowShadow: False

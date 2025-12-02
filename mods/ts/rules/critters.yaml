@@ -49,7 +49,6 @@ DOGGIE:
 		ArmamentNames: primary
 		Condition: attacking
 	RenderSprites:
-		Palette: greentiberium
 	WithSpriteBody:
 		RequiresCondition: hidingplace && !moving && !attacking
 		StartSequence: laydown
@@ -138,10 +137,8 @@ JFISH:
 		Sequence: attack
 	WithAttackOverlay@muzzle:
 		Sequence: attack-shock
-		Palette: bright
 	RenderSprites:
 		Image: floater
-		Palette: player-nobright
 	Selectable:
 		Bounds: 965, 1930, 0, -301
 	AmbientSound:

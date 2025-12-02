@@ -42,15 +42,12 @@ World:
 
 WarriorAnt:
 	RenderSprites:
-		PlayerPalette: warriorant
 
 ScoutAnt:
 	RenderSprites:
-		PlayerPalette: scoutant
 
 FireAnt:
 	RenderSprites:
-		PlayerPalette: fireant
 
 SPY:
 	Buildable:

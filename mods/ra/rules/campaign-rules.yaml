@@ -102,8 +102,6 @@ FCOM:
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: player
-		IsPlayerPalette: True
 
 MISS:
 	RevealsShroud:

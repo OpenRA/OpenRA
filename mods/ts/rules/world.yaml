@@ -14,8 +14,6 @@
 	ShroudRenderer:
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
-		ShroudPalette: shroud
-		FogPalette: shroud
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate
@@ -207,11 +205,9 @@
 		ResourceTypes:
 			Tiberium:
 				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-				Palette: greentiberium
 				Name: resource-tiberium
 			BlueTiberium:
 				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-				Palette: bluetiberium
 				Name: resource-tiberium
 		Ramp1Sequences:
 			Tiberium: tib13, tib14
@@ -228,7 +224,6 @@
 	TSVeinsRenderer:
 		ResourceType: Veins
 		Name: resource-veins
-		Palette: player
 		VeinholeActors: veinhole
 
 World:
@@ -398,7 +393,6 @@ World:
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
-		TerrainFlashPalette: moveflash
 		ActorFlashType: Tint
 
 EditorWorld:
@@ -427,7 +421,6 @@ EditorWorld:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
-		Palette: ra
 		Alpha: 0.35
 	MarkerLayerOverlay:
 	TilingPathTool:

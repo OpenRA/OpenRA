@@ -150,11 +150,9 @@
 		ResourceTypes:
 			Ore:
 				Sequences: gold01, gold02, gold03, gold04
-				Palette: player
 				Name: resource-minerals
 			Gems:
 				Sequences: gem01, gem02, gem03, gem04
-				Palette: player
 				Name: resource-minerals
 
 World:
@@ -215,7 +213,6 @@ World:
 		Types: Gems
 		Image: twinkle
 		Sequences: twinkle1, twinkle2, twinkle3
-		Palette: effect
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
@@ -295,7 +292,6 @@ World:
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
-		TerrainFlashPalette: moveflash
 
 EditorWorld:
 	Inherits: ^BaseWorld

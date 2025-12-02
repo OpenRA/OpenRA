@@ -4,6 +4,8 @@ lst:
 		Start: 0
 		Facings: 1
 		ZOffset: -1024
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: lsticnh.tem
 
@@ -12,31 +14,47 @@ boat:
 		Filename: boat.shp
 	left:
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	damaged-left:
 		Start: 32
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	critical-left:
 		Start: 64
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	wake-left:
 		Filename: wake.shp
 		Start: 6
 		Length: 6
 		Offset: 1,2
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	right:
 		Start: 96
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	damaged-right:
 		Start: 128
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	critical-right:
 		Start: 160
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	wake-right:
 		Filename: wake.shp
 		Length: 6
 		Offset: -1,2
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: boaticnh.tem

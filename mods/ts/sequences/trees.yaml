@@ -15,6 +15,12 @@ tibtre01:
 		TilesetFilenames:
 			TEMPERATE: tibtre01.tem
 			SNOW: tibtre01.sno
+	idle:
+		Palette: player
+		IsPlayerPalette: False
+	active:
+		Palette: player
+		IsPlayerPalette: False
 
 tibtre02:
 	Inherits: ^tibtree
@@ -22,6 +28,12 @@ tibtre02:
 		TilesetFilenames:
 			TEMPERATE: tibtre02.tem
 			SNOW: tibtre02.sno
+	idle:
+		Palette: player
+		IsPlayerPalette: False
+	active:
+		Palette: player
+		IsPlayerPalette: False
 
 tibtre03:
 	Inherits: ^tibtree
@@ -29,6 +41,12 @@ tibtre03:
 		TilesetFilenames:
 			TEMPERATE: tibtre03.tem
 			SNOW: tibtre03.sno
+	idle:
+		Palette: player
+		IsPlayerPalette: False
+	active:
+		Palette: player
+		IsPlayerPalette: False
 
 bigblue:
 	Defaults:
@@ -36,12 +54,16 @@ bigblue:
 	idle:
 		Filename: bigblue2.shp
 		ShadowStart: 10
+		Palette: bluetiberium
+		IsPlayerPalette: False
 	active:
 		Filename: bigblue2.shp
 		Start: 1
 		Length: 9
 		ShadowStart: 11
 		Tick: 160
+		Palette: bluetiberium
+		IsPlayerPalette: False
 
 bigblue3:
 	Defaults:
@@ -49,16 +71,22 @@ bigblue3:
 		Offset: 0, -12, 12
 	idle:
 		ShadowStart: 10
+		Palette: bluetiberium
+		IsPlayerPalette: False
 	active:
 		Start: 1
 		Length: 9
 		ShadowStart: 11
 		Tick: 160
+		Palette: bluetiberium
+		IsPlayerPalette: False
 
 ^tree:
 	idle:
 		ShadowStart: 1
 		Offset: 0, -12, 12
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree01:
 	Inherits: ^tree
@@ -66,6 +94,8 @@ tree01:
 		TilesetFilenames:
 			TEMPERATE: tree01.tem
 			SNOW: tree01.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree02:
 	Inherits: ^tree
@@ -73,6 +103,8 @@ tree02:
 		TilesetFilenames:
 			TEMPERATE: tree02.tem
 			SNOW: tree02.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree03:
 	Inherits: ^tree
@@ -80,6 +112,8 @@ tree03:
 		TilesetFilenames:
 			TEMPERATE: tree03.tem
 			SNOW: tree03.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree04:
 	Inherits: ^tree
@@ -87,6 +121,8 @@ tree04:
 		TilesetFilenames:
 			TEMPERATE: tree04.tem
 			SNOW: tree04.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree05:
 	Inherits: ^tree
@@ -94,6 +130,8 @@ tree05:
 		TilesetFilenames:
 			TEMPERATE: tree05.tem
 			SNOW: tree05.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree06:
 	Inherits: ^tree
@@ -101,6 +139,8 @@ tree06:
 		TilesetFilenames:
 			TEMPERATE: tree06.tem
 			SNOW: tree06.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree07:
 	Inherits: ^tree
@@ -108,6 +148,8 @@ tree07:
 		TilesetFilenames:
 			TEMPERATE: tree07.tem
 			SNOW: tree07.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree08:
 	Inherits: ^tree
@@ -115,6 +157,8 @@ tree08:
 		TilesetFilenames:
 			TEMPERATE: tree08.tem
 			SNOW: tree08.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree09:
 	Inherits: ^tree
@@ -122,6 +166,8 @@ tree09:
 		TilesetFilenames:
 			TEMPERATE: tree09.tem
 			SNOW: tree09.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree10:
 	Inherits: ^tree
@@ -129,6 +175,8 @@ tree10:
 		TilesetFilenames:
 			TEMPERATE: tree10.tem
 			SNOW: tree10.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree11:
 	Inherits: ^tree
@@ -136,6 +184,8 @@ tree11:
 		TilesetFilenames:
 			TEMPERATE: tree11.tem
 			SNOW: tree11.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree12:
 	Inherits: ^tree
@@ -143,6 +193,8 @@ tree12:
 		TilesetFilenames:
 			TEMPERATE: tree12.tem
 			SNOW: tree12.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree13:
 	Inherits: ^tree
@@ -150,6 +202,8 @@ tree13:
 		TilesetFilenames:
 			TEMPERATE: tree13.tem
 			SNOW: tree13.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree14:
 	Inherits: ^tree
@@ -157,6 +211,8 @@ tree14:
 		TilesetFilenames:
 			TEMPERATE: tree14.tem
 			SNOW: tree14.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree15:
 	Inherits: ^tree
@@ -164,6 +220,8 @@ tree15:
 		TilesetFilenames:
 			TEMPERATE: tree15.tem
 			SNOW: tree15.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree16:
 	Inherits: ^tree
@@ -171,6 +229,8 @@ tree16:
 		TilesetFilenames:
 			TEMPERATE: tree16.tem
 			SNOW: tree16.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree17:
 	Inherits: ^tree
@@ -178,6 +238,8 @@ tree17:
 		TilesetFilenames:
 			TEMPERATE: tree17.tem
 			SNOW: tree17.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree18:
 	Inherits: ^tree
@@ -185,6 +247,8 @@ tree18:
 		TilesetFilenames:
 			TEMPERATE: tree18.tem
 			SNOW: tree18.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree19:
 	Inherits: ^tree
@@ -192,6 +256,8 @@ tree19:
 		TilesetFilenames:
 			TEMPERATE: tree19.tem
 			SNOW: tree19.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree20:
 	Inherits: ^tree
@@ -199,6 +265,8 @@ tree20:
 		TilesetFilenames:
 			TEMPERATE: tree20.tem
 			SNOW: tree20.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree21:
 	Inherits: ^tree
@@ -206,6 +274,8 @@ tree21:
 		TilesetFilenames:
 			TEMPERATE: tree21.tem
 			SNOW: tree21.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree22:
 	Inherits: ^tree
@@ -213,6 +283,8 @@ tree22:
 		TilesetFilenames:
 			TEMPERATE: tree22.tem
 			SNOW: tree22.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree23:
 	Inherits: ^tree
@@ -220,6 +292,8 @@ tree23:
 		TilesetFilenames:
 			TEMPERATE: tree23.tem
 			SNOW: tree23.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree24:
 	Inherits: ^tree
@@ -227,6 +301,8 @@ tree24:
 		TilesetFilenames:
 			TEMPERATE: tree24.tem
 			SNOW: tree24.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 tree25:
 	Inherits: ^tree
@@ -234,81 +310,113 @@ tree25:
 		TilesetFilenames:
 			TEMPERATE: tree25.tem
 			SNOW: tree25.sno
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona01:
 	Inherits: ^tree
 	idle:
 		Filename: fona01.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona02:
 	Inherits: ^tree
 	idle:
 		Filename: fona02.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona03:
 	Inherits: ^tree
 	idle:
 		Filename: fona03.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona04:
 	Inherits: ^tree
 	idle:
 		Filename: fona04.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona05:
 	Inherits: ^tree
 	idle:
 		Filename: fona05.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona06:
 	Inherits: ^tree
 	idle:
 		Filename: fona06.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona07:
 	Inherits: ^tree
 	idle:
 		Filename: fona07.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona08:
 	Inherits: ^tree
 	idle:
 		Filename: fona08.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona09:
 	Inherits: ^tree
 	idle:
 		Filename: fona09.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona10:
 	Inherits: ^tree
 	idle:
 		Filename: fona10.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona11:
 	Inherits: ^tree
 	idle:
 		Filename: fona11.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona12:
 	Inherits: ^tree
 	idle:
 		Filename: fona12.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona13:
 	Inherits: ^tree
 	idle:
 		Filename: fona13.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona14:
 	Inherits: ^tree
 	idle:
 		Filename: fona14.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 fona15:
 	Inherits: ^tree
 	idle:
 		Filename: fona15.tem
+		Palette: terraindecoration
+		IsPlayerPalette: False
 
 veinhole:
 	idle:
@@ -318,3 +426,5 @@ veinhole:
 		ShadowStart: 1
 		Offset: 0, -36, 1
 		ZRamp: 1
+		Palette: player
+		IsPlayerPalette: False

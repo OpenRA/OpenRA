@@ -1,3 +1,5 @@
 iconchevrons:
 	veteran:
 		Start: 1
+		Palette: chrome
+		IsPlayerPalette: False

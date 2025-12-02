@@ -390,7 +390,6 @@ WEED:
 		RequiresSelection: true
 		Margin: 5, 2
 		FullSequence: pip-red
-		Palette: pips
 		PipCount: 7
 
 SAPC:
@@ -595,7 +594,6 @@ SGEN:
 		Condition: real-actor
 	RenderSprites:
 		Image: mstl
-		PlayerPalette: playertem
 	GrantConditionOnDeploy:
 		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed
@@ -621,8 +619,6 @@ SGEN:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: deployed && real-actor && !empdisable
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	RenderVoxels:
 		Scale: 11.5
 	ProximityExternalCondition:

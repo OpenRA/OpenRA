@@ -12,7 +12,6 @@
 		TrailImage: small_smoke_trail
 		HorizontalRateOfTurn: 100
 		RangeLimit: 15c0
-		Palette: ra
 		MinimumLaunchSpeed: 75
 		Speed: 216
 		Acceleration: 96
@@ -40,7 +39,6 @@
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
-		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
 		ValidTargets: Water
 		InvalidTargets: Vehicle

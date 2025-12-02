@@ -10,3 +10,18 @@ lst:
 		Filename: mgun.shp
 		Start: 0
 		Facings: 32
+	idle:
+		Palette: player
+		IsPlayerPalette: True
+	icon:
+		Palette: chrome
+		IsPlayerPalette: False
+	open:
+		Palette: player
+		IsPlayerPalette: True
+	close:
+		Palette: player
+		IsPlayerPalette: True
+	unload:
+		Palette: player
+		IsPlayerPalette: True

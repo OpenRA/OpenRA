@@ -5,24 +5,46 @@ fact:
 		Start: 4
 		Length: 20
 		Tick: 100
+		Palette: colorpicker
+		IsPlayerPalette: False
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Length: 4
 		Tick: 100
+		Palette: colorpicker
+		IsPlayerPalette: False
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 24
 		Length: 4
 		Tick: 100
+		Palette: colorpicker
+		IsPlayerPalette: False
+		Palette: player
+		IsPlayerPalette: True
 	damaged-build:
 		Start: 28
 		Length: 20
 		Tick: 100
+		Palette: colorpicker
+		IsPlayerPalette: False
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 48
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: factmake.shp
 		Length: *
 		Tick: 80
+		Palette: colorpicker
+		IsPlayerPalette: False
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib2.des
@@ -30,8 +52,12 @@ fact:
 			SNOW: bib2.sno
 			TEMPERAT: bib2.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: facticnh.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 nuke:
 	Defaults:
@@ -39,17 +65,25 @@ nuke:
 	idle:
 		Length: 4
 		Tick: 1000
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 4
 		Length: 4
 		Tick: 1000
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 8
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: nukemake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib3.des
@@ -57,8 +91,12 @@ nuke:
 			SNOW: bib3.sno
 			TEMPERAT: bib3.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: nukeicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 proc:
 	Defaults:
@@ -67,29 +105,41 @@ proc:
 		Length: 6
 		Tick: 120
 		Offset: 2,4
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 30
 		Length: 6
 		Tick: 120
 		Offset: 2,4
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 60
 		Tick: 800
 		Offset: 2,4
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: procmake.shp
 		Length: *
 		Tick: 80
 		Offset: 2,4
+		Palette: player
+		IsPlayerPalette: True
 	resources:
 		Filename: proctwr.shp
 		Length: 6
 		Offset: -30,-17
+		Palette: player
+		IsPlayerPalette: True
 	damaged-resources:
 		Filename: proctwr.shp
 		Start: 6
 		Length: 6
 		Offset: -30,-17
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib2.des
@@ -97,8 +147,12 @@ proc:
 			SNOW: bib2.sno
 			TEMPERAT: bib2.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: procicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 silo:
 	Defaults:
@@ -112,41 +166,61 @@ silo:
 		Start: 10
 		Offset: 0,-1
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	stages:
 		Length: 5
 		Offset: 0,-1
+		Palette: player
+		IsPlayerPalette: True
 	damaged-stages:
 		Start: 5
 		Length: 5
 		Offset: 0,-1
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: silomake.shp
 		Length: *
 		Tick: 80
 		Offset: 0,-1
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: mbSILO.tem
 		TilesetFilenames:
 			DESERT: mbSILO.des
 		Length: *
 		Offset: 0,1
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: siloicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 hand:
 	Defaults:
 		Filename: hand.shp
 		Offset: 0,-8
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 2
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: handmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib3.des
@@ -155,9 +229,13 @@ hand:
 			TEMPERAT: bib3.tem
 		Length: *
 		Offset: 0,0
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: handicnh.tem
 		Offset: 0,0
+		Palette: chrome
+		IsPlayerPalette: False
 
 pyle:
 	Defaults:
@@ -166,18 +244,26 @@ pyle:
 		Length: 10
 		Tick: 100
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 10
 		Length: 10
 		Tick: 100
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 20
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: pylemake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib3.des
@@ -185,8 +271,12 @@ pyle:
 			SNOW: bib3.sno
 			TEMPERAT: bib3.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: pyleicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 weap:
 	Defaults:
@@ -194,28 +284,42 @@ weap:
 		Offset: 0,-12
 	idle:
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 2
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	build-top:
 		Filename: weap2.shp
 		Length: 10
 		ZOffset: -1024
+		Palette: player
+		IsPlayerPalette: True
 	damaged-build-top:
 		Filename: weap2.shp
 		Start: 10
 		Length: 10
 		ZOffset: -1024
+		Palette: player
+		IsPlayerPalette: True
 	place:
 		Filename: weapmake.shp
 		Start: 19
+		Palette: terrain
+		IsPlayerPalette: False
 	make:
 		Filename: weapmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib2.des
@@ -224,9 +328,13 @@ weap:
 			TEMPERAT: bib2.tem
 		Length: *
 		Offset: 0,0
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: weapicnh.tem
 		Offset: 0,0
+		Palette: chrome
+		IsPlayerPalette: False
 
 afld:
 	Defaults:
@@ -234,36 +342,52 @@ afld:
 	idle:
 		Tick: 120
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 16
 		Tick: 120
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Length: 16
 		Tick: 120
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Start: 16
 		Length: 16
 		Tick: 120
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	idle-dish:
 		Filename: afld_d.shp
 		Length: 16
 		Tick: 160
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-dish:
 		Filename: afld_d.shp
 		Start: 16
 		Length: 16
 		Tick: 160
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 32
 		ZOffset: -1023
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: afldmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib1.des
@@ -271,8 +395,12 @@ afld:
 			SNOW: bib1.sno
 			TEMPERAT: bib1.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: afldicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 hq:
 	Defaults:
@@ -280,17 +408,25 @@ hq:
 	idle:
 		Length: 16
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 16
 		Length: 16
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 32
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: hqmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib3.des
@@ -298,8 +434,12 @@ hq:
 			SNOW: bib3.sno
 			TEMPERAT: bib3.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: hqicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 nuk2:
 	Defaults:
@@ -307,17 +447,25 @@ nuk2:
 	idle:
 		Length: 4
 		Tick: 1000
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 4
 		Length: 4
 		Tick: 1000
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 8
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: nuk2make.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib3.des
@@ -325,69 +473,103 @@ nuk2:
 			SNOW: bib3.sno
 			TEMPERAT: bib3.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: nuk2icnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 hpad:
 	Defaults:
 		Filename: hpad.shp
 	idle:
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 7
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Start: 1
 		Length: 6
 		Tick: 100
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Start: 8
 		Length: 6
 		Tick: 100
 		ZOffset: -1023
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 14
 		ZOffset: -1023
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: hpadmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: hpadicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 fix:
 	Defaults:
 		Filename: fix.shp
 	idle:
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 7
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Length: 7
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Start: 7
 		Length: 7
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 14
 		ZOffset: -1c511
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: fixmake.shp
 		Length: 14
 		Tick: 60
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: mbFIX.tem
 		TilesetFilenames:
 			DESERT: mbFIX.des
 		Length: *
 		Offset: 0,-9
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: fixicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 eye:
 	Defaults:
@@ -395,17 +577,25 @@ eye:
 	idle:
 		Length: 16
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 16
 		Length: 16
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 32
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: eyemake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib3.des
@@ -413,33 +603,51 @@ eye:
 			SNOW: bib3.sno
 			TEMPERAT: bib3.tem
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: eyeicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 tmpl:
 	Defaults:
 		Filename: tmpl.shp
 		Offset: 0,-12
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 5
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Length: 5
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	smoke:
 		Filename: atomdoor.shp
 		Length: *
 		Offset: -1,-47
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Start: 5
 		Length: 5
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 10
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: tmplmake.shp
 		Length: *
 		Tick: 60
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			DESERT: bib2.des
@@ -448,9 +656,13 @@ tmpl:
 			TEMPERAT: bib2.tem
 		Length: *
 		Offset: 0,0
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: tmplicnh.tem
 		Offset: 0,0
+		Palette: chrome
+		IsPlayerPalette: False
 
 obli:
 	Defaults:
@@ -462,85 +674,127 @@ obli:
 	active:
 		Length: 4
 		Tick: 680
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Start: 4
 		Length: 4
 		Tick: 680
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 8
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: oblimake.shp
 		Length: 13
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: mbOBLI.tem
 		TilesetFilenames:
 			DESERT: mbOBLI.des
 		Length: *
 		Offset: -1,-3
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: obliicnh.tem
 		Offset: 0,0
+		Palette: chrome
+		IsPlayerPalette: False
 
 brik:
 	Defaults:
 		Filename: brik.shp
 	idle:
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	scratched-idle:
 		Start: 16
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 32
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	icon:
 		Filename: brikicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 sbag:
 	idle:
 		Filename: sbag.shp
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	icon:
 		Filename: sbagicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 cycl:
 	Defaults:
 		Filename: cycl.shp
 	idle:
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	icon:
 		Filename: cyclicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 barb:
 	Defaults:
 		Filename: barb.shp
 	idle:
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 
 wood:
 	Defaults:
 		Filename: wood.shp
 	idle:
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
+		Palette: staticterrain
+		IsPlayerPalette: False
 
 gun:
 	Defaults:
 		Filename: gun.shp
 	idle: # Empty first frame. We need WithSpriteBody for the make anim, and WSB needs at least a placeholder default sequence to work
 		Filename: gunmake.shp
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	recoil:
 		Start: 32
 		Facings: 32
@@ -549,6 +803,8 @@ gun:
 		Start: 64
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	damaged-recoil:
 		Start: 96
 		Facings: 32
@@ -557,106 +813,162 @@ gun:
 		Filename: gunmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: *
+		Palette: effect
+		IsPlayerPalette: False
 	bib:
 		Filename: mbGUN.tem
 		TilesetFilenames:
 			DESERT: mbGUN.des
 		Length: *
 		Offset: -1,-1
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: gunicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 sam:
 	Defaults:
 		Filename: sam.shp
 	closed-idle:
 		Start: 0
+		Palette: player
+		IsPlayerPalette: True
 	opening:
 		Start: 1
 		Length: 16
 		Tick: 30
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Start: 17
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	closing:
 		Start: 50
 		Length: 14
 		Tick: 30
+		Palette: player
+		IsPlayerPalette: True
 	damaged-closed-idle:
 		Start: 64
+		Palette: player
+		IsPlayerPalette: True
 	damaged-opening:
 		Start: 65
 		Length: 16
 		Tick: 30
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 81
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	damaged-closing:
 		Start: 114
 		Length: 14
 		Tick: 30
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 128
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	place:
 		Start: 0
+		Palette: terrain
+		IsPlayerPalette: False
 	make:
 		Filename: sammake.shp
 		Length: 20
 		Tick: 50
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: samfire.shp
 		Length: 18
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: samicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 gtwr:
 	Defaults:
 		Filename: gtwr.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 2
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: gtwrmake.shp
 		Frames: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	bib:
 		Filename: mbGTWR.tem
 		TilesetFilenames:
 			DESERT: mbGTWR.des
 		Length: *
 		Offset: 0,-2
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: gtwricnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 atwr:
 	Defaults:
 		Filename: atwr.shp
 		Offset: 0,-13
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 	dead:
 		Start: 2
 		Tick: 800
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: atwrmake.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: *
@@ -666,9 +978,13 @@ atwr:
 			DESERT: mbGTWR.des
 		Length: *
 		Offset: -3,0
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: atwricnh.tem
 		Offset: 0,0
+		Palette: chrome
+		IsPlayerPalette: False
 
 hosp:
 	Defaults:
@@ -677,10 +993,14 @@ hosp:
 		Length: 4
 		Tick: 100
 		Offset: 0,-2
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 4
 		Length: 4
 		Offset: 0,-2
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: hospmake.shp
 		Length: *
@@ -692,24 +1012,34 @@ hosp:
 			DESERT: mbHOSP.des
 		Length: *
 		Offset: 0,1
+		Palette: terrain
+		IsPlayerPalette: False
 
 hosp.husk:
 	idle:
 		Filename: hosp.shp
 		Start: 8
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: mbHOSP.tem
 		TilesetFilenames:
 			DESERT: mbHOSP.des
 		Length: *
 		Offset: 0,1
+		Palette: terrain
+		IsPlayerPalette: False
 
 bio:
 	Defaults:
 		Filename: bio.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: biomake.shp
 		Length: *
@@ -719,28 +1049,40 @@ bio.husk:
 	idle:
 		Filename: bio.shp
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 miss:
 	Defaults:
 		Filename: miss.shp
 	idle:
 		Offset: 0,-1
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
 		Offset: 0,-1
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: missmake.shp
 		Length: *
 		Tick: 80
 		Offset: 0,-1
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: mbMISS.tem
 		TilesetFilenames:
 			DESERT: mbMISS.des
 		Length: *
 		Offset: 0,1
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: missicnh.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 miss.husk:
 	idle:

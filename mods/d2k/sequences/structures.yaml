@@ -3,15 +3,21 @@ concretea:
 		Filename: DATA.R16
 		Start: 4314
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 	preview:
 		Filename: BLOXBASE.R16
 		Start: 657
+		Palette: player
+		IsPlayerPalette: True
 
 concreteb:
 	icon:
 		Filename: DATA.R16
 		Start: 4317
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 wall:
 	idle:
@@ -19,32 +25,44 @@ wall:
 		Frames: 2775, 2778, 2776, 2786, 2779, 2780, 2790, 2783, 2777, 2787, 2781, 2782, 2788, 2784, 2785, 2789
 		Length: 16
 		Offset: -16,16
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Frames: 2791, 2794, 2792, 2802, 2795, 2796, 2806, 2799, 2793, 2803, 2797, 2798, 2804, 2800, 2801, 2805
 		Length: 16
 		Offset: -16,16
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4327
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 medium_gun_turret:
 	invisible:
 		Filename: DATA.R16
 		Start: 38
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Filename: DATA.R16
 		Frames: 2821, 2824, 2822, 2832, 2825, 2826, 2836, 2829, 2823, 2833, 2827, 2828, 2834, 2830, 2831, 2835
 		Length: 16
 		Offset: -24,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Frames: 2869, 2872, 2870, 2880, 2873, 2874, 2884, 2877, 2871, 2881, 2875, 2876, 2882, 2878, 2879, 2883
 		Length: 16
 		Offset: -24,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4577
@@ -52,6 +70,8 @@ medium_gun_turret:
 		Offset: -16,16
 		ZOffset: 1024
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4585
@@ -59,12 +79,16 @@ medium_gun_turret:
 		Offset: -16,16
 		Tick: 100
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 2837
 		Facings: -32
 		Offset: -24,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: DATA.R16
 		Start: 4028
@@ -72,27 +96,37 @@ medium_gun_turret:
 		Facings: -32
 		Offset: 0,2
 		BlendMode: Additive
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: DATA.R16
 		Start: 4333
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 large_gun_turret:
 	invisible:
 		Filename: DATA.R16
 		Start: 38
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Filename: DATA.R16
 		Frames: 2821, 2824, 2822, 2832, 2825, 2826, 2836, 2829, 2823, 2833, 2827, 2828, 2834, 2830, 2831, 2835
 		Length: 16
 		Offset: -24,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Frames: 2869, 2872, 2870, 2880, 2873, 2874, 2884, 2877, 2871, 2881, 2875, 2876, 2882, 2878, 2879, 2883
 		Length: 16
 		Offset: -24,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4577
@@ -100,6 +134,8 @@ large_gun_turret:
 		Offset: -16,16
 		ZOffset: 1024
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4585
@@ -107,16 +143,22 @@ large_gun_turret:
 		Offset: -16,16
 		Tick: 100
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 2885
 		Facings: -32
 		Offset: -24,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4339
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 conyard.atreides:
 	idle:
@@ -124,23 +166,31 @@ conyard.atreides:
 		Start: 2807
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4373
 		Length: 30
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4403
 		Length: 12
 		Offset: -48,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2808
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crane-overlay:
 		Filename: DATA.R16
 		Start: 4700
@@ -148,6 +198,8 @@ conyard.atreides:
 		Offset: -48,64
 		Tick: 80
 		ZOffset: 1023
+		Palette: d2k
+		IsPlayerPalette: False
 	damaged-crane-overlay:
 		Filename: DATA.R16
 		Start: 4700
@@ -155,11 +207,15 @@ conyard.atreides:
 		Offset: -48,64
 		Tick: 80
 		ZOffset: 1023
+		Palette: d2k
+		IsPlayerPalette: False
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -169,6 +225,8 @@ conyard.atreides:
 		Filename: DATA.R16
 		Start: 4310
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 repair_pad.atreides:
 	make:
@@ -177,30 +235,40 @@ repair_pad.atreides:
 		Length: 11
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4645
 		Length: 10
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Filename: DATA.R16
 		Start: 2819
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2820
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 5010
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Filename: DATA.R16
 		Start: 5010
@@ -208,10 +276,14 @@ repair_pad.atreides:
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4360
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 repair_pad.harkonnen:
 	make:
@@ -220,30 +292,40 @@ repair_pad.harkonnen:
 		Length: 11
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4645
 		Length: 10
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Filename: DATA.R16
 		Start: 2979
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2980
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 5010
 		Length: 14
 		Offset: -48,48
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Filename: DATA.R16
 		Start: 5010
@@ -251,10 +333,14 @@ repair_pad.harkonnen:
 		Tick: 60
 		Offset: -48,48
 		ZOffset: -1c511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4361
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 repair_pad.ordos:
 	make:
@@ -306,12 +392,16 @@ starport.atreides:
 		ZOffset: -1c511
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2920
 		ZOffset: -1c511
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 4986
@@ -319,6 +409,8 @@ starport.atreides:
 		ZOffset: -1c511
 		Offset: -48,48
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Filename: DATA.R16
 		Start: 4986
@@ -326,18 +418,24 @@ starport.atreides:
 		ZOffset: -1c511
 		Offset: -48,48
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4611
 		Length: 12
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
@@ -352,6 +450,8 @@ starport.atreides:
 		Filename: DATA.R16
 		Start: 4356
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 power.atreides:
 	idle:
@@ -359,40 +459,54 @@ power.atreides:
 		Start: 2771
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4415
 		Length: 11
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4426
 		Length: 13
 		Offset: -32,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2772
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-zaps:
 		Filename: DATA.R16
 		Start: 4756
 		Length: 10
 		Offset: -32,64
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-zaps:
 		Filename: DATA.R16
 		Start: 4761
 		Length: 5
 		Offset: -32,64
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 649, 650, 669, 670
@@ -402,6 +516,8 @@ power.atreides:
 		Filename: DATA.R16
 		Start: 4320
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 barracks.atreides:
 	idle:
@@ -409,28 +525,38 @@ barracks.atreides:
 		Start: 2773
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4439
 		Length: 11
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4450
 		Length: 9
 		Offset: -32,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2774
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 649, 650, 669, 670
@@ -440,6 +566,8 @@ barracks.atreides:
 		Filename: DATA.R16
 		Start: 4323
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 outpost.atreides:
 	idle:
@@ -447,12 +575,16 @@ outpost.atreides:
 		Start: 2769
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4518
 		Length: 11
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4529
@@ -460,21 +592,29 @@ outpost.atreides:
 		Offset: -48,64
 		ZOffset: 1024
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2770
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-dish:
 		Filename: DATA.R16
 		Start: 4786
 		Length: 30
 		Offset: -48,64
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -484,6 +624,8 @@ outpost.atreides:
 		Filename: DATA.R16
 		Start: 4336
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 refinery.atreides:
 	idle:
@@ -491,12 +633,16 @@ refinery.atreides:
 		Start: 2809
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4495
 		Length: 11
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4506
@@ -504,26 +650,36 @@ refinery.atreides:
 		Offset: -48,64
 		ZOffset: 1024
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2809
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 2810
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 2811
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -533,6 +689,8 @@ refinery.atreides:
 		Filename: DATA.R16
 		Start: 4330
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 	smoke:
 		Filename: DATA.R16
 		Start: 4138
@@ -540,6 +698,8 @@ refinery.atreides:
 		Offset: 13,-16
 		Tick: 100
 		BlendMode: Additive
+		Palette: player
+		IsPlayerPalette: True
 
 silo.atreides:
 	idle:
@@ -557,16 +717,22 @@ silo.atreides:
 		Start: 2814
 		Length: 4
 		Offset: -16,16
+		Palette: player
+		IsPlayerPalette: True
 	damaged-stages:
 		Filename: DATA.R16
 		Start: 2818
 		Offset: -16,16
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4577
 		Length: 8
 		Offset: -16,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4585
@@ -574,10 +740,14 @@ silo.atreides:
 		Offset: -16,16
 		Tick: 100
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4348
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 hightech.atreides:
 	Defaults:
@@ -586,20 +756,28 @@ hightech.atreides:
 		Filename: DATA.R16
 		Start: 2812
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4538
 		Length: 11
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4549
 		Length: 10
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2813
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4878
@@ -607,6 +785,8 @@ hightech.atreides:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	damaged-production-welding:
 		Filename: DATA.R16
 		Frames: 4878, 4879, 4880, 4881, 4882, 4884, 4885, 4886, 4887
@@ -614,11 +794,15 @@ hightech.atreides:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -628,6 +812,8 @@ hightech.atreides:
 		Filename: DATA.R16
 		Start: 4342
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 research.atreides:
 	idle:
@@ -635,34 +821,46 @@ research.atreides:
 		Start: 2917
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4655
 		Length: 11
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4666
 		Length: 11
 		Offset: -48,80
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2918
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-lights:
 		Filename: DATA.R16
 		Start: 5024
 		Length: 60
 		Tick: 80
 		Offset: -48,80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -672,6 +870,8 @@ research.atreides:
 		Filename: DATA.R16
 		Start: 4363
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 research.harkonnen:
 	idle:
@@ -679,34 +879,46 @@ research.harkonnen:
 		Start: 3077
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4655
 		Length: 11
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4666
 		Length: 11
 		Offset: -48,80
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3078
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-lights:
 		Filename: DATA.R16
 		Start: 5024
 		Length: 60
 		Tick: 80
 		Offset: -48,80
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -716,6 +928,8 @@ research.harkonnen:
 		Filename: DATA.R16
 		Start: 4364
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 research.ordos:
 	idle:
@@ -767,32 +981,44 @@ palace.atreides:
 		Start: 2924
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 2924
 		Offset: -48,48
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4677
 		Length: 13
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4690
 		Length: 10
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2925
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 663, 664, 665
@@ -802,6 +1028,8 @@ palace.atreides:
 		Filename: DATA.R16
 		Start: 4366
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 light.atreides:
 	idle:
@@ -809,12 +1037,16 @@ light.atreides:
 		Start: 2921
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4559
 		Length: 9
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4568
@@ -822,23 +1054,31 @@ light.atreides:
 		Offset: -48,64
 		ZOffset: 897
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2921
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 2922
 		Offset: -48,64
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 2923
 		Offset: -48,64
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4908
@@ -847,6 +1087,8 @@ light.atreides:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	damaged-production-welding:
 		Filename: DATA.R16
 		Frames: 4908, 4909, 4910, 4912, 4914, 4917
@@ -855,11 +1097,15 @@ light.atreides:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -869,6 +1115,8 @@ light.atreides:
 		Filename: DATA.R16
 		Start: 4345
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 heavy.atreides:
 	idle:
@@ -876,12 +1124,16 @@ heavy.atreides:
 		Start: 2766
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4592
 		Length: 10
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4602
@@ -889,23 +1141,31 @@ heavy.atreides:
 		Offset: -48,80
 		ZOffset: 897
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2766
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 2767
 		Offset: -48,80
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 2768
 		Offset: -48,80
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4938
@@ -914,11 +1174,15 @@ heavy.atreides:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -928,6 +1192,8 @@ heavy.atreides:
 		Filename: DATA.R16
 		Start: 4351
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 conyard.harkonnen:
 	idle:
@@ -935,23 +1201,31 @@ conyard.harkonnen:
 		Start: 2967
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4373
 		Length: 30
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4403
 		Length: 12
 		Offset: -48,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2968
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crane-overlay:
 		Filename: DATA.R16
 		Start: 4714
@@ -959,6 +1233,8 @@ conyard.harkonnen:
 		Offset: -48,64
 		Tick: 80
 		ZOffset: 1023
+		Palette: d2k
+		IsPlayerPalette: False
 	damaged-crane-overlay:
 		Filename: DATA.R16
 		Start: 4714
@@ -966,11 +1242,15 @@ conyard.harkonnen:
 		Offset: -48,64
 		Tick: 80
 		ZOffset: 1023
+		Palette: d2k
+		IsPlayerPalette: False
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -980,6 +1260,8 @@ conyard.harkonnen:
 		Filename: DATA.R16
 		Start: 4311
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 starport.harkonnen:
 	idle:
@@ -988,12 +1270,16 @@ starport.harkonnen:
 		ZOffset: -1c511
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3080
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 4993
@@ -1001,6 +1287,8 @@ starport.harkonnen:
 		ZOffset: -1c511
 		Offset: -48,48
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Filename: DATA.R16
 		Start: 4993
@@ -1008,18 +1296,24 @@ starport.harkonnen:
 		ZOffset: -1c511
 		Offset: -48,48
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4611
 		Length: 12
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
@@ -1034,6 +1328,8 @@ starport.harkonnen:
 		Filename: DATA.R16
 		Start: 4357
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 power.harkonnen:
 	idle:
@@ -1041,40 +1337,54 @@ power.harkonnen:
 		Start: 2931
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4415
 		Length: 11
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4426
 		Length: 13
 		Offset: -32,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2932
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-zaps:
 		Filename: DATA.R16
 		Start: 4766
 		Length: 10
 		Offset: -32,64
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-zaps:
 		Filename: DATA.R16
 		Start: 4771
 		Length: 5
 		Offset: -32,64
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 649, 650, 669, 670
@@ -1084,6 +1394,8 @@ power.harkonnen:
 		Filename: DATA.R16
 		Start: 4321
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 barracks.harkonnen:
 	idle:
@@ -1091,28 +1403,38 @@ barracks.harkonnen:
 		Start: 2933
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4477
 		Length: 9
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4486
 		Length: 9
 		Offset: -32,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2934
 		Offset: -32,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 617, 618, 637, 638
 		Length: 4
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 649, 650, 669, 670
@@ -1122,6 +1444,8 @@ barracks.harkonnen:
 		Filename: DATA.R16
 		Start: 4324
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 outpost.harkonnen:
 	idle:
@@ -1129,12 +1453,16 @@ outpost.harkonnen:
 		Start: 2929
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4518
 		Length: 11
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4529
@@ -1142,21 +1470,29 @@ outpost.harkonnen:
 		Offset: -48,64
 		ZOffset: 1024
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2930
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-dish:
 		Filename: DATA.R16
 		Start: 4817
 		Length: 30
 		Offset: -48,64
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -1166,6 +1502,8 @@ outpost.harkonnen:
 		Filename: DATA.R16
 		Start: 4337
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 refinery.harkonnen:
 	idle:
@@ -1173,12 +1511,16 @@ refinery.harkonnen:
 		Start: 2969
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4495
 		Length: 11
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4506
@@ -1186,26 +1528,36 @@ refinery.harkonnen:
 		Offset: -48,64
 		ZOffset: 1024
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2969
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 2970
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 2971
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -1215,6 +1567,8 @@ refinery.harkonnen:
 		Filename: DATA.R16
 		Start: 4331
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 	smoke:
 		Filename: DATA.R16
 		Start: 4138
@@ -1222,6 +1576,8 @@ refinery.harkonnen:
 		Offset: 13,-16
 		Tick: 100
 		BlendMode: Additive
+		Palette: player
+		IsPlayerPalette: True
 
 silo.harkonnen:
 	idle:
@@ -1239,16 +1595,22 @@ silo.harkonnen:
 		Start: 2974
 		Length: 4
 		Offset: -16,16
+		Palette: player
+		IsPlayerPalette: True
 	damaged-stages:
 		Filename: DATA.R16
 		Start: 2978
 		Offset: -16,16
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4577
 		Length: 8
 		Offset: -16,16
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4585
@@ -1256,10 +1618,14 @@ silo.harkonnen:
 		Offset: -16,16
 		Tick: 100
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4349
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 hightech.harkonnen:
 	Defaults:
@@ -1268,20 +1634,28 @@ hightech.harkonnen:
 		Filename: DATA.R16
 		Start: 2972
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4538
 		Length: 11
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4549
 		Length: 10
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2973
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4888
@@ -1289,11 +1663,15 @@ hightech.harkonnen:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -1303,6 +1681,8 @@ hightech.harkonnen:
 		Filename: DATA.R16
 		Start: 4343
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 palace.harkonnen:
 	idle:
@@ -1310,38 +1690,52 @@ palace.harkonnen:
 		Start: 3084
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4677
 		Length: 13
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4690
 		Length: 10
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3085
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 5084
 		Length: 20
 		Offset: -48,48
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Filename: DATA.R16
 		Start: 5084
 		Length: 20
 		Offset: -48,48
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 663, 664, 665
@@ -1351,6 +1745,8 @@ palace.harkonnen:
 		Filename: DATA.R16
 		Start: 4367
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 light.harkonnen:
 	idle:
@@ -1358,12 +1754,16 @@ light.harkonnen:
 		Start: 3081
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4559
 		Length: 9
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4568
@@ -1371,23 +1771,31 @@ light.harkonnen:
 		Offset: -48,64
 		ZOffset: 897
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3081
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 3082
 		Offset: -48,64
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 3083
 		Offset: -48,64
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4918
@@ -1396,11 +1804,15 @@ light.harkonnen:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -1410,6 +1822,8 @@ light.harkonnen:
 		Filename: DATA.R16
 		Start: 4346
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 heavy.harkonnen:
 	idle:
@@ -1417,12 +1831,16 @@ heavy.harkonnen:
 		Start: 2926
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4592
 		Length: 10
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4602
@@ -1430,23 +1848,31 @@ heavy.harkonnen:
 		Offset: -48,80
 		ZOffset: 897
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 2926
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 2927
 		Offset: -48,80
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 2928
 		Offset: -48,80
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4948
@@ -1455,11 +1881,15 @@ heavy.harkonnen:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -1469,6 +1899,8 @@ heavy.harkonnen:
 		Filename: DATA.R16
 		Start: 4352
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 conyard.ordos:
 	idle:
@@ -1476,23 +1908,31 @@ conyard.ordos:
 		Start: 3127
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4373
 		Length: 30
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4403
 		Length: 12
 		Offset: -48,64
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3128
 		Offset: -48,64
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crane-overlay:
 		Filename: DATA.R16
 		Start: 4728
@@ -1500,6 +1940,8 @@ conyard.ordos:
 		Offset: -48,64
 		Tick: 80
 		ZOffset: 1023
+		Palette: d2k
+		IsPlayerPalette: False
 	damaged-crane-overlay:
 		Filename: DATA.R16
 		Start: 4728
@@ -1507,11 +1949,15 @@ conyard.ordos:
 		Offset: -48,64
 		Tick: 80
 		ZOffset: 1023
+		Palette: d2k
+		IsPlayerPalette: False
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -1521,6 +1967,8 @@ conyard.ordos:
 		Filename: DATA.R16
 		Start: 4312
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 starport.ordos:
 	idle:
@@ -2011,20 +2459,28 @@ palace.corrino:
 		Start: 3252
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 3252
 		Offset: -48,48
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3253
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 631, 632, 633
 		Length: 3
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 663, 664, 665
@@ -2032,18 +2488,24 @@ palace.corrino:
 		Offset: -16,-16
 	icon:
 		Filename: palacecicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	make:
 		Filename: DATA.R16
 		Start: 4677
 		Length: 13
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4690
 		Length: 10
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 
 starport.smuggler:
 	idle:
@@ -2052,12 +2514,16 @@ starport.smuggler:
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3248
 		Offset: -48,48
 		ZOffset: -1c511
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	active:
 		Filename: DATA.R16
 		Start: 5002
@@ -2065,6 +2531,8 @@ starport.smuggler:
 		ZOffset: -1c511
 		Offset: -48,48
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	damaged-active:
 		Filename: DATA.R16
 		Start: 5002
@@ -2072,18 +2540,24 @@ starport.smuggler:
 		ZOffset: -1c511
 		Offset: -48,48
 		Tick: 200
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4611
 		Length: 12
 		Offset: -48,48
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4623
 		Length: 11
 		Offset: -48,48
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
@@ -2098,6 +2572,8 @@ starport.smuggler:
 		Filename: DATA.R16
 		Start: 4358
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 heavy.mercenary:
 	idle:
@@ -2105,12 +2581,16 @@ heavy.mercenary:
 		Start: 3249
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: DATA.R16
 		Start: 4592
 		Length: 10
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	crumble-overlay:
 		Filename: DATA.R16
 		Start: 4602
@@ -2118,23 +2598,31 @@ heavy.mercenary:
 		Offset: -48,80
 		ZOffset: 897
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: DATA.R16
 		Start: 3249
 		Offset: -48,80
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	idle-top:
 		Filename: DATA.R16
 		Start: 3250
 		Offset: -48,80
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle-top:
 		Filename: DATA.R16
 		Start: 3251
 		Offset: -48,80
 		ZOffset: 896
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	production-welding:
 		Filename: DATA.R16
 		Start: 4968
@@ -2143,6 +2631,8 @@ heavy.mercenary:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	damaged-production-welding:
 		Filename: DATA.R16
 		Frames: 4968, 4970, 4972, 4973, 4974, 4975, 4976
@@ -2151,11 +2641,15 @@ heavy.mercenary:
 		Tick: 200
 		BlendMode: Additive
 		ZOffset: 1024
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		Filename: BLOXBASE.R16
 		Frames: 611, 612, 613, 631, 632, 633
 		Length: 6
 		Offset: -16,-16
+		Palette: terrain
+		IsPlayerPalette: False
 	bib-Concrete:
 		Filename: BLOXBASE.R16
 		Frames: 643, 644, 645, 663, 664, 665
@@ -2165,6 +2659,8 @@ heavy.mercenary:
 		Filename: DATA.R16
 		Start: 4353
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 plates: # TODO: unused
 	idle:

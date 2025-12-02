@@ -91,7 +91,6 @@
 	WithDecoration@RANK-1:
 		Image: rank
 		Sequence: rank-veteran-1
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -99,7 +98,6 @@
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -107,7 +105,6 @@
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -367,8 +364,6 @@
 			FireDeath: 5
 			TiberiumDeath: 6
 		CrushedSequence: die-crushed
-		CrushedSequencePalette: player
-		CrushedPaletteIsPlayerPalette: true
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -544,7 +539,6 @@
 		TargetTypes: Ground, Creep
 	HiddenUnderFog:
 	RenderSprites:
-		Palette: terrain
 	QuantizeFacingsFromSequence:
 		Sequence: stand
 	WithInfantryBody:
@@ -774,8 +768,6 @@
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: player
-		IsPlayerPalette: True
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -831,8 +823,6 @@
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: player
-		IsPlayerPalette: True
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -845,7 +835,6 @@
 	-SoundOnDamageTransition:
 	-Demolishable:
 	RenderSprites:
-		Palette: terrain
 
 ^CivHaystackOrIgloo:
 	Inherits: ^CivField
@@ -877,7 +866,6 @@
 		GenericVisibility: None
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: terrain
 	WithSpriteBody:
 	FrozenUnderFog:
 	MapEditorData:
@@ -932,7 +920,6 @@
 	LineBuildNode:
 		Types: wall
 	RenderSprites:
-		Palette: staticterrain
 	WithWallSpriteBody:
 	Sellable:
 		SellSounds: cashturn.aud
@@ -955,7 +942,6 @@
 		Name: meta-tree-name
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: staticterrain
 	WithSpriteBody:
 	Building:
 		Footprint: __ x_
@@ -1033,7 +1019,6 @@
 		Name: meta-tibtree-name
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: staticterrain
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -1057,7 +1042,6 @@
 		Name: meta-rock-name
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: staticterrain
 	WithSpriteBody:
 	Building:
 		Footprint: __ x_
@@ -1177,7 +1161,6 @@
 	Crate:
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	RenderSprites:
-		Palette: effect
 		Image: scrate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated

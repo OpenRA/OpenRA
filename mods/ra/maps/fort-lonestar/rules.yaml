@@ -309,8 +309,6 @@ SNIPER:
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120

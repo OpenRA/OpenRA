@@ -13,6 +13,5 @@ TorpTubeNuclear:
 		HorizontalRateOfTurn: 4
 		RangeLimit: 11c819
 		BoundToTerrainType: Water
-		Palette: shadow
 		MaximumLaunchAngle: 0
 		CruiseAltitude: 0

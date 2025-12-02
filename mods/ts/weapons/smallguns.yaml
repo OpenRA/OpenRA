@@ -18,7 +18,6 @@
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: water_piffs
-		ExplosionPalette: ra
 		ValidTargets: Water
 		InvalidTargets: Vehicle
 

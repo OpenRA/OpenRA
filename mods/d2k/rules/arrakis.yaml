@@ -119,7 +119,6 @@ sandworm:
 	LeavesTrails:
 		Image: sandtrail
 		Sequences: traila, trailb, trailc
-		Palette: effect
 		Type: CenterPosition
 		TerrainTypes: Sand, Dune, SpiceSand, Spice
 		MovingInterval: 3

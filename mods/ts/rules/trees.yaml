@@ -12,7 +12,6 @@ BIGBLUE:
 	Tooltip:
 		Name: actor-bigblue-name
 	RenderSprites:
-		Palette: bluetiberium
 	RadarColorFromTerrain:
 		Terrain: BlueTiberium
 	AppearsOnMapPreview:
@@ -114,7 +113,6 @@ VEINHOLE:
 	Tooltip:
 		Name: actor-veinhole-name
 	RenderSprites:
-		Palette: player
 	WithSpriteBody:
 	MapEditorData:
 		Categories: Resource spawn

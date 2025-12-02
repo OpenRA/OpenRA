@@ -4,8 +4,12 @@ miner:
 		Length: *
 		Tick: 400
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: jmin.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 brick:
 	idle:

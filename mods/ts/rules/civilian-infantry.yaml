@@ -78,7 +78,6 @@ CHAMSPY:
 		Margin: 6, 10
 		Image: pips
 		Sequence: pip-disguise
-		Palette: pips
 	Infiltrates:
 		Types: SpyInfiltrate
 		Notification: BuildingInfiltrated
@@ -168,9 +167,6 @@ MUTANT3:
 		FacingTolerance: 0
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
-		Palette: player-nobright
-		IsPlayerPalette: true
-		SplitAttackPalette: bright
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 
@@ -229,9 +225,6 @@ CIV1:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
-		Palette: player-nomuzzle
-		IsPlayerPalette: true
-		SplitAttackPalette: muzzle
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:
@@ -257,9 +250,6 @@ CTECH:
 		Image: civ3
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
-		Palette: player-nomuzzle
-		IsPlayerPalette: true
-		SplitAttackPalette: muzzle
 	Armament:
 		Weapon: Pistola
 	AttackFrontal:

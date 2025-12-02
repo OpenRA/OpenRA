@@ -3,67 +3,107 @@ ss:
 		Filename: ss.shp
 		Facings: 16
 		InterpolatedFacings: 32
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: ssicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 ca:
 	idle:
 		Filename: ca.shp
 		Facings: 16
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: turr.shp
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: caicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 dd:
 	idle:
 		Filename: dd.shp
 		Facings: 16
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: ssam.shp
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: ddicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 pt:
 	idle:
 		Filename: pt.shp
 		Facings: 16
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: mgun.shp
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: 5
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: pticon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 lst:
 	Defaults:
 		Filename: lst.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	open:
 		Start: 1
 		Length: 4
 		Tick: 150
+		Palette: player
+		IsPlayerPalette: True
 	close:
 		Frames: 4, 3, 2, 1
 		Length: 4
 		Tick: 150
+		Palette: player
+		IsPlayerPalette: True
 	unload:
 		Start: 4
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: lsticon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 msub:
 	idle:
 		Filename: msub.shp
 		Facings: 16
 		InterpolatedFacings: 32
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: msubicon.shp
+		Palette: chrome
+		IsPlayerPalette: False

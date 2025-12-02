@@ -64,7 +64,6 @@
 		Margin: 3, 4
 		Image: rank
 		Sequence: veteran
-		Palette: ra
 		ValidRelationships: Ally, Enemy, Neutral
 	WithDecoration@ELITE:
 		RequiresCondition: rank-elite
@@ -72,7 +71,6 @@
 		Margin: 3, 4
 		Image: rank
 		Sequence: elite
-		Palette: ra
 		ValidRelationships: Ally, Enemy, Neutral
 
 ^InfantryExperienceHospitalOverrides:
@@ -107,7 +105,6 @@
 		Color: 000000B4
 	WithIdleOverlay@EMPDISABLE:
 		Sequence: emp-overlay
-		Palette: effect
 
 ^EmpDisable:
 	Inherits: ^EmpVisualEffects
@@ -327,7 +324,6 @@
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		UndeploySounds: cashturn.aud
 	ActorPreviewPlaceBuildingPreview:
-		Palette: ra
 		FootprintAlpha: 0.7
 		LineBuildFootprintAlpha: 0.5
 		PreviewAlpha: 0.55
@@ -408,7 +404,6 @@
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: mouse
 
 ^CivBuilding:
 	Inherits: ^BasicBuilding
@@ -421,7 +416,6 @@
 		Range: 4c0
 		MaxHeightDelta: 3
 	RenderSprites:
-		Palette: terraindecoration
 	MapEditorData:
 		Categories: Civilian building
 
@@ -436,7 +430,6 @@
 	Health:
 		HP: 40000
 	RenderSprites:
-		-Palette:
 	-Cloak@EXTERNALCLOAK:
 	-ExternalCondition@CLOAKGENERATOR:
 	-ExternalCondition@CRATE-CLOAK:
@@ -467,7 +460,6 @@
 		Duration: 4500
 		TerrainTypes: Clear, Rough, Sand, Road, DirtRoad, Tiberium, BlueTiberium, Veins, Green, Pavement
 	RenderSprites:
-		Palette: terraindecoration
 	WithCrateBody:
 	MapEditorData:
 		Categories: System
@@ -490,7 +482,6 @@
 		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		UndeploySounds: cashturn.aud
 	FootprintPlaceBuildingPreview:
-		Palette: ra
 		FootprintAlpha: 0.7
 		LineBuildFootprintAlpha: 0.5
 	RequiresBuildableArea:
@@ -540,7 +531,6 @@
 		UndeploySounds: cashturn.aud
 	SequencePlaceBuildingPreview:
 		Sequence: place
-		Palette: ra
 		FootprintAlpha: 0.7
 		SequenceAlpha: 0.55
 	KillsSelf:
@@ -629,7 +619,6 @@
 		Margin: 3, 4
 		Image: pips
 		Sequence: medic
-		Palette: pips
 		BlinkInterval: 32
 		BlinkPattern: Off, On
 	RevealOnFire:
@@ -647,8 +636,6 @@
 		Position: Center
 		Image: typeglyphs
 		Sequence: infantry
-		Palette: player
-		IsPlayerPalette: true
 
 ^RegularInfantryDeath:
 	WithDeathAnimation@normal:
@@ -658,20 +645,14 @@
 			SmallExplosionDeath: flying
 	WithDeathAnimation@explosion:
 		DeathSequence: die-
-		DeathSequencePalette: effect
-		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
 			ExplosionDeath: exploding
 	WithDeathAnimation@energy:
 		DeathSequence: die-
-		DeathSequencePalette: ra
-		DeathPaletteIsPlayerPalette: False
 		DeathTypes:
 			EnergyDeath: melting
 	WithDeathAnimation:
 		CrushedSequence: die-crushed
-		CrushedSequencePalette: player
-		CrushedPaletteIsPlayerPalette: true
 	DeathSounds@NORMAL:
 		DeathTypes: BulletDeath, SmallExplosionDeath, ExplosionDeath
 	DeathSounds@EXPLOSION:
@@ -713,9 +694,6 @@
 		ProneOffset: 300,0,0
 	WithSplitAttackPaletteInfantryBody:
 		IdleSequences: idle1, idle2
-		Palette: player-nomuzzle
-		IsPlayerPalette: true
-		SplitAttackPalette: muzzle
 
 ^Cyborg:
 	Inherits@1: ^Infantry
@@ -746,9 +724,6 @@
 	WithSplitAttackPaletteInfantryBody:
 		DefaultAttackSequence: attack
 		IdleSequences: idle1, idle2
-		Palette: player-nomuzzle
-		IsPlayerPalette: true
-		SplitAttackPalette: muzzle
 	GrantConditionOnDamageState@CRITICAL:
 		Condition: critical
 		ValidDamageStates: Critical
@@ -858,8 +833,6 @@
 		Position: Center
 		Image: typeglyphs
 		Sequence: vehicle
-		Palette: player
-		IsPlayerPalette: true
 	Sellable:
 		SellSounds: cashturn.aud
 		Cursor: sell2
@@ -1041,7 +1014,6 @@
 	Tooltip:
 		Name: meta-blossomtree-name
 	RenderSprites:
-		Palette: player
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -1066,7 +1038,6 @@
 	Interactable:
 	FrozenUnderFog:
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -1092,11 +1063,9 @@
 		ValidDamageStates: Heavy, Critical
 	WithIdleOverlay@SmallFire:
 		Image: fire2
-		Palette: effect
 		RequiresCondition: small-fire
 	WithIdleOverlay@LargeFire:
 		Image: fire1
-		Palette: effect
 		RequiresCondition: large-fire
 	SpreadsCondition@Fire:
 		RequiresCondition: small-fire || large-fire
@@ -1111,7 +1080,6 @@
 	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -1128,7 +1096,6 @@
 	Interactable:
 	HiddenUnderShroud:
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -1228,7 +1195,6 @@
 	Immobile:
 		OccupiesSpace: False
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
@@ -1246,7 +1212,6 @@
 
 ^Tunnel:
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	BodyOrientation:
 		UseClassicPerspectiveFudge: False
@@ -1339,7 +1304,6 @@
 		RequiresCondition: !inside-tunnel
 	LeavesTrails@VEINS:
 		Image: veins
-		Palette: player
 		TerrainTypes: Veins
 		TrailWhileStationary: true
 		StationaryInterval: 16
@@ -1374,7 +1338,6 @@
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
-		Palette: mouse
 		RequiresCondition: powerdown
 		Position: Center
 		Offsets:
@@ -1426,7 +1389,6 @@
 	WithCargoPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
-		Palette: pips
 		Margin: 5, 2
 		CustomPipSequences:
 			red: pip-red

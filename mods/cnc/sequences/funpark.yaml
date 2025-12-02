@@ -3,6 +3,8 @@ steg:
 		Filename: steg.shp
 	stand:
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -10,21 +12,31 @@ steg:
 		Start: 16
 		Length: 8
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 12
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	die:
 		Start: 176
 		Length: 22
+		Palette: terrain
+		IsPlayerPalette: False
 	icon:
 		Filename: stegicnh.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 trex:
 	Defaults:
 		Filename: trex.shp
 	stand:
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -32,21 +44,31 @@ trex:
 		Start: 16
 		Length: 8
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 8
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	die:
 		Start: 144
 		Length: 40
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: trexicnh.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 tric:
 	Defaults:
 		Filename: tric.shp
 	stand:
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -54,21 +76,31 @@ tric:
 		Start: 16
 		Length: 8
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 12
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	die:
 		Start: 176
 		Length: 20
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: tricicnh.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 rapt:
 	Defaults:
 		Filename: rapt.shp
 	stand:
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	stand2:
 		Start: 8
 		Facings: 8
@@ -76,12 +108,20 @@ rapt:
 		Start: 16
 		Length: 8
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	attack:
 		Start: 80
 		Length: 8
 		Facings: 8
+		Palette: terrain
+		IsPlayerPalette: False
 	die:
 		Start: 144
 		Length: 40
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: rapticnh.shp
+		Palette: chrome
+		IsPlayerPalette: False

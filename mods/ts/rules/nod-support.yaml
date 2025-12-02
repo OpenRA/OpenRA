@@ -75,16 +75,12 @@ NAPOST:
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: lights-bright
-		Palette: bright
 	WithIdleOverlay@CHAINOFLIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: chainoflights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@CHAINOFLIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: chainoflights-bright
-		Palette: bright
 	LineBuildSegmentExternalCondition:
 		RequiresCondition: !build-incomplete && !disabled
 		Condition: active-posts
@@ -123,27 +119,21 @@ NAFNCE:
 		Type: laserfence
 		Sequence: enabled-x
 		Name: x-enabled
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithWallSpriteBody@XENABLED-BRIGHT:
 		RequiresCondition: laserfence-direction-x && active-posts == 2
 		Type: laserfence
 		Sequence: enabled-x-bright
 		Name: x-enabled-bright
-		Palette: bright
 	WithWallSpriteBody@YENABLED:
 		RequiresCondition: laserfence-direction-y && active-posts == 2
 		Type: laserfence
 		Sequence: enabled-y
 		Name: y-enabled
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithWallSpriteBody@YENABLED-BRIGHT:
 		RequiresCondition: laserfence-direction-y && active-posts == 2
 		Type: laserfence
 		Sequence: enabled-y-bright
 		Name: y-enabled-bright
-		Palette: bright
 	WithSpriteBody@XDISABLED:
 		RequiresCondition: laserfence-direction-x && active-posts < 2
 		Sequence: disabled-x
@@ -242,8 +232,6 @@ NAOBEL:
 		Interval: 30, 40
 	WithChargeOverlay:
 		RequiresCondition: !build-incomplete
-		Palette: player
-		IsPlayerPalette: true
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights

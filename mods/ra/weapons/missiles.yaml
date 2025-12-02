@@ -238,7 +238,6 @@ TorpTube:
 		HorizontalRateOfTurn: 4
 		RangeLimit: 10c819
 		BoundToTerrainType: Water
-		Palette: shadow
 		MaximumLaunchAngle: 0
 		CruiseAltitude: 0
 	Warhead@1Dam: SpreadDamage

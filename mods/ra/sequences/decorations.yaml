@@ -4,6 +4,8 @@ tc04:
 		TilesetFilenames:
 			SNOW: tc04.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 tc04.husk:
 	Defaults:
@@ -12,6 +14,8 @@ tc04.husk:
 			SNOW: tc04.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -23,6 +27,8 @@ tc05:
 		TilesetFilenames:
 			SNOW: tc05.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 tc05.husk:
 	Defaults:
@@ -31,6 +37,8 @@ tc05.husk:
 			SNOW: tc05.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -42,6 +50,8 @@ tc03:
 		TilesetFilenames:
 			SNOW: tc03.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 tc03.husk:
 	Defaults:
@@ -50,6 +60,8 @@ tc03.husk:
 			SNOW: tc03.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -61,6 +73,8 @@ tc02:
 		TilesetFilenames:
 			SNOW: tc02.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 tc02.husk:
 	Defaults:
@@ -69,6 +83,8 @@ tc02.husk:
 			SNOW: tc02.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -81,6 +97,8 @@ tc01:
 			SNOW: tc01.sno
 			DESERT: tc01.des
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 tc01.husk:
 	Defaults:
@@ -90,6 +108,8 @@ tc01.husk:
 			DESERT: tc01.des
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -101,6 +121,8 @@ t17:
 		TilesetFilenames:
 			SNOW: t17.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t17.husk:
 	Defaults:
@@ -109,6 +131,8 @@ t17.husk:
 			SNOW: t17.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -120,6 +144,8 @@ t16:
 		TilesetFilenames:
 			SNOW: t16.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t16.husk:
 	Defaults:
@@ -128,6 +154,8 @@ t16.husk:
 			SNOW: t16.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -139,6 +167,8 @@ t15:
 		TilesetFilenames:
 			SNOW: t15.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t15.husk:
 	Defaults:
@@ -147,6 +177,8 @@ t15.husk:
 			SNOW: t15.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -158,6 +190,8 @@ t14:
 		TilesetFilenames:
 			SNOW: t14.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t14.husk:
 	Defaults:
@@ -166,6 +200,8 @@ t14.husk:
 			SNOW: t14.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -177,6 +213,8 @@ t13:
 		TilesetFilenames:
 			SNOW: t13.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t13.husk:
 	Defaults:
@@ -185,6 +223,8 @@ t13.husk:
 			SNOW: t13.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -196,6 +236,8 @@ t12:
 		TilesetFilenames:
 			SNOW: t12.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t12.husk:
 	Defaults:
@@ -204,6 +246,8 @@ t12.husk:
 			SNOW: t12.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -215,6 +259,8 @@ t11:
 		TilesetFilenames:
 			SNOW: t11.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t11.husk:
 	Defaults:
@@ -223,6 +269,8 @@ t11.husk:
 			SNOW: t11.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -234,6 +282,8 @@ t10:
 		TilesetFilenames:
 			SNOW: t10.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t10.husk:
 	Defaults:
@@ -242,6 +292,8 @@ t10.husk:
 			SNOW: t10.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -254,6 +306,8 @@ t08:
 			SNOW: t08.sno
 			DESERT: t08.des
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t08.husk:
 	Defaults:
@@ -263,6 +317,8 @@ t08.husk:
 			DESERT: t08.des
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -274,6 +330,8 @@ t07:
 		TilesetFilenames:
 			SNOW: t07.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t07.husk:
 	Defaults:
@@ -282,6 +340,8 @@ t07.husk:
 			SNOW: t07.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -293,6 +353,8 @@ t06:
 		TilesetFilenames:
 			SNOW: t06.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t06.husk:
 	Defaults:
@@ -301,6 +363,8 @@ t06.husk:
 			SNOW: t06.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -312,6 +376,8 @@ t05:
 		TilesetFilenames:
 			SNOW: t05.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t05.husk:
 	Defaults:
@@ -320,6 +386,8 @@ t05.husk:
 			SNOW: t05.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -331,6 +399,8 @@ t03:
 		TilesetFilenames:
 			SNOW: t03.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t03.husk:
 	Defaults:
@@ -339,6 +409,8 @@ t03.husk:
 			SNOW: t03.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -350,6 +422,8 @@ t02:
 		TilesetFilenames:
 			SNOW: t02.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t02.husk:
 	Defaults:
@@ -358,6 +432,8 @@ t02.husk:
 			SNOW: t02.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -369,6 +445,8 @@ t01:
 		TilesetFilenames:
 			SNOW: t01.sno
 	idle:
+		Palette: terrain
+		IsPlayerPalette: False
 
 t01.husk:
 	Defaults:
@@ -377,6 +455,8 @@ t01.husk:
 			SNOW: t01.sno
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Start: 2
 		Length: 8
@@ -386,26 +466,36 @@ ice01:
 	idle:
 		Filename: ice01.sno
 		Length: *
+		Palette: player
+		IsPlayerPalette: False
 
 ice02:
 	idle:
 		Filename: ice02.sno
 		Length: *
+		Palette: player
+		IsPlayerPalette: False
 
 ice03:
 	idle:
 		Filename: ice03.sno
 		Length: *
+		Palette: player
+		IsPlayerPalette: False
 
 ice04:
 	idle:
 		Filename: ice04.sno
 		Length: *
+		Palette: player
+		IsPlayerPalette: False
 
 ice05:
 	idle:
 		Filename: ice05.sno
 		Length: *
+		Palette: player
+		IsPlayerPalette: False
 
 v01:
 	Defaults:
@@ -413,8 +503,12 @@ v01:
 		TilesetFilenames:
 			SNOW: v01.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v02:
 	Defaults:
@@ -422,8 +516,12 @@ v02:
 		TilesetFilenames:
 			SNOW: v02.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v03:
 	Defaults:
@@ -431,8 +529,12 @@ v03:
 		TilesetFilenames:
 			SNOW: v03.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v04:
 	Defaults:
@@ -440,8 +542,12 @@ v04:
 		TilesetFilenames:
 			SNOW: v04.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 2
+		Palette: player
+		IsPlayerPalette: False
 	active:
 		Start: 1
 	damaged-active:
@@ -453,8 +559,12 @@ v05:
 		TilesetFilenames:
 			SNOW: v05.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 2
+		Palette: player
+		IsPlayerPalette: False
 
 v06:
 	Defaults:
@@ -462,8 +572,12 @@ v06:
 		TilesetFilenames:
 			SNOW: v06.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v07:
 	Defaults:
@@ -471,8 +585,12 @@ v07:
 		TilesetFilenames:
 			SNOW: v07.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 2
+		Palette: player
+		IsPlayerPalette: False
 
 v08:
 	Defaults:
@@ -480,8 +598,12 @@ v08:
 		TilesetFilenames:
 			SNOW: v08.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v09:
 	Defaults:
@@ -489,8 +611,12 @@ v09:
 		TilesetFilenames:
 			SNOW: v09.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v10:
 	Defaults:
@@ -498,8 +624,12 @@ v10:
 		TilesetFilenames:
 			SNOW: v10.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v11:
 	Defaults:
@@ -507,8 +637,12 @@ v11:
 		TilesetFilenames:
 			SNOW: v11.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v12:
 	Defaults:
@@ -517,9 +651,13 @@ v12:
 			SNOW: v12.sno
 	idle:
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 v13:
 	Defaults:
@@ -527,8 +665,12 @@ v13:
 		TilesetFilenames:
 			SNOW: v13.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 v14:
 	Defaults:
@@ -537,9 +679,13 @@ v14:
 			SNOW: v14.sno
 	idle:
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 v15:
 	Defaults:
@@ -548,9 +694,13 @@ v15:
 			SNOW: v15.sno
 	idle:
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 v16:
 	Defaults:
@@ -559,9 +709,13 @@ v16:
 			SNOW: v16.sno
 	idle:
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 v17:
 	Defaults:
@@ -570,9 +724,13 @@ v17:
 			SNOW: v17.sno
 	idle:
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 v18:
 	Defaults:
@@ -581,46 +739,66 @@ v18:
 			SNOW: v18.sno
 	idle:
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 rice:
 	idle:
 		Filename: rice.tem
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: rice.tem
 		Start: 1
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 v19:
 	idle:
 		Filename: v19.shp
 		Length: 14
+		Palette: player
+		IsPlayerPalette: False
 
 v19.husk:
 	idle:
 		Filename: v19.shp
 		Start: 28
+		Palette: player
+		IsPlayerPalette: False
 	fire-start:
 		Filename: flmspt.shp
 		Length: *
 		Offset: 7,-15
 		ZOffset: 1
+		Palette: player
+		IsPlayerPalette: False
 	fire-loop:
 		Filename: flmspt.shp
 		Start: 50
 		Length: *
 		Offset: 7,-15
 		ZOffset: 1
+		Palette: player
+		IsPlayerPalette: False
 
 utilpol1:
 	Defaults:
 		Filename: utilpol1.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 	dead:
 		Start: 1
 
@@ -628,146 +806,216 @@ utilpol2:
 	Defaults:
 		Filename: utilpol2.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 	dead:
 		Start: 1
 
 ammobox1:
 	idle:
 		Filename: ammobox1.shp
+		Palette: player
+		IsPlayerPalette: True
 
 ammobox2:
 	idle:
 		Filename: ammobox2.shp
+		Palette: player
+		IsPlayerPalette: True
 
 ammobox3:
 	idle:
 		Filename: ammobox3.shp
+		Palette: player
+		IsPlayerPalette: True
 
 tanktrap1:
 	idle:
 		Filename: tanktrap1.shp
+		Palette: player
+		IsPlayerPalette: False
 
 tanktrap2:
 	idle:
 		Filename: tanktrap2.shp
+		Palette: player
+		IsPlayerPalette: False
 
 rushouse:
 	Defaults:
 		Filename: rushouse.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 asianhut:
 	Defaults:
 		Filename: asianhut.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: False
 
 barb:
 	Defaults:
 		Filename: barb.shp
 	idle:
 		Length: 16
+		Palette: effect
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
+		Palette: effect
+		IsPlayerPalette: False
 
 wood:
 	Defaults:
 		Filename: wood.shp
 	idle:
 		Length: 16
+		Palette: effect
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Length: 16
+		Palette: effect
+		IsPlayerPalette: False
 
 barl:
 	idle:
 		Filename: barl.shp
+		Palette: player
+		IsPlayerPalette: True
 
 brl3:
 	idle:
 		Filename: brl3.shp
+		Palette: player
+		IsPlayerPalette: True
 
 # Interior Terrain
 boxes01:
 	idle:
 		Filename: boxes01.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes02:
 	idle:
 		Filename: boxes02.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes03:
 	idle:
 		Filename: boxes03.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes04:
 	idle:
 		Filename: boxes04.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes05:
 	idle:
 		Filename: boxes05.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes06:
 	idle:
 		Filename: boxes06.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes07:
 	idle:
 		Filename: boxes07.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes08:
 	idle:
 		Filename: boxes08.int
+		Palette: player
+		IsPlayerPalette: False
 
 boxes09:
 	idle:
 		Filename: boxes09.int
+		Palette: player
+		IsPlayerPalette: False
 
 # Desert Terrain Expansion
 rock1:
 	idle:
 		Filename: rock1.des
+		Palette: desert
+		IsPlayerPalette: False
 
 rock2:
 	idle:
 		Filename: rock2.des
+		Palette: desert
+		IsPlayerPalette: False
 
 rock3:
 	idle:
 		Filename: rock3.des
+		Palette: desert
+		IsPlayerPalette: False
 
 rock4:
 	idle:
 		Filename: rock4.des
+		Palette: desert
+		IsPlayerPalette: False
 
 rock5:
 	idle:
 		Filename: rock5.des
+		Palette: desert
+		IsPlayerPalette: False
 
 rock6:
 	idle:
 		Filename: rock6.des
+		Palette: desert
+		IsPlayerPalette: False
 
 rock7:
 	idle:
 		Filename: rock7.des
+		Palette: desert
+		IsPlayerPalette: False
 
 t04:
 	idle:
 		Filename: t04.des
+		Palette: terrain
+		IsPlayerPalette: False
 
 t04.husk:
 	Defaults:
 		Filename: t04.des
 	idle:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Filename: t04.des
 		Start: 2
@@ -777,11 +1025,15 @@ t04.husk:
 t09:
 	idle:
 		Filename: t09.des
+		Palette: terrain
+		IsPlayerPalette: False
 
 t09.husk:
 	idle:
 		Filename: t09.des
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	dead:
 		Filename: t09.des
 		Start: 2
@@ -793,142 +1045,214 @@ v20:
 		Filename: v20.des
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v20.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 
 v21:
 	idle:
 		Filename: v21.des
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v21.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 
 v22:
 	idle:
 		Filename: v22.des
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v22.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 
 v23:
 	idle:
 		Filename: v23.des
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v23.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: desert
+		IsPlayerPalette: False
 
 v24:
 	idle:
 		Filename: v24.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v24.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v25:
 	idle:
 		Filename: v25.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v25.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v26:
 	idle:
 		Filename: v26.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v26.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v27:
 	idle:
 		Filename: v27.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v27.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v28:
 	idle:
 		Filename: v28.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v28.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v29:
 	idle:
 		Filename: v29.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v29.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v30:
 	idle:
 		Filename: v30.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v30.des
 		Start: 2
+		Palette: desert
+		IsPlayerPalette: False
 
 v31:
 	idle:
 		Filename: v31.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v31.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v32:
 	idle:
 		Filename: v32.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v32.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v33:
 	idle:
 		Filename: v33.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v33.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v34:
 	idle:
 		Filename: v34.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v34.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v35:
 	idle:
 		Filename: v35.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v35.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v36:
 	idle:
 		Filename: v36.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v36.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 v37:
 	idle:
 		Filename: v37.des
+		Palette: desert
+		IsPlayerPalette: False
 	damaged-idle:
 		Filename: v37.des
 		Start: 1
+		Palette: desert
+		IsPlayerPalette: False
 
 snowhut:
 	Defaults:
@@ -938,9 +1262,13 @@ snowhut:
 	idle:
 		Length: 3
 		Tick: 360
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: False
 
 lhus:
 	Defaults:
@@ -949,10 +1277,14 @@ lhus:
 	idle:
 		Length: 16
 		Tick: 180
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 16
 		Tick: 180
 		Length: 8
+		Palette: player
+		IsPlayerPalette: False
 
 windmill:
 	Defaults:
@@ -961,7 +1293,11 @@ windmill:
 	idle:
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: False
 	damaged-idle:
 		Start: 8
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: False

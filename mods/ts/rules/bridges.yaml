@@ -8,7 +8,6 @@ CABHUT:
 	BridgeHut:
 		NeighbourOffsets: -1,-1, -1,0, -1,1, 0,-1, 0,1, 1,-1, 1,0, 1,1
 	RenderSprites:
-		Palette: player
 	Targetable:
 		TargetTypes: C4
 	-IsometricSelectable:
@@ -24,7 +23,6 @@ CABHUT:
 
 ^LowBridgeRamp:
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	AppearsOnRadar:
 	RadarColorFromTerrain:
@@ -171,7 +169,6 @@ LOBRDG_R_SW:
 
 ^ElevatedBridgePlaceholder:
 	RenderSprites:
-		Palette: terraindecoration
 	WithSpriteBody:
 	AppearsOnRadar:
 	RadarColorFromTerrain:

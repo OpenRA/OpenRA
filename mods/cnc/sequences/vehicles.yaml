@@ -3,8 +3,12 @@ mcv:
 		Filename: mcv.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mcvicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 mcv.destroyed:
 	idle:
@@ -12,6 +16,8 @@ mcv.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 harv:
 	Defaults:
@@ -19,19 +25,29 @@ harv:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	harvest:
 		Start: 32
 		Length: 4
 		Facings: 8
 		Tick: 60
+		Palette: player
+		IsPlayerPalette: True
 	dock:
 		Filename: harvdump.shp
 		Length: 7
+		Palette: player
+		IsPlayerPalette: True
 	dock-loop:
 		Filename: harvdump.shp
 		Start: 7
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: harvicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 harv.destroyed:
 	idle:
@@ -39,6 +55,8 @@ harv.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 bggy:
 	Defaults:
@@ -46,16 +64,24 @@ bggy:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: bggyicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 bggy.destroyed:
 	idle:
@@ -63,6 +89,8 @@ bggy.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: bggy.shp
 		Start: 32
@@ -76,15 +104,23 @@ mtnk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: *
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: mtnkicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 mtnk.destroyed:
 	idle:
@@ -92,12 +128,16 @@ mtnk.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: mtnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 ltnk:
 	Defaults:
@@ -105,15 +145,23 @@ ltnk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: *
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: ltnkicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 ltnk.destroyed:
 	idle:
@@ -121,12 +169,16 @@ ltnk.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: ltnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 htnk:
 	Defaults:
@@ -134,15 +186,23 @@ htnk:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: *
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: htnkicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 htnk.destroyed:
 	idle:
@@ -150,12 +210,16 @@ htnk.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: htnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 jeep:
 	Defaults:
@@ -163,16 +227,24 @@ jeep:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: jeepicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 jeep.destroyed:
 	idle:
@@ -180,6 +252,8 @@ jeep.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: jeep.shp
 		Start: 32
@@ -192,8 +266,12 @@ bike:
 		Filename: bike.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: bikeicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 bike.destroyed:
 	idle:
@@ -201,12 +279,16 @@ bike.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 ftnk:
 	idle:
 		Filename: ftnk.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Combine:
 			0:
@@ -243,8 +325,12 @@ ftnk:
 				Offset: -7,8
 		Facings: 8
 		Length: 13
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: ftnkicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 ftnk.destroyed:
 	idle:
@@ -252,6 +338,8 @@ ftnk.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 mhq:
 	Defaults:
@@ -259,11 +347,17 @@ mhq:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	spinner:
 		Start: 32
 		Length: 32
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mhqicnh.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 msam:
 	Defaults:
@@ -271,10 +365,14 @@ msam:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	empty-aim:
 		Start: 64
 		Facings: 32
@@ -285,6 +383,8 @@ msam:
 		UseClassicFacings: True
 	icon:
 		Filename: msamicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 msam.destroyed:
 	idle:
@@ -292,12 +392,16 @@ msam.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: msam.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 mlrs:
 	Defaults:
@@ -305,20 +409,30 @@ mlrs:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret1:
 		Start: 64
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret0:
 		Start: 96
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mlrsicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 mlrs.destroyed:
 	idle:
@@ -326,20 +440,28 @@ mlrs.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: mlrs.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 stnk:
 	idle:
 		Filename: stnk.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: stnkicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 stnk.destroyed:
 	idle:
@@ -347,17 +469,25 @@ stnk.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 arty:
 	idle:
 		Filename: arty.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire2.shp
 		Length: *
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: artyicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 arty.destroyed:
 	idle:
@@ -365,6 +495,8 @@ arty.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 apc:
 	Defaults:
@@ -372,22 +504,32 @@ apc:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: apctur.shp
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	turret-air:
 		Filename: apctur.shp
 		Start: 32
 		Facings: 32
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	muzzle-air:
 		Filename: apcmuz.shp
 		Length: 3
 		Stride: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	close:
 		Start: 32
 		Length: 3
@@ -395,6 +537,8 @@ apc:
 		Start: 32
 	icon:
 		Filename: apcicnh.tem
+		Palette: chrome
+		IsPlayerPalette: False
 
 apc.destroyed:
 	idle:
@@ -402,6 +546,8 @@ apc.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: apctur.shp
 		Facings: 32
@@ -412,8 +558,12 @@ truck:
 		Filename: truck.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: truckicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 truck.destroyed:
 	idle:
@@ -421,3 +571,5 @@ truck.destroyed:
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True

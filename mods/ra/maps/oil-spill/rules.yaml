@@ -24,8 +24,6 @@ FCOM:
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: player
-		IsPlayerPalette: True
 	ProductionBar@Building:
 		ProductionType: Building
 	ProductionBar@Defense:

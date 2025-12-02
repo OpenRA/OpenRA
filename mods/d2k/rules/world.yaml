@@ -14,8 +14,6 @@
 	ShroudRenderer:
 		ShroudVariants: shrouda, shroudb, shroudc, shroudd
 		FogVariants: foga, fogb, fogc, fogd
-		ShroudPalette: d2k
-		FogPalette: d2k
 		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
 		OverrideFullShroud: shroudfull
 		OverrideFullFog: fogfull
@@ -113,7 +111,6 @@
 		ResourceTypes:
 			Spice:
 				Sequences: spicea, spiceb, spicec, spiced
-				Palette: d2k
 				Name: resource-spice
 
 World:
@@ -257,7 +254,6 @@ World:
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
-		TerrainFlashPalette: effect
 
 EditorWorld:
 	Inherits: ^BaseWorld

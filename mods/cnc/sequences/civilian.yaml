@@ -3,29 +3,43 @@ c1:
 		Filename: c1.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 189
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 199
 		Length: 6
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 205
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 200
 		Length: 3
@@ -35,81 +49,515 @@ c1:
 		Start: 329
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 337
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 337
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 345
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 357
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Start: 182
 		Length: 4
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
+		Palette: player
+		IsPlayerPalette: True
 
 c2:
 	Inherits: c1
 	Defaults:
 		Filename: c2.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c3:
 	Inherits: c1
 	Defaults:
 		Filename: c3.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c4:
 	Inherits: c1
 	Defaults:
 		Filename: c4.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c5:
 	Inherits: c1
 	Defaults:
 		Filename: c5.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c6:
 	Inherits: c1
 	Defaults:
 		Filename: c6.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c7:
 	Inherits: c1
 	Defaults:
 		Filename: c7.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c8:
 	Inherits: c1
 	Defaults:
 		Filename: c8.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c9:
 	Inherits: c1
 	Defaults:
 		Filename: c9.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 c10:
 	Inherits: c1
 	Defaults:
 		Filename: c10.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 delphi:
 	Inherits: c1
 	Defaults:
 		Filename: delphi.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	shoot:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True
 
 moebius:
 	Defaults:
@@ -117,47 +565,112 @@ moebius:
 		Tick: 80
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 104
 		Length: 15
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 120
 		Length: 20
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 212
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 220
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 220
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 228
 		Length: 12
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 240
 		Length: 17
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Start: 214
 		Length: 3
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
+		Palette: player
+		IsPlayerPalette: True
 
 chan:
 	Inherits: moebius
 	Defaults:
 		Filename: chan.shp
+	run:
+		Palette: player
+		IsPlayerPalette: True
+	idle1:
+		Palette: player
+		IsPlayerPalette: True
+	idle2:
+		Palette: player
+		IsPlayerPalette: True
+	stand:
+		Palette: player
+		IsPlayerPalette: True
+	panic-run:
+		Palette: player
+		IsPlayerPalette: True
+	panic-stand:
+		Palette: player
+		IsPlayerPalette: True
+	die1:
+		Palette: player
+		IsPlayerPalette: True
+	die2:
+		Palette: player
+		IsPlayerPalette: True
+	die3:
+		Palette: player
+		IsPlayerPalette: True
+	die4:
+		Palette: player
+		IsPlayerPalette: True
+	die5:
+		Palette: player
+		IsPlayerPalette: True
+	die6:
+		Palette: player
+		IsPlayerPalette: True
+	die-crushed:
+		Palette: player
+		IsPlayerPalette: True

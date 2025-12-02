@@ -25,19 +25,15 @@ GAPOWR:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights-bright
-		Palette: bright
 	WithIdleOverlay@PLUG:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		Sequence: idle-plug
 	WithMakeOverlay@MAKE-BRIGHT:
 		Sequence: make-bright
-		Palette: bright
 	Power:
 		Amount: 100
 		RequiresCondition: !empdisable
@@ -129,8 +125,6 @@ GAPILE:
 		Range: 5c0
 		MaxHeightDelta: 3
 	RallyPoint:
-		Palette: mouse
-		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
 		CirclesSequence:
@@ -183,16 +177,12 @@ GAPILE:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-bright
-		Palette: bright
 	WithIdleOverlay@LIGHT-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-light-bright
-		Palette: bright
 	WithIdleOverlay@FLAG:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-flag
@@ -226,8 +216,6 @@ GAWEAP:
 	Armor:
 		Type: Heavy
 	RallyPoint:
-		Palette: mouse
-		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
 		CirclesSequence:
@@ -251,27 +239,20 @@ GAWEAP:
 	WithIdleOverlay@WHITELIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-white
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@WHITELIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-white-bright
-		Palette: bright
 	WithIdleOverlay@REDLIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-red
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@REDLIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-red-bright
-		Palette: bright
 	WithIdleOverlay@TURBINES:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-turbines
 	WithMakeOverlay@MAKE-BRIGHT:
 		Sequence: make-bright
-		Palette: bright
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
@@ -304,8 +285,6 @@ GAHPAD:
 		Facing: 896
 	ExitsDebugOverlay:
 	RallyPoint:
-		Palette: mouse
-		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
 		CirclesSequence:
@@ -331,12 +310,9 @@ GAHPAD:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-lights-bright
-		Palette: bright
 	WithDeathAnimation@BIB:
 		DeathSequence: dead-platform
 		UseDeathTypeSuffix: false
@@ -374,8 +350,6 @@ GADEPT:
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: notification-unit-repaired
 	RallyPoint:
-		Palette: mouse
-		IsPlayerPalette: false
 		LineWidth: 2
 		CirclesSequence:
 	CommandBarBlacklist:
@@ -383,39 +357,30 @@ GADEPT:
 	WithIdleOverlay@LIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-light
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHT-BRIGHT:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: idle-light-bright
-		Palette: bright
 	WithIdleOverlay@GROUND:
 		RequiresCondition: !build-incomplete
 		Sequence: ground
 	WithIdleOverlay@CIRCUITS:
 		RequiresCondition: !build-incomplete
 		Sequence: circuits
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@CIRCUITS-BRIGHT:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: circuits-bright
-		Palette: bright
 	WithRepairOverlay@CRANE:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		StartSequence: crane-start
 		Sequence: crane-loop
 		EndSequence: crane-end
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithRepairOverlay@CRANE-BRIGHT:
 		RequiresCondition: !build-incomplete
 		PauseOnCondition: empdisable
 		StartSequence: crane-start
 		Sequence: crane-loop-bright
 		EndSequence: crane-end
-		Palette: bright
 	WithRepairOverlay@PLATFORM:
 		RequiresCondition: !build-incomplete && !empdisable
 		Sequence: platform
@@ -508,12 +473,9 @@ GATECH:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete && !disabled
 		Sequence: idle-lights-bright
-		Palette: bright
 	Power:
 		Amount: -150
 	ProvidesPrerequisite@buildingname:
@@ -543,7 +505,6 @@ GAPLUG:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-lights-bright
-		Palette: bright
 	WithIdleOverlay@STRIP:
 		RequiresCondition: !build-incomplete && !disabled && !empdisable
 		Sequence: idle-strip
@@ -632,24 +593,18 @@ GAPLUG:
 		RequiresCondition: !build-incomplete && plug.hunterseekera
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@hunterseekera-bright:
 		RequiresCondition: !build-incomplete && plug.hunterseekera
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekera-bright
-		Palette: bright
 	WithIdleOverlay@droppoda:
 		RequiresCondition: !build-incomplete && plug.droppoda
 		PauseOnCondition: disabled
 		Sequence: idle-droppoda
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@droppoda-bright:
 		RequiresCondition: !build-incomplete && plug.droppoda
 		PauseOnCondition: disabled
 		Sequence: idle-droppoda-bright
-		Palette: bright
 	Pluggable@plugb:
 		Offset: 1,2
 		Conditions:
@@ -672,24 +627,18 @@ GAPLUG:
 		RequiresCondition: !build-incomplete && plug.hunterseekerb
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@hunterseekerb-bright:
 		RequiresCondition: !build-incomplete && plug.hunterseekerb
 		PauseOnCondition: disabled
 		Sequence: idle-hunterseekerb-bright
-		Palette: bright
 	WithIdleOverlay@droppodb:
 		RequiresCondition: plug.droppodb
 		PauseOnCondition: disabled
 		Sequence: idle-droppodb
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@droppodb-bright:
 		RequiresCondition: plug.droppodb
 		PauseOnCondition: disabled
 		Sequence: idle-droppodb-bright
-		Palette: bright
 	ProvidesPrerequisite@buildingname:
 	ProvidesPrerequisite@pluggableion:
 		RequiresCondition: !plug.ioncannona && !plug.ioncannonb
@@ -782,27 +731,21 @@ GAFIRE:
 	WithIdleOverlay@lights:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: true
 	WithIdleOverlay@lights-bright:
 		RequiresCondition: !build-incomplete && !empdisable && !disabled
 		Sequence: idle-lights-bright
-		Palette: bright
 	WithSwitchableOverlay@active-nobright:
 		RequiresCondition: !build-incomplete
 		EnabledSequence: active
 		SwitchingSequence: switching
 		DisabledSequence: disabled
 		PauseOnCondition: empdisable || disabled
-		Palette: player-nobright
-		IsPlayerPalette: true
 		SwitchingLevel: 20
 		SwitchingLevelOnSpawn: 20
 	WithSwitchableOverlay@active-bright:
 		RequiresCondition: !build-incomplete
 		EnabledSequence: active-bright
 		PauseOnCondition: empdisable || disabled
-		Palette: bright
 		IsDecoration: true
 		SwitchingLevel: 20
 		SwitchingLevelOnSpawn: 20

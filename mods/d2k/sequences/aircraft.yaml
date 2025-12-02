@@ -4,10 +4,16 @@ carryall:
 		Start: 1923
 		Facings: -32
 		Remap: 54F94B
+		Palette: colorpicker
+		IsPlayerPalette: False
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4290
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 ornithopter:
 	idle:
@@ -18,10 +24,14 @@ ornithopter:
 		Tick: 120
 		Transpose: true
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4292
 		Offset: -30,-24
+		Palette: chrome
+		IsPlayerPalette: False
 
 frigate:
 	idle:
@@ -29,3 +39,5 @@ frigate:
 		Start: 2517
 		Facings: 1
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True

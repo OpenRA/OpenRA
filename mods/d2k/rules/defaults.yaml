@@ -95,28 +95,24 @@
 	WithDecoration@RANK-1:
 		Image: rank
 		Sequence: rank-veteran-1
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		RequiresCondition: rank-veteran == 1
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		RequiresCondition: rank-veteran == 2
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		RequiresCondition: rank-veteran == 3
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		RequiresCondition: rank-elite
@@ -575,8 +571,6 @@
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: player
-		IsPlayerPalette: True
 
 ^Defense:
 	Inherits: ^Building
@@ -635,7 +629,6 @@
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
-		Palette: chrome
 		RequiresCondition: powerdown
 		Position: Center
 		Offsets:

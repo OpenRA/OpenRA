@@ -30,7 +30,6 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: supportpowers-support-powers-palette.ready
 					HoldText: supportpowers-support-powers-palette.hold
-					ClockPalette: iconclock
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
 		Image@COMMAND_BAR_BACKGROUND:
@@ -495,9 +494,7 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: productionpalette-sidebar-production-palette.ready
 					HoldText: productionpalette-sidebar-production-palette.hold
-					ClockPalette: iconclock
 					NotBuildableAnimation: darken
-					NotBuildablePalette: chromewithshadow
 					IconSize: 64, 48
 					IconMargin: 3, 4
 					IconSpriteOffset: 0, 0

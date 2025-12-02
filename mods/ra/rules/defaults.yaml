@@ -115,7 +115,6 @@
 	WithDecoration@RANK-1:
 		Image: rank
 		Sequence: rank-veteran-1
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -123,7 +122,6 @@
 	WithDecoration@RANK-2:
 		Image: rank
 		Sequence: rank-veteran-2
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -131,7 +129,6 @@
 	WithDecoration@RANK-3:
 		Image: rank
 		Sequence: rank-veteran-3
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -139,7 +136,6 @@
 	WithDecoration@RANK-ELITE:
 		Image: rank
 		Sequence: rank-elite
-		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
 		ValidRelationships: Ally, Enemy, Neutral
@@ -766,8 +762,6 @@
 		Image: allyrepair
 		Sequence: repair
 		Position: Center
-		Palette: player
-		IsPlayerPalette: True
 
 ^ScienceBuilding:
 	Inherits: ^Building
@@ -827,7 +821,6 @@
 		TargetTypes: GroundActor, DetonateAttack, Wall, NoAutoTarget
 	-GivesExperience:
 	RenderSprites:
-		Palette: effect
 	WithWallSpriteBody:
 	Sellable:
 		SellSounds: cashturn.aud
@@ -913,7 +906,6 @@
 ^CivBuilding:
 	Inherits: ^TechBuilding
 	RenderSprites:
-		Palette: player
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
@@ -965,7 +957,6 @@
 		Name: meta-tree-name
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: terrain
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -984,7 +975,6 @@
 	WithDamageOverlay@SmallBurn:
 		DamageTypes: Incendiary
 		Image: burn-s
-		Palette: effect
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
 		StartSequence: start
@@ -994,7 +984,6 @@
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
-		Palette: effect
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
 		StartSequence: start
@@ -1004,7 +993,6 @@
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
-		Palette: effect
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
 		StartSequence: start
@@ -1022,7 +1010,6 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	RenderSprites:
-		Palette: terrain
 	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Tree
@@ -1044,7 +1031,6 @@
 ^Box:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: meta-box-name
 	MapEditorData:
@@ -1182,7 +1168,6 @@
 		Name: meta-rock-name
 		ShowOwnerRow: false
 	RenderSprites:
-		Palette: desert
 	WithSpriteBody:
 	Building:
 		Footprint: __ x_
@@ -1202,7 +1187,6 @@
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderSprites:
-		Palette: desert
 	MapEditorData:
 		RequireTilesets: DESERT
 
@@ -1219,7 +1203,6 @@
 		Duration: 4500
 		TerrainTypes: Clear, Rough, Road, Ore, Beach, Water
 	RenderSprites:
-		Palette: effect
 		Image: scrate
 	WithCrateBody:
 		XmasImages: xcratea, xcrateb, xcratec, xcrated
@@ -1298,7 +1281,6 @@
 	WithDecoration@POWERDOWN:
 		Image: poweroff
 		Sequence: offline
-		Palette: chrome
 		RequiresCondition: powerdown
 		Position: Center
 		Offsets:
