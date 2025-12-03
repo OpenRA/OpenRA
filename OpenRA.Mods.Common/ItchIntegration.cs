@@ -75,16 +75,16 @@ namespace OpenRA.Mods.Common
 					}
 				}
 
-				var name = "";
 				if (user != null)
 				{
+					string name;
 					if (string.IsNullOrEmpty(user.DisplayName))
 						name = user.Username;
 					else
 						name = user.DisplayName;
-				}
 
-				Game.RunAfterTick(() => callback?.Invoke(name));
+					Game.RunAfterTick(() => callback?.Invoke(name));
+				}
 			});
 		}
 	}
