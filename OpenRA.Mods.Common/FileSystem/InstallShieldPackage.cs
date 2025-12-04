@@ -119,7 +119,14 @@ namespace OpenRA.Mods.Common.FileSystem
 
 			public IReadOnlyPackage OpenPackage(string filename, FS context)
 			{
-				// Not implemented
+				var childStream = GetStream(filename);
+				if (childStream == null)
+					return null;
+
+				if (context.TryParsePackage(childStream, filename, out var package))
+					return package;
+
+				childStream.Dispose();
 				return null;
 			}
 
