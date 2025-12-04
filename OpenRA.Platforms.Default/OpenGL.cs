@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -65,7 +66,7 @@ namespace OpenRA.Platforms.Default
 		public const int GL_CONTEXT_LOST = 0x0507;
 		public const int GL_TABLE_TOO_LARGE = 0x8031;
 
-		static readonly Dictionary<int, string> ErrorToText = new()
+		static readonly FrozenDictionary<int, string> ErrorToText = new Dictionary<int, string>
 		{
 			{ GL_NO_ERROR, "No Error" },
 			{ GL_INVALID_ENUM, "Invalid Enum" },
@@ -77,7 +78,7 @@ namespace OpenRA.Platforms.Default
 			{ GL_INVALID_FRAMEBUFFER_OPERATION, "Invalid Framebuffer Operation" },
 			{ GL_CONTEXT_LOST, "Context Lost" },
 			{ GL_TABLE_TOO_LARGE, "Table Too Large" },
-		};
+		}.ToFrozenDictionary();
 
 		// BeginMode
 		public const int GL_POINTS = 0;
@@ -161,7 +162,7 @@ namespace OpenRA.Platforms.Default
 		public const int GL_DEBUG_SOURCE_APPLICATION = 0x824A;
 		public const int GL_DEBUG_SOURCE_OTHER = 0x824B;
 
-		static readonly Dictionary<int, string> DebugSourceToText = new()
+		static readonly FrozenDictionary<int, string> DebugSourceToText = new Dictionary<int, string>
 		{
 			{ GL_DEBUG_SOURCE_API, "API" },
 			{ GL_DEBUG_SOURCE_WINDOW_SYSTEM, "Window System" },
@@ -169,7 +170,7 @@ namespace OpenRA.Platforms.Default
 			{ GL_DEBUG_SOURCE_THIRD_PARTY, "Third Party" },
 			{ GL_DEBUG_SOURCE_APPLICATION, "Application" },
 			{ GL_DEBUG_SOURCE_OTHER, "Other" }
-		};
+		}.ToFrozenDictionary();
 
 		public const int GL_DEBUG_TYPE_ERROR = 0x824C;
 		public const int GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D;
@@ -181,7 +182,7 @@ namespace OpenRA.Platforms.Default
 		public const int GL_DEBUG_TYPE_POP_GROUP = 0x826A;
 		public const int GL_DEBUG_TYPE_OTHER = 0x8251;
 
-		static readonly Dictionary<int, string> DebugTypeToText = new()
+		static readonly FrozenDictionary<int, string> DebugTypeToText = new Dictionary<int, string>
 		{
 			{ GL_DEBUG_TYPE_ERROR, "Error" },
 			{ GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, "Deprecated Behaviour" },
@@ -192,20 +193,20 @@ namespace OpenRA.Platforms.Default
 			{ GL_DEBUG_TYPE_PUSH_GROUP, "Push Group" },
 			{ GL_DEBUG_TYPE_POP_GROUP, "Pop Group" },
 			{ GL_DEBUG_TYPE_OTHER, "Other" }
-		};
+		}.ToFrozenDictionary();
 
 		public const int GL_DEBUG_SEVERITY_HIGH = 0x9146;
 		public const int GL_DEBUG_SEVERITY_MEDIUM = 0x9147;
 		public const int GL_DEBUG_SEVERITY_LOW = 0x9148;
 		public const int GL_DEBUG_SEVERITY_NOTIFICATION = 0x826B;
 
-		static readonly Dictionary<int, string> DebugSeverityToText = new()
+		static readonly FrozenDictionary<int, string> DebugSeverityToText = new Dictionary<int, string>
 		{
 			{ GL_DEBUG_SEVERITY_HIGH, "High" },
 			{ GL_DEBUG_SEVERITY_MEDIUM, "Medium" },
 			{ GL_DEBUG_SEVERITY_LOW, "Low" },
 			{ GL_DEBUG_SEVERITY_NOTIFICATION, "Notification" }
-		};
+		}.ToFrozenDictionary();
 
 		// Pixel Mode / Transfer
 		public const int GL_PACK_ROW_LENGTH = 0x0D02;

@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -22,13 +22,13 @@ namespace OpenRA.Mods.Common.Graphics
 
 		// Maps a cell offset to the index of the corner (in the 'Corner' arrays in the MapGrid.CellRamp structs)
 		// from which a border should be drawn. The index of the end corner will be (cornerIndex + 1) % 4.
-		static readonly Dictionary<CVec, int> Offset2CornerIndex = new()
-		{
-			{ new CVec(0, -1), (int)Corner.TopLeft },
-			{ new CVec(1, 0), (int)Corner.TopRight },
-			{ new CVec(0, 1), (int)Corner.BottomRight },
-			{ new CVec(-1, 0), (int)Corner.BottomLeft },
-		};
+		static readonly ImmutableArray<(CVec Offset, int CornerIndex)> Offset2CornerIndex =
+		[
+			(new CVec(0, -1), (int)Corner.TopLeft),
+			(new CVec(1, 0), (int)Corner.TopRight),
+			(new CVec(0, 1), (int)Corner.BottomRight),
+			(new CVec(-1, 0), (int)Corner.BottomLeft),
+		];
 
 		readonly CPos[] region;
 		readonly Color color, contrastColor;
@@ -77,14 +77,14 @@ namespace OpenRA.Mods.Common.Graphics
 				var corners = map.Grid.Ramps[ramp].Corners;
 				var pos = map.CenterOfCell(c) - new WVec(0, 0, map.Grid.Ramps[ramp].CenterHeightOffset);
 
-				foreach (var o in Offset2CornerIndex)
+				foreach (var (offset, cornerIndex) in Offset2CornerIndex)
 				{
 					// If the neighboring cell is part of the region, don't draw a border between the cells.
-					if (region.Contains(c + o.Key))
+					if (region.Contains(c + offset))
 						continue;
 
-					var start = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[o.Value]));
-					var end = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[(o.Value + 1) % 4]));
+					var start = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[cornerIndex]));
+					var end = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[(cornerIndex + 1) % 4]));
 
 					if (constrastWidth > 0)
 						cr.DrawLine(start, end, constrastWidth, constrastColor);

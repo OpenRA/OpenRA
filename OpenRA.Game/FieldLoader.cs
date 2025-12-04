@@ -61,8 +61,8 @@ namespace OpenRA
 		static readonly ConcurrentCache<string, IntegerExpression> IntegerExpressionCache =
 			new(expression => new IntegerExpression(expression));
 
-		static readonly Dictionary<Type, Func<string, Type, string, object>> TypeParsers =
-			new()
+		static readonly FrozenDictionary<Type, Func<string, Type, string, object>> TypeParsers =
+			new Dictionary<Type, Func<string, Type, string, object>>
 			{
 				{ typeof(int), ParseInt },
 				{ typeof(ushort), ParseUShort },
@@ -93,10 +93,10 @@ namespace OpenRA
 				{ typeof(float3), ParseFloat3 },
 				{ typeof(Rectangle), ParseRectangle },
 				{ typeof(DateTime), ParseDateTime }
-			};
+			}.ToFrozenDictionary();
 
-		static readonly Dictionary<Type, Func<string, Type, string, MiniYaml, object>> GenericTypeParsers =
-			new()
+		static readonly FrozenDictionary<Type, Func<string, Type, string, MiniYaml, object>> GenericTypeParsers =
+			new Dictionary<Type, Func<string, Type, string, MiniYaml, object>>
 			{
 				{ typeof(HashSet<>), ParseHashSetOrList },
 				{ typeof(List<>), ParseHashSetOrList },
@@ -106,7 +106,7 @@ namespace OpenRA
 				{ typeof(FrozenDictionary<,>), ParseFrozenDictionary },
 				{ typeof(BitSet<>), ParseBitSet },
 				{ typeof(Nullable<>), ParseNullable },
-			};
+			}.ToFrozenDictionary();
 
 		static readonly object BoxedTrue = true;
 		static readonly object BoxedFalse = false;

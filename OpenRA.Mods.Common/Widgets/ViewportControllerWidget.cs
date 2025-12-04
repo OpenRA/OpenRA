@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
@@ -54,37 +55,37 @@ namespace OpenRA.Mods.Common.Widgets
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public string ResourceTooltip { get; private set; }
 
-		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new()
-		{
-			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
-			{ ScrollDirection.Up | ScrollDirection.Right, "scroll-tr" },
-			{ ScrollDirection.Down | ScrollDirection.Left, "scroll-bl" },
-			{ ScrollDirection.Down | ScrollDirection.Right, "scroll-br" },
-			{ ScrollDirection.Up, "scroll-t" },
-			{ ScrollDirection.Down, "scroll-b" },
-			{ ScrollDirection.Left, "scroll-l" },
-			{ ScrollDirection.Right, "scroll-r" },
-		};
+		static readonly ImmutableArray<(ScrollDirection Direction, string Cursor)> ScrollCursors =
+		[
+			(ScrollDirection.Up | ScrollDirection.Left, "scroll-tl"),
+			(ScrollDirection.Up | ScrollDirection.Right, "scroll-tr"),
+			(ScrollDirection.Down | ScrollDirection.Left, "scroll-bl"),
+			(ScrollDirection.Down | ScrollDirection.Right, "scroll-br"),
+			(ScrollDirection.Up, "scroll-t"),
+			(ScrollDirection.Down, "scroll-b"),
+			(ScrollDirection.Left, "scroll-l"),
+			(ScrollDirection.Right, "scroll-r"),
+		];
 
-		static readonly Dictionary<ScrollDirection, string> JoystickCursors = new()
-		{
-			{ ScrollDirection.Up | ScrollDirection.Left, "joystick-tl-blocked" },
-			{ ScrollDirection.Up | ScrollDirection.Right, "joystick-tr-blocked" },
-			{ ScrollDirection.Down | ScrollDirection.Left, "joystick-bl-blocked" },
-			{ ScrollDirection.Down | ScrollDirection.Right, "joystick-br-blocked" },
-			{ ScrollDirection.Up, "joystick-t-blocked" },
-			{ ScrollDirection.Down, "joystick-b-blocked" },
-			{ ScrollDirection.Left, "joystick-l-blocked" },
-			{ ScrollDirection.Right, "joystick-r-blocked" },
-		};
+		static readonly ImmutableArray<(ScrollDirection Direction, string Cursor)> JoystickCursors =
+		[
+			(ScrollDirection.Up | ScrollDirection.Left, "joystick-tl-blocked"),
+			(ScrollDirection.Up | ScrollDirection.Right, "joystick-tr-blocked"),
+			(ScrollDirection.Down | ScrollDirection.Left, "joystick-bl-blocked"),
+			(ScrollDirection.Down | ScrollDirection.Right, "joystick-br-blocked"),
+			(ScrollDirection.Up, "joystick-t-blocked"),
+			(ScrollDirection.Down, "joystick-b-blocked"),
+			(ScrollDirection.Left, "joystick-l-blocked"),
+			(ScrollDirection.Right, "joystick-r-blocked"),
+		];
 
-		static readonly Dictionary<ScrollDirection, float2> ScrollOffsets = new()
-		{
-			{ ScrollDirection.Up, new float2(0, -1) },
-			{ ScrollDirection.Down, new float2(0, 1) },
-			{ ScrollDirection.Left, new float2(-1, 0) },
-			{ ScrollDirection.Right, new float2(1, 0) },
-		};
+		static readonly ImmutableArray<(ScrollDirection Direction, float2 Offset)> ScrollOffsets =
+		[
+			(ScrollDirection.Up, new float2(0, -1)),
+			(ScrollDirection.Down, new float2(0, 1)),
+			(ScrollDirection.Left, new float2(-1, 0)),
+			(ScrollDirection.Right, new float2(1, 0)),
+		];
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly World world;
@@ -202,9 +203,9 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					var scroll = float2.Zero;
 
-					foreach (var kv in ScrollOffsets)
-						if (keyboardDirections.Includes(kv.Key) || edgeDirections.Includes(kv.Key))
-							scroll += kv.Value;
+					foreach (var (direction, offset) in ScrollOffsets)
+						if (keyboardDirections.Includes(direction) || edgeDirections.Includes(direction))
+							scroll += offset;
 
 					// Scroll rate is defined for a 40ms interval
 					var deltaScale = Math.Min(Game.RunTime - lastScrollTime, 25f);
@@ -292,15 +293,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (IsJoystickScrolling || isStandardScrolling)
 			{
-				foreach (var dir in JoystickCursors)
-					if (blockedDirections.Includes(dir.Key))
-						return dir.Value;
+				foreach (var (direction, cursor) in JoystickCursors)
+					if (blockedDirections.Includes(direction))
+						return cursor;
 				return "joystick-all";
 			}
 
-			foreach (var dir in ScrollCursors)
-				if (edgeDirections.Includes(dir.Key))
-					return dir.Value + (blockedDirections.Includes(dir.Key) ? "-blocked" : "");
+			foreach (var (direction, cursor) in ScrollCursors)
+				if (edgeDirections.Includes(direction))
+					return cursor + (blockedDirections.Includes(direction) ? "-blocked" : "");
 
 			return null;
 		}

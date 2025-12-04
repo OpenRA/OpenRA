@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -364,7 +365,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static readonly Dictionary<string, Color> NamedColorMapping = new()
+		static readonly FrozenDictionary<string, Color> NamedColorMapping = new Dictionary<string, Color>
 		{
 			{ "gold", Color.FromArgb(246, 214, 121) },
 			{ "blue", Color.FromArgb(226, 230, 246) },
@@ -376,7 +377,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ "green", Color.FromArgb(160, 240, 140) },
 			{ "white", Color.FromArgb(255, 255, 255) },
 			{ "black", Color.FromArgb(80, 80, 80) },
-		};
+		}.ToFrozenDictionary();
 
 		public static void SetMapPlayers(string section, string faction, string color, IniFile file, List<string> players, MapPlayers mapPlayers)
 		{

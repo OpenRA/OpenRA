@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -49,11 +50,11 @@ namespace OpenRA.Mods.Common.Server
 		const string GameOffline = "notification-game-offline";
 
 		static readonly ushort LanAdvertisePort = (ushort)new Random(DateTime.Now.Millisecond).Next(2048, 60000);
-		static readonly Dictionary<int, string> MasterServerErrors = new()
+		static readonly FrozenDictionary<int, string> MasterServerErrors = new Dictionary<int, string>
 		{
 			{ 1, NoPortForward },
 			{ 2, BlacklistedTitle }
-		};
+		}.ToFrozenDictionary();
 
 		Beacon lanGameBeacon;
 		long lastPing = 0;

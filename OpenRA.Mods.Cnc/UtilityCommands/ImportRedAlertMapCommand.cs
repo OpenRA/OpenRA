@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			"fpls", "wcrate", "scrate", "fenc", "sbag",
 		];
 
-		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new()
+		static readonly FrozenDictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new Dictionary<string, (byte Type, byte Index)>
 		{
 			// RA ore & crystals
 			{ "gold01", (1, 0) },
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ "gem02", (2, 1) },
 			{ "gem03", (2, 2) },
 			{ "gem04", (2, 3) },
-		};
+		}.ToFrozenDictionary();
 
 		void UnpackTileData(MemoryStream ms)
 		{

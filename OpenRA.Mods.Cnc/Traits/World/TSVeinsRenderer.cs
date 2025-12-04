@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			PlusY = 0x8,
 		}
 
-		static readonly Dictionary<Adjacency, int[]> BorderIndices = new()
+		static readonly FrozenDictionary<Adjacency, int[]> BorderIndices = new Dictionary<Adjacency, int[]>
 		{
 			{ Adjacency.MinusY, new[] { 3, 4, 5 } },
 			{ Adjacency.PlusX, new[] { 6, 7, 8 } },
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{ Adjacency.MinusX | Adjacency.MinusY | Adjacency.PlusY, new[] { 39, 40, 41 } },
 			{ Adjacency.MinusX | Adjacency.PlusX | Adjacency.PlusY, new[] { 42, 43, 44 } },
 			{ Adjacency.MinusX | Adjacency.PlusX | Adjacency.MinusY | Adjacency.PlusY, new[] { 45, 46, 47 } },
-		};
+		}.ToFrozenDictionary();
 
 		static readonly int[] HeavyIndices = [48, 49, 50, 51];
 		static readonly int[] LightIndices = [52];
