@@ -94,8 +94,8 @@ namespace OpenRA.Mods.Common.Lint
 				if (playerCount > spawnPoints.Length)
 					emitError($"The map allows {playerCount} possible players, but defines only {spawnPoints.Length} spawn points.");
 
-				foreach (var spawn in spawnPoints.GroupBy(x => x))
-					if (spawn.Count() > 1)
+				foreach (var spawn in spawnPoints.CountBy(x => x))
+					if (spawn.Value > 1)
 						emitError($"Duplicate spawn point location detected at `{spawn.Key}`.");
 			}
 		}

@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Server
 				var options = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
 					.Concat(server.Map.WorldActorInfo.TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(server.Map))
-					.ToDictionary(o => o.Id, o => o);
+					.ToDictionary(o => o.Id);
 
 				foreach (var optionNode in optionsNode.Value.Nodes)
 				{

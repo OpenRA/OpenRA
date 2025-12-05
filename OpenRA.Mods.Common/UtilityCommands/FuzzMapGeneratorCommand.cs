@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							new KeyValuePair<string, string>(
 								config.Variables[variableI],
 								config.Choices[config.Variables[variableI]][choiceI]))
-						.ToDictionary(kv => kv.Key, kv => kv.Value);
+						.ToDictionary();
 
 					var descriptionBuilder = new StringBuilder();
 					foreach (var variable in config.Variables)

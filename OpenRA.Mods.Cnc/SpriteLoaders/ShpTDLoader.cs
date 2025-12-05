@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			// Skip eof and zero headers
 			stream.Position += 16;
 
-			var offsets = headers.ToDictionary(h => h.FileOffset, h => h);
+			var offsets = headers.ToDictionary(h => h.FileOffset);
 			for (var i = 0; i < imageCount; i++)
 			{
 				var h = headers[i];

@@ -403,8 +403,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Overlapping hosts can become hidden.
 				var lookup = docks
-					.GroupBy(dock => clientActor.World.Map.CellContaining(dock.Trait.DockPosition))
-					.ToDictionary(group => group.Key, group => group.First());
+					.AggregateBy(dock => clientActor.World.Map.CellContaining(dock.Trait.DockPosition), default(TraitPair<IDockHost>), (_, dock) => dock)
+					.ToDictionary();
 
 				// Start a search from each client actor:
 				var path = mobile.PathFinder.FindPathToTargetCells(

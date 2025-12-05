@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Lint
 			var worldActor = rules.Actors[SystemActors.World];
 			var locomotorNames = worldActor.TraitInfos<LocomotorInfo>().Select(li => li.Name).ToList();
 			var duplicateNames = locomotorNames
-				.GroupBy(name => name)
-				.Where(g => g.Count() > 1)
+				.CountBy(name => name)
+				.Where(g => g.Value > 1)
 				.Select(g => g.Key);
 			foreach (var duplicateName in duplicateNames)
 				emitError($"More than one Locomotor exists with the name `{duplicateName}`.");

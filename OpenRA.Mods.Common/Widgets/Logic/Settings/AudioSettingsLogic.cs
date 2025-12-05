@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundDevice[] devices, ScrollPanelWidget scrollPanel)
 		{
 			var i = 0;
-			var options = devices.ToDictionary(d => i++.ToStringInvariant(), d => d);
+			var options = devices.ToDictionary(d => i++.ToStringInvariant());
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
 			{
