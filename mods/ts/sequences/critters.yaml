@@ -6,11 +6,13 @@ doggie:
 	stand:
 		Facings: 8
 		ShadowStart: 119
+		Palette: greentiberium
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		ShadowStart: 127
+		Palette: greentiberium
 	attack:
 		Start: 56
 		Length: 4
@@ -20,9 +22,11 @@ doggie:
 		Start: 88
 		Length: 2
 		ShadowStart: 207
+		Palette: greentiberium
 	hide:
 		Start: 90
 		ShadowStart: 209
+		Palette: greentiberium
 	idle1:
 		Start: 91
 		Length: 8
@@ -31,28 +35,38 @@ doggie:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
+		Palette: player
+		IsPlayerPalette: True
 	die-flying:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
+		Palette: player
+		IsPlayerPalette: True
 	die-exploding:
 		Filename: s_bang34.shp
 		Length: *
+		Palette: effect
 	die-crushed:
 		Start: 105
 		Length: 4
 		ShadowStart: 224
 		Tick: 800
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	die-burning:
 		Start: 109
 		Length: 10
 		ShadowStart: 228
 		IgnoreWorldTint: True
+		Palette: player
+		IsPlayerPalette: True
 	die-melting:
 		Start: 109
 		Length: 10
 		ShadowStart: 228
+		Palette: ra
 
 vissml:
 	idle:
@@ -61,6 +75,8 @@ vissml:
 		ShadowStart: 90
 		Tick: 80
 		Offset: 0, 0, 16
+		Palette: player
+		IsPlayerPalette: True
 
 vislrg:
 	idle:
@@ -69,6 +85,8 @@ vislrg:
 		ShadowStart: 90
 		Tick: 80
 		Offset: 0, 0, 16
+		Palette: player
+		IsPlayerPalette: True
 	attack:
 		Combine:
 			0:
@@ -83,6 +101,8 @@ vislrg:
 		Length: 5
 		Tick: 80
 		Offset: 0, 0, 16
+		Palette: player
+		IsPlayerPalette: True
 #		ShadowStart: 40 # TODO: enable shadow frames
 
 floater:
@@ -93,15 +113,18 @@ floater:
 		ShadowStart: 32
 		Tick: 100
 		Offset: 0, 0, 16
+		Palette: player-nobright
 	attack:
 		Length: 16
 		Start: 16
 		ShadowStart: 48
 		Tick: 100
 		Offset: 0, 0, 16
+		Palette: player-nobright
 	attack-shock:
 		Length: 16
 		Start: 16
 		Tick: 100
 		Offset: 0, 0, 16
 		IgnoreWorldTint: True
+		Palette: bright

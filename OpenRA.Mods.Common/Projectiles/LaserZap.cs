@@ -85,19 +85,12 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Sequence of impact animation to use.")]
 		public readonly string HitAnimSequence = "idle";
 
-		[PaletteReference]
-		public readonly string HitAnimPalette = "effect";
-
 		[Desc("Image containing launch effect sequence.")]
 		public readonly string LaunchEffectImage = null;
 
 		[SequenceReference(nameof(LaunchEffectImage), allowNullImage: true)]
 		[Desc("Launch effect sequence to play.")]
 		public readonly string LaunchEffectSequence = null;
-
-		[PaletteReference]
-		[Desc("Palette to use for launch effect.")]
-		public readonly string LaunchEffectPalette = "effect";
 
 		public IProjectile Create(ProjectileArgs args)
 		{
@@ -154,7 +147,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (hasLaunchEffect && ticks == 0)
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(args.CurrentSource, args.CurrentMuzzleFacing, world,
-					info.LaunchEffectImage, info.LaunchEffectSequence, info.LaunchEffectPalette)));
+					info.LaunchEffectImage, info.LaunchEffectSequence, args.SourceActor.Owner)));
 
 			// Beam tracks target
 			if (info.TrackTarget && args.GuidedTarget.IsValidFor(args.SourceActor))
@@ -210,7 +203,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			if (showHitAnim)
-				foreach (var r in hitanim.Render(target, wr.Palette(info.HitAnimPalette)))
+				foreach (var r in hitanim.Render(wr, target, args.SourceActor.Owner))
 					yield return r;
 		}
 	}

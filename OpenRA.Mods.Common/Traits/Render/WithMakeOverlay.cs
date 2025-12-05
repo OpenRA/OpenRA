@@ -22,13 +22,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use.")]
 		public readonly string Sequence = null;
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name.")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName.")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithMakeOverlay(init.Self, this); }
 	}
 
@@ -47,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.Play(info.Sequence);
 
 			anim = new AnimationWithOffset(overlay, null, () => !visible);
-			rs.Add(anim, info.Palette, info.IsPlayerPalette);
+			rs.Add(anim);
 		}
 
 		public void Forward()

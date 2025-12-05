@@ -24,14 +24,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[FieldLoader.Require]
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = null;
-
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public readonly bool IsDecoration = false;
 
 		[Desc("Delay in ticks before overlay starts, either relative to attack preparation or attack.")]
@@ -66,8 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				IsDecoration = info.IsDecoration
 			};
 
-			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !attacking, p => RenderUtils.ZOffsetFromCenter(init.Self, p, 1)),
-				info.Palette, info.IsPlayerPalette);
+			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !attacking, p => RenderUtils.ZOffsetFromCenter(init.Self, p, 1)));
 		}
 
 		void PlayOverlay()

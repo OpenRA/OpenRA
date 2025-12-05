@@ -3,31 +3,45 @@ e1:
 		Filename: e1.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	liedown:
 		Start: 128
 		Length: 2
@@ -40,36 +54,54 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	parachute:
 		Start: 377
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	idle1:
 		Start: 256
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 272
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 288
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 296
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 304
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 312
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 324
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -77,6 +109,8 @@ e1:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -84,6 +118,8 @@ e1:
 		Length: *
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	garrison-muzzle: minigun
 		Filename:
 		Length: 12
@@ -121,56 +157,84 @@ e1:
 				Filename: minigun.shp
 				Length: 12
 				Frames: 42,43,44,45,46,47,42,43,44,45,46,47
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: e1icon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 e3:
 	Defaults:
 		Filename: e3.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	parachute:
 		Start: 393
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	idle1:
 		Start: 272
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 287
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 304
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 312
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 320
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 328
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 340
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -178,6 +242,8 @@ e3:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -185,69 +251,103 @@ e3:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 192
 		Length: 10
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e3icon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 e6:
 	Defaults:
 		Filename: e6.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	parachute:
 		Start: 210
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	idle1:
 		Start: 121
 		Length: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 130
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 146
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 154
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 162
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 170
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 182
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -255,6 +355,8 @@ e6:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -262,36 +364,56 @@ e6:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 82
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e6icon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 medi:
 	Defaults:
 		Filename: medi.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	heal:
 		Start: 56
 		Length: 58
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	standup:
 		Start: 114
 		Length: 2
@@ -300,26 +422,38 @@ medi:
 		Start: 178
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 193
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 201
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 209
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 217
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 229
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -327,6 +461,8 @@ medi:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -334,32 +470,50 @@ medi:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 130
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mediicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 mech:
 	Defaults:
 		Filename: mech.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	repair:
 		Start: 56
 		Length: 58
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	standup:
 		Start: 114
 		Length: 2
@@ -368,26 +522,38 @@ mech:
 		Start: 178
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 193
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 201
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 209
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 217
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 229
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -395,6 +561,8 @@ mech:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -402,65 +570,97 @@ mech:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 130
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 130
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: mechicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 e2:
 	Defaults:
 		Filename: e2.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	throw:
 		Start: 64
 		Length: 20
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	parachute:
 		Start: 505
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 399
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 416
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 424
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 432
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 440
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 452
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -468,6 +668,8 @@ e2:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -475,78 +677,118 @@ e2:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 240
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 240
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 240
 		Length: 4
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	prone-throw:
 		Start: 288
 		Length: 12
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e2icon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 dog:
 	Defaults:
 		Filename: dog.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	walk:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	eat:
 		Start: 104
 		Length: 14
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 216
 		Length: 7
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 224
 		Length: 11
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 236
 		Length: 6
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 242
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 236
 		Length: 6
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 242
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 251
 		Length: 14
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electdog.shp
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -554,58 +796,84 @@ dog:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	jump:
 		Filename: dogbullt.shp
 		Length: 4
 		Facings: 8
 	icon:
 		Filename: dogicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 spy:
 	Defaults:
 		Filename: spy.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 256
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 271
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 288
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 296
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 304
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 312
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 324
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -613,6 +881,8 @@ spy:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -620,60 +890,92 @@ spy:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 192
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: spyicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 thf:
 	Defaults:
 		Filename: thf.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Start: 120
 		Length: 19
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 139
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 147
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 155
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 163
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 175
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -681,6 +983,8 @@ thf:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -688,6 +992,8 @@ thf:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 72
 		Stride: 4
@@ -699,17 +1005,27 @@ thf:
 		Tick: 80
 	icon:
 		Filename: thficon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 e7:
 	Defaults:
 		Filename: e7.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	shoot-left:
 		Filename:
 		Combine:
@@ -738,6 +1054,8 @@ e7:
 				Offset: 0, -2
 		Length: 2
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	shoot-right:
 		Filename:
 		Combine:
@@ -766,34 +1084,50 @@ e7:
 				Offset: 0, -2
 		Length: 2
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 233
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 248
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 262
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 270
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 278
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 286
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 298
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -801,6 +1135,8 @@ e7:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -808,78 +1144,116 @@ e7:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 128
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 128
 		Length: 4
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot-left:
 		Frames: 179, 177, 185, 184, 192, 191, 200, 198, 206, 205, 213, 212, 220, 219, 228, 226
 		Length: 2
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot-right:
 		Frames: 178, 177, 186, 184, 193, 191, 199, 198, 207, 205, 214, 212, 221, 219, 227, 226
 		Length: 2
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	garrison-muzzle:
 		Filename: minigun.shp
 		Length: 3
 		Stride: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: e7icon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 e4:
 	Defaults:
 		Filename: e4.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	parachute:
 		Start: 528
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 399
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 416
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 424
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 432
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 440
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 452
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -887,6 +1261,8 @@ e4:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -894,49 +1270,75 @@ e4:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	prone-stand:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e4icon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 gnrl:
 	Defaults:
 		Filename: gnrl.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	run:
 		Start: 8
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 56
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand:
 		Start: 104
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 104
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	standup:
 		Start: 136
 		Length: 2
@@ -945,30 +1347,44 @@ gnrl:
 		Start: 152
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 184
 		Length: 26
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 210
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 218
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 226
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 234
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 246
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -976,6 +1392,8 @@ gnrl:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -983,37 +1401,53 @@ gnrl:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 shok:
 	Defaults:
 		Filename: shok.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	liedown:
 		Start: 192
 		Length: 2
@@ -1026,36 +1460,54 @@ shok:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	parachute:
 		Start: 528
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 399
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 416
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 424
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 432
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 440
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 452
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1063,6 +1515,8 @@ shok:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1070,12 +1524,18 @@ shok:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: shokicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 c1:
 	Defaults:
 		Filename: c1.shp
+		Palette: player
+		IsPlayerPalette: True
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1130,6 +1590,8 @@ c1:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	run:
 		Start: 56
 		Length: 6
@@ -1137,8 +1599,16 @@ c1:
 		Tick: 80
 
 c2:
+	Inherits: c1
+	Defaults:
+		Palette: civilian2
+		IsPlayerPalette: False
+
+c3:
 	Defaults:
 		Filename: c2.shp
+		Palette: player
+		IsPlayerPalette: True
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1193,23 +1663,72 @@ c2:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+
+c4:
+	Inherits: c3
+	Defaults:
+		Palette: civilian4
+		IsPlayerPalette: False
+
+c5:
+	Inherits: c3
+	Defaults:
+		Palette: civilian5
+		IsPlayerPalette: False
+
+c6:
+	Inherits: c1
+	Defaults:
+		Palette: civilian6
+		IsPlayerPalette: False
+
+c7:
+	Inherits: c1
+	Defaults:
+		Palette: civilian7
+		IsPlayerPalette: False
+
+c8:
+	Inherits: c1
+	Defaults:
+		Palette: civilian8
+		IsPlayerPalette: False
+c9:
+	Inherits: c1
+	Defaults:
+		Palette: civilian9
+		IsPlayerPalette: False
+
+c10:
+	Inherits: c1
+	Defaults:
+		Palette: civilian10
+		IsPlayerPalette: False
 
 c11:
 	Defaults:
 		Filename: c11.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 120
 		Length: 4
@@ -1218,6 +1737,8 @@ c11:
 		Start: 104
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 114
 		Length: 6
@@ -1226,22 +1747,32 @@ c11:
 		Start: 152
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 160
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 168
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 168
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 180
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1249,6 +1780,8 @@ c11:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1256,52 +1789,76 @@ c11:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 
 einstein:
 	Defaults:
 		Filename: einstein.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 104
 		Length: 15
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 120
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 128
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 136
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 136
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 148
 		Length: 17
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1309,6 +1866,8 @@ einstein:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1316,27 +1875,39 @@ einstein:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 delphi:
 	Defaults:
 		Filename: delphi.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 189
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 199
 		Length: 6
@@ -1345,22 +1916,32 @@ delphi:
 		Start: 329
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 337
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 345
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 345
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 357
 		Length: 17
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1368,6 +1949,8 @@ delphi:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1375,47 +1958,69 @@ delphi:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 chan:
 	Defaults:
 		Filename: chan.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	panic-run:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 56
 		Length: 6
 		Facings: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 104
 		Length: 15
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 120
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 128
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 136
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 136
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 148
 		Length: 17
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1423,6 +2028,8 @@ chan:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1430,48 +2037,74 @@ chan:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 zombie:
 	Defaults:
 		Filename: zombie.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
+	stand-noshadow:
+		Facings: 8
+		Palette: player-noshadow
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	bite:
 		Start: 64
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 96
 		Length: 10
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	die1:
 		Start: 106
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die2:
 		Start: 106
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die3:
 		Start: 106
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die4:
 		Start: 106
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die5:
 		Start: 114
 		Length: 19
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die6:
 		Filename: electro.tem
 		TilesetFilenames:
@@ -1479,6 +2112,8 @@ zombie:
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: corpse1.tem
 		TilesetFilenames:
@@ -1486,89 +2121,129 @@ zombie:
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: zombicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 ant:
 	stand:
 		Filename: ant1.shp
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Filename: ant1.shp
 		Start: 8
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	bite:
 		Filename: ant1.shp
 		Start: 72
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	die:
 		Filename: ant1.shp
 		Start: 104
 		Length: 8
 		Tick: 300
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: ant1.shp
 		Start: 104
 		Length: 8
 		Tick: 400
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: anticon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 fireant:
 	stand:
 		Filename: ant2.shp
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Filename: ant2.shp
 		Start: 8
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	bite:
 		Filename: ant2.shp
 		Start: 72
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	die:
 		Filename: ant2.shp
 		Start: 104
 		Length: 8
 		Tick: 300
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: ant2.shp
 		Start: 104
 		Length: 8
 		Tick: 400
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: anticon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 scoutant:
 	stand:
 		Filename: ant3.shp
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Filename: ant3.shp
 		Start: 8
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	bite:
 		Filename: ant3.shp
 		Start: 72
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	die:
 		Filename: ant3.shp
 		Start: 104
 		Length: 8
 		Tick: 300
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: ant3.shp
 		Start: 104
 		Length: 8
 		Tick: 400
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: anticon.shp
+		Palette: chrome
+		IsPlayerPalette: False

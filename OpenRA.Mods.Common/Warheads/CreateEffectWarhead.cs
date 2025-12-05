@@ -28,13 +28,6 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Image containing explosion effect sequence.")]
 		public readonly string Image = "explosion";
 
-		[PaletteReference(nameof(UsePlayerPalette))]
-		[Desc("Palette to use for explosion effect.")]
-		public readonly string ExplosionPalette = "effect";
-
-		[Desc("Remap explosion effect to player color, if art supports it.")]
-		public readonly bool UsePlayerPalette = false;
-
 		[Desc("Display explosion effect at ground level, regardless of explosion altitude.")]
 		public readonly bool ForceDisplayAtGroundLevel = false;
 
@@ -122,11 +115,7 @@ namespace OpenRA.Mods.Common.Warheads
 					pos -= new WVec(0, 0, dat.Length);
 				}
 
-				var palette = ExplosionPalette;
-				if (UsePlayerPalette)
-					palette += firedBy.Owner.InternalName;
-
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, palette)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, Image, explosion, firedBy.Owner)));
 			}
 
 			var impactSound = ImpactSounds.RandomOrDefault(world.LocalRandom);

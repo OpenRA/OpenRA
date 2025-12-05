@@ -251,6 +251,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			manualSteps.AddRange(rule.BeforeUpdate(modData));
 
+			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
+
 			if (rule is IBeforeUpdateActors beforeActors)
 			{
 				var resolvedActors = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Rules, null)
@@ -279,7 +281,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modSequences, rule.UpdateSequenceNode));
 
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
-			manualSteps.AddRange(ApplyChromeTransform(modData, modChromeLayout, rule.UpdateChromeNode));
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modChromeProvider, rule.UpdateChromeProviderNode));
 			manualSteps.AddRange(rule.AfterUpdate(modData));
 
@@ -455,13 +456,21 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (node.Key == null)
 				return false;
 
-			var atPosition = node.Key.IndexOf('@');
-			var relevantPart = ignoreSuffix && atPosition > 0 ? node.Key[..atPosition] : node.Key;
-
+			var relevantPart = ignoreSuffix ? node.GetKey() : node.Key;
 			if (relevantPart.Contains(match) && (includeRemovals || !node.IsRemoval()))
 				return true;
 
 			return false;
+		}
+
+		/// <summary>Returns the key of the node, excluding any suffix.</summary>
+		public static string GetKey(this MiniYamlNodeBuilder node)
+		{
+			if (node.Key == null)
+				return string.Empty;
+
+			var atPosition = node.Key.IndexOf('@');
+			return atPosition > 0 ? node.Key[..atPosition] : node.Key;
 		}
 
 		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix].</summary>

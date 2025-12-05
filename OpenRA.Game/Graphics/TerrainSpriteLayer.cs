@@ -89,9 +89,9 @@ namespace OpenRA.Graphics
 			Update(cell, null, null, 1f, 1f, true);
 		}
 
-		public void Update(CPos cell, ISpriteSequence sequence, PaletteReference palette, int frame)
+		public void Update(CPos cell, ISpriteSequence sequence, int frame)
 		{
-			Update(cell, sequence.GetSprite(frame), palette, sequence.Scale, sequence.GetAlpha(frame), sequence.IgnoreWorldTint);
+			Update(cell, sequence.GetSprite(frame), worldRenderer.Palette(sequence.GetPalette()), sequence.Scale, sequence.GetAlpha(frame), sequence.IgnoreWorldTint);
 		}
 
 		public void Update(CPos cell, Sprite sprite, PaletteReference palette, float scale = 1f, float alpha = 1f, bool ignoreTint = false)

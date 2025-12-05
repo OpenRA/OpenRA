@@ -26,13 +26,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "turret";
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
@@ -41,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithSpriteTurret(init.Self, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner)
 		{
 			if (!EnabledByDefault)
 				yield break;
@@ -63,12 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return -(tmpOffset.Y + tmpOffset.Z) + 1;
 			}
 
-			if (IsPlayerPalette)
-				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().InternalName);
-			else if (Palette != null)
-				p = init.WorldRenderer.Palette(Palette);
-
-			yield return new SpriteActorPreview(anim, Offset, ZOffset, p);
+			yield return new SpriteActorPreview(anim, Offset, ZOffset, owner);
 		}
 	}
 
@@ -94,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(new AnimationWithOffset(DefaultAnimation,
 				() => TurretOffset(self),
 				() => IsTraitDisabled,
-				p => RenderUtils.ZOffsetFromCenter(self, p, 1)), info.Palette, info.IsPlayerPalette);
+				p => RenderUtils.ZOffsetFromCenter(self, p, 1)));
 
 			// Restrict turret facings to match the sprite
 			t.QuantizedFacings = DefaultAnimation.CurrentSequence.Facings;

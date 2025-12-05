@@ -26,13 +26,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for this decoration (can be animated).")]
 		public readonly string Sequence = null;
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Palette to render the sprite in. Reference the world actor's PaletteFrom* traits.")]
-		public readonly string Palette = "chrome";
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithDecoration(init.Self, this); }
 	}
 
@@ -51,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual PaletteReference GetPalette(Actor self, WorldRenderer wr)
 		{
-			return wr.Palette(Info.IsPlayerPalette ? Info.Palette + self.Owner.InternalName : Info.Palette);
+			return wr.Palette(anim.Palette(self.Owner));
 		}
 
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)

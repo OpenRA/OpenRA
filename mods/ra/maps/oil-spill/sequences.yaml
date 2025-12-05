@@ -3,3 +3,5 @@ oilb.husk: oilb
 		Filename: oilb.shp
 		Start: 1
 		Offset: 0,-6
+		Palette: player
+		IsPlayerPalette: True

@@ -90,14 +90,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			foreach (var arm in armaments)
 			{
-				var palette = wr.Palette(arm.Info.MuzzlePalette);
 				foreach (var b in arm.Barrels)
 				{
 					var anim = anims[b];
 					if (anim.DisableFunc != null && anim.DisableFunc())
 						continue;
 
-					foreach (var r in anim.Render(self, palette))
+					foreach (var r in anim.Render(wr, self, self.Owner))
 						yield return r;
 				}
 			}

@@ -244,7 +244,6 @@ MINE:
 	Tooltip:
 		Name: actor-mine-name
 	RenderSprites:
-		Palette: terrain
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -267,7 +266,6 @@ GMINE:
 	Tooltip:
 		Name: actor-gmine-name
 	RenderSprites:
-		Palette: player
 	WithSpriteBody:
 	Building:
 		Footprint: x
@@ -291,7 +289,6 @@ RAILMINE:
 	Tooltip:
 		Name: actor-railmine-name
 	RenderSprites:
-		Palette: player
 	WithSpriteBody:
 	Building:
 		Footprint: xx
@@ -329,7 +326,6 @@ LAR1:
 		Footprint: x
 		Dimensions: 1,1
 	RenderSprites:
-		Palette: terrain
 	WithSpriteBody:
 	AppearsOnRadar:
 	MapEditorData:
@@ -376,7 +372,6 @@ powerproxy.sonarpulse:
 		LifeTime: 250
 		DeploySound: sonpulse.aud
 		EffectImage: moveflsh
-		EffectPalette: moveflash
 		SupportPowerPaletteOrder: 80
 		EffectSequence: idle
 		BlockedCursor: move-blocked
@@ -441,8 +436,7 @@ fact.colorpicker:
 	-MapEditorData:
 	-BaseBuilding:
 	RenderSprites:
-		Image: fact
-		Palette: colorpicker
+		Image: fact.colorpicker
 
 CTFLAG:
 	Inherits: ^TechBuilding

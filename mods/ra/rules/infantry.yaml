@@ -57,9 +57,8 @@ DOG:
 		MoveSequence: run
 		RequiresCondition: run && !parachute
 	WithInfantryBody@PARACHUTE:
+		IdleSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	SpeedMultiplier:
 		Modifier: 150
 		RequiresCondition: run
@@ -99,8 +98,6 @@ E1:
 	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 	WithProductionIconOverlay:
@@ -156,8 +153,6 @@ E2:
 	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -208,8 +203,6 @@ E3:
 	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 	AutoTarget:
@@ -268,8 +261,6 @@ E4:
 	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
 	WithProductionIconOverlay:
@@ -296,8 +287,6 @@ E6:
 	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Passenger:
 		CustomPipType: yellow
 	InstantlyRepairs:
@@ -366,14 +355,11 @@ SPY:
 		RequiresCondition: !parachute
 	WithDisguisingInfantryBody@PARACHUTE:
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	WithDecoration@disguise:
 		Position: Top
 		Margin: 0, -6
 		Image: pips
 		Sequence: tag-spy
-		Palette: effect
 		RequiresCondition: disguise
 	IgnoresDisguise:
 	Armament:
@@ -440,9 +426,8 @@ E7:
 		StandSequences: stand
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	ExternalCondition@PRODUCED:
 		Condition: produced
 	VoiceAnnouncement:
@@ -491,9 +476,8 @@ MEDI:
 		DefaultAttackSequence: heal
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Voiced:
 		VoiceSet: MedicVoice
 	AutoTarget:
@@ -547,9 +531,8 @@ MECH:
 		StandSequences: stand
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Voiced:
 		VoiceSet: MechanicVoice
 	AutoTarget:
@@ -613,9 +596,8 @@ GNRL:
 		IdleSequences: idle1
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 
 THF:
 	Inherits: ^Soldier
@@ -654,9 +636,8 @@ THF:
 		StandSequences: stand
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Crushable:
 		WarnProbability: 95
 	Cloak:
@@ -717,8 +698,6 @@ SHOK:
 	WithInfantryBody@PARACHUTE:
 		StandSequences: parachute
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Voiced:
 		VoiceSet: ShokVoice
 	ProducibleWithLevel:
@@ -753,9 +732,8 @@ Zombie:
 		IdleSequences: idle1
 		RequiresCondition: !parachute
 	WithInfantryBody@PARACHUTE:
+		StandSequences: stand-noshadow
 		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
 	Armament:
 		Weapon: claw
 	Voiced:

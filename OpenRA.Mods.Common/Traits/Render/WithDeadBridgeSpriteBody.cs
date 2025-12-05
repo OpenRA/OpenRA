@@ -38,26 +38,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		public readonly string[] ABRampSequences = ["abramp"];
 
-		[SequenceReference]
-		[Desc("Placeholder sequence to use in the map editor.")]
-		public readonly string EditorSequence = "editor";
-
-		[PaletteReference]
-		[Desc("Palette to use for the editor placeholder.")]
-		public readonly string EditorPalette = "terrainalpha";
-
 		public override object Create(ActorInitializer init) { return new WithDeadBridgeSpriteBody(init, this); }
 
-		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
+		public override IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner)
 		{
 			if (!EnabledByDefault)
 				yield break;
 
 			var anim = new Animation(init.World, image);
-			var sequence = init.World.Type == WorldType.Editor ? EditorSequence : Sequence;
-			var palette = init.World.Type == WorldType.Editor ? init.WorldRenderer.Palette(EditorPalette) : p;
-			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), sequence), () => 0);
-			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, palette);
+			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, owner);
 		}
 	}
 

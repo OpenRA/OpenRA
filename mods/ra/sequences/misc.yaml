@@ -2,6 +2,8 @@ clock:
 	idle:
 		Filename: clock.shp
 		Length: *
+		Palette: chrome
+		IsPlayerPalette: False
 
 powerdown:
 	disabled:
@@ -13,11 +15,15 @@ powerdown:
 	idle:
 		Filename: 120mm.shp
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 50cal:
 	idle:
 		Filename: 50cal.shp
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 explosion:
 	Defaults:
@@ -25,60 +31,106 @@ explosion:
 		ZOffset: 2047
 	piff:
 		Filename: piff.shp
+		Palette: effect
+		IsPlayerPalette: False
 	piffs:
 		Filename: piffpiff.shp
+		Palette: effect
+		IsPlayerPalette: False
 	water_piff:
 		Filename: wpiff.shp
+		Palette: effect
+		IsPlayerPalette: False
 	water_piffs:
 		Filename: wpifpif.shp
+		Palette: effect
+		IsPlayerPalette: False
 	small_explosion:
 		Filename: veh-hit3.shp
+		Palette: effect
+		IsPlayerPalette: False
 	med_explosion:
 		Filename: veh-hit2.shp
+		Palette: effect
+		IsPlayerPalette: False
 	flak_explosion_ground:
 		Filename: flak.shp
+		Palette: effect
+		IsPlayerPalette: False
 	small_explosion_air:
 		Filename: flak.shp
 		ZOffset: 511 # only used by AA weapons, so a high ZOffset to overlay buildings isn't needed
+		Palette: effect
+		IsPlayerPalette: False
 	med_explosion_air:
 		Filename: veh-hit1.shp
 		ZOffset: 511 # only used by AA weapons, so a high ZOffset to overlay buildings isn't needed
+		Palette: effect
+		IsPlayerPalette: False
 	large_splash:
 		Filename: h2o_exp1.shp
+		Palette: effect
+		IsPlayerPalette: False
 	napalm:
 		Filename: napalm2.shp
+		Palette: effect
+		IsPlayerPalette: False
 	building_napalm:
 		Filename: napalm2.shp
 		FlipX: true
+		Palette: effect
+		IsPlayerPalette: False
 	nuke:
 		Filename: atomsfx.shp
+		Palette: effect
+		IsPlayerPalette: False
 	med_splash:
 		Filename: h2o_exp2.shp
+		Palette: effect
+		IsPlayerPalette: False
 	self_destruct:
 		Filename: art-exp1.shp
+		Palette: effect
+		IsPlayerPalette: False
 	artillery_explosion:
 		Filename: art-exp1.shp
+		Palette: effect
+		IsPlayerPalette: False
 	building:
 		Filename: fball1.shp
 		Offset: 0,-9
+		Palette: effect
+		IsPlayerPalette: False
 	small_splash:
 		Filename: h2o_exp3.shp
+		Palette: effect
+		IsPlayerPalette: False
 	large_explosion:
 		Filename: frag1.shp
 		Offset: -2,0
+		Palette: effect
+		IsPlayerPalette: False
 	small_napalm:
 		Filename: napalm1.shp
+		Palette: effect
+		IsPlayerPalette: False
 	offset_napalm: # Used for E4 Explosion
 		Filename: napalm1.shp
 		Offset: 0, -6
+		Palette: effect
+		IsPlayerPalette: False
 	large_napalm:
 		Filename: napalm3.shp
+		Palette: effect
+		IsPlayerPalette: False
 	corpse:
 		Filename: corpse1.tem
 		TilesetFilenames:
 			SNOW: corpse1.sno
 		ZOffset: -512
 		Tick: 1600
+		Palette: effect
+		IsPlayerPalette: False
 
 burn-l:
 	Defaults:
@@ -90,10 +142,14 @@ burn-l:
 		Start: 16
 		Length: 44
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 	end:
 		Start: 60
 		Length: 6
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 
 burn-m:
 	Defaults:
@@ -105,10 +161,14 @@ burn-m:
 		Start: 16
 		Length: 44
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 	end:
 		Start: 60
 		Length: 6
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 
 burn-s:
 	Defaults:
@@ -120,10 +180,14 @@ burn-s:
 		Start: 12
 		Length: 46
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 	end:
 		Start: 59
 		Length: 5
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 
 pips:
 	Defaults:
@@ -132,9 +196,13 @@ pips:
 		Length: 10
 		Frames: 9, 10, 11, 12, 13, 14, 15, 16, 17, 8
 		Offset: 9, 5
+		Palette: chrome
+		IsPlayerPalette: False
 	medic:
 		Start: 20
 		Offset: 15, 1
+		Palette: chrome
+		IsPlayerPalette: False
 	#ready:
 	#	Start: 3
 	#hold:
@@ -142,28 +210,46 @@ pips:
 	tag-fake:
 		Start: 18
 		Offset: 0, 2
+		Palette: chrome
+		IsPlayerPalette: False
 	tag-primary:
 		Start: 2
 		Offset: 0, 2
+		Palette: chrome
+		IsPlayerPalette: False
 	tag-spy:
 		Filename: tag-spy.shp
+		Palette: effect
+		IsPlayerPalette: False
 	pip-empty:
 		Filename: pips2.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	pip-green:
 		Filename: pips2.shp
 		Start: 1
+		Palette: chrome
+		IsPlayerPalette: False
 	pip-yellow:
 		Filename: pips2.shp
 		Start: 2
+		Palette: chrome
+		IsPlayerPalette: False
 	pip-gray:
 		Filename: pips2.shp
 		Start: 3
+		Palette: chrome
+		IsPlayerPalette: False
 	pip-red:
 		Filename: pips2.shp
 		Start: 4
+		Palette: chrome
+		IsPlayerPalette: False
 	pip-blue:
 		Filename: pips2.shp
 		Start: 5
+		Palette: chrome
+		IsPlayerPalette: False
 	pip-disguise:
 		Filename: pip-disguise.shp
 		Length: *
@@ -175,6 +261,8 @@ v2:
 		Filename: v2.shp
 		Facings: 32
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 rallypoint:
 	flag:
@@ -182,10 +270,14 @@ rallypoint:
 		Length: *
 		Offset: 11,-5
 		ZOffset: 2535
+		Palette: player
+		IsPlayerPalette: True
 	circles:
 		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 
 beacon:
 	Defaults:
@@ -194,30 +286,44 @@ beacon:
 		Filename: mouse.shp
 		Start: 5
 		Offset: 1,-12
+		Palette: player
+		IsPlayerPalette: True
 	circles:
 		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 	atomicon:
 		Filename: lores|atomicon.shp
 		Length: *
 		Offset: 0,-42
+		Palette: chrome
+		IsPlayerPalette: False
 	pbmbicon:
 		Filename: lores|pbmbicon.shp
 		Length: *
 		Offset: 0,-42
+		Palette: chrome
+		IsPlayerPalette: False
 	camicon:
 		Filename: lores|camicon.shp
 		Length: *
 		Offset: 0,-42
+		Palette: chrome
+		IsPlayerPalette: False
 	pinficon:
 		Filename: lores|pinficon.shp
 		Length: *
 		Offset: 0,-42
+		Palette: chrome
+		IsPlayerPalette: False
 	clock:
 		Filename: beaconclock.shp
 		Length: *
 		Offset: 0,-42
+		Palette: chrome
+		IsPlayerPalette: False
 
 smoke_m:
 	Defaults:
@@ -226,6 +332,8 @@ smoke_m:
 		Length: *
 		Offset: 2, -5
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 	start:
 		Length: 49
 		Offset: 2, -5
@@ -235,6 +343,8 @@ smoke_m:
 		Length: 42
 		Offset: 2, -5
 		ZOffset: 512
+		Palette: effect
+		IsPlayerPalette: False
 
 scorch_flames:
 	large_flame:
@@ -295,6 +405,8 @@ scorch_flames:
 				Length: 42
 				Offset: 2, -5
 				Scale: 0.25
+		Palette: effect
+		IsPlayerPalette: False
 	medium_flame:
 		Length: *
 		Combine:
@@ -340,6 +452,8 @@ scorch_flames:
 				Length: 42
 				Offset: 2, -5
 				Scale: 0.25
+		Palette: effect
+		IsPlayerPalette: False
 	small_flame:
 		Combine:
 			0:
@@ -381,6 +495,8 @@ scorch_flames:
 				Scale: 0.25
 		Length: *
 		Offset: 0,-3
+		Palette: effect
+		IsPlayerPalette: False
 	tiny_flame:
 		Combine:
 			0:
@@ -453,30 +569,40 @@ dragon:
 		Filename: dragon.shp
 		Facings: 32
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 smokey:
 	idle:
 		Filename: smokey.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 bomb:
 	idle:
 		Filename: bomb.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 missile:
 	idle:
 		Filename: missile.shp
 		Facings: 32
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 torpedo:
 	idle:
 		Filename: missile.shp
 		Facings: 32
 		ZOffset: -1023
+		Palette: shadow
+		IsPlayerPalette: False
 
 litning:
 	Defaults:
@@ -484,16 +610,22 @@ litning:
 	bright:
 		Length: 4
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 	dim:
 		Start: 4
 		Length: 4
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 fb1:
 	idle:
 		Filename: fb1.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 moveflsh:
 	idle:
@@ -504,6 +636,8 @@ moveflsh:
 		Length: *
 		Tick: 80
 		ZOffset: 2047
+		Palette: moveflash
+		IsPlayerPalette: False
 
 select:
 	repair:
@@ -516,6 +650,8 @@ poweroff:
 		Length: *
 		Tick: 160
 		ZOffset: 2047
+		Palette: chrome
+		IsPlayerPalette: False
 
 allyrepair:
 	repair:
@@ -523,6 +659,8 @@ allyrepair:
 		Length: *
 		Tick: 160
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 
 tabs:
 	Defaults:
@@ -537,6 +675,8 @@ sputnik:
 		Length: *
 		Offset: -4,0
 		ZOffset: 1023
+		Palette: player
+		IsPlayerPalette: True
 
 dd-crnr:
 	Defaults:
@@ -556,98 +696,140 @@ fb2:
 		Filename: fb2.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 fb3:
 	idle:
 		Filename: fb3.shp
 		Facings: 32
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 fb4:
 	idle:
 		Filename: fb4.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 scrate:
 	Defaults:
 		Filename: scrate.shp
 		ZOffset: -511
 	idle:
+		Palette: effect
+		IsPlayerPalette: False
 	land:
 		Start: 1
+		Palette: effect
+		IsPlayerPalette: False
 	water:
 		Start: 2
 		Length: 4
 		Tick: 500
+		Palette: effect
+		IsPlayerPalette: False
 
 wcrate:
 	Defaults:
 		Filename: wcrate.shp
 		ZOffset: -511
 	idle:
+		Palette: effect
+		IsPlayerPalette: False
 	land:
 		Start: 1
+		Palette: effect
+		IsPlayerPalette: False
 	water:
 		Filename: wwcrate.shp
 		Length: *
 		Tick: 500
+		Palette: effect
+		IsPlayerPalette: False
 
 xcratea:
 	Defaults:
 		Filename: xcratea.shp
 	idle:
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	land:
 		Start: 1
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	water:
 		Start: 2
 		Length: 4
 		Tick: 500
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 xcrateb:
 	Defaults:
 		Filename: xcrateb.shp
 	idle:
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	land:
 		Start: 1
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	water:
 		Start: 2
 		Length: 4
 		Tick: 500
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 xcratec:
 	Defaults:
 		Filename: xcratec.shp
 	idle:
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	land:
 		Start: 1
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	water:
 		Start: 2
 		Length: 4
 		Tick: 500
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 xcrated:
 	Defaults:
 		Filename: xcrated.shp
 	idle:
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	land:
 		Start: 1
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 	water:
 		Start: 2
 		Length: 4
 		Tick: 500
 		ZOffset: -511
+		Palette: effect
+		IsPlayerPalette: False
 
 crate-effects:
 	Defaults:
@@ -659,16 +841,24 @@ crate-effects:
 		Filename: dollar.shp
 	reveal-map:
 		Filename: earth.shp
+		Palette: effect
+		IsPlayerPalette: False
 	hide-map:
 		Filename: empulse.shp
+		Palette: effect
+		IsPlayerPalette: False
 	fpower:
 		Filename: fpower.shp
 	gps:
 		Filename: gpsbox.shp
 	invuln:
 		Filename: invulbox.shp
+		Palette: effect
+		IsPlayerPalette: False
 	heal:
 		Filename: invun.shp
+		Palette: effect
+		IsPlayerPalette: False
 	nuke:
 		Filename: missile2.shp
 	parabombs:
@@ -688,26 +878,35 @@ crate-effects:
 	levelup:
 		Filename: levelup.shp
 		Tick: 200
+		Palette: effect
+		IsPlayerPalette: False
 
 parach:
 	Defaults:
 		Filename: parach.shp
 	open:
 		Length: 5
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Start: 5
 		Length: 11
+		Palette: player
+		IsPlayerPalette: True
 
 parach-shadow:
 	idle:
 		Filename: parach-shadow.shp
 		Length: *
+		ShadowPalette: player
 
 bomblet:
 	idle:
 		Filename: bomblet.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 parabomb:
 	Defaults:
@@ -715,10 +914,14 @@ parabomb:
 	open:
 		Length: 8
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 	idle:
 		Start: 8
 		Length: 5
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 smokland:
 	open:
@@ -726,12 +929,16 @@ smokland:
 		Length: 72
 		Tick: 120
 		ZOffset: 1023
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Filename: playersmoke.shp
 		Start: 72
 		Length: 20
 		Tick: 120
 		ZOffset: 1023
+		Palette: player
+		IsPlayerPalette: True
 
 fire:
 	1:
@@ -739,6 +946,8 @@ fire:
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
+		Palette: player
+		IsPlayerPalette: True
 	2:
 		Filename: fire2.shp
 		Length: *
@@ -760,92 +969,152 @@ rank:
 		Filename: rank.shp
 		Offset: 0, 3
 	rank-veteran-1:
+		Palette: effect
+		IsPlayerPalette: False
 	rank-veteran-2:
 		Start: 1
+		Palette: effect
+		IsPlayerPalette: False
 	rank-veteran-3:
 		Start: 2
+		Palette: effect
+		IsPlayerPalette: False
 	rank-elite:
 		Start: 3
 		Offset: 1, 3
+		Palette: effect
+		IsPlayerPalette: False
 
 iconchevrons:
 	veteran:
 		Filename: iconchevrons.shp
 		Offset: 2, 2
+		Palette: chrome
+		IsPlayerPalette: False
 
 atomic:
 	up:
 		Filename: atomicup.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 	down:
 		Filename: atomicdn.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
+		IsPlayerPalette: False
 
 bubbles:
 	idle:
 		Filename: bubbles.shp
 		Length: *
 		Tick: 220
+		Palette: effect
+		IsPlayerPalette: False
 
 mpspawn:
 	idle:
 		Filename: mpspawn.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 
 waypoint:
 	idle:
 		Filename: waypoint.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 
 camera:
 	idle:
 		Filename: camera.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 
 gpsdot:
 	Defaults:
 		Filename: gpsdot.shp
 	Infantry:
+		Palette: player
+		IsPlayerPalette: True
 	Vehicle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 	Ship:
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 	Helicopter:
 		Start: 3
+		Palette: player
+		IsPlayerPalette: True
 	Plane:
 		Start: 4
+		Palette: player
+		IsPlayerPalette: True
 	Harvester:
 		Start: 5
+		Palette: player
+		IsPlayerPalette: True
 	Structure:
 		Start: 6
+		Palette: player
+		IsPlayerPalette: True
 	Oil:
 		Start: 7
+		Palette: player
+		IsPlayerPalette: True
 	Hospital:
 		Start: 8
+		Palette: player
+		IsPlayerPalette: True
 	Biohazard:
 		Start: 9
+		Palette: player
+		IsPlayerPalette: True
 	Communications:
 		Start: 10
+		Palette: player
+		IsPlayerPalette: True
 	Forward:
 		Start: 11
+		Palette: player
+		IsPlayerPalette: True
 
 icon:
 	abomb:
 		Filename: atomicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	invuln:
 		Filename: infxicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	chrono:
 		Filename: warpicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	spyplane:
 		Filename: smigicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	paratroopers:
 		Filename: pinficon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	gps:
 		Filename: gpssicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	parabombs:
 		Filename: pbmbicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 	sonar:
 		Filename: sonricon.shp
 
@@ -854,22 +1123,32 @@ quee:
 		Filename: quee.shp
 	idle:
 		Length: 10
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 10
 		Length: 10
+		Palette: player
+		IsPlayerPalette: True
 
 lar1:
 	idle:
 		Filename: lar1.shp
+		Palette: terrain
+		IsPlayerPalette: False
 
 lar2:
 	idle:
 		Filename: lar2.shp
+		Palette: terrain
+		IsPlayerPalette: False
 
 minp:
 	idle:
 		Filename: minp.shp
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: jmin.shp
 
@@ -884,13 +1163,23 @@ overlay:
 	Defaults:
 		Filename: trans.icn
 	build-valid:
+		Palette: terrain
+		IsPlayerPalette: False
 	build-invalid:
 		Start: 2
+		Palette: terrain
+		IsPlayerPalette: False
 	target-valid:
+		Palette: terrain
+		IsPlayerPalette: False
 	target-select:
 		Start: 1
+		Palette: terrain
+		IsPlayerPalette: False
 	target-invalid:
 		Start: 2
+		Palette: terrain
+		IsPlayerPalette: False
 
 editor-overlay:
 	Defaults:
@@ -906,109 +1195,160 @@ resources:
 		Filename: gold01.tem
 		TilesetFilenames:
 			SNOW: gold01.sno
+		Palette: player
+		IsPlayerPalette: False
 	gold02:
 		Filename: gold02.tem
 		TilesetFilenames:
 			SNOW: gold02.sno
+		Palette: player
+		IsPlayerPalette: False
 	gold03:
 		Filename: gold03.tem
 		TilesetFilenames:
 			SNOW: gold03.sno
+		Palette: player
+		IsPlayerPalette: False
 	gold04:
 		Filename: gold04.tem
 		TilesetFilenames:
 			SNOW: gold04.sno
+		Palette: player
+		IsPlayerPalette: False
 	gem01:
 		Filename: gem01.tem
 		TilesetFilenames:
 			SNOW: gem01.sno
+		Palette: player
+		IsPlayerPalette: False
 	gem02:
 		Filename: gem02.tem
 		TilesetFilenames:
 			SNOW: gem02.sno
+		Palette: player
+		IsPlayerPalette: False
 	gem03:
 		Filename: gem03.tem
 		TilesetFilenames:
 			SNOW: gem03.sno
+		Palette: player
+		IsPlayerPalette: False
 	gem04:
 		Filename: gem04.tem
 		TilesetFilenames:
 			SNOW: gem04.sno
+		Palette: player
+		IsPlayerPalette: False
 
 shroud:
 	shroud:
 		Filename: shadow.shp
 		Length: *
+		Palette: shroud
+		IsPlayerPalette: False
+	fog:
+		Filename: shadow.shp
+		Length: *
+		Palette: fog
+		IsPlayerPalette: False
 
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps
 scorches:
 	Defaults:
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	sc1:
 		Filename: sc1.tem
 		TilesetFilenames:
 			SNOW: sc1.sno
 			DESERT: sc1.des
+		Palette: terrain
+		IsPlayerPalette: False
 	sc2:
 		Filename: sc2.tem
 		TilesetFilenames:
 			SNOW: sc2.sno
 			DESERT: sc2.des
+		Palette: terrain
+		IsPlayerPalette: False
 	sc3:
 		Filename: sc3.tem
 		TilesetFilenames:
 			SNOW: sc3.sno
 			DESERT: sc3.des
+		Palette: terrain
+		IsPlayerPalette: False
 	sc4:
 		Filename: sc4.tem
 		TilesetFilenames:
 			SNOW: sc4.sno
 			DESERT: sc4.des
+		Palette: terrain
+		IsPlayerPalette: False
 	sc5:
 		Filename: sc5.tem
 		TilesetFilenames:
 			SNOW: sc5.sno
 			DESERT: sc5.des
+		Palette: terrain
+		IsPlayerPalette: False
 	sc6:
 		Filename: sc6.tem
 		TilesetFilenames:
 			SNOW: sc6.sno
 			DESERT: sc6.des
+		Palette: terrain
+		IsPlayerPalette: False
 
 craters:
 	Defaults:
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 	cr1:
 		Filename: cr1.tem
 		TilesetFilenames:
 			SNOW: cr1.sno
 			DESERT: cr1.des
+		Palette: terrain
+		IsPlayerPalette: False
 	cr2:
 		Filename: cr2.tem
 		TilesetFilenames:
 			SNOW: cr2.sno
 			DESERT: cr2.des
+		Palette: terrain
+		IsPlayerPalette: False
 	cr3:
 		Filename: cr3.tem
 		TilesetFilenames:
 			SNOW: cr3.sno
 			DESERT: cr3.des
+		Palette: terrain
+		IsPlayerPalette: False
 	cr4:
 		Filename: cr4.tem
 		TilesetFilenames:
 			SNOW: cr4.sno
 			DESERT: cr4.des
+		Palette: terrain
+		IsPlayerPalette: False
 	cr5:
 		Filename: cr5.tem
 		TilesetFilenames:
 			SNOW: cr5.sno
 			DESERT: cr5.des
+		Palette: terrain
+		IsPlayerPalette: False
 	cr6:
 		Filename: cr6.tem
 		TilesetFilenames:
 			SNOW: cr6.sno
 			DESERT: cr6.des
+		Palette: terrain
+		IsPlayerPalette: False
 
 mine:
 	idle:
@@ -1018,6 +1358,8 @@ mine:
 			TEMPERAT: mine.tem
 			DESERT: mine.des
 		ZOffset: -2c512
+		Palette: terrain
+		IsPlayerPalette: False
 
 gmine:
 	idle:
@@ -1026,6 +1368,8 @@ gmine:
 			SNOW: gmine.sno
 			DESERT: gmine.des
 		ZOffset: -2c512
+		Palette: player
+		IsPlayerPalette: False
 
 railmine:
 	idle:
@@ -1034,6 +1378,8 @@ railmine:
 			SNOW: railmine.sno
 			DESERT: railmine.des
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: False
 
 ctflag:
 	idle:
@@ -1041,6 +1387,8 @@ ctflag:
 		Length: 9
 		Tick: 50
 		Offset: 0,-12
+		Palette: player
+		IsPlayerPalette: True
 	bib:
 		TilesetFilenames:
 			SNOW: mbGAP.sno
@@ -1048,47 +1396,71 @@ ctflag:
 			TEMPERAT: mbGAP.tem
 			DESERT: mbGAP.des
 		Length: *
+		Palette: terrain
+		IsPlayerPalette: False
 
 paradirection:
 	arrow-t:
 		Filename: mouse.shp
 		Start: 1
 		Offset: 0, -19, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-tr:
 		Filename: mouse.shp
 		Start: 2
 		Offset: 15, -15, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-r:
 		Filename: mouse.shp
 		Start: 3
 		Offset: 19, 0, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-br:
 		Filename: mouse.shp
 		Start: 4
 		Offset: 15, 15, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-b:
 		Filename: mouse.shp
 		Start: 5
 		Offset: 0, 19, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-bl:
 		Filename: mouse.shp
 		Start: 6
 		Offset: -15, 15, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-l:
 		Filename: mouse.shp
 		Start: 7
 		Offset: -19, 0, 0
+		Palette: chrome
+		IsPlayerPalette: False
 	arrow-tl:
 		Filename: mouse.shp
 		Start: 8
 		Offset: -15, -15, 0
+		Palette: chrome
+		IsPlayerPalette: False
 
 twinkle:
 	Defaults:
 		Length: *
 	twinkle1:
 		Filename: twinkle1.shp
+		Palette: effect
+		IsPlayerPalette: False
 	twinkle2:
 		Filename: twinkle2.shp
+		Palette: effect
+		IsPlayerPalette: False
 	twinkle3:
 		Filename: twinkle3.shp
+		Palette: effect
+		IsPlayerPalette: False

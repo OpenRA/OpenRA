@@ -243,7 +243,6 @@ BOXES09:
 ICE01:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -256,7 +255,6 @@ ICE01:
 ICE02:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Building:
 		Footprint: x x
 		Dimensions: 1,2
@@ -269,7 +267,6 @@ ICE02:
 ICE03:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -282,7 +279,6 @@ ICE03:
 ICE04:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: actor-ice04-name
 	MapEditorData:
@@ -292,7 +288,6 @@ ICE04:
 ICE05:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: actor-ice05-name
 	MapEditorData:
@@ -344,7 +339,6 @@ ROCK7:
 UTILPOL1:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: actor-utilpol1-name
 	MapEditorData:
@@ -353,7 +347,6 @@ UTILPOL1:
 UTILPOL2:
 	Inherits: ^Tree
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: actor-utilpol2-name
 	MapEditorData:
@@ -362,7 +355,6 @@ UTILPOL2:
 TANKTRAP1:
 	Inherits: ^Rock
 	RenderSprites:
-		Palette: player
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -374,7 +366,6 @@ TANKTRAP1:
 TANKTRAP2:
 	Inherits: ^Rock
 	RenderSprites:
-		Palette: player
 	Building:
 		Footprint: x
 		Dimensions: 1,1

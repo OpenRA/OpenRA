@@ -22,7 +22,6 @@ namespace OpenRA.Mods.Cnc.Effects
 	sealed class GpsDotEffect : IEffect, IEffectAnnotation
 	{
 		readonly Actor actor;
-		readonly GpsDotInfo info;
 		readonly Animation anim;
 
 		readonly PlayerDictionary<DotState> dotStates;
@@ -47,7 +46,6 @@ namespace OpenRA.Mods.Cnc.Effects
 		public GpsDotEffect(Actor actor, GpsDotInfo info)
 		{
 			this.actor = actor;
-			this.info = info;
 			anim = new Animation(actor.World, info.Image);
 			anim.PlayRepeating(info.String);
 
@@ -111,9 +109,8 @@ namespace OpenRA.Mods.Cnc.Effects
 			var effectiveOwner = actor.EffectiveOwner != null && actor.EffectiveOwner.Owner != null ?
 				actor.EffectiveOwner.Owner : actor.Owner;
 
-			var palette = wr.Palette(info.IndicatorPalettePrefix + effectiveOwner.InternalName);
 			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPxPosition(actor.CenterPosition));
-			return anim.RenderUI(wr, screenPos, WVec.Zero, 0, palette);
+			return anim.RenderUI(wr, screenPos, WVec.Zero, 0, effectiveOwner.InternalName);
 		}
 	}
 }

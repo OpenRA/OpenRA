@@ -51,17 +51,16 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly SequencePlaceBuildingPreviewInfo info;
 		readonly Animation preview;
-		readonly PaletteReference palette;
+		readonly OwnerInit ownerName;
 
 		public SequencePlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, SequencePlaceBuildingPreviewInfo info, TypeDictionary init)
 			: base(wr, ai, info)
 		{
 			this.info = info;
-			var ownerName = init.Get<OwnerInit>().InternalName;
+			ownerName = init.Get<OwnerInit>();
 			var faction = init.Get<FactionInit>().Value;
 
 			var rsi = ai.TraitInfo<RenderSpritesInfo>();
-			palette = wr.Palette(rsi.Palette ?? rsi.PlayerPalette + ownerName);
 			preview = new Animation(wr.World, rsi.GetImage(ai, faction));
 			preview.PlayRepeating(info.Sequence);
 		}
@@ -78,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 					yield return r;
 
 			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + CenterOffset;
-			foreach (var r in preview.Render(centerPosition, WVec.Zero, 0, palette))
+			foreach (var r in preview.Render(wr, centerPosition, WVec.Zero, 0, ownerName))
 			{
 				if (info.SequenceAlpha < 1f && r is IModifyableRenderable mr)
 					yield return mr.WithAlpha(mr.Alpha * info.SequenceAlpha);

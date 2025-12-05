@@ -8,11 +8,14 @@ split2:
 	make:
 		Length: 30
 		Tick: 120
+		Palette: staticterrain
 	active:
 		Start: 30
 		Length: 24
+		Palette: staticterrain
 	idle:
 		Start: 54
+		Palette: staticterrain
 
 split3:
 	Defaults:
@@ -25,39 +28,49 @@ split3:
 	make:
 		Length: 30
 		Tick: 120
+		Palette: staticterrain
 	active:
 		Start: 30
 		Length: 24
+		Palette: staticterrain
 	idle:
 		Start: 54
+		Palette: staticterrain
 
 rock1:
 	idle:
 		Filename: rock1.des
+		Palette: staticterrain
 
 rock2:
 	idle:
 		Filename: rock2.des
+		Palette: staticterrain
 
 rock3:
 	idle:
 		Filename: rock3.des
+		Palette: staticterrain
 
 rock4:
 	idle:
 		Filename: rock4.des
+		Palette: staticterrain
 
 rock5:
 	idle:
 		Filename: rock5.des
+		Palette: staticterrain
 
 rock6:
 	idle:
 		Filename: rock6.des
+		Palette: staticterrain
 
 rock7:
 	idle:
 		Filename: rock7.des
+		Palette: staticterrain
 
 tc04:
 	Defaults:
@@ -66,6 +79,7 @@ tc04:
 			WINTER: tc04.win
 			SNOW: tc04.sno
 	idle:
+		Palette: staticterrain
 
 tc04.husk:
 	Defaults:
@@ -75,6 +89,8 @@ tc04.husk:
 			SNOW: tc04.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 tc05:
 	Defaults:
@@ -83,6 +99,7 @@ tc05:
 			WINTER: tc05.win
 			SNOW: tc05.sno
 	idle:
+		Palette: staticterrain
 
 tc05.husk:
 	Defaults:
@@ -92,6 +109,8 @@ tc05.husk:
 			SNOW: tc05.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 tc03:
 	Defaults:
@@ -100,6 +119,7 @@ tc03:
 			WINTER: tc03.win
 			SNOW: tc03.sno
 	idle:
+		Palette: staticterrain
 
 tc03.husk:
 	Defaults:
@@ -109,6 +129,8 @@ tc03.husk:
 			SNOW: tc03.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 tc02:
 	Defaults:
@@ -117,6 +139,7 @@ tc02:
 			WINTER: tc02.win
 			SNOW: tc02.sno
 	idle:
+		Palette: staticterrain
 
 tc02.husk:
 	Defaults:
@@ -126,6 +149,8 @@ tc02.husk:
 			SNOW: tc02.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 tc01:
 	Defaults:
@@ -134,6 +159,7 @@ tc01:
 			WINTER: tc01.win
 			SNOW: tc01.sno
 	idle:
+		Palette: staticterrain
 
 tc01.husk:
 	Defaults:
@@ -143,15 +169,20 @@ tc01.husk:
 			SNOW: tc01.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t18:
 	idle:
 		Filename: t18.des
+		Palette: staticterrain
 
 t18.husk:
 	idle:
 		Filename: t18.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t17:
 	Defaults:
@@ -160,6 +191,7 @@ t17:
 			WINTER: t17.win
 			SNOW: t17.sno
 	idle:
+		Palette: staticterrain
 
 t17.husk:
 	Defaults:
@@ -169,6 +201,8 @@ t17.husk:
 			SNOW: t17.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t16:
 	Defaults:
@@ -177,6 +211,7 @@ t16:
 			WINTER: t16.win
 			SNOW: t16.sno
 	idle:
+		Palette: staticterrain
 
 t16.husk:
 	Defaults:
@@ -186,6 +221,8 @@ t16.husk:
 			SNOW: t16.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t15:
 	Defaults:
@@ -194,6 +231,7 @@ t15:
 			WINTER: t15.win
 			SNOW: t15.sno
 	idle:
+		Palette: staticterrain
 
 t15.husk:
 	Defaults:
@@ -203,6 +241,8 @@ t15.husk:
 			SNOW: t15.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t14:
 	Defaults:
@@ -211,6 +251,7 @@ t14:
 			WINTER: t14.win
 			SNOW: t14.sno
 	idle:
+		Palette: staticterrain
 
 t14.husk:
 	Defaults:
@@ -220,6 +261,8 @@ t14.husk:
 			SNOW: t14.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t13:
 	Defaults:
@@ -228,6 +271,7 @@ t13:
 			WINTER: t13.win
 			SNOW: t13.sno
 	idle:
+		Palette: staticterrain
 
 t13.husk:
 	Defaults:
@@ -237,6 +281,8 @@ t13.husk:
 			SNOW: t13.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t12:
 	Defaults:
@@ -245,6 +291,7 @@ t12:
 			WINTER: t12.win
 			SNOW: t12.sno
 	idle:
+		Palette: staticterrain
 
 t12.husk:
 	Defaults:
@@ -254,6 +301,8 @@ t12.husk:
 			SNOW: t12.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t11:
 	Defaults:
@@ -262,6 +311,7 @@ t11:
 			WINTER: t11.win
 			SNOW: t11.sno
 	idle:
+		Palette: staticterrain
 
 t11.husk:
 	Defaults:
@@ -271,6 +321,8 @@ t11.husk:
 			SNOW: t11.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t10:
 	Defaults:
@@ -279,6 +331,7 @@ t10:
 			WINTER: t10.win
 			SNOW: t10.sno
 	idle:
+		Palette: staticterrain
 
 t10.husk:
 	Defaults:
@@ -288,15 +341,20 @@ t10.husk:
 			SNOW: t10.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t09:
 	idle:
 		Filename: t09.des
+		Palette: staticterrain
 
 t09.husk:
 	idle:
 		Filename: t09.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t08:
 	Defaults:
@@ -306,6 +364,7 @@ t08:
 			SNOW: t08.sno
 			TEMPERAT: t08.tem
 	idle:
+		Palette: staticterrain
 
 t08.husk:
 	Defaults:
@@ -316,6 +375,8 @@ t08.husk:
 			TEMPERAT: t08.tem
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t07:
 	Defaults:
@@ -324,6 +385,7 @@ t07:
 			WINTER: t07.win
 			SNOW: t07.sno
 	idle:
+		Palette: staticterrain
 
 t07.husk:
 	Defaults:
@@ -333,6 +395,8 @@ t07.husk:
 			SNOW: t07.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t06:
 	Defaults:
@@ -341,6 +405,7 @@ t06:
 			WINTER: t06.win
 			SNOW: t06.sno
 	idle:
+		Palette: staticterrain
 
 t06.husk:
 	Defaults:
@@ -350,6 +415,8 @@ t06.husk:
 			SNOW: t06.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t05:
 	Defaults:
@@ -358,6 +425,7 @@ t05:
 			WINTER: t05.win
 			SNOW: t05.sno
 	idle:
+		Palette: staticterrain
 
 t05.husk:
 	Defaults:
@@ -367,15 +435,20 @@ t05.husk:
 			SNOW: t05.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t04:
 	idle:
 		Filename: t04.des
+		Palette: staticterrain
 
 t04.husk:
 	idle:
 		Filename: t04.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t03:
 	Defaults:
@@ -384,6 +457,7 @@ t03:
 			WINTER: t03.win
 			SNOW: t03.sno
 	idle:
+		Palette: staticterrain
 
 t03.husk:
 	Defaults:
@@ -393,6 +467,8 @@ t03.husk:
 			SNOW: t03.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t02:
 	Defaults:
@@ -401,6 +477,7 @@ t02:
 			WINTER: t02.win
 			SNOW: t02.sno
 	idle:
+		Palette: staticterrain
 
 t02.husk:
 	Defaults:
@@ -410,6 +487,8 @@ t02.husk:
 			SNOW: t02.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 t01:
 	Defaults:
@@ -418,6 +497,7 @@ t01:
 			WINTER: t01.win
 			SNOW: t01.sno
 	idle:
+		Palette: staticterrain
 
 t01.husk:
 	Defaults:
@@ -427,6 +507,8 @@ t01.husk:
 			SNOW: t01.sno
 	idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v01:
 	Defaults:
@@ -435,8 +517,12 @@ v01:
 			WINTER: v01.win
 			SNOW: v01.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v01.husk:
 	idle:
@@ -445,6 +531,8 @@ v01.husk:
 			WINTER: v01.win
 			SNOW: v01.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v02:
 	Defaults:
@@ -453,8 +541,12 @@ v02:
 			WINTER: v02.win
 			SNOW: v02.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v02.husk:
 	idle:
@@ -463,6 +555,8 @@ v02.husk:
 			WINTER: v02.win
 			SNOW: v02.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v03:
 	Defaults:
@@ -471,8 +565,12 @@ v03:
 			WINTER: v03.win
 			SNOW: v03.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v03.husk:
 	idle:
@@ -481,6 +579,8 @@ v03.husk:
 			WINTER: v03.win
 			SNOW: v03.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v04:
 	Defaults:
@@ -489,8 +589,12 @@ v04:
 			WINTER: v04.win
 			SNOW: v04.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v04.husk:
 	idle:
@@ -499,6 +603,8 @@ v04.husk:
 			WINTER: v04.win
 			SNOW: v04.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v05:
 	Defaults:
@@ -507,8 +613,12 @@ v05:
 			WINTER: v05.win
 			SNOW: v05.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v05.husk:
 	idle:
@@ -517,6 +627,8 @@ v05.husk:
 			WINTER: v05.win
 			SNOW: v05.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v06:
 	Defaults:
@@ -525,8 +637,12 @@ v06:
 			WINTER: v06.win
 			SNOW: v06.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v06.husk:
 	idle:
@@ -535,6 +651,8 @@ v06.husk:
 			WINTER: v06.win
 			SNOW: v06.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v07:
 	Defaults:
@@ -543,8 +661,12 @@ v07:
 			WINTER: v07.win
 			SNOW: v07.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v07.husk:
 	idle:
@@ -553,6 +675,8 @@ v07.husk:
 			WINTER: v07.win
 			SNOW: v07.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v08:
 	Defaults:
@@ -561,8 +685,12 @@ v08:
 			WINTER: v08.win
 			SNOW: v08.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v08.husk:
 	idle:
@@ -571,6 +699,8 @@ v08.husk:
 			WINTER: v08.win
 			SNOW: v08.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v09:
 	Defaults:
@@ -579,8 +709,12 @@ v09:
 			WINTER: v09.win
 			SNOW: v09.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v09.husk:
 	idle:
@@ -589,6 +723,8 @@ v09.husk:
 			WINTER: v09.win
 			SNOW: v09.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v10:
 	Defaults:
@@ -597,8 +733,12 @@ v10:
 			WINTER: v10.win
 			SNOW: v10.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v10.husk:
 	idle:
@@ -607,6 +747,8 @@ v10.husk:
 			WINTER: v10.win
 			SNOW: v10.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v11:
 	Defaults:
@@ -615,8 +757,12 @@ v11:
 			WINTER: v11.win
 			SNOW: v11.sno
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v11.husk:
 	idle:
@@ -625,6 +771,8 @@ v11.husk:
 			WINTER: v11.win
 			SNOW: v11.sno
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v12:
 	Defaults:
@@ -634,9 +782,11 @@ v12:
 			SNOW: v12.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v12.husk:
 	idle:
@@ -646,6 +796,7 @@ v12.husk:
 			SNOW: v12.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v13:
 	Defaults:
@@ -655,9 +806,11 @@ v13:
 			SNOW: v13.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v13.husk:
 	idle:
@@ -667,6 +820,7 @@ v13.husk:
 			SNOW: v13.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v14:
 	Defaults:
@@ -676,9 +830,11 @@ v14:
 			SNOW: v14.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v14.husk:
 	idle:
@@ -688,6 +844,7 @@ v14.husk:
 			SNOW: v14.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v15:
 	Defaults:
@@ -697,9 +854,11 @@ v15:
 			SNOW: v15.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v15.husk:
 	idle:
@@ -709,6 +868,7 @@ v15.husk:
 			SNOW: v15.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v16:
 	Defaults:
@@ -718,9 +878,11 @@ v16:
 			SNOW: v16.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v16.husk:
 	idle:
@@ -730,6 +892,7 @@ v16.husk:
 			SNOW: v16.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v17:
 	Defaults:
@@ -739,9 +902,11 @@ v17:
 			SNOW: v17.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v17.husk:
 	idle:
@@ -751,6 +916,7 @@ v17.husk:
 			SNOW: v17.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v18:
 	Defaults:
@@ -760,9 +926,11 @@ v18:
 			SNOW: v18.sno
 	idle:
 		ZOffset: -2c512
+		Palette: terrain
 	damaged-idle:
 		Start: 1
 		ZOffset: -2c512
+		Palette: terrain
 
 v18.husk:
 	idle:
@@ -772,6 +940,7 @@ v18.husk:
 			SNOW: v18.sno
 		Start: 2
 		ZOffset: -2c512
+		Palette: terrain
 
 v19:
 	Defaults:
@@ -779,267 +948,391 @@ v19:
 	idle:
 		Length: 14
 		Tick: 120
+		Palette: derrick
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 14
 		Length: 14
 		Tick: 120
+		Palette: derrick
+		IsPlayerPalette: True
 
 v19.husk:
 	idle:
 		Filename: v19.shp
 		Start: 28
+		Palette: derrick
+		IsPlayerPalette: True
 	fire-start:
 		Filename: flmspt.shp
 		Length: *
 		Offset: 7,-15
 		ZOffset: 1
+		Palette: derrick
+		IsPlayerPalette: True
 	fire-loop:
 		Filename: flmspt.shp
 		Start: 50
 		Length: *
 		Offset: 7,-15
 		ZOffset: 1
+		Palette: derrick
+		IsPlayerPalette: True
 
 v20:
 	idle:
 		Filename: v20.des
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v20.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 
 v20.husk:
 	idle:
 		Filename: v20.des
 		Start: 6
+		Palette: player
+		IsPlayerPalette: True
 
 v21:
 	idle:
 		Filename: v21.des
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v21.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 
 v21.husk:
 	idle:
 		Filename: v21.des
 		Start: 6
+		Palette: player
+		IsPlayerPalette: True
 
 v22:
 	idle:
 		Filename: v22.des
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v22.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 
 v22.husk:
 	idle:
 		Filename: v22.des
 		Start: 6
+		Palette: player
+		IsPlayerPalette: True
 
 v23:
 	idle:
 		Filename: v23.des
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v23.des
 		Start: 3
 		Length: 3
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 
 v23.husk:
 	idle:
 		Filename: v23.des
 		Start: 6
+		Palette: player
+		IsPlayerPalette: True
 
 v24:
 	idle:
 		Filename: v24.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v24.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v24.husk:
 	idle:
 		Filename: v24.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v25:
 	idle:
 		Filename: v25.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v25.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v25.husk:
 	idle:
 		Filename: v25.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v26:
 	idle:
 		Filename: v26.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v26.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v26.husk:
 	idle:
 		Filename: v26.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v27:
 	idle:
 		Filename: v27.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v27.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v27.husk:
 	idle:
 		Filename: v27.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v28:
 	idle:
 		Filename: v28.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v28.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v28.husk:
 	idle:
 		Filename: v28.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v29:
 	idle:
 		Filename: v29.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v29.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v29.husk:
 	idle:
 		Filename: v29.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v30:
 	idle:
 		Filename: v30.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v30.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v30.husk:
 	idle:
 		Filename: v30.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v31:
 	idle:
 		Filename: v31.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v31.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v31.husk:
 	idle:
 		Filename: v31.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v32:
 	idle:
 		Filename: v32.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v32.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v32.husk:
 	idle:
 		Filename: v32.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v33:
 	idle:
 		Filename: v33.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v33.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v33.husk:
 	idle:
 		Filename: v33.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v34:
 	idle:
 		Filename: v34.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v34.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v34.husk:
 	idle:
 		Filename: v34.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v35:
 	idle:
 		Filename: v35.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v35.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v35.husk:
 	idle:
 		Filename: v35.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v36:
 	idle:
 		Filename: v36.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v36.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v36.husk:
 	idle:
 		Filename: v36.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 v37:
 	idle:
 		Filename: v37.des
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: v37.des
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 v37.husk:
 	idle:
 		Filename: v37.des
 		Start: 2
+		Palette: player
+		IsPlayerPalette: True
 
 arco:
 	Defaults:
 		Filename: arco.shp
 	idle:
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True
 
 arco.husk:
 	idle:
 		Filename: arco.shp
 		Start: 1
+		Palette: player
+		IsPlayerPalette: True

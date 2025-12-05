@@ -30,13 +30,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Sequence to play when launched. Skipped if null or empty.")]
 		public readonly string OpenSequence = null;
 
-		[PaletteReference]
-		[Desc("The palette used to draw this projectile.")]
-		public readonly string Palette = "effect";
-
-		[Desc("Palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
@@ -121,23 +114,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))
 			{
-				var paletteName = info.Palette;
-				if (paletteName != null && info.IsPlayerPalette)
-					paletteName += args.SourceActor.Owner.InternalName;
-
-				var palette = wr.Palette(paletteName);
-
 				if (info.Shadow)
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
 					var shadowPos = pos - new WVec(0, 0, dat.Length);
-					foreach (var r in anim.Render(shadowPos, palette))
+					foreach (var r in anim.Render(wr, shadowPos, args.SourceActor.Owner))
 						yield return ((IModifyableRenderable)r)
 							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
 							.WithAlpha(shadowAlpha);
 				}
 
-				foreach (var r in anim.Render(pos, palette))
+				foreach (var r in anim.Render(wr, pos, args.SourceActor.Owner))
 					yield return r;
 			}
 		}

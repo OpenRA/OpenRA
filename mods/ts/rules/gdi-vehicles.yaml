@@ -43,7 +43,6 @@ APC:
 	LeavesTrails:
 		RequiresCondition: !inside-tunnel && inwater
 		Image: wake
-		Palette: effect
 		TerrainTypes: Water
 		StationaryInterval: 18
 		MovingInterval: 6
@@ -97,7 +96,6 @@ HVR:
 	LeavesTrails:
 		RequiresCondition: !inside-tunnel
 		Image: wake
-		Palette: effect
 		TerrainTypes: Water
 		TrailWhileStationary: True
 		StationaryInterval: 18
@@ -150,7 +148,6 @@ SMECH:
 		CameraPitch: 250
 	WithAttackOverlay@muzzle:
 		Sequence: shoot-muzzle
-		Palette: muzzle
 		IsDecoration: true
 	Selectable:
 		Bounds: 603, 1930, 0, -482

@@ -38,9 +38,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Pip sequence to use for specific passenger actors.")]
 		public readonly Dictionary<string, string> CustomPipSequences = [];
 
-		[PaletteReference]
-		public readonly string Palette = "chrome";
-
 		public override object Create(ActorInitializer init) { return new WithCargoPipsDecoration(init.Self, this); }
 	}
 
@@ -82,8 +79,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
 		{
 			pips.PlayRepeating(Info.EmptySequence);
-
-			var palette = wr.Palette(Info.Palette);
 			var pipSize = pips.Image.Size.XY.ToInt2();
 			var pipStride = Info.PipStride != int2.Zero ? Info.PipStride : new int2(pipSize.X, 0);
 
@@ -91,6 +86,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			for (var i = 0; i < pipCount; i++)
 			{
 				pips.PlayRepeating(GetPipSequence(i));
+				var palette = wr.Palette(pips.Palette(self.Owner));
 				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
 
 				screenPos += pipStride;

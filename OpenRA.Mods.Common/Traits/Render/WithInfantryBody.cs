@@ -39,29 +39,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		public readonly string[] StandSequences = ["stand"];
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithInfantryBody(init, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner)
 		{
 			if (!EnabledByDefault)
 				yield break;
 
 			var anim = new Animation(init.World, image, init.GetFacing());
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), StandSequences[0]));
-
-			if (IsPlayerPalette)
-				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().InternalName);
-			else if (Palette != null)
-				p = init.WorldRenderer.Palette(Palette);
-
-			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);
+			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, owner);
 		}
 	}
 
@@ -92,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 
 			DefaultAnimation = new Animation(init.World, rs.GetImage(self), RenderSprites.MakeFacingFunc(self));
-			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled), info.Palette, info.IsPlayerPalette);
+			rs.Add(new AnimationWithOffset(DefaultAnimation, null, () => IsTraitDisabled));
 			PlayStandAnimation(self);
 
 			move = init.Self.Trait<IMove>();

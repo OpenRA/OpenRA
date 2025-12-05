@@ -24,9 +24,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Dig animation sequence to play when transitioning.")]
 		public readonly string SubterraneanTransitionSequence = null;
 
-		[PaletteReference]
-		public readonly string SubterraneanTransitionPalette = "effect";
-
 		[Desc("Dig sound to play when transitioning.")]
 		public readonly string SubterraneanTransitionSound = null;
 
@@ -62,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSequence))
 				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.World.Map.CenterOfCell(fromCell), self.World,
 					Info.SubterraneanTransitionImage,
-					Info.SubterraneanTransitionSequence, Info.SubterraneanTransitionPalette)));
+					Info.SubterraneanTransitionSequence, self.Owner)));
 
 			if (!string.IsNullOrEmpty(Info.SubterraneanTransitionSound))
 				Game.Sound.Play(SoundType.World, Info.SubterraneanTransitionSound);

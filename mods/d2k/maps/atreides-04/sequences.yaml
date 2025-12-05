@@ -4,12 +4,16 @@ tile475:
 	idle:
 		Start: 706
 		Offset: -16,-16
+		Palette: d2k
 	idle2:
 		Start: 707
 		Offset: 16,-16
+		Palette: d2k
 	idle3:
 		Start: 726
 		Offset: -16,16
+		Palette: d2k
 	idle4:
 		Start: 727
 		Offset: 16,16
+		Palette: d2k

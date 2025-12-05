@@ -34,13 +34,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when rally point can be set.")]
 		public readonly string Cursor = "ability";
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom indicator palette name")]
-		public readonly string Palette = "player";
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = true;
-
 		[Desc("A list of 0 or more offsets defining the initial rally point path.")]
 		public readonly CVec[] Path = [];
 
@@ -66,7 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 		public List<CPos> Path;
 
 		public RallyPointInfo Info;
-		public string PaletteName { get; private set; }
 		RallyPointIndicator effect;
 
 		public void ResetPath(Actor self)
@@ -78,7 +70,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			ResetPath(self);
-			PaletteName = info.IsPlayerPalette ? info.Palette + self.Owner.InternalName : info.Palette;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -88,9 +79,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			if (Info.IsPlayerPalette)
-				PaletteName = Info.Palette + newOwner.InternalName;
-
 			ResetPath(self);
 		}
 

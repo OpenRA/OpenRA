@@ -32,16 +32,10 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(Image), allowNullImage: true)]
 		public readonly string GroundCorpseSequence = null;
 
-		[PaletteReference]
-		public readonly string GroundCorpsePalette = "effect";
-
 		public readonly string GroundImpactSound = null;
 
 		[SequenceReference(nameof(Image), allowNullImage: true)]
 		public readonly string WaterCorpseSequence = null;
-
-		[PaletteReference]
-		public readonly string WaterCorpsePalette = "effect";
 
 		[Desc("Terrain types on which to display WaterCorpseSequence.")]
 		public readonly HashSet<string> WaterTerrainTypes = ["Water"];
@@ -107,9 +101,8 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 
 			var sequence = onWater ? info.WaterCorpseSequence : info.GroundCorpseSequence;
-			var palette = onWater ? info.WaterCorpsePalette : info.GroundCorpsePalette;
-			if (!string.IsNullOrEmpty(info.Image) && !string.IsNullOrEmpty(sequence) && palette != null)
-				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, palette)));
+			if (!string.IsNullOrEmpty(info.Image) && !string.IsNullOrEmpty(sequence))
+				self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(self.OccupiesSpace.CenterPosition, w, info.Image, sequence, self.Owner)));
 
 			self.Kill(self, info.DamageTypes);
 		}

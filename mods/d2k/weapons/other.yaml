@@ -466,5 +466,3 @@ DeviatorGas:
 		InvalidTargets: Infantry, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: deviator
-		ExplosionPalette: player
-		UsePlayerPalette: true

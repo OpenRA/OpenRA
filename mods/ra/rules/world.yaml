@@ -90,7 +90,6 @@
 	TerrainRenderer:
 	ChronoVortexRenderer:
 	ShroudRenderer:
-		FogVariants: shroud
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
 	Faction@allies:
@@ -150,11 +149,9 @@
 		ResourceTypes:
 			Ore:
 				Sequences: gold01, gold02, gold03, gold04
-				Palette: player
 				Name: resource-minerals
 			Gems:
 				Sequences: gem01, gem02, gem03, gem04
-				Palette: player
 				Name: resource-minerals
 
 World:
@@ -215,7 +212,6 @@ World:
 		Types: Gems
 		Image: twinkle
 		Sequences: twinkle1, twinkle2, twinkle3
-		Palette: effect
 	WarheadDebugOverlay:
 	SpawnMapActors:
 	MapBuildRadius:
@@ -295,7 +291,6 @@ World:
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
-		TerrainFlashPalette: moveflash
 
 EditorWorld:
 	Inherits: ^BaseWorld

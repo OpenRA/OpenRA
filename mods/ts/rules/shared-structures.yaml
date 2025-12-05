@@ -65,27 +65,20 @@ GACNST:
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@TOP-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top-bright
-		Palette: bright
 	WithIdleOverlay@SIDE:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-side
 	WithIdleOverlay@FRONT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-front
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@FRONT-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-front-bright
-		Palette: bright
 	WithMakeOverlay@MAKE-BRIGHT:
 		Sequence: make-bright
-		Palette: bright
 	WithBuildingPlacedOverlay:
 		RequiresCondition: !build-incomplete
 	Power:
@@ -136,19 +129,15 @@ PROC:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-bright
-		Palette: bright
 	WithIdleOverlay@BIB:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
 	WithDockedOverlay@FLAME:
 		RequiresCondition: !build-incomplete
 		Sequence: flame
-		Palette: effect
 	WithDockingOverlay@UNLOAD:
 		RequiresCondition: !build-incomplete
 	Power:
@@ -172,7 +161,6 @@ PROC:
 		EmptySequence: pip-empty-building
 		PipStride: 4, 2
 		PipCount: 25
-		Palette: pips
 
 GASILO:
 	Inherits: ^Building
@@ -210,7 +198,6 @@ GASILO:
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-bright
-		Palette: bright
 	StoresPlayerResources:
 		Capacity: 1500
 	Power:
@@ -228,7 +215,6 @@ GASILO:
 		EmptySequence: pip-empty-building
 		PipStride: 4, 2
 		PipCount: 12
-		Palette: pips
 
 ANYPOWER:
 	Interactable:

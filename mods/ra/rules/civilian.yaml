@@ -4,97 +4,41 @@ C1:
 
 C2:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
 	WithInfantryBody:
-		Palette: civilian2
 	WithDeathAnimation:
-		DeathSequencePalette: civilian2
-		DeathPaletteIsPlayerPalette: false
 
 C3:
 	Inherits: ^CivInfantry
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
-	RenderSprites:
-		Image: C2
 
 C4:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C2
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
-	WithInfantryBody:
-		Palette: civilian4
-	WithDeathAnimation:
-		DeathSequencePalette: civilian4
-		DeathPaletteIsPlayerPalette: false
 
 C5:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C2
 	Voiced:
 		VoiceSet: CivilianFemaleVoice
-	WithInfantryBody:
-		Palette: civilian5
-	WithDeathAnimation:
-		DeathSequencePalette: civilian5
-		DeathPaletteIsPlayerPalette: false
 
 C6:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-		Palette: civilian6
-	WithDeathAnimation:
-		DeathSequencePalette: civilian6
-		DeathPaletteIsPlayerPalette: false
 
 C7:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-		Palette: civilian7
-	WithDeathAnimation:
-		DeathSequencePalette: civilian7
-		DeathPaletteIsPlayerPalette: false
 
 C8:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-		Palette: civilian8
-	WithDeathAnimation:
-		DeathSequencePalette: civilian8
-		DeathPaletteIsPlayerPalette: false
 
 C9:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-		Palette: civilian9
-	WithDeathAnimation:
-		DeathSequencePalette: civilian9
-		DeathPaletteIsPlayerPalette: false
 
 C10:
 	Inherits: ^CivInfantry
-	RenderSprites:
-		Image: C1
 	Tooltip:
 		Name: actor-c10-name
-	WithInfantryBody:
-		Palette: civilian10
-	WithDeathAnimation:
-		DeathSequencePalette: civilian10
-		DeathPaletteIsPlayerPalette: false
 
 C11:
 	Inherits: ^CivInfantry
@@ -117,12 +61,7 @@ TECN2:
 	Selectable:
 		Class: Technician
 	RenderSprites:
-		Image: C1
-	WithInfantryBody:
-		Palette: civilian7
-	WithDeathAnimation:
-		DeathSequencePalette: civilian7
-		DeathPaletteIsPlayerPalette: false
+		Image: C7
 
 FCOM:
 	Inherits: ^TechBuilding
@@ -353,7 +292,6 @@ V18:
 V19:
 	Inherits: ^CivBuilding
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: actor-v19-name
 	SpawnActorOnDeath:
@@ -364,7 +302,6 @@ V19:
 V19.Husk:
 	Inherits: ^CivBuilding
 	RenderSprites:
-		Palette: player
 	Tooltip:
 		Name: actor-v19-husk-name
 	WithSpriteBody:

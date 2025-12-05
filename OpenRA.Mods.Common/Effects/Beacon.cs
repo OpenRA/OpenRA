@@ -23,8 +23,6 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly Player owner;
 		readonly WPos position;
-		readonly bool isPlayerPalette;
-		readonly string beaconPalette, posterPalette;
 		readonly Animation arrow, beacon, circles, clock, poster;
 		readonly int duration;
 
@@ -34,13 +32,11 @@ namespace OpenRA.Mods.Common.Effects
 		int tick;
 
 		// Player-placed beacons are removed after a delay
-		public Beacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette,
-			string beaconCollection, string beaconSequence, string arrowSprite, string circleSprite, int delay = 0)
+		public Beacon(Player owner, WPos position, int duration, string beaconCollection, string beaconSequence,
+			string arrowSprite, string circleSprite, int delay = 0)
 		{
 			this.owner = owner;
 			this.position = position;
-			this.beaconPalette = beaconPalette;
-			this.isPlayerPalette = isPlayerPalette;
 			this.duration = duration;
 			this.delay = delay;
 
@@ -64,12 +60,10 @@ namespace OpenRA.Mods.Common.Effects
 		}
 
 		// By default, support power beacons are expected to clean themselves up
-		public Beacon(Player owner, WPos position, bool isPlayerPalette, string palette, string posterCollection, string posterType, string posterPalette,
+		public Beacon(Player owner, WPos position, string posterCollection, string posterType,
 			string beaconSequence, string arrowSequence, string circleSequence, string clockSequence, Func<float> clockFraction, int delay = 0, int duration = -1)
-				: this(owner, position, duration, palette, isPlayerPalette, posterCollection, beaconSequence, arrowSequence, circleSequence, delay)
+				: this(owner, position, duration, posterCollection, beaconSequence, arrowSequence, circleSequence, delay)
 		{
-			this.posterPalette = posterPalette;
-
 			if (posterType != null)
 			{
 				poster = new Animation(owner.World, posterCollection);
@@ -115,27 +109,25 @@ namespace OpenRA.Mods.Common.Effects
 			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
 				yield break;
 
-			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
-
 			if (beacon != null)
-				foreach (var a in beacon.Render(position, palette))
+				foreach (var a in beacon.Render(r, position, owner))
 					yield return a;
 
 			if (circles != null)
-				foreach (var a in circles.Render(position, palette))
+				foreach (var a in circles.Render(r, position, owner))
 					yield return a;
 
 			if (arrow != null)
-				foreach (var a in arrow.Render(position + new WVec(0, 0, arrowHeight), palette))
+				foreach (var a in arrow.Render(r, position + new WVec(0, 0, arrowHeight), owner))
 					yield return a;
 
 			if (poster != null)
 			{
-				foreach (var a in poster.Render(position, r.Palette(posterPalette)))
+				foreach (var a in poster.Render(r, position, owner))
 					yield return a;
 
 				if (clock != null)
-					foreach (var a in clock.Render(position, r.Palette(posterPalette)))
+					foreach (var a in clock.Render(r, position, owner))
 						yield return a;
 			}
 		}

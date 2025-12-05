@@ -24,26 +24,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence prefix to play when this actor is killed by a warhead.")]
 		public readonly string DeathSequence = "die";
 
-		[PaletteReference(nameof(DeathPaletteIsPlayerPalette))]
-		[Desc("The palette used for `DeathSequence`.")]
-		public readonly string DeathSequencePalette = "player";
-
-		[Desc("Custom death animation palette is a player palette BaseName")]
-		public readonly bool DeathPaletteIsPlayerPalette = true;
-
 		[Desc("Should DeathType-specific sequences be used (sequence name = DeathSequence + DeathType).")]
 		public readonly bool UseDeathTypeSuffix = true; // TODO: check the complete sequence with lint rules
 
 		[SequenceReference]
 		[Desc("Sequence to play when this actor is crushed.")]
 		public readonly string CrushedSequence = null;
-
-		[PaletteReference(nameof(CrushedPaletteIsPlayerPalette))]
-		[Desc("The palette used for `CrushedSequence`.")]
-		public readonly string CrushedSequencePalette = "effect";
-
-		[Desc("Custom crushed animation palette is a player palette BaseName")]
-		public readonly bool CrushedPaletteIsPlayerPalette = false;
 
 		[Desc("Death animations to use for each damage type (defined on the warheads).",
 			"Is only used if UseDeathTypeSuffix is `True`.")]
@@ -76,15 +62,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (crushed || IsTraitDisabled)
 				return;
 
-			var palette = Info.DeathSequencePalette;
-			if (Info.DeathPaletteIsPlayerPalette)
-				palette += self.Owner.InternalName;
-
 			// Killed by some non-standard means
 			if (e.Damage.DamageTypes.IsEmpty)
 			{
 				if (Info.FallbackSequence != null)
-					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, palette, Info.Delay);
+					SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.FallbackSequence, Info.Delay);
 
 				return;
 			}
@@ -99,12 +81,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 				sequence += Info.DeathTypes[damageType].Random(self.World.SharedRandom);
 			}
 
-			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), sequence, palette, Info.Delay);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), sequence, Info.Delay);
 		}
 
-		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, string palette, int delay)
+		public void SpawnDeathAnimation(Actor self, WPos pos, string image, string sequence, int delay)
 		{
-			self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, image, sequence, palette, delay: delay)));
+			self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, w, image, sequence, self.Owner, delay: delay)));
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
@@ -114,11 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.CrushedSequence == null)
 				return;
 
-			var crushPalette = Info.CrushedSequencePalette;
-			if (Info.CrushedPaletteIsPlayerPalette)
-				crushPalette += self.Owner.InternalName;
-
-			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.CrushedSequence, crushPalette, Info.Delay);
+			SpawnDeathAnimation(self, self.CenterPosition, rs.GetImage(self), Info.CrushedSequence, Info.Delay);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses) { }

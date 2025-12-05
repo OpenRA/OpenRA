@@ -1337,7 +1337,7 @@ PROC:
 			BottomRight: -512, 1280
 	-ActorPreviewPlaceBuildingPreview:
 	SequencePlaceBuildingPreview:
-		Sequence: idle
+		Sequence: place
 		SequenceAlpha: 0.65
 	WithResourceStoragePipsDecoration:
 		Position: BottomLeft

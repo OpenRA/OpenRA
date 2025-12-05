@@ -18,10 +18,9 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public bool ClickThrough = true;
 
-		Sprite sprite;
+		ISpriteSequence sprite;
 		readonly WorldRenderer worldRenderer;
 		readonly GraphicSettings graphicSettings;
-		string palette;
 		int2 location;
 
 		[ObjectCreator.UseCtor]
@@ -33,28 +32,26 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (sprite != null && palette != null)
+			if (sprite != null)
 			{
-				var directionPalette = worldRenderer.Palette(palette);
+				var directionPalette = worldRenderer.Palette(sprite.GetPalette());
 
 				// Cursor is rendered in native window coordinates
 				// Apply same scaling rules as hardware cursors
 				var scale = (graphicSettings.CursorDouble ? 2 : 1) * (Game.Renderer.NativeWindowScale > 1.5f ? 2 : 1);
-				WidgetUtils.DrawSpriteCentered(sprite, directionPalette, ChildOrigin, scale / Game.Renderer.WindowScale);
+				WidgetUtils.DrawSpriteCentered(sprite.GetSprite(0), directionPalette, ChildOrigin, scale / Game.Renderer.WindowScale);
 			}
 		}
 
-		public void SetAttachment(int2 location, Sprite sprite, string palette)
+		public void SetAttachment(int2 location, ISpriteSequence sprite)
 		{
 			this.sprite = sprite;
 			this.location = location;
-			this.palette = palette;
 		}
 
 		public void Reset()
 		{
 			sprite = null;
-			palette = null;
 		}
 
 		public override int2 ChildOrigin => location;

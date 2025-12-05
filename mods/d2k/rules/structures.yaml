@@ -108,7 +108,6 @@ construction_yard:
 			corrino: conyard.harkonnen
 	WithBuildingPlacedOverlay:
 		RequiresCondition: !build-incomplete
-		Palette: d2k
 	PrimaryBuilding:
 		ProductionQueues: Building
 	ProvidesPrerequisite@buildingname:

@@ -23,10 +23,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Animation used to render the direction arrows.")]
 		public readonly string DirectionArrowAnimation = null;
-
-		[PaletteReference]
-		[Desc("Palette for direction cursor animation.")]
-		public readonly string DirectionArrowPalette = "chrome";
 	}
 
 	public class DirectionalSupportPower : SupportPower

@@ -125,8 +125,6 @@ Player:
 		TextNotification: notification-harvester-under-attack
 	PlayerStatistics:
 	PlaceBeacon:
-		Palette: effect
-		IsPlayerPalette: false
 		BeaconSequence: idle
 		ArrowSequence:
 		CircleSequence:

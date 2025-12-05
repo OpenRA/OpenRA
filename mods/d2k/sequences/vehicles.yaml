@@ -4,10 +4,13 @@ mcv:
 		Start: 1795
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4284
 		Offset: -30,-24
+		Palette: chrome
 
 mcv.husk:
 	idle:
@@ -16,6 +19,8 @@ mcv.husk:
 		Facings: -32
 		ZOffset: -1023
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 harvester:
 	idle:
@@ -23,6 +28,8 @@ harvester:
 		Start: 1699
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	harvest:
 		Filename: DATA.R16
 		Start: 3884
@@ -31,19 +38,25 @@ harvester:
 		Tick: 80
 		ZOffset: 1
 		Alpha: 0.5
+		Palette: effect
 	dock:
 		Filename: DATA.R16
 		Start: 3623
 		Length: 10
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	dock-loop:
 		Filename: DATA.R16
 		Start: 3633
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4280
 		Offset: -30,-24
+		Palette: chrome
 
 harvester.husk:
 	idle:
@@ -52,6 +65,8 @@ harvester.husk:
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 trike:
 	idle:
@@ -59,6 +74,8 @@ trike:
 		Start: 1635
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Combine:
 			0:
@@ -193,10 +210,12 @@ trike:
 		Facings: -32
 		Length: 7
 		BlendMode: Additive
+		Palette: effect
 	icon:
 		Filename: DATA.R16
 		Start: 4277
 		Offset: -30,-24
+		Palette: chrome
 
 quad:
 	idle:
@@ -204,10 +223,13 @@ quad:
 		Start: 1667
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4279
 		Offset: -30,-24
+		Palette: chrome
 
 siege_tank:
 	idle:
@@ -215,20 +237,26 @@ siege_tank:
 		Start: 1763
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 1891
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: DATA.R16
 		Start: 3671
 		Length: 3
 		BlendMode: Additive
+		Palette: effect
 	icon:
 		Filename: DATA.R16
 		Start: 4287
 		Offset: -30,-24
+		Palette: chrome
 
 siege_tank.husk:
 	idle:
@@ -237,12 +265,16 @@ siege_tank.husk:
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 1891
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 missile_tank:
 	idle:
@@ -250,10 +282,13 @@ missile_tank:
 		Start: 1603
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4285
 		Offset: -30,-24
+		Palette: chrome
 
 missile_tank.husk:
 	idle:
@@ -262,24 +297,36 @@ missile_tank.husk:
 		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		FilenamePattern: missiletankhusk/missiletankhuskturret-{0:D4}.png
 			Count: 16
 		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris01:
 		Filename: missiletankhusk/missiletankhuskdebris-0000.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris02:
 		Filename: missiletankhusk/missiletankhuskdebris-0001.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris03:
 		Filename: missiletankhusk/missiletankhuskdebris-0002.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris04:
 		Filename: missiletankhusk/missiletankhuskdebris-0003.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 sonic_tank:
 	idle:
@@ -287,10 +334,13 @@ sonic_tank:
 		Start: 1827
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4288
 		Offset: -30,-24
+		Palette: chrome
 
 sonic_tank.husk:
 	idle:
@@ -299,24 +349,36 @@ sonic_tank.husk:
 		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		FilenamePattern: sonictankhusk/sonictankhuskturret-{0:D4}.png
 			Count: 4
 		Facings: -4
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris01:
 		Filename: sonictankhusk/sonictankhuskdebris-0000.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris02:
 		Filename: sonictankhusk/sonictankhuskdebris-0001.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris03:
 		Filename: sonictankhusk/sonictankhuskdebris-0002.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris04:
 		Filename: sonictankhusk/sonictankhuskdebris-0003.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 
 combat_tank_a:
 	idle:
@@ -324,21 +386,27 @@ combat_tank_a:
 		Start: 1731
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 1859
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: DATA.R16
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
+		Palette: effect
 	icon:
 		Filename: DATA.R16
 		Start: 4281
 		Offset: -30,-24
+		Palette: chrome
 
 combat_tank_a.husk:
 	idle:
@@ -347,12 +415,16 @@ combat_tank_a.husk:
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 1859
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 combat_tank_h:
 	idle:
@@ -360,21 +432,27 @@ combat_tank_h:
 		Start: 2051
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 2115
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: DATA.R16
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
+		Palette: effect
 	icon:
 		Filename: DATA.R16
 		Start: 4282
 		Offset: -30,-24
+		Palette: chrome
 
 combat_tank_h.husk:
 	idle:
@@ -383,12 +461,16 @@ combat_tank_h.husk:
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 2115
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 combat_tank_o:
 	idle:
@@ -396,21 +478,27 @@ combat_tank_o:
 		Start: 2453
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 2485
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: DATA.R16
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
+		Palette: effect
 	icon:
 		Filename: DATA.R16
 		Start: 4283
 		Offset: -30,-24
+		Palette: chrome
 
 combat_tank_o.husk:
 	idle:
@@ -419,12 +507,16 @@ combat_tank_o.husk:
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		Filename: DATA.R16
 		Start: 2485
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 devastator:
 	idle:
@@ -432,28 +524,36 @@ devastator:
 		Start: 2083
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: DATA.R16
 		Start: 4060
 		Tick: 80
 		Facings: -32
 		BlendMode: Additive
+		Palette: effect
 	active:
 		Filename: DATA.R16
 		Start: 3839
 		Length: 14
 		Tick: 130
 		BlendMode: Additive
+		Palette: player
+		IsPlayerPalette: True
 	active-2:
 		Filename: DATA.R16
 		Start: 4152
 		Length: 12
 		Tick: 110
 		BlendMode: Additive
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4289
 		Offset: -30,-24
+		Palette: chrome
 
 devastator.husk:
 	idle:
@@ -462,6 +562,8 @@ devastator.husk:
 		Facings: -32
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 
 raider:
 	Inherits: trike
@@ -470,10 +572,15 @@ raider:
 		Start: 2421
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4278
 		Offset: -30,-24
+		Palette: chrome
+	muzzle:
+		Palette: effect
 
 stealth_raider:
 	Inherits: trike
@@ -482,10 +589,15 @@ stealth_raider:
 		Start: 2421
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4298
 		Offset: -30,-24
+		Palette: chrome
+	muzzle:
+		Palette: effect
 
 deviator:
 	idle:
@@ -493,10 +605,13 @@ deviator:
 		Start: 2389
 		Facings: -32
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: DATA.R16
 		Start: 4286
 		Offset: -30,-24
+		Palette: chrome
 
 deviator.husk:
 	idle:
@@ -505,21 +620,33 @@ deviator.husk:
 		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	turret:
 		FilenamePattern: deviatorhusk/deviatorhuskturret-{0:D4}.png
 			Count: 16
 		Facings: -4
 		ZOffset: -512
 		Remap: 54F94B
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris01:
 		Filename: deviatorhusk/deviatordebris-0000.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris02:
 		Filename: deviatorhusk/deviatordebris-0001.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris03:
 		Filename: deviatorhusk/deviatordebris-0002.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True
 	tankdebris04:
 		Filename: deviatorhusk/deviatordebris-0003.png
 		ZOffset: -512
+		Palette: player
+		IsPlayerPalette: True

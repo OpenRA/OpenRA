@@ -14,8 +14,6 @@
 	ShroudRenderer:
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
-		ShroudPalette: shroud
-		FogPalette: shroud
 	Locomotor@FOOT:
 		Name: foot
 		Crushes: crate
@@ -206,29 +204,26 @@
 	TSTiberiumRenderer:
 		ResourceTypes:
 			Tiberium:
-				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-				Palette: greentiberium
+				Sequences: tib01g, tib02g, tib03g, tib04g, tib05g, tib06g, tib07g, tib08g, tib09g, tib10g, tib11g, tib12g
 				Name: resource-tiberium
 			BlueTiberium:
-				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
-				Palette: bluetiberium
+				Sequences: tib01b, tib02b, tib03b, tib04b, tib05b, tib06b, tib07b, tib08b, tib09b, tib10b, tib11b, tib12b
 				Name: resource-tiberium
 		Ramp1Sequences:
-			Tiberium: tib13, tib14
-			BlueTiberium: tib13, tib14
+			Tiberium: tib13g, tib14g
+			BlueTiberium: tib13b, tib14b
 		Ramp2Sequences:
-			Tiberium: tib15, tib16
-			BlueTiberium: tib15, tib16
+			Tiberium: tib15g, tib16g
+			BlueTiberium: tib15b, tib16b
 		Ramp3Sequences:
-			Tiberium: tib17, tib18
-			BlueTiberium: tib17, tib18
+			Tiberium: tib17g, tib18g
+			BlueTiberium: tib17b, tib18b
 		Ramp4Sequences:
-			Tiberium: tib19, tib20
-			BlueTiberium: tib19, tib20
+			Tiberium: tib19g, tib20g
+			BlueTiberium: tib19b, tib20b
 	TSVeinsRenderer:
 		ResourceType: Veins
 		Name: resource-veins
-		Palette: player
 		VeinholeActors: veinhole
 
 World:
@@ -398,7 +393,6 @@ World:
 	OrderEffects:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
-		TerrainFlashPalette: moveflash
 		ActorFlashType: Tint
 
 EditorWorld:
@@ -427,7 +421,6 @@ EditorWorld:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
-		Palette: ra
 		Alpha: 0.35
 	MarkerLayerOverlay:
 	TilingPathTool:

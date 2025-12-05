@@ -40,13 +40,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			"Two values indicate a random delay range.")]
 		public readonly int[] InitialDelay = [0];
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name.")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName.")]
-		public readonly bool IsPlayerPalette = false;
-
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"Leave empty to disable all filtering.")]
 		public readonly BitSet<DamageType> DamageTypes = default;

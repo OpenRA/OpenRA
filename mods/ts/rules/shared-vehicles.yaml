@@ -94,7 +94,6 @@ HARV:
 		Weapon: TiberiumExplosion
 	WithHarvestOverlay:
 		LocalOffset: 543,0,0
-		Palette: effect
 	RenderSprites:
 		Image: harv.gdi
 		FactionImages:
@@ -107,7 +106,6 @@ HARV:
 		RequiresSelection: true
 		Margin: 5, 2
 		PipCount: 7
-		Palette: pips
 		ResourceSequences:
 			Tiberium: pip-green
 			BlueTiberium: pip-blue
@@ -154,7 +152,6 @@ LPST:
 		Condition: real-actor
 	RenderSprites:
 		Image: lpst.gdi
-		PlayerPalette: playertem
 		FactionImages:
 			gdi: lpst.gdi
 			nod: lpst.nod
@@ -183,12 +180,9 @@ LPST:
 	WithIdleOverlay@LIGHTS:
 		RequiresCondition: deployed && real-actor && !empdisable
 		Sequence: idle-lights
-		Palette: player-nobright
-		IsPlayerPalette: True
 	WithIdleOverlay@LIGHTS-BRIGHT:
 		RequiresCondition: deployed && real-actor && !empdisable
 		Sequence: idle-lights-bright
-		Palette: bright
 	DetectCloaked:
 		RequiresCondition: !empdisable && deployed
 		Range: 18c0

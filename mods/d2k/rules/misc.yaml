@@ -131,7 +131,6 @@ crate:
 		Units: mcv
 	QuantizeFacingsFromSequence:
 	RenderSprites:
-		Palette: effect
 	WithCrateBody:
 	Passenger:
 	MapEditorData:
@@ -175,8 +174,7 @@ carryall.colorpicker:
 	-MapEditorData:
 	-Encyclopedia:
 	RenderSprites:
-		Image: carryall
-		Palette: colorpicker
+		Image: carryall.colorpicker
 
 camera:
 	Interactable:

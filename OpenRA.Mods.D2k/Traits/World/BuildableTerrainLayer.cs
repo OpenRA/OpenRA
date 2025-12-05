@@ -23,8 +23,9 @@ namespace OpenRA.Mods.D2k.Traits
 	[TraitLocation(SystemActors.World)]
 	public class BuildableTerrainLayerInfo : TraitInfo, Requires<ITiledTerrainRendererInfo>
 	{
+		[PaletteReference]
 		[Desc("Palette to render the layer sprites in.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		public readonly string Palette = "terrain";
 
 		[Desc("The hitpoints, which can be reduced by the DamagesConcreteWarhead.")]
 		public readonly int MaxStrength = 9000;

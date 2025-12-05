@@ -28,10 +28,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Animation sequence played when collected. Leave empty for no effect.")]
 		public readonly string Sequence = null;
 
-		[PaletteReference]
-		[Desc("Palette to draw the animation in.")]
-		public readonly string Palette = "effect";
-
 		[Desc("Audio clip to play when the crate is collected.")]
 		public readonly string Sound = null;
 
@@ -99,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 			TextNotificationsManager.AddTransientLine(collector.Owner, Info.TextNotification);
 
 			if (Info.Image != null && Info.Sequence != null)
-				collector.World.AddFrameEndTask(w => w.Add(new SpriteEffect(collector, w, Info.Image, Info.Sequence, Info.Palette)));
+				collector.World.AddFrameEndTask(w => w.Add(new SpriteEffect(collector, w, Info.Image, Info.Sequence, collector.Owner)));
 		}
 	}
 }

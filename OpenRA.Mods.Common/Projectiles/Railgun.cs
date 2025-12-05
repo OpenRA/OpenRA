@@ -93,9 +93,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[SequenceReference(nameof(HitAnim), allowNullImage: true)]
 		public readonly string HitAnimSequence = "idle";
 
-		[PaletteReference]
-		public readonly string HitAnimPalette = "effect";
-
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var bc = BeamPlayerColor ? Color.FromArgb(BeamColor.A, args.SourceActor.OwnerColor()) : BeamColor;
@@ -250,7 +247,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			if (hitanim != null)
-				foreach (var r in hitanim.Render(target, wr.Palette(info.HitAnimPalette)))
+				foreach (var r in hitanim.Render(wr, target, args.SourceActor.Owner))
 					yield return r;
 		}
 	}

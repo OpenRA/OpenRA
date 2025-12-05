@@ -48,12 +48,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Smoke sprite sequences randomly chosen from")]
 		public readonly string[] SmokeSequences = [];
 
-		[PaletteReference]
-		public readonly string SmokePalette = "effect";
-
-		[PaletteReference]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 		[FieldLoader.LoadUsing(nameof(LoadInitialSmudges))]
 		public readonly Dictionary<CPos, MapSmudge> InitialSmudges;
 
@@ -100,7 +94,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool hasSmoke;
 
 		TerrainSpriteLayer render;
-		PaletteReference paletteReference;
 		bool disposed;
 
 		public SmudgeLayer(Actor self, SmudgeLayerInfo info)
@@ -126,7 +119,6 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidDataException("Smudges specify different blend modes. "
 					+ "Try using different smudge types for smudges that use different blend modes.");
 
-			paletteReference = wr.Palette(Info.Palette);
 			render = new TerrainSpriteLayer(w, wr, emptySprite, blendMode, true);
 
 			// Add map smudges
@@ -145,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 				};
 
 				tiles.Add(kv.Key, smudge);
-				render.Update(kv.Key, seq, paletteReference, s.Depth);
+				render.Update(kv.Key, seq, s.Depth);
 			}
 		}
 
@@ -165,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(
-					position, w, Info.SmokeImage, Info.SmokeSequences.Random(Game.CosmeticRandom), Info.SmokePalette)));
+					position, w, Info.SmokeImage, Info.SmokeSequences.Random(Game.CosmeticRandom))));
 			}
 
 			// A null Sequence indicates a deleted smudge.
@@ -217,7 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var smudge = kv.Value;
 						tiles[kv.Key] = smudge;
-						render.Update(kv.Key, smudge.Sequence, paletteReference, smudge.Depth);
+						render.Update(kv.Key, smudge.Sequence, smudge.Depth);
 					}
 
 					remove.Add(kv.Key);

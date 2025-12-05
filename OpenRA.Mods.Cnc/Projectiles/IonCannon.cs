@@ -21,18 +21,16 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly Target target;
 		readonly Animation anim;
 		readonly Player firedBy;
-		readonly string palette;
 		readonly WeaponInfo weapon;
 
 		int weaponDelay;
 		bool impacted = false;
 
-		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, in Target target, string effect, string sequence, string palette, int delay)
+		public IonCannon(Player firedBy, WeaponInfo weapon, World world, WPos launchPos, in Target target, string effect, string sequence, int delay)
 		{
 			this.target = target;
 			this.firedBy = firedBy;
 			this.weapon = weapon;
-			this.palette = palette;
 			weaponDelay = delay;
 			anim = new Animation(world, effect);
 			anim.PlayThen(sequence, () => Finish(world));
@@ -62,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return anim.Render(target.CenterPosition, wr.Palette(palette));
+			return anim.Render(wr, target.CenterPosition, firedBy);
 		}
 
 		void Finish(World world)

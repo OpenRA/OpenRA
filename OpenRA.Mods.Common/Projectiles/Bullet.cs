@@ -43,13 +43,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
 		public readonly string[] Sequences = ["idle"];
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("The palette used to draw this projectile.")]
-		public readonly string Palette = "effect";
-
-		[Desc("Palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
@@ -68,13 +61,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		[Desc("Delay in ticks until trail animation is spawned.")]
 		public readonly int TrailDelay = 1;
-
-		[PaletteReference(nameof(TrailUsePlayerPalette))]
-		[Desc("Palette used to render the trail sequence.")]
-		public readonly string TrailPalette = "effect";
-
-		[Desc("Use the Player Palette to render the trail sequence.")]
-		public readonly bool TrailUsePlayerPalette = false;
 
 		[Desc("Is this blocked by actors with BlocksProjectiles trait.")]
 		public readonly bool Blockable = true;
@@ -148,7 +134,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WAngle facing;
 		readonly WAngle angle;
 		readonly WDist speed;
-		readonly string trailPalette;
 
 		readonly float3 shadowColor;
 		readonly float shadowAlpha;
@@ -214,10 +199,6 @@ namespace OpenRA.Mods.Common.Projectiles
 					info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
 			}
 
-			trailPalette = info.TrailPalette;
-			if (info.TrailUsePlayerPalette)
-				trailPalette += args.SourceActor.Owner.InternalName;
-
 			smokeTicks = info.TrailDelay;
 			remainingBounces = info.BounceCount;
 
@@ -269,7 +250,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				var delayedPos = WPos.LerpQuadratic(source, target, angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(delayedPos, GetEffectiveFacing(), w,
-					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), trailPalette)));
+					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), Args.SourceActor.Owner)));
 
 				smokeTicks = info.TrailInterval;
 			}
@@ -338,23 +319,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			var world = Args.SourceActor.World;
 			if (!world.FogObscures(pos))
 			{
-				var paletteName = info.Palette;
-				if (paletteName != null && info.IsPlayerPalette)
-					paletteName += Args.SourceActor.Owner.InternalName;
-
-				var palette = wr.Palette(paletteName);
-
 				if (info.Shadow)
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
 					var shadowPos = pos - new WVec(0, 0, dat.Length);
-					foreach (var r in Animation.Render(shadowPos, palette))
+					foreach (var r in Animation.Render(wr, shadowPos, Args.SourceActor.Owner))
 						yield return ((IModifyableRenderable)r)
 							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
 							.WithAlpha(shadowAlpha);
 				}
 
-				foreach (var r in Animation.Render(pos, palette))
+				foreach (var r in Animation.Render(wr, pos, Args.SourceActor.Owner))
 					yield return r;
 			}
 		}

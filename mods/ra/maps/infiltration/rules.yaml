@@ -102,7 +102,6 @@ TRUK.Hijackable:
 	-DeliversCash:
 	RenderSprites:
 		Image: TRUK
-		Palette: truk-soviets
 	RevealsShroud:
 		Range: 6c0
 	Voiced:

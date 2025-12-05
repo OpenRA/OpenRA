@@ -23,20 +23,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		[SequenceReference]
 		public readonly string Sequence = "bib";
 
-		[PaletteReference]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 		public readonly bool HasMinibib = false;
 
 		public override object Create(ActorInitializer init) { return new WithBuildingBib(init.Self, this); }
 
-		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
+		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, OwnerInit owner)
 		{
 			if (init.Contains<HideBibPreviewInit>(this))
 				yield break;
-
-			if (Palette != null)
-				p = init.WorldRenderer.Palette(Palette);
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();
 
@@ -69,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				// Z-order is one set to the top of the footprint
 				var offset = map.CenterOfCell(cell) - map.CenterOfCell(location) - centerOffset;
-				yield return new SpriteActorPreview(anim, () => offset, () => -(offset.Y + centerOffset.Y + 512), p);
+				yield return new SpriteActorPreview(anim, () => offset, () => -(offset.Y + centerOffset.Y + 512), owner);
 			}
 		}
 
@@ -120,7 +114,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				var offset = self.World.Map.CenterOfCell(cell) - self.World.Map.CenterOfCell(location) - centerOffset;
 				var awo = new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512));
 				anims.Add(awo);
-				rs.Add(awo, info.Palette);
+				rs.Add(awo);
 			}
 		}
 

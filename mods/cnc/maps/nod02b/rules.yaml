@@ -20,28 +20,24 @@ World:
 		GenericVisibility: Enemy
 		ShowOwnerRow: false
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Tank:
 	Tooltip:
 		GenericVisibility: Enemy
 		ShowOwnerRow: false
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Helicopter:
 	Tooltip:
 		GenericVisibility: Enemy
 		ShowOwnerRow: false
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Infantry:
 	Tooltip:
 		GenericVisibility: Enemy
 		ShowOwnerRow: false
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Plane:
 	Tooltip:
@@ -68,7 +64,6 @@ World:
 		GenericStancePrefix: false
 		ShowOwnerRow: false
 	RenderSprites:
-		PlayerPalette: player-units
 
 NUK2:
 	Buildable:
@@ -130,19 +125,15 @@ MCV:
 	Buildable:
 		Prerequisites: ~disabled
 	RenderSprites:
-		PlayerPalette: player
 
 MCV.Husk:
 	RenderSprites:
-		PlayerPalette: player
 
 HARV:
 	RenderSprites:
-		PlayerPalette: player
 
 HARV.Husk:
 	RenderSprites:
-		PlayerPalette: player
 
 SAM:
 	Buildable:

@@ -62,6 +62,7 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly bool checkUnsafeTiles;
 		readonly Sprite validTile, unsafeTile, blockedTile;
 		readonly float validAlpha, unsafeAlpha, blockedAlpha;
+		readonly string validPalette, unsafePalette, blockedPalette;
 		readonly CachedTransform<CPos, List<CPos>> unpathableCells;
 
 		public D2kActorPreviewPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, D2kActorPreviewPlaceBuildingPreviewInfo info, TypeDictionary init)
@@ -78,14 +79,17 @@ namespace OpenRA.Mods.D2k.Traits
 			var validSequence = sequences.GetSequence(info.Image, info.TileValidName);
 			validTile = validSequence.GetSprite(0);
 			validAlpha = validSequence.GetAlpha(0);
+			validPalette = validSequence.GetPalette();
 
 			var unsafeSequence = sequences.GetSequence(info.Image, info.TileUnsafeName);
 			unsafeTile = unsafeSequence.GetSprite(0);
 			unsafeAlpha = unsafeSequence.GetAlpha(0);
+			unsafePalette = unsafeSequence.GetPalette();
 
 			var blockedSequence = sequences.GetSequence(info.Image, info.TileInvalidName);
 			blockedTile = blockedSequence.GetSprite(0);
 			blockedAlpha = blockedSequence.GetAlpha(0);
+			blockedPalette = blockedSequence.GetPalette();
 
 			var buildingInfo = ai.TraitInfo<BuildingInfo>();
 			unpathableCells = new CachedTransform<CPos, List<CPos>>(topLeft => buildingInfo.OccupiedTiles(topLeft).ToList());
@@ -94,7 +98,9 @@ namespace OpenRA.Mods.D2k.Traits
 		protected override IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
-			var palette = wr.Palette(info.Palette);
+			var vPalette = wr.Palette(validPalette);
+			var bPalette = wr.Palette(blockedPalette);
+			var uPalette = wr.Palette(unsafePalette);
 			var topLeftPos = wr.World.Map.CenterOfCell(topLeft);
 
 			var candidateSafeTiles = unpathableCells.Update(topLeft);
@@ -110,6 +116,7 @@ namespace OpenRA.Mods.D2k.Traits
 					info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type);
 
 				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : isUnsafe ? unsafeTile : validTile;
+				var palette = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? bPalette : isUnsafe ? uPalette : vPalette;
 				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : isUnsafe ? unsafeAlpha : validAlpha;
 
 				var pos = wr.World.Map.CenterOfCell(c.Key);

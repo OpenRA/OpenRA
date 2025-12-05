@@ -2,26 +2,31 @@ orca:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: orcaicon.shp
+		Palette: chrome
 
 orcab:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: obmbicon.shp
+		Palette: chrome
 
 trnsport:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: otrnicon.shp
+		Palette: chrome
 
 scrin:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: proicon.shp
+		Palette: chrome
 
 apache:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: apchicon.shp
+		Palette: chrome
 	rotor:
 		Filename: harpyrotor.shp
 		Start: 32
@@ -29,17 +34,22 @@ apache:
 		Offset: 0, 0, 32
 		ZRamp: 1
 		Tick: 25
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: harpyrotor.shp
 		Length: 31
 		Offset: 0, 0, 32
 		ZRamp: 1
 		Tick: 50
+		Palette: player
+		IsPlayerPalette: True
 
 orcatran:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: crryicon.shp
+		Palette: chrome
 
 pod:
 	Inherits: ^VehicleOverlays
@@ -47,3 +57,5 @@ pod:
 		Filename: pod.shp
 		Facings: 1
 		Length: 1
+		Palette: player
+		IsPlayerPalette: True

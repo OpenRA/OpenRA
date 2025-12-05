@@ -94,12 +94,11 @@ namespace OpenRA.Mods.Common.Effects
 			var renderables = SpriteRenderable.None;
 			if (targetLineNodes.Count > 0 && (circles != null || flag != null))
 			{
-				var palette = wr.Palette(rp.PaletteName);
 				if (circles != null)
-					renderables = renderables.Concat(circles.Render(targetLineNodes[^1], palette));
+					renderables = renderables.Concat(circles.Render(wr, targetLineNodes[^1], building.Owner));
 
 				if (flag != null)
-					renderables = renderables.Concat(flag.Render(targetLineNodes[^1], palette));
+					renderables = renderables.Concat(flag.Render(wr, targetLineNodes[^1], building.Owner));
 			}
 
 			return renderables;

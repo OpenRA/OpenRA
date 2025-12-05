@@ -35,9 +35,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence used for full pips.")]
 		public readonly string FullSequence = "pip-green";
 
-		[PaletteReference]
-		public readonly string Palette = "chrome";
-
 		public override object Create(ActorInitializer init) { return new WithResourceStoragePipsDecoration(init.Self, this); }
 	}
 
@@ -57,7 +54,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			pips.PlayRepeating(Info.EmptySequence);
 
-			var palette = wr.Palette(Info.Palette);
 			var pipSize = pips.Image.Size.XY.ToInt2();
 			var pipStride = Info.PipStride != int2.Zero ? Info.PipStride : new int2(pipSize.X, 0);
 
@@ -65,6 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			for (var i = 0; i < Info.PipCount; i++)
 			{
 				pips.PlayRepeating(player.Resources * Info.PipCount > i * player.ResourceCapacity ? Info.FullSequence : Info.EmptySequence);
+				var palette = wr.Palette(pips.Palette(self.Owner));
 				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
 
 				screenPos += pipStride;

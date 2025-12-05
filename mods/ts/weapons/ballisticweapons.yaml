@@ -7,7 +7,6 @@
 		Image: 120mm
 		Shadow: true
 		LaunchAngle: 75
-		Palette: ra
 	Warhead@1Dam: SpreadDamage
 		Spread: 108
 		Falloff: 100, 50, 25, 12, 6, 3, 0
@@ -25,7 +24,6 @@
 		ValidTargets: Ground, Air
 	Warhead@3EffWater: CreateEffect
 		Explosions: small_watersplash
-		ExplosionPalette: player
 		ImpactSounds: ssplash3.aud
 		ValidTargets: Water
 		InvalidTargets: Vehicle
@@ -68,7 +66,6 @@ RPGTower:
 		Speed: 384
 		Blockable: false
 		Image: canister
-		Palette: player
 	Warhead@1Dam: SpreadDamage
 		Damage: 11000
 		Versus:
@@ -142,7 +139,6 @@ Grenade:
 		LaunchAngle: 60
 		Inaccuracy: 0
 		Image: DISCUS
-		Palette: effect
 		BounceCount: 2
 	Warhead@1Dam: SpreadDamage
 		Spread: 154

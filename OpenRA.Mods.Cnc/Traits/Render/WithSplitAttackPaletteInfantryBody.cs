@@ -12,16 +12,11 @@
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	sealed class WithSplitAttackPaletteInfantryBodyInfo : WithInfantryBodyInfo
 	{
-		[PaletteReference]
-		[Desc("Palette to use for the split attack rendering.")]
-		public readonly string SplitAttackPalette = null;
-
 		[Desc("Sequence suffix to use.")]
 		public readonly string SplitAttackSuffix = "muzzle";
 
@@ -40,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			this.info = info;
 			var rs = init.Self.Trait<RenderSprites>();
 			splitAnimation = new Animation(init.World, rs.GetImage(init.Self), RenderSprites.MakeFacingFunc(init.Self));
-			rs.Add(new AnimationWithOffset(splitAnimation, null, () => IsTraitDisabled || !visible), info.SplitAttackPalette);
+			rs.Add(new AnimationWithOffset(splitAnimation, null, () => IsTraitDisabled || !visible));
 		}
 
 		protected override void Attacking(Actor self, Armament a, Barrel barrel)

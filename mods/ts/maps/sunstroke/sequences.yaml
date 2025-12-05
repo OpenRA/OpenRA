@@ -1,7 +1,9 @@
 slav:
 	icon:
 		Filename: xxicon.shp
+		Palette: chrome
 
 4tnk:
 	icon:
 		Filename: xxicon.shp
+		Palette: chrome

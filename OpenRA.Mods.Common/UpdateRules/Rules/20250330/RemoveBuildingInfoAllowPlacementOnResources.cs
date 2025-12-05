@@ -14,10 +14,6 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	/// <summary>
-	/// Replaces the BaseAttackNotifier with a new AttackNotifier that uses the
-	/// new attack system.
-	/// </summary>
 	public class RemoveBuildingInfoAllowPlacementOnResources : UpdateRule, IBeforeUpdateActors
 	{
 		public override string Name => "Remove AllowPlacementOnResources from BuildingInfo";

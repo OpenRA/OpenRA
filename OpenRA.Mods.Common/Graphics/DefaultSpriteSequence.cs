@@ -115,6 +115,15 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("File name pattern to build the sprite to use for this sequence.")]
 		protected static readonly SpriteSequenceField<string> FilenamePattern = new(nameof(FilenamePattern), null);
 
+		[Desc("Palette to use for this sequence.")]
+		protected static readonly SpriteSequenceField<string> Palette = new(nameof(Palette), null);
+
+		[Desc("Palette to use for the shadow.")]
+		protected static readonly SpriteSequenceField<string> ShadowPalette = new(nameof(ShadowPalette), null);
+
+		[Desc("Whether the palette is a player palette.")]
+		protected static readonly SpriteSequenceField<bool> IsPlayerPalette = new(nameof(IsPlayerPalette), false);
+
 		[Desc("Frame index to start from.")]
 		protected static readonly SpriteSequenceField<int> Start = new(nameof(Start), 0);
 
@@ -206,6 +215,9 @@ namespace OpenRA.Mods.Common.Graphics
 		protected Sprite[] shadowSprites;
 		protected bool reverseFacings;
 		protected bool reverses;
+		protected string palette;
+		protected string shadowPalette;
+		protected bool isPlayerPalette;
 
 		protected int start;
 		protected int shadowStart;
@@ -242,6 +254,16 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
+		string ISpriteSequence.GetPalette(string owner)
+		{
+			if (isPlayerPalette)
+				return palette + owner;
+
+			return palette;
+		}
+
+		bool ISpriteSequence.IsPlayerPalette => isPlayerPalette;
+		string ISpriteSequence.ShadowPalette => shadowPalette;
 		int ISpriteSequence.Facings => interpolatedFacings ?? facings;
 		int ISpriteSequence.Tick => tick;
 		int ISpriteSequence.ZOffset => zOffset;
@@ -365,6 +387,10 @@ namespace OpenRA.Mods.Common.Graphics
 			this.image = image;
 			Name = sequence;
 			Loader = loader;
+
+			palette = LoadField(Palette, data, defaults);
+			shadowPalette = LoadField(ShadowPalette, data, defaults);
+			isPlayerPalette = LoadField(IsPlayerPalette, data, defaults);
 
 			start = LoadField(Start, data, defaults);
 

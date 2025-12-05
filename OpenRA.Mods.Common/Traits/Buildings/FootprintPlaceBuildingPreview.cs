@@ -21,10 +21,6 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Creates a building placement preview showing only the building footprint.")]
 	public class FootprintPlaceBuildingPreviewInfo : TraitInfo<FootprintPlaceBuildingPreview>, IPlaceBuildingPreviewGeneratorInfo
 	{
-		[PaletteReference]
-		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
-
 		[Desc("Custom opacity to apply to the placement sprite.")]
 		public readonly float FootprintAlpha = 1f;
 
@@ -53,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int2 topLeftScreenOffset;
 		readonly Sprite validTile, blockedTile;
 		readonly float validAlpha, blockedAlpha;
+		readonly string validPalette, blockedPalette;
 
 		public FootprintPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, FootprintPlaceBuildingPreviewInfo info)
 		{
@@ -71,17 +68,20 @@ namespace OpenRA.Mods.Common.Traits
 				var validSequence = sequences.GetSequence("overlay", $"build-valid-{tileset}");
 				validTile = validSequence.GetSprite(0);
 				validAlpha = validSequence.GetAlpha(0);
+				validPalette = validSequence.GetPalette();
 			}
 			else
 			{
 				var validSequence = sequences.GetSequence("overlay", "build-valid");
 				validTile = validSequence.GetSprite(0);
 				validAlpha = validSequence.GetAlpha(0);
+				validPalette = validSequence.GetPalette();
 			}
 
 			var blockedSequence = sequences.GetSequence("overlay", "build-invalid");
 			blockedTile = blockedSequence.GetSprite(0);
 			blockedAlpha = blockedSequence.GetAlpha(0);
+			blockedPalette = blockedSequence.GetPalette();
 		}
 
 		protected virtual void TickInner() { }
@@ -89,7 +89,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected virtual IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
-			var palette = wr.Palette(info.Palette);
+			var vPalette = wr.Palette(validPalette);
+			var bPalette = wr.Palette(blockedPalette);
 			var topLeftPos = wr.World.Map.CenterOfCell(topLeft);
 			foreach (var c in footprint)
 			{
@@ -97,6 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : validTile;
+				var palette = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? bPalette : vPalette;
 				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : validAlpha;
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);

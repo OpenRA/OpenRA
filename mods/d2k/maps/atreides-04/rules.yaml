@@ -81,7 +81,6 @@ tile475:
 	Immobile:
 		OccupiesSpace: false
 	RenderSprites:
-		Palette: d2k
 	WithIdleOverlay@2:
 		Sequence: idle2
 	WithIdleOverlay@3:

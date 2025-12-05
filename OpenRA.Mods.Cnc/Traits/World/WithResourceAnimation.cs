@@ -42,10 +42,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Randomly select one of these sequences to render.")]
 		public readonly string[] Sequences = ["idle"];
 
-		[PaletteReference]
-		[Desc("Animation palette.")]
-		public readonly string Palette = null;
-
 		public override object Create(ActorInitializer init) { return new WithResourceAnimation(init.Self, this); }
 	}
 
@@ -98,7 +94,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				.Select(world.Map.CenterOfCell);
 
 			foreach (var position in positions)
-				world.AddFrameEndTask(w => w.Add(new SpriteEffect(position, w, info.Image, info.Sequences.Random(w.LocalRandom), info.Palette)));
+				world.AddFrameEndTask(w => w.Add(new SpriteEffect(position, w, info.Image, info.Sequences.Random(w.LocalRandom), self.Owner)));
 
 			ticks = Common.Util.RandomInRange(world.LocalRandom, info.Interval);
 		}

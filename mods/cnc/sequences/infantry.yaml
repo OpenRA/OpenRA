@@ -2,6 +2,8 @@ vice:
 	idle:
 		Filename: vice.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Combine:
 			0:
@@ -38,10 +40,13 @@ vice:
 				Offset: -3,2
 		Facings: 8
 		Length: 13
+		Palette: effect
 	die:
 		Filename: chemball.shp
 		Length: *
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: viceicnh.shp
 
@@ -49,37 +54,61 @@ pvice:
 	Inherits: vice
 	Defaults:
 		Filename: pvice.shp
+	idle:
+		Palette: player
+		IsPlayerPalette: True
+	muzzle:
+		Palette: effect
+	die:
+		Palette: player
+		IsPlayerPalette: True
+	icon:
+		Palette: chrome
 
 e1:
 	Defaults:
 		Filename: e1.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 128
@@ -94,18 +123,26 @@ e1:
 		Start: 192
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 257
 		Length: 15
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 272
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle3:
 		Start: 289
 		Length: 22
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 460
 		Length: 3
@@ -116,62 +153,87 @@ e1:
 		Start: 517
 		Length: 9
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	# Shot
 	die1:
 		Start: 381
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 390
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 398
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 406
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 418
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 366
 		Length: 11
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e1icnh.tem
+		Palette: chrome
 
 e2:
 	Defaults:
 		Filename: e2.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	throw:
 		Start: 64
 		Length: 20
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 224
@@ -186,27 +248,39 @@ e2:
 		Start: 240
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 240
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 240
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	prone-throw:
 		Start: 288
 		Length: 12
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 400
 		Length: 13
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 588
 		Length: 3
@@ -217,57 +291,80 @@ e2:
 		Start: 509
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 518
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 526
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 534
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 546
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 494
 		Length: 11
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e2rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e2icnh.tem
+		Palette: chrome
 
 e3:
 	Defaults:
 		Filename: e3.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 128
@@ -282,27 +379,39 @@ e3:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 144
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 144
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 192
 		Length: 10
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 274
 		Length: 12
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 289
 		Length: 14
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 476
 		Length: 3
@@ -313,57 +422,80 @@ e3:
 		Start: 397
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 406
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 414
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 422
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 434
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 382
 		Length: 11
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e3rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e3icnh.tem
+		Palette: chrome
 
 e4:
 	Defaults:
 		Filename: e4.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 192
@@ -378,27 +510,39 @@ e4:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 400
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 588
 		Length: 3
@@ -409,37 +553,51 @@ e4:
 		Start: 509
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 518
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 526
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 534
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 546
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 494
 		Length: 10
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e4rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename:
 		Combine:
@@ -477,26 +635,36 @@ e4:
 				Offset: -7,8
 		Facings: 8
 		Length: 13
+		Palette: effect
 	icon:
 		Filename: e4icnh.tem
+		Palette: chrome
 
 e5:
 	Defaults:
 		Filename: e5.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 192
@@ -511,27 +679,39 @@ e5:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 208
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 208
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 256
 		Length: 16
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 384
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 400
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 588
 		Length: 3
@@ -542,37 +722,51 @@ e5:
 		Start: 509
 		Length: 9
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 518
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 526
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 534
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 546
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 494
 		Length: 10
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e4rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename:
 		Combine:
@@ -610,22 +804,30 @@ e5:
 				Offset: -3,2
 		Facings: 8
 		Length: 13
+		Palette: effect
 	icon:
 		Filename: e5icnh.tem
+		Palette: chrome
 
 e6:
 	Defaults:
 		Filename: e6.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 66
@@ -640,23 +842,33 @@ e6:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 82
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 82
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 114
 		Length: 6
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 200
 		Length: 6
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 200
 		Length: 3
@@ -667,57 +879,80 @@ e6:
 		Start: 146
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 154
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 162
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 170
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 182
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 130
 		Length: 4
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: e6icnh.tem
+		Palette: chrome
 
 rmbo:
 	Defaults:
 		Filename: rmbo.shp
 	stand:
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	stand2:
 		Start: 8
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Start: 16
 		Length: 6
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 64
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	# stand -> prone transition
 	liedown:
 		Start: 96
@@ -732,31 +967,45 @@ rmbo:
 		Start: 112
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-stand2:
 		Start: 112
 		Stride: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	prone-run:
 		Start: 112
 		Length: 4
 		Facings: 8
 		Tick: 100
+		Palette: player
+		IsPlayerPalette: True
 	prone-shoot:
 		Start: 160
 		Length: 4
 		Facings: 8
+		Palette: player
+		IsPlayerPalette: True
 	idle1:
 		Start: 192
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle2:
 		Start: 208
 		Length: 16
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	idle3:
 		Start: 224
 		Length: 15
 		Tick: 120
+		Palette: player
+		IsPlayerPalette: True
 	cheer:
 		Start: 396
 		Length: 3
@@ -767,36 +1016,51 @@ rmbo:
 		Start: 318
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Explode
 	die2:
 		Start: 326
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly and explode in air
 	die3:
 		Start: 334
 		Length: 8
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Fly through air squish on ground
 	die4:
 		Start: 342
 		Length: 12
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Burn
 	die5:
 		Start: 354
 		Length: 18
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	# Tib
 	die6:
 		Start: 308
 		Length: 4
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	die-crushed:
 		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: rmboicnh.tem
+		Palette: chrome

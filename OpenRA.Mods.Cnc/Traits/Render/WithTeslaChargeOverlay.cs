@@ -23,13 +23,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "active";
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithTeslaChargeOverlay(init, this); }
 	}
 
@@ -48,8 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 			overlay = new Animation(init.World, renderSprites.GetImage(init.Self));
 
-			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !charging),
-				info.Palette, info.IsPlayerPalette);
+			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !charging));
 		}
 
 		void INotifyTeslaCharging.Charging(Actor self, in Target target)

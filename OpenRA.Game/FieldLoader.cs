@@ -666,7 +666,7 @@ namespace OpenRA
 			return GetValue(fieldName, fieldType, value, null);
 		}
 
-		static object GetValue(string fieldName, Type fieldType, MiniYaml yaml)
+		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml)
 		{
 			return GetValue(fieldName, fieldType, yaml.Value, yaml);
 		}

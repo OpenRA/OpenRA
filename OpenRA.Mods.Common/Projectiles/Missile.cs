@@ -31,13 +31,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Loop a randomly chosen sequence of Image from this list while this projectile is moving.")]
 		public readonly string[] Sequences = ["idle"];
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Palette used to render the projectile sequence.")]
-		public readonly string Palette = "effect";
-
-		[Desc("Palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		[Desc("Does this projectile have a shadow?")]
 		public readonly bool Shadow = false;
 
@@ -119,13 +112,6 @@ namespace OpenRA.Mods.Common.Projectiles
 		[SequenceReference(nameof(TrailImage), allowNullImage: true)]
 		[Desc("Loop a randomly chosen sequence of TrailImage from this list while this projectile is moving.")]
 		public readonly string[] TrailSequences = ["idle"];
-
-		[PaletteReference(nameof(TrailUsePlayerPalette))]
-		[Desc("Palette used to render the trail sequence.")]
-		public readonly string TrailPalette = "effect";
-
-		[Desc("Use the Player Palette to render the trail sequence.")]
-		public readonly bool TrailUsePlayerPalette = false;
 
 		[Desc("Interval in ticks between spawning trail animation.")]
 		public readonly int TrailInterval = 2;
@@ -215,7 +201,6 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		int ticksToNextSmoke;
 		readonly ContrailRenderable contrail;
-		readonly string trailPalette;
 
 		States state;
 		bool targetPassedBy;
@@ -300,10 +285,6 @@ namespace OpenRA.Mods.Common.Projectiles
 					info.ContrailEndWidth ?? info.ContrailStartWidth,
 					info.ContrailLength, info.ContrailDelay, info.ContrailZOffset);
 			}
-
-			trailPalette = info.TrailPalette;
-			if (info.TrailUsePlayerPalette)
-				trailPalette += args.SourceActor.Owner.InternalName;
 
 			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
@@ -902,7 +883,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (!string.IsNullOrEmpty(info.TrailImage) && --ticksToNextSmoke < 0 && (state != States.Freefall || info.TrailWhenDeactivated))
 			{
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(pos - 3 * move / 2, renderFacing, w,
-					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), trailPalette)));
+					info.TrailImage, info.TrailSequences.Random(world.SharedRandom), args.SourceActor.Owner)));
 
 				ticksToNextSmoke = info.TrailInterval;
 			}
@@ -955,23 +936,17 @@ namespace OpenRA.Mods.Common.Projectiles
 			var world = args.SourceActor.World;
 			if (!world.FogObscures(pos))
 			{
-				var paletteName = info.Palette;
-				if (paletteName != null && info.IsPlayerPalette)
-					paletteName += args.SourceActor.Owner.InternalName;
-
-				var palette = wr.Palette(paletteName);
-
 				if (info.Shadow)
 				{
 					var dat = world.Map.DistanceAboveTerrain(pos);
 					var shadowPos = pos - new WVec(0, 0, dat.Length);
-					foreach (var r in anim.Render(shadowPos, palette))
+					foreach (var r in anim.Render(wr, shadowPos, args.SourceActor.Owner))
 						yield return ((IModifyableRenderable)r)
 							.WithTint(shadowColor, ((IModifyableRenderable)r).TintModifiers | TintModifiers.ReplaceColor)
 							.WithAlpha(shadowAlpha);
 				}
 
-				foreach (var r in anim.Render(pos, palette))
+				foreach (var r in anim.Render(wr, pos, args.SourceActor.Owner))
 					yield return r;
 			}
 		}

@@ -21,13 +21,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence to use for the charge levels.")]
 		public readonly string Sequence = "active";
 
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("Custom palette name")]
-		public readonly string Palette = null;
-
-		[Desc("Custom palette is a player palette BaseName")]
-		public readonly bool IsPlayerPalette = false;
-
 		public override object Create(ActorInitializer init) { return new WithChargeOverlay(init.Self, this); }
 	}
 
@@ -48,8 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
 				() => int2.Lerp(0, overlay.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
 
-			rs.Add(new AnimationWithOffset(overlay, null, () => IsTraitDisabled, 1024),
-				info.Palette, info.IsPlayerPalette);
+			rs.Add(new AnimationWithOffset(overlay, null, () => IsTraitDisabled, 1024));
 		}
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)

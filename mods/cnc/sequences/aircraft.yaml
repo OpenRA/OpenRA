@@ -3,6 +3,8 @@ c17:
 		Filename: c17.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: c17icnh.shp
 
@@ -12,20 +14,30 @@ tran:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	rotor:
 		Filename: lrotor.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	rotor2:
 		Filename: rrotor.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: lrotor.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor2:
 		Filename: rrotor.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	open:
 		Start: 32
 		Length: 4
@@ -33,25 +45,34 @@ tran:
 		Start: 35
 	icon:
 		Filename: tranicnh.tem
+		Palette: chrome
 
 heli:
 	idle:
 		Filename: heli.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	rotor:
 		Filename: lrotor.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: lrotor.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
 	icon:
 		Filename: heliicnh.tem
+		Palette: chrome
 
 orca:
 	Defaults:
@@ -59,17 +80,22 @@ orca:
 	idle:
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	move:
 		Start: 32
 		Facings: 32
 	icon:
 		Filename: orcaicnh.tem
+		Palette: chrome
 
 a10:
 	idle:
 		Filename: a10.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6

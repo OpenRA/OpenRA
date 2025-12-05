@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteReference]
 		[Desc("The name of the palette to base off.")]
-		public readonly string Base = TileSet.TerrainPaletteInternalName;
+		public readonly string Base = "terrain";
 
 		[PaletteDefinition]
 		[Desc("The name of the resulting palette")]

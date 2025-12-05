@@ -43,7 +43,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string ClockAnimation = "clock";
 		public readonly string ClockSequence = "idle";
-		public readonly string ClockPalette = "chrome";
 
 		public readonly bool Horizontal = false;
 
@@ -126,7 +125,6 @@ namespace OpenRA.Mods.Common.Widgets
 			public float2 Pos;
 			public Sprite Sprite;
 			public PaletteReference Palette;
-			public PaletteReference IconClockPalette;
 			public HotkeyReference Hotkey;
 		}
 
@@ -156,8 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Power = p,
 					Pos = new float2(rect.Location),
 					Sprite = icon.Image,
-					Palette = worldRenderer.Palette(p.Info.IconPalette),
-					IconClockPalette = worldRenderer.Palette(ClockPalette),
+					Palette = worldRenderer.Palette(icon.Palette()),
 					Hotkey = IconCount < HotkeyCount ? hotkeys[IconCount] : null,
 				};
 
@@ -218,7 +215,7 @@ namespace OpenRA.Mods.Common.Widgets
 					* (clock.CurrentSequence.Length - 1) / sp.TotalTicks);
 
 				clock.Tick();
-				WidgetUtils.DrawSpriteCentered(clock.Image, p.IconClockPalette, p.Pos + iconOffset);
+				WidgetUtils.DrawSpriteCentered(clock.Image, worldRenderer.Palette(clock.CurrentSequence.GetPalette()), p.Pos + iconOffset);
 			}
 
 			Game.Renderer.DisableAntialiasingFilter();

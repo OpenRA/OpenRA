@@ -57,10 +57,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Muzzle flash sequence to render")]
 		public readonly string MuzzleSequence = null;
 
-		[PaletteReference]
-		[Desc("Palette to render Muzzle flash sequence in")]
-		public readonly string MuzzlePalette = "effect";
-
 		[GrantedConditionReference]
 		[Desc("Condition to grant while reloading.")]
 		public readonly string ReloadingCondition = null;

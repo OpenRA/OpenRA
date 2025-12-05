@@ -10,6 +10,8 @@ fire:
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
+		Palette: player
+		IsPlayerPalette: True
 	2:
 		Filename: fire2.shp
 		Length: *
@@ -26,10 +28,12 @@ burn-l:
 		Start: 16
 		Length: 44
 		ZOffset: 512
+		Palette: staticterrain
 	end:
 		Start: 60
 		Length: 6
 		ZOffset: 512
+		Palette: staticterrain
 
 burn-m:
 	Defaults:
@@ -41,10 +45,12 @@ burn-m:
 		Start: 16
 		Length: 44
 		ZOffset: 512
+		Palette: staticterrain
 	end:
 		Start: 60
 		Length: 6
 		ZOffset: 512
+		Palette: staticterrain
 
 burn-s:
 	Defaults:
@@ -56,15 +62,18 @@ burn-s:
 		Start: 12
 		Length: 46
 		ZOffset: 512
+		Palette: staticterrain
 	end:
 		Start: 59
 		Length: 5
 		ZOffset: 512
+		Palette: staticterrain
 
 120mm:
 	idle:
 		Filename: 120mm.shp
 		ZOffset: 1023
+		Palette: effect
 
 smoke_m:
 	Defaults:
@@ -73,6 +82,7 @@ smoke_m:
 		Length: *
 		Offset: 2, -5
 		ZOffset: 512
+		Palette: effect
 	start:
 		Length: 49
 		Offset: 2, -5
@@ -82,6 +92,7 @@ smoke_m:
 		Length: 42
 		Offset: 2, -5
 		ZOffset: 512
+		Palette: effect
 
 scorch_flames:
 	large_flame:
@@ -142,6 +153,7 @@ scorch_flames:
 				Length: 42
 				Offset: 2, -5
 				Scale: 0.25
+		Palette: effect
 	medium_flame:
 		Length: *
 		Combine:
@@ -187,6 +199,7 @@ scorch_flames:
 				Length: 42
 				Offset: 2, -5
 				Scale: 0.25
+		Palette: effect
 	small_flame:
 		Combine:
 			0:
@@ -228,6 +241,7 @@ scorch_flames:
 				Scale: 0.25
 		Length: *
 		Offset: 0,-3
+		Palette: effect
 	tiny_flame:
 		Combine:
 			0:
@@ -300,30 +314,35 @@ laserfire:
 		Filename: veh-hit3.shp
 		Length: *
 		ZOffset: 511
+		Palette: effect
 
 dragon:
 	idle:
 		Filename: dragon.shp
 		Facings: 32
 		ZOffset: 1023
+		Palette: effect
 
 smokey:
 	idle:
 		Filename: smokey.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
 
 bomb:
 	idle:
 		Filename: bomb.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
 
 missile:
 	idle:
 		Filename: missile.shp
 		Facings: 32
 		ZOffset: 1023
+		Palette: effect
 
 patriot:
 	idle:
@@ -337,48 +356,66 @@ explosion:
 		ZOffset: 2047
 	nuke_explosion:
 		Filename: atomsfx.shp
+		Palette: effect
 	piff:
 		Filename: piff.shp
+		Palette: effect
 	piffs:
 		Filename: piffpiff.shp
+		Palette: effect
 	chemball:
 		Filename: chemball.shp
+		Palette: effect
 	small_napalm:
 		Filename: napalm1.shp
+		Palette: effect
 	med_napalm:
 		Filename: napalm2.shp
+		Palette: effect
 	big_napalm:
 		Filename: napalm3.shp
+		Palette: effect
 	small_frag:
 		Filename: veh-hit3.shp
+		Palette: effect
 	med_frag:
 		Filename: frag1.shp
+		Palette: effect
 	big_frag:
 		Filename: frag3.shp
+		Palette: effect
 	small_poof:
 		Filename: veh-hit2.shp
+		Palette: effect
 	poof:
 		Filename: art-exp1.shp
+		Palette: effect
 	small_building:
 		Filename: veh-hit1.shp
+		Palette: effect
 	building:
 		Filename: fball1.shp
+		Palette: effect
 	building_napalm:
 		Filename: napalm2.shp
 		FlipX: true
+		Palette: effect
 
 rank:
 	Defaults:
 		Filename: rank.shp
 		Offset: 0, 3
 	rank-veteran-1:
+		Palette: effect
 	rank-veteran-2:
 		Start: 1
+		Palette: effect
 	rank-veteran-3:
 		Start: 2
 	rank-elite:
 		Start: 3
 		Offset: 1, 3
+		Palette: effect
 
 rallypoint:
 	flag:
@@ -386,10 +423,14 @@ rallypoint:
 		Length: *
 		Offset: 10,-5
 		ZOffset: 2535
+		Palette: player
+		IsPlayerPalette: True
 	circles:
 		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 
 beacon:
 	Defaults:
@@ -398,20 +439,27 @@ beacon:
 		Filename: mouse2.shp
 		Start: 5
 		Offset: 1,-12
+		Palette: player
+		IsPlayerPalette: True
 	circles:
 		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 	airstrike:
 		Filename: bombicon.shp
 		Offset: 0,-42
+		Palette: beaconposter
 	atomic:
 		Filename: atomicon.shp
 		Offset: 0,-42
+		Palette: beaconposter
 	clock:
 		Filename: beaconclock.shp
 		Length: *
 		Offset: 0,-42
+		Palette: beaconposter
 
 select:
 	repair:
@@ -424,41 +472,49 @@ allyrepair:
 		Length: *
 		Tick: 160
 		ZOffset: 2047
+		Palette: player
+		IsPlayerPalette: True
 
 scrate:
 	idle:
 		Filename: scrate.shp
 		Start: 1
 		ZOffset: -511
+		Palette: effect
 
 wcrate:
 	idle:
 		Filename: wcrate.shp
 		Start: 1
 		ZOffset: -511
+		Palette: effect
 
 xcratea:
 	idle:
 		Filename: xcrate.shp
 		ZOffset: -511
+		Palette: effect
 
 xcrateb:
 	idle:
 		Filename: xcrate.shp
 		Start: 1
 		ZOffset: -511
+		Palette: effect
 
 xcratec:
 	idle:
 		Filename: xcrate.shp
 		Start: 2
 		ZOffset: -511
+		Palette: effect
 
 xcrated:
 	idle:
 		Filename: xcrate.shp
 		Start: 3
 		ZOffset: -511
+		Palette: effect
 
 crate-effects:
 	Defaults:
@@ -472,6 +528,7 @@ crate-effects:
 		Filename: dollar.shp
 	reveal-map:
 		Filename: radarcrate.shp
+		Palette: effect
 	hide-map:
 		Filename: empulse.shp
 	heal:
@@ -482,9 +539,11 @@ crate-effects:
 		Filename: rapid.shp
 	cloak:
 		Filename: cloakcrate.shp
+		Palette: effect
 	levelup:
 		Filename: levelup.shp
 		Tick: 200
+		Palette: effect
 	firepowerup:
 		Filename: firepowercrate.shp
 	armorup:
@@ -498,8 +557,10 @@ atomic:
 		ZOffset: 1023
 	up:
 		Filename: atomicup.shp
+		Palette: effect
 	down:
 		Filename: atomicdn.shp
+		Palette: effect
 
 ionsfx:
 	idle:
@@ -507,65 +568,85 @@ ionsfx:
 		Length: *
 		Offset: 0, -78
 		ZOffset: 1023
+		Palette: effect
 
 bomblet:
 	idle:
 		Filename: bomblet.shp
 		Length: *
 		ZOffset: 1023
+		Palette: effect
 
 mpspawn:
 	idle:
 		Filename: mpspawn.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 
 waypoint:
 	idle:
 		Filename: waypoint.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 
 camera:
 	idle:
 		Filename: camera.shp
 		Length: *
+		Palette: player
+		IsPlayerPalette: True
 
 clock:
 	idle:
 		Filename: hclock.shp
 		Length: *
+		Palette: chrome
 
 pips:
 	Defaults:
 		Filename: pips.shp
 	pip-empty:
+		Palette: chrome
 	pip-green:
 		Start: 1
+		Palette: chrome
 	pip-yellow:
 		Start: 2
+		Palette: chrome
 	pip-gray:
 		Start: 3
+		Palette: chrome
 	pip-red:
 		Start: 4
+		Palette: chrome
 	pip-blue:
 		Start: 5
+		Palette: chrome
 	pip-heal:
 		Filename: pip-heal.shp
 		Offset: -1, 1
+		Palette: chrome
 	groups:
 		Filename: pdigits.shp
 		Length: *
 		Offset: 9, 5
 		Frames: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0
+		Palette: chrome
 	pip-hazmat:
 		Filename: pip-hazmat.shp
 		Offset: -3, 0
+		Palette: chrome
 
 overlay:
 	Defaults:
 		Filename: trans.icn
 	build-valid:
+		Palette: terrain
 	build-invalid:
 		Start: 2
+		Palette: terrain
 	target-valid:
 	target-select:
 		Start: 1
@@ -589,10 +670,13 @@ poweroff:
 icon:
 	airstrike:
 		Filename: bombicnh.tem
+		Palette: chrome
 	ioncannon:
 		Filename: ionicnh.tem
+		Palette: chrome
 	abomb:
 		Filename: atomicnh.tem
+		Palette: chrome
 
 moveflsh:
 	idle:
@@ -600,6 +684,7 @@ moveflsh:
 		Length: *
 		Tick: 80
 		ZOffset: 2047
+		Palette: moveflash
 
 resources:
 	Defaults:
@@ -610,184 +695,220 @@ resources:
 			WINTER: ti1.win
 			SNOW: ti1.sno
 			TEMPERAT: ti1.tem
+		Palette: bluetiberium
 	ti2:
 		TilesetFilenames:
 			DESERT: ti2.des
 			WINTER: ti2.win
 			SNOW: ti2.sno
 			TEMPERAT: ti2.tem
+		Palette: bluetiberium
 	ti3:
 		TilesetFilenames:
 			DESERT: ti3.des
 			WINTER: ti3.win
 			SNOW: ti3.sno
 			TEMPERAT: ti3.tem
+		Palette: bluetiberium
 	ti4:
 		TilesetFilenames:
 			DESERT: ti4.des
 			WINTER: ti4.win
 			SNOW: ti4.sno
 			TEMPERAT: ti4.tem
+		Palette: bluetiberium
 	ti5:
 		TilesetFilenames:
 			DESERT: ti5.des
 			WINTER: ti5.win
 			SNOW: ti5.sno
 			TEMPERAT: ti5.tem
+		Palette: bluetiberium
 	ti6:
 		TilesetFilenames:
 			DESERT: ti6.des
 			WINTER: ti6.win
 			SNOW: ti6.sno
 			TEMPERAT: ti6.tem
+		Palette: bluetiberium
 	ti7:
 		TilesetFilenames:
 			DESERT: ti7.des
 			WINTER: ti7.win
 			SNOW: ti7.sno
 			TEMPERAT: ti7.tem
+		Palette: bluetiberium
 	ti8:
 		TilesetFilenames:
 			DESERT: ti8.des
 			WINTER: ti8.win
 			SNOW: ti8.sno
 			TEMPERAT: ti8.tem
+		Palette: bluetiberium
 	ti9:
 		TilesetFilenames:
 			DESERT: ti9.des
 			WINTER: ti9.win
 			SNOW: ti9.sno
 			TEMPERAT: ti9.tem
+		Palette: bluetiberium
 	ti10:
 		TilesetFilenames:
 			DESERT: ti10.des
 			WINTER: ti10.win
 			SNOW: ti10.sno
 			TEMPERAT: ti10.tem
+		Palette: bluetiberium
 	ti11:
 		TilesetFilenames:
 			DESERT: ti11.des
 			WINTER: ti11.win
 			SNOW: ti11.sno
 			TEMPERAT: ti11.tem
+		Palette: bluetiberium
 	ti12:
 		TilesetFilenames:
 			DESERT: ti12.des
 			WINTER: ti12.win
 			SNOW: ti12.sno
 			TEMPERAT: ti12.tem
+		Palette: bluetiberium
 
 shroud:
 	Defaults:
 		Filename: shadow.shp
 		Length: 12
 	shroud-typea:
+		Palette: shroud
 	shroud-typeb:
 		Start: 12
+		Palette: shroud
 	shroud-typec:
 		Start: 24
+		Palette: shroud
 	shroud-typed:
 		Start: 36
+		Palette: shroud
 	shroud-full:
 		Filename: fullshroud.shp
 		Length: 1
+		Palette: shroud
 	fog-typea:
 		Alpha: 0.5
+		Palette: shroud
 	fog-typeb: shadow
 		Alpha: 0.5
 		Start: 12
+		Palette: shroud
 	fog-typec: shadow
 		Alpha: 0.5
 		Start: 24
+		Palette: shroud
 	fog-typed: shadow
 		Alpha: 0.5
 		Start: 36
+		Palette: shroud
 	fog-full:
 		Filename: fullshroud.shp
 		Length: 1
 		Alpha: 0.5
+		Palette: shroud
 
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps
 scorches:
 	Defaults:
 		Length: *
+		Palette: terrain
 	sc1:
 		TilesetFilenames:
 			DESERT: sc1.des
 			WINTER: sc1.win
 			SNOW: sc1.sno
 			TEMPERAT: sc1.tem
+		Palette: terrain
 	sc2:
 		TilesetFilenames:
 			DESERT: sc2.des
 			WINTER: sc2.win
 			SNOW: sc2.sno
 			TEMPERAT: sc2.tem
+		Palette: terrain
 	sc3:
 		TilesetFilenames:
 			DESERT: sc3.des
 			WINTER: sc3.win
 			SNOW: sc3.sno
 			TEMPERAT: sc3.tem
+		Palette: terrain
 	sc4:
 		TilesetFilenames:
 			DESERT: sc4.des
 			WINTER: sc4.win
 			SNOW: sc4.sno
 			TEMPERAT: sc4.tem
+		Palette: terrain
 	sc5:
 		TilesetFilenames:
 			DESERT: sc5.des
 			WINTER: sc5.win
 			SNOW: sc5.sno
 			TEMPERAT: sc5.tem
+		Palette: terrain
 	sc6:
 		TilesetFilenames:
 			DESERT: sc6.des
 			WINTER: sc6.win
 			SNOW: sc6.sno
 			TEMPERAT: sc6.tem
+		Palette: terrain
 
 craters:
 	Defaults:
 		Length: *
+		Palette: terrain
 	cr1:
 		TilesetFilenames:
 			DESERT: cr1.des
 			WINTER: cr1.win
 			SNOW: cr1.sno
 			TEMPERAT: cr1.tem
+		Palette: terrain
 	cr2:
 		TilesetFilenames:
 			DESERT: cr2.des
 			WINTER: cr2.win
 			SNOW: cr2.sno
 			TEMPERAT: cr2.tem
+		Palette: terrain
 	cr3:
 		TilesetFilenames:
 			DESERT: cr3.des
 			WINTER: cr3.win
 			SNOW: cr3.sno
 			TEMPERAT: cr3.tem
+		Palette: terrain
 	cr4:
 		TilesetFilenames:
 			DESERT: cr4.des
 			WINTER: cr4.win
 			SNOW: cr4.sno
 			TEMPERAT: cr4.tem
+		Palette: terrain
 	cr5:
 		TilesetFilenames:
 			DESERT: cr5.des
 			WINTER: cr5.win
 			SNOW: cr5.sno
 			TEMPERAT: cr5.tem
+		Palette: terrain
 	cr6:
 		TilesetFilenames:
 			DESERT: cr6.des
 			WINTER: cr6.win
 			SNOW: cr6.sno
 			TEMPERAT: cr6.tem
+		Palette: terrain
 
 smokland:
 	Defaults:
@@ -796,42 +917,52 @@ smokland:
 		Length: 72
 		Tick: 120
 		ZOffset: 1023
+		Palette: terrain
 	idle:
 		Start: 72
 		Length: 20
 		Tick: 120
 		ZOffset: 1023
+		Palette: terrain
 
 airstrikedirection:
 	arrow-t:
 		Filename: mouse2.shp
 		Start: 1
 		Offset: 0, -15, 0
+		Palette: chrome
 	arrow-tr:
 		Filename: mouse2.shp
 		Start: 2
 		Offset: 7, -7, 0
+		Palette: chrome
 	arrow-r:
 		Filename: mouse2.shp
 		Start: 3
 		Offset: 12, 0, 0
+		Palette: chrome
 	arrow-br:
 		Filename: mouse2.shp
 		Start: 4
 		Offset: 7, 7, 0
+		Palette: chrome
 	arrow-b:
 		Filename: mouse2.shp
 		Start: 5
 		Offset: 0, 15, 0
+		Palette: chrome
 	arrow-bl:
 		Filename: mouse2.shp
 		Start: 6
 		Offset: -7, 7, 0
+		Palette: chrome
 	arrow-l:
 		Filename: mouse2.shp
 		Start: 7
 		Offset: -12, 0, 0
+		Palette: chrome
 	arrow-tl:
 		Filename: mouse2.shp
 		Start: 8
 		Offset: -7, -7, 0
+		Palette: chrome

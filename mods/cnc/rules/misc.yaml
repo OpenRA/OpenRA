@@ -83,7 +83,6 @@ fact.colorpicker:
 	-Encyclopedia:
 	RenderSprites:
 		Image: fact
-		Palette: colorpicker
 
 CAMERA:
 	Interactable:
@@ -129,7 +128,6 @@ FLARE:
 		Type: CenterPosition
 	RenderSprites:
 		Image: smokland
-		Palette: terrain
 	WithSpriteBody:
 		StartSequence: open
 	HiddenUnderFog:

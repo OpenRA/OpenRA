@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				currentArrow = GetArrow(angle);
 
-				mouseAttachment.SetAttachment(targetLocation, currentArrow.Sprite, info.DirectionArrowPalette);
+				mouseAttachment.SetAttachment(targetLocation, currentArrow.Sprite);
 				dragStarted = true;
 			}
 
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			for (var i = 0; i < noOfDividingPoints; i++)
 			{
-				var sprite = world.Map.Sequences.GetSequence(cursorAnimation, info.Arrows[i]).GetSprite(0);
+				var sprite = world.Map.Sequences.GetSequence(cursorAnimation, info.Arrows[i]);
 
 				var angle = i * partAngle;
 				var direction = WAngle.FromDegrees(angle);
@@ -170,6 +170,6 @@ namespace OpenRA.Mods.Common.Traits
 			return points;
 		}
 
-		sealed record Arrow(Sprite Sprite, double EndAngle, WAngle Direction);
+		sealed record Arrow(ISpriteSequence Sprite, double EndAngle, WAngle Direction);
 	}
 }

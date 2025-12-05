@@ -5,21 +5,25 @@
 		Length: *
 		BlendMode: Additive
 		IgnoreWorldTint: True
+		Palette: effect
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sidebar-gdi|mcvicon.shp
+		Palette: chrome
 
 mcv.nod:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sidebar-nod|mcvicon.shp
+		Palette: chrome
 
 apc:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: apcicon.shp
+		Palette: chrome
 
 harv.gdi:
 	Inherits: ^VehicleOverlays
@@ -28,8 +32,10 @@ harv.gdi:
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
+		Palette: effect
 	icon:
 		Filename: sidebar-gdi|harvicon.shp
+		Palette: chrome
 
 harv.nod:
 	Inherits: ^VehicleOverlays
@@ -38,13 +44,16 @@ harv.nod:
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
+		Palette: effect
 	icon:
 		Filename: sidebar-nod|harvicon.shp
+		Palette: chrome
 
 hvr:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: hovricon.shp
+		Palette: chrome
 
 4tnk:
 	Inherits: ^VehicleOverlays
@@ -52,6 +61,7 @@ hvr:
 		Filename: gunfire.shp
 		Length: *
 		IgnoreWorldTint: True
+		Palette: effect
 
 lpst.gdi:
 	Inherits: ^VehicleOverlays
@@ -63,6 +73,8 @@ lpst.gdi:
 		DepthSpriteOffset: -6, -6
 		Offset: 0, -13, 12
 		ShadowStart: 3
+		Palette: playertem
+		IsPlayerPalette: True
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtdpsamk.shp
@@ -72,6 +84,8 @@ lpst.gdi:
 		Offset: 0, -13, 12
 		Length: 36
 		ShadowStart: 36
+		Palette: playertem
+		IsPlayerPalette: True
 	idle-lights:
 		TilesetFilenames:
 			TEMPERATE: gtdpsa_a.shp
@@ -81,6 +95,8 @@ lpst.gdi:
 		Offset: 0, -13, 12
 		Length: 10
 		Tick: 200
+		Palette: player-nobright
+		IsPlayerPalette: True
 	idle-lights-bright:
 		TilesetFilenames:
 			TEMPERATE: gtdpsa_a.shp
@@ -91,23 +107,41 @@ lpst.gdi:
 		Length: 10
 		Tick: 200
 		IgnoreWorldTint: True
+		Palette: bright
 	icon:
 		Filename: sidebar-gdi|lpsticon.shp
+		Palette: chrome
 
 lpst.nod:
 	Inherits: lpst.gdi
 	icon:
 		Filename: sidebar-nod|lpsticon.shp
+		Palette: chrome
+	idle:
+		Palette: playertem
+		IsPlayerPalette: True
+	emp-overlay:
+		Palette: effect
+	make:
+		Palette: playertem
+		IsPlayerPalette: True
+	idle-lights:
+		Palette: player-nobright
+		IsPlayerPalette: True
+	idle-lights-bright:
+		Palette: bright
 
 repair:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: rboticon.shp
+		Palette: chrome
 
 art2:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: artyicon.shp
+		Palette: chrome
 	idle:
 		TilesetFilenames:
 			TEMPERATE: gtarty.shp
@@ -115,6 +149,8 @@ art2:
 		ShadowStart: 3
 		Offset: 0, -12, 12
 		DepthSprite: isodepth.shp
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: gtarty.shp
@@ -123,6 +159,8 @@ art2:
 		ShadowStart: 4
 		Offset: 0, -12, 12
 		DepthSprite: isodepth.shp
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtartymk.shp
@@ -131,26 +169,32 @@ art2:
 		ShadowStart: 16
 		Offset: 0, -12, 12
 		DepthSprite: isodepth.shp
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
+		Palette: effect
 
 weed:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: weedicon.shp
+		Palette: chrome
 
 hmec:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: hmecicon.shp
+		Palette: chrome
 
 bike:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: cyclicon.shp
+		Palette: chrome
 
 bggy:
 	Inherits: ^VehicleOverlays
@@ -185,24 +229,29 @@ bggy:
 		Facings: 8
 		Length: 6
 		IgnoreWorldTint: True
+		Palette: effect
 	icon:
 		Filename: bggyicon.shp
 		Offset: 0, 0
+		Palette: chrome
 
 sapc:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sapcicon.shp
+		Palette: chrome
 
 subtank:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: subticon.shp
+		Palette: chrome
 
 sonic:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: soniicon.shp
+		Palette: chrome
 
 ttnk:
 	Inherits: ^VehicleOverlays
@@ -210,28 +259,37 @@ ttnk:
 		Filename: gatick.shp
 		ShadowStart: 3
 		Offset: 0, -14, 14
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: gatick.shp
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -14, 14
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: gatickmk.shp
 		Length: 24
 		ShadowStart: 24
 		Offset: 0, -14, 14
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
+		Palette: effect
 	icon:
 		Filename: tickicon.shp
+		Palette: chrome
 
 stnk:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: stnkicon.shp
+		Palette: chrome
 
 mmch:
 	Defaults:
@@ -242,6 +300,8 @@ mmch:
 		Stride: 15
 		ShadowStart: 152
 		Offset: 0, 0, 12
+		Palette: player
+		IsPlayerPalette: True
 	walk:
 		Length: 15
 		Facings: -8
@@ -252,24 +312,31 @@ mmch:
 		Start: 120
 		Facings: -32
 		Offset: 0, 0, 12
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 12
 		IgnoreWorldTint: True
+		Palette: effect
 	icon:
 		Filename: mmchicon.shp
+		Palette: chrome
 
 jugg:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: juggicon.shp
+		Palette: chrome
 	stand:
 		Filename: jugger.shp
 		Facings: -8
 		Stride: 15
 		ShadowStart: 120
 		Offset: 0, 0, 12
+		Palette: player
+		IsPlayerPalette: True
 	walk:
 		Filename: jugger.shp
 		Length: 15
@@ -281,25 +348,34 @@ jugg:
 		Filename: djugg_a.shp
 		Facings: 32
 		Offset: -4, 0, 12
+		Palette: player
+		IsPlayerPalette: True
 	idle:
 		Filename: djugg.shp
 		ShadowStart: 3
 		Offset: 0, -12, 12
+		Palette: player
+		IsPlayerPalette: True
 	damaged-idle:
 		Filename: djugg.shp
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -12, 12
+		Palette: player
+		IsPlayerPalette: True
 	make:
 		Filename: djuggmk.shp
 		Length: 18
 		ShadowStart: 18
 		Offset: 0, -12, 12
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
+		Palette: effect
 
 gghunt:
 	Inherits: ^VehicleOverlays
@@ -308,6 +384,8 @@ gghunt:
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
+		Palette: player
+		IsPlayerPalette: True
 
 smech:
 	Inherits: ^VehicleOverlays
@@ -318,30 +396,39 @@ smech:
 		Start: 96
 		Facings: -8
 		ShadowStart: 232
+		Palette: player
+		IsPlayerPalette: True
 	run:
 		Facings: -8
 		Length: 12
 		ShadowStart: 136
 		Tick: 48
+		Palette: player
+		IsPlayerPalette: True
 	shoot:
 		Start: 104
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
 		Tick: 80
+		Palette: player
+		IsPlayerPalette: True
 	shoot-muzzle:
 		Start: 104
 		Length: 4
 		Facings: -8
 		Tick: 80
 		IgnoreWorldTint: True
+		Palette: muzzle
 	icon:
 		Filename: smchicon.shp
+		Palette: chrome
 
 mobilemp:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: mempicon.shp
+		Palette: chrome
 
 trucka:
 	Inherits: ^VehicleOverlays
@@ -377,17 +464,24 @@ mstl:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: mstlicon.shp
+		Palette: chrome
 	idle:
 		Filename: mstl.shp
 		ShadowStart: 3
 		Offset: 0, -15, 15
+		Palette: playertem
+		IsPlayerPalette: True
 	idle-lights:
 		Filename: mstl_a.shp
 		Length: 10
 		ShadowStart: 10
 		Offset: 0, -15, 15
+		Palette: player-nobright
+		IsPlayerPalette: True
 	make:
 		Filename: mstlmk.shp
 		Length: 20
 		ShadowStart: 20
 		Offset: 0, -15, 15
+		Palette: playertem
+		IsPlayerPalette: True

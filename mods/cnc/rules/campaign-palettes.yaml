@@ -47,29 +47,22 @@
 
 ^Vehicle:
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Tank:
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Helicopter:
 	RenderSprites:
-		PlayerPalette: player-units
 
 ^Infantry:
 	RenderSprites:
-		PlayerPalette: player-units
 	WithDeathAnimation:
-		DeathSequencePalette: player-units
 
 ^CommonHuskDefaults:
 	RenderSprites:
-		PlayerPalette: player-units
 
 C17:
 	RenderSprites:
-		PlayerPalette: player-units
 	Contrail@1:
 		StartColorUsePlayerColor: False
 	Contrail@2:
@@ -81,16 +74,12 @@ C17:
 
 HARV:
 	RenderSprites:
-		PlayerPalette: player
 
 MCV:
 	RenderSprites:
-		PlayerPalette: player
 
 HARV.Husk:
 	RenderSprites:
-		PlayerPalette: player
 
 MCV.Husk:
 	RenderSprites:
-		PlayerPalette: player

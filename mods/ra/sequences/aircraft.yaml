@@ -3,74 +3,112 @@ mig:
 		Filename: mig.shp
 		Facings: 16
 		InterpolatedFacings: 64
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: migicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 yak:
 	idle:
 		Filename: yak.shp
 		Facings: 16
 		InterpolatedFacings: 64
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: yakicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 heli:
 	idle:
 		Filename: heli.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	rotor:
 		Filename: lrotor.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: lrotor.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	icon:
 		Filename: heliicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 hind:
 	idle:
 		Filename: hind.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	rotor:
 		Filename: lrotorlg.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: lrotorlg.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: hindicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 tran:
 	idle:
 		Filename: tran2.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	rotor:
 		Filename: lrotor.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	rotor2:
 		Filename: rrotor.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: lrotor.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor2:
 		Filename: rrotor.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	open:
 		Filename: tran2.shp
 		Start: 32
@@ -80,42 +118,62 @@ tran:
 		Start: 35
 	icon:
 		Filename: tranicon.shp
+		Palette: chrome
+		IsPlayerPalette: False
 
 tran1husk:
 	idle:
 		Filename: tran1husk.shp
+		Palette: player
+		IsPlayerPalette: True
 
 tran2husk:
 	idle:
 		Filename: tran2husk.shp
+		Palette: player
+		IsPlayerPalette: True
 
 u2:
 	idle:
 		Filename: u2.shp
 		Facings: 16
 		InterpolatedFacings: 64
+		Palette: player
+		IsPlayerPalette: True
 
 badr:
 	idle:
 		Filename: badr.shp
 		Facings: 16
 		InterpolatedFacings: 64
+		Palette: player
+		IsPlayerPalette: True
 
 mh60:
 	idle:
 		Filename: mh60.shp
 		Facings: 32
 		UseClassicFacings: True
+		Palette: player
+		IsPlayerPalette: True
 	rotor:
 		Filename: yrotorlg.shp
 		Length: 4
+		Palette: player
+		IsPlayerPalette: True
 	slow-rotor:
 		Filename: yrotorlg.shp
 		Start: 4
 		Length: 8
+		Palette: player
+		IsPlayerPalette: True
 	muzzle:
 		Filename: minigun.shp
 		Length: 6
 		Facings: 8
+		Palette: effect
+		IsPlayerPalette: False
 	icon:
 		Filename: mh60icon.shp
+		Palette: chrome
+		IsPlayerPalette: False

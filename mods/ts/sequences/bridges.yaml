@@ -11,30 +11,37 @@ lobrdg_a:
 		TilesetFilenames:
 			TEMPERATE: lobrdg10.tem
 			SNOW: lobrdg10.sno
+		Palette: terraindecoration
 	idle2:
 		TilesetFilenames:
 			TEMPERATE: lobrdg11.tem
 			SNOW: lobrdg11.sno
+		Palette: terraindecoration
 	idle3:
 		TilesetFilenames:
 			TEMPERATE: lobrdg12.tem
 			SNOW: lobrdg12.sno
+		Palette: terraindecoration
 	idle4:
 		TilesetFilenames:
 			TEMPERATE: lobrdg13.tem
 			SNOW: lobrdg13.sno
+		Palette: terraindecoration
 	adead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg15.tem
 			SNOW: lobrdg15.sno
+		Palette: terraindecoration
 	bdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg14.tem
 			SNOW: lobrdg14.sno
+		Palette: terraindecoration
 	abdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg16.tem
 			SNOW: lobrdg16.sno
+		Palette: terraindecoration
 
 lobrdg_a_d:
 	Inherits: ^bridge
@@ -42,6 +49,7 @@ lobrdg_a_d:
 		TilesetFilenames:
 			TEMPERATE: lobrdg28.tem
 			SNOW: lobrdg28.sno
+		Palette: terraindecoration
 	aramp:
 		TilesetFilenames:
 			TEMPERATE: lobrdg17.tem
@@ -54,10 +62,6 @@ lobrdg_a_d:
 		TilesetFilenames:
 			TEMPERATE: lobrdg28.tem
 			SNOW: lobrdg28.sno
-	editor:
-		TilesetFilenames:
-			TEMPERATE: lobrdg10.tem
-			SNOW: lobrdg10.sno
 
 lobrdg_b:
 	Inherits: ^bridge
@@ -65,30 +69,37 @@ lobrdg_b:
 		TilesetFilenames:
 			TEMPERATE: lobrdg01.tem
 			SNOW: lobrdg01.sno
+		Palette: terraindecoration
 	idle2:
 		TilesetFilenames:
 			TEMPERATE: lobrdg02.tem
 			SNOW: lobrdg02.sno
+		Palette: terraindecoration
 	idle3:
 		TilesetFilenames:
 			TEMPERATE: lobrdg03.tem
 			SNOW: lobrdg03.sno
+		Palette: terraindecoration
 	idle4:
 		TilesetFilenames:
 			TEMPERATE: lobrdg04.tem
 			SNOW: lobrdg04.sno
+		Palette: terraindecoration
 	adead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg05.tem
 			SNOW: lobrdg05.sno
+		Palette: terraindecoration
 	bdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg06.tem
 			SNOW: lobrdg06.sno
+		Palette: terraindecoration
 	abdead:
 		TilesetFilenames:
 			TEMPERATE: lobrdg07.tem
 			SNOW: lobrdg07.sno
+		Palette: terraindecoration
 
 lobrdg_b_d:
 	Inherits: ^bridge
@@ -96,6 +107,7 @@ lobrdg_b_d:
 		TilesetFilenames:
 			TEMPERATE: lobrdg27.tem
 			SNOW: lobrdg27.sno
+		Palette: terraindecoration
 	aramp:
 		TilesetFilenames:
 			TEMPERATE: lobrdg08.tem
@@ -108,10 +120,6 @@ lobrdg_b_d:
 		TilesetFilenames:
 			TEMPERATE: lobrdg27.tem
 			SNOW: lobrdg27.sno
-	editor:
-		TilesetFilenames:
-			TEMPERATE: lobrdg01.tem
-			SNOW: lobrdg01.sno
 
 lobrdg_r_se:
 	Inherits: ^bridge
@@ -119,10 +127,12 @@ lobrdg_r_se:
 		TilesetFilenames:
 			TEMPERATE: lobrdg19.tem
 			SNOW: lobrdg19.sno
+		Palette: terraindecoration
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg20.tem
 			SNOW: lobrdg20.sno
+		Palette: terraindecoration
 
 lobrdg_r_nw:
 	Inherits: ^bridge
@@ -130,10 +140,12 @@ lobrdg_r_nw:
 		TilesetFilenames:
 			TEMPERATE: lobrdg21.tem
 			SNOW: lobrdg21.sno
+		Palette: terraindecoration
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg22.tem
 			SNOW: lobrdg22.sno
+		Palette: terraindecoration
 
 lobrdg_r_ne:
 	Inherits: ^bridge
@@ -141,10 +153,12 @@ lobrdg_r_ne:
 		TilesetFilenames:
 			TEMPERATE: lobrdg23.tem
 			SNOW: lobrdg23.sno
+		Palette: terraindecoration
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg24.tem
 			SNOW: lobrdg24.sno
+		Palette: terraindecoration
 
 lobrdg_r_sw:
 	Inherits: ^bridge
@@ -152,10 +166,12 @@ lobrdg_r_sw:
 		TilesetFilenames:
 			TEMPERATE: lobrdg25.tem
 			SNOW: lobrdg25.sno
+		Palette: terraindecoration
 	damaged-idle:
 		TilesetFilenames:
 			TEMPERATE: lobrdg26.tem
 			SNOW: lobrdg26.sno
+		Palette: terraindecoration
 
 bridge1:
 	idle:
@@ -166,6 +182,7 @@ bridge1:
 		# ShadowStart: 18
 		ZRamp: 1
 		Offset: 0, -13, 49
+		Palette: terraindecoration
 
 bridge2:
 	idle:
@@ -177,6 +194,7 @@ bridge2:
 		# ShadowStart: 27
 		ZRamp: 1
 		Offset: 0, -25, 49
+		Palette: terraindecoration
 
 railbrdg1:
 	idle:
@@ -187,6 +205,7 @@ railbrdg1:
 		# ShadowStart: 18
 		ZRamp: 1
 		Offset: 0, -13, 49
+		Palette: terraindecoration
 
 railbrdg2:
 	idle:
@@ -198,3 +217,4 @@ railbrdg2:
 		# ShadowStart: 27
 		ZRamp: 1
 		Offset: 0, -25, 49
+		Palette: terraindecoration

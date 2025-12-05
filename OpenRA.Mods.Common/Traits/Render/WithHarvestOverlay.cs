@@ -24,9 +24,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Position relative to body")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		[PaletteReference]
-		public readonly string Palette = "effect";
-
 		public override object Create(ActorInitializer init) { return new WithHarvestOverlay(init.Self, this); }
 	}
 
@@ -51,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(new AnimationWithOffset(anim,
 				() => body.LocalToWorld(info.LocalOffset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => !visible,
-				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
+				p => ZOffsetFromCenter(self, p, 0)));
 		}
 
 		void INotifyHarvestAction.Harvested(Actor self, string resourceType)

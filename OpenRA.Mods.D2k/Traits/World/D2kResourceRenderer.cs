@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -130,20 +131,20 @@ namespace OpenRA.Mods.D2k.Traits
 			return ret;
 		}
 
-		protected override void UpdateRenderedSprite(CPos cell, RendererCellContents content)
+		protected override void UpdateRenderedSprite(CPos cell, RendererCellContents content, WorldRenderer wr)
 		{
-			UpdateRenderedSpriteInner(cell, content);
+			UpdateRenderedSpriteInner(cell, content, wr);
 
 			var directions = CVec.Directions;
 			for (var i = 0; i < directions.Length; i++)
 			{
 				var neighbour = cell + directions[i];
 				if (RenderContents.Contains(neighbour))
-					UpdateRenderedSpriteInner(neighbour, RenderContents[neighbour]);
+					UpdateRenderedSpriteInner(neighbour, RenderContents[neighbour], wr);
 			}
 		}
 
-		void UpdateRenderedSpriteInner(CPos cell, RendererCellContents content)
+		void UpdateRenderedSpriteInner(CPos cell, RendererCellContents content, WorldRenderer wr)
 		{
 			if (content.Density > 0)
 			{
@@ -153,11 +154,11 @@ namespace OpenRA.Mods.D2k.Traits
 				{
 					var maxDensity = ResourceLayer.GetMaxDensity(content.Type);
 					var index = content.Density > maxDensity / 2 ? 1 : 0;
-					UpdateSpriteLayers(cell, content.Sequence, index, content.Palette);
+					UpdateSpriteLayers(cell, content.Sequence, index, wr);
 				}
 				else if (SpriteMap.TryGetValue(clear, out var index))
 				{
-					UpdateSpriteLayers(cell, content.Sequence, index, content.Palette);
+					UpdateSpriteLayers(cell, content.Sequence, index, wr);
 				}
 				else
 					throw new InvalidOperationException($"SpriteMap does not contain an index for ClearSides type '{clear}'");

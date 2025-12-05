@@ -33,9 +33,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Effect sequence to display")]
 		public readonly string EffectSequence = "idle";
 
-		[PaletteReference]
-		public readonly string EffectPalette = "effect";
-
 		[WeaponReference]
 		[Desc("Which weapon to fire")]
 		public readonly string Weapon = "IonCannon";
@@ -85,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				PlayLaunchSounds();
 				Game.Sound.Play(SoundType.World, info.OnFireSound, target.CenterPosition);
 				w.Add(new IonCannon(self.Owner, info.WeaponInfo, w, self.CenterPosition, target,
-					info.Effect, info.EffectSequence, info.EffectPalette, info.WeaponDelay));
+					info.Effect, info.EffectSequence, info.WeaponDelay));
 
 				if (info.CameraActor == null)
 					return;
