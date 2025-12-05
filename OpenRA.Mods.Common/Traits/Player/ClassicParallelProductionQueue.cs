@@ -89,10 +89,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (item == null)
 				return;
 
-			var parallelBuilds = Queue.FindAll(i => !i.Paused && !i.Done)
-				.GroupBy(i => i.Item)
-				.ToList()
-				.Count - 1;
+			var parallelBuilds = Queue
+				.Where(i => !i.Paused && !i.Done)
+				.DistinctBy(i => i.Item)
+				.Count() - 1;
 
 			if (parallelBuilds > 0 && !developerMode.FastBuild)
 			{
@@ -110,11 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// As we have progressed this actor type, we will move all queued items of this actor to the end.
-			foreach (var other in Queue.FindAll(a => a.Item == item.Item))
-			{
-				Queue.Remove(other);
-				Queue.Add(other);
-			}
+			var others = Queue.FindAll(a => a.Item == item.Item);
+			Queue.RemoveAll(a => a.Item == item.Item);
+			Queue.AddRange(others);
 		}
 
 		public override IEnumerable<ActorInfo> AllItems()
@@ -222,10 +220,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override int RemainingTimeActual(ProductionItem item)
 		{
-			var parallelBuilds = Queue.FindAll(i => !i.Paused && !i.Done)
-				.GroupBy(i => i.Item)
-				.ToList()
-				.Count;
+			var parallelBuilds = Queue
+				.Where(i => !i.Paused && !i.Done)
+				.DistinctBy(i => i.Item)
+				.Count();
 			return item.RemainingTimeActual *
 				parallelBuilds *
 				info.ParallelPenaltyBuildTimeMultipliers[Math.Min(parallelBuilds - 1, info.ParallelPenaltyBuildTimeMultipliers.Length - 1)] / 100;

@@ -802,8 +802,8 @@ namespace OpenRA
 			(Color Left, Color Right) terrainColor = default;
 
 			var colorsByPosition = positions
-				.GroupBy(p => p.Uv)
-				.ToDictionary(g => g.Key, g => g.First().Color);
+				.AggregateBy(p => p.Uv, default(Color), (_, p) => p.Color)
+				.ToDictionary();
 			for (var y = 0; y < height; y++)
 			{
 				for (var x = 0; x < width; x++)

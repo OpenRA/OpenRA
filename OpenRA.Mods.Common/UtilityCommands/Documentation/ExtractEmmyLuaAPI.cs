@@ -283,8 +283,8 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			});
 
 			var duplicateMembers = members
-				.GroupBy(x => x.memberInfo.Name)
-				.Where(x => x.Count() > 1)
+				.CountBy(x => x.memberInfo.Name)
+				.Where(x => x.Value > 1)
 				.Select(x => x.Key)
 				.ToHashSet();
 

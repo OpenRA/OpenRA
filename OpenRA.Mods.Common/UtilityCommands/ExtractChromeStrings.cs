@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					t => t.Name[..^6],
 					t => Utility.GetFields(t).Where(Utility.HasAttribute<FluentReferenceAttribute>).Select(f => f.Name).ToArray())
 				.Where(t => t.Value.Length > 0)
-				.ToDictionary(t => t.Key, t => t.Value);
+				.ToDictionary();
 
-			var chromeLayouts = modData.Manifest.ChromeLayout.GroupBy(c => c.Split('/')[0].Split('|')[0], c => c);
+			var chromeLayouts = modData.Manifest.ChromeLayout.GroupBy(c => c.Split('/')[0].Split('|')[0]);
 
 			foreach (var layout in chromeLayouts)
 			{

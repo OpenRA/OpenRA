@@ -38,11 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// As we have progressed this actor type, we will move all queued items of this actor to the end.
-			foreach (var other in Queue.FindAll(a => a.Item == item.Item))
-			{
-				Queue.Remove(other);
-				Queue.Add(other);
-			}
+			var others = Queue.FindAll(a => a.Item == item.Item);
+			Queue.RemoveAll(a => a.Item == item.Item);
+			Queue.AddRange(others);
 		}
 
 		public override bool IsProducing(ProductionItem item)
@@ -64,10 +62,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override int RemainingTimeActual(ProductionItem item)
 		{
-			var parallelBuilds = Queue.FindAll(i => !i.Paused && !i.Done)
-				.GroupBy(i => i.Item)
-				.ToList()
-				.Count;
+			var parallelBuilds = Queue
+				.Where(i => !i.Paused && !i.Done)
+				.DistinctBy(i => i.Item)
+				.Count();
 			return item.RemainingTimeActual * parallelBuilds;
 		}
 	}

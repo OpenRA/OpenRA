@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					t => t.Name[..^4],
 					t => Utility.GetFields(t).Where(Utility.HasAttribute<FluentReferenceAttribute>).Select(f => f.Name).ToArray())
 				.Where(t => t.Value.Length > 0)
-				.ToDictionary(t => t.Key, t => t.Value);
+				.ToDictionary();
 
 			// Extract from a specific map.
 			if (args.Length == 2)

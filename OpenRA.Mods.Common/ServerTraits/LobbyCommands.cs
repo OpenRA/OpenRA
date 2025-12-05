@@ -589,7 +589,7 @@ namespace OpenRA.Mods.Common.Server
 						server.LobbyInfo.Slots = server.Map.Players.Players
 							.Select(p => MakeSlotFromPlayerReference(p.Value))
 							.Where(ss => ss != null)
-							.ToDictionary(ss => ss.PlayerReference, ss => ss);
+							.ToDictionary(ss => ss.PlayerReference);
 
 						LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map);
 
@@ -1321,7 +1321,7 @@ namespace OpenRA.Mods.Common.Server
 				server.LobbyInfo.Slots = server.Map.Players.Players
 					.Select(p => MakeSlotFromPlayerReference(p.Value))
 					.Where(s => s != null)
-					.ToDictionary(s => s.PlayerReference, s => s);
+					.ToDictionary(s => s.PlayerReference);
 
 				LoadMapSettings(server, server.LobbyInfo.GlobalSettings, server.Map);
 			}
@@ -1437,7 +1437,7 @@ namespace OpenRA.Mods.Common.Server
 				server.LobbyInfo.Slots = server.Map.Players.Players
 					.Select(p => MakeSlotFromPlayerReference(p.Value))
 					.Where(ss => ss != null)
-					.ToDictionary(ss => ss.PlayerReference, ss => ss);
+					.ToDictionary(ss => ss.PlayerReference);
 			}
 		}
 

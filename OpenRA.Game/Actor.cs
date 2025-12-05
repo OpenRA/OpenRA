@@ -128,10 +128,11 @@ namespace OpenRA
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
-			var duplicateInit = initDict.WithInterface<ISingleInstanceInit>().GroupBy(i => i.GetType())
-				.FirstOrDefault(i => i.Count() > 1);
+			var duplicateInit = initDict.WithInterface<ISingleInstanceInit>()
+				.CountBy(i => i.GetType())
+				.FirstOrDefault(i => i.Value > 1);
 
-			if (duplicateInit != null)
+			if (duplicateInit.Key != null)
 				throw new InvalidDataException($"Duplicate initializer '{duplicateInit.Key.Name}'");
 
 			var init = new ActorInitializer(this, initDict);
