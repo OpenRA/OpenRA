@@ -10,9 +10,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using OpenRA.FileFormats;
+using OpenRA.FileSystem;
 using OpenRA.Mods.Common.FileSystem;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
@@ -22,13 +22,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 	public class BlankLoadScreen : ILoadScreen
 	{
 		public LaunchArguments Launch;
-		protected ModData ModData { get; private set; }
-
+		protected IReadOnlyFileSystem fileSystem;
 		bool initialized;
 
-		public virtual void Init(ModData modData, Dictionary<string, string> info)
+		public virtual void Init(Manifest manifest, IReadOnlyFileSystem fileSystem)
 		{
-			ModData = modData;
+			this.fileSystem = fileSystem;
 		}
 
 		public virtual void Display()
@@ -108,12 +107,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 			GC.SuppressFinalize(this);
 		}
 
-		public virtual bool BeforeLoad()
+		public virtual bool BeforeLoad(ModData modData)
 		{
 			var graphicSettings = Game.Settings.Graphics;
 
 			// Reset the UI scaling if the user has configured a UI scale that pushes us below the minimum allowed effective resolution
-			var minResolution = ModData.GetOrCreate<WorldViewportSizes>().MinEffectiveResolution;
+			var minResolution = modData.GetOrCreate<WorldViewportSizes>().MinEffectiveResolution;
 			var resolution = Game.Renderer.Resolution;
 			if ((resolution.Width < minResolution.Width || resolution.Height < minResolution.Height) && Game.Settings.Graphics.UIScale > 1.0f)
 			{
@@ -126,10 +125,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (graphicSettings.GLProfile != GLProfile.Automatic && graphicSettings.GLProfile != Game.Renderer.GLProfile)
 				graphicSettings.GLProfile = GLProfile.Automatic;
 
-			if (ModData.FileSystemLoader is not IFileSystemExternalContent content)
+			if (modData.FileSystemLoader is not IFileSystemExternalContent content)
 				return true;
 
-			return !content.InstallContentIfRequired(ModData);
+			return !content.InstallContentIfRequired(modData);
 		}
 	}
 }

@@ -35,7 +35,6 @@ namespace OpenRA
 		public readonly IPackageLoader[] PackageLoaders;
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
-		public readonly ITerrainLoader TerrainLoader;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
@@ -92,41 +91,38 @@ namespace OpenRA
 				modules.Add(module);
 			}
 
-			FluentProvider.Initialize(this, DefaultFileSystem);
+			FluentProvider.Initialize(Manifest, DefaultFileSystem);
 
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
-				LoadScreen.Init(this, Manifest.LoadScreen.ToDictionary(my => my.Value));
+				LoadScreen.Init(Manifest, DefaultFileSystem);
 				LoadScreen.Display();
 			}
 
-			WidgetLoader = new WidgetLoader(this);
-			MapCache = new MapCache(this);
+			WidgetLoader = new WidgetLoader(Manifest, DefaultFileSystem);
+			MapCache = new MapCache(Manifest, ModFiles);
 
 			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
 			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 			VideoLoaders = ObjectCreator.GetLoaders<IVideoLoader>(Manifest.VideoFormats, "video");
 			SpriteSequenceLoader = ObjectCreator.GetLoader<ISpriteSequenceLoader>(Manifest.SpriteSequenceFormat, "sequence");
-
-			var terrainLoader = ObjectCreator.FindType(Manifest.TerrainFormat + "Loader");
-			var terrainCtor = terrainLoader?.GetConstructor([typeof(ModData)]);
-			if (terrainLoader == null || !terrainLoader.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
-				throw new InvalidOperationException($"Unable to find a terrain loader for type '{Manifest.TerrainFormat}'.");
-
-			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke([this]);
-
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 			Cursors = ParseCursors(Manifest, DefaultFileSystem);
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTerrainInfo = Exts.Lazy(() =>
 			{
-				var items = new Dictionary<string, ITerrainInfo>();
+				var terrainType = ObjectCreator.FindType(Manifest.TerrainFormat + "Loader");
+				var terrainCtor = terrainType?.GetConstructor([typeof(ModData)]);
+				if (terrainType == null || !terrainType.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
+					throw new InvalidOperationException($"Unable to find a terrain loader for type '{Manifest.TerrainFormat}'.");
 
+				var items = new Dictionary<string, ITerrainInfo>();
+				var terrainLoader = (ITerrainLoader)terrainCtor.Invoke([this]);
 				foreach (var file in Manifest.TileSets)
 				{
-					var t = TerrainLoader.ParseTerrain(DefaultFileSystem, file);
+					var t = terrainLoader.ParseTerrain(DefaultFileSystem, file);
 					items.Add(t.Id, t);
 				}
 
@@ -169,7 +165,8 @@ namespace OpenRA
 			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(this);
 			ChromeProvider.Initialize(this);
-			FluentProvider.Initialize(this, fileSystem);
+			Ui.Initialize(this);
+			FluentProvider.Initialize(Manifest, fileSystem);
 
 			Game.Sound.Initialize(SoundLoaders, fileSystem);
 		}
@@ -234,7 +231,7 @@ namespace OpenRA
 	public interface ILoadScreen : IDisposable
 	{
 		/// <summary>Initializes the loadscreen with yaml data from the LoadScreen block in mod.yaml.</summary>
-		void Init(ModData m, Dictionary<string, string> info);
+		void Init(Manifest manifest, IReadOnlyFileSystem fileSystem);
 
 		/// <summary>Called at arbitrary times during mod load to rerender the loadscreen.</summary>
 		void Display();
@@ -243,7 +240,7 @@ namespace OpenRA
 		/// Called before loading the mod assets.
 		/// Returns false if mod loading should be aborted (e.g. switching to another mod instead).
 		/// </summary>
-		bool BeforeLoad();
+		bool BeforeLoad(ModData modData);
 
 		/// <summary>Called when the engine expects to connect to a server/replay or load the shellmap.</summary>
 		void StartGame(Arguments args);

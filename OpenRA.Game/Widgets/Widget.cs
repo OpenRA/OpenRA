@@ -36,6 +36,12 @@ namespace OpenRA.Widgets
 		public static Widget MouseOverWidget;
 
 		static readonly Mediator Mediator = new();
+		static ModData modData;
+
+		public static void Initialize(ModData modData)
+		{
+			Ui.modData = modData;
+		}
 
 		public static void CloseWindow()
 		{
@@ -66,6 +72,9 @@ namespace OpenRA.Widgets
 
 		public static Widget OpenWindow(string id, WidgetArgs args)
 		{
+			if (!args.ContainsKey("modData"))
+				args = new WidgetArgs(args) { { "modData", modData } };
+
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
 				Root.HideChild(WindowList.Peek());
@@ -88,6 +97,9 @@ namespace OpenRA.Widgets
 
 		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
 		{
+			if (!args.ContainsKey("modData"))
+				args = new WidgetArgs(args) { { "modData", modData } };
+
 			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 

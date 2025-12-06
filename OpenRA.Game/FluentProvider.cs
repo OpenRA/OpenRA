@@ -23,11 +23,11 @@ namespace OpenRA
 		static FluentBundle modFluentBundle;
 		static FluentBundle mapFluentBundle;
 
-		public static void Initialize(ModData modData, IReadOnlyFileSystem fileSystem)
+		public static void Initialize(Manifest manifest, IReadOnlyFileSystem fileSystem)
 		{
 			lock (SyncObject)
 			{
-				modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modData.Manifest.FluentMessages, fileSystem);
+				modFluentBundle = new FluentBundle(manifest.FluentCulture, manifest.FluentMessages, fileSystem);
 				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
 				{
 					var files = ImmutableArray<string>.Empty;
@@ -45,7 +45,7 @@ namespace OpenRA
 						text = builder.ToString();
 					}
 
-					mapFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, files, fileSystem, text);
+					mapFluentBundle = new FluentBundle(manifest.FluentCulture, files, fileSystem, text);
 				}
 			}
 		}

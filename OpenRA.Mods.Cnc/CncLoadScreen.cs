@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Mods.Common.Widgets;
@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Cnc
 
 		string message = "";
 
-		public override void Init(ModData modData, Dictionary<string, string> info)
+		public override void Init(Manifest manifest, IReadOnlyFileSystem fileSystem)
 		{
-			base.Init(modData, info);
+			base.Init(manifest, fileSystem);
 
-			versionText = modData.Manifest.Metadata.Version;
+			versionText = manifest.Metadata.Version;
 
 			message = FluentProvider.GetMessage(Loading);
 		}

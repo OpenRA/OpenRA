@@ -168,6 +168,7 @@ namespace OpenRA
 		{
 			return ModData.WidgetLoader.LoadWidget(new WidgetArgs(args)
 			{
+				{ "modData", ModData },
 				{ "world", world },
 				{ "orderManager", OrderManager },
 				{ "worldRenderer", worldRenderer },
@@ -502,14 +503,14 @@ namespace OpenRA
 
 			LocalPlayerProfile = new LocalPlayerProfile(Path.Combine(Platform.SupportDir, Settings.Game.AuthProfile), ModData.GetOrCreate<PlayerDatabase>());
 
-			if (!ModData.LoadScreen.BeforeLoad())
+			if (!ModData.LoadScreen.BeforeLoad(ModData))
 				return;
 
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
 
 			using (new PerfTimer("LoadMaps"))
-				ModData.MapCache.LoadMaps();
+				ModData.MapCache.LoadMaps(ModData);
 
 			Cursor?.Dispose();
 			Cursor = new CursorManager(ModData);

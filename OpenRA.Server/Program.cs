@@ -94,7 +94,7 @@ namespace OpenRA.Server
 				// HACK: The engine code *still* assumes that Game.ModData is set
 				var modData = Game.ModData = new ModData(mods[modID], mods);
 				modData.MapCache.LoadPreviewImages = false; // PERF: Server doesn't need previews, save memory by not loading them.
-				modData.MapCache.LoadMaps();
+				modData.MapCache.LoadMaps(modData);
 
 				var endpoints = new List<IPEndPoint> { new(IPAddress.IPv6Any, settings.ListenPort), new(IPAddress.Any, settings.ListenPort) };
 				var server = new Server(endpoints, settings, modData, ServerType.Dedicated);

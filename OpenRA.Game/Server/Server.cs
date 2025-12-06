@@ -1136,7 +1136,7 @@ namespace OpenRA.Server
 							var args = FieldLoader.Load<MapGenerationArgs>(yaml);
 							var preview = ModData.MapCache[args.Uid];
 							if (preview.Status != MapStatus.Available)
-								ModData.MapCache.GenerateMap(args);
+								ModData.MapCache.GenerateMap(ModData, args);
 
 							GeneratedMapData = o.TargetString;
 							DispatchServerOrdersToClients(Order.FromTargetString("GenerateMap", o.TargetString, true));
