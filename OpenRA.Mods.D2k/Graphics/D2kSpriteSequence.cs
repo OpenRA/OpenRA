@@ -18,9 +18,6 @@ namespace OpenRA.Mods.D2k.Graphics
 {
 	public class D2kSpriteSequenceLoader : DefaultSpriteSequenceLoader
 	{
-		public D2kSpriteSequenceLoader(ModData modData)
-			: base(modData) { }
-
 		public override D2kSpriteSequence CreateSequence(
 			ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{

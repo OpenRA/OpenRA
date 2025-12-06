@@ -26,28 +26,6 @@ namespace OpenRA
 {
 	public interface IGlobalModData { }
 
-	public sealed class TerrainFormat : IGlobalModData
-	{
-		public readonly string Type;
-		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
-		public TerrainFormat(MiniYaml yaml)
-		{
-			Type = yaml.Value;
-			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
-		}
-	}
-
-	public sealed class SpriteSequenceFormat : IGlobalModData
-	{
-		public readonly string Type;
-		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
-		public SpriteSequenceFormat(MiniYaml yaml)
-		{
-			Type = yaml.Value;
-			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
-		}
-	}
-
 	public sealed class ModData : IDisposable
 	{
 		public readonly Manifest Manifest;
@@ -129,22 +107,14 @@ namespace OpenRA
 			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
 			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 			VideoLoaders = ObjectCreator.GetLoaders<IVideoLoader>(Manifest.VideoFormats, "video");
+			SpriteSequenceLoader = ObjectCreator.GetLoader<ISpriteSequenceLoader>(Manifest.SpriteSequenceFormat, "sequence");
 
-			var terrainFormat = GetOrCreate<TerrainFormat>();
-			var terrainLoader = ObjectCreator.FindType(terrainFormat.Type + "Loader");
+			var terrainLoader = ObjectCreator.FindType(Manifest.TerrainFormat + "Loader");
 			var terrainCtor = terrainLoader?.GetConstructor([typeof(ModData)]);
 			if (terrainLoader == null || !terrainLoader.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
-				throw new InvalidOperationException($"Unable to find a terrain loader for type '{terrainFormat.Type}'.");
+				throw new InvalidOperationException($"Unable to find a terrain loader for type '{Manifest.TerrainFormat}'.");
 
 			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke([this]);
-
-			var sequenceFormat = GetOrCreate<SpriteSequenceFormat>();
-			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
-			var sequenceCtor = sequenceLoader?.GetConstructor([typeof(ModData)]);
-			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || sequenceCtor == null)
-				throw new InvalidOperationException($"Unable to find a sequence loader for type '{sequenceFormat.Type}'.");
-
-			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke([this]);
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 			Cursors = ParseCursors(Manifest, DefaultFileSystem);

@@ -24,8 +24,6 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		static readonly MiniYaml NoData = new(null);
 
-		public DefaultSpriteSequenceLoader(ModData modData) { }
-
 		public virtual ISpriteSequence CreateSequence(
 			ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{

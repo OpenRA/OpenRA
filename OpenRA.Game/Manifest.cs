@@ -70,6 +70,8 @@ namespace OpenRA
 		public readonly ImmutableArray<string> SpriteFormats = [];
 		public readonly ImmutableArray<string> PackageFormats = [];
 		public readonly ImmutableArray<string> VideoFormats = [];
+		public readonly string SpriteSequenceFormat;
+		public readonly string TerrainFormat;
 
 		// TODO: This should be controlled by a user-selected translation bundle!
 		public readonly string FluentCulture = "en";
@@ -81,7 +83,7 @@ namespace OpenRA
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "FluentMessages", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "RendererConstants"
+			"SpriteSequenceFormat", "TerrainFormat", "RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "RendererConstants"
 		}.ToFrozenSet();
 
 		public readonly FrozenDictionary<string, MiniYaml> GlobalModData;
@@ -165,6 +167,12 @@ namespace OpenRA
 
 			if (yaml.TryGetValue("VideoFormats", out entry))
 				VideoFormats = FieldLoader.GetValue<ImmutableArray<string>>("VideoFormats", entry.Value);
+
+			if (yaml.TryGetValue("SpriteSequenceFormat", out entry))
+				SpriteSequenceFormat = entry.Value;
+
+			if (yaml.TryGetValue("TerrainFormat", out entry))
+				TerrainFormat = entry.Value;
 
 			if (yaml.TryGetValue("AllowUnusedFluentMessagesInExternalPackages", out entry))
 				AllowUnusedFluentMessagesInExternalPackages =
