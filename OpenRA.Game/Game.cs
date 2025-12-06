@@ -428,7 +428,10 @@ namespace OpenRA
 
 			ExternalMods = new ExternalMods();
 
-			if (modID != null && Mods.TryGetValue(modID, out _))
+			if (modID == null)
+				throw new InvalidOperationException("Game.Mod argument missing.");
+
+			if (Mods.TryGetValue(modID, out var manifest))
 			{
 				var launchPath = args.GetValue("Engine.LaunchPath", null);
 				var launchArgs = new List<string>();
@@ -444,12 +447,14 @@ namespace OpenRA
 
 				ExternalMods.ClearInvalidRegistrations(ModRegistration.User);
 			}
+			else
+				throw new InvalidOperationException($"Unknown or invalid mod '{modID}'.");
 
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
 				Console.WriteLine($"\t{mod.Key} ({mod.Value.Version})");
 
-			InitializeMod(modID, args);
+			InitializeMod(manifest, args);
 		}
 
 		public static IPlatform CreatePlatform(string platformName)
@@ -465,7 +470,7 @@ namespace OpenRA
 			return (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
 		}
 
-		public static void InitializeMod(string mod, Arguments args)
+		public static void InitializeMod(Manifest manifest, Arguments args)
 		{
 			// Clear static state if we have switched mods
 			LobbyInfoChanged = () => { };
@@ -489,17 +494,11 @@ namespace OpenRA
 
 			ModData = null;
 
-			if (mod == null)
-				throw new InvalidOperationException("Game.Mod argument missing.");
-
-			if (!Mods.ContainsKey(mod))
-				throw new InvalidOperationException($"Unknown or invalid mod '{mod}'.");
-
-			Console.WriteLine($"Loading mod: {mod}");
+			Console.WriteLine($"Loading mod: {manifest.Id}");
 
 			Sound.StopVideo();
 
-			ModData = new ModData(Mods[mod], Mods, true);
+			ModData = new ModData(manifest, Mods, true);
 
 			LocalPlayerProfile = new LocalPlayerProfile(Path.Combine(Platform.SupportDir, Settings.Game.AuthProfile), ModData.Manifest.Get<PlayerDatabase>());
 

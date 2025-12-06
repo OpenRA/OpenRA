@@ -95,8 +95,8 @@ namespace OpenRA.Mods.Common.FileSystem
 
 		bool IFileSystemExternalContent.InstallContentIfRequired(ModData modData)
 		{
-			if (!isContentAvailable)
-				Game.InitializeMod(ContentInstallerMod, new Arguments());
+			if (!isContentAvailable && Game.Mods.TryGetValue(ContentInstallerMod, out var mod))
+				Game.InitializeMod(mod, new Arguments());
 
 			return !isContentAvailable;
 		}
@@ -105,7 +105,8 @@ namespace OpenRA.Mods.Common.FileSystem
 		{
 			// Switching mods changes the world state (by disposing it),
 			// so we can't do this inside the input handler.
-			Game.RunAfterTick(() => Game.InitializeMod(ContentInstallerMod, new Arguments()));
+			if (Game.Mods.TryGetValue(ContentInstallerMod, out var mod))
+				Game.RunAfterTick(() => Game.InitializeMod(mod, new Arguments()));
 		}
 	}
 }
