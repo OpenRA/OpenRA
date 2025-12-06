@@ -226,9 +226,6 @@ namespace OpenRA
 			"Legacy: OpenGL 2.1 with framebuffer_object extension (requires DisableLegacyGL: False)",
 			"Automatic: Use the first supported profile.")]
 		public GLProfile GLProfile = GLProfile.Automatic;
-
-		public int BatchSize = 8192;
-		public int SheetSize = 2048;
 	}
 
 	public class SoundSettings

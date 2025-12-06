@@ -22,29 +22,15 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
-		public readonly int BgraSheetSize = 2048;
-		public readonly int IndexedSheetSize = 2048;
-
 		static readonly MiniYaml NoData = new(null);
 
-		public DefaultSpriteSequenceLoader(ModData modData)
-		{
-			var metadata = modData.Manifest.Get<SpriteSequenceFormat>().Metadata;
-			if (metadata.TryGetValue("BgraSheetSize", out var yaml))
-				BgraSheetSize = FieldLoader.GetValue<int>("BgraSheetSize", yaml.Value);
-
-			if (metadata.TryGetValue("IndexedSheetSize", out yaml))
-				IndexedSheetSize = FieldLoader.GetValue<int>("IndexedSheetSize", yaml.Value);
-		}
+		public DefaultSpriteSequenceLoader(ModData modData) { }
 
 		public virtual ISpriteSequence CreateSequence(
 			ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
 			return new DefaultSpriteSequence(cache, this, image, sequence, data, defaults);
 		}
-
-		int ISpriteSequenceLoader.BgraSheetSize => BgraSheetSize;
-		int ISpriteSequenceLoader.IndexedSheetSize => IndexedSheetSize;
 
 		IReadOnlyDictionary<string, ISpriteSequence> ISpriteSequenceLoader.ParseSequences(
 			ModData modData, string tileset, SpriteCache cache, MiniYamlNode imageNode)

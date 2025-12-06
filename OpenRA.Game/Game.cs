@@ -386,32 +386,6 @@ namespace OpenRA
 			Log.AddChannel("nat", "nat.log");
 			Log.AddChannel("client", "client.log");
 
-			var platforms = new[] { Settings.Game.Platform, "Default", null };
-			foreach (var p in platforms)
-			{
-				if (p == null)
-					throw new InvalidOperationException("Failed to initialize platform-integration library. Check graphics.log for details.");
-
-				Settings.Game.Platform = p;
-				try
-				{
-					var platform = CreatePlatform(p);
-					Renderer = new Renderer(platform, Settings.Graphics);
-					Sound = new Sound(platform, Settings.Sound);
-
-					break;
-				}
-				catch (Exception e)
-				{
-					Log.Write("graphics", $"{e}");
-					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
-
-					Renderer?.Dispose();
-
-					Sound?.Dispose();
-				}
-			}
-
 			Nat.Initialize();
 
 			var modSearchArg = args.GetValue("Engine.ModSearchPaths", null);
@@ -453,6 +427,32 @@ namespace OpenRA
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
 				Console.WriteLine($"\t{mod.Key} ({mod.Value.Version})");
+
+			var platforms = new[] { Settings.Game.Platform, "Default", null };
+			foreach (var p in platforms)
+			{
+				if (p == null)
+					throw new InvalidOperationException("Failed to initialize platform-integration library. Check graphics.log for details.");
+
+				Settings.Game.Platform = p;
+				try
+				{
+					var platform = CreatePlatform(p);
+					Renderer = new Renderer(platform, Settings.Graphics, manifest.RendererConstants.VertexBatchSize);
+					Sound = new Sound(platform, Settings.Sound);
+
+					break;
+				}
+				catch (Exception e)
+				{
+					Log.Write("graphics", $"{e}");
+					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
+
+					Renderer?.Dispose();
+
+					Sound?.Dispose();
+				}
+			}
 
 			InitializeMod(manifest, args);
 		}

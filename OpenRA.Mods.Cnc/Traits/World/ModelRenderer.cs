@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Render voxels")]
 	public class ModelRendererInfo : TraitInfo, Requires<IModelCacheInfo>
 	{
+		public readonly int RenderBufferSize = 2048;
 		public override object Create(ActorInitializer init) { return new ModelRenderer(this, init.Self); }
 	}
 
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			ModelCache = self.Trait<IModelCache>();
 
-			sheetSize = Game.Settings.Graphics.SheetSize;
+			sheetSize = info.RenderBufferSize;
 			var a = 2f / sheetSize;
 			var view = new[]
 			{

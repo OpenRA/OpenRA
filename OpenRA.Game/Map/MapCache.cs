@@ -73,7 +73,7 @@ namespace OpenRA
 
 			var gridType = Exts.Lazy(() => modData.Manifest.Get<MapGrid>().Type);
 			previews = new Cache<string, MapPreview>(uid => new MapPreview(modData, uid, gridType.Value, this));
-			sheetBuilder = new SheetBuilder(SheetType.BGRA);
+			sheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.RendererConstants.MapPreviewSheetSize);
 		}
 
 		public void UpdateMaps()

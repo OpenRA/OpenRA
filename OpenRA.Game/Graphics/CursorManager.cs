@@ -42,10 +42,9 @@ namespace OpenRA.Graphics
 
 		public CursorManager(ModData modData)
 		{
-			hardwareCursorsDisabled = Game.Settings.Graphics.DisableHardwareCursors;
-
 			graphicSettings = Game.Settings.Graphics;
-			SheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.CursorSheetSize);
+			hardwareCursorsDisabled = graphicSettings.DisableHardwareCursors;
+			SheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.RendererConstants.CursorSheetSize);
 
 			// Overwrite previous definitions if there are duplicates
 			var pals = new Dictionary<string, IProvidesCursorPaletteInfo>();

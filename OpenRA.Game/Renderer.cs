@@ -40,7 +40,6 @@ namespace OpenRA
 		internal IPlatformWindow Window { get; }
 		internal IGraphicsContext Context { get; }
 
-		internal int SheetSize { get; }
 		internal int TempVertexBufferSize { get; }
 		internal int TempIndexBufferSize { get; }
 
@@ -84,12 +83,12 @@ namespace OpenRA
 		IBatchRenderer currentBatchRenderer;
 		RenderType renderType = RenderType.None;
 
-		public Renderer(IPlatform platform, GraphicSettings graphicSettings)
+		public Renderer(IPlatform platform, GraphicSettings graphicSettings, int vertexBatchSize)
 		{
 			this.platform = platform;
 			var resolution = GetResolution(graphicSettings);
 
-			TempVertexBufferSize = graphicSettings.BatchSize - graphicSettings.BatchSize % 4;
+			TempVertexBufferSize = vertexBatchSize - vertexBatchSize % 4;
 			TempIndexBufferSize = TempVertexBufferSize / 4 * 6;
 
 			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height),
@@ -97,8 +96,6 @@ namespace OpenRA
 				graphicSettings.VideoDisplay, graphicSettings.GLProfile);
 
 			Context = Window.Context;
-
-			SheetSize = graphicSettings.SheetSize;
 
 			var combinedBindings = new CombinedShaderBindings();
 			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader(combinedBindings));
@@ -134,7 +131,7 @@ namespace OpenRA
 			using (new PerfTimer("SpriteFonts"))
 			{
 				fontSheetBuilder?.Dispose();
-				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.FontSheetSize);
+				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.RendererConstants.FontSheetSize);
 				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
 					x => new SpriteFont(
 						platform, x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),

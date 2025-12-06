@@ -26,13 +26,14 @@ namespace OpenRA.Mods.Cnc.Graphics
 		readonly List<ModelVertex[]> vertices = [];
 		readonly Cache<(string, string), Voxel> voxels;
 		readonly IReadOnlyFileSystem fileSystem;
+		readonly int sheetSize;
 		IVertexBuffer<ModelVertex> vertexBuffer;
 		int totalVertexCount;
 		int cachedVertexCount;
 
 		SheetBuilder sheetBuilder;
 
-		static SheetBuilder CreateSheetBuilder()
+		SheetBuilder CreateSheetBuilder()
 		{
 			var allocated = false;
 			Sheet Allocate()
@@ -40,15 +41,16 @@ namespace OpenRA.Mods.Cnc.Graphics
 				if (allocated)
 					throw new SheetOverflowException("");
 				allocated = true;
-				return SheetBuilder.AllocateSheet(SheetType.Indexed, Game.Settings.Graphics.SheetSize);
+				return SheetBuilder.AllocateSheet(SheetType.Indexed, sheetSize);
 			}
 
 			return new SheetBuilder(SheetType.Indexed, Allocate);
 		}
 
-		public VoxelLoader(IReadOnlyFileSystem fileSystem)
+		public VoxelLoader(IReadOnlyFileSystem fileSystem, int sheetSize)
 		{
 			this.fileSystem = fileSystem;
+			this.sheetSize = sheetSize;
 			voxels = new Cache<(string, string), Voxel>(LoadFile);
 			vertices = [];
 			totalVertexCount = 0;

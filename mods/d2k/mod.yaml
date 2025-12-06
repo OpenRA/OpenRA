@@ -239,7 +239,9 @@ VideoFormats: Vqa
 TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: D2kSpriteSequence
-	IndexedSheetSize: 512
+
+RendererConstants:
+	SequenceIndexedSheetSize: 512
 
 AssetBrowser:
 	SpriteExtensions: .shp, .r8, .r16, .tmp, .png

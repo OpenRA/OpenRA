@@ -65,9 +65,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public SheetBuilder(SheetType t)
-			: this(t, Game.Settings.Graphics.SheetSize) { }
-
 		public SheetBuilder(SheetType t, int sheetSize, int margin = 1)
 			: this(t, () => AllocateSheet(t, sheetSize), margin) { }
 

@@ -64,6 +64,16 @@ namespace OpenRA
 		public string WindowTitleTranslated => WindowTitle != null ? FluentProvider.GetMessage(WindowTitle) : null;
 	}
 
+	public class RendererConstants
+	{
+		public readonly int FontSheetSize = 512;
+		public readonly int CursorSheetSize = 512;
+		public readonly int MapPreviewSheetSize = 2048;
+		public readonly int SequenceBgraSheetSize = 2048;
+		public readonly int SequenceIndexedSheetSize = 2048;
+		public readonly int VertexBatchSize = 8192;
+	}
+
 	/// <summary>Describes what is to be loaded in order to run a mod.</summary>
 	public sealed class Manifest : IDisposable
 	{
@@ -80,14 +90,13 @@ namespace OpenRA
 		public readonly MiniYaml FileSystem;
 		public readonly MiniYaml LoadScreen;
 		public readonly string DefaultOrderGenerator;
+		public readonly RendererConstants RendererConstants;
 
 		public readonly ImmutableArray<string> Assemblies = [];
 		public readonly ImmutableArray<string> SoundFormats = [];
 		public readonly ImmutableArray<string> SpriteFormats = [];
 		public readonly ImmutableArray<string> PackageFormats = [];
 		public readonly ImmutableArray<string> VideoFormats = [];
-		public readonly int FontSheetSize = 512;
-		public readonly int CursorSheetSize = 512;
 
 		// TODO: This should be controlled by a user-selected translation bundle!
 		public readonly string FluentCulture = "en";
@@ -99,7 +108,7 @@ namespace OpenRA
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "FluentMessages", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "FontSheetSize", "CursorSheetSize"
+			"RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "RendererConstants"
 		}.ToFrozenSet();
 
 		readonly TypeDictionary modules = [];
@@ -191,11 +200,10 @@ namespace OpenRA
 				AllowUnusedFluentMessagesInExternalPackages =
 					FieldLoader.GetValue<bool>("AllowUnusedFluentMessagesInExternalPackages", entry.Value);
 
-			if (yaml.TryGetValue("FontSheetSize", out entry))
-				FontSheetSize = FieldLoader.GetValue<int>("FontSheetSize", entry.Value);
-
-			if (yaml.TryGetValue("CursorSheetSize", out entry))
-				CursorSheetSize = FieldLoader.GetValue<int>("CursorSheetSize", entry.Value);
+			if (yaml.TryGetValue("RendererConstants", out entry))
+				RendererConstants = FieldLoader.Load<RendererConstants>(entry);
+			else
+				RendererConstants = new RendererConstants();
 		}
 
 		public void LoadCustomData(ObjectCreator oc)
