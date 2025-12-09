@@ -48,13 +48,16 @@ namespace OpenRA.Mods.Common.Traits
 			long lastTime = 0;
 			wr.Viewport.ViewportCenterProvider = () =>
 			{
-				var currentTime = Game.RunTime;
-				var dt = currentTime - lastTime;
-				lastTime = currentTime;
+				if (!Game.Settings.Game.PauseShellmap)
+				{
+					var currentTime = Game.RunTime;
+					var dt = currentTime - lastTime;
+					lastTime = currentTime;
 
-				// Prevent large jumps when the game is paused or the framerate is very low.
-				const float MaxStep = 0.25f;
-				angle += Math.Min(dt / 1000.0f * info.DegreesPerSecond, MaxStep);
+					// Prevent large jumps when the game is paused or the framerate is very low.
+					const float MaxStep = 0.25f;
+					angle += Math.Min(dt / 1000.0f * info.DegreesPerSecond, MaxStep);
+				}
 
 				var rad = angle * (Math.PI / 180);
 				var offset = new float2((float)(info.OvalRadius.X * Math.Sin(rad)), (float)(info.OvalRadius.Y * Math.Cos(rad)));
