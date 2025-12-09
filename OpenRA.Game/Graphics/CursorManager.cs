@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -39,19 +40,36 @@ namespace OpenRA.Graphics
 		readonly bool hardwareCursorsDisabled = false;
 		bool hardwareCursorsDoubled = false;
 
-		public CursorManager(CursorProvider cursorProvider, int cursorSheetSize)
+		public CursorManager(ModData modData)
 		{
 			hardwareCursorsDisabled = Game.Settings.Graphics.DisableHardwareCursors;
 
 			graphicSettings = Game.Settings.Graphics;
-			SheetBuilder = new SheetBuilder(SheetType.BGRA, cursorSheetSize);
+			SheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.CursorSheetSize);
+
+			// Overwrite previous definitions if there are duplicates
+			var pals = new Dictionary<string, IProvidesCursorPaletteInfo>();
+			foreach (var p in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<IProvidesCursorPaletteInfo>())
+				if (p.Palette != null)
+					pals[p.Palette] = p;
+
+			var paletteCache = new Cache<string, ImmutablePalette>(p => pals[p].ReadPalette(modData.DefaultFileSystem));
+			var frameCache = new FrameCache(modData.DefaultFileSystem, modData.SpriteLoaders);
 
 			// Sort the cursors for better packing onto the sheet.
-			foreach (var kv in cursorProvider.Cursors
-				.OrderBy(kvp => kvp.Value.Frames.Max(f => f.Size.Height)))
+			foreach (var kv in modData.Cursors)
 			{
-				var frames = kv.Value.Frames;
-				var palette = !string.IsNullOrEmpty(kv.Value.Palette) ? cursorProvider.Palettes[kv.Value.Palette] : null;
+				var cursorSprites = frameCache[kv.Value.Src];
+				var length = kv.Value.Length ?? cursorSprites.Length - kv.Value.Start;
+
+				if (kv.Value.Start > cursorSprites.Length)
+					throw new YamlException($"Cursor {kv.Value.Name}: {nameof(kv.Value.Start)} is greater than the length of the sprite sequence.");
+
+				if (kv.Value.Length > cursorSprites.Length)
+					throw new YamlException($"Cursor {kv.Value.Name}: {nameof(kv.Value.Length)} is greater than the length of the sprite sequence.");
+
+				var frames = cursorSprites.Skip(kv.Value.Start).Take(length).ToArray();
+				var palette = !string.IsNullOrEmpty(kv.Value.Palette) ? paletteCache[kv.Value.Palette] : null;
 
 				var c = new Cursor
 				{

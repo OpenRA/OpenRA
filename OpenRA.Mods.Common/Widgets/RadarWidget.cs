@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (cursor == null)
 				return worldDefaultCursor;
 
-			return Game.ModData.CursorProvider.HasCursorSequence(cursor + "-minimap") ? cursor + "-minimap" : cursor;
+			return Game.ModData.Cursors.ContainsKey(cursor + "-minimap") ? cursor + "-minimap" : cursor;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

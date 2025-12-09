@@ -513,7 +513,7 @@ namespace OpenRA
 				ModData.MapCache.LoadMaps();
 
 			Cursor?.Dispose();
-			Cursor = new CursorManager(ModData.CursorProvider, ModData.Manifest.CursorSheetSize);
+			Cursor = new CursorManager(ModData);
 
 			var metadata = ModData.Manifest.Metadata;
 			if (!string.IsNullOrEmpty(metadata.WindowTitleTranslated))
@@ -740,15 +740,12 @@ namespace OpenRA
 
 					Ui.Draw();
 
-					if (ModData != null && ModData.CursorProvider != null)
+					if (HideCursor)
+						Cursor?.SetCursor(null);
+					else
 					{
-						if (HideCursor)
-							Cursor.SetCursor(null);
-						else
-						{
-							Cursor.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
-							Cursor.Render(Renderer);
-						}
+						Cursor?.SetCursor(Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default");
+						Cursor?.Render(Renderer);
 					}
 				}
 

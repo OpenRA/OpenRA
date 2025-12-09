@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -35,9 +36,9 @@ namespace OpenRA
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
 		public readonly IFileSystemLoader FileSystemLoader;
+		public readonly FrozenDictionary<string, CursorSequence> Cursors;
 
 		public ILoadScreen LoadScreen { get; }
-		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
 		public IReadOnlyFileSystem DefaultFileSystem => ModFiles;
 
@@ -97,6 +98,7 @@ namespace OpenRA
 			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke([this]);
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
+			Cursors = ParseCursors(Manifest, DefaultFileSystem);
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTerrainInfo = Exts.Lazy(() =>
@@ -113,6 +115,23 @@ namespace OpenRA
 			});
 
 			initialThreadId = Environment.CurrentManagedThreadId;
+		}
+
+		static FrozenDictionary<string, CursorSequence> ParseCursors(Manifest manifest, IReadOnlyFileSystem fileSystem)
+		{
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			var sequenceYaml = MiniYaml.Merge(manifest.Cursors.Select(
+				s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool)));
+
+			var cursors = new Dictionary<string, CursorSequence>();
+			foreach (var node in sequenceYaml)
+				if (node.Key == "Cursors")
+					foreach (var fileNode in node.Value.Nodes)
+						foreach (var sequenceNode in fileNode.Value.Nodes)
+							cursors.Add(sequenceNode.Key, new CursorSequence(
+								sequenceNode.Key, fileNode.Key, fileNode.Value.Value, sequenceNode.Value));
+
+			return cursors.ToFrozenDictionary();
 		}
 
 		// HACK: Only update the loading screen if we're in the main thread.
@@ -134,8 +153,6 @@ namespace OpenRA
 			FluentProvider.Initialize(this, fileSystem);
 
 			Game.Sound.Initialize(SoundLoaders, fileSystem);
-
-			CursorProvider = new CursorProvider(this);
 		}
 
 		public IEnumerable<string> Languages { get; }
