@@ -56,7 +56,7 @@ namespace OpenRA.Graphics
 
 			createPaletteReference = CreatePaletteReference;
 
-			var mapGrid = modData.Manifest.Get<MapGrid>();
+			var mapGrid = modData.GetOrCreate<MapGrid>();
 			enableDepthBuffer = mapGrid.EnableDepthBuffer;
 
 			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())

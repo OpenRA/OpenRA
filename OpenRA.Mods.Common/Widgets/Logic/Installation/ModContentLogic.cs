@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ModContentLogic(ModData modData)
 		{
-			var content = modData.Manifest.Get<ModContent>();
+			var content = modData.GetOrCreate<ModContent>();
 			var mod = Game.Mods[content.Mod];
 			if (!IsModInstalled(content))
 			{

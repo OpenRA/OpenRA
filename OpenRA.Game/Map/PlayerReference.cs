@@ -31,7 +31,7 @@ namespace OpenRA
 		public string Faction;
 
 		public bool LockColor = false;
-		public Color Color = Game.ModData.Manifest.Get<DefaultPlayer>().Color;
+		public Color Color = Game.ModData.GetOrCreate<DefaultPlayer>().Color;
 
 		/// <summary>
 		/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera

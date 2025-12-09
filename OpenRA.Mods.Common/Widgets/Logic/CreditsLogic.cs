@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onExit();
 			};
 
-			var modCredits = modData.Manifest.Get<ModCredits>();
+			var modCredits = modData.GetOrCreate<ModCredits>();
 			var tabContainer = panel.Get("TAB_CONTAINER");
 
 			if (modCredits.ModCreditsFile != null)

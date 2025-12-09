@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Scripting
 			: base(context)
 		{
 			tlm = context.World.WorldActor.TraitOrDefault<TimeLimitManager>();
-			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+			var gameSpeeds = Game.ModData.GetOrCreate<GameSpeeds>();
 			var defaultGameSpeed = gameSpeeds.Speeds[gameSpeeds.DefaultSpeed];
 			ticksPerSecond = 1000 / defaultGameSpeed.Timestep;
 		}

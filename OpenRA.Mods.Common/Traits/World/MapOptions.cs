@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 					TechLevelDropdownLabel, TechLevelDropdownDescription, TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
 					techLevels, TechLevel, TechLevelDropdownLocked);
 
-			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+			var gameSpeeds = Game.ModData.GetOrCreate<GameSpeeds>();
 			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => FluentProvider.GetMessage(s.Value.Name));
 
 			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World.
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
-			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>().Speeds;
+			var gameSpeeds = Game.ModData.GetOrCreate<GameSpeeds>().Speeds;
 			if (GameSpeed != null && !gameSpeeds.ContainsKey(GameSpeed))
 				throw new YamlException($"Invalid default game speed '{GameSpeed}'.");
 		}

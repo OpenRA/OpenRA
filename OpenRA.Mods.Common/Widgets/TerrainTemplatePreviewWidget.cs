@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public TerrainTemplatePreviewWidget(ModData modData, WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
-			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
+			viewportSizes = modData.GetOrCreate<WorldViewportSizes>();
 
 			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
 			if (terrainRenderer == null)

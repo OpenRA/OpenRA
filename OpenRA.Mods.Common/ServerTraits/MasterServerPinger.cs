@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				try
 				{
-					var endpoint = server.ModData.Manifest.Get<WebServices>().ServerAdvertise;
+					var endpoint = server.ModData.GetOrCreate<WebServices>().ServerAdvertise;
 
 					var client = HttpClientFactory.Create();
 					var response = await client.PostAsync(endpoint, new StringContent(postData));

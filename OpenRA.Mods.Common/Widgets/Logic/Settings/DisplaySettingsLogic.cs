@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.worldRenderer = worldRenderer;
 			this.modData = modData;
-			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
+			viewportSizes = modData.GetOrCreate<WorldViewportSizes>();
 
 			legacyFullscreen = FluentProvider.GetMessage(LegacyFullscreen);
 			fullscreen = FluentProvider.GetMessage(Fullscreen);
@@ -567,7 +567,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			var viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
+			var viewportSizes = Game.ModData.GetOrCreate<WorldViewportSizes>();
 			var maxScales = new float2(Game.Renderer.NativeResolution) / new float2(viewportSizes.MinEffectiveResolution);
 			var maxScale = Math.Min(maxScales.X, maxScales.Y);
 

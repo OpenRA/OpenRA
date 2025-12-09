@@ -384,7 +384,7 @@ namespace OpenRA
 
 			var newData = innerData.Clone();
 			newData.Class = classification;
-			newData.GridType = gridType ?? modData.Manifest.Get<MapGrid>().Type;
+			newData.GridType = gridType ?? modData.GetOrCreate<MapGrid>().Type;
 
 			if (yaml.TryGetValue("MapFormat", out var temp))
 			{

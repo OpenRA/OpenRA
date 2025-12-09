@@ -87,7 +87,7 @@ namespace OpenRA.Network
 				}
 			}
 
-			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+			var gameSpeeds = Game.ModData.GetOrCreate<GameSpeeds>();
 			var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
 			orderLatency = gameSpeeds.Speeds[gameSpeedName].OrderLatency;
 		}

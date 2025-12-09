@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			serverShuttingDown = FluentProvider.GetMessage(ServerShuttingDown);
 			unknownServerState = FluentProvider.GetMessage(UnknownServerState);
 
-			services = modData.Manifest.Get<WebServices>();
+			services = modData.GetOrCreate<WebServices>();
 
 			incompatibleVersionColor = ChromeMetrics.Get<Color>("IncompatibleVersionColor");
 			incompatibleGameColor = ChromeMetrics.Get<Color>("IncompatibleGameColor");

@@ -13,15 +13,41 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Video;
 using OpenRA.Widgets;
 using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA
 {
+	public interface IGlobalModData { }
+
+	public sealed class TerrainFormat : IGlobalModData
+	{
+		public readonly string Type;
+		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
+		public TerrainFormat(MiniYaml yaml)
+		{
+			Type = yaml.Value;
+			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
+		}
+	}
+
+	public sealed class SpriteSequenceFormat : IGlobalModData
+	{
+		public readonly string Type;
+		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
+		public SpriteSequenceFormat(MiniYaml yaml)
+		{
+			Type = yaml.Value;
+			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
+		}
+	}
+
 	public sealed class ModData : IDisposable
 	{
 		public readonly Manifest Manifest;
@@ -48,6 +74,8 @@ namespace OpenRA
 		readonly Lazy<IReadOnlyDictionary<string, ITerrainInfo>> defaultTerrainInfo;
 		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo => defaultTerrainInfo.Value;
 
+		readonly TypeDictionary modules = [];
+
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
 			Languages = [];
@@ -63,7 +91,28 @@ namespace OpenRA
 			FileSystemLoader.Mount(ModFiles, ObjectCreator);
 			ModFiles.TrimExcess();
 
-			Manifest.LoadCustomData(ObjectCreator);
+			foreach (var kv in Manifest.GlobalModData)
+			{
+				var t = ObjectCreator.FindType(kv.Key);
+				if (t == null || !typeof(IGlobalModData).IsAssignableFrom(t))
+					throw new InvalidDataException($"`{kv.Key}` is not a valid mod manifest entry.");
+
+				IGlobalModData module;
+				var ctor = t.GetConstructor([typeof(MiniYaml)]);
+				if (ctor != null)
+				{
+					// Class has opted-in to DIY initialization
+					module = (IGlobalModData)ctor.Invoke([kv.Value]);
+				}
+				else
+				{
+					// Automatically load the child nodes using FieldLoader
+					module = ObjectCreator.CreateObject<IGlobalModData>(kv.Key);
+					FieldLoader.Load(module, kv.Value);
+				}
+
+				modules.Add(module);
+			}
 
 			FluentProvider.Initialize(this, DefaultFileSystem);
 
@@ -81,7 +130,7 @@ namespace OpenRA
 			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
 			VideoLoaders = ObjectCreator.GetLoaders<IVideoLoader>(Manifest.VideoFormats, "video");
 
-			var terrainFormat = Manifest.Get<TerrainFormat>();
+			var terrainFormat = GetOrCreate<TerrainFormat>();
 			var terrainLoader = ObjectCreator.FindType(terrainFormat.Type + "Loader");
 			var terrainCtor = terrainLoader?.GetConstructor([typeof(ModData)]);
 			if (terrainLoader == null || !terrainLoader.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
@@ -89,7 +138,7 @@ namespace OpenRA
 
 			TerrainLoader = (ITerrainLoader)terrainCtor.Invoke([this]);
 
-			var sequenceFormat = Manifest.Get<SpriteSequenceFormat>();
+			var sequenceFormat = GetOrCreate<SpriteSequenceFormat>();
 			var sequenceLoader = ObjectCreator.FindType(sequenceFormat.Type + "Loader");
 			var sequenceCtor = sequenceLoader?.GetConstructor([typeof(ModData)]);
 			if (sequenceLoader == null || !sequenceLoader.GetInterfaces().Contains(typeof(ISpriteSequenceLoader)) || sequenceCtor == null)
@@ -177,6 +226,26 @@ namespace OpenRA
 			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s, stringPool: stringPool).ToArray()).ToArray();
 		}
 
+		/// <summary>Load a cached IGlobalModData instance.</summary>
+		public T GetOrCreate<T>() where T : IGlobalModData
+		{
+			var module = modules.GetOrDefault<T>();
+
+			// Lazily create the default values if not explicitly defined.
+			if (module == null)
+			{
+				module = (T)ObjectCreator.CreateBasic(typeof(T));
+				modules.Add(module);
+			}
+
+			return module;
+		}
+
+		public T GetOrNull<T>() where T : IGlobalModData
+		{
+			return modules.GetOrDefault<T>();
+		}
+
 		public void Dispose()
 		{
 			LoadScreen?.Dispose();
@@ -184,7 +253,11 @@ namespace OpenRA
 
 			ObjectCreator?.Dispose();
 
-			Manifest.Dispose();
+			foreach (var module in modules)
+			{
+				var disposableModule = module as IDisposable;
+				disposableModule?.Dispose();
+			}
 		}
 	}
 

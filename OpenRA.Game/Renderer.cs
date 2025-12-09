@@ -132,7 +132,7 @@ namespace OpenRA
 			{
 				fontSheetBuilder?.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.RendererConstants.FontSheetSize);
-				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
+				Fonts = modData.GetOrCreate<Fonts>().FontList.ToDictionary(x => x.Key,
 					x => new SpriteFont(
 						platform, x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
 						x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder));

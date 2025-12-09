@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// TODO: This needs to be reworked to support per-map tech levels, bots, etc.
 			modRules = modData.DefaultRules;
 
-			services = modData.Manifest.Get<WebServices>();
+			services = modData.GetOrCreate<WebServices>();
 
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;

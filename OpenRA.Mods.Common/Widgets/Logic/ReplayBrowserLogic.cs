@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			map = MapCache.UnknownMap;
 			panel = widget;
 
-			services = modData.Manifest.Get<WebServices>();
+			services = modData.GetOrCreate<WebServices>();
 			this.modData = modData;
 			this.onStart = onStart;
 			Game.BeforeGameStart += OnGameStart;

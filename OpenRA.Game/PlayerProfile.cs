@@ -33,7 +33,7 @@ namespace OpenRA
 			var badgesNode = yaml.NodeWithKeyOrDefault("Badges");
 			if (badgesNode != null)
 			{
-				var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();
+				var playerDatabase = Game.ModData.GetOrCreate<PlayerDatabase>();
 				foreach (var badgeNode in badgesNode.Value.Nodes)
 				{
 					Game.RunAfterTick(() =>

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
 
-			var itchIntegration = modData.Manifest.Get<ItchIntegration>();
+			var itchIntegration = modData.GetOrCreate<ItchIntegration>();
 			itchIntegration.GetPlayerName(name => nameTextfield.Text = Settings.SanitizedPlayerName(name));
 
 			nameTextfield.OnLoseFocus = () =>
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => ps.Color;
 
-			var viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
+			var viewportSizes = modData.GetOrCreate<WorldViewportSizes>();
 			var battlefieldCameraDropDown = widget.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
 			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => DisplaySettingsLogic.GetViewportSizeName(modData, vs));
 			battlefieldCameraDropDown.OnMouseDown = _ => DisplaySettingsLogic.ShowBattlefieldCameraDropdown(modData, battlefieldCameraDropDown, viewportSizes, ds);

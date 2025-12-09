@@ -71,7 +71,7 @@ namespace OpenRA
 		{
 			this.modData = modData;
 
-			var gridType = Exts.Lazy(() => modData.Manifest.Get<MapGrid>().Type);
+			var gridType = Exts.Lazy(() => modData.GetOrCreate<MapGrid>().Type);
 			previews = new Cache<string, MapPreview>(uid => new MapPreview(modData, uid, gridType.Value, this));
 			sheetBuilder = new SheetBuilder(SheetType.BGRA, modData.Manifest.RendererConstants.MapPreviewSheetSize);
 		}
@@ -85,7 +85,7 @@ namespace OpenRA
 		public void LoadMaps()
 		{
 			// Utility mod that does not support maps
-			if (!modData.Manifest.Contains<MapGrid>())
+			if (modData.Manifest.MapFolders.Count == 0)
 				return;
 
 			// Enumerate map directories
@@ -124,7 +124,7 @@ namespace OpenRA
 
 			// PERF: Load the mod YAML once outside the loop, and reuse it when resolving each maps custom YAML.
 			var modDataRules = modData.GetRulesYaml();
-			var gridType = modData.Manifest.Get<MapGrid>().Type;
+			var gridType = modData.GetOrCreate<MapGrid>().Type;
 			foreach (var kv in MapLocations)
 			{
 				foreach (var map in kv.Key.Contents)
@@ -178,10 +178,6 @@ namespace OpenRA
 
 		public IEnumerable<IReadWritePackage> EnumerateMapDirPackages(MapClassification classification = MapClassification.System)
 		{
-			// Utility mod that does not support maps
-			if (!modData.Manifest.Contains<MapGrid>())
-				yield break;
-
 			// Enumerate map directories
 			foreach (var kv in modData.Manifest.MapFolders)
 			{

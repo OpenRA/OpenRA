@@ -304,7 +304,7 @@ namespace OpenRA.Server
 
 			ModData = modData;
 
-			playerDatabase = modData.Manifest.Get<PlayerDatabase>();
+			playerDatabase = modData.GetOrCreate<PlayerDatabase>();
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
@@ -1376,7 +1376,7 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 
-				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
+				var gameSpeeds = Game.ModData.GetOrCreate<GameSpeeds>();
 				var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
 
 				var gameSpeed = gameSpeeds.Speeds[gameSpeedName];

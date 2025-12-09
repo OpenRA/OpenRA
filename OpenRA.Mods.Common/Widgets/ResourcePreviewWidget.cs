@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public ResourcePreviewWidget(ModData modData, WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
-			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
+			viewportSizes = modData.GetOrCreate<WorldViewportSizes>();
 			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
 			tileSize = world.Map.Rules.TerrainInfo.TileSize;
 		}

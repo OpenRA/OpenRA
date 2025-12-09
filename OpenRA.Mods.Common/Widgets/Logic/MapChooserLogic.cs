@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// SetupMapTab (through RefreshMap) depends on the map search having already started
 			if (remoteMapPool != null && Game.Settings.Game.AllowDownloading)
 			{
-				var services = modData.Manifest.Get<WebServices>();
+				var services = modData.GetOrCreate<WebServices>();
 				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, remoteMapPool);
 			}
 

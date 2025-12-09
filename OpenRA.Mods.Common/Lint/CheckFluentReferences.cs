@@ -199,16 +199,13 @@ namespace OpenRA.Mods.Common.Lint
 					ExtractConstFluentKeys(modData, traitType, keys);
 			}
 
-			var hasModule = modData.Manifest.GetType().GetMethod(nameof(Manifest.Contains));
-			var getModule = modData.Manifest.GetType().GetMethod(nameof(Manifest.Get), []);
+			var getModule = modData.GetType().GetMethod(nameof(ModData.GetOrNull), []);
 			var globalModData = modData.ObjectCreator.GetTypesImplementing<IGlobalModData>()
-				.Where(t => (bool)hasModule.MakeGenericMethod(t).Invoke(modData.Manifest, []));
+				.Select(t => getModule?.MakeGenericMethod(t).Invoke(modData, []))
+				.Where(x => x != null);
 
 			foreach (var module in globalModData)
-			{
-				var value = getModule.MakeGenericMethod(module).Invoke(modData.Manifest, []);
-				ExtractFluentKeys(modData, value, "mod.yaml", keys);
-			}
+				ExtractFluentKeys(modData, module, "mod.yaml", keys);
 
 			// Load screen
 			var loadScreenType = modData.ObjectCreator.FindType(modData.Manifest.LoadScreen.Value);

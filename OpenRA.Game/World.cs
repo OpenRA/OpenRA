@@ -205,7 +205,7 @@ namespace OpenRA
 
 			orderGenerator = (IOrderGenerator)modData.ObjectCreator.CreateBasic(defaultOrderGeneratorType);
 
-			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
+			var gameSpeeds = modData.GetOrCreate<GameSpeeds>();
 			var gameSpeedName = orderManager.LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
 			GameSpeed = gameSpeeds.Speeds[gameSpeedName];
 			Timestep = ReplayTimestep = GameSpeed.Timestep;

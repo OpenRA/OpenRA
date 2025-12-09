@@ -686,7 +686,7 @@ namespace OpenRA.Mods.Common.Server
 				else if (server.Settings.QueryMapRepository)
 				{
 					server.SendFluentMessageTo(conn, SearchingMap);
-					var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
+					var mapRepository = server.ModData.GetOrCreate<WebServices>().MapRepository;
 					var reported = false;
 					server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, [s], SelectMap, _ =>
 					{
@@ -1319,7 +1319,7 @@ namespace OpenRA.Mods.Common.Server
 
 				// Query any missing maps and wait up to 10 seconds for a response
 				// Maps that have not resolved will not be valid for the initial map choice
-				var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
+				var mapRepository = server.ModData.GetOrCreate<WebServices>().MapRepository;
 				mapCache.QueryRemoteMapDetails(mapRepository, unknownMaps);
 
 				var searchingMaps = server.MapPool.Where(uid => mapCache[uid].Status == MapStatus.Searching);

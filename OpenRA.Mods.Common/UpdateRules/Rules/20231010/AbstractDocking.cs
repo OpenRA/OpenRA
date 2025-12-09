@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors)
 		{
-			grid = modData.Manifest.Get<MapGrid>();
+			grid = modData.GetOrCreate<MapGrid>();
 			var harvesters = new Dictionary<string, HashSet<string>>();
 			var refineries = new List<string>();
 			foreach (var actorNode in resolvedActors)

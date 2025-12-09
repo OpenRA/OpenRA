@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public BadgeWidget(ModData modData)
 		{
-			playerDatabase = modData.Manifest.Get<PlayerDatabase>();
+			playerDatabase = modData.GetOrCreate<PlayerDatabase>();
 		}
 
 		protected BadgeWidget(BadgeWidget other)

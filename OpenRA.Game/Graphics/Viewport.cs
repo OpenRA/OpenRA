@@ -149,7 +149,7 @@ namespace OpenRA.Graphics
 		{
 			worldRenderer = wr;
 			tileSize = map.Rules.TerrainInfo.TileSize;
-			viewportSizes = Game.ModData.Manifest.Get<WorldViewportSizes>();
+			viewportSizes = Game.ModData.GetOrCreate<WorldViewportSizes>();
 			graphicSettings = Game.Settings.Graphics;
 			defaultScale = viewportSizes.DefaultScale;
 

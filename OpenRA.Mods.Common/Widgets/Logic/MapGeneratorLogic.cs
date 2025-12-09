@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void RandomizeSize()
 		{
-			var mapGrid = modData.Manifest.Get<MapGrid>();
+			var mapGrid = modData.GetOrCreate<MapGrid>();
 			var sizeRange = MapSizes[selectedSize];
 			var width = Game.CosmeticRandom.Next(sizeRange.X, sizeRange.Y);
 			var height =

@@ -325,7 +325,7 @@ namespace OpenRA
 		{
 			this.modData = modData;
 			MapSize = size;
-			Grid = modData.Manifest.Get<MapGrid>();
+			Grid = modData.GetOrCreate<MapGrid>();
 
 			Title = "Name your map here";
 			Author = "Your name here";
@@ -370,7 +370,7 @@ namespace OpenRA
 			PlayerDefinitions = yaml.NodeWithKeyOrDefault("Players")?.Value.Nodes ?? [];
 			ActorDefinitions = yaml.NodeWithKeyOrDefault("Actors")?.Value.Nodes ?? [];
 
-			Grid = modData.Manifest.Get<MapGrid>();
+			Grid = modData.GetOrCreate<MapGrid>();
 
 			Tiles = new CellLayer<TerrainTile>(Grid.Type, MapSize);
 			Resources = new CellLayer<ResourceTile>(Grid.Type, MapSize);

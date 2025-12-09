@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return parent;
 			}
 
-			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
+			var mapRepository = modData.GetOrCreate<WebServices>().MapRepository;
 
 			Widget SetUpInstallButton(Widget parent)
 			{

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var grid = Game.ModData.Manifest.Get<MapGrid>();
+			var grid = Game.ModData.GetOrCreate<MapGrid>();
 			if (grid.Type != MapGridType.RectangularIsometric)
 				throw new YamlException($"{nameof(IsometricSelectable)} can only be used in mods that use the {nameof(MapGridType.RectangularIsometric)} MapGrid type.");
 

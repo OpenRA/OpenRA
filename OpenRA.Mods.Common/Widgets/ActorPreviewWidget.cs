@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public ActorPreviewWidget(ModData modData, WorldRenderer worldRenderer)
 		{
-			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
+			viewportSizes = modData.GetOrCreate<WorldViewportSizes>();
 			this.worldRenderer = worldRenderer;
 		}
 

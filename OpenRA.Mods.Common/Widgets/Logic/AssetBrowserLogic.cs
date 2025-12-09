@@ -395,7 +395,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.GetOrNull<LabelWidget>("MODEL_SCALE").IsVisible = () => currentVoxel != null;
 			}
 
-			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
+			var assetBrowserModData = modData.GetOrCreate<AssetBrowser>();
 			allowedSpriteExtensions = assetBrowserModData.SpriteExtensions.Select(x => x.ToLowerInvariant()).ToArray();
 			allowedModelExtensions = assetBrowserModData.ModelExtensions.Select(x => x.ToLowerInvariant()).ToArray();
 			allowedAudioExtensions = assetBrowserModData.AudioExtensions.Select(x => x.ToLowerInvariant()).ToArray();
