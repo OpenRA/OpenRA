@@ -124,3 +124,16 @@ Container@GAMEPLAY_PANEL:
 									Height: 20
 									Font: Regular
 									Text: checkbox-hide-replay-chat-container
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
+						Container@JUMP_TO_GROUP_SELECTS_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@JUMP_TO_GROUP_SELECTS_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-jump-to-group-selects-container

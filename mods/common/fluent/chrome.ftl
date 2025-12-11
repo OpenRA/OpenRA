@@ -498,6 +498,7 @@ label-gameplay-section-header = Gameplay
 label-auto-save-interval = Auto-save frequency:
 label-auto-save-max-file-number = Auto-save limit:
 checkbox-hide-replay-chat-container = Hide Chat in Replays
+checkbox-jump-to-group-selects-container = "Jump to group" Selects Group
 
 ## settings-display.yaml
 label-target-lines-dropdown-container = Target Lines:

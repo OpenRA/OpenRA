@@ -328,6 +328,7 @@ namespace OpenRA
 
 		public bool UseClassicMouseStyle = false;
 		public bool UseAlternateScrollButton = false;
+		public bool JumpToGroupSelects = false;
 
 		public bool HideReplayChat = false;
 
