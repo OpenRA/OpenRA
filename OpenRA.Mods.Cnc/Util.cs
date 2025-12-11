@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Numerics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc
 {
@@ -68,248 +70,89 @@ namespace OpenRA.Mods.Cnc
 			return Common.Util.QuantizeFacing(facing, steps);
 		}
 
-		public static float[] IdentityMatrix()
+		public static Matrix4x4 IdentityMatrix()
 		{
-			return
-			[
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1,
-			];
+			return Matrix4x4.Identity;
 		}
 
-		public static float[] ScaleMatrix(float sx, float sy, float sz)
+		public static Matrix4x4 ScaleMatrix(float sx, float sy, float sz)
 		{
-			return
-			[
-				sx, 0, 0, 0,
-				0, sy, 0, 0,
-				0, 0, sz, 0,
-				0, 0, 0, 1,
-			];
+			return Matrix4x4.CreateScale(sx, sy, sz);
 		}
 
-		public static float[] TranslationMatrix(float x, float y, float z)
+		public static Matrix4x4 TranslationMatrix(float x, float y, float z)
 		{
-			return
-			[
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				x, y, z, 1,
-			];
+			return Matrix4x4.CreateTranslation(x, y, z);
 		}
 
-		public static float[] MatrixMultiply(float[] lhs, float[] rhs)
+		/// <summary>
+		/// Warning: Arguments are backwards.
+		/// </summary>
+		public static Matrix4x4 MatrixMultiply(Matrix4x4 rhs, Matrix4x4 lhs)
 		{
-			var mtx = new float[16];
-			for (var i = 0; i < 4; i++)
-				for (var j = 0; j < 4; j++)
-				{
-					mtx[4 * i + j] = 0;
-					for (var k = 0; k < 4; k++)
-						mtx[4 * i + j] += lhs[4 * k + j] * rhs[4 * i + k];
-				}
-
-			return mtx;
+			return lhs * rhs;
 		}
 
-		public static float[] MatrixVectorMultiply(float[] mtx, float[] vec)
+		public static Vector4 MatrixVectorMultiply(Matrix4x4 mtx, Vector4 vec)
 		{
-			var ret = new float[4];
-			for (var j = 0; j < 4; j++)
-			{
-				ret[j] = 0;
-				for (var k = 0; k < 4; k++)
-					ret[j] += mtx[4 * k + j] * vec[k];
-			}
-
-			return ret;
+			return Vector4.Transform(vec, mtx);
 		}
 
-		public static float[] MatrixInverse(float[] m)
+		public static Matrix4x4? MatrixInverse(Matrix4x4 m)
 		{
-			var mtx = new float[16];
+			if (Matrix4x4.Invert(m, out var r))
+				return r;
 
-			mtx[0] = m[5] * m[10] * m[15] -
-				m[5] * m[11] * m[14] -
-				m[9] * m[6] * m[15] +
-				m[9] * m[7] * m[14] +
-				m[13] * m[6] * m[11] -
-				m[13] * m[7] * m[10];
-
-			mtx[4] = -m[4] * m[10] * m[15] +
-				m[4] * m[11] * m[14] +
-				m[8] * m[6] * m[15] -
-				m[8] * m[7] * m[14] -
-				m[12] * m[6] * m[11] +
-				m[12] * m[7] * m[10];
-
-			mtx[8] = m[4] * m[9] * m[15] -
-				m[4] * m[11] * m[13] -
-				m[8] * m[5] * m[15] +
-				m[8] * m[7] * m[13] +
-				m[12] * m[5] * m[11] -
-				m[12] * m[7] * m[9];
-
-			mtx[12] = -m[4] * m[9] * m[14] +
-				m[4] * m[10] * m[13] +
-				m[8] * m[5] * m[14] -
-				m[8] * m[6] * m[13] -
-				m[12] * m[5] * m[10] +
-				m[12] * m[6] * m[9];
-
-			mtx[1] = -m[1] * m[10] * m[15] +
-				m[1] * m[11] * m[14] +
-				m[9] * m[2] * m[15] -
-				m[9] * m[3] * m[14] -
-				m[13] * m[2] * m[11] +
-				m[13] * m[3] * m[10];
-
-			mtx[5] = m[0] * m[10] * m[15] -
-				m[0] * m[11] * m[14] -
-				m[8] * m[2] * m[15] +
-				m[8] * m[3] * m[14] +
-				m[12] * m[2] * m[11] -
-				m[12] * m[3] * m[10];
-
-			mtx[9] = -m[0] * m[9] * m[15] +
-				m[0] * m[11] * m[13] +
-				m[8] * m[1] * m[15] -
-				m[8] * m[3] * m[13] -
-				m[12] * m[1] * m[11] +
-				m[12] * m[3] * m[9];
-
-			mtx[13] = m[0] * m[9] * m[14] -
-				m[0] * m[10] * m[13] -
-				m[8] * m[1] * m[14] +
-				m[8] * m[2] * m[13] +
-				m[12] * m[1] * m[10] -
-				m[12] * m[2] * m[9];
-
-			mtx[2] = m[1] * m[6] * m[15] -
-				m[1] * m[7] * m[14] -
-				m[5] * m[2] * m[15] +
-				m[5] * m[3] * m[14] +
-				m[13] * m[2] * m[7] -
-				m[13] * m[3] * m[6];
-
-			mtx[6] = -m[0] * m[6] * m[15] +
-				m[0] * m[7] * m[14] +
-				m[4] * m[2] * m[15] -
-				m[4] * m[3] * m[14] -
-				m[12] * m[2] * m[7] +
-				m[12] * m[3] * m[6];
-
-			mtx[10] = m[0] * m[5] * m[15] -
-				m[0] * m[7] * m[13] -
-				m[4] * m[1] * m[15] +
-				m[4] * m[3] * m[13] +
-				m[12] * m[1] * m[7] -
-				m[12] * m[3] * m[5];
-
-			mtx[14] = -m[0] * m[5] * m[14] +
-				m[0] * m[6] * m[13] +
-				m[4] * m[1] * m[14] -
-				m[4] * m[2] * m[13] -
-				m[12] * m[1] * m[6] +
-				m[12] * m[2] * m[5];
-
-			mtx[3] = -m[1] * m[6] * m[11] +
-				m[1] * m[7] * m[10] +
-				m[5] * m[2] * m[11] -
-				m[5] * m[3] * m[10] -
-				m[9] * m[2] * m[7] +
-				m[9] * m[3] * m[6];
-
-			mtx[7] = m[0] * m[6] * m[11] -
-				m[0] * m[7] * m[10] -
-				m[4] * m[2] * m[11] +
-				m[4] * m[3] * m[10] +
-				m[8] * m[2] * m[7] -
-				m[8] * m[3] * m[6];
-
-			mtx[11] = -m[0] * m[5] * m[11] +
-				m[0] * m[7] * m[9] +
-				m[4] * m[1] * m[11] -
-				m[4] * m[3] * m[9] -
-				m[8] * m[1] * m[7] +
-				m[8] * m[3] * m[5];
-
-			mtx[15] = m[0] * m[5] * m[10] -
-				m[0] * m[6] * m[9] -
-				m[4] * m[1] * m[10] +
-				m[4] * m[2] * m[9] +
-				m[8] * m[1] * m[6] -
-				m[8] * m[2] * m[5];
-
-			var det = m[0] * mtx[0] + m[1] * mtx[4] + m[2] * mtx[8] + m[3] * mtx[12];
-			if (det == 0)
-				return null;
-
-			for (var i = 0; i < 16; i++)
-				mtx[i] *= 1 / det;
-
-			return mtx;
+			return null;
 		}
 
-		public static float[] MakeFloatMatrix(Int32Matrix4x4 imtx)
+		public static Matrix4x4 MakeFloatMatrix(Int32Matrix4x4 imtx)
 		{
 			var multipler = 1f / imtx.M44;
-			return
-			[
+			return new Matrix4x4(
 				imtx.M11 * multipler,
 				imtx.M12 * multipler,
 				imtx.M13 * multipler,
 				imtx.M14 * multipler,
-
 				imtx.M21 * multipler,
 				imtx.M22 * multipler,
 				imtx.M23 * multipler,
 				imtx.M24 * multipler,
-
 				imtx.M31 * multipler,
 				imtx.M32 * multipler,
 				imtx.M33 * multipler,
 				imtx.M34 * multipler,
-
 				imtx.M41 * multipler,
 				imtx.M42 * multipler,
 				imtx.M43 * multipler,
-				imtx.M44 * multipler,
-			];
+				1f);
 		}
 
-		public static float[] MatrixAABBMultiply(float[] mtx, float[] bounds)
+		public static AABB MatrixAABBMultiply(Matrix4x4 mtx, AABB bounds)
 		{
-			// Corner offsets.
-			var ix = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
-			var iy = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
-			var iz = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-
 			// Vectors to opposing corner.
-			var ret = new[]
-			{
-				float.MaxValue, float.MaxValue, float.MaxValue,
-				float.MinValue, float.MinValue, float.MinValue
-			};
+			var minX = float.MaxValue;
+			var minY = float.MaxValue;
+			var minZ = float.MaxValue;
+			var maxX = float.MinValue;
+			var maxY = float.MinValue;
+			var maxZ = float.MinValue;
 
 			// Transform vectors and find new bounding box.
 			for (var i = 0; i < 8; i++)
 			{
-				var vec = new[] { bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1 };
+				var vec = bounds.Corner(i);
 				var tvec = MatrixVectorMultiply(mtx, vec);
 
-				ret[0] = Math.Min(ret[0], tvec[0] / tvec[3]);
-				ret[1] = Math.Min(ret[1], tvec[1] / tvec[3]);
-				ret[2] = Math.Min(ret[2], tvec[2] / tvec[3]);
-				ret[3] = Math.Max(ret[3], tvec[0] / tvec[3]);
-				ret[4] = Math.Max(ret[4], tvec[1] / tvec[3]);
-				ret[5] = Math.Max(ret[5], tvec[2] / tvec[3]);
+				minX = Math.Min(minX, tvec[0] / tvec[3]);
+				minY = Math.Min(minY, tvec[1] / tvec[3]);
+				minZ = Math.Min(minZ, tvec[2] / tvec[3]);
+				maxX = Math.Max(maxX, tvec[0] / tvec[3]);
+				maxY = Math.Max(maxY, tvec[1] / tvec[3]);
+				maxZ = Math.Max(maxZ, tvec[2] / tvec[3]);
 			}
 
-			return ret;
+			return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 	}
 }

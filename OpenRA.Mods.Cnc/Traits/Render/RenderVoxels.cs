@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Graphics;
@@ -53,8 +52,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public readonly WAngle LightPitch = WAngle.FromDegrees(50);
 		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
-		public readonly ImmutableArray<float> LightAmbientColor = [0.6f, 0.6f, 0.6f];
-		public readonly ImmutableArray<float> LightDiffuseColor = [0.4f, 0.4f, 0.4f];
+		public readonly float3 LightAmbientColor = new(0.6f, 0.6f, 0.6f);
+		public readonly float3 LightDiffuseColor = new(0.4f, 0.4f, 0.4f);
 
 		public override object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
 

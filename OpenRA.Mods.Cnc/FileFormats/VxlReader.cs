@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 	{
 		public string Name;
 		public float Scale;
-		public float[] Bounds;
+		public AABB Bounds;
 		public byte[] Size;
 		public NormalType Type;
 
@@ -135,9 +136,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				Limbs[i].Scale = s.ReadSingle();
 				s.Seek(48, SeekOrigin.Current);
 
-				Limbs[i].Bounds = new float[6];
-				for (var j = 0; j < 6; j++)
-					Limbs[i].Bounds[j] = s.ReadSingle();
+				Limbs[i].Bounds = new AABB(
+					s.ReadSingle(), s.ReadSingle(), s.ReadSingle(),
+					s.ReadSingle(), s.ReadSingle(), s.ReadSingle());
 				Limbs[i].Size = s.ReadBytes(3);
 				Limbs[i].Type = (NormalType)s.ReadUInt8();
 			}

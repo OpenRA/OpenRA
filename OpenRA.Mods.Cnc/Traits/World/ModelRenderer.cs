@@ -11,8 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -46,14 +46,14 @@ namespace OpenRA.Mods.Cnc.Traits
 	public sealed class ModelRenderer : IDisposable, IRenderer, INotifyActorDisposing
 	{
 		// Static constants
-		static readonly ImmutableArray<float> ShadowDiffuse = [0, 0, 0];
-		static readonly ImmutableArray<float> ShadowAmbient = [1, 1, 1];
+		static readonly Vector3 ShadowDiffuse = new(0, 0, 0);
+		static readonly Vector3 ShadowAmbient = new(1, 1, 1);
 		static readonly float2 SpritePadding = new(2, 2);
-		static readonly float[] ZeroVector = [0, 0, 0, 1];
-		static readonly float[] ZVector = [0, 0, 1, 1];
-		static readonly float[] FlipMtx = Util.ScaleMatrix(1, -1, 1);
-		static readonly float[] ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
-		static readonly float[] GroundNormal = [0, 0, 1, 1];
+		static readonly Vector4 ZeroVector = new(0, 0, 0, 1);
+		static readonly Vector4 ZVector = new(0, 0, 1, 1);
+		static readonly Matrix4x4 FlipMtx = Util.ScaleMatrix(1, -1, 1);
+		static readonly Matrix4x4 ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
+		static readonly Vector4 GroundNormal = new(0, 0, 1, 1);
 
 		readonly Renderer renderer;
 		readonly IShader shader;
@@ -83,20 +83,18 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			sheetSize = info.RenderBufferSize;
 			var a = 2f / sheetSize;
-			var view = new[]
-			{
+			var view = new Matrix4x4(
 				a, 0, 0, 0,
 				0, -a, 0, 0,
 				0, 0, -2 * a, 0,
-				-1, 1, 0, 1
-			};
+				-1, 1, 0, 1);
 
 			shader.SetMatrix("View", view);
 		}
 
 		public ModelRenderProxy RenderAsync(
 			WorldRenderer wr, IEnumerable<ModelAnimation> models, in WRot camera, float scale,
-			in WRot groundOrientation, in WRot lightSource, ImmutableArray<float> lightAmbientColor, ImmutableArray<float> lightDiffuseColor,
+			in WRot groundOrientation, in WRot lightSource, Vector3 lightAmbientColor, Vector3 lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadowPalette)
 		{
 			if (!isInFrame)
@@ -109,15 +107,16 @@ namespace OpenRA.Mods.Cnc.Traits
 			var lightYaw = Util.MakeFloatMatrix(new WRot(WAngle.Zero, WAngle.Zero, -lightSource.Yaw).AsMatrix());
 			var lightPitch = Util.MakeFloatMatrix(new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).AsMatrix());
 			var ground = Util.MakeFloatMatrix(groundOrientation.AsMatrix());
-			var shadowTransform = Util.MatrixMultiply(Util.MatrixMultiply(lightPitch, lightYaw), Util.MatrixInverse(ground));
+			var shadowTransform = Util.MatrixMultiply(Util.MatrixMultiply(lightPitch, lightYaw), Util.MatrixInverse(ground).Value);
 
 			var groundNormal = Util.MatrixVectorMultiply(ground, GroundNormal);
 
-			var invShadowTransform = Util.MatrixInverse(shadowTransform);
+			var invShadowTransform = Util.MatrixInverse(shadowTransform).Value;
 			var cameraTransform = Util.MakeFloatMatrix(camera.AsMatrix());
-			var invCameraTransform = Util.MatrixInverse(cameraTransform);
-			if (invCameraTransform == null)
+			var invCameraTransformNullable = Util.MatrixInverse(cameraTransform);
+			if (invCameraTransformNullable == null)
 				throw new InvalidOperationException("Failed to invert the cameraTransform matrix during RenderAsync.");
+			var invCameraTransform = invCameraTransformNullable.Value;
 
 			// Sprite rectangle
 			var tl = new float2(float.MaxValue, float.MaxValue);
@@ -143,10 +142,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				var shadowBounds = Util.MatrixAABBMultiply(shadowTransform, worldBounds);
 
 				// Aggregate bounds rects
-				tl = float2.Min(tl, new float2(screenBounds[0], screenBounds[1]));
-				br = float2.Max(br, new float2(screenBounds[3], screenBounds[4]));
-				stl = float2.Min(stl, new float2(shadowBounds[0], shadowBounds[1]));
-				sbr = float2.Max(sbr, new float2(shadowBounds[3], shadowBounds[4]));
+				tl = float2.Min(tl, new float2(screenBounds.MinX, screenBounds.MinY));
+				br = float2.Max(br, new float2(screenBounds.MaxX, screenBounds.MaxY));
+				stl = float2.Min(stl, new float2(shadowBounds.MinX, shadowBounds.MinY));
+				sbr = float2.Max(sbr, new float2(shadowBounds.MaxX, shadowBounds.MaxY));
 			}
 
 			// Inflate rects to ensure rendering is within bounds
@@ -156,12 +155,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			sbr += SpritePadding;
 
 			// Corners of the shadow quad, in shadow-space
-			var corners = new float[][]
+			var corners = new Vector4[]
 			{
-				[stl.X, stl.Y, 0, 1],
-				[sbr.X, sbr.Y, 0, 1],
-				[sbr.X, stl.Y, 0, 1],
-				[stl.X, sbr.Y, 0, 1]
+				new(stl.X, stl.Y, 0, 1),
+				new(sbr.X, sbr.Y, 0, 1),
+				new(sbr.X, stl.Y, 0, 1),
+				new(stl.X, sbr.Y, 0, 1),
 			};
 
 			var shadowScreenTransform = Util.MatrixMultiply(cameraTransform, invShadowTransform);
@@ -214,7 +213,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					var shadow = Util.MatrixMultiply(shadowTransform, worldTransform);
 					shadow = Util.MatrixMultiply(shadowCorrectionTransform, shadow);
 
-					var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(rotations), invShadowTransform);
+					var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(rotations).Value, invShadowTransform);
 
 					var frame = m.FrameFunc();
 					for (uint i = 0; i < m.Model.Sections; i++)
@@ -226,7 +225,7 @@ namespace OpenRA.Mods.Cnc.Traits
 							throw new InvalidOperationException($"Failed to invert the transformed matrix of frame {i} during RenderAsync.");
 
 						// Transform light vector from shadow -> world -> limb coords
-						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
+						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it.Value, lightTransform));
 
 						Render(rd, ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureIndex, normals.TextureIndex);
@@ -261,7 +260,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			size = new Size(width, height);
 		}
 
-		static float[] ExtractRotationVector(float[] mtx)
+		static Vector4 ExtractRotationVector(Matrix4x4 mtx)
 		{
 			var tVec = Util.MatrixVectorMultiply(mtx, ZVector);
 			var tOrigin = Util.MatrixVectorMultiply(mtx, ZeroVector);
@@ -282,16 +281,16 @@ namespace OpenRA.Mods.Cnc.Traits
 		void Render(
 			ModelRenderData renderData,
 			IModelCache cache,
-			float[] t, float[] lightDirection,
-			ImmutableArray<float> ambientLight, ImmutableArray<float> diffuseLight,
+			Matrix4x4 t, Vector4 lightDirection,
+			Vector3 ambientLight, Vector3 diffuseLight,
 			float colorPaletteTextureIndex, float normalsPaletteTextureIndex)
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
 			shader.SetVec("Palettes", colorPaletteTextureIndex, normalsPaletteTextureIndex);
 			shader.SetMatrix("TransformMatrix", t);
-			shader.SetVec("LightDirection", lightDirection, 4);
-			shader.SetVec("AmbientLight", ambientLight.AsMemory(), 3);
-			shader.SetVec("DiffuseLight", diffuseLight.AsMemory(), 3);
+			shader.SetVec("LightDirection", lightDirection);
+			shader.SetVec("AmbientLight", ambientLight);
+			shader.SetVec("DiffuseLight", diffuseLight);
 
 			shader.PrepareRender();
 			renderer.DrawBatch(cache.VertexBuffer, shader, renderData.Start, renderData.Count, PrimitiveType.TriangleList);

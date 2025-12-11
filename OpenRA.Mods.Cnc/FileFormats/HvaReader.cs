@@ -9,8 +9,8 @@
  */
 #endregion
 
-using System;
 using System.IO;
+using System.Numerics;
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 	{
 		public readonly uint FrameCount;
 		public readonly uint LimbCount;
-		public readonly float[] Transforms;
+		public readonly Matrix4x4[] Transforms;
 
 		public HvaReader(Stream s, string fileName)
 		{
@@ -31,24 +31,22 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			// Skip limb names
 			s.Seek(16 * LimbCount, SeekOrigin.Current);
-			Transforms = new float[16 * FrameCount * LimbCount];
+			Transforms = new Matrix4x4[FrameCount * LimbCount];
 
-			var testMatrix = new float[16];
 			for (var j = 0; j < FrameCount; j++)
 				for (var i = 0; i < LimbCount; i++)
 				{
 					// Convert to column-major matrices and add the final matrix row
-					var c = 16 * (LimbCount * j + i);
-					Transforms[c + 3] = 0;
-					Transforms[c + 7] = 0;
-					Transforms[c + 11] = 0;
-					Transforms[c + 15] = 1;
+					var c = LimbCount * j + i;
+					Transforms[c][0, 3] = 0;
+					Transforms[c][1, 3] = 0;
+					Transforms[c][2, 3] = 0;
+					Transforms[c][3, 3] = 1;
 
 					for (var k = 0; k < 12; k++)
-						Transforms[c + ids[k]] = s.ReadSingle();
+						Transforms[c][ids[k] / 4, ids[k] % 4] = s.ReadSingle();
 
-					Array.Copy(Transforms, 16 * (LimbCount * j + i), testMatrix, 0, 16);
-					if (Util.MatrixInverse(testMatrix) == null)
+					if (Util.MatrixInverse(Transforms[c]) == null)
 						throw new InvalidDataException(
 							$"The transformation matrix for HVA file `{fileName}` section {i} frame {j} is invalid because it is not invertible!");
 				}

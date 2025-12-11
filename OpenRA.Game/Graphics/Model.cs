@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -20,9 +21,9 @@ namespace OpenRA.Graphics
 		uint Frames { get; }
 		uint Sections { get; }
 
-		float[] TransformationMatrix(uint section, uint frame);
+		Matrix4x4 TransformationMatrix(uint section, uint frame);
 		float[] Size { get; }
-		float[] Bounds(uint frame);
+		AABB Bounds(uint frame);
 		ModelRenderData RenderData(uint section);
 
 		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model.</summary>

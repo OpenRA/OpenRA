@@ -341,17 +341,8 @@ namespace OpenRA.Platforms.Default
 		public delegate void Uniform3f(int location, float v0, float v1, float v2);
 		public static Uniform3f glUniform3f { get; private set; }
 
-		public delegate void Uniform1fv(int location, int count, IntPtr value);
-		public static Uniform1fv glUniform1fv { get; private set; }
-
-		public delegate void Uniform2fv(int location, int count, IntPtr value);
-		public static Uniform2fv glUniform2fv { get; private set; }
-
-		public delegate void Uniform3fv(int location, int count, IntPtr value);
-		public static Uniform3fv glUniform3fv { get; private set; }
-
-		public delegate void Uniform4fv(int location, int count, IntPtr value);
-		public static Uniform4fv glUniform4fv { get; private set; }
+		public delegate void Uniform4f(int location, float v0, float v1, float v2, float v3);
+		public static Uniform4f glUniform4f { get; private set; }
 
 		public delegate void UniformMatrix4fv(int location, int count, bool transpose, IntPtr value);
 		public static UniformMatrix4fv glUniformMatrix4fv { get; private set; }
@@ -588,10 +579,7 @@ namespace OpenRA.Platforms.Default
 				glUniform1f = Bind<Uniform1f>("glUniform1f");
 				glUniform2f = Bind<Uniform2f>("glUniform2f");
 				glUniform3f = Bind<Uniform3f>("glUniform3f");
-				glUniform1fv = Bind<Uniform1fv>("glUniform1fv");
-				glUniform2fv = Bind<Uniform2fv>("glUniform2fv");
-				glUniform3fv = Bind<Uniform3fv>("glUniform3fv");
-				glUniform4fv = Bind<Uniform4fv>("glUniform4fv");
+				glUniform4f = Bind<Uniform4f>("glUniform4f");
 				glUniformMatrix4fv = Bind<UniformMatrix4fv>("glUniformMatrix4fv");
 				glGenBuffers = Bind<GenBuffers>("glGenBuffers");
 				glBindBuffer = Bind<BindBuffer>("glBindBuffer");

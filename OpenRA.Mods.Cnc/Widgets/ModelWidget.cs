@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Graphics;
 using OpenRA.Mods.Cnc.Traits;
@@ -27,8 +26,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public float Scale = 10f;
 		public int LightPitch = 142;
 		public int LightYaw = 682;
-		public ImmutableArray<float> LightAmbientColor = [0.6f, 0.6f, 0.6f];
-		public ImmutableArray<float> LightDiffuseColor = [0.4f, 0.4f, 0.4f];
+		public float3 LightAmbientColor = new(0.6f, 0.6f, 0.6f);
+		public float3 LightDiffuseColor = new(0.4f, 0.4f, 0.4f);
 		public WRot Rotation = WRot.None;
 		public WAngle CameraAngle = WAngle.FromDegrees(40);
 
@@ -36,8 +35,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public Func<string> GetPlayerPalette;
 		public Func<string> GetNormalsPalette;
 		public Func<string> GetShadowPalette;
-		public Func<ImmutableArray<float>> GetLightAmbientColor;
-		public Func<ImmutableArray<float>> GetLightDiffuseColor;
+		public Func<float3> GetLightAmbientColor;
+		public Func<float3> GetLightDiffuseColor;
 		public Func<float> GetScale;
 		public Func<int> GetLightPitch;
 		public Func<int> GetLightYaw;

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Effects;
 using OpenRA.Primitives;
@@ -447,10 +448,10 @@ namespace OpenRA.Graphics
 		}
 
 		// For scaling vectors to pixel sizes in the model renderer
-		public float[] ScreenVector(in WVec vec)
+		public Vector4 ScreenVector(in WVec vec)
 		{
 			var xyz = ScreenVectorComponents(vec);
-			return [xyz.X, xyz.Y, xyz.Z, 1f];
+			return new Vector4(xyz.X, xyz.Y, xyz.Z, 1f);
 		}
 
 		public int2 ScreenPxOffset(in WVec vec)

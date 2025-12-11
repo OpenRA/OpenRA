@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Numerics;
 using System.Text;
 using OpenRA.Graphics;
 
@@ -217,42 +217,32 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		public void SetVec(string name, ReadOnlyMemory<float> vec, int length)
+		public void SetVec(string name, Vector3 vec)
 		{
 			VerifyThreadAffinity();
 			var param = uniformCache[name];
-			unsafe
-			{
-				fixed (float* pVec = vec.Span)
-				{
-					var ptr = new IntPtr(pVec);
-					switch (length)
-					{
-						case 1: OpenGL.glUniform1fv(param, 1, ptr); break;
-						case 2: OpenGL.glUniform2fv(param, 1, ptr); break;
-						case 3: OpenGL.glUniform3fv(param, 1, ptr); break;
-						case 4: OpenGL.glUniform4fv(param, 1, ptr); break;
-						default: throw new InvalidDataException("Invalid vector length");
-					}
-				}
-			}
-
+			OpenGL.glUniform3f(param, vec.X, vec.Y, vec.Z);
 			OpenGL.CheckGLError();
 		}
 
-		public void SetMatrix(string name, float[] mtx)
+		public void SetVec(string name, Vector4 vec)
 		{
 			VerifyThreadAffinity();
-			if (mtx.Length != 16)
-				throw new InvalidDataException("Invalid 4x4 matrix");
+			var param = uniformCache[name];
+			OpenGL.glUniform4f(param, vec.X, vec.Y, vec.Z, vec.W);
+			OpenGL.CheckGLError();
+		}
+
+		public void SetMatrix(string name, Matrix4x4 mtx)
+		{
+			VerifyThreadAffinity();
 
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
 
 			unsafe
 			{
-				fixed (float* pMtx = mtx)
-					OpenGL.glUniformMatrix4fv(uniformCache[name], 1, false, new IntPtr(pMtx));
+				OpenGL.glUniformMatrix4fv(uniformCache[name], 1, false, new IntPtr((float*)&mtx));
 			}
 
 			OpenGL.CheckGLError();

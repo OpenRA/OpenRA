@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 
@@ -27,6 +28,7 @@ namespace OpenRA
 		public float2(int2 p) { X = p.X; Y = p.Y; }
 
 		public static implicit operator float2(int2 src) { return new float2(src.X, src.Y); }
+		public static implicit operator Vector2(float2 src) { return new Vector2(src.X, src.Y); }
 
 		public static float2 operator +(float2 a, float2 b) { return new float2(a.X + b.X, a.Y + b.Y); }
 		public static float2 operator -(float2 a, float2 b) { return new float2(a.X - b.X, a.Y - b.Y); }

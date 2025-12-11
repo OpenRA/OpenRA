@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -136,9 +137,10 @@ namespace OpenRA
 		void SetVec(string name, float x);
 		void SetVec(string name, float x, float y);
 		void SetVec(string name, float x, float y, float z);
-		void SetVec(string name, ReadOnlyMemory<float> vec, int length);
+		void SetVec(string name, Vector3 vec);
+		void SetVec(string name, Vector4 vec);
 		void SetTexture(string param, ITexture texture);
-		void SetMatrix(string param, float[] mtx);
+		void SetMatrix(string param, Matrix4x4 mtx);
 		void PrepareRender();
 		void Bind();
 	}

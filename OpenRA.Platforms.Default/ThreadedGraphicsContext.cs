@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using OpenRA.Primitives;
@@ -777,10 +778,10 @@ namespace OpenRA.Platforms.Default
 			bind = shader.Bind;
 			prepareRender = shader.PrepareRender;
 			setBool = tuple => { var t = ((string, bool))tuple; shader.SetBool(t.Item1, t.Item2); };
-			setMatrix = tuple => { var t = ((string, float[]))tuple; shader.SetMatrix(t.Item1, t.Item2); };
+			setMatrix = tuple => { var t = ((string, Matrix4x4))tuple; shader.SetMatrix(t.Item1, t.Item2); };
 			setTexture = tuple => { var t = ((string, ITexture))tuple; shader.SetTexture(t.Item1, t.Item2); };
 			setVec1 = tuple => { var t = ((string, float))tuple; shader.SetVec(t.Item1, t.Item2); };
-			setVec2 = tuple => { var t = ((string, ReadOnlyMemory<float>, int))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
+			setVec2 = tuple => { var t = ((string, Vector4))tuple; shader.SetVec(t.Item1, t.Item2); };
 			setVec3 = tuple => { var t = ((string, float, float))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
 			setVec4 = tuple => { var t = ((string, float, float, float))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
 		}
@@ -800,7 +801,7 @@ namespace OpenRA.Platforms.Default
 			device.Post(setBool, (name, value));
 		}
 
-		public void SetMatrix(string param, float[] mtx)
+		public void SetMatrix(string param, Matrix4x4 mtx)
 		{
 			device.Post(setMatrix, (param, mtx));
 		}
@@ -815,9 +816,14 @@ namespace OpenRA.Platforms.Default
 			device.Post(setVec1, (name, x));
 		}
 
-		public void SetVec(string name, ReadOnlyMemory<float> vec, int length)
+		public void SetVec(string name, Vector3 vec)
 		{
-			device.Post(setVec2, (name, vec, length));
+			device.Post(setVec4, (name, vec.X, vec.Y, vec.Z));
+		}
+
+		public void SetVec(string name, Vector4 vec)
+		{
+			device.Post(setVec2, (name, vec));
 		}
 
 		public void SetVec(string name, float x, float y)

@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace OpenRA
@@ -27,6 +28,7 @@ namespace OpenRA
 
 		public static implicit operator float3(int2 src) { return new float3(src.X, src.Y, 0); }
 		public static implicit operator float3(float2 src) { return new float3(src.X, src.Y, 0); }
+		public static implicit operator Vector3(float3 src) { return new Vector3(src.X, src.Y, src.Z); }
 
 		public static float3 operator +(in float3 a, in float3 b) { return new float3(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
 		public static float3 operator -(in float3 a, in float3 b) { return new float3(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
