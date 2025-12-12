@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -46,6 +47,7 @@ namespace OpenRA.Graphics
 		readonly List<IRenderable> renderablesBuffer = [];
 		readonly IRenderer[] renderers;
 		readonly IRenderPostProcessPass[] postProcessPasses;
+		long[] renderablesKeysBuffer = [];
 
 		internal WorldRenderer(ModData modData, World world)
 		{
@@ -157,7 +159,14 @@ namespace OpenRA.Graphics
 				renderablesBuffer.AddRange(e.Render(this));
 
 			// Renderables must be ordered using a stable sorting algorithm to avoid flickering artefacts
-			foreach (var renderable in renderablesBuffer.OrderBy(RenderableZPositionComparisonKey))
+			if (renderablesKeysBuffer.Length < renderablesBuffer.Count)
+				renderablesKeysBuffer = new long[Exts.NextPowerOf2(renderablesBuffer.Count)];
+			for (var i = 0; i < renderablesBuffer.Count; i++)
+				renderablesKeysBuffer[i] = ((long)RenderableZPositionComparisonKey(renderablesBuffer[i]) << 32) + i;
+			var keys = renderablesKeysBuffer.AsSpan(0, renderablesBuffer.Count);
+			keys.Sort(CollectionsMarshal.AsSpan(renderablesBuffer));
+
+			foreach (var renderable in renderablesBuffer)
 				preparedRenderables.Add(renderable.PrepareRender(this));
 
 			// PERF: Reuse collection to avoid allocations.
