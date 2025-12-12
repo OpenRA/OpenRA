@@ -122,7 +122,7 @@ jobs:
       - name: Upload Installer
         id: unsigned-artifact
         if: github.repository == 'openra/openra'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           path: build/windows/*.exe
 
