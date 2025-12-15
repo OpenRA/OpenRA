@@ -83,7 +83,7 @@ def format_docs(version, collectionName, types, relatedEnums):
 
             if "RequiresTraits" in currentType and currentType["RequiresTraits"]:
                 formattedRequiredTraits = [format_type_name(x, is_known_type(x, types)) for x in currentType["RequiresTraits"]]
-                print("\n> Requires trait(s): " + ", ".join(sorted(formattedRequiredTraits)) + '.')
+                print("\n> Requires: " + ", ".join(sorted(formattedRequiredTraits)) + '.')
 
             if currentType["Properties"] and len(currentType["Properties"]) > 0:
                 print()
