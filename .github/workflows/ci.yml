@@ -8,6 +8,7 @@ on:
     branches: [ bleed, 'prep-*' ]
     paths-ignore:
       - '*.md'
+      - '*.py'
 
 permissions:
   contents: read  #  to fetch code (actions/checkout)
