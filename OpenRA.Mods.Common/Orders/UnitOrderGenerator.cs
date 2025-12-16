@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Orders
 		public UnitOrderGenerator(World world)
 		{
 			gameSettings = Game.Settings.Game;
+			HasIssuedQueuedCommand = false;
 		}
 
 		protected static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -83,6 +84,7 @@ namespace OpenRA.Mods.Common.Orders
 		}
 
 		public virtual void Tick(World world) { }
+
 		public virtual IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public virtual IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 		public virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
@@ -220,5 +222,6 @@ namespace OpenRA.Mods.Common.Orders
 		}
 
 		public virtual bool ClearSelectionOnLeftClick => true;
+		public virtual bool HasIssuedQueuedCommand { get; set; }
 	}
 }

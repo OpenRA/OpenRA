@@ -29,8 +29,13 @@ namespace OpenRA.Mods.Common.Orders
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			mi.Modifiers |= Modifiers;
-			if ((cancelOnFirstUse && !mi.Modifiers.HasModifier(Modifiers.Shift)) || mi.Button == CancelButton)
-				world.CancelInputMode();
+			if (cancelOnFirstUse)
+			{
+				if (!mi.Modifiers.HasModifier(Modifiers.Shift) || mi.Button == CancelButton)
+					world.CancelInputMode();
+				else
+					HasIssuedQueuedCommand = true;
+			}
 
 			return base.OrderInner(world, cell, worldPixel, mi);
 		}
