@@ -231,5 +231,20 @@ namespace OpenRA.Mods.Common.Widgets
 				return World.OrderGenerator.GetCursor(World, cell, worldPixel, mi);
 			});
 		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (World.OrderGenerator is not UnitOrderGenerator uog)
+				return false;
+
+			if (uog.HasIssuedQueuedCommand && e.Event == KeyInputEvent.Up && (e.Key == Keycode.LSHIFT || e.Key == Keycode.RSHIFT))
+			{
+				World.CancelInputMode();
+				uog.HasIssuedQueuedCommand = false;
+				return true;
+			}
+
+			return false;
+		}
 	}
 }

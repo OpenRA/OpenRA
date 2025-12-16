@@ -120,6 +120,8 @@ namespace OpenRA.Mods.Common.Traits
 			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 			if (!queued)
 				world.CancelInputMode();
+			else
+				HasIssuedQueuedCommand = true;
 
 			var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
 
