@@ -123,6 +123,9 @@ namespace OpenRA
 		readonly IEnumerable<WPos> enabledTargetableWorldPositions;
 		bool created;
 
+		IEnumerable<IRenderable> renderables;
+		WorldRenderer lastWorldRenderer;
+
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
 			var duplicateInit = initDict.WithInterface<ISingleInstanceInit>().GroupBy(i => i.GetType())
@@ -287,11 +290,18 @@ namespace OpenRA
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (lastWorldRenderer != wr)
+			{
+				// PERF: Cache the enumerable to reduce allocations.
+				lastWorldRenderer = wr;
+				renderables = Renderables(wr);
+			}
+
 			// PERF: Avoid LINQ.
-			var renderables = Renderables(wr);
+			var modifiedRenderables = renderables;
 			foreach (var modifier in renderModifiers)
-				renderables = modifier.ModifyRender(this, wr, renderables);
-			return renderables;
+				modifiedRenderables = modifier.ModifyRender(this, wr, modifiedRenderables);
+			return modifiedRenderables;
 		}
 
 		IEnumerable<IRenderable> Renderables(WorldRenderer wr)

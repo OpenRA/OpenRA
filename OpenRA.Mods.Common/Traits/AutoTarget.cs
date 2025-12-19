@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
@@ -431,9 +432,16 @@ namespace OpenRA.Mods.Common.Traits
 				// Make sure that we can actually fire on the actor
 				var armaments = ab.ChooseArmamentsForTarget(target, false);
 				if (!allowMove)
-					armaments = armaments.Where(arm =>
-						target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
-						!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange));
+				{
+					// PERF: This lambda captures, contain it within a local function to prevent
+					// the compiler allocating the helper class at the top of the loop.
+					static Func<Armament, bool> IsInRange(Actor self, Target target) =>
+						arm =>
+							target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
+							!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange);
+
+					armaments = armaments.Where(IsInRange(self, target));
+				}
 
 				if (!armaments.Any())
 					continue;
