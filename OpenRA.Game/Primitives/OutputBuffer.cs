@@ -23,5 +23,6 @@ namespace OpenRA.Primitives
 		public void Add(T item) => list.Add(item);
 		public void AddRange(IEnumerable<T> items) => list.AddRange(items);
 		public void AddRange(params ReadOnlySpan<T> items) => list.AddRange(items);
+		public void AddRange(T[] items) => list.AddRange(items.AsSpan());
 	}
 }
