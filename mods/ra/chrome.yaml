@@ -140,7 +140,7 @@ sidebar-bits:
 commandbar:
 	Inherits: ^Sidebar
 	Regions:
-		background: 0, 0, 434, 44
+		background: 0, 0, 468, 44
 
 production-icons:
 	Inherits: ^Glyphs

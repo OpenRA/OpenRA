@@ -180,9 +180,27 @@ Container@PLAYER_WIDGETS:
 							Y: 8
 							ImageCollection: command-icons
 							ImageName: queue-orders
+				Button@PATROL:
+					X: 280
+					Width: 34
+					Height: 41
+					VisualHeight: 0
+					Background: command-button
+					Key: Patrol
+					DisableKeySound: true
+					TooltipText: button-command-bar-patrol.tooltip
+					TooltipDesc: button-command-bar-patrol.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 4
+							Y: 8
+							ImageCollection: command-icons
+							ImageName: queue-orders
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 316
+			X: 341
 			Y: WINDOW_HEIGHT - HEIGHT - 11
 			Width: 138
 			Height: 26

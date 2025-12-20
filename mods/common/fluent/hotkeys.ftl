@@ -102,6 +102,7 @@ hotkey-description-stop = Stop
 hotkey-description-scatter = Scatter
 hotkey-description-deploy = Deploy
 hotkey-description-guard = Guard
+hotkey-description-patrol = Patrol
 hotkey-description-stanceattackanything = Attack anything
 hotkey-description-stancedefend = Defend
 hotkey-description-stancereturnfire = Return fire

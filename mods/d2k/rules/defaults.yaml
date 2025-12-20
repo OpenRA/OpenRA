@@ -233,6 +233,7 @@
 	Passenger:
 		CargoType: Vehicle
 	AttackMove:
+	Patrol:
 	HiddenUnderFog:
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
@@ -426,6 +427,7 @@
 			BulletDeath: 4
 		CrushedSequence: die-crushed
 	AttackMove:
+	Patrol:
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
@@ -472,6 +474,7 @@
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
 	AttackMove:
+	Patrol:
 	WithFacingSpriteBody:
 	WithShadow:
 	HitShape:
