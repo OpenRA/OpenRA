@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common
 
 		public IReadOnlyCollection<Actor> Actors => actors;
 
-		ActorIndex(World world, IEnumerable<Actor> initialActorsToIndex)
+		protected ActorIndex(World world, IEnumerable<Actor> initialActorsToIndex)
 		{
 			this.world = world;
 			world.ActorAdded += AddActor;
