@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
-	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
+	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick, ISync
 	{
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;

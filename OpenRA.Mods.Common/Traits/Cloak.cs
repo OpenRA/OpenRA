@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Cloak : PausableConditionalTrait<CloakInfo>,
 		IRenderModifier, INotifyDamage, INotifyUnloadCargo, INotifyLoadCargo, INotifyDemolition, INotifyInfiltration,
-		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyDockClient, INotifyDockHost, INotifySupportPower
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyDockClient, INotifyDockHost, INotifySupportPower, ISync
 	{
 		readonly float3 cloakedColor;
 		readonly float cloakedColorAlpha;
