@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenRA.Mods.Common.UpdateRules;
 using OpenRA.Mods.Common.UpdateRules.Rules;
 
@@ -35,9 +34,27 @@ namespace OpenRA.Mods.Common.Lint
 					if (package == null)
 						continue;
 
-					var textData = Encoding.UTF8.GetBytes(nodes.WriteToString());
-					if (!Enumerable.SequenceEqual(textData, package.GetStream(file).ReadAllBytes()))
-						emitError($"Mock update rule has tried to modify file {file}. Syntax mismatch detected.");
+					var textData = nodes.WriteToString();
+					var packagesStream = package.GetStream(file);
+					var packageData = packagesStream.ReadAllText();
+					if (!Enumerable.SequenceEqual(textData, packageData))
+					{
+						emitError($"Mock update rule has tried to modify file {file}.");
+
+						var packageLines = packageData.Split(["\r\n", "\n"], StringSplitOptions.None).GetEnumerator();
+						var textLines = textData.Split(["\r\n", "\n"], StringSplitOptions.None).GetEnumerator();
+
+						var n = 1;
+#pragma warning disable RCS1239
+						while (packageLines.MoveNext() && textLines.MoveNext())
+						{
+							if ((string)packageLines.Current != (string)textLines.Current)
+								emitError($"Syntax or whitespace mismatch detected at line {n}.");
+
+							n++;
+						}
+#pragma warning restore RCS1239
+					}
 				}
 			}
 			catch (Exception ex)
