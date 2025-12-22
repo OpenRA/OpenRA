@@ -756,7 +756,7 @@ namespace OpenRA
 			var positions = new List<(MPos Uv, Color Color)>();
 			foreach (var actor in actors)
 			{
-				var s = new ActorReference(actor.Value.Value, actor.Value.ToDictionary());
+				var s = new ActorReference(actor.Value.Value, actor.Value);
 
 				var ai = Rules.Actors[actor.Value.Value];
 				var impsis = ai.TraitInfos<IMapPreviewSignatureInfo>();

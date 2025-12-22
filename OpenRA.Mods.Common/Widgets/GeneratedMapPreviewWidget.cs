@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var spawnPoints = map.ActorDefinitions
 				.Where(d => d.Value.Value == "mpspawn")
-				.Select(kv => new ActorReference(kv.Value.Value, kv.Value.ToDictionary()).Get<LocationInit>().Value);
+				.Select(kv => new ActorReference(kv.Value.Value, kv.Value).Get<LocationInit>().Value);
 
 			Update(spawnPoints, map.Bounds, map.Grid.Type, new Png(map.Package.GetStream("map.png")));
 		}

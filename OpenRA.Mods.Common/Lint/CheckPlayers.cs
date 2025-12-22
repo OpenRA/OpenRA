@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Lint
 			var spawns = new List<CPos>();
 			foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
 			{
-				var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var s = new ActorReference(kv.Value.Value, kv.Value);
 				spawns.Add(s.Get<LocationInit>().Value);
 			}
 

@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.ToDictionary(player => player.Name);
 			foreach (var kv in generatedMap.ActorDefinitions)
 			{
-				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var actorReference = new ActorReference(kv.Value.Value, kv.Value);
 				var ownerInit = actorReference.Get<OwnerInit>();
 				if (!players.TryGetValue(ownerInit.InternalName, out var owner))
 					throw new MapGenerationException("Generator produced mismatching player and actor definitions.");

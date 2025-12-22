@@ -30,15 +30,15 @@ namespace OpenRA
 		internal TypeDictionary InitDict => initDict.Value;
 
 		public ActorReference(string type)
-			: this(type, new Dictionary<string, MiniYaml>()) { }
+			: this(type, new MiniYaml("")) { }
 
-		public ActorReference(string type, Dictionary<string, MiniYaml> inits)
+		public ActorReference(string type, MiniYaml inits)
 		{
 			Type = type;
 			initDict = Exts.Lazy(() =>
 			{
 				var dict = new TypeDictionary();
-				foreach (var i in inits)
+				foreach (var i in inits.Nodes)
 				{
 					var init = LoadInit(i.Key, i.Value);
 					if (init is ISingleInstanceInit && dict.Contains(init.GetType()))

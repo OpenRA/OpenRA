@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var kv in map.ActorDefinitions)
 			{
-				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var actorReference = new ActorReference(kv.Value.Value, kv.Value);
 				var ownerInit = actorReference.GetOrDefault<OwnerInit>();
 				if (ownerInit == null)
 					emitError($"Actor `{kv.Key}` is not owned by any player.");

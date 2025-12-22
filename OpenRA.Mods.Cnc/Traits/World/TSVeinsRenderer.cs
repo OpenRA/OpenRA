@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (!VeinholeActors.Contains(type))
 					continue;
 
-				var actorReference = new ActorReference(type, kv.Value.ToDictionary());
+				var actorReference = new ActorReference(type, kv.Value);
 				var location = actorReference.Get<LocationInit>();
 				var veinholeInfo = map.Rules.Actors[actorReference.Type];
 				foreach (var cell in veinholeInfo.TraitInfo<IOccupySpaceInfo>().OccupiedCells(veinholeInfo, location.Value))

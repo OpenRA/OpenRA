@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var kv in map.ActorDefinitions)
 			{
-				var actor = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var actor = new ActorReference(kv.Value.Value, kv.Value);
 				var locationInit = actor.GetOrDefault<LocationInit>();
 				if (locationInit == null)
 					continue;

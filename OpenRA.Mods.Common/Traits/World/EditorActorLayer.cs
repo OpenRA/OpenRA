@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var kv = world.Map.ActorDefinitions.ElementAt(i);
 				names[i] = kv.Key;
-				references.Add(new ActorReference(kv.Value.Value, kv.Value.ToDictionary()));
+				references.Add(new ActorReference(kv.Value.Value, kv.Value));
 			}
 
 			AddRange(CollectionsMarshal.AsSpan(references), names);
