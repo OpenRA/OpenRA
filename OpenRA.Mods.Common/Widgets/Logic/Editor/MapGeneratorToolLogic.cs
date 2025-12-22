@@ -184,7 +184,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var validChoices = mo.ValidChoices(world.Map.Rules.TerrainInfo, playerCount);
 						if (!validChoices.Contains(mo.Value))
-							mo.Value = mo.Default != null ? mo.Default.FirstOrDefault(validChoices.Contains) : validChoices.FirstOrDefault();
+						{
+							if (mo.Default != null)
+								mo.Value = mo.Default.FirstOrDefault(validChoices.Contains);
+							mo.Value ??= validChoices.FirstOrDefault();
+						}
 
 						if (mo.Value != null && mo.Label != null && validChoices.Count > 0)
 						{

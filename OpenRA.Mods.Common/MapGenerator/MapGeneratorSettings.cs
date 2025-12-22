@@ -127,7 +127,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 			if (validChoices.Contains(value))
 				return Choices[value].Settings;
 
-			var fallback = Default != null ? Default.FirstOrDefault(validChoices.Contains) : validChoices.FirstOrDefault();
+			string fallback = null;
+			if (Default != null)
+				fallback = Default.FirstOrDefault(validChoices.Contains);
+			fallback ??= validChoices.FirstOrDefault();
+
 			return fallback != null ? Choices[fallback].Settings : [];
 		}
 
