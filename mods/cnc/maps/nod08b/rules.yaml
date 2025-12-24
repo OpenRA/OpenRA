@@ -5,7 +5,7 @@ World:
 		StartingMusic: linefire
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: Given our limited number of troops, you must make use of all available resources.\n\nFind the abandoned GDI base in the area and bring it back online. Once operational, use GDI's own weapons against them.\n\nEnsure that no GDI forces survive.
+		Briefing: briefing
 		BackgroundVideo: tiberfx.vqa
 		BriefingVideo: nod8.vqa
 		LossVideo: flag.vqa

@@ -940,4 +940,4 @@ Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/c
 
 Notifications: notifications.yaml
 
-FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl, map.ftl

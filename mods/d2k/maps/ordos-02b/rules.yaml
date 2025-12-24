@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, ordos02b.lua, ordos02b-AI.lua
 	MissionData:
-		Briefing: Harkonnen forces are weakened in the Imperial Basin. Use the sensors in our Outpost to find them. Strike hard and destroy everything.\n
+		Briefing: briefing
 		BriefingVideo: O_BR02_E.VQA
 	MapOptions:
 		TechLevel: low
