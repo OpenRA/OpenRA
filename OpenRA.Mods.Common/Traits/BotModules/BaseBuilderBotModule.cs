@@ -162,6 +162,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc($"AI will move the only mcv when those numbers of refinery <= productions + tech - {nameof(ForceExpansionTolerate)}.")]
 		public readonly ImmutableArray<int> ForceExpansionTolerate = [2, 3];
 
+		[Desc("Decrease the expansion tolerate by Cash / this. Used to prevent AI from expanding when it has enough cash.")]
+		public readonly int PerExpansionTolerateOnCash = 12000;
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 

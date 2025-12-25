@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int BuildMcvInterval = 101;
 
 		[Desc("Delay (in ticks) for moving a conyard to better expansion. Only work with more than 1 conyard.")]
-		public readonly int MoveConyardTick = 4000;
+		public readonly int MoveConyardTick = 5700;
 
 		[Desc("Should moving the oldest or newest conyard be preferred? Random ordering if unset.")]
 		public readonly bool? MoveOldConyardFirst = null;

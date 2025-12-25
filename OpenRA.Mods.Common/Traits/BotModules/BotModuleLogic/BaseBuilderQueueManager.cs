@@ -245,10 +245,12 @@ namespace OpenRA.Mods.Common.Traits
 						var numTech = playerBuildings.Count(a => baseBuilder.Info.TechTypes.Contains(a.Info.Name))
 							+ (baseBuilder.Info.TechTypes.Contains(currentBuilding.Item) ? 1 : 0);
 
+						var tolerateOnCash = playerResources.GetCashAndResources() / Math.Max(baseBuilder.Info.PerExpansionTolerateOnCash, 1);
+
 						if (numRef >= baseBuilder.Info.InititalMinimumRefineryCount + baseBuilder.Info.AdditionalMinimumRefineryCount
-							&& numProd > 0 && numProd - baseBuilder.Info.ExpansionTolerate.Random(world.LocalRandom) + numTech >= numRef)
+							&& numProd > 0 && numProd + numTech - baseBuilder.Info.ExpansionTolerate.Random(world.LocalRandom) - tolerateOnCash >= numRef)
 						{
-							var undeployEvenNoBase = numProd - baseBuilder.Info.ForceExpansionTolerate.Random(world.LocalRandom) + numTech >= numRef;
+							var undeployEvenNoBase = numProd + numTech - baseBuilder.Info.ForceExpansionTolerate.Random(world.LocalRandom) - tolerateOnCash >= numRef;
 
 							foreach (var be in baseBuilder.BaseExpansionModules)
 								be.UpdateExpansionParams(bot, true, undeployEvenNoBase, null);
