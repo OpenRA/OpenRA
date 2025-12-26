@@ -517,8 +517,9 @@ button-mapchooser-generated-maps-tab = Generate Map
 ## MissionBrowserLogic
 dialog-no-video =
     .title = Video not installed
-    .prompt = The game videos can be installed from the
-    "Manage Content" menu in the mod chooser.
+    .prompt =
+        The game videos can be installed from the
+        "Manage Content" menu.
     .cancel = Back
 
 dialog-cant-play-video =
