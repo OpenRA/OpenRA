@@ -74,7 +74,7 @@ Container@MISSIONBROWSER_PANEL:
 							Visible: False
 							Children:
 								LabelForInput@DIFFICULTY_DESC:
-									Y: PARENT_HEIGHT - HEIGHT + 2
+									Y: PARENT_HEIGHT - HEIGHT
 									Width: 56
 									Height: 25
 									Align: Right
@@ -82,7 +82,7 @@ Container@MISSIONBROWSER_PANEL:
 									For: DIFFICULTY
 								DropDownButton@DIFFICULTY:
 									X: 61
-									Y: PARENT_HEIGHT - HEIGHT + 2
+									Y: PARENT_HEIGHT - HEIGHT
 									Width: 120
 									Height: 25
 									Font: Regular
@@ -92,7 +92,7 @@ Container@MISSIONBROWSER_PANEL:
 									TooltipContainer: TOOLTIP_CONTAINER
 								LabelForInput@GAMESPEED_DESC:
 									X: PARENT_WIDTH - WIDTH - 125
-									Y: PARENT_HEIGHT - HEIGHT + 2
+									Y: PARENT_HEIGHT - HEIGHT
 									Width: 120
 									Height: 25
 									Align: Right
@@ -100,7 +100,7 @@ Container@MISSIONBROWSER_PANEL:
 									For: GAMESPEED
 								DropDownButton@GAMESPEED:
 									X: PARENT_WIDTH - WIDTH
-									Y: PARENT_HEIGHT - HEIGHT + 2
+									Y: PARENT_HEIGHT - HEIGHT
 									Width: 120
 									Height: 25
 									Font: Regular
@@ -108,23 +108,23 @@ Container@MISSIONBROWSER_PANEL:
 									TooltipContainer: TOOLTIP_CONTAINER
 						Container@MISSION_TABS:
 							Width: PARENT_WIDTH
-							Y: PARENT_HEIGHT - 31
+							Y: PARENT_HEIGHT - 32
 							Children:
 								Button@MISSIONINFO_TAB:
 									Width: 178
-									Height: 31
+									Height: 32
 									Font: Bold
 									Text: button-missionbrowser-panel-mission-info
 								Button@OPTIONS_TAB:
 									X: 184
 									Width: 178
-									Height: 31
+									Height: 32
 									Font: Bold
 									Text: button-missionbrowser-panel-mission-options
 						Container@MISSION_DETAIL:
 							Y: 213
 							Width: PARENT_WIDTH
-							Height: PARENT_HEIGHT - 213 - 30
+							Height: PARENT_HEIGHT - 244
 							Children:
 								ScrollPanel@MISSION_DESCRIPTION_PANEL:
 									Height: PARENT_HEIGHT
