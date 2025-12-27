@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void RegisterSettingsPanel(string panelID, string label, Func<Widget, Func<bool>> init, Func<Widget, Action> reset);
 	}
 
+	[IncludeChromeLogicArgsFluentReferences(nameof(DynamicFluentReferences))]
 	public class SettingsLogic : ChromeLogic, ISettingsLogic
 	{
 		[FluentReference]
@@ -56,6 +57,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[FluentReference]
 		const string ResetCancel = "dialog-settings-reset.cancel";
+
+		public static IEnumerable<(string Key, FluentReferenceAttribute Reference)> DynamicFluentReferences(Dictionary<string, MiniYaml> logicArgs)
+		{
+			if (logicArgs.TryGetValue("Panels", out var settingsPanels))
+				foreach (var node in settingsPanels.Nodes)
+					yield return (node.Value.Value, new FluentReferenceAttribute());
+		}
 
 		readonly Dictionary<string, Func<bool>> leavePanelActions = [];
 		readonly Dictionary<string, Action> resetPanelActions = [];
@@ -97,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						{ "settingsLogic", this },
 						{ "panelID", panel.Key },
-						{ "label", panel.Value }
+						{ "label", FluentProvider.GetMessage(panel.Value) }
 					});
 				}
 			}
@@ -164,11 +172,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			leavePanelActions.Add(panelID, init(panel));
 			resetPanelActions.Add(panelID, reset(panel));
 
-			AddSettingsTab(panelID, label);
-		}
-
-		ButtonWidget AddSettingsTab(string id, string label)
-		{
 			var tab = tabTemplate.Clone();
 			var lastButton = buttons.LastOrDefault();
 			if (lastButton != null)
@@ -177,20 +180,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				tab.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
 			}
 
-			tab.Id = id;
+			tab.Id = panelID;
 			tab.GetText = () => label;
-			tab.IsHighlighted = () => activePanel == id;
+			tab.IsHighlighted = () => activePanel == panelID;
 			tab.OnClick = () =>
 			{
 				needsRestart |= leavePanelActions[activePanel]();
 				Game.Settings.Save();
-				activePanel = id;
+				activePanel = panelID;
 			};
 
 			tabContainer.AddChild(tab);
 			buttons.Add(tab);
-
-			return tab;
 		}
 	}
 }

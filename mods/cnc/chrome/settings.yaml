@@ -2,12 +2,12 @@ Container@SETTINGS_PANEL:
 	Logic: SettingsLogic
 		ButtonStride: 0, 45
 		Panels:
-			GAMEPLAY_PANEL: Gameplay
-			INPUT_PANEL: Input
-			DISPLAY_PANEL: Display
-			AUDIO_PANEL: Audio
-			HOTKEYS_PANEL: Hotkeys
-			ADVANCED_PANEL: Advanced
+			GAMEPLAY_PANEL: button-panel-gameplay
+			INPUT_PANEL: button-panel-input
+			DISPLAY_PANEL: button-panel-display
+			AUDIO_PANEL: button-panel-audio
+			HOTKEYS_PANEL: button-panel-hotkeys
+			ADVANCED_PANEL: button-panel-advanced
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 640

@@ -754,6 +754,12 @@ label-ui-scrollspeed-slider-container-scroll-speed = UI Scroll Speed:
 
 ## settings.yaml
 button-settings-panel-reset = Reset
+button-panel-gameplay = Gameplay
+button-panel-input = Input
+button-panel-display = Display
+button-panel-audio = Audio
+button-panel-hotkeys = Hotkeys
+button-panel-advanced = Advanced
 
 ## tooltips.yaml
 label-latency-tooltip-prefix = Latency:
