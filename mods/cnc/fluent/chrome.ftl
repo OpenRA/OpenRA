@@ -466,7 +466,7 @@ label-bg-prompt-text-a = We would like to collect some details that will help us
 label-bg-prompt-text-b = With your permission, the following anonymous system data will be sent:
 checkbox-bg-sysinfo = Send System Information
 
-## mainmenu-prompts.yaml, settings-display.yaml
+## mainmenu-prompts.yaml, settings-display.yaml, settings-gameplay.yaml
 label-profile-section-header = Profile
 label-player-container = Player Name:
 label-playercolor-container-color = Preferred Color:
@@ -684,9 +684,10 @@ label-video-volume-container = Video Volume:
 label-restart-required-container-audio-desc = Device changes will be applied after the game is restarted
 
 ## settings-gameplay.yaml
-label-game-play-section-header = Auto-save
-auto-save-interval-label = Auto-save frequency:
-auto-save-max-file-number-label = Auto-save limit:
+label-gameplay-section-header = Gameplay
+label-auto-save-interval = Auto-save frequency:
+label-auto-save-max-file-number = Auto-save limit:
+checkbox-hide-replay-chat-container = Hide Chat in Replays
 
 ## settings-display.yaml
 label-target-lines-dropdown-container = Target Lines:
@@ -704,7 +705,6 @@ checkbox-transients-container =
     .label = Show Game Event Notifications
     .tooltip = Show transient text notifications for game events
 
-checkbox-hide-replay-chat-container = Hide Chat in Replays
 label-video-section-header = Video
 label-video-mode-dropdown-container = Video Mode:
 dropdownbutton-video-mode-dropdown-container = Windowed

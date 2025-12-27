@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
@@ -33,25 +34,77 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly int[] autoSaveFileNumbers = [3, 5, 10, 20, 50, 100];
 		readonly AutoSaveSettings autoSaveSettings;
+		readonly GameSettings gameSettings;
+		readonly PlayerSettings playerSettings;
+		readonly WorldRenderer worldRenderer;
+		readonly ModData modData;
+
+		TextFieldWidget nameTextfield;
 
 		[ObjectCreator.UseCtor]
-		public GameplaySettingsLogic(ModData modData, SettingsLogic settingsLogic, string panelID, string label)
+		public GameplaySettingsLogic(ModData modData, SettingsLogic settingsLogic, string panelID, string label, WorldRenderer worldRenderer)
 		{
+			this.modData = modData;
+			this.worldRenderer = worldRenderer;
+
 			autoSaveSettings = modData.GetSettings<AutoSaveSettings>();
+			gameSettings = modData.GetSettings<GameSettings>();
+			playerSettings = modData.GetSettings<PlayerSettings>();
 			settingsLogic.RegisterSettingsPanel(panelID, label, InitPanel, ResetPanel);
 		}
 
 		Func<bool> InitPanel(Widget panel)
 		{
 			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
-			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
+			var world = worldRenderer.World;
 
-			// Setup dropdown for auto-save interval
+			var escPressed = false;
+			nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
+			nameTextfield.IsDisabled = () => world.Type != WorldType.Shellmap;
+			nameTextfield.Text = Settings.SanitizedPlayerName(playerSettings.Name);
+			nameTextfield.OnLoseFocus = () =>
+			{
+				if (escPressed)
+				{
+					escPressed = false;
+					return;
+				}
+
+				nameTextfield.Text = nameTextfield.Text.Trim();
+				if (nameTextfield.Text.Length == 0)
+					nameTextfield.Text = Settings.SanitizedPlayerName(playerSettings.Name);
+				else
+				{
+					nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
+					playerSettings.Name = nameTextfield.Text;
+				}
+			};
+
+			nameTextfield.OnEnterKey = _ => { nameTextfield.YieldKeyboardFocus(); return true; };
+			nameTextfield.OnEscKey = _ =>
+			{
+				nameTextfield.Text = Settings.SanitizedPlayerName(playerSettings.Name);
+				escPressed = true;
+				nameTextfield.YieldKeyboardFocus();
+				return true;
+			};
+
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
+
+			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
+			colorDropdown.IsDisabled = () => world.Type != WorldType.Shellmap;
+			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, playerSettings.Color, null, worldRenderer, color =>
+			{
+				playerSettings.Color = color;
+				playerSettings.Save();
+			});
+			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.Color;
+
+			SettingsUtils.BindCheckboxPref(panel, "HIDE_REPLAY_CHAT_CHECKBOX", gameSettings, "HideReplayChat");
+
 			var autoSaveIntervalDropDown = panel.Get<DropDownButtonWidget>("AUTO_SAVE_INTERVAL_DROP_DOWN");
-
 			autoSaveIntervalDropDown.OnClick = () =>
 				ShowAutoSaveIntervalDropdown(autoSaveIntervalDropDown, autoSaveSeconds);
-
 			autoSaveIntervalDropDown.GetText = () => GetMessageForAutoSaveInterval(autoSaveSettings.AutoSaveInterval);
 
 			// Setup dropdown for auto-save number.
@@ -61,12 +114,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			autoSaveNoDropDown.GetText = () => FluentProvider.GetMessage(AutoSaveMaxFileNumber, "saves", autoSaveSettings.AutoSaveMaxFileCount);
 			autoSaveNoDropDown.IsDisabled = () => autoSaveSettings.AutoSaveInterval <= 0;
 
-			return () => false;
+			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
+
+			return () =>
+			{
+				nameTextfield.YieldKeyboardFocus();
+				return false;
+			};
 		}
 
 		Action ResetPanel(Widget panel)
 		{
-			return () => { };
+			var defaultAutoSaveSettings = new AutoSaveSettings();
+			var defaultGameSettings = new GameSettings();
+			var defaultPlayerSettings = new PlayerSettings();
+			return () =>
+			{
+				nameTextfield.Text = playerSettings.Name = defaultPlayerSettings.Name;
+				playerSettings.Color = defaultPlayerSettings.Color;
+				autoSaveSettings.AutoSaveInterval = defaultAutoSaveSettings.AutoSaveInterval;
+				autoSaveSettings.AutoSaveMaxFileCount = defaultAutoSaveSettings.AutoSaveMaxFileCount;
+				gameSettings.HideReplayChat = defaultGameSettings.HideReplayChat;
+			};
 		}
 
 		void ShowAutoSaveIntervalDropdown(DropDownButtonWidget dropdown, IEnumerable<int> options)

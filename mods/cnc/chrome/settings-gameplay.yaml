@@ -10,7 +10,7 @@ Container@GAMEPLAY_PANEL:
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
-				Background@INPUT_SECTION_HEADER:
+				Background@PROFILE_SECTION_HEADER:
 					X: 5
 					Width: PARENT_WIDTH - 24 - 10
 					Height: 13
@@ -22,7 +22,61 @@ Container@GAMEPLAY_PANEL:
 							Height: PARENT_HEIGHT
 							Font: TinyBold
 							Align: Center
-							Text: label-game-play-section-header
+							Text: label-profile-section-header
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@PLAYER_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput@PLAYER:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-player-container
+									For: PLAYERNAME
+								TextField@PLAYERNAME:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									MaxLength: 16
+									Text: Name
+						Container@PLAYERCOLOR_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput@COLOR:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-playercolor-container-color
+									For: PLAYERCOLOR
+								DropDownButton@PLAYERCOLOR:
+									Y: 25
+									Width: 75
+									Height: 25
+									IgnoreChildMouseOver: true
+									PanelAlign: Right
+									Children:
+										ColorBlock@COLORBLOCK:
+											X: 5
+											Y: 6
+											Width: PARENT_WIDTH - 35
+											Height: PARENT_HEIGHT - 12
+				Container@SPACER:
+				Background@GAMEPLAY_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-gameplay-section-header
 				Container@ROW:
 					Width: PARENT_WIDTH - 24
 					Height: 50
@@ -35,7 +89,7 @@ Container@GAMEPLAY_PANEL:
 									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
-									Text: auto-save-interval-label
+									Text: label-auto-save-interval
 									For: AUTO_SAVE_INTERVAL_DROP_DOWN
 								DropDownButton@AUTO_SAVE_INTERVAL_DROP_DOWN:
 									Y: 25
@@ -50,10 +104,23 @@ Container@GAMEPLAY_PANEL:
 									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
-									Text: auto-save-max-file-number-label
+									Text: label-auto-save-max-file-number
 									For: AUTO_SAVE_FILE_NUMBER_DROP_DOWN
 								DropDownButton@AUTO_SAVE_FILE_NUMBER_DROP_DOWN:
 									Y: 25
 									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
+						Container@HIDE_REPLAY_CHAT_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 10
+							Children:
+								Checkbox@HIDE_REPLAY_CHAT_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-hide-replay-chat-container

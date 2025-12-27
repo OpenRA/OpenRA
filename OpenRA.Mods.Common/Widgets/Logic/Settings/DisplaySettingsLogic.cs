@@ -15,7 +15,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -73,7 +72,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WorldViewportSizes viewportSizes;
 		readonly GameSettings gameSettings;
 		readonly GraphicSettings graphicSettings;
-		readonly PlayerSettings playerSettings;
 		static GraphicSettings originalGraphicSettings;
 
 		readonly string showOnDamage;
@@ -94,7 +92,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			viewportSizes = modData.GetOrCreate<WorldViewportSizes>();
 			gameSettings = modData.GetSettings<GameSettings>();
 			graphicSettings = modData.GetSettings<GraphicSettings>();
-			playerSettings = modData.GetSettings<PlayerSettings>();
 			originalGraphicSettings ??= graphicSettings.Clone();
 
 			legacyFullscreen = FluentProvider.GetMessage(LegacyFullscreen);
@@ -149,8 +146,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (panel.GetOrNull<CheckboxWidget>("PAUSE_SHELLMAP_CHECKBOX") != null)
 				SettingsUtils.BindCheckboxPref(panel, "PAUSE_SHELLMAP_CHECKBOX", gameSettings, "PauseShellmap");
-
-			SettingsUtils.BindCheckboxPref(panel, "HIDE_REPLAY_CHAT_CHECKBOX", gameSettings, "HideReplayChat");
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, graphicSettings, scrollPanel);
@@ -239,48 +234,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").IsDisabled = () => !frameLimitCheckbox.IsChecked() || frameLimitGamespeedCheckbox.IsChecked();
 
-			var escPressed = false;
-			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
-			nameTextfield.IsDisabled = () => world.Type != WorldType.Shellmap;
-			nameTextfield.Text = Settings.SanitizedPlayerName(playerSettings.Name);
-			nameTextfield.OnLoseFocus = () =>
-			{
-				if (escPressed)
-				{
-					escPressed = false;
-					return;
-				}
-
-				nameTextfield.Text = nameTextfield.Text.Trim();
-				if (nameTextfield.Text.Length == 0)
-					nameTextfield.Text = Settings.SanitizedPlayerName(playerSettings.Name);
-				else
-				{
-					nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
-					playerSettings.Name = nameTextfield.Text;
-				}
-			};
-
-			nameTextfield.OnEnterKey = _ => { nameTextfield.YieldKeyboardFocus(); return true; };
-			nameTextfield.OnEscKey = _ =>
-			{
-				nameTextfield.Text = Settings.SanitizedPlayerName(playerSettings.Name);
-				escPressed = true;
-				nameTextfield.YieldKeyboardFocus();
-				return true;
-			};
-
-			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
-
-			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
-			colorDropdown.IsDisabled = () => world.Type != WorldType.Shellmap;
-			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, playerSettings.Color, null, worldRenderer, color =>
-			{
-				playerSettings.Color = color;
-				playerSettings.Save();
-			});
-			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.Color;
-
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () =>
@@ -288,7 +241,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var x);
 				int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var y);
 				graphicSettings.WindowedSize = new int2(x, y);
-				nameTextfield.YieldKeyboardFocus();
 
 				return graphicSettings.Mode != originalGraphicSettings.Mode ||
 					graphicSettings.VideoDisplay != originalGraphicSettings.VideoDisplay ||
@@ -302,7 +254,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var defaultGameSettings = new GameSettings();
 			var defaultGraphicSettings = new GraphicSettings();
-			var defaultPlayerSettings = new PlayerSettings();
 			return () =>
 			{
 				graphicSettings.CapFramerate = defaultGraphicSettings.CapFramerate;
@@ -323,9 +274,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					RecalculateWidgetLayout(Ui.Root);
 					Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / graphicSettings.UIScale).ToInt2();
 				}
-
-				playerSettings.Color = defaultPlayerSettings.Color;
-				playerSettings.Name = defaultPlayerSettings.Name;
 
 				gameSettings.TextNotificationPoolFilters = defaultGameSettings.TextNotificationPoolFilters;
 			};

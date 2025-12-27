@@ -2,12 +2,12 @@ Background@SETTINGS_PANEL:
 	Logic: SettingsLogic
 		ButtonStride: 0, 35
 		Panels:
+			GAMEPLAY_PANEL: Gameplay
+			INPUT_PANEL: Input
 			DISPLAY_PANEL: Display
 			AUDIO_PANEL: Audio
-			INPUT_PANEL: Input
 			HOTKEYS_PANEL: Hotkeys
 			ADVANCED_PANEL: Advanced
-			GAMEPLAY_PANEL: Gameplay
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT -  HEIGHT) / 2
 	Width: 900
