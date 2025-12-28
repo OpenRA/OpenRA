@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
-			var pos = aircraft.GetPosition();
+			var pos = self.CenterPosition;
 			var delta = checkTarget.CenterPosition - pos;
 
 			// Inside the target annulus, so we're done

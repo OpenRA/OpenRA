@@ -309,8 +309,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return false;
 
-			var targetCell = self.World.Map.CellContaining(aircraft.GetPosition());
-			return Carryable != null && aircraft.CanLand(targetCell, blockedByMobile: false);
+			return Carryable != null && aircraft.CanLand(self.Location, blockedByMobile: false);
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders

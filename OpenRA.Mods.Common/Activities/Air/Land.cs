@@ -104,14 +104,15 @@ namespace OpenRA.Mods.Common.Activities
 					return true;
 			}
 
-			var pos = aircraft.GetPosition();
+			var pos = self.CenterPosition;
 
 			// Reevaluate target position in case the target has moved.
 			targetPosition = target.CenterPosition + offset;
 			landingCell = self.World.Map.CellContaining(targetPosition);
 
 			// We are already at the landing location.
-			if ((targetPosition - pos).LengthSquared == 0)
+			var delta = pos - targetPosition;
+			if (delta.HorizontalLengthSquared == 0 && delta.Z == aircraft.LandAltitude.Length)
 				return true;
 
 			// Look for free landing cell
@@ -132,7 +133,8 @@ namespace OpenRA.Mods.Common.Activities
 					targetPosition = target.CenterPosition + offset;
 					landingCell = self.World.Map.CellContaining(targetPosition);
 
-					if ((targetPosition - pos).LengthSquared == 0)
+					delta = pos - targetPosition;
+					if (delta.HorizontalLengthSquared == 0 && delta.Z == aircraft.LandAltitude.Length)
 						return true;
 				}
 			}
