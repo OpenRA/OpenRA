@@ -48,6 +48,16 @@ namespace OpenRA.Mods.Common
 			actors.Remove(actor);
 		}
 
+		public virtual void Refresh()
+		{
+			actors.Clear();
+
+			foreach (var actor in world.Actors)
+			{
+				AddActor(actor);
+			}
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);
