@@ -101,11 +101,12 @@ namespace OpenRA.Mods.Common.Orders
 					.Where(o => o != null && o.Cursor != null);
 
 				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
-				if (cursorOrder != null)
-					return cursorOrder.Cursor;
 
 				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>() &&
-					(mi.Modifiers.HasModifier(Modifiers.Shift) || world.Selection.Actors.Count == 0);
+					(cursorOrder == null || world.Selection.Actors.Count == 0 || !InputOverridesSelection(world, worldPixel, mi));
+
+				if (!useSelect && cursorOrder != null)
+					return cursorOrder.Cursor;
 			}
 
 			return useSelect ? worldSelectCursor : worldDefaultCursor;
