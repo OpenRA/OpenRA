@@ -63,8 +63,11 @@ namespace OpenRA.Mods.Common.Widgets
 		int2? selectionStartLocation;
 		CPos? selectionStartCell;
 		int2 worldPixel;
+
 		bool draggingActor;
 		MoveActorAction moveAction;
+		int2 dragPixelOffset;
+		CVec dragCellOffset;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
 		{
@@ -150,11 +153,10 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				if (mi.Event == MouseInputEvent.Down && underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || underCursor == Selection.Actor))
 				{
-					editorWidget.SetTooltip(null);
 					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)));
-					var pixelOffset = cellViewPx - mi.Location;
-					var cellOffset = underCursor.Location - cell;
-					moveAction = new MoveActorAction(underCursor, actorLayer, worldRenderer, pixelOffset, cellOffset);
+					dragPixelOffset = cellViewPx - mi.Location;
+					dragCellOffset = underCursor.Location - cell;
+					moveAction = new MoveActorAction(underCursor, actorLayer);
 					draggingActor = true;
 					return false;
 				}
@@ -162,14 +164,17 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					editorWidget.SetTooltip(null);
 					draggingActor = false;
-					editorActionManager.Add(moveAction);
+					if (moveAction.HasMoved)
+						editorActionManager.Add(moveAction);
+
 					moveAction = null;
 					return false;
 				}
 				else if (mi.Event == MouseInputEvent.Move && draggingActor)
 				{
 					editorWidget.SetTooltip(null);
-					moveAction.Move(mi.Location);
+					var to = worldRenderer.Viewport.ViewToWorld(mi.Location + dragPixelOffset) + dragCellOffset;
+					moveAction.Move(to);
 					return false;
 				}
 			}
@@ -544,27 +549,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly EditorActorPreview actor;
 		readonly EditorActorLayer layer;
-		readonly WorldRenderer worldRenderer;
-		readonly int2 pixelOffset;
-		readonly CVec cellOffset;
 		readonly CPos from;
 
 		CPos to;
 
 		public MoveActorAction(
 			EditorActorPreview actor,
-			EditorActorLayer layer,
-			WorldRenderer worldRenderer,
-			int2 pixelOffset,
-			CVec cellOffset)
+			EditorActorLayer layer)
 		{
 			this.actor = actor;
 			this.layer = layer;
-			this.worldRenderer = worldRenderer;
-			this.pixelOffset = pixelOffset;
-			this.cellOffset = cellOffset;
 
 			from = actor.Location;
+			to = from;
 		}
 
 		public void Execute() { }
@@ -579,12 +576,14 @@ namespace OpenRA.Mods.Common.Widgets
 			layer.MoveActor(actor, from);
 		}
 
-		public void Move(int2 pixelTo)
-		{
-			to = worldRenderer.Viewport.ViewToWorld(pixelTo + pixelOffset) + cellOffset;
-			layer.MoveActor(actor, to);
+		public bool HasMoved => from != to;
 
-			Text = FluentProvider.GetMessage(MovedActor, "id", actor.ID, "x1", from.X, "y1", from.Y, "x2", to.X, "y2", to.Y);
+		public void Move(CPos to)
+		{
+			this.to = to;
+			layer.MoveActor(actor, this.to);
+
+			Text = FluentProvider.GetMessage(MovedActor, "id", actor.ID, "x1", from.X, "y1", from.Y, "x2", this.to.X, "y2", this.to.Y);
 		}
 	}
 
