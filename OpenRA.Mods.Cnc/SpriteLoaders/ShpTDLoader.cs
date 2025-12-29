@@ -110,19 +110,6 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					}
 				}
 
-				// Keep a 1px empty border to work avoid rounding issues in the GPU shader.
-				if (left > 0)
-					left--;
-
-				if (top > 0)
-					top--;
-
-				if (right < origSize.Width - 1)
-					right++;
-
-				if (bottom < origSize.Height - 1)
-					bottom++;
-
 				var trimmedWidth = right - left + 1;
 				var trimmedHeight = bottom - top + 1;
 
