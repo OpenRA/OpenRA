@@ -107,6 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorEditPanel.IsVisible = () => editor.CurrentBrush == editor.DefaultBrush && SelectedActor != null;
 
 			actorIDField.OnEscKey = _ => actorIDField.YieldKeyboardFocus();
+			actorIDField.OnEnterKey = _ => actorIDField.YieldKeyboardFocus();
 
 			actorIDField.OnTextEdited = () =>
 			{
@@ -121,26 +122,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!SelectedActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
 				{
 					nextActorIDStatus = ActorIDStatus.Duplicate;
-					actorIDErrorLabel.Visible = true;
 					return;
 				}
 
 				SetActorID(actorId);
-				nextActorIDStatus = ActorIDStatus.Normal;
 			};
 
 			actorIDField.OnLoseFocus = () =>
 			{
 				// Reset invalid IDs back to their starting value
 				if (actorIDStatus != ActorIDStatus.Normal)
+				{
 					SetActorID(initialActorID);
+					actorIDField.Text = initialActorID;
+				}
 			};
 		}
 
 		void SetActorID(string actorId)
 		{
 			editActorPreview.SetActorID(actorId);
-
 			nextActorIDStatus = ActorIDStatus.Normal;
 		}
 
