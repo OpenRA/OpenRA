@@ -14,6 +14,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -402,25 +403,40 @@ namespace OpenRA.Mods.Common.Traits
 			if (mobile != null)
 			{
 				// Overlapping hosts can become hidden.
+				bool CanEnter(CPos location)
+				{
+					return mobile.Locomotor.MovementCostToEnterCell(
+						clientActor, location, BlockedByActor.All, clientActor, true) != PathGraph.MovementCostForUnreachableCell;
+				}
+
 				var lookup = docks
 					.GroupBy(dock => clientActor.World.Map.CellContaining(dock.Trait.DockPosition))
-					.ToDictionary(group => group.Key, group => group.First());
+					.ToDictionary(group => group.Key, group => (dock: group.First(), canEnter: CanEnter(group.Key)));
 
 				// Start a search from each docks position:
 				var path = mobile.PathFinder.FindPathToTargetCell(
 					clientActor, lookup.Keys, clientActor.Location, BlockedByActor.None,
 					location =>
 					{
-						if (!lookup.TryGetValue(location, out var dock))
+						if (!lookup.TryGetValue(location, out var tuple))
 							return 0;
+
+						var (dock, isBlocked) = tuple;
 
 						// Prefer docks with less occupancy (multiplier is to offset distance cost):
 						// TODO: add custom weights. E.g. owner vs allied.
-						return dock.Trait.ReservationCount * client.OccupancyCostModifier;
+						var expectedOccupancy = dock.Trait.ReservationCount;
+
+						// If the client is close to the dock location and the dock is currently occupied,
+						// increase the cost to avoid a possibility of getting stuck.
+						if (!isBlocked && (clientActor.Location - location).LengthSquared <= 3 * 3)
+							expectedOccupancy++;
+
+						return expectedOccupancy * client.OccupancyCostModifier;
 					});
 
 				if (path.Count > 0)
-					return lookup[path[^1]];
+					return lookup[path[^1]].dock;
 			}
 			else
 			{

@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly bool ignoreOccupancy;
 
 		bool dockingCancelled;
+		int moveAttempt;
 
 		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null,
 			bool forceEnter = false, bool ignoreOccupancy = false, Color? dockLineColor = null)
@@ -79,14 +80,15 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			// Find the nearest DockHost if not explicitly ordered to a specific dock.
-			if (dockHost == null || !dockHost.IsEnabledAndInWorld)
+			// Find the nearest DockHost if not explicitly ordered to a specific dock (or the max number of move attempts has been reached).
+			if (dockHost == null || !dockHost.IsEnabledAndInWorld || moveAttempt >= 3)
 			{
-				var host = dockClient.ClosestDock(null);
+				var host = dockClient.ClosestDock(dockHost);
 				if (host.HasValue)
 				{
 					dockHost = host.Value.Trait;
 					dockHostActor = host.Value.Actor;
+					moveAttempt = 0;
 				}
 				else
 				{
@@ -106,6 +108,8 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					foreach (var ndcm in notifyDockClientMoving)
 						ndcm.MovingToDock(self, dockHostActor, dockHost);
+
+					moveAttempt++;
 
 					return false;
 				}
