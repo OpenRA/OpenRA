@@ -321,9 +321,9 @@ namespace OpenRA.Graphics
 					yield return new MPos(u, v);
 		}
 
-		public int2 ViewToWorldPx(int2 view) { return (graphicSettings.UIScale / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
-		public int2 WorldToViewPx(int2 world) { return (Zoom / graphicSettings.UIScale * (world - TopLeft).ToFloat2()).ToInt2(); }
-		public int2 WorldToViewPx(in float3 world) { return (Zoom / graphicSettings.UIScale * (world - TopLeft).XY).ToInt2(); }
+		public int2 ViewToWorldPx(int2 view) => (graphicSettings.UIScale / Zoom * view.ToFloat2() + CenterLocation - ViewportSize.ToInt2() / 2).ToInt2();
+		public int2 WorldToViewPx(int2 world) => (Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2)).ToInt2();
+		public int2 WorldToViewPx(in float3 world) => (Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2).XY).ToInt2();
 
 		public void Center(IEnumerable<Actor> actors)
 		{
