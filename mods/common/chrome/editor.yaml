@@ -567,7 +567,7 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 						Label@ACTOR_ID_ERROR_LABEL:
 							X: 69
-							Y: 45
+							Y: 71
 							Width: 213
 							Height: 25
 							Font: TinyBold
