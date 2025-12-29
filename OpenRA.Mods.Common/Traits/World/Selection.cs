@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Play the selection voice from one of the selected actors
-			foreach (var actor in actors)
+			foreach (var actor in actors.Intersect(newSelectionCollection))
 			{
 				if (actor.Owner != world.LocalPlayer || !actor.IsInWorld)
 					continue;
