@@ -108,7 +108,9 @@ namespace OpenRA.Graphics
 			var oldCenter = worldRenderer.Viewport.ViewToWorldPx(center);
 			AdjustZoom(dz);
 			var newCenter = worldRenderer.Viewport.ViewToWorldPx(center);
-			CenterLocation += oldCenter - newCenter;
+
+			var candidateCenterLocation = CenterLocation + oldCenter - newCenter;
+			CenterLocation = candidateCenterLocation.Clamp(mapBounds);
 		}
 
 		public void ToggleZoom()
