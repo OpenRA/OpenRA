@@ -113,11 +113,27 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 				var trimmedWidth = right - left + 1;
 				var trimmedHeight = bottom - top + 1;
 
-				// Pad the dimensions to an even number to avoid issues with half-integer offsets.
-				var widthFudge = trimmedWidth % 2;
-				var heightFudge = trimmedHeight % 2;
-				var destWidth = trimmedWidth + widthFudge;
-				var destHeight = trimmedHeight + heightFudge;
+				// We must be careful to subract an even number
+				// of rows/columns to avoid sub-pixel offsets.
+				if ((trimmedWidth - origSize.Width) % 2 != 0)
+				{
+					if (left > 0)
+						left--;
+					else
+						right++;
+
+					trimmedWidth++;
+				}
+
+				if ((trimmedHeight - origSize.Height) % 2 != 0)
+				{
+					if (top > 0)
+						top--;
+					else
+						bottom++;
+
+					trimmedHeight++;
+				}
 
 				if (trimmedWidth == origSize.Width && trimmedHeight == origSize.Height)
 				{
@@ -130,15 +146,18 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 				else if (trimmedWidth > 0 && trimmedHeight > 0)
 				{
 					// Trim frame.
-					Data = new byte[destWidth * destHeight];
+					Data = new byte[trimmedWidth * trimmedHeight];
 					for (var y = 0; y < trimmedHeight; y++)
-						Array.Copy(origData, (y + top) * origSize.Width + left, Data, y * destWidth, trimmedWidth);
+						Array.Copy(origData, (y + top) * origSize.Width + left, Data, y * trimmedWidth, trimmedWidth);
 
-					Size = new Size(destWidth, destHeight);
+					Size = new Size(trimmedWidth, trimmedHeight);
 					FrameSize = origSize;
 					Offset = 0.5f * new float2(
-						left + right + widthFudge - origSize.Width + 1,
-						top + bottom + heightFudge - origSize.Height + 1);
+						left + right - origSize.Width + 1,
+						top + bottom - origSize.Height + 1);
+
+					if (Offset.X % 1 != 0 || Offset.Y % 1 != 0)
+						throw new InvalidDataException("Trimmed frame has non-integer offset.");
 				}
 			}
 		}
