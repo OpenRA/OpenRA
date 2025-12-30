@@ -593,7 +593,7 @@ namespace OpenRA
 
 			if (value == null)
 				return typeof(ImmutableArray<>).MakeGenericType(typeArgs)
-					.GetField(nameof(ImmutableArray<object>.Empty))
+					.GetField("Empty")
 					.GetValue(null);
 
 			object array;

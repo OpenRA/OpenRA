@@ -282,7 +282,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (hasTeams)
 				{
-					var tt = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
+					var tt = ScrollItemWidget.SetupHeader(teamTemplate);
 					tt.IgnoreMouseOver = true;
 
 					var teamLabel = tt.Get<LabelWidget>("TEAM");

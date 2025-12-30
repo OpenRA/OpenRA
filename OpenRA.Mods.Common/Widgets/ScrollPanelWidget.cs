@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -39,6 +40,16 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
+
+		ScrollItemWidget keyboardFocusedItem;
+		public bool HasKeyboardFocusedItem => keyboardFocusedItem != null;
+
+		// Called when Enter or Space is pressed. Return true if the key was handled.
+		// If null or returns false, the focused item's OnClick will be invoked.
+		public Func<bool> OnEnterKey;
+
+		// Called when Escape is pressed. Return true if the key was handled.
+		public Func<bool> OnEscapeKey;
 		public int BorderWidth = 1;
 		public int TopBottomSpacing = 2;
 		public int ItemSpacing = 0;
@@ -389,6 +400,146 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return upPressed || downPressed || thumbPressed;
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			switch (e.Key)
+			{
+				case Keycode.UP:
+					if (e.Modifiers.HasFlag(Modifiers.Meta) && Platform.CurrentPlatform == PlatformType.OSX)
+						return FocusFirstItem();
+					else
+						return FocusAdjacentItem(forward: false);
+
+				case Keycode.DOWN:
+					if (e.Modifiers.HasFlag(Modifiers.Meta) && Platform.CurrentPlatform == PlatformType.OSX)
+						return FocusLastItem();
+					else
+						return FocusAdjacentItem(forward: true);
+
+				case Keycode.HOME:
+					return FocusFirstItem();
+
+				case Keycode.END:
+					return FocusLastItem();
+
+				case Keycode.RETURN:
+				case Keycode.KP_ENTER:
+				case Keycode.SPACE:
+					if (OnEnterKey != null && OnEnterKey())
+						return true;
+					return ActivateFocusedItem();
+
+				case Keycode.ESCAPE:
+					if (OnEscapeKey != null)
+						return OnEscapeKey();
+					return false;
+
+				default:
+					return false;
+			}
+		}
+
+		bool ActivateFocusedItem()
+		{
+			if (keyboardFocusedItem == null)
+				return false;
+
+			keyboardFocusedItem.OnClick?.Invoke();
+			return true;
+		}
+
+		bool FocusAdjacentItem(bool forward)
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			var currentIndex = keyboardFocusedItem != null
+				? selectableItems.IndexOf(keyboardFocusedItem)
+				: selectableItems.FindIndex(item => item.IsSelected());
+
+			int newIndex;
+			if (currentIndex == -1)
+				newIndex = forward ? 0 : selectableItems.Count - 1;
+			else
+			{
+				newIndex = forward ? currentIndex + 1 : currentIndex - 1;
+
+				if (newIndex < 0 || newIndex >= selectableItems.Count)
+					return true;
+			}
+
+			SetKeyboardFocus(selectableItems[newIndex]);
+			ScrollToItem(selectableItems[newIndex]);
+
+			return true;
+		}
+
+		bool FocusFirstItem()
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			SetKeyboardFocus(selectableItems[0]);
+			ScrollToItem(selectableItems[0]);
+
+			return true;
+		}
+
+		bool FocusLastItem()
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			SetKeyboardFocus(selectableItems[^1]);
+			ScrollToItem(selectableItems[^1]);
+
+			return true;
+		}
+
+		void SetKeyboardFocus(ScrollItemWidget item)
+		{
+			if (keyboardFocusedItem != null)
+				keyboardFocusedItem.IsKeyboardFocused = () => false;
+
+			keyboardFocusedItem = item;
+
+			if (keyboardFocusedItem != null)
+			{
+				keyboardFocusedItem.IsKeyboardFocused = () => true;
+				keyboardFocusedItem.OnKeyboardSelect?.Invoke();
+			}
+		}
+
+		// Called when an item is clicked with the mouse to clear keyboard navigation state.
+		// This allows the visual highlight to fall back to the selected item.
+		public void ClearKeyboardFocusedItem()
+		{
+			SetKeyboardFocus(null);
+		}
+
+		List<ScrollItemWidget> GetSelectableItems()
+		{
+			var items = new List<ScrollItemWidget>();
+
+			foreach (var child in Children)
+			{
+				// Filter by IsVisible() for logical visibility (e.g. filtered items in AssetBrowser).
+				// Note: Items using IsCulledForRendering for geometric culling are still included
+				// because IsVisible() remains true for them - they are just not rendered when outside
+				// the visible scroll area but should still be navigable via keyboard.
+				if (child is ScrollItemWidget scrollItem && scrollItem.IsVisible() && scrollItem.IsSelectable)
+					items.Add(scrollItem);
+			}
+
+			return items;
 		}
 
 		IObservableCollection collection;

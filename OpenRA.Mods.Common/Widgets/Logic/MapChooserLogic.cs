@@ -284,9 +284,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, remoteMapPool);
 			}
 
-			SetupMapPanel(MapClassification.User, "USER_MAPS_TAB");
-			SetupMapPanel(MapClassification.System, "SYSTEM_MAPS_TAB");
-			SetupMapPanel(MapClassification.Remote, "REMOTE_MAPS_TAB");
+			SetupMapPanel(MapClassification.User, "USER_MAPS_TAB", approving, canceling);
+			SetupMapPanel(MapClassification.System, "SYSTEM_MAPS_TAB", approving, canceling);
+			SetupMapPanel(MapClassification.Remote, "REMOTE_MAPS_TAB", approving, canceling);
 
 			var hasGenerator = modData.DefaultRules.Actors[SystemActors.EditorWorld].HasTraitInfo<IEditorMapGeneratorInfo>();
 			if (onSelectGenerated != null && hasGenerator)
@@ -397,12 +397,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void SetupMapPanel(MapClassification tab, string tabContainerName)
+		void SetupMapPanel(MapClassification tab, string tabContainerName, Action approving, Action canceling)
 		{
 			var tabContainer = widget.Get<ContainerWidget>(tabContainerName);
 			tabContainer.IsVisible = () => currentTab == tab;
 			var tabScrollpanel = tabContainer.Get<ScrollPanelWidget>("MAP_LIST");
 			tabScrollpanel.Layout = new GridLayout(tabScrollpanel);
+
+			tabScrollpanel.OnEnterKey = () =>
+			{
+				if (onSelect != null && !(currentTab == MapClassification.Generated && generatedMapArgs == null))
+				{
+					approving();
+					return true;
+				}
+
+				return false;
+			};
+
+			tabScrollpanel.OnEscapeKey = () => { canceling(); return true; };
+
 			scrollpanels.Add(tab, tabScrollpanel);
 
 			RefreshMaps(tab);
@@ -551,7 +565,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid,
 					() => selectedUid = preview.Uid, DblClick);
-				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
+
+				// Use IsCulledForRendering instead of IsVisible for culling optimization.
+				// This allows keyboard navigation to items outside the visible area while
+				// still avoiding the rendering cost for off-screen items.
+				item.IsCulledForRendering = () => !item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
 				var titleLabel = item.Get<LabelWithTooltipWidget>("TITLE");
 				if (titleLabel != null)

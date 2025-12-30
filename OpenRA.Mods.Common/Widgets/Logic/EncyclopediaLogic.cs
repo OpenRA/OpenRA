@@ -62,6 +62,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 
 			actorList = widget.Get<ScrollPanelWidget>("ACTOR_LIST");
+			actorList.OnEscapeKey = () =>
+			{
+				Game.Disconnect();
+				Ui.CloseWindow();
+				onExit();
+				return true;
+			};
 
 			headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
 			template = widget.Get<ScrollItemWidget>("TEMPLATE");
@@ -134,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateActorGroup(string title, IEnumerable<ActorInfo> actors)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
+			var header = ScrollItemWidget.SetupHeader(headerTemplate);
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			actorList.AddChild(header);
 

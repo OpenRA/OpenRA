@@ -138,9 +138,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerTemplate = playerList.Get<ScrollItemWidget>("TEMPLATE");
 			playerList.RemoveChildren();
 
-			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { cancelLoadingReplays = true; Ui.CloseWindow(); onExit(); };
+			var cancelAction = new Action(() => { cancelLoadingReplays = true; Ui.CloseWindow(); onExit(); });
+			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = cancelAction;
 
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
+			replayList.OnEnterKey = () =>
+			{
+				if (selectedReplay != null && map.Status == MapStatus.Available)
+				{
+					WatchReplay();
+					return true;
+				}
+
+				return false;
+			};
+			replayList.OnEscapeKey = () => { cancelAction(); return true; };
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			var mod = modData.Manifest;
@@ -739,7 +751,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var group = kv.Key;
 					if (group.Length > 0)
 					{
-						var header = ScrollItemWidget.Setup(playerHeader, () => false, () => { });
+						var header = ScrollItemWidget.SetupHeader(playerHeader);
 						header.Get<LabelWidget>("LABEL").GetText = () => group;
 						playerList.AddChild(header);
 					}
@@ -750,7 +762,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var color = o.Color;
 
-						var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
+						var item = ScrollItemWidget.SetupHeader(playerTemplate);
 
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];

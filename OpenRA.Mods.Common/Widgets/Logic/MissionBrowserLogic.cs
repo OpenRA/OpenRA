@@ -93,6 +93,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.BeforeGameStart += OnGameStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
+			missionList.OnEnterKey = () =>
+			{
+				if (selectedMap != null)
+				{
+					StartMissionClicked(onExit);
+					return true;
+				}
+
+				return false;
+			};
+			missionList.OnEscapeKey = () =>
+			{
+				StopVideo(videoPlayer);
+				Ui.CloseWindow();
+				onExit();
+				return true;
+			};
 
 			headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
 			template = widget.Get<ScrollItemWidget>("TEMPLATE");
@@ -260,7 +277,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateMissionGroup(string title, IEnumerable<MapPreview> previews, Action onExit)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
+			var header = ScrollItemWidget.SetupHeader(headerTemplate);
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			missionList.AddChild(header);
 
