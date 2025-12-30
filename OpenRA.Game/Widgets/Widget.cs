@@ -35,12 +35,238 @@ namespace OpenRA.Widgets
 		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
+		// Currently focused widget for TAB navigation (separate from KeyboardFocusWidget used for text input)
+		public static Widget TabFocusWidget;
+
 		static readonly Mediator Mediator = new();
 		static ModData modData;
 
 		public static void Initialize(ModData modData)
 		{
 			Ui.modData = modData;
+		}
+
+		// Handles TAB and SHIFT+TAB navigation between focusable widgets
+		public static bool HandleTabNavigation(KeyInput e)
+		{
+			if (e.Key != Keycode.TAB || e.Event != KeyInputEvent.Down)
+				return false;
+
+			var reverse = e.Modifiers.HasModifier(Modifiers.Shift);
+
+			// Determine the scope for TAB navigation:
+			// If the current TAB focus widget has a parent that is not part of CurrentWindow,
+			// navigate within that parent's tree (e.g., dropdown panels added to Root)
+			Widget navigationScope;
+			if (TabFocusWidget != null)
+			{
+				// Find the topmost parent that contains focusable widgets
+				navigationScope = FindNavigationScope(TabFocusWidget);
+			}
+			else
+			{
+				navigationScope = CurrentWindow() ?? Root;
+			}
+
+			// Collect all focusable widgets in tab order
+			var focusableWidgets = new List<Widget>();
+			CollectFocusableWidgets(navigationScope, focusableWidgets);
+
+			if (focusableWidgets.Count == 0)
+				return false;
+
+			// Sort by TabIndex, then by visual position (top to bottom, left to right)
+			focusableWidgets.Sort((a, b) =>
+			{
+				var tabIndexCompare = a.TabIndex.CompareTo(b.TabIndex);
+				if (tabIndexCompare != 0)
+					return tabIndexCompare;
+
+				// If same TabIndex, sort by Y position then X position
+				var yCompare = a.RenderBounds.Y.CompareTo(b.RenderBounds.Y);
+				if (yCompare != 0)
+					return yCompare;
+
+				return a.RenderBounds.X.CompareTo(b.RenderBounds.X);
+			});
+
+			// Find current focused widget index
+			var currentIndex = -1;
+			if (TabFocusWidget != null)
+				currentIndex = focusableWidgets.IndexOf(TabFocusWidget);
+
+			// Calculate next index
+			int nextIndex;
+			if (reverse)
+			{
+				nextIndex = currentIndex <= 0 ? focusableWidgets.Count - 1 : currentIndex - 1;
+			}
+			else
+			{
+				nextIndex = currentIndex >= focusableWidgets.Count - 1 ? 0 : currentIndex + 1;
+			}
+
+			var newFocusWidget = focusableWidgets[nextIndex];
+
+			// Clear focus from previous widget, but set new TabFocusWidget first
+			// so that OnTabFocusLost can check where focus is going
+			var oldFocusWidget = TabFocusWidget;
+			TabFocusWidget = newFocusWidget;
+
+			if (oldFocusWidget != null)
+			{
+				oldFocusWidget.HasTabFocus = false;
+				oldFocusWidget.OnTabFocusLost();
+			}
+
+			// Set focus to new widget
+			newFocusWidget.HasTabFocus = true;
+			newFocusWidget.OnTabFocusGained();
+
+			return true;
+		}
+
+		// Handles ENTER and SPACE to activate the currently tab-focused widget
+		public static bool HandleTabFocusActivation(KeyInput e)
+		{
+			if (TabFocusWidget == null || e.Event != KeyInputEvent.Down)
+				return false;
+
+			if (e.Key != Keycode.RETURN && e.Key != Keycode.KP_ENTER && e.Key != Keycode.SPACE)
+				return false;
+
+			// Ensure the widget is still visible before activating
+			// If it has TAB focus, it was navigable when it received focus, so allow activation
+			if (!TabFocusWidget.IsVisible())
+				return false;
+
+			return TabFocusWidget.OnTabFocusActivate(e);
+		}
+
+		// Handles arrow keys and other navigation keys for the currently tab-focused widget
+		// This allows widgets like sliders to handle arrow keys even when another widget has keyboard focus
+		public static bool HandleTabFocusKeyPress(KeyInput e)
+		{
+			if (TabFocusWidget == null || e.Event != KeyInputEvent.Down)
+				return false;
+
+			// Let the tab-focused widget handle navigation keys (arrows, home, end, etc.)
+			if (TabFocusWidget.OnTabFocusKeyPress(e))
+				return true;
+
+			// For PAGE UP/DOWN/HOME/END, propagate to parent ScrollPanelWidget if not handled
+			if (e.Key == Keycode.PAGEUP || e.Key == Keycode.PAGEDOWN ||
+				e.Key == Keycode.HOME || e.Key == Keycode.END)
+			{
+				var parent = TabFocusWidget.Parent;
+				while (parent != null)
+				{
+					// Check if parent can handle scroll navigation via HandleKeyPress
+					// Use reflection to check for ScrollPanelWidget type since we're in OpenRA.Game
+					var handleMethod = parent.GetType().GetMethod("HandleKeyPress",
+						System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance,
+						null, [typeof(KeyInput)], null);
+
+					if (handleMethod != null && parent.GetType().Name == "ScrollPanelWidget")
+					{
+						var result = handleMethod.Invoke(parent, [e]);
+						if (result is bool handled && handled)
+							return true;
+					}
+
+					parent = parent.Parent;
+				}
+			}
+
+			return false;
+		}
+
+		// Clears the current TAB focus
+		public static void ClearTabFocus()
+		{
+			if (TabFocusWidget != null)
+			{
+				TabFocusWidget.HasTabFocus = false;
+				TabFocusWidget.OnTabFocusLost();
+				TabFocusWidget = null;
+			}
+		}
+
+		// Sets the initial TAB focus to the first focusable widget in a window
+		public static void SetInitialFocus(Widget window)
+		{
+			var focusableWidgets = new List<Widget>();
+			CollectFocusableWidgets(window, focusableWidgets);
+
+			if (focusableWidgets.Count == 0)
+				return;
+
+			// Sort by TabIndex, then by visual position
+			focusableWidgets.Sort((a, b) =>
+			{
+				var tabIndexCompare = a.TabIndex.CompareTo(b.TabIndex);
+				if (tabIndexCompare != 0)
+					return tabIndexCompare;
+
+				var yCompare = a.RenderBounds.Y.CompareTo(b.RenderBounds.Y);
+				if (yCompare != 0)
+					return yCompare;
+
+				return a.RenderBounds.X.CompareTo(b.RenderBounds.X);
+			});
+
+			var newFocusWidget = focusableWidgets[0];
+
+			// Clear focus from previous widget, but set new TabFocusWidget first
+			// so that OnTabFocusLost can check where focus is going
+			var oldFocusWidget = TabFocusWidget;
+			TabFocusWidget = newFocusWidget;
+
+			if (oldFocusWidget != null)
+			{
+				oldFocusWidget.HasTabFocus = false;
+				oldFocusWidget.OnTabFocusLost();
+			}
+
+			// Set focus to new widget
+			newFocusWidget.HasTabFocus = true;
+			newFocusWidget.OnTabFocusGained();
+		}
+
+		static void CollectFocusableWidgets(Widget widget, List<Widget> result)
+		{
+			if (!widget.IsVisible())
+				return;
+
+			if (widget.IsTabNavigable())
+				result.Add(widget);
+
+			foreach (var child in widget.Children)
+				CollectFocusableWidgets(child, result);
+		}
+
+		// Find the appropriate navigation scope for a widget
+		// Returns the topmost container that should be used for TAB navigation
+		static Widget FindNavigationScope(Widget widget)
+		{
+			// Walk up the parent chain to find the navigation scope
+			var current = widget;
+			while (current.Parent != null)
+			{
+				// If we reach a child of Root that is not the current window,
+				// that child is our navigation scope (e.g., a dropdown panel)
+				if (current.Parent == Root)
+				{
+					var currentWindow = CurrentWindow();
+					if (currentWindow != null && current != currentWindow)
+						return current;
+				}
+
+				current = current.Parent;
+			}
+
+			// Default to current window or root
+			return CurrentWindow() ?? Root;
 		}
 
 		public static void CloseWindow()
@@ -79,6 +305,10 @@ namespace OpenRA.Widgets
 			if (WindowList.Count > 0)
 				Root.HideChild(WindowList.Peek());
 			WindowList.Push(window);
+
+			// Set initial TAB focus to the first focusable widget in the new window
+			SetInitialFocus(window);
+
 			return window;
 		}
 
@@ -144,6 +374,18 @@ namespace OpenRA.Widgets
 		/// <param name="e">Key input data.</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
+			// Handle TAB navigation first (highest priority for UI navigation)
+			if (e.Key == Keycode.TAB && HandleTabNavigation(e))
+				return true;
+
+			// Handle ENTER/SPACE activation of tab-focused widget
+			if (TabFocusWidget != null && HandleTabFocusActivation(e))
+				return true;
+
+			// Handle arrow keys and other navigation for tab-focused widget (e.g., sliders)
+			if (TabFocusWidget != null && HandleTabFocusKeyPress(e))
+				return true;
+
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
@@ -160,6 +402,7 @@ namespace OpenRA.Widgets
 
 		public static void ResetAll()
 		{
+			ClearTabFocus();
 			Root.RemoveChildren();
 
 			while (WindowList.Count > 0)
@@ -227,6 +470,16 @@ namespace OpenRA.Widgets
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
+		// TAB navigation properties
+		// TabIndex determines the order of focus when pressing TAB (lower values come first)
+		public int TabIndex = 0;
+
+		// Whether this widget can receive TAB focus
+		public bool IsFocusable = false;
+
+		// Whether this widget currently has TAB focus (set by the Ui class)
+		public bool HasTabFocus = false;
+
 		// Calculated internally
 		public WidgetBounds Bounds;
 		public Widget Parent = null;
@@ -250,6 +503,10 @@ namespace OpenRA.Widgets
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 			IgnoreMouseOver = widget.IgnoreMouseOver;
+
+			// Copy TAB navigation properties
+			TabIndex = widget.TabIndex;
+			IsFocusable = widget.IsFocusable;
 
 			defaultCursor = widget.defaultCursor;
 
@@ -421,6 +678,26 @@ namespace OpenRA.Widgets
 		public virtual void MouseEntered() { }
 		public virtual void MouseExited() { }
 
+		// TAB navigation virtual methods
+		// Called when this widget gains TAB focus
+		public virtual void OnTabFocusGained() { }
+
+		// Called when this widget loses TAB focus
+		public virtual void OnTabFocusLost() { }
+
+		// Called when ENTER or SPACE is pressed while this widget has TAB focus
+		// Returns true if the activation was handled
+		public virtual bool OnTabFocusActivate(KeyInput e) { return false; }
+
+		// Called when arrow keys or other navigation keys are pressed while this widget has TAB focus
+		// Override to handle keys like LEFT/RIGHT for sliders, etc.
+		// Returns true if the key was handled
+		public virtual bool OnTabFocusKeyPress(KeyInput e) { return false; }
+
+		// Returns true if this widget can currently receive TAB focus
+		// Override to add additional conditions (e.g., not disabled)
+		public virtual bool IsTabNavigable() { return IsFocusable && IsVisible(); }
+
 		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
 		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget.</returns>
 		/// <param name="mi">Mouse input data.</param>
@@ -566,6 +843,10 @@ namespace OpenRA.Widgets
 			ForceYieldKeyboardFocus();
 			ForceYieldMouseFocus();
 
+			// Clear TAB focus if this widget had it
+			if (Ui.TabFocusWidget == this)
+				Ui.ClearTabFocus();
+
 			// PERF: Avoid LINQ.
 			for (var i = Children.Count - 1; i >= 0; --i)
 				Children[i].Hidden();
@@ -577,6 +858,10 @@ namespace OpenRA.Widgets
 			// have been removed
 			ForceYieldKeyboardFocus();
 			ForceYieldMouseFocus();
+
+			// Clear TAB focus if this widget had it
+			if (Ui.TabFocusWidget == this)
+				Ui.ClearTabFocus();
 
 			// PERF: Avoid LINQ.
 			for (var i = Children.Count - 1; i >= 0; --i)
@@ -652,15 +937,27 @@ namespace OpenRA.Widgets
 		public InputWidget()
 		{
 			IsDisabled = () => Disabled;
+
+			// InputWidgets are focusable by default for TAB navigation
+			IsFocusable = true;
 		}
 
 		public InputWidget(InputWidget other)
 			: base(other)
 		{
 			IsDisabled = () => other.Disabled;
+
+			// InputWidgets are focusable by default for TAB navigation
+			IsFocusable = true;
 		}
 
 		public override InputWidget Clone() { return new InputWidget(this); }
+
+		// InputWidgets are not tab navigable when disabled
+		public override bool IsTabNavigable()
+		{
+			return base.IsTabNavigable() && !IsDisabled();
+		}
 	}
 
 	public class WidgetArgs : Dictionary<string, object>

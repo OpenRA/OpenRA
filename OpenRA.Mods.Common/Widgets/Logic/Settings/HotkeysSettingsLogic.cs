@@ -159,6 +159,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitHotkeyList();
 			}
 
+			// Assign TabIndex to panel elements so they are navigated after menu tabs
+			SettingsUtils.AssignPanelTabIndexes(panel);
+
 			return () =>
 			{
 				hotkeyEntryWidget.Key =

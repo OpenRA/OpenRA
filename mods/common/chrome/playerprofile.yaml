@@ -65,6 +65,7 @@ Container@LOCAL_PROFILE_PANEL:
 					Height: 20
 					Font: TinyBold
 					Text: button-generate-keys-key
+					TabIndex: 7
 		Background@GENERATING_KEYS:
 			Width: PARENT_WIDTH
 			Height: PARENT_HEIGHT

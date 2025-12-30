@@ -81,6 +81,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		float modelScale;
 		AssetType assetTypesToDisplay = AssetType.Sprite | AssetType.Model | AssetType.Audio | AssetType.Video;
 
+		// Maps ItemKey to (Package, Filepath) for keyboard navigation preview updates
+		readonly Dictionary<string, (IReadOnlyPackage Package, string Filepath)> assetLookup = [];
+
 		readonly string allPackages;
 
 		[ObjectCreator.UseCtor]
@@ -411,6 +414,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
+
+			// Update preview when navigating with keyboard (UP/DOWN arrows)
+			assetList.OnKeyboardFocusChanged = item =>
+			{
+				if (item != null && item.ItemKey != null && assetLookup.TryGetValue(item.ItemKey, out var asset))
+					LoadAsset(asset.Package, asset.Filepath);
+			};
+
 			PopulateAssetList();
 
 			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
@@ -470,6 +481,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var item = ScrollItemWidget.Setup(template,
 				() => currentFilename == filepath && currentPackage == package,
 				() => LoadAsset(package, filepath));
+
+			// Store a unique key for keyboard navigation lookup
+			item.ItemKey = $"{package.Name}|{filepath}";
+			assetLookup[item.ItemKey] = (package, filepath);
 
 			var label = item.Get<LabelWithTooltipWidget>("TITLE");
 			WidgetUtils.TruncateLabelToTooltip(label, filepath);
@@ -622,6 +637,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void PopulateAssetList()
 		{
 			assetList.RemoveChildren();
+			assetLookup.Clear();
 
 			var files = new SortedList<string, List<IReadOnlyPackage>>();
 

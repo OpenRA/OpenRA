@@ -68,6 +68,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget headerTemplate;
 		readonly ScrollItemWidget template;
 
+		// Map UIDs to their previews for keyboard navigation
+		readonly Dictionary<string, MapPreview> missionPreviews = [];
+
 		readonly Widget miniOptions;
 		readonly DropDownButtonWidget difficultyButton;
 		readonly DropDownButtonWidget gameSpeedButton;
@@ -93,6 +96,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.BeforeGameStart += OnGameStart;
 
 			missionList = widget.Get<ScrollPanelWidget>("MISSION_LIST");
+			missionList.OnEnterKey = () =>
+			{
+				if (selectedMap != null)
+				{
+					StartMissionClicked(onExit);
+					return true;
+				}
+
+				return false;
+			};
+			missionList.OnEscapeKey = () =>
+			{
+				StopVideo(videoPlayer);
+				Ui.CloseWindow();
+				onExit();
+				return true;
+			};
+
+			// Update preview when navigating with keyboard (UP/DOWN arrows)
+			missionList.OnKeyboardFocusChanged = item =>
+			{
+				if (item != null && item.ItemKey != null && missionPreviews.TryGetValue(item.ItemKey, out var preview))
+					SelectMap(preview);
+			};
 
 			headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
 			template = widget.Get<ScrollItemWidget>("TEMPLATE");
@@ -104,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : titleText;
 			}
 
-			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
+			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null && playingVideo == PlayingVideo.None;
 
 			var previewWidget = widget.Get<MapPreviewWidget>("MISSION_PREVIEW");
 			previewWidget.Preview = () => selectedMap;
@@ -115,6 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			fullscreenVideoPlayer = Ui.LoadWidget<BackgroundWidget>("FULLSCREEN_PLAYER", Ui.Root, new WidgetArgs { { "world", world } });
 
 			missionDetail = widget.Get("MISSION_DETAIL");
+			missionList.IsVisible = () => playingVideo == PlayingVideo.None;
 
 			descriptionPanel = missionDetail.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
 			descriptionPanel.IsVisible = () => panel == PanelType.MissionInfo;
@@ -128,19 +156,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
 
 			startBriefingVideoButton = widget.Get<ButtonWidget>("START_BRIEFING_VIDEO_BUTTON");
+			startBriefingVideoButton.IsDisabled = () => playingVideo == PlayingVideo.Info;
 			stopBriefingVideoButton = widget.Get<ButtonWidget>("STOP_BRIEFING_VIDEO_BUTTON");
 			stopBriefingVideoButton.IsVisible = () => playingVideo == PlayingVideo.Briefing;
 			stopBriefingVideoButton.OnClick = () => StopVideo(videoPlayer);
 
 			startInfoVideoButton = widget.Get<ButtonWidget>("START_INFO_VIDEO_BUTTON");
+			startInfoVideoButton.IsDisabled = () => playingVideo == PlayingVideo.Briefing;
 			stopInfoVideoButton = widget.Get<ButtonWidget>("STOP_INFO_VIDEO_BUTTON");
+			stopInfoVideoButton.IsDisabled = () => playingVideo == PlayingVideo.Briefing;
 			stopInfoVideoButton.IsVisible = () => playingVideo == PlayingVideo.Info;
 			stopInfoVideoButton.OnClick = () => StopVideo(videoPlayer);
 
 			miniOptions = widget.GetOrNull("MISSION_MINIFIED_OPTIONS");
 			if (miniOptions != null)
 			{
-				miniOptions.IsVisible = () => minifiedOptions;
+				miniOptions.IsVisible = () => minifiedOptions && playingVideo == PlayingVideo.None;
 				difficultyButton = miniOptions.GetOrNull<DropDownButtonWidget>("DIFFICULTY");
 				gameSpeedButton = miniOptions.GetOrNull<DropDownButtonWidget>("GAMESPEED");
 				unsetDifficulty = FluentProvider.GetMessage(difficultyButton.Text);
@@ -226,7 +257,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var tabContainer = widget.Get("MISSION_TABS");
-			tabContainer.IsVisible = () => !minifiedOptions;
+			tabContainer.IsVisible = () => !minifiedOptions && playingVideo == PlayingVideo.None;
 
 			var optionsTab = tabContainer.Get<ButtonWidget>("OPTIONS_TAB");
 			optionsTab.IsHighlighted = () => panel == PanelType.Options;
@@ -260,13 +291,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateMissionGroup(string title, IEnumerable<MapPreview> previews, Action onExit)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
+			var header = ScrollItemWidget.SetupHeader(headerTemplate);
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			missionList.AddChild(header);
 
 			foreach (var preview in previews)
 			{
-				var item = ScrollItemWidget.Setup(template,
+				// Store the preview for keyboard navigation lookup
+				missionPreviews[preview.Uid] = preview;
+
+				var item = ScrollItemWidget.Setup(preview.Uid, template,
 					() => selectedMap != null && selectedMap.Uid == preview.Uid,
 					() => SelectMap(preview),
 					() => StartMissionClicked(onExit));

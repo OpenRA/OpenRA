@@ -792,6 +792,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					join.IsVisible = () => !slot.Closed;
 					join.IsDisabled = () => orderManager.LocalClient.IsReady;
 					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
+
+					// Assign TabIndex to focusable widgets in empty slot
+					SetSlotWidgetTabIndex(template, idx);
 				}
 				else if ((client.Index == orderManager.LocalClient.Index) ||
 						 (client.Bot != null && isHost))
@@ -813,6 +816,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableReadyWidget(template, client, orderManager, map, MapIsPlayable);
+
+					// Assign TabIndex to focusable widgets in editable player slot
+					SetSlotWidgetTabIndex(template, idx);
 				}
 				else
 				{
@@ -841,6 +847,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					LobbyUtils.SetupReadyWidget(template, client);
+
+					// Assign TabIndex to focusable widgets in non-editable player slot
+					SetSlotWidgetTabIndex(template, idx);
 				}
 
 				template.IsVisible = () => true;
@@ -923,6 +932,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				btn.IsVisible = () => orderManager.LobbyInfo.GlobalSettings.AllowSpectators
 					|| orderManager.LocalClient.IsAdmin;
 
+				// Spectate button comes after slots but before Change Map
+				btn.TabIndex = 100;
+
 				spec.IsVisible = () => true;
 
 				if (idx >= players.Children.Count)
@@ -937,6 +949,64 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				players.RemoveChild(players.Children[idx]);
 
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Where(c => !c.IsBot).Select(c => c.Name).Distinct().ToList();
+		}
+
+		// Assigns TabIndex to focusable widgets in a player slot template
+		// Each slot gets a base TabIndex calculated from its position (idx * 10)
+		// Widgets within the slot are ordered: SLOT_OPTIONS/NAME (0), COLOR (1), FACTION (2), TEAM (3), HANDICAP (4), SPAWN (5), STATUS (6), JOIN (7)
+		static void SetSlotWidgetTabIndex(Widget template, int slotIndex)
+		{
+			var baseTabIndex = slotIndex * 10;
+
+			// Slot options dropdown (for selecting Open/Closed/Bot type)
+			var slotOptions = template.GetOrNull("SLOT_OPTIONS");
+			if (slotOptions != null)
+				slotOptions.TabIndex = baseTabIndex;
+
+			// Name text field (for editable player name)
+			var name = template.GetOrNull("NAME");
+			if (name != null)
+				name.TabIndex = baseTabIndex;
+
+			// Player action dropdown (for host to kick/move players)
+			var playerAction = template.GetOrNull("PLAYER_ACTION");
+			if (playerAction != null)
+				playerAction.TabIndex = baseTabIndex;
+
+			// Color dropdown
+			var color = template.GetOrNull("COLOR");
+			if (color != null)
+				color.TabIndex = baseTabIndex + 1;
+
+			// Faction dropdown
+			var faction = template.GetOrNull("FACTION");
+			if (faction != null)
+				faction.TabIndex = baseTabIndex + 2;
+
+			// Team dropdown
+			var team = template.GetOrNull("TEAM_DROPDOWN");
+			if (team != null)
+				team.TabIndex = baseTabIndex + 3;
+
+			// Handicap dropdown
+			var handicap = template.GetOrNull("HANDICAP_DROPDOWN");
+			if (handicap != null)
+				handicap.TabIndex = baseTabIndex + 4;
+
+			// Spawn dropdown
+			var spawn = template.GetOrNull("SPAWN_DROPDOWN");
+			if (spawn != null)
+				spawn.TabIndex = baseTabIndex + 5;
+
+			// Ready checkbox
+			var status = template.GetOrNull("STATUS_CHECKBOX");
+			if (status != null)
+				status.TabIndex = baseTabIndex + 6;
+
+			// Join button (for empty slots)
+			var join = template.GetOrNull("JOIN");
+			if (join != null)
+				join.TabIndex = baseTabIndex + 7;
 		}
 
 		void UpdateDiscordStatus()

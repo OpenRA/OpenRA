@@ -271,6 +271,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
+			// Assign TabIndex to panel elements so they are navigated after menu tabs
+			SettingsUtils.AssignPanelTabIndexes(panel);
+
 			return () =>
 			{
 				int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var x);

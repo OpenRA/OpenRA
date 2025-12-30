@@ -10,12 +10,49 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public static class SettingsUtils
 	{
+		// Starting TabIndex for settings panel elements (menu tabs use 0-9, bottom buttons use 200+)
+		const int PanelElementsBaseTabIndex = 100;
+
+		// Assigns sequential TabIndex values to all focusable widgets in a panel
+		// This ensures panel elements are navigated after menu tabs but before bottom buttons
+		public static void AssignPanelTabIndexes(Widget panel)
+		{
+			var focusableWidgets = new List<Widget>();
+			CollectFocusableWidgets(panel, focusableWidgets);
+
+			// Sort by visual position (top to bottom, left to right) to determine navigation order
+			focusableWidgets.Sort((a, b) =>
+			{
+				var yCompare = a.RenderBounds.Y.CompareTo(b.RenderBounds.Y);
+				if (yCompare != 0)
+					return yCompare;
+
+				return a.RenderBounds.X.CompareTo(b.RenderBounds.X);
+			});
+
+			// Assign sequential TabIndex starting from PanelElementsBaseTabIndex
+			for (var i = 0; i < focusableWidgets.Count; i++)
+				focusableWidgets[i].TabIndex = PanelElementsBaseTabIndex + i;
+		}
+
+		static void CollectFocusableWidgets(Widget parent, List<Widget> result)
+		{
+			foreach (var child in parent.Children)
+			{
+				if (child.IsFocusable)
+					result.Add(child);
+
+				CollectFocusableWidgets(child, result);
+			}
+		}
+
 		public static void BindCheckboxPref(Widget parent, string id, object group, string pref)
 		{
 			var field = group.GetType().GetField(pref);

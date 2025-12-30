@@ -30,6 +30,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
+		Widget previousKeyboardFocusWidget;
+		Widget ownerWindow;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
@@ -49,6 +51,13 @@ namespace OpenRA.Mods.Common.Widgets
 			RemovePanel();
 			return base.YieldKeyboardFocus();
 		}
+
+		/// <summary>
+		/// Invoked after the dropdown panel has been removed.
+		/// </summary>
+		public Action DropDownClosed;
+
+		public bool IsDropDownOpen => panel != null;
 
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(ModData modData)
@@ -71,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var rb = RenderBounds;
 			var isDisabled = IsDisabled();
-			var isHover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
+			var isHover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget) || HasTabFocus;
 
 			getMarkerImage ??= WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
 
@@ -97,15 +106,73 @@ namespace OpenRA.Mods.Common.Widgets
 		// This is crap
 		public override int UsableWidth => Bounds.Width - Bounds.Height; /* space for button */
 
+		// TAB focus activation: open or close the dropdown panel
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			// If the dropdown is already open, close it (toggle behavior)
+			if (IsDropDownOpen)
+			{
+				RemovePanel();
+				return true;
+			}
+
+			// Use base implementation which handles both OnMouseDown and OnKeyPress/OnClick
+			// This supports dropdowns using OnMouseDown (most dropdowns) and OnClick (e.g., Battlefield News)
+			return base.OnTabFocusActivate(e);
+		}
+
+		// Close the dropdown panel when TAB focus is lost,
+		// unless the new focus is within the panel itself
+		public override void OnTabFocusLost()
+		{
+			if (!IsDropDownOpen)
+				return;
+
+			// Don't close if the new TAB focus is within the dropdown panel
+			if (Ui.TabFocusWidget != null && IsWidgetWithinPanel(Ui.TabFocusWidget, panel))
+				return;
+
+			RemovePanel();
+		}
+
 		public override void Hidden()
 		{
 			base.Hidden();
-			RemovePanel();
+			CloseDropdownUnlessInKeyboardNavigation();
 		}
 
 		public override void Removed()
 		{
 			base.Removed();
+			CloseDropdownUnlessInKeyboardNavigation();
+		}
+
+		static bool IsWidgetWithinPanel(Widget widget, Widget panel)
+		{
+			for (var w = widget; w != null; w = w.Parent)
+				if (ReferenceEquals(w, panel))
+					return true;
+
+			return false;
+		}
+
+		void CloseDropdownUnlessInKeyboardNavigation()
+		{
+			if (panel == null)
+				return;
+
+			// Always close if the dropdown belongs to a window that is no longer current.
+			if (ownerWindow != null && !ReferenceEquals(ownerWindow, Ui.CurrentWindow()))
+			{
+				RemovePanel();
+				return;
+			}
+
+			// Keep the panel open if the user is actively navigating it with the keyboard.
+			// This prevents dropdowns from closing when the source widget is replaced by a UI refresh (e.g. selecting bots in the lobby).
+			if (IsWidgetWithinPanel(Ui.KeyboardFocusWidget, panel))
+				return;
+
 			RemovePanel();
 		}
 
@@ -117,9 +184,30 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.RemoveChild(fullscreenMask);
 			panelRoot.RemoveChild(panel);
 			panel = fullscreenMask = null;
+			ownerWindow = null;
+
+			var focusToRestore = previousKeyboardFocusWidget;
+			previousKeyboardFocusWidget = null;
+			if (focusToRestore != null && focusToRestore.IsVisible())
+				focusToRestore.TakeKeyboardFocus();
+
+			// Restore TAB focus to this dropdown button
+			if (IsVisible() && IsFocusable)
+			{
+				if (Ui.TabFocusWidget != null)
+				{
+					Ui.TabFocusWidget.HasTabFocus = false;
+					Ui.TabFocusWidget.OnTabFocusLost();
+				}
+
+				Ui.TabFocusWidget = this;
+				HasTabFocus = true;
+				OnTabFocusGained();
+			}
 
 			YieldKeyboardFocus();
 			Ui.ResetTooltips();
+			DropDownClosed?.Invoke();
 		}
 
 		public void AttachPanel(Widget p) { AttachPanel(p, null); }
@@ -128,6 +216,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
 			panel = p;
+			previousKeyboardFocusWidget = Ui.KeyboardFocusWidget;
 			TakeKeyboardFocus();
 
 			// Mask to prevent any clicks from being sent to other widgets
@@ -137,10 +226,13 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 
 			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
+			fullscreenMask.OnEscapeKey = () => { RemovePanel(); onCancel?.Invoke(); return true; };
 			if (onCancel != null)
 				fullscreenMask.OnMouseDown += _ => onCancel();
 
 			panelRoot = PanelRoot == null ? Ui.Root : Ui.Root.Get(PanelRoot);
+
+			ownerWindow = Ui.CurrentWindow();
 
 			panelRoot.AddChild(fullscreenMask);
 
@@ -167,6 +259,25 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.AddChild(panel);
 
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
+
+			if (panel is ScrollPanelWidget scrollPanel)
+			{
+				scrollPanel.OnEscapeKey = () => { RemovePanel(); onCancel?.Invoke(); return true; };
+				scrollPanel.TakeKeyboardFocus();
+
+				// Set TAB focus to the first focusable widget in the panel
+				// This enables keyboard navigation for panels with checkboxes or other focusable widgets
+				Ui.SetInitialFocus(panel);
+			}
+			else
+			{
+				// For non-scroll panels (like color picker), give focus to the mask
+				// so it can handle ESC to close the dropdown.
+				fullscreenMask.TakeKeyboardFocus();
+
+				// Set TAB focus to the first focusable widget in the panel
+				Ui.SetInitialFocus(panel);
+			}
 		}
 
 		public void ShowDropDown<T>(
@@ -184,6 +295,9 @@ namespace OpenRA.Mods.Common.Widgets
 				var item = setupItem(o, itemTemplate);
 				var onClick = item.OnClick;
 				item.OnClick = () => { onClick(); RemovePanel(); };
+
+				var onKeyboardSelect = item.OnKeyboardSelect;
+				item.OnKeyboardSelect = () => { onKeyboardSelect?.Invoke(); RemovePanel(); };
 
 				panel.AddChild(item);
 			}
@@ -207,7 +321,8 @@ namespace OpenRA.Mods.Common.Widgets
 				var group = kv.Key;
 				if (group.Length > 0 && headerTemplate != null)
 				{
-					var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
+					// Headers are visual separators and should not be part of keyboard navigation.
+					var header = ScrollItemWidget.SetupHeader(headerTemplate);
 					header.Get<LabelWidget>("LABEL").GetText = () => group;
 					panel.AddChild(header);
 				}
@@ -219,6 +334,9 @@ namespace OpenRA.Mods.Common.Widgets
 					var item = setupItem(o, itemTemplate);
 					var onClick = item.OnClick;
 					item.OnClick = () => { onClick(); RemovePanel(); };
+
+					var onKeyboardSelect = item.OnKeyboardSelect;
+					item.OnKeyboardSelect = () => { onKeyboardSelect?.Invoke(); RemovePanel(); };
 
 					panel.AddChild(item);
 				}
@@ -232,11 +350,13 @@ namespace OpenRA.Mods.Common.Widgets
 	public class MaskWidget : Widget
 	{
 		public event Action<MouseInput> OnMouseDown = _ => { };
+		public Func<bool> OnEscapeKey;
 		public MaskWidget() { }
 		public MaskWidget(MaskWidget other)
 			: base(other)
 		{
 			OnMouseDown = other.OnMouseDown;
+			OnEscapeKey = other.OnEscapeKey;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -248,6 +368,14 @@ namespace OpenRA.Mods.Common.Widgets
 				OnMouseDown(mi);
 
 			return true;
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE && OnEscapeKey != null)
+				return OnEscapeKey();
+
+			return false;
 		}
 
 		public override string GetCursor(int2 pos) { return null; }

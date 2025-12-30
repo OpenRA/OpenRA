@@ -93,6 +93,7 @@ Container@LOBBY_PLAYER_BIN:
 							LeftMargin: 24
 							MaxLength: 16
 							Visible: false
+							TabIndex: 10
 							Children:
 								Image@PROFILE:
 									ImageCollection: lobby-bits
@@ -113,12 +114,14 @@ Container@LOBBY_PLAYER_BIN:
 							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
+							TabIndex: 10
 						DropDownButton@COLOR:
 							X: 210
 							Width: 94
 							Height: 25
 							Font: Regular
 							IgnoreChildMouseOver: true
+							TabIndex: 11
 							Children:
 								ColorBlock@COLORBLOCK:
 									X: 5
@@ -133,6 +136,7 @@ Container@LOBBY_PLAYER_BIN:
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
 							PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
+							TabIndex: 12
 							Children:
 								Image@FACTIONFLAG:
 									X: 4
@@ -149,6 +153,7 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 50
 							Height: 25
 							Font: Regular
+							TabIndex: 13
 						DropDownButton@HANDICAP_DROPDOWN:
 							X: 491
 							Width: 75
@@ -156,11 +161,13 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
+							TabIndex: 14
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 571
 							Width: 50
 							Height: 25
 							Font: Regular
+							TabIndex: 15
 						Image@STATUS_IMAGE:
 							X: 629
 							Y: 4
@@ -175,6 +182,7 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 20
 							Height: 20
 							Visible: false
+							TabIndex: 16
 				Container@TEMPLATE_NONEDITABLE_PLAYER:
 					X: 5
 					Width: 530
@@ -310,6 +318,7 @@ Container@LOBBY_PLAYER_BIN:
 							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
+							TabIndex: 20
 						Label@NAME:
 							X: 20
 							Width: 195
@@ -321,6 +330,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Text: button-lobby-players-join
 							Font: Regular
+							TabIndex: 21
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
 					Width: 530
@@ -472,9 +482,11 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 20
 							Font: Regular
 							Text: checkbox-lobby-players-new-spectator-toggle
+							TabIndex: 90
 						Button@SPECTATE:
 							X: 210
 							Width: 438
 							Height: 25
 							Text: button-lobby-players-spectate
 							Font: Regular
+							TabIndex: 91

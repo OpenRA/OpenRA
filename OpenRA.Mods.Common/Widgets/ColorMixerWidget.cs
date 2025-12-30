@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public event Action OnChange = () => { };
 
+		// Called when ENTER/SPACE is pressed to confirm the color selection
+		public Action OnConfirm;
+
 		public float H { get; private set; }
 		public float S { get; private set; }
 		public float V { get; private set; }
@@ -37,6 +40,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public ColorMixerWidget(ModData modData)
 		{
 			modRules = modData.DefaultRules;
+
+			// ColorMixerWidget is focusable for TAB navigation
+			IsFocusable = true;
 		}
 
 		public ColorMixerWidget(ColorMixerWidget other)
@@ -45,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 			modRules = other.modRules;
 			ClickSound = other.ClickSound;
 			OnChange = other.OnChange;
+			OnConfirm = other.OnConfirm;
 			H = other.H;
 			S = other.S;
 			V = other.V;
@@ -52,6 +59,9 @@ namespace OpenRA.Mods.Common.Widgets
 			maxSat = other.maxSat;
 			minVal = other.minVal;
 			maxVal = other.maxVal;
+
+			// ColorMixerWidget is focusable for TAB navigation
+			IsFocusable = true;
 		}
 
 		public void SetColorLimits(float minSaturation, float maxSaturation, float minValue, float maxValue, float? newHue = null)
@@ -99,12 +109,42 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			var rb = RenderBounds;
+
+			// Draw TAB focus indicator when this color mixer has TAB focus
+			if (HasTabFocus)
+				DrawTabFocusIndicator(rb);
+
 			WidgetUtils.DrawSprite(mixerSprite, RenderOrigin, RenderBounds.Size);
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
 			var pos = RenderOrigin + PxFromValue() - new int2((int)sprite.Size.X, (int)sprite.Size.Y) / 2;
 			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), Color);
 			WidgetUtils.DrawSprite(sprite, pos);
+		}
+
+		// Draws a visual indicator around the color mixer when it has TAB focus
+		static void DrawTabFocusIndicator(Rectangle rect)
+		{
+			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
+				focusColor = Color.FromArgb(128, 255, 255, 255);
+
+			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
+				focusWidth = 2;
+
+			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
+
+			// Top border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
+
+			// Bottom border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
+
+			// Left border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
+
+			// Right border
+			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
 		}
 
 		void SetValueFromPx(int2 xy)
@@ -159,6 +199,51 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return true;
+		}
+
+		// Handle ENTER/SPACE to confirm the color selection
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			if (OnConfirm != null)
+			{
+				OnConfirm();
+				return true;
+			}
+
+			return false;
+		}
+
+		// Handle arrow keys when this color mixer has TAB focus
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			// Calculate step size (1/20th of the range for smooth movement)
+			var stepX = (maxVal - minVal) / 20f;
+			var stepY = (maxSat - minSat) / 20f;
+
+			switch (e.Key)
+			{
+				case Keycode.LEFT:
+					V = (V - stepX).Clamp(minVal, maxVal);
+					OnChange();
+					return true;
+
+				case Keycode.RIGHT:
+					V = (V + stepX).Clamp(minVal, maxVal);
+					OnChange();
+					return true;
+
+				case Keycode.UP:
+					S = (S + stepY).Clamp(minSat, maxSat);
+					OnChange();
+					return true;
+
+				case Keycode.DOWN:
+					S = (S - stepY).Clamp(minSat, maxSat);
+					OnChange();
+					return true;
+			}
+
+			return false;
 		}
 
 		public Color Color => Color.FromAhsv(H, S, V);

@@ -220,6 +220,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "onMapUpdate", (Action<string>)(_ => { }) },
 			});
 
+			// Update selected save when navigating with keyboard (UP/DOWN arrows)
+			gameList.OnKeyboardFocusChanged = item =>
+			{
+				if (item != null)
+					Select(item.ItemKey);
+			};
+
 			var renameButton = panel.Get<ButtonWidget>("RENAME_BUTTON");
 			renameButton.IsDisabled = () => selectedSave == null;
 			renameButton.OnClick = () =>

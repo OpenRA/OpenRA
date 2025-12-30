@@ -161,6 +161,28 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		// TAB focus activation: handle ENTER/SPACE when this button has TAB focus
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			if (IsDisabled())
+			{
+				if (!DisableKeySound)
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickDisabledSound, null);
+				return true;
+			}
+
+			// Some buttons use OnMouseDown instead of OnClick (e.g., dropdown buttons, color buttons)
+			// Trigger both OnMouseDown and OnKeyPress to support all button configurations
+			var mi = new MouseInput(MouseInputEvent.Down, MouseButton.Left, RenderBounds.Location, int2.Zero, Modifiers.None, 0);
+			OnMouseDown(mi);
+			OnKeyPress(e);
+
+			if (!DisableKeySound)
+				Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null);
+
+			return true;
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
@@ -248,7 +270,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var position = GetTextPosition(text, font, rb);
 
 			var hover = Ui.MouseOverWidget == this || Children.FirstOrDefault(c => c == Ui.MouseOverWidget) != null;
-			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+
+			// Draw TAB focus indicator (border) when this button has TAB focus
+			if (HasTabFocus && !disabled)
+				DrawTabFocusIndicator(rb);
+
+			DrawBackground(rb, disabled, Depressed, hover || HasTabFocus, highlighted);
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
 					disabled ? colordisabled : color, bgDark, bgLight, ContrastRadius);
@@ -293,6 +320,31 @@ namespace OpenRA.Mods.Common.Widgets
 			var imageName = WidgetUtils.GetStatefulImageName(variantName, disabled, pressed, hover);
 
 			WidgetUtils.DrawPanel(imageName, rect);
+		}
+
+		// Draws a visual indicator around the button when it has TAB focus
+		protected virtual void DrawTabFocusIndicator(Rectangle rect)
+		{
+			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
+				focusColor = Color.FromArgb(128, 255, 255, 255);
+
+			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
+				focusWidth = 2;
+
+			// Draw a border around the button
+			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
+
+			// Top border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
+
+			// Bottom border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
+
+			// Left border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
+
+			// Right border
+			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
 		}
 	}
 }

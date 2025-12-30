@@ -113,6 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget playerTemplate, playerHeader;
 		readonly List<ReplayMetadata> replays = [];
 		readonly Dictionary<ReplayMetadata, ReplayState> replayState = [];
+		readonly Dictionary<string, ReplayMetadata> replayLookup = [];
 		readonly Action onStart;
 		readonly ModData modData;
 		readonly WebServices services;
@@ -138,9 +139,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerTemplate = playerList.Get<ScrollItemWidget>("TEMPLATE");
 			playerList.RemoveChildren();
 
-			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { cancelLoadingReplays = true; Ui.CloseWindow(); onExit(); };
+			var cancelAction = new Action(() => { cancelLoadingReplays = true; Ui.CloseWindow(); onExit(); });
+			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = cancelAction;
 
 			replayList = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
+			replayList.OnEnterKey = () =>
+			{
+				if (selectedReplay != null && map.Status == MapStatus.Available)
+				{
+					WatchReplay();
+					return true;
+				}
+
+				return false;
+			};
+			replayList.OnEscapeKey = () => { cancelAction(); return true; };
+
+			replayList.OnKeyboardFocusChanged = item =>
+			{
+				if (item != null && item.ItemKey != null && replayLookup.TryGetValue(item.ItemKey, out var replay))
+					SelectReplay(replay);
+			};
+
 			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			var mod = modData.Manifest;
@@ -565,7 +585,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			try
 			{
 				var item = replayState[replay].Item;
+				var oldPath = replay.FilePath;
+
 				replay.RenameFile(newFilenameWithoutExtension);
+
+				// Update lookup with new file path
+				replayLookup.Remove(oldPath);
+				replayLookup[replay.FilePath] = replay;
+				item.ItemKey = replay.FilePath;
+
 				item.GetText = () => newFilenameWithoutExtension;
 
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
@@ -596,6 +624,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replayList.RemoveChild(replayState[replay].Item);
 			replays.Remove(replay);
 			replayState.Remove(replay);
+			replayLookup.Remove(replay.FilePath);
 		}
 
 		static bool EvaluateReplayVisibility(ReplayMetadata replay)
@@ -739,7 +768,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var group = kv.Key;
 					if (group.Length > 0)
 					{
-						var header = ScrollItemWidget.Setup(playerHeader, () => false, () => { });
+						var header = ScrollItemWidget.SetupHeader(playerHeader);
 						header.Get<LabelWidget>("LABEL").GetText = () => group;
 						playerList.AddChild(header);
 					}
@@ -750,7 +779,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var color = o.Color;
 
-						var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
+						var item = ScrollItemWidget.SetupHeader(playerTemplate);
 
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
@@ -795,6 +824,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				() => selectedReplay == replay,
 				() => SelectReplay(replay),
 				WatchReplay);
+
+			item.ItemKey = replay.FilePath;
+			replayLookup[replay.FilePath] = replay;
 
 			replayState[replay] = new ReplayState
 			{

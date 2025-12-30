@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WebServices services;
 		readonly Probe lanGameProbe;
 
-		readonly Widget serverList;
+		readonly ScrollPanelWidget serverList;
 		readonly ScrollItemWidget serverTemplate;
 		readonly ScrollItemWidget headerTemplate;
 		readonly Widget noticeContainer;
@@ -190,6 +190,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			incompatibleGameStartedColor = ChromeMetrics.Get<Color>("IncompatibleGameStartedColor");
 
 			serverList = widget.Get<ScrollPanelWidget>("SERVER_LIST");
+			serverList.OnEnterKey = () =>
+			{
+				if (currentServer != null && currentServer.IsJoinable)
+				{
+					onJoin(currentServer);
+					return true;
+				}
+
+				return false;
+			};
+
 			headerTemplate = serverList.Get<ScrollItemWidget>("HEADER_TEMPLATE");
 			serverTemplate = serverList.Get<ScrollItemWidget>("SERVER_TEMPLATE");
 
@@ -600,7 +611,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var group = kv.Key;
 				if (group.Length > 0)
 				{
-					var header = ScrollItemWidget.Setup(clientHeader, () => false, () => { });
+					var header = ScrollItemWidget.SetupHeader(clientHeader);
 					header.Get<LabelWidget>("LABEL").GetText = () => group;
 					clientList.AddChild(header);
 				}
@@ -617,7 +628,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return WidgetUtils.TruncateText(name, s.Item2, s.Item3);
 					});
 
-					var item = ScrollItemWidget.Setup(clientTemplate, () => false, () => { });
+					var item = ScrollItemWidget.SetupHeader(clientTemplate);
 					if (!o.IsSpectator && server.Mod == modData.Manifest.Id)
 					{
 						var label = item.Get<LabelWidget>("LABEL");
@@ -699,7 +710,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (modGames.All(Filtered))
 					continue;
 
-				var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
+				var header = ScrollItemWidget.SetupHeader(headerTemplate);
 
 				var headerTitle = modGames.First().ModLabel;
 				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;

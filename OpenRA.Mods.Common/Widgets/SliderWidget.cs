@@ -85,6 +85,53 @@ namespace OpenRA.Mods.Common.Widgets
 			return ThumbRect.Contains(mi.Location);
 		}
 
+		// TAB focus activation: sliders use arrow keys instead of ENTER/SPACE
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			// Sliders don't activate with ENTER/SPACE, they use arrow keys
+			return false;
+		}
+
+		// Handle arrow keys when this slider has TAB focus
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			if (IsDisabled())
+				return false;
+
+			// Use pixel-based stepping for consistent behavior with both linear and exponential sliders
+			// Calculate step in pixels (use ticks if defined, otherwise divide track into 10 steps)
+			var trackWidth = RenderBounds.Width - RenderBounds.Height;
+			var pixelStep = Ticks > 1
+				? trackWidth / (Ticks - 1)
+				: trackWidth / 10;
+
+			// Get current position in pixels
+			var currentPx = PxFromValue(Value);
+
+			switch (e.Key)
+			{
+				case Keycode.LEFT:
+				case Keycode.DOWN:
+					UpdateValue(ValueFromPx(currentPx - pixelStep));
+					return true;
+
+				case Keycode.RIGHT:
+				case Keycode.UP:
+					UpdateValue(ValueFromPx(currentPx + pixelStep));
+					return true;
+
+				case Keycode.HOME:
+					UpdateValue(MinimumValue);
+					return true;
+
+				case Keycode.END:
+					UpdateValue(MaximumValue);
+					return true;
+			}
+
+			return false;
+		}
+
 		protected virtual float ValueFromPx(int x)
 		{
 			return MinimumValue + (MaximumValue - MinimumValue) * (x - 0.5f * RenderBounds.Height) / (RenderBounds.Width - RenderBounds.Height);
@@ -123,6 +170,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var trackOrigin = rb.X + rb.Height / 2;
 			var trackRect = new Rectangle(trackOrigin - 1, rb.Y + (rb.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
 
+			// Draw TAB focus indicator when this slider has TAB focus
+			if (HasTabFocus && !IsDisabled())
+				DrawTabFocusIndicator(rb);
+
 			// Tickmarks
 			var tick = ChromeProvider.GetImage("slider", "tick");
 			for (var i = 0; i < Ticks; i++)
@@ -139,7 +190,32 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Thumb
 			var thumbHover = Ui.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
-			ButtonWidget.DrawBackground(Thumb, tr, IsDisabled(), isMoving, thumbHover, false);
+			ButtonWidget.DrawBackground(Thumb, tr, IsDisabled(), isMoving, thumbHover || HasTabFocus, false);
+		}
+
+		// Draws a visual indicator around the slider when it has TAB focus
+		static void DrawTabFocusIndicator(Rectangle rect)
+		{
+			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
+				focusColor = Color.FromArgb(128, 255, 255, 255);
+
+			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
+				focusWidth = 2;
+
+			// Draw a border around the slider
+			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
+
+			// Top border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
+
+			// Bottom border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
+
+			// Left border
+			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
+
+			// Right border
+			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
 		}
 	}
 }
