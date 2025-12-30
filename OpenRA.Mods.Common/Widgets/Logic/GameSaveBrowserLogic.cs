@@ -323,14 +323,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void Select(string savePath)
 		{
 			selectedPath = savePath;
-			selectedSave = new GameSave(savePath);
 
-			var map = modData.MapCache[selectedSave.GlobalSettings.Map];
-			if (map.Status != MapStatus.Available && selectedSave.MapGenerationArgs != null)
+			if (savePath != null)
 			{
-				// Add to the MapCache so the server will accept the map
-				modData.MapCache.GenerateMap(modData, selectedSave.MapGenerationArgs);
+				selectedSave = new GameSave(savePath);
+				var map = modData.MapCache[selectedSave.GlobalSettings.Map];
+				if (map.Status != MapStatus.Available && selectedSave.MapGenerationArgs != null)
+				{
+					// Add to the MapCache so the server will accept the map
+					modData.MapCache.GenerateMap(modData, selectedSave.MapGenerationArgs);
+				}
 			}
+			else
+				selectedSave = null;
 
 			if (isSavePanel)
 			{
