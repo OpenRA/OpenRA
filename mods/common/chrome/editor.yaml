@@ -249,6 +249,18 @@ Container@EDITOR_WORLD_ROOT:
 			Y: 330
 			Width: 310
 			Height: WINDOW_HEIGHT - 422
+		MenuButton@OPTIONS_BUTTON:
+			Logic: MenuButtonsChromeLogic
+			MenuContainer: INGAME_MENU
+			HideIngameUI: true
+			Pause: true
+			Width: 60
+			Height: 25
+			Text: button-editor-world-root-options.label
+			TooltipText: button-editor-world-root-options.tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
+			Font: Bold
+			Key: escape
 		Container@TILE_WIDGETS:
 			X: WINDOW_WIDTH - 320
 			Y: 354
@@ -541,6 +553,7 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 							Text: button-cancel
 							Font: Bold
+							Key: escape
 				Background@ACTOR_EDIT_PANEL:
 					X: 10
 					Y: 10
@@ -653,12 +666,14 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 25
 									Text: button-cancel
 									Font: Bold
+									Key: escape
 								Button@OK_BUTTON:
 									X: 208
 									Width: 75
 									Height: 25
 									Text: button-container-ok
 									Font: Bold
+									Key: return
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
 			X: WINDOW_WIDTH - 311
@@ -750,18 +765,6 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 5
 							ImageCollection: editor
 							ImageName: history
-		MenuButton@OPTIONS_BUTTON:
-			Logic: MenuButtonsChromeLogic
-			MenuContainer: INGAME_MENU
-			HideIngameUI: true
-			Pause: true
-			Width: 60
-			Height: 25
-			Text: button-editor-world-root-options.label
-			TooltipText: button-editor-world-root-options.tooltip
-			TooltipContainer: TOOLTIP_CONTAINER
-			Font: Bold
-			Key: escape
 		Button@UNDO_BUTTON:
 			X: 70
 			Height: 25
