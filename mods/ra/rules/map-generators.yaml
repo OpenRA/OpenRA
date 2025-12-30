@@ -100,7 +100,7 @@
 			MultiChoiceOption@TerrainType:
 				Label: label-ra-map-generator-option-terrain-type
 				Priority: 2
-				Default: Gardens
+				Default: Plots
 				Choice@Lakes:
 					Label: label-ra-map-generator-choice-terrain-type-lakes
 					Settings:
@@ -117,6 +117,22 @@
 						EnforceSymmetry: 2
 						RoadSpacing: 3
 						RoadShrink: 4
+				Choice@Plots:
+					Label: label-ra-map-generator-choice-terrain-type-plots
+					Settings:
+						TerrainFeatureSize: 10240
+						ForestFeatureSize: 10240
+						ResourceFeatureSize: 10240
+						Water: 100
+						Forests: 300
+						ForestCutout: 5
+						EnforceSymmetry: 2
+						Mountains: 400
+						MinimumTerrainContourSpacing: 8
+						MinimumCliffLength: 8
+						Roughness: 125
+						RoadShrink: 4
+						CivilianBuildings: 100
 				Choice@Plains:
 					Label: label-ra-map-generator-choice-terrain-type-plains
 					Settings:
