@@ -380,6 +380,8 @@ namespace OpenRA.Graphics
 				}
 			}
 
+			ApplyPostProcessing(PostProcessPassType.AfterAnnotations);
+
 			Game.Renderer.Flush();
 
 			preparedRenderables.Clear();

@@ -4,7 +4,7 @@ precision mediump float;
 #endif
 
 uniform sampler2D VortexTexture;
-uniform sampler2D WorldTexture;
+uniform sampler2D SourceTexture;
 
 in vec2 vTexCoord;
 out vec4 fragColor;
@@ -18,5 +18,5 @@ void main()
 	if (vtx.r > 0.055)
 		discard;
 
-	fragColor = texelFetch(WorldTexture, ivec2(gl_FragCoord.xy + delta), 0) * vec4(frac, frac, frac, 1);
+	fragColor = texelFetch(SourceTexture, ivec2(gl_FragCoord.xy + delta), 0) * vec4(frac, frac, frac, 1);
 }

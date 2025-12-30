@@ -4,11 +4,11 @@ precision mediump float;
 #endif
 
 uniform vec3 Tint;
-uniform sampler2D WorldTexture;
+uniform sampler2D SourceTexture;
 out vec4 fragColor;
 
 void main()
 {
-	vec4 c = texelFetch(WorldTexture, ivec2(gl_FragCoord.xy), 0);
+	vec4 c = texelFetch(SourceTexture, ivec2(gl_FragCoord.xy), 0);
 	fragColor = vec4(Tint, c.a) * c;
 }

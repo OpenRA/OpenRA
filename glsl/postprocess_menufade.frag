@@ -6,7 +6,7 @@ precision mediump float;
 uniform float From;
 uniform float To;
 uniform float Blend;
-uniform sampler2D WorldTexture;
+uniform sampler2D SourceTexture;
 out vec4 fragColor;
 
 vec4 ColorForEffect(float effect, vec4 c)
@@ -27,6 +27,6 @@ vec4 ColorForEffect(float effect, vec4 c)
 
 void main()
 {
-	vec4 c = texelFetch(WorldTexture, ivec2(gl_FragCoord.xy), 0);
+	vec4 c = texelFetch(SourceTexture, ivec2(gl_FragCoord.xy), 0);
 	fragColor = mix(ColorForEffect(To, c), ColorForEffect(From, c), Blend);
 }

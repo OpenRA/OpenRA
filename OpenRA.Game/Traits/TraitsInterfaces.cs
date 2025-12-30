@@ -464,7 +464,7 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
-	public enum PostProcessPassType { AfterShroud, AfterWorld, AfterActors }
+	public enum PostProcessPassType { AfterShroud, AfterWorld, AfterActors, AfterAnnotations }
 
 	[RequireExplicitImplementation]
 	public interface IRenderPostProcessPass

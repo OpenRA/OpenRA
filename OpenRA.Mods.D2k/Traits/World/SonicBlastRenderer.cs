@@ -76,7 +76,7 @@ namespace OpenRA.Mods.D2k.Traits
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
 			shader.SetVec("p1", width, height);
 			shader.SetVec("p2", -1, -1);
-			shader.SetTexture("WorldTexture", Game.Renderer.WorldBufferSnapshot());
+			shader.SetTexture("SourceTexture", Game.Renderer.GetRenderBufferSnapshot());
 			shader.PrepareRender();
 			foreach (var pos in positions)
 			{

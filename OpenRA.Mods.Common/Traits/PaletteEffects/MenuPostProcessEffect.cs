@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		long endTime;
 
 		public MenuPostProcessEffect(MenuPostProcessEffectInfo info)
-			: base("menufade", PostProcessPassType.AfterShroud)
+			: base("menufade", PostProcessPassType.AfterAnnotations)
 		{
 			Info = info;
 			to = info.GameStartEffect;
