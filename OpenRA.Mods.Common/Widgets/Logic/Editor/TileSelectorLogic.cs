@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		readonly ITemplatedTerrainInfo terrainInfo;
-		readonly TileSelectorTemplate[] allTemplates;
+		readonly ImmutableArray<TileSelectorTemplate> allTemplates;
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer)
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (terrainInfo == null)
 				throw new InvalidDataException("TileSelectorLogic requires a template-based tileset.");
 
-			allTemplates = terrainInfo.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
+			allTemplates = terrainInfo.TemplatesInDefinitionOrder.Select(t => new TileSelectorTemplate(t)).ToImmutableArray();
 
 			allCategories = allTemplates.SelectMany(t => t.Categories)
 				.Distinct()

@@ -341,7 +341,7 @@ namespace OpenRA.Mods.Common.Traits
 			World = self.World;
 			TraitInfo = info;
 
-			var templatedTerrainInfo = World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			var templatedTerrainInfo = (ITemplatedTerrainInfo)World.Map.Rules.TerrainInfo;
 			SegmentedBrushes =
 				templatedTerrainInfo.MultiBrushCollections.Keys
 					.Order()

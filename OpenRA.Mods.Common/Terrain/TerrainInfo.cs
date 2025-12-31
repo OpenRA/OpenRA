@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Terrain
 	{
 		ImmutableArray<string> EditorTemplateOrder { get; }
 		FrozenDictionary<ushort, TerrainTemplateInfo> Templates { get; }
+		ImmutableArray<TerrainTemplateInfo> TemplatesInDefinitionOrder { get; }
 		FrozenDictionary<string, ImmutableArray<MultiBrushInfo>> MultiBrushCollections { get; }
 	}
 

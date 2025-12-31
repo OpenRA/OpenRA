@@ -276,7 +276,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		Map map;
 		Size mapSize;
 		DefaultTerrain terrainInfo;
-		List<TerrainTemplateInfo> tileSetsFromYaml;
+		List<DefaultTerrainTemplateInfo> tileSetsFromYaml;
 		int playerCount;
 
 		D2kMapImporter(string filename, string tileset, Ruleset rules)
@@ -338,11 +338,10 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
-			tileSetsFromYaml = terrainInfo.Templates.Where(t =>
-			{
-				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
-				return templateInfo.Frames != null && string.Equals(templateInfo.Images[0], tilesetName, StringComparison.InvariantCultureIgnoreCase);
-			}).Select(ts => ts.Value).ToList();
+			tileSetsFromYaml = terrainInfo.TemplatesInDefinitionOrder
+				.Cast<DefaultTerrainTemplateInfo>()
+				.Where(templateInfo => templateInfo.Frames != null && string.Equals(templateInfo.Images[0], tilesetName, StringComparison.InvariantCultureIgnoreCase))
+				.ToList();
 
 			var players = new MapPlayers(map.Rules, playerCount);
 			map.PlayerDefinitions = players.ToMiniYaml();
@@ -505,16 +504,14 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			// Get the first tileset template that contains the Frame ID of the original map's tile with the requested index
-			var template = tileSetsFromYaml.FirstOrDefault(x => ((DefaultTerrainTemplateInfo)x).Frames.Contains(tileIndex));
+			var template = tileSetsFromYaml.FirstOrDefault(x => x.Frames.Contains(tileIndex));
 
 			// HACK: The arrakis.yaml tileset file seems to be missing some tiles, so just get a replacement for them
 			// Also used for duplicate tiles that are taken from only tileset
 			// Just get a template that contains a tile with the same ID as requested
-			template ??= terrainInfo.Templates.FirstOrDefault(t =>
-			{
-				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
-				return templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex);
-			}).Value;
+			template ??= terrainInfo.TemplatesInDefinitionOrder
+				.Cast<DefaultTerrainTemplateInfo>()
+				.FirstOrDefault(templateInfo => templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex));
 
 			if (template == null)
 			{
@@ -525,7 +522,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			var templateIndex = template.Id;
-			var frameIndex = ((DefaultTerrainTemplateInfo)template).Frames.IndexOf(tileIndex);
+			var frameIndex = template.Frames.IndexOf(tileIndex);
 
 			return new TerrainTile(templateIndex, (byte)((frameIndex == -1) ? 0 : frameIndex));
 		}

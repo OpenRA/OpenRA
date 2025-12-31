@@ -87,6 +87,8 @@ namespace OpenRA.Mods.Common.Terrain
 		[FieldLoader.Ignore]
 		public readonly FrozenDictionary<ushort, TerrainTemplateInfo> Templates;
 		[FieldLoader.Ignore]
+		public readonly ImmutableArray<TerrainTemplateInfo> TemplatesInDefinitionOrder;
+		[FieldLoader.Ignore]
 		public readonly FrozenDictionary<string, ImmutableArray<MultiBrushInfo>> MultiBrushCollections;
 
 		[FieldLoader.Ignore]
@@ -125,10 +127,11 @@ namespace OpenRA.Mods.Common.Terrain
 			defaultWalkableTerrainIndex = GetTerrainIndex("Clear");
 
 			// Templates
-			Templates = yaml["Templates"].ToDictionary().Values
-				.Select(y => (TerrainTemplateInfo)new DefaultTerrainTemplateInfo(this, y))
-				.ToDictionary(t => t.Id)
-				.ToFrozenDictionary();
+			TemplatesInDefinitionOrder = yaml["Templates"].Nodes
+				.Select(n => (TerrainTemplateInfo)new DefaultTerrainTemplateInfo(this, n.Value))
+				.ToImmutableArray();
+			Templates = TemplatesInDefinitionOrder
+				.ToFrozenDictionary(t => t.Id);
 
 			MultiBrushCollections =
 				yaml.TryGetValue("MultiBrushCollections", out var collectionDefinitions)
@@ -187,10 +190,11 @@ namespace OpenRA.Mods.Common.Terrain
 		float ITerrainInfo.MinHeightColorBrightness => MinHeightColorBrightness;
 		float ITerrainInfo.MaxHeightColorBrightness => MaxHeightColorBrightness;
 
-		TerrainTile ITerrainInfo.DefaultTerrainTile => new(Templates.First().Key, 0);
+		TerrainTile ITerrainInfo.DefaultTerrainTile => new(TemplatesInDefinitionOrder[0].Id, 0);
 
 		ImmutableArray<string> ITemplatedTerrainInfo.EditorTemplateOrder => EditorTemplateOrder;
 		FrozenDictionary<ushort, TerrainTemplateInfo> ITemplatedTerrainInfo.Templates => Templates;
+		ImmutableArray<TerrainTemplateInfo> ITemplatedTerrainInfo.TemplatesInDefinitionOrder => TemplatesInDefinitionOrder;
 		FrozenDictionary<string, ImmutableArray<MultiBrushInfo>> ITemplatedTerrainInfo.MultiBrushCollections => MultiBrushCollections;
 
 		void IDumpSheetsTerrainInfo.DumpSheets(string terrainName, ImmutablePalette palette, ref int sheetCount)
