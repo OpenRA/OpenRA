@@ -161,24 +161,22 @@ namespace OpenRA.Primitives
 			return (h, s, v);
 		}
 
-		public static bool TryParse(string value, out Color color)
+		public static bool TryParse(ReadOnlySpan<char> value, out Color color)
 		{
 			color = default;
-			if (value == null)
-				return false;
 
 			value = value.Trim();
 			if (value.Length != 6 && value.Length != 8)
 				return false;
 
 			byte alpha = 255;
-			if (!byte.TryParse(value.AsSpan(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var red)
-				|| !byte.TryParse(value.AsSpan(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var green)
-				|| !byte.TryParse(value.AsSpan(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var blue))
+			if (!byte.TryParse(value[..2], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var red)
+				|| !byte.TryParse(value.Slice(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var green)
+				|| !byte.TryParse(value.Slice(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var blue))
 				return false;
 
 			if (value.Length == 8
-				&& !byte.TryParse(value.AsSpan(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
+				&& !byte.TryParse(value.Slice(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
 				return false;
 
 			color = FromArgb(alpha, red, green, blue);

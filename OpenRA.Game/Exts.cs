@@ -482,57 +482,83 @@ namespace OpenRA
 			return result;
 		}
 
-		public static byte ParseByteInvariant(string s)
+		public static byte ParseByteInvariant(ReadOnlySpan<char> s)
 		{
 			return byte.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
-		public static ushort ParseUshortInvariant(string s)
+		public static ushort ParseUInt16Invariant(ReadOnlySpan<char> s)
 		{
 			return ushort.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
-		public static short ParseInt16Invariant(string s)
+		public static short ParseInt16Invariant(ReadOnlySpan<char> s)
 		{
 			return short.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
-		public static int ParseInt32Invariant(string s)
+		public static int ParseInt32Invariant(ReadOnlySpan<char> s)
 		{
 			return int.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
-		public static float ParseFloatOrPercentInvariant(string s)
+		public static long ParseInt64Invariant(ReadOnlySpan<char> s)
 		{
-			var f = float.Parse(s.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo);
-			return f * (s.Contains('%') ? 0.01f : 1f);
+			return long.Parse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo);
 		}
 
-		public static bool TryParseByteInvariant(string s, out byte i)
+		public static float ParseFloatOrPercentInvariant(ReadOnlySpan<char> s)
+		{
+			var raw = s;
+			var mult = 1f;
+			if (s.Contains('%'))
+			{
+				raw = s.ToString().Replace("%", "");
+				mult = 0.01f;
+			}
+
+			var f = float.Parse(raw, NumberStyles.Float, NumberFormatInfo.InvariantInfo);
+			return f * mult;
+		}
+
+		public static bool TryParseByteInvariant(ReadOnlySpan<char> s, out byte i)
 		{
 			return byte.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
 
-		public static bool TryParseUshortInvariant(string s, out ushort i)
+		public static bool TryParseUInt16Invariant(ReadOnlySpan<char> s, out ushort i)
 		{
 			return ushort.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
 
-		public static bool TryParseInt32Invariant(string s, out int i)
+		public static bool TryParseInt16Invariant(ReadOnlySpan<char> s, out short i)
+		{
+			return short.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
+
+		public static bool TryParseInt32Invariant(ReadOnlySpan<char> s, out int i)
 		{
 			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
 
-		public static bool TryParseInt64Invariant(string s, out long i)
+		public static bool TryParseInt64Invariant(ReadOnlySpan<char> s, out long i)
 		{
 			return long.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
 		}
 
-		public static bool TryParseFloatOrPercentInvariant(string s, out float f)
+		public static bool TryParseFloatOrPercentInvariant(ReadOnlySpan<char> s, out float f)
 		{
-			if (float.TryParse(s?.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out f))
+			var raw = s;
+			var mult = 1f;
+			if (s.Contains('%'))
 			{
-				f *= s.Contains('%') ? 0.01f : 1f;
+				raw = s.ToString().Replace("%", "");
+				mult = 0.01f;
+			}
+
+			if (float.TryParse(raw, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out f))
+			{
+				f *= mult;
 				return true;
 			}
 
@@ -614,25 +640,25 @@ namespace OpenRA
 			return default;
 		}
 
-		public static LineSplitEnumerator SplitLines(this string str, char separator)
+		public static SplitEnumerator Split(this ReadOnlySpan<char> str, char separator)
 		{
-			return new LineSplitEnumerator(str.AsSpan(), separator);
+			return new SplitEnumerator(str, separator);
 		}
 	}
 
-	public ref struct LineSplitEnumerator
+	public ref struct SplitEnumerator
 	{
 		ReadOnlySpan<char> str;
 		readonly char separator;
 
-		public LineSplitEnumerator(ReadOnlySpan<char> str, char separator)
+		public SplitEnumerator(ReadOnlySpan<char> str, char separator)
 		{
 			this.str = str;
 			this.separator = separator;
 			Current = default;
 		}
 
-		public readonly LineSplitEnumerator GetEnumerator() => this;
+		public readonly SplitEnumerator GetEnumerator() => this;
 
 		public bool MoveNext()
 		{

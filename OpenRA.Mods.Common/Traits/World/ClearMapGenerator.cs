@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override Map Generate(ModData modData, MapGenerationArgs args)
 		{
 			var random = new MersenneTwister();
-			if (!Exts.TryParseUshortInvariant(GenerateParameterYaml(modData, args).NodeWithKey("Tile").Value.Value, out var tileType))
+			if (!Exts.TryParseUInt16Invariant(GenerateParameterYaml(modData, args).NodeWithKey("Tile").Value.Value, out var tileType))
 				throw new YamlException("Illegal tile type");
 
 			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];

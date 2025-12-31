@@ -227,7 +227,7 @@ namespace OpenRA.Graphics
 			if (string.IsNullOrEmpty(text))
 				return new int2(0, size);
 
-			var lines = text.SplitLines('\n');
+			var lines = text.AsSpan().Split('\n');
 
 			var maxWidth = 0f;
 			var rows = 0;

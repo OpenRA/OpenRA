@@ -85,15 +85,16 @@ namespace OpenRA
 			if (definition == null)
 				return;
 
-			string[] parts;
+			var s = definition.AsSpan();
 
-			parts = definition.Split(",");
-			if (parts.Length == 8)
+			Span<Range> ranges = stackalloc Range[9];
+			var parts = s.Split(ranges, ',');
+			if (parts == 8)
 			{
 				bits = 0;
 				for (var i = 0; i < 8; i++)
 				{
-					if (!Exts.TryParseByteInvariant(parts[i], out var b))
+					if (!Exts.TryParseByteInvariant(s[ranges[i]], out var b))
 						throw new YamlException($"`{definition}` is not a valid Riser definition");
 
 					bits |= (ulong)b << (i * 8);
@@ -102,25 +103,25 @@ namespace OpenRA
 				return;
 			}
 
-			parts = definition.Split("=");
-			if (parts.Length == 2)
+			parts = s.Split(ranges, '=');
+			if (parts == 2)
 			{
-				if (!Exts.TryParseByteInvariant(parts[1], out var b))
+				if (!Exts.TryParseByteInvariant(s[ranges[1]], out var b))
 					throw new YamlException($"`{definition}` is not a valid Riser definition");
 
 				bits = b * 0x0101010101010101u;
 
 				// TODO: make stricter
-				if (!parts[0].Contains('U', StringComparison.InvariantCultureIgnoreCase))
+				if (!s[ranges[0]].Contains(['U'], StringComparison.InvariantCultureIgnoreCase))
 					bits |= 0x00_00_00_00_00_00_ff_ffu;
 
-				if (!parts[0].Contains('R', StringComparison.InvariantCultureIgnoreCase))
+				if (!s[ranges[0]].Contains(['R'], StringComparison.InvariantCultureIgnoreCase))
 					bits |= 0x00_00_00_00_ff_ff_00_00u;
 
-				if (!parts[0].Contains('D', StringComparison.InvariantCultureIgnoreCase))
+				if (!s[ranges[0]].Contains(['D'], StringComparison.InvariantCultureIgnoreCase))
 					bits |= 0x00_00_ff_ff_00_00_00_00u;
 
-				if (!parts[0].Contains('L', StringComparison.InvariantCultureIgnoreCase))
+				if (!s[ranges[0]].Contains(['L'], StringComparison.InvariantCultureIgnoreCase))
 					bits |= 0xff_ff_00_00_00_00_00_00u;
 
 				return;

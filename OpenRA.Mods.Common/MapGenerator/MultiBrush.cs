@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text.RegularExpressions;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Terrain;
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				if (string.IsNullOrEmpty(my.Value))
 					throw new YamlException("Missing template type");
 
-				if (!Exts.TryParseUshortInvariant(my.Value, out Type))
+				if (!Exts.TryParseUInt16Invariant(my.Value, out Type))
 					throw new YamlException($"Invalid MultiBrush Template `${my.Value}`");
 
 				FieldLoader.Load(this, my);
@@ -205,7 +204,6 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// <summary>
 		/// Point sequence, where points are -X-Y corners of template tiles.
 		/// </summary>
-		[FieldLoader.Ignore]
 		public readonly ImmutableArray<CVec> Points;
 
 		/// <summary>
@@ -222,27 +220,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MultiBrushSegment(MiniYaml my)
 		{
 			FieldLoader.Load(this, my);
+
+			for (var i = 1; i < Points.Length; i++)
 			{
-				// Unlike FieldLoader.ParseInt2Array, whitespace is ignored.
-				var value = my.NodeWithKey("Points").Value.Value;
-				var parts = Regex.Replace(value, @"\s+", string.Empty)
-					.Split(',', StringSplitOptions.RemoveEmptyEntries);
-				if (parts.Length % 2 != 0)
-					FieldLoader.InvalidValueAction(value, typeof(int2[]), "Points");
-
-				var points = new CVec[parts.Length / 2];
-				for (var i = 0; i < points.Length; i++)
-				{
-					points[i] = new CVec(Exts.ParseInt32Invariant(parts[2 * i]), Exts.ParseInt32Invariant(parts[2 * i + 1]));
-					if (i > 0)
-					{
-						var step = points[i] - points[i - 1];
-						if (Math.Abs(step.X) + Math.Abs(step.Y) != 1)
-							throw new YamlException($"Points sequence {value} has non-unit steps");
-					}
-				}
-
-				Points = [.. points];
+				var step = Points[i] - Points[i - 1];
+				if (Math.Abs(step.X) + Math.Abs(step.Y) != 1)
+					throw new YamlException("Points sequence has non-unit steps");
 			}
 		}
 
