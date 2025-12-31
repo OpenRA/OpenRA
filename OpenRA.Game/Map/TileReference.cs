@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA
 {
 	public readonly struct TerrainTile(ushort type, byte index)
@@ -20,12 +22,13 @@ namespace OpenRA
 
 		public override string ToString() { return Type + "," + Index; }
 
-		public static bool TryParse(string s, out TerrainTile tt)
+		public static bool TryParse(ReadOnlySpan<char> s, out TerrainTile tt)
 		{
-			var split = s.Split(',');
-			if (split.Length == 2 &&
-				Exts.TryParseUshortInvariant(split[0], out var type) &&
-				Exts.TryParseByteInvariant(split[1], out var index))
+			Span<Range> ranges = stackalloc Range[3];
+			var parts = s.Split(ranges, ',');
+			if (parts == 2 &&
+				Exts.TryParseUInt16Invariant(s[ranges[0]], out var type) &&
+				Exts.TryParseByteInvariant(s[ranges[1]], out var index))
 			{
 				tt = new TerrainTile(type, index);
 				return true;

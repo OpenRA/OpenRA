@@ -16,6 +16,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -442,10 +443,10 @@ namespace OpenRA
 				var err2 = FieldLoader.InvalidValueAction;
 				try
 				{
-					FieldLoader.InvalidValueAction = (s, t, f) =>
+					FieldLoader.InvalidValueAction = (value, fieldType, fieldName) =>
 					{
-						var ret = t.GetField(f)?.GetValue(module);
-						Console.WriteLine($"FieldLoader: Cannot parse `{s}` into `{f}:{t.Name}`; substituting default `{ret}`");
+						var ret = fieldType.IsValueType ? RuntimeHelpers.GetUninitializedObject(fieldType) : null;
+						Console.WriteLine($"FieldLoader: Cannot parse `{value}` into field `{fieldName}` of type `{fieldType}`; substituting default `{ret}`");
 						return ret;
 					};
 

@@ -24,23 +24,20 @@ namespace OpenRA
 		public readonly Keycode Key;
 		public readonly Modifiers Modifiers;
 
-		public static bool TryParse(string s, out Hotkey result)
+		public static bool TryParse(ReadOnlySpan<char> s, out Hotkey result)
 		{
 			result = Invalid;
-			if (s == null)
-				return false;
 
 			Span<Range> ranges = stackalloc Range[2];
-			var span = s.AsSpan();
-			var count = span.Split(ranges, ' ');
+			var count = s.Split(ranges, ' ');
 			if (count == 0)
 				return false;
 
-			if (!Enum.TryParse(span[ranges[0]], true, out Keycode key))
+			if (!Enum.TryParse(s[ranges[0]], true, out Keycode key))
 				return false;
 
 			var mods = Modifiers.None;
-			if (count == 2 && !Enum.TryParse(span[ranges[1]], true, out mods))
+			if (count == 2 && !Enum.TryParse(s[ranges[1]], true, out mods))
 				return false;
 
 			result = new Hotkey(key, mods);

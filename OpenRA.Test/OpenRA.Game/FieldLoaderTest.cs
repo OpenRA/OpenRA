@@ -104,27 +104,32 @@ namespace OpenRA.Test
 		[Test]
 		public void GetValue_UnknownField()
 		{
-			static void Act() => FieldLoader.GetValue<object>("field", "test");
+			static void Act() => FieldLoader.GetValue<object>("field", "  test  ");
 
-			Assert.That(Act, Throws.TypeOf<NotImplementedException>().And.Message.EqualTo("FieldLoader: Missing field `[Type] test` on `Object`"));
+			Assert.That(Act, Throws.TypeOf<NotImplementedException>()
+				.And.Message.EqualTo("FieldLoader: Missing field `field`"));
 		}
 
 		static IEnumerable<TestCaseData> GetValue_InvalidValue_TestCases()
 		{
 			return
 			[
-				new TestCaseData(null) { TypeArgs = [typeof(int)] },
-				new TestCaseData("test") { TypeArgs = [typeof(int)] },
-				new TestCaseData("1.2") { TypeArgs = [typeof(int)] },
-				new TestCaseData((int.MaxValue + 1L).ToString(CultureInfo.InvariantCulture)) { TypeArgs = [typeof(int)] },
+				new TestCaseData(null) { TypeArgs = [typeof(byte)] },
+				new TestCaseData("test") { TypeArgs = [typeof(byte)] },
+				new TestCaseData("1.2") { TypeArgs = [typeof(byte)] },
+				new TestCaseData((byte.MaxValue + 1L).ToString(CultureInfo.InvariantCulture)) { TypeArgs = [typeof(byte)] },
 				new TestCaseData(null) { TypeArgs = [typeof(ushort)] },
 				new TestCaseData("test") { TypeArgs = [typeof(ushort)] },
 				new TestCaseData("1.2") { TypeArgs = [typeof(ushort)] },
 				new TestCaseData((ushort.MaxValue + 1L).ToString(CultureInfo.InvariantCulture)) { TypeArgs = [typeof(ushort)] },
-				new TestCaseData(null) { TypeArgs = [typeof(long)] },
-				new TestCaseData("test") { TypeArgs = [typeof(long)] },
-				new TestCaseData("1.2") { TypeArgs = [typeof(long)] },
-				new TestCaseData((long.MaxValue + 1UL).ToString(CultureInfo.InvariantCulture)) { TypeArgs = [typeof(long)] },
+				new TestCaseData(null) { TypeArgs = [typeof(short)] },
+				new TestCaseData("test") { TypeArgs = [typeof(short)] },
+				new TestCaseData("1.2") { TypeArgs = [typeof(short)] },
+				new TestCaseData((short.MaxValue + 1L).ToString(CultureInfo.InvariantCulture)) { TypeArgs = [typeof(short)] },
+				new TestCaseData(null) { TypeArgs = [typeof(int)] },
+				new TestCaseData("test") { TypeArgs = [typeof(int)] },
+				new TestCaseData("1.2") { TypeArgs = [typeof(int)] },
+				new TestCaseData((int.MaxValue + 1L).ToString(CultureInfo.InvariantCulture)) { TypeArgs = [typeof(int)] },
 				new TestCaseData(null) { TypeArgs = [typeof(float)] },
 				new TestCaseData("test") { TypeArgs = [typeof(float)] },
 				new TestCaseData("1,2") { TypeArgs = [typeof(float)] },
@@ -180,8 +185,6 @@ namespace OpenRA.Test
 				new TestCaseData("1") { TypeArgs = [typeof(CVec[])] },
 				new TestCaseData("1,test") { TypeArgs = [typeof(CVec[])] },
 				new TestCaseData("1,2,3") { TypeArgs = [typeof(CVec[])] },
-				new TestCaseData(null) { TypeArgs = [typeof(BooleanExpression)] },
-				new TestCaseData(null) { TypeArgs = [typeof(IntegerExpression)] },
 				new TestCaseData(null) { TypeArgs = [typeof(MapGridType)] },
 				new TestCaseData(null) { TypeArgs = [typeof(bool)] },
 				new TestCaseData("test") { TypeArgs = [typeof(bool)] },
@@ -224,27 +227,30 @@ namespace OpenRA.Test
 		[TestCaseSource(nameof(GetValue_InvalidValue_TestCases))]
 		public void GetValue_InvalidValue<T>(string input)
 		{
-			void Act() => FieldLoader.GetValue<T>("field", input);
+			void Act() => FieldLoader.GetValue<T>("field", $"  {input}  ");
 
-			Assert.That(Act, Throws.TypeOf<YamlException>().And.Message.EqualTo($"FieldLoader: Cannot parse `{input}` into `field.{typeof(T).FullName}`"));
+			Assert.That(Act, Throws.TypeOf<YamlException>()
+				.And.Message.EqualTo($"FieldLoader: Cannot parse `{input}` into field `field` of type `{typeof(T).FullName}`"));
 		}
 
 		[TestCase(TypeArgs = [typeof(BooleanExpression)])]
 		[TestCase(TypeArgs = [typeof(IntegerExpression)])]
 		public void GetValue_InvalidValue<T>()
 		{
-			static void Act() => FieldLoader.GetValue<T>("field", "");
+			static void Act() => FieldLoader.GetValue<T>("field", "  ");
 
-			Assert.That(Act, Throws.TypeOf<YamlException>().And.Message.EqualTo($"FieldLoader: Cannot parse `` into `field.{typeof(T).FullName}`: Empty expression"));
+			Assert.That(Act, Throws.TypeOf<YamlException>()
+				.And.Message.EqualTo($"FieldLoader: Cannot parse `` into field `field` of type `{typeof(T).FullName}`: Empty expression"));
 		}
 
 		static IEnumerable<TestCaseData> GetValue_Primitive_TestCases()
 		{
 			return
 			[
-				new TestCaseData(123),
+				new TestCaseData((byte)123),
 				new TestCaseData((ushort)123),
-				new TestCaseData(123L),
+				new TestCaseData((short)123),
+				new TestCaseData(123),
 				new TestCaseData(123.4f.ToString(CultureInfo.InvariantCulture)),
 				new TestCaseData(123m),
 				new TestCaseData("test"),
@@ -362,7 +368,7 @@ namespace OpenRA.Test
 		[Test]
 		public void GetValue_Vector3_TwoElements()
 		{
-			var actual = FieldLoader.GetValue<Vector3>("field", "123,456");
+			var actual = FieldLoader.GetValue<Vector3>("field", "  123 , 456  ");
 
 			Assert.That(actual, Is.EqualTo(new Vector3(123, 456, 0)));
 		}
@@ -587,7 +593,8 @@ namespace OpenRA.Test
 		{
 			static void Act() => FieldLoader.GetValue<sbyte>("field", "  test  ");
 
-			Assert.That(Act, Throws.TypeOf<YamlException>().And.Message.EqualTo($"FieldLoader: Cannot parse `test` into `field.{typeof(sbyte).FullName}`"));
+			Assert.That(Act, Throws.TypeOf<YamlException>()
+				.And.Message.EqualTo($"FieldLoader: Cannot parse `test` into field `field` of type `{typeof(sbyte).FullName}`"));
 		}
 
 		sealed class LoadFieldOrPropertyTarget
@@ -620,7 +627,8 @@ namespace OpenRA.Test
 			Assert.That(target.PublicIntProp, Is.EqualTo(34));
 			Assert.That(target.GetPrivateIntField(), Is.EqualTo(56));
 			Assert.That(target.GetPrivateIntProp(), Is.EqualTo(78));
-			Assert.That(Act, Throws.TypeOf<NotImplementedException>().And.Message.EqualTo("FieldLoader: Missing field `unknown` on `LoadFieldOrPropertyTarget`"));
+			Assert.That(Act, Throws.TypeOf<NotImplementedException>()
+				.And.Message.EqualTo("FieldLoader: Missing field `unknown`"));
 		}
 
 		sealed class LoadTarget
@@ -841,9 +849,8 @@ namespace OpenRA.Test
 
 			void Act() => FieldLoader.Load(target, yaml);
 
-			Assert.That(Act,
-				Throws.TypeOf<InvalidOperationException>().And
-				.Message.EqualTo("LoadUsingMissingTarget does not specify a loader function 'unknown'"));
+			Assert.That(Act, Throws.TypeOf<InvalidOperationException>()
+				.And.Message.EqualTo("LoadUsingMissingTarget does not specify a loader function 'unknown'"));
 			Assert.That(target.Int, Is.EqualTo(1));
 		}
 	}

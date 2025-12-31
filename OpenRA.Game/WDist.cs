@@ -59,27 +59,27 @@ namespace OpenRA
 				.Sum() / samples);
 		}
 
-		public static bool TryParse(string s, out WDist result)
+		public static bool TryParse(ReadOnlySpan<char> s, out WDist result)
 		{
 			result = Zero;
 
-			if (string.IsNullOrEmpty(s))
+			if (s.IsEmpty)
 				return false;
 
-			s = s.ToLowerInvariant();
-			var components = s.Split('c');
+			Span<Range> ranges = stackalloc Range[3];
+			var components = s.SplitAny(ranges, "cC");
 			var cell = 0;
 			int subcell;
 
-			switch (components.Length)
+			switch (components)
 			{
 				case 2:
-					if (!Exts.TryParseInt32Invariant(components[0], out cell) ||
-						!Exts.TryParseInt32Invariant(components[1], out subcell))
+					if (!Exts.TryParseInt32Invariant(s[ranges[0]], out cell) ||
+						!Exts.TryParseInt32Invariant(s[ranges[1]], out subcell))
 						return false;
 					break;
 				case 1:
-					if (!Exts.TryParseInt32Invariant(components[0], out subcell))
+					if (!Exts.TryParseInt32Invariant(s[ranges[0]], out subcell))
 						return false;
 					break;
 				default: return false;

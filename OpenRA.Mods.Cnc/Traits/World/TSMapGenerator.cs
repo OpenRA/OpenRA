@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				OtherGround = my.NodeWithKeyOrDefault("OtherGround")?.Value.Nodes.Select(
 					n =>
 					{
-						if (!Exts.TryParseUshortInvariant(n.Key, out var tile))
+						if (!Exts.TryParseUInt16Invariant(n.Key, out var tile))
 							throw new YamlException($"OtherGround {n.Key} is not a ushort");
 
 						if (!Exts.TryParseInt32Invariant(n.Value.Value, out var fraction))
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				RepaintTiles = my.NodeWithKeyOrDefault("RepaintTiles")?.Value.ToDictionary(
 					k =>
 					{
-						if (Exts.TryParseUshortInvariant(k, out var tile))
+						if (Exts.TryParseUInt16Invariant(k, out var tile))
 							return tile;
 						else
 							throw new YamlException($"RepaintTile {k} is not a ushort");

@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Traits
 					continue;
 
 				var name = kv.Key;
-				var index = Exts.ParseInt32Invariant(name[5..]);
+				var index = Exts.ParseInt32Invariant(name.AsSpan(5));
 
 				if (index >= newCount)
 				{

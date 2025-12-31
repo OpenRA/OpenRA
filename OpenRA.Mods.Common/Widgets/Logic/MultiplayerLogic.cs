@@ -112,8 +112,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (server == null || !server.IsJoinable)
 				return;
 
-			var host = server.Address.Split(':')[0];
-			var port = Exts.ParseInt32Invariant(server.Address.Split(':')[1]);
+			var parts = server.Address.Split(':');
+			var host = parts[0];
+			var port = Exts.ParseInt32Invariant(parts[1]);
 
 			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
 		}

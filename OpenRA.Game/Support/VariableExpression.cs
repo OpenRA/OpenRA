@@ -354,7 +354,7 @@ namespace OpenRA.Support
 						if (cc != CharClass.Digit)
 						{
 							if (cc != CharClass.Whitespace && cc != CharClass.Operator && cc != CharClass.Mixed)
-								throw new InvalidDataException($"Number {Exts.ParseInt32Invariant(expression[start..i])} and variable merged at index {start}");
+								throw new InvalidDataException($"Number {Exts.ParseInt32Invariant(expression.AsSpan()[start..i])} and variable merged at index {start}");
 
 							return true;
 						}
