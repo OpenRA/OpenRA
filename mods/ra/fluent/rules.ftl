@@ -660,7 +660,7 @@ actor-afld =
       Special Ability: Spy Plane
       Special Ability: Paratroopers
     .airstrikepower-spyplane-name = Spy Plane
-    .airstrikepower-spyplane-description = Reveals an area of the map.
+    .airstrikepower-spyplane-description = Reveals an area of the map and cloaked enemy units.
     .paratrooperspower-paratroopers-name = Paratroopers
     .paratrooperspower-paratroopers-description = A Badger drops a squad of infantry
     at the selected location.

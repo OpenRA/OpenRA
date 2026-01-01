@@ -74,7 +74,7 @@ hostages-released = Hostages released!
 stay-away-from-starport = Stay away from our Starport.
 smuggler-leader = Smuggler Leader.
 were-warned-will-pay = You were warned. Now you will pay.
-destroy-smugglers-mercenaries = Destroy the Smugglers and their mercenaries.
+destroy-smugglers-mercenaries = Destroy the Smugglers and their Mercenaries.
 capture-harkonnen-barracks-release-hostages = Capture the Harkonnen barracks to release the hostages.
 
 ## harkonnen-01ab, harkonnen-03ab
@@ -144,7 +144,7 @@ capture-atreides-starport-establish-base = Capture the Atreides Starport and est
 
 ## ordos-06a
 ixian-reinforcements-arrived = Ixian reinforcements have arrived!
-deliveries-arriving-massive-reinforcements = Deliveries are beginning to arrive; massive reinforcements expected!
+deliveries-arriving-massive-reinforcements = Deliveries are beginning to arrive. Massive reinforcements expected!
 initial-reinforcements-arrive-in = Initial reinforcements will arrive in { $time }
 additional-reinforcements-arrive-in = Additional reinforcements will arrive in { $time }
 defend-starport = Defend the Starport.

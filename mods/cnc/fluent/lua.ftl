@@ -59,7 +59,7 @@ destroy-nod-force = Destroy the Nod strike force.
 ## gdi08b
 protect-mobius = Protect Dr. Mobius.
 protect-hospital = Protect the Hospital.
-keep-civilians-alive = Keep at least { $civilians } out of 14 civilians alive.
+keep-civilians-alive = Keep at least { $civilians } out of 14 Civilians alive.
 destroy-nod-bases = Destroy the Nod bases.
 
 ## gdi09
