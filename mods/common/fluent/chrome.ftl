@@ -51,6 +51,7 @@ dropdownbutton-save-map-panel-visibility-dropdown = Map Visibility
 label-save-map-panel-directory = Directory:
 label-save-map-panel-filename = Filename:
 button-save-map-panel = Save
+button-save-map-panel-map-folder = Open
 label-actor-edit-panel-id = ID
 button-container-ok = OK
 label-tiles-bg-search = Search:

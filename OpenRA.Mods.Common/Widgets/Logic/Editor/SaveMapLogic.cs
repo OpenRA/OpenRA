@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -145,6 +146,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				directoryDropdown.OnClick = () =>
 					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, SetupItem);
 			}
+
+			var mapFolderButton = widget.Get<ButtonWidget>("MAP_FOLDER_BUTTON");
+			mapFolderButton.OnClick = () =>
+			{
+				if (selectedDirectory != null && Directory.Exists(selectedDirectory.Folder.Name))
+				{
+					try
+					{
+						var folderPath = selectedDirectory.Folder.Name;
+						Process.Start(new ProcessStartInfo
+						{
+							FileName = folderPath,
+							UseShellExecute = true
+						});
+					}
+					catch (Exception e)
+					{
+						Log.Write("debug", $"Failed to open map folder: {e.Message}");
+					}
+				}
+			};
 
 			var mapIsUnpacked = map.Package != null && map.Package is Folder;
 
