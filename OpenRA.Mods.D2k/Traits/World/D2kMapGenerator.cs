@@ -610,6 +610,7 @@ namespace OpenRA.Mods.D2k.Traits
 				}
 			}
 
+			terraformer.ReorderPlayerSpawns();
 			terraformer.BakeMap();
 
 			return map;

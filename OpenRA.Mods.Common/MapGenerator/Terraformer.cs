@@ -2243,5 +2243,63 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			return decorable;
 		}
+
+		/// <summary>Reorder mpspawn positions to make them more intuitive within a lobby.</summary>
+		public void ReorderPlayerSpawns()
+		{
+			// Find and take the actors out of the ActorPlans list.
+			var mpspawns = ActorPlans.Where(a => a.Reference.Type == "mpspawn").ToList();
+			if (mpspawns.Count <= 1)
+				return;
+
+			ActorPlans.RemoveAll(a => a.Reference.Type == "mpspawn");
+
+			// Sort the spawns clockwise around the center
+			var wCenter = CellLayerUtils.Center(Map);
+			(int Angle, long RadiusSq) PolarPosition(ActorPlan plan)
+			{
+				var locationFromCenter = plan.WPosCenterLocation - wCenter;
+				var wangle = WAngle.ArcTan(locationFromCenter.Y, locationFromCenter.X);
+				var radiusSq = locationFromCenter.LengthSquared;
+				return (wangle.Angle, radiusSq);
+			}
+
+			mpspawns = mpspawns.OrderBy(PolarPosition).ToList();
+
+			// Find a reasonable ("A") spawn. It should:
+			// - Have the largest possible preceeding angular gap from the preceeding spawn.
+			// - (Tie breaker) should be close to the left.
+			// - (Tie breaker 2) should be close to the top.
+			//
+			// Note that this offers a strong suggestion of spawn groupings for teams. This works
+			// well for the vast majority of cases, but is ultimately subjective. In some rare
+			// cases, it may suggest teams that seem unusual compared to alternatives, for example:
+			// - long but orderly straight lines of spawns (rather than tight clusters);
+			// - clustering by euclidean distance rather than polar angle;
+			// - division according to land masses or terrain barriers.
+			var previousPolar = PolarPosition(mpspawns[^1]);
+			var choices = new List<(int Gap, int X, int Y, int Index)>();
+			for (var i = 0; i < mpspawns.Count; i++)
+			{
+				var thisPolar = PolarPosition(mpspawns[i]);
+				var gap = (thisPolar.Angle - previousPolar.Angle + 1024) % 1024;
+				var location = mpspawns[i].WPosLocation;
+				choices.Add((gap, location.X, location.Y, i));
+				previousPolar = thisPolar;
+			}
+
+			const int ComparisonThreshold = 2;
+			var bestGap = choices.Max(c => c.Gap);
+			var bestIndex = choices
+				.Where(c => c.Gap >= bestGap - ComparisonThreshold)
+				.Min(c => (c.X, c.Y, c.Index))
+				.Index;
+
+			// Rotate the spawns so that our "A" spawn is first.
+			mpspawns = [.. mpspawns[bestIndex..], .. mpspawns[..bestIndex]];
+
+			// Put them back into the ActorPlans list.
+			ActorPlans.AddRange(mpspawns);
+		}
 	}
 }

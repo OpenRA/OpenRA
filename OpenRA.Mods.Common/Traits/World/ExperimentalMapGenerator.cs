@@ -947,6 +947,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Cosmetically repaint tiles
 			terraformer.RepaintTiles(repaintRandom, param.RepaintTiles);
 
+			terraformer.ReorderPlayerSpawns();
 			terraformer.BakeMap();
 
 			return map;
