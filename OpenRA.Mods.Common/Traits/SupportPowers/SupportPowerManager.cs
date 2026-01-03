@@ -262,6 +262,10 @@ namespace OpenRA.Mods.Common.Traits
 			remainingSubTicks = TotalTicks * 100;
 			notifiedCharging = notifiedReady = false;
 
+			// Track support power activation for Map Discovery stats
+			var playerStats = Manager.Self.TraitOrDefault<PlayerStatistics>();
+			playerStats?.IncrementSupportPowerActivation(Info.OrderName);
+
 			if (Info.OneShot)
 			{
 				PrerequisitesAvailable(false);

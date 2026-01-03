@@ -66,9 +66,14 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite terrainSprite;
 		Sprite actorSprite;
 		Sprite shroudSprite;
+		Sprite shroudBorderSprite;
 		Shroud shroud;
 		PlayerRadarTerrain playerRadarTerrain;
 		Player currentPlayer;
+
+		public bool ShowShroudBorders { get; set; }
+		public bool ShowFogBorders { get; set; }
+		public bool HideExploredAreasOnMinimap { get; set; }
 
 		[ObjectCreator.UseCtor]
 		public RadarWidget(ModData modData, World world, WorldRenderer worldRenderer)
@@ -223,6 +228,7 @@ namespace OpenRA.Mods.Common.Widgets
 			terrainSprite = new Sprite(radarSheet, b, TextureChannel.RGBA);
 			shroudSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(previewWidth, 0), b.Size), TextureChannel.RGBA);
 			actorSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(0, previewHeight), b.Size), TextureChannel.RGBA);
+			shroudBorderSprite = new Sprite(radarSheet, new Rectangle(b.Location + new Size(previewWidth, previewHeight), b.Size), TextureChannel.RGBA);
 		}
 
 		void UpdateTerrainColor(MPos uv)
@@ -286,6 +292,106 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 		}
+
+void UpdateBordersLayer()
+{
+	var stride = radarSheet.Size.Width;
+
+	// Get players to show borders for based on dropdown selection
+	// "Everyone" player (All Players option) or null (Disable Shroud) means show all playable players
+	// A specific player means show only that player's borders
+	Player[] playersToShow;
+	var isAllPlayersMode = currentPlayer == null || currentPlayer.InternalName == "Everyone";
+	if (isAllPlayersMode)
+		playersToShow = world.Players.Where(p => !p.NonCombatant && p.Playable).ToArray();
+	else
+		playersToShow = new[] { currentPlayer };
+
+	var neighborOffsets = new[] { new PPos(1, 0), new PPos(-1, 0), new PPos(0, 1), new PPos(0, -1) };
+
+	unsafe
+	{
+		fixed (byte* colorBytes = &radarData[0])
+		{
+			var colors = (uint*)colorBytes;
+
+			// Clear only the border layer quadrant (bottom-right), not the actor layer (bottom-left)
+			// The border sprite starts at (previewWidth, previewHeight) in the texture
+			var bounds = shroudBorderSprite.Bounds;
+			for (var y = bounds.Top; y < bounds.Bottom; y++)
+			{
+				for (var x = bounds.Left; x < bounds.Right; x++)
+				{
+					colors[y * stride + x] = 0;
+				}
+			}
+
+			foreach (var player in playersToShow)
+			{
+					var playerShroud = player.Shroud;
+					var playerColor = player.Color.ToArgb();
+
+					foreach (var puv in world.Map.ProjectedCells)
+					{
+						var isExplored = playerShroud.IsExplored(puv);
+						var isVisible = playerShroud.IsVisible(puv);
+
+						var isShroudBorder = false;
+						var isFogBorder = false;
+
+						// Check each neighbor for border detection
+						foreach (var offset in neighborOffsets)
+						{
+							var neighbor = new PPos(puv.U + offset.U, puv.V + offset.V);
+							if (!world.Map.Contains(neighbor))
+								continue;
+
+							// Shroud border: explored cell adjacent to unexplored cell
+							// (same logic as gamefield: draw border on the explored side)
+							if (ShowShroudBorders && isExplored && !playerShroud.IsExplored(neighbor))
+							{
+								isShroudBorder = true;
+								break;
+							}
+
+							// Fog border: visible cell adjacent to explored-but-not-visible cell
+							// (same logic as gamefield: draw border on the visible side)
+							if (ShowFogBorders && isVisible)
+							{
+								var neighborExplored = playerShroud.IsExplored(neighbor);
+								var neighborVisible = playerShroud.IsVisible(neighbor);
+								if (neighborExplored && !neighborVisible)
+								{
+									isFogBorder = true;
+									break;
+								}
+							}
+						}
+
+						if (!isShroudBorder && !isFogBorder)
+							continue;
+
+						// Draw the border pixel with the player's color
+						foreach (var iuv in world.Map.Unproject(puv))
+						{
+							if (isRectangularIsometric)
+							{
+								// Odd rows are shifted right by 1px
+								var dx = iuv.V & 1;
+								if (iuv.U + dx > 0)
+									colors[(iuv.V + previewHeight) * stride + 2 * iuv.U + dx - 1 + previewWidth] = playerColor;
+
+								if (2 * iuv.U + dx < stride)
+									colors[(iuv.V + previewHeight) * stride + 2 * iuv.U + dx + previewWidth] = playerColor;
+							}
+							else
+								colors[(iuv.V + previewHeight) * stride + iuv.U + previewWidth] = playerColor;
+						}
+					}
+				}
+			}
+		}
+	}
 
 		public override string GetCursor(int2 pos)
 		{
@@ -360,34 +466,56 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		public override void Draw()
+	public override void Draw()
+	{
+		if (world == null)
+			return;
+
+		radarSheet.CommitBufferedData();
+
+		var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
+		var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
+
+		var bordersEnabled = ShowShroudBorders || ShowFogBorders;
+
+		if (bordersEnabled)
 		{
-			if (world == null)
-				return;
+			// When borders are enabled, draw in this order: terrain -> shroud -> actors -> borders
+			// This way the shroud masks the terrain, but actors are drawn on top and remain visible
+			WidgetUtils.DrawSprite(terrainSprite, o, s);
 
-			radarSheet.CommitBufferedData();
+			if (shroud != null)
+				WidgetUtils.DrawSprite(shroudSprite, o, s);
 
-			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
-			var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
-
+			WidgetUtils.DrawSprite(actorSprite, o, s);
+			WidgetUtils.DrawSprite(shroudBorderSprite, o, s);
+		}
+		else
+		{
+			// Normal drawing order: terrain -> actors -> shroud
 			WidgetUtils.DrawSprite(terrainSprite, o, s);
 			WidgetUtils.DrawSprite(actorSprite, o, s);
 
 			if (shroud != null)
 				WidgetUtils.DrawSprite(shroudSprite, o, s);
-
-			// Draw viewport rect
-			if (hasRadar)
-			{
-				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
-				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
-
-				Game.Renderer.EnableScissor(mapRect);
-				DrawRadarPings();
-				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
-				Game.Renderer.DisableScissor();
-			}
 		}
+
+		// Mask to show only currently visible areas (hide already explored areas)
+		if (HideExploredAreasOnMinimap)
+			DrawVisibleAreaMask(o, s);
+
+		// Draw viewport rect
+		if (hasRadar)
+		{
+			var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
+			var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
+
+			Game.Renderer.EnableScissor(mapRect);
+			DrawRadarPings();
+			Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
+			Game.Renderer.DisableScissor();
+		}
+	}
 
 		void DrawRadarPings()
 		{
@@ -403,6 +531,153 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+void DrawVisibleAreaMask(float2 origin, float2 size)
+{
+	// Get players to show based on dropdown selection
+	// Draw black overlay over all non-visible areas (both unexplored and explored but not visible)	
+	Player[] playersToShow;
+	var isAllPlayersMode = currentPlayer == null || currentPlayer.InternalName == "Everyone";
+	if (isAllPlayersMode)
+		playersToShow = world.Players.Where(p => !p.NonCombatant && p.Playable).ToArray();
+	else
+		playersToShow = new[] { currentPlayer };
+
+	if (playersToShow.Length == 0)
+		return;
+
+	var stride = radarSheet.Size.Width;
+	var blackColor = Color.Black.ToArgb();
+	var transparentColor = Color.Transparent.ToArgb();
+	var neighborOffsets = new[] { new PPos(1, 0), new PPos(-1, 0), new PPos(0, 1), new PPos(0, -1) };
+
+	unsafe
+	{
+		fixed (byte* colorBytes = &radarData[0])
+		{
+			var colors = (uint*)colorBytes;
+
+			// Initialize only the border layer quadrant (bottom-right) to black
+			// This avoids clearing the actor layer (bottom-left)
+			var bounds = shroudBorderSprite.Bounds;
+			for (var y = bounds.Top; y < bounds.Bottom; y++)
+			{
+				for (var x = bounds.Left; x < bounds.Right; x++)
+				{
+					colors[y * stride + x] = blackColor;
+				}
+			}
+
+				// Make visible cells transparent
+				foreach (var puv in world.Map.ProjectedCells)
+				{
+					var isVisibleByAny = false;
+
+					// Check if this cell is visible by any of the selected players
+					foreach (var player in playersToShow)
+					{
+						if (player.Shroud.IsVisible(puv))
+						{
+							isVisibleByAny = true;
+							break;
+						}
+					}
+
+					// If visible by any selected player, make it transparent
+					if (isVisibleByAny)
+					{
+						foreach (var iuv in world.Map.Unproject(puv))
+						{
+							if (isRectangularIsometric)
+							{
+								// Odd rows are shifted right by 1px
+								var dx = iuv.V & 1;
+								if (iuv.U + dx > 0)
+									colors[(iuv.V + previewHeight) * stride + 2 * iuv.U + dx - 1 + previewWidth] = transparentColor;
+
+								if (2 * iuv.U + dx < stride)
+									colors[(iuv.V + previewHeight) * stride + 2 * iuv.U + dx + previewWidth] = transparentColor;
+							}
+							else
+								colors[(iuv.V + previewHeight) * stride + iuv.U + previewWidth] = transparentColor;
+						}
+					}
+				}
+
+				// Redraw colored borders on top of the fog mask when border options are enabled
+				// This is necessary because the fog mask overwrites the shroudBorderSprite layer
+				if (ShowShroudBorders || ShowFogBorders)
+				{
+					foreach (var player in playersToShow)
+					{
+							var playerShroud = player.Shroud;
+							var playerColor = player.Color.ToArgb();
+
+							foreach (var puv in world.Map.ProjectedCells)
+							{
+								var isExplored = playerShroud.IsExplored(puv);
+								var isVisible = playerShroud.IsVisible(puv);
+
+								var isShroudBorder = false;
+								var isFogBorder = false;
+
+								// Check each neighbor for border detection
+								foreach (var offset in neighborOffsets)
+								{
+									var neighbor = new PPos(puv.U + offset.U, puv.V + offset.V);
+									if (!world.Map.Contains(neighbor))
+										continue;
+
+									// Shroud border: explored cell adjacent to unexplored cell
+									// (same logic as gamefield: draw border on the explored side)
+									if (ShowShroudBorders && isExplored && !playerShroud.IsExplored(neighbor))
+									{
+										isShroudBorder = true;
+										break;
+									}
+
+									// Fog border: visible cell adjacent to explored-but-not-visible cell
+									// (same logic as gamefield: draw border on the visible side)
+									if (ShowFogBorders && isVisible)
+									{
+										var neighborExplored = playerShroud.IsExplored(neighbor);
+										var neighborVisible = playerShroud.IsVisible(neighbor);
+										if (neighborExplored && !neighborVisible)
+										{
+											isFogBorder = true;
+											break;
+										}
+									}
+								}
+
+								if (!isShroudBorder && !isFogBorder)
+									continue;
+
+								// Draw the border pixel with the player's color
+								foreach (var iuv in world.Map.Unproject(puv))
+								{
+									if (isRectangularIsometric)
+									{
+										// Odd rows are shifted right by 1px
+										var dx = iuv.V & 1;
+										if (iuv.U + dx > 0)
+											colors[(iuv.V + previewHeight) * stride + 2 * iuv.U + dx - 1 + previewWidth] = playerColor;
+
+										if (2 * iuv.U + dx < stride)
+											colors[(iuv.V + previewHeight) * stride + 2 * iuv.U + dx + previewWidth] = playerColor;
+									}
+									else
+										colors[(iuv.V + previewHeight) * stride + iuv.U + previewWidth] = playerColor;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			// Draw the mask sprite
+			WidgetUtils.DrawSprite(shroudBorderSprite, origin, size);
+		}
+
 		public override void Tick()
 		{
 			// Enable/Disable the radar
@@ -411,51 +686,82 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Sound.Play(SoundType.UI, enabled ? RadarOnlineSound : RadarOfflineSound);
 			cachedEnabled = enabled;
 
-			if (enabled)
+		if (enabled)
+		{
+			// The actor layer is updated every tick
+			var stride = radarSheet.Size.Width;
+			var cells = new List<(CPos Cell, Color Color)>();
+
+			unsafe
 			{
-				// The actor layer is updated every tick
-				var stride = radarSheet.Size.Width;
-				Array.Clear(radarData, 4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride);
-
-				var cells = new List<(CPos Cell, Color Color)>();
-
-				unsafe
+				fixed (byte* colorBytes = &radarData[0])
 				{
-					fixed (byte* colorBytes = &radarData[0])
-					{
-						var colors = (uint*)colorBytes;
+					var colors = (uint*)colorBytes;
 
-						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+					// Clear only the actor layer quadrant (bottom-left), not the border layer (bottom-right)
+					var actorBounds = actorSprite.Bounds;
+					for (var y = actorBounds.Top; y < actorBounds.Bottom; y++)
+					{
+						for (var x = actorBounds.Left; x < actorBounds.Right; x++)
 						{
-							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
+							colors[y * stride + x] = 0;
+						}
+					}
+
+				// When colored borders are enabled, show player actors regardless of fog
+				// but keep fog check for neutral actors (resources, terrain elements)
+				var bordersEnabled = ShowShroudBorders || ShowFogBorders;
+
+				// "Everyone" player (All Players option) or null (Disable Shroud) means show all players
+				var isAllPlayersMode = currentPlayer == null || currentPlayer.InternalName == "Everyone";
+
+				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+				{
+					if (!t.Actor.IsInWorld)
+						continue;
+
+					// Only ignore fog for actors belonging to playable players (units, buildings)
+					// Keep fog check for neutral actors (ore, gems, terrain elements)
+					var isPlayerActor = t.Actor.Owner.Playable && !t.Actor.Owner.NonCombatant;
+
+					// When borders are enabled and a specific player is selected, only show that player's actors
+					// When "All Players" or "Disable Shroud" is selected, show all player actors
+					var isSelectedPlayerActor = isAllPlayersMode || t.Actor.Owner == currentPlayer;
+					var ignoreFogForThisActor = bordersEnabled && isPlayerActor && isSelectedPlayerActor;
+
+					if (!ignoreFogForThisActor && world.FogObscures(t.Actor))
+						continue;
+
+						cells.Clear();
+						t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
+						foreach (var cell in cells)
+						{
+							if (!world.Map.Contains(cell.Cell))
 								continue;
 
-							cells.Clear();
-							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
-							foreach (var cell in cells)
+							var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
+							var color = cell.Color.ToArgb();
+							if (isRectangularIsometric)
 							{
-								if (!world.Map.Contains(cell.Cell))
-									continue;
+								// Odd rows are shifted right by 1px
+								var dx = uv.V & 1;
+								if (uv.U + dx > 0)
+									colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = color;
 
-								var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
-								var color = cell.Color.ToArgb();
-								if (isRectangularIsometric)
-								{
-									// Odd rows are shifted right by 1px
-									var dx = uv.V & 1;
-									if (uv.U + dx > 0)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = color;
-
-									if (2 * uv.U + dx < stride)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = color;
-								}
-								else
-									colors[(uv.V + previewHeight) * stride + uv.U] = color;
+								if (2 * uv.U + dx < stride)
+									colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = color;
 							}
+							else
+								colors[(uv.V + previewHeight) * stride + uv.U] = color;
 						}
 					}
 				}
 			}
+
+			// Update borders layer when enabled via Map Discovery checkboxes
+			if (ShowShroudBorders || ShowFogBorders)
+				UpdateBordersLayer();
+		}
 
 			var targetFrame = enabled ? AnimationLength : 0;
 			hasRadar = enabled && frame == AnimationLength;

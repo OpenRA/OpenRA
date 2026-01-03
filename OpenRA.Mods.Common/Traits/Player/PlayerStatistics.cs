@@ -54,6 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 		public int ArmyValue;
 		public int AssetsValue;
 
+		// Track buildings built by actor type (for Map Discovery stats)
+		public readonly Dictionary<string, int> BuildingsBuiltByType = [];
+
+		// Track support power activations by OrderName (for Map Discovery stats)
+		public readonly Dictionary<string, int> SupportPowerActivations = [];
+
 		// High resolution (every second) record of earnings, limited to the last minute
 		readonly Queue<int> earnedSeconds = new(60);
 
@@ -130,6 +136,28 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!incomeGraphDisabled)
 				IncomeSamples.Add(Income);
+		}
+
+		public void IncrementBuildingsBuilt(string actorType)
+		{
+			BuildingsBuiltByType.TryGetValue(actorType, out var count);
+			BuildingsBuiltByType[actorType] = count + 1;
+		}
+
+		public int GetBuildingsBuiltCount(string actorType)
+		{
+			return BuildingsBuiltByType.TryGetValue(actorType, out var count) ? count : 0;
+		}
+
+		public void IncrementSupportPowerActivation(string orderName)
+		{
+			SupportPowerActivations.TryGetValue(orderName, out var count);
+			SupportPowerActivations[orderName] = count + 1;
+		}
+
+		public int GetSupportPowerActivationCount(string orderName)
+		{
+			return SupportPowerActivations.TryGetValue(orderName, out var count) ? count : 0;
 		}
 	}
 
@@ -263,6 +291,10 @@ namespace OpenRA.Mods.Common.Traits
 			includedInAssetsValue = info.AddToAssetsValue;
 			if (includedInAssetsValue)
 				playerStats.AssetsValue += cost;
+
+			// Track buildings built by type for Map Discovery stats
+			if (self.Info.HasTraitInfo<BuildingInfo>())
+				playerStats.IncrementBuildingsBuilt(actorName);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)

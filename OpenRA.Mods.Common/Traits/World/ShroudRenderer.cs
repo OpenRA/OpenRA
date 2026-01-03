@@ -122,6 +122,10 @@ namespace OpenRA.Mods.Common.Traits
 		PaletteReference shroudPaletteReference, fogPaletteReference;
 		bool disposed;
 
+		// Controlled by ObserverStatsLogic checkboxes to show colored borders on gamefield
+		public bool ShowShroudBordersOnGamefield { get; set; }
+		public bool ShowFogBordersOnGamefield { get; set; }
+
 		public ShroudRenderer(World world, ShroudRendererInfo info)
 		{
 			if (info.ShroudVariants.Length != info.FogVariants.Length)
@@ -356,6 +360,129 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateShroud(map.ProjectedCells);
 			fogLayer.Draw(wr.Viewport);
 			shroudLayer.Draw(wr.Viewport);
+
+			// Render colored borders on gamefield if enabled
+			if (ShowShroudBordersOnGamefield || ShowFogBordersOnGamefield)
+				RenderColoredBorders(wr);
+		}
+
+		// Maps neighbor direction to edge indices for rectangular grids
+		// Corner order: TopLeft=0, TopRight=1, BottomRight=2, BottomLeft=3
+		static readonly (CVec Offset, int CornerIndex)[] RectangularNeighborToEdge =
+		[
+			(new CVec(0, -1), 0),  // Top neighbor -> draw from TopLeft to TopRight
+			(new CVec(1, 0), 1),   // Right neighbor -> draw from TopRight to BottomRight
+			(new CVec(0, 1), 2),   // Bottom neighbor -> draw from BottomRight to BottomLeft
+			(new CVec(-1, 0), 3),  // Left neighbor -> draw from BottomLeft to TopLeft
+		];
+
+		// Maps neighbor direction to edge indices for isometric grids (diamond shape)
+		// Corner order: Top=0, Right=1, Bottom=2, Left=3
+		static readonly (CVec Offset, int CornerIndex)[] IsometricNeighborToEdge =
+		[
+			(new CVec(0, -1), 0),  // Top-left neighbor -> draw from Top to Right
+			(new CVec(1, 0), 1),   // Top-right neighbor -> draw from Right to Bottom
+			(new CVec(0, 1), 2),   // Bottom-right neighbor -> draw from Bottom to Left
+			(new CVec(-1, 0), 3),  // Bottom-left neighbor -> draw from Left to Top
+		];
+
+	void RenderColoredBorders(WorldRenderer wr)
+	{
+		// Get players to show borders for based on dropdown selection
+		Player[] playersToShow;
+		var renderPlayer = world.RenderPlayer;
+		var isAllPlayersMode = renderPlayer == null || renderPlayer.InternalName == "Everyone";
+		if (isAllPlayersMode)
+			playersToShow = world.Players.Where(p => !p.NonCombatant && p.Playable).ToArray();
+		else
+			playersToShow = new[] { renderPlayer };
+
+		var screenWidth = wr.ScreenVector(new WVec(new WDist(64), WDist.Zero, WDist.Zero))[0];
+			var cr = Game.Renderer.WorldRgbaColorRenderer;
+
+			// Use the flat ramp corners from the grid (handles both rectangular and isometric)
+			// Ramp 0 is always flat with corners at ground level
+			var baseCorners = map.Grid.Ramps[0].Corners;
+
+			// Create flat corners (Z=0) for shroud border rendering
+			var cellCorners = new WVec[]
+			{
+				new(baseCorners[0].X, baseCorners[0].Y, 0),
+				new(baseCorners[1].X, baseCorners[1].Y, 0),
+				new(baseCorners[2].X, baseCorners[2].Y, 0),
+				new(baseCorners[3].X, baseCorners[3].Y, 0)
+			};
+
+			// Select the appropriate neighbor-to-edge mapping based on grid type
+			var isIsometric = map.Grid.Type == MapGridType.RectangularIsometric;
+			var neighborToEdge = isIsometric ? IsometricNeighborToEdge : RectangularNeighborToEdge;
+
+			// Only process visible cells for performance
+			var visibleCells = wr.Viewport.AllVisibleCells;
+
+		foreach (var player in playersToShow)
+		{
+			var playerShroud = player.Shroud;
+			var playerColor = player.Color;
+
+				foreach (var uv in visibleCells.CandidateMapCoords)
+				{
+					var cell = uv.ToCPos(map);
+					if (!map.Contains(cell))
+						continue;
+
+					var puv = (PPos)uv;
+
+					// Get cell center position (same as shroud sprites use, flattened to Z=0)
+					var cellPos = map.CenterOfCell(cell);
+					var pos = cellPos - new WVec(0, 0, cellPos.Z);
+
+					var isExplored = playerShroud.IsExplored(puv);
+					var isVisible = playerShroud.IsVisible(puv);
+
+					// Check each neighbor and draw border if there's a transition
+					foreach (var (offset, cornerIndex) in neighborToEdge)
+					{
+						var neighborCell = cell + offset;
+						if (!map.Contains(neighborCell))
+							continue;
+
+						var neighborPuv = (PPos)neighborCell.ToMPos(map);
+						var drawShroudBorder = false;
+						var drawFogBorder = false;
+
+						// Shroud border: explored cell adjacent to unexplored cell
+						if (ShowShroudBordersOnGamefield && isExplored && !playerShroud.IsExplored(neighborPuv))
+							drawShroudBorder = true;
+
+						// Fog border: visible cell adjacent to explored-but-not-visible cell
+						if (ShowFogBordersOnGamefield && isVisible)
+						{
+							var neighborExplored = playerShroud.IsExplored(neighborPuv);
+							var neighborVisible = playerShroud.IsVisible(neighborPuv);
+							if (neighborExplored && !neighborVisible)
+								drawFogBorder = true;
+						}
+
+						if (!drawShroudBorder && !drawFogBorder)
+							continue;
+
+						// Use Screen3DPosition with WorldRgbaColorRenderer like BeamRenderable does
+						// No WorldToViewPx needed - coordinates go directly to WorldSpriteRenderer
+						var startPos = pos + cellCorners[cornerIndex];
+						var endPos = pos + cellCorners[(cornerIndex + 1) % 4];
+						var start = wr.Screen3DPosition(startPos);
+						var end = wr.Screen3DPosition(endPos);
+
+						// Fog borders use 50% opacity to distinguish from shroud borders
+						var borderColor = drawFogBorder && !drawShroudBorder
+							? Color.FromArgb(128, playerColor.R, playerColor.G, playerColor.B)
+							: playerColor;
+
+						cr.DrawLine(start, end, screenWidth, borderColor);
+					}
+				}
+			}
 		}
 
 		void UpdateShroudCell(PPos puv)

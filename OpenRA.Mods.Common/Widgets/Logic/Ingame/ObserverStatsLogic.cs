@@ -22,7 +22,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public enum ObserverStatsPanel { None, Basic, Economy, Production, SupportPowers, Combat, Army, Graph, ArmyGraph }
+	public enum ObserverStatsPanel { None, Basic, Economy, Production, SupportPowers, Combat, Army, Graph, ArmyGraph, MapDiscovery }
 
 	[ChromeLogicArgsHotkeys(
 		"StatisticsBasicKey",
@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		"StatisticsCombatKey",
 		"StatisticsArmyKey",
 		"StatisticsGraphKey",
-		"StatisticsArmyGraphKey")]
+		"StatisticsArmyGraphKey",
+		"StatisticsMapDiscoveryKey")]
 	public class ObserverStatsLogic : ChromeLogic
 	{
 		[FluentReference]
@@ -62,6 +63,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string ArmyGraph = "options-observer-stats.army-graph";
 
+		[FluentReference]
+		const string MapDiscovery = "options-observer-stats.map-discovery";
+
 		[FluentReference("team")]
 		const string TeamNumber = "label-team-name";
 
@@ -74,6 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContainerWidget supportPowerStatsHeaders;
 		readonly ContainerWidget combatStatsHeaders;
 		readonly ContainerWidget armyHeaders;
+		readonly ContainerWidget mapDiscoveryStatsHeaders;
 		readonly ScrollPanelWidget playerStatsPanel;
 		readonly ScrollItemWidget basicPlayerTemplate;
 		readonly ScrollItemWidget economyPlayerTemplate;
@@ -81,11 +86,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget supportPowersPlayerTemplate;
 		readonly ScrollItemWidget armyPlayerTemplate;
 		readonly ScrollItemWidget combatPlayerTemplate;
+		readonly ScrollItemWidget mapDiscoveryPlayerTemplate;
 		readonly ContainerWidget incomeGraphContainer;
 		readonly ContainerWidget armyValueGraphContainer;
 		readonly ScrollableLineGraphWidget incomeGraph;
 		readonly ScrollableLineGraphWidget armyValueGraph;
 		readonly ScrollItemWidget teamTemplate;
+		readonly DropDownButtonWidget displayOptionsDropdown;
+		readonly ContainerWidget displayOptionsPanel;
+		readonly RadarWidget radarWidget;
+		readonly ShroudRenderer shroudRenderer;
 		readonly Player[] players;
 		readonly IGrouping<int, Player>[] teams;
 		readonly bool hasTeams;
@@ -93,6 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WorldRenderer worldRenderer;
 
 		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
+		readonly string modId;
 		ObserverStatsPanel activePanel;
 
 		[ObjectCreator.UseCtor]
@@ -100,6 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+			modId = modData.Manifest.Id;
 
 			MiniYaml yaml;
 			var keyNames = Enum.GetNames<ObserverStatsPanel>();
@@ -120,6 +132,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			supportPowerStatsHeaders = widget.Get<ContainerWidget>("SUPPORT_POWERS_HEADERS");
 			armyHeaders = widget.Get<ContainerWidget>("ARMY_HEADERS");
 			combatStatsHeaders = widget.Get<ContainerWidget>("COMBAT_STATS_HEADERS");
+			mapDiscoveryStatsHeaders = widget.GetOrNull<ContainerWidget>("MAP_DISCOVERY_STATS_HEADERS");
 
 			playerStatsPanel = widget.Get<ScrollPanelWidget>("PLAYER_STATS_PANEL");
 			playerStatsPanel.Layout = new GridLayout(playerStatsPanel);
@@ -135,6 +148,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				AdjustHeader(supportPowerStatsHeaders);
 				AdjustHeader(combatStatsHeaders);
 				AdjustHeader(armyHeaders);
+				if (mapDiscoveryStatsHeaders != null)
+					AdjustHeader(mapDiscoveryStatsHeaders);
 			}
 
 			basicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("BASIC_PLAYER_TEMPLATE");
@@ -143,6 +158,71 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			supportPowersPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("SUPPORT_POWERS_PLAYER_TEMPLATE");
 			armyPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("ARMY_PLAYER_TEMPLATE");
 			combatPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("COMBAT_PLAYER_TEMPLATE");
+			mapDiscoveryPlayerTemplate = playerStatsPanel.GetOrNull<ScrollItemWidget>("MAP_DISCOVERY_PLAYER_TEMPLATE");
+
+			// Get radar widget and shroud renderer for borders display
+			// Try different radar widget names depending on mod architecture
+			radarWidget = Ui.Root.GetOrNull<RadarWidget>("INGAME_RADAR"); // RA, D2K, TS (observer mode)
+			radarWidget ??= Ui.Root.GetOrNull<RadarWidget>("RADAR_MINIMAP"); // CNC (monolithic ingame.yaml)
+
+			shroudRenderer = world.WorldActor.TraitOrDefault<ShroudRenderer>();
+
+			// Load display options panel and setup dropdown
+			displayOptionsPanel = Ui.LoadWidget<ContainerWidget>("MAP_DISCOVERY_DISPLAY_OPTIONS_PANEL", null, []);
+
+			// Shroud borders on minimap
+			var showShroudBordersMinimapCheckbox = displayOptionsPanel.Get<CheckboxWidget>("SHOW_SHROUD_BORDERS_MINIMAP");
+			showShroudBordersMinimapCheckbox.IsChecked = () => radarWidget?.ShowShroudBorders ?? false;
+			showShroudBordersMinimapCheckbox.OnClick = () =>
+			{
+				if (radarWidget != null)
+					radarWidget.ShowShroudBorders = !radarWidget.ShowShroudBorders;
+			};
+
+			// Shroud borders on gamefield
+			var showShroudBordersGamefieldCheckbox = displayOptionsPanel.Get<CheckboxWidget>("SHOW_SHROUD_BORDERS_GAMEFIELD");
+			showShroudBordersGamefieldCheckbox.IsChecked = () => shroudRenderer?.ShowShroudBordersOnGamefield ?? false;
+			showShroudBordersGamefieldCheckbox.OnClick = () =>
+			{
+				if (shroudRenderer != null)
+					shroudRenderer.ShowShroudBordersOnGamefield = !shroudRenderer.ShowShroudBordersOnGamefield;
+			};
+
+			// Fog borders on minimap
+			var showFogBordersMinimapCheckbox = displayOptionsPanel.Get<CheckboxWidget>("SHOW_FOG_BORDERS_MINIMAP");
+			showFogBordersMinimapCheckbox.IsChecked = () => radarWidget?.ShowFogBorders ?? false;
+			showFogBordersMinimapCheckbox.OnClick = () =>
+			{
+				if (radarWidget != null)
+					radarWidget.ShowFogBorders = !radarWidget.ShowFogBorders;
+			};
+
+			// Fog borders on gamefield
+			var showFogBordersGamefieldCheckbox = displayOptionsPanel.Get<CheckboxWidget>("SHOW_FOG_BORDERS_GAMEFIELD");
+			showFogBordersGamefieldCheckbox.IsChecked = () => shroudRenderer?.ShowFogBordersOnGamefield ?? false;
+			showFogBordersGamefieldCheckbox.OnClick = () =>
+			{
+				if (shroudRenderer != null)
+					shroudRenderer.ShowFogBordersOnGamefield = !shroudRenderer.ShowFogBordersOnGamefield;
+			};
+
+			// Hide already explored areas on minimap (show only currently visible areas)
+			var hideExploredAreasMinimapCheckbox = displayOptionsPanel.Get<CheckboxWidget>("HIDE_EXPLORED_AREAS_MINIMAP");
+			hideExploredAreasMinimapCheckbox.IsChecked = () => radarWidget?.HideExploredAreasOnMinimap ?? false;
+			hideExploredAreasMinimapCheckbox.OnClick = () =>
+			{
+				if (radarWidget != null)
+					radarWidget.HideExploredAreasOnMinimap = !radarWidget.HideExploredAreasOnMinimap;
+			};
+
+			// Setup display options dropdown
+			displayOptionsDropdown = widget.Get<DropDownButtonWidget>("DISPLAY_OPTIONS_DROPDOWN");
+			displayOptionsDropdown.IsVisible = () => activePanel == ObserverStatsPanel.MapDiscovery;
+			displayOptionsDropdown.OnMouseDown = _ =>
+			{
+				displayOptionsDropdown.RemovePanel();
+				displayOptionsDropdown.AttachPanel(displayOptionsPanel);
+			};
 
 			incomeGraphContainer = widget.Get<ContainerWidget>("INCOME_GRAPH_CONTAINER");
 			incomeGraph = incomeGraphContainer.Get<ScrollableLineGraphWidget>("INCOME_GRAPH");
@@ -155,6 +235,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var statsDropDown = widget.Get<DropDownButtonWidget>("STATS_DROPDOWN");
 			StatsDropDownOption CreateStatsOption(string title, ObserverStatsPanel panel, ScrollItemWidget template, Action a)
 			{
+				// Return null if the option requires a template that doesn't exist (e.g., MapDiscovery in mods without it)
+				if (panel == ObserverStatsPanel.MapDiscovery && template == null)
+					return null;
+
 				title = FluentProvider.GetMessage(title);
 				return new StatsDropDownOption
 				{
@@ -198,7 +282,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				CreateStatsOption(Army, ObserverStatsPanel.Army, armyPlayerTemplate, () => DisplayStats(ArmyStats)),
 				CreateStatsOption(EarningsGraph, ObserverStatsPanel.Graph, null, IncomeGraph),
 				CreateStatsOption(ArmyGraph, ObserverStatsPanel.ArmyGraph, null, ArmyValueGraph),
-			};
+				CreateStatsOption(MapDiscovery, ObserverStatsPanel.MapDiscovery, mapDiscoveryPlayerTemplate, () => DisplayStats(MapDiscoveryStats)),
+			}.Where(option => option != null).ToArray();
 
 			ScrollItemWidget SetupItem(StatsDropDownOption option, ScrollItemWidget template)
 			{
@@ -209,7 +294,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var statsDropDownPanelTemplate = logicArgs.TryGetValue("StatsDropDownPanelTemplate", out yaml) ? yaml.Value : "LABEL_DROPDOWN_TEMPLATE";
 
-			statsDropDown.OnMouseDown = _ => statsDropDown.ShowDropDown(statsDropDownPanelTemplate, 230, statsDropDownOptions, SetupItem);
+			var dropdownHeight = statsDropDownOptions.Length * 25 + 10;
+			statsDropDown.OnMouseDown = _ => statsDropDown.ShowDropDown(statsDropDownPanelTemplate, dropdownHeight, statsDropDownOptions, SetupItem);
 			statsDropDownOptions[0].OnClick();
 
 			var keyListener = statsDropDown.Get<LogicKeyListenerWidget>("STATS_DROPDOWN_KEYHANDLER");
@@ -244,12 +330,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			supportPowerStatsHeaders.Visible = false;
 			armyHeaders.Visible = false;
 			combatStatsHeaders.Visible = false;
+			if (mapDiscoveryStatsHeaders != null)
+				mapDiscoveryStatsHeaders.Visible = false;
 
 			incomeGraphContainer.Visible = false;
 			armyValueGraphContainer.Visible = false;
 
 			incomeGraph.GetSeries = null;
 			armyValueGraph.GetSeries = null;
+
+			// Disable all borders when leaving Map Discovery panel
+			if (radarWidget != null)
+			{
+				radarWidget.ShowShroudBorders = false;
+				radarWidget.ShowFogBorders = false;
+				radarWidget.HideExploredAreasOnMinimap = false;
+			}
+
+			if (shroudRenderer != null)
+			{
+				shroudRenderer.ShowShroudBordersOnGamefield = false;
+				shroudRenderer.ShowFogBordersOnGamefield = false;
+			}
 		}
 
 		void IncomeGraph()
@@ -471,6 +573,157 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Count(a => a.Owner == player && !a.IsDead).ToString(NumberFormatInfo.CurrentInfo);
 
 			return template;
+		}
+
+		ScrollItemWidget MapDiscoveryStats(Player player)
+		{
+			if (mapDiscoveryStatsHeaders == null || mapDiscoveryPlayerTemplate == null)
+				return null;
+
+			mapDiscoveryStatsHeaders.Visible = true;
+			ConfigureMapDiscoveryHeaders();
+			var template = SetupPlayerScrollItemWidget(mapDiscoveryPlayerTemplate, player);
+
+			AddPlayerFlagAndName(template, player);
+
+			var playerName = template.Get<LabelWithTooltipWidget>("PLAYER");
+			playerName.GetColor = () => Color.White;
+
+			var playerColor = template.Get<ColorBlockWidget>("PLAYER_COLOR");
+			var playerGradient = template.Get<GradientColorBlockWidget>("PLAYER_GRADIENT");
+
+			SetupPlayerColor(player, template, playerColor, playerGradient);
+
+			// Fog of War: percentage of currently visible cells relative to total map size
+			// (fluctuates with unit positions, represents how much of the map is currently visible)
+			template.Get<LabelWidget>("FOG").GetText = () => player.Shroud.Disabled ? "100%" : VisibleCellsPercentage(player);
+
+			// Shroud: percentage of explored cells relative to total map size
+			// (increases as map is discovered, never decreases)
+			template.Get<LabelWidget>("SHROUD").GetText = () => player.Shroud.Disabled ? "100%" : ExploredCellsPercentage(player);
+
+			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
+
+			// Radar building count (mod-specific actor names)
+			var radarLabel = template.GetOrNull<LabelWidget>("RADAR");
+			if (radarLabel != null && stats != null)
+			{
+				var radarActors = GetRadarActorsForMod();
+				radarLabel.GetText = () => GetBuildingsBuiltCount(stats, radarActors);
+			}
+
+			// Spy Plane support power activations (RA Soviet only)
+			var spyPlaneLabel = template.GetOrNull<LabelWidget>("SPY_PLANE");
+			if (spyPlaneLabel != null && stats != null)
+			{
+				if (modId == "ra")
+					spyPlaneLabel.GetText = () => stats.GetSupportPowerActivationCount("SovietSpyPlane").ToString(NumberFormatInfo.CurrentInfo);
+				else
+					spyPlaneLabel.Visible = false;
+			}
+
+			// GPS Satellite support power activations (RA Allied only)
+			var gpsLabel = template.GetOrNull<LabelWidget>("GPS_SAT");
+			if (gpsLabel != null && stats != null)
+			{
+				if (modId == "ra")
+					gpsLabel.GetText = () => stats.GetSupportPowerActivationCount("GpsSatellite").ToString(NumberFormatInfo.CurrentInfo);
+				else
+					gpsLabel.Visible = false;
+			}
+
+			// Gap Generator building count (RA only)
+			var gapLabel = template.GetOrNull<LabelWidget>("GAP");
+			if (gapLabel != null && stats != null)
+			{
+				if (modId == "ra")
+					gapLabel.GetText = () => stats.GetBuildingsBuiltCount("gap").ToString(NumberFormatInfo.CurrentInfo);
+				else
+					gapLabel.Visible = false;
+			}
+
+			return template;
+		}
+
+		string[] GetRadarActorsForMod()
+		{
+			return modId switch
+			{
+				"ra" => ["dome"],
+				"cnc" => ["hq"],
+				"d2k" => ["radar"],
+				"ts" => ["gacnst", "nacnst"],
+				_ => []
+			};
+		}
+
+		static string GetBuildingsBuiltCount(PlayerStatistics stats, string[] actorNames)
+		{
+			var total = 0;
+			foreach (var actorName in actorNames)
+				total += stats.GetBuildingsBuiltCount(actorName);
+			return total.ToString(NumberFormatInfo.CurrentInfo);
+		}
+
+		void ConfigureMapDiscoveryHeaders()
+		{
+			if (mapDiscoveryStatsHeaders == null)
+				return;
+
+			// Hide Spy Plane header for non-RA mods
+			var spyPlaneHeader = mapDiscoveryStatsHeaders.GetOrNull<LabelWidget>("SPY_PLANE_HEADER");
+			if (spyPlaneHeader != null)
+				spyPlaneHeader.Visible = modId == "ra";
+
+			// Hide GPS Satellite header for non-RA mods
+			var gpsHeader = mapDiscoveryStatsHeaders.GetOrNull<LabelWidget>("GPS_SAT_HEADER");
+			if (gpsHeader != null)
+				gpsHeader.Visible = modId == "ra";
+
+			// Hide Gap Generator header for non-RA mods
+			var gapHeader = mapDiscoveryStatsHeaders.GetOrNull<LabelWidget>("GAP_HEADER");
+			if (gapHeader != null)
+				gapHeader.Visible = modId == "ra";
+		}
+
+		string ExploredCellsPercentage(Player player)
+		{
+			var exploredCells = 0;
+			var totalProjectedCells = 0;
+
+			// Count explored cells and total projected cells
+			// Use ProjectedCells instead of AllCells for consistency across all mods (especially TS isometric)
+			foreach (var puv in world.Map.ProjectedCells)
+			{
+				if (world.Map.Contains(puv))
+				{
+					totalProjectedCells++;
+					if (player.Shroud.IsExplored(puv))
+						exploredCells++;
+				}
+			}
+
+			// If no projected cells (shouldn't happen), avoid division by zero
+			if (totalProjectedCells == 0)
+				return 0.ToString("P0", NumberFormatInfo.CurrentInfo);
+
+			var percentage = (double)exploredCells / totalProjectedCells;
+			return percentage.ToString("P0", NumberFormatInfo.CurrentInfo);
+		}
+
+		string VisibleCellsPercentage(Player player)
+		{
+			// Use the same logic as Vision() in CombatStats - RevealedCells is the internal counter
+			// that tracks currently visible cells, maintained by the Shroud system
+			var revealedCells = player.Shroud.RevealedCells;
+			var totalProjectedCells = world.Map.ProjectedCells.Length;
+
+			if (totalProjectedCells == 0)
+				return 0.ToString("P0", NumberFormatInfo.CurrentInfo);
+
+			// Calculate visible cells as percentage of total projected cells (same as Vision())
+			var percentage = (double)revealedCells / totalProjectedCells;
+			return percentage.ToString("P0", NumberFormatInfo.CurrentInfo);
 		}
 
 		ScrollItemWidget BasicStats(Player player)

@@ -407,6 +407,15 @@ slider-thumb-disabled:
 checkbox:
 	Inherits: button-pressed
 
+display-options-checkbox:
+	Inherits: button-pressed
+
+display-options-checkbox-hover:
+	Inherits: button-pressed
+
+display-options-checkbox-disabled:
+	Inherits: button-disabled
+
 checkmark-tick:
 	Inherits: ^Glyphs
 	Regions:

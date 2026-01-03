@@ -1,6 +1,9 @@
 ## ingame-observer.yaml
 label-economy-stats-harvesters-header = Harvesters
 label-economy-stats-derricks-header = Oil Derricks
+label-map-discovery-spyplane-header = Spy Plane
+label-map-discovery-gps-header = GPS
+label-map-discovery-gap-header = Gap Gen
 
 
 

@@ -518,6 +518,15 @@ slider-thumb-disabled:
 checkbox:
 	Inherits: button-pressed
 
+observer-checkbox:
+	Inherits: observer-scrollpanel-button-pressed
+
+observer-checkbox-hover:
+	Inherits: observer-scrollpanel-button-pressed
+
+observer-checkbox-disabled:
+	Inherits: observer-scrollpanel-button-disabled
+
 checkmark-tick:
 	Inherits: ^Glyphs
 	Regions:

@@ -261,14 +261,20 @@ slider-thumb-pressed:
 checkbox:
 	Inherits: button
 
+checkbox-pressed:
+	Inherits: button-pressed
+
+checkbox-pressed-hover:
+	Inherits: button-pressed
+
+checkbox-pressed-disabled:
+	Inherits: button-disabled
+
 checkbox-hover:
 	Inherits: button-hover
 
 checkbox-disabled:
 	Inherits: button-disabled
-
-checkbox-pressed:
-	Inherits: button-pressed
 
 checkbox-highlighted:
 	Inherits: button-highlighted-pressed
@@ -277,7 +283,7 @@ checkbox-highlighted-hover:
 	Inherits: button-highlighted-hover
 
 checkbox-highlighted-disabled:
-	Inherits: button-highlighted-disabled
+	Inherits: button-disabled
 
 checkbox-highlighted-pressed:
 	Inherits: button-highlighted-pressed

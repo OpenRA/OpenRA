@@ -289,6 +289,20 @@ options-observer-stats =
     .army = Army
     .earnings-graph = Earnings (graph)
     .army-graph = Army (graph)
+    .map-discovery = Map Discovery
+
+label-map-discovery-player-header = Player
+label-map-discovery-shroud-header = Shroud
+label-map-discovery-fog-header = Fog of War
+label-map-discovery-radar-header = Radar
+
+## Map Discovery display options
+dropdown-map-discovery-display-options = Display Options
+checkbox-show-shroud-borders-minimap = Minimap: Show colored shroud borders
+checkbox-show-fog-borders-minimap = Minimap: Show colored fog of war borders
+checkbox-show-shroud-borders-gamefield = Gamefield: Show colored shroud borders
+checkbox-show-fog-borders-gamefield = Gamefield: Show colored fog of war borders
+checkbox-hide-explored-areas-minimap = Minimap: Hide already explored areas
 
 ## WorldTooltipLogic
 label-unrevealed-terrain = Unrevealed Terrain
