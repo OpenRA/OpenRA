@@ -310,4 +310,7 @@ EditorWorld:
 		DefaultStart: Clear
 		DefaultInner: Beach
 		DefaultEnd: Clear
+	MultiBrushTool:
+		DefaultMultiBrush: CivilianBuildings
+		IgnoredMultiBrushes: Segmented
 	Inherits@MapGenerators: ^MapGenerators

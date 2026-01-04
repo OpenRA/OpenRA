@@ -996,7 +996,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			var replace = new CellLayer<MultiBrush.Replaceability>(Map);
 			foreach (var mpos in Map.AllCells.MapCoords)
-				replace[mpos] = mask[mpos] ? MultiBrush.Replaceability.Actor : MultiBrush.Replaceability.None;
+				replace[mpos] = mask[mpos] ? MultiBrush.Replaceability.Actor | MultiBrush.Replaceability.SubCellActor : MultiBrush.Replaceability.None;
 
 			PaintArea(
 				random,
@@ -1011,7 +1011,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 			MultiBrush brush,
 			short? heightOffset = null)
 		{
-			brush.Paint(Map, ActorPlans, CPos.Zero, heightOffset, MultiBrush.Replaceability.Any, random);
+			if (brush.HasTiles)
+				brush.PaintTilesOntoMap(Map, CPos.Zero, heightOffset, _ => { }, random);
+
+			if (brush.HasActors)
+				brush.PaintActorsOntoList(ActorPlans, CPos.Zero, _ => { });
 		}
 
 		/// <summary>
@@ -1672,7 +1676,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			foreach (var tiling in tilings)
-				tiling.Paint(Map, ActorPlans, CPos.Zero, heightOffset, MultiBrush.Replaceability.Any, random);
+			{
+				if (tiling.HasTiles)
+					tiling.PaintTilesOntoMap(Map, CPos.Zero, heightOffset, _ => { }, random);
+
+				if (tiling.HasActors)
+					tiling.PaintActorsOntoList(ActorPlans, CPos.Zero, _ => { });
+			}
 
 			if (inside == null && outside == null)
 				return null;
@@ -1716,9 +1726,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 				tiledPoints[i] = tilings[i].Segment.Points
 					.Select(vec => CPos.Zero + vec)
 					.ToArray();
-				foreach (var cvec in tilings[i].Shape)
-					if (tiledArea.Contains(CPos.Zero + cvec))
-						tiledArea[CPos.Zero + cvec] = true;
+				foreach (var (vec, _) in tilings[i].Shape)
+					if (tiledArea.Contains(CPos.Zero + vec))
+						tiledArea[CPos.Zero + vec] = true;
 			}
 
 			var chiralityMatrix = MatrixUtils.PointsChirality(

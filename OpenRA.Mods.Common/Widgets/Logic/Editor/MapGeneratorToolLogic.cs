@@ -320,6 +320,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				map,
 				blitSource,
 				editorActorLayer,
+				false,
 				false);
 
 			var description = FluentProvider.GetMessage(MapGenerated,

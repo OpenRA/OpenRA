@@ -466,7 +466,10 @@ namespace OpenRA.Mods.Common.Traits
 
 				var result = tilingPath.Tile(random);
 				if (result != null)
-					return result.ToEditorBlitSource(WorldRenderer, random);
+				{
+					var region = result.GetCellCoordsRegion();
+					return result.ToEditorBlitSource(WorldRenderer, random, region);
+				}
 			}
 
 			return null;

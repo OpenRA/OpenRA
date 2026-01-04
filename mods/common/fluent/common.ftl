@@ -1131,3 +1131,26 @@ notification-tiling-path-started = Started tiling path
 notification-tiling-path-updated = Updated tiling path
 notification-tiling-path-reset = Discarded tiling path
 notification-tiling-path-painted = Painted tiling path
+
+# MultiBrushTool
+label-tool-paint-brush = Paint Brush
+
+label-shape-single = Single
+label-shape-square = Square
+label-shape-circle = Circle
+label-shape-flood-fill = Flood Fill
+
+label-flood-behavior-all-terrain = All Terrain
+label-flood-behavior-template-types = Template Types
+label-flood-behavior-terrain-types = Terrain Types
+label-flood-behavior-terrain-target-types = Terrain Target Types
+
+## EditorPaintBrush
+notification-multi-brush-painted =
+    { $tiles ->
+        [one] Painted one tile
+       *[other] Painted { $tiles } tiles
+    } and { $actors ->
+        [one] one actor
+       *[other] { $actors } actors
+    }.

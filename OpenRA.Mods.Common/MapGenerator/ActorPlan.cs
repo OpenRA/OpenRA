@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public readonly Map Map;
 		public readonly ActorInfo Info;
 		public readonly ActorReference Reference;
+		public bool SharesCell;
 
 		public CPos Location
 		{
@@ -49,6 +50,28 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			get => WPosLocation + WVecCenterOffset();
 			set => WPosLocation = value - WVecCenterOffset();
+		}
+
+		public SubCell SubCell
+		{
+			get => Reference.GetOrDefault<SubCellInit>()?.Value ?? SubCell.FullCell;
+			set
+			{
+				Reference.RemoveAll<SubCellInit>();
+				Reference.Add(new SubCellInit(value));
+			}
+		}
+
+		public string Owner
+		{
+			get => Reference.GetOrDefault<OwnerInit>()?.InternalName;
+			set
+			{
+				Reference.RemoveAll<OwnerInit>();
+
+				if (!string.IsNullOrEmpty(value))
+					Reference.Add(new OwnerInit(value));
+			}
 		}
 
 		/// <summary>
@@ -93,8 +116,15 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			var location = Location;
 			var ios = Info.TraitInfoOrDefault<IOccupySpaceInfo>();
-			var subCellInit = Reference.GetOrDefault<SubCellInit>();
-			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
+
+			SubCell subCell;
+			if (ios != null && ios.SharesCell)
+			{
+				var subCellInit = Reference.GetOrDefault<SubCellInit>();
+				subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
+			}
+			else
+				subCell = SubCell.FullCell;
 
 			var occupiedCells = ios?.OccupiedCells(Info, location, subCell);
 			if (occupiedCells == null || occupiedCells.Count == 0)

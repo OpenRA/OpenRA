@@ -863,10 +863,14 @@ namespace OpenRA.Mods.Common.MapGenerator
 					.ToArray();
 				var chosenSegment = candidates[random.PickWeighted(weights)];
 				var chosenFrom = to - chosenSegment.Moves;
-				compositeBrush.MergeFrom(
-					chosenSegment.MultiBrush,
-					chosenFrom - chosenSegment.Offset + minPoint - CPos.Zero,
-					Map.Grid.Type);
+				var offset = chosenFrom - chosenSegment.Offset + minPoint;
+
+				var brush = chosenSegment.MultiBrush;
+				if (brush.HasTiles)
+					brush.PaintTilesOntoBrush(compositeBrush, offset, _ => { }, random);
+
+				if (brush.HasActors)
+					brush.PaintActorsOntoBrush(compositeBrush, offset, a => MultiBrush.TransferShapeSubCells(brush, a));
 
 				// Skip end point as it is recorded in the previous segment.
 				for (var i = chosenSegment.RelativePoints.Length - 2; i >= 0; i--)

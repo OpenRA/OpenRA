@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		readonly CPos blitPosition;
 		readonly Map map;
 		readonly bool respectBounds;
+		readonly bool stickToGround;
 
 		public EditorBlit(
 			MapBlitFilters blitFilters,
@@ -56,7 +57,8 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			Map map,
 			EditorBlitSource blitSource,
 			EditorActorLayer editorActorLayer,
-			bool respectBounds)
+			bool respectBounds,
+			bool stickToGround)
 		{
 			this.blitFilters = blitFilters;
 			this.resourceLayer = resourceLayer;
@@ -64,6 +66,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			this.editorActorLayer = editorActorLayer;
 			this.map = map;
 			this.respectBounds = respectBounds;
+			this.stickToGround = stickToGround;
 
 			var blitSize = blitSource.CellCoords.BottomRight - blitSource.CellCoords.TopLeft;
 
@@ -171,7 +174,8 @@ namespace OpenRA.Mods.Common.EditorBrushes
 				if (blitFilters.HasFlag(MapBlitFilters.Terrain))
 				{
 					map.Tiles[position] = tile.TerrainTile;
-					map.Height[position] = tile.Height;
+					if (isRevert || !stickToGround)
+						map.Height[position] = tile.Height;
 				}
 
 				if (blitFilters.HasFlag(MapBlitFilters.Resources) &&

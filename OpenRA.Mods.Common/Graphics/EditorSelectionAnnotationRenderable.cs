@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -20,13 +21,13 @@ namespace OpenRA.Mods.Common.Graphics
 	public class EditorSelectionAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly Color color;
-		readonly CellCoordsRegion bounds;
+		readonly IEnumerable<CPos> cells;
 		readonly int2 altPixelOffset;
 		readonly CVec offset;
 
-		public EditorSelectionAnnotationRenderable(CellCoordsRegion bounds, Color color, int2 altPixelOffset, CVec offset)
+		public EditorSelectionAnnotationRenderable(IEnumerable<CPos> cells, Color color, int2 altPixelOffset, CVec offset)
 		{
-			this.bounds = bounds;
+			this.cells = cells;
 			this.color = color;
 			this.altPixelOffset = altPixelOffset;
 			this.offset = offset;
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			const int Width = 1;
 			var map = wr.World.Map;
-			foreach (var cellPos in bounds)
+			foreach (var cellPos in cells)
 			{
 				var pos = cellPos + offset;
 				var uv = pos.ToMPos(map);

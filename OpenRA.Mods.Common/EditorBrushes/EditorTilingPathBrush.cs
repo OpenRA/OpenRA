@@ -357,6 +357,7 @@ namespace OpenRA.Mods.Common.Widgets
 				world.Map,
 				blitSource,
 				editorActorLayer,
+				false,
 				false);
 		}
 

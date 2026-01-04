@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace OpenRA
 {
-	public readonly struct CellCoordsRegion : IEnumerable<CPos>
+	public readonly record struct CellCoordsRegion : IEnumerable<CPos>
 	{
 		public struct CellCoordsEnumerator : IEnumerator<CPos>
 		{
@@ -113,6 +113,28 @@ namespace OpenRA
 			}
 
 			return new CellCoordsRegion(new CPos(minX, minY), new CPos(maxX, maxY));
+		}
+
+		/// <summary>Creates a new <see cref="CellCoordsRegion"/> that encompasses all the given regions.</summary>
+		public static CellCoordsRegion Union(IEnumerable<CellCoordsRegion> regions)
+		{
+			var regionIterator = regions.GetEnumerator();
+			if (!regionIterator.MoveNext())
+				throw new ArgumentException("Cannot union an empty collection of CellCoordsRegions.");
+
+			var topLeft = regionIterator.Current.TopLeft;
+			var bottomRight = regionIterator.Current.BottomRight;
+
+			while (regionIterator.MoveNext())
+			{
+				var r = regionIterator.Current;
+				topLeft = new CPos(Math.Min(topLeft.X, r.TopLeft.X), Math.Min(topLeft.Y, r.TopLeft.Y));
+				bottomRight = new CPos(Math.Max(bottomRight.X, r.BottomRight.X), Math.Max(bottomRight.Y, r.BottomRight.Y));
+			}
+
+			regionIterator.Dispose();
+
+			return new CellCoordsRegion(topLeft, bottomRight);
 		}
 
 		public CPos TopLeft { get; }

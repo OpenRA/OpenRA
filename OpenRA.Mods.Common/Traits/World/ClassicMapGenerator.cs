@@ -503,7 +503,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (basicLand[mpos])
 							replace[mpos] = MultiBrush.Replaceability.Any;
 						else
-							replace[mpos] = MultiBrush.Replaceability.Actor;
+							replace[mpos] = MultiBrush.Replaceability.Actor | MultiBrush.Replaceability.SubCellActor;
 					}
 					else
 					{

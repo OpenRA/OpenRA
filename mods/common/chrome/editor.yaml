@@ -1020,9 +1020,9 @@ Background@MARKER_TOOL_PANEL:
 			Visible: false
 
 ScrollPanel@MAP_GENERATOR_TOOL_PANEL:
-	X: 9
+	X: 10
 	Y: 35
-	Width: 290
+	Width: PARENT_WIDTH - 20
 	Height: WINDOW_HEIGHT - 490
 	Visible: false
 	ScrollBar: Hidden
@@ -1051,7 +1051,7 @@ ScrollPanel@MAP_GENERATOR_TOOL_PANEL:
 			Children:
 				Container@CHECKBOX_TEMPLATE:
 					X: 5
-					Width: PARENT_WIDTH - 35
+					Width: PARENT_WIDTH - 34
 					Height: 30
 					Children:
 						Checkbox@CHECKBOX:
@@ -1059,7 +1059,7 @@ ScrollPanel@MAP_GENERATOR_TOOL_PANEL:
 							Height: 25
 				Container@TEXT_TEMPLATE:
 					X: 5
-					Width: PARENT_WIDTH - 35
+					Width: PARENT_WIDTH - 34
 					Height: 50
 					Children:
 						LabelForInput@LABEL:
@@ -1073,7 +1073,7 @@ ScrollPanel@MAP_GENERATOR_TOOL_PANEL:
 							Height: 25
 				Container@DROPDOWN_TEMPLATE:
 					X: 5
-					Width: PARENT_WIDTH - 35
+					Width: PARENT_WIDTH - 34
 					Height: 50
 					Children:
 						LabelForInput@LABEL:
@@ -1100,7 +1100,7 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 	Children:
 		Container@START_TYPE:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 50
 			Children:
 				LabelForInput@LABEL:
@@ -1115,7 +1115,7 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 					Height: 25
 		Container@INNER_TYPE:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 50
 			Children:
 				LabelForInput@LABEL:
@@ -1130,7 +1130,7 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 					Height: 25
 		Container@END_TYPE:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 50
 			Children:
 				LabelForInput@LABEL:
@@ -1145,7 +1145,7 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 					Height: 25
 		Container@DEVIATION:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 50
 			Children:
 				LabelForInput@LABEL:
@@ -1168,26 +1168,229 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 			Text: checkbox-tiling-path-allow-end-deviation
 		Checkbox@CLOSED_LOOPS:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 25
 			Text: checkbox-tiling-path-closed-loops
 		Button@REVERSE:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 25
 			Text: button-tiling-path-reverse
 		Button@RESET:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 25
 			Text: button-tiling-path-reset
 		Button@RANDOMIZE:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 25
 			Text: button-tiling-path-randomize
 		Button@PAINT:
 			X: 5
-			Width: PARENT_WIDTH - 35
+			Width: PARENT_WIDTH - 34
 			Height: 25
 			Text: button-tiling-path-paint
+
+ScrollPanel@MULTI_BRUSH_TOOL_PANEL:
+	X: 10
+	Y: 35
+	Width: PARENT_WIDTH - 20
+	Height: WINDOW_HEIGHT - 490
+	TopBottomSpacing: 5
+	ItemSpacing: 8
+	Background: scrollpanel-bg
+	Visible: false
+	CollapseHiddenChildren: True
+	Logic: MultiBrushToolLogic
+	Children:
+		Label@PAINT_OPTIONS_LABEL:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-brush-options
+			Align: Center
+			Font: Bold
+		Container@BRUSH_TYPE:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 25
+			Children:
+				LabelForInput@LABEL:
+					Width: 60
+					Height: 20
+					Text: label-paint-brush-type
+					For: DROPDOWN
+				DropDownButton@DROPDOWN:
+					X: 65
+					Width: PARENT_WIDTH - 65
+					Height: 25
+		Container@BRUSH_SIZE:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 44
+			Children:
+				Label@LABEL:
+					Y: 0
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: label-paint-brush-size
+				Container@SLIDER:
+					Y: 22
+					Width: PARENT_WIDTH
+					Height: 22
+					Children:
+						Slider@OPTION:
+							Y: 1
+							Width: PARENT_WIDTH - 40
+							Height: 20
+							MinimumValue: 1
+							MaximumValue: 15
+							Ticks: 15
+						TextField@VALUE:
+							X: PARENT_WIDTH - 40
+							Y: 1
+							Width: 40
+							Height: 20
+							Type: Integer
+		Container@FLOOD_LIMIT:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 44
+			Visible: false
+			Children:
+				Label@LABEL:
+					Y: 0
+					Width: 20
+					Height: 20
+					Text: label-paint-brush-flood-limit
+				Container@SLIDER:
+					Y: 22
+					Width: PARENT_WIDTH
+					Height: 22
+					Children:
+						Slider@OPTION:
+							Y: 1
+							Width: PARENT_WIDTH - 40
+							Height: 20
+							MinimumValue: 1
+							MaximumValue: 1000
+							Ticks: 15
+						TextField@VALUE:
+							X: PARENT_WIDTH - 40
+							Y: 1
+							Width: 40
+							Height: 20
+							Type: Integer
+		Container@FLOOD_TERRAIN_BEHAVIOR:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 25
+			Children:
+				LabelForInput@LABEL:
+					X: 0
+					Width: 60
+					Height: 25
+					Text: label-paint-brush-flood-terrain
+					For: DROPDOWN
+				DropDownButton@DROPDOWN:
+					X: 65
+					Width: PARENT_WIDTH - 65
+					Height: 25
+					Font: Bold
+		Checkbox@FLOOD_IGNORE_ACTORS_CHECKBOX:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-flood-ignore-actors
+		Checkbox@FLOOD_IGNORE_HEIGHT_CHECKBOX:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-flood-ignore-height
+		Label@PAINT_OPTIONS_LABEL:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-paint-options
+			Align: Center
+			Font: Bold
+		Container@BRUSH_PAINT_TYPE:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 25
+			Children:
+				LabelForInput@LABEL:
+					Width: 60
+					Height: 20
+					Text: label-paint-brush-type
+					For: DROPDOWN
+				DropDownButton@DROPDOWN:
+					X: 65
+					Width: PARENT_WIDTH - 65
+					Height: 25
+		Checkbox@ADAPT_HEIGHT_CHECKBOX:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-adapt-height
+		Checkbox@FILTER_TERRAIN_CHECKBOX:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-filter-terrain
+		Checkbox@FILTER_ACTORS_CHECKBOX:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-filter-actors
+		Checkbox@FILTER_SUBCELL_ACTORS_CHECKBOX:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 20
+			Text: label-paint-brush-filter-subcell-actors
+		Container@SPARSITY:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 44
+			Visible: false
+			Children:
+				Label@LABEL:
+					Y: 0
+					Width: 20
+					Height: 20
+					Text: label-paint-brush-sparsity
+				Container@SLIDER:
+					Y: 22
+					Width: PARENT_WIDTH
+					Height: 22
+					Children:
+						Slider@OPTION:
+							Y: 1
+							Width: PARENT_WIDTH - 40
+							Height: 20
+							MinimumValue: 0
+							MaximumValue: 100
+							Ticks: 15
+						TextField@VALUE:
+							X: PARENT_WIDTH - 40
+							Y: 1
+							Width: 40
+							Height: 20
+							Type: Integer
+		Container@ACTOR_OWNER:
+			X: 5
+			Width: PARENT_WIDTH - 34
+			Height: 25
+			Children:
+				LabelForInput@LABEL:
+					X: 0
+					Width: 60
+					Height: 25
+					Text: label-paint-brush-owner
+					For: DROPDOWN
+				DropDownButton@DROPDOWN:
+					X: 65
+					Width: PARENT_WIDTH - 65
+					Height: 25
+					Font: Bold

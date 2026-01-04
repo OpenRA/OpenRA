@@ -19,6 +19,7 @@ using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.MapGenerator
 {
@@ -281,19 +282,68 @@ namespace OpenRA.Mods.Common.MapGenerator
 	{
 		public const int DefaultWeight = 1000;
 
+		[Flags]
 		public enum Replaceability
 		{
-			/// <summary>Area cannot be replaced by a tile or obstructing actor.</summary>
 			None = 0,
-
-			/// <summary>Area must be replaced by a different tile, and may optionally be given an actor.</summary>
 			Tile = 1,
-
-			/// <summary>Area must be given an actor, but the underlying tile must not change.</summary>
 			Actor = 2,
+			SubCellActor = 4,
+			Any = Tile | Actor | SubCellActor,
+		}
 
-			/// <summary>Area can be replaced by a tile and/or actor.</summary>
-			Any = 3,
+		[Flags]
+		public enum ActorSubCell : byte
+		{
+			Any = 0,
+			FullCell = byte.MaxValue,
+		}
+
+		/// <summary>
+		/// Create a bitmask where all subcell bits are set to 1.
+		/// </summary>
+		public static ActorSubCell FullSubCell(MapGrid grid)
+		{
+			return (ActorSubCell)((1 << grid.SubCellOffsets.Length - 1) - 1);
+		}
+
+		/// <summary>Convert a SubCell to an ActorSubCell.</summary>
+		public static ActorSubCell ToActorSubCell(SubCell sub)
+		{
+			if (sub == SubCell.FullCell)
+				return ActorSubCell.FullCell;
+			if (sub == SubCell.Any)
+				return ActorSubCell.Any;
+			if (sub == SubCell.Invalid)
+				throw new ArgumentOutOfRangeException(nameof(sub), sub, null);
+
+			return (ActorSubCell)(1 << ((int)sub - 1));
+		}
+
+		/// <summary>
+		/// Generate a random set of sub-cell bits based on the given <paramref name="frequency"/>.
+		/// Frequency is the chance (0-1000) of each sub-cell being included.
+		/// </summary>
+		static ActorSubCell RandomSubCellBits(MapGrid grid, int frequency, MersenneTwister random)
+		{
+			var result = ActorSubCell.Any;
+			for (var i = 0; i < grid.SubCellOffsets.Length; i++)
+				if (random.Next(1000) < frequency)
+					result |= (ActorSubCell)(1 << i);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Get the first free sub-cell in the <paramref name="search"/> bitmask.
+		/// </summary>
+		public static SubCell FreeSubCell(MapGrid grid, ActorSubCell search)
+		{
+			for (var i = 0; i < grid.SubCellOffsets.Length; i++)
+				if (((byte)search & (1 << i)) == 0)
+					return (SubCell)(i + 1);
+
+			throw new ArgumentOutOfRangeException(nameof(search), search, "No free sub-cell found");
 		}
 
 		readonly struct TileRange
@@ -349,11 +399,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		// A cache for the shape/footprint of the brush.
 		// Null means the shape is dirty and must be recomputed.
-		CVec[] shape;
+		(CVec, SubCell)[] shape;
 
 		public bool HasTiles => tiles.Count != 0;
 		public bool HasActors => actorPlans.Count != 0;
-		public IEnumerable<CVec> Shape => GetShape();
+		public IEnumerable<(CVec Vec, SubCell SubCell)> Shape => GetShape();
 
 		/// <summary>Total area covered by the MultiBrush.</summary>
 		public int Area => GetShape().Length;
@@ -363,7 +413,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// top-row. Note that this does not necessarily correspond to the top-left corner of the
 		/// rectangular bounds of the MultiBrush.
 		/// </summary>
-		public CVec FirstCell => GetShape()[0];
+		public (CVec FirstCell, SubCell SubCell) FirstCell => GetShape()[0];
 
 		public IEnumerable<(CVec XY, short Height, byte Ramp)> GetHeightsAndRamps()
 		{
@@ -372,16 +422,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		public Replaceability Contract()
 		{
-			var hasTiles = tiles.Count != 0;
-			var hasActorPlans = actorPlans.Count != 0;
-			if (hasTiles && hasActorPlans)
-				return Replaceability.Any;
-			else if (hasTiles && !hasActorPlans)
-				return Replaceability.Tile;
-			else if (!hasTiles && hasActorPlans)
-				return Replaceability.Actor;
-			else
-				return Replaceability.None;
+			var replacability = Replaceability.None;
+			if (HasActors)
+			{
+				if (Shape.Any(xy => xy.SubCell != SubCell.FullCell))
+					replacability |= Replaceability.SubCellActor;
+				else
+					replacability |= Replaceability.Actor;
+			}
+
+			if (HasTiles)
+				replacability |= Replaceability.Tile;
+
+			return replacability;
 		}
 
 		/// <summary>
@@ -450,22 +503,22 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		void UpdateShape()
 		{
-			var xys = new HashSet<CVec>();
+			var xys = new HashSet<(CVec, SubCell)>();
 
 			foreach (var (xy, _) in tiles)
-				xys.Add(xy);
+				xys.Add((xy, SubCell.FullCell));
 
 			foreach (var actorPlan in actorPlans)
-				foreach (var cpos in actorPlan.Footprint().Keys)
-					xys.Add(new CVec(cpos.X, cpos.Y));
+				foreach (var (cpos, subCell) in actorPlan.Footprint())
+					xys.Add((new CVec(cpos.X, cpos.Y), subCell));
 
 			if (xys.Count != 0)
-				shape = xys.OrderBy(xy => (xy.Y, xy.X)).ToArray();
+				shape = xys.OrderBy(xy => (xy.Item1.Y, xy.Item1.X)).ToArray();
 			else
-				shape = [new CVec(0, 0)];
+				shape = [(new CVec(0, 0), SubCell.FullCell)];
 		}
 
-		CVec[] GetShape()
+		(CVec Vec, SubCell SubCell)[] GetShape()
 		{
 			if (shape == null)
 				UpdateShape();
@@ -553,7 +606,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			if (Area == 0)
 				throw new InvalidOperationException("No area");
-			foreach (var xy in shape)
+			foreach (var (xy, _) in GetShape())
 				tiles.Add((xy, new(tile, 0, 0)));
 
 			return this;
@@ -597,18 +650,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
-		/// <para>Paint tiles onto the map and/or add actors to actorPlans at the given location.</para>
-		/// <para>A specific height offset can be supplied, else one will be assumed from the map.</para>
-		/// <para>contract specifies whether tiles or actors are allowed to be painted.</para>
-		/// <para>An optional MersenneTwister can be provided to vary randomizable elements.</para>
-		/// <para>If nothing could be painted, throws ArgumentException.</para>
+		/// Paint the tiles onto the <paramref name="map"/> at the given position.
 		/// </summary>
-		public void Paint(
+		public void PaintTilesOntoMap(
 			Map map,
-			List<ActorPlan> actorPlans,
 			CPos paintAt,
 			short? heightOffset,
-			Replaceability contract,
+			Action<MPos> paint,
 			MersenneTwister random)
 		{
 			short finalHeightOffset = 0;
@@ -618,7 +666,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 			else
 			{
-				foreach (var cpos in Shape)
+				foreach (var (cpos, _) in GetShape())
 				{
 					if (map.Height.Contains(paintAt + cpos))
 					{
@@ -628,33 +676,6 @@ namespace OpenRA.Mods.Common.MapGenerator
 				}
 			}
 
-			switch (contract)
-			{
-				case Replaceability.None:
-					throw new ArgumentException("Cannot paint: Replaceability.None");
-				case Replaceability.Any:
-					PaintTiles(map, paintAt, finalHeightOffset, random);
-					PaintActors(map, actorPlans, paintAt);
-
-					break;
-				case Replaceability.Tile:
-					if (tiles.Count == 0)
-						throw new ArgumentException("Cannot paint: no tiles");
-
-					PaintTiles(map, paintAt, finalHeightOffset, random);
-					PaintActors(map, actorPlans, paintAt);
-					break;
-				case Replaceability.Actor:
-					if (this.actorPlans.Count == 0)
-						throw new ArgumentException("Cannot paint: no actors");
-
-					PaintActors(map, actorPlans, paintAt);
-					break;
-			}
-		}
-
-		void PaintTiles(Map map, CPos paintAt, short heightOffset, MersenneTwister random)
-		{
 			foreach (var (xy, tile) in tiles)
 			{
 				var mpos = (paintAt + xy).ToMPos(map);
@@ -662,35 +683,175 @@ namespace OpenRA.Mods.Common.MapGenerator
 				{
 					// map.Ramp does not need to be updated here.
 					map.Tiles[mpos] = tile.Pick(random);
-					map.Height[mpos] = (byte)Math.Clamp(tile.HeightOffset + heightOffset, byte.MinValue, byte.MaxValue);
+					map.Height[mpos] = (byte)Math.Clamp(tile.HeightOffset + finalHeightOffset, byte.MinValue, byte.MaxValue);
+					paint(mpos);
 				}
 			}
 		}
 
-		void PaintActors(Map map, List<ActorPlan> actorPlans, CPos paintAt)
+		/// <summary>
+		/// Paint the tiles onto the <paramref name="target"/> brush at the given position.
+		/// </summary>
+		public void PaintTilesOntoBrush(
+			MultiBrush target,
+			CPos paintAt,
+			Action<CPos> paint,
+			MersenneTwister random)
+		{
+			foreach (var (xy, tile) in tiles)
+			{
+				var pos = paintAt + xy;
+				target.tiles.Add((new CVec(pos.X, pos.Y), tile));
+				paint(pos);
+			}
+
+			target.shape = null;
+		}
+
+		/// <summary>
+		/// Clone actors onto the <paramref name="actorPlans"/> list.
+		/// </summary>
+		public void PaintActorsOntoList(
+			List<ActorPlan> actorPlans,
+			CPos paintAt,
+			Action<ActorPlan> actorPlanModifier,
+			string actorOwner = null)
 		{
 			foreach (var actorPlan in this.actorPlans)
 			{
-				if (map != actorPlan.Map)
-					throw new ArgumentException("ActorPlan is for a different map");
 				var plan = actorPlan.Clone();
 				var offset = plan.Location;
 				plan.Location = paintAt + new CVec(offset.X, offset.Y);
+				if (actorOwner != null)
+					plan.Owner = actorOwner;
+
+				actorPlanModifier(plan);
 				actorPlans.Add(plan);
 			}
 		}
 
 		/// <summary>
-		/// Paint an area defined by replace onto map and actorPlans using availableBrushes.
+		/// Clone actors onto the <paramref name="target"/> brush.
 		/// </summary>
+		public void PaintActorsOntoBrush(
+			MultiBrush target,
+			CPos paintAt,
+			Action<ActorPlan> actorPlanModifier,
+			string actorOwner = null)
+		{
+			PaintActorsOntoList(target.actorPlans, paintAt, actorPlanModifier, actorOwner);
+			target.shape = null;
+		}
+
+		/// <summary>
+		/// Pick a random brush from the available brushes.
+		/// </summary>
+		/// <remarks>
+		/// Allocates an array to hold the weights of the available brushes.
+		/// </remarks>
+		public static MultiBrush PickRandomBrush(IReadOnlyList<MultiBrush> availableBrushes, MersenneTwister random)
+		{
+			if (availableBrushes == null || availableBrushes.Count == 0)
+				throw new ArgumentException("No available brushes to pick from.");
+
+			var weights = availableBrushes.Select(b => b.Weight).ToArray();
+			return availableBrushes[random.PickWeighted(weights)];
+		}
+
+		/// <summary>
+		/// Return the validity of adding <paramref name="brush"/> onto the <paramref name="targetLayer"/> <see cref="CellLayer{ActorSubCell}"/>.
+		/// </summary>
+		public static Replaceability ValidateBrushPlacement(
+			MultiBrush brush,
+			CPos offset,
+			CellLayer<Replaceability> mask,
+			CellLayer<ActorSubCell> targetLayer,
+			ActorSubCell fullSubcell)
+		{
+			var shape = brush.Shape;
+			var shapeContract = brush.Contract();
+			foreach (var (cvec, subCell) in shape)
+			{
+				var cpos = offset + cvec;
+				if (!mask.Contains(cpos))
+				{
+					// Can't reserve - not in replace layer.
+					return Replaceability.None;
+				}
+
+				var r = targetLayer[cpos];
+				if (r.HasFlag(fullSubcell) || (r != ActorSubCell.Any && subCell == SubCell.FullCell))
+				{
+					// Can't reserve - not the right subcell.
+					return Replaceability.None;
+				}
+
+				shapeContract &= mask[cpos];
+				if (shapeContract == Replaceability.None)
+				{
+					// Can't reserve - obstruction choice doesn't comply
+					// with replaceability of original tiles.
+					return Replaceability.None;
+				}
+			}
+
+			return shapeContract;
+		}
+
+		/// <summary>
+		/// Transfer the shape subcells from the <paramref name="sourceBrush"/> to the <paramref name="target"/> actor plan.
+		/// </summary>
+		public static void TransferShapeSubCells(MultiBrush sourceBrush, ActorPlan target)
+		{
+			foreach (var (_, subCell) in sourceBrush.Shape)
+			{
+				if (subCell != SubCell.FullCell)
+					target.SubCell = subCell;
+			}
+		}
+
+		/// <summary>
+		/// Paint the <paramref name="sourceBrush"/> onto the <paramref name="targetLayer"/>,
+		/// finding free subcells and applying it to the <paramref name="target"/> actor plan.
+		/// </summary>
+		static void PaintOntoFreeSubCells(
+			MultiBrush sourceBrush,
+			ActorPlan target,
+			CPos offset,
+			CellLayer<ActorSubCell> targetLayer,
+			MapGrid grid)
+		{
+			foreach (var (cell, subCell) in sourceBrush.Shape)
+			{
+				var pos = cell + offset;
+				if (subCell == SubCell.FullCell)
+					targetLayer[pos] = ActorSubCell.FullCell;
+				else
+				{
+					var current = targetLayer[pos];
+					var freeSubCell = FreeSubCell(grid, current);
+					targetLayer[pos] = current | ToActorSubCell(freeSubCell);
+					target.SubCell = freeSubCell;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Paint an area masked by <paramref name="mask"/> onto the map and <paramref name="actorPlans"/> using <paramref name="availableBrushes"/>.
+		/// </summary>
+		/// <remarks>
+		/// Painting is biased towards smaller features in several ways.
+		/// 1. it's more likely to find a suitable position for a small feature.
+		/// 2. we do a second pass, trying to fill in 1x1 gaps with actors.
+		/// 3. sparsity is the applied first, meaning it can negate space for larger features.
+		/// </remarks>
 		public static void PaintArea(
 			Map map,
 			List<ActorPlan> actorPlans,
-			CellLayer<Replaceability> replace,
+			CellLayer<Replaceability> mask,
 			IReadOnlyList<MultiBrush> availableBrushes,
 			MersenneTwister random,
-			bool alwaysPreferLargerBrushes = false,
-			short? heightOffset = null)
+			bool alwaysPreferLargerBrushes = false)
 		{
 			var brushesByAreaDict = new Dictionary<int, List<MultiBrush>>();
 			foreach (var brush in availableBrushes)
@@ -705,6 +866,10 @@ namespace OpenRA.Mods.Common.MapGenerator
 				.ToList();
 			var brushTotalArea = availableBrushes.Sum(t => t.Area);
 			var brushTotalWeight = availableBrushes.Sum(t => t.Weight);
+			var subCellBrushes = availableBrushes.Where(b => b.Contract().HasFlag(Replaceability.SubCellActor)).ToArray();
+			var brushSubcellWeights = subCellBrushes.Select(o => o.Weight).ToArray();
+
+			var fullSubcell = FullSubCell(map.Grid);
 
 			// Give 1-by-1 actors the final pass, as they are most flexible.
 			brushesByArea.Add(
@@ -713,77 +878,40 @@ namespace OpenRA.Mods.Common.MapGenerator
 					availableBrushes.Where(o => o.HasActors && o.Area == 1).ToList()));
 			var size = map.MapSize;
 			var replaceMposes = new List<MPos>();
-			var remaining = new CellLayer<bool>(map);
+			var remaining = new CellLayer<ActorSubCell>(map);
 			for (var v = 0; v < size.Height; v++)
 			{
 				for (var u = 0; u < size.Width; u++)
 				{
 					var mpos = new MPos(u, v);
-					if (replace[mpos] != Replaceability.None)
+					if (mask[mpos] != Replaceability.None)
 					{
-						remaining[mpos] = true;
+						remaining[mpos] = ActorSubCell.Any;
 						replaceMposes.Add(mpos);
 					}
 					else
-					{
-						remaining[mpos] = false;
-					}
+						remaining[mpos] = ActorSubCell.FullCell;
 				}
 			}
 
-			var mposes = new MPos[size.Width * size.Height];
-			int mposCount;
+			if (replaceMposes.Count == 0)
+				return;
 
+			var mposes = new MPos[replaceMposes.Count];
+			int mposCount;
 			void RefreshIndices()
 			{
 				mposCount = 0;
 				foreach (var mpos in replaceMposes)
-					if (remaining[mpos])
+				{
+					if (!remaining[mpos].HasFlag(fullSubcell))
 					{
 						mposes[mposCount] = mpos;
 						mposCount++;
 					}
+				}
 
 				random.ShuffleInPlace(mposes.AsSpan(), 0, mposCount);
-			}
-
-			Replaceability ReserveShape(CPos paintAt, IEnumerable<CVec> shape, Replaceability contract)
-			{
-				foreach (var cvec in shape)
-				{
-					var cpos = paintAt + cvec;
-					if (!replace.Contains(cpos))
-					{
-						// Can't reserve - not in replace layer
-						return Replaceability.None;
-					}
-
-					if (!remaining[cpos])
-					{
-						// Can't reserve - not the right shape
-						return Replaceability.None;
-					}
-
-					contract &= replace[cpos];
-					if (contract == Replaceability.None)
-					{
-						// Can't reserve - obstruction choice doesn't comply
-						// with replaceability of original tiles.
-						return Replaceability.None;
-					}
-				}
-
-				// Can reserve. Commit.
-				foreach (var cvec in shape)
-				{
-					var cpos = paintAt + cvec;
-					if (!replace.Contains(cpos))
-						continue;
-
-					remaining[cpos] = false;
-				}
-
-				return contract;
 			}
 
 			foreach (var brushesKv in brushesByArea)
@@ -800,19 +928,177 @@ namespace OpenRA.Mods.Common.MapGenerator
 						? int.MaxValue
 						: (int)(((long)replaceMposes.Count * brushWeightForArea + brushTotalWeight - 1) / brushTotalWeight);
 				RefreshIndices();
-				foreach (var mpos in mposes)
+				for (var i = 0; i < mposCount; i++)
 				{
+					var mpos = mposes[i];
 					var brush = brushes[random.PickWeighted(brushWeights)];
-					var paintAt = mpos.ToCPos(map) - brush.FirstCell;
-					var contract = ReserveShape(paintAt, brush.Shape, brush.Contract());
-					if (contract != Replaceability.None)
-						brush.Paint(map, actorPlans, paintAt, heightOffset, contract, random);
+					var paintAt = mpos.ToCPos(map) - brush.FirstCell.FirstCell;
+					var contract = ValidateBrushPlacement(brush, paintAt, mask, remaining, fullSubcell);
+
+					if (contract.HasFlag(Replaceability.Tile))
+						brush.PaintTilesOntoMap(map, paintAt, 0, c => remaining[c] = ActorSubCell.FullCell, random);
+
+					void PaintSubCells(ActorPlan actorPlan) => PaintOntoFreeSubCells(brush, actorPlan, paintAt, remaining, map.Grid);
+
+					if (contract.HasFlag(Replaceability.SubCellActor))
+					{
+						brush.PaintActorsOntoList(actorPlans, paintAt, PaintSubCells);
+						for (var ii = 1; ii < map.Grid.SubCellOffsets.Length; ii++)
+						{
+							brush = subCellBrushes[random.PickWeighted(brushSubcellWeights)];
+							if (ValidateBrushPlacement(brush, paintAt, mask, remaining, fullSubcell).HasFlag(Replaceability.SubCellActor))
+								brush.PaintActorsOntoList(actorPlans, paintAt, PaintSubCells);
+						}
+					}
+					else if (contract.HasFlag(Replaceability.Actor))
+						brush.PaintActorsOntoList(actorPlans, paintAt, PaintSubCells);
 
 					remainingQuota -= brushArea;
 					if (remainingQuota <= 0)
 						break;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Paint an area masked by <paramref name="mask"/> onto <paramref name="resultBrush"/> using <paramref name="availableBrushes"/>.
+		/// </summary>
+		/// <remarks>
+		/// Painting is biased towards smaller features in several ways.
+		/// 1. it's more likely to find a suitable position for a small feature.
+		/// 2. we do a second pass, trying to fill in 1x1 gaps with actors.
+		/// 3. sparsity is the applied first, meaning it can negate space for larger features.
+		/// </remarks>
+		public static void PaintAreaBrush(
+			MultiBrush resultBrush,
+			Map map,
+			CellLayer<Replaceability> mask,
+			IReadOnlyList<MultiBrush> availableBrushes,
+			int sparsity,
+			MersenneTwister random,
+			bool alwaysPreferLargerBrushes = false,
+			string actorOwner = null)
+		{
+			var brushesByAreaDict = new Dictionary<int, List<MultiBrush>>();
+			foreach (var brush in availableBrushes)
+			{
+				if (!brushesByAreaDict.ContainsKey(brush.Area))
+					brushesByAreaDict.Add(brush.Area, []);
+				brushesByAreaDict[brush.Area].Add(brush);
+			}
+
+			var brushesByArea = brushesByAreaDict
+				.OrderBy(kv => -kv.Key)
+				.ToList();
+			var brushTotalArea = availableBrushes.Sum(t => t.Area);
+			var brushTotalWeight = availableBrushes.Sum(t => t.Weight);
+			var subCellBrushes = availableBrushes.Where(b => b.Contract().HasFlag(Replaceability.SubCellActor)).ToArray();
+			var brushSubcellProportion = subCellBrushes.Length * 1000 / availableBrushes.Count;
+			var brushSubcellWeights = subCellBrushes.Select(o => o.Weight).ToArray();
+
+			var fullSubcell = FullSubCell(map.Grid);
+
+			// Give 1-by-1 actors the final pass, as they are most flexible.
+			brushesByArea.Add(
+				new KeyValuePair<int, List<MultiBrush>>(
+					1,
+					availableBrushes.Where(o => o.HasActors && o.Area == 1).ToList()));
+			var size = mask.Size;
+			var replaceMposes = new List<MPos>();
+			var remaining = new CellLayer<ActorSubCell>(map.Grid.Type, size);
+			for (var v = 0; v < size.Height; v++)
+			{
+				for (var u = 0; u < size.Width; u++)
+				{
+					var mpos = new MPos(u, v);
+					var replaceability = mask[mpos];
+					if (replaceability != Replaceability.None)
+					{
+						ActorSubCell chosen;
+						if (sparsity == 0)
+							chosen = ActorSubCell.Any;
+						else if (brushSubcellProportion > 0 && replaceability.HasFlag(Replaceability.SubCellActor) && random.Next(1000) < brushSubcellProportion)
+							chosen = RandomSubCellBits(map.Grid, sparsity, random);
+						else if (random.Next(1000) >= sparsity)
+							chosen = ActorSubCell.Any;
+						else
+							chosen = ActorSubCell.FullCell;
+
+						remaining[mpos] = chosen;
+
+						if (!chosen.HasFlag(fullSubcell))
+							replaceMposes.Add(mpos);
+					}
+					else
+						remaining[mpos] = ActorSubCell.FullCell;
+				}
+			}
+
+			if (replaceMposes.Count == 0)
+				return;
+
+			var mposes = new MPos[replaceMposes.Count];
+			int mposCount;
+			void RefreshIndices()
+			{
+				mposCount = 0;
+				foreach (var mpos in replaceMposes)
+				{
+					if (!remaining[mpos].HasFlag(fullSubcell))
+					{
+						mposes[mposCount] = mpos;
+						mposCount++;
+					}
+				}
+
+				random.ShuffleInPlace(mposes.AsSpan(), 0, mposCount);
+			}
+
+			foreach (var brushesKv in brushesByArea)
+			{
+				var brushes = brushesKv.Value;
+				if (brushes.Count == 0)
+					continue;
+
+				var brushArea = brushes[0].Area;
+				var brushWeights = brushes.Select(o => o.Weight).ToArray();
+				var brushWeightForArea = brushWeights.Sum();
+				var remainingQuota =
+					(brushArea == 1 || alwaysPreferLargerBrushes)
+						? int.MaxValue
+						: (int)(((long)replaceMposes.Count * brushWeightForArea + brushTotalWeight - 1) / brushTotalWeight);
+				RefreshIndices();
+				for (var i = 0; i < mposCount; i++)
+				{
+					var mpos = mposes[i];
+					var brush = brushes[random.PickWeighted(brushWeights)];
+					var paintAt = mpos.ToCPos(map) - brush.FirstCell.FirstCell;
+					var contract = ValidateBrushPlacement(brush, paintAt, mask, remaining, fullSubcell);
+					if (contract.HasFlag(Replaceability.Tile))
+						brush.PaintTilesOntoBrush(resultBrush, paintAt, c => remaining[c] = ActorSubCell.FullCell, random);
+
+					void PaintSubCells(ActorPlan actorPlan) => PaintOntoFreeSubCells(brush, actorPlan, paintAt, remaining, map.Grid);
+
+					if (contract.HasFlag(Replaceability.SubCellActor))
+					{
+						brush.PaintActorsOntoBrush(resultBrush, paintAt, PaintSubCells, actorOwner);
+						for (var ii = 1; ii < map.Grid.SubCellOffsets.Length; ii++)
+						{
+							brush = subCellBrushes[random.PickWeighted(brushSubcellWeights)];
+							if (ValidateBrushPlacement(brush, paintAt, mask, remaining, fullSubcell).HasFlag(Replaceability.SubCellActor))
+								brush.PaintActorsOntoBrush(resultBrush, paintAt, PaintSubCells, actorOwner);
+						}
+					}
+					else if (contract.HasFlag(Replaceability.Actor))
+						brush.PaintActorsOntoBrush(resultBrush, paintAt, PaintSubCells, actorOwner);
+
+					remainingQuota -= brushArea;
+					if (remainingQuota <= 0)
+						break;
+				}
+			}
+
+			resultBrush.shape = null;
 		}
 
 		/// <summary>
@@ -824,6 +1110,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public EditorBlitSource ToEditorBlitSource(
 			WorldRenderer worldRenderer,
 			MersenneTwister random,
+			CellCoordsRegion region,
 			PlayerReference defaultActorOwner = null,
 			short heightOffset = 0)
 		{
@@ -840,14 +1127,6 @@ namespace OpenRA.Mods.Common.MapGenerator
 			var players = world.Players.ToDictionary(
 				player => player.InternalName,
 				player => player.PlayerReference);
-
-			var topLeft = new CPos(
-				Shape.Min(cvec => cvec.X),
-				Shape.Min(cvec => cvec.Y));
-			var bottomRight = new CPos(
-				Shape.Max(cvec => cvec.X),
-				Shape.Max(cvec => cvec.Y));
-			var cellRegion = new CellCoordsRegion(topLeft, bottomRight);
 
 			var actorPreviews = new Dictionary<string, EditorActorPreview>();
 			for (var i = 0; i < actorPlans.Count; i++)
@@ -870,6 +1149,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 					owner);
 			}
 
+			var terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 			var blitTiles =
 				tiles
 					.Where(t => map.Tiles.Contains(CPos.Zero + t.XY))
@@ -880,12 +1160,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 						t => new BlitTile(t.Tile, default, null, (byte)Math.Clamp(heightOffset + t.HeightOffset, byte.MinValue, byte.MaxValue)));
 
 			return new EditorBlitSource(
-				cellRegion,
+				region,
 				actorPreviews,
 				blitTiles);
 		}
 
-		/// <summary>All possible tiles that may be painted by this MultiBrush.</summary>
+		/// <summary>All possible tiles that may be painted by this <see cref="MultiBrush"/>.</summary>
 		public HashSet<TerrainTile> PossibleTiles()
 		{
 			var possible = new HashSet<TerrainTile>();
@@ -909,6 +1189,51 @@ namespace OpenRA.Mods.Common.MapGenerator
 				weights[i] = brushes[i].Weight;
 
 			return brushes[random.PickWeighted(weights)];
+		}
+
+		/// <summary> Returns a <see cref="CellCoordsRegion"/> that contains all cells covered by the <see cref="MultiBrush"/>. </summary>
+		public CellCoordsRegion GetCellCoordsRegion()
+		{
+			var topLeft = new CPos(
+				Shape.Min(tuple => tuple.Vec.X),
+				Shape.Min(tuple => tuple.Vec.Y));
+			var bottomRight = new CPos(
+				Shape.Max(tuple => tuple.Vec.X),
+				Shape.Max(tuple => tuple.Vec.Y));
+
+			return new CellCoordsRegion(topLeft, bottomRight);
+		}
+
+		/// <summary> Adds an <paramref name="offset"/> to all tiles and actor plans in the <see cref="MultiBrush"/>. </summary>
+		public void AddOffset(CVec offset)
+		{
+			for (var i = 0; i < tiles.Count; i++)
+			{
+				var (xy, tileRange) = tiles[i];
+				tiles[i] = (xy + offset, tileRange);
+			}
+
+			for (var i = 0; i < actorPlans.Count; i++)
+				actorPlans[i].Location += offset;
+
+			shape = null;
+		}
+
+		/// <summary> Removes the offset of the <see cref="MultiBrush"/>, resetting it to the top-left corner of the bounding region. </summary>
+		public void RemoveOffset()
+		{
+			var offset = GetCellCoordsRegion().TopLeft - CPos.Zero;
+			AddOffset(-offset);
+		}
+
+		/// <summary>Updates the owner of all actors in the <see cref="MultiBrush"/>.</summary>
+		public void UpdateOwner(string owner)
+		{
+			for (var i = 0; i < actorPlans.Count; i++)
+			{
+				var actorPlan = actorPlans[i];
+				actorPlan.Owner = owner;
+			}
 		}
 
 		/// <summary>
