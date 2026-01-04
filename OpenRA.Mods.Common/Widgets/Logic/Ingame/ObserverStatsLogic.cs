@@ -546,10 +546,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			return ScrollItemWidget.Setup(template, () => false, () =>
 			{
-				var playerBase = world.ActorsHavingTrait<BaseBuilding>().FirstOrDefault(a => !a.IsDead && a.Owner == player);
-				if (playerBase != null)
-					worldRenderer.Viewport.Center(playerBase.CenterPosition);
+				var targetActor = FindPlayerBaseActor(player);
+				if (targetActor != null)
+					worldRenderer.Viewport.Center(targetActor.CenterPosition);
 			});
+		}
+
+		Actor FindPlayerBaseActor(Player player)
+		{
+			// Priority 1: Primary BaseBuilding (Construction Yard or MCV), closest to viewport
+			var primaryBase = world.ActorsHavingTrait<BaseBuilding>()
+				.Where(a => a.Owner == player)
+				.OrderByDescending(a => a.IsPrimaryBuilding())
+				.ThenBy(a => (worldRenderer.Viewport.CenterPosition - a.CenterPosition).LengthSquared)
+				.FirstOrDefault();
+
+			if (primaryBase != null)
+				return primaryBase;
+
+			// Priority 2: Any selectable Building (fallback), closest to viewport
+			var building = world.ActorsHavingTrait<Building>()
+				.OrderBy(a => (worldRenderer.Viewport.CenterPosition - a.CenterPosition).LengthSquared)
+				.FirstOrDefault(a => a.Owner == player && a.Info.HasTraitInfo<SelectableInfo>());
+
+			return building;
 		}
 
 		void AdjustStatisticsPanel(Widget itemTemplate)
