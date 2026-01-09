@@ -1,7 +1,7 @@
 ^MapGenerators:
-	ExperimentalMapGenerator@experimental:
-		Type: experimental
-		Name: map-generator-experimental
+	ClassicMapGenerator@classic:
+		Type: classic
+		Name: map-generator-classic
 		Tilesets: DESERT, SNOW, TEMPERAT
 		Settings:
 			MultiChoiceOption@hidden_defaults:

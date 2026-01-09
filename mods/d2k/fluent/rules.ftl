@@ -104,7 +104,7 @@ faction-smugglers =
 faction-fremen =
     .name = Fremen
 
-map-generator-d2k = D2K RMG
+map-generator-d2k = Map Generator
 map-generator-clear = Clear Terrain
 
 ## defaults.yaml

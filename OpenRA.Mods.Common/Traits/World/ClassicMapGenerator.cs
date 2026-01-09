@@ -23,7 +23,7 @@ using static OpenRA.Mods.Common.Traits.ResourceLayerInfo;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	public sealed class ExperimentalMapGeneratorInfo : TraitInfo, IEditorMapGeneratorInfo
+	public sealed class ClassicMapGeneratorInfo : TraitInfo, IEditorMapGeneratorInfo
 	{
 		[FieldLoader.Require]
 		public readonly string Type = null;
@@ -955,18 +955,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init)
 		{
-			return new ExperimentalMapGenerator(init, this);
+			return new ClassicMapGenerator(init, this);
 		}
 	}
 
-	public class ExperimentalMapGenerator : IEditorTool
+	public class ClassicMapGenerator : IEditorTool
 	{
 		public string Label { get; }
 		public string PanelWidget { get; }
 		public TraitInfo TraitInfo { get; }
 		public bool IsEnabled { get; }
 
-		public ExperimentalMapGenerator(ActorInitializer init, ExperimentalMapGeneratorInfo info)
+		public ClassicMapGenerator(ActorInitializer init, ClassicMapGeneratorInfo info)
 		{
 			Label = info.Name;
 			PanelWidget = info.PanelWidget;
