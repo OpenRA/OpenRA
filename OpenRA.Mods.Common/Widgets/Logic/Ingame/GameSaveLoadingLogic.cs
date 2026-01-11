@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("CANCEL_HANDLER");
 			keyhandler.AddHandler(e =>
 			{
-				if (e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE)
+				if (e.Event == KeyInputEvent.Down && e.Key == Scancode.ESCAPE)
 				{
 					Game.Disconnect();
 					Ui.ResetAll();

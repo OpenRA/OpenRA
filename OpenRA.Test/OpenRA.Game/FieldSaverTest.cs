@@ -35,7 +35,7 @@ namespace OpenRA.Test
 				new TestCaseData(123m),
 				new TestCaseData("test"),
 				new TestCaseData(Color.CornflowerBlue),
-				new TestCaseData(new Hotkey(Keycode.A, Modifiers.Shift)),
+				new TestCaseData(new Hotkey(Scancode.A, Modifiers.Shift)),
 				new TestCaseData(new WDist(123)),
 				new TestCaseData(new WVec(123, 456, 789)),
 				new TestCaseData(new WPos(123, 456, 789)),

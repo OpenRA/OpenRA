@@ -43,7 +43,7 @@ DecreaseDepthPreviewOffset: SEMICOLON SHIFT
 	Types: DepthDebug
 	Contexts: player
 
-IncreaseDepthPreviewOffset: QUOTE SHIFT
+IncreaseDepthPreviewOffset: APOSTROPHE SHIFT
 	Description: hotkey-description-increasedepthpreviewoffset
 	Types: DepthDebug
 	Contexts: player

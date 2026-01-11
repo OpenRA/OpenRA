@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (e.Event == KeyInputEvent.Up || !chatText.IsDisabled())
 						return false;
 
-					if ((e.Key == Keycode.RETURN || e.Key == Keycode.KP_ENTER || e.Key == Keycode.ESCAPE) && e.Modifiers == Modifiers.None)
+					if ((e.Key == Scancode.RETURN || e.Key == Scancode.KP_ENTER || e.Key == Scancode.ESCAPE) && e.Modifiers == Modifiers.None)
 					{
 						CloseChat();
 						return true;

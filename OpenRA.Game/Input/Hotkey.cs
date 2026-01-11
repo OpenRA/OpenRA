@@ -15,13 +15,13 @@ namespace OpenRA
 {
 	public readonly struct Hotkey : IEquatable<Hotkey>
 	{
-		public static Hotkey Invalid = new(Keycode.UNKNOWN, Modifiers.None);
+		public static Hotkey Invalid = new(Scancode.UNKNOWN, Modifiers.None);
 		public bool IsValid()
 		{
-			return Key != Keycode.UNKNOWN;
+			return Key != Scancode.UNKNOWN;
 		}
 
-		public readonly Keycode Key;
+		public readonly Scancode Key;
 		public readonly Modifiers Modifiers;
 
 		public static bool TryParse(string s, out Hotkey result)
@@ -36,7 +36,7 @@ namespace OpenRA
 			if (count == 0)
 				return false;
 
-			if (!Enum.TryParse(span[ranges[0]], true, out Keycode key))
+			if (!Enum.TryParse(span[ranges[0]], true, out Scancode key))
 				return false;
 
 			var mods = Modifiers.None;
@@ -52,9 +52,9 @@ namespace OpenRA
 			return new Hotkey(ki.Key, ki.Modifiers);
 		}
 
-		public Hotkey(Keycode virtKey, Modifiers mod)
+		public Hotkey(Scancode scanKey, Modifiers mod)
 		{
-			Key = virtKey;
+			Key = scanKey;
 			Modifiers = mod;
 		}
 
@@ -62,7 +62,7 @@ namespace OpenRA
 		public static bool operator ==(Hotkey a, Hotkey b)
 		{
 			// Unknown keys are never equal
-			if (a.Key == Keycode.UNKNOWN)
+			if (a.Key == Scancode.UNKNOWN)
 				return false;
 
 			return a.Key == b.Key && a.Modifiers == b.Modifiers;
@@ -84,7 +84,7 @@ namespace OpenRA
 
 		public string DisplayString()
 		{
-			var ret = KeycodeExts.DisplayString(Key);
+			var ret = ScancodeExts.DisplayString(Key);
 
 			if (Modifiers.HasModifier(Modifiers.Shift))
 				ret = $"{ModifiersExts.DisplayString(Modifiers.Shift)} + {ret}";
