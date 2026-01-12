@@ -18,6 +18,11 @@ MapScrollRight: RIGHT
 	Types: Viewport
 	Contexts: player, spectator, editor
 
+FocusActor: L
+	Description: hotkey-description-focusactor
+	Types: Viewport
+	Contexts: player, spectator
+
 MapJumpToTopEdge: UP Alt
 	Description: hotkey-description-mapjumptotopedge
 	Types: Viewport
