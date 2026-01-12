@@ -1,4 +1,6 @@
 World:
+	StartGameNotification:
+		Notification:
 	TintPostProcessEffect@HAZE:
 		Red: 1
 		Green: 0.55

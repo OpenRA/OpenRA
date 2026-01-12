@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Graphics;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -23,7 +24,49 @@ namespace OpenRA.Mods.Common.Scripting
 		public WPos Position
 		{
 			get => Context.WorldRenderer.Viewport.CenterPosition;
-			set => Context.WorldRenderer.Viewport.Center(value);
+			set => Context.WorldRenderer.Viewport.Center(value, true);
+		}
+
+		Actor focusedActor;
+
+		float2? GetViewportCenter(WorldRenderer worldRenderer)
+		{
+			if (focusedActor == null || focusedActor.IsDead || !focusedActor.IsInWorld)
+			{
+				focusedActor = null;
+				Context.WorldRenderer.Viewport.IsMovementLocked = false;
+
+				void RemoveAction(World world)
+				{
+					if (focusedActor == null || focusedActor.IsDead || !focusedActor.IsInWorld)
+						worldRenderer.Viewport.ViewportCenterProvider = null;
+				}
+
+				worldRenderer.World.AddFrameEndTask(RemoveAction);
+				return null;
+			}
+
+			var pos = focusedActor.CenterPosition;
+			return new float2(pos.X, pos.Y - pos.Z);
+		}
+
+		[Desc("Locks the player's viewport to the specified actor. The viewport will follow the actor as it moves. Set to nil to unlock.")]
+		public Actor FocusedActor
+		{
+			get => focusedActor;
+			set
+			{
+				focusedActor = value;
+				if (focusedActor == null)
+				{
+					Context.WorldRenderer.Viewport.IsMovementLocked = false;
+					Context.WorldRenderer.Viewport.ViewportCenterProvider = null;
+					return;
+				}
+
+				Context.WorldRenderer.Viewport.IsMovementLocked = true;
+				Context.WorldRenderer.Viewport.ViewportCenterProvider = () => GetViewportCenter(Context.WorldRenderer);
+			}
 		}
 	}
 }
