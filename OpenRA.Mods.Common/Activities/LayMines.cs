@@ -174,10 +174,13 @@ namespace OpenRA.Mods.Common.Activities
 					yield return new TargetLineNode(Target.FromCell(self.World, c), minelayer.Info.TargetLineColor, tile: minelayer.Tile);
 		}
 
-		static bool CanLayMine(Actor self, CPos p)
+		static bool CanLayMine(Actor self, CPos location)
 		{
+			if (self.IsDead || !self.IsInWorld)
+				return false;
+
 			// If there is no unit (other than me) here, we can place a mine here
-			return self.World.ActorMap.GetActorsAt(p).All(a => a == self);
+			return self.World.ActorMap.GetActorsAt(location).All(a => a == self);
 		}
 
 		bool StartLayingMine(Actor self)
