@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
@@ -317,12 +318,38 @@ namespace OpenRA.Graphics
 				(int)Math.Ceiling(maxY) - (int)minY);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Color PremultiplyAlpha(Color c)
 		{
-			if (c.A == byte.MaxValue)
+			var argb = c.ToArgb();
+			var a = argb >> 24;
+
+			// Fully opaque.
+			if (a == 255)
 				return c;
-			var a = c.A / 255f;
-			return Color.FromArgb(c.A, (byte)(c.R * a + 0.5f), (byte)(c.G * a + 0.5f), (byte)(c.B * a + 0.5f));
+
+			// Fully transparent.
+			if (a == 0)
+				return default;
+
+			// Extract channels.
+			var r = (argb >> 16) & 0xFF;
+			var g = (argb >> 8) & 0xFF;
+			var b = argb & 0xFF;
+
+			// Fast integer premultiply: (c * a) / 255
+			// The (x + (x >> 8)) >> 8 trick is bit-perfect for the 0-255 range.
+			r = r * a + 128;
+			r = (r + (r >> 8)) >> 8;
+
+			g = g * a + 128;
+			g = (g + (g >> 8)) >> 8;
+
+			b = b * a + 128;
+			b = (b + (b >> 8)) >> 8;
+
+			var result = (a << 24) | (r << 16) | (g << 8) | b;
+			return Color.FromArgb(result);
 		}
 
 		public static Color PremultipliedColorLerp(float t, Color c1, Color c2)
