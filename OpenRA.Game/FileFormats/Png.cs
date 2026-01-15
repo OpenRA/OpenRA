@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using OpenRA.Graphics;
@@ -333,10 +332,12 @@ namespace OpenRA.FileFormats
 			var data = input.ReadAllBytes();
 			output.Write(data);
 
-			var crc32 = new Crc32();
-			crc32.Update(typeBytes);
-			crc32.Update(data);
-			output.Write(IPAddress.NetworkToHostOrder((int)crc32.Value));
+			var crc = 0xFFFFFFFF;
+			crc = CRC32.Update(crc, typeBytes);
+			crc = CRC32.Update(crc, data);
+			var finalCrc = CRC32.Finish(crc);
+
+			output.Write(IPAddress.NetworkToHostOrder((int)finalCrc));
 		}
 
 		public byte[] Save(Compression compression = Compression.BEST_COMPRESSION)

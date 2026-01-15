@@ -11,7 +11,7 @@
 
 using System;
 
-namespace OpenRA.Mods.Cnc.FileFormats
+namespace OpenRA.FileFormats
 {
 	/// <summary>
 	/// Static class that uses a lookup table to calculates CRC32
@@ -118,5 +118,16 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		{
 			return Calculate(data, 0xFFFFFFFF);
 		}
+
+		// Chaining method: accepts the current CRC state
+		public static uint Update(uint crc, ReadOnlySpan<byte> data)
+		{
+			for (var i = 0; i < data.Length; i++)
+				crc = (crc >> 8) ^ LookUp[(crc & 0xFF) ^ data[i]];
+			return crc;
+		}
+
+		// Standard PNG start: 0xFFFFFFFF, Finalize: XOR 0xFFFFFFFF
+		public static uint Finish(uint crc) => crc ^ 0xFFFFFFFF;
 	}
 }
