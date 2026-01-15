@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Buffers;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -23,6 +25,13 @@ namespace OpenRA.FileFormats
 {
 	public class Png
 	{
+		public const uint ChunkIHDR = 0x49484452;
+		public const uint ChunkPLTE = 0x504C5445;
+		public const uint ChunkIDAT = 0x49444154;
+		public const uint ChunkIEND = 0x49454E44;
+		public const uint ChunkTRNS = 0x74524E53;
+		public const uint ChunkTEXT = 0x74455874;
+
 		static readonly byte[] Signature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 		public int Width { get; }
@@ -44,22 +53,27 @@ namespace OpenRA.FileFormats
 			var data = new List<byte>();
 			Type = SpriteFrameType.Rgba32;
 
+			// Use a reusable 8-byte buffer for Length + Type.
+			Span<byte> chunkHeader = stackalloc byte[8];
+
 			byte bitDepth = 8;
 			while (true)
 			{
-				var length = IPAddress.NetworkToHostOrder(s.ReadInt32());
-				var type = s.ReadASCII(4);
+				s.ReadBytes(chunkHeader);
+				var length = BinaryPrimitives.ReadInt32BigEndian(chunkHeader[..4]);
+				var type = BinaryPrimitives.ReadUInt32BigEndian(chunkHeader[4..]);
+
 				var content = s.ReadBytes(length);
 				s.ReadInt32(); // crc
 
-				if (!headerParsed && type != "IHDR")
+				if (!headerParsed && type != ChunkIHDR)
 					throw new InvalidDataException("Invalid PNG file - header does not appear first.");
 
 				using (var ms = new MemoryStream(content))
 				{
 					switch (type)
 					{
-						case "IHDR":
+						case ChunkIHDR:
 						{
 							if (headerParsed)
 								throw new InvalidDataException("Invalid PNG file - duplicate header.");
@@ -90,7 +104,7 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						case "PLTE":
+						case ChunkPLTE:
 						{
 							Palette = new Color[length / 3];
 							for (var i = 0; i < Palette.Length; i++)
@@ -102,7 +116,7 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						case "tRNS":
+						case ChunkTRNS:
 						{
 							if (Palette == null)
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
@@ -113,14 +127,14 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						case "IDAT":
+						case ChunkIDAT:
 						{
 							data.AddRange(content);
 
 							break;
 						}
 
-						case "tEXt":
+						case ChunkTEXT:
 						{
 							var key = ms.ReadASCIIZ();
 							EmbeddedData.Add(key, ms.ReadASCII(length - key.Length - 1));
@@ -128,7 +142,7 @@ namespace OpenRA.FileFormats
 							break;
 						}
 
-						case "IEND":
+						case ChunkIEND:
 						{
 							using (var ns = new MemoryStream(data.ToArray()))
 							{
@@ -314,19 +328,22 @@ namespace OpenRA.FileFormats
 			throw new InvalidDataException("Unknown pixel format");
 		}
 
-		static void WritePngChunk(MemoryStream output, string type, MemoryStream input)
+		static void WritePngChunk(MemoryStream output, uint type, MemoryStream input)
 		{
-			input.Position = 0;
+			Span<byte> header = stackalloc byte[8];
+			BinaryPrimitives.WriteInt32BigEndian(header[..4], (int)input.Length);
+			BinaryPrimitives.WriteUInt32BigEndian(header[4..], type);
 
-			var typeBytes = Encoding.ASCII.GetBytes(type);
-			output.Write(IPAddress.HostToNetworkOrder((int)input.Length));
-			output.Write(typeBytes);
+			if (!input.TryGetBuffer(out var dataSegment))
+				dataSegment = new ArraySegment<byte>(input.ToArray());
 
-			var data = input.ReadAllBytes();
+			ReadOnlySpan<byte> data = dataSegment.AsSpan(0, (int)input.Length);
+
+			output.Write(header);
 			output.Write(data);
 
 			var crc = 0xFFFFFFFF;
-			crc = CRC32.Update(crc, typeBytes);
+			crc = CRC32.Update(crc, header[4..]);
 			crc = CRC32.Update(crc, data);
 			var finalCrc = CRC32.Finish(crc);
 
@@ -352,7 +369,7 @@ namespace OpenRA.FileFormats
 					header.WriteByte(0); // Filter
 					header.WriteByte(0); // Interlacing
 
-					WritePngChunk(output, "IHDR", header);
+					WritePngChunk(output, ChunkIHDR, header);
 				}
 
 				var alphaPalette = false;
@@ -368,7 +385,7 @@ namespace OpenRA.FileFormats
 							alphaPalette |= c.A > 0;
 						}
 
-						WritePngChunk(output, "PLTE", palette);
+						WritePngChunk(output, ChunkPLTE, palette);
 					}
 				}
 
@@ -379,7 +396,7 @@ namespace OpenRA.FileFormats
 						foreach (var c in Palette)
 							alpha.WriteByte(c.A);
 
-						WritePngChunk(output, "tRNS", alpha);
+						WritePngChunk(output, ChunkTRNS, alpha);
 					}
 				}
 
@@ -397,7 +414,7 @@ namespace OpenRA.FileFormats
 						}
 					}
 
-					WritePngChunk(output, "IDAT", data);
+					WritePngChunk(output, ChunkIDAT, data);
 				}
 
 				foreach (var kv in EmbeddedData)
@@ -405,11 +422,11 @@ namespace OpenRA.FileFormats
 					using (var text = new MemoryStream())
 					{
 						text.Write(Encoding.ASCII.GetBytes(kv.Key + (char)0 + kv.Value));
-						WritePngChunk(output, "tEXt", text);
+						WritePngChunk(output, ChunkTEXT, text);
 					}
 				}
 
-				WritePngChunk(output, "IEND", new MemoryStream());
+				WritePngChunk(output, ChunkIEND, new MemoryStream());
 				return output.ToArray();
 			}
 		}
