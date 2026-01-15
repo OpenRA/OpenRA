@@ -11,7 +11,7 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.FileFormats;
+using System.IO.Compression;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 
@@ -100,14 +100,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public static void CommitSheet(SheetBuilder builder, Sheet sheet, string name, ImmutablePalette palette, ref int count)
 		{
 			if (builder == null)
-				sheet.AsPng().Save($"{count++}.{name}.png", Png.Compression.BEST_SPEED);
+				sheet.AsPng().Save($"{count++}.{name}.png", CompressionLevel.Fastest);
 			else
 			{
 				if (palette != null)
 				{
 					var channels = sheet == builder.Current ? (int)builder.CurrentChannel + 1 : 4;
 					for (var i = 0; i < channels; i++)
-						sheet.AsPng((TextureChannel)ChannelMasks[i], palette).Save($"{count}.{i}.{name}.png", Png.Compression.BEST_SPEED);
+						sheet.AsPng((TextureChannel)ChannelMasks[i], palette).Save($"{count}.{i}.{name}.png", CompressionLevel.Fastest);
 
 					count++;
 				}

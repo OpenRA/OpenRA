@@ -12,11 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -24,12 +23,6 @@ namespace OpenRA.FileFormats
 {
 	public class Png
 	{
-		public enum Compression : byte
-		{
-			BEST_COMPRESSION = Deflater.BEST_COMPRESSION,
-			BEST_SPEED = Deflater.BEST_SPEED,
-		}
-
 		static readonly byte[] Signature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
 		public int Width { get; }
@@ -139,7 +132,7 @@ namespace OpenRA.FileFormats
 						{
 							using (var ns = new MemoryStream(data.ToArray()))
 							{
-								using (var ds = new InflaterInputStream(ns))
+								using (var ds = new ZLibStream(ns, CompressionMode.Decompress))
 								{
 									var pxStride = PixelStride;
 									var rowStride = Width * pxStride;
@@ -340,7 +333,7 @@ namespace OpenRA.FileFormats
 			output.Write(IPAddress.NetworkToHostOrder((int)finalCrc));
 		}
 
-		public byte[] Save(Compression compression = Compression.BEST_COMPRESSION)
+		public byte[] Save(CompressionLevel compression = CompressionLevel.SmallestSize)
 		{
 			using (var output = new MemoryStream())
 			{
@@ -392,7 +385,7 @@ namespace OpenRA.FileFormats
 
 				using (var data = new MemoryStream())
 				{
-					using (var compressed = new DeflaterOutputStream(data, new Deflater((int)compression)))
+					using (var compressed = new ZLibStream(data, compression, true))
 					{
 						var rowStride = Width * PixelStride;
 						for (var y = 0; y < Height; y++)
@@ -402,12 +395,9 @@ namespace OpenRA.FileFormats
 							compressed.WriteByte(FilterType);
 							compressed.Write(Data, y * rowStride, rowStride);
 						}
-
-						compressed.Flush();
-						compressed.Finish();
-
-						WritePngChunk(output, "IDAT", data);
 					}
+
+					WritePngChunk(output, "IDAT", data);
 				}
 
 				foreach (var kv in EmbeddedData)
@@ -424,7 +414,7 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public void Save(string path, Compression compression = Compression.BEST_COMPRESSION)
+		public void Save(string path, CompressionLevel compression = CompressionLevel.SmallestSize)
 		{
 			File.WriteAllBytes(path, Save(compression));
 		}
