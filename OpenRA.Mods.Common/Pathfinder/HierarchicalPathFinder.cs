@@ -390,12 +390,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 					// Make sure the abstract cell is one of the available local cells.
 					// This ensures each abstract cell we generate is unique.
 					// We'll choose an abstract node as close to the middle of the region as possible.
+					// If there are multiple equally close cells, choose the leftmost/topmost (arbitrary tiebreaker).
+					// This is important so we always choose the same abstract cell, no matter the ordering of the list.
 					var abstractCell = desired;
 					var distance = int.MaxValue;
 					foreach (var cell in cells)
 					{
 						var newDistance = (cell - desired).LengthSquared;
-						if (distance > newDistance)
+						if (distance > newDistance ||
+							(distance == newDistance && abstractCell.X > cell.X) ||
+							(distance == newDistance && abstractCell.X == cell.X && abstractCell.Y > cell.Y))
 						{
 							distance = newDistance;
 							abstractCell = cell;
@@ -416,6 +420,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 					using (var search = GetLocalPathSearch(
 						null, [src], src, customCost, null, BlockedByActor.None, false, grid, 100, null, false, null))
 					{
+						// Determinism: The order of visited cells from ExpandAll can be perturbed by cell cost changes.
+						// Processing of this list must not take any implicit dependencies on its ordering.
 						var localCellsInRegion = search.ExpandAll();
 						var abstractCell = AbstractCellForLocalCells(localCellsInRegion, gridLayer);
 						accessibleCells.ExceptWith(localCellsInRegion);
