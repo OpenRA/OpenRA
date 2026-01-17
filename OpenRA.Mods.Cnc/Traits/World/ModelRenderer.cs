@@ -84,12 +84,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			sheetSize = info.RenderBufferSize;
 			var a = 2f / sheetSize;
 			var view = new Matrix4x4(
-				a, 0, 0, 0,
-				0, -a, 0, 0,
+				a, 0, 0, -1,
+				0, -a, 0, 1,
 				0, 0, -2 * a, 0,
-				-1, 1, 0, 1);
+				0, 0, 0, 1);
 
-			shader.SetMatrix("View", view);
+			shader.SetMatrixRowMajor("View", view);
 		}
 
 		public ModelRenderProxy RenderAsync(
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var lightPitch = new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).ToFloatMatrix();
 			var ground = groundOrientation.ToFloatMatrix();
 			Matrix4x4.Invert(ground, out var groundInverse);
-			var shadowTransform = groundInverse * lightYaw * lightPitch;
+			var shadowTransform = lightPitch * lightYaw * groundInverse;
 
 			var groundNormal = Vector4.Transform(GroundNormal, ground);
 			Matrix4x4.Invert(shadowTransform, out var invShadowTransform);
@@ -131,8 +131,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				var offsetTransform = Matrix4x4.CreateTranslation(offsetVec.X, offsetVec.Y, offsetVec.Z);
 
 				var worldTransform = m.RotationFunc().ToFloatMatrix();
-				worldTransform *= scaleTransform;
-				worldTransform *= offsetTransform;
+				worldTransform = scaleTransform * worldTransform;
+				worldTransform = offsetTransform * worldTransform;
 
 				var bounds = m.Model.Bounds(m.FrameFunc());
 				var worldBounds = AABB.Transform(bounds, worldTransform);
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					var offsetTransform = Matrix4x4.CreateTranslation(offsetVec.X, offsetVec.Y, offsetVec.Z);
 
 					var rotations = m.RotationFunc().ToFloatMatrix();
-					var worldTransform = rotations * scaleTransform;
+					var worldTransform = scaleTransform * rotations;
 					worldTransform *= offsetTransform;
 
 					var transform = worldTransform * cameraTransform;
@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
 			shader.SetVec("Palettes", colorPaletteTextureIndex, normalsPaletteTextureIndex);
-			shader.SetMatrix("TransformMatrix", t);
+			shader.SetMatrixRowMajor("TransformMatrix", t);
 			shader.SetVec("LightDirection", lightDirection);
 			shader.SetVec("AmbientLight", ambientLight);
 			shader.SetVec("DiffuseLight", diffuseLight);

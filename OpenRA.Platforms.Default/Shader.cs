@@ -247,5 +247,20 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.CheckGLError();
 		}
+
+		public void SetMatrixRowMajor(string name, Matrix4x4 mtx)
+		{
+			VerifyThreadAffinity();
+
+			OpenGL.glUseProgram(program);
+			OpenGL.CheckGLError();
+
+			unsafe
+			{
+				OpenGL.glUniformMatrix4fv(uniformCache[name], 1, true, new IntPtr((float*)&mtx));
+			}
+
+			OpenGL.CheckGLError();
+		}
 	}
 }

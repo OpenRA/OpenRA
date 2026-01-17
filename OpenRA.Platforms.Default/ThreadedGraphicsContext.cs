@@ -765,6 +765,7 @@ namespace OpenRA.Platforms.Default
 		readonly Action prepareRender;
 		readonly Action<object> setBool;
 		readonly Action<object> setMatrix;
+		readonly Action<object> setMatrixRowMajor;
 		readonly Action<object> setTexture;
 		readonly Action<object> setVec1;
 		readonly Action<object> setVec2;
@@ -779,6 +780,7 @@ namespace OpenRA.Platforms.Default
 			prepareRender = shader.PrepareRender;
 			setBool = tuple => { var t = ((string, bool))tuple; shader.SetBool(t.Item1, t.Item2); };
 			setMatrix = tuple => { var t = ((string, Matrix4x4))tuple; shader.SetMatrix(t.Item1, t.Item2); };
+			setMatrixRowMajor = tuple => { var t = ((string, Matrix4x4))tuple; shader.SetMatrixRowMajor(t.Item1, t.Item2); };
 			setTexture = tuple => { var t = ((string, ITexture))tuple; shader.SetTexture(t.Item1, t.Item2); };
 			setVec1 = tuple => { var t = ((string, float))tuple; shader.SetVec(t.Item1, t.Item2); };
 			setVec2 = tuple => { var t = ((string, Vector4))tuple; shader.SetVec(t.Item1, t.Item2); };
@@ -804,6 +806,11 @@ namespace OpenRA.Platforms.Default
 		public void SetMatrix(string param, Matrix4x4 mtx)
 		{
 			device.Post(setMatrix, (param, mtx));
+		}
+
+		public void SetMatrixRowMajor(string param, Matrix4x4 mtx)
+		{
+			device.Post(setMatrixRowMajor, (param, mtx));
 		}
 
 		public void SetTexture(string param, ITexture texture)

@@ -141,6 +141,7 @@ namespace OpenRA
 		void SetVec(string name, Vector4 vec);
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, Matrix4x4 mtx);
+		void SetMatrixRowMajor(string param, Matrix4x4 mtx);
 		void PrepareRender();
 		void Bind();
 	}

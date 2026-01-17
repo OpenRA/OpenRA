@@ -69,9 +69,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var t = transforms[limbs * frame + limb];
 
 			// Fix limb position
-			t[3, 0] *= l.Scale * (l.Bounds.MaxX - l.Bounds.MinX) / l.Size[0];
-			t[3, 1] *= l.Scale * (l.Bounds.MaxY - l.Bounds.MinY) / l.Size[1];
-			t[3, 2] *= l.Scale * (l.Bounds.MaxZ - l.Bounds.MinZ) / l.Size[2];
+			t[0, 3] *= l.Scale * (l.Bounds.MaxX - l.Bounds.MinX) / l.Size[0];
+			t[1, 3] *= l.Scale * (l.Bounds.MaxY - l.Bounds.MinY) / l.Size[1];
+			t[2, 3] *= l.Scale * (l.Bounds.MaxZ - l.Bounds.MinZ) / l.Size[2];
 
 			// Center, flip and scale
 			t = Matrix4x4.CreateTranslation(l.Bounds.MinX, l.Bounds.MinY, l.Bounds.MinZ) * t;

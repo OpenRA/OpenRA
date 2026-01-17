@@ -160,17 +160,17 @@ namespace OpenRA
 			// Quaternion components use 10 bits, so there's no risk of overflow
 			mtx = new Int32Matrix4x4(
 				lsq - 2 * (y * y + z * z),
-				2 * (x * y + z * w),
-				2 * (x * z - y * w),
-				0,
-				/* row */
 				2 * (x * y - z * w),
-				lsq - 2 * (x * x + z * z),
-				2 * (y * z + x * w),
+				2 * (x * z + y * w),
 				0,
 				/* row */
-				2 * (x * z + y * w),
+				2 * (x * y + z * w),
+				lsq - 2 * (x * x + z * z),
 				2 * (y * z - x * w),
+				0,
+				/* row */
+				2 * (x * z - y * w),
+				2 * (y * z + x * w),
 				lsq - 2 * (x * x + y * y),
 				0,
 				/* row */

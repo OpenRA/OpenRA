@@ -22,9 +22,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		public HvaReader(Stream s, string fileName)
 		{
-			// Index swaps for transposing a matrix
-			var ids = new byte[] { 0, 4, 8, 12, 1, 5, 9, 13, 2, 6, 10, 14 };
-
 			s.Seek(16, SeekOrigin.Begin);
 			FrameCount = s.ReadUInt32();
 			LimbCount = s.ReadUInt32();
@@ -38,13 +35,13 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				{
 					// Convert to column-major matrices and add the final matrix row
 					var c = LimbCount * j + i;
-					Transforms[c][0, 3] = 0;
-					Transforms[c][1, 3] = 0;
-					Transforms[c][2, 3] = 0;
+					Transforms[c][3, 0] = 0;
+					Transforms[c][3, 1] = 0;
+					Transforms[c][3, 2] = 0;
 					Transforms[c][3, 3] = 1;
 
 					for (var k = 0; k < 12; k++)
-						Transforms[c][ids[k] / 4, ids[k] % 4] = s.ReadSingle();
+						Transforms[c][k / 4, k % 4] = s.ReadSingle();
 
 					if (!Matrix4x4.Invert(Transforms[c], out var _))
 						throw new InvalidDataException(

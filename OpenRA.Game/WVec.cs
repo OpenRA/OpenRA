@@ -58,9 +58,9 @@ namespace OpenRA
 			var ly = (long)Y;
 			var lz = (long)Z;
 			return new WVec(
-				(int)((lx * mtx.M11 + ly * mtx.M21 + lz * mtx.M31) / mtx.M44),
-				(int)((lx * mtx.M12 + ly * mtx.M22 + lz * mtx.M32) / mtx.M44),
-				(int)((lx * mtx.M13 + ly * mtx.M23 + lz * mtx.M33) / mtx.M44));
+				(int)((lx * mtx.M11 + ly * mtx.M12 + lz * mtx.M13) / mtx.M44),
+				(int)((lx * mtx.M21 + ly * mtx.M22 + lz * mtx.M23) / mtx.M44),
+				(int)((lx * mtx.M31 + ly * mtx.M32 + lz * mtx.M33) / mtx.M44));
 		}
 
 		public WAngle Yaw
