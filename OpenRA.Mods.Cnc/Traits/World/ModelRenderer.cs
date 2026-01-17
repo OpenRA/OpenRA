@@ -51,8 +51,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		static readonly float2 SpritePadding = new(2, 2);
 		static readonly Vector4 ZeroVector = new(0, 0, 0, 1);
 		static readonly Vector4 ZVector = new(0, 0, 1, 1);
-		static readonly Matrix4x4 FlipMtx = Util.ScaleMatrix(1, -1, 1);
-		static readonly Matrix4x4 ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
+		static readonly Matrix4x4 FlipMtx = Matrix4x4.CreateScale(1, -1, 1);
+		static readonly Matrix4x4 ShadowScaleFlipMtx = Matrix4x4.CreateScale(2, -2, 2);
 		static readonly Vector4 GroundNormal = new(0, 0, 1, 1);
 
 		readonly Renderer renderer;
@@ -101,22 +101,20 @@ namespace OpenRA.Mods.Cnc.Traits
 				throw new InvalidOperationException("BeginFrame has not been called. You cannot render until a frame has been started.");
 
 			// Correct for inverted y-axis
-			var scaleTransform = Util.ScaleMatrix(scale, scale, scale);
+			var scaleTransform = Matrix4x4.CreateScale(scale);
 
 			// Correct for bogus light source definition
-			var lightYaw = Util.MakeFloatMatrix(new WRot(WAngle.Zero, WAngle.Zero, -lightSource.Yaw).AsMatrix());
-			var lightPitch = Util.MakeFloatMatrix(new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).AsMatrix());
-			var ground = Util.MakeFloatMatrix(groundOrientation.AsMatrix());
-			var shadowTransform = Util.MatrixMultiply(Util.MatrixInverse(ground).Value, Util.MatrixMultiply(lightYaw, lightPitch));
+			var lightYaw = new WRot(WAngle.Zero, WAngle.Zero, -lightSource.Yaw).ToFloatMatrix();
+			var lightPitch = new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).ToFloatMatrix();
+			var ground = groundOrientation.ToFloatMatrix();
+			Matrix4x4.Invert(ground, out var groundInverse);
+			var shadowTransform = groundInverse * lightYaw * lightPitch;
 
-			var groundNormal = Util.MatrixVectorMultiply(ground, GroundNormal);
-
-			var invShadowTransform = Util.MatrixInverse(shadowTransform).Value;
-			var cameraTransform = Util.MakeFloatMatrix(camera.AsMatrix());
-			var invCameraTransformNullable = Util.MatrixInverse(cameraTransform);
-			if (invCameraTransformNullable == null)
+			var groundNormal = Vector4.Transform(GroundNormal, ground);
+			Matrix4x4.Invert(shadowTransform, out var invShadowTransform);
+			var cameraTransform = camera.ToFloatMatrix();
+			if (!Matrix4x4.Invert(cameraTransform, out var invCameraTransform))
 				throw new InvalidOperationException("Failed to invert the cameraTransform matrix during RenderAsync.");
-			var invCameraTransform = invCameraTransformNullable.Value;
 
 			// Sprite rectangle
 			var tl = new float2(float.MaxValue, float.MaxValue);
@@ -129,17 +127,17 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var m in models)
 			{
 				// Convert screen offset back to world coords
-				var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
-				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
+				var offsetVec = Vector4.Transform(wr.ScreenVector(m.OffsetFunc()), invCameraTransform);
+				var offsetTransform = Matrix4x4.CreateTranslation(offsetVec.X, offsetVec.Y, offsetVec.Z);
 
-				var worldTransform = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
-				worldTransform = Util.MatrixMultiply(worldTransform, scaleTransform);
-				worldTransform = Util.MatrixMultiply(worldTransform, offsetTransform);
+				var worldTransform = m.RotationFunc().ToFloatMatrix();
+				worldTransform *= scaleTransform;
+				worldTransform *= offsetTransform;
 
 				var bounds = m.Model.Bounds(m.FrameFunc());
-				var worldBounds = Util.MatrixAABBMultiply(worldTransform, bounds);
-				var screenBounds = Util.MatrixAABBMultiply(cameraTransform, worldBounds);
-				var shadowBounds = Util.MatrixAABBMultiply(shadowTransform, worldBounds);
+				var worldBounds = AABB.Transform(bounds, worldTransform);
+				var screenBounds = AABB.Transform(worldBounds, cameraTransform);
+				var shadowBounds = AABB.Transform(worldBounds, shadowTransform);
 
 				// Aggregate bounds rects
 				tl = float2.Min(tl, new float2(screenBounds.MinX, screenBounds.MinY));
@@ -163,8 +161,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				new(stl.X, sbr.Y, 0, 1),
 			};
 
-			var shadowScreenTransform = Util.MatrixMultiply(invShadowTransform, cameraTransform);
-			var shadowGroundNormal = Util.MatrixVectorMultiply(shadowTransform, groundNormal);
+			var shadowScreenTransform = invShadowTransform * cameraTransform;
+			var shadowGroundNormal = Vector4.Transform(groundNormal, shadowTransform);
 			var screenCorners = new float3[4];
 			for (var j = 0; j < 4; j++)
 			{
@@ -173,7 +171,7 @@ namespace OpenRA.Mods.Cnc.Traits
 								  corners[j][0] * shadowGroundNormal[0] / shadowGroundNormal[2]);
 
 				// Rotate to camera-space
-				corners[j] = Util.MatrixVectorMultiply(shadowScreenTransform, corners[j]);
+				corners[j] = Vector4.Transform(corners[j], shadowScreenTransform);
 				screenCorners[j] = new float3(corners[j][0], corners[j][1], 0);
 			}
 
@@ -190,49 +188,49 @@ namespace OpenRA.Mods.Cnc.Traits
 			var spriteCenter = new float2(sb.Left + sb.Width / 2, sb.Top + sb.Height / 2);
 			var shadowCenter = new float2(ssb.Left + ssb.Width / 2, ssb.Top + ssb.Height / 2);
 
-			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, sheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
-			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, sheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
-			var correctionTransform = Util.MatrixMultiply(FlipMtx, translateMtx);
-			var shadowCorrectionTransform = Util.MatrixMultiply(ShadowScaleFlipMtx, shadowTranslateMtx);
+			var translateMtx = Matrix4x4.CreateTranslation(spriteCenter.X - spriteOffset.X, sheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
+			var shadowTranslateMtx = Matrix4x4.CreateTranslation(shadowCenter.X - shadowSpriteOffset.X, sheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
+			var correctionTransform = FlipMtx * translateMtx;
+			var shadowCorrectionTransform = ShadowScaleFlipMtx * shadowTranslateMtx;
 
 			void RenderFunc()
 			{
 				foreach (var m in models)
 				{
 					// Convert screen offset to world offset
-					var offsetVec = Util.MatrixVectorMultiply(invCameraTransform, wr.ScreenVector(m.OffsetFunc()));
-					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
+					var offsetVec = Vector4.Transform(wr.ScreenVector(m.OffsetFunc()), invCameraTransform);
+					var offsetTransform = Matrix4x4.CreateTranslation(offsetVec.X, offsetVec.Y, offsetVec.Z);
 
-					var rotations = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(rotations, scaleTransform);
-					worldTransform = Util.MatrixMultiply(worldTransform, offsetTransform);
+					var rotations = m.RotationFunc().ToFloatMatrix();
+					var worldTransform = rotations * scaleTransform;
+					worldTransform *= offsetTransform;
 
-					var transform = Util.MatrixMultiply(worldTransform, cameraTransform);
-					transform = Util.MatrixMultiply(transform, correctionTransform);
+					var transform = worldTransform * cameraTransform;
+					transform *= correctionTransform;
 
-					var shadow = Util.MatrixMultiply(worldTransform, shadowTransform);
-					shadow = Util.MatrixMultiply(shadow, shadowCorrectionTransform);
+					var shadow = worldTransform * shadowTransform;
+					shadow *= shadowCorrectionTransform;
 
-					var lightTransform = Util.MatrixMultiply(invShadowTransform, Util.MatrixInverse(rotations).Value);
+					Matrix4x4.Invert(rotations, out var rotationsInverse);
+					var lightTransform = invShadowTransform * rotationsInverse;
 
 					var frame = m.FrameFunc();
 					for (uint i = 0; i < m.Model.Sections; i++)
 					{
 						var rd = m.Model.RenderData(i);
 						var t = m.Model.TransformationMatrix(i, frame);
-						var it = Util.MatrixInverse(t);
-						if (it == null)
+						if (!Matrix4x4.Invert(t, out var it))
 							throw new InvalidOperationException($"Failed to invert the transformed matrix of frame {i} during RenderAsync.");
 
 						// Transform light vector from shadow -> world -> limb coords
-						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(lightTransform, it.Value));
+						var lightDirection = ExtractRotationVector(lightTransform * it);
 
-						Render(rd, ModelCache, Util.MatrixMultiply(t, transform), lightDirection,
+						Render(rd, ModelCache, t * transform, lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureIndex, normals.TextureIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
-							Render(rd, ModelCache, Util.MatrixMultiply(t, shadow), lightDirection,
+							Render(rd, ModelCache, t * shadow, lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureIndex, normals.TextureIndex);
 					}
 				}
@@ -240,8 +238,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			doRender.Add((sprite.Sheet, RenderFunc));
 
-			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, ZVector);
-			screenLightVector = Util.MatrixVectorMultiply(cameraTransform, screenLightVector);
+			var screenLightVector = Vector4.Transform(ZVector, invShadowTransform);
+			screenLightVector = Vector4.Transform(screenLightVector, cameraTransform);
 			return new ModelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
 		}
 
@@ -262,8 +260,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		static Vector4 ExtractRotationVector(Matrix4x4 mtx)
 		{
-			var tVec = Util.MatrixVectorMultiply(mtx, ZVector);
-			var tOrigin = Util.MatrixVectorMultiply(mtx, ZeroVector);
+			var tVec = Vector4.Transform(ZVector, mtx);
+			var tOrigin = Vector4.Transform(ZeroVector, mtx);
 			tVec[0] -= tOrigin[0] * tVec[3] / tOrigin[3];
 			tVec[1] -= tOrigin[1] * tVec[3] / tOrigin[3];
 			tVec[2] -= tOrigin[2] * tVec[3] / tOrigin[3];

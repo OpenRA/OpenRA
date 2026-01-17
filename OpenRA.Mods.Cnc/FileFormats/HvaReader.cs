@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					for (var k = 0; k < 12; k++)
 						Transforms[c][ids[k] / 4, ids[k] % 4] = s.ReadSingle();
 
-					if (Util.MatrixInverse(Transforms[c]) == null)
+					if (!Matrix4x4.Invert(Transforms[c], out var _))
 						throw new InvalidDataException(
 							$"The transformation matrix for HVA file `{fileName}` section {i} frame {j} is invalid because it is not invertible!");
 				}

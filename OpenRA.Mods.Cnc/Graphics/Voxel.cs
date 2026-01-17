@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			t[3, 2] *= l.Scale * (l.Bounds.MaxZ - l.Bounds.MinZ) / l.Size[2];
 
 			// Center, flip and scale
-			t = Util.MatrixMultiply(Util.TranslationMatrix(l.Bounds.MinX, l.Bounds.MinY, l.Bounds.MinZ), t);
-			t = Util.MatrixMultiply(t, Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale));
+			t = Matrix4x4.CreateTranslation(l.Bounds.MinX, l.Bounds.MinY, l.Bounds.MinZ) * t;
+			t *= Matrix4x4.CreateScale(l.Scale, -l.Scale, l.Scale);
 
 			return t;
 		}
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					l.Bounds.MaxZ - l.Bounds.MinZ);
 
 				// Calculate limb bounding box
-				var bb = Util.MatrixAABBMultiply(TransformationMatrix(j, frame), b);
+				var bb = AABB.Transform(b, TransformationMatrix(j, frame));
 				minX = Math.Min(minX, bb.MinX);
 				minY = Math.Min(minY, bb.MinY);
 				minZ = Math.Min(minZ, bb.MinZ);

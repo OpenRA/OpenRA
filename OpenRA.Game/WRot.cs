@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 
 namespace OpenRA
 {
@@ -179,10 +180,32 @@ namespace OpenRA
 				lsq);
 		}
 
-		public Int32Matrix4x4 AsMatrix()
+		public Matrix4x4 ToFloatMatrix()
 		{
 			AsMatrix(out var mtx);
-			return mtx;
+			return MakeFloatMatrix(mtx);
+		}
+
+		static Matrix4x4 MakeFloatMatrix(Int32Matrix4x4 imtx)
+		{
+			var multipler = 1f / imtx.M44;
+			return new Matrix4x4(
+				imtx.M11 * multipler,
+				imtx.M12 * multipler,
+				imtx.M13 * multipler,
+				imtx.M14 * multipler,
+				imtx.M21 * multipler,
+				imtx.M22 * multipler,
+				imtx.M23 * multipler,
+				imtx.M24 * multipler,
+				imtx.M31 * multipler,
+				imtx.M32 * multipler,
+				imtx.M33 * multipler,
+				imtx.M34 * multipler,
+				imtx.M41 * multipler,
+				imtx.M42 * multipler,
+				imtx.M43 * multipler,
+				1f);
 		}
 
 		public override int GetHashCode() { return Roll.GetHashCode() ^ Pitch.GetHashCode() ^ Yaw.GetHashCode(); }

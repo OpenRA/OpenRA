@@ -9,10 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Numerics;
-using OpenRA.Primitives;
-
 namespace OpenRA.Mods.Cnc
 {
 	public static class Util
@@ -68,88 +64,6 @@ namespace OpenRA.Mods.Cnc
 				return SpriteFacings[ClassicIndexFacing(facing, steps)];
 
 			return Common.Util.QuantizeFacing(facing, steps);
-		}
-
-		public static Matrix4x4 IdentityMatrix()
-		{
-			return Matrix4x4.Identity;
-		}
-
-		public static Matrix4x4 ScaleMatrix(float sx, float sy, float sz)
-		{
-			return Matrix4x4.CreateScale(sx, sy, sz);
-		}
-
-		public static Matrix4x4 TranslationMatrix(float x, float y, float z)
-		{
-			return Matrix4x4.CreateTranslation(x, y, z);
-		}
-
-		public static Matrix4x4 MatrixMultiply(Matrix4x4 lhs, Matrix4x4 rhs)
-		{
-			return lhs * rhs;
-		}
-
-		public static Vector4 MatrixVectorMultiply(Matrix4x4 mtx, Vector4 vec)
-		{
-			return Vector4.Transform(vec, mtx);
-		}
-
-		public static Matrix4x4? MatrixInverse(Matrix4x4 m)
-		{
-			if (Matrix4x4.Invert(m, out var r))
-				return r;
-
-			return null;
-		}
-
-		public static Matrix4x4 MakeFloatMatrix(Int32Matrix4x4 imtx)
-		{
-			var multipler = 1f / imtx.M44;
-			return new Matrix4x4(
-				imtx.M11 * multipler,
-				imtx.M12 * multipler,
-				imtx.M13 * multipler,
-				imtx.M14 * multipler,
-				imtx.M21 * multipler,
-				imtx.M22 * multipler,
-				imtx.M23 * multipler,
-				imtx.M24 * multipler,
-				imtx.M31 * multipler,
-				imtx.M32 * multipler,
-				imtx.M33 * multipler,
-				imtx.M34 * multipler,
-				imtx.M41 * multipler,
-				imtx.M42 * multipler,
-				imtx.M43 * multipler,
-				1f);
-		}
-
-		public static AABB MatrixAABBMultiply(Matrix4x4 mtx, AABB bounds)
-		{
-			// Vectors to opposing corner.
-			var minX = float.MaxValue;
-			var minY = float.MaxValue;
-			var minZ = float.MaxValue;
-			var maxX = float.MinValue;
-			var maxY = float.MinValue;
-			var maxZ = float.MinValue;
-
-			// Transform vectors and find new bounding box.
-			for (var i = 0; i < 8; i++)
-			{
-				var vec = bounds.Corner(i);
-				var tvec = MatrixVectorMultiply(mtx, vec);
-
-				minX = Math.Min(minX, tvec[0] / tvec[3]);
-				minY = Math.Min(minY, tvec[1] / tvec[3]);
-				minZ = Math.Min(minZ, tvec[2] / tvec[3]);
-				maxX = Math.Max(maxX, tvec[0] / tvec[3]);
-				maxY = Math.Max(maxY, tvec[1] / tvec[3]);
-				maxZ = Math.Max(maxZ, tvec[2] / tvec[3]);
-			}
-
-			return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
 		}
 	}
 }

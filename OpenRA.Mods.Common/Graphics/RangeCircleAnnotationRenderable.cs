@@ -17,8 +17,10 @@ namespace OpenRA.Mods.Common.Graphics
 	public class RangeCircleAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
 		const int RangeCircleSegments = 32;
-		static readonly Int32Matrix4x4[] RangeCircleStartRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i).AsMatrix());
-		static readonly Int32Matrix4x4[] RangeCircleEndRotations = Exts.MakeArray(RangeCircleSegments, i => WRot.FromFacing(8 * i + 6).AsMatrix());
+		static readonly Int32Matrix4x4[] RangeCircleStartRotations =
+			Exts.MakeArray(RangeCircleSegments, i => { WRot.FromFacing(8 * i).AsMatrix(out var m); return m; });
+		static readonly Int32Matrix4x4[] RangeCircleEndRotations =
+			Exts.MakeArray(RangeCircleSegments, i => { WRot.FromFacing(8 * i + 6).AsMatrix(out var m); return m; });
 		readonly WDist radius;
 		readonly Color color;
 		readonly float width;

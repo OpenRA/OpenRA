@@ -204,17 +204,17 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 				// Draw bounding box
 				var draw = model.models.Where(v => v.IsVisible);
-				var scaleTransform = Util.ScaleMatrix(model.scale, model.scale, model.scale);
-				var cameraTransform = Util.MakeFloatMatrix(model.camera.AsMatrix());
+				var scaleTransform = Matrix4x4.CreateScale(model.scale);
+				var cameraTransform = model.camera.ToFloatMatrix();
 
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(rotation, scaleTransform);
+					var rotation = v.RotationFunc().ToFloatMatrix();
+					var worldTransform = rotation * scaleTransform;
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = Util.MatrixMultiply(worldTransform, cameraTransform);
+					var screenTransform = worldTransform * cameraTransform;
 					DrawBoundsBox(wr, pxPos, screenTransform, bounds, 1, Color.Yellow);
 				}
 			}
@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 				for (var i = 0; i < 8; i++)
 				{
 					var vec = bounds.Corner(i);
-					var screen = Util.MatrixVectorMultiply(transform, vec);
+					var screen = Vector4.Transform(vec, transform);
 					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new float3(screen[0], screen[1], screen[2]));
 				}
 
@@ -252,8 +252,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			{
 				var pxOrigin = wr.ScreenPosition(model.Pos);
 				var draw = model.models.Where(v => v.IsVisible);
-				var scaleTransform = Util.ScaleMatrix(model.scale, model.scale, model.scale);
-				var cameraTransform = Util.MakeFloatMatrix(model.camera.AsMatrix());
+				var scaleTransform = Matrix4x4.CreateScale(model.scale);
+				var cameraTransform = model.camera.ToFloatMatrix();
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;
@@ -265,16 +265,16 @@ namespace OpenRA.Mods.Cnc.Graphics
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(rotation, scaleTransform);
+					var rotation = v.RotationFunc().ToFloatMatrix();
+					var worldTransform = rotation * scaleTransform;
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = Util.MatrixMultiply(worldTransform, cameraTransform);
+					var screenTransform = worldTransform * cameraTransform;
 
 					for (var i = 0; i < 8; i++)
 					{
 						var vec = bounds.Corner(i);
-						var screen = Util.MatrixVectorMultiply(screenTransform, vec);
+						var screen = Vector4.Transform(vec, screenTransform);
 						minX = Math.Min(minX, pxPos.X + screen[0]);
 						minY = Math.Min(minY, pxPos.Y + screen[1]);
 						minZ = Math.Min(minZ, pxPos.Z + screen[2]);

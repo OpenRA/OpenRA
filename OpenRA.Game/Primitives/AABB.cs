@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Numerics;
 
 namespace OpenRA.Primitives
@@ -28,5 +29,32 @@ namespace OpenRA.Primitives
 			(uint)index % 4 < 2 ? MinY : MaxY,
 			(uint)index % 2 < 1 ? MinZ : MaxZ,
 			1);
+
+		public static AABB Transform(AABB bounds, Matrix4x4 mtx)
+		{
+			// Vectors to opposing corner.
+			var minX = float.MaxValue;
+			var minY = float.MaxValue;
+			var minZ = float.MaxValue;
+			var maxX = float.MinValue;
+			var maxY = float.MinValue;
+			var maxZ = float.MinValue;
+
+			// Transform vectors and find new bounding box.
+			for (var i = 0; i < 8; i++)
+			{
+				var vec = bounds.Corner(i);
+				var tvec = Vector4.Transform(vec, mtx);
+
+				minX = Math.Min(minX, tvec[0] / tvec[3]);
+				minY = Math.Min(minY, tvec[1] / tvec[3]);
+				minZ = Math.Min(minZ, tvec[2] / tvec[3]);
+				maxX = Math.Max(maxX, tvec[0] / tvec[3]);
+				maxY = Math.Max(maxY, tvec[1] / tvec[3]);
+				maxZ = Math.Max(maxZ, tvec[2] / tvec[3]);
+			}
+
+			return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+		}
 	}
 }
