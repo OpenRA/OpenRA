@@ -1,0 +1,384 @@
+name: Build PR Branch
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  actions: read
+
+jobs:
+  check-command:
+    name: Check Build Command
+    runs-on: ubuntu-22.04
+    if: >
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '/build')
+    outputs:
+      should_build: ${{ steps.check-permission.outputs.should_build }}
+      pr_number: ${{ github.event.issue.number }}
+      pr_head_ref: ${{ steps.get-pr-info.outputs.head_ref }}
+      pr_head_sha: ${{ steps.get-pr-info.outputs.head_sha }}
+      comment_id: ${{ github.event.comment.id }}
+    steps:
+      - name: Check User Permission
+        id: check-permission
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_AUTHOR="${{ github.event.comment.user.login }}"
+          PR_AUTHOR=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.issue.number }} --jq '.user.login')
+
+          # Check if user is the PR author
+          if [ "$COMMENT_AUTHOR" = "$PR_AUTHOR" ]; then
+            echo "User $COMMENT_AUTHOR is the PR author, allowing build"
+            echo "should_build=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Check if user has write permission (collaborator/maintainer)
+          PERMISSION=$(gh api repos/${{ github.repository }}/collaborators/$COMMENT_AUTHOR/permission --jq '.permission' 2>/dev/null || echo "none")
+          if [ "$PERMISSION" = "admin" ] || [ "$PERMISSION" = "write" ]; then
+            echo "User $COMMENT_AUTHOR has $PERMISSION permission, allowing build"
+            echo "should_build=true" >> $GITHUB_OUTPUT
+          else
+            echo "User $COMMENT_AUTHOR does not have permission to trigger builds"
+            echo "should_build=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get PR Information
+        id: get-pr-info
+        if: steps.check-permission.outputs.should_build == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_INFO=$(gh api repos/${{ github.repository }}/pulls/${{ github.event.issue.number }})
+          HEAD_REF=$(echo "$PR_INFO" | jq -r '.head.ref')
+          HEAD_SHA=$(echo "$PR_INFO" | jq -r '.head.sha')
+          echo "head_ref=$HEAD_REF" >> $GITHUB_OUTPUT
+          echo "head_sha=$HEAD_SHA" >> $GITHUB_OUTPUT
+
+      - name: Get Original Comment
+        id: get-original-comment
+        if: steps.check-permission.outputs.should_build == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the original comment body and encode it for safe passing
+          COMMENT_BODY=$(gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }} --jq '.body')
+          # Store in environment file to handle multiline
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMENT_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Add Reaction to Comment
+        if: steps.check-permission.outputs.should_build == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
+            -X POST -f content='rocket'
+
+      - name: Update Comment with Build Started
+        if: steps.check-permission.outputs.should_build == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UPDATED_BODY=$(cat <<'EOF'
+          ${{ steps.get-original-comment.outputs.body }}
+
+          <details>
+          <summary>
+          Click to see the build status
+          </summary>
+
+          🚀 **Build triggered!**
+          Building commit `${{ steps.get-pr-info.outputs.head_sha }}` for Windows, macOS, and Linux.
+          You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+          Artifacts will be available for download once the build completes.
+
+          </details>
+          EOF
+          )
+
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }} \
+            -X PATCH -f body="$UPDATED_BODY"
+
+  build-linux:
+    name: Linux AppImages
+    runs-on: ubuntu-22.04
+    needs: check-command
+    if: needs.check-command.outputs.should_build == 'true'
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.check-command.outputs.pr_head_sha }}
+
+      - name: Install .NET 8.0
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Prepare Environment
+        run: |
+          SHORT_SHA=$(echo "${{ needs.check-command.outputs.pr_head_sha }}" | cut -c1-7)
+          echo "BUILD_VERSION=pr-${{ needs.check-command.outputs.pr_number }}-${SHORT_SHA}" >> ${GITHUB_ENV}
+
+      - name: Package AppImages
+        run: |
+          mkdir -p build/linux
+          sudo apt-get install -y desktop-file-utils
+          ./packaging/linux/buildpackage.sh "${BUILD_VERSION}" "${PWD}/build/linux"
+
+      - name: Upload Linux Artifacts
+        id: upload
+        uses: actions/upload-artifact@v6
+        with:
+          name: linux-appimages-pr-${{ needs.check-command.outputs.pr_number }}
+          path: build/linux/*
+          retention-days: 14
+
+  build-macos:
+    name: macOS Disk Image
+    runs-on: macos-15
+    needs: check-command
+    if: needs.check-command.outputs.should_build == 'true'
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.check-command.outputs.pr_head_sha }}
+
+      - name: Install .NET 8.0
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Prepare Environment
+        run: |
+          SHORT_SHA=$(echo "${{ needs.check-command.outputs.pr_head_sha }}" | cut -c1-7)
+          echo "BUILD_VERSION=pr-${{ needs.check-command.outputs.pr_number }}-${SHORT_SHA}" >> ${GITHUB_ENV}
+
+      - name: Package Disk Image
+        run: |
+          mkdir -p build/macos
+          ./packaging/macos/buildpackage.sh "${BUILD_VERSION}" "${PWD}/build/macos"
+
+      - name: Upload macOS Artifacts
+        id: upload
+        uses: actions/upload-artifact@v6
+        with:
+          name: macos-dmg-pr-${{ needs.check-command.outputs.pr_number }}
+          path: build/macos/*
+          retention-days: 14
+
+  build-windows:
+    name: Windows Portable
+    runs-on: ubuntu-22.04
+    needs: check-command
+    if: needs.check-command.outputs.should_build == 'true'
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.check-command.outputs.pr_head_sha }}
+
+      - name: Install .NET 8.0
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Prepare Environment
+        run: |
+          SHORT_SHA=$(echo "${{ needs.check-command.outputs.pr_head_sha }}" | cut -c1-7)
+          echo "BUILD_VERSION=pr-${{ needs.check-command.outputs.pr_number }}-${SHORT_SHA}" >> ${GITHUB_ENV}
+          sudo apt-get update
+          sudo apt-get install -y nsis wine64
+
+      - name: Package Windows
+        run: |
+          mkdir -p build/windows
+          ./packaging/windows/buildpackage.sh "${BUILD_VERSION}" "${PWD}/build/windows"
+
+      - name: Keep Only Portable ZIP
+        run: |
+          # Remove installer .exe files, keep only portable .zip
+          rm -f build/windows/*.exe
+
+      - name: Upload Windows Artifacts
+        id: upload
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-portable-pr-${{ needs.check-command.outputs.pr_number }}
+          path: build/windows/*.zip
+          retention-days: 14
+
+  post-build-status:
+    name: Post Build Status
+    runs-on: ubuntu-22.04
+    needs: [check-command, build-linux, build-macos, build-windows]
+    if: always() && needs.check-command.outputs.should_build == 'true'
+    steps:
+      - name: Check Build Results
+        id: check-results
+        run: |
+          LINUX_RESULT="${{ needs.build-linux.result }}"
+          MACOS_RESULT="${{ needs.build-macos.result }}"
+          WINDOWS_RESULT="${{ needs.build-windows.result }}"
+
+          if [ "$LINUX_RESULT" = "success" ] && [ "$MACOS_RESULT" = "success" ] && [ "$WINDOWS_RESULT" = "success" ]; then
+            echo "all_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "all_success=false" >> $GITHUB_OUTPUT
+          fi
+
+          echo "linux_result=$LINUX_RESULT" >> $GITHUB_OUTPUT
+          echo "macos_result=$MACOS_RESULT" >> $GITHUB_OUTPUT
+          echo "windows_result=$WINDOWS_RESULT" >> $GITHUB_OUTPUT
+
+      - name: Get Result Emoji
+        id: emoji
+        run: |
+          get_emoji() {
+            case "$1" in
+              success) echo "✅" ;;
+              failure) echo "❌" ;;
+              cancelled) echo "⚪" ;;
+              skipped) echo "⏭️" ;;
+              *) echo "❓" ;;
+            esac
+          }
+
+          echo "linux=$(get_emoji ${{ steps.check-results.outputs.linux_result }})" >> $GITHUB_OUTPUT
+          echo "macos=$(get_emoji ${{ steps.check-results.outputs.macos_result }})" >> $GITHUB_OUTPUT
+          echo "windows=$(get_emoji ${{ steps.check-results.outputs.windows_result }})" >> $GITHUB_OUTPUT
+
+      - name: Build Artifact URLs
+        id: artifact-urls
+        run: |
+          RUN_ID="${{ github.run_id }}"
+          REPO="${{ github.repository }}"
+          SERVER="${{ github.server_url }}"
+
+          # Direct artifact download URLs
+          LINUX_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}/artifacts/${{ needs.build-linux.outputs.artifact_id }}"
+          MACOS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}/artifacts/${{ needs.build-macos.outputs.artifact_id }}"
+          WINDOWS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}/artifacts/${{ needs.build-windows.outputs.artifact_id }}"
+
+          # Fallback to run page if artifact_id is empty
+          if [ -z "${{ needs.build-linux.outputs.artifact_id }}" ]; then
+            LINUX_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}"
+          fi
+          if [ -z "${{ needs.build-macos.outputs.artifact_id }}" ]; then
+            MACOS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}"
+          fi
+          if [ -z "${{ needs.build-windows.outputs.artifact_id }}" ]; then
+            WINDOWS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}"
+          fi
+
+          echo "linux_url=$LINUX_URL" >> $GITHUB_OUTPUT
+          echo "macos_url=$MACOS_URL" >> $GITHUB_OUTPUT
+          echo "windows_url=$WINDOWS_URL" >> $GITHUB_OUTPUT
+
+      - name: Get Original Comment Body
+        id: get-original-comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the current comment and extract only the original part (before <details>)
+          FULL_COMMENT_BODY=$(gh api repos/${{ github.repository }}/issues/comments/${{ needs.check-command.outputs.comment_id }} --jq '.body')
+          
+          # Extract original comment by removing everything from <details> onwards
+          ORIGINAL_COMMENT_BODY=$(echo "$FULL_COMMENT_BODY" | sed '/<details>/,$d')
+          
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$ORIGINAL_COMMENT_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update Comment with Success Status
+        if: steps.check-results.outputs.all_success == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UPDATED_BODY=$(cat <<'EOF'
+          ${{ steps.get-original-comment.outputs.body }}
+
+          <details>
+          <summary>
+          Click to see the download links
+          </summary>
+
+          🚀 **Build triggered!**
+          Building commit `${{ needs.check-command.outputs.pr_head_sha }}` for Windows, macOS, and Linux.
+          You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+          ---
+
+          ✅ **Build completed successfully!**
+
+          | Platform | Status | Download |
+          |----------|--------|----------|
+          | Linux AppImages | ${{ steps.emoji.outputs.linux }} | [Download](${{ steps.artifact-urls.outputs.linux_url }}) |
+          | macOS Disk Image | ${{ steps.emoji.outputs.macos }} | [Download](${{ steps.artifact-urls.outputs.macos_url }}) |
+          | Windows Portable | ${{ steps.emoji.outputs.windows }} | [Download](${{ steps.artifact-urls.outputs.windows_url }}) |
+
+          📦 [View all artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)
+
+          _Artifacts will be available for 14 days._
+
+          </details>
+          EOF
+          )
+
+          gh api repos/${{ github.repository }}/issues/comments/${{ needs.check-command.outputs.comment_id }} \
+            -X PATCH -f body="$UPDATED_BODY"
+
+      - name: Update Comment with Failure Status
+        if: steps.check-results.outputs.all_success == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UPDATED_BODY=$(cat <<'EOF'
+          ${{ steps.get-original-comment.outputs.body }}
+
+          <details>
+          <summary>
+          Click to see the download links
+          </summary>
+
+          🚀 **Build triggered!**
+          Building commit `${{ needs.check-command.outputs.pr_head_sha }}` for Windows, macOS, and Linux.
+          You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+          ---
+
+          ⚠️ **Build completed with issues**
+
+          | Platform | Status | Download |
+          |----------|--------|----------|
+          | Linux AppImages | ${{ steps.emoji.outputs.linux }} | [Download](${{ steps.artifact-urls.outputs.linux_url }}) |
+          | macOS Disk Image | ${{ steps.emoji.outputs.macos }} | [Download](${{ steps.artifact-urls.outputs.macos_url }}) |
+          | Windows Portable | ${{ steps.emoji.outputs.windows }} | [Download](${{ steps.artifact-urls.outputs.windows_url }}) |
+
+          📦 [View all artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)
+
+          Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for error details.
+
+          _Successfully built artifacts are still available for download (14 days)._
+
+          </details>
+          EOF
+          )
+
+          gh api repos/${{ github.repository }}/issues/comments/${{ needs.check-command.outputs.comment_id }} \
+            -X PATCH -f body="$UPDATED_BODY"
