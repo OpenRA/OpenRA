@@ -85,10 +85,7 @@ namespace OpenRA.Mods.Cnc
 			return Matrix4x4.CreateTranslation(x, y, z);
 		}
 
-		/// <summary>
-		/// Warning: Arguments are backwards.
-		/// </summary>
-		public static Matrix4x4 MatrixMultiply(Matrix4x4 rhs, Matrix4x4 lhs)
+		public static Matrix4x4 MatrixMultiply(Matrix4x4 lhs, Matrix4x4 rhs)
 		{
 			return lhs * rhs;
 		}

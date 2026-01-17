@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			t[3, 2] *= l.Scale * (l.Bounds.MaxZ - l.Bounds.MinZ) / l.Size[2];
 
 			// Center, flip and scale
-			t = Util.MatrixMultiply(t, Util.TranslationMatrix(l.Bounds.MinX, l.Bounds.MinY, l.Bounds.MinZ));
-			t = Util.MatrixMultiply(Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale), t);
+			t = Util.MatrixMultiply(Util.TranslationMatrix(l.Bounds.MinX, l.Bounds.MinY, l.Bounds.MinZ), t);
+			t = Util.MatrixMultiply(t, Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale));
 
 			return t;
 		}

@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var lightYaw = Util.MakeFloatMatrix(new WRot(WAngle.Zero, WAngle.Zero, -lightSource.Yaw).AsMatrix());
 			var lightPitch = Util.MakeFloatMatrix(new WRot(WAngle.Zero, -lightSource.Pitch, WAngle.Zero).AsMatrix());
 			var ground = Util.MakeFloatMatrix(groundOrientation.AsMatrix());
-			var shadowTransform = Util.MatrixMultiply(Util.MatrixMultiply(lightPitch, lightYaw), Util.MatrixInverse(ground).Value);
+			var shadowTransform = Util.MatrixMultiply(Util.MatrixInverse(ground).Value, Util.MatrixMultiply(lightYaw, lightPitch));
 
 			var groundNormal = Util.MatrixVectorMultiply(ground, GroundNormal);
 
@@ -133,8 +133,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
 				var worldTransform = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
-				worldTransform = Util.MatrixMultiply(scaleTransform, worldTransform);
-				worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
+				worldTransform = Util.MatrixMultiply(worldTransform, scaleTransform);
+				worldTransform = Util.MatrixMultiply(worldTransform, offsetTransform);
 
 				var bounds = m.Model.Bounds(m.FrameFunc());
 				var worldBounds = Util.MatrixAABBMultiply(worldTransform, bounds);
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				new(stl.X, sbr.Y, 0, 1),
 			};
 
-			var shadowScreenTransform = Util.MatrixMultiply(cameraTransform, invShadowTransform);
+			var shadowScreenTransform = Util.MatrixMultiply(invShadowTransform, cameraTransform);
 			var shadowGroundNormal = Util.MatrixVectorMultiply(shadowTransform, groundNormal);
 			var screenCorners = new float3[4];
 			for (var j = 0; j < 4; j++)
@@ -192,8 +192,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, sheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
 			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, sheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
-			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
-			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
+			var correctionTransform = Util.MatrixMultiply(FlipMtx, translateMtx);
+			var shadowCorrectionTransform = Util.MatrixMultiply(ShadowScaleFlipMtx, shadowTranslateMtx);
 
 			void RenderFunc()
 			{
@@ -204,16 +204,16 @@ namespace OpenRA.Mods.Cnc.Traits
 					var offsetTransform = Util.TranslationMatrix(offsetVec[0], offsetVec[1], offsetVec[2]);
 
 					var rotations = Util.MakeFloatMatrix(m.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(scaleTransform, rotations);
-					worldTransform = Util.MatrixMultiply(offsetTransform, worldTransform);
+					var worldTransform = Util.MatrixMultiply(rotations, scaleTransform);
+					worldTransform = Util.MatrixMultiply(worldTransform, offsetTransform);
 
-					var transform = Util.MatrixMultiply(cameraTransform, worldTransform);
-					transform = Util.MatrixMultiply(correctionTransform, transform);
+					var transform = Util.MatrixMultiply(worldTransform, cameraTransform);
+					transform = Util.MatrixMultiply(transform, correctionTransform);
 
-					var shadow = Util.MatrixMultiply(shadowTransform, worldTransform);
-					shadow = Util.MatrixMultiply(shadowCorrectionTransform, shadow);
+					var shadow = Util.MatrixMultiply(worldTransform, shadowTransform);
+					shadow = Util.MatrixMultiply(shadow, shadowCorrectionTransform);
 
-					var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(rotations).Value, invShadowTransform);
+					var lightTransform = Util.MatrixMultiply(invShadowTransform, Util.MatrixInverse(rotations).Value);
 
 					var frame = m.FrameFunc();
 					for (uint i = 0; i < m.Model.Sections; i++)
@@ -225,14 +225,14 @@ namespace OpenRA.Mods.Cnc.Traits
 							throw new InvalidOperationException($"Failed to invert the transformed matrix of frame {i} during RenderAsync.");
 
 						// Transform light vector from shadow -> world -> limb coords
-						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it.Value, lightTransform));
+						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(lightTransform, it.Value));
 
-						Render(rd, ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
+						Render(rd, ModelCache, Util.MatrixMultiply(t, transform), lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureIndex, normals.TextureIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
-							Render(rd, ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
+							Render(rd, ModelCache, Util.MatrixMultiply(t, shadow), lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureIndex, normals.TextureIndex);
 					}
 				}

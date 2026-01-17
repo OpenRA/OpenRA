@@ -211,10 +211,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
 					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(scaleTransform, rotation);
+					var worldTransform = Util.MatrixMultiply(rotation, scaleTransform);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = Util.MatrixMultiply(worldTransform, cameraTransform);
 					DrawBoundsBox(wr, pxPos, screenTransform, bounds, 1, Color.Yellow);
 				}
 			}
@@ -266,10 +266,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
 					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = Util.MatrixMultiply(scaleTransform, rotation);
+					var worldTransform = Util.MatrixMultiply(rotation, scaleTransform);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = Util.MatrixMultiply(worldTransform, cameraTransform);
 
 					for (var i = 0; i < 8; i++)
 					{
