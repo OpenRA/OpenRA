@@ -229,6 +229,26 @@ label-no-music-title = Music Not Installed
 label-no-music-desc-a = The game music can be installed
 label-no-music-desc-b = from the "Manage Content" menu.
 
+## ingame-observer.yaml
+button-replay-pause-tooltip = Pause
+button-replay-play-tooltip = Play
+
+button-replay-slow =
+    .tooltip = Slow speed
+    .label = 50%
+
+button-replay-regular =
+    .tooltip = Regular speed
+    .label = 100%
+
+button-replay-fast =
+    .tooltip = Fast speed
+    .label = 200%
+
+button-replay-maximum =
+    .tooltip = Maximum speed
+    .label = MAX
+
 ## lobby-options.yaml
 label-lobby-options-bin-title = Map Options
 

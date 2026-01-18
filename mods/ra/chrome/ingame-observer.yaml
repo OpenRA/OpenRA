@@ -146,7 +146,7 @@ Container@OBSERVER_WIDGETS:
 					Height: 28
 					Background: sidebar-button-observer
 					Key: Pause
-					TooltipText: button-observer-widgets-pause-tooltip
+					TooltipText: button-replay-pause-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Children:
@@ -162,7 +162,7 @@ Container@OBSERVER_WIDGETS:
 					Height: 28
 					Background: sidebar-button-observer
 					Key: Pause
-					TooltipText: button-observer-widgets-play-tooltip
+					TooltipText: button-replay-play-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
 					Children:
@@ -178,10 +178,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					Background: sidebar-button-observer
 					Key: ReplaySpeedSlow
-					TooltipText: button-observer-widgets-slow.tooltip
+					TooltipText: button-replay-slow.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: button-observer-widgets-slow.label
+					Text: button-replay-slow.label
 					Font: TinyBold
 				Button@BUTTON_REGULAR:
 					X: 95
@@ -190,10 +190,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					Background: sidebar-button-observer
 					Key: ReplaySpeedRegular
-					TooltipText: button-observer-widgets-regular.tooltip
+					TooltipText: button-replay-regular.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: button-observer-widgets-regular.label
+					Text: button-replay-regular.label
 					Font: TinyBold
 				Button@BUTTON_FAST:
 					X: 141
@@ -202,10 +202,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					Background: sidebar-button-observer
 					Key: ReplaySpeedFast
-					TooltipText: button-observer-widgets-fast.tooltip
+					TooltipText: button-replay-fast.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: button-observer-widgets-fast.label
+					Text: button-replay-fast.label
 					Font: TinyBold
 				Button@BUTTON_MAXIMUM:
 					X: 187
@@ -214,10 +214,10 @@ Container@OBSERVER_WIDGETS:
 					Height: 22
 					Background: sidebar-button-observer
 					Key: ReplaySpeedMax
-					TooltipText: button-observer-widgets-maximum.tooltip
+					TooltipText: button-replay-maximum.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: button-observer-widgets-maximum.label
+					Text: button-replay-maximum.label
 					Font: TinyBold
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic

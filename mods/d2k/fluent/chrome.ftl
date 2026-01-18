@@ -6,25 +6,6 @@ label-menu-buttons-title = Options
 
 ## ingame-observer.yaml
 button-observer-widget-options = Options (Esc)
-button-replay-player-pause-tooltip = Pause
-button-replay-player-play-tooltip = Play
-
-button-replay-player-slow =
-    .tooltip = Slow speed
-    .label = 50%
-
-button-replay-player-regular =
-    .tooltip = Regular speed
-    .label = 100%
-
-button-replay-player-fast =
-    .tooltip = Fast speed
-    .label = 200%
-
-button-replay-player-maximum =
-    .tooltip = Maximum speed
-    .label = MAX
-
 label-basic-stats-player-header = Player
 label-basic-stats-cash-header = Cash
 label-basic-stats-power-header = Power

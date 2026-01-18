@@ -118,7 +118,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 26
 							Height: 26
 							Key: Pause
-							TooltipText: button-replay-player-pause-tooltip
+							TooltipText: button-replay-pause-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							IgnoreChildMouseOver: true
 							Children:
@@ -134,7 +134,7 @@ Container@OBSERVER_WIDGETS:
 							Height: 26
 							Key: Pause
 							IgnoreChildMouseOver: true
-							TooltipText: button-replay-player-play-tooltip
+							TooltipText: button-replay-play-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@IMAGE_PLAY:
@@ -148,9 +148,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 36
 							Height: 20
 							Key: ReplaySpeedSlow
-							TooltipText: button-replay-player-slow.tooltip
+							TooltipText: button-replay-slow.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: button-replay-player-slow.label
+							Text: button-replay-slow.label
 							Font: TinyBold
 						Button@BUTTON_REGULAR:
 							X: 55 + 45
@@ -158,9 +158,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedRegular
-							TooltipText: button-replay-player-regular.tooltip
+							TooltipText: button-replay-regular.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: button-replay-player-regular.label
+							Text: button-replay-regular.label
 							Font: TinyBold
 						Button@BUTTON_FAST:
 							X: 55 + 45 * 2
@@ -168,9 +168,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedFast
-							TooltipText: button-replay-player-fast.tooltip
+							TooltipText: button-replay-fast.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: button-replay-player-fast.label
+							Text: button-replay-fast.label
 							Font: TinyBold
 						Button@BUTTON_MAXIMUM:
 							X: 55 + 45 * 3
@@ -178,9 +178,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedMax
-							TooltipText: button-replay-player-maximum.tooltip
+							TooltipText: button-replay-maximum.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: button-replay-player-maximum.label
+							Text: button-replay-maximum.label
 							Font: TinyBold
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic

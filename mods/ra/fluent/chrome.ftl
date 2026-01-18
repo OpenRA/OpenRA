@@ -2,26 +2,6 @@
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
 
-## ingame-observer.yaml
-button-observer-widgets-pause-tooltip = Pause
-button-observer-widgets-play-tooltip = Play
-
-button-observer-widgets-slow =
-    .tooltip = Slow speed
-    .label = 50%
-
-button-observer-widgets-regular =
-    .tooltip = Regular speed
-    .label = 100%
-
-button-observer-widgets-fast =
-    .tooltip = Fast speed
-    .label = 200%
-
-button-observer-widgets-maximum =
-    .tooltip = Maximum speed
-    .label = MAX
-
 label-basic-stats-player-header = Player
 label-basic-stats-cash-header = Cash
 label-basic-stats-power-header = Power
