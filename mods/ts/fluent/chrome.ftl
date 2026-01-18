@@ -9,37 +9,7 @@ checkbox-debug-panel-show-depth-preview = Show Depth Data
 
 ## ingame-observer.yaml
 button-observer-widget-options = Options (Esc)
-label-basic-stats-player-header = Player
-label-basic-stats-cash-header = Cash
-label-basic-stats-power-header = Power
-label-basic-stats-kills-header = Kills
-label-basic-stats-deaths-header = Deaths
-label-basic-stats-assets-destroyed-header = Destroyed
-label-basic-stats-assets-lost-header = Lost
-label-basic-stats-experience-header = Score
-label-basic-stats-actions-min-header = APM
-label-economy-stats-player-header = Player
-label-economy-stats-cash-header = Cash
-label-economy-stats-income-header = Income
-label-economy-stats-assets-header = Assets
-label-economy-stats-earned-header = Earned
-label-economy-stats-spent-header = Spent
 label-economy-stats-harvesters-header = Harvesters
-label-production-stats-player-header = Player
-label-production-stats-header = Production
-label-support-powers-player-header = Player
-label-support-powers-header = Support Powers
-label-army-player-header = Player
-label-army-header = Army
-label-combat-stats-player-header = Player
-label-combat-stats-assets-destroyed-header = Destroyed
-label-combat-stats-assets-lost-header = Lost
-label-combat-stats-units-killed-header = U. Killed
-label-combat-stats-units-dead-header = U. Lost
-label-combat-stats-buildings-killed-header = B. Killed
-label-combat-stats-buildings-dead-header = B. Lost
-label-combat-stats-army-value-header = Army Value
-label-combat-stats-vision-header = Vision
 
 ## ingame-observer.yaml, ingame-player.yaml
 label-mute-indicator = Audio Muted
