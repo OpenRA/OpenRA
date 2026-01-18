@@ -765,62 +765,78 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 5
 							ImageCollection: editor
 							ImageName: history
-		Button@UNDO_BUTTON:
-			X: 70
-			Height: 25
-			Width: 70
-			Text: button-editor-world-root-undo.label
-			Font: Bold
-			Key: EditorUndo
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: button-editor-world-root-undo.tooltip
-			TooltipContainer: TOOLTIP_CONTAINER
-		Button@REDO_BUTTON:
-			X: 150
-			Height: 25
-			Width: 70
-			Text: button-editor-world-root-redo.label
-			Font: Bold
-			Key: EditorRedo
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: button-editor-world-root-redo.tooltip
-			TooltipContainer: TOOLTIP_CONTAINER
 		Button@COPY_BUTTON:
-			X: 230
+			X: 60
+			Width: 50
 			Height: 25
-			Text: button-editor-world-root-copy.label
-			Width: 70
-			Font: Bold
 			Key: EditorCopy
 			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: button-editor-world-root-copy.tooltip
+			TooltipText: button-editor-world-root-copy-tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
+			Children:
+				Image@ICON:
+					X: 17
+					Y: 5
+					ImageCollection: editor
+					ImageName: copy
 		Button@PASTE_BUTTON:
-			X: 310
-			Width: 70
+			X: 110
+			Width: 50
 			Height: 25
-			Text: button-editor-world-root-paste.label
-			Font: Bold
 			Key: EditorPaste
 			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: button-editor-world-root-paste.tooltip
+			TooltipText: button-editor-world-root-paste-tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
+			Children:
+				Image@ICON:
+					X: 17
+					Y: 4
+					ImageCollection: editor
+					ImageName: paste
+		Button@UNDO_BUTTON:
+			X: 160
+			Width: 50
+			Height: 25
+			Key: EditorUndo
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: button-editor-world-root-undo-tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
+			Children:
+				Image@ICON:
+					X: 17
+					Y: 4
+					ImageCollection: editor
+					ImageName: undo
+		Button@REDO_BUTTON:
+			X: 210
+			Width: 50
+			Height: 25
+			Key: EditorRedo
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: button-editor-world-root-redo-tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
+			Children:
+				Image@ICON:
+					X: 17
+					Y: 4
+					ImageCollection: editor
+					ImageName: redo
 		DropDownButton@OVERLAY_BUTTON:
-			X: 390
+			X: 260
 			Width: 140
 			Height: 25
 			Text: dropdownbutton-editor-world-root-overlay-button
 			Font: Bold
 		Label@COORDINATE_LABEL:
-			X: 540
-			Width: 50
+			X: 410
+			Width: 100
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 655
-			Width: 50
+			X: 515
+			Width: 100
 			Height: 25
 			Align: Left
 			Font: Bold

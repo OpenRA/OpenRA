@@ -762,6 +762,10 @@ editor:
 		tools: 904, 68, 16, 16
 		history: 904, 51, 16, 16
 		erase: 818, 170, 16, 16
+		copy: 835, 170, 16, 16
+		paste: 852, 170, 16, 16
+		undo: 869, 170, 16, 16
+		redo: 886, 170, 16, 16
 
 encyclopedia:
 	Image: encyclopedia/scanlines.png

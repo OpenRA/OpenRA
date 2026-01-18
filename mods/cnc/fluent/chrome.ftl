@@ -103,21 +103,13 @@ button-delete-actor =
     .label = Delete
     .tooltip = Remove the selected actor
 
-button-editor-world-root-copy =
-    .label = Copy
-    .tooltip = Copy the selected area
+button-editor-world-root-copy-tooltip = Copy the selected area
 
-button-editor-world-root-paste =
-    .label = Paste
-    .tooltip = Paste the saved area
+button-editor-world-root-paste-tooltip = Paste the saved area
 
-button-editor-world-root-undo =
-    .label = Undo
-    .tooltip = Undo last step
+button-editor-world-root-undo-tooltip = Undo last step
 
-button-editor-world-root-redo =
-    .label = Redo
-    .tooltip = Redo last step
+button-editor-world-root-redo-tooltip = Redo last step
 
 dropdownbutton-editor-world-root-overlay-button = Overlays
 button-select-categories-buttons-all = All
