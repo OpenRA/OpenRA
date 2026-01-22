@@ -22,6 +22,8 @@ notification-cannot-build-here = Cannot build here.
 notification-one-of-our-buildings-has-been-captured = One of our buildings has been captured.
 
 ## world.yaml
+notification-game-saved = Game saved.
+
 dropdown-map-worms =
     .label = Worms
     .description = Worms roam the map, devouring unprepared forces

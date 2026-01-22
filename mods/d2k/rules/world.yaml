@@ -246,6 +246,7 @@ World:
 	ScriptTriggers:
 	CellTriggerOverlay:
 	StartGameNotification:
+		SavedTextNotification: notification-game-saved
 	FlashPostProcessEffect:
 		Type: flash
 		Color: E2DD8F4D

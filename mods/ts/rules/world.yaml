@@ -381,6 +381,7 @@ World:
 	ScreenShaker:
 	RadarPings:
 	StartGameNotification:
+		SavedTextNotification: notification-game-saved
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 	LoadWidgetAtGameStart:

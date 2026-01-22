@@ -19,6 +19,8 @@ notification-harvester-under-attack = Harvester under attack.
 notification-silos-needed = Silos needed.
 
 ## World
+notification-game-saved = Game saved.
+
 options-starting-units =
     .mcv-only = MCV Only
     .light = Light

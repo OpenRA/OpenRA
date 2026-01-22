@@ -87,7 +87,6 @@ notification-lobby-disconnected = { $player } has left.
 
 ## UnitOrders
 notification-game-has-started = The game has started.
-notification-game-saved = Game saved.
 notification-game-paused = The game has been paused by { $player }.
 notification-game-unpaused = The game has been un-paused by { $player }.
 

@@ -27,6 +27,8 @@ notification-ally-under-attack = Our ally is under attack.
 notification-silos-needed = Silos needed.
 
 ## world.yaml
+notification-game-saved = Game saved.
+
 options-starting-units =
     .mcv-only = MCV Only
     .light-support = Light Support

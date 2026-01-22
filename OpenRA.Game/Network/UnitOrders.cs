@@ -30,9 +30,6 @@ namespace OpenRA.Network
 		[FluentReference]
 		const string GameStarted = "notification-game-has-started";
 
-		[FluentReference]
-		const string GameSaved = "notification-game-saved";
-
 		[FluentReference("player")]
 		const string GamePaused = "notification-game-paused";
 
@@ -213,9 +210,6 @@ namespace OpenRA.Network
 				}
 
 				case "GameSaved":
-					if (!orderManager.World.IsReplay)
-						TextNotificationsManager.AddSystemLine(GameSaved);
-
 					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementing<INotifyGameSaved>())
 						nsr.GameSaved(orderManager.World);
 					break;
