@@ -1,7 +1,3 @@
-## gamesave-loading.yaml
-label-gamesave-loading-screen-title = Loading Saved Game
-label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
-
 ## ingame-observer.yaml
 label-economy-stats-harvesters-header = Harvesters
 label-economy-stats-derricks-header = Oil Derricks
