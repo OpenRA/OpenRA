@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Eluant;
 using Eluant.ObjectBinding;
 using OpenRA.Scripting;
@@ -27,9 +29,8 @@ namespace OpenRA
 
 		public WAngle(int a)
 		{
-			Angle = a % 1024;
-			if (Angle < 0)
-				Angle += 1024;
+			// Bitwise mask handles wrapping and negatives.
+			Angle = a & 1023;
 		}
 
 		public static readonly WAngle Zero = new(0);
@@ -39,130 +40,179 @@ namespace OpenRA
 		public static WAngle operator -(WAngle a, WAngle b) { return new WAngle(a.Angle - b.Angle); }
 		public static WAngle operator -(WAngle a) { return new WAngle(-a.Angle); }
 
+		public static WAngle operator *(WAngle a, int b) { return new WAngle(a.Angle * b); }
+		public static WAngle operator *(int a, WAngle b) { return new WAngle(a * b.Angle); }
+		public static WAngle operator /(WAngle a, int b) { return new WAngle(a.Angle / b); }
+		public static int operator /(WAngle a, WAngle b) { return a.Angle / b.Angle; }
+
 		public static bool operator ==(WAngle me, WAngle other) { return me.Angle == other.Angle; }
 		public static bool operator !=(WAngle me, WAngle other) { return me.Angle != other.Angle; }
 
 		public override int GetHashCode() { return Angle.GetHashCode(); }
 
-		public bool Equals(WAngle other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WAngle angle && Equals(angle); }
+		public bool Equals(WAngle other) { return other.Angle == Angle; }
+		public override bool Equals(object obj) { return obj is WAngle angle && Angle == angle.Angle; }
 
 		public int Facing => Angle / 4;
 
-		public int Sin() { return new WAngle(Angle - 256).Cos(); }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public int Sin()
+		{
+			return new WAngle(Angle - 256).Cos();
+		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int Cos()
 		{
-			if (Angle <= 256)
-				return CosineTable[Angle];
-			if (Angle <= 512)
-				return -CosineTable[512 - Angle];
-			return -new WAngle(Angle - 512).Cos();
+			// Use symmetry to map the 1024-unit circle into a 0-256 quadrant index.
+			// Cosine is negative in the Q2 and Q3.
+			var angle = Angle;
+
+			// Maps 0-511 into a 0-256 mirrored triangle wave.
+			var qIndex = angle & 511;
+			var mirrored = 256 - qIndex;
+
+			// Branchless Abs(256 - qIndex).
+			var mask = mirrored >> 31;
+			var finalIndex = 256 - ((mirrored ^ mask) - mask);
+
+			// Phase-shift by 90 degrees (256-units) to align negative hemisphere with 9th bit.
+			// Maps bit value 0 -> 1 and 1 -> -1 branchlessly.
+			var signBit = (int)((uint)(angle + 256) >> 9) & 1;
+			var sign = 1 - (signBit << 1);
+
+			ref var table = ref MemoryMarshal.GetArrayDataReference(CosineTable);
+			return sign * Unsafe.Add(ref table, (nint)(uint)finalIndex);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int Tan()
 		{
-			if (Angle <= 256)
-				return TanTable[Angle];
-			if (Angle <= 512)
-				return -TanTable[512 - Angle];
-			return new WAngle(Angle - 512).Tan();
+			var angle = Angle & 511;
+
+			// Shift by 257 to keep the 90 degree asymptote (256) positive.
+			var shifted = angle - 257;
+			var mask = shifted >> 31;
+
+			// Branchless Abs(angle - 256) to map 0-511 range to a 256-0-255 triangle.
+			var triangle = ((angle - 256) ^ (angle - 256 >> 31)) - (angle - 256 >> 31);
+			var finalIndex = 256 - triangle;
+
+			// Maps bit value -1 -> 1 and 0 -> -1 branchlessly.
+			var sign = -1 - (mask << 1);
+
+			ref var table = ref MemoryMarshal.GetArrayDataReference(TanTable);
+			return sign * Unsafe.Add(ref table, (nint)(uint)finalIndex);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static WAngle Lerp(WAngle a, WAngle b, int mul, int div)
 		{
-			// Map 1024 <-> 0 wrapping into linear space
-			var aa = a.Angle;
-			var bb = b.Angle;
-			if (aa > bb && aa - bb > 512)
-				aa -= 1024;
+			// Linearize endpoints by shifting across the 1024-unit wrap if it yields a shorter path.
+			var start = a.Angle;
+			var diff = b.Angle - start;
 
-			if (bb > aa && bb - aa > 512)
-				bb -= 1024;
+			// Shift difference to take shortest path around the circle.
+			var mask1 = (511 - diff) >> 31;
+			var mask2 = (diff + 512) >> 31;
+			diff += (mask1 & -1024) | (mask2 & 1024);
 
-			return new WAngle(aa + (bb - aa) * mul / div);
+			return new WAngle(start + diff * mul / div);
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static WAngle ArcSin(int d)
 		{
-			if (d < -1024 || d > 1024)
-				throw new ArgumentException($"ArcSin is only valid for values between -1024 and 1024. Received {d}");
+			// Range check using unsigned trick
+			if ((uint)(d + 1024) > 2048)
+				ThrowOutOfRange();
 
-			var a = ClosestCosineIndex(Math.Abs(d));
-			return new WAngle(d < 0 ? 768 + a : 256 - a);
+			var index = GetClosestCosineIndex(Math.Abs(d));
+			var sign = d >> 31;
+
+			// Map positive to Q1 (0-256) and negative to Q4 (768-1024).
+			return new WAngle((sign & (768 + index)) | (~sign & (256 - index)));
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static WAngle ArcCos(int d)
 		{
-			if (d < -1024 || d > 1024)
-				throw new ArgumentException($"ArcCos is only valid for values between -1024 and 1024. Received {d}");
+			if ((uint)(d + 1024) > 2048)
+				ThrowOutOfRange();
 
-			var a = ClosestCosineIndex(Math.Abs(d));
-			return new WAngle(d < 0 ? 512 - a : a);
+			var index = GetClosestCosineIndex(Math.Abs(d));
+			var sign = d >> 31;
+
+			return new WAngle((sign & (512 - index)) | (~sign & index));
 		}
 
-		/// <summary>
-		/// Find the index of CosineTable that has the value closest to the given value.
-		/// The first or last index will be returned for values above or below the valid range.
-		/// </summary>
-		static int ClosestCosineIndex(int value)
+		static void ThrowOutOfRange() => throw new ArgumentOutOfRangeException();
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static int GetClosestCosineIndex(int value)
 		{
-			var aboveIndex = 0;
-			var belowIndex = 256;
-			while (aboveIndex != belowIndex - 1)
-			{
-				var index = (aboveIndex + belowIndex) / 2;
-				var val = CosineTable[index];
+			ref var table = ref MemoryMarshal.GetArrayDataReference(CosineTable);
+			var index = 0;
 
-				if (val == value)
-					return index;
+			// Waterfall binary search finds the lower bound; this picks the closest neighbor.
+			index |= (Unsafe.Add(ref table, index | 128) > value) ? 128 : 0;
+			index |= (Unsafe.Add(ref table, index | 64) > value) ? 64 : 0;
+			index |= (Unsafe.Add(ref table, index | 32) > value) ? 32 : 0;
+			index |= (Unsafe.Add(ref table, index | 16) > value) ? 16 : 0;
+			index |= (Unsafe.Add(ref table, index | 8) > value) ? 8 : 0;
+			index |= (Unsafe.Add(ref table, index | 4) > value) ? 4 : 0;
+			index |= (Unsafe.Add(ref table, index | 2) > value) ? 2 : 0;
+			index |= (Unsafe.Add(ref table, index | 1) > value) ? 1 : 0;
 
-				if (val < value)
-					belowIndex = index;
-				else
-					aboveIndex = index;
-			}
+			int val0 = Unsafe.Add(ref table, index);
+			int val1 = Unsafe.Add(ref table, Math.Min(index + 1, 256));
 
-			// Take the index with the smallest error
-			return CosineTable[aboveIndex] - value > value - CosineTable[belowIndex] ? belowIndex : aboveIndex;
+			// Pick the one with the smallest absolute difference.
+			return (val0 - value > value - val1) ? index + 1 : index;
 		}
 
-		public static WAngle ArcTan(int y, int x) { return ArcTan(y, x, 1); }
-		public static WAngle ArcTan(int y, int x, int stride)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static WAngle ArcTan(int y, int x)
 		{
 			if (y == 0)
 				return new WAngle(x >= 0 ? 0 : 512);
 
 			if (x == 0)
-				return new WAngle(Math.Sign(y) * 256);
+				return new WAngle(y > 0 ? 256 : 768);
 
-			var ay = Math.Abs(y);
-			var ax = Math.Abs(x);
+			var ay = Math.Abs((long)y);
+			var ax = Math.Abs((long)x);
 
-			// Find the closest angle that satisfies y = x*tan(theta)
-			// Uses a long to store bestVal to eliminate integer overflow issues in the common cases
-			// (may still fail for unrealistically large ax and ay)
-			var bestVal = long.MaxValue;
-			var bestAngle = 0;
-			for (var i = 0; i < 256; i += stride)
-			{
-				var val = Math.Abs(1024 * ay - (long)ax * TanTable[i]);
-				if (val < bestVal)
-				{
-					bestVal = val;
-					bestAngle = i;
-				}
-			}
+			// Return 90 degrees if the ratio exceeds the tangent table's precision limit (~89.6 deg).
+			if (ay >= ax * 167)
+				return new WAngle(y > 0 ? 256 : 768);
 
-			// Calculate quadrant
-			if (x < 0 && y > 0)
-				bestAngle = 512 - bestAngle;
-			else if (x < 0 && y < 0)
-				bestAngle = 512 + bestAngle;
-			else if (x > 0 && y < 0)
-				bestAngle = 1024 - bestAngle;
+			// Use a bitshift and single division to find the target ratio.
+			// This allows the binary search to compare simple integers instead of performing multiplications.
+			var target = (int)((ay << 10) / ax);
 
-			return new WAngle(bestAngle);
+			ref var table = ref MemoryMarshal.GetArrayDataReference(TanTable);
+			var index = 0;
+
+			// Waterfall binary search avoids loop overhead and branch mispredicts.
+			index |= (Unsafe.Add(ref table, index | 128) <= target) ? 128 : 0;
+			index |= (Unsafe.Add(ref table, index | 64) <= target) ? 64 : 0;
+			index |= (Unsafe.Add(ref table, index | 32) <= target) ? 32 : 0;
+			index |= (Unsafe.Add(ref table, index | 16) <= target) ? 16 : 0;
+			index |= (Unsafe.Add(ref table, index | 8) <= target) ? 8 : 0;
+			index |= (Unsafe.Add(ref table, index | 4) <= target) ? 4 : 0;
+			index |= (Unsafe.Add(ref table, index | 2) <= target) ? 2 : 0;
+			index |= (Unsafe.Add(ref table, index | 1) <= target) ? 1 : 0;
+
+			var val = Unsafe.Add(ref table, index);
+			var nextVal = Unsafe.Add(ref table, index + 1);
+			index += (target - val > nextVal - target) ? 1 : 0;
+
+			// Map the reference angle into the correct Cartesian quadrant.
+			var xNegResult = 512 + (y < 0 ? index : -index);
+			var xPosResult = y < 0 ? 1024 - index : index;
+
+			return new WAngle(x < 0 ? xNegResult : xPosResult);
 		}
 
 		// Must not be used outside rendering code
@@ -171,7 +221,7 @@ namespace OpenRA
 
 		public override string ToString() { return Angle.ToStringInvariant(); }
 
-		static readonly int[] CosineTable =
+		static readonly short[] CosineTable =
 		[
 			1024, 1023, 1023, 1023, 1023, 1023, 1023, 1023, 1022, 1022, 1022, 1021,
 			1021, 1020, 1020, 1019, 1019, 1018, 1017, 1017, 1016, 1015, 1014, 1013,
