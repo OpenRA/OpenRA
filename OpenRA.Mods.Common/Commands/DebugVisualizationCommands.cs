@@ -48,6 +48,18 @@ namespace OpenRA.Mods.Common.Commands
 		[FluentReference]
 		const string ActorTagsOverlayDescription = "description-actor-tags-overlay";
 
+		[FluentReference]
+		const string TargetLinesDescription = "description-target-lines";
+
+		[FluentReference]
+		const string TargetLinesDefault = "notification-target-lines-default";
+
+		[FluentReference]
+		const string TargetLinesAllPlayers = "notification-target-lines-all-players";
+
+		[FluentReference]
+		const string TargetLinesAlways = "notification-target-lines-always";
+
 		public static class Commands
 		{
 			public const string CombatGeometry = "combat-geometry";
@@ -55,6 +67,7 @@ namespace OpenRA.Mods.Common.Commands
 			public const string ScreenMap = "screen-map";
 			public const string DepthBuffer = "depth-buffer";
 			public const string ActorTags = "actor-tags";
+			public const string TargetLines = "target-lines";
 		}
 
 		public static class Orders
@@ -64,17 +77,19 @@ namespace OpenRA.Mods.Common.Commands
 			public const string ScreenMap = "DevScreenMap";
 			public const string DepthBuffer = "DevDepthBuffer";
 			public const string ActorTags = "DevActorTags";
+			public const string TargetLines = "DevTargetLines";
 		}
 
 		readonly Dictionary<string,
-			(string Description, Action<DebugVisualizations> Handler, string CheatName, Func<DebugVisualizations, bool> GetState)>
+			(string Description, Action<HandlerContext> Handler)>
 			commandHandlers = new()
 			{
-				{ Commands.CombatGeometry, (CombatGeometryDescription, CombatGeometry, Orders.CombatGeometry, d => d.CombatGeometry) },
-				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry, Orders.RenderGeometry, d => d.RenderGeometry) },
-				{ Commands.ScreenMap, (ScreenMapOverlayDescription, ScreenMap, Orders.ScreenMap, d => d.ScreenMap) },
-				{ Commands.DepthBuffer, (DepthBufferDescription, DepthBuffer, Orders.DepthBuffer, d => d.DepthBuffer) },
-				{ Commands.ActorTags, (ActorTagsOverlayDescription, ActorTags, Orders.ActorTags, d => d.ActorTags) },
+				{ Commands.CombatGeometry, (CombatGeometryDescription, CombatGeometry) },
+				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry) },
+				{ Commands.ScreenMap, (ScreenMapOverlayDescription, ScreenMap) },
+				{ Commands.DepthBuffer, (DepthBufferDescription, DepthBuffer) },
+				{ Commands.ActorTags, (ActorTagsOverlayDescription, ActorTags) },
+				{ Commands.TargetLines, (TargetLinesDescription, TargetLines) },
 			};
 
 		DebugVisualizations debugVis;
@@ -103,32 +118,68 @@ namespace OpenRA.Mods.Common.Commands
 			}
 		}
 
-		static void CombatGeometry(DebugVisualizations debugVis)
+		static void CombatGeometry(HandlerContext context)
 		{
-			debugVis.CombatGeometry ^= true;
+			context.DebugVis.CombatGeometry ^= true;
+
+			context.SendCheatNotification(context.DebugVis.CombatGeometry, Orders.CombatGeometry);
 		}
 
-		static void RenderGeometry(DebugVisualizations debugVis)
+		static void RenderGeometry(HandlerContext context)
 		{
-			debugVis.RenderGeometry ^= true;
+			context.DebugVis.RenderGeometry ^= true;
+
+			context.SendCheatNotification(context.DebugVis.RenderGeometry, Orders.RenderGeometry);
 		}
 
-		static void ScreenMap(DebugVisualizations debugVis)
+		static void ScreenMap(HandlerContext context)
 		{
-			debugVis.ScreenMap ^= true;
+			context.DebugVis.ScreenMap ^= true;
+
+			context.SendCheatNotification(context.DebugVis.ScreenMap, Orders.ScreenMap);
 		}
 
-		static void DepthBuffer(DebugVisualizations debugVis)
+		static void DepthBuffer(HandlerContext context)
 		{
-			debugVis.DepthBuffer ^= true;
+			context.DebugVis.DepthBuffer ^= true;
+
+			context.SendCheatNotification(context.DebugVis.DepthBuffer, Orders.DepthBuffer);
 		}
 
-		static void ActorTags(DebugVisualizations debugVis)
+		static void ActorTags(HandlerContext context)
 		{
-			debugVis.ActorTags ^= true;
+			context.DebugVis.ActorTags ^= true;
+
+			context.SendCheatNotification(context.DebugVis.ActorTags, Orders.ActorTags);
 		}
 
-		public void InvokeCommand(string name, string _)
+		static void TargetLines(HandlerContext context)
+		{
+			var value = context.Argument?.ToLowerInvariant()?.Trim();
+			if (string.IsNullOrEmpty(value))
+				value = context.DebugVis.TargetLines == DebugTargetLines.Default ? "always" : "default";
+
+			string key;
+			switch (value)
+			{
+				case "all-players":
+					context.DebugVis.TargetLines = DebugTargetLines.AllPlayers;
+					key = TargetLinesAllPlayers;
+					break;
+				case "always":
+					context.DebugVis.TargetLines = DebugTargetLines.AlwaysAllPlayers;
+					key = TargetLinesAlways;
+					break;
+				default:
+					context.DebugVis.TargetLines = DebugTargetLines.Default;
+					key = TargetLinesDefault;
+					break;
+			}
+
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(key));
+		}
+
+		public void InvokeCommand(string name, string arg)
 		{
 			if (!commandHandlers.TryGetValue(name, out var command))
 				return;
@@ -139,17 +190,20 @@ namespace OpenRA.Mods.Common.Commands
 				return;
 			}
 
-			command.Handler(debugVis);
-			SendNotification(command.GetState(debugVis), command.CheatName);
+			var context = new HandlerContext(world, debugVis, arg);
+			command.Handler(context);
 		}
 
-		void SendNotification(bool enabled, string cheatName)
+		sealed record class HandlerContext(World World, DebugVisualizations DebugVis, string Argument)
 		{
-			var notification = enabled ? CheatEnabled : CheatDisabled;
-			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
-			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
-				"cheat", cheatName,
-				"player", playerName));
+			public void SendCheatNotification(bool enabled, string cheatName)
+			{
+				var notification = enabled ? CheatEnabled : CheatDisabled;
+				var playerName = World.LocalPlayer != null ? World.LocalPlayer.ResolvedPlayerName : "";
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+					"cheat", cheatName,
+					"player", playerName));
+			}
 		}
 	}
 }
