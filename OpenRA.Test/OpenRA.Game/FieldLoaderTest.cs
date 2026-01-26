@@ -244,7 +244,7 @@ namespace OpenRA.Test
 				new TestCaseData(123),
 				new TestCaseData((ushort)123),
 				new TestCaseData(123L),
-				new TestCaseData(123.4f),
+				new TestCaseData(123.4f.ToString(CultureInfo.InvariantCulture)),
 				new TestCaseData(123m),
 				new TestCaseData("test"),
 				new TestCaseData(Color.CornflowerBlue),
