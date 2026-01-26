@@ -172,7 +172,7 @@ label-game-info-panel-title = Game Information
 label-mission-objectives = Mission:
 
 ## ingame-infoscripterror.yaml
-label-script-error-panel-desc-a = The map script has encountered a fatal error
+label-script-error-panel-desc-a = The map script has encountered a fatal error.
 label-script-error-panel-desc-b = The details of the error have been saved to lua.log in the logs directory.
 label-script-error-panel-desc-c = Please send this file to the map author so that they can fix this issue.
 
@@ -245,59 +245,57 @@ supportpowers-support-powers-palette =
 button-command-bar-attack-move =
     .tooltip = Attack Move
     .tooltipdesc =
-    Selected units will move to the desired location
+    Selected units will move to the target location,
     and attack any enemies they encounter en route.
 
-    Hold <(Ctrl)> while targeting to order an Assault Move
-    that attacks any units or structures encountered en route.
+    Left-click the icon, then right-click on the target.
 
-    Left-click icon then right-click on target location.
+    Hold <(Ctrl)> while targeting to issue an Assault Move,
+    to attack any units or structures encountered en route.
 
 button-command-bar-force-move =
     .tooltip = Force Move
     .tooltipdesc =
-    Selected units will move to the desired location
-     - Default activity for the target is suppressed
-     - Vehicles will attempt to crush enemies at the target location
-     - Helicopters will land at the target location
+    Selected units will move to the target location.
+    - Vehicles attempt to crush enemies at the target location.
+    - Helicopters land at the target location.
 
-    Left-click icon then right-click on target.
-    Hold <(Alt)> to activate temporarily while commanding units.
+    Left-click the icon, then right-click on the target.
+    Hold <(Alt)> to temporarily enable this command while controlling units.
 
 button-command-bar-force-attack =
     .tooltip = Force Attack
     .tooltipdesc =
-    Selected units will attack the targeted unit or location
-     - Default activity for the target is suppressed
-     - Allows targeting of own or ally forces
-     - Long-range artillery units will always target the
-       location, ignoring units and buildings
+    Selected units will attack the target unit or location.
+    - Allows targeting of allied or own forces.
+    - Long-range artillery will fire at the target
+     location, ignoring units and structures.
 
-    Left-click icon then right-click on target.
-    Hold <(Ctrl)> to activate temporarily while commanding units.
+    Left-click the icon, then right-click on the target.
+    Hold <(Ctrl)> to temporarily enable this command while controlling units.
 
 button-command-bar-guard =
     .tooltip = Guard
     .tooltipdesc =
-    Selected units will follow the targeted unit.
+    Selected units will follow and protect the target unit.
 
-    Left-click icon then right-click on target unit.
+    Left-click the icon, then right-click on the target unit.
 
 button-command-bar-deploy =
     .tooltip = Deploy
     .tooltipdesc =
-    Selected units will perform their default deploy activity
-     - MCVs will unpack into a Construction Yard
-     - Construction Yards will re-pack into a MCV
-     - Transports will unload their passengers
+    Selected units will perform their default deploy action:
+    - MCVs unpack into Construction Yards.
+    - Construction Yards repack into MCVs.
+    - Transports unload passengers.
 
-    Acts immediately on selected units.
+    Acts immediately on selected targets.
 
 button-command-bar-scatter =
     .tooltip = Scatter
     .tooltipdesc =
     Selected units will stop their current activity
-    and move to a nearby location.
+    and disperse to a nearby location.
 
     Acts immediately on selected units.
 
@@ -312,40 +310,39 @@ button-command-bar-stop =
 button-command-bar-queue-orders =
     .tooltip = Waypoint Mode
     .tooltipdesc =
-    Use Waypoint Mode to give multiple linking commands
-    to the selected units. Units will execute the commands
-    immediately upon receiving them.
+    Enables sequential command execution for selected units.
+    Units will immediately execute the commands upon receiving them.
 
-    Left-click icon then give commands in the game world.
-    Hold <(Shift)> to activate temporarily while commanding units.
+    Left-click the icon, then issue commands in the game world.
+    Hold <(Shift)> to temporarily enable this mode while commanding units.
 
 button-stance-bar-attackanything =
     .tooltip = Attack Anything Stance
     .tooltipdesc =
-    Set the selected units to Attack Anything stance:
-     - Units will attack enemy units and structures on sight
-     - Units will pursue attackers across the battlefield
+    Sets the selected units to Attack Anything stance:
+    - Units will attack enemy units and structures on sight.
+    - Units will pursue enemy units across the battlefield.
 
 button-stance-bar-defend =
     .tooltip = Defend Stance
     .tooltipdesc =
-    Set the selected units to Defend stance:
-     - Units will attack enemy units on sight
-     - Units will not move or pursue enemies
+    Sets the selected units to Defend stance:
+    - Units will attack enemy units on sight.
+    - Units will hold their position and will not pursue enemies.
 
 button-stance-bar-returnfire =
     .tooltip = Return Fire Stance
     .tooltipdesc =
-    Set the selected units to Return Fire stance:
-     - Units will retaliate against enemies that attack them
-     - Units will not move or pursue enemies
+    Sets the selected units to Return Fire stance:
+    - Units will retaliate only when attacked by the enemy.
+    - Units will hold their position and will not pursue enemies.
 
 button-stance-bar-holdfire =
     .tooltip = Hold Fire Stance
     .tooltipdesc =
-    Set the selected units to Hold Fire stance:
-     - Units will not fire upon enemies
-     - Units will not move or pursue enemies
+    Sets the selected units to Hold Fire stance:
+    - Units will not attack enemies under any circumstances.
+    - Units will hold their position and will not pursue enemies.
 
 label-mute-indicator = Audio Muted
 button-top-buttons-sell-tooltip = Sell
@@ -368,10 +365,10 @@ label-kick-client-dialog-text-b = them from joining for the remainder of this ga
 checkbox-kick-client-dialog-prevent-rejoining = Temporarily Ban
 button-kick-client-dialog = Kick
 label-kick-spectators-dialog-title = Kick Spectators
-button-kick-spectators-dialog-ok = Ok
+button-kick-spectators-dialog-ok = OK
 label-force-start-dialog-title = Start Game?
 label-force-start-dialog-text-a = One or more players are not yet ready.
-label-force-start-dialog-text-b = Are you sure that you want to force start the game?
+label-force-start-dialog-text-b = Are you sure you want to force start the game?
 label-kick-warning-a = One or more clients are missing the selected
 label-kick-warning-b = map, and will be kicked from the server.
 button-force-start-dialog-start = Start
@@ -428,8 +425,8 @@ checkbox-lobby-players-new-spectator-toggle = Allow Spectators?
 button-lobby-players-spectate = Spectate
 
 ## lobby-servers.yaml
-image-lobby-servers-bin-password-protected-tooltip = Requires Password
-image-lobby-servers-bin-requires-authentication-tooltip = Requires OpenRA forum account
+image-lobby-servers-bin-password-protected-tooltip = Requires a Password
+image-lobby-servers-bin-requires-authentication-tooltip = Requires an OpenRA Forum account
 dropdownbutton-lobby-servers-bin-filters = Filter Games
 
 ## lobby.yaml
@@ -535,7 +532,7 @@ label-filter-order-controls-orderby = Order by:
 button-bg-randommap = Random
 button-bg-delete-map = Delete Map
 button-bg-delete-all-maps = Delete All Maps
-button-bg-ok = Ok
+button-bg-ok = OK
 
 label-mapchooser-random-map-title = Random Map
 label-mapchooser-random-map-generating = Generating...
@@ -735,7 +732,7 @@ hotkey-group-control-groups = Control Groups
 hotkey-group-editor-commands = Editor Commands
 label-hotkeys-panel-filter-input = Filter by name:
 label-hotkeys-panel-context-dropdown = Context:
-label-hotkey-empty-list-message = No hotkeys match the filter criteria.
+label-hotkey-empty-list-message = No hotkeys match the filter criteria
 label-notices-readonly-notice = This hotkey cannot be modified
 button-hotkey-remap-dialog-override = Override
 
