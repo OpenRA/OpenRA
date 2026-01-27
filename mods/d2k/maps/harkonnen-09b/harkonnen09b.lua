@@ -8,8 +8,11 @@
 ]]
 
 AtreidesMainBase = { AConYard1, AOutpost1, APalace, ARefinery1, ARefinery2, AHeavyFactory1, ALightFactory1, ARepair1, AStarport1, AHiTechFactory, AResearch, ARock1, ARock2, ARock3, ARock4, ARock5, ARock6, ARock7, ARock8, ARock9, ARock10, ABarracks1, ABarracks2, APower1, APower2, APower3, APower4, APower5, APower6, APower7, APower8, APower9, APower10, APower11, ASilo1, ASilo2, ASilo3 }
+
 AtreidesSmallBase = { AConYard2, ARefinery3, ABarracks3, AHeavyFactory2, ALightFactory2, ARepair2, AGunt1, AGunt2, ARock11, APower12, APower13, APower14, APower15, APower16, APower17, APower18, APower19, APower20 }
+
 CorrinoMainBase = { CConYard, COutpost, CPalace, CRefinery1, CHeavyFactory, CResearch, CGunt1, CGunt2, CGunt3, CGunt4, CGunt5, CGunt6, CRock1, CRock2, CRock3, CRock4, CBarracks1, CBarracks2, CPower1, CPower2, CPower3, CPower4, CPower5, CPower6, CPower7, CPower8 }
+
 CorrinoSmallBase = { CRefinery2, CLightFactory, CStarport, CGunt7, CGunt8, CBarracks3, CPower9, CPower10, CPower11, CPower12, CSilo1, CSilo2, CSilo3, CSilo4 }
 
 AtreidesReinforcements =
@@ -148,7 +151,6 @@ SendStarportReinforcements = function()
 		end
 
 		local reinforcements = Utils.Random(CorrinoStarportReinforcements[Difficulty])
-
 		local units = Reinforcements.ReinforceWithTransport(CorrinoSmall, "frigate", reinforcements, { CorrinoStarportEntry.Location, CStarport.Location + CVec.New(1, 1) }, { CorrinoStarportExit.Location })[2]
 		Utils.Do(units, function(unit)
 			unit.AttackMove(AtreidesAttackLocation)
@@ -168,14 +170,33 @@ SendHarkonnenReinforcements = function(delay)
 	end)
 end
 
-SendAirStrike = function()
-	if AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesMain then
+AirStrikeTimer = 7500
+AirStrikeChargeTime = 7500
+AirstrikeLogic = function(airstrikeProvider)
+	if airstrikeProvider.IsDead then return end
+
+	if DateTime.GameTime <= AirStrikeTimer then
+		Trigger.AfterDelay(AirStrikeTimer - DateTime.GameTime + 1, function()
+			AirstrikeLogic(airstrikeProvider)
+		end)
 		return
 	end
 
+	-- randomly choose if wait again or strike. During waiting Airstrike can still be used by DefensiveAirStrike
+	if Utils.RandomInteger(1, 100) < 30 then
+		Trigger.AfterDelay(1501, function() AirstrikeLogic(airstrikeProvider)end)
+	else
+		AirStrikeVSBuilding(airstrikeProvider)
+		Trigger.AfterDelay(7500, function() AirstrikeLogic(airstrikeProvider) end)
+		IsAirstrikeReady = false
+	end
+end
+
+AirStrikeVSBuilding = function(airstrikeProvider)
+	if airstrikeProvider.IsDead then return end
+
 	local targets = Utils.Where(Harkonnen.GetActors(), function(actor)
-		return
-			actor.HasProperty("Sell") and
+		return actor.HasProperty("Sell") and
 			actor.Type ~= "wall" and
 			actor.Type ~= "medium_gun_turret" and
 			actor.Type ~= "large_gun_turret" and
@@ -184,11 +205,70 @@ SendAirStrike = function()
 	end)
 
 	if #targets > 0 then
-		AHiTechFactory.TargetAirstrike(Utils.Random(targets).CenterPosition)
+		airstrikeProvider.TargetAirstrike(Utils.Random(targets).CenterPosition)
+		AirStrikeTimer =  DateTime.GameTime + AirStrikeChargeTime
 	end
-
-	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)
 end
+
+DefensiveAirStrike = function(airstrikeProvider, possibleTargets)
+	if airstrikeProvider.IsDead then return end
+	local bestValue = {}
+	local bestIndex = 1
+	for i = 1, #possibleTargets, 1 do
+		local ActorsInCircle = Map.ActorsInCircle(possibleTargets[i].CenterPosition, WDist.FromCells(4), function(a)
+			return
+				a.Owner == Harkonnen
+				and not a.IsDead
+				and a.HasProperty("Attack")
+		end)
+
+		bestValue[i] = 0
+		Utils.Do(ActorsInCircle, function(a)
+			bestValue[i] = bestValue[i] + Actor.Cost(a.Type)
+		end)
+
+		if bestValue[i] > bestValue[bestIndex] then
+			bestIndex = i
+		end
+	end
+	airstrikeProvider.TargetAirstrike(possibleTargets[bestIndex].CenterPosition)
+	AirStrikeTimer =  DateTime.GameTime + AirStrikeChargeTime
+end
+
+EmergencyBehaviour = function(player,target)
+	if player == AtreidesMain or player == AtreidesSmall then
+		if AHiTechFactory.IsDead then return end
+
+		local enemyunits = Map.ActorsInCircle(Map.CenterOfCell(target), WDist.FromCells(15), function(a)
+			return a.Owner == Harkonnen
+				and not a.IsDead
+				and a.HasProperty("Attack")
+		end)
+
+		if enemyunits[1] == nil  then return end
+		DefensiveAirStrike(AHiTechFactory, enemyunits)
+	end
+	if player == CorrinoSmall then
+		player.Cash = player.Cash + 2000
+	end
+end
+
+ReleaseSardaukars = true
+Trigger.OnDamaged(CPalace, function(self)
+	if self.Health < self.MaxHealth * 0.8 and ReleaseSardaukars then
+		local index  = 0
+		while index < 100 do
+			index = index + 5
+			Trigger.AfterDelay(index,function()
+				if self.IsDead then return end
+				local actor = Actor.Create("sardaukar", true, {Owner = CorrinoMain, Location = CPalace.Location + CVec.New(1,2)})
+				actor.Move(CPos.New(90,45))
+				IdlingUnits[CorrinoMain][#IdlingUnits[CorrinoMain] + 1] = actor
+			end)
+		end
+		ReleaseSardaukars = false
+	end
+end)
 
 BuildFremen = function()
 	if APalace.IsDead or APalace.Owner ~= AtreidesMain then
@@ -302,7 +382,6 @@ Tick = function()
 
 	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[AtreidesMain] then
 		local units = AtreidesMain.GetActorsByType("harvester")
-
 		if #units > 0 then
 			LastHarvesterEaten[AtreidesMain] = false
 			ProtectHarvester(units[1], AtreidesMain, AttackGroupSize[Difficulty])
@@ -311,7 +390,6 @@ Tick = function()
 
 	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[AtreidesSmall] then
 		local units = AtreidesSmall.GetActorsByType("harvester")
-
 		if #units > 0 then
 			LastHarvesterEaten[AtreidesSmall] = false
 			ProtectHarvester(units[1], AtreidesSmall, AttackGroupSize[Difficulty])
@@ -320,7 +398,6 @@ Tick = function()
 
 	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[CorrinoMain] then
 		local units = CorrinoMain.GetActorsByType("harvester")
-
 		if #units > 0 then
 			LastHarvesterEaten[CorrinoMain] = false
 			ProtectHarvester(units[1], CorrinoMain, AttackGroupSize[Difficulty])
@@ -329,7 +406,6 @@ Tick = function()
 
 	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[CorrinoSmall] then
 		local units = CorrinoSmall.GetActorsByType("harvester")
-
 		if #units > 0 then
 			LastHarvesterEaten[CorrinoSmall] = false
 			ProtectHarvester(units[1], CorrinoSmall, AttackGroupSize[Difficulty])
@@ -366,8 +442,8 @@ WorldLoaded = function()
 	Camera.Position = HBarracks.CenterPosition
 	AtreidesAttackLocation = HBarracks.Location
 
-	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)
-	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds (30), BuildFremen)
+	Trigger.AfterDelay(DateTime.Minutes(10), function() AirstrikeLogic(AHiTechFactory) end )
+	Trigger.AfterDelay(EarlyGameStage, BuildFremen)
 
 	Trigger.OnAllKilledOrCaptured(AtreidesMainBase, function()
 		Utils.Do(AtreidesMain.GetGroundAttackers(), IdleHunt)
@@ -385,14 +461,22 @@ WorldLoaded = function()
 		Utils.Do(CorrinoSmall.GetGroundAttackers(), IdleHunt)
 	end)
 
+	Trigger.AfterDelay(300, function()
+		Media.DisplayMessage(UserInterface.GetFluentMessage("husk-reclaimed-harkonnen"), Mentat)
+	end)
+
+	Trigger.AfterDelay(350, function()
+		Media.DisplayMessage(UserInterface.GetFluentMessage("engineers-hint"), Mentat)
+	end)
+
 	local path = function() return Utils.Random(AtreidesPaths) end
 	local waveCondition = function() return Harkonnen.IsObjectiveCompleted(KillAtreides) end
 	local huntFunction = function(unit)
 		unit.AttackMove(AtreidesAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(AtreidesMain, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition, huntFunction)
 
+	SendCarryallReinforcements(AtreidesMain, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition, huntFunction)
 	SendStarportReinforcements()
 
 	Actor.Create("upgrade.barracks", true, { Owner = AtreidesMain })

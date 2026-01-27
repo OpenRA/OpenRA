@@ -8,6 +8,7 @@
 ]]
 
 HarkonnenBase = { HBarracks, HWindTrap1, HWindTrap2, HLightFactory, HOutpost, HConyard, HRefinery, HSilo1, HSilo2, HSilo3, HSilo4 }
+
 HarkonnenBaseAreaTrigger = { CPos.New(2, 58), CPos.New(3, 58), CPos.New(4, 58), CPos.New(5, 58), CPos.New(6, 58), CPos.New(7, 58), CPos.New(8, 58), CPos.New(9, 58), CPos.New(10, 58), CPos.New(11, 58), CPos.New(12, 58), CPos.New(13, 58), CPos.New(14, 58), CPos.New(15, 58), CPos.New(16, 58), CPos.New(16, 59), CPos.New(16, 60) }
 
 HarkonnenReinforcements =
@@ -65,15 +66,19 @@ HarkonnenPaths =
 }
 
 HarkonnenHunters = { "light_inf", "light_inf", "trike", "quad" }
+
 HarkonnenInitialReinforcements = { "light_inf", "light_inf", "quad", "quad", "trike", "trike", "trooper", "trooper" }
 
 HarkonnenHunterPath = { HarkonnenEntry5.Location, HarkonnenRally5.Location }
+
 HarkonnenInitialPath = { HarkonnenEntry4.Location, HarkonnenRally4.Location }
 
 OrdosReinforcements = { "quad", "raider" }
+
 OrdosPath = { OrdosEntry.Location, OrdosRally.Location }
 
 OrdosBaseBuildings = { "barracks", "light_factory" }
+
 OrdosUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 MessageCheck = function(index)

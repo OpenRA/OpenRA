@@ -32,6 +32,7 @@ AtreidesReinforcements =
 }
 
 AtreidesEntryWaypoints = { AtreidesWaypoint1.Location, AtreidesWaypoint2.Location, AtreidesWaypoint3.Location, AtreidesWaypoint4.Location }
+
 AtreidesAttackDelay = DateTime.Seconds(30)
 
 AtreidesAttackWaves =
@@ -49,6 +50,7 @@ ToHarvest =
 }
 
 HarkonnenReinforcements = { "light_inf", "light_inf", "light_inf", "trike" }
+
 HarkonnenEntryPath = { HarkonnenWaypoint.Location, HarkonnenRally.Location }
 
 Messages =
@@ -118,11 +120,8 @@ WorldLoaded = function()
 	end
 
 	Trigger.OnRemovedFromWorld(HarkonnenConyard, function()
-
 		-- Mission already failed, no need to check the other conditions as well
-		if checkResourceCapacity() then
-			return
-		end
+		if checkResourceCapacity() then return end
 
 		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == Harkonnen end)
 

@@ -66,6 +66,7 @@ Actors:
 	HGunTurret1: medium_gun_turret
 		Location: 38,3
 		Owner: Harkonnen
+		TurretFacing: 512
 	Actor3: wall
 		Location: 42,3
 		Owner: Smugglers
@@ -87,6 +88,7 @@ Actors:
 	HGunTurret2: medium_gun_turret
 		Location: 38,7
 		Owner: Harkonnen
+		TurretFacing: 512
 	Actor10: trooper
 		Location: 39,7
 		Owner: Harkonnen
@@ -300,6 +302,7 @@ Actors:
 	SGunTurret3: medium_gun_turret
 		Location: 57,20
 		Owner: Smugglers
+		TurretFacing: 512
 	HPower1: wind_trap
 		Location: 44,21
 		Owner: Harkonnen
@@ -330,6 +333,7 @@ Actors:
 	HGunTurret3: medium_gun_turret
 		Location: 47,29
 		Owner: Harkonnen
+		TurretFacing: 512
 	Actor97: wall
 		Location: 48,29
 		Owner: Harkonnen
@@ -348,6 +352,7 @@ Actors:
 	HGunTurret4: medium_gun_turret
 		Location: 11,32
 		Owner: Harkonnen
+		TurretFacing: 512
 	Actor103: light_inf
 		Location: 12,32
 		Owner: Harkonnen
@@ -378,15 +383,6 @@ Actors:
 	Actor112: wall
 		Location: 17,36
 		Owner: Harkonnen
-	Actor113: trike
-		Location: 37,39
-		Owner: Harkonnen
-	Actor114: trike
-		Location: 39,39
-		Owner: Harkonnen
-	Actor115: trike
-		Location: 41,39
-		Owner: Harkonnen
 	Actor116: spicebloom.spawnpoint
 		Location: 7,40
 		Owner: Neutral
@@ -395,9 +391,6 @@ Actors:
 		Owner: Harkonnen
 	Actor118: wall
 		Location: 38,40
-		Owner: Harkonnen
-	Actor119: light_inf
-		Location: 42,40
 		Owner: Harkonnen
 	Actor120: wall
 		Location: 37,41
@@ -516,6 +509,24 @@ Actors:
 	Actor152: wall
 		Owner: Smugglers
 		Location: 49,19
+	HPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 13,42
+	HPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 47,40
+	HPatrol1: trike
+		Location: 37,39
+		Owner: Harkonnen
+	HPatrol2: trike
+		Location: 39,39
+		Owner: Harkonnen
+	HPatrol3: trike
+		Location: 41,39
+		Owner: Harkonnen
+	HPatrol4: light_inf
+		Location: 42,40
+		Owner: Harkonnen
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

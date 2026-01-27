@@ -8,7 +8,17 @@
 ]]
 
 OrdosMainBase = { OOutpost, ORefinery1, ORefinery2, OHeavyFactory1, OHeavyFactory2, OLightFactory1, OHiTechFactory, OResearch, ORepair, OStarport, OGunt1, OGunt2, OGunt3, OGunt4, OGunt5, OGunt6, OGunt7, OGunt8, OGunt9, OGunt10, OGunt11, OGunt12, OBarracks1, OPower1, OPower2, OPower3, OPower4, OPower5, OPower6, OPower7, OPower8, OPower9, OPower10 }
+
 OrdosSmallBase = { OConyard, ORefinery3, OBarracks2, OLightFactory2, OGunt13, OGunt14, OGunt15, OGunt16, OPower11, OPower12, OPower13, OPower14 }
+
+ProductionBuildingsOrdosSmallBase = { OConyard, ORefinery3, OBarracks2, OLightFactory2 }
+
+SmugglerTriggerZone = Utils.Concat(
+	GetCellsInRectangle(CPos.New(73,67), CPos.New(81,72)),
+	GetCellsInRectangle(CPos.New(77,73), CPos.New(82,77))
+)
+
+SmugglerPatrol = {Smuggler1, Smuggler2, Smuggler3, Smuggler4, Smuggler5, Smuggler6 }
 
 OrdosReinforcements =
 {
@@ -149,9 +159,62 @@ ChangeOwner = function(old_owner, new_owner)
 	end)
 end
 
+Message = {}
+StopFollowing = {}
+Trigger.OnEnteredFootprint(SmugglerTriggerZone, function(a, id)
+	if SmugglerNeutral.HasNoRequiredUnits() then
+		Trigger.RemoveFootprintTrigger(id)
+	end
+
+	if a.Owner == Harkonnen and not Message[Harkonnen] then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("smuggler-warning-harkonnen"), "Smugglers", HSLColor.FromHex("7B2910"))
+		Message[Harkonnen] = true
+	end
+
+	if a.Owner == OrdosMain or a.Owner == OrdosSmall and not Message[Ordos] then
+		Media.DisplayMessage(UserInterface.GetFluentMessage("smuggler-warning-ordos"), "Smugglers", HSLColor.FromHex("7B2910"))
+		Message[Ordos] = true
+	end
+
+	if a.Owner ~= SmugglerNeutral then
+		Utils.Do(SmugglerPatrol, function(u)
+			if not u.IsDead then
+				StopFollowing[u] = false
+				FollowIntruder(u,a)
+			end
+		end)
+	end
+end)
+
+Trigger.OnExitedFootprint(SmugglerTriggerZone, function(a, id)
+	if SmugglerNeutral.HasNoRequiredUnits() then
+		Trigger.RemoveFootprintTrigger(id)
+	end
+	if a.Owner ~= SmugglerNeutral then
+		Utils.Do(SmugglerPatrol, function(u)
+			if not u.IsDead then StopFollowing[u] = true end
+		end)
+	end
+end)
+
+FollowIntruder = function(unit, intruder)
+	if intruder.IsDead or unit.IsDead then return end
+	if StopFollowing[unit] == true then unit.Stop() return end
+	unit.Stop()
+	unit.AttackMove(intruder.Location,1)
+	Trigger.AfterDelay(100, function() FollowIntruder(unit, intruder) end)
+end
+
 CheckSmugglerEnemies = function()
 	Utils.Do(SmugglerUnits, function(unit)
 		Trigger.OnDamaged(unit, function(self, attacker)
+			if Utils.Any(IgnoreDamageFromTypes, function(a) return a == attacker.Type end) then
+				return
+			end
+
+			if not self.HasProperty("Health") then return end
+			if self.MaxHealth * 0.9 < self.Health then return end
+
 			if unit.Owner == SmugglerNeutral and attacker.Owner == Harkonnen then
 				ChangeOwner(SmugglerNeutral, SmugglerHarkonnen)
 
@@ -197,6 +260,25 @@ CheckSmugglerEnemies = function()
 	end)
 end
 
+EmergencyBehaviour = function(player, target)
+	if player ~= OrdosSmall then return end
+	if not OGunt15.IsDead and not OGunt16.IsDead then return end
+	if #IdlingUnits[OrdosMain] > 10 and Utils.Any(ProductionBuildingsOrdosSmallBase, function(a) return not a.IsDead end) then
+		local reinforcements = SetupAttackGroup(OrdosMain, Utils.RandomInteger(5, #IdlingUnits[OrdosMain]))
+		Utils.Do(reinforcements, function(unit)
+			Trigger.ClearAll(unit)
+			Trigger.AfterDelay(1, function()
+				unit.Stop()
+				unit.Move(OrdosRally13.Location,1)
+				unit.AttackMove(target)
+				unit.CallFunc(function()
+					FindTargetsInArea(player, unit)
+				end)
+			end)
+		end)
+	end
+end
+
 Tick = function()
 	if Harkonnen.HasNoRequiredUnits() then
 		OrdosMain.MarkCompletedObjective(KillHarkonnen1)
@@ -234,6 +316,8 @@ Tick = function()
 			ProtectHarvester(units[1], OrdosSmall, AttackGroupSize[Difficulty])
 		end
 	end
+
+	if IdlingUnits[OrdosMain] == nil and IdlingUnits[OrdosSmall] == nil then return end
 end
 
 WorldLoaded = function()
@@ -273,6 +357,7 @@ WorldLoaded = function()
 		unit.AttackMove(OrdosAttackLocation)
 		IdleHunt(unit)
 	end
+
 	SendCarryallReinforcements(OrdosMain, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 
 	SendStarportReinforcements()

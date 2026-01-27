@@ -7,7 +7,8 @@
    information, see COPYING.
 ]]
 
-AtreidesBase = { AConyard, AOutpost, ARefinery, AHeavyFactory, ALightFactory, AGunt1, AGunt2, ABarracks, ASilo, APower1, APower2, APower3, APower4, APower5, APower6 }
+AtreidesBase = { AConyard, AOutpost, ARefinery, AHeavyFactory, ALightFactory, AGunt1, AGunt2, ABarracks, APower1, APower2, APower3, APower4, APower5, APower6 }
+
 FremenBase = { FGunt1, FGunt2 }
 
 BaseAreaTriggers =
@@ -105,6 +106,8 @@ FremenHunterPaths =
 	{ FremenEntry3.Location, FremenRally3.Location }
 }
 
+FremenAmbushSquad = { FremenAmbuser1, FremenAmbuser2, FremenAmbuser3, FremenAmbuser4 }
+
 HarkonnenReinforcements = { "combat_tank_h", "combat_tank_h" }
 
 HarkonnenPath = { HarkonnenEntry.Location, HarkonnenRally.Location }
@@ -156,7 +159,8 @@ WorldLoaded = function()
 	Atreides = Player.GetPlayer("Atreides")
 	Fremen = Player.GetPlayer("Fremen")
 	Harkonnen = Player.GetPlayer("Harkonnen")
-
+	Defending[Atreides] = {}
+	Defending[Fremen] = {}
 	InitObjectives(Harkonnen)
 	KillAtreides = AddPrimaryObjective(Harkonnen, "destroy-atreides")
 	KillFremen = AddPrimaryObjective(Harkonnen, "destroy-fremen")
@@ -164,11 +168,7 @@ WorldLoaded = function()
 
 	Camera.Position = HConyard.CenterPosition
 	FremenAttackLocation = HConyard.Location
-
-	Trigger.OnAllKilledOrCaptured(AtreidesBase, function()
-		Utils.Do(Atreides.GetGroundAttackers(), IdleHunt)
-	end)
-
+	IdleHuntOnBaseDestroyed(Atreides, AtreidesBase)
 	Trigger.OnAllKilled(Sietches, function()
 		SietchesAreDestroyed = true
 	end)
@@ -179,6 +179,7 @@ WorldLoaded = function()
 		unit.AttackMove(FremenAttackLocation)
 		IdleHunt(unit)
 	end
+
 	SendCarryallReinforcements(Fremen, 0, FremenAttackWaves[Difficulty], FremenAttackDelay[Difficulty], path, FremenReinforcements[Difficulty], waveCondition, huntFunction)
 
 	Actor.Create("upgrade.barracks", true, { Owner = Atreides })
@@ -201,4 +202,17 @@ WorldLoaded = function()
 	TriggerCarryallReinforcements(Harkonnen, Fremen, BaseAreaTriggers[1], FremenHunters[1],  FremenHunterPaths[3], fremenCondition)
 	TriggerCarryallReinforcements(Harkonnen, Fremen, BaseAreaTriggers[2], FremenHunters[2],  FremenHunterPaths[2], fremenCondition)
 	TriggerCarryallReinforcements(Harkonnen, Fremen, BaseAreaTriggers[3], FremenHunters[3],  FremenHunterPaths[1], fremenCondition)
+
+	Trigger.OnRemovedFromWorld(ExplosionCrate, function()
+		Utils.Do(FremenAmbushSquad, function(fremen)
+			fremen.Stance = "AttackAnything"
+		end)
+	end)
+
+	Trigger.OnAllKilled({AGunt1, AGunt2}, function()
+		EmergencyBuildRate[Atreides] = true
+		Trigger.AfterDelay(600, function()
+			EmergencyBuildRate[Atreides] = false
+		end)
+	end)
 end

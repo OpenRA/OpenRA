@@ -454,9 +454,6 @@ Actors:
 	COutpost: outpost
 		Location: 79,42
 		Owner: Corrino Main Base
-	CPalace: palace
-		Location: 89,42
-		Owner: Corrino Main Base
 	Actor116: wall
 		Location: 93,42
 		Owner: Corrino Main Base
@@ -1005,6 +1002,68 @@ Actors:
 	CPower8: wind_trap
 		Owner: Corrino Main Base
 		Location: 90,48
+	APatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 10,60
+	APatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 38,85
+	APatrolPoint3: waypoint
+		Owner: Neutral
+		Location: 75,73
+	APatrolPoint4: waypoint
+		Owner: Neutral
+		Location: 44,32
+	APatrolPoint5: waypoint
+		Owner: Neutral
+		Location: 99,33
+	APatrolPoint6: waypoint
+		Owner: Neutral
+		Location: 82,17
+	APatrolPoint7: waypoint
+		Owner: Neutral
+		Location: 65,30
+	CPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 49,13
+	CPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 15,47
+	Actor6: combat_tank_h.debris
+		Owner: Harkonnen
+		Facing: 384
+		Location: 17,3
+	Actor7: siege_tank.debris
+		Owner: Harkonnen
+		Facing: 384
+		Location: 16,3
+	Actor5: combat_tank_a.debris
+		Facing: 384
+		Faction:
+		Owner: Atreides Small Base
+		Location: 14,3
+	CPalace: palace
+		Owner: Corrino Main Base
+		Location: 89,41
+	Actor10: light_inf
+		Owner: Smugglers - Neutral
+		Facing: 384
+		Location: 12,89
+		SubCell: 3
+	Actor9: trooper
+		Owner: Smugglers - Neutral
+		Facing: 384
+		Location: 11,88
+		SubCell: 3
+	Actor15: siege_tank.debris
+		Owner: Smugglers - Neutral
+		Facing: 384
+		Location: 10,88
+	Actor8: engineer
+		Owner: Smugglers - Neutral
+		Facing: 384
+		Location: 9,88
+		SubCell: 3
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

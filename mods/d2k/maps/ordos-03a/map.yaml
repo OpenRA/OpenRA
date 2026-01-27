@@ -143,6 +143,19 @@ Actors:
 	HSilo4: silo
 		Owner: Harkonnen
 		Location: 4,60
+	Actor3: crate
+		Owner: Neutral
+		Location: 53,25
+	Actor9: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 63,64
+	Actor10: crate_reveal
+		Owner: Neutral
+		Location: 11,35
+	HPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 32,17
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

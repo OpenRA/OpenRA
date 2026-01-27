@@ -562,9 +562,6 @@ Actors:
 	ARock4: large_gun_turret
 		Location: 54,27
 		Owner: Atreides Main Base
-	CPalace: palace
-		Location: 2,28
-		Owner: Corrino Main Base
 	Actor161: wall
 		Location: 49,28
 		Owner: Atreides Main Base
@@ -844,6 +841,7 @@ Actors:
 	ARock6: large_gun_turret
 		Location: 47,62
 		Owner: Atreides Small Base 1
+		TurretFacing: 512
 	AHeavyFactory2: heavy_factory
 		Location: 36,63
 		Owner: Atreides Small Base 1
@@ -862,11 +860,9 @@ Actors:
 	ARock7: large_gun_turret
 		Location: 44,66
 		Owner: Atreides Small Base 1
+		TurretFacing: 512
 	APower21: wind_trap
 		Location: 38,67
-		Owner: Atreides Small Base 1
-	ARock8: large_gun_turret
-		Location: 44,67
 		Owner: Atreides Small Base 1
 	ABarracks3: barracks
 		Location: 36,68
@@ -967,18 +963,12 @@ Actors:
 	AtreidesRally1: waypoint
 		Owner: Neutral
 		Location: 96,87
-	AtreidesEntry1: waypoint
-		Owner: Neutral
-		Location: 97,87
 	AtreidesRally2: waypoint
 		Owner: Neutral
 		Location: 76,93
 	AtreidesEntry2: waypoint
 		Owner: Neutral
 		Location: 76,97
-	AtreidesRally3: waypoint
-		Owner: Neutral
-		Location: 63,65
 	AtreidesEntry3: waypoint
 		Owner: Neutral
 		Location: 97,65
@@ -1042,6 +1032,85 @@ Actors:
 	CorrinoStarportExit: waypoint
 		Owner: Neutral
 		Location: 2,13
+	AtreidesPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 16,63
+	AtreidesPatrolPoint3: waypoint
+		Owner: Neutral
+		Location: 62,47
+	AtreidesPatrolPoint4: waypoint
+		Owner: Neutral
+		Location: 72,28
+	CorrinoPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 13,39
+	CorrinoPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 32,29
+	AtreidesPatrolPoint5: waypoint
+		Owner: Neutral
+		Location: 44,42
+	CorrinoPatrolPoint3: waypoint
+		Owner: Neutral
+		Location: 72,50
+	Actor5: combat_tank_a.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 93,53
+	Actor8: frigate.debris
+		Owner: Creeps
+		Location: 86,54
+	Actor1: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 77,63
+	Actor9: carryall.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 48,75
+	Actor6: siege_tank.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 92,58
+	Actor10: combat_tank_h.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 88,54
+	HarkonnenRally1: waypoint
+		Owner: Neutral
+		Location: 74,71
+	HarkonnenRally2: waypoint
+		Owner: Neutral
+		Location: 68,79
+	AtreidesEntry1: waypoint
+		Owner: Neutral
+		Location: 97,87
+	Actor11: crate
+		Owner: Neutral
+		Location: 6,76
+	ARock8: large_gun_turret
+		Owner: Atreides Small Base 1
+		Location: 44,67
+		TurretFacing: 512
+	HarkonnenRally4: waypoint
+		Owner: Neutral
+		Location: 97,57
+	HarkonnenRally3: waypoint
+		Owner: Neutral
+		Location: 97,70
+	AtreidesRally3: waypoint
+		Owner: Neutral
+		Location: 51,65
+	AtreidesPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 46,84
+	DebrisHarvester2: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 58,39
+	CPalace: palace
+		Owner: Corrino Main Base
+		Location: 2,26
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

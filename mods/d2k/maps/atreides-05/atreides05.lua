@@ -8,6 +8,7 @@
 ]]
 
 HarkonnenBase = { HarkonnenConstructionYard, HarkonnenWindTrap1, HarkonnenWindTrap2, HarkonnenWindTrap3, HarkonnenWindTrap4, HarkonnenWindTrap5, HarkonnenWindTrap6, HarkonnenWindTrap7, HarkonnenWindTrap8, HarkonnenSilo1, HarkonnenSilo2, HarkonnenSilo3, HarkonnenSilo4, HarkonnenGunTurret1, HarkonnenGunTurret2, HarkonnenGunTurret3, HarkonnenGunTurret4, HarkonnenGunTurret5, HarkonnenGunTurret6, HarkonnenGunTurret7, HarkonnenHeavyFactory, HarkonnenRefinery, HarkonnenOutpost, HarkonnenLightFactory }
+
 SmugglerBase = { SmugglerWindTrap1, SmugglerWindTrap2 }
 
 HarkonnenReinforcements =
@@ -59,6 +60,7 @@ HarkonnenInfantryReinforcements =
 		{ "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "light_inf", "trooper", "trooper", "trooper", "trooper", "trooper" }
 	}
 }
+
 InfantryPath = { HarkonnenEntry3.Location }
 
 HarkonnenAttackDelay =
@@ -139,13 +141,14 @@ HarkonnenPaths =
 }
 
 AtreidesReinforcements = { "trike", "combat_tank_a" }
+
 AtreidesPath = { AtreidesEntry.Location, AtreidesRally.Location }
 
 ContrabandTimes =
 {
 	easy = DateTime.Minutes(10),
-	normal = DateTime.Minutes(5),
-	hard = DateTime.Minutes(2) + DateTime.Seconds(30)
+	normal = DateTime.Minutes(9),
+	hard = DateTime.Minutes(8)
 }
 
 Wave = 0
@@ -310,6 +313,10 @@ WorldLoaded = function()
 		Media.DisplayMessage(contrabandApproaching, Mentat)
 	end)
 
+	Trigger.AfterDelay(500, function()
+		Media.DisplayMessage(UserInterface.GetFluentMessage("use-engineer-hint"), Mentat)
+	end)
+
 	Trigger.OnAllKilledOrCaptured(HarkonnenBase, function()
 		Utils.Do(Harkonnen.GetGroundAttackers(), IdleHunt)
 	end)
@@ -330,6 +337,7 @@ WorldLoaded = function()
 			Atreides.MarkFailedObjective(DefendStarport)
 		end
 	end)
+
 	Trigger.OnDamaged(Starport, function(_, attacker)
 		if Starport.Owner ~= Smuggler or attacker.IsDead or attacker.Owner ~= Atreides then
 			return
@@ -347,6 +355,7 @@ WorldLoaded = function()
 			end
 		end
 	end)
+
 	Trigger.OnCapture(Starport, function()
 		DefendStarport = AddSecondaryObjective(Atreides, "defend-captured-starport")
 
@@ -366,12 +375,14 @@ WorldLoaded = function()
 	Trigger.OnKilled(HarkonnenBarracks, function()
 		Atreides.MarkFailedObjective(CaptureBarracks)
 	end)
+
 	Trigger.OnDamaged(HarkonnenBarracks, function()
 		if AttackNotifier <= 0 and HarkonnenBarracks.Health < HarkonnenBarracks.MaxHealth * 3/4 then
 			AttackNotifier = DateTime.Seconds(10)
 			Media.DisplayMessage(UserInterface.GetFluentMessage("do-not-destroy-barracks"), Mentat)
 		end
 	end)
+
 	Trigger.OnCapture(HarkonnenBarracks, function()
 		Media.DisplayMessage(UserInterface.GetFluentMessage("hostages-released"), Mentat)
 
@@ -400,7 +411,7 @@ WorldLoaded = function()
 		if not Warned and a.Owner == Atreides and a.Type ~= "carryall" then
 			Warned = true
 			Trigger.RemoveFootprintTrigger(id)
-			Media.DisplayMessage(UserInterface.GetFluentMessage("stay-away-from-starport"), UserInterface.GetFluentMessage("smuggler-leader"))
+			Media.DisplayMessage(UserInterface.GetFluentMessage("stay-away-from-starport"), UserInterface.GetFluentMessage("smuggler-leader"), HSLColor.FromHex("9C8408"))
 		end
 	end)
 
@@ -408,7 +419,7 @@ WorldLoaded = function()
 		if not Paid and a.Owner == Atreides and a.Type ~= "carryall" then
 			Paid = true
 			Trigger.RemoveFootprintTrigger(id)
-			Media.DisplayMessage(UserInterface.GetFluentMessage("were-warned-will-pay"), UserInterface.GetFluentMessage("smuggler-leader"))
+			Media.DisplayMessage(UserInterface.GetFluentMessage("were-warned-will-pay"), UserInterface.GetFluentMessage("smuggler-leader"), HSLColor.FromHex("9C8408"))
 			Utils.Do(Smuggler.GetGroundAttackers(), function(unit)
 				unit.AttackMove(SmugglerWaypoint2.Location)
 			end)
@@ -425,6 +436,13 @@ WorldLoaded = function()
 			Trigger.RemoveProximityTrigger(id)
 			Media.DisplayMessage(UserInterface.GetFluentMessage("capture-harkonnen-barracks-release-hostages"), Mentat)
 			StopInfantryProduction = true
+		end
+	end)
+
+	Trigger.OnEnteredProximityTrigger(Trigger1.CenterPosition, WDist.New(2 * 1024), function(a, id)
+		if HarkonnenTankDebris1.IsInWorld and a.Owner == Atreides then
+			HarkonnenTankDebris1.Deploy()
+			Trigger.RemoveProximityTrigger(id)
 		end
 	end)
 end

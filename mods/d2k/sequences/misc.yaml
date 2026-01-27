@@ -516,6 +516,34 @@ crate:
 		ZOffset: -511
 		Offset: -16,-16
 
+crate_explosion:
+	idle:
+		Filename: DATA.R16
+		Start: 102
+		ZOffset: -511
+		Offset: -16,-16
+
+crate_reveal:
+	idle:
+		Filename: DATA.R16
+		Start: 105
+		ZOffset: -511
+		Offset: -16,-16
+
+crate_script:
+	idle:
+		Filename: DATA.R16
+		Start: 103
+		ZOffset: -511
+		Offset: -16,-16
+
+vision_provider:
+	idle:
+		Filename: DATA.R16
+		Start: 0
+		ZOffset: -511
+		Offset: -16,-16
+
 spicebloom:
 	grow0:
 		Filename: DATA.R16
@@ -691,3 +719,71 @@ null:
 	idle:
 		Filename: DATA.R16
 		Start: 3552
+
+carryall.debris:
+	idle:
+		Filename: BLOXBASE.R16
+		Start: 349
+		Offset: -32,-32
+		ZOffset: -3024
+	1:
+		Filename: BLOXBASE.R16
+		Start: 350
+		Offset: 0,-32
+		ZOffset: -3024
+	2:
+		Filename: BLOXBASE.R16
+		Start: 369
+		Offset: -32,0
+		ZOffset: -3024
+	3:
+		Filename: BLOXBASE.R16
+		Start: 370
+		Offset: 0,0
+		ZOffset: -3024
+
+frigate.debris:
+	idle:
+		Filename: BLOXBAT.R16
+		Start: 652
+		Offset: -32,-32
+		ZOffset: -3024
+	1:
+		Filename: BLOXBAT.R16
+		Start: 653
+		Offset: 0,-32
+		ZOffset: -3024
+	2:
+		Filename: BLOXBAT.R16
+		Start: 672
+		Offset: -32,0
+		ZOffset: -3024
+	3:
+		Filename: BLOXBAT.R16
+		Start: 673
+		Offset: 0,0
+		ZOffset: -3024
+
+harvester.debris:
+	idle:
+		Filename: BLOXBASE.R16
+		Start: 389
+		Offset: -16,-16
+		ZOffset: -3024
+
+debris.small:
+	idle:
+		Filename: DATA.R16
+		Start: 38
+	tankdebris01:
+		Filename: missiletankhusk/missiletankhuskdebris-0000.png
+		ZOffset: -2048
+	tankdebris02:
+		Filename: missiletankhusk/missiletankhuskdebris-0001.png
+		ZOffset: -2048
+	tankdebris03:
+		Filename: missiletankhusk/missiletankhuskdebris-0002.png
+		ZOffset: -2048
+	tankdebris04:
+		Filename: missiletankhusk/missiletankhuskdebris-0003.png
+		ZOffset: -2048

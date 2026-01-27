@@ -413,7 +413,44 @@ Actors:
 		Location: 5,23
 	FremenRally: waypoint
 		Owner: Neutral
-		Location: 56,54
+		Location: 56,56
+	Actor27: combat_tank_h.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 58,50
+	Actor33: frigate.debris
+		Owner: Creeps
+		Location: 33,28
+	Actor34: crate
+		Owner: Fremen
+		Location: 39,57
+	Actor36: crate
+		Owner: Fremen
+		Location: 38,57
+	Actor53: crate
+		Owner: Fremen
+		Location: 37,57
+	Actor54: crate
+		Owner: Fremen
+		Location: 37,56
+	Actor57: crate
+		Owner: Fremen
+		Location: 38,56
+	Actor59: crate
+		Owner: Fremen
+		Location: 39,56
+	Actor62: combat_tank_a.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 14,45
+	Actor8: combat_tank_h.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 51,57
+	Actor63: combat_tank_a.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 31,48
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

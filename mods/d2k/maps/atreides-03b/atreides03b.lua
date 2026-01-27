@@ -9,6 +9,8 @@
 
 OrdosBase = { OBarracks, OWindTrap1, OWindTrap2, OOutpost, OConyard, ORefinery, OSilo }
 
+OrdosScouts = { OScout1, OScout2, OScout3 }
+
 OrdosReinforcements =
 {
 	easy =
@@ -143,7 +145,6 @@ WorldLoaded = function()
 	end
 
 	Trigger.OnRemovedFromWorld(AConyard, function()
-
 		-- Mission already failed, no need to check the other conditions as well
 		if checkResourceCapacity() then
 			return
@@ -175,5 +176,11 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(2) + DateTime.Seconds(30), function()
 		Media.PlaySpeechNotification(Atreides, "Reinforce")
 		Reinforcements.ReinforceWithTransport(Atreides, "carryall.reinforce", AtreidesReinforcements, AtreidesPath, { AtreidesPath[1] })
+	end)
+
+	Trigger.OnDamaged(HarvesterDebris, function(self, attacker)
+		if self.MaxHealth / 2 > self.Health then
+			self.Deploy()
+		end
 	end)
 end

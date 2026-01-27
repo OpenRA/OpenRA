@@ -8,7 +8,9 @@
 ]]
 
 OrdosBase = { OConYard, OOutpost, OPalace, ORefinery1, ORefinery2, OHeavyFactory, OLightFactory, OHiTechFactory, OResearch, ORepair, OStarport, OGunt1, OGunt2, OGunt3, OGunt4, OGunt5, OGunt6, ORock1, ORock2, ORock3, ORock4, OBarracks1, OBarracks2, OPower1, OPower2, OPower3, OPower4, OPower5, OPower6, OPower7, OPower8, OPower9, OPower10, OPower11, OPower12, OPower13 }
-AtreidesBase = { AConYard, AOutpost, ARefinery1, ARefinery2, AHeavyFactory, ALightFactory, AHiTechFactory, ARepair, AStarport, AGunt1, AGunt2, ARock1, ARock2, APower1, APower2, APower3, APower4, APower5, APower6, APower7, APower8, APower9 }
+
+AtreidesBase = { AConYard,ABarracks1, ABarracks2, AOutpost, ARefinery1, ARefinery2, AHeavyFactory, ALightFactory, AHiTechFactory, ARepair, AStarport, AGunt1, AGunt2, ARock1, ARock2, APower1, APower2, APower3, APower4, APower5, APower6, APower7, APower8, APower9 }
+
 MercenaryBase = { MHeavyFactory, MStarport, MGunt, MPower1, MPower2 }
 
 OrdosReinforcements =
@@ -56,7 +58,7 @@ OrdosAttackDelay =
 	hard = DateTime.Minutes(1)
 }
 
-MercenaryStarportDelay = DateTime.Minutes(1) + DateTime.Seconds(20)
+MercenaryStarportDelay = 4970
 
 OrdosAttackWaves =
 {
@@ -92,7 +94,9 @@ InitialOrdosPaths =
 SaboteurPaths =
 {
 	{ SaboteurWaypoint1.Location, SaboteurWaypoint2.Location, SaboteurWaypoint3.Location },
-	{ SaboteurWaypoint4.Location, SaboteurWaypoint5.Location, SaboteurWaypoint6.Location }
+	{ SaboteurWaypoint4.Location, SaboteurWaypoint5.Location, SaboteurWaypoint6.Location },
+	{ SaboteurWaypoint1.Location, OrdosPatrolPoint2.Location, OrdosRally1.Location, SaboteurWaypoint6.Location },
+	{ OrdosRally4.Location, OrdosPatrolPoint3.Location, OrdosPatrolPoint2.Location}
 }
 
 InitialAtreidesPath = { AStarport.Location, AtreidesRally.Location }
@@ -117,14 +121,36 @@ SendStarportReinforcements = function(faction)
 	end)
 end
 
-SendAirStrike = function()
-	if AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesEnemy then
+AirStrikeTimer = 7500
+AirStrikeChargeTime = 7500
+AirstrikeLogic = function(airstrikeProvider)
+	if airstrikeProvider.IsDead then
+		return
+	end
+	if DateTime.GameTime <= AirStrikeTimer then
+		Trigger.AfterDelay(AirStrikeTimer - DateTime.GameTime + 1, function()
+			AirstrikeLogic(airstrikeProvider)
+		end)
+		return
+	end
+
+	-- randomly choose if wait again or strike. During waiting Airstrike can still be used by DefensiveAirStrike
+	if Utils.RandomInteger(1, 100) < 30 then
+		Trigger.AfterDelay(1000, function() AirstrikeLogic(airstrikeProvider)end)
+	else
+		AirStrikeVSBuilding(airstrikeProvider)
+		Trigger.AfterDelay(7500, function() AirstrikeLogic(airstrikeProvider) end)
+		IsAirstrikeReady = false
+	end
+end
+
+AirStrikeVSBuilding = function(airstrikeProvider)
+	if airstrikeProvider.IsDead or  DateTime.GameTime < AirStrikeTimer  then
 		return
 	end
 
 	local targets = Utils.Where(Harkonnen.GetActors(), function(actor)
-		return
-			actor.HasProperty("Sell") and
+		return actor.HasProperty("Sell") and
 			actor.Type ~= "wall" and
 			actor.Type ~= "medium_gun_turret" and
 			actor.Type ~= "large_gun_turret" and
@@ -133,16 +159,40 @@ SendAirStrike = function()
 	end)
 
 	if #targets > 0 then
-		AHiTechFactory.TargetAirstrike(Utils.Random(targets).CenterPosition)
+		airstrikeProvider.TargetAirstrike(Utils.Random(targets).CenterPosition)
+		AirStrikeTimer =  DateTime.GameTime + AirStrikeChargeTime
+	end
+end
+
+DefensiveAirStrike = function(airstrikeProvider, possibleTargets)
+	if airstrikeProvider.IsDead or DateTime.GameTime <= AirStrikeTimer then return end
+	local bestValue = {}
+	local bestIndex = 1
+	for i = 1, #possibleTargets, 1 do
+		local ActorsInCircle = Map.ActorsInCircle(possibleTargets[i].CenterPosition, WDist.FromCells(4), function(a)
+			return
+				a.Owner == Harkonnen
+				and not a.IsDead
+				and a.HasProperty("Attack")
+		end)
+
+		bestValue[i] = 0
+		Utils.Do(ActorsInCircle, function(a)
+			bestValue[i] = bestValue[i] + Actor.Cost(a.Type)
+		end)
+
+		if bestValue[i] > bestValue[bestIndex] then
+			bestIndex = i
+		end
 	end
 
-	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)
+	airstrikeProvider.TargetAirstrike(possibleTargets[bestIndex].CenterPosition)
+	AirStrikeTimer =  DateTime.GameTime + AirStrikeChargeTime
 end
 
 GetSaboteurTargets = function(player)
 	return Utils.Where(player.GetActors(), function(actor)
-		return
-			actor.HasProperty("Sell") and
+		return actor.HasProperty("Sell") and
 			actor.Type ~= "wall" and
 			actor.Type ~= "medium_gun_turret" and
 			actor.Type ~= "large_gun_turret" and
@@ -162,14 +212,54 @@ BuildSaboteur = function()
 		saboteur.Wait(DateTime.Seconds(5))
 
 		local path = Utils.Random(SaboteurPaths)
-		saboteur.Move(path[1])
-		saboteur.Move(path[2])
-		saboteur.Move(path[3])
+		Utils.Do(path, function(waypoint)
+			saboteur.Move(waypoint)
+		end)
 
 		SendSaboteur(saboteur)
+		ScanForBetterTargets(saboteur)
 	end
 
-	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(30), BuildSaboteur)
+	Trigger.AfterDelay(DateTime.Minutes(5) + DateTime.Seconds(30), BuildSaboteur)
+end
+
+DemolishType = { "harvester", "mcv",  "siege_tank", "missile_tank", "sonic_tank", "devastator", "deviator", "combat_tank_a", "combat_tank_h", "combat_tank_o"}
+
+ScanForBetterTargets = function(saboteur)
+	if saboteur.IsDead or not saboteur.IsInWorld then return end
+
+	local possibleTargets = Map.ActorsInCircle(saboteur.CenterPosition, WDist.FromCells(6), function(a)
+		return not saboteur.Owner.IsAlliedWith(a.Owner) and
+			Utils.Any(DemolishType, function(d) return d == a.Type end)
+	end)
+
+	if possibleTargets[1] == nil then
+		Trigger.AfterDelay(200, function()
+			ScanForBetterTargets(saboteur)
+		end)
+		return
+	end
+
+	-- filter out targets where infantry is nearby
+	for index = #possibleTargets, 1, -1 do
+		local infantryunits = Map.ActorsInCircle(possibleTargets[index].CenterPosition, WDist.New(1536), function(u) return u.Type == "light_inf" or u.Type == "trooper" end)
+		if infantryunits[1] ~= nil then
+			table.remove(possibleTargets, index)
+		end
+	end
+
+	if possibleTargets[1] ~= nil then
+		saboteur.Stop()
+		local dfd = Utils.Random(possibleTargets)
+		saboteur.Demolish(dfd)
+		saboteur.CallFunc(function()
+			ScanForBetterTargets(saboteur)
+		end)
+	else
+		Trigger.AfterDelay(200, function()
+			ScanForBetterTargets(saboteur)
+		end)
+	end
 end
 
 SendSaboteur = function(saboteur)
@@ -216,6 +306,21 @@ ChangeOwner = function(old_owner, new_owner)
 	end)
 end
 
+EmergencyBehaviour = function(player, target)
+	HoldProduction[player] = false
+	if player == Ordos and not AtreidesEnemy.HasNoRequiredUnits() then
+		if AHiTechFactory.IsDead then return end
+		local enemyunits = Map.ActorsInCircle(Map.CenterOfCell(target), WDist.FromCells(15), function(a)
+			return a.Owner == Harkonnen
+				and not a.IsDead
+				and a.HasProperty("Attack")
+		end)
+
+		if enemyunits[1] == nil  then return end
+		DefensiveAirStrike(AHiTechFactory, enemyunits)
+	end
+end
+
 Tick = function()
 	if Harkonnen.HasNoRequiredUnits() then
 		Ordos.MarkCompletedObjective(KillHarkonnen1)
@@ -239,7 +344,6 @@ Tick = function()
 
 	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[Ordos] then
 		local units = Ordos.GetActorsByType("harvester")
-
 		if #units > 0 then
 			LastHarvesterEaten[Ordos] = false
 			ProtectHarvester(units[1], Ordos, AttackGroupSize[Difficulty])
@@ -248,7 +352,6 @@ Tick = function()
 
 	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[AtreidesEnemy] then
 		local units = AtreidesEnemy.GetActorsByType("harvester")
-
 		if #units > 0 then
 			LastHarvesterEaten[AtreidesEnemy] = false
 			ProtectHarvester(units[1], AtreidesEnemy, AttackGroupSize[Difficulty])
@@ -275,8 +378,8 @@ WorldLoaded = function()
 	OrdosAttackLocation = HMCV.Location
 	MercenaryAttackLocation = HMCV.Location
 
-	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)
-	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(30), BuildSaboteur)
+	Trigger.AfterDelay(EarlyGameStage, function() AirstrikeLogic(AHiTechFactory) end)
+	Trigger.AfterDelay(EarlyGameStage, BuildSaboteur)
 
 	Trigger.OnCapture(MHeavyFactory, function()
 		Harkonnen.MarkCompletedObjective(AllyWithMercenaries)
@@ -296,7 +399,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnKilledOrCaptured(OPalace, function()
-		Media.DisplayMessage(UserInterface.GetFluentMessage("cannot-stand-harkonnen-must-become-neutral"), UserInterface.GetFluentMessage("atreides-commander"))
+		Media.DisplayMessage(UserInterface.GetFluentMessage("cannot-stand-harkonnen-must-become-neutral"), UserInterface.GetFluentMessage("atreides-commander"), HSLColor.FromHex("5A7394"))
 
 		ChangeOwner(AtreidesEnemy, AtreidesNeutral)
 		DefendAndRepairBase(AtreidesNeutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
@@ -328,8 +431,8 @@ WorldLoaded = function()
 		unit.AttackMove(OrdosAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(Ordos, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 
+	SendCarryallReinforcements(Ordos, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 	SendStarportReinforcements(MercenaryEnemy)
 
 	Actor.Create("upgrade.barracks", true, { Owner = Ordos })

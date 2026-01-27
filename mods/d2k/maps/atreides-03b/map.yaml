@@ -48,23 +48,8 @@ Actors:
 	Actor3: wormspawner
 		Location: 27,14
 		Owner: Creeps
-	Actor8: light_inf
-		Location: 48,24
-		Owner: Ordos
-	Actor9: light_inf
-		Location: 19,34
-		Owner: Ordos
-	Actor10: light_inf
-		Location: 35,34
-		Owner: Ordos
-	Actor11: trooper
-		Location: 18,35
-		Owner: Ordos
 	Actor12: light_inf
 		Location: 18,37
-		Owner: Ordos
-	Actor13: trooper
-		Location: 19,39
 		Owner: Ordos
 	Actor14: light_inf
 		Location: 34,50
@@ -132,6 +117,33 @@ Actors:
 	OrdosRally2: waypoint
 		Owner: Neutral
 		Location: 15,34
+	HarvesterDebris: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 50,12
+	Actor0: combat_tank_a.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 22,37
+	Actor1: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 25,10
+	OScout1: light_inf
+		Location: 48,24
+		Owner: Ordos
+	OScout2: light_inf
+		Location: 35,34
+		Owner: Ordos
+	Actor13: trooper
+		Location: 19,39
+		Owner: Ordos
+	Actor9: light_inf
+		Location: 19,34
+		Owner: Ordos
+	OScout3: trooper
+		Location: 18,35
+		Owner: Ordos
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

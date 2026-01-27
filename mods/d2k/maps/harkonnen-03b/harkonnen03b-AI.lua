@@ -14,7 +14,7 @@ AttackGroupSize =
 	hard = 10
 }
 
-AttackDelays =
+ProductionDelays =
 {
 	easy = { DateTime.Seconds(4), DateTime.Seconds(9) },
 	normal = { DateTime.Seconds(2), DateTime.Seconds(7) },
@@ -22,29 +22,48 @@ AttackDelays =
 }
 
 AtreidesInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper" }
+
 AtreidesVehicleTypes = { "trike", "trike", "quad" }
 
 InitAIUnits = function()
 	IdlingUnits[Atreides] = Reinforcements.Reinforce(Atreides, AtreidesInitialReinforcements, AtreidesInitialPath)
-
 	DefendAndRepairBase(Atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
+	Defending[Atreides] = {}
+	AttackDelay[Atreides] = 7000 * DifficultyModifier[Difficulty]
+	TimeBetweenAttacks[Atreides] = 5000 * DifficultyModifier[Difficulty]
 	LastHarvesterEaten[Atreides] = true
 	Trigger.AfterDelay(0, InitAIUnits)
-
 	AConyard.Produce(HarkonnenUpgrades[1])
 	AConyard.Produce(HarkonnenUpgrades[2])
 
-	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
+	local delay = function(player) return Utils.RandomInteger(ProductionDelays[Difficulty][1], ProductionDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return { Utils.Random(AtreidesInfantryTypes) } end
-	local vehilcesToBuild = function() return { Utils.Random(AtreidesVehicleTypes) } end
+	local vehiclesToBuild = function() return { Utils.Random(AtreidesVehicleTypes) } end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
 	-- Finish the upgrades first before trying to build something
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
 		ProduceUnits(Atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(Atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Atreides, ALightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	end)
+
+	if Difficulty ~= "easy" then
+		Atreides.GrantCondition("base-rebuilder")
+	end
+
+	local productionTypes =
+	{
+		barracks = infantryToBuild,
+		light_factory = vehiclesToBuild,
+	}
+
+	Trigger.OnBuildingPlaced(Atreides, function(p, building)
+		table.insert(OrdosMainBase, building)
+		DefendAndRepairBase(Atreides, {building}, 0.75, AttackGroupSize[Difficulty] )
+		if productionTypes[building.Type] == nil then return end
+		ProduceUnits(Atreides, building, delay, productionTypes[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

@@ -576,6 +576,25 @@ Actors:
 	HarkonnenEntry7: waypoint
 		Owner: Neutral
 		Location: 34,2
+	APatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 46,7
+	APatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 10,45
+	HPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 40,49
+	HPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 62,76
+	Actor2: frigate.debris
+		Owner: Creeps
+		Location: 73,55
+	Actor1: missile_tank.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 72,53
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

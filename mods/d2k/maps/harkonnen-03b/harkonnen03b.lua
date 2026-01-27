@@ -8,6 +8,7 @@
 ]]
 
 AtreidesBase = { ABarracks, AWindTrap1, AWindTrap2, AWindTrap3, ALightFactory, AOutpost, AConyard, ARefinery, ASilo1, ASilo2, ASilo3, ASilo4 }
+
 AtreidesBaseAreaTriggers =
 {
 	{ CPos.New(10, 53), CPos.New(11, 53), CPos.New(12, 53), CPos.New(13, 53), CPos.New(14, 53), CPos.New(15, 53), CPos.New(16, 53), CPos.New(17, 53), CPos.New(17, 52), CPos.New(17, 51), CPos.New(17, 50), CPos.New(17, 49), CPos.New(17, 48), CPos.New(17, 47), CPos.New(17, 46), CPos.New(17, 45), CPos.New(17, 44), CPos.New(17, 43), CPos.New(17, 42), CPos.New(17, 41), CPos.New(17, 40), CPos.New(17, 39), CPos.New(17, 38), CPos.New(2, 35), CPos.New(3, 35), CPos.New(4, 35), CPos.New(5, 35), CPos.New(6, 35), CPos.New(7, 35), CPos.New(8, 35), CPos.New(9, 35), CPos.New(10, 35), CPos.New(11, 35), CPos.New(12, 35) },
@@ -87,12 +88,15 @@ AtreidesHunterPaths =
 }
 
 AtreidesInitialPath = { AtreidesEntry2.Location, AtreidesRally2.Location }
+
 AtreidesInitialReinforcements = { "light_inf", "light_inf", "quad", "quad", "trike", "trike", "trooper", "trooper" }
 
 HarkonnenReinforcements = { "quad", "quad" }
+
 HarkonnenPath = { HarkonnenEntry.Location, HarkonnenRally.Location }
 
 HarkonnenBaseBuildings = { "barracks", "light_factory" }
+
 HarkonnenUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 MessageCheck = function(index)
@@ -150,4 +154,10 @@ WorldLoaded = function()
 	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[2], AtreidesHunters[2], AtreidesHunterPaths[2])
 	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[3], AtreidesHunters[3], AtreidesHunterPaths[3])
 	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[4], AtreidesHunters[4], AtreidesHunterPaths[4])
+
+	Trigger.OnRemovedFromWorld(CrateScript, function()
+		VisionPoint.GrantCondition("activate", 150)
+		Media.PlaySound("MULTI1.WAV")
+		Camera.Position = VisionPoint.CenterPosition
+	end)
 end

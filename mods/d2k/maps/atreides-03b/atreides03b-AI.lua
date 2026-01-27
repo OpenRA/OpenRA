@@ -14,7 +14,7 @@ AttackGroupSize =
 	hard = 10
 }
 
-AttackDelays =
+ProductionDelays =
 {
 	easy = { DateTime.Seconds(4), DateTime.Seconds(7) },
 	normal = { DateTime.Seconds(2), DateTime.Seconds(5) },
@@ -24,6 +24,10 @@ AttackDelays =
 OrdosInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper" }
 
 InitAIUnits = function()
+	Defending[Ordos] = {}
+	AttackDelay[Ordos] = 12000 * DifficultyModifier[Difficulty]
+	TimeBetweenAttacks[Ordos] = 5000 * DifficultyModifier[Difficulty]
+	DefencePerimeter[Ordos] = GetCellsInRectangle(CPos.New(9,6), CPos.New(20,27))
 	IdlingUnits[Ordos] = Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements, OrdosPaths[2])
 	DefendAndRepairBase(Ordos, OrdosBase, 0.75, AttackGroupSize[Difficulty])
 end
@@ -34,7 +38,7 @@ ActivateAI = function()
 
 	OConyard.Produce(AtreidesUpgrades[1])
 
-	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
+	local delay = function() return Utils.RandomInteger(ProductionDelays[Difficulty][1], ProductionDelays[Difficulty][2] + 1) end
 	local toBuild = function() return { Utils.Random(OrdosInfantryTypes) } end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
@@ -42,4 +46,29 @@ ActivateAI = function()
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
 		ProduceUnits(Ordos, OBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
+
+	if Difficulty ~= "easy" then
+		Ordos.GrantCondition("base-rebuilder")
+	end
+
+	local productionTypes =
+	{
+		barracks = toBuild,
+	}
+
+	Trigger.OnBuildingPlaced(Ordos, function(p, building)
+		table.insert(OrdosBase, building)
+		DefendAndRepairBase(Ordos, {building}, 0.75, AttackGroupSize[Difficulty] )
+		if productionTypes[building.Type] == nil then return end
+		ProduceUnits(Ordos, building, delay, productionTypes[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
+	end)
+
+	Utils.Do(OrdosScouts, function(a)
+		Trigger.OnKilled(a, function(self, killer)
+			if not killer.IsDead then
+				CheckArea(Ordos, killer.Location, 4)
+			end
+		end)
+	end)
+
 end

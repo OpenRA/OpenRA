@@ -570,6 +570,28 @@ Actors:
 	AtreidesEntry8: waypoint
 		Owner: Neutral
 		Location: 2,58
+	APatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 51,17
+	APatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 52,44
+	Actor1: carryall.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 60,41
+	Actor2: crate_explosion
+		Owner: Neutral
+		Location: 41,60
+	Actor6: crate_explosion
+		Owner: Neutral
+		Location: 42,60
+	Actor8: crate_explosion
+		Owner: Neutral
+		Location: 42,59
+	Actor7: crate_explosion
+		Owner: Neutral
+		Location: 41,59
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

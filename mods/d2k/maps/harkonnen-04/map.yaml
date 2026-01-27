@@ -376,6 +376,54 @@ Actors:
 	AtreidesEntry3: waypoint
 		Owner: Neutral
 		Location: 22,91
+	APatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 56,67
+	APatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 34,43
+	APatrolPoint3: waypoint
+		Owner: Neutral
+		Location: 23,18
+	APatrolPoint4: waypoint
+		Owner: Neutral
+		Location: 60,17
+	Actor6: crate
+		Owner: Neutral
+		Location: 25,12
+	Actor8: crate
+		Owner: Neutral
+		Location: 8,18
+	ExplosionCrate: crate_explosion
+		Owner: Neutral
+		Location: 18,28
+	FremenAmbuser1: fremen
+		Owner: Fremen
+		Location: 15,25
+		SubCell: 3
+		Facing: 384
+		Stance: ReturnFire
+	FremenAmbuser2: fremen
+		Owner: Fremen
+		Location: 20,25
+		SubCell: 3
+		Stance: ReturnFire
+		Facing: 384
+	FremenAmbuser3: fremen
+		Owner: Fremen
+		Location: 15,28
+		SubCell: 3
+		Stance: ReturnFire
+		Facing: 384
+	FremenAmbuser4: fremen
+		Owner: Fremen
+		Location: 15,29
+		SubCell: 3
+		Stance: ReturnFire
+		Facing: 384
+	Actor32: crate_reveal
+		Owner: Neutral
+		Location: 16,47
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

@@ -48,8 +48,8 @@ HarkonnenReinforcements =
 HarkonnenAttackDelay =
 {
 	easy = DateTime.Minutes(3),
-	normal = DateTime.Minutes(2) + DateTime.Seconds(20),
-	hard = DateTime.Minutes(1)
+	normal = DateTime.Minutes(2) + DateTime.Seconds(30),
+	hard = DateTime.Minutes(2)
 }
 
 HarkonnenAttackWaves =
@@ -74,6 +74,7 @@ AtreidesReinforcements =
 	{ "trike", "combat_tank_a", "combat_tank_a" },
 	{ "quad", "combat_tank_a", "combat_tank_a" }
 }
+
 AtreidesPath = { AtreidesEntry.Location, AtreidesRally.Location }
 
 FremenInterval =
@@ -85,9 +86,9 @@ FremenInterval =
 
 IntegrityLevel =
 {
-	easy = 50,
-	normal = 75,
-	hard = 100
+	easy = 10,
+	normal = 50,
+	hard = 90
 }
 
 FremenProduction = function()
@@ -145,7 +146,7 @@ WorldLoaded = function()
 	ProtectFremen = AddPrimaryObjective(Atreides, "protect-fremen-sietch")
 	KillHarkonnen = AddPrimaryObjective(Atreides, "destroy-harkonnen")
 	local keepSietchIntact = UserInterface.GetFluentMessage("keep-sietch-intact", { ["integrity"] = IntegrityLevel[Difficulty] })
-	KeepIntegrity = AddPrimaryObjective(Atreides, keepSietchIntact)
+	KeepIntegrity = AddSecondaryObjective(Atreides, keepSietchIntact)
 
 	Camera.Position = AConyard.CenterPosition
 	HarkonnenAttackLocation = AConyard.Location
@@ -164,6 +165,7 @@ WorldLoaded = function()
 		UserInterface.SetMissionText(UserInterface.GetFluentMessage("sietch-destroyed"), Atreides.Color)
 		Atreides.MarkFailedObjective(ProtectFremen)
 	end)
+
 	Trigger.OnDamaged(Sietch, function()
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
@@ -185,6 +187,7 @@ WorldLoaded = function()
 		unit.AttackMove(HarkonnenAttackLocation)
 		IdleHunt(unit)
 	end
+
 	SendCarryallReinforcements(Harkonnen, 0, HarkonnenAttackWaves[Difficulty], HarkonnenAttackDelay[Difficulty], path, HarkonnenReinforcements[Difficulty], waveCondition, huntFunction)
 
 	Actor.Create("upgrade.barracks", true, { Owner = Harkonnen })
@@ -194,6 +197,7 @@ WorldLoaded = function()
 		Media.PlaySpeechNotification(Atreides, "Reinforce")
 		Reinforcements.Reinforce(Atreides, AtreidesReinforcements[1], AtreidesPath)
 	end)
+
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(40), function()
 		Media.PlaySpeechNotification(Atreides, "Reinforce")
 		Reinforcements.ReinforceWithTransport(Atreides, "carryall.reinforce", AtreidesReinforcements[2], AtreidesPath, { AtreidesPath[1] })

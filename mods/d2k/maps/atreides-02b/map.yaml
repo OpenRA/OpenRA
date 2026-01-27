@@ -138,6 +138,9 @@ Actors:
 	HarkonnenRally4: waypoint
 		Owner: Neutral
 		Location: 30,28
+	Actor4: crate
+		Owner: Neutral
+		Location: 12,21
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

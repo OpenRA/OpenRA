@@ -643,15 +643,33 @@ Actors:
 	SaboteurWaypoint4: waypoint
 		Owner: Neutral
 		Location: 18,59
-	SaboteurWaypoint5: waypoint
-		Owner: Neutral
-		Location: 31,91
 	SaboteurWaypoint6: waypoint
 		Owner: Neutral
 		Location: 64,91
 	MercenaryAttackPoint: waypoint
 		Owner: Neutral
 		Location: 53,38
+	OrdosPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 78,45
+	OrdosPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 55,63
+	OrdosPatrolPoint3: waypoint
+		Owner: Neutral
+		Location: 30,54
+	OrdosPatrolPoint4: waypoint
+		Owner: Neutral
+		Location: 73,21
+	AtreidesPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 14,65
+	AtreidesPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 48,10
+	SaboteurWaypoint5: waypoint
+		Owner: Neutral
+		Location: 31,81
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

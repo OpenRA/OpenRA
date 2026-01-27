@@ -17,7 +17,7 @@ Player:
 	GrantConditionOnBotOwner@gladius:
 		Condition: enable-gladius-ai
 		Bots: gladius
-	ProvidesPrerequisite@autoConreteForBots:
+	ProvidesPrerequisite@autoConcreteForBots:
 		Prerequisite: global-auto-concrete
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	SupportPowerBotModule:

@@ -254,6 +254,16 @@ Actors:
 	HarkonnenEntry8: waypoint
 		Owner: Neutral
 		Location: 2,20
+	Actor1: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 30,41
+	HPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 18,38
+	HPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 47,21
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

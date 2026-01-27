@@ -135,6 +135,20 @@ Actors:
 	OrdosRally2: waypoint
 		Owner: Neutral
 		Location: 39,30
+	Actor3: crate_explosion
+		Owner: Neutral
+		Location: 17,5
+	Actor4: carryall.debris
+		Owner: Neutral
+		Facing: 384
+		Location: 44,14
+	Actor6: combat_tank_h.debris
+		Facing: 384
+		Location: 18,52
+		Owner: Creeps
+	Actor7: crate_explosion
+		Owner: Neutral
+		Location: 4,52
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

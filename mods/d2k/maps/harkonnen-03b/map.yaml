@@ -207,6 +207,13 @@ Actors:
 	HarkonnenEntry: waypoint
 		Owner: Neutral
 		Location: 65,45
+	CrateScript: crate_script
+		Owner: Neutral
+		Location: 55,9
+	VisionPoint: vision_provider
+		Faction:
+		Location: 46,8
+		Owner: Harkonnen
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

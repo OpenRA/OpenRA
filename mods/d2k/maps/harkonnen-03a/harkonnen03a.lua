@@ -8,6 +8,7 @@
 ]]
 
 AtreidesBase = { ABarracks, AWindTrap1, AWindTrap2, ALightFactory, AOutpost, AConyard, ARefinery, ASilo }
+
 AtreidesBaseAreaTriggers =
 {
 	{ CPos.New(34, 50), CPos.New(35, 50), CPos.New(36, 50), CPos.New(37, 50), CPos.New(38, 50), CPos.New(39, 50), CPos.New(40, 50), CPos.New(41, 50), CPos.New(14, 57), CPos.New(14, 58), CPos.New(14, 59), CPos.New(14, 60), CPos.New(14, 61), CPos.New(14, 62), CPos.New(14, 63), CPos.New(14, 64), CPos.New(14, 65)},
@@ -88,9 +89,11 @@ AtreidesHunterPaths =
 }
 
 HarkonnenReinforcements = { "trike", "trike", "quad" }
+
 HarkonnenPath = { HarkonnenEntry.Location, HarkonnenRally.Location }
 
 HarkonnenBaseBuildings = { "barracks", "light_factory" }
+
 HarkonnenUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 MessageCheck = function(index)

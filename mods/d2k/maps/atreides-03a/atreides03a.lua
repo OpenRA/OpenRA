@@ -143,7 +143,6 @@ WorldLoaded = function()
 	end
 
 	Trigger.OnRemovedFromWorld(AConyard, function()
-
 		-- Mission already failed, no need to check the other conditions as well
 		if checkResourceCapacity() then
 			return

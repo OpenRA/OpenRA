@@ -177,6 +177,17 @@ Actors:
 	HarkonnenEntry: waypoint
 		Owner: Neutral
 		Location: 29,2
+	Actor2: carryall.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 24,40
+	Actor18: crate
+		Owner: Neutral
+		Location: 17,33
+	Actor19: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 12,61
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

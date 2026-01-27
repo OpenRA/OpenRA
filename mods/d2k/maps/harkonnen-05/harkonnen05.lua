@@ -8,8 +8,14 @@
 ]]
 
 OrdosMainBase = { OConYard, OOutpost, ORefinery1, ORefinery2, OHeavyFactory, OLightFactory1, OHiTechFactory, OGunt1, OGunt2, OGunt3, OGunt4, OBarracks1, OBarracks2, OPower1, OPower2, OPower3, OPower4, OPower5, OPower6, OPower7, OPower8, OPower9 }
+
 OrdosSmallBase = { ORefinery3, OBarracks3, OLightFactory2, OGunt5, OGunt6, OPower10, OPower11, OPower12, OPower13, OSilo }
+
 CorrinoBase = { CStarport, CPower1, CPower2 }
+
+ProductionBuildingsOrdosSmallBase = { ORefinery3, OBarracks3, OLightFactory2 }
+
+SmugglerSquad = {Smuggler1, Smuggler2, Smuggler3}
 
 BaseAreaTriggers =
 {
@@ -135,6 +141,7 @@ SendStarportReinforcements = function()
 			return
 		end
 
+		Media.DisplayMessage(UserInterface.GetFluentMessage("imperial-ships-penetrating-defense-grid"), Mentat)
 		local units = Reinforcements.ReinforceWithTransport(Corrino, "frigate", CorrinoStarportReinforcements[Difficulty], { CorrinoStarportEntry.Location, CStarport.Location + CVec.New(1, 1) }, { CorrinoStarportExit.Location })[2]
 		Utils.Do(units, function(unit)
 			unit.AttackMove(OrdosAttackLocation)
@@ -142,12 +149,6 @@ SendStarportReinforcements = function()
 		end)
 
 		SendStarportReinforcements()
-
-		if Harkonnen.IsObjectiveFailed(GuardOutpost) then
-			return
-		end
-
-		Media.DisplayMessage(UserInterface.GetFluentMessage("imperial-ships-penetrating-defense-grid"), Mentat)
 	end)
 end
 
@@ -222,13 +223,28 @@ Tick = function()
 	end
 end
 
+ChangeOwner = function(old_owner, new_owner)
+	local units = old_owner.GetActors()
+	Utils.Do(units, function(unit)
+		if not unit.IsDead then
+			unit.Owner = new_owner
+		end
+	end)
+end
+
 WorldLoaded = function()
 	OrdosMain = Player.GetPlayer("Ordos Main Base")
 	OrdosSmall = Player.GetPlayer("Ordos Small Base")
 	Corrino = Player.GetPlayer("Corrino")
 	Harkonnen = Player.GetPlayer("Harkonnen")
+	SmugglerNeutral = Player.GetPlayer("Smugglers - Neutral")
+	SmugglerEnemy = Player.GetPlayer("Smugglers - Enemy")
+	Defending[OrdosMain] = {}
+	Defending[OrdosSmall] = {}
+	Defending[Corrino] = {}
 
 	InitObjectives(Harkonnen)
+
 	KillOrdos = AddPrimaryObjective(Harkonnen, "destroy-ordos")
 	KillCorrino = AddPrimaryObjective(Harkonnen, "destroy-imperial-forces")
 	GuardOutpost = AddSecondaryObjective(Harkonnen, "keep-modified-outpost-intact")
@@ -257,16 +273,19 @@ WorldLoaded = function()
 		Media.DisplayMessage(UserInterface.GetFluentMessage("protect-outpost"), Mentat)
 	end)
 
+	Trigger.OnAllKilledOrCaptured({ HOutpost }, function()
+		SendStarportReinforcements()
+	end)
+
 	local path = function() return Utils.Random(OrdosPaths) end
 	local waveCondition = function() return Harkonnen.IsObjectiveCompleted(KillOrdos) end
 	local huntFunction = function(unit)
 		unit.AttackMove(OrdosAttackLocation)
 		IdleHunt(unit)
 	end
+
 	SendCarryallReinforcements(OrdosMain, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 	OrdosReinforcementNotification(0, OrdosAttackWaves[Difficulty])
-
-	SendStarportReinforcements()
 
 	Actor.Create("upgrade.barracks", true, { Owner = OrdosMain })
 	Actor.Create("upgrade.light", true, { Owner = OrdosMain })

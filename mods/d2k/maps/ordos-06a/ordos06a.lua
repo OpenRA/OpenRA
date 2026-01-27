@@ -153,6 +153,7 @@ SendContraband = function()
 
 		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(IxianReinforcementsHaveArrived, c) end)
 	end
+
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
 		TimerTicks = ContrabandTimes[Difficulty]
 	end)
@@ -259,6 +260,7 @@ WorldLoaded = function()
 		unit.AttackMove(Utils.Random(EnemyAttackLocations))
 		IdleHunt(unit)
 	end
+
 	local announcementFunction = function()
 		Media.DisplayMessage(UserInterface.GetFluentMessage("enemy-reinforcements-arrived"), Mentat)
 	end

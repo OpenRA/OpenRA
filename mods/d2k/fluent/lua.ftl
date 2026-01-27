@@ -76,6 +76,7 @@ smuggler-leader = Smuggler Leader.
 were-warned-will-pay = You were warned. Now you will pay.
 destroy-smugglers-mercenaries = Destroy the Smugglers and their mercenaries.
 capture-harkonnen-barracks-release-hostages = Capture the Harkonnen barracks to release the hostages.
+use-engineer-hint = Use engineers to reclaim destroyed vehicles.
 
 ## harkonnen-01ab, harkonnen-03ab
 eliminate-atreides-units-reinforcements = Eliminate all Atreides forces and reinforcements in the area.
@@ -112,6 +113,8 @@ destroy-ordos = Destroy the Ordos.
 ## harkonnen-06ab
 ixian-transports-detected = Ixian transports detected.
 capture-destroy-ordos-starport = Capture or destroy the Ordos Starport.
+smuggler-warning-harkonnen = Mind your own business Harkonnen.
+smuggler-warning-ordos = Mind your own business Ordos.
 
 ## harkonnen-06ab, harkonnen-09ab
 smugglers-now-hostile = The Smugglers are now hostile!
@@ -132,6 +135,8 @@ atreides-commander = Atreides Commander
 
 ## harkonnen-09ab
 build-deploy-mcv = Build and deploy an MCV to establish a Construction Yard.
+husk-reclaimed-harkonnen = We reclaimed some Atreides wreckage from battle.
+engineers-hint = Our engineers maybe find then useful.
 
 ## ordos-01ab, ordos-02ab, ordos-03ab, ordos-04, ordos-05
 outpost-not-captured-destroyed = Do not let the Outpost be captured or destroyed.

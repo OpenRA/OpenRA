@@ -8,6 +8,7 @@
 ]]
 
 HarkonnenBase = { HConyard, HPower1, HPower2, HBarracks, HOutpost }
+
 HarkonnenBaseAreaTrigger = { CPos.New(31, 37), CPos.New(32, 37), CPos.New(33, 37), CPos.New(34, 37), CPos.New(35, 37), CPos.New(36, 37), CPos.New(37, 37), CPos.New(38, 37), CPos.New(39, 37), CPos.New(40, 37), CPos.New(41, 37), CPos.New(42, 37), CPos.New(42, 38), CPos.New(42, 39), CPos.New(42, 40), CPos.New(42, 41), CPos.New(42, 42), CPos.New(42, 43), CPos.New(42, 44), CPos.New(42, 45), CPos.New(42, 46), CPos.New(42, 47), CPos.New(42, 48), CPos.New(42, 49) }
 
 HarkonnenReinforcements =
@@ -78,6 +79,7 @@ HarkonnenAttackWaves =
 }
 
 OrdosReinforcements = { "light_inf", "light_inf", "raider" }
+
 OrdosEntryPath = { OrdosEntry.Location, OrdosRally.Location }
 
 Tick = function()

@@ -14,7 +14,7 @@ AttackGroupSize =
 	hard = 10
 }
 
-AttackDelays =
+ProductionDelays =
 {
 	easy = { DateTime.Seconds(4), DateTime.Seconds(9) },
 	normal = { DateTime.Seconds(2), DateTime.Seconds(7) },
@@ -22,29 +22,59 @@ AttackDelays =
 }
 
 HarkonnenInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper" }
+
 HarkonnenVehicleTypes = { "trike", "trike", "quad" }
 
 InitAIUnits = function()
 	IdlingUnits[Harkonnen] = Reinforcements.Reinforce(Harkonnen, HarkonnenInitialReinforcements, HarkonnenInitialPath)
-
 	DefendAndRepairBase(Harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
+	Defending[Harkonnen] = {}
+	AttackDelay[Harkonnen] = 6000 * DifficultyModifier[Difficulty]
+	TimeBetweenAttacks[Harkonnen] = 5000 * DifficultyModifier[Difficulty]
 	LastHarvesterEaten[Harkonnen] = true
+	HarvesterCount[Harkonnen] = 0
+	PatrolPoints[Harkonnen] = { HPatrolPoint1.Location, HPatrolPoint2.Location, HarkonnenRally7.Location }
+	DefencePerimeter[Harkonnen] = Utils.Concat(GetCellsInRectangle(CPos.New(35,37), CPos.New(54,51)), GetCellsInRectangle(CPos.New(45,28), CPos.New(58,36)))
 	Trigger.AfterDelay(0, InitAIUnits)
 
 	HConyard.Produce(OrdosUpgrades[1])
 	HConyard.Produce(OrdosUpgrades[2])
 
-	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
+	local delay = function(player)
+		if EmergencyBuildRate[player] and Difficulty ~= "easy" then
+			return 1
+		else
+			return Utils.RandomInteger(ProductionDelays[Difficulty][1], ProductionDelays[Difficulty][2] + 1)
+		end
+	end
+
 	local infantryToBuild = function() return { Utils.Random(HarkonnenInfantryTypes) } end
-	local vehilcesToBuild = function() return { Utils.Random(HarkonnenVehicleTypes) } end
+	local vehiclesToBuild = function() return { Utils.Random(HarkonnenVehicleTypes) } end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
 	-- Finish the upgrades first before trying to build something
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
 		ProduceUnits(Harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(Harkonnen, HLightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Harkonnen, HLightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	end)
+
+	if Difficulty ~= "easy" then
+		Harkonnen.GrantCondition("base-rebuilder")
+	end
+
+	local productionTypes =
+	{
+		barracks = infantryToBuild,
+		light_factory = vehiclesToBuild,
+	}
+
+	Trigger.OnBuildingPlaced(Harkonnen, function(p, building)
+		table.insert(HarkonnenBase, building)
+		DefendAndRepairBase(Harkonnen, {building}, 0.75, AttackGroupSize[Difficulty] )
+		if productionTypes[building.Type] == nil then return end
+		ProduceUnits(Harkonnen, building, delay, productionTypes[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

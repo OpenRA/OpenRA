@@ -162,6 +162,12 @@ Actors:
 	AtreidesRally4: waypoint
 		Owner: Neutral
 		Location: 47,4
+	Actor1: crate
+		Owner: Neutral
+		Location: 33,47
+	Actor3: crate_reveal
+		Owner: Neutral
+		Location: 27,16
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 

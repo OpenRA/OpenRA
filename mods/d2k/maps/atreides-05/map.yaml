@@ -365,6 +365,41 @@ Actors:
 	HarkonnenRally4: waypoint
 		Owner: Neutral
 		Location: 49,4
+	HPatrolPoint1: waypoint
+		Owner: Neutral
+		Location: 40,27
+	HPatrolPoint2: waypoint
+		Owner: Neutral
+		Location: 21,38
+	HPatrolPoint3: waypoint
+		Owner: Neutral
+		Location: 24,60
+	Actor0: repair_pad
+		Owner: Atreides
+		Location: 59,59
+	Actor1: combat_tank_a.debris
+		Owner: Atreides
+		Facing: 384
+		Location: 59,63
+	Actor2: combat_tank_a.debris
+		Owner: Atreides
+		Facing: 384
+		Location: 62,63
+	Actor3: combat_tank_a.debris
+		Owner: Atreides
+		Facing: 384
+		Location: 56,62
+	Actor9: harvester.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 17,47
+	HarkonnenTankDebris1: combat_tank_h.debris
+		Owner: Creeps
+		Facing: 384
+		Location: 8,58
+	Trigger1: waypoint
+		Owner: Neutral
+		Location: 8,58
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
 
