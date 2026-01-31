@@ -136,6 +136,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
 				panelY -= Bounds.Height + oldBounds.Height;
 
+			var buttonRightEdge = RenderOrigin.X + Bounds.Width - panelRoot.RenderOrigin.X;
+			if (panelX + oldBounds.Width > Game.Renderer.Resolution.Width)
+				panelX = buttonRightEdge - oldBounds.Width;
+
 			panel.Bounds = new WidgetBounds(
 				panelX,
 				panelY,
