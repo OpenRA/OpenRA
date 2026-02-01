@@ -1,8 +1,0 @@
-# General dumping-ground for UI element sizes, etc.
-
-Metrics:
-	ButtonDepth: 0
-	ButtonFont: Bold
-	TextfieldColorHighlight: 800000
-	LobbyOptionChangedSound: LobbyOptionChanged
-	PlayerLeftSound: PlayerLeft

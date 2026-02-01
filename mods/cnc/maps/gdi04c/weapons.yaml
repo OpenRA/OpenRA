@@ -1,8 +1,0 @@
-Rockets:
-	Range: 5c0
-	Warhead: SpreadDamage
-		Versus:
-			None: 12
-			Wood: 116
-			Light: 92
-			Heavy: 92

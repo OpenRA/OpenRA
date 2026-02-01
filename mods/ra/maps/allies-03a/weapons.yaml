@@ -1,3 +1,0 @@
-BarrelExplode:
-	Warhead@1Dam: SpreadDamage
-		ValidTargets: Ground, GroundActor, Prisoner

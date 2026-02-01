@@ -1,3 +1,0 @@
-IonCannon:
-	Warhead@1Dam_impact: SpreadDamage
-		Falloff: 1000, 60, 40, 20

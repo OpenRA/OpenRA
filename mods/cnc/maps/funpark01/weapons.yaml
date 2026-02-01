@@ -1,5 +1,0 @@
-Teeth:
-	Range: 1c900
-	Warhead@1Dam: SpreadDamage
-		Versus:
-			Wood: 35
