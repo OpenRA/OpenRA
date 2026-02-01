@@ -692,6 +692,7 @@ label-gameplay-section-header = Gameplay
 label-auto-save-interval = Auto-save frequency:
 label-auto-save-max-file-number = Auto-save limit:
 checkbox-hide-replay-chat-container = Hide Chat in Replays
+button-random-name-tooltip = Generate random name
 
 ## settings-display.yaml
 label-target-lines-dropdown-container = Target Lines:
