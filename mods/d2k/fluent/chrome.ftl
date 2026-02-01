@@ -5,7 +5,7 @@ label-mentat-title = Mentat
 label-menu-buttons-title = Options
 
 ## ingame-observer.yaml
-button-observer-widget-options = Options (Esc)
+button-observer-widget-options = Options
 label-economy-stats-harvesters-header = Harvesters
 label-economy-stats-carryalls-header = Carryalls
 label-deliver-in-timer = DELIVERY IN: { $time }

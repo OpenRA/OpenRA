@@ -26,7 +26,7 @@ Container@OBSERVER_WIDGETS:
 		MenuButton@OPTIONS_BUTTON:
 			X: 5
 			Y: 5
-			Width: 160
+			Width: 130
 			Height: 25
 			Text: button-observer-widget-options
 			Font: Bold
@@ -199,7 +199,7 @@ Container@OBSERVER_WIDGETS:
 			Height: 240
 			Children:
 				DropDownButton@STATS_DROPDOWN:
-					X: 165
+					X: 135
 					Y: 0
 					Width: 185
 					Height: 25
