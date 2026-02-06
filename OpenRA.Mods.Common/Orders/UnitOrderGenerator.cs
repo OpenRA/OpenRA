@@ -79,7 +79,13 @@ namespace OpenRA.Mods.Common.Orders
 			yield return new Order("CreateGroup", actorsInvolved[0].Owner.PlayerActor, false, actorsInvolved);
 
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+			{
+				var order = CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+				if (order == null)
+					continue;
+
+				yield return order;
+			}
 		}
 
 		public virtual void Tick(World world) { }
@@ -199,7 +205,7 @@ namespace OpenRA.Mods.Common.Orders
 			return null;
 		}
 
-		static Order CheckSameOrder(IOrderTargeter iot, Order order)
+		protected static Order CheckSameOrder(IOrderTargeter iot, Order order)
 		{
 			if (order == null && iot.OrderID != null)
 				TextNotificationsManager.Debug("BUG: in order targeter - decided on {0} but then didn't order", iot.OrderID);

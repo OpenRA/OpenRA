@@ -93,6 +93,11 @@ Guard: D
 	Types: Unit
 	Contexts: player
 
+FormationMove: F Ctrl
+	Description: hotkey-description-formationmove
+	Types: Unit
+	Contexts: player
+
 StanceAttackAnything: A Alt
 	Description: hotkey-description-stanceattackanything
 	Types: Stance

@@ -629,6 +629,8 @@ command-icons:
 		stop-disabled: 918, 271, 24, 24
 		queue-orders: 943, 246, 24, 24
 		queue-orders-disabled: 943, 271, 24, 24
+		formation-move: 943, 246, 24, 24
+		formation-move-disabled: 943, 271, 24, 24
 
 command-icons-highlighted:
 	Inherits: command-icons
@@ -641,6 +643,7 @@ command-icons-highlighted:
 		scatter: 893, 296, 24, 24
 		stop: 918, 296, 24, 24
 		queue-orders: 943, 296, 24, 24
+		formation-move: 943, 296, 24, 24
 
 #
 # NOD chrome

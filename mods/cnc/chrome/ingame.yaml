@@ -1247,7 +1247,7 @@ Container@PLAYER_WIDGETS:
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
 			Y: WINDOW_HEIGHT - HEIGHT - 5
-			Width: 494
+			Width: 533
 			Height: 44
 			ImageCollection: sidebar
 			ImageName: background-commandbar
@@ -1257,7 +1257,7 @@ Container@PLAYER_WIDGETS:
 				HighlightOnButtonPress: True
 			X: 14
 			Y: WINDOW_HEIGHT - HEIGHT - 14
-			Width: 311
+			Width: 350
 			Height: 26
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
@@ -1455,9 +1455,34 @@ Container@PLAYER_WIDGETS:
 							Y: 1
 							ImageCollection: command-icons
 							ImageName: queue-orders
+						Image@SEPARATOR:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Y: 2
+							ImageCollection: chrome-button
+							ImageName: separator
+				WorldButton@FORMATION_MOVE:
+					Logic: AddFactionSuffixLogic
+					X: 312
+					Y: 0
+					Width: 38
+					Height: 26
+					Background: chrome-button-background
+					Key: FormationMove
+					DisableKeySound: true
+					TooltipText: button-command-bar-formation-move.tooltip
+					TooltipDesc: button-command-bar-formation-move.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
+					Children:
+						Image@ICON:
+							X: 7
+							Y: 1
+							ImageCollection: command-icons
+							ImageName: formation-move
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
-			X: 335
+			X: 374
 			Y: WINDOW_HEIGHT - HEIGHT - 14
 			Width: 155
 			Height: 26
