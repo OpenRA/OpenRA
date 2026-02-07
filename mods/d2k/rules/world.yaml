@@ -258,6 +258,8 @@ World:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
 		TerrainFlashPalette: effect
+	AttackRangeCirclesOptions:
+		CheckboxDisplayOrder: 11
 
 EditorWorld:
 	Inherits: ^BaseWorld

@@ -554,6 +554,7 @@
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -778,6 +779,7 @@
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -897,6 +899,7 @@
 	Inherits@3: ^Cloakable
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Huntable:
 	OwnerLostAction:
 		Action: Kill

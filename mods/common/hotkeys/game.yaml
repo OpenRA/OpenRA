@@ -113,6 +113,11 @@ StanceHoldFire: F Alt
 	Types: Stance
 	Contexts: player
 
+ShowAttackRangeCircles: R Ctrl, Alt
+	Description: hotkey-description-showattackrangecircles
+	Types: World
+	Contexts: player
+
 StopMusic: AUDIOSTOP
 	Description: hotkey-description-stopmusic
 	Types: Music

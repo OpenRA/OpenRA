@@ -241,6 +241,7 @@
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -325,6 +326,7 @@
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -508,6 +510,7 @@
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -585,6 +588,7 @@
 	Inherits@bounty: ^GlobalBounty
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	RenderAttackRangeOnSelect:
 	OwnerLostAction:
 		Action: Kill
 	Armor:
