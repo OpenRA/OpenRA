@@ -23,12 +23,16 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		readonly int dotWidth;
 		readonly int nextDotAdvance;
-		readonly Cache<string, int> textWidthCache;
-		readonly SpriteFont font = Game.Renderer.Fonts["Tiny"];
+		readonly Cache<string, int> textWidthCache = null;
+		readonly SpriteFont font = Game.Renderer?.Fonts["Tiny"];
 		StringBuilder builder = null;
 
 		public PerfGraphWidget()
 		{
+			// Skip if running format unit test
+			if (font == null)
+				return;
+
 			textWidthCache = new(GetTextWidth);
 			dotWidth = textWidthCache["."];
 			nextDotAdvance = textWidthCache[".."] - dotWidth;
@@ -51,8 +55,15 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			value += 0.000005; // Do normal rounding instead of floor/trucate;
 			var intValue = (int)value;
+
+			// Do normal rounding instead of floor/trucate; account for numbers >= 100000 being 6 decimal places or "TooBig".
+			var frontPlaceMultipler = 1;
+			while (frontPlaceMultipler <= intValue && frontPlaceMultipler < 100000)
+				frontPlaceMultipler *= 10;
+			value += 0.000005 * frontPlaceMultipler;
+			intValue = (int)value;
+
 			if (intValue >= 1000000)
 			{
 				output.Append("TooBig");
