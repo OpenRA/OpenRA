@@ -40,19 +40,19 @@ namespace OpenRA
 			if (Size != anotherLayer.Size || GridType != anotherLayer.GridType)
 				throw new ArgumentException("Layers must have a matching size and shape (grid type).", nameof(anotherLayer));
 
-			Array.Copy(anotherLayer.Entries, Entries, Entries.Length);
+			anotherLayer.Entries.AsSpan().CopyTo(Entries);
 		}
 
 		/// <summary>Clears the layer contents with their default value.</summary>
 		public virtual void Clear()
 		{
-			Array.Clear(Entries, 0, Entries.Length);
+			Entries.AsSpan().Clear();
 		}
 
 		/// <summary>Clears the layer contents with a known value.</summary>
 		public virtual void Clear(T clearValue)
 		{
-			Array.Fill(Entries, clearValue);
+			Entries.AsSpan().Fill(clearValue);
 		}
 
 		public IEnumerator<T> GetEnumerator()
@@ -63,6 +63,16 @@ namespace OpenRA
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public ReadOnlyMemory<T> AsReadOnlyMemory()
+		{
+			return Entries.AsMemory();
+		}
+
+		public Memory<T> AsMemory()
+		{
+			return Entries.AsMemory();
 		}
 	}
 }

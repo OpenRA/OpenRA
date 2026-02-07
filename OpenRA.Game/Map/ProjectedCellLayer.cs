@@ -55,14 +55,9 @@ namespace OpenRA
 			return Bounds.Contains(uv.U, uv.V);
 		}
 
-		public int IndexOf(T value, int startIndex)
-		{
-			return Array.IndexOf(Entries, value, startIndex);
-		}
-
 		public void SetAll(T value)
 		{
-			Array.Fill(Entries, value);
+			Entries.AsSpan().Fill(value);
 		}
 	}
 }
