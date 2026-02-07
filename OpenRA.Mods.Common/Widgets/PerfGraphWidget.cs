@@ -40,12 +40,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 		int GetTextWidth(string text) => font.Measure(text).X;
 
+		// Try to keep the text at 6 characters long to align columns.
 		public void SixCharacterFormatFloat(StringBuilder output, double value)
 		{
-			// Try to keep the text at 6 characters long to align columns.
 			if (double.IsNaN(value))
 			{
 				output.Append("NaN   ");
+				return;
+			}
+
+			if (double.IsInfinity(value))
+			{
+				output.Append(double.IsPositiveInfinity(value) ? "+Inf  " : "-Inf  ");
 				return;
 			}
 

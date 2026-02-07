@@ -34,6 +34,13 @@ namespace OpenRA.Test
 			AssertThat(double.NaN, "NaN   ");
 		}
 
+		[TestCase(TestName = "Infinities are reported with 2 padding spaces after.")]
+		public void Infinity()
+		{
+			AssertThat(double.PositiveInfinity, "+Inf  ");
+			AssertThat(double.NegativeInfinity, "-Inf  ");
+		}
+
 		[TestCase(TestName = "Negative numbers are discarded as \"<0\" with 4 padding spaces after.")]
 		public void Negative()
 		{
