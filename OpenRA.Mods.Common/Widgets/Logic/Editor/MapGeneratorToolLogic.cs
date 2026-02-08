@@ -25,11 +25,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MapGeneratorToolLogic : ChromeLogic
 	{
 		[FluentReference("name")]
-		const string StrGenerated = "notification-map-generator-generated";
+		const string MapGenerated = "notification-map-generator-generated";
+
 		[FluentReference]
-		const string StrFailed = "notification-map-generator-failed";
+		const string MapGeneratorFailedTitle = "dialog-notification-map-generator-failed.title";
+
 		[FluentReference]
-		const string StrFailedCancel = "label-map-generator-failed-cancel";
+		const string MapGeneratorFailedPrompt = "dialog-notification-map-generator-failed.prompt";
+
+		[FluentReference]
+		const string MapGeneratorFailedCancel = "dialog-notification-map-generator-failed.cancel";
 
 		readonly EditorActionManager editorActionManager;
 		readonly World world;
@@ -239,14 +244,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DisplayError(Exception e)
 		{
-			// For any non-MapGenerationException, include more information for debugging purposes.
-			var message = e is MapGenerationException ? e.Message : e.ToString();
+			var message = e is MapGenerationException ? e.Message : MapGeneratorFailedPrompt;
 			Log.Write("debug", e);
 			ConfirmationDialogs.ButtonPrompt(modData,
-				title: StrFailed,
+				title: MapGeneratorFailedTitle,
 				text: message,
 				onCancel: () => { },
-				cancelText: StrFailedCancel);
+				cancelText: MapGeneratorFailedCancel);
 		}
 
 		void GenerateMap()
@@ -318,7 +322,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				editorActorLayer,
 				false);
 
-			var description = FluentProvider.GetMessage(StrGenerated,
+			var description = FluentProvider.GetMessage(MapGenerated,
 				"name", FluentProvider.GetMessage(generator.Name));
 			var action = new RandomMapEditorAction(editorBlit, description);
 			editorActionManager.Add(action);

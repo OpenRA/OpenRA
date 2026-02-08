@@ -1120,9 +1120,12 @@ keycode =
     .mouse5 = Mouse 5
 
 ## MapGeneratorToolLogic
-label-map-generator-failed-cancel = Dismiss
 notification-map-generator-generated = Generated using { $name }
-notification-map-generator-failed = Map generation failed
+
+dialog-notification-map-generator-failed =
+    .title = Map generation failed
+    .prompt = See debug.log for details.
+    .cancel = Dismiss
 
 ## EditorTilingPathBrush
 notification-tiling-path-started = Started tiling path
