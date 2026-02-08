@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public override void ValidateMapFormat(int format)
 		{
 			if (format > 1)
-				Console.WriteLine($"ERROR: Detected NewINIFormat {format}. Are you trying to import a Red Alert map?");
+				Console.Error.WriteLine($"Detected NewINIFormat {format}. Are you trying to import a Red Alert map?");
 		}
 
 		static readonly FrozenDictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new Dictionary<string, (byte Type, byte Index)>

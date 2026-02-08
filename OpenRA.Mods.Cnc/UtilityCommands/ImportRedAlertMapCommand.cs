@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public override void ValidateMapFormat(int format)
 		{
 			if (format < 2)
-				Console.WriteLine($"ERROR: Detected NewINIFormat {format}. Are you trying to import a Tiberian Dawn map?");
+				Console.Error.WriteLine($"Detected NewINIFormat {format}. Are you trying to import a Tiberian Dawn map?");
 		}
 
 		// Mapping from RA95 overlay index to type string
