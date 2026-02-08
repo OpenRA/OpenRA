@@ -35,6 +35,7 @@ namespace OpenRA.Network
 		/// <summary>Null when watching a replay.</summary>
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
+
 		public int OrderQueueLength => pendingOrders.Count > 0 ? pendingOrders.Min(q => q.Value.Count) : 0;
 
 		public string ServerError = null;
@@ -50,9 +51,12 @@ namespace OpenRA.Network
 
 		public bool GameStarted => NetFrameNumber != 0;
 		public IConnection Connection { get; }
+		public readonly bool IsReplay;
 
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
+
+		public bool IsLoadingGameSave => NetFrameNumber <= GameSaveLastFrame;
 
 		readonly List<Order> localOrders = [];
 		readonly List<Order> localImmediateOrders = [];
@@ -109,6 +113,8 @@ namespace OpenRA.Network
 			generateSyncReport = Connection is not ReplayConnection && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
+			UpdateTimestep();
+
 			LocalFrameNumber = 0;
 			LastTickTime.Value = Game.RunTime;
 
@@ -118,9 +124,11 @@ namespace OpenRA.Network
 		public OrderManager(IConnection conn)
 		{
 			Connection = conn;
+			IsReplay = Connection is ReplayConnection;
 			syncReport = new SyncReport(this);
 
-			LastTickTime = new TickTime(() => SuggestedTimestep, Game.RunTime);
+			LastTickTime = new TickTime(Ui.Timestep, Game.RunTime);
+			UpdateTimestep();
 		}
 
 		public void IssueOrders(Order[] orders)
@@ -172,6 +180,7 @@ namespace OpenRA.Network
 		public void ReceiveTickScale(float scale)
 		{
 			tickScale = scale;
+			UpdateTimestep();
 		}
 
 		public void ReceiveImmediateOrders(int clientId, OrderPacket orders)
@@ -201,24 +210,26 @@ namespace OpenRA.Network
 
 		bool IsReadyForNextFrame => GameStarted && pendingOrders.All(p => p.Value.Count > 0);
 
-		public int SuggestedTimestep
+		int GetSuggestedTimestep()
 		{
-			get
-			{
-				if (World == null)
-					return Ui.Timestep;
+			if (World == null)
+				return Ui.Timestep;
 
-				if (World.IsLoadingGameSave)
-					return 1;
+			if (IsLoadingGameSave)
+				return 1;
 
-				if (World.IsReplay)
-					return World.ReplayTimestep;
+			if (IsReplay)
+				return World.ReplayTimestep;
 
-				if (tickScale != 1f)
-					return Math.Max((int)(tickScale * World.Timestep), 1);
+			if (tickScale != 1f)
+				return Math.Max((int)(tickScale * World.Timestep), 1);
 
-				return World.Timestep;
-			}
+			return World.Timestep;
+		}
+
+		void UpdateTimestep()
+		{
+			LastTickTime.Timestep = GetSuggestedTimestep();
 		}
 
 		void SendOrders()
@@ -282,6 +293,7 @@ namespace OpenRA.Network
 			processClientsToRemove.Clear();
 
 			++NetFrameNumber;
+			UpdateTimestep();
 		}
 
 		public void Dispose()

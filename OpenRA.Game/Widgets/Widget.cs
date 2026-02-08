@@ -27,7 +27,7 @@ namespace OpenRA.Widgets
 
 		public static Widget Root = new ContainerWidget();
 
-		public static TickTime LastTickTime = new(() => Timestep, Game.RunTime);
+		public static TickTime LastTickTime = new(Timestep, Game.RunTime);
 
 		static readonly Stack<Widget> WindowList = [];
 

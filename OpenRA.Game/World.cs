@@ -111,9 +111,9 @@ namespace OpenRA
 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
 		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
-		public bool IsReplay => OrderManager.Connection is ReplayConnection;
+		public bool IsReplay => OrderManager.IsReplay;
 
-		public bool IsLoadingGameSave => OrderManager.NetFrameNumber <= OrderManager.GameSaveLastFrame;
+		public bool IsLoadingGameSave => OrderManager.IsLoadingGameSave;
 
 		public int GameSaveLoadingPercentage => OrderManager.NetFrameNumber * 100 / OrderManager.GameSaveLastFrame;
 
