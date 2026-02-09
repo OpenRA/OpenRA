@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -30,13 +31,13 @@ namespace OpenRA.Mods.Common.Terrain
 
 		public Sprite MissingTile { get; }
 
-		public DefaultTileCache(DefaultTerrain terrainInfo, Action<uint, string> onMissingImage = null)
+		public DefaultTileCache(DefaultTerrain terrainInfo, Action<uint, string> onMissingImage = null, IReadOnlyFileSystem fileSystem = null)
 		{
 			sheetBuilders = new Cache<SheetType, SheetBuilder>(t => new SheetBuilder(t, terrainInfo.SheetSize));
 
 			random = new MersenneTwister();
 
-			var frameCache = new FrameCache(Game.ModData.DefaultFileSystem, Game.ModData.SpriteLoaders);
+			var frameCache = new FrameCache(fileSystem ?? Game.ModData.DefaultFileSystem, Game.ModData.SpriteLoaders);
 			foreach (var t in terrainInfo.Templates)
 			{
 				var variants = new List<Sprite[]>();

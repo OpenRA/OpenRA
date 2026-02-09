@@ -30,7 +30,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			Game.ModData = utility.ModData;
 
-			var rules = Ruleset.LoadDefaultsForTileSet(utility.ModData, "ARRAKIS");
+			var rules = Ruleset.LoadDefaultsForTileSet(utility.ModData, utility.ModData.DefaultTerrainInfo["ARRAKIS"]);
 			var map = D2kMapImporter.Import(args[1], utility.ModData.Manifest.Id, args[2], rules);
 
 			if (map == null)
