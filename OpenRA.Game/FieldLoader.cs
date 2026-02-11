@@ -526,7 +526,8 @@ namespace OpenRA
 
 		static object ParseDateTime(string fieldName, Type fieldType, string value)
 		{
-			if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dt))
+			if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture,
+					DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out var dt))
 				return dt;
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
