@@ -304,11 +304,11 @@ namespace OpenRA.Test
 		[Test]
 		public void GetValue_DateTime()
 		{
-			var expected = new DateTime(2000, 1, 1);
+			var expected = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 			var input = expected.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
 
 			var actual = FieldLoader.GetValue<DateTime>("field", $"  {input}  ");
-
+			Assert.That(actual.Kind, Is.EqualTo(DateTimeKind.Utc));
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 

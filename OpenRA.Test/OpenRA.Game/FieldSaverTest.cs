@@ -76,11 +76,25 @@ namespace OpenRA.Test
 		[Test]
 		public void FormatValue_DateTime()
 		{
-			var input = new DateTime(2000, 1, 1);
+			var inputToBeAssumedUtc = new DateTime(2000, 1, 1);
+			Assert.That(inputToBeAssumedUtc.Kind, Is.EqualTo(DateTimeKind.Unspecified));
 
-			var actual = FieldSaver.FormatValue(input);
+			var actualUtc = FieldSaver.FormatValue(inputToBeAssumedUtc);
+			Assert.That(actualUtc, Is.EqualTo(inputToBeAssumedUtc.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)));
+			var inputUtc = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+			actualUtc = FieldSaver.FormatValue(inputUtc);
+			Assert.That(actualUtc, Is.EqualTo(inputUtc.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)));
 
-			Assert.That(actual, Is.EqualTo(input.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)));
+			var amsterdamTz = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+			var inputAms = TimeZoneInfo.ConvertTime(inputUtc, TimeZoneInfo.Utc, amsterdamTz);
+			var actualAms = FieldSaver.FormatValue(inputAms);
+			Assert.That(inputAms.Kind, Is.EqualTo(DateTimeKind.Unspecified));
+			Assert.That(actualAms, Is.EqualTo(inputAms.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)));
+
+			var inputLocal = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Local);
+			inputUtc = inputLocal.ToUniversalTime();
+			actualUtc = FieldSaver.FormatValue(inputLocal);
+			Assert.That(actualUtc, Is.EqualTo(inputUtc.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)));
 		}
 
 		[Test]

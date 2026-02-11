@@ -127,7 +127,13 @@ namespace OpenRA
 			}
 
 			if (v is DateTime d)
+			{
+				// Assume DateTimeKind.Unspecified is already UTC
+				if (d.Kind == DateTimeKind.Local)
+					d = d.ToUniversalTime();
+
 				return d.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+			}
 
 			// Try the TypeConverter
 			var conv = TypeDescriptor.GetConverter(t);
