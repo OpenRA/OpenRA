@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<TextNotificationPool, Widget> templates = [];
 
 		readonly TabCompletionLogic tabCompletion = new();
+		readonly CommandHistory commandHistory = CommandHistory.Instance;
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
@@ -159,11 +160,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var text = chatText.Text.Trim();
 						var from = world.IsReplay ? null : orderManager.LocalClient.Name;
+						var commandName = text[1..].Split(' ')[0].ToLowerInvariant();
+						var isValidCommand = !string.IsNullOrEmpty(commandName) &&
+							chatTraits.OfType<ChatCommands>().Any(trait => trait.Commands.ContainsKey(commandName));
 						foreach (var trait in chatTraits)
 							trait.OnChat(from, text);
+
+						if (isValidCommand)
+							commandHistory.AddCommand(text);
 					}
 				}
 
+				commandHistory.Reset();
 				chatText.Text = "";
 				if (!isMenuChat)
 					CloseChat();
@@ -191,7 +199,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else
 					chatText.YieldKeyboardFocus();
 
+				commandHistory.Reset();
 				return true;
+			};
+
+			chatText.OnArrowUp = _ =>
+			{
+				var previousCommand = commandHistory.GetPrevious();
+				if (previousCommand != null)
+				{
+					chatText.Text = previousCommand;
+					chatText.CursorPosition = chatText.Text.Length;
+					return true;
+				}
+
+				return false;
+			};
+
+			chatText.OnArrowDown = _ =>
+			{
+				var nextCommand = commandHistory.GetNext();
+				if (nextCommand != null)
+				{
+					chatText.Text = nextCommand;
+					chatText.CursorPosition = chatText.Text.Length;
+					return true;
+				}
+				else
+				{
+					chatText.Text = "";
+					commandHistory.Reset();
+					return true;
+				}
 			};
 
 			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetMessage(ChatAvailability, "seconds", x));
@@ -265,6 +304,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public void OpenChat()
 		{
 			chatText.Text = "";
+			commandHistory.Reset();
 			chatChrome.Visible = true;
 			chatScrollPanel.ScrollToBottom();
 			if (!chatText.IsDisabled())
