@@ -282,8 +282,11 @@ namespace OpenRA
 						streams.Add(package.GetStream(filename));
 
 				// Take the SHA1
+				// When we simplify the collection, .NET 10.0.102 doesn't know which overload of SHA1Hash to call
+#pragma warning disable IDE0301 // Simplify collection initialization
 				if (streams.Count == 0)
 					return CryptoUtil.SHA1Hash(Array.Empty<byte>());
+#pragma warning restore IDE0301 // Simplify collection initialization
 
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)
