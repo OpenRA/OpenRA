@@ -283,7 +283,7 @@ namespace OpenRA
 
 				// Take the SHA1
 				if (streams.Count == 0)
-					return CryptoUtil.SHA1Hash([]);
+					return CryptoUtil.SHA1Hash(Array.Empty<byte>());
 
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)
@@ -440,7 +440,7 @@ namespace OpenRA
 			// This uses the same recursive merge as rules/weapons/etc, so the custom file only needs
 			// to contain additions or overrides rather than duplicating the entire tileset.
 			ITerrainInfo terrainInfo;
-			if (Package.Contains("custom-tileset.yaml"))
+			if (Package != null && Package.Contains("custom-tileset.yaml"))
 			{
 				var terrainType = modData.ObjectCreator.FindType(modData.Manifest.TerrainFormat + "Loader");
 				var terrainCtor = terrainType?.GetConstructor([typeof(ModData)]);
