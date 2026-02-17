@@ -52,9 +52,6 @@ namespace OpenRA.Server
 		const string CustomRules = "notification-custom-rules";
 
 		[FluentReference]
-		const string BotsDisabled = "notification-map-bots-disabled";
-
-		[FluentReference]
 		const string TwoHumansRequired = "notification-two-humans-required";
 
 		[FluentReference]
@@ -587,7 +584,8 @@ namespace OpenRA.Server
 
 						Log.Write("server", $"{client.Name} ({newConn.EndPoint}) has joined the game.");
 
-						SendFluentMessage(Joined, "player", client.Name);
+						var otherConns = Conns.Where(c => c != newConn).ToArray();
+						SendFluentMessage(otherConns.AsSpan(), Joined, "player", client.Name);
 
 						if (Type == ServerType.Dedicated)
 						{
@@ -598,15 +596,13 @@ namespace OpenRA.Server
 							var motd = File.ReadAllText(motdFile);
 							if (!string.IsNullOrEmpty(motd))
 								SendOrderTo(newConn, "Message", motd);
+
+							if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
+								SendFluentMessageTo(newConn, TwoHumansRequired);
 						}
 
-						if ((LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
+						if (Type != ServerType.Local && (LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							SendFluentMessageTo(newConn, CustomRules);
-
-						if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
-							SendFluentMessageTo(newConn, TwoHumansRequired);
-						else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
-							SendFluentMessageTo(newConn, BotsDisabled);
 					}
 				}
 
@@ -893,6 +889,17 @@ namespace OpenRA.Server
 			RecordOrder(frame, data, From);
 		}
 
+		public void DispatchServerOrdersToClients(ReadOnlySpan<Connection> conns, byte[] data, int frame = 0)
+		{
+			const int From = 0;
+			var frameData = CreateFrame(From, frame, data);
+			foreach (var c in conns)
+				if (c.Validated)
+					DispatchFrameToClient(c, From, frameData);
+
+			RecordOrder(frame, data, From);
+		}
+
 		public void ReceiveOrders(Connection conn, int frame, byte[] data)
 		{
 			// Make sure we don't accidentally forward on orders from clients who we have just dropped
@@ -953,8 +960,14 @@ namespace OpenRA.Server
 
 		public void SendFluentMessage(string key, params object[] args)
 		{
+			var conns = Conns.ToArray();
+			SendFluentMessage(conns, key, args);
+		}
+
+		public void SendFluentMessage(ReadOnlySpan<Connection> conns, string key, params object[] args)
+		{
 			var text = FluentMessage.Serialize(key, args);
-			DispatchServerOrdersToClients(Order.FromTargetString("FluentMessage", text, true));
+			DispatchServerOrdersToClients(conns, Order.FromTargetString("FluentMessage", text, true).Serialize());
 
 			if (Type == ServerType.Dedicated)
 				WriteLineWithTimeStamp(FluentProvider.GetMessage(key, args));

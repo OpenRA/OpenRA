@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string ConfigureBots = "options-slot-admin.configure-bots";
 
+		[FluentReference]
+		const string BotsDisabled = "notification-map-bots-disabled";
+
 		[FluentReference("count")]
 		const string NumberTeams = "options-slot-admin.teams-count";
 
@@ -588,6 +591,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				playerLeftSound = yaml.Value;
 			if (logicArgs.TryGetValue("LobbyOptionChangedSound", out yaml))
 				lobbyOptionChangedSound = yaml.Value;
+
+			Game.Sound.PlayNotification(modRules, null, "Sounds", playerJoinedSound, null);
 		}
 
 		bool disposed;
@@ -708,6 +713,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var o in allOptions)
 				if (newLobbyOptions.TryGetValue(o.Id, out var s) && (lobbyOptions.TryGetValue(o.Id, out var old) ? s.Value != old.Value : s.Value != o.DefaultValue))
 					TextNotificationsManager.AddSystemLine(OptionValue, "name", o.Name, "value", o.Label(s.Value));
+
+			if (map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
+				TextNotificationsManager.AddSystemLine(BotsDisabled);
 
 			lobbyOptions = newLobbyOptions;
 		}

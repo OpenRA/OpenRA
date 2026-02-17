@@ -7,7 +7,6 @@ button-quit = Quit
 
 ## Server Orders
 notification-custom-rules = This map contains custom rules. Game experience may change.
-notification-map-bots-disabled = Bots have been disabled on this map.
 notification-two-humans-required = This server requires at least two human players to start a match.
 notification-unknown-server-command = Unknown server command: { $command }.
 notification-admin-start-game = Only the host can start the game.
@@ -204,6 +203,7 @@ label-bot-player = AI Player
 ## LobbyLogic
 notification-lobby-option = { $name }: { $value }.
 notification-lobby-option-changed = { $name } changed to { $value }.
+notification-map-bots-disabled = Bots have been disabled on this map.
 
 ## IngameMenuLogic
 menu-ingame =
