@@ -64,11 +64,13 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void INotifyGameSaved.GameSaved(World world)
+		void INotifyGameSaved.GameSaved(World world, bool isAutosave)
 		{
 			if (!world.IsReplay)
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.SavedNotification, world.RenderPlayer?.Faction.InternalName);
+				if (!isAutosave)
+					Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.SavedNotification, world.RenderPlayer?.Faction.InternalName);
+
 				TextNotificationsManager.AddTransientLine(null, info.SavedTextNotification);
 			}
 		}

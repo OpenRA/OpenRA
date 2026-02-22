@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var dateTime = DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture);
 			var fileName = $"{AutoSavePattern}{dateTime}{SaveFileExtension}";
-			self.World.RequestGameSave(fileName);
+			self.World.RequestGameSave(fileName, true);
 			ticksUntilAutoSave = GetTicksBetweenAutosaves(self);
 		}
 

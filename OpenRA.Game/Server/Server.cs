@@ -1056,7 +1056,7 @@ namespace OpenRA.Server
 								Directory.CreateDirectory(baseSavePath);
 
 							GameSave.Save(Path.Combine(baseSavePath, filename));
-							DispatchServerOrdersToClients(Order.FromTargetString("GameSaved", filename, true));
+							DispatchServerOrdersToClients(Order.FromTargetString("GameSaved", filename, true, o.ExtraData));
 						}
 
 						break;

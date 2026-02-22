@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			void Inner()
 			{
-				world.RequestGameSave(filename);
+				world.RequestGameSave(filename, false);
 				Ui.CloseWindow();
 				onExit();
 			}

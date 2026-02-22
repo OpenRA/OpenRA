@@ -269,6 +269,11 @@ namespace OpenRA
 			return new Order(order, null, false) { IsImmediate = isImmediate, TargetString = targetString };
 		}
 
+		public static Order FromTargetString(string order, string targetString, bool isImmediate, uint extraData)
+		{
+			return new Order(order, null, false) { IsImmediate = isImmediate, TargetString = targetString, ExtraData = extraData };
+		}
+
 		public static Order FromGroupedOrder(Order grouped, Actor subject)
 		{
 			return new Order(
