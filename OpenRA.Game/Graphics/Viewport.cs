@@ -352,6 +352,25 @@ namespace OpenRA.Graphics
 			allCellsDirty = true;
 		}
 
+		// Temporarily overrides CenterLocation and ViewportSize for full-map PNG image rendering.
+		// Returns an Action that restores the original values.
+		public Action OverrideForMapCapture(float2 center, Size size)
+		{
+			var savedCenter = CenterLocation;
+			var savedSize = ViewportSize;
+			CenterLocation = center;
+			ViewportSize = size;
+			cellsDirty = true;
+			allCellsDirty = true;
+			return () =>
+			{
+				CenterLocation = savedCenter;
+				ViewportSize = savedSize;
+				cellsDirty = true;
+				allCellsDirty = true;
+			};
+		}
+
 		public void Scroll(float2 delta, bool ignoreBorders)
 		{
 			// Convert scroll delta from world-px to viewport-px

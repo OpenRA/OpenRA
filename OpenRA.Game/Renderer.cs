@@ -328,7 +328,7 @@ namespace OpenRA
 				r.SetPalette(palette);
 		}
 
-		public void EndFrame(IInputHandler inputHandler)
+		public void EndFrame(IInputHandler inputHandler, bool display = true)
 		{
 			if (renderType != RenderType.UI)
 				throw new InvalidOperationException($"EndFrame called with renderType = {renderType}, expected RenderType.UI.");
@@ -337,15 +337,21 @@ namespace OpenRA
 
 			screenBuffer.Unbind();
 
-			// Render the compositor buffers to the screen
-			// HACK / PERF: Fudge the coordinates to cover the actual window while keeping the buffer viewport parameters
-			// This saves us two redundant (and expensive) SetViewportParams each frame
-			RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0),
-				new float3(lastBufferSize.Width / screenSprite.Size.X, -lastBufferSize.Height / screenSprite.Size.Y, 1f));
-			Flush();
+			if (display)
+			{
+				// Render the compositor buffers to the screen
+				// HACK / PERF: Fudge the coordinates to cover the actual window while keeping the buffer viewport parameters
+				// This saves us two redundant (and expensive) SetViewportParams each frame
+				RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0),
+					new float3(lastBufferSize.Width / screenSprite.Size.X, -lastBufferSize.Height / screenSprite.Size.Y, 1f));
+				Flush();
+			}
 
-			Window.PumpInput(inputHandler);
-			Context.Present();
+			if (inputHandler != null)
+				Window.PumpInput(inputHandler);
+
+			if (display)
+				Context.Present();
 
 			renderType = RenderType.None;
 		}
@@ -535,6 +541,31 @@ namespace OpenRA
 				var dest = new byte[4 * destWidth * destHeight];
 				for (var y = 0; y < destHeight; y++)
 					Array.Copy(src, 4 * y * srcWidth, dest, 4 * y * destWidth, 4 * destWidth);
+
+				new Png(dest, SpriteFrameType.Bgra32, destWidth, destHeight).Save(path);
+			});
+		}
+
+		public void SaveMapAsPngImage(string path)
+		{
+			// Pull pixel data from the world framebuffer (not the screen framebuffer).
+			// The world buffer is not Y-flipped, so destHeight is positive.
+			var src = worldBuffer.Texture.GetData();
+			var srcWidth = worldSprite.Sheet.Size.Width;
+			var srcHeight = worldSprite.Sheet.Size.Height;
+			var originX = worldSprite.Bounds.X;
+			var originY = worldSprite.Bounds.Y;
+
+			// Clamp to the actual framebuffer dimensions: when the map is larger than the framebuffer,
+			// BeginWorld applies a downscale factor but the sprite bounds may still exceed the buffer.
+			var destWidth = Math.Min(worldSprite.Bounds.Width, srcWidth - originX);
+			var destHeight = Math.Min(worldSprite.Bounds.Height, srcHeight - originY);
+
+			ThreadPool.QueueUserWorkItem(_ =>
+			{
+				var dest = new byte[4 * destWidth * destHeight];
+				for (var y = 0; y < destHeight; y++)
+					Array.Copy(src, 4 * ((y + originY) * srcWidth + originX), dest, 4 * y * destWidth, 4 * destWidth);
 
 				new Png(dest, SpriteFrameType.Bgra32, destWidth, destHeight).Save(path);
 			});

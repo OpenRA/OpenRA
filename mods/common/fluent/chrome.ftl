@@ -50,6 +50,7 @@ label-save-map-panel-visibility = Visibility:
 dropdownbutton-save-map-panel-visibility-dropdown = Map Visibility
 label-save-map-panel-directory = Directory:
 label-save-map-panel-filename = Filename:
+checkbox-save-map-panel-png-image = Save map as PNG image
 button-save-map-panel = Save
 label-actor-edit-panel-id = ID
 button-container-ok = OK

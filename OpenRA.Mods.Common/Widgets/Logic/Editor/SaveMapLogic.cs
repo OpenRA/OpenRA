@@ -179,8 +179,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, SetupItem);
 			}
 
+			var saveMapPngImage = widget.Get<CheckboxWidget>("SAVE_MAP_PNG_IMAGE");
+
 			var close = widget.Get<ButtonWidget>("BACK_BUTTON");
 			close.OnClick = () => { Ui.CloseWindow(); onExit(); };
+
+			var exportMapAsPngImage = false;
 
 			void SaveMap(string combinedPath)
 			{
@@ -207,7 +211,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							package = new Folder(combinedPath);
 					}
 
-					SaveMapInner(map, package, world, modData);
+					SaveMapInner(map, package, world, modData, exportMapAsPngImage);
 				}
 				catch (Exception e)
 				{
@@ -216,6 +220,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				onSave(map.Uid);
 			}
+
+			saveMapPngImage.IsChecked = () => exportMapAsPngImage;
+			saveMapPngImage.OnClick = () => exportMapAsPngImage ^= true;
 
 			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
 			save.IsDisabled = () => string.IsNullOrWhiteSpace(filename.Text) || string.IsNullOrWhiteSpace(title.Text) || string.IsNullOrWhiteSpace(author.Text);
@@ -292,7 +299,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SaveMapMarkerTiles(map, modData, world);
 		}
 
-		public static void SaveMapInner(Map map, IReadWritePackage package, World world, ModData modData)
+		public static void SaveMapInner(Map map, IReadWritePackage package, World world, ModData modData, bool exportMapAsPngImage = false)
 		{
 			map.RequiresMod = modData.Manifest.Id;
 
@@ -307,6 +314,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					actionManager.Modified = false;
 
 				TextNotificationsManager.AddTransientLine(world.LocalPlayer, SaveCurrentMap);
+
+				if (exportMapAsPngImage)
+				{
+					var dir = Path.GetDirectoryName(package.Name);
+					var pngPath = Path.Combine(dir, Path.GetFileNameWithoutExtension(package.Name) + ".png");
+					Game.SaveEditorMapAsPngImage(pngPath);
+				}
 			}
 			catch (Exception e)
 			{
