@@ -8,7 +8,7 @@ on:
     - 'devtest-*'
 
 permissions:
-  contents: write  #  for release creation (svenstaro/upload-release-action)
+  contents: write # for release creation
 
 jobs:
   source:
@@ -27,13 +27,11 @@ jobs:
           ./packaging/source/buildpackage.sh "${GIT_TAG}" "${PWD}/build/source"
 
       - name: Upload Packages
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          file: build/source/*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release upload ${{ github.ref_name }} build/source/*
 
   linux:
     name: Linux AppImages
