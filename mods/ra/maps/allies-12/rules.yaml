@@ -1,0 +1,144 @@
+World:
+	LuaScript:
+		Scripts: allies12.lua, allies12-AI.lua, campaign.lua, utils.lua
+	MissionData:
+		Briefing: Rumors abound that the Soviet Iron Curtain is nearing completion. In addition, an even more powerful version of that weapon is also in the works. One research facility is more protected than the rest - find out why. Capture all technology centers, and destroy any Iron Curtain prototype that you encounter. Our newly developed Longbow Helicopter should be able to assist your attacks.
+		BriefingVideo: ally12.vqa
+		StartVideo: assess.vqa
+		WinVideo: aftrmath.vqa
+		LossVideo: frozen.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+CA.blind:
+	Inherits: CA
+	RevealsShroud:
+		Range: 0c0
+	-RevealsShroud@GAPGEN:
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: ca
+	Armament@PRIMARY:
+		Name: primary
+		Turret: primary
+		Weapon: 8InchFast
+	Armament@SECONDARY:
+		Name: secondary
+		Turret: secondary
+		Weapon: 8InchFast
+
+V01:
+	SpawnActorOnDeath:
+		Actor: moneycrate
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+MONEYCRATE:
+	GiveCashCrateAction:
+		Amount: 2000
+
+PROC:
+	InfiltrateForCash:
+		-Percentage:
+		Minimum: 0
+		Maximum: 2000
+
+SILO:
+	InfiltrateForCash:
+		-Percentage:
+		Minimum: 0
+		Maximum: 5000
+		Types: ThiefInfiltrate
+
+STEK:
+	-Sellable:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E2,E2,E4,E4
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	NukePower:
+		RequiresCondition: prepare
+		ChargeInterval: 60000
+	Buildable:
+		Prerequisites: ~disabled
+	Capturable:
+		Types: ~disabled
+	ExternalCondition:
+		Condition: prepare
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
