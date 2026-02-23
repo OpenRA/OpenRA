@@ -358,7 +358,7 @@ Actors:
 	Actor97: apwr
 		Location: 73,81
 		Owner: USSR
-	BGFlameTower: ftur
+	BadGuyFlameTower: ftur
 		Location: 46,78
 		Owner: BadGuy
 	Actor99: powr
@@ -388,109 +388,111 @@ Actors:
 	Actor107: v2rl
 		Location: 95,60
 		Owner: USSR
-		Facing: 764
+		Facing: 768
 	Actor108: v2rl
 		Location: 87,56
 		Owner: USSR
-		Facing: 892
+		Facing: 896
 	Actor109: v2rl
 		Location: 78,54
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Actor110: v2rl
 		Location: 78,67
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Actor111: v2rl
 		Location: 78,62
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Actor112: 3tnk
 		Location: 87,69
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Actor113: 3tnk
 		Location: 84,71
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Actor114: v2rl
 		Location: 94,68
 		Owner: USSR
-		Facing: 636
-	Actor115: jeep
+		Facing: 640
+	EnglandRanger: jeep
 		Location: 27,58
 		Owner: England
 		Health: 7
-		Facing: 636
+		Facing: 640
+		Stance: ReturnFire
 	Actor116: 3tnk
 		Location: 72,67
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	Actor117: 3tnk
 		Location: 63,66
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	Actor118: 3tnk
 		Location: 43,79
 		Owner: BadGuy
-		Facing: 124
+		Facing: 128
 	Actor119: 3tnk
 		Location: 47,55
 		Owner: USSR
-		Facing: 636
-	Actor120: v2rl
+		Facing: 640
+	BadGuyLauncherEast: v2rl
 		Location: 89,71
 		Owner: BadGuy
-		Facing: 124
-	Actor121: v2rl
+		Facing: 128
+	BadGuyLauncherWest: v2rl
 		Location: 48,80
 		Owner: BadGuy
-		Facing: 124
+		Facing: 128
+		Stance: Defend
 	Actor122: 3tnk
 		Location: 65,69
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Actor123: 3tnk
 		Location: 69,69
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Actor124: 3tnk
 		Location: 53,56
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	Actor125: 3tnk
 		Location: 67,71
 		Owner: BadGuy
-		Facing: 124
+		Facing: 128
 	Actor126: e1
 		Location: 79,64
 		Owner: USSR
-		Facing: 380
-		SubCell: 4
+		Facing: 384
+		SubCell: 5
 	Actor127: e1
 		Location: 78,63
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 0
 	Actor128: e1
 		Location: 82,62
 		Owner: USSR
-		Facing: 636
+		Facing: 640
 		SubCell: 0
 	Actor129: e1
 		Location: 95,59
 		Owner: USSR
-		Facing: 892
+		Facing: 896
 		SubCell: 2
 	Actor130: e1
 		Location: 94,60
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 2
 	Actor131: e1
 		Location: 96,61
 		Owner: USSR
-		Facing: 636
+		Facing: 640
 		SubCell: 1
 	Actor132: e2
 		Location: 77,66
@@ -499,7 +501,7 @@ Actors:
 	Actor133: e2
 		Location: 79,61
 		Owner: USSR
-		SubCell: 4
+		SubCell: 5
 	Actor134: e2
 		Location: 80,67
 		Owner: USSR
@@ -507,28 +509,28 @@ Actors:
 	Actor135: e2
 		Location: 59,70
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 2
 	Actor136: e2
 		Location: 60,71
 		Owner: USSR
-		Facing: 636
-		SubCell: 4
+		Facing: 640
+		SubCell: 5
 	Actor137: e2
 		Location: 58,71
 		Owner: USSR
-		Facing: 508
-		SubCell: 4
+		Facing: 512
+		SubCell: 5
 	Actor138: e2
 		Location: 71,62
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 		SubCell: 0
 	Actor139: e2
 		Location: 70,63
 		Owner: USSR
-		Facing: 636
-		SubCell: 4
+		Facing: 640
+		SubCell: 5
 	Actor140: e1
 		Location: 82,74
 		Owner: USSR
@@ -536,140 +538,140 @@ Actors:
 	Actor141: e1
 		Location: 80,72
 		Owner: USSR
-		Facing: 380
-		SubCell: 4
+		Facing: 384
+		SubCell: 5
 	Actor142: e1
 		Location: 81,76
 		Owner: USSR
-		Facing: 892
-		SubCell: 3
+		Facing: 896
+		SubCell: 4
 	Actor143: e1
 		Location: 80,77
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Actor144: e2
 		Location: 84,74
 		Owner: USSR
-		Facing: 892
-		SubCell: 4
+		Facing: 896
+		SubCell: 5
 	Actor145: e2
 		Location: 81,77
 		Owner: USSR
-		Facing: 636
-		SubCell: 4
+		Facing: 640
+		SubCell: 5
 	Actor146: e2
 		Location: 81,75
 		Owner: USSR
-		Facing: 764
+		Facing: 768
 		SubCell: 1
 	Actor147: e4
 		Location: 30,61
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 		SubCell: 0
 	Actor148: e4
 		Location: 30,59
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 		SubCell: 0
-	Actor149: e1
+	EnglandRifle2: e1
 		Location: 26,58
 		Owner: England
 		Health: 61
-		Facing: 764
+		Facing: 768
 		SubCell: 0
-	Actor150: e1
+	EnglandRifle1: e1
 		Location: 27,57
 		Owner: England
 		Health: 43
-		Facing: 636
+		Facing: 640
 		SubCell: 0
-	Actor151: e1
+	EnglandRifle3: e1
 		Location: 26,59
 		Owner: England
 		Health: 55
-		Facing: 636
-		SubCell: 4
+		Facing: 640
+		SubCell: 5
 	BeachRifle1: e1
 		Location: 35,55
 		Owner: BadGuy
-		Facing: 252
-		SubCell: 3
+		Facing: 256
+		SubCell: 4
 	BeachRifle2: e1
 		Location: 33,55
 		Owner: BadGuy
-		Facing: 380
-		SubCell: 4
+		Facing: 384
+		SubCell: 5
 	BeachRifle3: e1
 		Location: 34,55
 		Owner: BadGuy
-		Facing: 124
+		Facing: 128
 		SubCell: 1
 	BeachRifle4: e1
 		Location: 34,56
 		Owner: BadGuy
-		Facing: 636
-		SubCell: 4
+		Facing: 640
+		SubCell: 5
 	Actor156: dog
 		Location: 82,65
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 		SubCell: 1
 	Actor157: dog
 		Location: 86,62
 		Owner: USSR
-		Facing: 252
-		SubCell: 4
+		Facing: 256
+		SubCell: 5
 	Actor158: dog
 		Location: 80,69
 		Owner: USSR
-		Facing: 892
-		SubCell: 3
-	Actor159: e2
+		Facing: 896
+		SubCell: 4
+	BeachScout1: e2
 		Location: 40,74
 		Owner: BadGuy
-		Facing: 380
+		Facing: 384
 		SubCell: 0
-	Actor160: e2
+	BeachScout2: e2
 		Location: 40,73
 		Owner: BadGuy
-		Facing: 892
-		SubCell: 4
+		Facing: 896
+		SubCell: 5
 	Actor161: e1
 		Location: 46,74
 		Owner: BadGuy
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Actor162: e1
 		Location: 45,75
 		Owner: BadGuy
-		Facing: 380
+		Facing: 384
 		SubCell: 2
 	Actor163: e1
 		Location: 47,74
 		Owner: BadGuy
-		Facing: 636
+		Facing: 640
 		SubCell: 1
 	Actor164: e1
 		Location: 67,66
 		Owner: USSR
-		Facing: 380
-		SubCell: 4
+		Facing: 384
+		SubCell: 5
 	Actor165: e1
 		Location: 68,70
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Actor166: e1
 		Location: 66,68
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 		SubCell: 1
 	Actor167: e1
 		Location: 66,66
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Actor168: e1
 		Location: 45,81
@@ -686,75 +688,75 @@ Actors:
 	Actor171: e4
 		Location: 43,81
 		Owner: BadGuy
-		SubCell: 4
+		SubCell: 5
 	Actor172: e4
 		Location: 45,77
 		Owner: BadGuy
-		Facing: 892
+		Facing: 896
 		SubCell: 0
 	Actor173: e4
 		Location: 31,60
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Actor174: dog
 		Location: 60,80
 		Owner: USSR
-		Facing: 892
+		Facing: 896
 		SubCell: 0
 	Actor175: e4
 		Location: 61,63
 		Owner: BadGuy
-		Facing: 508
-		SubCell: 3
+		Facing: 512
+		SubCell: 4
 	Actor176: e4
 		Location: 66,72
 		Owner: BadGuy
-		SubCell: 3
+		SubCell: 4
 	Actor177: e4
 		Location: 62,67
 		Owner: BadGuy
-		Facing: 380
-		SubCell: 3
+		Facing: 384
+		SubCell: 4
 	Actor178: pt
 		Location: 13,51
 		Owner: Greece
-		Facing: 764
+		Facing: 768
 	Actor179: pt
 		Location: 13,55
 		Owner: Greece
-		Facing: 764
+		Facing: 768
 	Sub1: ss
 		Location: 43,52
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Sub2: ss
 		Location: 39,52
 		Owner: USSR
-		Facing: 764
+		Facing: 768
 	Sub3: ss
 		Location: 21,53
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Sub4: ss
 		Location: 13,70
 		Owner: USSR
 	Sub5: ss
 		Location: 16,75
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Sub6: ss
 		Location: 66,58
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Sub7: ss
 		Location: 71,54
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Sub8: ss
 		Location: 65,50
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	Sub9: ss
 		Location: 103,75
 		Owner: USSR
@@ -767,27 +769,27 @@ Actors:
 	Sub12: ss
 		Location: 95,78
 		Owner: USSR
-		Facing: 764
+		Facing: 768
 	Sub13: ss
 		Location: 86,46
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Sub14: ss
 		Location: 93,51
 		Owner: USSR
-		Facing: 124
+		Facing: 128
 	Sub15: ss
 		Location: 101,50
 		Owner: BadGuy
-		Facing: 636
+		Facing: 640
 	Sub16: ss
 		Location: 99,51
 		Owner: BadGuy
-		Facing: 252
+		Facing: 256
 	Sub17: ss
 		Location: 99,48
 		Owner: BadGuy
-		Facing: 380
+		Facing: 384
 	AlliedMCVEntry: waypoint
 		Location: 10,53
 		Owner: Neutral
@@ -809,8 +811,11 @@ Actors:
 	ParaLZ2: waypoint
 		Location: 49,64
 		Owner: Neutral
-	BeachRifleDestination: waypoint
-		Location: 44,78
+	RadarDefenseProximity: waypoint
+		Location: 46,79
+		Owner: Neutral
+	RadarDefenseLanding: waypoint
+		Location: 43,77
 		Owner: Neutral
 	RaidTwoEntry: waypoint
 		Location: 10,75
@@ -824,14 +829,17 @@ Actors:
 	ParaLZ1: waypoint
 		Location: 39,63
 		Owner: Neutral
-	Unload1: waypoint
+	AlliedLanding: waypoint
 		Location: 24,57
 		Owner: Neutral
 	GunboatEntry: waypoint
 		Owner: Neutral
 		Location: 10,54
 	waypoint42: waypoint
-		Location: 19,54
+		Location: 20,50
+		Owner: Neutral
+	waypoint29: waypoint
+		Location: 53,75
 		Owner: Neutral
 	DefaultCameraPosition: waypoint
 		Location: 13,53
@@ -875,6 +883,12 @@ Actors:
 	SovCamera: camera
 		Owner: USSR
 		Location: 33,62
+	MainBaseGate: waypoint
+		Location: 76,64
+		Owner: Neutral
+	ParaProxy: powerproxy.paratroopers
+		Location: 5,5
+		Owner: USSR
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
