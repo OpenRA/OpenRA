@@ -7,6 +7,72 @@
    information, see COPYING.
 ]]
 
+SetDifficulty = function()
+    if Difficulty == "easy" then
+        StartingCash = 7000
+
+        USSRStartingCash = 75000
+        BadGuyStartingCash = 30000
+
+        USSRActivationDelay = DateTime.Minutes(11)
+        BadGuyActivationDelay = DateTime.Minutes(4)
+
+        badgerCounterAtk = 0
+
+        nuclearAtk = false
+
+        InfantryAttackGroupSize = 7
+        VehicleAttackGroupSize = 4 -- starts in n and it increases to n + 2
+        VehicleAttackInterval = DateTime.Minutes(3)
+        IronTanks = {"4tnk"}
+
+        ProductionIntervalAir = DateTime.Seconds(15)
+    elseif Difficulty == "normal" then
+        StartingCash = 6000
+
+        USSRStartingCash = 100000
+        BadGuyStartingCash = 40000
+
+        USSRActivationDelay = DateTime.Minutes(9)
+        BadGuyActivationDelay = DateTime.Minutes(3)
+
+        badgerCounterAtk = 2
+
+        nuclearAtk = true
+        nuclearWaitTime = DateTime.Minutes(40)
+        nuclearCountdown = DateTime.Minutes(20)
+
+        InfantryAttackGroupSize = 7
+        VehicleAttackGroupSize = 5  -- starts in n and it increases to n + 2
+        VehicleAttackInterval = DateTime.Minutes(2.5)
+        IronTanks = {"4tnk"}
+
+        ProductionIntervalAir = DateTime.Seconds(10)
+
+    elseif Difficulty == "hard" then
+        StartingCash = 5000
+
+        USSRStartingCash = 125000
+        BadGuyStartingCash = 50000
+
+        USSRActivationDelay = DateTime.Minutes(7)
+        BadGuyActivationDelay = DateTime.Minutes(2)
+
+        badgerCounterAtk = 3
+
+        nuclearAtk = true
+        nuclearWaitTime = DateTime.Minutes(30)
+        nuclearCountdown = DateTime.Minutes(20)
+
+        InfantryAttackGroupSize = 10
+        VehicleAttackGroupSize = 6  -- starts in n and it increases to n + 2
+        VehicleAttackInterval = DateTime.Minutes(2.25)
+        IronTanks = {"4tnk", "4tnk"}
+
+        ProductionIntervalAir = DateTime.Seconds(5)
+    end
+end
+
 --------------------------------------------------------------------
 -----------------	    DATA BLOCK - START	------------------------
 --------------------------------------------------------------------
@@ -34,19 +100,21 @@ BadGuyAttackPaths =
     {BadGuyMidAtkPath1.Location, BadGuyMidAtkPath2.Location, BadGuyMidAtkPath3B.Location}
 }
 
---Attacks
 InfantryTypes = {"e1", "e2", "e4"}
+-- InfantryAttackGroupSize is defined in difficulty setup
 InfantryBadGuyAttackGroup = { }
+InfantryBadguyAttackInterval = DateTime.Minutes(1.5)
 InfantryUSSRAttackGroup = { }
+InfantryUSSRAttackInterval = DateTime.Minutes(2)
 
 VehicleTypes = { "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "4tnk" }
-VehicleAttackGroup = { }
 --VehicleAttackGroupSize is defined in difficulty setup
-
-ProductionInterval = DateTime.Seconds(5)--{}
+VehicleAttackGroup = { }
+--VehicleAttackInterval is defined in difficulty setup
 
 SovietAircraftType = { "yak", "mig" }
 PlanesAttackGroup = { }
+ParadropIntervals = DateTime.Minutes(5)
 
 LstEnemyTypes = { "3tnk", "3tnk", "v2rl" }
 LstEnemyAmount = 3
@@ -75,9 +143,10 @@ USSRBaseBlueprints = {
 
     { type = "afld", actor = USSRAfld1, cost = 500, shape = { 3, 2 }, location = CPos.New(61, 18) },
     { type = "afld", actor = USSRAfld2, cost = 500, shape = { 3, 2 }, location = CPos.New(65, 18) },
+    --[[
     { type = "hpad", actor = USSRHpad1, cost = 500, shape = { 2, 3 }, location = CPos.New(61, 20) },
     { type = "hpad", actor = USSRHpad2, cost = 500, shape = { 2, 3 }, location = CPos.New(64, 20) },
-
+    ]]
     { type = "dome", actor = USSRDome, cost = 1400, shape = { 2, 3 }, location = CPos.New(49, 21) },
     --[[{ type = "stek", actor = USSRStek, cost = 1500, shape = { 3, 3 }, location = CPos.New(53, 21) },]]
 
@@ -114,8 +183,10 @@ BadGuyBaseBlueprints = {
     { type = "kenn", actor = BadGuyKenn, cost = 200, shape = { 1, 1 }, location = CPos.New(106, 46) },
     { type = "spen", actor = BadGuySpen, cost = 800, shape = { 3, 3 }, location = CPos.New(89, 43) },
 
+    --[[
     { type = "hpad", actor = BadGuyHpad1, cost = 500, shape = { 2, 3 }, location = CPos.New(103, 43) },
     { type = "hpad", actor = BadGuyHpad2, cost = 500, shape = { 2, 3 }, location = CPos.New(110, 43) },
+    ]]
 
     { type = "fix", actor = BadGuyFix, cost = 500, shape = { 3, 3 }, location = CPos.New(99, 42) },
 
@@ -132,12 +203,11 @@ BadGuyBaseBlueprints = {
     { type = "sam", actor = BadGuySam3, cost = 700, shape = { 2, 1 }, location = CPos.New(108, 41) }
 }
 
--- USSR
 USSRGuardDog1Data = { actor = USSRRebuildableDog1, exists = true, pos = CPos.New(47, 24) }
 USSRGuardDog2Data = { actor = USSRRebuildableDog2, exists = true, pos = CPos.New(52, 25) }
 USSRGuardDog3Data = { actor = USSRRebuildableDog3, exists = true, pos = CPos.New(48, 35) }
 USSRGuardDog4Data = { actor = USSRRebuildableDog4, exists = true, pos = CPos.New(52, 39) }
--- BadGuy
+
 BadGuyGuardDog1Data = { actor = BadGuyRebuildableDog1, exists = true, pos = CPos.New(96, 45) }
 BadGuyGuardDog2Data = { actor = BadGuyRebuildableDog2, exists = true, pos = CPos.New(106, 47) }
 BadGuyGuardDog3Data = { actor = BadGuyRebuildableDog3, exists = true, pos = CPos.New(112, 43) }
@@ -145,24 +215,10 @@ BadGuyGuardDog3Data = { actor = BadGuyRebuildableDog3, exists = true, pos = CPos
 USSRRebuildableDogs = { USSRGuardDog1Data, USSRGuardDog2Data, USSRGuardDog3Data, USSRGuardDog4Data}
 BadGuyRebuildableDogs = { BadGuyGuardDog1Data, BadGuyGuardDog2Data, BadGuyGuardDog3Data}
 
-USSRGuardHelicopters =
-{
-    {actor = USSRGuardingHind1, guardPoint = USSRHpad1 },
-    {actor = USSRGuardingHind2, guardPoint = USSRHpad2 }
-}
-
-BadGuyGuardHelicopters =
-{
-    {actor = BadGuyGuardingHind1, guardPoint = BadGuyHpad1 },
-    {actor = BadGuyGuardingHind2, guardPoint = BadGuyHpad2 }
-}
-
-GuardRadius = WDist.FromCells(12)
-
 IronTankPath = {USSRMidAtkPath1.Location, USSRMidAtkPath2.Location, USSRMidAtkPath3.Location, USSRMidAtkPath4.Location}
 ironSwitch = 0
 
-NukeConditionInt = -1
+NukeStage = -1
 
 --------------------------------------------------------------------
 -----------------	    DATA BLOCK - END	------------------------
@@ -200,13 +256,13 @@ BuildBase = function(collection, cyard, owner)
 		end
 	end
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function() --CHANGE: Change to 1 second
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
         BuildBase(collection, cyard, owner)
     end)
 end
 
 BuildBlueprint = function(blueprint, cyard, owner, collection)
-    Trigger.AfterDelay(Actor.BuildTime(blueprint.type), function()   --CHANGE: Change to actual actor buildTime
+    Trigger.AfterDelay(Actor.BuildTime(blueprint.type), function()
 		if cyard.IsDead or cyard.Owner ~= owner then
 			return
 		elseif PlayerMoney(owner) <= 299 and IsHarvesterMissing(owner) then
@@ -351,7 +407,6 @@ end
 
 ProduceInfantry = function(barrack, owner)
     local delay = Utils.RandomInteger(DateTime.Seconds(2), DateTime.Seconds(4))
-    --local owner = factory.Owner CHANGE: Remove this. Is just a reminder
 
 	if (barrack.IsDead or barrack.Owner ~= owner) then
 		return
@@ -374,7 +429,7 @@ ProduceInfantry = function(barrack, owner)
             if #InfantryUSSRAttackGroup >= InfantryAttackGroupSize then
                 SendUnits(InfantryUSSRAttackGroup, path)
                 InfantryUSSRAttackGroup = { }
-                Trigger.AfterDelay(DateTime.Minutes(2), function()
+                Trigger.AfterDelay(InfantryUSSRAttackInterval, function()
                     ProduceInfantry(barrack, owner)
 			    end)
             else
@@ -387,7 +442,7 @@ ProduceInfantry = function(barrack, owner)
             if #InfantryBadGuyAttackGroup >= InfantryAttackGroupSize then
                 SendUnits(InfantryBadGuyAttackGroup, path)
                 InfantryBadGuyAttackGroup = { }
-                Trigger.AfterDelay(DateTime.Minutes(1.5), function()
+                Trigger.AfterDelay(InfantryBadguyAttackInterval, function()
                     ProduceInfantry(barrack, owner)
 			    end)
             else
@@ -446,7 +501,6 @@ end
 --- Air Attacks    ----
 -----------------------
 
--- Decide if this is the proper way tio set attack frequency
 ProduceAircraft = function()
     if (USSRAfld1.IsDead or USSRAfld1.Owner ~= USSR) and (USSRAfld2.IsDead or USSRAfld2.Owner ~= USSR) then
         return
@@ -470,7 +524,7 @@ end
 PlanesAttack = function()
     local entry = Utils.Random({ IronTankEntry.Location, SovWaterEntry.Location, BadgerEntry.Location })
     local planeType = Utils.Random({SovietAircraftType})
-    Media.Debug("Check till here 1")
+
     for p = 1, #planeType do
         Trigger.AfterDelay(DateTime.Seconds(0.25*p), function()
             local a = Actor.Create(planeType[p], true, { Owner = USSR, Location = entry })
@@ -493,7 +547,6 @@ CheckPlaneAmmo = function(plane, dir)
 end
 
 SendParadrop = function(waypoint, angle)
-
 	if (USSRAfld1.IsDead or USSRAfld1.Owner ~= USSR) or (USSRAfld2.IsDead or USSRAfld2.Owner ~= USSR) then
 		return
 	end
@@ -506,6 +559,19 @@ SendParadrop = function(waypoint, angle)
 			IdleHunt(p)
 		end)
 	end)
+end
+
+HarassingParadrop = function()
+    if badgerCounterAtk > 0 then
+        for i = 1, badgerCounterAtk do
+            local rngAngle = Angle.New(Utils.Random({-1, 0, 1}) * 40) --WAngle New
+            local rngPos = WVec.New(1024 * ( (-10) + i * 6), 1024 * (7), 0)
+            Trigger.AfterDelay(DateTime.Seconds(0.25*i), function()
+                SendParadrop( (BadgerEntry.CenterPosition + rngPos), rngAngle) 
+            end)
+        end
+        Trigger.AfterDelay(ParadropIntervals, HarassingParadrop)
+    end
 end
 
 -----------------------
@@ -539,7 +605,7 @@ end
 EnemySubsReinforcements = function()
     local northLeftEdge = WPos.New( (CPos.New(62,18)).X * 1024,  (CPos.New(70,18)).Y * 1024, 0)
     local southRightEdge = WPos.New( (CPos.New(94,54)).X * 1024, (CPos.New(94,54)).Y * 1024, 0)
- 
+
     local actors = Map.ActorsInBox( northLeftEdge, southRightEdge, function(actor)
 		return actor.Owner == Greece and ( actor.Type == "pt" or actor.Type == "dd" or actor.Type == "ca" or actor.Type == "ss" or actor.Type == "spen" or actor.Type == "syrd" or actor.Type == "lst" )
 	end)
@@ -605,49 +671,6 @@ ProduceDogs = function(d, owner, kenn)
     end)
 end
 
-InitHeliGuard = function(collection)
-    for _, guard in ipairs(collection) do
-        SetupGuardBehavior(guard)
-    end
-end
-
-SetupGuardBehavior = function(guard)
-    local heli = guard.actor
-    local hpad = guard.guardPoint
-    local loc = hpad.CenterPosition
-
-    local function GuardLoop()
-        if not heli.IsDead then
-
-            if not heli.AmmoCount() then
-                if not hpad.IsDead then
-                    heli.ReturnToBase(hpad)
-                end
-
-                Trigger.OnIdle(heli, function()
-                    GuardLoop()
-                end)
-
-                return
-            end
-
-            local enemies = Map.ActorsInCircle(loc, GuardRadius, function(e)
-                return e.Owner == Greece and not e.IsDead and e.Type ~= "spy" and e.Type ~= "heli" and e.Type ~= "mh60" and e.Type ~= "tran" and e.Type ~= "hind"  and e.Type ~= "mig" and e.Type ~= "yak"
-            end)
-
-            if #enemies > 0 then
-                heli.Attack(enemies[1])
-            else
-                if not hpad.IsDead then
-                    heli.ReturnToBase(hpad)
-                end
-            end
-            Trigger.AfterDelay(DateTime.Seconds(2), (GuardLoop))
-        end
-    end
-    Trigger.AfterDelay(DateTime.Seconds(2), (GuardLoop))
-end
-
 SendIronCurtainAtk = function(units)
     if not units then
         units = Reinforcements.Reinforce(USSR, IronTanks, { IronTankEntry.Location, IronTankDst.Location })
@@ -677,47 +700,71 @@ end
 
 IronCurtaining = function(actor)
     if ironSwitch > 0 then
-        if not actor.IsDead and not USSRIron.IsDead then
+        if not actor.IsDead and not USSRIron.IsDead and USSR.PowerState == "Normal" then
             actor.GrantCondition("invulnerability", DateTime.Seconds(25))
         end
         ironSwitch = ironSwitch - 1
     end
 end
 
---[[
 PrepareNuclearLaunch = function()
     if not USSRMslo.IsDead then
-        NukeConditionInt = USSRMslo.GrantCondition("prepare", nuclearCountdown)
+        DateTime.TimeLimit = TimerTicks
+		Media.PlaySpeechNotification(Greece, "TimerStarted")
+        Media.DisplayMessage(UserInterface.GetFluentMessage("nuke-ready-in"))
+        --PauseNuclearLaunchTimer()
+    else
+        return
     end
+ 
+    Trigger.OnKilled(USSRMslo, function()
+        FinishTimer()
+    end)
 
-    Trigger.AfterDelay(nuclearCountdown, function()
+    Trigger.OnTimerExpired(function()
+        FinishTimer()
         FindNuclearTarget()
     end)
 end
 
+-- Not an actual pause
+--[[
+PauseNuclearLaunchTimer = function()
+    if USSRMslo.IsDead then
+        return
+    end
+    if USSR.PowerState ~= "Normal" then
+        Media.Debug(tostring(DateTime.TimeLimit) .. " "  .. tostring(DateTime.Seconds(1)))
+        --DateTime.TimeLimit = DateTime.TimeLimit + DateTime.Seconds(1)
+        DateTime.TimeLimit = DateTime.TimeLimit - DateTime.Seconds(1)
+    end
+    Trigger.AfterDelay(DateTime.Seconds(1), PauseNuclearLaunchTimer)
+end
+]]
+
 FindNuclearTarget = function()
+    local target = nil
     local targets = Greece.GetActorsByType("atek")
 
-    if #targets > 0 then
-        Utils.Random(targets, function(t)
-            NuclearLaunch(t)
-        end)
-    else
-        targets = Greece.GetActorsByType("fact")
+    if not USSRMslo.IsDead then
         if #targets > 0 then
-            Utils.Random(targets, function(t)
-                NuclearLaunch(t)
-            end)
+            target = Utils.Random(targets)
+            NuclearLaunch(target)
         else
-            targets = Utils.Where(Greece.GetActors, function(a) return a.Type == "weap" end)
+            targets = Greece.GetActorsByType("fact")
             if #targets > 0 then
-                Utils.Random(targets, function(t)
-                    NuclearLaunch(t)
-                end)
+                target = Utils.Random(targets)
+                NuclearLaunch(target)
             else
-                Trigger.AfterDelay(DateTime.Seconds(10), function()
-                   FindNuclearTarget()
-                end)
+                targets = Greece.GetActorsByType("weap")
+                if #targets > 0 then
+                    target = Utils.Random(targets)
+                    NuclearLaunch(target)
+                else
+                    Trigger.AfterDelay(DateTime.Seconds(10), function()
+                        FindNuclearTarget()
+                    end)
+                end
             end
         end
     end
@@ -727,16 +774,15 @@ NuclearLaunch = function(loc)
     if not USSRMslo.IsDead then
         Media.PlaySpeechNotification(Greece, "AbombLaunchDetected")
         USSRMslo.ActivateNukePower(loc.Location)
-        USSRMslo.RevokeCondition(NukeConditionInt)
     end
 end
-]]
+
 --------------------------------------------------------------------
 ----------------    SPECIAL BEHAVIORS BLOCK - END	----------------
 --------------------------------------------------------------------
 
 SetupAIActivities = function()
-    Media.Debug("Start Basic AI")
+    --Media.Debug("Start Basic AI")
 
     USSR.Cash = USSRStartingCash
     BadGuy.Cash = BadGuyStartingCash
@@ -744,9 +790,6 @@ SetupAIActivities = function()
     --[[ IA GENERAL SETUP]]
     CheckDogs(BadGuy, BadGuyKenn)
     CheckDogs(USSR, USSRKenn)
-
-    InitHeliGuard(USSRGuardHelicopters)
-    InitHeliGuard(BadGuyGuardHelicopters)
 
     BeginBaseMaintenance(USSRBaseBlueprints, USSR)
     BeginBaseMaintenance(BadGuyBaseBlueprints, BadGuy)
@@ -756,30 +799,16 @@ SetupAIActivities = function()
 
     -- Main AI activities
     Trigger.AfterDelay(BadGuyActivationDelay, function()
-        Media.Debug("Start BadGuy Combat AI")
+        --Media.Debug("Start BadGuy Combat AI")
         RunBadGuyActivities()
     end)
 
     Trigger.AfterDelay(DateTime.Minutes(2),  SendIronCurtainAtk)
     Trigger.AfterDelay(USSRActivationDelay, function()
-        Media.Debug("Start USSR Combat AI")
+        --Media.Debug("Start USSR Combat AI")
         RunUSSRActivities()
     end)
 
-    PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
-    --[[
-    Trigger.AfterDelay(DateTime.Seconds(5), function()
-        if badgerCounterAtk > 0 then
-            for i = 1, badgerCounterAtk do
-                local rngAngle = Angle.New(Utils.Random({-1, 0, 1}) * 40) --WAngle New
-                local rngPos = WVec.New(1024 * ( (-10) + i * 6), 1024 * (7), 0)
-                Trigger.AfterDelay(DateTime.Seconds(0.25*i), function()
-                    SendParadrop( (BadgerEntry.CenterPosition + rngPos), rngAngle) 
-                end)
-            end
-        end
-    end)
-    ]]
 end
 
 RunUSSRActivities = function()
@@ -795,25 +824,23 @@ RunUSSRActivities = function()
         PlanesAttack()
     end)
 
-    --[[
     if nuclearAtk == true then
         Trigger.AfterDelay(nuclearWaitTime, PrepareNuclearLaunch)
     end
 
-    Trigger.AfterDelay(DateTime.Minutes(7.5), function()
+    Trigger.AfterDelay(DateTime.Minutes(10), function()
         VehicleAttackGroupSize = VehicleAttackGroupSize + 1
-        Trigger.AfterDelay(DateTime.Minutes(7.5), function()
+        Trigger.AfterDelay(DateTime.Minutes(10), function()
             VehicleAttackGroupSize = VehicleAttackGroupSize + 1
         end)
     end)
-    ]]
 end
 
 RunBadGuyActivities = function()
     ProduceInfantry(BadGuyBarr, BadGuy)
 
     Trigger.AfterDelay(DateTime.Minutes(3), function()
-        Media.Debug("Lst")
+        --Media.Debug("Lst Attack")
         EnemyLstReinforcements()
     end)
 end

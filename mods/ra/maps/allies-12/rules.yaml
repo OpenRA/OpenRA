@@ -16,6 +16,10 @@ World:
 			normal: options-difficulty.normal
 			hard: options-difficulty.hard
 		Default: normal
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
+		CountdownLabel: MISSION_TEXT
+		CountdownText: Soviet nuclear missile ready for launch in {0}
 
 LST.Reinforcement:
 	Inherits: LST
@@ -119,17 +123,17 @@ PDOX:
 IRON:
 	Buildable:
 		Prerequisites: ~disabled
+	Capturable:
+		Types: ~disabled
 
 MSLO:
+	-WithColoredOverlay@IDISABLE:
 	NukePower:
-		RequiresCondition: prepare
-		ChargeInterval: 60000
+		DisplayTimerRelationships: Neutral
 	Buildable:
 		Prerequisites: ~disabled
 	Capturable:
 		Types: ~disabled
-	ExternalCondition:
-		Condition: prepare
 
 MECH:
 	Buildable:

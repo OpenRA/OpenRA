@@ -7,83 +7,9 @@
    information, see COPYING.
 ]]
 
-SetDifficulty = function()
-    if Difficulty == "easy" then
-        StartingCash = 7000
-
-        USSRStartingCash = 75000
-        BadGuyStartingCash = 30000
-
-        USSRActivationDelay = DateTime.Minutes(11)
-        BadGuyActivationDelay = DateTime.Minutes(4)
-
-        badgerCounterAtk = 0
-
-        nuclearAtk = false
-
-        InfantryAttackGroupSize = 7
-        VehicleAttackGroupSize = 4 -- starts in n and it increases to n + 2
-        VehicleAttackInterval = DateTime.Minutes(3)
-        IronTanks = {"4tnk"}
-
-        ProductionIntervalAir = DateTime.Seconds(15)
-    elseif Difficulty == "normal" then
-        StartingCash = 6000
-
-        USSRStartingCash = 100000
-        BadGuyStartingCash = 40000
-
-        USSRActivationDelay = DateTime.Minutes(9)
-        BadGuyActivationDelay = DateTime.Minutes(3)
-
-        badgerCounterAtk = 2
-
-        nuclearAtk = true
-        nuclearWaitTime = DateTime.Minutes(40)
-        nuclearCountdown = DateTime.Minutes(10)
-
-        InfantryAttackGroupSize = 7
-        VehicleAttackGroupSize = 5  -- starts in n and it increases to n + 2
-        VehicleAttackInterval = DateTime.Minutes(2)
-        IronTanks = {"4tnk"}
-
-        ProductionIntervalAir = DateTime.Seconds(10)
-
-    elseif Difficulty == "hard" then
-        StartingCash = 5000
-
-        USSRStartingCash = 125000
-        BadGuyStartingCash = 50000
-
-        USSRActivationDelay = DateTime.Minutes(7)
-        BadGuyActivationDelay = DateTime.Minutes(2)
-
-        badgerCounterAtk = 3
-
-        nuclearAtk = true
-        nuclearWaitTime = DateTime.Minutes(30)
-        nuclearCountdown = DateTime.Minutes(20)
-
-        InfantryAttackGroupSize = 10
-        VehicleAttackGroupSize = 6  -- starts in n and it increases to n + 2
-        VehicleAttackInterval = DateTime.Minutes(2)
-        IronTanks = {"4tnk", "4tnk"}
-
-        ProductionIntervalAir = DateTime.Seconds(5)
-    end
-end
-
---[[
-ProductionInterval =
-{
-	easy = DateTime.Seconds(30),
-	normal = DateTime.Seconds(15),
-	hard = DateTime.Seconds(5)
-}
-]]
-
 STeksToCapture = { USSRStek, BadGuyStek }
 STeksCaptured = 0
+STekLost = false
 
 LstReinforcements =
 {
@@ -147,6 +73,32 @@ HostileVillager = function(spawnLoc, targetLoc)
     end)
 end
 
+FinishTimer = function()
+   	DateTime.TimeLimit = 0
+	for i = 0, 5, 1 do
+		local c = TimerColor
+		if i % 2 == 0 then
+			c = HSLColor.White
+		end
+        Trigger.AfterDelay(DateTime.Seconds(i), function()
+           if not USSRMslo.IsDead then
+              UserInterface.SetMissionText(UserInterface.GetFluentMessage("nuke-incoming"), c)
+            else
+              UserInterface.SetMissionText(UserInterface.GetFluentMessage("nuke-averted"), c)
+            end
+        end)
+    end
+	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
+end
+
+ToBeRemoved = function()
+    local toBeRemoved = Utils.Where(Neutral.GetActors(), function(a) return a.Type == "hpad" or a.Type == "hind" end)
+
+    Utils.Do(toBeRemoved, function(a)
+        a.Destroy()
+    end)
+end
+
 InitTriggers = function()
     Greece.Cash = StartingCash
 
@@ -155,6 +107,18 @@ InitTriggers = function()
     Trigger.AfterDelay(DateTime.Seconds(20), function()
         HostileVillager(CivBuilding1, PlayerBaseTarget)
     end)
+
+    Trigger.OnCapture(BadGuyStek, function()
+        --Move to when right stek is captured
+        PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
+        Trigger.AfterDelay(DateTime.Seconds(5), function()
+            HarassingParadrop()
+        end)
+    end)
+
+    TimerTicks = nuclearCountdown
+
+    Trigger.AfterDelay(DateTime.Seconds(5), PrepareNuclearLaunch)
 end
 
 PrepareObjectives = function()
@@ -167,7 +131,6 @@ PrepareObjectives = function()
 
     Utils.Do(STeksToCapture, function(b)
         Trigger.OnCapture(b, function()
-
             STeksCaptured = STeksCaptured + 1
             if STeksCaptured == 2 then
                 Media.PlaySpeechNotification(Greece, "FirstObjectiveMet")
@@ -236,8 +199,13 @@ WorldLoaded = function()
     SetDifficulty()
     InitTriggers()
     PrepareObjectives() --Replaces "InitObjectives()"
+    
+    --Debug function. Remove later
+    ToBeRemoved()
 
-    Trigger.AfterDelay(DateTime.Minutes(1), function()
+    Trigger.AfterDelay(DateTime.Seconds(30), function()
         SetupAIActivities()
     end)
+
+    TimerColor = Player.GetPlayer("USSR").Color
 end

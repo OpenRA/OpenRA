@@ -66,53 +66,59 @@ Actors:
 	Actor0: brik
 		Location: 44,25
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor1: brik
 		Location: 45,25
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor2: brik
 		Location: 44,26
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor3: brik
 		Location: 45,26
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor4: brik
 		Location: 44,32
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor5: brik
 		Location: 45,32
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor6: brik
 		Location: 44,33
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor7: brik
 		Location: 45,33
 		Faction: england
-		Owner: BadGuy
+		Owner: USSR
 	Actor8: fenc
 		Location: 33,44
-		Owner: Neutral
+		Faction: england
+		Owner: USSR
 	Actor9: fenc
 		Location: 33,45
-		Owner: Neutral
+		Faction: england
+		Owner: USSR
 	Actor10: fenc
 		Location: 34,45
-		Owner: Neutral
+		Faction: england
+		Owner: USSR
 	Actor11: fenc
 		Location: 35,45
-		Owner: Neutral
+		Faction: england
+		Owner: USSR
 	Actor12: fenc
 		Location: 36,45
-		Owner: Neutral
+		Faction: england
+		Owner: USSR
 	Actor13: fenc
 		Location: 37,45
-		Owner: Neutral
+		Faction: england
+		Owner: USSR
 	Actor15: brik
 		Location: 103,50
 		Faction: england
@@ -1057,18 +1063,6 @@ Actors:
 		Owner: USSR
 		Facing: 384
 		SubCell: 5
-	waypoint18: waypoint
-		Location: 114,70
-		Owner: Neutral
-	waypoint29: waypoint
-		Location: 108,26
-		Owner: Neutral
-	waypoint34: waypoint
-		Location: 116,107
-		Owner: Neutral
-	waypoint51: waypoint
-		Location: 67,96
-		Owner: Neutral
 	DefaultCameraPosition: waypoint
 		Location: 79,84
 		Owner: Neutral
@@ -1165,9 +1159,6 @@ Actors:
 	BadGuySilo2: silo
 		Location: 104,39
 		Owner: BadGuy
-	BadGuyStek: stek
-		Location: 107,41
-		Owner: BadGuy
 	BadGuyFact: fact
 		Location: 106,37
 		Owner: BadGuy
@@ -1176,9 +1167,6 @@ Actors:
 		Owner: BadGuy
 	BadGuyKenn: kenn
 		Location: 106,46
-		Owner: BadGuy
-	BadGuyHpad1: hpad
-		Location: 103,43
 		Owner: BadGuy
 	BadGuyProc: proc
 		Location: 98,37
@@ -1292,12 +1280,6 @@ Actors:
 		Location: 47,36
 		Owner: USSR
 		Facing: 128
-	USSRHpad1: hpad
-		Location: 61,20
-		Owner: USSR
-	USSRHpad2: hpad
-		Location: 64,20
-		Owner: USSR
 	Actor96: tc04
 		Owner: Neutral
 		Location: 47,36
@@ -1404,27 +1386,6 @@ Actors:
 		Location: 111,53
 		Owner: BadGuy
 		Facing: 512
-	BadGuyGuardingHind2: hind
-		Location: 110,43
-		Stance: HoldFire
-		Owner: BadGuy
-		Facing: 384
-	BadGuyGuardingHind1: hind
-		Location: 103,43
-		Stance: HoldFire
-		Owner: BadGuy
-		Facing: 384
-	USSRGuardingHind2: hind
-		Owner: USSR
-		Location: 64,20
-		Facing: 384
-	USSRGuardingHind1: hind
-		Owner: USSR
-		Location: 61,20
-		Facing: 384
-	BadGuyHpad2: hpad
-		Owner: BadGuy
-		Location: 110,43
 	USSRMslo: mslo
 		Location: 56,26
 		Owner: USSR
@@ -1462,12 +1423,6 @@ Actors:
 		Location: 52,39
 		Owner: USSR
 		SubCell: 2
-	Actor399: ftur
-		Owner: USSR
-		Location: 123,2
-	Actor400: ftur
-		Owner: BadGuy
-		Location: 122,2
 	IronMammothTank: 4tnk
 		Location: 49,32
 		Owner: USSR
@@ -1522,6 +1477,53 @@ Actors:
 	SovWaterWaypoint: waypoint
 		Location: 78,33
 		Owner: Neutral
+	BadGuyStek: stek
+		Owner: BadGuy
+		Location: 107,42
+	USSRGuardingHind2: hind
+		Location: 64,20
+		Faction: soviet
+		Facing: 384
+		Owner: Neutral
+	USSRGuardingHind1: hind
+		Location: 61,20
+		Faction: soviet
+		Facing: 384
+		Owner: Neutral
+	USSRHpad1: hpad
+		Location: 61,20
+		Faction: soviet
+		Owner: Neutral
+	BadGuyGuardingHind2: hind
+		Location: 110,43
+		Stance: HoldFire
+		Faction: soviet
+		Facing: 384
+		Owner: Neutral
+	BadGuyHpad2: hpad
+		Location: 110,43
+		Faction: soviet
+		Owner: Neutral
+	BadGuyGuardingHind1: hind
+		Location: 103,43
+		Stance: HoldFire
+		Faction: soviet
+		Facing: 384
+		Owner: Neutral
+	BadGuyHpad1: hpad
+		Location: 103,43
+		Faction: soviet
+		Owner: Neutral
+	USSRHpad2: hpad
+		Faction: soviet
+		Owner: Neutral
+		Location: 64,20
+	PrerequisiteGiverBadGuy: ftur
+		Owner: BadGuy
+		Location: 122,2
+	PrerequisiteGiverUSSR: ftur
+		Owner: USSR
+		Location: 123,2
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
