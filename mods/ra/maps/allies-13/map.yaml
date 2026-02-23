@@ -29,14 +29,14 @@ Players:
 		Bot: campaign
 		Faction: soviet
 		Color: FF1400
-		Allies: BadGuy
-		Enemies: Turkey, Greece
-	PlayerReference@Turkey:
-		Name: Turkey
+		Allies: BadGuy, Turkey
+		Enemies: Greece, England
+	PlayerReference@BadGuy:
+		Name: BadGuy
 		Faction: allies
 		Color: D2997D
-		Allies: Greece
-		Enemies: USSR, BadGuy
+		Allies: USSR, Turkey
+		Enemies: Greece, England
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False
@@ -49,12 +49,13 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: USSR, BadGuy
-	PlayerReference@BadGuy:
-		Name: BadGuy
+		Allies: England
+	PlayerReference@Turkey:
+		Name: Turkey
 		Bot: campaign
 		Faction: soviet
-		Color: FF1400
-		Allies: USSR
+		Color: D2997D
+		Allies: USSR, BadGuy
 	PlayerReference@England:
 		Name: England
 		Faction: allies
