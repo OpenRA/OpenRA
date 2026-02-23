@@ -402,6 +402,7 @@ Player:
 			4tnk: 25
 			ttnk: 25
 			stnk: 5
+			ctnk: 3
 		UnitLimits:
 			dog: 4
 			harv: 8
@@ -451,6 +452,7 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
+			ctnk: 3
 		UnitLimits:
 			dog: 4
 			harv: 8
@@ -503,6 +505,7 @@ Player:
 			ca: 10
 			pt: 10
 			mnly: 2
+			ctnk: 3
 		UnitLimits:
 			dog: 3
 			harv: 8
@@ -544,6 +547,7 @@ Player:
 			dd: 30
 			ca: 20
 			pt: 10
+			ctnk: 3
 		UnitLimits:
 			harv: 4
 			ftrk: 3
