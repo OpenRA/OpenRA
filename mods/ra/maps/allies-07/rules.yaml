@@ -33,6 +33,16 @@ powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
 
+powerproxy.badguydrop:
+	ParatroopersPower:
+		DropItems: E1,E1,E2,E4,E4
+
+BARR:
+	ProvidesPrerequisite@FTUR:
+		Prerequisite: ftur
+		Factions: soviet
+		ResetOnOwnerChange: true
+
 FTRK:
 	Buildable:
 		Prerequisites: ~disabled
