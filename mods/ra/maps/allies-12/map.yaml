@@ -33,15 +33,21 @@ Players:
 		Bot: campaign
 		Faction: soviet
 		Color: FF1400
-		Allies: BadGuy
+		Allies: BadGuy, Turkey
 		Enemies: Greece, England
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Bot: campaign
 		Faction: soviet
 		Color: FF1400
-		Allies: USSR
+		Allies: USSR, Turkey
 		Enemies: Greece, England
+	PlayerReference@Turkey:
+		Name: Turkey
+		Bot: campaign
+		Faction: soviet
+		Color: D2997D
+		Allies: USSR, BadGuy
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False
@@ -552,46 +558,6 @@ Actors:
 	Actor150: tc01
 		Location: 113,34
 		Owner: Neutral
-	Actor175: v02
-		Location: 67,56
-		Faction: allies
-		Owner: USSR
-	Actor176: v03
-		Location: 61,58
-		Faction: allies
-		Owner: USSR
-	Actor177: v04
-		Location: 52,57
-		Faction: allies
-		Owner: USSR
-	Actor178: v05
-		Location: 60,62
-		Faction: allies
-		Owner: USSR
-	Actor180: v07
-		Location: 57,66
-		Faction: allies
-		Owner: USSR
-	Actor181: v08
-		Location: 64,65
-		Faction: allies
-		Owner: USSR
-	Actor182: v09
-		Location: 56,62
-		Faction: allies
-		Owner: USSR
-	Actor183: v10
-		Location: 47,52
-		Faction: allies
-		Owner: USSR
-	Actor184: v11
-		Location: 51,65
-		Faction: allies
-		Owner: USSR
-	Actor185: v03
-		Location: 43,55
-		Faction: allies
-		Owner: USSR
 	Actor209: v19
 		Location: 84,78
 		Faction: allies
@@ -654,10 +620,6 @@ Actors:
 		Location: 31,47
 		Owner: USSR
 		Facing: 640
-	Actor247: 3tnk
-		Location: 38,45
-		Owner: USSR
-		Facing: 640
 	Actor250: 4tnk
 		Location: 107,62
 		Owner: BadGuy
@@ -713,68 +675,6 @@ Actors:
 		Owner: USSR
 		Facing: 256
 		SubCell: 5
-	Actor264: c1
-		Location: 53,60
-		Owner: USSR
-		SubCell: 2
-		Facing: 256
-	Actor265: c2
-		Location: 45,52
-		Owner: USSR
-		SubCell: 1
-		Facing: 128
-	Actor266: c3
-		Location: 49,56
-		Owner: USSR
-		Facing: 640
-		SubCell: 5
-	Actor267: c3
-		Location: 58,64
-		Owner: USSR
-		Facing: 256
-		SubCell: 2
-	Actor268: c4
-		Location: 63,65
-		Owner: USSR
-		Facing: 768
-	Actor269: c5
-		Location: 66,56
-		Owner: USSR
-		Facing: 896
-		SubCell: 2
-	Actor270: c6
-		Location: 57,62
-		Owner: USSR
-		Facing: 128
-		SubCell: 2
-	Actor271: c7
-		Location: 62,61
-		Owner: USSR
-		Facing: 896
-	Actor272: c8
-		Location: 49,53
-		Owner: USSR
-		Facing: 128
-		SubCell: 1
-	Actor273: c9
-		Location: 52,64
-		Owner: USSR
-		Facing: 896
-		SubCell: 5
-	Actor274: c10
-		Location: 54,63
-		Owner: USSR
-		Facing: 384
-		SubCell: 1
-	Actor275: c7
-		Location: 66,58
-		Owner: USSR
-		Facing: 896
-		SubCell: 5
-	Actor276: c6
-		Location: 63,57
-		Owner: USSR
-		Facing: 640
 	Actor277: e1
 		Location: 38,28
 		Owner: USSR
@@ -959,16 +859,6 @@ Actors:
 	Actor321: e2
 		Location: 110,63
 		Owner: BadGuy
-		SubCell: 2
-	Actor322: c1
-		Location: 50,63
-		Owner: USSR
-		Facing: 128
-		SubCell: 4
-	Actor323: c1
-		Location: 64,64
-		Owner: USSR
-		Facing: 896
 		SubCell: 2
 	Actor324: e2
 		Location: 100,47
@@ -1221,10 +1111,6 @@ Actors:
 	cruiserSpawn: waypoint
 		Location: 85,87
 		Owner: Neutral
-	ChurchWithMoney: v01
-		Location: 64,53
-		Faction: allies
-		Owner: USSR
 	BadGuySam1: sam
 		Location: 100,41
 		Owner: BadGuy
@@ -1433,13 +1319,10 @@ Actors:
 	IronTankDst: waypoint
 		Location: 49,32
 		Owner: Neutral
-	CivBuild2: v04
-		Location: 34,43
-		Owner: USSR
 	CivBuild1: v06
 		Location: 65,60
 		Faction: allies
-		Owner: USSR
+		Owner: Turkey
 	USSRPower4: apwr
 		Owner: USSR
 		Location: 66,24
@@ -1524,6 +1407,129 @@ Actors:
 	PrerequisiteGiverUSSR: ftur
 		Owner: USSR
 		Location: 123,2
+	Civ1: c1
+		Location: 64,64
+		SubCell: 2
+		Owner: Turkey
+		Facing: 896
+	Civ2: c4
+		Location: 63,65
+		Owner: Turkey
+		Facing: 768
+	Civ3: c7
+		Location: 66,58
+		SubCell: 5
+		Owner: Turkey
+		Facing: 896
+	Civ4: c7
+		Location: 62,61
+		Owner: Turkey
+		Facing: 896
+	Civ5: c6
+		Location: 63,57
+		Owner: Turkey
+		Facing: 640
+	Civ7: c5
+		Location: 66,56
+		SubCell: 2
+		Owner: Turkey
+		Facing: 896
+	Civ6: c3
+		Location: 58,64
+		SubCell: 2
+		Owner: Turkey
+		Facing: 256
+	Civ8: c6
+		Location: 57,62
+		SubCell: 2
+		Owner: Turkey
+		Facing: 128
+	Civ9: c10
+		Location: 54,63
+		Owner: USSR
+		SubCell: 1
+		Facing: 384
+	Civ10: c9
+		Location: 52,64
+		SubCell: 5
+		Owner: Turkey
+		Facing: 896
+	Civ11: c1
+		Location: 50,63
+		SubCell: 4
+		Owner: Turkey
+		Facing: 128
+	Civ12: c1
+		Location: 53,60
+		SubCell: 2
+		Owner: Turkey
+		Facing: 256
+	Civ13: c3
+		Location: 49,56
+		SubCell: 5
+		Owner: Turkey
+		Facing: 640
+	Civ14: c8
+		Location: 49,53
+		SubCell: 1
+		Owner: Turkey
+		Facing: 128
+	Civ15: c2
+		Location: 45,52
+		SubCell: 1
+		Owner: Turkey
+		Facing: 128
+	CivBuild2: v02
+		Location: 67,56
+		Faction: allies
+		Owner: Turkey
+	CivBuild3: v01
+		Location: 64,53
+		Faction: allies
+		Owner: Turkey
+	CivBuild4: v03
+		Location: 61,58
+		Faction: allies
+		Owner: Turkey
+	CivBuild5: v08
+		Location: 64,65
+		Faction: allies
+		Owner: Turkey
+	CivBuild6: v05
+		Location: 60,62
+		Faction: allies
+		Owner: Turkey
+	CivBuild7: v07
+		Location: 57,66
+		Faction: allies
+		Owner: Turkey
+	CivBuild8: v09
+		Location: 56,62
+		Faction: allies
+		Owner: Turkey
+	CivBuild9: v11
+		Location: 51,65
+		Faction: allies
+		Owner: Turkey
+	CivBuild10: v04
+		Location: 52,57
+		Faction: allies
+		Owner: Turkey
+	CivBuild11: v03
+		Location: 43,55
+		Faction: allies
+		Owner: Turkey
+	CivBuild12: v10
+		Location: 47,52
+		Faction: allies
+		Owner: Turkey
+	CivBuild13: v04
+		Location: 34,43
+		Owner: Turkey
+	GuardianTank: 3tnk
+		Location: 38,45
+		Owner: USSR
+		Facing: 640
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
