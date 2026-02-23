@@ -424,6 +424,39 @@ namespace OpenRA.Mods.Common.Widgets
 					fixed (byte* colorBytes = &radarData[0])
 					{
 						var colors = (uint*)colorBytes;
+						var overlayColor = Color.FromArgb(64, Color.Black).ToArgb();
+
+						foreach (var cs in world.ActorsWithTrait<CreatesShroud>())
+						{
+							if (!cs.Actor.IsInWorld)
+								continue;
+
+							if (currentPlayer != null && !cs.Actor.Owner.IsAlliedWith(currentPlayer))
+								continue;
+
+							var range = cs.Trait.Range;
+							if (range <= WDist.Zero)
+								continue;
+
+							foreach (var puv in Shroud.ProjectedCellsInRange(world.Map, cs.Actor.CenterPosition, WDist.Zero, range))
+							{
+								foreach (var uv in world.Map.Unproject(puv))
+								{
+									if (isRectangularIsometric)
+									{
+										// Odd rows are shifted right by 1px
+										var dx = uv.V & 1;
+										if (uv.U + dx > 0)
+											colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = overlayColor;
+
+										if (2 * uv.U + dx < stride)
+											colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = overlayColor;
+									}
+									else
+										colors[(uv.V + previewHeight) * stride + uv.U] = overlayColor;
+								}
+							}
+						}
 
 						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 						{
