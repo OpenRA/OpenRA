@@ -230,7 +230,6 @@ Actors:
 	Actor56: sbag
 		Location: 33,57
 		Owner: Greece
-		Health: 100
 	Actor57: sbag
 		Location: 34,57
 		Owner: Greece
@@ -847,54 +846,54 @@ Actors:
 	Actor262: arty
 		Location: 79,68
 		Owner: Greece
-		Facing: 63
+		Facing: 128
 	Actor263: arty
 		Location: 79,76
 		Owner: Greece
-		Facing: 63
+		Facing: 256
 	Ltnk1: 1tnk
 		Location: 87,90
 		Owner: Greece
-		Facing: 31
+		Facing: 128
 	Ltnk2: 1tnk
 		Location: 87,91
 		Owner: Greece
-		Facing: 31
+		Facing: 128
 	Ltnk3: 1tnk
 		Location: 87,92
 		Owner: Greece
-		Facing: 31
+		Facing: 128
 	Jeep3: jeep
 		Location: 88,92
 		Owner: Greece
-		Facing: 31
+		Facing: 128
 	Jeep2: jeep
 		Location: 88,91
 		Owner: Greece
-		Facing: 31
+		Facing: 128
 	Jeep1: jeep
 		Location: 88,90
 		Owner: Greece
-		Facing: 31
-	Actor270: e1
+		Facing: 128
+	NorthGateGuard1: e1
 		Location: 38,45
 		Owner: Greece
-		Health: 89
-		Facing: 191
 		SubCell: 1
+		Health: 89
+		Facing: 768
 	Actor271: e1
 		Location: 87,84
 		Owner: Greece
-		SubCell: 4
+		SubCell: 5
 	Actor272: e1
 		Location: 81,84
 		Owner: Greece
-		SubCell: 3
-	Actor273: e1
+		SubCell: 4
+	NorthGateGuard2: e1
 		Location: 38,49
 		Owner: Greece
-		Facing: 191
 		SubCell: 1
+		Facing: 768
 	LZ: waypoint
 		Location: 51,72
 		Owner: Neutral
