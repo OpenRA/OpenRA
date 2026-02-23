@@ -42,198 +42,198 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		Color: E2E6F6
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Enemies: USSR
 
 Actors:
 	Actor245: sbag
-		Owner: Neutral
+		Owner: USSR
 		Location: 69,83
 	Actor0: sbag
 		Location: 69,80
-		Owner: Neutral
+		Owner: USSR
 	Actor1: sbag
 		Location: 70,80
-		Owner: Neutral
+		Owner: USSR
 	Actor2: sbag
 		Location: 71,80
-		Owner: Neutral
+		Owner: USSR
 	Actor3: sbag
 		Location: 72,80
-		Owner: Neutral
+		Owner: USSR
 	Actor4: sbag
 		Location: 73,80
-		Owner: Neutral
+		Owner: USSR
 	Actor5: sbag
 		Location: 74,80
-		Owner: Neutral
+		Owner: USSR
 	Actor6: sbag
 		Location: 75,80
-		Owner: Neutral
+		Owner: USSR
 	Actor7: sbag
 		Location: 76,80
-		Owner: Neutral
+		Owner: USSR
 	Actor8: sbag
 		Location: 77,80
-		Owner: Neutral
+		Owner: USSR
 	Actor9: sbag
 		Location: 69,81
-		Owner: Neutral
+		Owner: USSR
 	Actor10: sbag
 		Location: 75,81
-		Owner: Neutral
+		Owner: USSR
 	Actor11: sbag
 		Location: 77,81
-		Owner: Neutral
+		Owner: USSR
 	Actor12: sbag
 		Location: 69,82
-		Owner: Neutral
+		Owner: USSR
 	Actor13: sbag
 		Location: 75,82
-		Owner: Neutral
+		Owner: USSR
 	Actor14: sbag
 		Location: 76,82
-		Owner: Neutral
+		Owner: USSR
 	Actor15: sbag
 		Location: 77,82
-		Owner: Neutral
+		Owner: USSR
 	Actor17: sbag
 		Location: 69,84
-		Owner: Neutral
+		Owner: USSR
 	Actor18: sbag
 		Location: 85,84
-		Owner: Neutral
+		Owner: USSR
 	Actor19: sbag
 		Location: 86,84
-		Owner: Neutral
+		Owner: USSR
 	Actor20: sbag
 		Location: 87,84
-		Owner: Neutral
+		Owner: USSR
 	Actor21: sbag
 		Location: 85,85
-		Owner: Neutral
+		Owner: USSR
 	Actor22: sbag
 		Location: 87,85
-		Owner: Neutral
+		Owner: USSR
 	Actor23: sbag
 		Location: 85,86
-		Owner: Neutral
+		Owner: USSR
 	Actor24: sbag
 		Location: 86,86
-		Owner: Neutral
+		Owner: USSR
 	Actor25: sbag
 		Location: 87,86
-		Owner: Neutral
+		Owner: USSR
 	Actor26: sbag
 		Location: 87,87
-		Owner: Neutral
+		Owner: USSR
 	Actor27: sbag
 		Location: 87,88
-		Owner: Neutral
+		Owner: USSR
 	Actor28: sbag
 		Location: 87,89
-		Owner: Neutral
+		Owner: USSR
 	Actor29: sbag
 		Location: 69,90
-		Owner: Neutral
+		Owner: USSR
 	Actor30: sbag
 		Location: 87,90
-		Owner: Neutral
+		Owner: USSR
 	Actor31: sbag
 		Location: 69,91
-		Owner: Neutral
+		Owner: USSR
 	Actor32: sbag
 		Location: 87,91
-		Owner: Neutral
+		Owner: USSR
 	Actor33: sbag
 		Location: 69,92
-		Owner: Neutral
+		Owner: USSR
 	Actor34: sbag
 		Location: 74,92
-		Owner: Neutral
+		Owner: USSR
 	Actor35: sbag
 		Location: 75,92
-		Owner: Neutral
+		Owner: USSR
 	Actor36: sbag
 		Location: 76,92
-		Owner: Neutral
+		Owner: USSR
 	Actor37: sbag
 		Location: 81,92
-		Owner: Neutral
+		Owner: USSR
 	Actor38: sbag
 		Location: 82,92
-		Owner: Neutral
+		Owner: USSR
 	Actor39: sbag
 		Location: 83,92
-		Owner: Neutral
+		Owner: USSR
 	Actor40: sbag
 		Location: 87,92
-		Owner: Neutral
+		Owner: USSR
 	Actor41: sbag
 		Location: 69,93
-		Owner: Neutral
+		Owner: USSR
 	Actor42: sbag
 		Location: 74,93
-		Owner: Neutral
+		Owner: USSR
 	Actor43: sbag
 		Location: 76,93
-		Owner: Neutral
+		Owner: USSR
 	Actor44: sbag
 		Location: 81,93
-		Owner: Neutral
+		Owner: USSR
 	Actor45: sbag
 		Location: 83,93
-		Owner: Neutral
+		Owner: USSR
 	Actor46: sbag
 		Location: 87,93
-		Owner: Neutral
+		Owner: USSR
 	Actor47: sbag
 		Location: 69,94
-		Owner: Neutral
+		Owner: USSR
 	Actor48: sbag
 		Location: 70,94
-		Owner: Neutral
+		Owner: USSR
 	Actor49: sbag
 		Location: 71,94
-		Owner: Neutral
+		Owner: USSR
 	Actor50: sbag
 		Location: 72,94
-		Owner: Neutral
+		Owner: USSR
 	Actor51: sbag
 		Location: 73,94
-		Owner: Neutral
+		Owner: USSR
 	Actor52: sbag
 		Location: 74,94
-		Owner: Neutral
+		Owner: USSR
 	Actor53: sbag
 		Location: 75,94
-		Owner: Neutral
+		Owner: USSR
 	Actor54: sbag
 		Location: 76,94
-		Owner: Neutral
+		Owner: USSR
 	Actor55: sbag
 		Location: 81,94
-		Owner: Neutral
+		Owner: USSR
 	Actor56: sbag
 		Location: 82,94
-		Owner: Neutral
+		Owner: USSR
 	Actor57: sbag
 		Location: 83,94
-		Owner: Neutral
+		Owner: USSR
 	Actor58: sbag
 		Location: 84,94
-		Owner: Neutral
+		Owner: USSR
 	Actor59: sbag
 		Location: 85,94
-		Owner: Neutral
+		Owner: USSR
 	Actor60: sbag
 		Location: 86,94
-		Owner: Neutral
+		Owner: USSR
 	Actor61: sbag
 		Location: 87,94
-		Owner: Neutral
+		Owner: USSR
 	Actor62: tc05
 		Location: 54,109
 		Owner: Neutral
@@ -363,10 +363,10 @@ Actors:
 	Actor104: mine
 		Location: 31,108
 		Owner: Neutral
-	Actor106: ftur
+	EastFlame2: ftur
 		Location: 69,89
 		Owner: USSR
-	Actor107: ftur
+	EastFlame1: ftur
 		Location: 69,85
 		Owner: USSR
 	Actor108: powr
@@ -447,23 +447,24 @@ Actors:
 	Actor148: 3tnk
 		Location: 49,91
 		Owner: USSR
-		Facing: 508
+		Facing: 512
+		Stance: Defend
 	Actor158: harv
 		Location: 78,37
 		Owner: USSR
-		Facing: 892
+		Facing: 896
 	Actor161: v2rl
 		Location: 85,55
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Actor165: e1
 		Location: 75,93
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Actor166: e1
 		Location: 82,93
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Actor167: e1
 		Location: 86,85
 		Owner: USSR
@@ -483,11 +484,11 @@ Actors:
 	Actor171: e2
 		Location: 86,85
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Actor172: e2
 		Location: 76,81
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Actor182: e1
 		Location: 54,105
 		Owner: Greece
@@ -500,12 +501,12 @@ Actors:
 	Actor184: e1
 		Location: 55,105
 		Owner: Greece
-		Facing: 892
-		SubCell: 4
+		Facing: 896
+		SubCell: 5
 	Actor186: ss
 		Location: 67,62
 		Owner: USSR
-		Facing: 508
+		Facing: 512
 	Actor236: mine
 		Owner: Neutral
 		Location: 88,35
@@ -530,11 +531,11 @@ Actors:
 	AttackTank1: 3tnk
 		Location: 71,87
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	AttackTank2: 3tnk
 		Location: 80,84
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	AlliedEntry1: waypoint
 		Location: 49,111
 		Owner: Neutral
@@ -548,10 +549,10 @@ Actors:
 		Location: 60,111
 		Owner: Neutral
 	UnitAStopLocation: waypoint
-		Location: 49,108
+		Location: 47,108
 		Owner: Neutral
 	UnitBStopLocation: waypoint
-		Location: 47,108
+		Location: 49,108
 		Owner: Neutral
 	UnitCStopLocation: waypoint
 		Location: 51,108
@@ -616,7 +617,7 @@ Actors:
 	RadarDome: dome
 		Location: 75,86
 		Owner: USSR
-	Radar2: dome
+	NorthRadarDome: dome
 		Location: 59,44
 		Owner: USSR
 	SovietBarracks: barr
@@ -628,85 +629,79 @@ Actors:
 	BadGuy1: e1
 		Location: 48,95
 		Owner: USSR
-		Facing: 380
-		SubCell: 4
+		SubCell: 5
+		Facing: 384
 	BadGuy2: e1
-		Location: 50,98
-		Owner: USSR
-		Facing: 380
-		SubCell: 1
-	BadGuy3: e1
 		Location: 50,96
 		Owner: USSR
-		Facing: 380
 		SubCell: 1
-	BadGuy4: e1
+		Facing: 384
+	BadGuy3: e1
 		Location: 48,97
 		Owner: USSR
-		Facing: 380
-		SubCell: 4
-	Patrol1Sub: ss
+		SubCell: 5
+		Facing: 384
+	BadGuy4: e1
+		Location: 50,98
+		Owner: USSR
+		SubCell: 1
+		Facing: 384
+	ScoutSub2: ss
 		Location: 96,58
 		Owner: USSR
-		Facing: 508
-	SubPatrol1_1: waypoint
-		Location: 96,58
-		Owner: Neutral
-	SubPatrol1_2: waypoint
+		Facing: 512
+	Harbor: waypoint
 		Location: 86,77
 		Owner: Neutral
-	Patrol2Sub: ss
+	Patrol1Sub: ss
 		Location: 39,70
 		Owner: USSR
-		Facing: 380
-	SubPatrol2_1: waypoint
+		Facing: 384
+	SubPatrol1_1: waypoint
 		Location: 42,63
 		Owner: Neutral
-	SubPatrol2_2: waypoint
+	SubPatrol1_2: waypoint
 		Location: 22,72
 		Owner: Neutral
-	Patrol3Sub: ss
+	Patrol2Sub: ss
 		Location: 22,64
 		Owner: USSR
-		Facing: 764
-	SubPatrol3_1: waypoint
+		Facing: 768
+	SubPatrol2_1: waypoint
 		Location: 41,75
 		Owner: Neutral
-	SubPatrol3_2: waypoint
+	SubPatrol2_2: waypoint
 		Location: 22,64
 		Owner: Neutral
-	Patrol4Sub: ss
+	ScoutSub1: ss
 		Location: 79,51
 		Owner: USSR
-		Facing: 764
-	SubPatrol4_1: waypoint
-		Location: 79,51
-		Owner: Neutral
-	SubPatrol4_2: waypoint
+		Facing: 768
+	WaterUnloadEntry4: waypoint
 		Location: 102,51
 		Owner: Neutral
-	Patrol5Sub: ss
+	Patrol3Sub: ss
 		Owner: USSR
 		Location: 94,75
-		Facing: 500
-	SubPatrol5_1: waypoint
+		Facing: 512
+	SubPatrol3_1: waypoint
 		Location: 94,94
 		Owner: Neutral
-	SubPatrol5_2: waypoint
+	SubPatrol3_2: waypoint
 		Location: 94,75
 		Owner: Neutral
 	Mammoth1: 4tnk
 		Location: 69,43
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Mammoth2: 4tnk
 		Location: 43,40
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Mammoth3: 4tnk
 		Location: 54,37
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	TnkPatrol1: waypoint
 		Location: 69,43
 		Owner: Neutral
@@ -725,58 +720,58 @@ Actors:
 	TnkPatrol6: waypoint
 		Location: 62,37
 		Owner: Neutral
-	DefenseFlame1: ftur
+	StartFlame1: ftur
 		Location: 51,91
 		Owner: USSR
-	DefenseFlame2: ftur
+	StartFlame2: ftur
 		Location: 47,91
 		Owner: USSR
-	DefBrl1: brl3
+	StartBarrel1: brl3
 		Location: 51,90
 		Owner: USSR
-	DefBrl2: brl3
+	StartBarrel2: brl3
 		Location: 46,89
 		Owner: USSR
 	Patrol_1_e1: e1
 		Location: 40,44
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Patrol_1_dog: dog
 		Location: 40,43
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Patrol_2_e1: e1
 		Location: 41,37
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 1
 	Patrol_2_dog: dog
 		Location: 41,37
 		Owner: USSR
-		Facing: 252
-		SubCell: 3
+		Facing: 256
+		SubCell: 4
 	Patrol_3_e1: e1
 		Location: 84,43
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 2
 	Patrol_3_dog: dog
 		Location: 86,43
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 		SubCell: 0
 	Patrol_4_e1: e1
 		Location: 67,51
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 		SubCell: 1
 	Patrol_4_dog: dog
 		Location: 66,50
 		Owner: USSR
-		Facing: 380
-		SubCell: 3
+		Facing: 384
+		SubCell: 4
 	Patrol1: waypoint
 		Location: 85,43
 		Owner: Neutral
@@ -804,34 +799,34 @@ Actors:
 	tank1: 3tnk
 		Location: 81,56
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	tank2: 3tnk
 		Location: 77,54
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	tank3: 3tnk
 		Location: 64,43
 		Owner: USSR
-		Facing: 636
+		Facing: 640
 	tank4: 3tnk
 		Location: 45,43
 		Owner: USSR
-		Facing: 508
+		Facing: 512
 	tank5: 3tnk
 		Location: 51,56
 		Owner: USSR
 	tank6: v2rl
 		Location: 46,41
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	tank7: v2rl
 		Location: 62,42
 		Owner: USSR
-		Facing: 636
+		Facing: 640
 	BeachDog: dog
 		Location: 75,54
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 		SubCell: 1
 	BeachPatrol1: waypoint
 		Owner: Neutral
@@ -842,6 +837,51 @@ Actors:
 	BeachPatrol3: waypoint
 		Location: 77,58
 		Owner: Neutral
+	Actor246: fenc
+		Location: 66,34
+		Owner: USSR
+	Actor247: fenc
+		Location: 73,34
+		Owner: USSR
+	Actor248: fenc
+		Location: 66,35
+		Owner: USSR
+	Actor249: fenc
+		Location: 73,35
+		Owner: USSR
+	Actor250: fenc
+		Location: 66,36
+		Owner: USSR
+	Actor251: fenc
+		Location: 67,36
+		Owner: USSR
+	Actor252: fenc
+		Location: 73,36
+		Owner: USSR
+	Actor253: fenc
+		Location: 72,37
+		Owner: USSR
+	Actor254: fenc
+		Location: 73,37
+		Owner: USSR
+	Actor255: fenc
+		Location: 70,49
+		Owner: USSR
+	Actor256: fenc
+		Location: 71,49
+		Owner: USSR
+	Actor257: fenc
+		Location: 72,49
+		Owner: USSR
+	Actor258: fenc
+		Location: 73,50
+		Owner: USSR
+	Actor259: fenc
+		Location: 73,51
+		Owner: USSR
+	Actor260: fenc
+		Location: 73,52
+		Owner: USSR
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
