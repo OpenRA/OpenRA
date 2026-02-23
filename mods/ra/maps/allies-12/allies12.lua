@@ -11,6 +11,10 @@ STeksToCapture = { USSRStek, BadGuyStek }
 STeksCaptured = 0
 STekLost = false
 
+InitialUnitsArrived = false
+TimerColor = HSLColor.OrangeRed
+TimerTicks = -1
+
 LstReinforcements =
 {
 	actors =  { { "mcv", "e1", "e1", "e3", "e3" }, { "jeep", "2tnk", "2tnk", "spy" }, { "arty", "1tnk", "1tnk" } },
@@ -26,7 +30,7 @@ IntroSequence = function()
 
     Trigger.AfterDelay(DateTime.Seconds(1), function()
         for i = 1, 3, 1 do
-            Trigger.AfterDelay(DateTime.Seconds(i*2), function()
+            Trigger.AfterDelay(DateTime.Seconds(i * 2), function()
                 Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", LstReinforcements.actors[i], LstReinforcements.entryPath[i], LstReinforcements.exitPath[i])
             end)
         end
@@ -207,5 +211,5 @@ WorldLoaded = function()
         SetupAIActivities()
     end)
 
-    TimerColor = Player.GetPlayer("USSR").Color
+    TimerColor = USSR.Color
 end

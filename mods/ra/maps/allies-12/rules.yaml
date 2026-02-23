@@ -32,7 +32,7 @@ LST.Reinforcement:
 
 powerproxy.paratroopers:
 	ParatroopersPower:
-		DropItems: E1,E1,E1,E2,E2
+		DropItems: E1,E2,E2,E4,E4
 
 CA.blind:
 	Inherits: CA
@@ -55,6 +55,7 @@ CA.blind:
 V01:
 	SpawnActorOnDeath:
 		Actor: moneycrate
+		Offset: 0,1
 
 E7:
 	Buildable:
@@ -82,11 +83,13 @@ SILO:
 		Types: ThiefInfiltrate
 
 STEK:
-	-Sellable:
-
-powerproxy.paratroopers:
-	ParatroopersPower:
-		DropItems: E1,E2,E2,E4,E4
+	Buildable:
+		Prerequisites: ~disabled
+	GrantConditionOnBotOwner@NOSELL:
+		Condition: soviet-owned
+		Bots: campaign
+	Sellable:
+		RequiresCondition: soviet-owned && !being-demolished && !being-captured
 
 FTRK:
 	Buildable:
