@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -47,6 +48,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string Display = "label-video-display-index";
 
 		[FluentReference]
+		const string SelectPreset = "dropdownbutton-resolution-select-preset";
+
+		[FluentReference]
 		const string Standard = "options-status-bars.standard";
 
 		[FluentReference]
@@ -67,6 +71,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("fps")]
 		const string FrameLimiter = "checkbox-frame-limiter";
 
+		static readonly FrozenSet<Size> CommonResolutions = new Size[]
+		{
+			new(1024, 720),   // OpenRA minimum
+			new(1024, 768),   // XGA
+			new(1280, 720),   // HD 720p
+			new(1366, 768),   // HD (laptop standard)
+			new(1440, 900),   // WXGA+
+			new(1600, 900),   // HD+
+			new(1920, 1080),  // Full HD
+			new(2560, 1440),  // QHD
+			new(3840, 2160),  // 4K UHD
+		}.ToFrozenSet();
+
 		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
@@ -83,6 +100,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string legacyFullscreen;
 		readonly string fullscreen;
+		readonly string selectPreset;
 
 		[ObjectCreator.UseCtor]
 		public DisplaySettingsLogic(ModData modData, SettingsLogic settingsLogic, string panelID, string label, WorldRenderer worldRenderer)
@@ -96,6 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			legacyFullscreen = FluentProvider.GetMessage(LegacyFullscreen);
 			fullscreen = FluentProvider.GetMessage(Fullscreen);
+			selectPreset = FluentProvider.GetMessage(SelectPreset);
 
 			settingsLogic.RegisterSettingsPanel(panelID, label, InitPanel, ResetPanel);
 
@@ -219,6 +238,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			var origHeightText = windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
+
+			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
+			if (resolutionPresetDropdown != null)
+			{
+				resolutionPresetDropdown.GetText = () =>
+				{
+					if (int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w)
+						&& int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h)
+						&& CommonResolutions.Contains(new Size(w, h)))
+						return $"{w}x{h}";
+
+					return selectPreset;
+				};
+
+				resolutionPresetDropdown.OnMouseDown = _ => ShowResolutionPresetDropdown(resolutionPresetDropdown, windowWidth, windowHeight);
+			}
 
 			var restartDesc = panel.Get("VIDEO_RESTART_REQUIRED_DESC");
 			restartDesc.IsVisible = () => graphicSettings.Mode != originalGraphicSettings.Mode ||
@@ -364,6 +399,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Enumerable.Range(0, Game.Renderer.DisplayCount), SetupItem);
+		}
+
+		static void ShowResolutionPresetDropdown(DropDownButtonWidget dropdown, TextFieldWidget windowWidth, TextFieldWidget windowHeight)
+		{
+			var sortedModes = CommonResolutions
+				.OrderBy(res => res.Width)
+					.ThenBy(res => res.Height)
+				.ToArray();
+
+			ScrollItemWidget SetupItem(Size resolution, ScrollItemWidget itemTemplate)
+			{
+				var currentWidth = int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w) ? w : 0;
+				var currentHeight = int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h) ? h : 0;
+
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => currentWidth == resolution.Width && currentHeight == resolution.Height,
+					() =>
+					{
+						windowWidth.Text = resolution.Width.ToString(NumberFormatInfo.CurrentInfo);
+						windowHeight.Text = resolution.Height.ToString(NumberFormatInfo.CurrentInfo);
+					});
+
+				var label = $"{resolution.Width}x{resolution.Height}";
+				item.Get<LabelWidget>("LABEL").GetText = () => label;
+				return item;
+			}
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 300, sortedModes, SetupItem);
 		}
 
 		static void ShowGLProfileDropdown(DropDownButtonWidget dropdown, GraphicSettings graphicSettings)
