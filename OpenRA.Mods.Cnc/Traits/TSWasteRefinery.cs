@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
@@ -53,12 +54,14 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (count > amountToFull)
 			{
-				contribution = count - amountToFull;
+				contribution = amountToFull;
 			}
 			else
 			{
 				contribution = count;
 			}
+
+			Debug.WriteLine($"veinFullAmount={veinFullAmount}, currentVeins={currentVeins}, amountToFull={amountToFull}, count={count}, contribution={contribution}");
 
 			// TODO: Is INotifyResourceAccepted useful for support powers?
 			/*

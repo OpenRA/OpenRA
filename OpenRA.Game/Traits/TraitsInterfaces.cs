@@ -164,8 +164,6 @@ namespace OpenRA.Traits
 	public interface INotifyEffectiveOwnerChanged { void OnEffectiveOwnerChanged(Actor self, Player oldEffectiveOwner, Player newEffectiveOwner); }
 	public interface INotifyOwnerLost { void OnOwnerLost(Actor self); }
 
-	public interface INotifySupportPowerUsed { void OnSupportPowerUsed(Actor self); }
-
 	[RequireExplicitImplementation]
 	public interface IVoiced
 	{

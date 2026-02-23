@@ -559,7 +559,7 @@ NAMISL:
 		TrailImage: small_smoke_trail
 		TrailInterval: 0
 		TrailSequences: idle
-	NukePower@ChemicalMissile:
+	TSChemicalMissilePower:
 		Prerequisites: nawast
 		PauseOnCondition: empdisable || disabled || !veins-full
 		Cursor: nuke

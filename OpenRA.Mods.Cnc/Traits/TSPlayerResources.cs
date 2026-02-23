@@ -15,9 +15,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.Player | SystemActors.EditorPlayer)]
 	public class TSPlayerResourcesInfo : TraitInfo, ILobbyOptions
@@ -79,6 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public override object Create(ActorInitializer init) { return new TSPlayerResources(init.Self, this); }
+
 	}
 
 	public class TSPlayerResources : ISync
@@ -265,5 +267,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return Cash + Resources;
 		}
+
 	}
 }

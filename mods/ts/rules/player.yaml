@@ -5,6 +5,8 @@
 			Tiberium: 25
 			BlueTiberium: 40
 			Veins: 0
+		# for testing only
+		TriggerChemicalMissileOnVeinsAmount: 10
 
 EditorPlayer:
 	Inherits: ^BasePlayer

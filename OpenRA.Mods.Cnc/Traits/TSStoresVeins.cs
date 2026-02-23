@@ -13,7 +13,7 @@ using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.CnC.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	public class TSStoresVeinsInfo : TraitInfo
 	{
