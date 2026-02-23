@@ -37,7 +37,8 @@ CheckpointRifles = { CheckpointRifle1, CheckpointRifle2 }
 BridgePatrol = { CheckpointDog1, CheckpointDog2, CheckpointRifle1, CheckpointRifle2 }
 BridgePatrolPath = { TrukWaypoint4.Location, BridgePatrolWay.Location }
 
-TanyaVoices = { "tuffguy", "bombit", "laugh", "gotit", "lefty", "keepem" }
+TanyaVoices = { "tuffguy", "bombit", "laugh", "keepem" }
+DeathVoices = { "death1", "death2", "death3" }
 SpyVoice = "sking"
 CivVoice = "guyokay"
 DogBark = "dogy"
@@ -71,7 +72,7 @@ ChurchFootprint = function()
 end
 
 ChurchSequence = function()
-	Media.PlaySoundNotification(Greece, CivVoice)
+	Media.PlaySpeechNotification(Greece, CivVoice)
 	Hero = Actor.Create("c1", true, { Owner = GoodGuy, Location = ChurchSpawn.Location })
 	Hero.Attack(TargetBarrel)
 
@@ -174,7 +175,7 @@ WarfactoryInfiltrated = function()
 	Trigger.OnEnteredProximityTrigger(TrukWaypoint4.CenterPosition, WDist.FromCells(1), function(actor, id)
 		if actor.Type == "dog" then
 			Trigger.RemoveProximityTrigger(id)
-			Media.PlaySoundNotification(Greece, DogBark)
+			Media.PlaySpeechNotification(Greece, DogBark)
 			Utils.Do(CheckpointRifles, function(guard)
 				guard.Move(TrukInspect.Location)
 			end)
@@ -193,7 +194,7 @@ WarfactoryInfiltrated = function()
 			Spy.DisguiseAsType("e1", USSR)
 			Spy.Move(TruckWaypoint5.Location)
 			Spy.Infiltrate(Prison)
-			Media.PlaySoundNotification(Greece, SpyVoice)
+			Media.PlaySpeechNotification(Greece, SpyVoice)
 
 			FollowTruk = false
 
@@ -218,14 +219,28 @@ WarfactoryInfiltrated = function()
 end
 
 MissInfiltrated = function()
-	for i = 0, 5, 1 do
-		local sound = Utils.Random(TanyaVoices)
-		Trigger.AfterDelay(DateTime.Seconds(i), function()
-			Media.PlaySoundNotification(Greece, sound)
+	local taunts = Utils.Shuffle(TanyaVoices)
+	local deathVoices = Utils.Shuffle(DeathVoices)
+	local deaths =
+	{
+		[2] = deathVoices[1],
+		[4] = deathVoices[2]
+	}
+
+	for i = 1, 4, 1 do
+		local taunt = taunts[i]
+		local death = deaths[i]
+
+		Trigger.AfterDelay(i * 30, function()
+			Media.PlaySpeechNotification(Greece, taunt)
+
+			if death then
+				Media.PlaySpeechNotification(Greece, death)
+			end
 		end)
 	end
-	Prison.Attack(Prison)
 
+	Prison.Attack(Prison)
 	Trigger.AfterDelay(DateTime.Seconds(6), FreeTanya)
 end
 
