@@ -52,7 +52,8 @@ DogPatrolPath = { DogPatrolRally1.Location, SpyCamera2.Location, DogPatrolRally3
 RiflePath = { RiflePath1.Location, RiflePath2.Location, RiflePath3.Location }
 BasePatrolPath = { BasePatrolPath1.Location, BasePatrolPath2.Location, BasePatrolPath3.Location }
 
-TanyaVoices = { "tuffguy", "bombit", "laugh", "gotit", "lefty", "keepem" }
+TanyaVoices = { "tuffguy", "bombit", "laugh", "keepem" }
+DeathVoices = { "death1", "death2", "death3" }
 SpyVoice = "sking"
 
 SamSites = { Sam1, Sam2, Sam3, Sam4, Sam5, Sam6 }
@@ -165,14 +166,28 @@ WarfactoryInfiltrated = function()
 end
 
 MissInfiltrated = function()
-	for i = 0, 5, 1 do
-		local sound = Utils.Random(TanyaVoices)
-		Trigger.AfterDelay(DateTime.Seconds(i), function()
-			Media.PlaySoundNotification(Greece, sound)
+	local taunts = Utils.Shuffle(TanyaVoices)
+	local deathVoices = Utils.Shuffle(DeathVoices)
+	local deaths =
+	{
+		[2] = deathVoices[1],
+		[4] = deathVoices[2]
+	}
+
+	for i = 1, 4, 1 do
+		local taunt = taunts[i]
+		local death = deaths[i]
+
+		Trigger.AfterDelay(i * 30, function()
+			Media.PlaySpeechNotification(Greece, taunt)
+
+			if death then
+				Media.PlaySpeechNotification(Greece, death)
+			end
 		end)
 	end
-	Prison.Attack(Prison)
 
+	Prison.Attack(Prison)
 	Trigger.AfterDelay(DateTime.Seconds(6), FreeTanya)
 end
 
@@ -267,7 +282,7 @@ InitTriggers = function()
 			Spy.DisguiseAsType("e1", USSR)
 			Spy.Move(SpyWaypoint.Location)
 			Spy.Infiltrate(Prison)
-			Media.PlaySoundNotification(Greece, SpyVoice)
+			Media.PlaySpeechNotification(Greece, SpyVoice)
 
 			FollowTruk = false
 

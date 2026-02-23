@@ -1,9 +1,10 @@
-Sounds:
+Speech:
 	Notifications:
 		bombit: bombit1
 		laugh: laugh1
-		gotit: gotit1
-		lefty: lefty1
 		keepem: keepem1
 		tuffguy: tuffguy1
+		death1: dedman5
+		death2: dedman6
+		death3: dedman10
 		sking: sking1
