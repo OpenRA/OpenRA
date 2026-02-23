@@ -721,6 +721,7 @@ Player:
 			4tnk: 25
 			ttnk: 25
 			stnk: 5
+			ctnk: 3
 			dtrk: 1
 			qtnk: 1
 		UnitLimits:
@@ -776,6 +777,7 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
+			ctnk: 3
 			dtrk: 1
 			qtnk: 1
 		UnitLimits:
@@ -834,6 +836,7 @@ Player:
 			ca: 10
 			pt: 10
 			mnly: 2
+			ctnk: 3
 			dtrk: 1
 			qtnk: 1
 		UnitLimits:
@@ -881,6 +884,7 @@ Player:
 			dd: 30
 			ca: 20
 			pt: 10
+			ctnk: 3
 		UnitLimits:
 			harv: 4
 			ftrk: 3

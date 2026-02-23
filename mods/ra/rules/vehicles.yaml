@@ -842,6 +842,15 @@ CTNK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI:
+		OrderName: PortableChronoTeleport
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 265
+		TargetRangeInCell: 12
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally, Neutral
+		TargetDistance: Furthest
 
 QTNK:
 	Inherits: ^TrackedVehicle
