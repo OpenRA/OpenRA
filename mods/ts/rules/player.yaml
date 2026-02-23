@@ -1,6 +1,6 @@
 ^BasePlayer:
 	Shroud:
-	PlayerResources:
+	TSPlayerResources:
 		ResourceValues:
 			Tiberium: 25
 			BlueTiberium: 40
