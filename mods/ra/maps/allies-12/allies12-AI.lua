@@ -44,7 +44,7 @@ SetDifficulty = function()
 
         InfantryAttackGroupSize = 7
         VehicleAttackGroupSize = 5  -- starts in n and it increases to n + 2
-        VehicleAttackInterval = DateTime.Minutes(2.5)
+        VehicleAttackInterval = DateTime.Seconds(135)
         IronTanks = {"4tnk"}
 
         ProductionIntervalAir = DateTime.Seconds(10)
@@ -66,7 +66,7 @@ SetDifficulty = function()
 
         InfantryAttackGroupSize = 10
         VehicleAttackGroupSize = 6  -- starts in n and it increases to n + 2
-        VehicleAttackInterval = DateTime.Minutes(2.25)
+        VehicleAttackInterval = DateTime.Seconds(135)
         IronTanks = {"4tnk", "4tnk"}
 
         ProductionIntervalAir = DateTime.Seconds(5)
@@ -103,7 +103,7 @@ BadGuyAttackPaths =
 InfantryTypes = {"e1", "e2", "e4"}
 -- InfantryAttackGroupSize is defined in difficulty setup
 InfantryBadGuyAttackGroup = { }
-InfantryBadguyAttackInterval = DateTime.Minutes(1.5)
+InfantryBadguyAttackInterval = DateTime.Seconds(90)
 InfantryUSSRAttackGroup = { }
 InfantryUSSRAttackInterval = DateTime.Minutes(2)
 
@@ -217,8 +217,6 @@ BadGuyRebuildableDogs = { BadGuyGuardDog1Data, BadGuyGuardDog2Data, BadGuyGuardD
 
 IronTankPath = {USSRMidAtkPath1.Location, USSRMidAtkPath2.Location, USSRMidAtkPath3.Location, USSRMidAtkPath4.Location}
 ironSwitch = 0
-
-NukeStage = -1
 
 --------------------------------------------------------------------
 -----------------	    DATA BLOCK - END	------------------------
@@ -526,7 +524,7 @@ PlanesAttack = function()
     local planeType = Utils.Random({SovietAircraftType})
 
     for p = 1, #planeType do
-        Trigger.AfterDelay(DateTime.Seconds(0.25*p), function()
+        Trigger.AfterDelay(6 * p , function()
             local a = Actor.Create(planeType[p], true, { Owner = USSR, Location = entry })
             InitializeAttackAircraft(a, Greece)
         end)
@@ -566,8 +564,8 @@ HarassingParadrop = function()
         for i = 1, badgerCounterAtk do
             local rngAngle = Angle.New(Utils.Random({-1, 0, 1}) * 40) --WAngle New
             local rngPos = WVec.New(1024 * ( (-10) + i * 6), 1024 * (7), 0)
-            Trigger.AfterDelay(DateTime.Seconds(0.25*i), function()
-                SendParadrop( (BadgerEntry.CenterPosition + rngPos), rngAngle) 
+            Trigger.AfterDelay(DateTime.Seconds(6 * i), function()
+                SendParadrop( (BadgerEntry.CenterPosition + rngPos), rngAngle)
             end)
         end
         Trigger.AfterDelay(ParadropIntervals, HarassingParadrop)
@@ -711,7 +709,7 @@ PrepareNuclearLaunch = function()
     if not USSRMslo.IsDead then
         DateTime.TimeLimit = TimerTicks
 		Media.PlaySpeechNotification(Greece, "TimerStarted")
-        Media.DisplayMessage(UserInterface.GetFluentMessage("nuke-ready-in"))
+        Media.DisplayMessage(UserInterface.GetFluentMessage("nuke-ready-in", { ["time"] = Utils.FormatTime(TimerTicks) }))
         --PauseNuclearLaunchTimer()
     else
         return
