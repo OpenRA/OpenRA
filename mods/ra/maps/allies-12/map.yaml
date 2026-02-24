@@ -752,21 +752,6 @@ Actors:
 		Location: 28,46
 		Owner: USSR
 		SubCell: 5
-	Actor297: e2
-		Location: 31,48
-		Owner: USSR
-		Facing: 896
-		SubCell: 5
-	Actor298: e2
-		Location: 30,48
-		Owner: USSR
-		Facing: 768
-		SubCell: 2
-	Actor299: e2
-		Location: 35,47
-		Owner: USSR
-		Facing: 384
-		SubCell: 4
 	Actor300: e4
 		Location: 38,38
 		Owner: USSR
@@ -774,17 +759,13 @@ Actors:
 	Actor301: e4
 		Location: 29,42
 		Owner: USSR
-		Facing: 128
 		SubCell: 1
+		Facing: 128
 	Actor302: e1
 		Location: 32,43
 		Owner: USSR
-		Facing: 256
 		SubCell: 4
-	Actor303: e2
-		Location: 32,45
-		Owner: USSR
-		Facing: 896
+		Facing: 256
 	Actor304: e4
 		Location: 102,47
 		Owner: BadGuy
@@ -1214,12 +1195,6 @@ Actors:
 	USSRLeftAtkPath2: waypoint
 		Location: 32,42
 		Owner: Neutral
-	USSRLeftAtkPath3: waypoint
-		Location: 33,47
-		Owner: Neutral
-	USSRLeftAtkPath4: waypoint
-		Location: 32,62
-		Owner: Neutral
 	USSRMidAtkPath1: waypoint
 		Location: 53,41
 		Owner: Neutral
@@ -1429,16 +1404,6 @@ Actors:
 		Location: 63,57
 		Owner: Turkey
 		Facing: 640
-	Civ7: c5
-		Location: 66,56
-		SubCell: 2
-		Owner: Turkey
-		Facing: 896
-	Civ6: c3
-		Location: 58,64
-		SubCell: 2
-		Owner: Turkey
-		Facing: 256
 	Civ8: c6
 		Location: 57,62
 		SubCell: 2
@@ -1530,6 +1495,38 @@ Actors:
 		Location: 38,45
 		Owner: USSR
 		Facing: 640
+	GuardianInf1: e2
+		Location: 30,48
+		Owner: USSR
+		SubCell: 2
+		Facing: 768
+	GuardianInf2: e2
+		Location: 31,48
+		Owner: USSR
+		SubCell: 5
+		Facing: 896
+	Civ6: c5
+		Location: 66,56
+		SubCell: 2
+		Owner: Turkey
+		Facing: 896
+	Civ7: c3
+		Location: 58,64
+		SubCell: 2
+		Owner: Turkey
+		Facing: 256
+	USSRLeftAtkPath3: waypoint
+		Location: 32,62
+		Owner: Neutral
+	Actor299: e2
+		Location: 35,47
+		Owner: USSR
+		SubCell: 4
+		Facing: 384
+	Actor303: e2
+		Location: 32,45
+		Owner: USSR
+		Facing: 896
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
