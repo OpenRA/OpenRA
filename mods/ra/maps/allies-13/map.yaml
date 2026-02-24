@@ -26,17 +26,16 @@ Players:
 		Faction: england
 	PlayerReference@USSR:
 		Name: USSR
-		Bot: campaign
 		Faction: soviet
 		Color: FF1400
-		Allies: BadGuy, Turkey
-		Enemies: Greece, England
-	PlayerReference@BadGuy:
-		Name: BadGuy
+		Allies: BadGuy
+		Enemies: Turkey, Greece
+	PlayerReference@Turkey:
+		Name: Turkey
 		Faction: allies
 		Color: D2997D
-		Allies: USSR, Turkey
-		Enemies: Greece, England
+		Allies: Greece
+		Enemies: USSR, BadGuy
 	PlayerReference@Greece:
 		Name: Greece
 		AllowBots: False
@@ -49,13 +48,11 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: USSR, BadGuy
-		Allies: England
-	PlayerReference@Turkey:
-		Name: Turkey
-		Bot: campaign
+	PlayerReference@BadGuy:
+		Name: BadGuy
 		Faction: soviet
-		Color: D2997D
-		Allies: USSR, BadGuy
+		Color: FF1400
+		Allies: USSR
 	PlayerReference@England:
 		Name: England
 		Faction: allies
@@ -1212,6 +1209,6 @@ Actors:
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
-FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl, map.ftl
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl
 
 Weapons: weapons.yaml
