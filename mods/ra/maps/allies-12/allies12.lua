@@ -22,6 +22,27 @@ LstReinforcements =
 	exitPath = { { LstMiddleEntry.Location },{ LstLeftEntry.Location },  { LstRightEntry.Location } }
 }
 
+BadGuyPowerLine = { BadGuyPower1, BadGuyPower2, BadGuyPower3, BadGuyPower4, BadGuyPower5, BadGuyPower6 }
+
+Villagers =
+{
+    { Civ1, Civ2, Civ3, Civ4, Civ5, Civ6 }, --right side
+    { Civ7, Civ8, Civ9, Civ10, Civ11, Civ12 }, -- mid
+    { Civ13, Civ14, Civ15 } -- left side
+}
+
+VillageHouses = --This may be removed
+{
+    { CivBuild1, CivBuild2, CivBuild3, CivBuild4, CivBuild5, CivBuild6 }, --right side
+    { CivBuild7, CivBuild8, CivBuild9, CivBuild10 }, -- mid
+    { CivBuild11, CivBuild12, CivBuild13 } -- left side
+} 
+
+AggressiveVillagers = { Civ1, Civ3, Civ4, Civ11, Civ12 }
+
+VillagerAlert = 0
+VillageGuardTypes = { "e2", "e2", "e2", "e4", "e4" }
+
 IntroSequence = function()
     local startingCam =  Actor.Create("Camera", true, { Owner = Greece, Location = LstMiddleDst.Location } )
 
@@ -66,6 +87,7 @@ HostileVillager = function(spawnLoc, targetLoc)
         if a.Type == "c1" and not activeFlare  then
             Trigger.RemoveProximityTrigger(id)
             Actor.Create("Flare", true, { Owner = USSR, Location = targetLoc.Location + CVec.New(0, -1) } )
+            SendAlertedParatroopers()
             activeFlare = true
         elseif activeFlare then
             Trigger.RemoveProximityTrigger(id)
@@ -76,6 +98,54 @@ HostileVillager = function(spawnLoc, targetLoc)
         USSR.GetActorsByType("flare")[1].Destroy()
     end)
 end
+
+SendAlertedParatroopers = function()
+    local angles = { Angle.New( -60 ), Angle.New( 60 ) }
+
+    Utils.Do(angles, function(angle)
+        SendParadrop(PlayerBaseTarget.CenterPosition, Angle.South, angle)
+    end)
+end
+
+ProtectedVillage = function()
+    Utils.Do(Villagers, function(a)
+        Trigger.OnDamaged(a, function(actor, attacker)
+            if attacker.Owner == Greece and not VillagerAlert then
+                VillagerAlert = true
+                VillagerCallsForHelp()
+            end
+        end)
+    end)
+end
+
+VillagerCallsForHelp = function()
+    local alertingCiv = Utils.Random( {Civ1, Civ2, Civ4, Civ6} )
+    local alert = USSRLeftAtkPath3
+
+    Utils.Do(Villagers, function(actors)
+        Utils.Do(actors, function()
+
+        end)
+    end)
+    Trigger.OnDamaged( function()
+
+    end)
+
+    alertingCiv.Move(rescue.Location)
+end
+
+SpawnVillageGuards = function()
+    if not CivBuild13.IsDead then
+        local guards = Reinforcements.Reinforce(USSR, VillageGuardTypes, { CivBuilding2.Location, CivBuilding2.Location + CVec.New(-1, -2) })
+    end
+
+end
+
+--[[
+VillageGuards = function()
+    
+end
+]]
 
 FinishTimer = function()
    	DateTime.TimeLimit = 0
@@ -108,13 +178,13 @@ InitTriggers = function()
 
     IntroSequence()
 
-    Trigger.AfterDelay(DateTime.Seconds(20), function()
-        HostileVillager(CivBuilding1, PlayerBaseTarget)
+    Trigger.AfterDelay(DateTime.Minutes(2), function()
+        if not CivBuild1.IsDead then
+            HostileVillager(CivBuilding1, PlayerBaseTarget)
+        end
     end)
 
     Trigger.OnCapture(BadGuyStek, function()
-        --Move to when right stek is captured
-        PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
         Trigger.AfterDelay(DateTime.Seconds(5), function()
             HarassingParadrop()
         end)
@@ -122,7 +192,6 @@ InitTriggers = function()
 
     TimerTicks = nuclearCountdown
 
-    Trigger.AfterDelay(DateTime.Seconds(5), PrepareNuclearLaunch)
 end
 
 PrepareObjectives = function()
@@ -136,7 +205,7 @@ PrepareObjectives = function()
     Utils.Do(STeksToCapture, function(b)
         Trigger.OnCapture(b, function()
             STeksCaptured = STeksCaptured + 1
-            if STeksCaptured == 2 then
+            if STeksCaptured == 1 then
                 Media.PlaySpeechNotification(Greece, "FirstObjectiveMet")
             else
                 Media.PlaySpeechNotification(Greece, "SecondObjectiveMet")
@@ -156,14 +225,12 @@ PrepareObjectives = function()
             if b.Owner == USSR or b.Owner == BadGuy then
                 Greece.MarkFailedObjective(CaptureTech)
                 Greece.MarkFailedObjective(ProtectTech)
-                --Media.DisplayMessage("Soviet Tech Center destroyed.")
             end
         end)
     end)
 
     Trigger.OnKilled(USSRIron, function()
         Greece.MarkCompletedObjective(DestroyIron)
-        --Media.DisplayMessage("Iron Curtain destroyed.")
     end)
 
     Trigger.OnPlayerWon(Greece, function()
@@ -181,7 +248,10 @@ Tick = function()
 
     if STeksCaptured == 2 then
         STeksCaptured = -1
-        Greece.MarkCompletedObjective(CaptureTech)
+        --Small wait to allow speech notification (ObjectiveMet)
+        Trigger.AfterDelay(DateTime.Seconds(1), function() 
+            Greece.MarkCompletedObjective(CaptureTech)
+        end)
     end
 
     if InitialUnitsArrived then
@@ -204,12 +274,12 @@ WorldLoaded = function()
     InitTriggers()
     PrepareObjectives() --Replaces "InitObjectives()"
     
-    --Debug function. Remove later
-    ToBeRemoved()
+    ToBeRemoved() --Debug function. Remove later
 
     Trigger.AfterDelay(DateTime.Seconds(30), function()
         SetupAIActivities()
     end)
 
+    PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
     TimerColor = USSR.Color
 end
