@@ -17,6 +17,7 @@ import platform
 import random
 import shutil
 import sys
+import time
 from typing import Dict, Any, List, Tuple, Optional, Set
 
 import mgrs  # type: ignore
@@ -31,6 +32,14 @@ except ImportError:
 
 # Maximum supported map size (cells per side). 16384x16384 = ~800MB tile data.
 MAX_CELLS = 16384
+
+_t0 = time.monotonic()
+
+
+def _status(msg: str) -> None:
+    """Print a timestamped progress message to stderr."""
+    elapsed = time.monotonic() - _t0
+    print(f"  [{elapsed:6.1f}s] {msg}", file=sys.stderr, flush=True)
 
 
 def parse_args() -> argparse.Namespace:
@@ -50,7 +59,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--install-release", default=None, help="OpenRA release tag (e.g., 20250330). If set, install to maps/ra/release-<tag>")
     p.add_argument("--install-path", default=None, help="Explicit directory to copy the .oramap into (overrides automatic path)")
     p.add_argument("--title", default=None, help="Title to embed in map.yaml (default: RealWorld <MGRS>)")
-    p.add_argument("--author", default="OpenRA_WoW", help="Author for map.yaml")
+    p.add_argument("--author", default="BK_MainMan", help="Author for map.yaml")
     p.add_argument("--categories", default="RealWorld", help="Comma-separated Categories for map.yaml")
     p.add_argument("--players", type=int, default=8, help="Number of playable Multi players to add (0-8, default: 8)")
     p.add_argument("--place-spawns", action="store_true", help="Place mpspawn actors for each player")
@@ -275,8 +284,8 @@ def build_players_block(num_players: int) -> str:
         lines.append(f"\tPlayerReference@Multi{p}:")
         lines.append(f"\t\tName: Multi{p}")
         lines.append("\t\tPlayable: True")
-        lines.append("\t\tAllowBots: False")
-        lines.append("\t\tLockFaction: True")
+        lines.append("\t\tAllowBots: True")
+        lines.append("\t\tLockFaction: False")
         lines.append("\t\tFaction: soviet")
     return "\n".join(lines)
 
@@ -531,23 +540,36 @@ def _point_in_poly(px: float, py: float, poly: List[Tuple[float, float]]) -> boo
 
 
 def _fill_polygon(grid: List[List[int]], poly: List[Tuple[float, float]], value: int) -> int:
-    """Fill a polygon on the grid. Returns number of cells set."""
-    if not poly:
+    """Fill a polygon on the grid using scanline algorithm. Returns number of cells set."""
+    if not poly or len(poly) < 3:
         return 0
     w = len(grid)
     h = len(grid[0]) if w else 0
-    xs = [p[0] for p in poly]
+    if w == 0 or h == 0:
+        return 0
     ys = [p[1] for p in poly]
-    xmin = max(0, int(min(xs)) - 1)
-    xmax = min(w - 1, int(max(xs)) + 1)
-    ymin = max(0, int(min(ys)) - 1)
+    ymin = max(0, int(min(ys)))
     ymax = min(h - 1, int(max(ys)) + 1)
+    n = len(poly)
     set_count = 0
-    for i in range(xmin, xmax + 1):
-        for j in range(ymin, ymax + 1):
-            cx = i + 0.5
-            cy = j + 0.5
-            if _point_in_poly(cx, cy, poly):
+    for j in range(ymin, ymax + 1):
+        cy = j + 0.5
+        # Find all x-intersections of polygon edges with this scanline (even-odd rule)
+        node_x: List[float] = []
+        k = n - 1
+        for idx in range(n):
+            yi = poly[idx][1]
+            yk = poly[k][1]
+            if (yi > cy) != (yk > cy):
+                ix = poly[idx][0] + (cy - yi) / (yk - yi) * (poly[k][0] - poly[idx][0])
+                node_x.append(ix)
+            k = idx
+        node_x.sort()
+        # Fill between pairs of intersections
+        for p in range(0, len(node_x) - 1, 2):
+            i_start = max(0, math.ceil(node_x[p] - 0.5))
+            i_end = min(w - 1, int(math.floor(node_x[p + 1] - 0.5)))
+            for i in range(i_start, i_end + 1):
                 if grid[i][j] != value:
                     grid[i][j] = value
                     set_count += 1
@@ -649,10 +671,11 @@ def _simplify_polygon(poly: List[Tuple[float, float]], epsilon: float = 1.0) -> 
 
 
 def _close_chain_via_bbox(chain: List[Tuple[float, float]], width: int, height: int) -> List[Tuple[float, float]]:
-    """Close an open coastline chain by walking clockwise along the bounding box edges.
+    """Close an open coastline chain by walking along the bounding box edges.
 
-    Standard GIS technique: when a coastline exits the map bbox, connect the
-    endpoints by following the bbox boundary clockwise to form a closed land polygon.
+    Tries both clockwise and counterclockwise closure around the bbox and
+    picks the one that produces the smaller polygon (= the land polygon,
+    not the ocean polygon).
     """
     if not chain or len(chain) < 2:
         return chain
@@ -671,47 +694,49 @@ def _close_chain_via_bbox(chain: List[Tuple[float, float]], width: int, height: 
         """Map a point on the bbox perimeter to a scalar 0..4 going clockwise from TL."""
         x, y = pt[0], pt[1]
         w, h = float(width), float(height)
-        # Clamp to bbox
         x = max(0.0, min(w, x))
         y = max(0.0, min(h, y))
-        # Top edge (TL->TR): y near 0
         if y <= 1.0:
-            return x / w  # 0..1
-        # Right edge (TR->BR): x near width
+            return x / w
         if x >= w - 1.0:
-            return 1.0 + y / h  # 1..2
-        # Bottom edge (BR->BL): y near height
+            return 1.0 + y / h
         if y >= h - 1.0:
-            return 2.0 + (w - x) / w  # 2..3
-        # Left edge (BL->TL): x near 0
-        return 3.0 + (h - y) / h  # 3..4
+            return 2.0 + (w - x) / w
+        return 3.0 + (h - y) / h
 
-    start = chain[-1]  # Where coastline ends
-    end = chain[0]     # Where coastline begins (we need to connect back)
-
-    pos_start = _edge_position(start)
-    pos_end = _edge_position(end)
-
-    # Walk clockwise from start to end, inserting bbox corners as needed
-    path: List[Tuple[float, float]] = []
+    pos_start = _edge_position(chain[-1])
+    pos_end = _edge_position(chain[0])
     corner_positions = [_edge_position(c) for c in corners]
 
-    # Collect corners between start and end going clockwise
-    if pos_start <= pos_end:
-        # Simple: corners with pos_start < pos < pos_end
+    def _collect_corners_cw(p_from: float, p_to: float) -> List[Tuple[float, float]]:
+        """Collect bbox corners going clockwise from p_from to p_to."""
+        path: List[Tuple[float, float]] = []
         for i, cp in enumerate(corner_positions):
-            if pos_start < cp < pos_end:
-                path.append(corners[i])
-    else:
-        # Wrap around: corners with pos > pos_start OR pos < pos_end
-        for i, cp in enumerate(corner_positions):
-            if cp > pos_start or cp < pos_end:
-                path.append(corners[i])
+            if p_from <= p_to:
+                if p_from < cp < p_to:
+                    path.append(corners[i])
+            else:
+                if cp > p_from or cp < p_to:
+                    path.append(corners[i])
+        path.sort(key=lambda p: (_edge_position(p) - p_from) % 4.0)
+        return path
 
-    # Sort collected corners by their clockwise position relative to start
-    path.sort(key=lambda p: (_edge_position(p) - pos_start) % 4.0)
+    def _poly_abs_area(poly: List[Tuple[float, float]]) -> float:
+        a = 0.0
+        for i in range(len(poly) - 1):
+            a += (poly[i + 1][0] - poly[i][0]) * (poly[i + 1][1] + poly[i][1])
+        return abs(a)
 
-    return list(chain) + path + [chain[0]]
+    # Clockwise closure: walk CW from chain end to chain start
+    cw_corners = _collect_corners_cw(pos_start, pos_end)
+    poly_cw = list(chain) + cw_corners + [chain[0]]
+
+    # Counterclockwise closure: walk CW from chain start to chain end (= CCW from end to start)
+    ccw_corners = _collect_corners_cw(pos_end, pos_start)
+    poly_ccw = list(chain) + list(reversed(ccw_corners)) + [chain[0]]
+
+    # Pick the smaller polygon — the land polygon, not the ocean
+    return poly_cw if _poly_abs_area(poly_cw) <= _poly_abs_area(poly_ccw) else poly_ccw
 
 
 def _assemble_coastline_rings(
@@ -923,10 +948,12 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
         if el.get("type") == "way" and "nodes" in el:
             ways_by_id[int(el["id"])] = el
 
+    _status("Indexing OSM nodes and ways...")
     # --- Coastline inversion: detect coastlines and optionally default grid to WATER ---
     coastline_land_rings: List[List[Tuple[float, float]]] = []
     coastline_land_cells = 0
     if include_coastline and include_water:
+        _status("Assembling coastline rings...")
         coastline_stats: Dict[str, int] = {}
         coastline_land_rings = _assemble_coastline_rings(
             osm_data, nodes_by_id, ways_by_id,
@@ -934,12 +961,16 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
             stats=coastline_stats,
         )
         if coastline_land_rings:
+            _status(f"Coastline found ({len(coastline_land_rings)} land rings) -- defaulting grid to WATER")
             # Coastlines found: init grid as WATER, then carve land
             tiles_type = [[WATER_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
-            for ring in coastline_land_rings:
+            for ri, ring in enumerate(coastline_land_rings):
+                _status(f"  Filling land ring {ri + 1}/{len(coastline_land_rings)} ({len(ring)} vertices)...")
                 coastline_land_cells += _fill_polygon(tiles_type, ring, CLEAR_TEMPLATE_ID)
+            _status(f"  Land carved: {coastline_land_cells} cells")
             coastline_stats["coastline_land_cells"] = coastline_land_cells
         else:
+            _status("No coastlines found (inland area) -- defaulting grid to CLEAR")
             # No coastlines (inland area): default to CLEAR as before
             tiles_type = [[CLEAR_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
     else:
@@ -969,6 +1000,7 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
     if gsw_water_mask is not None:
         stats["gsw_used"] = 1
     if include_water:
+        _status("Rasterizing water areas and waterways...")
         # Width mapping for waterways (meters)
         water_width_by_type: Dict[str, float] = {
             "river": max(waterway_width_m, 12.0),
@@ -1071,6 +1103,7 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
             stats["river_stamps"] = river_stamp_count
             stats["river_samples"] = len(river_samples_set)
 
+    _status("Applying shoreline smoothing...")
     # Simple shoreline pass: mark land cells adjacent to water as Beach tiles.
     # This is an MVP smoothing step. We use Template@6 (sh04.tem) with a Beach variant index.
     if include_water:
@@ -1105,6 +1138,7 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
 
     # Rasterize roads second
     if include_roads:
+        _status("Rasterizing roads...")
         # Width mapping for highway types (meters)
         road_width_by_type: Dict[str, float] = {
             "motorway": max(road_width_m, 16.0),
@@ -1254,6 +1288,7 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
 
     # OSM Buildings -> RA civilian building actors
     if include_buildings:
+        _status("Placing buildings...")
         placed_b = 0
         total_osm_b = 0
         audit_rows: List[str] = []
@@ -1418,6 +1453,7 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
             except Exception as e:
                 print(f"Warning: failed to write building audit CSV: {e}", file=sys.stderr)
     if include_vegetation:
+        _status("Placing vegetation...")
         tree_types = ["t01", "t02", "t03", "t05", "t06", "t07", "t08", "t10", "t11", "t12", "t13"]
         target = int(max_veg_actors)
         base_prob = max(0.0, min(1.0, veg_density))
@@ -1741,7 +1777,6 @@ def build_overpass_query(bbox: Dict[str, float], *, timeout: int = 25) -> str:
         f"way['natural'='water']({s},{w},{n},{e});"
         f"way['landuse'='reservoir']({s},{w},{n},{e});"
         f"way['natural'='coastline']({s},{w},{n},{e});"
-        f"relation['natural'='water']({s},{w},{n},{e});"
         f"way['building']({s},{w},{n},{e});"
         f"relation['building']({s},{w},{n},{e});"
         f"way['natural'='wood']({s},{w},{n},{e});"
@@ -1977,8 +2012,10 @@ def main() -> None:
         if args.overlay_osm or args.overlay_osm_buildings:
             bbox = bbox_from_corners(bounds["corners"])
             try:
+                _status("Fetching OSM data from Overpass API...")
                 osm_data = fetch_osm(bbox, args.overpass_url, None if args.no_osm_cache else args.osm_cache_dir,
                                      timeout=args.overpass_timeout)
+                _status(f"OSM data received ({len(osm_data.get('elements', []))} elements)")
                 # Optional dataset ingestions
                 wc_masks = None
                 gsw_mask = None
@@ -1993,6 +2030,7 @@ def main() -> None:
                         cells=width,
                         min_occurrence=float(args.gsw_min_occurrence),
                     )
+                _status("Processing OSM overlay...")
                 tiles_type, tiles_variant, extra_actor_lines, overlay_stats = overlay_osm_to_tiles(
                     center=center,
                     bounds=bounds,
@@ -2021,7 +2059,9 @@ def main() -> None:
                     worldcover_masks=wc_masks,
                     gsw_water_mask=gsw_mask,
                 )
+                _status("Building map.bin...")
                 bin_bytes = build_map_bin_from_grid(tiles_type, tiles_variant, include_heights=False)
+                _status("Overlay complete")
             except Exception as e:
                 # Fallback to flat map if overlay fails
                 bin_bytes = build_map_bin(width, height, default_template_id=255, default_variant=0, include_heights=False)
@@ -2095,7 +2135,9 @@ def main() -> None:
             metadata=metadata,
         )
         try:
+            _status(f"Writing .oramap to {args.write_oramap}...")
             write_oramap_zip(args.write_oramap, yaml_text, bin_bytes)
+            _status("Done!")
             oramap_info: Dict[str, Any] = {"path": args.write_oramap, "bytes_map_bin": len(bin_bytes), "notes": "map.yaml + map.bin written"}
             if overlay_stats:
                 oramap_info["overlay_stats"] = overlay_stats
