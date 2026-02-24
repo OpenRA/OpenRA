@@ -82,7 +82,6 @@ SILO:
 		Maximum: 5000
 		Types: ThiefInfiltrate
 
-# Remove IRON spy target 
 STEK:
 	Buildable:
 		Prerequisites: ~disabled
