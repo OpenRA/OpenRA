@@ -26,6 +26,7 @@ Players:
 		Faction: england
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: BadGuy
@@ -50,6 +51,7 @@ Players:
 		Enemies: USSR, BadGuy
 	PlayerReference@BadGuy:
 		Name: BadGuy
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR
@@ -1209,6 +1211,6 @@ Actors:
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
-FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl, map.ftl
 
 Weapons: weapons.yaml
