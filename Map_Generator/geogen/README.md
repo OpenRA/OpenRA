@@ -6,7 +6,7 @@ Generates OpenRA RA `.oramap` maps from real-world geographic data using MGRS co
 
 - RA TEMPERATE tileset targeting (2048x2048 at 4 m/cell default)
 - AOI from MGRS center coordinate with configurable map size (up to 16384x16384)
-- OSM overlay: roads (width-aware per highway type), water (areas + waterways with river smoothing + shoreline), vegetation (tree actors with density/spacing controls), buildings (civilian actors with placement strategies)
+- OSM overlay: roads (width-aware per highway type), water (areas + waterways with river smoothing + shoreline + coastline inversion for coastal/island areas + water multipolygon relations), vegetation (tree actors with density/spacing controls), buildings (civilian actors with placement strategies)
 - Optional datasets: ESA WorldCover 10 m (built-up/forest masks), JRC Global Surface Water (water augmentation)
 - map.yaml embeds GeoTransform metadata (UTM zone, meters_per_cell, origin, grid size) and Attributions (dataset licenses/versions)
 - Packages `.oramap` zip (map.yaml + map.bin) ready for OpenRA
@@ -149,6 +149,7 @@ The `--install-openra` flag automates this copy. Use `--install-release <tag>` t
 | `--no-water` | off | Disable water overlay |
 | `--no-vegetation` | off | Disable vegetation overlay |
 | `--no-buildings` | off | Disable building overlay |
+| `--no-coastline` | off | Disable coastline inversion (skip default-to-water for coastal areas) |
 
 ### Road tuning
 

@@ -78,6 +78,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--building-density", type=float, default=1.0, help="Fraction [0..1] of OSM buildings to place (default: 1.0)")
     p.add_argument("--max-buildings", type=int, default=1200, help="Maximum number of building actors to place (default: 1200)")
     p.add_argument("--no-buildings", action="store_true", help="Disable building overlay")
+    p.add_argument("--no-coastline", action="store_true",
+                   help="Disable coastline inversion (default-to-water for coastal areas)")
     p.add_argument("--building-search-radius", type=int, default=2,
                    help="Local search radius (tiles) around anchor for placement (default: 2)")
     p.add_argument("--building-placement-mode", choices=["accurate", "fallback", "aggressive"], default="accurate",
@@ -104,8 +106,8 @@ def parse_args() -> argparse.Namespace:
                    help="Validate a specific cell 'i,j' (0-based), e.g. --validate-cell 0,0")
     p.add_argument("--validate-latlon", default=None,
                    help="Validate a specific lat,lon, e.g. --validate-latlon 34.59,-77.37")
-    p.add_argument("--overpass-timeout", type=int, default=25,
-                   help="Overpass API query timeout in seconds (default: 25)")
+    p.add_argument("--overpass-timeout", type=int, default=60,
+                   help="Overpass API query timeout in seconds (default: 60)")
     args = p.parse_args()
     if args.cells < 1 or args.cells > MAX_CELLS:
         p.error(f"--cells must be between 1 and {MAX_CELLS} (got {args.cells})")
@@ -609,8 +611,291 @@ def _assemble_way_nodes(way: Dict[str, Any], nodes_by_id: Dict[int, Tuple[float,
     return coords
 
 
+def _simplify_polygon(poly: List[Tuple[float, float]], epsilon: float = 1.0) -> List[Tuple[float, float]]:
+    """Douglas-Peucker line simplification. Reduces vertex count while preserving shape.
+    epsilon is in cell units — vertices within epsilon of the simplified line are dropped.
+    """
+    if len(poly) <= 2:
+        return list(poly)
+
+    # Find the point with the greatest distance from the line (first, last)
+    first = poly[0]
+    last = poly[-1]
+    max_dist = 0.0
+    max_idx = 0
+    dx = last[0] - first[0]
+    dy = last[1] - first[1]
+    line_len_sq = dx * dx + dy * dy
+
+    for i in range(1, len(poly) - 1):
+        px, py = poly[i]
+        if line_len_sq == 0:
+            dist = math.hypot(px - first[0], py - first[1])
+        else:
+            t = max(0.0, min(1.0, ((px - first[0]) * dx + (py - first[1]) * dy) / line_len_sq))
+            proj_x = first[0] + t * dx
+            proj_y = first[1] + t * dy
+            dist = math.hypot(px - proj_x, py - proj_y)
+        if dist > max_dist:
+            max_dist = dist
+            max_idx = i
+
+    if max_dist > epsilon:
+        left = _simplify_polygon(poly[:max_idx + 1], epsilon)
+        right = _simplify_polygon(poly[max_idx:], epsilon)
+        return left[:-1] + right
+    else:
+        return [first, last]
+
+
+def _close_chain_via_bbox(chain: List[Tuple[float, float]], width: int, height: int) -> List[Tuple[float, float]]:
+    """Close an open coastline chain by walking clockwise along the bounding box edges.
+
+    Standard GIS technique: when a coastline exits the map bbox, connect the
+    endpoints by following the bbox boundary clockwise to form a closed land polygon.
+    """
+    if not chain or len(chain) < 2:
+        return chain
+    if chain[0] == chain[-1]:
+        return chain  # Already closed
+
+    # Bbox corners clockwise: TL, TR, BR, BL
+    corners = [
+        (0.0, 0.0),                    # TL
+        (float(width), 0.0),           # TR
+        (float(width), float(height)), # BR
+        (0.0, float(height)),          # BL
+    ]
+
+    def _edge_position(pt: Tuple[float, float]) -> float:
+        """Map a point on the bbox perimeter to a scalar 0..4 going clockwise from TL."""
+        x, y = pt[0], pt[1]
+        w, h = float(width), float(height)
+        # Clamp to bbox
+        x = max(0.0, min(w, x))
+        y = max(0.0, min(h, y))
+        # Top edge (TL->TR): y near 0
+        if y <= 1.0:
+            return x / w  # 0..1
+        # Right edge (TR->BR): x near width
+        if x >= w - 1.0:
+            return 1.0 + y / h  # 1..2
+        # Bottom edge (BR->BL): y near height
+        if y >= h - 1.0:
+            return 2.0 + (w - x) / w  # 2..3
+        # Left edge (BL->TL): x near 0
+        return 3.0 + (h - y) / h  # 3..4
+
+    start = chain[-1]  # Where coastline ends
+    end = chain[0]     # Where coastline begins (we need to connect back)
+
+    pos_start = _edge_position(start)
+    pos_end = _edge_position(end)
+
+    # Walk clockwise from start to end, inserting bbox corners as needed
+    path: List[Tuple[float, float]] = []
+    corner_positions = [_edge_position(c) for c in corners]
+
+    # Collect corners between start and end going clockwise
+    if pos_start <= pos_end:
+        # Simple: corners with pos_start < pos < pos_end
+        for i, cp in enumerate(corner_positions):
+            if pos_start < cp < pos_end:
+                path.append(corners[i])
+    else:
+        # Wrap around: corners with pos > pos_start OR pos < pos_end
+        for i, cp in enumerate(corner_positions):
+            if cp > pos_start or cp < pos_end:
+                path.append(corners[i])
+
+    # Sort collected corners by their clockwise position relative to start
+    path.sort(key=lambda p: (_edge_position(p) - pos_start) % 4.0)
+
+    return list(chain) + path + [chain[0]]
+
+
+def _assemble_coastline_rings(
+    osm_data: Dict[str, Any],
+    nodes_by_id: Dict[int, Tuple[float, float]],
+    ways_by_id: Dict[int, Dict[str, Any]],
+    *,
+    center: Dict[str, Any],
+    bounds: Dict[str, Any],
+    mpc: float,
+    cells: int,
+    stats: Dict[str, int],
+) -> List[List[Tuple[float, float]]]:
+    """Collect natural=coastline ways, chain them into closed land polygon rings.
+
+    OSM coastlines have land on the left, water on the right. We assemble
+    connected chains, close open ones via bbox edge walking, convert to cell
+    coordinates, and simplify.
+
+    Returns list of closed land polygon rings in cell coordinates.
+    """
+    # Collect coastline ways
+    coastline_ways: List[Dict[str, Any]] = []
+    for el in osm_data.get("elements", []):
+        if el.get("type") != "way":
+            continue
+        tags = el.get("tags", {}) or {}
+        if tags.get("natural") == "coastline":
+            coastline_ways.append(el)
+
+    stats["coast_coastline_ways"] = len(coastline_ways)
+    if not coastline_ways:
+        return []
+
+    # Build chains: each way is a sequence of node IDs
+    # Chain by matching last node of one way to first node of another
+    chains: List[List[int]] = []
+    for way in coastline_ways:
+        node_ids = [int(nid) for nid in way.get("nodes", [])]
+        if len(node_ids) >= 2:
+            chains.append(node_ids)
+
+    # Iteratively merge chains that share endpoints
+    merged = True
+    while merged:
+        merged = False
+        # Build index: first_node -> chain index, last_node -> chain index
+        first_idx: Dict[int, int] = {}
+        last_idx: Dict[int, int] = {}
+        for ci, ch in enumerate(chains):
+            if ch:
+                first_idx[ch[0]] = ci
+                last_idx[ch[-1]] = ci
+        for ci, ch in enumerate(chains):
+            if not ch:
+                continue
+            last_node = ch[-1]
+            # Can we append another chain whose first node matches our last?
+            if last_node in first_idx:
+                oi = first_idx[last_node]
+                if oi != ci and chains[oi]:
+                    # Merge: extend ci with oi (skip duplicate junction node)
+                    chains[ci] = ch + chains[oi][1:]
+                    chains[oi] = []
+                    merged = True
+                    break
+
+    # Remove empty chains
+    chains = [ch for ch in chains if ch]
+
+    total_verts_before = 0
+    total_verts_after = 0
+    open_chains = 0
+    rings: List[List[Tuple[float, float]]] = []
+
+    for ch in chains:
+        # Convert node IDs to cell coordinates
+        cell_coords: List[Tuple[float, float]] = []
+        for nid in ch:
+            npos = nodes_by_id.get(nid)
+            if not npos:
+                continue
+            cell = _latlon_to_cell(npos[0], npos[1], center=center, bounds=bounds, mpc=mpc)
+            if cell is not None:
+                cell_coords.append(cell)
+
+        if len(cell_coords) < 3:
+            continue
+
+        total_verts_before += len(cell_coords)
+
+        # Check if chain is closed
+        is_closed = (ch[0] == ch[-1])
+        if not is_closed:
+            open_chains += 1
+            # Close via bbox edge walk
+            cell_coords = _close_chain_via_bbox(cell_coords, cells, cells)
+
+        # Ensure closure
+        if cell_coords[0] != cell_coords[-1]:
+            cell_coords.append(cell_coords[0])
+
+        # Check orientation: OSM coastlines have land on left.
+        # For our cell coordinate system (x right, y down), land polygons
+        # should have negative signed area (clockwise winding).
+        # If positive (CCW), reverse to get land polygon.
+        signed_area = 0.0
+        for i in range(len(cell_coords) - 1):
+            x0, y0 = cell_coords[i]
+            x1, y1 = cell_coords[i + 1]
+            signed_area += (x1 - x0) * (y1 + y0)
+        # signed_area > 0 means clockwise in screen coords (y-down) = land on left = correct
+        # signed_area < 0 means CCW = water polygon, reverse it
+        if signed_area < 0:
+            cell_coords.reverse()
+
+        # Simplify to reduce vertex count (epsilon = 1.0 cell)
+        simplified = _simplify_polygon(cell_coords, epsilon=1.0)
+        total_verts_after += len(simplified)
+
+        if len(simplified) >= 3:
+            rings.append(simplified)
+
+    stats["coast_assembled_rings"] = len(rings)
+    stats["coast_open_chains"] = open_chains
+    stats["coast_vertices_before_simplify"] = total_verts_before
+    stats["coast_vertices_after_simplify"] = total_verts_after
+
+    return rings
+
+
+def _process_water_relations(
+    osm_data: Dict[str, Any],
+    nodes_by_id: Dict[int, Tuple[float, float]],
+    ways_by_id: Dict[int, Dict[str, Any]],
+    tiles_type: List[List[int]],
+    *,
+    center: Dict[str, Any],
+    bounds: Dict[str, Any],
+    mpc: float,
+    stats: Dict[str, int],
+) -> int:
+    """Process OSM relation elements with natural=water as multipolygons.
+
+    Fills outer rings with WATER, inner rings (islands) with CLEAR.
+    Returns total number of cells modified.
+    """
+    total_cells = 0
+    for el in osm_data.get("elements", []):
+        if el.get("type") != "relation":
+            continue
+        tags = el.get("tags", {}) or {}
+        if tags.get("natural") != "water":
+            continue
+        members = el.get("members", []) or []
+        for m in members:
+            if m.get("type") != "way":
+                continue
+            role = m.get("role", "outer")
+            wid = m.get("ref")
+            if wid is None:
+                continue
+            w_el = ways_by_id.get(int(wid))
+            if not w_el:
+                continue
+            coords = _assemble_way_nodes(w_el, nodes_by_id, center=center, bounds=bounds, mpc=mpc)
+            if len(coords) < 3:
+                continue
+            # Close ring if needed
+            if coords[0] != coords[-1]:
+                coords.append(coords[0])
+            if role == "inner":
+                # Inner ring = island within water = CLEAR
+                total_cells += _fill_polygon(tiles_type, coords, CLEAR_TEMPLATE_ID)
+            else:
+                # Outer ring = water body
+                total_cells += _fill_polygon(tiles_type, coords, WATER_TEMPLATE_ID)
+    stats["water_relation_cells"] = total_cells
+    return total_cells
+
+
 def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: float, cells: int, osm_data: Dict[str, Any],
                          *, include_roads: bool, include_water: bool, include_vegetation: bool, include_buildings: bool,
+                         include_coastline: bool = True,
                          road_width_m: float, waterway_width_m: float, veg_density: float, max_veg_actors: int,
                          veg_min_spacing: int, veg_patch_size: int, veg_patch_boost: float,
                          suppress_veg_near_roads: int, suppress_veg_near_buildings: int,
@@ -624,8 +909,6 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
     Returns (tiles_type, tiles_variant, extra_actor_lines, stats)
     """
     width = height = int(cells)
-    # Initialize grids in column-major order
-    tiles_type = [[CLEAR_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
     tiles_variant = [[0 for _ in range(height)] for _ in range(width)]
 
     # Collect nodes
@@ -640,6 +923,30 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
         if el.get("type") == "way" and "nodes" in el:
             ways_by_id[int(el["id"])] = el
 
+    # --- Coastline inversion: detect coastlines and optionally default grid to WATER ---
+    coastline_land_rings: List[List[Tuple[float, float]]] = []
+    coastline_land_cells = 0
+    if include_coastline and include_water:
+        coastline_stats: Dict[str, int] = {}
+        coastline_land_rings = _assemble_coastline_rings(
+            osm_data, nodes_by_id, ways_by_id,
+            center=center, bounds=bounds, mpc=mpc, cells=cells,
+            stats=coastline_stats,
+        )
+        if coastline_land_rings:
+            # Coastlines found: init grid as WATER, then carve land
+            tiles_type = [[WATER_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
+            for ring in coastline_land_rings:
+                coastline_land_cells += _fill_polygon(tiles_type, ring, CLEAR_TEMPLATE_ID)
+            coastline_stats["coastline_land_cells"] = coastline_land_cells
+        else:
+            # No coastlines (inland area): default to CLEAR as before
+            tiles_type = [[CLEAR_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
+    else:
+        # Coastline processing disabled or water disabled: default to CLEAR
+        tiles_type = [[CLEAR_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
+        coastline_stats = {}
+
     # Collect sample points for river smoothing along waterways.
     # Tuple is (i, j, orient) where orient: 0=vertical, 1=horizontal.
     river_samples_set: Set[Tuple[int, int, int]] = set()
@@ -653,6 +960,8 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
 
     # Rasterize water first (areas + waterways)
     stats = {"water_cells": 0, "road_cells": 0, "veg_actors": 0, "building_actors": 0}
+    # Merge coastline stats
+    stats.update(coastline_stats)
     # Debug counters
     stats["osm_nodes"] = len(nodes_by_id)
     if worldcover_masks is not None:
@@ -733,6 +1042,13 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
                     tiles_type[i][j] = WATER_TEMPLATE_ID
                     added += 1
         stats["water_cells"] += added
+
+    # Process water multipolygon relations (large bays, ocean inlets, etc.)
+    if include_water:
+        _process_water_relations(
+            osm_data, nodes_by_id, ways_by_id, tiles_type,
+            center=center, bounds=bounds, mpc=mpc, stats=stats,
+        )
 
     # River smoothing pass: stamp river templates along sampled waterway points
     if include_water and river_samples_set:
@@ -1424,6 +1740,8 @@ def build_overpass_query(bbox: Dict[str, float], *, timeout: int = 25) -> str:
         f"way['waterway']({s},{w},{n},{e});"
         f"way['natural'='water']({s},{w},{n},{e});"
         f"way['landuse'='reservoir']({s},{w},{n},{e});"
+        f"way['natural'='coastline']({s},{w},{n},{e});"
+        f"relation['natural'='water']({s},{w},{n},{e});"
         f"way['building']({s},{w},{n},{e});"
         f"relation['building']({s},{w},{n},{e});"
         f"way['natural'='wood']({s},{w},{n},{e});"
@@ -1447,7 +1765,7 @@ def fetch_osm(bbox: Dict[str, float], overpass_url: str, cache_dir: Optional[str
             os.makedirs(cache_dir, exist_ok=True)
             # Include a cache schema version and the full query so changes to the query
             # (e.g., adding recursion to include nodes) do not reuse stale cached files.
-            cache_version = "v2"
+            cache_version = "v3"
             key = (
                 f"{cache_version}|{bbox['south']:.6f},{bbox['west']:.6f},"
                 f"{bbox['north']:.6f},{bbox['east']:.6f}|{q}"
@@ -1685,6 +2003,7 @@ def main() -> None:
                     include_water=(not bool(args.no_water)) and bool(args.overlay_osm),
                     include_vegetation=(not bool(args.no_vegetation)) and bool(args.overlay_osm),
                     include_buildings=(not bool(args.no_buildings)) and bool(args.overlay_osm or args.overlay_osm_buildings),
+                    include_coastline=(not bool(args.no_coastline)),
                     road_width_m=float(args.road_width_m),
                     waterway_width_m=float(args.waterway_width_m),
                     veg_density=float(args.veg_density),
