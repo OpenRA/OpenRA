@@ -1463,9 +1463,9 @@ namespace OpenRA
 
 				return gt;
 			}
-			catch
+			catch (Exception e)
 			{
-				// Fail-safe: treat as absent on any parsing error
+				Log.Write("debug", $"ParseGeoTransformFromMetadata failed: {e.Message}");
 				return null;
 			}
 		}

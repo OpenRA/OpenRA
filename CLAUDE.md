@@ -44,7 +44,7 @@ cmd /c launch-game.cmd Game.Mod=ra
 
 **Run a single test (after building):**
 ```powershell
-dotnet test bin\OpenRA.Test.dll --filter "FullyQualifiedName~CoTVisibilityRouterTests"
+dotnet test bin\OpenRA.Test.dll --filter "FullyQualifiedName~CoT"
 ```
 
 ## Architecture
@@ -66,14 +66,20 @@ All projects output to `bin/`. The solution targets **.NET 8.0 / C# 12**.
 All CoT code is in `OpenRA.Mods.Common/`:
 
 **Transport layer:**
-- `CotOutputService.cs` — Static async UDP sender with bounded queue (256 msgs, drop-oldest). Supports unicast and multicast. Persists config to `%AppData%/OpenRA/cot-output.json`.
+- `CotOutputService.cs` — Static async UDP sender with bounded queue (256 msgs, drop-oldest). Supports unicast and multicast. Includes circuit breaker (5 consecutive failures → 10s backoff). Persists config to `%AppData%/OpenRA/cot-output.json`.
 
-**Emitter traits** (in `Traits/World/`):
-- `CoTVehicleEmitter.cs` — Ground vehicles (spawn, damage, kill, periodic heartbeat)
+**Base emitter (shared logic):**
+- `Traits/World/CoTEmitterBase.cs` — Abstract base class providing:
+  - `CoTEmitterInfoBase` — All shared YAML-configurable fields (UdpHost, UdpPort, Callsign, CotType, Hae, Ce, Le, StaleSeconds, etc.)
+  - `CoTEmitterBase<TInfo>` — Shared runtime logic: heartbeat tick, movement detection, FoW routing, XML building, resolve methods (callsign, type, milsym), string utilities (Clean, SecurityElementEscape, TryGetValueAnyCase)
+  - Static helper methods are public for testability
+
+**Concrete emitter traits** (in `Traits/World/`):
+- `CoTVehicleEmitter.cs` — Ground vehicles (extends base, sets domain to GroundMobile)
+- `CoTInfantryEmitter.cs` — Infantry units (extends base, sets domain to GroundMobile)
+- `CoTBuildingEmitter.cs` — Static structures (extends base, longer intervals, placement detection)
 - `CoTAircraftEmitter.cs` — Aircraft with flight-phase detection, altitude profiles, speed/course telemetry
-- `CoTInfantryEmitter.cs` — Infantry units
-- `CoTShipEmitter.cs` — Naval units
-- `CoTBuildingEmitter.cs` — Static structures (longer update intervals)
+- `CoTShipEmitter.cs` — Naval units with submarine depth, speed/course telemetry
 - `CoTBroadcaster.cs` — Emits on specific orders (e.g., PlaceBeacon)
 - `CoTOnSpawnBroadcaster.cs` — Emits once on actor spawn
 - `CoTPeriodicBroadcaster.cs` — Periodic heartbeat emitter
@@ -99,7 +105,8 @@ YAML rules in `mods/ra/rules/` attach CoT traits to actor archetypes:
 ### Key Patterns
 
 - **Trait Info pattern:** Every trait has a `FooInfo` class (YAML-configurable properties) and a `Foo` runtime class. Info is shared; Foo is per-actor instance.
-- **Per-actor YAML mappings:** Emitters use dictionary fields (e.g., `ActorCallsigns`, `ActorDamageStateMilsymIds`) for per-unit-type customization, with case-insensitive lookup.
+- **Base class hierarchy:** `CoTEmitterInfoBase` → concrete Info (e.g., `CoTVehicleEmitterInfo`). `CoTEmitterBase<TInfo>` → concrete emitter. Subclasses override `Domain` property and optionally `SendEvent()` for telemetry.
+- **Per-actor YAML mappings:** Emitters use dictionary fields (e.g., `ActorCallsigns`, `ActorDamageStateMilsymIds`) for per-unit-type customization, with case-insensitive lookup via `TryGetValueAnyCase`.
 - **CoT domains:** `CoTDomain` enum — `GroundMobile`, `Building`, `Aircraft`, `Vessel` — used by visibility router for domain-specific hostile symbol overrides.
 - **Geo-referenced maps:** The `GeoMaps/` folder contains `.oramap` files with real-world coordinates for CoT lat/lon output.
 
@@ -114,8 +121,11 @@ YAML rules in `mods/ra/rules/` attach CoT traits to actor archetypes:
 ## Testing
 
 - Tests use **NUnit** framework
-- CoT-specific tests are in `OpenRA.Test/OpenRA.Mods.Common/CoTVisibilityRouterTests.cs`
+- CoT-specific tests:
+  - `OpenRA.Test/OpenRA.Mods.Common/CoTVisibilityRouterTests.cs` — Tests for FoW policy evaluation and stealth gate
+  - `OpenRA.Test/OpenRA.Mods.Common/CoTEmitterBaseTests.cs` — Tests for shared base class utilities (SecurityElementEscape, Clean, TryGetValueAnyCase, CotOutputConfig validation)
 - `EvaluatePolicy()` and `EvaluateStealthGate()` are static methods on `CoTVisibilityRouter` specifically for testability
+- Base class static methods (`SecurityElementEscape`, `Clean`, `TryGetValueAnyCase`) are public for testability
 - YAML validation (`make test` / `make.ps1 test`) checks all mod YAML for parse errors
 
 ## Default CoT Configuration

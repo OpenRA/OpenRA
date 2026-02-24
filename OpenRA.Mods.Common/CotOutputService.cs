@@ -33,8 +33,26 @@ namespace OpenRA.Mods.Common
 	{
 		public CotEndpointMode Mode { get; set; } = CotEndpointMode.Localhost;
 		public string Host { get; set; } = "127.0.0.1";
-		public int Port { get; set; } = 4242;
-		public int? MulticastTtl { get; set; } = 1;
+
+		int port = 4242;
+		public int Port
+		{
+			get => port;
+			set => port = value is >= 1 and <= 65535 ? value : throw new ArgumentOutOfRangeException(nameof(value), "Port must be between 1 and 65535");
+		}
+
+		int? multicastTtl = 1;
+		public int? MulticastTtl
+		{
+			get => multicastTtl;
+			set
+			{
+				if (value.HasValue && value.Value <= 0)
+					throw new ArgumentOutOfRangeException(nameof(value), "MulticastTtl must be > 0");
+				multicastTtl = value;
+			}
+		}
+
 		public string BindInterfaceName { get; set; }
 		public bool Remember { get; set; } = true;
 	}
@@ -43,13 +61,15 @@ namespace OpenRA.Mods.Common
 	public static class CotOutputService
 	{
 		const int DefaultQueueCapacity = 256;
+		const int MaxConsecutiveFailures = 5;
+		const int FailureBackoffMs = 10000;
 
 		static readonly object Sync = new();
 		static Channel<byte[]> channel;
 		static CancellationTokenSource cts;
 		static Task pumpTask;
 		static ICotTransport transport;
-		static bool started;
+		static volatile bool started;
 
 		public static void EnsureInitializedFrom(string host, int port)
 		{
@@ -116,11 +136,11 @@ namespace OpenRA.Mods.Common
 				if (!started)
 					return;
 
-				try { channel.Writer.TryComplete(); } catch { }
-				try { cts.Cancel(); } catch { }
-				try { pumpTask?.Wait(1000); } catch { }
-				try { transport?.Dispose(); } catch { }
-				try { Game.OnQuit -= Dispose; } catch { }
+				try { channel.Writer.TryComplete(); } catch (Exception e) { Log.Write("cot", $"dispose channel: {e.Message}"); }
+				try { cts.Cancel(); } catch (Exception e) { Log.Write("cot", $"dispose cts: {e.Message}"); }
+				try { pumpTask?.Wait(1000); } catch (Exception e) { Log.Write("cot", $"dispose pump: {e.Message}"); }
+				try { transport?.Dispose(); } catch (Exception e) { Log.Write("cot", $"dispose transport: {e.Message}"); }
+				try { Game.OnQuit -= Dispose; } catch (Exception e) { Log.Write("cot", $"dispose quit hook: {e.Message}"); }
 
 				channel = null;
 				cts = null;
@@ -273,6 +293,7 @@ namespace OpenRA.Mods.Common
 
 		static async Task PumpAsync(CancellationToken token)
 		{
+			var consecutiveFailures = 0;
 			try
 			{
 				var reader = channel.Reader;
@@ -283,11 +304,24 @@ namespace OpenRA.Mods.Common
 						try
 						{
 							await transport.SendAsync(payload, token).ConfigureAwait(false);
+							consecutiveFailures = 0;
+						}
+						catch (OperationCanceledException)
+						{
+							throw;
 						}
 						catch (Exception e)
 						{
-							// Non-fatal: drop this packet, continue
-							Log.Write("cot", e);
+							consecutiveFailures++;
+							if (consecutiveFailures <= MaxConsecutiveFailures)
+								Log.Write("cot", e);
+
+							if (consecutiveFailures >= MaxConsecutiveFailures)
+							{
+								Log.Write("cot", $"circuit breaker: {MaxConsecutiveFailures} consecutive send failures, pausing {FailureBackoffMs}ms");
+								await Task.Delay(FailureBackoffMs, token).ConfigureAwait(false);
+								consecutiveFailures = 0;
+							}
 						}
 					}
 				}

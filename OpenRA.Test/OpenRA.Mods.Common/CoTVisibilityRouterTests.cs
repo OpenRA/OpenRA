@@ -43,7 +43,7 @@ namespace OpenRA.Test
 			var info = new CoTVisibilityRouterInfo();
 			var result = CoTVisibilityRouter.EvaluatePolicy(
 				isFriendly: false,
-				friendlyAlwaysEmit: true, // Irrelevant in hostile case
+				friendlyAlwaysEmit: true,
 				teamDetected: true,
 				useGenericMilsym: true,
 				overrideTypeFlag: true,
@@ -104,6 +104,111 @@ namespace OpenRA.Test
 				cloakActive: false,
 				anyArmamentAiming: false,
 				stealthEmitOnlyWhenAttacking: true);
+			Assert.That(suppress, Is.False);
+		}
+
+		[Test]
+		public void HostileDetected_AircraftDomain_UsesAircraftOverrides()
+		{
+			var info = new CoTVisibilityRouterInfo();
+			CoTVisibilityRouter.EvaluatePolicy(
+				isFriendly: false,
+				friendlyAlwaysEmit: true,
+				teamDetected: true,
+				useGenericMilsym: true,
+				overrideTypeFlag: true,
+				domain: CoTDomain.Aircraft,
+				info: info,
+				out var overrideType,
+				out var overrideMilsym);
+
+			Assert.That(overrideMilsym, Is.EqualTo(info.AircraftMilsymId));
+			Assert.That(overrideType, Is.EqualTo(info.AircraftType));
+		}
+
+		[Test]
+		public void HostileDetected_VesselDomain_UsesVesselOverrides()
+		{
+			var info = new CoTVisibilityRouterInfo();
+			CoTVisibilityRouter.EvaluatePolicy(
+				isFriendly: false,
+				friendlyAlwaysEmit: true,
+				teamDetected: true,
+				useGenericMilsym: true,
+				overrideTypeFlag: true,
+				domain: CoTDomain.Vessel,
+				info: info,
+				out var overrideType,
+				out var overrideMilsym);
+
+			Assert.That(overrideMilsym, Is.EqualTo(info.VesselMilsymId));
+			Assert.That(overrideType, Is.EqualTo(info.VesselType));
+		}
+
+		[Test]
+		public void HostileDetected_BuildingDomain_UsesBuildingOverrides()
+		{
+			var info = new CoTVisibilityRouterInfo();
+			CoTVisibilityRouter.EvaluatePolicy(
+				isFriendly: false,
+				friendlyAlwaysEmit: true,
+				teamDetected: true,
+				useGenericMilsym: true,
+				overrideTypeFlag: true,
+				domain: CoTDomain.Building,
+				info: info,
+				out var overrideType,
+				out var overrideMilsym);
+
+			Assert.That(overrideMilsym, Is.EqualTo(info.BuildingMilsymId));
+			Assert.That(overrideType, Is.EqualTo(info.BuildingType));
+		}
+
+		[Test]
+		public void HostileDetected_NoOverrideFlags_NoOverrides()
+		{
+			var info = new CoTVisibilityRouterInfo();
+			var result = CoTVisibilityRouter.EvaluatePolicy(
+				isFriendly: false,
+				friendlyAlwaysEmit: true,
+				teamDetected: true,
+				useGenericMilsym: false,
+				overrideTypeFlag: false,
+				domain: CoTDomain.GroundMobile,
+				info: info,
+				out var overrideType,
+				out var overrideMilsym);
+
+			Assert.That(result, Is.True);
+			Assert.That(overrideType, Is.Null);
+			Assert.That(overrideMilsym, Is.Null);
+		}
+
+		[Test]
+		public void FriendlyAlwaysEmit_Disabled_FriendlyNotDetected_Suppresses()
+		{
+			var info = new CoTVisibilityRouterInfo();
+			var result = CoTVisibilityRouter.EvaluatePolicy(
+				isFriendly: true,
+				friendlyAlwaysEmit: false,
+				teamDetected: false,
+				useGenericMilsym: true,
+				overrideTypeFlag: true,
+				domain: CoTDomain.GroundMobile,
+				info: info,
+				out _,
+				out _);
+
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void StealthGate_FeatureDisabled_NeverSuppresses()
+		{
+			var suppress = CoTVisibilityRouter.EvaluateStealthGate(
+				cloakActive: true,
+				anyArmamentAiming: false,
+				stealthEmitOnlyWhenAttacking: false);
 			Assert.That(suppress, Is.False);
 		}
 	}
