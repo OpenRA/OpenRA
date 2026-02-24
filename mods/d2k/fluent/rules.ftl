@@ -339,7 +339,6 @@ actor-upgrade-heavy =
     .name = Heavy Factory Upgrade
     .description =
     Unlocks additional construction options:
-    - Repair Pad
     - IX Research Center
 
     Unlocks additional heavy units:
