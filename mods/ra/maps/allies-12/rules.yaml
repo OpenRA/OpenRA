@@ -82,6 +82,7 @@ SILO:
 		Maximum: 5000
 		Types: ThiefInfiltrate
 
+# Remove IRON spy target 
 STEK:
 	Buildable:
 		Prerequisites: ~disabled
@@ -90,6 +91,8 @@ STEK:
 		Bots: campaign
 	Sellable:
 		RequiresCondition: soviet-owned && !being-demolished && !being-captured
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack
 
 FTRK:
 	Buildable:
@@ -114,6 +117,7 @@ V2RL:
 4TNK:
 	Buildable:
 		Prerequisites: ~vehicles.soviet
+	ScriptTags:
 
 QTNK:
 	Buildable:
