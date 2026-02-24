@@ -733,9 +733,7 @@ IronCurtaining = function(actor)
 end
 
 TaggedChangeTarget = function()
-    local units = Utils.Where(USSR.GetActors(), function(actor)
-        return actor.HasTag("iron")
-    end)
+    local units = Map.ActorsWithTag("iron")
     if #units > 0 then
         Utils.Do(units, function(u)
             u.Stop()
