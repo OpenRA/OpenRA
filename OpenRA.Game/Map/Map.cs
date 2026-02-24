@@ -218,6 +218,12 @@ namespace OpenRA
 		public IReadOnlyPackage Package { get; private set; }
 		public string Uid { get; private set; }
 
+		/// <summary>
+		/// Parsed GeoTransform metadata for converting between map cells and lat/lon.
+		/// Null if the map.yaml does not contain a Metadata.GeoTransform block.
+		/// </summary>
+		public MapGeoTransform GeoTransform { get; private set; }
+
 		public Ruleset Rules { get; private set; }
 		public SequenceSet Sequences { get; private set; }
 
@@ -369,6 +375,9 @@ namespace OpenRA
 
 			PlayerDefinitions = yaml.NodeWithKeyOrDefault("Players")?.Value.Nodes ?? [];
 			ActorDefinitions = yaml.NodeWithKeyOrDefault("Actors")?.Value.Nodes ?? [];
+
+			// Parse GeoTransform (if present) from the Metadata block
+			GeoTransform = ParseGeoTransformFromMetadata();
 
 			Grid = modData.GetOrCreate<MapGrid>();
 
