@@ -19,7 +19,7 @@ SetDifficulty = function()
 
         FComSabotage = true
 
-        badgerCounterAtk = 0
+        badgerCounterAtk = 1
 
         nuclearAtk = false
 

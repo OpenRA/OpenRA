@@ -7,6 +7,43 @@
    information, see COPYING.
 ]]
 
+--------------------------------------------------------------------
+----------------    SUMMARY OF LEVEL IMPLEMENTATION	----------------
+--------------------------------------------------------------------
+--[[
+APPROACH
+First of all I tried to stick to the original level spirit more than copying verbatim triggers/events.
+
+ORIGINAL VS ORA VERSION
+The staple element of the mission IMO is the frequent "iron-curtained" mammoth tanks that come from the left (USSR player) 
+so I wanted to keep that as close as possible to original intent. The deviation here, to make iron mammoth tanks more of a threat,
+was to activate iron curtain only once half hp is reached instead of arrival to x coordinate. Also added a function to allow these to switch 
+targets after x seconds to reduce the chance for these to be cheesed.
+The village to the left of player units arrival is also another element that I would like to change a little to have more relevance overall.
+Since turreted vehicles can attack while moving and most of original triggers are barely noticeable I thought about giving player a neutral
+stance towards civilians, so the player will have to "force attack" them. Civilians will have a few instances where they can trigger
+attacks made by USSR if the player disturbs the village. There is also the idea of adding and extra secondary objective, something around
+the line of: "keep civilian casualties to a bare minimum".
+Pointed by JovialFeline, in vanilla ra allies-12, FCom, if captured/destroy, selfs-destruct power plants from BadGuy base. I think this a bit of a strong effect to
+keep. Maybe this could happen only if FCom is captured so it requires a bit more thought for the player if he/she wants to take that route.
+Last but not least, I created a cruiser variant for England player to be able to destroy sov. beachhead as close as possible to how this
+occurs in the og. ra level
+
+BALANCE
+Balance-wise since this is the penultimate (/w base) mission for the allies campaign, and ORA allows better unit control and
+a smoother gameplay experience overall I wanted to make it way more difficult than the original level. Some of the intentional 
+and most noticeable changes are:
+- Added extra dogs for both USSR and BadGuy to protect base entrances against spies.
+- Dogs, if killed, are "rebuilt" by AI (through "Reinforcments" trigger; no actual usage of inf queue).
+- Capped the spy money steal amount upon refinery infiltration to 3000.
+- Hard dfficulty involves 2 "iron-curtained" mammoth tanks. Only 1 in both easy and normal difficulties.
+- Both AIs rebuild structures.
+
+OTHER
+Secondary objective is to protect captured Soviet Tech Centers. Added occasional paratrooper attacks as a way to threat 
+secondary objective failure. With the "expanded" logic for civilians I'm thinking about adding a 
+]]
+
 STeksToCapture = { USSRStek, BadGuyStek }
 STeksCaptured = 0
 STekLost = false
@@ -140,12 +177,6 @@ SpawnVillageGuards = function()
     end
 
 end
-
---[[
-VillageGuards = function()
-    
-end
-]]
 
 FinishTimer = function()
    	DateTime.TimeLimit = 0
