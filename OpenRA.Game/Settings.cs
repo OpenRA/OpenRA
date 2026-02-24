@@ -304,6 +304,22 @@ namespace OpenRA
 		}
 	}
 
+	[YamlNode("CoT", shared: true)]
+	public class CotSettings : SettingsModule
+	{
+		public bool Enabled = true;
+		public string EndpointMode = "Localhost";
+		public string Host = "127.0.0.1";
+		public int Port = 4242;
+		public int MulticastTtl = 1;
+		public string BindInterfaceName = "";
+
+		public CotSettings Clone()
+		{
+			return (CotSettings)MemberwiseClone();
+		}
+	}
+
 	[YamlNode("Player", shared: true)]
 	public class PlayerSettings : SettingsModule
 	{

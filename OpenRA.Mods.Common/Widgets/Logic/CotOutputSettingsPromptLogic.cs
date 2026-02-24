@@ -12,9 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -30,40 +27,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string ModeMulticast = "options-cot-mode.multicast";
 
-		static string GetConfigPath()
+		static CotSettings LoadSettingsConfig()
 		{
 			try
 			{
-				string baseDir;
-				if (OperatingSystem.IsWindows())
-					baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
-				else
-					baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".openra");
-				Directory.CreateDirectory(baseDir);
-				return Path.Combine(baseDir, "cot-output.json");
-			}
-			catch
-			{
-				return null;
-			}
-		}
-
-		static CotOutputConfig LoadSavedConfig()
-		{
-			try
-			{
-				var path = GetConfigPath();
-				if (string.IsNullOrEmpty(path) || !File.Exists(path))
-					return null;
-
-				var json = File.ReadAllText(path);
-				var options = new JsonSerializerOptions
-				{
-					ReadCommentHandling = JsonCommentHandling.Skip,
-					AllowTrailingCommas = true,
-				};
-				options.Converters.Add(new JsonStringEnumConverter());
-				return JsonSerializer.Deserialize<CotOutputConfig>(json, options);
+				return Game.Settings.GetOrCreate<CotSettings>(null);
 			}
 			catch
 			{
@@ -73,36 +41,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static bool ShouldShowPrompt()
 		{
-			var cfg = LoadSavedConfig();
+			var s = LoadSettingsConfig();
 
-			// Show if no saved config, or the saved config opted not to remember
-			return cfg == null || !cfg.Remember;
+			// Show prompt if settings haven't been configured (default port and host)
+			return s == null || (s.Host == "127.0.0.1" && s.Port == 4242 && s.EndpointMode == "Localhost");
 		}
 
 		[ObjectCreator.UseCtor]
 		public CotOutputSettingsPromptLogic(Widget widget, Action onComplete)
 		{
-			// Load saved or defaults
-			var cfg = LoadSavedConfig() ?? new CotOutputConfig();
+			// Load from settings.yaml
+			var s = LoadSettingsConfig() ?? new CotSettings();
 
-			var mode = cfg.Mode;
-			var remember = cfg.Remember;
+			var mode = Enum.TryParse<CotEndpointMode>(s.EndpointMode, true, out var parsedMode)
+				? parsedMode : CotEndpointMode.Localhost;
+			var remember = true;
 
 			var modeDropdown = widget.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			var hostField = widget.Get<TextFieldWidget>("HOST_FIELD");
-			hostField.Text = string.IsNullOrWhiteSpace(cfg.Host)
+			hostField.Text = string.IsNullOrWhiteSpace(s.Host)
 				? (mode == CotEndpointMode.Localhost ? "127.0.0.1" : string.Empty)
-				: cfg.Host;
+				: s.Host;
 
 			var portField = widget.Get<TextFieldWidget>("PORT_FIELD");
-			portField.Text = (cfg.Port <= 0 ? 4242 : cfg.Port).ToString(NumberFormatInfo.CurrentInfo);
+			portField.Text = (s.Port <= 0 ? 4242 : s.Port).ToString(NumberFormatInfo.CurrentInfo);
 
 			var ttlContainer = widget.GetOrNull("MULTICAST_TTL_CONTAINER");
 			var ttlField = widget.Get<TextFieldWidget>("TTL_FIELD");
-			ttlField.Text = cfg.MulticastTtl.GetValueOrDefault(1).ToString(NumberFormatInfo.CurrentInfo);
+			ttlField.Text = (s.MulticastTtl <= 0 ? 1 : s.MulticastTtl).ToString(NumberFormatInfo.CurrentInfo);
 
 			var bindIfField = widget.Get<TextFieldWidget>("BIND_INTERFACE_FIELD");
-			bindIfField.Text = cfg.BindInterfaceName ?? string.Empty;
+			bindIfField.Text = s.BindInterfaceName ?? string.Empty;
 
 			var rememberCheckbox = widget.Get<CheckboxWidget>("REMEMBER_CHECKBOX");
 			rememberCheckbox.IsChecked = () => remember;
@@ -148,18 +117,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ttl = 1;
 				}
 
-				var newCfg = new CotOutputConfig
-				{
-					Mode = mode,
-					Host = host,
-					Port = port,
-					MulticastTtl = ttl ?? 1,
-					BindInterfaceName = string.IsNullOrWhiteSpace(bindIfField.Text) ? null : bindIfField.Text.Trim(),
-					Remember = remember,
-				};
+				// Write back to CotSettings
+				s.EndpointMode = mode.ToString();
+				s.Host = host;
+				s.Port = port;
+				s.MulticastTtl = ttl ?? 1;
+				s.BindInterfaceName = string.IsNullOrWhiteSpace(bindIfField.Text) ? "" : bindIfField.Text.Trim();
+				s.Save();
 
-				// Initialize and optionally persist
-				CotOutputService.ConfigureAndStart(newCfg, persist: true);
+				// Start the service from settings
+				CotOutputService.ConfigureFromSettings(s);
 
 				Ui.CloseWindow();
 				onComplete();

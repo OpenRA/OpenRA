@@ -10,18 +10,14 @@
 #endregion
 
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
 namespace OpenRA.Mods.Common
 {
-	// N3: Config & persistence types
 	public enum CotEndpointMode
 	{
 		Localhost,
@@ -54,10 +50,8 @@ namespace OpenRA.Mods.Common
 		}
 
 		public string BindInterfaceName { get; set; }
-		public bool Remember { get; set; } = true;
 	}
 
-	// N2: Transport layer + background sender. Config/persistence will come in N3.
 	public static class CotOutputService
 	{
 		const int DefaultQueueCapacity = 256;
@@ -81,12 +75,19 @@ namespace OpenRA.Mods.Common
 				if (started)
 					return;
 
-				// Prefer remembered config if present and marked Remember=true
-				var cfg = TryLoadConfig();
-				if (cfg != null && cfg.Remember)
+				// Prefer CotSettings from settings.yaml
+				try
 				{
-					ConfigureAndStart(cfg, persist: false);
-					return;
+					var s = Game.Settings?.GetOrCreate<CotSettings>(null);
+					if (s != null && s.Enabled)
+					{
+						ConfigureFromSettings(s);
+						return;
+					}
+				}
+				catch
+				{
+					// Settings not available yet (early startup); fall through
 				}
 
 				// Fallback to provided host/port with inferred mode
@@ -98,9 +99,8 @@ namespace OpenRA.Mods.Common
 					Host = host,
 					Port = port,
 					MulticastTtl = 1,
-					Remember = false,
 				};
-				ConfigureAndStart(fallbackCfg, persist: false);
+				ConfigureAndStart(fallbackCfg);
 			}
 		}
 
@@ -171,7 +171,27 @@ namespace OpenRA.Mods.Common
 			Game.OnQuit += Dispose;
 		}
 
-		public static void ConfigureAndStart(CotOutputConfig cfg, bool persist)
+		public static void ConfigureFromSettings(CotSettings s)
+		{
+			if (s == null)
+				throw new ArgumentNullException(nameof(s));
+
+			if (!Enum.TryParse<CotEndpointMode>(s.EndpointMode, true, out var mode))
+				mode = CotEndpointMode.Localhost;
+
+			var cfg = new CotOutputConfig
+			{
+				Mode = mode,
+				Host = s.Host,
+				Port = s.Port is >= 1 and <= 65535 ? s.Port : 4242,
+				MulticastTtl = s.MulticastTtl > 0 ? s.MulticastTtl : 1,
+				BindInterfaceName = string.IsNullOrWhiteSpace(s.BindInterfaceName) ? null : s.BindInterfaceName,
+			};
+
+			ConfigureAndStart(cfg);
+		}
+
+		public static void ConfigureAndStart(CotOutputConfig cfg)
 		{
 			if (cfg == null)
 				throw new ArgumentNullException(nameof(cfg));
@@ -196,8 +216,6 @@ namespace OpenRA.Mods.Common
 
 				var tuple = CreateTransportFromConfig(cfg);
 				Start(tuple.transport, tuple.mode, tuple.host, tuple.port);
-				if (persist && cfg.Remember)
-					TrySaveConfig(cfg);
 			}
 		}
 
@@ -229,65 +247,6 @@ namespace OpenRA.Mods.Common
 					var mode = IsLoopback(ip) ? "Localhost" : "Unicast";
 					return (t, mode, host, port);
 				}
-			}
-		}
-
-		static string GetConfigPath()
-		{
-			try
-			{
-				string baseDir;
-				if (OperatingSystem.IsWindows())
-					baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "OpenRA");
-				else
-					baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".openra");
-				Directory.CreateDirectory(baseDir);
-				return Path.Combine(baseDir, "cot-output.json");
-			}
-			catch
-			{
-				return null;
-			}
-		}
-
-		static CotOutputConfig TryLoadConfig()
-		{
-			try
-			{
-				var path = GetConfigPath();
-				if (string.IsNullOrEmpty(path) || !File.Exists(path))
-					return null;
-				var json = File.ReadAllText(path);
-				var options = new JsonSerializerOptions
-				{
-					ReadCommentHandling = JsonCommentHandling.Skip,
-					AllowTrailingCommas = true,
-				};
-				options.Converters.Add(new JsonStringEnumConverter());
-				return JsonSerializer.Deserialize<CotOutputConfig>(json, options);
-			}
-			catch (Exception e)
-			{
-				Log.Write("cot", e);
-				return null;
-			}
-		}
-
-		static void TrySaveConfig(CotOutputConfig cfg)
-		{
-			try
-			{
-				var path = GetConfigPath();
-				if (string.IsNullOrEmpty(path))
-					return;
-				var options = new JsonSerializerOptions { WriteIndented = true };
-				options.Converters.Add(new JsonStringEnumConverter());
-				var json = JsonSerializer.Serialize(cfg, options);
-				File.WriteAllText(path, json);
-			}
-			catch (Exception e)
-			{
-				Log.Write("cot", e);
 			}
 		}
 

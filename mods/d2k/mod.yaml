@@ -105,6 +105,7 @@ ChromeLayout:
 	common|chrome/settings-input.yaml
 	common|chrome/settings-hotkeys.yaml
 	common|chrome/settings-advanced.yaml
+	common|chrome/settings-cot.yaml
 	common|chrome/credits.yaml
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml

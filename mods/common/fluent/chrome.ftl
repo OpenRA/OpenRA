@@ -433,6 +433,18 @@ options-cot-mode.localhost = Localhost (default)
 options-cot-mode.unicast = Unicast
 options-cot-mode.multicast = Multicast
 
+## settings-cot.yaml
+button-panel-cot = Cursor on Target
+label-cot-section-header = Cursor on Target (CoT) Settings
+checkbox-cot-enabled = Enable CoT Broadcasting
+label-cot-mode = Endpoint Mode:
+label-cot-host = Host Address:
+label-cot-port = Port:
+label-cot-ttl = Multicast TTL:
+label-cot-bind-interface =
+    .label = Bind Interface (optional):
+    .tooltip = Network adapter name to send CoT packets from (e.g. "Ethernet", "Wi-Fi"). Leave blank to use the system default route.
+
 ## mainmenu-prompts.yaml, settings-display.yaml, settings-gameplay.yaml
 label-profile-section-header = Profile
 label-player-container = Player Name:
