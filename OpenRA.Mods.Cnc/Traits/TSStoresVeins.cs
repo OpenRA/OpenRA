@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new TSStoresVeins(init.Self, this); }
 	}
 
-	public class TSStoresVeins : INotifyKilled
+	public class TSStoresVeins : INotifyRemovedFromWorld
 	{
 		readonly TSStoresVeinsInfo info;
 		TSPlayerResources player;
@@ -39,11 +39,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			player = self.Owner.PlayerActor.Trait<TSPlayerResources>();
 		}
 
-		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
-			// Lose the stored resources.
+			// This covers both when the building is sold and when it's destroyed.
 			player.Veins = 0;
 		}
-
 	}
 }
