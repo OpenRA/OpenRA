@@ -663,6 +663,15 @@ MRJ:
 		Range: 5c0
 		DeflectionRelationships: Neutral, Enemy
 	RenderJammerCircle:
+	IssueOrderToBot@AI: ## retreat To safety
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 7
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 TTNK:
 	Inherits: ^TrackedVehicle
@@ -706,6 +715,15 @@ TTNK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 7
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 FTRK:
 	Inherits: ^Vehicle
@@ -758,6 +776,15 @@ FTRK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 DTRK:
 	Inherits: ^Vehicle
@@ -924,7 +951,6 @@ STNK:
 		Range: 4c0
 	AutoTarget:
 		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	Armament:
 		Weapon: APTusk.stnk
 		LocalOffset: 192,0,176
@@ -955,6 +981,16 @@ STNK:
 		Prerequisites: vehicles.upgraded
 	IssueOrderToBot@AI:
 		RequiresCondition: loaded
+		OrderTrigger: Attack
 		OrderName: Unload
 		OrderChance: 100
 		OrderInterval: 45
+	IssueOrderToBot@AI2: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
