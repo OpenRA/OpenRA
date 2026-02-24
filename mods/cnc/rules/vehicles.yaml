@@ -354,6 +354,15 @@ BGGY:
 		Actor: BGGY.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 BIKE:
 	Inherits: ^Vehicle
@@ -402,6 +411,15 @@ BIKE:
 		Actor: BIKE.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 JEEP:
 	Inherits: ^Vehicle
@@ -453,6 +471,15 @@ JEEP:
 		Actor: JEEP.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 LTNK:
 	Inherits: ^Tank
@@ -816,7 +843,6 @@ STNK:
 		Voice: Attack
 	AutoTarget:
 		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	FireWarheadsOnDeath:
 		Weapon: UnitExplodeStealthTank
 		EmptyWeapon: UnitExplodeStealthTank
@@ -825,6 +851,15 @@ STNK:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
 	-MustBeDestroyed:
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 MHQ:
 	Inherits: ^Vehicle

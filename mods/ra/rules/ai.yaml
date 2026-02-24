@@ -705,6 +705,8 @@ Player:
 			e3: 30
 			e4: 15
 			e7: 1
+			medi: 1
+			mech: 1
 			dog: 15
 			shok: 15
 			spy: 2
@@ -722,6 +724,7 @@ Player:
 			ttnk: 25
 			stnk: 5
 			ctnk: 3
+			mrj: 1
 			dtrk: 1
 			qtnk: 1
 		UnitLimits:
@@ -729,6 +732,7 @@ Player:
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			mrj: 1
 			dtrk: 1
 			qtnk: 1
 	SquadManagerBotModule@normal:
@@ -752,6 +756,8 @@ Player:
 			e3: 30
 			e4: 15
 			e7: 1
+			medi: 2
+			mech: 2
 			dog: 15
 			shok: 15
 			harv: 15
@@ -778,13 +784,17 @@ Player:
 			ca: 10
 			pt: 10
 			ctnk: 3
+			mrj: 1
 			dtrk: 1
 			qtnk: 1
 		UnitLimits:
 			dog: 4
+			medi: 3
+			mech: 3
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			mrj: 1
 			dtrk: 1
 			qtnk: 1
 	SquadManagerBotModule@turtle:
@@ -810,6 +820,8 @@ Player:
 			e3: 30
 			e4: 15
 			e7: 1
+			medi: 3
+			mech: 3
 			dog: 15
 			shok: 15
 			spy: 2
@@ -837,14 +849,18 @@ Player:
 			pt: 10
 			mnly: 2
 			ctnk: 3
+			mrj: 1
 			dtrk: 1
 			qtnk: 1
 		UnitLimits:
 			dog: 3
+			medi: 3
+			mech: 3
 			harv: 8
 			jeep: 2
 			ftrk: 4
 			mnly: 2
+			mrj: 2
 			dtrk: 1
 			qtnk: 1
 	MinelayerBotModule@turtle:
@@ -885,12 +901,14 @@ Player:
 			ca: 20
 			pt: 10
 			ctnk: 3
+			mrj: 1
 		UnitLimits:
 			harv: 4
 			ftrk: 3
 			arty: 1
 			v2rl: 1
 			jeep: 1
+			mrj: 1
 		UnitDelays:
 			harv: 10000
 	SendUnitToAttackBotModule@Mad:

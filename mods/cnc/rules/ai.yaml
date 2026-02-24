@@ -20,6 +20,8 @@ Player:
 	GrantConditionOnBotOwner@hal9001:
 		Condition: enable-hal9001-ai
 		Bots: hal9001
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 	SupportPowerBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		Decisions:
@@ -283,6 +285,7 @@ Player:
 			e3: 40
 			e4: 15
 			e5: 15
+			rmbo: 1
 			harv: 10
 			bggy: 5
 			bike: 40
@@ -301,6 +304,8 @@ Player:
 		UnitLimits:
 			harv: 8
 			mlrs: 3
+		UnitDelays:
+			bike: 2000
 	McvExpansionManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		McvTypes: mcv
@@ -331,6 +336,7 @@ Player:
 			e3: 40
 			e4: 30
 			e5: 30
+			rmbo: 1
 			harv: 10
 			bggy: 10
 			ftnk: 10
@@ -348,6 +354,8 @@ Player:
 		UnitLimits:
 			harv: 8
 			mlrs: 2
+		UnitDelays:
+			bike: 2000
 	SquadManagerBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		SquadSize: 15
@@ -367,6 +375,7 @@ Player:
 			e3: 40
 			e4: 50
 			e5: 50
+			rmbo: 1
 			harv: 16
 			bggy: 10
 			bike: 10
@@ -385,3 +394,5 @@ Player:
 		UnitLimits:
 			harv: 8
 			mlrs: 3
+		UnitDelays:
+			bike: 2000
