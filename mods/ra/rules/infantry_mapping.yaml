@@ -1,0 +1,160 @@
+# Infantry CoT/MIL-STD-2525 mapping (J4-M0 skeleton)
+# Source: mirrored from defaults currently in `mods/ra/rules/defaults.yaml` under ^Infantry -> CoTInfantryEmitter
+# Purpose: externalize per-actor CoT `type` and per-state 2525C IDs for use by CoTInfantryEmitter
+# States: Undamaged, Damaged (maps to engine's "Default" bucket), Critical, Dead
+
+version: 1
+
+actors:
+  E1:
+    name: Rifleman
+    cotType: "a-f-G-E-W-R-R"
+    milsym:
+      Undamaged: "SFGCEWRR--*****"
+      Damaged:   "SFGDEWRR--*****"
+      Critical:  "SFGXEWRR--*****"
+      Dead:      "SFGXEWRR--*****"
+
+  E2:
+    name: Grenadier
+    cotType: "a-f-G-E-W-Z-L"
+    milsym:
+      Undamaged: "SFGCEWZL--*****"
+      Damaged:   "SFGDEWZL--*****"
+      Critical:  "SFGXEWZL--*****"
+      Dead:      "SFGXEWZL--*****"
+
+  E3:
+    name: RocketSoldier
+    cotType: "a-f-G-E-W-S-L"
+    milsym:
+      Undamaged: "SFGCEWSL--*****"
+      Damaged:   "SFGDEWSL--*****"
+      Critical:  "SFGXEWSL--*****"
+      Dead:      "SFGXEWSL--*****"
+
+  E4:
+    name: Flamethrower
+    cotType: "a-f-G-E-X-F"
+    milsym:
+      Undamaged: "SFGCEXF---*****"
+      Damaged:   "SFGDEXF---*****"
+      Critical:  "SFGXEXF---*****"
+      Dead:      "SFGXEXF---*****"
+
+  E6:
+    name: Engineer
+    cotType: "a-f-G-U-C-E"
+    milsym:
+      Undamaged: "SFGCUCE---*****"
+      Damaged:   "SFGDUCE---*****"
+      Critical:  "SFGXUCE---*****"
+      Dead:      "SFGXUCE---*****"
+
+  SPY:
+    name: Spy
+    cotType: "no-defined-type"
+    milsym:
+      Undamaged: "OFOCS-----*****"
+      Damaged:   "OFODS-----*****"
+      Critical:  "OFOXS-----*****"
+      Dead:      "OFOXS-----*****"
+
+  E7:
+    name: Commando
+    cotType: "a-f-F-G-S"
+    milsym:
+      Undamaged: "SFFCGS----*****"
+      Damaged:   "SFFDGS----*****"
+      Critical:  "SFFXGS----*****"
+      Dead:      "SFFXGS----*****"
+
+  MEDI:
+    name: Medic
+    cotType: "a-f-G-U-S-M"
+    milsym:
+      Undamaged: "SFGCUSM---*****"
+      Damaged:   "SFGDUSM---*****"
+      Critical:  "SFGXUSM---*****"
+      Dead:      "SFGXUSM---*****"
+
+  MECH:
+    name: Mechanic
+    cotType: "a-f-G-E-V-E"
+    milsym:
+      Undamaged: "SFGCEVE---*****"
+      Damaged:   "SFGDEVE---*****"
+      Critical:  "SFGXEVE---*****"
+      Dead:      "SFGXEVE---*****"
+
+  THF:
+    name: Thief
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  SHOK:
+    name: ShockTrooper
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  DOG:
+    name: Dog
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  Zombie:
+    name: Zombie
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  Ant:
+    name: Ant
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  FireAnt:
+    name: FireAnt
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  ScoutAnt:
+    name: ScoutAnt
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"
+
+  WarriorAnt:
+    name: WarriorAnt
+    cotType: "a-f-G-U-C-I"
+    milsym:
+      Undamaged: "SFGCUCI--------"
+      Damaged:   "SFGDUCI--------"
+      Critical:  "SFGXUCI--------"
+      Dead:      "SFGXUCI--------"

@@ -247,10 +247,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			void OnIntroductionComplete()
 			{
-				void OnSysInfoComplete()
+				void OnCotOutputComplete()
 				{
 					LoadAndDisplayNews(webServices, newsBG);
 					SwitchMenu(MenuType.Main);
+				}
+
+				void OnSysInfoComplete()
+				{
+					if (CotOutputSettingsPromptLogic.ShouldShowPrompt())
+					{
+						Ui.OpenWindow("MAINMENU_COT_OUTPUT_PROMPT", new WidgetArgs
+						{
+							{ "onComplete", (Action)OnCotOutputComplete }
+						});
+					}
+					else
+						OnCotOutputComplete();
 				}
 
 				if (SystemInfoPromptLogic.ShouldShowPrompt())

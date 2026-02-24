@@ -1,0 +1,28 @@
+## CoT Fog-of-War visibility routing defaults (Journey 8)
+## This file wires the CoTVisibilityRouter world trait and sets default policy.
+
+World:
+	CoTVisibilityRouter:
+		TeamSharing: true
+		UseGenericMilsym: true
+		OverrideType: true
+
+
+		GroundMobileMilsymId: "SHGP-----------"
+		BuildingMilsymId: "SHGPI-----H----"
+		AircraftMilsymId: "SHAP-----------"
+		VesselMilsymId: "SHUP-----------"
+
+		GroundMobileType: "a-h-G"
+		BuildingType: "a-h-G-I"
+		AircraftType: "a-h-A"
+		VesselType: "a-h-U"
+
+
+		StaleSecondsWhenLost: 1
+
+
+		FriendlyAlwaysEmit: true
+
+
+		StealthEmitOnlyWhenAttacking: true

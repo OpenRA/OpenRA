@@ -76,6 +76,7 @@ Rules:
 	ra|rules/player.yaml
 	ra|rules/palettes.yaml
 	ra|rules/world.yaml
+	ra|rules/cot-fow.yaml
 	ra|rules/defaults.yaml
 	ra|rules/vehicles.yaml
 	ra|rules/husks.yaml

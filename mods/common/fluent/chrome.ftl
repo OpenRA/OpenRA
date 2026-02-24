@@ -417,6 +417,22 @@ label-mainmenu-system-info-prompt-text-a = We would like to collect some system 
 label-mainmenu-system-info-prompt-text-b = With your permission, the following anonymous data will be sent each game launch:
 checkbox-mainmenu-system-info-prompt-sysinfo = Send System Information
 
+## mainmenu-prompts.yaml (CoT Output Settings)
+label-mainmenu-cot-output-prompt-title = Establishing Battlefield Control
+label-mainmenu-cot-output-prompt-text-a = Configure Chain-of-Thought output destination.
+label-mainmenu-cot-output-prompt-text-b = Choose a mode and address below. You can change this later in Settings.
+label-cot-output-mode = Mode:
+label-cot-output-host = Host:
+label-cot-output-port = Port:
+label-cot-output-ttl = Multicast TTL:
+label-cot-output-bind-interface = Bind Interface:
+checkbox-cot-output-remember = Remember these settings
+
+## CoT Output mode options
+options-cot-mode.localhost = Localhost (default)
+options-cot-mode.unicast = Unicast
+options-cot-mode.multicast = Multicast
+
 ## mainmenu-prompts.yaml, settings-display.yaml, settings-gameplay.yaml
 label-profile-section-header = Profile
 label-player-container = Player Name:
