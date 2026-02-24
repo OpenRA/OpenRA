@@ -37,6 +37,7 @@ Player:
 			stnk: IdleUnit
 			hbox: All
 			pbox: All
+			tran: IdleUnit
 		ValidTransportOwner: AlliedBot
 		PassengerTypes: e1, e1r1, e2, e3, e3r1, e4, e7, shok, thf
 	ResourceMapBotModule:
@@ -729,6 +730,7 @@ Player:
 			mrj: 1
 			dtrk: 1
 			qtnk: 1
+			tran: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
@@ -737,6 +739,9 @@ Player:
 			mrj: 1
 			dtrk: 1
 			qtnk: 1
+			tran: 1
+		UnitDelays:
+			tran: 9000
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
@@ -790,16 +795,19 @@ Player:
 			mrj: 1
 			dtrk: 1
 			qtnk: 1
+			tran: 1
 		UnitLimits:
 			dog: 4
 			medi: 3
 			mech: 3
 			harv: 8
 			jeep: 4
-			ftrk: 4
-			mrj: 1
 			dtrk: 1
 			qtnk: 1
+			mrj: 1
+			tran: 1
+		UnitDelays:
+			tran: 8000
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
@@ -907,6 +915,7 @@ Player:
 			pt: 10
 			ctnk: 3
 			mrj: 1
+			tran: 1
 		UnitLimits:
 			harv: 4
 			ftrk: 3
@@ -914,6 +923,7 @@ Player:
 			v2rl: 1
 			jeep: 1
 			mrj: 1
+			tran: 1
 		UnitDelays:
 			harv: 10000
 	SendUnitToAttackBotModule@Mad:
@@ -944,6 +954,12 @@ Player:
 				TryGetHealed: False
 				AttackRequires: Disguised
 				AttackOrderName: Infiltrate
+			tran:
+				AttackDesireOfEach: 80
+				MoveToOrderName: Move
+				AttackOrderName: Unload
+				MoveBackOrderName: Move
+				AttackRequires: CargoLoaded
 		ValidTargets: SpyInfiltrate
 		InvalidTargets: WaterActor
 		TargetDistances: Random

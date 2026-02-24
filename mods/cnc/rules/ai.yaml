@@ -96,6 +96,13 @@ Player:
 		HarvesterTypes: harv
 		RefineryTypes: proc
 		EnemyBaseBuildingTypes: fact,pyle,hand,weap,afld,gtwr,gun,atwr,obli,hpad,nuke,nuk2,proc
+	LoadCargoBotModule:
+		RequiresCondition: enable-hal9001-ai || enable-cabal-ai || enable-watson-ai
+		TransportTypesAndLoadRequirement:
+			apc: IdleUnit
+			tran: IdleUnit
+		ValidTransportOwner: AlliedBot
+		PassengerTypes: e1, e2, e3, e4, e5, rmbo
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -266,7 +273,7 @@ Player:
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		SquadSize: 50
-		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs, tran
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
@@ -301,11 +308,14 @@ Player:
 			heli: 5
 			orca: 5
 			mlrs: 1
+			tran: 1
 		UnitLimits:
 			harv: 8
 			mlrs: 3
+			tran: 1
 		UnitDelays:
 			bike: 2000
+			tran: 6000
 	McvExpansionManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		McvTypes: mcv
@@ -322,7 +332,7 @@ Player:
 	SquadManagerBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs, tran
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
@@ -351,15 +361,18 @@ Player:
 			jeep: 20
 			mtnk: 50
 			mlrs: 1
+			tran: 1
 		UnitLimits:
 			harv: 8
 			mlrs: 2
+			tran: 1
 		UnitDelays:
 			bike: 2000
+			tran: 5000
 	SquadManagerBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs, tran
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
@@ -391,8 +404,23 @@ Player:
 			msam: 50
 			htnk: 50
 			orca: 10
+			tran: 1
 		UnitLimits:
 			harv: 8
 			mlrs: 3
+			tran: 1
 		UnitDelays:
 			bike: 2000
+			tran: 5000
+	SendUnitToAttackBotModule@AirTransport:
+		RequiresCondition: enable-hal9001-ai || enable-cabal-ai || enable-watson-ai
+		ActorTypesAndAttackOptions:
+			tran:
+				AttackDesireOfEach: 80
+				MoveToOrderName: Move
+				AttackOrderName: Unload
+				MoveBackOrderName: Move
+				AttackRequires: CargoLoaded
+		ValidTargets: Structure
+		InvalidTargets: Water, Support
+		TargetDistances: Random

@@ -190,6 +190,7 @@ APC:
 		MaxWeight: 5
 		UnloadVoice: Unload
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	FireWarheadsOnDeath:
 		Weapon: UnitExplodeBig
 		EmptyWeapon: UnitExplodeBig
@@ -197,6 +198,11 @@ APC:
 		Actor: APC.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 ARTY:
 	Inherits: ^Tank
