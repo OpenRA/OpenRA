@@ -21,14 +21,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Flags]
-	public enum TargetDistance
-	{
-		Closest = 0,
-		Furthest = 1,
-		Random = 2
-	}
-
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Bot logic for units that should not be sent with a regular squad, like suicide or subterranean units.")]
 	public sealed class SendUnitToAttackBotModuleInfo : ConditionalTraitInfo

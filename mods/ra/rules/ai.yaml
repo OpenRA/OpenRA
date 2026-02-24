@@ -150,7 +150,7 @@ Player:
 				Consideration@ally-structure-assualt-target1:
 					StrategyName: structure-assualt-magic
 					Against: Enemy
-					ValidActorTypes: mcv, harv
+					ValidTargetTypes: Structure
 					Attractiveness: 100
 					TargetMetric: Value
 					CheckRadius: 4c0
@@ -269,7 +269,7 @@ Player:
 				Consideration@ally-structure-assualt-target1:
 					StrategyName: structure-assualt-magic
 					Against: Enemy
-					ValidActorTypes: mcv, harv
+					ValidTargetTypes: Structure
 					Attractiveness: 100
 					TargetMetric: Value
 					CheckRadius: 4c0
@@ -319,14 +319,15 @@ Player:
 				VisibilityCheck: false
 				Consideration@1:
 					Against: Enemy
-					Attractiveness: 1
-					TargetMetric: None
+					Attractiveness: 1100
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					TargetMetric: Undetected
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Enemy
+					Attractiveness: 1
 					ValidTargetTypes: Structure
-					Attractiveness: 100
-					TargetMetric: None
+					TargetMetric: Value
 					CheckRadius: 5c0
 			paratroopers:
 				OrderName: SovietParatroopers
@@ -392,7 +393,7 @@ Player:
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Ally
-					ValidTargetTypes: Air, Ground, Water
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0

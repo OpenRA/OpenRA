@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Evaluates the attractiveness of a position according to all considerations.</summary>
-		public (int Attractiveness, Actor TargetActor) GetAttractiveness(
+		public (int Attractiveness, Actor TargetActor, FrozenActor FrozenActor) GetAttractiveness(
 			WPos pos,
 			Player firedBy,
 			string considerationName,
@@ -131,10 +131,11 @@ namespace OpenRA.Mods.Common.Traits
 			var targetTile = world.Map.CellContaining(pos);
 
 			if (!Considerations.TryGetValue(considerationName, out var strategy) && !world.Map.Contains(targetTile))
-				return (0, null);
+				return (0, null, null);
 
 			var considerations = asExtraPos ? strategy.ExtraPositionConsiderations : strategy.TargetPositionConsiderations;
 			var goodActors = new List<Actor>();
+			var goodFrozenActors = new List<FrozenActor>();
 			foreach (var consideration in considerations)
 			{
 				var radiusToUse = new WDist(consideration.CheckRadius.Length);
@@ -156,14 +157,21 @@ namespace OpenRA.Mods.Common.Traits
 				var delta = new WVec(radiusToUse, radiusToUse, WDist.Zero);
 				var tl = world.Map.CellContaining(pos - delta);
 				var br = world.Map.CellContaining(pos + delta);
-				var checkFrozen = firedBy.FrozenActorLayer.FrozenActorsInRegion(new CellRegion(world.Map.Grid.Type, tl, br));
 
-				// IsValid check filters out Frozen Actors that have not initialized their Owner
+				var checkFrozen = firedBy.FrozenActorLayer.FrozenActorsInRegion(new CellRegion(world.Map.Grid.Type, tl, br));
 				foreach (var scrutinized in checkFrozen)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy);
+				{
+					// IsValid check filters out Frozen Actors that have not initialized their Owner
+					var attractiveness = consideration.GetAttractiveness(scrutinized, firedBy);
+
+					if (attractiveness > 0)
+						goodFrozenActors.Add(scrutinized);
+
+					answer += attractiveness;
+				}
 			}
 
-			return (answer, goodActors.RandomOrDefault(world.LocalRandom));
+			return (answer, goodActors.RandomOrDefault(world.LocalRandom), goodFrozenActors.RandomOrDefault(world.LocalRandom));
 		}
 
 		/// <summary>Evaluates the attractiveness of an actor according to all considerations.</summary>
@@ -233,7 +241,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
 		public class Consideration
 		{
-			public enum DecisionMetric { Health, HealthLoss, Value, None }
+			public enum DecisionMetric { Health, HealthLoss, Value, Undetected, None }
 
 			[Desc("The strategy name of the consideration", "Considerations of the same strategy will be considered together in one check run.")]
 			public readonly string StrategyName = "primary";
@@ -276,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 			/// <summary>Evaluates a single actor according to the rules defined in this consideration.</summary>
 			public int GetAttractiveness(Actor a, Player firedBy, bool visibilityCheck = true)
 			{
-				if (a == null || a.IsDead)
+				if (a == null || a.IsDead || !a.IsInWorld)
 					return 0;
 
 				if ((ValidActorTypes.Count > 0 && !ValidActorTypes.Contains(a.Info.Name)) || (InvalidActorTypes.Count > 0 && InvalidActorTypes.Contains(a.Info.Name)))
@@ -285,7 +293,8 @@ namespace OpenRA.Mods.Common.Traits
 				if ((AgainstOwnActors && a.Owner != firedBy) || (!AgainstOwnActors && !Against.HasRelationship(firedBy.RelationshipWith(a.Owner))))
 					return 0;
 
-				if (visibilityCheck && !a.CanBeViewedByPlayer(firedBy))
+				var canbeview = a.CanBeViewedByPlayer(firedBy);
+				if (TargetMetric != DecisionMetric.Undetected && visibilityCheck && !canbeview)
 					return 0;
 
 				if ((!a.IsTargetableBy(firedBy.PlayerActor)) && ((!ValidTargetTypes.IsEmpty) || !InvalidTargetTypes.IsEmpty))
@@ -313,6 +322,17 @@ namespace OpenRA.Mods.Common.Traits
 							// Cast to long to avoid overflow when multiplying by the health
 							return (int)((long)healthneed * Attractiveness / health.MaxHP);
 
+						case DecisionMetric.Undetected:
+							if (canbeview)
+								return 0;
+
+							// we consider visible frozen actor can be regard as detected actor for this bot module.
+							var frozen = a.TraitOrDefault<FrozenUnderFog>();
+							if (frozen != null && frozen.IsVisible(a, firedBy))
+								return 0;
+
+							return Attractiveness;
+
 						default:
 							return Attractiveness;
 					}
@@ -326,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 				if ((AgainstOwnActors && fa.Owner != firedBy) || (!AgainstOwnActors && !Against.HasRelationship(firedBy.RelationshipWith(fa.Owner))))
 					return 0;
 
-				if (fa == null || !fa.IsValid || !fa.Visible)
+				if (fa == null || !fa.IsValid || !fa.Visible || TargetMetric == DecisionMetric.Undetected)
 					return 0;
 
 				if ((ValidActorTypes.Count > 0 && !ValidActorTypes.Contains(fa.Info.Name)) || (InvalidActorTypes.Count > 0 && InvalidActorTypes.Contains(fa.Info.Name)))

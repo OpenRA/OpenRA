@@ -434,7 +434,7 @@ namespace OpenRA.Mods.Common.Traits
 					var pos = world.Map.CenterOfCell(new CPos(x, y));
 					var consideredAttractiveness = 0;
 
-					var (attractiveness, targetActor) = powerDecision.GetAttractiveness(pos, player, strategyName, asExtraPos);
+					var (attractiveness, targetActor, frozenTarget) = powerDecision.GetAttractiveness(pos, player, strategyName, asExtraPos);
 
 					consideredAttractiveness += attractiveness;
 
@@ -447,19 +447,33 @@ namespace OpenRA.Mods.Common.Traits
 						|| (powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.ActorLocation && !asExtraPos))
 					{
 						if (targetActor == null)
-							continue;
+						{
+							if (frozenTarget == null)
+								continue;
 
-						bestPos = world.Map.CenterOfCell(targetActor.Location);
-						bestActor = targetActor;
+							bestPos = frozenTarget.CenterPosition;
+						}
+						else
+						{
+							bestPos = world.Map.CenterOfCell(targetActor.Location);
+							bestActor = targetActor;
+						}
 					}
 					else if ((powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.ActorCenter && asExtraPos)
 						|| (powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.ActorCenter && !asExtraPos))
 					{
 						if (targetActor == null)
-							continue;
+						{
+							if (frozenTarget == null)
+								continue;
 
-						bestPos = targetActor.CenterPosition;
-						bestActor = targetActor;
+							bestPos = frozenTarget.CenterPosition;
+						}
+						else
+						{
+							bestPos = targetActor.CenterPosition;
+							bestActor = targetActor;
+						}
 					}
 					else if ((powerDecision.ExtraLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor && asExtraPos)
 						|| (powerDecision.TargetLocationMode == BotSupportPowerTargetLocationMode.CellCanBeEnteredByTargetedActor && !asExtraPos))
