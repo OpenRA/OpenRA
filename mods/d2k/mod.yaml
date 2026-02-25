@@ -129,6 +129,7 @@ ChromeLayout:
 	d2k|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
+	common|chrome/geo-map-generator.yaml
 	common|chrome/replaybrowser.yaml
 	common|chrome/gamesave-browser.yaml
 	common|chrome/gamesave-loading.yaml

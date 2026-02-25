@@ -214,6 +214,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			loadMapButton.Disabled = !hasMaps;
 
+			var geoMapButton = mapEditorMenu.Get<ButtonWidget>("GEO_MAP_BUTTON");
+			geoMapButton.OnClick = () =>
+			{
+				SwitchMenu(MenuType.None);
+				Game.OpenWindow("GEO_MAP_GENERATOR_BG", new WidgetArgs()
+				{
+					{ "onSelect", onSelect },
+					{ "onExit", () => SwitchMenu(MenuType.MapEditor) }
+				});
+			};
+
 			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
 			var newsBG = widget.GetOrNull("NEWS_BG");

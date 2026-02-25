@@ -753,3 +753,20 @@ label-game-admin = Game Admin
 ## gamesave-loading.yaml
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
+
+## geo-map-generator.yaml
+label-geo-map-generator-title = Real-World Map Generator
+label-geo-map-generator-mgrs = MGRS Coordinate:
+label-geo-map-generator-size = Map Size:
+label-geo-map-generator-mpc = Meters / Cell:
+label-geo-map-generator-features = Features:
+checkbox-geo-map-generator-roads = Roads
+checkbox-geo-map-generator-water = Water
+checkbox-geo-map-generator-vegetation = Vegetation
+checkbox-geo-map-generator-buildings = Buildings
+checkbox-geo-map-generator-coastline = Coastlines
+checkbox-geo-map-generator-invert-coastline = Invert Coast
+label-geo-map-generator-status-ready = Enter MGRS coordinate and click Generate.
+button-geo-map-generator-generate = Generate
+button-geo-map-generator-open-editor = Open in Map Editor
+button-map-editor-geo-map = Real-World Map

@@ -166,6 +166,7 @@ ChromeLayout:
 	common|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
+	common|chrome/geo-map-generator.yaml
 	common|chrome/playerprofile.yaml
 	common|chrome/text-notifications.yaml
 

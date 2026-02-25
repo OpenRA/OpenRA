@@ -211,6 +211,13 @@ Container@MAINMENU:
 							Height: 30
 							Text: button-map-editor-load-map
 							Font: Bold
+						Button@GEO_MAP_BUTTON:
+							X: PARENT_WIDTH / 2 - WIDTH / 2
+							Y: 140
+							Width: 140
+							Height: 30
+							Text: button-map-editor-geo-map
+							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Key: escape

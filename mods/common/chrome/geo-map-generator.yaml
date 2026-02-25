@@ -1,0 +1,151 @@
+Background@GEO_MAP_GENERATOR_BG:
+	Logic: GeoMapGeneratorLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 500
+	Height: 580
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 15
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-geo-map-generator-title
+			Align: Center
+			Font: Bold
+		Label@MGRS_LABEL:
+			X: 20
+			Y: 55
+			Width: 140
+			Height: 25
+			Align: Right
+			Text: label-geo-map-generator-mgrs
+		TextField@MGRS_TEXTFIELD:
+			X: 170
+			Y: 55
+			Width: 300
+			Height: 25
+			MaxLength: 20
+			Text: 18STJ8690017000
+		Label@SIZE_LABEL:
+			X: 20
+			Y: 95
+			Width: 140
+			Height: 25
+			Align: Right
+			Text: label-geo-map-generator-size
+		DropDownButton@SIZE_DROPDOWN:
+			X: 170
+			Y: 95
+			Width: 120
+			Height: 25
+		Label@MPC_LABEL:
+			X: 20
+			Y: 130
+			Width: 140
+			Height: 25
+			Align: Right
+			Text: label-geo-map-generator-mpc
+		DropDownButton@MPC_DROPDOWN:
+			X: 170
+			Y: 130
+			Width: 120
+			Height: 25
+		Label@FEATURES_LABEL:
+			X: 20
+			Y: 175
+			Width: 140
+			Height: 25
+			Align: Right
+			Text: label-geo-map-generator-features
+			Font: Bold
+		Checkbox@ROADS_CHECKBOX:
+			X: 170
+			Y: 175
+			Width: 140
+			Height: 20
+			Text: checkbox-geo-map-generator-roads
+			Font: Regular
+		Checkbox@WATER_CHECKBOX:
+			X: 320
+			Y: 175
+			Width: 140
+			Height: 20
+			Text: checkbox-geo-map-generator-water
+			Font: Regular
+		Checkbox@VEGETATION_CHECKBOX:
+			X: 170
+			Y: 200
+			Width: 140
+			Height: 20
+			Text: checkbox-geo-map-generator-vegetation
+			Font: Regular
+		Checkbox@BUILDINGS_CHECKBOX:
+			X: 320
+			Y: 200
+			Width: 140
+			Height: 20
+			Text: checkbox-geo-map-generator-buildings
+			Font: Regular
+		Checkbox@COASTLINE_CHECKBOX:
+			X: 170
+			Y: 225
+			Width: 140
+			Height: 20
+			Text: checkbox-geo-map-generator-coastline
+			Font: Regular
+		Checkbox@INVERT_COASTLINE_CHECKBOX:
+			X: 320
+			Y: 225
+			Width: 160
+			Height: 20
+			Text: checkbox-geo-map-generator-invert-coastline
+			Font: Regular
+		Label@SEPARATOR:
+			X: 20
+			Y: 265
+			Width: PARENT_WIDTH - 40
+			Height: 1
+		Label@STATUS_LABEL:
+			X: 20
+			Y: 280
+			Width: PARENT_WIDTH - 40
+			Height: 25
+			Text: label-geo-map-generator-status-ready
+			Font: Regular
+			Align: Center
+		ProgressBar@PROGRESS_BAR:
+			X: 20
+			Y: 310
+			Width: PARENT_WIDTH - 40
+			Height: 20
+		Label@STATS_LABEL:
+			X: 20
+			Y: 345
+			Width: PARENT_WIDTH - 40
+			Height: 150
+			Font: Regular
+			Align: Left
+		Button@GENERATE_BUTTON:
+			X: 30
+			Y: PARENT_HEIGHT - 50
+			Width: 140
+			Height: 30
+			Text: button-geo-map-generator-generate
+			Font: Bold
+			Key: return
+		Button@OPEN_EDITOR_BUTTON:
+			X: 180
+			Y: PARENT_HEIGHT - 50
+			Width: 180
+			Height: 30
+			Text: button-geo-map-generator-open-editor
+			Font: Bold
+		Button@CANCEL_BUTTON:
+			X: PARENT_WIDTH - 140 - 30
+			Y: PARENT_HEIGHT - 50
+			Width: 140
+			Height: 30
+			Text: button-cancel
+			Font: Bold
+			Key: escape
