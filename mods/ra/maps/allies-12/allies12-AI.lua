@@ -677,7 +677,7 @@ end
 
 ProduceDogs = function(d, owner, kenn)
     Trigger.AfterDelay(DateTime.Seconds(9), function()
-        if not kenn.IsDead then
+        if not kenn.IsDead and kenn.Owner ~= owner then
             local dog = Reinforcements.Reinforce(owner, {"dog"}, { kenn.Location, kenn.Location + CVec.New(0, 1) })[1]
             d.exists = true
             Trigger.AfterDelay(DateTime.Seconds(1), function()
