@@ -441,9 +441,9 @@ label-cot-mode = Endpoint Mode:
 label-cot-host = Host Address:
 label-cot-port = Port:
 label-cot-ttl = Multicast TTL:
-label-cot-bind-interface =
-    .label = Bind Interface (optional):
-    .tooltip = Network adapter name to send CoT packets from (e.g. "Ethernet", "Wi-Fi"). Leave blank to use the system default route.
+label-cot-bind-interface = Bind Interface (optional):
+label-cot-bind-interface-desc = Network adapter name to send from (e.g. "Ethernet", "Wi-Fi"). Leave blank for default.
+button-cot-test = Send Test Marker
 
 ## mainmenu-prompts.yaml, settings-display.yaml, settings-gameplay.yaml
 label-profile-section-header = Profile

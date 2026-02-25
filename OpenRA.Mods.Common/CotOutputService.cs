@@ -235,9 +235,20 @@ namespace OpenRA.Mods.Common
 				case CotEndpointMode.Multicast:
 				{
 					var ip = ResolveIPv4(host);
-					var ttl = cfg.MulticastTtl.GetValueOrDefault(1);
-					var t = new UdpMulticastTransport(new IPEndPoint(ip, port), ttl: ttl, loopback: false);
-					return (t, "Multicast", host, port);
+					if (IsMulticast(ip))
+					{
+						var ttl = cfg.MulticastTtl.GetValueOrDefault(1);
+						var t = new UdpMulticastTransport(new IPEndPoint(ip, port), ttl: ttl, loopback: false);
+						return (t, "Multicast", host, port);
+					}
+					else
+					{
+						// Non-multicast address (e.g. broadcast 255.255.255.255) — use unicast transport with broadcast enabled
+						Log.Write("cot", $"address {host} is not multicast (224-239); using unicast/broadcast transport");
+						var t = new UdpUnicastTransport(new IPEndPoint(ip, port));
+						var modeLabel = IsBroadcast(ip) ? "Broadcast" : "Unicast";
+						return (t, modeLabel, host, port);
+					}
 				}
 				case CotEndpointMode.Unicast:
 				default:
@@ -313,6 +324,14 @@ namespace OpenRA.Mods.Common
 		}
 
 		static bool IsLoopback(IPAddress ip) => IPAddress.IsLoopback(ip);
+
+		static bool IsBroadcast(IPAddress ip)
+		{
+			if (ip.AddressFamily != AddressFamily.InterNetwork)
+				return false;
+			var b = ip.GetAddressBytes();
+			return b[0] == 255 && b[1] == 255 && b[2] == 255 && b[3] == 255;
+		}
 	}
 
 	interface ICotTransport : IDisposable
