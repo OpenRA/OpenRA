@@ -124,6 +124,8 @@ harvester:
 		Pieces: 1, 3
 		Range: 1c0, 5c0
 		RequiresCondition: !harvester-empty
+	Targetable@Harvester:
+		TargetTypes: Harvester
 
 trike:
 	Inherits: ^Vehicle

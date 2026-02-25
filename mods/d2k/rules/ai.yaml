@@ -20,6 +20,8 @@ Player:
 	GrantConditionOnBotOwner@gladius:
 		Condition: enable-gladius-ai
 		Bots: gladius
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	ProvidesPrerequisite@autoConcreteForBots:
 		Prerequisite: global-auto-concrete
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
@@ -76,6 +78,9 @@ Player:
 					CheckRadius: 7c0
 			Fremen:
 				OrderName: ProduceActorPower.Fremen
+				MinimumAttractiveness: -1
+			Saboteur:
+				OrderName: ProduceActorPower.Saboteur
 				MinimumAttractiveness: -1
 
 	HarvesterBotModule:
@@ -269,7 +274,7 @@ Player:
 		RequiresCondition: enable-omnius-ai
 		SquadSize: 8
 		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter, saboteur, thumper
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep, Air, Cliff
 		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
@@ -282,6 +287,7 @@ Player:
 			trooper: 40
 			mpsardaukar: 20
 			grenadier: 20
+			thumper: 1
 			harvester: 1
 			trike.starport: 5
 			quad.starport: 7
@@ -305,6 +311,7 @@ Player:
 		UnitLimits:
 			harvester: 15
 			carryall: 8
+			thumper: 1
 	McvManagerBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		McvTypes: mcv
@@ -314,7 +321,7 @@ Player:
 		RequiresCondition: enable-vidious-ai
 		SquadSize: 6
 		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter, saboteur, thumper
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep, Air, Cliff
 		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
@@ -327,6 +334,7 @@ Player:
 			trooper: 40
 			mpsardaukar: 20
 			grenadier: 20
+			thumper: 1
 			harvester: 1
 			trike.starport: 7
 			quad.starport: 12
@@ -350,11 +358,12 @@ Player:
 		UnitLimits:
 			harvester: 15
 			carryall: 8
+			thumper: 1
 	SquadManagerBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
 		SquadSize: 10
 		MaxBaseRadius: 40
-		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter, saboteur, thumper
 		ConstructionYardTypes: construction_yard
 		IgnoredEnemyTargetTypes: Creep, Air, Cliff
 		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
@@ -367,6 +376,7 @@ Player:
 			trooper: 40
 			mpsardaukar: 20
 			grenadier: 20
+			thumper: 1
 			harvester: 1
 			trike.starport: 5
 			quad.starport: 7
@@ -390,3 +400,27 @@ Player:
 		UnitLimits:
 			harvester: 15
 			carryall: 8
+			thumper: 1
+	SendUnitToAttackBotModule@saboteur:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		ActorTypesAndAttackOptions:
+			saboteur:
+				AttackDesireOfEach: 100
+				MoveToOrderName: Move
+				AttackOrderName: C4
+				MoveBackOrderName: Move
+				TryGetHealed: False
+		ValidTargets: C4
+		InvalidTargets: Air, Vehicle, CapturedUnit
+		TargetDistances: Random
+	SendUnitToAttackBotModule@trumper:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		ActorTypesAndAttackOptions:
+			thumper:
+				AttackDesireOfEach: 100
+				MoveToOrderName: Move
+				AttackOrderName: GrantConditionOnDeploy
+				TryGetHealed: False
+		ScanTick: 1200
+		ValidTargets: Harvester
+		TargetDistances: Closest
