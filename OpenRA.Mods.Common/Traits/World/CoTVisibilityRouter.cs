@@ -146,14 +146,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (viewer == null)
 			{
-				// No viewer: be conservative, emit friendlies (if allowed), suppress enemies
-				var alliedWithLocal = self.Owner != null
-					&& world.LocalPlayer != null
-					&& self.Owner.IsAlliedWith(world.LocalPlayer);
+				// No viewer yet (e.g., during map loading before LocalPlayer is set).
+				// Emit for all player-owned combatants so spawn events are not lost.
+				var hasPlayableOwner = self.Owner != null && self.Owner.Playable && !self.Owner.NonCombatant;
 				return EvaluatePolicy(
-					alliedWithLocal,
+					hasPlayableOwner,
 					info.FriendlyAlwaysEmit,
-					false,
+					hasPlayableOwner,
 					info.UseGenericMilsym,
 					info.OverrideType,
 					domain,

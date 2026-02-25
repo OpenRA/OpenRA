@@ -645,7 +645,6 @@
 		DetectionTypes: Cloak
 		Range: 1c512
 	CoTInfantryEmitter:
-		PauseOnCondition: disabled
 		UdpHost: 127.0.0.1
 		UdpPort: 4242
 		Callsign: OpenRA-Infantry
@@ -1126,7 +1125,6 @@
 		LoseNotification: UnitLost
 		LoseTextNotification: notification-unit-lost
 	CoTAircraftEmitter@aircraft:
-		PauseOnCondition: disabled
 		UdpHost: 127.0.0.1
 		UdpPort: 4242
 		Callsign: OpenRA-Aircraft
@@ -1315,7 +1313,6 @@
 		GenericName: meta-basicbuilding-generic-name
 	Demolishable:
 	CoTBuildingEmitter:
-		PauseOnCondition: disabled
 		UdpHost: 127.0.0.1
 		UdpPort: 4242
 		Callsign: OpenRA-Building

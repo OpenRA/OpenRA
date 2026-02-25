@@ -465,6 +465,16 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var world = self.World;
 			var cell = world.Map.CellContaining(self.CenterPosition);
+
+			// Cell (0,0) is the default fallback when spawn points are missing;
+			// actors there are at the map origin, not a real gameplay position.
+			if (cell.X == 0 && cell.Y == 0)
+			{
+				lat = 0;
+				lon = 0;
+				return false;
+			}
+
 			if (!world.Map.TryCellToLatLon(cell, out lat, out lon))
 			{
 				Log.Write("cot", "skip cot no lat/lon (map not georef?)");
