@@ -321,7 +321,7 @@
 		Le: 25
 		StaleSeconds: 120
 		UpdateIntervalTicks: 25
-		MaxIntervalTicks: 250
+		MaxIntervalTicks: 25
 		IncludeMilsymDetail: True
 		MilsymId: ""
 		IncludeColor: True
@@ -655,7 +655,7 @@
 		Le: 25
 		StaleSeconds: 120
 		UpdateIntervalTicks: 25
-		MaxIntervalTicks: 250
+		MaxIntervalTicks: 25
 		IncludeMilsymDetail: True
 		MilsymId: ""
 		ActorCallsigns:
@@ -946,7 +946,7 @@
 		Le: 25
 		StaleSeconds: 120
 		UpdateIntervalTicks: 25
-		MaxIntervalTicks: 250
+		MaxIntervalTicks: 25
 		IncludeMilsymDetail: True
 		MilsymId: ""
 		IncludeColor: True
@@ -1136,7 +1136,7 @@
 		Le: 25
 		StaleSeconds: 120
 		UpdateIntervalTicks: 25
-		MaxIntervalTicks: 250
+		MaxIntervalTicks: 25
 		IncludeMilsymDetail: True
 		MilsymId: ""
 		IncludeColor: True
@@ -1324,8 +1324,8 @@
 		Ce: 50
 		Le: 50
 		StaleSeconds: 120
-		UpdateIntervalTicks: 150
-		MaxIntervalTicks: 1500
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 25
 		ActorCallsigns:
 			POWR: "Power"
 			APWR: "AdvPower"
@@ -1699,6 +1699,7 @@
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
+	-CoTBuildingEmitter:
 	RenderSprites:
 		Palette: player
 	MapEditorData:

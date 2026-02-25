@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -71,6 +72,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Bind Interface field
 			var bindIfField = panel.Get<TextFieldWidget>("COT_BIND_INTERFACE_FIELD");
 			bindIfField.Text = cotSettings.BindInterfaceName ?? string.Empty;
+
+			// Test button
+			var testButton = panel.Get<ButtonWidget>("COT_TEST_BUTTON");
+			testButton.OnClick = () =>
+			{
+				// Apply current on-screen values before sending
+				cotSettings.EndpointMode = mode.ToString();
+				cotSettings.Host = mode == CotEndpointMode.Localhost ? "127.0.0.1" : hostField.Text;
+
+				if (int.TryParse(portField.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var p) && p is >= 1 and <= 65535)
+					cotSettings.Port = p;
+
+				if (int.TryParse(ttlField.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var t) && t > 0)
+					cotSettings.MulticastTtl = t;
+
+				cotSettings.BindInterfaceName = string.IsNullOrWhiteSpace(bindIfField.Text) ? "" : bindIfField.Text.Trim();
+
+				CotOutputService.ConfigureFromSettings(cotSettings);
+				CotOutputService.Enqueue(Encoding.UTF8.GetBytes(BuildTestCotXml()));
+			};
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
@@ -167,6 +188,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				CotEndpointMode.Multicast => "239.2.3.1",
 				_ => "",
 			};
+		}
+
+		static string BuildTestCotXml()
+		{
+			var now = DateTime.UtcNow;
+			var stale = now.AddSeconds(120);
+			var uid = "OpenRA-Test-" + now.Ticks.ToString(CultureInfo.InvariantCulture);
+			var time = now.ToString("yyyy-MM-dd'T'HH:mm:ss.ff'Z'", CultureInfo.InvariantCulture);
+			var staleStr = stale.ToString("yyyy-MM-dd'T'HH:mm:ss.ff'Z'", CultureInfo.InvariantCulture);
+			var callsign = XmlEscape("OpenRA Test");
+
+			return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+ "<event version=\"2.0\""
+				+ " uid=\"" + uid + "\""
+				+ " type=\"a-f-G\""
+				+ " how=\"m-g\""
+				+ " time=\"" + time + "\""
+				+ " start=\"" + time + "\""
+				+ " stale=\"" + staleStr + "\">"
+				+ "<point lat=\"34.2257\" lon=\"-77.9447\" hae=\"0.0\" ce=\"25.0\" le=\"25.0\"/>"
+				+ "<detail>"
+				+ "<contact callsign=\"" + callsign + "\"/>"
+				+ "</detail>"
+				+ "</event>";
+		}
+
+		static string XmlEscape(string s)
+		{
+			return s.Replace("&", "&amp;")
+				.Replace("<", "&lt;")
+				.Replace(">", "&gt;")
+				.Replace("\"", "&quot;")
+				.Replace("'", "&apos;");
 		}
 	}
 }

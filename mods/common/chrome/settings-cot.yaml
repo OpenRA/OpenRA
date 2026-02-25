@@ -94,7 +94,7 @@ Container@COT_PANEL:
 									Height: 25
 				Container@ROW:
 					Width: PARENT_WIDTH - 24
-					Height: 50
+					Height: 60
 					Children:
 						Container@COT_BIND_INTERFACE_CONTAINER:
 							X: 10
@@ -103,10 +103,24 @@ Container@COT_PANEL:
 								Label@COT_BIND_INTERFACE_LABEL:
 									Width: PARENT_WIDTH
 									Height: 20
-									Text: label-cot-bind-interface.label
-									TooltipText: label-cot-bind-interface.tooltip
-									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+									Text: label-cot-bind-interface
+								Label@COT_BIND_INTERFACE_DESC:
+									Y: 18
+									Width: PARENT_WIDTH
+									Height: 15
+									Font: Tiny
+									Text: label-cot-bind-interface-desc
 								TextField@COT_BIND_INTERFACE_FIELD:
-									Y: 25
+									Y: 33
 									Width: PARENT_WIDTH
 									Height: 25
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 25
+					Children:
+						Button@COT_TEST_BUTTON:
+							X: 10
+							Width: 200
+							Height: 25
+							Text: button-cot-test
+							Font: Regular

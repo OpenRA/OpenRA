@@ -3,7 +3,7 @@
 Minimal CLI to compute AOI bounds from an MGRS center for RA TEMPERATE map generation.
 
 Usage:
-  python tools/geogen/cli.py --mgrs "33TWN1234567890" --cells 512 --meters-per-cell 4 --pretty
+  python tools/geogen/cli.py --mgrs "33TWN1234567890" --cells 512 --meters-per-cell 8 --pretty
 """
 from __future__ import annotations
 
@@ -45,8 +45,8 @@ def _status(msg: str) -> None:
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Compute AOI bounds from MGRS for OpenRA RA maps")
     p.add_argument("--mgrs", required=True, help="MGRS center coordinate (e.g., 33TWN1234567890)")
-    p.add_argument("--cells", type=int, default=2048, help=f"Map size in cells per side (default: 2048, max: {MAX_CELLS})")
-    p.add_argument("--meters-per-cell", type=float, default=4.0, help="Meters per cell (default: 4.0)")
+    p.add_argument("--cells", type=int, default=512, help=f"Map size in cells per side (default: 512, max: {MAX_CELLS})")
+    p.add_argument("--meters-per-cell", type=float, default=8.0, help="Meters per cell (default: 8.0)")
     p.add_argument("--rotation-deg", type=float, default=0.0, help="Rotation relative to UTM north, degrees (default: 0)")
     # In RA map.yaml, the tileset id is "TEMPERAT" (see OpenRA/mods/ra/tilesets/temperat.yaml General: Id)
     p.add_argument("--tileset", default="TEMPERAT", help="Tileset identifier for map.yaml (default: TEMPERAT)")
@@ -89,6 +89,9 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-buildings", action="store_true", help="Disable building overlay")
     p.add_argument("--no-coastline", action="store_true",
                    help="Disable coastline inversion (default-to-water for coastal areas)")
+    p.add_argument("--coastline-invert", action="store_true",
+                   help="Invert coastline logic: default grid to CLEAR, carve water rings. "
+                        "Use when land/water appear swapped at smaller map sizes.")
     p.add_argument("--building-search-radius", type=int, default=2,
                    help="Local search radius (tiles) around anchor for placement (default: 2)")
     p.add_argument("--building-placement-mode", choices=["accurate", "fallback", "aggressive"], default="accurate",
@@ -120,6 +123,10 @@ def parse_args() -> argparse.Namespace:
     args = p.parse_args()
     if args.cells < 1 or args.cells > MAX_CELLS:
         p.error(f"--cells must be between 1 and {MAX_CELLS} (got {args.cells})")
+    extent_m = args.cells * args.meters_per_cell
+    if extent_m > 4000:
+        print(f"Warning: map extent {extent_m:.0f} m ({extent_m/1000:.1f} km) exceeds 4 km limit. "
+              f"Reduce --cells or --meters-per-cell.", file=sys.stderr)
     return args
 
 
@@ -920,7 +927,7 @@ def _process_water_relations(
 
 def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: float, cells: int, osm_data: Dict[str, Any],
                          *, include_roads: bool, include_water: bool, include_vegetation: bool, include_buildings: bool,
-                         include_coastline: bool = True,
+                         include_coastline: bool = True, invert_coastline: bool = False,
                          road_width_m: float, waterway_width_m: float, veg_density: float, max_veg_actors: int,
                          veg_min_spacing: int, veg_patch_size: int, veg_patch_boost: float,
                          suppress_veg_near_roads: int, suppress_veg_near_buildings: int,
@@ -961,13 +968,20 @@ def overlay_osm_to_tiles(center: Dict[str, Any], bounds: Dict[str, Any], mpc: fl
             stats=coastline_stats,
         )
         if coastline_land_rings:
-            _status(f"Coastline found ({len(coastline_land_rings)} land rings) -- defaulting grid to WATER")
-            # Coastlines found: init grid as WATER, then carve land
-            tiles_type = [[WATER_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
-            for ri, ring in enumerate(coastline_land_rings):
-                _status(f"  Filling land ring {ri + 1}/{len(coastline_land_rings)} ({len(ring)} vertices)...")
-                coastline_land_cells += _fill_polygon(tiles_type, ring, CLEAR_TEMPLATE_ID)
-            _status(f"  Land carved: {coastline_land_cells} cells")
+            if invert_coastline:
+                _status(f"Coastline found ({len(coastline_land_rings)} rings) -- INVERTED: defaulting grid to CLEAR, carving water")
+                tiles_type = [[CLEAR_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
+                for ri, ring in enumerate(coastline_land_rings):
+                    _status(f"  Filling water ring {ri + 1}/{len(coastline_land_rings)} ({len(ring)} vertices)...")
+                    coastline_land_cells += _fill_polygon(tiles_type, ring, WATER_TEMPLATE_ID)
+                _status(f"  Water carved: {coastline_land_cells} cells")
+            else:
+                _status(f"Coastline found ({len(coastline_land_rings)} land rings) -- defaulting grid to WATER")
+                tiles_type = [[WATER_TEMPLATE_ID for _ in range(height)] for _ in range(width)]
+                for ri, ring in enumerate(coastline_land_rings):
+                    _status(f"  Filling land ring {ri + 1}/{len(coastline_land_rings)} ({len(ring)} vertices)...")
+                    coastline_land_cells += _fill_polygon(tiles_type, ring, CLEAR_TEMPLATE_ID)
+                _status(f"  Land carved: {coastline_land_cells} cells")
             coastline_stats["coastline_land_cells"] = coastline_land_cells
         else:
             _status("No coastlines found (inland area) -- defaulting grid to CLEAR")
@@ -2042,6 +2056,7 @@ def main() -> None:
                     include_vegetation=(not bool(args.no_vegetation)) and bool(args.overlay_osm),
                     include_buildings=(not bool(args.no_buildings)) and bool(args.overlay_osm or args.overlay_osm_buildings),
                     include_coastline=(not bool(args.no_coastline)),
+                    invert_coastline=bool(args.coastline_invert),
                     road_width_m=float(args.road_width_m),
                     waterway_width_m=float(args.waterway_width_m),
                     veg_density=float(args.veg_density),

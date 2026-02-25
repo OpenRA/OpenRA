@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common
 
 	public static class CotOutputService
 	{
-		const int DefaultQueueCapacity = 256;
+		const int DefaultQueueCapacity = 1024;
 		const int MaxConsecutiveFailures = 5;
 		const int FailureBackoffMs = 10000;
 
@@ -327,6 +327,7 @@ namespace OpenRA.Mods.Common
 		public UdpUnicastTransport(IPEndPoint endpoint)
 		{
 			udp = new UdpClient();
+			udp.EnableBroadcast = true;
 			udp.Connect(endpoint);
 		}
 
