@@ -918,6 +918,19 @@ QTNK:
 		TargetTypes: GroundActor, MADTank, Vehicle
 	Selectable:
 		DecorationBounds: 1877, 1621, 0, -170
+	GrantConditionOnDamageState@AI:
+		ValidDamageStates: Heavy, Critical, Medium
+		Condition: bot-suicide
+	IssueOrderToBot@AI: ## Hack: activate halfway only when there is valid hostile enemy and damaged
+		RequiresCondition: !deployed && !being-captured && bot-suicide
+		OrderTrigger: Damage
+		OrderName: Detonate
+		OrderChance: 100
+		OrderInterval: 150
+		TargetRangeInCell: 6
+		ValidTargets: Vehicle, Structure
+		ValidRelationships: Enemy
+
 
 STNK:
 	Inherits: ^Vehicle
