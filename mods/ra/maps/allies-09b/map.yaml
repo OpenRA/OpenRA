@@ -631,9 +631,6 @@ Actors:
 	CruisersDst: waypoint
 		Location: 45,102
 		Owner: Neutral
-	USSRAircrafts1: waypoint
-		Location: 27,102
-		Owner: Neutral
 	Actor31: sbag
 		Owner: USSR
 		Location: 80,26
@@ -766,12 +763,6 @@ Actors:
 	Actor129: tc04
 		Owner: Neutral
 		Location: 87,50
-	USSRRFEntry1: waypoint
-		Owner: Neutral
-		Location: 96,68
-	USSRRFEntry2: waypoint
-		Owner: Neutral
-		Location: 27,45
 	DogPatrol1WP2: waypoint
 		Location: 79,49
 		Owner: Neutral
@@ -871,6 +862,24 @@ Actors:
 	BaseSpen: spen
 		Owner: USSR
 		Location: 60,36
+	AAA: waypoint
+		Owner: Neutral
+		Location: 36,109
+	BBB: waypoint
+		Owner: Neutral
+		Location: 36,104
+	USSRAircraftOrigin2: waypoint
+		Location: 27,102
+		Owner: Neutral
+	USSRRFEntry2: waypoint
+		Owner: Neutral
+		Location: 96,68
+	USSRRFEntry1: waypoint
+		Owner: Neutral
+		Location: 27,45
+	USSRAircraftOrigin1: waypoint
+		Owner: Neutral
+		Location: 96,48
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

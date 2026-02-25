@@ -7,45 +7,47 @@
    information, see COPYING.
 ]]
 
-if Difficulty == "easy" then
+SetDifficulty = function()
+	if Difficulty == "easy" then
 
-	DestroyHelperCameras = false
+		DestroyHelperCameras = false
 
-	WTransDelays = 7
-	SubAttackGroupSize = 1
+		WTransDelays = 7
+		SubAttackGroupSize = 1
 
-	ParadropDelay = 7
-	ParabombDelay = 7
+		ParadropDelay = 7
+		ParabombDelay = 7
 
-elseif Difficulty == "normal" then
+	elseif Difficulty == "normal" then
 
-	DestroyHelperCameras = true
+		DestroyHelperCameras = true
 
-	WTransDelays = 6
-	SubAttackGroupSize = 2
+		WTransDelays = 6
+		SubAttackGroupSize = 2
 
-	ParadropDelay = 6
-	ParabombDelay = 6
+		ParadropDelay = 6
+		ParabombDelay = 6
 
-	--DateTime.TimeLimit = DateTime.Minutes(5) + DateTime.Seconds(3)
-	--InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
-	--InfantryDelay = DateTime.Seconds(18)
-	--AttackGroupSize = 5
-elseif Difficulty == "hard" then
+		--DateTime.TimeLimit = DateTime.Minutes(5) + DateTime.Seconds(3)
+		--InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
+		--InfantryDelay = DateTime.Seconds(18)
+		--AttackGroupSize = 5
+	elseif Difficulty == "hard" then
 
-	DestroyHelperCameras = true
+		DestroyHelperCameras = true
 
-	WTransDelays = 5
-	SubAttackGroupSize = 3
+		WTransDelays = 5
+		SubAttackGroupSize = 3
 
-	ParadropDelay = 5
-	ParabombDelay = 5
-	--DateTime.TimeLimit = DateTime.Minutes(3) + DateTime.Seconds(3)
-	--InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
-	--InfantryDelay = DateTime.Seconds(10)
-	--VehicleTypes = { "ftrk" }
-	--VehicleDelay = DateTime.Seconds(30)
-	--AttackGroupSize = 7
+		ParadropDelay = 5
+		ParabombDelay = 5
+		--DateTime.TimeLimit = DateTime.Minutes(3) + DateTime.Seconds(3)
+		--InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
+		--InfantryDelay = DateTime.Seconds(10)
+		--VehicleTypes = { "ftrk" }
+		--VehicleDelay = DateTime.Seconds(30)
+		--AttackGroupSize = 7
+	end
 end
 
 --------------------------------------------------------------------
@@ -78,12 +80,16 @@ WTransUnits =
 
 InfantryAttackGroup = { }
 InfantryAttackGroupSize = 5
+
+VehicleTypes = { "3tnk", "3tnk", "3tnk", "v2rl" }
 VehicleAttackGroup = { }
 VehicleAttackGroupSize = 3
-SubAttackGroup = { }
-AircraftTypes = { "yak" }
+
 SubTypes = { "ss" }
-VehicleTypes = { "3tnk", "3tnk", "3tnk", "v2rl" }
+SubAttackGroup = { }
+SubAtkPath = { SubAtkWP1.Location, SubAtkWP2.Location, SubAtkWP3.Location } 
+
+AircraftTypes = { "yak", "mig" }
 
 --------------------------------------------------------------------
 -----------------	    DATA BLOCK - END	------------------------
@@ -123,16 +129,21 @@ BaseBlueprints =
 	{ type = "apwr", actor = BasePower5, cost = 500, shape = { 3, 3 }, location = CPos.New(92, 29) },
 	{ type = "apwr", actor = BasePower6, cost = 500, shape = { 3, 3 }, location = CPos.New(93, 32) },
 	{ type = "apwr", actor = BasePower7, cost = 500, shape = { 3, 3 }, location = CPos.New(93, 37) },
-	{ type = "dome", actor = BaseDome, cost = 1500, shape = { 2, 3 }, location = CPos.New(88, 32) },
-	{ type = "stek", actor = BaseStek, cost = 1500, shape = { 3, 3 }, location = CPos.New(76, 23) },
+
 	{ type = "proc", actor = BaseRef, cost = 1400, shape = { 3, 4 }, location = CPos.New(72,28) },
+
 	{ type = "barr", actor = BaseBarr1, cost = 400, shape = { 2, 3 }, location = CPos.New(77, 30)--[[, onBuilt = ProduceInfantry]] },
 	{ type = "barr", actor = BaseBarr2, cost = 400, shape = { 2, 3 }, location = CPos.New(78, 34)--[[, onBuilt = ProduceInfantry]]  },
 	{ type = "weap", actor = BaseWeap, cost = 2000, shape = { 3, 3 }, location = CPos.New(82, 31)--[[, onBuilt = ProduceArmor ]] },
 	{ type = "spen", actor = BaseSpen, cost = 800, shape = { 3, 3 }, location = CPos.New(60, 36) },
-	{ type = "afld", actor = BaseAfld, cost = 500, shape = { 1, 1 }, location = CPos.New(89, 36)--[[, onBuilt = ProduceAircraft ]] },
 	{ type = "kenn", actor = BaseKenn1, cost = 200, shape = { 1, 1 }, location = CPos.New(71, 32) },
 	{ type = "kenn", actor = BaseKenn2, cost = 200, shape = { 1, 1 }, location = CPos.New(79,23) },
+
+	{ type = "afld", actor = BaseAfld, cost = 500, shape = { 1, 1 }, location = CPos.New(89, 36)--[[, onBuilt = ProduceAircraft ]] },
+
+	{ type = "dome", actor = BaseDome, cost = 1500, shape = { 2, 3 }, location = CPos.New(88, 32) },
+	{ type = "stek", actor = BaseStek, cost = 1500, shape = { 3, 3 }, location = CPos.New(76, 23) },
+
 -- Main gate ref pos CVec.New(-3,14)
 	{ type = "ftur", actor = BaseFtur1, cost = 600, shape = { 1, 1 }, location = CPos.New(80, 39) },
 	{ type = "ftur", actor = BaseFtur2, cost = 600, shape = { 1, 1 }, location = CPos.New(86, 39) },
@@ -162,10 +173,14 @@ end
 --------------------------------------------------------------------
 
 --------------------------------------------------------------------
------------------	BASE MANAGEMENT BLOCK - START	----------------
+-----------------	BASE MANAGMENT BLOCK - START	----------------
 --------------------------------------------------------------------
+local function __BASE_MANAGEMENT__() end
 
-BuildBase = function()
+---@param blueprints blueprint[]
+---@param cyard any
+---@param owner player
+BuildBase = function(blueprints, cyard, owner)
 	for _, blueprint in pairs(BaseBlueprints) do
 		if not blueprint.actor then
 			Media.Debug("type: " .. tostring(blueprint.type))
@@ -173,7 +188,7 @@ BuildBase = function()
 			Media.Debug("cost: " .. tostring(blueprint.cost))
 			Media.Debug("shape: " .. tostring(blueprint.shape))
 			Media.Debug("location: " .. tostring(blueprint.location))
-			Media.Debug("onBuilt: " .. tostring(blueprint.OnBuilt))
+			--Media.Debug("onBuilt: " .. tostring(blueprint.OnBuilt))
 
 			--Media.Debug("A: " .. tostring(BaseBlueprints[13].OnBuilt))
 			BuildBlueprint(blueprint)
@@ -181,19 +196,13 @@ BuildBase = function()
 		end
 	end
 
-	Trigger.AfterDelay(DateTime.Seconds(10), BuildBase)
+	Trigger.AfterDelay(DateTime.Seconds(10), function()
+		BuildBase(blueprints, cyard, owner)
+	end)
 end
 
 BuildBlueprint = function(blueprint)
 	Trigger.AfterDelay(DateTime.Seconds(1)--[[Actor.BuildTime(blueprint.type)]], function()
-		--Media.Debug(tostring(blueprint.type))
-		--Media.Debug(tostring(blueprint.type))
-		--Media.Debug(tostring(blueprint.actor))
-		--Media.Debug(tostring(blueprint.cost))
-		--Media.Debug(tostring(blueprint.shape))
-		--Media.Debug(tostring(blueprint.location))
-		--Media.Debug(tostring(blueprint.onBuilt))
-
 		if BaseFact.IsDead or BaseFact.Owner ~= USSR then
 			return
 		elseif USSRMoney() <= 299 and IsHarvesterMissing() then
@@ -210,7 +219,9 @@ BuildBlueprint = function(blueprint)
 		local actor = Actor.Create(blueprint.type, true, { Owner = USSR, Location = blueprint.location })
 		OnBlueprintBuilt(actor, blueprint)
 
-		Trigger.AfterDelay(DateTime.Seconds(1--[[10]]), BuildBase)
+		Trigger.AfterDelay(DateTime.Seconds(1--[[10]]), function()
+			BuildBase(BaseBlueprints, BaseFact, USSR)
+		end)
 	end)
 end
 
@@ -226,7 +237,7 @@ OnBlueprintBuilt = function(actor, blueprint)
 		end)
 
 		-- Build() will not work properly on producers if immediately called.
-	
+
 		Trigger.AfterDelay(1, function()
 			blueprint.onBuilt(actor)
 		end)
@@ -269,7 +280,6 @@ BeginBaseMaintenance = function()
 end
 
 MaintainBuilding = function(actor, blueprint, repairThreshold)
-
 	if blueprint then
 		Trigger.OnKilled(actor, function() blueprint.actor = nil end)
 		Trigger.OnSold(actor, function() blueprint.actor = nil end)
@@ -300,14 +310,6 @@ PrepareBlueprintEdges = function(blueprint)
 	blueprint.southeastEdge = southeastEdge
 end
 
---------------------------------------------------------------------
------------------	BASE BUILDING BLOCK - END	--------------------
---------------------------------------------------------------------
-
---------------------------------------------------------------------
-----------------		ATTACKING BLOCK - START	--------------------
---------------------------------------------------------------------
-
 ProduceHarvester = function(factory, delay)
 	if USSRMoney() < Actor.Cost("harv") then
 		return
@@ -321,29 +323,29 @@ ProduceHarvester = function(factory, delay)
 	end)
 end
 
-SendInfantryAttackGroup = function()
-	if #InfantryAttackGroup < InfantryAttackGroupSize then
-		return
-	end
-	Utils.Do(InfantryAttackGroup, IdleHunt)
-	InfantryAttackGroup = { }
+--------------------------------------------------------------------
+-----------------	BASE MANAGMENT BLOCK - END	--------------------
+--------------------------------------------------------------------
+
+--------------------------------------------------------------------
+----------------		ATTACKING BLOCK - START	--------------------
+--------------------------------------------------------------------
+local function __AI_ATTACKS__() end
+
+SendUnits = function(units, path)
+	Utils.Do(units, function(unit)
+		if unit.IsDead then
+			return
+		end
+
+		unit.Patrol(path, false)
+		IdleHunt(unit)
+	end)
 end
 
-SendVehicleAttackGroup = function()
-	if #VehicleAttackGroup < VehicleAttackGroupSize then
-		return
-	end
-	Utils.Do(VehicleAttackGroup, IdleHunt)
-	VehicleAttackGroup = { }
-end
-
-SendSubAttackGroup = function()
-	if #SubAttackGroup < SubAttackGroupSize then
-		return
-	end
-	Utils.Do(SubAttackGroup, IdleHunt)
-	SubAttackGroup = { }
-end
+-----------------------
+--- Inf Attacks     ---
+-----------------------
 
 ProduceInfantry = function()
 	if (BaseBarr1.IsDead or BaseBarr1.Owner ~= USSR) and (BaseBarr2.IsDead or BaseBarr2.Owner ~= USSR) then
@@ -359,15 +361,24 @@ ProduceInfantry = function()
 	end)
 end
 
-SendUnits = function(units, path)
-	Utils.Do(units, function(unit)
-		if unit.IsDead then
-			return
-		end
+SendInfantryAttackGroup = function()
+	if #InfantryAttackGroup < InfantryAttackGroupSize then
+		return
+	end
+	Utils.Do(InfantryAttackGroup, IdleHunt)
+	InfantryAttackGroup = { }
+end
 
-		unit.Patrol(path, false)
-		IdleHunt(unit)
-	end)
+-----------------------
+--- Tank Attacks    ---
+-----------------------
+
+SendVehicleAttackGroup = function()
+	if #VehicleAttackGroup < VehicleAttackGroupSize then
+		return
+	end
+	Utils.Do(VehicleAttackGroup, IdleHunt)
+	VehicleAttackGroup = { }
 end
 
 ProduceArmor = function(factory)
@@ -400,38 +411,202 @@ ProduceArmor = function(factory)
 			end)
 		end
 	end)
-
 end
 
-ProduceNavy = function()
+-----------------------
+--- Air  Attacks   ----
+-----------------------
+
+ProduceAircraft = function()
+    if BaseAfld.IsDead or BaseAfld.Owner ~= USSR then
+        return
+    end
+
+    USSR.Build(SovietAircraftType, function(units)
+        local plane = units[1]
+        PlanesAttackGroup[#PlanesAttackGroup + 1] = plane
+
+        Trigger.OnKilled(plane, ProduceAircraft)
+
+        local alive = Utils.Where(PlanesAttackGroup, function(p) return not p.IsDead end)
+        if #alive < 2 then
+            Trigger.AfterDelay(ProductionIntervalAir, ProduceAircraft)
+        end
+
+        InitializeAttackAircraft(plane, Greece)
+    end)
+end
+
+PlanesAttack = function()
+    local entry = Utils.Random({ IronTankEntry.Location, SovWaterEntry.Location, BadgerEntry.Location })
+    local planeType = Utils.Random({SovietAircraftType})
+    Media.Debug("Check till here 1")
+    for p = 1, #planeType do
+        Trigger.AfterDelay(DateTime.Seconds(0.25*p), function()
+            local a = Actor.Create(planeType[p], true, { Owner = USSR, Location = entry })
+            InitializeAttackAircraft(a, Greece)
+        end)
+    end
+end
+
+FirstAirDelays =
+{
+	easy = DateTime.Seconds(180),
+	normal = DateTime.Seconds(120)
+}
+
+PrepareAircraftReinforcements = function()
+	local delay = DateTime.Seconds(5)--FirstAirDelays[Difficulty] or FirstAirDelays["normal"]
+
+	Trigger.AfterDelay(delay, function()
+		--if IsForwardCommandFallen() then
+		--	return
+		--end
+
+		ScheduleAirWave(1)
+	end)
+end
+
+CurrentAirWave = 1
+
+HasAirfield = function(player)
+	return player.HasPrerequisites({ "afld" })
+end
+
+---@param wave integer
+ScheduleAirWave = function(wave)
+	local team = SovietAirTeams[wave]
+	--if not team then
+	--	return
+	--end
+	Media.Debug("1")
+	Trigger.AfterDelay(team.interval, function()
+		-- The last team was defeated before its scheduled repeat.
+		if CurrentAirWave > wave then
+			return
+		end
+
+		local units = Reinforcements.Reinforce(team.owner or USSR, team.types, team.path)
+		ScheduleAirWave(wave)
+
+		Utils.Do(units, function(unit)
+			InitializeAttackAircraft(unit, Greece)
+
+			Trigger.OnIdle(unit, function()
+				Media.Debug("On Idle")
+				if unit.AmmoCount() > 0 or HasAirfield(unit.Owner) then
+					Media.Debug("On Idle - return")
+					return
+				else
+					Media.Debug("On Idle - stranded")
+					OnAircraftStranded(unit, team.path[1])
+				end
+			end)
+		end)
+
+		Trigger.OnAllRemovedFromWorld(units, function()
+			if AreSovietPlanesActive() then
+				return
+			end
+
+			if team.onWaveDefeated then
+				team.onWaveDefeated()
+			end
+
+			CurrentAirWave = CurrentAirWave + 1
+			ScheduleAirWave(CurrentAirWave)
+		end)
+	end)
+end
+
+OnAircraftStranded = function(aircraft, exit)
+	local oldOwner = aircraft.Owner
+	Media.Debug("A")
+
+	--[[
+	if oldOwner == USSR and HasAirfield(BadGuy) then
+		aircraft.Owner = BadGuy
+	elseif oldOwner == BadGuy and HasAirfield(USSR) then
+		aircraft.Owner = USSR
+	end
+	]]
+	if oldOwner == aircraft.Owner then
+		Media.Debug("B")
+		aircraft.Stop()
+		aircraft.Move(exit)
+		aircraft.Destroy()
+	end
+end
+
+AreSovietPlanesActive = function()
+	local planes = { "mig", "yak" }
+	return #USSR.GetActorsByTypes(planes) > 0
+end
+
+---@type { interval: number, types: string[], path: cpos[], owner: player, onWaveDefeated: fun() }[]
+SovietAirTeams =
+{
+	{
+		types = { "yak" },
+		interval = DateTime.Seconds(10--[[105]]),
+		path = { USSRAircraftOrigin1.Location }
+	},
+	{
+		types = { "yak", "yak" },
+		interval = DateTime.Seconds(20--[[114]]),
+		path = { USSRAircraftOrigin1.Location }
+	},
+	{
+		owner = USSR,
+		types = { "mig", "mig" },
+		interval = DateTime.Seconds(30--[[165]]),
+		path = { USSRAircraftOrigin1.Location, USSRAircraftOrigin1.Location + CVec.New(-1, 0) },
+		onWaveDefeated = function()
+			if Difficulty ~= "hard" then
+				return
+			end
+
+			SendBomber(USSRAircraftOrigin2.Location)
+			SendBomber(USSRAircraftOrigin1.Location)
+		end
+	},
+	{
+		interval = DateTime.Seconds(219),
+		types = { "mig", "mig", "yak" },
+		path = { USSRAircraftOrigin1.Location, USSRAircraftOrigin1.Location + CVec.New(-1, 0) },
+	},
+	-- Original includes 2x Hind. Replaced with Yaks.
+	{
+		interval = DateTime.Seconds(210),
+		types = { "mig", "mig", "mig", "yak", "yak", "yak", "yak" },
+		path = { USSRAircraftOrigin1.Location, USSRAircraftOrigin1.Location + CVec.New(-1, 0) },
+		onWaveDefeated = function()
+			SendBomber(USSRAircraftOrigin2.Location)
+			SendBomber(USSRAircraftOrigin2.Location)
+		end
+	}
+}
+
+-----------------------
+--- Naval Attacks  ----
+-----------------------
+
+ProduceNavy = function(owner)
 	if BaseSpen.IsDead or BaseSpen.Owner ~= USSR then
 		return
 	end
-	USSR.Build(SubTypes, function(units)
+
+	owner.Build(SubTypes, function(units)
 		table.insert(SubAttackGroup, units[1])
-		SendSubAttackGroup()
-		Trigger.AfterDelay(ProductionInterval, ProduceNavy)
-	end)
-
-end
-
-ProduceAircraft = function()
-	if BaseAfld.IsDead or BaseAfld.Owner ~= USSR then
-		return
-	end
-	USSR.Build(SovietAircraftType, function(units)
-		local yak = units[1]
-		Trigger.OnKilled(yak, ProduceAircraft)
-		InitializeAttackAircraft(yak, Greece)
+		SendUnits(SubAttackGroup, SubAtkPath)
+		SubAttackGroup = { }
+		Trigger.AfterDelay(ProductionInterval, function()
+			ProduceNavy(owner)
+		end)
 	end)
 end
 
-
---------------------------------------------------------------------
-----------------		OUT OF MAP BLOCK - START	----------------
---------------------------------------------------------------------
-
-WTransWaves = function()
+WaterLSTWaves = function()
 	if BaseSpen.IsDead or BaseSpen.Owner ~= USSR then
 		return
 	end
@@ -444,8 +619,18 @@ WTransWaves = function()
 			IdleHunt(a)
 		end)
 	end)
-	Trigger.AfterDelay(DateTime.Minutes(WTransDelays), WTransWaves)
+	Trigger.AfterDelay(DateTime.Minutes(WTransDelays), WaterLSTWaves)
 end
+
+--------------------------------------------------------------------
+----------------		ATTACKING BLOCK - END	--------------------
+--------------------------------------------------------------------
+
+--------------------------------------------------------------------
+----------------		OUT OF MAP BLOCK - START	----------------
+--------------------------------------------------------------------
+
+
 --[[
 TankGroupWallGuard = function()
 	if not WGTank01.IsDead then
@@ -461,7 +646,6 @@ end
 ]]
 
 -- Allies09a has paradrop so I left it there.
---[[]]
 Paradrop = function()
 	if BaseAfld.IsDead or BaseAfld.Owner ~= USSR then
 		return
@@ -500,10 +684,6 @@ SendParabombs = function()
 end
 
 --------------------------------------------------------------------
-----------------		OUT OF MAP BLOCK - END	--------------------
---------------------------------------------------------------------
-
---------------------------------------------------------------------
 ----------------		ATTACKING BLOCK - END	--------------------
 --------------------------------------------------------------------
 
@@ -512,13 +692,12 @@ ActivateAI = function()
 	ProductionInterval = ProductionInterval[Difficulty]
 	InfantryUnits = InfantryUnits[Difficulty]
 
-
 	--PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 
-
 	BeginBaseMaintenance()
+
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		--BuildBase()
+		BuildBase(BaseBlueprints, BaseFact, USSR)
 	end)
 
 	--local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = USSR })	
@@ -541,9 +720,14 @@ ActivateAI = function()
 	end)
 	]]
 
-	Trigger.AfterDelay(DateTime.Minutes(4), ProduceNavy)
+	PrepareAircraftReinforcements()
+
+
+	Trigger.AfterDelay(DateTime.Minutes(4), function()
+		ProduceNavy(USSR)
+	end)
 	--Trigger.AfterDelay(DateTime.Minutes(5), MMGroupGuardGate)
 	--Trigger.AfterDelay(DateTime.Minutes(5), TankGroupWallGuard)
-	--Trigger.AfterDelay(DateTime.Minutes(WTransDelays), WTransWaves)
+	Trigger.AfterDelay(DateTime.Minutes(WTransDelays), WaterLSTWaves)
 	--Trigger.AfterDelay(DateTime.Minutes(ParabombDelay), SendParabombs)
 end
