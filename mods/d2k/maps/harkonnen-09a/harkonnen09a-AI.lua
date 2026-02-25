@@ -203,9 +203,7 @@ ActivateAI = function()
 		ProduceUnits(CorrinoSmall, CHeavyFactory2, delay, tanksToBuildCorrinoSmall, AttackGroupSize[Difficulty], attackThresholdSizeSmallBase)
 	end)
 
-	local crusherTypes = { "combat_tank_a", "combat_tank_a.starport", "combat_tank_h", "combat_tank_h.starport" }
-	local crusherFactories = { AStarport, AHeavyFactory1, AHeavyFactory2, CHeavyFactory1, CHeavyFactory2, CStarport }
-	ActivateCrusherLogic(crusherTypes, crusherFactories)
+	ActivateCrushLogic()
 
 	if Difficulty == "normal" then
 		AtreidesMain.GrantCondition("base-rebuilder")
@@ -241,7 +239,7 @@ ActivateAI = function()
 	end)
 
 	Trigger.OnBuildingPlaced(AtreidesSmall1, function(p, building)
-		table.insert(AtreidesSmallBase, building)
+		table.insert(AtreidesSmall1Base, building)
 		DefendAndRepairBase(AtreidesSmall1, {building}, 0.5, AttackGroupSize[Difficulty] )
 		if productionTypesAtreidis[building.Type] == nil then return end
 		ProduceUnits(AtreidesSmall1, building, delay, productionTypesAtreidis[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
