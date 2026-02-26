@@ -31,6 +31,7 @@ APC:
 		MaxWeight: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
+		LoadedCondition: loaded
 		EjectOnDeath: true
 	GrantConditionOnTerrain:
 		Condition: inwater
@@ -47,6 +48,11 @@ APC:
 		TerrainTypes: Water
 		StationaryInterval: 18
 		MovingInterval: 6
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 HVR:
 	Inherits: ^Vehicle
@@ -104,6 +110,15 @@ HVR:
 		MovingInterval: 6
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 SMECH:
 	Inherits: ^Vehicle
@@ -460,8 +475,27 @@ MOBILEMP:
 	GrantChargedConditionOnToggle:
 		Voice: Move
 		ChargeDuration: 750
+		ChargedCondition: charged
 		ActivatedCondition: triggered
 		PauseOnCondition: empdisable
 	FireWarheads:
 		Weapons: MEMPulse
 		RequiresCondition: triggered && !empdisable
+	IssueOrderToBot@AI:
+		RequiresCondition: charged
+		OrderName: ActivateCondition
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		TargetRangeInCell: 3
+		ValidTargets: Vehicle, Support
+		ValidRelationships: Enemy
+	IssueOrderToBot@AI-getcloser:
+		RequiresCondition: charged
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 100
+		TargetRangeInCell: 10
+		ValidTargets: Vehicle, Support
+		ValidRelationships: Enemy

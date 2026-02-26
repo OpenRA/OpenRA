@@ -80,6 +80,15 @@ BIKE:
 		RequiresCondition: !inside-tunnel && !rank-elite
 	LeavesTrails@VEINS:
 		RequiresCondition: !inside-tunnel && !rank-elite
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 TTNK:
 	Inherits: ^Tank
@@ -209,7 +218,7 @@ TTNK:
 		OrderName: GrantConditionOnDeploy
 		OrderChance: 100
 		OrderTrigger: Attack
-		OrderInterval: 35
+		OrderInterval: 40
 
 ART2:
 	Inherits: ^Tank
@@ -355,6 +364,15 @@ REPAIR:
 		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Vehicle
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 WEED:
 	Inherits: ^Tank
@@ -443,6 +461,7 @@ SAPC:
 		MaxWeight: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
+		LoadedCondition: loaded
 		EjectOnDeath: true
 	WithVoxelBody:
 		RequiresCondition: !submerged
@@ -460,6 +479,11 @@ SAPC:
 		RequiresCondition: !submerged
 	WithDecoration@UNDERGROUND:
 		RequiresCondition: inside-tunnel || submerged
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 SUBTANK:
 	Inherits: ^Tank
@@ -567,6 +591,15 @@ STNK:
 	FireWarheadsOnDeath@ELITE:
 		RequiresCondition: rank-elite
 		Weapon: UnitExplode
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 SGEN:
 	Inherits: ^Tank
@@ -653,3 +686,9 @@ SGEN:
 		Range: 6c0
 		Type: cloakgenerator
 		RequiresCondition: deployed && !empdisable
+	IssueOrderToBot@AI:
+		OrderTrigger: BecomingIdle, Periodically
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 40
+		RequiresCondition: undeployed

@@ -86,6 +86,15 @@ MEDIC:
 		Delay: 60
 	Passenger:
 		CustomPipType: red
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 JUMPJET:
 	Inherits: ^Soldier
@@ -264,3 +273,14 @@ GHOST:
 		DefaultAttackSequence: attack
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	IssueOrderToBot@AI2: ## c4
+		OrderName: C4
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 4
+		ValidTargets: C4
+		InvalidTargets: WaterActor
+		ValidRelationships: Enemy
+		TargetDistance: Closest
