@@ -134,33 +134,40 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 			if (map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
 				notifyMapCreated.MapCreated(map);
 
-			// Set GeoTransform metadata in RuleDefinitions
+			// Set GeoTransform metadata via the proper Metadata field
 			var nwLatLon = GeoMath.CellToLatLon(0, 0, bounds, options.MetersPerCell);
-			var geoYaml = $"Metadata:\n"
-				+ $"\tGeoTransform:\n"
-				+ $"\t\tUTMZone: {zoneNumber}{zoneLetter}\n"
-				+ $"\t\tMetersPerCell: {options.MetersPerCell}\n"
-				+ $"\t\tRotationDeg: 0\n"
-				+ $"\t\tOrigin:\n"
-				+ $"\t\t\tCorner: NW\n"
-				+ $"\t\t\tLat: {nwLatLon.Lat}\n"
-				+ $"\t\t\tLon: {nwLatLon.Lon}\n"
-				+ $"\t\t\tUTM_E: {bounds.MinE}\n"
-				+ $"\t\t\tUTM_N: {bounds.MaxN}\n"
-				+ $"\t\tGrid:\n"
-				+ $"\t\t\tWidth: {mapSize}\n"
-				+ $"\t\t\tHeight: {mapSize}\n"
-				+ $"\tAttributions:\n"
-				+ $"\t\t- Name: OpenStreetMap contributors\n"
-				+ $"\t\t  License: ODbL 1.0\n"
-				+ $"\t\t  URL: https://www.openstreetmap.org/copyright\n"
-				+ $"\t\t  Source: Overpass API: {options.OverpassUrl}\n";
+			var inv = System.Globalization.CultureInfo.InvariantCulture;
 
-			// Append metadata to existing rule definitions
-			if (map.RuleDefinitions != null && !string.IsNullOrEmpty(map.RuleDefinitions.Value))
-				map.RuleDefinitions = new MiniYaml(map.RuleDefinitions.Value + "\n" + geoYaml);
-			else
-				map.RuleDefinitions = new MiniYaml(geoYaml);
+			var originNodes = new List<MiniYamlNode>
+			{
+				new("Corner", "NW"),
+				new("Lat", nwLatLon.Lat.ToString(inv)),
+				new("Lon", nwLatLon.Lon.ToString(inv)),
+				new("UTM_E", bounds.MinE.ToString(inv)),
+				new("UTM_N", bounds.MaxN.ToString(inv)),
+			};
+
+			var gridNodes = new List<MiniYamlNode>
+			{
+				new("Width", mapSize.ToString(inv)),
+				new("Height", mapSize.ToString(inv)),
+			};
+
+			var geoTransformNodes = new List<MiniYamlNode>
+			{
+				new("UTMZone", $"{zoneNumber}{zoneLetter}"),
+				new("MetersPerCell", options.MetersPerCell.ToString(inv)),
+				new("RotationDeg", "0"),
+				new("Origin", new MiniYaml("", originNodes)),
+				new("Grid", new MiniYaml("", gridNodes)),
+			};
+
+			var metadataNodes = new List<MiniYamlNode>
+			{
+				new("GeoTransform", new MiniYaml("", geoTransformNodes)),
+			};
+
+			map.Metadata = new MiniYaml("", metadataNodes);
 
 			onProgress?.Invoke("Map generation complete!", 100);
 			return map;

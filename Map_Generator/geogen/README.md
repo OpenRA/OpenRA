@@ -233,6 +233,4 @@ See [DATA_SOURCES.md](DATA_SOURCES.md) for full details. Generated maps embed at
 | JRC Global Surface Water | CC BY 4.0 | Water augmentation |
 
 
-python -m cli --mgrs "17RMH9336033739" --no-coastline --overlay-osm --overlay-osm-buildings --write-oramap "f:\ClaudeSpace\OpenRA\OpenRA_TAK_Support\GeoMaps\TheKeys_realworld.oramap" --waterway-width-m 6 --veg-density 0.15 --max-veg-actors 4000 --veg-min-spacing 2 --veg-patch-size 16 --veg-patch-boost 2 --suppress-veg-near-roads 1 --suppress-veg-near-buildings 0 --building-placement-mode aggressive --building-search-radius 3 --pretty
 
-python -m cli --mgrs "17RMH9336033739" --coastline-invert --overlay-osm --overlay-osm-buildings --write-oramap "f:\ClaudeSpace\OpenRA\OpenRA_TAK_Support\GeoMaps\TheKeys_realworld.oramap" --waterway-width-m 6 --veg-density 0.15 --max-veg-actors 4000 --veg-min-spacing 2 --veg-patch-size 32 --veg-patch-boost 1.5 --suppress-veg-near-roads 1 --suppress-veg-near-buildings 1 --building-placement-mode aggressive --building-search-radius 3 --pretty
