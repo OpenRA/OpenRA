@@ -53,13 +53,15 @@ TankGroupPatrolPath =
 
 HuntDogsGroup = { HuntDog1, HuntDog2, HuntDog3, HuntDog4, HuntDog5, HuntDog6 }
 
-GuardingMammothTanks = { MM1, MM2, MM3 }
+TopExitBlockers = { TopExitBlocker1, TopExitBlocker2, TopExitBlocker3 }
+SideExitBlockers = { SideExitBlocker1, SideExitBlocker2, SideExitBlocker3 }
+BotExitBlockers = { BotExitBlocker1, BotExitBlocker2, BotExitBlocker3 }
 MMGuardPoints = { MMStop1.Location, MMStop2.Location, MMStop3.Location}
 
 GuardDogs = { GuardDog1, GuardDog2, GuardDog3 }
-GuardDogPoint = { DogBlockExit1.Location, DogBlockExit1.Location, DogBlockExit3.Location }
+GuardDogPoint = { BlockExit1.Location, BlockExit2.Location, BlockExit3.Location }
 
-HuntDogTriggers = { DogBlockExit1.CenterPosition + WVec.New(1024*4,0,0), DogBlockExit2.CenterPosition  + WVec.New(1024*3,0,0), DogBlockExit3.CenterPosition }
+HuntDogTriggers = { BlockExit1.CenterPosition + WVec.New(1024*4,0,0), BlockExit2.CenterPosition  + WVec.New(1024*3,0,0), BlockExit3.CenterPosition }
 
 CameraTriggers = { LowerBaseProximityCam.CenterPosition, UpperBaseProximityCam.CenterPosition }
 
@@ -77,15 +79,15 @@ end
 DogsGuardGates = function()
 	for i = 1, 3 do
 		if not GuardDogs[i].IsDead then
-			GuardDogPoint[i].AttackMove(MMGuardPoints[i])
+			GuardDogs[i].AttackMove(GuardDogPoint[i])
 		end
 	end
 end
 
 MMsGuardMainGate = function()
 	for i = 1, 3 do
-		if not GuardingMammothTanks[i].IsDead then
-			GuardingMammothTanks[i].AttackMove(MMGuardPoints[i])
+		if not BotExitBlockers[i].IsDead then
+			BotExitBlockers[i].AttackMove(MMGuardPoints[i])
 		end
 	end
 end
@@ -93,6 +95,17 @@ end
 USSRLockBase = function()
 	DogsGuardGates()
 	MMsGuardMainGate()
+	BlockGate(TopExitBlockers, BlockExit1.Location)
+	BlockGate(SideExitBlockers, BlockExit2.Location)
+	DefendAgainstInfiltration(USSR, GuardDog4)
+end
+
+BlockGate = function(units, waypoint)
+	Utils.Do(units, function(u)
+		if not u.IsDead then
+			u.Move(waypoint)
+		end
+	end)
 end
 
 InfiltrateForwardCommand = function()
@@ -120,6 +133,8 @@ CreateKosygin = function()
 
 	ExtractObjective = AddPrimaryObjective(Greece, "extract-kosygin")
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Greece, "TargetFreed") end)
+
+	TriggerHuntKosygin()
 end
 
 RescueFailed = function()
@@ -198,7 +213,6 @@ InitTriggers = function()
 	TriggerExtractKosygin()
 
 	InitialSovietPatrols()
-	TriggerHuntKosygin()
 
 	ActivateAI()
 end
@@ -222,4 +236,6 @@ WorldLoaded = function()
 	PrepareObjectives()
 	InitTriggers()
 
+	Actor182.Guard(GuardPoint2)
+	--Actor182.Guard(Actor174)
 end
