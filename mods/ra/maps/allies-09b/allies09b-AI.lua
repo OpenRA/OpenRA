@@ -822,8 +822,7 @@ SendParadrop = function()
 		return
 	end
 
-	local airfield = BaseAfld
-	local aircraft = PowerProxy.TargetParatroopers(KosyginExtractPoint.CenterPosition)
+	local aircraft = ParadropProxy.TargetParatroopers(KosyginExtractPoint.CenterPosition)
 
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
@@ -905,5 +904,6 @@ ActivateAI = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(WaterTransDelays), WaterLSTWaves)
-	Trigger.AfterDelay(DateTime.Minutes(ParabombDelay), SendParabombs)
+	Trigger.AfterDelay(DateTime.Seconds(ParabombDelay), SendParadrop)  --Reset to seconds
+	Trigger.AfterDelay(DateTime.Seconds(ParabombDelay), SendParabombs)  --Reset to seconds
 end
