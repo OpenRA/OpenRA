@@ -680,13 +680,16 @@ ProduceDogs = function(d, owner, kenn)
         if not kenn.IsDead and kenn.Owner ~= owner then
             local dog = Reinforcements.Reinforce(owner, {"dog"}, { kenn.Location, kenn.Location + CVec.New(0, 1) })[1]
             d.exists = true
-            Trigger.AfterDelay(DateTime.Seconds(1), function()
-                dog.AttackMove(d.pos)
-            end)
-
             Trigger.OnKilled(dog, function()
                 d.exists = false
             end)
+
+            Trigger.AfterDelay(DateTime.Seconds(1), function()
+                if not dog.IsDead then
+                    dog.AttackMove(d.pos)
+                end
+            end)
+
             Trigger.AfterDelay(DateTime.Seconds(10), function()
                 CheckDogs(owner, kenn)
             end)
