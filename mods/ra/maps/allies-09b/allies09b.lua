@@ -140,6 +140,7 @@ end
 RescueFailed = function()
 	Media.PlaySpeechNotification(Greece, "ObjectiveNotMet")
 	Greece.MarkFailedObjective(KosyginSurviveObjective)
+	Greece.MarkFailedObjective(ExtractObjective)
 end
 
 TriggerExtractKosygin = function()
@@ -162,7 +163,9 @@ TriggerHuntKosygin = function()
 			if actor.Type == KosyginType then
 				Trigger.RemoveProximityTrigger(id)
 				Utils.Do(HuntDogsGroup, function(d)
-					d.Attack(actor)
+					if not d.IsDead then
+						d.Attack(actor)
+					end
 				end)
 			end
 		end)
@@ -196,6 +199,8 @@ SendNavalSupport = function()
 end
 
 PrepareObjectives = function()
+	InitObjectives(Greece)
+	
 	UseSpyObjective = AddPrimaryObjective(Greece, "infiltrate-soviet-command-center-contact-kosygin")
 	KosyginSurviveObjective = AddPrimaryObjective(Greece, "kosygin-must-survive")
 
@@ -236,6 +241,6 @@ WorldLoaded = function()
 	PrepareObjectives()
 	InitTriggers()
 
-	Actor182.Guard(GuardPoint2)
+	--Actor182.Guard(GuardPoint2)
 	--Actor182.Guard(Actor174)
 end
