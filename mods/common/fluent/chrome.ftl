@@ -417,6 +417,34 @@ label-mainmenu-system-info-prompt-text-a = We would like to collect some system 
 label-mainmenu-system-info-prompt-text-b = With your permission, the following anonymous data will be sent each game launch:
 checkbox-mainmenu-system-info-prompt-sysinfo = Send System Information
 
+## mainmenu-prompts.yaml (CoT Output Settings)
+label-mainmenu-cot-output-prompt-title = Establishing Battlefield Control
+label-mainmenu-cot-output-prompt-text-a = Configure Chain-of-Thought output destination.
+label-mainmenu-cot-output-prompt-text-b = Choose a mode and address below. You can change this later in Settings.
+label-cot-output-mode = Mode:
+label-cot-output-host = Host:
+label-cot-output-port = Port:
+label-cot-output-ttl = Multicast TTL:
+label-cot-output-bind-interface = Bind Interface:
+checkbox-cot-output-remember = Remember these settings
+
+## CoT Output mode options
+options-cot-mode.localhost = Localhost (default)
+options-cot-mode.unicast = Unicast
+options-cot-mode.multicast = Multicast
+
+## settings-cot.yaml
+button-panel-cot = Cursor on Target
+label-cot-section-header = Cursor on Target (CoT) Settings
+checkbox-cot-enabled = Enable CoT Broadcasting
+label-cot-mode = Endpoint Mode:
+label-cot-host = Host Address:
+label-cot-port = Port:
+label-cot-ttl = Multicast TTL:
+label-cot-bind-interface = Bind Interface (optional):
+label-cot-bind-interface-desc = Network adapter name to send from (e.g. "Ethernet", "Wi-Fi"). Leave blank for default.
+button-cot-test = Send Test Marker
+
 ## mainmenu-prompts.yaml, settings-display.yaml, settings-gameplay.yaml
 label-profile-section-header = Profile
 label-player-container = Player Name:
@@ -725,3 +753,18 @@ label-game-admin = Game Admin
 ## gamesave-loading.yaml
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
+
+## geo-map-generator.yaml
+label-geo-map-generator-title = Real-World Map Generator
+label-geo-map-generator-mgrs = MGRS Coordinate:
+label-geo-map-generator-features = Features:
+checkbox-geo-map-generator-roads = Roads
+checkbox-geo-map-generator-water = Water
+checkbox-geo-map-generator-vegetation = Vegetation
+checkbox-geo-map-generator-buildings = Buildings
+checkbox-geo-map-generator-coastline = Coastlines
+checkbox-geo-map-generator-invert-coastline = Invert Coast
+label-geo-map-generator-status-ready = Enter MGRS coordinate and click Generate.
+button-geo-map-generator-generate = Generate
+button-geo-map-generator-open-editor = Open Map Editor
+button-map-editor-geo-map = Real-World Map

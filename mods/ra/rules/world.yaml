@@ -297,6 +297,11 @@ World:
 		TerrainFlashImage: moveflsh
 		TerrainFlashSequence: idle
 		TerrainFlashPalette: moveflash
+	CoTBroadcaster:
+		UdpHost: 127.0.0.1
+		UdpPort: 4242
+		TargetOrders: [PlaceBeacon]
+		Callsign: OpenRA
 
 EditorWorld:
 	Inherits: ^BaseWorld

@@ -1,14 +1,28 @@
-# OpenRA
+# Welcome to OpenRA with TAK Hostile MArkers
 
-A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
+## Get Started with OpenRA to TAKX with Step-by-Step Instructions.
 
-* Website: [https://www.openra.net](https://www.openra.net)
-* Chat: [#openra on Libera](ircs://irc.libera.chat:6697/openra) ([web](https://web.libera.chat/#openra)) or [Discord](https://discord.openra.net) ![Discord Badge](https://discordapp.com/api/guilds/153649279762694144/widget.png)
-* Repository: [https://github.com/OpenRA/OpenRA](https://github.com/OpenRA/OpenRA) ![Continuous Integration](https://github.com/OpenRA/OpenRA/workflows/Continuous%20Integration/badge.svg)
+![Alt text](Images/PassionPic.png "Passion")
 
-Please read the [FAQ](https://github.com/OpenRA/OpenRA/wiki/FAQ) in our [Wiki](https://github.com/OpenRA/OpenRA/wiki) and report problems at [https://github.com/OpenRA/OpenRA/issues](https://github.com/OpenRA/OpenRA/issues).
+<mark>DotNet is required please downlaod and install before step 1:</mark> https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-8.0.414-windows-x64-installer
 
-Join the [Forum](https://forum.openra.net/) for discussion.
+1. Extract OpenRA_For_TAKX-main (Tested on TAKX 5.5)
+2. Open OpenRA_For_TAKX-main until you see OpenRA contents  (.editorconfig, .gitignore, etc)
+3. Shift+Right-Click in the window and click “Open PowerShell Window here”. A powershell window will open.
+4. Copy, paste, execute in Powershell -> cmd /c launch-game.cmd Game.Mod=ra
+5. Click "Quick install," Follow the prompts, next, next, next (everything is set up for default). Close OpenRA after the install is complete. Full install indcates that you have Single and Multiplayer avalible as a selction.
+6. Copy the “4Ponds.oramap” from the "GeoMaps" folder and Paste it here -> C:\Users\FirstnameLastname\AppData\Roaming\OpenRA\maps\ra\{DEV_VERSION}
+"AppData" is hidden by default. To unhide it, right-click on the folder and select "Properties". In the "Attributes" section, uncheck "Hidden" and click "Apply".
+7. Redo steps 2 -4 then continue with step 8
+8. Click SinglePlayer -> Skirmish - Change Map -> Custom Maps (4 Ponds) -> ok
+
+OpenRA is set for localhost CoT messaging. Open TAKX or WinTAKX on the same computer as OpenRA and you will automatically see CoT Data populate. 
+
+Note: TAKX was tested for this project, WinTAK and ATAK may show different results.
+
+## Hostile Markers vs Friendly Markers
+
+Hostile Markers are only visible to the player when they are detected by a friendly actor. Friendly Markers are always visible to the player.
 
 ## Play
 
@@ -56,5 +70,3 @@ as published by the Free Software Foundation, either version 3 of
 the License, or (at your option) any later version. For more
 information, see [COPYING](https://github.com/OpenRA/OpenRA/blob/bleed/COPYING).
 
-# Sponsors
-Free code signing on Windows provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).

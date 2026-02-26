@@ -406,6 +406,10 @@ MCV:
 		Actor: MCV.Husk
 	TransferTimedExternalConditionOnTransform:
 		Condition: invulnerability
+	CoTVehicleEmitter@vehicle:
+		Callsign: MCV
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 250
 
 JEEP:
 	Inherits: ^Vehicle

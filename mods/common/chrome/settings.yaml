@@ -8,6 +8,7 @@ Background@SETTINGS_PANEL:
 			AUDIO_PANEL: button-panel-audio
 			HOTKEYS_PANEL: button-panel-hotkeys
 			ADVANCED_PANEL: button-panel-advanced
+			COT_PANEL: button-panel-cot
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT -  HEIGHT) / 2
 	Width: 900

@@ -76,6 +76,7 @@ Rules:
 	ra|rules/player.yaml
 	ra|rules/palettes.yaml
 	ra|rules/world.yaml
+	ra|rules/cot-fow.yaml
 	ra|rules/defaults.yaml
 	ra|rules/vehicles.yaml
 	ra|rules/husks.yaml
@@ -139,6 +140,7 @@ ChromeLayout:
 	common|chrome/settings-hotkeys.yaml
 	common|chrome/settings-gameplay.yaml
 	common|chrome/settings-advanced.yaml
+	common|chrome/settings-cot.yaml
 	common|chrome/credits.yaml
 	common|chrome/lobby.yaml
 	common|chrome/lobby-mappreview.yaml
@@ -164,6 +166,7 @@ ChromeLayout:
 	common|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
+	common|chrome/geo-map-generator.yaml
 	common|chrome/playerprofile.yaml
 	common|chrome/text-notifications.yaml
 

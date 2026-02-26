@@ -386,6 +386,7 @@ namespace OpenRA
 			Log.AddChannel("geoip", "geoip.log");
 			Log.AddChannel("nat", "nat.log");
 			Log.AddChannel("client", "client.log");
+			Log.AddChannel("cot", "cot.log");
 
 			Nat.Initialize();
 

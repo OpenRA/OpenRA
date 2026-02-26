@@ -311,6 +311,209 @@
 	HitShape:
 	MapEditorData:
 		Categories: Vehicle
+	CoTVehicleEmitter@vehicle:
+		UdpHost: 127.0.0.1
+		UdpPort: 4242
+		Callsign: OpenRA-Vehicle
+		CotType: a-f-G-U-C
+		Hae: 0
+		Ce: 25
+		Le: 25
+		StaleSeconds: 120
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 25
+		IncludeMilsymDetail: True
+		MilsymId: ""
+		IncludeColor: True
+		ColorArgb: -1
+		ColorValue: -1
+		IncludeLink: True
+		LinkParentCallsign: ""
+		LinkRelation: "p-p"
+		IncludeArchive: False
+		ActorCallsigns:
+			V2RL: Artillery (Rocket)
+			1TNK: Light Tank
+			2TNK: Medium Tank
+			3TNK: Heavy Tank
+			4TNK: Super-Heavy Tank
+			ARTY: Artillery
+			HARV: Harvester
+			MCV: MCV
+			JEEP: Jeep Recon
+			APC: APC
+			MNLY: Minelayer
+			TRUK: Truck
+			MGG: Gap Generator
+			MRJ: Radar Jammer
+			TTNK: Tesla Tank
+			FTRK: Flak Truck
+			DTRK: Demolition Truck
+			CTNK: Chrono Tank
+			QTNK: MAD Tank
+			STNK: Stealth Tank
+		ActorSymbols:
+			V2RL: a-f-G-U-C-F
+			1TNK: a-f-G-E-V-A-T
+			2TNK: a-f-G-E-V-A-T-L
+			3TNK: a-f-G-E-V-A-T-M
+			4TNK: a-f-G-E-V-A-T-H
+			ARTY: a-f-G-U-C-F
+			HARV: a-f-G-U-U
+			MCV: a-f-F-B
+			JEEP: a-f-G-U-C-R-X
+			APC: a-f-G-U-S-T
+			MNLY: a-f-G-E-V-E-M
+			TRUK: a-f-G-E-V-U-X
+			MGG: "a-f-G-U-U-M-S-E-J-*-*-*-*-*"
+			MRJ: "a-f-G-U-U-M-S-E-J-*-*-*-*-*"
+			TTNK: a-f-G-U-U-M-S-E
+			FTRK: a-f-G-U-C
+			DTRK: a-f-F-N-U
+			CTNK: a-f-G-E-V-A-T
+			QTNK: a-f-F-G
+			STNK: a-f-G-U-C
+		ActorDamageMilsymIds:
+			V2RL:
+				Undamaged: "SFGCUCF---*****"
+				Light: "SFGDUCF---*****"
+				Medium: "SFGDUCF---*****"
+				Heavy: "SFGDUCF---*****"
+				Critical: "SFGXUCF---*****"
+				Dead: "SFGXUCF---*****"
+			1TNK:
+				Undamaged: "SFGCEVAT--*****"
+				Light: "SFGDGVAT--*****"
+				Medium: "SFGDGVAT--*****"
+				Heavy: "SFGDGVAT--*****"
+				Critical: "SFGXGVAT--*****"
+				Dead: "SFGXGVAT--*****"
+			2TNK:
+				Undamaged: "SFGCEVATL-*****"
+				Light: "SFGDGVATL-*****"
+				Medium: "SFGDGVATL-*****"
+				Heavy: "SFGDGVATL-*****"
+				Critical: "SFGXGVATL-*****"
+				Dead: "SFGXGVATL-*****"
+			3TNK:
+				Undamaged: "SFGCEVATM-*****"
+				Light: "SFGDGVATM-*****"
+				Medium: "SFGDGVATM-*****"
+				Heavy: "SFGDGVATM-*****"
+				Critical: "SFGXGVATM-*****"
+				Dead: "SFGXGVATM-*****"
+			4TNK:
+				Undamaged: "SFGCEVATH-*****"
+				Light: "SFGDGVATH-*****"
+				Medium: "SFGDGVATH-*****"
+				Heavy: "SFGDGVATH-*****"
+				Critical: "SFGXGVATH-*****"
+				Dead: "SFGXGVATH-*****"
+			ARTY:
+				Undamaged: "SFGCUCF---*****"
+				Light: "SFGDUCF---*****"
+				Medium: "SFGDUCF---*****"
+				Heavy: "SFGDUCF---*****"
+				Critical: "SFGXUCF---*****"
+				Dead: "SFGXUCF---*****"
+			HARV:
+				Undamaged: "SFGCUU----*****"
+				Light: "SFGDUU----*****"
+				Medium: "SFGDUU----*****"
+				Heavy: "SFGDUU----*****"
+				Critical: "SFGXUU----*****"
+				Dead: "SFGXUU----*****"
+			MCV:
+				Undamaged: "SFFCB-----*****"
+				Light: "SFFDB-----*****"
+				Medium: "SFFDB-----*****"
+				Heavy: "SFFDB-----*****"
+				Critical: "SFFXB-----*****"
+				Dead: "SFFXB-----*****"
+			JEEP:
+				Undamaged: "SFGCUCRX--*****"
+				Light: "SFGDUCRX--*****"
+				Medium: "SFGDUCRX--*****"
+				Heavy: "SFGDUCRX--*****"
+				Critical: "SFGXUCRX--*****"
+				Dead: "SFGXUCRX--*****"
+			APC:
+				Undamaged: "SFGCUST---*****"
+				Light: "SFGDUST---*****"
+				Medium: "SFGDUST---*****"
+				Heavy: "SFGDUST---*****"
+				Critical: "SFGXUST---*****"
+				Dead: "SFGXUST---*****"
+			MNLY:
+				Undamaged: "SFGCEVEM--*****"
+				Light: "SFGDVEM--*****"
+				Medium: "SFGDVEM--*****"
+				Heavy: "SFGDVEM--*****"
+				Critical: "SFGXVEM--*****"
+				Dead: "SFGXVEM--*****"
+			TRUK:
+				Undamaged: "SFGCEVUX--*****"
+				Light: "SFGDVUX--*****"
+				Medium: "SFGDVUX--*****"
+				Heavy: "SFGDVUX--*****"
+				Critical: "SFGXVUX--*****"
+				Dead: "SFGXVUX--*****"
+			MGG:
+				Undamaged: "SFGCUUMSEJ*****"
+				Light: "SFGDUUMSEJ*****"
+				Medium: "SFGDUUMSEJ*****"
+				Heavy: "SFGDUUMSEJ*****"
+				Critical: "SFGXUMSEJ*****"
+				Dead: "SFGXUMSEJ*****"
+			MRJ:
+				Undamaged: "SFGCUUMSEJ*****"
+				Light: "SFGDUUMSEJ*****"
+				Medium: "SFGDUUMSEJ*****"
+				Heavy: "SFGDUUMSEJ*****"
+				Critical: "SFGXUMSEJ*****"
+				Dead: "SFGXUMSEJ*****"
+			TTNK:
+				Undamaged: "SFGCUUMSE-*****"
+				Light: "SFGDUUMSE-*****"
+				Medium: "SFGDUUMSE-*****"
+				Heavy: "SFGDUUMSE-*****"
+				Critical: "SFGXUMSE-*****"
+				Dead: "SFGXUMSE-*****"
+			FTRK:
+				Undamaged: "IFGCSRAA---*****"
+				Light: "IFGDRAA---*****"
+				Medium: "IFGDRAA---*****"
+				Heavy: "IFGDRAA---*****"
+				Critical: "IFGXRAA---*****"
+				Dead: "IFGXRAA---*****"
+			DTRK:
+				Undamaged: "SFFCNU----*****"
+				Light: "SFFDNU----*****"
+				Medium: "SFFDNU----*****"
+				Heavy: "SFFDNU----*****"
+				Critical: "SFFXNU----*****"
+				Dead: "SFFXNU----*****"
+			CTNK:
+				Undamaged: "SFGCEVAT--*****"
+				Light: "SFGDVAT--*****"
+				Medium: "SFGDVAT--*****"
+				Heavy: "SFGDVAT--*****"
+				Critical: "SFGXVAT--*****"
+				Dead: "SFGXVAT--*****"
+			QTNK:
+				Undamaged: "SFFCG-----*****"
+				Light: "SFFDG-----*****"
+				Medium: "SFFDG-----*****"
+				Heavy: "SFFDG-----*****"
+				Critical: "SFFXG-----*****"
+				Dead: "SFFXG-----*****"
+			STNK:
+				Undamaged: "EFOCDLB---*****"
+				Light: "EFODLB----*****"
+				Medium: "EFODLB----*****"
+				Heavy: "EFODLB----*****"
+				Critical: "EFOXLB----*****"
+				Dead: "EFOXLB----*****"
 
 ^TrackedVehicle:
 	Inherits: ^Vehicle
@@ -441,6 +644,184 @@
 	DetectCloaked:
 		DetectionTypes: Cloak
 		Range: 1c512
+	CoTInfantryEmitter:
+		UdpHost: 127.0.0.1
+		UdpPort: 4242
+		Callsign: OpenRA-Infantry
+		CotType: a-f-G-U-C
+		Hae: 0
+		Ce: 25
+		Le: 25
+		StaleSeconds: 120
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 25
+		IncludeMilsymDetail: True
+		MilsymId: ""
+		ActorCallsigns:
+			E1: "Rifleman"
+			E2: "Grenadier"
+			E3: "RocketSoldier"
+			E4: "Flamethrower"
+			E6: "Engineer"
+			SPY: "Spy"
+			E7: "Commando"
+			MEDI: "Medic"
+			MECH: "Mechanic"
+			THF: "Thief"
+			SHOK: "ShockTrooper"
+			DOG: "Dog"
+			Zombie: "Zombie"
+			Ant: "Ant"
+			FireAnt: "FireAnt"
+			ScoutAnt: "ScoutAnt"
+			WarriorAnt: "WarriorAnt"
+		IncludeColor: True
+		ColorArgb: -1
+		ColorValue: -1
+		IncludeLink: True
+		LinkParentCallsign: "OpenRA-Infantry"
+		LinkRelation: "p-p"
+		IncludeArchive: False
+		
+		ActorDamageSymbols:
+			E1:
+				Default: "a-f-G-E-W-R-R"
+			E2:
+				Default: "a-f-G-E-W-Z-L"
+			E3:
+				Default: "a-f-G-E-W-S-L"
+			E4:
+				Default: "a-f-G-E-X-F"
+			E6:
+				Default: "a-f-G-U-C-E"
+			SPY:
+				Default: "no-defined-type"
+			E7:
+				Default: "a-f-F-G-S"
+			MEDI:
+				Default: "a-f-G-U-S-M"
+			MECH:
+				Default: "a-f-G-E-V-E"
+			THF:
+				Default: "a-f-G-U-C-I"
+			SHOK:
+				Default: "a-f-G-U-C-I"
+			DOG:
+				Default: "a-f-G-U-C-I"
+			Zombie:
+				Default: "a-f-G-U-C-I"
+			Ant:
+				Default: "a-f-G-U-C-I"
+			FireAnt:
+				Default: "a-f-G-U-C-I"
+			ScoutAnt:
+				Default: "a-f-G-U-C-I"
+			WarriorAnt:
+				Default: "a-f-G-U-C-I"
+		ActorMilsymIds:
+			E1: "SFGCEWRR--*****"
+			E2: "SFGCEWZL--*****"
+			E3: "SFGCEWSL--*****"
+			E4: "SFGCEXF---*****"
+			E6: "SFGCUCE---*****"
+			SPY: "OFOCS-----*****"
+			E7: "SFFCGS----*****"
+			MEDI: "SFGCUSM---*****"
+			MECH: "SFGCEVE---*****"
+			THF: "SFGCUCI--------"
+			SHOK: "SFGCUCI--------"
+			DOG: "SFGCUCI--------"
+			Zombie: "SFGCUCI--------"
+			Ant: "SFGCUCI--------"
+			FireAnt: "SFGCUCI--------"
+			ScoutAnt: "SFGCUCI--------"
+			WarriorAnt: "SFGCUCI--------"
+		ActorDamageMilsymIds:
+			E1:
+				Undamaged: "SFGCEWRR--*****"
+				Default: "SFGDEWRR--*****"
+				Critical: "SFGXEWRR--*****"
+				Dead: "SFGXEWRR--*****"
+			E2:
+				Undamaged: "SFGCEWZL--*****"
+				Default: "SFGDEWZL--*****"
+				Critical: "SFGXEWZL--*****"
+				Dead: "SFGXEWZL--*****"
+			E3:
+				Undamaged: "SFGCEWSL--*****"
+				Default: "SFGDEWSL--*****"
+				Critical: "SFGXEWSL--*****"
+				Dead: "SFGXEWSL--*****"
+			E4:
+				Undamaged: "SFGCEXF---*****"
+				Default: "SFGDEXF---*****"
+				Critical: "SFGXEXF---*****"
+				Dead: "SFGXEXF---*****"
+			E6:
+				Undamaged: "SFGCUCE---*****"
+				Default: "SFGDUCE---*****"
+				Critical: "SFGXUCE---*****"
+				Dead: "SFGXUCE---*****"
+			SPY:
+				Undamaged: "OFOCS-----*****"
+				Default: "OFODS-----*****"
+				Critical: "OFOXS-----*****"
+				Dead: "OFOXS-----*****"
+			E7:
+				Undamaged: "SFFCGS----*****"
+				Default: "SFFDGS----*****"
+				Critical: "SFFXGS----*****"
+				Dead: "SFFXGS----*****"
+			MEDI:
+				Undamaged: "SFGCUSM---*****"
+				Default: "SFGDUSM---*****"
+				Critical: "SFGXUSM---*****"
+				Dead: "SFGXUSM---*****"
+			MECH:
+				Undamaged: "SFGCEVE---*****"
+				Default: "SFGDEVE---*****"
+				Critical: "SFGXEVE---*****"
+				Dead: "SFGXEVE---*****"
+			THF:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			SHOK:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			DOG:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			Zombie:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			Ant:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			FireAnt:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			ScoutAnt:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
+			WarriorAnt:
+				Undamaged: "SFGCUCI--------"
+				Default: "SFGDUCI--------"
+				Critical: "SFGXUCI--------"
+				Dead: "SFGXUCI--------"
 
 ^Soldier:
 	Inherits: ^Infantry
@@ -461,6 +842,7 @@
 
 ^CivInfantry:
 	Inherits: ^Infantry
+	-CoTInfantryEmitter:
 	Selectable:
 		Class: CivInfantry
 	Valued:
@@ -553,6 +935,95 @@
 		VoiceSet: VehicleVoice
 	WithFacingSpriteBody:
 	HitShape:
+	CoTShipEmitter@ship:
+		UdpHost: 127.0.0.1
+		UdpPort: 4242
+		Callsign: OpenRA-Ship
+		CotType: a-f-G-U-C
+		Hae: 0
+		Ce: 25
+		Le: 25
+		StaleSeconds: 120
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 25
+		IncludeMilsymDetail: True
+		MilsymId: ""
+		IncludeColor: True
+		ColorArgb: -1
+		ColorValue: -1
+		IncludeLink: True
+		LinkParentCallsign: ""
+		LinkRelation: "p-p"
+		IncludeArchive: False
+		ActorCallsigns:
+			SS: Submarine
+			MSUB: Missile Submarine
+			DD: Destroyer
+			CA: Cruiser
+			LST: Landing Craft
+			PT: Patrol Boat
+		ActorSymbols:
+			SS: "a-f-U-S-C-A"
+			MSUB: "a-f-U-S-N-B"
+			DD: "a-f-S-C-L-D-D"
+			CA: "a-f-S-C-L-C-C"
+			LST: "a-f-S-C-A-L-C"
+			PT: "a-f-S-C-P"
+		ActorIsSubmarine:
+			SS: True
+			MSUB: True
+		ActorDepthMeters:
+			SS: 40
+			MSUB: 60
+		ActorDamageMilsymIds:
+			SS:
+				Undamaged: "SFUCSCA---*-***"
+				Default: "SFUCSCA---*-***"
+				Light: "SFUDSCA---*-***"
+				Medium: "SFUDSCA---*-***"
+				Heavy: "SFUDSCA---*-***"
+				Critical: "SFUDSCA---*-***"
+				Dead: "SFUXSCA---*-***"
+			MSUB:
+				Undamaged: "SFUCSNB---*-***"
+				Default: "SFUCSNB---*-***"
+				Light: "SFUDSNB---*-***"
+				Medium: "SFUDSNB---*-***"
+				Heavy: "SFUDSNB---*-***"
+				Critical: "SFUDSNB---*-***"
+				Dead: "SFUXSNB---*-***"
+			DD:
+				Undamaged: "SFSCCLDD--*-***"
+				Default: "SFSCCLDD--*-***"
+				Light: "SFSCCLDD--*-***"
+				Medium: "SFSCCLDD--*-***"
+				Heavy: "SFSCCLDD--*-***"
+				Critical: "SFSCCLDD--*-***"
+				Dead: "SFSCCLDD--*-***"
+			CA:
+				Undamaged: "SFSCCLCC--*-***"
+				Default: "SFSCCLCC--*-***"
+				Light: "SFSDCLCC--*-***"
+				Medium: "SFSDCLCC--*-***"
+				Heavy: "SFSDCLCC--*-***"
+				Critical: "SFSDCLCC--*-***"
+				Dead: "SFSXCLCC--*-***"
+			LST:
+				Undamaged: "SFSCCALC--*-***"
+				Default: "SFSCCALC--*-***"
+				Light: "SFSDCALC--*-***"
+				Medium: "SFSDCALC--*-***"
+				Heavy: "SFSDCALC--*-***"
+				Critical: "SFSDCALC--*-***"
+				Dead: "SFSXCALC--*-***"
+			PT:
+				Undamaged: "SFSCCP----*-***"
+				Default: "SFSCCP----*-***"
+				Light: "SFSDCP----*-***"
+				Medium: "SFSDCP----*-***"
+				Heavy: "SFSDCP----*-***"
+				Critical: "SFSDCP----*-***"
+				Dead: "SFSXCP----*-***"
 
 ^Submarine:
 	Inherits: ^Ship
@@ -653,6 +1124,125 @@
 		TextNotification: notification-unit-stolen
 		LoseNotification: UnitLost
 		LoseTextNotification: notification-unit-lost
+	CoTAircraftEmitter@aircraft:
+		UdpHost: 127.0.0.1
+		UdpPort: 4242
+		Callsign: OpenRA-Aircraft
+		CotType: a-f-G-U-C
+		Hae: 0
+		Ce: 25
+		Le: 25
+		StaleSeconds: 120
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 25
+		IncludeMilsymDetail: True
+		MilsymId: ""
+		IncludeColor: True
+		ColorArgb: -1
+		ColorValue: -1
+		IncludeLink: True
+		LinkParentCallsign: ""
+		LinkRelation: "p-p"
+		IncludeTrack: True
+		AltitudeMode: Profile
+		TaxiHaeProfile: 0
+		TakeoffHaeProfile: 100
+		CruiseHaeProfile: 300
+		ApproachHaeProfile: 100
+		IncludeArchive: False
+		ActorCallsigns:
+			MIG: "MIG"
+			YAK: "YAK"
+			HELI: "HELI"
+			HIND: "HIND"
+			TRAN: "TRAN"
+			MH60: "MH60"
+			BADR: "BADR"
+			BADR.Bomber: "BADR Bomber"
+			U2: "U2"
+		ActorSymbols:
+			MIG: "a-f-A-M-F-F"
+			YAK: "a-f-A-M-F-P"
+			HELI: "a-f-A-M-H"
+			HIND: "a-f-A-M-H"
+			TRAN: "a-f-A-M-H"
+			MH60: "a-f-A-M-H-H"
+			BADR: "a-f-A-M-F-C-H"
+			BADR.Bomber: "a-f-A-M-F-B"
+			U2: "a-f-A-M-F-Q-R-Z"
+  		ActorDamageMilsymIds:
+  			MIG:
+  				Undamaged: "SFACMFF---*-***"
+				Default: "SFADMFF---*-***"
+				Light: "SFADMFF---*-***"
+				Medium: "SFADMFF---*-***"
+				Heavy: "SFADMFF---*-***"
+  				Critical: "SFADMFF---*-***"
+  				Dead: "SFAXMFF---*-***"
+  			YAK:
+  				Undamaged: "SFACMFP---*-***"
+				Default: "SFADMFP---*-***"
+				Light: "SFADMFP---*-***"
+				Medium: "SFADMFP---*-***"
+				Heavy: "SFADMFP---*-***"
+  				Critical: "SFADMFP---*-***"
+  				Dead: "SFAXMFP---*-***"
+  			HELI:
+  				Undamaged: "SFACMH----*-***"
+				Default: "SFADMH----*-***"
+				Light: "SFADMH----*-***"
+				Medium: "SFADMH----*-***"
+				Heavy: "SFADMH----*-***"
+  				Critical: "SFADMH----*-***"
+  				Dead: "SFAXMH----*-***"
+  			HIND:
+  				Undamaged: "SFACMH----*-***"
+				Default: "SFADMH----*-***"
+				Light: "SFADMH----*-***"
+				Medium: "SFADMH----*-***"
+				Heavy: "SFADMH----*-***"
+  				Critical: "SFADMH----*-***"
+  				Dead: "SFAXMH----*-***"
+  			TRAN:
+  				Undamaged: "SFACMH----*-***"
+				Default: "SFADMH----*-***"
+				Light: "SFADMH----*-***"
+				Medium: "SFADMH----*-***"
+				Heavy: "SFADMH----*-***"
+  				Critical: "SFADMH----*-***"
+  				Dead: "SFAXMH----*-***"
+  			MH60:
+  				Undamaged: "SFACMHH---*-***"
+				Default: "SFADMHH---*-***"
+				Light: "SFADMHH---*-***"
+				Medium: "SFADMHH---*-***"
+				Heavy: "SFADMHH---*-***"
+  				Critical: "SFADMHH---*-***"
+  				Dead: "SFAXMHH---*-***"
+  			BADR:
+  				Undamaged: "SUACMFCH--*-***"
+				Default: "SUADMFC---*-***"
+				Light: "SUADMFC---*-***"
+				Medium: "SUADMFC---*-***"
+				Heavy: "SUADMFC---*-***"
+  				Critical: "SUADMFC---*-***"
+  				Dead: "SUAXMFC---*-***"
+  			BADR.Bomber:
+  				Undamaged: "SFACMFB---*-***"
+				Default: "SFADMFB---*-***"
+				Light: "SFADMFB---*-***"
+				Medium: "SFADMFB---*-***"
+				Heavy: "SFADMFB---*-***"
+  				Critical: "SFADMFB---*-***"
+  				Dead: "SFAXMFB---*-***"
+  			U2:
+  				Undamaged: "SUACMFQRZ-*-***"
+				Default: "SUADMFQRZ-*-***"
+				Light: "SUADMFQRZ-*-***"
+				Medium: "SUADMFQRZ-*-***"
+				Heavy: "SUADMFQRZ-*-***"
+  				Critical: "SUADMFQRZ-*-***"
+  				Dead: "SUAXMFQRZ-*-***"
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -722,6 +1312,200 @@
 	Tooltip:
 		GenericName: meta-basicbuilding-generic-name
 	Demolishable:
+	CoTBuildingEmitter:
+		UdpHost: 127.0.0.1
+		UdpPort: 4242
+		Callsign: OpenRA-Building
+		CotType: a-f-G-U-C
+		Hae: 0
+		Ce: 50
+		Le: 50
+		StaleSeconds: 120
+		UpdateIntervalTicks: 25
+		MaxIntervalTicks: 25
+		ActorCallsigns:
+			POWR: "Power"
+			APWR: "AdvPower"
+			PROC: "Refinery"
+			WEAP: "WarFactory"
+			DOME: "RadarDome"
+			HQ: "HQ"
+			FACT: "ConstructionYard"
+			BARR: "BarracksSoviet"
+			TENT: "BarracksAllied"
+			SYRD: "NavalYardSoviet"
+			SPEN: "NavalYardAllied"
+			FIX: "ServiceDepot"
+			HPAD: "Helipad"
+			ATEK: "TechCenterAllied"
+			STEK: "TechCenterSoviet"
+			AFLD: "Airfield"
+			KENN: "Kennel"
+		ActorSymbols:
+			POWR: "a-f-G-I-U-E"
+			APWR: "a-f-G-I-U-E-N"
+			PROC: "a-f-G-I-R-M"
+			WEAP: "a-f-G-U-C-I-M"
+			DOME: "a-f-G-U-C-F-T-R"
+			HQ: "a-f-G-U-H"
+			FACT: "a-f-G-I-E"
+			BARR: "a-f-G-I-P"
+			TENT: "a-f-G-I-P"
+			SYRD: "a-f-G-I-B-N"
+			SPEN: "a-f-G-I-B-N"
+			FIX: "a-f-G-I-T"
+			HPAD: "a-f-G-U-C-V-V"
+			ATEK: "a-f-G-I-U-R"
+			STEK: "a-f-G-I-U-R"
+			AFLD: "a-f-G-U-C-V-V"
+			KENN: "a-f-G-E-V-M"
+		IncludeMilsymDetail: True
+		MilsymId: ""
+		ActorMilsymIds:
+			POWR: "SFGPIUE---H----"
+			APWR: "SFGPIUEN--H----"
+			PROC: "SFGPIRM---H----"
+			WEAP: "SFGPUCIM-------"
+			DOME: "SFGPUCFTR------"
+			HQ: "SFGPUH---------"
+			FACT: "SFGPIE----H----"
+			BARR: "SFGPIP----H----"
+			TENT: "SFGPIP----H----"
+			SYRD: "SFGPIBN---H----"
+			SPEN: "SFGPUCF-----"
+			FIX: "SFGPIT----H----"
+			HPAD: "SFGPUCVV-------"
+			ATEK: "SFGPUCF-----"
+			STEK: "SFGPIUR---H----"
+			AFLD: "SFGPUCVV-------"
+			KENN: "SFGPEVM--------"
+		ActorDamageMilsymIds:
+			POWR:
+				Undamaged: "SFGCIUE---HN***"
+				Light: "SFGDIUE---HN***"
+				Medium: "SFDCIUE---HN***"
+				Heavy: "SFGDIUE---HN***"
+				Critical: "SFGXIUE---HN***"
+				Dead: "SFGXIUE---HN***"
+			APWR:
+				Undamaged: "SFGCIUEN--HN***"
+				Light: "SFGDIUEN--HN***"
+				Medium: "SFDCIUE---HN***"
+				Heavy: "SFGDIUE---HN***"
+				Critical: "SFGXIUE---HN***"
+				Dead: "SFGXIUE---HN***"
+			PROC:
+				Undamaged: "SFGCIRM---HN***"
+				Light: "SFGDIIRM--HN***"
+				Medium: "SFDCIUE---HN***"
+				Heavy: "SFGDIUE---HN***"
+				Critical: "SFGXIUE---HN***"
+				Dead: "SFGXIUE---HN***"
+			WEAP:
+				Undamaged: "SFGCUCIM--*****"
+				Light: "SFGDUCIM--*****"
+				Medium: "SFGDUCIM--*****"
+				Heavy: "SFGDUCIM--*****"
+				Critical: "SFGXUCIM--*****"
+				Dead: "SFGXUCIM--*****"
+			DOME:
+				Undamaged: "SFGCUCFTR-*****"
+				Light: "SFGDUCFTR-*****"
+				Medium: "SFGDUCFTR-*****"
+				Heavy: "SFGDUCFTR-*****"
+				Critical: "SFGXUCFTR-*****"
+				Dead: "SFGXUCFTR-*****"
+			HQ:
+				Undamaged: "SFGCUH----*****"
+				Light: "SFGDUH----*****"
+				Medium: "SFDCUH----*****"
+				Heavy: "SFGDUH----*****"
+				Critical: "SFGXUH----*****"
+				Dead: "SFGXUH----*****"
+			FACT:
+				Undamaged: "SFGCIE----H****"
+				Light: "SFGDIE----H****"
+				Medium: "SFDCIE----H****"
+				Heavy: "SFGDIE----H****"
+				Critical: "SFGXIE----H****"
+				Dead: "SFGXIE----H****"
+			BARR:
+				Undamaged: "SFGCIP----H****"
+				Light: "SFGDIP----H****"
+				Medium: "SFDCIP----H****"
+				Heavy: "SFGDIP----H****"
+				Critical: "SFGXIP----H****"
+				Dead: "SFGXIP----H****"
+			TENT:
+				Undamaged: "SNGCIP----H****"
+				Light: "SNGDIP----H****"
+				Medium: "SFDCIP----H****"
+				Heavy: "SFGDIP----H****"
+				Critical: "SFGXIP----H****"
+				Dead: "SFGXIP----H****"
+			KENN:
+				Undamaged: "SFGCEVM---*****"
+				Light: "SFGDIP----H****"
+				Medium: "SFDCIP----H****"
+				Heavy: "SFGDIP----H****"
+				Critical: "SFGXIP----H****"
+				Dead: "SFGXIP----H****"
+			AFLD:
+				Undamaged: "SFGCUCVV--*****"
+				Light: "SFGDUCVV--*****"
+				Medium: "SFGDUCVV--*****"
+				Heavy: "SFGDUCVV--*****"
+				Critical: "SFGXUCVV--*****"
+				Dead: "SFGXUCVV--*****"
+			SYRD:
+				Undamaged: "SFGCIBN---H****"
+				Light: "SFGDIBN---H****"
+				Medium: "SFDCIBN---H****"
+				Heavy: "SFGDIBN---H****"
+				Critical: "SFGXIBN---H****"
+				Dead: "SFGXIBN---H****"
+			SPEN:
+				Undamaged: "SFGPUCF-----"
+				Light: "SFGPUCF-----"
+				Medium: "SFGPUCF-----"
+				Heavy: "SFGPUCF-----"
+				Critical: "SFGPUCF-----"
+				Dead: "SFGPUCF-----"
+			FIX:
+				Undamaged: "SFGCIT----H****"
+				Light: "SFGDIT----H****"
+				Medium: "SFDCIT----H****"
+				Heavy: "SFGDIT----H****"
+				Critical: "SFGXIT----H****"
+				Dead: "SFGXIT----H****"
+			HPAD:
+				Undamaged: "SFGCUCVV--*****"
+				Light: "SFGDUCVV--*****"
+				Medium: "SFDCUCVV--*****"
+				Heavy: "SFGDUCVV--*****"
+				Critical: "SFGXUCVV--*****"
+				Dead: "SFGXUCVV--*****"
+			ATEK:
+				Undamaged: "SFGPUCF-----"
+				Light: "SFGPUCF-----"
+				Medium: "SFGPUCF-----"
+				Heavy: "SFGPUCF-----"
+				Critical: "SFGPUCF-----"
+				Dead: "SFGPUCF-----"
+			STEK:
+				Undamaged: "SFGCIUR---H****"
+				Light: "SFGDIUR---H****"
+				Medium: "SFDCIUR---H****"
+				Heavy: "SFGDIUR---H****"
+				Critical: "SFGXIUR---H****"
+				Dead: "SFGXIUR---H****"
+		IncludeColor: True
+		ColorArgb: -1
+		ColorValue: -1
+		IncludeLink: True
+		LinkParentCallsign: "OpenRA-Building"
+		LinkRelation: "p-p"
+		IncludeArchive: False
 	MapEditorData:
 		Categories: Building
 	CommandBarBlacklist:
@@ -912,6 +1696,7 @@
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
+	-CoTBuildingEmitter:
 	RenderSprites:
 		Palette: player
 	MapEditorData:

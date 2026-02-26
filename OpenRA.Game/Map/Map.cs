@@ -179,6 +179,7 @@ namespace OpenRA
 			new("Voices", nameof(VoiceDefinitions), required: false),
 			new("Music", nameof(MusicDefinitions), required: false),
 			new("Notifications", nameof(NotificationDefinitions), required: false),
+			new("Metadata", required: false),
 		];
 
 		// Format versions
@@ -210,6 +211,7 @@ namespace OpenRA
 		public MiniYaml VoiceDefinitions;
 		public MiniYaml MusicDefinitions;
 		public MiniYaml NotificationDefinitions;
+		public MiniYaml Metadata;
 
 		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = [];
 
@@ -217,6 +219,12 @@ namespace OpenRA
 		public readonly MapGrid Grid;
 		public IReadOnlyPackage Package { get; private set; }
 		public string Uid { get; private set; }
+
+		/// <summary>
+		/// Parsed GeoTransform metadata for converting between map cells and lat/lon.
+		/// Null if the map.yaml does not contain a Metadata.GeoTransform block.
+		/// </summary>
+		public MapGeoTransform GeoTransform { get; private set; }
 
 		public Ruleset Rules { get; private set; }
 		public SequenceSet Sequences { get; private set; }
@@ -369,6 +377,9 @@ namespace OpenRA
 
 			PlayerDefinitions = yaml.NodeWithKeyOrDefault("Players")?.Value.Nodes ?? [];
 			ActorDefinitions = yaml.NodeWithKeyOrDefault("Actors")?.Value.Nodes ?? [];
+
+			// Parse GeoTransform (if present) from the Metadata block
+			GeoTransform = ParseGeoTransformFromMetadata();
 
 			Grid = modData.GetOrCreate<MapGrid>();
 
@@ -1362,6 +1373,180 @@ namespace OpenRA
 			return new WDist(Math.Min(x, y) * dir.Length);
 		}
 
+		// --- GeoTransform helpers ---
+
+		/// <summary>
+		/// Parse the optional GeoTransform subtree from the <c>Metadata</c> block.
+		/// Returns null if not present or invalid.
+		/// </summary>
+		MapGeoTransform ParseGeoTransformFromMetadata()
+		{
+			try
+			{
+				if (Metadata == null)
+					return null;
+
+				var gtNode = Metadata.NodeWithKeyOrDefault("GeoTransform");
+				if (gtNode == null)
+					return null;
+
+				var gtYaml = gtNode.Value;
+				var gt = new MapGeoTransform();
+
+				// UTM zone (e.g., "11S")
+				var utmNode = gtYaml.NodeWithKeyOrDefault("UTMZone");
+				if (utmNode != null)
+				{
+					var uz = (utmNode.Value.Value ?? string.Empty).Trim();
+					if (uz.Length >= 2)
+					{
+						gt.UTMZone = uz;
+						var numPart = uz.Substring(0, uz.Length - 1);
+						var letter = uz[uz.Length - 1];
+						if (int.TryParse(numPart, out var zn)) gt.UTMZoneNumber = zn;
+						gt.UTMZoneLetter = letter;
+					}
+				}
+
+				// MetersPerCell
+				var mpcNode = gtYaml.NodeWithKeyOrDefault("MetersPerCell");
+				if (mpcNode != null)
+				{
+					if (double.TryParse(mpcNode.Value.Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var mpc))
+						gt.MetersPerCell = mpc;
+				}
+
+				// RotationDeg (optional)
+				var rotNode = gtYaml.NodeWithKeyOrDefault("RotationDeg");
+				if (rotNode != null && double.TryParse(rotNode.Value.Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var rot))
+					gt.RotationDeg = rot;
+
+				// Origin
+				var originNode = gtYaml.NodeWithKeyOrDefault("Origin");
+				if (originNode != null)
+				{
+					var oYaml = originNode.Value;
+					var o = new MapGeoOrigin();
+					var cornerNode = oYaml.NodeWithKeyOrDefault("Corner");
+					if (cornerNode != null)
+						o.Corner = (cornerNode.Value.Value ?? string.Empty).Trim();
+
+					if (double.TryParse(oYaml.NodeWithKeyOrDefault("Lat")?.Value.Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var lat))
+						o.Lat = lat;
+					if (double.TryParse(oYaml.NodeWithKeyOrDefault("Lon")?.Value.Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var lon))
+						o.Lon = lon;
+					if (double.TryParse(oYaml.NodeWithKeyOrDefault("UTM_E")?.Value.Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var utmE))
+						o.UTM_E = utmE;
+					if (double.TryParse(oYaml.NodeWithKeyOrDefault("UTM_N")?.Value.Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var utmN))
+						o.UTM_N = utmN;
+					gt.Origin = o;
+				}
+
+				// Grid
+				var gridNode = gtYaml.NodeWithKeyOrDefault("Grid");
+				if (gridNode != null)
+				{
+					var gYaml = gridNode.Value;
+					var g = new MapGeoGrid();
+					if (int.TryParse(gYaml.NodeWithKeyOrDefault("Width")?.Value.Value, out var w)) g.Width = w;
+					if (int.TryParse(gYaml.NodeWithKeyOrDefault("Height")?.Value.Value, out var h)) g.Height = h;
+					gt.Grid = g;
+				}
+
+				// Basic validation
+				if (gt.MetersPerCell <= 0 || gt.Origin == null)
+					return null;
+
+				// Default corner is NW if unspecified (matches geogen)
+				if (string.IsNullOrEmpty(gt.Origin.Corner))
+					gt.Origin.Corner = "NW";
+
+				return gt;
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", $"ParseGeoTransformFromMetadata failed: {e.Message}");
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Convert a map cell center to latitude/longitude.
+		/// Returns false if GeoTransform is unavailable or the cell is out of bounds.
+		/// </summary>
+		public bool TryCellToLatLon(CPos cell, out double lat, out double lon)
+		{
+			lat = 0;
+			lon = 0;
+			var gt = GeoTransform;
+			if (gt == null)
+				return false;
+
+			if (cell.X < 0 || cell.Y < 0 || cell.X >= MapSize.Width || cell.Y >= MapSize.Height)
+				return false;
+
+			// Only NW corner origin is currently supported
+			if (!string.Equals(gt.Origin?.Corner, "NW", StringComparison.OrdinalIgnoreCase))
+				return false;
+
+			var mDegLat = MetersPerDegreeLatitude(gt.Origin.Lat);
+			var mDegLon = MetersPerDegreeLongitude(gt.Origin.Lat);
+
+			var dx = (cell.X + 0.5) * gt.MetersPerCell; // eastwards
+			var dy = (cell.Y + 0.5) * gt.MetersPerCell; // southwards (down)
+
+			// Rotation is currently ignored (matches geogen conversion as of now)
+			lat = gt.Origin.Lat + (-dy) / mDegLat;
+			lon = gt.Origin.Lon + (dx) / mDegLon;
+			return true;
+		}
+
+		/// <summary>
+		/// Convert latitude/longitude to the containing cell (floor). Returns false if outside the map
+		/// or GeoTransform is unavailable.
+		/// </summary>
+		public bool TryLatLonToCell(double lat, double lon, out CPos cell)
+		{
+			cell = default;
+			var gt = GeoTransform;
+			if (gt == null)
+				return false;
+
+			// Only NW corner origin is currently supported
+			if (!string.Equals(gt.Origin?.Corner, "NW", StringComparison.OrdinalIgnoreCase))
+				return false;
+
+			var mDegLat = MetersPerDegreeLatitude(gt.Origin.Lat);
+			var mDegLon = MetersPerDegreeLongitude(gt.Origin.Lat);
+
+			var northMeters = (lat - gt.Origin.Lat) * mDegLat; // +north
+			var eastMeters = (lon - gt.Origin.Lon) * mDegLon; // +east
+
+			var fx = eastMeters / gt.MetersPerCell;
+			var fy = (-northMeters) / gt.MetersPerCell; // +down
+
+			var i = (int)Math.Floor(fx);
+			var j = (int)Math.Floor(fy);
+			if (i < 0 || j < 0 || i >= MapSize.Width || j >= MapSize.Height)
+				return false;
+
+			cell = new CPos(i, j);
+			return true;
+		}
+
+		static double MetersPerDegreeLatitude(double latDeg)
+		{
+			// Approximation valid for WGS84 ellipsoid; sufficient for small areas.
+			var rad = latDeg * Math.PI / 180.0;
+			return 111132.954 - 559.822 * Math.Cos(2 * rad) + 1.175 * Math.Cos(4 * rad) - 0.0023 * Math.Cos(6 * rad);
+		}
+
+		static double MetersPerDegreeLongitude(double latDeg)
+		{
+			var rad = latDeg * Math.PI / 180.0;
+			return 111412.84 * Math.Cos(rad) - 93.5 * Math.Cos(3 * rad) + 0.118 * Math.Cos(5 * rad);
+		}
+
 		// Both ranges are inclusive because everything that calls it is designed for maxRange being inclusive:
 		// it rounds the actual distance up to the next integer so that this call
 		// will return any cells that intersect with the requested range circle.
@@ -1446,5 +1631,36 @@ namespace OpenRA
 		{
 			Sequences.Dispose();
 		}
+	}
+
+	// Strongly-typed view of Metadata.GeoTransform for real-world mapping
+	public sealed class MapGeoTransform
+	{
+		// e.g., "11S"
+		public string UTMZone { get; set; }
+		public int UTMZoneNumber { get; set; }
+		public char UTMZoneLetter { get; set; }
+
+		public double MetersPerCell { get; set; }
+		public double RotationDeg { get; set; }
+
+		public MapGeoOrigin Origin { get; set; }
+		public MapGeoGrid Grid { get; set; }
+	}
+
+	public sealed class MapGeoOrigin
+	{
+		// Typically "NW"
+		public string Corner { get; set; }
+		public double Lat { get; set; }
+		public double Lon { get; set; }
+		public double UTM_E { get; set; }
+		public double UTM_N { get; set; }
+	}
+
+	public sealed class MapGeoGrid
+	{
+		public int Width { get; set; }
+		public int Height { get; set; }
 	}
 }

@@ -1,0 +1,126 @@
+Container@COT_PANEL:
+	Logic: CotSettingsLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		ScrollPanel@SETTINGS_SCROLLPANEL:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 5
+			ItemSpacing: 10
+			Children:
+				Background@COT_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-cot-section-header
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
+						Container@COT_ENABLED_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Children:
+								Checkbox@COT_ENABLED:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-cot-enabled
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@COT_MODE_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@COT_MODE_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-cot-mode
+								DropDownButton@COT_MODE_DROPDOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+						Container@COT_HOST_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@COT_HOST_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-cot-host
+								TextField@COT_HOST_FIELD:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@COT_PORT_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@COT_PORT_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-cot-port
+								TextField@COT_PORT_FIELD:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+						Container@COT_TTL_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Label@COT_TTL_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-cot-ttl
+								TextField@COT_TTL_FIELD:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 60
+					Children:
+						Container@COT_BIND_INTERFACE_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Children:
+								Label@COT_BIND_INTERFACE_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-cot-bind-interface
+								Label@COT_BIND_INTERFACE_DESC:
+									Y: 18
+									Width: PARENT_WIDTH
+									Height: 15
+									Font: Tiny
+									Text: label-cot-bind-interface-desc
+								TextField@COT_BIND_INTERFACE_FIELD:
+									Y: 33
+									Width: PARENT_WIDTH
+									Height: 25
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 25
+					Children:
+						Button@COT_TEST_BUTTON:
+							X: 10
+							Width: 200
+							Height: 25
+							Text: button-cot-test
+							Font: Regular

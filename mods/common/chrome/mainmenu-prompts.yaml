@@ -391,6 +391,124 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 			Font: Bold
 			Key: return
 
+Background@MAINMENU_COT_OUTPUT_PROMPT:
+	Logic: CotOutputSettingsPromptLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 600
+	Height: 360
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Y: 20
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: label-mainmenu-cot-output-prompt-title
+		Label@PROMPT_TEXT_A:
+			X: 15
+			Y: 50
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+			Text: label-mainmenu-cot-output-prompt-text-a
+		Label@PROMPT_TEXT_B:
+			X: 15
+			Y: 68
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+			Text: label-mainmenu-cot-output-prompt-text-b
+		Container@ROW_MODE:
+			X: 20
+			Y: 100
+			Width: PARENT_WIDTH - 40
+			Height: 40
+			Children:
+				Label@MODE_LABEL:
+					Width: 150
+					Height: 20
+					Text: label-cot-output-mode
+				DropDownButton@MODE_DROPDOWN:
+					X: 160
+					Width: PARENT_WIDTH - 180
+					Height: 25
+					Font: Regular
+		Container@ROW_HOST_PORT:
+			X: 20
+			Y: 150
+			Width: PARENT_WIDTH - 40
+			Height: 40
+			Children:
+				Label@HOST_LABEL:
+					Width: 150
+					Height: 20
+					Text: label-cot-output-host
+				TextField@HOST_FIELD:
+					X: 160
+					Width: PARENT_WIDTH - 360
+					Height: 25
+				Label@PORT_LABEL:
+					X: PARENT_WIDTH - 190
+					Width: 50
+					Height: 20
+					Text: label-cot-output-port
+				TextField@PORT_FIELD:
+					X: PARENT_WIDTH - 130
+					Width: 110
+					Height: 25
+		Container@MULTICAST_TTL_CONTAINER:
+			X: 20
+			Y: 200
+			Width: PARENT_WIDTH - 40
+			Height: 40
+			Children:
+				Label@TTL_LABEL:
+					Width: 150
+					Height: 20
+					Text: label-cot-output-ttl
+				TextField@TTL_FIELD:
+					X: 160
+					Width: 110
+					Height: 25
+		Container@ROW_BIND_IF:
+			X: 20
+			Y: 250
+			Width: PARENT_WIDTH - 40
+			Height: 40
+			Children:
+				Label@BIND_IF_LABEL:
+					Width: 150
+					Height: 20
+					Text: label-cot-output-bind-interface
+				TextField@BIND_INTERFACE_FIELD:
+					X: 160
+					Width: PARENT_WIDTH - 180
+					Height: 25
+		Checkbox@REMEMBER_CHECKBOX:
+			X: 20
+			Y: PARENT_HEIGHT - 45
+			Width: PARENT_WIDTH - 200
+			Height: 25
+			Font: Regular
+			Text: checkbox-cot-output-remember
+		Button@CANCEL_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 200
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-cancel
+			Font: Bold
+			Key: escape
+		Button@CONTINUE_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-continue
+			Font: Bold
+			Key: return
+
 Background@MAINMENU_SYSTEM_INFO_PROMPT:
 	Logic: SystemInfoPromptLogic
 	X: (WINDOW_WIDTH - WIDTH) / 2

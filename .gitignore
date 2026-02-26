@@ -14,7 +14,7 @@ _ReSharper.*/
 /.vs
 
 # Visual Studio Code
-/.vscode/settings.json
+.vscode/
 
 # binaries
 IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
@@ -50,3 +50,42 @@ update.log
 
 # IntelliJ files
 .idea
+
+# AI / Claude Code
+.claude/
+CLAUDE.md
+
+# Cursor
+.cursor/
+.cursorignore
+.cursorindexingignore
+
+# GitHub Copilot
+.github/copilot-instructions.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.cache/
+.pytest_cache/
+*.pyc
+.env
+.venv/
+venv/
+
+# JetBrains
+*.iml
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Map Generator data (large rasters)
+Map_Generator/data/gsw/*.tif
+Map_Generator/data/worldcover/*.tif
