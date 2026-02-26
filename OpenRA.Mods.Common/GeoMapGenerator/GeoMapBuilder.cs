@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,19 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.GeoMapGenerator
 {
+	/// <summary>
+	/// Intermediate result from the background compute phase.
+	/// Contains everything needed to build the Map on the main thread.
+	/// </summary>
+	public sealed class GeoMapData
+	{
+		public RasterizationResult Rasterization;
+		public MapBounds Bounds;
+		public int ZoneNumber;
+		public char ZoneLetter;
+		public GeoMapOptions Options;
+	}
+
 	/// <summary>
 	/// Orchestrates the full geo-map generation pipeline:
 	/// MGRS parse → compute bounds → fetch OSM → rasterize → build OpenRA Map.
@@ -35,10 +49,10 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 		}
 
 		/// <summary>
-		/// Generate a complete OpenRA Map from real-world geographic data.
-		/// Must be called from a background thread; use Game.RunAfterTick for UI updates.
+		/// Phase 1-4: Background-safe compute. Parses coordinates, fetches OSM, rasterizes.
+		/// Does NOT touch any OpenRA engine state. Safe to call from Task.Run.
 		/// </summary>
-		public Map Generate(ModData modData, GeoMapOptions options,
+		public GeoMapData ComputeData(GeoMapOptions options,
 			Action<string, int> onProgress = null, CancellationToken ct = default)
 		{
 			// Phase 1: Parse MGRS coordinate
@@ -71,9 +85,25 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 			var result = TileRasterizer.Rasterize(osmData, bounds,
 				options.MetersPerCell, options.Cells, options, onProgress);
 
-			// Phase 5: Assemble OpenRA Map
-			onProgress?.Invoke("Building map...", 90);
-			ct.ThrowIfCancellationRequested();
+			return new GeoMapData
+			{
+				Rasterization = result,
+				Bounds = bounds,
+				ZoneNumber = zoneNumber,
+				ZoneLetter = zoneLetter,
+				Options = options,
+			};
+		}
+
+		/// <summary>
+		/// Phase 5: Build the OpenRA Map object from computed data.
+		/// MUST be called on the main game thread (uses modData, Ruleset, etc.).
+		/// </summary>
+		public static Map BuildMap(ModData modData, GeoMapData data)
+		{
+			var options = data.Options;
+			var bounds = data.Bounds;
+			var result = data.Rasterization;
 
 			var terrainInfo = modData.DefaultTerrainInfo.Values
 				.FirstOrDefault(t => t.Id.Equals(options.Tileset, StringComparison.OrdinalIgnoreCase))
@@ -97,7 +127,6 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 				{
 					var tileType = grid.GetType(i, j);
 					var tileVariant = grid.GetVariant(i, j);
-					// Map cells are offset by 1 due to border
 					map.Tiles[new MPos(i + 1, j + 1 + maxTerrainHeight)] =
 						new TerrainTile(tileType, tileVariant);
 				}
@@ -108,7 +137,12 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 			map.Author = options.Author ?? "GeoMapGenerator";
 			map.Visibility = MapVisibility.Lobby;
 			map.Categories = ImmutableArray.Create("RealWorld");
-			map.RequiresMod = "ra";
+			map.RequiresMod = modData.Manifest.Id;
+
+			// Skip preview generation during Save — our actor types (trees, buildings)
+			// may not have IMapPreviewSignatureInfo and the preview will be regenerated
+			// when the map is opened in the editor.
+			map.LockPreview = true;
 
 			// Set players (0 playable — user will add in editor)
 			map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
@@ -136,7 +170,7 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 
 			// Set GeoTransform metadata via the proper Metadata field
 			var nwLatLon = GeoMath.CellToLatLon(0, 0, bounds, options.MetersPerCell);
-			var inv = System.Globalization.CultureInfo.InvariantCulture;
+			var inv = CultureInfo.InvariantCulture;
 
 			var originNodes = new List<MiniYamlNode>
 			{
@@ -155,7 +189,7 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 
 			var geoTransformNodes = new List<MiniYamlNode>
 			{
-				new("UTMZone", $"{zoneNumber}{zoneLetter}"),
+				new("UTMZone", $"{data.ZoneNumber}{data.ZoneLetter}"),
 				new("MetersPerCell", options.MetersPerCell.ToString(inv)),
 				new("RotationDeg", "0"),
 				new("Origin", new MiniYaml("", originNodes)),
@@ -169,7 +203,6 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 
 			map.Metadata = new MiniYaml("", metadataNodes);
 
-			onProgress?.Invoke("Map generation complete!", 100);
 			return map;
 		}
 

@@ -20,11 +20,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class GeoMapGeneratorLogic : ChromeLogic
 	{
-		static readonly int[] MapSizes = { 128, 256, 512 };
-		static readonly double[] MetersPerCellOptions = { 4.0, 8.0, 16.0 };
-
-		int selectedSize = 128;
-		double selectedMpc = 8.0;
+		const int MapSize = 512;
+		const double MetersPerCell = 8.0;
 
 		volatile bool generating;
 		volatile string statusText = "";
@@ -40,42 +37,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// MGRS input
 			var mgrsField = panel.Get<TextFieldWidget>("MGRS_TEXTFIELD");
-
-			// Size dropdown
-			var sizeDropdown = panel.Get<DropDownButtonWidget>("SIZE_DROPDOWN");
-			sizeDropdown.GetText = () => $"{selectedSize} x {selectedSize}";
-			sizeDropdown.OnMouseDown = _ =>
-			{
-				ScrollItemWidget SetupSizeItem(int size, ScrollItemWidget template)
-				{
-					var item = ScrollItemWidget.Setup(template,
-						() => selectedSize == size,
-						() => selectedSize = size);
-					item.Get<LabelWidget>("LABEL").GetText = () => $"{size} x {size}";
-					return item;
-				}
-
-				sizeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE",
-					MapSizes.Length * 30, MapSizes, SetupSizeItem);
-			};
-
-			// Meters per cell dropdown
-			var mpcDropdown = panel.Get<DropDownButtonWidget>("MPC_DROPDOWN");
-			mpcDropdown.GetText = () => $"{selectedMpc:F1} m/cell";
-			mpcDropdown.OnMouseDown = _ =>
-			{
-				ScrollItemWidget SetupMpcItem(double mpc, ScrollItemWidget template)
-				{
-					var item = ScrollItemWidget.Setup(template,
-						() => Math.Abs(selectedMpc - mpc) < 0.01,
-						() => selectedMpc = mpc);
-					item.Get<LabelWidget>("LABEL").GetText = () => $"{mpc:F1} m/cell";
-					return item;
-				}
-
-				mpcDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE",
-					MetersPerCellOptions.Length * 30, MetersPerCellOptions, SetupMpcItem);
-			};
 
 			// Feature checkboxes
 			var roadsEnabled = true;
@@ -133,8 +94,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var opts = new GeoMapOptions
 				{
 					MgrsCoordinate = mgrs,
-					Cells = selectedSize,
-					MetersPerCell = selectedMpc,
+					Cells = MapSize,
+					MetersPerCell = MetersPerCell,
 					IncludeRoads = roadsEnabled,
 					IncludeWater = waterEnabled,
 					IncludeVegetation = vegEnabled,
@@ -146,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				RunGeneration(modData, opts);
 			};
 
-			// Open in Map Editor button
+			// Open Map Editor button
 			var openEditorButton = panel.Get<ButtonWidget>("OPEN_EDITOR_BUTTON");
 			openEditorButton.IsDisabled = () => generatedMap == null || generating;
 			openEditorButton.OnClick = () =>
@@ -175,33 +136,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			cts = new CancellationTokenSource();
 			var token = cts.Token;
 
+			// Phase 1-4 run on a background thread (no OpenRA engine state touched).
 			Task.Run(() =>
 			{
 				try
 				{
 					using var builder = new GeoMapBuilder();
-					var map = builder.Generate(modData, options, (msg, pct) =>
+					var data = builder.ComputeData(options, (msg, pct) =>
 					{
 						statusText = msg;
 						progressValue = pct;
 					}, token);
 
+					// Phase 5: Build the Map on the main thread (Map constructor
+					// calls PostInit/Ruleset.Load which touches shared modData).
 					Game.RunAfterTick(() =>
 					{
 						try
 						{
+							statusText = "Building map...";
+							progressValue = 92;
+
+							var map = GeoMapBuilder.BuildMap(modData, data);
+
+							statusText = "Saving map package...";
+							progressValue = 95;
+
 							var package = new ZipFileLoader.ReadWriteZipFile();
 							map.Save(package);
+
+							statusText = "Reloading map...";
+							progressValue = 98;
+
 							generatedMap = new Map(modData, package);
 							generating = false;
-							statusText = "Map generated! Click 'Open in Map Editor'.";
+							statusText = "Map generated! Click 'Open Map Editor'.";
 							progressValue = 100;
 						}
 						catch (Exception ex)
 						{
 							generating = false;
-							statusText = $"Save error: {ex.Message}";
+							statusText = $"Error: {ex.Message}";
 							progressValue = 0;
+							Log.Write("debug", $"GeoMapGenerator error: {ex}");
 						}
 					});
 				}
