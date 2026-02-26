@@ -1,7 +1,0 @@
-mgrs>=1.4.5
-utm>=0.7.0
-requests>=2.31.0
-
-# Optional: needed for --use-worldcover and --augment-water-gsw
-# pip install rasterio
-# rasterio>=1.3.0

@@ -1,32 +1,85 @@
-# Welcome to OpenRA with TAK Hostile MArkers
+# OpenRA with TAK Support
 
-## Get Started with OpenRA to TAKX with Step-by-Step Instructions.
+## Real-Time Strategy Meets Real-World Situational Awareness
 
 ![Alt text](Images/PassionPic.png "Passion")
 
-<mark>DotNet is required please downlaod and install before step 1:</mark> https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-8.0.414-windows-x64-installer
+OpenRA TAK Support is a fork of [OpenRA](https://github.com/OpenRA/OpenRA) that integrates Cursor-on-Target (CoT) messaging with the TAK ecosystem (TAKX, WinTAK, ATAK). Game units broadcast their positions as MIL-STD CoT XML messages over UDP, appearing as real-time markers on TAK maps. This project also includes a built-in Real-World Map Generator that creates playable maps from actual geographic data using OpenStreetMap.
 
-1. Extract OpenRA_For_TAKX-main (Tested on TAKX 5.5)
-2. Open OpenRA_For_TAKX-main until you see OpenRA contents  (.editorconfig, .gitignore, etc)
-3. Shift+Right-Click in the window and click “Open PowerShell Window here”. A powershell window will open.
-4. Copy, paste, execute in Powershell -> cmd /c launch-game.cmd Game.Mod=ra
-5. Click "Quick install," Follow the prompts, next, next, next (everything is set up for default). Close OpenRA after the install is complete. Full install indcates that you have Single and Multiplayer avalible as a selction.
-6. Copy the “4Ponds.oramap” from the "GeoMaps" folder and Paste it here -> C:\Users\FirstnameLastname\AppData\Roaming\OpenRA\maps\ra\{DEV_VERSION}
-"AppData" is hidden by default. To unhide it, right-click on the folder and select "Properties". In the "Attributes" section, uncheck "Hidden" and click "Apply".
-7. Redo steps 2 -4 then continue with step 8
-8. Click SinglePlayer -> Skirmish - Change Map -> Custom Maps (4 Ponds) -> ok
+---
 
-OpenRA is set for localhost CoT messaging. Open TAKX or WinTAKX on the same computer as OpenRA and you will automatically see CoT Data populate. 
+## Quick Start (Build and Play)
 
-Note: TAKX was tested for this project, WinTAK and ATAK may show different results.
+<mark>Prerequisite:</mark> [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-8.0.414-windows-x64-installer) must be installed.
 
-## Hostile Markers vs Friendly Markers
+### For Non-Developers
 
-Hostile Markers are only visible to the player when they are detected by a friendly actor. Friendly Markers are always visible to the player.
+1. Extract the project folder
+2. Double-click **`build-and-play.cmd`** — it builds and launches the game automatically
 
-## Play
+That's it. One click.
 
-Distributed mods include a reimagining of
+### For Developers
+
+```powershell
+# Build
+powershell -File make.ps1 all
+
+# Launch
+cmd /c launch-game.cmd Game.Mod=ra
+```
+
+---
+
+## Features
+
+### Cursor-on-Target (CoT) Integration
+
+All in-game units automatically broadcast CoT messages to TAK applications over UDP:
+
+- **Vehicles, Infantry, Aircraft, Ships, Buildings** — each unit type has a dedicated emitter with MIL-STD-2525C symbology
+- **Fog-of-War Aware** — friendly units always emit; hostile units only appear on TAK when detected by allied vision
+- **Stealth Gate** — cloaked units are suppressed unless actively engaging
+- **Configurable** — UDP host/port, callsigns, update intervals, and symbology are all YAML-configurable per actor type
+- **Default Config** — localhost `127.0.0.1:4242`, ready to use with TAKX on the same machine
+
+Open TAKX or WinTAK on the same computer as OpenRA and CoT data populates automatically.
+
+### Real-World Map Generator
+
+Generate playable OpenRA maps from real geographic data without leaving the game:
+
+1. **Extras** -> **Map Editor** -> **Real-World Map**
+2. Enter an MGRS coordinate (e.g., `18STJ8690017000` for the Washington DC area)
+3. Toggle features: Roads, Water, Vegetation, Buildings, Coastlines
+4. Click **Generate** — progress bar shows live status as the pipeline runs
+5. Click **Open Map Editor** — place spawn points, resources, and save
+
+The generator produces a 512x512 map at 8 meters per cell (~4km x 4km of real terrain). It fetches OpenStreetMap data via the Overpass API and rasterizes roads, waterways, coastlines, forests, and buildings into OpenRA terrain tiles and actors. All coordinate math (MGRS, UTM, WGS84) is implemented in pure C# with no external dependencies. Results are cached locally to avoid redundant network requests.
+
+Generated maps include geo-referencing metadata for downstream CoT lat/lon coordinate conversion.
+
+### Hostile Markers vs Friendly Markers
+
+Hostile markers are only visible to the player when they are detected by a friendly actor. Friendly markers are always visible to the player.
+
+---
+
+## Setup for TAK Integration
+
+1. Launch the game using `build-and-play.cmd` or the developer commands above
+2. Click **Quick Install** and follow the prompts (everything is set up for defaults). Close OpenRA after install completes.
+3. Relaunch the game
+4. **Singleplayer** -> **Skirmish** -> **Change Map** -> select a geo-referenced map or generate one with the Real-World Map Generator
+5. Open TAKX or WinTAK on the same computer — CoT markers appear automatically
+
+Note: TAKX was the primary test platform for this project. WinTAK and ATAK may show different results.
+
+---
+
+## Distributed Mods
+
+Includes a reimagining of:
 
 * Command & Conquer: Red Alert
 * Command & Conquer: Tiberian Dawn
@@ -34,7 +87,7 @@ Distributed mods include a reimagining of
 
 EA has not endorsed and does not support this product.
 
-Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-game) Guide to win multiplayer matches.
+Check the [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-game) guide to win multiplayer matches.
 
 ## Contribute
 
@@ -46,7 +99,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 ## Mapping
 
 * We offer a [Mapping](https://github.com/OpenRA/OpenRA/wiki/Mapping) Tutorial as you can change gameplay drastically with custom rules.
-* For scripted mission have a look at the [Lua API](https://docs.openra.net/en/release/lua/).
+* For scripted missions have a look at the [Lua API](https://docs.openra.net/en/release/lua/).
 * If you want to share your maps with the community, upload them at the [OpenRA Resource Center](https://resource.openra.net).
 
 ## Modding
@@ -69,4 +122,3 @@ available to you under the terms of the GNU General Public License
 as published by the Free Software Foundation, either version 3 of
 the License, or (at your option) any later version. For more
 information, see [COPYING](https://github.com/OpenRA/OpenRA/blob/bleed/COPYING).
-
