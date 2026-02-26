@@ -64,7 +64,9 @@ ChemicalMissile:
 		Dimensions: 5,5
 		RandomClusterCount: 10
 		Footprint: __x__ _xxx_ xxXxx _xxx_ __x__
-	CircleRanges: 9c0, 8c0, 7c0, 6c0, 5c0, 4c0, 3c0, 2c0, 1c0
+	# It would be nice to show the area of effect of the chem missile,
+	# but this might only be in the ra2 mod right now
+	#CircleRanges: 9c0, 8c0, 7c0, 6c0, 5c0, 4c0, 3c0, 2c0, 1c0
 
 GreenClouds:
 	Inherits: ^DefaultMissile

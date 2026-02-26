@@ -722,7 +722,7 @@ largecraters:
 icon:
 	clustermissile:
 		Filename: mltiicon.shp
-	chemicalmissile: 
+	chemicalmissile:
 		Filename: chemicon.shp
 	ioncannon:
 		Filename: ioncicon.shp
