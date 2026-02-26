@@ -17,6 +17,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	[Desc("Grants a condition to this actor when the player is full on veins.")]
 	public class TSGrantConditionOnVeinsInfo : TraitInfo
 	{
+
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("Condition to grant.")]
@@ -48,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (string.IsNullOrEmpty(info.Condition))
 				return;
 
-			var enabled = playerResources.Veins >= playerResources.Info.TriggerChemicalMissileOnVeinsAmount;
+			var enabled = playerResources.Veins >= playerResources.TriggerChemicalMissileOnVeinsAmount;
 			if (enabled && conditionToken == Actor.InvalidConditionToken)
 				conditionToken = self.GrantCondition(info.Condition);
 			else if (!enabled && conditionToken != Actor.InvalidConditionToken)

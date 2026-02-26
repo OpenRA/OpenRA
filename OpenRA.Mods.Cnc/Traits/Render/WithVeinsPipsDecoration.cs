@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			screenPos -= pipSize / 2;
 			for (var pipIndex = 0; pipIndex < Info.PipCount; pipIndex++)
 			{
-				var pipIsFilled = player.Veins * Info.PipCount > pipIndex * player.Info.TriggerChemicalMissileOnVeinsAmount;
+				var pipIsFilled = player.Veins * Info.PipCount > pipIndex * player.TriggerChemicalMissileOnVeinsAmount;
 				pips.PlayRepeating(pipIsFilled ? Info.FullSequence : Info.EmptySequence);
 				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
 

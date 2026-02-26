@@ -22,7 +22,6 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	public class TSWasteRefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<IDockHostInfo>
 	{
-
 		public readonly bool ShowTicks = true;
 		public readonly int TickRate = 10;
 
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		int IAcceptResources.AcceptResources(Actor self, string resourceType, int count)
 		{
-			var veinFullAmount = playerResources.Info.TriggerChemicalMissileOnVeinsAmount;
+			var veinFullAmount = playerResources.TriggerChemicalMissileOnVeinsAmount;
 			var currentVeins = playerResources.Veins;
 
 			var amountToFull = veinFullAmount - currentVeins;
@@ -61,19 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				contribution = count;
 			}
 
-			Debug.WriteLine($"veinFullAmount={veinFullAmount}, currentVeins={currentVeins}, amountToFull={amountToFull}, count={count}, contribution={contribution}");
-
-			// TODO: Is INotifyResourceAccepted useful for support powers?
-			/*
-			foreach (var notify in self.World.ActorsWithTrait<INotifyResourceAccepted>())
-			{
-				if (notify.Actor.Owner != self.Owner)
-					continue;
-
-				notify.Trait.OnResourceAccepted(notify.Actor, self, resourceType, count, value);
-			}
-			*/
-
+			// Debug.WriteLine($"veinFullAmount={veinFullAmount}, currentVeins={currentVeins}, amountToFull={amountToFull}, count={count}, contribution={contribution}");
 			playerResources.Veins += contribution;
 			currentDisplayValue += contribution;
 			return contribution;
