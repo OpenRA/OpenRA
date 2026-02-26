@@ -89,11 +89,21 @@ VehicleAttackGroupSize = 3
 
 LandAtkPaths = { LowerBaseProximityCam.Location }
 
+NavalAtkProcedure = 0
+NavalAtkType = "" -- To check whatto build on Spen
+
 SubTypes = { "ss" }
 SubAttackGroup = { }
-SubAtkPath = { SubAtkWP1.Location, SubAtkWP2.Location, SubAtkWP3.Location } 
+NavalAtkPath = { NavalAtkWP1.Location, NavalAtkWP2.Location, NavalAtkWP3.Location }
 
-AircraftTypes = { "yak", "mig" }
+LSTTypes = { "lst" }
+LSTLimitAmount = 2
+
+LSTLoadPoints = { LoadLst1.Location, LoadLst2.Location }
+LSTUnloadPoints = {USSRUnload3.Location, USSRUnload4.Location}
+
+AircraftTypes = { "yak" }
+PlanesAttackGroup = { }
 
 BaseBlueprints =
 {
@@ -293,8 +303,8 @@ PrepareBlueprintEdges = function(blueprint)
 	blueprint.southeastEdge = southeastEdge
 end
 
-ProduceHarvester = function(producer, delay)
-	if CheckPlayerMoney() < Actor.Cost("harv") then
+ProduceHarvester = function(producer, owner, delay)
+	if CheckPlayerMoney(owner) < Actor.Cost("harv") then
 		return
 	end
 
@@ -460,7 +470,7 @@ CheckSecuredArea = function(nw, se)
     local actors = Map.ActorsInBox( nw, se, function(actor)
 		return actor.Owner == Greece and actor.HasProperty("StartBuildingRepairs")
     end)
-	
+
 	if #actors > 0 then
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			CheckSecuredArea(nw, se)
@@ -485,7 +495,7 @@ ProduceArmor = function(producer, owner)
 		Media.Debug("Out of - ProduceArmor")
 		return
 	elseif IsHarvesterMissing() then
-		--ProduceHarvester(factory, delay)
+		--ProduceHarvester(factory, owner, delay)
 		--return
 	end
 
@@ -515,42 +525,49 @@ ProduceArmorGuards = function(producer, owner)
 	if WeapAvailableCheck(producer, owner) then
 		return
 	elseif IsHarvesterMissing then
-		ProduceHarvester(factory, delay)
+		ProduceHarvester(factory, owner, delay)
 	end
 
 	local toBuild = { Utils.Random(VehicleTypes) }
 	local target = {  }
-
-
 end
-
-
 
 -----------------------
 --- Air  Attacks   ----
 -----------------------
 
---[[
-ProduceAircraft = function()
-    if BaseAfld.IsDead or BaseAfld.Owner ~= USSR then
+AfldAvailableCheck = function(producer, owner)
+	if not producer.IsDead or producer.Owner == owner then
+		Media.Debug("BarrAvailableCheck - True")
+		return true
+	else
+		Media.Debug("BarrAvailableCheck - False")
+		return false
+	end
+end
+
+ProduceAircraft = function(producer, owner)
+    if not AfldAvailableCheck(producer, owner) then
         return
     end
 
-    USSR.Build(SovietAircraftType, function(units)
+	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
+	local toBuild = { Utils.Random(AircraftTypes) }
+
+    USSR.Build(toBuild, function(units)
         local plane = units[1]
         PlanesAttackGroup[#PlanesAttackGroup + 1] = plane
 
-        Trigger.OnKilled(plane, ProduceAircraft)
-
-        local alive = Utils.Where(PlanesAttackGroup, function(p) return not p.IsDead end)
-        if #alive < 2 then
-            Trigger.AfterDelay(ProductionIntervalAir, ProduceAircraft)
-        end
-
+        Trigger.OnKilled(plane, function()
+			Trigger.AfterDelay(delay, function()
+				ProduceAircraft(producer, owner)
+			end)
+		end)
         InitializeAttackAircraft(plane, Greece)
     end)
 end
 
+--[[
 PlanesAttack = function()
     local entry = Utils.Random({ IronTankEntry.Location, SovWaterEntry.Location, BadgerEntry.Location })
     local planeType = Utils.Random({SovietAircraftType})
@@ -703,15 +720,6 @@ SovietAirTeams =
 --- Naval Attacks  ----
 -----------------------
 
-NavalAtkType = ""
-LSTTypes = { "lst" }
-LSTLimitAmount = 2
-
-LSTLoadPoints = { LoadLst1.Location, LoadLst2.Location }
-LSTUnloadPoints = {USSRUnload3.Location, USSRUnload4.Location}
-
-NavalAtkProcedure = 0
-
 SpenAvailableCheck = function(producer, owner)
 	Media.Debug("A")
 	Media.Debug(tostring(producer))
@@ -756,7 +764,7 @@ ProduceSubs = function(producer, owner)
 		table.insert(SubAttackGroup, units[1])
 
 		if #SubAttackGroup >= SubAttackGroupSize then
-			SendUnits(SubAttackGroup, SubAtkPath)
+			SendUnits(SubAttackGroup, NavalAtkPath)
 			SubAttackGroup = { }
 			Trigger.AfterDelay(ProductionInterval, function()
 				PrepareNavalAtk(producer, owner)
@@ -783,7 +791,7 @@ ProduceLST = function(producer, owner)
 	end)
 end
 
---Out of map attack
+--Out of map attacks
 WaterLSTWaves = function()
 	if BaseSpen.IsDead or BaseSpen.Owner ~= USSR then
 		return
@@ -807,21 +815,6 @@ end
 --------------------------------------------------------------------
 ----------------		OUT OF MAP BLOCK - START	----------------
 --------------------------------------------------------------------
-
-
---[[
-TankGroupWallGuard = function()
-	if not WGTank01.IsDead then
-		WGTank01.AttackMove(WP72.Location)
-	end
-	if not WGTank02.IsDead then
-		WGTank02.AttackMove(WP72.Location)
-	end
-	if not WGV2.IsDead then
-		WGV2.AttackMove(WP72.Location)
-	end
-end
-]]
 
 -- Allies09a has paradrop so I left it there.
 SendParadrop = function()
@@ -890,29 +883,27 @@ ActivateAI = function()
 		BuildBase(BaseBlueprints, BaseFact, USSR)
 	end)
 
-	--Trigger.AfterDelay(DateTime.Minutes(2), ProduceAircraft)
-
-	--[[]]
-	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		ProduceInfantry(BaseBarr1, USSR) --Reset to minutes
+	
+	Trigger.AfterDelay(DateTime.Seconds(2), function() --Reset to minutes
+		ProduceAircraft(BaseAfld, USSR)
 	end)
-	
+	--[[]]
 
-	
-	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		ProduceArmor(BaseWeap, USSR) --Reset to minutes
+	Trigger.AfterDelay(DateTime.Seconds(2), function() --Reset to minutes
+		ProduceInfantry(BaseBarr1, USSR) 
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(2), function() --Reset to minutes
+		ProduceArmor(BaseWeap, USSR) 
 	end)
 	--[[]]
 
 	--PrepareAircraftReinforcements()
 
-	Trigger.AfterDelay(DateTime.Seconds(4), function() --Change to minutes
+	Trigger.AfterDelay(DateTime.Seconds(4), function() --Reset to minutes
 		PrepareNavalAtk(BaseSpen, USSR)
-		--ProduceSubs(USSR)
 	end)
 
-	--Trigger.AfterDelay(DateTime.Minutes(5), MMGroupGuardGate)
-	--Trigger.AfterDelay(DateTime.Minutes(5), TankGroupWallGuard)
 	Trigger.AfterDelay(DateTime.Minutes(WaterTransDelays), WaterLSTWaves)
-	--Trigger.AfterDelay(DateTime.Minutes(ParabombDelay), SendParabombs)
+	Trigger.AfterDelay(DateTime.Minutes(ParabombDelay), SendParabombs)
 end

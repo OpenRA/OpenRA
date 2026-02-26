@@ -471,10 +471,6 @@ Actors:
 	Actor145: mine
 		Location: 69,84
 		Owner: Neutral
-	Actor174: harv
-		Location: 53,27
-		Owner: USSR
-		Facing: 896
 	Actor180: 3tnk
 		Location: 82,23
 		Owner: USSR
@@ -613,18 +609,6 @@ Actors:
 		Owner: USSR
 		SubCell: 2
 		Facing: 384
-	MM1: 4tnk
-		Location: 81,36
-		Owner: USSR
-		Facing: 512
-	MM2: 4tnk
-		Location: 83,35
-		Owner: USSR
-		Facing: 512
-	MM3: 4tnk
-		Location: 85,36
-		Owner: USSR
-		Facing: 640
 	AlliedReinforcementsEntry: waypoint
 		Location: 45,105
 		Owner: Neutral
@@ -646,21 +630,6 @@ Actors:
 	MMStop3: waypoint
 		Location: 84,40
 		Owner: Neutral
-	KosyginDst: waypoint
-		Owner: Neutral
-		Location: 81,28
-	DogBlockExit3: waypoint
-		Owner: Neutral
-		Location: 83,39
-	DogBlockExit2: waypoint
-		Location: 68,33
-		Owner: Neutral
-	DogBlockExit1: waypoint
-		Location: 69,25
-		Owner: Neutral
-	UpperBaseProximityCam: waypoint
-		Owner: Neutral
-		Location: 80,31
 	LowerBaseProximityCam: waypoint
 		Location: 83,45
 		Owner: Neutral
@@ -775,15 +744,6 @@ Actors:
 	DogPatrol2WP3: waypoint
 		Location: 62,61
 		Owner: Neutral
-	SubAtkWP1: waypoint
-		Owner: Neutral
-		Location: 48,35
-	SubAtkWP2: waypoint
-		Owner: Neutral
-		Location: 32,48
-	SubAtkWP3: waypoint
-		Owner: Neutral
-		Location: 33,69
 	TopExitBlocker2: 3tnk
 		Location: 78,29
 		Owner: USSR
@@ -808,18 +768,6 @@ Actors:
 		Location: 90,31
 		Owner: USSR
 		Facing: 384
-	WP68: waypoint
-		Location: 74,35
-		Owner: Neutral
-	WP33: waypoint
-		Location: 72,34
-		Owner: Neutral
-	WP64: waypoint
-		Owner: Neutral
-		Location: 80,24
-	WP32: waypoint
-		Location: 75,27
-		Owner: Neutral
 	WP72: waypoint
 		Location: 91,39
 		Owner: Neutral
@@ -868,9 +816,6 @@ Actors:
 	BBB: waypoint
 		Owner: Neutral
 		Location: 36,104
-	USSRAircraftOrigin2: waypoint
-		Location: 27,102
-		Owner: Neutral
 	USSRRFEntry2: waypoint
 		Owner: Neutral
 		Location: 96,68
@@ -880,9 +825,85 @@ Actors:
 	USSRAircraftOrigin1: waypoint
 		Owner: Neutral
 		Location: 96,48
+	USSRAircraftOrigin2: waypoint
+		Owner: Neutral
+		Location: 65,22
+	GuardPoint1: waypoint
+		Owner: Neutral
+		Location: 53,27
+	GuardPoint3: waypoint
+		Owner: Neutral
+		Location: 83,60
+	GuardPoint2: waypoint
+		Owner: Neutral
+		Location: 53,47
+	Actor174: harv
+		Owner: USSR
+		Facing: 896
+		Location: 59,25
+	Actor263: waypoint
+		Owner: Neutral
+		Location: 63,53
+	Actor264: waypoint
+		Owner: Neutral
+		Location: 83,53
+	USSRUnload3: waypoint
+		Owner: Neutral
+		Location: 55,83
+	USSRUnload4: waypoint
+		Owner: Neutral
+		Location: 37,92
+	UpperBaseProximityCam: waypoint
+		Owner: Neutral
+		Location: 81,31
+	KosyginDst: waypoint
+		Owner: Neutral
+		Location: 81,28
+	BlockExit3: waypoint
+		Owner: Neutral
+		Location: 83,39
+	BlockExit2: waypoint
+		Location: 68,33
+		Owner: Neutral
+	BlockExit1: waypoint
+		Location: 69,25
+		Owner: Neutral
+	BotExitBlocker1: 4tnk
+		Location: 81,36
+		Owner: USSR
+		Facing: 512
+	BotExitBlocker2: 4tnk
+		Location: 83,35
+		Owner: USSR
+		Facing: 512
+	BotExitBlocker3: 4tnk
+		Location: 85,36
+		Owner: USSR
+		Facing: 640
+	BasePawPatrolWP1: waypoint
+		Owner: Neutral
+		Location: 76,37
+	BasePawPatrolWP2: waypoint
+		Owner: Neutral
+		Location: 88,37
+	BasePawPatrolWP4: waypoint
+		Owner: Neutral
+		Location: 76,25
+	BasePawPatrolWP3: waypoint
+		Owner: Neutral
+		Location: 88,25
+	NavalAtkWP1: waypoint
+		Owner: Neutral
+		Location: 48,35
+	NavalAtkWP2: waypoint
+		Owner: Neutral
+		Location: 32,48
+	NavalAtkWP3: waypoint
+		Owner: Neutral
+		Location: 33,69
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
-FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl
+FluentMessages: ra|fluent/lua.ftl, ra|fluent/campaign.ftl, map.ftl
 
 Weapons: weapons.yaml
