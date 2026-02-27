@@ -1,0 +1,53 @@
+---
+kind: pipeline
+type: exec
+name: cronRebase
+
+platform:
+  os: linux
+  arch: amd64
+
+trigger:
+    branch:
+        include:
+            - bleed
+
+steps:
+  - name: sync repo
+    commands:
+      - git remote add upstream https://github.com/OpenRA/OpenRA.git
+      - git fetch upstream
+      - git rebase upstream/bleed
+      - git remote set-url origin git@github.com:dangherve/OpenRA.git
+      - git push --force --set-upstream origin bleed
+
+node:
+  internet: high
+
+---
+kind: pipeline
+type: exec
+name: rebase
+
+platform:
+  os: linux
+  arch: amd64
+
+trigger:
+    branch:
+        exclude:
+            - bleed
+
+steps:
+  - name: sync repo
+    commands:
+      - git remote add upstream https://github.com/OpenRA/OpenRA.git
+      - git fetch
+      - git checkout bleed
+      - git fetch upstream
+      - git rebase upstream/bleed
+      - git remote set-url origin git@github.com:dangherve/OpenRA.git
+      - git push --force --set-upstream origin bleed
+
+node:
+  internet: high
