@@ -13,8 +13,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Modifies the terrain type underneath the actors location.")]
-	sealed class ChangesTerrainInfo : TraitInfo, Requires<ImmobileInfo>
+	[Desc("Modifies the terrain type underneath the actor's location.",
+		"Make sure that the actor doesn't move, as the terrain is changed only on actor creation.",
+		"In other words using Mobile, Aircraft nor any other IMove-based trait is supported " +
+		"and can cause unintended side effects.")]
+	sealed class ChangesTerrainInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly string TerrainType = null;
