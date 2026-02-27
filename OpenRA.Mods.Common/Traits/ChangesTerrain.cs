@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -22,13 +23,17 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		public readonly string TerrainType = null;
 
+		[Desc("Only change terrain, if the cell's original terrain type is in this list.",
+			"By default, the terrain type is changed regardless of the original terrain type.")]
+		public readonly FrozenSet<string> TerrainTypes = null;
+
 		public override object Create(ActorInitializer init) { return new ChangesTerrain(this); }
 	}
 
 	sealed class ChangesTerrain : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly ChangesTerrainInfo info;
-		byte previousTerrain;
+		byte? previousTerrain;
 
 		public ChangesTerrain(ChangesTerrainInfo info)
 		{
@@ -39,16 +44,24 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cell = self.Location;
 			var map = self.World.Map;
+
+			if (info.TerrainTypes?.Contains(map.GetTerrainInfo(cell).Type) == false)
+				return;
+
 			var terrain = map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
+
 			previousTerrain = map.CustomTerrain[cell];
 			map.CustomTerrain[cell] = terrain;
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{
+			if (previousTerrain == null)
+				return;
+
 			var cell = self.Location;
 			var map = self.World.Map;
-			map.CustomTerrain[cell] = previousTerrain;
+			map.CustomTerrain[cell] = previousTerrain.Value;
 		}
 	}
 }
