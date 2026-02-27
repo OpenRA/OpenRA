@@ -191,7 +191,7 @@ BuildBase = function(blueprints, cyard, owner)
 			--Media.Debug("onBuilt: " .. tostring(blueprint.OnBuilt))
 
 			--Media.Debug("A: " .. tostring(BaseBlueprints[13].OnBuilt))
-			BuildBlueprint(blueprint)
+			BuildBlueprint(blueprint, owner)
 			return
 		end
 	end
@@ -201,17 +201,17 @@ BuildBase = function(blueprints, cyard, owner)
 	end)
 end
 
-BuildBlueprint = function(blueprint)
-	Trigger.AfterDelay(DateTime.Seconds(1)--[[Actor.BuildTime(blueprint.type)]], function()
+BuildBlueprint = function(blueprint, owner)
+	Trigger.AfterDelay(Actor.BuildTime(blueprint.type), function()
 		if BaseFact.IsDead or BaseFact.Owner ~= USSR then
 			return
-		elseif CheckPlayerMoney() <= 299 and IsHarvesterMissing() then
+		elseif CheckPlayerMoney(owner) <= 299 and IsHarvesterMissing() then
 			return
 		end
 
 		if IsBuildAreaBlocked(USSR, blueprint) then
 			Trigger.AfterDelay(DateTime.Seconds(1--[[5]]), function()
-				BuildBlueprint(blueprint)
+				BuildBlueprint(blueprint, owner)
 			end)
 			return
 		end

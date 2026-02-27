@@ -9,29 +9,30 @@
 
 --[[
 APPROACH
-First of all I tried to stick to the original level spirit more than copying verbatim triggers/events.
+First of all I tried to stick to the original level spirit more than copying verbatim triggers/events (still need to have a look at those).
 
 ORIGINAL VS ORA VERSION
-The staple element of the mission IMO is the frequent "iron-curtained" mammoth tanks that come from the left (USSR player) 
-so I wanted to keep that as close as possible to original intent. The deviation here, to make iron mammoth tanks more of a threat,
-was to activate iron curtain only once half hp is reached instead of arrival to x coordinate. Also added a function to allow these to switch 
-targets after x seconds to reduce the chance for these to be cheesed.
-The village to the left of player units arrival is also another element that I would like to change a little to have more relevance overall.
-Since turreted vehicles can attack while moving and most of original triggers are barely noticeable I thought about giving player a neutral
-stance towards civilians, so the player will have to "force attack" them. Civilians will have a few instances where they can trigger
-attacks made by USSR if the player disturbs the village. There is also the idea of adding and extra secondary objective, something around
-the line of: "keep civilian casualties to a bare minimum".
-Pointed by JovialFeline, in vanilla ra allies-12, FCom, if captured/destroy, selfs-destruct power plants from BadGuy base. I think this a bit of a strong effect to
-keep. Maybe this could happen only if FCom is captured so it requires a bit more thought for the player if he/she wants to take that route.
-Last but not least, I created a cruiser variant for England player to be able to destroy sov. beachhead as close as possible to how this
-occurs in the og. ra level
+The mission requires that the player infiltrates a structure for a VIP unit to spawn and be moved to the starting location (island).
+The main behavior of the AI is to make it difficult for the VIP to leave the base hence the player needs to at least weaken soviet forces enough
+so the VIP can be extracted.
+
+First thing that comes to mind, as relevant deviation, is that the player can redeploy his/her mcv. The best location for the player base is 
+still the original spot (way more resources) but IMO there should be a way for the AI to act on the scenario where the player has buildings
+on soviet's mainland.
 
 BALANCE
+I want to increase soviet attacks, both in size and frequency, but, as mentioned before, I intend to make soviet defensive behaviors more effective.
+I would like to change a few things on allies-9a as well for variability. For example, make soviet allies-9a more aggressive and allies-9b more
+defensive. This is just to give a bit of variety to each scenario.
+
+There are some out of map occupied lst attacks (WaterLSTWaves), aircraft attacks (that come from out of the map) and submarine attacks. There needs to be
+a script that allows the soviets send units on LST as well.
+
 As mentioned before, AI will send attacks occasionally but the bulk of the AI efforts will be in protecting the base and other behaviors that make it hard
-for the VIP unit to leave the base. Among these changes
+for the VIP unit to leave the base.
 
 OTHER
-No secondary objective yet
+No secondary objective yet.
 ]]
 
 LstReinforcements = { actors = { "mcv" }, entryPath = { AlliedReinforcementsEntry.Location, Unload1.Location }, exitPath = { AlliedReinforcementsEntry.Location } }
@@ -198,9 +199,39 @@ SendNavalSupport = function()
 	end)
 end
 
+
+
+CheckLandBuildingsInArea = function(nw, se)
+    local buildings = Map.ActorsInBox( nw, se, function(actor)
+		return actor.Owner == Greece and actor.HasProperty("StartBuildingRepairs") and actor.Type ~= "syrd"
+    end)
+
+	if #buildings > 0 then
+		Media.Debug("Found one")
+	end
+
+    Trigger.AfterDelay(DateTime.Seconds(5), function()
+        CheckLandBuildingsInArea(nw, se)
+    end)
+end
+
+IslandAreaNW = WPos.New( (CPos.New(27, 20)).X * 1024, (CPos.New(27, 20)).Y * 1024, 0)
+IslandAreaSE = WPos.New( (CPos.New(96, 68)).X * 1024, (CPos.New(96, 68)).Y * 1024, 0)
+
+InlandAreaNW = WPos.New( (CPos.New(37, 76)).X * 1024, (CPos.New(37, 76)).Y * 1024, 0)
+InlandAreaSE = WPos.New( (CPos.New(88, 100)).X * 1024, (CPos.New(88, 100)).Y * 1024, 0)
+
+--Top
+-- CPos.New( 27, 20 ) - NW
+-- CPos.New( 96, 68 ) - SE
+
+--Bottom
+-- CPos.New( 37, 76 ) - NW
+-- CPos.New( 88, 100 ) - SE
+
 PrepareObjectives = function()
 	InitObjectives(Greece)
-	
+
 	UseSpyObjective = AddPrimaryObjective(Greece, "infiltrate-soviet-command-center-contact-kosygin")
 	KosyginSurviveObjective = AddPrimaryObjective(Greece, "kosygin-must-survive")
 
@@ -241,6 +272,8 @@ WorldLoaded = function()
 	PrepareObjectives()
 	InitTriggers()
 
+	CheckLandBuildingsInArea( IslandAreaNW, IslandAreaSE )
+	CheckLandBuildingsInArea( InlandAreaNW, InlandAreaSE )
 	--Actor182.Guard(GuardPoint2)
 	--Actor182.Guard(Actor174)
 end
