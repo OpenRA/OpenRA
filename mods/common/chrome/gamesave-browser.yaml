@@ -2,8 +2,8 @@ Background@GAMESAVE_BROWSER_PANEL:
 	Logic: GameSaveBrowserLogic
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
-	Width: 700
-	Height: 500
+	Width: 900
+	Height: 600
 	Children:
 		Label@LOAD_TITLE:
 			Width: PARENT_WIDTH
@@ -24,20 +24,22 @@ Background@GAMESAVE_BROWSER_PANEL:
 		ScrollPanel@GAME_LIST:
 			X: 20
 			Y: 45
-			Width: PARENT_WIDTH - 40
-			Height: PARENT_HEIGHT - 97
+			Width: PARENT_WIDTH - 225
+			Height: PARENT_HEIGHT - 99
 			Children:
-				ScrollItem@NEW_TEMPLATE:
+				ScrollItem@DATE_HEADER:
+					Background: scrollheader
 					Width: PARENT_WIDTH - 27
-					Height: 25
+					Height: 13
 					X: 2
+					Y: 0
 					Visible: false
 					Children:
-						Label@TITLE:
+						Label@LABEL:
+							Font: TinyBold
 							Width: PARENT_WIDTH
-							Height: PARENT_HEIGHT
+							Height: 13
 							Align: Center
-							Text: label-gamesave-browser-panel-title
 				ScrollItem@GAME_TEMPLATE:
 					Width: PARENT_WIDTH - 27
 					Height: 25
@@ -47,24 +49,113 @@ Background@GAMESAVE_BROWSER_PANEL:
 					Children:
 						LabelWithTooltip@TITLE:
 							X: 10
-							Width: PARENT_WIDTH - 200 - 10
+							Width: PARENT_WIDTH - 10
 							Height: 25
 							TooltipContainer: GAMESAVE_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-						Label@DATE:
-							X: PARENT_WIDTH - WIDTH - 10
-							Width: 200
+		Container@MAP_PREVIEW_ROOT:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: 45
+			Width: 174
+			Height: 250
+		Container@SAVE_INFO:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: 300
+			Width: 174
+			Height: PARENT_HEIGHT - 324
+			Children:
+				Label@NO_SAVE_SELECTED_LABEL:
+					Y: -75
+					Width: PARENT_WIDTH
+					Height: 65
+					Font: Tiny
+					Align: Center
+					WordWrap: True
+					Text: label-gamesave-browser-panel-no-save-selected
+					Visible: False
+				Label@INCOMPATIBLE_TITLE_LABEL:
+					Y: -66
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+					Align: Center
+					Text: label-load-game-browser-panel-incompatible-title
+					Visible: False
+				Label@INCOMPATIBLE_LABEL_A:
+					Y: -51
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: label-load-game-browser-panel-incompatible-a
+				Label@INCOMPATIBLE_LABEL_B:
+					Y: -38
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: label-load-game-browser-panel-incompatible-b
+				Label@SAVEGAME_INFO_DATE:
+					X: 5
+					Y: -32
+					Width: PARENT_WIDTH
+					Height: 16
+					Font: TinyBold
+					Align: Left
+					Visible: False
+				Label@SAVEGAME_INFO_DURATION:
+					X: 5
+					Y: -16
+					Width: PARENT_WIDTH
+					Height: 16
+					Font: TinyBold
+					Align: Left
+					Visible: False
+				ScrollPanel@PLAYER_LIST:
+					Y: 3
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 34
+					IgnoreChildMouseOver: true
+					Children:
+						ScrollItem@HEADER:
+							Background: scrollheader
+							Width: PARENT_WIDTH - 27
+							Height: 13
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 13
+									Align: Center
+						ScrollItem@TEMPLATE:
+							Width: PARENT_WIDTH - 27
 							Height: 25
-							Align: Right
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Image@FLAG:
+									X: 4
+									Y: 6
+									Width: 32
+									Height: 16
+								Label@LABEL:
+									X: 40
+									Width: PARENT_WIDTH - 50
+									Height: 25
+									Shadow: True
 		Container@SAVE_WIDGETS:
 			X: 20
-			Y: PARENT_HEIGHT - 77
+			Y: PARENT_HEIGHT - 81
 			Width: PARENT_WIDTH - 40
 			Height: 32
 			Visible: False
 			Children:
 				TextField@SAVE_TEXTFIELD:
-					Width: PARENT_WIDTH
+					Width: PARENT_WIDTH - 184
 					Height: 25
 					Type: Filename
 		Button@DELETE_ALL_BUTTON:

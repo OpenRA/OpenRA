@@ -121,13 +121,26 @@ label-tool-tiling-path = Path Tiler
 
 ## gamesave-browser.yaml
 label-gamesave-browser-panel-load-title = Load game
-label-gamesave-browser-panel-save-title = Save game
-label-gamesave-browser-panel-title = [CREATE NEW FILE]
+label-gamesave-browser-panel-save-title = Save Game
 button-gamesave-browser-panel-delete-all = Delete All
 button-gamesave-browser-panel-delete = Delete
 button-gamesave-browser-panel-rename = Rename
 button-gamesave-browser-panel-load = Load
 button-gamesave-browser-panel-save = Save
+label-gamesave-browser-panel-no-save-selected = Select a savegame to overwrite it or type a new savegame name
+
+## load-game-browser.yaml
+label-load-game-browser-panel-title = Load Game
+label-load-game-browser-panel-choose-save = Choose Save
+label-load-game-browser-panel-incompatible-title = Incompatible Savegame
+label-load-game-browser-panel-incompatible-a = This savegame is not compatible
+label-load-game-browser-panel-incompatible-b = with this version of OpenRA
+label-load-game-browser-panel-human-player = Player
+button-load-game-browser-panel-load = Load
+tooltip-savegame-date-created = Date Created
+tooltip-savegame-map = Map
+tooltip-savegame-duration = Duration
+tooltip-savegame-players = Number of players
 
 ## ingame-chat.yaml, ingame-infochat.yaml
 button-chat-chrome-mode =
@@ -585,6 +598,7 @@ label-connection-error-desc-b = Please check your internet connection.
 ## replaybrowser.yaml
 label-replaybrowser-panel-title = Replay Viewer
 label-filters-title = Filter
+label-filters-flt-name-desc = Name:
 label-filters-flt-gametype-desc = Type:
 dropdownbutton-filters-any = Any
 label-filters-flt-date-desc = Date:
@@ -599,6 +613,7 @@ label-management-manage-title = Manage
 button-management-mng-rensel = Rename
 button-management-mng-delsel = Delete
 button-management-mng-delall = Delete All
+checkbox-load-game-filters = Filters
 label-replay-list-container-replaybrowser-title = Choose Replay
 button-replaybrowser-panel-watch = Watch
 

@@ -553,6 +553,10 @@ options-winstate =
     .victory = Victory
     .defeat = Defeat
 
+options-save-type =
+    .autosave = Autosave
+    .manual = Manual save
+
 options-replay-date =
     .today = Today
     .last-week = Last 7 days

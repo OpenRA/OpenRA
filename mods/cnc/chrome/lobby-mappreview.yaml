@@ -27,6 +27,7 @@ Container@MAP_PREVIEW:
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 		Container@MAP_SMALL:
+			Visible: false
 			Width: PARENT_WIDTH
 			Height: PARENT_HEIGHT
 			Children:
@@ -170,14 +171,14 @@ Container@MAP_PREVIEW:
 					Y: 158
 					Width: PARENT_WIDTH
 					Height: 25
-					Font: Tiny
+					Font: TinyBold
 					Align: Center
 					Text: label-map-unavailable-a
 				Label@b:
 					Y: 171
 					Width: PARENT_WIDTH
 					Height: 25
-					Font: Tiny
+					Font: TinyBold
 					Align: Center
 					Text: label-map-unavailable-b
 		Label@MAP_ERROR:
