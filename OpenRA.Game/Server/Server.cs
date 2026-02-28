@@ -1398,6 +1398,8 @@ namespace OpenRA.Server
 				if (IsMultiplayer)
 					OrderLatency = gameSpeed.OrderLatency;
 
+				LobbyInfo.GlobalSettings.GameTimestep = gameSpeed.Timestep;
+
 				if (GameSave == null && LobbyInfo.GlobalSettings.EnableGameSaves)
 					GameSave = new GameSave();
 

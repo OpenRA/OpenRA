@@ -255,8 +255,8 @@ namespace OpenRA
 		public static string ReadLengthPrefixedString(this Stream s, Encoding encoding, int maxLength)
 		{
 			var length = s.ReadInt32();
-			if (length > maxLength)
-				throw new InvalidOperationException($"The length of the string ({length}) is longer than the maximum allowed ({maxLength}).");
+			if (length < 0 || length > maxLength)
+				throw new InvalidOperationException($"The length of the string ({length}) is outside the allowed range (0..{maxLength}).");
 
 			var buffer = length < 128 ? stackalloc byte[length] : new byte[length];
 			s.ReadBytes(buffer);

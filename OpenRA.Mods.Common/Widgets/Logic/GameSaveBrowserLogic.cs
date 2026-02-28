@@ -10,15 +10,19 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	[IncludeStaticFluentReferences(typeof(GameSaveUtils))]
 	public class GameSaveBrowserLogic : ChromeLogic
 	{
 		[FluentReference]
@@ -60,29 +64,50 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string OverwriteSaveAccept = "dialog-overwrite-save.confirm";
 
+		[FluentReference]
+		const string NoSaveSelected = "label-gamesave-browser-panel-no-save-selected";
+
+		[FluentReference("name", "number")]
+		const string EnumeratedBotName = "enumerated-bot-name";
+
+		[FluentReference]
+		const string HumanPlayer = "label-load-game-browser-panel-human-player";
+
+		[FluentReference]
+		const string Players = "label-players";
+
+		[FluentReference("team")]
+		const string TeamNumber = "label-team-name";
+
+		[FluentReference]
+		const string NoTeam = "label-no-team";
+
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
 		readonly TextFieldWidget saveTextField;
 		readonly List<string> games = [];
-		readonly Action onStart;
 		readonly Action onExit;
 		readonly ModData modData;
-		readonly bool isSavePanel;
 		readonly string baseSavePath;
+
+		readonly ScrollPanelWidget playerList;
+		readonly ScrollItemWidget playerHeader;
+		readonly ScrollItemWidget playerTemplate;
+		MapPreview map;
 
 		readonly string defaultSaveFilename;
 		string selectedPath;
 		GameSave selectedSave;
+		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public GameSaveBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart, bool isSavePanel, World world)
+		public GameSaveBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart, World world)
 		{
 			panel = widget;
 
 			this.modData = modData;
-			this.onStart = onStart;
 			this.onExit = onExit;
-			this.isSavePanel = isSavePanel;
+			this.world = world;
 			Game.BeforeGameStart += OnGameStart;
 
 			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
@@ -94,52 +119,112 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			gameList = panel.Get<ScrollPanelWidget>("GAME_LIST");
 			var gameTemplate = panel.Get<ScrollItemWidget>("GAME_TEMPLATE");
-			var newTemplate = panel.Get<ScrollItemWidget>("NEW_TEMPLATE");
+			var dateHeaderTemplate = panel.Get<ScrollItemWidget>("DATE_HEADER");
 
 			var mod = modData.Manifest;
 			baseSavePath = Path.Combine(Platform.SupportDir, "Saves", mod.Id, mod.Metadata.Version);
 
-			// Avoid filename conflicts when creating new saves
-			if (isSavePanel)
+			panel.Get("SAVE_TITLE").IsVisible = () => true;
+
+			defaultSaveFilename = world.Map.Title;
+			var filenameAttempt = 0;
+			while (File.Exists(Path.Combine(baseSavePath, defaultSaveFilename + ".orasav")))
+				defaultSaveFilename = world.Map.Title + $" ({++filenameAttempt})";
+
+			var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");
+			saveButton.IsDisabled = () => string.IsNullOrWhiteSpace(saveTextField.Text);
+			saveButton.OnClick = () => Save(world);
+			saveButton.IsVisible = () => true;
+
+			var saveWidgets = panel.Get("SAVE_WIDGETS");
+			gameList.Bounds.Height -= saveWidgets.Bounds.Height;
+			saveWidgets.IsVisible = () => true;
+
+			saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
+			saveTextField.OnEnterKey = saveButton.HandleKeyPress;
+			saveTextField.OnEscKey = cancelButton.HandleKeyPress;
+			saveTextField.OnTextEdited = () =>
 			{
-				panel.Get("SAVE_TITLE").IsVisible = () => true;
-
-				defaultSaveFilename = world.Map.Title;
-				var filenameAttempt = 0;
-				while (File.Exists(Path.Combine(baseSavePath, defaultSaveFilename + ".orasav")))
-					defaultSaveFilename = world.Map.Title + $" ({++filenameAttempt})";
-
-				var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");
-				saveButton.IsDisabled = () => string.IsNullOrWhiteSpace(saveTextField.Text);
-				saveButton.OnClick = () => Save(world);
-				saveButton.IsVisible = () => true;
-
-				var saveWidgets = panel.Get("SAVE_WIDGETS");
-				gameList.Bounds.Height -= saveWidgets.Bounds.Height;
-				saveWidgets.IsVisible = () => true;
-
-				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
-				saveTextField.OnEnterKey = saveButton.HandleKeyPress;
-				saveTextField.OnEscKey = cancelButton.HandleKeyPress;
-			}
-			else
-			{
-				panel.Get("LOAD_TITLE").IsVisible = () => true;
-				var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
-				loadButton.IsVisible = () => true;
-				loadButton.IsDisabled = () => selectedSave == null || modData.MapCache[selectedSave.GlobalSettings.Map].Status != MapStatus.Available;
-				loadButton.OnClick = Load;
-			}
+				if (string.IsNullOrEmpty(saveTextField.Text))
+				{
+					selectedPath = null;
+					selectedSave = null;
+					map = modData.MapCache[world.Map.Uid];
+					UpdatePlayerList();
+				}
+			};
 
 			if (Directory.Exists(baseSavePath))
-				LoadGames(gameTemplate, newTemplate, world);
+				LoadGames(gameTemplate, dateHeaderTemplate, world);
+
+			map = modData.MapCache[world.Map.Uid];
+
+			var mapPreviewRoot = panel.Get("MAP_PREVIEW_ROOT");
+
+			var saveInfo = panel.Get("SAVE_INFO");
+
+			var noSaveSelectedLabel = saveInfo.Get<LabelWidget>("NO_SAVE_SELECTED_LABEL");
+			noSaveSelectedLabel.GetText = () => FluentProvider.GetMessage(NoSaveSelected);
+			noSaveSelectedLabel.IsVisible = () => false;
+
+			var incompatibleTitleLabel = saveInfo.Get<LabelWidget>("INCOMPATIBLE_TITLE_LABEL");
+			incompatibleTitleLabel.IsVisible = () => selectedPath != null && selectedSave == null;
+
+			var incompatibleLabelA = saveInfo.Get<LabelWidget>("INCOMPATIBLE_LABEL_A");
+			incompatibleLabelA.IsVisible = () => selectedPath != null && selectedSave == null;
+
+			var incompatibleLabelB = saveInfo.Get<LabelWidget>("INCOMPATIBLE_LABEL_B");
+			incompatibleLabelB.IsVisible = () => selectedPath != null && selectedSave == null;
+
+			var savegameInfoDate = saveInfo.GetOrNull<LabelWidget>("SAVEGAME_INFO_DATE");
+			if (savegameInfoDate != null)
+			{
+				savegameInfoDate.GetText = () => selectedSave != null && selectedPath != null
+					? "Date created: " + File.GetCreationTime(selectedPath).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+					: string.Empty;
+				savegameInfoDate.IsVisible = () => selectedSave != null;
+			}
+
+			var savegameInfoDuration = saveInfo.GetOrNull<LabelWidget>("SAVEGAME_INFO_DURATION");
+			if (savegameInfoDuration != null)
+			{
+				savegameInfoDuration.GetText = () =>
+				{
+					if (selectedSave != null && selectedSave.GlobalSettings.GameTimestep > 0 && selectedSave.LastOrdersFrame >= 0)
+					{
+						var duration = TimeSpan.FromMilliseconds((long)selectedSave.LastOrdersFrame * selectedSave.GlobalSettings.GameTimestep);
+						return "Duration: " + duration.ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture);
+					}
+
+					return "Duration: ?";
+				};
+				savegameInfoDuration.IsVisible = () => selectedSave != null;
+			}
+
+			playerList = saveInfo.Get<ScrollPanelWidget>("PLAYER_LIST");
+			playerHeader = playerList.Get<ScrollItemWidget>("HEADER");
+			playerTemplate = playerList.Get<ScrollItemWidget>("TEMPLATE");
+			playerList.RemoveChildren();
+
+			var spawnOccupants = new CachedTransform<GameSave, Dictionary<int, SpawnOccupant>>(_ => GetSpawnOccupants());
+
+			Ui.LoadWidget("MAP_PREVIEW", mapPreviewRoot, new WidgetArgs
+			{
+				{ "orderManager", null },
+				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, Session.MapStatus.Playable)) },
+				{ "onMouseDown", null },
+				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants.Update(selectedSave)) },
+				{ "getDisabledSpawnPoints", () => FrozenSet<int>.Empty },
+				{ "showUnoccupiedSpawnpoints", false },
+				{ "mapUpdatesEnabled", false },
+				{ "onMapUpdate", (Action<string>)(_ => { }) },
+			});
 
 			var renameButton = panel.Get<ButtonWidget>("RENAME_BUTTON");
 			renameButton.IsDisabled = () => selectedSave == null;
 			renameButton.OnClick = () =>
 			{
 				var initialName = Path.GetFileNameWithoutExtension(selectedPath);
-				var invalidChars = Path.GetInvalidFileNameChars();
 
 				ConfirmationDialogs.TextInputPrompt(modData,
 					RenameSaveTitle,
@@ -149,22 +234,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onCancel: null,
 					acceptText: RenameSaveAccept,
 					cancelText: null,
-					inputValidator: newName =>
-					{
-						if (newName == initialName)
-							return false;
-
-						if (string.IsNullOrWhiteSpace(newName))
-							return false;
-
-						if (newName.IndexOfAny(invalidChars) >= 0)
-							return false;
-
-						if (File.Exists(Path.Combine(baseSavePath, newName)))
-							return false;
-
-						return true;
-					});
+					inputValidator: newName => GameSaveUtils.IsValidNewSaveName(newName, initialName, baseSavePath));
 			};
 
 			var deleteButton = panel.Get<ButtonWidget>("DELETE_BUTTON");
@@ -178,14 +248,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onConfirm: () =>
 					{
 						Delete(selectedPath);
-
-						if (games.Count == 0 && !isSavePanel)
-						{
-							Ui.CloseWindow();
-							onExit();
-						}
-						else
-							SelectFirstVisible();
+						SelectFirstVisible();
 					},
 					confirmText: DeleteSaveAccept,
 					onCancel: () => { });
@@ -214,56 +277,80 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SelectFirstVisible();
 		}
 
-		void LoadGames(ScrollItemWidget gameTemplate, ScrollItemWidget newTemplate, World world)
+		void LoadGames(ScrollItemWidget gameTemplate, ScrollItemWidget dateHeaderTemplate, World world)
 		{
 			gameList.RemoveChildren();
-			if (isSavePanel)
-			{
-				var item = ScrollItemWidget.Setup(newTemplate,
-					() => selectedSave == null,
-					() => Select(null),
-					() => { });
-				gameList.AddChild(item);
-			}
 
 			var savePaths = Directory.GetFiles(baseSavePath, "*.orasav", SearchOption.AllDirectories)
 				.OrderByDescending(File.GetLastWriteTime)
 				.ToList();
 
-			foreach (var savePath in savePaths)
+			var byDate = savePaths
+				.GroupBy(p => File.GetLastWriteTime(p).Date)
+				.OrderByDescending(g => g.Key);
+
+			foreach (var group in byDate)
 			{
-				games.Add(savePath);
+				var dateLabel = group.Key.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+				var header = ScrollItemWidget.Setup(dateHeaderTemplate, () => false, () => { });
+				header.Get<LabelWidget>("LABEL").GetText = () => dateLabel;
+				header.IsVisible = () => true;
+				gameList.AddChild(header);
 
-				// Create the item manually so the click handlers can refer to itself
-				// This simplifies the rename handling (only needs to update ItemKey)
-				var item = gameTemplate.Clone();
-				item.ItemKey = savePath;
-				item.IsVisible = () => true;
-				item.IsSelected = () => selectedPath == item.ItemKey;
-				item.OnClick = () => Select(item.ItemKey);
+				foreach (var savePath in group)
+				{
+					games.Add(savePath);
 
-				if (isSavePanel)
-					item.OnDoubleClick = () => Save(world);
-				else
-					item.OnDoubleClick = Load;
+					GameSave save = null;
+					try
+					{
+						save = new GameSave(savePath);
+					}
+					catch
+					{
+					}
 
-				var title = Path.GetFileNameWithoutExtension(savePath);
-				var label = item.Get<LabelWithTooltipWidget>("TITLE");
-				WidgetUtils.TruncateLabelToTooltip(label, title);
+					// Create the item manually so the click handlers can refer to itself.
+					// This simplifies the rename handling (only needs to update ItemKey).
+					var gameItem = gameTemplate.Clone();
+					gameItem.ItemKey = savePath;
+					gameItem.IsVisible = () => true;
+					gameItem.IsSelected = () => selectedPath == gameItem.ItemKey;
+					gameItem.OnClick = () => Select(gameItem.ItemKey);
+					gameItem.OnDoubleClick = () => Save(world);
 
-				var date = File.GetLastWriteTime(savePath).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture);
-				item.Get<LabelWidget>("DATE").GetText = () => date;
+					var title = Path.GetFileNameWithoutExtension(savePath);
+					var label = gameItem.Get<LabelWithTooltipWidget>("TITLE");
+					WidgetUtils.TruncateLabelToTooltip(label, title);
+					var tooltipText = GameSaveUtils.BuildSaveTooltipText(savePath, save, modData);
+					label.GetTooltipText = () => tooltipText;
 
-				gameList.AddChild(item);
+					var creationTime = File.GetCreationTime(savePath);
+					var creationTimeLabel = gameItem.GetOrNull<LabelWidget>("CREATION_TIME");
+					if (creationTimeLabel != null)
+					{
+						creationTimeLabel.GetText = () => creationTime.ToString("HH:mm:ss", CultureInfo.InvariantCulture);
+						creationTimeLabel.IsVisible = () => gameItem.IsSelected();
+					}
+
+					gameList.AddChild(gameItem);
+				}
 			}
 		}
 
 		void Rename(string oldName, string newName)
 		{
+			var oldPath = Path.Combine(baseSavePath, oldName + ".orasav");
+
+			var uniqueName = newName;
+			var attempt = 1;
+			while (File.Exists(Path.Combine(baseSavePath, uniqueName + ".orasav")))
+				uniqueName = newName + $" ({attempt++})";
+
+			var newPath = Path.Combine(baseSavePath, uniqueName + ".orasav");
+
 			try
 			{
-				var oldPath = Path.Combine(baseSavePath, oldName + ".orasav");
-				var newPath = Path.Combine(baseSavePath, newName + ".orasav");
 				File.Move(oldPath, newPath);
 
 				games[games.IndexOf(oldPath)] = newPath;
@@ -273,7 +360,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						continue;
 
 					item.ItemKey = newPath;
-					item.Get<LabelWidget>("TITLE").GetText = () => newName;
+					item.Get<LabelWidget>("TITLE").GetText = () => uniqueName;
 				}
 
 				if (selectedPath == oldPath)
@@ -312,12 +399,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SelectFirstVisible()
 		{
-			Select(isSavePanel ? null : games.FirstOrDefault());
-			if (isSavePanel)
-			{
-				saveTextField.TakeKeyboardFocus();
-				saveTextField.CursorPosition = saveTextField.Text.Length;
-			}
+			Select(null);
+			saveTextField.TakeKeyboardFocus();
+			saveTextField.CursorPosition = saveTextField.Text.Length;
 		}
 
 		void Select(string savePath)
@@ -326,43 +410,141 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (savePath != null)
 			{
-				selectedSave = new GameSave(savePath);
-				var preview = modData.MapCache[selectedSave.GlobalSettings.Map];
-				if (preview.Status != MapStatus.Available && selectedSave.MapGenerationArgs != null)
+				try
 				{
-					// Add to the MapCache so the server will accept the map
-					preview.UpdateFromGenerationArgs(selectedSave.MapGenerationArgs);
-					preview.Generate();
+					selectedSave = new GameSave(savePath);
+					var preview = modData.MapCache[selectedSave.GlobalSettings.Map];
+					if (preview.Status != MapStatus.Available && selectedSave.MapGenerationArgs != null)
+					{
+						// Add to the MapCache so the server will accept the map.
+						preview.UpdateFromGenerationArgs(selectedSave.MapGenerationArgs);
+						preview.Generate();
+					}
+
+					map = preview;
 				}
+				catch
+				{
+					selectedSave = null;
+					map = MapCache.UnknownMap;
+				}
+
+				UpdatePlayerList();
 			}
 			else
-				selectedSave = null;
-
-			if (isSavePanel)
 			{
-				saveTextField.Text = savePath == null ? defaultSaveFilename : Path.GetFileNameWithoutExtension(savePath);
-				saveTextField.CursorPosition = saveTextField.Text.Length;
+				selectedSave = null;
+				map = modData.MapCache[world.Map.Uid];
+				UpdatePlayerList();
 			}
+
+			saveTextField.Text = savePath == null ? defaultSaveFilename : Path.GetFileNameWithoutExtension(savePath);
+			saveTextField.CursorPosition = saveTextField.Text.Length;
 		}
 
-		void Load()
+		Dictionary<string, SlotClient> GetWorldSlotClients()
 		{
-			if (selectedSave == null)
-				return;
+			var result = new Dictionary<string, SlotClient>();
+			foreach (var client in world.LobbyInfo.Clients)
+				if (client.Slot != null)
+					result[client.Slot] = new SlotClient(client);
+			return result;
+		}
 
-			var map = modData.MapCache[selectedSave.GlobalSettings.Map];
-			if (map.Status != MapStatus.Available)
-				return;
+		Dictionary<int, SpawnOccupant> GetSpawnOccupants()
+		{
+			var slotClients = selectedSave?.SlotClients ?? (selectedPath == null ? GetWorldSlotClients() : null);
+			if (slotClients == null)
+				return [];
 
-			Ui.CloseWindow();
-
-			var orders = new List<Order>()
+			var occupants = new Dictionary<int, SpawnOccupant>();
+			foreach (var (_, slotClient) in slotClients)
 			{
-				Order.FromTargetString("LoadGameSave", Path.GetFileName(selectedPath), true),
-				Order.Command($"state {Session.ClientState.Ready}")
-			};
+				if (slotClient.SpawnPoint == 0)
+					continue;
 
-			Game.CreateAndStartLocalServer(map.Uid, orders);
+				var client = new Session.Client
+				{
+					Color = slotClient.Color,
+					Faction = slotClient.Faction,
+					SpawnPoint = slotClient.SpawnPoint,
+					Team = slotClient.Team,
+					Bot = slotClient.Bot,
+					Name = slotClient.Bot != null ? FluentProvider.GetMessage(slotClient.BotName) : string.Empty
+				};
+
+				occupants[slotClient.SpawnPoint] = new SpawnOccupant(client);
+			}
+
+			return occupants;
+		}
+
+		void UpdatePlayerList()
+		{
+			playerList.RemoveChildren();
+
+			Dictionary<string, SlotClient> slotClients;
+			if (selectedSave != null)
+				slotClients = selectedSave.SlotClients;
+			else if (selectedPath == null)
+				slotClients = GetWorldSlotClients();
+			else
+				return;
+
+			var factionInfo = modData.DefaultRules.Actors[SystemActors.World].TraitInfos<FactionInfo>();
+
+			var botOrdinals = slotClients
+				.Where(kv => kv.Value.Bot != null)
+				.GroupBy(kv => kv.Value.Bot)
+				.SelectMany(g => g.Select((kv, i) => (SlotKey: kv.Key, Ordinal: i + 1)))
+				.ToFrozenDictionary(x => x.SlotKey, x => x.Ordinal);
+
+			var slotClientsByTeam = slotClients
+				.GroupBy(kv => kv.Value.Team)
+				.OrderBy(g => g.Key)
+				.ToList();
+
+			var noTeams = slotClientsByTeam.Count == 1;
+
+			foreach (var teamGroup in slotClientsByTeam)
+			{
+				var team = teamGroup.Key;
+				var label = noTeams ? FluentProvider.GetMessage(Players) : team > 0
+					? FluentProvider.GetMessage(TeamNumber, "team", team)
+					: FluentProvider.GetMessage(NoTeam);
+
+				if (label.Length > 0)
+				{
+					var header = ScrollItemWidget.Setup(playerHeader, () => false, () => { });
+					header.Get<LabelWidget>("LABEL").GetText = () => label;
+					playerList.AddChild(header);
+				}
+
+				foreach (var (slotKey, slotClient) in teamGroup)
+				{
+					var displayName = slotClient.Bot != null
+						? FluentProvider.GetMessage(EnumeratedBotName,
+							"name", FluentProvider.GetMessage(slotClient.BotName),
+							"number", botOrdinals[slotKey])
+						: FluentProvider.GetMessage(HumanPlayer);
+
+					var color = slotClient.Color;
+					var item = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
+
+					var nameLabel = item.Get<LabelWidget>("LABEL");
+					var font = Game.Renderer.Fonts[nameLabel.Font];
+					var name = WidgetUtils.TruncateText(displayName, nameLabel.Bounds.Width, font);
+					nameLabel.GetText = () => name;
+					nameLabel.GetColor = () => color;
+
+					var flag = item.Get<ImageWidget>("FLAG");
+					flag.GetImageCollection = () => "flags";
+					var faction = slotClient.Faction;
+					flag.GetImageName = () => factionInfo != null && factionInfo.Any(f => f.InternalName == faction) ? faction : "Random";
+
+					playerList.AddChild(item);
+				}
+			}
 		}
 
 		void Save(World world)
@@ -399,7 +581,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OnGameStart()
 		{
 			Ui.CloseWindow();
-			onStart();
+			onExit();
 		}
 
 		bool disposed;
@@ -412,15 +594,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			base.Dispose(disposing);
-		}
-
-		public static bool IsLoadPanelEnabled(Manifest mod)
-		{
-			var baseSavePath = Path.Combine(Platform.SupportDir, "Saves", mod.Id, mod.Metadata.Version);
-			if (!Directory.Exists(baseSavePath))
-				return false;
-
-			return Directory.GetFiles(baseSavePath, "*.orasav", SearchOption.AllDirectories).Length > 0;
 		}
 	}
 }

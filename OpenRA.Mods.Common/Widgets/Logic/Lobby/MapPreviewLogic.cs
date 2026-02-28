@@ -218,10 +218,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			previewWidgets[PreviewStatus.DownloadError] =
 				[previewSmall, widget.Get("MAP_ERROR"), retryButton];
 
-			// Hide all widgets.
+			// Hide all widgets, then show the correct ones for the initial state.
 			foreach (var preview in previewWidgets)
 				foreach (var p in preview.Value)
 					p.IsVisible = () => false;
+
+			UpdateVisibility();
 		}
 
 		Widget[] visibleWidgets = [];

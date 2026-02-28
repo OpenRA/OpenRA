@@ -405,16 +405,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var button = AddButton("LOAD_GAME", LoadGameButton);
-			button.IsDisabled = () => leaving || !GameSaveBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
+			button.IsDisabled = () => leaving || !LoadGameBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
 			button.OnClick = () =>
 			{
 				hideMenu = true;
-				Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
+				Ui.OpenWindow("LOAD_GAME_BROWSER_PANEL", new WidgetArgs
 				{
 					{ "onExit", () => hideMenu = false },
 					{ "onStart", CloseMenu },
-					{ "isSavePanel", false },
-					{ "world", null }
 				});
 			};
 		}
@@ -433,7 +431,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "onExit", () => hideMenu = false },
 					{ "onStart", () => { } },
-					{ "isSavePanel", true },
 					{ "world", world }
 				});
 			};

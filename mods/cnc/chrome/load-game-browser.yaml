@@ -1,0 +1,295 @@
+﻿Container@LOAD_GAME_BROWSER_PANEL:
+	Logic: LoadGameBrowserLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 540
+	Children:
+		Label@TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: label-load-game-browser-panel-title
+		Background@bg:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: panel-black
+			Children:
+				Background@FILTERS:
+					X: 17
+					Y: 30
+					Width: 278
+					Height: 231
+					Background: panel-gray
+					Children:
+						Label@FILTERS_TITLE:
+							Y: 0 - 24
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: label-filters-title
+						Label@FLT_NAME_DESC:
+							X: 0
+							Y: 8
+							Width: 80
+							Height: 25
+							Text: label-filters-flt-name-desc
+							Align: Right
+						TextField@FLT_NAME_INPUT:
+							X: 85
+							Y: 8
+							Width: PARENT_WIDTH - 93
+							Height: 25
+						Label@FLT_TYPE_DESC:
+							X: 0
+							Y: 38
+							Width: 80
+							Height: 25
+							Text: label-filters-flt-gametype-desc
+							Align: Right
+						DropDownButton@FLT_TYPE_DROPDOWNBUTTON:
+							X: 85
+							Y: 38
+							Width: PARENT_WIDTH - 93
+							Height: 25
+							Text: dropdownbutton-filters-any
+						Label@FLT_DATE_DESC:
+							X: 0
+							Y: 68
+							Width: 80
+							Height: 25
+							Text: label-filters-flt-date-desc
+							Align: Right
+						DropDownButton@FLT_DATE_DROPDOWNBUTTON:
+							X: 85
+							Y: 68
+							Width: PARENT_WIDTH - 93
+							Height: 25
+							Text: dropdownbutton-filters-any
+						Label@FLT_DURATION_DESC:
+							X: 0
+							Y: 98
+							Width: 80
+							Height: 25
+							Text: label-filters-flt-duration-desc
+							Align: Right
+						DropDownButton@FLT_DURATION_DROPDOWNBUTTON:
+							X: 85
+							Y: 98
+							Width: PARENT_WIDTH - 93
+							Height: 25
+							Text: dropdownbutton-filters-any
+						Label@FLT_MAPNAME_DESC:
+							X: 0
+							Y: 128
+							Width: 80
+							Height: 25
+							Text: label-filters-flt-mapname-desc
+							Align: Right
+						DropDownButton@FLT_MAPNAME_DROPDOWNBUTTON:
+							X: 85
+							Y: 128
+							Width: PARENT_WIDTH - 93
+							Height: 25
+							Text: dropdownbutton-filters-any
+						Label@FLT_FACTION_DESC:
+							X: 0
+							Y: 158
+							Width: 80
+							Height: 25
+							Text: label-filters-flt-faction-desc
+							Align: Right
+						DropDownButton@FLT_FACTION_DROPDOWNBUTTON:
+							X: 85
+							Y: 158
+							Width: PARENT_WIDTH - 93
+							Height: 25
+							Text: dropdownbutton-filters-any
+						Button@FLT_RESET_BUTTON:
+							X: 85
+							Y: 198
+							Width: PARENT_WIDTH - 93
+							Height: 25
+							Text: button-filters-flt-reset
+							Font: Bold
+				Container@SAVE_LIST_CONTAINER:
+					X: 304
+					Y: 15
+					Width: PARENT_WIDTH - 508
+					Height: PARENT_HEIGHT - 33
+					Children:
+						Label@SAVE_LIST_LABEL:
+							Y: 0 - 9
+							Width: PARENT_WIDTH
+							Height: 25
+							Text: label-load-game-browser-panel-choose-save
+							Align: Center
+							Font: Bold
+						ScrollPanel@GAME_LIST:
+							X: 0
+							Y: 15
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT - 15
+							CollapseHiddenChildren: True
+							Children:
+								ScrollItem@DATE_HEADER:
+									Background: scrollheader
+									Width: PARENT_WIDTH - 27
+									Height: 13
+									X: 2
+									Y: 0
+									Visible: false
+									Children:
+										Label@LABEL:
+											Font: TinyBold
+											Width: PARENT_WIDTH
+											Height: 13
+											Align: Center
+								ScrollItem@GAME_TEMPLATE:
+									Width: PARENT_WIDTH - 27
+									Height: 25
+									X: 2
+									Visible: false
+									EnableChildMouseOver: True
+									Children:
+										LabelWithTooltip@TITLE:
+											X: 10
+											Width: PARENT_WIDTH - 10
+											Height: 25
+											TooltipContainer: LOAD_GAME_TITLE_TOOLTIP_CONTAINER
+											TooltipTemplate: SIMPLE_TOOLTIP
+				Container@MAP_PREVIEW_ROOT:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 30
+					Width: 174
+					Height: 250
+				Container@SAVE_INFO:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 283
+					Width: 174
+					Height: 239
+					Children:
+						Label@INCOMPATIBLE_TITLE_LABEL:
+							Y: -64
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: label-load-game-browser-panel-incompatible-title
+						Label@INCOMPATIBLE_LABEL_A:
+							Y: -49
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: TinyBold
+							Align: Center
+							Text: label-load-game-browser-panel-incompatible-a
+						Label@INCOMPATIBLE_LABEL_B:
+							Y: -36
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: TinyBold
+							Align: Center
+							Text: label-load-game-browser-panel-incompatible-b
+						Label@SAVEGAME_INFO_DATE:
+							X: 5
+							Y: -32
+							Width: PARENT_WIDTH
+							Height: 16
+							Font: TinyBold
+							Align: Left
+							Visible: False
+						Label@SAVEGAME_INFO_DURATION:
+							X: 5
+							Y: -16
+							Width: PARENT_WIDTH
+							Height: 16
+							Font: TinyBold
+							Align: Left
+							Visible: False
+						ScrollPanel@PLAYER_LIST:
+							Y: 3
+							Width: PARENT_WIDTH
+							Height: 236
+							IgnoreChildMouseOver: true
+							Children:
+								ScrollItem@HEADER:
+									Background: scrollheader
+									Width: PARENT_WIDTH - 27
+									Height: 13
+									X: 2
+									Y: 0
+									Visible: false
+									Children:
+										Label@LABEL:
+											Font: TinyBold
+											Width: PARENT_WIDTH
+											Height: 13
+											Align: Center
+								ScrollItem@TEMPLATE:
+									Width: PARENT_WIDTH - 27
+									Height: 25
+									X: 2
+									Y: 0
+									Visible: false
+									Children:
+										Image@FLAG:
+											X: 4
+											Y: 6
+											Width: 32
+											Height: 16
+										Label@LABEL:
+											X: 40
+											Width: PARENT_WIDTH - 50
+											Height: 25
+											Shadow: True
+				Button@CANCEL_BUTTON:
+					Key: escape
+					X: 0
+					Y: PARENT_HEIGHT - 1
+					Width: 140
+					Height: 35
+					Text: button-back
+				Checkbox@FILTERS_TOGGLE:
+					X: PARENT_WIDTH - 140 - 110 - 110 - 110 - 120
+					Y: PARENT_HEIGHT + 7
+					Width: 120
+					Height: 20
+					Text: checkbox-load-game-filters
+					Font: Regular
+				Button@DELETE_ALL_BUTTON:
+					X: PARENT_WIDTH - 140 - 110 - 110 - 110
+					Y: PARENT_HEIGHT - 1
+					Width: 100
+					Height: 35
+					Text: button-management-mng-delall
+					Font: Bold
+				Button@DELETE_BUTTON:
+					X: PARENT_WIDTH - 140 - 110 - 110
+					Y: PARENT_HEIGHT - 1
+					Width: 100
+					Height: 35
+					Text: button-management-mng-delsel
+					Font: Bold
+					Key: Delete
+				Button@RENAME_BUTTON:
+					X: PARENT_WIDTH - 140 - 110
+					Y: PARENT_HEIGHT - 1
+					Width: 100
+					Height: 35
+					Text: button-management-mng-rensel
+					Font: Bold
+					Key: F2
+				Button@LOAD_BUTTON:
+					Key: return
+					X: PARENT_WIDTH - 140
+					Y: PARENT_HEIGHT - 1
+					Width: 140
+					Height: 35
+					Text: button-load-game-browser-panel-load
+					Font: Bold
+		TooltipContainer@TOOLTIP_CONTAINER:
+		TooltipContainer@LOAD_GAME_TITLE_TOOLTIP_CONTAINER:
