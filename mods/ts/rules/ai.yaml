@@ -14,7 +14,7 @@ Player:
 		RefineryTypes: proc
 	PowerDownBotModule:
 		RequiresCondition: enable-test-ai
-		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam,napuls
 	ResourceMapBotModule:
 		RequiresCondition: enable-test-ai
 		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
@@ -29,12 +29,14 @@ Player:
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: gacnst
+		BuildingQueues: Building
+		DefenseQueues: Support
 		RefineryTypes: proc
 		PowerTypes: gapowr, gapowrup, napowr, naapwr
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		TechTypes: garadr, naradr, gahpad, nahpad, gatech, natech
 		SiloTypes: gasilo
-		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam,napuls
 		SellRefineryNoResourceDistance: 18
 		BuildingLimits:
 			proc: 4
@@ -59,6 +61,7 @@ Player:
 			naobel: 2
 			nalasr: 8
 			nasam: 4
+			napuls: 1
 		BuildingFractions:
 			proc: 30
 			gapile: 1
@@ -79,6 +82,7 @@ Player:
 			gactwr: 18
 			nasam: 6
 			naobel: 3
+			napuls: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai
 	SquadManagerBotModule@test:
