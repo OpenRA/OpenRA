@@ -19,6 +19,12 @@
 ---@field southeastEdge? wpos
 -- Could add a new field for when to SellBuilding
 
+---@class AirWave
+---@field types string[]
+---@field interval number
+---@field path cpos[]
+---@field owner? player
+
 SetDifficulty = function()
     if Difficulty == "easy" then
         StartingCash = 7000
@@ -139,9 +145,23 @@ VehicleTypes = { "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "4tnk" }
 VehicleAttackGroup = { }
 --VehicleAttackInterval is defined in difficulty setup
 
-SovietAircraftType = { "yak", "mig" }
 PlanesAttackGroup = { }
 ParadropIntervals = DateTime.Minutes(5)
+AircraftTypes = { "yak", "mig" }
+
+BasePlanes = {}
+TotalAflds = 2
+CurrentAirWave = 1
+
+---@type AirWave[]
+SovietAirTeams =
+{
+	{ types = { "yak", "yak" }, interval = DateTime.Seconds(120), path = { USSRAircraftOrigin1.Location }},
+	{ types = { "yak", "yak" }, interval = DateTime.Seconds(110), path = { USSRAircraftOrigin1.Location }},
+	{ types = { "yak", "mig" }, interval = DateTime.Seconds(110), path = { USSRAircraftOrigin1.Location, USSRAircraftOrigin1.Location + CVec.New(-1, 0) }	},
+	{ types = { "yak", "yak", "yak" }, interval = DateTime.Seconds(219),  path = { USSRAircraftOrigin1.Location, USSRAircraftOrigin1.Location + CVec.New(-1, 0) } },
+	{ types = { "yak", "yak", "mig" }, interval = DateTime.Seconds(210), path = { USSRAircraftOrigin1.Location, USSRAircraftOrigin1.Location + CVec.New(-1, 0) } }
+}
 
 LstEnemyTypes = { "3tnk", "3tnk", "v2rl" }
 LstEnemyAmount = 3
@@ -235,14 +255,12 @@ BadGuyBaseBlueprints = {
     { type = "sam", actor = BadGuySam3, cost = 700, shape = { 2, 1 }, location = CPos.New(108, 41) }
 }
 
----@type actor
 USSRRebuildableDog1, USSRRebuildableDog2, USSRRebuildableDog3, USSRRebuildableDog4 = nil, nil, nil, nil
 USSRGuardDog1Data = { actor = USSRRebuildableDog1, exists = true, pos = CPos.New(47, 24) }
 USSRGuardDog2Data = { actor = USSRRebuildableDog2, exists = true, pos = CPos.New(52, 25) }
 USSRGuardDog3Data = { actor = USSRRebuildableDog3, exists = true, pos = CPos.New(48, 35) }
 USSRGuardDog4Data = { actor = USSRRebuildableDog4, exists = true, pos = CPos.New(52, 39) }
 
----@type actor
 BadGuyRebuildableDog1, BadGuyRebuildableDog2, BadGuyRebuildableDog3 = nil, nil, nil
 BadGuyGuardDog1Data = { actor = BadGuyRebuildableDog1, exists = true, pos = CPos.New(96, 45) }
 BadGuyGuardDog2Data = { actor = BadGuyRebuildableDog2, exists = true, pos = CPos.New(106, 47) }
@@ -571,7 +589,7 @@ ProduceAircraft = function()
         return
     end
 
-    USSR.Build(SovietAircraftType, function(units)
+    USSR.Build(AircraftTypes, function(units)
         local plane = units[1]
         PlanesAttackGroup[#PlanesAttackGroup + 1] = plane
 
@@ -588,7 +606,7 @@ end
 
 PlanesAttack = function()
     local entry = Utils.Random({ IronTankEntry.Location, SovWaterEntry.Location, BadgerEntry.Location })
-    local planeType = Utils.Random({SovietAircraftType})
+    local planeType = Utils.Random({AircraftTypes})
 
     for p = 1, #planeType do
         Trigger.AfterDelay(6 * p , function()
@@ -626,6 +644,86 @@ HarassingParadrop = function()
         end
         Trigger.AfterDelay(ParadropIntervals, HarassingParadrop)
     end
+end
+
+
+PrepareAircraftReinforcements = function()
+	local delay = DateTime.Seconds(10)--FirstAirDelays[Difficulty] or FirstAirDelays["normal"]
+
+	Trigger.AfterDelay(delay, function()
+		ScheduleAirWave(1)
+	end)
+end
+
+---@param player player
+HasAirfield = function(player)
+	return player.HasPrerequisites({ "afld" })
+end
+
+---@param wave integer
+ScheduleAirWave = function(wave)
+	local team = SovietAirTeams[wave]
+	if not team then
+		team = SovietAirTeams[#SovietAirTeams]
+		--return
+	end
+	Trigger.AfterDelay(team.interval, function()
+		-- The last team was defeated before its scheduled repeat.
+		if CurrentAirWave > wave then
+			return
+		end
+
+		local units = Reinforcements.Reinforce(team.owner or USSR, team.types, team.path)
+		ScheduleAirWave(wave)
+
+		Utils.Do(units, function(unit)
+			InitializeAttackAircraft(unit, Greece)
+
+			Trigger.OnIdle(unit, function()
+				if unit.AmmoCount() > 0 --[[or HasAirfield(unit.Owner)]] then -- #BasePlanes < TotalAflds
+					--Media.Debug("On Idle - return")
+					table.insert(BasePlanes, unit)
+					return
+				elseif HasAirfield(unit.Owner) and #BasePlanes < TotalAflds then
+					return
+				end
+				OnAircraftStranded(unit, team.path[1])
+
+			end)
+		end)
+
+		Trigger.OnAllRemovedFromWorld(units, function()
+			if AreSovietPlanesActive() then
+				--Media.Debug("Does it enters here?")
+				return
+			end
+
+			--[[
+			if team.onWaveDefeated then
+				team.onWaveDefeated()
+			end
+			]]
+			CurrentAirWave = CurrentAirWave + 1
+			ScheduleAirWave(CurrentAirWave)
+		end)
+	end)
+end
+
+---@param aircraft actor
+---@param exit cpos
+OnAircraftStranded = function(aircraft, exit)
+	local oldOwner = aircraft.Owner
+
+	if oldOwner == aircraft.Owner then
+		aircraft.Stop()
+		aircraft.Move(exit)
+		aircraft.Destroy()
+	end
+end
+
+AreSovietPlanesActive = function()
+	local planes = { "mig", "yak" }
+	return #USSR.GetActorsByTypes(planes) > 0
 end
 
 -----------------------
