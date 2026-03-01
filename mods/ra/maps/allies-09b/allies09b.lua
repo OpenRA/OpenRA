@@ -13,23 +13,17 @@ First of all I tried to stick to the original level spirit more than copying ver
 
 ORIGINAL VS ORA VERSION
 The mission requires that the player infiltrates a structure for a VIP unit to spawn and be moved to the starting location (island).
-The main behavior of the AI is to make it difficult for the VIP to leave the base hence the player needs to at least weaken soviet forces enough
-so the VIP can be extracted.
+The main behavior of the AI is to make it difficult for the VIP to leave the base hence the player needs to at least weaken soviet forces enough so the VIP can be extracted.
 
-First thing that comes to mind, as relevant deviation, is that the player can redeploy his/her mcv. The best location for the player base is 
-still the original spot (way more resources) but IMO there should be a way for the AI to act on the scenario where the player has buildings
-on soviet's mainland.
+First thing that comes to mind, as relevant deviation, is that the player can redeploy his/her mcv. The best location for the player base is still the original spot (way more resources) but IMO there should be a way for the AI to act on the scenario where the player has buildings on soviet's mainland.
 
 BALANCE
-I want to increase soviet attacks, both in size and frequency, but, as mentioned before, I intend to make soviet defensive behaviors more effective.
-I would like to change a few things on allies-9a as well for variability. For example, make soviet allies-9a more aggressive and allies-9b more
-defensive. This is just to give a bit of variety to each scenario.
+I want to increase soviet attacks, both in size and frequency, but, as mentioned before, Soviet defensive behaviors should be more effective.
+I would like to change a few things on allies-9a as well for variability. For example, make soviet allies-9a more aggressive and allies-9b more defensive. This is just to add disctinction to each scenario.
 
-There are some out of map occupied lst attacks (WaterLSTWaves), aircraft attacks (that come from out of the map) and submarine attacks. There needs to be
-a script that allows the soviets send units on LST as well.
+There are some out of map lst attacks (WaterLSTWaves), aircraft attacks (that come from out of the map) and submarine attacks. There needs to be a script that allows the soviets send units on LST as well (producing said units, put them in an lst and send the transport to the player island).
 
-As mentioned before, AI will send attacks occasionally but the bulk of the AI efforts will be in protecting the base and other behaviors that make it hard
-for the VIP unit to leave the base.
+As mentioned before, AI will send attacks occasionally but the bulk of the AI efforts will be in protecting the base and other behaviors that make it hard for the VIP unit to leave the base.
 
 OTHER
 No secondary objective yet.
@@ -199,8 +193,6 @@ SendNavalSupport = function()
 	end)
 end
 
-
-
 CheckLandBuildingsInArea = function(nw, se)
     local buildings = Map.ActorsInBox( nw, se, function(actor)
 		return actor.Owner == Greece and actor.HasProperty("StartBuildingRepairs") and actor.Type ~= "syrd"
@@ -220,14 +212,6 @@ IslandAreaSE = WPos.New( (CPos.New(96, 68)).X * 1024, (CPos.New(96, 68)).Y * 102
 
 InlandAreaNW = WPos.New( (CPos.New(37, 76)).X * 1024, (CPos.New(37, 76)).Y * 1024, 0)
 InlandAreaSE = WPos.New( (CPos.New(88, 100)).X * 1024, (CPos.New(88, 100)).Y * 1024, 0)
-
---Top
--- CPos.New( 27, 20 ) - NW
--- CPos.New( 96, 68 ) - SE
-
---Bottom
--- CPos.New( 37, 76 ) - NW
--- CPos.New( 88, 100 ) - SE
 
 PrepareObjectives = function()
 	InitObjectives(Greece)
@@ -274,6 +258,5 @@ WorldLoaded = function()
 
 	CheckLandBuildingsInArea( IslandAreaNW, IslandAreaSE )
 	CheckLandBuildingsInArea( InlandAreaNW, InlandAreaSE )
-	--Actor182.Guard(GuardPoint2)
-	--Actor182.Guard(Actor174)
+
 end
