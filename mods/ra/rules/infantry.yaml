@@ -731,6 +731,17 @@ THF:
 		Voice: Move
 		Speed: 72
 	-AttackFrontal:
+	IssueOrderToBot@AI: ## capture vehicle
+		OrderName: CaptureActor
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 7
+		ValidTargets: Vehicle
+		InvalidTargets: Air, Water
+		ValidRelationships: Enemy, Neutral
+		TargetDistance: Closest
 
 SHOK:
 	Inherits: ^Soldier
