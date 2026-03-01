@@ -67,6 +67,16 @@ DOG:
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
+	IssueOrderToBot@AI: ## patrol
+		OrderName: AttackMove
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 2500
+		TargetRangeInCell: 50
+		ValidTargets: SpyInfiltrate
+		InvalidTargets: WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Random
 
 E1:
 	Inherits: ^Soldier
