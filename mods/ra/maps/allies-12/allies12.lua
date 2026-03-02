@@ -38,49 +38,84 @@ and most noticeable changes are:
 - Capped the spy money steal amount upon refinery infiltration to 3000.
 - Hard dfficulty involves 2 "iron-curtained" mammoth tanks. Only 1 in both easy and normal difficulties.
 - Both AIs rebuild structures.
+- Added LST vehicle reinforcements to BadGuy to make it a bigger threat that it is in original level.
 
 OTHER
 Secondary objective is to protect captured Soviet Tech Centers. Added occasional paratrooper attacks as a way to threat 
 secondary objective failure. With the "expanded" logic for civilians I'm thinking about adding a 
 ]]
 
-STeksToCapture = { USSRStek, BadGuyStek }
-STeksCaptured = 0
-STekLost = false
+if Difficulty == "easy" then
+    local StartingCash = 7000
 
-InitialUnitsArrived = false
-TimerColor = HSLColor.OrangeRed
-TimerTicks = -1
+    local IronTanks = {"4tnk"}
+    local TimeBeforeIronTanks = DateTime.Minutes(4)
+    local IronTanksCooldown = DateTime.Minutes(5)
 
-LstReinforcements =
+    local NuclearAtk = false
+
+elseif Difficulty == "normal" then
+    local StartingCash = 6000
+
+    local IronTanks = {"4tnk"}
+    local TimeBeforeIronTanks = DateTime.Minutes(4)
+    local IronTanksCooldown = DateTime.Minutes(5)
+
+    local NuclearAtk = true
+    local NuclearWaitTime = DateTime.Minutes(40)
+    local NuclearCountdown = DateTime.Minutes(20)
+
+elseif Difficulty == "hard" then
+    local StartingCash = 5000
+
+    local IronTanks = {"4tnk", "4tnk"}
+    local TimeBeforeIronTanks = DateTime.Minutes(4)
+    local IronTanksCooldown = DateTime.Minutes(5)
+
+    local NuclearAtk = true
+    local NuclearWaitTime = DateTime.Minutes(30)
+    local NuclearCountdown = DateTime.Minutes(20)
+
+end
+
+local STeksToCapture = { USSRStek, BadGuyStek }
+local STeksCaptured = 0
+local STekLost = false
+
+local InitialUnitsArrived = false
+
+local TimerColor = HSLColor.OrangeRed
+local TimerTicks = -1
+
+local LstReinforcements =
 {
 	actors =  { { "mcv", "e1", "e1", "e3", "e3" }, { "jeep", "2tnk", "2tnk", "spy" }, { "arty", "1tnk", "1tnk" } },
 	entryPath = { { LstMiddleEntry.Location, LstMiddleDst.Location }, { LstLeftEntry.Location, LstLeftDst.Location }, {LstRightEntry.Location, LstRightDst.Location} },
 	exitPath = { { LstMiddleEntry.Location },{ LstLeftEntry.Location },  { LstRightEntry.Location } }
 }
 
-BadGuyPowerLine = { BadGuyPower1, BadGuyPower2, BadGuyPower3, BadGuyPower4, BadGuyPower5, BadGuyPower6 }
+local BadGuyPowerLine = { BadGuyPower1, BadGuyPower2, BadGuyPower3, BadGuyPower4, BadGuyPower5, BadGuyPower6 }
 
-Villagers =
+local Villagers =
 {
     { Civ1, Civ2, Civ3, Civ4, Civ5, Civ6 }, --right side
     { Civ7, Civ8, Civ9, Civ10, Civ11, Civ12 }, -- mid
     { Civ13, Civ14, Civ15 } -- left side
 }
 
-VillageHouses = --This may be removed
+local VillageHouses = --This may be removed
 {
     { CivBuild1, CivBuild2, CivBuild3, CivBuild4, CivBuild5, CivBuild6 }, --right side
     { CivBuild7, CivBuild8, CivBuild9, CivBuild10 }, -- mid
     { CivBuild11, CivBuild12, CivBuild13 } -- left side
-} 
+}
 
-AggressiveVillagers = { Civ1, Civ3, Civ4, Civ11, Civ12 }
+local AggressiveVillagers = { Civ1, Civ3, Civ4, Civ11, Civ12 }
 
-VillagerAlert = 0
-VillageGuardTypes = { "e2", "e2", "e2", "e4", "e4" }
+local VillagerAlert = 0
+local VillageGuardTypes = { "e2", "e2", "e2", "e4", "e4" }
 
-IntroSequence = function()
+local function IntroSequence()
     local startingCam =  Actor.Create("Camera", true, { Owner = Greece, Location = LstMiddleDst.Location } )
 
     EnglishCruiser.Move(cruiserDeletion.Location)
@@ -100,7 +135,19 @@ IntroSequence = function()
     end)
 end
 
-HostileVillager = function(spawnLoc, targetLoc)
+local function SendAlertedParatroopers()
+    local angles = { Angle.New( -60 ), Angle.New( 60 ) }
+
+    Utils.Do(angles, function(angle)
+        SendParadrop(PlayerBaseTarget.CenterPosition, Angle.South, angle)
+    end)
+end
+
+-----------------------
+--  Civilian Start  --
+-----------------------
+
+local function HostileVillager(spawnLoc, targetLoc)
     local activeFlare = false
     local civ = Reinforcements.Reinforce(USSR, {"c1"}, { spawnLoc.Location, spawnLoc.Location + CVec.New(-1, 1) })[1]
 
@@ -136,15 +183,8 @@ HostileVillager = function(spawnLoc, targetLoc)
     end)
 end
 
-SendAlertedParatroopers = function()
-    local angles = { Angle.New( -60 ), Angle.New( 60 ) }
-
-    Utils.Do(angles, function(angle)
-        SendParadrop(PlayerBaseTarget.CenterPosition, Angle.South, angle)
-    end)
-end
-
-ProtectedVillage = function()
+--[[
+local function ProtectedVillage()
     Utils.Do(Villagers, function(a)
         Trigger.OnDamaged(a, function(actor, attacker)
             if attacker.Owner == Greece and not VillagerAlert then
@@ -155,7 +195,7 @@ ProtectedVillage = function()
     end)
 end
 
-VillagerCallsForHelp = function()
+local function VillagerCallsForHelp()
     local alertingCiv = Utils.Random( {Civ1, Civ2, Civ4, Civ6} )
     local alert = USSRLeftAtkPath3
 
@@ -164,21 +204,88 @@ VillagerCallsForHelp = function()
 
         end)
     end)
-    Trigger.OnDamaged( function()
-
-    end)
 
     alertingCiv.Move(rescue.Location)
 end
 
-SpawnVillageGuards = function()
+local function SpawnVillageGuards()
     if not CivBuild13.IsDead then
         local guards = Reinforcements.Reinforce(USSR, VillageGuardTypes, { CivBuilding2.Location, CivBuilding2.Location + CVec.New(-1, -2) })
     end
 
 end
+]]
 
-FinishTimer = function()
+-----------------------
+--  Civilian End     --
+-----------------------
+
+-----------------------
+--  Iron Tanks Start --
+-----------------------
+
+local function TaggedChangeTarget()
+    local units = Map.ActorsWithTag("iron")
+    if #units > 0 then
+        Utils.Do(units, function(u)
+            u.Stop()
+        end)
+        Trigger.AfterDelay(DateTime.Seconds(5), function()
+            TaggedChangeTarget()
+        end)
+    else
+        return
+    end
+end
+
+---@param actor actor
+local function IronCurtaining(actor)
+    if IronSwitch > 0 then
+        if not actor.IsDead and not USSRIron.IsDead and USSR.PowerState == "Normal" then
+            actor.GrantCondition("invulnerability", DateTime.Seconds(25))
+        end
+        IronSwitch = IronSwitch - 1
+    end
+end
+
+local function SendIronCurtainAtk()
+    local iron_tanks = Reinforcements.Reinforce(USSR, IronTanks, { IronTankEntry.Location, IronTankDst.Location })
+     Utils.Do(iron_tanks, function(u)
+        u.AddTag("iron")
+    end)
+
+    Trigger.AfterDelay(DateTime.Seconds(20), function()
+        Utils.Do(iron_tanks, function(t)
+            IronSwitch = IronSwitch + 1
+            if not t.IsDead then
+                IdleHunt(t)
+                Trigger.OnDamaged(t, function()
+                    if t.Health <= t.MaxHealth/2  then
+                        IronCurtaining(t)
+                        Trigger.ClearAll(t)
+                    end
+                end)
+            end
+        end)
+        TaggedChangeTarget()
+    end)
+
+    Trigger.AfterDelay(IronTanksCooldown, function()
+        if not USSRIron.IsDead then
+            SendIronCurtainAtk()
+        end
+    end)
+end
+
+-----------------------
+--  Iron Tanks End   --
+-----------------------
+
+-----------------------
+--  Nuke Timer Start --
+-----------------------
+
+local FinishTimer = function()
    	DateTime.TimeLimit = 0
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -196,16 +303,85 @@ FinishTimer = function()
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
 
-ToBeRemoved = function()
-    local toBeRemoved = Utils.Where(Neutral.GetActors(), function(a) return a.Type == "hpad" or a.Type == "hind" end)
+-- Not an actual pause
+local PauseNuclearLaunchTimer = function()
+    if USSRMslo.IsDead then
+        return
+    end
 
-    Utils.Do(toBeRemoved, function(a)
-        a.Destroy()
+    if USSR.PowerState ~= "Normal" then
+        Media.Debug(tostring(DateTime.TimeLimit) .. " "  .. tostring(DateTime.Seconds(1)))
+        --DateTime.TimeLimit = DateTime.TimeLimit + DateTime.Seconds(1)
+        --DateTime.TimeLimit = DateTime.TimeLimit - DateTime.Seconds(1)
+
+
+    end
+    Trigger.AfterDelay(DateTime.Seconds(1), PauseNuclearLaunchTimer)
+end
+
+-----------------------
+--  Nuke Timer End   --
+-----------------------
+
+-----------------------
+--  Nuclear Start    --
+-----------------------
+
+---@param loc cpos
+local function NuclearLaunch(loc)
+    if not USSRMslo.IsDead then
+        Media.PlaySpeechNotification(Greece, "AbombLaunchDetected")
+        USSRMslo.ActivateNukePower(loc)
+    end
+end
+
+local function FindNuclearTarget()
+if USSRMslo.IsDead then
+        return
+    end
+    local launched = false
+    local targetTypes = { "atek", "fact", "weap" }
+    Utils.Do(targetTypes, function(tt)
+        if launched then
+            return
+        end
+        local targets = Greece.GetActorsByType(tt)
+        if #targets > 0 then
+            launched = true
+            NuclearLaunch(Utils.Random(targets).Location)
+        end
+    end)
+    if not launched then
+        Trigger.AfterDelay(DateTime.Seconds(10), FindNuclearTarget)
+    end
+end
+
+local function PrepareNuclearLaunch()
+    if not USSRMslo.IsDead then
+        DateTime.TimeLimit = TimerTicks
+		Media.PlaySpeechNotification(Greece, "TimerStarted")
+        Media.DisplayMessage(UserInterface.GetFluentMessage("nuke-ready-in", { ["time"] = Utils.FormatTime(TimerTicks) }))
+        --PauseNuclearLaunchTimer()
+    else
+        return
+    end
+
+    Trigger.OnKilled(USSRMslo, function()
+        FinishTimer()
+    end)
+
+    Trigger.OnTimerExpired(function()
+        FinishTimer()
+        FindNuclearTarget()
     end)
 end
 
-InitTriggers = function()
-    Greece.Cash = StartingCash
+-----------------------
+--  Nuclear End      --
+-----------------------
+
+local function InitTriggers()
+    --Greece.Cash = StartingCash
 
     IntroSequence()
 
@@ -217,15 +393,13 @@ InitTriggers = function()
 
     Trigger.OnCapture(BadGuyStek, function()
         Trigger.AfterDelay(DateTime.Seconds(5), function()
-            HarassingParadrop()
+            --HarassingParadrop()
         end)
     end)
 
-    TimerTicks = nuclearCountdown
-
 end
 
-PrepareObjectives = function()
+local function PrepareObjectives()
 	InitObjectives(Greece)
 
     DenyAllies = AddPrimaryObjective(USSR, "")
@@ -301,11 +475,8 @@ WorldLoaded = function()
 	England = Player.GetPlayer("England")
 	Neutral = Player.GetPlayer("Neutral")
 
-    SetDifficulty()
     InitTriggers()
     PrepareObjectives() --Replaces "InitObjectives()"
-    
-    ToBeRemoved() --Debug function. Remove later
 
     Trigger.AfterDelay(DateTime.Seconds(30), function()
         SetupAIActivities()

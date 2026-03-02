@@ -1334,44 +1334,6 @@ Actors:
 	BadGuyStek: stek
 		Owner: BadGuy
 		Location: 107,42
-	USSRGuardingHind2: hind
-		Location: 64,20
-		Faction: soviet
-		Facing: 384
-		Owner: Neutral
-	USSRGuardingHind1: hind
-		Location: 61,20
-		Faction: soviet
-		Facing: 384
-		Owner: Neutral
-	USSRHpad1: hpad
-		Location: 61,20
-		Faction: soviet
-		Owner: Neutral
-	BadGuyGuardingHind2: hind
-		Location: 110,43
-		Stance: HoldFire
-		Faction: soviet
-		Facing: 384
-		Owner: Neutral
-	BadGuyHpad2: hpad
-		Location: 110,43
-		Faction: soviet
-		Owner: Neutral
-	BadGuyGuardingHind1: hind
-		Location: 103,43
-		Stance: HoldFire
-		Faction: soviet
-		Facing: 384
-		Owner: Neutral
-	BadGuyHpad1: hpad
-		Location: 103,43
-		Faction: soviet
-		Owner: Neutral
-	USSRHpad2: hpad
-		Faction: soviet
-		Owner: Neutral
-		Location: 64,20
 	PrerequisiteGiverBadGuy: ftur
 		Owner: BadGuy
 		Location: 122,2
@@ -1523,6 +1485,12 @@ Actors:
 		Location: 32,45
 		Owner: USSR
 		Facing: 896
+	USSRAircraftOrigin1: waypoint
+		Owner: Neutral
+		Location: 77,18
+	USSRAircraftOrigin2: waypoint
+		Owner: Neutral
+		Location: 31,18
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
