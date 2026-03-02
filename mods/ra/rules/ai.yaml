@@ -342,6 +342,7 @@ Player:
 		AircraftTargetType: AirborneActor
 		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
 		IgnoredEnemyTargetTypes: AirborneActor
+		DangerScanRadius: 18
 	McvManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		McvTypes: mcv
@@ -408,6 +409,7 @@ Player:
 		IgnoredEnemyTargetTypes: AirborneActor
 		ProtectUnitScanRadius: 15
 		ProtectionScanRadius: 12
+		DangerScanRadius: 18
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		UnitsToBuild:
@@ -459,6 +461,7 @@ Player:
 		MinimumAttackForceDelay: 100000
 		ProtectUnitScanRadius: 30
 		ProtectionScanRadius: 15
+		DangerScanRadius: 18
 	UnitBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		UnitsToBuild:
