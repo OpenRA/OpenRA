@@ -3,7 +3,7 @@ Background@GEO_MAP_GENERATOR_BG:
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 500
-	Height: 480
+	Height: 330
 	Children:
 		Label@TITLE:
 			X: 0
@@ -95,13 +95,6 @@ Background@GEO_MAP_GENERATOR_BG:
 			Y: 235
 			Width: PARENT_WIDTH - 40
 			Height: 20
-		Label@STATS_LABEL:
-			X: 20
-			Y: 270
-			Width: PARENT_WIDTH - 40
-			Height: 150
-			Font: Regular
-			Align: Left
 		Button@GENERATE_BUTTON:
 			X: 30
 			Y: PARENT_HEIGHT - 50

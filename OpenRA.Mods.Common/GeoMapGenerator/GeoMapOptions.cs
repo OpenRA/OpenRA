@@ -19,10 +19,10 @@ namespace OpenRA.Mods.Common.GeoMapGenerator
 		/// <summary>MGRS coordinate string (e.g., "18STJ8690017000").</summary>
 		public string MgrsCoordinate { get; set; } = "";
 
-		/// <summary>Map size in cells per side (128, 256, 512).</summary>
-		public int Cells { get; set; } = 128;
+		/// <summary>Map size in cells per side. Fixed at 512.</summary>
+		public int Cells { get; set; } = 512;
 
-		/// <summary>Meters per cell (4.0, 8.0, 16.0).</summary>
+		/// <summary>Meters per cell. Fixed at 8.0 (~4km x 4km coverage).</summary>
 		public double MetersPerCell { get; set; } = 8.0;
 
 		/// <summary>Tileset identifier (e.g., "TEMPERAT").</summary>

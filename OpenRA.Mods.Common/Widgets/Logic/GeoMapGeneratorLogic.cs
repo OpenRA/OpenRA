@@ -76,9 +76,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			progressBar.GetPercentage = () => progressValue;
 
-			var statsLabel = panel.Get<LabelWidget>("STATS_LABEL");
-			statsLabel.GetText = () => "";
-
 			// Generate button
 			var generateButton = panel.Get<ButtonWidget>("GENERATE_BUTTON");
 			generateButton.IsDisabled = () => generating;
@@ -122,6 +119,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
 			{
 				cts?.Cancel();
+				cts?.Dispose();
+				cts = null;
 				Ui.CloseWindow();
 				onExit?.Invoke();
 			};
@@ -133,6 +132,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			generating = true;
 			generatedMap = null;
+			cts?.Dispose();
 			cts = new CancellationTokenSource();
 			var token = cts.Token;
 
