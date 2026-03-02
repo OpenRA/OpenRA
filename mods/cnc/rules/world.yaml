@@ -265,6 +265,7 @@ World:
 	ObjectivesPanel:
 		PanelName: SKIRMISH_STATS
 	RadarPings:
+	SpectatorEffects:
 	StartGameNotification:
 		Notification:
 		LoadedNotification:

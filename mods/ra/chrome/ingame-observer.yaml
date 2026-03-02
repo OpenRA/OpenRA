@@ -33,9 +33,9 @@ Container@OBSERVER_WIDGETS:
 			Children:
 				Background@GAME_TIMER_BLOCK:
 					Logic: GameTimerLogic
-					X: 26
+					X: 21
 					Y: 10
-					Width: 120
+					Width: 100
 					Height: 22
 					Background: sidebar-button-observer
 					Children:
@@ -53,6 +53,36 @@ Container@OBSERVER_WIDGETS:
 					Y: 7
 					Children:
 						LogicKeyListener@OBSERVER_KEY_LISTENER:
+						Button@BEACON_BUTTON:
+							Logic: BeaconOrderButtonLogic
+							X: 124
+							Width: 28
+							Height: 28
+							Background: sidebar-button-observer
+							Key: PlaceBeacon
+							TooltipText: button-top-buttons-beacon-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
+						Button@WAYPOINT_BUTTON:
+							Logic: SpectatorWaypointOrderButtonLogic
+							X: 158
+							Width: 28
+							Height: 28
+							Background: sidebar-button-observer
+							Key: DrawSpectatorWaypoint
+							TooltipText: button-top-buttons-spectator-waypoint-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+							VisualHeight: 0
+							Children:
+								Image@ICON:
+									X: 6
+									Y: 6
+									ImageCollection: order-icons
 						MenuButton@OPTIONS_BUTTON:
 							Key: escape
 							X: 192

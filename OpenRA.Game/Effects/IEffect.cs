@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Primitives;
 
 namespace OpenRA.Effects
 {
@@ -25,4 +26,10 @@ namespace OpenRA.Effects
 
 	public interface IEffectAboveShroud { IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr); }
 	public interface IEffectAnnotation { IEnumerable<IRenderable> RenderAnnotation(WorldRenderer wr); }
+
+	// Effect that can provide a tooltip when the cursor is near it.
+	public interface IEffectWithTooltip { bool IsNearCursor(WPos cursorWorldPos); string GetTooltip(); }
+
+	// Effect that contributes line segments to the radar/minimap overlay.
+	public interface IRadarEffect { IEnumerable<(WPos From, WPos To, Color Color)> RadarLineSegments { get; } }
 }

@@ -574,6 +574,9 @@ order-icons:
 		beacon: 921, 68, 16, 16
 		beacon-disabled: 921, 85, 16, 16
 		beacon-active: 921, 102, 16, 16
+		waypoint: 921, 68, 16, 16
+		waypoint-disabled: 921, 85, 16, 16
+		waypoint-active: 921, 102, 16, 16
 		stats: 972, 68, 16, 16
 		stats-disabled: 972, 85, 16, 16
 		stats-active: 972, 102, 16, 16

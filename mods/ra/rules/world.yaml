@@ -270,6 +270,7 @@ World:
 	ValidateOrder:
 	DebugPauseState:
 	RadarPings:
+	SpectatorEffects:
 	StartGameNotification:
 		SavedTextNotification: notification-game-saved
 	ObjectivesPanel:

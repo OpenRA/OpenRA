@@ -239,6 +239,7 @@ World:
 	ValidateOrder:
 	DebugPauseState:
 	RadarPings:
+	SpectatorEffects:
 	ObjectivesPanel:
 		ExitDelay: 0
 		PanelName: SKIRMISH_STATS

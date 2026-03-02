@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -384,6 +385,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
+				DrawRadarEffects();
 				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
 				Game.Renderer.DisableScissor();
 			}
@@ -400,6 +402,22 @@ namespace OpenRA.Mods.Common.Widgets
 				var pingCell = world.Map.CellContaining(radarPing.Position);
 				var points = radarPing.Points(CellToMinimapPixel(pingCell)).ToArray();
 				Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 2, c);
+			}
+		}
+
+		void DrawRadarEffects()
+		{
+			foreach (var effect in world.UnpartitionedEffects)
+			{
+				if (effect is not IRadarEffect re)
+					continue;
+
+				foreach (var (from, to, color) in re.RadarLineSegments)
+				{
+					var a = CellToMinimapPixel(world.Map.CellContaining(from));
+					var b = CellToMinimapPixel(world.Map.CellContaining(to));
+					Game.Renderer.RgbaColorRenderer.DrawLine(new float3(a.X, a.Y, 0), new float3(b.X, b.Y, 0), 1, color);
+				}
 			}
 		}
 

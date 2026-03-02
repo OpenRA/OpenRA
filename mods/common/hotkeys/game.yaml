@@ -46,7 +46,12 @@ Repair: C
 PlaceBeacon: B
 	Description: hotkey-description-placebeacon
 	Types: OrderGenerator
-	Contexts: player
+	Contexts: player, spectator
+
+DrawSpectatorWaypoint: V
+	Description: hotkey-description-drawspectatorwaypoint
+	Types: Observer
+	Contexts: spectator
 
 CycleStatusBars: COMMA
 	Description: hotkey-description-cyclestatusbars

@@ -52,4 +52,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[method: ObjectCreator.UseCtor]
 	public class BeaconOrderButtonLogic(Widget widget, World world)
 		: ChromeOrderButtonLogic<BeaconOrderGenerator>(widget, world, "beacon");
+
+	public class SpectatorWaypointOrderButtonLogic : ChromeLogic
+	{
+		[ObjectCreator.UseCtor]
+		public SpectatorWaypointOrderButtonLogic(Widget widget, World world)
+		{
+			if (widget is not ButtonWidget button)
+				return;
+
+			button.OnClick = () =>
+			{
+				if (world.OrderGenerator is SpectatorWaypointOrderGenerator)
+					world.CancelInputMode();
+				else
+					world.OrderGenerator = new SpectatorWaypointOrderGenerator(world);
+			};
+
+			button.IsHighlighted = () => world.OrderGenerator is SpectatorWaypointOrderGenerator;
+
+			var icon = button.GetOrNull<ImageWidget>("ICON");
+			if (icon != null)
+				icon.GetImageName = () => world.OrderGenerator is SpectatorWaypointOrderGenerator ? "waypoint-active" : "waypoint";
+		}
+	}
 }

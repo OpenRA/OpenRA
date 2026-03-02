@@ -44,6 +44,7 @@ button-command-bar-deploy =
 
 
 button-top-buttons-beacon-tooltip = Place Beacon
+button-top-buttons-spectator-waypoint-tooltip = Draw Waypoint Path
 button-top-buttons-sell-tooltip = Sell
 button-top-buttons-power-tooltip = Power Down
 button-top-buttons-repair-tooltip = Repair

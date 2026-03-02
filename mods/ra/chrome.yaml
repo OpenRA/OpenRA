@@ -179,6 +179,9 @@ order-icons:
 		beacon: 153, 68, 16, 16
 		beacon-disabled: 153, 85, 16, 16
 		beacon-active: 153, 102, 16, 16
+		waypoint: 153, 68, 16, 16
+		waypoint-disabled: 153, 85, 16, 16
+		waypoint-active: 153, 102, 16, 16
 		power: 170, 68, 16, 16
 		power-disabled: 170, 85, 16, 16
 		power-active: 170, 102, 16, 16

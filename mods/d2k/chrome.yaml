@@ -129,6 +129,9 @@ order-icons:
 		beacon: 359, 357, 36, 35
 		beacon-disabled: 359, 393, 36, 35
 		beacon-active: 359, 430, 36, 35
+		waypoint: 359, 357, 36, 35
+		waypoint-disabled: 359, 393, 36, 35
+		waypoint-active: 359, 430, 36, 35
 		power: 398, 357, 34, 35
 		power-disabled: 398, 393, 36, 35
 		power-active: 398, 430, 36, 35

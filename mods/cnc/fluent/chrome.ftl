@@ -365,6 +365,7 @@ label-mute-indicator = Audio Muted
 button-top-buttons-sell-tooltip = Sell
 button-top-buttons-repair-tooltip = Repair
 button-top-buttons-beacon-tooltip = Place Beacon
+button-top-buttons-spectator-waypoint-tooltip = Draw Waypoint Path
 button-top-buttons-options-tooltip = Options
 button-production-types-building-tooltip = Buildings
 button-production-types-support-tooltip = Support

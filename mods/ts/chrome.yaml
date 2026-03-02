@@ -168,6 +168,9 @@ order-icons-gdi:
 		beacon: 265, 243, 30, 31
 		beacon-disabled: 295, 243, 30, 31
 		beacon-active: 265, 243, 30, 31
+		waypoint: 265, 243, 30, 31
+		waypoint-disabled: 295, 243, 30, 31
+		waypoint-active: 265, 243, 30, 31
 		power: 265, 274, 30, 31
 		power-disabled: 295, 274, 30, 31
 		power-active: 265, 274, 30, 31
@@ -368,6 +371,9 @@ order-icons-nod:
 		beacon: 777, 243, 30, 31
 		beacon-disabled: 807, 243, 30, 31
 		beacon-active: 777, 243, 30, 31
+		waypoint: 777, 243, 30, 31
+		waypoint-disabled: 807, 243, 30, 31
+		waypoint-active: 777, 243, 30, 31
 		power: 777, 274, 30, 31
 		power-disabled: 807, 274, 30, 31
 		power-active: 777, 274, 30, 31

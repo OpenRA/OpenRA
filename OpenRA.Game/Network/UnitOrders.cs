@@ -12,6 +12,7 @@
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Primitives;
 using OpenRA.Server;
 using OpenRA.Traits;
 
@@ -394,6 +395,41 @@ namespace OpenRA.Network
 						preview.UpdateFromGenerationArgs(args);
 						preview.Generate();
 					}
+
+					break;
+				}
+
+				case "SpectatorBeacon":
+				{
+					if (world == null)
+						break;
+
+					var beaconParts = order.TargetString.Split('|');
+					var position = FieldLoader.GetValue<WPos>("SpectatorBeacon", beaconParts[0]);
+					var beaconColor = beaconParts.Length > 1 && Color.TryParse(beaconParts[1], out var parsedBeaconColor)
+						? parsedBeaconColor : Color.White;
+					var spectatorBeaconName = orderManager.LobbyInfo.ClientWithIndex(clientId)?.Name ?? "";
+					foreach (var t in world.WorldActor.TraitsImplementing<INotifySpectatorBeacon>())
+						t.SpectatorBeaconPlaced(world, position, beaconColor, spectatorBeaconName);
+
+					break;
+				}
+
+				case "SpectatorWaypoint":
+				{
+					if (world == null)
+						break;
+
+					var waypointParts = order.TargetString.Split('|');
+					var waypointColor = Color.TryParse(waypointParts[0], out var parsedWaypointColor)
+						? parsedWaypointColor : Color.White;
+					var points = waypointParts.Skip(1)
+						.Select(s => FieldLoader.GetValue<WPos>("SpectatorWaypoint", s))
+						.ToArray();
+
+					var spectatorName = orderManager.LobbyInfo.ClientWithIndex(clientId)?.Name ?? "";
+					foreach (var t in world.WorldActor.TraitsImplementing<INotifySpectatorWaypoint>())
+						t.SpectatorWaypointDrawn(world, points, waypointColor, spectatorName);
 
 					break;
 				}

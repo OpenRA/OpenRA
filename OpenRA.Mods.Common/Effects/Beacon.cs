@@ -17,9 +17,12 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud
+	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud, IEffectWithTooltip
 	{
 		const int MaxArrowHeight = 512;
+
+		// Tolerance squared in world units (~half a cell radius) for cursor proximity detection.
+		const long HoverToleranceSq = 512L * 512;
 
 		readonly Player owner;
 		readonly WPos position;
@@ -27,6 +30,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly string beaconPalette, posterPalette;
 		readonly Animation arrow, beacon, circles, clock, poster;
 		readonly int duration;
+		readonly string spectatorName;
 
 		int delay;
 		int arrowHeight = MaxArrowHeight;
@@ -35,10 +39,11 @@ namespace OpenRA.Mods.Common.Effects
 
 		// Player-placed beacons are removed after a delay
 		public Beacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette,
-			string beaconCollection, string beaconSequence, string arrowSprite, string circleSprite, int delay = 0)
+			string beaconCollection, string beaconSequence, string arrowSprite, string circleSprite, int delay = 0, string spectatorName = null)
 		{
 			this.owner = owner;
 			this.position = position;
+			this.spectatorName = spectatorName;
 			this.beaconPalette = beaconPalette;
 			this.isPlayerPalette = isPlayerPalette;
 			this.duration = duration;
@@ -112,7 +117,13 @@ namespace OpenRA.Mods.Common.Effects
 			if (delay > 0)
 				yield break;
 
-			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
+			if (owner.Spectating)
+			{
+				// Spectator beacons are only visible in spectator views (all-players or unrestricted view).
+				if (owner.World.RenderPlayer != null && !owner.World.RenderPlayer.Spectating)
+					yield break;
+			}
+			else if (!owner.IsAlliedWith(owner.World.RenderPlayer))
 				yield break;
 
 			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
@@ -139,5 +150,17 @@ namespace OpenRA.Mods.Common.Effects
 						yield return a;
 			}
 		}
+
+		bool IEffectWithTooltip.IsNearCursor(WPos cursorWorldPos)
+		{
+			if (!owner.Spectating || string.IsNullOrEmpty(spectatorName))
+				return false;
+
+			var dx = (long)cursorWorldPos.X - position.X;
+			var dy = (long)cursorWorldPos.Y - position.Y;
+			return dx * dx + dy * dy <= HoverToleranceSq;
+		}
+
+		string IEffectWithTooltip.GetTooltip() => spectatorName;
 	}
 }

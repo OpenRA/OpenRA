@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
@@ -21,7 +22,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor, Resource }
+	public enum WorldTooltipType { None, Unexplored, Actor, FrozenActor, Resource, Effect }
 
 	public class ViewportControllerWidget : Widget
 	{
@@ -54,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public string ResourceTooltip { get; private set; }
+		public string EffectTooltip { get; private set; }
 
 		static readonly ImmutableArray<(ScrollDirection Direction, string Cursor)> ScrollCursors =
 		[
@@ -279,6 +281,24 @@ namespace OpenRA.Mods.Common.Widgets
 					TooltipType = WorldTooltipType.Resource;
 					ResourceTooltip = resourceTooltip;
 					break;
+				}
+			}
+
+			if (TooltipType != WorldTooltipType.None)
+				return;
+
+			var cursorWorldPos = worldRenderer.ProjectedPosition(worldPixel);
+			foreach (var effect in world.UnpartitionedEffects)
+			{
+				if (effect is IEffectWithTooltip ewt && ewt.IsNearCursor(cursorWorldPos))
+				{
+					var tooltip = ewt.GetTooltip();
+					if (!string.IsNullOrEmpty(tooltip))
+					{
+						TooltipType = WorldTooltipType.Effect;
+						EffectTooltip = tooltip;
+						break;
+					}
 				}
 			}
 		}

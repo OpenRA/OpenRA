@@ -64,6 +64,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					case WorldTooltipType.Resource:
 						labelText = viewport.ResourceTooltip;
 						break;
+					case WorldTooltipType.Effect:
+						labelText = viewport.EffectTooltip;
+						break;
 					case WorldTooltipType.Actor:
 					{
 						o = viewport.ActorTooltip.Owner;

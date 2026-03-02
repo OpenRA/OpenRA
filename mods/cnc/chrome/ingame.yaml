@@ -138,6 +138,36 @@ Container@OBSERVER_WIDGETS:
 					Text: label-mute-indicator
 					Contrast: true
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
+		Button@WAYPOINT_BUTTON:
+			Logic: SpectatorWaypointOrderButtonLogic
+			X: WINDOW_WIDTH - 330 - WIDTH
+			Y: 5
+			Width: 30
+			Height: 25
+			Key: DrawSpectatorWaypoint
+			TooltipText: button-top-buttons-spectator-waypoint-tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
+			VisualHeight: 0
+			Children:
+				Image@ICON:
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
+		Button@BEACON_BUTTON:
+			Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
+			X: WINDOW_WIDTH - 295 - WIDTH
+			Y: 5
+			Width: 30
+			Height: 25
+			Key: PlaceBeacon
+			TooltipText: button-top-buttons-beacon-tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
+			VisualHeight: 0
+			Children:
+				Image@ICON:
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
 			X: WINDOW_WIDTH - 260 - WIDTH

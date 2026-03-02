@@ -93,6 +93,7 @@ hotkey-description-pause = Pause / Unpause
 hotkey-description-sell = Sell mode
 hotkey-description-repair = Repair mode
 hotkey-description-placebeacon = Place beacon
+hotkey-description-drawspectatorwaypoint = Draw waypoint path
 hotkey-description-cyclestatusbars = Cycle status bars display
 hotkey-description-togglemute = Toggle audio mute
 hotkey-description-toggleplayerstancecolor = Toggle relationship colors
