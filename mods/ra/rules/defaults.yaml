@@ -880,6 +880,11 @@
 	-MustBeDestroyed:
 	MapEditorData:
 		Categories: Fake
+	IssueOrderToBot@AI: ## sell to put at frontline
+		OrderName: Sell
+		OrderTrigger: Periodically
+		OrderChance: 60
+		OrderInterval: 7000
 
 ^InfiltratableFake:
 	Targetable:

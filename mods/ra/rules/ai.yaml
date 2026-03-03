@@ -425,7 +425,7 @@ Player:
 		ProductionTypes: barr,tent,weap
 		NewProductionCashThreshold: 7000
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			barr: 7
 			tent: 7
@@ -462,6 +462,18 @@ Player:
 			mslo: 1
 			iron: 1
 			pdox: 1
+			fpwr: 1
+			tenf: 1
+			syrf: 1
+			spef: 1
+			weaf: 1
+			domf: 1
+			fixf: 1
+			fapw: 1
+			atef: 1
+			pdof: 1
+			mslf: 1
+			facf: 1
 		BuildingDelays:
 			dome: 7000
 			fix: 3000
@@ -472,6 +484,18 @@ Player:
 			kenn: 9000
 			atek: 11000
 			stek: 11000
+			fpwr: 6000
+			tenf: 7000
+			syrf: 8000
+			spef: 9000
+			weaf: 9000
+			domf: 10000
+			fixf: 10000
+			fapw: 10000
+			atef: 14000
+			pdof: 14000
+			mslf: 14000
+			facf: 6000
 	BaseBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		MinimumExcessPower: 0
@@ -489,7 +513,7 @@ Player:
 		NewProductionCashThreshold: 8000
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			barr: 7
 			tent: 7
@@ -529,6 +553,18 @@ Player:
 			mslo: 1
 			iron: 1
 			pdox: 1
+			fpwr: 1
+			tenf: 1
+			syrf: 1
+			spef: 1
+			weaf: 1
+			domf: 1
+			fixf: 1
+			fapw: 1
+			atef: 1
+			pdof: 1
+			mslf: 1
+			facf: 1
 		BuildingDelays:
 			dome: 6000
 			fix: 3000
@@ -541,6 +577,18 @@ Player:
 			syrd: 6000
 			atek: 9000
 			stek: 9000
+			fpwr: 6000
+			tenf: 7000
+			syrf: 8000
+			spef: 9000
+			weaf: 9000
+			domf: 10000
+			fixf: 10000
+			fapw: 10000
+			atef: 14000
+			pdof: 14000
+			mslf: 14000
+			facf: 6000
 	BaseBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		MinimumExcessPower: 20
@@ -555,7 +603,7 @@ Player:
 		ProductionTypes: barr,tent,weap
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			barr: 1
 			tent: 1
@@ -596,11 +644,35 @@ Player:
 			mslo: 1
 			iron: 1
 			pdox: 1
+			fpwr: 1
+			tenf: 1
+			syrf: 1
+			spef: 1
+			weaf: 1
+			domf: 1
+			fixf: 1
+			fapw: 1
+			atef: 1
+			pdof: 1
+			mslf: 1
+			facf: 1
 		BuildingDelays:
 			dome: 5000
 			atek: 7000
 			stek: 7000
 			kenn: 8000
+			fpwr: 6000
+			tenf: 7000
+			syrf: 8000
+			spef: 9000
+			weaf: 9000
+			domf: 10000
+			fixf: 10000
+			fapw: 10000
+			atef: 14000
+			pdof: 14000
+			mslf: 14000
+			facf: 6000
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		MinimumExcessPower: 0
@@ -616,7 +688,7 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			proc: 3
 			dome: 1
@@ -671,7 +743,7 @@ Player:
 		ConstructionYardTypes: fact
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 		DangerScanRadius: 18
 	McvManagerBotModule@naval:
@@ -752,7 +824,7 @@ Player:
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 		ProtectUnitScanRadius: 15
 		ProtectionScanRadius: 12
@@ -819,7 +891,7 @@ Player:
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 		RushInterval: 100000
 		MinimumAttackForceDelay: 100000
@@ -894,7 +966,7 @@ Player:
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 	UnitBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
