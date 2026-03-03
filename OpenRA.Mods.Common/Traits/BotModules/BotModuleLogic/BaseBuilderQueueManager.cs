@@ -452,7 +452,7 @@ namespace OpenRA.Mods.Common.Traits
 				return (null, null, 0);
 
 			// Find the buildable cell that is closest to pos and centered around center
-			(CPos? Location, CPos Center, int Variant) FindPos(CPos center, CPos target, int minRange, int maxRange)
+			(CPos? Location, CPos Center, int Variant) FindPos(CPos center, CPos target, int minRange, int maxRange, int? tryMaintainRange = null)
 			{
 				var actorVariant = 0;
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
@@ -464,7 +464,14 @@ namespace OpenRA.Mods.Common.Traits
 				// Sort by distance to target if we have one
 				if (center != target)
 				{
-					cells = cells.OrderBy(c => (c - target).LengthSquared);
+					if (tryMaintainRange == null)
+						cells = cells.OrderBy(c => (c - target).LengthSquared);
+					else
+					{
+						var theta = tryMaintainRange;
+						var deta = (target - center).Length - tryMaintainRange;
+						cells = cells.OrderBy(c => deta * (c - target).LengthSquared + theta * (c - center).LengthSquared);
+					}
 
 					// Rotate building if we have a Facings in buildingVariantInfo.
 					// If we don't have Facings in buildingVariantInfo, use a random variant
@@ -525,20 +532,20 @@ namespace OpenRA.Mods.Common.Traits
 				return (null, center, 0);
 			}
 
-			var baseCenter = baseBuilder.GetRandomBaseCenter();
+			var baseCenter = type == BuildingType.Defense ? baseBuilder.GetDefenseBaseCenter() : baseBuilder.GetRandomBaseCenter();
 
 			switch (type)
 			{
 				case BuildingType.Defense:
 
-					// Build near the closest enemy structure
-					var closestEnemy = world.ActorsHavingTrait<Building>()
-						.Where(a => !a.Disposed && player.RelationshipWith(a.Owner) == PlayerRelationship.Enemy)
-						.ClosestToIgnoringPath(world.Map.CenterOfCell(baseBuilder.DefenseCenter));
+					// Build near the closest enemy
+					var closestEnemy = world.ActorsHavingTrait<Targetable>()
+						.Where(a => !a.Disposed && a.IsInWorld && player.RelationshipWith(a.Owner) == PlayerRelationship.Enemy)
+						.ClosestToIgnoringPath(world.Map.CenterOfCell(baseCenter));
 
 					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
 
-					return FindPos(baseBuilder.DefenseCenter, targetCell, baseBuilder.Info.MinimumDefenseRadius, baseBuilder.Info.MaximumDefenseRadius);
+					return FindPos(baseCenter, targetCell, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius, baseBuilder.Info.TryMaintainDefenseRange);
 
 				case BuildingType.Refinery:
 
