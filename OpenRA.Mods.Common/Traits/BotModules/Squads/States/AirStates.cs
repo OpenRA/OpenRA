@@ -171,20 +171,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			foreach (var a in owner.Units)
 			{
-				if (BusyAttack(a))
+				if (BusyAttack(a) || IsRearming(a))
 					continue;
 
 				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
-				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()))
+				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !HasAmmo(ammoPools))
 				{
-					if (IsRearming(a))
-						continue;
-
-					if (!HasAmmo(ammoPools))
-					{
-						owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
-						continue;
-					}
+					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
+					continue;
 				}
 
 				if (CanAttackTarget(a, owner.TargetActor))
@@ -207,11 +201,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			foreach (var a in owner.Units)
 			{
 				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
+
+				if (IsRearming(a))
+					continue;
+
 				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
 				{
-					if (IsRearming(a))
-						continue;
-
 					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
 					continue;
 				}
