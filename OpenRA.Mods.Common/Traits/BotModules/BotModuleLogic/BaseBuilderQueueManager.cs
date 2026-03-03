@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		Actor[] playerBuildings;
 		int failCount;
 		int failRetryTicks;
+		string lastFailedBuilding;
 		int checkForBasesTicks;
 		int cachedBases;
 		int cachedBuildings;
@@ -64,14 +65,18 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (baseBuilder.BaseExpansionModules != null && baseCenterKeepsFailing != null)
 				{
-					var stuckConyard = baseBuilder.ConstructionYardBuildings.Actors
-						.Where(a => (a.Location - baseCenterKeepsFailing.Value).LengthSquared <= baseBuilder.Info.MaxBaseRadius * baseBuilder.Info.MaxBaseRadius)
-						.MinByOrDefault(a => (a.Location - baseCenterKeepsFailing.Value).LengthSquared);
-
-					if (stuckConyard != null)
+					// we should not give a nudge for defence
+					if (!baseBuilder.Info.DefenseTypes.Contains(lastFailedBuilding))
 					{
-						foreach (var be in baseBuilder.BaseExpansionModules)
-							be.UpdateExpansionParams(bot, false, true, stuckConyard);
+						var stuckConyard = baseBuilder.ConstructionYardBuildings.Actors
+							.Where(a => (a.Location - baseCenterKeepsFailing.Value).LengthSquared <= baseBuilder.Info.MaxBaseRadius * baseBuilder.Info.MaxBaseRadius)
+							.MinByOrDefault(a => (a.Location - baseCenterKeepsFailing.Value).LengthSquared);
+
+						if (stuckConyard != null)
+						{
+							foreach (var be in baseBuilder.BaseExpansionModules)
+								be.UpdateExpansionParams(bot, false, true, stuckConyard);
+						}
 					}
 
 					failCount = 0;
@@ -209,6 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						AIUtils.BotDebug($"{player} has nowhere to place {currentBuilding.Item}");
 						bot.QueueOrder(Order.CancelProduction(queue.Actor, currentBuilding.Item, 1));
+						lastFailedBuilding = currentBuilding.Item;
 						if (baseBuilder.BaseExpansionModules == null)
 						{
 							cachedBuildings = world.ActorsHavingTrait<Building>().Count(a => a.Owner == player);
