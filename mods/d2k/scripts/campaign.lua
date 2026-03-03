@@ -178,6 +178,7 @@ EmergencyBuildRate = {}
 ---@param target cpos -- position where emergency event take place
 EmergencyBehaviour = function(player, target)
 	HoldProduction[player] = false
+	Attacking[player] = false
 	if Difficulty == "hard" then
 		player.Cash = player.Cash + 2000
 	end

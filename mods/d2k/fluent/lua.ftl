@@ -57,7 +57,7 @@ smugglers-annihilated = The Smugglers have been annihilated!
 
 ## atreides-06a
 destroy-ordos-starport = Capture or destroy the Ordos Starport.
-destroy-smugglers = Destroy the Smugglers. 
+destroy-smugglers = Destroy the Smugglers.
 ordos-starport-destroyed = Ordos Starport destroyed.
 
 ## atreides-05
@@ -88,6 +88,10 @@ use-engineer-hint = Use engineers to reclaim destroyed vehicles.
 destroy-mercenaries = Destroy Mercenaries.
 destroy-ordos-starport = Destroy Ordos Starport.
 destroy-smugglers = Destroy Smugglers.
+
+## atreides-07
+its-a-trap = WARNING: Harkonnen not retreating.  It is a trap!
+
 ## harkonnen-01ab, harkonnen-03ab
 eliminate-atreides-units-reinforcements = Eliminate all Atreides forces and reinforcements in the area.
 
