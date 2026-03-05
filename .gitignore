@@ -41,8 +41,10 @@ update.log
 *.sublime-project
 *.sublime-workspace
 
-# NUnit
+# NUnit / dotnet test
 /TestResult.xml
+TestResults/
+*.trx
 /lib/
 
 # Support directory
@@ -89,3 +91,9 @@ Desktop.ini
 # Map Generator data (large rasters)
 Map_Generator/data/gsw/*.tif
 Map_Generator/data/worldcover/*.tif
+
+# GeoMap Generator OSM cache
+geomaps-cache/
+
+# Coverage mapping
+.msCoverageSourceRootsMapping*
