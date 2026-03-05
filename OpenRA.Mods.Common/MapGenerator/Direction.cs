@@ -78,6 +78,8 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>Bitmask right-up.</summary>
 		MRU = 1 << Direction.RU,
+
+		All = MR | MRD | MD | MLD | ML | MLU | MU | MRU,
 	}
 
 	public static class DirectionExts
@@ -125,6 +127,19 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public static readonly ImmutableArray<CVec> Spread8CVec =
 			Spread8.Select(xy => new CVec(xy.X, xy.Y)).ToImmutableArray();
+
+		/// <summary>Euclidean 1024x unit distance vectors for directions.</summary>
+		static readonly ImmutableArray<(int2, Direction)> EuclideanSpread8D =
+		[
+			(new int2(1024, 0), Direction.R),
+			(new int2(724, 724), Direction.RD),
+			(new int2(0, 1024), Direction.D),
+			(new int2(-724, 724), Direction.LD),
+			(new int2(-1024, 0), Direction.L),
+			(new int2(-724, -724), Direction.LU),
+			(new int2(0, -1024), Direction.U),
+			(new int2(724, -724), Direction.RU)
+		];
 
 		/// <summary>Convert a non-none direction to an int2 offset.</summary>
 		public static int2 ToInt2(this Direction direction)
@@ -185,7 +200,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
-		/// The direction with the closest angle wins. Keep inputs to 1000000 or less.
+		/// The direction with the closest angle wins. Keep input magnitudes to 1000000 or less.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
 		public static Direction ClosestFrom(int dx, int dy)
@@ -215,6 +230,38 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
+		/// Find a direction in a DirectionMask which best matches dx, dy.
+		/// Keep input magnitudes to 1000000 or less.
+		/// Supplying a zero-offset or an empty mask will throw.
+		/// </summary>
+		public static Direction ClosestInMaskFrom(int dx, int dy, DirectionMask mask)
+		{
+			if (dx == 0 && dy == 0)
+				throw new ArgumentException("bad direction");
+
+			if (mask == DirectionMask.None)
+				throw new ArgumentException("empty mask");
+
+			var dxy = new int2(dx, dy);
+			var best = Direction.None;
+			var bestScore = int.MinValue;
+			foreach (var (xy, direction) in EuclideanSpread8D)
+			{
+				if ((mask & direction.ToMask()) != 0)
+				{
+					var score = int2.Dot(xy, dxy);
+					if (score > bestScore)
+					{
+						best = direction;
+						bestScore = score;
+					}
+				}
+			}
+
+			return best;
+		}
+
+		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a direction.
 		/// Supplying a zero-offset will throw.
 		/// </summary>
@@ -236,6 +283,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public static Direction ClosestFromCVec(CVec delta)
 			=> ClosestFrom(delta.X, delta.Y);
+
+		/// <summary>
+		/// Find a direction in a DirectionMask which best matches an offset.
+		/// Supplying a zero-offset or an empty mask will throw.
+		/// </summary>
+		public static Direction ClosestInMaskFromCVec(CVec delta, DirectionMask mask)
+			=> ClosestInMaskFrom(delta.X, delta.Y, mask);
 
 		/// <summary>
 		/// Convert an offset (of arbitrary non-zero magnitude) to a non-diagonal direction.

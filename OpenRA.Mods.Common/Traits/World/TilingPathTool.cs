@@ -62,43 +62,37 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly Direction End;
 			public readonly bool Loop;
 			public readonly ImmutableArray<CPos> Rallies;
-			public Direction AutoStart
+			public Direction AutoStart(DirectionMask mask)
 			{
-				get
+				if (Start != Direction.None)
 				{
-					if (Start != Direction.None)
-					{
-						return Start;
-					}
+					return Start;
+				}
+				else
+				{
+					if (Rallies.Length >= 2 && mask != DirectionMask.None)
+						return DirectionExts.ClosestInMaskFromCVec(Rallies[1] - Rallies[0], mask);
 					else
-					{
-						if (Rallies.Length >= 2)
-							return DirectionExts.ClosestFromCVec(Rallies[1] - Rallies[0]);
-						else
-							return Direction.None;
-					}
+						return Direction.None;
 				}
 			}
 
-			public Direction AutoEnd
+			public Direction AutoEnd(DirectionMask mask)
 			{
-				get
+				if (End != Direction.None)
 				{
-					if (End != Direction.None)
-					{
-						return End;
-					}
-					else if (Loop)
-					{
-						return AutoStart;
-					}
+					return End;
+				}
+				else if (Loop)
+				{
+					return AutoStart(mask);
+				}
+				else
+				{
+					if (Rallies.Length >= 2 && mask != DirectionMask.None)
+						return DirectionExts.ClosestInMaskFromCVec(Rallies[^1] - Rallies[^2], mask);
 					else
-					{
-						if (Rallies.Length >= 2)
-							return DirectionExts.ClosestFromCVec(Rallies[^1] - Rallies[^2]);
-						else
-							return Direction.None;
-					}
+						return Direction.None;
 				}
 			}
 
@@ -190,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 					var reversedEnd = Start;
 					if (Start != Direction.None && End == Direction.None)
 					{
-						reversedStart = AutoEnd;
+						reversedStart = AutoEnd(DirectionMask.All);
 						reversedEnd = Direction.None;
 					}
 
@@ -232,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 				var points = new List<(CPos CPos, int RallyIndex)>();
 				var cpos = Rallies[0];
 				points.Add((cpos, 0));
-				var inertia = AutoStart.ToCVec();
+				var inertia = AutoStart(DirectionMask.All).ToCVec();
 				if (inertia.X != 0 && inertia.Y != 0)
 					inertia = new CVec(inertia.X, 0);
 
@@ -329,6 +323,8 @@ namespace OpenRA.Mods.Common.Traits
 		public string StartType { get; private set; } = null;
 		public string InnerType { get; private set; } = null;
 		public string EndType { get; private set; } = null;
+		public DirectionMask AutoStartDirectionMask = DirectionMask.None;
+		public DirectionMask AutoEndDirectionMask = DirectionMask.None;
 		public bool ClosedLoops { get; private set; } = true;
 		public int RandomSeed { get; private set; } = 0;
 		public int MaxDeviation { get; private set; } = 5;
@@ -462,8 +458,8 @@ namespace OpenRA.Mods.Common.Traits
 					startType,
 					endType,
 					permittedTemplates);
-				tilingPath.Start.Direction = plan.AutoStart;
-				tilingPath.End.Direction = plan.AutoEnd;
+				tilingPath.Start.Direction = plan.AutoStart(AutoStartDirectionMask);
+				tilingPath.End.Direction = plan.AutoEnd(AutoEndDirectionMask);
 				var result = tilingPath.Tile(random);
 				if (result != null)
 					return result.ToEditorBlitSource(WorldRenderer, random);
@@ -488,11 +484,42 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (string.IsNullOrEmpty(innerType))
 				InnerType = InnerTypes[0];
+
+			UpdateStartDirectionMask();
+			UpdateEndDirectionMask();
 		}
 
 		void Update()
 		{
 			EditorBlitSource = TilePlan(Plan);
+		}
+
+		void UpdateStartDirectionMask()
+		{
+			AutoStartDirectionMask = DirectionMask.None;
+			foreach (var brush in SegmentedBrushes)
+			{
+				if (brush.Segment != null &&
+					brush.Segment.HasInnerType(InnerType) &&
+					brush.Segment.HasStartType(StartType))
+				{
+					AutoStartDirectionMask |= brush.Segment.StartDirection.ToMask();
+				}
+			}
+		}
+
+		void UpdateEndDirectionMask()
+		{
+			AutoEndDirectionMask = DirectionMask.None;
+			foreach (var brush in SegmentedBrushes)
+			{
+				if (brush.Segment != null &&
+					brush.Segment.HasInnerType(InnerType) &&
+					brush.Segment.HasEndType(EndType))
+				{
+					AutoEndDirectionMask |= brush.Segment.EndDirection.ToMask();
+				}
+			}
 		}
 
 		public void SetPlan(PathPlan value)
@@ -504,6 +531,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetStartType(string value)
 		{
 			StartType = value;
+			UpdateStartDirectionMask();
 			Update();
 		}
 
@@ -517,6 +545,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetEndType(string value)
 		{
 			EndType = value;
+			UpdateEndDirectionMask();
 			Update();
 		}
 
