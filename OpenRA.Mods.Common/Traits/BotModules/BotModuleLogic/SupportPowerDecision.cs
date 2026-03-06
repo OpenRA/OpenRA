@@ -241,7 +241,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
 		public class Consideration
 		{
-			public enum DecisionMetric { Health, HealthLoss, Value, None }
+			public enum DecisionMetric { Health, HealthLoss, Value, Undetected, None }
 
 			[Desc("The strategy name of the consideration", "Considerations of the same strategy will be considered together in one check run.")]
 			public readonly string StrategyName = "primary";
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 			/// <summary>Evaluates a single actor according to the rules defined in this consideration.</summary>
 			public int GetAttractiveness(Actor a, Player firedBy, bool visibilityCheck = true)
 			{
-				if (a == null || a.IsDead)
+				if (a == null || a.IsDead || !a.IsInWorld)
 					return 0;
 
 				if ((ValidActorTypes.Count > 0 && !ValidActorTypes.Contains(a.Info.Name)) || (InvalidActorTypes.Count > 0 && InvalidActorTypes.Contains(a.Info.Name)))
@@ -293,7 +293,8 @@ namespace OpenRA.Mods.Common.Traits
 				if ((AgainstOwnActors && a.Owner != firedBy) || (!AgainstOwnActors && !Against.HasRelationship(firedBy.RelationshipWith(a.Owner))))
 					return 0;
 
-				if (visibilityCheck && !a.CanBeViewedByPlayer(firedBy))
+				var canbeview = a.CanBeViewedByPlayer(firedBy);
+				if (TargetMetric != DecisionMetric.Undetected && visibilityCheck && !canbeview)
 					return 0;
 
 				if ((!a.IsTargetableBy(firedBy.PlayerActor)) && ((!ValidTargetTypes.IsEmpty) || !InvalidTargetTypes.IsEmpty))
@@ -321,6 +322,17 @@ namespace OpenRA.Mods.Common.Traits
 							// Cast to long to avoid overflow when multiplying by the health
 							return (int)((long)healthneed * Attractiveness / health.MaxHP);
 
+						case DecisionMetric.Undetected:
+							if (canbeview)
+								return 0;
+
+							// we consider visible frozen actor can be regard as detected actor for this bot module.
+							var frozen = a.TraitOrDefault<FrozenUnderFog>();
+							if (frozen != null && frozen.IsVisible(a, firedBy))
+								return 0;
+
+							return Attractiveness;
+
 						default:
 							return Attractiveness;
 					}
@@ -334,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 				if ((AgainstOwnActors && fa.Owner != firedBy) || (!AgainstOwnActors && !Against.HasRelationship(firedBy.RelationshipWith(fa.Owner))))
 					return 0;
 
-				if (fa == null || !fa.IsValid || !fa.Visible)
+				if (fa == null || !fa.IsValid || !fa.Visible || TargetMetric == DecisionMetric.Undetected)
 					return 0;
 
 				if ((ValidActorTypes.Count > 0 && !ValidActorTypes.Contains(fa.Info.Name)) || (InvalidActorTypes.Count > 0 && InvalidActorTypes.Contains(fa.Info.Name)))

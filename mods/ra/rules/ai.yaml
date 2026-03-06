@@ -307,14 +307,15 @@ Player:
 				VisibilityCheck: false
 				Consideration@1:
 					Against: Enemy
-					Attractiveness: 1
-					TargetMetric: None
+					Attractiveness: 1100
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					TargetMetric: Undetected
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Enemy
+					Attractiveness: 1
 					ValidTargetTypes: Structure
-					Attractiveness: 100
-					TargetMetric: None
+					TargetMetric: Value
 					CheckRadius: 5c0
 			paratroopers:
 				OrderName: SovietParatroopers
