@@ -193,19 +193,21 @@ SendNavalSupport = function()
 	end)
 end
 
+--[[
 CheckLandBuildingsInArea = function(nw, se)
     local buildings = Map.ActorsInBox( nw, se, function(actor)
 		return actor.Owner == Greece and actor.HasProperty("StartBuildingRepairs") and actor.Type ~= "syrd"
     end)
 
 	if #buildings > 0 then
-		Media.Debug("Found one")
+
 	end
 
     Trigger.AfterDelay(DateTime.Seconds(5), function()
         CheckLandBuildingsInArea(nw, se)
     end)
 end
+]]
 
 IslandAreaNW = WPos.New( (CPos.New(27, 20)).X * 1024, (CPos.New(27, 20)).Y * 1024, 0)
 IslandAreaSE = WPos.New( (CPos.New(96, 68)).X * 1024, (CPos.New(96, 68)).Y * 1024, 0)
@@ -251,12 +253,13 @@ WorldLoaded = function()
 
 	Greece = Player.GetPlayer("Greece")
 	USSR = Player.GetPlayer("USSR")
+	Neutral = Player.GetPlayer("Neutral")
 
 	SetDifficulty()
 	PrepareObjectives()
 	InitTriggers()
 
-	CheckLandBuildingsInArea( IslandAreaNW, IslandAreaSE )
-	CheckLandBuildingsInArea( InlandAreaNW, InlandAreaSE )
+	--CheckLandBuildingsInArea( IslandAreaNW, IslandAreaSE )
+	--CheckLandBuildingsInArea( InlandAreaNW, InlandAreaSE )
 
 end

@@ -46,7 +46,7 @@ SetDifficulty = function()
 
 		FirstAirDelays = DateTime.Seconds(120)
 
-		AttackProductionInterval = DateTime.Seconds(40)
+		AttackProductionInterval = DateTime.Seconds(60)
 		--DateTime.TimeLimit = DateTime.Minutes(5) + DateTime.Seconds(3)
 		--InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
 		--InfantryDelay = DateTime.Seconds(18)
@@ -63,7 +63,7 @@ SetDifficulty = function()
 
 		FirstAirDelays = DateTime.Seconds(120)
 
-		AttackProductionInterval = DateTime.Seconds(20)
+		AttackProductionInterval = DateTime.Seconds(60)
 		--DateTime.TimeLimit = DateTime.Minutes(3) + DateTime.Seconds(3)
 		--InfantryTypes = { "e1", "e1", "e1", "e2", "e2", "e1" }
 		--InfantryDelay = DateTime.Seconds(10)
@@ -176,8 +176,21 @@ CheckPlayerMoney = function(owner)
 	return owner.Cash + owner.Resources
 end
 
+---@param player player
+---@param amount integer
 GrantCash = function(player, amount)
     player.Cash = player.Cash + amount
+end
+
+---@param producer actor
+---@param owner player
+function ProducerTypeAvailableCheck(producer, owner)
+	local type = producer.Type
+	if #owner.GetActorsByType(type) > 0 then
+		return true
+	else
+		return false
+	end
 end
 
 --------------------------------------------------------------------
@@ -394,6 +407,8 @@ ProduceInfantry = function(producer, owner)
 	end)
 end
 
+---@param owner player
+---@param dog actor
 DefendAgainstInfiltration = function(owner, dog)
 	if not BaseKenn1.IsDead or BaseKenn1.Owner ~= owner then
 		spawnPoint = BaseKenn1.Location
@@ -479,18 +494,10 @@ CheckSecuredArea = function(nw, se)
 	end
 end
 
-WeapAvailableCheck = function(producer, owner)
-	if not producer.IsDead or producer.Owner == owner then
-		return true
-	else
-		return false
-	end
-end
-
 ProduceArmor = function(producer, owner)
 	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
 
-	if not WeapAvailableCheck(producer, owner) then
+	if not ProducerTypeAvailableCheck(producer, owner) then
 		return
 	elseif IsHarvesterMissing() then
 		ProduceHarvester(producer, owner, delay)
@@ -520,7 +527,7 @@ end
 ProduceArmorGuards = function(producer, owner)
 	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
 
-	if WeapAvailableCheck(producer, owner) then
+	if ProducerTypeAvailableCheck(producer, owner) then
 		return
 	elseif IsHarvesterMissing then
 		ProduceHarvester(producer, owner, delay)
@@ -548,7 +555,7 @@ AfldAvailableCheck = function(producer, owner)
 end
 
 ProduceAircraft = function(producer, owner)
-    if not AfldAvailableCheck(producer, owner) then
+    if not ProducerTypeAvailableCheck(producer, owner) then
         return
     end
 
@@ -704,14 +711,31 @@ SovietAirTeams =
 -----------------------
 local function __NAVAL_ATTACKS__() end
 
+local function ________________Naval_Attacks________________() end
 ---@param producer actor
 ---@param owner player
-SpenAvailableCheck = function(producer, owner)
-	if not producer.IsDead and producer.Owner == owner then
-		return true
-	else
-		return false
+function ProduceSubs(producer, owner)
+	if not ProducerTypeAvailableCheck(producer, owner) then
+		return
 	end
+
+	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
+
+	owner.Build(SubTypes, function(units)
+		table.insert(SubAttackGroup, units[1])
+
+		if #SubAttackGroup >= SubAttackGroupSize then
+			SendUnits(SubAttackGroup, NavalAtkPath)
+			SubAttackGroup = { }
+			Trigger.AfterDelay(AtkProductionInterval, function()
+				ProduceSubs(producer, owner)
+			end)
+		else
+			Trigger.AfterDelay(delay, function()
+				ProduceSubs(producer, owner)
+			end)
+		end
+	end)
 end
 
 PrepareAttackOptions = function()
@@ -738,34 +762,8 @@ end
 
 ---@param producer actor
 ---@param owner player
-ProduceSubs = function(producer, owner)
-	if not SpenAvailableCheck(producer, owner) then
-		return
-	end
-
-	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
-
-	owner.Build(SubTypes, function(units)
-		table.insert(SubAttackGroup, units[1])
-
-		if #SubAttackGroup >= SubAttackGroupSize then
-			SendUnits(SubAttackGroup, NavalAtkPath)
-			SubAttackGroup = { }
-			Trigger.AfterDelay(AttackProductionInterval, function()
-				PrepareNavalAtk(producer, owner)
-			end)
-		else
-			Trigger.AfterDelay(delay, function()
-				ProduceSubs(producer, owner)
-			end)
-		end
-	end)
-end
-
----@param producer actor
----@param owner player
 ProduceLST = function(producer, owner)
-	if not SpenAvailableCheck(producer, owner) then
+	if not ProducerTypeAvailableCheck(producer, owner) then
 		return
 	end
 
@@ -804,7 +802,7 @@ ActivateAI = function()
 	ParabombProxy = Actor.Create("powerproxy.parabombs", false, { Owner = USSR })
 
 	WTransUnits = WTransUnits[Difficulty]
-	AttackProductionInterval = AttackProductionInterval[Difficulty]
+	--AttackProductionInterval = AttackProductionInterval[Difficulty]
 	InfantryUnits = InfantryUnits[Difficulty]
 
 	BeginBaseMaintenance()
