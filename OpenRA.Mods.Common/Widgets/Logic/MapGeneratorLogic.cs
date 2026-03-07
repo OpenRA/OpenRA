@@ -84,6 +84,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Size size;
 		bool initialGenerationDone;
 
+		Map lastGeneratedMap;
+
 		volatile bool failed;
 		volatile uint generationCounter = 0;
 		volatile uint lastGeneration = 0;
@@ -91,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool IsGenerating => lastGeneration != generationCounter;
 
 		[ObjectCreator.UseCtor]
-		internal MapGeneratorLogic(Widget widget, ModData modData, MapGenerationArgs initialSettings, Action<MapGenerationArgs, IReadWritePackage> onGenerate)
+		internal MapGeneratorLogic(Widget widget, ModData modData, MapGenerationArgs initialSettings, Action<MapGenerationArgs, IReadWritePackage> onGenerate, Action onSave)
 		{
 			this.modData = modData;
 			this.onGenerate = onGenerate;
@@ -206,6 +208,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				GenerateMap();
 			};
 
+			var saveButton = widget.GetOrNull<ButtonWidget>("BUTTON_SAVE");
+			if (saveButton != null)
+			{
+				saveButton.IsDisabled = () => IsGenerating;
+				saveButton.OnClick = () =>
+				{
+					if (lastGeneratedMap == null)
+						return;
+
+					Ui.OpenWindow("SAVE_GENERATED_MAP_PANEL", new WidgetArgs()
+					{
+						{ "modData", modData },
+						{ "map", lastGeneratedMap },
+						{ "onSave", onSave },
+						{ "onExit", new Action(() => { }) },
+					});
+				};
+			}
+
 			selectedSize = MapSizes.Keys.Skip(1).First();
 			if (initialSettings != null)
 			{
@@ -222,7 +243,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (map.Status == MapStatus.Available)
 				{
 					preview.Update(map);
-					initialGenerationDone = true;
 					onGenerate(initialSettings, null);
 				}
 			}
@@ -449,6 +469,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						map.Save(package);
 
 						args.Uid = map.Uid;
+						lastGeneratedMap = map;
 
 						preview.Update(map);
 						lastGeneration = currentGeneration;

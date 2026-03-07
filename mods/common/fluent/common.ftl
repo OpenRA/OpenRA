@@ -1131,3 +1131,10 @@ notification-tiling-path-started = Started tiling path
 notification-tiling-path-updated = Updated tiling path
 notification-tiling-path-reset = Discarded tiling path
 notification-tiling-path-painted = Painted tiling path
+
+dialog-overwrite-generated-map =
+    .title = Map Already Exists
+    .prompt = A map with that name already exists.
+        Do you want to overwrite it?
+    .confirm = Overwrite
+    .cancel = Cancel

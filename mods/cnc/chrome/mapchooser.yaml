@@ -246,6 +246,12 @@ Container@MAPCHOOSER_GENERATE_PANEL:
 			Width: 140
 			Height: 35
 			Text: button-mapchooser-random-map-generate
+		Button@BUTTON_SAVE:
+			X: PARENT_WIDTH - 285 - WIDTH
+			Y: PARENT_HEIGHT + 14
+			Width: 140
+			Height: 35
+			Text: button-mapchooser-random-map-save
 		ScrollPanel@SETTINGS_PANEL:
 			TopBottomSpacing: 5
 			Width: 485
@@ -289,3 +295,60 @@ Container@MAPCHOOSER_GENERATE_PANEL:
 							Width: PARENT_WIDTH - 20
 							Height: 25
 							PanelRoot: DROPDOWN_PANEL_ROOT
+Background@SAVE_GENERATED_MAP_PANEL:
+	Logic: SaveGeneratedMapLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 350
+	Height: 195
+	Background: panel-black
+	Children:
+		Label@LABEL_TITLE:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: 18
+			Width: 250
+			Height: 25
+			Text: label-mapchooser-random-map-save-title
+			Align: Center
+			Font: BigBold
+			Contrast: true
+		Label@TITLE_LABEL:
+			X: 10
+			Y: 60
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: label-save-map-background-title
+		TextField@TITLE:
+			X: 110
+			Y: 60
+			Width: 220
+			MaxLength: 50
+			Height: 25
+		Label@AUTHOR_LABEL:
+			X: 10
+			Y: 95
+			Width: 95
+			Height: 25
+			Align: Right
+			Text: label-save-map-background-author
+		TextField@AUTHOR:
+			X: 110
+			Y: 95
+			Width: 220
+			MaxLength: 50
+			Height: 25
+		Button@SAVE_BUTTON:
+			X: PARENT_WIDTH - 290
+			Y: PARENT_HEIGHT - 45
+			Width: 140
+			Height: 35
+			Text: button-save-map-panel
+			Key: return
+		Button@BACK_BUTTON:
+			X: PARENT_WIDTH - 145
+			Y: PARENT_HEIGHT - 45
+			Width: 140
+			Height: 35
+			Text: button-cancel
+			Key: escape
