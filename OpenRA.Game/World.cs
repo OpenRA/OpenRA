@@ -41,7 +41,7 @@ namespace OpenRA
 
 		public readonly GameSpeed GameSpeed;
 
-		public readonly int Timestep;
+		public int Timestep { get; internal set; }
 
 		public int ReplayTimestep;
 

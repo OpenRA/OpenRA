@@ -33,6 +33,21 @@ Pause: PAUSE
 	Types: World
 	Contexts: player, spectator
 
+IngameGameSpeedDecrease: F11 Shift
+	Description: hotkey-description-ingamegamespeeddecrease
+	Types: World
+	Contexts: player
+
+CycleStatusBars: COMMA
+	Description: hotkey-description-cyclestatusbars
+	Types: World
+	Contexts: player, spectator
+
+IngameGameSpeedIncrease: F12 Shift
+	Description: hotkey-description-ingamegamespeedincrease
+	Types: World
+	Contexts: player
+
 Sell: Z
 	Description: hotkey-description-sell
 	Types: OrderGenerator
@@ -47,11 +62,6 @@ PlaceBeacon: B
 	Description: hotkey-description-placebeacon
 	Types: OrderGenerator
 	Contexts: player
-
-CycleStatusBars: COMMA
-	Description: hotkey-description-cyclestatusbars
-	Types: World
-	Contexts: player, spectator
 
 ToggleMute: M
 	Description: hotkey-description-togglemute

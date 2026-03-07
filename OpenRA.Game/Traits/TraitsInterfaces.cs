@@ -582,9 +582,10 @@ namespace OpenRA.Traits
 		public readonly bool IsLocked;
 		public readonly bool IsVisible;
 		public readonly int DisplayOrder;
+		public readonly bool IsIngameGameSpeedAdjustable;
 
 		public LobbyOption(MapPreview map, string id, string name, string description, bool visible, int displayorder,
-			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
+			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked, bool ingameGameSpeedAdjustable = false)
 		{
 			Id = id;
 			Name = map.GetMessage(name);
@@ -594,6 +595,7 @@ namespace OpenRA.Traits
 			Values = values.ToDictionary(v => v.Key, v => map.GetMessage(v.Value));
 			DefaultValue = defaultValue;
 			IsLocked = locked;
+			IsIngameGameSpeedAdjustable = ingameGameSpeedAdjustable;
 		}
 
 		public virtual string Label(string value)

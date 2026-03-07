@@ -158,7 +158,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LoadWidget(world, "LOBBY_OPTIONS_PANEL", optionsPanelContainer, new WidgetArgs()
 			{
 				{ "getMap", () => modData.MapCache[world.Map.Uid] },
-				{ "configurationDisabled", () => true }
+				{ "configurationDisabled", () => true },
+				{ "ingameGameSpeedEnabled", () => !world.IsReplay && world.LobbyInfo.NonBotClients.Count() == 1 && world.LobbyInfo.NonBotClients.First().IsAdmin }
 			});
 		}
 
