@@ -33,6 +33,23 @@ namespace OpenRA.Mods.Common.Widgets
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (HasKeyboardFocus && e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE)
+			{
+				RemovePanel();
+				return true;
+			}
+
+			return base.HandleKeyPress(e);
+		}
+
+		public override bool YieldKeyboardFocus()
+		{
+			RemovePanel();
+			return base.YieldKeyboardFocus();
+		}
+
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(ModData modData)
 			: base(modData) { }
@@ -101,6 +118,7 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.RemoveChild(panel);
 			panel = fullscreenMask = null;
 
+			YieldKeyboardFocus();
 			Ui.ResetTooltips();
 		}
 
@@ -110,6 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
 			panel = p;
+			TakeKeyboardFocus();
 
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget
