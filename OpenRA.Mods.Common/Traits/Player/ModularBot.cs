@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Support;
@@ -33,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Excess orders remain queued for subsequent ticks.")]
 		public readonly int MinOrderQuotientPerTick = 5;
 
+		[Desc("Those orders will be issued immediately.", "Used for orders that is very sensitive to delays.")]
+		public readonly FrozenSet<string> HighPriorityOrders = FrozenSet<string>.Empty;
+
 		string IBotInfo.Type => Type;
 
 		string IBotInfo.Name => Name;
@@ -47,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ModularBotInfo info;
 		readonly World world;
 		readonly Queue<Order> orders = [];
+		readonly List<Order> highPriorityOrders = [];
 
 		Player player;
 
@@ -80,7 +85,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBot.QueueOrder(Order order)
 		{
-			orders.Enqueue(order);
+			if (info.HighPriorityOrders.Contains(order.OrderString))
+				highPriorityOrders.Add(order);
+			else
+				orders.Enqueue(order);
 		}
 
 		void ITick.Tick(Actor self)
@@ -97,6 +105,10 @@ namespace OpenRA.Mods.Common.Traits
 							t.BotTick(this);
 				});
 			}
+
+			foreach (var order in highPriorityOrders)
+				world.IssueOrder(order);
+			highPriorityOrders.Clear();
 
 			var ordersToIssueThisTick = Math.Min((orders.Count + info.MinOrderQuotientPerTick - 1) / info.MinOrderQuotientPerTick, orders.Count);
 			for (var i = 0; i < ordersToIssueThisTick; i++)

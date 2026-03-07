@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				var targetCell = target.Location + targetDelta;
 
-				if (self.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
+				if ((self.Owner.Shroud.IsExplored(targetCell) || self.Owner.IsBot) && cs.CanChronoshiftTo(target, targetCell))
 					cs.Teleport(target, targetCell, info.Duration, info.KillCargo, self);
 			}
 		}
