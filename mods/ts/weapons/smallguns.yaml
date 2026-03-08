@@ -98,8 +98,10 @@ HarpyClaw:
 	ReloadDelay: 36
 	Range: 5c0
 	Report: cygun1.aud
+	ValidTargets: Ground, Air
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
+		ValidTargets: Ground, Air
 
 Pistola:
 	Inherits: ^MG
