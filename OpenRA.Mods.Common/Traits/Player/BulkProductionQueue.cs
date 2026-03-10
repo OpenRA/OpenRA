@@ -97,8 +97,13 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (HasDeliveryStarted() && DeliveryDelay > 0)
 				{
-					DeliveryDelay--;
-					PlayDeliveryProgressNotifications();
+					if (developerMode.FastBuild)
+						DeliveryDelay = 0;
+					else
+					{
+						DeliveryDelay--;
+						PlayDeliveryProgressNotifications();
+					}
 				}
 				else if (HasDeliveryStarted() && DeliveryDelay == 0)
 				{
