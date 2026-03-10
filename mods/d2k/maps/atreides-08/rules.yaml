@@ -1,0 +1,237 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+	ExternalCondition@AI:
+		Condition: base-rebuilder
+	ExternalCondition@AIDefense:
+		Condition: defense-rebuilder
+	ExternalCondition@AIAtreides:
+		Condition: base-rebuilder2
+	ExternalCondition@AIAtreidesDefense:
+		Condition: defense-rebuilder2
+	BaseBuilderBotModule@MainBase:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 2
+			refinery: 2
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			starport: 1
+			wind_trap: 14
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			starport: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+	BaseBuilderBotModule@MainBaseWithDefence:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		PlaceDefenseTowardsEnemyChance: 50
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 2
+			refinery: 2
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			starport: 1
+			research_centre: 1
+			wind_trap: 14
+			palace: 1
+			silo: 1
+			medium_gun_turret: 4
+			large_gun_turret: 5
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			starport: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			research_centre: 1
+			palace: 1
+			medium_gun_turret: 1
+			large_gun_turret: 1
+	BaseBuilderBotModule@SecondaryBase:
+		RequiresCondition: base-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@SecondaryBaseWithDefense:
+		RequiresCondition: defense-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+			medium_gun_turret: 1
+			large_gun_turret: 2
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+			large_gun_turret: 1
+
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, atreides08.lua, atreides08-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: A_BR08_E.VQA
+	MapOptions:
+		TechLevel: unrestricted
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Atreides: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			OrdosSmall: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+			Ordos: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+			Harkonnen: 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 144
+			SmugglersAtreides: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			SmugglersAI: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			SmugglersBoth: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Ordos: 0.060, -0.275, 1, 0.32, 0.34
+			OrdosSmall: 0.060, -0.275, 1, 0.32, 0.34
+			Harkonnen: -0.329, -0.006, 1, 0.32, 0.34
+			Atreides: 0.274, -0.275, 1, 0.32, 0.34
+			SmugglersAtreides: -0.318, 0.047, 1, 0.32, 0.34
+			SmugglersAI: -0.318, 0.047, 1, 0.32, 0.34
+			SmugglersBoth: -0.318, 0.047, 1, 0.32, 0.34
+
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+combat_tank_a:
+	Buildable:
+		Prerequisites: ~heavy_factory, ~player.atreides
+
+combat_tank_h:
+	Buildable:
+		Prerequisites: ~heavy_factory, ~player.harkonnen
+
+combat_tank_a.starport:
+	Buildable:
+		Prerequisites: ~starport, ~player.atreides
+
+combat_tank_h.starport:
+	Buildable:
+		Prerequisites: ~starport, ~player.harkonnen
+
+sonic_tank:
+	Buildable:
+		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.atreides
+
+devastator:
+	Buildable:
+		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.harkonnen
+
+high_tech_factory:
+	AirstrikePower:
+		Prerequisites: upgrade.hightech
+
+upgrade.hightech:
+	Buildable:
+		Prerequisites: ~hightech.atreides
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~barracks, ~player.corrino
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+thumper:
+	Buildable:
+		Prerequisites: ~disabled
