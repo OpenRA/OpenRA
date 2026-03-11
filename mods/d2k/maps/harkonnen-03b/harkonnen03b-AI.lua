@@ -61,7 +61,7 @@ ActivateAI = function()
 	}
 
 	Trigger.OnBuildingPlaced(Atreides, function(p, building)
-		table.insert(OrdosMainBase, building)
+		table.insert(AtreidesBase, building)
 		DefendAndRepairBase(Atreides, {building}, 0.75, AttackGroupSize[Difficulty] )
 		if productionTypes[building.Type] == nil then return end
 		ProduceUnits(Atreides, building, delay, productionTypes[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
