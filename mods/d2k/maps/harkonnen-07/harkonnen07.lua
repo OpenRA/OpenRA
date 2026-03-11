@@ -116,8 +116,8 @@ HarkonnenReinforcements =
 
 	hard =
 	{
-		{ "trooper", "trooper", "light_inf", "light_inf", "light_inf", "light_inf" },
-		{ "quad", "trike", "trike", "combat_tank_h", "combat_tank_h", "siege_tank" }
+		{ "trooper", "trooper", "light_inf", "light_inf", "light_inf" },
+		{ "quad", "trike", "siege_tank", "combat_tank_h" }
 	},
 }
 
