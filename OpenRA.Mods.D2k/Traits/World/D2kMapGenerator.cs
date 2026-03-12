@@ -358,14 +358,15 @@ namespace OpenRA.Mods.D2k.Traits
 			// Sand cliff generation
 			if (param.SandCliffs > 0)
 			{
+				var sandMask = CellLayerUtils.Map(rockSmoothSand, s => s == Terraformer.Side.Out);
+				sandMask = terraformer.ImproveSymmetry(sandMask, true, (a, b) => a && b);
 				var inverseElevation = elevation.Map(v => -v);
 				var cliffMask = MatrixUtils.CalibratedBooleanThreshold(
 					roughnessMatrix,
 					param.SandRoughness, FractionMax);
 				var plan = terraformer.SliceElevation(
 					inverseElevation,
-					CellLayerUtils.ToMatrix(rockSmoothSand, Terraformer.Side.Out)
-						.Map(s => s == Terraformer.Side.Out),
+					CellLayerUtils.ToMatrix(sandMask, true),
 					param.SandCliffs,
 					param.SandContourSpacing);
 				plan = MatrixUtils.BooleanBlotch(
@@ -373,7 +374,7 @@ namespace OpenRA.Mods.D2k.Traits
 					param.TerrainSmoothing,
 					param.SmoothingThreshold, /*smoothingThresholdOutOf=*/FractionMax,
 					param.MinimumSandCliffThickness,
-					true);
+					false);
 				var contours = MatrixUtils.BordersToPoints(plan);
 				var partitionMask = cliffMask.Map(masked => masked ? sandSandCliffZone : sandZone);
 				var tilingPaths = terraformer.PartitionPaths(
