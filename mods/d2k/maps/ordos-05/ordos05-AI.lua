@@ -120,7 +120,7 @@ ActivateAIProduction = function()
 	}
 
 	Trigger.OnBuildingPlaced(AtreidesMain, function(p, building)
-		table.insert(Base[AtreidesMainBase], building)
+		table.insert(Base["AtreidesMainBase"], building)
 		DefendAndRepairBase(AtreidesMain, {building}, 0.75, AttackGroupSize[Difficulty] )
 		if productionTypes[building.Type] == nil then return end
 		ProduceUnits(AtreidesMain, building, delay, productionTypes[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
