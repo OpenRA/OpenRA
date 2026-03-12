@@ -100,9 +100,9 @@ Templates:
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@3:
 		Id: 3
 		Images: BLOXBASE.R16
@@ -111,9 +111,9 @@ Templates:
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@4:
 		Id: 4
 		Images: BLOXBASE.R16
@@ -186,9 +186,9 @@ Templates:
 		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Sand
 	Template@11:
 		Id: 11
 		Images: BLOXBASE.R16
@@ -253,7 +253,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
+			2: Sand
 			3: Cliff
 	Template@17:
 		Id: 17
@@ -263,7 +263,7 @@ Templates:
 		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Sand
 			2: Cliff
 			3: Sand
 	Template@18:
@@ -318,9 +318,9 @@ Templates:
 		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
-			1: Cliff
-			2: Cliff
-			3: Cliff
+			1: Rough
+			2: Rough
+			3: Sand
 	Template@23:
 		Id: 23
 		Images: BLOXBASE.R16
@@ -328,8 +328,8 @@ Templates:
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 			2: Cliff
 			3: Cliff
 	Template@24:
@@ -340,9 +340,9 @@ Templates:
 		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Rough
 	Template@25:
 		Id: 25
 		Images: BLOXBASE.R16
@@ -352,7 +352,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
+			2: Rough
 			3: Cliff
 	Template@26:
 		Id: 26
@@ -373,9 +373,9 @@ Templates:
 		Categories: Sand-Sand-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@28:
 		Id: 28
 		Images: BLOXBASE.R16
@@ -466,12 +466,12 @@ Templates:
 		Size: 2,3
 		Categories: Sand-Sand-Cliff
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
 			2: Cliff
 			3: Cliff
 			4: Sand
-			5: Cliff
+			5: Sand
 	Template@36:
 		Id: 36
 		Images: BLOXBASE.R16
@@ -501,10 +501,10 @@ Templates:
 		Size: 2,2
 		Categories: Sand-Sand-Cliff
 		Tiles:
-			0: Cliff
+			0: Sand
 			1: Cliff
 			2: Cliff
-			3: Sand
+			3: Cliff
 	Template@39:
 		Id: 39
 		Images: BLOXBASE.R16
@@ -514,7 +514,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Sand
+			2: Rough
 			3: Sand
 	Template@40:
 		Id: 40
@@ -602,8 +602,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Rough
 	Template@48:
 		Id: 48
 		Images: BLOXBASE.R16
@@ -613,8 +613,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Sand
+			3: Rough
 	Template@49:
 		Id: 49
 		Images: BLOXBASE.R16
@@ -627,7 +627,7 @@ Templates:
 			2: Cliff
 			3: Cliff
 			4: Cliff
-			5: Cliff
+			5: Rough
 	Template@50:
 		Id: 50
 		Images: BLOXBASE.R16
@@ -635,9 +635,9 @@ Templates:
 		Size: 3,2
 		Categories: Sand-Sand-Cliff
 		Tiles:
-			0: Sand
+			0: Cliff
 			1: Cliff
-			2: Cliff
+			2: Rough
 			3: Sand
 			4: Cliff
 			5: Cliff
@@ -768,7 +768,7 @@ Templates:
 		Size: 2,1
 		Categories: Cliff-Ends
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
 	Template@69:
 		Id: 69
@@ -1067,7 +1067,7 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Rock
+			1: Transition
 	Template@109:
 		Id: 109
 		Images: BLOXBASE.R16
@@ -1301,7 +1301,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Rock
+			2: Transition
 			3: Transition
 	Template@182:
 		Id: 182
@@ -1312,8 +1312,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Rock
-			3: Rock
+			2: Transition
+			3: Transition
 	Template@183:
 		Id: 183
 		Images: BLOXBASE.R16
@@ -1333,9 +1333,9 @@ Templates:
 		Categories: Rock-Detail
 		Tiles:
 			0: Cliff
-			1: Rock
-			2: Cliff
-			3: Cliff
+			1: Transition
+			2: Rough
+			3: Rough
 	Template@185:
 		Id: 185
 		Images: BLOXBASE.R16
@@ -1344,9 +1344,9 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Rough
 	Template@186:
 		Id: 186
 		Images: BLOXBASE.R16
@@ -1356,7 +1356,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
+			2: Transition
 			3: Cliff
 	Template@187:
 		Id: 187
@@ -1367,8 +1367,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Rock
-			3: Rock
+			2: Rough
+			3: Transition
 	Template@188:
 		Id: 188
 		Images: BLOXBASE.R16
@@ -1378,8 +1378,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Rock
-			3: Rock
+			2: Transition
+			3: Transition
 	Template@189:
 		Id: 189
 		Images: BLOXBASE.R16
@@ -1389,8 +1389,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Rock
-			3: Rock
+			2: Transition
+			3: Transition
 	Template@190:
 		Id: 190
 		Images: BLOXBASE.R16
@@ -1400,8 +1400,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Rough
 	Template@191:
 		Id: 191
 		Images: BLOXBASE.R16
@@ -1411,10 +1411,10 @@ Templates:
 		Tiles:
 			0: Sand
 			1: Cliff
-			2: Cliff
+			2: Transition
 			3: Cliff
 			4: Cliff
-			5: Cliff
+			5: Transition
 	Template@192:
 		Id: 192
 		Images: BLOXBASE.R16
@@ -1436,9 +1436,9 @@ Templates:
 		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Rock
+			3: Rough
 	Template@194:
 		Id: 194
 		Images: BLOXBASE.R16
@@ -1515,11 +1515,11 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Sand
 			2: Cliff
 			3: Cliff
-			4: Rock
-			5: Rock
+			4: Transition
+			5: Transition
 	Template@201:
 		Id: 201
 		Images: BLOXBASE.R16
@@ -1539,9 +1539,9 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@203:
 		Id: 203
 		Images: BLOXBASE.R16
@@ -1572,9 +1572,9 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Rock
+			1: Transition
 			2: Cliff
-			3: Rock
+			3: Transition
 	Template@206:
 		Id: 206
 		Images: BLOXBASE.R16
@@ -1582,12 +1582,12 @@ Templates:
 		Size: 2,3
 		Categories: Sand-Rock-Cliff
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
 			2: Cliff
 			3: Cliff
-			4: Rock
-			5: Rock
+			4: Transition
+			5: Transition
 	Template@207:
 		Id: 207
 		Images: BLOXBASE.R16
@@ -1609,7 +1609,7 @@ Templates:
 			0: Cliff
 			1: Cliff
 			2: Sand
-			3: Rock
+			3: Transition
 	Template@209:
 		Id: 209
 		Images: BLOXBASE.R16
@@ -1629,7 +1629,7 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Sand
 			2: Cliff
 			3: Cliff
 	Template@211:
@@ -1650,7 +1650,7 @@ Templates:
 		Size: 2,2
 		Categories: Sand-Rock-Cliff
 		Tiles:
-			0: Cliff
+			0: Sand
 			1: Cliff
 			2: Cliff
 			3: Cliff
@@ -1706,7 +1706,7 @@ Templates:
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@218:
 		Id: 218
 		Images: BLOXBASE.R16
@@ -1727,7 +1727,7 @@ Templates:
 		Tiles:
 			0: Sand
 			1: Sand
-			2: Cliff
+			2: Rough
 			3: Cliff
 	Template@220:
 		Id: 220
@@ -1736,12 +1736,12 @@ Templates:
 		Size: 3,2
 		Categories: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
 			2: Cliff
 			3: Sand
-			4: Cliff
-			5: Cliff
+			4: Rough
+			5: Rough
 	Template@221:
 		Id: 221
 		Images: BLOXBASE.R16
@@ -1750,7 +1750,7 @@ Templates:
 		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Sand
 	Template@222:
 		Id: 222
@@ -1761,7 +1761,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Transition
-			2: Transition
+			2: Rough
 			3: Transition
 	Template@223:
 		Id: 223
@@ -1967,7 +1967,7 @@ Templates:
 		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 	Template@249:
 		Id: 249
 		Images: BLOXBASE.R16
@@ -2004,8 +2004,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Rough
 	Template@253:
 		Id: 253
 		Images: BLOXBASE.R16
@@ -2158,7 +2158,7 @@ Templates:
 		Size: 1,1
 		Categories: Rock-Detail
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@272:
 		Id: 272
 		Images: BLOXBAT.R16
@@ -2174,7 +2174,7 @@ Templates:
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
-			0: Cliff
+			0: Rough
 	Template@274:
 		Id: 274
 		Images: BLOXBAT.R16
@@ -2848,9 +2848,9 @@ Templates:
 		Size: 3,3
 		Categories: Sand-Rock-Cliff
 		Tiles:
-			0: Rock
-			1: Rock
-			2: Rock
+			0: Transition
+			1: Transition
+			2: Transition
 			3: Cliff
 			4: Rough
 			5: Cliff
@@ -3541,7 +3541,7 @@ Templates:
 			0: Cliff
 			1: Cliff
 			2: Cliff
-			3: Cliff
+			3: Rough
 	Template@413:
 		Id: 413
 		Images: BLOXTREE.R16
@@ -3552,7 +3552,7 @@ Templates:
 			0: Cliff
 			1: Cliff
 			2: Cliff
-			3: Cliff
+			3: Rough
 			4: Cliff
 			5: Cliff
 	Template@414:
@@ -3886,13 +3886,13 @@ Templates:
 			6: Sand
 			7: Sand
 			8: Sand
-			9: Sand
+			9: Rough
 			10: Sand
 			11: Sand
 			12: Sand
 			13: Sand
 			14: Sand
-			15: Sand
+			15: Rough
 			16: SpiceSand
 			17: SpiceSand
 	Template@446:
@@ -4471,9 +4471,9 @@ Templates:
 		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Rough
 	Template@603:
 		Id: 603
 		Images: customtiles.r16
@@ -4483,7 +4483,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
+			2: Transition
 			3: Cliff
 	Template@604:
 		Id: 604
@@ -4493,11 +4493,11 @@ Templates:
 		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
 			3: Cliff
-			4: Cliff
-			5: Cliff
+			4: Transition
+			5: Transition
 	Template@605:
 		Id: 605
 		Images: customtiles.r16
@@ -4505,12 +4505,12 @@ Templates:
 		Size: 2,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
 			2: Cliff
 			3: Cliff
-			4: Cliff
-			5: Cliff
+			4: Transition
+			5: Transition
 	Template@606:
 		Id: 606
 		Images: customtiles.r16
@@ -4537,7 +4537,7 @@ Templates:
 		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 	Template@609:
 		Id: 609
 		Images: customtiles.r16
@@ -4556,8 +4556,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Rough
 	Template@611:
 		Id: 611
 		Images: customtiles.r16
@@ -4565,7 +4565,7 @@ Templates:
 		Size: 2,1
 		Categories: Cliff-Ends
 		Tiles:
-			0: Cliff
+			0: Rough
 			1: Cliff
 	Template@612:
 		Id: 612
@@ -4574,9 +4574,9 @@ Templates:
 		Size: 3,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
-			0: Rock
-			1: Rock
-			2: Rock
+			0: Transition
+			1: Transition
+			2: Transition
 			3: Cliff
 			4: Rough
 			5: Cliff
@@ -4613,7 +4613,7 @@ Templates:
 		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
 			3: Cliff
 	Template@616:
@@ -4623,7 +4623,7 @@ Templates:
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
-			0: Cliff
+			0: Transition
 			1: Cliff
 			2: Cliff
 			3: Cliff
@@ -4702,8 +4702,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Transition
+			3: Transition
 	Template@624:
 		Id: 624
 		Images: customtiles.r16
@@ -4712,9 +4712,9 @@ Templates:
 		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@625:
 		Id: 625
 		Images: customtiles.r16
@@ -4734,9 +4734,9 @@ Templates:
 		Categories: Rock-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@627:
 		Id: 627
 		Images: customtiles.r16
@@ -4746,8 +4746,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Transition
 	Template@628:
 		Id: 628
 		Images: customtiles.r16
@@ -4757,8 +4757,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Transition
+			3: Transition
 	Template@629:
 		Id: 629
 		Images: customtiles.r16
@@ -4845,9 +4845,9 @@ Templates:
 		Categories: Cliff-Ends
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@636:
 		Id: 636
 		Images: customtiles.r16
@@ -4857,8 +4857,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Transition
+			3: Transition
 	Template@637:
 		Id: 637
 		Images: customtiles.r16
@@ -4890,8 +4890,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Transition
+			3: Transition
 	Template@640:
 		Id: 640
 		Images: customtiles.r16
@@ -4899,8 +4899,8 @@ Templates:
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
-			0: Cliff
-			1: Cliff
+			0: Rough
+			1: Rough
 			2: Cliff
 			3: Cliff
 	Template@800:
@@ -5263,8 +5263,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Transition
 	Template@833:
 		Id: 833
 		Images: customtiles.r16
@@ -5274,8 +5274,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Rough
+			3: Transition
 	Template@834:
 		Id: 834
 		Images: customtiles.r16
@@ -5306,9 +5306,9 @@ Templates:
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@837:
 		Id: 837
 		Images: customtiles.r16
@@ -5317,9 +5317,9 @@ Templates:
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Transition
 			2: Cliff
-			3: Cliff
+			3: Transition
 	Template@838:
 		Id: 838
 		Images: customtiles.r16
@@ -5403,8 +5403,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Sand
+			3: Transition
 	Template@845:
 		Id: 845
 		Images: customtiles.r16
@@ -5436,8 +5436,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Transition
+			3: Sand
 	Template@848:
 		Id: 848
 		Images: customtiles.r16
@@ -5446,9 +5446,9 @@ Templates:
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Sand
 	Template@849:
 		Id: 849
 		Images: customtiles.r16
@@ -5457,9 +5457,9 @@ Templates:
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
-			1: Cliff
+			1: Rough
 			2: Cliff
-			3: Cliff
+			3: Sand
 	Template@850:
 		Id: 850
 		Images: customtiles.r16
@@ -5491,8 +5491,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Sand
+			3: Sand
 	Template@853:
 		Id: 853
 		Images: customtiles.r16
@@ -5502,8 +5502,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Cliff
-			3: Cliff
+			2: Sand
+			3: Sand
 	Template@854:
 		Id: 854
 		Images: customtiles.r16
@@ -6092,8 +6092,8 @@ Templates:
 		Size: 3,1
 		Categories: Rotten-Base
 		Tiles:
-			0: Cliff
-			1: Rough
+			0: Rough
+			1: Cliff
 			2: Cliff
 	Template@1077:
 		Id: 1077
