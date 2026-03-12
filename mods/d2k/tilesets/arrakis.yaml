@@ -6811,6 +6811,92 @@ Templates:
 		Categories: Rock-Sand-Smooth
 		Tiles:
 			0: Transition
+	Template@1153:
+		Id: 1153
+		Images: BLOXTREE.R16
+		Frames: 1, 2, 3, 4, 5, 349, 350, 351, 352, 353, 354, 355, 375, 394, 395, 415, 462, 463
+		Size: 1,1
+		PickAny: True
+		Categories: Basic
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+			10: Rock
+			11: Rock
+			12: Rock
+			13: Rock
+			14: Rock
+			15: Rock
+			16: Rock
+			17: Rock
+	Template@1154:
+		Id: 1154
+		Images: BLOXTREE.R16
+		Frames: 297, 316, 319, 356, 357, 374, 414, 434, 435, 619, 639, 713, 714, 715, 716, 717, 732, 733, 734, 735, 736, 737
+		Size: 1,1
+		PickAny: True
+		Categories: Basic
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+			6: Rock
+			7: Rock
+			8: Rock
+			9: Rock
+			10: Rock
+			11: Rock
+			12: Rock
+			13: Rock
+			14: Rock
+			15: Rock
+			16: Rock
+			17: Rock
+			18: Rock
+			19: Rock
+			20: Rock
+			21: Rock
+	Template@1155:
+		Id: 1155
+		Images: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Size: 1,1
+		PickAny: True
+		Categories: Basic
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@1156:
+		Id: 1156
+		Images: BLOXBASE.R16
+		Frames: 63, 64, 65, 66, 81, 83, 84, 103, 104
+		Size: 1,1
+		PickAny: True
+		Categories: Basic
+		Tiles:
+			0: Dune
+			1: Dune
+			2: Dune
+			3: Dune
+			4: Dune
+			5: Dune
+			6: Dune
+			7: Dune
+			8: Dune
+
 
 MultiBrushCollections:
 	Segmented:
