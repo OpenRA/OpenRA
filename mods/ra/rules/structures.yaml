@@ -468,6 +468,8 @@ PDOX:
 	Inherits@shape: ^2x2Shape
 	Selectable:
 		Bounds: 2048, 2048
+	WithSpriteBody:
+		PauseOnCondition: disabled
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 120
