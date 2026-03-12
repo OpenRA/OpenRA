@@ -782,8 +782,12 @@ pdox:
 	Defaults:
 		Filename: pdox.shp
 	idle:
+		Length: 4
+		Tick: 120
 	damaged-idle:
 		Start: 29
+		Length: 4
+		Tick: 120
 	active:
 		Length: 29
 	damaged-active:
