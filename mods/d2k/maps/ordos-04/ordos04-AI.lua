@@ -94,7 +94,7 @@ ActivateAI = function()
 	}
 
 	Trigger.OnBuildingPlaced(Harkonnen, function(p, building)
-		table.insert(Base[Harkonnen], building)
+		table.insert(Base["Harkonnen"], building)
 		DefendAndRepairBase(Harkonnen, {building}, 0.75, AttackGroupSize[Difficulty] )
 		if productionTypes[building.Type] == nil then return end
 		ProduceUnits(Harkonnen, building, delay, productionTypes[building.Type], AttackGroupSize[Difficulty], attackThresholdSize)
