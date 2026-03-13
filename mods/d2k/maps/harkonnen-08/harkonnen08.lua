@@ -216,7 +216,9 @@ BuildSaboteur = function()
 		end)
 
 		SendSaboteur(saboteur)
-		ScanForBetterTargets(saboteur)
+		Trigger.AfterDelay(200, function()
+			ScanForBetterTargets(saboteur)
+		end)
 	end
 
 	Trigger.AfterDelay(DateTime.Minutes(5) + DateTime.Seconds(30), BuildSaboteur)
@@ -398,6 +400,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnKilledOrCaptured(OPalace, function()
+		if AtreidesEnemy.HasNoRequiredUnits() then return  end
 		Media.DisplayMessage(UserInterface.GetFluentMessage("cannot-stand-harkonnen-must-become-neutral"), UserInterface.GetFluentMessage("atreides-commander"), HSLColor.FromHex("5A7394"))
 
 		ChangeOwner(AtreidesEnemy, AtreidesNeutral)
