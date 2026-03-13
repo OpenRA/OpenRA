@@ -32,18 +32,18 @@
 			Spice: 100
 			SpiceBlobs: 100
 			Dune: 80
-			Rough: 80
+			Rough: 70
 	Locomotor@VEHICLE:
 		Name: vehicle
 		Crushes: crate, spicebloom
 		TerrainSpeeds:
-			Sand: 100
+			Sand: 90
 			Rock: 100
 			Transition: 100
 			Concrete: 100
-			SpiceSand: 100
-			Spice: 100
-			SpiceBlobs: 100
+			SpiceSand: 90
+			Spice: 90
+			SpiceBlobs: 90
 			Dune: 50
 	Locomotor@TANK:
 		Name: tank
@@ -56,7 +56,7 @@
 			SpiceSand: 100
 			Spice: 100
 			SpiceBlobs: 100
-			Dune: 50
+			Dune: 70
 	Locomotor@DEVASTATOR:
 		Name: devastator
 		Crushes: crate, infantry, spicebloom, wall
@@ -68,7 +68,7 @@
 			SpiceSand: 100
 			Spice: 100
 			SpiceBlobs: 100
-			Dune: 50
+			Dune: 70
 	Locomotor@WORM:
 		Name: worm
 		TerrainSpeeds:
