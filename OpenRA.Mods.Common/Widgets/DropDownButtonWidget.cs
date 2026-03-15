@@ -121,6 +121,16 @@ namespace OpenRA.Mods.Common.Widgets
 			return base.OnTabFocusActivate(e);
 		}
 
+		// Close the dropdown before TAB navigation moves focus away.
+		// Called while TabFocusWidget still equals this, so RemovePanel can
+		// safely restore TAB focus to this button without conflicting with navigation.
+		// HandleTabNavigation will then overwrite TabFocusWidget with the next widget.
+		public override void OnBeforeTabNavigation()
+		{
+			if (IsDropDownOpen)
+				RemovePanel();
+		}
+
 		// Close the dropdown panel when TAB focus is lost,
 		// unless the new focus is within the panel itself
 		public override void OnTabFocusLost()
@@ -261,9 +271,9 @@ namespace OpenRA.Mods.Common.Widgets
 				scrollPanel.OnEscapeKey = () => { RemovePanel(); onCancel?.Invoke(); return true; };
 				scrollPanel.TakeKeyboardFocus();
 
-				// Set TAB focus to the first focusable widget in the panel
-				// This enables keyboard navigation for panels with checkboxes or other focusable widgets
-				Ui.SetInitialFocus(panel);
+				// Prevent the dropdown panel from being collected as a TAB-navigable widget.
+				// Navigation within the dropdown is handled via KeyboardFocus (UP/DOWN arrows).
+				scrollPanel.IsFocusable = false;
 			}
 			else
 			{

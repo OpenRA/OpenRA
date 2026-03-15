@@ -124,9 +124,13 @@ namespace OpenRA.Widgets
 
 			var newFocusWidget = focusableWidgets[nextIndex];
 
-			// Clear focus from previous widget, but set new TabFocusWidget first
-			// so that OnTabFocusLost can check where focus is going
+			// Allow the current widget to perform cleanup before focus changes
+			// (e.g. closing an open dropdown panel).
 			var oldFocusWidget = TabFocusWidget;
+			oldFocusWidget?.OnBeforeTabNavigation();
+
+			// Set new TabFocusWidget before calling OnTabFocusLost so that
+			// OnTabFocusLost can check where focus is going.
 			TabFocusWidget = newFocusWidget;
 			TabFocusFromKeyboard = true;
 
@@ -776,6 +780,11 @@ namespace OpenRA.Widgets
 
 		// Called when this widget loses TAB focus
 		public virtual void OnTabFocusLost() { }
+
+		// Called before TAB navigation moves focus away from this widget.
+		// Unlike OnTabFocusLost, this is called before TabFocusWidget is changed,
+		// allowing cleanup (e.g. closing dropdowns) without interfering with navigation.
+		public virtual void OnBeforeTabNavigation() { }
 
 		// Called when ENTER or SPACE is pressed while this widget has TAB focus
 		// Returns true if the activation was handled
