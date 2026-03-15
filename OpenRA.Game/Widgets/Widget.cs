@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -28,6 +28,9 @@ namespace OpenRA.Widgets
 	public interface IKeyboardScrollable
 	{
 		bool HandleScrollKeyPress(KeyInput e);
+
+		// Scrolls the container so that the given widget is visible.
+		void ScrollIntoView(Widget widget);
 	}
 
 	public static class Ui
@@ -138,6 +141,9 @@ namespace OpenRA.Widgets
 			// Set focus to new widget
 			newFocusWidget.OnTabFocusGained();
 
+			// Scroll the new focus widget into view if it is inside a scroll container.
+			ScrollTabFocusIntoView(newFocusWidget);
+
 			return true;
 		}
 
@@ -184,6 +190,22 @@ namespace OpenRA.Widgets
 			}
 
 			return false;
+		}
+
+		// Scrolls a scroll container ancestor to bring the given widget into view.
+		static void ScrollTabFocusIntoView(Widget widget)
+		{
+			var parent = widget.Parent;
+			while (parent != null)
+			{
+				if (parent is IKeyboardScrollable scrollable)
+				{
+					scrollable.ScrollIntoView(widget);
+					return;
+				}
+
+				parent = parent.Parent;
+			}
 		}
 
 		// Clears the current TAB focus

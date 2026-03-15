@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -459,6 +459,22 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (item != null)
 				ScrollToItem(item);
+		}
+
+		public void ScrollIntoView(Widget widget)
+		{
+			// Use screen-space RenderBounds to determine whether the widget is outside the visible area of this panel.
+			var widgetTop = widget.RenderBounds.Top - RenderBounds.Top;
+			var widgetBottom = widget.RenderBounds.Bottom - RenderBounds.Top;
+
+			float? newOffset = null;
+			if (widgetTop < 0)
+				newOffset = currentListOffset - widgetTop + ItemSpacing;
+			else if (widgetBottom > RenderBounds.Height)
+				newOffset = currentListOffset - widgetBottom + RenderBounds.Height - ItemSpacing;
+
+			if (newOffset.HasValue)
+				SetListOffset(newOffset.Value, false);
 		}
 
 		void UpdateSmoothScrolling()
