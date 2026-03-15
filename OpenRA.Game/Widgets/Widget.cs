@@ -91,19 +91,19 @@ namespace OpenRA.Widgets
 			if (focusableWidgets.Count == 0)
 				return false;
 
-			// Sort by TabIndex, then by visual position (top to bottom, left to right)
+			// Sort by TabIndex, then by document position (stable order unaffected by scroll).
 			focusableWidgets.Sort((a, b) =>
 			{
 				var tabIndexCompare = a.TabIndex.CompareTo(b.TabIndex);
 				if (tabIndexCompare != 0)
 					return tabIndexCompare;
 
-				// If same TabIndex, sort by Y position then X position
-				var yCompare = a.RenderBounds.Y.CompareTo(b.RenderBounds.Y);
+				// If same TabIndex, sort by document Y then X (not RenderBounds, which changes with scroll).
+				var yCompare = GetDocumentY(a).CompareTo(GetDocumentY(b));
 				if (yCompare != 0)
 					return yCompare;
 
-				return a.RenderBounds.X.CompareTo(b.RenderBounds.X);
+				return GetDocumentX(a).CompareTo(GetDocumentX(b));
 			});
 
 			// Find current focused widget index
@@ -192,6 +192,35 @@ namespace OpenRA.Widgets
 			return false;
 		}
 
+		// Returns the sum of Bounds.Y up the parent chain, giving a stable document Y
+		// position that is unaffected by scroll offsets of ancestor scroll containers.
+		static int GetDocumentY(Widget widget)
+		{
+			var y = 0;
+			var current = widget;
+			while (current != null)
+			{
+				y += current.Bounds.Y;
+				current = current.Parent;
+			}
+
+			return y;
+		}
+
+		// Returns the sum of Bounds.X up the parent chain, giving a stable document X position.
+		static int GetDocumentX(Widget widget)
+		{
+			var x = 0;
+			var current = widget;
+			while (current != null)
+			{
+				x += current.Bounds.X;
+				current = current.Parent;
+			}
+
+			return x;
+		}
+
 		// Scrolls a scroll container ancestor to bring the given widget into view.
 		static void ScrollTabFocusIntoView(Widget widget)
 		{
@@ -229,18 +258,18 @@ namespace OpenRA.Widgets
 			if (focusableWidgets.Count == 0)
 				return;
 
-			// Sort by TabIndex, then by visual position
+			// Sort by TabIndex, then by document position
 			focusableWidgets.Sort((a, b) =>
 			{
 				var tabIndexCompare = a.TabIndex.CompareTo(b.TabIndex);
 				if (tabIndexCompare != 0)
 					return tabIndexCompare;
 
-				var yCompare = a.RenderBounds.Y.CompareTo(b.RenderBounds.Y);
+				var yCompare = GetDocumentY(a).CompareTo(GetDocumentY(b));
 				if (yCompare != 0)
 					return yCompare;
 
-				return a.RenderBounds.X.CompareTo(b.RenderBounds.X);
+				return GetDocumentX(a).CompareTo(GetDocumentX(b));
 			});
 
 			var newFocusWidget = focusableWidgets[0];

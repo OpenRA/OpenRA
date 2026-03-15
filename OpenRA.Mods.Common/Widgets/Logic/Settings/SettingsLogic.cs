@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
-			backButton.TabIndex = 201; // Navigated after Reset button
+			backButton.TabIndex = 10001; // Navigated after all panel elements and Reset button
 			backButton.OnClick = () =>
 			{
 				needsRestart |= leavePanelActions[activePanel]();
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var resetButton = widget.Get<ButtonWidget>("RESET_BUTTON");
-			resetButton.TabIndex = 200; // Navigated after panel elements
+			resetButton.TabIndex = 10000; // Navigated after all panel elements
 			resetButton.OnClick = () =>
 			{
 				void Reset()

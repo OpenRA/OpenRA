@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public static class SettingsUtils
 	{
-		// Starting TabIndex for settings panel elements (menu tabs use 0-9, bottom buttons use 200+)
+		// Starting TabIndex for settings panel elements (menu tabs use 0-9, bottom buttons use 10000+)
 		const int PanelElementsBaseTabIndex = 100;
 
 		// Assigns sequential TabIndex values to all focusable widgets in a panel
@@ -27,17 +27,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var focusableWidgets = new List<Widget>();
 			CollectFocusableWidgets(panel, focusableWidgets);
 
-			// Sort by visual position (top to bottom, left to right) to determine navigation order
-			focusableWidgets.Sort((a, b) =>
-			{
-				var yCompare = a.RenderBounds.Y.CompareTo(b.RenderBounds.Y);
-				if (yCompare != 0)
-					return yCompare;
-
-				return a.RenderBounds.X.CompareTo(b.RenderBounds.X);
-			});
-
-			// Assign sequential TabIndex starting from PanelElementsBaseTabIndex
+			// Use DFS traversal order (= YAML declaration order), which is the correct logical
+			// document order. Sorting by screen/document coordinates is unreliable because
+			// items inside a ScrollPanel occupy coordinates that overlap with fixed widgets
+			// outside the panel (e.g. the remap dialog at the bottom).
 			for (var i = 0; i < focusableWidgets.Count; i++)
 				focusableWidgets[i].TabIndex = PanelElementsBaseTabIndex + i;
 		}
