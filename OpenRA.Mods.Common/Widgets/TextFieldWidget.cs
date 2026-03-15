@@ -590,11 +590,6 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.DrawPanel(state,
 				new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
 
-			// Draw TAB focus indicator when this text field has TAB focus but not keyboard focus
-			// (keyboard focus shows the blinking cursor instead)
-			if (HasTabFocus && !HasKeyboardFocus)
-				DrawTabFocusIndicator(new Rectangle(pos.X, pos.Y, Bounds.Width, Bounds.Height));
-
 			// Inset text by the margin and center vertically
 			var verticalMargin = (Bounds.Height - textSize.Y) / 2 - VisualHeight;
 			var textPos = pos + new int2(LeftMargin, verticalMargin);
@@ -633,30 +628,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (isTextOverflowing)
 				Game.Renderer.DisableScissor();
-		}
-
-		// Draws a visual indicator around the text field when it has TAB focus
-		static void DrawTabFocusIndicator(Rectangle rect)
-		{
-			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
-				focusColor = Color.FromArgb(128, 255, 255, 255);
-
-			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
-				focusWidth = 2;
-
-			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
-
-			// Top border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
-
-			// Bottom border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
-
-			// Left border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
-
-			// Right border
-			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
 		}
 
 		public override TextFieldWidget Clone() { return new TextFieldWidget(this); }

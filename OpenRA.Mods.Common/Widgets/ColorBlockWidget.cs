@@ -64,17 +64,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			WidgetUtils.FillRectWithColor(RenderBounds, GetColor());
-
-			if (HasTabFocus)
-			{
-				var bounds = RenderBounds;
-
-				// Draw a white border around the focused swatch
-				WidgetUtils.FillRectWithColor(new Rectangle(bounds.X, bounds.Y, bounds.Width, 2), Color.White);
-				WidgetUtils.FillRectWithColor(new Rectangle(bounds.X, bounds.Bottom - 2, bounds.Width, 2), Color.White);
-				WidgetUtils.FillRectWithColor(new Rectangle(bounds.X, bounds.Y, 2, bounds.Height), Color.White);
-				WidgetUtils.FillRectWithColor(new Rectangle(bounds.Right - 2, bounds.Y, 2, bounds.Height), Color.White);
-			}
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

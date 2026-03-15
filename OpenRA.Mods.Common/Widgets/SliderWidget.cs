@@ -170,10 +170,6 @@ namespace OpenRA.Mods.Common.Widgets
 			var trackOrigin = rb.X + rb.Height / 2;
 			var trackRect = new Rectangle(trackOrigin - 1, rb.Y + (rb.Height - TrackHeight) / 2, trackWidth + 2, TrackHeight);
 
-			// Draw TAB focus indicator when this slider has TAB focus
-			if (HasTabFocus && !IsDisabled())
-				DrawTabFocusIndicator(rb);
-
 			// Tickmarks
 			var tick = ChromeProvider.GetImage("slider", "tick");
 			for (var i = 0; i < Ticks; i++)
@@ -191,31 +187,6 @@ namespace OpenRA.Mods.Common.Widgets
 			// Thumb
 			var thumbHover = Ui.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
 			ButtonWidget.DrawBackground(Thumb, tr, IsDisabled(), isMoving, thumbHover || HasTabFocus, false);
-		}
-
-		// Draws a visual indicator around the slider when it has TAB focus
-		static void DrawTabFocusIndicator(Rectangle rect)
-		{
-			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
-				focusColor = Color.FromArgb(128, 255, 255, 255);
-
-			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
-				focusWidth = 2;
-
-			// Draw a border around the slider
-			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
-
-			// Top border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
-
-			// Bottom border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
-
-			// Left border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
-
-			// Right border
-			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
 		}
 	}
 }

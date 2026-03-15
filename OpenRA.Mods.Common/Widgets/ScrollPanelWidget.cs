@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Hidden
 	}
 
-	public class ScrollPanelWidget : Widget
+	public class ScrollPanelWidget : Widget, IKeyboardScrollable
 	{
 		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
@@ -295,9 +295,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var rb = RenderBounds;
 
-			// Draw TAB focus indicator when this scroll panel has TAB focus
-			if (HasTabFocus)
-				DrawTabFocusIndicator(rb);
 			var scrollbarHeight = rb.Height - 2 * ScrollbarWidth;
 
 			// Scroll thumb is only visible if the content does not fit within the panel bounds
@@ -376,30 +373,6 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		// Draws a visual indicator around the scroll panel when it has TAB focus
-		static void DrawTabFocusIndicator(Rectangle rect)
-		{
-			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
-				focusColor = Color.FromArgb(128, 255, 255, 255);
-
-			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
-				focusWidth = 2;
-
-			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
-
-			// Top border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
-
-			// Bottom border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
-
-			// Left border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
-
-			// Right border
-			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
-		}
-
 		public override int2 ChildOrigin => RenderOrigin + new int2(ScrollBar == ScrollBar.Left ? ScrollbarWidth : 0, (int)currentListOffset);
 
 		public override bool EventBoundsContains(int2 location)
@@ -430,6 +403,30 @@ namespace OpenRA.Mods.Common.Widgets
 				Math.Max(0, Bounds.Height - ContentHeight);
 
 			SetListOffset(value, smooth);
+		}
+
+		public bool HandleScrollKeyPress(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			switch (e.Key)
+			{
+				case Keycode.PAGEUP:
+					Scroll(1);
+					return true;
+				case Keycode.PAGEDOWN:
+					Scroll(-1);
+					return true;
+				case Keycode.HOME:
+					ScrollToTop(true);
+					return true;
+				case Keycode.END:
+					ScrollToBottom(true);
+					return true;
+			}
+
+			return false;
 		}
 
 		public bool ScrolledToBottom => targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height;
@@ -751,14 +748,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var newFocusWidget = focusableWidgets[newIndex];
 
 			// Transfer TAB focus
-			if (Ui.TabFocusWidget != null)
-			{
-				Ui.TabFocusWidget.HasTabFocus = false;
-				Ui.TabFocusWidget.OnTabFocusLost();
-			}
-
+			var oldFocusWidget = Ui.TabFocusWidget;
 			Ui.TabFocusWidget = newFocusWidget;
-			newFocusWidget.HasTabFocus = true;
+
+			oldFocusWidget?.OnTabFocusLost();
+
 			newFocusWidget.OnTabFocusGained();
 
 			return true;
@@ -900,14 +894,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var newFocusWidget = focusableWidgets[newIndex];
 
-			if (Ui.TabFocusWidget != null)
-			{
-				Ui.TabFocusWidget.HasTabFocus = false;
-				Ui.TabFocusWidget.OnTabFocusLost();
-			}
-
+			var oldFocusWidget = Ui.TabFocusWidget;
 			Ui.TabFocusWidget = newFocusWidget;
-			newFocusWidget.HasTabFocus = true;
+
+			oldFocusWidget?.OnTabFocusLost();
+
 			newFocusWidget.OnTabFocusGained();
 
 			return true;
@@ -921,14 +912,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var newFocusWidget = focusableWidgets[0];
 
-			if (Ui.TabFocusWidget != null)
-			{
-				Ui.TabFocusWidget.HasTabFocus = false;
-				Ui.TabFocusWidget.OnTabFocusLost();
-			}
-
+			var oldFocusWidget = Ui.TabFocusWidget;
 			Ui.TabFocusWidget = newFocusWidget;
-			newFocusWidget.HasTabFocus = true;
+
+			oldFocusWidget?.OnTabFocusLost();
+
 			newFocusWidget.OnTabFocusGained();
 
 			return true;
@@ -942,14 +930,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var newFocusWidget = focusableWidgets[^1];
 
-			if (Ui.TabFocusWidget != null)
-			{
-				Ui.TabFocusWidget.HasTabFocus = false;
-				Ui.TabFocusWidget.OnTabFocusLost();
-			}
-
+			var oldFocusWidget = Ui.TabFocusWidget;
 			Ui.TabFocusWidget = newFocusWidget;
-			newFocusWidget.HasTabFocus = true;
+
+			oldFocusWidget?.OnTabFocusLost();
+
 			newFocusWidget.OnTabFocusGained();
 
 			return true;

@@ -65,10 +65,6 @@ namespace OpenRA.Mods.Common.Widgets
 			var text = GetText();
 			var rect = new Rectangle(RenderBounds.Location, new Size(Bounds.Height, Bounds.Height));
 
-			// Draw TAB focus indicator when this checkbox has TAB focus
-			if (HasTabFocus && !disabled)
-				DrawTabFocusIndicator(RenderBounds);
-
 			DrawBackground(Background, rect, disabled, Depressed, hover, IsHighlighted());
 
 			var textPosition = new float2(RenderBounds.Left + RenderBounds.Height * 1.5f, RenderOrigin.Y + (Bounds.Height - font.Measure(text).Y - font.TopOffset) / 2);

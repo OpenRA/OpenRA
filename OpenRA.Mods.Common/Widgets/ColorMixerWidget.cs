@@ -109,42 +109,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			var rb = RenderBounds;
-
-			// Draw TAB focus indicator when this color mixer has TAB focus
-			if (HasTabFocus)
-				DrawTabFocusIndicator(rb);
-
 			WidgetUtils.DrawSprite(mixerSprite, RenderOrigin, RenderBounds.Size);
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
 			var pos = RenderOrigin + PxFromValue() - new int2((int)sprite.Size.X, (int)sprite.Size.Y) / 2;
 			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), Color);
 			WidgetUtils.DrawSprite(sprite, pos);
-		}
-
-		// Draws a visual indicator around the color mixer when it has TAB focus
-		static void DrawTabFocusIndicator(Rectangle rect)
-		{
-			if (!ChromeMetrics.TryGet<Color>("TabFocusColor", out var focusColor))
-				focusColor = Color.FromArgb(128, 255, 255, 255);
-
-			if (!ChromeMetrics.TryGet<int>("TabFocusWidth", out var focusWidth))
-				focusWidth = 2;
-
-			var outer = rect.InflateBy(focusWidth, focusWidth, focusWidth, focusWidth);
-
-			// Top border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, outer.Y, outer.Width, focusWidth), focusColor);
-
-			// Bottom border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Bottom, outer.Width, focusWidth), focusColor);
-
-			// Left border
-			WidgetUtils.FillRectWithColor(new Rectangle(outer.X, rect.Y, focusWidth, rect.Height), focusColor);
-
-			// Right border
-			WidgetUtils.FillRectWithColor(new Rectangle(rect.Right, rect.Y, focusWidth, rect.Height), focusColor);
 		}
 
 		void SetValueFromPx(int2 xy)

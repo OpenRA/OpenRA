@@ -194,14 +194,10 @@ namespace OpenRA.Mods.Common.Widgets
 			// Restore TAB focus to this dropdown button
 			if (IsVisible() && IsFocusable)
 			{
-				if (Ui.TabFocusWidget != null)
-				{
-					Ui.TabFocusWidget.HasTabFocus = false;
+				if (Ui.TabFocusWidget != null && Ui.TabFocusWidget != this)
 					Ui.TabFocusWidget.OnTabFocusLost();
-				}
 
 				Ui.TabFocusWidget = this;
-				HasTabFocus = true;
 				OnTabFocusGained();
 			}
 

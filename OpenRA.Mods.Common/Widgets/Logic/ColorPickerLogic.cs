@@ -284,11 +284,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var newSwatch = visibleSwatches[newIndex];
 
 				// Transfer TAB focus to the new swatch
-				currentSwatch.HasTabFocus = false;
-				currentSwatch.OnTabFocusLost();
-
 				Ui.TabFocusWidget = newSwatch;
-				newSwatch.HasTabFocus = true;
+				currentSwatch.OnTabFocusLost();
 				newSwatch.OnTabFocusGained();
 
 				// Update the preview with the newly focused swatch's color

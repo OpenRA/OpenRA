@@ -21,6 +21,15 @@ using OpenRA.Support;
 
 namespace OpenRA.Widgets
 {
+	/// <summary>
+	/// Implemented by scroll containers that support keyboard-driven scrolling
+	/// (PAGE UP, PAGE DOWN, HOME, END) when a child widget has focus.
+	/// </summary>
+	public interface IKeyboardScrollable
+	{
+		bool HandleScrollKeyPress(KeyInput e);
+	}
+
 	public static class Ui
 	{
 		public const int Timestep = 40;
@@ -37,6 +46,10 @@ namespace OpenRA.Widgets
 
 		// Currently focused widget for TAB navigation (separate from KeyboardFocusWidget used for text input)
 		public static Widget TabFocusWidget;
+
+		// Whether the current tab focus was obtained via keyboard (true) or mouse (false).
+		// Focus indicators are only shown when focus was obtained via keyboard.
+		public static bool TabFocusFromKeyboard;
 
 		static readonly Mediator Mediator = new();
 		static ModData modData;
@@ -112,15 +125,17 @@ namespace OpenRA.Widgets
 			// so that OnTabFocusLost can check where focus is going
 			var oldFocusWidget = TabFocusWidget;
 			TabFocusWidget = newFocusWidget;
+			TabFocusFromKeyboard = true;
 
-			if (oldFocusWidget != null)
-			{
-				oldFocusWidget.HasTabFocus = false;
-				oldFocusWidget.OnTabFocusLost();
-			}
+			oldFocusWidget?.OnTabFocusLost();
+
+			// Revoke KeyboardFocus from the previous widget if it was a focusable widget
+			// (e.g., leaving a text field via TAB should release its keyboard capture)
+			if (KeyboardFocusWidget != null && KeyboardFocusWidget != newFocusWidget
+				&& KeyboardFocusWidget.IsFocusable)
+				KeyboardFocusWidget.YieldKeyboardFocus();
 
 			// Set focus to new widget
-			newFocusWidget.HasTabFocus = true;
 			newFocusWidget.OnTabFocusGained();
 
 			return true;
@@ -154,25 +169,15 @@ namespace OpenRA.Widgets
 			if (TabFocusWidget.OnTabFocusKeyPress(e))
 				return true;
 
-			// For PAGE UP/DOWN/HOME/END, propagate to parent ScrollPanelWidget if not handled
+			// For PAGE UP/DOWN/HOME/END, propagate to parent scroll container if not handled.
 			if (e.Key == Keycode.PAGEUP || e.Key == Keycode.PAGEDOWN ||
 				e.Key == Keycode.HOME || e.Key == Keycode.END)
 			{
 				var parent = TabFocusWidget.Parent;
 				while (parent != null)
 				{
-					// Check if parent can handle scroll navigation via HandleKeyPress
-					// Use reflection to check for ScrollPanelWidget type since we're in OpenRA.Game
-					var handleMethod = parent.GetType().GetMethod("HandleKeyPress",
-						System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance,
-						null, [typeof(KeyInput)], null);
-
-					if (handleMethod != null && parent.GetType().Name == "ScrollPanelWidget")
-					{
-						var result = handleMethod.Invoke(parent, [e]);
-						if (result is bool handled && handled)
-							return true;
-					}
+					if (parent is IKeyboardScrollable scrollable && scrollable.HandleScrollKeyPress(e))
+						return true;
 
 					parent = parent.Parent;
 				}
@@ -186,9 +191,10 @@ namespace OpenRA.Widgets
 		{
 			if (TabFocusWidget != null)
 			{
-				TabFocusWidget.HasTabFocus = false;
-				TabFocusWidget.OnTabFocusLost();
+				var old = TabFocusWidget;
 				TabFocusWidget = null;
+				TabFocusFromKeyboard = false;
+				old.OnTabFocusLost();
 			}
 		}
 
@@ -222,14 +228,9 @@ namespace OpenRA.Widgets
 			var oldFocusWidget = TabFocusWidget;
 			TabFocusWidget = newFocusWidget;
 
-			if (oldFocusWidget != null)
-			{
-				oldFocusWidget.HasTabFocus = false;
-				oldFocusWidget.OnTabFocusLost();
-			}
+			oldFocusWidget?.OnTabFocusLost();
 
 			// Set focus to new widget
-			newFocusWidget.HasTabFocus = true;
 			newFocusWidget.OnTabFocusGained();
 		}
 
@@ -337,7 +338,42 @@ namespace OpenRA.Widgets
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
-		public static void Draw() { Root.DrawOuter(); }
+		public static void Draw()
+		{
+			Root.DrawOuter();
+
+			// Draw focus indicator on top of everything, only when focus was obtained via keyboard.
+			if (TabFocusWidget != null && TabFocusFromKeyboard && TabFocusWidget.IsVisible())
+				DrawFocusIndicator(TabFocusWidget);
+		}
+
+		static void DrawFocusIndicator(Widget widget)
+		{
+			if (!ChromeMetrics.TryGet("TabFocusColor", out Color focusColor))
+				focusColor = Color.FromArgb(128, 255, 255, 255);
+
+			if (!ChromeMetrics.TryGet("TabFocusWidth", out int focusWidth))
+				focusWidth = 2;
+
+			var rect = widget.GetFocusIndicatorBounds();
+			var l = rect.Left - focusWidth;
+			var t = rect.Top - focusWidth;
+			var r = rect.Right;
+			var b = rect.Bottom;
+			var cr = Game.Renderer.RgbaColorRenderer;
+
+			// Top border.
+			cr.FillRect(new float2(l, t), new float2(r + focusWidth, t + focusWidth), focusColor);
+
+			// Bottom border.
+			cr.FillRect(new float2(l, b), new float2(r + focusWidth, b + focusWidth), focusColor);
+
+			// Left border.
+			cr.FillRect(new float2(l, t), new float2(l + focusWidth, b + focusWidth), focusColor);
+
+			// Right border.
+			cr.FillRect(new float2(r, t), new float2(r + focusWidth, b + focusWidth), focusColor);
+		}
 
 		public static bool HandleInput(MouseInput mi)
 		{
@@ -374,7 +410,12 @@ namespace OpenRA.Widgets
 		/// <param name="e">Key input data.</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
-			// Handle TAB navigation first (highest priority for UI navigation)
+			// The widget with KeyboardFocus has absolute priority
+			// (allows tab autocomplete in text fields, etc.)
+			if (KeyboardFocusWidget != null && KeyboardFocusWidget.HandleKeyPressOuter(e))
+				return true;
+
+			// Handle TAB navigation
 			if (e.Key == Keycode.TAB && HandleTabNavigation(e))
 				return true;
 
@@ -477,8 +518,8 @@ namespace OpenRA.Widgets
 		// Whether this widget can receive TAB focus
 		public bool IsFocusable = false;
 
-		// Whether this widget currently has TAB focus (set by the Ui class)
-		public bool HasTabFocus = false;
+		// Whether this widget currently has TAB focus (derived from Ui.TabFocusWidget)
+		public bool HasTabFocus => Ui.TabFocusWidget == this;
 
 		// Calculated internally
 		public WidgetBounds Bounds;
@@ -697,6 +738,10 @@ namespace OpenRA.Widgets
 		// Returns true if this widget can currently receive TAB focus
 		// Override to add additional conditions (e.g., not disabled)
 		public virtual bool IsTabNavigable() { return IsFocusable && IsVisible(); }
+
+		// Returns the bounds used for drawing the focus indicator.
+		// Override to customize (e.g., ColorBlockWidget uses inner bounds).
+		public virtual Rectangle GetFocusIndicatorBounds() { return RenderBounds; }
 
 		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
 		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget.</returns>
