@@ -129,6 +129,43 @@ namespace OpenRA.Widgets
 			var oldFocusWidget = TabFocusWidget;
 			oldFocusWidget?.OnBeforeTabNavigation();
 
+			// OnBeforeTabNavigation may have changed the widget tree (e.g. closing a dropdown
+			// removes its children). If the target widget is no longer in the tree, recalculate.
+			var updatedFocusableWidgets = new List<Widget>();
+			CollectFocusableWidgets(navigationScope, updatedFocusableWidgets);
+			if (!updatedFocusableWidgets.Contains(newFocusWidget))
+			{
+				if (updatedFocusableWidgets.Count == 0)
+					return false;
+
+				// Re-sort and pick the next widget from the updated list.
+				updatedFocusableWidgets.Sort((a, b) =>
+				{
+					var tabIndexCompare = a.TabIndex.CompareTo(b.TabIndex);
+					if (tabIndexCompare != 0)
+						return tabIndexCompare;
+
+					var yCompare = GetDocumentY(a).CompareTo(GetDocumentY(b));
+					if (yCompare != 0)
+						return yCompare;
+
+					return GetDocumentX(a).CompareTo(GetDocumentX(b));
+				});
+
+				var updatedCurrentIndex = oldFocusWidget != null
+					? updatedFocusableWidgets.IndexOf(oldFocusWidget) : -1;
+
+				int updatedNextIndex;
+				if (reverse)
+					updatedNextIndex = updatedCurrentIndex <= 0
+						? updatedFocusableWidgets.Count - 1 : updatedCurrentIndex - 1;
+				else
+					updatedNextIndex = updatedCurrentIndex >= updatedFocusableWidgets.Count - 1
+						? 0 : updatedCurrentIndex + 1;
+
+				newFocusWidget = updatedFocusableWidgets[updatedNextIndex];
+			}
+
 			// Set new TabFocusWidget before calling OnTabFocusLost so that
 			// OnTabFocusLost can check where focus is going.
 			TabFocusWidget = newFocusWidget;
