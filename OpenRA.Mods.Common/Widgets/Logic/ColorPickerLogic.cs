@@ -98,10 +98,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var customColorTemplate = paletteTabPanel.Get<ColorBlockWidget>("COLORCUSTOM");
 
 			mixerTab.IsVisible = () => !paletteTabOpenedLast;
+			mixerTabButton.TabIndex = 0;
 			mixerTabButton.OnClick = () => paletteTabOpenedLast = false;
 			mixerTabButton.IsHighlighted = mixerTab.IsVisible;
 
 			paletteTab.IsVisible = () => paletteTabOpenedLast;
+			paletteTabButton.TabIndex = 1;
 			paletteTabButton.OnClick = () => paletteTabOpenedLast = true;
 			paletteTabButton.IsHighlighted = () => paletteTab.IsVisible() || paletteTabHighlighted > 0;
 
@@ -124,8 +126,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (logicArgs.TryGetValue("PaletteCustomRows", out yaml) && !int.TryParse(yaml.Value, out paletteCustomRows))
 				throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
 
+			if (randomButton != null)
+				randomButton.TabIndex = 2;
+
+			var storeButton = widget.Get<ButtonWidget>("STORE_BUTTON");
+			if (storeButton != null)
+				storeButton.TabIndex = 3;
+
 			var presetColors = colorManager.PresetColors;
-			var tabIndex = 0;
+
+			// Swatches start at TabIndex 10 to leave room for the fixed buttons above.
+			var tabIndex = 10;
 
 			// Create preset color swatches
 			for (var j = 0; j < palettePresetRows; j++)
@@ -218,7 +229,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Store color button
-			var storeButton = widget.Get<ButtonWidget>("STORE_BUTTON");
 			if (storeButton != null)
 			{
 				storeButton.OnClick = () =>
