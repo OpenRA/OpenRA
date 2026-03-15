@@ -549,6 +549,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
+			replayList.OnDeleteKey = () =>
+			{
+				if (!deleteButton.IsDisabled())
+					deleteButton.OnClick();
+				return true;
+			};
+
 			var deleteAllButton = panel.Get<ButtonWidget>("MNG_DELALL_BUTTON");
 			deleteAllButton.IsDisabled = () => !replayState.Any(kvp => kvp.Value.Visible);
 			deleteAllButton.OnClick = () =>

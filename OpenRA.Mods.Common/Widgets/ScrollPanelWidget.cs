@@ -51,6 +51,9 @@ namespace OpenRA.Mods.Common.Widgets
 		// Called when Escape is pressed. Return true if the key was handled.
 		public Func<bool> OnEscapeKey;
 
+		// Called when Delete is pressed. Return true if the key was handled.
+		public Func<bool> OnDeleteKey;
+
 		// Called when the keyboard-focused item changes (e.g., via UP/DOWN arrow keys).
 		// The parameter is the newly focused item, or null if focus is cleared.
 		public Action<ScrollItemWidget> OnKeyboardFocusChanged;
@@ -622,6 +625,11 @@ namespace OpenRA.Mods.Common.Widgets
 						return OnEscapeKey();
 					return false;
 
+				case Keycode.DELETE:
+					if (OnDeleteKey != null)
+						return OnDeleteKey();
+					return false;
+
 				default:
 					return false;
 			}
@@ -666,6 +674,11 @@ namespace OpenRA.Mods.Common.Widgets
 						return OnEscapeKey();
 					return false;
 
+				case Keycode.DELETE:
+					if (OnDeleteKey != null)
+						return OnDeleteKey();
+					return false;
+
 				default:
 					return false;
 			}
@@ -703,6 +716,11 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.ESCAPE:
 					if (OnEscapeKey != null)
 						return OnEscapeKey();
+					return false;
+
+				case Keycode.DELETE:
+					if (OnDeleteKey != null)
+						return OnDeleteKey();
 					return false;
 
 				default:

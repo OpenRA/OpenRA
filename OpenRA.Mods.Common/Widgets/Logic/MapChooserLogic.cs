@@ -417,6 +417,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			tabScrollpanel.OnEscapeKey = () => { canceling(); return true; };
 
+			if (tab == MapClassification.User)
+			{
+				var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
+				tabScrollpanel.OnDeleteKey = () =>
+				{
+					if (!deleteMapButton.IsDisabled())
+						deleteMapButton.OnClick();
+					return true;
+				};
+			}
+
 			// Update selected map when navigating with keyboard (UP/DOWN arrows)
 			tabScrollpanel.OnKeyboardFocusChanged = item =>
 			{

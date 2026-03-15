@@ -247,7 +247,10 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.TAB:
 					if (OnTabKey(e))
 						return true;
-					break;
+
+					// Release keyboard focus so the global TAB navigation can handle this key.
+					YieldKeyboardFocus();
+					return false;
 
 				case Keycode.ESCAPE:
 					ClearSelection();
