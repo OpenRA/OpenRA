@@ -14,12 +14,13 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.D2k.Traits.Buildings;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	[Desc("Attach this to the world actor. Required for LaysTerrain to work.")]
+	[Desc("Attach this to the world actor. Required for `" + nameof(D2kBuilding) + "` to work.")]
 	[TraitLocation(SystemActors.World)]
 	public class BuildableTerrainLayerInfo : TraitInfo, Requires<ITiledTerrainRendererInfo>
 	{
