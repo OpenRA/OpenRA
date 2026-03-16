@@ -38,7 +38,8 @@ namespace OpenRA
 		System = 1,
 		User = 2,
 		Remote = 4,
-		Generated = 8
+		Generated = 8,
+		Community = 16
 	}
 
 	[SuppressMessage("StyleCop.CSharp.NamingRules",

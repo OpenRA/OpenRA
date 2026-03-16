@@ -12,6 +12,8 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Traits;
@@ -96,6 +98,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[FluentReference]
 		const string GeneratedMapsTab = "button-mapchooser-generated-maps-tab";
+
+		[FluentReference]
+		const string CommunityMapsTab = "button-mapchooser-community-maps-tab";
 
 		public static string MapSizeLabel(Size size)
 		{
@@ -182,7 +187,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var okButton = widget.Get<ButtonWidget>("BUTTON_OK");
 			if (onSelect != null)
-				okButton.IsDisabled = () => currentTab == MapClassification.Generated && generatedMapArgs == null;
+				okButton.IsDisabled = () => currentTab == MapClassification.Community ||
+					(currentTab == MapClassification.Generated && generatedMapArgs == null);
 			else
 				okButton.Disabled = true;
 
@@ -198,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var filterContainer = widget.GetOrNull("FILTER_ORDER_CONTROLS");
 			if (filterContainer != null)
-				filterContainer.IsVisible = () => currentTab != MapClassification.Generated;
+				filterContainer.IsVisible = () => currentTab != MapClassification.Generated && currentTab != MapClassification.Community;
 
 			var mapFilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
 			if (mapFilterInput != null)
@@ -234,7 +240,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					scrollpanels[currentTab].ScrollToItem(uid, smooth: true);
 				};
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Length == 0;
-				randomMapButton.IsVisible = () => currentTab != MapClassification.Generated;
+				randomMapButton.IsVisible = () => currentTab != MapClassification.Generated && currentTab != MapClassification.Community;
 			}
 
 			var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
@@ -287,6 +293,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupMapPanel(MapClassification.User, "USER_MAPS_TAB");
 			SetupMapPanel(MapClassification.System, "SYSTEM_MAPS_TAB");
 			SetupMapPanel(MapClassification.Remote, "REMOTE_MAPS_TAB");
+			SetupCommunityMapsPanel("COMMUNITY_MAPS_TAB");
 
 			var hasGenerator = modData.DefaultRules.Actors[SystemActors.EditorWorld].HasTraitInfo<IEditorMapGeneratorInfo>();
 			if (onSelectGenerated != null && hasGenerator)
@@ -302,6 +309,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			else
 			{
 				tabLabels[MapClassification.System] = SystemMapsTab;
+				tabLabels[MapClassification.Community] = CommunityMapsTab;
 				tabLabels[MapClassification.User] = UserMapsTab;
 				if (onSelectGenerated != null && hasGenerator)
 					tabLabels[MapClassification.Generated] = GeneratedMapsTab;
@@ -331,7 +339,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SwitchTab(MapClassification tab)
 		{
 			currentTab = tab;
-			EnumerateMaps(tab);
+			if (tab != MapClassification.Community)
+				EnumerateMaps(tab);
 		}
 
 		void RefreshMaps(MapClassification tab)
@@ -379,14 +388,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetupMapTabs()
 		{
-			for (var i = 0; i < 3; i++)
+			for (var i = 0; i < 5; i++)
 				widget.Get<ButtonWidget>($"BUTTON{i + 1}").Visible = false;
 
 			var tabCount = 0;
 			foreach (var kv in tabLabels)
 			{
 				var tab = kv.Key;
-				if (tab == MapClassification.User && tabMaps[tab].Length == 0)
+				if (tab == MapClassification.User && tabMaps.TryGetValue(tab, out var maps) && maps.Length == 0)
 					continue;
 
 				var tabButton = widget.Get<ButtonWidget>($"BUTTON{++tabCount}");
@@ -425,6 +434,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					})
 				}
 			});
+		}
+
+		void SetupCommunityMapsPanel(string tabContainerName)
+		{
+			var tabContainer = widget.Get<ContainerWidget>(tabContainerName);
+			tabContainer.IsVisible = () => currentTab == MapClassification.Community;
+
+			var linkButton = tabContainer.Get<ButtonWidget>("BUTTON_COMMUNITY_MAPS_LINK");
+			linkButton.OnClick = () => Game.Renderer.TryOpenUrl("https://resource.openra.net/");
+
+			var wikiMappingButton = tabContainer.Get<ButtonWidget>("BUTTON_WIKI_MAPPING");
+			wikiMappingButton.OnClick = () => Game.Renderer.TryOpenUrl("https://github.com/OpenRA/OpenRA/wiki/Mapping");
+
+			var wikiScriptingButton = tabContainer.Get<ButtonWidget>("BUTTON_WIKI_MAP_SCRIPTING");
+			wikiScriptingButton.OnClick = () => Game.Renderer.TryOpenUrl("https://github.com/OpenRA/OpenRA/wiki/Map-scripting");
+
+			var openFolderButton = tabContainer.Get<ButtonWidget>("BUTTON_OPEN_MAPS_FOLDER");
+			openFolderButton.OnClick = () =>
+			{
+				var userMapFolder = modData.Manifest.MapFolders
+					.FirstOrDefault(kv => kv.Value == "User").Key;
+
+				if (userMapFolder == null)
+					return;
+
+				var folderPath = Platform.ResolvePath(userMapFolder.TrimStart('~'));
+				if (!Directory.Exists(folderPath))
+					Directory.CreateDirectory(folderPath);
+
+				try
+				{
+					Process.Start(new ProcessStartInfo
+					{
+						FileName = folderPath,
+						UseShellExecute = true
+					});
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to open custom maps folder: {e.Message}");
+				}
+			};
 		}
 
 		void SetupGameModeDropdown(MapClassification tab, DropDownButtonWidget gameModeDropdown)

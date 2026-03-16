@@ -513,6 +513,25 @@ button-mapchooser-system-maps-tab = Official Maps
 button-mapchooser-remote-maps-tab = Server Maps
 button-mapchooser-user-maps-tab = Custom Maps
 button-mapchooser-generated-maps-tab = Generate Map
+button-mapchooser-community-maps-tab = Community Maps
+label-mapchooser-community-resource-header = Resource Center
+label-mapchooser-community-resource-desc =
+    You can browse the Resource Center to download maps created by the community, 22,350 maps have already been uploaded.
+label-mapchooser-community-wiki-desc =
+    It's also the place where you can upload your own maps, if you want to share them with other players.
+
+    Check the Wiki pages to learn how to create maps and add Lua scripting:
+button-mapchooser-community-maps-link = Resource Center
+button-mapchooser-wiki-mapping = Wiki: Mapping
+button-mapchooser-wiki-map-scripting = Wiki: Map Scripting
+label-mapchooser-community-folder-header = Maps Folder Location
+label-mapchooser-community-folder-desc =
+    Custom maps are stored in the following directory. Once the .oramap file is downloaded, place it in this folder:
+
+    Windows: %AppData%\OpenRA\maps\<mod name>\
+    Mac OSX: ~/Library/Application Support/OpenRA/maps/<mod name>/
+    Linux: ~/.config/openra/maps/<mod name>/
+button-mapchooser-open-maps-folder = Open Maps Folder
 
 ## MissionBrowserLogic
 dialog-no-video =

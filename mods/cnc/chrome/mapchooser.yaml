@@ -33,6 +33,16 @@ Container@MAPCHOOSER_PANEL:
 					Y: 15
 					Height: 31
 					Width: 135
+				Button@BUTTON4:
+					X: 435
+					Y: 15
+					Height: 31
+					Width: 135
+				Button@BUTTON5:
+					X: 575
+					Y: 15
+					Height: 31
+					Width: 135
 				Container@MAP_TAB_PANES:
 					Width: PARENT_WIDTH - 30
 					Height: PARENT_HEIGHT - 90
@@ -63,6 +73,94 @@ Container@MAPCHOOSER_PANEL:
 									Width: PARENT_WIDTH
 									Height: PARENT_HEIGHT
 									ItemSpacing: 1
+						Container@COMMUNITY_MAPS_TAB:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Children:
+								ScrollPanel@COMMUNITY_MAPS_PANEL:
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									Children:
+										Background@RESOURCE_HEADER:
+											X: 5
+											Y: 10
+											Width: PARENT_WIDTH - 24 - 10
+											Height: 13
+											Background: separator
+											ClickThrough: true
+											Children:
+												Label@LABEL:
+													Width: PARENT_WIDTH
+													Height: PARENT_HEIGHT
+													Font: TinyBold
+													Align: Center
+													Text: label-mapchooser-community-resource-header
+										Label@COMMUNITY_RESOURCE_DESC:
+											X: 20
+											Y: 30
+											Width: PARENT_WIDTH - 40
+											Height: 40
+											WordWrap: true
+											Align: Center
+											Text: label-mapchooser-community-resource-desc
+										Button@BUTTON_COMMUNITY_MAPS_LINK:
+											X: (PARENT_WIDTH - WIDTH) / 2
+											Y: 75
+											Width: 200
+											Height: 25
+											Text: button-mapchooser-community-maps-link
+											Font: Bold
+										Label@COMMUNITY_WIKI_DESC:
+											X: 20
+											Y: 110
+											Width: PARENT_WIDTH - 40
+											Height: 40
+											WordWrap: true
+											Align: Center
+											Text: label-mapchooser-community-wiki-desc
+										Button@BUTTON_WIKI_MAPPING:
+											X: (PARENT_WIDTH - WIDTH) / 2 - 110
+											Y: 170
+											Width: 180
+											Height: 25
+											Text: button-mapchooser-wiki-mapping
+											Font: Bold
+										Button@BUTTON_WIKI_MAP_SCRIPTING:
+											X: (PARENT_WIDTH - WIDTH) / 2 + 110
+											Y: 170
+											Width: 180
+											Height: 25
+											Text: button-mapchooser-wiki-map-scripting
+											Font: Bold
+										Background@FOLDER_HEADER:
+											X: 5
+											Y: 210
+											Width: PARENT_WIDTH - 24 - 10
+											Height: 13
+											Background: separator
+											ClickThrough: true
+											Children:
+												Label@LABEL:
+													Width: PARENT_WIDTH
+													Height: PARENT_HEIGHT
+													Font: TinyBold
+													Align: Center
+													Text: label-mapchooser-community-folder-header
+										Label@COMMUNITY_FOLDER_DESC:
+											X: 20
+											Y: 230
+											Width: PARENT_WIDTH - 40
+											Height: 100
+											WordWrap: true
+											Align: Center
+											Text: label-mapchooser-community-folder-desc
+										Button@BUTTON_OPEN_MAPS_FOLDER:
+											X: (PARENT_WIDTH - WIDTH) / 2
+											Y: 340
+											Width: 200
+											Height: 25
+											Text: button-mapchooser-open-maps-folder
+											Font: Bold
 						Container@GENERATE_MAP_TAB:
 							Width: PARENT_WIDTH
 							Height: PARENT_HEIGHT + 30
