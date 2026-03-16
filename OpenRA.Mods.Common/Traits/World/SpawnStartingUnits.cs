@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. " +
-		"Both are defined at MPStartUnits. Attach this to the world actor.")]
+		"Both are defined at `" + nameof(StartingUnits) + "`. Attach this to the world actor.")]
 	public class SpawnStartingUnitsInfo : TraitInfo, Requires<StartingUnitsInfo>, NotBefore<PathFinderInfo>, ILobbyOptions
 	{
 		public readonly string StartingUnitsClass = "none";
