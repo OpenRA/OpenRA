@@ -173,7 +173,7 @@ end
 AirStrikeTimer = 7500
 AirStrikeChargeTime = 7500
 AirstrikeLogic = function(airstrikeProvider)
-	if airstrikeProvider.IsDead then return end
+	if airstrikeProvider.IsDead or airstrikeProvider.Owner ~= AtreidesMain then return end
 
 	if DateTime.GameTime <= AirStrikeTimer then
 		Trigger.AfterDelay(AirStrikeTimer - DateTime.GameTime + 1, function()
@@ -188,7 +188,6 @@ AirstrikeLogic = function(airstrikeProvider)
 	else
 		AirStrikeVSBuilding(airstrikeProvider)
 		Trigger.AfterDelay(7500, function() AirstrikeLogic(airstrikeProvider) end)
-		IsAirstrikeReady = false
 	end
 end
 
@@ -211,7 +210,7 @@ AirStrikeVSBuilding = function(airstrikeProvider)
 end
 
 DefensiveAirStrike = function(airstrikeProvider, possibleTargets)
-	if airstrikeProvider.IsDead then return end
+	if airstrikeProvider.IsDead  or DateTime.GameTime <= AirStrikeTimer then return end
 	local bestValue = {}
 	local bestIndex = 1
 	for i = 1, #possibleTargets, 1 do
@@ -237,7 +236,7 @@ end
 
 EmergencyBehaviour = function(player,target)
 	if player == AtreidesMain or player == AtreidesSmall then
-		if AHiTechFactory.IsDead then return end
+		if AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesMain then return end
 
 		local enemyunits = Map.ActorsInCircle(Map.CenterOfCell(target), WDist.FromCells(15), function(a)
 			return a.Owner == Harkonnen

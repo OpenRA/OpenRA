@@ -124,7 +124,7 @@ end
 AirStrikeTimer = 7500
 AirStrikeChargeTime = 7500
 AirstrikeLogic = function(airstrikeProvider)
-	if airstrikeProvider.IsDead then
+	if airstrikeProvider.IsDead or airstrikeProvider.Owner ~= AtreidesEnemy then
 		return
 	end
 	if DateTime.GameTime <= AirStrikeTimer then
@@ -140,12 +140,11 @@ AirstrikeLogic = function(airstrikeProvider)
 	else
 		AirStrikeVSBuilding(airstrikeProvider)
 		Trigger.AfterDelay(7500, function() AirstrikeLogic(airstrikeProvider) end)
-		IsAirstrikeReady = false
 	end
 end
 
 AirStrikeVSBuilding = function(airstrikeProvider)
-	if airstrikeProvider.IsDead or  DateTime.GameTime < AirStrikeTimer  then
+	if airstrikeProvider.IsDead or DateTime.GameTime < AirStrikeTimer  then
 		return
 	end
 
@@ -309,7 +308,7 @@ end
 EmergencyBehaviour = function(player, target)
 	HoldProduction[player] = false
 	if player == Ordos and not AtreidesEnemy.HasNoRequiredUnits() then
-		if AHiTechFactory.IsDead then return end
+		if AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesEnemy then return end
 		local enemyunits = Map.ActorsInCircle(Map.CenterOfCell(target), WDist.FromCells(15), function(a)
 			return a.Owner == Harkonnen
 				and not a.IsDead

@@ -171,7 +171,6 @@ AirstrikeLogic = function(airstrikeProvider)
 	else
 		AirStrikeVSBuilding(airstrikeProvider)
 		Trigger.AfterDelay(7500, function() AirstrikeLogic(airstrikeProvider) end)
-		IsAirstrikeReady = false
 	end
 end
 
@@ -267,23 +266,17 @@ Tick = function()
 end
 
 EmergencyBehaviour = function(player, target)
-	if HiTechIsDead or not IsAirstrikeReady or player == Corrino then return end
-
-	local targets = {}
-	if player == AtreidesMain then
-		targets = Map.ActorsInBox(Map.CenterOfCell(CPos.New(73,9)), Map.CenterOfCell(CPos.New(88,26)))
-	else
-		targets = Map.ActorsInBox(Map.CenterOfCell(CPos.New(5,18)), Map.CenterOfCell(CPos.New(16,32)))
-	end
-
-	targets = Utils.Where(targets, function(a)
-		return a.Owner == Harkonnen
+	if player == AtreidesMain or player == AtreidesSmall then
+		if HiTechIsDead then return end
+		local enemyunits = Map.ActorsInCircle(Map.CenterOfCell(target), WDist.FromCells(15), function(a)
+			return a.Owner == Harkonnen
 				and not a.IsDead
 				and a.HasProperty("Attack")
-	end)
+		end)
 
-	if targets[1] == nil  then return end
-	DefensiveAirStrike(AHiTechFactory, targets)
+		if enemyunits[1] == nil  then return end
+		DefensiveAirStrike(AHiTechFactory, enemyunits)
+	end
 end
 
 WorldLoaded = function()
