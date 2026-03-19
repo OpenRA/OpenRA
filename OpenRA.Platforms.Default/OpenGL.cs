@@ -283,7 +283,7 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		public unsafe delegate int GetIntegerv(int pname, out int param);
+		public delegate int GetIntegerv(int pname, out int param);
 		public static GetIntegerv glGetIntegerv { get; private set; }
 
 		public delegate void Finish();
