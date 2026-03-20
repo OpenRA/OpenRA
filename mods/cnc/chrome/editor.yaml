@@ -1189,6 +1189,11 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 					MinimumValue: 0
 					MaximumValue: 10
 					Ticks: 11
+		Checkbox@ALLOW_END_DEVIATION:
+			X: 5
+			Width: PARENT_WIDTH - 35
+			Height: 25
+			Text: checkbox-tiling-path-allow-end-deviation
 		Checkbox@CLOSED_LOOPS:
 			X: 5
 			Width: PARENT_WIDTH - 35

@@ -78,6 +78,7 @@ label-tiling-path-type-start = Start type
 label-tiling-path-type-inner = Inner type
 label-tiling-path-type-end = End type
 label-tiling-path-deviation = Deviation limit
+checkbox-tiling-path-allow-end-deviation = Allow end point deviation
 checkbox-tiling-path-closed-loops = Loops use only inner types
 button-tiling-path-reverse = Reverse path
 button-tiling-path-reset = Discard path

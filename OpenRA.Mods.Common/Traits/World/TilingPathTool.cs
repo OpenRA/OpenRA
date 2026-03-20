@@ -325,9 +325,10 @@ namespace OpenRA.Mods.Common.Traits
 		public string EndType { get; private set; } = null;
 		public DirectionMask AutoStartDirectionMask = DirectionMask.None;
 		public DirectionMask AutoEndDirectionMask = DirectionMask.None;
+		public int MaxDeviation { get; private set; } = 5;
+		public bool AllowEndDeviation { get; private set; } = true;
 		public bool ClosedLoops { get; private set; } = true;
 		public int RandomSeed { get; private set; } = 0;
-		public int MaxDeviation { get; private set; } = 5;
 		public EditorBlitSource? EditorBlitSource { get; private set; } = null;
 
 		bool disposed;
@@ -460,6 +461,9 @@ namespace OpenRA.Mods.Common.Traits
 					permittedTemplates);
 				tilingPath.Start.Direction = plan.AutoStart(AutoStartDirectionMask);
 				tilingPath.End.Direction = plan.AutoEnd(AutoEndDirectionMask);
+				if (AllowEndDeviation)
+					tilingPath.SetAutoEndDeviation();
+
 				var result = tilingPath.Tile(random);
 				if (result != null)
 					return result.ToEditorBlitSource(WorldRenderer, random);
@@ -564,6 +568,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetMaxDeviation(int value)
 		{
 			MaxDeviation = value;
+			Update();
+		}
+
+		public void SetAllowEndDeviation(bool value)
+		{
+			AllowEndDeviation = value;
 			Update();
 		}
 	}

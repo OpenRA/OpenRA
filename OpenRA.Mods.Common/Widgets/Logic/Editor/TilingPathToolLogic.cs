@@ -98,6 +98,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			deviationSlider.GetValue = () => tool.MaxDeviation;
 			deviationSlider.OnChange += (value) => tool.SetMaxDeviation((int)value);
 
+			var allowEndDeviationCheckbox = widget.Get<CheckboxWidget>("ALLOW_END_DEVIATION");
+			allowEndDeviationCheckbox.IsChecked = () => tool.AllowEndDeviation;
+			allowEndDeviationCheckbox.OnClick = () => tool.SetAllowEndDeviation(!tool.AllowEndDeviation);
+
 			var closedLoopsCheckbox = widget.Get<CheckboxWidget>("CLOSED_LOOPS");
 			closedLoopsCheckbox.IsChecked = () => tool.ClosedLoops;
 			closedLoopsCheckbox.OnClick = () => tool.SetClosedLoops(!tool.ClosedLoops);
