@@ -136,7 +136,7 @@ namespace OpenRA.Platforms.Default
 					if (Platform.CurrentPlatform == PlatformType.OSX)
 						return new Size(usable.w, usable.h - titleBarHeight);
 
-				return new Size((int)(usable.w / windowScale), (int)((usable.h - titleBarHeight) / windowScale));
+					return new Size((int)(usable.w / windowScale), (int)((usable.h - titleBarHeight) / windowScale));
 				}
 			}
 		}
@@ -324,7 +324,7 @@ namespace OpenRA.Platforms.Default
 				else
 					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
 
-			if (windowMode == WindowMode.Windowed)
+				if (windowMode == WindowMode.Windowed)
 				{
 					SDL.SDL_GetWindowPosition(window, out var wx, out var wy);
 					SDL.SDL_GetDisplayUsableBounds(videoDisplay, out var usable);

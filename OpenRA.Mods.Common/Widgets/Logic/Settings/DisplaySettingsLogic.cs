@@ -240,16 +240,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 
 			var maxUsableSize = Game.Renderer.MaxUsableWindowSize;
+			const int MinWidth = 1024;
+			const int MinHeight = 720;
+
 			windowWidth.OnLoseFocus = () =>
 			{
-				if (int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w) && w > maxUsableSize.Width)
-					windowWidth.Text = maxUsableSize.Width.ToString(NumberFormatInfo.CurrentInfo);
+				if (int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w))
+				{
+					if (w < MinWidth)
+						windowWidth.Text = MinWidth.ToString(NumberFormatInfo.CurrentInfo);
+					else if (w > maxUsableSize.Width)
+						windowWidth.Text = maxUsableSize.Width.ToString(NumberFormatInfo.CurrentInfo);
+				}
 			};
 
 			windowHeight.OnLoseFocus = () =>
 			{
-				if (int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h) && h > maxUsableSize.Height)
-					windowHeight.Text = maxUsableSize.Height.ToString(NumberFormatInfo.CurrentInfo);
+				if (int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h))
+				{
+					if (h < MinHeight)
+						windowHeight.Text = MinHeight.ToString(NumberFormatInfo.CurrentInfo);
+					else if (h > maxUsableSize.Height)
+						windowHeight.Text = maxUsableSize.Height.ToString(NumberFormatInfo.CurrentInfo);
+				}
 			};
 
 			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
