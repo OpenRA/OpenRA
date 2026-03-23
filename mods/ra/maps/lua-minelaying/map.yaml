@@ -1,0 +1,184 @@
+MapFormat: 12
+
+RequiresMod: ra
+
+Title: Test: Lua Minelaying
+
+Author: JF
+
+Tileset: TEMPERAT
+
+MapSize: 34,34
+
+Bounds: 1,1,32,32
+
+Visibility: Lobby, MissionSelector
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+	PlayerReference@France:
+		Name: France
+		Bot: campaign
+		Faction: allies
+		Color: 5DC2A5
+		Allies: Greece, Ukraine
+		Enemies: Soviets
+	PlayerReference@Greece:
+		Name: Greece
+		AllowBots: False
+		Playable: True
+		Required: True
+		LockFaction: True
+		Faction: allies
+		LockColor: True
+		Color: ABB7E4
+		LockSpawn: True
+		LockTeam: True
+		Allies: France, Ukraine
+		Enemies: Soviets
+	PlayerReference@Ukraine:
+		Name: Ukraine
+		Bot: campaign
+		Faction: soviet
+		Color: FFA500
+		Allies: France, Greece
+		Enemies: Soviets
+	PlayerReference@Soviets:
+		Name: Soviets
+		Bot: campaign
+		Faction: soviet
+		Color: FE1100
+		Enemies: France, Greece, Ukraine
+
+Actors:
+	Actor0: tc05
+		Owner: Neutral
+		Location: 26,28
+	Actor1: tc03
+		Owner: Neutral
+		Location: 30,30
+	Actor2: tc04
+		Owner: Neutral
+		Location: 1,30
+	Actor3: t03
+		Owner: Neutral
+		Location: 11,28
+	Actor5: tc04
+		Owner: Neutral
+		Location: 5,4
+	Actor6: tc05
+		Owner: Neutral
+		Location: 1,2
+	Actor7: t16
+		Owner: Neutral
+		Location: 7,1
+	Actor9: wood
+		Owner: Neutral
+		Location: 22,3
+	Actor10: wood
+		Owner: Neutral
+		Location: 23,3
+	Actor11: wood
+		Owner: Neutral
+		Location: 23,4
+	Actor8: v07
+		Owner: Neutral
+		Location: 21,4
+	EastRoadEntry: waypoint
+		Location: 32,16
+		Faction: england
+		Owner: Soviets
+	NorthRoadEntry: waypoint
+		Location: 15,1
+		Faction: england
+		Owner: Soviets
+	WaterFieldTop: waypoint
+		Location: 3,24
+		Faction: england
+		Owner: Ukraine
+	EastFieldTop: waypoint
+		Location: 19,10
+		Faction: england
+		Owner: Ukraine
+	Actor16: t10
+		Owner: Neutral
+		Location: 27,22
+	Actor17: t02
+		Owner: Neutral
+		Location: 29,10
+	Actor18: tc04
+		Owner: Neutral
+		Location: 24,8
+	Actor19: tc03
+		Owner: Neutral
+		Location: 32,11
+	EastFieldBottom: waypoint
+		Location: 31,24
+		Faction: england
+		Owner: Ukraine
+	Actor24: apwr
+		Owner: Ukraine
+		Location: 1,12
+	Actor22: apwr
+		Faction: england
+		Owner: Greece
+		Location: 6,12
+	Actor23: dome
+		Faction: england
+		Owner: Greece
+		Location: 4,13
+	Actor15: tent
+		Owner: Greece
+		Location: 4,17
+	Actor20: sam
+		Owner: Ukraine
+		Location: 21,14
+	Actor25: sam
+		Owner: Ukraine
+		Location: 10,8
+	SouthWaterEntry: waypoint
+		Location: 18,32
+		Faction: england
+		Owner: Soviets
+	WestWaterEntry: waypoint
+		Location: 1,25
+		Faction: england
+		Owner: Soviets
+	Actor12: mnly
+		Owner: Greece
+		Facing: 0
+		Location: 14,13
+	Actor26: fix
+		Owner: Ukraine
+		Location: 7,16
+	WaterFieldBottom: waypoint
+		Faction: england
+		Location: 15,30
+		Owner: Ukraine
+	Actor14: pt
+		Owner: France
+		Facing: 384
+		Location: 17,24
+	Actor4: pt
+		Owner: Greece
+		Facing: 384
+		Location: 19,26
+	Actor13: lst
+		Owner: Ukraine
+		Facing: 384
+		Location: 19,19
+	NearDepot: waypoint
+		Owner: Ukraine
+		Location: 11,16
+
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
