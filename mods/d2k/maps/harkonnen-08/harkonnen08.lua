@@ -254,6 +254,7 @@ ScanForBetterTargets = function(saboteur)
 		local dfd = Utils.Random(possibleTargets)
 		saboteur.Demolish(dfd)
 		saboteur.CallFunc(function()
+			SendSaboteur(saboteur)
 			ScanForBetterTargets(saboteur)
 		end)
 	else
