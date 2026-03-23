@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Scripting
 			"(\"Normal\", \"Low\" or \"Critical\").")]
 		public string PowerState => pm.PowerState.ToString();
 
-		[Desc("Triggers low power for the chosen amount of ticks.")]
+		[Desc("Triggers an outage for the chosen amount of ticks. " +
+		"Of this player's actors, only those with the `" + nameof(AffectedByPowerOutage) + "` trait are affected.")]
 		public void TriggerPowerOutage(int ticks)
 		{
 			pm.TriggerPowerOutage(ticks);
