@@ -40,7 +40,7 @@
 			Sand: 90
 			Rock: 100
 			Transition: 100
-			Concrete: 100
+			Concrete: 110
 			SpiceSand: 90
 			Spice: 90
 			SpiceBlobs: 90
@@ -52,7 +52,7 @@
 			Sand: 100
 			Rock: 100
 			Transition: 100
-			Concrete: 100
+			Concrete: 110
 			SpiceSand: 100
 			Spice: 100
 			SpiceBlobs: 100
@@ -64,7 +64,7 @@
 			Sand: 100
 			Rock: 100
 			Transition: 100
-			Concrete: 100
+			Concrete: 110
 			SpiceSand: 100
 			Spice: 100
 			SpiceBlobs: 100

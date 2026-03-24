@@ -536,6 +536,7 @@
 	CaptureNotification:
 		TextNotification: notification-enemy-building-captured
 		LoseTextNotification: notification-one-of-our-buildings-has-been-captured
+		LoseNotification: BuildingLost
 	ActorLostNotification:
 		Notification: BuildingLost
 		TextNotification: notification-building-lost

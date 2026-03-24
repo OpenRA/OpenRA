@@ -138,7 +138,7 @@ trike:
 		BuildDurationModifier: 100
 		Description: actor-trike.description
 	Valued:
-		Cost: 300
+		Cost: 275
 	Tooltip:
 		Name: actor-trike.name
 	UpdatesPlayerStatistics:
@@ -157,7 +157,7 @@ trike:
 		TurnSpeed: 40
 		Speed: 128
 	RevealsShroud:
-		Range: 5c512
+		Range: 6c0
 	WithMuzzleOverlay:
 	Armament:
 		Weapon: HMG
@@ -183,7 +183,7 @@ quad:
 		BuildDurationModifier: 100
 		Description: actor-quad.description
 	Valued:
-		Cost: 400
+		Cost: 350
 	Tooltip:
 		Name: actor-quad.name
 	UpdatesPlayerStatistics:
@@ -243,7 +243,7 @@ siege_tank:
 		Speed: 40
 		TurnSpeed: 12
 	RevealsShroud:
-		Range: 6c768
+		Range: 6c256
 	Turreted:
 		TurnSpeed: 12
 		Offset: 0,0,-32
@@ -306,13 +306,12 @@ missile_tank:
 		Order: 190
 		Category: Units
 	RevealsShroud:
-		Range: 6c768
+		Range: 6c256
 	Armament:
 		Weapon: mtank_pri
 		LocalOffset: -128,128,171, -128,-128,171
 	AttackFrontal:
 		FacingTolerance: 0
-		ForceFireIgnoresActors: True
 		TargetFrozenActors: True
 	AutoTarget:
 		InitialStanceAI: Defend
@@ -393,7 +392,7 @@ devastator:
 		BuildDurationModifier: 100
 		Description: actor-devastator.description
 	Valued:
-		Cost: 1200
+		Cost: 1050
 	Tooltip:
 		Name: actor-devastator.name
 	UpdatesPlayerStatistics:
@@ -464,12 +463,12 @@ devastator:
 	Selectable:
 		DecorationBounds: 1408, 1216, 0, 0
 	FireProjectilesOnDeath@OnMeldown:
-		Weapons: Debris2, Debris3, Debris4
+		Weapons: Debris2, Debris3, Debris4, ExplosiveDebris
 		Pieces: 7, 15
 		Range: 3c512, 6c0
 		RequiresCondition: meltdown
 	FireProjectilesOnDeath@standart:
-		Weapons: Debris, ExplosiveDebris
+		Weapons: Debris
 		Pieces: 1, 2
 		RequiresCondition: !meltdown
 
@@ -485,7 +484,7 @@ raider:
 		BuildDurationModifier: 100
 		Description: actor-raider.description
 	Valued:
-		Cost: 330
+		Cost: 325
 	Tooltip:
 		Name: actor-raider.name
 	Encyclopedia:
@@ -502,7 +501,7 @@ raider:
 		TurnSpeed: 40
 		Speed: 140
 	RevealsShroud:
-		Range: 4c768
+		Range: 5c768
 	WithMuzzleOverlay:
 	Armament:
 		Weapon: HMGo
@@ -525,7 +524,7 @@ stealth_raider:
 		BuildDurationModifier: 100
 		Description: actor-stealth-raider.description
 	Valued:
-		Cost: 400
+		Cost: 350
 	Tooltip:
 		Name: actor-stealth-raider.name
 	UpdatesPlayerStatistics:
@@ -570,7 +569,7 @@ deviator:
 		TurnSpeed: 12
 		Speed: 53
 	Health:
-		HP: 12500
+		HP: 12000
 	Armor:
 		Type: wood
 	Encyclopedia:
@@ -578,7 +577,7 @@ deviator:
 		Order: 210
 		Category: Units
 	RevealsShroud:
-		Range: 6c0
+		Range: 5c768
 	Armament:
 		Weapon: DeviatorMissile
 		LocalOffset: -299,0,85
@@ -591,7 +590,7 @@ deviator:
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
 		Actor: deviator.husk
-		OwnerType: Victim
+		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
@@ -618,7 +617,7 @@ deviator:
 		Speed: 75
 		TurnSpeed: 20
 	RevealsShroud:
-		Range: 5c768
+		Range: 5c512
 	Turreted:
 		TurnSpeed: 20
 		RealignDelay: 0
@@ -675,8 +674,11 @@ combat_tank_h:
 		Weapon: 80mm_H
 	Mobile:
 		Speed: 64
+	SpeedMultiplier@HEAVYDAMAGE:
+		RequiresCondition: heavy-damage
+		Modifier: 80
 	Health:
-		HP: 28500
+		HP: 29000
 	SpawnActorOnDeath:
 		Actor: combat_tank_h.husk
 

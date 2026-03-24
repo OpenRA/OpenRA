@@ -7,7 +7,7 @@
 	FootprintPlaceBuildingPreview:
 	RequiresBuildableArea:
 		AreaTypes: building
-		Adjacent: 4
+		Adjacent: 3
 	Tooltip:
 		GenericName: meta-concrete.generic-name
 	RenderSprites:
@@ -369,7 +369,9 @@ refinery:
 	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
-		Value: 500
+		Value: 300
+	SpawnActorsOnSell:
+		ValuePercent: 75
 	FreeActorWithDelivery:
 		Actor: harvester
 		DeliveryOffset: 2,2
@@ -506,13 +508,13 @@ light_factory:
 		Prerequisites: refinery
 		Queue: Building
 		BuildPaletteOrder: 230
-		BuildDuration: 390
+		BuildDuration: 360
 		BuildDurationModifier: 100
 		Description: actor-light-factory.description
 	Selectable:
 		Bounds: 3072, 2048
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: actor-light-factory.name
 	D2kBuilding:
