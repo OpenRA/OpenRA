@@ -8,7 +8,7 @@
 		InaccuracyType: PerCellIncrement
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
-		Damage: 2800
+		Damage: 2700
 		Spread: 1c0
 		Falloff: 100, 0
 		Versus:
@@ -51,7 +51,7 @@
 
 80mm_A:
 	Inherits: ^Cannon
-	Range: 5c112
+	Range: 5c0
 
 80mm_H:
 	Inherits: ^Cannon
@@ -88,7 +88,7 @@ DevBullet:
 
 155mm:
 	Inherits: ^Cannon
-	ReloadDelay: 105
+	ReloadDelay: 90
 	Range: 6c900
 	Report: MORTAR1.WAV
 	Projectile: Bullet

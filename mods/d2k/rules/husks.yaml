@@ -105,10 +105,6 @@ deviator.husk:
 		IntoActor: deviator
 	InfiltrateForTransform:
 		IntoActor: deviator
-	FireWarheads:
-		Weapons: DeviatorGas
-		Interval: 50
-		StartCooldown: 100
 
 ^combat_tank.husk:
 	Inherits: ^VehicleHusk

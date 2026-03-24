@@ -55,7 +55,7 @@ M_HMG:
 	InvalidTargets: Infantry
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500
-		Spread: 512
+		Spread: 1c0
 		Versus:
 			none: 25
 			wall: 100
