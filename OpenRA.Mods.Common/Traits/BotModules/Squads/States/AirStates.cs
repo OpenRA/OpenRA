@@ -49,42 +49,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return missileUnitsCount;
 		}
 
-		protected static Actor FindDefenselessTarget(Squad owner)
-		{
-			FindSafePlace(owner, out var target, true);
-			return target;
-		}
-
-		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
-		{
-			var map = owner.World.Map;
-			var dangerIndiceSideLength = owner.SquadManager.Info.DangerScanRadius * 141 / 100; // ¡Ö DangerScanRadius * sqrt(2)
-			detectedEnemyTarget = null;
-
-			var columnCount = (map.Bounds.Width + dangerIndiceSideLength - 1) / dangerIndiceSideLength;
-			var rowCount = (map.Bounds.Height + dangerIndiceSideLength - 1) / dangerIndiceSideLength;
-			var xoffset = map.Bounds.X;
-			var yoffset = map.Bounds.Y;
-
-			// Construct a grid of points as the center of square with side length of dangerDiameter to divide the map and shuffle them to get a random search pattern.
-			// Make sure when search with DangerScanRadius, covers the whole indice and covers the least cells in other indice.
-			foreach (var i in Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom))
-			{
-				var pos = new MPos(xoffset + i % columnCount * dangerIndiceSideLength + (dangerIndiceSideLength >> 1),
-					yoffset + i / columnCount * dangerIndiceSideLength + (dangerIndiceSideLength >> 1)).ToCPos(map);
-
-				if (NearToPosSafely(owner, map.CenterOfCell(pos), out detectedEnemyTarget))
-				{
-					if (needTarget && detectedEnemyTarget == null)
-						continue;
-
-					return pos;
-				}
-			}
-
-			return null;
-		}
-
 		protected static bool NearToPosSafely(Squad owner, WPos loc)
 		{
 			return NearToPosSafely(owner, loc, out _);
@@ -118,7 +82,59 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 	sealed class AirIdleState : AirStateBase, IState
 	{
-		public void Activate(Squad owner) { }
+		const int MaxCheckTimesPerTick = 2;
+		Map map;
+		int dangerRadius;
+		int columnCount;
+		int rowCount;
+
+		int[] airStrikeCheckIndices = null;
+		int checkedIndex = 0;
+
+		public void Activate(Squad owner)
+		{
+			map = owner.World.Map;
+			dangerRadius = owner.SquadManager.Info.DangerScanRadius;
+			var dangerIndiceSideLength = dangerRadius * 141 / 100; // ¡Ö DangerScanRadius * sqrt(2)
+
+			columnCount = (map.Bounds.Width + dangerIndiceSideLength - 1) / dangerIndiceSideLength;
+			rowCount = (map.Bounds.Height + dangerIndiceSideLength - 1) / dangerIndiceSideLength;
+			var xoffset = map.Bounds.X;
+			var yoffset = map.Bounds.Y;
+
+			airStrikeCheckIndices ??= Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom).ToArray();
+		}
+
+		Actor FindDefenselessTarget(Squad owner)
+		{
+			var position = owner.CenterPosition();
+
+			for (var checktime = 0; checktime <= MaxCheckTimesPerTick; checkedIndex++, checktime++)
+			{
+				if (checkedIndex >= airStrikeCheckIndices.Length)
+					checkedIndex = 0;
+
+				var pos = new MPos(airStrikeCheckIndices[checkedIndex] % columnCount * dangerRadius + dangerRadius / 2,
+					airStrikeCheckIndices[checkedIndex] / columnCount * dangerRadius + dangerRadius / 2).ToCPos(map);
+
+				var wpos = map.CenterOfCell(pos);
+
+				if (CountAntiAirUnits(owner, owner.World.FindActorsOnLine(position, wpos, WDist.FromCells(dangerRadius)).ToList()) * MissileUnitMultiplier
+					< owner.Units.Count)
+					continue;
+
+				if (NearToPosSafely(owner, wpos, out var detectedEnemyTarget))
+				{
+					if (detectedEnemyTarget == null)
+						continue;
+
+					checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
+					return detectedEnemyTarget;
+				}
+			}
+
+			return null;
+		}
 
 		public void Tick(Squad owner)
 		{
