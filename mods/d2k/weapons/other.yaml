@@ -26,7 +26,7 @@ Sound:
 			invulnerable: 0
 			cy: 20
 			harvester: 50
-		DamageTypes: TriggerProne, SoundDeath
+		DamageTypes: Prone80Percent, TriggerProne, SoundDeath
 	Warhead@3Concrete: DamagesConcrete
 		Damage: 1720
 
@@ -202,11 +202,11 @@ WallExplode:
 SiegeExplode:
 	Inherits: 155mm
 	Warhead@1Dam: SpreadDamage
-		Damage: 4500
 		Spread: 2c0
 	Warhead@3Eff: CreateEffect
-		Explosions: med_explosion
+		Explosions: building
 		ImpactSounds: EXPLSML2.WAV
+		ImpactActors: false
 
 CliffExplode:
 	Warhead@1Eff: CreateEffect
@@ -442,7 +442,7 @@ ExplosiveDebris:
 		BounceCount: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
-		Spread: 1c562
+		Spread: 2c0
 		Versus:
 			none: 100
 			wood: 100
@@ -457,14 +457,3 @@ ExplosiveDebris:
 		ImpactSounds: EXPLSML4.WAV
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 4500
-
-DeviatorGas:
-	Warhead@5OwnerChange: ChangeOwner
-		Range: 1c850
-		Duration: 160
-		ValidRelationships: Enemy, Neutral
-		InvalidTargets: Infantry, Structure
-	Warhead@3Eff: CreateEffect
-		Explosions: deviator
-		ExplosionPalette: player
-		UsePlayerPalette: true

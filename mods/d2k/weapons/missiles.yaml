@@ -1,6 +1,6 @@
 ^Rocket:
 	ReloadDelay: 40
-	Range: 3c870
+	Range: 3c624
 	Report: ROCKET1.WAV
 	Projectile: Bullet
 		Blockable: false
@@ -43,7 +43,7 @@
 	MinRange: 0c512
 	Projectile: Missile
 		Shadow: true
-		InaccuracyType: Maximum
+		InaccuracyType: Absolute
 		Inaccuracy: 250
 		HorizontalRateOfTurn: 22
 		RangeLimit: 10c0
@@ -66,11 +66,7 @@
 			invulnerable: 0
 			cy: 30
 			harvester: 50
-		DamageTypes: Prone80Percent, SmallExplosionDeath
-	Warhead@proneeffect: TargetDamage
-		Damage: 1
-		Spread: 600
-		DamageTypes: TriggerProne
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 720
 	Warhead@3Eff: CreateEffect
@@ -109,8 +105,6 @@ Rocket:
 TowerMissile:
 	Inherits: ^Missile
 	ReloadDelay: 60
-	Burst: 2
-	BurstDelays: 60
 	ValidTargets: Ground, Air
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Ground, Air
@@ -119,8 +113,6 @@ TowerMissile:
 mtank_pri:
 	Inherits: ^Missile
 	ReloadDelay: 115
-	Burst: 2
-	BurstDelays: 115
 	Range: 7c900
 	MinRange: 1c0
 	ValidTargets: Ground, Air
