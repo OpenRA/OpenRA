@@ -119,18 +119,17 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				var wpos = map.CenterOfCell(pos);
 
-				if (CountAntiAirUnits(owner, owner.World.FindActorsOnLine(position, wpos, WDist.FromCells(dangerRadius)).ToList()) * MissileUnitMultiplier
-					< owner.Units.Count)
+				// check the targets along the flight path, pick a random safe target to engage.
+				var actors = owner.World.FindActorsOnLine(position, wpos, WDist.FromCells(dangerRadius)).Where(owner.SquadManager.IsPreferredEnemyUnit).ToList();
+				if (CountAntiAirUnits(owner, actors) * MissileUnitMultiplier > owner.Units.Count)
 					continue;
 
-				if (NearToPosSafely(owner, wpos, out var detectedEnemyTarget))
-				{
-					if (detectedEnemyTarget == null)
-						continue;
+				var detectedEnemyTarget = actors.RandomOrDefault(owner.World.LocalRandom);
+				if (detectedEnemyTarget == null)
+					continue;
 
-					checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
-					return detectedEnemyTarget;
-				}
+				checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
+				return detectedEnemyTarget;
 			}
 
 			return null;
