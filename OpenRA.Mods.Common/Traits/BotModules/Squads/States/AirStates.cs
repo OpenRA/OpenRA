@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		int dangerRadius;
 		int columnCount;
 		int rowCount;
+		Actor leader;
 
 		int[] airStrikeCheckIndices = null;
 		int checkedIndex = 0;
@@ -105,9 +106,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			airStrikeCheckIndices ??= Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom).ToArray();
 		}
 
-		Actor FindDefenselessTarget(Squad owner)
+		(Actor Target, Actor Leader) FindDefenselessTarget(Squad owner)
 		{
-			var position = owner.CenterPosition();
+			var lead = owner.Units.Random(owner.Random);
+			var position = lead.CenterPosition;
 
 			for (var checktime = 0; checktime <= MaxCheckTimesPerTick; checkedIndex++, checktime++)
 			{
@@ -119,21 +121,21 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				var wpos = map.CenterOfCell(pos);
 
-				if (CountAntiAirUnits(owner, owner.World.FindActorsOnLine(position, wpos, WDist.FromCells(dangerRadius)).ToList()) * MissileUnitMultiplier
-					< owner.Units.Count)
+				// check the targets along the flight path, pick a random safe target to engage.
+				var actors = owner.World.FindActorsOnLine(position, wpos, WDist.FromCells(dangerRadius))
+					.Where(a => owner.SquadManager.IsPreferredEnemyUnit(a) && CanAttackTarget(lead, a)).ToList();
+				if (CountAntiAirUnits(owner, actors) * MissileUnitMultiplier > owner.Units.Count)
 					continue;
 
-				if (NearToPosSafely(owner, wpos, out var detectedEnemyTarget))
-				{
-					if (detectedEnemyTarget == null)
-						continue;
+				var detectedEnemyTarget = actors.RandomOrDefault(owner.World.LocalRandom);
+				if (detectedEnemyTarget == null)
+					continue;
 
-					checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
-					return detectedEnemyTarget;
-				}
+				checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
+				return (leader, detectedEnemyTarget);
 			}
 
-			return null;
+			return (null, null);
 		}
 
 		public void Tick(Squad owner)
@@ -147,11 +149,24 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				return;
 			}
 
-			var e = FindDefenselessTarget(owner);
-			if (e == null)
-				return;
+			if (!owner.IsTargetValid(leader))
+			{
+				var (target, lead) = FindDefenselessTarget(owner);
+				if (target == null)
+					return;
 
-			owner.SetActorToTarget((e, WVec.Zero));
+				leader = lead;
+				owner.SetActorToTarget((target, WVec.Zero));
+			}
+
+			foreach (var a in owner.Units)
+			{
+				if (BusyAttack(a) || IsRearming(a))
+					continue;
+				if ((a.Location - leader.Location).LengthSquared > owner.SquadManager.Info.DangerScanRadius * 141 / 100)
+					owner.Bot.QueueOrder(new Order("Move", a, Target.FromPos(a.CenterPosition), false));
+			}
+
 			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState());
 		}
 
