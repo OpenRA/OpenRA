@@ -610,20 +610,13 @@ label-bg-port = Port:
 button-directconnect-panel-join = Join
 
 ## playerprofile.yaml
-button-profile-header-logout = Logout
-label-generate-keys-desc-a = Connect to a forum account to identify
-label-generate-keys-desc-b = yourself to other players, join private
-label-generate-keys-desc-c = servers, and display badges.
-button-generate-keys-key = Connect to an OpenRA forum account
-label-generating-keys-desc-a = Generating authentication key pair.
-label-generating-keys-desc-b = This will take several seconds...
-label-register-fingerprint-desc-a = An authentication key has been copied to your
-label-register-fingerprint-desc-b = clipboard. Add this to your User Control Panel
-label-register-fingerprint-desc-c = on the OpenRA forum then press Continue.
+label-profile-link-desc-a = Link to a forum account to identify
+label-profile-link-desc-b = yourself to other players, join private
+label-profile-link-desc-c = servers, and display badges.
+button-profile-link = Link to an OpenRA forum account
+button-profile-unlink = Unlink
 label-checking-fingerprint-desc-a = Querying account details from
 label-checking-fingerprint-desc-b = the OpenRA forum...
-label-fingerprint-not-found-desc-a = Your authentication key is not connected
-label-fingerprint-not-found-desc-b = to an OpenRA forum account.
 label-connection-error-desc-a = Failed to connect to the OpenRA forum.
 label-connection-error-desc-b = Please check your internet connection.
 
@@ -689,6 +682,34 @@ label-gameplay-section-header = Gameplay
 label-auto-save-interval = Auto-save frequency:
 label-auto-save-max-file-number = Auto-save limit:
 checkbox-hide-replay-chat-container = Hide Chat in Replays
+
+label-forum-profile-section-header = OpenRA Forum Account
+label-forum-profile-description = Link a forum account to identify yourself to other players, join private servers, and display badges.
+label-forum-profile-checking-fingerprint = Querying account details from the OpenRA forum...
+label-forum-profile-connection-error = Failed to connect to the OpenRA forum.
+
+label-forum-profile-result-unlinked =
+   Your password is used to add an authentication key
+   to your OpenRA forum account. It will not be saved.
+label-forum-profile-result-linked =
+   Authentication keys can be managed and revoked
+   from your User Control Panel on the OpenRA forum.
+label-forum-profile-result-auth-failure =
+   Authentication failed. Please check your username
+   and password and try again.
+label-forum-profile-result-login-attempts =
+   You have exceeded the allowed number of login
+   attempts. Please try again later.
+label-forum-profile-result-banned = You have been banned from the OpenRA forum.
+label-forum-profile-result-connection-failed = Failed to connect to the OpenRA forum.
+label-forum-profile-result-error = An error has occurred. Please try again.
+
+label-forum-profile-username = Username:
+label-forum-profile-password = Password:
+button-forum-profile-link = Link Account
+button-forum-profile-unlink = Unlink Account
+button-forum-profile-retry = Retry
+button-forum-visit-forum = Visit Forum
 
 ## settings-display.yaml
 label-target-lines-dropdown-container = Target Lines:
