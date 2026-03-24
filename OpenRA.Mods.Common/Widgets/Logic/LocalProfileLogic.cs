@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LocalPlayerProfile localProfile;
 		readonly Widget badgeContainer;
 		readonly Widget widget;
-		bool notFound;
 		bool badgesVisible;
 
 		[ObjectCreator.UseCtor]
@@ -31,45 +30,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.widget = widget;
 			localProfile = Game.LocalPlayerProfile;
 
-			// Key registration
-			widget.Get("GENERATE_KEYS").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.Uninitialized && !minimalProfile();
-			widget.Get("GENERATING_KEYS").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.GeneratingKeys && !minimalProfile();
-
-			var lastProfileState = LocalPlayerProfile.LinkState.CheckingLink;
-			widget.Get("REGISTER_FINGERPRINT").IsVisible = () =>
-			{
-				// Take a copy of the state to avoid race conditions
-				var state = localProfile.State;
-
-				// Copy the key to the clipboard when displaying the link instructions
-				if (state != lastProfileState && state == LocalPlayerProfile.LinkState.Unlinked)
-					Game.SetClipboardText(localProfile.PublicKey);
-
-				lastProfileState = state;
-				return localProfile.State == LocalPlayerProfile.LinkState.Unlinked && !notFound && !minimalProfile();
-			};
-
 			widget.Get("CHECKING_FINGERPRINT").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.CheckingLink && !minimalProfile();
-			widget.Get("FINGERPRINT_NOT_FOUND").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.Unlinked && notFound && !minimalProfile();
+			widget.Get("LINK_ACCOUNT").IsVisible = () => localProfile.State < LocalPlayerProfile.LinkState.ConnectionFailed && !minimalProfile();
 			widget.Get("CONNECTION_ERROR").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.ConnectionFailed && !minimalProfile();
 
-			widget.Get<ButtonWidget>("GENERATE_KEY").OnClick = localProfile.GenerateKeypair;
-
-			widget.Get<ButtonWidget>("CHECK_KEY").OnClick = () => localProfile.RefreshPlayerData(() => RefreshComplete(true));
-
-			widget.Get<ButtonWidget>("DELETE_KEY").OnClick = () =>
-			{
-				localProfile.DeleteKeypair();
-				Game.RunAfterTick(Ui.ResetTooltips);
-			};
-
-			widget.Get<ButtonWidget>("FINGERPRINT_NOT_FOUND_CONTINUE").OnClick = () =>
-			{
-				notFound = false;
-				Game.RunAfterTick(Ui.ResetTooltips);
-			};
-
-			widget.Get<ButtonWidget>("CONNECTION_ERROR_RETRY").OnClick = () => localProfile.RefreshPlayerData(() => RefreshComplete(true));
+			widget.Get<ButtonWidget>("LINK_BUTTON").OnClick = () => Ui.Root.GetOrNull<ButtonWidget>("SETTINGS_BUTTON")?.OnClick();
+			widget.Get<ButtonWidget>("RETRY_BUTTON").OnClick = () => localProfile.RefreshPlayerData();
 
 			// Profile view
 			widget.Get("PROFILE_HEADER").IsVisible = () => localProfile.State == LocalPlayerProfile.LinkState.Linked;
@@ -84,24 +50,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			badgeContainer.IsVisible = () => badgesVisible && !minimalProfile()
 				&& localProfile.State == LocalPlayerProfile.LinkState.Linked;
 
-			localProfile.RefreshPlayerData(() => RefreshComplete(false));
+			localProfile.OnStateChanged += RefreshBadges;
+			RefreshBadges();
 		}
 
-		public void RefreshComplete(bool updateNotFound)
+		public void RefreshBadges()
 		{
-			if (updateNotFound)
-				notFound = localProfile.State == LocalPlayerProfile.LinkState.Unlinked;
-
 			Game.RunAfterTick(() =>
 			{
 				badgesVisible = false;
 
+				// Remove any stale badges that may be left over from a previous session
+				badgeContainer.RemoveChildren();
+
 				if (localProfile.State == LocalPlayerProfile.LinkState.Linked && localProfile.ProfileData.Badges.Count > 0)
 				{
 					Func<int, int> negotiateWidth = _ => widget.Get("PROFILE_HEADER").Bounds.Width;
-
-					// Remove any stale badges that may be left over from a previous session
-					badgeContainer.RemoveChildren();
 
 					var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
 						{
@@ -119,6 +83,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Ui.ResetTooltips();
 			});
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			localProfile.OnStateChanged -= RefreshBadges;
+			base.Dispose(disposing);
 		}
 	}
 }

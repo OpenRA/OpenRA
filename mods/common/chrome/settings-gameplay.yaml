@@ -64,6 +64,100 @@ Container@GAMEPLAY_PANEL:
 											Width: PARENT_WIDTH - 35
 											Height: PARENT_HEIGHT - 12
 				Container@SPACER:
+				Background@FORUM_SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-forum-profile-section-header
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 10
+					Children:
+						Label@DESC:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Height: 10
+							Text: label-forum-profile-description
+							Font: Small
+							Align: Center
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						LogicTicker@FORUM_PROFILE_TICKER:
+						Container@USERNAME_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-forum-profile-username
+									For: USERNAME
+								TextField@USERNAME:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+						Container@PASSWORD_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								LabelForInput:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: label-forum-profile-password
+									For: PASSWORD
+								PasswordField@PASSWORD:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 25
+					Children:
+						Label@PROFILE_STATUS:
+							X: 10
+							Width: PARENT_WIDTH - 280
+							Height: 25
+							Font: Small
+						Label@CHECKING_FINGERPRINT:
+							X: 10
+							Width: PARENT_WIDTH - 280
+							Height: 25
+							Font: Small
+							Text: label-forum-profile-checking-fingerprint
+						Label@CONNECTION_ERROR:
+							X: 10
+							Width: PARENT_WIDTH - 280
+							Height: 25
+							Font: Small
+							Text: label-forum-profile-connection-error
+						Button@FORUM_BUTTON:
+							X: PARENT_WIDTH - 283
+							Width: 128
+							Height: 25
+							Text: button-forum-visit-forum
+							Font: Bold
+						Button@RETRY_BUTTON:
+							X: PARENT_WIDTH - 145
+							Width: 135
+							Height: 25
+							Font: Bold
+							Text: button-forum-profile-retry
+						Button@LINK_BUTTON:
+							X: PARENT_WIDTH - 145
+							Width: 135
+							Height: 25
+							Font: Bold
+				Container@SPACER:
 				Background@GAMEPLAY_SECTION_HEADER:
 					X: 5
 					Width: PARENT_WIDTH - 24 - 10
