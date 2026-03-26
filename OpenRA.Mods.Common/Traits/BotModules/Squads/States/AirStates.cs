@@ -149,12 +149,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				return;
 			}
 
-			if (!owner.IsTargetValid(leader))
+			if (!owner.Units.Contains(leader) || !owner.IsTargetValid(leader))
 			{
 				var (target, lead) = FindDefenselessTarget(owner);
 				if (target == null)
 				{
-					Retreat(owner, flee: false, rearm: true, repair: true);
+					Retreat(owner, flee: true, rearm: true, repair: true);
 					return;
 				}
 
@@ -162,13 +162,21 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.SetActorToTarget((target, WVec.Zero));
 			}
 
+			var needsRegrouping = false;
 			foreach (var a in owner.Units)
 			{
 				if (BusyAttack(a) || IsRearming(a))
 					continue;
-				if ((a.Location - leader.Location).LengthSquared > owner.SquadManager.Info.DangerScanRadius * 141 / 100)
+
+				if ((a.Location - leader.Location).LengthSquared > owner.Units.Count * 6 * owner.Units.Count)
+				{
 					owner.Bot.QueueOrder(new Order("Move", a, Target.FromPos(a.CenterPosition), false));
+					needsRegrouping = true;
+				}
 			}
+
+			if (needsRegrouping)
+				return;
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState());
 		}
