@@ -115,6 +115,11 @@ namespace OpenRA.Mods.Common.Traits
 			var types = sequences.Sequences(Info.Sequence);
 			foreach (var t in types)
 				smudges.Add(t, sequences.GetSequence(Info.Sequence, t));
+
+			world.Map.Tiles.CellEntryChanged += RemoveUnacceptableSmudgeOnCellChange;
+			world.Map.CustomTerrain.CellEntryChanged += RemoveUnacceptableSmudgeOnCellChange;
+			world.Map.Ramp.CellEntryChanged += RemoveUnacceptableSmudgeOnCellChange;
+			world.Map.Height.CellEntryChanged += RemoveUnacceptableSmudgeOnCellChange;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -202,8 +207,26 @@ namespace OpenRA.Mods.Common.Traits
 			dirty[loc] = tile;
 		}
 
+		void RemoveUnacceptableSmudgeOnCellChange(CPos cell)
+		{
+			// Get current tile (if any)
+			if (!dirty.TryGetValue(cell, out var tile))
+				tiles.TryGetValue(cell, out tile);
+
+			// Either there is no tile, or the null Sequence indicates a to-be-deleted smudge.
+			if (tile.Sequence == null)
+				return;
+
+			// Remove any now unacceptable smudges on the tile.
+			if (!world.Map.GetTerrainInfo(cell).AcceptsSmudgeType.Contains(Info.Type))
+				RemoveSmudge(cell);
+		}
+
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
+			if (dirty.Count == 0)
+				return;
+
 			var remove = new List<CPos>();
 			foreach (var kv in dirty)
 			{
@@ -240,6 +263,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (disposed)
 				return;
 
+			world.Map.Tiles.CellEntryChanged -= RemoveUnacceptableSmudgeOnCellChange;
+			world.Map.CustomTerrain.CellEntryChanged -= RemoveUnacceptableSmudgeOnCellChange;
+			world.Map.Ramp.CellEntryChanged -= RemoveUnacceptableSmudgeOnCellChange;
+			world.Map.Height.CellEntryChanged -= RemoveUnacceptableSmudgeOnCellChange;
 			render.Dispose();
 			disposed = true;
 		}
