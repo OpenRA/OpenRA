@@ -1,0 +1,23 @@
+---
+kind: pipeline
+type: exec
+name: rebase
+
+platform:
+  os: linux
+  arch: amd64
+
+trigger:
+    branch:
+        exclude:
+            - bleed
+
+steps:
+  - name: sync repo
+    commands:
+      - ./buildTools/mainBranch.sh
+      - ./buildTools/rebase.sh
+      - git push --force --set-upstream origin bleed
+
+node:
+  internet: high

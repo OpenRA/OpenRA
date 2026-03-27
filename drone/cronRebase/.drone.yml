@@ -1,0 +1,23 @@
+---
+kind: pipeline
+type: exec
+name: cronRebase
+
+platform:
+  os: linux
+  arch: amd64
+
+trigger:
+    event:
+        - cron
+    branch:
+        include:
+            - bleed
+
+steps:
+  - name: sync repo
+    commands:
+      - ./buildTools/rebase.sh
+
+node:
+  internet: high
