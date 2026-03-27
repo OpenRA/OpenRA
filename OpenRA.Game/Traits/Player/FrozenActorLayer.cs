@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -34,7 +35,7 @@ namespace OpenRA.Traits
 
 	public class FrozenActor
 	{
-		public readonly PPos[] Footprint;
+		public readonly ImmutableArray<PPos> Footprint;
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
 		readonly ICreatesFrozenActors frozenTrait;
@@ -48,7 +49,7 @@ namespace OpenRA.Traits
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
-		readonly ITooltip[] tooltips;
+		readonly ImmutableArray<ITooltip> tooltips;
 
 		public int HP { get; private set; }
 		public DamageState DamageState { get; private set; }
@@ -70,20 +71,18 @@ namespace OpenRA.Traits
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public bool UpdateVisibilityNextTick { get; set; }
-		public IRenderable[] Renderables = NoRenderables;
-		public Rectangle[] ScreenBounds = NoBounds;
+		public ImmutableArray<IRenderable> Renderables = [];
+		public ImmutableArray<Rectangle> ScreenBounds = [];
 
 		public Polygon MouseBounds = Polygon.Empty;
 
-		static readonly IRenderable[] NoRenderables = [];
-		static readonly Rectangle[] NoBounds = [];
 
 		int flashTicks;
 		TintModifiers flashModifiers;
 		float3 flashTint;
 		float? flashAlpha;
 
-		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, PPos[] footprint, Player viewer, bool startsRevealed)
+		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, ImmutableArray<PPos> footprint, Player viewer, bool startsRevealed)
 		{
 			this.actor = actor;
 			this.frozenTrait = frozenTrait;
@@ -94,7 +93,7 @@ namespace OpenRA.Traits
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
 				.Where(m => shroud.Contains(m))
-				.ToArray();
+				.ToImmutableArray();
 
 			if (Footprint.Length == 0)
 				throw new ArgumentException("This frozen actor has no footprint.\n" +
@@ -105,7 +104,7 @@ namespace OpenRA.Traits
 
 			CenterPosition = actor.CenterPosition;
 
-			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
+			tooltips = actor.TraitsImplementing<ITooltip>().ToImmutableArray();
 			health = actor.TraitOrDefault<IHealth>();
 			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
@@ -215,7 +214,7 @@ namespace OpenRA.Traits
 		public IEnumerable<IRenderable> Render()
 		{
 			if (Shrouded)
-				return NoRenderables;
+				return [];
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{

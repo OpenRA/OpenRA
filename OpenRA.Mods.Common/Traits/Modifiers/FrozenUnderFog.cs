@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly FrozenUnderFogInfo info;
 		readonly bool startsRevealed;
-		readonly PPos[] footprint;
+		readonly ImmutableArray<PPos> footprint;
 
 		PlayerDictionary<FrozenState> frozenStates;
 		bool isRendering;
@@ -56,9 +57,10 @@ namespace OpenRA.Mods.Common.Traits
 			var shroudInfo = init.World.Map.Rules.Actors[SystemActors.Player].TraitInfo<ShroudInfo>();
 			var exploredMap = init.World.LobbyInfo.GlobalSettings.OptionOrDefault("explored", shroudInfo.ExploredMapCheckboxEnabled);
 			startsRevealed = exploredMap && init.Contains<SpawnedByMapInit>() && !init.Contains<HiddenUnderFogInit>();
+
 			var buildingInfo = init.Self.Info.TraitInfoOrDefault<BuildingInfo>();
-			var footprintCells = buildingInfo?.FrozenUnderFogTiles(init.Self.Location).ToList() ?? [init.Self.Location];
-			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToArray();
+			var footprintCells = buildingInfo?.FrozenUnderFogTiles(init.Self.Location).ToArray() ?? [init.Self.Location];
+			footprint = footprintCells.SelectMany(c => map.ProjectedCellsCovering(c.ToMPos(map))).ToImmutableArray();
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -116,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// If fog is disabled visibility is determined by shroud
 			if (!byPlayer.Shroud.FogEnabled)
-				return byPlayer.Shroud.AnyExplored(footprint);
+				return byPlayer.Shroud.AnyExplored(footprint.AsSpan());
 
 			return frozenStates[byPlayer].IsVisible;
 		}
@@ -132,8 +134,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
-			IRenderable[] renderables = null;
-			Rectangle[] bounds = null;
+			ImmutableArray<IRenderable> renderables = default;
+			ImmutableArray<Rectangle> bounds = default;
 			var mouseBounds = Polygon.Empty;
 			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 			{
@@ -141,11 +143,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (!frozen.NeedRenderables)
 					continue;
 
-				if (renderables == null)
+				if (renderables == default)
 				{
 					isRendering = true;
-					renderables = self.Render(wr).ToArray();
-					bounds = self.ScreenBounds(wr).ToArray();
+					renderables = self.Render(wr).ToImmutableArray();
+					bounds = self.ScreenBounds(wr).ToImmutableArray();
 					mouseBounds = self.MouseBounds(wr);
 
 					isRendering = false;
