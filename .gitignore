@@ -50,3 +50,5 @@ update.log
 
 # IntelliJ files
 .idea
+
+!buildTools
