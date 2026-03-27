@@ -274,6 +274,7 @@ namespace OpenRA.Traits
 
 		public void Add(FrozenActor fa)
 		{
+			FrozenHash += (int)fa.ID;
 			frozenActorsById.Add(fa.ID, fa);
 			world.ScreenMap.AddOrUpdate(owner, fa);
 			partitionedFrozenActors.Add(fa, FootprintBounds(fa));
@@ -281,6 +282,7 @@ namespace OpenRA.Traits
 
 		public void Remove(FrozenActor fa)
 		{
+			FrozenHash -= (int)fa.ID;
 			partitionedFrozenActors.Remove(fa);
 			world.ScreenMap.Remove(owner, fa);
 			frozenActorsById.Remove(fa.ID);
@@ -313,19 +315,14 @@ namespace OpenRA.Traits
 		{
 			List<FrozenActor> frozenActorsToRemove = null;
 			VisibilityHash = 0;
-			FrozenHash = 0;
 
 			foreach (var kvp in frozenActorsById)
 			{
-				var id = kvp.Key;
-				var hash = (int)id;
-				FrozenHash += hash;
-
 				var frozenActor = kvp.Value;
 				frozenActor.Tick();
 
 				if (frozenActor.Visible)
-					VisibilityHash += hash;
+					VisibilityHash += (int)frozenActor.ID;
 				else if (frozenActor.Actor == null)
 				{
 					frozenActorsToRemove ??= [];
