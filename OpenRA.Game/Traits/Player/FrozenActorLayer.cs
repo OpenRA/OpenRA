@@ -183,12 +183,12 @@ namespace OpenRA.Traits
 					Shrouded = false;
 			}
 
+			NeedRenderables |= Visible && !wasVisible;
+
 			// Force the backing trait to update so other actors can't
 			// query inconsistent state (both hidden or both visible)
 			if (Visible != wasVisible)
 				frozenTrait.OnVisibilityChanged(this);
-
-			NeedRenderables |= Visible && !wasVisible;
 		}
 
 		public void Invalidate()

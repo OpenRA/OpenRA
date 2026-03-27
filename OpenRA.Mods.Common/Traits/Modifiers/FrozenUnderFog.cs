@@ -37,20 +37,22 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool startsRevealed;
 		readonly ImmutableArray<PPos> footprint;
 
+		readonly HashSet<int> playersRequiringUpdate = [];
+
 		PlayerDictionary<FrozenState> frozenStates;
 		bool isRendering;
 		bool created;
 
-		sealed class FrozenState(FrozenActor frozenActor)
+		sealed class FrozenState(FrozenActor frozenActor, int playerIndex)
 		{
 			public readonly FrozenActor FrozenActor = frozenActor;
+			public readonly int PlayerIndex = playerIndex;
 			public bool IsVisible;
 		}
 
 		public FrozenUnderFog(ActorInitializer init, FrozenUnderFogInfo info)
 		{
 			this.info = info;
-
 			var map = init.World.Map;
 
 			// Explore map-placed actors if the "Explore Map" option is enabled
@@ -69,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var frozenActor = new FrozenActor(self, this, footprint, player, startsRevealed);
 				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
-				return new FrozenState(frozenActor) { IsVisible = !frozenActor.Visible };
+				return new FrozenState(frozenActor, playerIndex) { IsVisible = !frozenActor.Visible };
 			});
 
 			// Set the initial visibility state
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 					var state = frozenStates[playerIndex];
 					var frozen = state.FrozenActor;
 					if (startsRevealed || state.IsVisible)
-						UpdateFrozenActor(frozen, playerIndex);
+						UpdateFrozenActor(frozen, state.PlayerIndex);
 
 					frozen.RefreshHidden();
 				}
@@ -95,6 +97,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			VisibilityHash |= 1 << (playerIndex % 32);
 			frozenActor.RefreshState();
+
+			if (frozenActor.NeedRenderables)
+				playersRequiringUpdate.Add(playerIndex);
 		}
 
 		void ICreatesFrozenActors.OnVisibilityChanged(FrozenActor frozen)
@@ -105,11 +110,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Update state visibility to match the frozen actor to ensure consistency
 			var state = frozenStates[frozen.Viewer];
-			var isVisible = !frozen.Visible;
-			state.IsVisible = isVisible;
+			state.IsVisible = !frozen.Visible;
 
-			if (isVisible)
-				UpdateFrozenActor(frozen, frozen.Viewer.World.Players.IndexOf(frozen.Viewer));
+			if (state.IsVisible || frozen.NeedRenderables)
+				UpdateFrozenActor(frozen, state.PlayerIndex);
 
 			frozen.RefreshHidden();
 		}
@@ -134,12 +138,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
+			if (playersRequiringUpdate.Count == 0)
+				return;
+
 			ImmutableArray<IRenderable> renderables = default;
 			ImmutableArray<Rectangle> bounds = default;
 			var mouseBounds = Polygon.Empty;
-			for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
+			foreach (var playerIndex in playersRequiringUpdate)
 			{
-				var frozen = frozenStates[playerIndex].FrozenActor;
+				var state = frozenStates[playerIndex];
+				var frozen = state.FrozenActor;
+
 				if (!frozen.NeedRenderables)
 					continue;
 
@@ -157,13 +166,16 @@ namespace OpenRA.Mods.Common.Traits
 				frozen.Renderables = renderables;
 				frozen.ScreenBounds = bounds;
 				frozen.MouseBounds = mouseBounds;
+
 				self.World.ScreenMap.AddOrUpdate(self.World.Players[playerIndex], frozen);
 			}
+
+			playersRequiringUpdate.Clear();
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return IsVisible(self, self.World.RenderPlayer) || isRendering ? r : SpriteRenderable.None;
+			return isRendering || IsVisible(self, self.World.RenderPlayer) ? r : SpriteRenderable.None;
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
@@ -174,10 +186,9 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			// Force a state update for the old owner so the tooltip etc doesn't show them as the owner
-			var oldOwnerIndex = self.World.Players.IndexOf(oldOwner);
-			var frozen = frozenStates[oldOwnerIndex].FrozenActor;
-			UpdateFrozenActor(frozen, oldOwnerIndex);
-			frozen.RefreshHidden();
+			var oldState = frozenStates[oldOwner];
+			UpdateFrozenActor(oldState.FrozenActor, oldState.PlayerIndex);
+			oldState.FrozenActor.RefreshHidden();
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
