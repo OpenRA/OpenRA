@@ -76,6 +76,7 @@ namespace OpenRA.Traits
 
 		public Polygon MouseBounds = Polygon.Empty;
 
+		internal int LayerIndex;
 
 		int flashTicks;
 		TintModifiers flashModifiers;
@@ -252,7 +253,9 @@ namespace OpenRA.Traits
 		readonly int binSize;
 		readonly World world;
 		readonly Player owner;
-		readonly Dictionary<uint, FrozenActor> frozenActorsById;
+		readonly List<FrozenActor> actors = [];
+		readonly Dictionary<uint, FrozenActor> frozenActorsById = [];
+
 		readonly SpatiallyPartitioned<FrozenActor> partitionedFrozenActors;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
@@ -260,7 +263,6 @@ namespace OpenRA.Traits
 			binSize = info.BinSize;
 			world = self.World;
 			owner = self.Owner;
-			frozenActorsById = [];
 
 			partitionedFrozenActors = new SpatiallyPartitioned<FrozenActor>(
 				world.Map.MapSize.Width, world.Map.MapSize.Height, binSize);
@@ -275,7 +277,11 @@ namespace OpenRA.Traits
 		public void Add(FrozenActor fa)
 		{
 			FrozenHash += (int)fa.ID;
+
+			fa.LayerIndex = actors.Count;
+			actors.Add(fa);
 			frozenActorsById.Add(fa.ID, fa);
+
 			world.ScreenMap.AddOrUpdate(owner, fa);
 			partitionedFrozenActors.Add(fa, FootprintBounds(fa));
 		}
@@ -283,6 +289,16 @@ namespace OpenRA.Traits
 		public void Remove(FrozenActor fa)
 		{
 			FrozenHash -= (int)fa.ID;
+
+			// PERF: Swap with last element and remove.
+			var index = fa.LayerIndex;
+			var lastIdx = actors.Count - 1;
+			var lastActor = actors[lastIdx];
+
+			actors[index] = lastActor;
+			lastActor.LayerIndex = index;
+			actors.RemoveAt(lastIdx);
+
 			partitionedFrozenActors.Remove(fa);
 			world.ScreenMap.Remove(owner, fa);
 			frozenActorsById.Remove(fa.ID);
@@ -313,26 +329,19 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			List<FrozenActor> frozenActorsToRemove = null;
 			VisibilityHash = 0;
 
-			foreach (var kvp in frozenActorsById)
+			// Iterate backwards to allow safe removal during iteration.
+			for (var i = actors.Count - 1; i >= 0; i--)
 			{
-				var frozenActor = kvp.Value;
+				var frozenActor = actors[i];
 				frozenActor.Tick();
 
 				if (frozenActor.Visible)
 					VisibilityHash += (int)frozenActor.ID;
 				else if (frozenActor.Actor == null)
-				{
-					frozenActorsToRemove ??= [];
-					frozenActorsToRemove.Add(frozenActor);
-				}
+					Remove(frozenActor);
 			}
-
-			if (frozenActorsToRemove != null)
-				foreach (var fa in frozenActorsToRemove)
-					Remove(fa);
 		}
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
