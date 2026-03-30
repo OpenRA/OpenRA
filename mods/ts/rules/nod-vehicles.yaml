@@ -443,6 +443,10 @@ SAPC:
 		RequiresCondition: !submerged
 	WithDecoration@UNDERGROUND:
 		RequiresCondition: inside-tunnel || submerged
+	DamagedByTerrain@VEINS:
+		RequiresCondition: !inside-tunnel && !submerged
+	LeavesTrails@VEINS:
+		RequiresCondition: !inside-tunnel && !submerged
 
 SUBTANK:
 	Inherits: ^Tank
@@ -495,6 +499,10 @@ SUBTANK:
 		RequiresCondition: !submerged
 	WithDecoration@UNDERGROUND:
 		RequiresCondition: inside-tunnel || submerged
+	DamagedByTerrain@VEINS:
+		RequiresCondition: !inside-tunnel && !submerged
+	LeavesTrails@VEINS:
+		RequiresCondition: !inside-tunnel && !submerged
 
 STNK:
 	Inherits: ^Tank
