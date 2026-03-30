@@ -53,9 +53,19 @@ namespace OpenRA.Graphics
 		public float2 CenterLocation { get; private set; }
 
 		public WPos CenterPosition => worldRenderer.ProjectedPosition(CenterLocation.ToInt2());
-
 		public int2 TopLeft => CenterLocation.ToInt2() - ViewportSize.ToInt2() / 2;
-		public int2 BottomRight => CenterLocation.ToInt2() + ViewportSize.ToInt2() / 2;
+
+		public Rectangle Rect
+		{
+			get
+			{
+				var topLeft = TopLeft;
+
+				// We need to add 1 to scroll in order to handle interpixel 0-0.99 fractionalOffset.
+				return new Rectangle(topLeft.X, topLeft.Y, ViewportSize.Width + 1, ViewportSize.Height + 1);
+			}
+		}
+
 		public Size ViewportSize { get; private set; }
 		ProjectedCellRegion cells;
 		bool cellsDirty = true;
@@ -384,10 +394,11 @@ namespace OpenRA.Graphics
 		ProjectedCellRegion CalculateVisibleCells(bool insideBounds)
 		{
 			var map = worldRenderer.World.Map;
+			var rect = Rect;
 
 			// Calculate the projected cell position at the corners of the visible area
-			var tl = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(TopLeft)).ToMPos(map);
-			var br = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(BottomRight)).ToMPos(map);
+			var tl = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(rect.TopLeft)).ToMPos(map);
+			var br = (PPos)map.CellContaining(worldRenderer.ProjectedPosition(rect.BottomRight)).ToMPos(map);
 
 			// RectangularIsometric maps don't have straight edges, and so we need an additional
 			// cell margin to include the cells that are half visible on each edge.
