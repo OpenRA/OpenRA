@@ -205,7 +205,9 @@ WorldLoaded = function()
 
 	Trigger.OnRemovedFromWorld(ExplosionCrate, function()
 		Utils.Do(FremenAmbushSquad, function(fremen)
-			fremen.Stance = "AttackAnything"
+			if not fremen.IsDead then
+				fremen.Stance = "AttackAnything"
+			end
 		end)
 	end)
 
