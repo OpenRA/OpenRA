@@ -266,7 +266,7 @@ namespace OpenRA.Graphics
 				t.ViewportZoomExtentsChanged(minZoom, MaxZoom);
 		}
 
-		public CPos ViewToWorld(int2 view)
+		public CPos ViewToWorld(float2 view)
 		{
 			var world = ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
@@ -307,7 +307,7 @@ namespace OpenRA.Graphics
 		}
 
 		/// <summary>Returns an unfiltered list of all cells that could potentially contain the mouse cursor.</summary>
-		IEnumerable<MPos> CandidateMouseoverCells(int2 world)
+		IEnumerable<MPos> CandidateMouseoverCells(float2 world)
 		{
 			var map = worldRenderer.World.Map;
 			var tileScale = map.Grid.TileScale / 2;
@@ -333,9 +333,9 @@ namespace OpenRA.Graphics
 					yield return new MPos(u, v);
 		}
 
-		public int2 ViewToWorldPx(int2 view) => (graphicSettings.UIScale / Zoom * view.ToFloat2() + CenterLocation - ViewportSize.ToInt2() / 2).ToInt2();
-		public int2 WorldToViewPx(int2 world) => (Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2)).ToInt2();
-		public int2 WorldToViewPx(in float3 world) => (Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2).XY).ToInt2();
+		public float2 ViewToWorldPx(float2 view) => graphicSettings.UIScale / Zoom * view + CenterLocation - ViewportSize.ToInt2() / 2;
+		public float2 WorldToViewPx(int2 world) => Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2);
+		public float2 WorldToViewPx(in float3 world) => Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2).XY;
 
 		public void Center(IEnumerable<Actor> actors)
 		{

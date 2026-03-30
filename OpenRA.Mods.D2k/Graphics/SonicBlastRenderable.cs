@@ -56,8 +56,8 @@ namespace OpenRA.Mods.D2k.Graphics
 		public Rectangle ScreenBounds(WorldRenderer wr)
 		{
 			var pos = wr.Screen3DPxPosition(Pos);
-			var tl = wr.Viewport.WorldToViewPx(pos - r);
-			var br = wr.Viewport.WorldToViewPx(pos + r);
+			var tl = wr.Viewport.WorldToViewPx(pos - r).ToInt2();
+			var br = wr.Viewport.WorldToViewPx(pos + r).ToInt2Ceiling();
 			return new Rectangle(tl.X, tl.Y, br.X - tl.X, br.Y - tl.Y);
 		}
 	}

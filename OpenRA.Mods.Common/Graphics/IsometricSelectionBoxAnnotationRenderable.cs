@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public void Render(WorldRenderer wr)
 		{
-			var screen = bounds.Vertices.Select(v => wr.Viewport.WorldToViewPx(v).ToFloat2()).ToArray();
+			var screen = bounds.Vertices.Select(wr.Viewport.WorldToViewPx).ToArray();
 
 			var tl = new float2(-12, -6);
 			var tr = new float2(12, -6);

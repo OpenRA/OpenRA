@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			pips = new Animation(self.World, info.Image);
 		}
 
-		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
+		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, float2 screenPos)
 		{
 			pips.PlayRepeating(Info.EmptySequence);
 

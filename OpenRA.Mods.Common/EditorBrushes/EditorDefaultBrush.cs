@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets
 				&& mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll)
 				return false;
 
-			worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
+			worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location).ToInt2();
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 			var underCursor = editorLayer.PreviewsAtWorldPixel(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				if (mi.Event == MouseInputEvent.Down && underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || underCursor == Selection.Actor))
 				{
-					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)));
+					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell))).ToInt2();
 					dragPixelOffset = cellViewPx - mi.Location;
 					dragCellOffset = underCursor.Location - cell;
 					moveAction = new MoveActorAction(underCursor, actorLayer);

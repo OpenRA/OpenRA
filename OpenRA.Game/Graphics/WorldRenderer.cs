@@ -373,7 +373,7 @@ namespace OpenRA.Graphics
 					for (var index = 0; index < b.Vertices.Length; index++)
 					{
 						var vertex = b.Vertices[index];
-						points[index] = Viewport.WorldToViewPx(vertex).ToFloat2();
+						points[index] = Viewport.WorldToViewPx(vertex);
 					}
 
 					Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 1, Color.OrangeRed);
@@ -467,6 +467,11 @@ namespace OpenRA.Graphics
 		public WPos ProjectedPosition(int2 screenPx)
 		{
 			return new WPos(TileScale * screenPx.X / TileSize.Width, TileScale * screenPx.Y / TileSize.Height, 0);
+		}
+
+		public WPos ProjectedPosition(float2 screenPx)
+		{
+			return new WPos((int)(TileScale * screenPx.X / TileSize.Width), (int)(TileScale * screenPx.Y / TileSize.Height), 0);
 		}
 
 		public void Dispose()

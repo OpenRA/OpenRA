@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				name = name[..info.MaxLength];
 		}
 
-		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
+		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, float2 screenPos)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
 				return [];

@@ -89,6 +89,7 @@ namespace OpenRA
 		public float2 Round() { return new float2((float)Math.Round(X), (float)Math.Round(Y)); }
 
 		public int2 ToInt2() { return new int2((int)X, (int)Y); }
+		public int2 ToInt2Ceiling() { return new int2((int)Math.Ceiling(X), (int)Math.Ceiling(Y)); }
 
 		public static float2 Max(float2 a, float2 b) { return new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static float2 Min(float2 a, float2 b) { return new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }

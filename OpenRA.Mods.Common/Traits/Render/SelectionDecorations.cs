@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		protected override int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin)
+		protected override float2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin)
 		{
 			return wr.Viewport.WorldToViewPx(GetDecorationPosition(self, wr, pos)) + GetDecorationMargin(pos, margin);
 		}

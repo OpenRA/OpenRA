@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		bool IDecoration.RequiresSelection => Info.RequiresSelection;
 
-		protected abstract IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 pos);
+		protected abstract IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, float2 pos);
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{

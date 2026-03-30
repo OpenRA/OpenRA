@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 			return [imageRenderable];
 		}
 
-		public IRenderable[] RenderUI(WorldRenderer wr, int2 pos, in WVec offset, int zOffset, PaletteReference palette, float scale = 1f, float rotation = 0f)
+		public IRenderable[] RenderUI(WorldRenderer wr, float2 pos, in WVec offset, int zOffset, PaletteReference palette, float scale = 1f, float rotation = 0f)
 		{
 			scale *= CurrentSequence.Scale;
 			var screenOffset = (scale * wr.ScreenVectorComponents(offset)).XY.ToInt2();

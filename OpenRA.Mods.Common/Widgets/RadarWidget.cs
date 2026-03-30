@@ -297,7 +297,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = world.Map.CellContaining(wpos);
 
 			var worldPixel = worldRenderer.ScreenPxPosition(wpos);
-			var location = worldRenderer.Viewport.WorldToViewPx(worldPixel);
+			var location = worldRenderer.Viewport.WorldToViewPx(worldPixel).ToInt2();
 			var mi = new MouseInput
 			{
 				Location = location,
@@ -337,7 +337,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var wpos = new WPos(worldPos.X, worldPos.Y, 0);
 
 				// fake a mousedown/mouseup here
-				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(wpos));
+				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(wpos)).ToInt2();
 				var fakemi = new MouseInput
 				{
 					Event = MouseInputEvent.Down,

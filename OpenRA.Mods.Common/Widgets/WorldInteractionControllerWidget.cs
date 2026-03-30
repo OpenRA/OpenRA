@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			mousePos = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
+			mousePos = worldRenderer.Viewport.ViewToWorldPx(mi.Location).ToInt2();
 
 			var useClassicMouseStyle = gameSettings.MouseControlStyle == MouseControlStyle.Classic;
 			var actionButton = World.OrderGenerator.ActionButton;
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
+			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location).ToInt2();
 			var orders = world.OrderGenerator.Order(world, cell, worldPixel, mi).ToArray();
 			orders.PlayVoiceForOrders();
 
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets
 					return null;
 
 				var cell = worldRenderer.Viewport.ViewToWorld(screenPos);
-				var worldPixel = worldRenderer.Viewport.ViewToWorldPx(screenPos);
+				var worldPixel = worldRenderer.Viewport.ViewToWorldPx(screenPos).ToInt2();
 
 				var mi = new MouseInput
 				{

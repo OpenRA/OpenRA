@@ -156,7 +156,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<FrozenActor> FrozenActorsAtMouse(Player viewer, MouseInput mi)
 		{
-			return FrozenActorsAtMouse(viewer, worldRenderer.Viewport.ViewToWorldPx(mi.Location));
+			return FrozenActorsAtMouse(viewer, worldRenderer.Viewport.ViewToWorldPx(mi.Location).ToInt2());
 		}
 
 		public IEnumerable<ActorBoundsPair> ActorsAtMouse(int2 worldPx)
@@ -169,7 +169,7 @@ namespace OpenRA.Traits
 
 		public IEnumerable<ActorBoundsPair> ActorsAtMouse(MouseInput mi)
 		{
-			return ActorsAtMouse(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
+			return ActorsAtMouse(worldRenderer.Viewport.ViewToWorldPx(mi.Location).ToInt2());
 		}
 
 		static Rectangle RectWithCorners(int2 a, int2 b)

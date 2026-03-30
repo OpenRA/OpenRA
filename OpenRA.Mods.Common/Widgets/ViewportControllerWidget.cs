@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos);
+			var worldPixel = worldRenderer.Viewport.ViewToWorldPx(Viewport.LastMousePos).ToInt2();
 			var underCursor = world.ScreenMap.ActorsAtMouse(worldPixel)
 				.Where(a => a.Actor.Info.HasTraitInfo<ITooltipInfo>() && !world.FogObscures(a.Actor))
 				.WithHighestSelectionPriority(worldPixel, modifiers);

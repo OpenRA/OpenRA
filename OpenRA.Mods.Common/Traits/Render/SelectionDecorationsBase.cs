@@ -123,12 +123,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return RenderSelectionBox(self, worldRenderer, color);
 		}
 
-		int2 ISelectionDecorations.GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin)
+		float2 ISelectionDecorations.GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin)
 		{
 			return GetDecorationOrigin(self, wr, pos, margin);
 		}
 
-		protected abstract int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
+		protected abstract float2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
 		protected abstract IEnumerable<IRenderable> RenderSelectionBox(Actor self, WorldRenderer wr, Color color);
 		protected abstract IEnumerable<IRenderable> RenderSelectionBars(Actor self, WorldRenderer wr, bool displayHealth, bool displayExtra);
 	}

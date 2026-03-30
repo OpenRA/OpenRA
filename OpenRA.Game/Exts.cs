@@ -74,12 +74,12 @@ namespace OpenRA
 				return val;
 		}
 
-		static int WindingDirectionTest(int2 v0, int2 v1, int2 p)
+		static int WindingDirectionTest(int2 v0, int2 v1, float2 p)
 		{
 			return Math.Sign((v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y));
 		}
 
-		public static bool PolygonContains(this ImmutableArray<int2> polygon, int2 p)
+		public static bool PolygonContains(this ImmutableArray<int2> polygon, float2 p)
 		{
 			var windingNumber = 0;
 

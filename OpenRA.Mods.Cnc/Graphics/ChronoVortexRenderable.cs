@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public Rectangle ScreenBounds(WorldRenderer wr)
 		{
 			var pos = wr.Screen3DPxPosition(Pos);
-			var tl = wr.Viewport.WorldToViewPx(pos);
-			var br = wr.Viewport.WorldToViewPx(pos + new float3(64, 64, 0));
+			var tl = wr.Viewport.WorldToViewPx(pos).ToInt2();
+			var br = wr.Viewport.WorldToViewPx(pos + new float3(64, 64, 0)).ToInt2Ceiling();
 			return new Rectangle(tl.X, tl.Y, br.X - tl.X, br.Y - tl.Y);
 		}
 	}

@@ -71,8 +71,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var stepAspect = new float2(1f, -0.5f);
 
 			var offset = barNum * BarStride * barAspect - new float2(0, BarHeight + 1);
-			var start = wr.Viewport.WorldToViewPx(bounds.Vertices[1]).ToFloat2() + offset;
-			var end = wr.Viewport.WorldToViewPx(bounds.Vertices[0]).ToFloat2() + offset;
+			var start = wr.Viewport.WorldToViewPx(bounds.Vertices[1]) + offset;
+			var end = wr.Viewport.WorldToViewPx(bounds.Vertices[0]) + offset;
 
 			// HACK: Work around rounding errors that may cause a few-px offset in the end relative to the start
 			// Force the bar to take a 45 degree angle

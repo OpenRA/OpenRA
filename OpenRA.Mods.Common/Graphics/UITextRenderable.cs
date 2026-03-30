@@ -18,13 +18,13 @@ namespace OpenRA.Mods.Common.Graphics
 	public class UITextRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly SpriteFont font;
-		readonly int2 screenPos;
+		readonly float2 screenPos;
 		readonly Color color;
 		readonly Color bgDark;
 		readonly Color bgLight;
 		readonly string text;
 
-		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
+		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, float2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
 		{
 			this.font = font;
 			Pos = effectiveWorldPos;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.text = text;
 		}
 
-		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, string text)
+		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, float2 screenPos, int zOffset, Color color, string text)
 			: this(font, effectiveWorldPos, screenPos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),

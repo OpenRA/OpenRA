@@ -63,7 +63,7 @@ namespace OpenRA.Graphics
 			DrawTargetMarker(color, first);
 		}
 
-		public static void DrawTargetMarker(Color color, int2 screenPos, int size = 1)
+		public static void DrawTargetMarker(Color color, float2 screenPos, int size = 1)
 		{
 			var offset = new int2(size, size);
 			var tl = screenPos - offset;

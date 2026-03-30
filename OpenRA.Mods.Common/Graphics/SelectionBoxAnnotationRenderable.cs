@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var tl = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Left, decorationBounds.Top)).ToFloat2();
-			var br = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Right, decorationBounds.Bottom)).ToFloat2();
+			var tl = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Left, decorationBounds.Top));
+			var br = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Right, decorationBounds.Bottom));
 			var tr = new float2(br.X, tl.Y);
 			var bl = new float2(tl.X, br.Y);
 			var u = new float2(4, 0);

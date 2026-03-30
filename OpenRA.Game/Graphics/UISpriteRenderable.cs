@@ -16,12 +16,12 @@ namespace OpenRA.Graphics
 	public class UISpriteRenderable : IRenderable, IPalettedRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
-		readonly int2 screenPos;
+		readonly float2 screenPos;
 		readonly float scale;
 		readonly float alpha;
 		readonly float rotation = 0f;
 
-		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette,
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, float2 screenPos, int zOffset, PaletteReference palette,
 			float scale = 1f, float alpha = 1f, float rotation = 0f)
 		{
 			this.sprite = sprite;
