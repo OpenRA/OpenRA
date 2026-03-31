@@ -99,16 +99,17 @@ namespace OpenRA
 
 			Context = Window.Context;
 
+			tempVertexBuffer = Context.CreateEmptyVertexBuffer<Vertex>(TempVertexBufferSize);
+			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
+
 			var combinedBindings = new CombinedShaderBindings();
-			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader(combinedBindings));
+			WorldSpriteRenderer = new SpriteRenderer(this, tempVertexBuffer, quadIndexBuffer, Context.CreateShader(combinedBindings));
 			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
-			SpriteRenderer = new SpriteRenderer(this, Context.CreateShader(combinedBindings));
+			SpriteRenderer = new SpriteRenderer(this, tempVertexBuffer, quadIndexBuffer, Context.CreateShader(combinedBindings));
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempVertexBuffer = Context.CreateEmptyVertexBuffer<Vertex>(TempVertexBufferSize);
-			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
 			bufferSnapshot = Context.CreateTexture();
 		}
 
@@ -366,12 +367,6 @@ namespace OpenRA
 			shader.Bind();
 			Context.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
-		}
-
-		public void DrawQuadBatch(ref Vertex[] vertices, IShader shader, int numVertices)
-		{
-			tempVertexBuffer.SetData(ref vertices, numVertices);
-			DrawQuadBatch(tempVertexBuffer, quadIndexBuffer, shader, numVertices / 4 * 6, 0);
 		}
 
 		public void DrawQuadBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, IShader shader, int numIndices, int start)
