@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
 		{
-			var centerPixel = new int2(actor.Bounds.X, actor.Bounds.Y);
+			var centerPixel = new int2(actor.Bounds.X + actor.Bounds.Width / 2, actor.Bounds.Y + actor.Bounds.Height / 2);
 			var pixelDistance = (centerPixel - worldPixel).Length;
 
 			// If 2+ actors have the same pixel position, then the highest appears on top.
