@@ -34,7 +34,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		public ChronoVortexRenderer(Actor self)
 		{
 			renderer = Game.Renderer;
-			shader = renderer.CreateShader(new RenderPostProcessPassTexturedShaderBindings("vortex"));
+			var bindings = new RenderPostProcessPassTexturedShaderBindings("vortex");
+			shader = renderer.CreateShader(bindings);
 
 			vortexSheet = new Sheet(SheetType.BGRA, new Size(512, 512));
 			var vertices = new RenderPostProcessPassTexturedVertex[288];
@@ -71,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				vertices[j++] = new RenderPostProcessPassTexturedVertex(-32, -32, tl.X, tl.Y);
 			}
 
-			vortexBuffer = renderer.CreateVertexBuffer(vertices, false);
+			vortexBuffer = renderer.CreateVertexBuffer(bindings, vertices, false);
 			vortexSheet.CommitBufferedData();
 		}
 

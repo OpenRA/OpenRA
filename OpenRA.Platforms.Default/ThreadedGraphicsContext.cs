@@ -100,22 +100,22 @@ namespace OpenRA.Platforms.Default
 					getCreateEmptyVertexBuffer =
 						tuple =>
 						{
-							(object t, var type) = ((int, Type))tuple;
+							(var bindings, object t, var type) = ((IShaderBindings, int, Type))tuple;
 							var vertexBuffer = context.GetType()
 								.GetMethod(nameof(CreateEmptyVertexBuffer))
 								.MakeGenericMethod(type)
-								.Invoke(context, [t]);
+								.Invoke(context, [bindings, t]);
 
 							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
 						};
 					getCreateVertexBuffer =
 						tuple =>
 						{
-							var (array, dynamic, type) = ((object, bool, Type))tuple;
+							var (bindings, array, dynamic, type) = ((IShaderBindings, object, bool, Type))tuple;
 							var vertexBuffer = context.GetType()
 								.GetMethod(nameof(CreateVertexBuffer))
 								.MakeGenericMethod(type)
-								.Invoke(context, [array, dynamic]);
+								.Invoke(context, [bindings, array, dynamic]);
 							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke([this, vertexBuffer]);
 						};
 					getCreateIndexBuffer = indices => new ThreadedIndexBuffer(this, context.CreateIndexBuffer((uint[])indices));
@@ -441,14 +441,14 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateTexture);
 		}
 
-		public IVertexBuffer<T> CreateEmptyVertexBuffer<T>(int size) where T : struct
+		public IVertexBuffer<T> CreateEmptyVertexBuffer<T>(IShaderBindings bindings, int size) where T : struct
 		{
-			return (IVertexBuffer<T>)Send(getCreateEmptyVertexBuffer, (size, typeof(T)));
+			return (IVertexBuffer<T>)Send(getCreateEmptyVertexBuffer, (bindings, size, typeof(T)));
 		}
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>(T[] data, bool dynamic = true) where T : struct
+		public IVertexBuffer<T> CreateVertexBuffer<T>(IShaderBindings bindings, T[] data, bool dynamic = true) where T : struct
 		{
-			return (IVertexBuffer<T>)Send(getCreateVertexBuffer, ((object)data, dynamic, typeof(T)));
+			return (IVertexBuffer<T>)Send(getCreateVertexBuffer, (bindings, (object)data, dynamic, typeof(T)));
 		}
 
 		public IIndexBuffer CreateIndexBuffer(uint[] indices)
@@ -760,6 +760,7 @@ namespace OpenRA.Platforms.Default
 
 	sealed class ThreadedShader : IShader
 	{
+		public IShaderBindings Bindings { get; }
 		readonly ThreadedGraphicsContext device;
 		readonly Action prepareRender;
 		readonly Action<object> setBool;
@@ -774,6 +775,7 @@ namespace OpenRA.Platforms.Default
 		public ThreadedShader(ThreadedGraphicsContext device, IShader shader)
 		{
 			this.device = device;
+			Bindings = shader.Bindings;
 			bind = shader.Bind;
 			prepareRender = shader.PrepareRender;
 			setBool = tuple => { var t = ((string, bool))tuple; shader.SetBool(t.Item1, t.Item2); };

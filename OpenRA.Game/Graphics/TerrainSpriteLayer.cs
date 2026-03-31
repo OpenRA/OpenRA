@@ -51,7 +51,8 @@ namespace OpenRA.Graphics
 
 			vertexRowStride = 4 * map.MapSize.Width;
 			vertices = new Vertex[vertexRowStride * map.MapSize.Height];
-			vertexBuffer = Game.Renderer.Context.CreateEmptyVertexBuffer<Vertex>(vertices.Length);
+			var bindings = Game.Renderer.WorldSpriteRenderer.Shader.Bindings;
+			vertexBuffer = Game.Renderer.Context.CreateEmptyVertexBuffer<Vertex>(bindings, vertices.Length);
 
 			indexRowStride = 6 * map.MapSize.Width;
 			lock (IndexBuffers)
@@ -59,6 +60,9 @@ namespace OpenRA.Graphics
 				indexBufferWrapper = IndexBuffers.GetValue(world, world => new IndexBufferRc(world));
 				indexBufferWrapper.AddRef();
 			}
+
+			// Bind to the VAO, as we may not have done yet.
+			indexBufferWrapper.Buffer.Bind();
 
 			palettes = new PaletteReference[map.MapSize.Width * map.MapSize.Height];
 			wr.PaletteInvalidated += UpdatePaletteIndices;
@@ -225,7 +229,7 @@ namespace OpenRA.Graphics
 			}
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
-				vertexBuffer, indexBufferWrapper.Buffer, indexRowStride * firstRow,
+				vertexBuffer, indexRowStride * firstRow,
 				indexRowStride * (lastRow - firstRow), sheets, BlendMode);
 
 			Game.Renderer.Flush();

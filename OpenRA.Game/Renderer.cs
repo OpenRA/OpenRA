@@ -106,7 +106,7 @@ namespace OpenRA
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempVertexBuffer = Context.CreateEmptyVertexBuffer<Vertex>(TempVertexBufferSize);
+			tempVertexBuffer = Context.CreateEmptyVertexBuffer<Vertex>(combinedBindings, TempVertexBufferSize);
 			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
 			bufferSnapshot = Context.CreateTexture();
 		}
@@ -363,14 +363,13 @@ namespace OpenRA
 		public void DrawQuadBatch(ref Vertex[] vertices, IShader shader, int numVertices)
 		{
 			tempVertexBuffer.SetData(ref vertices, numVertices);
-			DrawQuadBatch(tempVertexBuffer, quadIndexBuffer, shader, numVertices / 4 * 6, 0);
+			DrawQuadBatch(tempVertexBuffer, shader, numVertices / 4 * 6, 0);
 		}
 
-		public void DrawQuadBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, IShader shader, int numIndices, int start)
+		public void DrawQuadBatch<T>(IVertexBuffer<T> vertices, IShader shader, int numIndices, int start)
 			where T : struct
 		{
 			vertices.Bind();
-			indices.Bind();
 			shader.Bind();
 			Context.DrawElements(numIndices, start);
 			PerfHistory.Increment("batches", 1);
@@ -413,9 +412,9 @@ namespace OpenRA
 			return Context.CreateShader(bindings);
 		}
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>(T[] data, bool dynamic) where T : struct
+		public IVertexBuffer<T> CreateVertexBuffer<T>(IShaderBindings bindings, T[] data, bool dynamic) where T : struct
 		{
-			return Context.CreateVertexBuffer(data, dynamic);
+			return Context.CreateVertexBuffer(bindings, data, dynamic);
 		}
 
 		public void EnableScissor(Rectangle rect)

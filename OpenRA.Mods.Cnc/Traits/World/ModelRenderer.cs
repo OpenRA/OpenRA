@@ -37,13 +37,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Render voxels")]
-	public class ModelRendererInfo : TraitInfo, Requires<IModelCacheInfo>
+	public class ModelRendererInfo : TraitInfo
 	{
 		public readonly int RenderBufferSize = 2048;
 		public override object Create(ActorInitializer init) { return new ModelRenderer(this, init.Self); }
 	}
 
-	public sealed class ModelRenderer : IDisposable, IRenderer, INotifyActorDisposing
+	public sealed class ModelRenderer : IDisposable, IRenderer, INotifyActorDisposing, INotifyCreated
 	{
 		// Static constants
 		static readonly ImmutableArray<float> ShadowDiffuse = [0, 0, 0];
@@ -55,9 +55,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		static readonly float[] ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
 		static readonly float[] GroundNormal = [0, 0, 1, 1];
 
+		public readonly IShader Shader;
 		readonly Renderer renderer;
-		readonly IShader shader;
-		public readonly IModelCache ModelCache;
+		public IModelCache ModelCache;
 
 		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = [];
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = [];
@@ -69,17 +69,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void SetPalette(HardwarePalette palette)
 		{
-			shader.SetTexture("Palette", palette.Texture);
-			shader.SetVec("PaletteRows", palette.Height);
+			Shader.SetTexture("Palette", palette.Texture);
+			Shader.SetVec("PaletteRows", palette.Height);
 		}
 
 		public ModelRenderer(ModelRendererInfo info, Actor self)
 		{
 			renderer = Game.Renderer;
-			shader = renderer.CreateShader(new ModelShaderBindings());
+			Shader = renderer.CreateShader(new ModelShaderBindings());
 			renderer.WorldRenderers = renderer.WorldRenderers.Append(this).ToArray();
-
-			ModelCache = self.Trait<IModelCache>();
 
 			sheetSize = info.RenderBufferSize;
 			var a = 2f / sheetSize;
@@ -91,7 +89,12 @@ namespace OpenRA.Mods.Cnc.Traits
 				-1, 1, 0, 1
 			};
 
-			shader.SetMatrix("View", view);
+			Shader.SetMatrix("View", view);
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			ModelCache = self.Trait<IModelCache>();
 		}
 
 		public ModelRenderProxy RenderAsync(
@@ -286,15 +289,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			ImmutableArray<float> ambientLight, ImmutableArray<float> diffuseLight,
 			float colorPaletteTextureIndex, float normalsPaletteTextureIndex)
 		{
-			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
-			shader.SetVec("Palettes", colorPaletteTextureIndex, normalsPaletteTextureIndex);
-			shader.SetMatrix("TransformMatrix", t);
-			shader.SetVec("LightDirection", lightDirection, 4);
-			shader.SetVec("AmbientLight", ambientLight.AsMemory(), 3);
-			shader.SetVec("DiffuseLight", diffuseLight.AsMemory(), 3);
+			Shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
+			Shader.SetVec("Palettes", colorPaletteTextureIndex, normalsPaletteTextureIndex);
+			Shader.SetMatrix("TransformMatrix", t);
+			Shader.SetVec("LightDirection", lightDirection, 4);
+			Shader.SetVec("AmbientLight", ambientLight.AsMemory(), 3);
+			Shader.SetVec("DiffuseLight", diffuseLight.AsMemory(), 3);
 
-			shader.PrepareRender();
-			renderer.DrawBatch(cache.VertexBuffer, shader, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
+			Shader.PrepareRender();
+			renderer.DrawBatch(cache.VertexBuffer, Shader, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
 		}
 
 		public void BeginFrame()
