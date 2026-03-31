@@ -548,6 +548,8 @@ namespace OpenRA
 			tempVertexBuffer.Dispose();
 			quadIndexBuffer.Dispose();
 			fontSheetBuilder?.Dispose();
+			WorldSpriteRenderer.Shader.Dispose();
+			SpriteRenderer.Shader.Dispose();
 			if (Fonts != null)
 				foreach (var font in Fonts.Values)
 					font.Dispose();

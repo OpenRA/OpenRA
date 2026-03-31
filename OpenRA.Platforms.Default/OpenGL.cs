@@ -292,6 +292,9 @@ namespace OpenRA.Platforms.Default
 		public delegate uint CreateProgram();
 		public static CreateProgram glCreateProgram { get; private set; }
 
+		public delegate void DeleteProgram(uint program);
+		public static DeleteProgram glDeleteProgram { get; private set; }
+
 		public delegate void UseProgram(uint program);
 		public static UseProgram glUseProgram { get; private set; }
 
@@ -300,6 +303,9 @@ namespace OpenRA.Platforms.Default
 
 		public delegate uint CreateShader(int shaderType);
 		public static CreateShader glCreateShader { get; private set; }
+
+		public delegate void DeleteShader(uint shader);
+		public static DeleteShader glDeleteShader { get; private set; }
 
 		public delegate void ShaderSource(uint shader, int count, string[] str, IntPtr length);
 		public static ShaderSource glShaderSource { get; private set; }
@@ -572,9 +578,11 @@ namespace OpenRA.Platforms.Default
 				glClearColor = Bind<ClearColor>("glClearColor");
 				glFinish = Bind<Finish>("glFinish");
 				glCreateProgram = Bind<CreateProgram>("glCreateProgram");
+				glDeleteProgram = Bind<DeleteProgram>("glDeleteProgram");
 				glUseProgram = Bind<UseProgram>("glUseProgram");
 				glGetProgramiv = Bind<GetProgramiv>("glGetProgramiv");
 				glCreateShader = Bind<CreateShader>("glCreateShader");
+				glDeleteShader = Bind<DeleteShader>("glDeleteShader");
 				glShaderSource = Bind<ShaderSource>("glShaderSource");
 				glCompileShader = Bind<CompileShader>("glCompileShader");
 				glGetShaderiv = Bind<GetShaderiv>("glGetShaderiv");

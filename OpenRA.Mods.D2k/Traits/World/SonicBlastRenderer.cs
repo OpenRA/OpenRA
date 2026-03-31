@@ -90,6 +90,7 @@ namespace OpenRA.Mods.D2k.Traits
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			buffer.Dispose();
+			shader.Dispose();
 		}
 	}
 }
