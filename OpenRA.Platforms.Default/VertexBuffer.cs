@@ -28,6 +28,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glGenVertexArrays(1, out vao);
 			OpenGL.CheckGLError();
 			OpenGL.glBindVertexArray(vao);
+			Sdl2GraphicsContext.ActiveVAO = vao;
 			OpenGL.CheckGLError();
 
 			OpenGL.glGenBuffers(1, out buffer);
@@ -82,6 +83,7 @@ namespace OpenRA.Platforms.Default
 			OpenGL.glGenVertexArrays(1, out vao);
 			OpenGL.CheckGLError();
 			OpenGL.glBindVertexArray(vao);
+			Sdl2GraphicsContext.ActiveVAO = vao;
 			OpenGL.CheckGLError();
 
 			OpenGL.glGenBuffers(1, out buffer);
@@ -155,7 +157,12 @@ namespace OpenRA.Platforms.Default
 		public void Bind()
 		{
 			VerifyThreadAffinity();
-			OpenGL.glBindVertexArray(vao);
+			if (Sdl2GraphicsContext.ActiveVAO != vao)
+			{
+				OpenGL.glBindVertexArray(vao);
+				Sdl2GraphicsContext.ActiveVAO = vao;
+			}
+
 			OpenGL.CheckGLError();
 		}
 

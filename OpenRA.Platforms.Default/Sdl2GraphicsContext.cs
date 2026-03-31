@@ -22,6 +22,10 @@ namespace OpenRA.Platforms.Default
 
 		public string GLVersion => OpenGL.Version;
 
+		// Shadowing state.
+		internal static uint ActiveVAO;
+		internal static uint ActiveProgram;
+
 		public Sdl2GraphicsContext(Sdl2PlatformWindow window)
 		{
 			this.window = window;

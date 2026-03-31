@@ -110,6 +110,7 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
+			Sdl2GraphicsContext.ActiveProgram = program;
 
 			OpenGL.glGetProgramiv(program, OpenGL.GL_ACTIVE_UNIFORMS, out var numUniforms);
 
@@ -146,15 +147,17 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			if (Sdl2GraphicsContext.ActiveProgram != program)
+			{
+				OpenGL.glUseProgram(program);
+				OpenGL.CheckGLError();
+				Sdl2GraphicsContext.ActiveProgram = program;
+			}
 		}
 
 		public void PrepareRender()
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
 
 			// bind the textures
 			foreach (var kv in textures)
@@ -189,43 +192,40 @@ namespace OpenRA.Platforms.Default
 
 		public void SetBool(string name, bool value)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform1i(uniformCache[name], value ? 1 : 0);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform1f(uniformCache[name], x);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x, float y)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform2f(uniformCache[name], x, y);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x, float y, float z)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform3f(uniformCache[name], x, y, z);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, ReadOnlyMemory<float> vec, int length)
 		{
-			VerifyThreadAffinity();
+			Bind();
+
 			var param = uniformCache[name];
 			unsafe
 			{
@@ -248,12 +248,10 @@ namespace OpenRA.Platforms.Default
 
 		public void SetMatrix(string name, float[] mtx)
 		{
-			VerifyThreadAffinity();
+			Bind();
+
 			if (mtx.Length != 16)
 				throw new InvalidDataException("Invalid 4x4 matrix");
-
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
 
 			unsafe
 			{
