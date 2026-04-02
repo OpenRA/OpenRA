@@ -11,8 +11,31 @@ permissions:
   contents: write # for release creation
 
 jobs:
+  create-release:
+    name: Create Draft Release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          PRE_RELEASE_FLAG=""
+
+          if [[ "${{ github.ref_name }}" == devtest-* ]] || [[ "${{ github.ref_name }}" == playtest-* ]]; then
+            PRE_RELEASE_FLAG="--prerelease"
+          fi
+
+          # Use --repo to interact with the API without needing a git checkout
+          gh release create "${{ github.ref_name }}" \
+            --repo "${{ github.repository }}" \
+            --title "${{ github.ref_name }}" \
+            --draft \
+            $PRE_RELEASE_FLAG
+
   source:
     name: Source Tarball
+    needs: create-release
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
@@ -35,6 +58,7 @@ jobs:
 
   linux:
     name: Linux AppImages
+    needs: create-release
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
@@ -63,6 +87,7 @@ jobs:
 
   macos:
     name: macOS Disk Image
+    needs: create-release
     runs-on: macos-14
     steps:
       - name: Clone Repository
@@ -96,6 +121,7 @@ jobs:
 
   windows:
     name: Windows Installers
+    needs: create-release
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
