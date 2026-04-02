@@ -162,8 +162,20 @@ set_mod_version() (
 
 	VERSION="${1}"
 	shift
+
+	if [ -z "${1}" ]; then
+        echo "Error: No YAML paths provided to set_mod_version" >&2
+        exit 1
+    fi
+
 	while [ -n "${1}" ]; do
 		MOD_YAML_PATH="${1}"
+
+		if [ ! -f "${MOD_YAML_PATH}" ]; then
+            echo "Error: File ${MOD_YAML_PATH} not found!" >&2
+            exit 1
+        fi
+
 		awk -v v="${VERSION}" '{sub("Version:.*$", "Version: " v); print $0}' "${MOD_YAML_PATH}" > "${MOD_YAML_PATH}.tmp"
 		awk -v v="${VERSION}" '{sub("/[^/]*: User$", "/"v ": User"); print $0}' "${MOD_YAML_PATH}.tmp" > "${MOD_YAML_PATH}"
 		rm "${MOD_YAML_PATH}.tmp"
