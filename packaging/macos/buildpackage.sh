@@ -126,17 +126,9 @@ modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.15" "${TEMPLATE_DIR}/Contents/Info.p
 clang apphost.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-x86_64" -framework AppKit -target x86_64-apple-macos10.15
 clang apphost.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-arm64" -framework AppKit -target arm64-apple-macos10.15
 
-# Compile universal (x86_64 + arm64) Launcher
-clang launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" -framework AppKit -target x86_64-apple-macos10.15
-clang launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher-arm64" -framework AppKit -target arm64-apple-macos10.15
-lipo -create -output "${TEMPLATE_DIR}/Contents/MacOS/Launcher" "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Launcher-arm64"
-rm "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Launcher-arm64"
-
-# Compile universal (x86_64 + arm64) Utility
-clang utility.m -o "${TEMPLATE_DIR}/Contents/MacOS/Utility-x86_64" -framework AppKit -target x86_64-apple-macos10.15
-clang utility.m -o "${TEMPLATE_DIR}/Contents/MacOS/Utility-arm64" -framework AppKit -target arm64-apple-macos10.15
-lipo -create -output "${TEMPLATE_DIR}/Contents/MacOS/Utility" "${TEMPLATE_DIR}/Contents/MacOS/Utility-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Utility-arm64"
-rm "${TEMPLATE_DIR}/Contents/MacOS/Utility-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Utility-arm64"
+# Compile universal (x86_64 + arm64) Launcher and Utility
+clang launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher" -framework AppKit -arch x86_64 -arch arm64 -mmacosx-version-min=10.15
+clang utility.m -o "${TEMPLATE_DIR}/Contents/MacOS/Utility" -framework AppKit -arch x86_64 -arch arm64 -mmacosx-version-min=10.15
 
 build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
 build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
