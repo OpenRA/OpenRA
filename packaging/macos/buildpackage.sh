@@ -38,6 +38,10 @@ if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CER
 	echo "Importing signing certificate"
 	echo "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" | base64 --decode > build.p12
 	security create-keychain -p build build.keychain
+
+	# Ensure keychain is deleted upon script exit, even on failure
+	trap 'security delete-keychain build.keychain 2>/dev/null || true' EXIT
+
 	security default-keychain -s build.keychain
 	security unlock-keychain -p build build.keychain
 	security import build.p12 -k build.keychain -P "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" -T /usr/bin/codesign >/dev/null 2>&1
@@ -221,9 +225,6 @@ sync
 hdiutil detach "${DMG_DEVICE}"
 rm -rf "${BUILTDIR}"
 
-if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
-	security delete-keychain build.keychain
-fi
 
 if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
 	echo "Submitting build for notarization"
