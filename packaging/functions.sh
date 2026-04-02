@@ -32,10 +32,17 @@ install_assemblies() (
 	COPY_CNC_DLL="${5}"
 	COPY_D2K_DLL="${6}"
 
+	ABS_SRC_PATH=$(realpath "${SRC_PATH}")
+
 	ORIG_PWD=$(pwd)
 	cd "${SRC_PATH}"
 
-    dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -p:PublishDir="${DEST_PATH}" --self-contained true
+	dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" \
+		-p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" \
+		-r "${TARGETPLATFORM}" -p:PublishDir="${DEST_PATH}" \
+		-p:Deterministic=true -p:PathMap="${ABS_SRC_PATH}=." \
+		--self-contained true
+
 	cd "${ORIG_PWD}"
 )
 
