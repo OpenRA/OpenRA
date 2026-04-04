@@ -151,6 +151,82 @@
 								xx_x: 640
 								xxx_: 641
 								xxxx: 642
+							Rule@RampEdge40:
+								AutoMain:
+								Low: 40,643,644,645
+								____: 40
+								___x: 40
+								__x_: 644
+								__xx: 644
+								_x__: 40
+								_x_x: 40
+								_xx_: 644
+								_xxx: 644
+								x___: 643
+								x__x: 643
+								x_x_: 645
+								x_xx: 645
+								xx__: 643
+								xx_x: 643
+								xxx_: 645
+								xxxx: 645
+							Rule@RampEdge41:
+								AutoMain:
+								Low: 41,646,647,648
+								____: 41
+								___x: 646
+								__x_: 41
+								__xx: 646
+								_x__: 647
+								_x_x: 648
+								_xx_: 647
+								_xxx: 648
+								x___: 41
+								x__x: 646
+								x_x_: 41
+								x_xx: 646
+								xx__: 647
+								xx_x: 648
+								xxx_: 647
+								xxxx: 648
+							Rule@RampEdge42:
+								AutoMain:
+								Low: 42,649,650,651
+								____: 42
+								___x: 42
+								__x_: 649
+								__xx: 649
+								_x__: 42
+								_x_x: 42
+								_xx_: 649
+								_xxx: 649
+								x___: 650
+								x__x: 650
+								x_x_: 651
+								x_xx: 651
+								xx__: 650
+								xx_x: 650
+								xxx_: 651
+								xxxx: 651
+							Rule@RampEdge43:
+								AutoMain:
+								Low: 43,652,653,654
+								____: 43
+								___x: 653
+								__x_: 43
+								__xx: 653
+								_x__: 652
+								_x_x: 654
+								_xx_: 652
+								_xxx: 654
+								x___: 43
+								x__x: 653
+								x_x_: 43
+								x_xx: 653
+								xx__: 652
+								xx_x: 654
+								xxx_: 652
+								xxxx: 654
 				Choice@snow:
 					Tileset: SNOW
 					Settings:
@@ -217,6 +293,82 @@
 								xx_x: 1020
 								xxx_: 1021
 								xxxx: 1007
+							Rule@RampEdge40:
+								AutoMain:
+								Low: 40,721,722,723
+								____: 40
+								___x: 40
+								__x_: 722
+								__xx: 722
+								_x__: 40
+								_x_x: 40
+								_xx_: 722
+								_xxx: 722
+								x___: 721
+								x__x: 721
+								x_x_: 723
+								x_xx: 723
+								xx__: 721
+								xx_x: 721
+								xxx_: 723
+								xxxx: 723
+							Rule@RampEdge41:
+								AutoMain:
+								Low: 41,724,725,726
+								____: 41
+								___x: 724
+								__x_: 41
+								__xx: 724
+								_x__: 725
+								_x_x: 726
+								_xx_: 725
+								_xxx: 726
+								x___: 41
+								x__x: 724
+								x_x_: 41
+								x_xx: 724
+								xx__: 725
+								xx_x: 726
+								xxx_: 725
+								xxxx: 726
+							Rule@RampEdge42:
+								AutoMain:
+								Low: 42,727,728,729
+								____: 42
+								___x: 42
+								__x_: 727
+								__xx: 727
+								_x__: 42
+								_x_x: 42
+								_xx_: 727
+								_xxx: 727
+								x___: 728
+								x__x: 728
+								x_x_: 729
+								x_xx: 729
+								xx__: 728
+								xx_x: 728
+								xxx_: 729
+								xxxx: 729
+							Rule@RampEdge43:
+								AutoMain:
+								Low: 43,730,731,732
+								____: 43
+								___x: 731
+								__x_: 43
+								__xx: 731
+								_x__: 730
+								_x_x: 732
+								_xx_: 730
+								_xxx: 732
+								x___: 43
+								x__x: 731
+								x_x_: 43
+								x_xx: 731
+								xx__: 730
+								xx_x: 732
+								xxx_: 730
+								xxxx: 732
 						IceLatTiler:
 							Rule@Ice:
 								AutoMain:
