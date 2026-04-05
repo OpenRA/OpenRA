@@ -124,7 +124,9 @@ namespace OpenRA.Mods.Common.Traits
 				(actor, _) =>
 				{
 					var init = actor.GetInitOrDefault<StanceInit>(this);
-					var stance = init?.Value ?? InitialStance;
+					var botOwned = actor.Owner.Bot != null || !actor.Owner.Playable;
+					var stance = init?.Value;
+					stance ??= botOwned ? InitialStanceAI : InitialStance;
 					return stances[(int)stance];
 				},
 				(actor, value) => actor.ReplaceInit(new StanceInit(this, (UnitStance)stances.IndexOf(value))));
