@@ -39,7 +39,7 @@
 						MinimumSpawnRadius: 5
 						SpawnResourceSpawns: 3
 						SpawnReservation: 16
-						SpawnResourceBias: 1050
+						SpawnResourceBias: 500
 						ResourcesPerPlayer: 50000
 						OreUniformity: 500
 						OreClumpiness: 1
