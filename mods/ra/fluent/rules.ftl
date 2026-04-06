@@ -198,7 +198,9 @@ meta-crate =
     .name = Crate
     .generic-name = Crate
 
-meta-mine-name = Mine
+meta-mine =
+    .name = Mine
+    .generic-name = Mine
 
 ## fakes.yaml
 actor-fpwr =
