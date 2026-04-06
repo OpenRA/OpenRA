@@ -254,8 +254,8 @@ namespace OpenRA.Mods.Common.Server
 					server.LobbyInfo.Clients.First(c => c.IsAdmin).State != Session.ClientState.Ready)
 					return;
 
-				// Does server have at least 2 human players?
-				if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && nonBotPlayers.Count() < 2)
+				// Does server have enough human presence?
+				if (!HasEnoughHumanPresence(server))
 					return;
 
 				// Are the map conditions satisfied?
@@ -332,7 +332,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && server.LobbyInfo.NonBotPlayers.Count() < 2)
+				if (!HasEnoughHumanPresence(server))
 				{
 					server.SendFluentMessageTo(conn, TwoHumansRequired);
 					return true;
@@ -1447,6 +1447,17 @@ namespace OpenRA.Mods.Common.Server
 				return null;
 
 			return server.Map.Players.Players[slot.PlayerReference];
+		}
+
+		static bool HasEnoughHumanPresence(S server)
+		{
+			if (server.Settings.AllowBotOnlyGames)
+				return server.LobbyInfo.NonBotClients.Any();
+
+			if (server.LobbyInfo.GlobalSettings.EnableSingleplayer)
+				return server.LobbyInfo.NonBotPlayers.Any();
+
+			return server.LobbyInfo.NonBotPlayers.Count() >= 2;
 		}
 	}
 }
