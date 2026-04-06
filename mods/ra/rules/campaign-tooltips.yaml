@@ -66,6 +66,11 @@
 	Tooltip:
 		ShowOwnerRow: false
 
+^Mine:
+	Tooltip:
+		GenericVisibility: Ally, Enemy
+		ShowOwnerRow: false
+
 FLARE:
 	Tooltip:
 		ShowOwnerRow: false

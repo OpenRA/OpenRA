@@ -1265,7 +1265,8 @@
 		DetectionTypes: Mine
 		InitialDelay: 0
 	Tooltip:
-		Name: meta-mine-name
+		Name: meta-mine.name
+		GenericName: meta-mine.generic-name
 	Targetable:
 		TargetTypes: GroundActor, Mine
 	Immobile:
