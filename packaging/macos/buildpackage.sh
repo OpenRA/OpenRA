@@ -143,6 +143,33 @@ build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Dune 2000.app" "d2k" "Dune 200
 
 rm -rf "${TEMPLATE_DIR}"
 
+# Replace duplicate .NET runtime files with hard links to improve compression
+echo "Deduplicating runtime files between mods"
+for MOD in "Red Alert" "Tiberian Dawn"; do
+	for p in "x86_64" "arm64"; do
+		for f in "${BUILTDIR}/OpenRA - ${MOD}.app/Contents/MacOS/${p}"/*; do
+			g="${BUILTDIR}/OpenRA - Dune 2000.app/Contents/MacOS/${p}/"$(basename "${f}")
+			if [ -e "${g}" ] && cmp -s "${f}" "${g}"; then
+				echo "Deduplicating ${f}"
+				rm "${f}"
+				ln "${g}" "${f}"
+			fi
+		done
+	done
+done
+
+echo "Deduplicating runtime files between architectures"
+for MOD in "Red Alert" "Tiberian Dawn" "Dune 2000"; do
+	for f in "${BUILTDIR}/OpenRA - ${MOD}.app/Contents/MacOS/x86_64"/*; do
+		g="${BUILTDIR}/OpenRA - ${MOD}.app/Contents/MacOS/arm64/"$(basename "${f}")
+		if [ -e "${g}" ] && cmp -s "${f}" "${g}"; then
+			echo "Deduplicating ${f}"
+			rm "${f}"
+			ln "${g}" "${f}"
+		fi
+	done
+done
+
 echo "Packaging disk image"
 if hdiutil info | grep -q "/Volumes/OpenRA"; then
 	echo "Some process is stealing our resources! /Volumes/OpenRA is already mounted!"
@@ -189,37 +216,6 @@ end tell
 cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
 SetFile -c icnC "/Volumes/OpenRA/.VolumeIcon.icns"
 SetFile -a C "/Volumes/OpenRA"
-
-# Replace duplicate .NET runtime files with hard links to improve compression
-for MOD in "Red Alert" "Tiberian Dawn"; do
-	for p in "x86_64" "arm64"; do
-		for f in "/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS/${p}"/*; do
-			g="/Volumes/OpenRA/OpenRA - Dune 2000.app/Contents/MacOS/${p}/"$(basename "${f}")
-			hashf=$(shasum "${f}" | awk '{ print $1 }') || :
-			hashg=$(shasum "${g}" | awk '{ print $1 }') || :
-			if [ -n "${hashf}" ] && [ "${hashf}" = "${hashg}" ]; then
-				echo "Deduplicating ${f}"
-				rm "${f}"
-				ln "${g}" "${f}"
-			fi
-		done
-	done
-done
-
-for MOD in "Red Alert" "Tiberian Dawn" "Dune 2000"; do
-	for f in "/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS/x86_64"/*; do
-		g="/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS/arm64/"$(basename "${f}")
-		if [ -e "${g}" ]; then
-			hashf=$(shasum "${f}" | awk '{ print $1 }') || :
-			hashg=$(shasum "${g}" | awk '{ print $1 }') || :
-			if [ -n "${hashf}" ] && [ "${hashf}" = "${hashg}" ]; then
-				echo "Deduplicating ${f}"
-				rm "${f}"
-				ln "${g}" "${f}"
-			fi
-		fi
-	done
-done
 
 chmod -Rf go-w /Volumes/OpenRA
 sync
