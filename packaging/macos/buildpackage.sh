@@ -145,7 +145,7 @@ rm -rf "${TEMPLATE_DIR}"
 
 echo "Packaging disk image"
 if hdiutil info | grep -q "/Volumes/OpenRA"; then
-  echo "Some process is stealing our resources! /Volumes/OpenRA is already mounted!"
+	echo "Some process is stealing our resources! /Volumes/OpenRA is already mounted!"
 fi
 
 hdiutil create "build.dmg" -format UDRW -volname "OpenRA" -fs HFS+ -srcfolder "${BUILTDIR}"
@@ -159,30 +159,30 @@ tiffutil -cathidpicheck "${ARTWORK_DIR}/macos-background.png" "${ARTWORK_DIR}/ma
 cp "${BUILTDIR}/OpenRA - Red Alert.app/Contents/Resources/ra.icns" "/Volumes/OpenRA/.VolumeIcon.icns"
 
 echo '
-   tell application "Finder"
-     tell disk "'OpenRA'"
-           open
-           set current view of container window to icon view
-           set toolbar visible of container window to false
-           set statusbar visible of container window to false
-           set the bounds of container window to {400, 100, 1040, 580}
-           set theViewOptions to the icon view options of container window
-           set arrangement of theViewOptions to not arranged
-           set icon size of theViewOptions to 72
-           set background picture of theViewOptions to file ".background:background.tiff"
-           make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
-           set position of item "'OpenRA - Tiberian Dawn.app'" of container window to {160, 106}
-           set position of item "'OpenRA - Red Alert.app'" of container window to {320, 106}
-           set position of item "'OpenRA - Dune 2000.app'" of container window to {480, 106}
-           set position of item "Applications" of container window to {320, 298}
-           set position of item ".background" of container window to {160, 298}
-           set position of item ".fseventsd" of container window to {160, 298}
-           set position of item ".VolumeIcon.icns" of container window to {160, 298}
-           update without registering applications
-           delay 5
-           close
-     end tell
-   end tell
+tell application "Finder"
+	tell disk "'OpenRA'"
+		open
+		set current view of container window to icon view
+		set toolbar visible of container window to false
+		set statusbar visible of container window to false
+		set the bounds of container window to {400, 100, 1040, 580}
+		set theViewOptions to the icon view options of container window
+		set arrangement of theViewOptions to not arranged
+		set icon size of theViewOptions to 72
+		set background picture of theViewOptions to file ".background:background.tiff"
+		make new alias file at container window to POSIX file "/Applications" with properties {name:"Applications"}
+		set position of item "'OpenRA - Tiberian Dawn.app'" of container window to {160, 106}
+		set position of item "'OpenRA - Red Alert.app'" of container window to {320, 106}
+		set position of item "'OpenRA - Dune 2000.app'" of container window to {480, 106}
+		set position of item "Applications" of container window to {320, 298}
+		set position of item ".background" of container window to {160, 298}
+		set position of item ".fseventsd" of container window to {160, 298}
+		set position of item ".VolumeIcon.icns" of container window to {160, 298}
+		update without registering applications
+		delay 5
+		close
+	end tell
+end tell
 ' | osascript
 
 # HACK: Copy the volume icon again - something in the previous step seems to delete it...?
