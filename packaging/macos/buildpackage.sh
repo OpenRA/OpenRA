@@ -56,6 +56,9 @@ SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
 ARTWORK_DIR="$(pwd)/../artwork/"
 
+# Clean up any leftover build directories from previous aborted runs
+rm -rf "${BUILTDIR}"
+
 modify_plist() {
 	sed "s|${1}|${2}|g" "${3}" > "${3}.tmp" && mv "${3}.tmp" "${3}"
 }
@@ -145,7 +148,7 @@ if hdiutil info | grep -q "/Volumes/OpenRA"; then
   echo "Some process is stealing our resources! /Volumes/OpenRA is already mounted!"
 fi
 
-hdiutil create "build.dmg" -format UDRW -volname "OpenRA" -fs HFS+ -srcfolder build
+hdiutil create "build.dmg" -format UDRW -volname "OpenRA" -fs HFS+ -srcfolder "${BUILTDIR}"
 DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "build.dmg" | egrep '^/dev/' | sed 1q | awk '{print $1}')
 sleep 2
 
@@ -225,33 +228,24 @@ sync
 hdiutil detach "${DMG_DEVICE}"
 rm -rf "${BUILTDIR}"
 
+DMG_NAME="OpenRA-${TAG}.dmg"
+FINAL_DMG_PATH="${OUTPUTDIR}/${DMG_NAME}"
 
+hdiutil convert "build.dmg" -format ULFO -ov -o "${FINAL_DMG_PATH}"
+rm "build.dmg"
+
+# Submit build for notarization
 if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
 	echo "Submitting build for notarization"
 
-	# Reset xcode search path to fix xcrun not finding altool
+	# Reset xcode search path to fix xcrun not finding altool/notarytool
 	sudo xcode-select -r
 
-	# Create a temporary read-only dmg for submission (notarization service rejects read/write images)
-	hdiutil convert "build.dmg" -format ULFO -ov -o "build-notarization.dmg"
+	# Submit the final DMG directly to notarytool
+	xcrun notarytool submit "${FINAL_DMG_PATH}" --wait --apple-id "${MACOS_DEVELOPER_USERNAME}" --password "${MACOS_DEVELOPER_PASSWORD}" --team-id "${MACOS_DEVELOPER_IDENTITY}"
 
-	xcrun notarytool submit "build-notarization.dmg" --wait --apple-id "${MACOS_DEVELOPER_USERNAME}" --password "${MACOS_DEVELOPER_PASSWORD}" --team-id "${MACOS_DEVELOPER_IDENTITY}"
-
-	rm "build-notarization.dmg"
-
-	echo "Stapling tickets"
-	DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "build.dmg" | egrep '^/dev/' | sed 1q | awk '{print $1}')
-	sleep 2
-
-	xcrun stapler staple "/Volumes/OpenRA/OpenRA - Red Alert.app"
-	xcrun stapler staple "/Volumes/OpenRA/OpenRA - Tiberian Dawn.app"
-	xcrun stapler staple "/Volumes/OpenRA/OpenRA - Dune 2000.app"
-
-	sync
-	sync
-
-	hdiutil detach "${DMG_DEVICE}"
+	echo "Stapling tickets to DMG"
+	xcrun stapler staple "${FINAL_DMG_PATH}"
 fi
 
-hdiutil convert "build.dmg" -format ULFO -ov -o "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
-rm "build.dmg"
+echo "Packaging complete: ${FINAL_DMG_PATH}"
