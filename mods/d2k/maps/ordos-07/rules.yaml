@@ -1,0 +1,195 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+	ExternalCondition@AIAtreides:
+		Condition: base-rebuilder
+	ExternalCondition@AIAtreidesDefense:
+		Condition: defense-rebuilder
+	ExternalCondition@AIHarkonnen:
+		Condition: base-rebuilder2
+	ExternalCondition@AIHarkonnenDefense:
+		Condition: defense-rebuilder2
+	BaseBuilderBotModule@AtriedesMain:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret, large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			wind_trap: 7
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			outpost: 1
+			high_tech_factory: 1
+			repair_pad: 1
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			outpost: 1
+			high_tech_factory: 1
+			repair_pad: 1
+	BaseBuilderBotModule@AtriedesMainDefense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 12
+			repair_pad: 1
+			outpost: 1
+			high_tech_factory: 1
+			silo: 1
+			medium_gun_turret: 2
+			large_gun_turret: 4
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			repair_pad: 1
+			outpost: 1
+			high_tech_factory: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+			large_gun_turret: 1
+	BaseBuilderBotModule@CorrinoMain:
+		RequiresCondition: base-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			wind_trap: 5
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@CorrinoMainDefense:
+		RequiresCondition: defense-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret, large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			outpost: 1
+			refinery: 1
+			heavy_factory: 1
+			wind_trap: 7
+			silo: 1
+			medium_gun_turret: 1
+			large_gun_turret: 4
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+			large_gun_turret: 3
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, ordos07.lua, ordos07-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: O_BR07_E.VQA
+	MapOptions:
+		TechLevel: nopowers
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			AtreidesSmall: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmall2: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			MercenariesNeutral: 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			AtreidesSmall: 0.274, -0.275, 1, 0.32, 0.34
+			AtreidesSmall2: 0.274, -0.275, 1, 0.32, 0.34
+			MercenariesNeutral: -0.219, 0.067, 1, 0.32, 0.34
+
+palace:
+	Buildable:
+		Prerequisites: ~disabled
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+missile_tank:
+	Buildable:
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+vision_provider:
+	RevealsShroud:
+		Range: 5c0
