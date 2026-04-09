@@ -520,8 +520,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var experienceText = new CachedTransform<int, string>(i => i.ToString(NumberFormatInfo.CurrentInfo));
 			template.Get<LabelWidget>("EXPERIENCE").GetText = () => experienceText.Update(stats.Experience);
 
-			var actionsText = new CachedTransform<double, string>(AverageOrdersPerMinute);
-			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => actionsText.Update(stats.OrderCount);
+			var actionsText = new CachedTransform<(int Orders, int Tick), string>(o => AverageOrdersPerMinute(o.Orders, o.Tick));
+			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => actionsText.Update((stats.OrderCount, stats.DefeatTick ?? world.WorldTick));
 
 			return template;
 		}
@@ -606,9 +606,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			playerName.GetColor = () => player.Color;
 		}
 
-		string AverageOrdersPerMinute(double orders)
+		static string AverageOrdersPerMinute(double orders, int tick)
 		{
-			return (world.WorldTick == 0 ? 0 : orders / (world.WorldTick / 1500.0)).ToString("F1", NumberFormatInfo.CurrentInfo);
+			return (tick == 0 ? 0 : orders / (tick / 1500.0)).ToString("F1", NumberFormatInfo.CurrentInfo);
 		}
 
 		string Vision(int revealedCells)
