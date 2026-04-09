@@ -26,12 +26,13 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
 	}
 
-	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated, IWorldLoaded
+	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated, IWorldLoaded, INotifyWinStateChanged
 	{
 		PlayerResources resources;
 		PlayerExperience experience;
 
 		public int OrderCount;
+		public int? DefeatTick { get; private set; }
 
 		public int Experience => experience != null ? experience.Experience : 0;
 
@@ -130,6 +131,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!incomeGraphDisabled)
 				IncomeSamples.Add(Income);
+		}
+
+		void INotifyWinStateChanged.OnPlayerWon(Player player) { }
+
+		void INotifyWinStateChanged.OnPlayerLost(Player player)
+		{
+			DefeatTick = player.World.WorldTick;
 		}
 	}
 
