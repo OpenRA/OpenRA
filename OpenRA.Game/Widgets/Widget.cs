@@ -328,6 +328,14 @@ namespace OpenRA.Widgets
 
 		static void CollectFocusableWidgets(Widget widget, List<Widget> result)
 		{
+			if (widget == null || widget.IsVisible == null)
+			{
+				var widgetType = widget?.GetType().Name ?? "null";
+				var widgetId = widget?.Id ?? "null";
+				Log.Write("debug", $"CollectFocusableWidgets: null widget or IsVisible delegate (type={widgetType}, id={widgetId})");
+				return;
+			}
+
 			if (!widget.IsVisible())
 				return;
 
