@@ -508,7 +508,9 @@ FindTargetsInArea = function(owner, unit)
 
 		if #enemies > 0 then
 			unit.Hunt()
-			unit.Wait(10)
+			Trigger.AfterDelay(420, function()
+				if not unit.IsDead then unit.Stop() end
+			end)
 		else
 			unit.Wait(Utils.RandomInteger(200 , 500))
 			if DefencePerimeter[owner] ~= nil then
