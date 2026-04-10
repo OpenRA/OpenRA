@@ -437,10 +437,10 @@ function AICrushLogic(unit, bot)
 	end
 
 	local targets = Map.ActorsInCircle(unit.CenterPosition, WDist.FromCells(5), function (a)
-        return a.Owner.IsAlliedWith(bot) == false and
-			a.Type == "light_inf" or
+		return not a.Owner.IsAlliedWith(bot) and
+			( a.Type == "light_inf" or
 			a.Type == "trooper" or
-			a.Type == "engineer" and
+			a.Type == "engineer" ) and
 			Map.TerrainType(a.Location) ~= "Rough"
     end)
 
@@ -450,7 +450,6 @@ function AICrushLogic(unit, bot)
 		Trigger.AfterDelay(55, function ()
 			AICrushLogic(unit, bot)
 		end)
-		unit.Hunt()
 	else
 		Trigger.AfterDelay(200, function ()
 			AICrushLogic(unit, bot)
