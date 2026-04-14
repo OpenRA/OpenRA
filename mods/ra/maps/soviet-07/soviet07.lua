@@ -6,316 +6,451 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-if Difficulty == "easy" then
-	RemainingTime = DateTime.Minutes(7)
-elseif Difficulty == "normal" then
-	RemainingTime = DateTime.Minutes(6)
-elseif Difficulty == "hard" then
-	RemainingTime = DateTime.Minutes(5)
+
+local USSR = Player.GetPlayer("USSR")
+local Spain = Player.GetPlayer("Spain")
+
+--- The objectives below are delayed and only assigned an ID later.
+
+---@type number Destroy hostile towers from the security center.
+local DeactivateSecurity
+---@type number Free the Soviet dogs.
+local FreeDogs
+---@type number Rescue the guarded Engineers.
+local RescueEngineers
+---@type number Reach all coolant stations with an Engineer.
+local GetEngineersToCoolant
+---@type number Activate friendly towers from the security center.
+local ReprogramSecurity
+---@type number Use the final reactor console.
+local SaveReactor
+
+--- Has either Rocket Soldier reached their fallback position?
+local RocketRetreated = false
+
+local TimeLimits =
+{
+	easy = DateTime.Minutes(7),
+	normal = DateTime.Minutes(6),
+	hard = DateTime.Minutes(5)
+}
+local RemainingTime = TimeLimits[Difficulty]
+local TimerColor = USSR.Color
+local CountdownEnabled = false
+
+local Dogs = { Dog1, Dog2, Dog3, Dog4, Dog5, Dog6, Dog7, Dog8, Dog9, Dog10, Dog11, Dog12, Dog13, Dog14, Dog15, Dog16, Dog17, Dog18, Dog19 }
+local Engineers = { Prisoner1, Prisoner2, Prisoner3, Prisoner4, Prisoner5 }
+local PrisonerGuards = { PrisonerGuard1, PrisonerGuard2, PrisonerGuard3 }
+local EntranceGuards = { EntranceGuard1, EntranceGuard2, EntranceGuard3, EntranceGuard4, EntranceGuard5, EntranceGuard6, EntranceGuard7, EntranceGuard8 }
+local ReactorGuards = { ReactorGuard1, ReactorGuard2, ReactorGuard3, ReactorGuard4 }
+local SecurityCenterGuards = { SecurityCenterGuard1, SecurityCenterGuard2, SecurityCenterGuard3, SecurityCenterGuard4 }
+local StartingUnitsReinforcements = { "e1", "e1", "e1", "e1" }
+
+---@param actor actor
+---@return boolean
+local function IsSoviet(actor)
+	return actor.Owner == USSR
 end
 
-Dogs = { Dog1, Dog2, Dog3, Dog4, Dog5, Dog6, Dog7, Dog8, Dog9, Dog10, Dog11, Dog12, Dog13, Dog14, Dog15, Dog16, Dog17, Dog18, Dog19 }
-Engineers = { Prisoner1, Prisoner2, Prisoner3, Prisoner4, Prisoner5 }
-PrisonerGuards = { PrisonerGuard1, PrisonerGuard2, PrisonerGuard3 }
-EntranceGuards = { EntranceGuard1, EntranceGuard2, EntranceGuard3, EntranceGuard4, EntranceGuard5, EntranceGuard6, EntranceGuard7, EntranceGuard8 }
-GoalGuards = { GoalGuard1, GoalGuard2, GoalGuard3, GoalGuard4 }
-CCGuards = { CCGuard1, CCGuard2, CCGuard3, CCGuard4 }
-StartingUnitsReinforcements = { "e1", "e1", "e1", "e1" }
+---@param actor actor
+---@return boolean
+local function IsSovietHuman(actor)
+	return actor.Owner == USSR and actor.Type ~= "dog"
+end
 
-CameraCCTrigger = { CPos.New(83, 71), CPos.New(84,71) }
-CameraGoalCenterTrigger = { CPos.New(74, 66), CPos.New(75, 66), CPos.New(76, 66), CPos.New(77, 66) }
-CameraGoalLeftTrigger = { CPos.New(62, 59), CPos.New(62, 60), CPos.New(62, 62), CPos.New(62, 63) }
-CameraGoalRightTrigger = { CPos.New(90, 59), CPos.New(90, 60), CPos.New(90, 62), CPos.New(90, 63) }
-ControlCenterTrigger = { CPos.New(87, 67), CPos.New(88, 67) }
-ControlCenterEngineerTrigger = { CPos.New(87, 67), CPos.New(88, 67) }
-FTurBottomTrigger = { CPos.New(67, 82), CPos.New(67, 83) }
-FTurLeftTrigger = { CPos.New(57, 70), CPos.New(58, 70), CPos.New(59, 70), CPos.New(60, 70) }
-FTurRightTrigger = { CPos.New(97, 68), CPos.New(97, 69), CPos.New(97, 70) }
-GoalCenterTrigger = { CPos.New(73, 52), CPos.New(74, 52), CPos.New(75, 52), CPos.New(76, 52), CPos.New(77, 52), CPos.New(78, 52) }
-GoalLeft1Trigger = { CPos.New(65, 58), CPos.New(66, 58), CPos.New(67, 58), CPos.New(65, 59), CPos.New(66, 59), CPos.New(67, 59) }
-GoalLeft2Trigger = { CPos.New(65, 64), CPos.New(66, 64), CPos.New(67, 64), CPos.New(65, 65), CPos.New(66, 65), CPos.New(67, 65) }
-GoalRight1Trigger = { CPos.New(86, 57), CPos.New(87, 57), CPos.New(88, 57), CPos.New(86, 58), CPos.New(87, 58), CPos.New(88, 58) }
-GoalRight2Trigger = { CPos.New(86, 64), CPos.New(87, 64), CPos.New(88, 64), CPos.New(86, 65), CPos.New(87, 65), CPos.New(88, 65) }
-RSoldierTrapTrigger = { CPos.New(72, 72), CPos.New(72,73), CPos.New(72,74) }
-SoldierTrap2Trigger = { CPos.New(51, 73), CPos.New(51, 74) }
+---@param actor actor
+---@return boolean
+local function IsEngineer(actor)
+	return actor.Type == "e6"
+end
 
-Trigger.OnEnteredFootprint(CameraCCTrigger, function(a, id)
-	if not CameraCCTriggered and a.Owner == USSR then
-		CameraCCTriggered = true
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraCC.Location })
-	end
-end)
+local function MarkAlliedVictory()
+	DeactivateSecurity = DeactivateSecurity or USSR.AddPrimaryObjective(UserInterface.GetFluentMessage("deactivate-security-system"))
+	local primaries = { DeactivateSecurity, RescueEngineers, GetEngineersToCoolant, SaveReactor }
 
-Trigger.OnEnteredFootprint(CameraGoalCenterTrigger, function(a, id)
-	if not CameraGoalCenterTriggered and a.Owner == USSR then
-		CameraGoalCenterTriggered = true
-		if not ControlCenterEngineerTriggered then
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter1.Location })
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter2.Location })
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter3.Location })
+	Utils.Do(primaries, function(p)
+		if not USSR.IsObjectiveCompleted(p) then
+			USSR.MarkFailedObjective(p)
 		end
-	end
-end)
+	end)
+end
 
-Trigger.OnEnteredFootprint(CameraGoalLeftTrigger, function(a, id)
-	if not CameraGoalLeftTriggered and a.Owner == USSR then
-		CameraGoalLeftTriggered = true
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalLeft1.Location })
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalLeft2.Location })
-	end
-end)
+local function UpdateTimerText()
+	local text = UserInterface.GetFluentMessage("time-until-meltdown", { ["time"] = Utils.FormatTime(RemainingTime) })
+	UserInterface.SetMissionText(text, TimerColor)
+end
 
-Trigger.OnEnteredFootprint(CameraGoalRightTrigger, function(a, id)
-	if not CameraGoalRightTriggered and a.Owner == USSR then
-		CameraGoalRightTriggered = true
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalRight1.Location })
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalRight2.Location })
-	end
-end)
+---@param cells cpos[]
+---@param filter fun(actor: actor):boolean
+---@param action fun()
+local function SetBasicFootprint(cells, filter, action)
+	local activated = false
 
-Trigger.OnEnteredFootprint(ControlCenterTrigger, function(a, id)
-	if not ControlCenterTriggered and a.Owner == USSR and a.Type == "e1" then
-		ControlCenterTriggered = true
-		FTurPrisoners.Kill()
-		FTurLeft.Kill()
-		FTurRight.Kill()
-		FTurBottom.Kill()
-		USSR.MarkCompletedObjective(SovietObjective1)
-	end
-end)
-
-Trigger.OnEnteredFootprint(ControlCenterEngineerTrigger, function(a, id)
-	if not ControlCenterEngineerTriggered and a.Owner == USSR and a.Type == "e6" then
-		ControlCenterEngineerTriggered = true
-		local fturA = Actor.Create("ftur", true, { Owner = USSR, Location = FTur1Goal.Location})
-		local fturB = Actor.Create("ftur", true, { Owner = USSR, Location = FTur2Goal.Location})
-		Camera.Position = CameraGoalCenter1.CenterPosition
-
-		if not CameraGoalRightTriggered then
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter1.Location })
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter2.Location })
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter3.Location })
+	Trigger.OnEnteredFootprint(cells, function(actor, id)
+		if activated or not filter(actor) then
+			return
 		end
 
-		Utils.Do(GoalGuards, function(actor)
-			if not actor.IsDead then
-				actor.AttackMove(FTur1Goal.Location)
-			end
+		activated = true
+		action()
+		Trigger.RemoveFootprintTrigger(id)
+	end)
+end
+
+---@param tag string Tag shared by the cameras.
+local function RevealArea(tag)
+	local cameras = Map.ActorsWithTag(tag)
+	Utils.Do(cameras, function(c)
+		c.Owner = USSR
+	end)
+end
+
+local function PrepareBasicReveals()
+	local securityCenter = { CPos.New(83, 71), CPos.New(84,71) }
+	local reactor = { CPos.New(74, 66), CPos.New(75, 66), CPos.New(76, 66), CPos.New(77, 66) }
+	local westCoolant = { CPos.New(62, 59), CPos.New(62, 60), CPos.New(62, 62), CPos.New(62, 63) }
+	local eastCoolant = { CPos.New(90, 59), CPos.New(90, 60), CPos.New(90, 62), CPos.New(90, 63) }
+	local southFlame = { CPos.New(67, 82), CPos.New(67, 83) }
+	local westFlame = { CPos.New(57, 70), CPos.New(58, 70), CPos.New(59, 70), CPos.New(60, 70) }
+
+	local reveals =
+	{
+		{ cells = securityCenter, tag = "Security Control Center" },
+		{ cells = reactor, tag = "Reactor Room" },
+		{ cells = westCoolant, tag = "West Coolant Stations" },
+		{ cells = eastCoolant, tag = "East Coolant Stations" },
+		{ cells = southFlame, tag = "Flame Tower South" },
+		{ cells = westFlame, tag = "Flame Tower West" },
+	}
+
+	Utils.Do(reveals, function(reveal)
+		SetBasicFootprint(reveal.cells, IsSoviet, function()
+			RevealArea(reveal.tag)
 		end)
+	end)
+end
 
-		if not Tanya.IsDead then
-			Tanya.Demolish(fturA)
-			Tanya.Demolish(fturB)
+local function SpawnFriendlyFlames()
+	local fturA = Actor.Create("ftur", true, { Owner = USSR, Location = FriendlyTower1Goal.Location})
+	local fturB = Actor.Create("ftur", true, { Owner = USSR, Location = FriendlyTower2Goal.Location})
+	Camera.Position = CameraGoalCenter2.CenterPosition
+	RevealArea("Reactor Room")
+
+	Utils.Do(ReactorGuards, function(guard)
+		if not guard.IsDead then
+			guard.AttackMove(FriendlyTower1Goal.Location, 2)
+			guard.AttackMove(CameraGoalCenter2.Location, 2)
 		end
-
-		USSR.MarkCompletedObjective(SovietObjective4)
-	end
-end)
-
-Trigger.OnEnteredFootprint(FTurBottomTrigger, function(a, id)
-	if not FTurBottomTriggered and a.Owner == USSR then
-		FTurBottomTriggered = true
-		if not RSoldierTrapTriggered then
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraRSoldier.Location })
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurBottom.Location })
-		end
-	end
-end)
-
-Trigger.OnEnteredFootprint(FTurLeftTrigger, function(a, id)
-	if not FTurLeftTriggered and a.Owner == USSR then
-		FTurLeftTriggered = true
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurLeft.Location })
-	end
-end)
-
-Trigger.OnEnteredFootprint(FTurRightTrigger, function(a, id)
-	if not FTurRightTriggered and a.Owner == USSR then
-		FTurRightTriggered = true
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurRight.Location })
-	end
-end)
-
-Trigger.OnEnteredFootprint(GoalCenterTrigger, function(a, id)
-	if not GoalCenterTriggered and a.Owner == USSR and a.Type == "e6" then
-		GoalCenterTriggered = true
-		USSR.MarkCompletedObjective(SovietObjective5)
-	end
-end)
-
-Trigger.OnEnteredFootprint(GoalLeft1Trigger, function(a, id)
-	if not GoalLeft1Triggered and a.Owner == USSR and a.Type == "e6" then
-		GoalLeft1Triggered = true
-		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
-	end
-end)
-
-Trigger.OnEnteredFootprint(GoalLeft2Trigger, function(a, id)
-	if not GoalLeft2Triggered and a.Owner == USSR and a.Type == "e6" then
-		GoalLeft2Triggered = true
-		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
-	end
-end)
-
-Trigger.OnEnteredFootprint(GoalRight1Trigger, function(a, id)
-	if not GoalRight1Triggered and a.Owner == USSR and a.Type == "e6" then
-		GoalRight1Triggered = true
-		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
-	end
-end)
-
-Trigger.OnEnteredFootprint(GoalRight2Trigger, function(a, id)
-	if not GoalRight2Triggered and a.Owner == USSR and a.Type == "e6" then
-		GoalRight2Triggered = true
-		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
-	end
-end)
-
-Trigger.OnEnteredFootprint(RSoldierTrapTrigger, function(a, id)
-	if not RSoldierTrapTriggered and a.Owner == USSR then
-		RSoldierTrapTriggered = true
-		if not FTurBottomTriggered then
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraRSoldier.Location })
-			Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurBottom.Location })
-		end
-
-		if not RSoldier1.IsDead and not RSoldierTrap1.IsDead then
-			RSoldier1.Attack(RSoldierTrap1)
-		end
-
-		if not RSoldier2.IsDead and not RSoldierTrap2.IsDead then
-			RSoldier2.Attack(RSoldierTrap2)
-		end
-	end
-end)
-
-Trigger.OnEnteredFootprint(SoldierTrap2Trigger, function(a, id)
-	if not SoldierTrap2Triggered and a.Owner == USSR then
-		SoldierTrap2Triggered = true
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraSoldierTrap2.Location })
-		if not SoldierTrap2.IsDead then
-			PrisonEntranceGuard.Attack(SoldierTrap2)
-		end
-		PrisonEntranceGuard.Move(SoldierTrap2Waypoint.Location)
-	end
-end)
-
-Trigger.OnAllKilled(Engineers, function()
-	Greece.MarkCompletedObjective(AlliedObjective)
-end)
-
-Trigger.OnAllKilled(PrisonerGuards, function()
-	Utils.Do(Engineers, function(actor)
-		actor.Owner = USSR
 	end)
 
-	Prisoner6.Owner = USSR
-	USSR.MarkCompletedObjective(SovietObjective2)
-end)
-
-Trigger.OnKilled(BarlCC, function()
-	if not CameraCCTriggered then
-		Actor.Create("camera", true, { Owner = USSR, Location = CameraCC.Location })
-		CameraCCTriggered = true
+	if not Tanya.IsDead then
+		Tanya.Demolish(fturA)
+		Tanya.Demolish(fturB)
 	end
 
-	Utils.Do(CCGuards, function(actor)
-		if not actor.IsDead then
-			actor.Hunt()
-		end
-	end)
-end)
+	USSR.MarkCompletedObjective(ReprogramSecurity)
+end
 
-Trigger.OnKilled(PBoxBrl, function()
-	PBox.Kill()
-	Utils.Do(Dogs, function(actor)
-		actor.Owner = USSR
-	end)
-	USSR.MarkCompletedObjective(SovietObjective6)
-end)
+local function PrepareSecurityCenter()
+	local cells =  { CPos.New(87, 67), CPos.New(88, 67) }
 
-Trigger.OnKilled(PrisonEntranceGuard, function()
-	if ControlCenterTriggered then
-		Utils.Do(PrisonerGuards, function(actor)
-			if not actor.IsDead then
-				actor.Hunt()
+	Trigger.OnKilled(SecurityCenterBarrel, function()
+		RevealArea("Security Control Center")
+		Utils.Do(SecurityCenterGuards, IdleHunt)
+	end)
+
+	SetBasicFootprint(cells, IsSovietHuman, function()
+		FlameTowerPrison.Kill()
+		FlameTowerWest.Kill()
+		FlameTowerEast.Kill()
+		FlameTowerSouth.Kill()
+		RescueEngineers = RescueEngineers or AddPrimaryObjective(USSR, "rescue-engineers")
+		USSR.MarkCompletedObjective(DeactivateSecurity)
+	end)
+
+	SetBasicFootprint(cells, IsEngineer, SpawnFriendlyFlames)
+end
+
+local function PrepareFinalStation()
+	local cells = { CPos.New(73, 51), CPos.New(74, 51), CPos.New(75, 51), CPos.New(76, 51), CPos.New(77, 51), CPos.New(78, 51) }
+
+	SetBasicFootprint(cells, IsEngineer, function()
+		CountdownEnabled = false
+		TimerColor = HSLColor.LightGreen
+		UpdateTimerText()
+		DateTime.TimeLimit = 0
+		USSR.MarkCompletedObjective(SaveReactor)
+	end)
+end
+
+local function PrepareEngineerStations()
+	local northWestCells = { CPos.New(65, 58), CPos.New(66, 58), CPos.New(67, 58), CPos.New(65, 59), CPos.New(66, 59), CPos.New(67, 59) }
+	local southWestCells = { CPos.New(65, 64), CPos.New(66, 64), CPos.New(67, 64), CPos.New(65, 65), CPos.New(66, 65), CPos.New(67, 65) }
+	local northEastCells = { CPos.New(86, 57), CPos.New(87, 57), CPos.New(88, 57), CPos.New(86, 58), CPos.New(87, 58), CPos.New(88, 58) }
+	local southEastCells = { CPos.New(86, 64), CPos.New(87, 64), CPos.New(88, 64), CPos.New(86, 65), CPos.New(87, 65), CPos.New(88, 65) }
+	local stations = { northWestCells, southWestCells, northEastCells, southEastCells }
+	local coolantMarks = { CoolantMarkNorthWest, CoolantMarkSouthWest, CoolantMarkNorthEast, CoolantMarkSouthEast }
+	local coolantCount = 0
+
+	for i = 1, #stations do
+		SetBasicFootprint(stations[i], IsEngineer, function()
+			Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
+			Actor.Create("flare", true, { Owner = Spain, Location = coolantMarks[i].Location })
+			coolantCount = coolantCount + 1
+
+			if coolantCount < #stations then
+				return
 			end
+
+			SaveReactor = AddPrimaryObjective(USSR, "engineer-reactor-core")
+			USSR.MarkCompletedObjective(GetEngineersToCoolant)
+			Trigger.AfterDelay(DateTime.Seconds(2), PrepareFinalStation)
 		end)
 	end
-end)
+end
 
-IntroSequence = function()
-	StartingUnits = Reinforcements.Reinforce(USSR, StartingUnitsReinforcements, { StartingUnitsSpawn.Location, SoldierTrap1Waypoint1.Location }, 0)
+--- Prepare the Rocket Soldiers and their barrel traps.
+--- After the first explosions, they flee to try again at a fallback position.
+local function PrepareRocketSoldiers()
+	local rockets = { Rocket1, Rocket2 }
+	local firstTraps = { RocketTrap1, RocketTrap2 }
+	local trapCells = { CPos.New(72, 72), CPos.New(72,73), CPos.New(72,74) }
+	local retreatTrapCells = { CPos.New(66, 72), CPos.New(66,73), CPos.New(66,74) }
+
+	SetBasicFootprint(trapCells, IsSoviet, function()
+		for i = 1, #rockets do
+			if not rockets[i].IsDead and not firstTraps[i].IsDead then
+				rockets[i].Attack(firstTraps[i])
+			end
+		end
+
+		RevealArea("Rocket Soldiers")
+	end)
+
+	Trigger.OnAnyKilled(firstTraps, function()
+		-- Stay if an attack from the west seems likely.
+		if CrateMazeTrap.IsDead then
+			return
+		end
+
+		Utils.Do(rockets, function(rocket)
+			if rocket.IsDead then
+				return
+			end
+
+			rocket.Move(RocketRetreat.Location)
+		end)
+	end)
+
+	Trigger.OnEnteredProximityTrigger(RocketRetreat.CenterPosition, WDist.FromCells(1), function(a, id)
+		if a.Type == "e3" then
+			RocketRetreated = true
+			Trigger.RemoveProximityTrigger(id)
+		end
+	end)
+
+	Trigger.OnEnteredFootprint(retreatTrapCells, function(a, id)
+		if not RocketRetreated or not IsSoviet(a) then
+			return
+		end
+
+		Utils.Do(rockets, function(rocket)
+			if rocket.IsDead or RocketRetreatTrap.IsDead then
+				return
+			end
+
+			rocket.Attack(RocketRetreatTrap)
+		end)
+
+		Trigger.RemoveFootprintTrigger(id)
+	end)
+
+	Trigger.OnKilled(RocketRetreatTrap, function()
+		Utils.Do(rockets, IdleHunt)
+	end)
+end
+
+--- Prepare a soldier at the maze to fire at a barrel trap and flee.
+--- If they successfully escape, they will blow up the captive Engineers.
+local function PrepareCrateMazeGuard()
+	local trapCells = { CPos.New(51, 73), CPos.New(51, 74) }
+	local moveGoals = { CrateMazeWaypoint1.Location, CrateMazeWaypoint2.Location, CrateMazeWaypoint3.Location, ExecutionWaypoint.Location }
+	local goalCount = 1
+	local waitTime = DateTime.Seconds(6)
+	if Difficulty == "hard" then
+		waitTime = DateTime.Seconds(2)
+	end
+
+	SetBasicFootprint(trapCells, IsSoviet, function()
+		if not CrateMazeTrap.IsDead then
+			CrateMazeGuard.Attack(CrateMazeTrap)
+		end
+
+		CrateMazeGuard.Move(moveGoals[1])
+		RevealArea("Crate Maze")
+	end)
+
+	local proximity = Trigger.OnEnteredProximityTrigger(ExecutionWaypoint.CenterPosition, WDist.New(512), function(a)
+		if a == CrateMazeGuard and not ExecutionBarrel.IsDead then
+			a.Attack(ExecutionBarrel)
+		end
+	end)
+
+	local foot = Trigger.OnEnteredFootprint(moveGoals, function(a)
+		if a ~= CrateMazeGuard then
+			return
+		end
+
+		Trigger.AfterDelay(waitTime, function()
+			if CrateMazeGuard.IsDead then
+				return
+			end
+
+			goalCount = goalCount + 1
+			CrateMazeGuard.Move(moveGoals[goalCount])
+		end)
+	end)
+
+	Trigger.OnKilled(CrateMazeGuard, function()
+		Trigger.RemoveProximityTrigger(proximity)
+		Trigger.RemoveFootprintTrigger(foot)
+	end)
+end
+
+local function PreparePrisonGuards()
+	local towerAndGuards = Utils.Concat({ FlameTowerPrison }, PrisonerGuards)
+
+	Utils.Do(PrisonerGuards, function(guard)
+		Trigger.OnKilled(guard, function()
+			-- Remain behind the tower if possible.
+			if not USSR.IsObjectiveCompleted(DeactivateSecurity) then
+				return
+			end
+
+			Utils.Do(PrisonerGuards, IdleHunt)
+		end)
+	end)
+
+	Trigger.OnAllKilled(towerAndGuards, function()
+		-- Avoid announcing the Engineers' rescue if they're about to burn.
+		if ExecutionBarrel.IsDead then
+			return
+		end
+
+		Utils.Do(Engineers, function(engineer)
+			engineer.Owner = USSR
+		end)
+
+		Prisoner6.Owner = USSR
+		GetEngineersToCoolant = AddPrimaryObjective(USSR, "engineers-coolant-station")
+		ReprogramSecurity = AddSecondaryObjective(USSR, "engineer-reprogram-security")
+		-- Unlikely but possible: guards are dead before security deactivation.
+		RescueEngineers = RescueEngineers or USSR.AddPrimaryObjective(UserInterface.GetFluentMessage("rescue-engineers"))
+		USSR.MarkCompletedObjective(RescueEngineers)
+	end)
+end
+
+--- Set distant lab structures to self-reveal, crumble, and explode.
+--- The original explosions were scheduled for ~291 and ~441 seconds,
+--- but that was on a more lenient time limit of ~600 seconds.
+local function PrepareLabExplosions()
+	-- The time limit changes with difficulty; work backward.
+	Trigger.AfterDelay(RemainingTime - DateTime.Seconds(153), function()
+		EastLab.Health = EastLab.MaxHealth * 0.2
+		EastLab.GrantCondition("unstable")
+	end)
+
+	Trigger.AfterDelay(RemainingTime - DateTime.Seconds(63), function()
+		WestLab.Health = WestLab.MaxHealth * 0.2
+		WestLab.GrantCondition("unstable")
+	end)
+end
+
+--- Start the countdown and entrance encounter.
+local function IntroSequence()
+	local StartingUnits = Reinforcements.Reinforce(USSR, StartingUnitsReinforcements, { StartingUnitsSpawn.Location, EntranceTrapWaypoint1.Location }, 0)
+	local countdownDelay = DateTime.Seconds(5)
+	DateTime.TimeLimit = RemainingTime
+
+	Trigger.AfterDelay(countdownDelay, function()
+		Media.PlaySpeechNotification(USSR, "TimerStarted")
+		RemainingTime = RemainingTime - countdownDelay
+		CountdownEnabled = true
+		UpdateTimerText()
+	end)
+
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		Utils.Do(EntranceGuards, function(actor)
-			if not SoldierTrap1.IsDead then
-				actor.Attack(SoldierTrap1)
+			if not EntranceTrap.IsDead then
+				actor.Attack(EntranceTrap)
 			end
-			actor.AttackMove(SoldierTrap1Waypoint1.Location)
-			actor.AttackMove(SoldierTrap1Waypoint2.Location)
-			actor.AttackMove(SoldierTrap1Waypoint3.Location)
+
+			actor.AttackMove(EntranceTrapWaypoint1.Location)
+			actor.AttackMove(EntranceTrapWaypoint2.Location)
+			actor.AttackMove(EntranceTrapWaypoint3.Location)
+			actor.Hunt()
 		end)
-		Media.PlaySpeechNotification(USSR, "TimerStarted")
-		TimerStarted = true
 	end)
 
-	-- Trigger a game over if the player lost all human units before the security system has been deactivated
 	Trigger.OnAllKilled(StartingUnits, function()
-		if not ControlCenterTriggered then
-			Greece.MarkCompletedObjective(AlliedObjective)
+		DeactivateSecurity = DeactivateSecurity or USSR.AddPrimaryObjective(UserInterface.GetFluentMessage("deactivate-security-system"))
+
+		if not USSR.IsObjectiveCompleted(DeactivateSecurity) then
+			MarkAlliedVictory()
 		end
+	end)
+
+	local eastFlameReveal = { CPos.New(97, 68), CPos.New(97, 69), CPos.New(97, 70) }
+	SetBasicFootprint(eastFlameReveal, IsSoviet, function()
+		DeactivateSecurity = AddPrimaryObjective(USSR, "deactivate-security-system")
+		FreeDogs = AddSecondaryObjective(USSR, "free-dogs")
+		RevealArea("Flame Tower East")
 	end)
 end
 
 WorldLoaded = function()
-	USSR = Player.GetPlayer("USSR")
-	Greece = Player.GetPlayer("Greece")
-
-	Camera.Position = SoldierTrap1Waypoint1.CenterPosition
-	Actor.Create("camera", true, { Owner = USSR, Location = CameraStart1.Location })
-	Actor.Create("camera", true, { Owner = USSR, Location = CameraStart2.Location })
+	Camera.Position = EntranceTrapWaypoint1.CenterPosition
+	RevealArea("Entrance")
+	InitObjectives(USSR)
 
 	IntroSequence()
+	PrepareLabExplosions()
+	PrepareBasicReveals()
+	PrepareSecurityCenter()
+	PrepareRocketSoldiers()
+	PrepareCrateMazeGuard()
+	PreparePrisonGuards()
+	PrepareEngineerStations()
 
-	InitObjectives(USSR)
-	AlliedObjective = AddPrimaryObjective(Greece, "")
-	SovietObjective1 = AddPrimaryObjective(USSR, "deactivate-security-system")
-	SovietObjective2 = AddPrimaryObjective(USSR, "rescue-engineers")
-	SovietObjective3 = AddPrimaryObjective(USSR, "engineers-coolant-station")
-	SovietObjective4 = AddPrimaryObjective(USSR, "engineer-reprogram-security")
-	SovietObjective5 = AddPrimaryObjective(USSR, "engineer-reactor-core")
-	SovietObjective6 = AddSecondaryObjective(USSR, "free-dogs")
+	Trigger.OnKilled(PillboxBarrel, function()
+		Pillbox.Kill()
+		Utils.Do(Dogs, function(actor)
+			actor.Owner = USSR
+		end)
+		USSR.MarkCompletedObjective(FreeDogs)
+	end)
+
+	Trigger.OnAllKilled(Engineers, function()
+		-- In case they die before security deactivation.
+		RescueEngineers = RescueEngineers or USSR.AddPrimaryObjective(UserInterface.GetFluentMessage("rescue-engineers"))
+		MarkAlliedVictory()
+	end)
+
+	Trigger.OnTimerExpired(function()
+		UserInterface.SetMissionText(UserInterface.GetFluentMessage("too-late"), TimerColor)
+		MarkAlliedVictory()
+	end)
 end
 
 Tick = function()
-	if USSR.HasNoRequiredUnits() and TimerStarted then
-		Greece.MarkCompletedObjective(AlliedObjective)
+	if USSR.HasNoRequiredUnits() and CountdownEnabled then
+		MarkAlliedVictory()
 	end
 
-	if RemainingTime == DateTime.Minutes(5) and Difficulty ~= "hard" then
-		Media.PlaySpeechNotification(USSR, "WarningFiveMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(4) then
-		Media.PlaySpeechNotification(USSR, "WarningFourMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(3) then
-		Media.PlaySpeechNotification(USSR, "WarningThreeMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(2) then
-		Media.PlaySpeechNotification(USSR, "WarningTwoMinutesRemaining")
-	elseif RemainingTime == DateTime.Minutes(1) then
-		Media.PlaySpeechNotification(USSR, "WarningOneMinuteRemaining")
-	end
-
-	if GoalLeft1Triggered and GoalLeft2Triggered and GoalRight1Triggered and GoalRight2Triggered then
-		USSR.MarkCompletedObjective(SovietObjective3)
-	end
-
-	if RemainingTime > 0 and TimerStarted then
+	if RemainingTime > 0 and CountdownEnabled then
 		if (RemainingTime % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.GetFluentMessage("time-until-meltdown", { ["time"] = Utils.FormatTime(RemainingTime) })
-			UserInterface.SetMissionText(Timer, USSR.Color)
+			UpdateTimerText()
 		end
 		RemainingTime = RemainingTime - 1
-	elseif RemainingTime == 0 then
-		UserInterface.SetMissionText("")
-		Greece.MarkCompletedObjective(AlliedObjective)
 	end
 end

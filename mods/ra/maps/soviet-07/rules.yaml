@@ -16,6 +16,8 @@ World:
 			normal: options-difficulty.normal
 			hard: options-difficulty.hard
 		Default: normal
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
 
 Player:
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
@@ -25,6 +27,31 @@ Player:
 CAMERA:
 	RevealsShroud:
 		Range: 6c0
+	ScriptTags:
+
+FLARE:
+	RevealsShroud:
+		Range: 2c512
+		ValidRelationships: Ally, Neutral, Enemy
+	Tooltip:
+		Name: actor-gas-name
+
+BIO:
+	ExternalCondition@UNSTABLE:
+		Condition: unstable
+	RevealsShroud:
+		RequiresCondition: unstable
+	RevealOnDeath:
+		Duration: 75
+	ShakeOnDeath:
+		Intensity: 3
+	KillsSelf:
+		RequiresCondition: unstable
+		Delay: 40,60
+		DamageTypes: ExplosionDeath
+	# The purpose of these structures isn't fully clear, so show a generic.
+	Tooltip:
+		GenericVisibility: Ally
 
 FTUR:
 	Valued:
