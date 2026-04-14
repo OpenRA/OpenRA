@@ -33,7 +33,7 @@ Players:
 		Name: Greece
 		Faction: allies
 		Color: E2E6F5
-		Allies: Soviet
+		Allies: Soviets
 		Enemies: USSR, Creeps
 		Bot: campaign
 	PlayerReference@USSR:
@@ -47,10 +47,10 @@ Players:
 		Color: FE1100
 		LockSpawn: True
 		LockTeam: True
-		Allies: Soviet
+		Allies: Soviets
 		Enemies: Greece, Creeps
-	PlayerReference@Soviet:
-		Name: Soviet
+	PlayerReference@Soviets:
+		Name: Soviets
 		Faction: soviet
 		Color: FE1100
 		Allies: USSR, Greece
@@ -58,8 +58,7 @@ Players:
 	PlayerReference@Spain:
 		Name: Spain
 		Faction: allies
-		Color: 0CBB4A
-		Bot: campaign
+		Color: F6D679
 
 Actors:
 	Actor0: boxes01
@@ -323,7 +322,7 @@ Actors:
 	Actor93: brl3
 		Location: 64,73
 		Owner: Creeps
-	Actor94: barl
+	RocketRetreatTrap: barl
 		Location: 62,73
 		Owner: Creeps
 	Actor95: barl
@@ -344,7 +343,7 @@ Actors:
 	Actor101: barl
 		Location: 45,45
 		Owner: Creeps
-	Actor102: brl3
+	ExecutionBarrel: brl3
 		Location: 47,46
 		Owner: Creeps
 	Actor103: barl
@@ -362,6 +361,18 @@ Actors:
 	Actor107: barl
 		Location: 48,71
 		Owner: Creeps
+	ExecutionWaypoint: waypoint
+		Location:  47,48
+		Owner: Neutral
+	CrateMazeWaypoint1: waypoint
+		Location: 47,63
+		Owner: Neutral
+	CrateMazeWaypoint2: waypoint
+		Location: 48,58
+		Owner: Neutral
+	CrateMazeWaypoint3: waypoint
+		Location: 48,56
+		Owner: Neutral
 	Actor108: brl3
 		Location: 47,72
 		Owner: Creeps
@@ -410,15 +421,15 @@ Actors:
 	Actor125: barl
 		Location: 81,80
 		Owner: Creeps
-	Actor126: brl3
+	PillboxBarrel: brl3
 		Location: 82,80
 		Owner: Creeps
-	Actor127: bio
+	WestLab: bio
 		Location: 65,46
-		Owner: Greece
-	Actor128: bio
+		Owner: Soviets
+	EastLab: bio
 		Location: 87,46
-		Owner: Greece
+		Owner: Soviets
 	Actor130: barl
 		Location: 80,79
 		Owner: Creeps
@@ -443,8 +454,8 @@ Actors:
 	Actor150: e1
 		Location: 84,67
 		Owner: Greece
-		Facing: 768
-		SubCell: 4
+		Facing: 256
+		SubCell: 5
 	Actor172: e1
 		Location: 77,80
 		Owner: Greece
@@ -453,175 +464,190 @@ Actors:
 	Actor214: healcrate
 		Owner: Neutral
 		Location: 88,69
-	Actor227: flare
+	CoolantMarkSouthWest: waypoint
 		Owner: Spain
 		Location: 75,49
-	Actor226: flare
+	CoolantMarkSouthEast: waypoint
 		Owner: Spain
 		Location: 76,49
-	Actor228: flare
+	CoolantMarkNorthWest: waypoint
 		Owner: Spain
 		Location: 75,48
-	Actor229: flare
+	CoolantMarkNorthEast: waypoint
 		Owner: Spain
 		Location: 76,48
 	Actor223: brl3
 		Owner: Creeps
 		Location: 105,53
-	BarlCC: barl
+	SecurityCenterBarrel: barl
 		Location: 83,70
 		Owner: Creeps
-	CameraCC: camera
+	SecurityCenterCamera: camera
 		Owner: Neutral
 		Location: 87,69
-	CameraFTurBottom: camera
+		ScriptTags: Security Control Center
+	CameraFlameTowerSouth: camera
 		Owner: Neutral
 		Location: 62,80
-	CameraFTurLeft: camera
+		ScriptTags: Flame Tower South,Rocket Soldiers
+	CameraFlameTowerWest: camera
 		Owner: Neutral
 		Location: 59,65
-	CameraFTurRight: camera
+		ScriptTags: Flame Tower West
+	CameraFlameTowerEast: camera
 		Owner: Neutral
 		Location: 93,65
+		ScriptTags: Flame Tower East
 	CameraGoalCenter1: camera
 		Owner: Neutral
 		Location: 75,51
+		ScriptTags: Reactor Room
 	CameraGoalCenter2: camera
 		Owner: Neutral
 		Location: 75,55
+		ScriptTags: Reactor Room
 	CameraGoalCenter3: camera
 		Owner: Neutral
 		Location: 75,61
-	CameraGoalLeft1: camera
+		ScriptTags: Reactor Room
+	CameraGoalWest1: camera
 		Owner: Neutral
 		Location: 68,58
-	CameraGoalLeft2: camera
+		ScriptTags: West Coolant Stations
+	CameraGoalWest2: camera
 		Owner: Neutral
 		Location: 68,63
-	CameraGoalRight1: camera
+		ScriptTags: West Coolant Stations
+	CameraGoalEast1: camera
 		Owner: Neutral
 		Location: 84,58
-	CameraGoalRight2: camera
+		ScriptTags: East Coolant Stations
+	CameraGoalEast2: camera
 		Owner: Neutral
 		Location: 84,63
-	CameraRSoldier: camera
+		ScriptTags: East Coolant Stations
+	CameraRocket: camera
 		Owner: Neutral
 		Location: 62,72
-	CameraStart1: camera
+		ScriptTags: Rocket Soldiers,Flame Tower South
+	CameraEntrance1: camera
 		Owner: Neutral
 		Location: 102,48
-	CameraStart2: camera
+		ScriptTags: Entrance
+	CameraEntrance2: camera
 		Owner: Neutral
 		Location: 102,54
-	CameraSoldierTrap2: camera
+		ScriptTags: Entrance
+	CameraCrateMazeTrap: camera
 		Owner: Neutral
 		Location: 47,71
-	CCGuard1: e1
+		ScriptTags: Crate Maze
+	SecurityCenterGuard1: e1
 		Location: 87,67
 		Owner: Greece
-		Facing: 768
-		SubCell: 3
-	CCGuard2: e1
+		Facing: 256
+		SubCell: 4
+	SecurityCenterGuard2: e1
 		Location: 88,67
 		Owner: Greece
-		Facing: 768
-		SubCell: 4
-	CCGuard3: e1
+		Facing: 256
+		SubCell: 5
+	SecurityCenterGuard3: e1
 		Location: 88,68
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 		SubCell: 1
-	CCGuard4: e1
+	SecurityCenterGuard4: e1
 		Location: 87,68
 		Owner: Greece
-		Facing: 768
-		SubCell: 3
+		Facing: 256
+		SubCell: 4
 	Dog1: dog
 		Location: 84,84
-		Owner: Soviet
-		Facing: 896
+		Owner: Soviets
+		Facing: 128
 		SubCell: 1
 	Dog2: dog
-		Owner: Soviet
+		Owner: Soviets
 		Location: 84,83
-		SubCell: 3
-		Facing: 368
+		SubCell: 1
+		Facing: 756
 	Dog3: dog
 		Location: 82,83
-		Owner: Soviet
-		SubCell: 4
+		Owner: Soviets
+		SubCell: 5
 	Dog4: dog
 		Location: 80,83
-		Owner: Soviet
+		Owner: Soviets
 		Facing: 256
 		SubCell: 2
 	Dog5: dog
 		Location: 85,82
-		Owner: Soviet
-		Facing: 896
+		Owner: Soviets
+		Facing: 128
 		SubCell: 1
 	Dog6: dog
 		Location: 85,79
-		Owner: Soviet
-		Facing: 768
-		SubCell: 4
+		Owner: Soviets
+		Facing: 256
+		SubCell: 5
 	Dog7: dog
 		Location: 85,81
-		Owner: Soviet
-		Facing: 768
-		SubCell: 4
+		Owner: Soviets
+		Facing: 256
+		SubCell: 5
 	Dog8: dog
 		Location: 86,83
-		Owner: Soviet
-		Facing: 896
+		Owner: Soviets
+		Facing: 128
 		SubCell: 1
 	Dog9: dog
 		Location: 86,84
-		Owner: Soviet
+		Owner: Soviets
 		SubCell: 0
 	Dog10: dog
 		Location: 86,82
-		Owner: Soviet
-		Facing: 768
+		Owner: Soviets
+		Facing: 256
 		SubCell: 0
 	Dog11: dog
 		Location: 82,84
-		Owner: Soviet
-		Facing: 128
+		Owner: Soviets
+		Facing: 896
 		SubCell: 1
 	Dog12: dog
 		Location: 83,84
-		Owner: Soviet
+		Owner: Soviets
 		SubCell: 1
 	Dog13: dog
 		Location: 86,81
-		Owner: Soviet
+		Owner: Soviets
 		Facing: 128
 		SubCell: 1
 	Dog14: dog
 		Location: 85,83
-		Owner: Soviet
-		SubCell: 3
+		Owner: Soviets
+		SubCell: 4
 	Dog15: dog
 		Location: 81,83
-		Owner: Soviet
-		SubCell: 4
+		Owner: Soviets
+		SubCell: 5
 	Dog16: dog
 		Location: 86,80
-		Owner: Soviet
-		SubCell: 4
+		Owner: Soviets
+		SubCell: 5
 	Dog17: dog
 		Location: 85,84
-		Owner: Soviet
+		Owner: Soviets
 		SubCell: 0
 	Dog18: dog
 		Location: 81,84
-		Owner: Soviet
+		Owner: Soviets
 		SubCell: 1
 	Dog19: dog
 		Location: 86,79
-		Owner: Soviet
-		Facing: 896
+		Owner: Soviets
+		Facing: 128
 		SubCell: 0
 	EntranceGuard1: e1
 		Location: 100,57
@@ -654,91 +680,92 @@ Actors:
 	EntranceGuard8: e1
 		Location: 99,56
 		Owner: Greece
-		SubCell: 3
+		SubCell: 4
 	Tanya: e7
 		Location: 75,54
 		Owner: Greece
 		Facing: 512
 		SubCell: 2
-	GoalGuard1: e1
+	ReactorGuard1: e1
 		Location: 74,54
 		Owner: Greece
 		Facing: 512
 		SubCell: 2
-	GoalGuard2: e1
+	ReactorGuard2: e1
 		Location: 73,54
 		Owner: Greece
 		Facing: 512
 		SubCell: 2
-	GoalGuard3: e1
+	ReactorGuard3: e1
 		Location: 76,54
 		Owner: Greece
 		Facing: 512
 		SubCell: 2
-	GoalGuard4: e1
+	ReactorGuard4: e1
 		Location: 77,54
 		Owner: Greece
 		Facing: 512
 		SubCell: 2
-	FTurBottom: ftur
+	FlameTowerSouth: ftur
 		Location: 62,79
 		Owner: Greece
-	FTur1Goal: waypoint
+	FriendlyTower1Goal: waypoint
 		Owner: Neutral
 		Location: 77,53
-	FTur2Goal: waypoint
+	FriendlyTower2Goal: waypoint
 		Owner: Neutral
 		Location: 74,53
-	FTurLeft: ftur
+	FlameTowerWest: ftur
 		Location: 45,50
 		Owner: Greece
-	FTurPrisoners: ftur
+	FlameTowerPrison: ftur
 		Location: 59,64
 		Owner: Greece
-	FTurRight: ftur
+	FlameTowerEast: ftur
 		Location: 93,64
 		Owner: Greece
-	PBox: pbox
+	Pillbox: pbox
 		Location: 83,81
 		Owner: Greece
-	PBoxBrl: brl3
+	Actor123: brl3
 		Location: 80,80
 		Owner: Creeps
 	Prisoner1: e6
 		Location: 44,46
-		Owner: Soviet
-		Facing: 640
-		SubCell: 4
+		Owner: Soviets
+		Facing: 384
+		SubCell: 5
 	Prisoner2: e6
 		Location: 44,47
-		Owner: Soviet
+		Owner: Soviets
 		Facing: 512
-		SubCell: 4
+		SubCell: 5
 	Prisoner3: e6
 		Location: 46,47
-		Owner: Soviet
-		Facing: 384
+		Owner: Soviets
+		Facing: 640
 		SubCell: 0
 	Prisoner4: e6
 		Location: 45,47
-		Owner: Soviet
-		Facing: 384
+		Owner: Soviets
+		Facing: 640
 		SubCell: 1
 	Prisoner5: e6
 		Location: 46,46
-		Owner: Soviet
+		Owner: Soviets
 		Facing: 512
-		SubCell: 3
+		SubCell: 4
 	Prisoner6: e1
 		Location: 46,46
-		Owner: Soviet
+		Owner: Soviets
 		Health: 51
-		SubCell: 4
-	PrisonEntranceGuard: e1
+		SubCell: 5
+	CrateMazeGuard: e1
 		Location: 46,69
 		Owner: Greece
 		Facing: 512
 		SubCell: 1
+		Stance: Defend
 	PrisonerGuard1: e1
 		Location: 45,48
 		Owner: Greece
@@ -753,43 +780,43 @@ Actors:
 		Owner: Greece
 		Facing: 512
 		SubCell: 0
-	RSoldier1: e3
+	Rocket1: e3
 		Owner: Greece
 		Location: 65,72
-		SubCell: 3
-		Facing: 368
-	RSoldier2: e3
+		SubCell: 4
+		Facing: 768
+	Rocket2: e3
 		Location: 65,74
 		Owner: Greece
-		Facing: 368
+		Facing: 768
 		SubCell: 2
-	RSoldierTrap1: brl3
+	RocketTrap1: brl3
 		Owner: Creeps
 		Location: 68,72
-	RSoldierTrap2: barl
+	RocketTrap2: barl
 		Owner: Creeps
 		Location: 68,74
+	RocketRetreat: waypoint
+		Owner: Neutral
+		Location: 59,73
 	StartingUnitsSpawn: waypoint
 		Location: 102,43
 		Owner: Neutral
-	SoldierTrap1: brl3
+	EntranceTrap: brl3
 		Owner: Creeps
 		Location: 98,50
-	SoldierTrap2: barl
+	CrateMazeTrap: barl
 		Owner: Creeps
 		Location: 46,71
-	SoldierTrap1Waypoint1: waypoint
+	EntranceTrapWaypoint1: waypoint
 		Location: 102,46
 		Owner: Neutral
-	SoldierTrap1Waypoint2: waypoint
+	EntranceTrapWaypoint2: waypoint
 		Owner: Neutral
 		Location: 104,53
-	SoldierTrap1Waypoint3: waypoint
+	EntranceTrapWaypoint3: waypoint
 		Owner: Neutral
 		Location: 93,72
-	SoldierTrap2Waypoint: waypoint
-		Owner: Neutral
-		Location: 45,52
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
