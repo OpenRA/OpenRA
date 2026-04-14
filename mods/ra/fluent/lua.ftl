@@ -195,7 +195,7 @@ chronosphere-explodes-in = Chronosphere explodes in { $time }
 rescue-scientists-extraction-point = Rescue the scientists and escort them back to the
     extraction point.
 
-## in-the-nick-of-time, situation-critical
+## in-the-nick-of-time, situation-critical, soviet-07
 too-late = We're too late!
 
 ## infiltration
