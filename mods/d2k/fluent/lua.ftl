@@ -155,3 +155,8 @@ additional-reinforcements-arrive-in = Additional reinforcements will arrive in {
 defend-starport = Defend the Starport.
 ixian-reinforcements-in = The first batch of Ixian reinforcements will arrive in { $time }
 enemy-reinforcements-arrived = Enemy reinforcements have arrived.
+
+## ordos-07, ordos-08, ordos-09a, ordos-09b
+mercenary-leader = Mercenary Leader:
+mercenaries-loses = We're losing too many men!
+mercenaries-become-neutral = We've lost too many men. We must withdraw our support!
