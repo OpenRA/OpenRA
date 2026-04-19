@@ -239,6 +239,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var origHeightText = windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 
+			windowWidth.OnEnterKey = _ => { windowWidth.YieldKeyboardFocus(); return true; };
+			windowHeight.OnEnterKey = _ => { windowHeight.YieldKeyboardFocus(); return true; };
+
 			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
 			if (resolutionPresetDropdown != null)
 			{
