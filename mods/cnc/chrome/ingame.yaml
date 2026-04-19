@@ -2,12 +2,13 @@ Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
-			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, DisableUIKeyLogic, DisableAllUIKeyLogic
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, DisableUIKeyLogic, DisableAllUIKeyLogic, QuickSaveHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
 				NextMusicKey: NextMusic
 				TakeScreenshotKey: TakeScreenshot
+				QuickSaveKey: QuickSave
 				MuteAudioKey: ToggleMute
 				DisableUIKey: DisableUserInterface
 				DisableAllUIKey: DisableAllUserInterface
