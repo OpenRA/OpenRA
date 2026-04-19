@@ -197,9 +197,8 @@ namespace OpenRA.Widgets
 			if (e.Key != Keycode.RETURN && e.Key != Keycode.KP_ENTER && e.Key != Keycode.SPACE)
 				return false;
 
-			// Ensure the widget is still visible before activating
-			// If it has TAB focus, it was navigable when it received focus, so allow activation
-			if (!TabFocusWidget.IsVisible())
+			// Ensure the widget and all its ancestors are still visible before activating.
+			if (!TabFocusWidget.IsFullyVisible())
 				return false;
 
 			return TabFocusWidget.OnTabFocusActivate(e);
@@ -443,7 +442,7 @@ namespace OpenRA.Widgets
 			Root.DrawOuter();
 
 			// Draw focus indicator on top of everything, only when focus was obtained via keyboard.
-			if (TabFocusWidget != null && TabFocusFromKeyboard && TabFocusWidget.IsVisible())
+			if (TabFocusWidget != null && TabFocusFromKeyboard && TabFocusWidget.IsFullyVisible())
 				DrawFocusIndicator(TabFocusWidget);
 		}
 
@@ -839,6 +838,20 @@ namespace OpenRA.Widgets
 		// Override to handle keys like LEFT/RIGHT for sliders, etc.
 		// Returns true if the key was handled
 		public virtual bool OnTabFocusKeyPress(KeyInput e) { return false; }
+
+		// Returns true if this widget and all its ancestors are visible.
+		public bool IsFullyVisible()
+		{
+			var w = this;
+			while (w != null)
+			{
+				if (!w.IsVisible())
+					return false;
+				w = w.Parent;
+			}
+
+			return true;
+		}
 
 		// Returns true if this widget can currently receive TAB focus
 		// Override to add additional conditions (e.g., not disabled)
