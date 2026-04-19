@@ -68,6 +68,11 @@ TakeScreenshot: P Ctrl
 	Types: World
 	Contexts: menu, player, spectator
 
+QuickSave: KP_ENTER
+	Description: hotkey-description-quicksave
+	Types: World
+	Contexts: player
+
 AttackMove: A
 	Description: hotkey-description-attackmove
 	Types: Unit
