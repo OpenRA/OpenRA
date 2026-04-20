@@ -984,7 +984,7 @@ wall:
 	LineBuildNode:
 		Types: wall
 	Targetable:
-		TargetTypes: Ground, Wall
+		TargetTypes: Ground, Wall, NoAutoTarget
 	WithWallSpriteBody:
 	Sellable:
 		SellSounds: CHUNG.WAV
