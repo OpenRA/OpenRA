@@ -102,6 +102,26 @@ namespace OpenRA.Mods.Common.Widgets
 			return i > 0 && i < s.Length && char.IsLowSurrogate(s[i]) ? i - 1 : i;
 		}
 
+		static (int Start, int End) GetWordBounds(string text, int charIndex)
+		{
+			var start = charIndex;
+			while (start > 0 && char.IsLetterOrDigit(text[AlignToTextElement(text, start - 1)]))
+				start = AlignToTextElement(text, start - 1);
+
+			var end = charIndex;
+			while (end < text.Length && char.IsLetterOrDigit(text[end]))
+				end = NextTextElementIndex(text, end);
+
+			return (start, end);
+		}
+
+		static (int Start, int End) GetLineBounds(string text, int charIndex)
+		{
+			var lineStart = text.LastIndexOf('\n', Math.Max(0, charIndex - 1)) + 1;
+			var lineEnd = text.IndexOf('\n', charIndex);
+			return (lineStart, lineEnd == -1 ? text.Length : lineEnd);
+		}
+
 		int GetCharIndexAtPosition(int2 location)
 		{
 			if (!TryGetTextLayout(out var text, out var font, out var textPosition))
@@ -153,9 +173,32 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					TakeMouseFocus(mi);
-					selectionStart = GetCharIndexAtPosition(mi.Location);
-					selectionEnd = selectionStart;
-					mouseSelecting = true;
+
+					if (selectionText != null && mi.MultiTapCount >= 3)
+					{
+						var (lineStart, lineEnd) = GetLineBounds(selectionText, GetCharIndexAtPosition(mi.Location));
+						selectionStart = lineStart;
+						selectionEnd = lineEnd;
+						mouseSelecting = false;
+						TakeKeyboardFocus();
+					}
+					else if (selectionText != null && mi.MultiTapCount == 2)
+					{
+						var clickIndex = GetCharIndexAtPosition(mi.Location);
+						var (wordStart, wordEnd) = GetWordBounds(selectionText, clickIndex);
+						selectionStart = wordStart;
+						selectionEnd = wordEnd;
+						mouseSelecting = wordStart == wordEnd;
+						if (wordStart != wordEnd)
+							TakeKeyboardFocus();
+					}
+					else
+					{
+						selectionStart = GetCharIndexAtPosition(mi.Location);
+						selectionEnd = selectionStart;
+						mouseSelecting = true;
+					}
+
 					return true;
 
 				case MouseInputEvent.Move:
