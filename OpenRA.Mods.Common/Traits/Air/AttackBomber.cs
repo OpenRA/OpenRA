@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
 	}
 
-	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
+	[GenerateSyncCode]
+	public partial class AttackBomber : AttackBase, ITick, INotifyRemovedFromWorld
 	{
 		readonly AttackBomberInfo info;
 

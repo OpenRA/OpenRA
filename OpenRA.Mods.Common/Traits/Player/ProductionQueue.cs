@@ -133,7 +133,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform, INotifyCreated
+	[GenerateSyncCode]
+	public partial class ProductionQueue : IResolveOrder, ITick, ITechTreeElement,
+		INotifyOwnerChanged, INotifyKilled, INotifySold, INotifyTransform, INotifyCreated
 	{
 		public readonly ProductionQueueInfo Info;
 

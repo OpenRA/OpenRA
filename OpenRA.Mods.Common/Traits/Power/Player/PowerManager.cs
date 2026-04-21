@@ -33,7 +33,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
 	}
 
-	public class PowerManager : INotifyCreated, ITick, ISync, IResolveOrder
+	[GenerateSyncCode]
+	public partial class PowerManager : INotifyCreated, ITick, IResolveOrder
 	{
 		readonly Actor self;
 		readonly PowerManagerInfo info;

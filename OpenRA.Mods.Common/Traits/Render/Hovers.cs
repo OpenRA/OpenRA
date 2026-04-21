@@ -62,7 +62,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class Hovers : ConditionalTrait<HoversInfo>, IRenderModifier, ITick, ISync
+	[GenerateSyncCode]
+	public partial class Hovers : ConditionalTrait<HoversInfo>, IRenderModifier, ITick
 	{
 		readonly HoversInfo info;
 		readonly int stepPercentage;

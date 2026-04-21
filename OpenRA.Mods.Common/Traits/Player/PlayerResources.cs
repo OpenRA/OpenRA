@@ -78,7 +78,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
-	public class PlayerResources : ISync
+	[GenerateSyncCode]
+	public partial class PlayerResources
 	{
 		public readonly PlayerResourcesInfo Info;
 		readonly Player owner;

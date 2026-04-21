@@ -11,4 +11,10 @@
 			<Private>False</Private>
 		</ProjectReference>
 	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OpenRA.Roslyn\OpenRA.Roslyn.csproj"
+						OutputItemType="Analyzer"
+						ReferenceOutputAssembly="false" />
+	</ItemGroup>
 </Project>
