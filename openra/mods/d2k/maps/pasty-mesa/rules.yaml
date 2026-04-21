@@ -1,0 +1,4 @@
+World:
+	ActorSpawnManager:
+		Minimum: 1
+		Maximum: 2

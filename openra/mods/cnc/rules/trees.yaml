@@ -1,0 +1,431 @@
+SPLIT2:
+	Inherits: ^TibTree
+	SeedsResource:
+		ResourceType: Tiberium
+		Interval: 55
+	WithIdleAnimation:
+		Interval: 500, 1000
+
+SPLIT3:
+	Inherits: ^TibTree
+	RenderSprites:
+		Image: split2
+	SeedsResource:
+		ResourceType: Tiberium
+		Interval: 55
+	WithIdleAnimation:
+		Interval: 500, 1000
+
+SPLITBLUE:
+	Inherits: ^TibTree
+	RenderSprites:
+		Image: split3
+	SeedsResource:
+		ResourceType: BlueTiberium
+		Interval: 110
+	WithIdleAnimation:
+		Interval: 500, 1000
+	Tooltip:
+		Name: actor-splitblue-name
+	RadarColorFromTerrain:
+		Terrain: BlueTiberium
+	AppearsOnMapPreview:
+		Terrain: BlueTiberium
+
+ROCK1:
+	Inherits: ^Rock
+	Building:
+		Footprint: __ xx
+
+ROCK2:
+	Inherits: ^Rock
+	Building:
+		Footprint: xx_
+		Dimensions: 3,1
+
+ROCK3:
+	Inherits: ^Rock
+
+ROCK4:
+	Inherits: ^Rock
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+
+ROCK5:
+	Inherits: ^Rock
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+
+ROCK6:
+	Inherits: ^Rock
+	Building:
+		Footprint: ___ xxx
+		Dimensions: 3,2
+
+ROCK7:
+	Inherits: ^Rock
+	Building:
+		Footprint: xxxx
+		Dimensions: 4,1
+
+T01:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T01.Husk
+
+T01.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T02:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T02.Husk
+
+T02.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T03:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T03.Husk
+
+T03.Transformable:
+	Inherits: ^Tree
+	RenderSprites:
+		Image: t03
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T03.Husk
+	TransformsNearResources:
+		Type: Tiberium
+		IntoActor: split2
+		Offset: 0,1
+	EditorOnlyTooltip:
+		Name: actor-t03-transformable-name
+
+T03.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T04:
+	Inherits: ^Tree
+	MapEditorData:
+		RequireTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T04.Husk
+
+T04.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		RequireTilesets: DESERT
+
+T05:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T05.Husk
+
+T05.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T06:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T06.Husk
+
+T06.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T07:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T07.Husk
+
+T07.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T08:
+	Inherits: ^Tree
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: T08.Husk
+
+T08.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+
+T09:
+	Inherits: ^Tree
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+	MapEditorData:
+		RequireTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T09.Husk
+
+T09.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: x_
+		Dimensions: 2,1
+	MapEditorData:
+		RequireTilesets: DESERT
+
+T10:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ xx
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T10.Husk
+
+T10.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ xx
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T11:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ xx
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T11.Husk
+
+T11.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __ xx
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T12:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T12.Husk
+
+T12.Husk:
+	Inherits: ^TreeHusk
+	Building:
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T13:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T13.Husk
+
+T13.Transformable:
+	Inherits: ^Tree
+	RenderSprites:
+		Image: t13
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T13.Husk
+	TransformsNearResources:
+		Type: Tiberium
+		IntoActor: split3
+		Offset: 0,1
+	EditorOnlyTooltip:
+		Name: actor-t13-transformable-name
+
+T13.Husk:
+	Inherits: ^TreeHusk
+	Building:
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T14:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T14.Husk
+
+T14.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T15:
+	Inherits: ^Tree
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T15.Husk
+
+T15.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T16:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T16.Husk
+
+T16.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T17:
+	Inherits: ^Tree
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T17.Husk
+
+T17.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+T18:
+	Inherits: ^Tree
+	MapEditorData:
+		RequireTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: T18.Husk
+
+T18.Husk:
+	Inherits: ^TreeHusk
+	MapEditorData:
+		RequireTilesets: DESERT
+
+TC01:
+	Inherits: ^Tree
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: TC01.Husk
+
+TC01.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ___ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+TC02:
+	Inherits: ^Tree
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: TC02.Husk
+
+TC02.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+TC03:
+	Inherits: ^Tree
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: TC03.Husk
+
+TC03.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: _x_ xx_
+		Dimensions: 3,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+TC04:
+	Inherits: ^Tree
+	Building:
+		Footprint: ____ xxx_ x___
+		Dimensions: 4,3
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: TC04.Husk
+
+TC04.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: ____ xxx_ x___
+		Dimensions: 4,3
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+TC05:
+	Inherits: ^Tree
+	Building:
+		Footprint: __x_ xxx_ _xx_
+		Dimensions: 4,3
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	SpawnActorOnDeath:
+		Actor: TC05.Husk
+
+TC05.Husk:
+	Inherits: ^TreeHusk
+	Building:
+		Footprint: __x_ xxx_ _xx_
+		Dimensions: 4,3
+	MapEditorData:
+		ExcludeTilesets: DESERT

@@ -1,0 +1,140 @@
+MultiCluster:
+	Inherits: ^DefaultMissile
+	ValidTargets: Ground, Water, Air, Trees
+	Projectile: Missile
+		MaximumLaunchSpeed: 120
+		Inaccuracy: 1c0
+		Speed: 370
+		Acceleration: 10
+		MinimumLaunchAngle: -255
+		MaximumLaunchAngle: 255
+		RangeLimit: 10c0
+		AllowSnapping: false
+		VerticalRateOfTurn: 64
+	Warhead@1Dam: SpreadDamage
+		Spread: 216
+		Damage: 13000
+		ValidTargets: Ground, Water, Air, Trees
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		ImpactActors: false
+		Explosions: large_twlt
+		ImpactSounds: expnew09.aud
+	Warhead@ResourceDestruction: DestroyResource
+
+ClusterMissile:
+	ValidTargets: Ground, Water, Air, Trees
+	Warhead@1Dam: SpreadDamage
+		Spread: 512
+		Falloff: 100, 100, 0
+		Damage: 26000
+		ValidTargets: Ground, Water, Air, Trees
+		Versus:
+			None: 100
+			Wood: 85
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@SoundEffect: CreateEffect
+		Explosions: large_twlt
+		ImpactSounds: expnew19.aud
+		ImpactActors: false
+		ValidTargets: Ground, Water, Air
+	Warhead@Cluster: FireCluster
+		Weapon: MultiCluster
+		RandomClusterCount: 10
+		Dimensions: 7,7
+		Footprint: __xxx__ _xxxxx_ xxxxxxx xxxxxxx xxxxxxx _xxxxx_ __xxx__
+	Warhead@Shake: ShakeScreen
+		Duration: 20
+		Intensity: 5
+		Multiplier: 1,1
+
+SuicideBomb:
+	Range: 0c512
+	TargetActorCenter: true
+	Report: hunter2.aud
+	Projectile: InstantHit
+	ValidTargets: Vehicle, Building, Support, Infantry
+	Warhead@1Dam: TargetDamage
+		Damage: 1000000
+		DamageTypes: FireDeath
+		ValidTargets: Vehicle, Building, Support, Infantry
+
+IonCannon:
+	ValidTargets: Ground, Water, Air, Trees
+	Warhead@1Dam_impact: SpreadDamage
+		Spread: 1c0
+		Damage: 10000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		ValidTargets: Ground, Water, Air
+		DamageTypes: Prone100Percent, TriggerProne, EnergyDeath
+	Warhead@2Dam_area: SpreadDamage
+		Spread: 1c0
+		Damage: 25000
+		Falloff: 100, 50, 25, 0
+		Delay: 3
+		ValidTargets: Ground, Water, Air, Trees
+		DamageTypes: Prone50Percent, TriggerProne, EnergyDeath
+	Warhead@3Smu_area: LeaveSmudge
+		SmudgeType: SmallScorch
+		InvalidTargets: Vehicle, Building, Wall
+		Size: 2
+		Delay: 3
+	Warhead@4Effect: CreateEffect
+		Explosions: ionbeam
+		ImpactSounds: ion1.aud
+		ImpactActors: false
+	Warhead@5Effect: CreateEffect
+		Explosions: ionbeam2
+		ImpactActors: false
+	Warhead@6Effect: CreateEffect
+		Explosions: ionbeam3
+		ImpactActors: false
+	Warhead@7Effect: CreateEffect
+		Explosions: ionbeam4
+		ImpactActors: false
+	Warhead@8Effect: CreateEffect
+		Explosions: ionbeam5
+		ImpactActors: false
+	Warhead@9Effect: CreateEffect
+		Explosions: ionbeam6
+		ImpactActors: false
+
+EMPulseCannon:
+	ReloadDelay: 100
+	Range: 40c0
+	Report: plsecan2.aud
+	Projectile: Bullet
+		Speed: 425
+		Blockable: false
+		Shadow: true
+		LaunchAngle: 96
+		Image: pulsball
+	Warhead@1Eff: CreateEffect
+		Explosions: pulse_explosion
+		ImpactActors: false
+	Warhead@emp: GrantExternalCondition
+		AffectsParent: true
+		Range: 6c0
+		Duration: 250
+		Condition: empdisable
+		ValidTargets: Ground, Water, Air, Underground
+
+MEMPulse:
+	Report: mobemp1.aud
+	Warhead@1Eff: CreateEffect
+		Explosions: pulse_explosion_small
+		ImpactActors: false
+	Warhead@emp: GrantExternalCondition
+		Range: 6c0
+		Duration: 250
+		Condition: empdisable
+		ValidTargets: Ground, Water, Air, Underground

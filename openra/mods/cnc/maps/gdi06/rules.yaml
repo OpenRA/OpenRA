@@ -1,0 +1,97 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, gdi06.lua
+	MusicPlaylist:
+		BackgroundMusic: rain-ambient
+		StartingMusic: rain
+	WeatherOverlay:
+		ChangingWindLevel: true
+		InstantWindChanges: false
+		UseSquares: false
+		ScatterDirection: 0, 0
+		Gravity: 15, 25
+		SwingOffset: 0, 0
+		SwingSpeed: 0, 0
+		SwingAmplitude: 0, 0
+		ParticleColors: 304074, 28386C, 202C60, 182C54
+		LineTailAlphaValue: 150
+		ParticleSize: 1, 1
+	TintPostProcessEffect:
+		Red: 0.75
+		Green: 0.85
+		Blue: 1.5
+		Ambient: 0.45
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: gdi6.vqa
+		StartVideo: nitejump.vqa
+		WinVideo: sabotage.vqa
+		LossVideo: gdilose.vqa
+	MapOptions:
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: True
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+BRIDGEHUT:
+	-Targetable:
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
+
+SAM:
+	SpawnActorOnDeath:
+		Actor: e1
+
+RMBO:
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	AutoTarget:
+		EnableStances: false
+		InitialStance: ReturnFire
+	Health:
+		HP: 15000
+
+RMBO.easy:
+	Inherits: RMBO
+	Health:
+		HP: 30000
+	ChangesHealth:
+		Step: 500
+		Delay: 10
+		StartIfBelow: 50
+		DamageCooldown: 200
+	RenderSprites:
+		Image: RMBO
+
+RMBO.hard:
+	Inherits: RMBO
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
+	-AttackMove:
+	RenderSprites:
+		Image: RMBO
+
+E3.sticky:
+	Inherits: E3
+	AutoTarget:
+		AllowMovement: false
+	RenderSprites:
+		Image: E3

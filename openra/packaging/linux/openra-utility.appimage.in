@@ -1,0 +1,7 @@
+#!/bin/sh
+set -o errexit || exit $?
+
+# OpenRA.Utility relies on keeping the original working directory, so don't change directory
+LAUNCHER=$(readlink -f "${0}")
+HERE=$(dirname "${LAUNCHER}")
+"${HERE}/../lib/openra/OpenRA.Utility" {MODID} "$@"

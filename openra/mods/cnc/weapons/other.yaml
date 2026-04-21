@@ -1,0 +1,149 @@
+^FlameWeapon:
+	ValidTargets: Ground, Water, Trees
+	ReloadDelay: 55
+	Range: 3c0
+	InvalidTargets: Wall
+	Report: flamer2.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 4000
+		ValidTargets: Ground, Water, Trees
+		InvalidTargets: Wall
+		Versus:
+			None: 110
+			Wood: 100
+			Light: 100
+			Heavy: 10
+			Concrete: 100
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+		ImpactActors: false
+
+Flamethrower:
+	Inherits: ^FlameWeapon
+
+BigFlamer:
+	Inherits: ^FlameWeapon
+	ReloadDelay: 65
+	Range: 3c512
+	Projectile: Bullet
+		Speed: 341
+	Burst: 2
+	BurstDelays: 10
+	Warhead@1Dam: SpreadDamage
+		Spread: 400
+		Damage: 10000
+		Versus:
+			None: 82
+			Wood: 75
+			Light: 75
+			Heavy: 18
+			Concrete: 75
+	Warhead@3Eff: CreateEffect
+		Explosions: med_napalm
+
+Chemspray:
+	Inherits: ^FlameWeapon
+	ReloadDelay: 65
+	-InvalidTargets:
+	Warhead@1Dam: SpreadDamage
+		Damage: 8000
+		-InvalidTargets:
+		Versus:
+			None: 70
+			Wood: 35
+			Light: 75
+			Heavy: 75
+			Concrete: 75
+		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
+	Warhead@3Eff: CreateEffect
+		Explosions: chemball
+		ImpactSounds: xplos.aud
+
+Napalm:
+	Inherits: ^FlameWeapon
+	ReloadDelay: 4
+	Range: 2c0
+	Burst: 2
+	BurstDelays: 2
+	-Projectile:
+	Projectile: GravityBomb
+		Image: BOMBLET
+		Shadow: true
+	Warhead@1Dam: SpreadDamage
+		Spread: 341
+		Damage: 3000
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			Wood: 35
+			Heavy: 80
+			Concrete: 80
+	Warhead@3Eff: CreateEffect
+		Explosions: med_napalm
+
+Laser:
+	ReloadDelay: 40
+	Range: 7c512
+	Report: obelray1.aud
+	Projectile: LaserZap
+		Width: 85
+		HitAnim: laserfire
+		ZOffset: 2047
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 36000
+		Versus:
+			Wood: 50
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		InvalidTargets: Vehicle, Structure, Wall, Husk, Trees, Creep
+
+^DinoWeapon:
+	ReloadDelay: 30
+	Range: 1c0
+	Report: dinoatk1.aud
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 18000
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
+
+Tail:
+	Inherits: ^DinoWeapon
+
+Horn:
+	Inherits: ^DinoWeapon
+	ReloadDelay: 20
+	Warhead@1Dam: SpreadDamage
+		Damage: 12000
+
+Teeth:
+	Inherits: ^DinoWeapon
+
+Claw:
+	Inherits: ^DinoWeapon
+	ReloadDelay: 10
+	Warhead@1Dam: SpreadDamage
+		Damage: 6000
+
+Demolish:
+	Warhead@1Dam: SpreadDamage
+		DamageTypes: DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: building
+		ImpactSounds: xplobig6.aud
+		ImpactActors: false

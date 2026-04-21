@@ -1,0 +1,120 @@
+Player:
+	PlayerResources:
+		DefaultCash: 15000
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, allies08a.lua, allies08a-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: ally8.vqa
+		WinVideo: crontest.vqa
+		LossVideo: cronfail.vqa
+		StartVideo: aagun.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+V2RL:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+4TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD.Ukraine:
+	-AirstrikePower@spyplane:
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+	GpsPower:
+		ChargeInterval: 15000
+	CaptureManager:
+		-BeingCapturedCondition:
+	-Sellable:
+	Demolishable:
+		-Condition:
+
+PDOX:
+	Inherits@IDISABLE: ^DisableOnLowPower
+	Buildable:
+		Prerequisites: ~disabled
+	ChronoshiftPower@chronoshift:
+		Prerequisites: ~disabled
+	CaptureManager:
+		-BeingCapturedCondition:
+	-Sellable:
+	Demolishable:
+		-Condition:
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled

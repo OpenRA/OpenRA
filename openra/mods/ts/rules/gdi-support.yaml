@@ -1,0 +1,205 @@
+GAWALL:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 10
+		Prerequisites: ~structures.gdi, ~techlevel.low
+		Description: actor-gawall.description
+	-SoundOnDamageTransition:
+	Tooltip:
+		Name: actor-gawall.name
+	Health:
+		HP: 22500
+	Armor:
+		Type: Concrete
+	Crushable:
+		CrushClasses: heavywall
+	LineBuild:
+		NodeTypes: wall, turret
+	Replaceable:
+		Types: GDIGate, GDITower
+
+GAGATE_A:
+	Inherits: ^Gate_A
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 30
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
+	Tooltip:
+		Name: actor-gagate-a-name
+	Replacement:
+		ReplaceableTypes: GDIGate
+
+GAGATE_B:
+	Inherits: ^Gate_B
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 50
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
+	Tooltip:
+		Name: actor-gagate-b-name
+	Replacement:
+		ReplaceableTypes: GDIGate
+
+GACTWR:
+	Inherits: ^Support
+	Inherits@IDISABLE: ^DisableOnPowerDown
+	Inherits@AUTOTARGET: ^AutoTargetAll
+	WithMakeAnimation:
+		BodyNames: make
+	WithSpriteBody:
+		Name: make
+		Sequence: invisible
+	WithWallSpriteBody:
+		RequiresCondition: !build-incomplete
+		Type: wall
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: actor-gactwr.name
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 70
+		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
+		Description: actor-gactwr.description
+	Health:
+		HP: 50000
+	Armor:
+		Type: Light
+	BlocksProjectiles:
+		Height: 768
+	BodyOrientation:
+		QuantizedFacings: 32
+	DetectCloaked:
+		RequiresCondition: !empdisable && !disabled && (tower.vulcan || tower.rocket || tower.sam)
+	Turreted:
+		TurnSpeed: 40
+		InitialFacing: 896
+		RealignDelay: -1
+	AttackTurreted:
+		RequiresCondition: !build-incomplete && (tower.vulcan || tower.rocket || tower.sam)
+		PauseOnCondition: empdisable || disabled
+	WithSpriteTurret@VULC:
+		RequiresCondition: !build-incomplete && tower.vulcan
+		Recoils: false
+		Sequence: turret-vulcan
+	WithSpriteTurret@ROCKET:
+		RequiresCondition: !build-incomplete && tower.rocket
+		Recoils: false
+		Sequence: turret-rocket
+	WithSpriteTurret@SAM:
+		RequiresCondition: !build-incomplete && tower.sam
+		Recoils: false
+		Sequence: turret-sam
+	Armament@VULCAN:
+		RequiresCondition: tower.vulcan
+		Weapon: VulcanTower
+		LocalOffset: 588,120,1358, 588,-120,1358
+		MuzzleSequence: muzzle
+	Armament@ROCKET:
+		RequiresCondition: tower.rocket
+		Weapon: RPGTower
+		LocalOffset: 272,-92,1493
+	Armament@SAM:
+		RequiresCondition: tower.sam
+		Weapon: RedEye2
+		LocalOffset: 543,0,1697
+	WithMuzzleOverlay:
+		RequiresCondition: !build-incomplete && tower.vulcan
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
+	LineBuildNode:
+		Types: turret
+	Power@base:
+		RequiresCondition: !disabled
+		Amount: -10
+	Power@turrets:
+		RequiresCondition: !disabled && (tower.vulcan || tower.rocket || tower.sam)
+		Amount: -20
+	Power@samextra:
+		RequiresCondition: !disabled && tower.sam
+		Amount: -10
+	Pluggable:
+		Conditions:
+			tower.vulcan: tower.vulcan
+			tower.rocket: tower.rocket
+			tower.sam: tower.sam
+		Requirements:
+			tower.vulcan: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+			tower.rocket: !build-incomplete && !tower.rocket && !tower.vulcan && !tower.sam
+			tower.sam: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+		EditorOptions:
+			tower.vulcan: Vulcan Tower
+			tower.rocket: RPG Upgrade
+			tower.sam: SAM Upgrade
+	ProvidesPrerequisite@buildingname:
+	ProvidesPrerequisite@pluggable:
+		RequiresCondition: !build-incomplete && !tower.vulcan && !tower.rocket && !tower.sam
+		Prerequisite: gactwr.socket
+	Replacement:
+		ReplaceableTypes: GDITower
+	IsometricSelectable:
+		Height: 48
+
+GACTWR.SOCKET:
+	Interactable:
+	Tooltip:
+		Name: actor-gactwr-socket-name
+
+GAVULC:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: actor-gavulc.name
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 80
+		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.low
+		Description: actor-gavulc.description
+	Plug:
+		Type: tower.vulcan
+	Power:
+		Amount: -20
+
+GAROCK:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: actor-garock.name
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 90
+		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.high
+		Description: actor-garock.description
+	Plug:
+		Type: tower.rocket
+	Power:
+		Amount: -20
+
+GACSAM:
+	Inherits: ^BuildingPlug
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: actor-gacsam.name
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 100
+		Prerequisites: gactwr.socket, garadr, ~structures.gdi, ~techlevel.medium
+		Description: actor-gacsam.description
+	Plug:
+		Type: tower.sam
+	Power:
+		Amount: -30

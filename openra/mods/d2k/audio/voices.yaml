@@ -1,0 +1,126 @@
+# requires Dune 2000/DATA/GAMESFX copied to ~/.openra/Content/d2k
+
+GenericVoice:
+	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
+	Prefixes:
+		atreides: A
+		fremen: A
+		ordos: O
+		smuggler: O
+		mercenary: O
+		harkonnen: H
+		corrino: H
+	Voices:
+		Select: G_SSEL1,G_SSEL2,G_SSEL3
+		Action: G_SCONF1,G_SCONF2,G_SCONF3
+		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+		Guard: I_GUARD
+	DisablePrefixes: Select, Action, Die
+	DisableVariants: Select, Action, Guard
+
+VehicleVoice:
+	DefaultVariant: .AUD
+	Prefixes:
+		atreides: A
+		fremen: A
+		ordos: O
+		smuggler: O
+		mercenary: O
+		harkonnen: H
+		corrino: H
+	Voices:
+		Select: _VSEL1,_VSEL2,_VSEL3
+		Action: _VCONF1,_VCONF2,_VCONF3
+		Guard: I_GUARD
+
+InfantryVoice:
+	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
+	Prefixes:
+		atreides: A
+		fremen: A
+		ordos: O
+		smuggler: O
+		mercenary: O
+		harkonnen: H
+		corrino: H
+	Voices:
+		Select: _ISEL1,_ISEL2,_ISEL3
+		Action: _ICONF1,_ICONF2,_ICONF3
+		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+		Guard: I_GUARD
+	DisablePrefixes: Die
+	DisableVariants: Select, Action, Guard
+
+EngineerVoice:
+	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
+	Prefixes:
+		atreides: A
+		fremen: A
+		ordos: O
+		smuggler: O
+		mercenary: O
+		harkonnen: H
+		corrino: H
+	Voices:
+		Select: _ESEL1,_ESEL2,_ESEL3
+		Action: _ECONF1,_ECONF2,_ECONF3
+		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+		Guard: I_GUARD
+	DisablePrefixes: Die
+	DisableVariants: Select, Action, Guard
+
+FremenVoice:
+	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
+	Prefixes:
+		atreides: A
+		fremen: A
+		ordos: O
+		smuggler: O
+		mercenary: O
+		harkonnen: H
+		corrino: H
+	Voices:
+		Select: A_FSEL1,A_FSEL2,A_FSEL3,A_FSEL4
+		Action: A_FCONF1,A_FCONF2,A_FCONF3,A_FCONF4
+		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+		Guard: I_GUARD
+	DisablePrefixes: Select, Action, Die
+	DisableVariants: Select, Action, Guard
+
+SaboteurVoice:
+	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
+	Prefixes:
+		atreides: A
+		fremen: A
+		ordos: O
+		smuggler: O
+		mercenary: O
+		harkonnen: H
+		corrino: H
+	Voices:
+		Select: O_SSEL1,O_SSEL2,O_SSEL3
+		Action: O_SCONF1,O_SCONF2,O_SCONF3
+		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+		Guard: I_GUARD
+	DisablePrefixes: Select, Action, Die
+	DisableVariants: Select, Action, Guard

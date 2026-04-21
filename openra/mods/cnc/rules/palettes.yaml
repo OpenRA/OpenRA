@@ -1,0 +1,115 @@
+^Palettes:
+	PaletteFromFile@terrain-desert:
+		Name: terrain
+		Tileset: DESERT
+		Filename: desert.pal
+		ShadowIndex: 4
+	PaletteFromFile@terrain-winter:
+		Name: terrain
+		Tileset: WINTER
+		Filename: winter.pal
+		ShadowIndex: 4
+	PaletteFromFile@terrain-snow:
+		Name: terrain
+		Tileset: SNOW
+		Filename: snow.pal
+		ShadowIndex: 4
+	PaletteFromFile@terrain-temperat:
+		Name: terrain
+		Tileset: TEMPERAT
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@staticterrain-desert:
+		Name: staticterrain
+		Tileset: DESERT
+		Filename: desert.pal
+		ShadowIndex: 4
+	PaletteFromFile@staticterrain-winter:
+		Name: staticterrain
+		Tileset: WINTER
+		Filename: winter.pal
+		ShadowIndex: 4
+	PaletteFromFile@staticterrain-snow:
+		Name: staticterrain
+		Tileset: SNOW
+		Filename: snow.pal
+		ShadowIndex: 4
+	PaletteFromFile@staticterrain-temperat:
+		Name: staticterrain
+		Tileset: TEMPERAT
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@cursor:
+		Name: cursor
+		Filename: temperat.pal
+		AllowModifiers: false
+		CursorPalette: true
+	PaletteFromFile@beaconposter:
+		Name: beaconposter
+		Filename: temperat.pal
+		ShadowIndex: 3
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	ColorPickerPalette@colorpicker:
+		Name: colorpicker
+		BasePalette: terrain
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
+		AllowModifiers: false
+	ColorPickerColorShift@colorpicker:
+		BasePalette: colorpicker
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@moveflash:
+		Name: moveflash
+		R: 255
+		G: 255
+		B: 255
+		A: 64
+	ShroudPalette@shroud:
+		Name: shroud
+	FixedColorPalette@BlueTiberium:
+		Base: terrain
+		Name: bluetiberium
+		Color: 89BAFF
+		RemapIndex: 5, 156, 157, 158, 159, 160, 165, 166, 167
+	FixedColorShift@BlueTiberium:
+		BasePalette: bluetiberium
+		Color: 89BAFF
+		MinHue: 0.15
+		MaxHue: 0.35
+		ReferenceHue: 0.23
+		ReferenceSaturation: 0.7
+	PlayerColorPalette:
+		BasePalette: terrain
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
+	PlayerColorShift:
+		BasePalette: player
+	PlayerColorPalette@derricks:
+		BaseName: derrick
+		BasePalette: terrain
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190, 171, 173, 144, 145
+	PlayerColorShift@derricks:
+		BasePalette: derrick
+		MinHue: 0.05
+		MaxHue: 0.15
+		ReferenceHue: 0.1
+		ReferenceSaturation: 0.75
+	MenuPostProcessEffect:
+		FadeInLength: 4
+		MenuEffect: Desaturated
+	CloakPaletteEffect:
+	FlashPostProcessEffect:
+	RotationPaletteEffect@water:
+		ExcludePalettes: effect, chrome
+		RotationBase: 32

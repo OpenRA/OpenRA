@@ -1,0 +1,542 @@
+Player:
+	ModularBot@RushAI:
+		Name: bot-rush-ai.name
+		Type: rush
+	ModularBot@NormalAI:
+		Name: bot-normal-ai.name
+		Type: normal
+	ModularBot@TurtleAI:
+		Name: bot-turtle-ai.name
+		Type: turtle
+	ModularBot@NavalAI:
+		Name: bot-naval-ai.name
+		Type: naval
+	GrantConditionOnBotOwner@rush:
+		Condition: enable-rush-ai
+		Bots: rush
+	GrantConditionOnBotOwner@normal:
+		Condition: enable-normal-ai
+		Bots: normal
+	GrantConditionOnBotOwner@turtle:
+		Condition: enable-turtle-ai
+		Bots: turtle
+	GrantConditionOnBotOwner@naval:
+		Condition: enable-naval-ai
+		Bots: naval
+	ResourceMapBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai
+		ResourceCreatorTypes: mine, gmine
+		ValuableResourceTypes: Ore, Gems
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: pbox,gun,ftur,tsla,agun,barr,tent,weap,afld,hpad,fact,powr,apwr,proc
+	SupportPowerBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		Decisions:
+			spyplane:
+				OrderName: SovietSpyPlane
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			paratroopers:
+				OrderName: SovietParatroopers
+				MinimumAttractiveness: 5
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			parabombs:
+				OrderName: UkraineParabombs
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	HarvesterBotModule@rush-naval:
+		RequiresCondition: enable-rush-ai || enable-naval-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 2
+	HarvesterBotModule@normal-turtle:
+		RequiresCondition: enable-normal-ai || enable-turtle-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 4
+	BaseBuilderBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		MinimumExcessPower: 0
+		MaximumExcessPower: 160
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		ExpansionTolerate: 0
+		ForceExpansionTolerate: 0
+		TechTypes: mslo, dome, atek, stek, fix
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 2
+		ProductionTypes: barr,tent,weap
+		NewProductionCashThreshold: 7000
+		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		BuildingLimits:
+			barr: 7
+			tent: 7
+			kenn: 1
+			dome: 1
+			weap: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			powr: 1
+			proc: 1
+			barr: 3
+			kenn: 1
+			tent: 3
+			weap: 4
+			pbox: 3
+			gun: 3
+			tsla: 3
+			gap: 1
+			ftur: 3
+			agun: 5
+			sam: 5
+			atek: 1
+			stek: 1
+			fix: 1
+			dome: 10
+			mslo: 1
+		BuildingDelays:
+			dome: 7000
+			fix: 3000
+			pbox: 2000
+			gun: 3000
+			ftur: 2000
+			tsla: 3000
+			kenn: 9000
+			atek: 11000
+			stek: 11000
+	BaseBuilderBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		MinimumExcessPower: 0
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 2
+		ExpansionTolerate: 1,2
+		PowerTypes: powr,apwr
+		TechTypes: dome, atek, stek, fix, afld, hpad
+		ProductionTypes: barr,tent,weap
+		NewProductionCashThreshold: 8000
+		NavalProductionTypes: spen, syrd
+		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		BuildingLimits:
+			barr: 7
+			tent: 7
+			dome: 1
+			weap: 4
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			afld.ukraine: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			powr: 1
+			proc: 1
+			tent: 3
+			barr: 3
+			kenn: 1
+			dome: 1
+			weap: 4
+			hpad: 1
+			spen: 1
+			syrd: 1
+			afld: 1
+			afld.ukraine: 1
+			pbox: 9
+			gun: 9
+			ftur: 10
+			tsla: 5
+			gap: 2
+			fix: 1
+			agun: 5
+			sam: 1
+			atek: 1
+			stek: 1
+			mslo: 1
+		BuildingDelays:
+			dome: 6000
+			fix: 3000
+			pbox: 1500
+			gun: 2000
+			ftur: 1500
+			tsla: 2800
+			kenn: 7000
+			spen: 6000
+			syrd: 6000
+			atek: 9000
+			stek: 9000
+	BaseBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		MinimumExcessPower: 20
+		MaximumExcessPower: 250
+		ExcessPowerIncrement: 20
+		ExcessPowerIncreaseThreshold: 2
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		ForceExpansionTolerate: 6, 7, 8
+		TechTypes: dome, atek, stek, fix, afld, hpad
+		ProductionTypes: barr,tent,weap
+		NavalProductionTypes: spen, syrd
+		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		BuildingLimits:
+			barr: 1
+			tent: 1
+			kenn: 1
+			dome: 1
+			weap: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			afld.ukraine: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			powr: 1
+			proc: 1
+			tent: 1
+			barr: 1
+			kenn: 1
+			weap: 3
+			hpad: 2
+			afld: 2
+			afld.ukraine: 2
+			spen: 1
+			syrd: 1
+			pbox: 13
+			gun: 12
+			ftur: 13
+			tsla: 7
+			gap: 3
+			fix: 1
+			dome: 10
+			agun: 5
+			sam: 5
+			atek: 1
+			stek: 1
+			mslo: 1
+		BuildingDelays:
+			dome: 5000
+			atek: 7000
+			stek: 7000
+			kenn: 8000
+	BaseBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		MinimumExcessPower: 0
+		MaximumExcessPower: 400
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 3
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: powr,apwr
+		ExpansionTolerate: 99
+		ForceExpansionTolerate: 999
+		TechTypes: mslo, dome, atek, stek, fix
+		ProductionTypes: barr,tent,weap,afld,hpad
+		NavalProductionTypes: spen, syrd
+		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		BuildingLimits:
+			proc: 3
+			dome: 1
+			barr: 1
+			tent: 1
+			spen: 1
+			syrd: 1
+			hpad: 8
+			afld: 8
+			afld.ukraine: 8
+			weap: 1
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			powr: 1
+			proc: 25
+			dome: 1
+			weap: 1
+			hpad: 15
+			afld: 15
+			afld.ukraine: 15
+			atek: 1
+			stek: 1
+			spen: 1
+			syrd: 1
+			fix: 1
+			pbox: 2
+			gun: 2
+			ftur: 2
+			tsla: 1
+			agun: 5
+			sam: 5
+			mslo: 1
+		BuildingDelays:
+			dome: 3000
+			fix: 20000
+			tsla: 21000
+			kenn: 4000
+	PowerDownBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		PowerDownTypes: dome,tsla,mslo,agun,sam
+	BuildingRepairBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	SquadManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		SquadSize: 20
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ConstructionYardTypes: fact
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	McvManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+	McvExpansionManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MoveOldConyardFirst: true
+		MinimumConstructionYardCount: 2
+	McvExpansionManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MinimumConstructionYardCount: 2
+	McvExpansionManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MoveOldConyardFirst: false
+		MoveConyardTick: 8000
+		MinimumConstructionYardCount: 2
+	UnitBuilderBotModule@rush:
+		RequiresCondition: enable-rush-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			e7: 1
+			dog: 15
+			shok: 15
+			harv: 10
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		SquadSize: 40
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
+	UnitBuilderBotModule@normal:
+		RequiresCondition: enable-normal-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			e7: 1
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 40
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+			heli: 30
+			mh60: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	SquadManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		SquadSize: 10
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+		RushInterval: 100000
+		MinimumAttackForceDelay: 100000
+		ProtectUnitScanRadius: 30
+		ProtectionScanRadius: 15
+	UnitBuilderBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			e7: 1
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 50
+			1tnk: 50
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 10
+			heli: 30
+			mh60: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+			mnly: 2
+		UnitLimits:
+			dog: 3
+			harv: 8
+			jeep: 2
+			ftrk: 4
+			mnly: 2
+	MinelayerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
+		MinelayingActorTypes: mnly
+		IgnoredEnemyTargetTypes: Structure, Defense, AirborneActor
+		UseEnemyLocationTargetTypes: Structure, Defense, AirborneActor
+		AwayFromAlliedTargetTypes: Structure, Defense
+		AwayFromEnemyTargetTypes: Structure, Defense
+	SquadManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		SquadSize: 1
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	UnitBuilderBotModule@naval:
+		RequiresCondition: enable-naval-ai
+		UnitsToBuild:
+			harv: 1
+			ftrk: 40
+			arty: 40
+			v2rl: 40
+			jeep: 40
+			heli: 30
+			mh60: 30
+			mig: 15
+			yak: 60
+			ss: 10
+			msub: 30
+			dd: 30
+			ca: 20
+			pt: 10
+		UnitLimits:
+			harv: 4
+			ftrk: 3
+			arty: 1
+			v2rl: 1
+			jeep: 1
+		UnitDelays:
+			harv: 10000

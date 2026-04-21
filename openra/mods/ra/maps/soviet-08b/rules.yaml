@@ -1,0 +1,130 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, soviet08b.lua, soviet08b-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: soviet8.vqa
+		StartVideo: slntsrvc.vqa
+		WinVideo: bombrun.vqa
+		LossVideo: allymorf.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+CAMERA:
+	RevealsShroud:
+		Range: 6c0
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+SCRIPTEDDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1,E1,E4,E4,E4
+
+AFLD:
+	AirstrikePower@parabombs:
+		Prerequisites: aircraft.soviet
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E2,E2
+
+MONEYCRATE:
+	GiveCashCrateAction:
+		Amount: 2000
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent

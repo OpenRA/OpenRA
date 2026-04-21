@@ -1,0 +1,258 @@
+Background@MULTIPLAYER_PANEL:
+	Logic: MultiplayerLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 600
+	Children:
+		Label@TITLE:
+			Y: 16
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-multiplayer-title
+			Align: Center
+			Font: Bold
+		Container@LABEL_CONTAINER:
+			X: 20
+			Y: 43
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Label@NAME:
+					X: 5
+					Width: 347
+					Height: 25
+					Text: label-container-server
+					Align: Center
+					Font: Bold
+				Label@PLAYERS:
+					X: 382
+					Width: 85
+					Height: 25
+					Text: label-container-players
+					Font: Bold
+				Label@LOCATION:
+					X: 472
+					Width: 110
+					Height: 25
+					Text: label-container-location
+					Font: Bold
+				Label@STATUS:
+					X: 587
+					Width: 50
+					Height: 25
+					Text: label-container-status
+					Font: Bold
+		LogicTicker@NOTICE_WATCHER:
+		Background@NOTICE_CONTAINER:
+			X: 20
+			Y: 67
+			Width: 675
+			Height: 20
+			Background: dialog2
+			Children:
+				Label@OUTDATED_VERSION_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 20
+					Align: Center
+					Text: label-notice-container-outdated-version
+					Font: TinyBold
+				Label@UNKNOWN_VERSION_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 20
+					Align: Center
+					Text: label-notice-container-unknown-version
+					Font: TinyBold
+				Label@PLAYTEST_AVAILABLE_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 20
+					Align: Center
+					Text: label-notice-container-playtest-available
+					Font: TinyBold
+		ScrollPanel@SERVER_LIST:
+			X: 20
+			Y: 67
+			Width: 675
+			Height: PARENT_HEIGHT - 122
+			TopBottomSpacing: 2
+			Children:
+				ScrollItem@HEADER_TEMPLATE:
+					X: 2
+					Width: PARENT_WIDTH - 27
+					Height: 20
+					Background: scrollheader
+					Visible: false
+					Children:
+						Label@LABEL:
+							Font: TinyBold
+							Width: PARENT_WIDTH
+							Height: 20
+							Align: Center
+				ScrollItem@SERVER_TEMPLATE:
+					X: 2
+					Width: PARENT_WIDTH - 27
+					Height: 25
+					EnableChildMouseOver: True
+					Children:
+						LabelWithTooltip@TITLE:
+							X: 5
+							Width: 337
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Image@PASSWORD_PROTECTED:
+							X: 364
+							Y: 6
+							Width: 12
+							Height: 13
+							ImageCollection: lobby-bits
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: image-multiplayer-panel-password-protected-tooltip
+						Image@REQUIRES_AUTHENTICATION:
+							X: 364
+							Y: 6
+							Width: 12
+							Height: 13
+							ImageCollection: lobby-bits
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: image-multiplayer-panel-requires-authentication-tooltip
+						LabelWithTooltip@PLAYERS:
+							X: 382
+							Width: 85
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@LOCATION:
+							X: 472
+							Width: 110
+							Height: 25
+						Label@STATUS:
+							X: 587
+							Width: 50
+							Height: 25
+		Label@PROGRESS_LABEL:
+			X: 20
+			Y: 67 + (PARENT_HEIGHT - 119 - HEIGHT) / 2
+			Width: 675
+			Height: 25
+			Font: Bold
+			Align: Center
+			Visible: false
+		Container@SELECTED_SERVER:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: 67
+			Width: 174
+			Height: 280
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_WIDTH
+					Height: 174
+					Background: dialog3
+					Children:
+						MapPreview@SELECTED_MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_WIDTH - 2
+							Height: PARENT_HEIGHT - 2
+							TooltipContainer: TOOLTIP_CONTAINER
+				LabelWithTooltip@SELECTED_MAP:
+					Y: 173
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+					Align: Center
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@SELECTED_IP:
+					Y: 188
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_STATUS:
+					Y: 204
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@SELECTED_MOD_VERSION:
+					Y: 217
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_PLAYERS:
+					Y: 230
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Container@CLIENT_LIST_CONTAINER:
+					Y: 240
+					Width: PARENT_WIDTH
+					Height: 166
+				Button@JOIN_BUTTON:
+					Key: return
+					Y: 255
+					Width: PARENT_WIDTH
+					Height: 25
+					Text: button-selected-server-join
+					Font: Bold
+		DropDownButton@FILTERS_DROPDOWNBUTTON:
+			X: 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 158
+			Height: 25
+			Text: dropdownbutton-multiplayer-panel-filters
+			Font: Bold
+		Button@RELOAD_BUTTON:
+			X: 182
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 26
+			Height: 25
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+					Children:
+						LogicTicker@ANIMATION:
+		Label@PLAYER_COUNT:
+			X: 254
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 190
+			Height: 25
+			Align: Center
+			Font: Bold
+		Button@DIRECTCONNECT_BUTTON:
+			X: 490
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 100
+			Height: 25
+			Text: button-multiplayer-panel-directconnect
+			Font: Bold
+		Button@CREATE_BUTTON:
+			X: 595
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 100
+			Height: 25
+			Text: button-multiplayer-panel-create
+			Font: Bold
+		Button@BACK_BUTTON:
+			Key: escape
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 174
+			Height: 25
+			Text: button-back
+			Font: Bold
+		TooltipContainer@TOOLTIP_CONTAINER:

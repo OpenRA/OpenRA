@@ -1,0 +1,119 @@
+^Cannon:
+	ReloadDelay: 50
+	Range: 4c624
+	Report: MEDTANK1.WAV
+	Projectile: Bullet
+		Speed: 562
+		Inaccuracy: 135
+		InaccuracyType: PerCellIncrement
+		Image: 120mm
+	Warhead@1Dam: SpreadDamage
+		Damage: 2800
+		Spread: 1c0
+		Falloff: 100, 0
+		Versus:
+			none: 30
+			wall: 50
+			building: 50
+			wood: 60
+			heavy: 75
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: Prone80Percent, TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater, RockCrater
+		InvalidTargets: Vehicle, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 540
+
+110mm_Gun:
+	Inherits: ^Cannon
+	ReloadDelay: 35
+	Range: 6c0
+	Report: TURRET1.WAV
+	Projectile: Bullet
+		Speed: 800
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Damage: 2900
+		Versus:
+			none: 65
+			wood: 80
+			heavy: 30
+			harvester: 50
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 2900
+
+80mm_A:
+	Inherits: ^Cannon
+	Range: 5c112
+
+80mm_H:
+	Inherits: ^Cannon
+	ReloadDelay: 55
+
+80mm_O:
+	Inherits: ^Cannon
+	ReloadDelay: 44
+
+DevBullet:
+	Inherits: ^Cannon
+	ReloadDelay: 75
+	Report: TANKHVY1.WAV
+	Projectile: Bullet
+		Speed: 281
+		Image: doubleblastbullet
+	Warhead@1Dam: SpreadDamage
+		Damage: 6500
+		Spread: 1c225
+		Versus:
+			none: 65
+			wall: 100
+			building: 75
+			wood: 60
+			heavy: 100
+			invulnerable: 0
+			cy: 40
+			harvester: 100
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 3250
+	Warhead@3Eff: CreateEffect
+		Explosions: shockwave
+		ImpactSounds: EXPLMD4.WAV
+
+155mm:
+	Inherits: ^Cannon
+	ReloadDelay: 105
+	Range: 6c900
+	Report: MORTAR1.WAV
+	Projectile: Bullet
+		Speed: 192
+		Blockable: false
+		Shadow: true
+		LaunchAngle: 62
+		ContrailLength: 20
+		Image: 155mm
+	Warhead@1Dam: SpreadDamage
+		Damage: 4500
+		Spread: 1c800
+		Versus:
+			none: 100
+			wall: 70
+			building: 100
+			wood: 70
+			light: 30
+			heavy: 20
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: Prone80Percent, TriggerProne, ExplosionDeath
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 5625
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: EXPLMD2.WAV

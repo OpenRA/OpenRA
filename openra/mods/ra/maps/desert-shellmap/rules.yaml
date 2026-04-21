@@ -1,0 +1,77 @@
+Player:
+	-ConquestVictoryConditions:
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
+	PlayerResources:
+		ResourceValues:
+			Ore: 0
+			Gems: 0
+
+World:
+	-CrateSpawner:
+	-AutoSave:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
+	MusicPlaylist:
+		BackgroundMusic: intro
+		AllowMuteBackgroundMusic: true
+		DisableWorldSounds: true
+	LuaScript:
+		Scripts: desert-shellmap.lua
+	-StartGameNotification:
+	CameraOvalMover:
+
+^Palettes:
+	-MenuPostProcessEffect:
+
+^ExistsInWorld:
+	GivesExperience:
+		ActorExperienceModifier: 0
+	DamageMultiplier@UNKILLABLE:
+		RequiresCondition: unkillable
+		Modifier: 0
+	ExternalCondition@UNKILLABLE:
+		Condition: unkillable
+
+^Bridge:
+	DamageMultiplier:
+		Modifier: 0
+
+^Wall:
+	DamageMultiplier:
+		Modifier: 0
+
+OILB:
+	CashTrickler:
+		ShowTicks: false
+
+TRAN.Husk2:
+	WithIdleOverlay@Burns:
+		Image: fire
+		Sequence: 1
+		IsDecoration: True
+
+MISS:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+APC:
+	Cargo:
+		InitialUnits: e1, e1, e2, e3, e4
+
+Ant:
+	Buildable:
+		Prerequisites: barr
+	Health:
+		HP: 20000
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DisplayBeacon: false
+		DropItems: E1,E1,E2,E3,E4
+
+powerproxy.parazombies:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE,ZOMBIE

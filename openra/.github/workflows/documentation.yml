@@ -1,0 +1,150 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [ bleed ]
+    tags: [ 'release-*', 'playtest-*' ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git Tag'
+        required: true
+        default: 'release-xxxxxxxx'
+
+permissions:
+  contents: read  #  to fetch code (actions/checkout)
+
+jobs:
+  prepare:
+    name: Prepare version strings
+    if: github.repository == 'openra/openra'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Prepare environment variables
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            if [ "${{ github.ref_type }}" = "tag" ]; then
+              VERSION_TYPE=`echo "${GITHUB_REF#refs/tags/}" | cut -d"-" -f1`
+              echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+              echo "VERSION_TYPE=$VERSION_TYPE" >> $GITHUB_ENV
+            else
+              echo "GIT_TAG=bleed" >> $GITHUB_ENV
+              echo "VERSION_TYPE=bleed" >> $GITHUB_ENV
+            fi
+          else
+            VERSION_TYPE=`echo "${{ github.event.inputs.tag }}" | cut -d"-" -f1`
+            echo "GIT_TAG=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+            echo "VERSION_TYPE=$VERSION_TYPE" >> $GITHUB_ENV
+          fi
+    outputs:
+      git_tag: ${{ env.GIT_TAG }}
+      version_type: ${{ env.VERSION_TYPE }}
+
+  wiki:
+    name: Update Wiki
+    needs: prepare
+    if: github.repository == 'openra/openra' && needs.prepare.outputs.version_type != 'bleed'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Debug output
+        run: |
+          echo ${{ needs.prepare.outputs.git_tag }}
+          echo ${{ needs.prepare.outputs.version_type }}
+
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.git_tag }}
+
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Prepare Environment
+        run: |
+          make all
+
+      - name: Clone Wiki
+        uses: actions/checkout@v6
+        with:
+          repository: openra/openra.wiki
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: wiki
+
+      - name: Update Wiki (Playtest)
+        if: startsWith(needs.prepare.outputs.git_tag, 'playtest-')
+        run: |
+          ./utility.sh all --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings (playtest).md"
+
+      - name: Update Wiki (Release)
+        if: startsWith(needs.prepare.outputs.git_tag, 'release-')
+        run: |
+          ./utility.sh all --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings.md"
+
+      - name: Push Wiki
+        run: |
+          cd wiki
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git status
+          git diff-index --quiet HEAD || \
+          (
+            git add --all && \
+            git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}" && \
+            git push origin master
+          )
+
+  docs:
+    name: Update docs.openra.net
+    needs: prepare
+    if: github.repository == 'openra/openra'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Debug output
+        run: |
+          echo ${{ needs.prepare.outputs.git_tag }}
+          echo ${{ needs.prepare.outputs.version_type }}
+
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.prepare.outputs.git_tag }}
+
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Prepare Environment
+        run: |
+          make all
+
+      # version_type is release/playtest/bleed - the name of the target branch.
+      - name: Clone docs.openra.net
+        uses: actions/checkout@v6
+        with:
+          repository: openra/docs
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: docs
+          ref: ${{ needs.prepare.outputs.version_type }}
+
+      - name: Generate docs files
+        run: |
+          ./utility.sh all --docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
+          ./utility.sh all --weapon-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
+          ./utility.sh all --sprite-sequence-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
+          ./utility.sh all --lua-docs "${{ needs.prepare.outputs.git_tag }}" > "docs/api/lua.md"
+
+      - name: Update docs.openra.net
+        run: |
+          cd docs
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git status
+          git diff-index --quiet HEAD || \
+          (
+            git add api/*.md && \
+            git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}" && \
+            git push origin ${{ needs.prepare.outputs.version_type }}
+          )

@@ -1,0 +1,332 @@
+TRAN:
+	Inherits: ^Helicopter
+	Inherits@TRANSPORT: ^Transport
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: actor-tran.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: hpad
+		Queue: Aircraft.GDI, Aircraft.Nod
+		Description: actor-tran.description
+	Aircraft:
+		TurnSpeed: 20
+		Speed: 150
+		AltitudeVelocity: 0c100
+	Health:
+		HP: 12500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	Encyclopedia:
+		Description: actor-tran.encyclopedia
+		Order: 230
+		Scale: 3
+		Category: Aircraft
+		PreviewOwner: GDI
+	WithIdleOverlay@ROTOR1AIR:
+		Offset: 597,0,85
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTOR1GROUND:
+		Offset: 597,0,85
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	WithIdleOverlay@ROTOR2AIR:
+		Offset: -597,0,171
+		Sequence: rotor2
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTOR2GROUND:
+		Offset: -597,0,171
+		Sequence: slow-rotor2
+		RequiresCondition: !airborne
+	Cargo:
+		Types: Infantry
+		MaxWeight: 10
+		UnloadVoice: Unload
+		AfterUnloadDelay: 40
+	SpawnActorOnDeath:
+		Actor: TRAN.Husk
+	Selectable:
+		DecorationBounds: 1749, 1749
+
+HELI:
+	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: actor-heli.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: hpad, anyhq, ~techlevel.medium
+		Queue: Aircraft.Nod
+		Description: actor-heli.description
+	Aircraft:
+		TurnSpeed: 28
+		Speed: 180
+	Health:
+		HP: 12500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: HeliAGGun
+		LocalOffset: 128,-213,-85, 128,213,-85
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: HeliAAGun
+		LocalOffset: 128,-213,-85, 128,213,-85
+		MuzzleSequence: muzzle
+		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: actor-heli.encyclopedia
+		Order: 240
+		Scale: 3
+		Category: Aircraft
+		PreviewOwner: NodUnits
+	AttackMove:
+		Voice: Attack
+	AutoTarget:
+		ScanRadius: 4
+	AttackAircraft:
+		FacingTolerance: 80
+		OpportunityFire: false
+		PersistentTargeting: false
+		AttackType: Hover
+		Voice: Attack
+	AmmoPool:
+		Ammo: 10
+		AmmoCondition: ammo
+	WithIdleOverlay@ROTORAIR:
+		Offset: 0,0,85
+		Sequence: rotor
+		RequiresCondition: airborne
+	WithIdleOverlay@ROTORGROUND:
+		Offset: 0,0,85
+		Sequence: slow-rotor
+		RequiresCondition: !airborne
+	WithMuzzleOverlay:
+	SpawnActorOnDeath:
+		Actor: HELI.Husk
+	ReloadAmmoPool:
+		Delay: 70
+		Count: 2
+	Selectable:
+		DecorationBounds: 1280, 1024
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 5
+
+ORCA:
+	Inherits: ^Helicopter
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: actor-orca.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: hpad, anyhq, ~techlevel.medium
+		Queue: Aircraft.GDI
+		Description: actor-orca.description
+	Aircraft:
+		TurnSpeed: 28
+		Speed: 186
+	Health:
+		HP: 10000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	Armament@PRIMARY:
+		Weapon: OrcaAGMissiles
+		LocalOffset: 427,-171,-213, 427,171,-213
+		PauseOnCondition: !ammo
+	Armament@SECONDARY:
+		Weapon: OrcaAAMissiles
+		LocalOffset: 427,-171,-213, 427,171,-213
+		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: actor-orca.encyclopedia
+		Order: 250
+		Scale: 3
+		Category: Aircraft
+		PreviewOwner: GDI
+	AttackMove:
+		Voice: Attack
+	AutoTarget:
+		ScanRadius: 5
+	AttackAircraft:
+		FacingTolerance: 80
+		OpportunityFire: false
+		PersistentTargeting: false
+		AttackType: Hover
+		Voice: Attack
+	AmmoPool:
+		Ammo: 6
+		AmmoCondition: ammo
+	SpawnActorOnDeath:
+		Actor: ORCA.Husk
+	WithMoveAnimation:
+		MoveSequence: move
+	ReloadAmmoPool:
+		Delay: 100
+		Count: 2
+	Selectable:
+		DecorationBounds: 1280, 1024
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+
+C17:
+	Inherits: ^Plane
+	Inherits@TRANSPORT: ^Transport
+	Interactable:
+	Tooltip:
+		Name: actor-c17-name
+	Valued:
+		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
+	Aircraft:
+		TurnSpeed: 20
+		Speed: 700
+		Repulsable: False
+		MaximumPitch: 36
+	HiddenUnderFog:
+		AlwaysVisibleRelationships: None
+		Type: CenterPosition
+	Cargo:
+		MaxWeight: 10
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+	GrantConditionOnPrerequisite@GLOBALC17STEALTH:
+		Condition: global-C17-stealth
+		Prerequisites: global-C17-stealth
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 0
+		CloakStyle: Palette
+		CloakedPalette: cloak
+		DetectionTypes: C17
+		RequiresCondition: global-C17-stealth
+	Contrail@1:
+		Offset: -261,-650,0
+		TrailLength: 15
+		StartColorAlpha: 128
+	Contrail@2:
+		Offset: -85,-384,0
+		TrailLength: 16
+		StartColorAlpha: 128
+	Contrail@3:
+		Offset: -85,384,0
+		TrailLength: 16
+		StartColorAlpha: 128
+	Contrail@4:
+		Offset: -261,650,0
+		TrailLength: 15
+		StartColorAlpha: 128
+	-MapEditorData:
+
+A10:
+	Inherits: ^Plane
+	Interactable:
+	Tooltip:
+		Name: actor-a10-name
+	Valued:
+		Cost: 2000
+	UpdatesPlayerStatistics:
+		AddToAssetsValue: false
+	Aircraft:
+		TurnSpeed: 16
+		Speed: 373
+		Repulsable: False
+	AttackBomber:
+		Armaments: gun, bombs
+		FacingTolerance: 8
+	Armament@GUNS:
+		Name: gun
+		Weapon: Vulcan
+		LocalOffset: 1024,0,-85
+	WithMuzzleOverlay:
+	Armament@BOMBS:
+		Name: bombs
+		Weapon: Napalm
+		LocalOffset: 0,-256,-43, 0,256,-43
+	Contrail@1:
+		Offset: -640,171,0
+		TrailLength: 15
+		StartColorAlpha: 128
+	Contrail@2:
+		Offset: -640,-171,0
+		TrailLength: 15
+		StartColorAlpha: 128
+	-MapEditorData:
+
+TRAN.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: actor-tran-husk-name
+	Aircraft:
+		TurnSpeed: 20
+		Speed: 140
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	WithIdleOverlay@ROTOR1:
+		Offset: 597,0,85
+		Sequence: rotor
+	WithIdleOverlay@ROTOR2:
+		Offset: -597,0,171
+		Sequence: rotor2
+	RenderSprites:
+		Image: tran
+
+HELI.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: actor-heli-husk-name
+	Aircraft:
+		TurnSpeed: 16
+		Speed: 186
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	WithIdleOverlay:
+		Offset: 0,0,85
+		Sequence: rotor
+	RenderSprites:
+		Image: heli
+
+ORCA.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: actor-orca-husk-name
+	Aircraft:
+		TurnSpeed: 16
+		Speed: 186
+	RevealsShroud:
+		Range: 10c0
+		Type: GroundPosition
+	RenderSprites:
+		Image: orca

@@ -1,0 +1,92 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, personal-war.lua
+	MissionData:
+		WinVideo: toofar.vqa
+		LossVideo: bmap.vqa
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+INSERTIONDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E7, GNRL
+
+INSERTIONDROPHARD:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E7.noautotarget, GNRL.noautotarget
+
+RIFLEDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1, E1, E1, E1, E1
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+GNRL:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-stavros-name
+	Armament:
+		Weapon: SilencedPPK
+	Passenger:
+		CargoType: VIP
+
+GNRL.noautotarget:
+	Inherits: GNRL
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:
+	AttackMove:
+		-AssaultMoveCondition:
+	RenderSprites:
+		Image: GNRL
+
+E7:
+	Passenger:
+		CargoType: VIP
+
+TRUK:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+TRAN:
+	-Selectable:
+	RevealsShroud:
+		Range: 4c0
+	Targetable@GROUND:
+		TargetTypes: GroundActor
+	Interactable:
+	Health:
+		HP: 5000
+	Cargo:
+		Types: VIP
+		MaxWeight: 2
+
+BADR.Bomber:
+	Aircraft:
+		Speed: 373
+	Tooltip:
+		Name: actor-strategic-bomber-name
+	RenderSprites:
+		Image: U2
+
+MIG:
+	Aircraft:
+		IdleBehavior: LeaveMap

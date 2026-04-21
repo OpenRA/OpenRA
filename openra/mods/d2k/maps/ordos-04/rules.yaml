@@ -1,0 +1,131 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+	ExternalCondition@AIMain:
+		Condition: base-rebuilder
+	ExternalCondition@AIMainDefense:
+		Condition: defense-rebuilder
+	BaseBuilderBotModule@Harkonnen:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@HarkonnenDefense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+			medium_gun_turret: 3
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, ordos04.lua, ordos04-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: O_BR04_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+	ExternalCondition@lua:
+		Condition: modified
+	Tooltip:
+		RequiresCondition: !modified
+	Tooltip@Modified:
+		Name: actor-outpost-modified-name
+		RequiresCondition: modified
+		ShowOwnerRow: false
+
+quad:
+	Buildable:
+		Prerequisites: upgrade.light
+
+trooper:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+engineer:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+repair_pad:
+	Buildable:
+		Prerequisites: heavy_factory
+
+mcv:
+	Buildable:
+		Prerequisites: repair_pad
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled

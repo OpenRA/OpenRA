@@ -1,0 +1,280 @@
+Metadata:
+	Title: mod-title
+	Version: {DEV_VERSION}
+	Website: https://www.openra.net
+	WebIcon32: https://www.openra.net/images/icons/d2k_32x32.png
+	WindowTitle: mod-windowtitle
+
+PackageFormats: D2kSoundResources
+
+FileSystem: ContentInstallerFileSystem
+	SystemPackages:
+		^EngineDir
+		$d2k: d2k
+		^EngineDir|mods/common: common
+		~^SupportDir|Content/d2k/v3/: content
+		common|scripts
+		d2k|scripts
+		d2k|uibits
+	ContentPackages:
+		content|SOUND.RS
+		content|GAMESFX
+		~content|Music
+		~content|Movies
+		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
+		d2k|bits
+	RequiredContentFiles:
+		content|BLOXBASE.R16
+		content|BLOXBAT.R16
+		content|BLOXBGBS.R16
+		content|BLOXICE.R16
+		content|BLOXTREE.R16
+		content|BLOXWAST.R16
+		content|DATA.R16
+		content|MOUSE.R16
+		content|PALETTE.BIN
+	ContentInstallerMod: d2k-content
+
+MapFolders:
+	d2k|maps: System
+	~^SupportDir|maps/d2k/{DEV_VERSION}: User
+
+Rules:
+	d2k|rules/misc.yaml
+	d2k|rules/ai.yaml
+	d2k|rules/player.yaml
+	d2k|rules/world.yaml
+	d2k|rules/palettes.yaml
+	d2k|rules/defaults.yaml
+	d2k|rules/infantry.yaml
+	d2k|rules/vehicles.yaml
+	d2k|rules/aircraft.yaml
+	d2k|rules/structures.yaml
+	d2k|rules/starport.yaml
+	d2k|rules/husks.yaml
+	d2k|rules/arrakis.yaml
+	d2k|rules/map-generators.yaml
+
+Sequences:
+	d2k|sequences/aircraft.yaml
+	d2k|sequences/vehicles.yaml
+	d2k|sequences/infantry.yaml
+	d2k|sequences/structures.yaml
+	d2k|sequences/misc.yaml
+	d2k|sequences/arrakis.yaml
+
+TileSets:
+	d2k|tilesets/arrakis.yaml
+
+MapGrid:
+	Type: Rectangular
+
+Cursors:
+	d2k|cursors.yaml
+
+Chrome:
+	d2k|chrome.yaml
+
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll, OpenRA.Mods.D2k.dll
+
+ChromeLayout:
+	common|chrome/ingame.yaml
+	common|chrome/ingame-chat.yaml
+	common|chrome/ingame-transients.yaml
+	common|chrome/ingame-fmvplayer.yaml
+	d2k|chrome/ingame-menu.yaml
+	common|chrome/ingame-info.yaml
+	common|chrome/ingame-infoscripterror.yaml
+	common|chrome/ingame-infobriefing.yaml
+	common|chrome/ingame-infoobjectives.yaml
+	d2k|chrome/ingame-infostats.yaml
+	common|chrome/ingame-info-lobby-options.yaml
+	d2k|chrome/ingame-observer.yaml
+	d2k|chrome/ingame-player.yaml
+	common|chrome/ingame-perf.yaml
+	common|chrome/ingame-debug.yaml
+	common|chrome/ingame-debug-hpf.yaml
+	common|chrome/ingame-debuginfo.yaml
+	common|chrome/ingame-infochat.yaml
+	d2k|chrome/mainmenu.yaml
+	common|chrome/mainmenu-prompts.yaml
+	common|chrome/settings.yaml
+	common|chrome/settings-display.yaml
+	common|chrome/settings-gameplay.yaml
+	common|chrome/settings-audio.yaml
+	common|chrome/settings-input.yaml
+	common|chrome/settings-hotkeys.yaml
+	common|chrome/settings-advanced.yaml
+	common|chrome/credits.yaml
+	common|chrome/lobby.yaml
+	common|chrome/lobby-mappreview.yaml
+	common|chrome/playerprofile.yaml
+	d2k|chrome/lobby-players.yaml
+	common|chrome/lobby-options.yaml
+	common|chrome/lobby-music.yaml
+	common|chrome/lobby-servers.yaml
+	common|chrome/lobby-kickdialogs.yaml
+	common|chrome/color-picker.yaml
+	common|chrome/map-chooser.yaml
+	common|chrome/multiplayer-browser.yaml
+	d2k|chrome/multiplayer-browserpanels.yaml
+	common|chrome/multiplayer-createserver.yaml
+	common|chrome/multiplayer-directconnect.yaml
+	common|chrome/connection.yaml
+	d2k|chrome/dropdowns.yaml
+	common|chrome/musicplayer.yaml
+	d2k|chrome/tooltips.yaml
+	common|chrome/assetbrowser.yaml
+	d2k|chrome/missionbrowser.yaml
+	common|chrome/confirmation-dialogs.yaml
+	common|chrome/editor.yaml
+	common|chrome/replaybrowser.yaml
+	common|chrome/gamesave-browser.yaml
+	common|chrome/load-game-browser.yaml
+	common|chrome/gamesave-loading.yaml
+	common|chrome/text-notifications.yaml
+	d2k|chrome/encyclopedia.yaml
+
+FluentMessages:
+	common|fluent/common.ftl
+	common|fluent/chrome.ftl
+	common|fluent/hotkeys.ftl
+	common|fluent/rules.ftl
+	d2k|fluent/d2k.ftl
+	d2k|fluent/chrome.ftl
+	d2k|fluent/hotkeys.ftl
+	d2k|fluent/rules.ftl
+
+AllowUnusedFluentMessagesInExternalPackages: false
+
+Weapons:
+	d2k|weapons/debris.yaml
+	d2k|weapons/smallguns.yaml
+	d2k|weapons/largeguns.yaml
+	d2k|weapons/missiles.yaml
+	d2k|weapons/other.yaml
+
+Voices:
+	d2k|audio/voices.yaml
+
+Notifications:
+	d2k|audio/notifications.yaml
+
+Music:
+	d2k|audio/music.yaml
+
+Hotkeys:
+	common|hotkeys/game.yaml
+	common|hotkeys/observer.yaml
+	common|hotkeys/production-common.yaml
+	common|hotkeys/supportpowers.yaml
+	common|hotkeys/viewport.yaml
+	common|hotkeys/chat.yaml
+	common|hotkeys/editor.yaml
+	common|hotkeys/control-groups.yaml
+	d2k|hotkeys.yaml
+
+LoadScreen: LogoStripeLoadScreen
+	Image: d2k|uibits/loadscreen.png
+	Image2x: d2k|uibits/loadscreen-2x.png
+	Image3x: d2k|uibits/loadscreen-3x.png
+
+ServerTraits:
+	LobbyCommands
+	SkirmishLogic
+	PlayerPinger
+	MasterServerPinger
+
+ChromeMetrics:
+	common|metrics.yaml
+	d2k|metrics.yaml
+
+Fonts:
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size: 10
+		Ascender: 8
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size: 10
+		Ascender: 8
+	Small:
+		Font: common|FreeSans.ttf
+		Size: 12
+		Ascender: 9
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+		Ascender: 11
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+		Ascender: 14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+		Ascender: 18
+	Title:
+		Font: d2k|Dune2k.ttf
+		Size: 32
+		Ascender: 23
+
+Missions:
+	d2k|missions.yaml
+
+DefaultOrderGenerator: UnitOrderGenerator
+
+SupportsMapsFrom: d2k
+
+SoundFormats: Aud, Wav
+
+SpriteFormats: R8, ShpTD, PngSheet
+
+VideoFormats: Vqa
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: D2kSpriteSequence
+
+RendererConstants:
+	SequenceIndexedSheetSize: 512
+
+AssetBrowser:
+	SpriteExtensions: .shp, .r8, .r16, .tmp, .png
+	AudioExtensions: .aud, .wav
+	VideoExtensions: .vqa
+
+GameSpeeds:
+	DefaultSpeed: default
+	Speeds:
+		slowest:
+			Name: options-game-speed.slowest
+			Timestep: 80
+			OrderLatency: 2
+		slower:
+			Name: options-game-speed.slower
+			Timestep: 50
+			OrderLatency: 3
+		default:
+			Name: options-game-speed.normal
+			Timestep: 40
+			OrderLatency: 3
+		fast:
+			Name: options-game-speed.fast
+			Timestep: 35
+			OrderLatency: 4
+		faster:
+			Name: options-game-speed.faster
+			Timestep: 30
+			OrderLatency: 4
+		fastest:
+			Name: options-game-speed.fastest
+			Timestep: 20
+			OrderLatency: 6
+
+DiscordService:
+	ApplicationId: 712711732770111550

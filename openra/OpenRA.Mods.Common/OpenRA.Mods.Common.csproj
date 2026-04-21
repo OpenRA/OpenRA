@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj">
+			<Private>False</Private>
+		</ProjectReference>
+		<PackageReference Include="NuGet.CommandLine" Version="6.12.2" />
+		<PackageReference Include="OpenRA-FuzzyLogicLibrary" Version="1.0.1" />
+		<PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
+		<PackageReference Include="MP3Sharp" Version="1.0.5" />
+		<PackageReference Include="NVorbis" Version="0.10.5" />
+		<PackageReference Include="TagLibSharp" Version="2.3.0" />
+		<PackageReference Include="rix0rrr.BeaconLib" Version="1.0.2" />
+		<PackageReference Include="Pfim" Version="0.11.3" />
+	</ItemGroup>
+</Project>

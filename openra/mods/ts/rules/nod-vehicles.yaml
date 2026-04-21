@@ -1,0 +1,638 @@
+BGGY:
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: actor-bggy.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: ~naweap, ~techlevel.low
+		Description: actor-bggy.description
+	Mobile:
+		TurnSpeed: 32
+		Speed: 142
+	Health:
+		HP: 22000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 6c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: RaiderCannon
+		LocalOffset: 0,-61,543, 0,61,543
+		MuzzleSequence: muzzle
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	WithMuzzleOverlay:
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+
+BIKE:
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: actor-bike.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Prerequisites: ~naweap, ~techlevel.low
+		Description: actor-bike.description
+	Mobile:
+		TurnSpeed: 32
+		Speed: 170
+	Health:
+		HP: 15000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Armament@PRIMARY:
+		Weapon: BikeMissile
+		RequiresCondition: !rank-elite
+		LocalOffset: -153,-204,509, -153,204,509
+	Armament@ELITE:
+		Weapon: HoverMissile
+		RequiresCondition: rank-elite
+		LocalOffset: -153,-204,509, -153,204,509
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	DamagedByTerrain@VEINS:
+		RequiresCondition: !inside-tunnel && !rank-elite
+	LeavesTrails@VEINS:
+		RequiresCondition: !inside-tunnel && !rank-elite
+
+TTNK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-ttnk.name
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: actor-ttnk.deployed-name
+		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Prerequisites: ~naweap, ~techlevel.medium
+		Description: actor-ttnk.description
+	Mobile:
+		TurnSpeed: 20
+		Speed: 85
+		ImmovableCondition: !undeployed
+		RequireForceMoveCondition: !undeployed
+	Health:
+		HP: 35000
+	Armor:
+		Type: Light
+		RequiresCondition: undeployed
+	Armament@PRIMARY:
+		Weapon: 90mm
+		LocalOffset: 407,0,362
+		RequiresCondition: !rank-elite
+		MuzzleSequence: muzzle
+	Armament@ELITE:
+		Weapon: 120mmx
+		LocalOffset: 407,0,362
+		RequiresCondition: rank-elite
+		MuzzleSequence: muzzle
+	WithMuzzleOverlay:
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	RenderSprites:
+		Image: ttnk
+	WithMakeAnimation:
+	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
+		Facing: 640
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+		SmartDeploy: true
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	WithVoxelBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	AttackFrontal:
+		Voice: Attack
+		RequiresCondition: undeployed
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	Turreted:
+		TurnSpeed: 24
+		Turret: deployed
+		InitialFacing: 640
+		Offset: -20, -130, 128
+		RealignDelay: -1
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 181,0,362
+		RequiresCondition: deployed
+	WithVoxelTurret@deployed:
+		Turret: deployed
+		RequiresCondition: deployed
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		Turrets: deployed
+		RequiresCondition: deployed
+		PauseOnCondition: empdisable
+		OutsideRangeRequiresForceFire: True
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: 90mm
+		LocalOffset: 543,0,362
+		RequiresCondition: !rank-elite
+		MuzzleSequence: muzzle
+	Armament@deployedElite:
+		Name: deployed
+		Turret: deployed
+		Weapon: 120mmx
+		LocalOffset: 543,0,362
+		RequiresCondition: rank-elite
+		MuzzleSequence: muzzle
+	Armor@deployed:
+		Type: Concrete
+		RequiresCondition: deployed
+	DetectCloaked:
+		Range: 1c768
+		RequiresCondition: rank-elite
+	RenderDetectionCircle:
+	RevealOnFire:
+		ArmamentNames: primary, deployed
+	RenderVoxels:
+		Scale: 11.5
+
+ART2:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 975
+	Tooltip:
+		Name: actor-art2.name
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: actor-art2.deployed-name
+		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~naweap, naradr, ~techlevel.high
+		Description: actor-art2.description
+	Health:
+		HP: 30000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 71
+		TurnSpeed: 8
+		ImmovableCondition: !undeployed
+		RequireForceMoveCondition: !undeployed
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 9c0
+		MaxHeightDelta: 3
+	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
+	RenderSprites:
+		Image: art2
+	WithMakeAnimation:
+	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
+		Facing: 384
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+		SmartDeploy: true
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	WithVoxelBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	Turreted:
+		Turret: deployed
+		TurnSpeed: 20
+		InitialFacing: 384
+		Offset: 0,0,256
+		RealignDelay: -1
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 203,0,0
+		LocalOrientation: 0, 128, 0
+		RequiresCondition: !undeployed
+	WithVoxelTurret@deployed:
+		Turret: deployed
+		RequiresCondition: !undeployed
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		Turrets: deployed
+		RequiresCondition: deployed
+		PauseOnCondition: empdisable
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
+		OutsideRangeRequiresForceFire: True
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: 155mm
+		LocalOffset: 820,0,1386
+		RequiresCondition: deployed
+		MuzzleSequence: muzzle
+	WithMuzzleOverlay:
+	RevealOnFire:
+		ArmamentNames: deployed
+
+REPAIR:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 70
+		Prerequisites: ~naweap, ~techlevel.medium
+		Description: actor-repair.description
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-repair.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 20000
+	Mobile:
+		Speed: 85
+		TurnSpeed: 20
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: Repair
+		Cursor: repair
+		OutsideRangeCursor: repair
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	AutoTarget:
+		ScanRadius: 8
+		InitialStance: AttackAnything
+	AutoTargetPriority@DEFAULT:
+		ValidTargets: Vehicle
+
+WEED:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableEconomicUnit
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: actor-weed.name
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 170
+		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
+		Description: actor-weed.description
+	Harvester:
+		Type: UnloadWeed
+		Resources: Veins
+		BaleUnloadDelay: 20
+		BaleLoadDelay: 40
+		SearchFromProcRadius: 72
+		SearchFromHarvesterRadius: 36
+		HarvestVoice: Attack
+	StoresResources:
+		Capacity: 7
+		Resources: Veins
+	DockClientManager:
+		Voice: Move
+	Mobile:
+		Speed: 71
+		TurnSpeed: 20
+	Health:
+		HP: 60000
+	ChangesHealth:
+		Step: 500
+		Delay: 10
+		StartIfBelow: 50
+		DamageCooldown: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 4c0
+		MaxHeightDelta: 3
+	-WithVoxelBody:
+	WithVoxelUnloadBody:
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+	WithStoresResourcesPipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 5, 2
+		FullSequence: pip-red
+		Palette: pips
+		PipCount: 7
+
+SAPC:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@CARGOPIPS: ^CargoPips
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-sapc.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Prerequisites: ~naweap, natech, ~techlevel.medium
+		Description: actor-sapc.description
+	Mobile:
+		TurnSpeed: 20
+		Speed: 71
+		PauseOnCondition: empdisable || loading || being-captured || carried
+		Locomotor: subterranean
+	Health:
+		HP: 17500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel && !submerged
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+	WithVoxelBody:
+		RequiresCondition: !submerged
+	Targetable:
+		RequiresCondition: !inside-tunnel && !submerged
+	Targetable@UNDERGROUND:
+		TargetTypes: Underground
+		RequiresCondition: submerged
+	GrantConditionOnSubterraneanLayer:
+		Condition: submerged
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		SubterraneanTransitionSound: subdril1.aud
+	Carryable:
+		RequiresCondition: !submerged
+	WithDecoration@UNDERGROUND:
+		RequiresCondition: inside-tunnel || submerged
+
+SUBTANK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: actor-subtank.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~naweap, natech, ~techlevel.high
+		Description: actor-subtank.description
+	Mobile:
+		TurnSpeed: 24
+		Speed: 71
+		Locomotor: subterranean
+	Health:
+		HP: 30000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel && !submerged
+		Range: 5c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: FireballLauncher
+		PauseOnCondition: submerged
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	WithVoxelBody:
+		RequiresCondition: !submerged
+	Targetable:
+		RequiresCondition: !inside-tunnel && !submerged
+	Targetable@UNDERGROUND:
+		TargetTypes: Underground
+		RequiresCondition: submerged
+	GrantConditionOnSubterraneanLayer:
+		Condition: submerged
+		SubterraneanTransitionImage: dig
+		SubterraneanTransitionSequence: idle
+		SubterraneanTransitionSound: subdril1.aud
+	Carryable:
+		RequiresCondition: !submerged
+	WithDecoration@UNDERGROUND:
+		RequiresCondition: inside-tunnel || submerged
+
+STNK:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: actor-stnk.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		BuildPaletteOrder: 150
+		Prerequisites: ~naweap, natech, ~techlevel.high
+		Queue: Vehicle
+		Description: actor-stnk.description
+	Mobile:
+		TurnSpeed: 20
+		Speed: 85
+	Health:
+		HP: 18000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cloak:
+		InitialDelay: 90
+		CloakDelay: 90
+		CloakSound: cloak5.aud
+		UncloakSound: cloak5.aud
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		PauseOnCondition: cloak-force-disabled || empdisable
+		CloakType: nod-stealth
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	Armament:
+		Weapon: Dragon
+		LocalOffset: 301,61,421, 301,-61,421
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	-MustBeDestroyed:
+	FireWarheadsOnDeath:
+		RequiresCondition: !rank-elite
+	FireWarheadsOnDeath@ELITE:
+		RequiresCondition: rank-elite
+		Weapon: UnitExplode
+
+SGEN:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
+	-AppearsOnRadar:
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~naweap, nastlh
+		Description: actor-sgen.description
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: actor-sgen.name
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: actor-sgen.deployed-name
+		RequiresCondition: deployed
+	Selectable:
+		Bounds: 1206, 1768, 0, -603
+	Health:
+		HP: 20000
+	Armor:
+		Type: Light
+	Voiced:
+		VoiceSet: Spy
+	Mobile:
+		Speed: 85
+		TurnSpeed: 20
+		ImmovableCondition: !undeployed
+		RequireForceMoveCondition: !undeployed
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel && undeployed
+		Range: 5c0
+		MaxHeightDelta: 3
+	RevealsShroud@DEPLOYED:
+		RequiresCondition: inside-tunnel || deployed
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithMakeAnimation:
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	RenderSprites:
+		Image: mstl
+		PlayerPalette: playertem
+	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
+		Facing: 384
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+		SmartDeploy: true
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
+	WithVoxelBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: deployed && real-actor && !empdisable
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	RenderVoxels:
+		Scale: 11.5
+	ProximityExternalCondition:
+		RequiresCondition: deployed && !empdisable
+		Condition: cloakgenerator
+		Range: 6c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
+	WithRangeCircle:
+		Range: 6c0
+		Type: cloakgenerator
+		RequiresCondition: deployed && !empdisable

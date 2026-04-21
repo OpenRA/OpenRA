@@ -1,0 +1,538 @@
+V01:
+	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
+		Type: Rectangle
+			TopLeft: -768, -597
+			BottomRight: 896, 683
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: actor-v01-name
+	SpawnActorOnDeath:
+		Actor: V01.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+V01.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: actor-v01-husk-name
+	MapEditorData:
+		ExcludeTilesets: DESERT
+
+V02:
+	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 597
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	SpawnActorOnDeath:
+		Actor: V02.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v02-name
+
+V02.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v02-husk-name
+
+V03:
+	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
+		Type: Rectangle
+			TopLeft: -1024, -597
+			BottomRight: 1024, 597
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	SpawnActorOnDeath:
+		Actor: V03.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v03-name
+
+V03.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v03-husk-name
+
+V04:
+	Inherits: ^CivBuilding
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
+		Type: Rectangle
+			TopLeft: -683, -432
+			BottomRight: 683, 683
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	SpawnActorOnDeath:
+		Actor: V04.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v04-name
+
+V04.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v04-husk-name
+
+V05:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: V05.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v05-name
+
+V05.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v05-husk-name
+
+V06:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: V06.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v06-name
+
+V06.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v06-husk-name
+
+V07:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: V07.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v07-name
+
+V07.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v07-husk-name
+
+V08:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V08.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v08-name
+
+V08.Husk:
+	Inherits: ^CivBuildingHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v08-husk-name
+
+V09:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V09.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v09-name
+
+V09.Husk:
+	Inherits: ^CivBuildingHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v09-husk-name
+
+V10:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V10.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v10-name
+
+V10.Husk:
+	Inherits: ^CivBuildingHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v10-husk-name
+
+V11:
+	Inherits: ^CivBuilding
+	SpawnActorOnDeath:
+		Actor: V11.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v11-name
+
+V11.Husk:
+	Inherits: ^CivBuildingHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v11-husk-name
+
+V12:
+	Inherits: ^CivHaystackOrIgloo
+	SpawnActorOnDeath:
+		Actor: V12.Husk
+
+V12.Husk:
+	Inherits: ^CivHaystackOrIglooHusk
+
+V13:
+	Inherits: ^CivHaystackOrIgloo
+	SpawnActorOnDeath:
+		Actor: V13.Husk
+
+V13.Husk:
+	Inherits: ^CivHaystackOrIglooHusk
+
+V14:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V14.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v14-name
+
+V14.Husk:
+	Inherits: ^CivFieldHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v14-husk-name
+
+V15:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V15.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v15-name
+
+V15.Husk:
+	Inherits: ^CivFieldHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v15-husk-name
+
+V16:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V16.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v16-name
+
+V16.Husk:
+	Inherits: ^CivFieldHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v16-husk-name
+
+V17:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V17.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v17-name
+
+V17.Husk:
+	Inherits: ^CivFieldHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v17-husk-name
+
+V18:
+	Inherits: ^CivField
+	SpawnActorOnDeath:
+		Actor: V18.Husk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v18-name
+
+V18.Husk:
+	Inherits: ^CivFieldHusk
+	MapEditorData:
+		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: actor-v18-husk-name
+
+ARCO:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	SpawnActorOnDeath:
+		Actor: ARCO.Husk
+	Tooltip:
+		Name: actor-arco-name
+		ShowOwnerRow: True
+
+ARCO.Husk:
+	Inherits: ^CivBuildingHusk
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	Tooltip:
+		Name: actor-arco-husk-name
+
+BARB:
+	Inherits: ^Wall
+	Armor:
+		Type: Light
+	Tooltip:
+		Name: actor-barb-name
+	LineBuild:
+		NodeTypes: barbwire
+	LineBuildNode:
+		Types: barbwire
+	WithWallSpriteBody:
+		Type: barbwire
+
+WOOD:
+	Inherits: ^Wall
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: actor-wood-name
+	LineBuild:
+		NodeTypes: woodfence
+	LineBuildNode:
+		Types: woodfence
+	WithWallSpriteBody:
+		Type: woodfence
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 165
+		DestroyedTemplate: 166
+	Building:
+		Footprint: ____ ____ ____ ____
+		Dimensions: 4,4
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,2
+	Interactable:
+		Bounds: 4096, 4096
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 167
+		DestroyedTemplate: 168
+	Building:
+		Footprint: _____ _____ _____ _____ _____
+		Dimensions: 5,5
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,2
+	Interactable:
+		Bounds: 5120, 5120
+
+BRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 169
+		DestroyedTemplate: 170
+	Building:
+		Footprint: ______ ______ ______ ______ ______
+		Dimensions: 6,5
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 3,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 1,2
+	Interactable:
+		Bounds: 6144, 5120
+
+BRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 171
+		DestroyedTemplate: 172
+	Building:
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 1,0
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 3,2
+	Interactable:
+		Bounds: 6144, 4096
+
+BRIDGEHUT:
+	Building:
+		Footprint: __ __
+		Dimensions: 2,2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
+	Interactable:
+		Bounds: 2048, 2048
+
+C1:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C2:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C3:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+
+C4:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+
+C5:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+
+C6:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C7:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C8:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C9:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+C10:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+
+DELPHI:
+	Inherits: ^CivInfantry
+	Inherits@armed: ^ArmedCivilian
+	-Wanders:
+	Tooltip:
+		Name: actor-delphi-name
+
+CHAN:
+	Inherits: ^CivInfantry
+	WithInfantryBody:
+		IdleSequences: idle1, idle2
+	Tooltip:
+		Name: actor-chan-name
+
+MOEBIUS:
+	Inherits: ^CivInfantry
+	-Wanders:
+	WithInfantryBody:
+		IdleSequences: idle1, idle2
+	Voiced:
+		VoiceSet: MoebiusVoice
+	Tooltip:
+		Name: actor-moebius-name
+
+VICE:
+	Inherits: ^Viceroid
+	AttackWander:

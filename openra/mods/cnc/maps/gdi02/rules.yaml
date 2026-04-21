@@ -1,0 +1,113 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, gdi02.lua
+	MusicPlaylist:
+		StartingMusic: befeared
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: gdi2.vqa
+		WinVideo: flag.vqa
+		LossVideo: gameover.vqa
+
+SBAG:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 32
+		SearchFromHarvesterRadius: 20
+
+PROC:
+	Buildable:
+		Queue: Building.Nod
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Queue: Infantry.Nod
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled

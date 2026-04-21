@@ -1,0 +1,701 @@
+mcv:
+	Inherits: ^Tank
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Prerequisites: repair_pad, ~techlevel.medium
+		Queue: Armor
+		BuildPaletteOrder: 110
+		BuildDuration: 750
+		BuildDurationModifier: 100
+		Description: actor-mcv.description
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: actor-mcv.name
+	Selectable:
+		Class: mcv
+		DecorationBounds: 1344, 1344
+	Health:
+		HP: 45000
+	Armor:
+		Type: light
+	Encyclopedia:
+		Description: actor-mcv.encyclopedia
+		Order: 180
+		Category: Units
+	Mobile:
+		Speed: 31
+	RevealsShroud:
+		Range: 2c768
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	BaseBuilding:
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
+	Transforms:
+		Facing: 64
+		IntoActor: construction_yard
+		Offset: -1,-1
+		TransformSounds: BUILD1.WAV
+		NoTransformNotification: CannotDeploy
+		NoTransformTextNotification: notification-cannot-deploy-here
+	SpawnActorOnDeath:
+		Actor: mcv.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	AttractsWorms:
+		Intensity: 700
+	ChangesHealth:
+		Step: 50
+		Delay: 3
+		StartIfBelow: 50
+
+harvester:
+	Inherits: ^Tank
+	Inherits@selection: ^SelectableEconomicUnit
+	Buildable:
+		Queue: Armor
+		Prerequisites: refinery
+		BuildPaletteOrder: 10
+		BuildDuration: 625
+		BuildDurationModifier: 100
+		Description: actor-harvester.description
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: actor-harvester.name
+	Selectable:
+		Class: harvester
+		DecorationBounds: 1344, 1344
+	Harvester:
+		HarvestFacings: 8
+		Resources: Spice
+		BaleUnloadDelay: 5
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 15
+		EmptyCondition: harvester-empty
+	StoresResources:
+		Capacity: 28
+		Resources: Spice
+	DockClientManager:
+	CarryableHarvester:
+	Health:
+		HP: 45000
+	Armor:
+		Type: harvester
+	Encyclopedia:
+		Description: actor-harvester.encyclopedia
+		Order: 130
+		Category: Units
+	Mobile:
+		Speed: 43
+	RevealsShroud:
+		Range: 3c768
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
+	SpawnActorOnDeath:
+		Actor: harvester.Husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+		RequiresCondition: harvester-empty
+	WithHarvestOverlay:
+	WithDockingAnimation:
+	AttractsWorms:
+		Intensity: 700
+	ChangesHealth:
+		Step: 50
+		Delay: 3
+		StartIfBelow: 50
+	WithStoresResourcesPipsDecoration:
+		Position: BottomLeft
+		Margin: 1, 4
+		RequiresSelection: true
+		PipCount: 7
+	-SpeedMultiplier@HEAVYDAMAGE:
+	FireProjectilesOnDeath@ShrapnelNotEmpty:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 3, 5
+		Range: 1c0, 6c0
+		RequiresCondition: !harvester-empty
+	FireProjectilesOnDeath@throwSpice:
+		Weapons: SpiceExplosion
+		Pieces: 1, 3
+		Range: 1c0, 5c0
+		RequiresCondition: !harvester-empty
+
+trike:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: ~light.trike
+		BuildDuration: 225
+		BuildDurationModifier: 100
+		Description: actor-trike.description
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: actor-trike.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Selectable:
+		Class: trike
+	Health:
+		HP: 9000
+	Armor:
+		Type: wood
+	Encyclopedia:
+		Description: actor-trike.encyclopedia
+		Order: 90
+		Category: Units
+	Mobile:
+		TurnSpeed: 40
+		Speed: 128
+	RevealsShroud:
+		Range: 5c512
+	WithMuzzleOverlay:
+	Armament:
+		Weapon: HMG
+		LocalOffset: 100,0,0
+		MuzzleSequence: muzzle
+	AttackFrontal:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	AttractsWorms:
+		Intensity: 420
+
+quad:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		Prerequisites: upgrade.light, ~techlevel.medium
+		BuildPaletteOrder: 20
+		BuildDuration: 321
+		BuildDurationModifier: 100
+		Description: actor-quad.description
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: actor-quad.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 11000
+	Armor:
+		Type: light
+	Mobile:
+		TurnSpeed: 32
+		Speed: 96
+	RevealsShroud:
+		Range: 4c768
+	Armament:
+		Weapon: Rocket
+		LocalOffset: 128,64,64, 128,-64,64
+	Encyclopedia:
+		Description: actor-quad.encyclopedia
+		Order: 110
+		Category: Units
+	AttackFrontal:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	Selectable:
+		Class: quad
+	AttractsWorms:
+		Intensity: 470
+
+siege_tank:
+	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Armor
+		Prerequisites: upgrade.heavy, ~techlevel.medium
+		BuildPaletteOrder: 50
+		BuildDuration: 475
+		BuildDurationModifier: 100
+		Description: actor-siege-tank.description
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-siege-tank.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 11500
+	Armor:
+		Type: light
+	Encyclopedia:
+		Description: actor-siege-tank.encyclopedia
+		Order: 170
+		Category: Units
+	Mobile:
+		Speed: 40
+		TurnSpeed: 12
+	RevealsShroud:
+		Range: 6c768
+	Turreted:
+		TurnSpeed: 12
+		Offset: 0,0,-32
+	Armament:
+		Weapon: 155mm
+		Recoil: 150
+		RecoilRecovery: 19
+		LocalOffset: 512,0,320
+		MuzzleSequence: muzzle
+	AttackFrontal:
+		FacingTolerance: 0
+		ForceFireIgnoresActors: True
+		TargetFrozenActors: True
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	FireWarheadsOnDeath:
+		Weapon: SiegeExplode
+		EmptyWeapon: SiegeExplode
+	AutoTarget:
+		InitialStanceAI: Defend
+	Selectable:
+		Class: siegetank
+	SpawnActorOnDeath:
+		Actor: siege_tank.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	AttractsWorms:
+		Intensity: 600
+	FireProjectilesOnDeath:
+		Weapons: Debris3, Debris
+		Pieces: 0,2
+		Range: 2c0, 3c0
+
+missile_tank:
+	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Tooltip:
+		Name: actor-missile-tank.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Armor
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre, ~techlevel.high
+		BuildPaletteOrder: 60
+		BuildDuration: 512
+		BuildDurationModifier: 100
+		Description: actor-missile-tank.description
+	Valued:
+		Cost: 900
+	Mobile:
+		Speed: 60
+		TurnSpeed: 20
+	Health:
+		HP: 13000
+	Armor:
+		Type: wood
+	Encyclopedia:
+		Description: actor-missile-tank.encyclopedia
+		Order: 190
+		Category: Units
+	RevealsShroud:
+		Range: 6c768
+	Armament:
+		Weapon: mtank_pri
+		LocalOffset: -128,128,171, -128,-128,171
+	AttackFrontal:
+		FacingTolerance: 0
+		ForceFireIgnoresActors: True
+		TargetFrozenActors: True
+	AutoTarget:
+		InitialStanceAI: Defend
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
+	Selectable:
+		Class: missiletank
+	SpawnActorOnDeath:
+		Actor: missile_tank.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	AttractsWorms:
+		Intensity: 600
+	FireProjectilesOnDeath@02:
+		Weapons: Debris3, Debris
+		Pieces: 0,2
+		Range: 2c0, 3c0
+	FireProjectilesOnDeath@03:
+		Weapons: DebrisMissile
+		Pieces: 0,2
+		Range: 4c0, 6c0
+
+sonic_tank:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Armor
+		BuildPaletteOrder: 100
+		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
+		BuildDuration: 600
+		BuildDurationModifier: 100
+		Description: actor-sonic-tank.description
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: actor-sonic-tank.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 30000
+	Armor:
+		Type: light
+	Mobile:
+		TurnSpeed: 12
+		Speed: 31
+	RevealsShroud:
+		Range: 5c768
+	Armament:
+		Weapon: Sound
+		LocalOffset: 600,0,427
+	Encyclopedia:
+		Description: actor-sonic-tank.encyclopedia
+		Order: 200
+		Category: Units
+	AttackFrontal:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
+	SpawnActorOnDeath:
+		Actor: sonic_tank.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	AttractsWorms:
+		Intensity: 600
+
+devastator:
+	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Armor
+		BuildPaletteOrder: 100
+		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
+		BuildDuration: 625
+		BuildDurationModifier: 100
+		Description: actor-devastator.description
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: actor-devastator.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 50000
+	Armor:
+		Type: heavy
+	Mobile:
+		TurnSpeed: 12
+		Speed: 31
+		Locomotor: devastator
+		RequiresCondition: !overload
+		PauseOnCondition: notmobile || being-demolished
+	AutoCarryable:
+		RequiresCondition: !overload
+	RevealsShroud:
+		Range: 5c512
+	Armament:
+		Weapon: DevBullet
+		LocalOffset: 640,0,32
+		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-devastator.encyclopedia
+		Order: 220
+		Category: Units
+	AttackFrontal:
+		FacingTolerance: 0
+	WithMuzzleOverlay:
+		IgnoreOffset: true
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
+		RequiresCondition: !overload
+	SpawnActorOnDeath:
+		Actor: devastator.husk
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+		RequiresCondition: !meltdown
+	FireWarheadsOnDeath@OVERLOAD:
+		Weapon: PlasmaExplosion
+		EmptyWeapon: PlasmaExplosion
+		RequiresCondition: meltdown
+	GrantConditionOnDeploy@REACTOR:
+		DeployedCondition: overload
+		PauseOnCondition: overload
+		RequiresCondition: !unit-captured
+	WithIdleOverlay@OVERLOAD:
+		Sequence: active
+		RequiresCondition: overload
+	WithIdleOverlay@OVERLOAD2:
+		Sequence: active-2
+		RequiresCondition: overload
+	KillsSelf@MELTDOWN:
+		Delay: 150
+		RequiresCondition: overload
+		GrantsCondition: meltdown
+	AmbientSound@onMeltDown:
+		SoundFiles: DEVASTATORMELTDOWN.WAV
+		RequiresCondition: overload
+		Interval: 250
+	AttractsWorms:
+		Intensity: 700
+	ChangesHealth:
+		Step: 40
+		Delay: 3
+		StartIfBelow: 50
+	Selectable:
+		DecorationBounds: 1408, 1216, 0, 0
+	FireProjectilesOnDeath@OnMeldown:
+		Weapons: Debris2, Debris3, Debris4
+		Pieces: 7, 15
+		Range: 3c512, 6c0
+		RequiresCondition: meltdown
+	FireProjectilesOnDeath@standart:
+		Weapons: Debris, ExplosiveDebris
+		Pieces: 1, 2
+		RequiresCondition: !meltdown
+
+raider:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: ~light.raider
+		BuildDuration: 255
+		BuildDurationModifier: 100
+		Description: actor-raider.description
+	Valued:
+		Cost: 330
+	Tooltip:
+		Name: actor-raider.name
+	Encyclopedia:
+		Description: actor-raider.encyclopedia
+		Order: 100
+		Category: Units
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 9200
+	Armor:
+		Type: wood
+	Mobile:
+		TurnSpeed: 40
+		Speed: 140
+	RevealsShroud:
+		Range: 4c768
+	WithMuzzleOverlay:
+	Armament:
+		Weapon: HMGo
+		MuzzleSequence: muzzle
+		LocalOffset: 100,0,0
+	AttackFrontal:
+		FacingTolerance: 0
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	AttractsWorms:
+		Intensity: 420
+
+stealth_raider:
+	Inherits: raider
+	Buildable:
+		Prerequisites: ~light.ordos, upgrade.light, high_tech_factory, ~techlevel.medium
+		BuildPaletteOrder: 30
+		BuildDuration: 275
+		BuildDurationModifier: 100
+		Description: actor-stealth-raider.description
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: actor-stealth-raider.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Cloak:
+		InitialDelay: 45
+		CloakDelay: 90
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
+		PauseOnCondition: cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	Health:
+		HP: 10000
+	Encyclopedia:
+		Description: actor-stealth-raider.encyclopedia
+		Order: 120
+		Category: Units
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	-MustBeDestroyed:
+
+deviator:
+	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetVehicleAssaultMove
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-deviator.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Armor
+		BuildPaletteOrder: 50
+		Prerequisites: ~heavy.ordos, research_centre, ~techlevel.high
+		BuildDuration: 562
+		BuildDurationModifier: 100
+		Description: actor-deviator.description
+	Mobile:
+		TurnSpeed: 12
+		Speed: 53
+	Health:
+		HP: 12500
+	Armor:
+		Type: wood
+	Encyclopedia:
+		Description: actor-deviator.encyclopedia
+		Order: 210
+		Category: Units
+	RevealsShroud:
+		Range: 6c0
+	Armament:
+		Weapon: DeviatorMissile
+		LocalOffset: -299,0,85
+	AttackFrontal:
+		FacingTolerance: 0
+	AutoTarget:
+		InitialStanceAI: Defend
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeLarge
+		EmptyWeapon: UnitExplodeLarge
+	SpawnActorOnDeath:
+		Actor: deviator.husk
+		OwnerType: Victim
+		EffectiveOwnerFromOwner: true
+	AttractsWorms:
+		Intensity: 600
+
+^combat_tank:
+	Inherits: ^Tank
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Armor
+		BuildPaletteOrder: 40
+		BuildDuration: 432
+		BuildDurationModifier: 100
+		Description: meta-combat-tank-description
+	Valued:
+		Cost: 700
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 22000
+	Armor:
+		Type: heavy
+	Mobile:
+		Speed: 75
+		TurnSpeed: 20
+	RevealsShroud:
+		Range: 5c768
+	Turreted:
+		TurnSpeed: 20
+		RealignDelay: 0
+	Armament:
+		Weapon: 80mm_A
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 256,0,0
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeMed
+		EmptyWeapon: UnitExplodeMed
+	Selectable:
+		Class: combat
+	AttractsWorms:
+		Intensity: 520
+	SpawnActorOnDeath:
+		OwnerType: InternalName
+		EffectiveOwnerFromOwner: true
+	FireProjectilesOnDeath:
+		Weapons: Debris, Debris2, Debris3
+		Pieces: 0, 2
+		Range: 2c0, 4c0
+
+combat_tank_a:
+	Inherits: ^combat_tank
+	Tooltip:
+		Name: actor-combat-tank-a.name
+	Encyclopedia:
+		Description: actor-combat-tank-a.encyclopedia
+		Order: 140
+		Category: Units
+	Buildable:
+		Prerequisites: ~heavy.atreides_combat
+	Armament:
+		Weapon: 80mm_A
+	SpawnActorOnDeath:
+		Actor: combat_tank_a.husk
+
+combat_tank_h:
+	Inherits: ^combat_tank
+	Tooltip:
+		Name: actor-combat-tank-h.name
+	Encyclopedia:
+		Description: actor-combat-tank-h.encyclopedia
+		Order: 160
+		Category: Units
+	Buildable:
+		Prerequisites: ~heavy.harkonnen_combat
+	Armament:
+		Weapon: 80mm_H
+	Mobile:
+		Speed: 64
+	Health:
+		HP: 28500
+	SpawnActorOnDeath:
+		Actor: combat_tank_h.husk
+
+combat_tank_o:
+	Inherits: ^combat_tank
+	Tooltip:
+		Name: actor-combat-tank-o.name
+	Buildable:
+		Prerequisites: ~heavy.ordos_combat
+	Turreted:
+		TurnSpeed: 20
+	Encyclopedia:
+		Description: actor-combat-tank-o.encyclopedia
+		Order: 150
+		Category: Units
+	Armament:
+		Weapon: 80mm_O
+	Mobile:
+		Speed: 85
+	Health:
+		HP: 19000
+	SpawnActorOnDeath:
+		Actor: combat_tank_o.husk

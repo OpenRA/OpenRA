@@ -1,0 +1,230 @@
+Background@MULTIPLAYER_CREATESERVER_PANEL:
+	Logic: ServerCreationLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 530
+	Height: 315
+	Children:
+		Label@TITLE:
+			Y: 16
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-multiplayer-createserver-panel-title
+			Align: Center
+			Font: Bold
+		Label@SERVER_NAME_LABEL:
+			Y: 45
+			Width: 105
+			Height: 25
+			Align: Right
+			Text: label-multiplayer-createserver-panel-server-name
+		TextField@SERVER_NAME:
+			X: 110
+			Y: 45
+			Width: 215
+			MaxLength: 50
+			Height: 25
+			Text: My OpenRA Server
+		Label@PASSWORD_LABEL:
+			Y: 80
+			Width: 105
+			Height: 25
+			Align: Right
+			Text: label-multiplayer-createserver-panel-password
+		PasswordField@PASSWORD:
+			X: 110
+			Y: 80
+			Width: 145
+			MaxLength: 20
+			Height: 25
+		Label@AFTER_PASSWORD_LABEL:
+			X: 265
+			Y: 80
+			Width: 95
+			Height: 25
+			Align: Left
+			Text: label-multiplayer-createserver-panel-after-password
+		Label@LISTEN_PORT_LABEL:
+			Y: 115
+			Width: 105
+			Height: 25
+			Align: Right
+			Text: label-multiplayer-createserver-panel-listen-port
+		TextField@LISTEN_PORT:
+			X: 110
+			Y: 115
+			Width: 50
+			Height: 25
+			MaxLength: 5
+			Text: 1234
+			Type: Integer
+		Checkbox@ADVERTISE_CHECKBOX:
+			X: 180
+			Y: 117
+			Width: 150
+			Height: 20
+			Font: Regular
+			Text: checkbox-multiplayer-createserver-panel-advertise
+		Label@NOTICES_HEADER_A:
+			X: 20
+			Y: 156
+			Height: 25
+			Align: Left
+			Font: Bold
+		Label@NOTICES_HEADER_B:
+			X: 20
+			Y: 156
+			Height: 25
+			Align: Left
+			Font: Bold
+		Label@NOTICES_HEADER_C:
+			X: 20
+			Y: 156
+			Height: 25
+			Align: Left
+			Font: Bold
+		Container@NOTICES_LAN:
+			X: 25
+			Y: 176
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Label@ADVERTISING:
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-lan-advertising
+				Label@FIREWALL:
+					Y: 12
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-lan-firewall
+				Label@PORTFORWARD_A:
+					Y: 24
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-lan-portforward-a
+				Label@PORTFORWARD_B:
+					X: 7
+					Y: 36
+					Width: 295
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-lan-portforward-b
+		Container@NOTICES_NO_UPNP:
+			X: 25
+			Y: 176
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Label@ADVERTISING:
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-no-upnp-advertising
+				Label@FIREWALL:
+					Y: 12
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-no-upnp-firewall
+				Label@PORTFORWARD_A:
+					Y: 24
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-no-upnp-portforward-a
+				Label@PORTFORWARD_B:
+					X: 7
+					Y: 36
+					Width: 295
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-no-upnp-portforward-b
+				Label@SETTINGS_A:
+					Y: 48
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-no-upnp-settings-a
+				Label@SETTINGS_B:
+					X: 7
+					Y: 60
+					Width: 295
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-no-upnp-settings-b
+		Container@NOTICES_UPNP:
+			X: 25
+			Y: 176
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Label@ADVERTISING:
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-upnp-advertising
+				Label@FIREWALL:
+					Y: 12
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-upnp-firewall
+				Label@PORTFORWARD_A:
+					Y: 24
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-upnp-portforward-a
+				Label@SETTINGS_A:
+					Y: 36
+					Width: 305
+					Height: 25
+					Font: Tiny
+					Align: Left
+					Text: label-notices-upnp-settings-a
+		Container@MAP_PREVIEW_ROOT:
+			X: PARENT_WIDTH - 194
+			Y: 45
+			Width: 174
+			Height: 250
+		Button@MAP_BUTTON:
+			X: 20
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-multiplayer-createserver-panel-change-map
+			Font: Bold
+		Button@BACK_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-back
+			Font: Bold
+			Key: escape
+		Button@CREATE_BUTTON:
+			Key: return
+			X: PARENT_WIDTH - 2 * WIDTH - 30
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-multiplayer-createserver-panel-create
+			Font: Bold
+		TooltipContainer@TOOLTIP_CONTAINER:

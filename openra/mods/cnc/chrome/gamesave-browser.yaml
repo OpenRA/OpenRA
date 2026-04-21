@@ -1,0 +1,211 @@
+Container@GAMESAVE_BROWSER_PANEL:
+	Logic: GameSaveBrowserLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 540
+	Children:
+		Label@LOAD_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: label-gamesave-browser-panel-load-title
+			Visible: False
+		Label@SAVE_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: label-gamesave-browser-panel-save-title
+			Visible: False
+		Background@bg:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: panel-black
+			Children:
+				ScrollPanel@GAME_LIST:
+					X: 15
+					Y: 13
+					Width: PARENT_WIDTH - 219
+					Height: PARENT_HEIGHT - 36
+					Children:
+						ScrollItem@DATE_HEADER:
+							Background: scrollheader
+							Width: PARENT_WIDTH - 27
+							Height: 13
+							X: 2
+							Y: 0
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 13
+									Align: Center
+						ScrollItem@GAME_TEMPLATE:
+							Width: PARENT_WIDTH - 27
+							Height: 25
+							X: 2
+							Visible: false
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 10
+									Width: PARENT_WIDTH - 10
+									Height: 25
+									TooltipContainer: GAMESAVE_TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+				Container@MAP_PREVIEW_ROOT:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 13
+					Width: 174
+					Height: 250
+				Container@SAVE_INFO:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 263
+					Width: 174
+					Height: PARENT_HEIGHT - 240
+					Children:
+						Label@NO_SAVE_SELECTED_LABEL:
+							Y: -75
+							Width: PARENT_WIDTH
+							Height: 65
+							Font: Tiny
+							Align: Center
+							WordWrap: True
+							Text: label-gamesave-browser-panel-no-save-selected
+							Visible: False
+						Label@INCOMPATIBLE_TITLE_LABEL:
+							Y: -61
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Bold
+							Align: Center
+							Text: label-load-game-browser-panel-incompatible-title
+							Visible: False
+						Label@INCOMPATIBLE_LABEL_A:
+							Y: -46
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: TinyBold
+							Align: Center
+							Text: label-load-game-browser-panel-incompatible-a
+						Label@INCOMPATIBLE_LABEL_B:
+							Y: -33
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: TinyBold
+							Align: Center
+							Text: label-load-game-browser-panel-incompatible-b
+						Label@SAVEGAME_INFO_DATE:
+							X: 5
+							Y: -27
+							Width: PARENT_WIDTH
+							Height: 16
+							Font: TinyBold
+							Align: Left
+							Visible: False
+						Label@SAVEGAME_INFO_DURATION:
+							X: 5
+							Y: -11
+							Width: PARENT_WIDTH
+							Height: 16
+							Font: TinyBold
+							Align: Left
+							Visible: False
+						ScrollPanel@PLAYER_LIST:
+							Y: 8
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT - 46
+							IgnoreChildMouseOver: true
+							Children:
+								ScrollItem@HEADER:
+									Background: scrollheader
+									Width: PARENT_WIDTH - 27
+									Height: 13
+									X: 2
+									Y: 0
+									Visible: false
+									Children:
+										Label@LABEL:
+											Font: TinyBold
+											Width: PARENT_WIDTH
+											Height: 13
+											Align: Center
+								ScrollItem@TEMPLATE:
+									Width: PARENT_WIDTH - 27
+									Height: 25
+									X: 2
+									Y: 0
+									Visible: false
+									Children:
+										Image@FLAG:
+											X: 4
+											Y: 6
+											Width: 32
+											Height: 16
+										Label@LABEL:
+											X: 40
+											Width: PARENT_WIDTH - 50
+											Height: 25
+											Shadow: True
+				Container@SAVE_WIDGETS:
+					X: 15
+					Y: PARENT_HEIGHT - 40
+					Width: PARENT_WIDTH - 219
+					Height: 25
+					Visible: False
+					Children:
+						TextField@SAVE_TEXTFIELD:
+							Width: PARENT_WIDTH - 1
+							Height: 25
+							Type: Filename
+				Button@CANCEL_BUTTON:
+					Key: escape
+					X: 0
+					Y: PARENT_HEIGHT - 1
+					Width: 140
+					Height: 35
+					Text: button-back
+				Button@DELETE_ALL_BUTTON:
+					X: PARENT_WIDTH - 370 - WIDTH
+					Y: PARENT_HEIGHT - 1
+					Width: 100
+					Height: 35
+					Text: button-bg-delete-all
+				Button@DELETE_BUTTON:
+					X: PARENT_WIDTH - 260 - WIDTH
+					Y: PARENT_HEIGHT - 1
+					Width: 100
+					Height: 35
+					Text: button-bg-delete
+					Key: Delete
+				Button@RENAME_BUTTON:
+					X: PARENT_WIDTH - 150 - WIDTH
+					Y: PARENT_HEIGHT - 1
+					Width: 100
+					Height: 35
+					Text: button-bg-rename
+					Key: F2
+				Button@LOAD_BUTTON:
+					Key: return
+					X: PARENT_WIDTH - WIDTH
+					Y: PARENT_HEIGHT - 1
+					Width: 140
+					Height: 35
+					Text: button-bg-load
+					Visible: False
+				Button@SAVE_BUTTON:
+					Key: return
+					X: PARENT_WIDTH - WIDTH
+					Y: PARENT_HEIGHT - 1
+					Width: 140
+					Height: 35
+					Text: button-bg-save
+					Visible: False
+		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:

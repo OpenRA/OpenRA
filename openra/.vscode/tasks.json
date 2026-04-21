@@ -1,0 +1,36 @@
+{
+	"version": "2.0.0",
+	"options": {
+		"env": {
+			"ENGINE_DIR": ".."
+		}
+	},
+	"tasks": [
+		{
+			"label": "build",
+			"command": "make",
+			"args": ["all", "CONFIGURATION=Debug"],
+			"windows": {
+				"command": "make.cmd"
+			}
+		},
+		{
+			"label": "Run Utility",
+			"command": "dotnet ${workspaceRoot}/bin/OpenRA.Utility.dll ${input:modId} ${input:command}",
+			"type": "shell",
+		}
+	],
+	"inputs": [
+		{
+			"id": "modId",
+			"description": "ID of the mod to run",
+			"default": "all",
+			"type": "promptString"
+		}, {
+			"id": "command",
+			"description": "Name of the command + parameters",
+			"default": "",
+			"type": "promptString"
+		},
+	]
+}

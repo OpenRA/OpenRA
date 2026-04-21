@@ -1,0 +1,192 @@
+Container@SKIRMISH_STATS:
+	Height: PARENT_HEIGHT
+	Width: PARENT_WIDTH
+	Logic: GameInfoStatsLogic
+	Children:
+		Container@OBJECTIVE:
+			Height: 75
+			Children:
+				Label@MISSION:
+					X: 20
+					Y: 22
+					Width: 482
+					Height: 25
+					Font: MediumBold
+					Text: label-mission-objective
+				Label@STATS_STATUS:
+					X: 100
+					Y: 22
+					Width: PARENT_WIDTH - 10
+					Height: 25
+					Font: MediumBold
+				Checkbox@STATS_CHECKBOX:
+					X: 20
+					Y: 55
+					Width: 482
+					Height: 20
+					Font: Bold
+					Text: checkbox-stats-objective
+					Disabled: true
+					TextColorDisabled: FFFFFF
+		Container@STATS_HEADERS:
+			X: 22
+			Y: 81
+			Width: PARENT_WIDTH - 44
+			Children:
+				Label@NAME:
+					X: 10
+					Y: 1
+					Width: 210
+					Height: 25
+					Text: label-stats-player
+					Font: Bold
+				Label@FACTION:
+					X: 230
+					Y: 1
+					Width: 120
+					Height: 25
+					Text: label-stats-faction
+					Font: Bold
+				Label@SCORE:
+					X: 392
+					Y: 1
+					Width: 60
+					Height: 25
+					Text: label-stats-score
+					Font: Bold
+				Label@ACTIONS:
+					X: 457
+					Y: 1
+					Width: 80
+					Height: 25
+					Text: label-stats-actions
+					Font: Bold
+		ScrollPanel@PLAYER_LIST:
+			X: 20
+			Y: 105
+			Width: PARENT_WIDTH - 40
+			Height: 265
+			ItemSpacing: 5
+			Children:
+				ScrollItem@TEAM_TEMPLATE:
+					Background: scrollheader
+					Width: PARENT_WIDTH - 27
+					Height: 20
+					X: 2
+					Visible: false
+					Children:
+						Label@TEAM:
+							X: 6
+							Width: 160
+							Height: 20
+							Font: Bold
+						Label@TEAM_SCORE:
+							X: 392
+							Width: 60
+							Height: 20
+							Font: Bold
+				Container@PLAYER_TEMPLATE:
+					Width: PARENT_WIDTH - 27
+					Height: 25
+					X: 2
+					Children:
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 8
+							Y: 4
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 8
+							Y: 4
+							Width: 16
+							Height: 16
+							Visible: false
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
+						LabelWithTooltip@NAME:
+							X: 29
+							Width: 191
+							Height: 25
+							Shadow: True
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Image@FACTIONFLAG:
+							X: 230
+							Y: 4
+							Width: 32
+							Height: 16
+						LabelWithTooltip@FACTION:
+							X: 264
+							Width: 123
+							Height: 25
+							Shadow: True
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@SCORE:
+							X: 392
+							Width: 60
+							Height: 25
+							Shadow: True
+						Checkbox@MUTE:
+							X: 457
+							Width: 25
+							Height: 25
+							Checkmark: mute
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@KICK:
+							X: 485
+							Width: 25
+							Height: 25
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image:
+									ImageCollection: lobby-bits
+									ImageName: kick
+									X: 7
+									Y: 7
+				Container@SPECTATOR_TEMPLATE:
+					Width: PARENT_WIDTH - 27
+					Height: 25
+					X: 2
+					Children:
+						Image@PROFILE:
+							ImageCollection: lobby-bits
+							X: 8
+							Y: 4
+							Visible: false
+						ClientTooltipRegion@PROFILE_TOOLTIP:
+							X: 8
+							Y: 4
+							Width: 16
+							Height: 16
+							Visible: false
+							TooltipContainer: TOOLTIP_CONTAINER
+							Template: ANONYMOUS_PLAYER_TOOLTIP
+						LabelWithTooltip@NAME:
+							X: 29
+							Width: 191
+							Height: 25
+							Shadow: True
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Checkbox@MUTE:
+							X: 457
+							Width: 25
+							Height: 25
+							Checkmark: mute
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@KICK:
+							X: 485
+							Width: 25
+							Height: 25
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image:
+									ImageCollection: lobby-bits
+									ImageName: kick
+									X: 7
+									Y: 7

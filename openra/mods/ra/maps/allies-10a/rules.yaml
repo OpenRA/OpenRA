@@ -1,0 +1,98 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, allies10a.lua, allies10a-AI.lua
+	MissionData:
+		BriefingVideo: ally10.vqa
+		LossVideo: trinity.vqa
+		StartVideo: mcv_land.vqa
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
+		CountdownLabel: MISSION_TEXT
+		CountdownText: Missiles reach their targets in {0}
+
+Player:
+	PlayerResources:
+		DefaultCash: 6500
+
+PARADROP:
+	ParatroopersPower:
+		DropItems: E1, E1, E1, E2, E2
+
+FCOM:
+	Capturable:
+		Types: building
+
+MSLO:
+	-WithColoredOverlay@IDISABLE:
+	NukePower:
+		DisplayTimerRelationships: Neutral
+	Buildable:
+		Prerequisites: ~disabled
+	Capturable:
+		Types: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled

@@ -1,0 +1,41 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod06b.lua
+	MusicPlaylist:
+		StartingMusic: rout
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: nod6.vqa
+		StartVideo: sundial.vqa
+		LossVideo: banner.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+			tough: options-difficulty.tough
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Civilians: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+FLARE:
+	Tooltip:
+		ShowOwnerRow: false
+
+TRAN:
+	-Selectable:
+	Interactable:

@@ -1,0 +1,43 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, soviet07.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: soviet7.vqa
+		StartVideo: countdwn.vqa
+		WinVideo: averted.vqa
+		LossVideo: nukestok.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
+
+CAMERA:
+	RevealsShroud:
+		Range: 6c0
+
+FTUR:
+	Valued:
+		Cost: 0
+	Power:
+		Amount: 0
+	CaptureManager:
+		-BeingCapturedCondition:
+	-Sellable:
+	Demolishable:
+		-Condition:
+
+PBOX:
+	-AutoTarget:
+	-AutoTargetPriority@DEFAULT:
+	-AutoTargetPriority@ATTACKANYTHING:

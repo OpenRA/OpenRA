@@ -1,0 +1,52 @@
+Background@CREDITS_PANEL:
+	Logic: CreditsLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 410
+	Height: 500
+	Children:
+		Label@CREDITS_TITLE:
+			Width: PARENT_WIDTH
+			Y: 21
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: label-credits-title
+		Container@TAB_CONTAINER:
+			Visible: False
+			X: 20
+			Y: 50
+			Width: PARENT_WIDTH - 40
+			Height: 30
+			Children:
+				Button@MOD_TAB:
+					Width: 140
+					Height: 31
+					Font: Bold
+				Button@ENGINE_TAB:
+					X: 140
+					Width: 140
+					Height: 31
+					Text: label-openra
+					Font: Bold
+		ScrollPanel@CREDITS_DISPLAY:
+			X: 20
+			Y: 50
+			Width: PARENT_WIDTH - 40
+			Height: 395
+			TopBottomSpacing: 8
+			Children:
+				Label@CREDITS_TEMPLATE:
+					X: 8
+					Width: PARENT_WIDTH - 24 - 2 * 8
+					Height: 16
+					VAlign: Top
+					WordWrap: true
+		Button@BACK_BUTTON:
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-back
+			Font: Bold
+			Key: escape

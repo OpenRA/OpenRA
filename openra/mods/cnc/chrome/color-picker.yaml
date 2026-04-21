@@ -1,0 +1,140 @@
+Background@COLOR_CHOOSER:
+	Logic: ColorPickerLogic
+		PaletteColumns: 8
+		PalettePresetRows: 2
+		PaletteCustomRows: 1
+	Background: panel-black
+	Width: 311
+	Height: 148
+	Children:
+		Button@RANDOM_BUTTON:
+			Key: tab
+			X: 229
+			Y: 89
+			Width: 77
+			Height: 25
+			Text: button-color-chooser-random
+		Button@STORE_BUTTON:
+			X: 229
+			Y: 118
+			Width: 77
+			Height: 25
+			Text: button-color-chooser-store
+			Font: Bold
+		ActorPreview@PREVIEW:
+			X: 232
+			Y: 7
+			Width: 77
+			Height: 73
+			Animate: true
+		Button@MIXER_TAB_BUTTON:
+			X: 5
+			Y: PARENT_HEIGHT - 30
+			Height: 25
+			Width: 80
+			Text: button-color-chooser-mixer-tab
+			Font: Bold
+		Button@PALETTE_TAB_BUTTON:
+			X: 90
+			Y: PARENT_HEIGHT - 30
+			Height: 25
+			Width: 80
+			Text: button-color-chooser-palette-tab
+			Font: Bold
+		Container@MIXER_TAB:
+			X: 5
+			Y: 5
+			Width: PARENT_WIDTH - 91
+			Height: PARENT_HEIGHT - 34
+			Children:
+				Background@HUEBG:
+					Background: panel-black
+					X: 0
+					Y: 0
+					Width: PARENT_WIDTH
+					Height: 17
+					Children:
+						HueSlider@HUE_SLIDER:
+							X: 2
+							Y: 2
+							Width: PARENT_WIDTH - 4
+							Height: PARENT_HEIGHT - 4
+							Ticks: 5
+				Background@MIXERBG:
+					Background: panel-black
+					X: 0
+					Y: 21
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 21
+					Children:
+						ColorMixer@MIXER:
+							X: 2
+							Y: 2
+							Width: PARENT_WIDTH - 4
+							Height: PARENT_HEIGHT - 4
+		Background@PALETTE_TAB:
+			Background: panel-black
+			X: 5
+			Y: 5
+			Width: PARENT_WIDTH - 91
+			Height: PARENT_HEIGHT - 34
+			Visible: false
+			Children:
+				Container@PALETTE_TAB_PANEL:
+					X: 0
+					Y: 0
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Children:
+						Background@PRESET_HEADER:
+							Background: panel-black
+							Width: PARENT_WIDTH - 4
+							Height: 13
+							X: 2
+							Y: 2
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 13
+									Align: Center
+									Text: label-preset-header
+						Container@PRESET_AREA:
+							Width: PARENT_WIDTH - 4
+							Height: 58
+							X: 2
+							Y: 16
+							Children:
+								ColorBlock@COLORPRESET:
+									X: 0
+									Y: 0
+									Width: 27
+									Height: 27
+									Visible: false
+									ClickSound: ClickSound
+						Background@CUSTOM_HEADER:
+							Background: panel-black
+							Width: PARENT_WIDTH - 4
+							Height: 13
+							X: 2
+							Y: 71
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 13
+									Align: Center
+									Text: label-custom-header
+						Container@CUSTOM_AREA:
+							Width: PARENT_WIDTH - 4
+							Height: 31
+							X: 2
+							Y: 85
+							Children:
+								ColorBlock@COLORCUSTOM:
+									X: 0
+									Y: 0
+									Width: 27
+									Height: 27
+									Visible: false
+									ClickSound: ClickSound

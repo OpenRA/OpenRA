@@ -1,0 +1,31 @@
+carryall:
+	idle:
+		Filename: DATA.R16
+		Start: 1923
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4290
+		Offset: -30,-24
+
+ornithopter:
+	idle:
+		Filename: DATA.R16
+		Start: 1955
+		Facings: -32
+		Length: 3
+		Tick: 120
+		Transpose: true
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4292
+		Offset: -30,-24
+
+frigate:
+	idle:
+		Filename: DATA.R16
+		Start: 2517
+		Facings: 1
+		Remap: 54F94B

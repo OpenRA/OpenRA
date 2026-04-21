@@ -1,0 +1,35 @@
+[[actions]]
+os = "windows"
+name = "Red Alert"
+path = "RedAlert.exe"
+scope = "profile:me"
+
+[[actions]]
+os = "windows"
+name = "Dune 2000"
+path = "Dune2000.exe"
+scope = "profile:me"
+
+[[actions]]
+os = "windows"
+name = "Tiberian Dawn"
+path = "TiberianDawn.exe"
+scope = "profile:me"
+
+[[actions]]
+os = "linux"
+name = "Red Alert"
+path = "OpenRA-Red-Alert-x86_64.AppImage"
+scope = "profile:me"
+
+[[actions]]
+os = "linux"
+name = "Dune 2000"
+path = "OpenRA-Dune-2000-x86_64.AppImage"
+scope = "profile:me"
+
+[[actions]]
+os = "linux"
+name = "Tiberian Dawn"
+path = "OpenRA-Tiberian-Dawn-x86_64.AppImage"
+scope = "profile:me"

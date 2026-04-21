@@ -1,0 +1,463 @@
+MINV:
+	Inherits: ^Mine
+	RenderSprites:
+		Image: minv
+		FactionImages:
+			soviet: minp
+			russia: minp
+			ukraine: minp
+	FireWarheadsOnDeath:
+		Weapon: ATMine
+
+# Only kept for backwards-compatibility with existing and imported maps, use MINV instead
+MINP:
+	Inherits: MINV
+	FireWarheadsOnDeath:
+		Weapon: APMine
+
+CRATE:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		UseCashTick: true
+	LevelUpCrateAction:
+		SelectionShares: 40
+	ExplodeCrateAction@fire:
+		Weapon: CrateNapalm
+		SelectionShares: 5
+	ExplodeCrateAction@boom:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Sequence: hide-map
+	HealActorsCrateAction:
+		Sound: heal2.aud
+		SelectionShares: 2
+		Sequence: heal
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Sequence: reveal-map
+	DuplicateUnitCrateAction:
+		SelectionShares: 10
+		MaxAmount: 5
+		MinAmount: 1
+		MaxDuplicateValue: 1500
+		ValidTargets: GroundActor, WaterActor, Submarine
+	GiveBaseBuilderCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 100
+		Units: mcv
+	GiveUnitCrateAction@jeep:
+		SelectionShares: 6
+		Units: jeep
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@1tnk:
+		SelectionShares: 6
+		Units: 1tnk
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@apc:
+		SelectionShares: 6
+		Units: apc
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@ftrk:
+		SelectionShares: 6
+		Units: ftrk
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@arty:
+		SelectionShares: 5
+		Units: arty
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.medium, dome
+	GiveUnitCrateAction@v2rl:
+		SelectionShares: 5
+		Units: v2rl
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.medium, dome
+	GiveUnitCrateAction@2tnk:
+		SelectionShares: 4
+		Units: 2tnk
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.medium, fix
+	GiveUnitCrateAction@3tnk:
+		SelectionShares: 4
+		Units: 3tnk
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.medium, fix
+	GiveUnitCrateAction@squadlight:
+		SelectionShares: 10
+		Units: e1,e1,e1,e3,e3
+		ValidFactions: allies, england, france, germany, soviet, russia, ukraine
+	GiveUnitCrateAction@squadheavyallies:
+		SelectionShares: 7
+		Units: e1,e1,e1,e1,e3,e3,e3,e6,medi
+		ValidFactions: allies, england, france, germany
+		TimeDelay: 4500
+	GiveUnitCrateAction@squadheavysoviet:
+		SelectionShares: 7
+		Units: e1,e1,e4,e4,e3,e3,e3,e6
+		ValidFactions: soviet, russia, ukraine
+		TimeDelay: 4500
+	GrantExternalConditionCrateAction@invuln:
+		SelectionShares: 5
+		Sequence: invuln
+		Sound: ironcur9.aud
+		Condition: invulnerability
+		Duration: 600
+	GiveUnitCrateAction@lst:
+		SelectionShares: 6
+		Units: lst
+		ValidFactions: allies, england, france, germany, soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@pt:
+		SelectionShares: 6
+		Units: pt
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@ss:
+		SelectionShares: 4
+		Units: ss
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.low
+	GiveUnitCrateAction@dd:
+		SelectionShares: 4
+		Units: dd
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.medium, dome
+	GiveUnitCrateAction@ss2:
+		SelectionShares: 4
+		Units: ss
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.medium, dome
+	GiveUnitCrateAction@ca:
+		SelectionShares: 3
+		Units: ca
+		ValidFactions: allies, england, france, germany
+		Prerequisites: techlevel.high, atek
+	GiveUnitCrateAction@msub:
+		SelectionShares: 3
+		Units: msub
+		ValidFactions: soviet, russia, ukraine
+		Prerequisites: techlevel.high, stek
+
+
+MONEYCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: actor-moneycrate-name
+	GiveCashCrateAction:
+		Amount: 500
+		SelectionShares: 1
+		UseCashTick: true
+	RenderSprites:
+		Image: wcrate
+
+HEALCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: actor-healcrate-name
+	HealActorsCrateAction:
+		Sound: heal2.aud
+		SelectionShares: 1
+		Sequence: heal
+
+WCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: actor-wcrate-name
+	RenderSprites:
+		Image: wcrate
+
+SCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: actor-scrate-name
+
+CAMERA:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-camera-name
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+	BodyOrientation:
+		QuantizedFacings: 1
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Image: camera
+	MapEditorData:
+		Categories: System
+
+camera.paradrop:
+	Inherits: CAMERA
+	EditorOnlyTooltip:
+		Name: actor-camera-paradrop-name
+	RevealsShroud:
+		Range: 6c0
+
+camera.spyplane:
+	Inherits: CAMERA
+	EditorOnlyTooltip:
+		Name: actor-camera-spyplane-name
+
+SONAR:
+	Inherits: camera.spyplane
+	EditorOnlyTooltip:
+		Name: actor-sonar-name
+	-RevealsShroud:
+	DetectCloaked:
+		DetectionTypes: Underwater
+		Range: 10c0
+
+FLARE:
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 3c0
+		Type: CenterPosition
+	RenderSprites:
+		Image: smokland
+	WithSpriteBody:
+		StartSequence: open
+	BodyOrientation:
+		QuantizedFacings: 1
+	HiddenUnderFog:
+		Type: CenterPosition
+	Interactable:
+	Tooltip:
+		Name: actor-flare-name
+		ShowOwnerRow: false
+	MapEditorData:
+		Categories: Decoration
+
+MINE:
+	Inherits@1: ^SpriteActor
+	Interactable:
+	HiddenUnderShroud:
+	Tooltip:
+		Name: actor-mine-name
+	RenderSprites:
+		Palette: terrain
+	WithSpriteBody:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Ore
+	AppearsOnMapPreview:
+		Terrain: Ore
+	SeedsResource:
+	MapEditorData:
+		Categories: Resource spawn
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+GMINE:
+	Inherits@1: ^SpriteActor
+	Interactable:
+	HiddenUnderShroud:
+	Tooltip:
+		Name: actor-gmine-name
+	RenderSprites:
+		Palette: player
+	WithSpriteBody:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Gems
+	AppearsOnMapPreview:
+		Terrain: Gems
+	SeedsResource:
+		ResourceType: Gems
+	MapEditorData:
+		Categories: Resource spawn
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+RAILMINE:
+	Inherits@1: ^SpriteActor
+	Interactable:
+	HiddenUnderShroud:
+	Tooltip:
+		Name: actor-railmine-name
+	RenderSprites:
+		Palette: player
+	WithSpriteBody:
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: INTERIOR
+		Categories: Civilian building
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+QUEE:
+	Inherits@1: ^SpriteActor
+	Inherits@shape: ^2x1Shape
+	Interactable:
+	HiddenUnderShroud:
+	Tooltip:
+		Name: actor-quee-name
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	WithSpriteBody:
+	AppearsOnRadar:
+	MapEditorData:
+		RequireTilesets: INTERIOR
+		Categories: Critter
+
+LAR1:
+	Inherits@1: ^SpriteActor
+	Inherits@shape: ^1x1Shape
+	Interactable:
+	HiddenUnderShroud:
+	Tooltip:
+		Name: actor-lar1-name
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderSprites:
+		Palette: terrain
+	WithSpriteBody:
+	AppearsOnRadar:
+	MapEditorData:
+		RequireTilesets: INTERIOR
+		Categories: Critter
+
+LAR2:
+	Inherits@1: LAR1
+	Tooltip:
+		Name: actor-lar2-name
+
+powerproxy.parabombs:
+	AirstrikePower:
+		Icon: parabombs
+		Name: actor-powerproxy-parabombs.name
+		Description: actor-powerproxy-parabombs.description
+		OneShot: true
+		AllowMultiple: true
+		UnitType: badr.bomber
+		SelectTargetSpeechNotification: SelectTarget
+		SelectTargetTextNotification: notification-select-target
+		QuantizedFacings: 8
+		DisplayBeacon: True
+		BeaconPoster: pbmbicon
+		CameraActor: camera
+		CameraRemoveDelay: 150
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+
+powerproxy.sonarpulse:
+	SpawnActorPower:
+		Icon: sonar
+		Name: actor-powerproxy-sonarpulse.name
+		Description: actor-powerproxy-sonarpulse.description
+		ChargeInterval: 750
+		EndChargeSpeechNotification: SonarPulseReady
+		SelectTargetSpeechNotification: SelectTarget
+		EndChargeTextNotification: notification-sonar-pulse-ready
+		SelectTargetTextNotification: notification-select-target
+		Actor: sonar
+		Terrain: Water
+		AllowUnderShroud: false
+		LifeTime: 250
+		DeploySound: sonpulse.aud
+		EffectImage: moveflsh
+		EffectPalette: moveflash
+		SupportPowerPaletteOrder: 80
+		EffectSequence: idle
+		BlockedCursor: move-blocked
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		Icon: paratroopers
+		Name: actor-powerproxy-paratroopers.name
+		Description: actor-powerproxy-paratroopers.description
+		DropItems: E1,E1,E1,E3,E3
+		SelectTargetSpeechNotification: SelectTarget
+		SelectTargetTextNotification: notification-select-target
+		AllowImpassableCells: false
+		QuantizedFacings: 8
+		CameraActor: camera.paradrop
+		DisplayBeacon: true
+		BeaconPoster: pinficon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+
+barracks.upgraded:
+	ProvidesPrerequisite:
+
+vehicles.upgraded:
+	ProvidesPrerequisite:
+
+aircraft.upgraded:
+	ProvidesPrerequisite:
+
+mpspawn:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-mpspawn-name
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+waypoint:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-waypoint-name
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+
+fact.colorpicker:
+	Inherits: FACT
+	-Buildable:
+	-MapEditorData:
+	-BaseBuilding:
+	RenderSprites:
+		Image: fact
+		Palette: colorpicker
+
+CTFLAG:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: actor-ctflag-name
+	WithBuildingBib:
+		HasMinibib: true
+	-HitShape:
+	-Health:
+	-FireWarheadsOnDeath:
+	-Selectable:
+	-Targetable:
+	MapEditorData:
+		Categories: Decoration
+	Interactable:

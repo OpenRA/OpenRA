@@ -1,0 +1,94 @@
+Player:
+	PlayerResources:
+		DefaultCash: 8500
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, allies06a.lua, allies06a-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: ally6.vqa
+		WinVideo: allymorf.vqa
+		LossVideo: overrun.vqa
+		StartVideo: mcv.vqa
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E4,E4
+
+TSLA:
+	Power:
+		Amount: -150
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, SpyInfiltrate
+
+TECH.CAM:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+		Type: CenterPosition
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled

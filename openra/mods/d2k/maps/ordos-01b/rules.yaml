@@ -1,0 +1,61 @@
+Player:
+	PlayerResources:
+		DefaultCash: 2300
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, ordos01b.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: O_BR01_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.barracks:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.light:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+barracks:
+	Buildable:
+		Prerequisites: ~disabled
+
+light_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+wall:
+	Buildable:
+		Prerequisites: ~disabled

@@ -1,0 +1,74 @@
+ObserverCombinedView: MINUS
+	Description: hotkey-description-observercombinedview
+	Types: Observer
+	Contexts: spectator
+
+ObserverWorldView: EQUALS
+	Description: hotkey-description-observerworldview
+	Types: Observer
+	Contexts: spectator
+
+ReplaySpeedSlow: F9
+	Description: hotkey-description-replayspeedslow
+	Types: Replay
+	Contexts: spectator
+
+ReplaySpeedRegular: F10
+	Description: hotkey-description-replayspeedregular
+	Types: Replay
+	Contexts: spectator
+
+ReplaySpeedFast: F11
+	Description: hotkey-description-replayspeedfast
+	Types: Replay
+	Contexts: spectator
+
+ReplaySpeedMax: F12
+	Description: hotkey-description-replayspeedmax
+	Types: Replay
+	Contexts: spectator
+
+StatisticsNone: F1
+	Description: hotkey-description-statisticsnone
+	Types: Observer
+	Contexts: spectator
+
+StatisticsBasic: F2
+	Description: hotkey-description-statisticsbasic
+	Types: Observer
+	Contexts: spectator
+
+StatisticsEconomy: F3
+	Description: hotkey-description-statisticseconomy
+	Types: Observer
+	Contexts: spectator
+
+StatisticsProduction: F4
+	Description: hotkey-description-statisticsproduction
+	Types: Observer
+	Contexts: spectator
+
+StatisticsSupportPowers: F5
+	Description: hotkey-description-statisticssupportpowers
+	Types: Observer
+	Contexts: spectator
+
+StatisticsCombat: F6
+	Description: hotkey-description-statisticscombat
+	Types: Observer
+	Contexts: spectator
+
+StatisticsArmy: F7
+	Description: hotkey-description-statisticsarmy
+	Types: Observer
+	Contexts: spectator
+
+StatisticsGraph:
+	Description: hotkey-description-statisticsgraph
+	Types: Observer
+	Contexts: spectator
+
+StatisticsArmyGraph:
+	Description: hotkey-description-statisticsarmygraph
+	Types: Observer
+	Contexts: spectator

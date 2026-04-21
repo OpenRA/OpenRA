@@ -1,0 +1,52 @@
+# Visual Studio
+Release
+bin
+obj
+*.ncb
+*.vcproj*
+*.suo
+*.user
+*.sln.cache
+*.manifest
+*.CodeAnalysisLog.xml
+*.lastcodeanalysissucceeded
+_ReSharper.*/
+/.vs
+
+# Visual Studio Code
+/.vscode/settings.json
+
+# binaries
+IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
+
+# backup files by various editors
+*~
+*.orig
+\#*
+.*.sw?
+
+# Mac OS X
+.DS_Store
+
+# auto-generated documentation
+DOCUMENTATION.md
+WEAPONS.md
+Lua-API.md
+Settings.md
+*.html
+openra.6
+update.log
+
+# SublimeText
+*.sublime-project
+*.sublime-workspace
+
+# NUnit
+/TestResult.xml
+/lib/
+
+# Support directory
+/Support
+
+# IntelliJ files
+.idea

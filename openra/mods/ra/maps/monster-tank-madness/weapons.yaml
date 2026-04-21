@@ -1,0 +1,15 @@
+FireballLauncher:
+	Projectile:
+		Blockable: false
+
+TurretGun:
+	Projectile:
+		Blockable: false
+
+SuperTankPrimary:
+	Inherits: 120mm
+	ReloadDelay: 70
+	Report: turret1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 50000
+		InvalidTargets: Air, Infantry

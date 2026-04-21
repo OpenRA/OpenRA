@@ -1,0 +1,1574 @@
+e1:
+	Defaults:
+		Filename: e1.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 100
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	prone-stand:
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 144
+		Length: 4
+		Facings: 8
+		Tick: 100
+	liedown:
+		Start: 128
+		Length: 2
+		Facings: 8
+	standup:
+		Start: 176
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 8
+		Facings: 8
+	parachute:
+		Start: 377
+	idle1:
+		Start: 256
+		Length: 16
+		Tick: 120
+	idle2:
+		Start: 272
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 288
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 296
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 304
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 312
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 324
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: *
+		Tick: 1600
+		ZOffset: -511
+	garrison-muzzle: minigun
+		Filename:
+		Length: 12
+		Facings: 8
+		Combine:
+			0:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 0,1,2,3,4,5,0,1,2,3,4,5
+			1:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 6,7,8,9,10,11,6,7,8,9,10,11
+			2:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 12,13,14,15,16,17,12,13,14,15,16,17
+			3:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 18,19,20,21,22,23,18,19,20,21,22,23
+			4:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 24,25,26,27,28,29,24,25,26,27,28,29
+			5:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 30,31,32,33,34,35,30,31,32,33,34,35
+			6:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 36,37,38,39,40,41,36,37,38,39,40,41
+			7:
+				Filename: minigun.shp
+				Length: 12
+				Frames: 42,43,44,45,46,47,42,43,44,45,46,47
+	icon:
+		Filename: e1icon.shp
+
+e3:
+	Defaults:
+		Filename: e3.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 120
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	parachute:
+		Start: 393
+	idle1:
+		Start: 272
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 287
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 304
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 312
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 320
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 328
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 340
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 144
+		Length: 4
+		Facings: 8
+		Tick: 120
+	prone-shoot:
+		Start: 192
+		Length: 10
+		Facings: 8
+	icon:
+		Filename: e3icon.shp
+
+e6:
+	Defaults:
+		Filename: e6.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 100
+	parachute:
+		Start: 210
+	idle1:
+		Start: 121
+		Length: 8
+		Tick: 120
+	idle2:
+		Start: 130
+		Length: 14
+		Tick: 120
+	die1:
+		Start: 146
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 154
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 162
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 170
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 182
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 82
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 82
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 82
+		Length: 4
+		Facings: 8
+		Tick: 100
+	icon:
+		Filename: e6icon.shp
+
+medi:
+	Defaults:
+		Filename: medi.shp
+	stand:
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 100
+	heal:
+		Start: 56
+		Length: 58
+		Tick: 120
+	standup:
+		Start: 114
+		Length: 2
+		Facings: 8
+	idle:
+		Start: 178
+		Length: 14
+		Tick: 120
+	die1:
+		Start: 193
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 201
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 209
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 217
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 229
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 130
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 130
+		Length: 4
+		Facings: 8
+		Tick: 100
+	icon:
+		Filename: mediicon.shp
+
+mech:
+	Defaults:
+		Filename: mech.shp
+	stand:
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 100
+	repair:
+		Start: 56
+		Length: 58
+		Tick: 120
+	standup:
+		Start: 114
+		Length: 2
+		Facings: 8
+	idle:
+		Start: 178
+		Length: 14
+		Tick: 120
+	die1:
+		Start: 193
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 201
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 209
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 217
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 229
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 130
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 130
+		Length: 4
+		Facings: 8
+		Tick: 100
+	icon:
+		Filename: mechicon.shp
+
+e2:
+	Defaults:
+		Filename: e2.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 80
+	throw:
+		Start: 64
+		Length: 20
+		Facings: 8
+	parachute:
+		Start: 505
+	idle1:
+		Start: 384
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 399
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 416
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 424
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 432
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 440
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 452
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 240
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 240
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 240
+		Length: 4
+		Facings: 8
+		Tick: 80
+	prone-throw:
+		Start: 288
+		Length: 12
+		Facings: 8
+	icon:
+		Filename: e2icon.shp
+
+dog:
+	Defaults:
+		Filename: dog.shp
+	stand:
+		Facings: 8
+	walk:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 80
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+	eat:
+		Start: 104
+		Length: 14
+		Facings: 8
+		Tick: 120
+	idle1:
+		Start: 216
+		Length: 7
+		Tick: 120
+	idle2:
+		Start: 224
+		Length: 11
+		Tick: 120
+	die1:
+		Start: 236
+		Length: 6
+		Tick: 80
+	die2:
+		Start: 242
+		Length: 9
+		Tick: 80
+	die3:
+		Start: 236
+		Length: 6
+		Tick: 80
+	die4:
+		Start: 242
+		Length: 9
+		Tick: 80
+	die5:
+		Start: 251
+		Length: 14
+		Tick: 80
+	die6:
+		Filename: electdog.shp
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	jump:
+		Filename: dogbullt.shp
+		Length: 4
+		Facings: 8
+	icon:
+		Filename: dogicon.shp
+
+spy:
+	Defaults:
+		Filename: spy.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 100
+	shoot:
+		Start: 64
+		Length: 8
+		Facings: 8
+	idle1:
+		Start: 256
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 271
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 288
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 296
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 304
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 312
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 324
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 144
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 144
+		Length: 4
+		Facings: 8
+		Tick: 100
+	prone-shoot:
+		Start: 192
+		Length: 8
+		Facings: 8
+	icon:
+		Filename: spyicon.shp
+
+thf:
+	Defaults:
+		Filename: thf.shp
+	stand:
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 100
+	idle:
+		Start: 120
+		Length: 19
+		Tick: 120
+	die1:
+		Start: 139
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 147
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 155
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 163
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 175
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 72
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 72
+		Length: 4
+		Facings: 8
+		Tick: 80
+	icon:
+		Filename: thficon.shp
+
+e7:
+	Defaults:
+		Filename: e7.shp
+	stand:
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 80
+	shoot-left:
+		Filename:
+		Combine:
+			0:
+				Filename: e7.shp
+				Length: 8
+				Frames: 58, 56, 64, 63, 71, 70, 79, 77
+			1:
+				Filename: e7.shp
+				Length: 2
+				Frames: 85, 84
+				Offset: 1, 0
+			2:
+				Filename: e7.shp
+				Length: 2
+				Frames: 92, 91
+			3:
+				Filename: e7.shp
+				Length: 2
+				Frames: 99, 98
+				Offset: 1, -2
+			4:
+				Filename: e7.shp
+				Length: 2
+				Frames: 107, 105
+				Offset: 0, -2
+		Length: 2
+		Facings: 8
+	shoot-right:
+		Filename:
+		Combine:
+			0:
+				Filename: e7.shp
+				Length: 8
+				Frames: 57, 56, 65, 63, 72, 70, 78, 77
+			1:
+				Filename: e7.shp
+				Length: 2
+				Frames: 86, 84
+				Offset: 1, 0
+			2:
+				Filename: e7.shp
+				Length: 2
+				Frames: 93, 91
+			3:
+				Filename: e7.shp
+				Length: 2
+				Frames: 100, 98
+				Offset: 1, -2
+			4:
+				Filename: e7.shp
+				Length: 2
+				Frames: 106, 105
+				Offset: 0, -2
+		Length: 2
+		Facings: 8
+	idle1:
+		Start: 233
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 248
+		Length: 14
+		Tick: 120
+	die1:
+		Start: 262
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 270
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 278
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 286
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 298
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 128
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 128
+		Length: 4
+		Facings: 8
+		Tick: 80
+	prone-shoot-left:
+		Frames: 179, 177, 185, 184, 192, 191, 200, 198, 206, 205, 213, 212, 220, 219, 228, 226
+		Length: 2
+		Facings: 8
+	prone-shoot-right:
+		Frames: 178, 177, 186, 184, 193, 191, 199, 198, 207, 205, 214, 212, 221, 219, 227, 226
+		Length: 2
+		Facings: 8
+	garrison-muzzle:
+		Filename: minigun.shp
+		Length: 3
+		Stride: 6
+		Facings: 8
+	icon:
+		Filename: e7icon.shp
+
+e4:
+	Defaults:
+		Filename: e4.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 120
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	parachute:
+		Start: 528
+	idle1:
+		Start: 384
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 399
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 416
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 424
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 432
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 440
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 452
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	prone-stand:
+		Start: 208
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 208
+		Length: 4
+		Facings: 8
+		Tick: 120
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	icon:
+		Filename: e4icon.shp
+
+gnrl:
+	Defaults:
+		Filename: gnrl.shp
+	stand:
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+		Tick: 100
+	shoot:
+		Start: 56
+		Length: 4
+		Facings: 8
+	prone-stand:
+		Start: 104
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 104
+		Length: 4
+		Facings: 8
+		Tick: 100
+	standup:
+		Start: 136
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 152
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 184
+		Length: 26
+		Tick: 120
+	die1:
+		Start: 210
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 218
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 226
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 234
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 246
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+
+shok:
+	Defaults:
+		Filename: shok.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 120
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	prone-stand:
+		Start: 208
+		Stride: 4
+		Facings: 8
+	prone-stand2:
+		Start: 208
+		Stride: 4
+		Facings: 8
+	prone-run:
+		Start: 208
+		Length: 4
+		Facings: 8
+		Tick: 120
+	liedown:
+		Start: 192
+		Length: 2
+		Facings: 8
+	standup:
+		Start: 240
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	parachute:
+		Start: 528
+	idle1:
+		Start: 384
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 399
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 416
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 424
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 432
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 440
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 452
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	icon:
+		Filename: shokicon.shp
+
+c1:
+	Defaults:
+		Filename: c1.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 120
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 104
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 114
+		Length: 6
+		Tick: 80
+	die1:
+		Start: 152
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 160
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 168
+		Length: 12
+		Tick: 80
+	die4:
+		Start: 168
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 180
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+
+c2:
+	Defaults:
+		Filename: c2.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 120
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 104
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 114
+		Length: 6
+		Tick: 80
+	die1:
+		Start: 152
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 160
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 168
+		Length: 12
+		Tick: 80
+	die4:
+		Start: 168
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 180
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+
+c11:
+	Defaults:
+		Filename: c11.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 120
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 104
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 114
+		Length: 6
+		Tick: 80
+	die1:
+		Start: 152
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 160
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 168
+		Length: 12
+		Tick: 80
+	die4:
+		Start: 168
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 180
+		Length: 18
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+
+einstein:
+	Defaults:
+		Filename: einstein.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+	idle1:
+		Start: 104
+		Length: 15
+		Tick: 80
+	die1:
+		Start: 120
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 128
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 136
+		Length: 12
+		Tick: 80
+	die4:
+		Start: 136
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 148
+		Length: 17
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+
+delphi:
+	Defaults:
+		Filename: delphi.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+	idle1:
+		Start: 189
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 199
+		Length: 6
+		Tick: 80
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 17
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+
+chan:
+	Defaults:
+		Filename: chan.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+	idle1:
+		Start: 104
+		Length: 15
+		Tick: 80
+	die1:
+		Start: 120
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 128
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 136
+		Length: 12
+		Tick: 80
+	die4:
+		Start: 136
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 148
+		Length: 17
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+
+zombie:
+	Defaults:
+		Filename: zombie.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+		Tick: 100
+	bite:
+		Start: 64
+		Length: 4
+		Facings: 8
+	idle1:
+		Start: 96
+		Length: 10
+		Tick: 120
+	die1:
+		Start: 106
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 106
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 106
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 106
+		Length: 8
+		Tick: 80
+	die5:
+		Start: 114
+		Length: 19
+		Tick: 80
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
+		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+		Length: *
+		Tick: 80
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		Length: 6
+		Tick: 1600
+		ZOffset: -511
+	icon:
+		Filename: zombicon.shp
+
+ant:
+	stand:
+		Filename: ant1.shp
+		Facings: 8
+	run:
+		Filename: ant1.shp
+		Start: 8
+		Length: 8
+		Facings: 8
+	bite:
+		Filename: ant1.shp
+		Start: 72
+		Length: 4
+		Facings: 8
+	die:
+		Filename: ant1.shp
+		Start: 104
+		Length: 8
+		Tick: 300
+	die-crushed:
+		Filename: ant1.shp
+		Start: 104
+		Length: 8
+		Tick: 400
+		ZOffset: -511
+	icon:
+		Filename: anticon.shp
+
+fireant:
+	stand:
+		Filename: ant2.shp
+		Facings: 8
+	run:
+		Filename: ant2.shp
+		Start: 8
+		Length: 8
+		Facings: 8
+	bite:
+		Filename: ant2.shp
+		Start: 72
+		Length: 4
+		Facings: 8
+	die:
+		Filename: ant2.shp
+		Start: 104
+		Length: 8
+		Tick: 300
+	die-crushed:
+		Filename: ant2.shp
+		Start: 104
+		Length: 8
+		Tick: 400
+		ZOffset: -511
+	icon:
+		Filename: anticon.shp
+
+scoutant:
+	stand:
+		Filename: ant3.shp
+		Facings: 8
+	run:
+		Filename: ant3.shp
+		Start: 8
+		Length: 8
+		Facings: 8
+	bite:
+		Filename: ant3.shp
+		Start: 72
+		Length: 4
+		Facings: 8
+	die:
+		Filename: ant3.shp
+		Start: 104
+		Length: 8
+		Tick: 300
+	die-crushed:
+		Filename: ant3.shp
+		Start: 104
+		Length: 8
+		Tick: 400
+		ZOffset: -511
+	icon:
+		Filename: anticon.shp

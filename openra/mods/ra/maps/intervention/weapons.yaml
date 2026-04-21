@@ -1,0 +1,6 @@
+Nike:
+	Range: 9c0
+
+Maverick:
+	Warhead@1Dam: SpreadDamage
+		Damage: 17500

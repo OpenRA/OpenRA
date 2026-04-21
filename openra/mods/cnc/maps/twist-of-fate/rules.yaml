@@ -1,0 +1,102 @@
+World:
+	MissionData:
+		StartVideo: airstrk.vqa
+		LossVideo: obel.vqa
+		WinVideo: paratrop.vqa
+		Briefing: briefing
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, twist-of-fate.lua, twist-of-fate-AI.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+CAMERA.mini:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 1c512
+		Type: CenterPosition
+	RenderSpritesEditorOnly:
+		Image: camera
+
+FLARE:
+	RevealsShroud:
+		Range: 7c0
+
+PROC:
+	GrantConditionOnPrerequisite@AIN:
+		Condition: ain
+		Prerequisites: diffnorm
+	GrantConditionOnPrerequisite@AIH:
+		Condition: aih
+		Prerequisites: diffhard
+	ResourceValueMultiplier@AIN:
+		Modifier: 150
+		RequiresCondition: ain
+	ResourceValueMultiplier@AIH:
+		Modifier: 200
+		RequiresCondition: aih
+
+AIHProcUpgrade:
+	ProvidesPrerequisite:
+		Prerequisite: diffhard
+	StoresResources:
+		Capacity: 25000
+	Interactable:
+
+AINProcUpgrade:
+	ProvidesPrerequisite:
+		Prerequisite: diffnorm
+	StoresResources:
+		Capacity: 15000
+	Interactable:
+
+AiAnyhqPrerequisite:
+	ProvidesPrerequisite:
+		Prerequisite: anyhq
+	Interactable:
+
+AiTmplPrerequisite:
+	ProvidesPrerequisite:
+		Prerequisite: tmpl
+	Interactable:
+
+Astk.proxy:
+	AirstrikePower:
+		StartFullyCharged: True
+		Prerequisites: ~techlevel.superweapons
+		Icon: airstrike
+		ChargeInterval: 5250
+		SquadSize: 3
+		QuantizedFacings: 8
+		Name: actor-hq.airstrikepower-name
+		Description: actor-hq.airstrikepower-description
+		EndChargeSpeechNotification: AirstrikeReady
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		IncomingSpeechNotification: EnemyPlanesApproaching
+		EndChargeTextNotification: notification-airstrike-ready
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		IncomingTextNotification: notification-enemy-planes-approaching
+		UnitType: a10
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		BeaconPosterPalette: beaconposter
+		DisplayRadarPing: True
+		CameraActor: camera
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: airstrikedirection
+		SupportPowerPaletteOrder: 10

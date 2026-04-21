@@ -1,0 +1,191 @@
+^BasePlayer:
+	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Spice: 25
+
+EditorPlayer:
+	Inherits: ^BasePlayer
+
+Player:
+	Inherits: ^BasePlayer
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		DisplayOrder: 0
+		LowPowerModifier: 300
+		ReadyAudio: BuildingReady
+		ReadyTextNotification: notification-construction-complete
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		DisplayOrder: 1
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		DisplayOrder: 2
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
+	ClassicProductionQueue@Armor:
+		Type: Armor
+		DisplayOrder: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
+	BulkProductionQueue@Starport:
+		Type: Starport
+		DisplayOrder: 4
+		QueueLimit: 6
+		PayUpFront: true
+		StartDeliveryNotification: OrderPlaced
+		DeliveryProgressNotifications: TMinusFive, TMinusFour, TMinusThree, TMinusTwo, TMinusOne
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		DisplayOrder: 5
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: true
+		BuildTimeSpeedReduction: 100, 66, 50
+	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
+		Type: Upgrade
+		ReadyAudio: NewOptions
+		ReadyTextNotification: notification-new-construction-options
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		QueuedAudio: Upgrading
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: notification-new-construction-options
+		CannotPlaceTextNotification: notification-cannot-build-here
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
+	ConquestVictoryConditions:
+	PowerManager:
+		AdviceInterval: 26000
+		SpeechNotification: LowPower
+		TextNotification: notification-low-power
+	AllyRepair:
+	PlayerResources:
+		SelectableCash: 2500, 5000, 7000, 10000, 20000
+		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: notification-insufficient-funds
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
+	DeveloperMode:
+		CheckboxDisplayOrder: 8
+	DamageNotifier:
+		ValidTargets: Structure
+		Notification: BaseAttack
+		TextNotification: notification-base-under-attack
+		AllyTextNotification: notification-ally-under-attack
+	DamageNotifier@Unit:
+		InvalidTargets: Structure
+		NotifyInterval: 10000
+	Shroud:
+		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
+		ID: autoconcrete
+		Label: checkbox-automatic-concrete.label
+		Description: checkbox-automatic-concrete.description
+		Enabled: False
+		DisplayOrder: 7
+		Prerequisites: global-auto-concrete
+	FrozenActorLayer:
+	HarvesterAttackNotifier:
+		ExcludeDamageTypes: SpiceExplosion
+		TextNotification: notification-harvester-under-attack
+	PlayerStatistics:
+	PlaceBeacon:
+	ProvidesPrerequisite@atreides:
+		Prerequisite: player.atreides
+		Factions: atreides
+	ProvidesPrerequisite@harkonnen:
+		Prerequisite: player.harkonnen
+		Factions: harkonnen
+	ProvidesPrerequisite@ordos:
+		Prerequisite: player.ordos
+		Factions: ordos
+	ProvidesPrerequisite@corrino:
+		Prerequisite: player.corrino
+		Factions: corrino
+	ProvidesPrerequisite@fremen:
+		Prerequisite: player.fremen
+		Factions: fremen
+	ProvidesPrerequisite@mercenary:
+		Prerequisite: player.mercenary
+		Factions: mercenary
+	ProvidesPrerequisite@smuggler:
+		Prerequisite: player.smuggler
+		Factions: smuggler
+	ProvidesTechPrerequisite@low:
+		Name: options-tech-level.low
+		Prerequisites: techlevel.low
+		Id: low
+	ProvidesTechPrerequisite@medium:
+		Name: options-tech-level.medium
+		Prerequisites: techlevel.low, techlevel.medium
+		Id: medium
+	ProvidesTechPrerequisite@nosuper:
+		Name: options-tech-level.no-powers
+		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
+		Id: nopowers
+	ProvidesTechPrerequisite@all:
+		Name: options-tech-level.unrestricted
+		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+		Id: unrestricted
+	EnemyWatcher:
+	HarvesterInsurance:
+	GrantConditionOnPrerequisiteManager:
+	ResourceStorageWarning:
+		AdviceInterval: 26000
+		TextNotification: notification-silos-needed
+	PlayerExperience:
+	GameSaveViewportManager:
+	PlayerRadarTerrain:

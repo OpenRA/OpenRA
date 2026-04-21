@@ -1,0 +1,9 @@
+PrisonColt:
+	CanTargetSelf: true
+	ValidTargets: Ground, GroundActor
+	ReloadDelay: 7
+	Report: gun5.aud
+	Projectile: InstantHit
+	Warhead@1Dam: SpreadDamage
+		AffectsParent: true
+		ValidTargets: Ground, GroundActor

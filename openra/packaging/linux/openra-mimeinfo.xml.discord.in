@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+  <mime-type type="x-scheme-handler/openra-{MODID}-{TAG}">
+    <icon name="openra-{MODID}" />
+    <generic-icon name="applications-games"/>
+    <comment>Join OpenRA server</comment>
+    <glob weight="60" pattern="openra-{MODID}-{TAG}://*"/>
+  </mime-type>
+  <mime-type type="x-scheme-handler/discord-{DISCORDAPPID}">
+    <generic-icon name="applications-games"/>
+    <comment>Launch OpenRA from Discord</comment>
+    <glob weight="60" pattern="discord-{DISCORDAPPID}://*"/>
+  </mime-type>
+</mime-info>

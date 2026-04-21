@@ -1,0 +1,161 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+	ExternalCondition@AIMain:
+		Condition: base-rebuilder
+	ExternalCondition@AIMainWithDefense:
+		Condition: defense-rebuilder
+	BaseBuilderBotModule@MainBase:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			starport: 1
+			wind_trap: 7
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			starport: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+	BaseBuilderBotModule@MainBaseWithDefence:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		PlaceDefenseTowardsEnemyChance: 50
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			starport: 1
+			wind_trap: 7
+			silo: 1
+			medium_gun_turret: 4
+			large_gun_turret: 4
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			starport: 1
+			light_factory: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			medium_gun_turret: 1
+			large_gun_turret: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, harkonnen07.lua, harkonnen07-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: H_BR07_E.VQA
+	MapOptions:
+		TechLevel: nopowers
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Atreides Main Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Atreides Small Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Atreides Main Base: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base: 0.274, -0.275, 1, 0.32, 0.34
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+combat_tank_a:
+	Buildable:
+		Prerequisites: ~heavy_factory, ~player.atreides
+
+combat_tank_h:
+	Buildable:
+		Prerequisites: ~heavy_factory, ~player.harkonnen
+
+combat_tank_a.starport:
+	Buildable:
+		Prerequisites: ~starport, ~player.atreides
+
+combat_tank_h.starport:
+	Buildable:
+		Prerequisites: ~starport, ~player.harkonnen
+
+sonic_tank:
+	Buildable:
+		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.atreides
+
+devastator:
+	Buildable:
+		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.harkonnen
+
+high_tech_factory:
+	AirstrikePower:
+		Prerequisites: upgrade.hightech
+
+upgrade.hightech:
+	Buildable:
+		Prerequisites: ~hightech.atreides
+
+palace:
+	Buildable:
+		Prerequisites: ~disabled
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~barracks, ~player.corrino
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+thumper:
+	Buildable:
+		Prerequisites: ~disabled

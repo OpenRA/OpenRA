@@ -1,0 +1,35 @@
+Metadata:
+	Title: All mods
+	Version: {DEV_VERSION}
+	Hidden: true
+
+FileSystem: DefaultFileSystem
+	Packages:
+		^EngineDir
+
+Cursors:
+
+Chrome:
+
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll, OpenRA.Mods.D2k.dll
+
+ChromeLayout:
+
+Notifications:
+
+LoadScreen: BlankLoadScreen
+
+ChromeMetrics:
+
+Fonts:
+
+SoundFormats:
+
+SpriteFormats:
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: DefaultSpriteSequence
+
+DiscordService:
+	ApplicationId: 699222659766026240

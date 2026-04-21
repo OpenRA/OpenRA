@@ -1,0 +1,239 @@
+Container@ASSETBROWSER_PANEL:
+	Logic: AssetBrowserLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 540
+	Children:
+		LogicTicker@ANIMATION_TICKER:
+		Label@ASSETBROWSER_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: label-assetbrowser-panel-title
+		Background@bg:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: panel-black
+			Children:
+				Label@SOURCE_SELECTOR_DESC:
+					X: 15
+					Y: 6
+					Width: 195
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: label-bg-source-selector-desc
+				DropDownButton@SOURCE_SELECTOR:
+					X: 15
+					Y: 30
+					Width: 195
+					Height: 25
+					Font: Bold
+					Text: dropdownbutton-bg-source-selector
+				DropDownButton@ASSET_TYPES_DROPDOWN:
+					X: 15
+					Y: 65
+					Width: 195
+					Height: 25
+					Font: Bold
+					Text: dropdownbutton-bg-asset-types-dropdown
+				Label@FILENAME_DESC:
+					X: 15
+					Y: 95
+					Width: 195
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: label-bg-filename-desc
+				TextField@FILENAME_INPUT:
+					X: 15
+					Y: 120
+					Width: 195
+					Height: 25
+					Type: Filename
+				ScrollPanel@ASSET_LIST:
+					X: 15
+					Y: 155
+					Width: 195
+					Height: PARENT_HEIGHT - 205
+					CollapseHiddenChildren: True
+					Children:
+						ScrollItem@ASSET_TEMPLATE:
+							Width: PARENT_WIDTH - 27
+							Height: 25
+							X: 2
+							Visible: false
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 10
+									Width: PARENT_WIDTH - 15
+									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+				Label@SPRITE_SCALE:
+					X: PARENT_WIDTH - WIDTH - 440
+					Y: 31
+					Width: 50
+					Height: 25
+					Font: Bold
+					Align: Left
+					Text: label-bg-sprite-scale
+				Slider@SPRITE_SCALE_SLIDER:
+					X: PARENT_WIDTH - WIDTH - 330
+					Y: 35
+					Width: 100
+					Height: 20
+					MinimumValue: 0.5
+					MaximumValue: 4
+				Label@PALETTE_DESC:
+					X: PARENT_WIDTH - WIDTH - 270
+					Y: 31
+					Width: 150
+					Height: 25
+					Font: Bold
+					Align: Right
+					Text: label-bg-palette-desc
+				DropDownButton@PALETTE_SELECTOR:
+					X: PARENT_WIDTH - WIDTH - 110
+					Y: 30
+					Width: 150
+					Height: 25
+					Font: Bold
+				DropDownButton@COLOR:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 30
+					Width: 80
+					Height: 25
+					Children:
+						ColorBlock@COLORBLOCK:
+							X: 5
+							Y: 6
+							Width: PARENT_WIDTH - 35
+							Height: PARENT_HEIGHT - 12
+				Background@SPRITE_BG:
+					X: 225
+					Y: 65
+					Width: PARENT_WIDTH - 195 - 45
+					Height: PARENT_HEIGHT - 115
+					Background: scrollpanel-bg
+					Children:
+						Sprite@SPRITE:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+						VideoPlayer@PLAYER:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							AspectRatio: 1
+						Label@ERROR:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Align: Center
+							Visible: false
+							Text: label-sprite-bg-error
+				Container@FRAME_SELECTOR:
+					X: 225
+					Y: PARENT_HEIGHT - 40
+					Width: PARENT_WIDTH - 225
+					Children:
+						Button@BUTTON_PREV:
+							Width: 26
+							Height: 26
+							Key: LEFT
+							Children:
+								Image@IMAGE_PREV:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: prev
+						Button@BUTTON_PLAY:
+							X: 35
+							Width: 26
+							Height: 26
+							Key: SPACE
+							Children:
+								Image@IMAGE_PLAY:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: play
+						Button@BUTTON_PAUSE:
+							Visible: false
+							X: 35
+							Width: 26
+							Height: 26
+							Key: SPACE
+							Children:
+								Image@IMAGE_PAUSE:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: pause
+						Button@BUTTON_STOP:
+							X: 70
+							Width: 26
+							Height: 26
+							Key: RETURN
+							Children:
+								Image@IMAGE_STOP:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: stop
+						Button@BUTTON_NEXT:
+							X: 105
+							Width: 26
+							Height: 26
+							Key: RIGHT
+							Children:
+								Image@IMAGE_NEXT:
+									X: 5
+									Y: 5
+									Width: 16
+									Height: 16
+									ImageCollection: music
+									ImageName: next
+						Slider@FRAME_SLIDER:
+							X: 140
+							Y: 3
+							Width: PARENT_WIDTH - 140 - 85
+							Height: 20
+							MinimumValue: 0
+						Label@FRAME_COUNT:
+							X: PARENT_WIDTH - WIDTH + 5
+							Y: 0
+							Width: 80
+							Height: 25
+							Font: TinyBold
+							Align: Left
+		Button@CLOSE_BUTTON:
+			Key: escape
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-back
+		TooltipContainer@TOOLTIP_CONTAINER:
+
+ScrollPanel@ASSET_TYPES_PANEL:
+	Width: 195
+	Height: 130
+	ItemSpacing: 5
+	TopBottomSpacing: 0
+	Children:
+		Checkbox@ASSET_TYPE_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_WIDTH - 29
+			Height: 20

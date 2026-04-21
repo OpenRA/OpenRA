@@ -1,0 +1,55 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, downunder.lua
+	MissionData:
+		Briefing: briefing
+		WinVideo: spy.vqa
+		LossVideo: execute.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+SPY:
+	RevealsShroud:
+		Range: 7c0
+
+4TNK:
+	AutoTarget:
+		InitialStanceAI: Defend
+
+TSLA:
+	Health:
+		HP: 300000
+
+GNRL:
+	Tooltip:
+		Name: actor-officer-name
+
+C5:
+	-Wanders:
+
+C6:
+	-Wanders:
+
+CHAN:
+	-Wanders:
+
+DTRK:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+	RevealsShroud:
+		Range: 4c0
+		ValidRelationships: Neutral
+		RequiresCondition: mission
+	ExternalCondition@mission:
+		Condition: mission

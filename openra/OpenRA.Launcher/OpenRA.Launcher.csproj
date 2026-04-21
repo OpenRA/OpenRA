@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<AssemblyName>OpenRA</AssemblyName>
+		<IsPublishable Condition="'$(CopyGenericLauncher)' == 'False'">false</IsPublishable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(RunConfiguration)' == 'Red Alert'">
+		<StartAction>Project</StartAction>
+		<StartArguments>Engine.EngineDir=".." Game.Mod=ra</StartArguments>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(RunConfiguration)' == 'Dune 2000'">
+		<StartAction>Project</StartAction>
+		<StartArguments>Engine.EngineDir=".." Game.Mod=d2k</StartArguments>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(RunConfiguration)' == 'Tiberian Dawn'">
+		<StartAction>Project</StartAction>
+		<StartArguments>Engine.EngineDir=".." Game.Mod=cnc</StartArguments>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(RunConfiguration)' == 'Tiberian Sun'">
+		<StartAction>Project</StartAction>
+		<StartArguments>Engine.EngineDir=".." Game.Mod=ts</StartArguments>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="App.config" />
+		<ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
+		<AdditionalFiles Include="Properties/launchSettings.json" />
+	</ItemGroup>
+</Project>

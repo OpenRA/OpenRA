@@ -1,0 +1,94 @@
+MapScrollUp: UP
+	Description: hotkey-description-mapscrollup
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapScrollDown: DOWN
+	Description: hotkey-description-mapscrolldown
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapScrollLeft: LEFT
+	Description: hotkey-description-mapscrollleft
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapScrollRight: RIGHT
+	Description: hotkey-description-mapscrollright
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapJumpToTopEdge: UP Alt
+	Description: hotkey-description-mapjumptotopedge
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapJumpToBottomEdge: DOWN Alt
+	Description: hotkey-description-mapjumptobottomedge
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapJumpToLeftEdge: LEFT Alt
+	Description: hotkey-description-mapjumptoleftedge
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapJumpToRightEdge: RIGHT Alt
+	Description: hotkey-description-mapjumptorightedge
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkSave01: Q Ctrl
+	Description: hotkey-description-mapbookmarksave01
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkRestore01: Q Alt
+	Description: hotkey-description-mapbookmarkrestore01
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkSave02: W Ctrl
+	Description: hotkey-description-mapbookmarksave02
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkRestore02: W Alt
+	Description: hotkey-description-mapbookmarkrestore02
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkSave03: E Ctrl
+	Description: hotkey-description-mapbookmarksave03
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkRestore03: E Alt
+	Description: hotkey-description-mapbookmarkrestore03
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkSave04: R Ctrl
+	Description: hotkey-description-mapbookmarksave04
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+MapBookmarkRestore04: R Alt
+	Description: hotkey-description-mapbookmarkrestore04
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+ZoomIn: RIGHTBRACKET
+	Description: hotkey-description-zoomin
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+ZoomOut: LEFTBRACKET
+	Description: hotkey-description-zoomout
+	Types: Viewport
+	Contexts: player, spectator, editor
+
+ResetZoom: PERIOD
+	Description: hotkey-description-resetzoom
+	Types: Viewport
+	Contexts: player, spectator, editor

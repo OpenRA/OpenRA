@@ -1,0 +1,215 @@
+ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@HEADER:
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 13
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_WIDTH - 20
+					Height: 25
+
+ScrollPanel@LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@HEADER:
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 13
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: BUTTON_TOOLTIP
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_WIDTH - 20
+					Height: 25
+
+ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_WIDTH - 20
+					Height: 25
+					Align: Left
+
+ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_WIDTH
+					Height: 25
+					Align: Center
+
+ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 0
+					Width: PARENT_WIDTH
+					Height: 25
+					Align: Center
+
+ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: observer-scrollpanel-button-pressed
+	ScrollBarBackground: observer-scrollpanel-button-pressed
+	Button: observer-scrollpanel-button
+	Children:
+		ScrollItem@HEADER:
+			Background: observer-scrollheader
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Background: observer-scrollitem
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			EnableChildMouseOver: true
+			Children:
+				Image@FLAG:
+					X: 4
+					Y: 6
+					Width: 32
+					Height: 16
+				LabelWithTooltip@LABEL:
+					X: 40
+					Width: PARENT_WIDTH - 42
+					Height: 25
+					Shadow: True
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@NOFLAG_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 7
+					Height: 25
+					Shadow: True
+
+ScrollPanel@SPECTATOR_LABEL_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Background: observer-scrollpanel-button-pressed
+	ScrollBarBackground: observer-scrollpanel-button-pressed
+	Button: observer-scrollpanel-button
+	Children:
+		ScrollItem@HEADER:
+			Background: observer-scrollitem
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 10
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Background: observer-scrollitem
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_WIDTH - 20
+					Height: 25
+
+ScrollPanel@NEWS_PANEL:
+	Width: 400
+	Height: 265
+	TopBottomSpacing: 15
+	ItemSpacing: 5
+	Children:
+		Container@NEWS_ITEM_TEMPLATE:
+			X: 10
+			Width: PARENT_WIDTH - 40
+			Height: 40
+			Children:
+				Label@TITLE:
+					Width: PARENT_WIDTH
+					Height: 15
+					Align: Center
+					Font: Bold
+				Label@AUTHOR_DATETIME:
+					Y: 20
+					Width: PARENT_WIDTH
+					Height: 15
+					Align: Center
+					Font: TinyBold
+				Label@CONTENT:
+					Y: 40
+					Width: PARENT_WIDTH
+		Label@NEWS_STATUS:
+			X: 80
+			Width: PARENT_WIDTH - 80 - 80 - 24
+			Height: PARENT_HEIGHT
+			Align: Center
+			VAlign: Middle

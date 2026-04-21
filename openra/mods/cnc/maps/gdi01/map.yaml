@@ -1,0 +1,240 @@
+MapFormat: 12
+
+RequiresMod: cnc
+
+Title: 01:   Storm the Beachhead
+
+Author: Westwood Studios
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 35,39,27,23
+
+Visibility: MissionSelector
+
+Categories: Campaign
+
+LockPreview: True
+
+Players:
+	PlayerReference@Nod:
+		Name: Nod
+		Faction: nod
+		Color: FE1100
+		Allies: Nod
+		Enemies: GDI
+		Bot: campaign
+	PlayerReference@GDI:
+		Name: GDI
+		Playable: True
+		AllowBots: False
+		Required: True
+		LockFaction: True
+		Faction: gdi
+		LockColor: True
+		Color: F5D378
+		LockSpawn: True
+		LockTeam: True
+		Allies: GDI
+		Enemies: Nod
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+
+Actors:
+	Actor0: sbag
+		Location: 48,55
+		Owner: Neutral
+	Actor1: sbag
+		Location: 47,55
+		Owner: Neutral
+	Actor2: sbag
+		Location: 49,54
+		Owner: Neutral
+	Actor3: sbag
+		Location: 48,54
+		Owner: Neutral
+	Actor42: tc01
+		Location: 59,39
+		Owner: Neutral
+	Actor45: tc02
+		Location: 33,31
+		Owner: Neutral
+	Actor47: tc02
+		Location: 55,44
+		Owner: Neutral
+	Actor59: tc01
+		Location: 58,31
+		Owner: Neutral
+	Actor60: tc01
+		Location: 60,37
+		Owner: Neutral
+	Actor61: tc02
+		Location: 48,39
+		Owner: Neutral
+	Actor62: t01
+		Location: 48,37
+		Owner: Neutral
+	Actor63: t06
+		Location: 41,52
+		Owner: Neutral
+	Actor64: t06
+		Location: 40,54
+		Owner: Neutral
+	Actor65: tc01
+		Location: 46,50
+		Owner: Neutral
+	Actor66: tc01
+		Location: 42,41
+		Owner: Neutral
+	Actor67: tc05
+		Location: 45,40
+		Owner: Neutral
+	Actor68: tc04
+		Location: 42,43
+		Owner: Neutral
+	Actor69: tc02
+		Location: 44,47
+		Owner: Neutral
+	Actor70: t02
+		Location: 45,44
+		Owner: Neutral
+	Actor71: t01
+		Location: 44,46
+		Owner: Neutral
+	Actor72: t07
+		Location: 44,44
+		Owner: Neutral
+	Actor73: t01
+		Location: 47,46
+		Owner: Neutral
+	Actor74: t16
+		Location: 45,50
+		Owner: Neutral
+	Actor75: tc02
+		Location: 48,47
+		Owner: Neutral
+	Actor76: t01
+		Location: 49,48
+		Owner: Neutral
+	Actor77: t01
+		Location: 56,45
+		Owner: Neutral
+	Actor78: tc05
+		Location: 56,41
+		Owner: Neutral
+	Actor79: tc04
+		Location: 58,45
+		Owner: Neutral
+	Actor80: t16
+		Location: 57,45
+		Owner: Neutral
+	Actor81: t01
+		Location: 39,51
+		Owner: Neutral
+	Actor82: t02
+		Location: 39,48
+		Owner: Neutral
+	Actor83: gun
+		Location: 46,55
+		Owner: Nod
+		Health: 50
+		Facing: 640
+	Actor84: gun
+		Location: 41,55
+		Owner: Nod
+		Health: 50
+		Facing: 640
+	Actor85: gun
+		Location: 49,55
+		Owner: Nod
+		Health: 19
+		Facing: 640
+	Actor92: e1
+		Location: 57,45
+		Owner: Nod
+		Facing: 640
+		SubCell: 2
+	Actor93: e1
+		Location: 56,41
+		Owner: Nod
+		Facing: 768
+		SubCell: 2
+	Actor94: e1
+		Location: 48,41
+		Owner: Nod
+		Facing: 384
+		SubCell: 3
+	Actor95: e1
+		Location: 59,45
+		Owner: Nod
+		Facing: 640
+		SubCell: 1
+	Actor96: e1
+		Location: 46,50
+		Owner: Nod
+		Facing: 384
+		SubCell: 3
+	Actor97: e1
+		Location: 48,47
+		Owner: Nod
+		Facing: 384
+		SubCell: 1
+	Actor98: e1
+		Location: 38,43
+		Owner: Nod
+		Facing: 512
+		SubCell: 4
+	Actor99: e1
+		Location: 38,43
+		Owner: Nod
+		Facing: 512
+		SubCell: 1
+	Actor100: e1
+		Location: 48,41
+		Owner: Nod
+		Facing: 384
+		SubCell: 2
+	Actor101: e1
+		Location: 41,39
+		Owner: Nod
+		Facing: 384
+		SubCell: 4
+	Gunboat: boat
+		Location: 51,59
+		Owner: GDI
+		Facing: 256
+	nod0: waypoint
+		Location: 36,39
+		Owner: Neutral
+	nod1: waypoint
+		Location: 37,46
+		Owner: Neutral
+	nod2: waypoint
+		Location: 38,55
+		Owner: Neutral
+	nod3: waypoint
+		Location: 52,52
+		Owner: Neutral
+	lstStart: waypoint
+		Location: 54,61
+		Owner: Neutral
+	lstEnd: waypoint
+		Location: 54,57
+		Owner: Neutral
+	mcvTarget: waypoint
+		Location: 56,53
+		Owner: Neutral
+	reinforcementsTarget: waypoint
+		Location: 54,53
+		Owner: Neutral
+
+Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
+
+Weapons: weapons.yaml
+
+FluentMessages: cnc|fluent/lua.ftl, cnc|fluent/campaign.ftl, map.ftl

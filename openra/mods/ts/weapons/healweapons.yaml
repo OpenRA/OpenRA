@@ -1,0 +1,28 @@
+^HealWeapon:
+	ReloadDelay: 80
+	Range: 2c849
+	Report: healer1.aud
+	ValidTargets: Heal
+	TargetActorCenter: true
+	Projectile: InstantHit
+	Warhead@1Eff: FlashTargetsInRadius
+		ValidTargets: Heal
+		ValidRelationships: Ally
+	Warhead@2Dam: TargetDamage
+		DebugOverlayColor: 00FF00
+		Damage: -5000
+		ValidTargets: Heal
+		ValidRelationships: Ally
+
+Heal:
+	Inherits: ^HealWeapon
+
+Repair:
+	Inherits: ^HealWeapon
+	Range: 1c819
+	Report: repair11.aud
+	ValidTargets: Repair
+	Warhead@1Eff: FlashTargetsInRadius
+		ValidTargets: Repair
+	Warhead@2Dam: TargetDamage
+		ValidTargets: Repair

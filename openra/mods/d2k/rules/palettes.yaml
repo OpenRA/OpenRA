@@ -1,0 +1,36 @@
+^Palettes:
+	PaletteFromFile:
+		Name: terrain
+		Filename: PALETTE.BIN
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: PALETTE.BIN
+		ShadowIndex: 1
+		CursorPalette: true
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: PALETTE.BIN
+		ShadowIndex: 3
+		AllowModifiers: false
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: PALETTE.BIN
+		ShadowIndex: 1
+		AllowModifiers: false
+	ColorPickerPalette@colorpicker:
+		Name: colorpicker
+		BasePalette: d2k
+		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+		AllowModifiers: false
+	PlayerColorPalette:
+		BasePalette: d2k
+		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
+	MenuPostProcessEffect:
+		FadeInLength: 4
+	FlashPostProcessEffect:
+	ColorPickerColorShift:
+		BasePalette: colorpicker
+		MinHue: 0.32
+		MaxHue: 0.34
+	PlayerColorShift:
+		BasePalette: player

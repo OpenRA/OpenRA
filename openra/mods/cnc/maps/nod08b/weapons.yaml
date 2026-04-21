@@ -1,0 +1,7 @@
+Napalm.IN:
+	Inherits: Napalm
+	Projectile: GravityBomb
+		Image: BOMBLET
+	Warhead@1Dam: SpreadDamage
+		Spread: 1000
+		Damage: 150000

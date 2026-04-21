@@ -1,0 +1,969 @@
+C1:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+
+C2:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian2
+	WithDeathAnimation:
+		DeathSequencePalette: civilian2
+		DeathPaletteIsPlayerPalette: false
+
+C3:
+	Inherits: ^CivInfantry
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+	RenderSprites:
+		Image: C2
+
+C4:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C2
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+	WithInfantryBody:
+		Palette: civilian4
+	WithDeathAnimation:
+		DeathSequencePalette: civilian4
+		DeathPaletteIsPlayerPalette: false
+
+C5:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C2
+	Voiced:
+		VoiceSet: CivilianFemaleVoice
+	WithInfantryBody:
+		Palette: civilian5
+	WithDeathAnimation:
+		DeathSequencePalette: civilian5
+		DeathPaletteIsPlayerPalette: false
+
+C6:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian6
+	WithDeathAnimation:
+		DeathSequencePalette: civilian6
+		DeathPaletteIsPlayerPalette: false
+
+C7:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian7
+	WithDeathAnimation:
+		DeathSequencePalette: civilian7
+		DeathPaletteIsPlayerPalette: false
+
+C8:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian8
+	WithDeathAnimation:
+		DeathSequencePalette: civilian8
+		DeathPaletteIsPlayerPalette: false
+
+C9:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian9
+	WithDeathAnimation:
+		DeathSequencePalette: civilian9
+		DeathPaletteIsPlayerPalette: false
+
+C10:
+	Inherits: ^CivInfantry
+	RenderSprites:
+		Image: C1
+	Tooltip:
+		Name: actor-c10-name
+	WithInfantryBody:
+		Palette: civilian10
+	WithDeathAnimation:
+		DeathSequencePalette: civilian10
+		DeathPaletteIsPlayerPalette: false
+
+C11:
+	Inherits: ^CivInfantry
+
+TECN:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	Tooltip:
+		Name: actor-tecn-name
+	Selectable:
+		Class: Technician
+	RenderSprites:
+		Image: C1
+
+TECN2:
+	Inherits@1: ^CivInfantry
+	Inherits@2: ^ArmedCivilian
+	Tooltip:
+		Name: actor-tecn2-name
+	Selectable:
+		Class: Technician
+	RenderSprites:
+		Image: C1
+	WithInfantryBody:
+		Palette: civilian7
+	WithDeathAnimation:
+		DeathSequencePalette: civilian7
+		DeathPaletteIsPlayerPalette: false
+
+FCOM:
+	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 2048, 2048
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: xx xx ==
+		Dimensions: 2,3
+		LocalCenterOffset: 0,-512,0
+	Health:
+		HP: 80000
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: actor-fcom.name
+	TooltipDescription@ally:
+		Description: actor-fcom.captured-desc
+		ValidRelationships: Ally
+	TooltipDescription@other:
+		Description: actor-fcom.capturable-desc
+		ValidRelationships: Neutral, Enemy
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	WithBuildingBib:
+	CaptureManager:
+		BeingCapturedCondition: being-captured
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
+	GivesBuildableArea:
+		AreaTypes: building
+	BaseProvider:
+		PauseOnCondition: being-captured
+		Range: 8c0
+	InstantlyRepairable:
+	Power:
+		Amount: 0
+	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
+	GpsDot:
+		String: Forward
+
+HOSP:
+	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
+	OwnerLostAction:
+		Action: ChangeOwner
+	Selectable:
+		Priority: 0
+		Bounds: 2048, 2048
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 80000
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
+	InstantlyRepairable:
+	Tooltip:
+		Name: actor-hosp.name
+	TooltipDescription@ally:
+		Description: actor-hosp.captured-desc
+		ValidRelationships: Ally
+	TooltipDescription@other:
+		Description: actor-hosp.capturable-desc
+		ValidRelationships: Neutral, Enemy
+	RevealsShroud:
+		Range: 4c0
+	WithBuildingBib:
+		HasMinibib: true
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
+	GpsDot:
+		String: Hospital
+
+V01:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: actor-v01-name
+	RevealsShroud:
+		Range: 10c0
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-384,0, 0,0,0, 0,470,0
+		Type: Rectangle
+			TopLeft: -768, -597
+			BottomRight: 896, 683
+
+V02:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 0,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 597
+
+V03:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -490,-512,0, 0,0,0, 421,512,0, -210,512,0
+		Type: Rectangle
+			TopLeft: -1024, -597
+			BottomRight: 1024, 597
+
+V04:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, -421,-256,0, -421,256,0
+		Type: Rectangle
+			TopLeft: -683, -432
+			BottomRight: 683, 683
+
+V05:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V06:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V07:
+	Inherits: ^CivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V08:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V09:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V10:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V11:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V12:
+	Inherits: ^CivHaystackOrIgloo
+
+V13:
+	Inherits: ^CivHaystackOrIgloo
+
+V14:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V15:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V16:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V17:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V18:
+	Inherits: ^CivField
+	MapEditorData:
+		ExcludeTilesets: DESERT, INTERIOR
+
+V19:
+	Inherits: ^CivBuilding
+	RenderSprites:
+		Palette: player
+	Tooltip:
+		Name: actor-v19-name
+	SpawnActorOnDeath:
+		Actor: V19.Husk
+	Targetable:
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, NoAutoTarget
+
+V19.Husk:
+	Inherits: ^CivBuilding
+	RenderSprites:
+		Palette: player
+	Tooltip:
+		Name: actor-v19-husk-name
+	WithSpriteBody:
+	WithIdleOverlay:
+		StartSequence: fire-start
+		Sequence: fire-loop
+	-Selectable:
+	-Targetable:
+	-Demolishable:
+	-HitShape:
+	-Health:
+	-FireWarheadsOnDeath:
+	-FireWarheadsOnDeath@CIVPANIC:
+	Interactable:
+
+BARL:
+	Inherits: ^TechBuilding
+	-Selectable:
+	Health:
+		HP: 1000
+	FireWarheadsOnDeath:
+		Weapon: BarrelExplode
+	Tooltip:
+		Name: actor-barl-name
+		ShowOwnerRow: False
+	Armor:
+		Type: None
+	Targetable:
+		TargetTypes: GroundActor, DemoTruck, Barrel, NoAutoTarget
+	-ShakeOnDeath:
+	-SoundOnDamageTransition:
+	-Demolishable:
+	MapEditorData:
+		Categories: Decoration
+	Interactable:
+		Bounds: 1024, 1024
+
+BRL3:
+	Inherits: ^TechBuilding
+	-Selectable:
+	Health:
+		HP: 1000
+	FireWarheadsOnDeath:
+		Weapon: BarrelExplode
+	Tooltip:
+		Name: actor-brl3-name
+		ShowOwnerRow: False
+	Armor:
+		Type: None
+	Targetable:
+		TargetTypes: GroundActor, DemoTruck, Barrel, NoAutoTarget
+	-ShakeOnDeath:
+	-SoundOnDamageTransition:
+	-Demolishable:
+	MapEditorData:
+		Categories: Decoration
+	Interactable:
+		Bounds: 1024, 1024
+
+AMMOBOX1:
+	Inherits: ^AmmoBox
+
+AMMOBOX2:
+	Inherits: ^AmmoBox
+
+AMMOBOX3:
+	Inherits: ^AmmoBox
+
+MISS:
+	Inherits: ^TechBuilding
+	Inherits@shape: ^3x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 840,0,0, 840,-1024,0, 420,768,0, -840,0,0, -840,-1024,0, -840,1024,0
+	Selectable:
+		Priority: 0
+		Bounds: 3072, 2048
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: xxx xxx ===
+		Dimensions: 3,3
+		LocalCenterOffset: 0,-512,0
+	Health:
+		HP: 60000
+	RevealsShroud:
+		MinRange: 6c0
+		Range: 10c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: actor-miss.name
+	TooltipDescription@ally:
+		Description: actor-miss.captured-desc
+		ValidRelationships: Ally
+	TooltipDescription@other:
+		Description: actor-miss.capturable-desc
+		ValidRelationships: Neutral, Enemy
+	WithBuildingBib:
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
+	InstantlyRepairable:
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
+	GpsDot:
+		String: Communications
+
+BIO:
+	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
+	Selectable:
+		Bounds: 2048, 2048
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	RevealsShroud:
+		Range: 4c0
+	CaptureManager:
+	CapturableProgressBlink:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	InstantlyRepairable:
+	Tooltip:
+		Name: actor-bio.name
+	TooltipDescription@ally:
+		Description: actor-bio.captured-desc
+		ValidRelationships: Ally
+	TooltipDescription@other:
+		Description: actor-bio.capturable-desc
+		ValidRelationships: Neutral, Enemy
+	WithDeathAnimation:
+		DeathSequence: dead
+		UseDeathTypeSuffix: false
+	ProvidesPrerequisite@buildingname:
+	AppearsOnMapPreview:
+	GpsDot:
+		String: Biohazard
+
+OILB:
+	Inherits: ^TechBuilding
+	Inherits@shape: ^2x2Shape
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 630,-300,0, 420,512,0, -420,-512,0, -630,300,0
+	Selectable:
+		Priority: 0
+		Bounds: 2048, 2048
+	OwnerLostAction:
+		Action: ChangeOwner
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 80000
+	RevealsShroud:
+		Range: 4c0
+	CaptureManager:
+	Capturable:
+		Types: building
+	CapturableProgressBar:
+	CapturableProgressBlink:
+	InstantlyRepairable:
+	CashTrickler:
+		Interval: 375
+		Amount: 100
+		RequiresCondition: enabled
+	Tooltip:
+		Name: actor-oilb.name
+	TooltipDescription@ally:
+		Description: actor-oilb.captured-desc
+		ValidRelationships: Ally
+	TooltipDescription@other:
+		Description: actor-oilb.capturable-desc
+		ValidRelationships: Neutral, Enemy
+	FireWarheadsOnDeath:
+		Weapon: BarrelExplode
+	GpsDot:
+		String: Oil
+	AppearsOnMapPreview:
+	GivesCashOnCapture:
+		Amount: 100
+	UpdatesDerrickCount:
+	GrantConditionOnCombatantOwner:
+		Condition: enabled
+
+BR1:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 235
+		DamagedTemplate: 236
+		DestroyedTemplate: 237
+		SouthOffset: 0,2
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 2,0
+		RequiresCondition: !desert-bridge
+	FreeActor@DESERT:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+		RequiresCondition: desert-bridge
+	GrantConditionOnTileSet@DESERT:
+		Condition: desert-bridge
+		TileSets: DESERT
+
+BR2:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 238
+		DamagedTemplate: 239
+		DestroyedTemplate: 240
+		NorthOffset: 3,0
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,1
+		RequiresCondition: !desert-bridge
+	FreeActor@DESERT:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+		RequiresCondition: desert-bridge
+	GrantConditionOnTileSet@DESERT:
+		Condition: desert-bridge
+		TileSets: DESERT
+
+BR3:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Long: true
+		ShorePieces: br1,br2
+		Template: 241
+		DamagedTemplate: 242
+		DestroyedTemplate: 243
+		DestroyedPlusNorthTemplate: 245
+		DestroyedPlusSouthTemplate: 244
+		DestroyedPlusBothTemplate: 246
+		NorthOffset: 2,0
+		SouthOffset: 0,1
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 131
+		DamagedTemplate: 378
+		DestroyedTemplate: 132
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 5120, 3072
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 133
+		DamagedTemplate: 379
+		DestroyedTemplate: 134
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 5120, 2048
+
+BRIDGE3:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 620
+		DamagedTemplate: 621
+		DestroyedTemplate: 622
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 1, -1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+	Interactable:
+		Bounds: 4096, 2048
+
+BRIDGE4:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 624
+		DamagedTemplate: 625
+		DestroyedTemplate: 626
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 1, -1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+	Interactable:
+		Bounds: 4096, 2048
+
+SBRIDGE1:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 520
+		DamagedTemplate: 521
+		DestroyedTemplate: 522
+	Building:
+		Footprint: ___ ___
+		Dimensions: 3,2
+	FreeActor@north:
+		Actor: bridgehut.small
+		SpawnOffset: 1,0
+	FreeActor@south:
+		Actor: bridgehut.small
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 3072, 2048
+
+SBRIDGE2:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 531
+		DamagedTemplate: 532
+		DestroyedTemplate: 533
+	Building:
+		Footprint: __ __ __
+		Dimensions: 2,3
+	FreeActor@west:
+		Actor: bridgehut.small
+		SpawnOffset: 0,1
+	FreeActor@east:
+		Actor: bridgehut.small
+		SpawnOffset: 1,1
+	Interactable:
+		Bounds: 2048, 3072
+
+SBRIDGE3:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 523
+		DamagedTemplate: 524
+		DestroyedTemplate: 525
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
+
+SBRIDGE4:
+	Inherits: ^Bridge
+	Inherits@EXPLOSIVE: ^ExplosiveBridge
+	Bridge:
+		Template: 527
+		DamagedTemplate: 528
+		DestroyedTemplate: 529
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+
+BRIDGEHUT:
+	Building:
+		Footprint: __ __
+		Dimensions: 2,2
+	Selectable:
+		Bounds: 2048, 2048
+		Priority: 2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
+
+BRIDGEHUT.small:
+	Building:
+		Footprint: _
+		Dimensions: 1,1
+	Selectable:
+		Bounds: 1024, 1024
+		Priority: 2
+	LegacyBridgeHut:
+	Targetable:
+		TargetTypes: BridgeHut, C4
+
+V20:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -840,-512,0, 0,0,0, -840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -512
+			BottomRight: 1024, 896
+
+V21:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 840,-512,0, 420,0,0, 840,512,0
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 0
+	HitShape@WELL:
+		TargetableOffsets: -770,512,0
+		Type: Rectangle
+			TopLeft: 0, 0
+			BottomRight: 1024, 598
+
+V22:
+	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V23:
+	Inherits: ^DesertCivBuilding
+
+V24:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: -630,-512,0, 0,0,0, -630,256,0, 420,-512,0
+		Type: Rectangle
+			TopLeft: -1024, -683
+			BottomRight: 640, 853
+
+V25:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: actor-v25-name
+	RevealsShroud:
+		Range: 10c0
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,-128,0, 420,512,0
+		Type: Rectangle
+			TopLeft: -683, -683
+			BottomRight: 1024, 512
+
+V26:
+	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V27:
+	Inherits: ^DesertCivBuilding
+
+V28:
+	Inherits: ^DesertCivBuilding
+
+V29:
+	Inherits: ^DesertCivBuilding
+
+V30:
+	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V31:
+	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V32:
+	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V33:
+	Inherits: ^DesertCivBuilding
+	Inherits@shape: ^2x1Shape
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V34:
+	Inherits: ^DesertCivBuilding
+
+V35:
+	Inherits: ^DesertCivBuilding
+
+V36:
+	Inherits: ^DesertCivBuilding
+
+V37:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: __xx_ ___xx
+		Dimensions: 5,2
+	HitShape:
+		UseTargetableCellsOffsets: false
+		TargetableOffsets: 0,0,0, 0,1024,0
+		Type: Rectangle
+			TopLeft: -512, -597
+			BottomRight: 1536, 597
+
+RICE:
+	Inherits: ^CivField
+	MapEditorData:
+		RequireTilesets: TEMPERAT
+
+RUSHOUSE:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		RequireTilesets: TEMPERAT
+	Building:
+		Footprint: x x
+		Dimensions: 1,2
+	HitShape:
+		UseTargetableCellsOffsets: false
+
+ASIANHUT:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		RequireTilesets: TEMPERAT
+
+SNOWHUT:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		RequireTilesets: SNOW
+	Building:
+		Footprint: x x
+		Dimensions: 1,2
+	HitShape:
+		UseTargetableCellsOffsets: false
+
+LHUS:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		RequireTilesets: TEMPERAT
+	Selectable:
+		Bounds: 1024, 2048, 0, -682
+	Tooltip:
+		Name: actor-lhus-name
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+
+WINDMILL:
+	Inherits: ^CivBuilding
+	MapEditorData:
+		RequireTilesets: TEMPERAT
+	Selectable:
+		Bounds: 1024, 1024, 0, -597
+		DecorationBounds: 1536, 1536, 0, -597
+	Tooltip:
+		Name: actor-windmill-name
+	Building:
+		Footprint: x
+		Dimensions: 1,1

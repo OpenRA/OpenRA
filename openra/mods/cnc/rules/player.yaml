@@ -1,0 +1,85 @@
+^BasePlayer:
+	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Tiberium: 35
+			BlueTiberium: 60
+
+EditorPlayer:
+	Inherits: ^BasePlayer
+
+Player:
+	Inherits: ^BasePlayer
+	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: notification-new-construction-options
+		CannotPlaceTextNotification: notification-cannot-deploy-here
+	TechTree:
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
+	ConquestVictoryConditions:
+	PowerManager:
+		SpeechNotification: LowPower
+		TextNotification: notification-low-power
+	AllyRepair:
+	PlayerResources:
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
+		SelectableCash: 2500, 5000, 7500, 10000, 20000
+		DefaultCash: 7500
+	DeveloperMode:
+		CheckboxDisplayOrder: 9
+	DamageNotifier:
+		ValidTargets: Structure
+		Notification: BaseAttack
+		TextNotification: notification-base-under-attack
+		AllyTextNotification: notification-ally-under-attack
+	DamageNotifier@Unit:
+		InvalidTargets: Structure
+		NotifyInterval: 10000
+	Shroud:
+		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		ID: factundeploy
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
+		Enabled: True
+		DisplayOrder: 7
+		Prerequisites: global-factundeploy
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		ID: C17-Stealth
+		Label: checkbox-stealth-deliveries.label
+		Description: checkbox-stealth-deliveries.description
+		Enabled: False
+		DisplayOrder: 8
+		Prerequisites: global-C17-stealth
+	PlayerStatistics:
+	FrozenActorLayer:
+	PlaceBeacon:
+	ProvidesTechPrerequisite@low:
+		Name: options-tech-level.low
+		Prerequisites: techlevel.low
+		Id: low
+	ProvidesTechPrerequisite@medium:
+		Name: options-tech-level.medium
+		Prerequisites: techlevel.low, techlevel.medium
+		Id: medium
+	ProvidesTechPrerequisite@nosuper:
+		Name: options-tech-level.no-powers
+		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
+		Id: nopowers
+	ProvidesTechPrerequisite@all:
+		Name: options-tech-level.unrestricted
+		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
+		Id: unrestricted
+	GrantConditionOnPrerequisiteManager:
+	ResourceStorageWarning:
+		TextNotification: notification-silos-needed
+	PlayerExperience:
+	GameSaveViewportManager:
+	PlayerRadarTerrain:

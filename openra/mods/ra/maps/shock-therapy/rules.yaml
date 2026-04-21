@@ -1,0 +1,31 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, shock-therapy.lua
+	MissionData:
+		WinVideo: sovtstar.vqa
+		LossVideo: sovcemet.vqa
+		Briefing: briefing
+
+^CivInfantry:
+	MustBeDestroyed:
+
+SHOCKDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: SHOK, SHOK, SHOK, SHOK, SHOK
+
+HOSP:
+	MustBeDestroyed:
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+powerproxy.parabombs:
+	AirstrikePower:
+		DisplayBeacon: False

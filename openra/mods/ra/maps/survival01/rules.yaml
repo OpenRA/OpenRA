@@ -1,0 +1,155 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, survival01.lua
+	MissionData:
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
+	IndexedPlayerPalette@NOSHADOW:
+		PlayerIndex:
+			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+powerproxy.allied:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: ARTY,ARTY,ARTY
+
+CAMERA.sam:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+
+AFLD.mission:
+	Inherits: AFLD
+	-AirstrikePower@spyplane:
+	-ParatroopersPower@paratroopers:
+	-AirstrikePower@parabombs:
+	-SupportPowerChargeBar:
+	RenderSprites:
+		Image: AFLD
+
+ATEK.mission:
+	Inherits: ATEK
+	GpsPower:
+		ChargeInterval: 0
+	Power:
+		Amount: 0
+	-Selectable:
+	-Targetable:
+	-GivesBuildableArea:
+	-Huntable:
+	RenderSprites:
+		Image: ATEK
+	Interactable:
+
+GUN:
+	Valued:
+		Cost: 1000
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled

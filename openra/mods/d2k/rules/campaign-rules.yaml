@@ -1,0 +1,512 @@
+Player:
+	-ConquestVictoryConditions:
+	MissionObjectives:
+		EarlyGameOver: true
+		GameOverDelay: 3000
+	Shroud:
+		FogCheckboxVisible: False
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		ExploredMapCheckboxVisible: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
+	PlayerResources:
+		DefaultCashDropdownVisible: False
+		DefaultCashDropdownLocked: True
+	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
+		Enabled: False
+		Locked: True
+		Visible: False
+	DeveloperMode:
+		CheckboxVisible: False
+		CheckboxEnabled: true
+	ModularBot@CampaignAI:
+		Name: bot-campaign-ai.name
+		Type: campaign
+	GrantConditionOnBotOwner@campaign:
+		Condition: campaign-ai
+		Bots: campaign
+	ProvidesPrerequisite@autoConcreteForBots:
+		Prerequisite: global-auto-concrete
+		RequiresCondition: campaign-ai
+
+World:
+	-CrateSpawner:
+	-SpawnStartingUnits:
+	-MapStartingLocations:
+	ObjectivesPanel:
+		PanelName: MISSION_OBJECTIVES
+	ActorSpawnManager:
+		Minimum: 0
+		Maximum: 1
+		InitialDelay: 5000
+	MapCreeps:
+		CheckboxVisible: False
+		CheckboxLocked: True
+		CheckboxEnabled: True
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxVisible: False
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		BuildRadiusCheckboxVisible: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
+	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
+		TechLevelDropdownVisible: False
+		TechLevelDropdownLocked: True
+	TimeLimitManager:
+		TimeLimitDropdownVisible: False
+
+^AutoTargetGroundAssaultMove:
+	GrantConditionOnBotOwner@BOTOWNER:
+		Bots: campaign
+
+^AutoTargetAllAssaultMove:
+	GrantConditionOnBotOwner@BOTOWNER:
+		Bots: campaign
+
+sandworm:
+	Sandworm:
+		ChanceToDisappear: 40
+
+sandworm.script:
+	Inherits: sandworm
+	Sandworm:
+		ChanceToDisappear: 50
+	RenderSprites:
+		Image: sandworm
+	ScriptTags:
+	WithMakeAnimation:
+		Sequence: mouth
+		Condition: eating
+	Mobile:
+		PauseOnCondition: eating
+	AmbientSound:
+		RequiresCondition: !attacking && !eating
+	AmbientSound@make:
+		RequiresCondition: eating
+		SoundFiles: WORM.WAV
+
+harvester:
+	-MustBeDestroyed:
+
+silo:
+	-MustBeDestroyed:
+
+saboteur:
+	ExternalCondition@script:
+		Condition: triggered
+
+crate:
+	Crate:
+		Duration: 0
+	ScriptTriggers:
+	-HideMapCrateAction:
+	-RevealMapCrateAction:
+
+crate_explosion:
+	Crate:
+	ScriptTriggers:
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+	MapEditorData:
+		Categories: Debris
+	Interactable:
+		Bounds: 640, 640
+	ExplodeCrateAction:
+		Weapon: CrateExplosion
+		SelectionShares: 100
+
+crate_reveal:
+	Crate:
+	ScriptTriggers:
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+	MapEditorData:
+		Categories: Debris
+	Interactable:
+		Bounds: 640, 640
+	RevealMapCrateAction:
+		SelectionShares: 100
+		Sequence: reveal-map
+		Sound: SONIC3.WAV
+
+crate_script:
+	ScriptTriggers:
+	Crate:
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+	MapEditorData:
+		Categories: Debris
+	Interactable:
+		Bounds: 640, 640
+	GrantExternalConditionCrateAction:
+		SelectionShares: 100
+		Sequence: reveal-map
+		Sound: MULTI1.WAV
+		Condition: activator
+		Duration: 500
+
+vision_provider:
+	Interactable:
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+	ExternalCondition:
+		Condition: activate
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+		RequiresCondition: activate
+
+debris.small:
+	Inherits: ^SpriteActor
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	ThrowsParticle@debris01:
+		Anim: tankdebris01
+	ThrowsParticle@debris02:
+		Anim: tankdebris02
+		Offset: 256,128,0
+	ThrowsParticle@debris03:
+		Anim: tankdebris03
+	ThrowsParticle@debris04:
+		Anim: tankdebris04
+
+debris.large:
+	Inherits: debris.small
+	RenderSprites:
+		Image: debris.small
+	ThrowsParticle@debris01:
+		MaxThrowRange: 1c0
+	ThrowsParticle@debris02:
+		Offset: 256,128,0
+		MaxThrowRange: 1c0
+	ThrowsParticle@debris03:
+		MaxThrowRange: 1c0
+	ThrowsParticle@debris04:
+		MaxThrowRange: 1c0
+	ThrowsParticle@debris05:
+		Anim: tankdebris01
+		Offset: -512,480,0
+		MaxThrowRange: 1c0
+	ThrowsParticle@debris06:
+		Anim: tankdebris02
+		Offset: 236,128,250
+	ThrowsParticle@debris07:
+		Anim: tankdebris03
+		Offset: 756,312,512
+	ThrowsParticle@debris08:
+		Anim: tankdebris04
+		Offset: 0,512,326
+	MapEditorData:
+		Categories: Debris
+
+^Debris:
+	Inherits@1: ^SpriteActor
+	Interactable:
+	Health:
+		HP: 10000
+	Armor:
+		Type: light
+	FireWarheadsOnDeath:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	ScriptTriggers:
+	WithFacingSpriteBody:
+	HitShape:
+		Type: Circle
+			Radius: 1024
+	MapEditorData:
+		Categories: Debris
+	Husk:
+	Targetable:
+		TargetTypes: Ground, Vehicle, Husk
+		RequiresForceFire: true
+
+carryall.debris:
+	Inherits@1: ^Debris
+	Interactable:
+		Bounds: 1024, 1024, 0, 0
+	WithIdleOverlay@1:
+		Sequence: 1
+	WithIdleOverlay@2:
+		Sequence: 2
+	WithIdleOverlay@3:
+		Sequence: 3
+	Husk:
+		Locomotor: tank
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 2, 10
+		RandomFacing: true
+		RandomRate: 4
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: -1
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@debris1:
+		Actor: debris.large
+		OwnerType: InternalName
+
+frigate.debris:
+	Inherits@1: ^Debris
+	Inherits@2: ^ExistsInWorld
+	WithIdleOverlay@1:
+		Sequence: 1
+	WithIdleOverlay@2:
+		Sequence: 2
+	WithIdleOverlay@3:
+		Sequence: 3
+	Interactable:
+		Bounds: 2048, 2048
+	-WithFacingSpriteBody:
+	-Husk:
+	WithSpriteBody:
+	CombatDebugOverlay:
+	Targetable:
+		TargetTypes: Ground, C4, Structure
+		RequiresForceFire: false
+	Building:
+		Footprint: _X XX
+		Dimensions: 2,2
+		LocalCenterOffset: 0,0,0
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1024, -1024
+			BottomRight: 1024, 1024
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		Offset: -128,512,200
+		SpawnFrequency: 2, 10
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: -1
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+		Offset: 0,1
+	SpawnActorOnDeath@1:
+		Actor: crate
+		OwnerType: InternalName
+		Offset: 1,1
+	SpawnActorOnDeath@debris:
+		Actor: debris.small
+		OwnerType: InternalName
+		Offset: 0,1
+	SpawnActorOnDeath@debris1:
+		Actor: debris.large
+		OwnerType: InternalName
+		Offset: 1,1
+
+harvester.debris:
+	Inherits@1: ^Debris
+	Interactable:
+	Transforms:
+		IntoActor: sandworm.script
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 2, 10
+		RandomFacing: true
+		RandomRate: 4
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: -1
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@1:
+		Actor: debris.small
+		OwnerType: InternalName
+
+combat_tank_a.debris:
+	Inherits: combat_tank_a.husk
+	RenderSprites:
+		Image: combat_tank_a.husk
+	ThrowsParticle@turret:
+		Anim: turret
+		TurnSpeed: 150
+		MaxThrowRange: 512
+	WithColoredOverlay@husk:
+		Color: 00000040
+	-FloatingSpriteEmitter@SMOKE:
+	-WithIdleOverlay@Burns:
+	-GrantRandomCondition:
+	-ChangesHealth:
+	MapEditorData:
+		Categories: Debris
+	Transforms:
+		IntoActor: sandworm.script
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@1:
+		Actor: debris.small
+		OwnerType: InternalName
+
+combat_tank_h.debris:
+	Inherits: combat_tank_h.husk
+	RenderSprites:
+		Image: combat_tank_h.husk
+	ThrowsParticle@turret:
+		Anim: turret
+		TurnSpeed: 150
+		MaxThrowRange: 512
+	WithColoredOverlay@husk:
+		Color: 00000040
+	Transforms:
+		IntoActor: sandworm.script
+	MapEditorData:
+		Categories: Debris
+	-FloatingSpriteEmitter@SMOKE:
+	-WithIdleOverlay@Burns:
+	-GrantRandomCondition:
+	-ChangesHealth:
+	-HiddenUnderFog:
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 20, 50
+		RandomFacing: true
+		RandomRate: 7
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: -1
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@1:
+		Actor: debris.small
+		OwnerType: InternalName
+
+combat_tank_o.debris:
+	Inherits: combat_tank_o.husk
+	RenderSprites:
+		Image: combat_tank_o.husk
+	ThrowsParticle@turret:
+		Anim: turret
+		TurnSpeed: 150
+		MaxThrowRange: 512
+	-WithColoredOverlay@husk:
+	Transforms:
+		IntoActor: sandworm.script
+	MapEditorData:
+		Categories: Debris
+	-FloatingSpriteEmitter@SMOKE:
+	-WithIdleOverlay@Burns:
+	-GrantRandomCondition:
+	-ChangesHealth:
+	-HiddenUnderFog:
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@1:
+		Actor: debris.small
+		OwnerType: InternalName
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 20, 50
+		RandomFacing: true
+		RandomRate: 7
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: -1
+
+siege_tank.debris:
+	Inherits: siege_tank.husk
+	RenderSprites:
+		Image: siege_tank.husk
+	-FloatingSpriteEmitter@SMOKE:
+	-WithIdleOverlay@Burns:
+	-GrantRandomCondition:
+	-ChangesHealth:
+	-HiddenUnderFog:
+	-WithColoredOverlay@husk:
+	MapEditorData:
+		Categories: Debris
+	Transforms:
+		IntoActor: sandworm.script
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@1:
+		Actor: debris.small
+		OwnerType: InternalName
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 20, 50
+		RandomFacing: true
+		RandomRate: 7
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: -1
+
+missile_tank.debris:
+	Inherits: missile_tank.husk
+	RenderSprites:
+		Image: missile_tank.husk
+	-FloatingSpriteEmitter@SMOKE:
+	-WithIdleOverlay@Burns:
+	-GrantRandomCondition:
+	-ChangesHealth:
+	-HiddenUnderFog:
+	-WithColoredOverlay@husk:
+	MapEditorData:
+		Categories: Debris
+	Transforms:
+		IntoActor: sandworm.script
+	SpawnActorOnDeath:
+		Actor: crate
+		OwnerType: InternalName
+	SpawnActorOnDeath@1:
+		Actor: debris.small
+		OwnerType: InternalName
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 20, 50
+		RandomFacing: true
+		RandomRate: 7
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: -1

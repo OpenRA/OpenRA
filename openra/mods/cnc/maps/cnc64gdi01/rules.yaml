@@ -1,0 +1,38 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, cnc64gdi01.lua
+	MusicPlaylist:
+		StartingMusic: aoi
+	MissionData:
+		Briefing: briefing
+		StartVideo: obel.vqa
+		WinVideo: orcabomb.vqa
+		LossVideo: cutout.vqa
+
+Player:
+	PlayerResources:
+		DefaultCash: 10000
+
+BIO.Husk:
+	Tooltip:
+		ShowOwnerRow: false
+
+EYE:
+	IonCannonPower:
+		Prerequisites: ~disabled
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
+
+STNK:
+	Buildable:
+		Prerequisites: ~techlevel.high
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled

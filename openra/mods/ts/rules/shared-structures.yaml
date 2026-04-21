@@ -1,0 +1,256 @@
+GACNST:
+	Inherits: ^Building
+	Inherits@SHAPE: ^3x3Shape
+	Building:
+		Footprint: xxx xxx xxx
+		BuildSounds: facbld1.aud
+		Dimensions: 3,3
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Prerequisites: ~disabled
+		Description: actor-gacnst.description
+	Health:
+		HP: 150000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5c0
+		MaxHeightDelta: 3
+	Production:
+		Produces: Building,Support
+		PauseOnCondition: empdisable
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: actor-gacnst.name
+	CustomSellValue:
+		Value: 2500
+	BaseBuilding:
+	Transforms:
+		RequiresCondition: factundeploy
+		PauseOnCondition: empdisable || being-demolished || build-incomplete
+		IntoActor: mcv
+		Offset: 1,1
+		Facing: 384
+		DeployCursor: undeploy
+	TransformsIntoMobile:
+		RequiresCondition: factundeploy
+		Locomotor: tracked
+		Voice: Move
+		RequiresForceMove: true
+	TransformsIntoRepairable:
+		RequiresCondition: factundeploy
+		RepairActors: gadept
+		Voice: Move
+		RequiresForceMove: true
+	TransformsIntoEntersTunnels:
+		RequiresCondition: factundeploy
+		Voice: Move
+		RequiresForceMove: true
+	TransformsIntoPassenger:
+		RequiresCondition: factundeploy
+		CargoType: Vehicle
+		Voice: Move
+		RequiresForceMove: true
+	TransformsIntoTransforms:
+		RequiresCondition: factundeploy && build-incomplete
+	GrantConditionOnPrerequisite@GLOBALFACTUNDEPLOY:
+		Condition: factundeploy
+		Prerequisites: global-factundeploy
+	ProductionBar@Building:
+		ProductionType: Building
+	ProductionBar@Support:
+		ProductionType: Support
+	WithIdleOverlay@TOP:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-top
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@TOP-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-top-bright
+		Palette: bright
+	WithIdleOverlay@SIDE:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-side
+	WithIdleOverlay@FRONT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-front
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@FRONT-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-front-bright
+		Palette: bright
+	WithMakeOverlay@MAKE-BRIGHT:
+		Sequence: make-bright
+		Palette: bright
+	WithBuildingPlacedOverlay:
+		RequiresCondition: !build-incomplete
+	Power:
+		Amount: 0
+	ProvidesPrerequisite@gdi:
+		Factions: gdi
+		Prerequisite: structures.gdi
+	ProvidesPrerequisite@nod:
+		Factions: nod
+		Prerequisite: structures.nod
+	IsometricSelectable:
+		Height: 36
+
+PROC:
+	Inherits: ^Building
+	Inherits@SHAPE: ^4x3FactoryWithBibShape
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: actor-proc.name
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower, ~techlevel.low
+		Description: actor-proc.description
+	Building:
+		Footprint: xxX+ xx++ xxX+
+		Dimensions: 4,3
+	Health:
+		HP: 90000
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	Refinery:
+		DiscardExcessResources: true
+	DockHost:
+		Type: Unload
+		DockAngle: 640
+		DockOffset: 362,362,0
+	StoresPlayerResources:
+		Capacity: 2000
+	CustomSellValue:
+		Value: 600
+	FreeActor:
+		Actor: HARV
+		SpawnOffset: 2,1
+		Facing: 640
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithIdleOverlay@BIB:
+		RequiresCondition: !build-incomplete
+		Sequence: bib
+	WithDockedOverlay@FLAME:
+		RequiresCondition: !build-incomplete
+		Sequence: flame
+		Palette: effect
+	WithDockingOverlay@UNLOAD:
+		RequiresCondition: !build-incomplete
+	Power:
+		Amount: -30
+	ProvidesPrerequisite@buildingname:
+	RenderSprites:
+		Image: proc.gdi
+		FactionImages:
+			gdi: proc.gdi
+			nod: proc.nod
+	GrantConditionOnPlayerResources:
+		Condition: contains-tiberium
+	FireWarheadsOnDeath:
+		RequiresCondition: contains-tiberium
+		Weapon: TiberiumExplosion
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 8, 2
+		FullSequence: pip-green-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 25
+		Palette: pips
+
+GASILO:
+	Inherits: ^Building
+	Inherits@SHAPE: ^2x2Shape
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 60
+		Prerequisites: proc, ~techlevel.low
+		Description: actor-gasilo.description
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: actor-gasilo.name
+	Building:
+		Footprint: xx xx
+		Dimensions: 2, 2
+	-GivesBuildableArea:
+	Health:
+		HP: 30000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4c0
+		MaxHeightDelta: 3
+	RenderSprites:
+		Image: gasilo.gdi
+		FactionImages:
+			gdi: gasilo.gdi
+			nod: gasilo.nod
+	WithResourceLevelOverlay@FILLSTAGE:
+		RequiresCondition: !build-incomplete
+		Sequence: stages
+	WithSpriteBody:
+		Sequence: idle-underlay
+	WithIdleOverlay@LIGHTS-BRIGHT:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights-bright
+		Palette: bright
+	StoresPlayerResources:
+		Capacity: 1500
+	Power:
+		Amount: -10
+	GrantConditionOnPlayerResources:
+		Condition: contains-tiberium
+	FireWarheadsOnDeath:
+		RequiresCondition: contains-tiberium
+		Weapon: TiberiumExplosion
+	WithResourceStoragePipsDecoration:
+		Position: BottomLeft
+		RequiresSelection: true
+		Margin: 8, 2
+		FullSequence: pip-green-building
+		EmptySequence: pip-empty-building
+		PipStride: 4, 2
+		PipCount: 12
+		Palette: pips
+
+ANYPOWER:
+	Interactable:
+	Tooltip:
+		Name: actor-anypower-name
+
+BARRACKS:
+	Interactable:
+	Tooltip:
+		Name: actor-barracks-name
+
+FACTORY:
+	Interactable:
+	Tooltip:
+		Name: actor-factory-name
+
+RADAR:
+	Interactable:
+	Tooltip:
+		Name: actor-radar-name
+
+TECH:
+	Interactable:
+	Tooltip:
+		Name: actor-tech-name

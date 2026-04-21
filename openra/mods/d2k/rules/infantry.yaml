@@ -1,0 +1,384 @@
+light_inf:
+	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		BuildDuration: 62
+		BuildDurationModifier: 100
+		Description: actor-light-inf.description
+	Valued:
+		Cost: 50
+	Tooltip:
+		Name: actor-light-inf.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 6000
+	Mobile:
+		Speed: 43
+	Armament:
+		Weapon: LMG
+	Encyclopedia:
+		Description: actor-light-inf.encyclopedia
+		Order: 0
+		Category: Units
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+engineer:
+	Inherits: ^Infantry
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: upgrade.barracks, ~techlevel.medium
+		BuildDuration: 150
+		BuildDurationModifier: 100
+		Description: actor-engineer.description
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: actor-engineer.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 5000
+	RevealsShroud:
+		Range: 2c768
+	Mobile:
+		Speed: 31
+	CaptureManager:
+	Captures:
+		CaptureTypes: building
+		PlayerExperience: 10
+	Captures@Husk:
+		CaptureTypes: husk
+		PlayerExperience: 10
+	Infiltrates:
+		Types: Husk
+		ValidRelationships: Ally
+	Captures@Cliff:
+		CaptureTypes: cliff
+		ConsumedByCapture: false
+		CaptureDelay: 150
+		ValidRelationships: Enemy, Neutral, Ally
+	Encyclopedia:
+		Description: actor-engineer.encyclopedia
+		Order: 30
+		Category: Units
+	Voiced:
+		VoiceSet: EngineerVoice
+	-AttackFrontal:
+
+trooper:
+	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Prerequisites: upgrade.barracks, ~techlevel.medium
+		BuildDuration: 124
+		BuildDurationModifier: 100
+		Description: actor-trooper.description
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-trooper.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 7000
+	RevealsShroud:
+		Range: 4c768
+	Mobile:
+		Speed: 31
+	Armament:
+		Weapon: Bazooka
+		LocalOffset: 128,0,256
+	Encyclopedia:
+		Description: actor-trooper.encyclopedia
+		Order: 10
+		Category: Units
+	TakeCover:
+		ProneOffset: 324,0,-204
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+
+thumper:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: upgrade.barracks, ~techlevel.high
+		BuildDuration: 125
+		BuildDurationModifier: 100
+		Description: actor-thumper.description
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: actor-thumper.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 3750
+	RevealsShroud:
+		Range: 2c768
+	Mobile:
+		Speed: 43
+		RequireForceMoveCondition: !undeployed
+	GrantConditionOnDeploy:
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		Facing: 512
+		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
+		SmartDeploy: true
+	Encyclopedia:
+		Description: actor-thumper.encyclopedia
+		Order: 40
+		Category: Units
+	WithInfantryBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@DEPLOYED:
+		Sequence: thump
+		RequiresCondition: !undeployed
+	WithMakeAnimation@DEPLOYING:
+		Sequence: deploy
+	WithIdleOverlay@DEPLOYED:
+		Sequence: thump-sand
+		RequiresCondition: deployed
+	AmbientSound:
+		SoundFiles: THUMPER1.WAV
+		Interval: 60
+		RequiresCondition: deployed
+	AttractsWorms:
+		Intensity: 1000
+		Falloff: 0, 0, 0, 100, 100, 100, 25, 11, 6, 4, 3, 2, 1, 0
+		RequiresCondition: deployed
+	-AttackFrontal:
+
+fremen:
+	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Tooltip:
+		Name: actor-fremen.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 80
+		Prerequisites: ~disabled
+		Description: actor-fremen.description
+	Mobile:
+		Speed: 43
+	Valued:
+		Cost: 200 ## actually 0, but spawns from support power at Palace
+	Health:
+		HP: 7000
+	RevealsShroud:
+		Range: 4c768
+	AutoTarget:
+		ScanRadius: 7
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	Armament@PRIMARY:
+		Weapon: Fremen_S
+	Armament@SECONDARY:
+		Weapon: Fremen_L
+	Encyclopedia:
+		Description: actor-fremen.encyclopedia
+		Order: 70
+		Category: Units
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	Cloak:
+		InitialDelay: 85
+		CloakDelay: 85
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
+		PauseOnCondition: cloak-force-disabled
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	-MustBeDestroyed:
+	Voiced:
+		VoiceSet: FremenVoice
+
+grenadier:
+	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
+		BuildDuration: 94
+		BuildDurationModifier: 100
+		Description: actor-grenadier.description
+	Valued:
+		Cost: 80
+	Tooltip:
+		Name: actor-grenadier.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 6000
+	Mobile:
+		Speed: 43
+	Armament:
+		Weapon: grenade
+		LocalOffset: 192,0,224
+		FireDelay: 3
+	Encyclopedia:
+		Description: actor-grenadier.encyclopedia
+		Order: 50
+		Category: Units
+	TakeCover:
+		ProneOffset: 96,100,-64
+	WithInfantryBody:
+		DefaultAttackSequence: throw
+	FireWarheadsOnDeath:
+		Weapon: GrenDeath
+		EmptyWeapon: GrenDeath
+
+sardaukar:
+	Inherits: ^Infantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Prerequisites: ~palace.sardaukar, ~techlevel.high
+		BuildDuration: 94
+		BuildDurationModifier: 100
+		Description: actor-sardaukar.description
+	Valued:
+		Cost: 120
+	Tooltip:
+		Name: actor-sardaukar.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 10000
+	Mobile:
+		Speed: 31
+	RevealsShroud:
+		Range: 4c768
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+	Armament@PRIMARY:
+		Weapon: M_LMG
+	Armament@SECONDARY:
+		Weapon: M_HMG
+	Encyclopedia:
+		Description: actor-sardaukar.encyclopedia
+		Order: 60
+		Category: Units
+	Voiced:
+		VoiceSet: GenericVoice
+	FireWarheadsOnDeath:
+		Weapon: SardDeath
+		EmptyWeapon: SardDeath
+		Chance: 100
+
+mpsardaukar:
+	Inherits: sardaukar
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 70
+		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.medium
+		BuildDuration: 160
+		BuildDurationModifier: 100
+		Description: actor-mpsardaukar-description
+	Valued:
+		Cost: 200
+	Armament@PRIMARY:
+		Weapon: M_LMG_H
+	Armament@SECONDARY:
+		Weapon: M_HMG_H
+	RenderSprites:
+		Image: sardaukar
+	UpdatesPlayerStatistics:
+		OverrideActor: sardaukar
+
+saboteur:
+	Inherits: ^Infantry
+	Selectable:
+		Priority: 8
+		PriorityModifiers: Ctrl, Alt
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Prerequisites: ~disabled
+		Description: actor-saboteur.description
+	Valued:
+		Cost: 300 ## actually 0, but spawns from support power at Palace
+	Tooltip:
+		Name: actor-saboteur.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 5000
+	Encyclopedia:
+		Description: actor-saboteur.encyclopedia
+		Order: 80
+		Category: Units
+	Mobile:
+		Speed: 43
+		PauseOnCondition: triggered
+	Demolition:
+		DetonationDelay: 50
+		Flashes: 3
+		EnterBehaviour: Suicide
+	Cloak:
+		InitialDelay: 100
+		CloakDelay: 100
+		CloakSound: STEALTH1.WAV
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		PauseOnCondition: cloak-force-disabled
+		RequiresCondition: !triggered
+	FireWarheadsOnDeath@Selfkill:
+		Weapon: PlasmaSaboteur
+		EmptyWeapon: PlasmaSaboteur
+		RequiresCondition: kamikadze
+	GrantConditionOnDeploy:
+		DeployCursor: c4
+		DeployedCondition: triggered
+		PauseOnCondition: triggered
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	KillsSelf@SuicideKillCount:
+		Delay: 45
+		RequiresCondition: triggered
+		GrantsCondition: kamikadze
+	TakeCover:
+		RequiresCondition: triggered
+	Voiced:
+		VoiceSet: SaboteurVoice
+	RevealsShroud:
+		Range: 4c768
+	Crushable:
+		WarnProbability: 95
+	WithInfantryBody:
+		RequiresCondition: !triggered
+	WithIdleOverlay:
+		Sequence: active
+		RequiresCondition: triggered
+	WithIdleOverlay@prone:
+		StartSequence: standup
+		Sequence: prone-stand
+		RequiresCondition: triggered
+	-AttackFrontal:
+
+nsfremen:
+	Inherits: fremen
+	Tooltip:
+	Buildable:
+		BuildPaletteOrder: 90
+		Prerequisites: ~disabled
+		Description: actor-nsfremen-description
+	RenderSprites:
+		Image: fremen
+	-Cloak:
+	-GrantConditionOnDamageState@UNCLOAK:
+	UpdatesPlayerStatistics:
+		OverrideActor: fremen

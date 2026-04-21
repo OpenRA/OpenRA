@@ -1,0 +1,525 @@
+mcv:
+	idle:
+		Filename: DATA.R16
+		Start: 1795
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4284
+		Offset: -30,-24
+
+mcv.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 1795
+		Facings: -32
+		ZOffset: -1023
+		Remap: 54F94B
+
+harvester:
+	idle:
+		Filename: DATA.R16
+		Start: 1699
+		Facings: -32
+		Remap: 54F94B
+	harvest:
+		Filename: DATA.R16
+		Start: 3884
+		Length: 6
+		Facings: -8
+		Tick: 80
+		ZOffset: 1
+		Alpha: 0.5
+	dock:
+		Filename: DATA.R16
+		Start: 3623
+		Length: 10
+		Remap: 54F94B
+	dock-loop:
+		Filename: DATA.R16
+		Start: 3633
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4280
+		Offset: -30,-24
+
+harvester.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 1699
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+
+trike:
+	idle:
+		Filename: DATA.R16
+		Start: 1635
+		Facings: -32
+		Remap: 54F94B
+	muzzle:
+		Combine:
+			0:
+				Filename: DATA.R16
+				Frames: 3996, 38, 3996, 38, 3996, 38, 3996
+				Length: 7
+			1:
+				Filename: DATA.R16
+				Frames: 3997, 38, 3997, 38, 3997, 38, 3997
+				Length: 7
+			2:
+				Filename: DATA.R16
+				Frames: 3998, 38, 3998, 38, 3998, 38, 3998
+				Length: 7
+			3:
+				Filename: DATA.R16
+				Frames: 3999, 38, 3999, 38, 3999, 38, 3999
+				Length: 7
+			4:
+				Filename: DATA.R16
+				Frames: 4000, 38, 4000, 38, 4000, 38, 4000
+				Length: 7
+			5:
+				Filename: DATA.R16
+				Frames: 4001, 38, 4001, 38, 4001, 38, 4001
+				Length: 7
+			6:
+				Filename: DATA.R16
+				Frames: 4002, 38, 4002, 38, 4002, 38, 4002
+				Length: 7
+			7:
+				Filename: DATA.R16
+				Frames: 4003, 38, 4003, 38, 4003, 38, 4003
+				Length: 7
+			8:
+				Filename: DATA.R16
+				Frames: 4004, 38, 4004, 38, 4004, 38, 4004
+				Length: 7
+			9:
+				Filename: DATA.R16
+				Frames: 4005, 38, 4005, 38, 4005, 38, 4005
+				Length: 7
+			10:
+				Filename: DATA.R16
+				Frames: 4006, 38, 4006, 38, 4006, 38, 4006
+				Length: 7
+			11:
+				Filename: DATA.R16
+				Frames: 4007, 38, 4007, 38, 4007, 38, 4007
+				Length: 7
+			12:
+				Filename: DATA.R16
+				Frames: 4008, 38, 4008, 38, 4008, 38, 4008
+				Length: 7
+			13:
+				Filename: DATA.R16
+				Frames: 4009, 38, 4009, 38, 4009, 38, 4009
+				Length: 7
+			14:
+				Filename: DATA.R16
+				Frames: 4010, 38, 4010, 38, 4010, 38, 4010
+				Length: 7
+			15:
+				Filename: DATA.R16
+				Frames: 4011, 38, 4011, 38, 4011, 38, 4011
+				Length: 7
+			16:
+				Filename: DATA.R16
+				Frames: 4012, 38, 4012, 38, 4012, 38, 4012
+				Length: 7
+			17:
+				Filename: DATA.R16
+				Frames: 4013, 38, 4013, 38, 4013, 38, 4013
+				Length: 7
+			18:
+				Filename: DATA.R16
+				Frames: 4014, 38, 4014, 38, 4014, 38, 4014
+				Length: 7
+			19:
+				Filename: DATA.R16
+				Frames: 4015, 38, 4015, 38, 4015, 38, 4015
+				Length: 7
+			20:
+				Filename: DATA.R16
+				Frames: 4016, 38, 4016, 38, 4016, 38, 4016
+				Length: 7
+			21:
+				Filename: DATA.R16
+				Frames: 4017, 38, 4017, 38, 4017, 38, 4017
+				Length: 7
+			22:
+				Filename: DATA.R16
+				Frames: 4018, 38, 4018, 38, 4018, 38, 4018
+				Length: 7
+			23:
+				Filename: DATA.R16
+				Frames: 4019, 38, 4019, 38, 4019, 38, 4019
+				Length: 7
+			24:
+				Filename: DATA.R16
+				Frames: 4020, 38, 4020, 38, 4020, 38, 4020
+				Length: 7
+			25:
+				Filename: DATA.R16
+				Frames: 4021, 38, 4021, 38, 4021, 38, 4021
+				Length: 7
+			26:
+				Filename: DATA.R16
+				Frames: 4022, 38, 4022, 38, 4022, 38, 4022
+				Length: 7
+			27:
+				Filename: DATA.R16
+				Frames: 4023, 38, 4023, 38, 4023, 38, 4023
+				Length: 7
+			28:
+				Filename: DATA.R16
+				Frames: 4024, 38, 4024, 38, 4024, 38, 4024
+				Length: 7
+			29:
+				Filename: DATA.R16
+				Frames: 4025, 38, 4025, 38, 4025, 38, 4025
+				Length: 7
+			30:
+				Filename: DATA.R16
+				Frames: 4026, 38, 4026, 38, 4026, 38, 4026
+				Length: 7
+			31:
+				Filename: DATA.R16
+				Frames: 4027, 38, 4027, 38, 4027, 38, 4027
+				Length: 7
+		Tick: 50
+		Facings: -32
+		Length: 7
+		BlendMode: Additive
+	icon:
+		Filename: DATA.R16
+		Start: 4277
+		Offset: -30,-24
+
+quad:
+	idle:
+		Filename: DATA.R16
+		Start: 1667
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4279
+		Offset: -30,-24
+
+siege_tank:
+	idle:
+		Filename: DATA.R16
+		Start: 1763
+		Facings: -32
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 1891
+		Facings: -32
+		Remap: 54F94B
+	muzzle:
+		Filename: DATA.R16
+		Start: 3671
+		Length: 3
+		BlendMode: Additive
+	icon:
+		Filename: DATA.R16
+		Start: 4287
+		Offset: -30,-24
+
+siege_tank.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 1763
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 1891
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+
+missile_tank:
+	idle:
+		Filename: DATA.R16
+		Start: 1603
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4285
+		Offset: -30,-24
+
+missile_tank.husk:
+	idle:
+		FilenamePattern: missiletankhusk/missiletankhusk-{0:D4}.png
+			Count: 16
+		Facings: -16
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		FilenamePattern: missiletankhusk/missiletankhuskturret-{0:D4}.png
+			Count: 16
+		Facings: -16
+		ZOffset: -512
+		Remap: 54F94B
+	tankdebris01:
+		Filename: missiletankhusk/missiletankhuskdebris-0000.png
+		ZOffset: -512
+	tankdebris02:
+		Filename: missiletankhusk/missiletankhuskdebris-0001.png
+		ZOffset: -512
+	tankdebris03:
+		Filename: missiletankhusk/missiletankhuskdebris-0002.png
+		ZOffset: -512
+	tankdebris04:
+		Filename: missiletankhusk/missiletankhuskdebris-0003.png
+		ZOffset: -512
+
+sonic_tank:
+	idle:
+		Filename: DATA.R16
+		Start: 1827
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4288
+		Offset: -30,-24
+
+sonic_tank.husk:
+	idle:
+		FilenamePattern: sonictankhusk/sonictankhusk-{0:D4}.png
+			Count: 16
+		Facings: -16
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		FilenamePattern: sonictankhusk/sonictankhuskturret-{0:D4}.png
+			Count: 4
+		Facings: -4
+		ZOffset: -512
+		Remap: 54F94B
+	tankdebris01:
+		Filename: sonictankhusk/sonictankhuskdebris-0000.png
+		ZOffset: -512
+	tankdebris02:
+		Filename: sonictankhusk/sonictankhuskdebris-0001.png
+		ZOffset: -512
+	tankdebris03:
+		Filename: sonictankhusk/sonictankhuskdebris-0002.png
+		ZOffset: -512
+	tankdebris04:
+		Filename: sonictankhusk/sonictankhuskdebris-0003.png
+		ZOffset: -512
+
+combat_tank_a:
+	idle:
+		Filename: DATA.R16
+		Start: 1731
+		Facings: -32
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 1859
+		Facings: -32
+		Remap: 54F94B
+	muzzle:
+		Filename: DATA.R16
+		Start: 4028
+		Tick: 60
+		Facings: -32
+		BlendMode: Additive
+	icon:
+		Filename: DATA.R16
+		Start: 4281
+		Offset: -30,-24
+
+combat_tank_a.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 1731
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 1859
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+
+combat_tank_h:
+	idle:
+		Filename: DATA.R16
+		Start: 2051
+		Facings: -32
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 2115
+		Facings: -32
+		Remap: 54F94B
+	muzzle:
+		Filename: DATA.R16
+		Start: 4028
+		Tick: 60
+		Facings: -32
+		BlendMode: Additive
+	icon:
+		Filename: DATA.R16
+		Start: 4282
+		Offset: -30,-24
+
+combat_tank_h.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 2051
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 2115
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+
+combat_tank_o:
+	idle:
+		Filename: DATA.R16
+		Start: 2453
+		Facings: -32
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 2485
+		Facings: -32
+		Remap: 54F94B
+	muzzle:
+		Filename: DATA.R16
+		Start: 4028
+		Tick: 60
+		Facings: -32
+		BlendMode: Additive
+	icon:
+		Filename: DATA.R16
+		Start: 4283
+		Offset: -30,-24
+
+combat_tank_o.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 2453
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		Filename: DATA.R16
+		Start: 2485
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+
+devastator:
+	idle:
+		Filename: DATA.R16
+		Start: 2083
+		Facings: -32
+		Remap: 54F94B
+	muzzle:
+		Filename: DATA.R16
+		Start: 4060
+		Tick: 80
+		Facings: -32
+		BlendMode: Additive
+	active:
+		Filename: DATA.R16
+		Start: 3839
+		Length: 14
+		Tick: 130
+		BlendMode: Additive
+	active-2:
+		Filename: DATA.R16
+		Start: 4152
+		Length: 12
+		Tick: 110
+		BlendMode: Additive
+	icon:
+		Filename: DATA.R16
+		Start: 4289
+		Offset: -30,-24
+
+devastator.husk:
+	idle:
+		Filename: DATA.R16
+		Start: 2083
+		Facings: -32
+		ZOffset: -512
+		Remap: 54F94B
+
+raider:
+	Inherits: trike
+	idle:
+		Filename: DATA.R16
+		Start: 2421
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4278
+		Offset: -30,-24
+
+stealth_raider:
+	Inherits: trike
+	idle:
+		Filename: DATA.R16
+		Start: 2421
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4298
+		Offset: -30,-24
+
+deviator:
+	idle:
+		Filename: DATA.R16
+		Start: 2389
+		Facings: -32
+		Remap: 54F94B
+	icon:
+		Filename: DATA.R16
+		Start: 4286
+		Offset: -30,-24
+
+deviator.husk:
+	idle:
+		FilenamePattern: deviatorhusk/deviatorhusk-{0:D4}.png
+			Count: 16
+		Facings: -16
+		ZOffset: -512
+		Remap: 54F94B
+	turret:
+		FilenamePattern: deviatorhusk/deviatorhuskturret-{0:D4}.png
+			Count: 16
+		Facings: -4
+		ZOffset: -512
+		Remap: 54F94B
+	tankdebris01:
+		Filename: deviatorhusk/deviatordebris-0000.png
+		ZOffset: -512
+	tankdebris02:
+		Filename: deviatorhusk/deviatordebris-0001.png
+		ZOffset: -512
+	tankdebris03:
+		Filename: deviatorhusk/deviatordebris-0002.png
+		ZOffset: -512
+	tankdebris04:
+		Filename: deviatorhusk/deviatordebris-0003.png
+		ZOffset: -512

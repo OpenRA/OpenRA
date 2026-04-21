@@ -1,0 +1,123 @@
+Player:
+	ModularBot@bot-test-ai:
+		Name: bot-test-ai.name
+		Type: test
+	GrantConditionOnBotOwner@test:
+		Condition: enable-test-ai
+		Bots: test
+	HarvesterBotModule:
+		RequiresCondition: enable-test-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+	PowerDownBotModule:
+		RequiresCondition: enable-test-ai
+		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+	ResourceMapBotModule:
+		RequiresCondition: enable-test-ai
+		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
+		ValuableResourceTypes: Tiberium, BlueTiberium
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: gacnst, gapowr, gapowrup, napowr, naapwr, gapile, nahand, gaweap, naweap,garadr, naradr, gahpad, nahpad, gatech, natech, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+	BaseBuilderBotModule@test:
+		RequiresCondition: enable-test-ai
+		MinimumExcessPower: 30
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 30
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: gacnst
+		RefineryTypes: proc
+		PowerTypes: gapowr, gapowrup, napowr, naapwr
+		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
+		TechTypes: garadr, naradr, gahpad, nahpad, gatech, natech
+		SiloTypes: gasilo
+		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		SellRefineryNoResourceDistance: 18
+		BuildingLimits:
+			proc: 4
+			gasilo: 2
+			gapowr: 8
+			napowr: 8
+			gapile: 1
+			nahand: 1
+			gaweap: 1
+			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
+			gahpad: 3
+			nahpad: 3
+			gavulc: 8
+			garock: 2
+			gacsam: 4
+			gactwr: 14
+			naobel: 2
+			nalasr: 8
+			nasam: 4
+		BuildingFractions:
+			proc: 30
+			gapile: 1
+			nahand: 1
+			gaweap: 1
+			naweap: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
+			nastlh: 1
+			gahpad: 1
+			nahpad: 1
+			nalasr: 10
+			gavulc: 10
+			garock: 3
+			gacsam: 6
+			gactwr: 18
+			nasam: 6
+			naobel: 3
+	BuildingRepairBotModule:
+		RequiresCondition: enable-test-ai
+	SquadManagerBotModule@test:
+		RequiresCondition: enable-test-ai
+		SquadSize: 20
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ConstructionYardTypes: gacnst
+		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
+		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
+		IgnoredEnemyTargetTypes: Air
+	UnitBuilderBotModule@test:
+		RequiresCondition: enable-test-ai
+		UnitQueues: Vehicle, Infantry, Air
+		UnitsToBuild:
+			e1: 80
+			e2: 25
+			e3: 25
+			cyborg: 15
+			jumpjet: 15
+			repair: 2
+			medic: 2
+			harv: 10
+			mmch: 15
+			ttnk: 15
+			smech: 25
+			bggy: 25
+			hvr: 20
+			bike: 20
+			subtank: 10
+			sonic: 10
+			stnk: 8
+			orca: 5
+			orcab: 4
+			apache: 5
+			scrin: 4
+		UnitLimits:
+			harv: 12
+			medic: 3
+			repair: 3
+	McvExpansionManagerBotModule@test:
+		RequiresCondition: enable-test-ai
+		McvTypes: mcv
+		ConstructionYardTypes: gacnst
+		McvFactoryTypes: gaweap, naweap
+		MinimumConstructionYardCount: 2

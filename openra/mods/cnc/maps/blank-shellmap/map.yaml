@@ -1,0 +1,71 @@
+MapFormat: 12
+
+RequiresMod: cnc
+
+Title: Blank Shellmap
+
+Author: Paul Chote
+
+Tileset: DESERT
+
+MapSize: 5,5
+
+Bounds: 1,1,1,1
+
+Visibility: Shellmap
+
+Categories: Shellmap
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	# Used for rendering the EVA Database previews
+	PlayerReference@Nod:
+		Name: Nod
+		Faction: nod
+		Color: FE1100
+		NonCombatant: True
+	PlayerReference@Nod:
+		Name: NodUnits
+		Faction: nod
+		Color: FE1100
+		NonCombatant: True
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: gdi
+		Color: F5D378
+		NonCombatant: True
+
+Actors:
+
+Rules:
+	World:
+		-SpawnStartingUnits:
+		-MapStartingLocations:
+		-CrateSpawner:
+		-AutoSave:
+		MusicPlaylist:
+			BackgroundMusic: map1
+			AllowMuteBackgroundMusic: true
+			DisableWorldSounds: true
+	# Used for rendering the EVA Database previews
+	^Palettes:
+		-MenuPostProcessEffect:
+		-PlayerColorPalette:
+		-PlayerColorShift:
+		IndexedPlayerPalette:
+			BasePalette: terrain
+			RemapIndex: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+			PlayerIndex:
+				GDI: 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191
+				Nod: 127, 126, 125, 124, 122, 46, 120, 47, 125, 124, 123, 122, 42, 121, 120, 120
+				NodUnits: 161, 200, 201, 202, 204, 205, 206, 12, 201, 202, 203, 204, 205, 115, 198, 114
+		FixedPlayerColorShift:
+			BasePalette: player
+			PlayerIndex:
+				GDI: 0.777, -0.196, 1, 0.29, 0.37
+				Nod: 0.667, 0.185, 1, 0.2892156, 0.37
+				NodUnits: 0.306, -0.655, 1, 0.29, 0.37

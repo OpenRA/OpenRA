@@ -1,0 +1,35 @@
+Container@INGAME_MENU:
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Logic: IngameMenuLogic
+		Buttons: EXIT_EDITOR, PLAY_MAP, SAVE_MAP, ABORT_MISSION, BACK_TO_EDITOR, SURRENDER, RESTART, LOAD_GAME, SAVE_GAME, MUSIC, SETTINGS, RESUME
+		ButtonStride: 130, 0
+	Children:
+		Image@EVA:
+			X: WINDOW_WIDTH - 128 - 43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
+		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
+			X: WINDOW_WIDTH - 128 - 43
+			Y: 116
+			Width: 128
+			Align: Center
+			Contrast: true
+		Background@BORDER:
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			Background: shellmapborder
+		Container@PANEL_ROOT:
+		Container@MENU_BUTTONS:
+			X: (WINDOW_WIDTH - WIDTH) / 2
+			Y: WINDOW_HEIGHT - 33 - HEIGHT - 10
+			Width: 120
+			Height: 35
+			Children:
+				Button@BUTTON_TEMPLATE:
+					Width: 120
+					Height: 35

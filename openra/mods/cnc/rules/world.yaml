@@ -1,0 +1,313 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	ScreenMap:
+	ActorMap:
+	Selection:
+	ControlGroups:
+	MusicPlaylist:
+		VictoryMusic: win1
+		DefeatMusic: nod_map1
+	DebugVisualizations:
+	TerrainRenderer:
+	TerrainGeometryOverlay:
+	ShroudRenderer:
+		ShroudVariants: shroud-typea, shroud-typeb, shroud-typec, shroud-typed
+		OverrideFullShroud: shroud-full
+		FogVariants: fog-typea, fog-typeb, fog-typec, fog-typed
+		OverrideFullFog: fog-full
+		FogPalette: shroud
+	Locomotor@FOOT:
+		Name: foot
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Tiberium: 78
+				PathingCost: 300
+			BlueTiberium: 78
+				PathingCost: 300
+			Beach: 89
+	Locomotor@CHEM:
+		Name: chem
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 89
+	Locomotor@WHEELED:
+		Name: wheeled
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 63
+			Road: 125
+			Bridge: 125
+			Tiberium: 63
+			BlueTiberium: 63
+			Beach: 50
+	Locomotor@HEAVYWHEELED:
+		Name: heavywheeled
+		Crushes: crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 63
+			Road: 125
+			Bridge: 125
+			Tiberium: 63
+			BlueTiberium: 63
+			Beach: 50
+	Locomotor@TRACKED:
+		Name: tracked
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 88
+			Road: 125
+			Bridge: 125
+			Tiberium: 88
+			BlueTiberium: 88
+			Beach: 88
+	Locomotor@HEAVYTRACKED:
+		Name: heavytracked
+		Crushes: wall, heavywall, crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 88
+			Road: 125
+			Bridge: 125
+			Tiberium: 88
+			BlueTiberium: 88
+			Beach: 88
+	Locomotor@NAVAL:
+		Name: naval
+		Crushes: crate
+		TerrainSpeeds:
+			Water: 100
+	Locomotor@LANDINGCRAFT:
+		Name: lcraft
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 100
+			River: 100
+	Locomotor@CRITTER:
+		Name: critter
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Tiberium: 78
+			BlueTiberium: 78
+			Beach: 89
+	Locomotor@VISC:
+		Name: visc
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Tiberium: 100
+			BlueTiberium: 100
+			Beach: 89
+	Faction@Random:
+		Name: faction-random.name
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+		Description: faction-random.description
+	Faction@gdi:
+		Name: faction-gdi.name
+		InternalName: gdi
+		Description: faction-gdi.description
+	Faction@nod:
+		Name: faction-nod.name
+		InternalName: nod
+		Description: faction-nod.description
+	ResourceRenderer:
+		ResourceTypes:
+			Tiberium:
+				Sequences: ti1, ti2, ti3, ti4, ti5, ti6, ti7, ti8, ti9, ti10, ti11, ti12
+				Palette: staticterrain
+				Name: resource-tiberium
+			BlueTiberium:
+				Sequences: ti1, ti2, ti3, ti4, ti5, ti6, ti7, ti8, ti9, ti10, ti11, ti12
+				Palette: bluetiberium
+				Name: resource-tiberium
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	DebugVisualizationCommands:
+	PathFinderOverlay:
+	AutoSave:
+	HierarchicalPathFinderOverlay:
+	ActorMapOverlay:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	LegacyBridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokeChance: 50
+		SmokeImage: scorch_flames
+		SmokeSequences: large_flame, medium_flame, small_flame
+		MaxSmokeOffsetDistance: 341
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+		SmokeChance: 25
+		SmokeImage: smoke_m
+		SmokeSequences: idle
+		MaxSmokeOffsetDistance: 213
+	ResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+	ResourceClaimLayer:
+	WarheadDebugOverlay:
+	CustomTerrainDebugOverlay:
+	MapCreeps:
+		CheckboxVisible: False
+		CheckboxEnabled: True
+		CheckboxLocked: True
+	SpawnMapActors:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxDisplayOrder: 5
+	MapOptions:
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 1
+	MapStartingLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	CreateMapPlayers:
+	StartingUnits@mcvonly:
+		Class: none
+		ClassName: options-starting-units.mcv-only
+		Factions: gdi, nod
+		BaseActor: mcv
+	StartingUnits@defaultgdia:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
+	StartingUnits@defaultnoda:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e3,e3,bggy
+	StartingUnits@heavynoda:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
+	StartingUnits@heavynodb:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
+	StartingUnits@heavygdia:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
+	StartingUnits@heavygdib:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
+	SpawnStartingUnits:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 6
+		SpawnInterval: 3000
+		WaterChance: 0
+		InitialSpawnDelay: 1500
+		CheckboxDisplayOrder: 1
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	RadarPings:
+	StartGameNotification:
+		Notification:
+		LoadedNotification:
+		SavedNotification:
+		SavedTextNotification: notification-game-saved
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MENU_BACKGROUND
+	ScriptTriggers:
+	CellTriggerOverlay:
+	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
+	ColorPickerManager:
+		PreviewActor: fact.colorpicker
+		PresetColors: F21818, FF7A22, F2BC18, F8D3B3, CDF291, DAF218, 18F26F, 12B572, F279E6, 502048, 391D1D, BA18F2, F218BC, 1821F2, 328DFF, 78DBF8
+	OrderEffects:
+		TerrainFlashImage: moveflsh
+		TerrainFlashSequence: idle
+		TerrainFlashPalette: moveflash
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorCursorLayer:
+	EditorResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+	LoadWidgetAtGameStart:
+	EditorActionManager:
+	BuildableTerrainOverlay:
+		AllowedTerrainTypes: Clear, Road
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: Clear
+		DefaultInner: Beach
+		DefaultEnd: Clear
+	Inherits@MapGenerators: ^MapGenerators

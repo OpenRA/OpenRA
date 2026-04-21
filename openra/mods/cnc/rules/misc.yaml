@@ -1,0 +1,144 @@
+CRATE.plain:
+	Inherits: ^Crate
+	ScriptTriggers:
+
+CRATE:
+	Inherits: ^Crate
+	Crate:
+		Duration: 6000
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 20
+		UseCashTick: true
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Sequence: reveal-map
+	ExplodeCrateAction@fire:
+		Weapon: Napalm.Crate
+		SelectionShares: 5
+	GrantExternalConditionCrateAction@cloak:
+		SelectionShares: 5
+		Sequence: cloak
+		Condition: cloak-crate-collected
+	GiveBaseBuilderCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 50
+		Units: mcv
+	ExplodeCrateAction:
+		Weapon: Atomic
+		SelectionShares: 1
+	GiveUnitCrateAction:
+		Units: vice
+		Owner: Creeps
+		SelectionShares: 10
+	LevelUpCrateAction:
+		Levels: 4
+		SelectionShares: 12
+
+WCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: actor-wcrate-name
+	RenderSprites:
+		Image: wcrate
+
+SCRATE:
+	Inherits: ^Crate
+	Tooltip:
+		Name: actor-scrate-name
+
+mpspawn:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-mpspawn-name
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+waypoint:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-waypoint-name
+	Immobile:
+		OccupiesSpace: false
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+
+fact.colorpicker:
+	Inherits: FACT
+	-Buildable:
+	-MapEditorData:
+	-BaseBuilding:
+	-Encyclopedia:
+	RenderSprites:
+		Image: fact
+		Palette: colorpicker
+
+CAMERA:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-camera-name
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+	MapEditorData:
+		Categories: System
+
+CAMERA.small:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-camera-small-name
+	WithSpriteBody:
+	RenderSpritesEditorOnly:
+		Image: camera
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	Health:
+		HP: 100000
+	HitShape:
+	RevealsShroud:
+		Range: 6c0
+		Type: CenterPosition
+	MapEditorData:
+		Categories: System
+
+FLARE:
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 3c0
+		Type: CenterPosition
+	RenderSprites:
+		Image: smokland
+		Palette: terrain
+	WithSpriteBody:
+		StartSequence: open
+	HiddenUnderFog:
+		Type: CenterPosition
+	Tooltip:
+		Name: actor-flare-name
+		ShowOwnerRow: false
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+	Interactable:

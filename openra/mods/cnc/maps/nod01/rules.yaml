@@ -1,0 +1,37 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod01.lua
+	MusicPlaylist:
+		StartingMusic: nomercy
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		BackgroundVideo: intro2.vqa
+		BriefingVideo: nod1.vqa
+		LossVideo: nodlose.vqa
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Villagers: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Villagers: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+C10:
+	Tooltip:
+		Name: actor-c10-name
+
+^Bridge:
+	DamageMultiplier@INVULNERABLE:
+		Modifier: 0
+
+^CivBuilding:
+	MustBeDestroyed:
+
+^CivInfantry:
+	MustBeDestroyed:

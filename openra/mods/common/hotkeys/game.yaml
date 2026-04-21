@@ -1,0 +1,134 @@
+CycleBase: H
+	Description: hotkey-description-cyclebase
+	Types: World
+	Contexts: player, spectator
+
+ToLastEvent: SPACE
+	Description: hotkey-description-tolastevent
+	Types: World
+	Contexts: player, spectator
+
+ToSelection: HOME
+	Description: hotkey-description-toselection
+	Types: World
+	Contexts: player, spectator
+
+SelectAllUnits: Q
+	Description: hotkey-description-selectallunits
+	Types: World
+	Contexts: player, spectator
+
+SelectUnitsByType: W
+	Description: hotkey-description-selectunitsbytype
+	Types: World
+	Contexts: player, spectator
+
+CycleHarvesters: N
+	Description: hotkey-description-cycleharvesters
+	Types: World
+	Contexts: player, spectator
+
+Pause: PAUSE
+	Description: hotkey-description-pause
+	Types: World
+	Contexts: player, spectator
+
+Sell: Z
+	Description: hotkey-description-sell
+	Types: OrderGenerator
+	Contexts: player
+
+Repair: C
+	Description: hotkey-description-repair
+	Types: OrderGenerator
+	Contexts: player
+
+PlaceBeacon: B
+	Description: hotkey-description-placebeacon
+	Types: OrderGenerator
+	Contexts: player
+
+CycleStatusBars: COMMA
+	Description: hotkey-description-cyclestatusbars
+	Types: World
+	Contexts: player, spectator
+
+ToggleMute: M
+	Description: hotkey-description-togglemute
+	Types: World
+	Contexts: menu, player, spectator
+
+TogglePlayerStanceColor:
+	Description: hotkey-description-toggleplayerstancecolor
+	Types: World
+	Contexts: player, spectator
+
+TakeScreenshot: P Ctrl
+	Description: hotkey-description-takescreenshot
+	Types: World
+	Contexts: menu, player, spectator
+
+AttackMove: A
+	Description: hotkey-description-attackmove
+	Types: Unit
+	Contexts: player
+
+Stop: S
+	Description: hotkey-description-stop
+	Types: Unit
+	Contexts: player
+
+Scatter: X Ctrl
+	Description: hotkey-description-scatter
+	Types: Unit
+	Contexts: player
+
+Deploy: F
+	Description: hotkey-description-deploy
+	Types: Unit
+	Contexts: player
+
+Guard: D
+	Description: hotkey-description-guard
+	Types: Unit
+	Contexts: player
+
+StanceAttackAnything: A Alt
+	Description: hotkey-description-stanceattackanything
+	Types: Stance
+	Contexts: player
+
+StanceDefend: S Alt
+	Description: hotkey-description-stancedefend
+	Types: Stance
+	Contexts: player
+
+StanceReturnFire: D Alt
+	Description: hotkey-description-stancereturnfire
+	Types: Stance
+	Contexts: player
+
+StanceHoldFire: F Alt
+	Description: hotkey-description-stanceholdfire
+	Types: Stance
+	Contexts: player
+
+StopMusic: AUDIOSTOP
+	Description: hotkey-description-stopmusic
+	Types: Music
+	Contexts: menu, player, spectator
+
+PauseMusic: AUDIOPLAY
+	Description: hotkey-description-pausemusic
+	Types: Music
+	Contexts: menu, player, spectator
+
+PrevMusic: AUDIOPREV
+	Description: hotkey-description-prevmusic
+	Types: Music
+	Contexts: menu, player, spectator
+
+NextMusic: AUDIONEXT
+	Description: hotkey-description-nextmusic
+	Types: Music
+	Contexts: menu, player, spectator

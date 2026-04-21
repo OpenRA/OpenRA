@@ -1,0 +1,16 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, gdi04a.lua
+	MusicPlaylist:
+		StartingMusic: fist226m
+	MissionData:
+		Briefing: briefing
+		BackgroundVideo: bkground.vqa
+		BriefingVideo: gdi4b.vqa
+		StartVideo: nitejump.vqa
+		WinVideo: burdet1.vqa
+		LossVideo: gameover.vqa
+
+Player:
+	PlayerResources:
+		DefaultCash: 0

@@ -1,0 +1,108 @@
+E1:
+	Inherits: ^Soldier
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@EXPHOSPITAL: ^InfantryExperienceHospitalOverrides
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Prerequisites: ~barracks, ~techlevel.low
+		Description: actor-e1.description
+	Valued:
+		Cost: 120
+	Tooltip:
+		Name: actor-e1.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 12500
+	Mobile:
+		Speed: 71
+	Armament@PRIMARY:
+		Weapon: Minigun
+		RequiresCondition: !rank-elite
+	Armament@ELITE:
+		Weapon: M1Carbine
+		RequiresCondition: rank-elite
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	RenderSprites:
+		Image: e1.gdi
+		FactionImages:
+			gdi: e1.gdi
+			nod: e1.nod
+	RevealsShroud:
+		Range: 5c0
+
+E1R3:
+	Inherits: E1
+	RenderSprites:
+		Image: e1.gdi
+	ProducibleWithLevel:
+		Prerequisites: techlevel.low
+		InitialLevels: 3
+	-Buildable:
+
+ENGINEER:
+	Inherits: ^Soldier
+	Inherits@selection: ^SelectableSupportUnit
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: actor-engineer.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 40
+		Prerequisites: ~barracks, ~techlevel.low
+		Description: actor-engineer.description
+	Voiced:
+		VoiceSet: Engineer
+	Mobile:
+		Speed: 56
+	Health:
+		HP: 10000
+	Passenger:
+		CustomPipType: yellow
+	InstantlyRepairs:
+	RepairsBridges:
+		RepairNotification: BridgeRepaired
+		RepairTextNotification: notification-bridge-repaired
+	CaptureManager:
+	Captures:
+		CaptureTypes: building
+		PlayerExperience: 10
+	RenderSprites:
+		Image: engineer.gdi
+		FactionImages:
+			gdi: engineer.gdi
+			nod: engineer.nod
+
+FLAMEGUY:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	Mobile:
+		Speed: 36
+		Locomotor: flameguy
+	HiddenUnderFog:
+	WithInfantryBody:
+		IdleSequences: run
+	Health:
+		HP: 16000
+	ChangesHealth:
+		Step: -1000
+		StartIfBelow: 101
+	ScaredyCat:
+		PanicSequencePrefix:
+	WithDeathAnimation:
+		FallbackSequence: die
+		UseDeathTypeSuffix: false
+	HitShape:
+	MapEditorData:
+		Categories: System

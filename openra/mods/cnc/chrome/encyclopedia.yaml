@@ -1,0 +1,143 @@
+Container@ENCYCLOPEDIA_PANEL:
+	Logic: EncyclopediaLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 540
+	Children:
+		Label@ENCYCLOPEDIA_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: label-encyclopedia-title
+		Background@ENCYCLOPEDIA_CONTENT:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: panel-black
+			Children:
+				ScrollPanel@ACTOR_LIST:
+					X: 15
+					Y: 15
+					Width: 255
+					Height: PARENT_HEIGHT - 30
+					Children:
+						ScrollItem@HEADER:
+							Background: scrollheader
+							Width: PARENT_WIDTH - 27
+							Height: 13
+							X: 2
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 13
+									Align: Center
+						ScrollItem@TEMPLATE:
+							Width: PARENT_WIDTH - 27
+							Height: 25
+							X: 2
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 10
+									Width: PARENT_WIDTH - 20
+									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+				Background@PORTRAIT_CONTAINER:
+					X: 285
+					Y: 15
+					Width: 600
+					Height: 320
+					Background: scrollpanel-bg
+					Children:
+						Sprite@ACTOR_PORTRAIT:
+							X: 1
+							Y: 1
+							Width: PARENT_WIDTH - 2
+							Height: PARENT_HEIGHT - 2
+						Image@PORTRAIT_GRID:
+							ImageCollection: encyclopedia
+							ImageName: scanlines
+				Container@ACTOR_INFO:
+					X: 285
+					Y: 350
+					Width: PARENT_WIDTH - 195 - 45
+					Height: PARENT_HEIGHT - 30
+					Children:
+						Background@ACTOR_BG:
+							Width: 170
+							Height: 175
+							Background: scrollpanel-bg
+							Children:
+								ActorPreview@ACTOR_PREVIEW:
+									X: 1
+									Y: 1
+									Width: PARENT_WIDTH - 2
+									Height: PARENT_HEIGHT - 2
+						ScrollPanel@ACTOR_DESCRIPTION_PANEL:
+							X: 185
+							Width: 580 - 165
+							Height: 175
+							TopBottomSpacing: 8
+							CollapseHiddenChildren: true
+							Children:
+								Label@ACTOR_TITLE:
+									X: 8
+									Width: PARENT_WIDTH - 40
+									Height: 18
+									VAlign: Top
+									Font: Bold
+								Container@ACTOR_PRODUCTION:
+									X: 8
+									Width: PARENT_WIDTH - 40
+									Height: 24
+									Children:
+										Image@COST_ICON:
+											Y: 1
+											Width: 16
+											Height: 16
+											ImageCollection: sidebar-bits
+											ImageName: production-tooltip-cost
+										Label@COST:
+											X: 17
+											Height: 16
+											Font: Bold
+										Image@TIME_ICON:
+											X: 75
+											Y: 1
+											Width: 16
+											Height: 16
+											ImageCollection: sidebar-bits
+											ImageName: production-tooltip-time
+										Label@TIME:
+											X: 95
+											Height: 16
+											Font: Bold
+										Image@POWER_ICON:
+											X: 150
+											Y: 1
+											Width: 16
+											Height: 16
+											ImageCollection: sidebar-bits
+											ImageName: production-tooltip-power
+										Label@POWER:
+											X: 167
+											Height: 16
+											Font: Bold
+								Label@ACTOR_DESCRIPTION:
+									X: 8
+									Width: PARENT_WIDTH - 40
+									VAlign: Top
+									Font: Regular
+		Button@BACK_BUTTON:
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-back
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:

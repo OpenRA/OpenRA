@@ -1,0 +1,79 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, controlledburn.lua, controlledburn-AI.lua
+	MissionData:
+		WinVideo: apcescpe.vqa
+		LossVideo: tesla.vqa
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 7500
+
+HARV:
+	-MustBeDestroyed:
+
+APC:
+	Buildable:
+		Prerequisites: ~vehicles.allies
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BIO:
+	Tooltip:
+		Name: actor-sarin-processing-plant-name
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+MH60:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~hpad

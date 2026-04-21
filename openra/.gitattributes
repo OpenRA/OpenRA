@@ -1,0 +1,10 @@
+# Enforce LF normalization on Windows
+*.yaml eol=lf
+*.lua eol=lf
+*.cs eol=lf
+*.csproj eol=lf
+*.sln eol=lf
+* text=lf
+
+# Custom for Visual Studio
+*.cs     diff=csharp

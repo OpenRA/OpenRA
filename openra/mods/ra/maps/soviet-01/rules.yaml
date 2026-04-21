@@ -1,0 +1,63 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, soviet01.lua
+	MissionData:
+		Briefing: briefing
+		BackgroundVideo: prolog.vqa
+		BriefingVideo: soviet1.vqa
+		StartVideo: flare.vqa
+		WinVideo: snstrafe.vqa
+		LossVideo: sfrozen.vqa
+
+V01:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1,E1,E1,E2,E2
+
+^CivBuilding:
+	MustBeDestroyed:
+
+JEEP:
+	FireWarheadsOnDeath:
+	ProximityExternalCondition@JAMMER:
+		Range: 10c0
+		ValidRelationships: Enemy, Neutral
+		Condition: jammed
+
+YAK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	AirstrikePower@spyplane:
+		Prerequisites: ~disabled
+	ParatroopersPower@paratroopers:
+		Prerequisites: ~disabled
+	-RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: true
+	-Sellable:
+	Demolishable:
+		-Condition:
+
+DOME:
+	CaptureManager:
+		-BeingCapturedCondition:
+	-Sellable:
+	Demolishable:
+		-Condition:
+
+POWR:
+	CaptureManager:
+		-BeingCapturedCondition:
+	-Sellable:
+	Demolishable:
+		-Condition:

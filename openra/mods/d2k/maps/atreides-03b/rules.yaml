@@ -1,0 +1,83 @@
+Player:
+	PlayerResources:
+		DefaultCash: 3000
+	ExternalCondition@AI:
+		Condition: base-rebuilder
+	BaseBuilderBotModule@Ordos:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			wind_trap: 2
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, atreides03b.lua, atreides03b-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: A_BR03_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+
+quad:
+	Buildable:
+		Prerequisites: upgrade.light
+
+trooper:
+	Buildable:
+		Prerequisites: upgrade.barracks
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled

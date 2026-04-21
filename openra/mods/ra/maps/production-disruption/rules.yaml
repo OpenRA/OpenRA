@@ -1,0 +1,69 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, production-disruption.lua
+	MissionData:
+		WinVideo: battle.vqa
+		LossVideo: slntsrvc.vqa
+		Briefing: briefing
+	StartGameNotification:
+		Notification: MissionTimerInitialised
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+powerproxy.chronoshift:
+	ChronoshiftPower:
+		Dimensions: 1, 1
+		Footprint: x
+
+powerproxy.parabombs:
+	AirstrikePower:
+		DisplayBeacon: False
+
+CHALK1:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1, E1, E1, E1, E1
+
+CHALK2:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E3, E3, E3, E3, MEDI
+
+CHALK3:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1, E1
+		SquadSize: 4
+
+CTNK:
+	Chronoshiftable:
+		ChronoshiftSound:
+
+LST.Reinforcement:
+	Inherits: LST
+	RejectsOrders:
+	-Buildable:
+	-Selectable:
+	RenderSprites:
+		Image: lst
+	Interactable:
+
+MSUB:
+	-Cloak:
+	-GrantConditionOnDamageState@UNCLOAK:
+	-Targetable@UNDERWATER:
+	Targetable:
+		-RequiresCondition:
+
+TSLA:
+	ExternalCondition@NOACTORSONSELL:
+		Condition: no-actors-on-sell
+	SpawnActorsOnSell:
+		RequiresCondition: !no-actors-on-sell

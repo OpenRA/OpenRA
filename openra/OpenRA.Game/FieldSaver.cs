@@ -1,0 +1,159 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using OpenRA.Primitives;
+
+namespace OpenRA
+{
+	public static class FieldSaver
+	{
+		public static MiniYaml Save(object o)
+		{
+			var nodes = new List<MiniYamlNode>();
+
+			foreach (var fieldInfo in FieldLoader.GetTypeLoadInfo(o.GetType()))
+			{
+				if (fieldInfo.Field.FieldType.IsGenericType && fieldInfo.Field.FieldType.IsAssignableTo(typeof(System.Collections.IDictionary)))
+				{
+					var dict = (System.Collections.IDictionary)fieldInfo.Field.GetValue(o);
+					var dictNodes = new List<MiniYamlNode>();
+					foreach (var kvp in dict)
+					{
+						var key = ((System.Collections.DictionaryEntry)kvp).Key;
+						var value = ((System.Collections.DictionaryEntry)kvp).Value;
+						dictNodes.Add(new MiniYamlNode(FormatValue(key), FormatValue(value)));
+					}
+
+					nodes.Add(new MiniYamlNode(fieldInfo.YamlName, "", dictNodes));
+				}
+				else
+					nodes.Add(new MiniYamlNode(fieldInfo.YamlName, FormatValue(o, fieldInfo.Field)));
+			}
+
+			return new MiniYaml(null, nodes);
+		}
+
+		public static MiniYaml SaveDifferences(object o, object from)
+		{
+			if (o.GetType() != from.GetType())
+				throw new InvalidOperationException("FieldSaver: can't diff objects of different types");
+
+			var fields = FieldLoader.GetTypeLoadInfo(o.GetType())
+				.Where(info => FormatValue(o, info.Field) != FormatValue(from, info.Field));
+
+			return new MiniYaml(
+				null,
+				fields.Select(info => new MiniYamlNode(info.YamlName, FormatValue(o, info.Field))));
+		}
+
+		public static MiniYamlNode SaveField(object o, string field)
+		{
+			return new MiniYamlNode(field, FormatValue(o, o.GetType().GetField(field)));
+		}
+
+		public static string FormatValue(object v)
+		{
+			if (v == null)
+				return "";
+
+			var t = v.GetType();
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(BitSet<>))
+				return ((IEnumerable<string>)v).Select(FormatValue).JoinWith(", ");
+
+			if (t.IsArray && t.GetArrayRank() == 1)
+				return ((Array)v).Cast<object>().Select(FormatValue).JoinWith(", ");
+
+			if (t.IsGenericType &&
+				t.GetGenericTypeDefinition() == typeof(ImmutableArray<>))
+			{
+				try
+				{
+					return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
+				}
+				catch (InvalidOperationException)
+				{
+					return "";
+				}
+			}
+
+			if (t.IsGenericType &&
+				(t.GetGenericTypeDefinition() == typeof(List<>) ||
+				t.GetGenericTypeDefinition() == typeof(HashSet<>) ||
+				t.GetGenericTypeDefinition()
+					.BaseTypes()
+					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+					.Any(bt => bt == typeof(FrozenSet<>))))
+				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
+
+			// This is only for documentation generation
+			if (t.IsGenericType &&
+				(t.GetGenericTypeDefinition() == typeof(Dictionary<,>) ||
+				t.GetGenericTypeDefinition()
+					.BaseTypes()
+					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+					.Any(bt => bt == typeof(FrozenDictionary<,>))))
+			{
+				var result = new StringBuilder();
+				var dict = (System.Collections.IDictionary)v;
+				foreach (var kvp in dict)
+				{
+					var key = ((System.Collections.DictionaryEntry)kvp).Key;
+					var value = ((System.Collections.DictionaryEntry)kvp).Value;
+
+					var formattedKey = FormatValue(key);
+					var formattedValue = FormatValue(value);
+
+					result.Append(CultureInfo.InvariantCulture, $"{formattedKey}: {formattedValue}{Environment.NewLine}");
+				}
+
+				return result.ToString();
+			}
+
+			if (v is DateTime d)
+			{
+				// Assume DateTimeKind.Unspecified is already UTC
+				if (d.Kind == DateTimeKind.Local)
+					d = d.ToUniversalTime();
+
+				return d.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
+			}
+
+			// Try the TypeConverter
+			var conv = TypeDescriptor.GetConverter(t);
+			if (conv.CanConvertTo(typeof(string)))
+			{
+				try
+				{
+					return conv.ConvertToInvariantString(v);
+				}
+				catch
+				{
+				}
+			}
+
+			return v.ToString();
+		}
+
+		public static string FormatValue(object o, FieldInfo f)
+		{
+			return FormatValue(f.GetValue(o));
+		}
+	}
+}

@@ -1,0 +1,99 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, gdi03.lua
+	MusicPlaylist:
+		StartingMusic: crep226m
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: gdi3.vqa
+		StartVideo: samdie.vqa
+		WinVideo: bombaway.vqa
+		LossVideo: gameover.vqa
+
+SBAG:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Queue: Infantry.Nod
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+E5:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+	Building:
+	Power:
+		Amount: -10
+	-Capturable:
+
+HQ:
+	Tooltip:
+	-AirstrikePower:
+	Buildable:
+		Description: actor-hq-description

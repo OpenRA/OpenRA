@@ -1,0 +1,78 @@
+await_r: Afterlife (Await)
+	VolumeModifier: 0.7
+bigf226m: Bigfoot
+	VolumeModifier: 0.7
+crus226m: Crush
+	VolumeModifier: 0.7
+dense_r: Dense
+	VolumeModifier: 0.7
+fac1226m: Face to the Enemy 1
+	VolumeModifier: 0.85
+fac2226m: Face to the Enemy 2
+	VolumeModifier: 0.7
+fogger1a: Fogger
+	VolumeModifier: 0.8
+hell226m: Hell March
+	VolumeModifier: 0.7
+intro: Intro
+	Hidden: true
+	VolumeModifier: 0.9
+map: Map
+	Hidden: true
+	VolumeModifier: 0.6
+mud1a: Mud
+	VolumeModifier: 0.7
+radio2: Radio 2
+	VolumeModifier: 0.7
+credits: Reload Fire (Credits)
+	VolumeModifier: 0.9
+rollout: Roll Out
+	VolumeModifier: 0.7
+run1226m: Run (For Your Life)
+	VolumeModifier: 0.7
+score: Militant Force (Scores)
+	Hidden: true
+	VolumeModifier: 0.7
+smsh226m: Smash
+	VolumeModifier: 0.7
+snake: Snake
+	VolumeModifier: 0.7
+terminat: Terminate
+	VolumeModifier: 0.7
+tren226m: Trenches
+	VolumeModifier: 0.7
+twin: Twin Cannon
+	VolumeModifier: 0.7
+vector1a: Vector
+	VolumeModifier: 0.7
+work226m: Workmen
+	VolumeModifier: 0.7
+
+# Counterstrike tracks
+araziod: Arazoid
+	VolumeModifier: 0.8
+backstab: Backstab
+	VolumeModifier: 0.9
+chaos2: Chaos
+	VolumeModifier: 0.9
+shut_it: Shut It
+	VolumeModifier: 0.9
+2nd_hand: The Second Hand
+twinmix1: Twin Cannon (Remix)
+	VolumeModifier: 0.9
+under3: Underlying Thoughts
+	VolumeModifier: 0.95
+vr2: Voice Rhythm 2
+	VolumeModifier: 0.95
+
+# Aftermath tracks
+await: Afterlife (Await)
+bog: Bog
+	VolumeModifier: 0.9
+float_v2: Floating
+gloom: Gloom
+grndwire: Groundwire
+rpt: Running Through Pipes
+search: The Search
+traction: Traction
+wastelnd: Wasteland

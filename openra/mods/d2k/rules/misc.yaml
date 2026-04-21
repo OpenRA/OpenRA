@@ -1,0 +1,339 @@
+crate:
+	HiddenUnderFog:
+	Tooltip:
+		Name: actor-crate-name
+	Crate:
+		Duration: 3000
+		TerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+	GiveCashCrateAction@1:
+		Amount: 750
+		SelectionShares: 25
+		UseCashTick: true
+	GiveCashCrateAction@2:
+		Amount: 1000
+		SelectionShares: 50
+		UseCashTick: true
+	GiveCashCrateAction@3:
+		Amount: 1500
+		SelectionShares: 25
+		UseCashTick: true
+	ExplodeCrateAction@1:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Sequence: hide-map
+	LevelUpCrateAction:
+		SelectionShares: 40
+	RevealMapCrateAction:
+		SelectionShares: 2
+		Sequence: reveal-map
+	GiveUnitCrateAction@LightInfantry:
+		SelectionShares: 15
+		Units: light_inf, light_inf, light_inf, light_inf, light_inf
+		Prerequisites: techlevel.low, barracks
+	GiveUnitCrateAction@Trooper:
+		SelectionShares: 10
+		Units: trooper, trooper, trooper, trooper
+		Prerequisites: techlevel.low, barracks, upgrade.barracks
+	GiveUnitCrateAction@Engineer:
+		SelectionShares: 10
+		Units: engineer
+		Prerequisites: techlevel.low, barracks, upgrade.barracks
+	GiveUnitCrateAction@Thumper:
+		SelectionShares: 4
+		Units: thumper
+		Prerequisites: techlevel.high, barracks, upgrade.barracks
+	GiveUnitCrateAction@Grenadier:
+		SelectionShares: 8
+		Units: grenadier, grenadier
+		ValidFactions: atreides
+		Prerequisites: techlevel.medium, barracks, upgrade.barracks, high_tech_factory
+	GiveUnitCrateAction@Sardaukar:
+		SelectionShares: 8
+		Units: sardaukar, sardaukar
+		ValidFactions: harkonnen
+		Prerequisites: techlevel.medium, barracks, upgrade.barracks, high_tech_factory
+	GiveUnitCrateAction@Trike:
+		SelectionShares: 25
+		Units: trike
+		ValidFactions: atreides, harkonnen
+		Prerequisites: techlevel.low, light_factory
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 25
+		Units: raider
+		ValidFactions: ordos
+		Prerequisites: techlevel.low, light_factory
+	GiveUnitCrateAction@Quad:
+		SelectionShares: 20
+		Units: quad
+		Prerequisites: techlevel.medium, light_factory, upgrade.light
+	GiveUnitCrateAction@StealthRaider:
+		SelectionShares: 8
+		Units: stealth_raider
+		ValidFactions: ordos
+		Prerequisites: techlevel.medium, light_factory, upgrade.light, high_tech_factory
+	GiveUnitCrateAction@Harvester:
+		SelectionShares: 10
+		Units: harvester
+		Prerequisites: techlevel.low, heavy_factory, refinery
+	GiveUnitCrateAction@CombatA:
+		SelectionShares: 15
+		Units: combat_tank_a
+		ValidFactions: atreides
+		Prerequisites: techlevel.low, heavy_factory
+	GiveUnitCrateAction@CombatH:
+		SelectionShares: 15
+		Units: combat_tank_h
+		ValidFactions: harkonnen
+		Prerequisites: techlevel.low, heavy_factory
+	GiveUnitCrateAction@CombatO:
+		SelectionShares: 15
+		Units: combat_tank_o
+		ValidFactions: ordos
+		Prerequisites: techlevel.low, heavy_factory
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 12
+		Units: siege_tank
+		Prerequisites: techlevel.medium, heavy_factory, upgrade.heavy
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 10
+		Units: missile_tank
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveUnitCrateAction@Fremen:
+		SelectionShares: 5
+		Units: fremen, fremen
+		ValidFactions: atreides
+		Prerequisites: techlevel.high, palace
+	GiveUnitCrateAction@Saboteur:
+		SelectionShares: 5
+		Units: saboteur
+		ValidFactions: ordos
+		Prerequisites: techlevel.high, palace
+	GiveUnitCrateAction@SonicTank:
+		SelectionShares: 5
+		Units: sonic_tank
+		ValidFactions: atreides
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveUnitCrateAction@Devastator:
+		SelectionShares: 5
+		Units: devastator
+		ValidFactions: harkonnen
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveUnitCrateAction@Deviator:
+		SelectionShares: 5
+		Units: deviator
+		ValidFactions: ordos
+		Prerequisites: techlevel.high, heavy_factory, research_centre
+	GiveBaseBuilderCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Units: mcv
+	QuantizeFacingsFromSequence:
+	RenderSprites:
+		Palette: effect
+	WithCrateBody:
+	Passenger:
+	MapEditorData:
+		Categories: System
+	Interactable:
+		Bounds: 640, 640
+
+mpspawn:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-mpspawn-name
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+waypoint:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-waypoint-name
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+
+carryall.colorpicker:
+	Inherits: carryall
+	Aircraft:
+		InitialFacing: 416
+	-Buildable:
+	-MapEditorData:
+	-Encyclopedia:
+	RenderSprites:
+		Image: carryall
+		Palette: colorpicker
+
+camera:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-camera-name
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 6c768
+		Type: CenterPosition
+	MapEditorData:
+		Categories: System
+
+wormspawner:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-wormspawner-name
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	ActorSpawner:
+	MapEditorData:
+		Categories: System
+
+upgrade.conyard:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: actor-upgrade-conyard.name
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: construction_yard
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 625
+		BuildDurationModifier: 100
+		Description: actor-upgrade-conyard.description
+	Valued:
+		Cost: 1000
+	RenderSprites:
+		Image: conyard.ordos
+		FactionImages:
+			atreides: conyard.atreides
+			fremen: conyard.atreides
+			harkonnen: conyard.harkonnen
+			corrino: conyard.harkonnen
+	ProvidesPrerequisite@upgradename:
+
+upgrade.barracks:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: actor-upgrade-barracks.name
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: barracks
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 260
+		BuildDurationModifier: 100
+		Description: actor-upgrade-barracks.description
+	Valued:
+		Cost: 500
+	RenderSprites:
+		Image: barracks.ordos
+		FactionImages:
+			atreides: barracks.atreides
+			fremen: barracks.atreides
+			harkonnen: barracks.harkonnen
+			corrino: barracks.harkonnen
+	ProvidesPrerequisite@upgradename:
+
+upgrade.light:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: actor-upgrade-light.name
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: light_factory
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 330
+		BuildDurationModifier: 100
+		Description: actor-upgrade-light.description
+	Valued:
+		Cost: 400
+	RenderSprites:
+		Image: light.ordos
+		FactionImages:
+			atreides: light.atreides
+			fremen: light.atreides
+			harkonnen: light.harkonnen
+			corrino: light.harkonnen
+	ProvidesPrerequisite@upgradename:
+
+upgrade.heavy:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: actor-upgrade-heavy.name
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: heavy_factory
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 600
+		BuildDurationModifier: 100
+		Description: actor-upgrade-heavy.description
+	Valued:
+		Cost: 800
+	RenderSprites:
+		Image: heavy.ordos
+		FactionImages:
+			atreides: heavy.atreides
+			fremen: heavy.atreides
+			harkonnen: heavy.harkonnen
+			corrino: heavy.harkonnen
+			mercenary: heavy.mercenary
+	ProvidesPrerequisite@upgradename:
+
+upgrade.hightech:
+	Interactable:
+	ScriptTriggers:
+	Tooltip:
+		Name: actor-upgrade-hightech.name
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: ~hightech.atreides, ~techlevel.superweapons
+		Queue: Upgrade
+		BuildLimit: 1
+		BuildDuration: 937
+		BuildDurationModifier: 100
+		Description: actor-upgrade-hightech.description
+	Valued:
+		Cost: 1500
+	RenderSprites:
+		Image: hightech.atreides
+	ProvidesPrerequisite@upgradename:
+
+deathhand:
+	Interactable:
+	Tooltip:
+		Name: actor-deathhand.name
+	Encyclopedia:
+		Description: actor-deathhand.encyclopedia
+		Order: 250
+		Category: Super Weapons
+	Buildable:
+		Prerequisites: palace
+	RenderSprites:
+	WithSpriteBody:
+		Sequence: up

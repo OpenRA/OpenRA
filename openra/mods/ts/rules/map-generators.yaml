@@ -1,0 +1,829 @@
+^MapGenerators:
+	TSMapGenerator@ts:
+		Type: ts
+		Name: map-generator-ts
+		Tilesets: TEMPERATE
+		Settings:
+			MultiChoiceOption@hidden_defaults:
+				Choice@hidden_defaults:
+					Settings:
+						Rotations: 1
+						Mirror: None
+						TerrainFeatureSize: 20480
+						RampFeatureSize: 16384
+						ForestFeatureSize: 20480
+						ResourceFeatureSize: 20480
+						CivilianBuildingsFeatureSize: 10240
+						Water: 200
+						Mountains: 300
+						Forests: 25
+						ForestCutout: 2
+						MaximumCutoutSpacing: 12
+						TerrainSmoothing: 4
+						SmoothingThreshold: 833
+						MinimumCoastStraight: 2
+						MinimumCliffStraight: 2
+						MinimumLandSeaThickness: 4
+						MinimumMountainThickness: 4
+						MaximumAltitude: 8
+						RoughnessRadius: 5
+						Roughness: 250
+						WaterCliffs: False
+						WaterRoughness: 300
+						MinimumTerrainContourSpacing: 7
+						MinimumBeachLength: 10
+						MinimumWaterCliffLength: 10
+						MinimumCliffLength: 10
+						MinimumClearLength: 4
+						BeachSpreadWhenWaterCliffing: 8
+						RampSoften: 16
+						ForestClumpiness: 1
+						DenyWalledAreas: True
+						EnforceSymmetry: 0
+						CreateEntities: True
+						CentralSpawnReservationFraction: 250
+						ResourceSpawnReservation: 8
+						SpawnRegionSize: 12
+						SpawnBuildSize: 8
+						MinimumSpawnRadius: 5
+						SpawnResourceSpawns: 3
+						SpawnReservation: 16
+						SpawnResourceBias: 500
+						OreUniformity: 250
+						OreClumpiness: 2
+						MinimumExpansionSize: 2
+						MaximumExpansionSize: 12
+						ExpansionInner: 2
+						ExpansionBorder: 1
+						CivilianBuildings: 125
+						CivilianBuildingDensity: 500
+						MinimumCivilianBuildingDensity: 90
+						CivilianBuildingDensityRadius: 3
+						DefaultResource: Tiberium
+						ResourceSpawnSeeds:
+							tibtre01: Tiberium
+							tibtre02: Tiberium
+							tibtre03: Tiberium
+							bigblue: BlueTiberium
+							bigblue3: BlueTiberium
+							veinhole: Veins
+						ClearTerrain: Clear
+						PlayableTerrain: BlueTiberium,Bridge,Clear,DirtRoad,Rail,Road,Rough,Tiberium,Veins
+						DominantTerrain: Cliff,Impassable,Rock,Tree,Water
+						ZoneableTerrain: Clear,Road
+						ClearSegmentTypes: Clear
+						BeachSegmentTypes: Shore
+						CliffSegmentTypes: Cliff
+						WaterCliffSegmentTypes: WaterCliff
+						ForestObstacles: Trees
+						UnplayableObstacles: Obstructions
+						CivilianBuildingsObstacles: CivilianBuildings
+						LandTile: 0
+						WaterTile: 341
+						ForestFloor: 125
+						RepaintTiles:
+							341: Water
+						RampTiles: 0, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57
+						UseIceLatTiler: False
+			MultiChoiceOption@hidden_tileset_overrides:
+				Choice@temperat:
+					Tileset: TEMPERATE
+					Settings:
+						ForestFloorTile: 626
+						OtherGround:
+							535: 150
+							150: 250
+						LatTiler:
+							Rule@Rough:
+								AutoMain:
+								Low: 150
+								____: 150
+								___x: 152
+								__x_: 153
+								__xx: 154
+								_x__: 155
+								_x_x: 156
+								_xx_: 157
+								_xxx: 158
+								x___: 159
+								x__x: 160
+								x_x_: 161
+								x_xx: 162
+								xx__: 163
+								xx_x: 164
+								xxx_: 165
+								xxxx: 166
+							Rule@Sand:
+								AutoMain:
+								Low: 535
+								____: 535
+								___x: 537
+								__x_: 538
+								__xx: 539
+								_x__: 540
+								_x_x: 541
+								_xx_: 542
+								_xxx: 543
+								x___: 544
+								x__x: 545
+								x_x_: 546
+								x_xx: 547
+								xx__: 548
+								xx_x: 549
+								xxx_: 550
+								xxxx: 551
+							Rule@Green:
+								AutoMain:
+								Low: 626
+								____: 626
+								___x: 628
+								__x_: 629
+								__xx: 630
+								_x__: 631
+								_x_x: 632
+								_xx_: 633
+								_xxx: 634
+								x___: 635
+								x__x: 636
+								x_x_: 637
+								x_xx: 638
+								xx__: 639
+								xx_x: 640
+								xxx_: 641
+								xxxx: 642
+							Rule@RampEdge40:
+								AutoMain:
+								Low: 40,643,644,645
+								____: 40
+								___x: 40
+								__x_: 644
+								__xx: 644
+								_x__: 40
+								_x_x: 40
+								_xx_: 644
+								_xxx: 644
+								x___: 643
+								x__x: 643
+								x_x_: 645
+								x_xx: 645
+								xx__: 643
+								xx_x: 643
+								xxx_: 645
+								xxxx: 645
+							Rule@RampEdge41:
+								AutoMain:
+								Low: 41,646,647,648
+								____: 41
+								___x: 646
+								__x_: 41
+								__xx: 646
+								_x__: 647
+								_x_x: 648
+								_xx_: 647
+								_xxx: 648
+								x___: 41
+								x__x: 646
+								x_x_: 41
+								x_xx: 646
+								xx__: 647
+								xx_x: 648
+								xxx_: 647
+								xxxx: 648
+							Rule@RampEdge42:
+								AutoMain:
+								Low: 42,649,650,651
+								____: 42
+								___x: 42
+								__x_: 649
+								__xx: 649
+								_x__: 42
+								_x_x: 42
+								_xx_: 649
+								_xxx: 649
+								x___: 650
+								x__x: 650
+								x_x_: 651
+								x_xx: 651
+								xx__: 650
+								xx_x: 650
+								xxx_: 651
+								xxxx: 651
+							Rule@RampEdge43:
+								AutoMain:
+								Low: 43,652,653,654
+								____: 43
+								___x: 653
+								__x_: 43
+								__xx: 653
+								_x__: 652
+								_x_x: 654
+								_xx_: 652
+								_xxx: 654
+								x___: 43
+								x__x: 653
+								x_x_: 43
+								x_xx: 653
+								xx__: 652
+								xx_x: 654
+								xxx_: 652
+								xxxx: 654
+				Choice@snow:
+					Tileset: SNOW
+					Settings:
+						ForestFloorTile: 150
+						OtherGround:
+							150: 250
+							989: 150
+							1006: 150
+						LatTiler:
+							Rule@Rough:
+								AutoMain:
+								Low: 150
+								____: 150
+								___x: 152
+								__x_: 153
+								__xx: 154
+								_x__: 155
+								_x_x: 156
+								_xx_: 157
+								_xxx: 158
+								x___: 159
+								x__x: 160
+								x_x_: 161
+								x_xx: 162
+								xx__: 163
+								xx_x: 164
+								xxx_: 165
+								xxxx: 166
+							Rule@Rock:
+								AutoMain:
+								Low: 989
+								____: 989
+								___x: 991
+								__x_: 992
+								__xx: 993
+								_x__: 994
+								_x_x: 995
+								_xx_: 996
+								_xxx: 997
+								x___: 998
+								x__x: 999
+								x_x_: 1000
+								x_xx: 1001
+								xx__: 1002
+								xx_x: 1003
+								xxx_: 1004
+								xxxx: 1005
+							Rule@Grey:
+								AutoMain:
+								Low: 1006
+								____: 1006
+								___x: 1008
+								__x_: 1009
+								__xx: 1010
+								_x__: 1011
+								_x_x: 1012
+								_xx_: 1013
+								_xxx: 1014
+								x___: 1015
+								x__x: 1016
+								x_x_: 1017
+								x_xx: 1018
+								xx__: 1019
+								xx_x: 1020
+								xxx_: 1021
+								xxxx: 1007
+							Rule@RampEdge40:
+								AutoMain:
+								Low: 40,721,722,723
+								____: 40
+								___x: 40
+								__x_: 722
+								__xx: 722
+								_x__: 40
+								_x_x: 40
+								_xx_: 722
+								_xxx: 722
+								x___: 721
+								x__x: 721
+								x_x_: 723
+								x_xx: 723
+								xx__: 721
+								xx_x: 721
+								xxx_: 723
+								xxxx: 723
+							Rule@RampEdge41:
+								AutoMain:
+								Low: 41,724,725,726
+								____: 41
+								___x: 724
+								__x_: 41
+								__xx: 724
+								_x__: 725
+								_x_x: 726
+								_xx_: 725
+								_xxx: 726
+								x___: 41
+								x__x: 724
+								x_x_: 41
+								x_xx: 724
+								xx__: 725
+								xx_x: 726
+								xxx_: 725
+								xxxx: 726
+							Rule@RampEdge42:
+								AutoMain:
+								Low: 42,727,728,729
+								____: 42
+								___x: 42
+								__x_: 727
+								__xx: 727
+								_x__: 42
+								_x_x: 42
+								_xx_: 727
+								_xxx: 727
+								x___: 728
+								x__x: 728
+								x_x_: 729
+								x_xx: 729
+								xx__: 728
+								xx_x: 728
+								xxx_: 729
+								xxxx: 729
+							Rule@RampEdge43:
+								AutoMain:
+								Low: 43,730,731,732
+								____: 43
+								___x: 731
+								__x_: 43
+								__xx: 731
+								_x__: 730
+								_x_x: 732
+								_xx_: 730
+								_xxx: 732
+								x___: 43
+								x__x: 731
+								x_x_: 43
+								x_xx: 731
+								xx__: 730
+								xx_x: 732
+								xxx_: 730
+								xxxx: 732
+						IceLatTiler:
+							Rule@Ice:
+								AutoMain:
+								Low: 341
+								____: 341
+								___x: 456, 520, 584
+								__x_: 457, 521, 585
+								__xx: 458, 522, 586
+								_x__: 459, 523, 587
+								_x_x: 460, 524, 588
+								_xx_: 461, 525, 589
+								_xxx: 462, 526, 590
+								x___: 463, 527, 591
+								x__x: 464, 528, 592
+								x_x_: 465, 529, 593
+								x_xx: 466, 530, 594
+								xx__: 467, 531, 595
+								xx_x: 468, 532, 596
+								xxx_: 469, 533, 597
+								xxxx: 470, 534, 598
+			IntegerOption@Seed:
+				Label: label-ts-map-generator-option-seed
+				Parameter: Seed
+				Default: 0
+			MultiChoiceOption@TerrainType:
+				Label: label-ts-map-generator-option-terrain-type
+				Priority: 2
+				Default: Plots
+				Choice@Lakes:
+					Label: label-ts-map-generator-choice-terrain-type-lakes
+					Settings:
+				Choice@Puddles:
+					Label: label-ts-map-generator-choice-terrain-type-puddles
+					Settings:
+						Water: 100
+				Choice@Gardens:
+					Label: label-ts-map-generator-choice-terrain-type-gardens
+					Settings:
+						Water: 50
+						Forests: 300
+						ForestCutout: 3
+						EnforceSymmetry: 2
+				Choice@Plots:
+					Label: label-ts-map-generator-choice-terrain-type-plots
+					Settings:
+						TerrainFeatureSize: 10240
+						ForestFeatureSize: 10240
+						ResourceFeatureSize: 10240
+						Water: 100
+						Forests: 300
+						ForestCutout: 5
+						EnforceSymmetry: 2
+						Mountains: 300
+						MinimumTerrainContourSpacing: 12
+						MinimumCliffLength: 8
+						Roughness: 150
+						CivilianBuildings: 100
+				Choice@Plains:
+					Label: label-ts-map-generator-choice-terrain-type-plains
+					Settings:
+						Water: 0
+						Mountains: 100
+						CivilianBuildings: 100
+				Choice@Parks:
+					Label: label-ts-map-generator-choice-terrain-type-parks
+					Settings:
+						Water: 0
+						Forests: 100
+						Mountains: 100
+						CivilianBuildings: 100
+				Choice@Woodlands:
+					Label: label-ts-map-generator-choice-terrain-type-woodlands
+					Settings:
+						Water: 0
+						Forests: 400
+						ForestCutout: 3
+						EnforceSymmetry: 2
+				Choice@Overgrown:
+					Label: label-ts-map-generator-choice-terrain-type-overgrown
+					Settings:
+						Water: 0
+						Forests: 500
+						EnforceSymmetry: 2
+						Mountains: 500
+						Roughness: 250
+				Choice@Rocky:
+					Label: label-ts-map-generator-choice-terrain-type-rocky
+					Settings:
+						Water: 0
+						Forests: 300
+						ForestCutout: 3
+						EnforceSymmetry: 2
+						Mountains: 500
+						Roughness: 250
+				Choice@Mountains:
+					Label: label-ts-map-generator-choice-terrain-type-mountains
+					Settings:
+						Water: 0
+						Mountains: 900
+						Roughness: 600
+				Choice@MountainLakes:
+					Label: label-ts-map-generator-choice-terrain-type-mountain-lakes
+					Settings:
+						Water: 200
+						Mountains: 900
+						Roughness: 850
+			MultiIntegerChoiceOption@Players:
+				Label: label-ts-map-generator-option-players
+				Parameter: Players
+				Choices: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+				Default: 2
+				Priority: 1
+			MultiChoiceOption@Symmetry:
+				Label: label-ts-map-generator-option-symmetry
+				Default: 2Rotations
+				Priority: 1
+				Choice@None:
+					Label: label-ts-map-generator-choice-mirror-none
+					Settings:
+						Mirror: None
+				Choice@LeftMatchesRight:
+					Label: label-ts-map-generator-choice-symmetry-mirror-horizontal
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: LeftMatchesRight
+				Choice@TopLeftMatchesBottomRight:
+					Label: label-ts-map-generator-choice-symmetry-mirror-diagonal-tl
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopLeftMatchesBottomRight
+				Choice@TopMatchesBottom:
+					Label: label-ts-map-generator-choice-symmetry-mirror-vertical
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopMatchesBottom
+				Choice@TopRightMatchesBottomLeft:
+					Label: label-ts-map-generator-choice-symmetry-mirror-diagonal-tr
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Mirror: TopRightMatchesBottomLeft
+				Choice@2Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-2-rotations
+					Players: 2, 4, 6, 8, 10, 12, 14, 16
+					Settings:
+						Rotations: 2
+				Choice@3Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-3-rotations
+					Players: 3, 6, 9, 12, 15
+					Settings:
+						Rotations: 3
+				Choice@4Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-4-rotations
+					Players: 4, 8, 12, 16
+					Settings:
+						Rotations: 4
+				Choice@5Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-5-rotations
+					Players: 5, 10, 15
+					Settings:
+						Rotations: 5
+				Choice@6Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-6-rotations
+					Players: 6, 12
+					Settings:
+						Rotations: 6
+				Choice@7Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-7-rotations
+					Players: 7, 14
+					Settings:
+						Rotations: 7
+				Choice@8Rotations:
+					Label: label-ts-map-generator-choice-symmetry-mirror-8-rotations
+					Players: 8, 16
+					Settings:
+						Rotations: 8
+			MultiChoiceOption@Resources:
+				Label: label-ts-map-generator-option-resources
+				Default: Medium
+				Choice@None:
+					Label: label-ts-map-generator-choice-resources-none
+					Settings:
+						SpawnResourceSpawns: 0
+						ResourcesPerPlayer: 0
+						ResourceSpawnWeights:
+						MaximumExpansionResourceSpawns: 0
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@Low:
+					Label: label-ts-map-generator-choice-resources-low
+					Settings:
+						SpawnResourceSpawns: 2
+						ResourcesPerPlayer: 50000
+						ResourceSpawnWeights:
+							tibtre01: 1
+							tibtre02: 1
+							tibtre03: 1
+						MaximumExpansionResourceSpawns: 3
+						MaximumResourceSpawnsPerExpansion: 1
+				Choice@Medium:
+					Label: label-ts-map-generator-choice-resources-medium
+					Settings:
+						SpawnResourceSpawns: 3
+						ResourcesPerPlayer: 75000
+						ResourceSpawnWeights:
+							tibtre01: 2
+							tibtre02: 2
+							tibtre03: 2
+							bigblue: 1
+							bigblue3: 1
+						MaximumExpansionResourceSpawns: 5
+						MaximumResourceSpawnsPerExpansion: 2
+				Choice@High:
+					Label: label-ts-map-generator-choice-resources-high
+					Settings:
+						SpawnResourceSpawns: 3
+						ResourcesPerPlayer: 100000
+						ResourceSpawnWeights:
+							tibtre01: 2
+							tibtre02: 2
+							tibtre03: 2
+							bigblue: 2
+							bigblue3: 2
+						MaximumExpansionResourceSpawns: 8
+						MaximumResourceSpawnsPerExpansion: 3
+				Choice@VeryHigh:
+					Label: label-ts-map-generator-choice-resources-very-high
+					Settings:
+						SpawnResourceSpawns: 4
+						ResourcesPerPlayer: 200000
+						ResourceSpawnWeights:
+							tibtre01: 2
+							tibtre02: 2
+							tibtre03: 2
+							bigblue: 3
+							bigblue3: 3
+						MaximumExpansionResourceSpawns: 10
+						MaximumResourceSpawnsPerExpansion: 3
+				Choice@Full:
+					Label: label-ts-map-generator-choice-resources-full
+					Settings:
+						SpawnResourceSpawns: 0
+						ResourcesPerPlayer: 1000000000
+						ResourceSpawnWeights:
+						MaximumExpansionResourceSpawns: 0
+						MaximumResourceSpawnsPerExpansion: 1
+			MultiChoiceOption@Buildings:
+				Label: label-ts-map-generator-option-buildings
+				Default: Standard
+				Choice@None:
+					Label: label-ts-map-generator-choice-buildings-none
+					Settings:
+						MinimumBuildings: 0
+						MaximumBuildings: 0
+						BuildingWeights:
+				Choice@Veinholes:
+					Label: label-ts-map-generator-choice-buildings-veinholes
+					Settings:
+						MinimumBuildings: 1
+						MaximumBuildings: 1
+						BuildingWeights:
+							veinhole: 1
+				Choice@MoreVeinholes:
+					Label: label-ts-map-generator-choice-buildings-more-veinholes
+					Settings:
+						MinimumBuildings: 2
+						MaximumBuildings: 2
+						BuildingWeights:
+							veinhole: 1
+			MultiChoiceOption@Density:
+				Label: label-ts-map-generator-option-density
+				Default: Players
+				Priority: 1
+				Choice@Players:
+					Label: label-ts-map-generator-choice-density-players
+					Settings:
+						AreaEntityBonus: 0
+						PlayerCountEntityBonus: 1000000
+				Choice@AreaAndPlayers:
+					Label: label-ts-map-generator-choice-density-area-and-players
+					Settings:
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 500000
+				Choice@AreaVeryLow:
+					Label: label-ts-map-generator-choice-density-area-very-low
+					Settings:
+						AreaEntityBonus: 100
+						PlayerCountEntityBonus: 0
+				Choice@AreaLow:
+					Label: label-ts-map-generator-choice-density-area-low
+					Settings:
+						AreaEntityBonus: 200
+						PlayerCountEntityBonus: 0
+				Choice@AreaMedium:
+					Label: label-ts-map-generator-choice-density-area-medium
+					Settings:
+						AreaEntityBonus: 400
+						PlayerCountEntityBonus: 0
+				Choice@AreaHigh:
+					Label: label-ts-map-generator-choice-density-area-high
+					Settings:
+						AreaEntityBonus: 600
+						PlayerCountEntityBonus: 0
+				Choice@AreaVeryHigh:
+					Label: label-ts-map-generator-choice-density-area-very-high
+					Settings:
+						AreaEntityBonus: 800
+						PlayerCountEntityBonus: 0
+			MultiChoiceOption@CivilianDensity:
+				Label: label-ts-map-generator-option-civilian-density
+				Default: Default
+				Priority: 3
+				Choice@Default:
+					Label: label-ts-map-generator-choice-civilian-density-default
+					Settings:
+				Choice@None:
+					Label: label-ts-map-generator-choice-civilian-density-none
+					Settings:
+						CivilianBuildings: 0
+				Choice@Low:
+					Label: label-ts-map-generator-choice-civilian-density-low
+					Settings:
+						CivilianBuildings: 75
+				Choice@Medium:
+					Label: label-ts-map-generator-choice-civilian-density-medium
+					Settings:
+						CivilianBuildings: 125
+				Choice@High:
+					Label: label-ts-map-generator-choice-civilian-density-high
+					Settings:
+						CivilianBuildings: 250
+				Choice@VeryHigh:
+					Label: label-ts-map-generator-choice-civilian-density-very-high
+					Settings:
+						CivilianBuildings: 500
+				Choice@Max:
+					Label: label-ts-map-generator-choice-civilian-density-max
+					Settings:
+						CivilianBuildings: 1000
+			MultiChoiceOption@Coastlines:
+				Label: label-ts-map-generator-option-coastlines
+				Default: Beaches
+				Priority: 3
+				Choice@Beaches:
+					Label: label-ts-map-generator-choice-coastlines-beaches
+					Settings:
+						WaterCliffs: False
+				Choice@SunkenBeaches:
+					Label: label-ts-map-generator-choice-coastlines-sunken-beaches
+					Settings:
+						WaterCliffs: True
+						WaterRoughness: 0
+				Choice@TemperateCliffs:
+					Label: label-ts-map-generator-choice-coastlines-cliffs
+					Tileset: TEMPERATE
+					Settings:
+						WaterCliffs: True
+						WaterRoughness: 1000
+				Choice@SnowCliffs:
+					Label: label-ts-map-generator-choice-coastlines-cliffs
+					Tileset: SNOW
+					Settings:
+						WaterCliffs: True
+						WaterRoughness: 1000
+						UseIceLatTiler: True
+				Choice@TemperateMixed:
+					Label: label-ts-map-generator-choice-coastlines-mixed
+					Tileset: TEMPERATE
+					Settings:
+						WaterCliffs: True
+				Choice@SnowMixed:
+					Label: label-ts-map-generator-choice-coastlines-mixed
+					Tileset: SNOW
+					Settings:
+						WaterCliffs: True
+						BeachSegmentTypes: IceShore
+						UseIceLatTiler: True
+			BooleanOption@DenyWalledArea:
+				Label: label-ts-map-generator-option-deny-walled-areas
+				Parameter: DenyWalledAreas
+				Default: True
+				Priority: 1
+
+	ClearMapGenerator@clear:
+		Type: clear
+		Name: map-generator-clear
+		Tilesets: TEMPERATE, SNOW
+		Settings:
+			MultiChoiceOption@Tile:
+				Label: label-clear-map-generator-option-tile
+				Choice@Clear:
+					Label: label-clear-map-generator-choice-tile-clear
+					Settings:
+						Tile: 0
+				Choice@Snow:
+					Label: label-clear-map-generator-choice-tile-snow
+					Settings:
+						Tile: 4
+				Choice@Blank:
+					Label: label-clear-map-generator-choice-tile-blank
+					Settings:
+						Tile: 12
+				Choice@Rough:
+					Label: label-clear-map-generator-choice-tile-rough
+					Settings:
+						Tile: 150
+				Choice@Water:
+					Label: label-clear-map-generator-choice-tile-water
+					Settings:
+						Tile: 341
+				Choice@Ground01:
+					Label: label-clear-map-generator-choice-tile-ground01
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 447
+				Choice@Sand:
+					Label: label-clear-map-generator-choice-tile-sand
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 535
+				Choice@Green:
+					Label: label-clear-map-generator-choice-tile-green
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 626
+				Choice@TemperatePavement:
+					Label: label-clear-map-generator-choice-tile-pavement
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 671
+				Choice@Crystal:
+					Label: label-clear-map-generator-choice-tile-crystal
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 960
+				Choice@Swamp:
+					Label: label-clear-map-generator-choice-tile-swamp
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 977
+				Choice@Rock:
+					Label: label-clear-map-generator-choice-tile-rock
+					Tileset: SNOW
+					Settings:
+						Tile: 989
+				Choice@BlueMold:
+					Label: label-clear-map-generator-choice-tile-bluemold
+					Tileset: TEMPERATE
+					Settings:
+						Tile: 1002
+				Choice@Grey:
+					Label: label-clear-map-generator-choice-tile-grey
+					Tileset: SNOW
+					Settings:
+						Tile: 1006
+				Choice@SnowPavement:
+					Label: label-clear-map-generator-choice-tile-pavement
+					Tileset: SNOW
+					Settings:
+						Tile: 1031

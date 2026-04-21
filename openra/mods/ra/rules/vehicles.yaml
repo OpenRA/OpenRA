@@ -1,0 +1,933 @@
+V2RL:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 230
+		Prerequisites: dome, ~vehicles.soviet, ~techlevel.medium
+		Description: actor-v2rl.description
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: actor-v2rl.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 20000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 72
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Armament:
+		Weapon: SCUD
+		ReloadingCondition: reloading
+	AutoTarget:
+		ScanRadius: 10
+	AttackFrontal:
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
+		FacingTolerance: 0
+	WithFacingSpriteBody:
+		RequiresCondition: !reloading
+		Name: loaded
+	WithFacingSpriteBody@EMPTY:
+		RequiresCondition: reloading
+		Sequence: empty-idle
+		Name: reloading
+	FireWarheadsOnDeath:
+		Weapon: V2Explode
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+1TNK:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 120
+		Prerequisites: ~vehicles.allies, ~techlevel.low
+		Description: actor-1tnk.description
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: actor-1tnk.name
+		GenericName: actor-1tnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 23000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 113
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 28
+	Armament:
+		Weapon: 25mm
+		Recoil: 85
+		RecoilRecovery: 25
+		LocalOffset: 768,0,90
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+2TNK:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 220
+		Prerequisites: fix, ~vehicles.allies, ~techlevel.medium
+		Description: actor-2tnk.description
+	Valued:
+		Cost: 850
+	Tooltip:
+		Name: actor-2tnk.name
+		GenericName: actor-2tnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 46000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 72
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 20
+	Armament:
+		Weapon: 90mm
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 720,0,80
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	SpawnActorOnDeath:
+		Actor: 2TNK.Husk
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+3TNK:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 220
+		Prerequisites: fix, ~vehicles.soviet, ~techlevel.medium
+		Description: actor-3tnk.description
+	Valued:
+		Cost: 1150
+	Tooltip:
+		Name: actor-3tnk.name
+		GenericName: actor-3tnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 60000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 64
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 20
+	Armament:
+		Weapon: 105mm
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 768,85,90, 768,-85,90
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	SpawnActorOnDeath:
+		Actor: 3TNK.Husk
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+4TNK:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 320
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
+		Description: actor-4tnk.description
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: actor-4tnk.name
+		GenericName: actor-4tnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 90000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 43
+		Locomotor: heavytracked
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 8
+	Armament@PRIMARY:
+		Weapon: 120mm
+		LocalOffset: 900,180,340, 900,-180,340
+		Recoil: 171
+		RecoilRecovery: 30
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: MammothTusk
+		LocalOffset: -85,384,340, -85,-384,340
+		LocalYaw: -100,100
+		Recoil: 43
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	SpawnActorOnDeath:
+		Actor: 4TNK.Husk
+	ChangesHealth:
+		Step: 100
+		Delay: 3
+		StartIfBelow: 50
+		DamageCooldown: 150
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1877, 1621, 0, -170
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+ARTY:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 230
+		Prerequisites: dome, ~vehicles.allies, ~techlevel.medium
+		Description: actor-arty.description
+	Valued:
+		Cost: 850
+	Tooltip:
+		Name: actor-arty.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 10000
+	Armor:
+		Type: Light
+	Mobile:
+		TurnSpeed: 8
+		Speed: 72
+		Locomotor: lighttracked
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Armament:
+		Weapon: 155mm
+		LocalOffset: 624,0,208
+		MuzzleSequence: muzzle
+	AttackFrontal:
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
+		FacingTolerance: 0
+	WithMuzzleOverlay:
+	FireWarheadsOnDeath:
+		Weapon: ArtilleryExplode
+		EmptyWeapon: UnitExplodeSmall
+		LoadedChance: 75
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+HARV:
+	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableEconomicUnit
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Prerequisites: proc, ~techlevel.infonly
+		Description: actor-harv.description
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: actor-harv.name
+		GenericName: actor-harv.generic-name
+	Selectable:
+		DecorationBounds: 1792, 1792
+	Harvester:
+		Resources: Ore,Gems
+		BaleUnloadDelay: 1
+		SearchFromProcRadius: 15
+		SearchFromHarvesterRadius: 8
+		HarvestFacings: 8
+		EmptyCondition: no-ore
+	StoresResources:
+		Capacity: 20
+		Resources: Ore,Gems
+	DockClientManager:
+	Health:
+		HP: 60000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 72
+		Locomotor: heavywheeled
+	RevealsShroud:
+		Range: 4c0
+	WithHarvestAnimation:
+	WithDockingAnimation:
+	GpsDot:
+		String: Harvester
+	SpawnActorOnDeath:
+		Actor: HARV.EmptyHusk
+	HarvesterHuskModifier:
+		FullHuskActor: HARV.FullHusk
+		FullnessThreshold: 50
+	ChangesHealth:
+		Step: 100
+		Delay: 25
+		StartIfBelow: 50
+		DamageCooldown: 500
+	FireWarheadsOnDeath:
+		RequiresCondition: !no-ore
+		Weapon: OreExplosion
+	WithHarvesterSpriteBody:
+		ImageByFullness: harvempty, harvhalf, harv
+	-WithFacingSpriteBody:
+	WithStoresResourcesPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+		PipCount: 7
+		ResourceSequences:
+			Ore: pip-yellow
+			Gems: pip-red
+
+MCV:
+	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 210
+		Prerequisites: fix, ~techlevel.medium
+		BuildDurationModifier: 50
+		Description: actor-mcv.description
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: actor-mcv.name
+	Selectable:
+		DecorationBounds: 1792, 1792
+	Health:
+		HP: 60000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 60
+		Locomotor: heavywheeled
+	RevealsShroud:
+		Range: 4c0
+	Transforms:
+		IntoActor: fact
+		Offset: -1,-1
+		Facing: 384
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformNotification: BuildingCannotPlaceAudio
+		NoTransformTextNotification: notification-cannot-deploy-here
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	BaseBuilding:
+	SpawnActorOnDeath:
+		Actor: MCV.Husk
+	TransferTimedExternalConditionOnTransform:
+		Condition: invulnerability
+
+JEEP:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~vehicles.allies, ~techlevel.low
+		Description: actor-jeep.description
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: actor-jeep.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 15000
+	Armor:
+		Type: Light
+	Mobile:
+		TurnSpeed: 40
+		Speed: 164
+		PauseOnCondition: notmobile || being-captured
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 40
+		Offset: 0,0,128
+	Armament:
+		Weapon: M60mg
+		MuzzleSequence: muzzle
+		LocalOffset: 128,0,43
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		LoadingCondition: notmobile
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+APC:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 120
+		Prerequisites: ~vehicles.soviet, ~techlevel.low
+		Description: actor-apc.description
+	Valued:
+		Cost: 850
+	Tooltip:
+		Name: actor-apc.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 35000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 128
+		PauseOnCondition: notmobile || being-captured
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Armament:
+		Weapon: M60mg
+		LocalOffset: 85,0,171
+		MuzzleSequence: muzzle
+	AttackFrontal:
+		FacingTolerance: 0
+	WithMuzzleOverlay:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		LoadingCondition: notmobile
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+MNLY:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 310
+		Prerequisites: fix, ~techlevel.medium
+		Description: actor-mnly.description
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-mnly.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 30000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 113
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 5c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Minelayer:
+		Mine: MINV
+		TileUnknownName: build-valid
+		TerrainTypes: Clear, Road, Beach, Ore, Gems, Rough, Bridge
+	MineImmune:
+	AmmoPool:
+		Ammo: 5
+		RearmSound: minelay1.aud
+	DetectCloaked:
+		Range: 5c0
+		DetectionTypes: Mine
+	RenderDetectionCircle:
+	FireWarheadsOnDeath:
+		Weapon: ATMine
+	RenderSprites:
+		Image: MNLY
+	Rearmable:
+		RearmActors: fix
+	Targetable:
+		TargetTypes: GroundActor, Vehicle, Mine
+	WithAmmoPipsDecoration:
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+
+TRUK:
+	Inherits: ^Vehicle
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 410
+		Prerequisites: ~techlevel.low
+		Description: actor-truk.description
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: actor-truk.name
+	Health:
+		HP: 11000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 113
+	RevealsShroud:
+		Range: 4c0
+	DeliversCash:
+		Payload: 500
+		PlayerExperience: 5
+	SpawnActorOnDeath:
+		Actor: moneycrate
+
+MGG:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 330
+		Prerequisites: atek, ~vehicles.england, ~techlevel.high
+		Description: actor-mgg.description
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-mgg.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 22000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 72
+	WithIdleOverlay@SPINNER:
+		Offset: -299,0,171
+		Sequence: spinner
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	CreatesShroud:
+		Range: 7c0
+	RenderShroudCircle:
+	SpawnActorOnDeath:
+		Actor: MGG.Husk
+
+MRJ:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-mrj.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 320
+		Prerequisites: atek, ~vehicles.allies, ~techlevel.high
+		Description: actor-mrj.description
+	Health:
+		HP: 22000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 68
+	RevealsShroud:
+		Range: 7c0
+	WithIdleOverlay@SPINNER:
+		Sequence: spinner
+		Offset: -256,0,256
+	ProximityExternalCondition@JAMMER:
+		Range: 18c0
+		ValidRelationships: Enemy, Neutral
+		Condition: jammed
+	WithRangeCircle@JAMMER:
+		Type: jammer
+		Range: 18c0
+		Color: 0000FF80
+	JamsMissiles:
+		Range: 5c0
+		DeflectionRelationships: Neutral, Enemy
+	RenderJammerCircle:
+
+TTNK:
+	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 330
+		Prerequisites: tsla, stek, ~vehicles.russia, ~techlevel.high
+		Description: actor-ttnk.description
+	Valued:
+		Cost: 1350
+	Tooltip:
+		Name: actor-ttnk.name
+		GenericName: actor-ttnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 40000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 92
+	RevealsShroud:
+		MinRange: 6c0
+		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 6c0
+	Armament:
+		Weapon: TTankZap
+		LocalOffset: 0,0,213
+	AttackTurreted:
+	Turreted:
+	WithIdleOverlay@SPINNER:
+		Sequence: spinner
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1280, 1280
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+FTRK:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~vehicles.soviet, ~techlevel.low
+		Description: actor-ftrk.description
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: actor-ftrk.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 15000
+	Armor:
+		Type: Light
+	Mobile:
+		TurnSpeed: 40
+		Speed: 113
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Turreted:
+		TurnSpeed: 40
+		Offset: -298,0,298
+	Armament@AA:
+		Weapon: FLAK-23-AA
+		Recoil: 85
+		LocalOffset: 512,0,192
+		MuzzleSequence: muzzle
+	Armament@AG:
+		Weapon: FLAK-23-AG
+		Recoil: 85
+		LocalOffset: 512,0,192
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+DTRK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 330
+		Prerequisites: stek, ~vehicles.ukraine, ~techlevel.high
+		Description: actor-dtrk.description
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: actor-dtrk.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 2800
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 67
+	RevealsShroud:
+		Range: 4c0
+	FireWarheadsOnDeath:
+		Weapon: MiniNuke
+		EmptyWeapon: MiniNuke
+		DamageSource: Killer
+	AttackFrontal:
+		FacingTolerance: 512
+	Armament:
+		Weapon: DemoTruckTargeting
+	GrantConditionOnAttack:
+		Condition: triggered
+	GrantConditionOnDeploy:
+		DeployedCondition: triggered
+	-DamageMultiplier@IRONCURTAIN:
+	KillsSelf:
+		RequiresCondition: invulnerability || triggered
+	Chronoshiftable:
+		ExplodeInstead: true
+
+CTNK:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 330
+		Prerequisites: atek, ~vehicles.germany, ~techlevel.high
+		Description: actor-ctnk.description
+	Valued:
+		Cost: 1350
+	Tooltip:
+		Name: actor-ctnk.name
+		GenericName: actor-ctnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 40000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 86
+		Locomotor: heavywheeled
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	Armament:
+		Weapon: APTusk
+		LocalOffset: -160,-276,232, -160,276,232
+		LocalYaw: 60, -60
+	AttackFrontal:
+		FacingTolerance: 0
+	PortableChrono:
+		ChargeDelay: 250
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	Selectable:
+		DecorationBounds: 1280, 1280
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
+
+QTNK:
+	Inherits: ^TrackedVehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 420
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high
+		Description: actor-qtnk.description
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: actor-qtnk.name
+		GenericName: actor-qtnk.generic-name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 90000
+	Armor:
+		Type: Heavy
+	Mobile:
+		RequiresCondition: !deployed
+		PauseOnCondition: being-captured
+		Speed: 46
+	Chronoshiftable:
+		RequiresCondition: !deployed && !being-captured
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 6c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	MadTank:
+		DeployedCondition: deployed
+	WithRangeCircle:
+		Color: FFFF0080
+		Range: 7c0
+	Targetable:
+		TargetTypes: GroundActor, MADTank, Vehicle
+	Selectable:
+		DecorationBounds: 1877, 1621, 0, -170
+
+STNK:
+	Inherits: ^Vehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@CARGOPIPS: ^CargoPips
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 330
+		Prerequisites: atek, ~vehicles.france, ~techlevel.high
+		Description: actor-stnk.description
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-stnk.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Health:
+		HP: 35000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 128
+		Locomotor: heavywheeled
+		PauseOnCondition: notmobile || being-captured
+	RevealsShroud:
+		MinRange: 4c0
+		Range: 7c0
+		RevealGeneratedShroud: False
+	RevealsShroud@GAPGEN:
+		Range: 4c0
+	AutoTarget:
+		InitialStance: HoldFire
+		InitialStanceAI: ReturnFire
+	Armament:
+		Weapon: APTusk.stnk
+		LocalOffset: 192,0,176
+	Turreted:
+		TurnSpeed: 20
+	AttackTurreted:
+	WithSpriteTurret:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		LoadingCondition: notmobile
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 175
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		PauseOnCondition: cloak-force-disabled
+		UncloakOn: Attack, Load, Unload, Heal, Dock
+	GrantConditionOnDamageState@UNCLOAK:
+		Condition: cloak-force-disabled
+		ValidDamageStates: Critical
+	-MustBeDestroyed:
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded

@@ -1,0 +1,11 @@
+Colt45:
+	ReloadDelay: 21
+	Range: 4c0
+	Warhead@1Dam: SpreadDamage
+	Warhead@2Eff: CreateEffect
+
+M1Carbine:
+	Range: 4c0
+
+Flamer:
+	Range: 4c0

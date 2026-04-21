@@ -1,0 +1,44 @@
+Sounds:
+	Notifications:
+		Bargraph: bargraph
+		Beacon: message1
+			InterruptType: Interrupt
+		Bestbox: bestbox
+		Blip: blip
+		BuildPaletteClose: emblem
+		BuildPaletteOpen: emblem
+		Button: button
+		CantPushButtonSound: scold8
+		CashTickDown: creddwn1
+			VolumeModifier: 0.33
+			InterruptType: Overlap
+		CashTickUp: credup1
+			VolumeModifier: 0.33
+			InterruptType: Overlap
+		ChatLine: message1
+			InterruptType: Interrupt
+		ClickDisabledSound: wrong1
+			InterruptType: Overlap
+		ClickSound: clicky1
+			InterruptType: Overlap
+		GameForming: gamefrm1
+		Gdiclose: gdiclose
+		Gdiopen: gdiopen
+		GenericBeep: bleep1
+		Klaxon: klax1
+		LevelUp:
+		MenuChoice: choice1
+		Notification: notify
+		Nsweep: nsweep
+		Options: options
+		RadarDown: radardn1
+		RadarUp: commup1
+		Scoldsfx: scoldsfx
+		SellSound: cashturn
+		StubSoundForTriggers: boop
+		Text1: text1
+		Text2: text2
+		Text3: text3
+		Type: type
+		Usertype: usertype
+		Wipe: wipe

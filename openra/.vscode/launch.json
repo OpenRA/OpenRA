@@ -1,0 +1,63 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Launch (TD)",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceRoot}/bin/OpenRA.dll",
+			"windows": {
+				"program": "${workspaceRoot}/bin/OpenRA.exe",
+			},
+			"args": ["Game.Mod=cnc", "Engine.EngineDir=.."],
+			"preLaunchTask": "build",
+		},
+		{
+			"name": "Launch (RA)",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceRoot}/bin/OpenRA.dll",
+			"windows": {
+				"program": "${workspaceRoot}/bin/OpenRA.exe",
+			},
+			"args": ["Game.Mod=ra", "Engine.EngineDir=.."],
+			"preLaunchTask": "build",
+		},
+		{
+			"name": "Launch (D2k)",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceRoot}/bin/OpenRA.dll",
+			"windows": {
+				"program": "${workspaceRoot}/bin/OpenRA.exe",
+			},
+			"args": ["Game.Mod=d2k", "Engine.EngineDir=.."],
+			"preLaunchTask": "build",
+		},
+		{
+			"name": "Launch (TS)",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceRoot}/bin/OpenRA.dll",
+			"windows": {
+				"program": "${workspaceRoot}/bin/OpenRA.exe",
+			},
+			"args": ["Game.Mod=ts", "Engine.EngineDir=.."],
+			"preLaunchTask": "build",
+		},
+		{
+			"name": "Launch Utility",
+			"type": "coreclr",
+			"request": "launch",
+			"program": "${workspaceRoot}/bin/OpenRA.Utility.dll",
+			"windows": {
+				"program": "${workspaceRoot}/bin/OpenRA.Utility.exe",
+			},
+			"args": ["all", "--docs", "{DEV_VERSION}"],
+			"env": {
+				"ENGINE_DIR": ".."
+			},
+			"preLaunchTask": "build",
+		},
+	]
+}

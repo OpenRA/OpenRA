@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<TrimmerRootAssembly Include="mscorlib" />
+		<TrimmerRootAssembly Include="netstandard" />
+		<TrimmerRootAssembly Include="System.IO.Pipes" />
+	</ItemGroup>
+</Project>

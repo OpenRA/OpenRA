@@ -1,0 +1,164 @@
+Background@CONNECTIONFAILED_PANEL:
+	Logic: ConnectionFailedLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 450
+	Height: 160
+	Children:
+		LogicTicker@CONNECTION_FAILED_TICKER:
+		Label@TITLE:
+			X: 0
+			Y: 21
+			Width: 450
+			Height: 25
+			Align: Center
+			Font: Bold
+		Label@CONNECTING_DESC:
+			X: 0
+			Y: 46
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+		Label@CONNECTION_ERROR:
+			X: 0
+			Y: 76
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+			Font: Bold
+		Label@PASSWORD_LABEL:
+			X: PARENT_WIDTH - 360
+			Y: 111
+			Width: 95
+			Height: 25
+			Text: label-connectionfailed-panel-password
+			Font: Bold
+		PasswordField@PASSWORD:
+			X: PARENT_WIDTH - 285
+			Y: 111
+			Width: 190
+			MaxLength: 20
+			Height: 25
+		Button@RETRY_BUTTON:
+			X: PARENT_WIDTH - 430
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-retry
+			Font: Bold
+			Key: return
+		Button@ABORT_BUTTON:
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-connectionfailed-panel-abort
+			Font: Bold
+			Key: escape
+		Button@QUIT_BUTTON:
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-quit
+			Font: Bold
+			Key: escape
+
+Background@CONNECTING_PANEL:
+	Logic: ConnectionLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 450
+	Height: 160
+	Children:
+		Label@CONNECTING_TITLE:
+			X: 0
+			Y: 21
+			Width: 450
+			Height: 25
+			Text: label-connecting-panel-title
+			Align: Center
+			Font: Bold
+		Label@CONNECTING_DESC:
+			X: 0
+			Y: 61
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+		Button@ABORT_BUTTON:
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-connecting-panel-abort
+			Font: Bold
+			Key: escape
+
+Background@CONNECTION_SWITCHMOD_PANEL:
+	Logic: ConnectionSwitchModLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 450
+	Height: 191
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 21
+			Width: 450
+			Height: 25
+			Align: Center
+			Font: Bold
+			Text: label-connection-switchmod-panel-title
+		Label@DESC:
+			Y: 46
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-connection-switchmod-panel-desc
+			Font: Bold
+			Align: Center
+		Container@MOD_CONTAINER:
+			X: 0
+			Y: 72
+			Width: PARENT_WIDTH
+			Children:
+				RGBASprite@MOD_ICON:
+					Y: 4
+					Width: 32
+					Height: 32
+				Label@MOD_TITLE:
+					X: 37
+					Y: 1
+					Width: PARENT_WIDTH - 37
+					Height: 25
+					Font: Bold
+					Align: Left
+				Label@MOD_VERSION:
+					X: 37
+					Y: 16
+					Width: PARENT_WIDTH - 37
+					Height: 25
+					Font: Tiny
+					Align: Left
+		Label@DESC2:
+			Y: 111
+			Width: PARENT_WIDTH
+			Height: 25
+			Text: label-connection-switchmod-panel-desc2
+			Font: Bold
+			Align: Center
+		Button@SWITCH_BUTTON:
+			X: PARENT_WIDTH - 430
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-connection-switchmod-panel-switch
+			Font: Bold
+			Key: return
+		Button@ABORT_BUTTON:
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: button-connection-switchmod-panel-abort
+			Font: Bold
+			Key: escape

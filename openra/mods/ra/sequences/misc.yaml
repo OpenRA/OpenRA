@@ -1,0 +1,1094 @@
+clock:
+	idle:
+		Filename: clock.shp
+		Length: *
+
+powerdown:
+	disabled:
+		Filename: speed.shp
+		Start: 3
+		ZOffset: 2047
+
+120mm:
+	idle:
+		Filename: 120mm.shp
+		ZOffset: 1023
+
+50cal:
+	idle:
+		Filename: 50cal.shp
+		ZOffset: 1023
+
+explosion:
+	Defaults:
+		Length: *
+		ZOffset: 2047
+	piff:
+		Filename: piff.shp
+	piffs:
+		Filename: piffpiff.shp
+	water_piff:
+		Filename: wpiff.shp
+	water_piffs:
+		Filename: wpifpif.shp
+	small_explosion:
+		Filename: veh-hit3.shp
+	med_explosion:
+		Filename: veh-hit2.shp
+	flak_explosion_ground:
+		Filename: flak.shp
+	small_explosion_air:
+		Filename: flak.shp
+		ZOffset: 511 # only used by AA weapons, so a high ZOffset to overlay buildings isn't needed
+	med_explosion_air:
+		Filename: veh-hit1.shp
+		ZOffset: 511 # only used by AA weapons, so a high ZOffset to overlay buildings isn't needed
+	large_splash:
+		Filename: h2o_exp1.shp
+	napalm:
+		Filename: napalm2.shp
+	building_napalm:
+		Filename: napalm2.shp
+		FlipX: true
+	nuke:
+		Filename: atomsfx.shp
+	med_splash:
+		Filename: h2o_exp2.shp
+	self_destruct:
+		Filename: art-exp1.shp
+	artillery_explosion:
+		Filename: art-exp1.shp
+	building:
+		Filename: fball1.shp
+		Offset: 0,-9
+	small_splash:
+		Filename: h2o_exp3.shp
+	large_explosion:
+		Filename: frag1.shp
+		Offset: -2,0
+	small_napalm:
+		Filename: napalm1.shp
+	offset_napalm: # Used for E4 Explosion
+		Filename: napalm1.shp
+		Offset: 0, -6
+	large_napalm:
+		Filename: napalm3.shp
+	corpse:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
+		ZOffset: -512
+		Tick: 1600
+
+burn-l:
+	Defaults:
+		Filename: burn-l.shp
+	start:
+		Length: 16
+		ZOffset: 512
+	loop:
+		Start: 16
+		Length: 44
+		ZOffset: 512
+	end:
+		Start: 60
+		Length: 6
+		ZOffset: 512
+
+burn-m:
+	Defaults:
+		Filename: burn-m.shp
+	start:
+		Length: 16
+		ZOffset: 512
+	loop:
+		Start: 16
+		Length: 44
+		ZOffset: 512
+	end:
+		Start: 60
+		Length: 6
+		ZOffset: 512
+
+burn-s:
+	Defaults:
+		Filename: burn-s.shp
+	start:
+		Length: 12
+		ZOffset: 512
+	loop:
+		Start: 12
+		Length: 46
+		ZOffset: 512
+	end:
+		Start: 59
+		Length: 5
+		ZOffset: 512
+
+pips:
+	Defaults:
+		Filename: pips.shp
+	groups:
+		Length: 10
+		Frames: 9, 10, 11, 12, 13, 14, 15, 16, 17, 8
+		Offset: 9, 5
+	medic:
+		Start: 20
+		Offset: 15, 1
+	#ready:
+	#	Start: 3
+	#hold:
+	#	Start: 4
+	tag-fake:
+		Start: 18
+		Offset: 0, 2
+	tag-primary:
+		Start: 2
+		Offset: 0, 2
+	tag-spy:
+		Filename: tag-spy.shp
+	pip-empty:
+		Filename: pips2.shp
+	pip-green:
+		Filename: pips2.shp
+		Start: 1
+	pip-yellow:
+		Filename: pips2.shp
+		Start: 2
+	pip-gray:
+		Filename: pips2.shp
+		Start: 3
+	pip-red:
+		Filename: pips2.shp
+		Start: 4
+	pip-blue:
+		Filename: pips2.shp
+		Start: 5
+	pip-disguise:
+		Filename: pip-disguise.shp
+		Length: *
+		Tick: 300
+		Offset: 0, -6
+
+v2:
+	idle:
+		Filename: v2.shp
+		Facings: 32
+		ZOffset: 1023
+
+rallypoint:
+	flag:
+		Filename: flagfly.shp
+		Length: *
+		Offset: 11,-5
+		ZOffset: 2535
+	circles:
+		Filename: fpls.shp
+		Length: *
+		ZOffset: 2047
+
+beacon:
+	Defaults:
+		ZOffset: 2535
+	arrow:
+		Filename: mouse.shp
+		Start: 5
+		Offset: 1,-12
+	circles:
+		Filename: fpls.shp
+		Length: *
+		ZOffset: 2047
+	atomicon:
+		Filename: lores|atomicon.shp
+		Length: *
+		Offset: 0,-42
+	pbmbicon:
+		Filename: lores|pbmbicon.shp
+		Length: *
+		Offset: 0,-42
+	camicon:
+		Filename: lores|camicon.shp
+		Length: *
+		Offset: 0,-42
+	pinficon:
+		Filename: lores|pinficon.shp
+		Length: *
+		Offset: 0,-42
+	clock:
+		Filename: beaconclock.shp
+		Length: *
+		Offset: 0,-42
+
+smoke_m:
+	Defaults:
+		Filename: smoke_m.shp
+	idle:
+		Length: *
+		Offset: 2, -5
+		ZOffset: 512
+	start:
+		Length: 49
+		Offset: 2, -5
+		ZOffset: 512
+	loop:
+		Start: 49
+		Length: 42
+		Offset: 2, -5
+		ZOffset: 512
+
+scorch_flames:
+	large_flame:
+		Length: *
+		Combine:
+			0:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire1.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			5:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			6:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			7:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+			8:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+			9:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.75
+			10:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			11:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+	medium_flame:
+		Length: *
+		Combine:
+			0:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: fire2.shp
+				Length: *
+				Offset: 0,-3
+			5:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+			6:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.75
+			7:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			8:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+	small_flame:
+		Combine:
+			0:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: fire3.shp
+				Length: *
+				Offset: 0,-3
+			5:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+				Scale: 0.75
+			6:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.5
+			7:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.25
+		Length: *
+		Offset: 0,-3
+	tiny_flame:
+		Combine:
+			0:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			1:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			2:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			3:
+				Filename: fire4.shp
+				Length: *
+				Offset: 0,-3
+			4:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+				Scale: 0.3
+			5:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.2
+		Length: *
+		Offset: 0,-3
+	smoke:
+		Combine:
+			0:
+				Filename: smoke_m.shp
+				Length: *
+				Offset: 2, -5
+			1:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+			2:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.8
+			3:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.6
+			4:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.4
+			5:
+				Filename: smoke_m.shp
+				Start: 49
+				Length: 42
+				Offset: 2, -5
+				Scale: 0.2
+
+dragon:
+	idle:
+		Filename: dragon.shp
+		Facings: 32
+		ZOffset: 1023
+
+smokey:
+	idle:
+		Filename: smokey.shp
+		Length: *
+		ZOffset: 1023
+
+bomb:
+	idle:
+		Filename: bomb.shp
+		Length: *
+		ZOffset: 1023
+
+missile:
+	idle:
+		Filename: missile.shp
+		Facings: 32
+		ZOffset: 1023
+
+torpedo:
+	idle:
+		Filename: missile.shp
+		Facings: 32
+		ZOffset: -1023
+
+litning:
+	Defaults:
+		Filename: litning.shp
+	bright:
+		Length: 4
+		ZOffset: 1023
+	dim:
+		Start: 4
+		Length: 4
+		ZOffset: 1023
+
+fb1:
+	idle:
+		Filename: fb1.shp
+		Length: *
+		ZOffset: 1023
+
+moveflsh:
+	idle:
+		Filename: moveflsh.tem
+		TilesetFilenames:
+			SNOW: moveflsh.sno
+			INTERIOR: moveflsh.int
+		Length: *
+		Tick: 80
+		ZOffset: 2047
+
+select:
+	repair:
+		Filename: select.shp
+		Start: 2
+
+poweroff:
+	offline:
+		Filename: poweroff.shp
+		Length: *
+		Tick: 160
+		ZOffset: 2047
+
+allyrepair:
+	repair:
+		Filename: allyrepair.shp
+		Length: *
+		Tick: 160
+		ZOffset: 2047
+
+tabs:
+	Defaults:
+		Filename: tabs.shp
+	left-normal:
+	left-pressed:
+		Start: 1
+
+sputnik:
+	idle:
+		Filename: sputnik.shp
+		Length: *
+		Offset: -4,0
+		ZOffset: 1023
+
+dd-crnr:
+	Defaults:
+		Filename: dd-crnr.shp
+	idle:
+		Length: *
+	top-left:
+	top-right:
+		Start: 1
+	bottom-left:
+		Start: 2
+	bottom-right:
+		Start: 3
+
+fb2:
+	idle:
+		Filename: fb2.shp
+		Length: *
+		ZOffset: 1023
+
+fb3:
+	idle:
+		Filename: fb3.shp
+		Facings: 32
+		ZOffset: 1023
+
+fb4:
+	idle:
+		Filename: fb4.shp
+		Length: *
+		ZOffset: 1023
+
+scrate:
+	Defaults:
+		Filename: scrate.shp
+		ZOffset: -511
+	idle:
+	land:
+		Start: 1
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+
+wcrate:
+	Defaults:
+		Filename: wcrate.shp
+		ZOffset: -511
+	idle:
+	land:
+		Start: 1
+	water:
+		Filename: wwcrate.shp
+		Length: *
+		Tick: 500
+
+xcratea:
+	Defaults:
+		Filename: xcratea.shp
+	idle:
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+xcrateb:
+	Defaults:
+		Filename: xcrateb.shp
+	idle:
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+xcratec:
+	Defaults:
+		Filename: xcratec.shp
+	idle:
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+xcrated:
+	Defaults:
+		Filename: xcrated.shp
+	idle:
+		ZOffset: -511
+	land:
+		Start: 1
+		ZOffset: -511
+	water:
+		Start: 2
+		Length: 4
+		Tick: 500
+		ZOffset: -511
+
+crate-effects:
+	Defaults:
+		ZOffset: 2047
+		Length: *
+	speed:
+		Filename: speed.shp
+	dollar:
+		Filename: dollar.shp
+	reveal-map:
+		Filename: earth.shp
+	hide-map:
+		Filename: empulse.shp
+	fpower:
+		Filename: fpower.shp
+	gps:
+		Filename: gpsbox.shp
+	invuln:
+		Filename: invulbox.shp
+	heal:
+		Filename: invun.shp
+	nuke:
+		Filename: missile2.shp
+	parabombs:
+		Filename: parabox.shp
+	sonar:
+		Filename: sonarbox.shp
+	stealth:
+		Filename: stealth2.shp
+	timequake:
+		Filename: tquake.shp
+	armor:
+		Filename: armor.shp
+	chrono:
+		Filename: chronbox.shp
+	airstrike:
+		Filename: deviator.shp
+	levelup:
+		Filename: levelup.shp
+		Tick: 200
+
+parach:
+	Defaults:
+		Filename: parach.shp
+	open:
+		Length: 5
+	idle:
+		Start: 5
+		Length: 11
+
+parach-shadow:
+	idle:
+		Filename: parach-shadow.shp
+		Length: *
+
+bomblet:
+	idle:
+		Filename: bomblet.shp
+		Length: *
+		ZOffset: 1023
+
+parabomb:
+	Defaults:
+		Filename: parabomb.shp
+	open:
+		Length: 8
+		ZOffset: 1023
+	idle:
+		Start: 8
+		Length: 5
+		ZOffset: 1023
+
+smokland:
+	open:
+		Filename: playersmoke.shp
+		Length: 72
+		Tick: 120
+		ZOffset: 1023
+	idle:
+		Filename: playersmoke.shp
+		Start: 72
+		Length: 20
+		Tick: 120
+		ZOffset: 1023
+
+fire:
+	1:
+		Filename: fire1.shp
+		Length: *
+		Offset: 0,-3
+		ZOffset: 1023
+	2:
+		Filename: fire2.shp
+		Length: *
+		Offset: 0,-3
+		ZOffset: 1023
+	3:
+		Filename: fire3.shp
+		Length: *
+		Offset: 0,-3
+		ZOffset: 1023
+	4:
+		Filename: fire4.shp
+		Length: *
+		Offset: 0,-3
+		ZOffset: 1023
+
+rank:
+	Defaults:
+		Filename: rank.shp
+		Offset: 0, 3
+	rank-veteran-1:
+	rank-veteran-2:
+		Start: 1
+	rank-veteran-3:
+		Start: 2
+	rank-elite:
+		Start: 3
+		Offset: 1, 3
+
+iconchevrons:
+	veteran:
+		Filename: iconchevrons.shp
+		Offset: 2, 2
+
+atomic:
+	up:
+		Filename: atomicup.shp
+		Length: *
+		ZOffset: 1023
+	down:
+		Filename: atomicdn.shp
+		Length: *
+		ZOffset: 1023
+
+bubbles:
+	idle:
+		Filename: bubbles.shp
+		Length: *
+		Tick: 220
+
+mpspawn:
+	idle:
+		Filename: mpspawn.shp
+		Length: *
+
+waypoint:
+	idle:
+		Filename: waypoint.shp
+		Length: *
+
+camera:
+	idle:
+		Filename: camera.shp
+		Length: *
+
+gpsdot:
+	Defaults:
+		Filename: gpsdot.shp
+	Infantry:
+	Vehicle:
+		Start: 1
+	Ship:
+		Start: 2
+	Helicopter:
+		Start: 3
+	Plane:
+		Start: 4
+	Harvester:
+		Start: 5
+	Structure:
+		Start: 6
+	Oil:
+		Start: 7
+	Hospital:
+		Start: 8
+	Biohazard:
+		Start: 9
+	Communications:
+		Start: 10
+	Forward:
+		Start: 11
+
+icon:
+	abomb:
+		Filename: atomicon.shp
+	invuln:
+		Filename: infxicon.shp
+	chrono:
+		Filename: warpicon.shp
+	spyplane:
+		Filename: smigicon.shp
+	paratroopers:
+		Filename: pinficon.shp
+	gps:
+		Filename: gpssicon.shp
+	parabombs:
+		Filename: pbmbicon.shp
+	sonar:
+		Filename: sonricon.shp
+
+quee:
+	Defaults:
+		Filename: quee.shp
+	idle:
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+
+lar1:
+	idle:
+		Filename: lar1.shp
+
+lar2:
+	idle:
+		Filename: lar2.shp
+
+minp:
+	idle:
+		Filename: minp.shp
+		ZOffset: -512
+	icon:
+		Filename: jmin.shp
+
+minv:
+	idle:
+		Filename: minv.shp
+		ZOffset: -512
+	icon:
+		Filename: jmin.shp
+
+overlay:
+	Defaults:
+		Filename: trans.icn
+	build-valid:
+	build-invalid:
+		Start: 2
+	target-valid:
+	target-select:
+		Start: 1
+	target-invalid:
+		Start: 2
+
+editor-overlay:
+	Defaults:
+		Filename: trans.icn
+	copy:
+	paste:
+		Start: 2
+
+resources:
+	Defaults:
+		Length: *
+	gold01:
+		Filename: gold01.tem
+		TilesetFilenames:
+			SNOW: gold01.sno
+	gold02:
+		Filename: gold02.tem
+		TilesetFilenames:
+			SNOW: gold02.sno
+	gold03:
+		Filename: gold03.tem
+		TilesetFilenames:
+			SNOW: gold03.sno
+	gold04:
+		Filename: gold04.tem
+		TilesetFilenames:
+			SNOW: gold04.sno
+	gem01:
+		Filename: gem01.tem
+		TilesetFilenames:
+			SNOW: gem01.sno
+	gem02:
+		Filename: gem02.tem
+		TilesetFilenames:
+			SNOW: gem02.sno
+	gem03:
+		Filename: gem03.tem
+		TilesetFilenames:
+			SNOW: gem03.sno
+	gem04:
+		Filename: gem04.tem
+		TilesetFilenames:
+			SNOW: gem04.sno
+
+shroud:
+	shroud:
+		Filename: shadow.shp
+		Length: *
+
+# Note: The order of smudges and craters determines
+# the index that is mapped to them in maps
+scorches:
+	Defaults:
+		Length: *
+	sc1:
+		Filename: sc1.tem
+		TilesetFilenames:
+			SNOW: sc1.sno
+			DESERT: sc1.des
+	sc2:
+		Filename: sc2.tem
+		TilesetFilenames:
+			SNOW: sc2.sno
+			DESERT: sc2.des
+	sc3:
+		Filename: sc3.tem
+		TilesetFilenames:
+			SNOW: sc3.sno
+			DESERT: sc3.des
+	sc4:
+		Filename: sc4.tem
+		TilesetFilenames:
+			SNOW: sc4.sno
+			DESERT: sc4.des
+	sc5:
+		Filename: sc5.tem
+		TilesetFilenames:
+			SNOW: sc5.sno
+			DESERT: sc5.des
+	sc6:
+		Filename: sc6.tem
+		TilesetFilenames:
+			SNOW: sc6.sno
+			DESERT: sc6.des
+
+craters:
+	Defaults:
+		Length: *
+	cr1:
+		Filename: cr1.tem
+		TilesetFilenames:
+			SNOW: cr1.sno
+			DESERT: cr1.des
+	cr2:
+		Filename: cr2.tem
+		TilesetFilenames:
+			SNOW: cr2.sno
+			DESERT: cr2.des
+	cr3:
+		Filename: cr3.tem
+		TilesetFilenames:
+			SNOW: cr3.sno
+			DESERT: cr3.des
+	cr4:
+		Filename: cr4.tem
+		TilesetFilenames:
+			SNOW: cr4.sno
+			DESERT: cr4.des
+	cr5:
+		Filename: cr5.tem
+		TilesetFilenames:
+			SNOW: cr5.sno
+			DESERT: cr5.des
+	cr6:
+		Filename: cr6.tem
+		TilesetFilenames:
+			SNOW: cr6.sno
+			DESERT: cr6.des
+
+mine:
+	idle:
+		TilesetFilenames:
+			SNOW: mine.sno
+			INTERIOR: mine.int
+			TEMPERAT: mine.tem
+			DESERT: mine.des
+		ZOffset: -2c512
+
+gmine:
+	idle:
+		Filename: gmine.tem
+		TilesetFilenames:
+			SNOW: gmine.sno
+			DESERT: gmine.des
+		ZOffset: -2c512
+
+railmine:
+	idle:
+		Filename: railmine.tem
+		TilesetFilenames:
+			SNOW: railmine.sno
+			DESERT: railmine.des
+		ZOffset: -512
+
+ctflag:
+	idle:
+		Filename: ctflag.shp
+		Length: 9
+		Tick: 50
+		Offset: 0,-12
+	bib:
+		TilesetFilenames:
+			SNOW: mbGAP.sno
+			INTERIOR: mbGAP.int
+			TEMPERAT: mbGAP.tem
+			DESERT: mbGAP.des
+		Length: *
+
+paradirection:
+	arrow-t:
+		Filename: mouse.shp
+		Start: 1
+		Offset: 0, -19, 0
+	arrow-tr:
+		Filename: mouse.shp
+		Start: 2
+		Offset: 15, -15, 0
+	arrow-r:
+		Filename: mouse.shp
+		Start: 3
+		Offset: 19, 0, 0
+	arrow-br:
+		Filename: mouse.shp
+		Start: 4
+		Offset: 15, 15, 0
+	arrow-b:
+		Filename: mouse.shp
+		Start: 5
+		Offset: 0, 19, 0
+	arrow-bl:
+		Filename: mouse.shp
+		Start: 6
+		Offset: -15, 15, 0
+	arrow-l:
+		Filename: mouse.shp
+		Start: 7
+		Offset: -19, 0, 0
+	arrow-tl:
+		Filename: mouse.shp
+		Start: 8
+		Offset: -15, -15, 0
+
+twinkle:
+	Defaults:
+		Length: *
+	twinkle1:
+		Filename: twinkle1.shp
+	twinkle2:
+		Filename: twinkle2.shp
+	twinkle3:
+		Filename: twinkle3.shp

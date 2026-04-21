@@ -1,0 +1,163 @@
+c1:
+	Defaults:
+		Filename: c1.shp
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+		Tick: 80
+	idle1:
+		Start: 189
+		Length: 9
+		Tick: 80
+	idle2:
+		Start: 199
+		Length: 6
+		Tick: 80
+	shoot:
+		Start: 205
+		Length: 4
+		Facings: 8
+	cheer:
+		Start: 200
+		Length: 3
+		Facings: 8
+		Tick: 120
+	die1:
+		Start: 329
+		Length: 8
+		Tick: 80
+	die2:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die3:
+		Start: 337
+		Length: 8
+		Tick: 80
+	die4:
+		Start: 345
+		Length: 12
+		Tick: 80
+	die5:
+		Start: 357
+		Length: 18
+		Tick: 80
+	die6:
+		Start: 182
+		Length: 4
+		Tick: 80
+	die-crushed:
+		Filename: e1rot.shp
+		Start: 16
+		Length: 4
+		Tick: 1600
+
+c2:
+	Inherits: c1
+	Defaults:
+		Filename: c2.shp
+
+c3:
+	Inherits: c1
+	Defaults:
+		Filename: c3.shp
+
+c4:
+	Inherits: c1
+	Defaults:
+		Filename: c4.shp
+
+c5:
+	Inherits: c1
+	Defaults:
+		Filename: c5.shp
+
+c6:
+	Inherits: c1
+	Defaults:
+		Filename: c6.shp
+
+c7:
+	Inherits: c1
+	Defaults:
+		Filename: c7.shp
+
+c8:
+	Inherits: c1
+	Defaults:
+		Filename: c8.shp
+
+c9:
+	Inherits: c1
+	Defaults:
+		Filename: c9.shp
+
+c10:
+	Inherits: c1
+	Defaults:
+		Filename: c10.shp
+
+delphi:
+	Inherits: c1
+	Defaults:
+		Filename: delphi.shp
+
+moebius:
+	Defaults:
+		Filename: moebius.shp
+		Tick: 80
+	stand:
+		Facings: 8
+	panic-stand:
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	idle1:
+		Start: 104
+		Length: 15
+	idle2:
+		Start: 120
+		Length: 20
+	die1:
+		Start: 212
+		Length: 8
+	die2:
+		Start: 220
+		Length: 8
+	die3:
+		Start: 220
+		Length: 8
+	die4:
+		Start: 228
+		Length: 12
+	die5:
+		Start: 240
+		Length: 17
+	die6:
+		Start: 214
+		Length: 3
+	die-crushed:
+		Filename: e1rot.shp
+		Start: 16
+		Length: 4
+		Tick: 1600
+
+chan:
+	Inherits: moebius
+	Defaults:
+		Filename: chan.shp

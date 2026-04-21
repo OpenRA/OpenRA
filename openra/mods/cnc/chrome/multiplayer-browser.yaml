@@ -1,0 +1,263 @@
+Container@MULTIPLAYER_PANEL:
+	Logic: MultiplayerLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 540
+	Children:
+		Label@TITLE:
+			Text: label-multiplayer-title
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		Background@bg:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: panel-black
+			Children:
+				Container@LABEL_CONTAINER:
+					X: 15
+					Y: 6
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Children:
+						Label@NAME:
+							X: 5
+							Width: 355
+							Height: 25
+							Text: label-container-server
+							Align: Center
+							Font: Bold
+						Label@PLAYERS:
+							X: 390
+							Width: 85
+							Height: 25
+							Text: label-container-players
+							Font: Bold
+						Label@LOCATION:
+							X: 480
+							Width: 110
+							Height: 25
+							Text: label-container-location
+							Font: Bold
+						Label@STATUS:
+							X: 595
+							Width: 50
+							Height: 25
+							Text: label-container-status
+							Font: Bold
+				LogicTicker@NOTICE_WATCHER:
+				Container@NOTICE_CONTAINER:
+					X: 15
+					Y: 30
+					Width: 682
+					Height: 19
+					Children:
+						Background@bg:
+							Width: PARENT_WIDTH
+							Height: 20
+							Background: panel-black
+							Children:
+								Label@OUTDATED_VERSION_LABEL:
+									X: 5
+									Width: PARENT_WIDTH - 10
+									Height: 20
+									Align: Center
+									Text: label-bg-outdated-version
+									Font: TinyBold
+								Label@UNKNOWN_VERSION_LABEL:
+									X: 5
+									Width: PARENT_WIDTH - 10
+									Height: 20
+									Align: Center
+									Text: label-bg-unknown-version
+									Font: TinyBold
+								Label@PLAYTEST_AVAILABLE_LABEL:
+									X: 5
+									Width: PARENT_WIDTH - 10
+									Height: 20
+									Align: Center
+									Text: label-bg-playtest-available
+									Font: TinyBold
+				ScrollPanel@SERVER_LIST:
+					X: 15
+					Y: 30
+					Width: 682
+					Height: PARENT_HEIGHT - 75
+					TopBottomSpacing: 2
+					Children:
+						ScrollItem@HEADER_TEMPLATE:
+							Background: scrollheader
+							Width: PARENT_WIDTH - 27
+							Height: 20
+							X: 2
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_WIDTH
+									Height: 20
+									Align: Center
+						ScrollItem@SERVER_TEMPLATE:
+							Width: PARENT_WIDTH - 27
+							Height: 25
+							X: 2
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 5
+									Width: 345
+									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+								Image@PASSWORD_PROTECTED:
+									X: 372
+									Y: 6
+									Width: 12
+									Height: 13
+									ImageCollection: lobby-bits
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+									TooltipText: image-bg-password-protected-tooltip
+								Image@REQUIRES_AUTHENTICATION:
+									X: 372
+									Y: 6
+									Width: 12
+									Height: 13
+									ImageCollection: lobby-bits
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+									TooltipText: image-bg-requires-authentication-tooltip
+								LabelWithTooltip@PLAYERS:
+									X: 390
+									Width: 85
+									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+								Label@LOCATION:
+									X: 480
+									Width: 110
+									Height: 25
+								Label@STATUS:
+									X: 595
+									Width: 50
+									Height: 25
+				Label@PROGRESS_LABEL:
+					X: 15
+					Y: 31 + (PARENT_HEIGHT - 75 - HEIGHT) / 2
+					Width: 682
+					Height: 25
+					Font: Bold
+					Align: Center
+					Visible: false
+				Container@SELECTED_SERVER:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 30
+					Width: 174
+					Height: 280
+					Children:
+						Background@MAP_BG:
+							Width: PARENT_WIDTH
+							Height: 174
+							Background: panel-gray
+							Children:
+								MapPreview@SELECTED_MAP_PREVIEW:
+									X: 1
+									Y: 1
+									Width: PARENT_WIDTH - 2
+									Height: PARENT_HEIGHT - 2
+									TooltipContainer: TOOLTIP_CONTAINER
+						LabelWithTooltip@SELECTED_MAP:
+							Y: 173
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Bold
+							Align: Center
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@SELECTED_IP:
+							Y: 188
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Tiny
+							Align: Center
+						Label@SELECTED_STATUS:
+							Y: 204
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: TinyBold
+							Align: Center
+						Label@SELECTED_MOD_VERSION:
+							Y: 217
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: Tiny
+							Align: Center
+						Label@SELECTED_PLAYERS:
+							Y: 230
+							Width: PARENT_WIDTH
+							Height: 25
+							Font: TinyBold
+							Align: Center
+						Container@CLIENT_LIST_CONTAINER:
+							Y: 240
+							Width: PARENT_WIDTH
+							Height: 230
+						Button@JOIN_BUTTON:
+							Key: return
+							Y: 255
+							Width: PARENT_WIDTH
+							Height: 25
+							Text: button-selected-server-join
+				DropDownButton@FILTERS_DROPDOWNBUTTON:
+					X: 15
+					Y: PARENT_HEIGHT - 40
+					Width: 152
+					Height: 25
+					Text: dropdownbutton-bg-filters
+				Button@RELOAD_BUTTON:
+					X: 172
+					Y: PARENT_HEIGHT - 40
+					Width: 26
+					Height: 25
+					Children:
+						Image@IMAGE_RELOAD:
+							X: 5
+							Y: 5
+							Width: 16
+							Height: 16
+							ImageCollection: reload-icon
+							ImageName: enabled
+							IgnoreMouseOver: True
+							Children:
+								LogicTicker@ANIMATION:
+				Label@PLAYER_COUNT:
+					X: 248
+					Y: PARENT_HEIGHT - 40
+					Width: 189
+					Height: 25
+					Align: Center
+					Font: Bold
+				Button@DIRECTCONNECT_BUTTON:
+					X: 487
+					Y: PARENT_HEIGHT - 40
+					Width: 100
+					Height: 25
+					Text: button-bg-directconnect
+				Button@CREATE_BUTTON:
+					X: 592
+					Y: PARENT_HEIGHT - 40
+					Width: 105
+					Height: 25
+					Text: button-bg-create
+		Button@BACK_BUTTON:
+			Key: escape
+			X: 0
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-back
+		TooltipContainer@TOOLTIP_CONTAINER:

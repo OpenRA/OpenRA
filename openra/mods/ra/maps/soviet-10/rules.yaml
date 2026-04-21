@@ -1,0 +1,100 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, soviet10.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: soviet10.vqa
+		WinVideo: mig.vqa
+		LossVideo: aagun.vqa
+		StartVideo: airfield.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 6500
+
+ENGIDROP:
+	ParatroopersPower:
+		DisplayBeacon: False
+		DropItems: E6, E6, E6
+
+AFLD:
+	ParatroopersPower@paratroopers:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	Buildable:
+		Prerequisites: ~disabled
+	-SpawnActorOnDeath:
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~afld
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled

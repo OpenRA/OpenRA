@@ -1,0 +1,200 @@
+World:
+	CrateSpawner:
+		CheckboxEnabled: False
+		CheckboxLocked: True
+		CheckboxVisible: False
+	-SpawnStartingUnits:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		AllyBuildRadiusCheckboxVisible: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
+		BuildRadiusCheckboxVisible: False
+	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
+		TechLevelDropdownLocked: True
+		TechLevelDropdownVisible: False
+		TechLevel: unrestricted
+	MapStartingLocations:
+		SeparateTeamSpawnsCheckboxVisible: false
+	Locomotor@LIGHTTRACKED:
+		WaitAverage: 1
+		WaitSpread: 1
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BARR:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+POWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+Player:
+	Shroud:
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: True
+		FogCheckboxVisible: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: False
+		ExploredMapCheckboxVisible: False
+	PlayerResources:
+		DefaultCashDropdownLocked: True
+		DefaultCashDropdownVisible: False
+		DefaultCash: 60
+	ChronoshiftPower:
+		Icon: chrono
+		ChargeInterval: 1500
+		Name: actor-player.chronoshiftpower-name
+		Description: actor-player.chronoshiftpower-description
+		SelectTargetSound: slcttgt1.aud
+		BeginChargeSound: chrochr1.aud
+		EndChargeSound: chrordy1.aud
+		KillCargo: true
+		Dimensions: 7, 7
+		Footprint: ___x___ __xxx__ _xxxxx_ xxxxxxx _xxxxx_ __xxx__ ___x___
+	GrantExternalConditionPower@IRONCURTAIN:
+		Icon: invuln
+		ChargeInterval: 750
+		Name: actor-player.grantexternalconditionpower-ironcurtain-name
+		Description: actor-player.grantexternalconditionpower-ironcurtain-description
+		Duration: 75
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		BeginChargeSpeechNotification: IronCurtainCharging
+		EndChargeSpeechNotification: IronCurtainReady
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		BeginChargeTextNotification: notification-ironcurtain.charging
+		EndChargeTextNotification: notification-ironcurtain.ready
+		Condition: invulnerability
+		Sequence: idle
+		OnFireSound: ironcur9.aud
+		Dimensions: 3, 3
+		Footprint: _x_ xxx _x_
+		BlockedCursor: move-blocked
+	Production:
+		Produces: Building
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: True
+		Locked: True
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
+		Visible: False
+
+MNLYR:
+	Inherits: ^TrackedVehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-mnlyr-name
+	Health:
+		HP: 50000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 128
+		TurnSpeed: 512
+	RevealsShroud:
+		Range: 40c0
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	Transforms:
+		IntoActor: ftur
+		Offset: 0,0
+		Facing: 384
+	CashTrickler:
+		Interval: 150
+		Amount: 20
+	RenderSprites:
+		Image: MNLY
+	Chronoshiftable:
+		ReturnToOrigin: false
+	HitShape:
+
+FTUR:
+	Health:
+		HP: 100000
+	Transforms:
+		IntoActor: mnlyr
+		Offset: 0,0
+		Facing: 384
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	CashTrickler:
+		Interval: 150
+		Amount: 30
+	-Power:
+
+MINVV:
+	Inherits: ^SpriteActor
+	HiddenUnderFog:
+	Building:
+		TerrainTypes: Clear,Road
+		BuildSounds: placbldg.aud, build5.aud
+		UndeploySounds: cashturn.aud
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Description: actor-minvv.description
+	Valued:
+		Cost: 30
+	Health:
+		HP: 20000
+	RenderSprites:
+		Image: miner
+	WithSpriteBody:
+	Tooltip:
+		Name: actor-minvv.name
+	ChangesHealth:
+		Step: -100
+		Delay: 1
+		StartIfBelow: 101
+	FireWarheadsOnDeath:
+		Weapon: CrateNuke
+		EmptyWeapon: CrateNuke
+	HitShape:
+	Interactable:
+
+T17:
+	-Health:

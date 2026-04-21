@@ -1,0 +1,327 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	ActorMap:
+	ScreenMap:
+	Selection:
+	ControlGroups:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: map
+	TerrainGeometryOverlay:
+	DebugVisualizations:
+	Locomotor@FOOT:
+		Name: foot
+		Crushes: mine, crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 89
+			Road: 111
+			Bridge: 111
+			Ore: 89
+			Gems: 89
+			Beach: 89
+	Locomotor@WHEELED:
+		Name: wheeled
+		Crushes: mine, crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 50
+			Road: 125
+			Bridge: 125
+			Ore: 88
+			Gems: 88
+			Beach: 50
+	Locomotor@HEAVYWHEELED:
+		Name: heavywheeled
+		Crushes: wall, mine, crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 50
+			Road: 125
+			Bridge: 125
+			Ore: 88
+			Gems: 88
+			Beach: 50
+	Locomotor@LIGHTTRACKED:
+		Name: lighttracked
+		Crushes: wall, mine, crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 88
+			Road: 125
+			Bridge: 125
+			Ore: 88
+			Gems: 88
+			Beach: 88
+	Locomotor@TRACKED:
+		Name: tracked
+		Crushes: wall, infantry, mine, crate
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 88
+			Road: 125
+			Bridge: 125
+			Ore: 88
+			Gems: 88
+			Beach: 88
+	Locomotor@HEAVYTRACKED:
+		Name: heavytracked
+		Crushes: wall, infantry, mine, crate, heavywall
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 88
+			Road: 125
+			Bridge: 125
+			Ore: 88
+			Gems: 88
+			Beach: 88
+	Locomotor@NAVAL:
+		Name: naval
+		Crushes: crate
+		TerrainSpeeds:
+			Water: 100
+	Locomotor@LANDINGCRAFT:
+		Name: lcraft
+		Crushes: crate
+		TerrainSpeeds:
+			Water: 100
+			Beach: 70
+	TerrainRenderer:
+	ChronoVortexRenderer:
+	ShroudRenderer:
+		FogVariants: shroud
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+	Faction@allies:
+		Name: faction-allies.name
+		InternalName: allies
+		Side: Allies
+		Selectable: False
+	Faction@england:
+		Name: faction-england.name
+		InternalName: england
+		Side: Allies
+		Description: faction-england.description
+	Faction@france:
+		Name: faction-france.name
+		InternalName: france
+		Side: Allies
+		Description: faction-france.description
+	Faction@germany:
+		Name: faction-germany.name
+		InternalName: germany
+		Side: Allies
+		Description: faction-germany.description
+	Faction@soviet:
+		Name: faction-soviet.name
+		InternalName: soviet
+		Side: Soviet
+		Selectable: False
+	Faction@russia:
+		Name: faction-russia.name
+		InternalName: russia
+		Side: Soviet
+		Description: faction-russia.description
+	Faction@ukraine:
+		Name: faction-ukraine.name
+		InternalName: ukraine
+		Side: Soviet
+		Description: faction-ukraine.description
+	Faction@random:
+		Name: faction-random.name
+		InternalName: Random
+		RandomFactionMembers: RandomAllies, RandomSoviet
+		Side: Random
+		Description: faction-random.description
+	Faction@randomallies:
+		Name: faction-randomallies.name
+		InternalName: RandomAllies
+		RandomFactionMembers: england, france, germany
+		Side: Random
+		Description: faction-randomallies.description
+	Faction@randomsoviet:
+		Name: faction-randomsoviet.name
+		InternalName: RandomSoviet
+		RandomFactionMembers: russia, ukraine
+		Side: Random
+		Description: faction-randomsoviet.description
+	ResourceRenderer:
+		ResourceTypes:
+			Ore:
+				Sequences: gold01, gold02, gold03, gold04
+				Palette: player
+				Name: resource-minerals
+			Gems:
+				Sequences: gem01, gem02, gem03, gem04
+				Palette: player
+				Name: resource-minerals
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	DebugVisualizationCommands:
+	PathFinderOverlay:
+	HierarchicalPathFinderOverlay:
+	ActorMapOverlay:
+	PlayerCommands:
+	HelpCommand:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	LegacyBridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
+	CustomTerrainDebugOverlay:
+	CrateSpawner:
+		DeliveryAircraft: badr
+		QuantizedFacings: 16
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 3000
+		WaterChance: 20
+		InitialSpawnDelay: 1500
+		CheckboxDisplayOrder: 1
+	SmudgeLayer@SCORCH:
+		Type: Scorch
+		Sequence: scorches
+		SmokeChance: 50
+		SmokeImage: scorch_flames
+		SmokeSequences: large_flame, medium_flame, small_flame
+		MaxSmokeOffsetDistance: 341
+	SmudgeLayer@CRATER:
+		Type: Crater
+		Sequence: craters
+		SmokeChance: 25
+		SmokeImage: smoke_m
+		SmokeSequences: idle
+		MaxSmokeOffsetDistance: 213
+	ResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Ore:
+				ResourceIndex: 1
+				TerrainType: Ore
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			Gems:
+				ResourceIndex: 2
+				TerrainType: Gems
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 3
+	ResourceClaimLayer:
+	WithResourceAnimation@GEMS:
+		Types: Gems
+		Image: twinkle
+		Sequences: twinkle1, twinkle2, twinkle3
+		Palette: effect
+	WarheadDebugOverlay:
+	SpawnMapActors:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxDisplayOrder: 5
+	MapOptions:
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 1
+	CreateMapPlayers:
+	StartingUnits@mcvonly:
+		Class: none
+		ClassName: options-starting-units.mcv-only
+		Factions: allies, england, france, germany, soviet, russia, ukraine
+		BaseActor: mcv
+	StartingUnits@lightallies:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: allies, england, france, germany
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@lightsoviet:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: soviet, russia, ukraine
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavyallies:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: allies, england, france, germany
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavysoviet:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: soviet, russia, ukraine
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MapStartingLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	SpawnStartingUnits:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	RadarPings:
+	StartGameNotification:
+		SavedTextNotification: notification-game-saved
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
+	ScriptTriggers:
+	CellTriggerOverlay:
+	AutoSave:
+	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
+		TimeLimitWarnings:
+			40: FourtyMinutesRemaining
+			30: ThirtyMinutesRemaining
+			20: TwentyMinutesRemaining
+			10: TenMinutesRemaining
+			5: WarningFiveMinutesRemaining
+			4: WarningFourMinutesRemaining
+			3: WarningThreeMinutesRemaining
+			2: WarningTwoMinutesRemaining
+			1: WarningOneMinuteRemaining
+	ColorPickerManager:
+		PreviewActor: fact.colorpicker
+		PresetColors: 391D1D, 98331F, F57606, F50606, DDB8FF, ACF218, 06F739, F2BC18, 200738, 280DF6, 79F2AA, 34BA93, F861A4, C718F2, 79CEF2, 2F86F2
+	OrderEffects:
+		TerrainFlashImage: moveflsh
+		TerrainFlashSequence: idle
+		TerrainFlashPalette: moveflash
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorCursorLayer:
+	EditorResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Ore:
+				ResourceIndex: 1
+				TerrainType: Ore
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 12
+			Gems:
+				ResourceIndex: 2
+				TerrainType: Gems
+				AllowedTerrainTypes: Clear, Road
+				MaxDensity: 3
+	LoadWidgetAtGameStart:
+	EditorActionManager:
+	BuildableTerrainOverlay:
+		AllowedTerrainTypes: Clear, Road
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: Clear
+		DefaultInner: Beach
+		DefaultEnd: Clear
+	Inherits@MapGenerators: ^MapGenerators

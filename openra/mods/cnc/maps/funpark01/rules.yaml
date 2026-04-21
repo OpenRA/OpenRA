@@ -1,0 +1,65 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, scj01ea.lua
+	MusicPlaylist:
+		StartingMusic: j1
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: generic.vqa
+		StartVideo: dino.vqa
+	MapOptions:
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Dinosaur: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+	IndexedPlayerPalette@units:
+		PlayerIndex:
+			Dinosaur: 192, 164, 132, 155, 133, 197, 112, 12, 163, 132, 155, 133, 134, 197, 154, 198
+
+^CivInfantry:
+	-ActorLostNotification:
+
+^CivBuilding:
+	AnnounceOnSeen:
+
+TREX:
+	Health:
+		HP: 75000
+	Mobile:
+		Speed: 34
+	AutoTarget:
+		ScanRadius: 5
+
+TRIC:
+	Health:
+		HP: 70000
+	Mobile:
+		Speed: 18
+	AutoTarget:
+		ScanRadius: 5
+
+STEG:
+	Health:
+		HP: 60000
+	Mobile:
+		Speed: 32
+
+^DINO:
+	MustBeDestroyed:

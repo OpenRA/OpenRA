@@ -1,0 +1,21 @@
+OpenTeamChat: Return
+	Description: hotkey-description-openteamchat
+	Types: Chat
+	Contexts: player, spectator
+
+OpenGeneralChat: Return Shift
+	Description: hotkey-description-opengeneralchat
+	Types: Chat
+	Contexts: player, spectator
+
+ToggleChatMode: Tab Shift
+	Description: hotkey-description-togglechatmode
+	Types: Chat
+	Contexts: chat-input, menu
+	Readonly: True
+
+Autocomplete: Tab
+	Description: hotkey-description-autocomplete
+	Types: Chat
+	Contexts: chat-input
+	Readonly: True

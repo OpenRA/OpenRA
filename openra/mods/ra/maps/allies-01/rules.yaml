@@ -1,0 +1,44 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, allies01.lua
+	MissionData:
+		Briefing: briefing
+		BackgroundVideo: prolog.vqa
+		BriefingVideo: ally1.vqa
+		StartVideo: landing.vqa
+		WinVideo: snowbomb.vqa
+		LossVideo: bmap.vqa
+
+TRAN.Extraction:
+	Inherits: TRAN
+	RevealsShroud:
+		Range: 0c0
+	-RevealsShroud@GAPGEN:
+	RejectsOrders:
+	-Selectable:
+	Cargo:
+		Types: Einstein
+		MaxWeight: 1
+	RenderSprites:
+		Image: tran
+	Interactable:
+
+TRAN.Insertion:
+	Inherits: TRAN.Extraction
+	Cargo:
+		MaxWeight: 0
+
+EINSTEIN:
+	Passenger:
+		CargoType: Einstein
+
+C8:
+	Inherits@2: ^ArmedCivilian
+
+JEEP:
+	Cargo:
+		Types: Infantry, Einstein
+
+TSLA:
+	Power:
+		Amount: -150

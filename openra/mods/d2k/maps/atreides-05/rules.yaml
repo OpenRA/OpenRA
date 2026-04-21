@@ -1,0 +1,125 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+	ExternalCondition@AI:
+		Condition: base-rebuilder
+	ExternalCondition@AIDefense:
+		Condition: defense-rebuilder
+	BaseBuilderBotModule@campaign:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 6
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@defense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 6
+			silo: 1
+			medium_gun_turret: 6
+		BuildingFractions:
+			wind_trap: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, atreides05.lua, atreides05-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: A_BR05_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+barracks.harkonnen:
+	Inherits: barracks
+	Buildable:
+		Prerequisites: ~disabled
+	-MustBeDestroyed:
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+research_centre:
+	Buildable:
+		Prerequisites: outpost, heavy_factory, upgrade.heavy
+
+siege_tank:
+	Buildable:
+		Prerequisites: ~disabled
+
+missile_tank:
+	Buildable:
+		Prerequisites: upgrade.heavy, research_centre

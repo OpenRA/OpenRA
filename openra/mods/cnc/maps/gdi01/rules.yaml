@@ -1,0 +1,111 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, gdi01.lua
+	MusicPlaylist:
+		StartingMusic: aoi
+	MissionData:
+		Briefing: briefing
+		BackgroundVideo: intro2.vqa
+		BriefingVideo: gdi1.vqa
+		StartVideo: landing.vqa
+		WinVideo: consyard.vqa
+		LossVideo: gameover.vqa
+
+NUKE:
+	-Sellable:
+	Demolishable:
+		-Condition:
+	Buildable:
+		BuildLimit: 1
+
+PYLE:
+	-Sellable:
+	Demolishable:
+		-Condition:
+	Buildable:
+		BuildLimit: 1
+
+FACT:
+	-Sellable:
+
+PROC:
+	Buildable:
+		Prerequisites: ~disabled
+
+SILO:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+HQ:
+	Buildable:
+		Prerequisites: ~disabled
+
+NUK2:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+EYE:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GTWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+SBAG:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+CYCL:
+	-Crushable:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E2:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+RMBO:
+	Buildable:
+		Prerequisites: ~disabled
+
+BOAT:
+	Health:
+		HP: 150000
+	AutoTarget:
+		InitialStance: AttackAnything
+	RejectsOrders:
+		Except: Attack

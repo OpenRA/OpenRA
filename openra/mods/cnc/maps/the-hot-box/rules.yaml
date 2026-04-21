@@ -1,0 +1,73 @@
+World:
+	CrateSpawner:
+		CheckboxEnabled: true
+		CheckboxLocked: true
+		CheckboxVisible: False
+		Maximum: 4
+		SpawnInterval: 125
+		CrateActors: unitcrate
+		InitialSpawnDelay: 0
+	-SpawnStartingUnits:
+	-MapStartingLocations:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxLocked: True
+		AllyBuildRadiusCheckboxEnabled: False
+		AllyBuildRadiusCheckboxVisible: False
+		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxEnabled: True
+		BuildRadiusCheckboxVisible: False
+	MapOptions:
+		ShortGameCheckboxVisible: False
+		ShortGameCheckboxLocked: True
+		ShortGameCheckboxEnabled: False
+		TechLevelDropdownLocked: True
+		TechLevelDropdownVisible: False
+		TechLevel: unrestricted
+
+UNITCRATE:
+	Inherits: ^Crate
+	GiveUnitCrateAction@stnk:
+		SelectionShares: 4
+		Units: stnk
+	GiveUnitCrateAction@bike:
+		SelectionShares: 6
+		Units: bike
+	GiveUnitCrateAction@htnk:
+		SelectionShares: 1
+		Units: htnk
+	GiveUnitCrateAction@e5:
+		SelectionShares: 1
+		Units: e5
+	GiveUnitCrateAction@e1:
+		SelectionShares: 1
+		Units: e1
+	GiveUnitCrateAction@e3:
+		SelectionShares: 1
+		Units: e3
+
+APC:
+	Inherits@AUTOTARGET: ^AutoTargetAll
+	Health:
+		HP: 100000
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	-AttackMove:
+
+Player:
+	Shroud:
+		FogCheckboxLocked: True
+		FogCheckboxEnabled: False
+		FogCheckboxVisible: False
+		ExploredMapCheckboxLocked: True
+		ExploredMapCheckboxEnabled: True
+		ExploredMapCheckboxVisible: False
+	PlayerResources:
+		DefaultCashDropdownLocked: True
+		DefaultCashDropdownVisible: False
+		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Visible: False
+	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
+		Enabled: False
+		Locked: True
+		Visible: False

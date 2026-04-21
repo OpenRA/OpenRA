@@ -1,0 +1,258 @@
+mpspawn:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-mpspawn-name
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+	RequiresSpecificOwners:
+		ValidOwnerNames: Neutral
+
+waypoint:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-waypoint-name
+	Immobile:
+		OccupiesSpace: false
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	MapEditorData:
+		Categories: System
+
+harv.colorpicker:
+	Inherits: HARV
+	-Buildable:
+	-MapEditorData:
+	RenderVoxels:
+		Image: harv
+		Palette: colorpicker
+		Scale: 18
+
+hvr.colorpicker:
+	Inherits: HVR
+	-Buildable:
+	-MapEditorData:
+	RenderVoxels:
+		Image: hvr
+		Palette: colorpicker
+		Scale: 18
+
+stnk.colorpicker:
+	Inherits: STNK
+	-Buildable:
+	-MapEditorData:
+	RenderVoxels:
+		Image: stnk
+		Palette: colorpicker
+		Scale: 18
+
+CAMERA:
+	Interactable:
+	EditorOnlyTooltip:
+		Name: actor-camera-name
+	RenderSpritesEditorOnly:
+	WithSpriteBody:
+	BodyOrientation:
+		QuantizedFacings: 1
+	Immobile:
+		OccupiesSpace: false
+	RevealsShroud:
+		Range: 10c0
+		Type: CenterPosition
+	DetectCloaked:
+		Range: 10c0
+	MapEditorData:
+		Categories: System
+
+CRATE:
+	Inherits: ^Crate
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		Sequence: dollar
+		UseCashTick: true
+	LevelUpCrateAction:
+		SelectionShares: 40
+		Sequence: levelup
+	HideMapCrateAction:
+		SelectionShares: 5
+		Sequence: hide-map
+	HealActorsCrateAction:
+		SelectionShares: 2
+		Sequence: heal
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Sequence: reveal-map
+	GiveBaseBuilderCrateAction:
+		SelectionShares: 0
+		NoBaseSelectionShares: 100
+		Units: mcv
+	GrantExternalConditionCrateAction@cloak:
+		SelectionShares: 5
+		Sequence: stealth
+		Condition: crate-cloak
+		Sound: cloak5.aud
+	GrantExternalConditionCrateAction@firepower:
+		SelectionShares: 5
+		Sequence: firepower
+		Condition: crate-firepower
+		Notification: UnitFirepowerUpgraded
+	GrantExternalConditionCrateAction@armor:
+		SelectionShares: 5
+		Sequence: armor
+		Condition: crate-damage
+		Notification: UnitArmourUpgraded
+	GrantExternalConditionCrateAction@speed:
+		SelectionShares: 5
+		Condition: crate-speed
+		Notification: UnitSpeedUpgraded
+	MapEditorData:
+		Categories: System
+
+SROCK01:
+	Inherits: ^Rock
+
+SROCK02:
+	Inherits: ^Rock
+
+SROCK03:
+	Inherits: ^Rock
+
+SROCK04:
+	Inherits: ^Rock
+
+SROCK05:
+	Inherits: ^Rock
+
+TROCK01:
+	Inherits: ^Rock
+
+TROCK02:
+	Inherits: ^Rock
+
+TROCK03:
+	Inherits: ^Rock
+
+TROCK04:
+	Inherits: ^Rock
+
+TROCK05:
+	Inherits: ^Rock
+
+CRAT01:
+	Inherits: ^Box
+
+CRAT02:
+	Inherits: ^Box
+
+CRAT03:
+	Inherits: ^Box
+
+CRAT04:
+	Inherits: ^Box
+
+CRAT0A:
+	Inherits: ^Box
+
+CRAT0B:
+	Inherits: ^Box
+
+CRAT0C:
+	Inherits: ^Box
+
+DRUM01:
+	Inherits: ^Drum
+
+DRUM02:
+	Inherits: ^Drum
+
+PALET01:
+	Inherits: ^Palette
+
+PALET02:
+	Inherits: ^Palette
+
+PALET03:
+	Inherits: ^Palette
+
+PALET04:
+	Inherits: ^Palette
+
+TRACKS01:
+	Inherits: ^Railway
+
+TRACKS02:
+	Inherits: ^Railway
+
+TRACKS03:
+	Inherits: ^Railway
+
+TRACKS04:
+	Inherits: ^Railway
+
+TRACKS05:
+	Inherits: ^Railway
+
+TRACKS06:
+	Inherits: ^Railway
+
+TRACKS07:
+	Inherits: ^Railway
+
+TRACKS08:
+	Inherits: ^Railway
+
+TRACKS09:
+	Inherits: ^Railway
+
+TRACKS10:
+	Inherits: ^Railway
+
+TRACKS11:
+	Inherits: ^Railway
+
+TRACKS12:
+	Inherits: ^Railway
+
+TRACKS13:
+	Inherits: ^Railway
+
+TRACKS14:
+	Inherits: ^Railway
+
+TRACKS15:
+	Inherits: ^Railway
+
+TRACKS16:
+	Inherits: ^Railway
+
+TUNTOP01:
+	Inherits: ^Tunnel
+	TunnelEntrance:
+		RallyPoint: -3, 1
+		Sensor: 0, 1
+
+TUNTOP02:
+	Inherits: ^Tunnel
+	TunnelEntrance:
+		RallyPoint: 1, -3
+		Sensor: 1, 0
+
+TUNTOP03:
+	Inherits: ^Tunnel
+	TunnelEntrance:
+		RallyPoint: 3, 1
+		Sensor: 0, 1
+
+TUNTOP04:
+	Inherits: ^Tunnel
+	TunnelEntrance:
+		RallyPoint: 1, 3
+		Sensor: 1, 0

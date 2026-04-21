@@ -1,0 +1,2811 @@
+General:
+	Name: tileset-winter
+	Id: WINTER
+	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Beach, River, Bridge
+	HeightDebugColors: 880000
+
+Terrain:
+	TerrainType@Beach:
+		Type: Beach
+		TargetTypes: Ground
+		Color: B09C78
+	TerrainType@BlueTiberium:
+		Type: BlueTiberium
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 54FCFC
+		RestrictPlayerColor: true
+	TerrainType@Bridge:
+		Type: Bridge
+		TargetTypes: Ground, Bridge
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 606060
+	TerrainType@Clear:
+		Type: Clear
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 284428
+		RestrictPlayerColor: true
+	TerrainType@River:
+		Type: River
+		TargetTypes: Ground
+		Color: 5C8CB4
+	TerrainType@Road:
+		Type: Road
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 587474
+	TerrainType@Rock:
+		Type: Rock
+		TargetTypes: Ground
+		Color: 44443C
+	TerrainType@Rough:
+		Type: Rough
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 44443C
+	TerrainType@Tiberium:
+		Type: Tiberium
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: A1E21C
+		RestrictPlayerColor: true
+	TerrainType@Tree:
+		Type: Tree
+		TargetTypes: Ground
+		Color: 1C2024
+	TerrainType@Wall:
+		Type: Wall
+		TargetTypes: Ground
+		AcceptsSmudgeType: Crater, Scorch
+		Color: D0C0A0
+	TerrainType@Water:
+		Type: Water
+		TargetTypes: Water
+		Color: 5C74A4
+		RestrictPlayerColor: true
+
+Templates:
+	Template@255:
+		Id: 255
+		Images: clear1.win
+		Size: 1,1
+		PickAny: True
+		Categories: Terrain
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+	Template@65535:
+		Id: 65535
+		Images: clear1.win
+		Size: 1,1
+		PickAny: True
+		Categories: Terrain
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+	Template@0:
+		Images: clear1.win
+		Size: 1,1
+		PickAny: True
+		Categories: Terrain
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			15: Clear
+	Template@1:
+		Id: 1
+		Images: w1.win
+		Size: 1,1
+		Categories: Terrain
+		Tiles:
+			0: Water
+	Template@2:
+		Id: 2
+		Images: w2.win
+		Size: 2,2
+		Categories: Terrain
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@3:
+		Id: 3
+		Images: sh1.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: River
+			4: Clear
+			5: Clear
+			6: Water
+			7: Water
+			8: Water
+	Template@4:
+		Id: 4
+		Images: sh2.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: River
+			4: River
+			5: River
+			6: River
+			7: Water
+			8: Water
+	Template@5:
+		Id: 5
+		Images: sh3.win
+		Size: 1,1
+		Categories: Beach
+		Tiles:
+			0: River
+	Template@6:
+		Id: 6
+		Images: sh4.win
+		Size: 2,1
+		Categories: Beach
+		Tiles:
+			0: River
+			1: River
+	Template@7:
+		Id: 7
+		Images: sh5.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: River
+			4: River
+			5: Clear
+			6: Water
+			7: Water
+			8: Water
+	Template@8:
+		Id: 8
+		Images: sh11.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: River
+			2: Rock
+			3: Clear
+			4: River
+			5: River
+			6: Water
+			7: Water
+			8: Water
+	Template@9:
+		Id: 9
+		Images: sh12.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Rock
+			4: Clear
+			5: Clear
+			6: Tree
+			7: Tree
+			8: Clear
+	Template@10:
+		Id: 10
+		Images: sh13.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+			4: Clear
+			5: Rock
+			6: Clear
+			7: Rock
+			8: Road
+	Template@11:
+		Id: 11
+		Images: sh14.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: River
+			4: River
+			5: River
+			6: Clear
+			7: Clear
+			8: Tree
+	Template@12:
+		Id: 12
+		Images: sh15.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			1: River
+			2: River
+			3: River
+			4: Rock
+			5: Rock
+			6: Clear
+			7: Tree
+			8: Clear
+	Template@13:
+		Id: 13
+		Images: s01.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Clear
+			3: Rock
+	Template@14:
+		Id: 14
+		Images: s02.win
+		Size: 2,3
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Clear
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Rock
+	Template@15:
+		Id: 15
+		Images: s03.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@16:
+		Id: 16
+		Images: s04.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@17:
+		Id: 17
+		Images: s05.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@18:
+		Id: 18
+		Images: s06.win
+		Size: 2,3
+		Categories: Cliffs
+		Tiles:
+			0: Clear
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+	Template@19:
+		Id: 19
+		Images: s07.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@20:
+		Id: 20
+		Images: s08.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Clear
+			2: Rock
+			3: Rock
+	Template@21:
+		Id: 21
+		Images: s09.win
+		Size: 3,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Clear
+			4: Rock
+			5: Rock
+	Template@22:
+		Id: 22
+		Images: s10.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@23:
+		Id: 23
+		Images: s11.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@24:
+		Id: 24
+		Images: s12.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@25:
+		Id: 25
+		Images: s13.win
+		Size: 3,2
+		Categories: Cliffs
+		Tiles:
+			0: Clear
+			1: Rock
+			2: Clear
+			3: Rock
+			4: Rock
+			5: Clear
+	Template@26:
+		Id: 26
+		Images: s14.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Clear
+			2: Clear
+	Template@27:
+		Id: 27
+		Images: s15.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Clear
+			2: Rock
+			3: Rock
+	Template@28:
+		Id: 28
+		Images: s16.win
+		Size: 2,3
+		Categories: Cliffs
+		Tiles:
+			0: Clear
+			2: Rock
+			3: Rock
+			5: Rock
+	Template@29:
+		Id: 29
+		Images: s17.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@30:
+		Id: 30
+		Images: s18.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@31:
+		Id: 31
+		Images: s19.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@32:
+		Id: 32
+		Images: s20.win
+		Size: 2,3
+		Categories: Cliffs
+		Tiles:
+			1: Clear
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Clear
+	Template@33:
+		Id: 33
+		Images: s21.win
+		Size: 1,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@34:
+		Id: 34
+		Images: s22.win
+		Size: 2,1
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@35:
+		Id: 35
+		Images: s23.win
+		Size: 3,2
+		Categories: Cliffs
+		Tiles:
+			0: Clear
+			1: Rock
+			2: Rock
+			3: Rock
+			4: Rock
+			5: Clear
+	Template@36:
+		Id: 36
+		Images: s24.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@37:
+		Id: 37
+		Images: s25.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@38:
+		Id: 38
+		Images: s26.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@39:
+		Id: 39
+		Images: s27.win
+		Size: 3,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Clear
+			3: Clear
+			4: Rock
+			5: Rock
+	Template@40:
+		Id: 40
+		Images: s28.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			3: Rock
+	Template@41:
+		Id: 41
+		Images: s29.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@42:
+		Id: 42
+		Images: s30.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Clear
+			2: Rock
+			3: Rock
+	Template@43:
+		Id: 43
+		Images: s31.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Rock
+			3: Rock
+	Template@44:
+		Id: 44
+		Images: s32.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+	Template@45:
+		Id: 45
+		Images: s33.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@46:
+		Id: 46
+		Images: s34.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@47:
+		Id: 47
+		Images: s35.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@48:
+		Id: 48
+		Images: s36.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@49:
+		Id: 49
+		Images: s37.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@50:
+		Id: 50
+		Images: s38.win
+		Size: 2,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+	Template@51:
+		Id: 51
+		Images: sh32.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Water
+			1: Clear
+			2: Clear
+			3: River
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+	Template@52:
+		Id: 52
+		Images: sh33.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: River
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+	Template@73:
+		Id: 73
+		Images: p07.win
+		Size: 4,2
+		Categories: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+	Template@74:
+		Id: 74
+		Images: p08.win
+		Size: 3,2
+		Categories: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+	Template@75:
+		Id: 75
+		Images: sh16.win
+		Size: 3,2
+		Categories: Beach
+		Tiles:
+			0: River
+			1: Water
+			2: River
+			3: Tree
+			4: River
+			5: River
+	Template@76:
+		Id: 76
+		Images: sh17.win
+		Size: 2,2
+		Categories: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@77:
+		Id: 77
+		Images: sh18.win
+		Size: 2,2
+		Categories: Beach
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
+	Template@79:
+		Id: 79
+		Images: p13.win
+		Size: 3,2
+		Categories: Debris
+		Tiles:
+			0: Wall
+			1: Wall
+			2: Wall
+			3: Wall
+			4: Clear
+			5: Wall
+	Template@80:
+		Id: 80
+		Images: p14.win
+		Size: 2,1
+		Categories: Debris
+		Tiles:
+			0: Wall
+			1: Wall
+	Template@81:
+		Id: 81
+		Images: p15.win
+		Size: 4,2
+		Categories: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+	Template@82:
+		Id: 82
+		Images: b1.win
+		Size: 1,1
+		Categories: Debris
+		Tiles:
+			0: Rock
+	Template@83:
+		Id: 83
+		Images: b2.win
+		Size: 2,1
+		Categories: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@84:
+		Id: 84
+		Images: b3.win
+		Size: 3,1
+		Categories: Debris
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Clear
+	Template@88:
+		Id: 88
+		Images: sh6.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Water
+			7: Water
+			8: Water
+	Template@89:
+		Id: 89
+		Images: sh7.win
+		Size: 2,2
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: River
+			2: River
+			3: Water
+	Template@90:
+		Id: 90
+		Images: sh8.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Clear
+			5: River
+			6: Clear
+			7: Clear
+			8: Water
+	Template@91:
+		Id: 91
+		Images: sh9.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: River
+			4: Clear
+			5: Clear
+			6: Water
+			7: River
+			8: Clear
+	Template@92:
+		Id: 92
+		Images: sh10.win
+		Size: 2,2
+		Categories: Beach
+		Tiles:
+			0: River
+			1: Clear
+			2: Water
+			3: River
+	Template@93:
+		Id: 93
+		Images: d01.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Road
+			2: Clear
+			3: Clear
+	Template@94:
+		Id: 94
+		Images: d02.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Clear
+	Template@95:
+		Id: 95
+		Images: d03.win
+		Size: 1,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@96:
+		Id: 96
+		Images: d04.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+	Template@97:
+		Id: 97
+		Images: d05.win
+		Size: 3,4
+		Categories: Road
+		Tiles:
+			1: Road
+			2: Clear
+			3: Road
+			4: Road
+			6: Road
+			7: Road
+			9: Clear
+			10: Road
+	Template@98:
+		Id: 98
+		Images: d06.win
+		Size: 2,3
+		Categories: Road
+		Tiles:
+			0: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Clear
+	Template@99:
+		Id: 99
+		Images: d07.win
+		Size: 3,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			4: Road
+			5: Clear
+	Template@100:
+		Id: 100
+		Images: d08.win
+		Size: 3,2
+		Categories: Road
+		Tiles:
+			1: Road
+			3: Clear
+			4: Road
+			5: Clear
+	Template@101:
+		Id: 101
+		Images: d09.win
+		Size: 4,3
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+			10: Clear
+			11: Clear
+	Template@102:
+		Id: 102
+		Images: d10.win
+		Size: 4,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Rock
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@103:
+		Id: 103
+		Images: d11.win
+		Size: 2,3
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Road
+			4: Clear
+	Template@104:
+		Id: 104
+		Images: d12.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			2: Road
+			3: Road
+	Template@105:
+		Id: 105
+		Images: d13.win
+		Size: 4,3
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Clear
+			4: Clear
+			5: Road
+			6: Road
+			7: Clear
+			10: Wall
+			11: Road
+	Template@106:
+		Id: 106
+		Images: d14.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+			4: Wall
+			5: Road
+			6: Road
+			7: Road
+			8: Road
+	Template@107:
+		Id: 107
+		Images: d15.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Road
+			4: Road
+			5: Clear
+			6: Road
+			7: Clear
+	Template@108:
+		Id: 108
+		Images: d16.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Clear
+			4: Road
+			5: Road
+			6: Road
+			7: Clear
+			8: Wall
+	Template@109:
+		Id: 109
+		Images: d17.win
+		Size: 3,2
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Road
+			2: Road
+			3: Clear
+			4: Road
+			5: Clear
+	Template@110:
+		Id: 110
+		Images: d18.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Road
+			4: Road
+			5: Clear
+			6: Clear
+			7: Road
+			8: Wall
+	Template@111:
+		Id: 111
+		Images: d19.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			3: Road
+			4: Road
+			5: Road
+			6: Clear
+			7: Road
+			8: Clear
+	Template@112:
+		Id: 112
+		Images: d20.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Clear
+			3: Road
+			4: Road
+			5: Clear
+			6: Clear
+			7: Road
+			8: Road
+	Template@113:
+		Id: 113
+		Images: d21.win
+		Size: 3,2
+		Categories: Road
+		Tiles:
+			0: Rock
+			1: Road
+			2: Road
+			3: Clear
+			4: Road
+			5: Clear
+	Template@114:
+		Id: 114
+		Images: d22.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			1: Clear
+			3: Road
+			4: Road
+			5: Clear
+			6: Clear
+			7: Road
+			8: Clear
+	Template@115:
+		Id: 115
+		Images: d23.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			1: Road
+			2: Clear
+			3: Clear
+			4: Road
+			5: Clear
+			6: Road
+			7: Clear
+	Template@116:
+		Id: 116
+		Images: d24.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Clear
+			3: Clear
+			4: Road
+			5: Clear
+			7: Clear
+			8: Road
+	Template@117:
+		Id: 117
+		Images: d25.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Clear
+			3: Clear
+			4: Road
+			5: Clear
+			7: Clear
+			8: Road
+	Template@118:
+		Id: 118
+		Images: d26.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Clear
+	Template@119:
+		Id: 119
+		Images: d27.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Clear
+	Template@120:
+		Id: 120
+		Images: d28.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Clear
+			2: Clear
+	Template@121:
+		Id: 121
+		Images: d29.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Clear
+			2: Clear
+	Template@122:
+		Id: 122
+		Images: d30.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Clear
+			2: Road
+	Template@123:
+		Id: 123
+		Images: d31.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Road
+	Template@124:
+		Id: 124
+		Images: d32.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+	Template@125:
+		Id: 125
+		Images: d33.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Road
+	Template@126:
+		Id: 126
+		Images: d34.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+			4: Road
+			5: Road
+			6: Road
+			7: Road
+	Template@127:
+		Id: 127
+		Images: d35.win
+		Size: 3,3
+		Categories: Road
+		Tiles:
+			1: Clear
+			2: Road
+			3: Clear
+			4: Road
+			5: Clear
+			6: Road
+			7: Clear
+	Template@128:
+		Id: 128
+		Images: d36.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			3: Clear
+	Template@129:
+		Id: 129
+		Images: d37.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			3: Clear
+	Template@130:
+		Id: 130
+		Images: d38.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			3: Clear
+	Template@131:
+		Id: 131
+		Images: d39.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			1: Road
+			3: Clear
+	Template@132:
+		Id: 132
+		Images: d40.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Road
+			1: Road
+			3: Clear
+	Template@133:
+		Id: 133
+		Images: d41.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Wall
+			2: Road
+			3: Clear
+	Template@134:
+		Id: 134
+		Images: d42.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			2: Road
+			3: Clear
+	Template@135:
+		Id: 135
+		Images: d43.win
+		Size: 2,2
+		Categories: Road
+		Tiles:
+			0: Clear
+			2: Road
+			3: Road
+	Template@136:
+		Id: 136
+		Images: rv01.win
+		Size: 5,4
+		Categories: River
+		Tiles:
+			0: Clear
+			1: Rock
+			5: Rock
+			6: River
+			7: River
+			8: River
+			9: Rock
+			10: River
+			11: River
+			12: River
+			13: Rock
+			14: River
+			16: Wall
+			17: Clear
+	Template@137:
+		Id: 137
+		Images: rv02.win
+		Size: 5,3
+		Categories: River
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+			4: River
+			5: River
+			6: River
+			7: River
+			8: River
+			9: River
+			10: River
+			11: Rock
+			12: Clear
+	Template@138:
+		Id: 138
+		Images: rv03.win
+		Size: 4,4
+		Categories: River
+		Tiles:
+			0: Clear
+			1: Clear
+			4: River
+			5: River
+			6: River
+			7: Clear
+			8: Clear
+			9: River
+			10: River
+			11: River
+			13: Clear
+			14: Clear
+			15: River
+	Template@139:
+		Id: 139
+		Images: rv04.win
+		Size: 4,4
+		Categories: River
+		Tiles:
+			2: Wall
+			3: Clear
+			5: Clear
+			6: River
+			7: River
+			8: River
+			9: River
+			10: River
+			11: Rock
+			12: River
+			13: Rock
+			14: Rock
+	Template@140:
+		Id: 140
+		Images: rv05.win
+		Size: 3,3
+		Categories: River
+		Tiles:
+			0: Clear
+			1: River
+			2: River
+			3: Clear
+			4: River
+			5: River
+			6: Rock
+			7: River
+			8: River
+	Template@141:
+		Id: 141
+		Images: rv06.win
+		Size: 3,2
+		Categories: River
+		Tiles:
+			0: Rock
+			1: River
+			2: Rock
+			3: Rock
+			4: River
+			5: Clear
+	Template@142:
+		Id: 142
+		Images: rv07.win
+		Size: 3,2
+		Categories: River
+		Tiles:
+			0: Rock
+			1: River
+			2: River
+			3: Rock
+			4: Rock
+			5: River
+	Template@143:
+		Id: 143
+		Images: rv08.win
+		Size: 2,2
+		Categories: River
+		Tiles:
+			0: Rock
+			1: River
+			2: River
+			3: River
+	Template@144:
+		Id: 144
+		Images: rv09.win
+		Size: 2,2
+		Categories: River
+		Tiles:
+			0: Clear
+			1: Clear
+			2: River
+			3: River
+	Template@145:
+		Id: 145
+		Images: rv10.win
+		Size: 2,2
+		Categories: River
+		Tiles:
+			0: River
+			1: River
+			2: Clear
+			3: River
+	Template@146:
+		Id: 146
+		Images: rv11.win
+		Size: 2,2
+		Categories: River
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: Clear
+	Template@147:
+		Id: 147
+		Images: rv12.win
+		Size: 3,4
+		Categories: River
+		Tiles:
+			0: Clear
+			1: River
+			2: River
+			3: Rock
+			4: River
+			5: River
+			6: River
+			7: River
+			8: Rock
+			9: Clear
+			10: River
+			11: River
+	Template@148:
+		Id: 148
+		Images: rv13.win
+		Size: 4,4
+		Categories: River
+		Tiles:
+			2: Clear
+			3: Clear
+			4: River
+			5: River
+			6: River
+			7: River
+			8: River
+			9: Rock
+			10: River
+			11: Rock
+			12: Clear
+			13: Rock
+			14: River
+			15: Rock
+	Template@161:
+		Id: 161
+		Images: ford1.win
+		Size: 3,3
+		Categories: River
+		Tiles:
+			0: Clear
+			1: River
+			2: Clear
+			3: Road
+			4: Rough
+			5: Road
+			6: Clear
+			7: River
+			8: River
+	Template@162:
+		Id: 162
+		Images: ford2.win
+		Size: 3,3
+		Categories: River
+		Tiles:
+			0: Rough
+			1: Rough
+			2: River
+			3: River
+			4: Rough
+			5: River
+			6: Clear
+			7: Road
+			8: Clear
+	Template@163:
+		Id: 163
+		Images: falls1.win
+		Size: 3,3
+		Categories: River
+		Tiles:
+			0: Clear
+			1: Rock
+			2: River
+			3: River
+			4: River
+			5: River
+			6: Clear
+			7: Rock
+			8: Rock
+	Template@164:
+		Id: 164
+		Images: falls2.win
+		Size: 3,2
+		Categories: River
+		Tiles:
+			0: Rock
+			1: River
+			2: River
+			3: Rock
+			4: River
+			5: River
+	Template@165:
+		Id: 165
+		Images: bridge1.win
+		Size: 4,4
+		Categories: Bridge
+		Tiles:
+			2: Clear
+			3: Road
+			4: River
+			5: Wall
+			6: Bridge
+			7: Wall
+			8: River
+			9: Bridge
+			10: Wall
+			11: River
+			12: Road
+			13: Clear
+			14: Clear
+			15: River
+	Template@166:
+		Id: 166
+		Images: bridge1d.win
+		Size: 4,4
+		Categories: Bridge
+		Tiles:
+			2: Clear
+			3: Road
+			4: River
+			5: Wall
+			6: Wall
+			7: Wall
+			8: River
+			9: River
+			10: River
+			11: River
+			12: Road
+			13: Clear
+			14: Clear
+			15: River
+	Template@167:
+		Id: 167
+		Images: bridge2.win
+		Size: 5,5
+		Categories: Bridge
+		Tiles:
+			0: Road
+			1: Clear
+			2: Clear
+			4: Clear
+			5: Wall
+			6: Bridge
+			7: Wall
+			8: River
+			9: River
+			10: River
+			11: Wall
+			12: Bridge
+			13: Wall
+			14: Clear
+			15: River
+			16: Clear
+			17: Clear
+			18: Road
+			19: Clear
+			23: Clear
+			24: Road
+	Template@168:
+		Id: 168
+		Images: bridge2d.win
+		Size: 5,5
+		Categories: Bridge
+		Tiles:
+			0: Road
+			1: Clear
+			2: Clear
+			4: Clear
+			5: Wall
+			6: Wall
+			7: River
+			8: River
+			9: River
+			10: River
+			11: River
+			12: River
+			13: River
+			14: Clear
+			15: River
+			16: Clear
+			17: Clear
+			18: Road
+			19: Clear
+			23: Clear
+			24: Road
+	Template@181:
+		Id: 181
+		Images: p16.win
+		Size: 2,2
+		Categories: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+	Template@182:
+		Id: 182
+		Images: p17.win
+		Size: 4,2
+		Categories: Debris
+		Tiles:
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+	Template@183:
+		Id: 183
+		Images: p18.win
+		Size: 4,3
+		Categories: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			10: Clear
+			11: Clear
+	Template@184:
+		Id: 184
+		Images: p19.win
+		Size: 4,3
+		Categories: Debris
+		Tiles:
+			2: Clear
+			3: Clear
+			4: Clear
+			5: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+	Template@185:
+		Id: 185
+		Images: p20.win
+		Size: 4,3
+		Categories: Debris
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			6: Clear
+			7: Clear
+			10: Clear
+			11: Clear
+	Template@186:
+		Id: 186
+		Images: sh34.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Water
+			3: Clear
+			4: Clear
+			5: Water
+			6: Clear
+			7: Clear
+			8: Water
+	Template@187:
+		Id: 187
+		Images: sh35.win
+		Size: 3,3
+		Categories: Beach
+		Tiles:
+			0: Water
+			1: River
+			2: Clear
+			3: Water
+			4: River
+			5: Clear
+			6: Water
+			7: Clear
+			8: Clear
+	Template@189:
+		Id: 189
+		Images: cliffsl1.win
+		Size: 1,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@190:
+		Id: 190
+		Images: cliffsl2.win
+		Size: 1,2
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@191:
+		Id: 191
+		Images: cliffsl3.win
+		Size: 2,1
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+	Template@192:
+		Id: 192
+		Images: cliffsl4.win
+		Size: 2,1
+		Categories: Cliffs
+		Tiles:
+			0: Rock
+			1: Rock
+
+MultiBrushCollections:
+	Segmented:
+		MultiBrush@3:
+			Template: 3
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@4:
+			Template: 4
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@7:
+			Template: 7
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@9:
+			Template: 9
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@10:
+			Template: 10
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@11:
+			Template: 11
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@12:
+			Template: 12
+			Segment:
+				Start: Beach.R
+				End: Beach.R
+				Points: 0,2, 1,2, 2,2, 3,2
+		MultiBrush@13:
+			Template: 13
+			Segment:
+				Start: Cliff.L
+				Inner: Cliff
+				End: Clear.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@14:
+			Template: 14
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,2, 1,2, 1,1, 0,1
+		MultiBrush@15:
+			Template: 15
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@16:
+			Template: 16
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@17:
+			Template: 17
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@18:
+			Template: 18
+			Segment:
+				Start: Cliff.L
+				End: Cliff.L
+				Points: 2,1, 1,1, 1,2, 0,2
+		MultiBrush@19:
+			Template: 19
+			Segment:
+				Start: Clear.L
+				Inner: Cliff
+				End: Cliff.L
+				Points: 2,1, 1,1, 0,1
+		MultiBrush@20:
+			Template: 20
+			Segment:
+				Start: Cliff.U
+				Inner: Cliff
+				End: Clear.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@21:
+			Template: 21
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 2,2, 2,1, 1,1, 1,0
+		MultiBrush@22:
+			Template: 22
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@23:
+			Template: 23
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@24:
+			Template: 24
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@25:
+			Template: 25
+			Segment:
+				Start: Cliff.U
+				End: Cliff.U
+				Points: 1,2, 1,1, 2,1, 2,0
+		MultiBrush@26:
+			Template: 26
+			Segment:
+				Start: Clear.U
+				Inner: Cliff
+				End: Cliff.U
+				Points: 1,2, 1,1, 1,0
+		MultiBrush@27:
+			Template: 27
+			Segment:
+				Start: Clear.R
+				Inner: Cliff
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@28:
+			Template: 28
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 1,2, 2,2
+		MultiBrush@29:
+			Template: 29
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@30:
+			Template: 30
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@31:
+			Template: 31
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,1, 1,1, 2,1
+		MultiBrush@32:
+			Template: 32
+			Segment:
+				Start: Cliff.R
+				End: Cliff.R
+				Points: 0,2, 1,2, 1,1, 2,1
+		MultiBrush@33:
+			Template: 33
+			Segment:
+				Start: Cliff.R
+				Inner: Cliff
+				End: Clear.R
+				Points: 0,1, 1,1
+		MultiBrush@34:
+			Template: 34
+			Segment:
+				Start: Clear.D
+				Inner: Cliff
+				End: Cliff.D
+				Points: 1,0, 1,1
+		MultiBrush@35:
+			Template: 35
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 2,0, 2,1, 1,1, 1,2
+		MultiBrush@36:
+			Template: 36
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@37:
+			Template: 37
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@38:
+			Template: 38
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@39:
+			Template: 39
+			Segment:
+				Start: Cliff.D
+				End: Cliff.D
+				Points: 1,0, 1,1, 2,1, 2,2
+		MultiBrush@40:
+			Template: 40
+			Segment:
+				Start: Cliff.D
+				Inner: Cliff
+				End: Clear.D
+				Points: 1,0, 1,1, 1,2
+		MultiBrush@41:
+			Template: 41
+			Segment:
+				Start: Cliff.L
+				End: Cliff.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@42:
+			Template: 42
+			Segment:
+				Start: Cliff.U
+				End: Cliff.R
+				Points: 1,2, 1,1, 2,1
+		MultiBrush@43:
+			Template: 43
+			Segment:
+				Start: Cliff.R
+				End: Cliff.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@44:
+			Template: 44
+			Segment:
+				Start: Cliff.D
+				End: Cliff.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@45:
+			Template: 45
+			Segment:
+				Start: Cliff.D
+				End: Cliff.R
+				Points: 1,0, 1,1, 2,1
+		MultiBrush@46:
+			Template: 46
+			Segment:
+				Start: Cliff.L
+				End: Cliff.D
+				Points: 2,1, 1,1, 1,2
+		MultiBrush@47:
+			Template: 47
+			Segment:
+				Start: Cliff.U
+				End: Cliff.L
+				Points: 1,2, 1,1, 0,1
+		MultiBrush@48:
+			Template: 48
+			Segment:
+				Start: Cliff.R
+				End: Cliff.U
+				Points: 0,1, 1,1, 1,0
+		MultiBrush@51:
+			Template: 51
+			Segment:
+				Start: Beach.R
+				End: Beach.U
+				Points: 0,2, 1,2, 2,2, 2,1, 2,0
+		MultiBrush@52:
+			Template: 52
+			Segment:
+				Start: Beach.D
+				End: Beach.R
+				Points: 1,0, 1,1, 1,2, 2,2, 3,2
+		MultiBrush@88:
+			Template: 88
+			Segment:
+				Start: Beach.L
+				End: Beach.L
+				Points: 3,1, 2,1, 1,1, 0,1
+		MultiBrush@89:
+			Template: 89
+			Segment:
+				Start: Beach.D
+				End: Beach.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@90:
+			Template: 90
+			Segment:
+				Start: Beach.L
+				End: Beach.D
+				Points: 3,1, 2,1, 1,1, 1,2, 1,3
+		MultiBrush@91:
+			Template: 91
+			Segment:
+				Start: Beach.U
+				End: Beach.L
+				Points: 2,3, 2,2, 2,1, 1,1, 0,1
+		MultiBrush@92:
+			Template: 92
+			Segment:
+				Start: Beach.L
+				End: Beach.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@93:
+			Template: 93
+			Segment:
+				End: Clear.D
+				Inner: Road
+				Points: 1,0, 1,1
+				Start: Road.Main.D
+		MultiBrush@93reverse:
+			Template: 93
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,1, 2,0
+				Start: Clear.U
+		MultiBrush@94:
+			Template: 94
+			Segment:
+				End: Clear.L
+				Inner: Road
+				Points: 2,0, 1,0
+				Start: Road.Main.L
+		MultiBrush@94reverse:
+			Template: 94
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 1,1, 2,1
+				Start: Clear.R
+		MultiBrush@95:
+			Template: 95
+			Segment:
+				End: Clear.U
+				Inner: Road
+				Points: 1,2, 1,1
+				Start: Road.Main.U
+		MultiBrush@95reverse:
+			Template: 95
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,1, 0,2
+				Start: Clear.D
+		MultiBrush@96:
+			Template: 96
+			Segment:
+				End: Clear.R
+				Inner: Road
+				Points: 0,2, 1,2
+				Start: Road.Main.R
+		MultiBrush@96reverse:
+			Template: 96
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,1, 0,1
+				Start: Clear.L
+		MultiBrush@97:
+			Template: 97
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 1,1, 0,1, 0,2, 0,3, 0,4, 1,4
+				Start: Road.Main.D
+		MultiBrush@97reverse:
+			Template: 97
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,4, 2,3, 1,3, 1,2, 2,2, 2,1, 2,0
+				Start: Road.Main.U
+		MultiBrush@98:
+			Template: 98
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 0,3
+				Start: Road.Main.D
+		MultiBrush@98reverse:
+			Template: 98
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 1,3, 1,2, 1,1, 1,0
+				Start: Road.Main.U
+		MultiBrush@99:
+			Template: 99
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 1,1, 1,2
+				Start: Road.Main.D
+		MultiBrush@99reverse:
+			Template: 99
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,2, 2,1, 2,0
+				Start: Road.Main.U
+		MultiBrush@100:
+			Template: 100
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 1,1, 1,2
+				Start: Road.Main.D
+		MultiBrush@100reverse:
+			Template: 100
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,2, 2,1, 2,0
+				Start: Road.Main.U
+		MultiBrush@101:
+			Template: 101
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2
+				Start: Road.Main.R
+		MultiBrush@101reverse:
+			Template: 101
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 4,1, 3,1, 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@102:
+			Template: 102
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2
+				Start: Road.Main.R
+		MultiBrush@102reverse:
+			Template: 102
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 4,1, 3,1, 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@103:
+			Template: 103
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2
+				Start: Road.Main.R
+		MultiBrush@103reverse:
+			Template: 103
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@104:
+			Template: 104
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,2, 1,2, 2,2
+				Start: Road.Main.R
+		MultiBrush@104reverse:
+			Template: 104
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,1, 1,1, 0,1
+				Start: Road.Main.L
+		MultiBrush@105:
+			Template: 105
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,1, 1,1, 1,2, 2,2, 2,3, 3,3, 4,3
+				Start: Road.Main.R
+		MultiBrush@105reverse:
+			Template: 105
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 4,2, 3,2, 3,1, 2,1, 2,0, 1,0, 0,0
+				Start: Road.Main.L
+		MultiBrush@112:
+			Template: 112
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 1,2, 1,3, 2,3, 3,3
+				Start: Road.Main.D
+		MultiBrush@112reverse:
+			Template: 112
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 3,2, 2,2, 2,1, 1,1, 1,0
+				Start: Road.Main.L
+		MultiBrush@113:
+			Template: 113
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 2,2, 2,1, 3,1
+				Start: Road.Main.U
+		MultiBrush@113reverse:
+			Template: 113
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 3,0, 2,0, 1,0, 1,1, 1,2
+				Start: Road.Main.L
+		MultiBrush@114:
+			Template: 114
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,2, 1,2, 1,3
+				Start: Road.Main.R
+		MultiBrush@114reverse:
+			Template: 114
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,3, 2,2, 2,1, 1,1, 0,1
+				Start: Road.Main.U
+		MultiBrush@115:
+			Template: 115
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 0,3, 1,3, 2,3, 2,2, 2,1, 2,0
+				Start: Road.Main.R
+		MultiBrush@115reverse:
+			Template: 115
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,0, 1,1, 1,2, 0,2
+				Start: Road.Main.D
+		MultiBrush@116:
+			Template: 116
+			Segment:
+				End: Road.Out.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 1,3, 2,3
+				Start: Road.In.RD
+		MultiBrush@116reverse:
+			Template: 116
+			Segment:
+				End: Road.Out.LU
+				Inner: Road
+				Points: 3,2, 3,1, 2,1, 2,0, 1,0
+				Start: Road.In.LU
+		MultiBrush@117:
+			Template: 117
+			Segment:
+				End: Road.Out.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 1,3, 2,3
+				Start: Road.In.RD
+		MultiBrush@117reverse:
+			Template: 117
+			Segment:
+				End: Road.Out.LU
+				Inner: Road
+				Points: 3,2, 3,1, 2,1, 2,0, 1,0
+				Start: Road.In.LU
+		MultiBrush@118:
+			Template: 118
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2
+				Start: Road.Out.RD
+		MultiBrush@118reverse:
+			Template: 118
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 2,1, 2,0, 1,0
+				Start: Road.Out.LU
+		MultiBrush@119:
+			Template: 119
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,1, 0,2, 1,2
+				Start: Road.Out.RD
+		MultiBrush@119reverse:
+			Template: 119
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 2,1, 2,0, 1,0
+				Start: Road.Out.LU
+		MultiBrush@120:
+			Template: 120
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,1, 1,1, 1,2
+				Start: Road.Main.R
+		MultiBrush@120reverse:
+			Template: 120
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 2,1, 2,0, 1,0, 0,0
+				Start: Road.Out.LU
+		MultiBrush@121:
+			Template: 121
+			Segment:
+				End: Road.In.RD
+				Inner: Road
+				Points: 0,0, 0,1, 0,2, 1,2
+				Start: Road.Main.D
+		MultiBrush@121reverse:
+			Template: 121
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 2,1, 1,1, 1,0
+				Start: Road.Out.LU
+		MultiBrush@123:
+			Template: 123
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 0,1, 0,2, 1,2, 2,2
+				Start: Road.Out.RD
+		MultiBrush@123reverse:
+			Template: 123
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 2,1, 1,1, 1,0
+				Start: Road.Main.L
+		MultiBrush@124:
+			Template: 124
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 0,1, 0,2
+				Start: Road.Out.RD
+		MultiBrush@124reverse:
+			Template: 124
+			Segment:
+				End: Road.In.LU
+				Inner: Road
+				Points: 1,2, 1,1, 1,0
+				Start: Road.Main.U
+		MultiBrush@126:
+			Template: 126
+			Segment:
+				End: Road.Out.RU
+				Inner: Road
+				Points: 1,3, 2,3, 2,2, 3,2, 3,1
+				Start: Road.In.RU
+		MultiBrush@126reverse:
+			Template: 126
+			Segment:
+				End: Road.Out.LD
+				Inner: Road
+				Points: 2,0, 1,0, 1,1, 0,1, 0,2
+				Start: Road.In.LD
+		MultiBrush@127:
+			Template: 127
+			Segment:
+				End: Road.Out.RU
+				Inner: Road
+				Points: 1,3, 2,3, 2,2, 3,2, 3,1
+				Start: Road.In.RU
+		MultiBrush@127reverse:
+			Template: 127
+			Segment:
+				End: Road.Out.LD
+				Inner: Road
+				Points: 2,0, 1,0, 1,1, 0,1, 0,2
+				Start: Road.In.LD
+		MultiBrush@128:
+			Template: 128
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 1,2, 2,2, 2,1
+				Start: Road.Out.RU
+		MultiBrush@128reverse:
+			Template: 128
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 1,0, 0,0, 0,1
+				Start: Road.Out.LD
+		MultiBrush@129:
+			Template: 129
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 1,2, 2,2, 2,1
+				Start: Road.Out.RU
+		MultiBrush@129reverse:
+			Template: 129
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 1,0, 0,0, 0,1
+				Start: Road.Out.LD
+		MultiBrush@130:
+			Template: 130
+			Segment:
+				End: Road.Main.R
+				Inner: Road
+				Points: 1,2, 1,1, 2,1
+				Start: Road.Out.RU
+		MultiBrush@130reverse:
+			Template: 130
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 2,0, 1,0, 0,0, 0,1
+				Start: Road.Main.L
+		MultiBrush@131:
+			Template: 131
+			Segment:
+				End: Road.Main.U
+				Inner: Road
+				Points: 1,2, 2,2, 2,1, 2,0
+				Start: Road.Out.RU
+		MultiBrush@131reverse:
+			Template: 131
+			Segment:
+				End: Road.In.LD
+				Inner: Road
+				Points: 1,0, 1,1, 0,1
+				Start: Road.Main.D
+		MultiBrush@133:
+			Template: 133
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 0,2, 1,2, 2,2, 2,1
+				Start: Road.Main.R
+		MultiBrush@133reverse:
+			Template: 133
+			Segment:
+				End: Road.Main.L
+				Inner: Road
+				Points: 1,0, 1,1, 0,1
+				Start: Road.Out.LD
+		MultiBrush@134:
+			Template: 134
+			Segment:
+				End: Road.In.RU
+				Inner: Road
+				Points: 1,2, 1,1, 2,1
+				Start: Road.Main.U
+		MultiBrush@134reverse:
+			Template: 134
+			Segment:
+				End: Road.Main.D
+				Inner: Road
+				Points: 1,0, 0,0, 0,1, 0,2
+				Start: Road.Out.LD
+		MultiBrush@136:
+			Template: 136
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,2, 1,2, 2,2, 3,2, 4,2, 5,2
+		MultiBrush@136reverse:
+			Template: 136
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 5,2, 4,2, 3,2, 2,2, 1,2, 0,2
+		MultiBrush@137:
+			Template: 137
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,2, 1,2, 2,2, 2,1, 3,1, 4,1, 5,1
+		MultiBrush@137reverse:
+			Template: 137
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 5,1, 4,1, 3,1, 2,1, 2,2, 1,2, 0,2
+		MultiBrush@138:
+			Template: 138
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,1, 1,1, 1,2, 2,2, 3,2, 3,3, 4,3
+		MultiBrush@138reverse:
+			Template: 138
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 4,3, 3,3, 3,2, 2,2, 1,2, 1,1, 0,1
+		MultiBrush@139:
+			Template: 139
+			Segment:
+				Start: River.R
+				End: River.R
+				Points: 0,3, 1,3, 1,2, 2,2, 3,2, 3,1, 4,1
+		MultiBrush@139reverse:
+			Template: 139
+			Segment:
+				Start: River.L
+				End: River.L
+				Points: 4,1, 3,1, 3,2, 2,2, 1,2, 1,3, 0,3
+		MultiBrush@140:
+			Template: 140
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 2,0, 2,1, 2,2, 2,3
+		MultiBrush@140reverse:
+			Template: 140
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 2,3, 2,2, 2,1, 2,0
+		MultiBrush@141:
+			Template: 141
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 2,0, 2,1, 2,2
+		MultiBrush@141reverse:
+			Template: 141
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 2,2, 2,1, 2,0
+		MultiBrush@142:
+			Template: 142
+			Segment:
+				Start: River.D
+				End: River.D
+				Points: 2,0, 2,1, 2,2
+		MultiBrush@142reverse:
+			Template: 142
+			Segment:
+				Start: River.U
+				End: River.U
+				Points: 2,2, 2,1, 2,0
+		MultiBrush@143:
+			Template: 143
+			Segment:
+				Start: River.U
+				End: River.R
+				Points: 1,2, 1,1, 2,1
+		MultiBrush@143reverse:
+			Template: 143
+			Segment:
+				Start: River.L
+				End: River.D
+				Points: 2,1, 1,1, 1,2
+		MultiBrush@144:
+			Template: 144
+			Segment:
+				Start: River.R
+				End: River.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@144reverse:
+			Template: 144
+			Segment:
+				Start: River.U
+				End: River.L
+				Points: 1,2, 1,1, 0,1
+		MultiBrush@145:
+			Template: 145
+			Segment:
+				Start: River.L
+				End: River.U
+				Points: 2,1, 1,1, 1,0
+		MultiBrush@145reverse:
+			Template: 145
+			Segment:
+				Start: River.D
+				End: River.R
+				Points: 1,0, 1,1, 2,1
+		MultiBrush@146:
+			Template: 146
+			Segment:
+				Start: River.D
+				End: River.L
+				Points: 1,0, 1,1, 0,1
+		MultiBrush@146reverse:
+			Template: 146
+			Segment:
+				Start: River.R
+				End: River.U
+				Points: 0,1, 1,1, 1,0
+		MultiBrush@186:
+			Template: 186
+			Segment:
+				Start: Beach.D
+				End: Beach.D
+				Points: 1,0, 1,1, 1,2, 1,3
+		MultiBrush@187:
+			Template: 187
+			Segment:
+				Start: Beach.U
+				End: Beach.U
+				Points: 2,3, 2,2, 2,1, 2,0
+		MultiBrush@189:
+			Template: 189
+			Segment:
+				End: Cliff.L
+				Points: 1,1, 0,1
+				Start: Cliff.L
+		MultiBrush@190:
+			Template: 190
+			Segment:
+				End: Cliff.R
+				Points: 0,1, 1,1
+				Start: Cliff.R
+		MultiBrush@191:
+			Template: 191
+			Segment:
+				End: Cliff.U
+				Points: 1,1, 1,0
+				Start: Cliff.U
+		MultiBrush@192:
+			Template: 192
+			Segment:
+				End: Cliff.D
+				Points: 1,0, 1,1
+				Start: Cliff.D
+		MultiBrush@TopRightBeachCorner:
+			Tile@0: 52,2
+				Offset: 0,0
+			Tile@2: 52,5
+				Offset: 0,1
+			Tile@3: 52,2
+				Offset: 1,1
+			Segment:
+				Start: Beach.R
+				End: Beach.D
+				Points: 0,1, 1,1, 1,2
+		MultiBrush@TopLeftBeachCorner:
+			Tile@1: 75,2
+				Offset: 1,0
+			Tile@2: 75,2
+				Offset: 0,1
+			Tile@3: 51,1
+				Offset: 1,1
+			Actor: tc05.husk
+				Offset: 0,0,0
+			Segment:
+				Start: Beach.U
+				End: Beach.R
+				Points: 1,2, 1,1, 2,1
+	Trees:
+		FromActors@1: t01,t02,t03,t05,t06,t07,t08,t10,t11,t12,t13,t14,t15,t16,t17,tc01,tc02,tc03,tc04,tc05
+		FromActors@2: t01.husk,t02.husk,t03.husk,t05.husk,t06.husk,t07.husk,t08.husk,t10.husk,t11.husk,t12.husk,t13.husk,t14.husk,t15.husk,t16.husk,t17.husk,tc01.husk,tc02.husk,tc03.husk,tc04.husk,tc05.husk
+			Weight: 100
+	Obstructions:
+		FromTemplates@1: 79,80,82,83,84
+		FromActors@2: t01,t02,t03,t05,t06,t07,t08,t10,t11,t12,t13,t14,t15,t16,t17
+			BackingTile: 255,0
+			Weight: 200
+	Snow:
+		MultiBrush@Nothing:
+			Weight: 100000
+		FromTemplates@1: 81,181,182,183,184,185
+	Water:
+		FromTemplates@1: 1,2,76,77
+		FromTemplates@2: 5
+			Weight: 50
+		FromTemplates@3: 6
+			Weight: 500
+	CivilianBuildings:
+		FromActors@1: v01,v02,v03,v04,v05,v06,v07,v08,v09,v10,v11
+		FromActors@2: v12,v13,v12.husk,v13.husk

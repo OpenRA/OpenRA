@@ -1,0 +1,126 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+	ExternalCondition@AIMain:
+		Condition: base-rebuilder
+	ExternalCondition@AIMainDefense:
+		Condition: defense-rebuilder
+	BaseBuilderBotModule@AtriedesMain:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 3
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AtriedesMainDefense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 3
+			silo: 1
+			medium_gun_turret: 5
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, ordos05.lua, ordos05-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: O_BR05_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			AtreidesMainBase: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmallBase1: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmallBase2: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			AtreidesSmallBase3: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			AtreidesMainBase: 0.274, -0.275, 1, 0.32, 0.34
+			AtreidesSmallBase1: 0.274, -0.275, 1, 0.32, 0.34
+			AtreidesSmallBase2: 0.274, -0.275, 1, 0.32, 0.34
+			AtreidesSmallBase3: 0.274, -0.275, 1, 0.32, 0.34
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+siege_tank:
+	Buildable:
+		Prerequisites: ~disabled

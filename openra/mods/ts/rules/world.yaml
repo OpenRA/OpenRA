@@ -1,0 +1,438 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	ScreenMap:
+	ActorMap:
+	Selection:
+	ControlGroups:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: fsmap
+	VoxelCache:
+	ModelRenderer:
+	TerrainRenderer:
+	TerrainLighting:
+	ShroudRenderer:
+		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
+		UseExtendedIndex: true
+		ShroudPalette: shroud
+		FogPalette: shroud
+	Locomotor@FOOT:
+		Name: foot
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+	Locomotor@FLAMEGUY:
+		Name: flameguy
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+	JumpjetLocomotor@JUMPJET:
+		Name: jumpjet
+		Crushes: crate
+		SharesCell: true
+		JumpjetTransitionCost: 100
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 90
+			DirtRoad: 100
+			Rough: 80
+			Tiberium: 90
+			BlueTiberium: 90
+			Veins: 50
+			Jumpjet: 110
+	Locomotor@WHEELED:
+		Name: wheeled
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 50
+			DirtRoad: 90
+			Rough: 40
+			Tiberium: 50
+			BlueTiberium: 50
+			Veins: 50
+				PathingCost: 90
+	Locomotor@HEAVYWHEELED:
+		Name: heavywheeled
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 50
+			DirtRoad: 90
+			Rough: 40
+			Tiberium: 50
+			BlueTiberium: 50
+			Veins: 50
+				PathingCost: 90
+	Locomotor@TRACKED:
+		Name: tracked
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 90
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
+	Locomotor@AMPHIBIOUS:
+		Name: amphibious
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 90
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
+			Water: 80
+	SubterraneanLocomotor@SUBTERRANEAN:
+		Name: subterranean
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 70
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 90
+			Rough: 60
+			Tiberium: 70
+			BlueTiberium: 70
+			Veins: 70
+			Subterranean: 120
+		SubterraneanTransitionTerrainTypes: Clear, Rough
+		SubterraneanTransitionCost: 120
+	Locomotor@HOVER:
+		Name: hover
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 100
+			Road: 100
+			Bridge: 100
+			Rail: 100
+			DirtRoad: 100
+			Rough: 100
+			Water: 100
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@SMALLVISC:
+		Name: smallvisc
+		Crushes: visceroid-fusing
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@VISCEROID:
+		Name: visceroid
+		Crushes: infantry
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@CRITTER:
+		Name: critter
+		TerrainSpeeds:
+			Clear: 90
+			Road: 100
+			Bridge: 100
+			Rail: 80
+			DirtRoad: 90
+			Rough: 70
+			Tiberium: 100
+			BlueTiberium: 100
+			Veins: 100
+	Locomotor@TRAIN:
+		Name: train
+		TerrainSpeeds:
+			Rail: 100
+		Crushes: wall, crate, infantry
+	Faction@Random:
+		Name: faction-random.name
+		InternalName: Random
+		RandomFactionMembers: gdi, nod
+		Description: faction-random.description
+	Faction@gdi:
+		Name: faction-gdi.name
+		InternalName: gdi
+		Description: faction-gdi.description
+	Faction@nod:
+		Name: faction-nod.name
+		InternalName: nod
+		Description: faction-nod.description
+	TerrainGeometryOverlay:
+	DebugVisualizations:
+	CliffBackImpassabilityLayer:
+	TSTiberiumRenderer:
+		ResourceTypes:
+			Tiberium:
+				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+				Palette: greentiberium
+				Name: resource-tiberium
+			BlueTiberium:
+				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
+				Palette: bluetiberium
+				Name: resource-tiberium
+		Ramp1Sequences:
+			Tiberium: tib13, tib14
+			BlueTiberium: tib13, tib14
+		Ramp2Sequences:
+			Tiberium: tib15, tib16
+			BlueTiberium: tib15, tib16
+		Ramp3Sequences:
+			Tiberium: tib17, tib18
+			BlueTiberium: tib17, tib18
+		Ramp4Sequences:
+			Tiberium: tib19, tib20
+			BlueTiberium: tib19, tib20
+	TSVeinsRenderer:
+		ResourceType: Veins
+		Name: resource-veins
+		Palette: player
+		VeinholeActors: veinhole
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	AutoSave:
+	DebugVisualizationCommands:
+	PathFinderOverlay:
+	HierarchicalPathFinderOverlay:
+	ActorMapOverlay:
+	PlayerCommands:
+	HelpCommand:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	SmudgeLayer@SMALLSCORCH:
+		Type: SmallScorch
+		Sequence: smallscorches
+		SmokeImage: smallfire
+		SmokeSequences: idle
+		SmokeChance: 50
+		MaxSmokeOffsetDistance: 256
+	SmudgeLayer@MEDIUMSCORCH:
+		Type: MediumScorch
+		Sequence: mediumscorches
+		SmokeImage: mediumfire
+		SmokeSequences: idle
+		SmokeChance: 75
+		MaxSmokeOffsetDistance: 192
+	SmudgeLayer@LARGESCORCH:
+		Type: LargeScorch
+		Sequence: largescorches
+		SmokeImage: largefire
+		SmokeSequences: idle
+		SmokeChance: 100
+		MaxSmokeOffsetDistance: 128
+	SmudgeLayer@SMALLCRATER:
+		Type: SmallCrater
+		Sequence: smallcraters
+	SmudgeLayer@MEDIUMCRATER:
+		Type: MediumCrater
+		Sequence: mediumcraters
+	SmudgeLayer@LARGECRATER:
+		Type: LargeCrater
+		Sequence: largecraters
+	TSResourceLayer:
+		VeinholeActors: veinhole
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			Veins:
+				ResourceIndex: 3
+				TerrainType: Veins
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 2
+	BridgeLayer:
+	CustomTerrainDebugOverlay:
+	ResourceClaimLayer:
+	WarheadDebugOverlay:
+	ExitsDebugOverlayManager:
+	SubterraneanActorLayer:
+	JumpjetActorLayer:
+	MapCreeps:
+		CheckboxVisible: False
+	SpawnMapActors:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxDisplayOrder: 5
+	MapOptions:
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 1
+	CreateMapPlayers:
+	StartingUnits@MCV:
+		Class: none
+		ClassName: options-starting-units.mcv-only
+		Factions: gdi, nod
+		BaseActor: mcv
+	StartingUnits@light.gdi:
+		Class: light
+		ClassName: options-starting-units.light
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,smech
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@light.nod:
+		Class: light
+		ClassName: options-starting-units.light
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,bggy
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@med.gdi:
+		Class: medium
+		ClassName: options-starting-units.medium
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e2,e2,jumpjet,smech
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@med.nod:
+		Class: medium
+		ClassName: options-starting-units.medium
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e3,e3,cyborg,bggy
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavy.gdi:
+		Class: heavy
+		ClassName: options-starting-units.heavy
+		Factions: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavy.nod:
+		Class: heavy
+		ClassName: options-starting-units.heavy
+		Factions: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	MapStartingLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	SpawnStartingUnits:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 6
+		SpawnInterval: 3000
+		WaterChance: 0
+		ValidGround: Clear, Rough, Road, DirtRoad, Tiberium, BlueTiberium
+		InitialSpawnDelay: 1500
+		CheckboxDisplayOrder: 1
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ScreenShaker:
+	RadarPings:
+	StartGameNotification:
+		SavedTextNotification: notification-game-saved
+	ObjectivesPanel:
+		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
+		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
+	ScriptTriggers:
+	CellTriggerOverlay:
+	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
+	ColorPickerManager:
+		PreviewActor: harv.colorpicker
+		FactionPreviewActors:
+			gdi: hvr.colorpicker
+			nod: stnk.colorpicker
+		PresetColors: F21818, FF7A22, F2BC18, F8D3B3, CDF291, DAF218, 18F26F, 12B572, F279E6, 502048, 391D1D, BA18F2, F218BC, 1821F2, 328DFF, 78DBF8
+	OrderEffects:
+		TerrainFlashImage: moveflsh
+		TerrainFlashSequence: idle
+		TerrainFlashPalette: moveflash
+		ActorFlashType: Tint
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorCursorLayer:
+	TSEditorResourceLayer:
+		ResourceTypes:
+			Tiberium:
+				ResourceIndex: 1
+				TerrainType: Tiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			BlueTiberium:
+				ResourceIndex: 2
+				TerrainType: BlueTiberium
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 12
+			Veins:
+				ResourceIndex: 3
+				TerrainType: Veins
+				AllowedTerrainTypes: Clear, Rough, DirtRoad
+				MaxDensity: 2
+		VeinholeActors: veinhole
+	LoadWidgetAtGameStart:
+	EditorActionManager:
+	BuildableTerrainOverlay:
+		AllowedTerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		Palette: ra
+		Alpha: 0.35
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: Clear
+		DefaultInner: Beach
+		DefaultEnd: Clear
+	Inherits@MapGenerators: ^MapGenerators

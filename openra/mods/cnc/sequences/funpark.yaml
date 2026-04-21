@@ -1,0 +1,87 @@
+steg:
+	Defaults:
+		Filename: steg.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	attack:
+		Start: 80
+		Length: 12
+		Facings: 8
+	die:
+		Start: 176
+		Length: 22
+	icon:
+		Filename: stegicnh.shp
+
+trex:
+	Defaults:
+		Filename: trex.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	attack:
+		Start: 80
+		Length: 8
+		Facings: 8
+	die:
+		Start: 144
+		Length: 40
+	icon:
+		Filename: trexicnh.shp
+
+tric:
+	Defaults:
+		Filename: tric.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	attack:
+		Start: 80
+		Length: 12
+		Facings: 8
+	die:
+		Start: 176
+		Length: 20
+	icon:
+		Filename: tricicnh.shp
+
+rapt:
+	Defaults:
+		Filename: rapt.shp
+	stand:
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 8
+		Facings: 8
+	attack:
+		Start: 80
+		Length: 8
+		Facings: 8
+	die:
+		Start: 144
+		Length: 40
+	icon:
+		Filename: rapticnh.shp

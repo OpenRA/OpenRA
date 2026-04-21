@@ -1,0 +1,67 @@
+^DamagingExplosion:
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Falloff: 100, 50, 25, 12, 6, 3, 0
+		Damage: 50000
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_brnl, large_bang, medium_twlt
+		ImpactSounds: expnew09.aud, expnew10.aud, expnew12.aud
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+		InvalidTargets: Building, Wall
+
+UnitExplode:
+	Inherits: ^DamagingExplosion
+
+UnitExplodeSmall:
+	Inherits: ^DamagingExplosion
+	Warhead@1Dam: SpreadDamage
+		Spread: 192
+		Damage: 4000
+	Warhead@2Eff: CreateEffect
+		Explosions: medium_brnl
+		ImpactSounds: expnew13.aud
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallCrater
+		InvalidTargets: Building, Wall
+
+BuildingExplosions:
+	Warhead@1Eff: CreateEffect
+		Explosions: building, large_bang, large_brnl, verylarge_clsn, large_tumu
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: MediumCrater
+
+CyborgExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: medium_bang
+		ImpactSounds: expnew10.aud
+
+TiberiumExplosion:
+	Inherits: ^DamagingExplosion
+	Warhead@1Dam: SpreadDamage
+		Spread: 9
+		Damage: 1000
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@Res: CreateResource
+		AddsResourceType: Tiberium
+		Size: 1,1
+	Warhead@2Eff: CreateEffect
+		Explosions: large_explosion
+	-Warhead@4Smu:
+
+Demolish:
+	Warhead@1Dam: SpreadDamage
+		DamageTypes: DefaultDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: large_twlt
+		ImpactSounds: expnew09.aud
+
+DropPodExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: droppod_explosion, droppod2_explosion, droppody_explosion, droppody2_explosion

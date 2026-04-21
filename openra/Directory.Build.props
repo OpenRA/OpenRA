@@ -1,0 +1,59 @@
+<Project>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <LangVersion>12</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <EngineRootPath Condition="'$(EngineRootPath)' == ''">..</EngineRootPath>
+    <OutputPath>$(EngineRootPath)/bin</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ExternalConsole>false</ExternalConsole>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>disable</Nullable>
+    <Product>OpenRA</Product>
+    <Copyright>Copyright (c) The OpenRA Developers and Contributors</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
+    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Linux'))">linux-x64</TargetPlatform>
+    <TargetPlatform Condition="$([MSBuild]::IsOsPlatform('OSX'))">osx-x64</TargetPlatform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <!-- Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Enabling GenerateDocumentationFile is required for IDE0005 (Remove unnecessary import)
+      rule to run in command line builds. https://github.com/dotnet/roslyn/issues/41640
+      Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
+    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
+  </ItemGroup>
+
+  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
+    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
+    <ItemGroup Condition="'$(Configuration)'=='Release'">
+      <Analyzer Remove="@(Analyzer)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- StyleCop/Roslynator -->
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.13.0" PrivateAssets="All" />
+    <PackageReference Include="Roslynator.Formatting.Analyzers" Version="4.13.0" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

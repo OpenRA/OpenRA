@@ -1,0 +1,256 @@
+Player:
+	PlayerResources:
+		DefaultCash: 7000
+	ExternalCondition@AIAMail:
+		Condition: base-rebuilder
+	ExternalCondition@AIASmall:
+		Condition: base-rebuilder2
+	ExternalCondition@AICSmall:
+		Condition: base-rebuilder3
+	ExternalCondition@AIAMail-defense:
+		Condition: defense-rebuilder
+	ExternalCondition@AIASmall-defense:
+		Condition: defense-rebuilder2
+	ExternalCondition@AICSmall-defense:
+		Condition: defense-rebuilder3
+	BaseBuilderBotModule@AIAMainBase:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			light_factory: 1
+			starport: 1
+			palace: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			wind_trap: 11
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			starport: 1
+			high_tech_factory: 1
+			palace: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AIASmallBase:
+		RequiresCondition: base-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			palace: 1
+			heavy_factory: 1
+			wind_trap: 7
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AIAMainCorrino:
+		RequiresCondition: base-rebuilder3
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AIAMainDefense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			light_factory: 1
+			starport: 1
+			palace: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			wind_trap: 11
+			silo: 1
+			medium_gun_turret: 5
+			large_gun_turret: 4
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			starport: 1
+			high_tech_factory: 1
+			palace: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+			large_gun_turret: 1
+	BaseBuilderBotModule@AIASmallDefense:
+		RequiresCondition: defense-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			palace: 1
+			heavy_factory: 1
+			wind_trap: 7
+			silo: 1
+			large_gun_turret: 5
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			large_gun_turret: 1
+	BaseBuilderBotModule@AISmallCorrino:
+		RequiresCondition: defense-rebuilder3
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+			large_gun_turret: 2
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			large_gun_turret: 2
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, harkonnen09a.lua, harkonnen09a-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: H_BR09_E.VQA
+	MapOptions:
+		TechLevel: unrestricted
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Atreides Main Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Atreides Small Base 1: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Atreides Small Base 2: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Corrino Main Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
+			Corrino Small Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Atreides Main Base: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base 1: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base 2: 0.274, -0.275, 1, 0.32, 0.34
+			Corrino Main Base: 0.477, 0.075, 1, 0.32, 0.34
+			Corrino Small Base: 0.477, 0.075, 1, 0.32, 0.34
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+thumper:
+	Buildable:
+		Prerequisites: ~disabled

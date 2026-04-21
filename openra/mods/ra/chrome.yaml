@@ -1,0 +1,673 @@
+^Sidebar:
+	Image: sidebar.png
+
+^Dialog:
+	Image: dialog.png
+
+^Glyphs:
+	Image: glyphs.png
+	Image2x: glyphs-2x.png
+	Image3x: glyphs-3x.png
+
+^LoadScreen:
+	Image: loadscreen.png
+	Image2x: loadscreen-2x.png
+	Image3x: loadscreen-3x.png
+
+sidebar-allies:
+	Inherits: ^Sidebar
+	Regions:
+		radar: 290, 67, 222, 222
+		background-top: 0, 185, 238, 262
+		background-moneybin: 0, 85, 238, 28
+		background-iconbg: 12, 227, 190, 47
+		background-iconrow: 0, 116, 238, 47
+		background-bottom: 0, 166, 238, 8
+		background-supportoverlay: 12, 324, 64, 48
+
+sidebar-button-allies:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 281, 5, 5, 18, 18, 5, 5
+sidebar-button-allies-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 252, 5, 5, 18, 18, 5, 5
+sidebar-button-allies-pressed:
+	Inherits: sidebar-button-allies
+sidebar-button-allies-highlighted:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 339, 5, 5, 18, 18, 5, 5
+sidebar-button-allies-highlighted-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 310, 5, 5, 18, 18, 5, 5
+sidebar-button-allies-highlighted-pressed:
+	Inherits: sidebar-button-allies-highlighted
+sidebar-button-allies-disabled:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 484, 5, 5, 18, 18, 5, 5
+sidebar-button-allies-highlighted-disabled:
+	Inherits: sidebar-button-allies-disabled
+
+command-button-allies:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 281, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-allies-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 252, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-allies-pressed:
+	Inherits: command-button-allies
+command-button-allies-highlighted:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 339, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-allies-highlighted-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 310, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-allies-highlighted-pressed:
+	Inherits: command-button-allies-highlighted
+command-button-allies-disabled:
+	Inherits: command-button-allies
+command-button-allies-highlighted-disabled:
+	Inherits: command-button-allies-highlighted
+
+sidebar-soviet:
+	Inherits: ^Sidebar
+	Regions:
+		radar: 290, 290, 222, 222
+		background-top: 0, 185, 238, 262
+		background-moneybin: 0, 54, 238, 28
+		background-iconbg: 12, 275, 190, 47
+		background-iconrow: 0, 116, 238, 47
+		background-bottom: 0, 166, 238, 8
+		background-supportoverlay: 77, 324, 64, 48
+
+sidebar-button-soviet:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 165, 5, 5, 18, 18, 5, 5
+sidebar-button-soviet-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 136, 5, 5, 18, 18, 5, 5
+sidebar-button-soviet-pressed:
+	Inherits: sidebar-button-soviet
+sidebar-button-soviet-highlighted:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 223, 5, 5, 18, 18, 5, 5
+sidebar-button-soviet-highlighted-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 194, 5, 5, 18, 18, 5, 5
+sidebar-button-soviet-highlighted-pressed:
+	Inherits: sidebar-button-soviet-highlighted
+sidebar-button-soviet-disabled:
+	Inherits: sidebar-button-allies-disabled
+sidebar-button-soviet-highlighted-disabled:
+	Inherits: sidebar-button-allies-disabled
+
+command-button-soviet:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 165, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-soviet-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 136, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-soviet-pressed:
+	Inherits: command-button-soviet
+command-button-soviet-highlighted:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 223, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-soviet-highlighted-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 194, 3, 3, 22, 22, 3, 3
+	PanelSides: Center
+command-button-soviet-highlighted-pressed:
+	Inherits: command-button-soviet-highlighted
+command-button-soviet-disabled:
+	Inherits: command-button-soviet
+command-button-soviet-highlighted-disabled:
+	Inherits: command-button-soviet-highlighted
+
+sidebar-bits:
+	Inherits: ^Glyphs
+	Regions:
+		production-tooltip-time: 136, 51, 16, 16
+		production-tooltip-power: 102, 51, 16, 16
+		production-tooltip-cost: 68, 51, 16, 16
+		indicator-muted: 221, 17, 26, 24
+
+commandbar:
+	Inherits: ^Sidebar
+	Regions:
+		background: 0, 0, 434, 44
+
+production-icons:
+	Inherits: ^Glyphs
+	Regions:
+		building: 0, 68, 16, 16
+		building-disabled: 0, 85, 16, 16
+		building-alert: 0, 102, 16, 16
+		defense: 17, 68, 16, 16
+		defense-disabled: 17, 85, 16, 16
+		defense-alert: 17, 102, 16, 16
+		infantry: 34, 68, 16, 16
+		infantry-disabled: 34, 85, 16, 16
+		infantry-alert: 34, 102, 16, 16
+		vehicle: 51, 68, 16, 16
+		vehicle-disabled: 51, 85, 16, 16
+		vehicle-alert: 51, 102, 16, 16
+		aircraft: 68, 68, 16, 16
+		aircraft-disabled: 68, 85, 16, 16
+		aircraft-alert: 68, 102, 16, 16
+		ship: 187, 68, 16, 16
+		ship-disabled: 187, 85, 16, 16
+		ship-alert: 187, 102, 16, 16
+
+order-icons:
+	Inherits: ^Glyphs
+	Regions:
+		repair: 136, 68, 16, 16
+		repair-disabled: 136, 85, 16, 16
+		repair-active: 136, 102, 16, 16
+		sell: 119, 68, 16, 16
+		sell-disabled: 119, 85, 16, 16
+		sell-active: 119, 102, 16, 16
+		options: 102, 68, 16, 16
+		options-disabled: 102, 85, 16, 16
+		options-active: 102, 102, 16, 16
+		beacon: 153, 68, 16, 16
+		beacon-disabled: 153, 85, 16, 16
+		beacon-active: 153, 102, 16, 16
+		power: 170, 68, 16, 16
+		power-disabled: 170, 85, 16, 16
+		power-active: 170, 102, 16, 16
+		stats: 204, 68, 16, 16
+		stats-disabled: 204, 85, 16, 16
+		stats-active: 204, 102, 16, 16
+
+power-icons:
+	Inherits: ^Glyphs
+	Regions:
+		power-normal: 102, 51, 16, 16
+		power-critical: 119, 51, 16, 16
+
+cash-icons:
+	Inherits: ^Glyphs
+	Regions:
+		cash-normal: 68, 51, 16, 16
+		cash-critical: 85, 51, 16, 16
+
+stance-icons:
+	Inherits: ^Glyphs
+	Regions:
+		attack-anything: 0, 119, 16, 16
+		attack-anything-disabled: 0, 136, 16, 16
+		defend: 17, 119, 16, 16
+		defend-disabled: 17, 136, 16, 16
+		return-fire: 34, 119, 16, 16
+		return-fire-disabled: 34, 136, 16, 16
+		hold-fire: 51, 119, 16, 16
+		hold-fire-disabled: 51, 136, 16, 16
+
+stance-icons-highlighted:
+	Inherits: stance-icons
+	Regions:
+		attack-anything: 0, 153, 16, 16
+		defend: 17, 153, 16, 16
+		return-fire: 34, 153, 16, 16
+		hold-fire: 51, 153, 16, 16
+
+command-icons:
+	Inherits: ^Glyphs
+	Regions:
+		attack-move: 0, 207, 24, 24
+		attack-move-disabled: 0, 232, 24, 24
+		force-move: 25, 207, 24, 24
+		force-move-disabled: 25, 232, 24, 24
+		force-attack: 50, 207, 24, 24
+		force-attack-disabled: 50, 232, 24, 24
+		guard: 75, 207, 24, 24
+		guard-disabled: 75, 232, 24, 24
+		deploy: 100, 207, 24, 24
+		deploy-disabled: 100, 232, 24, 24
+		scatter: 125, 207, 24, 24
+		scatter-disabled: 125, 232, 24, 24
+		stop: 150, 207, 24, 24
+		stop-disabled: 150, 232, 24, 24
+		queue-orders: 175, 207, 24, 24
+		queue-orders-disabled: 175, 232, 24, 24
+
+command-icons-highlighted:
+	Inherits: command-icons
+
+sidebar-observer:
+	Inherits: ^Sidebar
+	Regions:
+		background: 0, 185, 238, 287
+		replay-bottom: 0, 472, 238, 40
+		observer-bottom: 0, 176, 238, 8
+
+sidebar-button-observershroud:
+sidebar-button-observershroud-pressed:
+sidebar-button-observershroud-hover:
+
+sidebar-button-observer:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 397, 5, 5, 18, 18, 5, 5
+sidebar-button-observer-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 368, 5, 5, 18, 18, 5, 5
+sidebar-button-observer-pressed:
+	Inherits: sidebar-button-observer
+sidebar-button-observer-highlighted:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 455, 5, 5, 18, 18, 5, 5
+sidebar-button-observer-highlighted-hover:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 426, 5, 5, 18, 18, 5, 5
+sidebar-button-observer-highlighted-pressed:
+	Inherits: sidebar-button-observer-highlighted
+sidebar-button-observer-disabled:
+	Inherits: sidebar-button-allies-disabled
+sidebar-button-observer-highlighted-disabled:
+	Inherits: sidebar-button-allies-disabled
+
+observer-scrollpanel-button:
+	Inherits: ^Dialog
+	PanelRegion: 769, 257, 2, 2, 122, 122, 2, 2
+
+observer-scrollpanel-button-hover:
+	Inherits: observer-scrollpanel-button
+
+observer-scrollpanel-button-pressed:
+	Inherits: ^Dialog
+	PanelRegion: 897, 257, 2, 2, 122, 122, 2, 2
+
+observer-scrollpanel-button-disabled:
+	Inherits: ^Dialog
+	PanelRegion: 769, 385, 2, 2, 122, 122, 2, 2
+
+observer-scrollheader:
+	Inherits: observer-scrollpanel-button-disabled
+
+observer-scrollheader-highlighted:
+	Inherits: observer-scrollpanel-button-disabled
+
+observer-scrollitem:
+
+observer-scrollitem-hover:
+	Inherits: observer-scrollpanel-button
+
+observer-scrollitem-pressed:
+	Inherits: observer-scrollpanel-button
+
+observer-scrollitem-highlighted:
+	Inherits: observer-scrollpanel-button-pressed
+
+# Used for the main menu frame
+dialog:
+	Inherits: ^Dialog
+	Regions:
+		background: 1, 1, 480, 480
+		border-r: 492, 1, 9, 190
+		border-l: 483, 1, 9, 190
+		border-b: 1, 492, 189, 9
+		border-t: 1, 483, 189, 9
+		corner-tl: 192, 483, 9, 9
+		corner-tr: 201, 483, 9, 9
+		corner-bl: 192, 492, 9, 9
+		corner-br: 201, 492, 9, 9
+
+# Used for Music and Map selection (normal button)
+dialog2:
+	Inherits: button
+
+# It's a Container, used in various places, like Hotkeys, ColorPicker, Asset Browser frames (looks like a pressed button)
+dialog3:
+	Inherits: button-pressed
+
+# Used for tooltips and the video player
+dialog4:
+	Inherits: ^Dialog
+	PanelRegion: 512, 387, 6, 6, 52, 52, 6, 6
+
+# completely black tile
+dialog5:
+	Inherits: ^Dialog
+	PanelRegion: 580, 388, 0, 0, 62, 62, 0, 0
+	PanelSides: Center
+
+lobby-bits:
+	Inherits: ^Glyphs
+	Regions:
+		spawn-claimed: 68, 119, 22, 22
+		spawn-unclaimed: 91, 119, 22, 22
+		spawn-disabled: 114, 119, 22, 22
+		admin: 170, 0, 6, 5
+		bot: 170, 51, 16, 16
+		colorpicker: 68, 119, 22, 22
+		huepicker: 136, 0, 7, 15
+		kick: 153, 0, 11, 11
+		protected: 0, 17, 12, 13
+		protected-disabled: 17, 17, 12, 13
+		authentication: 34, 17, 12, 13
+		authentication-disabled: 51, 17, 12, 13
+		admin-registered: 0, 51, 16, 16
+		admin-anonymous: 34, 51, 16, 16
+		player-registered: 17, 51, 16, 16
+		player-anonymous: 51, 51, 16, 16
+
+reload-icon:
+	Inherits: ^Glyphs
+	Regions:
+		enabled: 0, 34, 16, 16
+		disabled-0: 17, 34, 16, 16
+		disabled-1: 34, 34, 16, 16
+		disabled-2: 51, 34, 16, 16
+		disabled-3: 68, 34, 16, 16
+		disabled-4: 85, 34, 16, 16
+		disabled-5: 102, 34, 16, 16
+		disabled-6: 119, 34, 16, 16
+		disabled-7: 136, 34, 16, 16
+		disabled-8: 153, 34, 16, 16
+		disabled-9: 170, 34, 16, 16
+		disabled-10: 187, 34, 16, 16
+		disabled-11: 204, 34, 16, 16
+
+strategic:
+	Inherits: ^Glyphs
+	Regions:
+		unowned: 68, 119, 22, 22
+		critical_unowned: 137, 119, 22, 22
+		enemy_owned: 160, 119, 22, 22
+		player_owned: 160, 142, 22, 22
+
+flags:
+	Inherits: ^Glyphs
+	Regions:
+		england: 226, 49, 30, 15
+		germany: 226, 65, 30, 15
+		france: 226, 81, 30, 15
+		spain: 226, 97, 30, 15
+		turkey: 226, 113, 30, 15
+		greece: 226, 129, 30, 15
+		ukraine: 226, 145, 30, 15
+		russia: 226, 161, 30, 15
+		allies: 226, 177, 30, 15
+		soviet: 226, 193, 30, 15
+		RandomSoviet: 226, 209, 30, 15
+		RandomAllies: 226, 225, 30, 15
+		Random: 226, 241, 30, 15
+		spectator: 226, 241, 30, 15
+
+music:
+	Inherits: ^Glyphs
+	Regions:
+		pause: 0, 0, 16, 16
+		stop: 17, 0, 16, 16
+		play: 34, 0, 16, 16
+		next: 51, 0, 16, 16
+		prev: 68, 0, 16, 16
+		fastforward: 85, 0, 16, 16
+
+progressbar-bg:
+	Inherits: button-pressed
+
+progressbar-thumb:
+	Inherits: button
+
+button:
+	Inherits: ^Dialog
+	PanelRegion: 513, 1, 2, 2, 122, 122, 2, 2
+
+# 5% lighter than a normal button (mouseover)
+button-hover:
+	Inherits: ^Dialog
+	PanelRegion: 513, 129, 2, 2, 122, 122, 2, 2
+
+button-pressed:
+	Inherits: ^Dialog
+	PanelRegion: 641, 1, 2, 2, 122, 122, 2, 2
+
+# 50% grey (disabled button)
+button-disabled:
+	Inherits: ^Dialog
+	PanelRegion: 513, 257, 2, 2, 122, 122, 2, 2
+
+button-highlighted:
+	Inherits: ^Dialog
+	PanelRegion: 769, 129, 2, 2, 122, 122, 2, 2
+
+button-highlighted-hover:
+	Inherits: button-highlighted
+
+button-highlighted-pressed:
+	Inherits: ^Dialog
+	PanelRegion: 897, 129, 2, 2, 122, 122, 2, 2
+
+button-highlighted-disabled:
+	Inherits: button-highlighted
+
+newsbutton:
+	Inherits: button
+
+newsbutton-hover:
+	Inherits: button
+
+newsbutton-highlighted:
+	Inherits: ^Dialog
+	PanelRegion: 769, 1, 2, 2, 122, 122, 2, 2
+
+newsbutton-highlighted-hover:
+	Inherits: newsbutton-highlighted
+
+newsbutton-highlighted-pressed:
+	Inherits: button-pressed
+
+newsbutton-pressed:
+	Inherits: button-pressed
+
+textfield:
+	Inherits: button-pressed
+
+textfield-hover:
+	Inherits: checkbox-hover
+
+textfield-disabled:
+	Inherits: checkbox-disabled
+
+textfield-focused:
+	Inherits: button-pressed
+
+scrollpanel-bg:
+	Inherits: button-pressed
+
+scrollpanel-button:
+	Inherits: button
+
+scrollpanel-button-hover:
+	Inherits: button-hover
+
+scrollpanel-button-pressed:
+	Inherits: button-pressed
+
+scrollpanel-button-disabled:
+	Inherits: button
+
+slider:
+	Inherits: ^Dialog
+	Regions:
+		tick: 513, 2, 2, 4
+
+slider-track:
+	Inherits: button
+
+slider-thumb:
+	Inherits: button
+
+slider-thumb-hover:
+	Inherits: button-hover
+
+slider-thumb-pressed:
+	Inherits: button-pressed
+
+slider-thumb-disabled:
+	Inherits: button-disabled
+
+checkbox:
+	Inherits: button-pressed
+
+checkmark-tick:
+	Inherits: ^Glyphs
+	Regions:
+		checked: 187, 0, 16, 16
+		checked-pressed: 204, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 204, 0, 16, 16
+
+checkmark-tick-highlighted:
+	Inherits: checkmark-tick
+
+checkmark-cross:
+	Inherits: ^Glyphs
+	Regions:
+		checked: 221, 0, 16, 16
+		checked-pressed: 238, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 238, 0, 16, 16
+
+checkmark-cross-highlighted:
+	Inherits: checkmark-cross
+
+checkmark-mute:
+	Inherits: ^Glyphs
+	Regions:
+		unchecked: 0, 170, 16, 16
+		unchecked-pressed: 17, 170, 16, 16
+		checked: 17, 170, 16, 16
+		checked-pressed: 0, 170, 16, 16
+
+checkmark-mute-highlighted:
+	Inherits: checkmark-mute
+
+checkbox-hover:
+	Inherits: ^Dialog
+	PanelRegion: 641, 129, 2, 2, 122, 122, 2, 2
+
+checkbox-pressed:
+	Inherits: checkbox-hover
+
+checkbox-disabled:
+	Inherits: ^Dialog
+	PanelRegion: 641, 257, 2, 2, 122, 122, 2, 2
+
+checkbox-highlighted:
+	Inherits: ^Dialog
+	PanelRegion: 897, 1, 2, 2, 122, 122, 2, 2
+
+checkbox-highlighted-hover:
+	Inherits: checkbox-highlighted
+
+checkbox-highlighted-pressed:
+	Inherits: checkbox-highlighted
+
+checkbox-highlighted-disabled:
+	Inherits: checkbox-disabled
+
+checkbox-toggle:
+
+checkbox-toggle-hover:
+	Inherits: button
+
+checkbox-toggle-pressed:
+	Inherits: checkbox-pressed
+
+checkbox-toggle-highlighted:
+
+checkbox-toggle-highlighted-hover:
+	Inherits: button-highlighted
+
+checkbox-toggle-highlighted-pressed:
+	Inherits: checkbox-highlighted-pressed
+
+scrollitem:
+
+scrollitem-hover:
+	Inherits: button
+
+scrollitem-pressed:
+	Inherits: button
+
+scrollitem-highlighted:
+	Inherits: button-pressed
+
+scrollitem-nohover:
+
+scrollitem-nohover-highlighted:
+
+scrollheader:
+	Inherits: button
+
+scrollheader-highlighted:
+	Inherits: button
+
+logos:
+	Inherits: ^LoadScreen
+	Regions:
+		logo: 0, 0, 256, 256
+
+loadscreen-stripe:
+	Inherits: ^LoadScreen
+	PanelRegion: 258, 0, 0, 0, 253, 256, 0, 0
+	PanelSides: Center
+
+mainmenu-border:
+	Inherits: ^Dialog
+	PanelRegion: 650, 389, 39, 39, 38, 38, 39, 39
+	PanelSides: Edges
+
+scrollpanel-decorations:
+	Inherits: ^Glyphs
+	Regions:
+		down: 68, 17, 16, 16
+		down-disabled: 85, 17, 16, 16
+		up: 102, 17, 16, 16
+		up-disabled: 119, 17, 16, 16
+		right: 136, 17, 16, 16
+		right-disabled: 153, 17, 16, 16
+		left: 170, 17, 16, 16
+		left-disabled: 187, 17, 16, 16
+
+dropdown-decorations:
+	Inherits: ^Glyphs
+	Regions:
+		marker: 68, 17, 16, 16
+		marker-disabled: 85, 17, 16, 16
+
+dropdown-separators:
+	Inherits: ^Dialog
+	Regions:
+		separator: 513, 2, 1, 19
+		separator-hover: 513, 130, 1, 19
+		separator-pressed: 766, 2, 1, 19
+		separator-disabled: 513, 258, 1, 19
+		observer-separator: 769, 258, 1, 19
+
+separator:
+	Inherits: button
+
+editor:
+	Inherits: ^Glyphs
+	Regions:
+		select: 34, 187, 16, 16
+		tiles: 0, 187, 16, 16
+		overlays: 17, 187, 16, 16
+		actors: 34, 68, 16, 16
+		tools: 136, 68, 16, 16
+		history: 136, 51, 16, 16
+		erase: 50, 187, 16, 16
+		copy: 67, 187, 16, 16
+		paste: 84, 187, 16, 16
+		undo: 101, 187, 16, 16
+		redo: 118, 187, 16, 16

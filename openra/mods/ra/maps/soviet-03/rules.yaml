@@ -1,0 +1,58 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, soviet03.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: soviet3.vqa
+		StartVideo: search.vqa
+		WinVideo: execute.vqa
+		LossVideo: take_off.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		Enabled: False
+		Locked: True
+
+^Helicopter:
+	Health:
+		HP: 900000
+
+FENC:
+	Health:
+		HP: 900000
+
+V01:
+	Inherits@CARGOPIPS: ^CargoPips
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+
+V05:
+	SpawnActorOnDeath:
+		Actor: healcrate
+
+DOG:
+	# HACK: Disable experience without killing the linter
+	-GainsExperience:
+	ExternalCondition@RANK-VETERAN:
+		Condition: rank-veteran
+	ExternalCondition@RANK-ELITE:
+		Condition: rank-elite
+	-GrantCondition@RANK-ELITE:
+
+SPY:
+	Mobile:
+		Speed: 80
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2

@@ -1,0 +1,206 @@
+OpenRA wouldn't be where it is today without the hard work of many contributors.
+
+The OpenRA developers are:
+    * Gustas Kažukauskas (PunkPun)
+    * Lukas Franke (abcdefg30)
+    * Matthias Mailänder (Mailaender)
+
+Previous developers included:
+    * Alli Witheford (alzeih)
+    * Caleb Anderson (RobotCaleb)
+    * Chris Forbes (chrisf)
+    * Curtis Shmyr (hamb)
+    * Daniel Hernandez (Mancano)
+    * Igor Popov (ihptru)
+    * Megan Bowra-Dean (beedee)
+    * Mike Bundy (kehaar)
+    * Oliver Brakmann (obrakmann)
+    * Paul Chote (pchote)
+    * Pavel Penev (penev92)
+    * Reaperrr
+    * Robert Pepperell (ytinasni)
+    * ScottNZ
+    * Tom Roostan (RoosterDragon)
+
+Also thanks to:
+    * abmyii
+    * anvilvapre (anvilvapre)
+    * Adam Valy (Tschokky)
+    * Akseli Virtanen (RAGEQUIT)
+    * Alexander Fast (mizipzor)
+    * Alexis Hunt (alercah)
+    * Allen262
+    * Andrew Aldridge (i80and)
+    * Andrew Perkins
+    * Andrew Riedi
+    * Andreas Beck (baxtor)
+    * Ang Soon Li (asl97)
+    * Arik Lirette (Angusm3)
+    * Ashley Newson
+    * Barnaby Smith (mvi)
+    * Bellator
+    * Bernd Stellwag (burned42)
+    * Biofreak
+    * Braxton Williams (Buddytex)
+    * Brendan Gluth (Mechanical_Man)
+    * Brent Gardner (bggardner)
+    * Bryan Wilbur
+    * Bugra Cuhadaroglu (BugraC)
+    * Chris Cameron (Vesuvian)
+    * Chris Grant (Unit158)
+    * Christer Ulfsparre (Holloweye)
+    * Christoph Lahner (chlah)
+    * clem
+    * Cody Brittain (Generalcamo)
+    * Constantin Helmig (CH4Code)
+    * D2k Sardaukar
+    * D'Arcy Rush (r34ch)
+    * Dan Stoian (stoiandan)
+    * Daniel Derejvanik (Harisson)
+    * Danny Keary (Dan9550)
+    * David Jiménez (Rydra)
+    * David Russell (DavidARussell)
+    * DeadlySurprise
+    * Dmitri Suvorov (suvjunmd)
+    * dtluna
+    * Eduardo Cáceres (eduherminio)
+    * Erasmus Schroder (rasco)
+    * Eric Bajumpaa (SteelPhase)
+    * Evgeniy Sergeev (evgeniysergeev)
+    * Fahrradkette
+    * Florian Wiesbauer (FiveAces)
+    * Frank Razenberg (zzattack)
+    * Gareth Needham (Ripley`)
+    * Glen Anderson (glen7)
+    * Glenn Martin Jensen (Baxxster)
+    * Gordon Martin (Happy0)
+    * Guido Lipke (LipkeGu)
+    * Guillermo Cuenca (Wylli)
+    * Hervé Matysiak (Herve-M)
+    * Huw Pascoe
+    * Ian T. Jacobsen (Smilex)
+    * Imago
+    * Iran
+    * Ishan Bhargava (ishantheperson)
+    * Ivaylo Draganov (dragunoff)
+    * Jacob Dufault (jacobdufault)
+    * James Dunne (jsd)
+    * James Gilbert (DSUK)
+    * Jan-Willem Buurlage (jwbuurlage)
+    * Jason (atlimit8)
+    * Jeff Harris (jeff_1amstudios)
+    * Jefri Sevkin (Arular)
+    * Jes
+    * Joakim Lindberg (booom3)
+    * Joe Alam (joealam)
+    * John Turner (whinis)
+    * Jonas A. Lind (SoScared)
+    * Joppy Furr
+    * Kanar
+    * Kenny Hoxworth (hoxworth)
+    * Kevin Azzam (ChaoticMind)
+    * Kevin Streser
+    * Krishnakanth Mallik
+    * Kyle Smith (Smitty)
+    * Kyrre Soerensen (zypres)
+    * Lawrence Wang
+    * Lesueur Benjamin (Valkirie)
+    * Maarten Meuris (Nyerguds)
+    * Manuel Geiger (Ectras)
+    * Mark Olson (markolson)
+    * Markus Hartung (hartmark)
+    * Matija Hustic (matija-hustic)
+    * Matthew Gatland (mgatland)
+    * Matthew Uzzell (MUzzell)
+    * Matthijs Benschop (Nerdie)
+    * Max621
+    * Max Ugrumov (katzsmile)
+    * Mazar Farran (mazarf)
+    * Michael Rätzel
+    * Michael Silber (frühstück)
+    * Michael Sztolcman (s1w_)
+    * Mike Gagné (AngryBirdz)
+    * Muh
+    * Mustafa Alperen Seki (MustaphaTR)
+    * Nathan Nichols (cracksmoka420)
+    * Neil Shivkar (havok13888)
+    * Nikolay Fomin (netnazgul)
+    * Nooze
+    * Nukem
+    * Okunev Yu Dmitry (xaionaro)
+    * Olaf van der Spek
+    * Paolo Chiodi (paolochiodi)
+    * Paul Dovydaitis (pdovy)
+    * Pavlos Touboulidis (pav)
+    * Pedro Ferreira Ramos (bateramos)
+    * Peter Amrehn (jongleur1983)
+    * Pizzaoverhead
+    * Pi Delport (pjdelport)
+    * Psydev
+    * Raphael Vogt (TheRaffy, Yellow)
+    * Raymond Bedrossian (Squiggles211)
+    * Raymond Martineau (mart0258)
+    * Riderr3
+    * riiga
+    * Rikhardur Bjarni Einarsson (WolfGaming)
+    * Robert Nordan (robpvn)
+    * Sascha Biedermann (bidifx)
+    * Sean Hunt (coppro)
+    * Shawn Collins (UberWaffe)
+    * Simon Verbeke (Saticmotion)
+    * Stuart McHattie (SDJMcHattie)
+    * Taryn Hill (Phrohdoh)
+    * Teemu Nieminen (Temeez)
+    * Thomas Christlieb (ThomasChr)
+    * Tim Mylemans (gecko)
+    * Tinix
+    * Tirili
+    * Tomas Einarsson (Mesacer)
+    * Tom van Leth (tovl)
+    * Trevor Nichols (ocdi)
+    * Tristan Keating (Kilkakon)
+    * Tristan Mühlbacher (MicroBit)
+    * UnknownProgrammer
+    * Vladimir Komarov (VrKomarov)
+    * Wojciech Walaszek (Voidwalker)
+    * Wuschel
+
+Using GNU FreeFont distributed under the GNU GPL terms.
+
+Using Simple DirectMedia Layer distributed under the terms of the zlib license.
+
+Using FreeType distributed under the terms of the FreeType License.
+
+Using OpenAL Soft distributed under the GNU LGPL.
+
+Using SDL2-CS and OpenAL-CS created by Ethan Lee and released under the zlib license.
+
+Using Eluant created by Chris Howie and released under the MIT license.
+
+Using FuzzyLogicLibrary (fuzzynet) by Dmitry Kaluzhny and released under the GNU GPL terms.
+
+Using Mono.Nat by Alan McGovern, Ben Motmans, Nicholas Terry distributed under the MIT license.
+
+Using MP3Sharp by Robert Bruke and Zane Wagner licensed under the GNU LGPL Version 3.
+
+Using TagLib# by Stephen Shaw licensed under the GNU LGPL Version 2.1.
+
+Using NVorbis by Andrew Ward distributed under the MIT license.
+
+Using ICSharpCode.SharpZipLib initially by Mike Krueger and distributed under the GNU GPL terms.
+
+Using rix0rrr.BeaconLib developed by Rico Huijbers distributed under MIT License.
+
+Using DiscordRichPresence developed by Lachee distributed under MIT License.
+
+Using Json.NET developed by James Newton-King distributed under MIT License.
+
+Using ANGLE distributed under the BS3 3-Clause license.
+
+Using Pfim developed by Nick Babcock distributed under the MIT license.
+
+Using Linguini by the Space Station 14 team licensed under Apache and MIT terms.
+
+This site or product includes IP2Location LITE data available from https://www.ip2location.com.
+
+Finally, special thanks goes to the original teams at Westwood Studios and EA for creating the classic games which OpenRA aims to reimagine.

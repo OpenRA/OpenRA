@@ -1,0 +1,156 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, allies03b.lua
+	MissionData:
+		Briefing: briefing
+		StartVideo: brdgtilt.vqa
+		WinVideo: toofar.vqa
+		LossVideo: sovtstar.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	Locomotor@IMMOBILE:
+		Name: immobile
+		TerrainSpeeds:
+
+powerproxy.paratroopers:
+	ParatroopersPower:
+		DropItems: E1,E1,E1,E2,E2
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+	-RepairsBridges:
+	Targetable:
+		RequiresCondition: !jail
+	Targetable@PRISONER:
+		TargetTypes: Prisoner
+	ExternalCondition@JAIL:
+		Condition: jail
+
+MEDI:
+	Targetable:
+		RequiresCondition: !jail
+	Targetable@PRISONER:
+		TargetTypes: Prisoner
+	ExternalCondition@JAIL:
+		Condition: jail
+
+PRISON:
+	HiddenUnderShroud:
+		Type: CenterPosition
+	Immobile:
+		OccupiesSpace: false
+	ProximityExternalCondition:
+		Condition: jail
+		Range: 1c0
+
+CAMERA:
+	RevealsShroud:
+		Range: 8c5
+
+CAMERA.VeryLarge:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 40c0
+
+CAMERA.Jeep:
+	Mobile:
+		Locomotor: immobile
+	RevealsShroud:
+		Range: 4c0
+	ScriptTriggers:
+
+E1.Autotarget:
+	Inherits: E1
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 8c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E1
+
+E2.Autotarget:
+	Inherits: E2
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 8c0
+	AutoTarget:
+		ScanRadius: 7
+	RenderSprites:
+		Image: E2
+
+DOG:
+	Buildable:
+		Prerequisites: ~disabled
+	RevealsShroud:
+		Range: 9c0
+	AutoTarget:
+		ScanRadius: 8
+
+TRUK:
+	-Demolishable:
+	Targetable:
+		TargetTypes: GroundActor, Truk
+	Armor:
+		Type: Truk
+
+TRAN:
+	RejectsOrders:
+	-Selectable:
+	RevealsShroud:
+		Range: 0c0
+	-RevealsShroud@GAPGEN:
+	Cargo:
+		Types: ~disabled
+	Interactable:
+
+JEEP.mission:
+	Inherits: JEEP
+	-Selectable:
+	-Demolishable:
+	-Huntable:
+	-Targetable:
+	-Armament:
+	-WithSpriteTurret:
+	-WithMuzzleOverlay:
+	Cargo:
+		Types: ~disabled
+	RevealsShroud:
+		Range: 0c0
+	RenderSprites:
+		Image: JEEP
+	Interactable:
+
+E3:
+	Buildable:
+		Prerequisites: ~disabled
+
+E4:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SS:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled

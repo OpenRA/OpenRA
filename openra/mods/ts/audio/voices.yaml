@@ -1,0 +1,239 @@
+Infantry:
+	Voices:
+		Select: 15-i000, 15-i004, 15-i012, 15-i048
+		Move: 15-i018, 15-i024, 15-i044
+		Attack: 15-i044, 15-i050, 15-i044, 15-i046
+		#Feedback: 15-i058, 15-i064 # TODO
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Rocket:
+	Voices:
+		Select: 15-i000, 15-i032, 15-i048
+		Move: 15-i008, 15-i014, 15-i026
+		Attack: 15-i008, 15-i014, 15-i026, 15-i050, 15-i060
+		#Feedback: 15-i058, 15-i064 #TODO
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Umagon:
+	Voices:
+		Select: 10-i000, 10-i002, 10-i004, 10-i006
+		Move: 10-i016, 10-i020, 10-i022
+		Attack: 10-i024, 10-i026, 10-i028, 10-i030
+		Die: dedgirl1, dedgirl2, dedgirl4
+		Burned: dedgirl3
+		Zapped: electro1
+		Explode: expnew10
+
+Ghost:
+	Voices:
+		Select: 14-i000, 14-i002, 14-i004
+		Move: 14-i008, 14-i010, 14-i012, 14-i014
+		Attack: 14-i008, 14-i010, 14-i014, 14-i016
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Medic:
+	Voices:
+		Select: 20-i000, 20-i004, 20-i006
+		Move: 20-i008, 20-i010, 20-i012
+		Action: 20-i016, 20-i018, 20-i020
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Engineer:
+	Voices:
+		Select: 19-i000, 19-i002, 19-i006
+		Move: 19-i010, 19-i016
+		Action: 19-i018, 19-i016
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+JumpJet:
+	Voices:
+		Select: 15-i000, 15-i004, 15-i012, 15-i048
+		Move: 15-i018, 15-i024, 15-i044
+		Attack: 15-i044, 15-i050, 15-i044, 15-i046
+		#Feedback: 15-i058, 15-i064
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Weed:
+	Voices:
+		Select: 15-i000, 15-i006, 15-i040, 15-i042
+		Move: 15-i024, 15-i044
+		Attack: 15-i006, 15-i046
+		#Feedback: 15-i058, 15-i064 # TODO
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Spy:
+	Voices:
+		Select: 21-i000, 21-i002, 21-i004
+		Move: 21-i010, 21-i012, 21-i016
+		Action: 21-i010, 21-i012, 21-i022
+		#Feedback: 21-i000, 21-i002 # TODO
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Hijacker:
+	Voices:
+		Select: 24-i000, 24-i002, 24-i004, 24-i006
+		Move: 24-i008, 24-i010, 24-i012, 24-i014
+		Action: 24-i016, 24-i018, 24-i020, 24-i022, 24-i024
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Cyborg:
+	Voices:
+		Select: 22-i000, 22-i002, 22-i006
+		Move: 22-i008, 22-i010, 22-i014, 22-i016, 22-i020
+		Attack: 22-i008, 22-i010, 22-i012, 22-i018
+		Die: 22-n104, 22-n106, 22-n108
+
+CyborgCommando:
+	Voices:
+		Select: 23-i000, 23-i002, 23-i004, 23-i006
+		Move: 23-i008, 23-i010, 23-i012, 23-i016
+		Attack: 23-i014, 23-i018, 23-i020, 23-i022
+		Die: 22-n104, 22-n106, 22-n108
+
+Mutant:
+	Voices:
+		Select: 15-i032, 15-i048
+		Move: 15-i008,15-I014,15-I026
+		Attack: 15-i008,15-I014,15-I026,15-I050,15-I060
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Tratos:
+	Voices:
+		Select: 13-i000, 13-i002, 13-i004, 13-i006
+		Move: 13-i008, 13-i010, 13-i012, 13-i014
+		Attack: 13-i016, 13-i018, 13-i020
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Oxanna:
+	Voices:
+		Select: 11-i000, 11-i002, 11-i004, 11-i006
+		Move: 11-i008, 11-i010, 11-i012
+		Attack: 11-i014, 11-i016, 11-i018
+		Die: dedgirl1, dedgirl2, dedgirl4
+		Burned: dedgirl3
+		Zapped: electro1
+		Explode: expnew10
+
+Slavick:
+	Voices:
+		Select: 12-i000, 12-i002, 12-i004
+		Move: 12-i006, 12-i008, 12-i010
+		Attack: 12-i012, 12-i014, 12-i016
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Fiend:
+	Voices:
+		Select: fiend1
+		Attack: fiend1
+		Move: fiend1
+		Die: fiend1
+		Burned: fiend1
+		Zapped: fiend1
+		Explode: expnew10
+
+Vehicle:
+	Voices:
+		Select: 25-i000, 25-i002, 25-i004, 25-i006
+		Move: 25-i012, 25-i014, 25-i016, 25-i018, 25-i022
+		Attack: 25-i014, 25-i022, 25-i024, 25-i026
+		Unload: 25-i018
+
+Mech:
+	Voices:
+		Select: 15-i000, 15-i006, 15-i040, 15-i042
+		Move: 15-i024, 15-i044
+		Attack: 15-i006, 15-i046
+
+Heli:
+	Voices:
+		Select: 30-i000, 30-i002, 30-i004, 30-i006
+		Move: 30-i014, 30-i016, 30-i018, 30-i022
+		Attack: 30-i022, 30-i030, 30-i034, 30-i036
+
+Civilian:
+	Voices:
+		Select:
+		Move:
+		Attack:
+		Die: dedman1, dedman3, dedman4, dedman5, dedman6
+		Burned: dedman2
+		Zapped: electro1
+		Explode: expnew10
+
+Civilian1:
+	Inherits: Civilian
+	Voices:
+		Select: 67-n100, 67-n102
+		Move: 67-n104, 67-n106, 67-n108
+
+Civilian2:
+	Inherits: Civilian
+	Voices:
+		Select: 68-n100, 68-n102, 68-n104
+		Move: 68-n106, 68-n108, 68-n110
+
+Civilian3:
+	Inherits: Civilian
+	Voices:
+		Select: 69-n100, 69-b102, 69-n104
+		Move: 69-n106, 69-n108, 69-n110
+
+CivilianTechnician:
+	Inherits: Civilian
+	Voices:
+		Select: 70-n000, 70-n002, 70-n004
+		Move: 70-n006, 70-n008, 70-n010
+		Attack: 70-n014, 70-n016, 70-n018
+
+CivilianFemale: #can be used for female mutant as well
+	Voices:
+		Select:
+		Move:
+		Attack:
+		Die: dedgirl1, dedgirl2, dedgirl4
+		Burned: dedgirl3
+		Zapped: electro1
+		Explode: expnew10
+
+Scrin:
+	Voices:
+		Select: 32-i000
+		Move: 32-i002, 32-i004
+		Attack: 32-i006
+		Die: 32-i008

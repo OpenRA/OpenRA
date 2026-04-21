@@ -1,0 +1,379 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Primitives;
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.Common.Widgets.Logic
+{
+	[IncludeChromeLogicArgsFluentReferences(nameof(DynamicFluentReferences))]
+	[IncludeStaticFluentReferences(typeof(KeycodeExts), typeof(ModifiersExts))]
+	public class HotkeysSettingsLogic : ChromeLogic
+	{
+		[FluentReference("key")]
+		const string OriginalNotice = "label-original-notice";
+
+		[FluentReference("key", "context")]
+		const string DuplicateNotice = "label-duplicate-notice";
+
+		[FluentReference]
+		const string AnyContext = HotkeyDefinition.ContextFluentPrefix + "-any";
+
+		public static IEnumerable<(string Key, FluentReferenceAttribute Reference)> DynamicFluentReferences(Dictionary<string, MiniYaml> logicArgs)
+		{
+			if (logicArgs.TryGetValue("HotkeyGroups", out var hotkeyGroupsYaml))
+				foreach (var node in hotkeyGroupsYaml.Nodes)
+					yield return (node.Key, new FluentReferenceAttribute());
+		}
+
+		readonly ModData modData;
+		readonly Dictionary<string, MiniYaml> logicArgs;
+
+		ScrollPanelWidget hotkeyList;
+		ButtonWidget selectedHotkeyButton;
+		HotkeyEntryWidget hotkeyEntryWidget;
+		HotkeyDefinition duplicateHotkeyDefinition, selectedHotkeyDefinition;
+		int validHotkeyEntryWidth;
+		int invalidHotkeyEntryWidth;
+		bool isHotkeyValid;
+		bool isHotkeyDefault;
+
+		string currentContext = AnyContext;
+		readonly HashSet<string> contexts = [AnyContext];
+		readonly Dictionary<string, FrozenSet<string>> hotkeyGroups = [];
+		TextFieldWidget filterInput;
+
+		Widget headerTemplate;
+		Widget template;
+		Widget emptyListMessage;
+		Widget remapDialog;
+
+		[ObjectCreator.UseCtor]
+		public HotkeysSettingsLogic(ModData modData, SettingsLogic settingsLogic, string panelID, string label, Dictionary<string, MiniYaml> logicArgs)
+		{
+			this.modData = modData;
+			this.logicArgs = logicArgs;
+
+			settingsLogic.RegisterSettingsPanel(panelID, label, InitPanel, ResetPanel);
+		}
+
+		void BindHotkeyPref(HotkeyDefinition hd, Widget template)
+		{
+			var key = template.Clone();
+			key.Id = hd.Name;
+			key.IsVisible = () => true;
+
+			var desc = FluentProvider.GetMessage(hd.Description) + ":";
+			key.Get<LabelWidget>("FUNCTION").GetText = () => desc;
+
+			var remapButton = key.Get<ButtonWidget>("HOTKEY");
+			WidgetUtils.TruncateButtonToTooltip(remapButton, modData.Hotkeys[hd.Name].GetValue().DisplayString());
+
+			remapButton.IsHighlighted = () => selectedHotkeyDefinition == hd;
+
+			var hotkeyValidColor = ChromeMetrics.Get<Color>("HotkeyColor");
+			var hotkeyInvalidColor = ChromeMetrics.Get<Color>("HotkeyColorInvalid");
+
+			remapButton.GetColor = () => hd.HasDuplicates ? hotkeyInvalidColor : hotkeyValidColor;
+
+			if (selectedHotkeyDefinition == hd)
+			{
+				selectedHotkeyButton = remapButton;
+				hotkeyEntryWidget.Key = modData.Hotkeys[hd.Name].GetValue();
+				ValidateHotkey();
+			}
+
+			remapButton.OnClick = () =>
+			{
+				selectedHotkeyDefinition = hd;
+				selectedHotkeyButton = remapButton;
+				hotkeyEntryWidget.Key = modData.Hotkeys[hd.Name].GetValue();
+				ValidateHotkey();
+
+				if (hd.Readonly)
+					hotkeyEntryWidget.YieldKeyboardFocus();
+				else
+					hotkeyEntryWidget.TakeKeyboardFocus();
+			};
+
+			hotkeyList.AddChild(key);
+		}
+
+		Func<bool> InitPanel(Widget panel)
+		{
+			hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
+			hotkeyList.Layout = new GridLayout(hotkeyList);
+			headerTemplate = hotkeyList.Get("HEADER");
+			template = hotkeyList.Get("TEMPLATE");
+			emptyListMessage = panel.Get("HOTKEY_EMPTY_LIST");
+			remapDialog = panel.Get("HOTKEY_REMAP_DIALOG");
+
+			foreach (var hd in modData.Hotkeys.Definitions)
+				contexts.UnionWith(hd.Contexts);
+
+			filterInput = panel.Get<TextFieldWidget>("FILTER_INPUT");
+			filterInput.OnTextEdited = InitHotkeyList;
+			filterInput.OnEscKey = _ =>
+			{
+				if (string.IsNullOrEmpty(filterInput.Text))
+					filterInput.YieldKeyboardFocus();
+				else
+				{
+					filterInput.Text = "";
+					filterInput.OnTextEdited();
+				}
+
+				return true;
+			};
+
+			var contextDropdown = panel.GetOrNull<DropDownButtonWidget>("CONTEXT_DROPDOWN");
+			if (contextDropdown != null)
+			{
+				contextDropdown.OnMouseDown = _ => ShowContextDropdown(contextDropdown);
+				var contextName = new CachedTransform<string, string>(GetContextDisplayName);
+				contextDropdown.GetText = () => contextName.Update(currentContext);
+			}
+
+			if (logicArgs.TryGetValue("HotkeyGroups", out var hotkeyGroupsYaml))
+			{
+				foreach (var hg in hotkeyGroupsYaml.Nodes)
+				{
+					var typesNode = hg.Value.NodeWithKeyOrDefault("Types");
+					if (typesNode != null)
+						hotkeyGroups.Add(hg.Key, FieldLoader.GetValue<FrozenSet<string>>("Types", typesNode.Value.Value));
+				}
+
+				InitHotkeyRemapDialog(panel);
+				InitHotkeyList();
+			}
+
+			return () =>
+			{
+				hotkeyEntryWidget.Key =
+					selectedHotkeyDefinition != null ?
+					modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue() :
+					Hotkey.Invalid;
+
+				hotkeyEntryWidget.ForceYieldKeyboardFocus();
+
+				return false;
+			};
+		}
+
+		Action ResetPanel(Widget panel)
+		{
+			return () =>
+			{
+				foreach (var hd in modData.Hotkeys.Definitions)
+				{
+					modData.Hotkeys.Set(hd.Name, hd.Default);
+					var hotkeyButton = panel.GetOrNull(hd.Name)?.Get<ButtonWidget>("HOTKEY");
+					if (hotkeyButton != null)
+						WidgetUtils.TruncateButtonToTooltip(hotkeyButton, hd.Default.DisplayString());
+				}
+			};
+		}
+
+		void InitHotkeyList()
+		{
+			hotkeyList.RemoveChildren();
+			selectedHotkeyDefinition = null;
+
+			foreach (var hg in hotkeyGroups)
+			{
+				var typesInGroup = hg.Value;
+				var keysInGroup = modData.Hotkeys.Definitions
+					.Where(hd => IsHotkeyVisibleInFilter(hd) && hd.Types.Overlaps(typesInGroup))
+					.ToList();
+
+				if (keysInGroup.Count == 0)
+					continue;
+
+				var header = headerTemplate.Clone();
+				var groupName = FluentProvider.GetMessage(hg.Key);
+				header.Get<LabelWidget>("LABEL").GetText = () => groupName;
+				hotkeyList.AddChild(header);
+
+				var added = new HashSet<HotkeyDefinition>();
+
+				foreach (var type in typesInGroup)
+				{
+					foreach (var hd in keysInGroup.Where(k => k.Types.Contains(type)))
+					{
+						if (added.Add(hd))
+						{
+							selectedHotkeyDefinition ??= hd;
+
+							BindHotkeyPref(hd, template);
+						}
+					}
+				}
+			}
+
+			emptyListMessage.Visible = selectedHotkeyDefinition == null;
+			remapDialog.Visible = selectedHotkeyDefinition != null;
+
+			hotkeyList.ScrollToTop();
+		}
+
+		void InitHotkeyRemapDialog(Widget panel)
+		{
+			var label = panel.Get<LabelWidget>("HOTKEY_LABEL");
+			var labelText = new CachedTransform<HotkeyDefinition, string>(
+				hd => (hd != null ? FluentProvider.GetMessage(hd.Description) : "") + ":");
+			label.IsVisible = () => selectedHotkeyDefinition != null;
+			label.GetText = () => labelText.Update(selectedHotkeyDefinition);
+
+			var duplicateNotice = panel.Get<LabelWidget>("DUPLICATE_NOTICE");
+			duplicateNotice.TextColor = ChromeMetrics.Get<Color>("NoticeErrorColor");
+			duplicateNotice.IsVisible = () => !isHotkeyValid;
+			var duplicateNoticeText = new CachedTransform<HotkeyDefinition, string>(hd =>
+				hd != null
+					? FluentProvider.GetMessage(
+						DuplicateNotice,
+						"key", FluentProvider.GetMessage(hd.Description),
+						"context", FluentProvider.GetMessage(hd.Contexts.First(c => selectedHotkeyDefinition.Contexts.Contains(c))))
+					: "");
+			duplicateNotice.GetText = () => duplicateNoticeText.Update(duplicateHotkeyDefinition);
+
+			var originalNotice = panel.Get<LabelWidget>("ORIGINAL_NOTICE");
+			originalNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
+			originalNotice.IsVisible = () => isHotkeyValid && !isHotkeyDefault;
+			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd =>
+				FluentProvider.GetMessage(OriginalNotice, "key", hd?.Default.DisplayString()));
+			originalNotice.GetText = () => originalNoticeText.Update(selectedHotkeyDefinition);
+
+			var readonlyNotice = panel.Get<LabelWidget>("READONLY_NOTICE");
+			readonlyNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
+			readonlyNotice.IsVisible = () => selectedHotkeyDefinition.Readonly;
+
+			var resetButton = panel.Get<ButtonWidget>("RESET_HOTKEY_BUTTON");
+			resetButton.IsDisabled = () => isHotkeyDefault || selectedHotkeyDefinition.Readonly;
+			resetButton.OnClick = ResetHotkey;
+
+			var clearButton = panel.Get<ButtonWidget>("CLEAR_HOTKEY_BUTTON");
+			clearButton.IsDisabled = () => selectedHotkeyDefinition.Readonly || !hotkeyEntryWidget.Key.IsValid();
+			clearButton.OnClick = ClearHotkey;
+
+			var overrideButton = panel.Get<ButtonWidget>("OVERRIDE_HOTKEY_BUTTON");
+			overrideButton.IsDisabled = () => isHotkeyValid;
+			overrideButton.IsVisible = () => !isHotkeyValid && !duplicateHotkeyDefinition.Readonly;
+			overrideButton.OnClick = OverrideHotkey;
+
+			hotkeyEntryWidget = panel.Get<HotkeyEntryWidget>("HOTKEY_ENTRY");
+			hotkeyEntryWidget.IsValid = () => isHotkeyValid;
+			hotkeyEntryWidget.OnLoseFocus = ValidateHotkey;
+			hotkeyEntryWidget.OnEscKey = _ =>
+				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
+			hotkeyEntryWidget.IsDisabled = () => selectedHotkeyDefinition.Readonly;
+
+			validHotkeyEntryWidth = hotkeyEntryWidget.Bounds.Width;
+			invalidHotkeyEntryWidth = validHotkeyEntryWidth - (clearButton.Bounds.X - overrideButton.Bounds.X);
+		}
+
+		void ValidateHotkey()
+		{
+			if (selectedHotkeyDefinition == null)
+				return;
+
+			duplicateHotkeyDefinition = modData.Hotkeys.GetFirstDuplicate(selectedHotkeyDefinition, hotkeyEntryWidget.Key);
+			isHotkeyValid = duplicateHotkeyDefinition == null || selectedHotkeyDefinition.Readonly;
+			isHotkeyDefault =
+				hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default ||
+				(!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
+
+			if (isHotkeyValid)
+			{
+				hotkeyEntryWidget.Bounds.Width = validHotkeyEntryWidth;
+				SaveHotkey();
+			}
+			else
+			{
+				hotkeyEntryWidget.Bounds.Width = duplicateHotkeyDefinition.Readonly ? validHotkeyEntryWidth : invalidHotkeyEntryWidth;
+				hotkeyEntryWidget.TakeKeyboardFocus();
+			}
+		}
+
+		void SaveHotkey()
+		{
+			if (selectedHotkeyDefinition.Readonly)
+				return;
+
+			WidgetUtils.TruncateButtonToTooltip(selectedHotkeyButton, hotkeyEntryWidget.Key.DisplayString());
+			modData.Hotkeys.Set(selectedHotkeyDefinition.Name, hotkeyEntryWidget.Key);
+			modData.Hotkeys.Save();
+		}
+
+		void ResetHotkey()
+		{
+			hotkeyEntryWidget.Key = selectedHotkeyDefinition.Default;
+			hotkeyEntryWidget.YieldKeyboardFocus();
+		}
+
+		void ClearHotkey()
+		{
+			hotkeyEntryWidget.Key = Hotkey.Invalid;
+			hotkeyEntryWidget.YieldKeyboardFocus();
+		}
+
+		void OverrideHotkey()
+		{
+			var duplicateHotkeyButton = hotkeyList.GetOrNull<ContainerWidget>(duplicateHotkeyDefinition.Name)?.Get<ButtonWidget>("HOTKEY");
+			if (duplicateHotkeyButton != null)
+				WidgetUtils.TruncateButtonToTooltip(duplicateHotkeyButton, Hotkey.Invalid.DisplayString());
+			modData.Hotkeys.Set(duplicateHotkeyDefinition.Name, Hotkey.Invalid);
+			modData.Hotkeys.Save();
+			hotkeyEntryWidget.YieldKeyboardFocus();
+		}
+
+		bool IsHotkeyVisibleInFilter(HotkeyDefinition hd)
+		{
+			var filter = filterInput.Text;
+			var isFilteredByName = string.IsNullOrWhiteSpace(filter) ||
+				FluentProvider.GetMessage(hd.Description).Contains(filter, StringComparison.CurrentCultureIgnoreCase);
+			var isFilteredByContext = currentContext == AnyContext || hd.Contexts.Contains(currentContext);
+
+			return isFilteredByName && isFilteredByContext;
+		}
+
+		bool ShowContextDropdown(DropDownButtonWidget dropdown)
+		{
+			hotkeyEntryWidget.YieldKeyboardFocus();
+
+			var contextName = new CachedTransform<string, string>(GetContextDisplayName);
+			ScrollItemWidget SetupItem(string context, ScrollItemWidget itemTemplate)
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => currentContext == context,
+					() => { currentContext = context; InitHotkeyList(); });
+
+				item.Get<LabelWidget>("LABEL").GetText = () => contextName.Update(context);
+				return item;
+			}
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, contexts, SetupItem);
+
+			return true;
+		}
+
+		static string GetContextDisplayName(string context)
+		{
+			if (string.IsNullOrEmpty(context))
+				context = AnyContext;
+
+			return FluentProvider.GetMessage(context);
+		}
+	}
+}

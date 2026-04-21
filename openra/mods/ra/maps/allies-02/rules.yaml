@@ -1,0 +1,103 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5700
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, allies02.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: ally2.vqa
+		StartVideo: mcv.vqa
+		WinVideo: montpass.vqa
+		LossVideo: frozen.vqa
+	SmudgeLayer@CRATER:
+		InitialSmudges:
+			60,79: cr1,0
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+			tough: options-difficulty.tough
+		Default: normal
+	TimeLimitManager:
+		CountdownLabel: MISSION_TEXT
+		CountdownText: The convoy will arrive in {0}
+		Notification: {0} minute{1} remaining
+		SkipTimerExpiredNotification: True
+
+APWR:
+	Buildable:
+		Prerequisites: ~disabled
+
+FIX:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+WEAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+DOME:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+HBOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+GUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E6:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled

@@ -1,0 +1,291 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+	ExternalCondition@AIAMail:
+		Condition: base-rebuilder
+	ExternalCondition@AIASmall:
+		Condition: base-rebuilder2
+	ExternalCondition@AICSmall:
+		Condition: base-rebuilder3
+	ExternalCondition@AIAMail-defense:
+		Condition: defense-rebuilder
+	ExternalCondition@AIASmall-defense:
+		Condition: defense-rebuilder2
+	ExternalCondition@AICSmall-defense:
+		Condition: defense-rebuilder3
+	BaseBuilderBotModule@AtreidesMain:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			light_factory: 1
+			starport: 1
+			palace: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			wind_trap: 11
+			research_centre: 1
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			research_centre: 1
+			outpost: 1
+			starport: 1
+			high_tech_factory: 1
+			palace: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AtreidesSmallBase:
+		RequiresCondition: base-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			palace: 1
+			heavy_factory: 1
+			wind_trap: 7
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@CorrinoMain:
+		RequiresCondition: base-rebuilder3
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AtreidesMainDefense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			light_factory: 1
+			starport: 1
+			palace: 1
+			heavy_factory: 1
+			high_tech_factory: 1
+			wind_trap: 11
+			silo: 1
+			research_centre: 1
+			large_gun_turret: 10
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			starport: 1
+			high_tech_factory: 1
+			palace: 1
+			light_factory: 1
+			research_centre: 1
+			heavy_factory: 1
+			large_gun_turret: 1
+	BaseBuilderBotModule@AtreidesSmallBaseDefense:
+		RequiresCondition: defense-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			palace: 1
+			heavy_factory: 1
+			wind_trap: 7
+			silo: 1
+			large_gun_turret: 1
+			medium_gun_turret: 2
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			large_gun_turret: 1
+			medium_gun_turret: 1
+	BaseBuilderBotModule@CorrinoMainDefense:
+		RequiresCondition: defense-rebuilder3
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: heavy_factory, barracks, starport
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 3
+			outpost: 1
+			heavy_factory: 1
+			wind_trap: 4
+			silo: 1
+			large_gun_turret: 2
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			heavy_factory: 1
+			large_gun_turret: 2
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, harkonnen09b.lua, harkonnen09b-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: H_BR09_E.VQA
+	MapOptions:
+		TechLevel: unrestricted
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			Atreides Main Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Atreides Small Base: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
+			Corrino Main Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
+			Corrino Small Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
+			Smugglers - Neutral: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			Smugglers - Enemy to Harkonnen: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			Smugglers - Enemy to AI: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+			Smugglers - Enemy to Both: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Atreides Main Base: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base: 0.274, -0.275, 1, 0.32, 0.34
+			Corrino Main Base: 0.477, 0.075, 1, 0.32, 0.34
+			Corrino Small Base: 0.477, 0.075, 1, 0.32, 0.34
+			Smugglers - Neutral: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Harkonnen: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to AI: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Both: -0.318, 0.047, 1, 0.32, 0.34
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+mpsardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+thumper:
+	Buildable:
+		Prerequisites: ~disabled
+
+palace:
+	ProduceActorPower@ReleaseSardaukars:
+		Name: actor-palace.produceactorpower-fremen-name
+		Description: actor-palace.produceactorpower-fremen-description
+		Icon: fremen
+		PauseOnCondition: disabled
+		RequiresCondition: corrino
+		Prerequisites: ~techlevel.superweapons, ~palace.sardaukar
+		Actors: mpsardaukar, mpsardaukar, mpsardaukar, mpsardaukar, mpsardaukar
+		Type: sardaukar
+		ChargeInterval: 2250
+		EndChargeTextNotification: notification-fremen-ready
+		ReadyAudio: Reinforce
+		ReadyTextNotification: notification-reinforcements-have-arrived
+		BlockedAudio: NoRoom
+		BlockedTextNotification: notification-no-room-for-new-unit
+		OrderName: ProduceActorPower.Fremen
+		SupportPowerPaletteOrder: 2040
+	GrantConditionOnFaction@corrino:
+		Condition: corrino
+		Factions: corrino
+	Production@Corrino:
+		Produces: sardaukar
+		RequiresCondition: corrino

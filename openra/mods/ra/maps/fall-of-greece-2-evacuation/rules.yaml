@@ -1,0 +1,106 @@
+Player:
+	PlayerResources:
+		DefaultCash: 3500
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, evacuation.lua, evacuation-AI.lua
+	MissionData:
+		WinVideo: allymorf.vqa
+		LossVideo: snstrafe.vqa
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+PARADROP:
+	ParatroopersPower:
+		DropItems: E1, E1, E1, E2, E2
+
+FLAMERDROP:
+	ParatroopersPower:
+		DropItems: E2, E2, E4, E4, E4
+
+^CivInfantry:
+	Infiltrates:
+		Types: CivilianEntry
+		ValidRelationships: Ally
+
+TECN:
+	-Infiltrates:
+
+TECN2:
+	-Infiltrates:
+
+GNRL:
+	-Infiltrates:
+
+MISS:
+	Targetable:
+		TargetTypes: GroundActor, C4, DetonateAttack, Structure, CivilianEntry
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7.noautotarget:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+3TNK:
+	Buildable:
+		Prerequisites: ~vehicles.soviet

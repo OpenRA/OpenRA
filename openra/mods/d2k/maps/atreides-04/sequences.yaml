@@ -1,0 +1,15 @@
+tile475:
+	Defaults:
+		Filename: BLOXWAST.R16
+	idle:
+		Start: 706
+		Offset: -16,-16
+	idle2:
+		Start: 707
+		Offset: 16,-16
+	idle3:
+		Start: 726
+		Offset: -16,16
+	idle4:
+		Start: 727
+		Offset: 16,16

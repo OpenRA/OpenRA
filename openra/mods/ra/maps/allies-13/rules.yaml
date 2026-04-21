@@ -1,0 +1,45 @@
+World:
+	LuaScript:
+		Scripts: allies13.lua, campaign.lua, utils.lua
+	MissionData:
+		BackgroundVideo: spy.vqa
+		WinVideo: apcescpe.vqa
+		LossVideo: bmap.vqa
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	TimeLimitManager:
+		CountdownLabel: MISSION_TEXT
+		CountdownText: Sarin gas released in {0}
+	StartGameNotification:
+		Notification: MissionTimerInitialised
+
+Player:
+	MissionObjectives:
+		GameOverDelay: 4000
+
+3TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+4TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+V2RL:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+FTUR:
+	RevealOnDeath:
+		RevealForRelationships: Enemy
+		Duration: 60
+	Armor:
+		Type: Concrete

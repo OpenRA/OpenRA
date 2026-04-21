@@ -1,0 +1,292 @@
+Background@MAPCHOOSER_PANEL:
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Logic: MapChooserLogic
+	Width: 900
+	Height: 600
+	Children:
+		Label@MAPCHOOSER_TITLE:
+			Y: 17
+			Align: Center
+			Width: PARENT_WIDTH
+			Height: 20
+			Text: label-mapchooser-panel-title
+			Font: Bold
+		Button@BUTTON1:
+			X: 20
+			Y: 48
+			Height: 31
+			Width: 140
+			Font: Bold
+		Button@BUTTON2:
+			X: 160
+			Y: 48
+			Height: 31
+			Width: 140
+			Font: Bold
+		Button@BUTTON3:
+			X: 300
+			Y: 48
+			Height: 31
+			Width: 140
+			Font: Bold
+		Container@MAP_TAB_PANES:
+			Width: PARENT_WIDTH - 40
+			Height: 438
+			X: 20
+			Y: 77
+			Children:
+				Container@SYSTEM_MAPS_TAB:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+				Container@REMOTE_MAPS_TAB:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+				Container@USER_MAPS_TAB:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+				Container@GENERATE_MAP_TAB:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+		ScrollItem@MAP_TEMPLATE:
+			Width: 208
+			Height: 266
+			X: 2
+			Visible: false
+			EnableChildMouseOver: True
+			Children:
+				MapPreview@PREVIEW:
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Y: 3
+					Width: 202
+					Height: 202
+					IgnoreMouseOver: true
+					IgnoreMouseInput: true
+				LabelWithTooltip@TITLE:
+					X: 4
+					Y: PARENT_HEIGHT - HEIGHT - 39
+					Width: PARENT_WIDTH - 8
+					Height: 24
+					Align: Center
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@DETAILS:
+					Width: PARENT_WIDTH - 8
+					Height: 12
+					X: 4
+					Y: PARENT_HEIGHT - HEIGHT - 30
+					Align: Center
+					Font: Tiny
+				LabelWithTooltip@AUTHOR:
+					Width: PARENT_WIDTH - 8
+					Height: 12
+					X: 4
+					Y: PARENT_HEIGHT - HEIGHT - 18
+					Align: Center
+					Font: Tiny
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@SIZE:
+					Width: PARENT_WIDTH - 8
+					Height: 12
+					X: 4
+					Y: PARENT_HEIGHT - HEIGHT - 6
+					Align: Center
+					Font: Tiny
+		Container@FILTER_ORDER_CONTROLS:
+			X: 20
+			Y: PARENT_HEIGHT - 80
+			Width: PARENT_WIDTH - 40
+			Height: PARENT_HEIGHT
+			Children:
+				Label@FILTER_DESC:
+					Width: 40
+					Height: 24
+					Font: Bold
+					Align: Right
+					Text: label-filter-order-controls-desc
+				TextField@MAPFILTER_INPUT:
+					X: 45
+					Width: 150
+					Height: 25
+				Label@FILTER_DESC_JOINER:
+					X: 195
+					Width: 30
+					Height: 24
+					Font: Bold
+					Align: Center
+					Text: label-filter-order-controls-desc-joiner
+				DropDownButton@GAMEMODE_FILTER:
+					X: 225
+					Width: 200
+					Height: 25
+				Label@ORDERBY_LABEL:
+					X: PARENT_WIDTH - WIDTH - 200 - 5
+					Width: 100
+					Height: 24
+					Font: Bold
+					Align: Right
+					Text: label-filter-order-controls-orderby
+				DropDownButton@ORDERBY:
+					X: PARENT_WIDTH - WIDTH
+					Width: 200
+					Height: 25
+		Button@RANDOMMAP_BUTTON:
+			X: 20
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-mapchooser-panel-randommap
+			Font: Bold
+		Button@DELETE_MAP_BUTTON:
+			X: 160
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-mapchooser-panel-delete-map
+			Font: Bold
+		Button@DELETE_ALL_MAPS_BUTTON:
+			X: 300
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-mapchooser-panel-delete-all-maps
+			Font: Bold
+		Label@REMOTE_MAP_LABEL:
+			X: 140
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: PARENT_WIDTH - 410
+			Height: 25
+			Align: Center
+			Font: Bold
+		Button@BUTTON_OK:
+			X: PARENT_WIDTH - 270
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-mapchooser-panel-ok
+			Font: Bold
+			Key: return
+		Button@BUTTON_CANCEL:
+			X: PARENT_WIDTH - 140
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-back
+			Font: Bold
+			Key: escape
+		Container@DROPDOWN_PANEL_ROOT:
+		TooltipContainer@TOOLTIP_CONTAINER:
+
+
+Container@MAPCHOOSER_GENERATE_PANEL:
+	Logic: MapGeneratorLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		Background@MAP_BG:
+			X: PARENT_WIDTH - WIDTH
+			Width: 370
+			Height: 370
+			Background: dialog3
+			Children:
+				GeneratedMapPreview@PREVIEW:
+					X: 1
+					Y: 1
+					Width: PARENT_WIDTH - 2
+					Height: PARENT_HEIGHT - 2
+		Label@TITLE:
+			X: PARENT_WIDTH - WIDTH
+			Y: 375
+			Width: 370
+			Height: 24
+			Align: Center
+			Text: label-mapchooser-random-map-title
+			Font: Bold
+		Label@ERROR:
+			X: PARENT_WIDTH - WIDTH
+			Y: 405
+			Width: 370
+			Height: 24
+			Align: Center
+			Text: label-mapchooser-random-map-error-desc
+		Label@DETAILS:
+			X: PARENT_WIDTH - WIDTH
+			Y: 405
+			Width: 370
+			Height: 24
+			Align: Center
+		LabelWithTooltip@AUTHOR:
+			X: PARENT_WIDTH - WIDTH
+			Y: 425
+			Width: 370
+			Height: 24
+			Align: Center
+		Label@SIZE:
+			X: PARENT_WIDTH - WIDTH
+			Y: 445
+			Width: 370
+			Height: 24
+			Align: Center
+		Button@BUTTON_GENERATE:
+			X: PARENT_WIDTH - 380
+			Y: PARENT_HEIGHT + 40
+			Width: 120
+			Height: 25
+			Text: button-mapchooser-random-map-generate
+			Font: Bold
+		ScrollPanel@SETTINGS_PANEL:
+			TopBottomSpacing: 5
+			Width: 485
+			Height: PARENT_HEIGHT + 30
+			Children:
+				Container@CHECKBOX_TEMPLATE:
+					Width: 230
+					Height: 30
+					Children:
+						Checkbox@CHECKBOX:
+							X: 10
+							Y: 5
+							Width: PARENT_WIDTH - 20
+							Height: 20
+				Container@TEXT_TEMPLATE:
+					Width: 230
+					Height: 50
+					Children:
+						LabelForInput@LABEL:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Height: 20
+							For: INPUT
+						TextField@INPUT:
+							X: 10
+							Y: 20
+							Width: PARENT_WIDTH - 20
+							Height: 25
+				Container@DROPDOWN_TEMPLATE:
+					Width: 230
+					Height: 50
+					Children:
+						LabelForInput@LABEL:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Height: 20
+							For: DROPDOWN
+						DropDownButton@DROPDOWN:
+							X: 10
+							Y: 20
+							Width: PARENT_WIDTH - 20
+							Height: 25
+							PanelRoot: DROPDOWN_PANEL_ROOT

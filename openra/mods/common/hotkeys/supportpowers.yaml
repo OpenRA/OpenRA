@@ -1,0 +1,29 @@
+SupportPower01:
+	Description: hotkey-description-supportpower01
+	Types: SupportPower
+	Contexts: player
+
+SupportPower02:
+	Description: hotkey-description-supportpower02
+	Types: SupportPower
+	Contexts: player
+
+SupportPower03:
+	Description: hotkey-description-supportpower03
+	Types: SupportPower
+	Contexts: player
+
+SupportPower04:
+	Description: hotkey-description-supportpower04
+	Types: SupportPower
+	Contexts: player
+
+SupportPower05:
+	Description: hotkey-description-supportpower05
+	Types: SupportPower
+	Contexts: player
+
+SupportPower06:
+	Description: hotkey-description-supportpower06
+	Types: SupportPower
+	Contexts: player

@@ -1,0 +1,97 @@
+Debris:
+	ReloadDelay: 60
+	Range: 2c768
+	Projectile: Bullet
+		Speed: 32, 64
+		Blockable: false
+		LaunchAngle: 128, 192
+		Inaccuracy: 1c256
+		Image: shrapnel
+		Shadow: true
+		BounceCount: 3
+		BounceRangeModifier: 20
+	Warhead@1Dam: SpreadDamage
+		Damage: 1500
+		Spread: 0c756
+		Falloff: 100, 0
+		Versus:
+			none: 20
+			wall: 50
+			building: 50
+			wood: 60
+			light: 100
+			heavy: 75
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 50
+		DamageTypes: TriggerProne, SmallExplosionDeath
+		DamageCalculationType: ClosestTargetablePosition
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: SandCrater
+		InvalidTargets: Vehicle, Structure
+	Warhead@3Eff: CreateEffect
+		Explosions: tiny_explosion
+		ImpactActors: false
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 300
+
+Debris2:
+	Inherits: Debris
+	Projectile: Bullet
+		Image: shrapnel2
+		TrailImage: small_trail
+		TrailInterval: 1
+	Warhead@1Dam: SpreadDamage
+		Damage: 2500
+		Spread: 1c0
+		Versus:
+			none: 90
+			wall: 5
+			building: 65
+			wood: 50
+			light: 40
+			heavy: 30
+			concrete: 100
+			invulnerable: 0
+			cy: 20
+			harvester: 25
+		DamageTypes: TriggerProne, ExplosionDeath
+	Warhead@3Eff: CreateEffect
+		Explosions: small_napalm
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 2250
+
+Debris3:
+	Inherits: Debris2
+	Projectile: Bullet
+		Image: shrapnel3
+		TrailImage: small_trail2
+	Warhead@1Dam: SpreadDamage
+		Damage: 1500
+		Spread: 1c512
+	Warhead@4Concrete: DamagesConcrete
+		Damage: 1350
+
+Debris4:
+	Inherits: Debris2
+	Projectile: Bullet
+		Image: shrapnel4
+		TrailImage: large_trail
+	Warhead@1Dam: SpreadDamage
+		Spread: 2c0
+
+DebrisMissile:
+	Inherits: ^Missile
+	-Report:
+	Projectile: Missile
+		HorizontalRateOfTurn: 20
+		MinimumLaunchAngle: 120
+		MaximumLaunchAngle: 250
+		VerticalRateOfTurn: 20
+		CruiseAltitude: 0
+		ExplodeWhenEmpty: false
+		Speed: 250
+	Warhead@1Dam: SpreadDamage
+		Spread: 1c0
+		Damage: 2000

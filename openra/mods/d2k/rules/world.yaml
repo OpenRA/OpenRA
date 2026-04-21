@@ -1,0 +1,284 @@
+^BaseWorld:
+	Inherits: ^Palettes
+	ScreenMap:
+	ActorMap:
+	Selection:
+	ControlGroups:
+	MusicPlaylist:
+		VictoryMusic: score
+		DefeatMusic: score
+	TerrainGeometryOverlay:
+	DebugVisualizations:
+	TerrainRenderer:
+	SonicBlastRenderer:
+	ShroudRenderer:
+		ShroudVariants: shrouda, shroudb, shroudc, shroudd
+		FogVariants: foga, fogb, fogc, fogd
+		ShroudPalette: d2k
+		FogPalette: d2k
+		Index: 11, 3, 7, 9, 6, 13, 12, 14, 4, 8, 2, 1, 5, 10
+		OverrideFullShroud: shroudfull
+		OverrideFullFog: fogfull
+	Locomotor@FOOT:
+		Name: foot
+		Crushes: crate, spicebloom
+		SharesCell: true
+		TerrainSpeeds:
+			Sand: 100
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			SpiceSand: 100
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 80
+			Rough: 70
+	Locomotor@VEHICLE:
+		Name: vehicle
+		Crushes: crate, spicebloom
+		TerrainSpeeds:
+			Sand: 90
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			SpiceSand: 90
+			Spice: 90
+			SpiceBlobs: 90
+			Dune: 50
+	Locomotor@TANK:
+		Name: tank
+		Crushes: crate, infantry, spicebloom
+		TerrainSpeeds:
+			Sand: 100
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			SpiceSand: 100
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 70
+	Locomotor@DEVASTATOR:
+		Name: devastator
+		Crushes: crate, infantry, spicebloom, wall
+		TerrainSpeeds:
+			Sand: 100
+			Rock: 100
+			Transition: 100
+			Concrete: 100
+			SpiceSand: 100
+			Spice: 100
+			SpiceBlobs: 100
+			Dune: 70
+	Locomotor@WORM:
+		Name: worm
+		TerrainSpeeds:
+			Sand: 100
+			Dune: 100
+			SpiceSand: 100
+			Spice: 100
+	Faction@Random:
+		Name: faction-random.name
+		InternalName: Random
+		RandomFactionMembers: atreides, harkonnen, ordos
+		Description: faction-random.description
+	Faction@Atreides:
+		Name: faction-atreides.name
+		InternalName: atreides
+		Description: faction-atreides.description
+	Faction@Harkonnen:
+		Name: faction-harkonnen.name
+		InternalName: harkonnen
+		Description: faction-harkonnen.description
+	Faction@Ordos:
+		Name: faction-ordos.name
+		InternalName: ordos
+		Description: faction-ordos.description
+	Faction@Corrino:
+		Name: faction-corrino.name
+		InternalName: corrino
+		Selectable: false
+	Faction@Mercenaries:
+		Name: faction-mercenaries.name
+		InternalName: mercenary
+		Selectable: false
+	Faction@Smugglers:
+		Name: faction-smugglers.name
+		InternalName: smuggler
+		Selectable: false
+	Faction@Fremen:
+		Name: faction-fremen.name
+		InternalName: fremen
+		Selectable: false
+	D2kResourceRenderer:
+		ResourceTypes:
+			Spice:
+				Sequences: spicea, spiceb, spicec, spiced
+				Palette: d2k
+				Name: resource-spice
+
+World:
+	Inherits: ^BaseWorld
+	ChatCommands:
+	DevCommands:
+	DebugVisualizationCommands:
+	PathFinderOverlay:
+	HierarchicalPathFinderOverlay:
+	ActorMapOverlay:
+	PlayerCommands:
+	HelpCommand:
+	AutoSave:
+	ScreenShaker:
+	BuildingInfluence:
+	ProductionQueueFromSelection:
+		ProductionPaletteWidget: PRODUCTION_PALETTE
+	ActorSpawnManager:
+		Actors: sandworm
+		InitialDelay: 9000
+	CrateSpawner:
+		Minimum: 0
+		Maximum: 2
+		SpawnInterval: 1500
+		WaterChance: 0
+		ValidGround: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+		InitialSpawnDelay: 1500
+		CheckboxDisplayOrder: 1
+	WarheadDebugOverlay:
+	BuildableTerrainLayer:
+	ResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Spice:
+				ResourceIndex: 1
+				TerrainType: Spice
+				AllowedTerrainTypes: SpiceSand
+				MaxDensity: 20
+	ResourceClaimLayer:
+	CustomTerrainDebugOverlay:
+	SmudgeLayer@Rock:
+		Type: RockCrater
+		Sequence: rockcraters
+	SmudgeLayer@Sand:
+		Type: SandCrater
+		Sequence: sandcraters
+	MapCreeps:
+		CheckboxLabel: dropdown-map-worms.label
+		CheckboxDescription: dropdown-map-worms.description
+		CheckboxDisplayOrder: 5
+	SpawnMapActors:
+	MapBuildRadius:
+		AllyBuildRadiusCheckboxDisplayOrder: 4
+		BuildRadiusCheckboxVisible: False
+	MapOptions:
+		ShortGameCheckboxDisplayOrder: 2
+		TechLevelDropdownDisplayOrder: 2
+		GameSpeedDropdownDisplayOrder: 1
+	CreateMapPlayers:
+	MapStartingLocations:
+		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	StartingUnits@mcv:
+		Class: none
+		ClassName: options-starting-units.mcv-only
+		BaseActor: mcv
+		Factions: atreides, ordos, harkonnen
+	StartingUnits@Carryall:
+		Class: carryall
+		ClassName: options-starting-units.carryall
+		BaseActor: mcv
+		SupportActors: carryall
+		Factions: atreides, ordos, harkonnen
+	StartingUnits@lightatreides:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: atreides
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad, carryall
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@lightharkonnen:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: harkonnen
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad, carryall
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@lightordos:
+		Class: light
+		ClassName: options-starting-units.light-support
+		Factions: ordos
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad, carryall
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavyatreides:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: atreides
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank, carryall
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavyharkonnen:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: harkonnen
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank, carryall
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	StartingUnits@heavyordos:
+		Class: heavy
+		ClassName: options-starting-units.heavy-support
+		Factions: ordos
+		BaseActor: mcv
+		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank, carryall
+		InnerSupportRadius: 3
+		OuterSupportRadius: 5
+	SpawnStartingUnits:
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	RadarPings:
+	ObjectivesPanel:
+		ExitDelay: 0
+		PanelName: SKIRMISH_STATS
+	LoadWidgetAtGameStart:
+	ScriptTriggers:
+	CellTriggerOverlay:
+	StartGameNotification:
+		SavedTextNotification: notification-game-saved
+	FlashPostProcessEffect:
+		Type: flash
+		Color: E2DD8F4D
+	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
+	ColorPickerManager:
+		PreviewActor: carryall.colorpicker
+		PresetColors: F21818, FFAE00, FFF830, 44F218, 39C46F, 498221, F2798F, E118F2, 9023CD, 392929, 200738, F218A8, DDB8FF, 184FF2, 2F86F2, 76D2F8
+	OrderEffects:
+		TerrainFlashImage: moveflsh
+		TerrainFlashSequence: idle
+		TerrainFlashPalette: effect
+
+EditorWorld:
+	Inherits: ^BaseWorld
+	EditorActorLayer:
+	EditorCursorLayer:
+	EditorResourceLayer:
+		RecalculateResourceDensity: true
+		ResourceTypes:
+			Spice:
+				ResourceIndex: 1
+				TerrainType: Spice
+				AllowedTerrainTypes: SpiceSand
+				MaxDensity: 20
+	LoadWidgetAtGameStart:
+	EditorActionManager:
+	BuildableTerrainOverlay:
+		AllowedTerrainTypes: Rock, Concrete
+	MarkerLayerOverlay:
+	TilingPathTool:
+		DefaultStart: RockSmooth
+		DefaultInner: RockSmooth
+		DefaultEnd: RockSmooth
+	Inherits@MapGenerators: ^MapGenerators

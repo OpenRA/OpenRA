@@ -1,0 +1,269 @@
+WEEDGUY:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: actor-weedguy-name
+	Voiced:
+		VoiceSet: Weed
+	Mobile:
+		Speed: 42
+	Health:
+		HP: 13000
+	Crushable:
+		CrushSound: squishy2.aud
+	Armament:
+		Weapon: FireballLauncher
+		LocalOffset: 317,0,453
+	TakeCover:
+		ProneOffset: 128,0,-320
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	-SpawnActorOnDeath@FLAMEGUY:
+	WithDeathAnimation@fire:
+		DeathSequence: die-
+		DeathTypes:
+			FireDeath: burning
+
+UMAGON:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@EXPHOSPITAL: ^InfantryExperienceHospitalOverrides
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: actor-umagon-name
+	Voiced:
+		VoiceSet: Umagon
+	Mobile:
+		Speed: 71
+	Health:
+		HP: 15000
+	Passenger:
+	RevealsShroud:
+		Range: 7c0
+	Armament:
+		Weapon: Sniper
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+CHAMSPY:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 700
+	DisguiseTooltip:
+		Name: actor-chamspy-disguisetooltip-name
+	Voiced:
+		VoiceSet: Spy
+	Health:
+		HP: 12000
+	Mobile:
+		Speed: 85
+	RevealsShroud:
+		Range: 9c0
+	Passenger:
+	Disguise:
+		DisguisedCondition: disguise
+	WithDecoration@disguise:
+		RequiresCondition: disguise
+		Position: TopRight
+		Margin: 6, 10
+		Image: pips
+		Sequence: pip-disguise
+		Palette: pips
+	Infiltrates:
+		Types: SpyInfiltrate
+		Notification: BuildingInfiltrated
+		TextNotification: notification-building-infiltrated
+	-WithSplitAttackPaletteInfantryBody:
+	WithDisguisingInfantryBody:
+		IdleSequences: idle1, idle2
+
+MUTANT:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@EXPHOSPITAL: ^InfantryExperienceHospitalOverrides
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-mutant-name
+	Voiced:
+		VoiceSet: Mutant
+	Health:
+		HP: 5000
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MWMN:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@EXPHOSPITAL: ^InfantryExperienceHospitalOverrides
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-mwmn-name
+	Voiced:
+		VoiceSet: CivilianFemale
+	Health:
+		HP: 5000
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+MUTANT3:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@EXPHOSPITAL: ^InfantryExperienceHospitalOverrides
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-mutant3-name
+	Voiced:
+		VoiceSet: Mutant
+	Health:
+		HP: 5000
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+		Palette: player-nobright
+		IsPlayerPalette: true
+		SplitAttackPalette: bright
+	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+
+TRATOS:
+	Inherits: ^Soldier
+	Inherits@2: ^HealsOnTiberium
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-tratos-name
+	Voiced:
+		VoiceSet: Tratos
+	Health:
+		HP: 20000
+	Mobile:
+		Speed: 71
+	RevealsShroud:
+		Range: 4c0
+
+OXANNA:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-oxanna-name
+	Voiced:
+		VoiceSet: Oxanna
+	Health:
+		HP: 5000
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+
+SLAV:
+	Inherits: ^Soldier
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: actor-slav-name
+	Voiced:
+		VoiceSet: Slavick
+	Health:
+		HP: 30000
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		Range: 4c0
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+
+CIV1:
+	Inherits: ^CivilianInfantry
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+		Palette: player-nomuzzle
+		IsPlayerPalette: true
+		SplitAttackPalette: muzzle
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	Voiced:
+		VoiceSet: Civilian1
+
+CIV2:
+	Inherits: ^CivilianInfantry
+	Voiced:
+		VoiceSet: Civilian2
+
+CIV3:
+	Inherits: ^CivilianInfantry
+	Voiced:
+		VoiceSet: Civilian3
+
+CTECH:
+	Inherits: CIV3
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	RenderSprites:
+		Image: civ3
+	WithSplitAttackPaletteInfantryBody:
+		DefaultAttackSequence: attack
+		Palette: player-nomuzzle
+		IsPlayerPalette: true
+		SplitAttackPalette: muzzle
+	Armament:
+		Weapon: Pistola
+	AttackFrontal:
+		Voice: Attack
+		FacingTolerance: 0
+	Voiced:
+		VoiceSet: CivilianTechnician

@@ -1,0 +1,186 @@
+Player:
+	PlayerResources:
+		DefaultCash: 6000
+	ExternalCondition@AIAtreides:
+		Condition: base-rebuilder
+	ExternalCondition@AIAtreidesDefense:
+		Condition: defense-rebuilder
+	ExternalCondition@AIHarkonnen:
+		Condition: base-rebuilder2
+	ExternalCondition@AIHarkonnenDefense:
+		Condition: defense-rebuilder2
+	BaseBuilderBotModule@AtriedesMain:
+		RequiresCondition: base-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			repair_pad: 1
+			wind_trap: 12
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@AtriedesMainDefense:
+		RequiresCondition: defense-rebuilder
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 12
+			repair_pad: 1
+			silo: 1
+			medium_gun_turret: 2
+			large_gun_turret: 4
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			repair_pad: 1
+			refinery: 1
+			light_factory: 1
+			heavy_factory: 1
+			medium_gun_turret: 1
+			large_gun_turret: 1
+	BaseBuilderBotModule@HarkonnenMain:
+		RequiresCondition: base-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: light_factory, heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+			wind_trap: 9
+			silo: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			light_factory: 1
+			heavy_factory: 1
+	BaseBuilderBotModule@HarkonnenMainDefense:
+		RequiresCondition: defense-rebuilder2
+		BuildingQueues: Building, Upgrade
+		MinimumExcessPower: 0
+		MaximumExcessPower: 250
+		MaxBaseRadius: 40
+		ConstructionYardTypes: construction_yard
+		RefineryTypes: refinery
+		PowerTypes: wind_trap
+		ProductionTypes: heavy_factory, barracks
+		SiloTypes: silo
+		DefenseTypes: medium_gun_turret, large_gun_turret
+		SellRefineryInterval: -1
+		BuildingLimits:
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			heavy_factory: 1
+			wind_trap: 9
+			silo: 1
+			medium_gun_turret: 4
+			large_gun_turret: 1
+		BuildingFractions:
+			wind_trap: 1
+			barracks: 1
+			refinery: 1
+			outpost: 1
+			heavy_factory: 1
+			medium_gun_turret: 4
+			large_gun_turret: 1
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, ordos06a.lua, ordos06a-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: O_BR06_E.VQA
+	MapOptions:
+		TechLevel: medium
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+frigate:
+	Aircraft:
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+starport:
+	Buildable:
+		Prerequisites: heavy_factory, outpost
+
+missile_tank:
+	Buildable:
+		Prerequisites: ~heavy.missile_tank, upgrade.heavy, research_centre
+
+grenadier:
+	Buildable:
+		Prerequisites: ~disabled
+
+stealth_raider:
+	Buildable:
+		Prerequisites: ~disabled
+
+sardaukar:
+	Buildable:
+		Prerequisites: ~disabled
+
+large_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled

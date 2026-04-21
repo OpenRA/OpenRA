@@ -1,0 +1,69 @@
+Player:
+	PlayerResources:
+		DefaultCash: 5000
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, atreides02b.lua, atreides02b-AI.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: A_BR02_E.VQA
+	MapOptions:
+		TechLevel: low
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: easy
+
+carryall.reinforce:
+	Cargo:
+		MaxWeight: 10
+
+upgrade.conyard:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.barracks:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.light:
+	Buildable:
+		Prerequisites: ~disabled
+
+upgrade.heavy:
+	Buildable:
+		Prerequisites: ~disabled
+
+concreteb:
+	Buildable:
+		Prerequisites: ~disabled
+
+heavy_factory:
+	Buildable:
+		Prerequisites: ~disabled
+
+medium_gun_turret:
+	Buildable:
+		Prerequisites: ~disabled
+
+wall:
+	Buildable:
+		Prerequisites: ~disabled
+
+outpost:
+	Buildable:
+		Prerequisites: barracks
+
+outpostnopower:
+	Inherits: outpost
+	Buildable:
+		Prerequisites: ~disabled
+	GrantCondition@IDISABLE:
+		RequiresCondition: powerdown
+	-GrantConditionOnPowerState@LOWPOWER:

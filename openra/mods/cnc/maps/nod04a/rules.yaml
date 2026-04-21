@@ -1,0 +1,28 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod04a.lua
+	MusicPlaylist:
+		StartingMusic: warfare
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: nod4a.vqa
+		LossVideo: nodlose.vqa
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+^Vehicle:
+	AnnounceOnSeen:
+
+^Tank:
+	AnnounceOnSeen:
+
+TRAN:
+	RejectsOrders:
+	-Selectable:
+	RevealsShroud:
+		Range: 5c0
+	Interactable:

@@ -1,0 +1,68 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, fresh-tracks.lua
+	MissionData:
+		WinVideo: sovbatl.vqa
+		LossVideo: overrun.vqa
+		Briefing: briefing
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 2100
+
+MONEYCRATE:
+	ExplodeCrateAction:
+		Weapon: MiniNuke
+	Tooltip:
+		Name: actor-atomic-material-name
+	RenderSprites:
+		Image: wcrate
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRAN:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~hpad
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+ARTY:
+	Buildable:
+		Prerequisites: ~disabled
+
+MH60:
+	Buildable:
+		Prerequisites: ~disabled

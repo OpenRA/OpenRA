@@ -1,0 +1,210 @@
+^Railgun:
+	ReloadDelay: 60
+	Range: 6c0
+	Report: bigggun1.aud
+	Projectile: Railgun
+		Duration: 15
+		Blockable: true
+		DamageActorsInLine: true
+		BeamColor: 0080FFC8
+	Warhead@1Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 100, 100
+		Damage: 15000
+		AffectsParent: false
+		Versus:
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+
+LtRail:
+	Inherits: ^Railgun
+	Warhead@1Dam: SpreadDamage
+		ValidRelationships: Neutral, Enemy
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 50, 50 # Only does half damage to friendly units
+		Damage: 15000
+		AffectsParent: false
+		ValidRelationships: Ally
+		Versus:
+			None: 100
+			Wood: 130
+			Light: 150
+			Heavy: 110
+			Concrete: 5
+		DamageTypes: Prone100Percent, TriggerProne, ExplosionDeath
+
+MechRailgun:
+	Inherits: ^Railgun
+	Range: 8c0
+	Report: railuse5.aud
+	Projectile: Railgun
+		BeamColor: 00FFFFC8
+	Warhead@1Dam: SpreadDamage
+		Damage: 20000
+		Versus:
+			None: 200
+			Wood: 175
+			Light: 160
+			Heavy: 100
+			Concrete: 25
+
+SonicZap:
+	ReloadDelay: 180
+	Range: 6c0
+	Report: sonic4.aud
+	ValidTargets: Ground, Trees
+	Projectile: AreaBeam
+		Speed: 0c128
+		Duration: 90
+		DamageInterval: 5 # Roughly 18 impacts.
+		Width: 384
+		Shape: Flat
+		ZOffset: 2047
+		BeyondTargetRange: 0c256
+		Blockable: true
+		TrackTarget: true
+		Color: 50F5FF45
+	Warhead@1Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 100, 100
+		Damage: 800
+		AffectsParent: false
+		ValidRelationships: Neutral, Enemy
+		ValidTargets: Ground, Trees
+		Versus:
+			Heavy: 80
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Dam: SpreadDamage
+		Range: 0, 32
+		Falloff: 50, 50
+		Damage: 800
+		InvalidTargets: Disruptor # Does not affect friendly disruptors at all
+		AffectsParent: false
+		ValidRelationships: Ally
+		ValidTargets: Ground, Trees
+		Versus:
+			Heavy: 80
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+
+^EnergyBlast:
+	ReloadDelay: 50
+	Range: 7c0
+	Report: scrin5b.aud
+	ValidTargets: Ground
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: Ground
+	Warhead@2Eff: CreateEffect
+		Explosions: large_explosion
+		ImpactSounds: expnew12.aud
+		ValidTargets: Ground, Air
+	Warhead@3EffWater: CreateEffect
+		Explosions: small_watersplash
+		ExplosionPalette: player
+		ImpactSounds: ssplash3.aud
+		ValidTargets: Water
+		InvalidTargets: Vehicle
+	Warhead@4Smu: LeaveSmudge
+		SmudgeType: SmallScorch
+		InvalidTargets: Vehicle, Building, Wall
+
+CyCannon:
+	Inherits: ^EnergyBlast
+	ValidTargets: Ground, Trees
+	Projectile: Missile
+		MaximumLaunchSpeed: 192
+		Blockable: false
+		HorizontalRateOfTurn: 8
+		Shadow: true
+		Image: TORPEDO
+		MinimumLaunchSpeed: 75
+		Speed: 384
+		RangeLimit: 8c0
+		TerrainHeightAware: true
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: Ground, Trees
+		Spread: 43
+		Damage: 12000
+		Versus:
+			None: 350
+			Wood: 260
+			Light: 205
+			Heavy: 150
+			Concrete: 80
+		DamageTypes: Prone350Percent, TriggerProne, EnergyDeath
+	Warhead@2Eff: CreateEffect
+		ValidTargets: Ground, Trees
+
+Proton:
+	Inherits: ^EnergyBlast
+	Range: 5c0
+	Burst: 5
+	BurstDelays: 3
+	Projectile: Bullet
+		Speed: 341
+		Blockable: false
+		Shadow: true
+		Inaccuracy: 128
+		Image: TORPEDO
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 2000
+		Versus:
+			None: 25
+			Wood: 65
+			Light: 75
+			Heavy: 100
+			Concrete: 60
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: small_bang
+
+^Laser:
+	Projectile: LaserZap
+		Width: 72
+		Duration: 15
+		ZOffset: 2047
+		Color: FF000080
+		SecondaryBeam: true
+		SecondaryBeamWidth: 180
+		SecondaryBeamZOffset: 2047
+		SecondaryBeamColor: FF000040
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 25000
+		DamageTypes: Prone60Percent, TriggerProne, EnergyDeath
+
+ObeliskLaserFire:
+	Inherits: ^Laser
+	ReloadDelay: 120
+	Range: 10c512
+	Report: obelray1.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 25000
+
+TurretLaserFire:
+	Inherits: ^Laser
+	ReloadDelay: 40
+	Range: 5c512
+	Report: lastur1.aud
+	Projectile: LaserZap
+		Width: 36
+		Duration: 8
+		SecondaryBeamWidth: 144
+		SecondaryBeamColor: FF000030
+	Warhead@1Dam: SpreadDamage
+		Damage: 3000
+
+LaserFence:
+	TargetActorCenter: true
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
+		DebugOverlayColor: FF0000
+		Damage: 10000000
+		DamageTypes: FireDeath

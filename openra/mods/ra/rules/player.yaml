@@ -1,0 +1,187 @@
+^BasePlayer:
+	Shroud:
+	PlayerResources:
+		ResourceValues:
+			Ore: 25
+			Gems: 50
+
+EditorPlayer:
+	Inherits: ^BasePlayer
+
+Player:
+	Inherits: ^BasePlayer
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		DisplayOrder: 0
+		LowPowerModifier: 300
+		ReadyAudio: ConstructionComplete
+		ReadyTextNotification: notification-construction-complete
+		BlockedAudio: NoBuild
+		BlockedTextNotification: notification-unable-to-build-more
+		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: True
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		DisplayOrder: 1
+		LowPowerModifier: 300
+		ReadyAudio: ConstructionComplete
+		ReadyTextNotification: notification-construction-complete
+		BlockedAudio: NoBuild
+		BlockedTextNotification: notification-unable-to-build-more
+		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: True
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		DisplayOrder: 3
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoBuild
+		BlockedTextNotification: notification-unable-to-build-more
+		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: True
+		BuildTimeSpeedReduction: 100, 75, 60, 50
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		DisplayOrder: 2
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoBuild
+		BlockedTextNotification: notification-unable-to-build-more
+		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
+		QueuedAudio: Training
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: True
+	ClassicProductionQueue@Ship:
+		Type: Ship
+		DisplayOrder: 5
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoBuild
+		BlockedTextNotification: notification-unable-to-build-more
+		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: True
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		DisplayOrder: 4
+		LowPowerModifier: 300
+		ReadyAudio: UnitReady
+		ReadyTextNotification: notification-unit-ready
+		BlockedAudio: NoBuild
+		BlockedTextNotification: notification-unable-to-build-more
+		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
+		QueuedAudio: Building
+		OnHoldAudio: OnHold
+		CancelledAudio: Cancelled
+		SpeedUp: True
+	PlaceBuilding:
+		NewOptionsNotification: NewOptions
+		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: notification-new-construction-options
+		CannotPlaceTextNotification: notification-cannot-deploy-here
+	SupportPowerManager:
+	ScriptTriggers:
+	MissionObjectives:
+		WinNotification: Win
+		LoseNotification: Lose
+		LeaveNotification: Leave
+	ConquestVictoryConditions:
+	PowerManager:
+		SpeechNotification: LowPower
+		TextNotification: notification-low-power
+	AllyRepair:
+	PlayerResources:
+		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: notification-insufficient-funds
+		CashTickUpNotification: CashTickUp
+		CashTickDownNotification: CashTickDown
+	DeveloperMode:
+		CheckboxDisplayOrder: 10
+	GpsWatcher:
+	Shroud:
+		FogCheckboxDisplayOrder: 3
+	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+		ID: bounty
+		Label: checkbox-kill-bounties.label
+		Description: checkbox-kill-bounties.description
+		Enabled: False
+		DisplayOrder: 8
+		Prerequisites: global-bounty
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		ID: factundeploy
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
+		Enabled: True
+		DisplayOrder: 7
+		Prerequisites: global-factundeploy
+	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
+		ID: reusable-engineers
+		Label: checkbox-reusable-engineers.label
+		Description: checkbox-reusable-engineers.description
+		Enabled: False
+		DisplayOrder: 9
+		Prerequisites: global-reusable-engineers
+	FrozenActorLayer:
+	DamageNotifier:
+		ValidTargets: Structure
+		Notification: BaseAttack
+		TextNotification: notification-base-under-attack
+		AllyTextNotification: notification-ally-under-attack
+	DamageNotifier@Unit:
+		InvalidTargets: Structure
+		NotifyInterval: 10000
+	PlayerStatistics:
+	PlaceBeacon:
+	ProvidesTechPrerequisite@infonly:
+		Name: options-tech-level.infantry-only
+		Prerequisites: techlevel.infonly
+		Id: infantryonly
+	ProvidesTechPrerequisite@low:
+		Name: options-tech-level.low
+		Prerequisites: techlevel.infonly, techlevel.low
+		Id: low
+	ProvidesTechPrerequisite@medium:
+		Name: options-tech-level.medium
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium
+		Id: medium
+	ProvidesTechPrerequisite@high:
+		Name: options-tech-level.no-superweapons
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high
+		Id: nosuperweapons
+	ProvidesTechPrerequisite@unrestricted:
+		Name: options-tech-level.unrestricted
+		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high, techlevel.unrestricted
+		Id: unrestricted
+	GrantConditionOnPrerequisiteManager:
+	EnemyWatcher:
+	ProductionIconOverlayManager:
+		Type: Veterancy
+		Image: iconchevrons
+		Sequence: veteran
+	ResourceStorageWarning:
+		TextNotification: notification-silos-needed
+	PlayerExperience:
+	GameSaveViewportManager:
+	PlayerRadarTerrain:

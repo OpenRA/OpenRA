@@ -1,0 +1,55 @@
+Background@MAINMENU_PRERELEASE_NOTIFICATION:
+	Logic: PreReleaseWarningPrompt
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 520
+	Height: 195
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Y: 20
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: label-mainmenu-prerelease-notification-prompt-title
+		Label@PROMPT_TEXT_A:
+			X: 15
+			Y: 50
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+			Text: label-mainmenu-prerelease-notification-prompt-text-a
+		Label@PROMPT_TEXT_B:
+			X: 15
+			Y: 68
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+			Text: label-mainmenu-prerelease-notification-prompt-text-b
+		Label@PROMPT_TEXT_C:
+			X: 15
+			Y: 104
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+			Text: label-mainmenu-prerelease-notification-prompt-text-c
+		Label@PROMPT_TEXT_D:
+			X: 15
+			Y: 122
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+			Text: label-mainmenu-prerelease-notification-prompt-text-d
+		Label@PROMPT_TEXT_E:
+			X: 15
+			Y: 140
+			Width: PARENT_WIDTH - 30
+			Height: 16
+			Align: Center
+		Button@CONTINUE_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-mainmenu-prerelease-notification-continue
+			Font: Bold

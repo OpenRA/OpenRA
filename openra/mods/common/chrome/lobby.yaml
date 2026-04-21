@@ -1,0 +1,149 @@
+Background@SERVER_LOBBY:
+	Logic: LobbyLogic
+		ChatTemplates:
+			Chat: CHAT_LINE_TEMPLATE
+			Join: SYSTEM_LINE_TEMPLATE
+			Leave: SYSTEM_LINE_TEMPLATE
+			System: SYSTEM_LINE_TEMPLATE
+			Mission: CHAT_LINE_TEMPLATE
+			Feedback: TRANSIENT_LINE_TEMPLATE
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 900
+	Height: 600
+	Children:
+		Label@SERVER_NAME:
+			Y: 16
+			Align: Center
+			Width: PARENT_WIDTH
+			Height: 25
+			Font: Bold
+		Container@MAP_PREVIEW_ROOT:
+			X: PARENT_WIDTH - 20 - WIDTH
+			Y: 67
+			Width: 174
+			Height: 250
+		DropDownButton@SLOTS_DROPDOWNBUTTON:
+			X: 20
+			Y: 291
+			Width: 185
+			Height: 25
+			Font: Bold
+			Text: dropdownbutton-server-lobby-slots
+		Button@RESET_OPTIONS_BUTTON:
+			X: 20
+			Y: 291
+			Width: 185
+			Height: 25
+			Font: Bold
+			Text: button-server-lobby-reset-options
+		Container@SKIRMISH_TABS:
+			X: 695 - WIDTH
+			Width: 486
+			Visible: False
+			Children:
+				Button@PLAYERS_TAB:
+					Y: 285
+					Width: 162
+					Height: 31
+					Font: Bold
+					Text: button-skirmish-tabs-players-tab
+				Button@OPTIONS_TAB:
+					X: 162
+					Y: 285
+					Width: 162
+					Height: 31
+					Font: Bold
+					Text: button-skirmish-tabs-options-tab
+				Button@MUSIC_TAB:
+					X: 2 * 162
+					Y: 285
+					Width: 162
+					Height: 31
+					Font: Bold
+					Text: label-music-title
+		Container@MULTIPLAYER_TABS:
+			X: 695 - WIDTH
+			Width: 486
+			Visible: False
+			Children:
+				Button@PLAYERS_TAB:
+					Y: 285
+					Width: 121
+					Height: 31
+					Font: Bold
+					Text: button-multiplayer-tabs-players-tab
+				Button@OPTIONS_TAB:
+					X: 121
+					Y: 285
+					Width: 122
+					Height: 31
+					Font: Bold
+					Text: button-multiplayer-tabs-options-tab
+				Button@MUSIC_TAB:
+					X: 243
+					Y: 285
+					Width: 121
+					Height: 31
+					Font: Bold
+					Text: label-music-title
+				Button@SERVERS_TAB:
+					X: 364
+					Y: 285
+					Width: 122
+					Height: 31
+					Font: Bold
+					Text: button-multiplayer-tabs-servers-tab
+		Container@TOP_PANELS_ROOT:
+			X: 20
+			Y: 67
+			Width: 675
+			Height: 219
+		Button@CHANGEMAP_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: 291
+			Width: 174
+			Height: 25
+			Text: button-server-lobby-changemap
+			Font: Bold
+		Container@LOBBYCHAT:
+			X: 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: PARENT_WIDTH - 40
+			Height: 259
+			Children:
+				ScrollPanel@CHAT_DISPLAY:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 30
+					TopBottomSpacing: 2
+					ItemSpacing: 2
+				Button@CHAT_MODE:
+					Y: PARENT_HEIGHT - HEIGHT
+					Width: 50
+					Height: 25
+					Text: button-lobbychat-chat-mode.label
+					Font: Bold
+					Key: ToggleChatMode
+					TooltipText: button-lobbychat-chat-mode.tooltip
+					TooltipContainer: TOOLTIP_CONTAINER
+				TextField@CHAT_TEXTFIELD:
+					X: 55
+					Y: PARENT_HEIGHT - HEIGHT
+					Width: PARENT_WIDTH - 260 - 55
+					Height: 25
+		Button@START_GAME_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 150
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: button-server-lobby-start-game
+			Font: Bold
+		Button@DISCONNECT_BUTTON:
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
+			Width: 120
+			Height: 25
+			Text: button-server-lobby-disconnect
+			Font: Bold
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
+		TooltipContainer@TOOLTIP_CONTAINER:

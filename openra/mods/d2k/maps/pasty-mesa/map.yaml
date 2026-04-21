@@ -1,0 +1,82 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: Pasty Mesa
+
+Author: Westwood Studios
+
+Tileset: ARRAKIS
+
+MapSize: 56,56
+
+Bounds: 4,4,48,48
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: atreides
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: atreides
+		Enemies: Multi0, Multi1
+
+Actors:
+	Actor2: spicebloom.spawnpoint
+		Location: 7,18
+		Owner: Neutral
+	Actor4: spicebloom.spawnpoint
+		Location: 27,6
+		Owner: Neutral
+	Actor8: spicebloom.spawnpoint
+		Location: 34,38
+		Owner: Neutral
+	Actor5: spicebloom.spawnpoint
+		Location: 49,26
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 18,34
+		Owner: Neutral
+	Actor0: mpspawn
+		Location: 45,12
+		Owner: Neutral
+	Actor6: spicebloom.spawnpoint
+		Location: 6,42
+		Owner: Neutral
+	Actor7: spicebloom.spawnpoint
+		Location: 25,49
+		Owner: Neutral
+	Actor3: spicebloom.spawnpoint
+		Location: 30,15
+		Owner: Neutral
+	Actor9: wormspawner
+		Location: 36,51
+		Owner: Creeps
+	Actor10: wormspawner
+		Location: 4,51
+		Owner: Creeps
+	Actor11: wormspawner
+		Location: 21,4
+		Owner: Creeps
+	Actor12: wormspawner
+		Location: 4,4
+		Owner: Creeps
+
+Rules: rules.yaml

@@ -1,0 +1,154 @@
+Player:
+	PlayerResources:
+		DefaultCash: 11500
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, soviet06a.lua, soviet06a-AI.lua, soviet06a-reinforcements_teams.lua
+	MissionData:
+		Briefing: briefing
+		BriefingVideo: soviet6.vqa
+		StartVideo: onthprwl.vqa
+		WinVideo: sitduck.vqa
+		LossVideo: dpthchrg.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+APWR:
+	Buildable:
+		Prerequisites: ~structures.allies
+
+ARTY:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~techlevel.low
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+BRIK:
+	Buildable:
+		Prerequisites: ~disabled
+
+TSLA:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+MECH:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+E3:
+	Buildable:
+		Prerequisites: ~tent
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPY:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+MIG:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+2TNK:
+	Buildable:
+		Prerequisites: ~vehicles.allies, ~techlevel.low
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+APC:
+	Buildable:
+		Prerequisites: ~disabled
+
+TRUK:
+	-SpawnActorOnDeath:
+	-DeliversCash:
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	ParatroopersPower@paratroopers:
+		DropItems: E1,E1,E1,E1,E1
+
+V01:
+	SpawnActorOnDeath:
+		Actor: moneycrate
+
+V05:
+	SpawnActorOnDeath:
+		Actor: healcrate

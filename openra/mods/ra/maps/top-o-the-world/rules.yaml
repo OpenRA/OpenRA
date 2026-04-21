@@ -1,0 +1,75 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, top-o-the-world.lua
+	MissionData:
+		Briefing: briefing
+		WinVideo: sovtstar.vqa
+		LossVideo: sovbatl.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	TimeLimitManager:
+		SkipTimerExpiredNotification: True
+
+^Palettes:
+	IndexedPlayerPalette@truk:
+		BaseName: truk
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+		PlayerIndex:
+			USSR: 200, 200, 201, 202, 203, 203, 204, 205, 206, 206, 207, 221, 222, 222, 223, 223
+		AllowModifiers: True
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Power:
+		Amount: 125
+
+TRUK:
+	-SpawnActorOnDeath:
+	RenderSprites:
+		PlayerPalette: truk
+
+GNRL:
+	Armament:
+		Weapon: SilencedPPK
+
+SCAMERA:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 5c512
+
+powerproxy.spyplane:
+	AirstrikePower:
+		OrderName: SovietSpyPlane
+		Icon: spyplane
+		ChargeInterval: 4500
+		Name: actor-powerproxy-spyplane.airstrikepower-name
+		Description: actor-powerproxy-spyplane.airstrikepower-description
+		OneShot: true
+		SelectTargetSpeechNotification: SelectTarget
+		EndChargeSpeechNotification: SpyPlaneReady
+		SelectTargetTextNotification: notification-select-target
+		EndChargeTextNotification: notification-spy-plane-ready
+		CameraActor: camera.spyplane
+		CameraRemoveDelay: 150
+		UnitType: u2
+		QuantizedFacings: 8
+		DisplayBeacon: true
+		BeaconPoster: camicon
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+
+powerproxy.parabombs:
+	AirstrikePower:
+		ChargeInterval: 4500

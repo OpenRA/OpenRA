@@ -1,0 +1,39 @@
+#Tiberian Sun
+intro: Intro
+	Hidden: true
+approach: Approach
+defense: The Defense
+duskhour: Dusk Hour
+flurry: Flurry
+gloom: Gloom
+heroism: Heroism
+infrared: Infrared
+lonetrop: Lone Trooper
+madrap: Mad Rap
+mutants: Mutants
+nodcrush: Nod Crush
+pharotek: Pharotek
+redsky: Red Sky
+score: Score
+	Hidden: true
+scout: Scouting
+storm: Storm
+timebomb: Timebomb
+valves1b: Valves
+whatlurk: What Lurks
+maps: Map Selection
+	Hidden: true
+#Firestorm
+fsmap: Firestorm Map Selection
+	Hidden: true
+dmachine: Deploy Machines
+elusive: Elusive
+hacker: Hacker
+infiltra: Infiltration
+kmachine: Killing Machine
+linkup: Link Up
+rainnite: Rain In The Night 2
+slavesys: Slave To The System
+#Bonus tracks
+stomp: Stomp
+initiate: Initiate

@@ -1,0 +1,20 @@
+World:
+	LuaScript:
+		Scripts: allies10b.lua, campaign.lua, utils.lua
+	MissionData:
+		StartVideo: elevator.vqa
+		WinVideo: dud.vqa
+		LossVideo: trinity.vqa
+		Briefing: briefing
+
+3TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+4TNK:
+	AutoTarget:
+		InitialStanceAI: HoldFire
+
+CHAN:
+	Targetable:
+		TargetTypes: GroundActor, Infantry, NoAutoTarget

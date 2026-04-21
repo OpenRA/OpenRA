@@ -1,0 +1,203 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Network;
+using OpenRA.Primitives;
+using OpenRA.Server;
+using OpenRA.Traits;
+using S = OpenRA.Server.Server;
+
+namespace OpenRA.Mods.Common.Server
+{
+	public class SkirmishLogic : ServerTrait, IClientJoined, INotifySyncLobbyInfo
+	{
+		[YamlNode("Skirmish", shared: false)]
+		public class SkirmishSettings : SettingsModule { }
+
+		sealed class SkirmishSlot
+		{
+			static string LoadSlot(MiniYaml yaml) => yaml.Value;
+
+			[FieldLoader.LoadUsing(nameof(LoadSlot))]
+			public readonly string Slot;
+			public readonly Color Color;
+			public readonly string Faction;
+			public readonly int SpawnPoint;
+			public readonly int Team;
+			public readonly int Handicap;
+
+			public SkirmishSlot() { }
+
+			public SkirmishSlot(Session.Client c)
+			{
+				Slot = c.Slot;
+				Color = c.Color;
+				Faction = c.Faction;
+				SpawnPoint = c.SpawnPoint;
+				Team = c.Team;
+				Handicap = c.Handicap;
+			}
+
+			public static void DeserializeToClient(MiniYaml yaml, Session.Client c)
+			{
+				var s = FieldLoader.Load<SkirmishSlot>(yaml);
+				c.Slot = s.Slot;
+				c.Color = c.PreferredColor = s.Color;
+				c.Faction = s.Faction;
+				c.SpawnPoint = s.SpawnPoint;
+				c.Team = s.Team;
+				c.Handicap = s.Handicap;
+			}
+
+			public MiniYaml ToYaml()
+			{
+				var yaml = FieldSaver.Save(this);
+				return yaml.WithValue(Slot).WithNodes(yaml.Nodes.RemoveAll(n => n.Key == nameof(Slot)));
+			}
+		}
+
+		static bool TryInitializeFromSettings(S server, SkirmishSettings skirmishSettings, Connection conn)
+		{
+			var nodes = skirmishSettings.Yaml.Build();
+			var mapNode = nodes.NodeWithKeyOrDefault("Map");
+			if (mapNode == null)
+				return false;
+
+			// Only set players and options if the map is available
+			if (server.LobbyInfo.GlobalSettings.Map != mapNode.Value.Value)
+			{
+				var preview = server.ModData.MapCache[mapNode.Value.Value];
+				if (preview.Status != MapStatus.Available)
+				{
+					if (mapNode.Value.Nodes.Length == 0)
+						return false;
+
+					var args = FieldLoader.Load<MapGenerationArgs>(mapNode.Value);
+					preview.UpdateFromGenerationArgs(args);
+					preview.Generate();
+					server.GeneratedMapData = mapNode.Value.Nodes.WriteToString();
+				}
+
+				if (!server.InterpretCommand($"map {preview.Uid}", conn))
+					return false;
+			}
+
+			var optionsNode = nodes.NodeWithKeyOrDefault("Options");
+			if (optionsNode != null)
+			{
+				var options = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(server.Map))
+					.ToDictionary(o => o.Id, o => o);
+
+				foreach (var optionNode in optionsNode.Value.Nodes)
+				{
+					if (options.TryGetValue(optionNode.Key, out var option) && !option.IsLocked && option.Values.ContainsKey(optionNode.Value.Value))
+					{
+						var oo = server.LobbyInfo.GlobalSettings.LobbyOptions[option.Id];
+						oo.Value = oo.PreferredValue = optionNode.Value.Value;
+					}
+				}
+			}
+
+			var selectableFactions = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
+				.Where(f => f.Selectable)
+				.Select(f => f.InternalName)
+				.ToList();
+
+			var playerNode = nodes.NodeWithKeyOrDefault("Player");
+			if (playerNode != null)
+			{
+				var client = server.GetClient(conn);
+				SkirmishSlot.DeserializeToClient(playerNode.Value, client);
+				client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
+				client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
+			}
+
+			var botsNode = nodes.NodeWithKeyOrDefault("Bots");
+			if (botsNode != null)
+			{
+				var botController = server.LobbyInfo.Clients.First(c => c.IsAdmin);
+				foreach (var botNode in botsNode.Value.Nodes)
+				{
+					var botInfo = server.Map.PlayerActorInfo.TraitInfos<IBotInfo>()
+						.FirstOrDefault(b => b.Type == botNode.Key);
+
+					if (botInfo == null)
+						continue;
+
+					var client = new Session.Client
+					{
+						Index = server.ChooseFreePlayerIndex(),
+						Name = botInfo.Name,
+						Bot = botInfo.Type,
+						Slot = botNode.Value.Value,
+						State = Session.ClientState.NotReady,
+						BotControllerClientIndex = botController.Index
+					};
+
+					SkirmishSlot.DeserializeToClient(botNode.Value, client);
+
+					// Validate whether color is allowed and get an alternative if it isn't
+					if (client.Slot != null && !server.LobbyInfo.Slots[client.Slot].LockColor)
+						client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
+
+					client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
+
+					server.LobbyInfo.Clients.Add(client);
+					S.SyncClientToPlayerReference(client, server.Map.Players.Players[client.Slot]);
+				}
+			}
+
+			return true;
+		}
+
+		void INotifySyncLobbyInfo.LobbyInfoSynced(S server)
+		{
+			if (server.Type != ServerType.Skirmish)
+				return;
+
+			var playerClient = server.LobbyInfo.NonBotClients.First();
+			var map = server.ModData.MapCache[server.LobbyInfo.GlobalSettings.Map];
+			var nodes = new List<MiniYamlNode>
+			{
+				new("Map", server.LobbyInfo.GlobalSettings.Map, map.GenerationArgs?.Serialize() ?? []),
+				new("Options", new MiniYaml("", server.LobbyInfo.GlobalSettings.LobbyOptions
+					.Select(kv => new MiniYamlNode(kv.Key, kv.Value.Value)))),
+				new("Player", new SkirmishSlot(playerClient).ToYaml()),
+				new("Bots", new MiniYaml("", server.LobbyInfo.Clients.Where(c => c.IsBot)
+					.Select(b => new MiniYamlNode(b.Bot, new SkirmishSlot(b).ToYaml()))))
+			};
+
+			var skirmishSettings = server.ModData.GetSettings<SkirmishSettings>();
+			skirmishSettings.Yaml.Nodes = new MiniYamlBuilder("", nodes).Nodes;
+			skirmishSettings.Save();
+		}
+
+		void IClientJoined.ClientJoined(S server, Connection conn)
+		{
+			if (server.Type != ServerType.Skirmish)
+				return;
+
+			var skirmishSettings = server.ModData.GetSettings<SkirmishSettings>();
+			if (TryInitializeFromSettings(server, skirmishSettings, conn))
+				return;
+
+			var slot = server.LobbyInfo.FirstEmptyBotSlot();
+			var bot = server.Map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type).FirstOrDefault();
+			var botController = server.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+			if (slot != null && bot != null)
+				server.InterpretCommand($"slot_bot {slot} {botController.Index} {bot}", conn);
+		}
+	}
+}

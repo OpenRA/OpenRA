@@ -1,0 +1,198 @@
+Container@LOBBY_SERVERS_BIN:
+	Logic: ServerListLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		Container@LABEL_CONTAINER:
+			Y: 0 - 24
+			Width: PARENT_WIDTH
+			Children:
+				Label@NAME:
+					X: 5
+					Width: 347
+					Height: 25
+					Text: label-container-server
+					Align: Center
+					Font: Bold
+				Label@PLAYERS:
+					X: 382
+					Width: 85
+					Height: 25
+					Text: label-container-players
+					Font: Bold
+				Label@LOCATION:
+					X: 472
+					Width: 110
+					Height: 25
+					Text: label-container-location
+					Font: Bold
+				Label@STATUS:
+					X: 587
+					Width: 50
+					Height: 25
+					Text: label-container-status
+					Font: Bold
+		LogicTicker@NOTICE_WATCHER:
+		Background@NOTICE_CONTAINER:
+			Width: PARENT_WIDTH
+			Height: 20
+			Background: dialog2
+			Children:
+				Label@OUTDATED_VERSION_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 20
+					Align: Center
+					Text: label-notice-container-outdated-version
+					Font: TinyBold
+				Label@UNKNOWN_VERSION_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 20
+					Align: Center
+					Text: label-notice-container-unknown-version
+					Font: TinyBold
+				Label@PLAYTEST_AVAILABLE_LABEL:
+					X: 5
+					Width: PARENT_WIDTH - 10
+					Height: 20
+					Align: Center
+					Text: label-notice-container-playtest-available
+					Font: TinyBold
+		ScrollPanel@SERVER_LIST:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				ScrollItem@HEADER_TEMPLATE:
+					X: 2
+					Width: PARENT_WIDTH - 27
+					Height: 20
+					Background: scrollheader
+					Visible: false
+					Children:
+						Label@LABEL:
+							Font: TinyBold
+							Width: PARENT_WIDTH
+							Height: 20
+							Align: Center
+				ScrollItem@SERVER_TEMPLATE:
+					X: 2
+					Width: PARENT_WIDTH - 27
+					Height: 25
+					EnableChildMouseOver: True
+					Children:
+						LabelWithTooltip@TITLE:
+							X: 5
+							Width: 337
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Image@PASSWORD_PROTECTED:
+							X: 364
+							Y: 6
+							Width: 12
+							Height: 13
+							ImageCollection: lobby-bits
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: image-lobby-servers-bin-password-protected-tooltip
+						Image@REQUIRES_AUTHENTICATION:
+							X: 364
+							Y: 6
+							Width: 12
+							Height: 13
+							ImageCollection: lobby-bits
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+							TooltipText: image-lobby-servers-bin-requires-authentication-tooltip
+						LabelWithTooltip@PLAYERS:
+							X: 382
+							Width: 85
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Label@LOCATION:
+							X: 472
+							Width: 110
+							Height: 25
+						Label@STATUS:
+							X: 587
+							Width: 50
+							Height: 25
+		Label@PROGRESS_LABEL:
+			Y: (PARENT_HEIGHT - HEIGHT) / 2
+			Width: PARENT_WIDTH
+			Height: 25
+			Font: Bold
+			Align: Center
+			Visible: false
+		DropDownButton@FILTERS_DROPDOWNBUTTON:
+			Y: PARENT_HEIGHT + 5
+			Width: 154
+			Height: 25
+			Text: dropdownbutton-lobby-servers-bin-filters
+			Font: Bold
+		Button@RELOAD_BUTTON:
+			X: 159
+			Y: PARENT_HEIGHT + 5
+			Width: 26
+			Height: 25
+			Children:
+				Image@IMAGE_RELOAD:
+					X: 5
+					Y: 5
+					Width: 16
+					Height: 16
+					ImageCollection: reload-icon
+					ImageName: enabled
+					IgnoreMouseOver: True
+					Children:
+						LogicTicker@ANIMATION:
+		Container@SELECTED_SERVER:
+			X: PARENT_WIDTH + 11
+			Width: 174
+			Height: 280
+			Children:
+				Background@MAP_BG:
+					Width: PARENT_WIDTH
+					Height: 174
+					Background: dialog3
+					Children:
+						MapPreview@SELECTED_MAP_PREVIEW:
+							X: 1
+							Y: 1
+							Width: PARENT_WIDTH - 2
+							Height: PARENT_HEIGHT - 2
+							TooltipContainer: TOOLTIP_CONTAINER
+				LabelWithTooltip@SELECTED_MAP:
+					Y: 173
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+					Align: Center
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
+				Label@SELECTED_IP:
+					Y: 188
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_STATUS:
+					Y: 204
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@SELECTED_MOD_VERSION:
+					Y: 217
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Tiny
+					Align: Center
+				Label@SELECTED_PLAYERS:
+					Y: 230
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center

@@ -1,0 +1,355 @@
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, monster-tank-madness.lua
+	StartGameNotification:
+		Notification:
+	MissionData:
+		Briefing: briefing
+		WinVideo: sovbatl.vqa
+		LossVideo: sovtstar.vqa
+
+^Palettes:
+	IndexedPlayerPalette:
+		PlayerIndex:
+			BadGuy: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
+			FriendlyMadTanks: 200, 200, 201, 202, 203, 203, 204, 205, 206, 206, 207, 221, 222, 222, 223, 223
+			Outpost: 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143
+
+^Building:
+	AnnounceOnSeen:
+
+^ExplodingCivBuilding:
+	Inherits: ^CivBuilding
+	FireWarheadsOnDeath:
+		Weapon: BarrelExplode
+		EmptyWeapon: BarrelExplode
+
+V01.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V01
+
+V02.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V02
+
+V03.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V03
+
+V04.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V04
+
+V05.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V05
+
+V06.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V06
+
+V07.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V07
+
+V08.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V08
+
+V09.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V09
+
+V11.exploding:
+	Inherits: ^ExplodingCivBuilding
+	RenderSprites:
+		Image: V11
+
+V19:
+	FireWarheadsOnDeath:
+		Weapon: BarrelExplode
+		EmptyWeapon: BarrelExplode
+
+DEMITRI:
+	Inherits: DELPHI
+	Tooltip:
+		Name: actor-demitri-name
+	Passenger:
+		CargoType: Demitri
+	RenderSprites:
+		Image: DELPHI
+	Voiced:
+		VoiceSet: DemitriVoice
+
+TRAN:
+	RevealsShroud:
+		Range: 0c0
+	Cargo:
+		Types: Demitri
+		MaxWeight: 1
+	-Selectable:
+	Interactable:
+
+LST:
+	Cargo:
+		Types: Infantry, Vehicle, Demitri
+
+JEEP:
+	Cargo:
+		Types: Infantry, Demitri
+
+PBOX:
+	Cargo:
+		Types: Infantry, Demitri
+
+5TNK:
+	Inherits: ^TrackedVehicle
+	Inherits@AUTOTARGET: ^AutoTargetAll
+	Valued:
+		Cost: 10000
+	Tooltip:
+		Name: actor-5tnk.name
+		GenericName: actor-5tnk.generic-name
+	Health:
+		HP: 2000000
+	Armor:
+		Type: Concrete
+	Mobile:
+		Speed: 42
+	RevealsShroud:
+		Range: 6c0
+		RequiresCondition: !friendly
+	RevealsShroud@friendly:
+		Range: 6c0
+		RequiresCondition: friendly
+		ValidRelationships: Ally, Enemy
+	ExternalCondition@friendly:
+		Condition: friendly
+	Turreted:
+		TurnSpeed: 4
+	Armament@PRIMARY:
+		Weapon: SuperTankPrimary
+		LocalOffset: 900,180,340, 900,-180,340
+		Recoil: 171
+		RecoilRecovery: 30
+		MuzzleSequence: muzzle
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: MammothTusk
+		LocalOffset: -85,384,340, -85,-384,340
+		LocalYaw: -100,100
+		Recoil: 43
+		MuzzleSequence: muzzle
+	AttackTurreted:
+	WithMuzzleOverlay:
+	WithSpriteTurret:
+	FireWarheadsOnDeath:
+		Weapon: MiniNuke
+		EmptyWeapon: MiniNuke
+	SpawnActorOnDeath:
+		Actor: 5TNK.Husk
+	ChangesHealth:
+		Step: 100
+		Delay: 1
+		StartIfBelow: 100
+		DamageCooldown: 150
+	Selectable:
+		Bounds: 1877, 1621, 0, -170
+	RenderSprites:
+		Image: 4TNK
+
+5TNK.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: actor-5tnk-husk-name
+	ThrowsParticle@turret:
+		Anim: turret
+	Health:
+		HP: 200000
+	RenderSprites:
+		Image: 4TNK
+	-Capturable:
+	-TransformOnCapture:
+	-InfiltrateForTransform:
+
+DOME.NoInfiltrate:
+	Inherits: DOME
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: DOME
+	-InfiltrateForExploration:
+	Targetable:
+		TargetTypes: GroundActor, Structure, C4, DetonateAttack, MissionObjective
+	ProvidesPrerequisite:
+		Prerequisite: dome
+
+SPY:
+	Infiltrates:
+		Types: SpyInfiltrate, MissionObjective
+
+BAD3TNK:
+	Inherits: 3TNK
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: 3TNK
+
+BADTRUK:
+	Inherits: TRUK
+	Buildable:
+		Prerequisites: ~disabled
+	RenderSprites:
+		Image: TRUK
+
+SS:
+	Buildable:
+		Prerequisites: ~disabled
+
+AGUN:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSUB:
+	Buildable:
+		Prerequisites: ~disabled
+
+DD:
+	Buildable:
+		Prerequisites: ~disabled
+
+CA:
+	Buildable:
+		Prerequisites: ~disabled
+
+PT:
+	Buildable:
+		Prerequisites: ~disabled
+
+MSLO:
+	Buildable:
+		Prerequisites: ~disabled
+
+SYRD:
+	Buildable:
+		Prerequisites: ~disabled
+
+SPEN:
+	Buildable:
+		Prerequisites: ~disabled
+
+IRON:
+	Buildable:
+		Prerequisites: ~disabled
+
+PDOX:
+	Buildable:
+		Prerequisites: ~disabled
+
+SAM:
+	Buildable:
+		Prerequisites: ~disabled
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+AFLD:
+	Buildable:
+		Prerequisites: ~disabled
+
+ATEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+STEK:
+	Buildable:
+		Prerequisites: ~disabled
+
+4TNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MCV:
+	Buildable:
+		Prerequisites: ~disabled
+
+MNLY:
+	Buildable:
+		Prerequisites: ~disabled
+
+TTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+CTNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+MGG:
+	Buildable:
+		Prerequisites: ~disabled
+
+GAP:
+	Buildable:
+		Prerequisites: ~disabled
+
+MRJ:
+	Buildable:
+		Prerequisites: ~disabled
+
+E7:
+	Buildable:
+		Prerequisites: ~disabled
+
+C1:
+	-Crushable:
+
+C2:
+	-Crushable:
+
+C5:
+	-Crushable:
+
+C7:
+	-Crushable:
+
+C8:
+	-Crushable:
+
+SHOK:
+	Buildable:
+		Prerequisites: ~disabled
+
+THF:
+	Buildable:
+		Prerequisites: ~disabled
+
+STNK:
+	Buildable:
+		Prerequisites: ~disabled
+
+DTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
+QTNK:
+	Buildable:
+		Prerequisites: ~disabled

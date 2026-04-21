@@ -1,0 +1,457 @@
+APC:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@CARGOPIPS: ^CargoPips
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-apc.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 80
+		Prerequisites: ~gaweap, gapile, ~techlevel.medium
+		Description: actor-apc.description
+	Mobile:
+		TurnSpeed: 20
+		Speed: 113
+		PauseOnCondition: empdisable || loading || being-captured || carried
+		Locomotor: amphibious
+	Health:
+		HP: 20000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		UnloadVoice: Unload
+		LoadingCondition: loading
+		EjectOnDeath: true
+	GrantConditionOnTerrain:
+		Condition: inwater
+		TerrainTypes: Water
+	WithVoxelBody:
+		RequiresCondition: !inwater
+	WithVoxelBody@water:
+		Sequence: water
+		RequiresCondition: inwater
+	LeavesTrails:
+		RequiresCondition: !inside-tunnel && inwater
+		Image: wake
+		Palette: effect
+		TerrainTypes: Water
+		StationaryInterval: 18
+		MovingInterval: 6
+
+HVR:
+	Inherits: ^Vehicle
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: actor-hvr.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 80
+		Prerequisites: ~gaweap, garadr, ~techlevel.high
+		Description: actor-hvr.description
+	Mobile:
+		Speed: 99
+		Locomotor: hover
+		TerrainOrientationAdjustmentMargin: -1
+		TurnsWhileMoving: true
+		TurnSpeed: 24
+	Selectable:
+		Bounds: 1206, 1448, 0, -603
+	Health:
+		HP: 23000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 7c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: HoverMissile
+		LocalOffset: 0,242,543, 0,-242,543
+	Turreted:
+		TurnSpeed: 28
+		Offset: -128,0,85
+	AttackTurreted:
+		Voice: Attack
+		PauseOnCondition: empdisable
+	WithVoxelTurret:
+	Hovers:
+		RequiresCondition: !empdisable
+		BobDistance: -64
+		InitialHeight: 384
+	LeavesTrails:
+		RequiresCondition: !inside-tunnel
+		Image: wake
+		Palette: effect
+		TerrainTypes: Water
+		TrailWhileStationary: True
+		StationaryInterval: 18
+		MovingInterval: 6
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+
+SMECH:
+	Inherits: ^Vehicle
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: actor-smech.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 20
+		Prerequisites: ~gaweap, ~techlevel.low
+		Description: actor-smech.description
+	Mobile:
+		TurnSpeed: 20
+		Speed: 99
+		AlwaysTurnInPlace: true
+		TerrainOrientationAdjustmentMargin: -1
+	Health:
+		HP: 17500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 6c0
+		MaxHeightDelta: 3
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	Armament:
+		Weapon: AssaultCannon
+		LocalOffset: 0,0,620
+	Voiced:
+		VoiceSet: Mech
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		RequiresCondition: !inside-tunnel
+	BodyOrientation:
+		QuantizedFacings: 8
+		CameraPitch: 250
+	WithAttackOverlay@muzzle:
+		Sequence: shoot-muzzle
+		Palette: muzzle
+		IsDecoration: true
+	Selectable:
+		Bounds: 603, 1930, 0, -482
+	-DamagedByTerrain@VEINS:
+	-LeavesTrails@VEINS:
+
+MMCH:
+	Inherits: ^Tank
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: actor-mmch.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 50
+		Prerequisites: ~gaweap, ~techlevel.medium
+		Description: actor-mmch.description
+	Mobile:
+		TurnSpeed: 20
+		Speed: 56
+		AlwaysTurnInPlace: true
+		TerrainOrientationAdjustmentMargin: -1
+	Health:
+		HP: 40000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 8c0
+		MaxHeightDelta: 3
+	BodyOrientation:
+		QuantizedFacings: 32
+		UseClassicPerspectiveFudge: False
+	WithFacingSpriteBody:
+		Sequence: stand
+	WithMoveAnimation:
+		MoveSequence: walk
+		ValidMovementTypes: Horizontal, Turn
+	Turreted:
+		TurnSpeed: 20
+	AttackTurreted:
+		Voice: Attack
+		PauseOnCondition: empdisable
+	WithSpriteTurret:
+		Recoils: false
+	Armament:
+		Weapon: 120mm
+		MuzzleSequence: muzzle
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 1024,272,1216
+	DetectCloaked:
+		Range: 1c768
+		RequiresCondition: rank-elite
+	RenderDetectionCircle:
+	WithMuzzleOverlay:
+	RenderVoxels:
+	WithVoxelBarrel:
+		LocalOffset: 0,51,256
+	Selectable:
+		Bounds: 905, 2534, 0, -482
+	Carryable:
+		LocalOffset: 0,0,577
+
+HMEC:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	Valued:
+		Cost: 3000
+	Tooltip:
+		Name: actor-hmec.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 140
+		Prerequisites: ~gaweap, gatech, ~techlevel.high
+		BuildLimit: 1
+		Description: actor-hmec.description
+	Mobile:
+		TurnSpeed: 12
+		Speed: 42
+	Health:
+		HP: 80000
+	ChangesHealth:
+		Step: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 8c0
+		MaxHeightDelta: 3
+	AttackFrontal:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		FacingTolerance: 0
+	Armament@MISSILES:
+		Weapon: MammothTusk
+		LocalOffset: -243,-368,1208, -243,368,1208
+	Armament@RAILGUN:
+		Weapon: MechRailgun
+		LocalOffset: 368,-311,1030, 368,311,1030
+	-WithVoxelBody:
+	WithVoxelWalkerBody:
+		TickRate: 1
+	Selectable:
+		Bounds: 1206, 2413, 0, -482
+	Carryable:
+		LocalOffset: 0,0,509
+
+SONIC:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 1300
+	Tooltip:
+		Name: actor-sonic.name
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 120
+		Prerequisites: ~gaweap, gatech, ~techlevel.high
+		Description: actor-sonic.description
+	Targetable:
+		TargetTypes: Ground, Vehicle, Disruptor
+	Mobile:
+		TurnSpeed: 16
+		Speed: 56
+	Health:
+		HP: 50000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 7c0
+		MaxHeightDelta: 3
+	Armament:
+		Weapon: SonicZap
+		LocalOffset: -71,0,580
+	AttackTurreted:
+		Voice: Attack
+		PauseOnCondition: empdisable
+		OpportunityFire: False
+	Turreted:
+		TurnSpeed: 20
+		Offset: -170,0,0
+	WithVoxelTurret:
+	FireWarheadsOnDeath:
+		RequiresCondition: !rank-elite
+	FireWarheadsOnDeath@ELITE:
+		RequiresCondition: rank-elite
+		Weapon: UnitExplode
+
+JUGG:
+	Inherits: ^Tank
+	Inherits@SPRITES: ^SpriteActor
+	Inherits@EXPERIENCE: ^GainsExperience
+	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: actor-jugg.name
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: actor-jugg.deployed-name
+		RequiresCondition: deployed
+	UpdatesPlayerStatistics:
+		AddToArmyValue: true
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: ~gaweap, garadr, ~techlevel.high
+		Description: actor-jugg.description
+	Health:
+		HP: 35000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 71
+		TurnSpeed: 20
+		AlwaysTurnInPlace: true
+		ImmovableCondition: !undeployed
+		RequireForceMoveCondition: !undeployed
+		TerrainOrientationAdjustmentMargin: -1
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 9c0
+		MaxHeightDelta: 3
+	RenderVoxels:
+		LightAmbientColor: 0.4, 0.4, 0.4
+	RenderSprites:
+		Image: jugg
+	WithMakeAnimation:
+		BodyNames: body, deployedbody
+	WithFacingSpriteBody:
+		Sequence: stand
+		RequiresCondition: !deployed
+	WithMoveAnimation:
+		MoveSequence: walk
+		ValidMovementTypes: Horizontal, Turn
+	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
+		Facing: 384
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+		SmartDeploy: true
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	QuantizeFacingsFromSequence:
+		Sequence: turret
+	WithSpriteBody@deployed:
+		RequiresCondition: deployed && real-actor
+		Name: deployedbody
+	Turreted:
+		Turret: deployed
+		TurnSpeed: 20
+		InitialFacing: 384
+		Offset: -153,-17,633
+		RealignDelay: -1
+	WithVoxelBarrel:
+		Armament: deployed
+		LocalOffset: 512,0,362
+		LocalOrientation: 0, 128, 0
+		RequiresCondition: deployed
+	WithSpriteTurret@deployed:
+		Turret: deployed
+		RequiresCondition: deployed
+		Recoils: false
+	AttackTurreted@deployed:
+		Voice: Attack
+		Armaments: deployed
+		Turrets: deployed
+		RequiresCondition: deployed
+		PauseOnCondition: empdisable
+		TargetFrozenActors: True
+		ForceFireIgnoresActors: True
+		OutsideRangeRequiresForceFire: True
+	Armament@deployed:
+		Name: deployed
+		Turret: deployed
+		Weapon: Jugg90mm
+		LocalOffset: 820,203,1386, 820,0,1386, 820,-203,1386
+		RequiresCondition: deployed
+		MuzzleSequence: muzzle
+	WithMuzzleOverlay:
+	RevealOnFire:
+		ArmamentNames: deployed
+	Selectable:
+		DecorationBounds: 1448, 2413, 0, -482
+
+MOBILEMP:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~gaweap, napuls, ~techlevel.superweapons
+		Description: actor-mobilemp.description
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: actor-mobilemp.name
+	Health:
+		HP: 80000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 85
+	WithVoxelBody:
+		Offset: 0,0,-256
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 6c0
+		MaxHeightDelta: 3
+	GrantChargedConditionOnToggle:
+		Voice: Move
+		ChargeDuration: 750
+		ActivatedCondition: triggered
+		PauseOnCondition: empdisable
+	FireWarheads:
+		Weapons: MEMPulse
+		RequiresCondition: triggered && !empdisable

@@ -1,0 +1,356 @@
+Background@SIMPLE_TOOLTIP:
+	Logic: SimpleTooltipLogic
+	Background: dialog4
+	Height: 32
+	Children:
+		Container@LINE_HEIGHT:
+			Y: 3
+			Height: 19
+		Label@LABEL:
+			X: 7
+			Y: 0 - 1
+			Height: 23
+			Font: Bold
+
+Background@BUTTON_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: dialog4
+	Height: 29
+	Children:
+		Label@LABEL:
+			X: 7
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 2
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+		Label@DESC:
+			X: 7
+			Y: 28
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
+	Logic: ButtonTooltipLogic
+	Background: dialog4
+	Height: 29
+	Children:
+		Label@LABEL:
+			X: 7
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Y: 3
+			Visible: false
+			TextColor: FFFF00
+			Height: 23
+			Font: Bold
+		LabelWithHighlight@DESC:
+			X: 7
+			Y: 27
+			Height: 12
+			Font: TinyBold
+			VAlign: Top
+
+Background@WORLD_TOOLTIP:
+	Logic: WorldTooltipLogic
+	Background: dialog4
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height: 29
+		Container@DOUBLE_HEIGHT:
+			Height: 50
+		Label@LABEL:
+			X: 7
+			Y: 2
+			Height: 23
+			Font: Bold
+		Image@FLAG:
+			X: 7
+			Y: 27
+			Width: 32
+			Height: 16
+		Label@OWNER:
+			X: 45
+			Y: 23
+			Height: 23
+			Font: Bold
+			Shadow: True
+		Label@EXTRA:
+			X: 7
+			Y: 51
+			Height: 5
+			Font: Bold
+
+Background@SPAWN_TOOLTIP:
+	Logic: SpawnSelectorTooltipLogic
+	Background: dialog4
+	Width: 7
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height: 29
+		Container@DOUBLE_HEIGHT:
+			Height: 44
+		Label@LABEL:
+			Y: 3
+			Height: 23
+			Font: Bold
+		Image@FLAG:
+			X: 7
+			Y: 7
+			Width: 32
+			Height: 16
+		Label@TEAM:
+			Y: 24
+			Height: 15
+			Font: TinyBold
+			Align: center
+
+Background@LATENCY_TOOLTIP:
+	Logic: LatencyTooltipLogic
+	Background: dialog4
+	Height: 29
+	Width: 7
+	Children:
+		Label@LATENCY_PREFIX:
+			X: 7
+			Y: 3
+			Width: 200
+			Height: 26
+			Font: Bold
+			Text: label-latency-tooltip-prefix
+		Label@LATENCY:
+			Y: 3
+			Height: 26
+			Font: Bold
+
+Background@BOT_TOOLTIP:
+	Logic: BotTooltipLogic
+	Background: dialog4
+	Height: 30
+	Width: 300
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Text: label-bot-player-tooltip-name
+			Width: 290
+			Height: 24
+			Font: Bold
+
+Background@ANONYMOUS_PLAYER_TOOLTIP:
+	Logic: AnonymousProfileTooltipLogic
+	Background: dialog4
+	Height: 30
+	Width: 300
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 2
+			Text: label-anonymous-player-tooltip-name
+			Width: 290
+			Height: 24
+			Font: MediumBold
+		Label@LOCATION:
+			X: 7
+			Y: 25
+			Height: 12
+			Visible: False
+			Font: TinyBold
+		Label@IP:
+			X: 7
+			Y: 25
+			Height: 12
+			Visible: False
+			Font: TinyBold
+		Container@GAME_ADMIN:
+			X: 7
+			Y: 25
+			Height: 12
+			Visible: False
+			Children:
+				Image@ICON:
+					X: 1
+					Y: 4
+					Width: 7
+					Height: 5
+					ImageCollection: lobby-bits
+					ImageName: admin
+				Label@LABEL:
+					X: 10
+					Width: 200
+					Height: 12
+					Text: label-game-admin
+					Font: TinyBold
+
+Background@REGISTERED_PLAYER_TOOLTIP:
+	Logic: RegisteredProfileTooltipLogic
+	Width: 270
+	Background: dialog4
+	Children:
+		Container@HEADER:
+			Width: PARENT_WIDTH
+			Children:
+				Container@PROFILE_HEADER:
+					Height: 43
+					Children:
+						Label@PROFILE_NAME:
+							X: 7
+							Y: 2
+							Width: PARENT_WIDTH - 20
+							Height: 24
+							Font: MediumBold
+						Label@PROFILE_RANK:
+							X: 7
+							Y: 24
+							Width: PARENT_WIDTH - 20
+							Height: 12
+							Font: TinyBold
+						Container@GAME_ADMIN:
+							X: 7
+							Y: 36
+							Width: PARENT_WIDTH - 20
+							Height: 12
+							Visible: False
+							Children:
+								Image@ICON:
+									Y: 5
+									Width: 7
+									Height: 5
+									ImageCollection: lobby-bits
+									ImageName: admin
+								Label@LABEL:
+									X: 10
+									Y: 1
+									Width: 200
+									Height: 12
+									Text: label-game-admin
+									Font: TinyBold
+				Container@MESSAGE_HEADER:
+					Height: 26
+					Width: PARENT_WIDTH
+					Children:
+						Label@MESSAGE:
+							X: 7
+							Width: PARENT_WIDTH - 14
+							Height: 23
+							Font: Bold
+		Container@BADGES_CONTAINER:
+			Width: PARENT_WIDTH
+			Visible: false
+			Children:
+				Background@SEPARATOR:
+					X: 10
+					Height: 1
+					Background: tooltip-separator
+
+Background@PRODUCTION_TOOLTIP:
+	Logic: ProductionTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 3
+			Height: 23
+			TextColor: FFFF00
+			Font: Bold
+		Label@REQUIRES:
+			X: 7
+			Y: 26
+			Height: 15
+			Font: TinyBold
+		Label@DESC:
+			X: 7
+			Y: 27
+			Height: 2
+			Font: TinyBold
+			VAlign: Top
+		Image@COST_ICON:
+			Y: 5
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-cost
+		Label@COST:
+			Y: 1
+			Height: 23
+			Font: Bold
+		Image@TIME_ICON:
+			X: 3
+			Y: 26
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-time
+		Label@TIME:
+			Y: 22
+			Height: 23
+			Font: Bold
+		Image@POWER_ICON:
+			Y: 46
+			Width: 16
+			Height: 16
+			ImageCollection: sidebar-bits
+			ImageName: production-tooltip-power
+		Label@POWER:
+			Y: 42
+			Height: 23
+			Font: Bold
+
+Background@SUPPORT_POWER_TOOLTIP:
+	Logic: SupportPowerTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 32
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 4
+			Height: 20
+			Font: Bold
+		Label@HOTKEY:
+			Visible: false
+			Y: 4
+			Height: 20
+			TextColor: FFFF00
+			Font: Bold
+		Label@TIME:
+			Y: 10
+			Font: TinyBold
+			VAlign: Top
+		Label@DESC:
+			X: 7
+			Y: 24
+			Font: TinyBold
+			VAlign: Top
+
+Background@ARMY_TOOLTIP:
+	Logic: ArmyTooltipLogic
+	Background: dialog4
+	Width: 200
+	Height: 65
+	Children:
+		Label@NAME:
+			X: 7
+			Y: 3
+			Height: 23
+			Font: Bold
+		Label@DESC:
+			X: 7
+			Y: 27
+			Height: 2
+			Font: TinyBold
+			VAlign: Top
