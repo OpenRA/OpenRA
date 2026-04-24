@@ -116,6 +116,9 @@ namespace OpenRA.Mods.Common.Server
 		const string ChangedMap = "notification-changed-map";
 
 		[FluentReference]
+		const string HiddenMapHasBeenPreviewed = "notification-hidden-map-has-been-previewed";
+
+		[FluentReference]
 		const string MapBotsDisabled = "notification-map-bots-disabled";
 
 		[FluentReference]
@@ -642,6 +645,12 @@ namespace OpenRA.Mods.Common.Server
 						server.LobbyInfo.DisabledSpawnPoints.Clear();
 
 						server.SendFluentMessage(ChangedMap, "player", client.Name, "map", server.Map.Title);
+						var previewVisibility = map.GenerationArgs?.PreviewVisibility ?? MapGenerationArgs.PreviewVisibilityFlags.All;
+						var hiddenMapNeedsDisclaimer =
+							!previewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.Lobby)
+								&& previewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.MapChooser);
+						if (hiddenMapNeedsDisclaimer)
+							server.SendFluentMessage(HiddenMapHasBeenPreviewed);
 
 						server.SyncLobbyInfo();
 

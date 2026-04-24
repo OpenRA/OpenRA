@@ -168,6 +168,7 @@ namespace OpenRA
 			new("Bounds"),
 			new("Visibility"),
 			new("Categories"),
+			new("HideSpawnPreviews", required: false, ignoreIfValue: "False"),
 			new("LockPreview", required: false, ignoreIfValue: "False"),
 			new("Players", nameof(PlayerDefinitions)),
 			new("Actors", nameof(ActorDefinitions)),
@@ -194,8 +195,27 @@ namespace OpenRA
 		public Rectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
 		public ImmutableArray<string> Categories = ["Conquest"];
+		public bool HideSpawnPreviews;
 
 		public Size MapSize { get; private set; }
+
+		/// <summary>
+		/// <para>
+		/// Files to add to a map package when saving. This is useful for logic
+		/// which has no access to the underlying IReadWritePackage used to store map files.
+		/// </para>
+		/// <para>
+		/// Files are added using the string key as the file name and the byte array as the
+		/// content. The byte array associated with a string key cannot be null. map.bin and
+		/// map.yaml may not be supplied via this mechanism. map.png may be supplied, but must be
+		/// accompanied by setting LockPreview to true.
+		/// </para>
+		/// <para>
+		/// Note that by default, Save() will carry over files from an original map package if not
+		/// listed here.
+		/// </para>
+		/// </summary>
+		public readonly Dictionary<string, byte[]> StagedMapFiles = [];
 
 		// Player and actor yaml. Public for access by the map importers and lint checks.
 		public IReadOnlyCollection<MiniYamlNode> PlayerDefinitions = [];
@@ -658,6 +678,18 @@ namespace OpenRA
 					if (stream == null || !Enumerable.SequenceEqual(data, stream.ReadAllBytes()))
 						toPackage.Update(filename, data);
 				}
+			}
+
+			foreach (var forbidden in new[] { "map.bin", "map.yaml" })
+				if (StagedMapFiles.ContainsKey(forbidden))
+					throw new InvalidOperationException($"StagedMapFiles contains forbidden `{forbidden}` key");
+
+			foreach (var (filename, data) in StagedMapFiles.Order())
+			{
+				if (data == null)
+					throw new NullReferenceException($"Staged map file `{filename}` has null data");
+
+				UpdatePackage(filename, data);
 			}
 
 			if (!LockPreview)

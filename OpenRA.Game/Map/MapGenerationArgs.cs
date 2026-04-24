@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -17,6 +18,15 @@ namespace OpenRA
 {
 	public class MapGenerationArgs
 	{
+		[Flags]
+		public enum PreviewVisibilityFlags
+		{
+			None = 0,
+			Lobby = 1,
+			MapChooser = 2,
+			All = Lobby | MapChooser,
+		}
+
 		[FieldLoader.Require]
 		public string Uid = null;
 
@@ -41,6 +51,8 @@ namespace OpenRA
 		[FieldLoader.Require]
 		public string Author = null;
 
+		public PreviewVisibilityFlags PreviewVisibility = PreviewVisibilityFlags.All;
+
 		public Dictionary<string, string> Options = [];
 
 		public List<MiniYamlNode> Serialize()
@@ -53,7 +65,8 @@ namespace OpenRA
 				new("Size", FieldSaver.FormatValue(Size)),
 				new("Options", new MiniYaml(null, Options.Select(o => new MiniYamlNode(o.Key, o.Value)))),
 				new("Title", Title),
-				new("Author", Author)
+				new("Author", Author),
+				new("PreviewVisibility", FieldSaver.FormatValue(PreviewVisibility)),
 			];
 		}
 	}

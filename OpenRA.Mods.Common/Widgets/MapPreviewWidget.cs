@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.DrawSprite(minimap, mapRect.Location.ToVector2(), mapRect.Size);
 
 			TooltipSpawnIndex = -1;
-			if (ShowSpawnPoints)
+			if (ShowSpawnPoints && !preview.HideSpawnPreviews)
 			{
 				var spawnPoints = preview.SpawnPoints;
 				var occupants = SpawnOccupants();
