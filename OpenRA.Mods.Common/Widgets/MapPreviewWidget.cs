@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Sprite spawnClaimed, spawnUnclaimed, spawnDisabled;
 		readonly SpriteFont spawnFont;
-		readonly Color spawnColor, spawnContrastColor;
+		readonly Color spawnColor, spawnContrastColor, mapPreviewHiddenColor;
 		readonly int2 spawnLabelOffset;
 
 		public Func<MapPreview> Preview = () => null;
@@ -75,6 +75,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public int TooltipSpawnIndex = -1;
 		public bool ShowUnoccupiedSpawnpoints = true;
+		public Func<bool> HidePreview = () => false;
 
 		Rectangle mapRect;
 		float previewScale = 0;
@@ -91,6 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			ChromeMetrics.TryGet("MapPreviewHiddenColor", out mapPreviewHiddenColor);
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
@@ -112,6 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			ChromeMetrics.TryGet("MapPreviewHiddenColor", out mapPreviewHiddenColor);
 		}
 
 		public override MapPreviewWidget Clone() { return new MapPreviewWidget(this); }
@@ -164,6 +167,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var preview = Preview();
 			if (preview == null)
 				return;
+
+			if (HidePreview())
+			{
+				WidgetUtils.FillRectWithColor(RenderBounds, mapPreviewHiddenColor);
+				return;
+			}
 
 			// Stash a copy of the minimap to ensure consistency
 			// (it may be modified by another thread)

@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string MapSize = "label-mapchooser-random-map-size";
 
 		[FluentReference]
+		const string PreviewVisibility = "label-mapchooser-random-map-preview-visibility";
+
+		[FluentReference]
 		const string RandomMap = "label-mapchooser-random-map-title";
 
 		[FluentReference]
@@ -57,12 +60,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string MapSizeHuge = "label-map-size-huge";
 
+		[FluentReference]
+		const string PreviewVisibilityAll = "label-mapchooser-random-map-preview-visibility-all";
+
+		[FluentReference]
+		const string PreviewVisibilityMapChooser = "label-mapchooser-random-map-preview-visibility-mapchooser";
+
+		[FluentReference]
+		const string PreviewVisibilityNone = "label-mapchooser-random-map-preview-visibility-none";
+
 		public static readonly IReadOnlyDictionary<string, int2> MapSizes = new Dictionary<string, int2>()
 		{
 			{ MapSizeSmall, new int2(48, 60) },
 			{ MapSizeMedium, new int2(60, 90) },
 			{ MapSizeLarge, new int2(90, 120) },
 			{ MapSizeHuge, new int2(120, 160) },
+		};
+
+		public static readonly IReadOnlyDictionary<string, MapGenerationArgs.PreviewVisibilityFlags> PreviewVisibilities =
+			new Dictionary<string, MapGenerationArgs.PreviewVisibilityFlags>()
+		{
+			{ PreviewVisibilityAll, MapGenerationArgs.PreviewVisibilityFlags.All },
+			{ PreviewVisibilityMapChooser, MapGenerationArgs.PreviewVisibilityFlags.MapChooser },
+			{ PreviewVisibilityNone, MapGenerationArgs.PreviewVisibilityFlags.None },
 		};
 
 		readonly ModData modData;
@@ -77,10 +97,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget dropdownSettingTemplate;
 		readonly Widget tilesetSetting;
 		readonly Widget sizeSetting;
+		readonly Widget previewVisibilitySetting;
 		readonly Widget parentWidget;
 
 		ITerrainInfo selectedTerrain;
 		string selectedSize;
+		string selectedPreviewVisibility;
 		Size size;
 		bool initialGenerationDone;
 
@@ -197,6 +219,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				sizeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", MapSizes.Count * 30, MapSizes.Keys, SetupItem);
 			};
 
+			var previewVisibilityLabel = FluentProvider.GetMessage(PreviewVisibility);
+			previewVisibilitySetting = dropdownSettingTemplate.Clone();
+			previewVisibilitySetting.Get<LabelWidget>("LABEL").GetText = () => previewVisibilityLabel;
+
+			var previewVisibilityDropdown = previewVisibilitySetting.Get<DropDownButtonWidget>("DROPDOWN");
+			var previewVisibilityDropdownLabel = new CachedTransform<string, string>(s => FluentProvider.GetMessage(s));
+			previewVisibilityDropdown.GetText = () => previewVisibilityDropdownLabel.Update(selectedPreviewVisibility);
+			previewVisibilityDropdown.OnMouseDown = _ =>
+			{
+				ScrollItemWidget SetupItem(string visibility, ScrollItemWidget template)
+				{
+					bool IsSelected() => visibility == selectedPreviewVisibility;
+					void OnClick()
+					{
+						selectedPreviewVisibility = visibility;
+
+						// Changes to visibility should re-randomize so that it's not possible to
+						// peak at a preview by changing the setting back and forth. (Which would
+						// be cheating.)
+						settings.Randomize(Game.CosmeticRandom);
+						RandomizeSize();
+						GenerateMap();
+					}
+
+					var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
+					var label = FluentProvider.GetMessage(visibility);
+					item.Get<LabelWidget>("LABEL").GetText = () => label;
+					return item;
+				}
+
+				previewVisibilityDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", PreviewVisibilities.Count * 30, PreviewVisibilities.Keys, SetupItem);
+			};
+
 			var generateButton = widget.Get<ButtonWidget>("BUTTON_GENERATE");
 			generateButton.IsDisabled = () => IsGenerating;
 			generateButton.OnClick = () =>
@@ -207,6 +262,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			selectedSize = MapSizes.Keys.Skip(1).First();
+			selectedPreviewVisibility = PreviewVisibilities.Keys.First();
 			if (initialSettings != null)
 			{
 				selectedTerrain = modData.DefaultTerrainInfo[initialSettings.Tileset];
@@ -260,9 +316,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void RefreshSettings()
 		{
 			settingsPanel.RemoveChildren();
-			tilesetSetting.Bounds = sizeSetting.Bounds = dropdownSettingTemplate.Bounds;
+			tilesetSetting.Bounds = sizeSetting.Bounds = previewVisibilitySetting.Bounds =
+				dropdownSettingTemplate.Bounds;
 			settingsPanel.AddChild(tilesetSetting);
 			settingsPanel.AddChild(sizeSetting);
+			settingsPanel.AddChild(previewVisibilitySetting);
 
 			var playerCount = settings.PlayerCount;
 			foreach (var o in settings.Options)
@@ -425,6 +483,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					args = settings.Compile(selectedTerrain, size);
+					args.PreviewVisibility = PreviewVisibilities[selectedPreviewVisibility];
 					map = generator.Generate(modData, args);
 				}
 				catch (MapGenerationException)
@@ -450,7 +509,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						args.Uid = map.Uid;
 
-						preview.Update(map);
+						if (args.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.MapChooser))
+							preview.Update(map);
+						else
+							preview.HiddenUpdate(map);
+
 						lastGeneration = currentGeneration;
 
 						// `onGenerate` assumed to take ownership of package here.

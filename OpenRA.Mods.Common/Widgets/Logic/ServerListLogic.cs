@@ -329,7 +329,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
 			if (mapPreview != null)
+			{
 				mapPreview.Preview = () => currentMap;
+				mapPreview.HidePreview = () => !(currentMap.GenerationArgs?.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.Lobby) ?? true);
+			}
 
 			var mapTitle = widget.GetOrNull<LabelWithTooltipWidget>("SELECTED_MAP");
 			if (mapTitle != null)

@@ -335,6 +335,8 @@ label-downloading-map = Downloading { $size } kB
 label-downloading-map-progress = Downloading { $size } kB ({ $progress }%)
 button-retry-install = Retry Install
 button-retry-search = Retry Search
+label-generated-map-visible-to-nobody = Hidden
+label-generated-map-visible-to-mapchooser = Hidden (previewed by chooser)
 ## also MapChooserLogic
 label-created-by = Created by { $author }
 

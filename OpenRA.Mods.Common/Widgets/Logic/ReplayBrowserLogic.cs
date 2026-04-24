@@ -180,6 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "showUnoccupiedSpawnpoints", false },
 				{ "mapUpdatesEnabled", false },
 				{ "onMapUpdate", (Action<string>)(_ => { }) },
+				{ "respectPreviewVisibility", false },
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>

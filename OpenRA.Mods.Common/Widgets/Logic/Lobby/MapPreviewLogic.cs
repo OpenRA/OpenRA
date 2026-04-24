@@ -36,17 +36,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string RetrySearch = "button-retry-search";
 
+		[FluentReference]
+		const string VisibleToNobody = "label-generated-map-visible-to-nobody";
+
+		[FluentReference]
+		const string VisibleToMapChooser = "label-generated-map-visible-to-mapchooser";
+
 		[FluentReference("author")]
 		const string CreatedBy = "label-created-by";
 
 		readonly int blinkTickLength = 10;
 		readonly Dictionary<PreviewStatus, Widget[]> previewWidgets = [];
 		readonly Func<(MapPreview Map, Session.MapStatus Status)> getMap;
+		readonly bool respectPreviewVisibility;
 
 		enum PreviewStatus
 		{
 			Unknown,
 			Playable,
+			PlayableButHidden,
 			Incompatible,
 			Validating,
 			Generating,
@@ -66,16 +74,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool mapUpdateAvailable = false;
 
 		[ObjectCreator.UseCtor]
-		internal MapPreviewLogic(Widget widget, ModData modData, Func<(MapPreview Map, Session.MapStatus Status)> getMap,
+		internal MapPreviewLogic(Widget widget, ModData modData, Func<(MapPreview Map, Session.MapStatus Status)> getMap, bool respectPreviewVisibility,
 			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
 			bool mapUpdatesEnabled, Action<string> onMapUpdate, Func<IReadOnlySet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
 		{
 			this.getMap = getMap;
+			this.respectPreviewVisibility = respectPreviewVisibility;
 
 			Widget SetupMapPreview(Widget parent)
 			{
 				var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => getMap().Map;
+				if (respectPreviewVisibility)
+					preview.HidePreview = () => !(getMap().Map.GenerationArgs?.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.Lobby) ?? true);
+
 				if (onMouseDown != null)
 					preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
 
@@ -125,6 +137,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				authorLabel.GetText = () => truncateCache.Update(getMap().Map.Author);
 
 				return parent;
+			}
+
+			Widget SetupAuthorMapTypeAndVisibility(Widget parent)
+			{
+				var visibilityLabel = parent.Get<LabelWidget>("VISIBILITY");
+
+				var visibleToMapChooser = FluentProvider.GetMessage(VisibleToMapChooser);
+				var visibleToNobody = FluentProvider.GetMessage(VisibleToNobody);
+				visibilityLabel.GetText = () =>
+					(getMap().Map.GenerationArgs?.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.MapChooser) ?? false)
+						? visibleToMapChooser : visibleToNobody;
+
+				return SetupAuthorAndMapType(parent);
 			}
 
 			var mapRepository = modData.GetOrCreate<WebServices>().MapRepository;
@@ -197,6 +222,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				[previewLarge];
 			previewWidgets[PreviewStatus.Playable] =
 				[previewLarge, SetupAuthorAndMapType(widget.Get("MAP_AVAILABLE"))];
+			previewWidgets[PreviewStatus.PlayableButHidden] =
+				[previewSmall, SetupAuthorMapTypeAndVisibility(widget.Get("MAP_AVAILABLE_HIDDEN"))];
 			previewWidgets[PreviewStatus.Incompatible] =
 				[previewLarge, widget.Get("MAP_INCOMPATIBLE")];
 			previewWidgets[PreviewStatus.Validating] =
@@ -260,7 +287,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					case MapStatus.Available:
 						if (serverStatus.HasFlag(Session.MapStatus.Playable))
-							status = PreviewStatus.Playable;
+						{
+							if (respectPreviewVisibility && !(map.GenerationArgs?.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.Lobby) ?? true))
+								status = PreviewStatus.PlayableButHidden;
+							else
+								status = PreviewStatus.Playable;
+						}
 						else if (serverStatus.HasFlag(Session.MapStatus.Incompatible))
 							status = PreviewStatus.Incompatible;
 						else if (serverStatus.HasFlag(Session.MapStatus.Validating))

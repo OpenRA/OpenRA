@@ -66,6 +66,29 @@ Container@MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
+		Container@MAP_AVAILABLE_HIDDEN:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Children:
+				Label@VISIBILITY:
+					Y: 158
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+				Label@MAP_TYPE:
+					Y: 188
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					IgnoreMouseOver: true
+				Label@MAP_AUTHOR:
+					Y: 201
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Tiny
+					Align: Center
 		Container@MAP_INCOMPATIBLE:
 			Width: PARENT_WIDTH
 			Height: PARENT_HEIGHT

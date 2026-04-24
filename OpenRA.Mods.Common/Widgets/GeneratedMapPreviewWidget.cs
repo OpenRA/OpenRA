@@ -25,9 +25,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Sprite spawnUnclaimed;
 		readonly SpriteFont spawnFont;
-		readonly Color spawnColor, spawnContrastColor;
+		readonly Color spawnColor, spawnContrastColor, mapPreviewHiddenColor;
 		readonly int2 spawnLabelOffset;
 
+		bool active;
 		Sheet mapSheet;
 		Sprite mapSprite;
 		Rectangle mapRect;
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			ChromeMetrics.TryGet("MapPreviewHiddenColor", out mapPreviewHiddenColor);
 		}
 
 		protected GeneratedMapPreviewWidget(GeneratedMapPreviewWidget other)
@@ -50,6 +52,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			ChromeMetrics.TryGet("MapPreviewHiddenColor", out mapPreviewHiddenColor);
 		}
 
 		public override GeneratedMapPreviewWidget Clone() { return new GeneratedMapPreviewWidget(this); }
@@ -58,7 +61,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Update(MapPreview map)
 		{
-			Update(map.SpawnPoints, map.Bounds, map.GridType, map.Preview);
+			if (map.GenerationArgs.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.MapChooser))
+				Update(map.SpawnPoints, map.Bounds, map.GridType, map.Preview);
+			else
+				Update([], map.Bounds, map.GridType, null);
 		}
 
 		public void Update(Map map)
@@ -72,6 +78,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void Update(IEnumerable<CPos> spawnPoints, Rectangle bounds, MapGridType gridType, Png preview)
 		{
+			active = true;
+
+			if (preview == null)
+			{
+				mapSheet?.Dispose();
+				mapSheet = null;
+				mapSprite = null;
+				mapRect = RenderBounds;
+				spawns = [];
+				return;
+			}
+
 			if (mapSheet == null || mapSheet.Size.Width < preview.Width || mapSheet.Size.Height < preview.Height)
 			{
 				mapSheet?.Dispose();
@@ -113,7 +131,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Clear()
 		{
+			active = false;
 			mapSprite = null;
+		}
+
+		public void HiddenUpdate(Map map)
+		{
+			Update([], map.Bounds, map.Grid.Type, null);
 		}
 
 		public int2 ConvertToPreview(CPos cell, Rectangle bounds, MapGridType gridType, float previewScale)
@@ -132,8 +156,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (mapSprite == null)
+			if (!active)
 				return;
+
+			if (mapSprite == null)
+			{
+				WidgetUtils.FillRectWithColor(mapRect, mapPreviewHiddenColor);
+				return;
+			}
 
 			WidgetUtils.DrawSprite(mapSprite, mapRect.Location, mapRect.Size);
 			var offset = spawnUnclaimed.Size.XY.ToInt2() / 2;

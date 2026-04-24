@@ -215,6 +215,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Game.Settings.Save();
 					})
 				},
+				{ "respectPreviewVisibility", true },
 			});
 
 			mapContainer.IsVisible = () => panel != PanelType.Servers;

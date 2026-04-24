@@ -85,6 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "showUnoccupiedSpawnpoints", false },
 				{ "mapUpdatesEnabled", true },
 				{ "onMapUpdate", (Action<string>)(uid => map = modData.MapCache[uid]) },
+				{ "respectPreviewVisibility", true },
 			});
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };

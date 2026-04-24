@@ -218,6 +218,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "showUnoccupiedSpawnpoints", false },
 				{ "mapUpdatesEnabled", false },
 				{ "onMapUpdate", (Action<string>)(_ => { }) },
+				{ "respectPreviewVisibility", true },
 			});
 
 			var renameButton = panel.Get<ButtonWidget>("RENAME_BUTTON");
