@@ -13,10 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Widgets;
 using static OpenRA.Mods.Common.Traits.ResourceLayerInfo;
 
 namespace OpenRA.Mods.Common.MapGenerator
@@ -204,6 +207,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Map.Title = MapGenerationArgs.Title;
 			Map.Author = MapGenerationArgs.Author;
 			Map.RequiresMod = ModData.Manifest.Id;
+			if (!MapGenerationArgs.PreviewVisibility.HasFlag(MapGenerationArgs.PreviewVisibilityFlags.Lobby))
+			{
+				Map.HideSpawnPreviews = true;
+				Map.LockPreview = true;
+				byte[] png;
+				if (ChromeMetrics.TryGet<string>("HiddenMapPreviewPng", out var path))
+					png = ModData.DefaultFileSystem.Open(Platform.ResolvePath(path)).ReadAllBytes();
+				else
+					png = new Png([0, 0, 0, 255], SpriteFrameType.Rgba32, 1, 1).Save();
+				Map.StagedMapFiles.Add("map.png", png);
+			}
 		}
 
 		/// <summary>

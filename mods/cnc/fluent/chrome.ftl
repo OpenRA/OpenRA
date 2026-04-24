@@ -538,6 +538,10 @@ label-mapchooser-random-map-error = Map Generation Failed
 button-mapchooser-random-map-generate = Generate
 label-mapchooser-random-map-tileset = Environment:
 label-mapchooser-random-map-size = Map Size:
+label-mapchooser-random-map-preview-visibility = Preview Visibility:
+label-mapchooser-random-map-preview-visibility-all = Visible To Everyone
+label-mapchooser-random-map-preview-visibility-mapchooser = Map Chooser Only
+label-mapchooser-random-map-preview-visibility-none = Hidden
 label-mapchooser-random-map-error-desc = Adjust the settings or try again.
 
 ## missionbrowser.yaml

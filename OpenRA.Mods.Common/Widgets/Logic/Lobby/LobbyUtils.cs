@@ -265,6 +265,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static int DetermineSelectedSpawnPoint(MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
+			if (preview.HideSpawnPreviews)
+				return 0;
+
 			var spawnSize = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Size.AsVector2();
 			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => (SpawnLocation: mapPreview.ConvertToPreview(sp, preview.GridType), Index: i))

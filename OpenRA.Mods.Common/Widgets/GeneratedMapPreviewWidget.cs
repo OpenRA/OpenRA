@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using OpenRA.FileFormats;
@@ -59,16 +60,26 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Update(MapPreview map)
 		{
-			Update(map.SpawnPoints, map.Bounds, map.GridType, map.Preview);
+			IEnumerable<CPos> spawnPoints =
+				!map.HideSpawnPreviews
+					? map.SpawnPoints
+					: [];
+			Update(spawnPoints, map.Bounds, map.GridType, map.Preview);
 		}
 
-		public void Update(Map map)
+		public void Update(Map map, bool forcePreview)
 		{
-			var spawnPoints = map.ActorDefinitions
-				.Where(d => d.Value.Value == "mpspawn")
-				.Select(kv => new ActorReference(kv.Value.Value, kv.Value).Get<LocationInit>().Value);
-
-			Update(spawnPoints, map.Bounds, map.Grid.Type, new Png(map.Package.GetStream("map.png")));
+			var spawnPoints =
+				forcePreview || !map.HideSpawnPreviews
+					? map.ActorDefinitions
+						.Where(d => d.Value.Value == "mpspawn")
+						.Select(kv => new ActorReference(kv.Value.Value, kv.Value).Get<LocationInit>().Value)
+					: [];
+			var preview =
+				forcePreview
+					? new Png(new MemoryStream(map.SavePreview()))
+					: new Png(map.Package.GetStream("map.png"));
+			Update(spawnPoints, map.Bounds, map.Grid.Type, preview);
 		}
 
 		void Update(IEnumerable<CPos> spawnPoints, Rectangle bounds, MapGridType gridType, Png preview)

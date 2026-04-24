@@ -55,6 +55,7 @@ namespace OpenRA
 		public readonly int players;
 		public readonly Rectangle bounds;
 		public readonly ImmutableArray<short> spawnpoints = [];
+		public readonly bool hideSpawnPreviews;
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
 		public readonly bool downloading;
@@ -78,6 +79,7 @@ namespace OpenRA
 			public MapPlayers Players;
 			public int PlayerCount;
 			public ImmutableArray<CPos> SpawnPoints;
+			public bool HideSpawnPreviews;
 			public MapGridType GridType;
 			public Rectangle Bounds;
 			public Png Preview;
@@ -233,6 +235,7 @@ namespace OpenRA
 		public MapPlayers Players => innerData.Players;
 		public int PlayerCount => innerData.PlayerCount;
 		public ImmutableArray<CPos> SpawnPoints => innerData.SpawnPoints;
+		public bool HideSpawnPreviews => innerData.HideSpawnPreviews;
 		public MapGridType GridType => innerData.GridType;
 		public Rectangle Bounds => innerData.Bounds;
 		public Png Preview => innerData.Preview;
@@ -412,6 +415,10 @@ namespace OpenRA
 			newData.Status = modData.Manifest.MapCompatibility.Contains(requiresMod) ?
 				MapStatus.Available : MapStatus.Unavailable;
 
+			newData.HideSpawnPreviews = false;
+			if (yaml.TryGetValue("HideSpawnPreviews", out temp))
+				newData.HideSpawnPreviews = FieldLoader.GetValue<bool>("HideSpawnPreviews", temp.Value);
+
 			try
 			{
 				// Actor definitions may change if the map format changes
@@ -581,11 +588,13 @@ namespace OpenRA
 					newData.Bounds = r.bounds;
 					newData.TileSet = r.tileset;
 					newData.MapFormat = r.mapformat;
+					newData.HideSpawnPreviews = r.hideSpawnPreviews;
 
 					var spawns = new CPos[r.spawnpoints.Length / 2];
 					for (var j = 0; j < r.spawnpoints.Length; j += 2)
 						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 					newData.SpawnPoints = spawns.ToImmutableArray();
+
 					newData.GridType = r.map_grid_type;
 					if (cache.LoadPreviewImages)
 					{

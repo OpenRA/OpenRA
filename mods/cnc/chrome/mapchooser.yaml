@@ -257,7 +257,7 @@ Container@MAPCHOOSER_GENERATE_PANEL:
 					Children:
 						Checkbox@CHECKBOX:
 							X: 10
-							Y: 5
+							Y: 20
 							Width: PARENT_WIDTH - 20
 							Height: 20
 				Container@TEXT_TEMPLATE:
