@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			// Cancel the requested target, but keep firing on it while in range
-			attackAircraft.ClearRequestedTarget();
+			attackAircraft.ClearRequestedTarget(self);
 		}
 
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If lastVisibleTarget is invalid we could never view the target in the first place, so we just drop it here too
 			if (!lastVisibleTarget.IsValidFor(self) || !autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
-				attackAircraft.ClearRequestedTarget();
+				attackAircraft.ClearRequestedTarget(self);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)

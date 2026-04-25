@@ -57,13 +57,32 @@ namespace OpenRA.Mods.Common.Traits
 			requestedTargetPresetForActivity = requestedTargetPreset;
 		}
 
-		public void ClearRequestedTarget()
+		public void ClearRequestedTarget(Actor self)
 		{
 			if (Info.PersistentTargeting)
 			{
-				OpportunityTarget = RequestedTarget;
-				opportunityForceAttack = requestedForceAttack;
-				opportunityTargetIsPersistentTarget = true;
+				var dominated = false;
+
+				if (autoTarget != null)
+				{
+					if (RequestedTarget.Type == TargetType.Actor)
+					{
+						var a = RequestedTarget.Actor;
+						dominated = !autoTarget.HasValidTargetPriority(self, a.Owner, a.GetEnabledTargetTypes());
+					}
+					else if (RequestedTarget.Type == TargetType.FrozenActor)
+					{
+						var fa = RequestedTarget.FrozenActor;
+						dominated = !autoTarget.HasValidTargetPriority(self, fa.Owner, fa.TargetTypes);
+					}
+				}
+
+				if (!dominated)
+				{
+					OpportunityTarget = RequestedTarget;
+					opportunityForceAttack = requestedForceAttack;
+					opportunityTargetIsPersistentTarget = true;
+				}
 			}
 
 			RequestedTarget = Target.Invalid;
@@ -121,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Requested activity has been canceled
 				else
-					ClearRequestedTarget();
+					ClearRequestedTarget(self);
 			}
 
 			// Can't fire on anything
@@ -431,7 +450,7 @@ namespace OpenRA.Mods.Common.Traits
 			protected override void OnLastRun(Actor self)
 			{
 				// Cancel the requested target, but keep firing on it while in range
-				attack.ClearRequestedTarget();
+				attack.ClearRequestedTarget(self);
 			}
 
 			void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
@@ -442,7 +461,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// If lastVisibleTarget is invalid we could never view the target in the first place, so we just drop it here too
 				if (!lastVisibleTarget.IsValidFor(self) || !autoTarget.HasValidTargetPriority(self, lastVisibleOwner, lastVisibleTargetTypes))
-					attack.ClearRequestedTarget();
+					attack.ClearRequestedTarget(self);
 			}
 
 			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
