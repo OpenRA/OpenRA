@@ -80,6 +80,10 @@ notification-blacklisted-server-name = Server name contains a blacklisted word.
 notification-requires-authentication = Server requires players to have an OpenRA forum account.
 notification-no-permission-to-join = You do not have permission to join this server.
 notification-slot-closed = Your slot was closed by the host.
+notification-admin-auth-wrong = Feature disabled, or invalid admin password.
+notification-admin-auth-already = You are already an administrator.
+notification-admin-auth-success = You are now an administrator.
+notification-admin-auth-sole-success = You are now the sole administrator.
 
 ## ServerOrders, UnitOrders
 notification-joined = { $player } has joined the game.
@@ -1149,3 +1153,9 @@ notification-tiling-path-started = Started tiling path
 notification-tiling-path-updated = Updated tiling path
 notification-tiling-path-reset = Discarded tiling path
 notification-tiling-path-painted = Painted tiling path
+
+## LobbyCommands
+notification-admin-granted = { $player } is now an administrator.
+notification-admin-revoked = { $player } is no longer an administrator.
+notification-admin-revoke-last-admin = Cannot remove the last administrator.
+notification-admin-grant-already = That player is already an administrator.

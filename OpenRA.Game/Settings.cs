@@ -105,6 +105,9 @@ namespace OpenRA
 		[Desc("Locks the game with a password.")]
 		public string Password = "";
 
+		[Desc("Admin password for the game lobby.")]
+		public string AdminPassword = "";
+
 		[Desc("Allow users to search UPnP/NAT-PMP enabled devices for automatic port forwarding.")]
 		public bool DiscoverNatDevices = false;
 
