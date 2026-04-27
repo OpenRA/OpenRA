@@ -29,17 +29,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			// MultiplayerLogic is a superset of the ServerListLogic
 			// but cannot be a direct subclass because it needs to pass object-level state to the constructor
-			serverListLogic = new ServerListLogic(widget, modData, Join);
+			serverListLogic = new ServerListLogic(widget, modData, server => JoinServer(server));
 
 			this.onStart = onStart;
 			this.onExit = onExit;
+
+			serverListLogic.OnJoinAsAdmin = server => JoinServer(server, LobbyEntryMode.AdminAuth);
+			serverListLogic.OnJoinAsSpectator = server => JoinServer(server, LobbyEntryMode.Spectate);
 
 			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
 			directConnectButton.OnClick = () =>
 			{
 				Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
 				{
-					{ "openLobby", OpenLobby },
+					{ "openLobby", () => OpenLobby() },
 					{ "onExit", DoNothing },
 					{ "directConnectEndPoint", null },
 				});
@@ -50,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Ui.OpenWindow("MULTIPLAYER_CREATESERVER_PANEL", new WidgetArgs
 				{
-					{ "openLobby", OpenLobby },
+					{ "openLobby", () => OpenLobby() },
 					{ "onExit", DoNothing }
 				});
 			};
@@ -69,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
 					{
-						{ "openLobby", OpenLobby },
+						{ "openLobby", () => OpenLobby() },
 						{ "onExit", DoNothing },
 						{ "directConnectEndPoint", directConnectEndPoint },
 					});
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void OpenLobby()
+		void OpenLobby(LobbyEntryMode mode = LobbyEntryMode.Normal)
 		{
 			// Close the multiplayer browser
 			Ui.CloseWindow();
@@ -103,11 +106,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "onStart", onStart },
 				{ "onExit", OnLobbyExit },
-				{ "skirmishMode", false }
+				{ "skirmishMode", false },
+				{ "lobbyEntryMode", mode }
 			});
 		}
 
-		void Join(GameServer server)
+		void JoinServer(GameServer server, LobbyEntryMode mode = LobbyEntryMode.Normal)
 		{
 			if (server == null || !server.IsJoinable)
 				return;
@@ -116,7 +120,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var host = parts[0];
 			var port = Exts.ParseInt32Invariant(parts[1]);
 
-			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
+			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", () => OpenLobby(mode), DoNothing);
 		}
 
 		bool disposed;

@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly bool EnableChildMouseOver = false;
 		public string ItemKey;
 
+		// Action invoked when the item is right-clicked.
+		public Action OnRightClick = null;
+
 		readonly CachedTransform<(bool, bool, bool, bool, bool), Sprite[]> getPanelCache;
 
 		[ObjectCreator.UseCtor]
@@ -66,6 +69,18 @@ namespace OpenRA.Mods.Common.Widgets
 				hover = Children.Contains(Ui.MouseOverWidget);
 
 			WidgetUtils.DrawPanel(RenderBounds, getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted())));
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Button == MouseButton.Right)
+			{
+				if (mi.Event == MouseInputEvent.Up && OnRightClick != null && EventBoundsContains(mi.Location))
+					OnRightClick();
+				return OnRightClick != null;
+			}
+
+			return base.HandleMouseInput(mi);
 		}
 
 		public override ScrollItemWidget Clone() { return new ScrollItemWidget(this); }

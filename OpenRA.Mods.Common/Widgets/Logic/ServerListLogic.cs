@@ -122,6 +122,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly int joinButtonY;
 
 		readonly Action<GameServer> onJoin;
+		public Action<GameServer> OnJoinAsAdmin { get; set; }
+		public Action<GameServer> OnJoinAsSpectator { get; set; }
 
 		GameServer currentServer;
 		MapPreview currentMap;
@@ -734,6 +736,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var canJoin = game.IsJoinable;
 						var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => SelectServer(game), () => onJoin(game));
+						if (canJoin && (OnJoinAsAdmin != null || (OnJoinAsSpectator != null && game.AllowSpectators)))
+							item.OnRightClick = () => ShowServerContextMenu(game);
 						var title = item.GetOrNull<LabelWithTooltipWidget>("TITLE");
 						if (title != null)
 						{
@@ -887,6 +891,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			base.Dispose(disposing);
+		}
+
+		void ShowServerContextMenu(GameServer game)
+		{
+			var panel = Ui.LoadWidget("SERVER_CONTEXT_MENU", null, []);
+			var spectatorButton = panel.Get<ButtonWidget>("JOIN_AS_SPECTATOR_BUTTON");
+			var showSpectator = OnJoinAsSpectator != null && game.AllowSpectators;
+
+			spectatorButton.IsVisible = () => showSpectator;
+
+			if (!showSpectator)
+				panel.Bounds.Height -= spectatorButton.Bounds.Height;
+
+			var mousePos = Viewport.LastMousePos;
+			var screen = Game.Renderer.Resolution;
+			var close = DropDownButtonWidget.AttachRootPanel(panel,
+				Math.Min(mousePos.X, screen.Width - panel.Bounds.Width),
+				Math.Min(mousePos.Y, screen.Height - panel.Bounds.Height));
+
+			panel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () => { close(); onJoin(game); };
+			panel.Get<ButtonWidget>("JOIN_AS_ADMIN_BUTTON").OnClick = () => { close(); OnJoinAsAdmin(game); };
+
+			if (showSpectator)
+				spectatorButton.OnClick = () => { close(); OnJoinAsSpectator(game); };
 		}
 	}
 }
