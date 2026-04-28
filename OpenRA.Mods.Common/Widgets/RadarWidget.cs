@@ -324,8 +324,11 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 
 			var worldCoords = MinimapPixelToWorldCoords(mi.Location);
-			if ((mi.Event == MouseInputEvent.Down && mi.Button != world.OrderGenerator.ActionButton) ||
-				(mi.Event == MouseInputEvent.Move && isMinimapMoving && mi.Button == minimapMoveButton))
+			if ((mi.Event == MouseInputEvent.Down && mi.Button !=
+				(gameSettings.CurrentControlStyleHasDedicatedRadarMoveButton() ?
+					gameSettings.ResolveActionButton(MouseActionType.Contextual) :
+					world.OrderGenerator.ActionButton)) ||
+			(mi.Event == MouseInputEvent.Move && isMinimapMoving && mi.Button == minimapMoveButton))
 			{
 				worldRenderer.Viewport.Center(worldCoords);
 				isMinimapMoving = true;
