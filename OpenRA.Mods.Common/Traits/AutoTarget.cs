@@ -409,6 +409,7 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					continue;
 
+				validPriorities.Clear();
 				foreach (var ati in activePriorities)
 				{
 					// Already have a higher priority target
@@ -461,8 +462,6 @@ namespace OpenRA.Mods.Common.Traits
 						chosenTargetRange = targetRange;
 					}
 				}
-
-				validPriorities.Clear();
 			}
 
 			return chosenTarget;
