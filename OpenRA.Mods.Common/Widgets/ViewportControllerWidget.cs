@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly HotkeyReference ScrollDownKey = new();
 		public readonly HotkeyReference ScrollLeftKey = new();
 		public readonly HotkeyReference ScrollRightKey = new();
+		public readonly HotkeyReference FocusActorKey = new();
 
 		public readonly HotkeyReference JumpToTopEdgeKey = new();
 		public readonly HotkeyReference JumpToBottomEdgeKey = new();
@@ -54,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public IProvideTooltipInfo[] ActorTooltipExtra { get; private set; }
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public string ResourceTooltip { get; private set; }
+		public Actor FocusedActor;
 
 		static readonly ImmutableArray<(ScrollDirection Direction, string Cursor)> ScrollCursors =
 		[
@@ -160,6 +162,8 @@ namespace OpenRA.Mods.Common.Widgets
 				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			bookmarkPositions = new WPos?[BookmarkKeyCount];
+
+			worldRenderer.Viewport.ViewportChanged += OnViewportChanged;
 		}
 
 		public override void MouseEntered()
@@ -188,7 +192,8 @@ namespace OpenRA.Mods.Common.Widgets
 				var rate = 0.01f * Game.Settings.Game.ViewportEdgeScrollStep;
 
 				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToFloat2() * rate;
-				worldRenderer.Viewport.Scroll(scroll, false);
+				if (scroll != float2.Zero)
+					worldRenderer.Viewport.Scroll(scroll, false);
 			}
 			else if (!isStandardScrolling)
 			{
@@ -212,8 +217,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 					var length = Math.Max(1, scroll.Length);
 					scroll *= deltaScale / (25 * length) * Game.Settings.Game.ViewportEdgeScrollStep;
+					if (scroll != float2.Zero)
+						worldRenderer.Viewport.Scroll(scroll, false);
 
-					worldRenderer.Viewport.Scroll(scroll, false);
 					lastScrollTime = Game.RunTime;
 				}
 			}
@@ -314,6 +320,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (mi.Event == MouseInputEvent.Scroll && mi.Modifiers.HasModifier(Game.Settings.Game.ZoomModifier))
 			{
+				viewportActorLock = true;
 				worldRenderer.Viewport.AdjustZoom(mi.Delta.Y * Game.Settings.Game.ZoomSpeed, mi.Location);
 				return true;
 			}
@@ -339,7 +346,10 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					isStandardScrolling = true;
 					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
-					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
+					var scroll = (Viewport.LastMousePos - mi.Location) * d;
+					if (scroll != float2.Zero)
+						worldRenderer.Viewport.Scroll(scroll, false);
+
 					return true;
 				}
 				else if (mi.Event == MouseInputEvent.Up)
@@ -426,13 +436,28 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (ZoomInKey.IsActivatedBy(e))
 			{
+				viewportActorLock = true;
 				worldRenderer.Viewport.AdjustZoom(0.25f);
 				return true;
 			}
 
 			if (ZoomOutKey.IsActivatedBy(e))
 			{
+				viewportActorLock = true;
 				worldRenderer.Viewport.AdjustZoom(-0.25f);
+				return true;
+			}
+
+			if (FocusActorKey.IsActivatedBy(e))
+			{
+				var viewportPos = worldRenderer.Viewport.CenterPosition;
+				FocusedActor = worldRenderer.World.Selection.Actors
+					.Where(a => a.IsInWorld && !a.IsDead)
+					.MinByOrDefault(a => (a.CenterPosition - viewportPos).LengthSquared);
+
+				if (FocusedActor != null && worldRenderer.Viewport.ViewportCenterProvider == null)
+					worldRenderer.Viewport.ViewportCenterProvider = GetViewportCenter;
+
 				return true;
 			}
 
@@ -483,6 +508,47 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return world.OrderGenerator.HandleKeyPress(e);
+		}
+
+		bool viewportActorLock;
+		public void OnViewportChanged()
+		{
+			// We lock only for one update.
+			if (viewportActorLock)
+			{
+				viewportActorLock = false;
+				return;
+			}
+
+			FocusedActor = null;
+		}
+
+		public override void Removed()
+		{
+			worldRenderer.Viewport.ViewportChanged -= OnViewportChanged;
+			base.Removed();
+		}
+
+		float2? GetViewportCenter()
+		{
+			if (FocusedActor == null || FocusedActor.IsDead || !FocusedActor.IsInWorld || !FocusedActor.CanBeViewedByPlayer(world.RenderPlayer))
+			{
+				FocusedActor = null;
+
+				// Cleanup the provider.
+				world.AddFrameEndTask(w =>
+				{
+					// Repeat the checks in case the actor was changed again.
+					if (FocusedActor == null || FocusedActor.IsDead || !FocusedActor.IsInWorld || !FocusedActor.CanBeViewedByPlayer(world.RenderPlayer))
+						worldRenderer.Viewport.ViewportCenterProvider = null;
+				});
+
+				return null;
+			}
+
+			viewportActorLock = true;
+			var pos = FocusedActor.CenterPosition;
+			return new float2(pos.X, pos.Y - pos.Z);
 		}
 
 		static ScrollDirection CheckForDirections()

@@ -85,8 +85,8 @@ GroupPatrol = function(units, waypoints, delay)
 end
 
 Tick = function()
-	if FollowTruk and not Truk.IsDead then
-		Camera.Position = Truk.CenterPosition
+	if Truk.IsDead then
+		FollowTruk = false
 	end
 
 	if USSR.HasNoRequiredUnits() then
@@ -150,6 +150,7 @@ SendWaterExtraction = function()
 end
 
 WarfactoryInfiltrated = function()
+	Camera.FocusedActor = Truk
 	FollowTruk = true
 	Truk.GrantCondition("hijacked")
 
@@ -311,6 +312,7 @@ InitTriggers = function()
 			Media.PlaySpeechNotification(Greece, SpyVoice)
 
 			FollowTruk = false
+			Camera.FocusedActor = nil
 
 			if SpecialCameras then
 				PrisonCamera = Actor.Create("camera", true, { Owner = Greece, Location = TrukWaypoint5.Location })

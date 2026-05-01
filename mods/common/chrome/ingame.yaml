@@ -48,6 +48,7 @@ Container@INGAME_ROOT:
 					ScrollDownKey: MapScrollDown
 					ScrollLeftKey: MapScrollLeft
 					ScrollRightKey: MapScrollRight
+					FocusActorKey: FocusActor
 					JumpToTopEdgeKey: MapJumpToTopEdge
 					JumpToBottomEdgeKey: MapJumpToBottomEdge
 					JumpToLeftEdgeKey: MapJumpToLeftEdge

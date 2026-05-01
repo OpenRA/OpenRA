@@ -170,6 +170,11 @@ ChangeOwnerOnAddedToWorld = function(actor, newOwner)
 	Trigger.OnAddedToWorld(actor, function(unloadedActor)
 		unloadedActor.Owner = newOwner
 		Trigger.Clear(unloadedActor, "OnAddedToWorld")
+		Utils.Do(Humans, function(player)
+			Media.PlaySpeechNotification(player, "StartGame")
+		end)
+
+		Camera.FocusedActor = nil
 	end)
 end
 
@@ -208,6 +213,9 @@ InsertSpies = function()
 
 	local transport = reinforcements[1]
 	Camera.Position = transport.CenterPosition
+	Trigger.OnAddedToWorld(transport, function(actor)
+		Camera.FocusedActor = actor
+	end)
 
 	local spies = reinforcements[2]
 	Trigger.OnAnyKilled(spies, InfiltrateLabFailed)

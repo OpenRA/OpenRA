@@ -89,6 +89,7 @@ Container@OBSERVER_WIDGETS:
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
 			ScrollRightKey: MapScrollRight
+			FocusActorKey: FocusActor
 			JumpToTopEdgeKey: MapJumpToTopEdge
 			JumpToBottomEdgeKey: MapJumpToBottomEdge
 			JumpToLeftEdgeKey: MapJumpToLeftEdge
@@ -1204,6 +1205,7 @@ Container@PLAYER_WIDGETS:
 			ScrollDownKey: MapScrollDown
 			ScrollLeftKey: MapScrollLeft
 			ScrollRightKey: MapScrollRight
+			FocusActorKey: FocusActor
 			JumpToTopEdgeKey: MapJumpToTopEdge
 			JumpToBottomEdgeKey: MapJumpToBottomEdge
 			JumpToLeftEdgeKey: MapJumpToLeftEdge

@@ -170,6 +170,7 @@ hotkey-description-mapscrolldown = Scroll down
 hotkey-description-mapscrollleft = Scroll left
 hotkey-description-mapscrollright = Scroll right
 hotkey-description-mapjumptotopedge = Jump to top edge
+hotkey-description-focusactor = Focus on selected actor
 hotkey-description-mapjumptobottomedge = Jump to bottom edge
 hotkey-description-mapjumptoleftedge = Jump to left edge
 hotkey-description-mapjumptorightedge = Jump to right edge
