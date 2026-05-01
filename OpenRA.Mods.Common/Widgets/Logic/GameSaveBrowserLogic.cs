@@ -254,6 +254,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onCancel: () => { });
 			};
 
+			gameList.OnDeleteKey = () =>
+			{
+				if (!deleteButton.IsDisabled())
+					deleteButton.OnClick();
+				return true;
+			};
+
 			var deleteAllButton = panel.Get<ButtonWidget>("DELETE_ALL_BUTTON");
 			deleteAllButton.IsDisabled = () => games.Count == 0;
 			deleteAllButton.OnClick = () =>

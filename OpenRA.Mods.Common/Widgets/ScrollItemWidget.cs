@@ -22,6 +22,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly bool EnableChildMouseOver = false;
 		public string ItemKey;
 
+		/// <summary>
+		/// When true, this item is culled from rendering due to being outside the visible scroll area.
+		/// Unlike IsVisible, culled items should still be navigable via keyboard.
+		/// </summary>
+		public Func<bool> IsCulledForRendering = () => false;
+
 		readonly CachedTransform<(bool, bool, bool, bool, bool), Sprite[]> getPanelCache;
 
 		[ObjectCreator.UseCtor]
@@ -31,6 +37,9 @@ namespace OpenRA.Mods.Common.Widgets
 			IsVisible = () => false;
 			VisualHeight = 0;
 			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(Background);
+
+			// ScrollItemWidget is navigated via its parent ScrollPanelWidget (UP/DOWN keys), not TAB
+			IsFocusable = false;
 		}
 
 		protected ScrollItemWidget(ScrollItemWidget other)
@@ -41,7 +50,11 @@ namespace OpenRA.Mods.Common.Widgets
 			Key = other.Key;
 			Background = other.Background;
 			EnableChildMouseOver = other.EnableChildMouseOver;
+			IsCulledForRendering = other.IsCulledForRendering;
 			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(Background);
+
+			// ScrollItemWidget is navigated via its parent ScrollPanelWidget (UP/DOWN keys), not TAB
+			IsFocusable = false;
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -54,6 +67,29 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public Func<bool> IsSelected = () => false;
+		public Func<bool> IsKeyboardFocused = () => false;
+		public Action OnKeyboardSelect;
+		public bool IsSelectable = true;
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left && Parent is ScrollPanelWidget scrollPanel)
+			{
+				scrollPanel.ClearKeyboardFocusedItem();
+				scrollPanel.TakeKeyboardFocus();
+			}
+
+			return base.HandleMouseInput(mi);
+		}
+
+		public override void DrawOuter()
+		{
+			// Skip rendering if culled (outside visible scroll area) but keep IsVisible for logical filtering
+			if (IsCulledForRendering())
+				return;
+
+			base.DrawOuter();
+		}
 
 		public override void Draw()
 		{
@@ -65,7 +101,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IgnoreChildMouseOver && !hover)
 				hover = Children.Contains(Ui.MouseOverWidget);
 
-			WidgetUtils.DrawPanel(RenderBounds, getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted())));
+			var parentHasKeyboardFocus = Parent is ScrollPanelWidget sp && sp.HasKeyboardFocusedItem;
+			var highlighted = IsKeyboardFocused() || (!parentHasKeyboardFocus && (IsSelected() || IsHighlighted()));
+			WidgetUtils.DrawPanel(RenderBounds, getPanelCache.Update((IsDisabled(), Depressed, hover, false, highlighted)));
 		}
 
 		public override ScrollItemWidget Clone() { return new ScrollItemWidget(this); }
@@ -76,6 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 			w.IsVisible = () => true;
 			w.IsSelected = isSelected;
 			w.OnClick = onClick;
+			w.OnKeyboardSelect = onClick;
 			return w;
 		}
 
@@ -91,6 +130,15 @@ namespace OpenRA.Mods.Common.Widgets
 			var w = Setup(template, isSelected, onClick);
 			w.OnDoubleClick = onDoubleClick;
 			w.ItemKey = key;
+			return w;
+		}
+
+		public static ScrollItemWidget SetupHeader(ScrollItemWidget template)
+		{
+			var w = template.Clone();
+			w.IsVisible = () => true;
+			w.IsSelected = () => false;
+			w.IsSelectable = false;
 			return w;
 		}
 	}

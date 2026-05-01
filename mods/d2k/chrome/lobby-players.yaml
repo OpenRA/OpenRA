@@ -92,6 +92,7 @@ Container@LOBBY_PLAYER_BIN:
 							LeftMargin: 24
 							MaxLength: 16
 							Visible: false
+							TabIndex: 10
 							Children:
 								Image@PROFILE:
 									ImageCollection: lobby-bits
@@ -112,11 +113,13 @@ Container@LOBBY_PLAYER_BIN:
 							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
+							TabIndex: 10
 						DropDownButton@COLOR:
 							X: 190
 							Width: 70
 							Height: 25
 							IgnoreChildMouseOver: true
+							TabIndex: 11
 							Children:
 								ColorBlock@COLORBLOCK:
 									X: 5
@@ -130,6 +133,7 @@ Container@LOBBY_PLAYER_BIN:
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
 							PanelRoot: FACTION_DROPDOWN_PANEL_ROOT # ensure that tooltips for the options are on top of the dropdown panel
+							TabIndex: 12
 							Children:
 								Image@FACTIONFLAG:
 									X: 4
@@ -146,23 +150,27 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 48
 							Height: 25
 							Text: label-lobby-players-team
+							TabIndex: 13
 						DropDownButton@HANDICAP_DROPDOWN:
 							X: 478
 							Width: 72
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
+							TabIndex: 14
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 560
 							Width: 48
 							Height: 25
 							Text: label-lobby-players-spawn
+							TabIndex: 15
 						Checkbox@STATUS_CHECKBOX:
 							X: 617
 							Y: 2
 							Width: 20
 							Height: 20
 							Visible: false
+							TabIndex: 16
 						Image@STATUS_IMAGE:
 							X: 619
 							Y: 4
@@ -308,11 +316,13 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Text: label-lobby-players-name
 							Visible: false
+							TabIndex: 20
 						Button@JOIN:
 							X: 190
 							Width: 418
 							Height: 25
 							Text: button-lobby-players-join
+							TabIndex: 21
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
 					Width: 475
@@ -463,12 +473,14 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 20
 							Text: checkbox-lobby-players-new-spectator-toggle
 							Font: Regular
+							TabIndex: 90
 						Button@SPECTATE:
 							X: 190
 							Width: 418
 							Height: 25
 							Text: button-lobby-players-spectate
 							Font: Regular
+							TabIndex: 91
 
 ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH

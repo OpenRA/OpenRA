@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (teams.Count > 1)
 				{
-					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
+					var teamHeader = ScrollItemWidget.SetupHeader(teamTemplate);
 					var team = t.Key > 0
 						? FluentProvider.GetMessage(TeamNumber, "team", t.Key)
 						: FluentProvider.GetMessage(NoTeam);
@@ -287,7 +287,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var spectators = orderManager.LobbyInfo.Clients.Where(c => c.IsObserver).ToList();
 			if (spectators.Count > 0)
 			{
-				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
+				var spectatorHeader = ScrollItemWidget.SetupHeader(teamTemplate);
 				var spectatorTeam = FluentProvider.GetMessage(Spectators);
 				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => spectatorTeam;
 

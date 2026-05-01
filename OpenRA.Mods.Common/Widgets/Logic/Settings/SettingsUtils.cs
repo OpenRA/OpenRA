@@ -10,12 +10,42 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public static class SettingsUtils
 	{
+		// Starting TabIndex for settings panel elements (menu tabs use 0-9, bottom buttons use 10000+)
+		const int PanelElementsBaseTabIndex = 100;
+
+		// Assigns sequential TabIndex values to all focusable widgets in a panel
+		// This ensures panel elements are navigated after menu tabs but before bottom buttons
+		public static void AssignPanelTabIndexes(Widget panel)
+		{
+			var focusableWidgets = new List<Widget>();
+			CollectFocusableWidgets(panel, focusableWidgets);
+
+			// Use DFS traversal order (= YAML declaration order), which is the correct logical
+			// document order. Sorting by screen/document coordinates is unreliable because
+			// items inside a ScrollPanel occupy coordinates that overlap with fixed widgets
+			// outside the panel (e.g. the remap dialog at the bottom).
+			for (var i = 0; i < focusableWidgets.Count; i++)
+				focusableWidgets[i].TabIndex = PanelElementsBaseTabIndex + i;
+		}
+
+		static void CollectFocusableWidgets(Widget parent, List<Widget> result)
+		{
+			foreach (var child in parent.Children)
+			{
+				if (child.IsFocusable)
+					result.Add(child);
+
+				CollectFocusableWidgets(child, result);
+			}
+		}
+
 		public static void BindCheckboxPref(Widget parent, string id, object group, string pref)
 		{
 			var field = group.GetType().GetField(pref);

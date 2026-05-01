@@ -54,6 +54,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: label-singleplayer-title
 							Font: Bold
+							TabIndex: 0
 						Button@MULTIPLAYER_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 100
@@ -61,6 +62,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: label-multiplayer-title
 							Font: Bold
+							TabIndex: 1
 						Button@SETTINGS_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 140
@@ -68,6 +70,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: button-settings-title
 							Font: Bold
+							TabIndex: 2
 						Button@EXTRAS_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 180
@@ -75,6 +78,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: button-extras-title
 							Font: Bold
+							TabIndex: 3
 						Button@CONTENT_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 220
@@ -82,6 +86,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: button-main-menu-content
 							Font: Bold
+							TabIndex: 4
 						Button@QUIT_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 260
@@ -89,6 +94,7 @@ Container@MAINMENU:
 							Height: 30
 							Text: button-quit
 							Font: Bold
+							TabIndex: 5
 				Background@SINGLEPLAYER_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
@@ -255,6 +261,7 @@ Container@MAINMENU:
 					Height: 25
 					Text: dropdownbutton-news-bg-button
 					Font: Bold
+					TabIndex: 6
 		Container@UPDATE_NOTICE:
 			X: (WINDOW_WIDTH - WIDTH) / 2
 			Y: 95

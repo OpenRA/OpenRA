@@ -75,7 +75,11 @@ namespace OpenRA.Mods.Common.Widgets
 		protected int selectionEndIndex = -1;
 		protected bool mouseSelectionActive = false;
 
-		public TextFieldWidget() { }
+		public TextFieldWidget()
+		{
+			// TextFieldWidget can be TAB focused; pressing ENTER/SPACE takes keyboard focus for text input
+			IsFocusable = true;
+		}
 
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
@@ -91,6 +95,20 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorInvalid = widget.TextColorInvalid;
 			TextColorHighlight = widget.TextColorHighlight;
 			VisualHeight = widget.VisualHeight;
+
+			// TextFieldWidget can be TAB focused; pressing ENTER/SPACE takes keyboard focus for text input
+			IsFocusable = true;
+		}
+
+		// When TAB focus is activated (ENTER/SPACE), take keyboard focus for text input
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			if (IsDisabled())
+				return false;
+
+			TakeKeyboardFocus();
+			ResetBlinkCycle();
+			return true;
 		}
 
 		public override bool YieldKeyboardFocus()
@@ -229,7 +247,10 @@ namespace OpenRA.Mods.Common.Widgets
 				case Keycode.TAB:
 					if (OnTabKey(e))
 						return true;
-					break;
+
+					// Release keyboard focus so the global TAB navigation can handle this key.
+					YieldKeyboardFocus();
+					return false;
 
 				case Keycode.ESCAPE:
 					ClearSelection();

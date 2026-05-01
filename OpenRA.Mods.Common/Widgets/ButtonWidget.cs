@@ -161,6 +161,28 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		// TAB focus activation: handle ENTER/SPACE when this button has TAB focus
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			if (IsDisabled())
+			{
+				if (!DisableKeySound)
+					Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickDisabledSound, null);
+				return true;
+			}
+
+			// Some buttons use OnMouseDown instead of OnClick (e.g., dropdown buttons, color buttons)
+			// Trigger both OnMouseDown and OnKeyPress to support all button configurations
+			var mi = new MouseInput(MouseInputEvent.Down, MouseButton.Left, RenderBounds.Location, int2.Zero, Modifiers.None, 0);
+			OnMouseDown(mi);
+			OnKeyPress(e);
+
+			if (!DisableKeySound)
+				Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null);
+
+			return true;
+		}
+
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Button != MouseButton.Left)
@@ -248,7 +270,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var position = GetTextPosition(text, font, rb);
 
 			var hover = Ui.MouseOverWidget == this || Children.FirstOrDefault(c => c == Ui.MouseOverWidget) != null;
-			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+
+			DrawBackground(rb, disabled, Depressed, hover || HasTabFocus, highlighted);
 			if (Contrast)
 				font.DrawTextWithContrast(text, position + stateOffset,
 					disabled ? colordisabled : color, bgDark, bgLight, ContrastRadius);

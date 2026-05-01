@@ -21,6 +21,16 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetColor;
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public Action<MouseInput> OnMouseUp = _ => { };
+
+		// Called when the swatch is activated via keyboard (ENTER/SPACE)
+		public Action OnKeyboardSelect;
+
+		// Callback for arrow key navigation
+		public Func<Keycode, bool> OnArrowKey;
+
+		// Callback when this swatch gains TAB focus (for updating preview)
+		public Action OnSwatchFocusGained;
+
 		public string ClickSound = null;
 
 		readonly Ruleset modRules;
@@ -30,6 +40,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			modRules = modData.DefaultRules;
 			GetColor = () => Color;
+
+			// Not focusable by default; only enabled in ColorPickerLogic for palette swatches
+			IsFocusable = false;
 		}
 
 		protected ColorBlockWidget(ColorBlockWidget widget)
@@ -38,6 +51,9 @@ namespace OpenRA.Mods.Common.Widgets
 			modRules = widget.modRules;
 			GetColor = widget.GetColor;
 			ClickSound = widget.ClickSound;
+			OnKeyboardSelect = widget.OnKeyboardSelect;
+			OnArrowKey = widget.OnArrowKey;
+			OnSwatchFocusGained = widget.OnSwatchFocusGained;
 		}
 
 		public override ColorBlockWidget Clone()
@@ -75,6 +91,45 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return false;
+		}
+
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			if (OnKeyboardSelect != null)
+			{
+				Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
+				OnKeyboardSelect();
+				return true;
+			}
+
+			// Fallback: trigger the mouse up handler with a dummy input
+			if (OnMouseUp != null)
+			{
+				Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
+				OnMouseUp(default);
+				return true;
+			}
+
+			return false;
+		}
+
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			if (e.Key == Keycode.LEFT || e.Key == Keycode.RIGHT ||
+				e.Key == Keycode.UP || e.Key == Keycode.DOWN)
+			{
+				return OnArrowKey?.Invoke(e.Key) ?? false;
+			}
+
+			return false;
+		}
+
+		public override void OnTabFocusGained()
+		{
+			base.OnTabFocusGained();
+
+			// Notify that this swatch has gained focus (for updating preview color)
+			OnSwatchFocusGained?.Invoke();
 		}
 	}
 }

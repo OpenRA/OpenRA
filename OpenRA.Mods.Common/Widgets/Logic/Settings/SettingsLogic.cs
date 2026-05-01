@@ -77,6 +77,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool needsRestart = false;
 
+		// TabIndex counter for menu buttons (starts at 0 so they are navigated first)
+		int menuTabIndex = 0;
+
 		[ObjectCreator.UseCtor]
 		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs, ModData modData)
 		{
@@ -110,7 +113,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
+			var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
+			backButton.TabIndex = 10001; // Navigated after all panel elements and Reset button
+			backButton.OnClick = () =>
 			{
 				needsRestart |= leavePanelActions[activePanel]();
 				Game.Settings.Save();
@@ -142,7 +147,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					CloseAndExit();
 			};
 
-			widget.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>
+			var resetButton = widget.Get<ButtonWidget>("RESET_BUTTON");
+			resetButton.TabIndex = 10000; // Navigated after all panel elements
+			resetButton.OnClick = () =>
 			{
 				void Reset()
 				{
@@ -189,6 +196,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Settings.Save();
 				activePanel = panelID;
 			};
+
+			// Assign sequential TabIndex to menu buttons (0, 1, 2, ...) so they are navigated first
+			tab.TabIndex = menuTabIndex++;
 
 			tabContainer.AddChild(tab);
 			buttons.Add(tab);

@@ -111,8 +111,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			hotkeyList.AddChild(key);
 		}
 
+		Widget hotkeyPanel;
+
 		Func<bool> InitPanel(Widget panel)
 		{
+			hotkeyPanel = panel;
 			hotkeyList = panel.Get<ScrollPanelWidget>("HOTKEY_LIST");
 			hotkeyList.Layout = new GridLayout(hotkeyList);
 			headerTemplate = hotkeyList.Get("HEADER");
@@ -226,6 +229,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			remapDialog.Visible = selectedHotkeyDefinition != null;
 
 			hotkeyList.ScrollToTop();
+
+			// Reassign TabIndexes after rebuilding the list so hotkey buttons are included in the correct order.
+			if (hotkeyPanel != null)
+				SettingsUtils.AssignPanelTabIndexes(hotkeyPanel);
 		}
 
 		void InitHotkeyRemapDialog(Widget panel)

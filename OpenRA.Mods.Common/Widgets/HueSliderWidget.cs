@@ -59,10 +59,44 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var ro = RenderOrigin;
 			var rb = RenderBounds;
+
 			WidgetUtils.DrawSprite(hueSprite, ro, rb.Size);
 
 			var pos = RenderOrigin + new int2(PxFromValue(Value).Clamp(0, rb.Width - 1) - (int)pickerSprite.Size.X / 2, (rb.Height - (int)pickerSprite.Size.Y) / 2);
 			WidgetUtils.DrawSprite(pickerSprite, pos);
+		}
+
+		// Override to use a smaller step for the hue slider (1/50 instead of 1/10)
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			if (IsDisabled())
+				return false;
+
+			// Use a finer step for hue selection (50 steps across the full range)
+			var valueStep = (MaximumValue - MinimumValue) / 50f;
+
+			switch (e.Key)
+			{
+				case Keycode.LEFT:
+				case Keycode.DOWN:
+					UpdateValue(Value - valueStep);
+					return true;
+
+				case Keycode.RIGHT:
+				case Keycode.UP:
+					UpdateValue(Value + valueStep);
+					return true;
+
+				case Keycode.HOME:
+					UpdateValue(MinimumValue);
+					return true;
+
+				case Keycode.END:
+					UpdateValue(MaximumValue);
+					return true;
+			}
+
+			return false;
 		}
 
 		public override void Removed()

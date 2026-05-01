@@ -85,6 +85,53 @@ namespace OpenRA.Mods.Common.Widgets
 			return ThumbRect.Contains(mi.Location);
 		}
 
+		// TAB focus activation: sliders use arrow keys instead of ENTER/SPACE
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			// Sliders don't activate with ENTER/SPACE, they use arrow keys
+			return false;
+		}
+
+		// Handle arrow keys when this slider has TAB focus
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			if (IsDisabled())
+				return false;
+
+			// Use pixel-based stepping for consistent behavior with both linear and exponential sliders
+			// Calculate step in pixels (use ticks if defined, otherwise divide track into 10 steps)
+			var trackWidth = RenderBounds.Width - RenderBounds.Height;
+			var pixelStep = Ticks > 1
+				? trackWidth / (Ticks - 1)
+				: trackWidth / 10;
+
+			// Get current position in pixels
+			var currentPx = PxFromValue(Value);
+
+			switch (e.Key)
+			{
+				case Keycode.LEFT:
+				case Keycode.DOWN:
+					UpdateValue(ValueFromPx(currentPx - pixelStep));
+					return true;
+
+				case Keycode.RIGHT:
+				case Keycode.UP:
+					UpdateValue(ValueFromPx(currentPx + pixelStep));
+					return true;
+
+				case Keycode.HOME:
+					UpdateValue(MinimumValue);
+					return true;
+
+				case Keycode.END:
+					UpdateValue(MaximumValue);
+					return true;
+			}
+
+			return false;
+		}
+
 		protected virtual float ValueFromPx(int x)
 		{
 			return MinimumValue + (MaximumValue - MinimumValue) * (x - 0.5f * RenderBounds.Height) / (RenderBounds.Width - RenderBounds.Height);
@@ -139,7 +186,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Thumb
 			var thumbHover = Ui.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
-			ButtonWidget.DrawBackground(Thumb, tr, IsDisabled(), isMoving, thumbHover, false);
+			ButtonWidget.DrawBackground(Thumb, tr, IsDisabled(), isMoving, thumbHover || HasTabFocus, false);
 		}
 	}
 }

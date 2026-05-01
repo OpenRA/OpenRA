@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public event Action OnChange = () => { };
 
+		// Called when ENTER/SPACE is pressed to confirm the color selection
+		public Action OnConfirm;
+
 		public float H { get; private set; }
 		public float S { get; private set; }
 		public float V { get; private set; }
@@ -37,6 +40,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public ColorMixerWidget(ModData modData)
 		{
 			modRules = modData.DefaultRules;
+
+			// ColorMixerWidget is focusable for TAB navigation
+			IsFocusable = true;
 		}
 
 		public ColorMixerWidget(ColorMixerWidget other)
@@ -45,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 			modRules = other.modRules;
 			ClickSound = other.ClickSound;
 			OnChange = other.OnChange;
+			OnConfirm = other.OnConfirm;
 			H = other.H;
 			S = other.S;
 			V = other.V;
@@ -52,6 +59,9 @@ namespace OpenRA.Mods.Common.Widgets
 			maxSat = other.maxSat;
 			minVal = other.minVal;
 			maxVal = other.maxVal;
+
+			// ColorMixerWidget is focusable for TAB navigation
+			IsFocusable = true;
 		}
 
 		public void SetColorLimits(float minSaturation, float maxSaturation, float minValue, float maxValue, float? newHue = null)
@@ -159,6 +169,51 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return true;
+		}
+
+		// Handle ENTER/SPACE to confirm the color selection
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			if (OnConfirm != null)
+			{
+				OnConfirm();
+				return true;
+			}
+
+			return false;
+		}
+
+		// Handle arrow keys when this color mixer has TAB focus
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			// Calculate step size (1/20th of the range for smooth movement)
+			var stepX = (maxVal - minVal) / 20f;
+			var stepY = (maxSat - minSat) / 20f;
+
+			switch (e.Key)
+			{
+				case Keycode.LEFT:
+					V = (V - stepX).Clamp(minVal, maxVal);
+					OnChange();
+					return true;
+
+				case Keycode.RIGHT:
+					V = (V + stepX).Clamp(minVal, maxVal);
+					OnChange();
+					return true;
+
+				case Keycode.UP:
+					S = (S + stepY).Clamp(minSat, maxSat);
+					OnChange();
+					return true;
+
+				case Keycode.DOWN:
+					S = (S - stepY).Clamp(minSat, maxSat);
+					OnChange();
+					return true;
+			}
+
+			return false;
 		}
 
 		public Color Color => Color.FromAhsv(H, S, V);

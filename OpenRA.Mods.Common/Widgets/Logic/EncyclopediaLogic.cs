@@ -62,6 +62,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 
 			actorList = widget.Get<ScrollPanelWidget>("ACTOR_LIST");
+			actorList.OnEscapeKey = () =>
+			{
+				Game.Disconnect();
+				Ui.CloseWindow();
+				onExit();
+				return true;
+			};
+
+			// Update preview and info when navigating with keyboard (arrow keys, Page Up/Down, Home, End)
+			actorList.OnKeyboardFocusChanged = item =>
+			{
+				if (item == null)
+					return;
+
+				// Find the actor associated with this item
+				var actor = info.Keys.FirstOrDefault(a =>
+				{
+					var name = a.TraitInfos<TooltipInfo>().FirstOrDefault(i => i.EnabledByDefault)?.Name;
+					return !string.IsNullOrEmpty(name) && item.GetOrNull<LabelWithTooltipWidget>("TITLE") != null;
+				});
+
+				// Use the item's OnClick action to select the actor
+				// This ensures the preview and info are updated
+				item.OnClick?.Invoke();
+			};
 
 			headerTemplate = widget.Get<ScrollItemWidget>("HEADER");
 			template = widget.Get<ScrollItemWidget>("TEMPLATE");
@@ -134,7 +159,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateActorGroup(string title, IEnumerable<ActorInfo> actors)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
+			var header = ScrollItemWidget.SetupHeader(headerTemplate);
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			actorList.AddChild(header);
 

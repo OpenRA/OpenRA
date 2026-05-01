@@ -33,7 +33,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color TextColorDisabled = ChromeMetrics.Get<Color>("HotkeyColorDisabled");
 		public Color TextColorInvalid = ChromeMetrics.Get<Color>("HotkeyColorInvalid");
 
-		public HotkeyEntryWidget() { }
+		public HotkeyEntryWidget()
+		{
+			// HotkeyEntryWidget uses KeyboardFocusWidget for hotkey capture, not TAB navigation
+			IsFocusable = false;
+		}
+
 		protected HotkeyEntryWidget(HotkeyEntryWidget widget)
 			: base(widget)
 		{
@@ -42,6 +47,9 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorDisabled = widget.TextColorDisabled;
 			TextColorInvalid = widget.TextColorInvalid;
 			VisualHeight = widget.VisualHeight;
+
+			// HotkeyEntryWidget uses KeyboardFocusWidget for hotkey capture, not TAB navigation
+			IsFocusable = false;
 		}
 
 		public override bool YieldKeyboardFocus()

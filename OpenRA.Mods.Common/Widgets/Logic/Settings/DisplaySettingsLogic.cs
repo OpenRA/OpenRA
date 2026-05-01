@@ -239,6 +239,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var origHeightText = windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 
+			windowWidth.OnEnterKey = _ => { windowWidth.YieldKeyboardFocus(); return true; };
+			windowHeight.OnEnterKey = _ => { windowHeight.YieldKeyboardFocus(); return true; };
+
 			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
 			if (resolutionPresetDropdown != null)
 			{
@@ -270,6 +273,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").IsDisabled = () => !frameLimitCheckbox.IsChecked() || frameLimitGamespeedCheckbox.IsChecked();
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
+
+			// Assign TabIndex to panel elements so they are navigated after menu tabs
+			SettingsUtils.AssignPanelTabIndexes(panel);
 
 			return () =>
 			{

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -35,10 +36,27 @@ namespace OpenRA.Mods.Common.Widgets
 		Hidden
 	}
 
-	public class ScrollPanelWidget : Widget
+	public class ScrollPanelWidget : Widget, IKeyboardScrollable
 	{
 		readonly Ruleset modRules;
 		public int ScrollbarWidth = 24;
+
+		ScrollItemWidget keyboardFocusedItem;
+		public bool HasKeyboardFocusedItem => keyboardFocusedItem != null;
+
+		// Called when Enter or Space is pressed. Return true if the key was handled.
+		// If null or returns false, the focused item's OnClick will be invoked.
+		public Func<bool> OnEnterKey;
+
+		// Called when Escape is pressed. Return true if the key was handled.
+		public Func<bool> OnEscapeKey;
+
+		// Called when Delete is pressed. Return true if the key was handled.
+		public Func<bool> OnDeleteKey;
+
+		// Called when the keyboard-focused item changes (e.g., via UP/DOWN arrow keys).
+		// The parameter is the newly focused item, or null if focus is cleared.
+		public Action<ScrollItemWidget> OnKeyboardFocusChanged;
 		public int BorderWidth = 1;
 		public int TopBottomSpacing = 2;
 		public int ItemSpacing = 0;
@@ -115,6 +133,130 @@ namespace OpenRA.Mods.Common.Widgets
 
 			getUpArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollUp);
 			getDownArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollDown);
+
+			// ScrollPanelWidget can be focusable by TAB when it contains selectable items.
+			// When it receives TAB focus, it takes KeyboardFocus and allows arrow-key navigation of items.
+			IsFocusable = true;
+		}
+
+		// Override to check if this panel has content before allowing TAB focus
+		public override bool IsTabNavigable()
+		{
+			if (!base.IsTabNavigable())
+				return false;
+
+			// Allow TAB focus if there are selectable items in the list
+			if (GetSelectableItems().Count > 0)
+				return true;
+
+			// Also allow TAB focus if there's scrollable content (like Credits)
+			// This enables keyboard scrolling with PAGE UP/DOWN, HOME, END
+			if (ContentHeight > Bounds.Height)
+				return true;
+
+			// Also allow TAB focus if there are focusable widgets (like checkboxes in Options)
+			if (GetFocusableWidgets().Count > 0)
+				return true;
+
+			return false;
+		}
+
+		public override bool TakeKeyboardFocus()
+		{
+			if (!base.TakeKeyboardFocus())
+				return false;
+
+			// Initialize keyboard focus to the currently selected item (if any)
+			// so that pressing ENTER/SPACE immediately confirms the current selection.
+			InitializeKeyboardFocusToSelectedItem();
+			return true;
+		}
+
+		// Called when this panel gains TAB focus
+		public override void OnTabFocusGained()
+		{
+			base.OnTabFocusGained();
+
+			// Take KeyboardFocus to enable arrow-key navigation
+			TakeKeyboardFocus();
+
+			// Initialize focus to the first selectable item if none is selected
+			if (keyboardFocusedItem == null)
+			{
+				var selectableItems = GetSelectableItems();
+				if (selectableItems.Count > 0)
+					SetKeyboardFocus(selectableItems[0]);
+			}
+		}
+
+		// Called when this panel loses TAB focus
+		public override void OnTabFocusLost()
+		{
+			base.OnTabFocusLost();
+
+			// Clear keyboard focus when losing TAB focus
+			ClearKeyboardFocusedItem();
+		}
+
+		// Handle ENTER/SPACE activation when this panel has TAB focus
+		public override bool OnTabFocusActivate(KeyInput e)
+		{
+			// Activate the currently keyboard-focused item
+			return ActivateFocusedItem();
+		}
+
+		// Handle arrow keys when this panel has TAB focus
+		public override bool OnTabFocusKeyPress(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			// Check what kind of content we have
+			var selectableItems = GetSelectableItems();
+			var hasScrollItems = selectableItems.Count > 0;
+
+			// If we have ScrollItemWidgets, use item-based navigation
+			if (hasScrollItems)
+			{
+				switch (e.Key)
+				{
+					case Keycode.UP:
+						return FocusAdjacentItem(forward: false);
+
+					case Keycode.DOWN:
+						return FocusAdjacentItem(forward: true);
+
+					case Keycode.PAGEUP:
+						return FocusItemByPage(forward: false);
+
+					case Keycode.PAGEDOWN:
+						return FocusItemByPage(forward: true);
+
+					case Keycode.HOME:
+						return FocusFirstItem();
+
+					case Keycode.END:
+						return FocusLastItem();
+				}
+
+				return false;
+			}
+
+			// Check for focusable widgets (like checkboxes in Options)
+			var focusableWidgets = GetFocusableWidgets();
+			if (focusableWidgets.Count > 0)
+				return HandleFocusableWidgetKeyPress(e);
+
+			// No items and no focusable widgets - use pure scroll navigation (like Credits)
+			return HandlePureScrollKeyPress(e);
+		}
+
+		void InitializeKeyboardFocusToSelectedItem()
+		{
+			var selectableItems = GetSelectableItems();
+			var selectedItem = selectableItems.Find(item => item.IsSelected());
+			if (selectedItem != null)
+				SetKeyboardFocus(selectedItem);
 		}
 
 		public override void RemoveChildren()
@@ -155,6 +297,7 @@ namespace OpenRA.Mods.Common.Widgets
 			UpdateSmoothScrolling();
 
 			var rb = RenderBounds;
+
 			var scrollbarHeight = rb.Height - 2 * ScrollbarWidth;
 
 			// Scroll thumb is only visible if the content does not fit within the panel bounds
@@ -265,6 +408,30 @@ namespace OpenRA.Mods.Common.Widgets
 			SetListOffset(value, smooth);
 		}
 
+		public bool HandleScrollKeyPress(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			switch (e.Key)
+			{
+				case Keycode.PAGEUP:
+					Scroll(1);
+					return true;
+				case Keycode.PAGEDOWN:
+					Scroll(-1);
+					return true;
+				case Keycode.HOME:
+					ScrollToTop(true);
+					return true;
+				case Keycode.END:
+					ScrollToBottom(true);
+					return true;
+			}
+
+			return false;
+		}
+
 		public bool ScrolledToBottom => targetListOffset == Math.Min(0, Bounds.Height - ContentHeight) || ContentHeight <= Bounds.Height;
 
 		void ScrollToItem(Widget item, bool smooth = false)
@@ -295,6 +462,22 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (item != null)
 				ScrollToItem(item);
+		}
+
+		public void ScrollIntoView(Widget widget)
+		{
+			// Use screen-space RenderBounds to determine whether the widget is outside the visible area of this panel.
+			var widgetTop = widget.RenderBounds.Top - RenderBounds.Top;
+			var widgetBottom = widget.RenderBounds.Bottom - RenderBounds.Top;
+
+			float? newOffset = null;
+			if (widgetTop < 0)
+				newOffset = currentListOffset - widgetTop + ItemSpacing;
+			else if (widgetBottom > RenderBounds.Height)
+				newOffset = currentListOffset - widgetBottom + RenderBounds.Height - ItemSpacing;
+
+			if (newOffset.HasValue)
+				SetListOffset(newOffset.Value, false);
 		}
 
 		void UpdateSmoothScrolling()
@@ -389,6 +572,447 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return upPressed || downPressed || thumbPressed;
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			// Check if we have ScrollItemWidget children for standard navigation
+			var selectableItems = GetSelectableItems();
+			var hasScrollItems = selectableItems.Count > 0;
+
+			// If no ScrollItemWidget children, use focusable widget navigation instead
+			if (!hasScrollItems)
+				return HandleFocusableWidgetKeyPress(e);
+
+			switch (e.Key)
+			{
+				case Keycode.UP:
+					if (e.Modifiers.HasFlag(Modifiers.Meta) && Platform.CurrentPlatform == PlatformType.OSX)
+						return FocusFirstItem();
+					else
+						return FocusAdjacentItem(forward: false);
+
+				case Keycode.DOWN:
+					if (e.Modifiers.HasFlag(Modifiers.Meta) && Platform.CurrentPlatform == PlatformType.OSX)
+						return FocusLastItem();
+					else
+						return FocusAdjacentItem(forward: true);
+
+				case Keycode.PAGEUP:
+					return FocusItemByPage(forward: false);
+
+				case Keycode.PAGEDOWN:
+					return FocusItemByPage(forward: true);
+
+				case Keycode.HOME:
+					return FocusFirstItem();
+
+				case Keycode.END:
+					return FocusLastItem();
+
+				case Keycode.RETURN:
+				case Keycode.KP_ENTER:
+				case Keycode.SPACE:
+					if (OnEnterKey != null && OnEnterKey())
+						return true;
+					return ActivateFocusedItem();
+
+				case Keycode.ESCAPE:
+					if (OnEscapeKey != null)
+						return OnEscapeKey();
+					return false;
+
+				case Keycode.DELETE:
+					if (OnDeleteKey != null)
+						return OnDeleteKey();
+					return false;
+
+				default:
+					return false;
+			}
+		}
+
+		// Handle keyboard navigation for panels with focusable widgets (like checkboxes) instead of ScrollItemWidgets
+		bool HandleFocusableWidgetKeyPress(KeyInput e)
+		{
+			var focusableWidgets = GetFocusableWidgets();
+
+			// If no focusable widgets, use pure scroll navigation (for panels like Credits)
+			if (focusableWidgets.Count == 0)
+				return HandlePureScrollKeyPress(e);
+
+			switch (e.Key)
+			{
+				case Keycode.UP:
+					return FocusAdjacentFocusableWidget(forward: false);
+
+				case Keycode.DOWN:
+					return FocusAdjacentFocusableWidget(forward: true);
+
+				case Keycode.PAGEUP:
+					return FocusFocusableWidgetByPage(forward: false);
+
+				case Keycode.PAGEDOWN:
+					return FocusFocusableWidgetByPage(forward: true);
+
+				case Keycode.HOME:
+					return FocusFirstFocusableWidget();
+
+				case Keycode.END:
+					return FocusLastFocusableWidget();
+
+				case Keycode.RETURN:
+				case Keycode.KP_ENTER:
+				case Keycode.SPACE:
+					return ActivateFocusedFocusableWidget();
+
+				case Keycode.ESCAPE:
+					if (OnEscapeKey != null)
+						return OnEscapeKey();
+					return false;
+
+				case Keycode.DELETE:
+					if (OnDeleteKey != null)
+						return OnDeleteKey();
+					return false;
+
+				default:
+					return false;
+			}
+		}
+
+		// Handle keyboard scrolling for panels with no selectable items (like Credits)
+		bool HandlePureScrollKeyPress(KeyInput e)
+		{
+			switch (e.Key)
+			{
+				case Keycode.UP:
+					Scroll(1, true);
+					return true;
+
+				case Keycode.DOWN:
+					Scroll(-1, true);
+					return true;
+
+				case Keycode.PAGEUP:
+					ScrollByPixels(Bounds.Height);
+					return true;
+
+				case Keycode.PAGEDOWN:
+					ScrollByPixels(-Bounds.Height);
+					return true;
+
+				case Keycode.HOME:
+					ScrollToTop(true);
+					return true;
+
+				case Keycode.END:
+					ScrollToBottom(true);
+					return true;
+
+				case Keycode.ESCAPE:
+					if (OnEscapeKey != null)
+						return OnEscapeKey();
+					return false;
+
+				case Keycode.DELETE:
+					if (OnDeleteKey != null)
+						return OnDeleteKey();
+					return false;
+
+				default:
+					return false;
+			}
+		}
+
+		void ScrollByPixels(int pixels)
+		{
+			var newTarget = targetListOffset + pixels;
+			newTarget = Math.Min(0, Math.Max(Bounds.Height - ContentHeight, newTarget));
+			SetListOffset(newTarget, true);
+		}
+
+		// Get all focusable widgets in this panel (for panels without ScrollItemWidgets)
+		List<Widget> GetFocusableWidgets()
+		{
+			var widgets = new List<Widget>();
+			CollectFocusableWidgets(this, widgets);
+			return widgets;
+		}
+
+		static void CollectFocusableWidgets(Widget parent, List<Widget> result)
+		{
+			foreach (var child in parent.Children)
+			{
+				if (child.IsVisible() && child.IsFocusable)
+					result.Add(child);
+
+				CollectFocusableWidgets(child, result);
+			}
+		}
+
+		bool FocusAdjacentFocusableWidget(bool forward)
+		{
+			var focusableWidgets = GetFocusableWidgets();
+			if (focusableWidgets.Count == 0)
+				return false;
+
+			// Find the currently focused widget
+			var currentIndex = Ui.TabFocusWidget != null
+				? focusableWidgets.IndexOf(Ui.TabFocusWidget)
+				: -1;
+
+			int newIndex;
+			if (currentIndex == -1)
+				newIndex = forward ? 0 : focusableWidgets.Count - 1;
+			else
+			{
+				newIndex = forward ? currentIndex + 1 : currentIndex - 1;
+
+				// Wrap around
+				if (newIndex < 0)
+					newIndex = focusableWidgets.Count - 1;
+				else if (newIndex >= focusableWidgets.Count)
+					newIndex = 0;
+			}
+
+			var newFocusWidget = focusableWidgets[newIndex];
+
+			// Transfer TAB focus
+			var oldFocusWidget = Ui.TabFocusWidget;
+			Ui.TabFocusWidget = newFocusWidget;
+
+			oldFocusWidget?.OnTabFocusLost();
+
+			newFocusWidget.OnTabFocusGained();
+
+			return true;
+		}
+
+		bool ActivateFocusedFocusableWidget()
+		{
+			if (Ui.TabFocusWidget == null)
+				return false;
+
+			// Check if the focused widget is within this panel
+			var focusableWidgets = GetFocusableWidgets();
+			if (!focusableWidgets.Contains(Ui.TabFocusWidget))
+				return false;
+
+			// Activate the widget using its OnTabFocusActivate
+			var dummyInput = new KeyInput { Key = Keycode.RETURN, Event = KeyInputEvent.Down };
+			return Ui.TabFocusWidget.OnTabFocusActivate(dummyInput);
+		}
+
+		bool ActivateFocusedItem()
+		{
+			if (keyboardFocusedItem == null)
+				return false;
+
+			// Prefer OnKeyboardSelect if defined, otherwise fall back to OnClick.
+			if (keyboardFocusedItem.OnKeyboardSelect != null)
+				keyboardFocusedItem.OnKeyboardSelect();
+			else
+				keyboardFocusedItem.OnClick?.Invoke();
+
+			return true;
+		}
+
+		bool FocusAdjacentItem(bool forward)
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			var currentIndex = keyboardFocusedItem != null
+				? selectableItems.IndexOf(keyboardFocusedItem)
+				: selectableItems.FindIndex(item => item.IsSelected());
+
+			int newIndex;
+			if (currentIndex == -1)
+				newIndex = forward ? 0 : selectableItems.Count - 1;
+			else
+			{
+				newIndex = forward ? currentIndex + 1 : currentIndex - 1;
+
+				if (newIndex < 0 || newIndex >= selectableItems.Count)
+					return true;
+			}
+
+			SetKeyboardFocus(selectableItems[newIndex]);
+			ScrollToItem(selectableItems[newIndex]);
+
+			return true;
+		}
+
+		bool FocusFirstItem()
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			SetKeyboardFocus(selectableItems[0]);
+			ScrollToItem(selectableItems[0]);
+
+			return true;
+		}
+
+		bool FocusLastItem()
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			SetKeyboardFocus(selectableItems[^1]);
+			ScrollToItem(selectableItems[^1]);
+
+			return true;
+		}
+
+		bool FocusItemByPage(bool forward)
+		{
+			var selectableItems = GetSelectableItems();
+			if (selectableItems.Count == 0)
+				return false;
+
+			var currentIndex = keyboardFocusedItem != null
+				? selectableItems.IndexOf(keyboardFocusedItem)
+				: selectableItems.FindIndex(item => item.IsSelected());
+
+			if (currentIndex == -1)
+				currentIndex = forward ? 0 : selectableItems.Count - 1;
+
+			// Calculate how many items fit in the visible area
+			var itemHeight = selectableItems[0].Bounds.Height + ItemSpacing;
+			var itemsPerPage = itemHeight > 0 ? Math.Max(1, Bounds.Height / itemHeight) : 1;
+
+			var newIndex = forward
+				? Math.Min(currentIndex + itemsPerPage, selectableItems.Count - 1)
+				: Math.Max(currentIndex - itemsPerPage, 0);
+
+			if (newIndex == currentIndex)
+				return true;
+
+			SetKeyboardFocus(selectableItems[newIndex]);
+			ScrollToItem(selectableItems[newIndex]);
+
+			return true;
+		}
+
+		bool FocusFocusableWidgetByPage(bool forward)
+		{
+			var focusableWidgets = GetFocusableWidgets();
+			if (focusableWidgets.Count == 0)
+				return false;
+
+			var currentIndex = Ui.TabFocusWidget != null
+				? focusableWidgets.IndexOf(Ui.TabFocusWidget)
+				: -1;
+
+			if (currentIndex == -1)
+				currentIndex = forward ? 0 : focusableWidgets.Count - 1;
+
+			// Estimate items per page based on first widget height
+			var itemHeight = focusableWidgets[0].Bounds.Height + ItemSpacing;
+			var itemsPerPage = itemHeight > 0 ? Math.Max(1, Bounds.Height / itemHeight) : 1;
+
+			var newIndex = forward
+				? Math.Min(currentIndex + itemsPerPage, focusableWidgets.Count - 1)
+				: Math.Max(currentIndex - itemsPerPage, 0);
+
+			if (newIndex == currentIndex)
+				return true;
+
+			var newFocusWidget = focusableWidgets[newIndex];
+
+			var oldFocusWidget = Ui.TabFocusWidget;
+			Ui.TabFocusWidget = newFocusWidget;
+
+			oldFocusWidget?.OnTabFocusLost();
+
+			newFocusWidget.OnTabFocusGained();
+
+			return true;
+		}
+
+		bool FocusFirstFocusableWidget()
+		{
+			var focusableWidgets = GetFocusableWidgets();
+			if (focusableWidgets.Count == 0)
+				return false;
+
+			var newFocusWidget = focusableWidgets[0];
+
+			var oldFocusWidget = Ui.TabFocusWidget;
+			Ui.TabFocusWidget = newFocusWidget;
+
+			oldFocusWidget?.OnTabFocusLost();
+
+			newFocusWidget.OnTabFocusGained();
+
+			return true;
+		}
+
+		bool FocusLastFocusableWidget()
+		{
+			var focusableWidgets = GetFocusableWidgets();
+			if (focusableWidgets.Count == 0)
+				return false;
+
+			var newFocusWidget = focusableWidgets[^1];
+
+			var oldFocusWidget = Ui.TabFocusWidget;
+			Ui.TabFocusWidget = newFocusWidget;
+
+			oldFocusWidget?.OnTabFocusLost();
+
+			newFocusWidget.OnTabFocusGained();
+
+			return true;
+		}
+
+		void SetKeyboardFocus(ScrollItemWidget item)
+		{
+			if (keyboardFocusedItem == item)
+				return;
+
+			if (keyboardFocusedItem != null)
+				keyboardFocusedItem.IsKeyboardFocused = () => false;
+
+			keyboardFocusedItem = item;
+
+			if (keyboardFocusedItem != null)
+				keyboardFocusedItem.IsKeyboardFocused = () => true;
+
+			// Notify listeners that the keyboard focus has changed
+			OnKeyboardFocusChanged?.Invoke(item);
+		}
+
+		// Called when an item is clicked with the mouse to clear keyboard navigation state.
+		// This allows the visual highlight to fall back to the selected item.
+		public void ClearKeyboardFocusedItem()
+		{
+			SetKeyboardFocus(null);
+		}
+
+		List<ScrollItemWidget> GetSelectableItems()
+		{
+			var items = new List<ScrollItemWidget>();
+
+			foreach (var child in Children)
+			{
+				// Filter by IsVisible() for logical visibility (e.g. filtered items in AssetBrowser).
+				// Note: Items using IsCulledForRendering for geometric culling are still included
+				// because IsVisible() remains true for them - they are just not rendered when outside
+				// the visible scroll area but should still be navigable via keyboard.
+				if (child is ScrollItemWidget scrollItem && scrollItem.IsVisible() && scrollItem.IsSelectable)
+					items.Add(scrollItem);
+			}
+
+			return items;
 		}
 
 		IObservableCollection collection;

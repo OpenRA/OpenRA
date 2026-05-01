@@ -24,10 +24,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static bool paletteTabOpenedLast;
 		int paletteTabHighlighted = 0;
 
+		// All color swatches in the palette for keyboard navigation
+		readonly List<ColorBlockWidget> allSwatches = [];
+		readonly int paletteCols;
+
+		// Callback to update the preview when navigating swatches with arrow keys
+		readonly Action<Color> onColorChange;
+
 		[ObjectCreator.UseCtor]
 		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, Action<Color> onChange, Action<Widget> extraLogic,
-			Dictionary<string, MiniYaml> logicArgs)
+			Action onConfirm, Dictionary<string, MiniYaml> logicArgs)
 		{
+			onColorChange = onChange;
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
 			var hueSlider = widget.Get<HueSliderWidget>("HUE_SLIDER");
 
@@ -40,6 +48,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mixer.SetColorLimits(sMin, sMax, vMin, vMax);
 			mixer.OnChange += () => onChange(mixer.Color);
 			mixer.Set(initialColor);
+
+			// Configure confirmation callback for ENTER/SPACE in mixer
+			mixer.OnConfirm = onConfirm;
 
 			hueSlider.OnChange += h =>
 			{
@@ -87,25 +98,47 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var customColorTemplate = paletteTabPanel.Get<ColorBlockWidget>("COLORCUSTOM");
 
 			mixerTab.IsVisible = () => !paletteTabOpenedLast;
+			mixerTabButton.TabIndex = 0;
 			mixerTabButton.OnClick = () => paletteTabOpenedLast = false;
 			mixerTabButton.IsHighlighted = mixerTab.IsVisible;
 
 			paletteTab.IsVisible = () => paletteTabOpenedLast;
+			paletteTabButton.TabIndex = 1;
 			paletteTabButton.OnClick = () => paletteTabOpenedLast = true;
 			paletteTabButton.IsHighlighted = () => paletteTab.IsVisible() || paletteTabHighlighted > 0;
 
-			var paletteCols = 8;
 			var palettePresetRows = 2;
 			var paletteCustomRows = 1;
 
-			if (logicArgs.TryGetValue("PaletteColumns", out var yaml) && !int.TryParse(yaml.Value, out paletteCols))
-				throw new YamlException($"Invalid value for PaletteColumns: {yaml.Value}");
+			if (logicArgs.TryGetValue("PaletteColumns", out var yaml))
+			{
+				if (!int.TryParse(yaml.Value, out var cols))
+					throw new YamlException($"Invalid value for PaletteColumns: {yaml.Value}");
+				paletteCols = cols;
+			}
+			else
+			{
+				paletteCols = 8;
+			}
+
 			if (logicArgs.TryGetValue("PalettePresetRows", out yaml) && !int.TryParse(yaml.Value, out palettePresetRows))
 				throw new YamlException($"Invalid value for PalettePresetRows: {yaml.Value}");
 			if (logicArgs.TryGetValue("PaletteCustomRows", out yaml) && !int.TryParse(yaml.Value, out paletteCustomRows))
 				throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
 
+			if (randomButton != null)
+				randomButton.TabIndex = 2;
+
+			var storeButton = widget.Get<ButtonWidget>("STORE_BUTTON");
+			if (storeButton != null)
+				storeButton.TabIndex = 3;
+
 			var presetColors = colorManager.PresetColors;
+
+			// Swatches start at TabIndex 10 to leave room for the fixed buttons above.
+			var tabIndex = 10;
+
+			// Create preset color swatches
 			for (var j = 0; j < palettePresetRows; j++)
 			{
 				for (var i = 0; i < paletteCols; i++)
@@ -121,16 +154,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					newSwatch.IsVisible = () => true;
 					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
 					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
+					newSwatch.TabIndex = tabIndex++;
+					newSwatch.IsFocusable = true;
+
+					// Mouse selection
 					newSwatch.OnMouseUp = m =>
 					{
 						mixer.Set(color);
 						hueSlider.UpdateValue(color.ToAhsv().H);
 					};
 
+					// Keyboard selection (ENTER/SPACE) - select color and close picker
+					newSwatch.OnKeyboardSelect = () =>
+					{
+						mixer.Set(color);
+						hueSlider.UpdateValue(color.ToAhsv().H);
+						onConfirm?.Invoke();
+					};
+
+					// Arrow key navigation
+					newSwatch.OnArrowKey = key => HandleSwatchArrowKey(newSwatch, key);
+
+					// TAB focus gained - update preview color
+					newSwatch.OnSwatchFocusGained = () => onColorChange?.Invoke(color);
+
 					presetArea.AddChild(newSwatch);
+					allSwatches.Add(newSwatch);
 				}
 			}
 
+			// Create custom color swatches
 			for (var j = 0; j < paletteCustomRows; j++)
 			{
 				for (var i = 0; i < paletteCols; i++)
@@ -144,19 +197,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;
 					newSwatch.Bounds.X = i * newSwatch.Bounds.Width;
 					newSwatch.Bounds.Y = j * newSwatch.Bounds.Height;
+					newSwatch.TabIndex = tabIndex++;
+					newSwatch.IsFocusable = true;
+
+					// Mouse selection
 					newSwatch.OnMouseUp = m =>
 					{
-						var color = newSwatch.GetColor();
-						mixer.Set(color);
-						hueSlider.UpdateValue(color.ToAhsv().H);
+						var c = newSwatch.GetColor();
+						mixer.Set(c);
+						hueSlider.UpdateValue(c.ToAhsv().H);
 					};
 
+					// Keyboard selection (ENTER/SPACE) - select color and close picker
+					newSwatch.OnKeyboardSelect = () =>
+					{
+						var c = newSwatch.GetColor();
+						mixer.Set(c);
+						hueSlider.UpdateValue(c.ToAhsv().H);
+						onConfirm?.Invoke();
+					};
+
+					// Arrow key navigation
+					newSwatch.OnArrowKey = key => HandleSwatchArrowKey(newSwatch, key);
+
+					// TAB focus gained - update preview color
+					newSwatch.OnSwatchFocusGained = () => onColorChange?.Invoke(newSwatch.GetColor());
+
 					customArea.AddChild(newSwatch);
+					allSwatches.Add(newSwatch);
 				}
 			}
 
 			// Store color button
-			var storeButton = widget.Get<ButtonWidget>("STORE_BUTTON");
 			if (storeButton != null)
 			{
 				storeButton.OnClick = () =>
@@ -180,6 +252,59 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Attach logic to preview actor.
 			extraLogic(widget);
+		}
+
+		// Handle arrow key navigation between color swatches
+		bool HandleSwatchArrowKey(ColorBlockWidget currentSwatch, Keycode key)
+		{
+			var currentIndex = allSwatches.IndexOf(currentSwatch);
+			if (currentIndex < 0)
+				return false;
+
+			// Filter to only visible swatches
+			var visibleSwatches = allSwatches.Where(s => s.IsVisible()).ToList();
+			var visibleIndex = visibleSwatches.IndexOf(currentSwatch);
+			if (visibleIndex < 0)
+				return false;
+
+			var newIndex = visibleIndex;
+			var cols = paletteCols;
+			var totalVisible = visibleSwatches.Count;
+
+			switch (key)
+			{
+				case Keycode.LEFT:
+					newIndex = visibleIndex > 0 ? visibleIndex - 1 : totalVisible - 1;
+					break;
+				case Keycode.RIGHT:
+					newIndex = visibleIndex < totalVisible - 1 ? visibleIndex + 1 : 0;
+					break;
+				case Keycode.UP:
+					newIndex = visibleIndex >= cols ? visibleIndex - cols : visibleIndex;
+					break;
+				case Keycode.DOWN:
+					newIndex = visibleIndex + cols < totalVisible ? visibleIndex + cols : visibleIndex;
+					break;
+				default:
+					return false;
+			}
+
+			if (newIndex != visibleIndex && newIndex >= 0 && newIndex < totalVisible)
+			{
+				var newSwatch = visibleSwatches[newIndex];
+
+				// Transfer TAB focus to the new swatch
+				Ui.TabFocusWidget = newSwatch;
+				currentSwatch.OnTabFocusLost();
+				newSwatch.OnTabFocusGained();
+
+				// Update the preview with the newly focused swatch's color
+				onColorChange?.Invoke(newSwatch.GetColor());
+
+				return true;
+			}
+
+			return false;
 		}
 
 		public override void Tick()

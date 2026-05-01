@@ -219,11 +219,22 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var finalColor = initialColor;
+
+			// When ENTER/SPACE is pressed on the mixer or palette swatches, close the panel
+			// AND apply the selected color via onExit. Without calling onExit here, the color
+			// would only be updated visually in the preview but not applied to the player.
+			void OnConfirmSelection()
+			{
+				dropdownButton.RemovePanel();
+				onExit(finalColor);
+			}
+
 			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", (Action<Color>)(c => { finalColor = c; OnColorPickerColorUpdate(c); }) },
 				{ "initialColor", initialColor },
 				{ "extraLogic", (Action<Widget>)AddActorPreview },
+				{ "onConfirm", OnConfirmSelection },
 			});
 
 			dropdownButton.AttachPanel(colorChooser, () => onExit(finalColor));
