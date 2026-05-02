@@ -94,7 +94,14 @@ namespace OpenRA.Mods.Common.Installer
 					break;
 
 				case PlatformType.Linux:
-					// Direct distro install
+					// Direct distro install.
+					// This could be in ~/.steam/steam...
+					candidatePaths.Add(Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+						".steam",
+						"steam"));
+
+					// ... or in ~/.steam/root/
 					candidatePaths.Add(Path.Combine(
 						Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
 						".steam",
