@@ -123,6 +123,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var o in generator.Options)
 			{
+				if (!o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Editor))
+					continue;
+
 				Widget optionWidget = null;
 				switch (o)
 				{

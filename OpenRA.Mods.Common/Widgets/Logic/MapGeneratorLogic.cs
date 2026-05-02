@@ -284,6 +284,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (o.Id == "Seed")
 					continue;
 
+				if (!o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Lobby))
+					continue;
+
 				Widget optionWidget = null;
 				switch (o)
 				{
