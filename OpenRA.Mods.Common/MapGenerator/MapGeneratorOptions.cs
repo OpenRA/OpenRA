@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -17,10 +18,20 @@ namespace OpenRA.Mods.Common.MapGenerator
 {
 	public abstract class MapGeneratorOption
 	{
+		[Flags]
+		public enum VisibilityFlags
+		{
+			None = 0,
+			Lobby = 1,
+			Editor = 2,
+			All = Lobby | Editor,
+		}
+
 		[FieldLoader.Ignore]
 		public readonly string Id;
 		public readonly string Label = null;
 		public readonly int Priority = 0;
+		public readonly VisibilityFlags Visibility = VisibilityFlags.All;
 
 		protected MapGeneratorOption(string id, MiniYaml yaml)
 		{

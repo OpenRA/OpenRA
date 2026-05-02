@@ -679,6 +679,7 @@
 				Label: label-ts-map-generator-option-civilian-density
 				Default: Default
 				Priority: 3
+				Visibility: Editor
 				Choice@Default:
 					Label: label-ts-map-generator-choice-civilian-density-default
 					Parameters:
@@ -749,6 +750,7 @@
 				Parameter: DenyWalledAreas
 				Default: True
 				Priority: 1
+				Visibility: Editor
 	ClearMapGenerator@clear:
 		Type: clear
 		Name: map-generator-clear
