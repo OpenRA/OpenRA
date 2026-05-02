@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								return item;
 							}
 
-							dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", mio.Choices.Length * 30, mio.Choices, SetupItem);
+							dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", 250, mio.Choices, SetupItem);
 						};
 						break;
 					}
@@ -387,7 +387,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									return item;
 								}
 
-								dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", validChoices.Count * 30, validChoices, SetupItem);
+								dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", 250, validChoices, SetupItem);
 							};
 						}
 
