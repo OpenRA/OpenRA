@@ -525,16 +525,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_FACTION_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
+					var factionInfo = modData.DefaultRules.Actors[SystemActors.World].TraitInfos<FactionInfo>();
+					var factionDisplayNames = factionInfo.ToFrozenDictionary(
+						f => f.InternalName,
+						f => FluentProvider.GetMessage(f.Name),
+						StringComparer.OrdinalIgnoreCase);
+
+					string ResolveFactionName(string internalName) =>
+						factionDisplayNames.GetValueOrDefault(internalName, internalName);
+
 					var factions = saves
 						.SelectMany(s => s.Factions)
 						.Distinct(StringComparer.OrdinalIgnoreCase)
-						.OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
+						.OrderBy(ResolveFactionName, StringComparer.CurrentCultureIgnoreCase)
 						.ToList();
 
 					factions.Insert(0, null);
 
 					var anyText = ddb.GetText();
-					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : FluentProvider.GetMessage(filter.Faction);
+					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : ResolveFactionName(filter.Faction);
 					ddb.OnMouseDown = _ =>
 					{
 						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
@@ -543,7 +552,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								tpl,
 								() => string.Equals(filter.Faction, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.Faction = option; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option != null ? FluentProvider.GetMessage(option) : anyText;
+							var label = option != null ? ResolveFactionName(option) : anyText;
+							item.Get<LabelWidget>("LABEL").GetText = () => label;
 							return item;
 						}
 
