@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -58,7 +59,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						bool IsSelected() => choice == read();
 						void OnClick() => write(choice);
 						var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => choice;
+						var localisedChoice = GetLocalizedSegmentName(choice);
+						item.Get<LabelWidget>("LABEL").GetText = () => localisedChoice;
 						return item;
 					}
 
@@ -70,17 +72,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var startDropdown = widget
 				.Get<ContainerWidget>("START_TYPE")
 				.Get<DropDownButtonWidget>("DROPDOWN");
-			startDropdown.GetText = () => tool.StartType;
+			var startNameCache = new CachedTransform<string, string>(GetLocalizedSegmentName);
+			startDropdown.GetText = () => startNameCache.Update(tool.StartType);
 
 			var endDropdown = widget
 				.Get<ContainerWidget>("END_TYPE")
 				.Get<DropDownButtonWidget>("DROPDOWN");
-			endDropdown.GetText = () => tool.EndType;
+			var endNameCache = new CachedTransform<string, string>(GetLocalizedSegmentName);
+			endDropdown.GetText = () => endNameCache.Update(tool.EndType);
 
 			var innerDropDown = widget
 				.Get<ContainerWidget>("INNER_TYPE")
 				.Get<DropDownButtonWidget>("DROPDOWN");
-			innerDropDown.GetText = () => tool.InnerType;
+			var innerNameCache = new CachedTransform<string, string>(GetLocalizedSegmentName);
+			innerDropDown.GetText = () => innerNameCache.Update(tool.InnerType);
 
 			SetupDropDown(startDropdown, tool.StartTypesByInner[tool.InnerType], () => tool.StartType, tool.SetStartType);
 			SetupDropDown(endDropdown, tool.EndTypesByInner[tool.InnerType], () => tool.EndType, tool.SetEndType);
@@ -144,6 +149,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			MapToolsLogic.OnSelected -= TabSelected;
 
 			base.Dispose(disposing);
+		}
+
+		static string GetLocalizedSegmentName(string internalName)
+		{
+			if (string.IsNullOrEmpty(internalName))
+				return string.Empty;
+
+			var fluentKey = "tiling-path-segment-" + internalName.ToLowerInvariant();
+			if (FluentProvider.TryGetMessage(fluentKey, out var localised))
+				return localised;
+
+			return internalName;
 		}
 	}
 }
