@@ -50,6 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Incompatible,
 			Validating,
 			Generating,
+			GenerationError,
 			DownloadAvailable,
 			Searching,
 			Downloading,
@@ -203,6 +204,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				[previewSmall, widget.Get("MAP_VALIDATING")];
 			previewWidgets[PreviewStatus.Generating] =
 				[previewSmall, widget.Get("MAP_GENERATING")];
+			previewWidgets[PreviewStatus.GenerationError] =
+				[previewSmall, widget.Get("MAP_GENERATION_ERROR")];
 			previewWidgets[PreviewStatus.UpdateAvailable] =
 				[previewSmall, widget.Get("MAP_UPDATE_AVAILABLE"), updateButton];
 			previewWidgets[PreviewStatus.DownloadAvailable] =
@@ -283,6 +286,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					case MapStatus.Unavailable:
 						if (mapUpdateAvailable)
 							status = PreviewStatus.UpdateAvailable;
+						else if (map.Class == MapClassification.Generated)
+							status = PreviewStatus.GenerationError;
 						else
 							status = PreviewStatus.Unavailable;
 						break;

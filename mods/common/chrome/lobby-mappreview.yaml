@@ -119,6 +119,23 @@ Container@MAP_PREVIEW:
 					Width: PARENT_WIDTH
 					Height: 25
 					Indeterminate: True
+		Container@MAP_GENERATION_ERROR:
+			Width: PARENT_WIDTH
+			Children:
+				Label@a:
+					Y: 158
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: label-map-generation-error-a
+				Label@b:
+					Y: 171
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: label-map-generation-error-b
 		Container@MAP_DOWNLOAD_AVAILABLE:
 			Width: PARENT_WIDTH
 			Height: PARENT_HEIGHT
