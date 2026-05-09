@@ -223,7 +223,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			uiScaleDropdown.GetText = () => uiScaleLabel.Update(graphicSettings.UIScale);
 
 			var minResolution = viewportSizes.MinEffectiveResolution;
-			var resolution = Game.Renderer.Resolution;
+
+			// Use physical pixels (SurfaceSize) so OS DPI Scale != 100% does not disable the UI scale option
+			var resolution = Game.Renderer.SurfaceSize;
+
 			var disableUIScale = world.Type != WorldType.Shellmap ||
 				resolution.Width * graphicSettings.UIScale < 1.25f * minResolution.Width ||
 				resolution.Height * graphicSettings.UIScale < 1.25f * minResolution.Height;
@@ -482,17 +485,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			var windowHeight = Game.Renderer.NativeResolution.Height;
+			// SurfaceSize (physical pixels) is used for Close/Medium/Far
+			// so that OS DPI scale does not limit viewport distances
+			// Native/Furthest keeps NativeResolution (DPI-normalised)
+			var nativeHeight = Game.Renderer.NativeResolution.Height;
+			var surfaceHeight = Game.Renderer.SurfaceSize.Height;
 
 			var validSizes = new List<WorldViewport>() { WorldViewport.Close };
-			if (viewportSizes.GetSizeRange(WorldViewport.Medium).X < windowHeight)
+			if (viewportSizes.GetSizeRange(WorldViewport.Medium).X < surfaceHeight)
 				validSizes.Add(WorldViewport.Medium);
 
 			var farRange = viewportSizes.GetSizeRange(WorldViewport.Far);
-			if (farRange.X < windowHeight)
+			if (farRange.X < surfaceHeight)
 				validSizes.Add(WorldViewport.Far);
 
-			if (viewportSizes.AllowNativeZoom && farRange.Y < windowHeight)
+			if (viewportSizes.AllowNativeZoom && farRange.Y < nativeHeight)
 				validSizes.Add(WorldViewport.Native);
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validSizes, SetupItem);
@@ -565,7 +572,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var viewportSizes = Game.ModData.GetOrCreate<WorldViewportSizes>();
-			var maxScales = Game.Renderer.NativeResolution.ToVector2() / viewportSizes.MinEffectiveResolution.ToVector2();
+
+			// Use physical pixels (SurfaceSize) so UI scale option is available also for users using OS DPI Scale != 100%
+			var maxScales = Game.Renderer.SurfaceSize.ToVector2() / viewportSizes.MinEffectiveResolution.ToVector2();
 			var maxScale = Math.Min(maxScales.X, maxScales.Y);
 
 			var validScales = new[] { 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);
