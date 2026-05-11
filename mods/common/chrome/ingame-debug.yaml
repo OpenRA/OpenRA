@@ -95,6 +95,14 @@ Container@DEBUG_PANEL:
 							Text: button-debug-panel-give-cash
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipContainer: TOOLTIP_CONTAINER
+						Button@GIVE_CASH_ALL:
+							X: 177
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-give-cash-all
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@GROW_RESOURCES:
 							X: 339
 							Width: 151
@@ -121,6 +129,59 @@ Container@DEBUG_PANEL:
 							Height: 30
 							Font: Bold
 							Text: button-debug-panel-reset-shroud
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@PLAYER_EXPERIENCE:
+							X: 339
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-player-experience
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Background@SELECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-debug-panel-selection-title
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 30
+					Children:
+						Button@DISPOSE_SELECTED:
+							X: 177
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-dispose-selected
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@KILL_SELECTED:
+							X: 339
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-kill-selected
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 30
+					Children:
+						Button@LEVEL_UP:
+							X: 15
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-level-up
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipContainer: TOOLTIP_CONTAINER
 				Background@VISUALIZATIONS_HEADER:
@@ -200,6 +261,34 @@ Container@DEBUG_PANEL:
 					Width: PARENT_WIDTH - 17
 					Height: 20
 					Children:
+						Checkbox@SHOW_CELLTRIGGER_OVERLAY:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-celltrigger-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@SHOW_ACTORMAP_OVERLAY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-actormap-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_HPF_OVERLAY:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-hpf-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@SHOW_SCREENMAP:
 							X: 290
 							Height: 20

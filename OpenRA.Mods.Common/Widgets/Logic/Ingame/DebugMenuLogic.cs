@@ -51,11 +51,50 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				cashButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveCash);
 			}
 
+			var cashAllButton = widget.GetOrNull<ButtonWidget>("GIVE_CASH_ALL");
+			if (cashAllButton != null)
+			{
+				cashAllButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.GiveCashAll);
+				cashAllButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveCashAll);
+			}
+
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
 			{
 				growResourcesButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
 				growResourcesButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GrowResources);
+			}
+
+			var disposeButton = widget.GetOrNull<ButtonWidget>("DISPOSE_SELECTED");
+			if (disposeButton != null)
+			{
+				disposeButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.Dispose);
+				disposeButton.OnClick = () =>
+				{
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.Disposed)
+							continue;
+
+						world.IssueOrder(new Order(DeveloperMode.Orders.Dispose, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
+					}
+				};
+			}
+
+			var killButton = widget.GetOrNull<ButtonWidget>("KILL_SELECTED");
+			if (killButton != null)
+			{
+				killButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.Kill);
+				killButton.OnClick = () =>
+				{
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.IsDead)
+							continue;
+
+						world.IssueOrder(new Order(DeveloperMode.Orders.Kill, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false) { TargetString = "" });
+					}
+				};
 			}
 
 			var fastBuildCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_BUILD");
@@ -168,6 +207,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					world.IssueOrder(new Order(PowerManager.OrderName, world.LocalPlayer.PlayerActor, false) { ExtraData = 250 });
 			}
 
+			var levelUpButton = widget.GetOrNull<ButtonWidget>("LEVEL_UP");
+			if (levelUpButton != null)
+			{
+				levelUpButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + GainsExperience.CommandName);
+				levelUpButton.OnClick = () =>
+				{
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.IsDead || !actor.Info.HasTraitInfo<GainsExperienceInfo>())
+							continue;
+
+						world.IssueOrder(new Order(GainsExperience.OrderName, actor, false));
+					}
+				};
+			}
+
+			var playerExperienceButton = widget.GetOrNull<ButtonWidget>("PLAYER_EXPERIENCE");
+			if (playerExperienceButton != null)
+			{
+				playerExperienceButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.PlayerExperience);
+				playerExperienceButton.OnClick = () =>
+					world.IssueOrder(new Order(DeveloperMode.Orders.PlayerExperience, world.LocalPlayer.PlayerActor, false) { ExtraData = 1000 });
+			}
+
 			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
 			if (showActorTagsCheckbox != null)
 			{
@@ -189,6 +252,45 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					showCustomTerrainCheckbox.IsChecked = () => customTerrainDebugTrait.Enabled;
 					showCustomTerrainCheckbox.OnClick = () => customTerrainDebugTrait.InvokeCommand(CustomTerrainDebugOverlay.CommandName, "");
+				}
+			}
+
+			var cellTriggerOverlayTrait = world.WorldActor.TraitOrDefault<CellTriggerOverlay>();
+			var showCellTriggerOverlayCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_CELLTRIGGER_OVERLAY");
+			if (showCellTriggerOverlayCheckbox != null)
+			{
+				showCellTriggerOverlayCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + CellTriggerOverlay.CommandName);
+				showCellTriggerOverlayCheckbox.Disabled = cellTriggerOverlayTrait == null;
+				if (cellTriggerOverlayTrait != null)
+				{
+					showCellTriggerOverlayCheckbox.IsChecked = () => cellTriggerOverlayTrait.Enabled;
+					showCellTriggerOverlayCheckbox.OnClick = () => cellTriggerOverlayTrait.InvokeCommand(CellTriggerOverlay.CommandName, "");
+				}
+			}
+
+			var actorMapOverlayTrait = world.WorldActor.TraitOrDefault<ActorMapOverlay>();
+			var showActorMapOverlayCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTORMAP_OVERLAY");
+			if (showActorMapOverlayCheckbox != null)
+			{
+				showActorMapOverlayCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + ActorMapOverlay.CommandName);
+				showActorMapOverlayCheckbox.Disabled = actorMapOverlayTrait == null;
+				if (actorMapOverlayTrait != null)
+				{
+					showActorMapOverlayCheckbox.IsChecked = () => actorMapOverlayTrait.Enabled;
+					showActorMapOverlayCheckbox.OnClick = () => actorMapOverlayTrait.InvokeCommand(ActorMapOverlay.CommandName, "");
+				}
+			}
+
+			var hpfTrait = world.WorldActor.TraitOrDefault<HierarchicalPathFinderOverlay>();
+			var showHpfOverlayCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_HPF_OVERLAY");
+			if (showHpfOverlayCheckbox != null)
+			{
+				showHpfOverlayCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + HierarchicalPathFinderOverlay.CommandName);
+				showHpfOverlayCheckbox.Disabled = hpfTrait == null;
+				if (hpfTrait != null)
+				{
+					showHpfOverlayCheckbox.IsChecked = () => hpfTrait.Enabled;
+					showHpfOverlayCheckbox.OnClick = () => hpfTrait.InvokeCommand(HierarchicalPathFinderOverlay.CommandName, "");
 				}
 			}
 

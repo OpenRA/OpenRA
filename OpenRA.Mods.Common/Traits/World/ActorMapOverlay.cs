@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference("cheat", "player")]
 		const string CheatDisabled = "notification-cheat-disabled";
 
-		public bool Enabled;
+		public bool Enabled { get; private set; }
 
 		DeveloperMode devMode;
 		World world;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
-		void IChatCommand.InvokeCommand(string name, string arg)
+		public void InvokeCommand(string name, string arg)
 		{
 			if (name != CommandName)
 				return;
