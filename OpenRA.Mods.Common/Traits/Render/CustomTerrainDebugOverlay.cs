@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
-		void IChatCommand.InvokeCommand(string name, string arg)
+		public void InvokeCommand(string name, string arg)
 		{
 			if (name == CommandName)
 				Enabled ^= true;

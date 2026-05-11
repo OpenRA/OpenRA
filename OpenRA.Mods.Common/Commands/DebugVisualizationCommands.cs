@@ -39,14 +39,23 @@ namespace OpenRA.Mods.Common.Commands
 		[FluentReference]
 		const string ActorTagsOverlayDescripition = "description-actor-tags-overlay";
 
+		public static class Commands
+		{
+			public const string CombatGeometry = "combat-geometry";
+			public const string RenderGeometry = "render-geometry";
+			public const string ScreenMap = "screen-map";
+			public const string DepthBuffer = "depth-buffer";
+			public const string ActorTags = "actor-tags";
+		}
+
 		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers =
 			new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
 			{
-				{ "combat-geometry", (CombatGeometryDescription, CombatGeometry) },
-				{ "render-geometry", (RenderGeometryDescription, RenderGeometry) },
-				{ "screen-map", (ScreenMapOverlayDescription, ScreenMap) },
-				{ "depth-buffer", (DepthBufferDescription, DepthBuffer) },
-				{ "actor-tags", (ActorTagsOverlayDescripition, ActorTags) },
+				{ Commands.CombatGeometry, (CombatGeometryDescription, CombatGeometry) },
+				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry) },
+				{ Commands.ScreenMap, (ScreenMapOverlayDescription, ScreenMap) },
+				{ Commands.DepthBuffer, (DepthBufferDescription, DepthBuffer) },
+				{ Commands.ActorTags, (ActorTagsOverlayDescripition, ActorTags) },
 			};
 
 		DebugVisualizations debugVis;
@@ -68,7 +77,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			foreach (var command in commandHandlers)
 			{
-				if (command.Key == "depth-buffer" && !w.Map.Grid.EnableDepthBuffer)
+				if (command.Key == Commands.DepthBuffer && !w.Map.Grid.EnableDepthBuffer)
 					continue;
 
 				console.RegisterCommand(command.Key, this);
