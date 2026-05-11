@@ -733,6 +733,9 @@ description-dev-crash = crashes the game.
 description-levelup-actor = adds a specified number of levels to the selected actors.
 description-player-experience = adds a specified amount of player experience to the local player.
 description-power-outage = causes a 5-second power outage for the local player.
+description-grow-resources = grows resources on the map.
+description-clear-shroud = reveals the entire map.
+description-reset-shroud = hides the entire map.
 description-kill-selected-actors = kills selected actors.
 description-dispose-selected-actors = disposes selected actors.
 

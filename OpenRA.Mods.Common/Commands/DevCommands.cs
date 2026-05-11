@@ -70,6 +70,15 @@ namespace OpenRA.Mods.Common.Commands
 		const string PowerOutageDescription = "description-power-outage";
 
 		[FluentReference]
+		const string GrowResourcesDescription = "description-grow-resources";
+
+		[FluentReference]
+		const string GiveExplorationDescription = "description-clear-shroud";
+
+		[FluentReference]
+		const string ResetExplorationDescription = "description-reset-shroud";
+
+		[FluentReference]
 		const string KillSelectedActorsDescription = "description-kill-selected-actors";
 
 		[FluentReference]
@@ -87,6 +96,9 @@ namespace OpenRA.Mods.Common.Commands
 			public const string FastCharge = "fast-charge";
 			public const string All = "all";
 			public const string Crash = "crash";
+			public const string GrowResources = "grow-resources";
+			public const string GiveExploration = "clear-shroud";
+			public const string ResetExploration = "reset-shroud";
 			public const string PlayerExperience = "player-experience";
 			public const string Kill = "kill";
 			public const string Dispose = "dispose";
@@ -104,6 +116,9 @@ namespace OpenRA.Mods.Common.Commands
 			{ Commands.FastCharge, (FastChargeDescription, FastCharge) },
 			{ Commands.All, (DevCheatAllDescription, All) },
 			{ Commands.Crash, (DevCrashDescription, Crash) },
+			{ Commands.GrowResources, (GrowResourcesDescription, GrowResources) },
+			{ Commands.GiveExploration, (GiveExplorationDescription, GiveExploration) },
+			{ Commands.ResetExploration, (ResetExplorationDescription, ResetExploration) },
 			{ GainsExperience.CommandName, (LevelUpActorDescription, LevelUp) },
 			{ Commands.PlayerExperience, (PlayerExperienceDescription, PlayerExperience) },
 			{ PowerManager.CommandName, (PowerOutageDescription, PowerOutage) },
@@ -260,6 +275,21 @@ namespace OpenRA.Mods.Common.Commands
 
 				world.IssueOrder(new Order(DeveloperMode.Orders.Dispose, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
 			}
+		}
+
+		static void GrowResources(string arg, World world)
+		{
+			IssueDevCommand(world, DeveloperMode.Orders.GrowResources);
+		}
+
+		static void GiveExploration(string arg, World world)
+		{
+			IssueDevCommand(world, DeveloperMode.Orders.GiveExploration);
+		}
+
+		static void ResetExploration(string arg, World world)
+		{
+			IssueDevCommand(world, DeveloperMode.Orders.ResetExploration);
 		}
 
 		static void IssueDevCommand(World world, string command)

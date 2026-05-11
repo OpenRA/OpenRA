@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
 			{
-				growResourcesButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
+				growResourcesButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.GrowResources);
 				growResourcesButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GrowResources);
 			}
 
@@ -188,14 +188,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var explorationButton = widget.GetOrNull<ButtonWidget>("GIVE_EXPLORATION");
 			if (explorationButton != null)
 			{
-				explorationButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
+				explorationButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.GiveExploration);
 				explorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveExploration);
 			}
 
 			var noexplorationButton = widget.GetOrNull<ButtonWidget>("RESET_EXPLORATION");
 			if (noexplorationButton != null)
 			{
-				noexplorationButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
+				noexplorationButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.ResetExploration);
 				noexplorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.ResetExploration);
 			}
 
