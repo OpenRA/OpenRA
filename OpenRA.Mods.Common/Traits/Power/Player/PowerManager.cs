@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference("cheat", "player", "suffix")]
 		const string CheatUsed = "notification-cheat-used";
 
+		public const string CommandName = "power-outage";
 		public const string OrderName = "DevPowerOutage";
 
 		readonly Actor self;

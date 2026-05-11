@@ -54,3 +54,6 @@ button-production-types-infantry-tooltip = Infantry
 button-production-types-vehicle-tooltip = Vehicles
 button-production-types-aircraft-tooltip = Aircraft
 button-production-types-naval-tooltip = Naval
+
+## ingame-debug.yaml
+button-debug-panel-power-outage = Power Outage
