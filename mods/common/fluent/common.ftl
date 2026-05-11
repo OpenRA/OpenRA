@@ -751,6 +751,10 @@ description-surrender-description = self-destruct everything and lose the game.
 ## DeveloperMode, GainsExperience, PowerManager
 notification-cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }.
 
+## DeveloperMode, DebugVisualizationCommands, CustomTerrainDebugOverlay, ActorMapOverlay, CellTriggerOverlay, ExitsDebugOverlayManager, HierarchicalPathFinderOverlay, PathFinderOverlay, TerrainGeometryOverlay
+notification-cheat-enabled = Cheat enabled: { $cheat } by { $player }.
+notification-cheat-disabled = Cheat disabled: { $cheat } by { $player }.
+
 ## CustomTerrainDebugOverlay
 description-custom-terrain-debug-overlay = toggles the custom terrain debug overlay.
 

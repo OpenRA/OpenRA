@@ -98,6 +98,12 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference("cheat", "player", "suffix")]
 		const string CheatUsed = "notification-cheat-used";
 
+		[FluentReference("cheat", "player")]
+		const string CheatEnabled = "notification-cheat-enabled";
+
+		[FluentReference("cheat", "player")]
+		const string CheatDisabled = "notification-cheat-disabled";
+
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }
 
@@ -295,10 +301,28 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatUsed,
-				"cheat", order.OrderString,
-				"player", self.Owner.ResolvedPlayerName,
-				"suffix", debugSuffix));
+			var notification = order.OrderString switch
+			{
+				Orders.All => enableAll ? CheatEnabled : CheatDisabled,
+				Orders.EnableTech => allTech ? CheatEnabled : CheatDisabled,
+				Orders.FastCharge => fastCharge ? CheatEnabled : CheatDisabled,
+				Orders.FastBuild => fastBuild ? CheatEnabled : CheatDisabled,
+				Orders.Visibility => disableShroud ? CheatEnabled : CheatDisabled,
+				PathFinderOverlay.OrderName => pathDebug ? CheatEnabled : CheatDisabled,
+				Orders.UnlimitedPower => unlimitedPower ? CheatEnabled : CheatDisabled,
+				Orders.BuildAnywhere => buildAnywhere ? CheatEnabled : CheatDisabled,
+				_ => CheatUsed,
+			};
+
+			if (notification == CheatUsed)
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatUsed,
+					"cheat", order.OrderString,
+					"player", self.Owner.ResolvedPlayerName,
+					"suffix", debugSuffix));
+			else
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+					"cheat", order.OrderString,
+					"player", self.Owner.ResolvedPlayerName));
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;

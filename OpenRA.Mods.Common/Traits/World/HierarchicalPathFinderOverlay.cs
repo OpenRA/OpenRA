@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class HierarchicalPathFinderOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		public const string CommandName = "hpf";
+		public const string OrderName = "DevHpf";
 
 		[FluentReference]
 		const string CheatsDisabled = "notification-cheats-disabled";
@@ -44,12 +45,19 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference]
 		const string CommandDescription = "description-hpf-debug-overlay";
 
+		[FluentReference("cheat", "player")]
+		const string CheatEnabled = "notification-cheat-enabled";
+
+		[FluentReference("cheat", "player")]
+		const string CheatDisabled = "notification-cheat-disabled";
+
 		readonly HierarchicalPathFinderOverlayInfo info;
 		readonly SpriteFont font;
 
 		public bool Enabled { get; private set; }
 
 		DeveloperMode devMode;
+		World world;
 
 		/// <summary>
 		/// The Locomotor selected in the UI which the overlay will display.
@@ -70,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
+			world = w;
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
 			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
@@ -93,6 +102,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Enabled ^= true;
+
+			var notification = Enabled ? CheatEnabled : CheatDisabled;
+			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+				"cheat", OrderName,
+				"player", playerName));
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)

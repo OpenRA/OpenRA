@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class CellTriggerOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		public const string CommandName = "triggers";
+		public const string OrderName = "DevTriggers";
 
 		[FluentReference]
 		const string CheatsDisabled = "notification-cheats-disabled";
@@ -41,12 +42,19 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference]
 		const string CommandDescription = "description-cell-triggers-overlay";
 
+		[FluentReference("cheat", "player")]
+		const string CheatEnabled = "notification-cheat-enabled";
+
+		[FluentReference("cheat", "player")]
+		const string CheatDisabled = "notification-cheat-disabled";
+
 		bool enabled;
 
 		readonly SpriteFont font;
 		readonly Color color;
 
 		DeveloperMode devMode;
+		World world;
 
 		public CellTriggerOverlay(CellTriggerOverlayInfo info)
 		{
@@ -56,6 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
+			world = w;
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
 			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
@@ -79,6 +88,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			enabled ^= true;
+
+			var notification = enabled ? CheatEnabled : CheatDisabled;
+			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+				"cheat", OrderName,
+				"player", playerName));
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
