@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			public const string UnlimitedPower = "DevUnlimitedPower";
 			public const string BuildAnywhere = "DevBuildAnywhere";
 			public const string PlayerExperience = "DevPlayerExperience";
+			public const string Heal = "DevHeal";
 			public const string Kill = "DevKill";
 			public const string Dispose = "DevDispose";
 		}
@@ -272,6 +273,17 @@ namespace OpenRA.Mods.Common.Traits
 				case Orders.PlayerExperience:
 				{
 					self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience((int)order.ExtraData);
+					break;
+				}
+
+				case Orders.Heal:
+				{
+					if (order.Target.Type != TargetType.Actor)
+						break;
+
+					var actor = order.Target.Actor;
+					var health = actor.TraitOrDefault<IHealth>();
+					health?.InflictDamage(actor, actor, new Damage(-health.MaxHP), true);
 					break;
 				}
 

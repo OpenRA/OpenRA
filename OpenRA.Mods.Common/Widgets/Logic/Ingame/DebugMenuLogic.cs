@@ -58,6 +58,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				cashAllButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveCashAll);
 			}
 
+			var healButton = widget.GetOrNull<ButtonWidget>("HEAL_SELECTED");
+			if (healButton != null)
+			{
+				healButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.Heal);
+				healButton.OnClick = () =>
+				{
+					foreach (var actor in world.Selection.Actors)
+					{
+						if (actor.IsDead)
+							continue;
+
+						world.IssueOrder(new Order(DeveloperMode.Orders.Heal, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
+					}
+				};
+			}
+
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
 			{

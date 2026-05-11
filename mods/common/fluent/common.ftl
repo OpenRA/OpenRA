@@ -736,6 +736,7 @@ description-power-outage = causes a 5-second power outage for the local player.
 description-grow-resources = grows resources on the map.
 description-clear-shroud = reveals the entire map.
 description-reset-shroud = hides the entire map.
+description-heal-selected-actors = heals selected actors.
 description-kill-selected-actors = kills selected actors.
 description-dispose-selected-actors = disposes selected actors.
 

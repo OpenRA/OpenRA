@@ -79,6 +79,9 @@ namespace OpenRA.Mods.Common.Commands
 		const string ResetExplorationDescription = "description-reset-shroud";
 
 		[FluentReference]
+		const string HealSelectedActorsDescription = "description-heal-selected-actors";
+
+		[FluentReference]
 		const string KillSelectedActorsDescription = "description-kill-selected-actors";
 
 		[FluentReference]
@@ -101,6 +104,7 @@ namespace OpenRA.Mods.Common.Commands
 			public const string ResetExploration = "reset-shroud";
 			public const string PlayerExperience = "player-experience";
 			public const string Kill = "kill";
+			public const string Heal = "heal";
 			public const string Dispose = "dispose";
 		}
 
@@ -123,6 +127,7 @@ namespace OpenRA.Mods.Common.Commands
 			{ Commands.PlayerExperience, (PlayerExperienceDescription, PlayerExperience) },
 			{ PowerManager.CommandName, (PowerOutageDescription, PowerOutage) },
 			{ Commands.Kill, (KillSelectedActorsDescription, Kill) },
+			{ Commands.Heal, (HealSelectedActorsDescription, Heal) },
 			{ Commands.Dispose, (DisposeSelectedActorsDescription, Dispose) }
 		};
 
@@ -253,6 +258,17 @@ namespace OpenRA.Mods.Common.Commands
 		static void PowerOutage(string arg, World world)
 		{
 			world.IssueOrder(new Order(PowerManager.OrderName, world.LocalPlayer.PlayerActor, false) { ExtraData = 250 });
+		}
+
+		static void Heal(string arg, World world)
+		{
+			foreach (var actor in world.Selection.Actors)
+			{
+				if (actor.IsDead)
+					continue;
+
+				world.IssueOrder(new Order(DeveloperMode.Orders.Heal, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
+			}
 		}
 
 		static void Kill(string arg, World world)

@@ -8,6 +8,7 @@ checkbox-debug-panel-instant-charge = Instant Charge Time
 checkbox-debug-panel-disable-visibility-checks = Disable Visibility Checks
 button-debug-panel-give-cash = Give $20,000
 button-debug-panel-give-cash-all = Give Cash All
+button-debug-panel-heal-selected = Heal Selected
 button-debug-panel-dispose-selected = Dispose Selected
 button-debug-panel-grow-resources = Grow Resources
 button-debug-panel-kill-selected = Kill Selected

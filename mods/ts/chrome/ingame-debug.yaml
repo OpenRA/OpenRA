@@ -156,6 +156,14 @@ Container@DEBUG_PANEL:
 					Width: PARENT_WIDTH - 17
 					Height: 30
 					Children:
+						Button@HEAL_SELECTED:
+							X: 15
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-heal-selected
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@DISPOSE_SELECTED:
 							X: 177
 							Width: 151
