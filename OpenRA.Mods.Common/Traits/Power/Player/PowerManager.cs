@@ -17,6 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Attach this to the player actor.")]
+	[IncludeStaticFluentReferences(typeof(PowerManager))]
 	public class PowerManagerInfo : TraitInfo, Requires<DeveloperModeInfo>
 	{
 		[Desc("Interval (in milliseconds) at which to warn the player of low power.")]
@@ -35,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class PowerManager : INotifyCreated, ITick, ISync, IResolveOrder
 	{
+		[FluentReference("cheat", "player", "suffix")]
+		const string CheatUsed = "notification-cheat-used";
+
 		public const string OrderName = "DevPowerOutage";
 
 		readonly Actor self;
@@ -216,7 +220,13 @@ namespace OpenRA.Mods.Common.Traits
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (devMode.Enabled && order.OrderString == OrderName)
+			{
 				TriggerPowerOutage((int)order.ExtraData);
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatUsed,
+					"cheat", OrderName,
+					"player", self.Owner.ResolvedPlayerName,
+					"suffix", ""));
+			}
 		}
 	}
 }

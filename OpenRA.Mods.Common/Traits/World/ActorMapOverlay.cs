@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ActorMapOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		public const string CommandName = "actor-map";
+		public const string OrderName = "DevActorMap";
 
 		[FluentReference]
 		const string CheatsDisabled = "notification-cheats-disabled";
@@ -33,12 +34,20 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference]
 		const string CommandDescription = "description-actor-map-overlay";
 
+		[FluentReference("cheat", "player")]
+		const string CheatEnabled = "notification-cheat-enabled";
+
+		[FluentReference("cheat", "player")]
+		const string CheatDisabled = "notification-cheat-disabled";
+
 		public bool Enabled;
 
 		DeveloperMode devMode;
+		World world;
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
+			world = w;
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
 			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
@@ -62,6 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Enabled = !Enabled;
+
+			var notification = Enabled ? CheatEnabled : CheatDisabled;
+			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+				"cheat", OrderName,
+				"player", playerName));
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)

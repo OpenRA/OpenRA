@@ -28,12 +28,19 @@ namespace OpenRA.Mods.Common.Traits
 	public class ExitsDebugOverlayManager : IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "exits-overlay";
+		const string OrderName = "DevExitsOverlay";
 
 		[FluentReference]
 		const string CheatsDisabled = "notification-cheats-disabled";
 
 		[FluentReference]
 		const string CommandDescription = "description-exits-overlay";
+
+		[FluentReference("cheat", "player")]
+		const string CheatEnabled = "notification-cheat-enabled";
+
+		[FluentReference("cheat", "player")]
+		const string CheatDisabled = "notification-cheat-disabled";
 
 		public readonly SpriteFont Font;
 		public readonly ExitsDebugOverlayManagerInfo Info;
@@ -43,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		DeveloperMode devMode;
+		World world;
 
 		public ExitsDebugOverlayManager(Actor self, ExitsDebugOverlayManagerInfo info)
 		{
@@ -55,6 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
+			world = w;
 			var console = self.TraitOrDefault<ChatCommands>();
 			var help = self.TraitOrDefault<HelpCommand>();
 			devMode = self.TraitOrDefault<DeveloperMode>();
@@ -78,6 +87,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Enabled ^= true;
+
+			var notification = Enabled ? CheatEnabled : CheatDisabled;
+			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+				"cheat", OrderName,
+				"player", playerName));
 		}
 	}
 }

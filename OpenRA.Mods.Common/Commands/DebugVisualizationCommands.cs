@@ -27,6 +27,12 @@ namespace OpenRA.Mods.Common.Commands
 		[FluentReference]
 		const string CheatsDisabled = "notification-cheats-disabled";
 
+		[FluentReference("cheat", "player")]
+		const string CheatEnabled = "notification-cheat-enabled";
+
+		[FluentReference("cheat", "player")]
+		const string CheatDisabled = "notification-cheat-disabled";
+
 		[FluentReference]
 		const string CombatGeometryDescription = "description-combat-geometry";
 
@@ -51,22 +57,33 @@ namespace OpenRA.Mods.Common.Commands
 			public const string ActorTags = "actor-tags";
 		}
 
-		readonly IDictionary<string, (string Description, Action<DebugVisualizations> Handler)> commandHandlers =
-			new Dictionary<string, (string Description, Action<DebugVisualizations> Handler)>
+		public static class Orders
+		{
+			public const string CombatGeometry = "DevCombatGeometry";
+			public const string RenderGeometry = "DevRenderGeometry";
+			public const string ScreenMap = "DevScreenMap";
+			public const string DepthBuffer = "DevDepthBuffer";
+			public const string ActorTags = "DevActorTags";
+		}
+
+		readonly Dictionary<string,
+			(string Description, Action<DebugVisualizations> Handler, string CheatName, Func<DebugVisualizations, bool> GetState)>
+			commandHandlers = new()
 			{
-				{ Commands.CombatGeometry, (CombatGeometryDescription, CombatGeometry) },
-				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry) },
-				{ Commands.ScreenMap, (ScreenMapOverlayDescription, ScreenMap) },
-				{ Commands.DepthBuffer, (DepthBufferDescription, DepthBuffer) },
-				{ Commands.ActorTags, (ActorTagsOverlayDescripition, ActorTags) },
+				{ Commands.CombatGeometry, (CombatGeometryDescription, CombatGeometry, Orders.CombatGeometry, d => d.CombatGeometry) },
+				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry, Orders.RenderGeometry, d => d.RenderGeometry) },
+				{ Commands.ScreenMap, (ScreenMapOverlayDescription, ScreenMap, Orders.ScreenMap, d => d.ScreenMap) },
+				{ Commands.DepthBuffer, (DepthBufferDescription, DepthBuffer, Orders.DepthBuffer, d => d.DepthBuffer) },
+				{ Commands.ActorTags, (ActorTagsOverlayDescripition, ActorTags, Orders.ActorTags, d => d.ActorTags) },
 			};
 
 		DebugVisualizations debugVis;
 		DeveloperMode devMode;
+		World world;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var world = w;
+			world = w;
 			debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
 			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
 
@@ -111,7 +128,7 @@ namespace OpenRA.Mods.Common.Commands
 			debugVis.ActorTags ^= true;
 		}
 
-		public void InvokeCommand(string name, string arg)
+		public void InvokeCommand(string name, string _)
 		{
 			if (!commandHandlers.TryGetValue(name, out var command))
 				return;
@@ -123,6 +140,16 @@ namespace OpenRA.Mods.Common.Commands
 			}
 
 			command.Handler(debugVis);
+			SendNotification(command.GetState(debugVis), command.CheatName);
+		}
+
+		void SendNotification(bool enabled, string cheatName)
+		{
+			var notification = enabled ? CheatEnabled : CheatDisabled;
+			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
+			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
+				"cheat", cheatName,
+				"player", playerName));
 		}
 	}
 }
