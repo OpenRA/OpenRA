@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Commands;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 			var debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
+			var debugVisCommands = world.WorldActor.TraitOrDefault<DebugVisualizationCommands>();
 
 			var visibilityCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_VISIBILITY_CHECKS");
 			if (visibilityCheckbox != null)
@@ -52,25 +54,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showCombatCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_COMBATOVERLAY");
 			if (showCombatCheckbox != null)
 			{
-				showCombatCheckbox.Disabled = debugVis == null;
+				showCombatCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showCombatCheckbox.IsChecked = () => debugVis != null && debugVis.CombatGeometry;
-				showCombatCheckbox.OnClick = () => debugVis.CombatGeometry ^= true;
+				showCombatCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.CombatGeometry, "");
 			}
 
 			var showGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_GEOMETRY");
 			if (showGeometryCheckbox != null)
 			{
-				showGeometryCheckbox.Disabled = debugVis == null;
+				showGeometryCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showGeometryCheckbox.IsChecked = () => debugVis != null && debugVis.RenderGeometry;
-				showGeometryCheckbox.OnClick = () => debugVis.RenderGeometry ^= true;
+				showGeometryCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.RenderGeometry, "");
 			}
 
 			var showScreenMapCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_SCREENMAP");
 			if (showScreenMapCheckbox != null)
 			{
-				showScreenMapCheckbox.Disabled = debugVis == null;
+				showScreenMapCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showScreenMapCheckbox.IsChecked = () => debugVis != null && debugVis.ScreenMap;
-				showScreenMapCheckbox.OnClick = () => debugVis.ScreenMap ^= true;
+				showScreenMapCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.ScreenMap, "");
 			}
 
 			var terrainGeometryTrait = world.WorldActor.TraitOrDefault<TerrainGeometryOverlay>();
@@ -78,15 +80,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (showTerrainGeometryCheckbox != null && terrainGeometryTrait != null)
 			{
 				showTerrainGeometryCheckbox.IsChecked = () => terrainGeometryTrait.Enabled;
-				showTerrainGeometryCheckbox.OnClick = () => terrainGeometryTrait.Enabled ^= true;
+				showTerrainGeometryCheckbox.OnClick = () => terrainGeometryTrait.InvokeCommand(TerrainGeometryOverlay.CommandName, "");
 			}
 
 			var showDepthPreviewCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_DEPTH_PREVIEW");
 			if (showDepthPreviewCheckbox != null)
 			{
-				showDepthPreviewCheckbox.Disabled = debugVis == null;
+				showDepthPreviewCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showDepthPreviewCheckbox.IsChecked = () => debugVis != null && debugVis.DepthBuffer;
-				showDepthPreviewCheckbox.OnClick = () => debugVis.DepthBuffer ^= true;
+				showDepthPreviewCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.DepthBuffer, "");
 			}
 
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");
@@ -112,9 +114,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
 			if (showActorTagsCheckbox != null)
 			{
-				showActorTagsCheckbox.Disabled = debugVis == null;
+				showActorTagsCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showActorTagsCheckbox.IsChecked = () => debugVis != null && debugVis.ActorTags;
-				showActorTagsCheckbox.OnClick = () => debugVis.ActorTags ^= true;
+				showActorTagsCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.ActorTags, "");
 			}
 
 			var showCustomTerrainCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_CUSTOMTERRAIN_OVERLAY");
@@ -125,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (customTerrainDebugTrait != null)
 				{
 					showCustomTerrainCheckbox.IsChecked = () => customTerrainDebugTrait.Enabled;
-					showCustomTerrainCheckbox.OnClick = () => customTerrainDebugTrait.Enabled ^= true;
+					showCustomTerrainCheckbox.OnClick = () => customTerrainDebugTrait.InvokeCommand(CustomTerrainDebugOverlay.CommandName, "");
 				}
 			}
 		}
