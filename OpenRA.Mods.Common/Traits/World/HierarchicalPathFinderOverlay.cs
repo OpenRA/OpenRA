@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class HierarchicalPathFinderOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
-		const string CommandName = "hpf";
+		public const string CommandName = "hpf";
 
 		[FluentReference]
 		const string CommandDescription = "description-hpf-debug-overlay";

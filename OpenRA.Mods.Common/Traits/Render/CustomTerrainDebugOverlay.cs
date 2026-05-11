@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	sealed class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRenderAnnotations
 	{
-		const string CommandName = "custom-terrain";
+		public const string CommandName = "custom-terrain";
 
 		[FluentReference]
 		const string CommandDescription = "description-custom-terrain-debug-overlay";

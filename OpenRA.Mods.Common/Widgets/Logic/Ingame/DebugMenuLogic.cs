@@ -27,27 +27,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var visibilityCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_VISIBILITY_CHECKS");
 			if (visibilityCheckbox != null)
-				BindOrderCheckbox(visibilityCheckbox, world, "DevVisibility", () => devTrait.DisableShroud);
+				BindOrderCheckbox(visibilityCheckbox, world, DeveloperMode.Orders.Visibility, () => devTrait.DisableShroud);
 
 			var pathCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_UNIT_PATHS");
 			if (pathCheckbox != null)
-				BindOrderCheckbox(pathCheckbox, world, "DevPathDebug", () => devTrait.PathDebug);
+				BindOrderCheckbox(pathCheckbox, world, PathFinderOverlay.OrderName, () => devTrait.PathDebug);
 
 			var cashButton = widget.GetOrNull<ButtonWidget>("GIVE_CASH");
 			if (cashButton != null)
-				cashButton.OnClick = () => IssueOrder(world, "DevGiveCash");
+				cashButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveCash);
 
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
-				growResourcesButton.OnClick = () => IssueOrder(world, "DevGrowResources");
+				growResourcesButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GrowResources);
 
 			var fastBuildCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_BUILD");
 			if (fastBuildCheckbox != null)
-				BindOrderCheckbox(fastBuildCheckbox, world, "DevFastBuild", () => devTrait.FastBuild);
+				BindOrderCheckbox(fastBuildCheckbox, world, DeveloperMode.Orders.FastBuild, () => devTrait.FastBuild);
 
 			var fastChargeCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_CHARGE");
 			if (fastChargeCheckbox != null)
-				BindOrderCheckbox(fastChargeCheckbox, world, "DevFastCharge", () => devTrait.FastCharge);
+				BindOrderCheckbox(fastChargeCheckbox, world, DeveloperMode.Orders.FastCharge, () => devTrait.FastCharge);
 
 			var showCombatCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_COMBATOVERLAY");
 			if (showCombatCheckbox != null)
@@ -91,23 +91,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");
 			if (allTechCheckbox != null)
-				BindOrderCheckbox(allTechCheckbox, world, "DevEnableTech", () => devTrait.AllTech);
+				BindOrderCheckbox(allTechCheckbox, world, DeveloperMode.Orders.EnableTech, () => devTrait.AllTech);
 
 			var powerCheckbox = widget.GetOrNull<CheckboxWidget>("UNLIMITED_POWER");
 			if (powerCheckbox != null)
-				BindOrderCheckbox(powerCheckbox, world, "DevUnlimitedPower", () => devTrait.UnlimitedPower);
+				BindOrderCheckbox(powerCheckbox, world, DeveloperMode.Orders.UnlimitedPower, () => devTrait.UnlimitedPower);
 
 			var buildAnywhereCheckbox = widget.GetOrNull<CheckboxWidget>("BUILD_ANYWHERE");
 			if (buildAnywhereCheckbox != null)
-				BindOrderCheckbox(buildAnywhereCheckbox, world, "DevBuildAnywhere", () => devTrait.BuildAnywhere);
+				BindOrderCheckbox(buildAnywhereCheckbox, world, DeveloperMode.Orders.BuildAnywhere, () => devTrait.BuildAnywhere);
 
 			var explorationButton = widget.GetOrNull<ButtonWidget>("GIVE_EXPLORATION");
 			if (explorationButton != null)
-				explorationButton.OnClick = () => IssueOrder(world, "DevGiveExploration");
+				explorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveExploration);
 
 			var noexplorationButton = widget.GetOrNull<ButtonWidget>("RESET_EXPLORATION");
 			if (noexplorationButton != null)
-				noexplorationButton.OnClick = () => IssueOrder(world, "DevResetExploration");
+				noexplorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.ResetExploration);
 
 			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
 			if (showActorTagsCheckbox != null)
