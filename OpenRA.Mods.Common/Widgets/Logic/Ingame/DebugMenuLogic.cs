@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class DebugMenuLogic : ChromeLogic
 	{
+		[FluentReference("command")]
+		const string TooltipDebugCommand = "tooltip-debug-command";
+
 		[ObjectCreator.UseCtor]
 		public DebugMenuLogic(Widget widget, World world)
 		{
@@ -29,31 +32,52 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var visibilityCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_VISIBILITY_CHECKS");
 			if (visibilityCheckbox != null)
+			{
+				visibilityCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.Visibility);
 				BindOrderCheckbox(visibilityCheckbox, world, DeveloperMode.Orders.Visibility, () => devTrait.DisableShroud);
+			}
 
 			var pathCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_UNIT_PATHS");
 			if (pathCheckbox != null)
+			{
+				pathCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + PathFinderOverlay.CommandName);
 				BindOrderCheckbox(pathCheckbox, world, PathFinderOverlay.OrderName, () => devTrait.PathDebug);
+			}
 
 			var cashButton = widget.GetOrNull<ButtonWidget>("GIVE_CASH");
 			if (cashButton != null)
+			{
+				cashButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.GiveCash);
 				cashButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveCash);
+			}
 
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
+			{
+				growResourcesButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
 				growResourcesButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GrowResources);
+			}
 
 			var fastBuildCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_BUILD");
 			if (fastBuildCheckbox != null)
+			{
+				fastBuildCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.FastBuild);
 				BindOrderCheckbox(fastBuildCheckbox, world, DeveloperMode.Orders.FastBuild, () => devTrait.FastBuild);
+			}
 
 			var fastChargeCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_CHARGE");
 			if (fastChargeCheckbox != null)
+			{
+				fastChargeCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.FastCharge);
 				BindOrderCheckbox(fastChargeCheckbox, world, DeveloperMode.Orders.FastCharge, () => devTrait.FastCharge);
+			}
 
 			var showCombatCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_COMBATOVERLAY");
 			if (showCombatCheckbox != null)
 			{
+				showCombatCheckbox.GetTooltipText =
+					() => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DebugVisualizationCommands.Commands.CombatGeometry);
+
 				showCombatCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showCombatCheckbox.IsChecked = () => debugVis != null && debugVis.CombatGeometry;
 				showCombatCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.CombatGeometry, "");
@@ -62,6 +86,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_GEOMETRY");
 			if (showGeometryCheckbox != null)
 			{
+				showGeometryCheckbox.GetTooltipText =
+					() => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DebugVisualizationCommands.Commands.RenderGeometry);
+
 				showGeometryCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showGeometryCheckbox.IsChecked = () => debugVis != null && debugVis.RenderGeometry;
 				showGeometryCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.RenderGeometry, "");
@@ -70,6 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showScreenMapCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_SCREENMAP");
 			if (showScreenMapCheckbox != null)
 			{
+				showScreenMapCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DebugVisualizationCommands.Commands.ScreenMap);
 				showScreenMapCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showScreenMapCheckbox.IsChecked = () => debugVis != null && debugVis.ScreenMap;
 				showScreenMapCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.ScreenMap, "");
@@ -79,6 +107,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showTerrainGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_TERRAIN_OVERLAY");
 			if (showTerrainGeometryCheckbox != null && terrainGeometryTrait != null)
 			{
+				showTerrainGeometryCheckbox.GetTooltipText =
+					() => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + TerrainGeometryOverlay.CommandName);
+
 				showTerrainGeometryCheckbox.IsChecked = () => terrainGeometryTrait.Enabled;
 				showTerrainGeometryCheckbox.OnClick = () => terrainGeometryTrait.InvokeCommand(TerrainGeometryOverlay.CommandName, "");
 			}
@@ -86,6 +117,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showDepthPreviewCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_DEPTH_PREVIEW");
 			if (showDepthPreviewCheckbox != null)
 			{
+				showDepthPreviewCheckbox.GetTooltipText =
+					() => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DebugVisualizationCommands.Commands.DepthBuffer);
+
 				showDepthPreviewCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showDepthPreviewCheckbox.IsChecked = () => debugVis != null && debugVis.DepthBuffer;
 				showDepthPreviewCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.DepthBuffer, "");
@@ -93,27 +127,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");
 			if (allTechCheckbox != null)
+			{
+				allTechCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.EnableTech);
 				BindOrderCheckbox(allTechCheckbox, world, DeveloperMode.Orders.EnableTech, () => devTrait.AllTech);
+			}
 
 			var powerCheckbox = widget.GetOrNull<CheckboxWidget>("UNLIMITED_POWER");
 			if (powerCheckbox != null)
+			{
+				powerCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.UnlimitedPower);
 				BindOrderCheckbox(powerCheckbox, world, DeveloperMode.Orders.UnlimitedPower, () => devTrait.UnlimitedPower);
+			}
 
 			var buildAnywhereCheckbox = widget.GetOrNull<CheckboxWidget>("BUILD_ANYWHERE");
 			if (buildAnywhereCheckbox != null)
+			{
+				buildAnywhereCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DevCommands.Commands.BuildAnywhere);
 				BindOrderCheckbox(buildAnywhereCheckbox, world, DeveloperMode.Orders.BuildAnywhere, () => devTrait.BuildAnywhere);
+			}
 
 			var explorationButton = widget.GetOrNull<ButtonWidget>("GIVE_EXPLORATION");
 			if (explorationButton != null)
+			{
+				explorationButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
 				explorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.GiveExploration);
+			}
 
 			var noexplorationButton = widget.GetOrNull<ButtonWidget>("RESET_EXPLORATION");
 			if (noexplorationButton != null)
+			{
+				noexplorationButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", "");
 				noexplorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.ResetExploration);
+			}
 
 			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
 			if (showActorTagsCheckbox != null)
 			{
+				showActorTagsCheckbox.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + DebugVisualizationCommands.Commands.ActorTags);
 				showActorTagsCheckbox.Disabled = debugVis == null || debugVisCommands == null;
 				showActorTagsCheckbox.IsChecked = () => debugVis != null && debugVis.ActorTags;
 				showActorTagsCheckbox.OnClick = () => debugVisCommands.InvokeCommand(DebugVisualizationCommands.Commands.ActorTags, "");
@@ -122,6 +172,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var showCustomTerrainCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_CUSTOMTERRAIN_OVERLAY");
 			if (showCustomTerrainCheckbox != null)
 			{
+				showCustomTerrainCheckbox.GetTooltipText =
+					() => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + CustomTerrainDebugOverlay.CommandName);
+
 				var customTerrainDebugTrait = world.WorldActor.TraitOrDefault<CustomTerrainDebugOverlay>();
 				showCustomTerrainCheckbox.Disabled = customTerrainDebugTrait == null;
 				if (customTerrainDebugTrait != null)
