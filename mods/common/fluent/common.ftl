@@ -731,8 +731,8 @@ description-fast-charge = toggles near-instant support power charging.
 description-dev-cheat-all = toggles all cheats and gives you some cash for your trouble.
 description-dev-crash = crashes the game.
 description-levelup-actor = adds a specified number of levels to the selected actors.
-description-player-experience = adds a specified amount of player experience to the owner(s) of selected actors.
-description-power-outage = causes a 5-second power outage for the owner(s) of selected actors.
+description-player-experience = adds a specified amount of player experience to the local player.
+description-power-outage = causes a 5-second power outage for the local player.
 description-kill-selected-actors = kills selected actors.
 description-dispose-selected-actors = disposes selected actors.
 

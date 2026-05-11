@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -234,14 +233,12 @@ namespace OpenRA.Mods.Common.Commands
 			if (!int.TryParse(arg, out var experience))
 				return;
 
-			foreach (var player in world.Selection.Actors.Select(a => a.Owner.PlayerActor).Distinct())
-				world.IssueOrder(new Order(DeveloperMode.Orders.PlayerExperience, player, false) { ExtraData = (uint)experience });
+			world.IssueOrder(new Order(DeveloperMode.Orders.PlayerExperience, world.LocalPlayer.PlayerActor, false) { ExtraData = (uint)experience });
 		}
 
 		static void PowerOutage(string arg, World world)
 		{
-			foreach (var player in world.Selection.Actors.Select(a => a.Owner.PlayerActor).Distinct())
-				world.IssueOrder(new Order(PowerManager.OrderName, player, false) { ExtraData = 250 });
+			world.IssueOrder(new Order(PowerManager.OrderName, world.LocalPlayer.PlayerActor, false) { ExtraData = 250 });
 		}
 
 		static void Kill(string arg, World world)
