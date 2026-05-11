@@ -40,7 +40,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class PathFinderOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
-		const string CommandName = "path-debug";
+		public const string CommandName = "path-debug";
+		public const string OrderName = "DevPathDebug";
 
 		[FluentReference]
 		const string CommandDescription = "description-path-debug-overlay";

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class CellTriggerOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
-		const string CommandName = "triggers";
+		public const string CommandName = "triggers";
 
 		[FluentReference]
 		const string CommandDescription = "description-cell-triggers-overlay";

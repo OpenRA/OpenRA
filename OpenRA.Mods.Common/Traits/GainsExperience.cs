@@ -58,6 +58,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class GainsExperience : INotifyCreated, ISync, IResolveOrder, ITransformActorInitModifier
 	{
+		public const string OrderName = "DevLevelUp";
+
 		readonly Actor self;
 		readonly GainsExperienceInfo info;
 		readonly int initialExperience;
@@ -133,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DevLevelUp")
+			if (order.OrderString == OrderName)
 			{
 				var developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
 				if (!developerMode.Enabled)

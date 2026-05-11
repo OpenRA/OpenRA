@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ActorMapOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
-		const string CommandName = "actor-map";
+		public const string CommandName = "actor-map";
 
 		[FluentReference]
 		const string CommandDescription = "description-actor-map-overlay";

@@ -132,12 +132,12 @@ namespace OpenRA.Mods.Common.Commands
 
 		static void GiveCash(string arg, World world)
 		{
-			IssueCashDevCommand(world, "DevGiveCash", arg);
+			IssueCashDevCommand(world, DeveloperMode.Orders.GiveCash, arg);
 		}
 
 		static void GiveCashAll(string arg, World world)
 		{
-			IssueCashDevCommand(world, "DevGiveCashAll", arg);
+			IssueCashDevCommand(world, DeveloperMode.Orders.GiveCashAll, arg);
 		}
 
 		static void IssueCashDevCommand(World world, string command, string arg)
@@ -159,37 +159,37 @@ namespace OpenRA.Mods.Common.Commands
 
 		static void Visibility(string arg, World world)
 		{
-			IssueDevCommand(world, "DevVisibility");
+			IssueDevCommand(world, DeveloperMode.Orders.Visibility);
 		}
 
 		static void InstantBuild(string arg, World world)
 		{
-			IssueDevCommand(world, "DevFastBuild");
+			IssueDevCommand(world, DeveloperMode.Orders.FastBuild);
 		}
 
 		static void BuildAnywhere(string arg, World world)
 		{
-			IssueDevCommand(world, "DevBuildAnywhere");
+			IssueDevCommand(world, DeveloperMode.Orders.BuildAnywhere);
 		}
 
 		static void UnlimitedPower(string arg, World world)
 		{
-			IssueDevCommand(world, "DevUnlimitedPower");
+			IssueDevCommand(world, DeveloperMode.Orders.UnlimitedPower);
 		}
 
 		static void EnableTech(string arg, World world)
 		{
-			IssueDevCommand(world, "DevEnableTech");
+			IssueDevCommand(world, DeveloperMode.Orders.EnableTech);
 		}
 
 		static void FastCharge(string arg, World world)
 		{
-			IssueDevCommand(world, "DevFastCharge");
+			IssueDevCommand(world, DeveloperMode.Orders.FastCharge);
 		}
 
 		static void All(string arg, World world)
 		{
-			IssueDevCommand(world, "DevAll");
+			IssueDevCommand(world, DeveloperMode.Orders.All);
 		}
 
 		static void Crash(string arg, World world)
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (actor.IsDead)
 					continue;
 
-				var leveluporder = new Order("DevLevelUp", actor, false);
+				var leveluporder = new Order(GainsExperience.OrderName, actor, false);
 				if (int.TryParse(arg, out var level))
 					leveluporder.ExtraData = (uint)level;
 
@@ -219,13 +219,13 @@ namespace OpenRA.Mods.Common.Commands
 				return;
 
 			foreach (var player in world.Selection.Actors.Select(a => a.Owner.PlayerActor).Distinct())
-				world.IssueOrder(new Order("DevPlayerExperience", player, false) { ExtraData = (uint)experience });
+				world.IssueOrder(new Order(DeveloperMode.Orders.PlayerExperience, player, false) { ExtraData = (uint)experience });
 		}
 
 		static void PowerOutage(string arg, World world)
 		{
 			foreach (var player in world.Selection.Actors.Select(a => a.Owner.PlayerActor).Distinct())
-				world.IssueOrder(new Order("PowerOutage", player, false) { ExtraData = 250 });
+				world.IssueOrder(new Order(PowerManager.OrderName, player, false) { ExtraData = 250 });
 		}
 
 		static void Kill(string arg, World world)
@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (actor.IsDead)
 					continue;
 
-				world.IssueOrder(new Order("DevKill", world.LocalPlayer.PlayerActor, Target.FromActor(actor), false) { TargetString = arg });
+				world.IssueOrder(new Order(DeveloperMode.Orders.Kill, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false) { TargetString = arg });
 			}
 		}
 
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (actor.Disposed)
 					continue;
 
-				world.IssueOrder(new Order("DevDispose", world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
+				world.IssueOrder(new Order(DeveloperMode.Orders.Dispose, world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
 			}
 		}
 
