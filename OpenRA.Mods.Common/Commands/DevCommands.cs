@@ -76,23 +76,41 @@ namespace OpenRA.Mods.Common.Commands
 		[FluentReference]
 		const string DisposeSelectedActorsDescription = "description-dispose-selected-actors";
 
+		public static class Commands
+		{
+			public const string Visibility = "visibility";
+			public const string GiveCash = "give-cash";
+			public const string GiveCashAll = "give-cash-all";
+			public const string FastBuild = "instant-build";
+			public const string BuildAnywhere = "build-anywhere";
+			public const string UnlimitedPower = "unlimited-power";
+			public const string EnableTech = "enable-tech";
+			public const string FastCharge = "fast-charge";
+			public const string All = "all";
+			public const string Crash = "crash";
+			public const string PlayerExperience = "player-experience";
+			public const string PowerOutage = "power-outage";
+			public const string Kill = "kill";
+			public const string Dispose = "dispose";
+		}
+
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{
-			{ "visibility", (ToggleVisiblityDescription, Visibility) },
-			{ "give-cash", (GiveCashDescription, GiveCash) },
-			{ "give-cash-all", (GiveCashAllDescription, GiveCashAll) },
-			{ "instant-build", (InstantBuildingDescription, InstantBuild) },
-			{ "build-anywhere", (BuildAnywhereDescription, BuildAnywhere) },
-			{ "unlimited-power", (UnlimitedPowerDescription, UnlimitedPower) },
-			{ "enable-tech", (EnableTechDescription, EnableTech) },
-			{ "fast-charge", (FastChargeDescription, FastCharge) },
-			{ "all", (DevCheatAllDescription, All) },
-			{ "crash", (DevCrashDescription, Crash) },
-			{ "levelup", (LevelUpActorDescription, LevelUp) },
-			{ "player-experience", (PlayerExperienceDescription, PlayerExperience) },
-			{ "power-outage", (PowerOutageDescription, PowerOutage) },
-			{ "kill", (KillSelectedActorsDescription, Kill) },
-			{ "dispose", (DisposeSelectedActorsDescription, Dispose) }
+			{ Commands.Visibility, (ToggleVisiblityDescription, Visibility) },
+			{ Commands.GiveCash, (GiveCashDescription, GiveCash) },
+			{ Commands.GiveCashAll, (GiveCashAllDescription, GiveCashAll) },
+			{ Commands.FastBuild, (InstantBuildingDescription, InstantBuild) },
+			{ Commands.BuildAnywhere, (BuildAnywhereDescription, BuildAnywhere) },
+			{ Commands.UnlimitedPower, (UnlimitedPowerDescription, UnlimitedPower) },
+			{ Commands.EnableTech, (EnableTechDescription, EnableTech) },
+			{ Commands.FastCharge, (FastChargeDescription, FastCharge) },
+			{ Commands.All, (DevCheatAllDescription, All) },
+			{ Commands.Crash, (DevCrashDescription, Crash) },
+			{ GainsExperience.CommandName, (LevelUpActorDescription, LevelUp) },
+			{ Commands.PlayerExperience, (PlayerExperienceDescription, PlayerExperience) },
+			{ Commands.PowerOutage, (PowerOutageDescription, PowerOutage) },
+			{ Commands.Kill, (KillSelectedActorsDescription, Kill) },
+			{ Commands.Dispose, (DisposeSelectedActorsDescription, Dispose) }
 		};
 
 		World world;

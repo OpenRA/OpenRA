@@ -708,6 +708,9 @@ notification-saved-screenshot = Saved screenshot { $filename }
 ## ChatCommands
 notification-invalid-command = { $name } is not a valid command.
 
+## DebugMenuLogic
+tooltip-debug-command = Cheat command: { $command }
+
 ## DebugVisualizationCommands
 description-combat-geometry = toggles combat geometry overlay.
 description-render-geometry = toggles render geometry overlay.
@@ -743,7 +746,7 @@ description-help-description = provides useful info about various commands.
 description-pause-description = pause or unpause the game.
 description-surrender-description = self-destruct everything and lose the game.
 
-## DeveloperMode
+## DeveloperMode, GainsExperience, PowerManager
 notification-cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }.
 
 ## CustomTerrainDebugOverlay

@@ -33,12 +33,16 @@ Container@DEBUG_PANEL:
 							Height: 20
 							Font: Regular
 							Text: checkbox-debug-panel-instant-build
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@UNLIMITED_POWER:
 							X: 290
 							Width: 200
 							Height: 20
 							Font: Regular
 							Text: checkbox-debug-panel-unlimited-power
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 20
@@ -49,12 +53,16 @@ Container@DEBUG_PANEL:
 							Height: 20
 							Font: Regular
 							Text: checkbox-debug-panel-enable-tech
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@INSTANT_CHARGE:
 							X: 290
 							Width: 200
 							Height: 20
 							Font: Regular
 							Text: checkbox-debug-panel-instant-charge
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 20
@@ -65,12 +73,16 @@ Container@DEBUG_PANEL:
 							Height: 20
 							Font: Regular
 							Text: checkbox-debug-panel-build-anywhere
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@DISABLE_VISIBILITY_CHECKS:
 							X: 290
 							Height: 20
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-disable-visibility-checks
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 30
@@ -81,12 +93,16 @@ Container@DEBUG_PANEL:
 							Height: 30
 							Font: Bold
 							Text: button-debug-panel-give-cash
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@GROW_RESOURCES:
 							X: 339
 							Width: 151
 							Height: 30
 							Font: Bold
 							Text: button-debug-panel-grow-resources
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 30
@@ -97,12 +113,16 @@ Container@DEBUG_PANEL:
 							Height: 30
 							Font: Bold
 							Text: button-debug-panel-clear-shroud
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@RESET_EXPLORATION:
 							X: 177
 							Width: 151
 							Height: 30
 							Font: Bold
 							Text: button-debug-panel-reset-shroud
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Background@VISUALIZATIONS_HEADER:
 					X: 5
 					Width: PARENT_WIDTH - 24 - 10
@@ -126,12 +146,16 @@ Container@DEBUG_PANEL:
 							Height: 20
 							Font: Regular
 							Text: checkbox-debug-panel-show-unit-paths
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@SHOW_COMBATOVERLAY:
 							X: 290
 							Height: 20
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-show-combatoverlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 20
@@ -142,12 +166,16 @@ Container@DEBUG_PANEL:
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-show-customterrain-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@SHOW_GEOMETRY:
 							X: 290
 							Height: 20
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-show-geometry
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 20
@@ -158,12 +186,16 @@ Container@DEBUG_PANEL:
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-show-actor-tags
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 						Checkbox@SHOW_TERRAIN_OVERLAY:
 							X: 290
 							Height: 20
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-show-terrain-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_WIDTH - 17
 					Height: 20
@@ -174,6 +206,8 @@ Container@DEBUG_PANEL:
 							Width: 200
 							Font: Regular
 							Text: checkbox-debug-panel-show-screenmap
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@SPACER:
 					Width: PARENT_WIDTH - 17
 					Height: 1

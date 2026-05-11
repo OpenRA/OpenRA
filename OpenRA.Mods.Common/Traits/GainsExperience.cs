@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class GainsExperience : INotifyCreated, ISync, IResolveOrder, ITransformActorInitModifier
 	{
+		public const string CommandName = "levelup";
 		public const string OrderName = "DevLevelUp";
 
 		readonly Actor self;
