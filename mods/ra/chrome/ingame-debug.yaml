@@ -1,0 +1,221 @@
+Container@DEBUG_PANEL:
+	Logic: DebugMenuLogic
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
+	Children:
+		ScrollPanel@DEBUG_SCROLLPANEL:
+			X: 20
+			Y: 20
+			Width: PARENT_WIDTH - 40
+			Height: 395
+			ItemSpacing: 10
+			Children:
+				Background@DEBUG_OPTIONS_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-debug-panel-title
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@INSTANT_BUILD:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-instant-build
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@UNLIMITED_POWER:
+							X: 290
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-unlimited-power
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@ENABLE_TECH:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-enable-tech
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@INSTANT_CHARGE:
+							X: 290
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-instant-charge
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@BUILD_ANYWHERE:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-build-anywhere
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@DISABLE_VISIBILITY_CHECKS:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-disable-visibility-checks
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 30
+					Children:
+						Button@GIVE_CASH:
+							X: 15
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-give-cash
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@GROW_RESOURCES:
+							X: 339
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-grow-resources
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 30
+					Children:
+						Button@GIVE_EXPLORATION:
+							X: 15
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-clear-shroud
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@RESET_EXPLORATION:
+							X: 177
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-reset-shroud
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@POWER_OUTAGE:
+							X: 339
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-power-outage
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Background@VISUALIZATIONS_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-debug-panel-visualizations-title
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_UNIT_PATHS:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-unit-paths
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@SHOW_COMBATOVERLAY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-combatoverlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-customterrain-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@SHOW_GEOMETRY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-geometry
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_ACTOR_TAGS:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-actor-tags
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+						Checkbox@SHOW_TERRAIN_OVERLAY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-terrain-overlay
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_SCREENMAP:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-screenmap
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipContainer: TOOLTIP_CONTAINER
+				Container@SPACER:
+					Width: PARENT_WIDTH - 17
+					Height: 1

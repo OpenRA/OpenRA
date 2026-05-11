@@ -88,7 +88,6 @@ namespace OpenRA.Mods.Common.Commands
 			public const string All = "all";
 			public const string Crash = "crash";
 			public const string PlayerExperience = "player-experience";
-			public const string PowerOutage = "power-outage";
 			public const string Kill = "kill";
 			public const string Dispose = "dispose";
 		}
@@ -107,7 +106,7 @@ namespace OpenRA.Mods.Common.Commands
 			{ Commands.Crash, (DevCrashDescription, Crash) },
 			{ GainsExperience.CommandName, (LevelUpActorDescription, LevelUp) },
 			{ Commands.PlayerExperience, (PlayerExperienceDescription, PlayerExperience) },
-			{ Commands.PowerOutage, (PowerOutageDescription, PowerOutage) },
+			{ PowerManager.CommandName, (PowerOutageDescription, PowerOutage) },
 			{ Commands.Kill, (KillSelectedActorsDescription, Kill) },
 			{ Commands.Dispose, (DisposeSelectedActorsDescription, Dispose) }
 		};

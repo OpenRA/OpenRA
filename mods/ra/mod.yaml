@@ -126,7 +126,7 @@ ChromeLayout:
 	ra|chrome/ingame-observer.yaml
 	ra|chrome/ingame-player.yaml
 	common|chrome/ingame-perf.yaml
-	common|chrome/ingame-debug.yaml
+	ra|chrome/ingame-debug.yaml
 	common|chrome/ingame-debug-hpf.yaml
 	common|chrome/ingame-debuginfo.yaml
 	common|chrome/ingame-infochat.yaml

@@ -160,6 +160,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				noexplorationButton.OnClick = () => IssueOrder(world, DeveloperMode.Orders.ResetExploration);
 			}
 
+			var powerOutageButton = widget.GetOrNull<ButtonWidget>("POWER_OUTAGE");
+			if (powerOutageButton != null)
+			{
+				powerOutageButton.GetTooltipText = () => FluentProvider.GetMessage(TooltipDebugCommand, "command", '/' + PowerManager.CommandName);
+				powerOutageButton.OnClick = () =>
+					world.IssueOrder(new Order(PowerManager.OrderName, world.LocalPlayer.PlayerActor, false) { ExtraData = 250 });
+			}
+
 			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
 			if (showActorTagsCheckbox != null)
 			{
