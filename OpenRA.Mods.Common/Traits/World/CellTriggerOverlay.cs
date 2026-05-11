@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FluentReference("cheat", "player")]
 		const string CheatDisabled = "notification-cheat-disabled";
 
-		bool enabled;
+		public bool Enabled { get; private set; }
 
 		readonly SpriteFont font;
 		readonly Color color;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
-		void IChatCommand.InvokeCommand(string name, string arg)
+		public void InvokeCommand(string name, string arg)
 		{
 			if (name != CommandName)
 				return;
@@ -87,9 +87,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 			}
 
-			enabled ^= true;
+			Enabled ^= true;
 
-			var notification = enabled ? CheatEnabled : CheatDisabled;
+			var notification = Enabled ? CheatEnabled : CheatDisabled;
 			var playerName = world.LocalPlayer != null ? world.LocalPlayer.ResolvedPlayerName : "";
 			TextNotificationsManager.Debug(FluentProvider.GetMessage(notification,
 				"cheat", OrderName,
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (!enabled)
+			if (!Enabled)
 				yield break;
 
 			var triggerPositions = wr.World.ActorMap.TriggerPositions().ToHashSet();
