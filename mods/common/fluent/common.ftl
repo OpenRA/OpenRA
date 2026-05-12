@@ -149,7 +149,7 @@ menu-game-info =
     .objectives = Objectives
     .briefing = Briefing
     .options = Options
-    .debug = Debug
+    .debug = Cheats
     .chat = Chat
 
 ## GameInfoObjectivesLogic, GameInfoStatsLogic

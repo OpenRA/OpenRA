@@ -171,6 +171,7 @@ ChromeLayout:
 FluentMessages:
 	common|fluent/common.ftl
 	common|fluent/chrome.ftl
+	common|fluent/ingame-debug.ftl
 	common|fluent/hotkeys.ftl
 	common|fluent/rules.ftl
 	ra|fluent/ra.ftl

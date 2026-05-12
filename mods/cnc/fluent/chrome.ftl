@@ -154,27 +154,6 @@ button-chat-chrome-mode =
     .label = Team
     .tooltip = Toggle chat mode
 
-## ingame-debug.yaml
-label-debug-panel-title = Debug Options
-checkbox-debug-panel-instant-build = Instant Build Speed
-checkbox-debug-panel-enable-tech = Build Everything
-checkbox-debug-panel-build-anywhere = Build Anywhere
-checkbox-debug-panel-unlimited-power = Unlimited Power
-checkbox-debug-panel-instant-charge = Instant Charge Time
-checkbox-debug-panel-disable-visibility-checks = Disable Visibility Checks
-button-debug-panel-give-cash = Give $20,000
-button-debug-panel-grow-resources = Grow Resources
-button-debug-panel-give-exploration = Clear Shroud
-button-debug-panel-reset-exploration = Reset Shroud
-label-debug-panel-visualizations-title = Visualizations
-checkbox-debug-panel-show-unit-paths = Show Unit Paths
-checkbox-debug-panel-show-customterrain-overlay = Show Custom Terrain
-checkbox-debug-panel-show-actor-tags = Show Actor Tags
-checkbox-debug-panel-show-combatoverlay = Show Combat Geometry
-checkbox-debug-panel-show-geometry = Show Render Geometry
-checkbox-debug-panel-show-terrain-overlay = Show Terrain Geometry
-checkbox-debug-panel-show-screenmap = Show Screen Map
-
 ## ingame-debug-hpf.yaml
 dropdownbutton-hpf-overlay-locomotor = Select Locomotor
 dropdownbutton-hpf-overlay-check = Select BlockedByActor
