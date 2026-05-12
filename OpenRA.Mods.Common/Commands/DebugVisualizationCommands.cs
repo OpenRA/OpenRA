@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Commands
 	public class DebugVisualizationCommands : IChatCommand, IWorldLoaded
 	{
 		[FluentReference]
+		const string CheatsDisabled = "notification-cheats-disabled";
+
+		[FluentReference]
 		const string CombatGeometryDescription = "description-combat-geometry";
 
 		[FluentReference]
@@ -48,8 +51,8 @@ namespace OpenRA.Mods.Common.Commands
 			public const string ActorTags = "actor-tags";
 		}
 
-		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers =
-			new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
+		readonly IDictionary<string, (string Description, Action<DebugVisualizations> Handler)> commandHandlers =
+			new Dictionary<string, (string Description, Action<DebugVisualizations> Handler)>
 			{
 				{ Commands.CombatGeometry, (CombatGeometryDescription, CombatGeometry) },
 				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry) },
@@ -65,11 +68,9 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			var world = w;
 			debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
+			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
 
-			if (world.LocalPlayer != null)
-				devMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
-
-			if (debugVis == null)
+			if (debugVis == null || devMode == null)
 				return;
 
 			var console = world.WorldActor.Trait<ChatCommands>();
@@ -85,36 +86,43 @@ namespace OpenRA.Mods.Common.Commands
 			}
 		}
 
-		static void CombatGeometry(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void CombatGeometry(DebugVisualizations debugVis)
 		{
 			debugVis.CombatGeometry ^= true;
 		}
 
-		static void RenderGeometry(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void RenderGeometry(DebugVisualizations debugVis)
 		{
 			debugVis.RenderGeometry ^= true;
 		}
 
-		static void ScreenMap(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void ScreenMap(DebugVisualizations debugVis)
 		{
-			if (devMode == null || devMode.Enabled)
-				debugVis.ScreenMap ^= true;
+			debugVis.ScreenMap ^= true;
 		}
 
-		static void DepthBuffer(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void DepthBuffer(DebugVisualizations debugVis)
 		{
 			debugVis.DepthBuffer ^= true;
 		}
 
-		static void ActorTags(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void ActorTags(DebugVisualizations debugVis)
 		{
 			debugVis.ActorTags ^= true;
 		}
 
 		public void InvokeCommand(string name, string arg)
 		{
-			if (commandHandlers.TryGetValue(name, out var command))
-				command.Handler(debugVis, devMode);
+			if (!commandHandlers.TryGetValue(name, out var command))
+				return;
+
+			if (devMode == null || !devMode.Enabled)
+			{
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatsDisabled));
+				return;
+			}
+
+			command.Handler(debugVis);
 		}
 	}
 }

@@ -120,11 +120,9 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			world = w;
 
-			if (world.LocalPlayer != null)
-				developerMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
-
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
+			developerMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
 
 			foreach (var command in commandHandlers)
 			{

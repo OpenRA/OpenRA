@@ -29,16 +29,22 @@ namespace OpenRA.Mods.Common.Traits
 		public const string CommandName = "terrain-geometry";
 
 		[FluentReference]
+		const string CheatsDisabled = "notification-cheats-disabled";
+
+		[FluentReference]
 		const string CommandDescription = "description-terrain-geometry-overlay";
 
 		public bool Enabled;
+
+		DeveloperMode devMode;
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
+			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
 
-			if (console == null || help == null)
+			if (console == null || help == null || devMode == null)
 				return;
 
 			console.RegisterCommand(CommandName, this);
@@ -47,8 +53,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void InvokeCommand(string name, string arg)
 		{
-			if (name == CommandName)
-				Enabled ^= true;
+			if (name != CommandName)
+				return;
+
+			if (devMode == null || !devMode.Enabled)
+			{
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatsDisabled));
+				return;
+			}
+
+			Enabled ^= true;
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
