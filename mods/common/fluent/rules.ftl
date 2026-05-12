@@ -9,7 +9,7 @@ checkbox-explored-map =
 
 ## DeveloperMode
 checkbox-debug-menu =
-    .label = Debug Menu
+    .label = Cheats
     .description = Enables cheats and developer commands
 
 ## CrateSpawner

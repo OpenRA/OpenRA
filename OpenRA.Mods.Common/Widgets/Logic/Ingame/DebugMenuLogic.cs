@@ -130,6 +130,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					showCustomTerrainCheckbox.OnClick = () => customTerrainDebugTrait.InvokeCommand(CustomTerrainDebugOverlay.CommandName, "");
 				}
 			}
+
+			var scrollPanel = widget.GetOrNull<ScrollPanelWidget>("DEBUG_SCROLLPANEL");
+			scrollPanel?.Layout.AdjustChildren();
 		}
 
 		static void BindOrderCheckbox(CheckboxWidget checkbox, World world, string order, Func<bool> getValue)

@@ -7,7 +7,7 @@ Container@LOBBY_OPTIONS_PANEL:
 			X: 20
 			Y: 20
 			Width: PARENT_WIDTH - 40
-			Height: 365
+			Height: 395
 			Children:
 				Container@LOBBY_OPTIONS:
 					Y: 10

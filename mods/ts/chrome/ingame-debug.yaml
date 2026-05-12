@@ -1,146 +1,185 @@
 Container@DEBUG_PANEL:
 	Logic: DebugMenuLogic
-	Y: 10
 	Width: PARENT_WIDTH
 	Height: PARENT_HEIGHT
 	Children:
-		Label@TITLE:
-			Y: 16
-			Font: Bold
-			Text: label-debug-panel-title
-			Align: Center
-			Width: PARENT_WIDTH
-			Height: 20
-		Checkbox@INSTANT_BUILD:
-			X: 45
-			Y: 45
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-instant-build
-		Checkbox@ENABLE_TECH:
-			X: 45
-			Y: 75
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-enable-tech
-		Checkbox@BUILD_ANYWHERE:
-			X: 45
-			Y: 105
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-build-anywhere
-		Checkbox@UNLIMITED_POWER:
-			X: 290
-			Y: 45
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-unlimited-power
-		Checkbox@INSTANT_CHARGE:
-			X: 290
-			Y: 75
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-instant-charge
-		Checkbox@DISABLE_VISIBILITY_CHECKS:
-			X: 290
-			Y: 105
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-disable-visibility-checks
-		Button@GIVE_CASH:
-			X: 90
-			Y: 150
-			Width: 140
-			Height: 30
-			Font: Bold
-			Text: button-debug-panel-give-cash
-		Button@GROW_RESOURCES:
-			X: 271
-			Y: 150
-			Width: 140
-			Height: 30
-			Font: Bold
-			Text: button-debug-panel-grow-resources
-		Button@GIVE_EXPLORATION:
-			X: 90
-			Y: 200
-			Width: 140
-			Height: 30
-			Font: Bold
-			Text: button-debug-panel-give-exploration
-		Button@RESET_EXPLORATION:
-			X: 271
-			Y: 200
-			Width: 140
-			Height: 30
-			Font: Bold
-			Text: button-debug-panel-reset-exploration
-		Label@VISUALIZATIONS_TITLE:
-			Y: 245
-			Font: Bold
-			Text: label-debug-panel-visualizations-title
-			Align: Center
-			Width: PARENT_WIDTH
-			Height: 20
-		Checkbox@SHOW_UNIT_PATHS:
-			X: 45
-			Y: 275
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-show-unit-paths
-		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
-			X: 45
-			Y: 305
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-customterrain-overlay
-		Checkbox@SHOW_ACTOR_TAGS:
-			X: 45
-			Y: 335
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-actor-tags
-		Checkbox@SHOW_DEPTH_PREVIEW:
-			X: 45
-			Y: 365
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-depth-preview
-		Checkbox@SHOW_COMBATOVERLAY:
-			X: 290
-			Y: 275
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-combatoverlay
-		Checkbox@SHOW_GEOMETRY:
-			X: 290
-			Y: 305
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-geometry
-		Checkbox@SHOW_TERRAIN_OVERLAY:
-			X: 290
-			Y: 335
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-terrain-overlay
-		Checkbox@SHOW_SCREENMAP:
-			X: 290
-			Y: 365
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-screenmap
+		ScrollPanel@DEBUG_SCROLLPANEL:
+			X: 20
+			Y: 20
+			Width: PARENT_WIDTH - 40
+			Height: 395
+			ItemSpacing: 10
+			Children:
+				Background@DEBUG_OPTIONS_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-debug-panel-title
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@INSTANT_BUILD:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-instant-build
+						Checkbox@UNLIMITED_POWER:
+							X: 290
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-unlimited-power
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@ENABLE_TECH:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-enable-tech
+						Checkbox@INSTANT_CHARGE:
+							X: 290
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-instant-charge
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@BUILD_ANYWHERE:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-build-anywhere
+						Checkbox@DISABLE_VISIBILITY_CHECKS:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-disable-visibility-checks
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 30
+					Children:
+						Button@GIVE_CASH:
+							X: 15
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-give-cash
+						Button@GROW_RESOURCES:
+							X: 339
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-grow-resources
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 30
+					Children:
+						Button@GIVE_EXPLORATION:
+							X: 15
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-clear-shroud
+						Button@RESET_EXPLORATION:
+							X: 177
+							Width: 151
+							Height: 30
+							Font: Bold
+							Text: button-debug-panel-reset-shroud
+				Background@VISUALIZATIONS_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: label-debug-panel-visualizations-title
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_UNIT_PATHS:
+							X: 45
+							Width: 200
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-unit-paths
+						Checkbox@SHOW_COMBATOVERLAY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-combatoverlay
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-customterrain-overlay
+						Checkbox@SHOW_GEOMETRY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-geometry
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_ACTOR_TAGS:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-actor-tags
+						Checkbox@SHOW_TERRAIN_OVERLAY:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-terrain-overlay
+				Container@ROW:
+					Width: PARENT_WIDTH - 17
+					Height: 20
+					Children:
+						Checkbox@SHOW_DEPTH_PREVIEW:
+							X: 45
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-depth-preview
+						Checkbox@SHOW_SCREENMAP:
+							X: 290
+							Height: 20
+							Width: 200
+							Font: Regular
+							Text: checkbox-debug-panel-show-screenmap
+				Container@SPACER:
+					Width: PARENT_WIDTH - 17
+					Height: 1
