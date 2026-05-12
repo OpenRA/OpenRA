@@ -719,7 +719,6 @@ description-depth-buffer = toggles depth buffer overlay.
 description-actor-tags-overlay = toggles actor tags overlay.
 
 ## DevCommands
-notification-cheats-disabled = Cheats are disabled.
 notification-invalid-cash-amount = Invalid cash amount.
 description-toggle-visibility = toggles visibility checks and minimap.
 description-give-cash = gives the default or specified amount of money.
@@ -736,6 +735,9 @@ description-player-experience = adds a specified amount of player experience to 
 description-power-outage = causes a 5-second power outage for the owner(s) of selected actors.
 description-kill-selected-actors = kills selected actors.
 description-dispose-selected-actors = disposes selected actors.
+
+## DevCommands, DebugVisualizationCommands, CustomTerrainDebugOverlay, ActorMapOverlay, CellTriggerOverlay, ExitsDebugOverlayManager, HierarchicalPathFinderOverlay, PathFinderOverlay, TerrainGeometryOverlay
+notification-cheats-disabled = Cheats are disabled.
 
 ## HelpCommands
 notification-available-commands = Here are the available commands:

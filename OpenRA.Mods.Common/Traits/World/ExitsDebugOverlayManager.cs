@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		const string CommandName = "exits-overlay";
 
 		[FluentReference]
+		const string CheatsDisabled = "notification-cheats-disabled";
+
+		[FluentReference]
 		const string CommandDescription = "description-exits-overlay";
 
 		public readonly SpriteFont Font;
@@ -38,6 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Enabled;
 
 		readonly Actor self;
+
+		DeveloperMode devMode;
 
 		public ExitsDebugOverlayManager(Actor self, ExitsDebugOverlayManagerInfo info)
 		{
@@ -52,8 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var console = self.TraitOrDefault<ChatCommands>();
 			var help = self.TraitOrDefault<HelpCommand>();
+			devMode = self.TraitOrDefault<DeveloperMode>();
 
-			if (console == null || help == null)
+			if (console == null || help == null || devMode == null)
 				return;
 
 			console.RegisterCommand(CommandName, this);
@@ -62,8 +68,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IChatCommand.InvokeCommand(string command, string arg)
 		{
-			if (command == CommandName)
-				Enabled ^= true;
+			if (command != CommandName)
+				return;
+
+			if (devMode == null || !devMode.Enabled)
+			{
+				TextNotificationsManager.Debug(FluentProvider.GetMessage(CheatsDisabled));
+				return;
+			}
+
+			Enabled ^= true;
 		}
 	}
 }
