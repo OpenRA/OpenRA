@@ -18,21 +18,22 @@ Container@MAPCHOOSER_PANEL:
 			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
-				Button@BUTTON1:
+				Row@MAP_TABS:
 					X: 15
 					Y: 15
 					Height: 31
-					Width: 135
-				Button@BUTTON2:
-					X: 155
-					Y: 15
-					Height: 31
-					Width: 135
-				Button@BUTTON3:
-					X: 295
-					Y: 15
-					Height: 31
-					Width: 135
+					MainAxisSize: Min
+					Spacing: 5
+					Children:
+						Button@BUTTON1:
+							Height: 31
+							Width: 135
+						Button@BUTTON2:
+							Height: 31
+							Width: 135
+						Button@BUTTON3:
+							Height: 31
+							Width: 135
 				Container@MAP_TAB_PANES:
 					Width: PARENT_WIDTH - 30
 					Height: PARENT_HEIGHT - 90
@@ -156,38 +157,36 @@ Container@MAPCHOOSER_PANEL:
 					Height: 35
 					Align: Center
 					Font: Bold
-				Button@BUTTON_CANCEL:
-					Key: escape
+				Row@BUTTON_ROW:
+					X: 0
 					Y: PARENT_HEIGHT - 1
-					Width: 140
+					Width: PARENT_WIDTH
 					Height: 35
-					Text: button-back
-				Button@RANDOMMAP_BUTTON:
-					Key: space
-					X: PARENT_WIDTH - 150 - WIDTH
-					Y: PARENT_HEIGHT - 1
-					Width: 140
-					Height: 35
-					Text: button-bg-randommap
-				Button@DELETE_MAP_BUTTON:
-					X: PARENT_WIDTH - 300 - WIDTH
-					Y: PARENT_HEIGHT - 1
-					Width: 140
-					Height: 35
-					Text: button-bg-delete-map
-				Button@DELETE_ALL_MAPS_BUTTON:
-					X: PARENT_WIDTH - 450 - WIDTH
-					Y: PARENT_HEIGHT - 1
-					Width: 140
-					Height: 35
-					Text: button-bg-delete-all-maps
-				Button@BUTTON_OK:
-					Key: return
-					X: PARENT_WIDTH - WIDTH
-					Y: PARENT_HEIGHT - 1
-					Width: 140
-					Height: 35
-					Text: button-bg-ok
+					MainAxisAlignment: SpaceBetween
+					Children:
+						Button@BUTTON_CANCEL:
+							Key: escape
+							Width: 140
+							Height: 35
+							Text: button-back
+						Button@DELETE_ALL_MAPS_BUTTON:
+							Width: 140
+							Height: 35
+							Text: button-bg-delete-all-maps
+						Button@DELETE_MAP_BUTTON:
+							Width: 140
+							Height: 35
+							Text: button-bg-delete-map
+						Button@RANDOMMAP_BUTTON:
+							Key: space
+							Width: 140
+							Height: 35
+							Text: button-bg-randommap
+						Button@BUTTON_OK:
+							Key: return
+							Width: 140
+							Height: 35
+							Text: button-bg-ok
 				Container@DROPDOWN_PANEL_ROOT:
 				TooltipContainer@TOOLTIP_CONTAINER:
 

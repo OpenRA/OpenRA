@@ -18,18 +18,18 @@ Container@CREDITS_PANEL:
 			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
-				Container@TAB_CONTAINER:
+				Row@TAB_CONTAINER:
 					Visible: False
 					X: 15
 					Y: 15
 					Width: PARENT_WIDTH - 30
 					Height: 34
+					Spacing: 10
 					Children:
 						Button@MOD_TAB:
 							Width: 140
 							Height: 35
 						Button@ENGINE_TAB:
-							X: 150
 							Width: 140
 							Height: 35
 							Text: label-openra

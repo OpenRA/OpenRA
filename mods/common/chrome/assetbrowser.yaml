@@ -129,10 +129,13 @@ Background@ASSETBROWSER_PANEL:
 					Align: Center
 					Visible: false
 					Text: label-assetbrowser-sprite-bg-error
-		Container@FRAME_SELECTOR:
+		Row@FRAME_SELECTOR:
 			X: 226
 			Y: PARENT_HEIGHT - 75
 			Width: PARENT_WIDTH - 226
+			Height: 26
+			CrossAxisAlignment: Center
+			Spacing: 9
 			Children:
 				Button@BUTTON_PREV:
 					Width: 26
@@ -145,7 +148,6 @@ Background@ASSETBROWSER_PANEL:
 							ImageCollection: music
 							ImageName: prev
 				Button@BUTTON_PLAY:
-					X: 35
 					Width: 26
 					Height: 26
 					Key: SPACE
@@ -157,7 +159,6 @@ Background@ASSETBROWSER_PANEL:
 							ImageName: play
 				Button@BUTTON_PAUSE:
 					Visible: false
-					X: 35
 					Width: 26
 					Height: 26
 					Key: SPACE
@@ -168,7 +169,6 @@ Background@ASSETBROWSER_PANEL:
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_STOP:
-					X: 70
 					Width: 26
 					Height: 26
 					Key: RETURN
@@ -179,7 +179,6 @@ Background@ASSETBROWSER_PANEL:
 							ImageCollection: music
 							ImageName: stop
 				Button@BUTTON_NEXT:
-					X: 105
 					Width: 26
 					Height: 26
 					Key: RIGHT
@@ -189,15 +188,14 @@ Background@ASSETBROWSER_PANEL:
 							Y: 5
 							ImageCollection: music
 							ImageName: next
-				Slider@FRAME_SLIDER:
-					X: 140
-					Y: 3
-					Width: PARENT_WIDTH - 140 - 85
-					Height: 20
-					MinimumValue: 0
+				Expanded@SLIDER_EXPANDED:
+					FlexFactor: 1
+					Children:
+						Slider@FRAME_SLIDER:
+							Width: PARENT_WIDTH
+							Height: 20
+							MinimumValue: 0
 				Label@FRAME_COUNT:
-					X: PARENT_WIDTH - WIDTH + 5
-					Y: 0
 					Width: 85
 					Height: 25
 					Font: TinyBold

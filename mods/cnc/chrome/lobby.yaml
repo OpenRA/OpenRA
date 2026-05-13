@@ -41,53 +41,45 @@ Container@SERVER_LOBBY:
 					Width: 211
 					Height: 25
 					Text: button-bg-reset-options
-				Container@SKIRMISH_TABS:
+				Row@SKIRMISH_TABS:
 					X: 697 - WIDTH
+					Y: 248
 					Width: 465
 					Visible: False
+					Spacing: 6
 					Children:
 						Button@PLAYERS_TAB:
-							Y: 248
 							Width: 151
 							Height: 31
 							Text: button-skirmish-tabs-players-tab
 						Button@OPTIONS_TAB:
-							X: 157
-							Y: 248
 							Width: 151
 							Height: 31
 							Text: button-skirmish-tabs-options-tab
 						Button@MUSIC_TAB:
-							X: 314
-							Y: 248
 							Width: 151
 							Height: 31
 							Text: label-music-title
-				Container@MULTIPLAYER_TABS:
+				Row@MULTIPLAYER_TABS:
 					X: 697 - WIDTH
+					Y: 248
 					Width: 465
 					Visible: False
+					Spacing: 6
 					Children:
 						Button@PLAYERS_TAB:
-							Y: 248
 							Width: 112
 							Height: 31
 							Text: button-multiplayer-tabs-players-tab
 						Button@OPTIONS_TAB:
-							X: 118
-							Y: 248
 							Width: 112
 							Height: 31
 							Text: button-multiplayer-tabs-options-tab
 						Button@MUSIC_TAB:
-							X: 236
-							Y: 248
 							Width: 112
 							Height: 31
 							Text: label-music-title
 						Button@SERVERS_TAB:
-							X: 354
-							Y: 248
 							Width: 111
 							Height: 31
 							Text: button-multiplayer-tabs-servers-tab
@@ -127,16 +119,20 @@ Container@SERVER_LOBBY:
 							Y: PARENT_HEIGHT - HEIGHT
 							Width: PARENT_WIDTH - 55
 							Height: 25
-		Button@DISCONNECT_BUTTON:
+		Row@BUTTON_ROW:
+			X: 0
 			Y: PARENT_HEIGHT - 1
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-server-lobby-disconnect
-		Button@START_GAME_BUTTON:
-			X: PARENT_WIDTH - WIDTH
-			Y: PARENT_HEIGHT - 1
-			Width: 140
-			Height: 35
-			Text: button-server-lobby-start-game
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@DISCONNECT_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-server-lobby-disconnect
+				Button@START_GAME_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-server-lobby-start-game
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:

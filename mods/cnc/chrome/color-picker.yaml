@@ -27,20 +27,23 @@ Background@COLOR_CHOOSER:
 			Width: 77
 			Height: 73
 			Animate: true
-		Button@MIXER_TAB_BUTTON:
+		Row@TAB_BUTTONS_ROW:
 			X: 5
 			Y: PARENT_HEIGHT - 30
+			Width: 165
 			Height: 25
-			Width: 80
-			Text: button-color-chooser-mixer-tab
-			Font: Bold
-		Button@PALETTE_TAB_BUTTON:
-			X: 90
-			Y: PARENT_HEIGHT - 30
-			Height: 25
-			Width: 80
-			Text: button-color-chooser-palette-tab
-			Font: Bold
+			Spacing: 5
+			Children:
+				Button@MIXER_TAB_BUTTON:
+					Height: 25
+					Width: 80
+					Text: button-color-chooser-mixer-tab
+					Font: Bold
+				Button@PALETTE_TAB_BUTTON:
+					Height: 25
+					Width: 80
+					Text: button-color-chooser-palette-tab
+					Font: Bold
 		Container@MIXER_TAB:
 			X: 5
 			Y: 5

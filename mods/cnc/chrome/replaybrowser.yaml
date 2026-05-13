@@ -256,18 +256,21 @@ Container@REPLAYBROWSER_PANEL:
 											X: 5
 											Width: PARENT_WIDTH
 											Height: 25
-		Button@CANCEL_BUTTON:
-			Key: escape
+		Row@BUTTON_ROW:
 			X: 0
 			Y: PARENT_HEIGHT - 1
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-back
-		Button@WATCH_BUTTON:
-			Key: return
-			X: PARENT_WIDTH - 140
-			Y: PARENT_HEIGHT - 1
-			Width: 140
-			Height: 35
-			Text: button-replaybrowser-panel-watch
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Key: escape
+					Width: 140
+					Height: 35
+					Text: button-back
+				Button@WATCH_BUTTON:
+					Key: return
+					Width: 140
+					Height: 35
+					Text: button-replaybrowser-panel-watch
 		TooltipContainer@TOOLTIP_CONTAINER:

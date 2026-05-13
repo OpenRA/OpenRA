@@ -156,16 +156,20 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 					Text: label-connection-background-desc2
 					Font: Bold
 					Align: Center
-		Button@ABORT_BUTTON:
-			Key: escape
+		Row@BUTTON_ROW:
+			X: 0
 			Y: 119
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-connection-switchmod-panel-abort
-		Button@SWITCH_BUTTON:
-			Key: return
-			X: 230
-			Y: 119
-			Width: 140
-			Height: 35
-			Text: button-connection-switchmod-panel-switch
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@ABORT_BUTTON:
+					Key: escape
+					Width: 140
+					Height: 35
+					Text: button-connection-switchmod-panel-abort
+				Button@SWITCH_BUTTON:
+					Key: return
+					Width: 140
+					Height: 35
+					Text: button-connection-switchmod-panel-switch

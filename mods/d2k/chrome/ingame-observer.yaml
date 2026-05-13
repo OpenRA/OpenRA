@@ -105,16 +105,17 @@ Container@OBSERVER_WIDGETS:
 							Width: PARENT_WIDTH - 7 - 16
 							Height: 25
 							Shadow: True
-				Container@REPLAY_PLAYER:
+				Row@REPLAY_PLAYER:
 					Logic: ReplayControlBarLogic
 					Y: 39
 					Width: 160
 					Height: 35
 					Visible: false
+					CrossAxisAlignment: Center
+					Spacing: 9
+					Padding: 0, 15, 0, 15
 					Children:
 						Button@BUTTON_PAUSE:
-							X: 15
-							Y: 10
 							Width: 26
 							Height: 26
 							Key: Pause
@@ -128,8 +129,6 @@ Container@OBSERVER_WIDGETS:
 									ImageCollection: music
 									ImageName: pause
 						Button@BUTTON_PLAY:
-							X: 15
-							Y: 10
 							Width: 26
 							Height: 26
 							Key: Pause
@@ -143,8 +142,6 @@ Container@OBSERVER_WIDGETS:
 									ImageCollection: music
 									ImageName: play
 						Button@BUTTON_SLOW:
-							X: 55
-							Y: 13
 							Width: 36
 							Height: 20
 							Key: ReplaySpeedSlow
@@ -153,8 +150,6 @@ Container@OBSERVER_WIDGETS:
 							Text: button-replay-slow.label
 							Font: TinyBold
 						Button@BUTTON_REGULAR:
-							X: 55 + 45
-							Y: 13
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedRegular
@@ -163,8 +158,6 @@ Container@OBSERVER_WIDGETS:
 							Text: button-replay-regular.label
 							Font: TinyBold
 						Button@BUTTON_FAST:
-							X: 55 + 45 * 2
-							Y: 13
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedFast
@@ -173,8 +166,6 @@ Container@OBSERVER_WIDGETS:
 							Text: button-replay-fast.label
 							Font: TinyBold
 						Button@BUTTON_MAXIMUM:
-							X: 55 + 45 * 3
-							Y: 13
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedMax

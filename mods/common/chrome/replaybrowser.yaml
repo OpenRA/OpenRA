@@ -250,20 +250,23 @@ Background@REPLAYBROWSER_PANEL:
 									X: 5
 									Width: PARENT_WIDTH
 									Height: 25
-		Button@WATCH_BUTTON:
-			X: PARENT_WIDTH - 140 - 130
+		Row@BUTTON_ROW:
+			X: PARENT_WIDTH - 270
 			Y: PARENT_HEIGHT - 45
-			Width: 120
+			Width: 250
 			Height: 25
-			Text: button-replaybrowser-panel-watch
-			Font: Bold
-			Key: return
-		Button@CANCEL_BUTTON:
-			X: PARENT_WIDTH - 140
-			Y: PARENT_HEIGHT - 45
-			Width: 120
-			Height: 25
-			Text: button-back
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@WATCH_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-replaybrowser-panel-watch
+					Font: Bold
+					Key: return
+				Button@CANCEL_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-back
+					Font: Bold
+					Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:

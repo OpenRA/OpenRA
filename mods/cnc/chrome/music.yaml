@@ -62,10 +62,13 @@ Container@MUSIC_PANEL:
 							Text: label-music-controls-length
 							Align: Right
 							Font: Bold
-				Container@BUTTONS:
+				Row@BUTTONS:
 					X: 15
-					Y: PARENT_HEIGHT - HEIGHT - 40
+					Y: PARENT_HEIGHT - HEIGHT - 15
 					Width: PARENT_WIDTH - 30
+					Height: 26
+					CrossAxisAlignment: Center
+					Spacing: 9
 					Children:
 						Button@BUTTON_PREV:
 							Width: 26
@@ -79,35 +82,36 @@ Container@MUSIC_PANEL:
 									Height: 16
 									ImageCollection: music
 									ImageName: prev
-						Button@BUTTON_PLAY:
-							X: 35
+						Container@PLAY_PAUSE_CONTAINER:
 							Width: 26
 							Height: 26
-							IgnoreChildMouseOver: true
 							Children:
-								Image@IMAGE_PLAY:
-									X: 5
-									Y: 5
-									Width: 16
-									Height: 16
-									ImageCollection: music
-									ImageName: play
-						Button@BUTTON_PAUSE:
-							Visible: false
-							X: 35
-							Width: 26
-							Height: 26
-							IgnoreChildMouseOver: true
-							Children:
-								Image@IMAGE_PAUSE:
-									X: 5
-									Y: 5
-									Width: 16
-									Height: 16
-									ImageCollection: music
-									ImageName: pause
+								Button@BUTTON_PLAY:
+									Width: 26
+									Height: 26
+									IgnoreChildMouseOver: true
+									Children:
+										Image@IMAGE_PLAY:
+											X: 5
+											Y: 5
+											Width: 16
+											Height: 16
+											ImageCollection: music
+											ImageName: play
+								Button@BUTTON_PAUSE:
+									Visible: false
+									Width: 26
+									Height: 26
+									IgnoreChildMouseOver: true
+									Children:
+										Image@IMAGE_PAUSE:
+											X: 5
+											Y: 5
+											Width: 16
+											Height: 16
+											ImageCollection: music
+											ImageName: pause
 						Button@BUTTON_STOP:
-							X: 70
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
@@ -120,7 +124,6 @@ Container@MUSIC_PANEL:
 									ImageCollection: music
 									ImageName: stop
 						Button@BUTTON_NEXT:
-							X: 105
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
@@ -132,32 +135,36 @@ Container@MUSIC_PANEL:
 									Height: 16
 									ImageCollection: music
 									ImageName: next
-						ExponentialSlider@MUSIC_SLIDER:
-							X: PARENT_WIDTH - WIDTH
-							Y: 3
-							Width: PARENT_WIDTH - 145
-							Height: 20
-							Ticks: 7
-				Label@TIME_LABEL:
-					X: (PARENT_WIDTH - WIDTH) / 2
-					Y: PARENT_HEIGHT - HEIGHT - 60 - 3
-					Width: 140
-					Height: 25
-					Align: Center
-				Checkbox@SHUFFLE:
+						Expanded@SLIDER_EXPANDED:
+							FlexFactor: 1
+							Children:
+								ExponentialSlider@MUSIC_SLIDER:
+									Y: 1
+									Width: PARENT_WIDTH - 145
+									Height: 25
+									Ticks: 7
+				Row@SHUFFLE_REPEAT_ROW:
 					X: 15
 					Y: PARENT_HEIGHT - HEIGHT - 60
-					Width: 85
-					Height: 20
-					Font: Regular
-					Text: checkbox-music-controls-shuffle
-				Checkbox@REPEAT:
-					X: PARENT_WIDTH - 15 - WIDTH
-					Y: PARENT_HEIGHT - HEIGHT - 60
-					Width: 70
-					Height: 20
-					Font: Regular
-					Text: checkbox-music-controls-loop
+					Width: PARENT_WIDTH - 30
+					Height: 25
+					MainAxisAlignment: SpaceBetween
+					CrossAxisAlignment: Center
+					Children:
+						Checkbox@SHUFFLE:
+							Width: 85
+							Height: 20
+							Font: Regular
+							Text: checkbox-music-controls-shuffle
+						Label@TIME_LABEL:
+							Width: 140
+							Height: 25
+							Align: Center
+						Checkbox@REPEAT:
+							Width: 70
+							Height: 20
+							Font: Regular
+							Text: checkbox-music-controls-loop
 				Container@NO_MUSIC_LABEL:
 					X: 15
 					Y: (PARENT_HEIGHT - HEIGHT - 60) / 2

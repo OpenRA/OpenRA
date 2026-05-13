@@ -43,17 +43,20 @@ Container@DIRECTCONNECT_PANEL:
 					Width: 200
 					Height: 25
 					Type: Integer
-		Button@BACK_BUTTON:
-			Key: escape
+		Row@BUTTON_ROW:
 			X: 0
 			Y: 89
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-cancel
-		Button@JOIN_BUTTON:
-			Key: return
-			X: 230
-			Y: 89
-			Width: 140
-			Height: 35
-			Text: button-directconnect-panel-join
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@BACK_BUTTON:
+					Key: escape
+					Width: 140
+					Height: 35
+					Text: button-cancel
+				Button@JOIN_BUTTON:
+					Key: return
+					Width: 140
+					Height: 35
+					Text: button-directconnect-panel-join

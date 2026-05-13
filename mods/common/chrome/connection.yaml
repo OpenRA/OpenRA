@@ -39,30 +39,31 @@ Background@CONNECTIONFAILED_PANEL:
 			Width: 190
 			MaxLength: 20
 			Height: 25
-		Button@RETRY_BUTTON:
-			X: PARENT_WIDTH - 430
+		Row@BUTTON_ROW:
+			X: 20
 			Y: PARENT_HEIGHT - 45
-			Width: 160
+			Width: PARENT_WIDTH - 40
 			Height: 25
-			Text: button-retry
-			Font: Bold
-			Key: return
-		Button@ABORT_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-connectionfailed-panel-abort
-			Font: Bold
-			Key: escape
-		Button@QUIT_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-quit
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@RETRY_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-retry
+					Font: Bold
+					Key: return
+				Button@ABORT_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-connectionfailed-panel-abort
+					Font: Bold
+					Key: escape
+				Button@QUIT_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-quit
+					Font: Bold
+					Key: escape
 
 Background@CONNECTING_PANEL:
 	Logic: ConnectionLogic
@@ -146,19 +147,22 @@ Background@CONNECTION_SWITCHMOD_PANEL:
 			Text: label-connection-switchmod-panel-desc2
 			Font: Bold
 			Align: Center
-		Button@SWITCH_BUTTON:
-			X: PARENT_WIDTH - 430
+		Row@BUTTON_ROW:
+			X: 20
 			Y: PARENT_HEIGHT - 45
-			Width: 160
+			Width: PARENT_WIDTH - 40
 			Height: 25
-			Text: button-connection-switchmod-panel-switch
-			Font: Bold
-			Key: return
-		Button@ABORT_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-connection-switchmod-panel-abort
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@SWITCH_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-connection-switchmod-panel-switch
+					Font: Bold
+					Key: return
+				Button@ABORT_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-connection-switchmod-panel-abort
+					Font: Bold
+					Key: escape
