@@ -12,6 +12,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -40,9 +41,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var headerLabel = panel.Get<LabelWidget>("HEADER_LABEL");
 			headerLabel.IncreaseHeightToFitCurrentText();
 			var headerHeight = headerLabel.Bounds.Height;
+			headerLabel.Height = new IntegerExpression($"{headerHeight}");
 
+			var panelBaseHeight = panel.Bounds.Height;
+			panel.Height = new IntegerExpression($"{panelBaseHeight + headerHeight}");
+			panel.Y = new IntegerExpression($"(WINDOW_HEIGHT - {panelBaseHeight + headerHeight}) / 2");
 			panel.Bounds.Height += headerHeight;
-			panel.Bounds.Y -= headerHeight / 2;
+			panel.Bounds.Y = (Game.Renderer.Resolution.Height - (panelBaseHeight + headerHeight)) / 2;
 
 			var advancedButton = panel.Get<ButtonWidget>("ADVANCED_BUTTON");
 			advancedButton.Bounds.Y += headerHeight;

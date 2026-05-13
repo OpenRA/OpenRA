@@ -120,6 +120,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly MapPreviewWidget mapPreview;
 		readonly ButtonWidget joinButton;
 		readonly int joinButtonY;
+		Size lastResolution;
 
 		readonly Action<GameServer> onJoin;
 
@@ -418,6 +419,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			RefreshServerList();
+			lastResolution = Game.Renderer.Resolution;
+		}
+
+		public override void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+				RepositionJoinButton();
+			}
+		}
+
+		void RepositionJoinButton()
+		{
+			if (joinButton == null)
+				return;
+
+			if (currentServer == null || currentServer.Clients.Length == 0)
+				joinButton.Bounds.Y = joinButtonY;
+			else
+				joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
 		}
 
 		string PlayerLabel(GameServer game)

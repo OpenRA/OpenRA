@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget titleLabel;
 		readonly LabelWidget descriptionLabel;
-		readonly SpriteFont descriptionFont;
 
 		readonly ScrollPanelWidget actorList;
 		readonly ScrollItemWidget headerTemplate;
@@ -74,7 +73,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			descriptionPanel = widget.Get<ScrollPanelWidget>("ACTOR_DESCRIPTION_PANEL");
 			titleLabel = descriptionPanel.GetOrNull<LabelWidget>("ACTOR_TITLE");
 			descriptionLabel = descriptionPanel.Get<LabelWidget>("ACTOR_DESCRIPTION");
-			descriptionFont = Game.Renderer.Fonts[descriptionLabel.Font];
 
 			portraitWidget = widget.GetOrNull<SpriteWidget>("ACTOR_PORTRAIT");
 			if (portraitWidget != null)
@@ -248,12 +246,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			if (selectedInfo != null && !string.IsNullOrEmpty(selectedInfo.Description))
-				text += WidgetUtils.WrapText(FluentProvider.GetMessage(selectedInfo.Description), descriptionLabel.Bounds.Width, descriptionFont);
+				text += FluentProvider.GetMessage(selectedInfo.Description);
 
-			var height = descriptionFont.Measure(text).Y;
 			descriptionLabel.GetText = () => text;
-			descriptionLabel.Bounds.Height = height;
-			descriptionPanel.Layout.AdjustChildren();
+			descriptionPanel.RecalculateBounds();
 
 			descriptionPanel.ScrollToTop();
 		}

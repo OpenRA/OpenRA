@@ -32,6 +32,11 @@ namespace OpenRA.Mods.Common.Widgets
 		Sprite mapSprite;
 		Rectangle mapRect;
 
+		// Raw data stored for per-frame mapRect recalculation in Draw()
+		Rectangle mapBounds;
+		MapGridType mapGridType;
+		(CPos Cell, string Label, int2 LabelOffset)[] spawnData = [];
+
 		public GeneratedMapPreviewWidget()
 		{
 			spawnUnclaimed = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed");
@@ -53,8 +58,6 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override GeneratedMapPreviewWidget Clone() { return new GeneratedMapPreviewWidget(this); }
-
-		(int2 Pos, string Label, int2 LabelOffset)[] spawns = [];
 
 		public void Update(MapPreview map)
 		{
@@ -83,31 +86,20 @@ namespace OpenRA.Mods.Common.Widgets
 			OpenRA.Graphics.Util.FastCopyIntoSprite(mapSprite, preview);
 			mapSheet.CommitBufferedData();
 
-			// Update map rect
-			var previewScale = Math.Min(RenderBounds.Width * 1f / spriteRect.Width, RenderBounds.Height * 1f / spriteRect.Height);
-			var w = (int)(previewScale * spriteRect.Width);
-			var h = (int)(previewScale * spriteRect.Height);
-			var x = RenderBounds.X + (RenderBounds.Width - w) / 2;
-			var y = RenderBounds.Y + (RenderBounds.Height - h) / 2;
-			mapRect = new Rectangle(x, y, w, h);
+			mapBounds = bounds;
+			mapGridType = gridType;
 
 			if (ShowSpawnPoints)
 			{
-				var s = new List<(int2, string, int2)>();
+				var s = new List<(CPos, string, int2)>();
 				foreach (var p in spawnPoints)
 				{
-					var pos = ConvertToPreview(p, bounds, gridType, previewScale);
-
-					var sprite = spawnUnclaimed;
-					var offset = sprite.Size.XY.ToInt2() / 2;
-					WidgetUtils.DrawSprite(sprite, pos - offset);
-
 					var number = Convert.ToChar('A' + s.Count).ToString();
 					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
-					s.Add((pos, number, textOffset));
+					s.Add((p, number, textOffset));
 				}
 
-				spawns = s.ToArray();
+				spawnData = s.ToArray();
 			}
 		}
 
@@ -135,12 +127,25 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mapSprite == null)
 				return;
 
+			// Recompute mapRect each frame so resize doesn't shift the preview.
+			var previewScale = Math.Min(RenderBounds.Width * 1f / mapSprite.Bounds.Width, RenderBounds.Height * 1f / mapSprite.Bounds.Height);
+			var w = (int)(previewScale * mapSprite.Bounds.Width);
+			var h = (int)(previewScale * mapSprite.Bounds.Height);
+			var x = RenderBounds.X + (RenderBounds.Width - w) / 2;
+			var y = RenderBounds.Y + (RenderBounds.Height - h) / 2;
+			mapRect = new Rectangle(x, y, w, h);
+
 			WidgetUtils.DrawSprite(mapSprite, mapRect.Location, mapRect.Size);
-			var offset = spawnUnclaimed.Size.XY.ToInt2() / 2;
-			foreach (var (pos, label, labelOffset) in spawns)
+
+			if (ShowSpawnPoints)
 			{
-				WidgetUtils.DrawSprite(spawnUnclaimed, pos - offset);
-				spawnFont.DrawTextWithContrast(label, pos - labelOffset, spawnColor, spawnContrastColor, 1);
+				var offset = spawnUnclaimed.Size.XY.ToInt2() / 2;
+				foreach (var (cell, label, labelOffset) in spawnData)
+				{
+					var pos = ConvertToPreview(cell, mapBounds, mapGridType, previewScale);
+					WidgetUtils.DrawSprite(spawnUnclaimed, pos - offset);
+					spawnFont.DrawTextWithContrast(label, pos - labelOffset, spawnColor, spawnContrastColor, 1);
+				}
 			}
 		}
 

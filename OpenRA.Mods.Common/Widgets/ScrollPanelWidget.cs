@@ -124,6 +124,37 @@ namespace OpenRA.Mods.Common.Widgets
 			Scroll(0);
 		}
 
+		public override void RecalculateBounds()
+		{
+			base.RecalculateBounds();
+
+			// RecalculateBounds() resets children's Y to their YAML expression (usually 0),
+			// discarding positions previously set by the ILayout. Re-apply layout so children
+			// are correctly repositioned after a window resize.
+			Layout.AdjustChildren();
+		}
+
+		public override (int Width, int Height) Measure(BoxConstraints constraints)
+		{
+			var previousWidth = Bounds.Width;
+			var (w, h) = constraints.Constrain(Bounds.Width, Bounds.Height);
+			Bounds.Width = w;
+			Bounds.Height = h;
+
+			// Children whose YAML Width references PARENT_WIDTH got width=0 during
+			// RecalculateBounds() because this widget had no size yet at that point.
+			// Now that our true width is known, re-evaluate those children so that
+			// AutoHeight labels can compute the correct wrap width.
+			if (w != previousWidth)
+			{
+				foreach (var child in Children)
+					child.RecalculateBounds();
+				Layout.AdjustChildren();
+			}
+
+			return (w, h);
+		}
+
 		public override void AddChild(Widget child)
 		{
 			// Initial setup of margins/height

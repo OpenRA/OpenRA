@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -42,10 +43,17 @@ namespace OpenRA.Mods.Common.Widgets
 			var textMessage = FluentProvider.GetMessage(text, textArguments);
 			var headerLines = textMessage.Split('\n');
 			var headerHeight = 0;
-			foreach (var l in headerLines)
+
+			headerTemplate.GetText = () => headerLines[0];
+			headerHeight += headerTemplate.Bounds.Height;
+
+			for (var i = 1; i < headerLines.Length; i++)
 			{
+				var lineText = headerLines[i];
 				var line = headerTemplate.Clone();
-				line.GetText = () => l;
+				line.Id = null;
+				line.Visible = true;
+				line.GetText = () => lineText;
 				line.Bounds.Y += headerHeight;
 				prompt.AddChild(line);
 
@@ -55,10 +63,22 @@ namespace OpenRA.Mods.Common.Widgets
 			prompt.Bounds.Height += headerHeight;
 			prompt.Bounds.Y -= headerHeight / 2;
 
+			// Move the button row down by the same amount the dialog was expanded,
+			// keeping it anchored relative to its YAML-defined position.
+			var buttonRow = prompt.GetOrNull("BUTTON_ROW");
+			if (buttonRow != null)
+				buttonRow.Bounds.Y += headerHeight;
+
+			// Register the expansion with the logic so it can be re-applied after
+			// each window resize (RecalculateBounds() resets Bounds to YAML values).
+			if (!prompt.LogicObjects.IsDefault)
+				foreach (var l in prompt.LogicObjects)
+					if (l is ConfirmationDialogLogic dialogLogic)
+						dialogLogic.SetHeaderExpansion(headerHeight);
+
 			if (onConfirm != null && confirmButton != null)
 			{
 				confirmButton.Visible = true;
-				confirmButton.Bounds.Y += headerHeight;
 				confirmButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
@@ -75,7 +95,6 @@ namespace OpenRA.Mods.Common.Widgets
 			if (onCancel != null && cancelButton != null)
 			{
 				cancelButton.Visible = true;
-				cancelButton.Bounds.Y += headerHeight;
 				cancelButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
@@ -92,7 +111,6 @@ namespace OpenRA.Mods.Common.Widgets
 			if (onOther != null && otherButton != null)
 			{
 				otherButton.Visible = true;
-				otherButton.Bounds.Y += headerHeight;
 				otherButton.OnClick = onOther;
 
 				if (!string.IsNullOrEmpty(otherText))

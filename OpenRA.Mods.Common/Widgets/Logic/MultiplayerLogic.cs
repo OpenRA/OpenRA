@@ -118,6 +118,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
 		}
 
+		public override void Tick()
+		{
+			serverListLogic.Tick();
+		}
+
 		bool disposed;
 		protected override void Dispose(bool disposing)
 		{

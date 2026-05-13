@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string AxisFont;
 		public Color BackgroundColorDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 		public Color BackgroundColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
-		public int Padding = 5;
+		public int GraphPadding = 5;
 
 		public LineGraphWidget()
 		{
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets
 			AxisFont = other.AxisFont;
 			BackgroundColorDark = other.BackgroundColorDark;
 			BackgroundColorLight = other.BackgroundColorLight;
-			Padding = other.Padding;
+			GraphPadding = other.GraphPadding;
 		}
 
 		public override void Draw()
@@ -116,8 +116,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var xAxisPointLabelHeight = labelFont.Measure("0").Y;
 
-			var graphBottomOffset = Padding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight;
-			var height = rect.Height - (graphBottomOffset + Padding);
+			var graphBottomOffset = GraphPadding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight;
+			var height = rect.Height - (graphBottomOffset + GraphPadding);
 
 			var maxValue = series.Select(p => p.Points).SelectMany(d => d).Concat([0f]).Max();
 			var longestName = series.Select(s => s.Key).OrderByDescending(s => s.Length).FirstOrDefault() ?? "";
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var yAxisLabel = GetYAxisLabel();
 			var yAxisLabelSize = axisFont.Measure(yAxisLabel);
 
-			var width = rect.Width - (Padding * 4 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
+			var width = rect.Width - (GraphPadding * 4 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
 
 			var xStep = width / xAxisSize;
 			var yStep = height / yAxisSize;
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var pointStart = Math.Max(0, pointCount - xAxisSize);
 			var pointEnd = Math.Max(pointCount, xAxisSize);
 
-			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(Padding * 2 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
+			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(GraphPadding * 2 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
 
 			var origin = new float2(rect.Left, rect.Bottom);
 
@@ -172,14 +172,14 @@ namespace OpenRA.Mods.Common.Widgets
 							color, BackgroundColorDark, BackgroundColorLight, 1);
 				}
 
-				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + Padding), 10 * keyOffset + 3),
+				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + GraphPadding), 10 * keyOffset + 3),
 					color, BackgroundColorDark, BackgroundColorLight, 1);
 				keyOffset++;
 			}
 
 			// Draw x axis
 			axisFont.DrawTextWithShadow(xAxisLabel,
-				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)),
+				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + GraphPadding)),
 				Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 
 			// TODO: make this stuff not draw outside of the RenderBounds

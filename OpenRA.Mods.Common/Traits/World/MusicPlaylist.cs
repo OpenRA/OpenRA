@@ -232,7 +232,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Stop()
 		{
-			currentSong = null;
 			Game.Sound.StopMusic();
 
 			if (currentBackgroundSong != null)

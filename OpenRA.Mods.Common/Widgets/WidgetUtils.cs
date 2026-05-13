@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -404,13 +405,17 @@ namespace OpenRA.Mods.Common.Widgets
 				prefixLabel.GetColor = () => notification.PrefixColor ?? prefixLabel.TextColor;
 				prefixLabel.GetText = () => prefix;
 				prefixLabel.Bounds.Width = prefixSize.X;
+				prefixLabel.Width = new IntegerExpression(prefixSize.X.ToString(System.Globalization.CultureInfo.InvariantCulture));
+				prefixLabel.X = new IntegerExpression(prefixLabel.Bounds.X.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
 				textWidth -= prefixOffset;
 				textLabel.Bounds.X += prefixOffset - timeOffset;
 			}
 
+			textLabel.X = new IntegerExpression(textLabel.Bounds.X.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			textLabel.GetColor = () => notification.TextColor ?? textLabel.TextColor;
 			textLabel.Bounds.Width = textWidth;
+			textLabel.Width = new IntegerExpression(textWidth.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
 			// Hack around our hacky wordwrap behavior: need to resize the widget to fit the text
 			var text = WrapText(notification.Text, textLabel.Bounds.Width, textFont);
@@ -419,7 +424,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (dh > 0)
 			{
 				textLabel.Bounds.Height += dh;
+				textLabel.Height = new IntegerExpression(textLabel.Bounds.Height.ToString(System.Globalization.CultureInfo.InvariantCulture));
 				notificationWidget.Bounds.Height += dh;
+				notificationWidget.Height = new IntegerExpression(notificationWidget.Bounds.Height.ToString(System.Globalization.CultureInfo.InvariantCulture));
 			}
 
 			notificationWidget.Bounds.Width = boxWidth - notificationWidget.Bounds.X;

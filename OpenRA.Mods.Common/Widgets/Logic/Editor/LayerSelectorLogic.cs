@@ -11,6 +11,7 @@
 
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -65,9 +66,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					preview.Scale = scale;
 					preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.Width);
 					preview.Bounds.Height = (int)(scale * preview.IdealPreviewSize.Height);
-
+					preview.Width = new IntegerExpression(preview.Bounds.Width.ToString(System.Globalization.CultureInfo.InvariantCulture));
+					preview.Height = new IntegerExpression(preview.Bounds.Height.ToString(System.Globalization.CultureInfo.InvariantCulture));
 					item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
+					item.Width = new IntegerExpression(item.Bounds.Width.ToString(System.Globalization.CultureInfo.InvariantCulture));
+					item.Height = new IntegerExpression(item.Bounds.Height.ToString(System.Globalization.CultureInfo.InvariantCulture));
 					item.IsVisible = () => true;
 					item.GetTooltipText = () => resourceType;
 

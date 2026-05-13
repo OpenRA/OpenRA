@@ -173,11 +173,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			resetPanelActions.Add(panelID, reset(panel));
 
 			var tab = tabTemplate.Clone();
-			var lastButton = buttons.LastOrDefault();
-			if (lastButton != null)
+			if (tabContainer is not LinearWidget)
 			{
-				tab.Bounds.X = lastButton.Bounds.X + buttonStride.X;
-				tab.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				var lastButton = buttons.LastOrDefault();
+				if (lastButton != null)
+				{
+					tab.Bounds.X = lastButton.Bounds.X + buttonStride.X;
+					tab.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				}
 			}
 
 			tab.Id = panelID;

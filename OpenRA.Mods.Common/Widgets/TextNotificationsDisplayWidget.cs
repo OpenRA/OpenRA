@@ -81,7 +81,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void AddNotification(TextNotification notification)
 		{
+			AddNotification(notification, Game.RunTime + DisplayDurationMs);
+		}
+
+		void AddNotification(TextNotification notification, long expiration)
+		{
 			var notificationWidget = templates[notification.Pool].Clone();
+			notificationWidget.Tag = notification;
 			WidgetUtils.SetupTextNotification(notificationWidget, notification, Bounds.Width, false);
 
 			if (Children.Count == 0)
@@ -96,10 +102,43 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			AddChild(notificationWidget);
-			expirations.Add(Game.RunTime + DisplayDurationMs);
+			expirations.Add(expiration);
 
 			while (Children.Count > LogLength)
 				RemoveNotification();
+		}
+
+		public override void RecalculateBounds()
+		{
+			base.RecalculateBounds();
+
+			var lineHeight = Game.Renderer.Fonts[templates[TextNotificationPool.Chat].Get<LabelWidget>("TEXT").Font].Measure("").Y;
+			var wholeLines = (int)Math.Floor((double)((Bounds.Height - BottomSpacing) / lineHeight));
+			var visibleChildrenHeight = wholeLines * lineHeight;
+			overflowDrawBounds = new Rectangle(RenderOrigin.X, RenderOrigin.Y + Bounds.Height - visibleChildrenHeight, Bounds.Width, visibleChildrenHeight);
+
+			RebuildNotificationWidgets();
+		}
+
+		void RebuildNotificationWidgets()
+		{
+			if (Children.Count == 0)
+				return;
+
+			var notifications = new List<(TextNotification Notification, long Expiration)>();
+			for (var i = 0; i < Children.Count; i++)
+			{
+				if (Children[i].Tag is TextNotification notification)
+					notifications.Add((notification, expirations[i]));
+			}
+
+			for (var i = Children.Count - 1; i >= 0; i--)
+				RemoveChild(Children[i]);
+
+			expirations.Clear();
+
+			foreach (var (notification, expiration) in notifications)
+				AddNotification(notification, expiration);
 		}
 
 		public void RemoveMostRecentNotification()
