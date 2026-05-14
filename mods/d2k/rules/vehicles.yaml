@@ -1,5 +1,5 @@
 mcv:
-	Inherits: ^Tank
+	Inherits: ^Vehicle
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Prerequisites: repair_pad, ~techlevel.medium
@@ -44,6 +44,7 @@ mcv:
 		Actor: mcv.husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+		RequiresCondition: !being-demolished
 	AttractsWorms:
 		Intensity: 700
 	ChangesHealth:
@@ -52,7 +53,7 @@ mcv:
 		StartIfBelow: 50
 
 harvester:
-	Inherits: ^Tank
+	Inherits: ^Vehicle
 	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Armor
@@ -99,7 +100,7 @@ harvester:
 		Actor: harvester.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-		RequiresCondition: harvester-empty
+		RequiresCondition: harvester-empty && !being-demolished
 	WithHarvestOverlay:
 	WithDockingAnimation:
 	AttractsWorms:
