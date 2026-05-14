@@ -102,6 +102,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly string fullscreen;
 		readonly string selectPreset;
 
+		// Captured so we can detach it in Dispose() — leaving it attached would keep the
+		// closure (and the captured TextFieldWidgets) alive for the rest of the process.
+		Action onResolutionChanged;
+
 		[ObjectCreator.UseCtor]
 		public DisplaySettingsLogic(ModData modData, SettingsLogic settingsLogic, string panelID, string label, WorldRenderer worldRenderer)
 		{
@@ -124,6 +128,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			automatic = FluentProvider.GetMessage(Automatic);
 			manual = FluentProvider.GetMessage(Manual);
 			disabled = FluentProvider.GetMessage(Disabled);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (onResolutionChanged != null)
+			{
+				Game.Renderer.ResolutionChanged -= onResolutionChanged;
+				onResolutionChanged = null;
+			}
+
+			base.Dispose(disposing);
 		}
 
 		public static string GetViewportSizeName(ModData modData, WorldViewport worldViewport)
@@ -233,11 +248,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Get("DISPLAY_SELECTION_CONTAINER").IsVisible = () => graphicSettings.Mode != WindowMode.Windowed;
 			panel.Get("WINDOW_RESOLUTION_CONTAINER").IsVisible = () => graphicSettings.Mode == WindowMode.Windowed;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
-			var origWidthText = windowWidth.Text = graphicSettings.WindowedSize.X.ToString(NumberFormatInfo.CurrentInfo);
+			windowWidth.Text = graphicSettings.WindowedSize.X.ToString(NumberFormatInfo.CurrentInfo);
 
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
-			var origHeightText = windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
+
+			onResolutionChanged = () =>
+			{
+				if (graphicSettings.Mode == WindowMode.Windowed)
+				{
+					windowWidth.Text = graphicSettings.WindowedSize.X.ToString(NumberFormatInfo.CurrentInfo);
+					windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
+				}
+			};
+			Game.Renderer.ResolutionChanged += onResolutionChanged;
+
+			void ApplyWindowSizeFromFields()
+			{
+				if (int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var w)
+					&& int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var h)
+					&& w > 0 && h > 0)
+					ApplyWindowedSize(new int2(w, h));
+			}
+
+			windowWidth.OnEnterKey = _ => { ApplyWindowSizeFromFields(); return true; };
+			windowHeight.OnEnterKey = _ => { ApplyWindowSizeFromFields(); return true; };
 
 			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
 			if (resolutionPresetDropdown != null)
@@ -252,14 +287,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return selectPreset;
 				};
 
-				resolutionPresetDropdown.OnMouseDown = _ => ShowResolutionPresetDropdown(resolutionPresetDropdown, windowWidth, windowHeight);
+				resolutionPresetDropdown.OnMouseDown = _ => ShowResolutionPresetDropdown(resolutionPresetDropdown, windowWidth, windowHeight, ApplyWindowedSize);
 			}
+
+			static void ApplyWindowedSize(int2 size) => Game.Renderer.SetWindowSize(size);
 
 			var restartDesc = panel.Get("VIDEO_RESTART_REQUIRED_DESC");
 			restartDesc.IsVisible = () => graphicSettings.Mode != originalGraphicSettings.Mode ||
 				graphicSettings.VideoDisplay != originalGraphicSettings.VideoDisplay ||
-				graphicSettings.GLProfile != originalGraphicSettings.GLProfile ||
-				(graphicSettings.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
+				graphicSettings.GLProfile != originalGraphicSettings.GLProfile;
 
 			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
@@ -273,13 +309,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			return () =>
 			{
-				int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var x);
-				int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var y);
-				graphicSettings.WindowedSize = new int2(x, y);
-
 				return graphicSettings.Mode != originalGraphicSettings.Mode ||
 					graphicSettings.VideoDisplay != originalGraphicSettings.VideoDisplay ||
-					graphicSettings.WindowedSize != originalGraphicSettings.WindowedSize ||
 					graphicSettings.FullscreenSize != originalGraphicSettings.FullscreenSize ||
 					graphicSettings.GLProfile != originalGraphicSettings.GLProfile;
 			};
@@ -305,6 +336,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var oldScale = graphicSettings.UIScale;
 					graphicSettings.UIScale = defaultGraphicSettings.UIScale;
+					Ui.SetUserRequestedUIScale(defaultGraphicSettings.UIScale);
 					Game.Renderer.SetUIScale(defaultGraphicSettings.UIScale);
 					RecalculateWidgetLayout(Ui.Root);
 					Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / graphicSettings.UIScale).ToInt2();
@@ -401,7 +433,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Enumerable.Range(0, Game.Renderer.DisplayCount), SetupItem);
 		}
 
-		static void ShowResolutionPresetDropdown(DropDownButtonWidget dropdown, TextFieldWidget windowWidth, TextFieldWidget windowHeight)
+		static void ShowResolutionPresetDropdown(
+			DropDownButtonWidget dropdown, TextFieldWidget windowWidth, TextFieldWidget windowHeight, Action<int2> onPresetSelected)
 		{
 			var sortedModes = CommonResolutions
 				.OrderBy(res => res.Width)
@@ -419,6 +452,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						windowWidth.Text = resolution.Width.ToString(NumberFormatInfo.CurrentInfo);
 						windowHeight.Text = resolution.Height.ToString(NumberFormatInfo.CurrentInfo);
+						onPresetSelected(new int2(resolution.Width, resolution.Height));
 					});
 
 				var label = $"{resolution.Width}x{resolution.Height}";
@@ -552,6 +586,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var oldScale = graphicSettings.UIScale;
 							graphicSettings.UIScale = o;
+							Ui.SetUserRequestedUIScale(o);
 
 							Game.Renderer.SetUIScale(o);
 							RecalculateWidgetLayout(Ui.Root);

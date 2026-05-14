@@ -30,7 +30,7 @@ namespace OpenRA.Platforms.Default
 		bool disposed;
 
 		readonly object syncObject = new();
-		readonly Size windowSize;
+		Size windowSize;
 		Size surfaceSize;
 		float windowScale = 1f;
 		int2? lockedMousePosition;
@@ -119,6 +119,7 @@ namespace OpenRA.Platforms.Default
 		}
 
 		public event Action<float, float, float, float> OnWindowScaleChanged = (oldNative, oldEffective, newNative, newEffective) => { };
+		public event Action OnWindowResized = () => { };
 
 		[DllImport("user32.dll")]
 		static extern bool SetProcessDPIAware();
@@ -224,14 +225,16 @@ namespace OpenRA.Platforms.Default
 
 				Console.WriteLine($"Using resolution: {windowSize.Width}x{windowSize.Height}");
 
-				const SDL.SDL_WindowFlags WindowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
+				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
+				if (windowMode == WindowMode.Windowed)
+					windowFlags |= SDL.SDL_WindowFlags.SDL_WINDOW_RESIZABLE;
 
 				// HiDPI doesn't work properly on OSX with (legacy) fullscreen mode
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
-					windowSize.Width, windowSize.Height, WindowFlags);
+					windowSize.Width, windowSize.Height, windowFlags);
 
 				if (Platform.CurrentPlatform == PlatformType.Linux)
 				{
@@ -278,6 +281,9 @@ namespace OpenRA.Platforms.Default
 				}
 				else
 					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
+
+				if (windowMode == WindowMode.Windowed)
+					SDL.SDL_SetWindowMinimumSize(window, (int)(1024 * windowScale), (int)(720 * windowScale));
 
 				if (Game.Settings.Game.LockMouseWindow)
 					GrabWindowMouseFocus();
@@ -426,6 +432,14 @@ namespace OpenRA.Platforms.Default
 			SDL.SDL_SetWindowTitle(window, title);
 		}
 
+		public void SetWindowSize(int2 size)
+		{
+			VerifyThreadAffinity();
+			var physicalW = (int)(size.X * windowScale);
+			var physicalH = (int)(size.Y * windowScale);
+			SDL.SDL_SetWindowSize(window, physicalW, physicalH);
+		}
+
 		public void SetRelativeMouseMode(bool mode)
 		{
 			if (mode)
@@ -444,25 +458,48 @@ namespace OpenRA.Platforms.Default
 
 		internal void WindowSizeChanged()
 		{
-			// The ratio between pixels and points can change when moving between displays in OSX
-			// We need to recalculate our scale to account for the potential change in the actual rendered area
-			if (Platform.CurrentPlatform == PlatformType.OSX)
+			// Query the new sizes outside the lock (SDL calls are on the main thread)
+			SDL.SDL_GL_GetDrawableSize(window, out var surfaceW, out var surfaceH);
+			SDL.SDL_GetWindowSize(window, out var winW, out var winH);
+
+			var newSurface = new Size(surfaceW, surfaceH);
+			var newWindow = new Size(winW, winH);
+
+			var oldScale = 0f;
+			var scaleChanged = false;
+
+			lock (syncObject)
 			{
-				SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
+				if (newWindow == windowSize && newSurface == surfaceSize)
+					return;
 
-				if (width != SurfaceSize.Width || height != SurfaceSize.Height)
+				oldScale = windowScale;
+				surfaceSize = newSurface;
+
+				// On macOS, SDL reports window sizes in logical points and GL drawable sizes in physical pixels,
+				// so the ratio gives the correct HiDPI scale factor. On Windows and Linux, SDL_GL_GetDrawableSize
+				// returns the same value as SDL_GetWindowSize (logical pixels) when using ANGLE or non-HiDPI drivers,
+				// making the ratio unreliable. The windowScale on those platforms is determined at startup from the
+				// system DPI and remains constant unless the window is moved to a display with a different DPI.
+				if (Platform.CurrentPlatform == PlatformType.OSX)
 				{
-					float oldScale;
-					lock (syncObject)
-					{
-						oldScale = windowScale;
-						surfaceSize = new Size(width, height);
-						windowScale = width * 1f / windowSize.Width;
-					}
-
-					OnWindowScaleChanged(oldScale, oldScale * scaleModifier, windowScale, windowScale * scaleModifier);
+					windowScale = surfaceW * 1f / winW;
+					windowSize = newWindow;
 				}
+				else
+				{
+					// Keep the DPI-derived windowScale; derive windowSize in logical units from the surface size.
+					windowSize = new Size((int)(surfaceW / windowScale), (int)(surfaceH / windowScale));
+				}
+
+				scaleChanged = Math.Abs(oldScale - windowScale) > 0.001f;
 			}
+
+			// The ratio between pixels and points can change when moving between displays or on resize (HiDPI)
+			if (scaleChanged)
+				OnWindowScaleChanged(oldScale, oldScale * scaleModifier, windowScale, windowScale * scaleModifier);
+			else
+				OnWindowResized();
 		}
 
 		public void Dispose()

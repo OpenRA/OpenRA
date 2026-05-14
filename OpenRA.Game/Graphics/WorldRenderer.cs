@@ -49,12 +49,17 @@ namespace OpenRA.Graphics
 		readonly IRenderPostProcessPass[] postProcessPasses;
 		long[] renderablesKeysBuffer = [];
 
+		readonly Action onResolutionChanged;
+
 		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
 			TileSize = World.Map.Rules.TerrainInfo.TileSize;
 			TileScale = World.Map.Grid.TileScale;
 			Viewport = new Viewport(this, world.Map);
+
+			onResolutionChanged = () => Viewport.AdjustForNewResolution();
+			Game.Renderer.ResolutionChanged += onResolutionChanged;
 
 			createPaletteReference = CreatePaletteReference;
 
@@ -471,6 +476,8 @@ namespace OpenRA.Graphics
 
 		public void Dispose()
 		{
+			Game.Renderer.ResolutionChanged -= onResolutionChanged;
+
 			// HACK: Disposing the world from here violates ownership
 			// but the WorldRenderer lifetime matches the disposal
 			// behavior we want for the world, and the root object setup

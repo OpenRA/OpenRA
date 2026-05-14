@@ -103,7 +103,58 @@ namespace OpenRA.Widgets
 			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
-		public static void Tick() { Root.TickOuter(); }
+		// Sets the UIScale value explicitly chosen by the user, used as a ceiling for auto-adjustment.
+		public static void SetUserRequestedUIScale(float scale)
+		{
+			userRequestedUIScale = scale;
+		}
+
+		public static void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			var currentNativeResolution = Game.Renderer.NativeResolution;
+
+			// Lazily initialise userRequestedUIScale from the persisted settings on the first tick.
+			if (userRequestedUIScale < 1f)
+				userRequestedUIScale = Game.Settings.Graphics.UIScale;
+
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+
+				// Only clamp/restore UIScale when the physical window size changed (not when the user
+				// deliberately changed UIScale, which also affects the effective resolution).
+				if (lastNativeResolution != currentNativeResolution)
+				{
+					lastNativeResolution = currentNativeResolution;
+
+					// Clamp UIScale to the highest step that fits the new resolution, bounded above
+					// by the user's chosen value so that enlarging the window restores the preference.
+					var graphicSettings = Game.Settings.Graphics;
+					var viewportSizes = Game.ModData?.GetOrCreate<WorldViewportSizes>();
+					if (viewportSizes != null)
+					{
+						var maxScales = new float2(currentNativeResolution) / new float2(viewportSizes.MinEffectiveResolution);
+						var maxScale = Math.Min(maxScales.X, maxScales.Y);
+						var clampedScale = UIScaleSteps.LastOrDefault(s => s <= maxScale && s <= userRequestedUIScale);
+						if (clampedScale < 1f)
+							clampedScale = 1f;
+
+						if (Math.Abs(clampedScale - graphicSettings.UIScale) > 0.001f)
+						{
+							var oldScale = graphicSettings.UIScale;
+							graphicSettings.UIScale = clampedScale;
+							Game.Renderer.SetUIScale(clampedScale);
+							Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / clampedScale).ToInt2();
+						}
+					}
+				}
+
+				Root.RecalculateBounds();
+			}
+
+			Root.TickOuter();
+		}
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 

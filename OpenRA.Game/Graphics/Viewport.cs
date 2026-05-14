@@ -129,6 +129,11 @@ namespace OpenRA.Graphics
 			UpdateViewportZooms(false);
 		}
 
+		public void AdjustForNewResolution()
+		{
+			UpdateViewportZooms(false);
+		}
+
 		public static long LastMoveRunTime = 0;
 		public static int2 LastMousePos;
 
@@ -246,7 +251,13 @@ namespace OpenRA.Graphics
 			if (resetCurrentZoom)
 				Zoom = MinZoom;
 			else
-				Zoom = Zoom.Clamp(MinZoom, MaxZoom);
+			{
+				// Preserve the current zoom level when adjusting for a new resolution or viewport distance change.
+				// Only clamp to MaxZoom to avoid exceeding the upper bound; do not force a zoom-in by clamping
+				// to the new MinZoom, as the user may have intentionally zoomed out below it (unlockMinZoom)
+				// or simply wants to keep their current zoom level after a window resize.
+				Zoom = Math.Min(Zoom, MaxZoom);
+			}
 
 			var minZoom = unlockMinZoom ? unlockedMinZoom : MinZoom;
 			var maxSize = 1f / minZoom * new float2(Game.Renderer.NativeResolution);

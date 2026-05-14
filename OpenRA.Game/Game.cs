@@ -455,6 +455,28 @@ namespace OpenRA
 				}
 			}
 
+			Renderer.Window.OnWindowResized += () => Game.RunAfterTick(() =>
+			{
+				if (Settings.Graphics.Mode == WindowMode.Windowed)
+				{
+					var nativeSize = Renderer.Window.NativeWindowSize;
+					var nativeScale = Renderer.Window.NativeWindowScale;
+					Settings.Graphics.WindowedSize = new int2(
+						(int)(nativeSize.Width / nativeScale),
+						(int)(nativeSize.Height / nativeScale));
+
+					// Debounce: only save once the resize has settled for 500ms.
+					// Each resize event increments the generation; only the last
+					// scheduled save (matching the current generation) will run.
+					var generation = ++pendingWindowSizeSaveGeneration;
+					Game.RunAfterDelay(500, () =>
+					{
+						if (pendingWindowSizeSaveGeneration == generation)
+							Settings.Save();
+					});
+				}
+			});
+
 			InitializeMod(manifest, args);
 		}
 
@@ -601,6 +623,7 @@ namespace OpenRA
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
 		static volatile ActionQueue delayedActions = new();
+		static int pendingWindowSizeSaveGeneration;
 
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
