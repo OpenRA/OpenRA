@@ -170,16 +170,29 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (path.Count == 0)
+			(CPos Cell, SubCell SubCell)? nextCell = null;
+			var shouldTryAgain = false;
+			if (path.Count != 0)
 			{
+				// Continue with the path to our destination.
+				destination = path[0];
+				(nextCell, shouldTryAgain) = PopPath(self);
+			}
+			else if (mobile.IsBlocking)
+			{
+				// We are blocked from our destination, but we're also blocking others. We can be productive and move out of their way at least.
+				var unblockDestination = UnblockDestination(self);
+				if (unblockDestination != null)
+					(nextCell, shouldTryAgain) = (unblockDestination, true);
+			}
+			else
+			{
+				// We're blocked and nothing alternative we can do.
 				hadNoPath = true;
 				destination = mobile.ToCell;
 				return false;
 			}
 
-			destination = path[0];
-
-			var (nextCell, shouldTryAgain) = PopPath(self);
 			if (nextCell == null)
 			{
 				if (!shouldTryAgain)
@@ -324,14 +337,9 @@ namespace OpenRA.Mods.Common.Activities
 				else if (mobile.IsBlocking)
 				{
 					// If there is no way around the blocker and blocker will not move and we are blocking others, back up to let others pass.
-					var newCell = mobile.GetAdjacentCell(nextCell);
+					var newCell = UnblockDestination(self);
 					if (newCell != null)
-					{
-						if ((nextCell - newCell).Value.LengthSquared > 2)
-							path.Add(mobile.ToCell);
-
-						return ((newCell.Value, mobile.GetAvailableSubCell(newCell.Value, mobile.FromSubCell, ignoreActor)), true);
-					}
+						return (newCell, true);
 				}
 
 				return (null, false);
@@ -341,6 +349,14 @@ namespace OpenRA.Mods.Common.Activities
 			path.RemoveAt(path.Count - 1);
 
 			return ((nextCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor)), true);
+		}
+
+		(CPos Cell, SubCell SubCell)? UnblockDestination(Actor self)
+		{
+			var adjacent = mobile.GetAdjacentCell(self.Location);
+			if (adjacent == null)
+				return null;
+			return (adjacent.Value, mobile.GetAvailableSubCell(adjacent.Value, mobile.FromSubCell, ignoreActor));
 		}
 
 		protected override void OnLastRun(Actor self)

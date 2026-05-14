@@ -82,6 +82,12 @@ namespace OpenRA.Mods.Common.Activities
 				cooldownTicks = world.SharedRandom.Next(Cooldown.MinTicksInclusive, Cooldown.MaxTicksExclusive);
 				return false;
 			}
+			else if (mobile.IsBlocking)
+			{
+				// If we're blocking, don't wait for the cooldown even if we moved recently.
+				// Allow the caller to schedule a move immediately to get us out of the blocking position ASAP.
+				return null;
+			}
 			else
 			{
 				if (cooldownTicks > 0)
