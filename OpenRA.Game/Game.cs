@@ -519,6 +519,8 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(metadata.WindowTitleTranslated))
 				Renderer.Window.SetWindowTitle(metadata.WindowTitleTranslated);
 
+			Renderer.Window.SetTextInputActive(false);
+
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
 			PerfHistory.Items["render_world"].HasNormalTick = false;

@@ -442,6 +442,19 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public void SetTextInputActive(bool active)
+		{
+			VerifyThreadAffinity();
+			if (active)
+			{
+				SDL.SDL_StartTextInput();
+			}
+			else
+			{
+				SDL.SDL_StopTextInput();
+			}
+		}
+
 		internal void WindowSizeChanged()
 		{
 			// The ratio between pixels and points can change when moving between displays in OSX

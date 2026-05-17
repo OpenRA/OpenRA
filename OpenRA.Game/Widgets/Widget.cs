@@ -389,13 +389,17 @@ namespace OpenRA.Widgets
 				return false;
 
 			Ui.KeyboardFocusWidget = this;
+			Game.Renderer.Window.SetTextInputActive(true);
 			return true;
 		}
 
 		public virtual bool YieldKeyboardFocus()
 		{
 			if (Ui.KeyboardFocusWidget == this)
+			{
 				Ui.KeyboardFocusWidget = null;
+				Game.Renderer.Window.SetTextInputActive(false);
+			}
 
 			return true;
 		}
