@@ -355,6 +355,7 @@ namespace OpenRA.Platforms.Default
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
+			SetTextInputActive(false);
 		}
 
 		static byte[] DoublePixelData(byte[] data, Size size)
@@ -439,6 +440,19 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_WarpMouseInWindow(window, lockedMousePosition.Value.X, lockedMousePosition.Value.Y);
 
 				lockedMousePosition = null;
+			}
+		}
+
+		public void SetTextInputActive(bool active)
+		{
+			VerifyThreadAffinity();
+			if (active)
+			{
+				SDL.SDL_StartTextInput();
+			}
+			else
+			{
+				SDL.SDL_StopTextInput();
 			}
 		}
 
