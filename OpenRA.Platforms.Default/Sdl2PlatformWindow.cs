@@ -209,7 +209,10 @@ namespace OpenRA.Platforms.Default
 								if (line.StartsWith("Xft.dpi", StringComparison.Ordinal) && int.TryParse(line.AsSpan(8), out var dpi))
 									windowScale = dpi / 96f;
 						}
-						catch { }
+						catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to detect DPI: {e.Message}");
+				}
 					}
 				}
 

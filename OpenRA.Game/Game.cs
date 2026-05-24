@@ -358,7 +358,10 @@ namespace OpenRA
 			{
 				EngineVersion = File.ReadAllText(Path.Combine(Platform.EngineDir, "VERSION")).Trim();
 			}
-			catch { }
+			catch (Exception e)
+			{
+				Log.Write("debug", $"Failed to read engine version: {e.Message}");
+			}
 
 			if (string.IsNullOrEmpty(EngineVersion))
 				EngineVersion = "Unknown";

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Threading.Tasks;
 using OpenRA.Support;
 
@@ -57,7 +58,10 @@ namespace OpenRA.Mods.Common
 
 					Game.RunAfterTick(() => ModVersionStatus = status);
 				}
-				catch { }
+				catch (Exception e)
+			{
+				Log.Write("debug", $"Failed to check mod version: {e.Message}");
+			}
 			});
 		}
 	}

@@ -170,7 +170,10 @@ namespace OpenRA.WindowsLauncher
 					{
 						SDL.SDL_OpenURL(faqUrl);
 					}
-					catch { }
+					catch (Exception e)
+					{
+						Log.Write("debug", $"Failed to open FAQ URL: {e.Message}");
+					}
 					break;
 				}
 
@@ -180,7 +183,10 @@ namespace OpenRA.WindowsLauncher
 					{
 						SDL.SDL_OpenURL(Path.Combine(Platform.SupportDir, "Logs"));
 					}
-					catch { }
+					catch (Exception e)
+					{
+						Log.Write("debug", $"Failed to open logs folder: {e.Message}");
+					}
 					break;
 				}
 			}

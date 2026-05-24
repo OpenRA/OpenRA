@@ -57,7 +57,10 @@ namespace OpenRA
 
 				return PlatformType.Linux;
 			}
-			catch { }
+			catch (Exception e)
+			{
+				Log.Write("debug", $"Failed to detect platform type: {e.Message}");
+			}
 
 			return PlatformType.Unknown;
 		}
@@ -97,7 +100,10 @@ namespace OpenRA
 							if (line.StartsWith("Operating System: ", StringComparison.Ordinal))
 								return line[18..] + suffix;
 					}
-					catch { }
+					catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to detect OS version via wmic: {e.Message}");
+				}
 
 					if (File.Exists("/etc/os-release"))
 						foreach (var line in File.ReadLines("/etc/os-release"))
@@ -123,7 +129,10 @@ namespace OpenRA
 								return line[16..];
 						}
 					}
-					catch { }
+					catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to detect macOS version via sw_vers: {e.Message}");
+				}
 				}
 
 				return Environment.OSVersion.ToString();

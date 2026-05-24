@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -75,7 +76,10 @@ namespace OpenRA.Mods.Common.Traits
 						var depth = FieldLoader.GetValue<int>("depth", parts[1]);
 						smudges.Add(cell, new MapSmudge { Type = type, Depth = depth });
 					}
-					catch { }
+					catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to parse smudge entry: {e.Message}");
+				}
 				}
 			}
 

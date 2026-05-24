@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
@@ -56,7 +57,10 @@ namespace OpenRA
 						});
 					}
 				}
-				catch { }
+				catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to render player icon: {e.Message}");
+				}
 			});
 
 			return sprite;

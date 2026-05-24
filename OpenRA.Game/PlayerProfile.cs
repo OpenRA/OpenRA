@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace OpenRA
@@ -45,7 +46,10 @@ namespace OpenRA
 							if (badge != null)
 								badges.Add(badge);
 						}
-						catch { }
+						catch (Exception e)
+						{
+							Log.Write("debug", $"Failed to load badge: {e.Message}");
+						}
 					});
 				}
 			}

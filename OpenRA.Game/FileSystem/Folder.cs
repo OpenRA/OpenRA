@@ -46,7 +46,11 @@ namespace OpenRA.FileSystem
 				return null;
 
 			try { return File.OpenRead(combined); }
-			catch { return null; }
+			catch (Exception e)
+			{
+				Log.Write("debug", $"Failed to open file '{combined}': {e.Message}");
+				return null;
+			}
 		}
 
 		public bool Contains(string filename)

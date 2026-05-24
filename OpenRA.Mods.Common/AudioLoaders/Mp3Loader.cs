@@ -89,7 +89,10 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					// Attempt to parse a more accurate length from the file metadata;
 					LengthInSeconds = (float)new TagLib.Mpeg.AudioFile(new StreamAbstraction(stream)).Properties.Duration.TotalSeconds;
 				}
-				catch { }
+				catch (Exception e)
+			{
+				Log.Write("debug", $"Failed to parse MP3 metadata for duration: {e.Message}");
+			}
 			}
 			finally
 			{
