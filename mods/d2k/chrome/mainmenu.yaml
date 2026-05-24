@@ -31,7 +31,7 @@ Container@MAINMENU:
 							Y: 21
 							Width: 200
 							Height: 30
-							Text: label-openra
+							Text: label-main-menu-title
 							Align: Center
 							Font: Bold
 						Button@SINGLEPLAYER_BUTTON:
