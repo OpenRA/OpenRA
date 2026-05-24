@@ -521,7 +521,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			template.Get<LabelWidget>("EXPERIENCE").GetText = () => experienceText.Update(stats.Experience);
 
 			var actionsText = new CachedTransform<double, string>(AverageOrdersPerMinute);
-			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => actionsText.Update(stats.OrderCount);
+			string defeatedApm = null;
+			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () =>
+			{
+				if (player.WinState == WinState.Undefined)
+					return actionsText.Update(stats.OrderCount);
+
+				defeatedApm ??= actionsText.Update(stats.OrderCount);
+				return defeatedApm;
+			};
 
 			return template;
 		}
