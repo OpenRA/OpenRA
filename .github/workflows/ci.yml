@@ -38,6 +38,30 @@ jobs:
           make check-scripts
           make TREAT_WARNINGS_AS_ERRORS=true test
 
+  macos:
+    name: macOS (ARM64)
+    runs-on: macos-14
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v6
+
+      - name: Install .NET 8.0
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Check Code
+        run: |
+          make check
+          make tests
+
+      - name: Check Mods
+        run: |
+          brew install lua
+          make check-scripts
+          make TREAT_WARNINGS_AS_ERRORS=true test
+
   windows:
     name: Windows (.NET 8.0)
     runs-on: windows-2022
