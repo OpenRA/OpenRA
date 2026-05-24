@@ -32,7 +32,7 @@ label-connection-switchmod-panel-desc2 = Switch mods and join server?
 button-connection-switchmod-panel-switch = Switch
 button-connection-switchmod-panel-abort = Abort
 
-## credits.yaml, mainmenu.yaml
+## credits.yaml
 label-openra = OpenRA
 label-credits-title = Credits
 
@@ -476,6 +476,7 @@ label-mouse-control-desc-modern-edgescroll = or by moving the cursor to the edge
 checkbox-edgescroll-container = Screen Edge Panning
 
 ## mainmenu.yaml
+label-main-menu-title = OpenRA
 label-singleplayer-title = Singleplayer
 button-extras-title = Extras
 button-main-menu-content = Manage Content
