@@ -96,6 +96,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (world.ReplayTimestep != 0)
 						world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
 				};
+
+				// Restore normal FPS when the replay ends after running at max speed
+				Action<World> checkReplayEnded = null;
+				checkReplayEnded = w =>
+				{
+					if (orderManager.NetFrameNumber >= replayNetTicks)
+					{
+						if (w.ReplayTimestep != 0 && w.ReplayTimestep != originalTimestep)
+							w.ReplayTimestep = originalTimestep;
+					}
+					else
+						w.AddFrameEndTask(checkReplayEnded);
+				};
+
+				world.AddFrameEndTask(checkReplayEnded);
 			}
 		}
 	}
