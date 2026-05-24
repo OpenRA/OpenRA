@@ -58,7 +58,7 @@ jobs:
 
       - name: Check Mods
         run: |
-          brew install lua
+          brew install lua@5.1
           make check-scripts
           make TREAT_WARNINGS_AS_ERRORS=true test
 
