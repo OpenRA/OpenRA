@@ -518,7 +518,7 @@ checkbox-edgescroll-container = Screen Edge Panning
 
 ## mainmenu.yaml
 label-singleplayer-title = Singleplayer
-label-main-menu-mainmenu-title = Main Menu
+label-main-menu-title = Main Menu
 button-extras-title = Extras
 button-main-menu-content = Manage Content
 button-singleplayer-menu-skirmish = Skirmish

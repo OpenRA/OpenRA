@@ -55,7 +55,7 @@ Container@MENU_BACKGROUND:
 							Y: 0 - 28
 							Width: PARENT_WIDTH
 							Height: 20
-							Text: label-main-menu-mainmenu-title
+							Text: label-main-menu-title
 							Align: Center
 							Font: Bold
 							Contrast: True
