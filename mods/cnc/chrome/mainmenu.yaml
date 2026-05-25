@@ -49,6 +49,7 @@ Container@MENU_BACKGROUND:
 			Children:
 				Container@MAIN_MENU:
 					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
@@ -59,44 +60,38 @@ Container@MENU_BACKGROUND:
 							Align: Center
 							Font: Bold
 							Contrast: True
-						Button@SINGLEPLAYER_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-singleplayer-title
-						Button@MULTIPLAYER_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-multiplayer-title
-						Button@SETTINGS_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-settings-title
-						Button@EXTRAS_BUTTON:
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-extras-title
-						Button@CONTENT_BUTTON:
-							X: 600
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-main-menu-content
-						Button@QUIT_BUTTON:
-							X: 750
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-quit
+						Row@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Spacing: 10
+							Children:
+								Button@SINGLEPLAYER_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-singleplayer-title
+								Button@MULTIPLAYER_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-multiplayer-title
+								Button@SETTINGS_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-settings-title
+								Button@EXTRAS_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-extras-title
+								Button@CONTENT_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-main-menu-content
+								Button@QUIT_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-quit
 				Container@SINGLEPLAYER_MENU:
 					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Visible: False
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
@@ -108,39 +103,35 @@ Container@MENU_BACKGROUND:
 							Align: Center
 							Font: Bold
 							Contrast: True
-						Button@SKIRMISH_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-singleplayer-menu-skirmish
-						Button@MISSIONS_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-missions-title
-						Button@LOAD_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-singleplayer-menu-load
-						Button@ENCYCLOPEDIA_BUTTON:
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-encyclopedia-title
-						Button@BACK_BUTTON:
-							Key: escape
-							X: 600
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-back
+						Row@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Spacing: 10
+							Children:
+								Button@SKIRMISH_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-singleplayer-menu-skirmish
+								Button@MISSIONS_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-missions-title
+								Button@LOAD_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-singleplayer-menu-load
+								Button@ENCYCLOPEDIA_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-encyclopedia-title
+								Button@BACK_BUTTON:
+									Key: escape
+									Width: 140
+									Height: 35
+									Text: button-back
 				Container@EXTRAS_MENU:
 					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Visible: False
 					Children:
 						Label@EXTRAS_MENU_TITLE:
@@ -152,46 +143,40 @@ Container@MENU_BACKGROUND:
 							Align: Center
 							Font: Bold
 							Contrast: True
-						Button@REPLAYS_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-extras-menu-replays
-						Button@MUSIC_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-music-title
-						Button@MAP_EDITOR_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-map-editor-title
-							Font: Bold
-						Button@ASSETBROWSER_BUTTON:
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-extras-menu-assetbrowser
-						Button@CREDITS_BUTTON:
-							X: 600
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: label-credits-title
-						Button@BACK_BUTTON:
-							Key: escape
-							X: 750
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-back
+						Row@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Spacing: 10
+							Children:
+								Button@REPLAYS_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-extras-menu-replays
+								Button@MUSIC_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-music-title
+								Button@MAP_EDITOR_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-map-editor-title
+									Font: Bold
+								Button@ASSETBROWSER_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-extras-menu-assetbrowser
+								Button@CREDITS_BUTTON:
+									Width: 140
+									Height: 35
+									Text: label-credits-title
+								Button@BACK_BUTTON:
+									Key: escape
+									Width: 140
+									Height: 35
+									Text: button-back
 				Container@MAP_EDITOR_MENU:
 					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Visible: False
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
@@ -203,28 +188,27 @@ Container@MENU_BACKGROUND:
 							Align: Center
 							Font: Bold
 							Contrast: True
-						Button@NEW_MAP_BUTTON:
-							X: 0
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-map-editor-new-map
-							Font: Bold
-						Button@LOAD_MAP_BUTTON:
-							X: 150
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-map-editor-load-map
-							Font: Bold
-						Button@BACK_BUTTON:
-							X: 300
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-back
-							Font: Bold
-							Key: escape
+						Row@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Spacing: 10
+							Children:
+								Button@NEW_MAP_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-map-editor-new-map
+									Font: Bold
+								Button@LOAD_MAP_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-map-editor-load-map
+									Font: Bold
+								Button@BACK_BUTTON:
+									Width: 140
+									Height: 35
+									Text: button-back
+									Font: Bold
+									Key: escape
 		Container@NEWS_BG:
 			Children:
 				DropDownButton@NEWS_BUTTON:

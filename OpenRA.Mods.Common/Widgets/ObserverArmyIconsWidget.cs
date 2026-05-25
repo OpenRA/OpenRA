@@ -31,7 +31,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconSpacing = 1;
 
 		readonly float2 iconSize;
-		public int MinWidth = 240;
 
 		public ArmyUnit TooltipUnit { get; private set; }
 		public Func<ArmyUnit> GetTooltipUnit;
@@ -52,6 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+			MinWidth = 240;
 
 			GetTooltipUnit = () => TooltipUnit;
 			tooltipContainer = Exts.Lazy(() =>

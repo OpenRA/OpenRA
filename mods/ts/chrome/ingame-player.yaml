@@ -42,7 +42,7 @@ Container@PLAYER_WIDGETS:
 			ImageCollection: sidebar
 			ImageName: background-commandbar
 			ClickThrough: False
-		Container@COMMAND_BAR:
+		Row@COMMAND_BAR:
 			Logic: CommandBarLogic
 				HighlightOnButtonPress: True
 			X: 19
@@ -70,7 +70,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: attack-move
 				Button@FORCE_MOVE:
-					X: 35
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -88,7 +87,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: force-move
 				Button@FORCE_ATTACK:
-					X: 70
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -106,7 +104,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: force-attack
 				Button@GUARD:
-					X: 105
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -124,7 +121,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: guard
 				Button@DEPLOY:
-					X: 140
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -143,7 +139,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: deploy
 				Button@SCATTER:
-					X: 175
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -162,7 +157,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: scatter
 				Button@STOP:
-					X: 210
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -181,7 +175,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: command-icons
 							ImageName: stop
 				Button@QUEUE_ORDERS:
-					X: 245
 					Width: 35
 					Height: 32
 					VisualHeight: 0
@@ -198,7 +191,7 @@ Container@PLAYER_WIDGETS:
 							Y: 3
 							ImageCollection: command-icons
 							ImageName: queue-orders
-		Container@STANCE_BAR:
+		Row@STANCE_BAR:
 			Logic: StanceSelectorLogic
 			X: 306
 			Y: WINDOW_HEIGHT - HEIGHT - 20
@@ -224,7 +217,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: stance-icons
 							ImageName: attack-anything
 				Button@STANCE_DEFEND:
-					X: 28
 					Width: 28
 					Height: 32
 					VisualHeight: 0
@@ -243,7 +235,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: stance-icons
 							ImageName: defend
 				Button@STANCE_RETURNFIRE:
-					X: 56
 					Width: 28
 					Height: 32
 					VisualHeight: 0
@@ -262,7 +253,6 @@ Container@PLAYER_WIDGETS:
 							ImageCollection: stance-icons
 							ImageName: return-fire
 				Button@STANCE_HOLDFIRE:
-					X: 84
 					Width: 28
 					Height: 32
 					VisualHeight: 0

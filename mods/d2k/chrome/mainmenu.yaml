@@ -1,4 +1,6 @@
 Container@MAINMENU:
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
 	Logic: MainMenuLogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
@@ -25,194 +27,182 @@ Container@MAINMENU:
 				Background@MAIN_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					ClickThrough: true
 					Children:
-						Label@MAINMENU_LABEL_TITLE:
-							X: 0
-							Y: 21
-							Width: 200
-							Height: 30
-							Text: label-openra
-							Align: Center
-							Font: Bold
-						Button@SINGLEPLAYER_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
-							Width: 140
-							Height: 30
-							Text: label-singleplayer-title
-							Font: Bold
-						Button@MULTIPLAYER_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
-							Width: 140
-							Height: 30
-							Text: label-multiplayer-title
-							Font: Bold
-						Button@SETTINGS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 140
-							Width: 140
-							Height: 30
-							Text: button-settings-title
-							Font: Bold
-						Button@EXTRAS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 180
-							Width: 140
-							Height: 30
-							Text: button-extras-title
-							Font: Bold
-						Button@CONTENT_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 220
-							Width: 140
-							Height: 30
-							Text: button-main-menu-content
-							Font: Bold
-						Button@QUIT_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 260
-							Width: 140
-							Height: 30
-							Text: button-quit
-							Font: Bold
+						Column@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							CrossAxisAlignment: Center
+							Spacing: 10
+							MainAxisAlignment: Center
+							Children:
+								Label@MAINMENU_LABEL_TITLE:
+									Width: 200
+									Height: 30
+									Text: label-openra
+									Align: Center
+									Font: Bold
+								Button@SINGLEPLAYER_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-singleplayer-title
+									Font: Bold
+								Button@MULTIPLAYER_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-multiplayer-title
+									Font: Bold
+								Button@SETTINGS_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-settings-title
+									Font: Bold
+								Button@EXTRAS_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-extras-title
+									Font: Bold
+								Button@CONTENT_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-main-menu-content
+									Font: Bold
+								Button@QUIT_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-quit
+									Font: Bold
 				Background@SINGLEPLAYER_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					ClickThrough: true
 					Children:
-						Label@SINGLEPLAYER_MENU_TITLE:
-							X: 0
-							Y: 21
-							Width: 200
-							Height: 30
-							Text: label-singleplayer-title
-							Align: Center
-							Font: Bold
-						Button@SKIRMISH_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
-							Width: 140
-							Height: 30
-							Text: button-singleplayer-menu-skirmish
-							Font: Bold
-						Button@MISSIONS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
-							Width: 140
-							Height: 30
-							Text: label-missions-title
-							Font: Bold
-						Button@LOAD_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 140
-							Width: 140
-							Height: 30
-							Text: button-singleplayer-menu-load
-							Font: Bold
-						Button@ENCYCLOPEDIA_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 180
-							Width: 140
-							Height: 30
-							Text: label-mentat-title
-							Font: Bold
-						Button@BACK_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Key: escape
-							Y: 260
-							Width: 140
-							Height: 30
-							Text: button-back
-							Font: Bold
+						Column@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							CrossAxisAlignment: Center
+							Spacing: 10
+							MainAxisAlignment: Start
+							Padding: 25, 0, 25, 0
+							Children:
+								Label@SINGLEPLAYER_MENU_TITLE:
+									Width: 200
+									Height: 30
+									Text: label-singleplayer-title
+									Align: Center
+									Font: Bold
+								Button@SKIRMISH_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-singleplayer-menu-skirmish
+									Font: Bold
+								Button@MISSIONS_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-missions-title
+									Font: Bold
+								Button@LOAD_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-singleplayer-menu-load
+									Font: Bold
+								Button@ENCYCLOPEDIA_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-mentat-title
+									Font: Bold
+								Expanded@BACK_SPACER:
+								Button@BACK_BUTTON:
+									Key: escape
+									Width: 140
+									Height: 30
+									Text: button-back
+									Font: Bold
 				Background@EXTRAS_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					ClickThrough: true
 					Children:
-						Label@EXTRAS_MENU_TITLE:
-							X: 0
-							Y: 21
-							Width: 200
-							Height: 30
-							Text: button-extras-title
-							Align: Center
-							Font: Bold
-						Button@REPLAYS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
-							Width: 140
-							Height: 30
-							Text: button-extras-menu-replays
-							Font: Bold
-						Button@MUSIC_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
-							Width: 140
-							Height: 30
-							Text: label-music-title
-							Font: Bold
-						Button@MAP_EDITOR_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 140
-							Width: 140
-							Height: 30
-							Text: label-map-editor-title
-							Font: Bold
-						Button@ASSETBROWSER_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 180
-							Width: 140
-							Height: 30
-							Text: button-extras-menu-assetbrowser
-							Font: Bold
-						Button@CREDITS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 220
-							Width: 140
-							Height: 30
-							Text: label-credits-title
-							Font: Bold
-						Button@BACK_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Key: escape
-							Y: 260
-							Width: 140
-							Height: 30
-							Text: button-back
-							Font: Bold
+						Column@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							CrossAxisAlignment: Center
+							Spacing: 10
+							MainAxisAlignment: Center
+							Children:
+								Label@EXTRAS_MENU_TITLE:
+									Width: 200
+									Height: 30
+									Text: button-extras-title
+									Align: Center
+									Font: Bold
+								Button@REPLAYS_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-extras-menu-replays
+									Font: Bold
+								Button@MUSIC_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-music-title
+									Font: Bold
+								Button@MAP_EDITOR_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-map-editor-title
+									Font: Bold
+								Button@ASSETBROWSER_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-extras-menu-assetbrowser
+									Font: Bold
+								Button@CREDITS_BUTTON:
+									Width: 140
+									Height: 30
+									Text: label-credits-title
+									Font: Bold
+								Button@BACK_BUTTON:
+									Key: escape
+									Width: 140
+									Height: 30
+									Text: button-back
+									Font: Bold
 				Background@MAP_EDITOR_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					ClickThrough: true
 					Children:
-						Label@MAP_EDITOR_MENU_TITLE:
-							X: 0
-							Y: 21
-							Width: 200
-							Height: 30
-							Text: label-map-editor-title
-							Align: Center
-							Font: Bold
-						Button@NEW_MAP_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
-							Width: 140
-							Height: 30
-							Text: button-map-editor-new-map
-							Font: Bold
-						Button@LOAD_MAP_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
-							Width: 140
-							Height: 30
-							Text: button-map-editor-load-map
-							Font: Bold
-						Button@BACK_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Key: escape
-							Y: 260
-							Width: 140
-							Height: 30
-							Text: button-back
-							Font: Bold
+						Column@BUTTONS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							CrossAxisAlignment: Center
+							Spacing: 10
+							MainAxisAlignment: Start
+							Padding: 25, 0, 25, 0
+							Children:
+								Label@MAP_EDITOR_MENU_TITLE:
+									Width: 200
+									Height: 30
+									Text: label-map-editor-title
+									Align: Center
+									Font: Bold
+								Button@NEW_MAP_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-map-editor-new-map
+									Font: Bold
+								Button@LOAD_MAP_BUTTON:
+									Width: 140
+									Height: 30
+									Text: button-map-editor-load-map
+									Font: Bold
+								Expanded@BACK_SPACER:
+								Button@BACK_BUTTON:
+									Key: escape
+									Width: 140
+									Height: 30
+									Text: button-back
+									Font: Bold
 		Background@NEWS_BG:
 			X: (WINDOW_WIDTH - WIDTH) / 2
 			Y: 35

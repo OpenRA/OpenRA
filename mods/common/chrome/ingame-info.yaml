@@ -15,107 +15,87 @@ Container@GAME_INFO_PANEL:
 			Height: 25
 			Align: Center
 			Font: Bold
-		Container@TAB_CONTAINER_2:
+		Row@TAB_CONTAINER_2:
 			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: 50
 			Width: 280
 			Height: 25
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 50
 					Width: 140
 					Height: 25
 					Font: Bold
 				Button@BUTTON2:
-					X: 140
-					Y: 50
 					Width: 140
 					Height: 25
 					Font: Bold
-		Container@TAB_CONTAINER_3:
+		Row@TAB_CONTAINER_3:
 			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: 50
 			Width: 360
 			Height: 25
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
 				Button@BUTTON2:
-					X: 120
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
 				Button@BUTTON3:
-					X: 240
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
-		Container@TAB_CONTAINER_4:
+		Row@TAB_CONTAINER_4:
 			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: 50
 			Width: 480
 			Height: 25
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
 				Button@BUTTON2:
-					X: 120
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
 				Button@BUTTON3:
-					X: 240
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
 				Button@BUTTON4:
-					X: 360
-					Y: 50
 					Width: 120
 					Height: 25
 					Font: Bold
-		Container@TAB_CONTAINER_5:
+		Row@TAB_CONTAINER_5:
 			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: 50
 			Width: 480
 			Height: 25
 			Visible: False
 			Children:
 				Button@BUTTON1:
-					Y: 50
 					Width: 96
 					Height: 25
 					Font: Bold
 				Button@BUTTON2:
-					X: 96
-					Y: 50
 					Width: 96
 					Height: 25
 					Font: Bold
 				Button@BUTTON3:
-					X: 192
-					Y: 50
 					Width: 96
 					Height: 25
 					Font: Bold
 				Button@BUTTON4:
-					X: 288
-					Y: 50
 					Width: 96
 					Height: 25
 					Font: Bold
 				Button@BUTTON5:
-					X: 384
-					Y: 50
 					Width: 96
 					Height: 25
 					Font: Bold

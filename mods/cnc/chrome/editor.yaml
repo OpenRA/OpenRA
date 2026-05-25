@@ -60,21 +60,25 @@ Container@NEW_MAP_BG:
 					Height: 25
 					Text: 128
 					Type: Integer
-		Button@CANCEL_BUTTON:
+		Row@BUTTON_ROW:
+			X: 0
 			Y: PARENT_HEIGHT - 1
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-cancel
-			Font: Bold
-			Key: escape
-		Button@CREATE_BUTTON:
-			X: PARENT_WIDTH - WIDTH
-			Y: PARENT_HEIGHT - 1
-			Width: 140
-			Height: 35
-			Text: button-new-map-bg-create
-			Font: Bold
-			Key: return
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+				Button@CREATE_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-new-map-bg-create
+					Font: Bold
+					Key: return
 
 Container@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
@@ -96,59 +100,66 @@ Container@SAVE_MAP_PANEL:
 			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
-				Label@TITLE_LABEL:
+				Column@FORM_ROWS:
 					X: 10
 					Y: 15
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: label-save-map-background-title
-				TextField@TITLE:
-					X: 110
-					Y: 15
-					Width: 220
-					MaxLength: 50
-					Height: 25
-				Label@AUTHOR_LABEL:
-					X: 10
-					Y: 50
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: label-save-map-background-author
-				TextField@AUTHOR:
-					X: 110
-					Y: 50
-					Width: 220
-					MaxLength: 50
-					Height: 25
-				Label@VISIBILITY_LABEL:
-					X: 10
-					Y: 85
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: label-save-map-background-visibility
-				DropDownButton@VISIBILITY_DROPDOWN:
-					X: 110
-					Y: 85
-					Width: 220
-					Height: 25
-					Text: dropdownbutton-save-map-background-visibility-dropdown
-					Font: Regular
-				Label@DIRECTORY_LABEL:
-					X: 10
-					Y: 120
-					Width: 95
-					Height: 25
-					Align: Right
-					Text: label-save-map-background-directory
-				DropDownButton@DIRECTORY_DROPDOWN:
-					X: 110
-					Y: 120
-					Width: 220
-					Height: 25
-					Font: Regular
+					Width: PARENT_WIDTH - 20
+					Height: 130
+					Spacing: 10
+					Children:
+						Row@TITLE_ROW:
+							Width: PARENT_WIDTH
+							Height: 25
+							Children:
+								Label@TITLE_LABEL:
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: label-save-map-background-title
+								TextField@TITLE:
+									Width: 220
+									MaxLength: 50
+									Height: 25
+						Row@AUTHOR_ROW:
+							Width: PARENT_WIDTH
+							Height: 25
+							Children:
+								Label@AUTHOR_LABEL:
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: label-save-map-background-author
+								TextField@AUTHOR:
+									Width: 220
+									MaxLength: 50
+									Height: 25
+						Row@VISIBILITY_ROW:
+							Width: PARENT_WIDTH
+							Height: 25
+							Children:
+								Label@VISIBILITY_LABEL:
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: label-save-map-background-visibility
+								DropDownButton@VISIBILITY_DROPDOWN:
+									Width: 220
+									Height: 25
+									Text: dropdownbutton-save-map-background-visibility-dropdown
+									Font: Regular
+						Row@DIRECTORY_ROW:
+							Width: PARENT_WIDTH
+							Height: 25
+							Children:
+								Label@DIRECTORY_LABEL:
+									Width: 95
+									Height: 25
+									Align: Right
+									Text: label-save-map-background-directory
+								DropDownButton@DIRECTORY_DROPDOWN:
+									Width: 220
+									Height: 25
+									Font: Regular
 				Label@FILENAME_LABEL:
 					X: 10
 					Y: 155
@@ -168,20 +179,24 @@ Container@SAVE_MAP_PANEL:
 					Width: 110
 					Height: 25
 					Font: Regular
-		Button@BACK_BUTTON:
+		Row@BUTTON_ROW:
+			X: 0
 			Y: PARENT_HEIGHT - 1
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-cancel
-			Font: Bold
-			Key: escape
-		Button@SAVE_BUTTON:
-			X: PARENT_WIDTH - 140
-			Y: PARENT_HEIGHT - 1
-			Width: 140
-			Height: 35
-			Text: button-save-map-panel
-			Font: Bold
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@BACK_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+				Button@SAVE_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-save-map-panel
+					Font: Bold
 
 ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
 	TopBottomSpacing: 5

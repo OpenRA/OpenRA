@@ -106,9 +106,10 @@ Container@MISSIONBROWSER_PANEL:
 									Font: Regular
 									PanelRoot: MISSION_DROPDOWN_PANEL_ROOT
 									TooltipContainer: TOOLTIP_CONTAINER
-						Container@MISSION_TABS:
+						Row@MISSION_TABS:
 							Width: PARENT_WIDTH
 							Y: PARENT_HEIGHT - 32
+							Spacing: 6
 							Children:
 								Button@MISSIONINFO_TAB:
 									Width: 178
@@ -116,7 +117,6 @@ Container@MISSIONBROWSER_PANEL:
 									Font: Bold
 									Text: button-missionbrowser-panel-mission-info
 								Button@OPTIONS_TAB:
-									X: 184
 									Width: 178
 									Height: 32
 									Font: Bold

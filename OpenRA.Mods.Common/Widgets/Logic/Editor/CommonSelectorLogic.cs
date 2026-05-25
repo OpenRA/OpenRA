@@ -72,6 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			Editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
+			Game.Renderer.ResolutionChanged += InitializePreviews;
 
 			var none = FluentProvider.GetMessage(None);
 			var searchResults = FluentProvider.GetMessage(SearchResults);
@@ -108,6 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void Dispose(bool disposing)
 		{
 			Editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
+			Game.Renderer.ResolutionChanged -= InitializePreviews;
 
 			base.Dispose(disposing);
 		}

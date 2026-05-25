@@ -40,19 +40,22 @@ Background@DIRECTCONNECT_PANEL:
 			MaxLength: 5
 			Height: 25
 			Type: Integer
-		Button@JOIN_BUTTON:
-			X: PARENT_WIDTH - 430
+		Row@BUTTON_ROW:
+			X: 20
 			Y: PARENT_HEIGHT - 45
-			Width: 160
+			Width: PARENT_WIDTH - 40
 			Height: 25
-			Text: button-directconnect-panel-join
-			Font: Bold
-			Key: return
-		Button@BACK_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-cancel
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@JOIN_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-directconnect-panel-join
+					Font: Bold
+					Key: return
+				Button@BACK_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+					Key: escape

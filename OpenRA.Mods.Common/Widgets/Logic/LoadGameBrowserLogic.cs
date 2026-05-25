@@ -173,6 +173,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string selectedPath;
 		GameSave selectedSave;
 		bool filtersVisible;
+		Action reapplyFiltersVisibility;
+		Size lastResolution;
 
 		[ObjectCreator.UseCtor]
 		public LoadGameBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart)
@@ -264,6 +266,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SetupSaveDependentFilters();
 			ApplyFilter();
+			lastResolution = Game.Renderer.Resolution;
+		}
+
+		public override void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+				reapplyFiltersVisibility?.Invoke();
+			}
 		}
 
 		void LoadGames(ScrollItemWidget gameTemplate, ScrollItemWidget dateHeaderTemplate)
@@ -691,36 +704,61 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			filtersToggle.IsChecked = () => filtersVisible;
 
 			// The YAML lays the save list out as if the filter panel were visible.
-			var saveListNormalBounds = saveListContainer.Bounds;
+			// yamlBounds captures that "filters shown" state. After a window resize,
+			// RecalculateBounds() resets all Bounds to YAML values, so we re-snapshot
+			// before reapplying the current visibility state.
+			var yamlBounds = saveListContainer.Bounds;
 			var expandedX = filterContainer.Bounds.X;
-			var expandedWidth = saveListNormalBounds.Right - expandedX;
+			var yamlGameTemplateWidth = gameTemplate.Bounds.Width;
+			var yamlGameTemplateChildWidths = gameTemplate.Children.Select(c => c.Bounds.Width).ToArray();
+			var yamlDateHeaderTemplateWidth = dateHeaderTemplate.Bounds.Width;
+			var yamlDateHeaderTemplateChildWidths = dateHeaderTemplate.Children.Select(c => c.Bounds.Width).ToArray();
 
 			void ApplyFiltersVisibility(bool reloadGames)
 			{
-				var newX = filtersVisible ? saveListNormalBounds.X : expandedX;
-				var newWidth = filtersVisible ? saveListNormalBounds.Width : expandedWidth;
-				var widthDelta = newWidth - saveListContainer.Bounds.Width;
+				var expandedWidth = yamlBounds.Right - expandedX;
 
-				saveListContainer.Bounds = new WidgetBounds(newX, saveListNormalBounds.Y, newWidth, saveListNormalBounds.Height);
+				var newX = filtersVisible ? yamlBounds.X : expandedX;
+				var newWidth = filtersVisible ? yamlBounds.Width : expandedWidth;
+				var widthDelta = newWidth - yamlBounds.Width;
+
+				saveListContainer.Bounds = new WidgetBounds(newX, yamlBounds.Y, newWidth, yamlBounds.Height);
 
 				var saveListLabel = saveListContainer.GetOrNull<LabelWidget>("SAVE_LIST_LABEL");
 				if (saveListLabel != null)
-					saveListLabel.Bounds.Width += widthDelta;
+					saveListLabel.Bounds.Width = newWidth;
 
-				gameList.Bounds.Width += widthDelta;
+				gameList.Bounds.Width = newWidth;
 
-				gameTemplate.Bounds.Width += widthDelta;
-				foreach (var child in gameTemplate.Children)
-					child.Bounds.Width += widthDelta;
+				gameTemplate.Bounds.Width = yamlGameTemplateWidth + widthDelta;
+				for (var i = 0; i < gameTemplate.Children.Count; i++)
+					gameTemplate.Children[i].Bounds.Width = yamlGameTemplateChildWidths[i] + widthDelta;
 
-				dateHeaderTemplate.Bounds.Width += widthDelta;
-				foreach (var child in dateHeaderTemplate.Children)
-					child.Bounds.Width += widthDelta;
+				dateHeaderTemplate.Bounds.Width = yamlDateHeaderTemplateWidth + widthDelta;
+				for (var i = 0; i < dateHeaderTemplate.Children.Count; i++)
+					dateHeaderTemplate.Children[i].Bounds.Width = yamlDateHeaderTemplateChildWidths[i] + widthDelta;
 
 				if (reloadGames)
 				{
 					LoadGames(gameTemplate, dateHeaderTemplate);
 					ApplyFilter();
+				}
+				else
+				{
+					// Resize the existing items in gameList without reloading from disk.
+					// Items cloned from gameTemplate have an ItemKey; date headers do not.
+					foreach (var child in gameList.Children)
+					{
+						var (templateWidth, templateChildWidths) = child is ScrollItemWidget { ItemKey: not null }
+							? (gameTemplate.Bounds.Width, gameTemplate.Children.Select(c => c.Bounds.Width).ToArray())
+							: (dateHeaderTemplate.Bounds.Width, dateHeaderTemplate.Children.Select(c => c.Bounds.Width).ToArray());
+
+						child.Bounds.Width = templateWidth;
+						for (var i = 0; i < Math.Min(child.Children.Count, templateChildWidths.Length); i++)
+							child.Children[i].Bounds.Width = templateChildWidths[i];
+					}
+
+					gameList.Layout.AdjustChildren();
 				}
 			}
 
@@ -728,6 +766,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				filtersVisible = !filtersVisible;
 				ApplyFiltersVisibility(reloadGames: true);
+			};
+
+			// On resize: RecalculateBounds() resets saveListContainer.Bounds to YAML values,
+			// so we re-snapshot yamlBounds before reapplying the current visibility state.
+			// Template widths are captured once at init and never change (templates are detached
+			// from gameList after the first LoadGames, so RecalculateBounds does not reset them).
+			reapplyFiltersVisibility = () =>
+			{
+				yamlBounds = saveListContainer.Bounds;
+				ApplyFiltersVisibility(reloadGames: false);
 			};
 
 			// Filters are hidden by default, so widen the save list to fill the freed space.

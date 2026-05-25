@@ -1,8 +1,9 @@
 Background@THREEBUTTON_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
-	Y: (WINDOW_HEIGHT - 90) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 600
 	Height: 110
+	Logic: ConfirmationDialogLogic
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_WIDTH
@@ -16,38 +17,41 @@ Background@THREEBUTTON_PROMPT:
 			Width: PARENT_WIDTH - 30
 			Height: 20
 			Align: Center
-		Button@CONFIRM_BUTTON:
+		Row@BUTTON_ROW:
 			X: 20
 			Y: PARENT_HEIGHT - 45
-			Width: 160
+			Width: PARENT_WIDTH - 40
 			Height: 25
-			Text: button-prompt-confirm
-			Font: Bold
-			Key: return
-			Visible: false
-		Button@OTHER_BUTTON:
-			X: PARENT_WIDTH - 380
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-prompt-other
-			Font: Bold
-			Visible: false
-		Button@CANCEL_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-cancel
-			Font: Bold
-			Key: escape
-			Visible: false
+			MainAxisAlignment: Center
+			Spacing: 10
+			Children:
+				Button@CONFIRM_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-prompt-confirm
+					Font: Bold
+					Key: return
+					Visible: false
+				Button@OTHER_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-prompt-other
+					Font: Bold
+					Visible: false
+				Button@CANCEL_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+					Visible: false
 
 Background@TWOBUTTON_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
-	Y: (WINDOW_HEIGHT - 90) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 370
 	Height: 110
+	Logic: ConfirmationDialogLogic
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_WIDTH
@@ -61,24 +65,28 @@ Background@TWOBUTTON_PROMPT:
 			Width: PARENT_WIDTH - 30
 			Height: 20
 			Align: Center
-		Button@CONFIRM_BUTTON:
+		Row@BUTTON_ROW:
 			X: 20
 			Y: PARENT_HEIGHT - 45
-			Width: 160
+			Width: PARENT_WIDTH - 40
 			Height: 25
-			Text: button-prompt-confirm
-			Font: Bold
-			Key: return
-			Visible: false
-		Button@CANCEL_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-cancel
-			Font: Bold
-			Key: escape
-			Visible: false
+			MainAxisAlignment: Center
+			Spacing: 10
+			Children:
+				Button@CONFIRM_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-prompt-confirm
+					Font: Bold
+					Key: return
+					Visible: false
+				Button@CANCEL_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+					Visible: false
 
 Background@TEXT_INPUT_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
@@ -103,19 +111,23 @@ Background@TEXT_INPUT_PROMPT:
 			Y: 80
 			Width: PARENT_WIDTH - 40
 			Height: 25
-		Button@ACCEPT_BUTTON:
+		Row@BUTTON_ROW:
 			X: 20
 			Y: PARENT_HEIGHT - 45
-			Width: 160
+			Width: PARENT_WIDTH - 40
 			Height: 25
-			Text: button-text-input-prompt-accept
-			Font: Bold
-			Key: return
-		Button@CANCEL_BUTTON:
-			X: PARENT_WIDTH - 180
-			Y: PARENT_HEIGHT - 45
-			Width: 160
-			Height: 25
-			Text: button-cancel
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: Center
+			Spacing: 10
+			Children:
+				Button@ACCEPT_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-text-input-prompt-accept
+					Font: Bold
+					Key: return
+				Button@CANCEL_BUTTON:
+					Width: 160
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+					Key: escape

@@ -210,23 +210,25 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 					Y: 15
 					Width: 174
 					Height: 250
-		Button@BACK_BUTTON:
-			Key: return
+		Row@BUTTON_ROW:
+			X: 0
 			Y: PARENT_HEIGHT - 1
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-back
-		Button@MAP_BUTTON:
-			X: PARENT_WIDTH - WIDTH - 150
-			Y: PARENT_HEIGHT - 1
-			Width: 140
-			Height: 35
-			Text: button-multiplayer-createserver-panel-change-map
-		Button@CREATE_BUTTON:
-			Key: return
-			X: PARENT_WIDTH - WIDTH
-			Y: PARENT_HEIGHT - 1
-			Width: 140
-			Height: 35
-			Text: button-multiplayer-createserver-panel-create
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@BACK_BUTTON:
+					Key: return
+					Width: 140
+					Height: 35
+					Text: button-back
+				Button@MAP_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-multiplayer-createserver-panel-change-map
+				Button@CREATE_BUTTON:
+					Key: return
+					Width: 140
+					Height: 35
+					Text: button-multiplayer-createserver-panel-create
 		TooltipContainer@TOOLTIP_CONTAINER:

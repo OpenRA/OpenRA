@@ -24,11 +24,16 @@ Container@INGAME_MENU:
 			Height: WINDOW_HEIGHT
 			Background: shellmapborder
 		Container@PANEL_ROOT:
-		Container@MENU_BUTTONS:
-			X: (WINDOW_WIDTH - WIDTH) / 2
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+		Row@MENU_BUTTONS:
 			Y: WINDOW_HEIGHT - 33 - HEIGHT - 10
-			Width: 120
+			Width: WINDOW_WIDTH
 			Height: 35
+			MinHeight: 35
+			MainAxisAlignment: Center
+			CrossAxisAlignment: Center
+			Spacing: 10
 			Children:
 				Button@BUTTON_TEMPLATE:
 					Width: 120

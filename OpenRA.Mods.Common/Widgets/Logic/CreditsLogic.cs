@@ -80,11 +80,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			isShowingModTab = modCredits;
 
 			scrollPanel.RemoveChildren();
-			var font = Game.Renderer.Fonts[template.Font];
 			var lines = modCredits ? modLines : engineLines;
 
 			var label = template.Clone();
 			label.GetText = () => lines;
+			label.AutoHeight = true;
 			label.IncreaseHeightToFitCurrentText();
 			scrollPanel.AddChild(label);
 		}

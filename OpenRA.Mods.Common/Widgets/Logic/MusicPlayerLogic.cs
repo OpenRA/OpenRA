@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				songWatcher.OnTick = () =>
 				{
-					if (musicPlaylist.CurrentSongIsBackground && currentSong != null)
+					if (musicPlaylist.CurrentSongIsBackground && currentSong != null && currentSong == Game.Sound.CurrentMusic)
 						currentSong = null;
 
 					if (Game.Sound.CurrentMusic == null || currentSong == Game.Sound.CurrentMusic || musicPlaylist.CurrentSongIsBackground)

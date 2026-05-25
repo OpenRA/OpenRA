@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Common.Widgets
 		float2 videoOrigin, videoSize;
 		float2 overlayOrigin, overlaySize;
 		float overlayScale;
+		Rectangle cachedOverlayBounds;
 		readonly Stopwatch playTime = new();
 		int textureWidth;
 		int textureHeight;
@@ -137,14 +138,6 @@ namespace OpenRA.Mods.Common.Widgets
 					video.Width,
 					video.Height),
 				TextureChannel.RGBA);
-
-			var scale = Math.Min((float)RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
-			videoOrigin = new float2(
-				RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2,
-				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
-
-			// Round size to integer pixels. Round up to be consistent with the scale calculation.
-			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
 		}
 
 		public override void Draw()
@@ -181,6 +174,16 @@ namespace OpenRA.Mods.Common.Widgets
 					Log.Write("perf", $"{nameof(VideoPlayerWidget)}: {cachedVideoFileName} skipped {skippedFrames} frames at position {Video.CurrentFrameIndex}");
 			}
 
+			// Recalculate position and size every frame so the video follows the widget
+			// when the window is resized (RenderBounds changes after RecalculateBounds).
+			var videoScale = Math.Min((float)RenderBounds.Width / Video.Width, RenderBounds.Height / (Video.Height * AspectRatio));
+			videoOrigin = new float2(
+				RenderBounds.X + (RenderBounds.Width - videoScale * Video.Width) / 2,
+				RenderBounds.Y + (RenderBounds.Height - videoScale * Video.Height * AspectRatio) / 2);
+			videoSize = new float2(
+				(int)Math.Ceiling(Video.Width * videoScale),
+				(int)Math.Ceiling(Video.Height * AspectRatio * videoScale));
+
 			WidgetUtils.DrawSprite(videoSprite, videoOrigin, videoSize);
 
 			if (DrawOverlay)
@@ -193,13 +196,12 @@ namespace OpenRA.Mods.Common.Widgets
 				// - The screen pixel size may change while the video is playing back
 				//   (user moves a window between displays with different DPI on macOS)
 				var scale = Game.Renderer.WindowScale;
-				if (overlaySheet == null || overlayScale != scale)
+				if (overlaySheet == null || overlayScale != scale || cachedOverlayBounds != RenderBounds)
 				{
 					overlaySheet?.Dispose();
 
-					// Calculate the scan line height by converting the video scale (copied from Open()) to screen
+					// Calculate the scan line height by converting the video scale to screen
 					// pixels, halving it (scan lines cover half the pixel height), and rounding to the nearest integer.
-					var videoScale = Math.Min((float)RenderBounds.Width / Video.Width, RenderBounds.Height / (Video.Height * AspectRatio));
 					var halfRowHeight = (int)(videoScale * scale / 2 + 0.5f);
 
 					// If the video is "too tightly packed" into the player and there is no room for drawing an overlay disable it.
@@ -226,6 +228,7 @@ namespace OpenRA.Mods.Common.Widgets
 					overlayOrigin = new float2((int)(RenderBounds.X * scale + 0.5f), (int)(RenderBounds.Y * scale + 0.5f)) / scale;
 					overlaySize = new float2(RenderBounds.Width, overlayHeight * halfRowHeight / scale);
 					overlayScale = scale;
+					cachedOverlayBounds = RenderBounds;
 				}
 
 				WidgetUtils.DrawSprite(overlaySprite, overlayOrigin, overlaySize);

@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -20,6 +21,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly ProductionPaletteWidget palette;
 		readonly World world;
+		readonly Action<int, int> updateBackground;
+		readonly Action repositionBackground;
+		Size lastResolution;
 
 		void SetupProductionGroupButton(ProductionTypeButtonWidget button)
 		{
@@ -115,10 +119,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				palette.OnIconCountChanged += UpdateBackground;
+				updateBackground = UpdateBackground;
+				palette.OnIconCountChanged += updateBackground;
 
 				// Set the initial palette state
-				UpdateBackground(0, 0);
+				updateBackground(0, 0);
+
+				// Capture for live reposition (bounds-only, safe to call during Tick() enumeration)
+				repositionBackground = () =>
+				{
+					if (background != null)
+					{
+						var rowHeight = backgroundTemplate.Bounds.Height;
+						var rowCount = background.Children.Count - (backgroundBottom != null ? 1 : 0);
+						for (var i = 0; i < rowCount; i++)
+							background.Children[i].Bounds.Y = i * rowHeight;
+
+						if (backgroundBottom == null)
+							return;
+
+						background.Children[rowCount].Bounds.Y = rowCount * rowHeight;
+					}
+
+					if (foreground != null)
+					{
+						var rowHeight = foregroundTemplate.Bounds.Height;
+						for (var i = 0; i < foreground.Children.Count; i++)
+							foreground.Children[i].Bounds.Y = i * rowHeight;
+					}
+				};
 			}
 
 			var typesContainer = widget.Get("PRODUCTION_TYPES");
@@ -162,6 +191,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			SetMaximumVisibleRows(palette);
+			lastResolution = Game.Renderer.Resolution;
+		}
+
+		public override void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+
+				// Tick() runs after RecalculateBounds() in the same tick — update immediately without deferral.
+				SetMaximumVisibleRows(palette);
+				repositionBackground?.Invoke();
+			}
 		}
 
 		static void SetMaximumVisibleRows(ProductionPaletteWidget productionPalette)

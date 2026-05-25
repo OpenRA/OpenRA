@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color BackgroundColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
 		public string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
-		public int Padding = 5;
+		public int GraphPadding = 5;
 
 		// Horizontal scrolling properties
 		public int ScrollbarHeight = 16;
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets
 			AxisFont = other.AxisFont;
 			BackgroundColorDark = other.BackgroundColorDark;
 			BackgroundColorLight = other.BackgroundColorLight;
-			Padding = other.Padding;
+			GraphPadding = other.GraphPadding;
 			ScrollbarHeight = other.ScrollbarHeight;
 			ScrollbarBackground = other.ScrollbarBackground;
 			ScrollbarButton = other.ScrollbarButton;
@@ -211,8 +211,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var xAxisPointLabelHeight = labelFont.Measure("0").Y;
 
-			var graphBottomOffset = Padding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight + ScrollbarHeight;
-			var height = rect.Height - (graphBottomOffset + Padding * 4);
+			var graphBottomOffset = GraphPadding * 2 + xAxisLabelSize.Y + xAxisPointLabelHeight + ScrollbarHeight;
+			var height = rect.Height - (graphBottomOffset + GraphPadding * 4);
 
 			var maxValue = series.Select(p => p.Points).SelectMany(d => d).Concat([0f]).Max();
 			var longestName = series.Select(s => s.Key).OrderByDescending(s => s.Length).FirstOrDefault() ?? "";
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var yAxisLabel = GetYAxisLabel();
 			var yAxisLabelSize = axisFont.Measure(yAxisLabel);
 
-			var width = rect.Width - (Padding * 10 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
+			var width = rect.Width - (GraphPadding * 10 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
 
 			var pointCount = series.Max(s => s.Points.Count());
 			var totalDataWidth = pointCount * (width / xAxisSize);
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var visibleStart = Math.Max(0, (int)Math.Floor(-horizontalOffset / xStep));
 			var visibleEnd = Math.Min(pointCount, visibleStart + xAxisSize + 1);
 
-			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(Padding * 3 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
+			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(GraphPadding * 3 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
 
 			var origin = new float2(rect.Left, rect.Bottom);
 
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 
-				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + Padding), 10 * keyOffset + 3),
+				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + GraphPadding), 10 * keyOffset + 3),
 					color, BackgroundColorDark, BackgroundColorLight, 1);
 				keyOffset++;
 			}
@@ -392,7 +392,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Draw x axis
 			axisFont.DrawTextWithShadow(xAxisLabel,
-				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding + ScrollbarHeight)),
+				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + GraphPadding + ScrollbarHeight)),
 				Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 
 			// Enable clipping for x-axis labels to prevent them from extending beyond the right graph bound
@@ -512,7 +512,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var yAxisLabel = GetYAxisLabel();
 					var yAxisLabelSize = axisFont.Measure(yAxisLabel);
 
-					var width = rect.Width - (Padding * 10 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
+					var width = rect.Width - (GraphPadding * 10 + widthMaxValue + widthLongestName + yAxisLabelSize.Y);
 
 					var totalDataWidth = pointCount * (width / GetXAxisSize());
 					var maxHorizontalOffset = Math.Max(0, totalDataWidth - width);

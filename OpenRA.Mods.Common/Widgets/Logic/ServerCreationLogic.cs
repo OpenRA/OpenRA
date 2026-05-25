@@ -59,6 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action onExit;
 		MapPreview map = MapCache.UnknownMap;
 		bool advertiseOnline;
+		Size lastResolution;
 
 		[ObjectCreator.UseCtor]
 		public ServerCreationLogic(Widget widget, ModData modData, Action onExit, Action openLobby)
@@ -162,6 +163,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (noticesLAN != null)
 				noticesLAN.IsVisible = () => !advertiseOnline;
 
+			BuildNotices();
+			lastResolution = Game.Renderer.Resolution;
+		}
+
+		public override void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution == currentResolution)
+				return;
+
+			lastResolution = currentResolution;
 			BuildNotices();
 		}
 

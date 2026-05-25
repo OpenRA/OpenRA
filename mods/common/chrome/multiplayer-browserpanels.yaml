@@ -44,42 +44,38 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 	Width: PARENT_WIDTH
 	Height: 130
 	Children:
-		Checkbox@WAITING_FOR_PLAYERS:
+		Column@FILTER_CHECKBOXES:
 			X: 5
 			Y: 5
 			Width: PARENT_WIDTH - 29
-			Height: 20
-			Text: checkbox-multiplayer-filter-panel-waiting-for-players
-			TextColor: 32CD32
-			Font: Regular
-		Checkbox@EMPTY:
-			X: 5
-			Y: 30
-			Width: PARENT_WIDTH - 29
-			Height: 20
-			Text: checkbox-multiplayer-filter-panel-empty
-			Font: Regular
-		Checkbox@PASSWORD_PROTECTED:
-			X: 5
-			Y: 55
-			Width: PARENT_WIDTH - 29
-			Height: 20
-			Text: checkbox-multiplayer-filter-panel-password-protected
-			TextColor: FF0000
-			Font: Regular
-		Checkbox@ALREADY_STARTED:
-			X: 5
-			Y: 80
-			Width: PARENT_WIDTH - 29
-			Height: 20
-			Text: checkbox-multiplayer-filter-panel-already-started
-			TextColor: FFA500
-			Font: Regular
-		Checkbox@INCOMPATIBLE_VERSION:
-			X: 5
-			Y: 105
-			Width: PARENT_WIDTH - 29
-			Height: 20
-			Text: checkbox-multiplayer-filter-panel-incompatible-version
-			TextColor: BEBEBE
-			Font: Regular
+			Spacing: 5
+			Children:
+				Checkbox@WAITING_FOR_PLAYERS:
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: checkbox-multiplayer-filter-panel-waiting-for-players
+					TextColor: 32CD32
+					Font: Regular
+				Checkbox@EMPTY:
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: checkbox-multiplayer-filter-panel-empty
+					Font: Regular
+				Checkbox@PASSWORD_PROTECTED:
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: checkbox-multiplayer-filter-panel-password-protected
+					TextColor: FF0000
+					Font: Regular
+				Checkbox@ALREADY_STARTED:
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: checkbox-multiplayer-filter-panel-already-started
+					TextColor: FFA500
+					Font: Regular
+				Checkbox@INCOMPATIBLE_VERSION:
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: checkbox-multiplayer-filter-panel-incompatible-version
+					TextColor: BEBEBE
+					Font: Regular

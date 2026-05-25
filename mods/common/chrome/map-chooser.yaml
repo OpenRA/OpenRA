@@ -12,24 +12,24 @@ Background@MAPCHOOSER_PANEL:
 			Height: 20
 			Text: label-mapchooser-panel-title
 			Font: Bold
-		Button@BUTTON1:
+		Row@MAP_TABS:
 			X: 20
 			Y: 48
 			Height: 31
-			Width: 140
-			Font: Bold
-		Button@BUTTON2:
-			X: 160
-			Y: 48
-			Height: 31
-			Width: 140
-			Font: Bold
-		Button@BUTTON3:
-			X: 300
-			Y: 48
-			Height: 31
-			Width: 140
-			Font: Bold
+			MainAxisSize: Min
+			Children:
+				Button@BUTTON1:
+					Height: 31
+					Width: 140
+					Font: Bold
+				Button@BUTTON2:
+					Height: 31
+					Width: 140
+					Font: Bold
+				Button@BUTTON3:
+					Height: 31
+					Width: 140
+					Font: Bold
 		Container@MAP_TAB_PANES:
 			Width: PARENT_WIDTH - 40
 			Height: 438

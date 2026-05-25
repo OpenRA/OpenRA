@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -92,7 +93,8 @@ namespace OpenRA
 				{ typeof(float2), ParseFloat2 },
 				{ typeof(float3), ParseFloat3 },
 				{ typeof(Rectangle), ParseRectangle },
-				{ typeof(DateTime), ParseDateTime }
+				{ typeof(DateTime), ParseDateTime },
+				{ typeof(EdgeInsets), ParseEdgeInsets }
 			}.ToFrozenDictionary();
 
 		static readonly FrozenDictionary<Type, Func<string, Type, string, MiniYaml, object>> GenericTypeParsers =
@@ -529,6 +531,13 @@ namespace OpenRA
 			if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture,
 					DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out var dt))
 				return dt;
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseEdgeInsets(string fieldName, Type fieldType, string value)
+		{
+			if (value != null && EdgeInsets.TryParse(value, out var result))
+				return result;
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 

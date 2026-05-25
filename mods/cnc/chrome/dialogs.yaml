@@ -189,10 +189,11 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 
 Background@THREEBUTTON_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
-	Y: (WINDOW_HEIGHT - 90) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 500
 	Height: 41
 	Background: panel-black
+	Logic: ConfirmationDialogLogic
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_WIDTH
@@ -233,10 +234,11 @@ Background@THREEBUTTON_PROMPT:
 
 Background@TWOBUTTON_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
-	Y: (WINDOW_HEIGHT - 90) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 370
 	Height: 31
 	Background: panel-black
+	Logic: ConfirmationDialogLogic
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_WIDTH
@@ -251,21 +253,26 @@ Background@TWOBUTTON_PROMPT:
 			Height: 20
 			Font: Bold
 			Align: Center
-		Button@CANCEL_BUTTON:
-			Key: escape
+		Row@BUTTON_ROW:
 			Y: 30
-			Width: 140
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-cancel
-			Visible: false
-		Button@CONFIRM_BUTTON:
-			Key: return
-			X: 230
-			Y: 30
-			Width: 140
-			Height: 35
-			Text: button-prompt-confirm
-			Visible: false
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+					Visible: false
+				Button@CONFIRM_BUTTON:
+					Width: 140
+					Height: 35
+					Text: button-prompt-confirm
+					Font: Bold
+					Key: return
+					Visible: false
 
 Container@TEXT_INPUT_PROMPT:
 	X: (WINDOW_WIDTH - WIDTH) / 2
@@ -297,22 +304,25 @@ Container@TEXT_INPUT_PROMPT:
 					Y: 40
 					Width: PARENT_WIDTH - 40
 					Height: 25
-		Button@ACCEPT_BUTTON:
-			X: PARENT_WIDTH - 160
-			Y: PARENT_HEIGHT - 1
-			Width: 160
-			Height: 34
-			Text: button-text-input-prompt-accept
-			Font: Bold
-			Key: return
-		Button@CANCEL_BUTTON:
+		Row@BUTTON_ROW:
 			X: 0
 			Y: PARENT_HEIGHT - 1
-			Width: 160
+			Width: PARENT_WIDTH
 			Height: 35
-			Text: button-cancel
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Width: 160
+					Height: 35
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+				Button@ACCEPT_BUTTON:
+					Width: 160
+					Height: 34
+					Text: button-text-input-prompt-accept
+					Font: Bold
+					Key: return
 
 ScrollPanel@NEWS_PANEL:
 	Width: 400

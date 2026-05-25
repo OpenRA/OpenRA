@@ -55,22 +55,25 @@ Background@NEW_MAP_BG:
 			Height: 25
 			Text: 128
 			Type: Integer
-		Button@CREATE_BUTTON:
+		Row@BUTTON_ROW:
 			X: 30
 			Y: PARENT_HEIGHT - 45
-			Width: 120
+			Width: 250
 			Height: 25
-			Text: button-new-map-bg-create
-			Font: Bold
-			Key: return
-		Button@CANCEL_BUTTON:
-			X: 160
-			Y: PARENT_HEIGHT - 45
-			Width: 120
-			Height: 25
-			Text: button-cancel
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CREATE_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-new-map-bg-create
+					Font: Bold
+					Key: return
+				Button@CANCEL_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+					Key: escape
 
 Background@SAVE_MAP_PANEL:
 	Logic: SaveMapLogic
@@ -87,57 +90,64 @@ Background@SAVE_MAP_PANEL:
 			Text: label-save-map-panel-heading
 			Align: Center
 			Font: Bold
-		Label@TITLE_LABEL:
+		Column@FORM_ROWS:
 			X: 10
 			Y: 60
-			Width: 95
-			Height: 25
-			Align: Right
-			Text: label-save-map-panel-title
-		TextField@TITLE:
-			X: 110
-			Y: 60
-			Width: 220
-			MaxLength: 50
-			Height: 25
-		Label@AUTHOR_LABEL:
-			X: 10
-			Y: 95
-			Width: 95
-			Height: 25
-			Align: Right
-			Text: label-save-map-panel-author
-		TextField@AUTHOR:
-			X: 110
-			Y: 95
-			Width: 220
-			MaxLength: 50
-			Height: 25
-		Label@VISIBILITY_LABEL:
-			X: 10
-			Y: 130
-			Width: 95
-			Height: 25
-			Align: Right
-			Text: label-save-map-panel-visibility
-		DropDownButton@VISIBILITY_DROPDOWN:
-			X: 110
-			Y: 130
-			Width: 220
-			Height: 25
-			Text: dropdownbutton-save-map-panel-visibility-dropdown
-		Label@DIRECTORY_LABEL:
-			X: 10
-			Y: 165
-			Width: 95
-			Height: 25
-			Align: Right
-			Text: label-save-map-panel-directory
-		DropDownButton@DIRECTORY_DROPDOWN:
-			X: 110
-			Y: 165
-			Width: 220
-			Height: 25
+			Width: PARENT_WIDTH - 20
+			Height: 130
+			Spacing: 10
+			Children:
+				Row@TITLE_ROW:
+					Width: PARENT_WIDTH
+					Height: 25
+					Children:
+						Label@TITLE_LABEL:
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: label-save-map-panel-title
+						TextField@TITLE:
+							Width: 220
+							MaxLength: 50
+							Height: 25
+				Row@AUTHOR_ROW:
+					Width: PARENT_WIDTH
+					Height: 25
+					Children:
+						Label@AUTHOR_LABEL:
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: label-save-map-panel-author
+						TextField@AUTHOR:
+							Width: 220
+							MaxLength: 50
+							Height: 25
+				Row@VISIBILITY_ROW:
+					Width: PARENT_WIDTH
+					Height: 25
+					Children:
+						Label@VISIBILITY_LABEL:
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: label-save-map-panel-visibility
+						DropDownButton@VISIBILITY_DROPDOWN:
+							Width: 220
+							Height: 25
+							Text: dropdownbutton-save-map-panel-visibility-dropdown
+				Row@DIRECTORY_ROW:
+					Width: PARENT_WIDTH
+					Height: 25
+					Children:
+						Label@DIRECTORY_LABEL:
+							Width: 95
+							Height: 25
+							Align: Right
+							Text: label-save-map-panel-directory
+						DropDownButton@DIRECTORY_DROPDOWN:
+							Width: 220
+							Height: 25
 		Label@FILENAME_LABEL:
 			X: 10
 			Y: 200
@@ -156,21 +166,24 @@ Background@SAVE_MAP_PANEL:
 			Y: 200
 			Width: 110
 			Height: 25
-		Button@SAVE_BUTTON:
+		Row@BUTTON_ROW:
 			X: 80
 			Y: PARENT_HEIGHT - 45
-			Width: 120
+			Width: 250
 			Height: 25
-			Text: button-save-map-panel
-			Font: Bold
-		Button@BACK_BUTTON:
-			X: 210
-			Y: PARENT_HEIGHT - 45
-			Width: 120
-			Height: 25
-			Text: button-cancel
-			Font: Bold
-			Key: escape
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@SAVE_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-save-map-panel
+					Font: Bold
+				Button@BACK_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+					Key: escape
 
 ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
 	TopBottomSpacing: 5
@@ -676,7 +689,7 @@ Container@EDITOR_WORLD_ROOT:
 									Text: button-container-ok
 									Font: Bold
 									Key: return
-		Container@MAP_EDITOR_TAB_CONTAINER:
+		Row@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
 			X: WINDOW_WIDTH - 311
 			Y: 339
@@ -684,7 +697,6 @@ Container@EDITOR_WORLD_ROOT:
 			Height: 25
 			Children:
 				Button@SELECT_TAB:
-					X: 0
 					Width: 49
 					Height: 25
 					Key: EditorSelectTab
@@ -698,7 +710,6 @@ Container@EDITOR_WORLD_ROOT:
 							ImageCollection: editor
 							ImageName: select
 				Button@TILES_TAB:
-					X: 49
 					Width: 49
 					Height: 25
 					Key: EditorTilesTab
@@ -712,7 +723,6 @@ Container@EDITOR_WORLD_ROOT:
 							ImageCollection: editor
 							ImageName: tiles
 				Button@OVERLAYS_TAB:
-					X: 98
 					Width: 49
 					Height: 25
 					Key: EditorOverlaysTab
@@ -726,7 +736,6 @@ Container@EDITOR_WORLD_ROOT:
 							ImageCollection: editor
 							ImageName: overlays
 				Button@ACTORS_TAB:
-					X: 147
 					Width: 48
 					Height: 25
 					Key: EditorActorsTab
@@ -740,7 +749,6 @@ Container@EDITOR_WORLD_ROOT:
 							ImageCollection: editor
 							ImageName: actors
 				Button@TOOLS_TAB:
-					X: 195
 					Width: 48
 					Height: 25
 					Key: EditorToolsTab
@@ -754,7 +762,6 @@ Container@EDITOR_WORLD_ROOT:
 							ImageCollection: editor
 							ImageName: tools
 				Button@HISTORY_TAB:
-					X: 243
 					Width: 49
 					Height: 25
 					Key: EditorHistoryTab

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Support;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -88,12 +89,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var headerLabel = panel.Get<LabelWidget>("HEADER_LABEL");
 			headerLabel.IncreaseHeightToFitCurrentText();
 			var headerHeight = headerLabel.Bounds.Height;
+			headerLabel.Height = new IntegerExpression($"{headerHeight}");
 
+			var panelBaseHeight = panel.Bounds.Height;
+			panel.Height = new IntegerExpression($"{panelBaseHeight + headerHeight}");
+			panel.Y = new IntegerExpression($"(WINDOW_HEIGHT - {panelBaseHeight + headerHeight}) / 2");
 			panel.Bounds.Height += headerHeight;
-			panel.Bounds.Y -= headerHeight / 2;
+			panel.Bounds.Y = (Game.Renderer.Resolution.Height - (panelBaseHeight + headerHeight)) / 2;
+
+			var scrollPanelBaseY = scrollPanel.Bounds.Y;
+			scrollPanel.Y = new IntegerExpression($"{scrollPanelBaseY + headerHeight}");
 			scrollPanel.Bounds.Y += headerHeight;
 
 			var sourceButton = panel.Get<ButtonWidget>("CHECK_SOURCE_BUTTON");
+			var sourceButtonBaseY = sourceButton.Bounds.Y;
+			sourceButton.Y = new IntegerExpression($"{sourceButtonBaseY + headerHeight}");
 			sourceButton.Bounds.Y += headerHeight;
 			sourceButton.IsVisible = () => sourceAvailable;
 

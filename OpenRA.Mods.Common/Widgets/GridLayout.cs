@@ -35,14 +35,33 @@ namespace OpenRA.Mods.Common.Widgets
 				pos = new int2(widget.ItemSpacing, widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing);
 			}
 
-			w.Bounds.X += pos.X;
-			w.Bounds.Y += pos.Y;
+			w.Bounds.X = pos.X;
+			w.Bounds.Y = pos.Y;
 
 			pos = pos.WithX(pos.X + w.Bounds.Width + widget.ItemSpacing);
 
 			widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + w.Bounds.Height + widget.TopBottomSpacing);
 		}
 
-		public void AdjustChildren() { }
+		public void AdjustChildren()
+		{
+			if (widget.Children.Count == 0)
+				return;
+
+			widget.ContentHeight = 2 * widget.TopBottomSpacing;
+			pos = new int2(widget.ItemSpacing, widget.TopBottomSpacing);
+
+			foreach (var w in widget.Children)
+			{
+				if (pos.X + w.Bounds.Width + widget.ItemSpacing > widget.Bounds.Width - widget.ScrollbarWidth)
+					pos = new int2(widget.ItemSpacing, widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing);
+
+				w.Bounds.X = pos.X;
+				w.Bounds.Y = pos.Y;
+
+				pos = pos.WithX(pos.X + w.Bounds.Width + widget.ItemSpacing);
+				widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + w.Bounds.Height + widget.TopBottomSpacing);
+			}
+		}
 	}
 }

@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Func<bool> configurationDisabled;
 		MapPreview mapPreview;
 		MapStatus mapStatus;
+		Size lastResolution;
 
 		[ObjectCreator.UseCtor]
 		internal LobbyOptionsLogic(Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
@@ -52,10 +53,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mapPreview = getMap();
 			mapStatus = mapPreview.Status;
 			RebuildOptions();
+
+			lastResolution = Game.Renderer.Resolution;
 		}
 
 		public override void Tick()
 		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+
+				// Only reposition rows — no tree structure change, safe to call during tick enumeration.
+				// Tick() runs after RecalculateBounds() in the same tick, so positions are correct immediately.
+				RepositionRows();
+			}
+
 			var newMapPreview = getMap();
 			if (newMapPreview == mapPreview && mapStatus == mapPreview.Status)
 				return;
@@ -68,6 +81,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				mapStatus = mapPreview.Status;
 				RebuildOptions();
 			});
+		}
+
+		static void CollectCheckboxes(Widget widget, Queue<CheckboxWidget> queue)
+		{
+			if (widget is CheckboxWidget checkbox)
+				queue.Enqueue(checkbox);
+			else
+				foreach (var child in widget.Children)
+					CollectCheckboxes(child, queue);
+		}
+
+		void RepositionRows()
+		{
+			optionsContainer.Bounds.Height = 0;
+			foreach (var row in optionsContainer.Children)
+			{
+				row.Bounds.Y = optionsContainer.Bounds.Height;
+				optionsContainer.Bounds.Height += row.Bounds.Height;
+			}
+
+			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
+			optionsContainer.Bounds.Y = yMargin;
 		}
 
 		void RebuildOptions()
@@ -96,8 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					row.Bounds.Y = optionsContainer.Bounds.Height;
 					optionsContainer.Bounds.Height += row.Bounds.Height;
 					foreach (var child in row.Children)
-						if (child is CheckboxWidget childCheckbox)
-							checkboxColumns.Enqueue(childCheckbox);
+						CollectCheckboxes(child, checkboxColumns);
 
 					optionsContainer.AddChild(row);
 				}

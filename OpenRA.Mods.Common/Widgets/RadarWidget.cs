@@ -121,6 +121,19 @@ namespace OpenRA.Mods.Common.Widgets
 			world.RenderPlayerChanged += WorldOnRenderPlayerChanged;
 		}
 
+		public override void RecalculateBounds()
+		{
+			base.RecalculateBounds();
+
+			// Recalculate previewScale/previewOrigin for the new widget dimensions.
+			MapBoundsChanged();
+
+			// MapBoundsChanged() leaves mapRect in widget-local coordinates.
+			// Convert to screen coordinates, matching what Tick() does during animation.
+			var ro = RenderOrigin;
+			mapRect = new Rectangle(previewOrigin.X + ro.X, previewOrigin.Y + ro.Y, mapRect.Width, mapRect.Height);
+		}
+
 		void WorldOnRenderPlayerChanged(Player player)
 		{
 			SetPlayer(player);

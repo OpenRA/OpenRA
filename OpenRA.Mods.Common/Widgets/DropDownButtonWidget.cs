@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
+		Action onResolutionChanged;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
@@ -118,6 +119,9 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.RemoveChild(panel);
 			panel = fullscreenMask = null;
 
+			Game.Renderer.ResolutionChanged -= onResolutionChanged;
+			onResolutionChanged = null;
+
 			YieldKeyboardFocus();
 			Ui.ResetTooltips();
 		}
@@ -127,6 +131,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
+
 			panel = p;
 			TakeKeyboardFocus();
 
@@ -165,6 +170,9 @@ namespace OpenRA.Mods.Common.Widgets
 				oldBounds.Width,
 				oldBounds.Height);
 			panelRoot.AddChild(panel);
+
+			onResolutionChanged = RemovePanel;
+			Game.Renderer.ResolutionChanged += onResolutionChanged;
 
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
 		}

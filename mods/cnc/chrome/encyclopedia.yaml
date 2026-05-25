@@ -134,6 +134,8 @@ Container@ENCYCLOPEDIA_PANEL:
 									Width: PARENT_WIDTH - 40
 									VAlign: Top
 									Font: Regular
+									WordWrap: True
+									AutoHeight: True
 		Button@BACK_BUTTON:
 			Y: PARENT_HEIGHT - 1
 			Width: 140

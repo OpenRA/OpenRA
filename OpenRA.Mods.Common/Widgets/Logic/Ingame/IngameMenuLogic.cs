@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -144,6 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ButtonWidget buttonTemplate;
 		readonly int2 buttonStride;
 		readonly List<ButtonWidget> buttons = [];
+		readonly Widget gameInfoPanel;
 
 		readonly ModData modData;
 		readonly Action onExit;
@@ -154,6 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly bool hasError;
 		bool leaving;
 		bool hideMenu;
+		Size lastResolution;
 
 		static bool lastGameEditor = false;
 
@@ -188,10 +191,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mpe = world.WorldActor.TraitOrDefault<MenuPostProcessEffect>();
 			mpe?.Fade(mpe.Info.MenuEffect);
 
-			buttonContainer = menu.Get("MENU_BUTTONS");
+			var menuButtonsRoot = menu.Get("MENU_BUTTONS");
+			menuButtonsRoot.IsVisible = () => !hideMenu;
+			buttonContainer = menuButtonsRoot is LinearWidget
+				? menuButtonsRoot
+				: menuButtonsRoot.Children.OfType<LinearWidget>().FirstOrDefault() ?? menuButtonsRoot;
 			buttonTemplate = buttonContainer.Get<ButtonWidget>("BUTTON_TEMPLATE");
 			buttonContainer.RemoveChild(buttonTemplate);
-			buttonContainer.IsVisible = () => !hideMenu;
 
 			if (logicArgs.TryGetValue("ButtonStride", out var buttonStrideNode))
 				buttonStride = FieldLoader.GetValue<int2>("ButtonStride", buttonStrideNode.Value);
@@ -210,18 +216,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Recenter the button container
 			if (buttons.Count > 0)
 			{
-				var expand = (buttons.Count - 1) * buttonStride;
-				buttonContainer.Bounds.X -= expand.X / 2;
-				buttonContainer.Bounds.Y -= expand.Y / 2;
-				buttonContainer.Bounds.Width += expand.X;
-				buttonContainer.Bounds.Height += expand.Y;
+				if (buttonContainer is not LinearWidget)
+				{
+					var expand = (buttons.Count - 1) * buttonStride;
+					buttonContainer.Bounds.X -= expand.X / 2;
+					buttonContainer.Bounds.Y -= expand.Y / 2;
+					buttonContainer.Bounds.Width += expand.X;
+					buttonContainer.Bounds.Height += expand.Y;
+				}
+				else
+				{
+					RecenterLinearButtonContainer();
+				}
 			}
+			else
+				RecenterLinearButtonContainer();
+
+			lastResolution = Game.Renderer.Resolution;
 
 			var panelRoot = widget.GetOrNull("PANEL_ROOT");
 			if (panelRoot != null && world.Type != WorldType.Editor)
 			{
 				Action<bool> requestHideMenu = h => hideMenu = h;
-				var gameInfoPanel = Game.LoadWidget(world, "GAME_INFO_PANEL", panelRoot, new WidgetArgs()
+				gameInfoPanel = Game.LoadWidget(world, "GAME_INFO_PANEL", panelRoot, new WidgetArgs()
 				{
 					{ "initialPanel", initialPanel },
 					{ "hideMenu", requestHideMenu },
@@ -229,10 +246,56 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 
 				gameInfoPanel.IsVisible = () => !hideMenu;
+				RecenterGameInfoPanel();
 			}
 
 			Ui.WidgetsVisible = true;
 			Game.HideCursor = false;
+		}
+
+		public override void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+				RecenterLinearButtonContainer();
+				RecenterGameInfoPanel();
+			}
+		}
+
+		void RecenterLinearButtonContainer()
+		{
+			if (buttonContainer is not LinearWidget linearContainer)
+				return;
+
+			// Ask the layout engine for the intrinsic size instead of replicating its logic.
+			var (intrinsicW, intrinsicH) = linearContainer.Measure(
+				BoxConstraints.Loose(BoxConstraints.Unbounded, BoxConstraints.Unbounded));
+
+			if (linearContainer is RowWidget)
+			{
+				buttonContainer.Bounds.X -= (intrinsicW - buttonContainer.Bounds.Width) / 2;
+				buttonContainer.Bounds.Width = intrinsicW;
+			}
+			else
+			{
+				buttonContainer.Bounds.Y -= (intrinsicH - buttonContainer.Bounds.Height) / 2;
+				buttonContainer.Bounds.Height = intrinsicH;
+			}
+
+			buttonContainer.MarkLayoutDirty();
+		}
+
+		void RecenterGameInfoPanel()
+		{
+			if (gameInfoPanel == null)
+				return;
+
+			var resolution = Game.Renderer.Resolution;
+			gameInfoPanel.Bounds.X = (resolution.Width - gameInfoPanel.Bounds.Width) / 2;
+			gameInfoPanel.Bounds.Y = (resolution.Height - gameInfoPanel.Bounds.Height) / 2;
+			gameInfoPanel.MarkLayoutDirty();
 		}
 
 		public static void OnQuit(World world)
@@ -300,11 +363,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		ButtonWidget AddButton(string id, string label)
 		{
 			var button = buttonTemplate.Clone();
-			var lastButton = buttons.LastOrDefault();
-			if (lastButton != null)
+			if (buttonContainer is not LinearWidget)
 			{
-				button.Bounds.X = lastButton.Bounds.X + buttonStride.X;
-				button.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				var lastButton = buttons.LastOrDefault();
+				if (lastButton != null)
+				{
+					button.Bounds.X = lastButton.Bounds.X + buttonStride.X;
+					button.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				}
 			}
 
 			button.Id = id;

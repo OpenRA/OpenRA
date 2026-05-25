@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Color ContrastColorLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
 		public int ContrastRadius = ChromeMetrics.Get<int>("TextContrastRadius");
 		public bool WordWrap = false;
+		public bool AutoHeight = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColorDark;
@@ -62,10 +63,19 @@ namespace OpenRA.Mods.Common.Widgets
 			ContrastRadius = other.ContrastRadius;
 			Shadow = other.Shadow;
 			WordWrap = other.WordWrap;
+			AutoHeight = other.AutoHeight;
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColorDark = other.GetContrastColorDark;
 			GetContrastColorLight = other.GetContrastColorLight;
+		}
+
+		public override void RecalculateBounds()
+		{
+			base.RecalculateBounds();
+
+			if (AutoHeight && Bounds.Width > 0)
+				IncreaseHeightToFitCurrentText();
 		}
 
 		public void IncreaseHeightToFitCurrentText()
@@ -76,7 +86,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var line = GetText();
 			if (WordWrap)
 				line = WidgetUtils.WrapText(line, Bounds.Width, font);
-			Bounds.Height = Math.Max(Bounds.Height, font.Measure(line).Y);
+
+			// Honour MaxHeight when set: never grow beyond it, even with AutoHeight.
+			var desired = Math.Max(Bounds.Height, font.Measure(line).Y);
+			Bounds.Height = MaxHeight != int.MaxValue ? Math.Min(desired, MaxHeight) : desired;
 		}
 
 		public override void Draw()

@@ -119,9 +119,12 @@ namespace OpenRA
 			return new Size(size.X, size.Y);
 		}
 
+		public event Action ResolutionChanged;
+
 		public void SetUIScale(float scale)
 		{
 			Window.SetScaleModifier(scale);
+			Game.RunAfterTick(() => ResolutionChanged?.Invoke());
 		}
 
 		public void InitializeFonts(ModData modData)

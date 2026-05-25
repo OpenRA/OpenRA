@@ -47,7 +47,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly float2 iconSize;
 		int lastIconIdx;
-		public int MinWidth = 240;
 		int currentTooltipToken;
 
 		[ObjectCreator.UseCtor]
@@ -56,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			clocks = [];
+			MinWidth = 240;
 			GetTooltipIcon = () => TooltipIcon;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));

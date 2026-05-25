@@ -33,8 +33,11 @@ Container@SETTINGS_PANEL:
 			Width: 140
 			Height: 35
 			Text: button-settings-panel-reset
-		Container@SETTINGS_TAB_CONTAINER:
+		Column@SETTINGS_TAB_CONTAINER:
 			X: 0 - 140 + 1
+			Width: 140
+			Height: PARENT_HEIGHT
+			Spacing: 10
 			Children:
 				Button@BUTTON_TEMPLATE:
 					Width: 140

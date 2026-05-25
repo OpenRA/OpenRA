@@ -30,20 +30,23 @@ Background@KICK_CLIENT_DIALOG:
 			Width: 150
 			Height: 20
 			Text: checkbox-kick-client-dialog-prevent-rejoining
-		Button@OK_BUTTON:
-			X: (PARENT_WIDTH - WIDTH) / 2 + 75
+		Row@BUTTON_ROW:
+			X: (PARENT_WIDTH - 270) / 2
 			Y: 155
-			Width: 120
+			Width: 270
 			Height: 25
-			Text: button-kick-client-dialog
-			Font: Bold
-		Button@CANCEL_BUTTON:
-			X: (PARENT_WIDTH - WIDTH) / 2 - 75
-			Y: 155
-			Width: 120
-			Height: 25
-			Text: button-cancel
-			Font: Bold
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+				Button@OK_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-kick-client-dialog
+					Font: Bold
 
 Background@KICK_SPECTATORS_DIALOG:
 	Width: PARENT_WIDTH
@@ -64,20 +67,23 @@ Background@KICK_SPECTATORS_DIALOG:
 			Height: 25
 			Font: Regular
 			Align: Center
-		Button@OK_BUTTON:
-			X: (PARENT_WIDTH - WIDTH) / 2 + 75
+		Row@BUTTON_ROW:
+			X: (PARENT_WIDTH - 270) / 2
 			Y: 155
-			Width: 120
+			Width: 270
 			Height: 25
-			Text: button-kick-spectators-dialog-ok
-			Font: Bold
-		Button@CANCEL_BUTTON:
-			X: (PARENT_WIDTH - WIDTH) / 2 - 75
-			Y: 155
-			Width: 120
-			Height: 25
-			Text: button-cancel
-			Font: Bold
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+				Button@OK_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-kick-spectators-dialog-ok
+					Font: Bold
 
 Background@FORCE_START_DIALOG:
 	Width: PARENT_WIDTH
@@ -124,17 +130,20 @@ Background@FORCE_START_DIALOG:
 					Font: Bold
 					Align: Center
 					Text: label-kick-warning-b
-		Button@OK_BUTTON:
-			X: (PARENT_WIDTH - WIDTH) / 2 + 75
+		Row@BUTTON_ROW:
+			X: (PARENT_WIDTH - 270) / 2
 			Y: 155
-			Width: 120
+			Width: 270
 			Height: 25
-			Text: button-force-start-dialog-start
-			Font: Bold
-		Button@CANCEL_BUTTON:
-			X: (PARENT_WIDTH - WIDTH) / 2 - 75
-			Y: 155
-			Width: 120
-			Height: 25
-			Text: button-cancel
-			Font: Bold
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@CANCEL_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-cancel
+					Font: Bold
+				Button@OK_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-force-start-dialog-start
+					Font: Bold

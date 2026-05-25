@@ -27,6 +27,8 @@ namespace OpenRA.Widgets
 
 		public static Widget Root = new ContainerWidget();
 
+		static Size lastResolution;
+
 		public static TickTime LastTickTime = new(() => Timestep, Game.RunTime);
 
 		static readonly Stack<Widget> WindowList = [];
@@ -58,6 +60,7 @@ namespace OpenRA.Widgets
 			{
 				var restore = WindowList.Peek();
 				Root.AddChild(restore);
+				restore.RecalculateBounds();
 
 				if (restore.LogicObjects != null)
 					foreach (var l in restore.LogicObjects)
@@ -103,7 +106,18 @@ namespace OpenRA.Widgets
 			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
-		public static void Tick() { Root.TickOuter(); }
+		public static void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+				Root.RecalculateBounds();
+			}
+
+			Root.TickOuter();
+		}
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
@@ -234,10 +248,33 @@ namespace OpenRA.Widgets
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
+		// Box model
+		public EdgeInsets Padding;
+		public EdgeInsets Border;
+
+		// Size constraints
+		public int MinWidth;
+		public int MinHeight;
+		public int MaxWidth = int.MaxValue;
+		public int MaxHeight = int.MaxValue;
+
 		// Calculated internally
 		public WidgetBounds Bounds;
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
+		public object Tag;
+
+		// Layout dirty flag — protected so Flutter-style subclasses can check it.
+		protected bool layoutDirty = true;
+
+		public void MarkLayoutDirty()
+		{
+			if (layoutDirty)
+				return;
+
+			layoutDirty = true;
+			Parent?.MarkLayoutDirty();
+		}
 
 		protected Widget() { IsVisible = () => Visible; }
 
@@ -251,8 +288,16 @@ namespace OpenRA.Widgets
 			Logic = widget.Logic;
 			Visible = widget.Visible;
 
+			Padding = widget.Padding;
+			Border = widget.Border;
+			MinWidth = widget.MinWidth;
+			MinHeight = widget.MinHeight;
+			MaxWidth = widget.MaxWidth;
+			MaxHeight = widget.MaxHeight;
+
 			Bounds = widget.Bounds;
 			Parent = widget.Parent;
+			Tag = widget.Tag;
 
 			IsVisible = widget.IsVisible;
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
@@ -274,11 +319,14 @@ namespace OpenRA.Widgets
 			get
 			{
 				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
+
 				return new int2(Bounds.X, Bounds.Y) + offset;
 			}
 		}
 
-		public virtual int2 ChildOrigin => RenderOrigin;
+		public virtual int2 ChildOrigin => RenderOrigin + new int2(
+			Border.Left + Padding.Left,
+			Border.Top + Padding.Top);
 
 		public virtual Rectangle RenderBounds
 		{
@@ -317,6 +365,37 @@ namespace OpenRA.Widgets
 			var x = X?.Evaluate(readOnlySubstitutions) ?? 0;
 			var y = Y?.Evaluate(readOnlySubstitutions) ?? 0;
 			Bounds = new WidgetBounds(x, y, width, height);
+		}
+
+		public virtual void RecalculateBounds()
+		{
+			var parentBounds = (Parent == null)
+				? new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+				: Parent.Bounds;
+
+			var substitutions = new Dictionary<string, int>
+			{
+				{ "WINDOW_WIDTH", Game.Renderer.Resolution.Width },
+				{ "WINDOW_HEIGHT", Game.Renderer.Resolution.Height },
+				{ "PARENT_WIDTH", parentBounds.Width },
+				{ "PARENT_HEIGHT", parentBounds.Height }
+			};
+
+			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
+			var width = Width?.Evaluate(readOnlySubstitutions) ?? 0;
+			var height = Height?.Evaluate(readOnlySubstitutions) ?? 0;
+
+			substitutions.Add("WIDTH", width);
+			substitutions.Add("HEIGHT", height);
+
+			var x = X?.Evaluate(readOnlySubstitutions) ?? 0;
+			var y = Y?.Evaluate(readOnlySubstitutions) ?? 0;
+			Bounds = new WidgetBounds(x, y, width, height);
+
+			foreach (var child in Children)
+				child.RecalculateBounds();
+
+			MarkLayoutDirty();
 		}
 
 		public void PostInit(WidgetArgs args)
@@ -431,7 +510,10 @@ namespace OpenRA.Widgets
 		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
 		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget.</returns>
 		/// <param name="mi">Mouse input data.</param>
-		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
+		public virtual bool HandleMouseInput(MouseInput mi)
+		{
+			return false;
+		}
 
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
@@ -506,12 +588,43 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		/// <summary>
+		/// Flutter-style measurement protocol.
+		/// The parent calls this to ask the widget how big it wants to be within the
+		/// given constraints.  The result is stored in <see cref="Bounds"/> and also
+		/// returned so callers can read it without a second property access.
+		/// <para>
+		/// Default behaviour: clamp the already-declared YAML bounds to the constraints
+		/// (legacy widgets that do not override this continue to use their YAML sizes).
+		/// </para>
+		/// </summary>
+		public virtual (int Width, int Height) Measure(BoxConstraints constraints)
+		{
+			var (w, h) = constraints.Constrain(Bounds.Width, Bounds.Height);
+			Bounds.Width = w;
+			Bounds.Height = h;
+			return (w, h);
+		}
+
+		public virtual void PerformLayoutIfNeeded()
+		{
+			if (!layoutDirty)
+				return;
+
+			layoutDirty = false;
+
+			foreach (var child in Children)
+				child.PerformLayoutIfNeeded();
+		}
+
 		public virtual void Draw() { }
 
 		public virtual void DrawOuter()
 		{
 			if (IsVisible())
 			{
+				PerformLayoutIfNeeded();
+
 				Draw();
 				foreach (var child in Children)
 					child.DrawOuter();
@@ -538,6 +651,7 @@ namespace OpenRA.Widgets
 		{
 			child.Parent = this;
 			Children.Add(child);
+			MarkLayoutDirty();
 		}
 
 		public virtual void RemoveChild(Widget child)
@@ -546,6 +660,7 @@ namespace OpenRA.Widgets
 			{
 				Children.Remove(child);
 				child.Removed();
+				MarkLayoutDirty();
 			}
 		}
 
@@ -555,6 +670,7 @@ namespace OpenRA.Widgets
 			{
 				Children.Remove(child);
 				child.Hidden();
+				MarkLayoutDirty();
 			}
 		}
 
@@ -564,6 +680,7 @@ namespace OpenRA.Widgets
 				child?.Removed();
 
 			Children.Clear();
+			MarkLayoutDirty();
 		}
 
 		public virtual void Hidden()
@@ -628,27 +745,6 @@ namespace OpenRA.Widgets
 		}
 
 		public Widget Get(string id) { return Get<Widget>(id); }
-	}
-
-	public class ContainerWidget : Widget
-	{
-		public readonly bool ClickThrough = true;
-
-		public ContainerWidget() { IgnoreMouseOver = true; }
-		public ContainerWidget(ContainerWidget other)
-			: base(other)
-		{
-			ClickThrough = other.ClickThrough;
-			IgnoreMouseOver = true;
-		}
-
-		public override string GetCursor(int2 pos) { return null; }
-		public override ContainerWidget Clone() { return new ContainerWidget(this); }
-
-		public override bool HandleMouseInput(MouseInput mi)
-		{
-			return !ClickThrough && EventBounds.Contains(mi.Location);
-		}
 	}
 
 	public class InputWidget : Widget

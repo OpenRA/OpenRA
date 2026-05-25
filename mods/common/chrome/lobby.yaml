@@ -37,59 +37,49 @@ Background@SERVER_LOBBY:
 			Height: 25
 			Font: Bold
 			Text: button-server-lobby-reset-options
-		Container@SKIRMISH_TABS:
+		Row@SKIRMISH_TABS:
 			X: 695 - WIDTH
+			Y: 285
 			Width: 486
 			Visible: False
 			Children:
 				Button@PLAYERS_TAB:
-					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
 					Text: button-skirmish-tabs-players-tab
 				Button@OPTIONS_TAB:
-					X: 162
-					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
 					Text: button-skirmish-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 2 * 162
-					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
 					Text: label-music-title
-		Container@MULTIPLAYER_TABS:
+		Row@MULTIPLAYER_TABS:
 			X: 695 - WIDTH
+			Y: 285
 			Width: 486
 			Visible: False
 			Children:
 				Button@PLAYERS_TAB:
-					Y: 285
 					Width: 121
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-players-tab
 				Button@OPTIONS_TAB:
-					X: 121
-					Y: 285
 					Width: 122
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 243
-					Y: 285
 					Width: 121
 					Height: 31
 					Font: Bold
 					Text: label-music-title
 				Button@SERVERS_TAB:
-					X: 364
-					Y: 285
 					Width: 122
 					Height: 31
 					Font: Bold
@@ -131,19 +121,22 @@ Background@SERVER_LOBBY:
 					Y: PARENT_HEIGHT - HEIGHT
 					Width: PARENT_WIDTH - 260 - 55
 					Height: 25
-		Button@START_GAME_BUTTON:
-			X: PARENT_WIDTH - WIDTH - 150
-			Y: PARENT_HEIGHT - HEIGHT - 20
-			Width: 120
+		Row@BUTTON_ROW:
+			X: PARENT_WIDTH - 270
+			Y: PARENT_HEIGHT - 45
+			Width: 250
 			Height: 25
-			Text: button-server-lobby-start-game
-			Font: Bold
-		Button@DISCONNECT_BUTTON:
-			X: PARENT_WIDTH - WIDTH - 20
-			Y: PARENT_HEIGHT - HEIGHT - 20
-			Width: 120
-			Height: 25
-			Text: button-server-lobby-disconnect
-			Font: Bold
+			MainAxisAlignment: SpaceBetween
+			Children:
+				Button@START_GAME_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-server-lobby-start-game
+					Font: Bold
+				Button@DISCONNECT_BUTTON:
+					Width: 120
+					Height: 25
+					Text: button-server-lobby-disconnect
+					Font: Bold
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:

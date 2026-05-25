@@ -25,24 +25,31 @@ Container@INGAME_MENU:
 			Align: Center
 			Font: Regular
 			Contrast: True
+		# Empty container that GAME_INFO_PANEL is loaded into at runtime by IngameMenuLogic.
 		Container@PANEL_ROOT:
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
 		Background@MENU_BUTTONS:
 			X: 13 + (WINDOW_WIDTH - 522) / 4 - WIDTH / 2
 			Y: (WINDOW_HEIGHT - HEIGHT) / 2
 			Width: 200
-			Height: 120
+			Height: 360
+			ClickThrough: True
 			Children:
-				Label@LABEL_TITLE:
-					X: (PARENT_WIDTH - WIDTH) / 2
-					Y: 20
-					Width: 200
-					Height: 30
-					Text: label-menu-buttons-title
-					Align: Center
-					Font: Bold
-				Button@BUTTON_TEMPLATE:
-					X: (PARENT_WIDTH - WIDTH) / 2
-					Y: 60
-					Width: 140
-					Height: 30
-					Font: Bold
+				Column@BUTTONS_COLUMN:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					CrossAxisAlignment: Center
+					MainAxisAlignment: Center
+					Spacing: 10
+					Children:
+						Label@LABEL_TITLE:
+							Width: 200
+							Height: 30
+							Text: label-menu-buttons-title
+							Align: Center
+							Font: Bold
+						Button@BUTTON_TEMPLATE:
+							Width: 140
+							Height: 30
+							Font: Bold
