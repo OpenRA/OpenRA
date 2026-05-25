@@ -746,6 +746,9 @@ description-surrender-description = self-destruct everything and lose the game.
 ## DeveloperMode
 notification-cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }.
 
+## MapOptions
+notification-ingame-game-speed-changed = Game speed set to { $speed }.
+
 ## CustomTerrainDebugOverlay
 description-custom-terrain-debug-overlay = toggles the custom terrain debug overlay.
 

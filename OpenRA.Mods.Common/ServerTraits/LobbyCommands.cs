@@ -183,7 +183,8 @@ namespace OpenRA.Mods.Common.Server
 				{ "spawn", Spawn },
 				{ "clear_spawn", ClearPlayerSpawn },
 				{ "color", PlayerColor },
-				{ "sync_lobby", SyncLobby }
+				{ "sync_lobby", SyncLobby },
+				{ "ingame_gamespeed", IngameGameSpeed }
 			};
 
 		static bool ValidateSlotCommand(S server, Connection conn, Session.Client client, string arg, bool requiresHost)
@@ -212,6 +213,10 @@ namespace OpenRA.Mods.Common.Server
 			{
 				// Kick command is always valid for the host
 				if (command.StartsWith("kick ", StringComparison.Ordinal) || command.StartsWith("vote_kick ", StringComparison.Ordinal))
+					return true;
+
+				// Game speed change is allowed during games with no other human players
+				if (command.StartsWith("ingame_gamespeed ", StringComparison.Ordinal))
 					return true;
 
 				if (server.State == ServerState.GameStarted)
@@ -724,6 +729,34 @@ namespace OpenRA.Mods.Common.Server
 					c.State = Session.ClientState.NotReady;
 
 				server.SyncLobbyClients();
+
+				return true;
+			}
+		}
+
+		static bool IngameGameSpeed(S server, Connection conn, Session.Client client, string s)
+		{
+			lock (server.LobbyInfo)
+			{
+				// Only allow while the game is running, for the admin, and only when there are no other human players
+				if (server.State != ServerState.GameStarted || !client.IsAdmin || server.LobbyInfo.NonBotClients.Count() > 1)
+				{
+					server.SendFluentMessageTo(conn, InvalidConfigurationCommand);
+					return true;
+				}
+
+				if (!Game.ModData.GetOrCreate<GameSpeeds>().Speeds.ContainsKey(s))
+				{
+					server.SendFluentMessageTo(conn, InvalidConfigurationCommand);
+					return true;
+				}
+
+				var oo = server.LobbyInfo.GlobalSettings.LobbyOptions["gamespeed"];
+				oo.Value = oo.PreferredValue = s;
+
+				foreach (var c in server.Conns.ToList())
+					if (c.Validated)
+						server.SendOrderTo(c, "SetGameSpeed", s);
 
 				return true;
 			}

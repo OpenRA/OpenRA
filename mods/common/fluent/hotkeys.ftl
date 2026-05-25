@@ -111,6 +111,9 @@ hotkey-description-pausemusic = Pause or Resume
 hotkey-description-prevmusic = Previous
 hotkey-description-nextmusic = Next
 
+hotkey-description-ingamegamespeeddecrease = Decrease game speed
+hotkey-description-ingamegamespeedincrease = Increase game speed
+
 ## observer.yaml
 hotkey-description-observercombinedview = All Players
 hotkey-description-observerworldview = Disable Shroud

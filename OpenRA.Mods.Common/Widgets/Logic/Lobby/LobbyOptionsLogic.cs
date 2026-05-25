@@ -33,15 +33,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Func<MapPreview> getMap;
 		readonly OrderManager orderManager;
 		readonly Func<bool> configurationDisabled;
+		readonly Func<bool> ingameGameSpeedEnabled;
 		MapPreview mapPreview;
 		MapStatus mapStatus;
 
 		[ObjectCreator.UseCtor]
-		internal LobbyOptionsLogic(Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
+		internal LobbyOptionsLogic(
+			Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled, Func<bool> ingameGameSpeedEnabled)
 		{
 			this.getMap = getMap;
 			this.orderManager = orderManager;
 			this.configurationDisabled = configurationDisabled;
+			this.ingameGameSpeedEnabled = ingameGameSpeedEnabled;
 
 			panel = (ScrollPanelWidget)widget;
 			optionsContainer = widget.Get("LOBBY_OPTIONS");
@@ -163,15 +166,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				dropdown.IsVisible = () => true;
-				dropdown.IsDisabled = () => configurationDisabled() ||
-					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
+				dropdown.IsDisabled = () =>
+				{
+					if (option.IsIngameGameSpeedAdjustable && ingameGameSpeedEnabled())
+						return false;
+
+					return configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
+				};
 
 				dropdown.OnMouseDown = _ =>
 				{
 					ScrollItemWidget SetupItem(KeyValuePair<string, string> c, ScrollItemWidget template)
 					{
 						bool IsSelected() => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
-						void OnClick() => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+						void OnClick()
+						{
+							if (option.IsIngameGameSpeedAdjustable && ingameGameSpeedEnabled())
+								orderManager.IssueOrder(Order.Command($"ingame_gamespeed {c.Key}"));
+							else
+								orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+						}
 
 						var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => c.Value;

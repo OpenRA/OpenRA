@@ -399,7 +399,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "orderManager", orderManager },
 				{ "getMap", () => map },
-				{ "configurationDisabled", configurationDisabled }
+				{ "configurationDisabled", configurationDisabled },
+				{ "ingameGameSpeedEnabled", () => false }
 			});
 
 			optionsBin.IsVisible = () => panel == PanelType.Options;

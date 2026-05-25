@@ -36,6 +36,9 @@ namespace OpenRA.Network
 		[FluentReference("player")]
 		const string GameUnpaused = "notification-game-unpaused";
 
+		[FluentReference("speed")]
+		const string GameSpeedChanged = "notification-ingame-game-speed-changed";
+
 		public static int? KickVoteTarget { get; internal set; }
 
 		static Player FindPlayerByClient(this World world, Session.Client c)
@@ -213,6 +216,25 @@ namespace OpenRA.Network
 					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementing<INotifyGameSaved>())
 						nsr.GameSaved(orderManager.World, order.ExtraData != 0);
 					break;
+
+				case "SetGameSpeed":
+				{
+					if (OrderNotFromServerOrWorldIsReplay(clientId, world))
+						break;
+
+					var gameSpeeds = Game.ModData.GetOrCreate<GameSpeeds>();
+					if (gameSpeeds.Speeds.TryGetValue(order.TargetString, out var gameSpeed))
+					{
+						if (orderManager.LobbyInfo.GlobalSettings.LobbyOptions.TryGetValue("gamespeed", out var lobbyOption))
+							lobbyOption.Value = order.TargetString;
+
+						world.Timestep = gameSpeed.Timestep;
+						TextNotificationsManager.AddSystemLine("Options", FluentProvider.GetMessage(GameSpeedChanged,
+							"speed", FluentProvider.GetMessage(gameSpeed.Name)));
+					}
+
+					break;
+				}
 
 				case "PauseGame":
 				{

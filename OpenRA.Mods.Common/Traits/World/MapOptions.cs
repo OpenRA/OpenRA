@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new LobbyOption(map, "gamespeed",
 				GameSpeedDropdownLabel, GameSpeedDropdownDescription,
 				GameSpeedDropdownVisible, GameSpeedDropdownDisplayOrder, speeds,
-				GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked);
+				GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked, ingameGameSpeedAdjustable: true);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
