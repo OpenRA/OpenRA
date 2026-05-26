@@ -67,6 +67,16 @@ DOG:
 	Voiced:
 		VoiceSet: DogVoice
 	-TakeCover:
+	IssueOrderToBot@AI: ## patrol
+		OrderName: AttackMove
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 2500
+		TargetRangeInCell: 50
+		ValidTargets: SpyInfiltrate
+		InvalidTargets: WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Random
 
 E1:
 	Inherits: ^Soldier
@@ -456,6 +466,26 @@ E7:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: barracks.upgraded
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
+	IssueOrderToBot@AI2: ## c4
+		OrderName: C4
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 4
+		ValidTargets: C4
+		InvalidTargets: WaterActor
+		ValidRelationships: Enemy
+		TargetDistance: Closest
 
 MEDI:
 	Inherits: ^Soldier
@@ -499,6 +529,15 @@ MEDI:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Infantry
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 MECH:
 	Inherits: ^Soldier
@@ -555,6 +594,26 @@ MECH:
 	AutoTarget:
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Vehicle, Ship
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
+	IssueOrderToBot@AI2: ## capture husk
+		OrderName: CaptureActor
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 7
+		ValidTargets: Husk
+		InvalidTargets: AirActor, WaterActor
+		ValidRelationships: Ally, Enemy, Neutral
+		TargetDistance: Closest
 
 EINSTEIN:
 	Inherits: ^CivInfantry
@@ -672,6 +731,17 @@ THF:
 		Voice: Move
 		Speed: 72
 	-AttackFrontal:
+	IssueOrderToBot@AI: ## capture vehicle
+		OrderName: CaptureActor
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 7
+		ValidTargets: Vehicle
+		InvalidTargets: Air, Water
+		ValidRelationships: Enemy, Neutral
+		TargetDistance: Closest
 
 SHOK:
 	Inherits: ^Soldier

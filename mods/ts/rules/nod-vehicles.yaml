@@ -80,12 +80,22 @@ BIKE:
 		RequiresCondition: !inside-tunnel && !rank-elite
 	LeavesTrails@VEINS:
 		RequiresCondition: !inside-tunnel && !rank-elite
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 TTNK:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -105,7 +115,7 @@ TTNK:
 		TurnSpeed: 20
 		Speed: 85
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	Health:
 		HP: 35000
 	Armor:
@@ -203,12 +213,19 @@ TTNK:
 		ArmamentNames: primary, deployed
 	RenderVoxels:
 		Scale: 11.5
+	IssueOrderToBot@AI:
+		RequiresCondition: undeployed
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderTrigger: Attack
+		OrderInterval: 40
 
 ART2:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -232,7 +249,7 @@ ART2:
 		Speed: 71
 		TurnSpeed: 8
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
@@ -299,6 +316,15 @@ ART2:
 	WithMuzzleOverlay:
 	RevealOnFire:
 		ArmamentNames: deployed
+	IssueOrderToBot@AI:
+		RequiresCondition: undeployed
+		OrderName: GrantConditionOnDeploy
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 45
+		TargetRangeInCell: 17
+		ValidTargets: Ground, Water
+		ValidRelationships: Enemy
 
 REPAIR:
 	Inherits: ^Tank
@@ -338,6 +364,15 @@ REPAIR:
 		InitialStance: AttackAnything
 	AutoTargetPriority@DEFAULT:
 		ValidTargets: Vehicle
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 WEED:
 	Inherits: ^Tank
@@ -426,6 +461,7 @@ SAPC:
 		MaxWeight: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
+		LoadedCondition: loaded
 		EjectOnDeath: true
 	WithVoxelBody:
 		RequiresCondition: !submerged
@@ -443,6 +479,11 @@ SAPC:
 		RequiresCondition: !submerged
 	WithDecoration@UNDERGROUND:
 		RequiresCondition: inside-tunnel || submerged
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 SUBTANK:
 	Inherits: ^Tank
@@ -550,6 +591,15 @@ STNK:
 	FireWarheadsOnDeath@ELITE:
 		RequiresCondition: rank-elite
 		Weapon: UnitExplode
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 SGEN:
 	Inherits: ^Tank
@@ -636,3 +686,9 @@ SGEN:
 		Range: 6c0
 		Type: cloakgenerator
 		RequiresCondition: deployed && !empdisable
+	IssueOrderToBot@AI:
+		OrderTrigger: BecomingIdle, Periodically
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 40
+		RequiresCondition: undeployed

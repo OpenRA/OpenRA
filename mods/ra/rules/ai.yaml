@@ -2,15 +2,19 @@ Player:
 	ModularBot@RushAI:
 		Name: bot-rush-ai.name
 		Type: rush
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	ModularBot@NormalAI:
 		Name: bot-normal-ai.name
 		Type: normal
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	ModularBot@TurtleAI:
 		Name: bot-turtle-ai.name
 		Type: turtle
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	ModularBot@NavalAI:
 		Name: bot-naval-ai.name
 		Type: naval
+		HighPriorityOrders: AdvancedChronoshift, Chronoshift, ironcurtain, PlaceBuilding
 	GrantConditionOnBotOwner@rush:
 		Condition: enable-rush-ai
 		Bots: rush
@@ -23,6 +27,19 @@ Player:
 	GrantConditionOnBotOwner@naval:
 		Condition: enable-naval-ai
 		Bots: naval
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	LoadCargoBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		TransportTypesAndLoadRequirement:
+			jeep: IdleUnit
+			apc: IdleUnit
+			stnk: IdleUnit
+			hbox: All
+			pbox: All
+			tran: IdleUnit
+		ValidTransportOwner: AlliedBot
+		PassengerTypes: e1, e1r1, e2, e3, e3r1, e4, e7, shok, thf
 	ResourceMapBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai
 		ResourceCreatorTypes: mine, gmine
@@ -33,51 +50,351 @@ Player:
 	SupportPowerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		Decisions:
+			ioncurtain:
+				OrderName: ironcurtain
+				DecisionMode: OnAttacked
+				TargetLocationMode: ActorCenter
+				VisibilityCheck: false
+				CoarseScanRadius: 8 ##triggered by OnAttacked
+				MinimumAttractiveness: 100
+				Consideration@1:
+					AgainstOwnActors: true
+					ValidTargetTypes: Structure, Vehicle
+					InvalidActorTypes: dtrk
+					Attractiveness: 150
+					TargetMetric: HealthLoss
+					CheckRadius: 1c512
+				Consideration@2:
+					Against: Ally
+					ValidTargetTypes: Infantry
+					Attractiveness: -20
+					TargetMetric: None
+					CheckRadius: 1c512
+				Consideration@4:
+					Against: Enemy
+					ValidTargetTypes: Structure, Vehicle
+					Attractiveness: -40
+					CheckRadius: 1c512
+			chronoshift:
+				OrderName: Chronoshift
+				CheckTargetLocationFirst: false
+				TargetLocationMode: CellCanBeEnteredByTargetedActor
+				ExtraLocationMode: ActorLocation
+				MinimumAttractiveness: 10000
+				VisibilityCheck: false
+				FineScanRadius: 4
+				## steal enemy harvester\mcv
+				Consideration@enemy-harvester-extraloc1:
+					StrategyName: harvester-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@enemy-harvester-target1:
+					StrategyName: harvester-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## steal enemy vehicles
+				Consideration@enemy-vehicles-extraloc1:
+					StrategyName: vehicles-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidTargetTypes: Vehicle
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@enemy-vehicles-target1:
+					StrategyName: vehicles-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 50
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## teleport vehicles to attack weak spot (harv)
+				Consideration@ally-harv-assualt-extraloc1:
+					StrategyName: harv-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@ally-harv-assualt-target1:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-harv-assualt-target2:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport vehicles to attack weak spot (structure)
+				Consideration@ally-structure-assualt-extraloc1:
+					StrategyName: structure-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk, v2rl, arty, msub,ca
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 1c512
+				Consideration@ally-structure-assualt-target1:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Structure
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-structure-assualt-target2:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport mcv for expansion
+				Consideration@ally-mcv-expansion-extraloc1:
+					StrategyName: ally-expansion-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: mcv
+					Attractiveness: 14000 ## Teleport will kill conyard HP below 50%
+					TargetMetric: Health
+					CheckRadius: 1c512
+				Consideration@ally-mcv-expansion-target1:
+					StrategyName: ally-expansion-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					InvalidActorTypes: harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target2:
+					StrategyName: ally-expansion-magic
+					Against: Ally
+					ValidActorTypes: mcv, proc, fact
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target3:
+					StrategyName: ally-expansion-magic
+					Against: Ally, Neutral, Enemy
+					ValidActorTypes: mine, gmine
+					Attractiveness: 10001
+					TargetMetric: None
+					CheckRadius: 8c0
+			advancedchronoshift:
+				OrderName: AdvancedChronoshift
+				CheckTargetLocationFirst: false
+				TargetLocationMode: CellCanBeEnteredByTargetedActor
+				ExtraLocationMode: ActorLocation
+				VisibilityCheck: false
+				MinimumAttractiveness: 10000
+				FineScanRadius: 4
+				## steal enemy harvester\mcv
+				Consideration@enemy-harvester-extraloc1:
+					StrategyName: harvester-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@enemy-harvester-target1:
+					StrategyName: harvester-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## steal enemy vehicles
+				Consideration@enemy-vehicles-extraloc1:
+					StrategyName: vehicles-magic
+					AsExtraLocation: true
+					Against: Enemy
+					ValidTargetTypes: Vehicle
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@enemy-vehicles-target1:
+					StrategyName: vehicles-magic
+					Against: Ally
+					ValidActorTypes: e3, e3r1, shok, tsla, gun, 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 50
+					TargetMetric: Value
+					CheckRadius: 4c0
+				## teleport vehicles to attack weak spot (harv)
+				Consideration@ally-harv-assualt-extraloc1:
+					StrategyName: harv-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@ally-harv-assualt-target1:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidActorTypes: mcv, harv
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-harv-assualt-target2:
+					StrategyName: harv-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport vehicles to attack weak spot (structure)
+				Consideration@ally-structure-assualt-extraloc1:
+					StrategyName: structure-assualt-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk, v2rl, arty, msub,ca
+					Attractiveness: 200
+					TargetMetric: Value
+					CheckRadius: 2c512
+				Consideration@ally-structure-assualt-target1:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Structure
+					Attractiveness: 100
+					TargetMetric: Value
+					CheckRadius: 4c0
+				Consideration@ally-structure-assualt-target2:
+					StrategyName: structure-assualt-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 8c0
+				## teleport mcv for expansion
+				Consideration@ally-mcv-expansion-extraloc1:
+					StrategyName: ally-expansion-magic
+					AsExtraLocation: true
+					AgainstOwnActors: true
+					ValidActorTypes: mcv
+					Attractiveness: 14000 ## Teleport will kill conyard HP below 50%
+					TargetMetric: Health
+					CheckRadius: 2c512
+				Consideration@ally-mcv-expansion-target1:
+					StrategyName: ally-expansion-magic
+					Against: Enemy
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					InvalidActorTypes: harv, gap
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target2:
+					StrategyName: ally-expansion-magic
+					Against: Ally
+					ValidActorTypes: mcv, proc, fact
+					Attractiveness: -800
+					TargetMetric: Value
+					CheckRadius: 16c0
+				Consideration@ally-mcv-expansion-target3:
+					StrategyName: ally-expansion-magic
+					Against: Ally, Neutral, Enemy
+					ValidActorTypes: mine, gmine
+					Attractiveness: 100001
+					TargetMetric: None
+					CheckRadius: 8c0
 			spyplane:
 				OrderName: SovietSpyPlane
 				MinimumAttractiveness: 1
+				TargetLocationMode: ActorCenter
+				VisibilityCheck: false
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
+					Attractiveness: 1100
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
+					TargetMetric: Undetected
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Enemy
 					Attractiveness: 1
-					TargetMetric: None
+					ValidTargetTypes: Structure
+					TargetMetric: Value
 					CheckRadius: 5c0
 			paratroopers:
 				OrderName: SovietParatroopers
-				MinimumAttractiveness: 5
-				Consideration@1:
+				MinimumAttractiveness: 3
+				VisibilityCheck: false
+				FineScanRadius: 4
+				## paratroopers attack weak spot (structure)
+				Consideration@assualt1:
+					StrategyName: structure-assualt
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
+					InvalidActorTypes: ftur, pbox, hbox, tsla
 					Attractiveness: 1
 					TargetMetric: None
 					CheckRadius: 8c0
-				Consideration@2:
+				Consideration@assualt2:
+					StrategyName: structure-assualt
 					Against: Enemy
-					Types: Water
+					ValidTargetTypes: Water, Vehicle, Defense, Infantry
+					InvalidActorTypes: mcv, harv, gap
 					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+				## paratroopers reinforce the expansion
+				Consideration@reinforce1:
+					StrategyName: reinforce-expansion
+					Against: Ally
+					ValidActorTypes: proc, fact
+					Attractiveness: 2
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@reinforce2:
+					StrategyName: reinforce-expansion
+					Against: Ally
+					ValidTargetTypes: Vehicle, Infantry
+					InvalidActorTypes: mcv, harv
+					Attractiveness: -3
 					TargetMetric: None
 					CheckRadius: 8c0
 			parabombs:
 				OrderName: UkraineParabombs
-				MinimumAttractiveness: 1
+				TargetLocationMode: ActorCenter
+				MinimumAttractiveness: 4000
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
 					Attractiveness: 1
-					TargetMetric: None
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Enemy
+					ValidTargetTypes: Structure
+					Attractiveness: 2
+					TargetMetric: Value
 					CheckRadius: 5c0
 			nukepower:
 				OrderName: NukePowerInfoOrder
 				MinimumAttractiveness: 3000
 				Consideration@1:
 					Against: Enemy
-					Types: Structure
+					ValidTargetTypes: Structure
 					Attractiveness: 1
 					TargetMetric: Value
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Ally
-					Types: Air, Ground, Water
+					ValidTargetTypes: Vehicle, Infantry, Structure, Water
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
@@ -108,13 +425,16 @@ Player:
 		ProductionTypes: barr,tent,weap
 		NewProductionCashThreshold: 7000
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			barr: 7
 			tent: 7
 			kenn: 1
 			dome: 1
 			weap: 4
+			hpad: 1
+			afld: 1
+			afld.ukraine: 1
 			atek: 1
 			stek: 1
 			fix: 1
@@ -125,6 +445,9 @@ Player:
 			kenn: 1
 			tent: 3
 			weap: 4
+			hpad: 1
+			afld: 1
+			afld.ukraine: 1
 			pbox: 3
 			gun: 3
 			tsla: 3
@@ -137,6 +460,20 @@ Player:
 			fix: 1
 			dome: 10
 			mslo: 1
+			iron: 1
+			pdox: 1
+			fpwr: 1
+			tenf: 1
+			syrf: 1
+			spef: 1
+			weaf: 1
+			domf: 1
+			fixf: 1
+			fapw: 1
+			atef: 1
+			pdof: 1
+			mslf: 1
+			facf: 1
 		BuildingDelays:
 			dome: 7000
 			fix: 3000
@@ -147,6 +484,18 @@ Player:
 			kenn: 9000
 			atek: 11000
 			stek: 11000
+			fpwr: 6000
+			tenf: 7000
+			syrf: 8000
+			spef: 9000
+			weaf: 9000
+			domf: 10000
+			fixf: 10000
+			fapw: 10000
+			atef: 14000
+			pdof: 14000
+			mslf: 14000
+			facf: 6000
 	BaseBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		MinimumExcessPower: 0
@@ -164,7 +513,7 @@ Player:
 		NewProductionCashThreshold: 8000
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			barr: 7
 			tent: 7
@@ -202,6 +551,20 @@ Player:
 			atek: 1
 			stek: 1
 			mslo: 1
+			iron: 1
+			pdox: 1
+			fpwr: 1
+			tenf: 1
+			syrf: 1
+			spef: 1
+			weaf: 1
+			domf: 1
+			fixf: 1
+			fapw: 1
+			atef: 1
+			pdof: 1
+			mslf: 1
+			facf: 1
 		BuildingDelays:
 			dome: 6000
 			fix: 3000
@@ -214,6 +577,18 @@ Player:
 			syrd: 6000
 			atek: 9000
 			stek: 9000
+			fpwr: 6000
+			tenf: 7000
+			syrf: 8000
+			spef: 9000
+			weaf: 9000
+			domf: 10000
+			fixf: 10000
+			fapw: 10000
+			atef: 14000
+			pdof: 14000
+			mslf: 14000
+			facf: 6000
 	BaseBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		MinimumExcessPower: 20
@@ -228,7 +603,7 @@ Player:
 		ProductionTypes: barr,tent,weap
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			barr: 1
 			tent: 1
@@ -267,11 +642,37 @@ Player:
 			atek: 1
 			stek: 1
 			mslo: 1
+			iron: 1
+			pdox: 1
+			fpwr: 1
+			tenf: 1
+			syrf: 1
+			spef: 1
+			weaf: 1
+			domf: 1
+			fixf: 1
+			fapw: 1
+			atef: 1
+			pdof: 1
+			mslf: 1
+			facf: 1
 		BuildingDelays:
 			dome: 5000
 			atek: 7000
 			stek: 7000
 			kenn: 8000
+			fpwr: 6000
+			tenf: 7000
+			syrf: 8000
+			spef: 9000
+			weaf: 9000
+			domf: 10000
+			fixf: 10000
+			fapw: 10000
+			atef: 14000
+			pdof: 14000
+			mslf: 14000
+			facf: 6000
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		MinimumExcessPower: 0
@@ -287,7 +688,7 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
-		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		BuildingLimits:
 			proc: 3
 			dome: 1
@@ -322,6 +723,8 @@ Player:
 			agun: 5
 			sam: 5
 			mslo: 1
+			iron: 1
+			pdox: 1
 		BuildingDelays:
 			dome: 3000
 			fix: 20000
@@ -329,19 +732,20 @@ Player:
 			kenn: 4000
 	PowerDownBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
-		PowerDownTypes: dome,tsla,mslo,agun,sam
+		PowerDownTypes: dome,tsla,mslo,agun,sam, gap, iron, pdox
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	SquadManagerBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england, thf, tran
 		ConstructionYardTypes: fact
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
+		DangerScanRadius: 18
 	McvManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		McvTypes: mcv
@@ -376,8 +780,13 @@ Player:
 			e3: 30
 			e4: 15
 			e7: 1
+			medi: 1
+			mech: 1
 			dog: 15
 			shok: 15
+			spy: 2
+			spy.england: 2
+			thf: 1
 			harv: 10
 			apc: 30
 			jeep: 20
@@ -390,24 +799,36 @@ Player:
 			4tnk: 25
 			ttnk: 25
 			stnk: 5
+			ctnk: 3
+			mrj: 1
+			dtrk: 1
+			qtnk: 1
+			tran: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			mrj: 1
+			dtrk: 1
+			qtnk: 1
+			tran: 1
+		UnitDelays:
+			tran: 9000
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england, thf, tran
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 		ProtectUnitScanRadius: 15
 		ProtectionScanRadius: 12
+		DangerScanRadius: 18
 	UnitBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		UnitsToBuild:
@@ -416,9 +837,14 @@ Player:
 			e3: 30
 			e4: 15
 			e7: 1
+			medi: 2
+			mech: 2
 			dog: 15
 			shok: 15
 			harv: 15
+			spy: 2
+			spy.england: 2
+			thf: 1
 			apc: 30
 			jeep: 20
 			arty: 15
@@ -439,26 +865,39 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
+			ctnk: 3
+			mrj: 1
+			dtrk: 1
+			qtnk: 1
+			tran: 1
 		UnitLimits:
 			dog: 4
+			medi: 3
+			mech: 3
 			harv: 8
 			jeep: 4
-			ftrk: 4
+			dtrk: 1
+			qtnk: 1
+			mrj: 1
+			tran: 1
+		UnitDelays:
+			tran: 8000
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly, dtrk, qtnk, spy, spy.england, thf, tran
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 		RushInterval: 100000
 		MinimumAttackForceDelay: 100000
 		ProtectUnitScanRadius: 30
 		ProtectionScanRadius: 15
+		DangerScanRadius: 18
 	UnitBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		UnitsToBuild:
@@ -467,8 +906,13 @@ Player:
 			e3: 30
 			e4: 15
 			e7: 1
+			medi: 3
+			mech: 3
 			dog: 15
 			shok: 15
+			spy: 2
+			spy.england: 2
+			thf: 1
 			harv: 15
 			apc: 30
 			jeep: 20
@@ -491,12 +935,21 @@ Player:
 			ca: 10
 			pt: 10
 			mnly: 2
+			ctnk: 3
+			mrj: 1
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 3
+			medi: 3
+			mech: 3
 			harv: 8
 			jeep: 2
 			ftrk: 4
 			mnly: 2
+			mrj: 2
+			dtrk: 1
+			qtnk: 1
 	MinelayerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		MinelayingActorTypes: mnly
@@ -507,17 +960,20 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england, thf, tran
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
-		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf,fpwr,tenf,syrf,spef,weaf,domf,fixf,fapw,atef,pdof,mslf,facf
 		IgnoredEnemyTargetTypes: AirborneActor
 	UnitBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		UnitsToBuild:
+			spy: 2
+			spy.england: 2
+			thf: 1
 			harv: 1
 			ftrk: 40
 			arty: 40
@@ -532,11 +988,65 @@ Player:
 			dd: 30
 			ca: 20
 			pt: 10
+			ctnk: 3
+			mrj: 1
+			tran: 1
 		UnitLimits:
 			harv: 4
 			ftrk: 3
 			arty: 1
 			v2rl: 1
 			jeep: 1
+			mrj: 1
+			tran: 1
 		UnitDelays:
 			harv: 10000
+	SendUnitToAttackBotModule@Mad:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackOptions:
+			dtrk:
+				AttackDesireOfEach: 100
+				MoveToOrderName: AssaultMove
+				MoveBackOrderName: AssaultMove
+			qtnk:
+				AttackDesireOfEach: 100
+				AttackOrderName: DetonateAttack
+				MoveBackOrderName: Detonate
+		ValidTargets: Structure
+		InvalidTargets: WaterActor
+	SendUnitToAttackBotModule@SendSpy:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackOptions:
+			spy:
+				AttackDesireOfEach: 100
+				TryDisguise: True
+				TryGetHealed: False
+				AttackRequires: Disguised
+				AttackOrderName: Infiltrate
+			spy.england:
+				AttackDesireOfEach: 100
+				TryDisguise: True
+				TryGetHealed: False
+				AttackRequires: Disguised
+				AttackOrderName: Infiltrate
+			tran:
+				AttackDesireOfEach: 80
+				MoveToOrderName: Move
+				AttackOrderName: Unload
+				MoveBackOrderName: Move
+				AttackRequires: CargoLoaded
+		ValidTargets: SpyInfiltrate
+		InvalidTargets: WaterActor
+		TargetDistances: Random
+
+	SendUnitToAttackBotModule@SendTheif:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackOptions:
+			thf:
+				AttackDesireOfEach: 100
+				TryGetHealed: False
+				AttackRequires: Disguised
+				AttackOrderName: Infiltrate
+		ValidTargets: ThiefInfiltrate
+		InvalidTargets: WaterActor
+		TargetDistances: Random

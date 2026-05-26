@@ -31,6 +31,7 @@ APC:
 		MaxWeight: 5
 		UnloadVoice: Unload
 		LoadingCondition: loading
+		LoadedCondition: loaded
 		EjectOnDeath: true
 	GrantConditionOnTerrain:
 		Condition: inwater
@@ -47,6 +48,11 @@ APC:
 		TerrainTypes: Water
 		StationaryInterval: 18
 		MovingInterval: 6
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 HVR:
 	Inherits: ^Vehicle
@@ -104,6 +110,15 @@ HVR:
 		MovingInterval: 6
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 SMECH:
 	Inherits: ^Vehicle
@@ -318,6 +333,7 @@ JUGG:
 	Inherits@SPRITES: ^SpriteActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -342,7 +358,7 @@ JUGG:
 		TurnSpeed: 20
 		AlwaysTurnInPlace: true
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 		TerrainOrientationAdjustmentMargin: -1
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -421,6 +437,15 @@ JUGG:
 		ArmamentNames: deployed
 	Selectable:
 		DecorationBounds: 1448, 2413, 0, -482
+	IssueOrderToBot@AI:
+		RequiresCondition: undeployed
+		OrderName: GrantConditionOnDeploy
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 45
+		TargetRangeInCell: 17
+		ValidTargets: Ground, Water
+		ValidRelationships: Enemy
 
 MOBILEMP:
 	Inherits: ^Tank
@@ -450,8 +475,27 @@ MOBILEMP:
 	GrantChargedConditionOnToggle:
 		Voice: Move
 		ChargeDuration: 750
+		ChargedCondition: charged
 		ActivatedCondition: triggered
 		PauseOnCondition: empdisable
 	FireWarheads:
 		Weapons: MEMPulse
 		RequiresCondition: triggered && !empdisable
+	IssueOrderToBot@AI:
+		RequiresCondition: charged
+		OrderName: ActivateCondition
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		TargetRangeInCell: 3
+		ValidTargets: Vehicle, Support
+		ValidRelationships: Enemy
+	IssueOrderToBot@AI-getcloser:
+		RequiresCondition: charged
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 100
+		TargetRangeInCell: 10
+		ValidTargets: Vehicle, Support
+		ValidRelationships: Enemy

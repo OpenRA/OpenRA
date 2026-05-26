@@ -368,6 +368,17 @@ saboteur:
 		Sequence: prone-stand
 		RequiresCondition: triggered
 	-AttackFrontal:
+	GrantConditionOnDamageState@AI:
+		ValidDamageStates: Heavy, Critical, Medium
+		Condition: bot-suicide
+	IssueOrderToBot@AI: ### Hack: activate halfway only when there is valid hostile enemy and damaged
+		RequiresCondition: bot-suicide && !triggered
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 60
+		TargetRangeInCell: 7
+		ValidTargets: Infantry, Vehicle, Structure
+		ValidRelationships: Enemy
 
 nsfremen:
 	Inherits: fremen

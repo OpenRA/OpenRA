@@ -2,23 +2,26 @@ Player:
 	ModularBot@bot-test-ai:
 		Name: bot-test-ai.name
 		Type: test
+		HighPriorityOrders: PlaceBuilding
 	GrantConditionOnBotOwner@test:
 		Condition: enable-test-ai
 		Bots: test
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-test-ai
 	HarvesterBotModule:
 		RequiresCondition: enable-test-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
 	PowerDownBotModule:
 		RequiresCondition: enable-test-ai
-		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam,napuls
 	ResourceMapBotModule:
 		RequiresCondition: enable-test-ai
 		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
 		ValuableResourceTypes: Tiberium, BlueTiberium
 		HarvesterTypes: harv
 		RefineryTypes: proc
-		EnemyBaseBuildingTypes: gacnst, gapowr, gapowrup, napowr, naapwr, gapile, nahand, gaweap, naweap,garadr, naradr, gahpad, nahpad, gatech, natech, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		EnemyBaseBuildingTypes: gacnst, gapowr, gapowrup, napowr, naapwr, gapile, nahand, gaweap, naweap,garadr, naradr, gahpad, nahpad, gatech, natech, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam, napuls
 	BaseBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		MinimumExcessPower: 30
@@ -26,22 +29,20 @@ Player:
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: gacnst
+		BuildingQueues: Building
+		DefenseQueues: Support
 		RefineryTypes: proc
 		PowerTypes: gapowr, gapowrup, napowr, naapwr
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		TechTypes: garadr, naradr, gahpad, nahpad, gatech, natech
 		SiloTypes: gasilo
-		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam,napuls
 		SellRefineryNoResourceDistance: 18
 		BuildingLimits:
-			proc: 4
-			gasilo: 2
-			gapowr: 8
-			napowr: 8
-			gapile: 1
-			nahand: 1
-			gaweap: 1
-			naweap: 1
+			gapile: 7
+			nahand: 7
+			gaweap: 4
+			naweap: 4
 			garadr: 1
 			naradr: 1
 			gatech: 1
@@ -49,43 +50,44 @@ Player:
 			nastlh: 1
 			gahpad: 3
 			nahpad: 3
-			gavulc: 8
-			garock: 2
-			gacsam: 4
-			gactwr: 14
-			naobel: 2
-			nalasr: 8
-			nasam: 4
+			natmpl: 1
+			napuls: 1
 		BuildingFractions:
-			proc: 30
-			gapile: 1
-			nahand: 1
-			gaweap: 1
-			naweap: 1
+			proc: 25
+			gapile: 4
+			nahand: 4
+			gaweap: 4
+			naweap: 4
 			garadr: 1
 			naradr: 1
 			gatech: 1
 			natech: 1
+			natmpl: 1
 			nastlh: 1
 			gahpad: 1
 			nahpad: 1
-			nalasr: 10
-			gavulc: 10
+			nalasr: 8
+			gavulc: 7
 			garock: 3
 			gacsam: 6
-			gactwr: 18
+			gactwr: 14
 			nasam: 6
-			naobel: 3
+			naobel: 5
+			napuls: 1
+		BuildingDelays:
+			garadr: 8000
+			naradr: 8000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai
 	SquadManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter, lpst, subtank, sapc, mhijack
 		ConstructionYardTypes: gacnst
 		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
 		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
 		IgnoredEnemyTargetTypes: Air
+		DangerScanRadius: 18
 	UnitBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
 		UnitQueues: Vehicle, Infantry, Air
@@ -95,18 +97,29 @@ Player:
 			e3: 25
 			cyborg: 15
 			jumpjet: 15
+			cyc2: 1
+			ghost: 1
+			mhijack: 1
+			apc: 1
 			repair: 2
 			medic: 2
 			harv: 10
 			mmch: 15
 			ttnk: 15
 			smech: 25
-			bggy: 25
+			bggy: 10
 			hvr: 20
-			bike: 20
-			subtank: 10
+			bike: 10
+			subtank: 1
 			sonic: 10
 			stnk: 8
+			sapc: 1
+			art2: 50
+			jugg: 6
+			lpst: 1
+			hmec: 1
+			mobilemp: 1
+			sgen: 1
 			orca: 5
 			orcab: 4
 			apache: 5
@@ -115,9 +128,45 @@ Player:
 			harv: 12
 			medic: 3
 			repair: 3
+			lpst: 1
+			mobilemp: 1
+			apc: 1
+			sapc: 1
+			sgen: 1
 	McvExpansionManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		McvTypes: mcv
 		ConstructionYardTypes: gacnst
 		McvFactoryTypes: gaweap, naweap
 		MinimumConstructionYardCount: 2
+	SendUnitToAttackBotModule@backline:
+		RequiresCondition: enable-test-ai
+		ActorTypesAndAttackOptions:
+			subtank:
+				AttackDesireOfEach: 100
+				MoveBackOrderName: AssualtMove
+			sapc:
+				AttackDesireOfEach: 100
+				MoveToOrderName: Move
+				AttackOrderName: Unload
+				MoveBackOrderName: Move
+				AttackRequires: CargoLoaded
+		ValidTargets: Infantry, Building
+		InvalidTargets: Support, Water, Air
+		TargetDistances: Furthest, Random
+	SendUnitToAttackBotModule@hijack:
+		RequiresCondition: enable-test-ai
+		ActorTypesAndAttackOptions:
+			mhijack:
+				AttackDesireOfEach: 100
+				AttackOrderName: CaptureActor
+		ValidTargets: Vehicle
+		InvalidTargets: Water, Air
+		TargetDistances: Closest
+	LoadCargoBotModule:
+		RequiresCondition: enable-test-ai
+		TransportTypesAndLoadRequirement:
+			apc: IdleUnit
+			sapc: IdleUnit
+		PassengerTypes: e1, jumpjet, e2, e3, cyborg, cyc2, ghost, mhijack
+		ValidTransportOwner: AlliedBot

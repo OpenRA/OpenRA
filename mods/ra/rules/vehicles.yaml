@@ -451,11 +451,17 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 APC:
 	Inherits: ^TrackedVehicle
@@ -497,11 +503,17 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 MNLY:
 	Inherits: ^TrackedVehicle
@@ -651,6 +663,15 @@ MRJ:
 		Range: 5c0
 		DeflectionRelationships: Neutral, Enemy
 	RenderJammerCircle:
+	IssueOrderToBot@AI: ## retreat To safety
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 7
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 TTNK:
 	Inherits: ^TrackedVehicle
@@ -694,6 +715,15 @@ TTNK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 7
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 FTRK:
 	Inherits: ^Vehicle
@@ -746,6 +776,15 @@ FTRK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest
 
 DTRK:
 	Inherits: ^Vehicle
@@ -830,6 +869,15 @@ CTNK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI:
+		OrderName: PortableChronoTeleport
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 265
+		TargetRangeInCell: 12
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally, Neutral
+		TargetDistance: Furthest
 
 QTNK:
 	Inherits: ^TrackedVehicle
@@ -870,6 +918,19 @@ QTNK:
 		TargetTypes: GroundActor, MADTank, Vehicle
 	Selectable:
 		DecorationBounds: 1877, 1621, 0, -170
+	GrantConditionOnDamageState@AI:
+		ValidDamageStates: Heavy, Critical, Medium
+		Condition: bot-suicide
+	IssueOrderToBot@AI: ## Hack: activate halfway only when there is valid hostile enemy and damaged
+		RequiresCondition: !deployed && !being-captured && bot-suicide
+		OrderTrigger: Damage
+		OrderName: Detonate
+		OrderChance: 100
+		OrderInterval: 150
+		TargetRangeInCell: 6
+		ValidTargets: Vehicle, Structure
+		ValidRelationships: Enemy
+
 
 STNK:
 	Inherits: ^Vehicle
@@ -903,7 +964,6 @@ STNK:
 		Range: 4c0
 	AutoTarget:
 		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
 	Armament:
 		Weapon: APTusk.stnk
 		LocalOffset: 192,0,176
@@ -915,6 +975,7 @@ STNK:
 		Types: Infantry
 		MaxWeight: 5
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 175
@@ -931,3 +992,18 @@ STNK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderTrigger: Attack
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
+	IssueOrderToBot@AI2: ## hit and run
+		OrderName: Move
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 80
+		TargetRangeInCell: 9
+		ValidTargets: GroundActor, AirActor, WaterActor
+		ValidRelationships: Ally
+		TargetDistance: Furthest

@@ -265,10 +265,26 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 8
 		AfterUnloadDelay: 40
+		LoadedCondition: loaded
 	SpawnActorOnDeath:
 		Actor: TRAN.Husk
 	Selectable:
 		DecorationBounds: 1706, 1536
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 76
+	IssueOrderToBot@AI2: # find infantry to load
+		RequiresCondition: !loaded
+		OrderTrigger: Periodically
+		OrderName: Move
+		OrderChance: 100
+		OrderInterval: 2000
+		TargetRangeInCell: 200
+		ValidTargets: Infantry
+		ValidRelationships: Ally
+		TargetDistance: Random
 
 HELI:
 	Inherits: ^Helicopter

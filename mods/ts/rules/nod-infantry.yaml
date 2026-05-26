@@ -141,3 +141,14 @@ MHIJACK:
 		PlayerExperience: 10
 	RevealsShroud:
 		Range: 6c0
+	IssueOrderToBot@AI: ## capture vehicle
+		OrderName: CaptureActor
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 7
+		ValidTargets: Vehicle
+		InvalidTargets: Air, Water
+		ValidRelationships: Enemy, Neutral
+		TargetDistance: Closest
