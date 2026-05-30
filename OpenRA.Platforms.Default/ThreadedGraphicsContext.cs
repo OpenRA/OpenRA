@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading;
@@ -26,7 +27,8 @@ namespace OpenRA.Platforms.Default
 		// PERF: Maintain several object pools to reduce allocations.
 		readonly Dictionary<Type, object> vertexBufferPools = [];
 		readonly Stack<Message> messagePool = [];
-		readonly Queue<Message> messages = [];
+		readonly ConcurrentQueue<Message> messages = new();
+		readonly ManualResetEventSlim messageAvailable = new(false);
 
 		public readonly int VertexBatchSize;
 		public readonly int IndexBatchSize;
@@ -146,26 +148,24 @@ namespace OpenRA.Platforms.Default
 				// Run a message loop.
 				// Only this rendering thread can perform actions on the real device,
 				// so other threads must send us a message which we process here.
-				Message message;
 				while (true)
 				{
-					lock (messages)
-					{
-						if (messages.Count == 0)
-						{
-							if (messageException != null)
-								break;
+					// PERF: Avoid Monitor.Wait to work around Linux spinning/timer storms
+					messageAvailable.Wait();
+					messageAvailable.Reset();
 
-							Monitor.Wait(messages);
-						}
-
-						message = messages.Dequeue();
-					}
-
-					if (message == null)
+					if (messageException != null)
 						break;
 
-					message.Execute();
+					while (messages.TryDequeue(out var message))
+					{
+						if (message == null)
+							return;
+
+						message.Execute();
+						if (messageException != null)
+							return;
+					}
 				}
 			}
 		}
@@ -320,12 +320,8 @@ namespace OpenRA.Platforms.Default
 			var exception = messageException;
 			exception?.Throw();
 
-			lock (messages)
-			{
-				messages.Enqueue(message);
-				if (messages.Count == 1)
-					Monitor.Pulse(messages);
-			}
+			messages.Enqueue(message);
+			messageAvailable.Set();
 		}
 
 		object RunMessage(Message message)
