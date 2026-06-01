@@ -481,7 +481,7 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 25
 									Align: Left
 		Container@SELECT_WIDGETS:
-			X: WINDOW_WIDTH - 295
+			X: 5
 			Y: 318
 			Width: 290
 			Height: WINDOW_HEIGHT - 410
@@ -571,6 +571,16 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipText: button-delete-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_FILL_BUTTON:
+							X: 107
+							Y: 222
+							Width: 75
+							Height: 25
+							Text: button-fill-area.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-fill-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_CANCEL_BUTTON:
 							X: 208
 							Y: 222
@@ -579,6 +589,38 @@ Container@EDITOR_WORLD_ROOT:
 							Text: button-cancel
 							Font: Bold
 							Key: escape
+						Background@SELECTION_PREVIEW_PANEL:
+							X: 10
+							Y: PARENT_HEIGHT - 165
+							Width: PARENT_WIDTH - 20
+							Height: 150
+							Background: scrollpanel-bg
+							Children:
+								Label@SELECTION_PREVIEW_LABEL:
+									Y: 5
+									Width: PARENT_WIDTH
+									Height: 20
+									Align: Center
+									Font: Bold
+									Text: label-selected-area-preview
+								Label@MIX_MODE_LABEL:
+									X: 5
+									Y: 28
+									Width: 55
+									Height: 20
+									Align: Right
+									Font: TinyBold
+									Text: label-editor-mix-mode
+								DropDownButton@MIX_MODE_DROPDOWN:
+									X: 65
+									Y: 25
+									Width: PARENT_WIDTH - 75
+									Height: 25
+									Font: Bold
+								TerrainTemplatePreview@SELECTION_TILE_PREVIEW:
+									Visible: false
+								ActorPreview@SELECTION_ACTOR_PREVIEW:
+									Visible: false
 				Background@ACTOR_EDIT_PANEL:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT

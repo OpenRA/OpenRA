@@ -62,6 +62,10 @@ label-area-info = Area Info
 label-selected-area-diagonal = Diagonal:
 label-selected-area-resources = Resources:
 label-selection-filters = Filters
+label-selected-area-preview = Selected Preview
+label-editor-mix-mode = Mix:
+label-editor-mix-mode-random = Random
+label-editor-mix-mode-sequential = Sequential
 label-filter-terrain = Terrain
 label-filter-resources = Resources
 label-filter-actors = Actors
@@ -95,6 +99,10 @@ button-map-editor-tab-container-history-tooltip = History
 button-delete-area =
     .label = Delete
     .tooltip = Remove everything in the selected area
+
+button-fill-area =
+    .label = Fill
+    .tooltip = Fill the selected area with the selected terrain tile or actor
 
 button-delete-actor =
     .label = Delete

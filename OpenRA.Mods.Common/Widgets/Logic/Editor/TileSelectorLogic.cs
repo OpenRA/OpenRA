@@ -167,8 +167,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tileId = t.Template.Id;
 				var item = ScrollItemWidget.Setup(ItemTemplate,
-					() => Editor.CurrentBrush is EditorTileBrush editorCursor && editorCursor.TerrainTemplate.Id == tileId,
-					() => Editor.SetBrush(new EditorTileBrush(Editor, tileId, WorldRenderer)));
+					() => Editor.CurrentBrush is EditorTileBrush editorCursor && editorCursor.Templates.Contains(tileId),
+					() => { });
+				item.OnMouseUp = mi => SelectTile(tileId, mi.Modifiers.HasModifier(Modifiers.Ctrl));
+				item.ShowSelectionOutline = item.IsSelected;
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				preview.SetTemplate(terrainInfo.Templates[tileId]);
@@ -200,6 +202,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Panel.AddChild(item);
 			}
+		}
+
+		void SelectTile(ushort tileId, bool toggleSelection)
+		{
+			var templates = Editor.CurrentBrush is EditorTileBrush brush ? brush.Templates.ToList() : [];
+
+			if (toggleSelection)
+			{
+				if (!templates.Remove(tileId))
+					templates.Add(tileId);
+			}
+			else
+			{
+				templates.Clear();
+				templates.Add(tileId);
+			}
+
+			if (templates.Count == 0)
+				Editor.ClearBrush();
+			else
+				Editor.SetBrush(new EditorTileBrush(Editor, templates, WorldRenderer));
 		}
 	}
 }

@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
@@ -21,6 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly TerrainTemplateInfo TerrainTemplate;
 		public readonly ushort Template;
+		public readonly ushort[] Templates;
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
@@ -34,8 +36,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		CPos cell;
 		readonly List<IRenderable> preview = [];
+		int nextTemplate;
 
 		public EditorTileBrush(EditorViewportControllerWidget editorWidget, ushort id, WorldRenderer wr)
+			: this(editorWidget, [id], wr) { }
+
+		public EditorTileBrush(EditorViewportControllerWidget editorWidget, IEnumerable<ushort> ids, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
 			worldRenderer = wr;
@@ -47,7 +53,8 @@ namespace OpenRA.Mods.Common.Widgets
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			terrainRenderer = world.WorldActor.Trait<ITiledTerrainRenderer>();
 
-			Template = id;
+			Templates = ids.Distinct().ToArray();
+			Template = Templates[0];
 			TerrainTemplate = terrainInfo.Templates[Template];
 			cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
 			UpdatePreview();
@@ -100,11 +107,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void PaintCell(CPos cell, bool isMoving)
 		{
-			var template = terrainInfo.Templates[Template];
+			var templateId = PickTemplate();
+			var template = terrainInfo.Templates[templateId];
 			if (isMoving && PlacementOverlapsSameTemplate(template, cell))
 				return;
 
-			editorActionManager.Add(new PaintTileEditorAction(Template, world.Map, cell));
+			editorActionManager.Add(new PaintTileEditorAction(templateId, world.Map, cell));
 		}
 
 		void FloodFillWithBrush(CPos cell)
@@ -115,11 +123,23 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var mapTiles = map.Tiles;
 			var replace = mapTiles[cell];
+			var template = PickTemplate();
 
-			if (replace.Type == Template)
+			if (replace.Type == template)
 				return;
 
-			editorActionManager.Add(new FloodFillEditorAction(Template, map, cell));
+			editorActionManager.Add(new FloodFillEditorAction(template, map, cell));
+		}
+
+		ushort PickTemplate()
+		{
+			if (Templates.Length == 1)
+				return Template;
+
+			if (editorWidget.AssetMixMode == EditorAssetMixMode.Sequential)
+				return Templates[nextTemplate++ % Templates.Length];
+
+			return Templates[Game.CosmeticRandom.Next(Templates.Length)];
 		}
 
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
@@ -367,6 +387,106 @@ namespace OpenRA.Mods.Common.Widgets
 						var index = terrainTemplate.PickAny ? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount) : (byte)i;
 						var c = cellToPaint + new CVec(x, y);
 						if (!mapTiles.Contains(c))
+							continue;
+
+						undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));
+
+						mapTiles[c] = new TerrainTile(template, index);
+						mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height).Clamp(0, map.Grid.MaximumTerrainHeight);
+					}
+				}
+			}
+		}
+	}
+
+	sealed class FillSelectionWithTileEditorAction : IEditorAction
+	{
+		[FluentReference("id")]
+		const string FilledTile = "notification-filled-tile";
+
+		public string Text { get; }
+
+		readonly ushort[] templates;
+		readonly EditorAssetMixMode mixMode;
+		readonly Map map;
+		readonly CellCoordsRegion area;
+
+		readonly Queue<UndoTile> undoTiles = [];
+		readonly ITemplatedTerrainInfo terrainInfo;
+		readonly TerrainTemplateInfo firstTerrainTemplate;
+		int nextTemplate;
+
+		public FillSelectionWithTileEditorAction(ushort template, Map map, CellCoordsRegion area)
+			: this([template], EditorAssetMixMode.Random, map, area) { }
+
+		public FillSelectionWithTileEditorAction(IEnumerable<ushort> templates, EditorAssetMixMode mixMode, Map map, CellCoordsRegion area)
+		{
+			this.templates = templates.Distinct().ToArray();
+			this.mixMode = mixMode;
+			this.map = map;
+			this.area = area;
+
+			terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			firstTerrainTemplate = terrainInfo.Templates[this.templates[0]];
+			Text = FluentProvider.GetMessage(FilledTile, "id", firstTerrainTemplate.Id);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			for (var y = area.TopLeft.Y; y <= area.BottomRight.Y; y += firstTerrainTemplate.Size.Y)
+			{
+				for (var x = area.TopLeft.X; x <= area.BottomRight.X; x += firstTerrainTemplate.Size.X)
+					PaintTemplate(PickTemplate(), new CPos(x, y));
+			}
+		}
+
+		public void Undo()
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+
+			while (undoTiles.Count > 0)
+			{
+				var undoTile = undoTiles.Dequeue();
+
+				mapTiles[undoTile.Cell] = undoTile.MapTile;
+				mapHeight[undoTile.Cell] = undoTile.Height;
+			}
+		}
+
+		ushort PickTemplate()
+		{
+			if (templates.Length == 1)
+				return templates[0];
+
+			if (mixMode == EditorAssetMixMode.Sequential)
+				return templates[nextTemplate++ % templates.Length];
+
+			return templates[Game.CosmeticRandom.Next(templates.Length)];
+		}
+
+		void PaintTemplate(ushort template, CPos cellToPaint)
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var baseHeight = mapHeight.Contains(cellToPaint) ? mapHeight[cellToPaint] : (byte)0;
+			var terrainTemplate = terrainInfo.Templates[template];
+
+			var i = 0;
+			for (var y = 0; y < terrainTemplate.Size.Y; y++)
+			{
+				for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
+				{
+					if (terrainTemplate.Contains(i) && terrainTemplate[i] != null)
+					{
+						var index = terrainTemplate.PickAny ? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount) : (byte)i;
+						var c = cellToPaint + new CVec(x, y);
+						if (!area.Contains(c) || !mapTiles.Contains(c))
 							continue;
 
 						undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));

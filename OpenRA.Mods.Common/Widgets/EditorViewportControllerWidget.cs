@@ -17,6 +17,8 @@ using Color = OpenRA.Primitives.Color;
 
 namespace OpenRA.Mods.Common.Widgets
 {
+	public enum EditorAssetMixMode { Random, Sequential }
+
 	[IncludeStaticFluentReferences(
 		typeof(ChangeSelectionAction),
 		typeof(DeleteAreaAction),
@@ -39,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate;
 		public readonly EditorDefaultBrush DefaultBrush;
+		public EditorAssetMixMode AssetMixMode { get; private set; } = EditorAssetMixMode.Random;
 
 		public event Action BrushChanged;
 
@@ -68,6 +71,16 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void ClearBrush() { SetBrush(null); }
+
+		public void SetAssetMixMode(EditorAssetMixMode mixMode)
+		{
+			if (AssetMixMode == mixMode)
+				return;
+
+			AssetMixMode = mixMode;
+			BrushChanged?.Invoke();
+		}
+
 		public void SetBrush(IEditorBrush brush)
 		{
 			if (CurrentBrush != DefaultBrush)

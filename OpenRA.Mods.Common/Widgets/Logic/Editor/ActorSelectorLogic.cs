@@ -156,12 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			InitializePreviews();
 
 			if (editor.CurrentBrush is EditorActorBrush brush)
-			{
-				var actor = brush.Preview;
-				actor.Owner = option;
-				actor.ReplaceInit(new OwnerInit(option.Name));
-				actor.ReplaceInit(new FactionInit(option.Faction));
-			}
+				editor.SetBrush(new EditorActorBrush(editor, brush.Actors, option, WorldRenderer));
 		}
 
 		protected override void InitializePreviews()
@@ -192,8 +187,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					var item = ScrollItemWidget.Setup(ItemTemplate,
-						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Preview.Info == actor,
-						() => Editor.SetBrush(new EditorActorBrush(Editor, actor, selectedOwner, WorldRenderer)));
+						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Actors.Contains(actor),
+						() => { });
+					item.OnMouseUp = mi => SelectActor(actor, mi.Modifiers.HasModifier(Modifiers.Ctrl));
+					item.ShowSelectionOutline = item.IsSelected;
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");
 					preview.SetPreview(actor, td);
@@ -228,6 +225,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						+ $"because of missing sprites for tileset {World.Map.Rules.TerrainInfo.Id}.");
 				}
 			}
+		}
+
+		void SelectActor(ActorInfo actor, bool toggleSelection)
+		{
+			var actors = Editor.CurrentBrush is EditorActorBrush brush ? brush.Actors.ToList() : [];
+
+			if (toggleSelection)
+			{
+				if (!actors.Remove(actor))
+					actors.Add(actor);
+			}
+			else
+			{
+				actors.Clear();
+				actors.Add(actor);
+			}
+
+			if (actors.Count == 0)
+				Editor.ClearBrush();
+			else
+				Editor.SetBrush(new EditorActorBrush(Editor, actors, selectedOwner, WorldRenderer));
 		}
 	}
 }

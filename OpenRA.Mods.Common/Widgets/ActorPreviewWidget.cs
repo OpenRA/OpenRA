@@ -62,6 +62,21 @@ namespace OpenRA.Mods.Common.Widgets
 			PreviewOffset = previewTopLeft + IdealPreviewSize / 2;
 		}
 
+		public void SetPreview(ActorReference actor)
+		{
+			var actorInfo = worldRenderer.World.Map.Rules.Actors[actor.Type.ToLowerInvariant()];
+			var init = new ActorPreviewInitializer(actor, worldRenderer);
+			preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
+				.SelectMany(rpi => rpi.RenderPreview(init))
+				.ToArray();
+
+			var r = preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
+			var b = r.Union();
+			IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
+			var previewTopLeft = new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale));
+			PreviewOffset = previewTopLeft + IdealPreviewSize / 2;
+		}
+
 		IFinalizedRenderable[] renderables;
 		public override void PrepareRenderables()
 		{

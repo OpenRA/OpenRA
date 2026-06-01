@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public Func<bool> IsSelected = () => false;
+		public Func<bool> ShowSelectionOutline = () => false;
 
 		public override void Draw()
 		{
@@ -66,6 +67,15 @@ namespace OpenRA.Mods.Common.Widgets
 				hover = Children.Contains(Ui.MouseOverWidget);
 
 			WidgetUtils.DrawPanel(RenderBounds, getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted())));
+			if (ShowSelectionOutline())
+			{
+				var rb = RenderBounds;
+				Game.Renderer.RgbaColorRenderer.DrawRect(
+					new int2(rb.Left, rb.Top),
+					new int2(rb.Right, rb.Bottom),
+					1,
+					Color.FromArgb(0xFF4CFF00));
+			}
 		}
 
 		public override ScrollItemWidget Clone() { return new ScrollItemWidget(this); }

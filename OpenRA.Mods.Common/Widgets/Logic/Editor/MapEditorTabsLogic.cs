@@ -82,16 +82,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var container = panelContainer.Get<ContainerWidget>(tabId);
-			container.IsVisible = () => menuType == tabType;
+			container.IsVisible = () => (tabType == MenuType.Select && editor.DefaultBrush.Selection.Area.HasValue) || menuType == tabType;
 		}
 
 		void HandleUpdateSelectedTab()
 		{
-			var hasSelection = editor.DefaultBrush.Selection.HasSelection;
+			var selection = editor.DefaultBrush.Selection;
 
-			if (menuType != MenuType.Select && hasSelection)
+			if (selection.Area.HasValue)
+			{
+				if (menuType == MenuType.Select)
+					menuType = lastSelectedTab;
+			}
+			else if (menuType != MenuType.Select && selection.HasSelection)
 				menuType = MenuType.Select;
-			else if (menuType == MenuType.Select && !hasSelection)
+			else if (menuType == MenuType.Select && !selection.HasSelection)
 				menuType = lastSelectedTab;
 
 			OnTabChanged?.Invoke();
