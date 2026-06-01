@@ -251,25 +251,28 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorAssetMixMode mixMode;
 		readonly Map map;
 		readonly CellCoordsRegion area;
+		readonly IReadOnlySet<CPos> mask;
 
 		readonly List<EditorActorPreview> editorActorPreviews = [];
 		int nextActor;
 
-		public FillSelectionWithActorEditorAction(EditorActorLayer editorLayer, ActorReference actor, Map map, CellCoordsRegion area)
-			: this(editorLayer, [actor], EditorAssetMixMode.Random, map, area) { }
+		public FillSelectionWithActorEditorAction(EditorActorLayer editorLayer, ActorReference actor, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
+			: this(editorLayer, [actor], EditorAssetMixMode.Random, map, area, mask) { }
 
 		public FillSelectionWithActorEditorAction(
 			EditorActorLayer editorLayer,
 			IEnumerable<ActorReference> actors,
 			EditorAssetMixMode mixMode,
 			Map map,
-			CellCoordsRegion area)
+			CellCoordsRegion area,
+			IReadOnlySet<CPos> mask = null)
 		{
 			this.editorLayer = editorLayer;
 			this.actors = actors.Select(a => a.Clone()).ToArray();
 			this.mixMode = mixMode;
 			this.map = map;
 			this.area = area;
+			this.mask = mask;
 		}
 
 		public void Execute()
@@ -282,34 +285,45 @@ namespace OpenRA.Mods.Common.Widgets
 			var actors = new List<ActorReference>();
 			var firstActorInfo = map.Rules.Actors[this.actors[0].Type.ToLowerInvariant()];
 
-			foreach (var cell in area)
+			if (mask != null)
 			{
-				var actorAtCell = PickActor().Clone();
-				var actorInfo = map.Rules.Actors[actorAtCell.Type.ToLowerInvariant()];
-				var occupySpaceInfo = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
-				var sharesCell = occupySpaceInfo != null && occupySpaceInfo.SharesCell;
-
-				actorAtCell.Replace(new LocationInit(cell));
-
-				if (sharesCell)
-				{
-					var subcell = editorLayer.FreeSubCellAt(cell);
-					if (subcell == SubCell.Invalid)
-						continue;
-
-					actorAtCell.Replace(new SubCellInit(subcell));
-				}
-
-				if (!Footprint(actorInfo, occupySpaceInfo, actorAtCell).All(map.Tiles.Contains))
-					continue;
-
-				actors.Add(actorAtCell);
+				foreach (var cell in mask)
+					PlaceActorAt(cell, actors);
+			}
+			else
+			{
+				foreach (var cell in area)
+					PlaceActorAt(cell, actors);
 			}
 
 			foreach (var actorAtCell in actors)
 				editorActorPreviews.Add(editorLayer.Add(actorAtCell));
 
 			Text = FluentProvider.GetMessage(FilledActors, "name", firstActorInfo.Name, "count", editorActorPreviews.Count);
+		}
+
+		void PlaceActorAt(CPos cell, List<ActorReference> actors)
+		{
+			var actorAtCell = PickActor().Clone();
+			var actorInfo = map.Rules.Actors[actorAtCell.Type.ToLowerInvariant()];
+			var occupySpaceInfo = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
+			var sharesCell = occupySpaceInfo != null && occupySpaceInfo.SharesCell;
+
+			actorAtCell.Replace(new LocationInit(cell));
+
+			if (sharesCell)
+			{
+				var subcell = editorLayer.FreeSubCellAt(cell);
+				if (subcell == SubCell.Invalid)
+					return;
+
+				actorAtCell.Replace(new SubCellInit(subcell));
+			}
+
+			if (!Footprint(actorInfo, occupySpaceInfo, actorAtCell).All(map.Tiles.Contains))
+				return;
+
+			actors.Add(actorAtCell);
 		}
 
 		public void Undo()

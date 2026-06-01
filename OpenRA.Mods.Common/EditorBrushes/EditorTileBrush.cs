@@ -410,21 +410,23 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorAssetMixMode mixMode;
 		readonly Map map;
 		readonly CellCoordsRegion area;
+		readonly IReadOnlySet<CPos> mask;
 
 		readonly Queue<UndoTile> undoTiles = [];
 		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly TerrainTemplateInfo firstTerrainTemplate;
 		int nextTemplate;
 
-		public FillSelectionWithTileEditorAction(ushort template, Map map, CellCoordsRegion area)
-			: this([template], EditorAssetMixMode.Random, map, area) { }
+		public FillSelectionWithTileEditorAction(ushort template, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
+			: this([template], EditorAssetMixMode.Random, map, area, mask) { }
 
-		public FillSelectionWithTileEditorAction(IEnumerable<ushort> templates, EditorAssetMixMode mixMode, Map map, CellCoordsRegion area)
+		public FillSelectionWithTileEditorAction(IEnumerable<ushort> templates, EditorAssetMixMode mixMode, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
 		{
 			this.templates = templates.Distinct().ToArray();
 			this.mixMode = mixMode;
 			this.map = map;
 			this.area = area;
+			this.mask = mask;
 
 			terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			firstTerrainTemplate = terrainInfo.Templates[this.templates[0]];
@@ -438,6 +440,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
+			if (mask != null)
+			{
+				foreach (var cell in mask)
+					PaintTemplate(PickTemplate(), cell);
+
+				return;
+			}
+
 			for (var y = area.TopLeft.Y; y <= area.BottomRight.Y; y += firstTerrainTemplate.Size.Y)
 			{
 				for (var x = area.TopLeft.X; x <= area.BottomRight.X; x += firstTerrainTemplate.Size.X)

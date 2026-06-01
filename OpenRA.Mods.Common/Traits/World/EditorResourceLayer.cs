@@ -178,8 +178,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int CalculateRegionValue(CellCoordsRegion sourceRegion)
 		{
+			return CalculateCellsValue(sourceRegion);
+		}
+
+		public int CalculateCellsValue(IEnumerable<CPos> cells)
+		{
 			var resourceValueInRegion = 0;
-			foreach (var cell in sourceRegion)
+			foreach (var cell in cells)
 			{
 				var mcell = cell.ToMPos(Map);
 				if (!Map.Resources.Contains(mcell))

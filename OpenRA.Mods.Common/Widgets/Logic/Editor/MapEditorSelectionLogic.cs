@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		CellCoordsRegion? cachedPreviewRegion;
 		MapBlitFilters cachedPreviewFilters;
 		EditorBlitSource? cachedPreviewSource;
+		HashSet<CPos> cachedPreviewCells;
 
 		[ObjectCreator.UseCtor]
 		public MapEditorSelectionLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -140,7 +141,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var fillAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_FILL_BUTTON");
 			fillAreaSelectionButton.OnClick = () =>
 			{
-				if (!editor.DefaultBrush.Selection.Area.HasValue)
+				var selection = editor.DefaultBrush.Selection;
+				if (!selection.Area.HasValue)
 					return;
 
 				if (editor.CurrentBrush is EditorTileBrush tileBrush)
@@ -148,14 +150,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						tileBrush.Templates,
 						editor.AssetMixMode,
 						map,
-						editor.DefaultBrush.Selection.Area.Value));
+						selection.Area.Value,
+						selection.GetAreaMask()));
 				else if (editor.CurrentBrush is EditorActorBrush actorBrush)
 					editorActionManager.Add(new FillSelectionWithActorEditorAction(
 						editorActorLayer,
 						actorBrush.ActorReferences,
 						editor.AssetMixMode,
 						map,
-						editor.DefaultBrush.Selection.Area.Value));
+						selection.Area.Value,
+						selection.GetAreaMask()));
 			};
 
 			fillAreaSelectionButton.IsDisabled = () => editor.CurrentBrush is not EditorTileBrush && editor.CurrentBrush is not EditorActorBrush;
@@ -228,12 +232,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		EditorBlitSource CopySelectionContents()
 		{
+			var selection = editor.DefaultBrush.Selection;
 			return EditorBlit.CopyRegionContents(
 				map,
 				editorActorLayer,
 				resourceLayer,
-				editor.DefaultBrush.Selection.Area.Value,
-				selectionFilters);
+				selection.Area.Value,
+				selectionFilters,
+				selection.GetAreaMask());
 		}
 
 		void CreateCategoryPanel(MapBlitFilters copyFilter, CheckboxWidget checkbox)
@@ -271,19 +277,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!ShowAreaPreview())
 				return null;
 
-			var region = editor.DefaultBrush.Selection.Area.Value;
+			var selection = editor.DefaultBrush.Selection;
+			var region = selection.Area.Value;
+			var mask = selection.GetAreaMask();
+			var previewCells = mask != null ? new HashSet<CPos>(mask) : null;
 			if (cachedPreviewSource == null || cachedPreviewRegion is not CellCoordsRegion cachedRegion ||
 				cachedRegion.TopLeft != region.TopLeft || cachedRegion.BottomRight != region.BottomRight ||
-				cachedPreviewFilters != selectionFilters)
+				cachedPreviewFilters != selectionFilters ||
+				!PreviewCellsMatch(cachedPreviewCells, previewCells))
 			{
 				cachedPreviewRegion = region;
 				cachedPreviewFilters = selectionFilters;
+				cachedPreviewCells = previewCells;
 				cachedPreviewSource = EditorBlit.CopyRegionContents(
 					map,
 					editorActorLayer,
 					resourceLayer,
 					region,
-					selectionFilters);
+					selectionFilters,
+					mask);
 			}
 
 			return (cachedPreviewSource.Value, selectionFilters);
@@ -293,6 +305,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			cachedPreviewSource = null;
 			cachedPreviewRegion = null;
+			cachedPreviewCells = null;
 		}
 
 		void UpdateAreaPreview()
@@ -465,25 +478,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			InvalidateAreaPreview();
 			UpdateAreaPreview();
 
-			if (!editor.DefaultBrush.Selection.Area.HasValue)
+			var selection = editor.DefaultBrush.Selection;
+			if (!selection.Area.HasValue)
 				return;
 
-			var selectedRegion = editor.DefaultBrush.Selection.Area.Value;
+			var selectedRegion = selection.Area.Value;
 
 			if (editorResourceLayer == null)
 				return;
 
 			var selectionSize = selectedRegion.BottomRight - selectedRegion.TopLeft + new CPos(1, 1);
 			var diagonalLength = Math.Round(Math.Sqrt(Math.Pow(selectionSize.X, 2) + Math.Pow(selectionSize.Y, 2)), 3);
-			var resourceValueInRegion = editorResourceLayer.CalculateRegionValue(selectedRegion);
+			var resourceValueInRegion = CalculateSelectionResourceValue(selection);
+			var isSolidRectangle = selection.GetAreaMask() == null;
+			var dimensionsLabel = isSolidRectangle
+				? DimensionsAsString(selectionSize)
+				: $"{selection.EnumerateAreaCells().Count()} cells";
 
 			var areaSelectionLabel =
-				$"{FluentProvider.GetMessage(AreaSelection)} ({DimensionsAsString(selectionSize)}) " +
+				$"{FluentProvider.GetMessage(AreaSelection)} ({dimensionsLabel}) " +
 				$"{PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
 
 			AreaEditTitle.GetText = () => areaSelectionLabel;
 			DiagonalLabel.GetText = () => $"{diagonalLength}";
 			ResourceCounterLabel.GetText = () => $"${resourceValueInRegion:N0}";
+		}
+
+		int CalculateSelectionResourceValue(EditorSelection selection)
+		{
+			return editorResourceLayer.CalculateCellsValue(selection.EnumerateAreaCells());
+		}
+
+		static bool PreviewCellsMatch(HashSet<CPos> cached, HashSet<CPos> current)
+		{
+			if (cached == null && current == null)
+				return true;
+
+			if (cached == null || current == null || cached.Count != current.Count)
+				return false;
+
+			return cached.SetEquals(current);
 		}
 
 		static string PositionAsString(CPos cell) => $"{cell.X},{cell.Y}";

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
@@ -35,9 +36,53 @@ namespace OpenRA.Mods.Common.Widgets
 	public class EditorSelection
 	{
 		public CellCoordsRegion? Area;
+		public HashSet<CPos> AreaCells;
 		public EditorActorPreview Actor;
 
 		public bool HasSelection => Area.HasValue || Actor != null;
+
+		public IEnumerable<CPos> EnumerateAreaCells()
+		{
+			if (AreaCells != null)
+				return AreaCells;
+
+			if (Area.HasValue)
+				return Area.Value;
+
+			return Enumerable.Empty<CPos>();
+		}
+
+		public IReadOnlySet<CPos> GetAreaMask()
+		{
+			if (!Area.HasValue || AreaCells == null)
+				return null;
+
+			var region = Area.Value;
+			var expected = (region.BottomRight.X - region.TopLeft.X + 1) * (region.BottomRight.Y - region.TopLeft.Y + 1);
+			return AreaCells.Count == expected ? null : AreaCells;
+		}
+
+		public static EditorSelection FromRegion(CellCoordsRegion region, EditorSelection existing = null, bool add = false)
+		{
+			HashSet<CPos> cells;
+			if (add && existing?.AreaCells != null)
+			{
+				cells = new HashSet<CPos>(existing.AreaCells);
+				foreach (var cell in region)
+					cells.Add(cell);
+			}
+			else
+				cells = new HashSet<CPos>(region);
+
+			if (cells.Count == 0)
+				return new EditorSelection();
+
+			return new EditorSelection
+			{
+				Area = CellCoordsRegion.BoundingRegion(cells),
+				AreaCells = cells
+			};
+		}
 	}
 
 	public sealed class EditorDefaultBrush : IEditorBrush
@@ -69,6 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 		CellCoordsRegion? selectionBounds;
 		int2? selectionStartLocation;
 		CPos? selectionStartCell;
+		bool addToSelection;
 		int2 worldPixel;
 
 		bool draggingActor;
@@ -103,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void DeleteSelection(MapBlitFilters filters)
 		{
 			if (Selection.Area.HasValue)
-				editorActionManager.Add(new DeleteAreaAction(world.Map, filters, Selection.Area.Value, resourceLayer, actorLayer));
+				editorActionManager.Add(new DeleteAreaAction(world.Map, filters, Selection.Area.Value, Selection.GetAreaMask(), resourceLayer, actorLayer));
 		}
 
 		public void CloseAreaPanel()
@@ -157,6 +203,17 @@ namespace OpenRA.Mods.Common.Widgets
 			SelectionChanged?.Invoke();
 		}
 
+		bool PrefersAreaSelection(MouseInput mi)
+		{
+			if (mi.Button != MouseButton.Left)
+				return false;
+
+			if (!mi.Modifiers.HasModifier(Modifiers.Shift))
+				return false;
+
+			return AreaPanelOpen || Selection.Area.HasValue;
+		}
+
 		public bool HandleMouseInput(MouseInput mi)
 		{
 			// Exclusively uses mouse wheel and both mouse buttons, but nothing else.
@@ -181,7 +238,8 @@ namespace OpenRA.Mods.Common.Widgets
 			// Actor drag.
 			if (mi.Button == MouseButton.Left)
 			{
-				if (mi.Event == MouseInputEvent.Down && underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || underCursor == Selection.Actor))
+				if (mi.Event == MouseInputEvent.Down && underCursor != null && !PrefersAreaSelection(mi)
+					&& (mi.Modifiers.HasModifier(Modifiers.Shift) || underCursor == Selection.Actor))
 				{
 					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)));
 					dragPixelOffset = cellViewPx - mi.Location;
@@ -243,6 +301,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Start area drag.
 				selectionStartLocation = mi.Location;
+				addToSelection = mi.Modifiers.HasModifier(Modifiers.Shift) && Selection.Area.HasValue;
 			}
 
 			if (mi.Event == MouseInputEvent.Up)
@@ -252,22 +311,21 @@ namespace OpenRA.Mods.Common.Widgets
 					editorWidget.SetTooltip(null);
 					selectionStartLocation = null;
 					selectionStartCell = null;
+					var combineSelection = addToSelection;
+					addToSelection = false;
 
 					// If we've released a bounds drag.
 					if (selectionBounds != null)
 					{
 						// Set this as the editor selection.
 						previousSelection = Selection;
-						SetSelection(new EditorSelection
-						{
-							Area = selectionBounds
-						});
+						SetSelection(EditorSelection.FromRegion(selectionBounds.Value, Selection, combineSelection));
 
 						selectionBounds = null;
 						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
 						UpdateSelectedTab?.Invoke();
 					}
-					else if (underCursor != null)
+					else if (underCursor != null && !combineSelection)
 					{
 						// We've clicked on an actor.
 						if (Selection.Actor != underCursor)
@@ -287,10 +345,7 @@ namespace OpenRA.Mods.Common.Widgets
 						// Single click on a cell selects a 1x1 area (same as a minimal drag box).
 						var singleCell = new CellCoordsRegion(cell, cell);
 						previousSelection = Selection;
-						SetSelection(new EditorSelection
-						{
-							Area = singleCell
-						});
+						SetSelection(EditorSelection.FromRegion(singleCell, Selection, combineSelection));
 
 						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
 						UpdateSelectedTab?.Invoke();
@@ -339,6 +394,29 @@ namespace OpenRA.Mods.Common.Widgets
 			return a.TopLeft == b.TopLeft && a.BottomRight == b.BottomRight;
 		}
 
+		HashSet<CPos> GetSelectionDisplayCells()
+		{
+			if (selectionBounds.HasValue)
+			{
+				var cells = new HashSet<CPos>(selectionBounds.Value);
+				if (addToSelection && Selection.AreaCells != null)
+				{
+					foreach (var cell in Selection.AreaCells)
+						cells.Add(cell);
+				}
+
+				return cells;
+			}
+
+			if (Selection.AreaCells != null)
+				return new HashSet<CPos>(Selection.AreaCells);
+
+			if (Selection.Area.HasValue)
+				return new HashSet<CPos>(Selection.Area.Value);
+
+			return [];
+		}
+
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			var clipboard = editorWidget.HasClipboard ? editorWidget.Clipboard : null;
@@ -351,27 +429,28 @@ namespace OpenRA.Mods.Common.Widgets
 					yield return glow;
 			}
 
-			if (!CurrentDragBounds.HasValue)
+			var displayCells = GetSelectionDisplayCells();
+			if (displayCells.Count == 0)
 				yield break;
 
-			var selection = CurrentDragBounds.Value;
+			var selection = CurrentDragBounds ?? Selection.Area;
 
 			if (clipboard is EditorBlitSource pasteSource && copySource is CellCoordsRegion copyRegion &&
-				Selection.Area.HasValue && !RegionsMatch(selection, copyRegion))
+				Selection.Area.HasValue && selection.HasValue && !RegionsMatch(selection.Value, copyRegion))
 			{
-				var pasteOffset = selection.TopLeft - pasteSource.CellCoords.TopLeft;
+				var pasteOffset = selection.Value.TopLeft - pasteSource.CellCoords.TopLeft;
 				var pasteCells = EditorBlit.GetBlitSourceMask(pasteSource, pasteOffset);
 				foreach (var glow in GlowAnnotations(pasteCells, editorWidget.PasteColor))
 					yield return glow;
 			}
 
 			var selectionMatchesCopy = clipboard.HasValue && copySource is CellCoordsRegion copiedRegion &&
-				Selection.Area.HasValue && RegionsMatch(selection, copiedRegion);
+				Selection.Area.HasValue && selection.HasValue && RegionsMatch(selection.Value, copiedRegion);
 
 			if (!selectionMatchesCopy)
 			{
-				yield return new EditorSelectionAnnotationRenderable(selection, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
-				yield return new EditorSelectionAnnotationRenderable(selection, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
+				yield return new EditorSelectionAnnotationRenderable(displayCells, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
+				yield return new EditorSelectionAnnotationRenderable(displayCells, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
 			}
 		}
 
@@ -407,7 +486,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.previousSelection = new EditorSelection
 			{
 				Actor = previousSelection.Actor,
-				Area = previousSelection.Area
+				Area = previousSelection.Area,
+				AreaCells = previousSelection.AreaCells != null ? new HashSet<CPos>(previousSelection.AreaCells) : null
 			};
 
 			if (selection.Area.HasValue)
@@ -452,15 +532,18 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly CellCoordsRegion area;
 		readonly Map map;
 
-		public DeleteAreaAction(Map map, MapBlitFilters blitFilters, CellCoordsRegion area, IResourceLayer resourceLayer, EditorActorLayer editorActorLayer)
+		readonly IReadOnlySet<CPos> mask;
+
+		public DeleteAreaAction(Map map, MapBlitFilters blitFilters, CellCoordsRegion area, IReadOnlySet<CPos> mask, IResourceLayer resourceLayer, EditorActorLayer editorActorLayer)
 		{
 			this.map = map;
 			this.blitFilters = blitFilters;
 			this.resourceLayer = resourceLayer;
 			this.editorActorLayer = editorActorLayer;
 			this.area = area;
+			this.mask = mask;
 
-			editorBlitSource = EditorBlit.CopyRegionContents(map, editorActorLayer, resourceLayer, area, blitFilters);
+			editorBlitSource = EditorBlit.CopyRegionContents(map, editorActorLayer, resourceLayer, area, blitFilters, mask);
 
 			Text = FluentProvider.GetMessage(RemovedArea,
 				"x", area.TopLeft.X,
@@ -480,7 +563,12 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Clear any existing actors in the paste cells.
 				using (new PerfTimer("RemoveActors", 1))
-					editorActorLayer.RemoveRegion(area);
+				{
+					if (mask != null)
+						editorActorLayer.RemoveRegion(area, new HashSet<CPos>(mask));
+					else
+						editorActorLayer.RemoveRegion(area);
+				}
 			}
 
 			foreach (var tileKeyValuePair in editorBlitSource.Tiles)
