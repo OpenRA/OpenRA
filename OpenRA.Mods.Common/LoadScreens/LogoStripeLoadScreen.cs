@@ -39,6 +39,13 @@ namespace OpenRA.Mods.Common.LoadScreens
 			messages = FluentProvider.GetMessage(Loading).Split(',').Select(x => x.Trim()).ToArray();
 		}
 
+		protected override void InvalidateCachedSprites()
+		{
+			lastSheet = null;
+			logo = null;
+			stripe = null;
+		}
+
 		public override void DisplayInner(Renderer r, Sheet s, int density)
 		{
 			if (s != lastSheet || density != lastDensity)

@@ -110,11 +110,57 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
+			var saveButton = widget.GetOrNull<ButtonWidget>("SAVE_BUTTON");
+			if (saveButton == null && modData.Manifest.Id == "ra")
+			{
+				var backButton = widget.Get<ButtonWidget>("BACK_BUTTON");
+				backButton.Bounds = new WidgetBounds(
+					widget.Bounds.Width - 350,
+					backButton.Bounds.Y,
+					backButton.Bounds.Width,
+					backButton.Bounds.Height);
+				Ui.LoadWidget("SAVE_BUTTON", widget, []);
+				saveButton = widget.Get<ButtonWidget>("SAVE_BUTTON");
+			}
+
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				needsRestart |= leavePanelActions[activePanel]();
-				Game.Settings.Save();
+				if (saveButton == null)
+					Game.Settings.Save();
 
+				CloseOrConfirmRestart();
+			};
+
+			if (saveButton != null)
+			{
+				saveButton.OnClick = () =>
+				{
+					needsRestart |= leavePanelActions[activePanel]();
+					Game.Settings.Save();
+				};
+			}
+
+			widget.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>
+			{
+				void Reset()
+				{
+					resetPanelActions[activePanel]();
+					Game.Settings.Save();
+				}
+
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: ResetTitle,
+					text: ResetPrompt,
+					titleArguments: ["panel", panels[activePanel]],
+					onConfirm: Reset,
+					confirmText: ResetAccept,
+					onCancel: () => { },
+					cancelText: ResetCancel);
+			};
+
+			void CloseOrConfirmRestart()
+			{
 				void CloseAndExit() { Ui.CloseWindow(); onExit(); }
 				if (needsRestart)
 				{
@@ -140,25 +186,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				else
 					CloseAndExit();
-			};
-
-			widget.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>
-			{
-				void Reset()
-				{
-					resetPanelActions[activePanel]();
-					Game.Settings.Save();
-				}
-
-				ConfirmationDialogs.ButtonPrompt(modData,
-					title: ResetTitle,
-					text: ResetPrompt,
-					titleArguments: ["panel", panels[activePanel]],
-					onConfirm: Reset,
-					confirmText: ResetAccept,
-					onCancel: () => { },
-					cancelText: ResetCancel);
-			};
+			}
 		}
 
 		public void RegisterSettingsPanel(string panelID, string label, Func<Widget, Func<bool>> init, Func<Widget, Action> reset)

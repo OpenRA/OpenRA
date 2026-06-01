@@ -11,11 +11,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -23,7 +25,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	[IncludeStaticFluentReferences(
 		typeof(CopyPasteEditorAction),
+		typeof(ClearAndFillEditorAction),
 		typeof(FillSelectionWithActorEditorAction),
+		typeof(FillSelectionWithResourceEditorAction),
 		typeof(FillSelectionWithTileEditorAction))]
 	public class MapEditorSelectionLogic : ChromeLogic
 	{
@@ -39,6 +43,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string SelectedAreaPreview = "label-selected-area-preview";
 
+		const int SelectionPreviewBoxSize = 148;
+		const float SelectionPreviewImageScale = 0.8f;
+
 		readonly EditorViewportControllerWidget editor;
 		readonly Map map;
 
@@ -53,9 +60,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly TerrainTemplatePreviewWidget selectedTilePreview;
 		readonly ActorPreviewWidget selectedActorPreview;
+		readonly ResourcePreviewWidget selectedResourcePreview;
 		readonly EditorBlitPreviewWidget clipboardPreview;
 		readonly LabelWidget selectedPreviewLabel;
 		readonly Widget selectedPreviewPanel;
+		readonly Widget selectedAssetPreviewBox;
 		readonly WorldRenderer worldRenderer;
 		readonly List<Widget> multiPreviewWidgets = [];
 		MapBlitFilters selectionFilters = MapBlitFilters.All;
@@ -67,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		CPos? cachedPreviewTemplateAnchor;
 		TilePlacementPreviewDisplayMode cachedPreviewDisplayMode;
 		readonly TemplateBoundsOverlay templateBoundsOverlay;
+		readonly ActorBoundsOverlay actorBoundsOverlay;
 		TilePlacementPreviewDisplayMode placementPreviewDisplayMode = TilePlacementPreviewDisplayMode.Current;
 
 		[ObjectCreator.UseCtor]
@@ -80,6 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editorResourceLayer = world.WorldActor.TraitOrDefault<EditorResourceLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			templateBoundsOverlay = world.WorldActor.TraitOrDefault<TemplateBoundsOverlay>();
+			actorBoundsOverlay = world.WorldActor.TraitOrDefault<ActorBoundsOverlay>();
 
 			editor = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
@@ -89,8 +100,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
 			var areaEditPanel = selectTabContainer.Get("AREA_EDIT_PANEL");
 
-			actorEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Actor != null;
-			areaEditPanel.IsVisible = () => editor.DefaultBrush.AreaPanelOpen || editor.HasClipboard;
+			actorEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Actor != null
+				&& (actorBoundsOverlay == null || !actorBoundsOverlay.Enabled);
+			areaEditPanel.IsVisible = () => (editor.DefaultBrush.AreaPanelOpen || editor.HasClipboard)
+				&& editor.DefaultBrush.Selection.Actor == null;
 
 			var copyTerrainCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_TERRAIN_CHECKBOX");
 			var copyResourcesCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_RESOURCES_CHECKBOX");
@@ -124,13 +137,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			DiagonalLabel = areaEditPanel.Get<LabelWidget>("DIAGONAL_COUNTER_LABEL");
 			ResourceCounterLabel = areaEditPanel.Get<LabelWidget>("RESOURCES_COUNTER_LABEL");
 			selectedPreviewPanel = areaEditPanel.Get("SELECTION_PREVIEW_PANEL");
+			selectedAssetPreviewBox = selectedPreviewPanel.Get("SELECTION_ASSET_PREVIEW_BOX");
 			selectedPreviewLabel = selectedPreviewPanel.Get<LabelWidget>("SELECTION_PREVIEW_LABEL");
-			selectedTilePreview = selectedPreviewPanel.Get<TerrainTemplatePreviewWidget>("SELECTION_TILE_PREVIEW");
-			selectedActorPreview = selectedPreviewPanel.Get<ActorPreviewWidget>("SELECTION_ACTOR_PREVIEW");
-			clipboardPreview = selectedPreviewPanel.Get<EditorBlitPreviewWidget>("SELECTION_CLIPBOARD_PREVIEW");
+			selectedTilePreview = selectedAssetPreviewBox.Get<TerrainTemplatePreviewWidget>("SELECTION_TILE_PREVIEW");
+			selectedActorPreview = selectedAssetPreviewBox.Get<ActorPreviewWidget>("SELECTION_ACTOR_PREVIEW");
+			selectedResourcePreview = selectedAssetPreviewBox.Get<ResourcePreviewWidget>("SELECTION_RESOURCE_PREVIEW");
+			clipboardPreview = selectedAssetPreviewBox.Get<EditorBlitPreviewWidget>("SELECTION_CLIPBOARD_PREVIEW");
 			clipboardPreview.SetPreviewSource(GetAreaPreviewSource);
 			clipboardPreview.SetPlacementDisplay(GetTemplatePlacementDisplay);
-			clipboardPreview.IsVisible = () => editor.HasClipboard || ShowAreaPreview();
+			clipboardPreview.IsVisible = () => (editor.HasClipboard || ShowAreaPreview()) && !ShowActorOverlayPreview();
 
 			var tilePreviewCurrentButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_CURRENT_BUTTON");
 			var tilePreviewOriginalButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_ORIGINAL_BUTTON");
@@ -148,9 +163,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var mixModeLabel = selectedPreviewPanel.Get<LabelWidget>("MIX_MODE_LABEL");
 			var mixModeDropDown = selectedPreviewPanel.Get<DropDownButtonWidget>("MIX_MODE_DROPDOWN");
 			mixModeLabel.IsVisible = mixModeDropDown.IsVisible = () =>
-				editor.CurrentBrush is EditorTileBrush or EditorActorBrush && !ShowTilePlacementPreviewControls();
+				editor.CurrentBrush is EditorTileBrush or EditorActorBrush or EditorResourceBrush
+				&& !ShowTilePlacementPreviewControls() && !ShowActorOverlayPreview();
 			mixModeDropDown.GetText = () => MixModeText(editor.AssetMixMode);
 			mixModeDropDown.OnClick = () => ShowMixModeDropDown(mixModeDropDown);
+
+			var showFillControls = () => editor.CurrentBrush is EditorTileBrush or EditorActorBrush or EditorResourceBrush
+				&& !ShowTilePlacementPreviewControls() && !ShowActorOverlayPreview();
+
+			var fillSpaceLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_SPACE_LABEL");
+			var fillSpaceSlider = selectedPreviewPanel.Get<SliderWidget>("FILL_SPACE_SLIDER");
+			var fillSpaceValue = selectedPreviewPanel.Get<LabelWidget>("FILL_SPACE_VALUE");
+			fillSpaceLabel.IsVisible = fillSpaceSlider.IsVisible = fillSpaceValue.IsVisible = showFillControls;
+			fillSpaceSlider.MinimumValue = 10;
+			fillSpaceSlider.MaximumValue = 100;
+			fillSpaceSlider.Ticks = 10;
+			fillSpaceSlider.GetValue = () => editor.AssetFillDensity;
+			fillSpaceSlider.OnChange += value => editor.SetAssetFillDensity((int)value);
+			fillSpaceValue.GetText = () => $"{editor.AssetFillDensity.ToString(NumberFormatInfo.InvariantInfo)}%";
+
+			var fillModeOverlapLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_MODE_OVERLAP_LABEL");
+			var fillModeSlider = selectedPreviewPanel.Get<SliderWidget>("FILL_MODE_SLIDER");
+			var fillModeDeleteLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_MODE_DELETE_LABEL");
+			fillModeOverlapLabel.IsVisible = fillModeSlider.IsVisible = fillModeDeleteLabel.IsVisible = showFillControls;
+			fillModeSlider.MinimumValue = 0;
+			fillModeSlider.MaximumValue = 1;
+			fillModeSlider.Ticks = 2;
+			fillModeSlider.GetValue = () => editor.AssetFillMode == EditorFillMode.Delete ? 1 : 0;
+			fillModeSlider.OnChange += value => editor.SetAssetFillMode(value >= 0.5f ? EditorFillMode.Delete : EditorFillMode.Overlap);
 
 			var deleteAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_DELETE_BUTTON");
 			deleteAreaSelectionButton.OnClick = () =>
@@ -168,26 +208,52 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				if (editor.CurrentBrush is EditorTileBrush tileBrush)
-					editorActionManager.Add(new FillSelectionWithTileEditorAction(
+					AddFillAction(new FillSelectionWithTileEditorAction(
 						tileBrush.Templates,
 						editor.AssetMixMode,
+						GetFillDensityPercent(),
 						map,
 						selection.Area.Value,
 						selection.GetAreaMask()));
 				else if (editor.CurrentBrush is EditorActorBrush actorBrush)
-					editorActionManager.Add(new FillSelectionWithActorEditorAction(
+					AddFillAction(new FillSelectionWithActorEditorAction(
 						editorActorLayer,
 						actorBrush.ActorReferences,
 						editor.AssetMixMode,
+						GetFillDensityPercent(),
 						map,
+						selection.Area.Value,
+						selection.GetAreaMask()));
+				else if (editor.CurrentBrush is EditorResourceBrush resourceBrush && resourceLayer != null)
+					AddFillAction(new FillSelectionWithResourceEditorAction(
+						resourceLayer,
+						resourceBrush.ResourceType,
+						editor.AssetMixMode,
+						GetFillDensityPercent(),
 						selection.Area.Value,
 						selection.GetAreaMask()));
 			};
 
-			fillAreaSelectionButton.IsDisabled = () => editor.CurrentBrush is not EditorTileBrush && editor.CurrentBrush is not EditorActorBrush;
+			fillAreaSelectionButton.IsDisabled = () => editor.CurrentBrush is not EditorTileBrush
+				&& editor.CurrentBrush is not EditorActorBrush
+				&& (editor.CurrentBrush is not EditorResourceBrush || resourceLayer == null);
 
 			var closeAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_CANCEL_BUTTON");
 			closeAreaSelectionButton.OnClick = () => editor.DefaultBrush.CloseAreaPanel();
+
+			var closeAreaPanelButton = areaEditPanel.GetOrNull<ButtonWidget>("SELECTION_CLOSE_BUTTON");
+			if (closeAreaPanelButton != null)
+				closeAreaPanelButton.OnClick = () => editor.DefaultBrush.HideAreaPanel();
+
+			var findInBrowserButton = areaEditPanel.GetOrNull<ButtonWidget>("SELECTION_FIND_BUTTON");
+			if (findInBrowserButton != null)
+			{
+				findInBrowserButton.IsVisible = () =>
+					(templateBoundsOverlay != null && templateBoundsOverlay.Enabled)
+					|| (actorBoundsOverlay != null && actorBoundsOverlay.Enabled);
+				findInBrowserButton.OnClick = FindSelectionInAssetBrowser;
+				findInBrowserButton.IsDisabled = () => !CanFindSelectionInAssetBrowser();
+			}
 
 			CreateCategoryPanel(MapBlitFilters.Terrain, copyTerrainCheckbox);
 			CreateCategoryPanel(MapBlitFilters.Resources, copyResourcesCheckbox);
@@ -288,7 +354,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool ShowAreaPreview()
 		{
 			return editor.DefaultBrush.Selection.Area.HasValue
-				&& editor.CurrentBrush is not EditorTileBrush and not EditorActorBrush;
+				&& editor.CurrentBrush is not EditorTileBrush and not EditorActorBrush and not EditorResourceBrush;
 		}
 
 		(EditorBlitSource Source, MapBlitFilters Filters)? GetAreaPreviewSource()
@@ -336,6 +402,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				&& editor.DefaultBrush.Selection.HasTemplatePlacementContext;
 		}
 
+		bool ShowActorOverlayPreview()
+		{
+			return actorBoundsOverlay != null && actorBoundsOverlay.Enabled
+				&& editor.DefaultBrush.Selection.Actor != null
+				&& editor.DefaultBrush.AreaPanelOpen;
+		}
+
 		void SetPlacementPreviewDisplayMode(TilePlacementPreviewDisplayMode mode)
 		{
 			if (placementPreviewDisplayMode == mode)
@@ -372,6 +445,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void UpdateAreaPreview()
 		{
 			selectedPreviewLabel.GetText = () => FluentProvider.GetMessage(SelectedAreaPreview);
+			LayoutClipboardPreview();
 
 			if (editor.HasClipboard || ShowAreaPreview())
 				clipboardPreview.PrepareRenderables();
@@ -380,6 +454,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void UpdateSelectedPreview()
 		{
 			ClearMultiPreview();
+			LayoutClipboardPreview();
 			if (editor.CurrentBrush is EditorTileBrush tileBrush)
 			{
 				if (tileBrush.Templates.Length > 1)
@@ -395,6 +470,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				selectedActorPreview.IsVisible = () => false;
+				selectedResourcePreview.IsVisible = () => false;
 			}
 			else if (editor.CurrentBrush is EditorActorBrush actorBrush)
 			{
@@ -411,11 +487,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				selectedTilePreview.IsVisible = () => false;
+				selectedResourcePreview.IsVisible = () => false;
+			}
+			else if (editor.CurrentBrush is EditorResourceBrush resourceBrush)
+			{
+				selectedResourcePreview.SetResourceType(resourceBrush.ResourceType);
+				ScaleResourcePreview();
+				selectedResourcePreview.IsVisible = () => true;
+				selectedTilePreview.IsVisible = () => false;
+				selectedActorPreview.IsVisible = () => false;
+			}
+			else if (ShowActorOverlayPreview())
+			{
+				selectedActorPreview.SetPreview(editor.DefaultBrush.Selection.Actor.Export());
+				ScaleActorPreview();
+				selectedActorPreview.IsVisible = () => ShowActorOverlayPreview();
+				selectedTilePreview.IsVisible = () => false;
+				selectedResourcePreview.IsVisible = () => false;
 			}
 			else
 			{
 				selectedTilePreview.IsVisible = () => false;
 				selectedActorPreview.IsVisible = () => false;
+				selectedResourcePreview.IsVisible = () => false;
 			}
 		}
 
@@ -441,10 +535,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return FluentProvider.GetMessage(mode == EditorAssetMixMode.Random ? MixModeRandom : MixModeSequential);
 		}
 
+		void AddFillAction(IEditorAction fillAction)
+		{
+			if (editor.AssetFillMode == EditorFillMode.Delete)
+			{
+				var selection = editor.DefaultBrush.Selection;
+				editorActionManager.Add(new ClearAndFillEditorAction(
+					new DeleteAreaAction(
+						map,
+						MapBlitFilters.All,
+						selection.Area.Value,
+						selection.GetAreaMask(),
+						resourceLayer,
+						editorActorLayer),
+					fillAction));
+			}
+			else
+				editorActionManager.Add(fillAction);
+		}
+
+		bool HasMultiAssetSelection()
+		{
+			return editor.CurrentBrush is EditorTileBrush { Templates.Length: > 1 }
+				|| editor.CurrentBrush is EditorActorBrush { Actors.Length: > 1 };
+		}
+
+		int GetFillDensityPercent()
+		{
+			return editor.AssetFillDensity;
+		}
+
 		void ClearMultiPreview()
 		{
 			foreach (var preview in multiPreviewWidgets)
-				selectedPreviewPanel.RemoveChild(preview);
+				selectedAssetPreviewBox.RemoveChild(preview);
 
 			multiPreviewWidgets.Clear();
 		}
@@ -459,11 +583,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var preview = selectedTilePreview.Clone();
 				preview.SetTemplate(previews[i]);
-				PlaceMultiPreview(preview, i, previews.Length, bounds);
-				preview.Scale = PreviewScale(preview.IdealPreviewSize, preview.Bounds.Width, preview.Bounds.Height);
+				preview.Scale = LayoutPreviewInGridCell(preview, preview.IdealPreviewSize, MultiPreviewCell(i, previews.Length, bounds));
 				preview.IsVisible = () => true;
 				multiPreviewWidgets.Add(preview);
-				selectedPreviewPanel.AddChild(preview);
+				selectedAssetPreviewBox.AddChild(preview);
 			}
 		}
 
@@ -476,32 +599,64 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var preview = selectedActorPreview.Clone();
 				preview.SetPreview(previews[i]);
-				PlaceMultiPreview(preview, i, previews.Length, bounds);
-				preview.Scale = PreviewScale(preview.IdealPreviewSize, preview.Bounds.Width, preview.Bounds.Height);
+				preview.Scale = LayoutPreviewInGridCell(preview, preview.IdealPreviewSize, MultiPreviewCell(i, previews.Length, bounds));
+				preview.PrepareRenderables();
 				preview.IsVisible = () => true;
 				multiPreviewWidgets.Add(preview);
-				selectedPreviewPanel.AddChild(preview);
+				selectedAssetPreviewBox.AddChild(preview);
 			}
+		}
+
+		Rectangle AssetPreviewContentBounds()
+		{
+			var inset = (int)Math.Round(SelectionPreviewBoxSize * (1 - SelectionPreviewImageScale) / 2);
+			var contentSize = SelectionPreviewBoxSize - 2 * inset;
+			return new Rectangle(inset, inset, contentSize, contentSize);
 		}
 
 		Rectangle MultiPreviewBounds()
 		{
-			const int PreviewSize = 130;
-			var x = (selectedPreviewPanel.Bounds.Width - PreviewSize) / 2;
-			return new Rectangle(x, 55, PreviewSize, PreviewSize);
+			return AssetPreviewContentBounds();
 		}
 
-		static void PlaceMultiPreview(Widget preview, int index, int count, Rectangle bounds)
+		void LayoutClipboardPreview()
 		{
-			var columns = Math.Min(3, Math.Max(1, count));
+			var bounds = AssetPreviewContentBounds();
+			clipboardPreview.Bounds.X = bounds.X;
+			clipboardPreview.Bounds.Y = bounds.Y;
+			clipboardPreview.Bounds.Width = bounds.Width;
+			clipboardPreview.Bounds.Height = bounds.Height;
+		}
+
+		static int MultiPreviewColumns(int count)
+		{
+			return Math.Max(1, (int)Math.Ceiling(Math.Sqrt(count)));
+		}
+
+		static Rectangle MultiPreviewCell(int index, int count, Rectangle bounds)
+		{
+			var columns = MultiPreviewColumns(count);
 			var rows = (count + columns - 1) / columns;
 			var width = bounds.Width / columns;
 			var height = bounds.Height / rows;
 
-			preview.Bounds.X = bounds.X + index % columns * width;
-			preview.Bounds.Y = bounds.Y + index / columns * height;
+			return new Rectangle(
+				bounds.X + index % columns * width,
+				bounds.Y + index / columns * height,
+				width,
+				height);
+		}
+
+		static float LayoutPreviewInGridCell(Widget preview, int2 idealSize, Rectangle cell)
+		{
+			var scale = PreviewScale(idealSize, cell.Width, cell.Height);
+			var width = Math.Max(1, (int)(scale * idealSize.X));
+			var height = Math.Max(1, (int)(scale * idealSize.Y));
+			preview.Bounds.X = cell.X + (cell.Width - width) / 2;
+			preview.Bounds.Y = cell.Y + (cell.Height - height) / 2;
 			preview.Bounds.Width = width;
 			preview.Bounds.Height = height;
+			return scale;
 		}
 
 		void ScaleTerrainPreview()
@@ -520,10 +675,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bounds = MultiPreviewBounds();
 			var scale = PreviewScale(selectedActorPreview.IdealPreviewSize, bounds.Width, bounds.Height);
 			selectedActorPreview.Scale = scale;
-			selectedActorPreview.Bounds.X = bounds.X;
-			selectedActorPreview.Bounds.Y = bounds.Y;
-			selectedActorPreview.Bounds.Width = bounds.Width;
-			selectedActorPreview.Bounds.Height = bounds.Height;
+			selectedActorPreview.Bounds.Width = (int)(scale * selectedActorPreview.IdealPreviewSize.X);
+			selectedActorPreview.Bounds.Height = (int)(scale * selectedActorPreview.IdealPreviewSize.Y);
+			selectedActorPreview.Bounds.X = bounds.X + (bounds.Width - selectedActorPreview.Bounds.Width) / 2;
+			selectedActorPreview.Bounds.Y = bounds.Y + (bounds.Height - selectedActorPreview.Bounds.Height) / 2;
+		}
+
+		void ScaleResourcePreview()
+		{
+			var bounds = MultiPreviewBounds();
+			var idealSize = new int2(selectedResourcePreview.IdealPreviewSize.Width, selectedResourcePreview.IdealPreviewSize.Height);
+			var scale = PreviewScale(idealSize, bounds.Width, bounds.Height);
+			selectedResourcePreview.Scale = scale;
+			selectedResourcePreview.Bounds.Width = (int)(scale * selectedResourcePreview.IdealPreviewSize.Width);
+			selectedResourcePreview.Bounds.Height = (int)(scale * selectedResourcePreview.IdealPreviewSize.Height);
+			selectedResourcePreview.Bounds.X = bounds.X + (bounds.Width - selectedResourcePreview.Bounds.Width) / 2;
+			selectedResourcePreview.Bounds.Y = bounds.Y + (bounds.Height - selectedResourcePreview.Bounds.Height) / 2;
 		}
 
 		static float PreviewScale(int2 idealSize, int maxWidth, int maxHeight)
@@ -539,6 +706,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			placementPreviewDisplayMode = TilePlacementPreviewDisplayMode.Current;
 			InvalidateAreaPreview();
 			UpdateAreaPreview();
+			UpdateSelectedPreview();
 
 			var selection = editor.DefaultBrush.Selection;
 			if (!selection.Area.HasValue)
@@ -584,5 +752,99 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static string PositionAsString(CPos cell) => $"{cell.X},{cell.Y}";
 		static string DimensionsAsString(CPos cell) => $"{cell.X}x{cell.Y}";
+
+		bool CanFindSelectionInAssetBrowser()
+		{
+			return TryCreateLocateRequest(out _);
+		}
+
+		void FindSelectionInAssetBrowser()
+		{
+			if (!TryCreateLocateRequest(out var request))
+				return;
+
+			editor.RequestLocateAsset(request);
+		}
+
+		bool TryCreateLocateRequest(out EditorLocateAssetRequest request)
+		{
+			request = default;
+			var selection = editor.DefaultBrush.Selection;
+
+			if (selection.TemplatePlacementType is ushort templateId)
+			{
+				request = EditorLocateAssetRequest.ForTile(templateId);
+				return true;
+			}
+
+			if (selection.Actor != null)
+			{
+				request = EditorLocateAssetRequest.ForActor(selection.Actor.Info);
+				return true;
+			}
+
+			if (!selection.Area.HasValue)
+				return false;
+
+			if (selectionFilters.HasFlag(MapBlitFilters.Actors))
+			{
+				var actors = editorActorLayer.PreviewsInCellRegion(selection.Area.Value)
+					.Select(p => p.Info)
+					.Distinct()
+					.ToArray();
+
+				if (actors.Length == 1)
+				{
+					request = EditorLocateAssetRequest.ForActor(actors[0]);
+					return true;
+				}
+			}
+
+			if (selectionFilters.HasFlag(MapBlitFilters.Terrain))
+			{
+				var dominantTemplate = GetDominantTemplateInSelection(selection);
+				if (dominantTemplate.HasValue)
+				{
+					request = EditorLocateAssetRequest.ForTile(dominantTemplate.Value);
+					return true;
+				}
+			}
+
+			if (selectionFilters.HasFlag(MapBlitFilters.Resources) && resourceLayer != null)
+			{
+				var resourceTypes = selection.EnumerateAreaCells()
+					.Select(c => resourceLayer.GetResource(c).Type)
+					.Where(t => !string.IsNullOrEmpty(t))
+					.Distinct()
+					.ToArray();
+
+				if (resourceTypes.Length == 1)
+				{
+					request = EditorLocateAssetRequest.ForResource(resourceTypes[0]);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		ushort? GetDominantTemplateInSelection(EditorSelection selection)
+		{
+			var counts = new Dictionary<ushort, int>();
+			foreach (var cell in selection.EnumerateAreaCells())
+			{
+				if (!map.Contains(cell))
+					continue;
+
+				var type = map.Tiles[cell].Type;
+				counts.TryGetValue(type, out var count);
+				counts[type] = count + 1;
+			}
+
+			if (counts.Count == 0)
+				return null;
+
+			return counts.MaxBy(kvp => kvp.Value).Key;
+		}
 	}
 }

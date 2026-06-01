@@ -249,6 +249,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorActorLayer editorLayer;
 		readonly ActorReference[] actors;
 		readonly EditorAssetMixMode mixMode;
+		readonly int fillDensityPercent;
 		readonly Map map;
 		readonly CellCoordsRegion area;
 		readonly IReadOnlySet<CPos> mask;
@@ -257,12 +258,13 @@ namespace OpenRA.Mods.Common.Widgets
 		int nextActor;
 
 		public FillSelectionWithActorEditorAction(EditorActorLayer editorLayer, ActorReference actor, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
-			: this(editorLayer, [actor], EditorAssetMixMode.Random, map, area, mask) { }
+			: this(editorLayer, [actor], EditorAssetMixMode.Random, 100, map, area, mask) { }
 
 		public FillSelectionWithActorEditorAction(
 			EditorActorLayer editorLayer,
 			IEnumerable<ActorReference> actors,
 			EditorAssetMixMode mixMode,
+			int fillDensityPercent,
 			Map map,
 			CellCoordsRegion area,
 			IReadOnlySet<CPos> mask = null)
@@ -270,6 +272,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorLayer = editorLayer;
 			this.actors = actors.Select(a => a.Clone()).ToArray();
 			this.mixMode = mixMode;
+			this.fillDensityPercent = fillDensityPercent.Clamp(10, 100);
 			this.map = map;
 			this.area = area;
 			this.mask = mask;
@@ -284,17 +287,10 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var actors = new List<ActorReference>();
 			var firstActorInfo = map.Rules.Actors[this.actors[0].Type.ToLowerInvariant()];
+			var cells = mask != null ? mask.ToList() : area.ToList();
 
-			if (mask != null)
-			{
-				foreach (var cell in mask)
-					PlaceActorAt(cell, actors);
-			}
-			else
-			{
-				foreach (var cell in area)
-					PlaceActorAt(cell, actors);
-			}
+			foreach (var cell in EditorFillSelection.SelectCells(cells, fillDensityPercent))
+				PlaceActorAt(cell, actors);
 
 			foreach (var actorAtCell in actors)
 				editorActorPreviews.Add(editorLayer.Add(actorAtCell));

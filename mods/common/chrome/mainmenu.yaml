@@ -156,19 +156,19 @@ Container@MAINMENU:
 							Height: 30
 							Text: label-music-title
 							Font: Bold
-						Button@MAP_EDITOR_BUTTON:
+						Button@ASSETBROWSER_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 140
 							Width: 140
 							Height: 30
-							Text: label-map-editor-title
+							Text: button-extras-menu-assetbrowser
 							Font: Bold
-						Button@ASSETBROWSER_BUTTON:
+						Button@MAP_EDITOR_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Y: 180
 							Width: 140
 							Height: 30
-							Text: button-extras-menu-assetbrowser
+							Text: label-map-editor-title
 							Font: Bold
 						Button@CREDITS_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2

@@ -1,0 +1,7 @@
+Button@SAVE_BUTTON:
+	X: PARENT_WIDTH - 180
+	Y: PARENT_HEIGHT - 45
+	Width: 160
+	Height: 25
+	Text: button-settings-save
+	Font: Bold

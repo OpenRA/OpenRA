@@ -55,5 +55,12 @@ button-production-types-vehicle-tooltip = Vehicles
 button-production-types-aircraft-tooltip = Aircraft
 button-production-types-naval-tooltip = Naval
 
+## settings-display.yaml (local dev UI theme)
+label-dev-ui-theme-section-header = UI Theme
+label-dev-ui-theme-color = Menu chrome accent color
+button-dev-ui-theme-default = Default
+
+button-settings-save = Save
+
 ## ingame-debug.yaml
 button-debug-panel-power-outage = Power Outage

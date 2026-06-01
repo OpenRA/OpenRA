@@ -207,6 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(graphicSettings.ViewportDistance);
 
 			BindTextNotificationPoolFilterSettings(panel, gameSettings);
+			DevUiThemeSettings.Bind(panel, graphicSettings);
 
 			// Update vsync immediately
 			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
@@ -311,6 +312,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				gameSettings.TextNotificationPoolFilters = defaultGameSettings.TextNotificationPoolFilters;
+				DevUiThemeSettings.Reset(graphicSettings);
 			};
 		}
 

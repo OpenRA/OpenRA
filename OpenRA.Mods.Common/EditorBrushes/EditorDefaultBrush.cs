@@ -66,17 +66,23 @@ namespace OpenRA.Mods.Common.Widgets
 			return AreaCells.Count == expected ? null : AreaCells;
 		}
 
-		public static EditorSelection FromRegion(CellCoordsRegion region, EditorSelection existing = null, bool add = false)
+		public static EditorSelection FromRegion(CellCoordsRegion region, EditorSelection existing = null, bool add = false, bool subtract = false)
 		{
-			return FromCells(region, existing, add);
+			return FromCells(region, existing, add, subtract);
 		}
 
-		public static EditorSelection FromCells(IEnumerable<CPos> cells, EditorSelection existing = null, bool add = false)
+		public static EditorSelection FromCells(IEnumerable<CPos> cells, EditorSelection existing = null, bool add = false, bool subtract = false)
 		{
 			HashSet<CPos> cellSet;
-			if (add && existing?.AreaCells != null)
+			if (subtract && existing?.Area.HasValue == true)
 			{
-				cellSet = new HashSet<CPos>(existing.AreaCells);
+				cellSet = new HashSet<CPos>(existing.EnumerateAreaCells());
+				foreach (var cell in cells)
+					cellSet.Remove(cell);
+			}
+			else if (add && existing?.Area.HasValue == true)
+			{
+				cellSet = new HashSet<CPos>(existing.EnumerateAreaCells());
 				foreach (var cell in cells)
 					cellSet.Add(cell);
 			}
@@ -110,6 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly IResourceLayer resourceLayer;
 		readonly EditorActorLayer actorLayer;
 		readonly TemplateBoundsOverlay templateBoundsOverlay;
+		readonly ActorBoundsOverlay actorBoundsOverlay;
 
 		public CellCoordsRegion? CurrentDragBounds => selectionBounds ?? Selection.Area;
 
@@ -125,6 +132,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int2? selectionStartLocation;
 		CPos? selectionStartCell;
 		bool addToSelection;
+		bool subtractFromSelection;
 		int2 worldPixel;
 
 		bool draggingActor;
@@ -143,6 +151,7 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
 			actorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			templateBoundsOverlay = world.WorldActor.TraitOrDefault<TemplateBoundsOverlay>();
+			actorBoundsOverlay = world.WorldActor.TraitOrDefault<ActorBoundsOverlay>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -167,6 +176,24 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			AreaPanelOpen = false;
 			ClearSelection(updateSelectedTab: true);
+		}
+
+		public void HideAreaPanel()
+		{
+			if (!AreaPanelOpen)
+				return;
+
+			AreaPanelOpen = false;
+			UpdateSelectedTab?.Invoke();
+		}
+
+		public void ShowAreaPanel()
+		{
+			if (AreaPanelOpen)
+				return;
+
+			AreaPanelOpen = true;
+			UpdateSelectedTab?.Invoke();
 		}
 
 		public void DismissAreaOverlay()
@@ -209,7 +236,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (selection.Area.HasValue)
 				AreaPanelOpen = true;
 			else if (selection.Actor != null)
-				AreaPanelOpen = false;
+				AreaPanelOpen = actorBoundsOverlay != null && actorBoundsOverlay.Enabled;
 
 			SelectionChanged?.Invoke();
 		}
@@ -219,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Button != MouseButton.Left)
 				return false;
 
-			if (!mi.Modifiers.HasModifier(Modifiers.Shift))
+			if (!mi.Modifiers.HasModifier(Modifiers.Shift) && !mi.Modifiers.HasModifier(Modifiers.Alt))
 				return false;
 
 			return AreaPanelOpen || Selection.Area.HasValue;
@@ -312,7 +339,8 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Start area drag.
 				selectionStartLocation = mi.Location;
-				addToSelection = mi.Modifiers.HasModifier(Modifiers.Shift) && Selection.Area.HasValue;
+				subtractFromSelection = mi.Modifiers.HasModifier(Modifiers.Alt) && Selection.Area.HasValue;
+				addToSelection = !subtractFromSelection && mi.Modifiers.HasModifier(Modifiers.Shift) && Selection.Area.HasValue;
 			}
 
 			if (mi.Event == MouseInputEvent.Up)
@@ -323,20 +351,22 @@ namespace OpenRA.Mods.Common.Widgets
 					selectionStartLocation = null;
 					selectionStartCell = null;
 					var combineSelection = addToSelection;
+					var removeSelection = subtractFromSelection;
 					addToSelection = false;
+					subtractFromSelection = false;
 
 					// If we've released a bounds drag.
 					if (selectionBounds != null)
 					{
 						// Set this as the editor selection.
 						previousSelection = Selection;
-						SetSelection(EditorSelection.FromRegion(selectionBounds.Value, Selection, combineSelection));
+						SetSelection(EditorSelection.FromRegion(selectionBounds.Value, Selection, combineSelection, removeSelection));
 
 						selectionBounds = null;
 						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
 						UpdateSelectedTab?.Invoke();
 					}
-					else if (underCursor != null && !combineSelection)
+					else if (underCursor != null && !combineSelection && !removeSelection)
 					{
 						// We've clicked on an actor.
 						if (Selection.Actor != underCursor)
@@ -354,7 +384,7 @@ namespace OpenRA.Mods.Common.Widgets
 					else
 					{
 						previousSelection = Selection;
-						var selection = CreateCellClickSelection(cell, combineSelection);
+						var selection = CreateCellClickSelection(cell, combineSelection, removeSelection);
 						SetSelection(selection);
 
 						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
@@ -382,7 +412,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		EditorSelection CreateCellClickSelection(CPos cell, bool combineSelection)
+		EditorSelection CreateCellClickSelection(CPos cell, bool combineSelection, bool removeSelection)
 		{
 			if (templateBoundsOverlay != null && templateBoundsOverlay.Enabled
 				&& world.Map.Rules.TerrainInfo is ITemplatedTerrainInfo terrainInfo
@@ -390,7 +420,7 @@ namespace OpenRA.Mods.Common.Widgets
 					world.Map, terrainInfo, cell,
 					out var templateType, out var anchor, out var matchingCells, out _))
 			{
-				var selection = EditorSelection.FromCells(matchingCells, Selection, combineSelection);
+				var selection = EditorSelection.FromCells(matchingCells, Selection, combineSelection, removeSelection);
 				if (terrainInfo.Templates.TryGetValue(templateType, out var template)
 					&& !template.PickAny && (template.Size.X != 1 || template.Size.Y != 1))
 				{
@@ -401,7 +431,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return selection;
 			}
 
-			var fallback = EditorSelection.FromRegion(new CellCoordsRegion(cell, cell), Selection, combineSelection);
+			var fallback = EditorSelection.FromRegion(new CellCoordsRegion(cell, cell), Selection, combineSelection, removeSelection);
 			fallback.TemplatePlacementType = null;
 			fallback.TemplatePlacementAnchor = null;
 			return fallback;
@@ -433,14 +463,22 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (selectionBounds.HasValue)
 			{
-				var cells = new HashSet<CPos>(selectionBounds.Value);
-				if (addToSelection && Selection.AreaCells != null)
+				if (subtractFromSelection && Selection.Area.HasValue)
 				{
-					foreach (var cell in Selection.AreaCells)
-						cells.Add(cell);
+					var cells = new HashSet<CPos>(Selection.EnumerateAreaCells());
+					foreach (var cell in selectionBounds.Value)
+						cells.Remove(cell);
+					return cells;
 				}
 
-				return cells;
+				var dragCells = new HashSet<CPos>(selectionBounds.Value);
+				if (addToSelection && Selection.Area.HasValue)
+				{
+					foreach (var cell in Selection.EnumerateAreaCells())
+						dragCells.Add(cell);
+				}
+
+				return dragCells;
 			}
 
 			if (Selection.AreaCells != null)
@@ -669,6 +707,37 @@ namespace OpenRA.Mods.Common.Widgets
 
 				editorActorLayer.AddRange(CollectionsMarshal.AsSpan(copies));
 			}
+		}
+	}
+
+	sealed class ClearAndFillEditorAction : IEditorAction
+	{
+		public string Text => fillAction.Text;
+
+		readonly DeleteAreaAction deleteAction;
+		readonly IEditorAction fillAction;
+
+		public ClearAndFillEditorAction(DeleteAreaAction deleteAction, IEditorAction fillAction)
+		{
+			this.deleteAction = deleteAction;
+			this.fillAction = fillAction;
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			deleteAction.Do();
+			fillAction.Do();
+		}
+
+		public void Undo()
+		{
+			fillAction.Undo();
+			deleteAction.Undo();
 		}
 	}
 

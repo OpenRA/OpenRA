@@ -86,12 +86,27 @@ EditorToggleBuildableOverlay: F2
 	Types: Editor
 	Contexts: editor
 
-EditorToggleMarkerOverlay: F3
+EditorToggleWalkableOverlay: F3
+	Description: hotkey-description-editortogglewalkableoverlay
+	Types: Editor
+	Contexts: editor
+
+EditorToggleShipTravelOverlay: F4
+	Description: hotkey-description-editortoggleshiptraveloverlay
+	Types: Editor
+	Contexts: editor
+
+EditorToggleMarkerOverlay: F5
 	Description: hotkey-description-editortogglemarkeroverlay
 	Types: Editor
 	Contexts: editor
 
-EditorToggleTilesOverlay: F4
+EditorToggleTilesOverlay: F6
 	Description: hotkey-description-editortoggletilesoverlay
+	Types: Editor
+	Contexts: editor
+
+EditorToggleActorsOverlay: F7
+	Description: hotkey-description-editortoggleactorsoverlay
 	Types: Editor
 	Contexts: editor

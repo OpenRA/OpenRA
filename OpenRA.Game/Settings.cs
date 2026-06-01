@@ -16,6 +16,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -250,6 +251,9 @@ namespace OpenRA
 		public bool CursorDouble = false;
 		public WorldViewport ViewportDistance = WorldViewport.Medium;
 		public float UIScale = 1;
+
+		[Desc("Local dev: UI chrome accent color (Default restores original RA red theme).")]
+		public Color DevUiThemeColor = DevUiTheme.DefaultPurple;
 
 		[Desc("Add a frame rate limiter.")]
 		public bool CapFramerate = false;

@@ -1,0 +1,59 @@
+Background@DEV_UI_THEME_SECTION_HEADER:
+	X: 5
+	Width: PARENT_WIDTH - 24 - 10
+	Height: 13
+	Background: separator
+	ClickThrough: True
+	Children:
+		Label@LABEL:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Font: TinyBold
+			Align: Center
+			Text: label-dev-ui-theme-section-header
+Container@DEV_UI_THEME_ROW:
+	Width: PARENT_WIDTH - 24
+	Height: 130
+	Children:
+		Label@DEV_UI_THEME_LABEL:
+			X: 10
+			Width: PARENT_WIDTH - 20
+			Height: 20
+			Text: label-dev-ui-theme-color
+		Background@DEV_UI_THEME_HUEBG:
+			X: 10
+			Y: 25
+			Width: PARENT_WIDTH - 20
+			Height: 17
+			Background: dialog3
+			Children:
+				HueSlider@DEV_UI_THEME_HUE_SLIDER:
+					X: 2
+					Y: 2
+					Width: PARENT_WIDTH - 4
+					Height: PARENT_HEIGHT - 4
+					Ticks: 5
+		Background@DEV_UI_THEME_MIXERBG:
+			X: 10
+			Y: 47
+			Width: PARENT_WIDTH - 160
+			Height: 78
+			Background: dialog3
+			Children:
+				ColorMixer@DEV_UI_THEME_MIXER:
+					X: 2
+					Y: 2
+					Width: PARENT_WIDTH - 4
+					Height: PARENT_HEIGHT - 4
+		ColorBlock@DEV_UI_THEME_PREVIEW:
+			X: PARENT_WIDTH - 145
+			Y: 47
+			Width: 40
+			Height: 40
+		Button@DEV_UI_THEME_DEFAULT_BUTTON:
+			X: PARENT_WIDTH - 145
+			Y: 92
+			Width: 135
+			Height: 25
+			Text: button-dev-ui-theme-default
+			Font: Bold

@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[ChromeLogicArgsHotkeys("ToggleGridOverlayKey", "ToggleBuildableOverlayKey", "ToggleMarkerOverlayKey", "ToggleTilesOverlayKey")]
+	[ChromeLogicArgsHotkeys("ToggleGridOverlayKey", "ToggleBuildableOverlayKey", "ToggleWalkableOverlayKey", "ToggleShipTravelOverlayKey", "ToggleMarkerOverlayKey", "ToggleTilesOverlayKey", "ToggleActorsOverlayKey")]
 	public class MapOverlaysLogic : ChromeLogic
 	{
 		[Flags]
@@ -27,77 +27,60 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			None = 0,
 			Grid = 1,
 			Buildable = 2,
-			Marker = 4,
-			Tiles = 8,
+			Walkable = 4,
+			ShipTravel = 8,
+			Marker = 16,
+			Tiles = 32,
+			Actors = 64,
 		}
 
 		readonly TerrainGeometryOverlay terrainGeometryTrait;
 		readonly BuildableTerrainOverlay buildableTerrainTrait;
+		readonly WalkableTerrainOverlay walkableTerrainTrait;
+		readonly ShipTravelTerrainOverlay shipTravelTerrainTrait;
 		readonly MarkerLayerOverlay markerLayerTrait;
 		readonly TemplateBoundsOverlay templateBoundsTrait;
+		readonly ActorBoundsOverlay actorBoundsTrait;
+
+		readonly HotkeyReference toggleGridKey;
+		readonly HotkeyReference toggleBuildableKey;
+		readonly HotkeyReference toggleWalkableKey;
+		readonly HotkeyReference toggleShipTravelKey;
+		readonly HotkeyReference toggleMarkerKey;
+		readonly HotkeyReference toggleTilesKey;
+		readonly HotkeyReference toggleActorsKey;
+
+		readonly Widget overlayPanel;
+		DropDownButtonWidget overlayDropdown;
 
 		[ObjectCreator.UseCtor]
 		public MapOverlaysLogic(Widget widget, World world, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
 			terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 			buildableTerrainTrait = world.WorldActor.Trait<BuildableTerrainOverlay>();
+			walkableTerrainTrait = world.WorldActor.Trait<WalkableTerrainOverlay>();
+			shipTravelTerrainTrait = world.WorldActor.TraitOrDefault<ShipTravelTerrainOverlay>();
 			markerLayerTrait = world.WorldActor.Trait<MarkerLayerOverlay>();
 			templateBoundsTrait = world.WorldActor.Trait<TemplateBoundsOverlay>();
+			actorBoundsTrait = world.WorldActor.Trait<ActorBoundsOverlay>();
 
-			var toggleGridKey = new HotkeyReference();
-			if (logicArgs.TryGetValue("ToggleGridOverlayKey", out var yaml))
-				toggleGridKey = modData.Hotkeys[yaml.Value];
+			toggleGridKey = GetHotkey(logicArgs, modData, "ToggleGridOverlayKey");
+			toggleBuildableKey = GetHotkey(logicArgs, modData, "ToggleBuildableOverlayKey");
+			toggleWalkableKey = GetHotkey(logicArgs, modData, "ToggleWalkableOverlayKey");
+			toggleShipTravelKey = GetHotkey(logicArgs, modData, "ToggleShipTravelOverlayKey");
+			toggleMarkerKey = GetHotkey(logicArgs, modData, "ToggleMarkerOverlayKey");
+			toggleTilesKey = GetHotkey(logicArgs, modData, "ToggleTilesOverlayKey");
+			toggleActorsKey = GetHotkey(logicArgs, modData, "ToggleActorsOverlayKey");
 
-			var toggleBuildableKey = new HotkeyReference();
-			if (logicArgs.TryGetValue("ToggleBuildableOverlayKey", out yaml))
-				toggleBuildableKey = modData.Hotkeys[yaml.Value];
-
-			var toggleMarkerKey = new HotkeyReference();
-			if (logicArgs.TryGetValue("ToggleMarkerOverlayKey", out yaml))
-				toggleMarkerKey = modData.Hotkeys[yaml.Value];
-
-			var toggleTilesKey = new HotkeyReference();
-			if (logicArgs.TryGetValue("ToggleTilesOverlayKey", out yaml))
-				toggleTilesKey = modData.Hotkeys[yaml.Value];
+			overlayPanel = CreateOverlaysPanel();
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("OVERLAY_KEYHANDLER");
-			keyhandler.AddHandler(e =>
-			{
-				if (e.Event != KeyInputEvent.Down)
-					return false;
+			keyhandler.AddHandler(HandleOverlayHotkey);
 
-				if (toggleGridKey.IsActivatedBy(e))
-				{
-					terrainGeometryTrait.Enabled ^= true;
-					return true;
-				}
-
-				if (toggleBuildableKey.IsActivatedBy(e))
-				{
-					buildableTerrainTrait.Enabled ^= true;
-					return true;
-				}
-
-				if (toggleMarkerKey.IsActivatedBy(e))
-				{
-					markerLayerTrait.Enabled ^= true;
-					return true;
-				}
-
-				if (toggleTilesKey.IsActivatedBy(e))
-				{
-					templateBoundsTrait.Enabled ^= true;
-					return true;
-				}
-
-				return false;
-			});
-
-			var overlayPanel = CreateOverlaysPanel();
-
-			var overlayDropdown = widget.GetOrNull<DropDownButtonWidget>("OVERLAY_BUTTON");
+			overlayDropdown = widget.GetOrNull<DropDownButtonWidget>("OVERLAY_BUTTON");
 			if (overlayDropdown != null)
 			{
+				overlayDropdown.AdditionalKeyHandler = HandleOverlayHotkey;
 				overlayDropdown.OnMouseDown = _ =>
 				{
 					overlayDropdown.RemovePanel();
@@ -106,16 +89,105 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		static HotkeyReference GetHotkey(Dictionary<string, MiniYaml> logicArgs, ModData modData, string key)
+		{
+			if (logicArgs.TryGetValue(key, out var yaml))
+				return modData.Hotkeys[yaml.Value];
+
+			return new HotkeyReference();
+		}
+
+		bool HandleOverlayHotkey(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			if (toggleGridKey.IsActivatedBy(e))
+			{
+				terrainGeometryTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			if (toggleBuildableKey.IsActivatedBy(e))
+			{
+				buildableTerrainTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			if (toggleWalkableKey.IsActivatedBy(e))
+			{
+				walkableTerrainTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			if (shipTravelTerrainTrait != null && toggleShipTravelKey.IsActivatedBy(e))
+			{
+				shipTravelTerrainTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			if (toggleMarkerKey.IsActivatedBy(e))
+			{
+				markerLayerTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			if (toggleTilesKey.IsActivatedBy(e))
+			{
+				templateBoundsTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			if (toggleActorsKey.IsActivatedBy(e))
+			{
+				actorBoundsTrait.Enabled ^= true;
+				OpenOverlayPanel();
+				return true;
+			}
+
+			return false;
+		}
+
+		void OpenOverlayPanel()
+		{
+			if (overlayDropdown == null || overlayDropdown.IsPanelOpen)
+				return;
+
+			overlayDropdown.AttachPanel(overlayPanel);
+		}
+
 		Widget CreateOverlaysPanel()
 		{
 			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, []);
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
-			MapOverlays[] allCategories = [MapOverlays.Grid, MapOverlays.Buildable, MapOverlays.Marker, MapOverlays.Tiles];
+			var allCategories = new List<MapOverlays>
+			{
+				MapOverlays.Grid,
+				MapOverlays.Buildable,
+				MapOverlays.Walkable
+			};
+
+			if (shipTravelTerrainTrait != null)
+				allCategories.Add(MapOverlays.ShipTravel);
+
+			allCategories.AddRange([MapOverlays.Marker, MapOverlays.Tiles, MapOverlays.Actors]);
+
 			foreach (var cat in allCategories)
 			{
 				var category = categoryTemplate.Clone();
-				category.GetText = cat.ToString;
+				category.GetText = () => cat switch
+				{
+					MapOverlays.ShipTravel => "Ship travel",
+					MapOverlays.Walkable => "Walk / Drive",
+					_ => cat.ToString()
+				};
 				category.IsVisible = () => true;
 
 				if (cat.HasFlag(MapOverlays.Grid))
@@ -128,6 +200,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					category.IsChecked = () => buildableTerrainTrait.Enabled;
 					category.OnClick = () => buildableTerrainTrait.Enabled ^= true;
 				}
+				else if (cat.HasFlag(MapOverlays.Walkable))
+				{
+					category.IsChecked = () => walkableTerrainTrait.Enabled;
+					category.OnClick = () => walkableTerrainTrait.Enabled ^= true;
+				}
+				else if (cat.HasFlag(MapOverlays.ShipTravel))
+				{
+					category.IsChecked = () => shipTravelTerrainTrait.Enabled;
+					category.OnClick = () => shipTravelTerrainTrait.Enabled ^= true;
+				}
 				else if (cat.HasFlag(MapOverlays.Marker))
 				{
 					category.IsChecked = () => markerLayerTrait.Enabled;
@@ -137,6 +219,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					category.IsChecked = () => templateBoundsTrait.Enabled;
 					category.OnClick = () => templateBoundsTrait.Enabled ^= true;
+				}
+				else if (cat.HasFlag(MapOverlays.Actors))
+				{
+					category.IsChecked = () => actorBoundsTrait.Enabled;
+					category.OnClick = () => actorBoundsTrait.Enabled ^= true;
 				}
 
 				categoriesPanel.AddChild(category);

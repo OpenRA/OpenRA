@@ -430,7 +430,11 @@ EditorWorld:
 		AllowedTerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		Palette: ra
 		Alpha: 0.35
+	WalkableTerrainOverlay:
+		Palette: effect
+		Alpha: 0.35
 	TemplateBoundsOverlay:
+	ActorBoundsOverlay:
 	MarkerLayerOverlay:
 	TilingPathTool:
 		DefaultStart: Clear

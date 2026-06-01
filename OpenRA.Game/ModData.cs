@@ -93,6 +93,9 @@ namespace OpenRA
 
 			FluentProvider.Initialize(Manifest, DefaultFileSystem);
 
+			if (Game.Settings != null)
+				DevUiTheme.UpdateTargetColor(Game.Settings.Graphics.DevUiThemeColor);
+
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
@@ -249,6 +252,9 @@ namespace OpenRA
 
 		/// <summary>Called when the engine expects to connect to a server/replay or load the shellmap.</summary>
 		void StartGame(Arguments args);
+
+		/// <summary>Called when local dev UI theme chrome is recolored.</summary>
+		void InvalidateTheme();
 	}
 
 	public interface IFileSystemLoader

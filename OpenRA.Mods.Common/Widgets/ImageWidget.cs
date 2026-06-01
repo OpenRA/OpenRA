@@ -34,8 +34,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		public Func<string> GetTooltipText;
 
-		readonly CachedTransform<(string, string), Sprite> getImageCache = new(
-			((string Collection, string Image) args) => ChromeProvider.GetImage(args.Collection, args.Image));
+		readonly CachedTransform<(string Collection, string Image, int ThemeGeneration), Sprite> getImageCache = new(
+			args => ChromeProvider.GetImage(args.Collection, args.Image));
 
 		public ImageWidget()
 		{
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
+			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName(), ChromeProvider.ThemeGeneration));
 		}
 
 		protected ImageWidget(ImageWidget other)
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
+			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName(), ChromeProvider.ThemeGeneration));
 		}
 
 		public override ImageWidget Clone() { return new ImageWidget(this); }

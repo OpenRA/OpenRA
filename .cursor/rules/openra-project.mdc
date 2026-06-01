@@ -9,6 +9,7 @@ This repo is a **local development fork** of OpenRA (Red Alert). It must stay di
 
 ## Git
 
+- **Never push a .env file to github! 
 - **Never `git push` or `git pull`** (or fetch/merge/rebase from remote) unless the user **explicitly** asks in that message.
 - **Never create commits** unless the user explicitly asks.
 - **Never stage, commit, or push** these personal note files: **`My own OpenRA.odt`** and **`.~lock.My own OpenRA.odt#`**. Do not include them in commits or pushes under any circumstances.

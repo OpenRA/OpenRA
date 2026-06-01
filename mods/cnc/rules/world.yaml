@@ -305,7 +305,10 @@ EditorWorld:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Clear, Road
+	WalkableTerrainOverlay:
+	ShipTravelTerrainOverlay:
 	TemplateBoundsOverlay:
+	ActorBoundsOverlay:
 	MarkerLayerOverlay:
 	TilingPathTool:
 		DefaultStart: Clear

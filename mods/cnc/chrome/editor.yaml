@@ -220,8 +220,11 @@ Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic, MapEditorSelectionLogic
 		ToggleGridOverlayKey: EditorToggleGridOverlay
 		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
+		ToggleWalkableOverlayKey: EditorToggleWalkableOverlay
+		ToggleShipTravelOverlayKey: EditorToggleShipTravelOverlay
 		ToggleMarkerOverlayKey: EditorToggleMarkerOverlay
 		ToggleTilesOverlayKey: EditorToggleTilesOverlay
+		ToggleActorsOverlayKey: EditorToggleActorsOverlay
 	Children:
 		LogicKeyListener@OVERLAY_KEYHANDLER:
 		Container@PERF_ROOT:
@@ -485,7 +488,7 @@ Container@EDITOR_WORLD_ROOT:
 			X: 5
 			Y: 318
 			Width: 290
-			Height: WINDOW_HEIGHT - 410
+			Height: WINDOW_HEIGHT - 320
 			Visible: false
 			Children:
 				Background@AREA_EDIT_PANEL:
@@ -495,158 +498,27 @@ Container@EDITOR_WORLD_ROOT:
 					Children:
 						Label@AREA_EDIT_TITLE:
 							Y: 16
-							Width: PARENT_WIDTH
+							Width: PARENT_WIDTH - 40
 							Height: 24
 							Align: Center
 							Font: Bold
 							Text: label-area-selection
-						Label@AREA_FILTERS_LABEL:
-							X: 7
-							Y: 45
-							Width: 150
+						Button@SELECTION_CLOSE_BUTTON:
+							X: PARENT_WIDTH - 35
+							Y: 8
+							Width: 25
 							Height: 25
-							Font: Bold
-							Align: Left
-							Text: label-selection-filters
-						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
-							X: 7
-							Y: 70
-							Width: PARENT_WIDTH - 29
-							Height: 20
-							Text: label-filter-terrain
-						Checkbox@COPY_FILTER_RESOURCES_CHECKBOX:
-							X: 7
-							Y: 95
-							Width: PARENT_WIDTH - 29
-							Height: 20
-							Text: label-filter-resources
-						Checkbox@COPY_FILTER_ACTORS_CHECKBOX:
-							X: 7
-							Y: 120
-							Width: PARENT_WIDTH - 29
-							Height: 20
-							Text: label-filter-actors
-						Label@AREA_INFO_TITLE:
-							Y: 139
-							Width: PARENT_WIDTH
-							Height: 24
-							Align: Center
-							Font: Bold
-							Text: label-area-info
-						Label@DIAGONAL_LABEL:
-							X: 7
-							Y: 171
-							Width: 120
-							Height: 20
-							Font: Bold
-							Align: Left
-							Text: label-selected-area-diagonal
-						Label@RESOURCE_LABEL:
-							X: 7
-							Y: 193
-							Width: 120
-							Height: 25
-							Font: Bold
-							Align: Left
-							Text: label-selected-area-resources
-						Label@DIAGONAL_COUNTER_LABEL:
-							X: 140
-							Y: 170
-							Width: 55
-							Height: 22
-							Align: Left
-						Label@RESOURCES_COUNTER_LABEL:
-							X: 140
-							Y: 195
-							Width: 55
-							Height: 22
-							Align: Left
-						Button@SELECTION_COPY_BUTTON:
-							X: 7
-							Y: 222
-							Width: 85
-							Height: 25
-							Text: button-copy-area.label
-							Font: Bold
-							Key: EditorCopy
-							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-copy-area.tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_PASTE_BUTTON:
-							X: 102
-							Y: 222
-							Width: 85
-							Height: 25
-							Text: button-paste-area.label
-							Font: Bold
-							Key: EditorPaste
-							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-paste-area.tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_DELETE_BUTTON:
-							X: 197
-							Y: 222
-							Width: 85
-							Height: 25
-							Text: button-delete-area.label
-							Font: Bold
-							Key: EditorDeleteSelection
-							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-delete-area.tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_FILL_BUTTON:
-							X: 7
-							Y: 252
-							Width: 85
-							Height: 25
-							Text: button-fill-area.label
+							Text: X
+							TextColor: FF0000
 							Font: Bold
 							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-fill-area.tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_CLEAR_COPY_BUTTON:
-							X: 102
-							Y: 252
-							Width: 85
-							Height: 25
-							Text: button-clear-copy-area.label
-							Font: Bold
-							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-clear-copy-area.tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_CANCEL_BUTTON:
-							X: 197
-							Y: 252
-							Width: 85
-							Height: 25
-							Text: button-cancel
-							Font: Bold
-							Key: escape
-						Button@SELECTION_ROTATE_LEFT_BUTTON:
-							X: 5
-							Y: PARENT_HEIGHT - 230
-							Width: 130
-							Height: 25
-							Text: button-rotate-copy-left.label
-							Font: Bold
-							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-rotate-copy-left.tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_ROTATE_RIGHT_BUTTON:
-							X: 150
-							Y: PARENT_HEIGHT - 230
-							Width: 130
-							Height: 25
-							Text: button-rotate-copy-right.label
-							Font: Bold
-							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-rotate-copy-right.tooltip
+							TooltipText: button-cancel
 							TooltipContainer: TOOLTIP_CONTAINER
 						Background@SELECTION_PREVIEW_PANEL:
 							X: 10
-							Y: PARENT_HEIGHT - 200
+							Y: 44
 							Width: PARENT_WIDTH - 20
-							Height: 195
+							Height: 285
 							Background: scrollpanel-bg
 							Children:
 								Label@SELECTION_PREVIEW_LABEL:
@@ -670,6 +542,53 @@ Container@EDITOR_WORLD_ROOT:
 									Width: PARENT_WIDTH - 75
 									Height: 25
 									Font: Bold
+								Label@FILL_SPACE_LABEL:
+									X: 5
+									Y: 50
+									Width: 55
+									Height: 20
+									Align: Right
+									Font: TinyBold
+									Text: label-editor-fill-space
+									Visible: false
+								Slider@FILL_SPACE_SLIDER:
+									X: 65
+									Y: 50
+									Width: PARENT_WIDTH - 110
+									Height: 25
+									Visible: false
+								Label@FILL_SPACE_VALUE:
+									X: PARENT_WIDTH - 40
+									Y: 50
+									Width: 35
+									Height: 20
+									Align: Left
+									Font: TinyBold
+									Visible: false
+								Label@FILL_MODE_OVERLAP_LABEL:
+									X: 5
+									Y: 75
+									Width: 55
+									Height: 20
+									Align: Left
+									Font: TinyBold
+									Text: label-editor-fill-mode-overlap
+									Visible: false
+								Slider@FILL_MODE_SLIDER:
+									X: 65
+									Y: 72
+									Width: PARENT_WIDTH - 75
+									Height: 25
+									Visible: false
+								Label@FILL_MODE_DELETE_LABEL:
+									X: PARENT_WIDTH - 45
+									Y: 75
+									Width: 40
+									Height: 20
+									Align: Left
+									Font: TinyBold
+									Text: label-editor-fill-mode-delete
+									Visible: false
 								Button@TILE_PREVIEW_CURRENT_BUTTON:
 									X: 5
 									Y: 28
@@ -684,16 +603,175 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 22
 									Font: TinyBold
 									Text: label-tile-preview-original
-								EditorBlitPreview@SELECTION_CLIPBOARD_PREVIEW:
-									X: (PARENT_WIDTH - 130) / 2
-									Y: 52
-									Width: 130
-									Height: 130
-									Visible: false
-								TerrainTemplatePreview@SELECTION_TILE_PREVIEW:
-									Visible: false
-								ActorPreview@SELECTION_ACTOR_PREVIEW:
-									Visible: false
+								Background@SELECTION_ASSET_PREVIEW_BOX:
+									X: (PARENT_WIDTH - 148) / 2
+									Y: 110
+									Width: 148
+									Height: 148
+									Background: dialog3
+									Children:
+										EditorBlitPreview@SELECTION_CLIPBOARD_PREVIEW:
+											Width: PARENT_WIDTH
+											Height: PARENT_HEIGHT
+											Visible: false
+										TerrainTemplatePreview@SELECTION_TILE_PREVIEW:
+											Visible: false
+										ActorPreview@SELECTION_ACTOR_PREVIEW:
+											Visible: false
+										ResourcePreview@SELECTION_RESOURCE_PREVIEW:
+											Visible: false
+						Label@AREA_FILTERS_LABEL:
+							X: 7
+							Y: 339
+							Width: 150
+							Height: 25
+							Font: Bold
+							Align: Left
+							Text: label-selection-filters
+						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
+							X: 7
+							Y: 364
+							Width: PARENT_WIDTH - 29
+							Height: 20
+							Text: label-filter-terrain
+						Checkbox@COPY_FILTER_RESOURCES_CHECKBOX:
+							X: 7
+							Y: 389
+							Width: PARENT_WIDTH - 29
+							Height: 20
+							Text: label-filter-resources
+						Checkbox@COPY_FILTER_ACTORS_CHECKBOX:
+							X: 7
+							Y: 414
+							Width: PARENT_WIDTH - 29
+							Height: 20
+							Text: label-filter-actors
+						Label@AREA_INFO_TITLE:
+							Y: 433
+							Width: PARENT_WIDTH
+							Height: 24
+							Align: Center
+							Font: Bold
+							Text: label-area-info
+						Label@DIAGONAL_LABEL:
+							X: 7
+							Y: 465
+							Width: 120
+							Height: 20
+							Font: Bold
+							Align: Left
+							Text: label-selected-area-diagonal
+						Label@RESOURCE_LABEL:
+							X: 7
+							Y: 487
+							Width: 120
+							Height: 25
+							Font: Bold
+							Align: Left
+							Text: label-selected-area-resources
+						Label@DIAGONAL_COUNTER_LABEL:
+							X: 140
+							Y: 464
+							Width: 55
+							Height: 22
+							Align: Left
+						Label@RESOURCES_COUNTER_LABEL:
+							X: 140
+							Y: 489
+							Width: 55
+							Height: 22
+							Align: Left
+						Button@SELECTION_COPY_BUTTON:
+							X: 7
+							Y: PARENT_HEIGHT - 122
+							Width: 85
+							Height: 25
+							Text: button-copy-area.label
+							Font: Bold
+							Key: EditorCopy
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-copy-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_PASTE_BUTTON:
+							X: 102
+							Y: PARENT_HEIGHT - 122
+							Width: 85
+							Height: 25
+							Text: button-paste-area.label
+							Font: Bold
+							Key: EditorPaste
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-paste-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_DELETE_BUTTON:
+							X: 197
+							Y: PARENT_HEIGHT - 122
+							Width: 85
+							Height: 25
+							Text: button-delete-area.label
+							Font: Bold
+							Key: EditorDeleteSelection
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-delete-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_FILL_BUTTON:
+							X: 7
+							Y: PARENT_HEIGHT - 92
+							Width: 85
+							Height: 25
+							Text: button-fill-area.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-fill-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_CLEAR_COPY_BUTTON:
+							X: 102
+							Y: PARENT_HEIGHT - 92
+							Width: 85
+							Height: 25
+							Text: button-clear-copy-area.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-clear-copy-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_CANCEL_BUTTON:
+							X: 197
+							Y: PARENT_HEIGHT - 92
+							Width: 85
+							Height: 25
+							Text: button-cancel
+							Font: Bold
+							Key: escape
+						Button@SELECTION_FIND_BUTTON:
+							X: 7
+							Y: PARENT_HEIGHT - 32
+							Width: PARENT_WIDTH - 14
+							Height: 25
+							Text: button-find-in-browser.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-find-in-browser.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_ROTATE_LEFT_BUTTON:
+							X: 5
+							Y: PARENT_HEIGHT - 62
+							Width: 130
+							Height: 25
+							Text: button-rotate-copy-left.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-rotate-copy-left.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_ROTATE_RIGHT_BUTTON:
+							X: 150
+							Y: PARENT_HEIGHT - 62
+							Width: 130
+							Height: 25
+							Text: button-rotate-copy-right.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-rotate-copy-right.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 				Background@ACTOR_EDIT_PANEL:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
@@ -1017,9 +1095,11 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 
 ScrollPanel@OVERLAY_PANEL:
 	Width: 140
-	Height: 100
+	Height: 180
 	ItemSpacing: 5
 	TopBottomSpacing: 0
+	ScrollBar: Hidden
+	ScrollbarWidth: 0
 	Children:
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5

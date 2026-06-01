@@ -80,8 +80,11 @@ hotkey-description-editorhistorytab = History Tab
 hotkey-description-editorsettingstab = Settings Tab
 hotkey-description-editortogglegridoverlay = Grid Overlay
 hotkey-description-editortogglebuildableoverlay = Buildable Terrain Overlay
+hotkey-description-editortogglewalkableoverlay = Walkable Terrain Overlay
+hotkey-description-editortoggleshiptraveloverlay = Ship Travel Overlay
 hotkey-description-editortogglemarkeroverlay = Marker Layer Overlay
 hotkey-description-editortoggletilesoverlay = Tile Bounds Overlay
+hotkey-description-editortoggleactorsoverlay = Actor Bounds Overlay
 
 ## game.yaml
 hotkey-description-cyclebase = Jump to base

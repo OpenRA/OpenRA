@@ -70,6 +70,9 @@ label-copied-area-preview = Copied Preview
 label-editor-mix-mode = Mix:
 label-editor-mix-mode-random = Random
 label-editor-mix-mode-sequential = Sequential
+label-editor-fill-space = Space:
+label-editor-fill-mode-overlap = Overlap
+label-editor-fill-mode-delete = Delete
 label-filter-terrain = Terrain
 label-filter-resources = Resources
 label-filter-actors = Actors
@@ -127,6 +130,10 @@ button-rotate-copy-right =
 button-fill-area =
     .label = Fill
     .tooltip = Fill the selected area with the selected terrain tile or actor
+
+button-find-in-browser =
+    .label = Find
+    .tooltip = Show this tile or actor in the asset browser on the right
 
 button-delete-actor =
     .label = Delete

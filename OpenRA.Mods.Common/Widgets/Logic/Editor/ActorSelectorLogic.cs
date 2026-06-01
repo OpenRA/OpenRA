@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorViewportControllerWidget editor;
 
 		PlayerReference selectedOwner;
+		string locateHighlightActorName;
 
 		[ObjectCreator.UseCtor]
 		public ActorSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer)
@@ -144,7 +145,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitializePreviews();
 			};
 
+			Editor.LocateAssetRequested += HandleLocateAssetRequested;
 			InitializePreviews();
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			Editor.LocateAssetRequested -= HandleLocateAssetRequested;
+			base.Dispose(disposing);
+		}
+
+		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
+		{
+			if (request.Kind != EditorLocateAssetKind.Actor || request.Actor == null)
+				return;
+
+			LocateActor(request.Actor);
+		}
+
+		void LocateActor(ActorInfo actor)
+		{
+			var entry = allActors.FirstOrDefault(a => a.Actor == actor);
+			if (entry == null)
+				return;
+
+			locateHighlightActorName = actor.Name;
+			searchFilter = "";
+			SearchTextField.Text = "";
+			FilteredCategories.Clear();
+			FilteredCategories.AddRange(allCategories);
+
+			SelectedCategories.Clear();
+			foreach (var category in entry.Categories)
+				SelectedCategories.Add(category);
+
+			if (SelectedCategories.Count == 0)
+			{
+				foreach (var c in allCategories)
+					SelectedCategories.Add(c);
+			}
+
+			InitializePreviews();
+			Panel.ScrollToItem(actor.Name, smooth: true);
 		}
 
 		void SelectOwner(PlayerReference option)
@@ -186,11 +228,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					var item = ScrollItemWidget.Setup(ItemTemplate,
+					var item = ScrollItemWidget.Setup(
+						actor.Name,
+						ItemTemplate,
 						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Actors.Contains(actor),
+						() => { },
 						() => { });
 					item.OnMouseUp = mi => SelectActor(actor, mi.Modifiers.HasModifier(Modifiers.Ctrl));
 					item.ShowSelectionOutline = item.IsSelected;
+					item.ShowLocateOutline = () => locateHighlightActorName == actor.Name;
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");
 					preview.SetPreview(actor, td);

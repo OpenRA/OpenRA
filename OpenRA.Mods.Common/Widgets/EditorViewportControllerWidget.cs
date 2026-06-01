@@ -19,6 +19,7 @@ using Color = OpenRA.Primitives.Color;
 namespace OpenRA.Mods.Common.Widgets
 {
 	public enum EditorAssetMixMode { Random, Sequential }
+	public enum EditorFillMode { Overlap, Delete }
 
 	[IncludeStaticFluentReferences(
 		typeof(ChangeSelectionAction),
@@ -51,8 +52,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipTemplate;
 		public readonly EditorDefaultBrush DefaultBrush;
 		public EditorAssetMixMode AssetMixMode { get; private set; } = EditorAssetMixMode.Random;
+		public int AssetFillDensity { get; private set; } = 100;
+		public EditorFillMode AssetFillMode { get; private set; } = EditorFillMode.Overlap;
 
 		public event Action BrushChanged;
+		public event Action<EditorLocateAssetRequest> LocateAssetRequested;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly WorldRenderer worldRenderer;
@@ -104,6 +108,28 @@ namespace OpenRA.Mods.Common.Widgets
 			AssetMixMode = mixMode;
 			BrushChanged?.Invoke();
 		}
+
+		public void SetAssetFillDensity(int fillDensity)
+		{
+			fillDensity = ((fillDensity + 5) / 10 * 10).Clamp(10, 100);
+			if (AssetFillDensity == fillDensity)
+				return;
+
+			AssetFillDensity = fillDensity;
+			BrushChanged?.Invoke();
+		}
+
+		public void SetAssetFillMode(EditorFillMode fillMode)
+		{
+			if (AssetFillMode == fillMode)
+				return;
+
+			AssetFillMode = fillMode;
+			BrushChanged?.Invoke();
+		}
+
+		public void RequestLocateAsset(EditorLocateAssetRequest request) =>
+			LocateAssetRequested?.Invoke(request);
 
 		public void SetBrush(IEditorBrush brush)
 		{

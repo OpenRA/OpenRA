@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -408,6 +409,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly ushort[] templates;
 		readonly EditorAssetMixMode mixMode;
+		readonly int fillDensityPercent;
 		readonly Map map;
 		readonly CellCoordsRegion area;
 		readonly IReadOnlySet<CPos> mask;
@@ -418,12 +420,19 @@ namespace OpenRA.Mods.Common.Widgets
 		int nextTemplate;
 
 		public FillSelectionWithTileEditorAction(ushort template, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
-			: this([template], EditorAssetMixMode.Random, map, area, mask) { }
+			: this([template], EditorAssetMixMode.Random, 100, map, area, mask) { }
 
-		public FillSelectionWithTileEditorAction(IEnumerable<ushort> templates, EditorAssetMixMode mixMode, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
+		public FillSelectionWithTileEditorAction(
+			IEnumerable<ushort> templates,
+			EditorAssetMixMode mixMode,
+			int fillDensityPercent,
+			Map map,
+			CellCoordsRegion area,
+			IReadOnlySet<CPos> mask = null)
 		{
 			this.templates = templates.Distinct().ToArray();
 			this.mixMode = mixMode;
+			this.fillDensityPercent = fillDensityPercent.Clamp(10, 100);
 			this.map = map;
 			this.area = area;
 			this.mask = mask;
@@ -440,19 +449,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
+			var anchors = new List<CPos>();
 			if (mask != null)
+				anchors.AddRange(mask);
+			else
 			{
-				foreach (var cell in mask)
-					PaintTemplate(PickTemplate(), cell);
-
-				return;
+				for (var y = area.TopLeft.Y; y <= area.BottomRight.Y; y += firstTerrainTemplate.Size.Y)
+				{
+					for (var x = area.TopLeft.X; x <= area.BottomRight.X; x += firstTerrainTemplate.Size.X)
+						anchors.Add(new CPos(x, y));
+				}
 			}
 
-			for (var y = area.TopLeft.Y; y <= area.BottomRight.Y; y += firstTerrainTemplate.Size.Y)
-			{
-				for (var x = area.TopLeft.X; x <= area.BottomRight.X; x += firstTerrainTemplate.Size.X)
-					PaintTemplate(PickTemplate(), new CPos(x, y));
-			}
+			foreach (var cell in EditorFillSelection.SelectCells(anchors, fillDensityPercent))
+				PaintTemplate(PickTemplate(), cell);
 		}
 
 		public void Undo()
@@ -510,4 +520,29 @@ namespace OpenRA.Mods.Common.Widgets
 	}
 
 	sealed record UndoTile(CPos Cell, TerrainTile MapTile, byte Height);
+
+	static class EditorFillSelection
+	{
+		public static IEnumerable<CPos> SelectCells(IReadOnlyList<CPos> cells, int fillDensityPercent)
+		{
+			if (fillDensityPercent >= 100 || cells.Count == 0)
+				return cells;
+
+			var count = (cells.Count * fillDensityPercent + 50) / 100;
+			if (count <= 0)
+				return Array.Empty<CPos>();
+
+			if (count >= cells.Count)
+				return cells;
+
+			var shuffled = cells.ToArray();
+			for (var i = shuffled.Length - 1; i > 0; i--)
+			{
+				var j = Game.CosmeticRandom.Next(i + 1);
+				(shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
+			}
+
+			return shuffled.Take(count);
+		}
+	}
 }

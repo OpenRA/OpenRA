@@ -9,18 +9,18 @@
  */
 #endregion
 
-using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	public class BuildableTerrainOverlayInfo : TraitInfo
+	public class ShipTravelTerrainOverlayInfo : TraitInfo
 	{
-		[FieldLoader.Require]
-		public readonly FrozenSet<string> AllowedTerrainTypes = null;
+		[Desc("Locomotor used to determine ship passable terrain.")]
+		public readonly string Locomotor = "naval";
 
 		[PaletteReference]
 		[Desc("Palette to use for rendering the overlay sprite.")]
@@ -38,32 +38,42 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override object Create(ActorInitializer init)
 		{
-			return new BuildableTerrainOverlay(init.Self, this);
+			return new ShipTravelTerrainOverlay(init.Self, this);
 		}
 	}
 
-	public class BuildableTerrainOverlay : IRenderAboveWorld, IRenderAnnotations
+	public class ShipTravelTerrainOverlay : IRenderAboveWorld, IRenderAnnotations, IWorldLoaded
 	{
-		readonly BuildableTerrainOverlayInfo info;
+		readonly ShipTravelTerrainOverlayInfo info;
 		readonly World world;
 		readonly Sprite overlaySprite;
 		readonly float overlayScale;
+		Locomotor locomotor;
 		PaletteReference palette;
 
 		public bool Enabled = false;
 
-		public BuildableTerrainOverlay(Actor self, BuildableTerrainOverlayInfo info)
+		public ShipTravelTerrainOverlay(Actor self, ShipTravelTerrainOverlayInfo info)
 		{
 			this.info = info;
 			world = self.World;
 			overlaySprite = EditorCellStatusOverlay.GetOverlaySprite(world, info.Image, info.Sequence);
 			overlayScale = EditorCellStatusOverlay.GetOverlayScale(world, info.Image, info.Sequence);
+
+			var locomotorInfo = self.World.Map.Rules.Actors[SystemActors.World].TraitInfos<LocomotorInfo>()
+				.SingleOrDefault(li => li.Name == info.Locomotor);
+
+			if (locomotorInfo == null)
+				throw new YamlException($"A locomotor named '{info.Locomotor}' doesn't exist.");
 		}
 
-		bool IsBuildable(CPos cell)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			return info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type) && world.Map.Ramp[cell] == 0;
+			locomotor = w.WorldActor.TraitsImplementing<Locomotor>()
+				.SingleOrDefault(l => l.Info.Name == info.Locomotor);
 		}
+
+		bool IsTravelable(CPos cell) => EditorWalkability.IsCellWalkable(world, locomotor, cell);
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
@@ -71,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			palette ??= wr.Palette(info.Palette);
-			EditorCellStatusOverlay.RenderCells(wr, IsBuildable, overlaySprite, overlayScale, info.Alpha, palette);
+			EditorCellStatusOverlay.RenderCells(wr, IsTravelable, overlaySprite, overlayScale, info.Alpha, palette);
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)

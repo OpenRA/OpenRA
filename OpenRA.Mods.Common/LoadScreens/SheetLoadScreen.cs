@@ -71,11 +71,16 @@ namespace OpenRA.Mods.Common.LoadScreens
 					density = 2;
 				}
 
-				using (var stream = fileSystem.Open(Platform.ResolvePath(image)))
+				var resolvedImage = Platform.ResolvePath(image);
+				var source = DevUiTheme.IsThemedImage(resolvedImage) ? DevUiTheme.GetSourcePath(resolvedImage, fileSystem) : resolvedImage;
+				using (var stream = fileSystem.Open(source))
 				{
 					sheet = new Sheet(SheetType.BGRA, stream);
 					sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
 				}
+
+				if (DevUiTheme.IsThemedImage(resolvedImage))
+					DevUiTheme.RecolorSheet(sheet, DevUiTheme.TargetColor, resolvedImage);
 			}
 
 			Game.Renderer.BeginUI();
@@ -89,6 +94,15 @@ namespace OpenRA.Mods.Common.LoadScreens
 		{
 			return new Sprite(s, density * rect, TextureChannel.RGBA, 1f / density);
 		}
+
+		public override void InvalidateTheme()
+		{
+			sheet?.Dispose();
+			sheet = null;
+			InvalidateCachedSprites();
+		}
+
+		protected virtual void InvalidateCachedSprites() { }
 
 		protected override void Dispose(bool disposing)
 		{

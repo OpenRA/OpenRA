@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -109,6 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 	}
 
 	readonly record struct CellResource(CPos Cell, ResourceLayerContents OldResourceTile);
+	readonly record struct FilledCellResource(CPos Cell, ResourceLayerContents OldResourceTile, string PlacedType);
 
 	sealed class AddResourcesEditorAction : IEditorAction
 	{
@@ -156,6 +158,98 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceLayer.AddResource(resourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceType));
 			cellResources.Add(resourceCell);
 			Text = FluentProvider.GetMessage(AddedResource, "count", cellResources.Count, "type", resourceType);
+		}
+	}
+
+	sealed class FillSelectionWithResourceEditorAction : IEditorAction
+	{
+		[FluentReference("count", "type")]
+		const string FilledResource = "notification-filled-resource";
+
+		public string Text { get; private set; }
+
+		readonly IResourceLayer resourceLayer;
+		readonly string[] resourceTypes;
+		readonly EditorAssetMixMode mixMode;
+		readonly int fillDensityPercent;
+		readonly CellCoordsRegion area;
+		readonly IReadOnlySet<CPos> mask;
+		readonly List<FilledCellResource> filledCells = [];
+		int nextResourceType;
+
+		public FillSelectionWithResourceEditorAction(
+			IResourceLayer resourceLayer,
+			string resourceType,
+			EditorAssetMixMode mixMode,
+			int fillDensityPercent,
+			CellCoordsRegion area,
+			IReadOnlySet<CPos> mask = null)
+			: this(resourceLayer, [resourceType], mixMode, fillDensityPercent, area, mask) { }
+
+		public FillSelectionWithResourceEditorAction(
+			IResourceLayer resourceLayer,
+			IEnumerable<string> resourceTypes,
+			EditorAssetMixMode mixMode,
+			int fillDensityPercent,
+			CellCoordsRegion area,
+			IReadOnlySet<CPos> mask = null)
+		{
+			this.resourceLayer = resourceLayer;
+			this.resourceTypes = resourceTypes.Distinct().ToArray();
+			this.mixMode = mixMode;
+			this.fillDensityPercent = fillDensityPercent.Clamp(10, 100);
+			this.area = area;
+			this.mask = mask;
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			var cells = mask != null ? mask.ToList() : area.ToList();
+
+			foreach (var cell in EditorFillSelection.SelectCells(cells, fillDensityPercent))
+				PlaceResourceAt(cell);
+
+			Text = FluentProvider.GetMessage(FilledResource, "count", filledCells.Count, "type", resourceTypes[0]);
+		}
+
+		void PlaceResourceAt(CPos cell)
+		{
+			var resourceType = PickResourceType();
+			if (!resourceLayer.CanAddResource(resourceType, cell))
+				return;
+
+			filledCells.Add(new FilledCellResource(cell, resourceLayer.GetResource(cell), resourceType));
+			resourceLayer.AddResource(resourceType, cell, resourceLayer.GetMaxDensity(resourceType));
+		}
+
+		public void Undo()
+		{
+			foreach (var resourceCell in filledCells)
+			{
+				if (resourceCell.OldResourceTile.Type == resourceCell.PlacedType || resourceCell.OldResourceTile.Type == null)
+					resourceLayer.ClearResources(resourceCell.Cell);
+
+				if (resourceCell.OldResourceTile.Type == resourceCell.PlacedType || resourceCell.OldResourceTile.Type != null)
+					resourceLayer.AddResource(resourceCell.OldResourceTile.Type, resourceCell.Cell, resourceCell.OldResourceTile.Density);
+			}
+
+			filledCells.Clear();
+		}
+
+		string PickResourceType()
+		{
+			if (resourceTypes.Length == 1)
+				return resourceTypes[0];
+
+			if (mixMode == EditorAssetMixMode.Sequential)
+				return resourceTypes[nextResourceType++ % resourceTypes.Length];
+
+			return resourceTypes[Game.CosmeticRandom.Next(resourceTypes.Length)];
 		}
 	}
 }

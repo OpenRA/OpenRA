@@ -821,6 +821,11 @@ notification-added-resource =
        [one] Added one cell of { $type }
       *[other] Added { $count } cells of { $type }
     }
+notification-filled-resource =
+    { $count ->
+       [one] Filled one cell with { $type }
+      *[other] Filled { $count } cells with { $type }
+    }
 
 ## EditorTileBrush
 notification-added-tile = Added tile { $id }

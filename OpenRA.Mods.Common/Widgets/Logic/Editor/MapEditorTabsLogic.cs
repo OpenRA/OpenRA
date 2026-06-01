@@ -12,6 +12,7 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -39,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.UpdateSelectedTab += HandleUpdateSelectedTab;
+			editor.LocateAssetRequested += HandleLocateAssetRequested;
 
 			SetupTab("SELECT_TAB", "SELECT_WIDGETS", MenuType.Select);
 			SetupTab("TILES_TAB", "TILE_WIDGETS", MenuType.Tiles);
@@ -51,29 +53,55 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void Dispose(bool disposing)
 		{
 			editor.DefaultBrush.UpdateSelectedTab -= HandleUpdateSelectedTab;
+			editor.LocateAssetRequested -= HandleLocateAssetRequested;
 
 			base.Dispose(disposing);
+		}
+
+		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
+		{
+			var tab = request.Kind switch
+			{
+				EditorLocateAssetKind.Tile => MenuType.Tiles,
+				EditorLocateAssetKind.Actor => MenuType.Actors,
+				EditorLocateAssetKind.Resource => MenuType.Layers,
+				_ => MenuType.Tiles
+			};
+
+			if (tab != MenuType.Select)
+				lastSelectedTab = tab;
+
+			menuType = tab;
+			OnTabChanged?.Invoke();
+			Ui.KeyboardFocusWidget = null;
 		}
 
 		void SetupTab(string buttonId, string tabId, MenuType tabType)
 		{
 			var tab = tabContainer.Get<ButtonWidget>(buttonId);
-			tab.IsHighlighted = () => menuType == tabType;
+			tab.IsHighlighted = () => tabType == MenuType.Select
+				? editor.DefaultBrush.AreaPanelOpen
+				: menuType == tabType;
 			tab.OnClick = () =>
 			{
-				if (tabType != MenuType.Select)
+				if (tabType == MenuType.Select)
+				{
+					if (editor.DefaultBrush.AreaPanelOpen)
+						editor.DefaultBrush.HideAreaPanel();
+					else
+						editor.DefaultBrush.ShowAreaPanel();
+				}
+				else
+				{
 					lastSelectedTab = tabType;
+					menuType = tabType;
+				}
 
-				menuType = tabType;
 				OnTabChanged?.Invoke();
 
 				// Clear keyboard focus when switching tabs.
 				Ui.KeyboardFocusWidget = null;
 			};
-
-			// Selection tab is special, it can only be selected if a selection exists.
-			if (tabType == MenuType.Select)
-				tab.IsDisabled = () => !editor.DefaultBrush.Selection.HasSelection && !editor.HasClipboard && !editor.DefaultBrush.AreaPanelOpen;
 
 			if (tabType == MenuType.Tools)
 			{
@@ -82,20 +110,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var container = panelContainer.Get<ContainerWidget>(tabId);
-			container.IsVisible = () => (tabType == MenuType.Select && (editor.DefaultBrush.AreaPanelOpen || editor.HasClipboard)) || menuType == tabType;
+			if (tabType == MenuType.Select)
+			{
+				container.IsVisible = () => editor.HasClipboard
+					|| editor.DefaultBrush.Selection.Actor != null
+					|| editor.DefaultBrush.AreaPanelOpen;
+			}
+			else
+				container.IsVisible = () => menuType == tabType;
 		}
 
 		void HandleUpdateSelectedTab()
 		{
-			var selection = editor.DefaultBrush.Selection;
-
-			if (selection.Area.HasValue && menuType != MenuType.Select)
-				menuType = MenuType.Select;
-			else if (menuType != MenuType.Select && selection.HasSelection)
-				menuType = MenuType.Select;
-			else if (menuType == MenuType.Select && !selection.HasSelection && !editor.HasClipboard && !editor.DefaultBrush.AreaPanelOpen)
-				menuType = lastSelectedTab;
-
 			OnTabChanged?.Invoke();
 		}
 	}

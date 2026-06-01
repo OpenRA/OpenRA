@@ -101,6 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly ImmutableArray<TileSelectorTemplate> allTemplates;
+		ushort? locateHighlightTileId;
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer)
@@ -141,7 +142,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				InitializePreviews();
 			};
 
+			Editor.LocateAssetRequested += HandleLocateAssetRequested;
 			InitializePreviews();
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			Editor.LocateAssetRequested -= HandleLocateAssetRequested;
+			base.Dispose(disposing);
+		}
+
+		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
+		{
+			if (request.Kind != EditorLocateAssetKind.Tile || !request.TemplateId.HasValue)
+				return;
+
+			LocateTemplate(request.TemplateId.Value);
+		}
+
+		void LocateTemplate(ushort tileId)
+		{
+			var entry = allTemplates.FirstOrDefault(t => t.Template.Id == tileId);
+			if (entry == null)
+				return;
+
+			locateHighlightTileId = tileId;
+			searchFilter = "";
+			SearchTextField.Text = "";
+			FilteredCategories.Clear();
+			FilteredCategories.AddRange(allCategories);
+
+			SelectedCategories.Clear();
+			foreach (var category in entry.Categories)
+				SelectedCategories.Add(category);
+
+			if (SelectedCategories.Count == 0)
+			{
+				foreach (var c in allCategories)
+					SelectedCategories.Add(c);
+			}
+
+			InitializePreviews();
+			Panel.ScrollToItem(tileId.ToString(CultureInfo.InvariantCulture), smooth: true);
 		}
 
 		int CategoryOrder(string category)
@@ -166,11 +208,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					continue;
 
 				var tileId = t.Template.Id;
-				var item = ScrollItemWidget.Setup(ItemTemplate,
+				var item = ScrollItemWidget.Setup(
+					tileId.ToString(CultureInfo.InvariantCulture),
+					ItemTemplate,
 					() => Editor.CurrentBrush is EditorTileBrush editorCursor && editorCursor.Templates.Contains(tileId),
+					() => { },
 					() => { });
 				item.OnMouseUp = mi => SelectTile(tileId, mi.Modifiers.HasModifier(Modifiers.Ctrl));
 				item.ShowSelectionOutline = item.IsSelected;
+				item.ShowLocateOutline = () => locateHighlightTileId == tileId;
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				preview.SetTemplate(terrainInfo.Templates[tileId]);

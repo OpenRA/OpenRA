@@ -134,6 +134,8 @@ ChromeLayout:
 	common|chrome/mainmenu-prompts.yaml
 	common|chrome/settings.yaml
 	common|chrome/settings-display.yaml
+	ra|chrome/dev-ui-theme-settings.yaml
+	ra|chrome/settings-save-button.yaml
 	common|chrome/settings-audio.yaml
 	common|chrome/settings-input.yaml
 	common|chrome/settings-hotkeys.yaml

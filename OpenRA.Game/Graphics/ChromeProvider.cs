@@ -79,6 +79,9 @@ namespace OpenRA.Graphics
 			cachedPanelSprites = [];
 			cachedCollectionSheets = [];
 
+			if (Game.Settings != null)
+				DevUiTheme.UpdateTargetColor(Game.Settings.Graphics.DevUiThemeColor);
+
 			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
 				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool)));
@@ -129,8 +132,12 @@ namespace OpenRA.Graphics
 				if (!cachedSheets.TryGetValue(image, out sheetDensity))
 				{
 					Sheet sheet;
-					using (var stream = fileSystem.Open(image))
+					var source = DevUiTheme.IsThemedImage(image) ? DevUiTheme.GetSourcePath(image, fileSystem) : image;
+					using (var stream = fileSystem.Open(source))
 						sheet = new Sheet(SheetType.BGRA, stream);
+
+					if (DevUiTheme.IsThemedImage(image))
+						DevUiTheme.RecolorSheet(sheet, DevUiTheme.TargetColor, image);
 
 					sheet.GetTexture().ScaleFilter = TextureScaleFilter.Linear;
 
@@ -297,6 +304,33 @@ namespace OpenRA.Graphics
 			// the overhead of having to dispose and reload everything.
 			// Changing the DPI scale is rare, but if it does happen then there
 			// is a reasonable chance that it may happen again this session.
+			cachedSprites.Clear();
+			cachedPanelSprites.Clear();
+			cachedCollectionSheets.Clear();
+		}
+
+		public static int ThemeGeneration { get; private set; }
+
+		public static void InvalidateThemedSheets()
+		{
+			if (cachedSheets == null)
+				return;
+
+			ThemeGeneration++;
+
+			var remove = new List<string>();
+			foreach (var (image, entry) in cachedSheets)
+			{
+				if (!DevUiTheme.IsThemedImage(image))
+					continue;
+
+				entry.Sheet.Dispose();
+				remove.Add(image);
+			}
+
+			foreach (var image in remove)
+				cachedSheets.Remove(image);
+
 			cachedSprites.Clear();
 			cachedPanelSprites.Clear();
 			cachedCollectionSheets.Clear();

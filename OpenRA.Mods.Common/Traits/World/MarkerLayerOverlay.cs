@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CellLayer<int?> CellLayer;
 		public readonly Dictionary<int, HashSet<CPos>> Tiles = [];
 
-		public bool Enabled = true;
+		public bool Enabled = false;
 		public MarkerTileMirrorMode MirrorMode { get; private set; } = MarkerTileMirrorMode.None;
 		public MarkerLayerOverlayInfo Info { get; }
 		public int NumSides = 2;

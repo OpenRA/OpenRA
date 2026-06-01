@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ScrollPanelWidget layerTemplateList;
 		readonly ScrollItemWidget layerPreviewTemplate;
+		string locateHighlightResourceType;
 
 		[ObjectCreator.UseCtor]
 		public LayerSelectorLogic(Widget widget, WorldRenderer worldRenderer)
@@ -33,7 +34,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			layerTemplateList.Layout = new GridLayout(layerTemplateList);
 			layerPreviewTemplate = layerTemplateList.Get<ScrollItemWidget>("LAYERPREVIEW_TEMPLATE");
 
+			editor.LocateAssetRequested += HandleLocateAssetRequested;
 			IntializeLayerPreview();
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			editor.LocateAssetRequested -= HandleLocateAssetRequested;
+			base.Dispose(disposing);
+		}
+
+		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
+		{
+			if (request.Kind != EditorLocateAssetKind.Resource || string.IsNullOrEmpty(request.ResourceType))
+				return;
+
+			locateHighlightResourceType = request.ResourceType;
+			IntializeLayerPreview();
+			layerTemplateList.ScrollToItem(request.ResourceType, smooth: true);
 		}
 
 		void IntializeLayerPreview()
@@ -43,9 +61,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				foreach (var resourceType in resourceRenderer.ResourceTypes)
 				{
-					var item = ScrollItemWidget.Setup(layerPreviewTemplate,
+					var item = ScrollItemWidget.Setup(
+						resourceType,
+						layerPreviewTemplate,
 						() => editor.CurrentBrush is EditorResourceBrush brush && brush.ResourceType == resourceType,
-						() => editor.SetBrush(new EditorResourceBrush(editor, resourceType, worldRenderer)));
+						() => editor.SetBrush(new EditorResourceBrush(editor, resourceType, worldRenderer)),
+						() => { });
+					item.ShowLocateOutline = () => locateHighlightResourceType == resourceType;
 
 					var preview = item.Get<ResourcePreviewWidget>("LAYER_PREVIEW");
 					preview.SetResourceType(resourceType);

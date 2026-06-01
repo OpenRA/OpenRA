@@ -33,8 +33,15 @@ namespace OpenRA.Mods.Common.Widgets
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
+		public Func<KeyInput, bool> AdditionalKeyHandler;
+
+		public bool IsPanelOpen => panel != null;
+
 		public override bool HandleKeyPress(KeyInput e)
 		{
+			if (AdditionalKeyHandler != null && AdditionalKeyHandler(e))
+				return true;
+
 			if (HasKeyboardFocus && e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE)
 			{
 				RemovePanel();
@@ -62,6 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 			DecorationMarker = widget.DecorationMarker;
 			Separators = widget.Separators;
 			SeparatorImage = widget.SeparatorImage;
+			AdditionalKeyHandler = widget.AdditionalKeyHandler;
 		}
 
 		public override void Draw()

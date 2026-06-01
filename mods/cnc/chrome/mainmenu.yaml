@@ -164,19 +164,19 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: label-music-title
-						Button@MAP_EDITOR_BUTTON:
+						Button@ASSETBROWSER_BUTTON:
 							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: button-extras-menu-assetbrowser
+						Button@MAP_EDITOR_BUTTON:
+							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-map-editor-title
 							Font: Bold
-						Button@ASSETBROWSER_BUTTON:
-							X: 450
-							Y: 0
-							Width: 140
-							Height: 35
-							Text: button-extras-menu-assetbrowser
 						Button@CREDITS_BUTTON:
 							X: 600
 							Y: 0

@@ -107,6 +107,8 @@ namespace OpenRA.Mods.Common.LoadScreens
 			GC.SuppressFinalize(this);
 		}
 
+		public virtual void InvalidateTheme() { }
+
 		public virtual bool BeforeLoad(ModData modData)
 		{
 			var graphicSettings = Game.Settings.Graphics;

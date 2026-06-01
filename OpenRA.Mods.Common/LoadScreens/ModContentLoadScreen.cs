@@ -25,6 +25,12 @@ namespace OpenRA.Mods.Common.LoadScreens
 		int lastDensity;
 		Size lastResolution;
 
+		protected override void InvalidateCachedSprites()
+		{
+			lastSheet = null;
+			sprite = null;
+		}
+
 		public override void DisplayInner(Renderer r, Sheet s, int density)
 		{
 			if (s != lastSheet || density != lastDensity)
