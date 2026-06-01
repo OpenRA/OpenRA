@@ -249,6 +249,7 @@ dialog-exit-map-editor =
     .prompt-deleted = The map may have been deleted outside the editor
     .confirm-anyway = Exit anyway
     .confirm = Exit
+    .save = Save
 
 dialog-play-map-warning =
     .title = Warning
@@ -809,6 +810,7 @@ notification-copied-tiles-actors = Copied { $tiles } tiles and { $actors } actor
 ## EditorDefaultBrush
 notification-selected-area = Selected area { $x },{ $y } ({ $width },{ $height })
 notification-removed-area = Removed area { $x },{ $y } ({ $width },{ $height })
+notification-moved-area = Moved selection to { $x },{ $y }
 notification-selected-actor = Selected actor { $id }
 notification-cleared-selection = Cleared selection
 notification-removed-actor = Removed { $name } ({ $id })

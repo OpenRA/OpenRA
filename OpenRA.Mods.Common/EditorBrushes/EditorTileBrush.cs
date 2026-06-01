@@ -402,6 +402,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class FillSelectionWithTileEditorAction : IEditorAction
 	{
+		enum FillAxis { Horizontal, Vertical, Grid }
+
 		[FluentReference("id")]
 		const string FilledTile = "notification-filled-tile";
 
@@ -417,6 +419,11 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Queue<UndoTile> undoTiles = [];
 		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly TerrainTemplateInfo firstTerrainTemplate;
+		readonly byte roadTerrainIndex;
+		readonly Dictionary<ushort, EditorTemplateRoadAlignment.Profile> roadProfiles;
+		readonly FillAxis fillAxis;
+		readonly int targetRoadX;
+		readonly int targetRoadY;
 		int nextTemplate;
 
 		public FillSelectionWithTileEditorAction(ushort template, Map map, CellCoordsRegion area, IReadOnlySet<CPos> mask = null)
@@ -440,6 +447,23 @@ namespace OpenRA.Mods.Common.Widgets
 			terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			firstTerrainTemplate = terrainInfo.Templates[this.templates[0]];
 			Text = FluentProvider.GetMessage(FilledTile, "id", firstTerrainTemplate.Id);
+
+			roadTerrainIndex = terrainInfo.GetTerrainIndex("Road");
+			roadProfiles = this.templates.ToDictionary(
+				t => t,
+				t => EditorTemplateRoadAlignment.GetProfile(terrainInfo, roadTerrainIndex, terrainInfo.Templates[t]));
+
+			var width = area.BottomRight.X - area.TopLeft.X + 1;
+			var height = area.BottomRight.Y - area.TopLeft.Y + 1;
+			if (height > width)
+				fillAxis = FillAxis.Vertical;
+			else if (width > height)
+				fillAxis = FillAxis.Horizontal;
+			else
+				fillAxis = FillAxis.Grid;
+
+			targetRoadX = (area.TopLeft.X + area.BottomRight.X) / 2;
+			targetRoadY = (area.TopLeft.Y + area.BottomRight.Y) / 2;
 		}
 
 		public void Execute()
@@ -449,20 +473,94 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			var anchors = new List<CPos>();
 			if (mask != null)
-				anchors.AddRange(mask);
-			else
 			{
-				for (var y = area.TopLeft.Y; y <= area.BottomRight.Y; y += firstTerrainTemplate.Size.Y)
-				{
-					for (var x = area.TopLeft.X; x <= area.BottomRight.X; x += firstTerrainTemplate.Size.X)
-						anchors.Add(new CPos(x, y));
-				}
+				var maskAnchors = mask.ToList();
+				foreach (var cell in EditorFillSelection.SelectCells(maskAnchors, fillDensityPercent))
+					PaintTemplate(PickTemplate(), cell);
+				return;
 			}
 
-			foreach (var cell in EditorFillSelection.SelectCells(anchors, fillDensityPercent))
-				PaintTemplate(PickTemplate(), cell);
+			var placements = BuildContiguousPlacements();
+			var placementAnchors = new List<CPos>(placements.Count);
+			foreach (var placement in placements)
+				placementAnchors.Add(placement.Anchor);
+
+			var selected = new HashSet<CPos>(EditorFillSelection.SelectCells(placementAnchors, fillDensityPercent));
+			foreach (var (anchor, template) in placements)
+			{
+				if (selected.Contains(anchor))
+					PaintTemplate(template, anchor);
+			}
+		}
+
+		List<(CPos Anchor, ushort Template)> BuildContiguousPlacements()
+		{
+			return fillAxis switch
+			{
+				FillAxis.Vertical => BuildVerticalPlacements(),
+				FillAxis.Horizontal => BuildHorizontalPlacements(),
+				_ => BuildGridPlacements(),
+			};
+		}
+
+		List<(CPos Anchor, ushort Template)> BuildVerticalPlacements()
+		{
+			var placements = new List<(CPos, ushort)>();
+			var y = area.TopLeft.Y;
+			while (y <= area.BottomRight.Y)
+			{
+				var template = PickTemplate();
+				var terrainTemplate = terrainInfo.Templates[template];
+				var profile = roadProfiles[template];
+				var anchorX = targetRoadX - (int)Math.Round(profile.RoadCenterX);
+				placements.Add((new CPos(anchorX, y), template));
+				y += terrainTemplate.Size.Y;
+			}
+
+			return placements;
+		}
+
+		List<(CPos Anchor, ushort Template)> BuildHorizontalPlacements()
+		{
+			var placements = new List<(CPos, ushort)>();
+			var x = area.TopLeft.X;
+			while (x <= area.BottomRight.X)
+			{
+				var template = PickTemplate();
+				var terrainTemplate = terrainInfo.Templates[template];
+				var profile = roadProfiles[template];
+				var anchorY = targetRoadY - (int)Math.Round(profile.RoadCenterY);
+				placements.Add((new CPos(x, anchorY), template));
+				x += terrainTemplate.Size.X;
+			}
+
+			return placements;
+		}
+
+		List<(CPos Anchor, ushort Template)> BuildGridPlacements()
+		{
+			var placements = new List<(CPos, ushort)>();
+			var y = area.TopLeft.Y;
+			while (y <= area.BottomRight.Y)
+			{
+				var x = area.TopLeft.X;
+				var rowMaxY = 0;
+				while (x <= area.BottomRight.X)
+				{
+					var template = PickTemplate();
+					var terrainTemplate = terrainInfo.Templates[template];
+					var profile = roadProfiles[template];
+					rowMaxY = Math.Max(rowMaxY, terrainTemplate.Size.Y);
+					var anchorY = targetRoadY - (int)Math.Round(profile.RoadCenterY);
+					placements.Add((new CPos(x, anchorY), template));
+					x += terrainTemplate.Size.X;
+				}
+
+				y += Math.Max(rowMaxY, 1);
+			}
+
+			return placements;
 		}
 
 		public void Undo()
@@ -481,13 +579,36 @@ namespace OpenRA.Mods.Common.Widgets
 
 		ushort PickTemplate()
 		{
-			if (templates.Length == 1)
-				return templates[0];
+			var pool = templates;
+			if (templates.Length > 1)
+			{
+				var oriented = templates.Where(t =>
+				{
+					var profile = roadProfiles[t];
+					if (!profile.HasRoad)
+						return true;
+
+					var roadWidth = profile.MaxRoadX - profile.MinRoadX;
+					var roadHeight = profile.MaxRoadY - profile.MinRoadY;
+					return fillAxis switch
+					{
+						FillAxis.Vertical => roadHeight >= roadWidth,
+						FillAxis.Horizontal => roadWidth >= roadHeight,
+						_ => true,
+					};
+				}).ToArray();
+
+				if (oriented.Length > 0)
+					pool = oriented;
+			}
+
+			if (pool.Length == 1)
+				return pool[0];
 
 			if (mixMode == EditorAssetMixMode.Sequential)
-				return templates[nextTemplate++ % templates.Length];
+				return pool[nextTemplate++ % pool.Length];
 
-			return templates[Game.CosmeticRandom.Next(templates.Length)];
+			return pool[Game.CosmeticRandom.Next(pool.Length)];
 		}
 
 		void PaintTemplate(ushort template, CPos cellToPaint)
@@ -516,6 +637,86 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 			}
+		}
+	}
+
+	static class EditorTemplateRoadAlignment
+	{
+		public readonly struct Profile
+		{
+			public readonly float RoadCenterX;
+			public readonly float RoadCenterY;
+			public readonly int MinRoadX;
+			public readonly int MaxRoadX;
+			public readonly int MinRoadY;
+			public readonly int MaxRoadY;
+			public readonly bool HasRoad;
+
+			public Profile(
+				float roadCenterX,
+				float roadCenterY,
+				int minRoadX,
+				int maxRoadX,
+				int minRoadY,
+				int maxRoadY,
+				bool hasRoad)
+			{
+				RoadCenterX = roadCenterX;
+				RoadCenterY = roadCenterY;
+				MinRoadX = minRoadX;
+				MaxRoadX = maxRoadX;
+				MinRoadY = minRoadY;
+				MaxRoadY = maxRoadY;
+				HasRoad = hasRoad;
+			}
+		}
+
+		public static Profile GetProfile(ITemplatedTerrainInfo terrainInfo, byte roadTerrainIndex, TerrainTemplateInfo template)
+		{
+			if (template.PickAny)
+			{
+				return new Profile(0.5f, 0.5f, 0, 0, 0, 0, false);
+			}
+
+			var minRoadX = int.MaxValue;
+			var maxRoadX = int.MinValue;
+			var minRoadY = int.MaxValue;
+			var maxRoadY = int.MinValue;
+			var hasRoad = false;
+			var templateWidth = template.Size.X;
+
+			for (var i = 0; i < templateWidth * template.Size.Y; i++)
+			{
+				if (!template.Contains(i) || template[i] == null)
+					continue;
+
+				if (template[i].TerrainType != roadTerrainIndex)
+					continue;
+
+				hasRoad = true;
+				var localX = i % templateWidth;
+				var localY = i / templateWidth;
+				minRoadX = Math.Min(minRoadX, localX);
+				maxRoadX = Math.Max(maxRoadX, localX);
+				minRoadY = Math.Min(minRoadY, localY);
+				maxRoadY = Math.Max(maxRoadY, localY);
+			}
+
+			if (!hasRoad)
+			{
+				var centerX = (template.Size.X - 1) / 2f;
+				var centerY = (template.Size.Y - 1) / 2f;
+				return new Profile(centerX, centerY, 0, template.Size.X - 1, 0, template.Size.Y - 1, false);
+			}
+
+			return new Profile(
+				(minRoadX + maxRoadX) / 2f,
+				(minRoadY + maxRoadY) / 2f,
+				minRoadX,
+				maxRoadX,
+				minRoadY,
+				maxRoadY,
+				true);
 		}
 	}
 

@@ -73,6 +73,7 @@ label-editor-mix-mode-sequential = Sequential
 label-editor-fill-space = Space:
 label-editor-fill-mode-overlap = Overlap
 label-editor-fill-mode-delete = Delete
+label-editor-preview-border = Border
 label-filter-terrain = Terrain
 label-filter-resources = Resources
 label-filter-actors = Actors
@@ -157,6 +158,20 @@ button-select-categories-buttons-none = None
 
 label-tool-marker-tiles = Marker Tiles
 label-tool-tiling-path = Path Tiler
+label-tool-move = Move
+
+checkbox-move-tool-enabled = Enable Move
+label-move-tool-disabled = Move tool is off. Enable it above to reposition the current selection.
+label-move-tool-no-selection = Select an area on the map to move.
+label-move-tool-ready = Use W A S D to move the preview. Enter or Place to apply.
+label-move-tool-offset = Offset: { $x }, { $y }. Enter or Place to apply.
+label-move-tool-help = Moves tiles, resources, and actors together. Reset Offset snaps the preview back to the original position without placing anything.
+
+button-move-tool-place = Place
+button-move-tool-reset = Reset Offset
+
+button-move-tool-place-tooltip = Apply the move (Enter)
+button-move-tool-reset-tooltip = Cancel the preview shift and return to the original position. Nothing is changed on the map until you Place.
 
 ## gamesave-browser.yaml
 label-gamesave-browser-panel-load-title = Load game

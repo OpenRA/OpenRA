@@ -99,6 +99,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("EXTRAS_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
+			Func<bool> modLogoVisible = () => menuType != MenuType.StartupPrompts;
+
+			var menuLogo = widget.GetOrNull<ImageWidget>("LOGO");
+			if (menuLogo != null)
+				menuLogo.IsVisible = modLogoVisible;
+
+			var versionLabel = widget.GetOrNull<LabelWidget>("VERSION_LABEL");
+			if (versionLabel != null)
+				versionLabel.IsVisible = modLogoVisible;
+
+			var shockwaveLogo = widget.GetOrNull<ImageWidget>("SHOCKWAVE_LOGO");
+			if (shockwaveLogo != null)
+				shockwaveLogo.IsVisible = modLogoVisible;
+
+			var mapEditorShortcut = widget.GetOrNull<ButtonWidget>("MAP_EDITOR_SHORTCUT_BUTTON");
+			if (mapEditorShortcut != null)
+			{
+				mapEditorShortcut.IsVisible = modLogoVisible;
+				mapEditorShortcut.OnClick = () =>
+				{
+					if (menuType == MenuType.None)
+						Ui.CloseWindow();
+					SwitchMenu(MenuType.MapEditor);
+				};
+			}
+
 			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
 			// Singleplayer menu

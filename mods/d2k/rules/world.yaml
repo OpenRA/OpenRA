@@ -280,6 +280,7 @@ EditorWorld:
 	TemplateBoundsOverlay:
 	ActorBoundsOverlay:
 	MarkerLayerOverlay:
+	MoveTool:
 	TilingPathTool:
 		DefaultStart: RockSmooth
 		DefaultInner: RockSmooth

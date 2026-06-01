@@ -29,6 +29,22 @@ Container@MAINMENU:
 			Align: Center
 			Font: Regular
 			Shadow: true
+		Button@MAP_EDITOR_SHORTCUT_BUTTON:
+			X: WINDOW_WIDTH - 34 - 25
+			Y: WINDOW_HEIGHT - 34 - 20 - 10
+			Width: 34
+			Height: 34
+			Children:
+				Image@ICON:
+					X: 1
+					Y: 1
+					ImageCollection: worldmap-icon
+					ImageName: icon
+		Image@SHOCKWAVE_LOGO:
+			X: 25
+			Y: WINDOW_HEIGHT - 54 - 20 - 10
+			ImageCollection: shockwave-logo
+			ImageName: logo
 		Container@MENUS:
 			X: 13 + (WINDOW_WIDTH - 522) / 4 - WIDTH / 2
 			Y: WINDOW_HEIGHT / 2 - HEIGHT / 2

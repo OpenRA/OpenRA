@@ -75,6 +75,7 @@ label-editor-mix-mode-sequential = Sequential
 label-editor-fill-space = Space:
 label-editor-fill-mode-overlap = Overlap
 label-editor-fill-mode-delete = Delete
+label-editor-preview-border = Border
 label-filter-terrain = Terrain
 label-filter-resources = Resources
 label-filter-actors = Actors

@@ -227,6 +227,7 @@ Container@EDITOR_WORLD_ROOT:
 		ToggleActorsOverlayKey: EditorToggleActorsOverlay
 	Children:
 		LogicKeyListener@OVERLAY_KEYHANDLER:
+		LogicKeyListener@MOVE_KEYHANDLER:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
 			Width: WINDOW_WIDTH
@@ -603,6 +604,12 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 22
 									Font: TinyBold
 									Text: label-tile-preview-original
+								Label@SELECTION_ASSET_SIZE_LABEL_TEMPLATE:
+									Visible: false
+									Width: 36
+									Height: 16
+									Font: TinyBold
+									Align: Right
 								Background@SELECTION_ASSET_PREVIEW_BOX:
 									X: (PARENT_WIDTH - 148) / 2
 									Y: 110
@@ -610,6 +617,10 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 148
 									Background: dialog3
 									Children:
+										EditorSelectionPreviewGrid@SELECTION_ASSET_PREVIEW_GRID:
+											Width: PARENT_WIDTH
+											Height: PARENT_HEIGHT
+											Visible: false
 										EditorBlitPreview@SELECTION_CLIPBOARD_PREVIEW:
 											Width: PARENT_WIDTH
 											Height: PARENT_HEIGHT
@@ -620,6 +631,17 @@ Container@EDITOR_WORLD_ROOT:
 											Visible: false
 										ResourcePreview@SELECTION_RESOURCE_PREVIEW:
 											Visible: false
+										EditorSelectionPreviewBorder@SELECTION_ASSET_PREVIEW_BORDER:
+											Width: PARENT_WIDTH
+											Height: PARENT_HEIGHT
+											Visible: false
+								Checkbox@SELECTION_PREVIEW_BORDER_CHECKBOX:
+									X: (PARENT_WIDTH - 148) / 2
+									Y: 262
+									Width: 148
+									Height: 20
+									Text: label-editor-preview-border
+									Visible: false
 						Label@AREA_FILTERS_LABEL:
 							X: 7
 							Y: 339
@@ -1416,3 +1438,50 @@ ScrollPanel@TILING_PATH_TOOL_PANEL:
 			Width: PARENT_WIDTH - 35
 			Height: 25
 			Text: button-tiling-path-paint
+
+ScrollPanel@MOVE_TOOL_PANEL:
+	X: 10
+	Y: 35
+	Width: PARENT_WIDTH - 20
+	Height: WINDOW_HEIGHT - 490
+	TopBottomSpacing: 5
+	ItemSpacing: 5
+	Background: scrollpanel-bg
+	Visible: false
+	Logic: MoveToolLogic
+	Children:
+		Checkbox@ENABLE_CHECKBOX:
+			X: 5
+			Y: 10
+			Width: PARENT_WIDTH - 35
+			Height: 25
+			Text: checkbox-move-tool-enabled
+		Label@STATUS_LABEL:
+			X: 5
+			Y: 40
+			Width: PARENT_WIDTH - 35
+			Height: 40
+			Align: Left
+			Text: label-move-tool-no-selection
+		Label@HELP_LABEL:
+			X: 5
+			Y: 85
+			Width: PARENT_WIDTH - 35
+			Height: 40
+			Align: Left
+			Text: label-move-tool-help
+		Button@PLACE_BUTTON:
+			X: 5
+			Y: 135
+			Width: PARENT_WIDTH - 35
+			Height: 25
+			Text: button-move-tool-place
+			TooltipText: button-move-tool-place-tooltip
+			Font: Bold
+		Button@RESET_BUTTON:
+			X: 5
+			Y: 165
+			Width: PARENT_WIDTH - 35
+			Height: 25
+			Text: button-move-tool-reset
+			TooltipText: button-move-tool-reset-tooltip

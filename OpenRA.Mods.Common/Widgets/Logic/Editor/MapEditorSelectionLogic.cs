@@ -19,6 +19,7 @@ using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -45,6 +46,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		const int SelectionPreviewBoxSize = 148;
 		const float SelectionPreviewImageScale = 0.8f;
+		const int SelectionAssetSizeLabelWidth = 36;
+		const int SelectionAssetSizeLabelHeight = 16;
+		const int SelectionAssetSizeLabelGap = 4;
 
 		readonly EditorViewportControllerWidget editor;
 		readonly Map map;
@@ -62,11 +66,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ActorPreviewWidget selectedActorPreview;
 		readonly ResourcePreviewWidget selectedResourcePreview;
 		readonly EditorBlitPreviewWidget clipboardPreview;
+		readonly EditorSelectionPreviewGridWidget previewGridWidget;
+		readonly EditorSelectionPreviewBorderWidget previewBorderWidget;
 		readonly LabelWidget selectedPreviewLabel;
 		readonly Widget selectedPreviewPanel;
 		readonly Widget selectedAssetPreviewBox;
 		readonly WorldRenderer worldRenderer;
 		readonly List<Widget> multiPreviewWidgets = [];
+		readonly LabelWidget assetSizeLabelTemplate;
+		readonly List<LabelWidget> assetSizeLabels = [];
+		readonly int maxTemplateCellSpan;
+		PreviewCellLayout? currentPreviewLayout;
+		bool previewBordersEnabled = true;
 		MapBlitFilters selectionFilters = MapBlitFilters.All;
 		CellCoordsRegion? cachedPreviewRegion;
 		MapBlitFilters cachedPreviewFilters;
@@ -138,6 +149,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ResourceCounterLabel = areaEditPanel.Get<LabelWidget>("RESOURCES_COUNTER_LABEL");
 			selectedPreviewPanel = areaEditPanel.Get("SELECTION_PREVIEW_PANEL");
 			selectedAssetPreviewBox = selectedPreviewPanel.Get("SELECTION_ASSET_PREVIEW_BOX");
+			previewGridWidget = selectedAssetPreviewBox.Get<EditorSelectionPreviewGridWidget>("SELECTION_ASSET_PREVIEW_GRID");
+			previewGridWidget.IsVisible = () => false;
+			previewBorderWidget = selectedAssetPreviewBox.Get<EditorSelectionPreviewBorderWidget>("SELECTION_ASSET_PREVIEW_BORDER");
+			previewBorderWidget.IsVisible = () => false;
+			maxTemplateCellSpan = ComputeMaxTemplateCellSpan();
+			assetSizeLabelTemplate = selectedPreviewPanel.GetOrNull<LabelWidget>("SELECTION_ASSET_SIZE_LABEL_TEMPLATE");
 			selectedPreviewLabel = selectedPreviewPanel.Get<LabelWidget>("SELECTION_PREVIEW_LABEL");
 			selectedTilePreview = selectedAssetPreviewBox.Get<TerrainTemplatePreviewWidget>("SELECTION_TILE_PREVIEW");
 			selectedActorPreview = selectedAssetPreviewBox.Get<ActorPreviewWidget>("SELECTION_ACTOR_PREVIEW");
@@ -191,6 +208,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			fillModeSlider.Ticks = 2;
 			fillModeSlider.GetValue = () => editor.AssetFillMode == EditorFillMode.Delete ? 1 : 0;
 			fillModeSlider.OnChange += value => editor.SetAssetFillMode(value >= 0.5f ? EditorFillMode.Delete : EditorFillMode.Overlap);
+
+			var showPreviewBorderToggle = () => HasMultiAssetSelection()
+				&& !ShowTilePlacementPreviewControls() && !ShowActorOverlayPreview()
+				&& editor.CurrentBrush is EditorTileBrush or EditorActorBrush;
+
+			var previewBorderCheckbox = selectedPreviewPanel.GetOrNull<CheckboxWidget>("SELECTION_PREVIEW_BORDER_CHECKBOX");
+			if (previewBorderCheckbox != null)
+			{
+				previewBorderCheckbox.IsVisible = showPreviewBorderToggle;
+				previewBorderCheckbox.IsChecked = () => previewBordersEnabled;
+				previewBorderCheckbox.OnClick = () =>
+				{
+					previewBordersEnabled ^= true;
+					ApplyPreviewBorders();
+				};
+			}
 
 			var deleteAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_DELETE_BUTTON");
 			deleteAreaSelectionButton.OnClick = () =>
@@ -454,63 +487,120 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void UpdateSelectedPreview()
 		{
 			ClearMultiPreview();
+			ClearAssetSizeLabels();
 			LayoutClipboardPreview();
+			HideAssetPreviews();
+			HidePreviewGrid();
+
+			var cellSizes = GetSelectedAssetCellSizes();
+			if (cellSizes.Count == 0)
+			{
+				currentPreviewLayout = null;
+				ApplyPreviewBorders();
+				return;
+			}
+
+			LayoutAssetPreviews(cellSizes);
+			UpdateAssetSizeLabels(cellSizes);
+		}
+
+		void HideAssetPreviews()
+		{
+			selectedTilePreview.IsVisible = () => false;
+			selectedActorPreview.IsVisible = () => false;
+			selectedResourcePreview.IsVisible = () => false;
+		}
+
+		void HidePreviewGrid()
+		{
+			previewGridWidget.IsVisible = () => false;
+			previewGridWidget.GridWidth = 0;
+			previewGridWidget.GridHeight = 0;
+		}
+
+		void HidePreviewBorders()
+		{
+			previewBorderWidget.Clear();
+			previewBorderWidget.IsVisible = () => false;
+		}
+
+		void LayoutAssetPreviews(IReadOnlyList<CVec> cellSizes)
+		{
+			var layout = ComputePreviewCellLayout(cellSizes, FullAssetPreviewBounds());
+			currentPreviewLayout = layout;
+			UpdatePreviewGrid(layout);
+
 			if (editor.CurrentBrush is EditorTileBrush tileBrush)
-			{
-				if (tileBrush.Templates.Length > 1)
-				{
-					ShowTileMultiPreview(tileBrush);
-					selectedTilePreview.IsVisible = () => false;
-				}
-				else
-				{
-					selectedTilePreview.SetTemplate(tileBrush.TerrainTemplate);
-					ScaleTerrainPreview();
-					selectedTilePreview.IsVisible = () => true;
-				}
-
-				selectedActorPreview.IsVisible = () => false;
-				selectedResourcePreview.IsVisible = () => false;
-			}
+				LayoutTilePreviews(tileBrush, layout);
 			else if (editor.CurrentBrush is EditorActorBrush actorBrush)
-			{
-				if (actorBrush.Actors.Length > 1)
-				{
-					ShowActorMultiPreview(actorBrush);
-					selectedActorPreview.IsVisible = () => false;
-				}
-				else
-				{
-					selectedActorPreview.SetPreview(actorBrush.Preview.Export());
-					ScaleActorPreview();
-					selectedActorPreview.IsVisible = () => true;
-				}
-
-				selectedTilePreview.IsVisible = () => false;
-				selectedResourcePreview.IsVisible = () => false;
-			}
+				LayoutActorPreviews(actorBrush, layout);
 			else if (editor.CurrentBrush is EditorResourceBrush resourceBrush)
-			{
-				selectedResourcePreview.SetResourceType(resourceBrush.ResourceType);
-				ScaleResourcePreview();
-				selectedResourcePreview.IsVisible = () => true;
-				selectedTilePreview.IsVisible = () => false;
-				selectedActorPreview.IsVisible = () => false;
-			}
+				LayoutResourcePreview(resourceBrush, layout);
 			else if (ShowActorOverlayPreview())
+				LayoutSingleActorPreview(editor.DefaultBrush.Selection.Actor.Export(), layout);
+
+			ApplyPreviewBorders();
+			EnsureBorderWidgetOnTop();
+		}
+
+		void LayoutTilePreviews(EditorTileBrush tileBrush, PreviewCellLayout layout)
+		{
+			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			if (tileBrush.Templates.Length == 1)
 			{
-				selectedActorPreview.SetPreview(editor.DefaultBrush.Selection.Actor.Export());
-				ScaleActorPreview();
-				selectedActorPreview.IsVisible = () => ShowActorOverlayPreview();
-				selectedTilePreview.IsVisible = () => false;
-				selectedResourcePreview.IsVisible = () => false;
+				selectedTilePreview.SetTemplate(tileBrush.TerrainTemplate);
+				LayoutTerrainPreview(selectedTilePreview, ItemPixelBounds(layout, 0));
+				selectedTilePreview.IsVisible = () => true;
+				return;
 			}
-			else
+
+			var templates = tileBrush.Templates.Select(t => terrainInfo.Templates[t]).ToArray();
+			for (var i = 0; i < templates.Length; i++)
 			{
-				selectedTilePreview.IsVisible = () => false;
-				selectedActorPreview.IsVisible = () => false;
-				selectedResourcePreview.IsVisible = () => false;
+				var preview = selectedTilePreview.Clone();
+				preview.SetTemplate(templates[i]);
+				LayoutTerrainPreview(preview, ItemPixelBounds(layout, i));
+				preview.IsVisible = () => true;
+				multiPreviewWidgets.Add(preview);
+				selectedAssetPreviewBox.AddChild(preview);
 			}
+		}
+
+		void LayoutActorPreviews(EditorActorBrush actorBrush, PreviewCellLayout layout)
+		{
+			if (actorBrush.Actors.Length == 1)
+			{
+				selectedActorPreview.SetPreview(actorBrush.Preview.Export());
+				LayoutActorPreview(selectedActorPreview, ItemPixelBounds(layout, 0));
+				selectedActorPreview.IsVisible = () => true;
+				return;
+			}
+
+			var references = actorBrush.ActorReferences.Select(a => a.Clone()).ToArray();
+			for (var i = 0; i < references.Length; i++)
+			{
+				var preview = selectedActorPreview.Clone();
+				preview.SetPreview(references[i]);
+				LayoutActorPreview(preview, ItemPixelBounds(layout, i));
+				preview.PrepareRenderables();
+				preview.IsVisible = () => true;
+				multiPreviewWidgets.Add(preview);
+				selectedAssetPreviewBox.AddChild(preview);
+			}
+		}
+
+		void LayoutSingleActorPreview(ActorReference actor, PreviewCellLayout layout)
+		{
+			selectedActorPreview.SetPreview(actor);
+			LayoutActorPreview(selectedActorPreview, ItemPixelBounds(layout, 0));
+			selectedActorPreview.IsVisible = () => ShowActorOverlayPreview();
+		}
+
+		void LayoutResourcePreview(EditorResourceBrush resourceBrush, PreviewCellLayout layout)
+		{
+			selectedResourcePreview.SetResourceType(resourceBrush.ResourceType);
+			LayoutResourcePreview(selectedResourcePreview, ItemPixelBounds(layout, 0));
+			selectedResourcePreview.IsVisible = () => true;
 		}
 
 		void ShowMixModeDropDown(DropDownButtonWidget dropDown)
@@ -573,38 +663,336 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			multiPreviewWidgets.Clear();
 		}
 
-		void ShowTileMultiPreview(EditorTileBrush tileBrush)
+		void ClearAssetSizeLabels()
 		{
-			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
-			var bounds = MultiPreviewBounds();
-			var previews = tileBrush.Templates.Select(t => terrainInfo.Templates[t]).ToArray();
+			foreach (var label in assetSizeLabels)
+				selectedPreviewPanel.RemoveChild(label);
 
-			for (var i = 0; i < previews.Length; i++)
+			assetSizeLabels.Clear();
+		}
+
+		void UpdateAssetSizeLabels(IReadOnlyList<CVec> cellSizes)
+		{
+			if (assetSizeLabelTemplate == null || cellSizes.Count == 0)
+				return;
+
+			var previewBounds = selectedAssetPreviewBox.Bounds;
+			var labelX = previewBounds.X - SelectionAssetSizeLabelWidth - SelectionAssetSizeLabelGap;
+
+			for (var i = 0; i < cellSizes.Count; i++)
 			{
-				var preview = selectedTilePreview.Clone();
-				preview.SetTemplate(previews[i]);
-				preview.Scale = LayoutPreviewInGridCell(preview, preview.IdealPreviewSize, MultiPreviewCell(i, previews.Length, bounds));
-				preview.IsVisible = () => true;
-				multiPreviewWidgets.Add(preview);
-				selectedAssetPreviewBox.AddChild(preview);
+				var sizeText = DimensionsAsString(new CPos(cellSizes[i].X, cellSizes[i].Y));
+				var label = assetSizeLabelTemplate.Clone();
+				label.GetText = () => sizeText;
+				label.Bounds.X = labelX;
+				label.Bounds.Y = previewBounds.Y + i * SelectionAssetSizeLabelHeight;
+				label.Bounds.Width = SelectionAssetSizeLabelWidth;
+				label.Bounds.Height = SelectionAssetSizeLabelHeight;
+				label.IsVisible = () => true;
+				assetSizeLabels.Add(label);
+				selectedPreviewPanel.AddChild(label);
 			}
 		}
 
-		void ShowActorMultiPreview(EditorActorBrush actorBrush)
+		IReadOnlyList<CVec> GetSelectedAssetCellSizes()
 		{
-			var previews = actorBrush.ActorReferences.Select(a => a.Clone()).ToArray();
-			var bounds = MultiPreviewBounds();
-
-			for (var i = 0; i < previews.Length; i++)
+			if (editor.CurrentBrush is EditorTileBrush tileBrush)
 			{
-				var preview = selectedActorPreview.Clone();
-				preview.SetPreview(previews[i]);
-				preview.Scale = LayoutPreviewInGridCell(preview, preview.IdealPreviewSize, MultiPreviewCell(i, previews.Length, bounds));
-				preview.PrepareRenderables();
-				preview.IsVisible = () => true;
-				multiPreviewWidgets.Add(preview);
-				selectedAssetPreviewBox.AddChild(preview);
+				var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+				return tileBrush.Templates
+					.Select(t => TileTemplateCellSize(terrainInfo.Templates[t]))
+					.ToArray();
 			}
+
+			if (editor.CurrentBrush is EditorActorBrush actorBrush)
+				return actorBrush.Actors.Select(ActorCellSize).ToArray();
+
+			if (editor.CurrentBrush is EditorResourceBrush)
+				return [new CVec(1, 1)];
+
+			if (ShowActorOverlayPreview())
+				return [ActorCellSize(editor.DefaultBrush.Selection.Actor.Info)];
+
+			return [];
+		}
+
+		int ComputeMaxTemplateCellSpan()
+		{
+			if (map.Rules.TerrainInfo is not ITemplatedTerrainInfo terrainInfo)
+				return 1;
+
+			var max = 1;
+			foreach (var template in terrainInfo.Templates.Values)
+			{
+				if (template.PickAny)
+					continue;
+
+				max = Math.Max(max, Math.Max(template.Size.X, template.Size.Y));
+			}
+
+			return max;
+		}
+
+		static CVec TileTemplateCellSize(TerrainTemplateInfo template)
+		{
+			if (template.PickAny)
+				return new CVec(1, 1);
+
+			return new CVec(template.Size.X, template.Size.Y);
+		}
+
+		static CVec ActorCellSize(ActorInfo actorInfo)
+		{
+			var buildingInfo = actorInfo.TraitInfoOrDefault<BuildingInfo>();
+			if (buildingInfo != null)
+				return buildingInfo.Dimensions;
+
+			var occupySpaceInfo = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
+			if (occupySpaceInfo == null)
+				return new CVec(1, 1);
+
+			var cells = occupySpaceInfo.OccupiedCells(actorInfo, default, SubCell.Any).Keys;
+			if (!cells.Any())
+				return new CVec(1, 1);
+
+			var minX = cells.Min(c => c.X);
+			var maxX = cells.Max(c => c.X);
+			var minY = cells.Min(c => c.Y);
+			var maxY = cells.Max(c => c.Y);
+			return new CVec(maxX - minX + 1, maxY - minY + 1);
+		}
+
+		readonly struct PreviewCellLayout
+		{
+			public readonly int GridWidth;
+			public readonly int GridHeight;
+			public readonly int CellPixelSize;
+			public readonly int OriginX;
+			public readonly int OriginY;
+			public readonly CVec[] ItemCellOrigins;
+			public readonly CVec[] ItemCellSizes;
+
+			public PreviewCellLayout(
+				int gridWidth,
+				int gridHeight,
+				int cellPixelSize,
+				int originX,
+				int originY,
+				CVec[] itemCellOrigins,
+				CVec[] itemCellSizes)
+			{
+				GridWidth = gridWidth;
+				GridHeight = gridHeight;
+				CellPixelSize = cellPixelSize;
+				OriginX = originX;
+				OriginY = originY;
+				ItemCellOrigins = itemCellOrigins;
+				ItemCellSizes = itemCellSizes;
+			}
+		}
+
+		PreviewCellLayout ComputePreviewCellLayout(IReadOnlyList<CVec> itemCellSizes, Rectangle bounds)
+		{
+			if (itemCellSizes.Count == 1)
+			{
+				var span = maxTemplateCellSpan;
+				var cellPixelSize = Math.Max(1, Math.Min(bounds.Width, bounds.Height) / span);
+				var gridPixelSize = span * cellPixelSize;
+				return new PreviewCellLayout(
+					span,
+					span,
+					cellPixelSize,
+					bounds.X + (bounds.Width - gridPixelSize) / 2,
+					bounds.Y + (bounds.Height - gridPixelSize) / 2,
+					[new CVec(0, 0)],
+					[itemCellSizes[0]]);
+			}
+
+			var count = itemCellSizes.Count;
+			var columns = MultiPreviewColumns(count);
+			var rows = (count + columns - 1) / columns;
+			var columnWidths = new int[columns];
+			var rowHeights = new int[rows];
+
+			for (var i = 0; i < count; i++)
+			{
+				columnWidths[i % columns] = Math.Max(columnWidths[i % columns], itemCellSizes[i].X);
+				rowHeights[i / columns] = Math.Max(rowHeights[i / columns], itemCellSizes[i].Y);
+			}
+
+			var gridWidth = columnWidths.Sum();
+			var gridHeight = rowHeights.Sum();
+			var multiCellPixelSize = Math.Max(1, Math.Min(bounds.Width / gridWidth, bounds.Height / gridHeight));
+			var multiGridPixelWidth = gridWidth * multiCellPixelSize;
+			var multiGridPixelHeight = gridHeight * multiCellPixelSize;
+			var originX = bounds.X + (bounds.Width - multiGridPixelWidth) / 2;
+			var originY = bounds.Y + (bounds.Height - multiGridPixelHeight) / 2;
+
+			var columnStarts = new int[columns];
+			var rowStarts = new int[rows];
+			for (var c = 1; c < columns; c++)
+				columnStarts[c] = columnStarts[c - 1] + columnWidths[c - 1];
+			for (var r = 1; r < rows; r++)
+				rowStarts[r] = rowStarts[r - 1] + rowHeights[r - 1];
+
+			var itemCellOrigins = new CVec[count];
+			for (var i = 0; i < count; i++)
+				itemCellOrigins[i] = new CVec(columnStarts[i % columns], rowStarts[i / columns]);
+
+			return new PreviewCellLayout(
+				gridWidth,
+				gridHeight,
+				multiCellPixelSize,
+				originX,
+				originY,
+				itemCellOrigins,
+				itemCellSizes.ToArray());
+		}
+
+		void UpdatePreviewGrid(PreviewCellLayout layout)
+		{
+			previewGridWidget.Bounds.X = layout.OriginX;
+			previewGridWidget.Bounds.Y = layout.OriginY;
+			previewGridWidget.Bounds.Width = layout.GridWidth * layout.CellPixelSize;
+			previewGridWidget.Bounds.Height = layout.GridHeight * layout.CellPixelSize;
+			previewGridWidget.GridWidth = layout.GridWidth;
+			previewGridWidget.GridHeight = layout.GridHeight;
+			previewGridWidget.IsVisible = () => true;
+		}
+
+		void ApplyPreviewBorders()
+		{
+			HidePreviewBorders();
+
+			if (!previewBordersEnabled || !HasMultiAssetSelection() || currentPreviewLayout is not PreviewCellLayout layout)
+				return;
+
+			var regions = BuildPreviewBorderCellRegions(layout);
+			if (regions.Count == 0)
+				return;
+
+			previewBorderWidget.OriginX = layout.OriginX;
+			previewBorderWidget.OriginY = layout.OriginY;
+			previewBorderWidget.CellPixelSize = layout.CellPixelSize;
+			previewBorderWidget.CellRegions = regions;
+			previewBorderWidget.IsVisible = () => previewBordersEnabled && HasMultiAssetSelection();
+		}
+
+		void EnsureBorderWidgetOnTop()
+		{
+			selectedAssetPreviewBox.RemoveChild(previewBorderWidget);
+			selectedAssetPreviewBox.AddChild(previewBorderWidget);
+		}
+
+		List<CVec[]> BuildPreviewBorderCellRegions(PreviewCellLayout layout)
+		{
+			var regions = new List<CVec[]>();
+
+			if (editor.CurrentBrush is EditorTileBrush tileBrush)
+			{
+				var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+				for (var i = 0; i < tileBrush.Templates.Length; i++)
+				{
+					var template = terrainInfo.Templates[tileBrush.Templates[i]];
+					regions.Add(TemplatePreviewCells(template, layout.ItemCellOrigins[i]));
+				}
+			}
+			else if (editor.CurrentBrush is EditorActorBrush actorBrush)
+			{
+				for (var i = 0; i < actorBrush.Actors.Length; i++)
+					regions.Add(ActorPreviewCells(actorBrush.Actors[i], layout.ItemCellOrigins[i]));
+			}
+
+			return regions;
+		}
+
+		static CVec[] TemplatePreviewCells(TerrainTemplateInfo template, CVec gridOrigin)
+		{
+			if (template.PickAny)
+				return [gridOrigin];
+
+			var templateWidth = template.Size.X;
+			var cells = new List<CVec>();
+			for (byte i = 0; i < templateWidth * template.Size.Y; i++)
+			{
+				if (!template.Contains(i) || template[i] == null)
+					continue;
+
+				cells.Add(gridOrigin + new CVec(i % templateWidth, i / templateWidth));
+			}
+
+			return cells.Count > 0 ? cells.ToArray() : [gridOrigin];
+		}
+
+		static CVec[] ActorPreviewCells(ActorInfo actorInfo, CVec gridOrigin)
+		{
+			var buildingInfo = actorInfo.TraitInfoOrDefault<BuildingInfo>();
+			if (buildingInfo != null)
+			{
+				return buildingInfo.Footprint
+					.Where(kv => kv.Value != FootprintCellType.Empty)
+					.Select(kv => gridOrigin + kv.Key)
+					.ToArray();
+			}
+
+			var occupySpaceInfo = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
+			if (occupySpaceInfo == null)
+				return [gridOrigin];
+
+			var cells = occupySpaceInfo.OccupiedCells(actorInfo, default, SubCell.Any).Keys;
+			if (!cells.Any())
+				return [gridOrigin];
+
+			var minX = cells.Min(c => c.X);
+			var minY = cells.Min(c => c.Y);
+			return cells.Select(c => gridOrigin + new CVec(c.X - minX, c.Y - minY)).ToArray();
+		}
+
+		static Rectangle ItemPixelBounds(PreviewCellLayout layout, int index)
+		{
+			var origin = layout.ItemCellOrigins[index];
+			var size = layout.ItemCellSizes[index];
+			return new Rectangle(
+				layout.OriginX + origin.X * layout.CellPixelSize,
+				layout.OriginY + origin.Y * layout.CellPixelSize,
+				size.X * layout.CellPixelSize,
+				size.Y * layout.CellPixelSize);
+		}
+
+		static Rectangle FullAssetPreviewBounds()
+		{
+			return new Rectangle(0, 0, SelectionPreviewBoxSize, SelectionPreviewBoxSize);
+		}
+
+		void LayoutTerrainPreview(TerrainTemplatePreviewWidget preview, Rectangle pixelBounds)
+		{
+			var scale = PreviewScale(preview.IdealPreviewSize, pixelBounds.Width, pixelBounds.Height);
+			preview.Scale = scale;
+			preview.Bounds.X = pixelBounds.X;
+			preview.Bounds.Y = pixelBounds.Y;
+			preview.Bounds.Width = pixelBounds.Width;
+			preview.Bounds.Height = pixelBounds.Height;
+		}
+
+		void LayoutActorPreview(ActorPreviewWidget preview, Rectangle pixelBounds)
+		{
+			var scale = PreviewScale(preview.IdealPreviewSize, pixelBounds.Width, pixelBounds.Height);
+			preview.Scale = scale;
+			preview.Bounds.X = pixelBounds.X;
+			preview.Bounds.Y = pixelBounds.Y;
+			preview.Bounds.Width = pixelBounds.Width;
+			preview.Bounds.Height = pixelBounds.Height;
+			preview.PrepareRenderables();
+		}
+
+		void LayoutResourcePreview(ResourcePreviewWidget preview, Rectangle pixelBounds)
+		{
+			var idealSize = new int2(preview.IdealPreviewSize.Width, preview.IdealPreviewSize.Height);
+			preview.Scale = PreviewScale(idealSize, pixelBounds.Width, pixelBounds.Height);
+			preview.Bounds.X = pixelBounds.X;
+			preview.Bounds.Y = pixelBounds.Y;
+			preview.Bounds.Width = pixelBounds.Width;
+			preview.Bounds.Height = pixelBounds.Height;
 		}
 
 		Rectangle AssetPreviewContentBounds()
@@ -612,11 +1000,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var inset = (int)Math.Round(SelectionPreviewBoxSize * (1 - SelectionPreviewImageScale) / 2);
 			var contentSize = SelectionPreviewBoxSize - 2 * inset;
 			return new Rectangle(inset, inset, contentSize, contentSize);
-		}
-
-		Rectangle MultiPreviewBounds()
-		{
-			return AssetPreviewContentBounds();
 		}
 
 		void LayoutClipboardPreview()
@@ -631,66 +1014,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static int MultiPreviewColumns(int count)
 		{
 			return Math.Max(1, (int)Math.Ceiling(Math.Sqrt(count)));
-		}
-
-		static Rectangle MultiPreviewCell(int index, int count, Rectangle bounds)
-		{
-			var columns = MultiPreviewColumns(count);
-			var rows = (count + columns - 1) / columns;
-			var width = bounds.Width / columns;
-			var height = bounds.Height / rows;
-
-			return new Rectangle(
-				bounds.X + index % columns * width,
-				bounds.Y + index / columns * height,
-				width,
-				height);
-		}
-
-		static float LayoutPreviewInGridCell(Widget preview, int2 idealSize, Rectangle cell)
-		{
-			var scale = PreviewScale(idealSize, cell.Width, cell.Height);
-			var width = Math.Max(1, (int)(scale * idealSize.X));
-			var height = Math.Max(1, (int)(scale * idealSize.Y));
-			preview.Bounds.X = cell.X + (cell.Width - width) / 2;
-			preview.Bounds.Y = cell.Y + (cell.Height - height) / 2;
-			preview.Bounds.Width = width;
-			preview.Bounds.Height = height;
-			return scale;
-		}
-
-		void ScaleTerrainPreview()
-		{
-			var bounds = MultiPreviewBounds();
-			var scale = PreviewScale(selectedTilePreview.IdealPreviewSize, bounds.Width, bounds.Height);
-			selectedTilePreview.Scale = scale;
-			selectedTilePreview.Bounds.Width = (int)(scale * selectedTilePreview.IdealPreviewSize.X);
-			selectedTilePreview.Bounds.Height = (int)(scale * selectedTilePreview.IdealPreviewSize.Y);
-			selectedTilePreview.Bounds.X = bounds.X + (bounds.Width - selectedTilePreview.Bounds.Width) / 2;
-			selectedTilePreview.Bounds.Y = bounds.Y + (bounds.Height - selectedTilePreview.Bounds.Height) / 2;
-		}
-
-		void ScaleActorPreview()
-		{
-			var bounds = MultiPreviewBounds();
-			var scale = PreviewScale(selectedActorPreview.IdealPreviewSize, bounds.Width, bounds.Height);
-			selectedActorPreview.Scale = scale;
-			selectedActorPreview.Bounds.Width = (int)(scale * selectedActorPreview.IdealPreviewSize.X);
-			selectedActorPreview.Bounds.Height = (int)(scale * selectedActorPreview.IdealPreviewSize.Y);
-			selectedActorPreview.Bounds.X = bounds.X + (bounds.Width - selectedActorPreview.Bounds.Width) / 2;
-			selectedActorPreview.Bounds.Y = bounds.Y + (bounds.Height - selectedActorPreview.Bounds.Height) / 2;
-		}
-
-		void ScaleResourcePreview()
-		{
-			var bounds = MultiPreviewBounds();
-			var idealSize = new int2(selectedResourcePreview.IdealPreviewSize.Width, selectedResourcePreview.IdealPreviewSize.Height);
-			var scale = PreviewScale(idealSize, bounds.Width, bounds.Height);
-			selectedResourcePreview.Scale = scale;
-			selectedResourcePreview.Bounds.Width = (int)(scale * selectedResourcePreview.IdealPreviewSize.Width);
-			selectedResourcePreview.Bounds.Height = (int)(scale * selectedResourcePreview.IdealPreviewSize.Height);
-			selectedResourcePreview.Bounds.X = bounds.X + (bounds.Width - selectedResourcePreview.Bounds.Width) / 2;
-			selectedResourcePreview.Bounds.Y = bounds.Y + (bounds.Height - selectedResourcePreview.Bounds.Height) / 2;
 		}
 
 		static float PreviewScale(int2 idealSize, int maxWidth, int maxHeight)

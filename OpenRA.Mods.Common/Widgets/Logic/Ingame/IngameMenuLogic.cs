@@ -119,6 +119,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string ExitMapEditorConfirm = "dialog-exit-map-editor.confirm";
 
 		[FluentReference]
+		const string ExitMapEditorSave = "dialog-exit-map-editor.save";
+
+		[FluentReference]
 		const string PlayMapWarningTitle = "dialog-play-map-warning.title";
 
 		[FluentReference]
@@ -481,37 +484,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var button = AddButton("SAVE_MAP", SaveMapButton);
-			button.OnClick = () =>
+			button.OnClick = () => OpenSaveMapPanel();
+		}
+
+		void OpenSaveMapPanel(Action onSavePanelExit = null)
+		{
+			hideMenu = true;
+			var editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
+			var actionManager = world.WorldActor.Trait<EditorActionManager>();
+
+			var playerDefinitions = editorActorLayer.Players.ToMiniYaml();
+
+			var playerCount = new MapPlayers(playerDefinitions).Players.Count;
+			if (playerCount > MapPlayers.MaximumPlayerCount)
 			{
-				hideMenu = true;
-				var editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
-				var actionManager = world.WorldActor.Trait<EditorActionManager>();
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: ErrorMaxPlayerTitle,
+					text: ErrorMaxPlayerPrompt,
+					textArguments: ["players", playerCount, "max", MapPlayers.MaximumPlayerCount],
+					onConfirm: ShowMenu,
+					confirmText: ErrorMaxPlayerAccept);
 
-				var playerDefinitions = editorActorLayer.Players.ToMiniYaml();
+				return;
+			}
 
-				var playerCount = new MapPlayers(playerDefinitions).Players.Count;
-				if (playerCount > MapPlayers.MaximumPlayerCount)
-				{
-					ConfirmationDialogs.ButtonPrompt(modData,
-						title: ErrorMaxPlayerTitle,
-						text: ErrorMaxPlayerPrompt,
-						textArguments: ["players", playerCount, "max", MapPlayers.MaximumPlayerCount],
-						onConfirm: ShowMenu,
-						confirmText: ErrorMaxPlayerAccept);
-
-					return;
-				}
-
-				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
-				{
-					{ "onSave", (Action<string>)(_ => { ShowMenu(); actionManager.Modified = false; }) },
-					{ "onExit", CloseMenu },
-					{ "map", world.Map },
-					{ "world", world },
-					{ "playerDefinitions", playerDefinitions },
-					{ "actorDefinitions", editorActorLayer.Save() }
-				});
-			};
+			Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
+			{
+				{ "onSave", (Action<string>)(_ => { ShowMenu(); actionManager.Modified = false; }) },
+				{ "onExit", onSavePanelExit ?? (Action)CloseMenu },
+				{ "map", world.Map },
+				{ "world", world },
+				{ "playerDefinitions", playerDefinitions },
+				{ "actorDefinitions", editorActorLayer.Save() }
+			});
 		}
 
 		void CreatePlayMapButton()
@@ -635,7 +640,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					text: deletedOrUnavailable ? ExitMapEditorPromptDeleted : ExitMapEditorPromptUnsaved,
 					onConfirm: () => { onSuccess(); leaving = true; },
 					confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
-					onCancel: ShowMenu);
+					onCancel: ShowMenu,
+					onOther: () =>
+					{
+						Ui.CloseWindow();
+						OpenSaveMapPanel(ShowMenu);
+					},
+					otherText: ExitMapEditorSave);
 			}
 			else
 			{

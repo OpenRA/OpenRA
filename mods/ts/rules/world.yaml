@@ -436,6 +436,7 @@ EditorWorld:
 	TemplateBoundsOverlay:
 	ActorBoundsOverlay:
 	MarkerLayerOverlay:
+	MoveTool:
 	TilingPathTool:
 		DefaultStart: Clear
 		DefaultInner: Beach
