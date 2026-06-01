@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[ChromeLogicArgsHotkeys("ToggleGridOverlayKey", "ToggleBuildableOverlayKey", "ToggleMarkerOverlayKey")]
+	[ChromeLogicArgsHotkeys("ToggleGridOverlayKey", "ToggleBuildableOverlayKey", "ToggleMarkerOverlayKey", "ToggleTilesOverlayKey")]
 	public class MapOverlaysLogic : ChromeLogic
 	{
 		[Flags]
@@ -28,11 +28,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Grid = 1,
 			Buildable = 2,
 			Marker = 4,
+			Tiles = 8,
 		}
 
 		readonly TerrainGeometryOverlay terrainGeometryTrait;
 		readonly BuildableTerrainOverlay buildableTerrainTrait;
 		readonly MarkerLayerOverlay markerLayerTrait;
+		readonly TemplateBoundsOverlay templateBoundsTrait;
 
 		[ObjectCreator.UseCtor]
 		public MapOverlaysLogic(Widget widget, World world, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
@@ -40,6 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 			buildableTerrainTrait = world.WorldActor.Trait<BuildableTerrainOverlay>();
 			markerLayerTrait = world.WorldActor.Trait<MarkerLayerOverlay>();
+			templateBoundsTrait = world.WorldActor.Trait<TemplateBoundsOverlay>();
 
 			var toggleGridKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("ToggleGridOverlayKey", out var yaml))
@@ -52,6 +55,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var toggleMarkerKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("ToggleMarkerOverlayKey", out yaml))
 				toggleMarkerKey = modData.Hotkeys[yaml.Value];
+
+			var toggleTilesKey = new HotkeyReference();
+			if (logicArgs.TryGetValue("ToggleTilesOverlayKey", out yaml))
+				toggleTilesKey = modData.Hotkeys[yaml.Value];
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("OVERLAY_KEYHANDLER");
 			keyhandler.AddHandler(e =>
@@ -77,6 +84,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
+				if (toggleTilesKey.IsActivatedBy(e))
+				{
+					templateBoundsTrait.Enabled ^= true;
+					return true;
+				}
+
 				return false;
 			});
 
@@ -98,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, []);
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
-			MapOverlays[] allCategories = [MapOverlays.Grid, MapOverlays.Buildable, MapOverlays.Marker];
+			MapOverlays[] allCategories = [MapOverlays.Grid, MapOverlays.Buildable, MapOverlays.Marker, MapOverlays.Tiles];
 			foreach (var cat in allCategories)
 			{
 				var category = categoryTemplate.Clone();
@@ -119,6 +132,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					category.IsChecked = () => markerLayerTrait.Enabled;
 					category.OnClick = () => markerLayerTrait.Enabled ^= true;
+				}
+				else if (cat.HasFlag(MapOverlays.Tiles))
+				{
+					category.IsChecked = () => templateBoundsTrait.Enabled;
+					category.OnClick = () => templateBoundsTrait.Enabled ^= true;
 				}
 
 				categoriesPanel.AddChild(category);

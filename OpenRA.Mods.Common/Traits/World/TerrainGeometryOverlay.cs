@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Commands;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -45,10 +46,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		DeveloperMode devMode;
 		World world;
+		TemplateBoundsOverlay templateBoundsOverlay;
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
+			templateBoundsOverlay = w.WorldActor.TraitOrDefault<TemplateBoundsOverlay>();
 			var console = w.WorldActor.TraitOrDefault<ChatCommands>();
 			var help = w.WorldActor.TraitOrDefault<HelpCommand>();
 			devMode = world.LocalPlayer?.PlayerActor.Trait<DeveloperMode>();
@@ -90,10 +93,15 @@ namespace OpenRA.Mods.Common.Traits
 			var lastColor = colors.Length - 1;
 			var heightStep = map.Grid.TileScale / 2;
 			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
+			var terrainInfo = map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			var hideGridOnPlacedTiles = templateBoundsOverlay != null && templateBoundsOverlay.Enabled && terrainInfo != null;
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
 				if (!map.Height.Contains(uv) || self.World.ShroudObscures(uv))
+					continue;
+
+				if (hideGridOnPlacedTiles && TemplateBoundsOverlay.IsEditorPlacedTile(map, terrainInfo, uv.ToCPos(map)))
 					continue;
 
 				var height = (int)map.Height[uv];

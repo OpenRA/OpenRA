@@ -90,3 +90,8 @@ EditorToggleMarkerOverlay: F3
 	Description: hotkey-description-editortogglemarkeroverlay
 	Types: Editor
 	Contexts: editor
+
+EditorToggleTilesOverlay: F4
+	Description: hotkey-description-editortoggletilesoverlay
+	Types: Editor
+	Contexts: editor

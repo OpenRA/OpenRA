@@ -276,6 +276,7 @@ EditorWorld:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Rock, Concrete
+	TemplateBoundsOverlay:
 	MarkerLayerOverlay:
 	TilingPathTool:
 		DefaultStart: RockSmooth

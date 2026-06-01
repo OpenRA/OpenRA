@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Widgets;
@@ -38,8 +39,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public CellCoordsRegion? Area;
 		public HashSet<CPos> AreaCells;
 		public EditorActorPreview Actor;
+		public ushort? TemplatePlacementType;
+		public CPos? TemplatePlacementAnchor;
 
 		public bool HasSelection => Area.HasValue || Actor != null;
+		public bool HasTemplatePlacementContext => TemplatePlacementType.HasValue && TemplatePlacementAnchor.HasValue;
 
 		public IEnumerable<CPos> EnumerateAreaCells()
 		{
@@ -64,23 +68,28 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static EditorSelection FromRegion(CellCoordsRegion region, EditorSelection existing = null, bool add = false)
 		{
-			HashSet<CPos> cells;
+			return FromCells(region, existing, add);
+		}
+
+		public static EditorSelection FromCells(IEnumerable<CPos> cells, EditorSelection existing = null, bool add = false)
+		{
+			HashSet<CPos> cellSet;
 			if (add && existing?.AreaCells != null)
 			{
-				cells = new HashSet<CPos>(existing.AreaCells);
-				foreach (var cell in region)
-					cells.Add(cell);
+				cellSet = new HashSet<CPos>(existing.AreaCells);
+				foreach (var cell in cells)
+					cellSet.Add(cell);
 			}
 			else
-				cells = new HashSet<CPos>(region);
+				cellSet = new HashSet<CPos>(cells);
 
-			if (cells.Count == 0)
+			if (cellSet.Count == 0)
 				return new EditorSelection();
 
 			return new EditorSelection
 			{
-				Area = CellCoordsRegion.BoundingRegion(cells),
-				AreaCells = cells
+				Area = CellCoordsRegion.BoundingRegion(cellSet),
+				AreaCells = cellSet
 			};
 		}
 	}
@@ -100,6 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorActionManager editorActionManager;
 		readonly IResourceLayer resourceLayer;
 		readonly EditorActorLayer actorLayer;
+		readonly TemplateBoundsOverlay templateBoundsOverlay;
 
 		public CellCoordsRegion? CurrentDragBounds => selectionBounds ?? Selection.Area;
 
@@ -132,6 +142,7 @@ namespace OpenRA.Mods.Common.Widgets
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
 			actorLayer = world.WorldActor.Trait<EditorActorLayer>();
+			templateBoundsOverlay = world.WorldActor.TraitOrDefault<TemplateBoundsOverlay>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -342,10 +353,9 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 					else
 					{
-						// Single click on a cell selects a 1x1 area (same as a minimal drag box).
-						var singleCell = new CellCoordsRegion(cell, cell);
 						previousSelection = Selection;
-						SetSelection(EditorSelection.FromRegion(singleCell, Selection, combineSelection));
+						var selection = CreateCellClickSelection(cell, combineSelection);
+						SetSelection(selection);
 
 						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
 						UpdateSelectedTab?.Invoke();
@@ -370,6 +380,31 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return true;
+		}
+
+		EditorSelection CreateCellClickSelection(CPos cell, bool combineSelection)
+		{
+			if (templateBoundsOverlay != null && templateBoundsOverlay.Enabled
+				&& world.Map.Rules.TerrainInfo is ITemplatedTerrainInfo terrainInfo
+				&& TemplateBoundsOverlay.TryGetPlacementContext(
+					world.Map, terrainInfo, cell,
+					out var templateType, out var anchor, out var matchingCells, out _))
+			{
+				var selection = EditorSelection.FromCells(matchingCells, Selection, combineSelection);
+				if (terrainInfo.Templates.TryGetValue(templateType, out var template)
+					&& !template.PickAny && (template.Size.X != 1 || template.Size.Y != 1))
+				{
+					selection.TemplatePlacementType = templateType;
+					selection.TemplatePlacementAnchor = anchor;
+				}
+
+				return selection;
+			}
+
+			var fallback = EditorSelection.FromRegion(new CellCoordsRegion(cell, cell), Selection, combineSelection);
+			fallback.TemplatePlacementType = null;
+			fallback.TemplatePlacementAnchor = null;
+			return fallback;
 		}
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }

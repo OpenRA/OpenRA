@@ -63,6 +63,8 @@ label-selected-area-diagonal = Diagonal:
 label-selected-area-resources = Resources:
 label-selection-filters = Filters
 label-selected-area-preview = Selected Preview
+label-tile-preview-current = Current
+label-tile-preview-original = Original
 
 label-copied-area-preview = Copied Preview
 label-editor-mix-mode = Mix:

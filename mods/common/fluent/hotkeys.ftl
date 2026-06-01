@@ -81,6 +81,7 @@ hotkey-description-editorsettingstab = Settings Tab
 hotkey-description-editortogglegridoverlay = Grid Overlay
 hotkey-description-editortogglebuildableoverlay = Buildable Terrain Overlay
 hotkey-description-editortogglemarkeroverlay = Marker Layer Overlay
+hotkey-description-editortoggletilesoverlay = Tile Bounds Overlay
 
 ## game.yaml
 hotkey-description-cyclebase = Jump to base

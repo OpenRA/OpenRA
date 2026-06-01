@@ -210,6 +210,7 @@ Container@EDITOR_WORLD_ROOT:
 		ToggleGridOverlayKey: EditorToggleGridOverlay
 		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
 		ToggleMarkerOverlayKey: EditorToggleMarkerOverlay
+		ToggleTilesOverlayKey: EditorToggleTilesOverlay
 	Children:
 		LogicKeyListener@OVERLAY_KEYHANDLER:
 		Container@PERF_ROOT:
@@ -655,9 +656,23 @@ Container@EDITOR_WORLD_ROOT:
 									Width: PARENT_WIDTH - 75
 									Height: 25
 									Font: Bold
+								Button@TILE_PREVIEW_CURRENT_BUTTON:
+									X: 5
+									Y: 28
+									Width: (PARENT_WIDTH - 15) / 2
+									Height: 22
+									Font: TinyBold
+									Text: label-tile-preview-current
+								Button@TILE_PREVIEW_ORIGINAL_BUTTON:
+									X: 5 + (PARENT_WIDTH - 15) / 2
+									Y: 28
+									Width: (PARENT_WIDTH - 15) / 2
+									Height: 22
+									Font: TinyBold
+									Text: label-tile-preview-original
 								EditorBlitPreview@SELECTION_CLIPBOARD_PREVIEW:
 									X: (PARENT_WIDTH - 130) / 2
-									Y: 55
+									Y: 52
 									Width: 130
 									Height: 130
 									Visible: false
@@ -984,7 +999,7 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 
 ScrollPanel@OVERLAY_PANEL:
 	Width: 140
-	Height: 80
+	Height: 100
 	ItemSpacing: 5
 	TopBottomSpacing: 0
 	Children:

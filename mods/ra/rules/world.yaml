@@ -319,6 +319,7 @@ EditorWorld:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Clear, Road
+	TemplateBoundsOverlay:
 	MarkerLayerOverlay:
 	TilingPathTool:
 		DefaultStart: Clear

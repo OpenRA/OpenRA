@@ -63,6 +63,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapBlitFilters cachedPreviewFilters;
 		EditorBlitSource? cachedPreviewSource;
 		HashSet<CPos> cachedPreviewCells;
+		ushort? cachedPreviewTemplateType;
+		CPos? cachedPreviewTemplateAnchor;
+		TilePlacementPreviewDisplayMode cachedPreviewDisplayMode;
+		readonly TemplateBoundsOverlay templateBoundsOverlay;
+		TilePlacementPreviewDisplayMode placementPreviewDisplayMode = TilePlacementPreviewDisplayMode.Current;
 
 		[ObjectCreator.UseCtor]
 		public MapEditorSelectionLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -74,6 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
 			editorResourceLayer = world.WorldActor.TraitOrDefault<EditorResourceLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
+			templateBoundsOverlay = world.WorldActor.TraitOrDefault<TemplateBoundsOverlay>();
 
 			editor = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
@@ -123,10 +129,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectedActorPreview = selectedPreviewPanel.Get<ActorPreviewWidget>("SELECTION_ACTOR_PREVIEW");
 			clipboardPreview = selectedPreviewPanel.Get<EditorBlitPreviewWidget>("SELECTION_CLIPBOARD_PREVIEW");
 			clipboardPreview.SetPreviewSource(GetAreaPreviewSource);
+			clipboardPreview.SetPlacementDisplay(GetTemplatePlacementDisplay);
 			clipboardPreview.IsVisible = () => editor.HasClipboard || ShowAreaPreview();
+
+			var tilePreviewCurrentButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_CURRENT_BUTTON");
+			var tilePreviewOriginalButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_ORIGINAL_BUTTON");
+			if (tilePreviewCurrentButton != null && tilePreviewOriginalButton != null)
+			{
+				var showTilePreviewMode = () => ShowTilePlacementPreviewControls();
+				tilePreviewCurrentButton.IsVisible = showTilePreviewMode;
+				tilePreviewOriginalButton.IsVisible = showTilePreviewMode;
+				tilePreviewCurrentButton.IsHighlighted = () => placementPreviewDisplayMode == TilePlacementPreviewDisplayMode.Current;
+				tilePreviewOriginalButton.IsHighlighted = () => placementPreviewDisplayMode == TilePlacementPreviewDisplayMode.Original;
+				tilePreviewCurrentButton.OnClick = () => SetPlacementPreviewDisplayMode(TilePlacementPreviewDisplayMode.Current);
+				tilePreviewOriginalButton.OnClick = () => SetPlacementPreviewDisplayMode(TilePlacementPreviewDisplayMode.Original);
+			}
+
 			var mixModeLabel = selectedPreviewPanel.Get<LabelWidget>("MIX_MODE_LABEL");
 			var mixModeDropDown = selectedPreviewPanel.Get<DropDownButtonWidget>("MIX_MODE_DROPDOWN");
-			mixModeLabel.IsVisible = mixModeDropDown.IsVisible = () => editor.CurrentBrush is EditorTileBrush or EditorActorBrush;
+			mixModeLabel.IsVisible = mixModeDropDown.IsVisible = () =>
+				editor.CurrentBrush is EditorTileBrush or EditorActorBrush && !ShowTilePlacementPreviewControls();
 			mixModeDropDown.GetText = () => MixModeText(editor.AssetMixMode);
 			mixModeDropDown.OnClick = () => ShowMixModeDropDown(mixModeDropDown);
 
@@ -284,11 +306,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (cachedPreviewSource == null || cachedPreviewRegion is not CellCoordsRegion cachedRegion ||
 				cachedRegion.TopLeft != region.TopLeft || cachedRegion.BottomRight != region.BottomRight ||
 				cachedPreviewFilters != selectionFilters ||
+				cachedPreviewTemplateType != selection.TemplatePlacementType ||
+				cachedPreviewTemplateAnchor != selection.TemplatePlacementAnchor ||
+				cachedPreviewDisplayMode != placementPreviewDisplayMode ||
 				!PreviewCellsMatch(cachedPreviewCells, previewCells))
 			{
 				cachedPreviewRegion = region;
 				cachedPreviewFilters = selectionFilters;
 				cachedPreviewCells = previewCells;
+				cachedPreviewTemplateType = selection.TemplatePlacementType;
+				cachedPreviewTemplateAnchor = selection.TemplatePlacementAnchor;
+				cachedPreviewDisplayMode = placementPreviewDisplayMode;
 				cachedPreviewSource = EditorBlit.CopyRegionContents(
 					map,
 					editorActorLayer,
@@ -301,11 +329,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return (cachedPreviewSource.Value, selectionFilters);
 		}
 
+		bool ShowTilePlacementPreviewControls()
+		{
+			return templateBoundsOverlay != null && templateBoundsOverlay.Enabled
+				&& ShowAreaPreview()
+				&& editor.DefaultBrush.Selection.HasTemplatePlacementContext;
+		}
+
+		void SetPlacementPreviewDisplayMode(TilePlacementPreviewDisplayMode mode)
+		{
+			if (placementPreviewDisplayMode == mode)
+				return;
+
+			placementPreviewDisplayMode = mode;
+			InvalidateAreaPreview();
+			UpdateAreaPreview();
+		}
+
+		TemplatePlacementPreviewDisplay? GetTemplatePlacementDisplay()
+		{
+			if (!ShowTilePlacementPreviewControls())
+				return null;
+
+			var selection = editor.DefaultBrush.Selection;
+			return new TemplatePlacementPreviewDisplay(
+				new TemplatePlacementPreview(
+					selection.TemplatePlacementAnchor.Value,
+					selection.TemplatePlacementType.Value),
+				placementPreviewDisplayMode);
+		}
+
 		void InvalidateAreaPreview()
 		{
 			cachedPreviewSource = null;
 			cachedPreviewRegion = null;
 			cachedPreviewCells = null;
+			cachedPreviewTemplateType = null;
+			cachedPreviewTemplateAnchor = null;
+			cachedPreviewDisplayMode = TilePlacementPreviewDisplayMode.Current;
 		}
 
 		void UpdateAreaPreview()
@@ -475,6 +536,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void HandleSelectionChanged()
 		{
+			placementPreviewDisplayMode = TilePlacementPreviewDisplayMode.Current;
 			InvalidateAreaPreview();
 			UpdateAreaPreview();
 
