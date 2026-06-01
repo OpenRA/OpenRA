@@ -47,6 +47,10 @@ update.log
 
 # Support directory
 /Support
+/artifacts
 
 # IntelliJ files
 .idea
+
+# Local dev UI theme backups (see mods/ra/uibits/apply-dev-purple-theme.ps1)
+mods/ra/uibits/*.bak

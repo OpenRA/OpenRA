@@ -1,5 +1,7 @@
 @echo off
 title OpenRA
+if not defined DOTNET_ROOT if exist "%USERPROFILE%\.dotnet\dotnet.exe" set "DOTNET_ROOT=%USERPROFILE%\.dotnet"
+if defined DOTNET_ROOT set "PATH=%DOTNET_ROOT%;%DOTNET_ROOT%\tools;%PATH%"
 for /F "delims==\ " %%x in ("%*") do (
   if "%%~x" EQU "Game.Mod" (goto launch)
 )

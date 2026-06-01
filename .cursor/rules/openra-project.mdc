@@ -1,0 +1,44 @@
+---
+description: OpenRA local dev project — git, maps, editor, and build conventions
+alwaysApply: true
+---
+
+# OpenRA Local Dev (Cursor)
+
+This repo is a **local development fork** of OpenRA (Red Alert). It must stay distinguishable from official installs and produce maps that work on [OpenRA Resource Center](https://resource.openra.net/upload/map/) for players who never used this build.
+
+## Git
+
+- **Never `git push` or `git pull`** (or fetch/merge/rebase from remote) unless the user **explicitly** asks in that message.
+- **Never create commits** unless the user explicitly asks.
+- Do not change git config. Avoid destructive git commands unless explicitly requested.
+
+## Maps and `.oramap` compatibility
+
+- Saved maps must be **indistinguishable from maps made in official OpenRA** for upload and play.
+- **Do not** add custom fields, metadata, or formats to `Map`, map save logic, or `.oramap` serialization.
+- **Editor-only** helpers (rich tile names, search, tooltips, purple UI, dev labels) must **not** change what is written into map files—only what the local editor UI shows.
+
+When placing tiles, maps store official **template IDs** and terrain data from `mods/*/tilesets/*.yaml` (e.g. `sh07.sno` → template id in yaml). Dev tooling may document `Images`, `Categories`, and terrain types for search; the saved file stays vanilla.
+
+## Editor vs game data
+
+- Tile metadata for the intelligent editor: read from existing tileset YAML (`Images`, `Categories`, terrain types). Prefer UI-only changes (`TileSelectorLogic`, chrome, tooltips) over changing core map types.
+- Shore/beach tiles use assets like `sh01.sno` … `sh56.sno`; interior walls use `wall0001.int` etc.; outdoor “walls” may be cliffs, beach, or actors (`BRIK`, `FENC`, …)—tileset-dependent.
+
+## Local dev branding (this build only)
+
+- Purple menu/chrome and `[Local Dev]` window title are intentional so this build is not confused with official OpenRA.
+- Reapply purple UI after upstream asset pulls: `mods/ra/uibits/apply-dev-purple-theme.ps1` (see `mods/ra/uibits/*.bak`).
+
+## Build
+
+- Target framework: **net8.0** (`Directory.Build.props`). SDK is often user-local at `%USERPROFILE%\.dotnet`.
+- If build fails with DLL locked, OpenRA is running—close it or ask before stopping the process.
+- Prefer rebuilding after C# editor changes; YAML/chrome changes may hot-reload depending on how the game is launched.
+
+## Code changes
+
+- **Minimize scope**—smallest correct diff; do not refactor unrelated code.
+- Match OpenRA/C# conventions in surrounding files.
+- Do not add tests or docs unless asked.

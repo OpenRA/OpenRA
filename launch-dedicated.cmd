@@ -1,6 +1,8 @@
 :: example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated-Server for details
 
 @echo on
+if not defined DOTNET_ROOT if exist "%USERPROFILE%\.dotnet\dotnet.exe" set "DOTNET_ROOT=%USERPROFILE%\.dotnet"
+if defined DOTNET_ROOT set "PATH=%DOTNET_ROOT%;%DOTNET_ROOT%\tools;%PATH%"
 
 set Name="Dedicated Server"
 set Mod=ra

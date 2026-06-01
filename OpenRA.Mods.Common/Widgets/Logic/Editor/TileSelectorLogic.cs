@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
@@ -30,15 +31,71 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			public readonly TerrainTemplateInfo Template;
 			public readonly ImmutableArray<string> Categories;
+			public readonly string DisplayName;
 			public readonly string[] SearchTerms;
 			public readonly string Tooltip;
 
-			public TileSelectorTemplate(TerrainTemplateInfo template)
+			public TileSelectorTemplate(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo template)
 			{
 				Template = template;
 				Categories = template.Categories;
-				Tooltip = template.Id.ToString(NumberFormatInfo.CurrentInfo);
-				SearchTerms = [Tooltip];
+
+				var id = template.Id.ToString(NumberFormatInfo.CurrentInfo);
+				var images = template is DefaultTerrainTemplateInfo defaultTemplate
+					? defaultTemplate.Images
+					: [];
+				DisplayName = images.Length > 0 ? images[0] : id;
+
+				var terrainTypes = TerrainTypes(terrainInfo, template);
+				var terms = new List<string> { id };
+				terms.AddRange(images);
+				terms.AddRange(Categories);
+				terms.AddRange(terrainTypes);
+
+				foreach (var image in images)
+					terms.AddRange(ImageAliases(image));
+
+				SearchTerms = terms
+					.Where(t => !string.IsNullOrWhiteSpace(t))
+					.Distinct(StringComparer.CurrentCultureIgnoreCase)
+					.ToArray();
+
+				var details = new[]
+				{
+					DisplayName,
+					$"Template ID: {id}",
+					Categories.Length > 0 ? $"Category: {string.Join(", ", Categories)}" : null,
+					terrainTypes.Length > 0 ? $"Terrain: {string.Join(", ", terrainTypes)}" : null,
+				};
+
+				Tooltip = string.Join("\n", details.Where(d => d != null));
+			}
+
+			static ImmutableArray<string> TerrainTypes(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo template)
+			{
+				var terrainTypes = new HashSet<string>();
+				for (var i = 0; i < template.TilesCount; i++)
+				{
+					if (!template.Contains(i) || template[i] == null || template[i].TerrainType == byte.MaxValue)
+						continue;
+
+					terrainTypes.Add(terrainInfo.TerrainTypes[template[i].TerrainType].Type);
+				}
+
+				return [.. terrainTypes.Order()];
+			}
+
+			static IEnumerable<string> ImageAliases(string image)
+			{
+				var name = Path.GetFileNameWithoutExtension(image);
+				if (string.IsNullOrEmpty(name))
+					yield break;
+
+				yield return name;
+
+				// Original RA shore tile assets use sh## filenames.
+				if (name.StartsWith("sh", StringComparison.OrdinalIgnoreCase))
+					yield return "shore";
 			}
 		}
 
@@ -53,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (terrainInfo == null)
 				throw new InvalidDataException("TileSelectorLogic requires a template-based tileset.");
 
-			allTemplates = terrainInfo.TemplatesInDefinitionOrder.Select(t => new TileSelectorTemplate(t)).ToImmutableArray();
+			allTemplates = terrainInfo.TemplatesInDefinitionOrder.Select(t => new TileSelectorTemplate(terrainInfo, t)).ToImmutableArray();
 
 			allCategories = allTemplates.SelectMany(t => t.Categories)
 				.Distinct()
@@ -115,11 +172,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
 				preview.SetTemplate(terrainInfo.Templates[tileId]);
+				var label = item.Get<LabelWidget>("TILE_NAME");
+				label.GetText = () => t.DisplayName;
 
 				// Scale templates to fit within the panel
 				// Preview position is assumed to be a margin
 				var maxPreviewWidth = item.Bounds.Width - 2 * preview.Bounds.X;
-				var maxPreviewHeight = item.Bounds.Height - 2 * preview.Bounds.Y;
+				var maxPreviewHeight = item.Bounds.Height - 2 * preview.Bounds.Y - label.Bounds.Height;
 
 				var scale = 1f;
 				if (preview.IdealPreviewSize.X > maxPreviewWidth)
@@ -133,7 +192,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.Bounds.Height = (int)(scale * preview.IdealPreviewSize.Y);
 
 				item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
-				item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
+				item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y + label.Bounds.Height;
+				label.Bounds.Y = item.Bounds.Height - label.Bounds.Height;
+				label.Bounds.Width = item.Bounds.Width - 2 * label.Bounds.X;
 				item.IsVisible = () => true;
 				item.GetTooltipText = () => t.Tooltip;
 

@@ -10,12 +10,15 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SimpleTooltipLogic : ChromeLogic
 	{
+		const int LineSpacing = 2;
+
 		[ObjectCreator.UseCtor]
 		public SimpleTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<string> getText)
 		{
@@ -24,9 +27,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.RemoveChildren();
 
 			var font = Game.Renderer.Fonts[label.Font];
-			var horizontalPadding = label.Bounds.Width - widget.Bounds.Width;
-			if (horizontalPadding <= 0)
-				horizontalPadding = 2 * label.Bounds.X;
+			var sidePadding = label.Bounds.X;
+			var topPadding = spacing.Bounds.Y;
+			var bottomPadding = topPadding;
 
 			var cachedText = "";
 			tooltipContainer.BeforeRender = () =>
@@ -36,24 +39,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var lines = text.Split('\n');
-				var textWidth = font.Measure(text).X;
+				var lineSizes = lines.Select(line => font.Measure(line)).ToArray();
+				var textWidth = lineSizes.Length > 0 ? lineSizes.Max(s => s.X) : 0;
 
-				// Set up label widgets
 				widget.RemoveChildren();
-				var bottom = 0;
+				var y = topPadding;
 				for (var i = 0; i < lines.Length; i++)
 				{
-					var line = label.Clone();
 					var lineText = lines[i];
-					line.Bounds.Y += spacing.Bounds.Y + i * spacing.Bounds.Height;
-					line.Bounds.Width = textWidth;
-					line.GetText = () => lineText;
-					widget.AddChild(line);
-					bottom = line.Bounds.Y + line.Bounds.Height;
+					var lineSize = lineSizes[i];
+					var lineLabel = label.Clone();
+					lineLabel.Bounds.X = sidePadding;
+					lineLabel.Bounds.Y = y;
+					lineLabel.Bounds.Width = textWidth;
+					lineLabel.Bounds.Height = lineSize.Y;
+					lineLabel.Align = TextAlign.Left;
+					lineLabel.VAlign = TextVAlign.Top;
+					lineLabel.GetText = () => lineText;
+					widget.AddChild(lineLabel);
+					y += lineSize.Y + LineSpacing;
 				}
 
-				widget.Bounds.Width = horizontalPadding + textWidth;
-				widget.Bounds.Height = bottom + spacing.Bounds.Y;
+				if (lines.Length > 0)
+					y -= LineSpacing;
+
+				widget.Bounds.Width = 2 * sidePadding + textWidth;
+				widget.Bounds.Height = y + bottomPadding;
 				cachedText = text;
 			};
 		}
