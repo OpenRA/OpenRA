@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Selection tab is special, it can only be selected if a selection exists.
 			if (tabType == MenuType.Select)
-				tab.IsDisabled = () => !editor.DefaultBrush.Selection.HasSelection;
+				tab.IsDisabled = () => !editor.DefaultBrush.Selection.HasSelection && !editor.HasClipboard && !editor.DefaultBrush.AreaPanelOpen;
 
 			if (tabType == MenuType.Tools)
 			{
@@ -82,21 +82,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var container = panelContainer.Get<ContainerWidget>(tabId);
-			container.IsVisible = () => (tabType == MenuType.Select && editor.DefaultBrush.Selection.Area.HasValue) || menuType == tabType;
+			container.IsVisible = () => (tabType == MenuType.Select && (editor.DefaultBrush.AreaPanelOpen || editor.HasClipboard)) || menuType == tabType;
 		}
 
 		void HandleUpdateSelectedTab()
 		{
 			var selection = editor.DefaultBrush.Selection;
 
-			if (selection.Area.HasValue)
-			{
-				if (menuType == MenuType.Select)
-					menuType = lastSelectedTab;
-			}
+			if (selection.Area.HasValue && menuType != MenuType.Select)
+				menuType = MenuType.Select;
 			else if (menuType != MenuType.Select && selection.HasSelection)
 				menuType = MenuType.Select;
-			else if (menuType == MenuType.Select && !selection.HasSelection)
+			else if (menuType == MenuType.Select && !selection.HasSelection && !editor.HasClipboard && !editor.DefaultBrush.AreaPanelOpen)
 				menuType = lastSelectedTab;
 
 			OnTabChanged?.Invoke();

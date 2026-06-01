@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -21,15 +22,32 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		readonly Color color;
 		readonly CellCoordsRegion bounds;
+		readonly IEnumerable<CPos> cells;
+		readonly bool useCells;
 		readonly int2 altPixelOffset;
 		readonly CVec offset;
+		readonly int lineWidth;
 
-		public EditorSelectionAnnotationRenderable(CellCoordsRegion bounds, Color color, int2 altPixelOffset, CVec offset)
+		public EditorSelectionAnnotationRenderable(
+			CellCoordsRegion bounds, Color color, int2 altPixelOffset, CVec offset, int lineWidth = 1)
 		{
 			this.bounds = bounds;
 			this.color = color;
 			this.altPixelOffset = altPixelOffset;
 			this.offset = offset;
+			this.lineWidth = lineWidth;
+			useCells = false;
+		}
+
+		public EditorSelectionAnnotationRenderable(
+			IEnumerable<CPos> cells, Color color, int2 altPixelOffset, CVec offset, int lineWidth = 1)
+		{
+			this.cells = cells;
+			this.color = color;
+			this.altPixelOffset = altPixelOffset;
+			this.offset = offset;
+			this.lineWidth = lineWidth;
+			useCells = true;
 		}
 
 		public WPos Pos => WPos.Zero;
@@ -44,9 +62,8 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			const int Width = 1;
 			var map = wr.World.Map;
-			foreach (var cellPos in bounds)
+			foreach (var cellPos in useCells ? cells : bounds)
 			{
 				var pos = cellPos + offset;
 				var uv = pos.ToMPos(map);
@@ -67,7 +84,7 @@ namespace OpenRA.Mods.Common.Graphics
 						Game.Renderer.RgbaColorRenderer.DrawLine(
 							wr.Viewport.WorldToViewPx(wr.ScreenPosition(start)) + altPixelOffset,
 							wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end)) + altPixelOffset,
-							Width, color, color);
+							lineWidth, color, color);
 					}
 				}
 			}

@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string MixModeSequential = "label-editor-mix-mode-sequential";
 
+		[FluentReference]
+		const string SelectedAreaPreview = "label-selected-area-preview";
+
 		readonly EditorViewportControllerWidget editor;
 		readonly Map map;
 
@@ -50,14 +53,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly TerrainTemplatePreviewWidget selectedTilePreview;
 		readonly ActorPreviewWidget selectedActorPreview;
+		readonly EditorBlitPreviewWidget clipboardPreview;
+		readonly LabelWidget selectedPreviewLabel;
 		readonly Widget selectedPreviewPanel;
+		readonly WorldRenderer worldRenderer;
 		readonly List<Widget> multiPreviewWidgets = [];
 		MapBlitFilters selectionFilters = MapBlitFilters.All;
-		EditorBlitSource? clipboard;
+		CellCoordsRegion? cachedPreviewRegion;
+		MapBlitFilters cachedPreviewFilters;
+		EditorBlitSource? cachedPreviewSource;
 
 		[ObjectCreator.UseCtor]
 		public MapEditorSelectionLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
+			this.worldRenderer = worldRenderer;
 			map = worldRenderer.World.Map;
 
 			editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
@@ -68,56 +77,65 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 			editor.BrushChanged += UpdateSelectedPreview;
+			editor.BrushChanged += UpdateAreaPreview;
 			var selectTabContainer = widget.Get("SELECT_WIDGETS");
 			var actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
 			var areaEditPanel = selectTabContainer.Get("AREA_EDIT_PANEL");
 
 			actorEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Actor != null;
-			areaEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Area.HasValue;
+			areaEditPanel.IsVisible = () => editor.DefaultBrush.AreaPanelOpen || editor.HasClipboard;
 
 			var copyTerrainCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_TERRAIN_CHECKBOX");
 			var copyResourcesCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_RESOURCES_CHECKBOX");
 			var copyActorsCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_ACTORS_CHECKBOX");
 
-			copyTerrainCheckbox.IsDisabled = () => editor.CurrentBrush is EditorCopyPasteBrush;
-			copyResourcesCheckbox.IsDisabled = () => editor.CurrentBrush is EditorCopyPasteBrush;
-			copyActorsCheckbox.IsDisabled = () => editor.CurrentBrush is EditorCopyPasteBrush;
+			copyTerrainCheckbox.IsDisabled = () => false;
+			copyResourcesCheckbox.IsDisabled = () => false;
+			copyActorsCheckbox.IsDisabled = () => false;
 
-			var copyButton = widget.Get<ButtonWidget>("COPY_BUTTON");
-			copyButton.OnClick = () => clipboard = CopySelectionContents();
-			copyButton.IsDisabled = () => !editor.DefaultBrush.Selection.Area.HasValue;
+			SetupCopyPasteButton(widget.Get<ButtonWidget>("COPY_BUTTON"));
+			SetupCopyPasteButton(areaEditPanel.Get<ButtonWidget>("SELECTION_COPY_BUTTON"));
+			SetupCopyPasteButton(areaEditPanel.Get<ButtonWidget>("SELECTION_PASTE_BUTTON"), paste: true);
+			SetupCopyPasteButton(widget.Get<ButtonWidget>("PASTE_BUTTON"), paste: true);
+
+			var clearCopyButton = areaEditPanel.Get<ButtonWidget>("SELECTION_CLEAR_COPY_BUTTON");
+			clearCopyButton.OnClick = () =>
+			{
+				editor.ClearClipboard();
+			};
+			clearCopyButton.IsDisabled = () => !editor.HasClipboard;
+
+			var rotateLeftButton = areaEditPanel.Get<ButtonWidget>("SELECTION_ROTATE_LEFT_BUTTON");
+			rotateLeftButton.OnClick = () => RotateClipboard(RotationDirection.CounterClockwise);
+			rotateLeftButton.IsDisabled = () => !editor.HasClipboard;
+
+			var rotateRightButton = areaEditPanel.Get<ButtonWidget>("SELECTION_ROTATE_RIGHT_BUTTON");
+			rotateRightButton.OnClick = () => RotateClipboard(RotationDirection.Clockwise);
+			rotateRightButton.IsDisabled = () => !editor.HasClipboard;
 
 			AreaEditTitle = areaEditPanel.Get<LabelWidget>("AREA_EDIT_TITLE");
 			DiagonalLabel = areaEditPanel.Get<LabelWidget>("DIAGONAL_COUNTER_LABEL");
 			ResourceCounterLabel = areaEditPanel.Get<LabelWidget>("RESOURCES_COUNTER_LABEL");
 			selectedPreviewPanel = areaEditPanel.Get("SELECTION_PREVIEW_PANEL");
+			selectedPreviewLabel = selectedPreviewPanel.Get<LabelWidget>("SELECTION_PREVIEW_LABEL");
 			selectedTilePreview = selectedPreviewPanel.Get<TerrainTemplatePreviewWidget>("SELECTION_TILE_PREVIEW");
 			selectedActorPreview = selectedPreviewPanel.Get<ActorPreviewWidget>("SELECTION_ACTOR_PREVIEW");
+			clipboardPreview = selectedPreviewPanel.Get<EditorBlitPreviewWidget>("SELECTION_CLIPBOARD_PREVIEW");
+			clipboardPreview.SetPreviewSource(GetAreaPreviewSource);
+			clipboardPreview.IsVisible = () => editor.HasClipboard || ShowAreaPreview();
 			var mixModeLabel = selectedPreviewPanel.Get<LabelWidget>("MIX_MODE_LABEL");
 			var mixModeDropDown = selectedPreviewPanel.Get<DropDownButtonWidget>("MIX_MODE_DROPDOWN");
 			mixModeLabel.IsVisible = mixModeDropDown.IsVisible = () => editor.CurrentBrush is EditorTileBrush or EditorActorBrush;
 			mixModeDropDown.GetText = () => MixModeText(editor.AssetMixMode);
 			mixModeDropDown.OnClick = () => ShowMixModeDropDown(mixModeDropDown);
 
-			var pasteButton = widget.Get<ButtonWidget>("PASTE_BUTTON");
-			pasteButton.OnClick = () =>
-			{
-				if (clipboard == null)
-					return;
-
-				editor.SetBrush(new EditorCopyPasteBrush(
-					editor,
-					worldRenderer,
-					clipboard.Value,
-					resourceLayer,
-					() => selectionFilters));
-			};
-
-			pasteButton.IsDisabled = () => clipboard == null || (clipboard.Value.Actors.Count == 0 && clipboard.Value.Tiles.Count == 0);
-			pasteButton.IsHighlighted = () => editor.CurrentBrush is EditorCopyPasteBrush;
-
 			var deleteAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_DELETE_BUTTON");
-			deleteAreaSelectionButton.OnClick = () => editor.DefaultBrush.DeleteSelection(selectionFilters);
+			deleteAreaSelectionButton.OnClick = () =>
+			{
+				editor.DefaultBrush.DeleteSelection(selectionFilters);
+				InvalidateAreaPreview();
+				UpdateAreaPreview();
+			};
 
 			var fillAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_FILL_BUTTON");
 			fillAreaSelectionButton.OnClick = () =>
@@ -143,12 +161,69 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			fillAreaSelectionButton.IsDisabled = () => editor.CurrentBrush is not EditorTileBrush && editor.CurrentBrush is not EditorActorBrush;
 
 			var closeAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_CANCEL_BUTTON");
-			closeAreaSelectionButton.OnClick = () => editor.DefaultBrush.ClearSelection(updateSelectedTab: true);
+			closeAreaSelectionButton.OnClick = () => editor.DefaultBrush.CloseAreaPanel();
 
 			CreateCategoryPanel(MapBlitFilters.Terrain, copyTerrainCheckbox);
 			CreateCategoryPanel(MapBlitFilters.Resources, copyResourcesCheckbox);
 			CreateCategoryPanel(MapBlitFilters.Actors, copyActorsCheckbox);
 			UpdateSelectedPreview();
+			UpdateAreaPreview();
+		}
+
+		void SetupCopyPasteButton(ButtonWidget button, bool paste = false)
+		{
+			if (paste)
+			{
+				button.OnClick = PasteSelection;
+				button.IsDisabled = () => !editor.HasClipboard || !editor.DefaultBrush.Selection.Area.HasValue;
+				button.IsHighlighted = () => editor.HasClipboard && editor.DefaultBrush.Selection.Area.HasValue;
+			}
+			else
+			{
+				button.OnClick = CopySelection;
+				button.IsDisabled = () => !editor.DefaultBrush.Selection.Area.HasValue;
+				button.IsHighlighted = () => editor.CopySourceRegion.HasValue;
+			}
+		}
+
+		void CopySelection()
+		{
+			if (!editor.DefaultBrush.Selection.Area.HasValue)
+				return;
+
+			var region = editor.DefaultBrush.Selection.Area.Value;
+			editor.SetClipboard(CopySelectionContents(), region);
+			UpdateAreaPreview();
+		}
+
+		void RotateClipboard(RotationDirection direction)
+		{
+			if (!editor.HasClipboard || !editor.CopySourceRegion.HasValue)
+				return;
+
+			var rotated = EditorBlit.Rotate(editor.Clipboard.Value, direction, worldRenderer);
+			editor.SetClipboard(rotated, editor.CopySourceRegion.Value);
+			UpdateAreaPreview();
+		}
+
+		void PasteSelection()
+		{
+			if (!editor.HasClipboard || !editor.DefaultBrush.Selection.Area.HasValue)
+				return;
+
+			editor.ClearBrush();
+			var pastePosition = editor.DefaultBrush.Selection.Area.Value.TopLeft;
+			var editorBlit = new EditorBlit(
+				selectionFilters,
+				resourceLayer,
+				pastePosition,
+				map,
+				editor.Clipboard.Value,
+				editorActorLayer,
+				true);
+			editorActionManager.Add(new CopyPasteEditorAction(editorBlit));
+			InvalidateAreaPreview();
+			UpdateAreaPreview();
 		}
 
 		EditorBlitSource CopySelectionContents()
@@ -166,14 +241,66 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			checkbox.GetText = copyFilter.ToString;
 			checkbox.IsChecked = () => selectionFilters.HasFlag(copyFilter);
 			checkbox.IsVisible = () => true;
-			checkbox.OnClick = () => selectionFilters ^= copyFilter;
+			checkbox.OnClick = () =>
+			{
+				selectionFilters ^= copyFilter;
+				InvalidateAreaPreview();
+				UpdateAreaPreview();
+			};
 		}
 
 		protected override void Dispose(bool disposing)
 		{
 			editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
 			editor.BrushChanged -= UpdateSelectedPreview;
+			editor.BrushChanged -= UpdateAreaPreview;
 			base.Dispose(disposing);
+		}
+
+		bool ShowAreaPreview()
+		{
+			return editor.DefaultBrush.Selection.Area.HasValue
+				&& editor.CurrentBrush is not EditorTileBrush and not EditorActorBrush;
+		}
+
+		(EditorBlitSource Source, MapBlitFilters Filters)? GetAreaPreviewSource()
+		{
+			if (editor.HasClipboard)
+				return (editor.Clipboard.Value, selectionFilters);
+
+			if (!ShowAreaPreview())
+				return null;
+
+			var region = editor.DefaultBrush.Selection.Area.Value;
+			if (cachedPreviewSource == null || cachedPreviewRegion is not CellCoordsRegion cachedRegion ||
+				cachedRegion.TopLeft != region.TopLeft || cachedRegion.BottomRight != region.BottomRight ||
+				cachedPreviewFilters != selectionFilters)
+			{
+				cachedPreviewRegion = region;
+				cachedPreviewFilters = selectionFilters;
+				cachedPreviewSource = EditorBlit.CopyRegionContents(
+					map,
+					editorActorLayer,
+					resourceLayer,
+					region,
+					selectionFilters);
+			}
+
+			return (cachedPreviewSource.Value, selectionFilters);
+		}
+
+		void InvalidateAreaPreview()
+		{
+			cachedPreviewSource = null;
+			cachedPreviewRegion = null;
+		}
+
+		void UpdateAreaPreview()
+		{
+			selectedPreviewLabel.GetText = () => FluentProvider.GetMessage(SelectedAreaPreview);
+
+			if (editor.HasClipboard || ShowAreaPreview())
+				clipboardPreview.PrepareRenderables();
 		}
 
 		void UpdateSelectedPreview()
@@ -285,7 +412,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Rectangle MultiPreviewBounds()
 		{
-			return new Rectangle(5, 55, selectedPreviewPanel.Bounds.Width - 10, selectedPreviewPanel.Bounds.Height - 60);
+			const int PreviewSize = 130;
+			var x = (selectedPreviewPanel.Bounds.Width - PreviewSize) / 2;
+			return new Rectangle(x, 55, PreviewSize, PreviewSize);
 		}
 
 		static void PlaceMultiPreview(Widget preview, int index, int count, Rectangle bounds)
@@ -333,6 +462,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void HandleSelectionChanged()
 		{
+			InvalidateAreaPreview();
+			UpdateAreaPreview();
+
 			if (!editor.DefaultBrush.Selection.Area.HasValue)
 				return;
 

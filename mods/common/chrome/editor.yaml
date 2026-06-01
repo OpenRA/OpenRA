@@ -546,10 +546,32 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 55
 							Height: 22
 							Align: Left
-						Button@SELECTION_DELETE_BUTTON:
+						Button@SELECTION_COPY_BUTTON:
 							X: 5
 							Y: 222
-							Width: 75
+							Width: 85
+							Height: 25
+							Text: button-copy-area.label
+							Font: Bold
+							Key: EditorCopy
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-copy-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_PASTE_BUTTON:
+							X: 100
+							Y: 222
+							Width: 85
+							Height: 25
+							Text: button-paste-area.label
+							Font: Bold
+							Key: EditorPaste
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-paste-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_DELETE_BUTTON:
+							X: 195
+							Y: 222
+							Width: 85
 							Height: 25
 							Text: button-delete-area.label
 							Font: Bold
@@ -558,28 +580,58 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-delete-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_FILL_BUTTON:
-							X: 106
-							Y: 222
-							Width: 75
+							X: 5
+							Y: 252
+							Width: 85
 							Height: 25
 							Text: button-fill-area.label
 							Font: Bold
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipText: button-fill-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_CLEAR_COPY_BUTTON:
+							X: 100
+							Y: 252
+							Width: 85
+							Height: 25
+							Text: button-clear-copy-area.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-clear-copy-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_CANCEL_BUTTON:
-							X: 208
-							Y: 222
-							Width: 75
+							X: 195
+							Y: 252
+							Width: 85
 							Height: 25
 							Text: button-cancel
 							Font: Bold
 							Key: escape
+						Button@SELECTION_ROTATE_LEFT_BUTTON:
+							X: 5
+							Y: PARENT_HEIGHT - 230
+							Width: 130
+							Height: 25
+							Text: button-rotate-copy-left.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-rotate-copy-left.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_ROTATE_RIGHT_BUTTON:
+							X: 150
+							Y: PARENT_HEIGHT - 230
+							Width: 130
+							Height: 25
+							Text: button-rotate-copy-right.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-rotate-copy-right.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 						Background@SELECTION_PREVIEW_PANEL:
 							X: 10
-							Y: PARENT_HEIGHT - 165
+							Y: PARENT_HEIGHT - 200
 							Width: PARENT_WIDTH - 20
-							Height: 150
+							Height: 195
 							Background: scrollpanel-bg
 							Children:
 								Label@SELECTION_PREVIEW_LABEL:
@@ -603,6 +655,12 @@ Container@EDITOR_WORLD_ROOT:
 									Width: PARENT_WIDTH - 75
 									Height: 25
 									Font: Bold
+								EditorBlitPreview@SELECTION_CLIPBOARD_PREVIEW:
+									X: (PARENT_WIDTH - 130) / 2
+									Y: 55
+									Width: 130
+									Height: 130
+									Visible: false
 								TerrainTemplatePreview@SELECTION_TILE_PREVIEW:
 									Visible: false
 								ActorPreview@SELECTION_ACTOR_PREVIEW:

@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 using Color = OpenRA.Primitives.Color;
@@ -36,6 +37,14 @@ namespace OpenRA.Mods.Common.Widgets
 		[Desc("Main color of the copy / paste grid.")]
 		public readonly Color PasteColor = Color.FromArgb(0xFF4CFF00);
 
+		[Desc("Glow color shown around a copied area selection.")]
+		public readonly Color CopyColor = Color.FromArgb(0xFF0088FF);
+
+		public EditorBlitSource? Clipboard { get; private set; }
+		public CellCoordsRegion? CopySourceRegion { get; private set; }
+		public bool HasClipboard => Clipboard.HasValue &&
+			(Clipboard.Value.Actors.Count > 0 || Clipboard.Value.Tiles.Count > 0);
+
 		public IEditorBrush CurrentBrush { get; private set; }
 
 		public readonly string TooltipContainer;
@@ -60,6 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 			CurrentBrush = DefaultBrush = new EditorDefaultBrush(this, worldRenderer);
 
 			editorCursor = worldRenderer.World.WorldActor.Trait<EditorCursorLayer>();
+			editorCursor.SetSelectionBrush(DefaultBrush);
 			editorCursor.SetBrush(CurrentBrush);
 
 			// Allow zooming out to full map size
@@ -71,6 +81,20 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void ClearBrush() { SetBrush(null); }
+
+		public void SetClipboard(EditorBlitSource clipboard, CellCoordsRegion sourceRegion)
+		{
+			Clipboard = clipboard;
+			CopySourceRegion = sourceRegion;
+			BrushChanged?.Invoke();
+		}
+
+		public void ClearClipboard()
+		{
+			Clipboard = null;
+			CopySourceRegion = null;
+			BrushChanged?.Invoke();
+		}
 
 		public void SetAssetMixMode(EditorAssetMixMode mixMode)
 		{

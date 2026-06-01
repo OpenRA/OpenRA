@@ -15,11 +15,19 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.MapGenerator;
+using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.EditorBrushes
 {
+	public enum RotationDirection
+	{
+		Clockwise,
+		CounterClockwise
+	}
+
 	public readonly record struct BlitTile(TerrainTile TerrainTile, ResourceTile ResourceTile, ResourceLayerContents? ResourceLayerContents, byte Height);
 
 	public readonly record struct EditorBlitSource(CellCoordsRegion CellCoords, Dictionary<string, EditorActorPreview> Actors, Dictionary<CPos, BlitTile> Tiles);
@@ -236,6 +244,9 @@ namespace OpenRA.Mods.Common.EditorBrushes
 				foreach (var (pos, tile) in blitSource.Tiles)
 				{
 					var cPos = pos + offset;
+					if (!map.Contains(cPos))
+						continue;
+
 					var height = stickToGround ? (mapHeight.TryGetValue(cPos, out var isoHeight) ? isoHeight : byte.MinValue) : tile.Height;
 					var wPos = CellLayerUtils.CPosToWPos(cPos, height, mapGrid.Type);
 					var preview = terrainRenderer.RenderPreview(wr, tile.TerrainTile, wPos);
@@ -255,6 +266,9 @@ namespace OpenRA.Mods.Common.EditorBrushes
 						continue;
 
 					var cPos = pos + offset;
+					if (!map.Contains(cPos))
+						continue;
+
 					if (!filters.HasFlag(MapBlitFilters.Terrain) && !resourceLayer.CanAddResource(tile.ResourceLayerContents.Value.Type, cPos))
 						continue;
 
@@ -287,6 +301,10 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			{
 				foreach (var (_, editorActorPreview) in blitSource.Actors)
 				{
+					var actorCell = editorActorPreview.Location + offset;
+					if (!map.Contains(actorCell))
+						continue;
+
 					var useGround = stickToGround;
 					if (!filters.HasFlag(MapBlitFilters.Terrain) || !blitSource.Tiles.ContainsKey(editorActorPreview.Location))
 						useGround = true;
@@ -313,7 +331,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		/// be at least partially inside the CellRegion. If an actor partially lies outside of the
 		/// CellRegion, only cells within the CellRegion are included in the output set.
 		/// </summary>
-		static HashSet<CPos> GetBlitSourceMask(
+		public static HashSet<CPos> GetBlitSourceMask(
 			EditorBlitSource blitSource,
 			CVec offset)
 		{
@@ -345,6 +363,169 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			}
 
 			return mask;
+		}
+
+		public static EditorBlitSource Rotate(EditorBlitSource source, RotationDirection direction, WorldRenderer worldRenderer)
+		{
+			var region = source.CellCoords;
+			var origin = region.TopLeft;
+			var sizeDiff = region.BottomRight - origin;
+			var width = sizeDiff.X + 1;
+			var height = sizeDiff.Y + 1;
+
+			CVec RotateOffset(CVec rel)
+			{
+				return direction switch
+				{
+					RotationDirection.Clockwise => new CVec(rel.Y, width - 1 - rel.X),
+					RotationDirection.CounterClockwise => new CVec(height - 1 - rel.Y, rel.X),
+					_ => throw new ArgumentOutOfRangeException(nameof(direction))
+				};
+			}
+
+			var newRegion = new CellCoordsRegion(
+				origin,
+				origin + new CVec(height - 1, width - 1));
+
+			var terrainInfo = worldRenderer.World.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			var newTiles = terrainInfo != null
+				? RotateTiles(source.Tiles, origin, terrainInfo, RotateOffset)
+				: RotateTilesPerCell(source.Tiles, origin, RotateOffset);
+
+			var facingDelta = direction == RotationDirection.Clockwise ? new WAngle(256) : new WAngle(-256);
+			var newActors = new Dictionary<string, EditorActorPreview>();
+			foreach (var (id, preview) in source.Actors)
+			{
+				var copy = preview.Export();
+
+				var locationInit = copy.GetOrDefault<LocationInit>();
+				if (locationInit != null)
+				{
+					var rel = locationInit.Value - origin;
+					copy.RemoveAll<LocationInit>();
+					copy.Add(new LocationInit(origin + RotateOffset(new CVec(rel.X, rel.Y))));
+				}
+
+				var facingInit = copy.GetOrDefault<FacingInit>();
+				if (facingInit != null)
+				{
+					var newFacing = new WAngle((facingInit.Value.Angle + facingDelta.Angle + 1024) % 1024);
+					copy.RemoveAll<FacingInit>();
+					copy.Add(new FacingInit(newFacing));
+				}
+
+				newActors[id] = new EditorActorPreview(worldRenderer, id, copy, preview.Owner);
+			}
+
+			return new EditorBlitSource(newRegion, newActors, newTiles);
+		}
+
+		static Dictionary<CPos, BlitTile> RotateTilesPerCell(
+			IReadOnlyDictionary<CPos, BlitTile> sourceTiles,
+			CPos origin,
+			Func<CVec, CVec> rotateOffset)
+		{
+			var newTiles = new Dictionary<CPos, BlitTile>();
+			foreach (var (pos, tile) in sourceTiles)
+			{
+				var rel = pos - origin;
+				newTiles[origin + rotateOffset(new CVec(rel.X, rel.Y))] = tile;
+			}
+
+			return newTiles;
+		}
+
+		static Dictionary<CPos, BlitTile> RotateTiles(
+			IReadOnlyDictionary<CPos, BlitTile> sourceTiles,
+			CPos origin,
+			ITemplatedTerrainInfo terrainInfo,
+			Func<CVec, CVec> rotateOffset)
+		{
+			var processed = new HashSet<CPos>();
+			var newTiles = new Dictionary<CPos, BlitTile>();
+
+			foreach (var (pos, blitTile) in sourceTiles)
+			{
+				if (processed.Contains(pos))
+					continue;
+
+				var terrainTile = blitTile.TerrainTile;
+				if (!terrainInfo.Templates.TryGetValue(terrainTile.Type, out var template)
+					|| template.PickAny
+					|| (template.Size.X == 1 && template.Size.Y == 1))
+				{
+					var rel = pos - origin;
+					newTiles[origin + rotateOffset(new CVec(rel.X, rel.Y))] = blitTile;
+					processed.Add(pos);
+					continue;
+				}
+
+				var localX = terrainTile.Index % template.Size.X;
+				var localY = terrainTile.Index / template.Size.X;
+				var anchor = pos - new CVec(localX, localY);
+
+				if (!IsCompleteTemplatePlacement(template, anchor, terrainTile.Type, sourceTiles))
+				{
+					var rel = pos - origin;
+					newTiles[origin + rotateOffset(new CVec(rel.X, rel.Y))] = blitTile;
+					processed.Add(pos);
+					continue;
+				}
+
+				var templateWidth = template.Size.X;
+				var rotatedCells = new List<(CPos NewCell, BlitTile Tile)>();
+				for (byte i = 0; i < templateWidth * template.Size.Y; i++)
+				{
+					if (!template.Contains(i) || template[i] == null)
+						continue;
+
+					var cell = anchor + new CVec(i % templateWidth, i / templateWidth);
+					var tile = sourceTiles[cell];
+					var rel = cell - origin;
+					rotatedCells.Add((origin + rotateOffset(new CVec(rel.X, rel.Y)), tile));
+					processed.Add(cell);
+				}
+
+				var newAnchor = new CPos(
+					rotatedCells.Min(c => c.NewCell.X),
+					rotatedCells.Min(c => c.NewCell.Y));
+
+				foreach (var (newCell, tile) in rotatedCells)
+				{
+					var newLocal = newCell - newAnchor;
+					var newIndex = (byte)(newLocal.Y * templateWidth + newLocal.X);
+					if (!template.Contains(newIndex) || template[newIndex] == null)
+						continue;
+
+					var newTerrainTile = new TerrainTile(terrainTile.Type, newIndex);
+					newTiles[newCell] = new BlitTile(newTerrainTile, tile.ResourceTile, tile.ResourceLayerContents, tile.Height);
+				}
+			}
+
+			return newTiles;
+		}
+
+		static bool IsCompleteTemplatePlacement(
+			TerrainTemplateInfo template,
+			CPos anchor,
+			ushort templateType,
+			IReadOnlyDictionary<CPos, BlitTile> sourceTiles)
+		{
+			var templateWidth = template.Size.X;
+			for (byte i = 0; i < templateWidth * template.Size.Y; i++)
+			{
+				if (!template.Contains(i) || template[i] == null)
+					continue;
+
+				var cell = anchor + new CVec(i % templateWidth, i / templateWidth);
+				if (!sourceTiles.TryGetValue(cell, out var tile))
+					return false;
+
+				if (tile.TerrainTile.Type != templateType || tile.TerrainTile.Index != i)
+					return false;
+			}
+
+			return true;
 		}
 
 		public void Commit() => Blit(false);

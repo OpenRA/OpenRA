@@ -105,17 +105,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
+			var pasteOffset = PastePreviewPosition - Region.TopLeft;
+
 			yield return new EditorSelectionAnnotationRenderable(
 				Region,
 				editorWidget.SelectionAltColor,
 				editorWidget.SelectionAltOffset,
-				PastePreviewPosition - Region.TopLeft);
+				pasteOffset);
 
+			var pasteCells = EditorBlit.GetBlitSourceMask(clipboard, pasteOffset);
 			yield return new EditorSelectionAnnotationRenderable(
-				Region,
+				pasteCells,
 				editorWidget.PasteColor,
 				int2.Zero,
-				PastePreviewPosition - Region.TopLeft);
+				CVec.Zero);
 		}
 
 		public void Tick()

@@ -18,6 +18,7 @@ using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Support;
 using OpenRA.Widgets;
+using Color = OpenRA.Primitives.Color;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -42,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public sealed class EditorDefaultBrush : IEditorBrush
 	{
 		const int MinMouseMoveBeforeDrag = 32;
+		const int CopyGlowPulseTicks = 100;
 
 		public event Action SelectionChanged;
 		public event Action UpdateSelectedTab;
@@ -57,6 +59,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public CellCoordsRegion? CurrentDragBounds => selectionBounds ?? Selection.Area;
 
 		public EditorSelection Selection { get; private set; } = new();
+
+		/// <summary>
+		/// Keeps the area selection sidebar open after the map overlay is dismissed (e.g. right-click).
+		/// </summary>
+		public bool AreaPanelOpen { get; private set; }
 
 		EditorSelection previousSelection;
 		CellCoordsRegion? selectionBounds;
@@ -99,6 +106,22 @@ namespace OpenRA.Mods.Common.Widgets
 				editorActionManager.Add(new DeleteAreaAction(world.Map, filters, Selection.Area.Value, resourceLayer, actorLayer));
 		}
 
+		public void CloseAreaPanel()
+		{
+			AreaPanelOpen = false;
+			ClearSelection(updateSelectedTab: true);
+		}
+
+		public void DismissAreaOverlay()
+		{
+			if (!Selection.Area.HasValue)
+				return;
+
+			previousSelection = Selection;
+			SetSelection(new EditorSelection { Actor = Selection.Actor });
+			editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+		}
+
 		public void ClearSelection(bool updateSelectedTab = false)
 		{
 			if (Selection.HasSelection)
@@ -110,6 +133,8 @@ namespace OpenRA.Mods.Common.Widgets
 				if (updateSelectedTab)
 					UpdateSelectedTab?.Invoke();
 			}
+			else if (updateSelectedTab)
+				UpdateSelectedTab?.Invoke();
 		}
 
 		public void SetSelection(EditorSelection selection)
@@ -123,6 +148,11 @@ namespace OpenRA.Mods.Common.Widgets
 			Selection = selection;
 			if (Selection.Actor != null)
 				Selection.Actor.Selected = true;
+
+			if (selection.Area.HasValue)
+				AreaPanelOpen = true;
+			else if (selection.Actor != null)
+				AreaPanelOpen = false;
 
 			SelectionChanged?.Invoke();
 		}
@@ -252,10 +282,18 @@ namespace OpenRA.Mods.Common.Widgets
 							UpdateSelectedTab?.Invoke();
 						}
 					}
-					else if (Selection.HasSelection)
+					else
 					{
-						// Released left mouse without dragging or selecting an actor - deselect current.
-						ClearSelection(updateSelectedTab: true);
+						// Single click on a cell selects a 1x1 area (same as a minimal drag box).
+						var singleCell = new CellCoordsRegion(cell, cell);
+						previousSelection = Selection;
+						SetSelection(new EditorSelection
+						{
+							Area = singleCell
+						});
+
+						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+						UpdateSelectedTab?.Invoke();
 					}
 				}
 				else if (mi.Button == MouseButton.Right)
@@ -269,6 +307,10 @@ namespace OpenRA.Mods.Common.Widgets
 					// Or delete resource if found under cursor.
 					if (resourceUnderCursor != null)
 						editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
+
+					// Clear area selection overlay (removes paste preview / green grid).
+					if (Selection.Area.HasValue)
+						DismissAreaOverlay();
 				}
 			}
 
@@ -277,12 +319,59 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
+
+		static float CopyGlowPulseScale()
+		{
+			var phase = Game.LocalTick % CopyGlowPulseTicks / (float)CopyGlowPulseTicks;
+			return 0.45f + 0.55f * (0.5f + 0.5f * MathF.Sin(phase * MathF.PI * 2));
+		}
+
+		static IEnumerable<EditorSelectionAnnotationRenderable> GlowAnnotations(IReadOnlyCollection<CPos> cells, Color color, bool pulse = false)
+		{
+			var scale = pulse ? CopyGlowPulseScale() : 1f;
+			yield return new EditorSelectionAnnotationRenderable(cells, Color.FromArgb((int)(64 * scale), color), int2.Zero, CVec.Zero, 5);
+			yield return new EditorSelectionAnnotationRenderable(cells, Color.FromArgb((int)(128 * scale), color), int2.Zero, CVec.Zero, 3);
+			yield return new EditorSelectionAnnotationRenderable(cells, Color.FromArgb((int)(color.A * scale), color), int2.Zero, CVec.Zero, 2);
+		}
+
+		static bool RegionsMatch(CellCoordsRegion a, CellCoordsRegion b)
+		{
+			return a.TopLeft == b.TopLeft && a.BottomRight == b.BottomRight;
+		}
+
 		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (CurrentDragBounds.HasValue)
+			var clipboard = editorWidget.HasClipboard ? editorWidget.Clipboard : null;
+			var copySource = editorWidget.CopySourceRegion;
+
+			if (clipboard is EditorBlitSource blitSource && copySource.HasValue)
 			{
-				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
-				yield return new EditorSelectionAnnotationRenderable(CurrentDragBounds.Value, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
+				var copyCells = EditorBlit.GetBlitSourceMask(blitSource, CVec.Zero);
+				foreach (var glow in GlowAnnotations(copyCells, editorWidget.CopyColor, pulse: true))
+					yield return glow;
+			}
+
+			if (!CurrentDragBounds.HasValue)
+				yield break;
+
+			var selection = CurrentDragBounds.Value;
+
+			if (clipboard is EditorBlitSource pasteSource && copySource is CellCoordsRegion copyRegion &&
+				Selection.Area.HasValue && !RegionsMatch(selection, copyRegion))
+			{
+				var pasteOffset = selection.TopLeft - pasteSource.CellCoords.TopLeft;
+				var pasteCells = EditorBlit.GetBlitSourceMask(pasteSource, pasteOffset);
+				foreach (var glow in GlowAnnotations(pasteCells, editorWidget.PasteColor))
+					yield return glow;
+			}
+
+			var selectionMatchesCopy = clipboard.HasValue && copySource is CellCoordsRegion copiedRegion &&
+				Selection.Area.HasValue && RegionsMatch(selection, copiedRegion);
+
+			if (!selectionMatchesCopy)
+			{
+				yield return new EditorSelectionAnnotationRenderable(selection, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
+				yield return new EditorSelectionAnnotationRenderable(selection, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
 			}
 		}
 

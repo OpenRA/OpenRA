@@ -23,12 +23,18 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorCursorLayer : ITickRender, IRenderAboveShroud, IRenderAnnotations
 	{
 		IEditorBrush brush;
+		IEditorBrush selectionBrush;
 
 		static readonly IEnumerable<IRenderable> NoRenderables = [];
 
 		public void SetBrush(IEditorBrush brush)
 		{
 			this.brush = brush;
+		}
+
+		public void SetSelectionBrush(IEditorBrush selectionBrush)
+		{
+			this.selectionBrush = selectionBrush;
 		}
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
@@ -45,7 +51,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return brush?.RenderAnnotations(self, wr) ?? NoRenderables;
+			if (selectionBrush != null && selectionBrush != brush)
+				foreach (var renderable in selectionBrush.RenderAnnotations(self, wr))
+					yield return renderable;
+
+			if (brush != null)
+				foreach (var renderable in brush.RenderAnnotations(self, wr))
+					yield return renderable;
 		}
 
 		bool IRenderAnnotations.SpatiallyPartitionable => false;

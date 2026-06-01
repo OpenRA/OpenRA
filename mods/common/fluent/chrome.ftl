@@ -63,6 +63,8 @@ label-selected-area-diagonal = Diagonal:
 label-selected-area-resources = Resources:
 label-selection-filters = Filters
 label-selected-area-preview = Selected Preview
+
+label-copied-area-preview = Copied Preview
 label-editor-mix-mode = Mix:
 label-editor-mix-mode-random = Random
 label-editor-mix-mode-sequential = Sequential
@@ -99,6 +101,26 @@ button-map-editor-tab-container-history-tooltip = History
 button-delete-area =
     .label = Delete
     .tooltip = Remove everything in the selected area
+
+button-copy-area =
+    .label = Copy
+    .tooltip = Copy the selected area
+
+button-paste-area =
+    .label = Paste
+    .tooltip = Paste the copied area at the selected location
+
+button-clear-copy-area =
+    .label = Clear Copy
+    .tooltip = Clear the copied area from memory
+
+button-rotate-copy-left =
+    .label = Rotate Left
+    .tooltip = Rotate the copied selection 90 degrees counter-clockwise
+
+button-rotate-copy-right =
+    .label = Rotate Right
+    .tooltip = Rotate the copied selection 90 degrees clockwise
 
 button-fill-area =
     .label = Fill
