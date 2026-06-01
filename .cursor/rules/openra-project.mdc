@@ -42,3 +42,5 @@ When placing tiles, maps store official **template IDs** and terrain data from `
 - **Minimize scope**—smallest correct diff; do not refactor unrelated code.
 - Match OpenRA/C# conventions in surrounding files.
 - Do not add tests or docs unless asked.
+
+- Avoid winget install, they get stuck. Find another way to install.
