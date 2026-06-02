@@ -287,6 +287,35 @@ namespace OpenRA.Graphics
 			];
 		}
 
+		/// <summary>Rotates a quad about its center in the x-y plane.</summary>
+		/// <param name="des">Destination array of four verties representing the rotated quad (top-left, top-right, bottom-right, bottom-left).</param>
+		/// <param name="tl">The top left vertex of the quad.</param>
+		/// <param name="size">A float3 containing the X, Y, and Z lengths of the quad.</param>
+		/// <param name="rotation">The number of radians to rotate by.</param>
+		public static void RotateQuadInto(Span<float3> des, float3 tl, float3 size, float rotation)
+		{
+			var center = tl + 0.5f * size;
+			var angleSin = (float)Math.Sin(-rotation);
+			var angleCos = (float)Math.Cos(-rotation);
+
+			// Rotated offset for +/- x with +/- y
+			var ra = 0.5f * new float3(
+				size.X * angleCos - size.Y * angleSin,
+				size.X * angleSin + size.Y * angleCos,
+				(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
+
+			// Rotated offset for +/- x with -/+ y
+			var rb = 0.5f * new float3(
+				size.X * angleCos + size.Y * angleSin,
+				size.X * angleSin - size.Y * angleCos,
+				(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
+
+			des[0] = center - ra;
+			des[1] = center + rb;
+			des[2] = center + ra;
+			des[3] = center - rb;
+		}
+
 		/// <summary>
 		/// Returns the bounds of an object. Used for determining which objects need to be rendered on screen, and which do not.
 		/// </summary>
@@ -298,7 +327,9 @@ namespace OpenRA.Graphics
 			if (rotation == 0f)
 				return new Rectangle((int)offset.X, (int)offset.Y, (int)size.X, (int)size.Y);
 
-			var rotatedQuad = RotateQuad(offset, size, rotation);
+			Span<float3> rotatedQuad = stackalloc float3[4];
+			RotateQuadInto(rotatedQuad, offset, size, rotation);
+
 			var minX = rotatedQuad[0].X;
 			var maxX = rotatedQuad[0].X;
 			var minY = rotatedQuad[0].Y;
