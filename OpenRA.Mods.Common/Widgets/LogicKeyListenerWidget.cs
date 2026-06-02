@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -18,6 +19,12 @@ namespace OpenRA.Mods.Common.Widgets
 	public class LogicKeyListenerWidget : Widget
 	{
 		readonly List<Func<KeyInput, bool>> handlers = [];
+
+		/// <summary>When true, mouse events pass through to widgets below (keyboard handling only).</summary>
+		public bool IgnoreMouseInput;
+
+		public override bool EventBoundsContains(int2 location) =>
+			IgnoreMouseInput ? false : base.EventBoundsContains(location);
 
 		public override bool HandleKeyPress(KeyInput e)
 		{

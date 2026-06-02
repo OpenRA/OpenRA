@@ -206,7 +206,7 @@ Container@EDITOR_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
-	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic, MapEditorSelectionLogic
+	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic, EditorTileMetadataTrainingLogic, MapEditorSelectionLogic
 		ToggleGridOverlayKey: EditorToggleGridOverlay
 		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
 		ToggleWalkableOverlayKey: EditorToggleWalkableOverlay
@@ -315,6 +315,12 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 							Children:
+								Checkbox@TRAINING_CHECKBOX:
+									X: PARENT_WIDTH - 22
+									Y: 2
+									Width: 18
+									Height: 18
+									Visible: false
 								TerrainTemplatePreview@TILE_PREVIEW:
 									X: 4
 									Y: 4
@@ -414,6 +420,12 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipTemplate: SIMPLE_TOOLTIP
 							IgnoreChildMouseOver: true
 							Children:
+								Checkbox@TRAINING_CHECKBOX:
+									X: PARENT_WIDTH - 22
+									Y: 2
+									Width: 18
+									Height: 18
+									Visible: false
 								ActorPreview@ACTOR_PREVIEW:
 									X: 4
 									Y: 4
@@ -489,7 +501,7 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 24
 							Align: Center
 							Font: Bold
-							Text: label-area-selection
+							Text: label-selected-area-preview
 						Button@SELECTION_CLOSE_BUTTON:
 							X: PARENT_WIDTH - 35
 							Y: 8
@@ -509,12 +521,11 @@ Container@EDITOR_WORLD_ROOT:
 							Background: scrollpanel-bg
 							Children:
 								Label@SELECTION_PREVIEW_LABEL:
-									Y: 5
+									Y: 10
 									Width: PARENT_WIDTH
 									Height: 20
 									Align: Center
 									Font: Bold
-									Text: label-selected-area-preview
 								Label@MIX_MODE_LABEL:
 									X: 5
 									Y: 28
@@ -598,9 +609,9 @@ Container@EDITOR_WORLD_ROOT:
 									Align: Right
 								Background@SELECTION_ASSET_PREVIEW_BOX:
 									X: 10
-									Y: 55
+									Y: 40
 									Width: PARENT_WIDTH - 20
-									Height: 180
+									Height: 148
 									Background: dialog3
 									Children:
 										EditorSelectionPreviewGrid@SELECTION_ASSET_PREVIEW_GRID:
@@ -640,6 +651,22 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 25
 									Font: Bold
 									Text: button-similar-preview-next
+									Visible: false
+								Button@SHOW_SIMILAR_BUTTON:
+									X: 10
+									Y: 230
+									Width: (PARENT_WIDTH - 25) / 2
+									Height: 22
+									Font: TinyBold
+									Text: button-editor-show-similar
+									Visible: false
+								Button@CLEAR_SIMILAR_BUTTON:
+									X: 15 + (PARENT_WIDTH - 25) / 2
+									Y: 230
+									Width: (PARENT_WIDTH - 25) / 2
+									Height: 22
+									Font: TinyBold
+									Text: button-editor-clear-similar
 									Visible: false
 								Checkbox@SELECTION_PREVIEW_BORDER_CHECKBOX:
 									X: 10
@@ -694,7 +721,7 @@ Container@EDITOR_WORLD_ROOT:
 											Align: Left
 								Background@ACTOR_EDIT_PANEL:
 									X: 10
-									Y: 248
+									Y: 198
 									Width: PARENT_WIDTH - 20
 									Height: 158
 									Background: scrollpanel-bg
@@ -708,7 +735,7 @@ Container@EDITOR_WORLD_ROOT:
 											Align: Center
 											Font: Bold
 										Label@ACTOR_ID_LABEL:
-											Y: 6
+											Y: 10
 											Width: 55
 											Height: 20
 											Text: label-actor-edit-panel-id
@@ -716,18 +743,18 @@ Container@EDITOR_WORLD_ROOT:
 											Font: TinyBold
 										TextField@ACTOR_ID:
 											X: 69
-											Y: 4
+											Y: 8
 											Width: PARENT_WIDTH - 78
 											Height: 22
 										Label@ACTOR_ID_ERROR_LABEL:
 											X: 69
-											Y: 26
+											Y: 32
 											Width: PARENT_WIDTH - 78
 											Height: 16
 											Font: TinyBold
 											TextColor: FF0000
 										Container@ACTOR_INIT_CONTAINER:
-											Y: 44
+											Y: 50
 											Width: PARENT_WIDTH
 											Children:
 												Container@CHECKBOX_OPTION_TEMPLATE:
@@ -807,7 +834,7 @@ Container@EDITOR_WORLD_ROOT:
 													TooltipText: button-delete-actor.tooltip
 													TooltipContainer: TOOLTIP_CONTAINER
 												Button@CANCEL_BUTTON:
-													X: (PARENT_WIDTH - 160) / 2
+													X: 85
 													Width: 75
 													Height: 25
 													Text: button-cancel
@@ -821,18 +848,34 @@ Container@EDITOR_WORLD_ROOT:
 													Font: Bold
 													Key: return
 								Label@OPPOSITES_LABEL:
-									Y: 420
+									Y: 340
 									Width: PARENT_WIDTH
 									Height: 20
 									Align: Center
 									Font: Bold
 									Text: label-editor-opposites
 									Visible: false
+								Button@OPPOSITES_MODE_ISLAND_BUTTON:
+									X: 10
+									Y: 360
+									Width: (PARENT_WIDTH - 25) / 2
+									Height: 22
+									Font: TinyBold
+									Text: label-editor-opposites-island
+									Visible: false
+								Button@OPPOSITES_MODE_RING_BUTTON:
+									X: 15 + (PARENT_WIDTH - 25) / 2
+									Y: 360
+									Width: (PARENT_WIDTH - 25) / 2
+									Height: 22
+									Font: TinyBold
+									Text: label-editor-opposites-ring
+									Visible: false
 								Background@OPPOSITES_PREVIEW_BOX:
-									X: (PARENT_WIDTH - 148) / 2
-									Y: 442
-									Width: 148
-									Height: 148
+									X: 10
+									Y: 386
+									Width: PARENT_WIDTH - 20
+									Height: 200
 									Background: dialog3
 									Visible: false
 									Children:
@@ -848,9 +891,16 @@ Container@EDITOR_WORLD_ROOT:
 											Width: PARENT_WIDTH
 											Height: PARENT_HEIGHT
 											Visible: false
+						Button@OPEN_TILE_METADATA_TRAIN_BUTTON:
+							X: 10
+							Y: 700
+							Width: PARENT_WIDTH - 20
+							Height: 25
+							Font: TinyBold
+							Text: button-editor-train
 						Label@AREA_FILTERS_LABEL:
 							X: 15
-							Y: 718
+							Y: 732
 							Width: 150
 							Height: 25
 							Font: Bold
@@ -858,24 +908,24 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-selection-filters
 						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
 							X: 15
-							Y: 743
+							Y: 757
 							Width: PARENT_WIDTH - 29
 							Height: 20
 							Text: label-filter-terrain
 						Checkbox@COPY_FILTER_RESOURCES_CHECKBOX:
 							X: 15
-							Y: 768
+							Y: 782
 							Width: PARENT_WIDTH - 29
 							Height: 20
 							Text: label-filter-resources
 						Checkbox@COPY_FILTER_ACTORS_CHECKBOX:
 							X: 15
-							Y: 793
+							Y: 807
 							Width: PARENT_WIDTH - 29
 							Height: 20
 							Text: label-filter-actors
 						Label@AREA_INFO_TITLE:
-							Y: 812
+							Y: 826
 							Width: PARENT_WIDTH
 							Height: 24
 							Align: Center
@@ -883,7 +933,7 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-area-info
 						Label@DIAGONAL_LABEL:
 							X: 5
-							Y: 844
+							Y: 858
 							Width: 120
 							Height: 20
 							Font: Bold
@@ -891,7 +941,7 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-selected-area-diagonal
 						Label@RESOURCE_LABEL:
 							X: 5
-							Y: 866
+							Y: 880
 							Width: 120
 							Height: 25
 							Font: Bold
@@ -899,13 +949,13 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-selected-area-resources
 						Label@DIAGONAL_COUNTER_LABEL:
 							X: 140
-							Y: 843
+							Y: 857
 							Width: 55
 							Height: 22
 							Align: Left
 						Label@RESOURCES_COUNTER_LABEL:
 							X: 140
-							Y: 868
+							Y: 882
 							Width: 55
 							Height: 22
 							Align: Left
@@ -1167,6 +1217,41 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
+		Background@EDITOR_ORIENTATION_TRAINING_PANEL:
+			X: (WINDOW_WIDTH - WIDTH) / 2
+			Y: (WINDOW_HEIGHT - HEIGHT) / 2
+			Width: 320
+			Height: 400
+			Background: dialog3
+			Visible: false
+			Children:
+				Label@ORIENTATION_TITLE:
+					X: 0
+					Y: 8
+					Width: PARENT_WIDTH
+					Height: 20
+					Align: Center
+					Font: Bold
+					Text: label-editor-orientation-training
+				EditorOrientationGrid@ORIENTATION_GRID:
+					X: 20
+					Y: 36
+					Width: PARENT_WIDTH - 40
+					Height: 280
+				Button@ORIENTATION_SAVE_BUTTON:
+					X: 10
+					Y: PARENT_HEIGHT - 68
+					Width: (PARENT_WIDTH - 30) / 2
+					Height: 28
+					Text: button-save
+					Font: Bold
+				Button@ORIENTATION_CANCEL_BUTTON:
+					X: 20 + (PARENT_WIDTH - 30) / 2
+					Y: PARENT_HEIGHT - 68
+					Width: (PARENT_WIDTH - 30) / 2
+					Height: 28
+					Text: button-cancel
+					Font: Bold
 
 ScrollPanel@CATEGORY_FILTER_PANEL:
 	Width: 240

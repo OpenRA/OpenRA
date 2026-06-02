@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public enum EditorLocateAssetKind { Tile, Actor, Resource }
+	public enum EditorLocateAssetKind { Tile, Actor, Resource, RestoreAllCategories }
 
 	public readonly struct EditorLocateAssetRequest
 	{
@@ -21,22 +21,27 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly ushort? TemplateId;
 		public readonly ActorInfo Actor;
 		public readonly string ResourceType;
+		public readonly bool ScrollToAsset;
 
-		public static EditorLocateAssetRequest ForTile(ushort templateId) =>
-			new(EditorLocateAssetKind.Tile, templateId, null, null);
+		public static EditorLocateAssetRequest ForTile(ushort templateId, bool scrollToAsset = true) =>
+			new(EditorLocateAssetKind.Tile, templateId, null, null, scrollToAsset);
 
-		public static EditorLocateAssetRequest ForActor(ActorInfo actor) =>
-			new(EditorLocateAssetKind.Actor, null, actor, null);
+		public static EditorLocateAssetRequest ForActor(ActorInfo actor, bool scrollToAsset = true) =>
+			new(EditorLocateAssetKind.Actor, null, actor, null, scrollToAsset);
 
 		public static EditorLocateAssetRequest ForResource(string resourceType) =>
-			new(EditorLocateAssetKind.Resource, null, null, resourceType);
+			new(EditorLocateAssetKind.Resource, null, null, resourceType, true);
 
-		EditorLocateAssetRequest(EditorLocateAssetKind kind, ushort? templateId, ActorInfo actor, string resourceType)
+		public static EditorLocateAssetRequest RestoreAllCategories() =>
+			new(EditorLocateAssetKind.RestoreAllCategories, null, null, null, false);
+
+		EditorLocateAssetRequest(EditorLocateAssetKind kind, ushort? templateId, ActorInfo actor, string resourceType, bool scrollToAsset)
 		{
 			Kind = kind;
 			TemplateId = templateId;
 			Actor = actor;
 			ResourceType = resourceType;
+			ScrollToAsset = scrollToAsset;
 		}
 	}
 }

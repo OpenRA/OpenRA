@@ -146,24 +146,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			Editor.LocateAssetRequested += HandleLocateAssetRequested;
+			if (EditorTileMetadataTraining.Instance != null)
+				EditorTileMetadataTraining.Instance.Changed += OnMetadataTrainingChanged;
 			InitializePreviews();
 		}
 
 		protected override void Dispose(bool disposing)
 		{
+			if (EditorTileMetadataTraining.Instance != null)
+				EditorTileMetadataTraining.Instance.Changed -= OnMetadataTrainingChanged;
 			Editor.LocateAssetRequested -= HandleLocateAssetRequested;
 			base.Dispose(disposing);
 		}
 
+		void OnMetadataTrainingChanged() => InitializePreviews();
+
 		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
 		{
+			if (request.Kind == EditorLocateAssetKind.RestoreAllCategories)
+			{
+				RestoreAllCategories();
+				return;
+			}
+
 			if (request.Kind != EditorLocateAssetKind.Actor || request.Actor == null)
 				return;
 
-			LocateActor(request.Actor);
+			ApplyActorCategoryFilter(request.Actor, request.ScrollToAsset);
 		}
 
-		void LocateActor(ActorInfo actor)
+		void RestoreAllCategories()
+		{
+			locateHighlightActorName = null;
+			SelectedCategories.Clear();
+			foreach (var c in allCategories)
+				SelectedCategories.Add(c);
+
+			InitializePreviews();
+		}
+
+		void ApplyActorCategoryFilter(ActorInfo actor, bool scrollToItem)
 		{
 			var entry = allActors.FirstOrDefault(a => a.Actor == actor);
 			if (entry == null)
@@ -186,7 +208,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			InitializePreviews();
-			Panel.ScrollToItem(actor.Name, smooth: true);
+			if (scrollToItem)
+				Panel.ScrollToItem(actor.Name, smooth: true);
 		}
 
 		void SelectOwner(PlayerReference option)
@@ -234,8 +257,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Actors.Contains(actor),
 						() => { },
 						() => { });
-					item.OnMouseUp = mi => SelectActor(actor, mi.Modifiers.HasModifier(Modifiers.Ctrl));
-					item.ShowSelectionOutline = item.IsSelected;
+					var trainingCheckbox = item.GetOrNull<CheckboxWidget>("TRAINING_CHECKBOX");
+					var training = EditorTileMetadataTraining.Instance;
+					if (trainingCheckbox != null && training != null)
+					{
+						trainingCheckbox.IsVisible = () => training.ShowTrainingCheckboxes || training.ShowSecondarySelection;
+						trainingCheckbox.IsChecked = () => training.ShowSecondarySelection && training.IsSecondaryActorSelected(actor.Name);
+						trainingCheckbox.IsDisabled = () => training.ShowSecondarySelection &&
+							string.Equals(actor.Name, training.PrimaryActorName, StringComparison.OrdinalIgnoreCase);
+					}
+
+					item.OnMouseUp = mi =>
+					{
+						if (TryHandleTrainingClick(actor))
+							return;
+
+						SelectActor(actor, mi.Modifiers.HasModifier(Modifiers.Ctrl));
+					};
+					item.ShowSelectionOutline = () => item.IsSelected() ||
+						(training != null && string.Equals(actor.Name, training.PrimaryActorName, StringComparison.OrdinalIgnoreCase));
 					item.ShowLocateOutline = () => locateHighlightActorName == actor.Name;
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");
@@ -271,6 +311,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						+ $"because of missing sprites for tileset {World.Map.Rules.TerrainInfo.Id}.");
 				}
 			}
+		}
+
+		bool TryHandleTrainingClick(ActorInfo actor)
+		{
+			var training = EditorTileMetadataTraining.Instance;
+			if (training == null || !training.IsActive)
+				return false;
+
+			if (training.IsPrimaryActorSelected(actor.Name))
+				return training.TogglePrimaryActor(actor.Name);
+
+			if (training.ShowSecondarySelection)
+				return training.ToggleSecondaryActor(actor.Name);
+
+			if (training.ShowTrainingCheckboxes)
+				return training.TogglePrimaryActor(actor.Name);
+
+			return false;
 		}
 
 		void SelectActor(ActorInfo actor, bool toggleSelection)

@@ -18,14 +18,21 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
+	public enum EditorOppositesMode { Island, Ring }
+
 	sealed class EditorTileMetadata
 	{
 		const int Slots = 9;
+		public const int RingHiddenSlot = 4;
+		public const int HorizontalSlot = 9;
+		public const int VerticalSlot = 10;
 		const int MaxOppositesTemplateSpan = 5;
 
 		readonly Dictionary<TemplateKey, Entry> entries;
 		readonly Dictionary<string, ActorEntry> actorEntries;
-		readonly Dictionary<TemplateKey, TerrainTemplateInfo[]> oppositesCache = [];
+		readonly Dictionary<OppositesCacheKey, TerrainTemplateInfo[]> oppositesCache = [];
+
+		readonly record struct OppositesCacheKey(TemplateKey Template, EditorOppositesMode Mode);
 
 		EditorTileMetadata(Dictionary<TemplateKey, Entry> entries, Dictionary<string, ActorEntry> actorEntries)
 		{
@@ -55,11 +62,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var tileset = ReadValue(data, "Tileset");
 					var groups = ReadCsv(data, "OppositesGroup");
-					var slot = ParseSlot(ReadValue(data, "Orientation")) ?? ParseSlot(ReadValue(data, "OppositesSlot"));
-					var opposites = ReadList(data, "Opposites");
+					var slotIsland = ParseSlot(ReadValue(data, "Orientation_island"))
+						?? ParseSlot(ReadValue(data, "Orientation"))
+						?? ParseSlot(ReadValue(data, "OppositesSlot"));
+					var slotRing = ParseSlot(ReadValue(data, "Orientation_ring"));
+					var oppositesIsland = ReadList(data, "Opposites_island");
+					if (oppositesIsland.Length == 0)
+						oppositesIsland = ReadList(data, "Opposites");
+					var oppositesRing = ReadList(data, "Opposites_ring");
 					var similar = ReadList(data, "Similar");
 
-					entries[new TemplateKey(tileset, id)] = new Entry(groups, slot, opposites, similar);
+					entries[new TemplateKey(tileset, id)] = new Entry(groups, slotIsland, slotRing, oppositesIsland, oppositesRing, similar);
 				}
 			}
 
@@ -81,25 +94,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return new EditorTileMetadata(entries, actorEntries);
 		}
 
-		public TerrainTemplateInfo[] FindOpposites(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo selectedTemplate)
+		public TerrainTemplateInfo[] FindOpposites(
+			ITemplatedTerrainInfo terrainInfo,
+			TerrainTemplateInfo selectedTemplate,
+			EditorOppositesMode mode = EditorOppositesMode.Island)
 		{
-			var cacheKey = new TemplateKey(terrainInfo.Id, selectedTemplate.Id);
+			var cacheKey = new OppositesCacheKey(new TemplateKey(terrainInfo.Id, selectedTemplate.Id), mode);
 			if (oppositesCache.TryGetValue(cacheKey, out var cached))
 				return cached;
 
 			var result = new TerrainTemplateInfo[Slots];
-			var selectedSlot = SlotFor(terrainInfo, selectedTemplate);
+			var selectedSlot = SlotFor(terrainInfo, selectedTemplate, mode);
 			if (selectedSlot == null)
 				return oppositesCache[cacheKey] = result;
 
-			result[selectedSlot.Value] = selectedTemplate;
+			if (mode == EditorOppositesMode.Ring && IsCenterOrientationSlot(selectedSlot.Value))
+				return oppositesCache[cacheKey] = result;
+
+			result[OppositesGridIndex(selectedSlot.Value)] = selectedTemplate;
 			var selectedEntry = EntryFor(terrainInfo, selectedTemplate);
 
-			foreach (var template in MatchingTemplates(terrainInfo, selectedEntry.OppositeRefs))
+			foreach (var template in MatchingTemplates(terrainInfo, selectedEntry.OppositeRefs(mode)))
 			{
-				var slot = SlotFor(terrainInfo, template);
-				if (slot != null && result[slot.Value] == null)
-					result[slot.Value] = template;
+				var slot = SlotFor(terrainInfo, template, mode);
+				if (slot != null)
+					TryAssignOpposite(result, mode, slot.Value, template);
 			}
 
 			foreach (var template in terrainInfo.TemplatesInDefinitionOrder)
@@ -110,13 +129,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!IsRelated(selectedTemplate, selectedEntry, template, EntryFor(terrainInfo, template)))
 					continue;
 
-				var slot = SlotFor(terrainInfo, template);
-				if (slot != null && result[slot.Value] == null)
-					result[slot.Value] = template;
+				var slot = SlotFor(terrainInfo, template, mode);
+				if (slot != null)
+					TryAssignOpposite(result, mode, slot.Value, template);
 			}
 
 			return oppositesCache[cacheKey] = result;
 		}
+
+		public static bool IsCenterOrientationSlot(int slot) =>
+			slot is RingHiddenSlot or HorizontalSlot or VerticalSlot;
+
+		public static int OppositesGridIndex(int slot) =>
+			slot is HorizontalSlot or VerticalSlot ? RingHiddenSlot : slot;
+
+		static bool TryAssignOpposite(TerrainTemplateInfo[] result, EditorOppositesMode mode, int slot, TerrainTemplateInfo template)
+		{
+			if (!IsOppositesSlotUsed(mode, slot))
+				return false;
+
+			var index = OppositesGridIndex(slot);
+			if (index < 0 || index >= result.Length || result[index] != null)
+				return false;
+
+			result[index] = template;
+			return true;
+		}
+
+		public static bool IsOppositesSlotUsed(EditorOppositesMode mode, int slot) =>
+			mode == EditorOppositesMode.Island || !IsCenterOrientationSlot(slot);
 
 		public TerrainTemplateInfo[] FindSimilar(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo selectedTemplate)
 		{
@@ -132,7 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (explicitSimilar.Length > 0)
 				return [selectedTemplate, .. explicitSimilar];
 
-			var selectedSlot = SlotFor(terrainInfo, selectedTemplate);
+			var selectedSlot = SlotFor(terrainInfo, selectedTemplate, EditorOppositesMode.Island);
 			if (selectedSlot == null)
 				return [selectedTemplate];
 
@@ -140,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.Where(template => template.Id == selectedTemplate.Id ||
 					(CanShowInOpposites(template) &&
 					IsRelated(selectedTemplate, selectedEntry, template, EntryFor(terrainInfo, template)) &&
-					SlotFor(terrainInfo, template) == selectedSlot))
+					SlotFor(terrainInfo, template, EditorOppositesMode.Island) == selectedSlot))
 				.ToArray();
 		}
 
@@ -277,6 +318,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				defaultTemplate.Images.Any(image => string.Equals(image, reference, StringComparison.OrdinalIgnoreCase));
 		}
 
+		public static string SlotIndexToName(int slot) => slot switch
+		{
+			0 => "TopLeft",
+			1 => "Top",
+			2 => "TopRight",
+			3 => "Left",
+			4 => "Center",
+			5 => "Right",
+			6 => "BottomLeft",
+			7 => "Bottom",
+			8 => "BottomRight",
+			HorizontalSlot => "Horizontal",
+			VerticalSlot => "Vertical",
+			_ => "Center"
+		};
+
 		static int? ParseSlot(string value)
 		{
 			return value?.Trim().ToLowerInvariant() switch
@@ -285,7 +342,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				"top" or "top-center" or "topcenter" or "up" => 1,
 				"top-right" or "topright" => 2,
 				"left" or "middle-left" or "middleleft" => 3,
-				"center" or "horizontal" or "vertical" => 4,
+				"center" => 4,
+				"horizontal" => HorizontalSlot,
+				"vertical" => VerticalSlot,
 				"right" or "middle-right" or "middleright" => 5,
 				"bottom-left" or "bottomleft" => 6,
 				"bottom" or "bottom-center" or "bottomcenter" or "down" => 7,
@@ -317,11 +376,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return selectedTemplate.Categories.Any(c => template.Categories.Contains(c));
 		}
 
-		int? SlotFor(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo template)
+		public static int? TryParseOrientationSlot(string value) => ParseSlot(value);
+
+		int? SlotFor(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo template, EditorOppositesMode mode)
 		{
 			var entry = EntryFor(terrainInfo, template);
-			if (entry.Slot != null)
-				return entry.Slot;
+			if (entry.Slot(mode) != null)
+				return entry.Slot(mode);
 
 			var topWater = EdgeKind(terrainInfo, template, Edge.Top) == TerrainKind.Water;
 			var rightWater = EdgeKind(terrainInfo, template, Edge.Right) == TerrainKind.Water;
@@ -400,20 +461,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly struct Entry
 		{
-			public static readonly Entry Empty = new([], null);
+			public static readonly Entry Empty = new([], null, null);
 
 			public readonly HashSet<string> Groups;
-			public readonly int? Slot;
-			public readonly string[] OppositeRefs;
+			public readonly int? SlotIsland;
+			public readonly int? SlotRing;
+			public readonly string[] OppositeRefsIsland;
+			public readonly string[] OppositeRefsRing;
 			public readonly string[] SimilarRefs;
 
-			public Entry(HashSet<string> groups, int? slot, string[] oppositeRefs = null, string[] similarRefs = null)
+			public Entry(
+				HashSet<string> groups,
+				int? slotIsland,
+				int? slotRing,
+				string[] oppositeRefsIsland = null,
+				string[] oppositeRefsRing = null,
+				string[] similarRefs = null)
 			{
 				Groups = groups;
-				Slot = slot;
-				OppositeRefs = oppositeRefs ?? [];
+				SlotIsland = slotIsland;
+				SlotRing = slotRing;
+				OppositeRefsIsland = oppositeRefsIsland ?? [];
+				OppositeRefsRing = oppositeRefsRing ?? [];
 				SimilarRefs = similarRefs ?? [];
 			}
+
+			public int? Slot(EditorOppositesMode mode) => mode == EditorOppositesMode.Ring ? SlotRing : SlotIsland;
+
+			public string[] OppositeRefs(EditorOppositesMode mode) => mode switch
+			{
+				EditorOppositesMode.Ring => OppositeRefsRing,
+				_ => OppositeRefsIsland,
+			};
 		}
 
 		readonly struct ActorEntry

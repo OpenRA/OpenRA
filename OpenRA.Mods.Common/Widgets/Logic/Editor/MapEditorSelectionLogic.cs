@@ -47,14 +47,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Opposites = "label-editor-opposites";
 
+		[FluentReference]
+		const string OppositesIsland = "label-editor-opposites-island";
+
+		[FluentReference]
+		const string OppositesRing = "label-editor-opposites-ring";
+
+		[FluentReference]
+		const string ShowSimilar = "button-editor-show-similar";
+
+		[FluentReference]
+		const string ClearSimilar = "button-editor-clear-similar";
+
 		const float SelectionPreviewImageScale = 0.8f;
 		const int SelectionPanelContentMargin = 10;
+		const int SelectionPreviewLabelHeight = 20;
+		const int SelectionPreviewControlsGap = 6;
+		const int MixModeRowHeight = 25;
+		const int TilePreviewModeRowHeight = 22;
+		const int FillControlRowHeight = 25;
+		const int FillModeRowHeight = 25;
+		const int SelectionPreviewBoxSize = 148;
+		const int SelectionPreviewFullHeight = 180;
 		const int SelectionAssetSizeLabelWidth = 36;
 		const int SelectionAssetSizeLabelHeight = 16;
 		const int SelectionAssetSizeLabelGap = 4;
 		const int OppositesPreviewSections = 3;
 		const int OppositesSectionCellSpan = 5;
 		const int OppositesPreviewSlots = OppositesPreviewSections * OppositesPreviewSections;
+		const int OppositesLabelHeight = 20;
+		const int OppositesModeButtonHeight = 22;
+		const int OppositesSectionGap = 6;
+		const int OppositesBoxInset = 4;
+		const int SimilarFilterButtonHeight = 22;
+		const int SimilarFilterButtonGap = 6;
 
 		readonly EditorViewportControllerWidget editor;
 		readonly Map map;
@@ -77,10 +103,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorSelectionPreviewGridWidget previewGridWidget;
 		readonly EditorSelectionPreviewBorderWidget previewBorderWidget;
 		readonly LabelWidget selectedPreviewLabel;
+		readonly ButtonWidget tilePreviewCurrentButton;
+		readonly ButtonWidget tilePreviewOriginalButton;
+		readonly ButtonWidget showSimilarButton;
+		readonly ButtonWidget clearSimilarButton;
+		readonly LabelWidget mixModeLabel;
+		readonly DropDownButtonWidget mixModeDropDown;
+		readonly LabelWidget fillSpaceLabel;
+		readonly SliderWidget fillSpaceSlider;
+		readonly LabelWidget fillSpaceValue;
+		readonly LabelWidget fillModeOverlapLabel;
+		readonly SliderWidget fillModeSlider;
+		readonly LabelWidget fillModeDeleteLabel;
 		readonly Widget selectedPreviewPanel;
 		readonly Widget selectedAssetPreviewBox;
 		readonly LabelWidget oppositesLabel;
+		readonly ButtonWidget oppositesIslandButton;
+		readonly ButtonWidget oppositesRingButton;
 		readonly Widget oppositesPreviewBox;
+		EditorOppositesMode oppositesMode = EditorOppositesMode.Island;
 		readonly EditorSelectionPreviewGridWidget oppositesPreviewGridWidget;
 		readonly EditorSelectionPreviewBorderWidget oppositesSelectedBorderWidget;
 		readonly EditorOppositesPreviewClickWidget oppositesClickWidget;
@@ -96,10 +137,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget assetSizeLabelTemplate;
 		readonly List<LabelWidget> assetSizeLabels = [];
 		readonly int maxTemplateCellSpan;
-		readonly EditorTileMetadata editorTileMetadata;
+		EditorTileMetadata editorTileMetadata;
 		PreviewCellLayout? currentPreviewLayout;
 		int similarPreviewIndex;
 		bool previewBordersEnabled = true;
+		bool similarBrowserFilterActive;
 		MapBlitFilters selectionFilters = MapBlitFilters.All;
 		CellCoordsRegion? cachedPreviewRegion;
 		MapBlitFilters cachedPreviewFilters;
@@ -118,6 +160,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.worldRenderer = worldRenderer;
 			map = worldRenderer.World.Map;
 			editorTileMetadata = EditorTileMetadata.Load(Game.ModData, map.Rules.TerrainInfo as ITemplatedTerrainInfo);
+			if (EditorTileMetadataTraining.Instance != null)
+				EditorTileMetadataTraining.Instance.Changed += ReloadEditorTileMetadata;
 
 			editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
@@ -191,6 +235,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			assetSizeLabelTemplate = selectedPreviewPanel.GetOrNull<LabelWidget>("SELECTION_ASSET_SIZE_LABEL_TEMPLATE");
 			selectedPreviewLabel = selectedPreviewPanel.Get<LabelWidget>("SELECTION_PREVIEW_LABEL");
 			oppositesLabel = selectedPreviewPanel.Get<LabelWidget>("OPPOSITES_LABEL");
+			oppositesIslandButton = selectedPreviewPanel.Get<ButtonWidget>("OPPOSITES_MODE_ISLAND_BUTTON");
+			oppositesRingButton = selectedPreviewPanel.Get<ButtonWidget>("OPPOSITES_MODE_RING_BUTTON");
 			oppositesPreviewBox = selectedPreviewPanel.Get("OPPOSITES_PREVIEW_BOX");
 			oppositesPreviewGridWidget = oppositesPreviewBox.Get<EditorSelectionPreviewGridWidget>("OPPOSITES_PREVIEW_GRID");
 			oppositesSelectedBorderWidget = oppositesPreviewBox.Get<EditorSelectionPreviewBorderWidget>("OPPOSITES_SELECTED_BORDER");
@@ -219,12 +265,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			previousSimilarButton.OnClick = () => CycleSimilarPreview(-1);
 			nextSimilarButton.OnClick = () => CycleSimilarPreview(1);
 
+			showSimilarButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("SHOW_SIMILAR_BUTTON");
+			clearSimilarButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("CLEAR_SIMILAR_BUTTON");
+			if (showSimilarButton != null && clearSimilarButton != null)
+			{
+				var showSimilarFilterButtons = () => ShowSimilarFilterButtons();
+				showSimilarButton.IsVisible = showSimilarFilterButtons;
+				clearSimilarButton.IsVisible = showSimilarFilterButtons;
+				showSimilarButton.OnClick = () => ApplySimilarBrowserFilter(scrollToAsset: true);
+				clearSimilarButton.OnClick = ClearSimilarBrowserFilter;
+			}
+
 			oppositesClickWidget.GridWidth = OppositesPreviewSections;
 			oppositesClickWidget.GridHeight = OppositesPreviewSections;
 			oppositesClickWidget.OnClickSlot = SelectOppositesSlot;
 
-			var tilePreviewCurrentButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_CURRENT_BUTTON");
-			var tilePreviewOriginalButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_ORIGINAL_BUTTON");
+			tilePreviewCurrentButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_CURRENT_BUTTON");
+			tilePreviewOriginalButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("TILE_PREVIEW_ORIGINAL_BUTTON");
 			if (tilePreviewCurrentButton != null && tilePreviewOriginalButton != null)
 			{
 				var showTilePreviewMode = () => ShowTilePlacementPreviewControls();
@@ -236,23 +293,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				tilePreviewOriginalButton.OnClick = () => SetPlacementPreviewDisplayMode(TilePlacementPreviewDisplayMode.Original);
 			}
 
-			var mixModeLabel = selectedPreviewPanel.Get<LabelWidget>("MIX_MODE_LABEL");
-			var mixModeDropDown = selectedPreviewPanel.Get<DropDownButtonWidget>("MIX_MODE_DROPDOWN");
-			mixModeLabel.IsVisible = mixModeDropDown.IsVisible = () =>
-				editor.CurrentBrush is EditorTileBrush or EditorActorBrush or EditorResourceBrush
-				&& !ShowTilePlacementPreviewControls() && !ShowSelectedMapActorPreview()
-				&& !ShowSelectedActorBrushDetail();
+			mixModeLabel = selectedPreviewPanel.Get<LabelWidget>("MIX_MODE_LABEL");
+			mixModeDropDown = selectedPreviewPanel.Get<DropDownButtonWidget>("MIX_MODE_DROPDOWN");
+			mixModeLabel.IsVisible = mixModeDropDown.IsVisible = () => ShowMixModeControls();
 			mixModeDropDown.GetText = () => MixModeText(editor.AssetMixMode);
 			mixModeDropDown.OnClick = () => ShowMixModeDropDown(mixModeDropDown);
 
-			var showFillControls = () => editor.CurrentBrush is EditorTileBrush or EditorActorBrush or EditorResourceBrush
-				&& !ShowTilePlacementPreviewControls() && !ShowSelectedMapActorPreview()
-				&& !ShowSelectedActorBrushDetail();
-
-			var fillSpaceLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_SPACE_LABEL");
-			var fillSpaceSlider = selectedPreviewPanel.Get<SliderWidget>("FILL_SPACE_SLIDER");
-			var fillSpaceValue = selectedPreviewPanel.Get<LabelWidget>("FILL_SPACE_VALUE");
-			fillSpaceLabel.IsVisible = fillSpaceSlider.IsVisible = fillSpaceValue.IsVisible = showFillControls;
+			fillSpaceLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_SPACE_LABEL");
+			fillSpaceSlider = selectedPreviewPanel.Get<SliderWidget>("FILL_SPACE_SLIDER");
+			fillSpaceValue = selectedPreviewPanel.Get<LabelWidget>("FILL_SPACE_VALUE");
+			fillSpaceLabel.IsVisible = fillSpaceSlider.IsVisible = fillSpaceValue.IsVisible = () => ShowFillControls();
 			fillSpaceSlider.MinimumValue = 10;
 			fillSpaceSlider.MaximumValue = 100;
 			fillSpaceSlider.Ticks = 10;
@@ -260,10 +310,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			fillSpaceSlider.OnChange += value => editor.SetAssetFillDensity((int)value);
 			fillSpaceValue.GetText = () => $"{editor.AssetFillDensity.ToString(NumberFormatInfo.InvariantInfo)}%";
 
-			var fillModeOverlapLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_MODE_OVERLAP_LABEL");
-			var fillModeSlider = selectedPreviewPanel.Get<SliderWidget>("FILL_MODE_SLIDER");
-			var fillModeDeleteLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_MODE_DELETE_LABEL");
-			fillModeOverlapLabel.IsVisible = fillModeSlider.IsVisible = fillModeDeleteLabel.IsVisible = showFillControls;
+			fillModeOverlapLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_MODE_OVERLAP_LABEL");
+			fillModeSlider = selectedPreviewPanel.Get<SliderWidget>("FILL_MODE_SLIDER");
+			fillModeDeleteLabel = selectedPreviewPanel.Get<LabelWidget>("FILL_MODE_DELETE_LABEL");
+			fillModeOverlapLabel.IsVisible = fillModeSlider.IsVisible = fillModeDeleteLabel.IsVisible = () => ShowFillControls();
 			fillModeSlider.MinimumValue = 0;
 			fillModeSlider.MaximumValue = 1;
 			fillModeSlider.Ticks = 2;
@@ -351,6 +401,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			CreateCategoryPanel(MapBlitFilters.Terrain, copyTerrainCheckbox);
 			CreateCategoryPanel(MapBlitFilters.Resources, copyResourcesCheckbox);
 			CreateCategoryPanel(MapBlitFilters.Actors, copyActorsCheckbox);
+			AreaEditTitle.GetText = () => FluentProvider.GetMessage(SelectedAreaPreview);
 			UpdateSelectedPreview();
 			UpdateAreaPreview();
 		}
@@ -436,8 +487,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
+		void ReloadEditorTileMetadata()
+		{
+			editorTileMetadata = EditorTileMetadata.Load(Game.ModData, map.Rules.TerrainInfo as ITemplatedTerrainInfo);
+			UpdateOppositesPreview();
+			UpdateSimilarPreview();
+		}
+
 		protected override void Dispose(bool disposing)
 		{
+			if (EditorTileMetadataTraining.Instance != null)
+				EditorTileMetadataTraining.Instance.Changed -= ReloadEditorTileMetadata;
 			editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
 			editor.BrushChanged -= UpdateSelectedPreview;
 			editor.BrushChanged -= UpdateAreaPreview;
@@ -563,7 +623,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void UpdateAreaPreview()
 		{
-			selectedPreviewLabel.GetText = () => FluentProvider.GetMessage(SelectedAreaPreview);
 			LayoutClipboardPreview();
 
 			if (editor.HasClipboard || ShowAreaPreview())
@@ -577,19 +636,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			LayoutClipboardPreview();
 			HideAssetPreviews();
 			HidePreviewGrid();
-			UpdateOppositesPreview();
+
+			LayoutSelectionPreviewSection();
 
 			var cellSizes = GetSelectedAssetCellSizes();
 			if (cellSizes.Count == 0)
 			{
 				currentPreviewLayout = null;
 				ApplyPreviewBorders();
+				UpdateOppositesPreview();
 				return;
 			}
 
 			LayoutAssetPreviews(cellSizes);
 			UpdateAssetSizeLabels(cellSizes);
 			UpdateSimilarPreview();
+			UpdateOppositesPreview();
 		}
 
 		void HideAssetPreviews()
@@ -606,6 +668,276 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			previewGridWidget.IsVisible = () => false;
 			previewGridWidget.GridWidth = 0;
 			previewGridWidget.GridHeight = 0;
+		}
+
+		bool ShowMixModeControls()
+		{
+			return editor.CurrentBrush is EditorTileBrush or EditorActorBrush or EditorResourceBrush
+				&& !ShowTilePlacementPreviewControls() && !ShowSelectedMapActorPreview()
+				&& !ShowSelectedActorBrushDetail();
+		}
+
+		bool ShowFillControls()
+		{
+			return ShowMixModeControls();
+		}
+
+		int LayoutSelectionPreviewControls(int rowY)
+		{
+			if (ShowTilePlacementPreviewControls() && tilePreviewCurrentButton != null && tilePreviewOriginalButton != null)
+			{
+				rowY += SelectionPreviewControlsGap;
+				tilePreviewCurrentButton.Bounds.Y = rowY;
+				tilePreviewOriginalButton.Bounds.Y = rowY;
+				return rowY + TilePreviewModeRowHeight;
+			}
+
+			if (!ShowMixModeControls())
+				return rowY;
+
+			rowY += SelectionPreviewControlsGap;
+			mixModeLabel.Bounds.Y = rowY + 2;
+			mixModeDropDown.Bounds.Y = rowY;
+			mixModeDropDown.Bounds.Height = MixModeRowHeight;
+			rowY += MixModeRowHeight;
+
+			if (!ShowFillControls())
+				return rowY;
+
+			rowY += SelectionPreviewControlsGap;
+			fillSpaceLabel.Bounds.Y = rowY;
+			fillSpaceSlider.Bounds.Y = rowY;
+			fillSpaceValue.Bounds.Y = rowY;
+			rowY += FillControlRowHeight;
+
+			fillModeOverlapLabel.Bounds.Y = rowY;
+			fillModeSlider.Bounds.Y = rowY - 3;
+			fillModeDeleteLabel.Bounds.Y = rowY;
+			return rowY + FillModeRowHeight;
+		}
+
+		void LayoutSelectionPreviewSection()
+		{
+			var margin = SelectionPanelContentMargin;
+			var panelWidth = selectedPreviewPanel.Bounds.Width;
+
+			selectedPreviewLabel.Bounds.Y = margin;
+			selectedPreviewLabel.Bounds.Height = SelectionPreviewLabelHeight;
+
+			var headerBottom = margin + SelectionPreviewLabelHeight;
+			var controlsBottom = LayoutSelectionPreviewControls(headerBottom);
+			var previewY = (ShowTilePlacementPreviewControls() || ShowMixModeControls())
+				? controlsBottom + margin
+				: headerBottom + margin;
+
+			selectedAssetPreviewBox.Bounds.X = margin;
+			selectedAssetPreviewBox.Bounds.Y = previewY;
+			selectedAssetPreviewBox.Bounds.Width = panelWidth - 2 * margin;
+			selectedAssetPreviewBox.Bounds.Height = ShowSelectedMapActorPreview()
+				? SelectionPreviewBoxSize
+				: SelectionPreviewFullHeight;
+
+			var previewBottom = previewY + selectedAssetPreviewBox.Bounds.Height;
+			var stackY = previewBottom + margin;
+
+			var previewBorderCheckbox = selectedPreviewPanel.GetOrNull<CheckboxWidget>("SELECTION_PREVIEW_BORDER_CHECKBOX");
+			if (previewBorderCheckbox != null)
+			{
+				previewBorderCheckbox.Bounds.Y = stackY;
+				if (previewBorderCheckbox.Visible)
+					stackY = previewBorderCheckbox.Bounds.Y + previewBorderCheckbox.Bounds.Height + margin;
+			}
+
+			LayoutSimilarFilterButtons(ref stackY);
+
+			tileDetailPanel.Bounds.Y = stackY;
+			actorBrushDetailPanel.Bounds.Y = stackY;
+			actorEditPanel.Bounds.Y = stackY;
+
+			var similarButtonY = previewY + selectedAssetPreviewBox.Bounds.Height / 2 - 12;
+			var previousSimilarButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("SIMILAR_PREVIEW_PREVIOUS_BUTTON");
+			var nextSimilarButton = selectedPreviewPanel.GetOrNull<ButtonWidget>("SIMILAR_PREVIEW_NEXT_BUTTON");
+			if (previousSimilarButton != null)
+			{
+				previousSimilarButton.Bounds.X = margin;
+				previousSimilarButton.Bounds.Y = similarButtonY;
+			}
+
+			if (nextSimilarButton != null)
+			{
+				nextSimilarButton.Bounds.X = panelWidth - margin - nextSimilarButton.Bounds.Width;
+				nextSimilarButton.Bounds.Y = similarButtonY;
+			}
+
+			LayoutOppositesSection();
+		}
+
+		bool ShowSimilarFilterButtons()
+		{
+			return ShowSimilarCarouselControls();
+		}
+
+		void LayoutSimilarFilterButtons(ref int stackY)
+		{
+			if (!ShowSimilarFilterButtons() || showSimilarButton == null || clearSimilarButton == null)
+				return;
+
+			var margin = SelectionPanelContentMargin;
+			var panelWidth = selectedPreviewPanel.Bounds.Width;
+			var buttonWidth = (panelWidth - 2 * margin - SimilarFilterButtonGap) / 2;
+
+			showSimilarButton.Bounds.X = margin;
+			showSimilarButton.Bounds.Y = stackY;
+			showSimilarButton.Bounds.Width = buttonWidth;
+			showSimilarButton.Bounds.Height = SimilarFilterButtonHeight;
+
+			clearSimilarButton.Bounds.X = margin + buttonWidth + SimilarFilterButtonGap;
+			clearSimilarButton.Bounds.Y = stackY;
+			clearSimilarButton.Bounds.Width = buttonWidth;
+			clearSimilarButton.Bounds.Height = SimilarFilterButtonHeight;
+
+			stackY += SimilarFilterButtonHeight + margin;
+		}
+
+		bool TryGetSimilarFilterActor(out ActorInfo actor)
+		{
+			actor = null;
+			if (ShowSelectedMapActorPreview())
+			{
+				actor = editor.DefaultBrush.Selection.Actor.Info;
+				return true;
+			}
+
+			if (TryGetSelectedActor(out _, out var selectedActor))
+			{
+				actor = selectedActor;
+				return true;
+			}
+
+			return false;
+		}
+
+		bool TryGetSimilarFilterTile(out ushort templateId)
+		{
+			templateId = 0;
+			if (!TryGetSelectedTemplate(out _, out var template))
+				return false;
+
+			templateId = template.Id;
+			return true;
+		}
+
+		void ApplySimilarBrowserFilter(bool scrollToAsset)
+		{
+			if (TryGetSimilarFilterActor(out var actor))
+			{
+				similarBrowserFilterActive = true;
+				editor.RequestLocateAsset(EditorLocateAssetRequest.ForActor(actor, scrollToAsset));
+				return;
+			}
+
+			if (TryGetSimilarFilterTile(out var templateId))
+			{
+				similarBrowserFilterActive = true;
+				editor.RequestLocateAsset(EditorLocateAssetRequest.ForTile(templateId, scrollToAsset));
+			}
+		}
+
+		void ClearSimilarBrowserFilter()
+		{
+			similarBrowserFilterActive = false;
+			editor.RequestLocateAsset(EditorLocateAssetRequest.RestoreAllCategories());
+		}
+
+		void ResetSimilarBrowserFilterIfActive()
+		{
+			if (!similarBrowserFilterActive)
+				return;
+
+			ClearSimilarBrowserFilter();
+		}
+
+		int GetSelectionContentBottom()
+		{
+			var margin = SelectionPanelContentMargin;
+			var bottom = selectedAssetPreviewBox.Bounds.Y + selectedAssetPreviewBox.Bounds.Height;
+
+			var previewBorderCheckbox = selectedPreviewPanel.GetOrNull<CheckboxWidget>("SELECTION_PREVIEW_BORDER_CHECKBOX");
+			if (previewBorderCheckbox != null && previewBorderCheckbox.Visible)
+				bottom = Math.Max(bottom, previewBorderCheckbox.Bounds.Y + previewBorderCheckbox.Bounds.Height);
+
+			if (ShowSelectedTileDetail())
+				bottom = Math.Max(bottom, tileDetailPanel.Bounds.Y + tileDetailPanel.Bounds.Height);
+			if (ShowSelectedActorBrushDetail())
+				bottom = Math.Max(bottom, actorBrushDetailPanel.Bounds.Y + actorBrushDetailPanel.Bounds.Height);
+			if (ShowSelectedMapActorPreview())
+				bottom = Math.Max(bottom, actorEditPanel.Bounds.Y + actorEditPanel.Bounds.Height);
+
+			if (showSimilarButton != null && showSimilarButton.Visible)
+				bottom = Math.Max(bottom, showSimilarButton.Bounds.Y + showSimilarButton.Bounds.Height);
+
+			if (oppositesIslandButton != null && oppositesIslandButton.Visible)
+				bottom = Math.Max(bottom, oppositesIslandButton.Bounds.Y + oppositesIslandButton.Bounds.Height);
+
+			return bottom + margin;
+		}
+
+		void LayoutOppositesSection()
+		{
+			if (!ShowOppositesPreview())
+				return;
+
+			var margin = SelectionPanelContentMargin;
+			var panelWidth = selectedPreviewPanel.Bounds.Width;
+			var panelHeight = selectedPreviewPanel.Bounds.Height;
+			var contentBottom = GetSelectionContentBottom();
+
+			oppositesLabel.Bounds.Y = contentBottom;
+			oppositesLabel.Bounds.Height = OppositesLabelHeight;
+
+			var modeButtonY = contentBottom + OppositesLabelHeight + OppositesSectionGap;
+			var modeButtonWidth = (panelWidth - 2 * margin - SimilarFilterButtonGap) / 2;
+			oppositesIslandButton.Bounds.X = margin;
+			oppositesIslandButton.Bounds.Y = modeButtonY;
+			oppositesIslandButton.Bounds.Width = modeButtonWidth;
+			oppositesIslandButton.Bounds.Height = OppositesModeButtonHeight;
+			oppositesIslandButton.IsHighlighted = () => oppositesMode == EditorOppositesMode.Island;
+
+			oppositesRingButton.Bounds.X = margin + modeButtonWidth + SimilarFilterButtonGap;
+			oppositesRingButton.Bounds.Y = modeButtonY;
+			oppositesRingButton.Bounds.Width = modeButtonWidth;
+			oppositesRingButton.Bounds.Height = OppositesModeButtonHeight;
+			oppositesRingButton.IsHighlighted = () => oppositesMode == EditorOppositesMode.Ring;
+
+			var boxY = modeButtonY + OppositesModeButtonHeight + OppositesSectionGap;
+			var boxWidth = panelWidth - 2 * margin;
+			var maxBoxHeight = panelHeight - boxY - margin;
+			var boxSize = Math.Max(1, Math.Min(boxWidth, maxBoxHeight));
+
+			oppositesPreviewBox.Bounds.X = margin;
+			oppositesPreviewBox.Bounds.Y = boxY;
+			oppositesPreviewBox.Bounds.Width = boxSize;
+			oppositesPreviewBox.Bounds.Height = boxSize;
+
+			UpdateOppositesPreviewGrid();
+			UpdateOppositesClickTarget();
+			RelayoutVisibleOppositesPreviews();
+		}
+
+		void RelayoutVisibleOppositesPreviews()
+		{
+			for (var slot = 0; slot < Math.Min(currentOpposites.Length, oppositesPreviewWidgets.Count); slot++)
+			{
+				var template = currentOpposites[slot];
+				if (template == null || !IsOppositesSlotVisible(slot))
+					continue;
+
+				var preview = oppositesPreviewWidgets[slot];
+				if (!preview.Visible)
+					continue;
+
+				LayoutOppositesPreview(preview, template, slot);
+			}
 		}
 
 		void HidePreviewBorders()
@@ -718,6 +1050,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CycleSimilarPreview(int delta)
 		{
+			ApplySimilarBrowserFilter(scrollToAsset: false);
+
 			if (TryGetSelectedTemplate(out var terrainInfo, out var selectedTemplate))
 			{
 				var group = editorTileMetadata.FindSimilarGroup(terrainInfo, selectedTemplate);
@@ -850,7 +1184,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SetupOppositesPreview()
 		{
 			oppositesLabel.IsVisible = oppositesPreviewBox.IsVisible = ShowOppositesPreview;
+			oppositesIslandButton.IsVisible = oppositesRingButton.IsVisible = ShowOppositesPreview;
 			oppositesLabel.GetText = () => FluentProvider.GetMessage(Opposites);
+			oppositesIslandButton.OnClick = () => SetOppositesMode(EditorOppositesMode.Island);
+			oppositesRingButton.OnClick = () => SetOppositesMode(EditorOppositesMode.Ring);
 			UpdateOppositesPreviewGrid();
 			oppositesSelectedBorderWidget.IsVisible = () => false;
 			oppositesClickWidget.IsVisible = ShowOppositesPreview;
@@ -886,14 +1223,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!TryGetSelectedTemplate(out var terrainInfo, out var selectedTemplate))
 				return;
 
-			UpdateOppositesPreviewGrid();
-			UpdateOppositesClickTarget();
-			var templates = editorTileMetadata.FindOpposites(terrainInfo, selectedTemplate);
+			LayoutOppositesSection();
+			var templates = editorTileMetadata.FindOpposites(terrainInfo, selectedTemplate, oppositesMode);
 			currentOpposites = templates;
 			for (var slot = 0; slot < Math.Min(templates.Length, oppositesPreviewWidgets.Count); slot++)
 			{
 				var template = templates[slot];
-				if (template == null)
+				if (template == null || !IsOppositesSlotVisible(slot))
 					continue;
 
 				var preview = oppositesPreviewWidgets[slot];
@@ -906,9 +1242,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		void SetOppositesMode(EditorOppositesMode mode)
+		{
+			if (oppositesMode == mode)
+				return;
+
+			oppositesMode = mode;
+			UpdateOppositesPreview();
+		}
+
+		bool IsOppositesSlotVisible(int slot) =>
+			EditorTileMetadata.IsOppositesSlotUsed(oppositesMode, slot);
+
 		void SelectOppositesSlot(int slot)
 		{
-			if (slot < 0 || slot >= currentOpposites.Length)
+			if (slot < 0 || slot >= currentOpposites.Length || !IsOppositesSlotVisible(slot))
 				return;
 
 			var template = currentOpposites[slot];
@@ -960,13 +1308,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		OppositesSquareLayout GetOppositesSquareLayout()
 		{
 			var box = oppositesPreviewBox.Bounds;
-			var totalSize = Math.Min(box.Width, box.Height);
+			var innerWidth = Math.Max(0, box.Width - 2 * OppositesBoxInset);
+			var innerHeight = Math.Max(0, box.Height - 2 * OppositesBoxInset);
+			var totalSize = Math.Min(innerWidth, innerHeight);
 			if (totalSize <= 0)
 				return new OppositesSquareLayout(0, 0, 0, 0);
 
 			return new OppositesSquareLayout(
-				(box.Width - totalSize) / 2,
-				(box.Height - totalSize) / 2,
+				OppositesBoxInset + (innerWidth - totalSize) / 2,
+				OppositesBoxInset + (innerHeight - totalSize) / 2,
 				totalSize,
 				totalSize / OppositesPreviewSections);
 		}
@@ -1216,12 +1566,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		int PreviewGridSpan(CVec itemSize)
+		{
+			if (ShowSelectedMapActorPreview())
+				return Math.Max(1, Math.Max(itemSize.X, itemSize.Y));
+
+			return Math.Max(maxTemplateCellSpan, Math.Max(itemSize.X, itemSize.Y));
+		}
+
 		PreviewCellLayout ComputePreviewCellLayout(IReadOnlyList<CVec> itemCellSizes, Rectangle bounds)
 		{
 			if (itemCellSizes.Count == 1)
 			{
 				var itemSize = itemCellSizes[0];
-				var span = Math.Max(maxTemplateCellSpan, Math.Max(itemSize.X, itemSize.Y));
+				var span = PreviewGridSpan(itemSize);
 				var cellPixelSize = Math.Max(1, Math.Min(bounds.Width, bounds.Height) / span);
 				var gridPixelSize = span * cellPixelSize;
 				var cellOrigin = new CVec((span - itemSize.X) / 2, (span - itemSize.Y) / 2);
@@ -1389,7 +1747,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Rectangle FullAssetPreviewBounds()
 		{
 			var bounds = selectedAssetPreviewBox.Bounds;
-			return new Rectangle(0, 0, bounds.Width, bounds.Height);
+			var inset = SelectionPanelContentMargin;
+			return new Rectangle(
+				inset,
+				inset,
+				Math.Max(1, bounds.Width - 2 * inset),
+				Math.Max(1, bounds.Height - 2 * inset));
 		}
 
 		void LayoutTerrainPreview(TerrainTemplatePreviewWidget preview, Rectangle pixelBounds)
@@ -1462,11 +1825,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			UpdateSelectionDetailPanel();
 			UpdatePanelTitle();
-			AutoLocateSelectionInAssetBrowser();
 		}
 
 		void HandleSelectionChanged()
 		{
+			ResetSimilarBrowserFilterIfActive();
 			placementPreviewDisplayMode = TilePlacementPreviewDisplayMode.Current;
 			similarPreviewIndex = 0;
 			InvalidateAreaPreview();
@@ -1501,7 +1864,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				$"{FluentProvider.GetMessage(AreaSelection)} ({dimensionsLabel}) " +
 				$"{PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
 
-			AreaEditTitle.GetText = () => areaSelectionLabel;
+			selectedPreviewLabel.GetText = () => areaSelectionLabel;
 			DiagonalLabel.GetText = () => $"{diagonalLength}";
 			ResourceCounterLabel.GetText = () => $"${resourceValueInRegion:N0}";
 		}
@@ -1530,21 +1893,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var selection = editor.DefaultBrush.Selection;
 			if (selection.Actor != null)
 			{
-				AreaEditTitle.GetText = () => FluentProvider.GetMessage(selection.Actor.DescriptiveName);
+				selectedPreviewLabel.GetText = () => FluentProvider.GetMessage(selection.Actor.DescriptiveName);
 				return;
 			}
 
 			if (editor.CurrentBrush is EditorActorBrush actorBrush && actorBrush.Actors.Length == 1)
 			{
-				AreaEditTitle.GetText = () => GetActorDisplayName(actorBrush.Actors[0]);
+				selectedPreviewLabel.GetText = () => GetActorDisplayName(actorBrush.Actors[0]);
 				return;
 			}
 
 			if (TryGetSelectedTemplate(out _, out var template))
 			{
-				AreaEditTitle.GetText = () => FormatTileDisplayName(template);
+				selectedPreviewLabel.GetText = () => FormatTileDisplayName(template);
 				return;
 			}
+
+			selectedPreviewLabel.GetText = () => "";
 		}
 
 		void UpdateSelectionDetailPanel()
@@ -1630,7 +1995,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool ShouldAutoLocateSelectionInAssetBrowser()
 		{
-			return ShowSelectedMapActorPreview() || ShowSelectedTileDetail() || ShowSelectedActorBrushDetail();
+			var selection = editor.DefaultBrush.Selection;
+
+			// Area selection and multi-asset brushes should not narrow browser categories.
+			if (selection.Area.HasValue)
+				return false;
+
+			if (editor.CurrentBrush is EditorTileBrush tileBrush && tileBrush.Templates.Length != 1)
+				return false;
+
+			if (editor.CurrentBrush is EditorActorBrush actorBrush && actorBrush.Actors.Length != 1)
+				return false;
+
+			return ShowSelectedTileDetail() || ShowSelectedActorBrushDetail();
 		}
 
 		void AutoLocateSelectionInAssetBrowser()

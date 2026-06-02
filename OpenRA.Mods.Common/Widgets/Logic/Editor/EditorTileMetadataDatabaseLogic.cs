@@ -1,0 +1,735 @@
+#region Copyright & License Information
+/*
+ * Copyright (c) The OpenRA Developers and Contributors
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version. For more
+ * information, see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Terrain;
+using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
+using OpenRA.Primitives;
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.Common.Widgets.Logic
+{
+	public class EditorTileMetadataDatabaseLogic : ChromeLogic
+	{
+		[FluentReference]
+		const string Title = "label-editor-tile-metadata-database";
+
+		[FluentReference]
+		const string TemplatesTab = "label-editor-metadata-templates";
+
+		[FluentReference]
+		const string ActorsTab = "label-editor-metadata-actors";
+
+		[FluentReference]
+		const string PickColumnHeader = "label-editor-metadata-pick";
+
+		[FluentReference]
+		const string CurrentlyTraining = "label-editor-currently-training";
+
+		[FluentReference]
+		const string PickPrimaryTile = "label-editor-metadata-pick-primary";
+
+		const int CheckboxColumnWidth = 36;
+		const int PreviewWidth = 112;
+		const int RowHeight = 96;
+		const int CellWidth = 88;
+		const int HeaderHeight = 26;
+		static readonly Color TrainedEntryColor = Color.FromArgb(0xFF4CFF00);
+		static readonly Color TrainedHeaderColor = Color.FromArgb(0xFF4CFF00);
+		static readonly Color TrainedCellBorderColor = Color.FromArgb(0xFF228B22);
+
+		static bool IsTrainingHighlightColumn(string column) => column switch
+		{
+			"Orientation_island" or "Orientation_ring" or "Opposites_island" or "Opposites_ring" or "Similar" or "OppositesSlot" => true,
+			_ => false
+		};
+
+		static string SlotArrowGlyph(int slot) => slot switch
+		{
+			0 => "↖",
+			1 => "↑",
+			2 => "↗",
+			3 => "←",
+			4 => "·",
+			5 => "→",
+			6 => "↙",
+			7 => "↓",
+			8 => "↘",
+			EditorTileMetadata.HorizontalSlot => "↔",
+			EditorTileMetadata.VerticalSlot => "↕",
+			_ => "·"
+		};
+
+		static string SlotDisplay(int slot) => slot switch
+		{
+			0 => "↖ TopLeft",
+			1 => "↑ Top",
+			2 => "↗ TopRight",
+			3 => "← Left",
+			4 => "· Center",
+			5 => "→ Right",
+			6 => "↙ BottomLeft",
+			7 => "↓ Bottom",
+			8 => "↘ BottomRight",
+			EditorTileMetadata.HorizontalSlot => "↔ Horizontal",
+			EditorTileMetadata.VerticalSlot => "↕ Vertical",
+			_ => "· Center"
+		};
+
+		static string FormatTrainingCellText(string column, string text)
+		{
+			if (string.IsNullOrWhiteSpace(text))
+				return text;
+
+			if (column is not ("OppositesSlot" or "Orientation_island" or "Orientation_ring"))
+				return text;
+
+			var slot = EditorTileMetadata.TryParseOrientationSlot(text);
+			return slot.HasValue ? SlotDisplay(slot.Value) : text;
+		}
+
+		static string ColumnDisplayName(string column) => column switch
+		{
+			"OriginalFilename" => "Filename",
+			"TemplateId" => "TmplId",
+			"TerrainTypes" => "Terrain",
+			"EdgeSignature" => "Edges",
+			"Orientation_island" => "Ori.Isl",
+			"Orientation_ring" => "Ori.Ring",
+			"OppositesGroup" => "OppGrp",
+			"Opposites_island" => "OppIsl",
+			"Opposites_ring" => "OppRing",
+			"OppositesSlot" => "Slot",
+			"TrainingStatus" => "Status",
+			"DeepDescription" => "Deep",
+			"Description" => "Desc",
+			"OriginalActorName" => "Actor",
+			"RuleFile" => "Rule",
+			"DisplayNameKey" => "NameKey",
+			"SimilarGroup" => "SimGrp",
+			"BuildQueue" => "Queue",
+			_ => column
+		};
+
+		static EditorTileMetadataDatabaseLogic active;
+
+		readonly Widget parentRoot;
+		readonly Widget panel;
+		readonly EditorTileMetadataTraining training;
+		readonly EditorTileMetadataFile metadataFile;
+		readonly ITemplatedTerrainInfo terrainInfo;
+		readonly Ruleset rules;
+		readonly World world;
+		readonly WorldRenderer worldRenderer;
+		readonly ScrollPanelWidget rowPanel;
+		readonly Widget headerPanel;
+		ContainerWidget headerContent;
+		readonly ScrollItemWidget rowTemplate;
+		readonly ButtonWidget templatesTab;
+		readonly ButtonWidget actorsTab;
+		readonly Widget saveBar;
+		readonly Widget trainingStatusPanel;
+		readonly LabelWidget trainingModeLabel;
+		readonly LabelWidget trainingNameLabel;
+		readonly Widget trainingPreviewBox;
+		Widget trainingPreviewWidget;
+		bool showActors;
+		bool isClosing;
+
+		[ObjectCreator.UseCtor]
+		public EditorTileMetadataDatabaseLogic(Widget widget, World world, WorldRenderer worldRenderer, EditorTileMetadataTraining training)
+		{
+			parentRoot = widget.Parent;
+			this.training = training;
+			metadataFile = training.MetadataFile;
+			this.world = world;
+			terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
+			rules = world.Map.Rules;
+			this.worldRenderer = worldRenderer;
+			panel = widget;
+			active = this;
+
+			panel.Get<LabelWidget>("DATABASE_TITLE").GetText = () => FluentProvider.GetMessage(Title);
+
+			var closeButton = panel.Get<ButtonWidget>("DATABASE_CLOSE_BUTTON");
+			closeButton.OnClick = Close;
+
+			templatesTab = panel.Get<ButtonWidget>("DATABASE_TEMPLATES_TAB");
+			actorsTab = panel.Get<ButtonWidget>("DATABASE_ACTORS_TAB");
+			templatesTab.GetText = () => FluentProvider.GetMessage(TemplatesTab);
+			actorsTab.GetText = () => FluentProvider.GetMessage(ActorsTab);
+			templatesTab.IsHighlighted = () => !showActors;
+			actorsTab.IsHighlighted = () => showActors;
+			templatesTab.OnClick = () => { showActors = false; RebuildRows(); };
+			actorsTab.OnClick = () => { showActors = true; RebuildRows(); };
+
+			SetupTrainButton(panel, "DATABASE_TRAIN_OPPOSITE_ISLAND_BUTTON", EditorMetadataTrainingKind.OppositeIsland);
+			SetupTrainButton(panel, "DATABASE_TRAIN_OPPOSITE_RING_BUTTON", EditorMetadataTrainingKind.OppositeRing);
+			SetupTrainButton(panel, "DATABASE_TRAIN_SIMILAR_BUTTON", EditorMetadataTrainingKind.Similar);
+			SetupTrainButton(panel, "DATABASE_TRAIN_ORIENTATION_ISLAND_BUTTON", EditorMetadataTrainingKind.OrientationIsland);
+			SetupTrainButton(panel, "DATABASE_TRAIN_ORIENTATION_RING_BUTTON", EditorMetadataTrainingKind.OrientationRing);
+
+			saveBar = panel.Get("DATABASE_TRAINING_SAVE_BAR");
+			saveBar.IsVisible = () => training.ShowSecondarySelection;
+			saveBar.Get<ButtonWidget>("DATABASE_TRAINING_SAVE_BUTTON").OnClick = training.Save;
+			saveBar.Get<ButtonWidget>("DATABASE_TRAINING_CANCEL_BUTTON").OnClick = () =>
+			{
+				training.Cancel();
+				RebuildRows();
+			};
+
+			headerPanel = panel.Get("DATABASE_HEADER_PANEL");
+			rowPanel = panel.Get<ScrollPanelWidget>("DATABASE_ROW_PANEL");
+			rowTemplate = rowPanel.Get<ScrollItemWidget>("DATABASE_ROW_TEMPLATE");
+			rowTemplate.Visible = false;
+			trainingStatusPanel = panel.Get("DATABASE_TRAINING_STATUS");
+			trainingStatusPanel.IsVisible = () => training.IsActive;
+			trainingModeLabel = panel.Get<LabelWidget>("DATABASE_TRAINING_MODE");
+			trainingNameLabel = panel.Get<LabelWidget>("DATABASE_TRAINING_NAME");
+			trainingPreviewBox = panel.Get("DATABASE_TRAINING_PREVIEW_BOX");
+
+			metadataFile.Changed += RebuildRows;
+			training.Changed += OnTrainingChanged;
+			RebuildRows();
+			UpdateTrainingStatus();
+		}
+
+		void OnTrainingChanged()
+		{
+			if (isClosing)
+				return;
+
+			UpdateTrainingStatus();
+			RebuildRows();
+		}
+
+		void Close()
+		{
+			if (isClosing || panel.Parent == null)
+				return;
+
+			isClosing = true;
+
+			if (active == this)
+				active = null;
+
+			metadataFile.Changed -= RebuildRows;
+			training.Changed -= OnTrainingChanged;
+
+			var orientation = panel.GetOrNull("EDITOR_ORIENTATION_TRAINING_PANEL");
+			if (orientation != null && parentRoot != null)
+			{
+				panel.RemoveChild(orientation);
+				parentRoot.AddChild(orientation);
+			}
+
+			training.Cancel();
+
+			if (panel.Parent != null)
+				panel.Parent.RemoveChild(panel);
+
+			isClosing = false;
+		}
+
+		public static void CloseIfOpen()
+		{
+			if (active == null)
+				return;
+
+			active.Close();
+		}
+
+		void UpdateTrainingStatus()
+		{
+			if (!training.IsActive)
+			{
+				trainingPreviewBox.RemoveChildren();
+				trainingPreviewWidget = null;
+				return;
+			}
+
+			trainingModeLabel.GetText = () => training.ModeDisplayName;
+
+			var primaryName = training.GetPrimaryDisplayName();
+			trainingNameLabel.GetText = () => primaryName ?? FluentProvider.GetMessage(PickPrimaryTile);
+
+			trainingPreviewBox.RemoveChildren();
+			trainingPreviewWidget = null;
+
+			if (training.PrimaryTemplateCount == 1 && training.PrimaryTemplateId != null &&
+				terrainInfo?.Templates.TryGetValue(training.PrimaryTemplateId.Value, out var template) == true)
+			{
+				var preview = new TerrainTemplatePreviewWidget(Game.ModData, worldRenderer, world)
+				{
+					Bounds = new WidgetBounds(0, 0, 72, 72)
+				};
+				preview.SetTemplate(template);
+				var scale = Math.Min(1f, 72f / preview.IdealPreviewSize.X);
+				preview.Scale = Math.Min(scale, 72f / preview.IdealPreviewSize.Y);
+				trainingPreviewWidget = preview;
+				trainingPreviewBox.AddChild(preview);
+				AddTrainingPreviewSelection();
+			}
+			else if (training.PrimaryActorCount == 1 && training.PrimaryActorName != null &&
+				rules.Actors.TryGetValue(training.PrimaryActorName.ToLowerInvariant(), out var actor))
+			{
+				try
+				{
+					var preview = new ActorPreviewWidget(Game.ModData, worldRenderer)
+					{
+						Bounds = new WidgetBounds(0, 0, 72, 72)
+					};
+					preview.SetPreview(actor, CreateActorPreviewInit(actor));
+					trainingPreviewWidget = preview;
+					trainingPreviewBox.AddChild(preview);
+					AddTrainingPreviewSelection();
+				}
+				catch
+				{
+					// Actor preview not available for this tileset.
+				}
+			}
+		}
+
+		public static bool IsOpen => active != null;
+
+		public static void Open(Widget parent, World world, WorldRenderer worldRenderer, ModData modData, EditorTileMetadataTraining training)
+		{
+			if (!training.MetadataFile.IsAvailable)
+				return;
+
+			if (active != null)
+			{
+				active.panel.IsVisible = () => true;
+				return;
+			}
+
+			var panel = Ui.LoadWidget("EDITOR_TILE_METADATA_DATABASE", parent, new WidgetArgs
+			{
+				{ "world", world },
+				{ "worldRenderer", worldRenderer },
+				{ "training", training }
+			});
+			panel.IsVisible = () => true;
+			parent.AddChild(panel);
+
+		}
+
+		public static void Toggle(Widget parent, World world, WorldRenderer worldRenderer, ModData modData, EditorTileMetadataTraining training)
+		{
+			if (active != null)
+				active.Close();
+			else
+				Open(parent, world, worldRenderer, modData, training);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			metadataFile.Changed -= RebuildRows;
+			training.Changed -= OnTrainingChanged;
+			if (active == this)
+				active = null;
+
+			base.Dispose(disposing);
+		}
+
+		void SetupTrainButton(Widget root, string id, EditorMetadataTrainingKind mode)
+		{
+			var button = root.GetOrNull<ButtonWidget>(id);
+			if (button == null)
+				return;
+
+			button.IsHighlighted = () => training.Mode == mode;
+			button.OnClick = () =>
+			{
+				if (training.Mode == mode)
+					training.Cancel();
+				else
+					training.Start(mode);
+			};
+		}
+
+		void RebuildRows()
+		{
+			var scrollOffset = rowPanel.CurrentListOffset;
+			rowPanel.RemoveChildren();
+
+			var columns = DisplayColumns(showActors ? metadataFile.ActorColumns : metadataFile.TemplateColumns);
+			if (columns.Length == 0)
+				return;
+
+			BuildHeader(columns);
+
+			if (showActors)
+			{
+				foreach (var row in metadataFile.ActorRows().OrderBy(r => r.ActorName, StringComparer.OrdinalIgnoreCase))
+				{
+					try
+					{
+						rowPanel.AddChild(CreateActorRow(rowTemplate, row, columns));
+					}
+					catch (Exception ex)
+					{
+						Log.Write("debug", $"Metadata database ignoring actor {row.ActorName}: {ex.Message}");
+					}
+				}
+			}
+			else if (terrainInfo != null)
+			{
+				foreach (var row in metadataFile.TemplateRows(terrainInfo.Id).OrderBy(r => r.OriginalFilename, StringComparer.OrdinalIgnoreCase))
+					rowPanel.AddChild(CreateTemplateRow(rowTemplate, row, columns));
+			}
+
+			EnsureScrollbarCapture();
+			rowPanel.ApplyListOffset(scrollOffset);
+		}
+
+		void EnsureScrollbarCapture()
+		{
+			foreach (var child in rowPanel.Children)
+			{
+				if (child is MetadataScrollbarCaptureWidget)
+					return;
+			}
+
+			rowPanel.AddChild(new MetadataScrollbarCaptureWidget(rowPanel));
+		}
+
+		int RowContentWidth(int columnCount) =>
+			(training.IsActive ? CheckboxColumnWidth : 0) + PreviewWidth + columnCount * CellWidth;
+
+		static string[] DisplayColumns(string[] columns) =>
+			columns.Where(c => c != "OppositesSlot").ToArray();
+
+		void BuildHeader(string[] columns)
+		{
+			headerPanel.RemoveChildren();
+			var contentWidth = RowContentWidth(columns.Length);
+			headerContent = new ContainerWidget
+			{
+				Bounds = new WidgetBounds(0, 0, contentWidth, HeaderHeight)
+			};
+
+			var x = 0;
+			if (training.IsActive)
+			{
+				AddHeaderCell(x, CheckboxColumnWidth, FluentProvider.GetMessage(PickColumnHeader));
+				x += CheckboxColumnWidth;
+			}
+
+			AddHeaderCell(x, PreviewWidth, "Preview");
+			x += PreviewWidth;
+
+			foreach (var column in columns)
+			{
+				AddHeaderCell(x, CellWidth, ColumnDisplayName(column), column);
+				x += CellWidth;
+			}
+
+			headerPanel.AddChild(headerContent);
+		}
+
+		void AddHeaderCell(int x, int width, string displayText, string columnKey = null)
+		{
+			var label = new LabelWidget(Game.ModData)
+			{
+				Bounds = new WidgetBounds(x, 0, width, HeaderHeight),
+				Align = TextAlign.Left,
+				VAlign = TextVAlign.Top,
+				Font = "TinyBold",
+				Text = displayText
+			};
+			label.GetText = () => displayText;
+			if (columnKey != null && IsTrainingHighlightColumn(columnKey))
+				label.GetColor = () => TrainedHeaderColor;
+
+			headerContent.AddChild(label);
+		}
+
+		EditorPreviewSelectionKind TemplatePreviewSelection(ushort templateId, string rowKey)
+		{
+			if (training.IsActive && training.IsPrimaryTemplateSelected(templateId))
+				return EditorPreviewSelectionKind.Primary;
+
+			if (training.ShowSecondarySelection && training.IsSecondaryTemplateSelected(templateId))
+				return EditorPreviewSelectionKind.Secondary;
+
+			return EditorPreviewSelectionKind.None;
+		}
+
+		Widget CreateTemplateRow(ScrollItemWidget template, MetadataTemplateRow row, string[] columns)
+		{
+			var templateId = row.TemplateId;
+			var item = ScrollItemWidget.Setup(row.Key, template, () => false, () => { }, () => { });
+			item.Bounds.Height = RowHeight;
+			item.Bounds.Width = RowContentWidth(columns.Length);
+			item.IgnoreChildMouseOver = false;
+
+			var x = 0;
+			if (training.IsActive)
+				x += AddTrainingCheckbox(item, x, () => training.ShowTrainingCheckboxes, () => training.IsPrimaryTemplateSelected(templateId), () => HandleTemplateRowClick(templateId));
+
+			if (terrainInfo.Templates.TryGetValue(templateId, out var templateInfo))
+			{
+				var previewBounds = new WidgetBounds(x + 4, 4, PreviewWidth - 8, RowHeight - 8);
+				var preview = new TerrainTemplatePreviewWidget(Game.ModData, worldRenderer, world)
+				{
+					Bounds = previewBounds
+				};
+				preview.SetTemplate(templateInfo);
+				var scale = Math.Min(1f, (PreviewWidth - 8) / (float)preview.IdealPreviewSize.X);
+				preview.Scale = Math.Min(scale, (RowHeight - 8) / (float)preview.IdealPreviewSize.Y);
+				item.AddChild(preview);
+				if (training.IsActive)
+					item.AddChild(CreatePreviewClickTarget(previewBounds, () => HandleTemplateRowClick(templateId)));
+				item.AddChild(new EditorPreviewSelectionWidget
+				{
+					Bounds = previewBounds,
+					GetSelection = () => TemplatePreviewSelection(templateId, row.Key)
+				});
+			}
+
+			x += PreviewWidth;
+			foreach (var column in columns)
+			{
+				var raw = metadataFile.ReadField(row.Data, column);
+				item.AddChild(CreateCell(x, CellWidth, column, FormatTrainingCellText(column, raw), row.Data));
+				x += CellWidth;
+			}
+
+			return item;
+		}
+
+		EditorPreviewSelectionKind ActorPreviewSelection(string actorName)
+		{
+			if (training.IsPrimaryActorSelected(actorName))
+				return EditorPreviewSelectionKind.Primary;
+
+			if (training.ShowSecondarySelection && training.IsSecondaryActorSelected(actorName))
+				return EditorPreviewSelectionKind.Secondary;
+
+			return EditorPreviewSelectionKind.None;
+		}
+
+		Widget CreateActorRow(ScrollItemWidget template, MetadataActorRow row, string[] columns)
+		{
+			var actorName = row.ActorName;
+			var item = ScrollItemWidget.Setup(row.Key, template, () => false, () => { }, () => { });
+			item.Bounds.Height = RowHeight;
+			item.Bounds.Width = RowContentWidth(columns.Length);
+			item.IgnoreChildMouseOver = false;
+
+			var x = 0;
+			if (training.IsActive)
+				x += AddTrainingCheckbox(item, x, () => training.ShowTrainingCheckboxes, () => training.IsPrimaryActorSelected(actorName), () => HandleActorRowClick(actorName));
+
+			if (rules.Actors.TryGetValue(actorName.ToLowerInvariant(), out var actor))
+			{
+				var previewBounds = new WidgetBounds(x + 4, 4, PreviewWidth - 8, RowHeight - 8);
+				var preview = new ActorPreviewWidget(Game.ModData, worldRenderer)
+				{
+					Bounds = previewBounds
+				};
+				preview.SetPreview(actor, CreateActorPreviewInit(actor));
+				var scale = Math.Min(1f, (PreviewWidth - 8) / (float)Math.Max(1, preview.IdealPreviewSize.X));
+				preview.Scale = Math.Min(scale, (RowHeight - 8) / (float)Math.Max(1, preview.IdealPreviewSize.Y));
+				item.AddChild(preview);
+				if (training.IsActive)
+					item.AddChild(CreatePreviewClickTarget(previewBounds, () => HandleActorRowClick(actorName)));
+				item.AddChild(new EditorPreviewSelectionWidget
+				{
+					Bounds = previewBounds,
+					GetSelection = () => ActorPreviewSelection(actorName)
+				});
+			}
+
+			x += PreviewWidth;
+			foreach (var column in columns)
+			{
+				var raw = metadataFile.ReadField(row.Data, column);
+				item.AddChild(CreateCell(x, CellWidth, column, FormatTrainingCellText(column, raw), row.Data));
+				x += CellWidth;
+			}
+
+			return item;
+		}
+
+		void AddTrainingPreviewSelection()
+		{
+			trainingPreviewBox.AddChild(new EditorPreviewSelectionWidget
+			{
+				Bounds = new WidgetBounds(0, 0, 72, 72),
+				GetSelection = () => EditorPreviewSelectionKind.Primary
+			});
+		}
+
+		ButtonWidget CreatePreviewClickTarget(WidgetBounds bounds, Action onClick)
+		{
+			var button = new ButtonWidget(Game.ModData)
+			{
+				Bounds = bounds,
+				Background = "scrollitem-nohover",
+				Text = ""
+			};
+			button.OnClick = onClick;
+			return button;
+		}
+
+		int AddTrainingCheckbox(Widget item, int x, Func<bool> isVisible, Func<bool> isChecked, Action onToggle)
+		{
+			var checkbox = new CheckboxWidget(Game.ModData)
+			{
+				Bounds = new WidgetBounds(x + 8, (RowHeight - 20) / 2, 20, 20)
+			};
+			checkbox.IsVisible = isVisible;
+			checkbox.IsChecked = isChecked;
+			checkbox.OnClick = onToggle;
+			item.AddChild(checkbox);
+			return CheckboxColumnWidth;
+		}
+
+		void HandleTemplateRowClick(ushort templateId)
+		{
+			if (!training.IsActive)
+				return;
+
+			if (training.ShowOrientationTraining)
+			{
+				training.TogglePrimaryTemplate(templateId);
+				return;
+			}
+
+			if (training.IsPrimaryTemplateSelected(templateId))
+			{
+				training.TogglePrimaryTemplate(templateId);
+				return;
+			}
+
+			if (training.ShowSecondarySelection)
+			{
+				training.ToggleSecondaryTemplate(templateId);
+				return;
+			}
+
+			training.TogglePrimaryTemplate(templateId);
+		}
+
+		void HandleActorRowClick(string actorName)
+		{
+			if (!training.IsActive)
+				return;
+
+			if (training.IsPrimaryActorSelected(actorName))
+			{
+				training.TogglePrimaryActor(actorName);
+				return;
+			}
+
+			if (training.ShowSecondarySelection)
+			{
+				training.ToggleSecondaryActor(actorName);
+				return;
+			}
+
+			training.TogglePrimaryActor(actorName);
+		}
+
+		TypeDictionary CreateActorPreviewInit(ActorInfo actor)
+		{
+			var td = new TypeDictionary();
+			var editorLayer = world.WorldActor.TraitOrDefault<EditorActorLayer>();
+			if (editorLayer != null)
+			{
+				var owner = editorLayer.Players.Players.Values.First();
+				td.Add(new OwnerInit(owner.Name));
+				td.Add(new FactionInit(owner.Faction));
+			}
+
+			foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+			{
+				foreach (var init in api.ActorPreviewInits(actor, ActorPreviewType.MapEditorSidebar))
+					td.Add(init);
+			}
+
+			return td;
+		}
+
+		Widget CreateCell(int x, int width, string column, string text, IReadOnlyDictionary<string, MiniYaml> data)
+		{
+			var cellBounds = new WidgetBounds(x + 2, 2, width - 4, RowHeight - 4);
+			var container = new ContainerWidget { Bounds = cellBounds };
+			var visibleText = FormatCellText(text, cellBounds.Width - 4, cellBounds.Height - 4);
+
+			var trained = IsTrainingHighlightColumn(column) &&
+				!string.IsNullOrWhiteSpace(visibleText) &&
+				metadataFile.IsColumnTrained(data, column);
+			container.AddChild(new EditorTrainedCellWidget
+			{
+				Bounds = new WidgetBounds(0, 0, cellBounds.Width, cellBounds.Height),
+				BorderColor = TrainedCellBorderColor,
+				BorderWidth = 3,
+				IsTrained = () => trained
+			});
+
+			var label = new EditorMetadataCellLabelWidget(Game.ModData)
+			{
+				Bounds = new WidgetBounds(2, 2, cellBounds.Width - 4, cellBounds.Height - 4),
+				Align = TextAlign.Left,
+				VAlign = TextVAlign.Top,
+				Font = "Tiny"
+			};
+			label.GetText = () => visibleText;
+
+			if (IsTrainingHighlightColumn(column))
+			{
+				label.GetColor = () => string.IsNullOrWhiteSpace(visibleText)
+					? label.TextColor
+					: TrainedEntryColor;
+			}
+
+			container.AddChild(label);
+			return container;
+		}
+
+		static string FormatCellText(string text, int width, int height)
+		{
+			if (string.IsNullOrWhiteSpace(text) || !Game.Renderer.Fonts.TryGetValue("Tiny", out var font))
+				return text;
+
+			var lineHeight = Math.Max(1, font.Measure("Ag").Y);
+			var maxLines = Math.Max(1, height / lineHeight);
+			var lines = new List<string>();
+
+			foreach (var part in text.Split(',').Select(p => p.Trim()).Where(p => p.Length > 0))
+			{
+				var wrapped = WidgetUtils.WrapText(part, width, font);
+				lines.AddRange(wrapped.Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0));
+			}
+
+			if (lines.Count == 0)
+				return "";
+
+			var clipped = lines.Take(maxLines).ToList();
+			var overflow = lines.Count > maxLines;
+			for (var i = 0; i < clipped.Count; i++)
+				clipped[i] = WidgetUtils.TruncateText(clipped[i], width, font);
+
+			if (overflow)
+				clipped[^1] = WidgetUtils.TruncateText(clipped[^1] + " ...", width, font);
+
+			return string.Join("\n", clipped);
+		}
+	}
+}

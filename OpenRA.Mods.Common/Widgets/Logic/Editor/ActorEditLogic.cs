@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Owner = "label-actor-owner";
 
+		const int ActorEditPanelMargin = 8;
+		const int ActorEditButtonGap = 8;
+
 		// Error states define overlapping bits to simplify panel reflow logic
 		[Flags]
 		enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
@@ -350,13 +353,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				buttonContainer.Bounds.Y = initContainer.Bounds.Y + initContainer.Bounds.Height + 8;
+				UpdateActorEditPanelLayout();
 			}
 			else
 			{
 				// Selected actor is null, hide the border and edit panel.
 				Close();
 			}
+		}
+
+		void UpdateActorEditPanelLayout()
+		{
+			buttonContainer.Bounds.Y = initContainer.Bounds.Y + initContainer.Bounds.Height + ActorEditButtonGap;
+			actorEditPanel.Bounds.Height = buttonContainer.Bounds.Y + buttonContainer.Bounds.Height + ActorEditPanelMargin;
 		}
 
 		public override void Tick()
@@ -370,7 +379,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						offset *= -1;
 
 					initContainer.Bounds.Y += offset;
-					buttonContainer.Bounds.Y += offset;
+					UpdateActorEditPanelLayout();
 				}
 
 				actorIDStatus = nextActorIDStatus;

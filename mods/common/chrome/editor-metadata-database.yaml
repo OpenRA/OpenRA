@@ -1,0 +1,179 @@
+Background@EDITOR_TILE_METADATA_DATABASE:
+	Logic: EditorTileMetadataDatabaseLogic
+	X: 0
+	Y: 0
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Background: dialog3
+	Children:
+		Label@DATABASE_TITLE:
+			X: 0
+			Y: 8
+			Width: PARENT_WIDTH
+			Height: 24
+			Align: Center
+			Font: Bold
+		Button@DATABASE_TEMPLATES_TAB:
+			X: 10
+			Y: 36
+			Width: 120
+			Height: 22
+			Font: TinyBold
+		Button@DATABASE_ACTORS_TAB:
+			X: 135
+			Y: 36
+			Width: 120
+			Height: 22
+			Font: TinyBold
+		Button@DATABASE_TRAIN_OPPOSITE_ISLAND_BUTTON:
+			X: 270
+			Y: 36
+			Width: 130
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-opposite-island
+		Button@DATABASE_TRAIN_OPPOSITE_RING_BUTTON:
+			X: 405
+			Y: 36
+			Width: 130
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-opposite-ring
+		Button@DATABASE_TRAIN_SIMILAR_BUTTON:
+			X: 540
+			Y: 36
+			Width: 100
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-similar
+		Button@DATABASE_TRAIN_ORIENTATION_ISLAND_BUTTON:
+			X: 645
+			Y: 36
+			Width: 140
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-orientation-island
+		Button@DATABASE_TRAIN_ORIENTATION_RING_BUTTON:
+			X: 790
+			Y: 36
+			Width: 140
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-orientation-ring
+		Background@DATABASE_TRAINING_STATUS:
+			X: 10
+			Y: 62
+			Width: PARENT_WIDTH - 20
+			Height: 88
+			Background: scrollpanel-bg
+			Children:
+				Label@DATABASE_TRAINING_HEADING:
+					X: 10
+					Y: 6
+					Width: 200
+					Height: 18
+					Font: Bold
+					Text: label-editor-currently-training
+				Label@DATABASE_TRAINING_MODE:
+					X: 10
+					Y: 24
+					Width: PARENT_WIDTH - 20
+					Height: 18
+					Font: TinyBold
+				Container@DATABASE_TRAINING_PREVIEW_BOX:
+					X: 10
+					Y: 42
+					Width: 72
+					Height: 72
+				Label@DATABASE_TRAINING_NAME:
+					X: 90
+					Y: 42
+					Width: PARENT_WIDTH - 110
+					Height: 72
+					Font: Tiny
+					Align: Left
+		Container@DATABASE_HEADER_PANEL:
+			X: 10
+			Y: 154
+			Width: PARENT_WIDTH - 20
+			Height: 26
+			Children:
+				Background@DATABASE_HEADER_BACKGROUND:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: scrollpanel-bg
+		ScrollPanel@DATABASE_ROW_PANEL:
+			X: 10
+			Y: 180
+			Width: PARENT_WIDTH - 20
+			Height: PARENT_HEIGHT - 235
+			TopBottomSpacing: 2
+			ItemSpacing: 2
+			Children:
+				ScrollItem@DATABASE_ROW_TEMPLATE:
+					Visible: false
+					Width: 4000
+					Height: 96
+		Container@DATABASE_TRAINING_SAVE_BAR:
+			X: 10
+			Y: PARENT_HEIGHT - 45
+			Width: PARENT_WIDTH - 20
+			Height: 32
+			Visible: false
+			Children:
+				Button@DATABASE_TRAINING_SAVE_BUTTON:
+					X: 0
+					Width: (PARENT_WIDTH - 10) / 2
+					Height: 28
+					Text: Save
+					Font: Bold
+				Button@DATABASE_TRAINING_CANCEL_BUTTON:
+					X: 5 + (PARENT_WIDTH - 10) / 2
+					Width: (PARENT_WIDTH - 10) / 2
+					Height: 28
+					Text: button-cancel
+					Font: Bold
+		EditorImmediateCloseButton@DATABASE_CLOSE_BUTTON:
+			X: PARENT_WIDTH - 50
+			Y: 4
+			Width: 44
+			Height: 32
+			Text: X
+			Key: escape
+			Font: Bold
+
+Background@EDITOR_ORIENTATION_TRAINING_PANEL:
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 320
+	Height: 400
+	Background: dialog3
+	Visible: false
+	Children:
+		Label@ORIENTATION_TITLE:
+			X: 0
+			Y: 8
+			Width: PARENT_WIDTH
+			Height: 20
+			Align: Center
+			Font: Bold
+			Text: label-editor-orientation-training
+		EditorOrientationGrid@ORIENTATION_GRID:
+			X: 20
+			Y: 36
+			Width: PARENT_WIDTH - 40
+			Height: 280
+		Button@ORIENTATION_SAVE_BUTTON:
+			X: 10
+			Y: PARENT_HEIGHT - 68
+			Width: (PARENT_WIDTH - 30) / 2
+			Height: 28
+			Text: Save
+			Font: Bold
+		Button@ORIENTATION_CANCEL_BUTTON:
+			X: 20 + (PARENT_WIDTH - 30) / 2
+			Y: PARENT_HEIGHT - 68
+			Width: (PARENT_WIDTH - 30) / 2
+			Height: 28
+			Text: button-cancel
+			Font: Bold

@@ -143,24 +143,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			Editor.LocateAssetRequested += HandleLocateAssetRequested;
+			if (EditorTileMetadataTraining.Instance != null)
+				EditorTileMetadataTraining.Instance.Changed += OnMetadataTrainingChanged;
 			InitializePreviews();
 		}
 
 		protected override void Dispose(bool disposing)
 		{
+			if (EditorTileMetadataTraining.Instance != null)
+				EditorTileMetadataTraining.Instance.Changed -= OnMetadataTrainingChanged;
 			Editor.LocateAssetRequested -= HandleLocateAssetRequested;
 			base.Dispose(disposing);
 		}
 
+		void OnMetadataTrainingChanged() => InitializePreviews();
+
 		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
 		{
+			if (request.Kind == EditorLocateAssetKind.RestoreAllCategories)
+			{
+				RestoreAllCategories();
+				return;
+			}
+
 			if (request.Kind != EditorLocateAssetKind.Tile || !request.TemplateId.HasValue)
 				return;
 
-			LocateTemplate(request.TemplateId.Value);
+			ApplyTileCategoryFilter(request.TemplateId.Value, request.ScrollToAsset);
 		}
 
-		void LocateTemplate(ushort tileId)
+		void RestoreAllCategories()
+		{
+			locateHighlightTileId = null;
+			SelectedCategories.Clear();
+			foreach (var c in allCategories)
+				SelectedCategories.Add(c);
+
+			InitializePreviews();
+		}
+
+		void ApplyTileCategoryFilter(ushort tileId, bool scrollToItem)
 		{
 			var entry = allTemplates.FirstOrDefault(t => t.Template.Id == tileId);
 			if (entry == null)
@@ -183,7 +205,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			InitializePreviews();
-			Panel.ScrollToItem(tileId.ToString(CultureInfo.InvariantCulture), smooth: true);
+			if (scrollToItem)
+				Panel.ScrollToItem(tileId.ToString(CultureInfo.InvariantCulture), smooth: true);
 		}
 
 		int CategoryOrder(string category)
@@ -214,8 +237,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => Editor.CurrentBrush is EditorTileBrush editorCursor && editorCursor.Templates.Contains(tileId),
 					() => { },
 					() => { });
-				item.OnMouseUp = mi => SelectTile(tileId, mi.Modifiers.HasModifier(Modifiers.Ctrl));
-				item.ShowSelectionOutline = item.IsSelected;
+				var trainingCheckbox = item.GetOrNull<CheckboxWidget>("TRAINING_CHECKBOX");
+				var training = EditorTileMetadataTraining.Instance;
+				if (trainingCheckbox != null && training != null)
+				{
+					trainingCheckbox.IsVisible = () => training.ShowTrainingCheckboxes || training.ShowSecondarySelection;
+					trainingCheckbox.IsChecked = () => training.IsPrimaryTemplateSelected(tileId) ||
+						(training.ShowSecondarySelection && training.IsSecondaryTemplateSelected(tileId));
+					trainingCheckbox.IsDisabled = () => training.ShowSecondarySelection && training.IsPrimaryTemplateSelected(tileId);
+				}
+
+				item.OnMouseUp = mi =>
+				{
+					if (TryHandleTrainingClick(tileId))
+						return;
+
+					SelectTile(tileId, mi.Modifiers.HasModifier(Modifiers.Ctrl));
+				};
+				item.ShowSelectionOutline = () => item.IsSelected() ||
+					(training != null && training.IsPrimaryTemplateSelected(tileId));
 				item.ShowLocateOutline = () => locateHighlightTileId == tileId;
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
@@ -248,6 +288,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Panel.AddChild(item);
 			}
+		}
+
+		bool TryHandleTrainingClick(ushort tileId)
+		{
+			var training = EditorTileMetadataTraining.Instance;
+			if (training == null || !training.IsActive)
+				return false;
+
+			if (training.ShowOrientationTraining)
+				return training.TogglePrimaryTemplate(tileId);
+
+			if (training.IsPrimaryTemplateSelected(tileId))
+				return training.TogglePrimaryTemplate(tileId);
+
+			if (training.ShowSecondarySelection)
+				return training.ToggleSecondaryTemplate(tileId);
+
+			if (training.ShowTrainingCheckboxes)
+				return training.TogglePrimaryTemplate(tileId);
+
+			return false;
 		}
 
 		void SelectTile(ushort tileId, bool toggleSelection)

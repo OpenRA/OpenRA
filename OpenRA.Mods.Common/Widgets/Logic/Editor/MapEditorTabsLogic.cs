@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapEditorTabsLogic : ChromeLogic
 	{
-		enum MenuType { Select, Tiles, Layers, Actors, Tools, History }
+		public enum MenuType { Select, Tiles, Layers, Actors, Tools, History }
 
 		readonly World world;
 		readonly Widget panelContainer;
@@ -29,11 +29,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MenuType menuType = MenuType.Tiles;
 		MenuType lastSelectedTab = MenuType.Tiles;
 
+		static MapEditorTabsLogic instance;
+
 		public static event Action OnTabChanged;
+
+		public static void ShowTab(MenuType tab)
+		{
+			instance?.ActivateTab(tab);
+		}
 
 		[ObjectCreator.UseCtor]
 		public MapEditorTabsLogic(Widget widget, World world)
 		{
+			instance = this;
 			this.world = world;
 			panelContainer = widget.Parent;
 			tabContainer = widget.Get("MAP_EDITOR_TAB_CONTAINER");
@@ -52,14 +60,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected override void Dispose(bool disposing)
 		{
+			if (instance == this)
+				instance = null;
+
 			editor.DefaultBrush.UpdateSelectedTab -= HandleUpdateSelectedTab;
 			editor.LocateAssetRequested -= HandleLocateAssetRequested;
 
 			base.Dispose(disposing);
 		}
 
+		void ActivateTab(MenuType tab)
+		{
+			if (tab == MenuType.Select)
+				return;
+
+			lastSelectedTab = tab;
+			menuType = tab;
+			OnTabChanged?.Invoke();
+			Ui.KeyboardFocusWidget = null;
+		}
+
 		void HandleLocateAssetRequested(EditorLocateAssetRequest request)
 		{
+			if (request.Kind == EditorLocateAssetKind.RestoreAllCategories)
+				return;
+
 			var tab = request.Kind switch
 			{
 				EditorLocateAssetKind.Tile => MenuType.Tiles,
