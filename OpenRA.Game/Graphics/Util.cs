@@ -82,8 +82,8 @@ namespace OpenRA.Graphics
 			float sb = 0;
 
 			// See combined.vert for documentation on the channel attribute format
-			var attribC = r.Channel == TextureChannel.RGBA ? 0x02 : ((byte)r.Channel) << 1 | 0x01;
-			attribC |= samplers.X << 6;
+			var attribC = r.Channel == TextureChannel.RGBA ? 0x02u : ((uint)r.Channel << 1) | 0x01u;
+			attribC |= (uint)samplers.X << 6;
 			if (r is SpriteWithSecondaryData ss)
 			{
 				sl = ss.SecondaryLeft;
@@ -91,17 +91,16 @@ namespace OpenRA.Graphics
 				sr = ss.SecondaryRight;
 				sb = ss.SecondaryBottom;
 
-				attribC |= ((byte)ss.SecondaryChannel) << 4 | 0x08;
-				attribC |= samplers.Y << 9;
+				attribC |= ((uint)ss.SecondaryChannel) << 4 | 0x08;
+				attribC |= (uint)samplers.Y << 9;
 			}
 
-			attribC |= (paletteTextureIndex & 0xFFFF) << 16;
+			attribC |= ((uint)paletteTextureIndex & 0xFFFFu) << 16;
 
-			var uAttribC = (uint)attribC;
-			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, uAttribC, tint, alpha);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, uAttribC, tint, alpha);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, uAttribC, tint, alpha);
-			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, sl, sb, uAttribC, tint, alpha);
+			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, attribC, tint, alpha);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, attribC, tint, alpha);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, attribC, tint, alpha);
+			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, sl, sb, attribC, tint, alpha);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src, SpriteFrameType srcType, bool premultiplied = false)
@@ -150,62 +149,88 @@ namespace OpenRA.Graphics
 			if (srcType == SpriteFrameType.Bgra32)
 			{
 				var s = MemoryMarshal.Cast<byte, uint>(src);
-				for (var h = 0; h < height; h++)
+				if (premultiplied)
 				{
-					s[si..(si + width)].CopyTo(d[di..(di + width)]);
-
-					if (!premultiplied)
+					for (var h = 0; h < height; h++)
+					{
+						s[si..(si + width)].CopyTo(d[di..(di + width)]);
+						si += width;
+						di += stride;
+					}
+				}
+				else
+				{
+					for (var h = 0; h < height; h++)
 					{
 						for (var w = 0; w < width; w++)
-						{
-							d[di] = PremultiplyAlpha(Color.FromArgb(d[di])).ToArgb();
-							di++;
-						}
+							d[di++] = PremultiplyPixel(s[si++]);
 
-						di -= width;
+						di += stride - width;
 					}
-
-					si += width;
-					di += stride;
 				}
 
 				return;
 			}
 
-			for (var h = 0; h < height; h++)
+			switch (srcType)
 			{
-				for (var w = 0; w < width; w++)
-				{
-					byte r, g, b, a;
-					switch (srcType)
+				case SpriteFrameType.Bgr24:
+					for (var h = 0; h < height; h++)
 					{
-						case SpriteFrameType.Bgra32:
-						case SpriteFrameType.Bgr24:
-							b = src[si++];
-							g = src[si++];
-							r = src[si++];
-							a = srcType == SpriteFrameType.Bgra32 ? src[si++] : byte.MaxValue;
-							break;
+						for (var w = 0; w < width; w++)
+						{
+							var b = src[si++];
+							var g = src[si++];
+							var r = src[si++];
 
-						case SpriteFrameType.Rgba32:
-						case SpriteFrameType.Rgb24:
-							r = src[si++];
-							g = src[si++];
-							b = src[si++];
-							a = srcType == SpriteFrameType.Rgba32 ? src[si++] : byte.MaxValue;
-							break;
+							var pixel = 0xFF000000u | ((uint)r << 16) | ((uint)g << 8) | b;
+							d[di++] = premultiplied ? pixel : PremultiplyPixel(pixel);
+						}
 
-						default:
-							throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
+						di += stride - width;
 					}
 
-					var c = Color.FromArgb(a, r, g, b);
-					if (!premultiplied)
-						c = PremultiplyAlpha(c);
-					d[di++] = c.ToArgb();
-				}
+					break;
 
-				di += stride - width;
+				case SpriteFrameType.Rgba32:
+					for (var h = 0; h < height; h++)
+					{
+						for (var w = 0; w < width; w++)
+						{
+							var b = src[si++];
+							var g = src[si++];
+							var r = src[si++];
+							var a = src[si++];
+
+							var pixel = ((uint)a << 24) | ((uint)r << 16) | ((uint)g << 8) | b;
+							d[di++] = premultiplied ? pixel : PremultiplyPixel(pixel);
+						}
+
+						di += stride - width;
+					}
+
+					break;
+
+				case SpriteFrameType.Rgb24:
+					for (var h = 0; h < height; h++)
+					{
+						for (var w = 0; w < width; w++)
+						{
+							var b = src[si++];
+							var g = src[si++];
+							var r = src[si++];
+
+							var pixel = 0xFF000000 | ((uint)r << 16) | ((uint)g << 8) | b;
+							d[di++] = premultiplied ? pixel : PremultiplyPixel(pixel);
+						}
+
+						di += stride - width;
+					}
+
+					break;
+
+				default:
+					throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
 			}
 		}
 
@@ -218,39 +243,77 @@ namespace OpenRA.Graphics
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
+			var destSpan = MemoryMarshal.Cast<byte, uint>(destData);
+			var srcData = src.Data;
+
+			var diBase = y * stride + x;
 			var si = 0;
-			var di = y * stride + x;
-			var d = MemoryMarshal.Cast<byte, uint>(destData);
 
-			for (var h = 0; h < height; h++)
+			switch (src.Type)
 			{
-				for (var w = 0; w < width; w++)
-				{
-					Color c;
-					switch (src.Type)
+				case SpriteFrameType.Indexed8:
+					var palette = src.Palette;
+					for (var h = 0; h < height; h++)
 					{
-						case SpriteFrameType.Indexed8:
-							c = src.Palette[src.Data[si++]];
-							break;
+						var di = diBase + h * stride;
+						for (var w = 0; w < width; w++)
+						{
+							var entry = srcData[si++];
+							var c = palette[entry];
 
-						case SpriteFrameType.Rgba32:
-						case SpriteFrameType.Rgb24:
-							var r = src.Data[si++];
-							var g = src.Data[si++];
-							var b = src.Data[si++];
-							var a = src.Type == SpriteFrameType.Rgba32 ? src.Data[si++] : byte.MaxValue;
-							c = Color.FromArgb(a, r, g, b);
-							break;
+							// Inline PremultiplyAlpha + ToArgb
+							var a = (uint)c.A;
+							var r = (c.R * a + 128) / 255;
+							var g = (c.G * a + 128) / 255;
+							var b = (c.B * a + 128) / 255;
 
-						// PNGs don't support BGR[A], so no need to include them here
-						default:
-							throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
+							destSpan[di++] = (a << 24) | (r << 16) | (g << 8) | b;
+						}
 					}
 
-					d[di++] = PremultiplyAlpha(c).ToArgb();
-				}
+					break;
 
-				di += stride - width;
+				case SpriteFrameType.Rgba32:
+					for (var h = 0; h < height; h++)
+					{
+						var di = diBase + h * stride;
+						for (var w = 0; w < width; w++)
+						{
+							var r = srcData[si++];
+							var g = srcData[si++];
+							var b = srcData[si++];
+							var a = srcData[si++];
+
+							// Inline Premultiply
+							var pr = (r * a + 128) / 255;
+							var pg = (g * a + 128) / 255;
+							var pb = (b * a + 128) / 255;
+
+							destSpan[di++] = (uint)((a << 24) | (pr << 16) | (pg << 8) | pb);
+						}
+					}
+
+					break;
+
+				case SpriteFrameType.Rgb24:
+					for (var h = 0; h < height; h++)
+					{
+						var di = diBase + h * stride;
+						for (var w = 0; w < width; w++)
+						{
+							var r = srcData[si++];
+							var g = srcData[si++];
+							var b = srcData[si++];
+
+							destSpan[di++] = 0xFF000000u | ((uint)r << 16) | ((uint)g << 8) | b;
+						}
+					}
+
+					break;
+
+				// PNGs don't support BGR[A], so no need to include them here
+				default:
+					throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
 			}
 		}
 
@@ -321,8 +384,29 @@ namespace OpenRA.Graphics
 		{
 			if (c.A == byte.MaxValue)
 				return c;
-			var a = c.A / 255f;
-			return Color.FromArgb(c.A, (byte)(c.R * a + 0.5f), (byte)(c.G * a + 0.5f), (byte)(c.B * a + 0.5f));
+
+			return Color.FromArgb(c.A, (byte)((c.R * c.A + 128) >> 8), (byte)((c.G * c.A + 128) >> 8), (byte)((c.B * c.A + 128) >> 8));
+		}
+
+		static uint PremultiplyPixel(uint pixel)
+		{
+			var a = (pixel >> 24) & 0xFF;
+			var r = (pixel >> 16) & 0xFF;
+			var g = (pixel >> 8) & 0xFF;
+			var b = pixel & 0xFF;
+
+			if (a == byte.MaxValue)
+				return pixel;
+
+			if (a == 0)
+				return 0;
+
+			// Optimization: (channel  * alpha + 128) / 255 is faster and accurate enough
+			var pr = (r * a + 128) / 255;
+			var pg = (g * a + 128) / 255;
+			var pb = (b * a + 128) / 255;
+
+			return (a << 24) | (pr << 16) | (pg << 8) | pb;
 		}
 
 		public static Color PremultipliedColorLerp(float t, Color c1, Color c2)
