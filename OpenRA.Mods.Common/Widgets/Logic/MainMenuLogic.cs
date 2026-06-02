@@ -109,21 +109,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (versionLabel != null)
 				versionLabel.IsVisible = modLogoVisible;
 
+			var swOraVersionLabel = widget.GetOrNull<LabelWidget>("SW_ORA_VERSION_LABEL");
+			if (swOraVersionLabel != null)
+				swOraVersionLabel.IsVisible = modLogoVisible;
+
 			var shockwaveLogo = widget.GetOrNull<ImageWidget>("SHOCKWAVE_LOGO");
 			if (shockwaveLogo != null)
 				shockwaveLogo.IsVisible = modLogoVisible;
 
 			var mapEditorShortcut = widget.GetOrNull<ButtonWidget>("MAP_EDITOR_SHORTCUT_BUTTON");
 			if (mapEditorShortcut != null)
-			{
 				mapEditorShortcut.IsVisible = modLogoVisible;
-				mapEditorShortcut.OnClick = () =>
-				{
-					if (menuType == MenuType.None)
-						Ui.CloseWindow();
-					SwitchMenu(MenuType.MapEditor);
-				};
-			}
 
 			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
@@ -210,6 +206,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LoadMapIntoEditor(modData.MapCache[uid].Uid);
 			});
 
+			void OpenMapChooserPanel(Action onExit)
+			{
+				SwitchMenu(MenuType.None);
+				Game.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+				{
+					{ "initialMap", null },
+					{ "initialGeneratedMap", (MapGenerationArgs)null },
+					{ "remoteMapPool", null },
+					{ "initialTab", MapClassification.User },
+					{ "onExit", onExit },
+					{ "onSelect", onSelect },
+					{ "onSelectGenerated", null },
+					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },
+				});
+			}
+
 			var newMapButton = widget.Get<ButtonWidget>("NEW_MAP_BUTTON");
 			newMapButton.OnClick = () =>
 			{
@@ -222,23 +234,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var loadMapButton = widget.Get<ButtonWidget>("LOAD_MAP_BUTTON");
-			loadMapButton.OnClick = () =>
-			{
-				SwitchMenu(MenuType.None);
-				Game.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
-				{
-					{ "initialMap", null },
-					{ "initialGeneratedMap", (MapGenerationArgs)null },
-					{ "remoteMapPool", null },
-					{ "initialTab", MapClassification.User },
-					{ "onExit", () => SwitchMenu(MenuType.MapEditor) },
-					{ "onSelect", onSelect },
-					{ "onSelectGenerated", null },
-					{ "filter", MapVisibility.Lobby | MapVisibility.Shellmap | MapVisibility.MissionSelector },
-				});
-			};
-
+			loadMapButton.OnClick = () => OpenMapChooserPanel(() => SwitchMenu(MenuType.MapEditor));
 			loadMapButton.Disabled = !hasMaps;
+
+			if (mapEditorShortcut != null)
+			{
+				mapEditorShortcut.IsDisabled = () => !hasMaps;
+				mapEditorShortcut.OnClick = () => OpenMapChooserPanel(() => SwitchMenu(MenuType.Main));
+			}
 
 			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 

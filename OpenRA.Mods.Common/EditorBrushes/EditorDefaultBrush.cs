@@ -233,10 +233,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (Selection.Actor != null)
 				Selection.Actor.Selected = true;
 
-			if (selection.Area.HasValue)
+			if (selection.Area.HasValue || selection.Actor != null)
 				AreaPanelOpen = true;
-			else if (selection.Actor != null)
-				AreaPanelOpen = actorBoundsOverlay != null && actorBoundsOverlay.Enabled;
 
 			SelectionChanged?.Invoke();
 		}
@@ -414,20 +412,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 		EditorSelection CreateCellClickSelection(CPos cell, bool combineSelection, bool removeSelection)
 		{
-			if (templateBoundsOverlay != null && templateBoundsOverlay.Enabled
-				&& world.Map.Rules.TerrainInfo is ITemplatedTerrainInfo terrainInfo
+			if (world.Map.Rules.TerrainInfo is ITemplatedTerrainInfo terrainInfo
 				&& TemplateBoundsOverlay.TryGetPlacementContext(
 					world.Map, terrainInfo, cell,
 					out var templateType, out var anchor, out var matchingCells, out _))
 			{
 				var selection = EditorSelection.FromCells(matchingCells, Selection, combineSelection, removeSelection);
-				if (terrainInfo.Templates.TryGetValue(templateType, out var template)
-					&& !template.PickAny && (template.Size.X != 1 || template.Size.Y != 1))
-				{
-					selection.TemplatePlacementType = templateType;
-					selection.TemplatePlacementAnchor = anchor;
-				}
-
+				selection.TemplatePlacementType = templateType;
+				selection.TemplatePlacementAnchor = anchor;
 				return selection;
 			}
 
@@ -452,6 +444,13 @@ namespace OpenRA.Mods.Common.Widgets
 			yield return new EditorSelectionAnnotationRenderable(cells, Color.FromArgb((int)(64 * scale), color), int2.Zero, CVec.Zero, 5);
 			yield return new EditorSelectionAnnotationRenderable(cells, Color.FromArgb((int)(128 * scale), color), int2.Zero, CVec.Zero, 3);
 			yield return new EditorSelectionAnnotationRenderable(cells, Color.FromArgb((int)(color.A * scale), color), int2.Zero, CVec.Zero, 2);
+		}
+
+		bool ShowTileSelectionGlow()
+		{
+			return templateBoundsOverlay != null && templateBoundsOverlay.Enabled
+				&& Selection.Area.HasValue
+				&& Selection.Actor == null;
 		}
 
 		static bool RegionsMatch(CellCoordsRegion a, CellCoordsRegion b)
@@ -522,8 +521,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (!selectionMatchesCopy)
 			{
-				yield return new EditorSelectionAnnotationRenderable(displayCells, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
-				yield return new EditorSelectionAnnotationRenderable(displayCells, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
+				if (ShowTileSelectionGlow())
+				{
+					foreach (var glow in GlowAnnotations(displayCells, Color.Orange, pulse: true))
+						yield return glow;
+				}
+				else
+				{
+					yield return new EditorSelectionAnnotationRenderable(displayCells, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, CVec.Zero);
+					yield return new EditorSelectionAnnotationRenderable(displayCells, editorWidget.SelectionMainColor, int2.Zero, CVec.Zero);
+				}
 			}
 		}
 

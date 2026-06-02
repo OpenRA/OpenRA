@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
 			var selectTabContainer = widget.Parent.Parent.Get("SELECT_WIDGETS");
-			actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
+			actorEditPanel = selectTabContainer.Get<Widget>("AREA_EDIT_PANEL").Get("SELECTION_PREVIEW_PANEL").Get("ACTOR_EDIT_PANEL");
 
 			typeLabel = actorEditPanel.Get<LabelWidget>("ACTOR_TYPE_LABEL");
 			actorIDField = actorEditPanel.Get<TextFieldWidget>("ACTOR_ID");
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			okButton.OnClick = Save;
 			cancelButton.OnClick = Cancel;
 			deleteButton.OnClick = Delete;
-			actorEditPanel.IsVisible = () => editor.CurrentBrush == editor.DefaultBrush && SelectedActor != null;
+			typeLabel.IsVisible = () => false;
 
 			actorIDField.OnEscKey = _ => actorIDField.YieldKeyboardFocus();
 			actorIDField.OnEnterKey = _ => actorIDField.YieldKeyboardFocus();
@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				buttonContainer.Bounds.Y += initContainer.Bounds.Height - oldInitHeight;
+				buttonContainer.Bounds.Y = initContainer.Bounds.Y + initContainer.Bounds.Height + 8;
 			}
 			else
 			{

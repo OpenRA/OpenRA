@@ -471,9 +471,9 @@ Container@EDITOR_WORLD_ROOT:
 									Align: Left
 		Container@SELECT_WIDGETS:
 			X: 5
-			Y: 354
+			Y: 28
 			Width: 310
-			Height: WINDOW_HEIGHT - 368
+			Height: WINDOW_HEIGHT - 42
 			Visible: false
 			Children:
 				Background@AREA_EDIT_PANEL:
@@ -505,7 +505,7 @@ Container@EDITOR_WORLD_ROOT:
 							X: 10
 							Y: 44
 							Width: PARENT_WIDTH - 20
-							Height: 285
+							Height: 660
 							Background: scrollpanel-bg
 							Children:
 								Label@SELECTION_PREVIEW_LABEL:
@@ -597,10 +597,10 @@ Container@EDITOR_WORLD_ROOT:
 									Font: TinyBold
 									Align: Right
 								Background@SELECTION_ASSET_PREVIEW_BOX:
-									X: (PARENT_WIDTH - 148) / 2
-									Y: 110
-									Width: 148
-									Height: 148
+									X: 10
+									Y: 55
+									Width: PARENT_WIDTH - 20
+									Height: 180
 									Background: dialog3
 									Children:
 										EditorSelectionPreviewGrid@SELECTION_ASSET_PREVIEW_GRID:
@@ -610,6 +610,10 @@ Container@EDITOR_WORLD_ROOT:
 										EditorBlitPreview@SELECTION_CLIPBOARD_PREVIEW:
 											Width: PARENT_WIDTH
 											Height: PARENT_HEIGHT
+											Visible: false
+										TerrainTemplatePreview@SIMILAR_TILE_PREVIEW:
+											Visible: false
+										ActorPreview@SIMILAR_ACTOR_PREVIEW:
 											Visible: false
 										TerrainTemplatePreview@SELECTION_TILE_PREVIEW:
 											Visible: false
@@ -621,41 +625,257 @@ Container@EDITOR_WORLD_ROOT:
 											Width: PARENT_WIDTH
 											Height: PARENT_HEIGHT
 											Visible: false
+								Button@SIMILAR_PREVIEW_PREVIOUS_BUTTON:
+									X: 5
+									Y: 125
+									Width: 25
+									Height: 25
+									Font: Bold
+									Text: button-similar-preview-previous
+									Visible: false
+								Button@SIMILAR_PREVIEW_NEXT_BUTTON:
+									X: PARENT_WIDTH - 30
+									Y: 125
+									Width: 25
+									Height: 25
+									Font: Bold
+									Text: button-similar-preview-next
+									Visible: false
 								Checkbox@SELECTION_PREVIEW_BORDER_CHECKBOX:
-									X: (PARENT_WIDTH - 148) / 2
-									Y: 262
-									Width: 148
+									X: 10
+									Y: 238
+									Width: PARENT_WIDTH - 20
 									Height: 20
 									Text: label-editor-preview-border
 									Visible: false
+								Background@SELECTION_TILE_DETAIL:
+									X: 10
+									Y: 248
+									Width: PARENT_WIDTH - 20
+									Height: 82
+									Background: scrollpanel-bg
+									Visible: false
+									Children:
+										Label@SELECTION_TILE_DETAIL_TITLE:
+											Y: 4
+											Width: PARENT_WIDTH
+											Height: 18
+											Align: Center
+											Font: Bold
+											Text: label-selection-detail
+										Label@SELECTION_TILE_DETAIL_INFO:
+											X: 8
+											Y: 24
+											Width: PARENT_WIDTH - 16
+											Height: 52
+											Font: Tiny
+											Align: Left
+								Background@SELECTION_ACTOR_BRUSH_DETAIL:
+									X: 10
+									Y: 248
+									Width: PARENT_WIDTH - 20
+									Height: 98
+									Background: scrollpanel-bg
+									Visible: false
+									Children:
+										Label@SELECTION_ACTOR_BRUSH_DETAIL_TITLE:
+											Y: 4
+											Width: PARENT_WIDTH
+											Height: 18
+											Align: Center
+											Font: Bold
+											Text: label-selection-detail
+										Label@SELECTION_ACTOR_BRUSH_DETAIL_INFO:
+											X: 8
+											Y: 24
+											Width: PARENT_WIDTH - 16
+											Height: 68
+											Font: Tiny
+											Align: Left
+								Background@ACTOR_EDIT_PANEL:
+									X: 10
+									Y: 248
+									Width: PARENT_WIDTH - 20
+									Height: 158
+									Background: scrollpanel-bg
+									Visible: false
+									Children:
+										Label@ACTOR_TYPE_LABEL:
+											Visible: false
+											Y: 4
+											Width: PARENT_WIDTH
+											Height: 20
+											Align: Center
+											Font: Bold
+										Label@ACTOR_ID_LABEL:
+											Y: 6
+											Width: 55
+											Height: 20
+											Text: label-actor-edit-panel-id
+											Align: Right
+											Font: TinyBold
+										TextField@ACTOR_ID:
+											X: 69
+											Y: 4
+											Width: PARENT_WIDTH - 78
+											Height: 22
+										Label@ACTOR_ID_ERROR_LABEL:
+											X: 69
+											Y: 26
+											Width: PARENT_WIDTH - 78
+											Height: 16
+											Font: TinyBold
+											TextColor: FF0000
+										Container@ACTOR_INIT_CONTAINER:
+											Y: 44
+											Width: PARENT_WIDTH
+											Children:
+												Container@CHECKBOX_OPTION_TEMPLATE:
+													Width: PARENT_WIDTH
+													Height: 22
+													Children:
+														Checkbox@OPTION:
+															X: 60
+															Y: 1
+															Width: PARENT_WIDTH - 100
+															Height: 20
+												Container@SLIDER_OPTION_TEMPLATE:
+													Width: PARENT_WIDTH
+													Height: 22
+													Children:
+														Label@LABEL:
+															Y: 1
+															Width: 55
+															Height: 16
+															Align: Right
+															Font: TinyBold
+														Slider@OPTION:
+															X: 60
+															Y: 1
+															Width: PARENT_WIDTH - 125
+															Height: 20
+														TextField@VALUE:
+															X: PARENT_WIDTH - 58
+															Y: 1
+															Width: 50
+															Height: 20
+															Type: Integer
+												Container@DROPDOWN_OPTION_TEMPLATE:
+													Width: PARENT_WIDTH
+													Height: 27
+													Children:
+														Label@LABEL:
+															Y: 2
+															Width: 55
+															Height: 24
+															Align: Right
+															Font: TinyBold
+														DropDownButton@OPTION:
+															X: 69
+															Y: 1
+															Width: PARENT_WIDTH - 78
+															Height: 25
+															Font: Bold
+												Container@TEXTFIELD_OPTION_TEMPLATE:
+													Width: PARENT_WIDTH
+													Height: 27
+													Children:
+														Label@LABEL:
+															Y: 1
+															Width: 55
+															Height: 25
+															Align: Right
+															Font: TinyBold
+														TextField@OPTION:
+															X: 69
+															Y: 1
+															Width: PARENT_WIDTH - 78
+															Height: 25
+										Container@BUTTON_CONTAINER:
+											Y: 128
+											Width: PARENT_WIDTH
+											Height: 28
+											Children:
+												Button@DELETE_BUTTON:
+													X: 5
+													Width: 75
+													Height: 25
+													Text: button-delete-actor.label
+													Font: Bold
+													Key: EditorDeleteSelection
+													TooltipTemplate: BUTTON_TOOLTIP
+													TooltipText: button-delete-actor.tooltip
+													TooltipContainer: TOOLTIP_CONTAINER
+												Button@CANCEL_BUTTON:
+													X: (PARENT_WIDTH - 160) / 2
+													Width: 75
+													Height: 25
+													Text: button-cancel
+													Font: Bold
+													Key: escape
+												Button@OK_BUTTON:
+													X: PARENT_WIDTH - 80
+													Width: 75
+													Height: 25
+													Text: button-container-ok
+													Font: Bold
+													Key: return
+								Label@OPPOSITES_LABEL:
+									Y: 420
+									Width: PARENT_WIDTH
+									Height: 20
+									Align: Center
+									Font: Bold
+									Text: label-editor-opposites
+									Visible: false
+								Background@OPPOSITES_PREVIEW_BOX:
+									X: (PARENT_WIDTH - 148) / 2
+									Y: 442
+									Width: 148
+									Height: 148
+									Background: dialog3
+									Visible: false
+									Children:
+										EditorSelectionPreviewGrid@OPPOSITES_PREVIEW_GRID:
+											Width: PARENT_WIDTH
+											Height: PARENT_HEIGHT
+											Visible: false
+										EditorSelectionPreviewBorder@OPPOSITES_SELECTED_BORDER:
+											Width: PARENT_WIDTH
+											Height: PARENT_HEIGHT
+											Visible: false
+										EditorOppositesPreviewClick@OPPOSITES_CLICK_TARGET:
+											Width: PARENT_WIDTH
+											Height: PARENT_HEIGHT
+											Visible: false
 						Label@AREA_FILTERS_LABEL:
-							X: 5
-							Y: 339
+							X: 15
+							Y: 718
 							Width: 150
 							Height: 25
 							Font: Bold
 							Align: Left
 							Text: label-selection-filters
 						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
-							X: 5
-							Y: 364
+							X: 15
+							Y: 743
 							Width: PARENT_WIDTH - 29
 							Height: 20
 							Text: label-filter-terrain
 						Checkbox@COPY_FILTER_RESOURCES_CHECKBOX:
-							X: 5
-							Y: 389
+							X: 15
+							Y: 768
 							Width: PARENT_WIDTH - 29
 							Height: 20
 							Text: label-filter-resources
 						Checkbox@COPY_FILTER_ACTORS_CHECKBOX:
-							X: 5
-							Y: 414
+							X: 15
+							Y: 793
 							Width: PARENT_WIDTH - 29
 							Height: 20
 							Text: label-filter-actors
 						Label@AREA_INFO_TITLE:
-							Y: 433
+							Y: 812
 							Width: PARENT_WIDTH
 							Height: 24
 							Align: Center
@@ -663,7 +883,7 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-area-info
 						Label@DIAGONAL_LABEL:
 							X: 5
-							Y: 465
+							Y: 844
 							Width: 120
 							Height: 20
 							Font: Bold
@@ -671,7 +891,7 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-selected-area-diagonal
 						Label@RESOURCE_LABEL:
 							X: 5
-							Y: 487
+							Y: 866
 							Width: 120
 							Height: 25
 							Font: Bold
@@ -679,13 +899,13 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-selected-area-resources
 						Label@DIAGONAL_COUNTER_LABEL:
 							X: 140
-							Y: 464
+							Y: 843
 							Width: 55
 							Height: 22
 							Align: Left
 						Label@RESOURCES_COUNTER_LABEL:
 							X: 140
-							Y: 489
+							Y: 868
 							Width: 55
 							Height: 22
 							Align: Left
@@ -780,126 +1000,6 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipText: button-rotate-copy-right.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-				Background@ACTOR_EDIT_PANEL:
-					X: 10
-					Y: 10
-					Width: PARENT_WIDTH - 20
-					Height: PARENT_HEIGHT - 7
-					Background: scrollpanel-bg
-					Children:
-						Label@ACTOR_TYPE_LABEL:
-							Y: 16
-							Width: PARENT_WIDTH
-							Height: 24
-							Align: Center
-							Font: Bold
-						Label@ACTOR_ID_LABEL:
-							Y: 45
-							Width: 55
-							Height: 25
-							Text: label-actor-edit-panel-id
-							Align: Right
-						TextField@ACTOR_ID:
-							X: 69
-							Y: 45
-							Width: 213
-							Height: 25
-						Label@ACTOR_ID_ERROR_LABEL:
-							X: 69
-							Y: 71
-							Width: 213
-							Height: 25
-							Font: TinyBold
-							TextColor: FF0000
-						Container@ACTOR_INIT_CONTAINER:
-							Y: 73
-							Width: PARENT_WIDTH
-							Children:
-								Container@CHECKBOX_OPTION_TEMPLATE:
-									Width: PARENT_WIDTH
-									Height: 22
-									Children:
-										Checkbox@OPTION:
-											X: 60
-											Y: 1
-											Width: PARENT_WIDTH - 100
-											Height: 20
-								Container@SLIDER_OPTION_TEMPLATE:
-									Width: PARENT_WIDTH
-									Height: 22
-									Children:
-										Label@LABEL:
-											Y: 1
-											Width: 55
-											Height: 16
-											Align: Right
-										Slider@OPTION:
-											X: 60
-											Y: 1
-											Width: 170
-											Height: 20
-										TextField@VALUE:
-											X: 232
-											Y: 1
-											Width: 50
-											Height: 20
-											Type: Integer
-								Container@DROPDOWN_OPTION_TEMPLATE:
-									Width: PARENT_WIDTH
-									Height: 27
-									Children:
-										Label@LABEL:
-											Y: 2
-											Width: 55
-											Height: 24
-											Align: Right
-										DropDownButton@OPTION:
-											X: 69
-											Y: 1
-											Width: 213
-											Height: 25
-											Font: Bold
-								Container@TEXTFIELD_OPTION_TEMPLATE:
-									Width: PARENT_WIDTH
-									Height: 27
-									Children:
-										Label@LABEL:
-											Y: 1
-											Width: 55
-											Height: 25
-											Align: Right
-										TextField@OPTION:
-											X: 69
-											Y: 1
-											Width: 213
-											Height: 25
-						Container@BUTTON_CONTAINER:
-							Y: 75
-							Children:
-								Button@DELETE_BUTTON:
-									X: 5
-									Width: 75
-									Height: 25
-									Text: button-delete-actor.label
-									Font: Bold
-									Key: EditorDeleteSelection
-									TooltipTemplate: BUTTON_TOOLTIP
-									TooltipText: button-delete-actor.tooltip
-									TooltipContainer: TOOLTIP_CONTAINER
-								Button@CANCEL_BUTTON:
-									X: 127
-									Width: 75
-									Height: 25
-									Text: button-cancel
-									Font: Bold
-									Key: escape
-								Button@OK_BUTTON:
-									X: 208
-									Width: 75
-									Height: 25
-									Text: button-container-ok
-									Font: Bold
-									Key: return
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
 			X: WINDOW_WIDTH - 311

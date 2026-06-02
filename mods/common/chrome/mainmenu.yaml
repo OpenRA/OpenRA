@@ -29,6 +29,15 @@ Container@MAINMENU:
 			Align: Center
 			Font: Regular
 			Shadow: true
+		Label@SW_ORA_VERSION_LABEL:
+			X: WINDOW_WIDTH - 296
+			Y: 301
+			Width: 296 - 20
+			Height: 25
+			Text: SW-ORA 0.001
+			Align: Center
+			Font: Regular
+			Shadow: true
 		Button@MAP_EDITOR_SHORTCUT_BUTTON:
 			X: WINDOW_WIDTH - 34 - 25
 			Y: WINDOW_HEIGHT - 34 - 20 - 10
@@ -42,7 +51,7 @@ Container@MAINMENU:
 					ImageName: icon
 		Image@SHOCKWAVE_LOGO:
 			X: 25
-			Y: WINDOW_HEIGHT - 54 - 20 - 10
+			Y: WINDOW_HEIGHT - 32 - 20 - 10
 			ImageCollection: shockwave-logo
 			ImageName: logo
 		Container@MENUS:

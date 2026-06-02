@@ -138,17 +138,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 			CurrentBrush = brush ?? DefaultBrush;
 
-			if (HasMultiAssetSelection(CurrentBrush))
+			if (IsEditorAssetSelection(CurrentBrush))
 				DefaultBrush.ShowAreaPanel();
 
 			BrushChanged?.Invoke();
 			editorCursor.SetBrush(CurrentBrush);
 		}
 
-		static bool HasMultiAssetSelection(IEditorBrush brush)
+		static bool IsEditorAssetSelection(IEditorBrush brush)
 		{
-			return brush is EditorTileBrush { Templates.Length: > 1 }
-				|| brush is EditorActorBrush { Actors.Length: > 1 };
+			return brush is EditorTileBrush or EditorActorBrush or EditorResourceBrush;
 		}
 
 		public override void MouseEntered()

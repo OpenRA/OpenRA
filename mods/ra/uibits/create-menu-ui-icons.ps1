@@ -5,8 +5,8 @@ $dir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 # --- Shockwave logo (scaled for bottom-right menu chrome, padded to POT texture) ---
 $srcPath = Join-Path $dir 'SHOCKWAVELOGO.png'
-$logoW = 280
-$logoH = 54
+$logoW = 168
+$logoH = 32
 $sheetW = 512
 $sheetH = 64
 

@@ -50,3 +50,5 @@ When placing tiles, maps store official **template IDs** and terrain data from `
 - The agent rebuilds, not the user.
 
 - The user starts the app, not the agent.
+
+- This project does NOT have a cursorrules file

@@ -680,4 +680,4 @@ worldmap-icon:
 shockwave-logo:
 	Image: SHOCKWAVELOGO-menu.png
 	Regions:
-		logo: 0, 0, 280, 54
+		logo: 0, 0, 168, 32
