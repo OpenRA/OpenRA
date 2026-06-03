@@ -424,6 +424,50 @@ namespace OpenRA.Mods.Common.Traits
 			return SubCell.Invalid;
 		}
 
+		public bool CanPlaceFootprint(ActorInfo actorInfo, ActorReference actor)
+		{
+			var map = worldRenderer.World.Map;
+			var ios = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
+			var location = actor.Get<LocationInit>().Value;
+			var subCellInit = actor.GetOrDefault<SubCellInit>();
+			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
+			var occupiedCells = ios?.OccupiedCells(actorInfo, location, subCell).Keys.ToArray() ?? [location];
+
+			if (!occupiedCells.All(map.Contains))
+				return false;
+
+			if (ios != null && ios.SharesCell)
+			{
+				foreach (var cell in occupiedCells)
+					if (FreeSubCellAt(cell) == SubCell.Invalid)
+						return false;
+
+				return true;
+			}
+
+			var occupiedSet = occupiedCells.ToHashSet();
+			foreach (var cell in occupiedCells)
+			{
+				foreach (var preview in PreviewsAtCell(cell))
+				{
+					foreach (var existingCell in preview.Footprint.Keys)
+					{
+						if (!occupiedSet.Contains(existingCell))
+							continue;
+
+						var existingIos = preview.Info.TraitInfoOrDefault<IOccupySpaceInfo>();
+						if (existingIos == null || !existingIos.SharesCell)
+							return false;
+
+						if (ios == null || !ios.SharesCell)
+							return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
 		public IEnumerable<EditorActorPreview> PreviewsAtWorldPixel(int2 worldPx)
 		{
 			return screenMap.At(worldPx);

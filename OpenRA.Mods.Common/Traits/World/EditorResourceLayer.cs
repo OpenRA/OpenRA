@@ -230,18 +230,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool AllowResourceAt(string resourceType, CPos cell)
 		{
-			if (!Map.Ramp.Contains(cell) || Map.Ramp[cell] != 0)
+			if (!Map.Contains(cell) || Map.Ramp[cell] != 0)
 				return false;
 
 			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
 				return false;
 
-			// Ignore custom terrain types when spawning resources in the editor
-			var terrainInfo = Map.Rules.TerrainInfo;
-			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[cell]).TerrainType].Type;
+			var cellTerrainType = Map.GetTerrainInfo(cell).Type;
+			if (resourceInfo.AllowedTerrainTypes.Contains(cellTerrainType))
+				return true;
 
-			// TODO: Check against actors in the EditorActorLayer
-			return resourceInfo.AllowedTerrainTypes.Contains(terrainType);
+			// Placing resources updates CustomTerrain to Ore/Gems; still allow fill and type replacement.
+			foreach (var r in info.ResourceTypes.Values)
+				if (r.TerrainType == cellTerrainType)
+					return true;
+
+			return false;
 		}
 
 		bool CanAddResource(string resourceType, CPos cell, int amount = 1)

@@ -130,6 +130,37 @@ namespace OpenRA.Mods.Common.Traits
 			return cells.ToArray();
 		}
 
+		/// <summary>
+		/// Each anchor is where a new template should be painted to replace one existing placement.
+		/// </summary>
+		public static IEnumerable<CPos> EnumeratePlacedTemplateAnchors(
+			Map map,
+			ITemplatedTerrainInfo terrainInfo,
+			CellCoordsRegion area,
+			IReadOnlySet<CPos> selectionMask)
+		{
+			var processed = new HashSet<(ushort Type, CPos Key)>();
+
+			foreach (var cell in selectionMask ?? EnumerateRegionCells(area))
+			{
+				if (!map.Contains(cell))
+					continue;
+
+				if (!IsEditorPlacedTile(map, terrainInfo, cell))
+					continue;
+
+				if (!TryGetAnchor(map, terrainInfo, cell, out var template, out var anchor, out var templateType))
+					continue;
+
+				var isSingleCell = template.PickAny || (template.Size.X == 1 && template.Size.Y == 1);
+				var key = isSingleCell ? cell : anchor;
+				if (!processed.Add((templateType, key)))
+					continue;
+
+				yield return key;
+			}
+		}
+
 		public static CPos[] BuildTemplateFootprintCells(TerrainTemplateInfo template, CPos anchor)
 		{
 			var templateWidth = template.Size.X;
@@ -291,6 +322,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var region in obscuredRegions)
 				yield return new BorderedRegionRenderable(region, ObscuredTileColor, 1, Color.Black, 0, true);
+		}
+
+		static IEnumerable<CPos> EnumerateRegionCells(CellCoordsRegion region)
+		{
+			foreach (var cell in region)
+				yield return cell;
 		}
 
 		static bool Contains(CPos[] region, CPos cell)

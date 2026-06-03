@@ -665,6 +665,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					map.Tiles[position] = map.Rules.TerrainInfo.DefaultTerrainTile;
 					map.Height[position] = 0;
+					map.CustomTerrain[position] = byte.MaxValue;
 				}
 			}
 		}

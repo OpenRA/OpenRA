@@ -374,6 +374,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						resourceBrush.ResourceType,
 						editor.AssetMixMode,
 						GetFillDensityPercent(),
+						editor.AssetFillMode,
 						selection.Area.Value,
 						selection.GetAreaMask()));
 			};
@@ -381,6 +382,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			fillAreaSelectionButton.IsDisabled = () => editor.CurrentBrush is not EditorTileBrush
 				&& editor.CurrentBrush is not EditorActorBrush
 				&& (editor.CurrentBrush is not EditorResourceBrush || resourceLayer == null);
+
+			var replaceAreaSelectionButton = areaEditPanel.GetOrNull<ButtonWidget>("SELECTION_REPLACE_BUTTON");
+			if (replaceAreaSelectionButton != null)
+			{
+				replaceAreaSelectionButton.OnClick = () =>
+				{
+					if (!editor.DefaultBrush.Selection.Area.HasValue)
+						return;
+
+					Game.OpenWindow(world, "EDITOR_REPLACE_PANEL");
+				};
+				replaceAreaSelectionButton.IsDisabled = () => !editor.DefaultBrush.Selection.Area.HasValue;
+			}
 
 			var closeAreaSelectionButton = areaEditPanel.Get<ButtonWidget>("SELECTION_CANCEL_BUTTON");
 			closeAreaSelectionButton.OnClick = () => editor.DefaultBrush.CloseAreaPanel();
@@ -673,8 +687,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool ShowMixModeControls()
 		{
 			return editor.CurrentBrush is EditorTileBrush or EditorActorBrush or EditorResourceBrush
-				&& !ShowTilePlacementPreviewControls() && !ShowSelectedMapActorPreview()
-				&& !ShowSelectedActorBrushDetail();
+				&& !ShowTilePlacementPreviewControls() && !ShowSelectedMapActorPreview();
 		}
 
 		bool ShowFillControls()

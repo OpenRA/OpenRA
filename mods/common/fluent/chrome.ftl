@@ -162,6 +162,31 @@ button-fill-area =
     .label = Fill
     .tooltip = Fill the selected area with the selected terrain tile or actor
 
+button-replace-area =
+    .label = Replace
+    .tooltip = Replace tiles, resources, or actors in the selection without affecting other layers
+
+label-editor-replace-title = Replace Selection
+label-editor-replace-source-prompt = Replace:
+label-editor-replace-with-prompt = With:
+label-editor-replace-layer-tile = Tile
+label-editor-replace-layer-resources = Resources
+label-editor-replace-layer-actors = Actors
+button-editor-replace-confirm = Replace
+label-editor-replace-asset-tile = Tile: { $id }
+label-editor-replace-asset-tiles = Tiles: { $count } selected
+label-editor-replace-asset-resource = Resource: { $type }
+label-editor-replace-asset-actor = Actor: { $name }
+label-editor-replace-asset-actors = Actors: { $count } selected
+label-editor-replace-include-empty = Include empty spaces
+label-editor-replace-asset-missing = Select a { $layer } in the asset browser
+label-editor-replace-layer-mismatch = Current asset is not a { $layer }
+label-editor-replace-no-selection = No area selected
+label-editor-replace-no-replace-layers = Choose at least one layer to replace
+label-editor-replace-nothing-to-replace = Nothing matching the replace layers in this selection
+notification-replaced-selection = Replaced selection
+notification-replaced-tiles = Replaced { $count } tiles with { $id }
+
 button-find-in-browser =
     .label = Find
     .tooltip = Show this tile or actor in the asset browser on the right

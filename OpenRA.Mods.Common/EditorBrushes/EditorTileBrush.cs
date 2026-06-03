@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 
@@ -415,6 +416,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Map map;
 		readonly CellCoordsRegion area;
 		readonly IReadOnlySet<CPos> mask;
+		readonly IReadOnlySet<CPos> paintMask;
 
 		readonly Queue<UndoTile> undoTiles = [];
 		readonly ITemplatedTerrainInfo terrainInfo;
@@ -435,7 +437,8 @@ namespace OpenRA.Mods.Common.Widgets
 			int fillDensityPercent,
 			Map map,
 			CellCoordsRegion area,
-			IReadOnlySet<CPos> mask = null)
+			IReadOnlySet<CPos> mask = null,
+			IReadOnlySet<CPos> paintMask = null)
 		{
 			this.templates = templates.Distinct().ToArray();
 			this.mixMode = mixMode;
@@ -443,6 +446,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.map = map;
 			this.area = area;
 			this.mask = mask;
+			this.paintMask = paintMask;
 
 			terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			firstTerrainTemplate = terrainInfo.Templates[this.templates[0]];
@@ -473,7 +477,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			if (mask != null)
+			if (mask != null && !HasMultiCellTemplate())
 			{
 				var maskAnchors = mask.ToList();
 				foreach (var cell in EditorFillSelection.SelectCells(maskAnchors, fillDensityPercent))
@@ -489,13 +493,23 @@ namespace OpenRA.Mods.Common.Widgets
 			var selected = new HashSet<CPos>(EditorFillSelection.SelectCells(placementAnchors, fillDensityPercent));
 			foreach (var (anchor, template) in placements)
 			{
-				if (selected.Contains(anchor))
-					PaintTemplate(template, anchor);
+				if (!selected.Contains(anchor))
+					continue;
+
+				if (mask != null && !mask.Contains(anchor))
+					continue;
+
+				PaintTemplate(template, anchor);
 			}
 		}
 
 		List<(CPos Anchor, ushort Template)> BuildContiguousPlacements()
 		{
+			// Road alignment only applies to templates that contain road cells; terrain like water
+			// should tile across the full selection from the top-left corner.
+			if (templates.All(t => !roadProfiles[t].HasRoad))
+				return BuildGridPlacements();
+
 			return fillAxis switch
 			{
 				FillAxis.Vertical => BuildVerticalPlacements(),
@@ -552,7 +566,9 @@ namespace OpenRA.Mods.Common.Widgets
 					var terrainTemplate = terrainInfo.Templates[template];
 					var profile = roadProfiles[template];
 					rowMaxY = Math.Max(rowMaxY, terrainTemplate.Size.Y);
-					var anchorY = targetRoadY - (int)Math.Round(profile.RoadCenterY);
+					var anchorY = profile.HasRoad
+						? targetRoadY - (int)Math.Round(profile.RoadCenterY)
+						: y;
 					placements.Add((new CPos(x, anchorY), template));
 					x += terrainTemplate.Size.X;
 				}
@@ -611,6 +627,15 @@ namespace OpenRA.Mods.Common.Widgets
 			return pool[Game.CosmeticRandom.Next(pool.Length)];
 		}
 
+		bool HasMultiCellTemplate()
+		{
+			return templates.Any(t =>
+			{
+				var size = terrainInfo.Templates[t].Size;
+				return size.X > 1 || size.Y > 1;
+			});
+		}
+
 		void PaintTemplate(ushort template, CPos cellToPaint)
 		{
 			var mapTiles = map.Tiles;
@@ -630,6 +655,9 @@ namespace OpenRA.Mods.Common.Widgets
 						if (!area.Contains(c) || !mapTiles.Contains(c))
 							continue;
 
+						if (paintMask != null && !paintMask.Contains(c))
+							continue;
+
 						undoTiles.Enqueue(new UndoTile(c, mapTiles[c], mapHeight[c]));
 
 						mapTiles[c] = new TerrainTile(template, index);
@@ -637,6 +665,331 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 				}
 			}
+		}
+	}
+
+	sealed class ReplaceTemplatePlacementsEditorAction : IEditorAction
+	{
+		[FluentReference("count", "id")]
+		const string ReplacedTiles = "notification-replaced-tiles";
+
+		public string Text { get; }
+
+		readonly ushort[] templates;
+		readonly EditorAssetMixMode mixMode;
+		readonly Map map;
+		readonly ITemplatedTerrainInfo terrainInfo;
+		readonly TerrainTile defaultTile;
+		readonly List<CPos> intactAnchors;
+		readonly HashSet<CPos> packCells;
+		readonly Queue<UndoTile> undoTiles = [];
+		int nextTemplate;
+
+		public ReplaceTemplatePlacementsEditorAction(
+			IEnumerable<ushort> templates,
+			EditorAssetMixMode mixMode,
+			Map map,
+			TileReplacePlan plan)
+		{
+			this.templates = templates.Distinct().ToArray();
+			this.mixMode = mixMode;
+			this.map = map;
+			intactAnchors = plan.IntactAnchors;
+			packCells = plan.PackCells;
+			terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
+			defaultTile = map.Rules.TerrainInfo.DefaultTerrainTile;
+			var placementCount = intactAnchors.Count + packCells.Count;
+			Text = FluentProvider.GetMessage(
+				ReplacedTiles,
+				"count", placementCount,
+				"id", terrainInfo.Templates[this.templates[0]].Id);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			foreach (var anchor in intactAnchors)
+			{
+				var template = PickTemplate();
+				var terrainTemplate = terrainInfo.Templates[template];
+				ClearPlacedTemplate(anchor);
+				PaintTemplate(template, terrainTemplate, anchor);
+			}
+
+			if (packCells.Count == 0)
+				return;
+
+			foreach (var cluster in BuildConnectedClusters(packCells))
+				ReplaceCluster(cluster);
+		}
+
+		void ReplaceCluster(HashSet<CPos> cluster)
+		{
+			var placed = new HashSet<CPos>();
+			var origin = new CPos(cluster.Min(c => c.X), cluster.Min(c => c.Y));
+
+			if (HasMultiCellTemplate())
+			{
+				var bounds = ClusterBounds(cluster);
+				for (var anchorY = bounds.MinY; anchorY <= bounds.MaxY; anchorY++)
+				{
+					for (var anchorX = bounds.MinX; anchorX <= bounds.MaxX; anchorX++)
+					{
+						var template = PickTemplate();
+						var terrainTemplate = terrainInfo.Templates[template];
+						var anchor = new CPos(anchorX, anchorY);
+						if (!CanPlaceIntactTemplate(anchor, terrainTemplate, cluster, placed))
+							continue;
+
+						PaintIntactTemplate(template, terrainTemplate, anchor, cluster);
+						foreach (var cell in TemplateBoundsOverlay.BuildTemplateFootprintCells(terrainTemplate, anchor))
+							placed.Add(cell);
+					}
+				}
+			}
+
+			foreach (var cell in cluster)
+			{
+				if (placed.Contains(cell))
+					continue;
+
+				var template = PickTemplate();
+				var terrainTemplate = terrainInfo.Templates[template];
+				PaintTemplateFragment(template, terrainTemplate, cell, origin);
+			}
+		}
+
+		bool HasMultiCellTemplate()
+		{
+			return templates.Any(t =>
+			{
+				var size = terrainInfo.Templates[t].Size;
+				return size.X > 1 || size.Y > 1;
+			});
+		}
+
+		static (int MinX, int MinY, int MaxX, int MaxY) ClusterBounds(HashSet<CPos> cluster)
+		{
+			return (
+				cluster.Min(c => c.X),
+				cluster.Min(c => c.Y),
+				cluster.Max(c => c.X),
+				cluster.Max(c => c.Y));
+		}
+
+		static bool CanPlaceIntactTemplate(
+			CPos anchor,
+			TerrainTemplateInfo template,
+			HashSet<CPos> cluster,
+			HashSet<CPos> placed)
+		{
+			var footprint = TemplateBoundsOverlay.BuildTemplateFootprintCells(template, anchor);
+			if (footprint.Length == 0)
+				return false;
+
+			foreach (var cell in footprint)
+			{
+				if (!cluster.Contains(cell))
+					return false;
+
+				if (placed.Contains(cell))
+					return false;
+			}
+
+			return true;
+		}
+
+		void PaintIntactTemplate(
+			ushort template,
+			TerrainTemplateInfo terrainTemplate,
+			CPos anchor,
+			HashSet<CPos> allowedCells)
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var baseHeight = mapHeight.Contains(anchor) ? mapHeight[anchor] : (byte)0;
+
+			var i = 0;
+			for (var y = 0; y < terrainTemplate.Size.Y; y++)
+			{
+				for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
+				{
+					if (!terrainTemplate.Contains(i) || terrainTemplate[i] == null)
+						continue;
+
+					var c = anchor + new CVec(x, y);
+					if (!allowedCells.Contains(c) || !mapTiles.Contains(c))
+						continue;
+
+					var index = terrainTemplate.PickAny
+						? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount)
+						: (byte)i;
+
+					SaveUndoCell(c);
+					mapTiles[c] = new TerrainTile(template, index);
+					mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height)
+						.Clamp(0, map.Grid.MaximumTerrainHeight);
+				}
+			}
+		}
+
+		void PaintTemplateFragment(
+			ushort template,
+			TerrainTemplateInfo terrainTemplate,
+			CPos cell,
+			CPos clusterOrigin)
+		{
+			if (!map.Tiles.Contains(cell))
+				return;
+
+			var localX = Mod(cell.X - clusterOrigin.X, terrainTemplate.Size.X);
+			var localY = Mod(cell.Y - clusterOrigin.Y, terrainTemplate.Size.Y);
+			var index = localY * terrainTemplate.Size.X + localX;
+			if (!terrainTemplate.Contains(index) || terrainTemplate[index] == null)
+				return;
+
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
+			var tileIndex = terrainTemplate.PickAny
+				? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount)
+				: (byte)index;
+
+			SaveUndoCell(cell);
+			mapTiles[cell] = new TerrainTile(template, tileIndex);
+			mapHeight[cell] = (byte)(baseHeight + terrainTemplate[index].Height)
+				.Clamp(0, map.Grid.MaximumTerrainHeight);
+		}
+
+		static int Mod(int value, int size)
+		{
+			if (size <= 0)
+				return 0;
+
+			var result = value % size;
+			return result < 0 ? result + size : result;
+		}
+
+		static List<HashSet<CPos>> BuildConnectedClusters(HashSet<CPos> cells)
+		{
+			var remaining = new HashSet<CPos>(cells);
+			var clusters = new List<HashSet<CPos>>();
+			var directions = new[] { new CVec(1, 0), new CVec(-1, 0), new CVec(0, 1), new CVec(0, -1) };
+
+			while (remaining.Count > 0)
+			{
+				var start = remaining.OrderBy(c => c.Y).ThenBy(c => c.X).First();
+				var cluster = new HashSet<CPos>();
+				var queue = new Queue<CPos>();
+				queue.Enqueue(start);
+				remaining.Remove(start);
+				cluster.Add(start);
+
+				while (queue.Count > 0)
+				{
+					var current = queue.Dequeue();
+					foreach (var direction in directions)
+					{
+						var next = current + direction;
+						if (!remaining.Remove(next))
+							continue;
+
+						cluster.Add(next);
+						queue.Enqueue(next);
+					}
+				}
+
+				clusters.Add(cluster);
+			}
+
+			return clusters;
+		}
+
+		public void Undo()
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+
+			while (undoTiles.Count > 0)
+			{
+				var undoTile = undoTiles.Dequeue();
+				mapTiles[undoTile.Cell] = undoTile.MapTile;
+				mapHeight[undoTile.Cell] = undoTile.Height;
+			}
+		}
+
+		void ClearPlacedTemplate(CPos anchor)
+		{
+			if (!TemplateBoundsOverlay.TryGetIntactPlacementCells(map, terrainInfo, anchor, out var cells))
+			{
+				ClearCell(anchor);
+				return;
+			}
+
+			foreach (var cell in cells)
+				ClearCell(cell);
+		}
+
+		void SaveUndoCell(CPos cell)
+		{
+			undoTiles.Enqueue(new UndoTile(cell, map.Tiles[cell], map.Height[cell]));
+		}
+
+		void ClearCell(CPos cell)
+		{
+			if (!map.Tiles.Contains(cell))
+				return;
+
+			SaveUndoCell(cell);
+			map.Tiles[cell] = defaultTile;
+			map.Height[cell] = 0;
+			map.CustomTerrain[cell] = byte.MaxValue;
+		}
+
+		void PaintTemplate(ushort template, TerrainTemplateInfo terrainTemplate, CPos cellToPaint, HashSet<CPos> skipUndo = null)
+		{
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var baseHeight = mapHeight.Contains(cellToPaint) ? mapHeight[cellToPaint] : (byte)0;
+
+			var i = 0;
+			for (var y = 0; y < terrainTemplate.Size.Y; y++)
+			{
+				for (var x = 0; x < terrainTemplate.Size.X; x++, i++)
+				{
+					if (!terrainTemplate.Contains(i) || terrainTemplate[i] == null)
+						continue;
+
+					var index = terrainTemplate.PickAny
+						? (byte)Game.CosmeticRandom.Next(0, terrainTemplate.TilesCount)
+						: (byte)i;
+					var c = cellToPaint + new CVec(x, y);
+					if (!mapTiles.Contains(c))
+						continue;
+
+					if (skipUndo == null || !skipUndo.Contains(c))
+						SaveUndoCell(c);
+
+					mapTiles[c] = new TerrainTile(template, index);
+					mapHeight[c] = (byte)(baseHeight + terrainTemplate[index].Height)
+						.Clamp(0, map.Grid.MaximumTerrainHeight);
+				}
+			}
+		}
+
+		ushort PickTemplate()
+		{
+			if (templates.Length == 1)
+				return templates[0];
+
+			if (mixMode == EditorAssetMixMode.Sequential)
+				return templates[nextTemplate++ % templates.Length];
+
+			return templates[Game.CosmeticRandom.Next(templates.Length)];
 		}
 	}
 

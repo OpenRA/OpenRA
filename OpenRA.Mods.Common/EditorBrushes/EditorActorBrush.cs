@@ -96,6 +96,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!Footprint(actor, reference).All(world.Map.Tiles.Contains))
 					return true;
 
+				if (!editorLayer.CanPlaceFootprint(actor, reference))
+					return true;
+
 				var action = new AddActorAction(editorLayer, reference);
 				editorActionManager.Add(action);
 			}
@@ -285,22 +288,21 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			var actors = new List<ActorReference>();
 			var firstActorInfo = map.Rules.Actors[this.actors[0].Type.ToLowerInvariant()];
 			var cells = mask != null ? mask.ToList() : area.ToList();
 
 			foreach (var cell in EditorFillSelection.SelectCells(cells, fillDensityPercent))
-				PlaceActorAt(cell, actors);
-
-			foreach (var actorAtCell in actors)
-				editorActorPreviews.Add(editorLayer.Add(actorAtCell));
+			{
+				if (TryCreateActorAt(cell, out var actorAtCell))
+					editorActorPreviews.Add(editorLayer.Add(actorAtCell));
+			}
 
 			Text = FluentProvider.GetMessage(FilledActors, "name", firstActorInfo.Name, "count", editorActorPreviews.Count);
 		}
 
-		void PlaceActorAt(CPos cell, List<ActorReference> actors)
+		bool TryCreateActorAt(CPos cell, out ActorReference actorAtCell)
 		{
-			var actorAtCell = PickActor().Clone();
+			actorAtCell = PickActor().Clone();
 			var actorInfo = map.Rules.Actors[actorAtCell.Type.ToLowerInvariant()];
 			var occupySpaceInfo = actorInfo.TraitInfoOrDefault<IOccupySpaceInfo>();
 			var sharesCell = occupySpaceInfo != null && occupySpaceInfo.SharesCell;
@@ -311,15 +313,18 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var subcell = editorLayer.FreeSubCellAt(cell);
 				if (subcell == SubCell.Invalid)
-					return;
+					return false;
 
 				actorAtCell.Replace(new SubCellInit(subcell));
 			}
 
 			if (!Footprint(actorInfo, occupySpaceInfo, actorAtCell).All(map.Tiles.Contains))
-				return;
+				return false;
 
-			actors.Add(actorAtCell);
+			if (!editorLayer.CanPlaceFootprint(actorInfo, actorAtCell))
+				return false;
+
+			return true;
 		}
 
 		public void Undo()

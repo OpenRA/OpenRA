@@ -203,12 +203,12 @@ World:
 			Ore:
 				ResourceIndex: 1
 				TerrainType: Ore
-				AllowedTerrainTypes: Clear, Road
+				AllowedTerrainTypes: Clear, Road, Rough, Beach
 				MaxDensity: 12
 			Gems:
 				ResourceIndex: 2
 				TerrainType: Gems
-				AllowedTerrainTypes: Clear, Road
+				AllowedTerrainTypes: Clear, Road, Rough, Beach
 				MaxDensity: 3
 	ResourceClaimLayer:
 	WithResourceAnimation@GEMS:
@@ -308,12 +308,12 @@ EditorWorld:
 			Ore:
 				ResourceIndex: 1
 				TerrainType: Ore
-				AllowedTerrainTypes: Clear, Road
+				AllowedTerrainTypes: Clear, Road, Rough, Beach, Ore, Gems
 				MaxDensity: 12
 			Gems:
 				ResourceIndex: 2
 				TerrainType: Gems
-				AllowedTerrainTypes: Clear, Road
+				AllowedTerrainTypes: Clear, Road, Rough, Beach, Gems, Ore
 				MaxDensity: 3
 	LoadWidgetAtGameStart:
 	EditorActionManager:

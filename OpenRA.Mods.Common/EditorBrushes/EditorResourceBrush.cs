@@ -67,11 +67,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
-			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && resourceLayer.CanAddResource(ResourceType, cell))
+			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up)
 			{
-				action ??= new AddResourcesEditorAction(ResourceType, resourceLayer);
-				action.Add(new CellResource(cell, resourceLayer.GetResource(cell)));
-				resourceAdded = true;
+				var existing = resourceLayer.GetResource(cell);
+				if (!string.IsNullOrEmpty(existing.Type) && existing.Type != ResourceType)
+					return true;
+
+				if (resourceLayer.CanAddResource(ResourceType, cell))
+				{
+					action ??= new AddResourcesEditorAction(ResourceType, resourceLayer);
+					action.Add(new CellResource(cell, existing));
+					resourceAdded = true;
+				}
 			}
 			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
@@ -172,6 +179,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly string[] resourceTypes;
 		readonly EditorAssetMixMode mixMode;
 		readonly int fillDensityPercent;
+		readonly EditorFillMode fillMode;
 		readonly CellCoordsRegion area;
 		readonly IReadOnlySet<CPos> mask;
 		readonly List<FilledCellResource> filledCells = [];
@@ -182,15 +190,17 @@ namespace OpenRA.Mods.Common.Widgets
 			string resourceType,
 			EditorAssetMixMode mixMode,
 			int fillDensityPercent,
+			EditorFillMode fillMode,
 			CellCoordsRegion area,
 			IReadOnlySet<CPos> mask = null)
-			: this(resourceLayer, [resourceType], mixMode, fillDensityPercent, area, mask) { }
+			: this(resourceLayer, [resourceType], mixMode, fillDensityPercent, fillMode, area, mask) { }
 
 		public FillSelectionWithResourceEditorAction(
 			IResourceLayer resourceLayer,
 			IEnumerable<string> resourceTypes,
 			EditorAssetMixMode mixMode,
 			int fillDensityPercent,
+			EditorFillMode fillMode,
 			CellCoordsRegion area,
 			IReadOnlySet<CPos> mask = null)
 		{
@@ -198,6 +208,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.resourceTypes = resourceTypes.Distinct().ToArray();
 			this.mixMode = mixMode;
 			this.fillDensityPercent = fillDensityPercent.Clamp(10, 100);
+			this.fillMode = fillMode;
 			this.area = area;
 			this.mask = mask;
 		}
@@ -220,10 +231,17 @@ namespace OpenRA.Mods.Common.Widgets
 		void PlaceResourceAt(CPos cell)
 		{
 			var resourceType = PickResourceType();
+			var existing = resourceLayer.GetResource(cell);
+
+			if (fillMode == EditorFillMode.Overlap
+				&& !string.IsNullOrEmpty(existing.Type)
+				&& existing.Type != resourceType)
+				return;
+
 			if (!resourceLayer.CanAddResource(resourceType, cell))
 				return;
 
-			filledCells.Add(new FilledCellResource(cell, resourceLayer.GetResource(cell), resourceType));
+			filledCells.Add(new FilledCellResource(cell, existing, resourceType));
 			resourceLayer.AddResource(resourceType, cell, resourceLayer.GetMaxDensity(resourceType));
 		}
 

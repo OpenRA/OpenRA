@@ -183,6 +183,92 @@ Container@SAVE_MAP_PANEL:
 			Text: button-save-map-panel
 			Font: Bold
 
+Background@EDITOR_REPLACE_PANEL:
+	Logic: ReplaceSelectionLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 340
+	Height: 310
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 16
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+			Font: Bold
+		Label@REPLACE_LABEL:
+			X: 20
+			Y: 48
+			Width: PARENT_WIDTH - 40
+			Height: 20
+			Align: Left
+			Text: label-editor-replace-source-prompt
+		Checkbox@REPLACE_TILE_CHECKBOX:
+			X: 30
+			Y: 70
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Checkbox@REPLACE_RESOURCES_CHECKBOX:
+			X: 30
+			Y: 92
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Checkbox@REPLACE_ACTORS_CHECKBOX:
+			X: 30
+			Y: 114
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Label@WITH_LABEL:
+			X: 20
+			Y: 140
+			Width: PARENT_WIDTH - 40
+			Height: 20
+			Align: Left
+			Text: label-editor-replace-with-prompt
+		Checkbox@WITH_TILE_CHECKBOX:
+			X: 30
+			Y: 162
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Checkbox@WITH_RESOURCES_CHECKBOX:
+			X: 30
+			Y: 184
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Checkbox@WITH_ACTORS_CHECKBOX:
+			X: 30
+			Y: 206
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Checkbox@INCLUDE_EMPTY_CHECKBOX:
+			X: 30
+			Y: 228
+			Width: PARENT_WIDTH - 50
+			Height: 20
+		Label@ASSET_LABEL:
+			X: 20
+			Y: 250
+			Width: PARENT_WIDTH - 40
+			Height: 28
+			Align: Left
+			Font: Tiny
+		Button@CONFIRM_BUTTON:
+			X: 30
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 190
+			Y: PARENT_HEIGHT - 45
+			Width: 120
+			Height: 25
+			Text: button-cancel
+			Font: Bold
+			Key: escape
+
 ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
 	TopBottomSpacing: 5
 	ItemSpacing: 5
@@ -746,15 +832,15 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipText: button-fill-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-						Button@SELECTION_CLEAR_COPY_BUTTON:
+						Button@SELECTION_REPLACE_BUTTON:
 							X: 102
 							Y: PARENT_HEIGHT - 92
 							Width: 85
 							Height: 25
-							Text: button-clear-copy-area.label
+							Text: button-replace-area.label
 							Font: Bold
 							TooltipTemplate: BUTTON_TOOLTIP
-							TooltipText: button-clear-copy-area.tooltip
+							TooltipText: button-replace-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_CANCEL_BUTTON:
 							X: 197
@@ -775,9 +861,9 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-find-in-browser.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_ROTATE_LEFT_BUTTON:
-							X: 5
+							X: 7
 							Y: PARENT_HEIGHT - 62
-							Width: 130
+							Width: 85
 							Height: 25
 							Text: button-rotate-copy-left.label
 							Font: Bold
@@ -785,14 +871,24 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-rotate-copy-left.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_ROTATE_RIGHT_BUTTON:
-							X: 150
+							X: 102
 							Y: PARENT_HEIGHT - 62
-							Width: 130
+							Width: 85
 							Height: 25
 							Text: button-rotate-copy-right.label
 							Font: Bold
 							TooltipTemplate: BUTTON_TOOLTIP
 							TooltipText: button-rotate-copy-right.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_CLEAR_COPY_BUTTON:
+							X: 197
+							Y: PARENT_HEIGHT - 62
+							Width: 85
+							Height: 25
+							Text: button-clear-copy-area.label
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-clear-copy-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 				Background@ACTOR_EDIT_PANEL:
 					Width: PARENT_WIDTH
