@@ -199,6 +199,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SetupCopyPasteButton(widget.Get<ButtonWidget>("COPY_BUTTON"));
 			SetupCopyPasteButton(areaEditPanel.Get<ButtonWidget>("SELECTION_COPY_BUTTON"));
+			var cutAreaSelectionButton = areaEditPanel.GetOrNull<ButtonWidget>("SELECTION_CUT_BUTTON");
+			if (cutAreaSelectionButton != null)
+			{
+				cutAreaSelectionButton.OnClick = CutSelection;
+				cutAreaSelectionButton.IsDisabled = () => !editor.DefaultBrush.Selection.Area.HasValue;
+			}
+
 			SetupCopyPasteButton(areaEditPanel.Get<ButtonWidget>("SELECTION_PASTE_BUTTON"), paste: true);
 			SetupCopyPasteButton(widget.Get<ButtonWidget>("PASTE_BUTTON"), paste: true);
 
@@ -403,6 +410,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (closeAreaPanelButton != null)
 				closeAreaPanelButton.OnClick = () => editor.DefaultBrush.HideAreaPanel();
 
+			var helpButton = areaEditPanel.GetOrNull<ButtonWidget>("SELECTION_INFO_BUTTON");
+			if (helpButton != null)
+				helpButton.OnClick = () => Game.OpenWindow(world, "EDITOR_HELP_PANEL");
+
 			var findInBrowserButton = areaEditPanel.GetOrNull<ButtonWidget>("SELECTION_FIND_BUTTON");
 			if (findInBrowserButton != null)
 			{
@@ -443,6 +454,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var region = editor.DefaultBrush.Selection.Area.Value;
 			editor.SetClipboard(CopySelectionContents(), region);
+			UpdateAreaPreview();
+		}
+
+		void CutSelection()
+		{
+			if (!editor.DefaultBrush.Selection.Area.HasValue)
+				return;
+
+			CopySelection();
+			editor.DefaultBrush.DeleteSelection(selectionFilters);
+			InvalidateAreaPreview();
 			UpdateAreaPreview();
 		}
 
@@ -965,7 +987,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			currentPreviewLayout = layout;
 			UpdatePreviewGrid(layout);
 
-			if (editor.CurrentBrush is EditorTileBrush tileBrush)
+			if (TryGetPlacementTemplate(out _, out var placementTemplate))
+				LayoutSingleTilePreview(placementTemplate, layout);
+			else if (editor.CurrentBrush is EditorTileBrush tileBrush)
 				LayoutTilePreviews(tileBrush, layout);
 			else if (editor.CurrentBrush is EditorActorBrush actorBrush)
 				LayoutActorPreviews(actorBrush, layout);
@@ -1170,10 +1194,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return false;
 		}
 
+		bool TryGetPlacementTemplate(out ITemplatedTerrainInfo terrainInfo, out TerrainTemplateInfo template)
+		{
+			terrainInfo = null;
+			template = null;
+
+			if (map.Rules.TerrainInfo is not ITemplatedTerrainInfo templateInfo)
+				return false;
+
+			var selection = editor.DefaultBrush.Selection;
+			if (!selection.HasTemplatePlacementContext ||
+				!selection.TemplatePlacementType.HasValue ||
+				!templateInfo.Templates.TryGetValue(selection.TemplatePlacementType.Value, out template))
+				return false;
+
+			terrainInfo = templateInfo;
+			return true;
+		}
+
 		bool TryGetSelectedTemplate(out ITemplatedTerrainInfo terrainInfo, out TerrainTemplateInfo selectedTemplate)
 		{
 			terrainInfo = null;
 			selectedTemplate = null;
+
+			if (TryGetPlacementTemplate(out terrainInfo, out selectedTemplate))
+				return true;
 
 			if (map.Rules.TerrainInfo is not ITemplatedTerrainInfo templateInfo)
 				return false;
@@ -1185,13 +1230,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			}
 
-			var selection = editor.DefaultBrush.Selection;
-			if (!selection.TemplatePlacementType.HasValue ||
-				!templateInfo.Templates.TryGetValue(selection.TemplatePlacementType.Value, out selectedTemplate))
-				return false;
-
-			terrainInfo = templateInfo;
-			return true;
+			return false;
 		}
 
 		void SetupOppositesPreview()
@@ -1276,10 +1315,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (template == null)
 				return;
 
+			// Map placement context overrides the tile brush in the top preview; clear it so the
+			// clicked opposite becomes the new main selected asset.
+			var selection = editor.DefaultBrush.Selection;
+			selection.TemplatePlacementType = null;
+			selection.TemplatePlacementAnchor = null;
+
 			similarPreviewIndex = 0;
 			editor.SetBrush(new EditorTileBrush(editor, template.Id, worldRenderer));
 			UpdateSelectedPreview();
 			UpdateAreaPreview();
+			UpdateSelectionDetailPanel();
+			UpdatePanelTitle();
+			editor.RequestLocateAsset(EditorLocateAssetRequest.ForTile(template.Id));
 		}
 
 		void HideOppositesSelectedBorder()
@@ -1481,6 +1529,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		IReadOnlyList<CVec> GetSelectedAssetCellSizes()
 		{
+			if (TryGetPlacementTemplate(out _, out var mapTemplate))
+				return [TileTemplateCellSize(mapTemplate)];
+
 			if (editor.CurrentBrush is EditorTileBrush tileBrush)
 			{
 				var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
@@ -1494,9 +1545,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (editor.CurrentBrush is EditorResourceBrush)
 				return [new CVec(1, 1)];
-
-			if (TryGetSelectedTemplate(out _, out var mapTemplate))
-				return [TileTemplateCellSize(mapTemplate)];
 
 			if (ShowSelectedMapActorPreview())
 				return [ActorCellSize(editor.DefaultBrush.Selection.Actor.Info)];
@@ -2010,8 +2058,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var selection = editor.DefaultBrush.Selection;
 
-			// Area selection and multi-asset brushes should not narrow browser categories.
-			if (selection.Area.HasValue)
+			// Map tile / area selection must not narrow asset-browser category filters.
+			if (selection.Area.HasValue || selection.HasTemplatePlacementContext)
 				return false;
 
 			if (editor.CurrentBrush is EditorTileBrush tileBrush && tileBrush.Templates.Length != 1)
@@ -2049,6 +2097,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			request = default;
 			var selection = editor.DefaultBrush.Selection;
 
+			if (selection.HasTemplatePlacementContext && selection.TemplatePlacementType is ushort placementTemplateId)
+			{
+				request = EditorLocateAssetRequest.ForTile(placementTemplateId);
+				return true;
+			}
+
 			if (editor.CurrentBrush is EditorTileBrush tileBrush && tileBrush.Templates.Length == 1)
 			{
 				request = EditorLocateAssetRequest.ForTile(tileBrush.Templates[0]);
@@ -2058,12 +2112,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (editor.CurrentBrush is EditorActorBrush actorBrush && actorBrush.Actors.Length == 1)
 			{
 				request = EditorLocateAssetRequest.ForActor(actorBrush.Actors[0]);
-				return true;
-			}
-
-			if (selection.TemplatePlacementType is ushort templateId)
-			{
-				request = EditorLocateAssetRequest.ForTile(templateId);
 				return true;
 			}
 

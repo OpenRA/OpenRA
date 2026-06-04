@@ -20,6 +20,13 @@ EditorCopy: C Ctrl
 	Platform:
 		OSX: C Meta
 
+EditorCut: X Ctrl
+	Description: hotkey-description-editorcut
+	Types: Editor
+	Contexts: editor
+	Platform:
+		OSX: X Meta
+
 EditorQuickSave: S Ctrl
 	Description: hotkey-description-editorquicksave
 	Types: Editor

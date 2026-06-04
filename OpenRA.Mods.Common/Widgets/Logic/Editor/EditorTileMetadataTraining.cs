@@ -72,6 +72,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			EditorMetadataTrainingKind.Similar => "Similar",
 			EditorMetadataTrainingKind.OrientationIsland => "Orientation Island",
 			EditorMetadataTrainingKind.OrientationRing => "Orientation Ring",
+			EditorMetadataTrainingKind.RelatedCornersIsland => "Corner Island",
+			EditorMetadataTrainingKind.RelatedCornersRing => "Corner Ring",
 			_ => ""
 		};
 
@@ -82,6 +84,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			!ShowOrientationTraining &&
 			(Mode == EditorMetadataTrainingKind.OppositeIsland ||
 				Mode == EditorMetadataTrainingKind.OppositeRing ||
+				Mode == EditorMetadataTrainingKind.RelatedCornersIsland ||
+				Mode == EditorMetadataTrainingKind.RelatedCornersRing ||
 				Mode == EditorMetadataTrainingKind.Similar) &&
 			(PrimaryTemplateCount > 0 || PrimaryActorCount > 0);
 
@@ -90,6 +94,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			(Mode == EditorMetadataTrainingKind.OrientationIsland || Mode == EditorMetadataTrainingKind.OrientationRing);
 
 		public bool ShowOrientationSave => ShowOrientationTraining && PrimaryTemplateCount > 0;
+
+		public bool ShowRelatedCornersTraining =>
+			IsActive &&
+			(Mode == EditorMetadataTrainingKind.RelatedCornersIsland || Mode == EditorMetadataTrainingKind.RelatedCornersRing);
 
 		public int? PendingOrientationSlot { get; private set; }
 
@@ -100,6 +108,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Mode = mode;
 			Phase = EditorMetadataTrainingPhase.PickPrimary;
 			ClearSelection();
+			NotifyChanged();
+		}
+
+		public void ApplyFocusedTemplateAsPrimary(ushort templateId)
+		{
+			if (!IsActive || !templateRowsById.TryGetValue(templateId, out var row))
+				return;
+
+			primaryTemplateIds.Clear();
+			primaryTemplateKeys.Clear();
+			primaryTemplateIds.Add(templateId);
+			primaryTemplateKeys.Add(row.Key);
+			SyncLegacyPrimaryTemplate();
+			UpdatePhaseAfterPrimaryChange();
+			LoadPendingTrainingValuesFromPrimary();
 			NotifyChanged();
 		}
 
@@ -124,6 +147,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (Mode != EditorMetadataTrainingKind.Similar &&
 				Mode != EditorMetadataTrainingKind.OrientationIsland &&
 				Mode != EditorMetadataTrainingKind.OrientationRing &&
+				Mode != EditorMetadataTrainingKind.RelatedCornersIsland &&
+				Mode != EditorMetadataTrainingKind.RelatedCornersRing &&
 				Mode != EditorMetadataTrainingKind.OppositeIsland &&
 				Mode != EditorMetadataTrainingKind.OppositeRing)
 				return false;
@@ -141,8 +166,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			SyncLegacyPrimaryTemplate();
 			UpdatePhaseAfterPrimaryChange();
+			LoadPendingTrainingValuesFromPrimary();
 			NotifyChanged();
 			return true;
+		}
+
+		void LoadPendingTrainingValuesFromPrimary()
+		{
+			if (ShowOrientationTraining)
+				LoadPendingOrientationFromPrimary();
+			else if (ShowRelatedCornersTraining)
+				LoadPendingRelatedCornersFromPrimary();
+		}
+
+		void LoadPendingOrientationFromPrimary()
+		{
+			PendingOrientationSlot = null;
+			if (PrimaryTemplateId == null || !templateRowsById.TryGetValue(PrimaryTemplateId.Value, out var row))
+				return;
+
+			var field = Mode == EditorMetadataTrainingKind.OrientationRing ? "Orientation_ring" : "Orientation_island";
+			var raw = metadataFile.ReadField(row.Data, field);
+			PendingOrientationSlot = EditorTileMetadata.TryParseOrientationSlot(raw);
+		}
+
+		void LoadPendingRelatedCornersFromPrimary()
+		{
+			secondaryRefs.Clear();
+			if (PrimaryTemplateId == null || !templateRowsById.TryGetValue(PrimaryTemplateId.Value, out var row))
+				return;
+
+			var field = Mode == EditorMetadataTrainingKind.RelatedCornersRing
+				? "Related_corners_ring"
+				: "Related_corners_island";
+			var raw = metadataFile.ReadField(row.Data, field);
+			if (string.IsNullOrWhiteSpace(raw))
+				return;
+
+			foreach (var part in raw.Split(','))
+			{
+				var reference = part.Trim();
+				if (reference.Length > 0)
+					secondaryRefs.Add(reference);
+			}
 		}
 
 		public bool TogglePrimaryActor(string actorName)
@@ -172,6 +238,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Phase = EditorMetadataTrainingPhase.PickPrimary;
 			if (ShowOrientationTraining && PrimaryTemplateCount == 0)
 				PendingOrientationSlot = null;
+
+			if (ShowRelatedCornersTraining && PrimaryTemplateCount == 0)
+				secondaryRefs.Clear();
 		}
 
 		public bool ToggleSecondaryTemplate(ushort templateId)
@@ -234,6 +303,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					break;
 				case EditorMetadataTrainingKind.Similar when PrimaryActorCount > 0:
 					metadataFile.SaveSimilarActorMany(primaryActorKeys, secondaryRefs);
+					break;
+				case EditorMetadataTrainingKind.RelatedCornersIsland when PrimaryTemplateCount > 0:
+					metadataFile.SaveRelatedCornersIslandMany(primaryTemplateKeys, secondaryRefs, terrainInfo);
+					break;
+				case EditorMetadataTrainingKind.RelatedCornersRing when PrimaryTemplateCount > 0:
+					metadataFile.SaveRelatedCornersRingMany(primaryTemplateKeys, secondaryRefs, terrainInfo);
 					break;
 			}
 

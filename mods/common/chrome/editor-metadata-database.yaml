@@ -60,6 +60,20 @@ Background@EDITOR_TILE_METADATA_DATABASE:
 			Height: 22
 			Font: TinyBold
 			Text: button-editor-train-orientation-ring
+		Button@DATABASE_TRAIN_RELATED_CORNERS_ISLAND_BUTTON:
+			X: 935
+			Y: 36
+			Width: 115
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-related-corners-island
+		Button@DATABASE_TRAIN_RELATED_CORNERS_RING_BUTTON:
+			X: 1055
+			Y: 36
+			Width: 115
+			Height: 22
+			Font: TinyBold
+			Text: button-editor-train-related-corners-ring
 		Background@DATABASE_TRAINING_STATUS:
 			X: 10
 			Y: 62

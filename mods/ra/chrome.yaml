@@ -673,9 +673,9 @@ editor:
 		redo: 118, 187, 16, 16
 
 worldmap-icon:
-	Image: worldmap-icon.png
+	Image: worldmap-icon2.png
 	Regions:
-		icon: 0, 0, 32, 32
+		icon2: 0, 0, 32, 32
 
 shockwave-logo:
 	Image: SHOCKWAVELOGO-menu.png

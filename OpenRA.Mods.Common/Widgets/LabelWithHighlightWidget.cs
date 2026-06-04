@@ -20,51 +20,43 @@ namespace OpenRA.Mods.Common.Widgets
 	public class LabelWithHighlightWidget : LabelWidget
 	{
 		public Color HighlightColor = ChromeMetrics.Get<Color>("TextHighlightColor");
-		readonly CachedTransform<string, (string Text, bool Highlighted)[]> textComponents;
 
 		[ObjectCreator.UseCtor]
 		public LabelWithHighlightWidget(ModData modData)
-			: base(modData)
-		{
-			textComponents = new CachedTransform<string, (string, bool)[]>(MakeComponents);
-		}
+			: base(modData) { }
 
 		protected LabelWithHighlightWidget(LabelWithHighlightWidget other)
 			: base(other)
 		{
 			HighlightColor = other.HighlightColor;
-			textComponents = new CachedTransform<string, (string, bool)[]>(MakeComponents);
 		}
 
-		(string, bool)[] MakeComponents(string text)
+		static (string Text, bool Highlighted)[] ParseLineComponents(string line)
 		{
 			var components = new List<(string, bool)>();
-			foreach (var l in text.Split("\\n", StringSplitOptions.None))
+
+			while (line.Length > 0)
 			{
-				var line = l;
-
-				while (line.Length > 0)
+				var highlightStart = line.IndexOf('<');
+				if (highlightStart == -1)
 				{
-					var highlightStart = line.IndexOf('<');
-					var highlightEnd = line.IndexOf('>', 0);
+					components.Add((line, false));
+					break;
+				}
 
-					if (highlightStart > 0 && highlightEnd > highlightStart)
-					{
-						// Normal line segment before highlight
-						var lineNormal = line[..highlightStart];
-						components.Add((lineNormal, false));
+				var highlightEnd = line.IndexOf('>', highlightStart);
+				if (highlightEnd > highlightStart)
+				{
+					if (highlightStart > 0)
+						components.Add((line[..highlightStart], false));
 
-						// Highlight line segment
-						var lineHighlight = line[(highlightStart + 1)..highlightEnd];
-						components.Add((lineHighlight, true));
-						line = line[(highlightEnd + 1)..];
-					}
-					else
-					{
-						// Final normal line segment
-						components.Add((line, false));
-						break;
-					}
+					components.Add((line[(highlightStart + 1)..highlightEnd], true));
+					line = line[(highlightEnd + 1)..];
+				}
+				else
+				{
+					components.Add((line[..(highlightStart + 1)], false));
+					line = line[(highlightStart + 1)..];
 				}
 			}
 
@@ -73,11 +65,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 		protected override void DrawInner(string text, SpriteFont font, Color color, int2 position)
 		{
-			var advance = 0;
-			foreach (var c in textComponents.Update(text))
+			var normalized = text.Replace("\\n", "\n", StringComparison.Ordinal);
+			var lineHeight = font.Measure("A").Y;
+			var y = 0;
+
+			foreach (var line in normalized.Split('\n', StringSplitOptions.None))
 			{
-				base.DrawInner(c.Text, font, c.Highlighted ? HighlightColor : color, position + new int2(advance, 0));
-				advance += font.Measure(c.Text).X;
+				var x = 0;
+				foreach (var c in ParseLineComponents(line))
+				{
+					base.DrawInner(c.Text, font, c.Highlighted ? HighlightColor : color, position + new int2(x, y));
+					x += font.Measure(c.Text).X;
+				}
+
+				y += lineHeight;
 			}
 		}
 

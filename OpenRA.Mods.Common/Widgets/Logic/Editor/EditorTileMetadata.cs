@@ -71,8 +71,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						oppositesIsland = ReadList(data, "Opposites");
 					var oppositesRing = ReadList(data, "Opposites_ring");
 					var similar = ReadList(data, "Similar");
+					var relatedCornersIsland = ReadList(data, "Related_corners_island");
+					if (relatedCornersIsland.Length == 0)
+						relatedCornersIsland = ReadList(data, "Related_corners");
+					var relatedCornersRing = ReadList(data, "Related_corners_ring");
 
-					entries[new TemplateKey(tileset, id)] = new Entry(groups, slotIsland, slotRing, oppositesIsland, oppositesRing, similar);
+					entries[new TemplateKey(tileset, id)] = new Entry(
+						groups, slotIsland, slotRing, oppositesIsland, oppositesRing, similar, relatedCornersIsland, relatedCornersRing);
 				}
 			}
 
@@ -113,12 +118,79 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			result[OppositesGridIndex(selectedSlot.Value)] = selectedTemplate;
 			var selectedEntry = EntryFor(terrainInfo, selectedTemplate);
+			var unassignedRelatedCorners = new List<TerrainTemplateInfo>();
+			var unassignedExplicitOpposites = new List<TerrainTemplateInfo>();
+
+			// Related corners are placed by 3x3 topology, not per-file orientation training.
+			// Island: land at center, water outward — a corner cell is the unique junction of one
+			// horizontal and one vertical edge. Ring: water at center, land outward — same grid, inverted art.
+			var cornerSlots = TopologicalCornerSlotsForRelated(mode, selectedSlot.Value);
+			var usedCornerSlots = new HashSet<int>();
+			var cornerTemplates = MatchingTemplates(terrainInfo, selectedEntry.RelatedCornerRefs(mode))
+				.OrderBy(t => TemplateImageSortKey(t), StringComparer.OrdinalIgnoreCase)
+				.ToArray();
+			foreach (var template in cornerTemplates)
+			{
+				if (template.Id == selectedTemplate.Id)
+					continue;
+
+				var slot = InferRelatedCornerSlot(terrainInfo, template, selectedSlot.Value, cornerSlots, usedCornerSlots, mode);
+				if (slot != null && TryAssignOpposite(result, mode, slot.Value, template))
+				{
+					usedCornerSlots.Add(slot.Value);
+					continue;
+				}
+
+				unassignedRelatedCorners.Add(template);
+			}
+
+			var cornerSlotIndex = 0;
+			foreach (var template in unassignedRelatedCorners.ToArray())
+			{
+				while (cornerSlotIndex < cornerSlots.Length && usedCornerSlots.Contains(cornerSlots[cornerSlotIndex]))
+					cornerSlotIndex++;
+
+				if (cornerSlotIndex >= cornerSlots.Length)
+					break;
+
+				if (TryAssignOpposite(result, mode, cornerSlots[cornerSlotIndex], template))
+				{
+					usedCornerSlots.Add(cornerSlots[cornerSlotIndex]);
+					unassignedRelatedCorners.Remove(template);
+					cornerSlotIndex++;
+				}
+			}
 
 			foreach (var template in MatchingTemplates(terrainInfo, selectedEntry.OppositeRefs(mode)))
 			{
+				if (template.Id == selectedTemplate.Id)
+					continue;
+
 				var slot = SlotFor(terrainInfo, template, mode);
-				if (slot != null)
-					TryAssignOpposite(result, mode, slot.Value, template);
+				if (slot != null && TryAssignOpposite(result, mode, slot.Value, template))
+					continue;
+
+				unassignedExplicitOpposites.Add(template);
+			}
+
+			foreach (var fallbackSlot in FallbackOppositeSlots(mode, selectedSlot.Value))
+			{
+				if (unassignedExplicitOpposites.Count == 0)
+					break;
+
+				var template = unassignedExplicitOpposites[0];
+				if (TryAssignOpposite(result, mode, fallbackSlot, template))
+					unassignedExplicitOpposites.RemoveAt(0);
+			}
+
+			foreach (var fallbackSlot in FallbackOppositeSlots(mode, selectedSlot.Value))
+			{
+				if (unassignedRelatedCorners.Count == 0)
+					break;
+
+				var template = unassignedRelatedCorners[0];
+				if (TryAssignOpposite(result, mode, fallbackSlot, template))
+					unassignedRelatedCorners.RemoveAt(0);
 			}
 
 			foreach (var template in terrainInfo.TemplatesInDefinitionOrder)
@@ -142,6 +214,137 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static int OppositesGridIndex(int slot) =>
 			slot is HorizontalSlot or VerticalSlot ? RingHiddenSlot : slot;
+
+		/// <summary>
+		/// Unique 3x3 slots for trained related-corner tiles given the primary tile's slot.
+		/// A corner piece links exactly one vertical and one horizontal neighbor; island vs ring
+		/// only changes which art belongs in each cell, not which cell index is the junction.
+		/// </summary>
+		public static int[] TopologicalCornerSlotsForRelated(EditorOppositesMode mode, int primarySlot)
+		{
+			return primarySlot switch
+			{
+				// Edge primaries: the two outer corner cells this edge touches.
+				1 => [0, 2],
+				7 => [6, 8],
+				3 => [0, 6],
+				5 => [2, 8],
+				// Corner primaries: the two edge cells this corner links.
+				0 => [1, 3],
+				2 => [1, 5],
+				6 => [3, 7],
+				8 => [5, 7],
+				// Ring center split; island center (4) uses the four outer corners.
+				HorizontalSlot => [0, 2],
+				VerticalSlot => [6, 8],
+				RingHiddenSlot or 4 => [0, 2, 6, 8],
+				_ => []
+			};
+		}
+
+		int? InferRelatedCornerSlot(
+			ITemplatedTerrainInfo terrainInfo,
+			TerrainTemplateInfo template,
+			int primarySlot,
+			int[] candidateSlots,
+			HashSet<int> usedSlots,
+			EditorOppositesMode mode)
+		{
+			if (candidateSlots.Length == 0)
+				return null;
+
+			var entry = EntryFor(terrainInfo, template);
+			var trainedSlot = entry.Slot(mode);
+			if (trainedSlot != null && !usedSlots.Contains(trainedSlot.Value) &&
+				candidateSlots.Contains(trainedSlot.Value))
+				return trainedSlot;
+
+			if (candidateSlots.Length == 1)
+				return usedSlots.Contains(candidateSlots[0]) ? null : candidateSlots[0];
+
+			var inferred = InferCornerSlotFromWater(terrainInfo, template, candidateSlots, primarySlot);
+			return inferred != null && !usedSlots.Contains(inferred.Value) ? inferred : null;
+		}
+
+		/// <summary>
+		/// Picks top-left vs top-right (etc.) from tile art: water/river on the half facing the 3x3 center.
+		/// </summary>
+		public static int? InferCornerSlotFromWater(
+			ITemplatedTerrainInfo terrainInfo,
+			TerrainTemplateInfo template,
+			int[] candidateSlots,
+			int primarySlot)
+		{
+			if (candidateSlots.Length != 2)
+				return null;
+
+			bool? pickFirst = primarySlot switch
+			{
+				1 or HorizontalSlot => CompareWaterFacingCenter(terrainInfo, template, towardEast: true, towardSouth: true) >=
+					CompareWaterFacingCenter(terrainInfo, template, towardEast: false, towardSouth: true),
+				7 => CompareWaterFacingCenter(terrainInfo, template, towardEast: true, towardSouth: false) >=
+					CompareWaterFacingCenter(terrainInfo, template, towardEast: false, towardSouth: false),
+				3 => CompareWaterFacingCenter(terrainInfo, template, towardEast: true, towardSouth: true) >=
+					CompareWaterFacingCenter(terrainInfo, template, towardEast: true, towardSouth: false),
+				5 => CompareWaterFacingCenter(terrainInfo, template, towardEast: false, towardSouth: true) >
+					CompareWaterFacingCenter(terrainInfo, template, towardEast: false, towardSouth: false),
+				_ => null
+			};
+
+			if (!pickFirst.HasValue)
+				return null;
+
+			return pickFirst.Value ? candidateSlots[0] : candidateSlots[1];
+		}
+
+		static int CompareWaterFacingCenter(
+			ITemplatedTerrainInfo terrainInfo,
+			TerrainTemplateInfo template,
+			bool towardEast,
+			bool towardSouth)
+		{
+			var count = 0;
+			for (var y = 0; y < template.Size.Y; y++)
+			{
+				for (var x = 0; x < template.Size.X; x++)
+				{
+					if (towardEast && x < (template.Size.X + 1) / 2)
+						continue;
+					if (!towardEast && x >= template.Size.X / 2)
+						continue;
+					if (towardSouth && y < (template.Size.Y + 1) / 2)
+						continue;
+					if (!towardSouth && y >= template.Size.Y / 2)
+						continue;
+
+					if (TileKind(terrainInfo, template, x, y) == TerrainKind.Water)
+						count++;
+				}
+			}
+
+			return count;
+		}
+
+		static IEnumerable<int> FallbackOppositeSlots(EditorOppositesMode mode, int selectedSlot)
+		{
+			if (mode != EditorOppositesMode.Island)
+				yield break;
+
+			foreach (var slot in selectedSlot switch
+			{
+				7 => new[] { 1, 0, 2, 3, 5, 4, 6, 8 },
+				1 => new[] { 7, 0, 2, 3, 5, 6, 8, 4 },
+				0 => new[] { 8, 1, 2, 7, 5, 3, 4, 6 },
+				2 => new[] { 6, 1, 0, 7, 3, 5, 4, 8 },
+				6 => new[] { 2, 0, 1, 7, 5, 3, 4, 8 },
+				8 => new[] { 0, 1, 2, 7, 3, 5, 4, 6 },
+				3 => new[] { 5, 1, 7, 0, 2, 6, 8, 4 },
+				5 => new[] { 3, 1, 7, 0, 2, 6, 8, 4 },
+				4 => new[] { 1, 3, 5, 7, 0, 2, 6, 8 },
+				_ => new[] { 1, 3, 5, 7, 0, 2, 6, 8, 4 }
+			})
+				yield return slot;
+		}
 
 		static bool TryAssignOpposite(TerrainTemplateInfo[] result, EditorOppositesMode mode, int slot, TerrainTemplateInfo template)
 		{
@@ -302,6 +505,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return new ActorEntry(editorData?.Categories.FirstOrDefault(), []);
 		}
 
+		static string TemplateImageSortKey(TerrainTemplateInfo template)
+		{
+			if (template is DefaultTerrainTemplateInfo defaultTemplate && defaultTemplate.Images.Length > 0)
+				return defaultTemplate.Images[0];
+
+			return template.Id.ToString(CultureInfo.InvariantCulture);
+		}
+
 		static bool TemplateMatchesReference(TerrainTemplateInfo template, string reference)
 		{
 			if (ushort.TryParse(reference, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id) && template.Id == id)
@@ -389,13 +600,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bottomWater = EdgeKind(terrainInfo, template, Edge.Bottom) == TerrainKind.Water;
 			var leftWater = EdgeKind(terrainInfo, template, Edge.Left) == TerrainKind.Water;
 
-			if (topWater && leftWater)
-				return 0;
+			// Corner chirality from outer water edges (toward open water, away from 3x3 center).
 			if (topWater && rightWater)
+				return 0;
+			if (topWater && leftWater)
 				return 2;
-			if (bottomWater && leftWater)
-				return 6;
 			if (bottomWater && rightWater)
+				return 6;
+			if (bottomWater && leftWater)
 				return 8;
 			if (topWater)
 				return 1;
@@ -469,6 +681,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public readonly string[] OppositeRefsIsland;
 			public readonly string[] OppositeRefsRing;
 			public readonly string[] SimilarRefs;
+			public readonly string[] RelatedCornerRefsIsland;
+			public readonly string[] RelatedCornerRefsRing;
 
 			public Entry(
 				HashSet<string> groups,
@@ -476,7 +690,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				int? slotRing,
 				string[] oppositeRefsIsland = null,
 				string[] oppositeRefsRing = null,
-				string[] similarRefs = null)
+				string[] similarRefs = null,
+				string[] relatedCornerRefsIsland = null,
+				string[] relatedCornerRefsRing = null)
 			{
 				Groups = groups;
 				SlotIsland = slotIsland;
@@ -484,6 +700,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				OppositeRefsIsland = oppositeRefsIsland ?? [];
 				OppositeRefsRing = oppositeRefsRing ?? [];
 				SimilarRefs = similarRefs ?? [];
+				RelatedCornerRefsIsland = relatedCornerRefsIsland ?? [];
+				RelatedCornerRefsRing = relatedCornerRefsRing ?? [];
 			}
 
 			public int? Slot(EditorOppositesMode mode) => mode == EditorOppositesMode.Ring ? SlotRing : SlotIsland;
@@ -492,6 +710,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				EditorOppositesMode.Ring => OppositeRefsRing,
 				_ => OppositeRefsIsland,
+			};
+
+			public string[] RelatedCornerRefs(EditorOppositesMode mode) => mode switch
+			{
+				EditorOppositesMode.Ring => RelatedCornerRefsRing,
+				_ => RelatedCornerRefsIsland,
 			};
 		}
 

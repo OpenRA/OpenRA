@@ -19,7 +19,17 @@ using OpenRA.Mods.Common.Terrain;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public enum EditorMetadataTrainingKind { None, OppositeIsland, OppositeRing, Similar, OrientationIsland, OrientationRing }
+	public enum EditorMetadataTrainingKind
+	{
+		None,
+		OppositeIsland,
+		OppositeRing,
+		Similar,
+		OrientationIsland,
+		OrientationRing,
+		RelatedCornersIsland,
+		RelatedCornersRing
+	}
 
 	public enum EditorMetadataTrainingPhase { PickPrimary, PickSecondary, PickOrientationSlot }
 
@@ -112,6 +122,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					HasTrainedOrientationSlot(data, "Orientation_ring"),
 				"OppositesSlot" => status.Contains("orientation_island") || status.Contains("orientation") ||
 					HasTrainedOrientationSlot(data, "OppositesSlot", "Orientation_island", "Orientation"),
+				"Related_corners_island" => status.Contains("corners_island") || status.Contains("corners") ||
+					HasList(data, "Related_corners_island", "Related_corners"),
+				"Related_corners_ring" => status.Contains("corners_ring") || HasList(data, "Related_corners_ring"),
 				_ => false
 			};
 		}
@@ -341,6 +354,120 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (changed)
 				WriteToDisk();
+		}
+
+		public void SaveRelatedCornersIslandMany(
+			IEnumerable<string> templateKeys,
+			IEnumerable<string> cornerRefs,
+			ITemplatedTerrainInfo terrainInfo = null)
+		{
+			SaveRelatedCornersMany(templateKeys, cornerRefs, "Related_corners_island", "corners_island", island: true, terrainInfo);
+		}
+
+		public void SaveRelatedCornersRingMany(
+			IEnumerable<string> templateKeys,
+			IEnumerable<string> cornerRefs,
+			ITemplatedTerrainInfo terrainInfo = null)
+		{
+			SaveRelatedCornersMany(templateKeys, cornerRefs, "Related_corners_ring", "corners_ring", island: false, terrainInfo);
+		}
+
+		void SaveRelatedCornersMany(
+			IEnumerable<string> templateKeys,
+			IEnumerable<string> cornerRefs,
+			string field,
+			string trainingFlag,
+			bool island,
+			ITemplatedTerrainInfo terrainInfo)
+		{
+			var refs = cornerRefs.Where(r => !string.IsNullOrWhiteSpace(r)).ToArray();
+			var value = JoinRefs(refs);
+			var mode = island ? EditorOppositesMode.Island : EditorOppositesMode.Ring;
+			var orientationField = island ? "Orientation_island" : "Orientation_ring";
+			var orientationFlag = island ? "orientation_island" : "orientation_ring";
+			var changed = false;
+
+			foreach (var templateKey in templateKeys)
+			{
+				if (!TryUpdateEntry("Templates", templateKey, field, value))
+					continue;
+
+				AddTrainingFlag("Templates", templateKey, trainingFlag);
+				ApplyTopologicalCornerOrientations(templateKey, refs, mode, orientationField, orientationFlag, island, terrainInfo);
+				changed = true;
+			}
+
+			if (changed)
+				WriteToDisk();
+		}
+
+		void ApplyTopologicalCornerOrientations(
+			string primaryTemplateKey,
+			string[] cornerRefs,
+			EditorOppositesMode mode,
+			string orientationField,
+			string orientationFlag,
+			bool island,
+			ITemplatedTerrainInfo terrainInfo)
+		{
+			var primarySlot = EditorTileMetadata.TryParseOrientationSlot(ReadTemplateField(primaryTemplateKey, orientationField))
+				?? EditorTileMetadata.TryParseOrientationSlot(ReadTemplateField(primaryTemplateKey, "Orientation"))
+				?? EditorTileMetadata.TryParseOrientationSlot(ReadTemplateField(primaryTemplateKey, "OppositesSlot"));
+			if (!primarySlot.HasValue)
+				return;
+
+			var cornerSlots = EditorTileMetadata.TopologicalCornerSlotsForRelated(mode, primarySlot.Value);
+			var usedSlots = new HashSet<int>();
+			foreach (var cornerRef in cornerRefs)
+			{
+				if (!TryFindTemplateKeyByReference(cornerRef, out var cornerKey))
+					continue;
+
+				var slot = ResolveCornerSlotForSave(
+					cornerKey, cornerSlots, primarySlot.Value, usedSlots, mode, orientationField, terrainInfo);
+				if (slot == null)
+					continue;
+
+				usedSlots.Add(slot.Value);
+				var slotName = EditorTileMetadata.SlotIndexToName(slot.Value);
+				if (!TryUpdateEntry("Templates", cornerKey, orientationField, slotName))
+					continue;
+
+				AddTrainingFlag("Templates", cornerKey, orientationFlag);
+				if (island)
+					TryUpdateEntry("Templates", cornerKey, "OppositesSlot", slotName);
+			}
+		}
+
+		int? ResolveCornerSlotForSave(
+			string cornerKey,
+			int[] cornerSlots,
+			int primarySlot,
+			HashSet<int> usedSlots,
+			EditorOppositesMode mode,
+			string orientationField,
+			ITemplatedTerrainInfo terrainInfo)
+		{
+			var trained = EditorTileMetadata.TryParseOrientationSlot(ReadTemplateField(cornerKey, orientationField));
+			if (trained != null && cornerSlots.Contains(trained.Value) && !usedSlots.Contains(trained.Value))
+				return trained;
+
+			var cornerData = GetTemplateData(cornerKey)?.ToDictionary();
+			if (terrainInfo != null && cornerData != null && TryGetTemplateId(cornerKey, cornerData, out var templateId) &&
+				terrainInfo.Templates.TryGetValue(templateId, out var template))
+			{
+				var inferred = EditorTileMetadata.InferCornerSlotFromWater(terrainInfo, template, cornerSlots, primarySlot);
+				if (inferred != null && !usedSlots.Contains(inferred.Value))
+					return inferred;
+			}
+
+			foreach (var candidate in cornerSlots)
+			{
+				if (!usedSlots.Contains(candidate))
+					return candidate;
+			}
+
+			return null;
 		}
 
 		public static string TemplateReference(ITemplatedTerrainInfo terrainInfo, TerrainTemplateInfo template, MetadataTemplateRow row)

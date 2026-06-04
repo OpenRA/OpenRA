@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Primitives;
@@ -25,7 +27,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		static readonly Color SelectionColor = Color.FromArgb(0xFF4CFF00);
 
+		public bool RingCenterSlots = true;
+		public bool MultiSelectMode;
 		public Func<int?> GetSelectedSlot = () => null;
+		public Func<IReadOnlyCollection<int>> GetSelectedSlots = () => [];
 		public Action<int> OnSelectSlot = _ => { };
 
 		public EditorOrientationGridWidget() { }
@@ -33,7 +38,10 @@ namespace OpenRA.Mods.Common.Widgets
 		protected EditorOrientationGridWidget(EditorOrientationGridWidget other)
 			: base(other)
 		{
+			RingCenterSlots = other.RingCenterSlots;
+			MultiSelectMode = other.MultiSelectMode;
 			GetSelectedSlot = other.GetSelectedSlot;
+			GetSelectedSlots = other.GetSelectedSlots;
 			OnSelectSlot = other.OnSelectSlot;
 		}
 
@@ -48,6 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var cellW = bounds.Width / 3;
 			var cellH = bounds.Height / 3;
 			var selected = GetSelectedSlot();
+			var selectedSlots = GetSelectedSlots();
 			var boldFont = Game.Renderer.Fonts["Bold"];
 			var tinyFont = Game.Renderer.Fonts["Tiny"];
 
@@ -58,15 +67,18 @@ namespace OpenRA.Mods.Common.Widgets
 				var cell = new Rectangle(bounds.X + col * cellW, bounds.Y + row * cellH, cellW, cellH);
 				var inner = cell.InflateBy(2, 2, -2, -2);
 
-				if (slot == EditorTileMetadata.RingHiddenSlot)
+				if (RingCenterSlots && slot == EditorTileMetadata.RingHiddenSlot)
 				{
 					DrawCenterCell(cell, inner, selected, tinyFont);
 					continue;
 				}
 
-				WidgetUtils.DrawPanel(inner, PanelCache.Update((false, false, false, false, selected == slot)));
+				var isSelected = MultiSelectMode
+					? selectedSlots.Contains(slot)
+					: selected == slot;
+				WidgetUtils.DrawPanel(inner, PanelCache.Update((false, false, false, false, isSelected)));
 
-				if (selected == slot)
+				if (isSelected)
 					DrawSelectionBorder(inner);
 
 				var glyph = SlotGlyphs[slot];
@@ -89,14 +101,16 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Renderer.RgbaColorRenderer.DrawLine(new float3(bounds.X, y, 0), new float3(bounds.Right, y, 0), 1, lineColor);
 			}
 
-			// Split center cell into horizontal / vertical choices.
-			var centerX = bounds.X + cellW;
-			var centerY = bounds.Y + cellH;
-			Game.Renderer.RgbaColorRenderer.DrawLine(
-				new float3(centerX, centerY + cellH / 2, 0),
-				new float3(centerX + cellW, centerY + cellH / 2, 0),
-				1,
-				lineColor);
+			if (RingCenterSlots)
+			{
+				var centerX = bounds.X + cellW;
+				var centerY = bounds.Y + cellH;
+				Game.Renderer.RgbaColorRenderer.DrawLine(
+					new float3(centerX, centerY + cellH / 2, 0),
+					new float3(centerX + cellW, centerY + cellH / 2, 0),
+					1,
+					lineColor);
+			}
 		}
 
 		static void DrawCenterCell(Rectangle cell, Rectangle inner, int? selected, SpriteFont tinyFont)
@@ -163,7 +177,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var x = ((mi.Location.X - bounds.X) * 3 / bounds.Width).Clamp(0, 2);
 			var y = ((mi.Location.Y - bounds.Y) * 3 / bounds.Height).Clamp(0, 2);
 
-			if (x == 1 && y == 1)
+			if (RingCenterSlots && x == 1 && y == 1)
 			{
 				var centerTop = bounds.Y + cellH;
 				var slot = mi.Location.Y < centerTop + cellH / 2

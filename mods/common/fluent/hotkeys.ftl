@@ -68,6 +68,7 @@ hotkey-description-removefromcontrolgroup = Remove from control group
 hotkey-description-editorundo = Undo
 hotkey-description-editorredo = Redo
 hotkey-description-editorcopy = Copy
+hotkey-description-editorcut = Cut
 hotkey-description-editorquicksave = Save Map
 hotkey-description-editorpaste = Paste
 hotkey-description-editordeleteselection = Delete Selection

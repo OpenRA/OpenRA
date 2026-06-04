@@ -583,6 +583,17 @@ Container@EDITOR_WORLD_ROOT:
 					Height: PARENT_HEIGHT
 					Background: scrollpanel-bg
 					Children:
+						Button@SELECTION_INFO_BUTTON:
+							X: 8
+							Y: 8
+							Width: 25
+							Height: 25
+							Text: i
+							TextColor: 00AAFF
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-editor-help-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 						Label@AREA_EDIT_TITLE:
 							Y: 16
 							Width: PARENT_WIDTH - 40
@@ -789,10 +800,21 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 55
 							Height: 22
 							Align: Left
-						Button@SELECTION_COPY_BUTTON:
+						Button@SELECTION_CUT_BUTTON:
 							X: 7
 							Y: PARENT_HEIGHT - 122
-							Width: 85
+							Width: 67
+							Height: 25
+							Text: button-cut-area.label
+							Font: Bold
+							Key: EditorCut
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-cut-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_COPY_BUTTON:
+							X: 78
+							Y: PARENT_HEIGHT - 122
+							Width: 67
 							Height: 25
 							Text: button-copy-area.label
 							Font: Bold
@@ -801,9 +823,9 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-copy-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_PASTE_BUTTON:
-							X: 102
+							X: 149
 							Y: PARENT_HEIGHT - 122
-							Width: 85
+							Width: 67
 							Height: 25
 							Text: button-paste-area.label
 							Font: Bold
@@ -812,9 +834,9 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-paste-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_DELETE_BUTTON:
-							X: 197
+							X: 220
 							Y: PARENT_HEIGHT - 122
-							Width: 85
+							Width: 67
 							Height: 25
 							Text: button-delete-area.label
 							Font: Bold
@@ -849,7 +871,6 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 							Text: button-cancel
 							Font: Bold
-							Key: escape
 						Button@SELECTION_FIND_BUTTON:
 							X: 7
 							Y: PARENT_HEIGHT - 32

@@ -240,6 +240,10 @@ Fonts:
 		Font: common|FreeSans.ttf
 		Size: 12
 		Ascender: 9
+	SmallItalic:
+		Font: ra|fonts/FreeSansOblique.ttf
+		Size: 12
+		Ascender: 9
 	Regular:
 		Font: common|FreeSans.ttf
 		Size: 14

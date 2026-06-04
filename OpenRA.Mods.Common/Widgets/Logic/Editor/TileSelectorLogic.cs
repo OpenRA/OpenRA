@@ -326,6 +326,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				templates.Add(tileId);
 			}
 
+			// Map placement context overrides the tile brush in Selected Preview; clear it when
+			// picking from the asset browser so the new brush becomes the main selected asset.
+			var selection = Editor.DefaultBrush.Selection;
+			selection.TemplatePlacementType = null;
+			selection.TemplatePlacementAnchor = null;
+			locateHighlightTileId = templates.Count == 1 ? tileId : null;
+
 			if (templates.Count == 0)
 				Editor.ClearBrush();
 			else

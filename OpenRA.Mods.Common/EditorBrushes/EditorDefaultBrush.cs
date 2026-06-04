@@ -412,6 +412,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 		EditorSelection CreateCellClickSelection(CPos cell, bool combineSelection, bool removeSelection)
 		{
+			if (editorWidget.HasClipboard && editorWidget.CopySourceRegion is CellCoordsRegion copyRegion
+				&& !combineSelection && !removeSelection)
+				return CreateClipboardPlacementSelection(cell, copyRegion);
+
 			if (world.Map.Rules.TerrainInfo is ITemplatedTerrainInfo terrainInfo
 				&& TemplateBoundsOverlay.TryGetPlacementContext(
 					world.Map, terrainInfo, cell,
@@ -427,6 +431,30 @@ namespace OpenRA.Mods.Common.Widgets
 			fallback.TemplatePlacementType = null;
 			fallback.TemplatePlacementAnchor = null;
 			return fallback;
+		}
+
+		EditorSelection CreateClipboardPlacementSelection(CPos cell, CellCoordsRegion copyRegion)
+		{
+			var referenceTopLeft = Selection.Area?.TopLeft ?? copyRegion.TopLeft;
+			var delta = cell - referenceTopLeft;
+			var mask = Selection.GetAreaMask();
+
+			EditorSelection selection;
+			if (mask != null)
+			{
+				var shifted = Selection.EnumerateAreaCells().Select(c => c + delta);
+				selection = EditorSelection.FromCells(shifted);
+			}
+			else
+			{
+				var size = copyRegion.BottomRight - copyRegion.TopLeft;
+				var topLeft = referenceTopLeft + delta;
+				selection = EditorSelection.FromRegion(new CellCoordsRegion(topLeft, topLeft + size));
+			}
+
+			selection.TemplatePlacementType = null;
+			selection.TemplatePlacementAnchor = null;
+			return selection;
 		}
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }

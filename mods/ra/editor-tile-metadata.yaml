@@ -1,10 +1,11 @@
 # Editor-only metadata for local OpenRA development.
 # This file is not used by map serialization. Maps still save official template ids and actor names only.
 # Orientation_island / Orientation_ring are the 3x3 slot hints for Opposites_island / Opposites_ring (corners, edges, center).
+# Related_corners_island / Related_corners_ring list related tile filenames (same format as Opposites_island).
 # Legacy Orientation is editor-only fallback for island until migrated.
 General:
 	Compatibility: EditorOnly
-	TemplateColumns: Tileset, OriginalFilename, TemplateId, Categories, Size, TerrainTypes, EdgeSignature, Orientation_island, Orientation_ring, OppositesGroup, Opposites_island, Opposites_ring, Similar, OppositesSlot, TrainingStatus, Description, DeepDescription, Notes
+	TemplateColumns: Tileset, OriginalFilename, TemplateId, Categories, Size, TerrainTypes, EdgeSignature, Orientation_island, Orientation_ring, Related_corners_island, Related_corners_ring, OppositesGroup, Opposites_island, Opposites_ring, Similar, OppositesSlot, TrainingStatus, Description, DeepDescription, Notes
 	ActorColumns: OriginalActorName, RuleFile, DisplayNameKey, Category, SimilarGroup, Similar, TrainingStatus, Mobility, BuildQueue, Cost, Health, Orientation, Description, DeepDescription, Notes
 
 Templates:
@@ -8750,13 +8751,14 @@ Templates:
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
 		Orientation: Mixed
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc15.sno, wc17.sno, wc18.sno, wc19.sno
 		Opposites_ring:
 		Similar:
 		OppositesSlot:
 		Description: SNOW water cliff transition wc03.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 61 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		TrainingStatus: island
 	Template@SNOW-62:
 		Tileset: SNOW
 		OriginalFilename: wc04.sno
@@ -8767,13 +8769,14 @@ Templates:
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
 		Orientation: Mixed
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc17.sno, wc18.sno, wc19.sno
 		Opposites_ring:
 		Similar:
 		OppositesSlot:
 		Description: SNOW water cliff transition wc04.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 62 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		TrainingStatus: island
 	Template@SNOW-63:
 		Tileset: SNOW
 		OriginalFilename: wc05.sno
@@ -8782,16 +8785,18 @@ Templates:
 		Size: 2,2
 		TerrainTypes: Rock
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
-		Orientation: Center
+		Orientation: Bottom
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc15.sno, wc17.sno, wc18.sno, wc19.sno
 		Opposites_ring:
 		Similar:
-		OppositesSlot: Center
+		OppositesSlot: Bottom
+		Orientation_island: Bottom
 		Description: SNOW water cliff transition wc05.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 63 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
-		TrainingStatus: orientation
+		TrainingStatus: corners, island, orientation
+		Related_corners_island: wc29.sno, wc32.sno
 	Template@SNOW-64:
 		Tileset: SNOW
 		OriginalFilename: wc06.sno
@@ -8955,13 +8960,15 @@ Templates:
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
 		Orientation: Mixed
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc03.sno, wc05.sno
 		Opposites_ring:
 		Similar:
-		OppositesSlot:
+		OppositesSlot: Top
+		Orientation_island: Top
 		Description: SNOW water cliff transition wc15.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 73 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		TrainingStatus: island
 	Template@SNOW-74:
 		Tileset: SNOW
 		OriginalFilename: wc16.sno
@@ -8989,13 +8996,15 @@ Templates:
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
 		Orientation: Mixed
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc03.sno, wc04.sno, wc05.sno
 		Opposites_ring:
 		Similar:
-		OppositesSlot:
+		OppositesSlot: Top
+		Orientation_island: Top
 		Description: SNOW water cliff transition wc17.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 75 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		TrainingStatus: island
 	Template@SNOW-76:
 		Tileset: SNOW
 		OriginalFilename: wc18.sno
@@ -9006,13 +9015,16 @@ Templates:
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
 		Orientation: Mixed
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc03.sno, wc04.sno, wc05.sno
 		Opposites_ring:
 		Similar:
-		OppositesSlot:
+		OppositesSlot: Top
+		Orientation_island: Top
 		Description: SNOW water cliff transition wc18.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 76 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		TrainingStatus: corners_island, island
+		Related_corners_island: wc31.sno, wc30.sno
 	Template@SNOW-77:
 		Tileset: SNOW
 		OriginalFilename: wc19.sno
@@ -9023,13 +9035,15 @@ Templates:
 		EdgeSignature: Top=Land, Right=Land, Bottom=Land, Left=Land
 		Orientation: Mixed
 		OppositesGroup: WaterCliffs
-		Opposites_island:
+		Opposites_island: wc05.sno, wc04.sno, wc03.sno
 		Opposites_ring:
 		Similar:
-		OppositesSlot:
+		OppositesSlot: Top
+		Orientation_island: Top
 		Description: SNOW water cliff transition wc19.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 77 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		TrainingStatus: island
 	Template@SNOW-78:
 		Tileset: SNOW
 		OriginalFilename: wc20.sno
@@ -9196,10 +9210,12 @@ Templates:
 		Opposites_island:
 		Opposites_ring:
 		Similar:
-		OppositesSlot:
+		OppositesSlot: BottomLeft
 		Description: SNOW water cliff transition wc29.sno (2x2), orientation Mixed.
 		DeepDescription: Official template 87 from SNOW uses terrain types Rock. It is grouped as WaterCliffs; orientation means no clear directional relationship inferred.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		Orientation_island: BottomLeft
+		TrainingStatus: orientation_island
 	Template@SNOW-88:
 		Tileset: SNOW
 		OriginalFilename: wc30.sno
@@ -9247,10 +9263,12 @@ Templates:
 		Opposites_island:
 		Opposites_ring:
 		Similar:
-		OppositesSlot: Bottom
+		OppositesSlot: BottomRight
 		Description: SNOW water cliff transition wc32.sno (2x2), orientation Down.
 		DeepDescription: Official template 90 from SNOW uses terrain types Rock, Water. It is grouped as WaterCliffs; orientation means water or transition focus on the bottom edge.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		Orientation_island: BottomRight
+		TrainingStatus: orientation_island
 	Template@SNOW-91:
 		Tileset: SNOW
 		OriginalFilename: wc33.sno

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
@@ -52,7 +53,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static bool IsTrainingHighlightColumn(string column) => column switch
 		{
-			"Orientation_island" or "Orientation_ring" or "Opposites_island" or "Opposites_ring" or "Similar" or "OppositesSlot" => true,
+			"Orientation_island" or "Orientation_ring" or "Related_corners_island" or "Related_corners_ring" or
+			"Opposites_island" or "Opposites_ring" or "Similar" or "OppositesSlot" => true,
 			_ => false
 		};
 
@@ -108,6 +110,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			"EdgeSignature" => "Edges",
 			"Orientation_island" => "Ori.Isl",
 			"Orientation_ring" => "Ori.Ring",
+			"Related_corners_island" => "Crnr.Isl",
+			"Related_corners_ring" => "Crnr.Ring",
 			"OppositesGroup" => "OppGrp",
 			"Opposites_island" => "OppIsl",
 			"Opposites_ring" => "OppRing",
@@ -147,6 +151,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget trainingPreviewWidget;
 		bool showActors;
 		bool isClosing;
+		string focusedTemplateRowKey;
+		ushort? focusedTemplateId;
 
 		[ObjectCreator.UseCtor]
 		public EditorTileMetadataDatabaseLogic(Widget widget, World world, WorldRenderer worldRenderer, EditorTileMetadataTraining training)
@@ -180,10 +186,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupTrainButton(panel, "DATABASE_TRAIN_SIMILAR_BUTTON", EditorMetadataTrainingKind.Similar);
 			SetupTrainButton(panel, "DATABASE_TRAIN_ORIENTATION_ISLAND_BUTTON", EditorMetadataTrainingKind.OrientationIsland);
 			SetupTrainButton(panel, "DATABASE_TRAIN_ORIENTATION_RING_BUTTON", EditorMetadataTrainingKind.OrientationRing);
+			SetupTrainButton(panel, "DATABASE_TRAIN_RELATED_CORNERS_ISLAND_BUTTON", EditorMetadataTrainingKind.RelatedCornersIsland);
+			SetupTrainButton(panel, "DATABASE_TRAIN_RELATED_CORNERS_RING_BUTTON", EditorMetadataTrainingKind.RelatedCornersRing);
 
 			saveBar = panel.Get("DATABASE_TRAINING_SAVE_BAR");
-			saveBar.IsVisible = () => training.ShowSecondarySelection;
-			saveBar.Get<ButtonWidget>("DATABASE_TRAINING_SAVE_BUTTON").OnClick = training.Save;
+			saveBar.IsVisible = () => training.ShowSecondarySelection || training.ShowOrientationSave;
+			saveBar.Get<ButtonWidget>("DATABASE_TRAINING_SAVE_BUTTON").OnClick = () =>
+			{
+				if (training.ShowOrientationSave)
+					training.SaveOrientation();
+				else
+					training.Save();
+			};
 			saveBar.Get<ButtonWidget>("DATABASE_TRAINING_CANCEL_BUTTON").OnClick = () =>
 			{
 				training.Cancel();
@@ -211,8 +225,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (isClosing)
 				return;
 
+			EnsureOrientationPanelRaised();
 			UpdateTrainingStatus();
 			RebuildRows();
+		}
+
+		void EnsureOrientationPanelRaised()
+		{
+			if (!training.ShowOrientationTraining)
+				return;
+
+			var orient = parentRoot.GetOrNull("EDITOR_ORIENTATION_TRAINING_PANEL");
+			if (orient == null)
+				return;
+
+			if (orient.Parent != panel)
+			{
+				orient.Parent?.RemoveChild(orient);
+				panel.AddChild(orient);
+			}
+			else
+			{
+				panel.RemoveChild(orient);
+				panel.AddChild(orient);
+			}
 		}
 
 		void Close()
@@ -324,7 +360,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 			panel.IsVisible = () => true;
 			parent.AddChild(panel);
-
+			if (active != null)
+				active.EnsureOrientationPanelRaised();
 		}
 
 		public static void Toggle(Widget parent, World world, WorldRenderer worldRenderer, ModData modData, EditorTileMetadataTraining training)
@@ -357,7 +394,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (training.Mode == mode)
 					training.Cancel();
 				else
+				{
 					training.Start(mode);
+					if (focusedTemplateId.HasValue)
+						training.ApplyFocusedTemplateAsPrimary(focusedTemplateId.Value);
+				}
 			};
 		}
 
@@ -472,14 +513,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget CreateTemplateRow(ScrollItemWidget template, MetadataTemplateRow row, string[] columns)
 		{
 			var templateId = row.TemplateId;
-			var item = ScrollItemWidget.Setup(row.Key, template, () => false, () => { }, () => { });
+			var rowWidth = RowContentWidth(columns.Length);
+			var item = ScrollItemWidget.Setup(row.Key, template, () => false, () => HandleTemplateRowClick(templateId, row.Key), () => { });
 			item.Bounds.Height = RowHeight;
-			item.Bounds.Width = RowContentWidth(columns.Length);
+			item.Bounds.Width = rowWidth;
 			item.IgnoreChildMouseOver = false;
+			item.ShowLocateOutline = () => focusedTemplateRowKey == row.Key;
 
 			var x = 0;
 			if (training.IsActive)
-				x += AddTrainingCheckbox(item, x, () => training.ShowTrainingCheckboxes, () => training.IsPrimaryTemplateSelected(templateId), () => HandleTemplateRowClick(templateId));
+				x += AddTrainingCheckbox(item, x, () => training.ShowTrainingCheckboxes, () => training.IsPrimaryTemplateSelected(templateId), () => HandleTemplateRowClick(templateId, row.Key));
 
 			if (terrainInfo.Templates.TryGetValue(templateId, out var templateInfo))
 			{
@@ -493,7 +536,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				preview.Scale = Math.Min(scale, (RowHeight - 8) / (float)preview.IdealPreviewSize.Y);
 				item.AddChild(preview);
 				if (training.IsActive)
-					item.AddChild(CreatePreviewClickTarget(previewBounds, () => HandleTemplateRowClick(templateId)));
+					item.AddChild(CreatePreviewClickTarget(previewBounds, () => HandleTemplateRowClick(templateId, row.Key)));
 				item.AddChild(new EditorPreviewSelectionWidget
 				{
 					Bounds = previewBounds,
@@ -505,10 +548,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var column in columns)
 			{
 				var raw = metadataFile.ReadField(row.Data, column);
-				item.AddChild(CreateCell(x, CellWidth, column, FormatTrainingCellText(column, raw), row.Data));
+				item.AddChild(CreateTemplateCell(x, CellWidth, column, FormatTrainingCellText(column, raw), row.Data, templateId));
 				x += CellWidth;
 			}
 
+			item.AddChild(CreatePreviewClickTarget(new WidgetBounds(0, 0, rowWidth, RowHeight), () => HandleTemplateRowClick(templateId, row.Key)));
 			return item;
 		}
 
@@ -600,8 +644,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return CheckboxColumnWidth;
 		}
 
-		void HandleTemplateRowClick(ushort templateId)
+		void SetFocusedTemplateRow(string rowKey, ushort templateId)
 		{
+			focusedTemplateRowKey = rowKey;
+			focusedTemplateId = templateId;
+		}
+
+		void HandleTemplateRowClick(ushort templateId, string rowKey)
+		{
+			SetFocusedTemplateRow(rowKey, templateId);
+
 			if (!training.IsActive)
 				return;
 
@@ -666,26 +718,63 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return td;
 		}
 
-		Widget CreateCell(int x, int width, string column, string text, IReadOnlyDictionary<string, MiniYaml> data)
+		Widget CreateTemplateCell(int x, int width, string column, string text, IReadOnlyDictionary<string, MiniYaml> data, ushort templateId)
+		{
+			if (ShouldShowOrientationGrid(column, templateId))
+				return CreateOrientationGridCell(x, width, column, data, templateId);
+
+			var cornersField = column switch
+			{
+				"Opposites_ring" => "Related_corners_ring",
+				"Opposites_island" => "Related_corners_island",
+				_ => null
+			};
+			return CreateTextCell(x, width, column, text, data, cornersField);
+		}
+
+		bool ShouldShowOrientationGrid(string column, ushort templateId)
+		{
+			if (!training.ShowOrientationTraining || !training.IsPrimaryTemplateSelected(templateId))
+				return false;
+
+			return training.Mode == EditorMetadataTrainingKind.OrientationIsland
+				? column == "Orientation_island"
+				: training.Mode == EditorMetadataTrainingKind.OrientationRing && column == "Orientation_ring";
+		}
+
+		Widget CreateOrientationGridCell(int x, int width, string column, IReadOnlyDictionary<string, MiniYaml> data, ushort templateId)
 		{
 			var cellBounds = new WidgetBounds(x + 2, 2, width - 4, RowHeight - 4);
-			var container = new ContainerWidget { Bounds = cellBounds };
+			var container = new EditorMetadataCellWidget { Bounds = cellBounds };
+			var ringCenter = column == "Orientation_ring" || training.Mode == EditorMetadataTrainingKind.OrientationRing;
+			var grid = new EditorOrientationGridWidget
+			{
+				Bounds = new WidgetBounds(0, 0, cellBounds.Width, cellBounds.Height),
+				RingCenterSlots = ringCenter,
+				GetSelectedSlot = () => training.PendingOrientationSlot,
+				OnSelectSlot = training.SelectOrientationSlot
+			};
+			container.AddChild(TrainedCellBackground(cellBounds, metadataFile.IsColumnTrained(data, column)));
+			container.AddChild(grid);
+			return container;
+		}
+
+		Widget CreateTextCell(int x, int width, string column, string text, IReadOnlyDictionary<string, MiniYaml> data, string cornersField)
+		{
+			var cellBounds = new WidgetBounds(x + 2, 2, width - 4, RowHeight - 4);
+			var container = new EditorMetadataCellWidget { Bounds = cellBounds };
 			var visibleText = FormatCellText(text, cellBounds.Width - 4, cellBounds.Height - 4);
 
 			var trained = IsTrainingHighlightColumn(column) &&
 				!string.IsNullOrWhiteSpace(visibleText) &&
 				metadataFile.IsColumnTrained(data, column);
-			container.AddChild(new EditorTrainedCellWidget
-			{
-				Bounds = new WidgetBounds(0, 0, cellBounds.Width, cellBounds.Height),
-				BorderColor = TrainedCellBorderColor,
-				BorderWidth = 3,
-				IsTrained = () => trained
-			});
+			container.AddChild(TrainedCellBackground(cellBounds, trained));
 
+			var showCornersOverlay = cornersField != null;
+			var labelHeight = showCornersOverlay ? Math.Max(20, cellBounds.Height - 36) : cellBounds.Height - 4;
 			var label = new EditorMetadataCellLabelWidget(Game.ModData)
 			{
-				Bounds = new WidgetBounds(2, 2, cellBounds.Width - 4, cellBounds.Height - 4),
+				Bounds = new WidgetBounds(2, 2, cellBounds.Width - 4, labelHeight),
 				Align = TextAlign.Left,
 				VAlign = TextVAlign.Top,
 				Font = "Tiny"
@@ -700,7 +789,97 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			container.AddChild(label);
+
+			if (showCornersOverlay)
+			{
+				var orientationField = cornersField == "Related_corners_ring" ? "Orientation_ring" : "Orientation_island";
+				container.AddChild(new EditorRelatedCornersOverlayWidget
+				{
+					Bounds = new WidgetBounds(cellBounds.Width - 38, cellBounds.Height - 38, 36, 36),
+					GetCornerSlots = () => ResolveRelatedCornerSlots(data, cornersField, orientationField)
+				});
+			}
+
 			return container;
+		}
+
+		static EditorTrainedCellWidget TrainedCellBackground(WidgetBounds cellBounds, bool trained) => new()
+		{
+			Bounds = new WidgetBounds(0, 0, cellBounds.Width, cellBounds.Height),
+			BorderColor = TrainedCellBorderColor,
+			BorderWidth = 3,
+			IsTrained = () => trained,
+		};
+
+		Widget CreateCell(int x, int width, string column, string text, IReadOnlyDictionary<string, MiniYaml> data) =>
+			CreateTextCell(x, width, column, text, data, cornersField: null);
+
+		IEnumerable<int> ResolveRelatedCornerSlots(
+			IReadOnlyDictionary<string, MiniYaml> primaryData,
+			string cornersField,
+			string orientationField)
+		{
+			if (terrainInfo == null)
+				yield break;
+
+			var cornersText = metadataFile.ReadField(primaryData, cornersField);
+			if (string.IsNullOrWhiteSpace(cornersText))
+				yield break;
+
+			var mode = cornersField == "Related_corners_ring"
+				? EditorOppositesMode.Ring
+				: EditorOppositesMode.Island;
+			var primarySlot = EditorTileMetadata.TryParseOrientationSlot(metadataFile.ReadField(primaryData, orientationField))
+				?? EditorTileMetadata.TryParseOrientationSlot(metadataFile.ReadField(primaryData, "OppositesSlot"));
+			if (!primarySlot.HasValue)
+				yield break;
+
+			var cornerSlots = EditorTileMetadata.TopologicalCornerSlotsForRelated(mode, primarySlot.Value);
+			var usedSlots = new HashSet<int>();
+			foreach (var reference in cornersText.Split(',').Select(part => part.Trim()).Where(part => part.Length > 0))
+			{
+				TerrainTemplateInfo template = null;
+				foreach (var row in metadataFile.TemplateRows(terrainInfo.Id))
+				{
+					if (!TemplateReferenceMatches(row, reference))
+						continue;
+
+					if (terrainInfo.Templates.TryGetValue(row.TemplateId, out template))
+						break;
+				}
+
+				if (template == null)
+					continue;
+
+				var slot = EditorTileMetadata.InferCornerSlotFromWater(terrainInfo, template, cornerSlots, primarySlot.Value);
+				if (slot == null)
+				{
+					foreach (var candidate in cornerSlots)
+					{
+						if (!usedSlots.Contains(candidate))
+						{
+							slot = candidate;
+							break;
+						}
+					}
+				}
+
+				if (slot == null || usedSlots.Contains(slot.Value))
+					continue;
+
+				usedSlots.Add(slot.Value);
+				yield return EditorTileMetadata.OppositesGridIndex(slot.Value);
+			}
+		}
+
+		static bool TemplateReferenceMatches(MetadataTemplateRow row, string reference)
+		{
+			if (!string.IsNullOrEmpty(row.OriginalFilename) &&
+				string.Equals(row.OriginalFilename, reference, StringComparison.OrdinalIgnoreCase))
+				return true;
+
+			return ushort.TryParse(reference, NumberStyles.Integer, CultureInfo.InvariantCulture, out var id) &&
+				row.TemplateId == id;
 		}
 
 		static string FormatCellText(string text, int width, int height)

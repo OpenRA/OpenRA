@@ -258,6 +258,45 @@ Background@EDITOR_REPLACE_PANEL:
 			Font: Bold
 			Key: escape
 
+Background@EDITOR_HELP_PANEL:
+	Logic: MapEditorHelpLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 540
+	Height: 580
+	Children:
+		Label@TITLE:
+			X: 0
+			Y: 12
+			Width: PARENT_WIDTH
+			Height: 25
+			Align: Center
+			Font: Bold
+			Text: label-editor-help-title
+		ScrollPanel@CONTENT_PANEL:
+			X: 15
+			Y: 42
+			Width: PARENT_WIDTH - 30
+			Height: PARENT_HEIGHT - 95
+			Children:
+				MapEditorHelpLabel@CONTENT:
+					X: 4
+					Width: PARENT_WIDTH - 31
+					Align: Left
+					Font: Regular
+					DescriptionFont: Small
+					SectionIntroFont: SmallItalic
+					KeyColor: 00FF00
+					TitleColor: 78B4FF
+		Button@CLOSE_BUTTON:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: PARENT_HEIGHT - 42
+			Width: 140
+			Height: 28
+			Text: button-cancel
+			Font: Bold
+			Key: escape
+
 ScrollPanel@MAP_SAVE_VISIBILITY_PANEL:
 	TopBottomSpacing: 5
 	ItemSpacing: 5
@@ -581,6 +620,17 @@ Container@EDITOR_WORLD_ROOT:
 					Height: PARENT_HEIGHT - 7
 					Background: scrollpanel-bg
 					Children:
+						Button@SELECTION_INFO_BUTTON:
+							X: 8
+							Y: 8
+							Width: 25
+							Height: 25
+							Text: i
+							TextColor: 00AAFF
+							Font: Bold
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-editor-help-tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
 						Label@AREA_EDIT_TITLE:
 							Y: 16
 							Width: PARENT_WIDTH - 40
@@ -1045,10 +1095,21 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 55
 							Height: 22
 							Align: Left
-						Button@SELECTION_COPY_BUTTON:
+						Button@SELECTION_CUT_BUTTON:
 							X: 5
 							Y: PARENT_HEIGHT - 122
-							Width: 85
+							Width: 67
+							Height: 25
+							Text: button-cut-area.label
+							Font: Bold
+							Key: EditorCut
+							TooltipTemplate: BUTTON_TOOLTIP
+							TooltipText: button-cut-area.tooltip
+							TooltipContainer: TOOLTIP_CONTAINER
+						Button@SELECTION_COPY_BUTTON:
+							X: 76
+							Y: PARENT_HEIGHT - 122
+							Width: 67
 							Height: 25
 							Text: button-copy-area.label
 							Font: Bold
@@ -1057,9 +1118,9 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-copy-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_PASTE_BUTTON:
-							X: 100
+							X: 147
 							Y: PARENT_HEIGHT - 122
-							Width: 85
+							Width: 67
 							Height: 25
 							Text: button-paste-area.label
 							Font: Bold
@@ -1068,9 +1129,9 @@ Container@EDITOR_WORLD_ROOT:
 							TooltipText: button-paste-area.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 						Button@SELECTION_DELETE_BUTTON:
-							X: 195
+							X: 218
 							Y: PARENT_HEIGHT - 122
-							Width: 85
+							Width: 67
 							Height: 25
 							Text: button-delete-area.label
 							Font: Bold
@@ -1105,7 +1166,6 @@ Container@EDITOR_WORLD_ROOT:
 							Height: 25
 							Text: button-cancel
 							Font: Bold
-							Key: escape
 						Button@SELECTION_FIND_BUTTON:
 							X: 5
 							Y: PARENT_HEIGHT - 32

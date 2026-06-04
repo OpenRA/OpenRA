@@ -64,6 +64,81 @@ label-selected-area-resources = Resources:
 label-selection-filters = Filters
 label-selected-area-preview = Selected Preview
 
+button-editor-help-tooltip = Map editor help
+label-editor-help-title = Map Editor Help
+label-editor-help-overview =
+    This screen is the in-game map editor. Use it to paint terrain, place resources and overlays, add actors, and edit map metadata before saving. Saved maps use the standard OpenRA format and work on the Resource Center.
+
+label-editor-help-top-bar =
+    Top bar (left to right):
+    Menu — open the editor menu (save, load, quit, settings). Escape also opens this menu.
+    Copy / Paste — copy or paste the current rectangular selection (same as the Selected Preview buttons).
+    Undo / Redo — step through edit history.
+    Overlays — toggle grid, buildable terrain, walkable cells, ship paths, markers, tile bounds, and actor bounds.
+    Coordinates — cursor cell position, height, and tile type under the mouse.
+
+label-editor-help-map-canvas =
+    Map canvas (center):
+    Drag with the left mouse button on empty map to define a rectangular selection. Hold Shift while dragging to add cells; hold Alt to subtract.
+    Click an actor to select it for editing. Right-click cancels the active brush or clears placement.
+    Scroll the view with arrow keys; Alt + arrow jumps to map edges. Bookmarks: Ctrl+Q/W/E/R saves a view, Alt+Q/W/E/R restores it.
+    Zoom with [ and ]; press . to reset zoom. Hide chrome with Shift+= or Shift+Alt+=.
+
+label-editor-help-selected-preview =
+    Selected Preview (top-left panel):
+    i — open this help window. X — hide the panel (selection tab toggles it back).
+    Preview — shows the tile, actor, resource, or copied area. Current / Original toggles tile placement preview mode.
+    Mix — random or sequential order when filling with multiple tiles. Opposites / Similar — quick-pick related shore or terrain tiles (Island vs Ring modes).
+    Train — open tile metadata training (local dev): teach opposites, similar groups, orientation, and corner relationships.
+    Filters — include Terrain, Resources, and/or Actors when copying, cutting, pasting, filling, or replacing.
+    Cut / Copy / Paste / Delete — edit the selection. Fill — fill the area with the active tile, resource, or actor brush. Replace — swap one layer for another asset. Rotate Left/Right — rotate copied data. Clear Copy — discard the clipboard. Find — jump to the selected asset in the right-hand browser. Cancel — clear the selection rectangle.
+
+label-editor-help-tabs =
+    Asset browser tabs (above the right panel):
+    Selection (E) — toggle Selected Preview / area tools.
+    Tiles (R) — terrain template picker with search and category filter.
+    Overlays (T) — overlay layers (roads, cliffs, etc., tileset-specific).
+    Actors (Y) — place units, structures, and props; filter by owner and category.
+    Tools (U) — generators, marker tiles, path tiler, move tool, and other editor utilities.
+    History (I) — list of recent placement actions to revisit assets.
+
+label-editor-help-tiles-tab =
+    Tiles tab:
+    Search matches template id, filename, categories, and terrain types. Pick a category or All.
+    Left-click and drag on the map to paint. Training checkboxes (local dev) mark tiles for the metadata database.
+
+label-editor-help-overlays-tab =
+    Overlays tab:
+    Choose an overlay template, then paint on the map like terrain. Used for non-terrain map layers defined by the tileset.
+
+label-editor-help-actors-tab =
+    Actors tab:
+    Search and filter actors. Set Owner before placing. Click to place; selected actors can be edited in Selected Preview (ID, facings, and trait options).
+
+label-editor-help-tools-tab =
+    Tools tab:
+    Pick a tool (map generator, marker tiles, tiling path, move selection, etc.). Each tool shows its own options below. Move tool: enable it, select an area, nudge with W/A/S/D, then Enter or Place to apply.
+
+label-editor-help-history-tab =
+    History tab:
+    Click an entry to select that tile or actor again in the browser.
+
+label-editor-help-mouse =
+    Mouse and placement:
+    Left button — paint, place actors/resources, or drag a selection box.
+    Right button — cancel brush placement or abort the current operation (brush-dependent).
+    Mouse wheel — not used for zoom; use [ ] keys instead.
+
+label-editor-help-modifiers =
+    Modifier keys (left or right Ctrl, Shift, and Alt all work the same):
+    Ctrl — hold with another key for shortcuts: copy, cut, paste, undo, redo, quick save, editor tabs (where bound), and Ctrl+Q/W/E/R to save map view bookmarks.
+    Shift — hold while dragging a selection on the map to add cells to the selection; also Shift+= to hide UI chrome, and combined with other keys in shortcuts listed below.
+    Alt — hold while dragging a selection to remove cells from the selection; Alt+arrow keys jump the view to map edges; Alt+Q/W/E/R restores saved view bookmarks.
+
+label-editor-help-hotkeys-header = Keyboard shortcuts (editor context; remappable in Settings):
+
+label-editor-help-extra-hotkeys-header = Also active on this screen:
+
 label-selection-detail = Selection Info
 label-tile-preview-current = Current
 label-tile-preview-original = Original
@@ -75,6 +150,8 @@ button-editor-train-opposite-ring = Train Opposite Ring
 button-editor-train-similar = Train Similar
 button-editor-train-orientation-island = Train Orientation Island
 button-editor-train-orientation-ring = Train Orientation Ring
+button-editor-train-related-corners-island = Train Corner Island
+button-editor-train-related-corners-ring = Train Corner Ring
 button-editor-open-metadata-database = Tile Metadata Database
 button-editor-train = Train
 label-editor-currently-training = Currently training:
@@ -141,6 +218,10 @@ button-delete-area =
 button-copy-area =
     .label = Copy
     .tooltip = Copy the selected area
+
+button-cut-area =
+    .label = Cut
+    .tooltip = Copy the selected area and remove it from the map
 
 button-paste-area =
     .label = Paste

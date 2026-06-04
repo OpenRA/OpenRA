@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orientationGrid = orientationPanel.Get<EditorOrientationGridWidget>("ORIENTATION_GRID");
 				orientationGrid.GetSelectedSlot = () => training.PendingOrientationSlot;
 				orientationGrid.OnSelectSlot = training.SelectOrientationSlot;
+				training.Changed += UpdateOrientationGridMode;
+				UpdateOrientationGridMode();
 
 				var saveButton = orientationPanel.Get<ButtonWidget>("ORIENTATION_SAVE_BUTTON");
 				saveButton.OnClick = training.SaveOrientation;
@@ -56,8 +58,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				trainButton.OnClick = () => EditorTileMetadataDatabaseLogic.Toggle(editorRoot, world, worldRenderer, modData, training);
 		}
 
+		void UpdateOrientationGridMode()
+		{
+			if (orientationGrid == null)
+				return;
+
+			orientationGrid.RingCenterSlots = training.Mode == EditorMetadataTrainingKind.OrientationRing;
+		}
+
 		protected override void Dispose(bool disposing)
 		{
+			if (orientationGrid != null)
+				training.Changed -= UpdateOrientationGridMode;
+
 			if (EditorTileMetadataTraining.Instance == training)
 				EditorTileMetadataTraining.Instance = null;
 
