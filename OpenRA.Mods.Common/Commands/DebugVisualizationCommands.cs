@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Commands
 		const string DepthBufferDescription = "description-depth-buffer";
 
 		[FluentReference]
-		const string ActorTagsOverlayDescripition = "description-actor-tags-overlay";
+		const string ActorTagsOverlayDescription = "description-actor-tags-overlay";
 
 		public static class Commands
 		{
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Commands
 				{ Commands.RenderGeometry, (RenderGeometryDescription, RenderGeometry, Orders.RenderGeometry, d => d.RenderGeometry) },
 				{ Commands.ScreenMap, (ScreenMapOverlayDescription, ScreenMap, Orders.ScreenMap, d => d.ScreenMap) },
 				{ Commands.DepthBuffer, (DepthBufferDescription, DepthBuffer, Orders.DepthBuffer, d => d.DepthBuffer) },
-				{ Commands.ActorTags, (ActorTagsOverlayDescripition, ActorTags, Orders.ActorTags, d => d.ActorTags) },
+				{ Commands.ActorTags, (ActorTagsOverlayDescription, ActorTags, Orders.ActorTags, d => d.ActorTags) },
 			};
 
 		DebugVisualizations debugVis;
