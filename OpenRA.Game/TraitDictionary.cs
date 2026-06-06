@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using OpenRA.Primitives;
 using OpenRA.Support;
 
 namespace OpenRA
@@ -42,6 +42,8 @@ namespace OpenRA
 	/// </summary>
 	sealed class TraitDictionary
 	{
+		static readonly Assembly SystemAssembly = typeof(object).Assembly;
+
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
 			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
@@ -69,9 +71,17 @@ namespace OpenRA
 			var t = val.GetType();
 
 			foreach (var i in t.GetInterfaces())
-				InnerAdd(actor, i, val);
-			foreach (var tt in t.BaseTypes())
-				InnerAdd(actor, tt, val);
+				if (i.Assembly != SystemAssembly)
+					InnerAdd(actor, i, val);
+
+			var baseType = t;
+			while (baseType != null && baseType != typeof(object))
+			{
+				if (baseType.Assembly != SystemAssembly)
+					InnerAdd(actor, baseType, val);
+
+				baseType = baseType.BaseType;
+			}
 		}
 
 		void InnerAdd(Actor actor, Type t, object val)

@@ -13,23 +13,29 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace OpenRA.Primitives
 {
 	public class TypeDictionary : IEnumerable<object>
 	{
+		static readonly Assembly SystemAssembly = typeof(object).Assembly;
+
 		static readonly Func<Type, ITypeContainer> CreateTypeContainer = t =>
 			(ITypeContainer)typeof(TypeContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
 		readonly Dictionary<Type, ITypeContainer> data;
+		readonly bool includeSystemTypes;
 
-		public TypeDictionary()
+		public TypeDictionary(bool includeSystemTypes = false)
 		{
+			this.includeSystemTypes = includeSystemTypes;
 			data = [];
 		}
 
 		public TypeDictionary(TypeDictionary cloneFrom)
 		{
+			includeSystemTypes = cloneFrom.includeSystemTypes;
 			data = cloneFrom.data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Clone());
 		}
 
@@ -43,9 +49,17 @@ namespace OpenRA.Primitives
 			var t = val.GetType();
 
 			foreach (var i in t.GetInterfaces())
-				InnerAdd(i, val);
-			foreach (var tt in t.BaseTypes())
-				InnerAdd(tt, val);
+				if (includeSystemTypes || i.Assembly != SystemAssembly)
+					InnerAdd(i, val);
+
+			var baseType = t;
+			while (baseType != null && baseType != typeof(object))
+			{
+				if (includeSystemTypes || baseType.Assembly != SystemAssembly)
+					InnerAdd(baseType, val);
+
+				baseType = baseType.BaseType;
+			}
 		}
 
 		void InnerAdd(Type t, object val)
