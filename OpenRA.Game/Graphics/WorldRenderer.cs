@@ -61,7 +61,7 @@ namespace OpenRA.Graphics
 			var mapGrid = modData.GetOrCreate<MapGrid>();
 			enableDepthBuffer = mapGrid.EnableDepthBuffer;
 
-			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
+			foreach (var pal in world.TraitDict.ActorsWithTraitAsIterator<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
 
 			Player.SetupRelationshipColors(world.Players, world.LocalPlayer, this, true);

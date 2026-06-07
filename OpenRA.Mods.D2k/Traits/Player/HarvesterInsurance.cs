@@ -33,9 +33,9 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public void TryActivate()
 		{
-			var harvesters = self.World.ActorsHavingTrait<Harvester>().Where(x => x.Owner == self.Owner);
-			if (harvesters.Any())
-				return;
+			foreach (var harv in self.World.ActorsHavingTraitAsIterator<Harvester>())
+				if (harv.Owner == self.Owner)
+					return;
 
 			var refinery = self.World.ActorsHavingTrait<Refinery>().FirstOrDefault(x => x.Owner == self.Owner && x.Info.HasTraitInfo<FreeActorWithDeliveryInfo>());
 			if (refinery == null)

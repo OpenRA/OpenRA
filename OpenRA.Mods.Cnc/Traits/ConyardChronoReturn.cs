@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				TriggerVortex();
 
 			// Trigger screen desaturate effect
-			foreach (var cpa in self.World.ActorsWithTrait<ChronoshiftPostProcessEffect>())
+			foreach (var cpa in self.World.ActorsWithTraitAsIterator<ChronoshiftPostProcessEffect>())
 				cpa.Trait.Enable();
 
 			Game.Sound.Play(SoundType.World, info.ChronoshiftSound, self.CenterPosition);
