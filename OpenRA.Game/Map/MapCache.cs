@@ -223,8 +223,9 @@ namespace OpenRA
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids,
 			Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
 		{
-			var queryUids = uids.Distinct()
-				.Where(uid => uid != null)
+			var distinctUids = uids.Distinct().Where(uid => uid != null).ToList();
+
+			var queryUids = distinctUids
 				.Select(uid => previews[uid])
 				.Where(p => p.Status == MapStatus.Unavailable)
 				.Select(p => p.Uid)
@@ -238,9 +239,36 @@ namespace OpenRA
 				var client = HttpClientFactory.Create();
 				var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 
-				// Limit each query to 50 maps at a time to avoid request size limits
-				foreach (var batchUids in queryUids.Chunk(50))
+				// Limit each query to 50 maps at a time to avoid request size limits.
+				// Use manual chunking instead of Enumerable.Chunk to avoid potential
+				// runtime bugs (see #22506).
+				const int BatchSize = 50;
+				for (var i = 0; i < queryUids.Count; i += BatchSize)
 				{
+					var batchSize = Math.Min(BatchSize, queryUids.Count - i);
+					var batchUids = new List<string>(batchSize);
+					for (var j = 0; j < batchSize; j++)
+					{
+						var uid = queryUids[i + j];
+
+						// Map UIDs are SHA-1 hashes (40 lowercase hex characters).
+						// Skip any UID that doesn't match this format to prevent
+						// Corrupted data from reaching the remote query URL (#22506).
+						if (uid.Length != 40 || !uid.All(c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')))
+						{
+							Log.Write("debug", $"MapCache: skipping invalid map UID '{uid}'");
+							var p = previews[uid];
+							if (p.Status == MapStatus.Searching)
+								p.CompleteRemoteSearch(null, mapQueryFailed);
+							continue;
+						}
+
+						batchUids.Add(uid);
+					}
+
+					if (batchUids.Count == 0)
+						continue;
+
 					var url = repositoryUrl + "hash/" + string.Join(",", batchUids) + "/yaml";
 					using (new PerfTimer("RemoteMapDetails"))
 					{

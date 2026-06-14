@@ -93,22 +93,20 @@ namespace OpenRA
 				}
 			}
 
-			if (t.IsGenericType &&
+			if ((t.IsGenericType &&
 				(t.GetGenericTypeDefinition() == typeof(List<>) ||
-				t.GetGenericTypeDefinition() == typeof(HashSet<>) ||
-				t.GetGenericTypeDefinition()
-					.BaseTypes()
+				t.GetGenericTypeDefinition() == typeof(HashSet<>))) ||
+				t.BaseTypes()
 					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
-					.Any(bt => bt == typeof(FrozenSet<>))))
+					.Any(bt => bt == typeof(FrozenSet<>)))
 				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 
 			// This is only for documentation generation
-			if (t.IsGenericType &&
-				(t.GetGenericTypeDefinition() == typeof(Dictionary<,>) ||
-				t.GetGenericTypeDefinition()
-					.BaseTypes()
+			if ((t.IsGenericType &&
+				t.GetGenericTypeDefinition() == typeof(Dictionary<,>)) ||
+				t.BaseTypes()
 					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
-					.Any(bt => bt == typeof(FrozenDictionary<,>))))
+					.Any(bt => bt == typeof(FrozenDictionary<,>)))
 			{
 				var result = new StringBuilder();
 				var dict = (System.Collections.IDictionary)v;
