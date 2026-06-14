@@ -4,7 +4,7 @@
 #   make
 #
 # to compile using system libraries for native dependencies, run:
-#   make TARGETPLATFORM=unix-generic
+#   make DEPENDENCIES=system
 #
 # to check the official mods for erroneous yaml files, run:
 #   make test
@@ -14,10 +14,6 @@
 #
 # to compile and install Red Alert, Tiberian Dawn, and Dune 2000, run:
 #   make [prefix=/foo] [bindir=/bar/bin] install
-#
-# to compile and install Red Alert, Tiberian Dawn, and Dune 2000
-# using system libraries for native dependencies, run:
-#   make [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install
 #
 # to install FreeDesktop startup scripts, desktop files, icons, and MIME metadata
 #   make install-linux-shortcuts
@@ -58,7 +54,10 @@ ARCH_X64 = $(shell echo ${DOTNET_RID} | grep x64)
 # Only for use in target version:
 VERSION := $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || (c=$$(git rev-parse --short HEAD 2>/dev/null) && echo git-$$c))
 
-# Detect target platform for dependencies if not given by the user
+# Or use system dependencies on Unix:
+DEPENDENCIES ?= bundled
+
+# Detect target platform if not given by the user
 ifndef TARGETPLATFORM
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
@@ -74,8 +73,6 @@ TARGETPLATFORM = linux-x64
 else
 ifeq ($(UNAME_M),aarch64)
 TARGETPLATFORM = linux-arm64
-else
-TARGETPLATFORM = unix-generic
 endif
 endif
 endif
@@ -86,7 +83,7 @@ endif
 all:
 	@echo "Compiling in ${CONFIGURATION} mode..."
 	@$(DOTNET) build -c ${CONFIGURATION} -nologo -p:TargetPlatform=$(TARGETPLATFORM)
-ifeq ($(TARGETPLATFORM), unix-generic)
+ifneq ($(DEPENDENCIES), bundled)
 	@./configure-system-libraries.sh
 endif
 	@./fetch-geoip.sh
@@ -101,7 +98,7 @@ check:
 	@echo "Compiling in Debug mode..."
 	@$(DOTNET) clean -c Debug --nologo --verbosity minimal
 	@$(DOTNET) build -c Debug -nologo -warnaserror -p:TargetPlatform=$(TARGETPLATFORM)
-ifeq ($(TARGETPLATFORM), unix-generic)
+ifneq ($(DEPENDENCIES), bundled)
 	@./configure-system-libraries.sh
 endif
 	@echo
@@ -167,7 +164,7 @@ help:
 	@echo '  make'
 	@echo
 	@echo 'to compile using system libraries for native dependencies, run:'
-	@echo '  make TARGETPLATFORM=unix-generic'
+	@echo '  make DEPENDENCIES=system'
 	@echo
 	@echo 'to check the official mods for erroneous yaml files, run:'
 	@echo '  make [TREAT_WARNINGS_AS_ERRORS=false] test'
@@ -176,11 +173,7 @@ help:
 	@echo '  make check'
 	@echo
 	@echo 'to compile and install Red Alert, Tiberian Dawn, and Dune 2000 run:'
-	@echo '  make [prefix=/foo] [TARGETPLATFORM=unix-generic] install'
-	@echo
-	@echo 'to compile and install Red Alert, Tiberian Dawn, and Dune 2000'
-	@echo 'using system libraries for native dependencies, run:'
-	@echo '   make [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install'
+	@echo '  make [prefix=/foo] [bindir=/bar/bin] install'
 	@echo
 	@echo 'to install FreeDesktop startup scripts, desktop files, icons, and MIME metadata'
 	@echo '  make install-linux-shortcuts'
