@@ -28,7 +28,13 @@ namespace OpenRA.Mods.Common.Installer
 				var targetPath = Platform.ResolvePath(node.Key);
 				if (File.Exists(targetPath))
 				{
-					Log.Write("install", "Ignoring installed file " + targetPath);
+					Log.Write("install", $"Ignoring installed file: {targetPath}");
+					continue;
+				}
+
+				if (!File.Exists(sourcePath))
+				{
+					Log.Write("install", $"File not found: {sourcePath}");
 					continue;
 				}
 
