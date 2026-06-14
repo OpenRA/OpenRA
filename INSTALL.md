@@ -21,7 +21,7 @@ Linux
 
 To compile OpenRA, run `make` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
 
-The default behaviour on the x86_64 architecture is to download several pre-compiled native libraries using the Nuget packaging manager. If you prefer to use system libraries, compile instead using `make TARGETPLATFORM=unix-generic`.
+The default behaviour on the x86_64 architecture is to download several pre-compiled native libraries using the Nuget packaging manager. If you prefer to use system libraries, compile instead using `make DEPENDENCIES=system`.
 
 If you choose to use system libraries, or your system is not x86_64, you will need to install [SDL 2](https://www.libsdl.org/download-2.0.php), [FreeType](https://gnuwin32.sourceforge.net/packages/freetype.htm), [OpenAL](https://openal-soft.org/), and [liblua 5.1](https://luabinaries.sourceforge.net/download.html) before compiling OpenRA.
 

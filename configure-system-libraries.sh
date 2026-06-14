@@ -15,10 +15,8 @@ create_symlinks()
 	REPLACE=$3
 	SEARCH=$4
 
-	# Exit early if the symlink already exists
-	if [ -L "bin/${REPLACE}" ]; then
-		return 0
-	fi
+	# Override bundled dependencies.
+	rm "bin/${REPLACE}"
 
 	printf "Searching for %s... " "${LABEL}"
 	for DIR in ${SEARCHDIRS} ; do
