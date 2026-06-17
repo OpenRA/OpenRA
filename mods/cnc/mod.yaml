@@ -132,6 +132,7 @@ ChromeLayout:
 	cnc|chrome/ingame-debuginfo.yaml
 	cnc|chrome/music.yaml
 	cnc|chrome/settings.yaml
+	common|chrome/settings-language.yaml
 	cnc|chrome/settings-display.yaml
 	cnc|chrome/settings-gameplay.yaml
 	cnc|chrome/settings-audio.yaml
@@ -157,6 +158,9 @@ FluentMessages:
 	cnc|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
+
+FluentLanguages:
+	en
 
 Voices:
 	cnc|audio/voices.yaml

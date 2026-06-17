@@ -133,6 +133,7 @@ ChromeLayout:
 	common|chrome/mainmenu.yaml
 	common|chrome/mainmenu-prompts.yaml
 	common|chrome/settings.yaml
+	common|chrome/settings-language.yaml
 	common|chrome/settings-display.yaml
 	common|chrome/settings-audio.yaml
 	common|chrome/settings-input.yaml
@@ -180,6 +181,9 @@ FluentMessages:
 	ra|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
+
+FluentLanguages:
+	en
 
 Weapons:
 	ra|weapons/explosions.yaml

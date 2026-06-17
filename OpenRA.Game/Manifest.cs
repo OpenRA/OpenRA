@@ -73,8 +73,7 @@ namespace OpenRA
 		public readonly string SpriteSequenceFormat;
 		public readonly string TerrainFormat;
 
-		// TODO: This should be controlled by a user-selected translation bundle!
-		public readonly string FluentCulture = "en";
+		public readonly ImmutableArray<string> FluentLanguages = ImmutableArray.Create("en");
 		public readonly bool AllowUnusedFluentMessagesInExternalPackages = true;
 
 		static readonly FrozenSet<string> ReservedModuleNames = new HashSet<string>
@@ -83,7 +82,8 @@ namespace OpenRA
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "FluentMessages", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"SpriteSequenceFormat", "TerrainFormat", "RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages", "RendererConstants"
+			"SpriteSequenceFormat", "TerrainFormat", "RequiresMods", "PackageFormats", "AllowUnusedFluentMessagesInExternalPackages",
+			"RendererConstants", "FluentLanguages"
 		}.ToFrozenSet();
 
 		public readonly FrozenDictionary<string, MiniYaml> GlobalModData;
@@ -132,6 +132,8 @@ namespace OpenRA
 			Notifications = YamlList(yaml, "Notifications");
 			Music = YamlList(yaml, "Music");
 			FluentMessages = YamlList(yaml, "FluentMessages");
+			if (yaml.TryGetValue("FluentLanguages", out entry))
+				FluentLanguages = entry.Nodes.Select(n => n.Key).ToImmutableArray();
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			Missions = YamlList(yaml, "Missions");

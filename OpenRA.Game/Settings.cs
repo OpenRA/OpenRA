@@ -360,6 +360,9 @@ namespace OpenRA
 
 		public TextNotificationPoolFilters TextNotificationPoolFilters = TextNotificationPoolFilters.Feedback | TextNotificationPoolFilters.Transients;
 
+		[Desc("BCP 47 language tag for UI strings.")]
+		public string Language = "en";
+
 		public MouseButton ResolveActionButton(MouseActionType actionType)
 		{
 			switch (actionType)
