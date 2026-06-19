@@ -605,6 +605,7 @@ checkbox-check-version-container = Check for Updates
 checkbox-perftext-container = Show Performance Text
 checkbox-sendsysinfo-container = Send System Information
 label-sendsysinfo-checkbox-container-desc = Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+checkbox-enable-discord-service-container = Enable Discord Rich Presence
 label-debug-section-header = Developer
 label-debug-hidden-container-a = Additional developer-specific options can be enabled via the
 label-debug-hidden-container-b = Debug.DisplayDeveloperSettings setting or launch flag

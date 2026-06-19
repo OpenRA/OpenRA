@@ -42,6 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "FETCH_NEWS_CHECKBOX", gameSettings, "FetchNews");
 			SettingsUtils.BindCheckboxPref(panel, "SENDSYSINFO_CHECKBOX", debugSettings, "SendSystemInformation");
 			SettingsUtils.BindCheckboxPref(panel, "CHECK_VERSION_CHECKBOX", debugSettings, "CheckVersion");
+			SettingsUtils.BindCheckboxPref(panel, "ENABLE_DISCORD_SERVICE", gameSettings, "EnableDiscordService");
 
 			var ssi = panel.Get<CheckboxWidget>("SENDSYSINFO_CHECKBOX");
 			ssi.IsDisabled = () => !gameSettings.FetchNews;
@@ -71,6 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var defaultDebugSettings = new DebugSettings();
 			var defaultServerSettings = new ServerSettings();
+			var defaultGameSettings = new GameSettings();
 
 			return () =>
 			{
@@ -85,6 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				debugSettings.CheckVersion = defaultDebugSettings.CheckVersion;
 				debugSettings.EnableDebugCommandsInReplays = defaultDebugSettings.EnableDebugCommandsInReplays;
 				debugSettings.EnableSimulationPerfLogging = defaultDebugSettings.EnableSimulationPerfLogging;
+				gameSettings.EnableDiscordService = defaultGameSettings.EnableDiscordService;
 			};
 		}
 	}
