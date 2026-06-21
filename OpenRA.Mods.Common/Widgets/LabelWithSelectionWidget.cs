@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -27,6 +28,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		// Tracks the displayed text so we can clear the selection if the text changes between frames.
 		string selectionText;
+
+		// Cached highlight rectangles, stored relative to the text position so they stay valid while the chat
+		// scrolls. They are only recalculated when the selection changes, not every frame.
+		readonly List<Rectangle> selectionRects = [];
+		int cachedSelectionStart = -1;
+		int cachedSelectionEnd = -1;
 
 		[ObjectCreator.UseCtor]
 		public LabelWithSelectionWidget(ModData modData)
@@ -46,8 +53,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (text != selectionText)
 			{
-				selectionStart = -1;
-				selectionEnd = -1;
+				ClearSelection();
 				selectionText = text;
 			}
 
@@ -58,38 +64,65 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (selectionStart != -1 && selectionStart != selectionEnd)
 			{
-				var start = Math.Min(selectionStart, selectionEnd);
-				var end = Math.Max(selectionStart, selectionEnd);
+				if (selectionStart != cachedSelectionStart || selectionEnd != cachedSelectionEnd)
+				{
+					cachedSelectionStart = selectionStart;
+					cachedSelectionEnd = selectionEnd;
+					RecalculateSelectionRects(text, font);
+				}
 
 				// Draw one highlight rectangle per line, then render text normally on top.
-				var lines = text.Split('\n');
-				var lineHeight = font.Measure(" ").Y;
-				var charOffset = 0;
-				for (var lineIndex = 0; lineIndex < lines.Length; lineIndex++)
-				{
-					var line = lines[lineIndex];
-					var lineStart = charOffset;
-					var lineEnd = charOffset + line.Length;
-
-					var selStart = AlignToTextElement(line, Math.Max(start, lineStart) - lineStart);
-					var selEnd = AlignToTextElement(line, Math.Min(end, lineEnd) - lineStart);
-
-					if (selStart < selEnd)
-					{
-						var x = position.X + font.Measure(line[..selStart]).X;
-						var y = position.Y + lineIndex * lineHeight + 1;
-						var w = font.Measure(line[selStart..selEnd]).X;
-						var h = lineHeight + 2 * font.TopOffset - 2;
-						WidgetUtils.FillRectWithColor(
-							new Rectangle(x, y, w, h),
-							TextSelectionBackgroundColor);
-					}
-
-					charOffset += line.Length + 1;
-				}
+				foreach (var r in selectionRects)
+					WidgetUtils.FillRectWithColor(
+						new Rectangle(position.X + r.X, position.Y + r.Y, r.Width, r.Height),
+						TextSelectionBackgroundColor);
 			}
 
 			base.DrawInner(text, font, color, position);
+		}
+
+		// Computes the highlight rectangles once per selection change rather than every frame. The rectangles are
+		// stored relative to the text position so they remain correct as the chat scrolls.
+		void RecalculateSelectionRects(string text, SpriteFont font)
+		{
+			selectionRects.Clear();
+
+			var start = Math.Min(selectionStart, selectionEnd);
+			var end = Math.Max(selectionStart, selectionEnd);
+
+			var lines = text.Split('\n');
+			var lineHeight = font.Measure(" ").Y;
+			var height = lineHeight + 2 * font.TopOffset - 2;
+			var charOffset = 0;
+			for (var lineIndex = 0; lineIndex < lines.Length; lineIndex++)
+			{
+				var line = lines[lineIndex];
+				var lineStart = charOffset;
+				var lineEnd = charOffset + line.Length;
+
+				var selStart = AlignToTextElement(line, Math.Max(start, lineStart) - lineStart);
+				var selEnd = AlignToTextElement(line, Math.Min(end, lineEnd) - lineStart);
+
+				if (selStart < selEnd)
+				{
+					var x = font.Measure(line[..selStart]).X;
+					var y = lineIndex * lineHeight + 1;
+					var w = font.Measure(line[selStart..selEnd]).X;
+					selectionRects.Add(new Rectangle(x, y, w, height));
+				}
+
+				charOffset += line.Length + 1;
+			}
+		}
+
+		// Clears the selection together with the cached highlight rectangles so no stale highlight survives.
+		void ClearSelection()
+		{
+			selectionStart = -1;
+			selectionEnd = -1;
+			selectionRects.Clear();
+			cachedSelectionStart = -1;
+			cachedSelectionEnd = -1;
 		}
 
 		static int NextTextElementIndex(string s, int i)
@@ -162,8 +195,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						if (HasMouseFocus)
 						{
-							selectionStart = -1;
-							selectionEnd = -1;
+							ClearSelection();
 							mouseSelecting = false;
 							YieldMouseFocus(mi);
 							YieldKeyboardFocus();
@@ -216,10 +248,7 @@ namespace OpenRA.Mods.Common.Widgets
 						mouseSelecting = false;
 						selectionEnd = GetCharIndexAtPosition(mi.Location);
 						if (selectionStart == selectionEnd)
-						{
-							selectionStart = -1;
-							selectionEnd = -1;
-						}
+							ClearSelection();
 						else
 							TakeKeyboardFocus();
 
