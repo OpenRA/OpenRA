@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -19,8 +20,33 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class LabelWithSelectionWidget : LabelWidget
 	{
+		// Shown as a tooltip when the current selection contains a link, warning that chat links may be unsafe.
+		[FluentReference]
+		const string UrlWarning = "label-chat-url-warning";
+
+		// Common generic top-level domains with three or more letters, used to spot bare links such as
+		// "domain.com" written without a http(s):// or www. prefix. Two-letter TLDs are not listed here:
+		// every country-code TLD (ISO 3166-1 alpha-2) is two letters and is matched generically in UrlRegex.
+		static readonly string[] CommonGenericDomains =
+		[
+			"com", "net", "org", "info", "biz", "app", "dev", "xyz", "online", "site", "tech", "store",
+			"gov", "edu", "club", "shop", "blog", "live", "news", "games", "wiki", "pro",
+		];
+
+		// Matches a http(s):// link (tolerating a malformed single slash), a www. link, or a bare domain ending
+		// in a common generic TLD or any two-letter (country-code) TLD, with optional subdomains and path.
+		static readonly Regex UrlRegex = new(
+			@"(?:https?:/+|www\.)\S+" +
+			@"|(?:[\w-]+\.)+(?:" + string.Join("|", CommonGenericDomains) + @"|[a-z]{2})(?:[/?#]\S*)?\b",
+			RegexOptions.IgnoreCase);
+
 		public readonly Color TextSelectionBackgroundColor = ChromeMetrics.Get<Color>("TextfieldColorHighlight");
 		public string Cursor = ChromeMetrics.Get<string>("DefaultCursor");
+
+		public readonly string TooltipTemplate;
+		public readonly string TooltipContainer;
+
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 
 		int selectionStart = -1;
 		int selectionEnd = -1;
@@ -37,13 +63,20 @@ namespace OpenRA.Mods.Common.Widgets
 
 		[ObjectCreator.UseCtor]
 		public LabelWithSelectionWidget(ModData modData)
-			: base(modData) { }
+			: base(modData)
+		{
+			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+		}
 
 		protected LabelWithSelectionWidget(LabelWithSelectionWidget other)
 			: base(other)
 		{
 			TextSelectionBackgroundColor = other.TextSelectionBackgroundColor;
 			Cursor = other.Cursor;
+			TooltipTemplate = other.TooltipTemplate;
+			TooltipContainer = other.TooltipContainer;
+
+			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override void Draw()
@@ -55,6 +88,9 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				ClearSelection();
 				selectionText = text;
+
+				// The selection (and any link it contained) is gone, so drop a possibly stale warning tooltip.
+				RefreshUrlWarningTooltip();
 			}
 
 			DrawInner(text, font, GetColor(), position);
@@ -231,6 +267,7 @@ namespace OpenRA.Mods.Common.Widgets
 						mouseSelecting = true;
 					}
 
+					RefreshUrlWarningTooltip();
 					return true;
 
 				case MouseInputEvent.Move:
@@ -252,6 +289,7 @@ namespace OpenRA.Mods.Common.Widgets
 						else
 							TakeKeyboardFocus();
 
+						RefreshUrlWarningTooltip();
 						return true;
 					}
 
@@ -282,6 +320,44 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Renderer.SetClipboardText(selected);
 
 			return true;
+		}
+
+		bool SelectionContainsUrl()
+		{
+			if (selectionText == null || selectionStart == -1 || selectionStart == selectionEnd)
+				return false;
+
+			var start = AlignToTextElement(selectionText, Math.Min(selectionStart, selectionEnd));
+			var end = AlignToTextElement(selectionText, Math.Max(selectionStart, selectionEnd));
+			return UrlRegex.IsMatch(selectionText[start..end]);
+		}
+
+		string UrlWarningText() { return FluentProvider.GetMessage(UrlWarning); }
+
+		// Shows the warning tooltip while a link is selected and hides it otherwise. Called whenever the selection
+		// is finalized rather than every frame.
+		void RefreshUrlWarningTooltip()
+		{
+			if (TooltipContainer == null)
+				return;
+
+			if (SelectionContainsUrl())
+				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", (Func<string>)UrlWarningText } });
+			else if (tooltipContainer.IsValueCreated)
+				tooltipContainer.Value.RemoveTooltip();
+		}
+
+		public override void MouseEntered()
+		{
+			RefreshUrlWarningTooltip();
+		}
+
+		public override void MouseExited()
+		{
+			// Only try to remove the tooltip if we know it has been created.
+			// This avoids a crash if the widget (and the container it refers to) are being removed.
+			if (TooltipContainer != null && tooltipContainer.IsValueCreated)
+				tooltipContainer.Value.RemoveTooltip();
 		}
 
 		public override string GetCursor(int2 pos) { return Cursor; }
