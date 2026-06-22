@@ -151,6 +151,7 @@ AllowUnusedFluentMessagesInExternalPackages: false
 
 FluentLanguages:
 	en
+	ru
 
 Weapons:
 	d2k|weapons/debris.yaml

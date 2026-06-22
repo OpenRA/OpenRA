@@ -149,6 +149,7 @@ ChromeLayout:
 
 FluentMessages:
 	common|fluent/common.ftl
+	common|fluent/chrome.ftl
 	common|fluent/ingame-debug.ftl
 	common|fluent/hotkeys.ftl
 	common|fluent/rules.ftl
@@ -161,6 +162,7 @@ AllowUnusedFluentMessagesInExternalPackages: false
 
 FluentLanguages:
 	en
+	ru
 
 Voices:
 	cnc|audio/voices.yaml

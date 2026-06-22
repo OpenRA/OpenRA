@@ -184,6 +184,7 @@ AllowUnusedFluentMessagesInExternalPackages: false
 
 FluentLanguages:
 	en
+	ru
 
 Weapons:
 	ra|weapons/explosions.yaml
