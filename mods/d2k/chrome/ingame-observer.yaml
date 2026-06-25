@@ -34,7 +34,7 @@ Container@OBSERVER_WIDGETS:
 			DisableWorldSounds: true
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
-			X: (WINDOW_WIDTH - WIDTH) / 2
+			X: (WINDOW_WIDTH - WIDTH) / 2 + 50
 			Width: 100
 			Height: 55
 			Children:
@@ -602,6 +602,68 @@ Container@OBSERVER_WIDGETS:
 									Text: label-combat-stats-vision-header
 									Align: Right
 									Shadow: True
+						Container@MAP_DISCOVERY_STATS_HEADERS:
+							X: 0
+							Y: 0
+							Width: 450
+							Height: PARENT_HEIGHT
+							Children:
+								ColorBlock@HEADER_COLOR:
+									X: 0
+									Y: 0
+									Color: 00000090
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
+								GradientColorBlock@HEADER_GRADIENT:
+									X: PARENT_WIDTH - 200
+									Y: 0
+									TopLeftColor: 00000090
+									BottomLeftColor: 00000090
+									Width: 200
+									Height: PARENT_HEIGHT
+								Label@PLAYER_HEADER:
+									X: 40
+									Y: 0
+									Width: 120
+									Height: PARENT_HEIGHT
+									Font: Bold
+									Text: label-map-discovery-player-header
+									Align: Left
+									Shadow: True
+								Label@SHROUD_HEADER:
+									X: 130
+									Y: 0
+									Width: 80
+									Height: PARENT_HEIGHT
+									Font: Bold
+									Text: label-map-discovery-shroud-header
+									Align: Right
+									Shadow: True
+								Label@FOG_HEADER:
+									X: 225
+									Y: 0
+									Width: 80
+									Height: PARENT_HEIGHT
+									Font: Bold
+									Text: label-map-discovery-fog-header
+									Align: Right
+									Shadow: True
+								Label@RADAR_HEADER:
+									X: 285
+									Y: 0
+									Width: 80
+									Height: PARENT_HEIGHT
+									Font: Bold
+									Text: label-map-discovery-radar-header
+									Align: Right
+									Shadow: True
+				DropDownButton@DISPLAY_OPTIONS_DROPDOWN:
+					X: 325
+					Y: 0
+					Width: 180
+					Height: 25
+					Text: dropdown-map-discovery-display-options
+					Font: Bold
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 0
 					Y: 55
@@ -1015,6 +1077,61 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
+						ScrollItem@MAP_DISCOVERY_PLAYER_TEMPLATE:
+							X: 0
+							Y: 0
+							Width: 450
+							Height: 25
+							Background: scrollitem-nohover
+							EnableChildMouseOver: true
+							Children:
+								ColorBlock@PLAYER_COLOR:
+									X: 0
+									Y: 0
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
+								GradientColorBlock@PLAYER_GRADIENT:
+									X: PARENT_WIDTH - 200
+									Y: 0
+									Width: 200
+									Height: PARENT_HEIGHT
+								Image@FLAG:
+									X: 5
+									Y: 4
+									Width: 35
+									Height: PARENT_HEIGHT - 4
+									ImageName: random
+									ImageCollection: flags
+								LabelWithTooltip@PLAYER:
+									X: 40
+									Y: 0
+									Width: 120
+									Height: PARENT_HEIGHT
+									Font: Bold
+									Shadow: True
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+								Label@SHROUD:
+									X: 130
+									Y: 0
+									Width: 80
+									Height: PARENT_HEIGHT
+									Align: Right
+									Shadow: True
+								Label@FOG:
+									X: 225
+									Y: 0
+									Width: 80
+									Height: PARENT_HEIGHT
+									Align: Right
+									Shadow: True
+								Label@RADAR:
+									X: 285
+									Y: 0
+									Width: 80
+									Height: PARENT_HEIGHT
+									Align: Right
+									Shadow: True
 				Container@INCOME_GRAPH_CONTAINER:
 					X: 0
 					Y: 30
@@ -1076,3 +1193,54 @@ Container@OBSERVER_WIDGETS:
 			X: WINDOW_WIDTH - WIDTH - 260
 			Y: 40
 			Width: 175
+
+Container@MAP_DISCOVERY_DISPLAY_OPTIONS_PANEL:
+	Width: 330
+	Height: 120
+	Children:
+		Background@BG:
+			X: 0
+			Y: 0
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Background: button-pressed
+		Checkbox@SHOW_SHROUD_BORDERS_MINIMAP:
+			X: 10
+			Y: 5
+			Width: 300
+			Height: 20
+			Text: checkbox-show-shroud-borders-minimap
+			Font: Regular
+			Background: display-options-checkbox
+		Checkbox@SHOW_FOG_BORDERS_MINIMAP:
+			X: 10
+			Y: 27
+			Width: 300
+			Height: 20
+			Text: checkbox-show-fog-borders-minimap
+			Font: Regular
+			Background: display-options-checkbox
+		Checkbox@HIDE_EXPLORED_AREAS_MINIMAP:
+			X: 10
+			Y: 49
+			Width: 300
+			Height: 20
+			Text: checkbox-hide-explored-areas-minimap
+			Font: Regular
+			Background: display-options-checkbox
+		Checkbox@SHOW_SHROUD_BORDERS_GAMEFIELD:
+			X: 10
+			Y: 71
+			Width: 300
+			Height: 20
+			Text: checkbox-show-shroud-borders-gamefield
+			Font: Regular
+			Background: display-options-checkbox
+		Checkbox@SHOW_FOG_BORDERS_GAMEFIELD:
+			X: 10
+			Y: 93
+			Width: 300
+			Height: 20
+			Text: checkbox-show-fog-borders-gamefield
+			Font: Regular
+			Background: display-options-checkbox
