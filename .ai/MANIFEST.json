@@ -1,0 +1,183 @@
+{
+  "repo_url": "https://github.com/Pummelchen/OpenRA",
+  "indexed_commit": "b0b0544d4adae970fc747e9b01241ef6e80032fc",
+  "previous_indexed_commit": "",
+  "generated_at": "2026-06-26T11:08:43Z",
+  "generator": "generic high-end AI coding agent",
+  "operation_mode": "bootstrap",
+  "primary_languages": [
+    "C#",
+    "YAML",
+    "Shell",
+    "PowerShell",
+    "Lua",
+    "Fluent"
+  ],
+  "frameworks": [
+    ".NET 8",
+    "NUnit",
+    "GitHub Actions"
+  ],
+  "package_managers": [
+    "NuGet"
+  ],
+  "generated_files": [
+    "AI_INDEX.md",
+    "AGENTS.md",
+    ".ai/START_HERE.md",
+    ".ai/PROJECT_MAP.md",
+    ".ai/ARCHITECTURE.md",
+    ".ai/COMPONENTS.md",
+    ".ai/COMMANDS.md",
+    ".ai/TESTING.md",
+    ".ai/SECURITY.md",
+    ".ai/PLAYBOOKS.md",
+    ".ai/KNOWN_UNKNOWNS.md",
+    ".ai/CHANGELOG.md",
+    ".ai/MANIFEST.json"
+  ],
+  "recommended_read_order": [
+    "AI_INDEX.md",
+    "AGENTS.md",
+    ".ai/START_HERE.md",
+    ".ai/PROJECT_MAP.md",
+    ".ai/ARCHITECTURE.md",
+    ".ai/COMMANDS.md",
+    ".ai/TESTING.md",
+    ".ai/SECURITY.md",
+    ".ai/PLAYBOOKS.md",
+    ".ai/KNOWN_UNKNOWNS.md"
+  ],
+  "important_commands": {
+    "install": [
+      "make install"
+    ],
+    "dev": [
+      "make",
+      "./launch-game.sh Game.Mod=ra",
+      "./make.ps1 all",
+      "launch-game.cmd Game.Mod=ra"
+    ],
+    "build": [
+      "make",
+      "./make.ps1 all",
+      "make TARGETPLATFORM=unix-generic"
+    ],
+    "test": [
+      "make tests",
+      "./make.ps1 tests",
+      "make test",
+      "./make.ps1 test",
+      "make check-scripts",
+      "./make.ps1 check-scripts"
+    ],
+    "lint": [
+      "make check",
+      "./make.ps1 check"
+    ],
+    "typecheck": [
+      "make check",
+      "./make.ps1 check"
+    ]
+  },
+  "source_files_used": [
+    "README.md",
+    "INSTALL.md",
+    "CONTRIBUTING.md",
+    "OpenRA.sln",
+    "Directory.Build.props",
+    "Makefile",
+    "make.ps1",
+    ".github/workflows/ci.yml",
+    ".editorconfig",
+    ".gitignore",
+    "launch-game.sh",
+    "launch-game.cmd",
+    "utility.sh",
+    "utility.cmd",
+    "OpenRA.Game/OpenRA.Game.csproj",
+    "OpenRA.Test/OpenRA.Test.csproj",
+    "OpenRA.Launcher/OpenRA.Launcher.csproj",
+    "OpenRA.Server/OpenRA.Server.csproj",
+    "OpenRA.Utility/OpenRA.Utility.csproj",
+    "OpenRA.Mods.Common/OpenRA.Mods.Common.csproj",
+    "OpenRA.Mods.Cnc/OpenRA.Mods.Cnc.csproj",
+    "OpenRA.Mods.D2k/OpenRA.Mods.D2k.csproj",
+    "OpenRA.Platforms.Default/OpenRA.Platforms.Default.csproj",
+    "OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj",
+    "OpenRA.Launcher/Program.cs",
+    "OpenRA.Server/Program.cs",
+    "OpenRA.Utility/Program.cs",
+    "OpenRA.Game/Game.cs",
+    "OpenRA.Game/World.cs",
+    "OpenRA.Game/Settings.cs",
+    "OpenRA.Game/Network/Connection.cs",
+    "OpenRA.Game/Network/OrderManager.cs",
+    "OpenRA.Game/Server/Server.cs",
+    "OpenRA.Game/PlayerDatabase.cs",
+    "mods/ra/mod.yaml",
+    "packaging/functions.sh"
+  ],
+  "changed_files_since_previous_index": [],
+  "refresh_reason": [
+    "bootstrap_no_prior_ai_onboarding_files_detected"
+  ],
+  "migrated_model_specific_files": [],
+  "deprecated_model_specific_files": [],
+  "preserved_model_specific_files_requiring_human_review": [],
+  "warnings": [
+    "Requested base branch main was not found; repository default branch bleed was used.",
+    "Markdown-only changes are ignored by CI according to .github/workflows/ci.yml.",
+    "Connector directory listing was limited; bootstrap used targeted source/config/doc inspection."
+  ],
+  "unknowns": [
+    "No global.json found; .NET 8 is inferred from project config, docs, and CI.",
+    "No Dockerfile or docker-compose.yml found in checked root paths.",
+    "No database migration tooling detected.",
+    "Full issue and PR template inventory could not be enumerated."
+  ],
+  "conflicts": [
+    "Input requested BASE_BRANCH main; repository metadata reports default branch bleed."
+  ],
+  "file_metadata": {
+    "mode": "bootstrap",
+    "indexed_commit": "b0b0544d4adae970fc747e9b01241ef6e80032fc",
+    "last_generated": "2026-06-26T11:08:43Z",
+    "purpose": "Help future AI sessions understand this repository quickly.",
+    "audience": "Any high-capability AI coding agent, regardless of vendor or model family."
+  },
+  "refresh_policy": {
+    "recommended_mode": "event_driven_plus_periodic_check",
+    "regenerate_after_relevant_main_merges": true,
+    "staleness_check_on_pull_request": true,
+    "weekly_check_for_active_repos": true,
+    "monthly_check_for_stable_repos": true,
+    "force_review_after_days": 30,
+    "force_regeneration_after_meaningful_commits": 20,
+    "relevant_change_paths": [
+      "README.md",
+      "INSTALL.md",
+      "CONTRIBUTING.md",
+      "OpenRA.sln",
+      "Directory.Build.props",
+      "Makefile",
+      "make.ps1",
+      ".github/workflows/**",
+      "OpenRA.Game/**",
+      "OpenRA.Launcher/**",
+      "OpenRA.Server/**",
+      "OpenRA.Utility/**",
+      "OpenRA.Mods.Common/**",
+      "OpenRA.Mods.Cnc/**",
+      "OpenRA.Mods.D2k/**",
+      "OpenRA.Platforms.Default/**",
+      "OpenRA.Test/**",
+      "mods/**",
+      "packaging/**",
+      "tests/**",
+      "docs/architecture*",
+      "docs/deployment*",
+      "docs/security*"
+    ]
+  }
+}
