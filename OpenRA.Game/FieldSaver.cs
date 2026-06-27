@@ -94,12 +94,13 @@ namespace OpenRA
 			}
 
 			if (t.IsGenericType &&
-				(t.GetGenericTypeDefinition() == typeof(List<>) ||
-				t.GetGenericTypeDefinition() == typeof(HashSet<>) ||
-				t.GetGenericTypeDefinition()
-					.BaseTypes()
-					.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
-					.Any(bt => bt == typeof(FrozenSet<>))))
+				(t.GetGenericTypeDefinition() == typeof(List<>) || t.GetGenericTypeDefinition() == typeof(HashSet<>)))
+				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
+
+			// FrozenSet may be optimized by the runtime to a non-generic internal type
+			if (t.BaseTypes()
+				.Select(bt => bt.IsGenericType ? bt.GetGenericTypeDefinition() : null)
+				.Any(bt => bt == typeof(FrozenSet<>)))
 				return ((System.Collections.IEnumerable)v).Cast<object>().Select(FormatValue).JoinWith(", ");
 
 			// This is only for documentation generation
