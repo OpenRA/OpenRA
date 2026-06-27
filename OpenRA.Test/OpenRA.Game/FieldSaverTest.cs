@@ -265,6 +265,17 @@ namespace OpenRA.Test
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
+		[TestCase(null, "")]
+		[TestCase(new string[] { }, "")]
+		[TestCase(new string[] { "item1" }, "item1")]
+		[TestCase(new string[] { "item1", "item2", "item3" }, "item1, item2, item3")]
+		public void StringArray_FormatValue_FrozenSet(string[] input, string expected)
+		{
+			var actual = FieldSaver.FormatValue(input?.ToFrozenSet());
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
 		[Test]
 		public void FormatValue_FrozenDictionary()
 		{
