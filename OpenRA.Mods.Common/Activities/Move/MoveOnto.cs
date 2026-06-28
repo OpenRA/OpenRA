@@ -43,10 +43,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (lastVisibleTargetLocation == self.Location)
 				return (true, PathFinder.NoPath);
 
-			// If we are close to the target but can't enter, we wait.
-			if (!Mobile.CanEnterCell(lastVisibleTargetLocation) && Util.AreAdjacentCells(lastVisibleTargetLocation, self.Location))
-				return (false, PathFinder.NoPath);
-
 			// PERF: Don't create a new list every run.
 			// PERF: Also reuse the already created list in the base class.
 			if (SearchCells.Count == 0)
