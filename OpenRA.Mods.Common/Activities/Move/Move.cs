@@ -353,7 +353,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		(CPos Cell, SubCell SubCell)? UnblockDestination(Actor self)
 		{
-			var adjacent = mobile.GetAdjacentCell(self.Location);
+			var adjacent = mobile.GetAdjacentEnterableCell(self.Location);
 			if (adjacent == null)
 				return null;
 			return (adjacent.Value, mobile.GetAvailableSubCell(adjacent.Value, mobile.FromSubCell, ignoreActor));
