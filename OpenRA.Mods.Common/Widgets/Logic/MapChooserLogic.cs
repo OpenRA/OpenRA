@@ -423,6 +423,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						generatedMapPackage?.Dispose();
 						generatedMapPackage = package;
 					})
+				},
+				{
+					"onSave", new Action(() =>
+					{
+						RefreshMaps(MapClassification.User);
+						SetupMapTabs();
+					})
 				}
 			});
 		}
