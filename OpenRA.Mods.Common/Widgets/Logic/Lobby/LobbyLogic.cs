@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -127,6 +128,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
 
+		bool sortPlayersByTeam;
+
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
 		{
@@ -232,6 +235,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			nonEditableSpectatorTemplate = players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
 			newSpectatorTemplate = players.Get("TEMPLATE_NEW_SPECTATOR");
 			colorManager = modRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
+
+			var sortTeamsButton = playerBin.GetOrNull<ButtonWidget>("SORT_TEAMS_BUTTON");
+			if (sortTeamsButton != null)
+			{
+				var sortTeamsDefaultTextColor = sortTeamsButton.TextColor;
+				var sortTeamsActiveBg = playerBin.GetOrNull<ColorBlockWidget>("SORT_TEAMS_ACTIVE");
+				if (sortTeamsActiveBg != null)
+				{
+					sortTeamsActiveBg.IsVisible = () => sortPlayersByTeam;
+					sortTeamsActiveBg.GetColor = () => Color.LimeGreen;
+				}
+
+				void UpdateSortTeamsButtonChrome()
+				{
+					if (sortPlayersByTeam)
+					{
+						sortTeamsButton.Background = "";
+						sortTeamsButton.GetColor = () => Color.White;
+					}
+					else
+					{
+						sortTeamsButton.Background = "button";
+						sortTeamsButton.GetColor = () => sortTeamsDefaultTextColor;
+					}
+				}
+
+				UpdateSortTeamsButtonChrome();
+				sortTeamsButton.OnClick = () =>
+				{
+					sortPlayersByTeam = !sortPlayersByTeam;
+					UpdateSortTeamsButtonChrome();
+					UpdatePlayerList();
+				};
+			}
 
 			foreach (var f in modRules.Actors[SystemActors.World].TraitInfos<FactionInfo>())
 				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
@@ -515,6 +552,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				disconnectButton.GetText = () => disconnectButtonText;
 			}
 
+			var escapeKeyHandler = lobby.GetOrNull<LogicKeyListenerWidget>("ESCAPE_KEYHANDLER");
+			if (escapeKeyHandler != null)
+			{
+				escapeKeyHandler.AddHandler(e =>
+				{
+					if (e.Event != KeyInputEvent.Down || e.Key != Keycode.ESCAPE || e.Modifiers != Modifiers.None)
+						return false;
+
+					if (panel == PanelType.ForceStart || panel == PanelType.Kick)
+					{
+						panel = PanelType.Players;
+						return true;
+					}
+
+					disconnectButton.OnClick();
+					return true;
+				});
+			}
+
 			if (logicArgs.TryGetValue("ChatTemplates", out var templateIds))
 			{
 				foreach (var item in templateIds.Nodes)
@@ -766,7 +822,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var isHost = Game.IsHost;
 			var idx = 0;
-			foreach (var kv in orderManager.LobbyInfo.Slots)
+			var slots = orderManager.LobbyInfo.Slots.AsEnumerable();
+			if (sortPlayersByTeam)
+			{
+				slots = slots
+					.OrderBy(kv =>
+					{
+						var c = orderManager.LobbyInfo.ClientInSlot(kv.Key);
+						if (c == null)
+							return int.MaxValue;
+
+						return c.Team == 0 ? int.MaxValue - 1 : c.Team;
+					})
+					.ThenBy(kv => kv.Key);
+			}
+
+			foreach (var kv in slots)
 			{
 				var key = kv.Key;
 				var slot = kv.Value;

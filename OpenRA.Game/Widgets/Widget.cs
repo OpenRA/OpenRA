@@ -29,7 +29,56 @@ namespace OpenRA.Widgets
 
 		public static TickTime LastTickTime = new(() => Timestep, Game.RunTime);
 
-		static readonly Stack<Widget> WindowList = [];
+		static readonly Stack<(Widget Window, Action OnClose)> WindowStack = [];
+
+		public static bool HasOpenWindows() => WindowStack.Count > 0;
+
+		public static void CloseWindow()
+		{
+			if (WindowStack.Count == 0)
+				return;
+
+			var (hidden, _) = WindowStack.Pop();
+			Root.RemoveChild(hidden);
+			if (hidden.LogicObjects != null)
+				foreach (var l in hidden.LogicObjects)
+					l.BecameHidden();
+
+			if (WindowStack.Count > 0)
+			{
+				var (restore, _) = WindowStack.Peek();
+				Root.AddChild(restore);
+
+				if (restore.LogicObjects != null)
+					foreach (var l in restore.LogicObjects)
+						l.BecameVisible();
+			}
+		}
+
+		public static bool TryEscapeBack()
+		{
+			if (WindowStack.Count == 0)
+				return false;
+
+			var (_, onClose) = WindowStack.Peek();
+			CloseWindow();
+			onClose();
+			return true;
+		}
+
+		static Action ExtractWindowOnClose(WidgetArgs args)
+		{
+			if (args.TryGetValue("onExit", out var onExit) && onExit is Action exit)
+				return exit;
+
+			if (args.TryGetValue("onAbort", out var onAbort) && onAbort is Action abort)
+				return abort;
+
+			if (args.TryGetValue("onCancel", out var onCancel) && onCancel is Action cancel)
+				return cancel;
+
+			return () => { };
+		}
 
 		public static Widget MouseFocusWidget;
 		public static Widget KeyboardFocusWidget;
@@ -43,28 +92,6 @@ namespace OpenRA.Widgets
 			Ui.modData = modData;
 		}
 
-		public static void CloseWindow()
-		{
-			if (WindowList.Count > 0)
-			{
-				var hidden = WindowList.Pop();
-				Root.RemoveChild(hidden);
-				if (hidden.LogicObjects != null)
-					foreach (var l in hidden.LogicObjects)
-						l.BecameHidden();
-			}
-
-			if (WindowList.Count > 0)
-			{
-				var restore = WindowList.Peek();
-				Root.AddChild(restore);
-
-				if (restore.LogicObjects != null)
-					foreach (var l in restore.LogicObjects)
-						l.BecameVisible();
-			}
-		}
-
 		public static Widget OpenWindow(string id)
 		{
 			return OpenWindow(id, []);
@@ -75,16 +102,17 @@ namespace OpenRA.Widgets
 			if (!args.ContainsKey("modData"))
 				args = new WidgetArgs(args) { { "modData", modData } };
 
+			var onClose = ExtractWindowOnClose(args);
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
-			if (WindowList.Count > 0)
-				Root.HideChild(WindowList.Peek());
-			WindowList.Push(window);
+			if (WindowStack.Count > 0)
+				Root.HideChild(WindowStack.Peek().Window);
+			WindowStack.Push((window, onClose));
 			return window;
 		}
 
 		public static Widget CurrentWindow()
 		{
-			return WindowList.Count > 0 ? WindowList.Peek() : null;
+			return WindowStack.Count > 0 ? WindowStack.Peek().Window : null;
 		}
 
 		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args) where T : Widget
@@ -154,7 +182,13 @@ namespace OpenRA.Widgets
 			if (KeyboardFocusWidget != null)
 				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
-			return Root.HandleKeyPressOuter(e);
+			if (Root.HandleKeyPressOuter(e))
+				return true;
+
+			if (e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE && e.Modifiers == Modifiers.None)
+				return TryEscapeBack();
+
+			return false;
 		}
 
 		public static bool HandleTextInput(string text)
@@ -168,9 +202,7 @@ namespace OpenRA.Widgets
 		public static void ResetAll()
 		{
 			Root.RemoveChildren();
-
-			while (WindowList.Count > 0)
-				CloseWindow();
+			WindowStack.Clear();
 		}
 
 		public static void ResetTooltips()

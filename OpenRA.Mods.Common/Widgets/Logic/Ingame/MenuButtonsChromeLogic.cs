@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -23,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool disableSystemButtons;
 		Widget currentWidget;
+		Action closeMenuPanel;
 
 		[ObjectCreator.UseCtor]
 		public MenuButtonsChromeLogic(Widget widget, World world)
@@ -31,6 +34,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			worldRoot = Ui.Root.Get("WORLD_ROOT");
 			menuRoot = Ui.Root.Get("MENU_ROOT");
+
+			var ingameRoot = Ui.Root.GetOrNull("INGAME_ROOT");
+			var escapeKeyHandler = ingameRoot?.GetOrNull<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
+			if (escapeKeyHandler != null)
+			{
+				escapeKeyHandler.AddHandler(e =>
+				{
+					if (e.Event != KeyInputEvent.Down || e.Key != Keycode.ESCAPE || e.Modifiers != Modifiers.None)
+						return false;
+
+					if (currentWidget != null && closeMenuPanel != null)
+					{
+						closeMenuPanel();
+						return true;
+					}
+
+					return false;
+				});
+			}
 
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
@@ -102,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Sound.DisableWorldSounds = true;
 
 			widgetArgs ??= [];
-			widgetArgs.Add("onExit", () =>
+			closeMenuPanel = () =>
 			{
 				if (button.HideIngameUI)
 					worldRoot.IsVisible = () => true;
@@ -115,7 +137,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				menuRoot.RemoveChild(currentWidget);
 				disableSystemButtons = false;
-			});
+				currentWidget = null;
+				closeMenuPanel = null;
+			};
+			widgetArgs.Add("onExit", closeMenuPanel);
 
 			currentWidget = Game.LoadWidget(world, button.MenuContainer, menuRoot, widgetArgs);
 			Game.RunAfterTick(Ui.ResetTooltips);

@@ -30,11 +30,27 @@ Container@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
 					X: 420
-					Width: 48
+					Width: 36
 					Height: 25
 					Text: label-lobby-players-team
-					Align: Center
+					Align: Left
 					Font: Bold
+				Container@SORT_TEAMS_BUTTON_ROOT:
+					X: 458
+					Y: 4
+					Width: 16
+					Height: 16
+					Children:
+						ColorBlock@SORT_TEAMS_ACTIVE:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+						Button@SORT_TEAMS_BUTTON:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Text: ⇕
+							Font: Regular
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: button-lobby-sort-teams
 				Label@LABEL_LOBBY_HANDICAP:
 					X: 478
 					Width: 72

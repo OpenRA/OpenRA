@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using OpenRA.Mods.Common.FileSystem;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Widgets;
@@ -122,6 +123,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				mapEditorShortcut.IsVisible = modLogoVisible;
 
 			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+
+			var escapeKeyHandler = widget.Get<LogicKeyListenerWidget>("GLOBAL_KEYHANDLER");
+			escapeKeyHandler.AddHandler(e =>
+			{
+				if (e.Event != KeyInputEvent.Down || e.Key != Keycode.ESCAPE || e.Modifiers != Modifiers.None)
+					return false;
+
+				if (Ui.HasOpenWindows())
+					return false;
+
+				switch (menuType)
+				{
+					case MenuType.Singleplayer:
+					case MenuType.Extras:
+					case MenuType.MapEditor:
+						SwitchMenu(MenuType.Main);
+						return true;
+					case MenuType.Main:
+						Game.Exit();
+						return true;
+					default:
+						return false;
+				}
+			});
 
 			// Singleplayer menu
 			var singleplayerMenu = widget.Get("SINGLEPLAYER_MENU");

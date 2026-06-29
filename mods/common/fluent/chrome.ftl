@@ -551,6 +551,7 @@ label-lobby-players-name = Name
 label-lobby-players-color = Color
 label-lobby-players-faction = Faction
 label-lobby-players-team = Team
+button-lobby-sort-teams = Group players by team
 label-lobby-players-handicap = Handicap
 label-lobby-players-spawn = Spawn
 label-lobby-players-ready = Ready

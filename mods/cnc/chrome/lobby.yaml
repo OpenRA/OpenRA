@@ -31,13 +31,13 @@ Container@SERVER_LOBBY:
 					Height: 250
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
-					Y: 254
+					Y: 335
 					Width: 211
 					Height: 25
 					Text: dropdownbutton-bg-slots
 				Button@RESET_OPTIONS_BUTTON:
 					X: 15
-					Y: 254
+					Y: 335
 					Width: 211
 					Height: 25
 					Text: button-bg-reset-options
@@ -47,19 +47,19 @@ Container@SERVER_LOBBY:
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							Y: 248
+							Y: 329
 							Width: 151
 							Height: 31
 							Text: button-skirmish-tabs-players-tab
 						Button@OPTIONS_TAB:
 							X: 157
-							Y: 248
+							Y: 329
 							Width: 151
 							Height: 31
 							Text: button-skirmish-tabs-options-tab
 						Button@MUSIC_TAB:
 							X: 314
-							Y: 248
+							Y: 329
 							Width: 151
 							Height: 31
 							Text: label-music-title
@@ -69,31 +69,31 @@ Container@SERVER_LOBBY:
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
-							Y: 248
+							Y: 329
 							Width: 112
 							Height: 31
 							Text: button-multiplayer-tabs-players-tab
 						Button@OPTIONS_TAB:
 							X: 118
-							Y: 248
+							Y: 329
 							Width: 112
 							Height: 31
 							Text: button-multiplayer-tabs-options-tab
 						Button@MUSIC_TAB:
 							X: 236
-							Y: 248
+							Y: 329
 							Width: 112
 							Height: 31
 							Text: label-music-title
 						Button@SERVERS_TAB:
 							X: 354
-							Y: 248
+							Y: 329
 							Width: 111
 							Height: 31
 							Text: button-multiplayer-tabs-servers-tab
 				Button@CHANGEMAP_BUTTON:
 					X: PARENT_WIDTH - WIDTH - 15
-					Y: 254
+					Y: 335
 					Width: 174
 					Height: 25
 					Text: button-bg-changemap
@@ -101,12 +101,12 @@ Container@SERVER_LOBBY:
 					X: 15
 					Y: 30
 					Width: 682
-					Height: 219
+					Height: 300
 				Container@LOBBYCHAT:
 					X: 15
-					Y: 285
+					Y: 366
 					Width: PARENT_WIDTH - 30
-					Height: PARENT_HEIGHT - 300
+					Height: PARENT_HEIGHT - 381
 					Children:
 						ScrollPanel@CHAT_DISPLAY:
 							Width: PARENT_WIDTH

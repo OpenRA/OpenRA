@@ -502,6 +502,8 @@ Templates:
 		Description: DESERT cliff/height edge s24.des (2x2), orientation Full.
 		DeepDescription: Official template 204 from DESERT uses terrain types Rock. It is grouped as Cliffs; orientation means filled terrain with no directional edge.
 		Notes: Auto-described from official tileset YAML; correct this line if the art meaning is wrong.
+		Orientation_ring: Vertical
+		TrainingStatus: orientation_ring
 	Template@DESERT-205:
 		Tileset: DESERT
 		OriginalFilename: s25.des
