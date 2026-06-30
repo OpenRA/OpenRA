@@ -390,6 +390,14 @@ auto-save-interval =
 
 auto-save-max-file-number = { $saves } saves
 
+max-replay-count =
+    .disabled = None
+    .options =
+        { $replays ->
+            [one] 1 replay
+           *[other] { $replays } replays
+        }
+
 ## InputSettingsLogic
 options-mouse-scroll-type =
     .disabled = Disabled

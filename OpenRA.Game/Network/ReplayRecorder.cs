@@ -25,6 +25,7 @@ namespace OpenRA.Network
 		BinaryWriter writer;
 		readonly Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new();
+		string replayDir;
 
 		static bool IsGameStart(byte[] data)
 		{
@@ -46,6 +47,7 @@ namespace OpenRA.Network
 			var filename = chooseFilename();
 			var mod = Game.ModData.Manifest;
 			var dir = Path.Combine(Platform.SupportDir, "Replays", mod.Id, mod.Metadata.Version);
+			replayDir = dir;
 
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
@@ -114,6 +116,36 @@ namespace OpenRA.Network
 
 			preStartBuffer?.Dispose();
 			writer.Close();
+
+			if (replayDir != null)
+				PruneOldReplays(replayDir);
+		}
+
+		static void PruneOldReplays(string dir)
+		{
+			var maxReplayCount = Game.Settings.Game.MaxReplayCount;
+			if (maxReplayCount <= 0)
+				return;
+
+			var directoryInfo = new DirectoryInfo(dir);
+			if (!directoryInfo.Exists)
+				return;
+
+			var oldReplays = directoryInfo.EnumerateFiles("*.orarep")
+				.OrderByDescending(f => f.CreationTimeUtc)
+				.Skip(maxReplayCount);
+
+			foreach (var replay in oldReplays)
+			{
+				try
+				{
+					replay.Delete();
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to delete old replay '{replay.Name}': {e.Message}");
+				}
+			}
 		}
 	}
 }
