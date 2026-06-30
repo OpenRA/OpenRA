@@ -335,6 +335,9 @@ namespace OpenRA
 
 		public bool HideReplayChat = false;
 
+		[Desc("Maximum number of replays to keep per mod/version. Oldest replays beyond this count are deleted on startup. 0 disables pruning.")]
+		public int MaxReplayCount = 0;
+
 		public StatusBarsType StatusBars = StatusBarsType.Standard;
 		public TargetLinesType TargetLines = TargetLinesType.Manual;
 		public bool UsePlayerStanceColors = false;
