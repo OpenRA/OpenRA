@@ -186,8 +186,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (IsJoystickScrolling)
 			{
-				// Base the JoystickScrolling speed on the Scroll Speed slider
-				var rate = 0.01f * Game.Settings.Game.ViewportEdgeScrollStep;
+				// Base the JoystickScrolling speed on the Mouse Pan Speed slider
+				var rate = 0.3f * Game.Settings.Game.ViewportMousePanSpeed;
 
 				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToFloat2() * rate;
 				worldRenderer.Viewport.Scroll(scroll, false);
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					isStandardScrolling = true;
 					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
-					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
+					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location).ToFloat2() * Game.Settings.Game.ViewportMousePanSpeed * d, false);
 					return true;
 				}
 				else if (mi.Event == MouseInputEvent.Up)

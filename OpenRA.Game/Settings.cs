@@ -326,6 +326,7 @@ namespace OpenRA
 		public MouseControlStyle MouseControlStyle = MouseControlStyle.Modern;
 		public MouseScrollType MouseScroll = MouseScrollType.Joystick;
 		public float ViewportEdgeScrollStep = 30f;
+		public float ViewportMousePanSpeed = 1.65f;
 		public float UIScrollSpeed = 50f;
 		public float ZoomSpeed = 0.04f;
 		public int SelectionDeadzone = 24;

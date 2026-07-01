@@ -749,7 +749,8 @@ label-zoom-modifier-container = Zoom Modifier:
 checkbox-alternate-scroll-container = Alternate Mouse Panning
 checkbox-lockmouse-container = Lock Mouse to Window
 label-mouse-scroll-type-container = Pan Behaviour:
-label-scrollspeed-slider-container-scroll-speed = Pan Speed:
+label-scrollspeed-slider-container-scroll-speed = Edge Pan Speed:
+label-mouse-pan-speed-slider-container = Mouse Pan Speed:
 label-zoomspeed-slider-container-zoom-speed = Zoom Speed:
 label-ui-scrollspeed-slider-container-scroll-speed = UI Scroll Speed:
 
