@@ -71,7 +71,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			WidgetUtils.DrawSprite(GetSprite(), RenderOrigin);
+			var sprite = GetSprite();
+			if (sprite == null)
+				return;
+
+			var rb = RenderBounds;
+			if (Width != null && Height != null && rb.Width > 0 && rb.Height > 0 &&
+				(rb.Width != sprite.Bounds.Width || rb.Height != sprite.Bounds.Height))
+				WidgetUtils.DrawSprite(sprite, RenderOrigin, rb.Size);
+			else
+				WidgetUtils.DrawSprite(sprite, RenderOrigin);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

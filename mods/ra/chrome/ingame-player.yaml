@@ -1,7 +1,6 @@
 Container@PLAYER_WIDGETS:
 	Logic: LoadIngameChatLogic
 	Children:
-		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:
 			Logic: RemoveFromControlGroupHotkeyLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
@@ -287,7 +286,7 @@ Container@PLAYER_WIDGETS:
 							ImageName: hold-fire
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
-			X: WINDOW_WIDTH - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 286
 			Y: 10
 			Width: 200
 			Height: 25
@@ -295,8 +294,8 @@ Container@PLAYER_WIDGETS:
 				Image@ICON:
 					X: PARENT_WIDTH - WIDTH
 					Y: 1
-					Width: 24
-					Height: 24
+					Width: 26
+					Height: 26
 					ImageCollection: sidebar-bits
 					ImageName: indicator-muted
 				Label@LABEL:
@@ -307,23 +306,23 @@ Container@PLAYER_WIDGETS:
 					Contrast: true
 		Image@SIDEBAR_BACKGROUND_TOP:
 			Logic: AddFactionSuffixLogic
-			X: WINDOW_WIDTH - 250
+			X: WINDOW_WIDTH - 274
 			Y: 10
-			Width: 238
-			Height: 262
+			Width: 262
+			Height: 288
 			ImageCollection: sidebar
 			ImageName: background-top
 			ClickThrough: false
 			Children:
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
-					X: 9
-					Y: 7
+					X: 10
+					Y: 8
 					Children:
 						Button@BEACON_BUTTON:
 							Logic: BeaconOrderButtonLogic, AddFactionSuffixLogic
-							Width: 28
-							Height: 28
+							Width: 31
+							Height: 31
 							Background: sidebar-button
 							Key: PlaceBeacon
 							TooltipText: button-top-buttons-beacon-tooltip
@@ -331,14 +330,14 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: order-icons
 						Button@SELL_BUTTON:
 							Logic: SellOrderButtonLogic, AddFactionSuffixLogic
-							X: 32
-							Width: 28
-							Height: 28
+							X: 35
+							Width: 31
+							Height: 31
 							Background: sidebar-button
 							Key: Sell
 							TooltipText: button-top-buttons-sell-tooltip
@@ -346,14 +345,14 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: order-icons
 						Button@POWER_BUTTON:
 							Logic: PowerdownOrderButtonLogic, AddFactionSuffixLogic
-							X: 64
-							Width: 28
-							Height: 28
+							X: 70
+							Width: 31
+							Height: 31
 							Background: sidebar-button
 							Key: PowerDown
 							TooltipText: button-top-buttons-power-tooltip
@@ -361,14 +360,14 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: order-icons
 						Button@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic, AddFactionSuffixLogic
-							X: 96
-							Width: 28
-							Height: 28
+							X: 106
+							Width: 31
+							Height: 31
 							Background: sidebar-button
 							Key: Repair
 							TooltipText: button-top-buttons-repair-tooltip
@@ -376,14 +375,14 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: order-icons
 						MenuButton@OPTIONS_BUTTON:
 							Logic: AddFactionSuffixLogic
-							X: 192
-							Width: 28
-							Height: 28
+							X: 211
+							Width: 31
+							Height: 31
 							Background: sidebar-button
 							Key: escape
 							TooltipText: button-top-buttons-options-tooltip
@@ -392,72 +391,74 @@ Container@PLAYER_WIDGETS:
 							VisualHeight: 0
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: order-icons
 									ImageName: options
 				Image@RADAR:
 					Logic: AddFactionSuffixLogic, IngameRadarDisplayLogic
-					X: 8
-					Y: 40
+					X: 9
+					Y: 44
+					Width: 244
+					Height: 244
 					ImageCollection: sidebar
 					ImageName: radar
 					Children:
 						LogicTicker@RADAR_TICKER:
 						ColorBlock@RADAR_FADETOBLACK:
-							Width: 222
-							Height: 222
+							Width: 244
+							Height: 244
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
 							X: 1
 							Y: 1
-							Width: 220
-							Height: 220
+							Width: 242
+							Height: 242
 							SoundUp: RadarUp
 							SoundDown: RadarDown
 							Children:
 						VideoPlayer@PLAYER:
 							X: 1
 							Y: 1
-							Width: 220
-							Height: 220
+							Width: 242
+							Height: 242
 							Skippable: false
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
-			X: WINDOW_WIDTH - 250
-			Y: 300
-			Width: 238
-			Height: 306
+			X: WINDOW_WIDTH - 274
+			Y: 329
+			Width: 262
+			Height: 337
 			Children:
 				Container@PALETTE_BACKGROUND:
 					Children:
 						Container@ROW_TEMPLATE:
-							Width: 238
-							Height: 47
+							Width: 262
+							Height: 51
 							ClickThrough: true
 							Children:
 								Image@ROW_BGND:
 									Logic: AddFactionSuffixLogic
-									X: 40
-									Width: 190
-									Height: 47
+									X: 44
+									Width: 208
+									Height: 51
 									ImageCollection: sidebar
 									ImageName: background-iconbg
 						Container@BAR_ROW_TEMPLATE:
-							Width: 238
-							Height: 14
+							Width: 262
+							Height: 15
 							ClickThrough: true
 							Children:
 								Image@BAR_ROW_BGND:
 									Logic: AddFactionSuffixLogic
-									Width: 238
-									Height: 14
+									Width: 262
+									Height: 15
 									ImageCollection: sidebar
 									ImageName: background-iconrow-mid
 						Image@BOTTOM_CAP:
 							Logic: AddFactionSuffixLogic
-							Width: 238
-							Height: 8
+							Width: 262
+							Height: 9
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-bottom
@@ -465,46 +466,46 @@ Container@PLAYER_WIDGETS:
 				Container@PALETTE_FOREGROUND:
 					Children:
 						ColorBlock@PALETTE_SOLID_BACKGROUND:
-							X: 40
+							X: 44
 							Y: 0
-							Width: 190
-							Height: 296
+							Width: 208
+							Height: 326
 							Color: 1f1f1fff
 						Image@ROW_TEMPLATE:
 							Logic: AddFactionSuffixLogic
-							Width: 238
-							Height: 47
+							Width: 262
+							Height: 51
 							IgnoreMouseOver: true
 							ImageCollection: sidebar
 							ImageName: background-iconrow
 						Container@BAR_ROW_TEMPLATE:
-							Width: 238
-							Height: 14
+							Width: 262
+							Height: 15
 							IgnoreMouseOver: true
 							Children:
 								Image@BAR_ROW_LEFT:
 									Logic: AddFactionSuffixLogic
 									Width: 3
-									Height: 14
+									Height: 15
 									ImageCollection: sidebar
 									ImageName: background-iconrow-left
 								Image@BAR_ROW_RIGHT:
 									Logic: AddFactionSuffixLogic
-									X: 235
+									X: 259
 									Width: 3
-									Height: 14
+									Height: 15
 									ImageCollection: sidebar
 									ImageName: background-iconrow-right
 				Container@PRODUCTION_TYPES:
-					X: 7
+					X: 8
 					Y: 2
-					Width: 29
-					Height: 296
+					Width: 32
+					Height: 326
 					Children:
 						ProductionTypeButton@BUILDING:
 							Logic: AddFactionSuffixLogic
-							Width: 28
-							Height: 28
+							Width: 31
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-building-tooltip
@@ -513,14 +514,14 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeBuilding
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@DEFENSE:
 							Logic: AddFactionSuffixLogic
-							Y: 40
-							Width: 28
-							Height: 28
+							Y: 34
+							Width: 31
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-defense-tooltip
@@ -529,14 +530,14 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeDefense
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
 							Logic: AddFactionSuffixLogic
-							Y: 80
-							Width: 28
-							Height: 28
+							Y: 68
+							Width: 31
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-infantry-tooltip
@@ -545,14 +546,14 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeInfantry
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
 							Logic: AddFactionSuffixLogic
-							Y: 120
-							Width: 28
-							Height: 28
+							Y: 102
+							Width: 31
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-vehicle-tooltip
@@ -561,14 +562,14 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeVehicle
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
 							Logic: AddFactionSuffixLogic
-							Y: 160
-							Width: 28
-							Height: 28
+							Y: 136
+							Width: 31
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-aircraft-tooltip
@@ -577,14 +578,14 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeAircraft
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						ProductionTypeButton@NAVAL:
 							Logic: AddFactionSuffixLogic
-							Y: 200
-							Width: 28
-							Height: 28
+							Y: 170
+							Width: 31
+							Height: 31
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-naval-tooltip
@@ -593,49 +594,50 @@ Container@PLAYER_WIDGETS:
 							Key: ProductionTypeNaval
 							Children:
 								Image@ICON:
-									X: 6
-									Y: 6
+									X: 7
+									Y: 7
 									ImageCollection: production-icons
 						Button@SCROLL_UP_BUTTON:
 							Logic: AddFactionSuffixLogic
-							Y: 241
-							Width: 28
-							Height: 22
+							Y: 265
+							Width: 31
+							Height: 24
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-scroll-up-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:
-									X: 6
+									X: 7
 									Y: 3
 									ImageCollection: scrollpanel-decorations
 									ImageName: up
 						Button@SCROLL_DOWN_BUTTON:
 							Logic: AddFactionSuffixLogic
-							Y: 274
-							Width: 28
-							Height: 22
+							Y: 301
+							Width: 31
+							Height: 24
 							VisualHeight: 0
 							Background: sidebar-button
 							TooltipText: button-production-types-scroll-down-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:
-									X: 6
+									X: 7
 									Y: 3
 									ImageCollection: scrollpanel-decorations
 									ImageName: down
 				ProductionPalette@PRODUCTION_PALETTE:
-					X: 42
+					X: 46
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: productionpalette-sidebar-production-palette.ready
 					HoldText: productionpalette-sidebar-production-palette.hold
-					IconSize: 62, 46
+					IconSize: 68, 50
 					IconMargin: 1, 1
 					IconSpriteOffset: -1, -1
-					BarHeight: 14
+					BarHeight: 15
+					SmoothScaleIcons: false
 					ButtonsPerBar: 4
 					BarButtonBackground: sidebar-button
 					HotkeyPrefix: Production
@@ -643,10 +645,10 @@ Container@PLAYER_WIDGETS:
 					SelectProductionBuildingHotkey: SelectProductionBuilding
 		Image@SIDEBAR_MONEYBIN:
 			Logic: AddFactionSuffixLogic
-			X: WINDOW_WIDTH - 250
-			Y: 272
-			Width: 238
-			Height: 28
+			X: WINDOW_WIDTH - 274
+			Y: 298
+			Width: 262
+			Height: 31
 			ImageCollection: sidebar
 			ImageName: background-moneybin
 			ClickThrough: false
@@ -670,8 +672,10 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
 						Image@CASH_ICON:
-							X: -21
+							X: -23
 							Y: 4
+							Width: 13
+							Height: 13
 							ImageCollection: cash-icons
 							ImageName: cash-normal
 				LabelWithTooltip@POWER:
@@ -688,14 +692,16 @@ Container@PLAYER_WIDGETS:
 						Image@POWER_ICON:
 							X: PARENT_WIDTH + 4
 							Y: 4
+							Width: 13
+							Height: 13
 							ImageCollection: power-icons
 							ImageName: power-normal
 		Container@PRODUCTION_QUEUE_ROOT:
 			Logic: ProductionQueueOverviewLogic
-			X: WINDOW_WIDTH - 250
-			Y: 610
-			Width: 238
-			Height: 256
+			X: WINDOW_WIDTH - 274
+			Y: 666
+			Width: 262
+			Height: 282
 			Children:
 				LogicTicker@PRODUCTION_QUEUE_TICKER:
 				ProductionQueueOverview@PRODUCTION_QUEUE_OVERVIEW:
@@ -704,13 +710,13 @@ Container@PLAYER_WIDGETS:
 					TooltipContainer: TOOLTIP_CONTAINER
 					ProductionPaletteWidget: PRODUCTION_PALETTE
 					TitleText: Building que
-					CategoryIconSize: 28, 28
-					QueueIconSize: 32, 32
-					CategoryColumnX: 7
-					QueueStartX: 42
-					RowHeight: 40
+					CategoryIconSize: 31, 31
+					QueueIconSize: 36, 36
+					CategoryColumnX: 8
+					QueueStartX: 46
+					RowHeight: 44
 					TitleHeight: 16
-					PriorityButtonSize: 14
+					PriorityButtonSize: 15
 		Container@PRODUCTION_OVERVIEW_ROOT:
 			Logic: ProductionOverviewLogic
 			X: (WINDOW_WIDTH - WIDTH) / 2
@@ -732,6 +738,7 @@ Container@PLAYER_WIDGETS:
 					TitleBarHeight: 14
 		Container@HPF_ROOT:
 			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
-			X: WINDOW_WIDTH - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 286
 			Y: 40
 			Width: 175
+		Container@CHAT_ROOT:

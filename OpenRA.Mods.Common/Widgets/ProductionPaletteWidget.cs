@@ -500,6 +500,100 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
+	public class ProductionBarAdvancedRallyButtonWidget : ButtonWidget
+	{
+		static readonly Color FillActive = Color.FromArgb(255, 205, 110, 24);
+		static readonly Color FillActiveHover = Color.FromArgb(255, 235, 132, 30);
+		static readonly Color FillDisabled = Color.FromArgb(255, 50, 50, 70);
+
+		public Func<bool> HasRallyPoint;
+
+		[ObjectCreator.UseCtor]
+		public ProductionBarAdvancedRallyButtonWidget(ModData modData)
+			: base(modData)
+		{
+			VisualHeight = 0;
+		}
+
+		protected ProductionBarAdvancedRallyButtonWidget(ProductionBarAdvancedRallyButtonWidget other)
+			: base(other)
+		{
+			HasRallyPoint = other.HasRallyPoint;
+		}
+
+		public override ProductionBarAdvancedRallyButtonWidget Clone() { return new ProductionBarAdvancedRallyButtonWidget(this); }
+
+		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
+		{
+			if (disabled)
+			{
+				WidgetUtils.FillRectWithColor(rect, FillDisabled);
+				return;
+			}
+
+			if (highlighted)
+			{
+				WidgetUtils.FillRectWithColor(rect, pressed || hover ? FillActiveHover : FillActive);
+				return;
+			}
+
+			if (!string.IsNullOrEmpty(Background))
+				ButtonWidget.DrawBackground(Background, rect, disabled, pressed, hover, false);
+			else
+				WidgetUtils.FillRectWithColor(rect, Color.FromArgb(255, 35, 35, 55));
+		}
+
+		static void DrawRallyGlyph(Rectangle rb, int usableWidth, int2 stateOffset, Color color, bool drawPlus)
+		{
+			var center = new float2(
+				rb.X + usableWidth / 2f + stateOffset.X,
+				rb.Y + rb.Height / 2f + stateOffset.Y);
+			var radius = Math.Max(2f, Math.Min(usableWidth, rb.Height) * 0.32f);
+			const int segments = 14;
+			const float width = 1f;
+			var cr = Game.Renderer.RgbaColorRenderer;
+			for (var i = 0; i < segments; i++)
+			{
+				var a = (float)(2 * Math.PI * i / segments);
+				var b = (float)(2 * Math.PI * (i + 1) / segments);
+				var p0 = new float3(center.X + (float)Math.Cos(a) * radius, center.Y + (float)Math.Sin(a) * radius, 0);
+				var p1 = new float3(center.X + (float)Math.Cos(b) * radius, center.Y + (float)Math.Sin(b) * radius, 0);
+				cr.DrawLine(p0, p1, width, color);
+			}
+
+			if (drawPlus)
+			{
+				var plus = radius * 0.55f;
+				cr.DrawLine(
+					new float3(center.X - plus, center.Y, 0),
+					new float3(center.X + plus, center.Y, 0),
+					width,
+					color);
+				cr.DrawLine(
+					new float3(center.X, center.Y - plus, 0),
+					new float3(center.X, center.Y + plus, 0),
+					width,
+					color);
+			}
+			else
+				TargetLineRenderable.DrawTargetMarker(color, new int2((int)center.X, (int)center.Y), 1);
+		}
+
+		public override void Draw()
+		{
+			var rb = RenderBounds;
+			var disabled = IsDisabled();
+			var highlighted = IsHighlighted();
+			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : int2.Zero;
+			var hover = Ui.MouseOverWidget == this || Children.FirstOrDefault(c => c == Ui.MouseOverWidget) != null;
+			var hasRallyPoint = HasRallyPoint?.Invoke() ?? false;
+			var iconColor = disabled ? GetColorDisabled() : highlighted ? Color.FromArgb(255, 255, 224, 180) : GetColor();
+
+			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+			DrawRallyGlyph(rb, UsableWidth, stateOffset, iconColor, !hasRallyPoint);
+		}
+	}
+
 	public class ProductionPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
@@ -515,6 +609,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string BarButtonBackground = null;
 		public readonly int BarPriorityButtonIndex = 0;
 		public readonly int BarBulkButtonIndex = 1;
+		public readonly int BarAdvancedRallyButtonIndex = 2;
 		public readonly int BarCancelButtonIndex = 3;
 
 		public readonly float2 QueuedOffset = new(4, 2);
@@ -544,6 +639,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string SymbolsFont = "Symbols";
 
 		public readonly bool DrawTime = true;
+		public readonly bool SmoothScaleIcons = true;
 
 		[FluentReference]
 		public string ReadyText = "";
@@ -603,6 +699,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Player cachedQueueOwner;
 		IProductionIconOverlay[] pios;
+		static readonly HashSet<string> AdvancedRallyGroups =
+			new(StringComparer.Ordinal) { "Infantry", "Vehicle", "Aircraft", "Ship" };
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError)
@@ -651,7 +749,7 @@ namespace OpenRA.Mods.Common.Widgets
 			overlayFont = Game.Renderer.Fonts[OverlayFont];
 			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
 
-			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
+			iconOffset = (0.5f * IconSize.ToFloat2() + IconSpriteOffset).Round();
 			HoldText = FluentProvider.GetMessage(HoldText);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			ReadyText = FluentProvider.GetMessage(ReadyText);
@@ -745,6 +843,59 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 
 			return CurrentQueue.BuildableItems().All(a => a.Name != icon.Name);
+		}
+
+		bool SupportsAdvancedRally(ProductionQueue queue)
+		{
+			if (queue == null)
+				return false;
+
+			var group = queue.Info.Group ?? queue.Info.Type;
+			return AdvancedRallyGroups.Contains(group);
+		}
+
+		AdvancedProductionRallyPoints GetAdvancedRallyPointsTrait()
+		{
+			return World.LocalPlayer?.PlayerActor.TraitOrDefault<AdvancedProductionRallyPoints>();
+		}
+
+		bool IsBarAdvancedRallyButtonDisabled(ProductionIcon icon)
+		{
+			return CurrentQueue == null
+				|| icon?.ProductionQueue == null
+				|| !SupportsAdvancedRally(icon.ProductionQueue)
+				|| GetAdvancedRallyPointsTrait() == null;
+		}
+
+		bool HasAdvancedRallyPoint(ProductionIcon icon)
+		{
+			if (icon == null)
+				return false;
+
+			var rallyPoints = GetAdvancedRallyPointsTrait();
+			return rallyPoints != null && rallyPoints.HasRallyPoint(icon.Name);
+		}
+
+		bool IsAdvancedRallyOrderActive(ProductionIcon icon)
+		{
+			return World.OrderGenerator is AdvancedProductionRallyOrderGenerator generator
+				&& generator.Matches(icon?.ProductionQueue, icon?.Name);
+		}
+
+		bool HandleSetAdvancedRally(ProductionIcon icon)
+		{
+			if (IsBarAdvancedRallyButtonDisabled(icon))
+				return false;
+
+			if (IsAdvancedRallyOrderActive(icon))
+			{
+				World.CancelInputMode();
+				return true;
+			}
+
+			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+			World.OrderGenerator = new AdvancedProductionRallyOrderGenerator(World, icon.ProductionQueue, icon.Name);
+			return true;
 		}
 
 		bool HandlePrioritizeProduction(ProductionIcon icon)
@@ -1190,6 +1341,60 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		void SyncAdvancedRallyButtonWidgets()
+		{
+			var rallyButtons = Children.OfType<ProductionBarAdvancedRallyButtonWidget>().ToList();
+			var shouldShowButtons = SupportsAdvancedRally(CurrentQueue) && GetAdvancedRallyPointsTrait() != null;
+
+			if (BarHeight <= 0 || ButtonsPerBar <= 0 || icons.Count == 0 || !shouldShowButtons)
+			{
+				foreach (var btn in rallyButtons)
+					RemoveChild(btn);
+
+				return;
+			}
+
+			var iconRects = icons.Keys.ToList();
+			var buttonWidth = IconSize.X / ButtonsPerBar;
+			var ro = RenderOrigin;
+
+			while (rallyButtons.Count > iconRects.Count)
+			{
+				RemoveChild(rallyButtons[^1]);
+				rallyButtons.RemoveAt(rallyButtons.Count - 1);
+			}
+
+			for (var i = 0; i < iconRects.Count; i++)
+			{
+				var iconRect = iconRects[i];
+				var pi = icons[iconRect];
+
+				ProductionBarAdvancedRallyButtonWidget btn;
+				if (i >= rallyButtons.Count)
+				{
+					btn = new ProductionBarAdvancedRallyButtonWidget(modData);
+					AddChild(btn);
+				}
+				else
+					btn = rallyButtons[i];
+
+				btn.Background = resolvedBarButtonBackground;
+				btn.Bounds = new WidgetBounds(
+					iconRect.X - ro.X + BarAdvancedRallyButtonIndex * buttonWidth,
+					iconRect.Y - ro.Y + IconSize.Y,
+					buttonWidth,
+					BarHeight);
+				btn.OnClick = () =>
+				{
+					if (!HandleSetAdvancedRally(pi))
+						Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickDisabledSound, null);
+				};
+				btn.IsDisabled = () => IsBarAdvancedRallyButtonDisabled(pi);
+				btn.IsHighlighted = () => IsAdvancedRallyOrderActive(pi) || HasAdvancedRallyPoint(pi);
+				btn.HasRallyPoint = () => HasAdvancedRallyPoint(pi);
+			}
+		}
+
 		void SyncCancelButtonWidgets()
 		{
 			var cancelButtons = Children.OfType<ProductionBarCancelButtonWidget>().ToList();
@@ -1249,6 +1454,8 @@ namespace OpenRA.Mods.Common.Widgets
 					RemoveChild(btn);
 				foreach (var btn in Children.OfType<ProductionBarBulkButtonWidget>().ToList())
 					RemoveChild(btn);
+				foreach (var btn in Children.OfType<ProductionBarAdvancedRallyButtonWidget>().ToList())
+					RemoveChild(btn);
 
 				if (DisplayedIconCount != 0)
 				{
@@ -1299,6 +1506,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			SyncPriorityButtonWidgets();
 			SyncBulkButtonWidgets();
+			SyncAdvancedRallyButtonWidgets();
 			SyncCancelButtonWidgets();
 
 			eventBounds = BarHeight > 0
@@ -1307,6 +1515,23 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (oldIconCount != DisplayedIconCount)
 				OnIconCountChanged(oldIconCount, DisplayedIconCount);
+		}
+
+		void DrawQueuedCount(int count, float2 iconPos)
+		{
+			var pos = QueuedOffset;
+			if (QueuedTextAlign != TextAlign.Left)
+			{
+				var size = overlayFont.Measure(count.ToString(NumberFormatInfo.CurrentInfo));
+
+				pos = QueuedTextAlign == TextAlign.Center ?
+					new float2(QueuedOffset.X - size.X / 2, QueuedOffset.Y) :
+					new float2(QueuedOffset.X - size.X, QueuedOffset.Y);
+			}
+
+			overlayFont.DrawTextWithContrast(count.ToString(NumberFormatInfo.CurrentInfo),
+				iconPos + pos,
+				TextColor, Color.Black, 1);
 		}
 
 		public override void Draw()
@@ -1319,14 +1544,16 @@ namespace OpenRA.Mods.Common.Widgets
 			var buildableItems = CurrentQueue.BuildableItems();
 
 			// Icons
-			Game.Renderer.EnableAntialiasingFilter();
+			if (SmoothScaleIcons)
+				Game.Renderer.EnableAntialiasingFilter();
 			foreach (var icon in icons.Values)
 			{
-				WidgetUtils.DrawSpriteCentered(icon.Sprite, icon.Palette, icon.Pos + iconOffset);
+				var center = (icon.Pos + iconOffset).Round();
+				WidgetUtils.DrawSpriteCentered(icon.Sprite, icon.Palette, center);
 
 				// Draw the ProductionIconOverlay's sprites
 				foreach (var pio in pios.Where(p => p.IsOverlayActive(icon.Actor)))
-					WidgetUtils.DrawSpriteCentered(pio.Sprite, worldRenderer.Palette(pio.Palette), icon.Pos + iconOffset + pio.Offset(IconSize));
+					WidgetUtils.DrawSpriteCentered(pio.Sprite, worldRenderer.Palette(pio.Palette), center + pio.Offset(IconSize));
 
 				// Build progress
 				if (icon.Queued.Count > 0)
@@ -1337,19 +1564,21 @@ namespace OpenRA.Mods.Common.Widgets
 							* (clock.CurrentSequence.Length - 1) / first.TotalTime);
 					clock.Tick();
 
-					WidgetUtils.DrawSpriteCentered(clock.Image, icon.IconClockPalette, icon.Pos + iconOffset);
+					WidgetUtils.DrawSpriteCentered(clock.Image, icon.IconClockPalette, center);
 				}
 				else if (!buildableItems.Any(a => a.Name == icon.Name))
-					WidgetUtils.DrawSpriteCentered(cantBuild.Image, icon.IconDarkenPalette, icon.Pos + iconOffset);
+					WidgetUtils.DrawSpriteCentered(cantBuild.Image, icon.IconDarkenPalette, center);
 			}
 
-			Game.Renderer.DisableAntialiasingFilter();
+			if (SmoothScaleIcons)
+				Game.Renderer.DisableAntialiasingFilter();
 
 			// Overlays
 			foreach (var icon in icons.Values)
 			{
-				var total = icon.Queued.Count;
-				if (total > 0)
+				var queuedCount = icon.Queued.Count;
+
+				if (queuedCount > 0)
 				{
 					var first = icon.Queued[0];
 					var waiting = !CurrentQueue.IsProducing(first) && !first.Done;
@@ -1376,22 +1605,8 @@ namespace OpenRA.Mods.Common.Widgets
 						symbolFont.DrawTextWithContrast(InfiniteSymbol,
 							icon.Pos + infiniteOffset,
 							TextColor, Color.Black, 1);
-					else if (total > 1 || waiting)
-					{
-						var pos = QueuedOffset;
-						if (QueuedTextAlign != TextAlign.Left)
-						{
-							var size = overlayFont.Measure(total.ToString(NumberFormatInfo.CurrentInfo));
-
-							pos = QueuedTextAlign == TextAlign.Center ?
-								new float2(QueuedOffset.X - size.X / 2, QueuedOffset.Y) :
-								new float2(QueuedOffset.X - size.X, QueuedOffset.Y);
-						}
-
-						overlayFont.DrawTextWithContrast(total.ToString(NumberFormatInfo.CurrentInfo),
-							icon.Pos + pos,
-							TextColor, Color.Black, 1);
-					}
+					else if (queuedCount > 1 || waiting)
+						DrawQueuedCount(queuedCount, icon.Pos);
 				}
 
 				if (CurrentQueue is BulkProductionQueue bulkProductionQueue)

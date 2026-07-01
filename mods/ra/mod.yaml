@@ -113,7 +113,7 @@ Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml
-	common|chrome/ingame-chat.yaml
+	ra|chrome/ingame-chat.yaml
 	common|chrome/ingame-transients.yaml
 	common|chrome/ingame-fmvplayer.yaml
 	common|chrome/ingame-info.yaml

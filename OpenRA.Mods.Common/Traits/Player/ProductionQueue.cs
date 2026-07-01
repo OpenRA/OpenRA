@@ -578,9 +578,20 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			count = Math.Min(Math.Max(count, 0), 999);
 			if (count <= 0)
+			{
 				productionTargets.Remove(itemName);
-			else
-				productionTargets[itemName] = count;
+				var inQueue = Queue.Count(i => i.Item == itemName);
+				if (inQueue > 0)
+					CancelProduction(itemName, (uint)inQueue, adjustProductionTarget: false);
+
+				return;
+			}
+
+			productionTargets[itemName] = count;
+
+			var queued = Queue.Count(i => i.Item == itemName);
+			if (queued > count)
+				CancelProduction(itemName, (uint)(queued - count), adjustProductionTarget: false);
 
 			TryFillProductionTarget(Actor, itemName);
 		}
@@ -739,7 +750,7 @@ namespace OpenRA.Mods.Common.Traits
 			Queue.FirstOrDefault(a => a.Item == itemName)?.Pause(paused);
 		}
 
-		protected virtual void CancelProduction(string itemName, uint numberToCancel)
+		protected virtual void CancelProduction(string itemName, uint numberToCancel, bool adjustProductionTarget = true)
 		{
 			var cancelled = 0;
 			for (var i = 0; i < numberToCancel; i++)
@@ -750,7 +761,7 @@ namespace OpenRA.Mods.Common.Traits
 				cancelled++;
 			}
 
-			if (cancelled > 0)
+			if (cancelled > 0 && adjustProductionTarget)
 				ReduceProductionTarget(itemName, cancelled);
 		}
 

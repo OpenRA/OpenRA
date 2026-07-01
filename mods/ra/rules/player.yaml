@@ -11,6 +11,7 @@ EditorPlayer:
 Player:
 	Inherits: ^BasePlayer
 	TechTree:
+	AdvancedProductionRallyPoints:
 	ClassicProductionQueue@Building:
 		Type: Building
 		DisplayOrder: 0

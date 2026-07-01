@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		static readonly Color PriorityFillHover = Color.FromArgb(255, 60, 60, 75);
 		static readonly Color PriorityFillPressed = Color.FromArgb(255, 110, 90, 25);
 		static readonly Color PriorityFillDisabled = Color.FromArgb(255, 50, 50, 70);
-		const float QueueIconScale = 1.15f;
+		const float QueueIconScale = 1f;
 
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 		public readonly string TooltipContainer;
@@ -437,7 +437,7 @@ namespace OpenRA.Mods.Common.Widgets
 					sprite = disabledSprite;
 			}
 
-			const int inset = 6;
+			const int inset = 7;
 			var scale = Math.Min(
 				(rect.Width - 2 * inset) / sprite.Size.X,
 				(rect.Height - 2 * inset) / sprite.Size.Y);
@@ -451,7 +451,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var scale = Math.Min(
 				(rect.Width - 2 * inset) / sprite.Size.X,
 				(rect.Height - 2 * inset) / sprite.Size.Y) * scaleMultiplier;
-			var center = new float2(rect.X + rect.Width / 2f, rect.Y + rect.Height / 2f);
+			var center = new float2(rect.X + rect.Width / 2f, rect.Y + rect.Height / 2f).Round();
 			WidgetUtils.DrawSpriteCentered(sprite, palette, center, scale);
 		}
 
@@ -470,18 +470,15 @@ namespace OpenRA.Mods.Common.Widgets
 			var palette = worldRenderer.Palette(paletteName);
 			DrawScaledActorIcon(icon.Image, palette, iconRect, inset: 2, scaleMultiplier: QueueIconScale);
 
-			var queueNumberText = (block.StartIndex + 1).ToString(NumberFormatInfo.CurrentInfo);
-			var queueNumberSize = overlayFont.Measure(queueNumberText);
-			var queueNumberPos = new float2(
-				iconRect.Right - queueNumberSize.X - 1,
-				iconRect.Bottom - queueNumberSize.Y - 1);
-			overlayFont.DrawTextWithContrast(queueNumberText, queueNumberPos, CountColor, Color.Black, 1);
+			var queued = block.Queue.AllQueued().Where(a => a.Item == block.ItemName).ToList();
+			var queuedCount = queued.Count;
 
 			var current = block.Queue.CurrentItem();
 			var isBuildingNow = block.StartIndex == 0 &&
 				current != null &&
 				!current.Done &&
 				current.Item == block.ItemName;
+			var waiting = queuedCount > 0 && !isBuildingNow;
 			if (isBuildingNow)
 			{
 				if (!clocks.ContainsKey(block.Queue))
@@ -498,13 +495,12 @@ namespace OpenRA.Mods.Common.Widgets
 					(iconRect.Width - 4f) / queueClock.Image.Size.X,
 					(iconRect.Height - 4f) / queueClock.Image.Size.Y) * QueueIconScale;
 				WidgetUtils.DrawSpriteCentered(queueClock.Image, clockPalette, clockCenter, clockScale);
+			}
 
-				var timerText = WidgetUtils.FormatTime(block.Queue.RemainingTimeActual(current), world.Timestep);
-				var timerSize = overlayFont.Measure(timerText);
-				var timerPos = new float2(
-					iconRect.X + (iconRect.Width - timerSize.X) / 2f,
-					iconRect.Y + 1);
-				overlayFont.DrawTextWithContrast(timerText, timerPos, Color.White, Color.Black, 1);
+			if (queuedCount > 1 || waiting)
+			{
+				var countText = queuedCount.ToString(NumberFormatInfo.CurrentInfo);
+				overlayFont.DrawTextWithContrast(countText, new float2(iconRect.X + 4, iconRect.Y + 2), CountColor, Color.Black, 1);
 			}
 
 			var moveUpRect = GetMoveUpButtonRect(iconRect);
@@ -529,7 +525,6 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.FillRectWithColor(moveDownRect, moveDownFill);
 			ProductionBarButtonGraphics.TryDrawRightTriangle(moveDownRect, moveDownRect.Width, int2.Zero, moveDownDisabled);
 
-			var queued = block.Queue.AllQueued().Where(a => a.Item == block.ItemName).ToList();
 			var productionIcon = new ProductionIcon
 			{
 				Actor = block.Actor,

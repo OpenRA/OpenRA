@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Production : PausableConditionalTrait<ProductionInfo>, INotifyOwnerChanged
 	{
 		RallyPoint rp;
+		AdvancedProductionRallyPoints advancedRallyPoints;
 
 		public string Faction { get; private set; }
 
@@ -45,6 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			rp = self.TraitOrDefault<RallyPoint>();
+			advancedRallyPoints = self.Owner.PlayerActor.TraitOrDefault<AdvancedProductionRallyPoints>();
 			base.Created(self);
 		}
 
@@ -77,7 +79,11 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					initialFacing = exitinfo.Facing.Value;
 
-				exitLocations = rp != null && rp.Path.Count > 0 ? rp.Path : [exit];
+				var advancedRallyPath = advancedRallyPoints?.GetRallyPath(producee.Name);
+				if (advancedRallyPath != null && advancedRallyPath.Length > 0)
+					exitLocations = new List<CPos>(advancedRallyPath);
+				else
+					exitLocations = rp != null && rp.Path.Count > 0 ? rp.Path : [exit];
 
 				td.Add(new LocationInit(exit));
 				td.Add(new CenterPositionInit(spawn));
@@ -145,6 +151,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Info.UpdateFactionOnOwnerChange)
 				Faction = self.Owner.Faction.InternalName;
+
+			advancedRallyPoints = newOwner.PlayerActor.TraitOrDefault<AdvancedProductionRallyPoints>();
 		}
 	}
 
