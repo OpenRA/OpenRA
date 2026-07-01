@@ -67,20 +67,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Widget backgroundTemplate = null;
 				Widget backgroundBarTemplate = null;
 				Widget backgroundBottom = null;
+				Widget backgroundSolidTemplate = null;
 				Widget foregroundTemplate = null;
 				Widget foregroundBarTemplate = null;
+				Widget foregroundSolidTemplate = null;
 
 				if (background != null)
 				{
 					backgroundTemplate = background.Get("ROW_TEMPLATE");
 					backgroundBarTemplate = background.GetOrNull("BAR_ROW_TEMPLATE");
 					backgroundBottom = background.GetOrNull("BOTTOM_CAP");
+					backgroundSolidTemplate = background.GetOrNull("PALETTE_SOLID_BACKGROUND");
 				}
 
 				if (foreground != null)
 				{
 					foregroundTemplate = foreground.Get("ROW_TEMPLATE");
 					foregroundBarTemplate = foreground.GetOrNull("BAR_ROW_TEMPLATE");
+					foregroundSolidTemplate = foreground.GetOrNull("PALETTE_SOLID_BACKGROUND");
 				}
 
 				void UpdateBackground(int _, int icons)
@@ -93,6 +97,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (background != null)
 					{
 						background.RemoveChildren();
+						if (backgroundSolidTemplate != null)
+						{
+							var solid = backgroundSolidTemplate.Clone();
+							solid.Bounds = new WidgetBounds(
+								solid.Bounds.X,
+								solid.Bounds.Y,
+								solid.Bounds.Width,
+								rows * rowHeight);
+							background.AddChild(solid);
+						}
 
 						for (var i = 0; i < rows; i++)
 						{
@@ -120,6 +134,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (foreground != null)
 					{
 						foreground.RemoveChildren();
+						if (foregroundSolidTemplate != null)
+						{
+							var solid = foregroundSolidTemplate.Clone();
+							solid.Bounds = new WidgetBounds(
+								solid.Bounds.X,
+								solid.Bounds.Y,
+								solid.Bounds.Width,
+								rows * rowHeight);
+							foreground.AddChild(solid);
+						}
 
 						for (var i = 0; i < rows; i++)
 						{

@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -23,21 +23,27 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class ProductionOverviewWidget : Widget
+	public class ProductionQueueOverviewWidget : Widget
 	{
 		public static readonly string[] DefaultGroups = ["Building", "Defense", "Infantry", "Vehicle", "Aircraft", "Ship"];
 
-		static readonly string[] GroupLabelKeys =
+		static readonly string[] GroupIconNames =
 		[
-			"button-production-types-building-tooltip",
-			"button-production-types-defense-tooltip",
-			"button-production-types-infantry-tooltip",
-			"button-production-types-vehicle-tooltip",
-			"button-production-types-aircraft-tooltip",
-			"button-production-types-naval-tooltip"
+			"building",
+			"defense",
+			"infantry",
+			"vehicle",
+			"aircraft",
+			"ship"
 		];
 
 		static readonly Color BorderColor = Color.FromArgb(255, 120, 120, 120);
+		static readonly Color CountColor = Color.White;
+		static readonly Color PriorityFill = Color.FromArgb(255, 45, 45, 55);
+		static readonly Color PriorityFillHover = Color.FromArgb(255, 60, 60, 75);
+		static readonly Color PriorityFillPressed = Color.FromArgb(255, 110, 90, 25);
+		static readonly Color PriorityFillDisabled = Color.FromArgb(255, 50, 50, 70);
+		const float QueueIconScale = 1.15f;
 
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 		public readonly string TooltipContainer;
@@ -51,25 +57,24 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<string, bool> IsGroupDisabled;
 		public Func<string, Modifiers, bool> TrySelectGroup;
 
-		public readonly int2 IconSize = new(62, 46);
-		public readonly int2 IconMargin = new(1, 0);
-		public readonly int2 IconSpriteOffset = new(-1, -1);
-		public int SlotPadding = 4;
+		public readonly int2 CategoryIconSize = new(28, 28);
+		public readonly int2 QueueIconSize = new(28, 28);
+		public int CategoryColumnX = 7;
+		public int QueueStartX = 42;
+		public int RowHeight = 40;
+		public int TitleHeight = 16;
+		public int PriorityButtonSize = 12;
+		public int IconPadding = 1;
 
 		public string SidebarCollection = "sidebar";
 		public string IconBackgroundImage = "background-iconbg";
-		public int TitleBarHeight = 14;
 		public string TitleFont = "Tiny";
-
 		public string ClockAnimation = "clock";
 		public string ClockSequence = "idle";
 		public string ClockPalette = "chrome";
 
-		[FluentReference]
-		public string ReadyText = "";
-
-		[FluentReference]
-		public string HoldText = "";
+		[FluentReference(optional: true)]
+		public string TitleText = "Building que";
 
 		public ProductionIcon TooltipIcon { get; private set; }
 		public Func<ProductionIcon> GetTooltipIcon;
@@ -81,196 +86,48 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Lazy<ProductionPaletteWidget> paletteWidget;
 		readonly Lazy<ProductionTabsWidget> tabsWidget;
 		readonly Dictionary<ProductionQueue, Animation> clocks = [];
-		readonly List<OverviewEntry> entries = [];
+		readonly List<QueueEntry> entries = [];
 		Rectangle eventBounds = Rectangle.Empty;
 		string resolvedSidebarCollection;
 		string resolvedTitleButtonBackground;
 		Sprite iconBackgroundSprite;
-		string[] groupLabels;
+		Sprite[] categoryIconSprites;
+		string titleText;
 
 		SpriteFont overlayFont;
 		SpriteFont titleFont;
-		float2 iconOffset;
-		float2 holdOffset;
-		float2 readyOffset;
-		float2 timeOffset;
 		int lastIconIdx;
 		int currentTooltipToken;
-		int? hoveredTitleIndex;
-		bool titlePressed;
+		int? hoveredMoveUpIndex;
+		int? hoveredMoveDownIndex;
+		bool moveUpPressed;
+		bool moveDownPressed;
 
-		int SlotWidth => IconSize.X + 2 * SlotPadding;
-		int IconRowHeight => IconSize.Y + 2 * SlotPadding;
-		int SlotStride => SlotWidth + IconMargin.X;
+		int QueueIconStride => QueueIconSize.X + IconPadding;
+		int MoveButtonHeight => Math.Max(1, Math.Min(PriorityButtonSize, Math.Max(1, RowHeight - QueueIconSize.Y)));
 
-		Rectangle GetSlotRect(Rectangle rb, int index, int y, int height)
+		struct QueueBlock
 		{
-			var x = rb.X + index * SlotStride;
-			var width = index == DefaultGroups.Length - 1 ? rb.Right - x : SlotWidth;
-			return new Rectangle(x, y, width, height);
+			public string ItemName;
+			public ActorInfo Actor;
+			public int Count;
+			public int StartIndex;
+			public ProductionQueue Queue;
+			public bool CanMoveUp;
+			public bool CanMoveDown;
 		}
 
-		Rectangle GetIconRect(Rectangle rb, int index, int iconRowY)
-		{
-			var slot = GetSlotRect(rb, index, iconRowY, IconRowHeight);
-			return new Rectangle(slot.X + SlotPadding, slot.Y + SlotPadding, IconSize.X, IconSize.Y);
-		}
-
-		Sprite GetUniformGreyTile(Sprite source)
-		{
-			var cellWidth = source.Bounds.Width / 3;
-			var cellBounds = new Rectangle(source.Bounds.X, source.Bounds.Y, cellWidth, source.Bounds.Height);
-			return new Sprite(source.Sheet, cellBounds, source.Channel);
-		}
-
-		void DrawUniformCell(Sprite source, Rectangle rect)
-		{
-			WidgetUtils.DrawSprite(GetUniformGreyTile(source), rect.Location, new float2(rect.Width, rect.Height));
-		}
-
-		void DrawSlotBackgrounds(Rectangle rb, int iconRowY)
-		{
-			for (var i = 0; i < DefaultGroups.Length; i++)
-				DrawUniformCell(iconBackgroundSprite, GetSlotRect(rb, i, iconRowY, IconRowHeight));
-		}
-
-		bool IsGroupAvailable(string group)
-		{
-			if (IsGroupDisabled != null)
-				return !IsGroupDisabled(group);
-
-			var tabs = tabsWidget.Value;
-			if (tabs != null)
-				return tabs.Groups.TryGetValue(group, out var tabGroup) &&
-					tabGroup.Tabs.Any(t => t.Queue.BuildableItems().Any());
-
-			var player = world.LocalPlayer;
-			if (player == null)
-				return false;
-
-			return player.PlayerActor.TraitsImplementing<ProductionQueue>()
-				.Any(q => (q.Info.Group ?? q.Info.Type) == group && q.Actor.IsInWorld && q.AnyItemsToBuild());
-		}
-
-		string GetActiveGroup()
-		{
-			var tabs = tabsWidget.Value;
-			if (tabs != null)
-				return tabs.QueueGroup;
-
-			var palette = paletteWidget.Value;
-			if (palette?.CurrentQueue == null)
-				return null;
-
-			return palette.CurrentQueue.Info.Group ?? palette.CurrentQueue.Info.Type;
-		}
-
-		bool SelectProductionGroup(string group, bool reverse)
-		{
-			var modifiers = reverse ? Modifiers.Shift : Modifiers.None;
-			if (TrySelectGroup != null)
-				return TrySelectGroup(group, modifiers);
-
-			if (!IsGroupAvailable(group))
-				return false;
-
-			var tabs = tabsWidget.Value;
-			if (tabs != null)
-			{
-				if (tabs.QueueGroup == group)
-					tabs.SelectNextTab(reverse);
-				else
-					tabs.QueueGroup = group;
-
-				tabs.PickUpCompletedBuilding();
-				return true;
-			}
-
-			var palette = paletteWidget.Value;
-			if (palette == null)
-				return false;
-
-			var queues = world.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
-				.Where(q => (q.Info.Group ?? q.Info.Type) == group && q.Actor.IsInWorld)
-				.ToArray();
-
-			palette.CurrentQueue = queues.FirstOrDefault(q => q.Enabled);
-			palette.ScrollToTop();
-			palette.PickUpCompletedBuilding();
-			return true;
-		}
-
-		int? GetTitleIndexAt(int2 location, Rectangle rb)
-		{
-			for (var i = 0; i < DefaultGroups.Length; i++)
-			{
-				if (GetSlotRect(rb, i, rb.Y, TitleBarHeight).Contains(location))
-					return i;
-			}
-
-			return null;
-		}
-
-		void DrawTitleLabels(Rectangle rb)
-		{
-			var activeGroup = GetActiveGroup();
-
-			for (var i = 0; i < groupLabels.Length; i++)
-			{
-				var group = DefaultGroups[i];
-				var slot = GetSlotRect(rb, i, rb.Y, TitleBarHeight);
-				var disabled = !IsGroupAvailable(group);
-				var hover = hoveredTitleIndex == i && Ui.MouseOverWidget == this;
-				var highlighted = group == activeGroup;
-				var pressed = titlePressed && hover;
-
-				ButtonWidget.DrawBackground(resolvedTitleButtonBackground, slot, disabled, pressed, hover, highlighted);
-
-				var label = groupLabels[i];
-				var textSize = titleFont.Measure(label);
-				var textPos = new float2(
-					slot.X + (slot.Width - textSize.X) / 2f,
-					slot.Y + (TitleBarHeight - textSize.Y) / 2f);
-				var textColor = disabled ? Color.Gray :
-					highlighted ? Color.Gold : Color.White;
-				titleFont.DrawTextWithContrast(label, textPos, textColor, Color.Black, 1);
-			}
-		}
-
-		void DrawBorders(Rectangle rb)
-		{
-			Game.Renderer.RgbaColorRenderer.DrawRect(
-				new int2(rb.Left, rb.Top),
-				new int2(rb.Right, rb.Bottom),
-				1,
-				BorderColor);
-
-			var dividerY = rb.Y + TitleBarHeight;
-			Game.Renderer.RgbaColorRenderer.DrawRect(
-				new int2(rb.Left, dividerY),
-				new int2(rb.Right, dividerY),
-				1,
-				BorderColor);
-
-			for (var i = 1; i < DefaultGroups.Length; i++)
-			{
-				var x = rb.X + i * SlotStride;
-				Game.Renderer.RgbaColorRenderer.DrawRect(
-					new int2(x, rb.Top),
-					new int2(x, rb.Bottom),
-					1,
-					BorderColor);
-			}
-		}
-
-		struct OverviewEntry
+		struct QueueEntry
 		{
 			public Rectangle Bounds;
+			public Rectangle MoveUpBounds;
+			public Rectangle MoveDownBounds;
 			public ProductionIcon Icon;
+			public QueueBlock Block;
 		}
 
 		[ObjectCreator.UseCtor]
-		public ProductionOverviewWidget(World world, WorldRenderer worldRenderer, OrderManager orderManager)
+		public ProductionQueueOverviewWidget(World world, WorldRenderer worldRenderer, OrderManager orderManager)
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
@@ -284,29 +141,29 @@ namespace OpenRA.Mods.Common.Widgets
 				ProductionTabsWidget != null ? Ui.Root.GetOrNull<ProductionTabsWidget>(ProductionTabsWidget) : null);
 		}
 
-		protected ProductionOverviewWidget(ProductionOverviewWidget other)
+		protected ProductionQueueOverviewWidget(ProductionQueueOverviewWidget other)
 			: base(other)
 		{
 			world = other.world;
 			worldRenderer = other.worldRenderer;
 			orderManager = other.orderManager;
 
-			IconSize = other.IconSize;
-			IconMargin = other.IconMargin;
-			IconSpriteOffset = other.IconSpriteOffset;
-			SlotPadding = other.SlotPadding;
+			CategoryIconSize = other.CategoryIconSize;
+			QueueIconSize = other.QueueIconSize;
+			CategoryColumnX = other.CategoryColumnX;
+			QueueStartX = other.QueueStartX;
+			RowHeight = other.RowHeight;
+			TitleHeight = other.TitleHeight;
+			PriorityButtonSize = other.PriorityButtonSize;
+			IconPadding = other.IconPadding;
 
 			SidebarCollection = other.SidebarCollection;
 			IconBackgroundImage = other.IconBackgroundImage;
-			TitleBarHeight = other.TitleBarHeight;
 			TitleFont = other.TitleFont;
-
+			TitleText = other.TitleText;
 			ClockAnimation = other.ClockAnimation;
 			ClockSequence = other.ClockSequence;
 			ClockPalette = other.ClockPalette;
-
-			ReadyText = other.ReadyText;
-			HoldText = other.HoldText;
 
 			TooltipIcon = other.TooltipIcon;
 			GetTooltipIcon = () => TooltipIcon;
@@ -334,17 +191,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
 			titleFont = Game.Renderer.Fonts[TitleFont];
-			ReadyText = FluentProvider.GetMessage(ReadyText);
-			HoldText = FluentProvider.GetMessage(HoldText);
-			groupLabels = GroupLabelKeys.Select(k => FluentProvider.GetMessage(k)).ToArray();
-
-			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
-			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
-			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+			titleText = string.IsNullOrEmpty(TitleText) ? "Building que" : FluentProvider.GetMessage(TitleText);
 
 			resolvedSidebarCollection = ResolveSidebarCollection(SidebarCollection);
 			iconBackgroundSprite = ChromeProvider.GetImage(resolvedSidebarCollection, IconBackgroundImage);
 			resolvedTitleButtonBackground = ResolveTitleButtonBackground(TitleButtonBackground);
+
+			categoryIconSprites = GroupIconNames
+				.Select(name => ChromeProvider.TryGetImage("production-icons", name))
+				.ToArray();
 		}
 
 		string ResolveTitleButtonBackground(string background)
@@ -359,11 +214,6 @@ namespace OpenRA.Mods.Common.Widgets
 			return background + "-" + player.Faction.InternalName;
 		}
 
-		void DrawTitleBar(Rectangle rb)
-		{
-			DrawTitleLabels(rb);
-		}
-
 		string ResolveSidebarCollection(string collection)
 		{
 			var player = world.LocalPlayer;
@@ -376,7 +226,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return collection + "-" + player.Faction.InternalName;
 		}
 
-		public override ProductionOverviewWidget Clone() { return new ProductionOverviewWidget(this); }
+		public override ProductionQueueOverviewWidget Clone() { return new ProductionQueueOverviewWidget(this); }
 
 		public override Rectangle EventBounds =>
 			world.LocalPlayer != null && !world.LocalPlayer.Spectating ? RenderBounds : eventBounds;
@@ -391,19 +241,104 @@ namespace OpenRA.Mods.Common.Widgets
 				.Where(q => (q.Info.Group ?? q.Info.Type) == group && q.Actor.IsInWorld);
 		}
 
-		static (ProductionQueue Queue, ProductionItem Item)? SelectDisplayItem(IEnumerable<ProductionQueue> queues)
+		ProductionQueue SelectQueueForGroup(string group)
 		{
-			var active = queues
-				.Select(q => new { Queue = q, Item = q.CurrentItem() })
-				.Where(x => x.Item != null)
-				.OrderBy(x => x.Item.Done ? 0 : x.Item.Paused ? 2 : 1)
-				.ThenBy(x => x.Item.RemainingTimeActual)
-				.FirstOrDefault();
-
-			if (active == null)
+			var queues = QueuesForGroup(group).Where(q => q.Enabled).ToArray();
+			if (queues.Length == 0)
 				return null;
 
-			return (active.Queue, active.Item);
+			var palette = paletteWidget.Value;
+			if (palette?.CurrentQueue != null)
+			{
+				var currentGroup = palette.CurrentQueue.Info.Group ?? palette.CurrentQueue.Info.Type;
+				if (currentGroup == group && queues.Contains(palette.CurrentQueue))
+					return palette.CurrentQueue;
+			}
+
+			return queues.FirstOrDefault(q => q.AllQueued().Any()) ?? queues.First();
+		}
+
+		static List<QueueBlock> GetQueueBlocks(ProductionQueue queue)
+		{
+			var blocks = new List<QueueBlock>();
+			if (queue == null)
+				return blocks;
+
+			var items = queue.AllQueued().ToList();
+			if (items.Count == 0)
+				return blocks;
+
+			var index = 0;
+			while (index < items.Count)
+			{
+				var itemName = items[index].Item;
+				var startIndex = index;
+				var count = 0;
+				while (index < items.Count && items[index].Item == itemName)
+				{
+					count++;
+					index++;
+				}
+
+				var actor = queue.AllItems().FirstOrDefault(a => a.Name == itemName);
+				if (actor == null)
+					continue;
+
+				var canMoveUp = startIndex > 1;
+				var canMoveDown = startIndex > 0 && startIndex + count < items.Count;
+
+				blocks.Add(new QueueBlock
+				{
+					ItemName = itemName,
+					Actor = actor,
+					Count = count,
+					StartIndex = startIndex,
+					Queue = queue,
+					CanMoveUp = canMoveUp,
+					CanMoveDown = canMoveDown
+				});
+			}
+
+			return blocks;
+		}
+
+		bool IsGroupAvailable(string group)
+		{
+			if (IsGroupDisabled != null)
+				return !IsGroupDisabled(group);
+
+			return QueuesForGroup(group).Any(q => q.Enabled && q.AllQueued().Any());
+		}
+
+		bool SelectProductionGroup(string group, bool reverse)
+		{
+			if (TrySelectGroup != null)
+				return TrySelectGroup(group, reverse ? Modifiers.Shift : Modifiers.None);
+
+			if (!IsGroupAvailable(group))
+				return false;
+
+			var tabs = tabsWidget.Value;
+			if (tabs != null)
+			{
+				if (tabs.QueueGroup == group)
+					tabs.SelectNextTab(reverse);
+				else
+					tabs.QueueGroup = group;
+
+				tabs.PickUpCompletedBuilding();
+				return true;
+			}
+
+			var palette = paletteWidget.Value;
+			if (palette == null)
+				return false;
+
+			var queues = QueuesForGroup(group).Where(q => q.Enabled).ToArray();
+			palette.CurrentQueue = queues.FirstOrDefault();
+			palette.ScrollToTop();
+			palette.PickUpCompletedBuilding();
+			return true;
 		}
 
 		bool PickUpCompletedBuilding(ProductionQueue queue, ProductionItem item)
@@ -419,9 +354,248 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		bool HandleMoveBlockUp(QueueBlock block)
+		{
+			if (!block.CanMoveUp || block.Queue == null)
+				return false;
+
+			Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickSound, null);
+			world.IssueOrder(Order.MoveProductionBlockUp(block.Queue.Actor, block.StartIndex));
+			return true;
+		}
+
+		bool HandleMoveBlockDown(QueueBlock block)
+		{
+			if (!block.CanMoveDown || block.Queue == null)
+				return false;
+
+			Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickSound, null);
+			world.IssueOrder(Order.MoveProductionBlockDown(block.Queue.Actor, block.StartIndex));
+			return true;
+		}
+
+		Rectangle GetCategoryRect(Rectangle rb, int rowIndex)
+		{
+			return new Rectangle(
+				rb.X + CategoryColumnX,
+				rb.Y + TitleHeight + rowIndex * RowHeight + (RowHeight - CategoryIconSize.Y) / 2,
+				CategoryIconSize.X,
+				CategoryIconSize.Y);
+		}
+
+		Rectangle GetQueueIconRect(Rectangle rb, int rowIndex, int columnIndex)
+		{
+			var rowTop = rb.Y + TitleHeight + rowIndex * RowHeight;
+			var iconAreaHeight = Math.Max(1, RowHeight - MoveButtonHeight);
+			var iconTop = rowTop + Math.Max(0, (iconAreaHeight - QueueIconSize.Y) / 2);
+
+			return new Rectangle(
+				rb.X + QueueStartX + columnIndex * QueueIconStride,
+				iconTop,
+				QueueIconSize.X,
+				QueueIconSize.Y);
+		}
+
+		Rectangle GetMoveUpButtonRect(Rectangle iconRect)
+		{
+			var buttonWidth = Math.Max(1, iconRect.Width / 2);
+			return new Rectangle(
+				iconRect.X,
+				iconRect.Bottom,
+				buttonWidth,
+				MoveButtonHeight);
+		}
+
+		Rectangle GetMoveDownButtonRect(Rectangle iconRect)
+		{
+			var buttonWidth = Math.Max(1, iconRect.Width / 2);
+			return new Rectangle(
+				iconRect.X + buttonWidth,
+				iconRect.Bottom,
+				iconRect.Width - buttonWidth,
+				MoveButtonHeight);
+		}
+
+		void DrawCategoryIcon(Rectangle rect, string group, int rowIndex)
+		{
+			var disabled = !IsGroupAvailable(group);
+			var hover = Ui.MouseOverWidget == this && GetCategoryRect(RenderBounds, rowIndex).Contains(Viewport.LastMousePos);
+			var highlighted = GetActiveGroup() == group;
+			var pressed = false;
+
+			ButtonWidget.DrawBackground(resolvedTitleButtonBackground, rect, disabled, pressed, hover, highlighted);
+
+			var sprite = categoryIconSprites[rowIndex];
+			if (sprite == null)
+				return;
+
+			var iconName = GroupIconNames[rowIndex];
+			if (disabled)
+			{
+				var disabledSprite = ChromeProvider.TryGetImage("production-icons", iconName + "-disabled");
+				if (disabledSprite != null)
+					sprite = disabledSprite;
+			}
+
+			const int inset = 6;
+			var scale = Math.Min(
+				(rect.Width - 2 * inset) / sprite.Size.X,
+				(rect.Height - 2 * inset) / sprite.Size.Y);
+			var size = new float2(scale * sprite.Size.X, scale * sprite.Size.Y);
+			var pos = new float2(rect.X + (rect.Width - size.X) / 2f, rect.Y + (rect.Height - size.Y) / 2f);
+			WidgetUtils.DrawSprite(sprite, pos, size);
+		}
+
+		void DrawScaledActorIcon(Sprite sprite, PaletteReference palette, Rectangle rect, int inset = 4, float scaleMultiplier = 1f)
+		{
+			var scale = Math.Min(
+				(rect.Width - 2 * inset) / sprite.Size.X,
+				(rect.Height - 2 * inset) / sprite.Size.Y) * scaleMultiplier;
+			var center = new float2(rect.X + rect.Width / 2f, rect.Y + rect.Height / 2f);
+			WidgetUtils.DrawSpriteCentered(sprite, palette, center, scale);
+		}
+
+		void DrawQueueIcon(QueueBlock block, Rectangle iconRect, int rowIndex, int columnIndex)
+		{
+			DrawUniformCell(iconBackgroundSprite, iconRect);
+
+			var player = world.LocalPlayer;
+			var faction = player.Faction.InternalName;
+			var rsi = block.Actor.TraitInfo<RenderSpritesInfo>();
+			var icon = new Animation(world, rsi.GetImage(block.Actor, faction));
+			var bi = block.Actor.TraitInfo<BuildableInfo>();
+			icon.Play(bi.Icon);
+
+			var paletteName = bi.IconPaletteIsPlayerPalette ? bi.IconPalette + player.InternalName : bi.IconPalette;
+			var palette = worldRenderer.Palette(paletteName);
+			DrawScaledActorIcon(icon.Image, palette, iconRect, inset: 2, scaleMultiplier: QueueIconScale);
+
+			var queueNumberText = (block.StartIndex + 1).ToString(NumberFormatInfo.CurrentInfo);
+			var queueNumberSize = overlayFont.Measure(queueNumberText);
+			var queueNumberPos = new float2(
+				iconRect.Right - queueNumberSize.X - 1,
+				iconRect.Bottom - queueNumberSize.Y - 1);
+			overlayFont.DrawTextWithContrast(queueNumberText, queueNumberPos, CountColor, Color.Black, 1);
+
+			var current = block.Queue.CurrentItem();
+			var isBuildingNow = block.StartIndex == 0 &&
+				current != null &&
+				!current.Done &&
+				current.Item == block.ItemName;
+			if (isBuildingNow)
+			{
+				if (!clocks.ContainsKey(block.Queue))
+					clocks.Add(block.Queue, new Animation(world, ClockAnimation));
+
+				var queueClock = clocks[block.Queue];
+				queueClock.PlayFetchIndex(ClockSequence, () => current.TotalTime == 0 ? 0 :
+					(current.TotalTime - current.RemainingTime) * (queueClock.CurrentSequence.Length - 1) / current.TotalTime);
+				queueClock.Tick();
+
+				var clockPalette = worldRenderer.Palette(ClockPalette);
+				var clockCenter = new float2(iconRect.X + iconRect.Width / 2f, iconRect.Y + iconRect.Height / 2f);
+				var clockScale = Math.Min(
+					(iconRect.Width - 4f) / queueClock.Image.Size.X,
+					(iconRect.Height - 4f) / queueClock.Image.Size.Y) * QueueIconScale;
+				WidgetUtils.DrawSpriteCentered(queueClock.Image, clockPalette, clockCenter, clockScale);
+
+				var timerText = WidgetUtils.FormatTime(block.Queue.RemainingTimeActual(current), world.Timestep);
+				var timerSize = overlayFont.Measure(timerText);
+				var timerPos = new float2(
+					iconRect.X + (iconRect.Width - timerSize.X) / 2f,
+					iconRect.Y + 1);
+				overlayFont.DrawTextWithContrast(timerText, timerPos, Color.White, Color.Black, 1);
+			}
+
+			var moveUpRect = GetMoveUpButtonRect(iconRect);
+			var moveDownRect = GetMoveDownButtonRect(iconRect);
+			var moveIndex = entries.Count;
+
+			var moveUpDisabled = !block.CanMoveUp;
+			var moveUpHover = hoveredMoveUpIndex == moveIndex && Ui.MouseOverWidget == this;
+			var moveUpDepressed = moveUpPressed && moveUpHover;
+			var moveUpFill = moveUpDisabled ? PriorityFillDisabled :
+				moveUpDepressed ? PriorityFillPressed :
+				moveUpHover ? PriorityFillHover : PriorityFill;
+			WidgetUtils.FillRectWithColor(moveUpRect, moveUpFill);
+			ProductionBarButtonGraphics.TryDrawLeftTriangle(moveUpRect, moveUpRect.Width, int2.Zero, moveUpDisabled);
+
+			var moveDownDisabled = !block.CanMoveDown;
+			var moveDownHover = hoveredMoveDownIndex == moveIndex && Ui.MouseOverWidget == this;
+			var moveDownDepressed = moveDownPressed && moveDownHover;
+			var moveDownFill = moveDownDisabled ? PriorityFillDisabled :
+				moveDownDepressed ? PriorityFillPressed :
+				moveDownHover ? PriorityFillHover : PriorityFill;
+			WidgetUtils.FillRectWithColor(moveDownRect, moveDownFill);
+			ProductionBarButtonGraphics.TryDrawRightTriangle(moveDownRect, moveDownRect.Width, int2.Zero, moveDownDisabled);
+
+			var queued = block.Queue.AllQueued().Where(a => a.Item == block.ItemName).ToList();
+			var productionIcon = new ProductionIcon
+			{
+				Actor = block.Actor,
+				Name = block.Actor.Name,
+				Sprite = icon.Image,
+				Palette = palette,
+				Pos = new float2(iconRect.X, iconRect.Y),
+				Queued = queued,
+				ProductionQueue = block.Queue
+			};
+
+			entries.Add(new QueueEntry
+			{
+				Bounds = iconRect,
+				MoveUpBounds = moveUpRect,
+				MoveDownBounds = moveDownRect,
+				Icon = productionIcon,
+				Block = block
+			});
+		}
+
+		Sprite GetUniformGreyTile(Sprite source)
+		{
+			var cellWidth = source.Bounds.Width / 3;
+			var cellBounds = new Rectangle(source.Bounds.X, source.Bounds.Y, cellWidth, source.Bounds.Height);
+			return new Sprite(source.Sheet, cellBounds, source.Channel);
+		}
+
+		void DrawUniformCell(Sprite source, Rectangle rect)
+		{
+			WidgetUtils.DrawSprite(GetUniformGreyTile(source), rect.Location, new float2(rect.Width, rect.Height));
+		}
+
+		string GetActiveGroup()
+		{
+			var tabs = tabsWidget.Value;
+			if (tabs != null)
+				return tabs.QueueGroup;
+
+			var palette = paletteWidget.Value;
+			if (palette?.CurrentQueue == null)
+				return null;
+
+			return palette.CurrentQueue.Info.Group ?? palette.CurrentQueue.Info.Type;
+		}
+
+		void DrawBorders(Rectangle rb)
+		{
+			Game.Renderer.RgbaColorRenderer.DrawRect(
+				new int2(rb.Left, rb.Top),
+				new int2(rb.Right, rb.Bottom),
+				1,
+				BorderColor);
+
+			var dividerY = rb.Y + TitleHeight;
+			Game.Renderer.RgbaColorRenderer.DrawRect(
+				new int2(rb.Left, dividerY),
+				new int2(rb.Right, dividerY),
+				1,
+				BorderColor);
+		}
+
 		public override bool YieldMouseFocus(MouseInput mi)
 		{
-			titlePressed = false;
+			moveUpPressed = false;
+			moveDownPressed = false;
 			return base.YieldMouseFocus(mi);
 		}
 
@@ -431,39 +605,34 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 
 			var rb = RenderBounds;
-			var titleIndex = GetTitleIndexAt(mi.Location, rb);
 
-			if (mi.Event == MouseInputEvent.Move)
-				hoveredTitleIndex = titleIndex;
-
-			if (titleIndex != null)
+			for (var rowIndex = 0; rowIndex < DefaultGroups.Length; rowIndex++)
 			{
+				var categoryRect = GetCategoryRect(rb, rowIndex);
+				if (!categoryRect.Contains(mi.Location))
+					continue;
+
 				if (mi.Button != MouseButton.Left)
 					return true;
 
-				var titleRect = GetSlotRect(rb, titleIndex.Value, rb.Y, TitleBarHeight);
-				var disabled = !IsGroupAvailable(DefaultGroups[titleIndex.Value]);
-
 				if (mi.Event == MouseInputEvent.Down)
 				{
-					titlePressed = titleRect.Contains(mi.Location) && !disabled;
 					TakeMouseFocus(mi);
-					if (disabled)
+					if (!IsGroupAvailable(DefaultGroups[rowIndex]))
 						Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickDisabledSound, null);
 					return true;
 				}
 
 				if (mi.Event == MouseInputEvent.Up)
 				{
-					if (titlePressed && titleRect.Contains(mi.Location))
+					if (categoryRect.Contains(mi.Location))
 					{
-						var group = DefaultGroups[titleIndex.Value];
+						var group = DefaultGroups[rowIndex];
 						var reverse = mi.Modifiers.HasModifier(Modifiers.Shift);
 						var sound = SelectProductionGroup(group, reverse) ? ClickSound : ClickDisabledSound;
 						Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", sound, null);
 					}
 
-					titlePressed = false;
 					if (HasMouseFocus)
 						YieldMouseFocus(mi);
 					return true;
@@ -472,18 +641,76 @@ namespace OpenRA.Mods.Common.Widgets
 				return true;
 			}
 
-			var entry = entries.FirstOrDefault(e => e.Bounds.Contains(mi.Location));
-			if (entry.Icon == null)
+			for (var i = 0; i < entries.Count; i++)
+			{
+				var entry = entries[i];
+				var inMoveUp = entry.MoveUpBounds.Contains(mi.Location);
+				var inMoveDown = entry.MoveDownBounds.Contains(mi.Location);
+				if (!inMoveUp && !inMoveDown)
+					continue;
+
+				if (mi.Event == MouseInputEvent.Move)
+				{
+					hoveredMoveUpIndex = inMoveUp ? i : null;
+					hoveredMoveDownIndex = inMoveDown ? i : null;
+				}
+
+				if (mi.Button != MouseButton.Left)
+					return true;
+
+				if (mi.Event == MouseInputEvent.Down)
+				{
+					moveUpPressed = inMoveUp && entry.Block.CanMoveUp;
+					moveDownPressed = inMoveDown && entry.Block.CanMoveDown;
+					TakeMouseFocus(mi);
+
+					var clickedDisabled = (inMoveUp && !entry.Block.CanMoveUp) || (inMoveDown && !entry.Block.CanMoveDown);
+					if (clickedDisabled)
+						Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickDisabledSound, null);
+					return true;
+				}
+
+				if (mi.Event == MouseInputEvent.Up)
+				{
+					if (moveUpPressed && entry.MoveUpBounds.Contains(mi.Location))
+					{
+						if (!HandleMoveBlockUp(entry.Block))
+							Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickDisabledSound, null);
+					}
+					else if (moveDownPressed && entry.MoveDownBounds.Contains(mi.Location))
+					{
+						if (!HandleMoveBlockDown(entry.Block))
+							Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickDisabledSound, null);
+					}
+
+					moveUpPressed = false;
+					moveDownPressed = false;
+					if (HasMouseFocus)
+						YieldMouseFocus(mi);
+					return true;
+				}
+
+				return true;
+			}
+
+			if (mi.Event == MouseInputEvent.Move)
+			{
+				hoveredMoveUpIndex = null;
+				hoveredMoveDownIndex = null;
+			}
+
+			var iconEntry = entries.FirstOrDefault(e => e.Bounds.Contains(mi.Location));
+			if (iconEntry.Icon == null)
 				return false;
 
 			if (mi.Event == MouseInputEvent.Move)
-				TooltipIcon = entry.Icon;
+				TooltipIcon = iconEntry.Icon;
 
 			if (mi.Event != MouseInputEvent.Down)
 				return true;
 
-			var item = entry.Icon.Queued[0];
-			if (PickUpCompletedBuilding(entry.Icon.ProductionQueue, item))
+			var first = iconEntry.Icon.Queued.FirstOrDefault();
+			if (first != null && PickUpCompletedBuilding(iconEntry.Icon.ProductionQueue, first))
 				Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickSound, null);
 
 			return true;
@@ -553,109 +780,37 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var rb = RenderBounds;
-			var iconRowY = rb.Y + TitleBarHeight;
 			var bounds = new List<Rectangle>();
-			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, world.Timestep)) / 2;
+
+			DrawUniformCell(iconBackgroundSprite, rb);
+			DrawBorders(rb);
+
+			titleFont.DrawTextWithContrast(titleText, new float2(rb.X + 6, rb.Y + 2), Color.White, Color.Black, 1);
 
 			Game.Renderer.EnableAntialiasingFilter();
 
-			DrawSlotBackgrounds(rb, iconRowY);
-			DrawTitleBar(rb);
-			DrawBorders(rb);
-
-			for (var groupIndex = 0; groupIndex < DefaultGroups.Length; groupIndex++)
+			for (var rowIndex = 0; rowIndex < DefaultGroups.Length; rowIndex++)
 			{
-				var group = DefaultGroups[groupIndex];
-				var iconRect = GetIconRect(rb, groupIndex, iconRowY);
-				var display = SelectDisplayItem(QueuesForGroup(group));
-				if (display == null)
-					continue;
+				var group = DefaultGroups[rowIndex];
+				var categoryRect = GetCategoryRect(rb, rowIndex);
+				DrawCategoryIcon(categoryRect, group, rowIndex);
+				bounds.Add(categoryRect);
 
-				var queue = display.Value.Queue;
-				var current = display.Value.Item;
+				var queue = SelectQueueForGroup(group);
+				var blocks = GetQueueBlocks(queue);
+				var maxColumns = Math.Max(0, (rb.Right - QueueStartX - rb.X) / QueueIconStride);
 
-				if (!clocks.ContainsKey(queue))
-					clocks.Add(queue, new Animation(world, ClockAnimation));
-
-				var actor = queue.AllItems().FirstOrDefault(a => a.Name == current.Item);
-				if (actor == null)
-					continue;
-
-				var faction = player.Faction.InternalName;
-				var rsi = actor.TraitInfo<RenderSpritesInfo>();
-				var icon = new Animation(world, rsi.GetImage(actor, faction));
-				var bi = actor.TraitInfo<BuildableInfo>();
-				icon.Play(bi.Icon);
-
-				var paletteName = bi.IconPaletteIsPlayerPalette ? bi.IconPalette + player.InternalName : bi.IconPalette;
-				var pos = new float2(iconRect.Location);
-				var palette = worldRenderer.Palette(paletteName);
-				var clockPalette = worldRenderer.Palette(ClockPalette);
-
-				WidgetUtils.DrawSpriteCentered(icon.Image, palette, pos + iconOffset);
-
-				var queued = queue.AllQueued().Where(a => a.Item == current.Item).ToList();
-				var productionIcon = new ProductionIcon
+				for (var columnIndex = 0; columnIndex < blocks.Count && columnIndex < maxColumns; columnIndex++)
 				{
-					Actor = actor,
-					Name = actor.Name,
-					Sprite = icon.Image,
-					Palette = palette,
-					IconClockPalette = clockPalette,
-					Pos = pos,
-					Queued = queued,
-					ProductionQueue = queue
-				};
-
-				entries.Add(new OverviewEntry { Bounds = iconRect, Icon = productionIcon });
-				bounds.Add(iconRect);
-
-				var pios = player.PlayerActor.TraitsImplementing<IProductionIconOverlay>();
-				foreach (var pio in pios.Where(p => p.IsOverlayActive(actor)))
-					WidgetUtils.DrawSpriteCentered(pio.Sprite, worldRenderer.Palette(pio.Palette),
-						pos + iconOffset + pio.Offset(IconSize));
-
-				if (!current.Done)
-				{
-					var queueClock = clocks[queue];
-					queueClock.PlayFetchIndex(ClockSequence, () => current.TotalTime == 0 ? 0 :
-						(current.TotalTime - current.RemainingTime) * (queueClock.CurrentSequence.Length - 1) / current.TotalTime);
-					queueClock.Tick();
-					WidgetUtils.DrawSpriteCentered(queueClock.Image, clockPalette, pos + iconOffset);
+					var iconRect = GetQueueIconRect(rb, rowIndex, columnIndex);
+					DrawQueueIcon(blocks[columnIndex], iconRect, rowIndex, columnIndex);
+					bounds.Add(iconRect);
+					bounds.Add(entries[^1].MoveUpBounds);
+					bounds.Add(entries[^1].MoveDownBounds);
 				}
 			}
 
 			Game.Renderer.DisableAntialiasingFilter();
-
-			foreach (var entry in entries)
-			{
-				var icon = entry.Icon;
-				var first = icon.Queued[0];
-				var queue = icon.ProductionQueue;
-				var waiting = !queue.IsProducing(first) && !first.Done;
-				var pos = icon.Pos;
-				var total = icon.Queued.Count;
-
-				if (total > 0)
-				{
-					if (first.Done)
-					{
-						if (orderManager.LocalFrameNumber * world.Timestep / 360 % 2 == 0)
-							overlayFont.DrawTextWithContrast(ReadyText, pos + readyOffset, Color.White, Color.Black, 1);
-					}
-					else if (first.Paused)
-						overlayFont.DrawTextWithContrast(HoldText, pos + holdOffset, Color.White, Color.Black, 1);
-					else if (!waiting)
-						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(queue.RemainingTimeActual(first), world.Timestep),
-							pos + timeOffset, Color.White, Color.Black, 1);
-
-					if (total > 1 || waiting)
-					{
-						var text = total.ToString(NumberFormatInfo.CurrentInfo);
-						overlayFont.DrawTextWithContrast(text, pos + new float2(4, 2), Color.White, Color.Black, 1);
-					}
-				}
-			}
 
 			eventBounds = bounds.Count > 0 ? bounds.Union() : Rectangle.Empty;
 		}

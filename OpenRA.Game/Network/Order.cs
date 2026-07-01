@@ -312,6 +312,16 @@ namespace OpenRA
 			return new Order("PrioritizeProduction", subject, false) { TargetString = item };
 		}
 
+		public static Order MoveProductionBlockUp(Actor subject, int blockStartIndex)
+		{
+			return new Order("MoveProductionBlockUp", subject, false) { ExtraData = (uint)blockStartIndex };
+		}
+
+		public static Order MoveProductionBlockDown(Actor subject, int blockStartIndex)
+		{
+			return new Order("MoveProductionBlockDown", subject, false) { ExtraData = (uint)blockStartIndex };
+		}
+
 		public static Order SetProductionTarget(Actor subject, string item, int count)
 		{
 			return new Order("SetProductionTarget", subject, false) { ExtraData = (uint)count, TargetString = item };

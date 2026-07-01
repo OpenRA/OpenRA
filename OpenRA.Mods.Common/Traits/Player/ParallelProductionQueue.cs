@@ -58,6 +58,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void PrioritizeProduction(string itemName) { }
 
+		protected override void MoveProductionBlockUp(int blockStartIndex) { base.MoveProductionBlockUp(blockStartIndex); }
+
+		protected override void MoveProductionBlockDown(int blockStartIndex) { base.MoveProductionBlockDown(blockStartIndex); }
+
 		protected override void PauseProduction(string itemName, bool paused)
 		{
 			foreach (var item in Queue.Where(a => a.Item == itemName))

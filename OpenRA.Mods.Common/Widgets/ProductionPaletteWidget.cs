@@ -52,6 +52,141 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
+	static class ProductionBarButtonGraphics
+	{
+		const string UpArrowCollection = "scrollpanel-decorations";
+		const string UpArrowImage = "up";
+		const string UpArrowDisabledImage = "up-disabled";
+		const string LeftArrowImage = "left";
+		const string LeftArrowDisabledImage = "left-disabled";
+		const string RightArrowImage = "right";
+		const string RightArrowDisabledImage = "right-disabled";
+
+		static Sprite upArrowEnabled;
+		static Sprite upArrowDisabled;
+		static Sprite leftArrowEnabled;
+		static Sprite leftArrowDisabled;
+		static Sprite rightArrowEnabled;
+		static Sprite rightArrowDisabled;
+
+		static Sprite GetUpArrow(bool disabled)
+		{
+			upArrowEnabled ??= ChromeProvider.TryGetImage(UpArrowCollection, UpArrowImage);
+			upArrowDisabled ??= ChromeProvider.TryGetImage(UpArrowCollection, UpArrowDisabledImage);
+			return disabled ? upArrowDisabled ?? upArrowEnabled : upArrowEnabled;
+		}
+
+		static Sprite GetLeftArrow(bool disabled)
+		{
+			leftArrowEnabled ??= ChromeProvider.TryGetImage(UpArrowCollection, LeftArrowImage);
+			leftArrowDisabled ??= ChromeProvider.TryGetImage(UpArrowCollection, LeftArrowDisabledImage);
+			return disabled ? leftArrowDisabled ?? leftArrowEnabled : leftArrowEnabled;
+		}
+
+		static Sprite GetRightArrow(bool disabled)
+		{
+			rightArrowEnabled ??= ChromeProvider.TryGetImage(UpArrowCollection, RightArrowImage);
+			rightArrowDisabled ??= ChromeProvider.TryGetImage(UpArrowCollection, RightArrowDisabledImage);
+			return disabled ? rightArrowDisabled ?? rightArrowEnabled : rightArrowEnabled;
+		}
+
+		public static int2 GetTextPosition(string text, SpriteFont font, Rectangle rb, int usableWidth)
+		{
+			var textSize = font.Measure(text);
+			var y = rb.Y + (rb.Height - textSize.Y - font.TopOffset) / 2;
+			return new int2(rb.X + (usableWidth - textSize.X) / 2, y);
+		}
+
+		public static void DrawButtonText(string text, SpriteFont font, Rectangle rb, int usableWidth, int2 stateOffset,
+			Color color, Color disabledColor, Color bgDark, Color bgLight, bool disabled, bool contrast, bool shadow, int contrastRadius)
+		{
+			var position = GetTextPosition(text, font, rb, usableWidth);
+			if (contrast)
+				font.DrawTextWithContrast(text, position + stateOffset,
+					disabled ? disabledColor : color, bgDark, bgLight, contrastRadius);
+			else if (shadow)
+				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
+			else
+				font.DrawText(text, position + stateOffset, disabled ? disabledColor : color);
+		}
+
+		public static void DrawMinus(SpriteFont font, Rectangle rb, int usableWidth, int2 stateOffset,
+			Color color, Color disabledColor, Color contrastColor, bool disabled, bool contrast, int contrastRadius)
+		{
+			var refSize = font.Measure("1");
+			var thickness = Math.Max(1f, refSize.Y * 0.16f);
+			var lineWidth = Math.Min(usableWidth - 4, refSize.X * 0.75f);
+			var centerY = rb.Y + rb.Height / 2f + stateOffset.Y;
+			var centerX = rb.X + usableWidth / 2f + stateOffset.X;
+			var drawColor = disabled ? disabledColor : color;
+			var cr = Game.Renderer.RgbaColorRenderer;
+			var a = new float3(centerX - lineWidth / 2f, centerY, 0);
+			var b = new float3(centerX + lineWidth / 2f, centerY, 0);
+
+			if (contrast)
+				cr.DrawLine(a, b, thickness + 2 * contrastRadius, contrastColor);
+
+			cr.DrawLine(a, b, thickness, drawColor);
+		}
+
+		public static bool TryDrawUpTriangle(Rectangle rb, int usableWidth, int2 stateOffset, bool disabled)
+		{
+			var sprite = GetUpArrow(disabled);
+			if (sprite == null)
+				return false;
+
+			const int padding = 1;
+			var maxWidth = usableWidth - 2 * padding;
+			var maxHeight = rb.Height - 2 * padding;
+			var scale = Math.Min(maxWidth / sprite.Size.X, maxHeight / sprite.Size.Y);
+			var center = new float2(
+				rb.X + usableWidth / 2f + stateOffset.X,
+				rb.Y + rb.Height / 2f + stateOffset.Y);
+			DrawChromeSpriteCentered(sprite, center, scale);
+			return true;
+		}
+
+		public static bool TryDrawLeftTriangle(Rectangle rb, int usableWidth, int2 stateOffset, bool disabled)
+		{
+			var sprite = GetLeftArrow(disabled);
+			if (sprite == null)
+				return false;
+
+			const int padding = 1;
+			var maxWidth = usableWidth - 2 * padding;
+			var maxHeight = rb.Height - 2 * padding;
+			var scale = Math.Min(maxWidth / sprite.Size.X, maxHeight / sprite.Size.Y);
+			var center = new float2(
+				rb.X + usableWidth / 2f + stateOffset.X,
+				rb.Y + rb.Height / 2f + stateOffset.Y);
+			DrawChromeSpriteCentered(sprite, center, scale);
+			return true;
+		}
+
+		public static bool TryDrawRightTriangle(Rectangle rb, int usableWidth, int2 stateOffset, bool disabled)
+		{
+			var sprite = GetRightArrow(disabled);
+			if (sprite == null)
+				return false;
+
+			const int padding = 1;
+			var maxWidth = usableWidth - 2 * padding;
+			var maxHeight = rb.Height - 2 * padding;
+			var scale = Math.Min(maxWidth / sprite.Size.X, maxHeight / sprite.Size.Y);
+			var center = new float2(
+				rb.X + usableWidth / 2f + stateOffset.X,
+				rb.Y + rb.Height / 2f + stateOffset.Y);
+			DrawChromeSpriteCentered(sprite, center, scale);
+			return true;
+		}
+
+		static void DrawChromeSpriteCentered(Sprite s, float2 center, float scale)
+		{
+			var size = new float2(scale * s.Size.X, scale * s.Size.Y);
+			WidgetUtils.DrawSprite(s, center - 0.5f * size, size);
+		}
+	}
+
 	public class ProductionBarCancelButtonWidget : ButtonWidget
 	{
 		static readonly Color Fill = Color.FromArgb(255, 210, 25, 25);
@@ -105,6 +240,26 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override ProductionBarPriorityButtonWidget Clone() { return new ProductionBarPriorityButtonWidget(this); }
 
+		public override void Draw()
+		{
+			var rb = RenderBounds;
+			var disabled = IsDisabled();
+			var highlighted = IsHighlighted();
+			var font = Game.Renderer.Fonts[Font];
+			var color = GetColor();
+			var colordisabled = GetColorDisabled();
+			var bgDark = GetContrastColorDark();
+			var bgLight = GetContrastColorLight();
+			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var hover = Ui.MouseOverWidget == this || Children.FirstOrDefault(c => c == Ui.MouseOverWidget) != null;
+
+			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+
+			if (!ProductionBarButtonGraphics.TryDrawUpTriangle(rb, UsableWidth, stateOffset, disabled))
+				ProductionBarButtonGraphics.DrawButtonText(Text, font, rb, UsableWidth, stateOffset,
+					color, colordisabled, bgDark, bgLight, disabled, Contrast, Shadow, ContrastRadius);
+		}
+
 		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
 			if (highlighted)
@@ -133,6 +288,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		bool editing;
 		string editText = "";
+		string boundIconName;
+		uint? boundQueueActorId;
 
 		public Func<int> GetTargetCount;
 		public Action<int> OnTargetConfirmed;
@@ -188,6 +345,64 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var count = GetTargetCount?.Invoke() ?? 0;
 			return count > 0 ? count.ToString(NumberFormatInfo.CurrentInfo) : "";
+		}
+
+		bool ShouldDrawIdleIcon()
+		{
+			if (editing)
+				return false;
+
+			return (GetTargetCount?.Invoke() ?? 0) <= 0;
+		}
+
+		public void SyncBinding(string iconName, uint queueActorId)
+		{
+			if (boundQueueActorId.HasValue &&
+				(boundIconName != iconName || boundQueueActorId != queueActorId))
+				CancelEditingWithoutConfirm();
+
+			boundIconName = iconName;
+			boundQueueActorId = queueActorId;
+		}
+
+		void CancelEditingWithoutConfirm()
+		{
+			if (!editing)
+				return;
+
+			editing = false;
+			editText = "";
+
+			if (Ui.KeyboardFocusWidget == this)
+				base.YieldKeyboardFocus();
+		}
+
+		public override void Draw()
+		{
+			var rb = RenderBounds;
+			var disabled = IsDisabled();
+			var highlighted = IsHighlighted();
+			var font = Game.Renderer.Fonts[Font];
+			var text = GetText();
+			var color = GetColor();
+			var colordisabled = GetColorDisabled();
+			var bgDark = GetContrastColorDark();
+			var bgLight = GetContrastColorLight();
+			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var hover = Ui.MouseOverWidget == this || Children.FirstOrDefault(c => c == Ui.MouseOverWidget) != null;
+
+			DrawBackground(rb, disabled, Depressed, hover, highlighted);
+
+			if (!string.IsNullOrEmpty(text))
+			{
+				ProductionBarButtonGraphics.DrawButtonText(text, font, rb, UsableWidth, stateOffset,
+					color, colordisabled, bgDark, bgLight, disabled, Contrast, Shadow, ContrastRadius);
+			}
+			else if (ShouldDrawIdleIcon())
+			{
+				ProductionBarButtonGraphics.DrawMinus(font, rb, UsableWidth, stateOffset,
+					color, colordisabled, bgDark, disabled, Contrast, ContrastRadius);
+			}
 		}
 
 		void BeginEditing()
@@ -971,6 +1186,7 @@ namespace OpenRA.Mods.Common.Widgets
 				btn.GetTargetCount = () => pi.ProductionQueue?.GetProductionTarget(pi.Name) ?? 0;
 				btn.OnTargetConfirmed = count => HandleSetProductionTarget(pi, count);
 				btn.IsDisabled = () => IsBarBulkButtonDisabled(pi);
+				btn.SyncBinding(pi.Name, pi.ProductionQueue.Actor.ActorID);
 			}
 		}
 

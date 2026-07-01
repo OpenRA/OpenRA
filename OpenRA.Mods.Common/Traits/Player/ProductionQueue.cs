@@ -556,6 +556,12 @@ namespace OpenRA.Mods.Common.Traits
 				case "PrioritizeProduction":
 					PrioritizeProduction(order.TargetString);
 					break;
+				case "MoveProductionBlockUp":
+					MoveProductionBlockUp((int)order.ExtraData);
+					break;
+				case "MoveProductionBlockDown":
+					MoveProductionBlockDown((int)order.ExtraData);
+					break;
 				case "SetProductionTarget":
 					if (!rules.Actors.TryGetValue(order.TargetString, out var targetUnit))
 						return;
@@ -782,6 +788,74 @@ namespace OpenRA.Mods.Common.Traits
 
 			for (var i = 0; i < priorityItems.Count; i++)
 				Queue.Insert(1 + i, priorityItems[i]);
+		}
+
+		protected virtual void MoveProductionBlockUp(int blockStartIndex)
+		{
+			if (Queue.Count < 2 || blockStartIndex <= 1 || blockStartIndex >= Queue.Count)
+				return;
+
+			var blockEnd = blockStartIndex;
+			while (blockEnd < Queue.Count && Queue[blockEnd].Item == Queue[blockStartIndex].Item)
+				blockEnd++;
+
+			var prevEnd = blockStartIndex - 1;
+			var prevStart = prevEnd;
+			var prevItemName = Queue[prevStart].Item;
+			while (prevStart > 0 && Queue[prevStart - 1].Item == prevItemName)
+				prevStart--;
+
+			// Keep the currently producing item at index 0 fixed.
+			// If the previous block includes index 0, only swap with its waiting part (index >= 1).
+			if (prevStart == 0)
+			{
+				if (prevEnd == 0)
+					return;
+
+				prevStart = 1;
+			}
+
+			var movingCount = blockEnd - blockStartIndex;
+			var previousCount = prevEnd - prevStart + 1;
+
+			var moving = Queue.GetRange(blockStartIndex, movingCount);
+			var previous = Queue.GetRange(prevStart, previousCount);
+
+			Queue.RemoveRange(blockStartIndex, movingCount);
+			Queue.RemoveRange(prevStart, previousCount);
+
+			Queue.InsertRange(prevStart, moving);
+			Queue.InsertRange(prevStart + moving.Count, previous);
+		}
+
+		protected virtual void MoveProductionBlockDown(int blockStartIndex)
+		{
+			if (Queue.Count < 2 || blockStartIndex <= 0 || blockStartIndex >= Queue.Count - 1)
+				return;
+
+			var blockEnd = blockStartIndex;
+			while (blockEnd < Queue.Count && Queue[blockEnd].Item == Queue[blockStartIndex].Item)
+				blockEnd++;
+
+			if (blockEnd >= Queue.Count)
+				return;
+
+			var nextStart = blockEnd;
+			var nextEnd = nextStart;
+			while (nextEnd < Queue.Count && Queue[nextEnd].Item == Queue[nextStart].Item)
+				nextEnd++;
+
+			var movingCount = blockEnd - blockStartIndex;
+			var nextCount = nextEnd - nextStart;
+
+			var moving = Queue.GetRange(blockStartIndex, movingCount);
+			var next = Queue.GetRange(nextStart, nextCount);
+
+			Queue.RemoveRange(nextStart, nextCount);
+			Queue.RemoveRange(blockStartIndex, movingCount);
+
+			Queue.InsertRange(blockStartIndex, next);
+			Queue.InsertRange(blockStartIndex + next.Count, moving);
 		}
 
 		protected bool CancelProductionInner(string itemName)

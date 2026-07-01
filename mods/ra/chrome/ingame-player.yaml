@@ -464,6 +464,12 @@ Container@PLAYER_WIDGETS:
 				LogicTicker@PRODUCTION_TICKER:
 				Container@PALETTE_FOREGROUND:
 					Children:
+						ColorBlock@PALETTE_SOLID_BACKGROUND:
+							X: 40
+							Y: 0
+							Width: 190
+							Height: 296
+							Color: 1f1f1fff
 						Image@ROW_TEMPLATE:
 							Logic: AddFactionSuffixLogic
 							Width: 238
@@ -684,6 +690,27 @@ Container@PLAYER_WIDGETS:
 							Y: 4
 							ImageCollection: power-icons
 							ImageName: power-normal
+		Container@PRODUCTION_QUEUE_ROOT:
+			Logic: ProductionQueueOverviewLogic
+			X: WINDOW_WIDTH - 250
+			Y: 610
+			Width: 238
+			Height: 256
+			Children:
+				LogicTicker@PRODUCTION_QUEUE_TICKER:
+				ProductionQueueOverview@PRODUCTION_QUEUE_OVERVIEW:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					TooltipContainer: TOOLTIP_CONTAINER
+					ProductionPaletteWidget: PRODUCTION_PALETTE
+					TitleText: Building que
+					CategoryIconSize: 28, 28
+					QueueIconSize: 32, 32
+					CategoryColumnX: 7
+					QueueStartX: 42
+					RowHeight: 40
+					TitleHeight: 16
+					PriorityButtonSize: 14
 		Container@PRODUCTION_OVERVIEW_ROOT:
 			Logic: ProductionOverviewLogic
 			X: (WINDOW_WIDTH - WIDTH) / 2

@@ -15,15 +15,15 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class ProductionOverviewLogic : ChromeLogic
+	public class ProductionQueueOverviewLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ProductionOverviewLogic(Widget widget, World world)
+		public ProductionQueueOverviewLogic(Widget widget, World world)
 		{
 			if (world.LocalPlayer == null || world.LocalPlayer.Spectating)
 				return;
 
-			var overview = widget.Get<ProductionOverviewWidget>("PRODUCTION_OVERVIEW");
+			var overview = widget.Get<ProductionQueueOverviewWidget>("PRODUCTION_QUEUE_OVERVIEW");
 			var sidebar = Ui.Root.GetOrNull("SIDEBAR_PRODUCTION");
 			var types = sidebar?.GetOrNull("PRODUCTION_TYPES");
 			if (types == null)
@@ -42,6 +42,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				button.OnMouseUp(new MouseInput(MouseInputEvent.Up, MouseButton.Left, int2.Zero, int2.Zero, modifiers, 0));
 				return true;
 			};
+
+			var ticker = widget.GetOrNull<LogicTickerWidget>("PRODUCTION_QUEUE_TICKER");
+			if (ticker != null && sidebar is ContainerWidget sidebarContainer)
+			{
+				ticker.OnTick = () =>
+				{
+					var sidebarBottom = GetSidebarProductionBottom(sidebarContainer);
+					widget.Bounds.X = sidebar.Bounds.X;
+					widget.Bounds.Y = sidebarBottom + 4 - widget.Parent.RenderOrigin.Y;
+				};
+			}
+		}
+
+		static int GetSidebarProductionBottom(ContainerWidget sidebar)
+		{
+			var bottom = sidebar.RenderBounds.Bottom;
+
+			var background = sidebar.GetOrNull("PALETTE_BACKGROUND");
+			if (background != null)
+			{
+				foreach (var child in background.Children)
+				{
+					var childBottom = child.RenderBounds.Bottom;
+					if (childBottom > bottom)
+						bottom = childBottom;
+				}
+			}
+
+			var types = sidebar.GetOrNull("PRODUCTION_TYPES");
+			var scrollDown = types?.GetOrNull<ButtonWidget>("SCROLL_DOWN_BUTTON");
+			if (scrollDown != null)
+			{
+				var scrollBottom = scrollDown.RenderBounds.Bottom;
+				if (scrollBottom > bottom)
+					bottom = scrollBottom;
+			}
+
+			return bottom;
 		}
 	}
 }
