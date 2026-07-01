@@ -131,18 +131,27 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static bool TryDrawUpTriangle(Rectangle rb, int usableWidth, int2 stateOffset, bool disabled)
 		{
-			var sprite = GetUpArrow(disabled);
-			if (sprite == null)
-				return false;
+			var triangleColor = disabled ? Color.FromArgb(255, 170, 170, 170) : Color.White;
+			var maxWidth = Math.Max(3, usableWidth - 4);
+			var maxHeight = Math.Max(3, rb.Height - 4);
+			var drawWidth = Math.Max(3, Math.Min(maxWidth, maxHeight + 2));
+			var drawHeight = Math.Max(3, Math.Min(maxHeight, drawWidth));
+			const float triangleScale = 0.68f;
+			drawWidth = Math.Max(3, (int)Math.Round(drawWidth * triangleScale));
+			drawHeight = Math.Max(3, (int)Math.Round(drawHeight * triangleScale));
+			var centerX = rb.X + usableWidth / 2f + stateOffset.X;
+			var topY = rb.Y + (rb.Height - drawHeight) / 2f + stateOffset.Y;
 
-			const int padding = 1;
-			var maxWidth = usableWidth - 2 * padding;
-			var maxHeight = rb.Height - 2 * padding;
-			var scale = Math.Min(maxWidth / sprite.Size.X, maxHeight / sprite.Size.Y);
-			var center = new float2(
-				rb.X + usableWidth / 2f + stateOffset.X,
-				rb.Y + rb.Height / 2f + stateOffset.Y);
-			DrawChromeSpriteCentered(sprite, center, scale);
+			var renderer = Game.Renderer.RgbaColorRenderer;
+			for (var row = 0; row < drawHeight; row++)
+			{
+				var span = 1 + row * (drawWidth - 1) / Math.Max(1, drawHeight - 1);
+				var x0 = centerX - (span - 1) / 2f;
+				var x1 = centerX + span / 2f;
+				var y = topY + row;
+				renderer.DrawLine(new float3(x0, y, 0), new float3(x1, y, 0), 1f, triangleColor);
+			}
+
 			return true;
 		}
 
