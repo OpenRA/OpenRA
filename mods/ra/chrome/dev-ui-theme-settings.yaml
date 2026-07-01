@@ -13,7 +13,7 @@ Background@DEV_UI_THEME_SECTION_HEADER:
 			Text: label-dev-ui-theme-section-header
 Container@DEV_UI_THEME_ROW:
 	Width: PARENT_WIDTH - 24
-	Height: 130
+	Height: 160
 	Children:
 		Label@DEV_UI_THEME_LABEL:
 			X: 10
@@ -36,7 +36,7 @@ Container@DEV_UI_THEME_ROW:
 		Background@DEV_UI_THEME_MIXERBG:
 			X: 10
 			Y: 47
-			Width: PARENT_WIDTH - 160
+			Width: PARENT_WIDTH - 255
 			Height: 78
 			Background: dialog3
 			Children:
@@ -46,14 +46,26 @@ Container@DEV_UI_THEME_ROW:
 					Width: PARENT_WIDTH - 4
 					Height: PARENT_HEIGHT - 4
 		ColorBlock@DEV_UI_THEME_PREVIEW:
-			X: PARENT_WIDTH - 145
+			X: PARENT_WIDTH - 233
 			Y: 47
-			Width: 40
-			Height: 40
+			Width: 78
+			Height: 78
 		Button@DEV_UI_THEME_DEFAULT_BUTTON:
 			X: PARENT_WIDTH - 145
-			Y: 92
+			Y: 47
 			Width: 135
 			Height: 25
 			Text: button-dev-ui-theme-default
 			Font: Bold
+		Button@DEV_UI_THEME_USE_IN_GAME_BUTTON:
+			X: PARENT_WIDTH - 145
+			Y: 75
+			Width: 105
+			Height: 25
+			Text: button-dev-ui-theme-use-in-game
+			Font: Bold
+		Checkbox@DEV_UI_THEME_USE_IN_GAME_CHECK:
+			X: PARENT_WIDTH - 34
+			Y: 78
+			Width: 24
+			Height: 20

@@ -8,8 +8,9 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_WIDTH
-					Height: 174
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Width: PARENT_HEIGHT - 53
+					Height: PARENT_HEIGHT - 53
 					Background: dialog3
 					Children:
 						MapPreview@MAP_PREVIEW:
@@ -19,7 +20,7 @@ Container@MAP_PREVIEW:
 							Height: PARENT_HEIGHT - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
-					Y: 173
+					Y: PARENT_HEIGHT - 54
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
@@ -31,8 +32,9 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_WIDTH
-					Height: 142
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Width: PARENT_HEIGHT - 100
+					Height: PARENT_HEIGHT - 100
 					Background: dialog3
 					Children:
 						MapPreview@MAP_PREVIEW:
@@ -42,7 +44,7 @@ Container@MAP_PREVIEW:
 							Height: PARENT_HEIGHT - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@MAP_TITLE:
-					Y: 143
+					Y: PARENT_HEIGHT - 101
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
@@ -54,14 +56,14 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@MAP_TYPE:
-					Y: 188
+					Y: PARENT_HEIGHT - 39
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
 				Label@MAP_AUTHOR:
-					Y: 201
+					Y: PARENT_HEIGHT - 26
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
@@ -71,7 +73,7 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@MAP_STATUS_A:
-					Y: 188
+					Y: PARENT_HEIGHT - 39
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
@@ -79,7 +81,7 @@ Container@MAP_PREVIEW:
 					Text: label-map-incompatible-status-a
 					IgnoreMouseOver: true
 				Label@MAP_STATUS_B:
-					Y: 201
+					Y: PARENT_HEIGHT - 26
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
@@ -90,7 +92,7 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@MAP_STATUS_VALIDATING:
-					Y: 174
+					Y: PARENT_HEIGHT - 99
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
@@ -98,7 +100,7 @@ Container@MAP_PREVIEW:
 					Text: label-map-validating-status
 					IgnoreMouseOver: true
 				ProgressBar@MAP_VALIDATING_BAR:
-					Y: 194
+					Y: PARENT_HEIGHT - 79
 					Width: PARENT_WIDTH
 					Height: 25
 					Indeterminate: True
@@ -107,7 +109,7 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@MAP_STATUS_GENERATING:
-					Y: 174
+					Y: PARENT_HEIGHT - 99
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
@@ -115,7 +117,7 @@ Container@MAP_PREVIEW:
 					Text: label-map-generating-status
 					IgnoreMouseOver: true
 				ProgressBar@MAP_GENERATING_BAR:
-					Y: 194
+					Y: PARENT_HEIGHT - 79
 					Width: PARENT_WIDTH
 					Height: 25
 					Indeterminate: True
@@ -124,26 +126,26 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@MAP_TYPE:
-					Y: 158
+					Y: PARENT_HEIGHT - 92
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					IgnoreMouseOver: true
 				Label@MAP_AUTHOR:
-					Y: 171
+					Y: PARENT_HEIGHT - 79
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 				Button@MAP_INSTALL:
-					Y: 194
+					Y: PARENT_HEIGHT - 56
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
 					Text: button-map-download-available-install
 		Button@MAP_UPDATE:
-			Y: 195
+			Y: PARENT_HEIGHT - 55
 			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
@@ -153,13 +155,13 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Button@MAP_INSTALL:
-					Y: 166
+					Y: PARENT_HEIGHT - 80
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
 					Text: button-map-update-download-available-install
 		Label@MAP_SEARCHING:
-			Y: 158
+			Y: PARENT_HEIGHT - 92
 			Width: PARENT_WIDTH
 			Height: 25
 			Font: Tiny
@@ -170,21 +172,21 @@ Container@MAP_PREVIEW:
 			Width: PARENT_WIDTH
 			Children:
 				Label@a:
-					Y: 158
+					Y: PARENT_HEIGHT - 92
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					Text: label-map-unavailable-a
 				Label@b:
-					Y: 171
+					Y: PARENT_HEIGHT - 79
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 					Text: label-map-unavailable-b
 		Label@MAP_ERROR:
-			Y: 158
+			Y: PARENT_HEIGHT - 92
 			Width: PARENT_WIDTH
 			Height: 25
 			Font: Tiny
@@ -195,18 +197,18 @@ Container@MAP_PREVIEW:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@MAP_STATUS_DOWNLOADING:
-					Y: 158
+					Y: PARENT_HEIGHT - 92
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 				ProgressBar@MAP_PROGRESSBAR:
-					Y: 194
+					Y: PARENT_HEIGHT - 56
 					Width: PARENT_WIDTH
 					Height: 25
 					Indeterminate: True
 		Button@MAP_RETRY:
-			Y: 194
+			Y: PARENT_HEIGHT - 56
 			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
@@ -214,14 +216,14 @@ Container@MAP_PREVIEW:
 			Width: PARENT_WIDTH
 			Children:
 				Label@a:
-					Y: 158
+					Y: PARENT_HEIGHT - 92
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 					Text: label-map-update-available-a
 				Label@b:
-					Y: 171
+					Y: PARENT_HEIGHT - 79
 					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny

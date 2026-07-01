@@ -57,8 +57,9 @@ button-production-types-naval-tooltip = Naval
 
 ## settings-display.yaml (local dev UI theme)
 label-dev-ui-theme-section-header = UI Theme
-label-dev-ui-theme-color = Menu chrome accent color
+label-dev-ui-theme-color = Theme color
 button-dev-ui-theme-default = Default
+button-dev-ui-theme-use-in-game = Use in game
 
 button-settings-save = Save
 

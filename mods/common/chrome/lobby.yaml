@@ -9,8 +9,8 @@ Background@SERVER_LOBBY:
 			Feedback: TRANSIENT_LINE_TEMPLATE
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
-	Width: 900
-	Height: 600
+	Width: 1125
+	Height: 750
 	Children:
 		Label@SERVER_NAME:
 			Y: 16
@@ -21,8 +21,8 @@ Background@SERVER_LOBBY:
 		Container@MAP_PREVIEW_ROOT:
 			X: PARENT_WIDTH - 20 - WIDTH
 			Y: 67
-			Width: 174
-			Height: 250
+			Width: 253
+			Height: 306
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X: 20
 			Y: 373
@@ -38,71 +38,71 @@ Background@SERVER_LOBBY:
 			Font: Bold
 			Text: button-server-lobby-reset-options
 		Container@SKIRMISH_TABS:
-			X: 695 - WIDTH
-			Width: 486
+			X: 205
+			Width: 637
 			Visible: False
 			Children:
 				Button@PLAYERS_TAB:
 					Y: 367
-					Width: 162
+					Width: 212
 					Height: 31
 					Font: Bold
 					Text: button-skirmish-tabs-players-tab
 				Button@OPTIONS_TAB:
-					X: 162
+					X: 212
 					Y: 367
-					Width: 162
+					Width: 212
 					Height: 31
 					Font: Bold
 					Text: button-skirmish-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 2 * 162
+					X: 424
 					Y: 367
-					Width: 162
+					Width: 213
 					Height: 31
 					Font: Bold
 					Text: label-music-title
 		Container@MULTIPLAYER_TABS:
-			X: 695 - WIDTH
-			Width: 486
+			X: 205
+			Width: 637
 			Visible: False
 			Children:
 				Button@PLAYERS_TAB:
 					Y: 367
-					Width: 121
+					Width: 159
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-players-tab
 				Button@OPTIONS_TAB:
-					X: 121
+					X: 159
 					Y: 367
-					Width: 122
+					Width: 160
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-options-tab
 				Button@MUSIC_TAB:
-					X: 243
+					X: 319
 					Y: 367
-					Width: 121
+					Width: 159
 					Height: 31
 					Font: Bold
 					Text: label-music-title
 				Button@SERVERS_TAB:
-					X: 364
+					X: 478
 					Y: 367
-					Width: 122
+					Width: 159
 					Height: 31
 					Font: Bold
 					Text: button-multiplayer-tabs-servers-tab
 		Container@TOP_PANELS_ROOT:
 			X: 20
 			Y: 67
-			Width: 675
+			Width: 822
 			Height: 300
 		Button@CHANGEMAP_BUTTON:
 			X: PARENT_WIDTH - WIDTH - 20
 			Y: 373
-			Width: 174
+			Width: 253
 			Height: 25
 			Text: button-server-lobby-changemap
 			Font: Bold
@@ -110,7 +110,7 @@ Background@SERVER_LOBBY:
 			X: 20
 			Y: 403
 			Width: PARENT_WIDTH - 40
-			Height: 177
+			Height: PARENT_HEIGHT - 423
 			Children:
 				ScrollPanel@CHAT_DISPLAY:
 					Width: PARENT_WIDTH

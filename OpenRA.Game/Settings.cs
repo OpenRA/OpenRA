@@ -255,6 +255,12 @@ namespace OpenRA
 		[Desc("Local dev: UI chrome accent color (Default restores original RA red theme).")]
 		public Color DevUiThemeColor = DevUiTheme.DefaultPurple;
 
+		[Desc("Local dev: use the UI theme color as the in-game player color.")]
+		public bool DevUiThemeUseInGame = false;
+
+		[Desc("Local dev: player color to restore when 'Use in game' is turned off.")]
+		public Color DevUiThemePreviousPlayerColor = Color.FromArgb(200, 32, 32);
+
 		[Desc("Add a frame rate limiter.")]
 		public bool CapFramerate = false;
 

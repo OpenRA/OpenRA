@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ColorBlockWidget : Widget
 	{
 		public Color Color { get; set; }
+		public bool Circle { get; set; }
+		public bool BorderOnly { get; set; }
+		public int BorderWidth { get; set; } = 1;
 		public Func<Color> GetColor;
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public Action<MouseInput> OnMouseUp = _ => { };
@@ -36,6 +39,9 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(widget)
 		{
 			modRules = widget.modRules;
+			Circle = widget.Circle;
+			BorderOnly = widget.BorderOnly;
+			BorderWidth = widget.BorderWidth;
 			GetColor = widget.GetColor;
 			ClickSound = widget.ClickSound;
 		}
@@ -47,11 +53,26 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			WidgetUtils.FillRectWithColor(RenderBounds, GetColor());
+			if (BorderOnly)
+			{
+				var rb = RenderBounds;
+				Game.Renderer.RgbaColorRenderer.DrawRect(
+					new int2(rb.Left, rb.Top),
+					new int2(rb.Right, rb.Bottom),
+					BorderWidth,
+					GetColor());
+			}
+			else if (Circle)
+				WidgetUtils.FillEllipseWithColor(RenderBounds, GetColor());
+			else
+				WidgetUtils.FillRectWithColor(RenderBounds, GetColor());
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			if (BorderOnly)
+				return false;
+
 			if (mi.Button != MouseButton.Left)
 				return false;
 

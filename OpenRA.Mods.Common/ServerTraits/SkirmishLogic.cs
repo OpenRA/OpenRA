@@ -119,7 +119,14 @@ namespace OpenRA.Mods.Common.Server
 			if (playerNode != null)
 			{
 				var client = server.GetClient(conn);
+
+				// The player's colour must follow their preferred colour (from the handshake, i.e. the
+				// Gameplay "Preferred Color" / "Use in game" theme option), not the colour cached in the
+				// skirmish settings, which can go stale when the color is changed outside the lobby.
+				var preferredColor = client.PreferredColor;
+
 				SkirmishSlot.DeserializeToClient(playerNode.Value, client);
+				client.Color = client.PreferredColor = preferredColor;
 				client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
 				client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
 			}

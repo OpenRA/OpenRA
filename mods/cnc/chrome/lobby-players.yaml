@@ -9,39 +9,40 @@ Container@LOBBY_PLAYER_BIN:
 			Height: PARENT_HEIGHT
 			Children:
 				Label@LABEL_LOBBY_NAME:
-					Width: 200
+					Width: 378
 					Height: 25
 					Text: label-lobby-players-player
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_COLOR:
-					X: 210
+					X: 389
 					Width: 94
 					Height: 25
 					Text: label-lobby-players-color
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_FACTION:
-					X: 309
+					X: 489
 					Width: 120
 					Height: 25
 					Text: label-lobby-players-faction
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
-					X: 460 - 25
+					X: 616
 					Width: 36
 					Height: 25
 					Text: label-lobby-players-team
 					Align: Left
 					Font: Bold
 				Container@SORT_TEAMS_BUTTON_ROOT:
-					X: 473
+					X: 654
 					Y: 4
 					Width: 16
 					Height: 16
 					Children:
 						ColorBlock@SORT_TEAMS_ACTIVE:
+							Circle: true
 							Width: PARENT_WIDTH
 							Height: PARENT_HEIGHT
 						Button@SORT_TEAMS_BUTTON:
@@ -52,21 +53,21 @@ Container@LOBBY_PLAYER_BIN:
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipText: button-lobby-sort-teams
 				Label@LABEL_LOBBY_HANDICAP:
-					X: 491
+					X: 672
 					Width: 75
 					Height: 25
 					Text: label-lobby-players-handicap
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_SPAWN:
-					X: 571
+					X: 752
 					Width: 50
 					Height: 25
 					Text: label-lobby-players-spawn
 					Align: Left
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
-					X: 627
+					X: 808
 					Width: 20 + 24
 					Height: 25
 					Text: label-lobby-players-ready
@@ -80,7 +81,7 @@ Container@LOBBY_PLAYER_BIN:
 			Children:
 				Container@TEMPLATE_EDITABLE_PLAYER:
 					X: 5
-					Width: 530
+					Width: 823
 					Height: 25
 					Visible: false
 					Children:
@@ -101,9 +102,18 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 368
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						TextField@NAME:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 25
 							Text: Name
 							LeftMargin: 24
@@ -124,13 +134,13 @@ Container@LOBBY_PLAYER_BIN:
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						DropDownButton@SLOT_OPTIONS:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 25
 							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
 						DropDownButton@COLOR:
-							X: 210
+							X: 389
 							Width: 94
 							Height: 25
 							Font: Regular
@@ -142,7 +152,7 @@ Container@LOBBY_PLAYER_BIN:
 									Width: PARENT_WIDTH - 35
 									Height: PARENT_HEIGHT - 12
 						DropDownButton@FACTION:
-							X: 309
+							X: 489
 							Width: 120
 							Height: 25
 							Font: Regular
@@ -161,24 +171,24 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 25
 									Text: label-lobby-players-faction
 						DropDownButton@TEAM_DROPDOWN:
-							X: 435
+							X: 616
 							Width: 50
 							Height: 25
 							Font: Regular
 						DropDownButton@HANDICAP_DROPDOWN:
-							X: 491
+							X: 672
 							Width: 75
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 571
+							X: 752
 							Width: 50
 							Height: 25
 							Font: Regular
 						Image@STATUS_IMAGE:
-							X: 629
+							X: 810
 							Y: 4
 							Width: 20
 							Height: 20
@@ -186,14 +196,25 @@ Container@LOBBY_PLAYER_BIN:
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
-							X: 627
+							X: 808
 							Y: 2
 							Width: 20
 							Height: 20
 							Visible: false
+						Label@ADMIN:
+							X: 323
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_NONEDITABLE_PLAYER:
 					X: 5
-					Width: 530
+					Width: 823
 					Height: 25
 					Visible: false
 					Children:
@@ -214,6 +235,15 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 368
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						Image@PROFILE:
 							ImageCollection: lobby-bits
 							X: 18
@@ -228,11 +258,11 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Width: 161
+							Width: 339
 							Height: 25
 						DropDownButton@PLAYER_ACTION:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 25
 							Font: Regular
 							Visible: false
@@ -252,12 +282,12 @@ Container@LOBBY_PLAYER_BIN:
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						ColorBlock@COLORBLOCK:
-							X: 215
+							X: 394
 							Y: 6
 							Width: 59
 							Height: 13
 						Container@FACTION:
-							X: 309
+							X: 489
 							Width: 120
 							Height: 25
 							Children:
@@ -272,74 +302,85 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 25
 									Text: label-lobby-players-faction
 						Label@TEAM:
-							X: 425
+							X: 606
 							Width: 45
 							Height: 25
 							Align: Center
 						DropDownButton@TEAM_DROPDOWN:
-							X: 435
+							X: 616
 							Width: 50
 							Height: 25
 							Font: Regular
 							Visible: false
 						Label@HANDICAP:
-							X: 491
+							X: 672
 							Width: 50
 							Height: 25
 							Align: Center
 						DropDownButton@HANDICAP_DROPDOWN:
-							X: 491
+							X: 672
 							Width: 75
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
 						Label@SPAWN:
-							X: 571
+							X: 752
 							Width: 25
 							Height: 25
 							Align: Center
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 571
+							X: 752
 							Width: 50
 							Height: 25
 							Font: Regular
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 629
+							X: 810
 							Y: 4
 							Width: 20
 							Height: 20
 							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
+						Label@ADMIN:
+							X: 323
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_EMPTY:
 					X: 5
-					Width: 530
+					Width: 823
 					Height: 25
 					Visible: false
 					Children:
 						DropDownButton@SLOT_OPTIONS:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 25
 							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
 						Label@NAME:
 							X: 20
-							Width: 195
+							Width: 373
 							Height: 25
 							Visible: false
 						Button@JOIN:
-							X: 210
-							Width: 438
+							X: 389
+							Width: 439
 							Height: 25
 							Text: button-lobby-players-join
 							Font: Regular
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
-					Width: 530
+					Width: 823
 					Height: 25
 					Visible: false
 					Children:
@@ -360,9 +401,18 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 368
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						TextField@NAME:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 25
 							Text: Name
 							LeftMargin: 24
@@ -381,14 +431,14 @@ Container@LOBBY_PLAYER_BIN:
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
-							X: 210
-							Width: 441
+							X: 389
+							Width: 439
 							Height: 25
 							Text: label-lobby-players-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 629
+							X: 810
 							Y: 4
 							Width: 20
 							Height: 20
@@ -396,14 +446,25 @@ Container@LOBBY_PLAYER_BIN:
 							ImageName: checked
 							Visible: false
 						Checkbox@STATUS_CHECKBOX:
-							X: 627
+							X: 808
 							Y: 2
 							Width: 20
 							Height: 20
 							Visible: false
+						Label@ADMIN:
+							X: 323
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X: 5
-					Width: 530
+					Width: 823
 					Height: 25
 					Visible: false
 					Children:
@@ -424,6 +485,15 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 368
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						Image@PROFILE:
 							ImageCollection: lobby-bits
 							X: 18
@@ -438,11 +508,11 @@ Container@LOBBY_PLAYER_BIN:
 							Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@NAME:
 							X: 39
-							Width: 161
+							Width: 339
 							Height: 25
 						DropDownButton@PLAYER_ACTION:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 25
 							Font: Regular
 							Visible: false
@@ -462,35 +532,46 @@ Container@LOBBY_PLAYER_BIN:
 									TooltipContainer: TOOLTIP_CONTAINER
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
-							X: 210
-							Width: 441
+							X: 389
+							Width: 439
 							Height: 25
 							Text: label-lobby-players-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 627
+							X: 808
 							Y: 4
 							Width: 20
 							Height: 20
 							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
+						Label@ADMIN:
+							X: 323
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_NEW_SPECTATOR:
 					X: 5
-					Width: 529
+					Width: 822
 					Height: 25
 					Visible: false
 					Children:
 						Checkbox@TOGGLE_SPECTATORS:
 							X: 15
-							Width: 190
+							Width: 368
 							Height: 20
 							Font: Regular
 							Text: checkbox-lobby-players-new-spectator-toggle
 						Button@SPECTATE:
-							X: 210
-							Width: 438
+							X: 389
+							Width: 439
 							Height: 25
 							Text: button-lobby-players-spectate
 							Font: Regular

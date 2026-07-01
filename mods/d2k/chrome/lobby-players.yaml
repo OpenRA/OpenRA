@@ -42,6 +42,7 @@ Container@LOBBY_PLAYER_BIN:
 					Height: 16
 					Children:
 						ColorBlock@SORT_TEAMS_ACTIVE:
+							Circle: true
 							Width: PARENT_WIDTH
 							Height: PARENT_HEIGHT
 						Button@SORT_TEAMS_BUTTON:
@@ -100,6 +101,15 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 165
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						TextField@NAME:
 							X: 15
 							Width: 165
@@ -187,6 +197,17 @@ Container@LOBBY_PLAYER_BIN:
 							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
+						Label@ADMIN:
+							X: 120
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_NONEDITABLE_PLAYER:
 					X: 5
 					Width: 475
@@ -209,6 +230,15 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 165
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						Image@PROFILE:
 							ImageCollection: lobby-bits
 							X: 18
@@ -307,6 +337,17 @@ Container@LOBBY_PLAYER_BIN:
 							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
+						Label@ADMIN:
+							X: 120
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_EMPTY:
 					X: 5
 					Width: 475
@@ -351,6 +392,15 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 165
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						TextField@NAME:
 							X: 15
 							Width: 165
@@ -392,6 +442,17 @@ Container@LOBBY_PLAYER_BIN:
 							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
+						Label@ADMIN:
+							X: 120
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
+							Visible: false
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X: 5
 					Width: 475
@@ -414,6 +475,15 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							Template: LATENCY_TOOLTIP
+						ColorBlock@ADMIN_BORDER:
+							X: 15
+							Y: 0
+							Width: 165
+							Height: 25
+							Color: 4A9E4A
+							BorderOnly: true
+							BorderWidth: 1
+							Visible: false
 						Image@PROFILE:
 							ImageCollection: lobby-bits
 							X: 18
@@ -466,6 +536,17 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 20
 							ImageCollection: checkmark-tick
 							ImageName: checked
+							Visible: false
+						Label@ADMIN:
+							X: 120
+							Y: 1
+							Width: 58
+							Height: 12
+							Text: Admin
+							TextColor: 4A9E4A
+							Align: Right
+							VAlign: Top
+							Font: Tiny
 							Visible: false
 				Container@TEMPLATE_NEW_SPECTATOR:
 					X: 5

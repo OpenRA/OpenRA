@@ -240,25 +240,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (sortTeamsButton != null)
 			{
 				var sortTeamsDefaultTextColor = sortTeamsButton.TextColor;
-				var sortTeamsActiveBg = playerBin.GetOrNull<ColorBlockWidget>("SORT_TEAMS_ACTIVE");
-				if (sortTeamsActiveBg != null)
+				var sortTeamsBg = playerBin.GetOrNull<ColorBlockWidget>("SORT_TEAMS_ACTIVE");
+				if (sortTeamsBg != null)
 				{
-					sortTeamsActiveBg.IsVisible = () => sortPlayersByTeam;
-					sortTeamsActiveBg.GetColor = () => Color.LimeGreen;
+					sortTeamsBg.GetColor = () => sortPlayersByTeam
+						? Color.FromArgb(255, 45, 110, 45)
+						: Color.FromArgb(255, 72, 58, 98);
 				}
 
 				void UpdateSortTeamsButtonChrome()
 				{
-					if (sortPlayersByTeam)
-					{
-						sortTeamsButton.Background = "";
-						sortTeamsButton.GetColor = () => Color.White;
-					}
-					else
-					{
-						sortTeamsButton.Background = "button";
-						sortTeamsButton.GetColor = () => sortTeamsDefaultTextColor;
-					}
+					sortTeamsButton.Background = "";
+					sortTeamsButton.GetColor = () => sortPlayersByTeam ? Color.White : sortTeamsDefaultTextColor;
 				}
 
 				UpdateSortTeamsButtonChrome();
@@ -884,6 +877,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableReadyWidget(template, client, orderManager, map, MapIsPlayable);
+					LobbyUtils.SetupAdminWidget(template, client);
 				}
 				else
 				{
@@ -912,6 +906,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					LobbyUtils.SetupReadyWidget(template, client);
+					LobbyUtils.SetupAdminWidget(template, client);
 				}
 
 				template.IsVisible = () => true;
@@ -966,6 +961,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				LobbyUtils.SetupLatencyWidget(template, c, orderManager);
+				LobbyUtils.SetupAdminWidget(template, c);
 				template.IsVisible = () => true;
 
 				if (idx >= players.Children.Count)

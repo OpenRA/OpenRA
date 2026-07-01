@@ -170,12 +170,16 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Set(Color color)
 		{
 			var (_, h, s, v) = color.ToAhsv();
+			s = s.Clamp(minSat, maxSat);
+			v = v.Clamp(minVal, maxVal);
 
 			if (H != h || S != s || V != v)
 			{
+				if (H != h)
+					SetColorLimits(minSat, maxSat, minVal, maxVal, h);
 				H = h;
-				S = s.Clamp(minSat, maxSat);
-				V = v.Clamp(minVal, maxVal);
+				S = s;
+				V = v;
 				OnChange();
 			}
 		}

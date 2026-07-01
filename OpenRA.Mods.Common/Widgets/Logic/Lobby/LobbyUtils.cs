@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string BotPlayer = "label-bot-player";
 
+		static readonly Color AdminBorderColor = Color.FromArgb(0xFF4A9E4A);
+		static readonly Color AdminLabelColor = Color.FromArgb(0xFF4A9E4A);
+
 		[FluentReference]
 		const string BotsDisabled = "options-lobby-slot.bots-disabled";
 
@@ -322,6 +325,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				case Session.ConnectionQuality.Moderate: return "Moderate";
 				case Session.ConnectionQuality.Poor: return "Poor";
 				default: return "Unknown";
+			}
+		}
+
+		public static void SetupAdminWidget(Widget parent, Session.Client c)
+		{
+			var border = parent.GetOrNull<ColorBlockWidget>("ADMIN_BORDER");
+			if (border != null)
+			{
+				border.IsVisible = () => c != null && c.IsAdmin;
+				border.GetColor = () => AdminBorderColor;
+			}
+
+			var label = parent.GetOrNull<LabelWidget>("ADMIN");
+			if (label != null)
+			{
+				label.IsVisible = () => c != null && c.IsAdmin;
+				label.GetColor = () => AdminLabelColor;
 			}
 		}
 

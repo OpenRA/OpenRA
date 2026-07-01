@@ -9,8 +9,8 @@ Container@SERVER_LOBBY:
 			Feedback: TRANSIENT_LINE_TEMPLATE
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
-	Width: 900
-	Height: 540
+	Width: 1125
+	Height: 675
 	Children:
 		Label@SERVER_NAME:
 			Width: PARENT_WIDTH
@@ -27,8 +27,8 @@ Container@SERVER_LOBBY:
 				Container@MAP_PREVIEW_ROOT:
 					X: PARENT_WIDTH - 15 - WIDTH
 					Y: 30
-					Width: 174
-					Height: 250
+					Width: 252
+					Height: 305
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
 					Y: 335
@@ -42,65 +42,65 @@ Container@SERVER_LOBBY:
 					Height: 25
 					Text: button-bg-reset-options
 				Container@SKIRMISH_TABS:
-					X: 697 - WIDTH
-					Width: 465
+					X: 226
+					Width: 622
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
 							Y: 329
-							Width: 151
+							Width: 207
 							Height: 31
 							Text: button-skirmish-tabs-players-tab
 						Button@OPTIONS_TAB:
-							X: 157
+							X: 207
 							Y: 329
-							Width: 151
+							Width: 207
 							Height: 31
 							Text: button-skirmish-tabs-options-tab
 						Button@MUSIC_TAB:
-							X: 314
+							X: 414
 							Y: 329
-							Width: 151
+							Width: 208
 							Height: 31
 							Text: label-music-title
 				Container@MULTIPLAYER_TABS:
-					X: 697 - WIDTH
-					Width: 465
+					X: 226
+					Width: 622
 					Visible: False
 					Children:
 						Button@PLAYERS_TAB:
 							Y: 329
-							Width: 112
+							Width: 155
 							Height: 31
 							Text: button-multiplayer-tabs-players-tab
 						Button@OPTIONS_TAB:
-							X: 118
+							X: 155
 							Y: 329
-							Width: 112
+							Width: 156
 							Height: 31
 							Text: button-multiplayer-tabs-options-tab
 						Button@MUSIC_TAB:
-							X: 236
+							X: 311
 							Y: 329
-							Width: 112
+							Width: 155
 							Height: 31
 							Text: label-music-title
 						Button@SERVERS_TAB:
-							X: 354
+							X: 466
 							Y: 329
-							Width: 111
+							Width: 156
 							Height: 31
 							Text: button-multiplayer-tabs-servers-tab
 				Button@CHANGEMAP_BUTTON:
 					X: PARENT_WIDTH - WIDTH - 15
 					Y: 335
-					Width: 174
+					Width: 252
 					Height: 25
 					Text: button-bg-changemap
 				Container@TOP_PANELS_ROOT:
 					X: 15
 					Y: 30
-					Width: 682
+					Width: 833
 					Height: 300
 				Container@LOBBYCHAT:
 					X: 15
