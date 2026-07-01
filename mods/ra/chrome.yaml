@@ -22,6 +22,9 @@ sidebar-allies:
 		background-moneybin: 0, 85, 238, 28
 		background-iconbg: 12, 227, 190, 47
 		background-iconrow: 0, 116, 238, 47
+		background-iconrow-mid: 0, 120, 238, 14
+		background-iconrow-left: 0, 120, 3, 14
+		background-iconrow-right: 235, 120, 3, 14
 		background-bottom: 0, 166, 238, 8
 		background-supportoverlay: 12, 324, 64, 48
 
@@ -80,6 +83,9 @@ sidebar-soviet:
 		background-moneybin: 0, 54, 238, 28
 		background-iconbg: 12, 275, 190, 47
 		background-iconrow: 0, 116, 238, 47
+		background-iconrow-mid: 0, 120, 238, 14
+		background-iconrow-left: 0, 120, 3, 14
+		background-iconrow-right: 235, 120, 3, 14
 		background-bottom: 0, 166, 238, 8
 		background-supportoverlay: 77, 324, 64, 48
 

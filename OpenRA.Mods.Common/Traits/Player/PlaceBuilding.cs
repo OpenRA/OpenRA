@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Traits
 						nbp.BuildingPlaced(self, building);
 				}
 
-				queue.EndProduction(item);
+				queue.EndProduction(item, completedProduction: true);
 
 				// FindBaseProvider may return null if the build anywhere cheat is active
 				// BuildingInfo.IsCloseEnoughToBase has already verified that this is a valid build location

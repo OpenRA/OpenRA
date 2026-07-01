@@ -114,6 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			TickInner(self, !isActive);
+			TickProductionTargets(self);
 		}
 
 		public override IEnumerable<ActorInfo> AllItems()
@@ -164,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var item = Queue.First(i => i.Done && i.Item == unit.Name);
 					ActorsReadyForDelivery.Add((unit, item.ResourcesPaid, item.TotalCost - item.ResourcesPaid));
-					EndProduction(item);
+					EndProduction(item, completedProduction: true);
 					return true;
 				}
 			}
@@ -245,6 +246,15 @@ namespace OpenRA.Mods.Common.Traits
 				case "PurchaseOrder":
 					if (!deliveryProcessStarted && order.TargetString == info.Type)
 						StartDeliveryProcess();
+					break;
+				case "SetProductionTarget":
+					if (!rules.Actors.TryGetValue(order.TargetString, out var targetUnit))
+						return;
+
+					if (!targetUnit.TraitInfo<BuildableInfo>().Queue.Contains(Info.Type))
+						return;
+
+					SetProductionTarget(order.TargetString, (int)order.ExtraData);
 					break;
 			}
 		}

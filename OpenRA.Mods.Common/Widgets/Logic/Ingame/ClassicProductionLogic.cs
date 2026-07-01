@@ -65,33 +65,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (background != null || foreground != null)
 			{
 				Widget backgroundTemplate = null;
+				Widget backgroundBarTemplate = null;
 				Widget backgroundBottom = null;
 				Widget foregroundTemplate = null;
+				Widget foregroundBarTemplate = null;
 
 				if (background != null)
 				{
 					backgroundTemplate = background.Get("ROW_TEMPLATE");
+					backgroundBarTemplate = background.GetOrNull("BAR_ROW_TEMPLATE");
 					backgroundBottom = background.GetOrNull("BOTTOM_CAP");
 				}
 
 				if (foreground != null)
+				{
 					foregroundTemplate = foreground.Get("ROW_TEMPLATE");
+					foregroundBarTemplate = foreground.GetOrNull("BAR_ROW_TEMPLATE");
+				}
 
 				void UpdateBackground(int _, int icons)
 				{
 					var rows = Math.Max(palette.MinimumRows, (icons + palette.Columns - 1) / palette.Columns);
 					rows = Math.Min(rows, palette.MaximumRows);
+					var rowHeight = palette.RowStride;
+					var iconRowHeight = palette.IconSize.Y + palette.IconMargin.Y;
 
 					if (background != null)
 					{
 						background.RemoveChildren();
 
-						var rowHeight = backgroundTemplate.Bounds.Height;
 						for (var i = 0; i < rows; i++)
 						{
+							var y = i * rowHeight;
+
 							var row = backgroundTemplate.Clone();
-							row.Bounds.Y = i * rowHeight;
+							row.Bounds.Y = y;
 							background.AddChild(row);
+
+							if (palette.BarHeight > 0 && backgroundBarTemplate != null)
+							{
+								var barRow = backgroundBarTemplate.Clone();
+								barRow.Bounds.Y = y + iconRowHeight;
+								background.AddChild(barRow);
+							}
 						}
 
 						if (backgroundBottom == null)
@@ -105,12 +121,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						foreground.RemoveChildren();
 
-						var rowHeight = foregroundTemplate.Bounds.Height;
 						for (var i = 0; i < rows; i++)
 						{
+							var y = i * rowHeight;
+
 							var row = foregroundTemplate.Clone();
-							row.Bounds.Y = i * rowHeight;
+							row.Bounds.Y = y;
 							foreground.AddChild(row);
+
+							if (palette.BarHeight > 0 && foregroundBarTemplate != null)
+							{
+								var barRow = foregroundBarTemplate.Clone();
+								barRow.Bounds.Y = y + iconRowHeight;
+								foreground.AddChild(barRow);
+							}
 						}
 					}
 				}
@@ -179,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Check if icon heights exceed y resolution
 			var maxItemsHeight = screenHeight - sidebarProductionHeight;
 
-			var maxIconRowOffest = maxItemsHeight / productionPalette.IconSize.Y - 1;
+			var maxIconRowOffest = maxItemsHeight / productionPalette.RowStride - 1;
 			productionPalette.MaxIconRowOffset = Math.Min(maxIconRowOffest, productionPalette.MaximumRows);
 		}
 	}

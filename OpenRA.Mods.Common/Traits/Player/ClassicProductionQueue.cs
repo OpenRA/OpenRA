@@ -70,6 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 				ClearQueue();
 
 			TickInner(self, !isActive);
+			TickProductionTargets(self);
 		}
 
 		public override IEnumerable<ActorInfo> AllItems()
@@ -126,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 				var item = Queue.First(i => i.Done && i.Item == unit.Name);
 				if (p.Trait.Produce(p.Actor, unit, type, inits, item.TotalCost))
 				{
-					EndProduction(item);
+					EndProduction(item, completedProduction: true);
 					return true;
 				}
 			}

@@ -1,8 +1,8 @@
 Container@GAME_INFO_PANEL:
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
-	Width: 580
-	Height: 500
+	Width: 754
+	Height: 650
 	Logic: GameInfoLogic
 	Visible: False
 	Children:
@@ -121,23 +121,25 @@ Container@GAME_INFO_PANEL:
 					Font: Bold
 		Container@STATS_PANEL:
 			Y: 65
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT - 65
 		Container@MAP_PANEL:
 			Y: 65
 			Width: PARENT_WIDTH
-			Height: PARENT_HEIGHT
+			Height: PARENT_HEIGHT - 65
 		Container@OBJECTIVES_PANEL:
 			Y: 65
 			Width: PARENT_WIDTH
-			Height: PARENT_HEIGHT
+			Height: PARENT_HEIGHT - 65
 		Container@DEBUG_PANEL:
 			Y: 65
 			Width: PARENT_WIDTH
-			Height: PARENT_HEIGHT
+			Height: PARENT_HEIGHT - 65
 		Container@CHAT_PANEL:
 			Y: 65
 			Width: PARENT_WIDTH
-			Height: PARENT_HEIGHT
+			Height: PARENT_HEIGHT - 65
 		Container@LOBBY_OPTIONS_PANEL:
 			Y: 65
 			Width: PARENT_WIDTH
-			Height: PARENT_HEIGHT
+			Height: PARENT_HEIGHT - 65

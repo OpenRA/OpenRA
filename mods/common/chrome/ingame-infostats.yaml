@@ -61,7 +61,7 @@ Container@SKIRMISH_STATS:
 			X: 20
 			Y: 105
 			Width: PARENT_WIDTH - 40
-			Height: 310
+			Height: PARENT_HEIGHT - 125
 			ItemSpacing: 5
 			Children:
 				ScrollItem@TEAM_TEMPLATE:

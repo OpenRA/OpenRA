@@ -140,6 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 		// A list of things we could possibly build
 		protected readonly Dictionary<ActorInfo, ProductionState> Producible = [];
 		protected readonly List<ProductionItem> Queue = [];
+		readonly Dictionary<string, int> productionTargets = [];
 		readonly IEnumerable<ActorInfo> allProducibles;
 		readonly IEnumerable<ActorInfo> buildableProducibles;
 
@@ -200,6 +201,12 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			Queue.Clear();
+			productionTargets.Clear();
+		}
+
+		public int GetProductionTarget(string itemName)
+		{
+			return productionTargets.TryGetValue(itemName, out var target) ? target : 0;
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -356,6 +363,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			Enabled = IsValidFaction && anyEnabledProduction;
 			TickInner(self, !anyUnpausedProduction);
+			TickProductionTargets(self);
+		}
+
+		protected void TickProductionTargets(Actor self)
+		{
+			if (productionTargets.Count == 0)
+				return;
+
+			foreach (var itemName in productionTargets.Keys.ToArray())
+				TryFillProductionTarget(self, itemName);
 		}
 
 		protected virtual void TickInner(Actor self, bool allProductionPaused)
@@ -390,6 +407,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Refund what's been paid so far
 				playerResources.RefundCash(Queue[i].TotalCost - Queue[i].RemainingCost);
+				ReduceProductionTarget(Queue[i].Item, 1);
 				EndProduction(Queue[i]);
 				cancelledAnItem = true;
 			}
@@ -535,6 +553,149 @@ namespace OpenRA.Mods.Common.Traits
 				case "CancelProduction":
 					CancelProduction(order.TargetString, order.ExtraData);
 					break;
+				case "PrioritizeProduction":
+					PrioritizeProduction(order.TargetString);
+					break;
+				case "SetProductionTarget":
+					if (!rules.Actors.TryGetValue(order.TargetString, out var targetUnit))
+						return;
+
+					if (!targetUnit.TraitInfo<BuildableInfo>().Queue.Contains(Info.Type))
+						return;
+
+					SetProductionTarget(order.TargetString, (int)order.ExtraData);
+					break;
+			}
+		}
+
+		protected void SetProductionTarget(string itemName, int count)
+		{
+			count = Math.Min(Math.Max(count, 0), 999);
+			if (count <= 0)
+				productionTargets.Remove(itemName);
+			else
+				productionTargets[itemName] = count;
+
+			TryFillProductionTarget(Actor, itemName);
+		}
+
+		protected int GetProductionLimit(string itemName)
+		{
+			var fromLimit = int.MaxValue;
+			if (developerMode.AllTech)
+				return fromLimit;
+
+			if (Info.QueueLimit > 0)
+				fromLimit = Info.QueueLimit - Queue.Count;
+
+			if (Info.ItemLimit > 0)
+				fromLimit = Math.Min(fromLimit, Info.ItemLimit - Queue.Count(i => i.Item == itemName));
+
+			var unit = Actor.World.Map.Rules.Actors[itemName];
+			var bi = unit.TraitInfo<BuildableInfo>();
+			if (bi.BuildLimit > 0)
+			{
+				var inQueue = Queue.Count(pi => pi.Item == itemName);
+				var owned = Actor.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == itemName && a.Owner == Actor.Owner);
+				fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
+			}
+
+			return fromLimit;
+		}
+
+		protected bool QueueProductionItem(Actor self, ActorInfo unit, bool queued)
+		{
+			var cost = GetProductionCost(unit);
+			var time = GetBuildTime(unit, unit.TraitInfo<BuildableInfo>());
+			if (Info.PayUpFront && cost > playerResources.GetCashAndResources())
+				return false;
+
+			var rules = self.World.Map.Rules;
+			var notified = false;
+			BeginProduction(new ProductionItem(this, unit.Name, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+			{
+				if (!Queue.Any(i => i.Done && i.Item == unit.Name))
+				{
+					notified = false;
+					return;
+				}
+
+				var isBuilding = unit.HasTraitInfo<BuildingInfo>();
+				if (isBuilding && !notified)
+				{
+					Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
+					notified = true;
+				}
+				else if (!isBuilding)
+				{
+					if (BuildUnit(unit))
+					{
+						Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+						TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
+					}
+					else if (!notified && time > 0)
+					{
+						Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
+						TextNotificationsManager.AddTransientLine(self.Owner, Info.BlockedTextNotification);
+						notified = true;
+					}
+				}
+			})), queued);
+
+			return true;
+		}
+
+		protected void TryFillProductionTarget(Actor self, string itemName)
+		{
+			if (!productionTargets.TryGetValue(itemName, out var target) || target <= 0)
+				return;
+
+			if (BuildableItems().All(b => b.Name != itemName))
+				return;
+
+			var inQueue = Queue.Count(i => i.Item == itemName);
+			var needed = target - inQueue;
+			if (needed <= 0)
+				return;
+
+			var fromLimit = GetProductionLimit(itemName);
+			if (fromLimit <= 0)
+				return;
+
+			var unit = self.World.Map.Rules.Actors[itemName];
+			var amountToBuild = Math.Min(needed, fromLimit);
+			for (var n = 0; n < amountToBuild; n++)
+			{
+				if (!QueueProductionItem(self, unit, queued: true))
+					break;
+			}
+		}
+
+		void ReduceProductionTarget(string itemName, int amount)
+		{
+			if (amount <= 0 || !productionTargets.TryGetValue(itemName, out var target))
+				return;
+
+			target = Math.Max(0, target - amount);
+			if (target <= 0)
+				productionTargets.Remove(itemName);
+			else
+				productionTargets[itemName] = target;
+		}
+
+		void DecrementProductionTarget(string itemName)
+		{
+			if (!productionTargets.TryGetValue(itemName, out var target))
+				return;
+
+			target--;
+			if (target <= 0)
+				productionTargets.Remove(itemName);
+			else
+			{
+				productionTargets[itemName] = target;
+				TryFillProductionTarget(Actor, itemName);
 			}
 		}
 
@@ -574,9 +735,53 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void CancelProduction(string itemName, uint numberToCancel)
 		{
+			var cancelled = 0;
 			for (var i = 0; i < numberToCancel; i++)
+			{
 				if (!CancelProductionInner(itemName))
 					break;
+
+				cancelled++;
+			}
+
+			if (cancelled > 0)
+				ReduceProductionTarget(itemName, cancelled);
+		}
+
+		protected virtual void PrioritizeProduction(string itemName)
+		{
+			if (Queue.Count < 2)
+				return;
+
+			var priorityItems = new List<ProductionItem>();
+			for (var i = 1; i < Queue.Count; i++)
+			{
+				if (Queue[i].Item == itemName)
+					priorityItems.Add(Queue[i]);
+			}
+
+			if (priorityItems.Count == 0)
+				return;
+
+			// Already grouped at the front of the waiting queue.
+			if (Queue[1].Item == itemName)
+			{
+				var blockEnd = 1;
+				while (blockEnd < Queue.Count && Queue[blockEnd].Item == itemName)
+					blockEnd++;
+
+				if (priorityItems.Count == blockEnd - 1)
+					return;
+			}
+
+			for (var i = Queue.Count - 1; i >= 1; i--)
+			{
+				if (Queue[i].Item == itemName)
+					Queue.RemoveAt(i);
+			}
+
+			for (var i = 0; i < priorityItems.Count; i++)
+				Queue.Insert(1 + i, priorityItems[i]);
 		}
 
 		protected bool CancelProductionInner(string itemName)
@@ -610,8 +815,11 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		public void EndProduction(ProductionItem item)
+		public void EndProduction(ProductionItem item, bool completedProduction = false)
 		{
+			if (completedProduction)
+				DecrementProductionTarget(item.Item);
+
 			Queue.Remove(item);
 
 			if (item.Infinite)
@@ -701,7 +909,7 @@ namespace OpenRA.Mods.Common.Traits
 			var item = Queue.First(i => i.Done && i.Item == unit.Name);
 			if (!mostLikelyProducerTrait.IsTraitPaused && mostLikelyProducerTrait.Produce(Actor, unit, type, inits, item.TotalCost))
 			{
-				EndProduction(item);
+				EndProduction(item, completedProduction: true);
 				return true;
 			}
 

@@ -76,6 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 				ClearQueue();
 
 			TickInner(self, !isActive);
+			TickProductionTargets(self);
 		}
 
 		protected override void TickInner(Actor self, bool allProductionPaused)
@@ -176,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 				var item = Queue.First(i => i.Done && i.Item == unit.Name);
 				if (p.Trait.Produce(p.Actor, unit, type, inits, item.TotalCost))
 				{
-					EndProduction(item);
+					EndProduction(item, completedProduction: true);
 					return true;
 				}
 			}
@@ -192,6 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 			// Ignore `hasPriority` as it's not relevant in parallel production context.
 			base.BeginProduction(item, false);
 		}
+
+		protected override void PrioritizeProduction(string itemName) { }
 
 		protected override void PauseProduction(string itemName, bool paused)
 		{

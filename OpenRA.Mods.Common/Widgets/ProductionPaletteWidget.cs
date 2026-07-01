@@ -38,6 +38,253 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionQueue ProductionQueue;
 	}
 
+	public readonly struct ProductionBarButton
+	{
+		public readonly ProductionIcon Icon;
+		public readonly int ButtonIndex;
+		public readonly Rectangle Bounds;
+
+		public ProductionBarButton(ProductionIcon icon, int buttonIndex, Rectangle bounds)
+		{
+			Icon = icon;
+			ButtonIndex = buttonIndex;
+			Bounds = bounds;
+		}
+	}
+
+	public class ProductionBarCancelButtonWidget : ButtonWidget
+	{
+		static readonly Color Fill = Color.FromArgb(255, 210, 25, 25);
+		static readonly Color FillHover = Color.FromArgb(255, 255, 45, 45);
+		static readonly Color FillDisabled = Color.FromArgb(255, 90, 35, 35);
+
+		[ObjectCreator.UseCtor]
+		public ProductionBarCancelButtonWidget(ModData modData)
+			: base(modData)
+		{
+			VisualHeight = 0;
+			Text = "X";
+			Font = "TinyBold";
+			TextColor = Color.White;
+			Contrast = true;
+			ContrastRadius = 1;
+		}
+
+		protected ProductionBarCancelButtonWidget(ProductionBarCancelButtonWidget other)
+			: base(other) { }
+
+		public override ProductionBarCancelButtonWidget Clone() { return new ProductionBarCancelButtonWidget(this); }
+
+		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
+		{
+			var fill = disabled ? FillDisabled : pressed || hover ? FillHover : Fill;
+			WidgetUtils.FillRectWithColor(rect, fill);
+		}
+	}
+
+	public class ProductionBarPriorityButtonWidget : ButtonWidget
+	{
+		static readonly Color Fill = Color.FromArgb(255, 25, 160, 25);
+		static readonly Color FillHover = Color.FromArgb(255, 40, 200, 40);
+		static readonly Color FillDisabled = Color.FromArgb(255, 50, 50, 70);
+
+		[ObjectCreator.UseCtor]
+		public ProductionBarPriorityButtonWidget(ModData modData)
+			: base(modData)
+		{
+			VisualHeight = 0;
+			Text = "1";
+			Font = "TinyBold";
+			TextColor = Color.White;
+			Contrast = true;
+			ContrastRadius = 1;
+		}
+
+		protected ProductionBarPriorityButtonWidget(ProductionBarPriorityButtonWidget other)
+			: base(other) { }
+
+		public override ProductionBarPriorityButtonWidget Clone() { return new ProductionBarPriorityButtonWidget(this); }
+
+		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
+		{
+			if (highlighted)
+			{
+				var fill = disabled ? Fill : pressed || hover ? FillHover : Fill;
+				WidgetUtils.FillRectWithColor(rect, fill);
+				return;
+			}
+
+			if (!string.IsNullOrEmpty(Background))
+				ButtonWidget.DrawBackground(Background, rect, disabled, pressed, hover, false);
+			else
+				WidgetUtils.FillRectWithColor(rect, disabled ? FillDisabled : Color.FromArgb(255, 35, 35, 55));
+		}
+	}
+
+	public class ProductionBarBulkButtonWidget : ButtonWidget
+	{
+		const int MaxDigits = 3;
+
+		static readonly Color FillEditing = Color.FromArgb(255, 20, 40, 110);
+		static readonly Color FillEditingHover = Color.FromArgb(255, 30, 55, 140);
+		static readonly Color FillActive = Color.FromArgb(255, 50, 120, 230);
+		static readonly Color FillActiveHover = Color.FromArgb(255, 70, 145, 255);
+		static readonly Color FillDisabled = Color.FromArgb(255, 50, 50, 70);
+
+		bool editing;
+		string editText = "";
+
+		public Func<int> GetTargetCount;
+		public Action<int> OnTargetConfirmed;
+
+		[ObjectCreator.UseCtor]
+		public ProductionBarBulkButtonWidget(ModData modData)
+			: base(modData)
+		{
+			VisualHeight = 0;
+			Font = "TinyBold";
+			TextColor = Color.White;
+			Contrast = true;
+			ContrastRadius = 1;
+			GetText = () => editing ? editText : GetDisplayText();
+		}
+
+		protected ProductionBarBulkButtonWidget(ProductionBarBulkButtonWidget other)
+			: base(other)
+		{
+			GetTargetCount = other.GetTargetCount;
+			OnTargetConfirmed = other.OnTargetConfirmed;
+		}
+
+		public override ProductionBarBulkButtonWidget Clone() { return new ProductionBarBulkButtonWidget(this); }
+
+		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
+		{
+			if (disabled)
+			{
+				WidgetUtils.FillRectWithColor(rect, FillDisabled);
+				return;
+			}
+
+			if (editing)
+			{
+				WidgetUtils.FillRectWithColor(rect, pressed || hover ? FillEditingHover : FillEditing);
+				return;
+			}
+
+			if ((GetTargetCount?.Invoke() ?? 0) > 0)
+			{
+				WidgetUtils.FillRectWithColor(rect, pressed || hover ? FillActiveHover : FillActive);
+				return;
+			}
+
+			if (!string.IsNullOrEmpty(Background))
+				ButtonWidget.DrawBackground(Background, rect, disabled, pressed, hover, false);
+			else
+				WidgetUtils.FillRectWithColor(rect, Color.FromArgb(255, 35, 35, 55));
+		}
+
+		string GetDisplayText()
+		{
+			var count = GetTargetCount?.Invoke() ?? 0;
+			return count > 0 ? count.ToString(NumberFormatInfo.CurrentInfo) : "";
+		}
+
+		void BeginEditing()
+		{
+			editing = true;
+			editText = "";
+			TakeKeyboardFocus();
+		}
+
+		void CancelEditing()
+		{
+			editing = false;
+			editText = "";
+		}
+
+		void ConfirmEditing()
+		{
+			if (editing && editText.Length > 0 && int.TryParse(editText, NumberStyles.None, NumberFormatInfo.CurrentInfo, out var count))
+				OnTargetConfirmed?.Invoke(Math.Min(count, 999));
+
+			CancelEditing();
+			base.YieldKeyboardFocus();
+		}
+
+		static bool TryGetDigit(Keycode key, out char digit)
+		{
+			if (key >= Keycode.NUMBER_0 && key <= Keycode.NUMBER_9)
+			{
+				digit = (char)key;
+				return true;
+			}
+
+			if (key >= Keycode.KP_0 && key <= Keycode.KP_9)
+			{
+				digit = (char)('0' + (key - Keycode.KP_0));
+				return true;
+			}
+
+			digit = default;
+			return false;
+		}
+
+		public override bool YieldKeyboardFocus()
+		{
+			if (editing)
+			{
+				if (editText.Length > 0 && int.TryParse(editText, NumberStyles.None, NumberFormatInfo.CurrentInfo, out var count))
+					OnTargetConfirmed?.Invoke(Math.Min(count, 999));
+
+				CancelEditing();
+			}
+
+			return base.YieldKeyboardFocus();
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (!editing || IsDisabled() || e.Event == KeyInputEvent.Up)
+				return false;
+
+			switch (e.Key)
+			{
+				case Keycode.RETURN:
+				case Keycode.KP_ENTER:
+					ConfirmEditing();
+					return true;
+				case Keycode.ESCAPE:
+					CancelEditing();
+					base.YieldKeyboardFocus();
+					return true;
+				case Keycode.BACKSPACE:
+				case Keycode.KP_BACKSPACE:
+					if (editText.Length > 0)
+						editText = editText[..^1];
+					return true;
+				default:
+					if (TryGetDigit(e.Key, out var digit) && editText.Length < MaxDigits)
+						editText += digit;
+					return true;
+			}
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (IsDisabled())
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left)
+			{
+				BeginEditing();
+				return true;
+			}
+
+			return editing;
+		}
+	}
+
 	public class ProductionPaletteWidget : Widget
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
@@ -48,6 +295,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int2 IconSize = new(64, 48);
 		public readonly int2 IconMargin = int2.Zero;
 		public readonly int2 IconSpriteOffset = int2.Zero;
+		public readonly int BarHeight = 0;
+		public readonly int ButtonsPerBar = 4;
+		public readonly string BarButtonBackground = null;
+		public readonly int BarPriorityButtonIndex = 0;
+		public readonly int BarBulkButtonIndex = 1;
+		public readonly int BarCancelButtonIndex = 3;
 
 		public readonly float2 QueuedOffset = new(4, 2);
 
@@ -101,6 +354,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconRowOffset = 0;
 		public int MaxIconRowOffset = int.MaxValue;
 
+		public int RowStride => IconSize.Y + IconMargin.Y + BarHeight;
+
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
 		HotkeyReference[] hotkeys;
@@ -120,6 +375,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override Rectangle EventBounds => eventBounds;
 		Dictionary<Rectangle, ProductionIcon> icons = [];
+		List<ProductionBarButton> barButtons = [];
+		string resolvedBarButtonBackground;
 		Animation cantBuild;
 		Animation clock;
 		Rectangle eventBounds = Rectangle.Empty;
@@ -189,6 +446,125 @@ namespace OpenRA.Mods.Common.Widgets
 				infiniteOffset += QueuedOffset;
 			else
 				infiniteOffset = QueuedOffset;
+
+			resolvedBarButtonBackground = ResolveBarButtonBackground(BarButtonBackground);
+		}
+
+		string ResolveBarButtonBackground(string background)
+		{
+			if (string.IsNullOrEmpty(background))
+				return null;
+
+			var player = World.LocalPlayer;
+			if (player == null || player.Spectating)
+				return background;
+
+			if (ChromeMetrics.TryGet("FactionSuffix-" + player.Faction.InternalName, out string faction))
+				return background + "-" + faction;
+
+			return background + "-" + player.Faction.InternalName;
+		}
+
+		bool IsBarCancelButtonDisabled(ProductionIcon icon) => icon.Queued.Count == 0;
+
+		bool QueueSupportsPriority =>
+			CurrentQueue is not ClassicParallelProductionQueue &&
+			CurrentQueue is not ParallelProductionQueue;
+
+		ProductionItem GetNextQueuedItem()
+		{
+			if (CurrentQueue == null)
+				return null;
+
+			return CurrentQueue.AllQueued().Skip(1).FirstOrDefault();
+		}
+
+		bool IsNextInLine(ProductionIcon icon)
+		{
+			var next = GetNextQueuedItem();
+			return next != null && next.Item == icon.Name;
+		}
+
+		bool IsBarPriorityButtonDisabled(ProductionIcon icon)
+		{
+			if (CurrentQueue == null || !QueueSupportsPriority)
+				return true;
+
+			if (IsNextInLine(icon))
+				return false;
+
+			if (icon.Queued.Count > 0)
+				return false;
+
+			return CurrentQueue.BuildableItems().All(a => a.Name != icon.Name);
+		}
+
+		bool HandleCancelAllQueued(ProductionIcon icon)
+		{
+			if (CurrentQueue == null || IsBarCancelButtonDisabled(icon))
+				return false;
+
+			var cancelCount = icon.Queued.Count;
+			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, World.LocalPlayer.Faction.InternalName);
+			TextNotificationsManager.AddTransientLine(World.LocalPlayer, CurrentQueue.Info.CancelledTextNotification);
+
+			World.IssueOrder(Order.CancelProduction(CurrentQueue.Actor, icon.Name, cancelCount));
+			World.IssueOrder(Order.SetProductionTarget(CurrentQueue.Actor, icon.Name, 0));
+			return true;
+		}
+
+		bool HandleSetProductionTarget(ProductionIcon icon, int count)
+		{
+			if (CurrentQueue == null)
+				return false;
+
+			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+			World.IssueOrder(Order.SetProductionTarget(CurrentQueue.Actor, icon.Name, count));
+			return true;
+		}
+
+		bool IsBarBulkButtonDisabled(ProductionIcon icon)
+		{
+			if (CurrentQueue == null)
+				return true;
+
+			return CurrentQueue.BuildableItems().All(a => a.Name != icon.Name);
+		}
+
+		bool HandlePrioritizeProduction(ProductionIcon icon)
+		{
+			if (CurrentQueue == null || !QueueSupportsPriority)
+				return false;
+
+			if (IsNextInLine(icon))
+				return true;
+
+			if (IsBarPriorityButtonDisabled(icon))
+				return false;
+
+			Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+
+			var hasQueuedWaiting = icon.Queued.Any(i => !CurrentQueue.IsProducing(i));
+			if (hasQueuedWaiting)
+			{
+				World.IssueOrder(Order.PrioritizeProduction(CurrentQueue.Actor, icon.Name));
+				return true;
+			}
+
+			var buildable = CurrentQueue.BuildableItems().FirstOrDefault(a => a.Name == icon.Name);
+			if (buildable == null)
+				return false;
+
+			if (CurrentQueue.Info.PayUpFront &&
+				currentQueue.GetProductionCost(buildable) > CurrentQueue.Actor.Owner.PlayerActor.Trait<PlayerResources>().GetCashAndResources())
+				return false;
+
+			if (!CurrentQueue.CanQueue(buildable, out _, out _))
+				return false;
+
+			World.IssueOrder(Order.StartProduction(CurrentQueue.Actor, icon.Name, 1, queued: false));
+			return true;
 		}
 
 		public void ScrollDown()
@@ -485,12 +861,179 @@ namespace OpenRA.Mods.Common.Widgets
 			pios = cachedQueueOwner.PlayerActor.TraitsImplementing<IProductionIconOverlay>().ToArray();
 		}
 
+		void AddBarButtons(ProductionIcon pi, Rectangle iconRect)
+		{
+			if (BarHeight <= 0 || ButtonsPerBar <= 0)
+				return;
+
+			var barY = iconRect.Y + IconSize.Y;
+			var buttonWidth = IconSize.X / ButtonsPerBar;
+			for (var i = 0; i < ButtonsPerBar; i++)
+			{
+				if (i == BarCancelButtonIndex || i == BarPriorityButtonIndex || i == BarBulkButtonIndex)
+					continue;
+
+				var buttonRect = new Rectangle(iconRect.X + i * buttonWidth, barY, buttonWidth, BarHeight);
+				barButtons.Add(new ProductionBarButton(pi, i, buttonRect));
+			}
+		}
+
+		void SyncPriorityButtonWidgets()
+		{
+			var priorityButtons = Children.OfType<ProductionBarPriorityButtonWidget>().ToList();
+
+			if (BarHeight <= 0 || ButtonsPerBar <= 0 || icons.Count == 0)
+			{
+				foreach (var btn in priorityButtons)
+					RemoveChild(btn);
+
+				return;
+			}
+
+			var iconRects = icons.Keys.ToList();
+			var buttonWidth = IconSize.X / ButtonsPerBar;
+			var ro = RenderOrigin;
+
+			while (priorityButtons.Count > iconRects.Count)
+			{
+				RemoveChild(priorityButtons[^1]);
+				priorityButtons.RemoveAt(priorityButtons.Count - 1);
+			}
+
+			for (var i = 0; i < iconRects.Count; i++)
+			{
+				var iconRect = iconRects[i];
+				var pi = icons[iconRect];
+
+				ProductionBarPriorityButtonWidget btn;
+				if (i >= priorityButtons.Count)
+				{
+					btn = new ProductionBarPriorityButtonWidget(modData);
+					AddChild(btn);
+				}
+				else
+					btn = priorityButtons[i];
+
+				btn.Background = resolvedBarButtonBackground;
+				btn.Bounds = new WidgetBounds(
+					iconRect.X - ro.X + BarPriorityButtonIndex * buttonWidth,
+					iconRect.Y - ro.Y + IconSize.Y,
+					buttonWidth,
+					BarHeight);
+				btn.OnClick = () => HandlePrioritizeProduction(pi);
+				btn.IsDisabled = () => IsBarPriorityButtonDisabled(pi);
+				btn.IsHighlighted = () => IsNextInLine(pi);
+			}
+		}
+
+		void SyncBulkButtonWidgets()
+		{
+			var bulkButtons = Children.OfType<ProductionBarBulkButtonWidget>().ToList();
+
+			if (BarHeight <= 0 || ButtonsPerBar <= 0 || icons.Count == 0)
+			{
+				foreach (var btn in bulkButtons)
+					RemoveChild(btn);
+
+				return;
+			}
+
+			var iconRects = icons.Keys.ToList();
+			var buttonWidth = IconSize.X / ButtonsPerBar;
+			var ro = RenderOrigin;
+
+			while (bulkButtons.Count > iconRects.Count)
+			{
+				RemoveChild(bulkButtons[^1]);
+				bulkButtons.RemoveAt(bulkButtons.Count - 1);
+			}
+
+			for (var i = 0; i < iconRects.Count; i++)
+			{
+				var iconRect = iconRects[i];
+				var pi = icons[iconRect];
+
+				ProductionBarBulkButtonWidget btn;
+				if (i >= bulkButtons.Count)
+				{
+					btn = new ProductionBarBulkButtonWidget(modData);
+					AddChild(btn);
+				}
+				else
+					btn = bulkButtons[i];
+
+				btn.Background = resolvedBarButtonBackground;
+				btn.Bounds = new WidgetBounds(
+					iconRect.X - ro.X + BarBulkButtonIndex * buttonWidth,
+					iconRect.Y - ro.Y + IconSize.Y,
+					buttonWidth,
+					BarHeight);
+				btn.GetTargetCount = () => pi.ProductionQueue?.GetProductionTarget(pi.Name) ?? 0;
+				btn.OnTargetConfirmed = count => HandleSetProductionTarget(pi, count);
+				btn.IsDisabled = () => IsBarBulkButtonDisabled(pi);
+			}
+		}
+
+		void SyncCancelButtonWidgets()
+		{
+			var cancelButtons = Children.OfType<ProductionBarCancelButtonWidget>().ToList();
+
+			if (BarHeight <= 0 || ButtonsPerBar <= 0 || icons.Count == 0)
+			{
+				foreach (var btn in cancelButtons)
+					RemoveChild(btn);
+
+				return;
+			}
+
+			var iconRects = icons.Keys.ToList();
+			var buttonWidth = IconSize.X / ButtonsPerBar;
+			var ro = RenderOrigin;
+
+			while (cancelButtons.Count > iconRects.Count)
+			{
+				RemoveChild(cancelButtons[^1]);
+				cancelButtons.RemoveAt(cancelButtons.Count - 1);
+			}
+
+			for (var i = 0; i < iconRects.Count; i++)
+			{
+				var iconRect = iconRects[i];
+				var pi = icons[iconRect];
+
+				ProductionBarCancelButtonWidget btn;
+				if (i >= cancelButtons.Count)
+				{
+					btn = new ProductionBarCancelButtonWidget(modData);
+					AddChild(btn);
+				}
+				else
+					btn = cancelButtons[i];
+
+				btn.Bounds = new WidgetBounds(
+					iconRect.X - ro.X + BarCancelButtonIndex * buttonWidth,
+					iconRect.Y - ro.Y + IconSize.Y,
+					buttonWidth,
+					BarHeight);
+				btn.OnClick = () => HandleCancelAllQueued(pi);
+				btn.IsDisabled = () => IsBarCancelButtonDisabled(pi);
+			}
+		}
+
 		public void RefreshIcons()
 		{
 			icons = [];
+			barButtons = [];
 			var producer = CurrentQueue != null ? CurrentQueue.MostLikelyProducer() : default;
 			if (CurrentQueue == null || producer.Trait == null)
 			{
+				foreach (var btn in Children.OfType<ProductionBarCancelButtonWidget>().ToList())
+					RemoveChild(btn);
+				foreach (var btn in Children.OfType<ProductionBarPriorityButtonWidget>().ToList())
+					RemoveChild(btn);
+				foreach (var btn in Children.OfType<ProductionBarBulkButtonWidget>().ToList())
+					RemoveChild(btn);
+
 				if (DisplayedIconCount != 0)
 				{
 					OnIconCountChanged(DisplayedIconCount, 0);
@@ -510,7 +1053,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var x = DisplayedIconCount % Columns;
 				var y = DisplayedIconCount / Columns;
-				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * (IconSize.Y + IconMargin.Y), IconSize.X, IconSize.Y);
+				var rect = new Rectangle(rb.X + x * (IconSize.X + IconMargin.X), rb.Y + y * RowStride, IconSize.X, IconSize.Y);
 
 				var rsi = item.TraitInfo<RenderSpritesInfo>();
 				var icon = new Animation(World, rsi.GetImage(item, faction));
@@ -534,10 +1077,17 @@ namespace OpenRA.Mods.Common.Widgets
 				};
 
 				icons.Add(rect, pi);
+				AddBarButtons(pi, rect);
 				DisplayedIconCount++;
 			}
 
-			eventBounds = icons.Keys.Union();
+			SyncPriorityButtonWidgets();
+			SyncBulkButtonWidgets();
+			SyncCancelButtonWidgets();
+
+			eventBounds = BarHeight > 0
+				? icons.Keys.Concat(barButtons.Select(b => b.Bounds)).Union()
+				: icons.Keys.Union();
 
 			if (oldIconCount != DisplayedIconCount)
 				OnIconCountChanged(oldIconCount, DisplayedIconCount);
@@ -636,10 +1186,27 @@ namespace OpenRA.Mods.Common.Widgets
 						icon.Pos + BulkOffset, TextColor, Color.Black, 1);
 				}
 			}
+
+			if (BarHeight > 0 && !string.IsNullOrEmpty(resolvedBarButtonBackground))
+			{
+				foreach (var barButton in barButtons)
+				{
+					var hover = barButton.Bounds.Contains(Viewport.LastMousePos);
+					var pressed = Ui.MouseFocusWidget == this && barButton.Bounds.Contains(Viewport.LastMousePos);
+					ButtonWidget.DrawBackground(resolvedBarButtonBackground, barButton.Bounds, false, pressed, hover, false);
+				}
+			}
 		}
 
 		public override string GetCursor(int2 pos)
 		{
+			foreach (var child in Children)
+			{
+				var cursor = child.GetCursor(pos);
+				if (cursor != null)
+					return cursor;
+			}
+
 			var icon = icons.Where(i => i.Key.Contains(pos))
 				.Select(i => i.Value).FirstOrDefault();
 

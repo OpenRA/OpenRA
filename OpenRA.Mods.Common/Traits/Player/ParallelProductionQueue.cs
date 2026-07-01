@@ -56,6 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 			base.BeginProduction(item, false);
 		}
 
+		protected override void PrioritizeProduction(string itemName) { }
+
 		protected override void PauseProduction(string itemName, bool paused)
 		{
 			foreach (var item in Queue.Where(a => a.Item == itemName))
