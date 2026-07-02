@@ -29,6 +29,15 @@ Container@SERVER_LOBBY:
 					Y: 30
 					Width: 252
 					Height: 305
+				Button@MAP_PREVIEW_FULLSCREEN_BUTTON:
+					X: PARENT_WIDTH - WIDTH - 15
+					Y: 4
+					Width: 40
+					Height: 25
+					Text: [  ]
+					Font: Bold
+					TooltipText: Fullscreen map preview
+					TooltipContainer: TOOLTIP_CONTAINER
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
 					X: 15
 					Y: 335
@@ -138,5 +147,221 @@ Container@SERVER_LOBBY:
 			Width: 140
 			Height: 35
 			Text: button-server-lobby-start-game
+		Container@MAP_PREVIEW_FULLSCREEN:
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
+			Visible: False
+			Children:
+				Background@MAP_PREVIEW_FULLSCREEN_BACKDROP:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: panel-black
+				Background@MAP_PREVIEW_LEGEND:
+					X: 20
+					Y: 20
+					Width: 220
+					Height: PARENT_HEIGHT - 40
+					Background: scrollpanel-bg
+					Children:
+						Label@MAP_PREVIEW_LEGEND_TITLE:
+							X: 8
+							Y: 8
+							Width: PARENT_WIDTH - 16
+							Height: 20
+							Font: Bold
+							Text: Legend
+						Container@MAP_PREVIEW_LEGEND_ROW_0:
+							X: 8
+							Y: 34
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_1:
+							X: 8
+							Y: 58
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_2:
+							X: 8
+							Y: 82
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_3:
+							X: 8
+							Y: 106
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_4:
+							X: 8
+							Y: 130
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_5:
+							X: 8
+							Y: 154
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_6:
+							X: 8
+							Y: 178
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_7:
+							X: 8
+							Y: 202
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_8:
+							X: 8
+							Y: 226
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Container@MAP_PREVIEW_LEGEND_ROW_9:
+							X: 8
+							Y: 250
+							Width: PARENT_WIDTH - 16
+							Height: 22
+							Visible: False
+							Children:
+								MapPreviewLegendSwatch@SWATCH:
+									Y: 3
+									Width: 16
+									Height: 16
+								Label@TEXT:
+									X: 30
+									Y: 1
+									Width: PARENT_WIDTH - 30
+									Height: 20
+									Font: TinyBold
+						Button@MAP_PREVIEW_LEGEND_CLEAR:
+							X: 8
+							Y: 278
+							Width: PARENT_WIDTH - 16
+							Height: 25
+							Visible: False
+							Text: Clear
+							Font: Bold
+				Container@MAP_PREVIEW_FULLSCREEN_ROOT:
+					X: 250
+					Y: 20
+					Width: PARENT_WIDTH - 274
+					Height: PARENT_HEIGHT - 40
+				Button@MAP_PREVIEW_FULLSCREEN_CLOSE_BUTTON:
+					X: PARENT_WIDTH - WIDTH - 24
+					Y: 24
+					Width: 30
+					Height: 25
+					Text: X
+					TextColor: FF0000
+					Font: Bold
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
+		LogicKeyListener@ESCAPE_KEYHANDLER:
+			IgnoreMouseInput: true
 		TooltipContainer@TOOLTIP_CONTAINER:

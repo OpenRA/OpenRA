@@ -80,6 +80,9 @@ namespace OpenRA.Mods.Common.Widgets
 		float previewScale = 0;
 		Sprite minimap;
 
+		public Func<MapPreviewLegendHighlights> GetLegendHighlights;
+		static readonly Color LegendHighlightColor = Color.FromArgb(220, 0, 255, 0);
+
 		public MapPreviewWidget()
 		{
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
@@ -112,6 +115,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			GetLegendHighlights = other.GetLegendHighlights;
 		}
 
 		public override MapPreviewWidget Clone() { return new MapPreviewWidget(this); }
@@ -181,6 +185,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			WidgetUtils.DrawSprite(minimap, mapRect.Location, mapRect.Size);
 
+			DrawLegendTerrainHighlights(preview);
+
 			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
 			{
@@ -225,6 +231,58 @@ namespace OpenRA.Mods.Common.Widgets
 
 					spawnFont.DrawTextWithContrast(number, pos - textOffset, spawnColor, spawnContrastColor, 1);
 				}
+			}
+
+			DrawLegendSpawnHighlights(preview);
+		}
+
+		void DrawLegendTerrainHighlights(MapPreview preview)
+		{
+			var highlights = GetLegendHighlights?.Invoke();
+			if (highlights == null || highlights.TerrainCells.Count == 0)
+				return;
+
+			var gridType = preview.GridType;
+			var cellWidth = gridType == MapGridType.RectangularIsometric ? 2 : 1;
+			var pixelWidth = Math.Max(1, (int)(previewScale * cellWidth));
+			var pixelHeight = Math.Max(1, (int)previewScale);
+
+			foreach (var uv in highlights.TerrainCells)
+			{
+				var pos = ConvertToPreview(uv.ToCPos(gridType), gridType);
+				WidgetUtils.FillRectWithColor(new Rectangle(pos.X, pos.Y, pixelWidth, pixelHeight), LegendHighlightColor);
+			}
+		}
+
+		void DrawLegendSpawnHighlights(MapPreview preview)
+		{
+			var highlights = GetLegendHighlights?.Invoke();
+			if (highlights == null || highlights.SpawnPoints.Count == 0)
+				return;
+
+			var gridType = preview.GridType;
+			var spawnPoints = preview.SpawnPoints;
+			var offset = spawnUnclaimed.Size.XY.ToInt2() / 2;
+			var highlightColor = Color.FromArgb(255, 0, 255, 0);
+
+			foreach (var spawn in highlights.SpawnPoints)
+			{
+				var pos = ConvertToPreview(spawn, gridType);
+				WidgetUtils.FillEllipseWithColor(
+					new Rectangle(
+						pos.X - offset.X,
+						pos.Y - offset.Y,
+						(int)spawnUnclaimed.Size.X,
+						(int)spawnUnclaimed.Size.Y),
+					highlightColor);
+
+				var spawnIndex = spawnPoints.IndexOf(spawn);
+				if (spawnIndex < 0)
+					continue;
+
+				var number = Convert.ToChar('A' + spawnIndex).ToString();
+				var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
+				spawnFont.DrawTextWithContrast(number, pos - textOffset, spawnColor, spawnContrastColor, 1);
 			}
 		}
 

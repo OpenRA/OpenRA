@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -118,6 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool updateDiscordStatus = true;
 		bool resetOptionsButtonEnabled;
 		bool mapAvailable;
+		bool mapPreviewFullscreenOpen;
 		Dictionary<int, SpawnOccupant> spawnOccupants = [];
 		Dictionary<string, Session.LobbyOptionState> lobbyOptions = [];
 
@@ -125,10 +127,54 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly string playerJoinedSound;
 		readonly string playerLeftSound;
 		readonly string lobbyOptionChangedSound;
+		readonly List<MapPreviewLegendEntry> mapPreviewLegend = [];
+		readonly Dictionary<string, MapPreviewLegendData> mapPreviewLegendCache = [];
+		string mapPreviewLegendUid;
+		MapStatus? mapPreviewLegendStatus;
 
 		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
 
 		bool sortPlayersByTeam;
+		const int MapPreviewLegendMaxRows = 10;
+		enum LegendSwatchKind { ColorSquare, SpawnPoint }
+		enum MapPreviewLegendMatchKind { None, GroundTerrainType, TerrainType, ResourceIndex, NearWhiteActor, SpawnPoint }
+
+		readonly struct MapPreviewLegendEntry
+		{
+			public readonly string Name;
+			public readonly Color Color;
+			public readonly LegendSwatchKind SwatchKind;
+			public readonly MapPreviewLegendMatchKind MatchKind;
+			public readonly string TerrainType;
+			public readonly byte ResourceIndex;
+
+			public MapPreviewLegendEntry(string name, Color color, LegendSwatchKind swatchKind, MapPreviewLegendMatchKind matchKind,
+				string terrainType = null, byte resourceIndex = 0)
+			{
+				Name = name;
+				Color = color;
+				SwatchKind = swatchKind;
+				MatchKind = matchKind;
+				TerrainType = terrainType;
+				ResourceIndex = resourceIndex;
+			}
+		}
+
+		readonly struct MapPreviewLegendData
+		{
+			public readonly MapPreviewLegendEntry[] Entries;
+			public readonly MapPreviewLegendHighlights[] Highlights;
+
+			public MapPreviewLegendData(MapPreviewLegendEntry[] entries, MapPreviewLegendHighlights[] highlights)
+			{
+				Entries = entries;
+				Highlights = highlights;
+			}
+		}
+
+		readonly HashSet<int> activeLegendHighlightIndices = [];
+		readonly List<MapPreviewLegendHighlights> mapPreviewLegendHighlights = [];
+		readonly MapPreviewLegendHighlights combinedLegendHighlights = new();
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
@@ -198,31 +244,114 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (name != null)
 				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
-			var mapContainer = Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			WidgetArgs CreateMapPreviewArgs()
 			{
-				{ "orderManager", orderManager },
-				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, mapStatus)) },
+				return new WidgetArgs
 				{
-					"onMouseDown", (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
-						LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
-				},
-				{ "getSpawnOccupants", () => spawnOccupants },
-				{ "getDisabledSpawnPoints", () => orderManager.LobbyInfo.DisabledSpawnPoints },
-				{ "showUnoccupiedSpawnpoints", true },
-				{ "mapUpdatesEnabled", true },
-				{
-					"onMapUpdate", (Action<string>)(uid =>
+					{ "orderManager", orderManager },
+					{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, mapStatus)) },
 					{
-						orderManager.IssueOrder(Order.Command("map " + uid));
-						Game.Settings.Server.Map = uid;
-						Game.Settings.Save();
-					})
-				},
-			});
+						"onMouseDown", (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
+							LobbyUtils.SelectSpawnPoint(orderManager, preview, mapPreview, mi))
+					},
+					{ "getSpawnOccupants", () => spawnOccupants },
+					{ "getDisabledSpawnPoints", () => orderManager.LobbyInfo.DisabledSpawnPoints },
+					{ "showUnoccupiedSpawnpoints", true },
+					{ "mapUpdatesEnabled", true },
+					{
+						"onMapUpdate", (Action<string>)(uid =>
+						{
+							orderManager.IssueOrder(Order.Command("map " + uid));
+							Game.Settings.Server.Map = uid;
+							Game.Settings.Save();
+						})
+					},
+				};
+			}
+
+			var mapContainer = Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), CreateMapPreviewArgs());
 
 			mapContainer.IsVisible = () => panel != PanelType.Servers;
 
+			MapPreviewWidget fullscreenMapPreview = null;
+			var fullscreenMapPreviewRoot = lobby.GetOrNull("MAP_PREVIEW_FULLSCREEN_ROOT");
+			if (fullscreenMapPreviewRoot != null)
+			{
+				var fullscreenMapPreviewWidget = Ui.LoadWidget("MAP_PREVIEW", fullscreenMapPreviewRoot, CreateMapPreviewArgs());
+				fullscreenMapPreview = fullscreenMapPreviewWidget.Get("MAP_LARGE").Get<MapPreviewWidget>("MAP_PREVIEW");
+				fullscreenMapPreview.GetLegendHighlights = () => combinedLegendHighlights;
+			}
+
+			var fullscreenMapPreviewContainer = lobby.GetOrNull("MAP_PREVIEW_FULLSCREEN");
+			if (fullscreenMapPreviewContainer != null)
+				fullscreenMapPreviewContainer.IsVisible = () => panel != PanelType.Servers && mapPreviewFullscreenOpen;
+
+			var fullscreenMapPreviewButton = lobby.GetOrNull<ButtonWidget>("MAP_PREVIEW_FULLSCREEN_BUTTON");
+			if (fullscreenMapPreviewButton != null)
+			{
+				fullscreenMapPreviewButton.IsVisible = () => panel != PanelType.Servers && !mapPreviewFullscreenOpen;
+				fullscreenMapPreviewButton.IsDisabled = () => map == MapCache.UnknownMap;
+				fullscreenMapPreviewButton.OnClick = () => mapPreviewFullscreenOpen = true;
+			}
+
+			var fullscreenMapPreviewCloseButton = lobby.GetOrNull<ButtonWidget>("MAP_PREVIEW_FULLSCREEN_CLOSE_BUTTON");
+			if (fullscreenMapPreviewCloseButton != null)
+			{
+				fullscreenMapPreviewCloseButton.IsVisible = () => mapPreviewFullscreenOpen;
+				fullscreenMapPreviewCloseButton.OnClick = () => mapPreviewFullscreenOpen = false;
+			}
+
+			var fullscreenMapPreviewLegend = lobby.GetOrNull("MAP_PREVIEW_LEGEND");
+			if (fullscreenMapPreviewLegend != null)
+				fullscreenMapPreviewLegend.IsVisible = () => mapPreviewFullscreenOpen && mapPreviewLegend.Count > 0;
+
+			for (var i = 0; i < MapPreviewLegendMaxRows; i++)
+			{
+				var rowIndex = i;
+				var row = lobby.GetOrNull($"MAP_PREVIEW_LEGEND_ROW_{rowIndex}");
+				if (row == null)
+					continue;
+
+				row.IsVisible = () => mapPreviewFullscreenOpen && rowIndex < mapPreviewLegend.Count;
+
+				var swatch = row.GetOrNull<MapPreviewLegendSwatchWidget>("SWATCH");
+				if (swatch != null)
+				{
+					swatch.GetColor = () => rowIndex < mapPreviewLegend.Count ? mapPreviewLegend[rowIndex].Color : Color.Transparent;
+					swatch.GetIsSpawnPoint = () => rowIndex < mapPreviewLegend.Count && mapPreviewLegend[rowIndex].SwatchKind == LegendSwatchKind.SpawnPoint;
+					swatch.GetIsHighlighted = () => activeLegendHighlightIndices.Contains(rowIndex);
+					swatch.OnClick = () =>
+					{
+						if (rowIndex >= mapPreviewLegend.Count)
+							return;
+
+						if (activeLegendHighlightIndices.Contains(rowIndex))
+							activeLegendHighlightIndices.Remove(rowIndex);
+						else
+							activeLegendHighlightIndices.Add(rowIndex);
+
+						RefreshCombinedLegendHighlightCells();
+					};
+				}
+
+				var text = row.GetOrNull<LabelWidget>("TEXT");
+				if (text != null)
+					text.GetText = () => rowIndex < mapPreviewLegend.Count ? mapPreviewLegend[rowIndex].Name : string.Empty;
+			}
+
+			var legendClearButton = lobby.GetOrNull<ButtonWidget>("MAP_PREVIEW_LEGEND_CLEAR");
+			if (legendClearButton != null)
+			{
+				legendClearButton.IsVisible = () => mapPreviewFullscreenOpen && mapPreviewLegend.Count > 0;
+				legendClearButton.OnClick = () =>
+				{
+					activeLegendHighlightIndices.Clear();
+					RefreshCombinedLegendHighlightCells();
+				};
+			}
+
 			UpdateCurrentMap();
+			UpdateMapPreviewLegendIfNeeded();
 
 			var playerBin = Ui.LoadWidget("LOBBY_PLAYER_BIN", lobby.Get("TOP_PANELS_ROOT"), []);
 			playerBin.IsVisible = () => panel == PanelType.Players;
@@ -484,6 +613,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (serverListLogic != null && panel != PanelType.Servers)
 						serverListLogic.RefreshServerList();
 
+					mapPreviewFullscreenOpen = false;
 					panel = PanelType.Servers;
 				};
 			}
@@ -552,6 +682,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (e.Event != KeyInputEvent.Down || e.Key != Keycode.ESCAPE || e.Modifiers != Modifiers.None)
 						return false;
+
+					if (mapPreviewFullscreenOpen)
+					{
+						mapPreviewFullscreenOpen = false;
+						return true;
+					}
 
 					if (panel == PanelType.ForceStart || panel == PanelType.Kick)
 					{
@@ -679,6 +815,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (panel == PanelType.Options && OptionsTabDisabled())
 				panel = PanelType.Players;
 
+			if (panel == PanelType.Servers && mapPreviewFullscreenOpen)
+				mapPreviewFullscreenOpen = false;
+
+			UpdateMapPreviewLegendIfNeeded();
+
 			var chatWasEnabled = chatEnabled;
 			chatEnabled =
 				worldRenderer.World.IsReplay ||
@@ -774,7 +915,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mapStatus = orderManager.LobbyInfo.GlobalSettings.MapStatus;
 			var uid = orderManager.LobbyInfo.GlobalSettings.Map;
 			if (map.Uid == uid)
+			{
+				UpdateMapPreviewLegendIfNeeded();
 				return;
+			}
 
 			map = modData.MapCache[uid];
 			if (map.GenerationArgs != null)
@@ -788,6 +932,634 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// We don't have the map
 			else if (map.Status != MapStatus.DownloadAvailable && Game.Settings.Game.AllowDownloading)
 				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, [uid]);
+
+			UpdateMapPreviewLegendIfNeeded();
+		}
+
+		void UpdateMapPreviewLegendIfNeeded()
+		{
+			if (map == null)
+				return;
+
+			var status = map.Status;
+			if (mapPreviewLegendUid == map.Uid && mapPreviewLegendStatus == status)
+				return;
+
+			mapPreviewLegendUid = map.Uid;
+			mapPreviewLegendStatus = status;
+			UpdateMapPreviewLegend();
+		}
+
+		void UpdateMapPreviewLegend()
+		{
+			mapPreviewLegend.Clear();
+			mapPreviewLegendHighlights.Clear();
+			activeLegendHighlightIndices.Clear();
+			combinedLegendHighlights.Clear();
+
+			if (map == null || map == MapCache.UnknownMap || map.Status != MapStatus.Available)
+				return;
+
+			if (!mapPreviewLegendCache.TryGetValue(map.Uid, out var data))
+			{
+				data = BuildMapPreviewLegendData(map);
+				mapPreviewLegendCache[map.Uid] = data;
+			}
+
+			var rowCount = Math.Min(MapPreviewLegendMaxRows, data.Entries.Length);
+			for (var i = 0; i < rowCount; i++)
+			{
+				mapPreviewLegend.Add(data.Entries[i]);
+				mapPreviewLegendHighlights.Add(data.Highlights[i]);
+			}
+		}
+
+		void RefreshCombinedLegendHighlightCells()
+		{
+			combinedLegendHighlights.Clear();
+			foreach (var index in activeLegendHighlightIndices)
+			{
+				if (index < mapPreviewLegendHighlights.Count)
+					combinedLegendHighlights.UnionWith(mapPreviewLegendHighlights[index]);
+			}
+		}
+
+		MapPreviewLegendData BuildMapPreviewLegendData(MapPreview mapPreview)
+		{
+			try
+			{
+				using var fullMap = mapPreview.ToMap();
+				var entries = BuildMapPreviewLegend(fullMap);
+				var highlights = new MapPreviewLegendHighlights[entries.Length];
+				for (var i = 0; i < entries.Length; i++)
+					highlights[i] = BuildLegendHighlights(fullMap, entries[i]);
+
+				return new MapPreviewLegendData(entries, highlights);
+			}
+			catch
+			{
+				return new MapPreviewLegendData([], []);
+			}
+		}
+
+		const int MinPreviewFeatureCells = 8;
+		const int MinRiverLegendCells = 16;
+
+		MapPreviewLegendEntry[] BuildMapPreviewLegend(Map fullMap)
+		{
+			var entries = new List<MapPreviewLegendEntry>();
+			var addedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+			void AddEntry(string name, Color color, MapPreviewLegendMatchKind matchKind, LegendSwatchKind swatchKind = LegendSwatchKind.ColorSquare,
+				string terrainType = null, byte resourceIndex = 0)
+			{
+				if (string.IsNullOrWhiteSpace(name) || !addedNames.Add(name))
+					return;
+
+				entries.Add(new MapPreviewLegendEntry(name, color, swatchKind, matchKind, terrainType, resourceIndex));
+			}
+
+			var terrainInfo = fullMap.Rules.TerrainInfo;
+
+			AnalyzeMapPreview(fullMap,
+				out var previewTerrainCounts,
+				out var previewTerrainColors,
+				out var presentResourceTypes,
+				out var hasNearWhiteActorSignature,
+				out var nearWhiteActorColor,
+				out var totalPreviewCells);
+
+			var dominantTerrainType = previewTerrainCounts
+				.Where(kv => !IsNonBaseGroundTerrainType(kv.Key))
+				.OrderByDescending(kv => kv.Value)
+				.Select(kv => kv.Key)
+				.FirstOrDefault()
+				?? previewTerrainCounts.OrderByDescending(kv => kv.Value).Select(kv => kv.Key).FirstOrDefault();
+
+			if (!string.IsNullOrEmpty(dominantTerrainType))
+			{
+				var terrainLabel = GetBaseTerrainLegendName(terrainInfo, dominantTerrainType);
+				AddEntry(terrainLabel, ResolveTerrainColor(dominantTerrainType, previewTerrainColors, terrainInfo),
+					MapPreviewLegendMatchKind.GroundTerrainType, terrainType: dominantTerrainType);
+			}
+
+			var waterCount = previewTerrainCounts.Where(kv => IsWaterTerrainType(kv.Key)).Sum(kv => kv.Value);
+			var riverCount = previewTerrainCounts.Where(kv => IsRiverTerrainType(kv.Key)).Sum(kv => kv.Value);
+
+			var waterTerrainType = previewTerrainCounts
+				.Where(kv => IsWaterTerrainType(kv.Key))
+				.OrderByDescending(kv => kv.Value)
+				.Select(kv => kv.Key)
+				.FirstOrDefault();
+			if (!string.IsNullOrEmpty(waterTerrainType))
+				AddEntry("Water", ResolveTerrainColor(waterTerrainType, previewTerrainColors, terrainInfo),
+					MapPreviewLegendMatchKind.GroundTerrainType, terrainType: waterTerrainType);
+
+			var riverTerrainType = previewTerrainCounts
+				.Where(kv => IsRiverTerrainType(kv.Key))
+				.OrderByDescending(kv => kv.Value)
+				.Select(kv => kv.Key)
+				.FirstOrDefault();
+			if (!string.IsNullOrEmpty(riverTerrainType) && ShouldShowRiverLegendEntry(riverCount, waterCount, totalPreviewCells))
+				AddEntry("River", ResolveTerrainColor(riverTerrainType, previewTerrainColors, terrainInfo),
+					MapPreviewLegendMatchKind.GroundTerrainType, terrainType: riverTerrainType);
+
+			var roadTerrainType = previewTerrainCounts
+				.Where(kv => IsRoadTerrainType(kv.Key) && kv.Value >= MinPreviewFeatureCells)
+				.OrderByDescending(kv => kv.Value)
+				.Select(kv => kv.Key)
+				.FirstOrDefault();
+			if (!string.IsNullOrEmpty(roadTerrainType))
+				AddEntry("Roads", ResolveTerrainColor(roadTerrainType, previewTerrainColors, terrainInfo),
+					MapPreviewLegendMatchKind.GroundTerrainType, terrainType: roadTerrainType);
+
+			var wallTerrainType = previewTerrainCounts
+				.Where(kv => IsWallTerrainType(kv.Key) && kv.Value >= MinPreviewFeatureCells)
+				.OrderByDescending(kv => kv.Value)
+				.Select(kv => kv.Key)
+				.FirstOrDefault();
+			if (!string.IsNullOrEmpty(wallTerrainType))
+				AddEntry("Walls", ResolveTerrainColor(wallTerrainType, previewTerrainColors, terrainInfo),
+					MapPreviewLegendMatchKind.TerrainType, terrainType: wallTerrainType);
+
+			var worldActorInfo = fullMap.Rules.Actors[SystemActors.World];
+			var resourceLayerInfo = worldActorInfo.TraitInfoOrDefault<IResourceLayerInfo>();
+			var resourceRendererInfo = worldActorInfo.TraitInfoOrDefault<ResourceRendererInfo>();
+			if (resourceLayerInfo != null && resourceRendererInfo != null)
+			{
+				foreach (var resource in resourceRendererInfo.ResourceTypes.OrderBy(kv => kv.Key))
+				{
+					if (!resourceLayerInfo.TryGetResourceIndex(resource.Key, out var resourceIndex) || !presentResourceTypes.Contains(resourceIndex))
+						continue;
+
+					var resourceLabel = FormatLegendLabel(resource.Key);
+					var color = Color.Gold;
+					if (resourceLayerInfo.TryGetTerrainType(resource.Key, out var terrainType))
+						color = ResolveTerrainColor(terrainType, previewTerrainColors, fullMap.Rules.TerrainInfo);
+
+					AddEntry(resourceLabel, color, MapPreviewLegendMatchKind.ResourceIndex, resourceIndex: resourceIndex);
+				}
+			}
+
+			if (hasNearWhiteActorSignature)
+				AddEntry("Refinery", nearWhiteActorColor, MapPreviewLegendMatchKind.NearWhiteActor);
+			else
+			{
+				foreach (var actorNode in fullMap.ActorDefinitions)
+				{
+					var actorType = actorNode.Value.Value;
+					if (!TryGetActorInfo(fullMap, actorType, out var actorInfo))
+						continue;
+
+					var isRefinery =
+						actorInfo.HasTraitInfo<RefineryInfo>() ||
+						actorType.Contains("refinery", StringComparison.OrdinalIgnoreCase) ||
+						string.Equals(actorType, "proc", StringComparison.OrdinalIgnoreCase);
+
+					if (!isRefinery)
+						continue;
+
+					var refineryColor = Color.White;
+					var previewInfo = actorInfo.TraitInfoOrDefault<AppearsOnMapPreviewInfo>();
+					if (previewInfo != null)
+					{
+						if (!string.IsNullOrEmpty(previewInfo.Terrain))
+							refineryColor = ResolveTerrainColor(previewInfo.Terrain, previewTerrainColors, fullMap.Rules.TerrainInfo);
+						else if (previewInfo.Color != default)
+							refineryColor = previewInfo.Color;
+					}
+
+					AddEntry("Refinery", refineryColor, MapPreviewLegendMatchKind.NearWhiteActor);
+					break;
+				}
+			}
+
+			if (fullMap.ActorDefinitions.Any(a => string.Equals(a.Value.Value, "mpspawn", StringComparison.OrdinalIgnoreCase)))
+				AddEntry("Spawn Point", Color.Transparent, MapPreviewLegendMatchKind.SpawnPoint, LegendSwatchKind.SpawnPoint);
+
+			return entries.ToArray();
+		}
+
+		static MapPreviewLegendHighlights BuildLegendHighlights(Map map, MapPreviewLegendEntry entry)
+		{
+			var highlights = new MapPreviewLegendHighlights();
+			if (entry.MatchKind == MapPreviewLegendMatchKind.None)
+				return highlights;
+
+			if (entry.MatchKind == MapPreviewLegendMatchKind.SpawnPoint)
+			{
+				foreach (var actor in map.ActorDefinitions)
+				{
+					if (!string.Equals(actor.Value.Value, "mpspawn", StringComparison.OrdinalIgnoreCase))
+						continue;
+
+					var reference = new ActorReference(actor.Value.Value, actor.Value);
+					highlights.SpawnPoints.Add(reference.Get<LocationInit>().Value);
+				}
+
+				return highlights;
+			}
+
+			var colorsByPosition = CollectMapPreviewSignatureColors(map);
+			var (top, height) = GetMapPreviewVerticalBounds(map);
+			var width = map.Bounds.Width;
+			var terrainInfo = map.Rules.TerrainInfo;
+
+			for (var y = 0; y < height; y++)
+			{
+				for (var x = 0; x < width; x++)
+				{
+					var uv = new MPos(x + map.Bounds.Left, y + top);
+					if (!map.Contains(uv))
+						continue;
+
+					switch (entry.MatchKind)
+					{
+						case MapPreviewLegendMatchKind.GroundTerrainType:
+						{
+							if (IsCellVisiblyGroundTerrain(map, uv, entry.TerrainType, colorsByPosition, terrainInfo))
+								highlights.TerrainCells.Add(uv);
+
+							break;
+						}
+
+						case MapPreviewLegendMatchKind.TerrainType:
+						{
+							colorsByPosition.TryGetValue(uv, out var actorColor);
+							if (actorColor.A != 0)
+							{
+								if (TryGetTerrainTypeForPreviewColor(terrainInfo, actorColor, out var actorTerrainType) &&
+									string.Equals(actorTerrainType, entry.TerrainType, StringComparison.OrdinalIgnoreCase))
+									highlights.TerrainCells.Add(uv);
+							}
+							else
+							{
+								var terrain = map.GetTerrainInfo(uv);
+								if (terrain != null && string.Equals(terrain.Type, entry.TerrainType, StringComparison.OrdinalIgnoreCase))
+									highlights.TerrainCells.Add(uv);
+							}
+
+							break;
+						}
+
+						case MapPreviewLegendMatchKind.ResourceIndex:
+						{
+							var resourceTile = map.Resources[uv];
+							if (resourceTile.Index > 0 && resourceTile.Type == entry.ResourceIndex)
+								highlights.TerrainCells.Add(uv);
+
+							break;
+						}
+
+						case MapPreviewLegendMatchKind.NearWhiteActor:
+						{
+							colorsByPosition.TryGetValue(uv, out var actorColor);
+							if (actorColor.A != 0 && IsNearWhitePreviewColor(actorColor))
+								highlights.TerrainCells.Add(uv);
+
+							break;
+						}
+					}
+				}
+			}
+
+			return highlights;
+		}
+
+		static bool IsCellVisiblyGroundTerrain(Map map, MPos uv, string terrainType,
+			IReadOnlyDictionary<MPos, Color> colorsByPosition, ITerrainInfo terrainInfo)
+		{
+			var ground = map.GetTerrainInfo(uv);
+			if (ground == null || !string.Equals(ground.Type, terrainType, StringComparison.OrdinalIgnoreCase))
+				return false;
+
+			if (map.Resources[uv].Index > 0)
+				return false;
+
+			if (!colorsByPosition.TryGetValue(uv, out var actorColor) || actorColor.A == 0)
+				return true;
+
+			if (IsNearWhitePreviewColor(actorColor))
+				return false;
+
+			if (TryGetTerrainTypeForPreviewColor(terrainInfo, actorColor, out var overlayTerrainType))
+				return string.Equals(overlayTerrainType, terrainType, StringComparison.OrdinalIgnoreCase);
+
+			return false;
+		}
+
+		static void AnalyzeMapPreview(Map map,
+			out Dictionary<string, int> previewTerrainCounts,
+			out Dictionary<string, Color> previewTerrainColors,
+			out HashSet<byte> presentResourceTypes,
+			out bool hasNearWhiteActorSignature,
+			out Color nearWhiteActorColor,
+			out int totalPreviewCells)
+		{
+			previewTerrainCounts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+			previewTerrainColors = new Dictionary<string, Color>(StringComparer.OrdinalIgnoreCase);
+			presentResourceTypes = [];
+			hasNearWhiteActorSignature = false;
+			nearWhiteActorColor = Color.White;
+			totalPreviewCells = 0;
+
+			var colorsByPosition = CollectMapPreviewSignatureColors(map);
+			var (top, height) = GetMapPreviewVerticalBounds(map);
+			var width = map.Bounds.Width;
+			var terrainInfo = map.Rules.TerrainInfo;
+
+			for (var y = 0; y < height; y++)
+			{
+				for (var x = 0; x < width; x++)
+				{
+					var uv = new MPos(x + map.Bounds.Left, y + top);
+					if (!map.Contains(uv))
+						continue;
+
+					totalPreviewCells++;
+
+					var terrain = map.GetTerrainInfo(uv);
+					if (terrain != null && !string.IsNullOrEmpty(terrain.Type) &&
+						IsCellVisiblyGroundTerrain(map, uv, terrain.Type, colorsByPosition, terrainInfo))
+						IncrementPreviewTerrain(previewTerrainCounts, previewTerrainColors, terrain.Type, terrain.Color);
+
+					colorsByPosition.TryGetValue(uv, out var actorColor);
+					if (actorColor.A != 0 && IsNearWhitePreviewColor(actorColor))
+					{
+						hasNearWhiteActorSignature = true;
+						nearWhiteActorColor = actorColor;
+					}
+					else if (actorColor.A != 0 &&
+						TryGetTerrainTypeForPreviewColor(terrainInfo, actorColor, out var overlayTerrainType) &&
+						IsWallTerrainType(overlayTerrainType))
+					{
+						IncrementPreviewTerrain(previewTerrainCounts, previewTerrainColors, overlayTerrainType, actorColor);
+					}
+
+					var resourceTile = map.Resources[uv];
+					if (resourceTile.Index > 0)
+						presentResourceTypes.Add(resourceTile.Type);
+				}
+			}
+		}
+
+		static Dictionary<MPos, Color> CollectMapPreviewSignatureColors(Map map)
+		{
+			var positions = new List<(MPos Uv, Color Color)>();
+			var actorTypes = map.Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
+			foreach (var actor in map.ActorDefinitions.Where(a => actorTypes.Any(ai => ai.Name == a.Value.Value)))
+			{
+				var s = new ActorReference(actor.Value.Value, actor.Value);
+				var ai = map.Rules.Actors[actor.Value.Value];
+				foreach (var impsi in ai.TraitInfos<IMapPreviewSignatureInfo>())
+					impsi.PopulateMapPreviewSignatureCells(map, ai, s, positions);
+			}
+
+			var worldActorInfo = map.Rules.Actors[SystemActors.World];
+			foreach (var worldimpsi in worldActorInfo.TraitInfos<IMapPreviewSignatureInfo>())
+				worldimpsi.PopulateMapPreviewSignatureCells(map, worldActorInfo, null, positions);
+
+			return positions
+				.GroupBy(p => p.Uv)
+				.ToDictionary(g => g.Key, g => g.First().Color);
+		}
+
+		static (int Top, int Height) GetMapPreviewVerticalBounds(Map map)
+		{
+			var top = int.MaxValue;
+			var bottom = int.MinValue;
+
+			if (map.Grid.MaximumTerrainHeight > 0)
+			{
+				(top, bottom) = map.GetCellSpaceBounds();
+				if (top == int.MaxValue || bottom == int.MinValue)
+				{
+					top = map.Bounds.Top;
+					bottom = map.Bounds.Bottom;
+				}
+			}
+			else
+			{
+				top = map.Bounds.Top;
+				bottom = map.Bounds.Bottom;
+			}
+
+			return (top, bottom - top);
+		}
+
+		static void IncrementPreviewTerrain(
+			Dictionary<string, int> counts,
+			Dictionary<string, Color> colors,
+			string terrainType,
+			Color color)
+		{
+			counts[terrainType] = counts.TryGetValue(terrainType, out var count) ? count + 1 : 1;
+			colors.TryAdd(terrainType, color);
+		}
+
+		static bool IsNearWhitePreviewColor(Color color)
+		{
+			return color.A != 0 && color.R >= 240 && color.G >= 240 && color.B >= 240;
+		}
+
+		static bool TryGetTerrainTypeForPreviewColor(ITerrainInfo terrainInfo, Color color, out string terrainType)
+		{
+			foreach (var tt in terrainInfo.TerrainTypes)
+			{
+				if (tt.Color == color)
+				{
+					terrainType = tt.Type;
+					return true;
+				}
+			}
+
+			terrainType = null;
+			return false;
+		}
+
+		static bool TryGetActorInfo(Map fullMap, string actorType, out ActorInfo actorInfo)
+		{
+			if (fullMap.Rules.Actors.TryGetValue(actorType, out actorInfo))
+				return true;
+
+			var kv = fullMap.Rules.Actors.FirstOrDefault(x => string.Equals(x.Key, actorType, StringComparison.OrdinalIgnoreCase));
+			actorInfo = kv.Value;
+			return actorInfo != null;
+		}
+
+		static bool IsWaterTerrainType(string terrainType)
+		{
+			if (string.IsNullOrEmpty(terrainType))
+				return false;
+
+			var type = terrainType.ToLowerInvariant();
+			return type.Contains("water", StringComparison.Ordinal) ||
+				type.Contains("sea", StringComparison.Ordinal) ||
+				type.Contains("ocean", StringComparison.Ordinal);
+		}
+
+		static bool IsRiverTerrainType(string terrainType)
+		{
+			if (string.IsNullOrEmpty(terrainType))
+				return false;
+
+			var type = terrainType.ToLowerInvariant();
+			return type == "river" ||
+				type.EndsWith("river", StringComparison.Ordinal) ||
+				type == "stream" ||
+				type.EndsWith("stream", StringComparison.Ordinal);
+		}
+
+		static bool IsRoadTerrainType(string terrainType)
+		{
+			return string.Equals(terrainType, "road", StringComparison.OrdinalIgnoreCase);
+		}
+
+		static bool IsCliffOrShoreTerrainType(string terrainType)
+		{
+			if (string.IsNullOrEmpty(terrainType))
+				return false;
+
+			var type = terrainType.ToLowerInvariant();
+			return type == "rock" ||
+				type == "rough" ||
+				type == "beach" ||
+				type == "tree" ||
+				type.Contains("cliff", StringComparison.Ordinal) ||
+				type.Contains("shore", StringComparison.Ordinal);
+		}
+
+		static bool IsNonBaseGroundTerrainType(string terrainType)
+		{
+			return IsWaterTerrainType(terrainType) ||
+				IsRiverTerrainType(terrainType) ||
+				IsWallTerrainType(terrainType) ||
+				IsResourceTerrainType(terrainType) ||
+				IsRoadTerrainType(terrainType) ||
+				IsCliffOrShoreTerrainType(terrainType);
+		}
+
+		static bool ShouldShowRiverLegendEntry(int riverCount, int waterCount, int totalPreviewCells)
+		{
+			if (riverCount < MinRiverLegendCells || totalPreviewCells == 0)
+				return false;
+
+			// Large rivers always qualify.
+			if (riverCount >= 50)
+				return true;
+
+			// River-only maps.
+			if (waterCount == 0)
+				return riverCount * 1000 >= totalPreviewCells;
+
+			// With lakes or oceans, ignore a handful of mis-tagged shore tiles.
+			var waterFeatureCells = waterCount + riverCount;
+			return riverCount * 10 >= waterCount || riverCount * 100 >= waterFeatureCells * 5;
+		}
+
+		static bool IsWallTerrainType(string terrainType)
+		{
+			if (string.IsNullOrEmpty(terrainType))
+				return false;
+
+			var type = terrainType.ToLowerInvariant();
+			return type == "wall" ||
+				type.EndsWith("wall", StringComparison.Ordinal) ||
+				type == "cliff" ||
+				type.EndsWith("cliff", StringComparison.Ordinal);
+		}
+
+		static bool IsResourceTerrainType(string terrainType)
+		{
+			if (string.IsNullOrEmpty(terrainType))
+				return false;
+
+			var type = terrainType.ToLowerInvariant();
+			return type.Contains("ore", StringComparison.Ordinal) ||
+				type.Contains("gem", StringComparison.Ordinal) ||
+				type.Contains("resource", StringComparison.Ordinal) ||
+				type.Contains("tiber", StringComparison.Ordinal);
+		}
+
+		static Color ResolveTerrainColor(string terrainType, IReadOnlyDictionary<string, Color> colorsByTerrainType, ITerrainInfo terrainInfo)
+		{
+			if (!string.IsNullOrEmpty(terrainType))
+			{
+				if (colorsByTerrainType.TryGetValue(terrainType, out var color))
+					return color;
+
+				try
+				{
+					return terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)].Color;
+				}
+				catch
+				{
+					// Fall through to default
+				}
+			}
+
+			return Color.White;
+		}
+
+		static string GetBaseTerrainLegendName(ITerrainInfo terrainInfo, string dominantTerrainType)
+		{
+			var name = terrainInfo.Name ?? string.Empty;
+			var id = terrainInfo.Id ?? string.Empty;
+			var lower = name.ToLowerInvariant();
+			var idLower = id.ToLowerInvariant();
+
+			if (lower.Contains("temperat", StringComparison.Ordinal) || idLower == "temperat")
+				return "Grass";
+			if (lower.Contains("snow", StringComparison.Ordinal) || lower.Contains("winter", StringComparison.Ordinal) ||
+				idLower.Contains("snow", StringComparison.Ordinal) || idLower.Contains("winter", StringComparison.Ordinal))
+				return "Snow";
+			if (lower.Contains("desert", StringComparison.Ordinal) || idLower.Contains("desert", StringComparison.Ordinal))
+				return "Desert";
+
+			if (string.Equals(dominantTerrainType, "Clear", StringComparison.OrdinalIgnoreCase))
+			{
+				if (idLower.Contains("snow", StringComparison.Ordinal) || idLower.Contains("winter", StringComparison.Ordinal))
+					return "Snow";
+				if (idLower.Contains("desert", StringComparison.Ordinal))
+					return "Desert";
+
+				return "Grass";
+			}
+
+			if (string.IsNullOrWhiteSpace(name))
+				return "Terrain";
+
+			return FormatLegendLabel(name);
+		}
+
+		static string FormatLegendLabel(string raw)
+		{
+			if (string.IsNullOrWhiteSpace(raw))
+				return string.Empty;
+
+			var text = raw.Replace('_', ' ').Replace('-', ' ').Trim();
+			var chars = new List<char>(text.Length + 4);
+			for (var i = 0; i < text.Length; i++)
+			{
+				var c = text[i];
+				if (i > 0 && char.IsUpper(c) && char.IsLower(text[i - 1]))
+					chars.Add(' ');
+
+				chars.Add(c);
+			}
+
+			text = new string(chars.ToArray());
+			var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			for (var i = 0; i < words.Length; i++)
+			{
+				var word = words[i];
+				if (word.All(char.IsUpper))
+					continue;
+
+				words[i] = char.ToUpperInvariant(word[0]) + (word.Length > 1 ? word[1..].ToLowerInvariant() : string.Empty);
+			}
+
+			return string.Join(" ", words);
 		}
 
 		void UpdatePlayerList()
