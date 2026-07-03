@@ -12,7 +12,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Orders;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -88,6 +90,14 @@ namespace OpenRA.Mods.Common.Orders
 			}
 
 			var anchorCell = world.Map.Clamp(cell);
+			var moveActors = issuedOrders
+				.Where(o => o.OrderString == "Move" && o.Target.Type == TargetType.Terrain)
+				.Select(o => o.Subject)
+				.Distinct()
+				.ToArray();
+			if (moveActors.Length > 0)
+				FormationMoveIndicator.ShowAt(world, anchorCell, moveActors, FormationPreferences.Selected);
+
 			foreach (var order in FormationResolver.ApplyToMoveOrders(world, anchorCell, issuedOrders))
 				yield return order;
 		}

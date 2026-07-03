@@ -539,20 +539,33 @@ button-stance-bar-holdfire =
 button-stance-bar-formation =
     .tooltip = Formation
     .tooltipdesc =
-    Choose a formation shape for group movement orders.
+    Choose a formation shape and unit spacing for group movement orders.
     Units will move to the selected layout when given move, attack-move, or guard orders.
+    Spacing applies to infantry, vehicles, aircraft, and naval units.
+
+options-formation-orange-preview = Orange Preview
+
+options-formation-group-shape = Formation Shape
+options-formation-group-spacing = Unit Spacing
 
 options-formation-default = Default (Blob)
 options-formation-square = Square
 options-formation-circle = Circle
 options-formation-line-horizontal = Line Horizontal
 options-formation-line-vertical = Line Vertical
-options-formation-pyramid = Pyramid
-options-formation-pyramid-inverted = Pyramid Inverted
-options-formation-v-formation = V Formation
-options-formation-v-inverted = V Inverted
+options-formation-pyramid = Pyramid Up
+options-formation-pyramid-inverted = Pyramid Down
+options-formation-pyramid-right = Pyramid Right
+options-formation-pyramid-left = Pyramid Left
+options-formation-v-formation = V Up
+options-formation-v-inverted = V Down
 options-formation-v-left = V Left
 options-formation-v-right = V Right
+
+options-formation-spacing-tight = Tight
+options-formation-spacing-normal = Normal
+options-formation-spacing-medium = Medium
+options-formation-spacing-far = Far
 
 productionpalette-sidebar-production-palette =
     .ready = READY

@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -148,6 +149,9 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (!Key.IsActivatedBy(e) || e.Event != KeyInputEvent.Down || (DisableKeyRepeat && e.IsRepeat))
 				return false;
+
+			if (e.Key == Keycode.ESCAPE && e.Modifiers == Modifiers.None && FormationPreferences.TryCloseOpenDropdown())
+				return true;
 
 			if (!IsDisabled())
 			{

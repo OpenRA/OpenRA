@@ -29,6 +29,19 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 ScrollPanel@FORMATION_DROPDOWN_TEMPLATE:
 	Width: 200
 	Children:
+		ScrollItem@HEADER:
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 13
+					Align: Center
 		ScrollItem@TEMPLATE:
 			Width: PARENT_WIDTH - 27
 			Height: 25
@@ -36,6 +49,12 @@ ScrollPanel@FORMATION_DROPDOWN_TEMPLATE:
 			Y: 0
 			Visible: false
 			Children:
+				Checkbox@CHECKBOX:
+					X: 4
+					Y: 0
+					Width: PARENT_WIDTH - 12
+					Height: 25
+					Visible: false
 				Label@LABEL:
 					X: 10
 					Width: PARENT_WIDTH - 20

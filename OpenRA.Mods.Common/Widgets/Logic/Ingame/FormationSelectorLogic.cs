@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA;
 using OpenRA.Mods.Common.Orders;
@@ -22,6 +23,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class FormationSelectorLogic : ChromeLogic
 	{
+		enum FormationMenuKind { Preview, Shape, Spacing }
+
+		sealed class FormationMenuEntry
+		{
+			public readonly FormationMenuKind Kind;
+			public readonly FormationType Formation;
+			public readonly FormationSpacing Spacing;
+
+			FormationMenuEntry(FormationMenuKind kind, FormationType formation, FormationSpacing spacing)
+			{
+				Kind = kind;
+				Formation = formation;
+				Spacing = spacing;
+			}
+
+			public static FormationMenuEntry PreviewToggle() =>
+				new(FormationMenuKind.Preview, default, default);
+
+			public static FormationMenuEntry Shape(FormationType formation) =>
+				new(FormationMenuKind.Shape, formation, default);
+
+			public static FormationMenuEntry SpacingOption(FormationSpacing spacing) =>
+				new(FormationMenuKind.Spacing, default, spacing);
+		}
+
 		[FluentReference]
 		const string DefaultLabel = "options-formation-default";
 
@@ -44,6 +70,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string PyramidInvertedLabel = "options-formation-pyramid-inverted";
 
 		[FluentReference]
+		const string PyramidRightLabel = "options-formation-pyramid-right";
+
+		[FluentReference]
+		const string PyramidLeftLabel = "options-formation-pyramid-left";
+
+		[FluentReference]
 		const string VFormationLabel = "options-formation-v-formation";
 
 		[FluentReference]
@@ -55,11 +87,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string VRightLabel = "options-formation-v-right";
 
+		[FluentReference]
+		const string PreviewLabel = "options-formation-orange-preview";
+
+		[FluentReference]
+		const string ShapeGroupLabel = "options-formation-group-shape";
+
+		[FluentReference]
+		const string SpacingGroupLabel = "options-formation-group-spacing";
+
+		[FluentReference]
+		const string SpacingTightLabel = "options-formation-spacing-tight";
+
+		[FluentReference]
+		const string SpacingNormalLabel = "options-formation-spacing-normal";
+
+		[FluentReference]
+		const string SpacingMediumLabel = "options-formation-spacing-medium";
+
+		[FluentReference]
+		const string SpacingFarLabel = "options-formation-spacing-far";
+
 		readonly World world;
 		int selectionHash;
 		bool formationDisabled = true;
 
-		static readonly FormationType[] Options =
+		static readonly FormationType[] ShapeOptions =
 		[
 			FormationType.Default,
 			FormationType.Square,
@@ -68,10 +121,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			FormationType.LineVertical,
 			FormationType.Pyramid,
 			FormationType.PyramidInverted,
+			FormationType.PyramidRight,
+			FormationType.PyramidLeft,
 			FormationType.VFormation,
 			FormationType.VInverted,
 			FormationType.VLeft,
 			FormationType.VRight,
+		];
+
+		static readonly FormationSpacing[] SpacingOptions =
+		[
+			FormationSpacing.Tight,
+			FormationSpacing.Normal,
+			FormationSpacing.Medium,
+			FormationSpacing.Far,
 		];
 
 		[ObjectCreator.UseCtor]
@@ -84,30 +147,83 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			WidgetUtils.BindButtonIcon(formationButton);
+			FormationPreferences.SetFormationDropdown(formationButton);
 
 			formationButton.IsDisabled = () => { UpdateStateIfNecessary(); return formationDisabled; };
-			formationButton.IsHighlighted = () => FormationPreferences.Selected != FormationType.Default;
+			formationButton.IsHighlighted = () =>
+				formationButton.IsPanelOpen
+				|| FormationPreferences.Selected != FormationType.Default
+				|| FormationPreferences.SelectedSpacing != FormationSpacing.Normal;
 
 			formationButton.OnMouseDown = _ =>
 			{
 				if (formationButton.IsDisabled())
 					return;
 
-				ScrollItemWidget SetupItem(FormationType option, ScrollItemWidget template)
+				if (formationButton.IsPanelOpen)
 				{
-					bool IsSelected() => FormationPreferences.Selected == option;
+					formationButton.RemovePanel();
+					return;
+				}
+
+				var groups = new Dictionary<string, IEnumerable<FormationMenuEntry>>
+				{
+					{ "", [FormationMenuEntry.PreviewToggle()] },
+					{ FluentProvider.GetMessage(ShapeGroupLabel), ShapeOptions.Select(FormationMenuEntry.Shape) },
+					{ FluentProvider.GetMessage(SpacingGroupLabel), SpacingOptions.Select(FormationMenuEntry.SpacingOption) },
+				};
+
+				ScrollItemWidget SetupItem(FormationMenuEntry entry, ScrollItemWidget template)
+				{
+					bool IsSelected() => entry.Kind switch
+					{
+						FormationMenuKind.Shape => FormationPreferences.Selected == entry.Formation,
+						FormationMenuKind.Spacing => FormationPreferences.SelectedSpacing == entry.Spacing,
+						_ => false,
+					};
+
 					void OnClick()
 					{
-						FormationPreferences.Selected = option;
-						FormationResolver.ApplyImmediateFormation(world, world.Selection.Actors, option);
+						if (entry.Kind == FormationMenuKind.Preview)
+							FormationPreferences.OrangePreviewEnabled = !FormationPreferences.OrangePreviewEnabled;
+						else if (entry.Kind == FormationMenuKind.Shape)
+						{
+							FormationPreferences.Selected = entry.Formation;
+							FormationResolver.ApplyImmediateFormation(world, world.Selection.Actors, entry.Formation);
+						}
+						else
+						{
+							FormationPreferences.SelectedSpacing = entry.Spacing;
+							FormationResolver.ApplyImmediateFormation(world, world.Selection.Actors, FormationPreferences.Selected);
+						}
 					}
 
 					var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
-					item.Get<LabelWidget>("LABEL").GetText = () => GetLabel(option);
+					var label = item.Get<LabelWidget>("LABEL");
+					var checkbox = item.GetOrNull<CheckboxWidget>("CHECKBOX");
+
+					if (entry.Kind == FormationMenuKind.Preview && checkbox != null)
+					{
+						label.IsVisible = () => false;
+						checkbox.IsVisible = () => true;
+						checkbox.IsChecked = () => FormationPreferences.OrangePreviewEnabled;
+						checkbox.GetText = () => GetLabel(entry);
+						checkbox.OnClick = OnClick;
+					}
+					else
+					{
+						if (checkbox != null)
+							checkbox.IsVisible = () => false;
+
+						label.GetText = () => GetLabel(entry);
+					}
+
 					return item;
 				}
 
-				formationButton.ShowDropDown("FORMATION_DROPDOWN_TEMPLATE", Options.Length * 25, Options, SetupItem);
+				var itemCount = 1 + ShapeOptions.Length + SpacingOptions.Length;
+				formationButton.ShowDropDown("FORMATION_DROPDOWN_TEMPLATE", itemCount * 25 + 30, groups, SetupItem,
+					closeOnSelect: false, dismissOnMaskClick: false, blockWorldClicks: false);
 			};
 		}
 
@@ -122,7 +238,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			selectionHash = world.Selection.Hash;
 		}
 
-		static string GetLabel(FormationType option)
+		static string GetLabel(FormationMenuEntry entry)
+		{
+			if (entry.Kind == FormationMenuKind.Preview)
+				return FluentProvider.GetMessage(PreviewLabel);
+
+			if (entry.Kind == FormationMenuKind.Spacing)
+			{
+				return entry.Spacing switch
+				{
+					FormationSpacing.Tight => FluentProvider.GetMessage(SpacingTightLabel),
+					FormationSpacing.Normal => FluentProvider.GetMessage(SpacingNormalLabel),
+					FormationSpacing.Medium => FluentProvider.GetMessage(SpacingMediumLabel),
+					FormationSpacing.Far => FluentProvider.GetMessage(SpacingFarLabel),
+					_ => entry.Spacing.ToString(),
+				};
+			}
+
+			return GetShapeLabel(entry.Formation);
+		}
+
+		static string GetShapeLabel(FormationType option)
 		{
 			return option switch
 			{
@@ -133,6 +269,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				FormationType.LineVertical => FluentProvider.GetMessage(LineVerticalLabel),
 				FormationType.Pyramid => FluentProvider.GetMessage(PyramidLabel),
 				FormationType.PyramidInverted => FluentProvider.GetMessage(PyramidInvertedLabel),
+				FormationType.PyramidRight => FluentProvider.GetMessage(PyramidRightLabel),
+				FormationType.PyramidLeft => FluentProvider.GetMessage(PyramidLeftLabel),
 				FormationType.VFormation => FluentProvider.GetMessage(VFormationLabel),
 				FormationType.VInverted => FluentProvider.GetMessage(VInvertedLabel),
 				FormationType.VLeft => FluentProvider.GetMessage(VLeftLabel),

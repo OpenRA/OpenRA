@@ -11,10 +11,13 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
@@ -129,6 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (FormationResolver.ShouldApply(FormationPreferences.Selected, actors.Length))
 			{
+				FormationMoveIndicator.ShowAt(world, cell, actors, FormationPreferences.Selected);
 				var destinations = FormationResolver.AssignDestinations(world, actors, cell, FormationPreferences.Selected);
 				foreach (var s in subjects)
 					yield return new Order(orderName, s.Actor, Target.FromCell(world, destinations[s.Actor]), queued);

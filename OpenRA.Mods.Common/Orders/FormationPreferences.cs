@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Widgets;
+
 namespace OpenRA.Mods.Common.Orders
 {
 	/// <summary>
@@ -17,5 +19,24 @@ namespace OpenRA.Mods.Common.Orders
 	public static class FormationPreferences
 	{
 		public static FormationType Selected { get; set; } = FormationType.Default;
+		public static FormationSpacing SelectedSpacing { get; set; } = FormationSpacing.Normal;
+		public static bool OrangePreviewEnabled { get; set; } = true;
+
+		static DropDownButtonWidget formationDropdown;
+
+		public static void SetFormationDropdown(DropDownButtonWidget button)
+		{
+			formationDropdown = button;
+		}
+
+		/// <summary>Close the formation dropdown if open. Returns true when ESC should be consumed.</summary>
+		public static bool TryCloseOpenDropdown()
+		{
+			if (formationDropdown == null || !formationDropdown.IsPanelOpen)
+				return false;
+
+			formationDropdown.RemovePanel();
+			return true;
+		}
 	}
 }

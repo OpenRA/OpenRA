@@ -20,6 +20,8 @@ namespace OpenRA.Mods.Common.Orders
 		LineVertical,
 		Pyramid,
 		PyramidInverted,
+		PyramidRight,
+		PyramidLeft,
 		VFormation,
 		VInverted,
 		VLeft,

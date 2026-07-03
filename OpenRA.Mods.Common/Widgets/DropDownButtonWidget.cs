@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
+		bool allowWorldClicks;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (AdditionalKeyHandler != null && AdditionalKeyHandler(e))
 				return true;
 
-			if (HasKeyboardFocus && e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE)
+			if (panel != null && e.Event == KeyInputEvent.Down && e.Key == Keycode.ESCAPE && e.Modifiers == Modifiers.None)
 			{
 				RemovePanel();
 				return true;
@@ -120,8 +121,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Removed()
 		{
+			// Do not detach the panel here: Ui.ResetAll() iterates children and
+			// RemoveChild during Removed() throws "Collection was modified".
+			panel = null;
+			fullscreenMask = null;
+			panelRoot = null;
+			allowWorldClicks = false;
 			base.Removed();
-			RemovePanel();
 		}
 
 		public void RemovePanel()
@@ -129,35 +135,60 @@ namespace OpenRA.Mods.Common.Widgets
 			if (panel == null)
 				return;
 
-			panelRoot.RemoveChild(fullscreenMask);
+			if (fullscreenMask != null)
+				panelRoot.RemoveChild(fullscreenMask);
 			panelRoot.RemoveChild(panel);
 			panel = fullscreenMask = null;
+			allowWorldClicks = false;
 
 			YieldKeyboardFocus();
 			Ui.ResetTooltips();
 		}
 
 		public void AttachPanel(Widget p) { AttachPanel(p, null); }
-		public void AttachPanel(Widget p, Action onCancel)
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			if (allowWorldClicks && panel != null && mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location))
+			{
+				if (HasMouseFocus)
+					YieldMouseFocus(mi);
+
+				return false;
+			}
+
+			return base.HandleMouseInput(mi);
+		}
+
+		public void AttachPanel(Widget p, Action onCancel, bool dismissOnMaskClick = true, bool blockWorldClicks = true)
 		{
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
 			panel = p;
-			TakeKeyboardFocus();
-
-			// Mask to prevent any clicks from being sent to other widgets
-			fullscreenMask = new MaskWidget
-			{
-				Bounds = new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
-			};
-
-			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
-			if (onCancel != null)
-				fullscreenMask.OnMouseDown += _ => onCancel();
+			allowWorldClicks = !blockWorldClicks;
+			if (blockWorldClicks)
+				TakeKeyboardFocus();
 
 			panelRoot = PanelRoot == null ? Ui.Root : Ui.Root.Get(PanelRoot);
 
-			panelRoot.AddChild(fullscreenMask);
+			if (blockWorldClicks)
+			{
+				// Mask to prevent any clicks from being sent to other widgets
+				fullscreenMask = new MaskWidget
+				{
+					Bounds = new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height),
+					ClickPassThrough = pos => RenderBounds.Contains(pos)
+				};
+
+				fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); };
+				if (dismissOnMaskClick)
+					fullscreenMask.OnMouseDown += _ => RemovePanel();
+				if (onCancel != null)
+					fullscreenMask.OnMouseDown += _ => onCancel();
+
+				panelRoot.AddChild(fullscreenMask);
+			}
+			else
+				fullscreenMask = null;
 
 			var oldBounds = panel.Bounds;
 			var panelX = RenderOrigin.X - panelRoot.RenderOrigin.X;
@@ -182,10 +213,15 @@ namespace OpenRA.Mods.Common.Widgets
 			panelRoot.AddChild(panel);
 
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
+
+			// Opening click leaves mouse focus on the button, which would swallow map orders.
+			if (allowWorldClicks)
+				YieldMouseFocus(default);
 		}
 
 		public void ShowDropDown<T>(
-			string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+			string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem,
+			bool closeOnSelect = true, bool dismissOnMaskClick = true, bool blockWorldClicks = true)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
@@ -198,17 +234,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var item = setupItem(o, itemTemplate);
 				var onClick = item.OnClick;
-				item.OnClick = () => { onClick(); RemovePanel(); };
+				item.OnClick = () => OnDropDownItemClicked(onClick, closeOnSelect, blockWorldClicks);
 
 				panel.AddChild(item);
 			}
 
 			panel.Bounds.Height = Math.Min(maxHeight, panel.ContentHeight);
-			AttachPanel(panel);
+			AttachPanel(panel, null, dismissOnMaskClick, blockWorldClicks);
 		}
 
 		public void ShowDropDown<T>(
-			string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+			string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem,
+			bool closeOnSelect = true, bool dismissOnMaskClick = true, bool blockWorldClicks = true)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
@@ -233,30 +270,45 @@ namespace OpenRA.Mods.Common.Widgets
 
 					var item = setupItem(o, itemTemplate);
 					var onClick = item.OnClick;
-					item.OnClick = () => { onClick(); RemovePanel(); };
+					item.OnClick = () => OnDropDownItemClicked(onClick, closeOnSelect, blockWorldClicks);
 
 					panel.AddChild(item);
 				}
 			}
 
 			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
-			AttachPanel(panel);
+			AttachPanel(panel, null, dismissOnMaskClick, blockWorldClicks);
+		}
+
+		void OnDropDownItemClicked(Action onClick, bool closeOnSelect, bool blockWorldClicks)
+		{
+			onClick();
+			if (closeOnSelect)
+				RemovePanel();
+			else if (!blockWorldClicks)
+				YieldMouseFocus(default);
 		}
 	}
 
 	public class MaskWidget : Widget
 	{
 		public event Action<MouseInput> OnMouseDown = _ => { };
+		public Func<int2, bool> ClickPassThrough = _ => false;
+
 		public MaskWidget() { }
 		public MaskWidget(MaskWidget other)
 			: base(other)
 		{
 			OnMouseDown = other.OnMouseDown;
+			ClickPassThrough = other.ClickPassThrough;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			if (mi.Event == MouseInputEvent.Move)
+				return false;
+
+			if (mi.Event == MouseInputEvent.Down && ClickPassThrough(mi.Location))
 				return false;
 
 			if (mi.Event == MouseInputEvent.Down)
