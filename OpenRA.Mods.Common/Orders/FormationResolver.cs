@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		public static bool ShouldApply(FormationType formation, int actorCount)
 		{
-			return actorCount >= 2;
+			return formation != FormationType.Default && actorCount >= 2;
 		}
 
 		public static Dictionary<Actor, CPos> AssignDestinations(
