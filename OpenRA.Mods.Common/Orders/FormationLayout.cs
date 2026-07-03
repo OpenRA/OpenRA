@@ -44,8 +44,8 @@ namespace OpenRA.Mods.Common.Orders
 				FormationType.PyramidLeft => PyramidHorizontal(count, spacing, pointingRight: false),
 				FormationType.VFormation => VShapeVertical(count, spacing, inverted: false),
 				FormationType.VInverted => VShapeVertical(count, spacing, inverted: true),
-				FormationType.VLeft => VShapeHorizontal(count, spacing, pointingLeft: true),
-				FormationType.VRight => VShapeHorizontal(count, spacing, pointingLeft: false),
+				FormationType.VLeft => VShapeHorizontal(count, spacing, pointingLeft: false),
+				FormationType.VRight => VShapeHorizontal(count, spacing, pointingLeft: true),
 				_ => Circle(count, spacing),
 			};
 

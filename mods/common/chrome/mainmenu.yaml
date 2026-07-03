@@ -29,15 +29,28 @@ Container@MAINMENU:
 			Align: Center
 			Font: Regular
 			Shadow: true
-		Label@SW_ORA_VERSION_LABEL:
-			X: WINDOW_WIDTH - 296
+		Container@SW_ORA_ROW:
+			X: WINDOW_WIDTH - 296 + (296 - 20 - 130) / 2
 			Y: 301
-			Width: 296 - 20
+			Width: 130
 			Height: 25
-			Text: SW-ORA 0.001
-			Align: Center
-			Font: Regular
-			Shadow: true
+			Children:
+				Label@SW_ORA_VERSION_LABEL:
+					X: 0
+					Y: 0
+					Width: PARENT_WIDTH - 24
+					Height: 25
+					Text: SW-ORA 0.001
+					Align: Right
+					Font: Regular
+					Shadow: true
+				Button@SUPPORT_BUTTON:
+					X: PARENT_WIDTH - 22
+					Y: 1
+					Width: 22
+					Height: 22
+					Text: $
+					Font: TinyBold
 		Image@SHOCKWAVE_LOGO:
 			X: 25
 			Y: WINDOW_HEIGHT - 32 - 20 - 10
@@ -234,6 +247,7 @@ Container@MAINMENU:
 							Text: button-back
 							Font: Bold
 				Button@MAP_EDITOR_SHORTCUT_BUTTON:
+					Visible: false
 					X: PARENT_WIDTH / 2 - WIDTH / 2
 					Y: PARENT_HEIGHT + 10
 					Width: 34

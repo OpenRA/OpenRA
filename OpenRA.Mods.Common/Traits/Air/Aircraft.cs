@@ -1075,8 +1075,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				var target = Target.FromCell(self.World, cell);
 
-				// TODO: this should scale with unit selection group size.
-				self.QueueActivity(order.Queued, new Fly(self, target, WDist.FromCells(8), targetLineColor: Info.TargetLineColor));
+				var isFormationMove = order.ExtraLocation != CPos.Zero;
+				var nearEnough = isFormationMove ? WDist.FromCells(2) : WDist.FromCells(8);
+				self.QueueActivity(order.Queued, new Fly(self, target, nearEnough, targetLineColor: Info.TargetLineColor, exactPosition: isFormationMove));
 				self.ShowTargetLines();
 			}
 			else if (orderString == "Land")

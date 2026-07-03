@@ -201,6 +201,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
 					var label = item.Get<LabelWidget>("LABEL");
 					var checkbox = item.GetOrNull<CheckboxWidget>("CHECKBOX");
+					var shapeIcon = item.GetOrNull<FormationShapeIconWidget>("SHAPE_ICON");
+
+					if (shapeIcon != null)
+					{
+						if (entry.Kind == FormationMenuKind.Shape)
+						{
+							shapeIcon.IsVisible = () => true;
+							shapeIcon.GetFormationType = () => entry.Formation;
+						}
+						else
+							shapeIcon.IsVisible = () => false;
+					}
 
 					if (entry.Kind == FormationMenuKind.Preview && checkbox != null)
 					{

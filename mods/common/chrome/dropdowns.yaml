@@ -57,8 +57,14 @@ ScrollPanel@FORMATION_DROPDOWN_TEMPLATE:
 					Visible: false
 				Label@LABEL:
 					X: 10
-					Width: PARENT_WIDTH - 20
+					Width: PARENT_WIDTH - 40
 					Height: 25
+				FormationShapeIcon@SHAPE_ICON:
+					X: PARENT_WIDTH - 32
+					Y: 3
+					Width: 26
+					Height: 19
+					Visible: false
 
 ScrollPanel@LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE:
 	Width: DROPDOWN_WIDTH

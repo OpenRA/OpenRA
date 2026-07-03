@@ -114,13 +114,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (swOraVersionLabel != null)
 				swOraVersionLabel.IsVisible = modLogoVisible;
 
+			var supportButton = widget.GetOrNull<ButtonWidget>("SUPPORT_BUTTON");
+			if (supportButton != null)
+			{
+				supportButton.IsVisible = modLogoVisible;
+				supportButton.OnClick = () => Ui.OpenWindow("SUPPORT_PROMPT");
+			}
+
 			var shockwaveLogo = widget.GetOrNull<ImageWidget>("SHOCKWAVE_LOGO");
 			if (shockwaveLogo != null)
 				shockwaveLogo.IsVisible = modLogoVisible;
 
 			var mapEditorShortcut = widget.GetOrNull<ButtonWidget>("MAP_EDITOR_SHORTCUT_BUTTON");
 			if (mapEditorShortcut != null)
-				mapEditorShortcut.IsVisible = modLogoVisible;
+				mapEditorShortcut.IsVisible = () => false;
 
 			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 

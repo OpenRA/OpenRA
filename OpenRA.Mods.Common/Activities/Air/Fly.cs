@@ -25,16 +25,18 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		readonly Color? targetLineColor;
 		readonly WDist nearEnough;
+		readonly bool exactPosition;
 
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
 		readonly RingBuffer<WPos> previousPositions = new(5);
 
-		public Fly(Actor self, in Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		public Fly(Actor self, in Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null, bool exactPosition = false)
 			: this(self, t, initialTargetPosition, targetLineColor)
 		{
 			this.nearEnough = nearEnough;
+			this.exactPosition = exactPosition;
 		}
 
 		public Fly(Actor self, in Target t, WPos? initialTargetPosition = null, Color? targetLineColor = null)
@@ -214,7 +216,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// For VTOL landing to succeed, it must reach the exact target position,
 				// so for the final move it needs to behave as if it had CanSlide.
-				if (isSlider || aircraft.Info.VTOL)
+				if (isSlider || aircraft.Info.VTOL || exactPosition)
 				{
 					// Set final (horizontal) position
 					if (delta.HorizontalLengthSquared != 0)

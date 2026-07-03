@@ -29,6 +29,12 @@ namespace OpenRA.Mods.Common.Orders
 			formationDropdown = button;
 		}
 
+		public static void ClearFormationDropdown(DropDownButtonWidget button)
+		{
+			if (formationDropdown == button)
+				formationDropdown = null;
+		}
+
 		/// <summary>Close the formation dropdown if open. Returns true when ESC should be consumed.</summary>
 		public static bool TryCloseOpenDropdown()
 		{

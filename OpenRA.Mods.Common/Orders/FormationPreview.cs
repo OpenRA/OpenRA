@@ -24,14 +24,15 @@ namespace OpenRA.Mods.Common.Orders
 				if (!destinations.TryGetValue(actor, out var dest))
 					continue;
 
-				if (actor.OccupiesSpace == null)
+				var occupied = actor.OccupiesSpace?.OccupiedCells().ToArray() ?? [];
+				if (occupied.Length == 0)
 				{
 					yield return dest;
 					continue;
 				}
 
 				var delta = dest - actor.Location;
-				foreach (var p in actor.OccupiesSpace.OccupiedCells())
+				foreach (var p in occupied)
 					yield return p.Cell + delta;
 			}
 		}

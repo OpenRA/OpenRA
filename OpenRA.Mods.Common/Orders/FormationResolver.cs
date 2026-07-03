@@ -128,13 +128,18 @@ namespace OpenRA.Mods.Common.Orders
 
 			var anchor = GetCentroid(units);
 			var destinations = AssignDestinations(world, units, anchor, formation);
+			var localOffsets = AssignLocalOffsets(units, formation);
 
 			foreach (var unit in units)
 			{
 				if (!destinations.TryGetValue(unit, out var cell) || unit.Location == cell)
 					continue;
 
-				world.IssueOrder(new Order("Move", unit, Target.FromCell(world, cell), false));
+				var order = new Order("Move", unit, Target.FromCell(world, cell), false);
+				if (localOffsets.TryGetValue(unit, out var offset) && offset != CVec.Zero)
+					order.ExtraLocation = new CPos(offset.X, offset.Y);
+
+				world.IssueOrder(order);
 			}
 		}
 
@@ -164,7 +169,13 @@ namespace OpenRA.Mods.Common.Orders
 
 				var cells = a.OccupiesSpace.OccupiedCells().Select(p => p.Cell).ToArray();
 				if (cells.Length == 0)
+				{
+					// Airborne aircraft have no landing influence but still need formation spacing.
+					if (a.Info.HasTraitInfo<AircraftInfo>())
+						max = Math.Max(max, 2);
+
 					continue;
+				}
 
 				var width = cells.Max(c => c.X) - cells.Min(c => c.X) + 1;
 				var height = cells.Max(c => c.Y) - cells.Min(c => c.Y) + 1;
@@ -183,11 +194,18 @@ namespace OpenRA.Mods.Common.Orders
 
 			var actors = moveOrders.Select(o => o.Subject).ToArray();
 			var destinations = AssignDestinations(world, actors, anchorCell, FormationPreferences.Selected);
+			var localOffsets = AssignLocalOffsets(actors, FormationPreferences.Selected);
 
 			return orderList.Select(o =>
 			{
 				if (o.OrderString == "Move" && destinations.TryGetValue(o.Subject, out var cell))
-					return new Order("Move", o.Subject, Target.FromCell(world, cell), o.Queued);
+				{
+					var order = new Order("Move", o.Subject, Target.FromCell(world, cell), o.Queued);
+					if (localOffsets.TryGetValue(o.Subject, out var offset) && offset != CVec.Zero)
+						order.ExtraLocation = new CPos(offset.X, offset.Y);
+
+					return order;
+				}
 
 				return o;
 			});

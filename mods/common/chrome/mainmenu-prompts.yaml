@@ -447,3 +447,52 @@ Background@MAINMENU_SYSTEM_INFO_PROMPT:
 			Text: button-continue
 			Font: Bold
 			Key: return
+
+Background@SUPPORT_PROMPT:
+	Logic: SupportPromptLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 640
+	Height: 180
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Y: 21
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: Support
+		Label@PROMPT_TEXT_A:
+			X: 20
+			Y: 51
+			Width: PARENT_WIDTH - 40
+			Height: 20
+			Align: Center
+			Text: If you like the work I did on this client you can support me at this Paypal
+		Label@PROMPT_TEXT_B:
+			X: 20
+			Y: 71
+			Width: PARENT_WIDTH - 40
+			Height: 20
+			Align: Center
+			Text: so I can afford more tokens to keep building more things :
+		Button@EMAIL_BUTTON:
+			X: 20
+			Y: 91
+			Width: PARENT_WIDTH - 40
+			Height: 25
+			Text: Loosetop@Yahoo.com
+			Align: Center
+			Font: Regular
+			Shadow: true
+			Background:
+			VisualHeight: 0
+			DisableKeySound: true
+		Button@OK_BUTTON:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: PARENT_HEIGHT - 45
+			Width: 160
+			Height: 25
+			Text: OK
+			Font: Bold
+			Key: return

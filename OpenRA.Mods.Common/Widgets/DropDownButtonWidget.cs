@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -121,12 +122,29 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Removed()
 		{
-			// Do not detach the panel here: Ui.ResetAll() iterates children and
+			// Do not detach the panel synchronously: Ui.ResetAll() iterates children and
 			// RemoveChild during Removed() throws "Collection was modified".
+			var p = panel;
+			var mask = fullscreenMask;
+			var root = panelRoot;
 			panel = null;
 			fullscreenMask = null;
 			panelRoot = null;
 			allowWorldClicks = false;
+
+			FormationPreferences.ClearFormationDropdown(this);
+
+			if (p != null && root != null)
+			{
+				Game.RunAfterTick(() =>
+				{
+					if (mask != null && mask.Parent == root)
+						root.RemoveChild(mask);
+					if (p.Parent == root)
+						root.RemoveChild(p);
+				});
+			}
+
 			base.Removed();
 		}
 
@@ -156,13 +174,20 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
+			// Clicking the button while open closes it instead of attaching a second panel.
+			if (panel != null && mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left && RenderBounds.Contains(mi.Location))
+			{
+				RemovePanel();
+				return true;
+			}
+
 			return base.HandleMouseInput(mi);
 		}
 
 		public void AttachPanel(Widget p, Action onCancel, bool dismissOnMaskClick = true, bool blockWorldClicks = true)
 		{
 			if (panel != null)
-				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
+				RemovePanel();
 			panel = p;
 			allowWorldClicks = !blockWorldClicks;
 			if (blockWorldClicks)
