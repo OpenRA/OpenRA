@@ -78,8 +78,18 @@ namespace OpenRA.Mods.Common.Orders
 			// TODO: Reimplement APM properly and then remove this
 			yield return new Order("CreateGroup", actorsInvolved[0].Owner.PlayerActor, false, actorsInvolved);
 
+			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
+			var issuedOrders = new List<Order>();
 			foreach (var o in orders)
-				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
+			{
+				var order = CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, queued));
+				if (order != null)
+					issuedOrders.Add(order);
+			}
+
+			var anchorCell = world.Map.Clamp(cell);
+			foreach (var order in FormationResolver.ApplyToMoveOrders(world, anchorCell, issuedOrders))
+				yield return order;
 		}
 
 		public virtual void Tick(World world) { }

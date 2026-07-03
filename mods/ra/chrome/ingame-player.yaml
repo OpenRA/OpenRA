@@ -42,7 +42,7 @@ Container@PLAYER_WIDGETS:
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
 			Y: WINDOW_HEIGHT - HEIGHT - 5
-			Width: 434
+			Width: 476
 			Height: 44
 			ImageCollection: commandbar
 			ImageName: background
@@ -206,7 +206,7 @@ Container@PLAYER_WIDGETS:
 			Logic: StanceSelectorLogic
 			X: 294
 			Y: WINDOW_HEIGHT - HEIGHT - 14
-			Width: 138
+			Width: 178
 			Height: 26
 			Children:
 				Button@STANCE_ATTACKANYTHING:
@@ -284,6 +284,30 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
+				Container@FORMATION_SELECTOR:
+					Logic: FormationSelectorLogic
+					X: 144
+					Width: 34
+					Height: 26
+					Children:
+						DropDownButton@FORMATION:
+							Logic: AddFactionSuffixLogic
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							VisualHeight: 0
+							Background: command-button
+							Decorations:
+							Separators:
+							DisableKeySound: true
+							TooltipText: button-stance-bar-formation.tooltip
+							TooltipDesc: button-stance-bar-formation.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							Children:
+								Image@ICON:
+									X: 9
+									Y: 5
+									ImageCollection: stance-icons
+									ImageName: formation
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
 			X: WINDOW_WIDTH - WIDTH - 286

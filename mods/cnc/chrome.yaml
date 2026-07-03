@@ -502,6 +502,9 @@ dropdown-decorations:
 		marker: 836, 17, 16, 16
 		marker-disabled: 853, 17, 16, 16
 
+dropdown-decorations-highlighted:
+	Inherits: dropdown-decorations
+
 dropdown-separators:
 	Inherits: ^Chrome
 	Regions:
@@ -522,7 +525,7 @@ sidebar:
 	Inherits: ^Chrome
 	Regions:
 		background-sidebar: 513, 0, 230, 315
-		background-commandbar: 513, 468, 494, 44
+		background-commandbar: 513, 468, 533, 44
 
 sidebar-bits:
 	Inherits: ^Chrome
@@ -601,6 +604,8 @@ stance-icons:
 		return-fire-disabled: 802, 136, 16, 16
 		hold-fire: 819, 119, 16, 16
 		hold-fire-disabled: 819, 136, 16, 16
+		formation: 870, 34, 16, 16
+		formation-disabled: 887, 34, 16, 16
 
 stance-icons-highlighted:
 	Inherits: stance-icons
@@ -609,6 +614,7 @@ stance-icons-highlighted:
 		defend: 785, 153, 16, 16
 		return-fire: 802, 153, 16, 16
 		hold-fire: 819, 153, 16, 16
+		formation: 870, 51, 16, 16
 
 command-icons:
 	Inherits: ^Chrome

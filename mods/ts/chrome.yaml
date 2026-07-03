@@ -56,7 +56,7 @@ sidebar-gdi:
 		background-top: 0, 0, 235, 260
 		background-iconrow: 0, 260, 235, 52
 		background-bottom: 0, 312, 235, 26
-		background-commandbar: 87, 461, 425, 51
+		background-commandbar: 87, 461, 463, 51
 
 sidebar-button-gdi:
 	Inherits: ^Chrome
@@ -235,6 +235,9 @@ stance-icons-gdi:
 		hold-fire: 490, 176, 22, 22
 		hold-fire-disabled: 490, 198, 22, 22
 		hold-fire-hover: 490, 242, 22, 22
+		formation: 534, 176, 22, 22
+		formation-disabled: 534, 198, 22, 22
+		formation-hover: 534, 242, 22, 22
 
 stance-icons-gdi-highlighted:
 	Inherits: stance-icons-gdi
@@ -247,6 +250,8 @@ stance-icons-gdi-highlighted:
 		return-fire-hover: 468, 264, 22, 22
 		hold-fire: 490, 220, 22, 22
 		hold-fire-hover: 490, 264, 22, 22
+		formation: 534, 220, 22, 22
+		formation-hover: 534, 264, 22, 22
 
 # ----------------------------------------------------------------------
 # NOD
@@ -258,7 +263,7 @@ sidebar-nod:
 		background-top: 512, 0, 235, 260
 		background-iconrow: 512, 260, 235, 52
 		background-bottom: 512, 312, 235, 26
-		background-commandbar: 599, 461, 425, 51
+		background-commandbar: 599, 461, 463, 51
 
 sidebar-button-nod:
 	Inherits: ^Chrome
@@ -438,6 +443,9 @@ stance-icons-nod:
 		hold-fire: 1002, 176, 22, 22
 		hold-fire-disabled: 1002, 198, 22, 22
 		hold-fire-hover: 1002, 242, 22, 22
+		formation: 1046, 176, 22, 22
+		formation-disabled: 1046, 198, 22, 22
+		formation-hover: 1046, 242, 22, 22
 
 stance-icons-nod-highlighted:
 	Inherits: stance-icons-nod
@@ -450,6 +458,8 @@ stance-icons-nod-highlighted:
 		return-fire-hover: 980, 264, 22, 22
 		hold-fire: 1002, 220, 22, 22
 		hold-fire-hover: 1002, 264, 22, 22
+		formation: 1046, 220, 22, 22
+		formation-hover: 1046, 264, 22, 22
 
 # ----------------------------------------------------------------------
 # GENERIC
@@ -766,6 +776,9 @@ dropdown-decorations:
 	Regions:
 		marker: 68, 17, 16, 16
 		marker-disabled: 85, 17, 16, 16
+
+dropdown-decorations-highlighted:
+	Inherits: dropdown-decorations
 
 dropdown-separators:
 	Inherits: ^Dialog

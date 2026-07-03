@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -23,18 +24,20 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly IMove move;
 		readonly Color? targetLineColor;
+		readonly CVec? formationOffset;
 		readonly MoveCooldownHelper moveCooldownHelper;
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
 
 		public Follow(Actor self, in Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition, Color? targetLineColor = null)
+			WPos? initialTargetPosition, Color? targetLineColor = null, CVec? formationOffset = null)
 		{
 			this.target = target;
 			this.minRange = minRange;
 			this.maxRange = maxRange;
 			this.targetLineColor = targetLineColor;
+			this.formationOffset = formationOffset;
 			move = self.Trait<IMove>();
 			moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile) { RetryIfDestinationBlocked = true };
 
@@ -69,6 +72,20 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
+			if (formationOffset.HasValue)
+			{
+				var followPos = GetFormationPosition(checkTarget);
+				var slotTolerance = WDist.FromCells(1);
+				if ((pos - followPos).HorizontalLengthSquared <= slotTolerance.LengthSquared
+					&& checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
+					return useLastVisibleTarget;
+
+				moveCooldownHelper.NotifyMoveQueued();
+				var cell = self.World.Map.CellContaining(followPos);
+				QueueChild(move.MoveTo(cell, 1, targetLineColor: targetLineColor));
+				return false;
+			}
+
 			// We've reached the required range - if the target is visible and valid then we wait
 			// otherwise if it is hidden or dead we give up
 			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
@@ -78,6 +95,15 @@ namespace OpenRA.Mods.Common.Activities
 			moveCooldownHelper.NotifyMoveQueued();
 			QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
 			return false;
+		}
+
+		WPos GetFormationPosition(in Target checkTarget)
+		{
+			var facing = WAngle.Zero;
+			if (checkTarget.Type == TargetType.Actor)
+				facing = checkTarget.Actor.TraitOrDefault<IFacing>()?.Facing ?? WAngle.Zero;
+
+			return FormationResolver.OffsetWorldPosition(checkTarget.CenterPosition, formationOffset.Value, facing);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)

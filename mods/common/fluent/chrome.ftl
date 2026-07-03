@@ -536,6 +536,24 @@ button-stance-bar-holdfire =
      - Units will not fire upon enemies
      - Units will not move or pursue enemies
 
+button-stance-bar-formation =
+    .tooltip = Formation
+    .tooltipdesc =
+    Choose a formation shape for group movement orders.
+    Units will move to the selected layout when given move, attack-move, or guard orders.
+
+options-formation-default = Default (Blob)
+options-formation-square = Square
+options-formation-circle = Circle
+options-formation-line-horizontal = Line Horizontal
+options-formation-line-vertical = Line Vertical
+options-formation-pyramid = Pyramid
+options-formation-pyramid-inverted = Pyramid Inverted
+options-formation-v-formation = V Formation
+options-formation-v-inverted = V Inverted
+options-formation-v-left = V Left
+options-formation-v-right = V Right
+
 productionpalette-sidebar-production-palette =
     .ready = READY
     .hold = ON HOLD

@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -23,19 +24,21 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist minRange;
 		readonly WDist maxRange;
 		readonly Color? targetLineColor;
+		readonly CVec? formationOffset;
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
 		bool wasMovingWithinRange;
 
 		public FlyFollow(Actor self, in Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition, Color? targetLineColor = null)
+			WPos? initialTargetPosition, Color? targetLineColor = null, CVec? formationOffset = null)
 		{
 			this.target = target;
 			aircraft = self.Trait<Aircraft>();
 			this.minRange = minRange;
 			this.maxRange = maxRange;
 			this.targetLineColor = targetLineColor;
+			this.formationOffset = formationOffset;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -75,6 +78,24 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
+			if (formationOffset.HasValue)
+			{
+				var followPos = GetFormationPosition(checkTarget);
+				var slotTolerance = WDist.FromCells(2);
+				if ((pos - followPos).HorizontalLengthSquared <= slotTolerance.LengthSquared
+					&& checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
+				{
+					if (!aircraft.Info.CanHover)
+						Fly.FlyTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+
+					return useLastVisibleTarget;
+				}
+
+				wasMovingWithinRange = true;
+				QueueChild(aircraft.MoveTo(self.World.Map.CellContaining(followPos), 2, targetLineColor: targetLineColor));
+				return false;
+			}
+
 			// We've reached the required range - if the target is visible and valid then we wait
 			// otherwise if it is hidden or dead we give up
 			if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
@@ -88,6 +109,15 @@ namespace OpenRA.Mods.Common.Activities
 			wasMovingWithinRange = true;
 			QueueChild(aircraft.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
 			return false;
+		}
+
+		WPos GetFormationPosition(in Target checkTarget)
+		{
+			var facing = WAngle.Zero;
+			if (checkTarget.Type == TargetType.Actor)
+				facing = checkTarget.Actor.TraitOrDefault<IFacing>()?.Facing ?? WAngle.Zero;
+
+			return FormationResolver.OffsetWorldPosition(checkTarget.CenterPosition, formationOffset.Value, facing);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)

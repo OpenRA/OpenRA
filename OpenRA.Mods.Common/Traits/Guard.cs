@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Mods.Common.Activities;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -45,16 +46,21 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Guard")
-				GuardTarget(self, order.Target, order.Queued);
+			{
+				CVec? formationOffset = order.ExtraLocation != CPos.Zero
+					? new CVec(order.ExtraLocation.X, order.ExtraLocation.Y)
+					: null;
+				GuardTarget(self, order.Target, order.Queued, formationOffset);
+			}
 		}
 
-		public void GuardTarget(Actor self, Target target, bool queued = false)
+		public void GuardTarget(Actor self, Target target, bool queued = false, CVec? formationOffset = null)
 		{
 			if (target.Type != TargetType.Actor)
 				return;
 
 			var range = target.Actor.Info.TraitInfo<GuardableInfo>().Range;
-			self.QueueActivity(queued, new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: info.TargetLineColor)));
+			self.QueueActivity(queued, new AttackMoveActivity(self, () => move.MoveFollow(self, target, WDist.Zero, range, targetLineColor: info.TargetLineColor, formationOffset: formationOffset)));
 			self.ShowTargetLines();
 		}
 

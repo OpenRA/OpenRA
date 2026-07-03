@@ -915,10 +915,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Activity MoveFollow(Actor self, in Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+			WPos? initialTargetPosition = null, Color? targetLineColor = null, CVec? formationOffset = null)
 		{
 			return new FlyFollow(self, target, minRange, maxRange,
-				initialTargetPosition, targetLineColor);
+				initialTargetPosition, targetLineColor, formationOffset);
 		}
 
 		public Activity ReturnToCell(Actor self) { return null; }

@@ -146,7 +146,7 @@ sidebar-bits:
 commandbar:
 	Inherits: ^Sidebar
 	Regions:
-		background: 0, 0, 434, 44
+		background: 0, 0, 476, 44
 
 production-icons:
 	Inherits: ^Glyphs
@@ -215,6 +215,8 @@ stance-icons:
 		return-fire-disabled: 34, 136, 16, 16
 		hold-fire: 51, 119, 16, 16
 		hold-fire-disabled: 51, 136, 16, 16
+		formation: 170, 34, 16, 16
+		formation-disabled: 187, 34, 16, 16
 
 stance-icons-highlighted:
 	Inherits: stance-icons
@@ -223,6 +225,7 @@ stance-icons-highlighted:
 		defend: 17, 153, 16, 16
 		return-fire: 34, 153, 16, 16
 		hold-fire: 51, 153, 16, 16
+		formation: 170, 51, 16, 16
 
 command-icons:
 	Inherits: ^Glyphs
@@ -650,6 +653,9 @@ dropdown-decorations:
 	Regions:
 		marker: 68, 17, 16, 16
 		marker-disabled: 85, 17, 16, 16
+
+dropdown-decorations-highlighted:
+	Inherits: dropdown-decorations
 
 dropdown-separators:
 	Inherits: ^Dialog

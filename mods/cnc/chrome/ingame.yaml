@@ -1249,7 +1249,7 @@ Container@PLAYER_WIDGETS:
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
 			Y: WINDOW_HEIGHT - HEIGHT - 5
-			Width: 494
+			Width: 533
 			Height: 44
 			ImageCollection: sidebar
 			ImageName: background-commandbar
@@ -1461,7 +1461,7 @@ Container@PLAYER_WIDGETS:
 			Logic: StanceSelectorLogic
 			X: 335
 			Y: WINDOW_HEIGHT - HEIGHT - 14
-			Width: 155
+			Width: 194
 			Height: 26
 			Children:
 				WorldButton@STANCE_ATTACKANYTHING:
@@ -1562,6 +1562,31 @@ Container@PLAYER_WIDGETS:
 							Y: 5
 							ImageCollection: stance-icons
 							ImageName: hold-fire
+				Container@FORMATION_SELECTOR:
+					Logic: FormationSelectorLogic
+					X: 156
+					Y: 0
+					Width: 38
+					Height: 26
+					Children:
+						DropDownButton@FORMATION:
+							Logic: AddFactionSuffixLogic
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Background: chrome-button-background
+							Decorations:
+							Separators:
+							DisableKeySound: true
+							TooltipText: button-stance-bar-formation.tooltip
+							TooltipDesc: button-stance-bar-formation.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
+							Children:
+								Image@ICON:
+									X: 11
+									Y: 5
+									ImageCollection: stance-icons
+									ImageName: formation
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
 			X: WINDOW_WIDTH - WIDTH - 240

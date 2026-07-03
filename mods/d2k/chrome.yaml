@@ -55,7 +55,7 @@ sidebar-bits:
 commandbar:
 	Inherits: ^Chrome
 	Regions:
-		background: 0, 469, 454, 43
+		background: 0, 469, 485, 43
 
 minimap-overlay:
 	Inherits: ^Chrome
@@ -190,6 +190,8 @@ stance-icons:
 		return-fire-disabled: 432, 264, 16, 16
 		hold-fire: 464, 264, 16, 16
 		hold-fire-disabled: 480, 264, 16, 16
+		formation: 448, 280, 16, 16
+		formation-disabled: 464, 280, 16, 16
 
 stance-icons-highlighted:
 	Inherits: stance-icons
@@ -198,6 +200,7 @@ stance-icons-highlighted:
 		defend: 496, 248, 16, 16
 		return-fire: 448, 264, 16, 16
 		hold-fire: 496, 264, 16, 16
+		formation: 496, 280, 16, 16
 
 flags:
 	Inherits: ^Glyphs
@@ -515,6 +518,9 @@ dropdown-decorations:
 	Inherits: ^Glyphs
 	Regions:
 		marker: 119, 0, 16, 16
+
+dropdown-decorations-highlighted:
+	Inherits: dropdown-decorations
 
 dropdown-separators:
 	Inherits: ^Dialog

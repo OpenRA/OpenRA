@@ -75,6 +75,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			base.Draw();
+
+			if (string.IsNullOrEmpty(Decorations))
+				return;
+
 			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
 			var rb = RenderBounds;
@@ -90,14 +94,17 @@ namespace OpenRA.Mods.Common.Widgets
 					rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2),
 					rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
 
-			getSeparatorImage ??= WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
+			if (!string.IsNullOrEmpty(Separators))
+			{
+				getSeparatorImage ??= WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
 
-			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
-			if (separatorImage != null)
-				WidgetUtils.DrawSprite(
-					separatorImage,
-					stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4,
-					rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
+				var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
+				if (separatorImage != null)
+					WidgetUtils.DrawSprite(
+						separatorImage,
+						stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4,
+						rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
+			}
 		}
 
 		public override DropDownButtonWidget Clone() { return new DropDownButtonWidget(this); }

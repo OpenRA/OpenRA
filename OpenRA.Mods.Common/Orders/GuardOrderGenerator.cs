@@ -11,6 +11,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -41,7 +43,20 @@ namespace OpenRA.Mods.Common.Orders
 			if (!queued)
 				world.CancelInputMode();
 
-			yield return new Order(orderName, null, Target.FromActor(target), queued, null, subjects.Where(s => s != target).ToArray());
+			var guarders = subjects.Where(s => s != target).OrderBy(a => a.ActorID).ToArray();
+			if (guarders.Length == 0)
+				yield break;
+
+			var localOffsets = FormationResolver.AssignLocalOffsets(guarders, FormationPreferences.Selected);
+			foreach (var guarder in guarders)
+			{
+				var order = new Order(orderName, guarder, Target.FromActor(target), queued);
+				var offset = localOffsets[guarder];
+				if (offset != CVec.Zero)
+					order.ExtraLocation = new CPos(offset.X, offset.Y);
+
+				yield return order;
+			}
 		}
 
 		public override void SelectionChanged(World world, IEnumerable<Actor> selected)

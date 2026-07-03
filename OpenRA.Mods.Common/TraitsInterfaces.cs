@@ -529,7 +529,7 @@ namespace OpenRA.Mods.Common.Traits
 		Activity MoveWithinRange(in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity MoveFollow(Actor self, in Target target, WDist minRange, WDist maxRange,
-			WPos? initialTargetPosition = null, Color? targetLineColor = null);
+			WPos? initialTargetPosition = null, Color? targetLineColor = null, CVec? formationOffset = null);
 		Activity MoveToTarget(Actor self, in Target target,
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity ReturnToCell(Actor self);
