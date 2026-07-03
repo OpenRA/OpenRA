@@ -13,9 +13,12 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Network;
 using OpenRA.Primitives;
+using OpenRA.Server;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -137,6 +140,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string mapFilter;
 
 		Func<MapPreview, long> orderByFunc;
+		bool orderByCompatibility;
+
+		static readonly Color CompatibleColor = Color.FromArgb(0xFF4CFF00);
+		static readonly Color IncompatibleColor = Color.FromArgb(0xFFFF4040);
+
+		readonly MapStatusCache mapStatusCache;
+		readonly Dictionary<string, Session.MapStatus> compatibilityResults = [];
+		readonly Dictionary<string, ColorBlockWidget> compatibilityBorders = [];
+		readonly HashSet<string> compatibilityPending = [];
+		readonly Queue<MapPreview> compatibilityQueue = new();
+		readonly object compatibilityLock = new();
+		int compatibilityChecksRunning;
+		int compatibilityResortGeneration;
+		const int MaxConcurrentCompatibilityChecks = 2;
 
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, ModData modData, string initialMap, MapGenerationArgs initialGeneratedMap, FrozenSet<string> remoteMapPool,
@@ -147,6 +164,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onSelect = onSelect;
 			this.remoteMapPool = remoteMapPool;
 			this.filter = filter;
+
+			mapStatusCache = new MapStatusCache(modData, null, false);
 
 			allMaps = FluentProvider.GetMessage(AllMaps);
 
@@ -326,12 +345,125 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			EnumerateMaps(currentTab);
 			SetupMapTabs();
+
+			var compatibilityLegend = widget.GetOrNull("COMPATIBILITY_LEGEND");
+			if (compatibilityLegend != null)
+				compatibilityLegend.IsVisible = () => currentTab != MapClassification.Generated;
+
+			var compatibilitySort = widget.GetOrNull<ButtonWidget>("COMPATIBILITY_SORT");
+			if (compatibilitySort != null)
+			{
+				compatibilitySort.IsVisible = () => currentTab != MapClassification.Generated;
+				compatibilitySort.IsHighlighted = () => orderByCompatibility;
+				compatibilitySort.OnClick = () =>
+				{
+					orderByCompatibility = !orderByCompatibility;
+					compatibilityResortGeneration++;
+					EnumerateMaps(currentTab);
+				};
+			}
 		}
 
 		void SwitchTab(MapClassification tab)
 		{
 			currentTab = tab;
 			EnumerateMaps(tab);
+		}
+
+		void QueueCompatibilityCheck(MapPreview map)
+		{
+			lock (compatibilityLock)
+			{
+				if (compatibilityResults.ContainsKey(map.Uid) || !compatibilityPending.Add(map.Uid))
+					return;
+
+				compatibilityQueue.Enqueue(map);
+			}
+
+			StartCompatibilityCheck();
+		}
+
+		void UpdateCompatibilityBorder(string uid)
+		{
+			if (!compatibilityBorders.TryGetValue(uid, out var border))
+				return;
+
+			if (!compatibilityResults.TryGetValue(uid, out var status) || (status & Session.MapStatus.Validating) != 0)
+			{
+				border.IsVisible = () => false;
+				return;
+			}
+
+			var color = (status & Session.MapStatus.Playable) != 0 ? CompatibleColor : IncompatibleColor;
+			border.IsVisible = () => true;
+			border.GetColor = () => color;
+		}
+
+		void ScheduleCompatibilityResort()
+		{
+			if (!orderByCompatibility || currentTab == MapClassification.Generated)
+				return;
+
+			var generation = ++compatibilityResortGeneration;
+			Game.RunAfterDelay(400, () =>
+			{
+				if (disposed || generation != compatibilityResortGeneration)
+					return;
+
+				EnumerateMaps(currentTab);
+			});
+		}
+
+		void OnCompatibilityCheckComplete(MapPreview map, Session.MapStatus status)
+		{
+			compatibilityResults[map.Uid] = status;
+			lock (compatibilityLock)
+				compatibilityPending.Remove(map.Uid);
+
+			UpdateCompatibilityBorder(map.Uid);
+			ScheduleCompatibilityResort();
+		}
+
+		void StartCompatibilityCheck()
+		{
+			while (true)
+			{
+				MapPreview map;
+				lock (compatibilityLock)
+				{
+					if (compatibilityChecksRunning >= MaxConcurrentCompatibilityChecks || compatibilityQueue.Count == 0)
+						return;
+
+					compatibilityChecksRunning++;
+					map = compatibilityQueue.Dequeue();
+				}
+
+				ThreadPool.QueueUserWorkItem(_ =>
+				{
+					Session.MapStatus status;
+					lock (compatibilityLock)
+						status = mapStatusCache[map];
+
+					Game.RunAfterTick(() =>
+					{
+						OnCompatibilityCheckComplete(map, status);
+						lock (compatibilityLock)
+							compatibilityChecksRunning--;
+
+						StartCompatibilityCheck();
+					});
+				});
+			}
+		}
+
+		void SetupCompatibilityBorder(ScrollItemWidget item, MapPreview preview)
+		{
+			var borderWidget = item.GetOrNull<ColorBlockWidget>("COMPATIBILITY_BORDER");
+			if (borderWidget == null)
+				return;
+
+			compatibilityBorders[preview.Uid] = borderWidget;
+			UpdateCompatibilityBorder(preview.Uid);
 		}
 
 		void RefreshMaps(MapClassification tab)
@@ -510,6 +642,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orderByDict.FirstOrDefault(m => m.Value == orderByFunc).Key;
 		}
 
+		int CompatibilitySortGroup(string uid)
+		{
+			if (!compatibilityResults.TryGetValue(uid, out var status) || (status & Session.MapStatus.Validating) != 0)
+				return 1;
+
+			return (status & Session.MapStatus.Playable) != 0 ? 0 : 2;
+		}
+
+		IOrderedEnumerable<MapPreview> OrderMaps(IEnumerable<MapPreview> maps)
+		{
+			if (orderByCompatibility)
+			{
+				if (orderByFunc == null)
+					return maps.OrderBy(m => CompatibilitySortGroup(m.Uid)).ThenBy(m => m.Title);
+
+				return maps.OrderBy(m => CompatibilitySortGroup(m.Uid)).ThenBy(orderByFunc).ThenBy(m => m.Title);
+			}
+
+			if (orderByFunc == null)
+				return maps.OrderBy(m => m.Title);
+
+			return maps.OrderBy(orderByFunc).ThenBy(m => m.Title);
+		}
+
 		void EnumerateMaps(MapClassification tab)
 		{
 			if (tab == MapClassification.Generated)
@@ -518,20 +674,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!int.TryParse(mapFilter, out var playerCountFilter))
 				playerCountFilter = -1;
 
-			var maps = tabMaps[tab]
+			var maps = OrderMaps(tabMaps[tab]
 				.Where(m => (category == null || m.Categories.Contains(category)) &&
 					(mapFilter == null ||
 					(m.Title != null && m.Title.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
 					(m.Author != null && m.Author.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
-					m.PlayerCount == playerCountFilter));
+					m.PlayerCount == playerCountFilter)))
+				.ToList();
 
-			if (orderByFunc == null)
-				maps = maps.OrderBy(m => m.Title);
-			else
-				maps = maps.OrderBy(orderByFunc).ThenBy(m => m.Title);
+			foreach (var map in maps)
+				QueueCompatibilityCheck(map);
 
-			maps = maps.ToList();
-
+			compatibilityBorders.Clear();
 			scrollpanels[tab].RemoveChildren();
 			foreach (var loop in maps)
 			{
@@ -561,6 +715,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
 				previewWidget.Preview = () => preview;
+
+				SetupCompatibilityBorder(item, preview);
 
 				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
 				if (detailsWidget != null)

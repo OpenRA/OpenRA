@@ -440,7 +440,7 @@ Container@PLAYER_WIDGETS:
 					Height: 22
 					Align: Center
 					Font: TinyBold
-				LabelWithTooltip@CASH:
+				IngameCashLabel@CASH:
 					Logic: IngameCashCounterLogic
 					X: 29
 					Y: 4

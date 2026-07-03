@@ -12,6 +12,7 @@
 using System;
 using System.Globalization;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -29,6 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Player player;
 		readonly PlayerResources playerResources;
 		readonly LabelWithTooltipWidget cashLabel;
+		readonly Func<bool> showInfinitySymbol;
 		readonly CachedTransform<(int Resources, int Capacity), string> siloUsageTooltipCache;
 
 		int nextCashTickTime = 0;
@@ -42,16 +44,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.world = world;
 			player = world.LocalPlayer;
 			playerResources = player.PlayerActor.Trait<PlayerResources>();
-			displayResources = playerResources.GetCashAndResources();
+			displayResources = playerResources.UnlimitedCash ? playerResources.Cash : playerResources.GetCashAndResources();
 
 			siloUsageTooltipCache = new CachedTransform<(int Resources, int Capacity), string>(x =>
 				FluentProvider.GetMessage(SiloUsage, "usage", x.Resources, "capacity", x.Capacity));
-			cashLabel = widget.Get<LabelWithTooltipWidget>("CASH");
+			cashLabel = widget as LabelWithTooltipWidget;
+			showInfinitySymbol = () => playerResources.UnlimitedCash;
+			if (widget is IInfinityCashDisplay infinityDisplay)
+				infinityDisplay.ShowInfinitySymbol = showInfinitySymbol;
 			cashLabel.GetTooltipText = () => siloUsageTooltip;
 		}
 
 		public override void Tick()
 		{
+			if (playerResources.UnlimitedCash)
+			{
+				siloUsageTooltip = siloUsageTooltipCache.Update((playerResources.Resources, playerResources.ResourceCapacity));
+				return;
+			}
+
 			if (nextCashTickTime > 0)
 				nextCashTickTime--;
 

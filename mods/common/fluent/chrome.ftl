@@ -679,6 +679,9 @@ button-mapchooser-panel-randommap = Random Map
 button-mapchooser-panel-delete-map = Delete Map
 button-mapchooser-panel-delete-all-maps = Delete All Maps
 button-mapchooser-panel-ok = Ok
+label-map-compatible = Compatible
+label-map-not-compatible = Not compatible
+button-mapchooser-sort-compatibility = Group maps by compatibility
 
 label-mapchooser-random-map-title = Random Map
 label-mapchooser-random-map-generating = Generating...

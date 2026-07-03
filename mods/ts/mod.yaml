@@ -305,6 +305,10 @@ GameSpeeds:
 			Name: options-game-speed.fastest
 			Timestep: 20
 			OrderLatency: 6
+		ludicrous:
+			Name: options-game-speed.ludicrous
+			Timestep: 13
+			OrderLatency: 9
 
 DiscordService:
 	ApplicationId: 712713986558394399

@@ -22,6 +22,8 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.Player | SystemActors.EditorPlayer)]
 	public class PlayerResourcesInfo : TraitInfo, ILobbyOptions
 	{
+		public const string UnlimitedCashLobbyValue = "unlimited";
+
 		[Desc("Descriptive label for the starting cash option in the lobby.")]
 		public readonly string DefaultCashDropdownLabel = "Starting Cash";
 
@@ -66,8 +68,18 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			// Make sure that DefaultCash is included in the available options
-			var startingCash = SelectableCash.Append(DefaultCash).ToHashSet()
-				.ToDictionary(c => c.ToStringInvariant(), c => "$" + c.ToString(NumberFormatInfo.CurrentInfo));
+			var seen = new HashSet<int>();
+			var startingCash = new Dictionary<string, string>();
+			foreach (var c in SelectableCash)
+			{
+				if (seen.Add(c))
+					startingCash[c.ToStringInvariant()] = "$" + c.ToString(NumberFormatInfo.CurrentInfo);
+			}
+
+			if (seen.Add(DefaultCash))
+				startingCash[DefaultCash.ToStringInvariant()] = "$" + DefaultCash.ToString(NumberFormatInfo.CurrentInfo);
+
+			startingCash[UnlimitedCashLobbyValue] = "∞ Unlimited";
 
 			if (startingCash.Count > 0)
 				yield return new LobbyOption(map, "startingcash",
@@ -91,11 +103,18 @@ namespace OpenRA.Mods.Common.Traits
 			var startingCash = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("startingcash", info.DefaultCash.ToStringInvariant());
 
-			if (!int.TryParse(startingCash, out Cash))
+			if (startingCash == PlayerResourcesInfo.UnlimitedCashLobbyValue)
+			{
+				UnlimitedCash = true;
+				Cash = info.DefaultCash;
+			}
+			else if (!int.TryParse(startingCash, out Cash))
 				Cash = info.DefaultCash;
 
 			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
 		}
+
+		public bool UnlimitedCash { get; }
 
 		[VerifySync]
 		public int Cash;
@@ -219,6 +238,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool TakeCash(int num, bool notifyLowFunds = false)
 		{
+			if (UnlimitedCash)
+				return true;
+
 			if (GetCashAndResources() < num)
 			{
 				if (notifyLowFunds && Game.RunTime > lastNotificationTime + Info.InsufficientFundsNotificationInterval)
@@ -258,6 +280,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int GetCashAndResources()
 		{
+			if (UnlimitedCash)
+				return int.MaxValue;
+
 			return Cash + Resources;
 		}
 	}

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToList()
 				.Count - 1;
 
-			if (parallelBuilds > 0 && !developerMode.FastBuild)
+			if (parallelBuilds > 0 && !developerMode.FastBuild && !(instantBuilding?.IsEnabled(Info.Type) ?? false))
 			{
 				penalty -= 100;
 				if (penalty < 0)
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
-			if (developerMode.FastBuild)
+			if (developerMode.FastBuild || (instantBuilding?.IsEnabled(Info.Type) ?? false))
 				return 0;
 
 			var time = base.GetBuildTime(unit, bi);

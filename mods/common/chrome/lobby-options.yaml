@@ -88,6 +88,33 @@ Container@LOBBY_OPTIONS_BIN:
 							Height: 13
 							Background: separator
 							ClickThrough: True
+						Background@CHECKBOX_SECTION_SEPARATOR_TEMPLATE:
+							Width: PARENT_WIDTH
+							Height: 13
+							Background: separator
+							ClickThrough: True
+						Container@INSTANT_BUILDING_SUBCHECKBOX_ROW_TEMPLATE:
+							Width: PARENT_WIDTH
+							Height: 30
+							Children:
+								Checkbox@A:
+									X: 10
+									Width: PARENT_WIDTH / 3 - 20
+									Height: 20
+									Visible: False
+									TooltipContainer: TOOLTIP_CONTAINER
+								Checkbox@B:
+									X: PARENT_WIDTH / 3 + 10
+									Width: PARENT_WIDTH / 3 - 20
+									Height: 20
+									Visible: False
+									TooltipContainer: TOOLTIP_CONTAINER
+								Checkbox@C:
+									X: (PARENT_WIDTH / 3) * 2 + 10
+									Width: PARENT_WIDTH / 3 - 20
+									Height: 20
+									Visible: False
+									TooltipContainer: TOOLTIP_CONTAINER
 						Label@ADAPTIVE_SECTION_TITLE_TEMPLATE:
 							Width: PARENT_WIDTH
 							Height: 22

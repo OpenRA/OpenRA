@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("name", "value")]
 		const string OptionChanged = "notification-lobby-option-changed";
 
+		[FluentReference("category", "state")]
+		const string InstantBuildingOptionChanged = "notification-instant-building-option-changed";
+
 		static readonly Action DoNothing = () => { };
 
 		readonly ModData modData;
@@ -902,7 +905,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var newLobbyOptions = orderManager.LobbyInfo.GlobalSettings.LobbyOptions;
 			foreach (var o in allOptions)
 				if (newLobbyOptions.TryGetValue(o.Id, out var s) && (lobbyOptions.TryGetValue(o.Id, out var old) ? s.Value != old.Value : s.Value != o.DefaultValue))
-					TextNotificationsManager.AddSystemLine(OptionValue, "name", o.Name, "value", o.Label(s.Value));
+					AddLobbyOptionNotification(o, s.Value, changed: false);
 
 			if (map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 				TextNotificationsManager.AddSystemLine(BotsDisabled);
@@ -1859,11 +1862,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					updatedValue = uo.Value;
 
 				if (updatedValue != value)
-					TextNotificationsManager.AddSystemLine(OptionChanged, "name", o.Name, "value", o.Label(updatedValue));
+					AddLobbyOptionNotification(o, updatedValue, changed: true);
 			}
 
 			lobbyOptions = updated;
 			resetOptionsButtonEnabled = mapOptions.Any(o => o.DefaultValue != serverOptions[o.Id].Value);
+		}
+
+		void AddLobbyOptionNotification(LobbyOption option, string value, bool changed)
+		{
+			if (InstantBuilding.SubOptionIds.Contains(option.Id))
+			{
+				TextNotificationsManager.AddSystemLine(InstantBuildingOptionChanged,
+					"category", option.Name,
+					"state", option.Label(value));
+				return;
+			}
+
+			TextNotificationsManager.AddSystemLine(changed ? OptionChanged : OptionValue,
+				"name", option.Name, "value", option.Label(value));
 		}
 
 		void OnGameStart()

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (HasDeliveryStarted() && DeliveryDelay > 0)
 				{
-					if (developerMode.FastBuild)
+					if (developerMode.FastBuild || (instantBuilding?.IsEnabled(Info.Type) ?? false))
 						DeliveryDelay = 0;
 					else
 					{

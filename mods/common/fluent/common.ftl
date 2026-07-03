@@ -203,6 +203,7 @@ label-bot-player = AI Player
 ## LobbyLogic
 notification-lobby-option = { $name }: { $value }.
 notification-lobby-option-changed = { $name } changed to { $value }.
+notification-instant-building-option-changed = Instant building : { $category } { $state }.
 notification-map-bots-disabled = Bots have been disabled on this map.
 
 ## IngameMenuLogic
@@ -786,6 +787,7 @@ options-game-speed =
     .fast = Fast
     .faster = Faster
     .fastest = Fastest
+    .ludicrous = Ludicrous
 
 ## TimeLimitManager
 options-time-limit =

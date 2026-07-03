@@ -151,6 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected PlayerResources playerResources;
 		protected DeveloperMode developerMode;
 		protected TechTree techTree;
+		protected InstantBuilding instantBuilding;
 
 		public Actor Actor { get; }
 
@@ -180,6 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+			instantBuilding = self.World.WorldActor.TraitOrDefault<InstantBuilding>();
 			techTree = self.Owner.PlayerActor.Trait<TechTree>();
 
 			productionTraits = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).ToArray();
@@ -216,6 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = newOwner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
+			instantBuilding = self.World.WorldActor.TraitOrDefault<InstantBuilding>();
 			techTree = newOwner.PlayerActor.Trait<TechTree>();
 
 			if (!Info.Sticky)
@@ -718,7 +721,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual int GetBuildTime(ActorInfo unit, BuildableInfo bi)
 		{
-			if (developerMode.FastBuild)
+			if (developerMode.FastBuild || (instantBuilding?.IsEnabled(Info.Type) ?? false))
 				return 0;
 
 			var time = bi.BuildDuration;

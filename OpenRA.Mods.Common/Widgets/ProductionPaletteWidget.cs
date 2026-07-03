@@ -436,22 +436,18 @@ namespace OpenRA.Mods.Common.Widgets
 			base.YieldKeyboardFocus();
 		}
 
-		static bool TryGetDigit(Keycode key, out char digit)
+		public override bool HandleTextInput(string input)
 		{
-			if (key >= Keycode.NUMBER_0 && key <= Keycode.NUMBER_9)
+			if (!editing || IsDisabled())
+				return false;
+
+			foreach (var c in input)
 			{
-				digit = (char)key;
-				return true;
+				if (c is >= '0' and <= '9' && editText.Length < MaxDigits)
+					editText += c;
 			}
 
-			if (key >= Keycode.KP_0 && key <= Keycode.KP_9)
-			{
-				digit = (char)('0' + (key - Keycode.KP_0));
-				return true;
-			}
-
-			digit = default;
-			return false;
+			return true;
 		}
 
 		public override bool YieldKeyboardFocus()
@@ -488,8 +484,6 @@ namespace OpenRA.Mods.Common.Widgets
 						editText = editText[..^1];
 					return true;
 				default:
-					if (TryGetDigit(e.Key, out var digit) && editText.Length < MaxDigits)
-						editText += digit;
 					return true;
 			}
 		}

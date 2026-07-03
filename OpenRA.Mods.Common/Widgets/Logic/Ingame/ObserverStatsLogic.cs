@@ -441,8 +441,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return template;
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			var cashText = new CachedTransform<int, string>(i => "$" + i);
-			template.Get<LabelWidget>("CASH").GetText = () => cashText.Update(res.GetCashAndResources());
+			template.Get<LabelWidget>("CASH").GetText = () => res.UnlimitedCash ? "∞" : "$" + res.GetCashAndResources();
 
 			var incomeText = new CachedTransform<int, string>(i => "$" + i);
 			template.Get<LabelWidget>("INCOME").GetText = () => incomeText.Update(stats.DisplayIncome);
@@ -489,8 +488,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupPlayerColor(player, template, playerColor, playerGradient);
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			var cashText = new CachedTransform<int, string>(i => "$" + i);
-			template.Get<LabelWidget>("CASH").GetText = () => cashText.Update(res.GetCashAndResources());
+			template.Get<LabelWidget>("CASH").GetText = () => res.UnlimitedCash ? "∞" : "$" + res.GetCashAndResources();
 
 			var powerRes = player.PlayerActor.TraitOrDefault<PowerManager>();
 			if (powerRes != null)

@@ -45,6 +45,37 @@ checkbox-separate-team-spawns =
     .label = Separate Team Spawns
     .description = Players without assigned spawn points start as far as possible from enemy players
 
+## InstantBuildingLobbyOptions
+label-instant-building-options = Instant Building options
+
+checkbox-instant-building =
+    .label = Instant Building
+    .description = Removes production and build wait times for selected unit categories
+
+checkbox-instant-building-buildings =
+    .label = Buildings
+    .description = Instantly complete building production
+
+checkbox-instant-building-defense =
+    .label = Defense
+    .description = Instantly complete defense structure production
+
+checkbox-instant-building-infantry =
+    .label = Infantry
+    .description = Instantly complete infantry training
+
+checkbox-instant-building-vehicles =
+    .label = Vehicles
+    .description = Instantly complete vehicle production
+
+checkbox-instant-building-aircraft =
+    .label = Aircraft
+    .description = Instantly complete aircraft production
+
+checkbox-instant-building-naval =
+    .label = Naval
+    .description = Instantly complete naval unit production
+
 ## SpawnStartingUnits
 dropdown-starting-units =
     .label = Starting Units

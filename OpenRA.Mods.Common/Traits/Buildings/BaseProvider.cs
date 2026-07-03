@@ -45,6 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class BaseProvider : PausableConditionalTrait<BaseProviderInfo>, ITick, IRenderAnnotationsWhenSelected, ISelectionBar
 	{
 		readonly DeveloperMode devMode;
+		readonly InstantBuilding instantBuilding;
 		readonly Actor self;
 		readonly bool allyBuildEnabled;
 		readonly bool buildRadiusEnabled;
@@ -57,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			devMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+			instantBuilding = self.World.WorldActor.TraitOrDefault<InstantBuilding>();
 			progress = total = info.InitialDelay;
 			var mapBuildRadius = self.World.WorldActor.TraitOrDefault<MapBuildRadius>();
 			allyBuildEnabled = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;
@@ -79,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || IsTraitPaused)
 				return false;
 
-			return devMode.FastBuild || progress == 0;
+			return devMode.FastBuild || instantBuilding?.IsBuildingsEnabled() == true || progress == 0;
 		}
 
 		bool ValidRenderPlayer()
@@ -123,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 				return 0f;
 
 			// Ready or delay disabled
-			if (progress == 0 || total == 0 || devMode.FastBuild)
+			if (progress == 0 || total == 0 || devMode.FastBuild || instantBuilding?.IsBuildingsEnabled() == true)
 				return 0f;
 
 			return (float)progress / total;
