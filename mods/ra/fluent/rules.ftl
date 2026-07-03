@@ -949,6 +949,68 @@ bot-turtle-ai =
 bot-naval-ai =
     .name = Naval AI
 
+bot-adaptive-ai =
+    .name = Adaptive AI
+
+label-adaptive-ai-controls = Adaptive AI controls
+
+dropdown-adaptive-difficulty =
+    .label = Adaptive AI Difficulty
+    .description = Overall challenge level for Adaptive AI bots.
+
+options-adaptive-difficulty =
+    .easy = Easy
+    .medium = Medium
+    .hard = Hard
+    .brutal = Brutal
+
+dropdown-adaptive-scouting =
+    .label = Adaptive AI Scouting
+    .description = How actively Adaptive AI explores the map.
+
+options-adaptive-scouting =
+    .off = Off
+    .minimal = Minimal
+    .normal = Normal
+    .aggressive = Aggressive
+
+dropdown-adaptive-counterbuild =
+    .label = Adaptive AI Counter-Building
+    .description = How quickly Adaptive AI counters seen enemy units.
+
+options-adaptive-counterbuild =
+    .off = Off
+    .balanced = Balanced
+    .aggressive = Aggressive
+
+dropdown-adaptive-expansion =
+    .label = Adaptive AI Expansion
+    .description = How aggressively Adaptive AI expands with MCVs.
+
+options-adaptive-expansion =
+    .defensive = Defensive
+    .balanced = Balanced
+    .greedy = Greedy
+
+dropdown-adaptive-aggression =
+    .label = Adaptive AI Combat Aggression
+    .description = How readily Adaptive AI commits to attacks.
+
+options-adaptive-aggression =
+    .passive = Passive
+    .balanced = Balanced
+    .rush = Rush
+
+dropdown-adaptive-supportpowers =
+    .label = Adaptive AI Support Powers
+    .description = How readily Adaptive AI uses support powers.
+
+options-adaptive-supportpowers =
+    .never = Never
+    .conservative = Conservative
+    .normal = Normal
+    .aggressive = Aggressive
+
 ## map-generators.yaml
 label-random-map = Random Map
 label-clear-map-generator-option-tile = Tile

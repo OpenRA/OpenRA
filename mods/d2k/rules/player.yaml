@@ -113,7 +113,7 @@ Player:
 		TextNotification: notification-low-power
 	AllyRepair:
 	PlayerResources:
-		SelectableCash: 2500, 5000, 7000, 10000, 20000
+		SelectableCash: 2500, 5000, 7000, 10000, 20000, 50000, 100000
 		InsufficientFundsNotification: InsufficientFunds
 		InsufficientFundsTextNotification: notification-insufficient-funds
 		CashTickUpNotification: CashTickUp

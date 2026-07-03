@@ -30,7 +30,7 @@ Player:
 	PlayerResources:
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
-		SelectableCash: 2500, 5000, 7500, 10000, 20000
+		SelectableCash: 2500, 5000, 7500, 10000, 20000, 50000, 100000
 		DefaultCash: 7500
 	DeveloperMode:
 		CheckboxDisplayOrder: 9

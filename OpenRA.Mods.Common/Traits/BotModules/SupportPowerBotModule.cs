@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.LoadUsing(nameof(LoadDecisions))]
 		public readonly ImmutableArray<SupportPowerDecision> Decisions = [];
 
-		static object LoadDecisions(MiniYaml yaml)
+		protected static object LoadDecisions(MiniYaml yaml)
 		{
 			var ret = new List<SupportPowerDecision>();
 			var decisions = yaml.NodeWithKeyOrDefault("Decisions");
@@ -126,6 +126,8 @@ namespace OpenRA.Mods.Common.Traits
 			stalePowers.Clear();
 		}
 
+		protected virtual int MinimumAttractiveness(SupportPowerDecision powerDecision) => powerDecision.MinimumAttractiveness;
+
 		/// <summary>Scans the map in chunks, evaluating all actors in each.</summary>
 		CPos? FindCoarseAttackLocationToSupportPower(SupportPowerInstance readyPower)
 		{
@@ -156,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var frozenTargets = player.FrozenActorLayer != null ? player.FrozenActorLayer.FrozenActorsInRegion(region) : [];
 					var consideredAttractiveness = powerDecision.GetAttractiveness(targets, player) + powerDecision.GetAttractiveness(frozenTargets, player);
-					if (consideredAttractiveness < powerDecision.MinimumAttractiveness)
+					if (consideredAttractiveness < MinimumAttractiveness(powerDecision))
 						continue;
 
 					suitableLocations.Add((tl, consideredAttractiveness));
@@ -199,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 					var consideredAttractiveness = 0;
 					consideredAttractiveness += powerDecision.GetAttractiveness(pos, player);
 
-					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < powerDecision.MinimumAttractiveness)
+					if (consideredAttractiveness <= bestAttractiveness || consideredAttractiveness < MinimumAttractiveness(powerDecision))
 						continue;
 
 					bestAttractiveness = consideredAttractiveness;

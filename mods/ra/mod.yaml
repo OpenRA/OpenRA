@@ -73,6 +73,7 @@ MapFolders:
 Rules:
 	ra|rules/misc.yaml
 	ra|rules/ai.yaml
+	ra|rules/ai-adaptive.yaml
 	ra|rules/player.yaml
 	ra|rules/palettes.yaml
 	ra|rules/world.yaml

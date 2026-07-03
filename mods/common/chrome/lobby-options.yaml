@@ -83,3 +83,13 @@ Container@LOBBY_OPTIONS_BIN:
 									Height: 25
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+						Background@ADAPTIVE_SECTION_SEPARATOR_TEMPLATE:
+							Width: PARENT_WIDTH
+							Height: 13
+							Background: separator
+							ClickThrough: True
+						Label@ADAPTIVE_SECTION_TITLE_TEMPLATE:
+							Width: PARENT_WIDTH
+							Height: 22
+							Font: Bold
+							Align: Center

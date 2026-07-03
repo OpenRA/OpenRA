@@ -1,0 +1,228 @@
+World:
+	AdaptiveAILobbyOptions:
+	AdaptiveAILobbySettings:
+
+Player:
+	ModularBot@AdaptiveAI:
+		Name: bot-adaptive-ai.name
+		Type: adaptive
+	GrantConditionOnBotOwner@adaptive:
+		Condition: enable-adaptive-ai
+		Bots: adaptive
+	BotIntelModule:
+		RequiresCondition: enable-adaptive-ai
+		AirUnitTypes: mig, yak, heli, hind, mh60, badr.bomber, u2
+		ArmorUnitTypes: 1tnk, 2tnk, 3tnk, 4tnk, ttnk, apc, arty, v2rl, ftrk, stnk, jeep
+		InfantryUnitTypes: e1, e2, e3, e4, e7, dog, shok, spy
+		NavalUnitTypes: ss, msub, dd, ca, lst, pt
+		BaseBuildingTypes: fact, proc, barr, tent, weap, afld, hpad, spen, syrd, powr, apwr, dome, atek, stek, fix, pbox, gun, ftur, tsla, agun, sam, mslo, pdox, iron
+	ScoutBotModule:
+		RequiresCondition: enable-adaptive-ai
+		ScoutUnitTypes: e1, jeep, dog
+	AdaptiveCommanderModule:
+		RequiresCondition: enable-adaptive-ai
+		DecisionInterval: 75
+	AdaptiveUnitBuilderBotModule:
+		RequiresCondition: enable-adaptive-ai
+		UnitsToBuild:
+			e1: 65
+			e2: 15
+			e3: 30
+			e4: 15
+			e7: 1
+			dog: 15
+			shok: 15
+			harv: 15
+			apc: 30
+			jeep: 20
+			arty: 15
+			v2rl: 40
+			ftrk: 30
+			1tnk: 40
+			2tnk: 50
+			3tnk: 50
+			4tnk: 25
+			ttnk: 25
+			stnk: 5
+			heli: 30
+			mh60: 30
+			mig: 30
+			yak: 30
+			ss: 10
+			msub: 10
+			dd: 10
+			ca: 10
+			pt: 10
+		UnitLimits:
+			dog: 4
+			harv: 8
+			jeep: 4
+			ftrk: 4
+	AdaptiveCounterBuildBotModule:
+		RequiresCondition: enable-adaptive-ai
+	AdaptiveBaseBuilderBotModule:
+		RequiresCondition: enable-adaptive-ai
+	AdaptiveBotDebugModule:
+		RequiresCondition: enable-adaptive-ai
+	AdaptiveSquadManagerBotModule:
+		RequiresCondition: enable-adaptive-ai
+		SquadSize: 25
+		RushInterval: 400
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
+	AdaptiveResourceMapBotModule:
+		RequiresCondition: enable-adaptive-ai
+		ResourceCreatorTypes: mine, gmine
+		ValuableResourceTypes: Ore, Gems
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: pbox,gun,ftur,tsla,agun,barr,tent,weap,afld,hpad,fact,powr,apwr,proc
+	ResourceMapBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai
+		ResourceCreatorTypes: mine, gmine
+		ValuableResourceTypes: Ore, Gems
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		EnemyBaseBuildingTypes: pbox,gun,ftur,tsla,agun,barr,tent,weap,afld,hpad,fact,powr,apwr,proc
+	HarvesterBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 4
+	BaseBuilderBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai
+		MinimumExcessPower: 0
+		MaximumExcessPower: 200
+		ExcessPowerIncrement: 40
+		ExcessPowerIncreaseThreshold: 4
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		InititalMinimumRefineryCount: 0
+		AdditionalMinimumRefineryCount: 2
+		ExpansionTolerate: 1,2
+		PowerTypes: powr,apwr
+		TechTypes: dome, atek, stek, fix, afld, hpad
+		ProductionTypes: barr,tent,weap
+		NewProductionCashThreshold: 8000
+		NavalProductionTypes: spen, syrd
+		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		BuildingLimits:
+			barr: 7
+			tent: 7
+			dome: 1
+			weap: 4
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			afld.ukraine: 4
+			atek: 1
+			stek: 1
+			fix: 1
+		BuildingFractions:
+			powr: 1
+			proc: 1
+			tent: 3
+			barr: 3
+			kenn: 1
+			dome: 1
+			weap: 4
+			hpad: 1
+			spen: 1
+			syrd: 1
+			afld: 1
+			afld.ukraine: 1
+			pbox: 9
+			gun: 9
+			ftur: 10
+			tsla: 5
+			gap: 2
+			fix: 1
+			agun: 5
+			sam: 1
+			atek: 1
+			stek: 1
+			mslo: 1
+		BuildingDelays:
+			dome: 6000
+			fix: 3000
+			pbox: 1500
+			gun: 2000
+			ftur: 1500
+			tsla: 2800
+			kenn: 7000
+			spen: 6000
+			syrd: 6000
+			atek: 9000
+			stek: 9000
+	AdaptiveMcvExpansionManagerBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MinimumConstructionYardCount: 2
+	AdaptiveSupportPowerBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai
+		Decisions:
+			spyplane:
+				OrderName: SovietSpyPlane
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			paratroopers:
+				OrderName: SovietParatroopers
+				MinimumAttractiveness: 5
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 8c0
+				Consideration@2:
+					Against: Enemy
+					Types: Water
+					Attractiveness: -5
+					TargetMetric: None
+					CheckRadius: 8c0
+			parabombs:
+				OrderName: UkraineParabombs
+				MinimumAttractiveness: 1
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: None
+					CheckRadius: 5c0
+			nukepower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3000
+				Consideration@1:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 5c0
+				Consideration@2:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
+	PowerDownBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai
+		PowerDownTypes: dome,tsla,mslo,agun,sam
+	BuildingRepairBotModule@adaptive:
+		RequiresCondition: enable-adaptive-ai

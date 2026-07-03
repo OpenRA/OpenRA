@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string DefaultCashDropdownDescription = "The amount of cash that players start with";
 
 		[Desc("Starting cash options that are available in the lobby options. DefaultCash will be included if not specified.")]
-		public readonly ImmutableArray<int> SelectableCash = [2500, 5000, 10000, 20000];
+		public readonly ImmutableArray<int> SelectableCash = [2500, 5000, 10000, 20000, 50000, 100000];
 
 		[Desc("Default starting cash option: should be one of the SelectableCash options.")]
 		public readonly int DefaultCash = 5000;

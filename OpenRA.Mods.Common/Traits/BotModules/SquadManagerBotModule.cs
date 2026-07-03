@@ -158,6 +158,16 @@ namespace OpenRA.Mods.Common.Traits
 		// Use for proactive targeting.
 		public bool IsPreferredEnemyUnit(Actor a)
 		{
+			if (!IsPreferredEnemyUnitCore(a))
+				return false;
+
+			return PassesEnemyVisibilityFilter(a);
+		}
+
+		protected virtual bool PassesEnemyVisibilityFilter(Actor a) => true;
+
+		bool IsPreferredEnemyUnitCore(Actor a)
+		{
 			if (a == null || a.IsDead || Player.RelationshipWith(a.Owner) != PlayerRelationship.Enemy || a.Info.HasTraitInfo<HuskInfo>())
 				return false;
 
@@ -292,8 +302,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal (Actor Actor, WVec Offset) FindClosestEnemy(Actor sourceActor)
 		{
-			return FindClosestEnemy(World.Actors, sourceActor);
+			return FindClosestEnemy(GetProactiveEnemyActors(), sourceActor);
 		}
+
+		protected virtual IEnumerable<Actor> GetProactiveEnemyActors() => World.Actors;
 
 		internal (Actor Actor, WVec Offset) FindClosestEnemy(Actor sourceActor, WDist radius)
 		{
@@ -335,9 +347,15 @@ namespace OpenRA.Mods.Common.Traits
 			// and thus would mutate the Squads list we are iterating over.
 		}
 
+		protected virtual int EffectiveSquadSize => Info.SquadSize;
+		protected virtual int EffectiveRushInterval => Info.RushInterval;
+		protected virtual bool ShouldAttemptRush() => true;
+		protected virtual void AfterCleanSquads() { }
+
 		void AssignRolesToIdleUnits(IBot bot)
 		{
 			CleanSquads();
+			AfterCleanSquads();
 
 			activeUnits.RemoveWhere(unitCannotBeOrdered);
 			unitsHangingAroundTheBase.RemoveAll(unitCannotBeOrdered);
@@ -346,7 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (--rushTicks <= 0)
 			{
-				rushTicks = Info.RushInterval;
+				rushTicks = EffectiveRushInterval;
 				TryToRushAttack(bot);
 			}
 
@@ -420,7 +438,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Create an attack force when we have enough units around our base.
 			// (don't bother leaving any behind for defense)
-			var randomizedSquadSize = Info.SquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
+			var randomizedSquadSize = EffectiveSquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
 
 			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
 			{
@@ -436,6 +454,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void TryToRushAttack(IBot bot)
 		{
+			if (!ShouldAttemptRush())
+				return;
+
 			var groundTroopNum = unitsHangingAroundTheBase.Count;
 
 			foreach (var s in Squads)
@@ -444,7 +465,7 @@ namespace OpenRA.Mods.Common.Traits
 					groundTroopNum += s.Units.Count;
 			}
 
-			if (groundTroopNum < Info.SquadSize)
+			if (groundTroopNum < EffectiveSquadSize)
 				return;
 
 			var randomAttackableUnit = unitsHangingAroundTheBase.Where(a => a.Info.HasTraitInfo<AttackBaseInfo>()).RandomOrDefault(World.LocalRandom);

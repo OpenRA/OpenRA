@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -24,10 +25,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string NotAvailable = "label-not-available";
 
+		[FluentReference]
+		const string AdaptiveAiControlsTitle = "label-adaptive-ai-controls";
+
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
 		readonly Widget checkboxRowTemplate;
 		readonly Widget dropdownRowTemplate;
+		readonly Widget adaptiveSeparatorTemplate;
+		readonly Widget adaptiveTitleTemplate;
 		readonly int yMargin;
 
 		readonly Func<MapPreview> getMap;
@@ -35,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Func<bool> configurationDisabled;
 		MapPreview mapPreview;
 		MapStatus mapStatus;
+		bool hadAdaptiveBot;
 
 		[ObjectCreator.UseCtor]
 		internal LobbyOptionsLogic(Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
@@ -48,6 +55,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			yMargin = optionsContainer.Bounds.Y;
 			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
+			adaptiveSeparatorTemplate = optionsContainer.GetOrNull("ADAPTIVE_SECTION_SEPARATOR_TEMPLATE");
+			adaptiveTitleTemplate = optionsContainer.GetOrNull("ADAPTIVE_SECTION_TITLE_TEMPLATE");
 
 			mapPreview = getMap();
 			mapStatus = mapPreview.Status;
@@ -57,7 +66,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public override void Tick()
 		{
 			var newMapPreview = getMap();
-			if (newMapPreview == mapPreview && mapStatus == mapPreview.Status)
+			var hasAdaptiveBot = orderManager.LobbyInfo.Clients.Any(c => c.Bot == "adaptive");
+			if (newMapPreview == mapPreview && mapStatus == mapPreview.Status && hasAdaptiveBot == hadAdaptiveBot)
 				return;
 
 			// We are currently enumerating the widget tree and so can't modify any layout
@@ -66,6 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				mapPreview = newMapPreview;
 				mapStatus = mapPreview.Status;
+				hadAdaptiveBot = hasAdaptiveBot;
 				RebuildOptions();
 			});
 		}
@@ -84,9 +95,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.OrderBy(o => o.DisplayOrder)
 					.ToArray();
 
+			var hasAdaptiveBot = orderManager.LobbyInfo.Clients.Any(c => c.Bot == "adaptive");
+			var adaptiveDropdownOptions = allOptions
+				.Where(o => o is not LobbyBooleanOption && o.Id.StartsWith("adaptive-"))
+				.ToArray();
+			var standardDropdownOptions = allOptions
+				.Where(o => o is not LobbyBooleanOption && !o.Id.StartsWith("adaptive-"))
+				.ToArray();
+			var showAdaptiveSection = adaptiveDropdownOptions.Length > 0 && adaptiveSeparatorTemplate != null;
+
 			Widget row = null;
 			var checkboxColumns = new Queue<CheckboxWidget>();
 			var dropdownColumns = new Queue<DropDownButtonWidget>();
+			Widget dropdownRow = null;
 
 			foreach (var option in allOptions.Where(o => o is LobbyBooleanOption))
 			{
@@ -128,71 +149,131 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			foreach (var option in allOptions.Where(o => o is not LobbyBooleanOption))
+			foreach (var option in standardDropdownOptions)
+				SetupDropdownOption(option, ref dropdownRow, dropdownColumns);
+
+			if (showAdaptiveSection)
 			{
-				if (dropdownColumns.Count == 0)
-				{
-					row = dropdownRowTemplate.Clone();
-					row.Bounds.Y = optionsContainer.Bounds.Height;
-					optionsContainer.Bounds.Height += row.Bounds.Height;
-					foreach (var child in row.Children)
-						if (child is DropDownButtonWidget dropDown)
-							dropdownColumns.Enqueue(dropDown);
+				HideUnusedDropdownColumns(dropdownRow, dropdownColumns);
+				dropdownColumns.Clear();
+				dropdownRow = null;
 
-					optionsContainer.AddChild(row);
+				AddAdaptiveSeparator();
+
+				if (hasAdaptiveBot)
+				{
+					AddAdaptiveTitle();
+					foreach (var option in adaptiveDropdownOptions)
+						SetupDropdownOption(option, ref dropdownRow, dropdownColumns);
 				}
-
-				var dropdown = dropdownColumns.Dequeue();
-				var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
-					gs => gs.LobbyOptions[option.Id]);
-
-				var getOptionLabel = new CachedTransform<string, string>(id =>
-				{
-					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return FluentProvider.GetMessage(NotAvailable);
-
-					return value;
-				});
-
-				dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
-				if (option.Description != null)
-				{
-					var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
-					dropdown.GetTooltipText = () => text;
-					dropdown.GetTooltipDesc = () => desc;
-				}
-
-				dropdown.IsVisible = () => true;
-				dropdown.IsDisabled = () => configurationDisabled() ||
-					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
-
-				dropdown.OnMouseDown = _ =>
-				{
-					ScrollItemWidget SetupItem(KeyValuePair<string, string> c, ScrollItemWidget template)
-					{
-						bool IsSelected() => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
-						void OnClick() => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
-
-						var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
-						return item;
-					}
-
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
-				};
-
-				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
-				if (label != null)
-				{
-					label.GetText = () => option.Name + ":";
-					label.IsVisible = () => true;
-				}
+			}
+			else
+			{
+				foreach (var option in adaptiveDropdownOptions)
+					SetupDropdownOption(option, ref dropdownRow, dropdownColumns);
 			}
 
 			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
 			optionsContainer.Bounds.Y = yMargin;
 
 			panel.ScrollToTop();
+		}
+
+		void SetupDropdownOption(LobbyOption option, ref Widget dropdownRow, Queue<DropDownButtonWidget> dropdownColumns)
+		{
+			if (dropdownColumns.Count == 0)
+			{
+				dropdownRow = dropdownRowTemplate.Clone();
+				dropdownRow.Bounds.Y = optionsContainer.Bounds.Height;
+				optionsContainer.Bounds.Height += dropdownRow.Bounds.Height;
+				foreach (var child in dropdownRow.Children)
+					if (child is DropDownButtonWidget dropDown)
+						dropdownColumns.Enqueue(dropDown);
+
+				optionsContainer.AddChild(dropdownRow);
+			}
+
+			var dropdown = dropdownColumns.Dequeue();
+			var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
+				gs => gs.LobbyOptions[option.Id]);
+
+			var getOptionLabel = new CachedTransform<string, string>(id =>
+			{
+				if (id == null || !option.Values.TryGetValue(id, out var value))
+					return FluentProvider.GetMessage(NotAvailable);
+
+				return value;
+			});
+
+			dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
+			if (option.Description != null)
+			{
+				var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
+				dropdown.GetTooltipText = () => text;
+				dropdown.GetTooltipDesc = () => desc;
+			}
+
+			dropdown.IsVisible = () => true;
+			dropdown.IsDisabled = () => configurationDisabled() ||
+				optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
+
+			dropdown.OnMouseDown = _ =>
+			{
+				ScrollItemWidget SetupItem(KeyValuePair<string, string> c, ScrollItemWidget template)
+				{
+					bool IsSelected() => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
+					void OnClick() => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+
+					var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
+					item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
+					return item;
+				}
+
+				dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
+			};
+
+			var label = dropdownRow.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
+			if (label != null)
+			{
+				label.GetText = () => option.Name + ":";
+				label.IsVisible = () => true;
+			}
+		}
+
+		static void HideUnusedDropdownColumns(Widget dropdownRow, Queue<DropDownButtonWidget> dropdownColumns)
+		{
+			if (dropdownRow == null)
+				return;
+
+			while (dropdownColumns.Count > 0)
+			{
+				var dropdown = dropdownColumns.Dequeue();
+				dropdown.IsVisible = () => false;
+
+				var label = dropdownRow.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
+				if (label != null)
+					label.IsVisible = () => false;
+			}
+		}
+
+		void AddAdaptiveSeparator()
+		{
+			var separator = adaptiveSeparatorTemplate.Clone();
+			separator.Bounds.Y = optionsContainer.Bounds.Height;
+			optionsContainer.Bounds.Height += separator.Bounds.Height;
+			optionsContainer.AddChild(separator);
+		}
+
+		void AddAdaptiveTitle()
+		{
+			if (adaptiveTitleTemplate == null)
+				return;
+
+			var title = (LabelWidget)adaptiveTitleTemplate.Clone();
+			title.Bounds.Y = optionsContainer.Bounds.Height;
+			optionsContainer.Bounds.Height += title.Bounds.Height;
+			title.GetText = () => FluentProvider.GetMessage(AdaptiveAiControlsTitle);
+			optionsContainer.AddChild(title);
 		}
 	}
 }
