@@ -9,15 +9,9 @@
  */
 #endregion
 
-using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
-using OpenRA.Support;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.MapGenerator
 {
@@ -34,7 +28,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			FieldLoader.Load(this, yaml);
 		}
 
-		public abstract IReadOnlyCollection<MiniYamlNode> GetSettings(ITerrainInfo terrainInfo, int playerCount);
+		public abstract IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount);
 
 		public virtual IEnumerable<string> GetFluentReferences()
 		{
@@ -48,17 +42,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		[FieldLoader.Require]
 		public readonly string Parameter = null;
 		public readonly bool Default = false;
-		public bool Value;
 
 		public MapGeneratorBooleanOption(string id, MiniYaml yaml)
-			: base(id, yaml)
-		{
-			Value = Default;
-		}
+			: base(id, yaml) { }
 
-		public override IReadOnlyCollection<MiniYamlNode> GetSettings(ITerrainInfo terrainInfo, int playerCount)
+		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
-			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(Value))];
+			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(value))];
 		}
 	}
 
@@ -67,17 +57,13 @@ namespace OpenRA.Mods.Common.MapGenerator
 		[FieldLoader.Require]
 		public readonly string Parameter = null;
 		public readonly int Default = 0;
-		public int Value;
 
 		public MapGeneratorIntegerOption(string id, MiniYaml yaml)
-			: base(id, yaml)
-		{
-			Value = Default;
-		}
+			: base(id, yaml) { }
 
-		public override IReadOnlyCollection<MiniYamlNode> GetSettings(ITerrainInfo terrainInfo, int playerCount)
+		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
-			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(Value))];
+			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(value))];
 		}
 	}
 
@@ -95,7 +81,11 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 			static object LoadSettings(MiniYaml yaml)
 			{
-				return yaml.NodeWithKey("Settings").Value.Nodes.ToImmutableArray();
+				var settingsNode = yaml.NodeWithKeyOrDefault("Settings");
+				if (settingsNode == null)
+					return ImmutableArray<MiniYamlNode>.Empty;
+
+				return settingsNode.Value.Nodes.ToImmutableArray();
 			}
 		}
 
@@ -116,35 +106,28 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		public readonly ImmutableArray<string> Default = default;
-		string value = null;
 
 		public MapGeneratorMultiChoiceOption(string id, MiniYaml yaml)
 			: base(id, yaml) { }
 
-		public override IReadOnlyCollection<MiniYamlNode> GetSettings(ITerrainInfo terrainInfo, int playerCount)
+		public string DefaultFor(ITerrainInfo terrainInfo, int playerCount)
+		{
+			var validChoices = ValidChoices(terrainInfo, playerCount);
+			if (Default != null)
+				foreach (var value in Default)
+					if (validChoices.Contains(value))
+						return value;
+
+			return validChoices.FirstOrDefault();
+		}
+
+		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
 			var validChoices = ValidChoices(terrainInfo, playerCount);
 			if (validChoices.Contains(value))
 				return Choices[value].Settings;
 
-			string fallback = null;
-			if (Default != null)
-				fallback = Default.FirstOrDefault(validChoices.Contains);
-			fallback ??= validChoices.FirstOrDefault();
-
-			return fallback != null ? Choices[fallback].Settings : [];
-		}
-
-		public string Value
-		{
-			get => value;
-			set
-			{
-				if (value != null && !Choices.ContainsKey(value))
-					throw new ArgumentException($"{value} is not in the list of valid choices");
-
-				this.value = value;
-			}
+			return Choices[DefaultFor(terrainInfo, playerCount)].Settings;
 		}
 
 		public List<string> ValidChoices(ITerrainInfo terrainInfo, int playerCount)
@@ -184,139 +167,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 		[FieldLoader.Require]
 		public readonly ImmutableArray<int> Choices = default;
 
-		public readonly int? Default = null;
-		int value;
+		public readonly int? Default;
 
 		public MapGeneratorMultiIntegerChoiceOption(string id, MiniYaml yaml)
 			: base(id, yaml)
 		{
-			Value = Default ?? (Choices != null ? Choices[0] : 0);
+			Default ??= Choices != null ? Choices[0] : 0;
 		}
 
-		public int Value
+		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
-			get => value;
-			set
-			{
-				if (!Choices.Contains(value))
-					throw new ArgumentException($"{value} is not in the list of valid choices");
-
-				this.value = value;
-			}
-		}
-
-		public override IReadOnlyCollection<MiniYamlNode> GetSettings(ITerrainInfo terrainInfo, int playerCount)
-		{
-			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(Value))];
-		}
-	}
-
-	public sealed class MapGeneratorSettings : IMapGeneratorSettings
-	{
-		sealed class MapGenerationArgsWithOptions : MapGenerationArgs
-		{
-			public FrozenDictionary<string, string> Options = FrozenDictionary<string, string>.Empty;
-		}
-
-		readonly IMapGeneratorInfo generatorInfo;
-
-		public MapGeneratorSettings(IMapGeneratorInfo generatorInfo, MiniYaml yaml)
-		{
-			this.generatorInfo = generatorInfo;
-
-			var options = new List<MapGeneratorOption>();
-			foreach (var node in yaml.Nodes)
-			{
-				var split = node.Key.Split('@');
-				if (split.Length != 2)
-					continue;
-
-				if (split[0] == "BooleanOption")
-					options.Add(new MapGeneratorBooleanOption(split[1], node.Value));
-				else if (split[0] == "IntegerOption")
-					options.Add(new MapGeneratorIntegerOption(split[1], node.Value));
-				else if (split[0] == "MultiIntegerChoiceOption")
-					options.Add(new MapGeneratorMultiIntegerChoiceOption(split[1], node.Value));
-				else if (split[0] == "MultiChoiceOption")
-					options.Add(new MapGeneratorMultiChoiceOption(split[1], node.Value));
-			}
-
-			Options = options.ToImmutableArray();
-		}
-
-		public ImmutableArray<MapGeneratorOption> Options { get; } = [];
-
-		public void Randomize(MersenneTwister random)
-		{
-			if (Options.FirstOrDefault(o => o.Id == "Seed") is MapGeneratorIntegerOption seed)
-				seed.Value = random.Next();
-		}
-
-		public int PlayerCount
-		{
-			get
-			{
-				var o = Options.FirstOrDefault(o => o.Id == "Players");
-				if (o is MapGeneratorIntegerOption io)
-					return io.Value;
-
-				if (o is MapGeneratorMultiIntegerChoiceOption mio)
-					return mio.Value;
-
-				return 0;
-			}
-		}
-
-		public void Initialize(MapGenerationArgs args)
-		{
-			if (args is MapGenerationArgsWithOptions optionArgs)
-			{
-				foreach (var o in Options)
-				{
-					if (!optionArgs.Options.TryGetValue(o.Id, out var value))
-						continue;
-
-					switch (o)
-					{
-						case MapGeneratorBooleanOption bo: bo.Value = FieldLoader.GetValue<bool>(o.Id, value); break;
-						case MapGeneratorIntegerOption io: io.Value = FieldLoader.GetValue<int>(o.Id, value); break;
-						case MapGeneratorMultiIntegerChoiceOption mio: mio.Value = FieldLoader.GetValue<int>(o.Id, value); break;
-						case MapGeneratorMultiChoiceOption mo: mo.Value = value; break;
-					}
-				}
-			}
-		}
-
-		public MapGenerationArgs Compile(ITerrainInfo terrainInfo, Size size)
-		{
-			// Apply the choices in their canonical order.
-			var playerCount = PlayerCount;
-			var layers = Options
-				.OrderBy(option => option.Priority)
-				.Select(o => o.GetSettings(terrainInfo, playerCount));
-
-			var options = new Dictionary<string, string>();
-			foreach (var o in Options)
-			{
-				switch (o)
-				{
-					case MapGeneratorBooleanOption bo: options[o.Id] = FieldSaver.FormatValue(bo.Value); break;
-					case MapGeneratorIntegerOption io: options[o.Id] = FieldSaver.FormatValue(io.Value); break;
-					case MapGeneratorMultiIntegerChoiceOption mio: options[o.Id] = FieldSaver.FormatValue(mio.Value); break;
-					case MapGeneratorMultiChoiceOption mo: options[o.Id] = mo.Value; break;
-				}
-			}
-
-			return new MapGenerationArgsWithOptions()
-			{
-				Generator = generatorInfo.Type,
-				Tileset = terrainInfo.Id,
-				Size = size,
-				Title = FluentProvider.GetMessage(generatorInfo.MapTitle),
-				Author = FluentProvider.GetMessage(generatorInfo.Name),
-				Settings = new MiniYaml(null, MiniYaml.Merge(layers)),
-				Options = options.ToFrozenDictionary()
-			};
+			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(value))];
 		}
 	}
 }

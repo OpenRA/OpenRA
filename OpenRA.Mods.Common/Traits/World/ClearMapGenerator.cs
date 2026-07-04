@@ -43,42 +43,78 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string PanelWidget = "MAP_GENERATOR_TOOL_PANEL";
 
 		// This is purely of interest to the linter.
-		[FieldLoader.LoadUsing(nameof(FluentReferencesLoader))]
+		[FieldLoader.LoadUsing(nameof(LoadFluentReferences))]
 		[FluentReference]
 		public readonly ImmutableArray<string> FluentReferences = default;
 
-		[FieldLoader.LoadUsing(nameof(SettingsLoader))]
-		public readonly MiniYaml Settings;
+		[FieldLoader.LoadUsing(nameof(LoadOptions))]
+		public readonly ImmutableArray<MapGeneratorOption> Options;
 
 		string IMapGeneratorInfo.Type => Type;
 		string IMapGeneratorInfo.Name => Name;
 		string IMapGeneratorInfo.MapTitle => MapTitle;
 
-		static MiniYaml SettingsLoader(MiniYaml my)
+		static object LoadOptions(MiniYaml my)
 		{
-			return my.NodeWithKey("Settings").Value;
+			var optionsNode = my.NodeWithKeyOrDefault("Options");
+			if (optionsNode == null)
+				return ImmutableArray<MapGeneratorOption>.Empty;
+
+			var options = new List<MapGeneratorOption>();
+			foreach (var node in optionsNode.Value.Nodes)
+			{
+				var split = node.Key.Split('@');
+				if (split.Length != 2)
+					continue;
+
+				if (split[0] == "BooleanOption")
+					options.Add(new MapGeneratorBooleanOption(split[1], node.Value));
+				else if (split[0] == "IntegerOption")
+					options.Add(new MapGeneratorIntegerOption(split[1], node.Value));
+				else if (split[0] == "MultiIntegerChoiceOption")
+					options.Add(new MapGeneratorMultiIntegerChoiceOption(split[1], node.Value));
+				else if (split[0] == "MultiChoiceOption")
+					options.Add(new MapGeneratorMultiChoiceOption(split[1], node.Value));
+			}
+
+			return options.ToImmutableArray();
 		}
 
-		static object FluentReferencesLoader(MiniYaml my)
+		static object LoadFluentReferences(MiniYaml my)
 		{
-			return new MapGeneratorSettings(null, my.NodeWithKey("Settings").Value)
-				.Options.SelectMany(o => o.GetFluentReferences()).ToImmutableArray();
+			return ((ImmutableArray<MapGeneratorOption>)LoadOptions(my))
+				.SelectMany(o => o.GetFluentReferences())
+				.ToImmutableArray();
 		}
 
-		public IMapGeneratorSettings GetSettings()
+		MiniYaml GenerateParameterYaml(ModData modData, MapGenerationArgs args)
 		{
-			return new MapGeneratorSettings(this, Settings);
+			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
+
+			// Apply the choices in their canonical order.
+			var parameters = new Dictionary<string, MiniYaml>();
+			foreach (var o in Options.OrderBy(option => option.Priority))
+			{
+				if (!args.Options.TryGetValue(o.Id, out var value))
+					continue;
+
+				foreach (var pn in o.GetParameters(terrainInfo, value, 0))
+					parameters[pn.Key] = pn.Value;
+			}
+
+			return new MiniYaml(null, parameters.Select(kv => new MiniYamlNode(kv.Key, kv.Value)));
 		}
 
 		public Map Generate(ModData modData, MapGenerationArgs args)
 		{
 			var random = new MersenneTwister();
 			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
+			var yaml = GenerateParameterYaml(modData, args);
 
-			if (!Exts.TryParseUshortInvariant(args.Settings.NodeWithKey("Tile").Value.Value, out var tileType))
+			if (!Exts.TryParseUshortInvariant(yaml.NodeWithKey("Tile").Value.Value, out var tileType))
 				throw new YamlException("Illegal tile type");
 
-			if (!terrainInfo.TryGetTerrainInfo(new TerrainTile(tileType, 0), out var _))
+			if (!terrainInfo.TryGetTerrainInfo(new TerrainTile(tileType, 0), out _))
 				throw new MapGenerationException("Illegal tile type");
 
 			var map = new Map(modData, terrainInfo, args.Size);
@@ -108,6 +144,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		ImmutableArray<string> IEditorMapGeneratorInfo.Tilesets => Tilesets;
+		ImmutableArray<MapGeneratorOption> IEditorMapGeneratorInfo.Options => Options;
+		int IEditorMapGeneratorInfo.GetPlayerCount(MapGenerationArgs args) => 0;
 	}
 
 	public class ClearMapGenerator : IEditorTool
