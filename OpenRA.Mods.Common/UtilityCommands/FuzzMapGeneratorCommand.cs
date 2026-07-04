@@ -16,7 +16,6 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 
@@ -266,20 +265,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (size.Length != 2)
 						throw new ArgumentException($"bad map size `{iterationChoices[Configuration.SizeVariable]}`");
 
-					var settings = generator.GetSettings();
-					foreach (var o in settings.Options)
+					var generationArgs = new MapGenerationArgs
+					{
+						Tileset = terrainInfo.Id,
+						Size = new Size(size[0], size[1])
+					};
+
+					foreach (var o in generator.Options)
 					{
 						if (iterationChoices.TryGetValue(o.Id, out var choice))
 						{
-							if (o is MapGeneratorBooleanOption bo)
-								bo.Value = FieldLoader.GetValue<bool>("choice", choice);
-							else if (o is MapGeneratorIntegerOption io)
-								io.Value = FieldLoader.GetValue<int>("choice", choice);
-							else if (o is MapGeneratorMultiIntegerChoiceOption mio)
-								mio.Value = FieldLoader.GetValue<int>("choice", choice);
-							else if (o is MapGeneratorMultiChoiceOption mo)
-								mo.Value = choice;
-
+							generationArgs.Options[o.Id] = choice;
 							iterationChoices.Remove(o.Id);
 						}
 						else if (config.NoDefaults)
@@ -294,7 +290,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						tests++;
 						try
 						{
-							generator.Generate(modData, settings.Compile(terrainInfo, new Size(size[0], size[1])));
+							generator.Generate(modData, generationArgs);
 						}
 						catch (Exception e) when (e is MapGenerationException || e is YamlException)
 						{

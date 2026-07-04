@@ -1007,22 +1007,10 @@ namespace OpenRA.Mods.Common.Traits
 			: base(message, inner) { }
 	}
 
-	public interface IMapGeneratorSettings
-	{
-		ImmutableArray<MapGeneratorOption> Options { get; }
-
-		int PlayerCount { get; }
-
-		void Randomize(MersenneTwister random);
-
-		void Initialize(MapGenerationArgs args);
-
-		MapGenerationArgs Compile(ITerrainInfo terrainInfo, Size size);
-	}
-
 	public interface IEditorMapGeneratorInfo : IMapGeneratorInfo
 	{
 		ImmutableArray<string> Tilesets { get; }
-		IMapGeneratorSettings GetSettings();
+		ImmutableArray<MapGeneratorOption> Options { get; }
+		int GetPlayerCount(MapGenerationArgs args);
 	}
 }
