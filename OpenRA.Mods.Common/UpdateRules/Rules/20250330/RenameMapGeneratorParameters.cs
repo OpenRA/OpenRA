@@ -10,12 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	/// <summary>
-	/// Renames generator Settings nodes to Options or Parameters
+	/// Renames generator Settings nodes to Options or Parameters.
 	/// </summary>
 	public class RenameMapGeneratorParameters : UpdateRule
 	{
