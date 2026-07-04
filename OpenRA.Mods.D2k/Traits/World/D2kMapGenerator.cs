@@ -50,22 +50,46 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly ImmutableArray<string> FluentReferences = default;
 
 		[FieldLoader.LoadUsing(nameof(SettingsLoader))]
-		public readonly MiniYaml Settings;
+		public readonly ImmutableArray<MapGeneratorOption> Settings;
 
 		string IMapGeneratorInfo.Type => Type;
 		string IMapGeneratorInfo.Name => Name;
 		string IMapGeneratorInfo.MapTitle => MapTitle;
 		ImmutableArray<string> IEditorMapGeneratorInfo.Tilesets => Tilesets;
+		ImmutableArray<MapGeneratorOption> IEditorMapGeneratorInfo.Options => Settings;
+		int IEditorMapGeneratorInfo.GetPlayerCount(MapGenerationArgs args) => GetPlayerCount(args);
 
-		static MiniYaml SettingsLoader(MiniYaml my)
+		static object SettingsLoader(MiniYaml my)
 		{
-			return my.NodeWithKey("Settings").Value;
+			var optionsNode = my.NodeWithKeyOrDefault("Settings");
+			if (optionsNode == null)
+				return ImmutableArray<MapGeneratorOption>.Empty;
+
+			var options = new List<MapGeneratorOption>();
+			foreach (var node in optionsNode.Value.Nodes)
+			{
+				var split = node.Key.Split('@');
+				if (split.Length != 2)
+					continue;
+
+				if (split[0] == "BooleanOption")
+					options.Add(new MapGeneratorBooleanOption(split[1], node.Value));
+				else if (split[0] == "IntegerOption")
+					options.Add(new MapGeneratorIntegerOption(split[1], node.Value));
+				else if (split[0] == "MultiIntegerChoiceOption")
+					options.Add(new MapGeneratorMultiIntegerChoiceOption(split[1], node.Value));
+				else if (split[0] == "MultiChoiceOption")
+					options.Add(new MapGeneratorMultiChoiceOption(split[1], node.Value));
+			}
+
+			return options.ToImmutableArray();
 		}
 
 		static object FluentReferencesLoader(MiniYaml my)
 		{
-			return new MapGeneratorSettings(null, my.NodeWithKey("Settings").Value)
-				.Options.SelectMany(o => o.GetFluentReferences()).ToImmutableArray();
+			return ((ImmutableArray<MapGeneratorOption>)SettingsLoader(my))
+				.SelectMany(o => o.GetFluentReferences())
+				.ToImmutableArray();
 		}
 
 		const int FractionMax = Terraformer.FractionMax;
@@ -242,21 +266,39 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 		}
 
-		public IMapGeneratorSettings GetSettings()
+		static int GetPlayerCount(MapGenerationArgs args)
 		{
-			return new MapGeneratorSettings(this, Settings);
+			if (args.Options.TryGetValue("Players", out var players))
+				return FieldLoader.GetValue<int>("Players", players);
+
+			return 0;
+		}
+
+		MiniYaml GenerateParameterYaml(ModData modData, MapGenerationArgs args)
+		{
+			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
+			var playerCount = GetPlayerCount(args);
+
+			// Apply the choices in their canonical order.
+			var parameters = new Dictionary<string, MiniYaml>();
+			foreach (var o in Settings.OrderBy(option => option.Priority))
+			{
+				if (!args.Options.TryGetValue(o.Id, out var value))
+					continue;
+
+				foreach (var pn in o.GetParameters(terrainInfo, value, playerCount))
+					parameters[pn.Key] = pn.Value;
+			}
+
+			return new MiniYaml(null, parameters.Select(kv => new MiniYamlNode(kv.Key, kv.Value)));
 		}
 
 		public Map Generate(ModData modData, MapGenerationArgs args)
 		{
-			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
-			var size = args.Size;
-
-			var map = new Map(modData, terrainInfo, size);
 			var actorPlans = new List<ActorPlan>();
-
-			var param = new Parameters(map, args.Settings);
-
+			var terrainInfo = modData.DefaultTerrainInfo[args.Tileset];
+			var map = new Map(modData, terrainInfo, args.Size);
+			var param = new Parameters(map, GenerateParameterYaml(modData, args));
 			var terraformer = new Terraformer(args, map, modData, actorPlans, param.Mirror, param.Rotations);
 
 			var sandZone = new Terraformer.PathPartitionZone()
@@ -625,11 +667,9 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			try
 			{
-				var playerCount = FieldLoader.GetValue<int>("Players", args.Settings.NodeWithKey("Players").Value.Value);
-
 				// Generated maps use the default ruleset
 				ruleDefinitions = [];
-				players = new MapPlayers(modData.DefaultRules, playerCount);
+				players = new MapPlayers(modData.DefaultRules, GetPlayerCount(args));
 
 				return true;
 			}
