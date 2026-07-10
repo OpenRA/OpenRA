@@ -260,6 +260,13 @@ namespace OpenRA
 				// We need to add 1 to scroll in order to handle interpixel 0-0.99 fractionalOffset.
 				var s = new Size(vw / WorldDownscaleFactor + 1, vh / WorldDownscaleFactor + 1);
 				var fractionalOffset = centerLocation - viewportLocation;
+
+				// If scaling by an integer factor (including 1:1) we must round the offset
+				// to an integer number of screen-space pixels to preserve sharp pixel edges
+				var renderScale = screenSprite.Size.X / (s.Width - 1f);
+				if (float.IsInteger(renderScale))
+					fractionalOffset = (fractionalOffset * renderScale).Round() / renderScale;
+
 				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), 0, fractionalOffset, TextureChannel.RGBA);
 			}
 
