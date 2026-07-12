@@ -149,13 +149,15 @@ namespace OpenRA.Mods.Common.Server
 					SkirmishSlot.DeserializeToClient(botNode.Value, client);
 
 					// Validate whether color is allowed and get an alternative if it isn't
-					if (client.Slot != null && !server.LobbyInfo.Slots[client.Slot].LockColor)
+					if (client.Slot != null && server.LobbyInfo.Slots.TryGetValue(client.Slot, out var slot) && !slot.LockColor)
 						client.Color = LobbyCommands.SanitizePlayerColor(server, client.Color, client.Index);
 
 					client.Faction = LobbyCommands.SanitizePlayerFaction(server, client.Faction, selectableFactions);
 
 					server.LobbyInfo.Clients.Add(client);
-					S.SyncClientToPlayerReference(client, server.Map.Players.Players[client.Slot]);
+
+					if (client.Slot != null && server.Map.Players.Players.TryGetValue(client.Slot, out var player))
+						S.SyncClientToPlayerReference(client, player);
 				}
 			}
 
