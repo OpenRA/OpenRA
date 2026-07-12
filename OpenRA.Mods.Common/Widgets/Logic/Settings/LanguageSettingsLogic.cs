@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			{ "en", "English" },
 			{ "ru", "Русский" },
+			{ "zh", "中文" },
 		};
 
 		readonly GameSettings gameSettings;

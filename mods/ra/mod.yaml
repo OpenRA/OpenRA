@@ -185,6 +185,7 @@ AllowUnusedFluentMessagesInExternalPackages: false
 FluentLanguages:
 	en
 	ru
+	zh
 
 Weapons:
 	ra|weapons/explosions.yaml
@@ -231,31 +232,31 @@ ChromeMetrics:
 
 Fonts:
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 10
 		Ascender: 8
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 10
 		Ascender: 8
 	Small:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 12
 		Ascender: 9
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 14
 		Ascender: 11
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 14
 		Ascender: 11
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 18
 		Ascender: 14
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 24
 		Ascender: 18
 	Title:
