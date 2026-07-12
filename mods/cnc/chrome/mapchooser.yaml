@@ -246,7 +246,7 @@ Container@MAPCHOOSER_GENERATE_PANEL:
 			Width: 140
 			Height: 35
 			Text: button-mapchooser-random-map-generate
-		ScrollPanel@SETTINGS_PANEL:
+		ScrollPanel@OPTIONS_PANEL:
 			TopBottomSpacing: 5
 			Width: 485
 			Height: PARENT_HEIGHT

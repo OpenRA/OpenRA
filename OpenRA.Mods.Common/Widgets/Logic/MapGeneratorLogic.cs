@@ -71,12 +71,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action<MapGenerationArgs, IReadWritePackage> onGenerate;
 
 		readonly GeneratedMapPreviewWidget preview;
-		readonly ScrollPanelWidget settingsPanel;
-		readonly Widget checkboxSettingTemplate;
-		readonly Widget textSettingTemplate;
-		readonly Widget dropdownSettingTemplate;
-		readonly Widget tilesetSetting;
-		readonly Widget sizeSetting;
+		readonly ScrollPanelWidget optionsPanel;
+		readonly Widget checkboxOptionTemplate;
+		readonly Widget textOptionTemplate;
+		readonly Widget dropdownOptionTemplate;
+		readonly Widget tilesetOption;
+		readonly Widget sizeOption;
 		readonly Widget parentWidget;
 
 		ITerrainInfo selectedTerrain;
@@ -130,20 +130,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				previewSizeLabel.GetText = () => desc.Update(generationArgs.Size);
 			}
 
-			settingsPanel = widget.Get<ScrollPanelWidget>("SETTINGS_PANEL");
-			checkboxSettingTemplate = settingsPanel.Get<Widget>("CHECKBOX_TEMPLATE");
-			textSettingTemplate = settingsPanel.Get<Widget>("TEXT_TEMPLATE");
-			dropdownSettingTemplate = settingsPanel.Get<Widget>("DROPDOWN_TEMPLATE");
-			settingsPanel.Layout = new GridLayout(settingsPanel);
+			optionsPanel = widget.Get<ScrollPanelWidget>("OPTIONS_PANEL");
+			checkboxOptionTemplate = optionsPanel.Get<Widget>("CHECKBOX_TEMPLATE");
+			textOptionTemplate = optionsPanel.Get<Widget>("TEXT_TEMPLATE");
+			dropdownOptionTemplate = optionsPanel.Get<Widget>("DROPDOWN_TEMPLATE");
+			optionsPanel.Layout = new GridLayout(optionsPanel);
 
 			// Tileset and map size are handled outside the generator logic so must be created manually
 			var validTerrainInfos = generator.Tilesets.Select(t => modData.DefaultTerrainInfo[t]).ToList();
 			var tilesetLabel = FluentProvider.GetMessage(Tileset);
-			tilesetSetting = dropdownSettingTemplate.Clone();
-			tilesetSetting.Get<LabelWidget>("LABEL").GetText = () => tilesetLabel;
+			tilesetOption = dropdownOptionTemplate.Clone();
+			tilesetOption.Get<LabelWidget>("LABEL").GetText = () => tilesetLabel;
 
 			var label = new CachedTransform<ITerrainInfo, string>(ti => FluentProvider.GetMessage(ti.Name));
-			var tilesetDropdown = tilesetSetting.Get<DropDownButtonWidget>("DROPDOWN");
+			var tilesetDropdown = tilesetOption.Get<DropDownButtonWidget>("DROPDOWN");
 			tilesetDropdown.GetText = () => label.Update(selectedTerrain);
 			tilesetDropdown.OnMouseDown = _ =>
 			{
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						selectedTerrain = terrainInfo;
 						generationArgs.Tileset = terrainInfo.Id;
-						RefreshSettings();
+						RefreshOptions();
 						GenerateMap();
 					}
 
@@ -168,10 +168,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var sizeLabel = FluentProvider.GetMessage(MapSize);
-			sizeSetting = dropdownSettingTemplate.Clone();
-			sizeSetting.Get<LabelWidget>("LABEL").GetText = () => sizeLabel;
+			sizeOption = dropdownOptionTemplate.Clone();
+			sizeOption.Get<LabelWidget>("LABEL").GetText = () => sizeLabel;
 
-			var sizeDropdown = sizeSetting.Get<DropDownButtonWidget>("DROPDOWN");
+			var sizeDropdown = sizeOption.Get<DropDownButtonWidget>("DROPDOWN");
 			var sizeDropdownLabel = new CachedTransform<string, string>(s => FluentProvider.GetMessage(s));
 			sizeDropdown.GetText = () => sizeDropdownLabel.Update(selectedSize);
 			sizeDropdown.OnMouseDown = _ =>
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (kv.Value.X > generationArgs.Size.Width && kv.Value.Y <= generationArgs.Size.Width)
 						selectedSize = kv.Key;
 
-				RefreshSettings();
+				RefreshOptions();
 
 				var map = modData.MapCache[generationArgs.Uid];
 				if (map.Status == MapStatus.Available)
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				generationArgs.Options["Seed"] = FieldSaver.FormatValue(Game.CosmeticRandom.Next());
 				RandomizeSize();
-				RefreshSettings();
+				RefreshOptions();
 			}
 		}
 
@@ -270,12 +270,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			generationArgs.Size = new Size(width + 2, height + mapGrid.MaximumTerrainHeight * 2 + 2);
 		}
 
-		void RefreshSettings()
+		void RefreshOptions()
 		{
-			settingsPanel.RemoveChildren();
-			tilesetSetting.Bounds = sizeSetting.Bounds = dropdownSettingTemplate.Bounds;
-			settingsPanel.AddChild(tilesetSetting);
-			settingsPanel.AddChild(sizeSetting);
+			optionsPanel.RemoveChildren();
+			tilesetOption.Bounds = sizeOption.Bounds = dropdownOptionTemplate.Bounds;
+			optionsPanel.AddChild(tilesetOption);
+			optionsPanel.AddChild(sizeOption);
 
 			var trueString = FieldSaver.FormatValue(true);
 			var falseString = FieldSaver.FormatValue(false);
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (o.Id == "Seed")
 					continue;
 
-				Widget settingWidget = null;
+				Widget optionWidget = null;
 				switch (o)
 				{
 					case MapGeneratorBooleanOption bo:
@@ -292,8 +292,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = bo.Default ? falseString : trueString;
 
-						settingWidget = checkboxSettingTemplate.Clone();
-						var checkboxWidget = settingWidget.Get<CheckboxWidget>("CHECKBOX");
+						optionWidget = checkboxOptionTemplate.Clone();
+						var checkboxWidget = optionWidget.Get<CheckboxWidget>("CHECKBOX");
 						var label = FluentProvider.GetMessage(bo.Label);
 						checkboxWidget.GetText = () => label;
 						checkboxWidget.IsChecked = () => generationArgs.Options[o.Id] == trueString;
@@ -310,11 +310,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(io.Default);
 
-						settingWidget = textSettingTemplate.Clone();
-						var labelWidget = settingWidget.Get<LabelWidget>("LABEL");
+						optionWidget = textOptionTemplate.Clone();
+						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 						var label = FluentProvider.GetMessage(io.Label);
 						labelWidget.GetText = () => label;
-						var textFieldWidget = settingWidget.Get<TextFieldWidget>("INPUT");
+						var textFieldWidget = optionWidget.Get<TextFieldWidget>("INPUT");
 						textFieldWidget.Type = TextFieldType.Integer;
 						textFieldWidget.Text = generationArgs.Options[o.Id];
 						textFieldWidget.OnTextEdited = () =>
@@ -336,12 +336,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(mio.Default);
 
-						settingWidget = dropdownSettingTemplate.Clone();
-						var labelWidget = settingWidget.Get<LabelWidget>("LABEL");
+						optionWidget = dropdownOptionTemplate.Clone();
+						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 						var label = FluentProvider.GetMessage(mio.Label);
 						labelWidget.GetText = () => label;
 
-						var dropDownWidget = settingWidget.Get<DropDownButtonWidget>("DROPDOWN");
+						var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
 						dropDownWidget.GetText = () => generationArgs.Options[o.Id];
 						dropDownWidget.OnMouseDown = _ =>
 						{
@@ -353,7 +353,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								{
 									generationArgs.Options[o.Id] = choiceString;
 									if (o.Id == "Players")
-										RefreshSettings();
+										RefreshOptions();
 									GenerateMap();
 								}
 
@@ -378,13 +378,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						if (mo.Label != null && validChoices.Count > 0)
 						{
-							settingWidget = dropdownSettingTemplate.Clone();
-							var labelWidget = settingWidget.Get<LabelWidget>("LABEL");
+							optionWidget = dropdownOptionTemplate.Clone();
+							var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 							var label = FluentProvider.GetMessage(mo.Label);
 							labelWidget.GetText = () => label;
 
 							var labelCache = new CachedTransform<string, string>(v => FluentProvider.GetMessage(mo.Choices[v].Label + ".label"));
-							var dropDownWidget = settingWidget.Get<DropDownButtonWidget>("DROPDOWN");
+							var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
 							dropDownWidget.GetText = () => labelCache.Update(generationArgs.Options[o.Id]);
 							dropDownWidget.OnMouseDown = _ =>
 							{
@@ -420,11 +420,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						throw new NotImplementedException($"Unhandled MapGeneratorOption type {o.GetType().Name}");
 				}
 
-				if (settingWidget == null)
+				if (optionWidget == null)
 					continue;
 
-				settingWidget.IsVisible = () => true;
-				settingsPanel.AddChild(settingWidget);
+				optionWidget.IsVisible = () => true;
+				optionsPanel.AddChild(optionWidget);
 			}
 		}
 

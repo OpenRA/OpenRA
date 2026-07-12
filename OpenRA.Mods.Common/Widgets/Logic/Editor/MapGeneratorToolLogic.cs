@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly IEditorMapGeneratorInfo generator;
 		readonly MapGenerationArgs generationArgs;
 
-		readonly ScrollPanelWidget settingsPanel;
-		readonly Widget checkboxSettingTemplate;
-		readonly Widget textSettingTemplate;
-		readonly Widget dropDownSettingTemplate;
+		readonly ScrollPanelWidget optionsPanel;
+		readonly Widget checkboxOptionTemplate;
+		readonly Widget textOptionTemplate;
+		readonly Widget dropdownOptionTemplate;
 
 		[ObjectCreator.UseCtor]
 		public MapGeneratorToolLogic(Widget widget, World world, WorldRenderer worldRenderer, ModData modData, IEditorTool tool)
@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Size = world.Map.MapSize,
 			};
 
-			settingsPanel = widget.Get<ScrollPanelWidget>("SETTINGS_PANEL");
-			checkboxSettingTemplate = settingsPanel.Get<Widget>("CHECKBOX_TEMPLATE");
-			textSettingTemplate = settingsPanel.Get<Widget>("TEXT_TEMPLATE");
-			dropDownSettingTemplate = settingsPanel.Get<Widget>("DROPDOWN_TEMPLATE");
+			optionsPanel = widget.Get<ScrollPanelWidget>("OPTIONS_PANEL");
+			checkboxOptionTemplate = optionsPanel.Get<Widget>("CHECKBOX_TEMPLATE");
+			textOptionTemplate = optionsPanel.Get<Widget>("TEXT_TEMPLATE");
+			dropdownOptionTemplate = optionsPanel.Get<Widget>("DROPDOWN_TEMPLATE");
 
 			var generateButtonWidget = widget.Get<ButtonWidget>("GENERATE_BUTTON");
 			generateButtonWidget.OnClick = GenerateMap;
@@ -76,11 +76,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			generateRandomButtonWidget.OnClick = () =>
 			{
 				generationArgs.Options["Seed"] = FieldSaver.FormatValue(world.LocalRandom.Next());
-				UpdateSettingsUi();
+				RefreshOptions();
 				GenerateMap();
 			};
 
-			UpdateSettingsUi();
+			RefreshOptions();
 		}
 
 		sealed class RandomMapEditorAction : IEditorAction
@@ -112,9 +112,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void UpdateSettingsUi()
+		void RefreshOptions()
 		{
-			settingsPanel.RemoveChildren();
+			optionsPanel.RemoveChildren();
 			if (generator == null)
 				return;
 
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var o in generator.Options)
 			{
-				Widget settingWidget = null;
+				Widget optionWidget = null;
 				switch (o)
 				{
 					case MapGeneratorBooleanOption bo:
@@ -131,8 +131,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = bo.Default ? falseString : trueString;
 
-						settingWidget = checkboxSettingTemplate.Clone();
-						var checkboxWidget = settingWidget.Get<CheckboxWidget>("CHECKBOX");
+						optionWidget = checkboxOptionTemplate.Clone();
+						var checkboxWidget = optionWidget.Get<CheckboxWidget>("CHECKBOX");
 						var label = FluentProvider.GetMessage(bo.Label);
 						checkboxWidget.GetText = () => label;
 						checkboxWidget.IsChecked = () => generationArgs.Options[o.Id] == trueString;
@@ -146,11 +146,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(io.Default);
 
-						settingWidget = textSettingTemplate.Clone();
-						var labelWidget = settingWidget.Get<LabelWidget>("LABEL");
+						optionWidget = textOptionTemplate.Clone();
+						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 						var label = FluentProvider.GetMessage(io.Label);
 						labelWidget.GetText = () => label;
-						var textFieldWidget = settingWidget.Get<TextFieldWidget>("INPUT");
+						var textFieldWidget = optionWidget.Get<TextFieldWidget>("INPUT");
 						textFieldWidget.Type = TextFieldType.Integer;
 						textFieldWidget.Text = generationArgs.Options[o.Id];
 						textFieldWidget.OnTextEdited = () =>
@@ -171,12 +171,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(mio.Default);
 
-						settingWidget = dropDownSettingTemplate.Clone();
-						var labelWidget = settingWidget.Get<LabelWidget>("LABEL");
+						optionWidget = dropdownOptionTemplate.Clone();
+						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 						var label = FluentProvider.GetMessage(mio.Label);
 						labelWidget.GetText = () => label;
 
-						var dropDownWidget = settingWidget.Get<DropDownButtonWidget>("DROPDOWN");
+						var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
 						dropDownWidget.GetText = () => generationArgs.Options[o.Id];
 						dropDownWidget.OnMouseDown = _ =>
 						{
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								{
 									generationArgs.Options[o.Id] = choiceString;
 									if (o.Id == "Players")
-										UpdateSettingsUi();
+										RefreshOptions();
 								}
 
 								var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
@@ -212,13 +212,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						if (mo.Label != null && validChoices.Count > 0)
 						{
-							settingWidget = dropDownSettingTemplate.Clone();
-							var labelWidget = settingWidget.Get<LabelWidget>("LABEL");
+							optionWidget = dropdownOptionTemplate.Clone();
+							var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 							var label = FluentProvider.GetMessage(mo.Label);
 							labelWidget.GetText = () => label;
 
 							var labelCache = new CachedTransform<string, string>(v => FluentProvider.GetMessage(mo.Choices[v].Label + ".label"));
-							var dropDownWidget = settingWidget.Get<DropDownButtonWidget>("DROPDOWN");
+							var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
 							dropDownWidget.GetText = () => labelCache.Update(generationArgs.Options[o.Id]);
 							dropDownWidget.OnMouseDown = _ =>
 							{
@@ -249,11 +249,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						throw new NotImplementedException($"Unhandled MapGeneratorOption type {o.GetType().Name}");
 				}
 
-				if (settingWidget == null)
+				if (optionWidget == null)
 					continue;
 
-				settingWidget.IsVisible = () => true;
-				settingsPanel.AddChild(settingWidget);
+				optionWidget.IsVisible = () => true;
+				optionsPanel.AddChild(optionWidget);
 			}
 		}
 
