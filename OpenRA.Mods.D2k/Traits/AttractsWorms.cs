@@ -72,6 +72,9 @@ namespace OpenRA.Mods.D2k.Traits
 			if (length > effectiveRange[^1].Length)
 				return WVec.Zero;
 
+			if (length == 0)
+				return WVec.Zero;
+
 			var direction = 1024 * distance / length;
 			var percentage = GetNoisePercentageAtDistance(length);
 
