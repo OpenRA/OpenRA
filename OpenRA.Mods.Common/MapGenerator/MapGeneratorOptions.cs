@@ -75,17 +75,17 @@ namespace OpenRA.Mods.Common.MapGenerator
 			public readonly ImmutableArray<string> Tileset = default;
 			public readonly ImmutableArray<int> Players = default;
 
-			[FieldLoader.LoadUsing(nameof(LoadSettings))]
+			[FieldLoader.LoadUsing(nameof(LoadParameters))]
 			[FieldLoader.Require]
-			public readonly ImmutableArray<MiniYamlNode> Settings = default;
+			public readonly ImmutableArray<MiniYamlNode> Parameters = default;
 
-			static object LoadSettings(MiniYaml yaml)
+			static object LoadParameters(MiniYaml yaml)
 			{
-				var settingsNode = yaml.NodeWithKeyOrDefault("Settings");
-				if (settingsNode == null)
+				var parametersNode = yaml.NodeWithKeyOrDefault("Parameters");
+				if (parametersNode == null)
 					return ImmutableArray<MiniYamlNode>.Empty;
 
-				return settingsNode.Value.Nodes.ToImmutableArray();
+				return parametersNode.Value.Nodes.ToImmutableArray();
 			}
 		}
 
@@ -125,9 +125,9 @@ namespace OpenRA.Mods.Common.MapGenerator
 		{
 			var validChoices = ValidChoices(terrainInfo, playerCount);
 			if (validChoices.Contains(value))
-				return Choices[value].Settings;
+				return Choices[value].Parameters;
 
-			return Choices[DefaultFor(terrainInfo, playerCount)].Settings;
+			return Choices[DefaultFor(terrainInfo, playerCount)].Parameters;
 		}
 
 		public List<string> ValidChoices(ITerrainInfo terrainInfo, int playerCount)

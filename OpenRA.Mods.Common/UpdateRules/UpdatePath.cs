@@ -77,8 +77,10 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAlwaysVisible(),
 				new RemoveAndRenameDefenseRadiusInBaseBuilderBotModule(),
 
-				// Execute these rules last to avoid premature yaml merge crashes.
 				new WithDamageOverlayPropertyRename(),
+
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new RenameMapGeneratorParameters(),
 			]),
 		];
 

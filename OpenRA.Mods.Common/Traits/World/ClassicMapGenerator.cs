@@ -44,24 +44,24 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string PanelWidget = "MAP_GENERATOR_TOOL_PANEL";
 
 		// This is purely of interest to the linter.
-		[FieldLoader.LoadUsing(nameof(FluentReferencesLoader))]
+		[FieldLoader.LoadUsing(nameof(LoadFluentReferences))]
 		[FluentReference]
 		public readonly ImmutableArray<string> FluentReferences = default;
 
-		[FieldLoader.LoadUsing(nameof(SettingsLoader))]
-		public readonly ImmutableArray<MapGeneratorOption> Settings = default;
+		[FieldLoader.LoadUsing(nameof(LoadOptions))]
+		public readonly ImmutableArray<MapGeneratorOption> Options = default;
 
 		string IMapGeneratorInfo.Type => Type;
 		string IMapGeneratorInfo.Name => Name;
 		string IMapGeneratorInfo.MapTitle => MapTitle;
 
 		ImmutableArray<string> IEditorMapGeneratorInfo.Tilesets => Tilesets;
-		ImmutableArray<MapGeneratorOption> IEditorMapGeneratorInfo.Options => Settings;
+		ImmutableArray<MapGeneratorOption> IEditorMapGeneratorInfo.Options => Options;
 		int IEditorMapGeneratorInfo.GetPlayerCount(MapGenerationArgs args) => GetPlayerCount(args);
 
-		static object SettingsLoader(MiniYaml my)
+		static object LoadOptions(MiniYaml my)
 		{
-			var optionsNode = my.NodeWithKeyOrDefault("Settings");
+			var optionsNode = my.NodeWithKeyOrDefault("Options");
 			if (optionsNode == null)
 				return ImmutableArray<MapGeneratorOption>.Empty;
 
@@ -85,9 +85,9 @@ namespace OpenRA.Mods.Common.Traits
 			return options.ToImmutableArray();
 		}
 
-		static object FluentReferencesLoader(MiniYaml my)
+		static object LoadFluentReferences(MiniYaml my)
 		{
-			return ((ImmutableArray<MapGeneratorOption>)SettingsLoader(my))
+			return ((ImmutableArray<MapGeneratorOption>)LoadOptions(my))
 				.SelectMany(o => o.GetFluentReferences())
 				.ToImmutableArray();
 		}
@@ -509,7 +509,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Apply the choices in their canonical order.
 			var parameters = new Dictionary<string, MiniYaml>();
-			foreach (var o in Settings.OrderBy(option => option.Priority))
+			foreach (var o in Options.OrderBy(option => option.Priority))
 			{
 				if (!args.Options.TryGetValue(o.Id, out var value))
 					continue;

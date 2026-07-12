@@ -1073,7 +1073,7 @@ Container@MAP_GENERATOR_TOOL_PANEL:
 					Height: 25
 					Text: button-map-generator-generate-random
 					Font: Bold
-		ScrollPanel@SETTINGS_PANEL:
+		ScrollPanel@OPTIONS_PANEL:
 			X: 0
 			Y: 34
 			Width: PARENT_WIDTH
