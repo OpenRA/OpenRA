@@ -42,12 +42,16 @@ faction-random =
 faction-gdi =
     .name = GDI
     .description = 全球防御倡议
-     GDI是联合国的一个国际军事分支，负责维护世界和平。指挥世界上最具实力国家的联合力量，拥有无与伦比的高科技武器库。
+     GDI是联合国的一个国际军事分支，负责维护
+     世界和平。指挥世界上最具实力国家的联合
+     力量，拥有无与伦比的高科技武器库。
 
 faction-nod =
     .name = Nod
     .description = Nod兄弟会
-     兄弟会是一个以他们的领袖Kane和外星物质钛菌为中心的宗教教派。他们使用隐身技术和游击战术来击败那些反对他们的人。
+     兄弟会是一个以他们的领袖Kane和外星物质钛菌
+     为中心的宗教教派。他们使用隐身技术和游击
+     战术来击败那些反对他们的人。
 
 map-generator-classic = 地图生成器
 map-generator-clear = 清除地形
@@ -875,8 +879,6 @@ label-cnc-map-generator-choice-resources-very-high =
     .label = 很高
 label-cnc-map-generator-choice-resources-full =
     .label = 充满
-label-cnc-map-generator-choice-resources-oreful =
-    .label = 富含
 
 label-cnc-map-generator-option-buildings = 技术结构
 label-cnc-map-generator-choice-buildings-none =

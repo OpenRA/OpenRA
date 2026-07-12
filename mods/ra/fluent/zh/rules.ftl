@@ -180,6 +180,7 @@ meta-basicbuilding-generic-name = 建筑
 meta-techbuilding-name = 民用建筑
 meta-ammobox-name = 弹药箱
 meta-civfield-name = 田野
+
 meta-civhaystackorigloo =
     .winter-name = 冰屋
     .summer-name = 稻草堆
@@ -445,6 +446,7 @@ actor-msub =
       弱项对海军单位
       特殊能力：潜入
 
+
 actor-dd =
     .name = 驱逐舰
     .description =
@@ -506,6 +508,7 @@ actor-mslo =
     .nukepower-name = 原子弹
     .nukepower-description = 在目标位置发射毁灭性原子弹。
 
+
 actor-gap =
     .name = 缺口发生器
     .description =
@@ -534,6 +537,7 @@ actor-iron =
       特殊能力：无敌
     .grantexternalconditionpower-ironcurtain-name = 无敌
     .grantexternalconditionpower-ironcurtain-description = 给一组单位提供20秒的无敌能力。
+
 
 actor-pdox =
     .name = 时空扭曲器
@@ -663,9 +667,11 @@ actor-afld =
     .airstrikepower-spyplane-description = 揭示地图区域。
     .paratrooperspower-paratroopers-name = 伞兵
     .paratrooperspower-paratroopers-description = 猞猁在所选位置投放一队步兵。
+
     .airstrikepower-parabombs-name = 伞兵炸弹
     .airstrikepower-parabombs-description = 猞猁在所选位置投放降落炸弹。
-    
+
+
 actor-afld-ukraine-description =
     生产和重新装载飞机。
       特殊能力：间谍飞机
@@ -917,15 +923,18 @@ actor-powerproxy-parabombs =
     .description =
     猞猁在所选位置投放伞兵炸弹。
 
+
 actor-powerproxy-sonarpulse =
     .name = 声纳脉冲
     .description =
     短时间内揭示附近的潜艇。
 
+
 actor-powerproxy-paratroopers =
     .name = 伞兵
     .description =
     猞猁在地图任何位置投放一队步兵。
+
 
 ## ai.yaml
 bot-rush-ai =

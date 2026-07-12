@@ -310,6 +310,8 @@ button-command-bar-queue-orders =
 
     左键单击图标然后在游戏世界中给命令。
     按住<(Shift)>在指挥单位时临时激活。
+    
+
 
 button-stance-bar-attackanything =
     .tooltip = 攻击任意姿态
