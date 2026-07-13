@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					case MapGeneratorBooleanOption bo:
 					{
 						if (!generationArgs.Options.ContainsKey(o.Id))
-							generationArgs.Options[o.Id] = bo.Default ? falseString : trueString;
+							generationArgs.Options[o.Id] = bo.Default ? trueString : falseString;
 
 						optionWidget = checkboxOptionTemplate.Clone();
 						var checkboxWidget = optionWidget.Get<CheckboxWidget>("CHECKBOX");
