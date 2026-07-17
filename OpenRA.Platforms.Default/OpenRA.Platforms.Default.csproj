@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
 		<ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
-		<PackageReference Include="OpenRA-Freetype6" Version="1.0.11" />
-		<PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
-		<PackageReference Include="OpenRA-SDL2-CS" Version="1.0.43" />
+		<PackageReference Include="OpenRA-Freetype6" Version="1.0.12 " />
+		<PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.23 " />
+		<PackageReference Include="OpenRA-SDL2-CS" Version="1.0.44" />
 	</ItemGroup>
 </Project>
