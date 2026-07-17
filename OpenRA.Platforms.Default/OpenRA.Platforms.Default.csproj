@@ -5,9 +5,4 @@
 		<PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
 		<PackageReference Include="OpenRA-SDL2-CS" Version="1.0.43" />
 	</ItemGroup>
-	<ItemGroup>
-		<Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64'">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
 </Project>
