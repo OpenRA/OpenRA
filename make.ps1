@@ -10,8 +10,10 @@ function All-Command
 		return
 	}
 
-	Write-Host "Building in" $configuration "configuration..." -ForegroundColor Cyan
-	dotnet build -c $configuration --nologo -p:TargetPlatform=win-x64
+	$arch = $env:PROCESSOR_ARCHITECTURE
+	Write-Host "Building in" $configuration "configuration for" $arch "..." -ForegroundColor Cyan
+	$rid = if ($arch -eq "ARM64") { "win-arm64" } else { "win-x64" }
+	dotnet build -c $configuration --nologo -p:TargetPlatform=$rid
 
 	if ($lastexitcode -ne 0)
 	{
@@ -117,7 +119,8 @@ function Test-Command
 function Tests-Command
 {
 	Write-Host "Running unit tests..." -ForegroundColor Cyan
-	dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
+	$rid = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "win-arm64" } else { "win-x64" }
+	dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=$rid
 	dotnet test bin\OpenRA.Test.dll --test-adapter-path:.
 }
 
@@ -126,7 +129,8 @@ function Check-Command
 	Write-Host "Compiling in Debug configuration..." -ForegroundColor Cyan
 
 	dotnet clean -c Debug --nologo --verbosity minimal
-	dotnet build -c Debug --nologo -warnaserror -p:TargetPlatform=win-x64
+	$rid = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "win-arm64" } else { "win-x64" }
+	dotnet build -c Debug --nologo -warnaserror -p:TargetPlatform=$rid
 
 	if ($lastexitcode -ne 0)
 	{
