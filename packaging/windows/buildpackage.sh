@@ -93,4 +93,5 @@ function build_platform()
 }
 
 build_platform "x64"
+build_platform "arm64"
 rm rcedit-x64.exe
