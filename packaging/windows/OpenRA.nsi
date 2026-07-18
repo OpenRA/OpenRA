@@ -26,17 +26,11 @@ ManifestDPIAware true
 Unicode True
 
 Function .onInit
-	!ifndef USE_PROGRAMFILES32
-		SetRegView 64
-	!endif
+	SetRegView 64
 	ReadRegStr $INSTDIR HKLM "Software\OpenRA${SUFFIX}" "InstallDir"
 	StrCmp $INSTDIR "" unset done
 	unset:
-	!ifndef USE_PROGRAMFILES32
-		StrCpy $INSTDIR "$PROGRAMFILES64\OpenRA${SUFFIX}"
-	!else
-		StrCpy $INSTDIR "$PROGRAMFILES32\OpenRA${SUFFIX}"
-	!endif
+	StrCpy $INSTDIR "$PROGRAMFILES64\OpenRA${SUFFIX}"
 	done:
 FunctionEnd
 
@@ -225,9 +219,7 @@ Function ${UN}Clean
 
 	RMDir /r $INSTDIR\Support
 
-	!ifndef USE_PROGRAMFILES32
-		SetRegView 64
-	!endif
+	SetRegView 64
 
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}"
 	DeleteRegKey HKLM "Software\Classes\openra-ra-${TAG}"
