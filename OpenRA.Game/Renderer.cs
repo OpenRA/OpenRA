@@ -47,9 +47,13 @@ namespace OpenRA
 		readonly IIndexBuffer quadIndexBuffer;
 		readonly Stack<Rectangle> scissorState = [];
 		readonly ITexture bufferSnapshot;
+		readonly FrameBufferBlitter frameBufferBlitter;
 
 		IFrameBuffer screenBuffer;
 		Sprite screenSprite;
+		bool captureScreenBuffer;
+		bool renderToScreenBuffer;
+		int activeFrameRenderScale = 1;
 
 		IFrameBuffer worldBuffer;
 		Sheet worldSheet;
@@ -60,7 +64,11 @@ namespace OpenRA
 		public Size WorldFrameBufferSize => worldSheet.Size;
 		public int WorldDownscaleFactor { get; private set; } = 1;
 		public int MinimumWorldDownscaleFactor { get; private set; }
+		public int FrameRenderScale { get; private set; }
 		public bool UseNearestNeighborScaling { get; private set; }
+		public bool UseSimpleWorldScaling { get; private set; }
+		public bool DirectRenderToDisplay { get; private set; }
+		public bool UseWorldNativeBlit { get; private set; }
 		public bool DrawWorldShadows { get; private set; }
 		public bool EnableWorldPostProcessing { get; private set; }
 		public bool AntialiasWorldOverlays { get; private set; }
@@ -71,7 +79,9 @@ namespace OpenRA
 		/// </summary>
 		public ITexture GetRenderBufferSnapshot()
 		{
-			var size = renderType == RenderType.World ? worldSheet.Size : Window.SurfaceSize.NextPowerOf2();
+			var size = renderType == RenderType.World
+				? worldSheet.Size
+				: renderToScreenBuffer ? screenSprite.Sheet.Size : Window.SurfaceSize;
 			bufferSnapshot.SetDataFromReadBuffer(new Rectangle(int2.Zero, size));
 			return bufferSnapshot;
 		}
@@ -82,6 +92,7 @@ namespace OpenRA
 		float depthMargin;
 
 		Size lastBufferSize = new(-1, -1);
+		bool lastBufferFlipped;
 
 		Rectangle lastWorldViewport;
 		float2 lastViewportLocation;
@@ -94,7 +105,11 @@ namespace OpenRA
 		{
 			this.platform = platform;
 			MinimumWorldDownscaleFactor = graphicSettings.WorldRenderScale.Clamp(1, 8);
+			FrameRenderScale = graphicSettings.FrameRenderScale.Clamp(1, 4);
 			UseNearestNeighborScaling = graphicSettings.WorldRenderNearestNeighbor;
+			UseSimpleWorldScaling = graphicSettings.WorldRenderSimpleScaling;
+			DirectRenderToDisplay = graphicSettings.DirectRenderToDisplay;
+			UseWorldNativeBlit = graphicSettings.WorldRenderNativeBlit;
 			DrawWorldShadows = graphicSettings.WorldRenderShadows;
 			EnableWorldPostProcessing = graphicSettings.WorldRenderPostProcessing;
 			AntialiasWorldOverlays = graphicSettings.WorldRenderOverlayAntialiasing;
@@ -121,6 +136,7 @@ namespace OpenRA
 			tempVertexBuffer = Context.CreateEmptyVertexBuffer<Vertex>(TempVertexBufferSize);
 			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
 			bufferSnapshot = Context.CreateTexture();
+			frameBufferBlitter = new FrameBufferBlitter(this);
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -143,7 +159,11 @@ namespace OpenRA
 				UseNearestNeighborScaling != settings.WorldRenderNearestNeighbor;
 
 			MinimumWorldDownscaleFactor = downscaleFactor;
+			FrameRenderScale = settings.FrameRenderScale.Clamp(1, 4);
 			UseNearestNeighborScaling = settings.WorldRenderNearestNeighbor;
+			UseSimpleWorldScaling = settings.WorldRenderSimpleScaling;
+			DirectRenderToDisplay = settings.DirectRenderToDisplay;
+			UseWorldNativeBlit = settings.WorldRenderNativeBlit;
 			DrawWorldShadows = settings.WorldRenderShadows;
 			EnableWorldPostProcessing = settings.WorldRenderPostProcessing;
 			AntialiasWorldOverlays = settings.WorldRenderOverlayAntialiasing;
@@ -192,12 +212,22 @@ namespace OpenRA
 			this.depthMargin = depthMargin;
 		}
 
-		void BeginFrame()
+		void BeginFrame(bool worldWillRender)
 		{
-			Context.Clear();
+			activeFrameRenderScale = captureScreenBuffer ? 1 : FrameRenderScale;
+			renderToScreenBuffer = !DirectRenderToDisplay || activeFrameRenderScale > 1 || captureScreenBuffer;
+			captureScreenBuffer = false;
+			if (worldWillRender && !renderToScreenBuffer)
+				Context.Synchronize();
+			else
+				Context.Clear();
 
 			var surfaceSize = Window.SurfaceSize;
-			var surfaceBufferSize = surfaceSize.NextPowerOf2();
+
+			var contentSize = new Size(
+				(surfaceSize.Width + activeFrameRenderScale - 1) / activeFrameRenderScale,
+				(surfaceSize.Height + activeFrameRenderScale - 1) / activeFrameRenderScale);
+			var surfaceBufferSize = contentSize.NextPowerOf2();
 
 			if (screenSprite == null || screenSprite.Sheet.Size != surfaceBufferSize)
 			{
@@ -207,12 +237,12 @@ namespace OpenRA
 				screenBuffer = Context.CreateFrameBuffer(surfaceBufferSize, Color.FromArgb(0xFF, 0, 0, 0));
 			}
 
-			if (screenSprite == null || surfaceSize.Width != screenSprite.Bounds.Width || -surfaceSize.Height != screenSprite.Bounds.Height)
+			if (screenSprite == null || contentSize.Width != screenSprite.Bounds.Width || -contentSize.Height != screenSprite.Bounds.Height)
 			{
 				var screenSheet = new Sheet(SheetType.BGRA, screenBuffer.Texture);
 
 				// Flip sprite in Y to match OpenGL's bottom-left origin
-				var screenBounds = Rectangle.FromLTRB(0, surfaceSize.Height, surfaceSize.Width, 0);
+				var screenBounds = Rectangle.FromLTRB(0, contentSize.Height, contentSize.Width, 0);
 				screenSprite = new Sprite(screenSheet, screenBounds, TextureChannel.RGBA);
 			}
 
@@ -221,11 +251,16 @@ namespace OpenRA
 			// We must convert the surface buffer size to a viewport size - in general this is NOT just the window size
 			// rounded to the next power of two, as the NextPowerOf2 calculation is done in the surface pixel coordinates
 			var scale = Window.EffectiveWindowScale;
-			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
-			if (lastBufferSize != bufferSize)
+			var bufferSize = renderToScreenBuffer
+				? new Size(
+					(int)(activeFrameRenderScale * surfaceBufferSize.Width / scale),
+					(int)(activeFrameRenderScale * surfaceBufferSize.Height / scale))
+				: Window.EffectiveWindowSize;
+			if (lastBufferSize != bufferSize || lastBufferFlipped == renderToScreenBuffer)
 			{
-				SpriteRenderer.SetViewportParams(bufferSize, 1, 0f, int2.Zero);
+				SpriteRenderer.SetViewportParams(bufferSize, 1, 0f, int2.Zero, !renderToScreenBuffer);
 				lastBufferSize = bufferSize;
+				lastBufferFlipped = !renderToScreenBuffer;
 			}
 		}
 
@@ -280,7 +315,7 @@ namespace OpenRA
 			if (renderType != RenderType.None)
 				throw new InvalidOperationException($"BeginWorld called with renderType = {renderType}, expected RenderType.None.");
 
-			BeginFrame();
+			BeginFrame(true);
 
 			if (worldSheet == null)
 				throw new InvalidOperationException("BeginWorld called before SetMaximumViewportSize has been set.");
@@ -310,7 +345,8 @@ namespace OpenRA
 				if (float.IsInteger(renderScale))
 					fractionalOffset = (fractionalOffset * renderScale).Round() / renderScale;
 
-				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), 0, fractionalOffset, TextureChannel.RGBA);
+				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), 0, fractionalOffset,
+					TextureChannel.RGBA, BlendMode.None);
 			}
 
 			worldBuffer.Bind();
@@ -327,22 +363,44 @@ namespace OpenRA
 
 		void DrawWorldBufferToScreen()
 		{
-			screenBuffer.Bind();
+			if (UseWorldNativeBlit && (UseNearestNeighborScaling || UseSimpleWorldScaling) && !renderToScreenBuffer)
+			{
+				// The low-quality path can snap fractional camera offsets to framebuffer
+				// pixels and let the driver perform the upscale without a fragment shader.
+				var sx = ((int)Math.Round(-worldSprite.Offset.X)).Clamp(0, worldSheet.Size.Width - 1);
+				var sy = ((int)Math.Round(-worldSprite.Offset.Y)).Clamp(0, worldSheet.Size.Height - 1);
+				var sw = ((int)worldSprite.Size.X - 1).Clamp(1, worldSheet.Size.Width - sx);
+				var sh = ((int)worldSprite.Size.Y - 1).Clamp(1, worldSheet.Size.Height - sy);
+				var source = new Rectangle(sx, sy, sw, sh);
+				var surfaceSize = Window.SurfaceSize;
+				var destination = Rectangle.FromLTRB(0, surfaceSize.Height, surfaceSize.Width, 0);
+				var filter = UseNearestNeighborScaling ? TextureScaleFilter.Nearest : TextureScaleFilter.Linear;
+				worldBuffer.BlitToDefault(source, destination, filter);
+				return;
+			}
 
-			var scale = Window.EffectiveWindowScale;
+			if (renderToScreenBuffer)
+				screenBuffer.Bind();
 
 			// We added 1 to worldSprite now we need to subtract.
-			var bufferScale = new float3(
-				(int)(screenSprite.Bounds.Width / scale) / (worldSprite.Size.X - 1),
-				(int)(-screenSprite.Bounds.Height / scale) / (worldSprite.Size.Y - 1),
-				1f);
+			var resolution = Window.EffectiveWindowSize;
+			var bufferScale = new float2(
+				resolution.Width / (worldSprite.Size.X - 1),
+				resolution.Height / (worldSprite.Size.Y - 1));
 
-			if (!UseNearestNeighborScaling)
+			if (UseNearestNeighborScaling || UseSimpleWorldScaling)
+			{
+				var location = bufferScale * worldSprite.Offset.XY;
+				var size = bufferScale * worldSprite.Size.XY;
+				frameBufferBlitter.Draw(worldSprite, location, size, lastBufferSize, !renderToScreenBuffer);
+			}
+			else
+			{
 				SpriteRenderer.EnablePixelArtScaling(true);
-			RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferScale);
-			Flush();
-			if (!UseNearestNeighborScaling)
+				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, new float3(bufferScale, 1f));
+				Flush();
 				SpriteRenderer.EnablePixelArtScaling(false);
+			}
 		}
 
 		public void BeginUI()
@@ -357,8 +415,9 @@ namespace OpenRA
 			else
 			{
 				// World rendering was skipped
-				BeginFrame();
-				screenBuffer.Bind();
+				BeginFrame(false);
+				if (renderToScreenBuffer)
+					screenBuffer.Bind();
 			}
 
 			renderType = RenderType.UI;
@@ -390,19 +449,30 @@ namespace OpenRA
 
 			Flush();
 
-			screenBuffer.Unbind();
+			if (renderToScreenBuffer)
+			{
+				screenBuffer.Unbind();
 
-			// Render the compositor buffers to the screen
-			// HACK / PERF: Fudge the coordinates to cover the actual window while keeping the buffer viewport parameters
-			// This saves us two redundant (and expensive) SetViewportParams each frame
-			RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0),
-				new float3(lastBufferSize.Width / screenSprite.Size.X, -lastBufferSize.Height / screenSprite.Size.Y, 1f));
-			Flush();
+				// Drivers can optimize framebuffer copies (especially software renderers)
+				// much more aggressively than a full-screen fragment shader.
+				var surfaceSize = Window.SurfaceSize;
+				var source = new Rectangle(0, 0, screenSprite.Bounds.Width, -screenSprite.Bounds.Height);
+				var destination = Rectangle.FromLTRB(0, surfaceSize.Height, surfaceSize.Width, 0);
+				var filter = UseNearestNeighborScaling ? TextureScaleFilter.Nearest : TextureScaleFilter.Linear;
+				screenBuffer.BlitToDefault(source, destination, filter);
+			}
 
 			Window.PumpInput(inputHandler);
 			Context.Present();
 
 			renderType = RenderType.None;
+		}
+
+		public bool CurrentFrameUsesScreenBuffer => renderToScreenBuffer;
+
+		public void CaptureScreenBufferForNextFrame()
+		{
+			captureScreenBuffer = true;
 		}
 
 		public void DrawBatch<T>(IVertexBuffer<T> vertices, IShader shader,
@@ -473,6 +543,16 @@ namespace OpenRA
 			return Context.CreateVertexBuffer(data, dynamic);
 		}
 
+		Rectangle ScaleUIScissor(Rectangle rect)
+		{
+			var scale = Window.EffectiveWindowScale / activeFrameRenderScale;
+			return Rectangle.FromLTRB(
+				(int)Math.Floor(scale * rect.Left),
+				(int)Math.Floor(scale * rect.Top),
+				(int)Math.Ceiling(scale * rect.Right),
+				(int)Math.Ceiling(scale * rect.Bottom));
+		}
+
 		public void EnableScissor(Rectangle rect)
 		{
 			// Must remain inside the current scissor rect
@@ -490,8 +570,10 @@ namespace OpenRA
 					(rect.Bottom + WorldDownscaleFactor - 1) / WorldDownscaleFactor);
 				worldBuffer.EnableScissor(r);
 			}
+			else if (renderToScreenBuffer)
+				screenBuffer.EnableScissor(ScaleUIScissor(rect));
 			else
-				Context.EnableScissor(rect.X, rect.Y, rect.Width, rect.Height);
+				Context.EnableScissor(rect.X, Resolution.Height - rect.Bottom, rect.Width, rect.Height);
 
 			scissorState.Push(rect);
 		}
@@ -523,10 +605,18 @@ namespace OpenRA
 				if (scissorState.Count > 0)
 				{
 					var rect = scissorState.Peek();
-					Context.EnableScissor(rect.X, rect.Y, rect.Width, rect.Height);
+					if (renderToScreenBuffer)
+						screenBuffer.EnableScissor(ScaleUIScissor(rect));
+					else
+						Context.EnableScissor(rect.X, Resolution.Height - rect.Bottom, rect.Width, rect.Height);
 				}
 				else
-					Context.DisableScissor();
+				{
+					if (renderToScreenBuffer)
+						screenBuffer.DisableScissor();
+					else
+						Context.DisableScissor();
+				}
 			}
 		}
 
@@ -598,8 +688,9 @@ namespace OpenRA
 		public void Dispose()
 		{
 			worldBuffer?.Dispose();
-			screenBuffer.Dispose();
+			screenBuffer?.Dispose();
 			bufferSnapshot.Dispose();
+			frameBufferBlitter.Dispose();
 			tempVertexBuffer.Dispose();
 			quadIndexBuffer.Dispose();
 			fontSheetBuilder?.Dispose();

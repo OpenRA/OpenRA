@@ -98,6 +98,7 @@ namespace OpenRA
 		void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices);
 		void DrawElements(int numIndices, int offset);
 		void Clear();
+		void Synchronize();
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
 		void ClearDepthBuffer();
@@ -169,6 +170,7 @@ namespace OpenRA
 	{
 		void Bind();
 		void Unbind();
+		void BlitToDefault(Rectangle source, Rectangle destination, TextureScaleFilter filter);
 		void EnableScissor(Rectangle rect);
 		void DisableScissor();
 		ITexture Texture { get; }

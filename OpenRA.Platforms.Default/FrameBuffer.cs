@@ -113,6 +113,26 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		public void BlitToDefault(Rectangle source, Rectangle destination, TextureScaleFilter filter)
+		{
+			VerifyThreadAffinity();
+
+			OpenGL.glBindFramebuffer(OpenGL.GL_READ_FRAMEBUFFER, framebuffer);
+			OpenGL.CheckGLError();
+			OpenGL.glBindFramebuffer(OpenGL.GL_DRAW_FRAMEBUFFER, 0);
+			OpenGL.CheckGLError();
+			OpenGL.glBlitFramebuffer(
+				source.Left, source.Top, source.Right, source.Bottom,
+				destination.Left, destination.Top, destination.Right, destination.Bottom,
+				OpenGL.GL_COLOR_BUFFER_BIT,
+				filter == TextureScaleFilter.Linear ? OpenGL.GL_LINEAR : OpenGL.GL_NEAREST);
+			OpenGL.CheckGLError();
+
+			// Restore the default framebuffer for subsequent rendering.
+			OpenGL.glBindFramebuffer(OpenGL.GL_FRAMEBUFFER, 0);
+			OpenGL.CheckGLError();
+		}
+
 		public void EnableScissor(Rectangle rect)
 		{
 			VerifyThreadAffinity();

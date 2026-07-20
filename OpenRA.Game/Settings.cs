@@ -258,8 +258,24 @@ namespace OpenRA
 			"The window and user interface remain at the configured resolution (for example 1024x768).")]
 		public int WorldRenderScale = 1;
 
+		[Desc("Divide the whole-frame render width and height by this value before scaling to the window.",
+			"Values above 1 reduce user-interface quality as well as battlefield quality.")]
+		public int FrameRenderScale = 1;
+
 		[Desc("Use fast nearest-neighbour battlefield upscaling instead of the filtered pixel-art scaler.")]
 		public bool WorldRenderNearestNeighbor = false;
+
+		[Desc("Use a minimal one-texture battlefield scaler instead of the expensive pixel-art shader.",
+			"Linear mode may look slightly softer when this is enabled.")]
+		public bool WorldRenderSimpleScaling = true;
+
+		[Desc("Render directly to the display instead of copying through a full-resolution compositor buffer.",
+			"Disable this only to work around graphics driver compatibility problems.")]
+		public bool DirectRenderToDisplay = true;
+
+		[Desc("Use the graphics driver's native framebuffer copy for nearest-neighbour battlefield upscaling.",
+			"This is faster on software renderers, but snaps scrolling to internal framebuffer pixels.")]
+		public bool WorldRenderNativeBlit = false;
 
 		[Desc("Draw decorative battlefield shadows.")]
 		public bool WorldRenderShadows = true;

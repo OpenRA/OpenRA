@@ -217,14 +217,14 @@ namespace OpenRA.Graphics
 			shader.SetVec("PaletteRows", palette.Height);
 		}
 
-		public void SetViewportParams(Size sheetSize, int downscale, float depthMargin, int2 scroll)
+		public void SetViewportParams(Size sheetSize, int downscale, float depthMargin, int2 scroll, bool flipY = false)
 		{
 			// OpenGL only renders x and y coordinates inside [-1, 1] range. We project world coordinates
 			// using p1 to values [0, 2] and then subtract by 1 using p2, where p stands for projection. It's
 			// standard practice for shaders to use a projection matrix, but as we project orthographically
 			// we are able to send less data to the GPU.
 			var width = 2f / (downscale * sheetSize.Width);
-			var height = 2f / (downscale * sheetSize.Height);
+			var height = (flipY ? -2f : 2f) / (downscale * sheetSize.Height);
 
 			// Depth is more complicated:
 			// * The OpenGL z axis is inverted (negative is closer) relative to OpenRA (positive is closer).
@@ -244,7 +244,7 @@ namespace OpenRA.Graphics
 			shader.SetVec("DepthTextureScale", 128 * depth);
 			shader.SetVec("Scroll", scroll.X, scroll.Y, depthMargin != 0f ? scroll.Y : 0);
 			shader.SetVec("p1", width, height, -depth);
-			shader.SetVec("p2", -1, -1, depthMargin != 0f ? 1 : 0);
+			shader.SetVec("p2", -1, flipY ? 1 : -1, depthMargin != 0f ? 1 : 0);
 		}
 
 		public void SetDepthPreview(bool enabled, float contrast, float offset)

@@ -351,7 +351,7 @@ options-camera =
 
 options-display-mode =
     .windowed = Windowed
-    .legacy-fullscreen = Fullscreen (Legacy)
+    .legacy-fullscreen = Fullscreen (Scaled Resolution)
     .fullscreen = Fullscreen
 
 label-video-display-index = Display { $number }

@@ -179,6 +179,8 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		public void Synchronize() { }
+
 		public void EnableDepthBuffer()
 		{
 			VerifyThreadAffinity();

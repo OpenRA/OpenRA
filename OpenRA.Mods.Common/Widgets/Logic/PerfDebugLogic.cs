@@ -51,9 +51,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return $"FPS: {fps:0}\n" +
 					$"Tick: {worldRenderer.World.WorldTick} / {Game.LocalTick} @ {PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
 					$"Render {Game.RenderFrame} @ {PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
+					$"Parts P/B/W/U/F: {PerfHistory.Items["render_prepare"].Average(Game.Settings.Debug.Samples):F1} / " +
+					$"{PerfHistory.Items["render_begin"].Average(Game.Settings.Debug.Samples):F1} / " +
+					$"{PerfHistory.Items["render_world"].Average(Game.Settings.Debug.Samples):F1} / " +
+					$"{PerfHistory.Items["render_widgets"].Average(Game.Settings.Debug.Samples):F1} / " +
+					$"{PerfHistory.Items["render_flip"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
 					$"Batches: {PerfHistory.Items["batches"].LastValue}\n" +
 					$"Viewport Size: {viewportSize.Width} x {viewportSize.Height} / {Game.Renderer.WorldDownscaleFactor}\n" +
-					$"WFB Size: {wfbSize.Width} x {wfbSize.Height}";
+					$"WFB Size: {wfbSize.Width} x {wfbSize.Height}\n" +
+					$"Whole Frame: 1/{Game.Renderer.FrameRenderScale}";
 			};
 
 			Game.AfterGameStart += OnGameStart;

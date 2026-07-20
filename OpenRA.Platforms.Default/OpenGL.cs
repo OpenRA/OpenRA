@@ -226,6 +226,8 @@ namespace OpenRA.Platforms.Default
 
 		// Framebuffers
 		public const int GL_FRAMEBUFFER = 0x8D40;
+		public const int GL_READ_FRAMEBUFFER = 0x8CA8;
+		public const int GL_DRAW_FRAMEBUFFER = 0x8CA9;
 		public const int GL_RENDERBUFFER = 0x8D41;
 		public const int GL_COLOR_ATTACHMENT0 = 0x8CE0;
 		public const int GL_DEPTH_ATTACHMENT = 0x8D00;
@@ -467,6 +469,10 @@ namespace OpenRA.Platforms.Default
 		public delegate void BindFramebuffer(int target, uint framebuffer);
 		public static BindFramebuffer glBindFramebuffer { get; private set; }
 
+		public delegate void BlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1,
+			int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter);
+		public static BlitFramebuffer glBlitFramebuffer { get; private set; }
+
 		public delegate void FramebufferTexture2D(int target, int attachment,
 			int textarget, uint texture, int level);
 		public static FramebufferTexture2D glFramebufferTexture2D { get; private set; }
@@ -636,6 +642,7 @@ namespace OpenRA.Platforms.Default
 				glBindVertexArray = Bind<BindVertexArray>("glBindVertexArray");
 				glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffers");
 				glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebuffer");
+				glBlitFramebuffer = Bind<BlitFramebuffer>("glBlitFramebuffer");
 				glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2D");
 				glDeleteFramebuffers = Bind<DeleteFramebuffers>("glDeleteFramebuffers");
 				glGenRenderbuffers = Bind<GenRenderbuffers>("glGenRenderbuffers");

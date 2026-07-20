@@ -702,6 +702,9 @@ namespace OpenRA
 		{
 			using (new PerfSample("render"))
 			{
+				if (takeScreenshot)
+					Renderer.CaptureScreenBufferForNextFrame();
+
 				++RenderFrame;
 
 				// Prepare renderables (i.e. render voxels) before calling BeginFrame
@@ -725,7 +728,8 @@ namespace OpenRA
 				// Use worldRenderer.World instead of OrderManager.World to avoid a rendering mismatch while processing orders
 				if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
 				{
-					Renderer.BeginWorld(worldRenderer.Viewport.CenterLocation, worldRenderer.Viewport.ViewportSize);
+					using (new PerfSample("render_begin"))
+						Renderer.BeginWorld(worldRenderer.Viewport.CenterLocation, worldRenderer.Viewport.ViewportSize);
 					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
 					using (new PerfSample("render_world"))
 						worldRenderer.Draw();
@@ -752,7 +756,7 @@ namespace OpenRA
 				using (new PerfSample("render_flip"))
 					Renderer.EndFrame(new DefaultInputHandler(OrderManager.World));
 
-				if (takeScreenshot)
+				if (takeScreenshot && Renderer.CurrentFrameUsesScreenBuffer)
 				{
 					takeScreenshot = false;
 					TakeScreenshotInner();
@@ -762,6 +766,8 @@ namespace OpenRA
 			var isActive = !(worldRenderer?.World.Paused ?? true);
 			PerfHistory.Items["render"].Tick(isActive);
 			PerfHistory.Items["batches"].Tick(isActive);
+			PerfHistory.Items["render_prepare"].Tick(isActive);
+			PerfHistory.Items["render_begin"].Tick(isActive);
 			PerfHistory.Items["render_world"].Tick(isActive);
 			PerfHistory.Items["render_widgets"].Tick(isActive);
 			PerfHistory.Items["render_flip"].Tick(isActive);

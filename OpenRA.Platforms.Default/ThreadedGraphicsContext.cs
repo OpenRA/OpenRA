@@ -36,6 +36,7 @@ namespace OpenRA.Platforms.Default
 
 		// Delegates that perform actions on the real device.
 		Func<object> doClear;
+		Func<object> doSynchronize;
 		Action doClearDepthBuffer;
 		Action doDisableDepthBuffer;
 		Action doEnableDepthBuffer;
@@ -82,6 +83,7 @@ namespace OpenRA.Platforms.Default
 					context.InitializeOpenGL();
 
 					doClear = () => { context.Clear(); return null; };
+					doSynchronize = () => null;
 					doClearDepthBuffer = context.ClearDepthBuffer;
 					doDisableDepthBuffer = context.DisableDepthBuffer;
 					doEnableDepthBuffer = context.EnableDepthBuffer;
@@ -416,6 +418,12 @@ namespace OpenRA.Platforms.Default
 			Send(doClear);
 		}
 
+		public void Synchronize()
+		{
+			// Wait for queued rendering without clearing pixels that the next draw replaces.
+			Send(doSynchronize);
+		}
+
 		public void ClearDepthBuffer()
 		{
 			Post(doClearDepthBuffer);
@@ -513,6 +521,7 @@ namespace OpenRA.Platforms.Default
 		readonly Func<ITexture> getTexture;
 		readonly Action bind;
 		readonly Action unbind;
+		readonly Action<object> blitToDefault;
 		readonly Action dispose;
 		readonly Action<object> enableScissor;
 		readonly Action disableScissor;
@@ -523,6 +532,11 @@ namespace OpenRA.Platforms.Default
 			getTexture = () => frameBuffer.Texture;
 			bind = frameBuffer.Bind;
 			unbind = frameBuffer.Unbind;
+			blitToDefault = args =>
+			{
+				var t = ((Rectangle, Rectangle, TextureScaleFilter))args;
+				frameBuffer.BlitToDefault(t.Item1, t.Item2, t.Item3);
+			};
 			dispose = frameBuffer.Dispose;
 
 			enableScissor = rect => frameBuffer.EnableScissor((Rectangle)rect);
@@ -539,6 +553,11 @@ namespace OpenRA.Platforms.Default
 		public void Unbind()
 		{
 			device.Post(unbind);
+		}
+
+		public void BlitToDefault(Rectangle source, Rectangle destination, TextureScaleFilter filter)
+		{
+			device.Post(blitToDefault, (source, destination, filter));
 		}
 
 		public void EnableScissor(Rectangle rect)

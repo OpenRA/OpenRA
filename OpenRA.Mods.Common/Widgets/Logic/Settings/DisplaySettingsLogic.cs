@@ -77,6 +77,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("scale", "width", "height")]
 		const string WorldRenderScale = "label-world-render-scale";
 
+		[FluentReference("scale", "width", "height")]
+		const string FrameRenderScale = "label-frame-render-scale";
+
 		[FluentReference]
 		const string QualityPreset = "options-renderer-performance.quality";
 
@@ -96,8 +99,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string CustomPreset = "options-renderer-performance.custom";
 
 		readonly struct RendererPerformanceOptions(
-			int scale,
+			int worldScale,
+			int frameScale,
 			bool nearestNeighbor,
+			bool simpleScaling,
+			bool directRender,
+			bool nativeBlit,
 			bool shadows,
 			bool postProcessing,
 			bool overlayAntialiasing,
@@ -105,8 +112,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			bool capFramerate,
 			int maxFramerate)
 		{
-			public readonly int Scale = scale;
+			public readonly int WorldScale = worldScale;
+			public readonly int FrameScale = frameScale;
 			public readonly bool NearestNeighbor = nearestNeighbor;
+			public readonly bool SimpleScaling = simpleScaling;
+			public readonly bool DirectRender = directRender;
+			public readonly bool NativeBlit = nativeBlit;
 			public readonly bool Shadows = shadows;
 			public readonly bool PostProcessing = postProcessing;
 			public readonly bool OverlayAntialiasing = overlayAntialiasing;
@@ -117,15 +128,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static readonly RendererPerformanceOptions[] RendererPerformancePresets =
 		[
-			new(1, false, true, true, true, false, false, 60),
-			new(2, false, true, true, true, false, true, 60),
-			new(3, true, true, false, true, true, true, 45),
-			new(4, true, false, false, false, true, true, 30),
-			new(6, true, false, false, false, true, true, 20),
+			new(1, 1, false, true, true, false, true, true, true, false, false, 60),
+			new(2, 1, false, true, true, false, true, true, true, false, true, 60),
+			new(3, 1, true, true, true, true, true, false, true, true, true, 45),
+			new(4, 2, true, true, true, true, false, false, false, true, true, 30),
+			new(6, 4, true, true, true, true, false, false, false, true, true, 20),
 		];
 
 		static readonly FrozenSet<Size> CommonResolutions = new Size[]
 		{
+			new(640, 480),    // Low-spec VGA (use 62.5% UI scale)
+			new(800, 600),    // Low-spec SVGA (use 75% UI scale)
+			new(960, 720),    // Low-spec 4:3
 			new(1024, 720),   // OpenRA minimum
 			new(1024, 768),   // XGA
 			new(1280, 720),   // HD 720p
@@ -232,6 +246,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			BindPerformanceCheckbox("WORLD_RENDER_NEAREST_CHECKBOX", "WorldRenderNearestNeighbor");
+			BindPerformanceCheckbox("WORLD_RENDER_SIMPLE_SCALING_CHECKBOX", "WorldRenderSimpleScaling");
+			BindPerformanceCheckbox("DIRECT_RENDER_CHECKBOX", "DirectRenderToDisplay");
+			BindPerformanceCheckbox("WORLD_RENDER_NATIVE_BLIT_CHECKBOX", "WorldRenderNativeBlit");
 			BindPerformanceCheckbox("WORLD_RENDER_SHADOWS_CHECKBOX", "WorldRenderShadows");
 			BindPerformanceCheckbox("WORLD_RENDER_POST_PROCESSING_CHECKBOX", "WorldRenderPostProcessing");
 			BindPerformanceCheckbox("WORLD_RENDER_ANTIALIASING_CHECKBOX", "WorldRenderOverlayAntialiasing");
@@ -333,6 +350,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					"scale", scale, "width", resolution.Width / scale, "height", resolution.Height / scale);
 			};
 
+			var frameRenderScaleSlider = panel.Get<SliderWidget>("FRAME_RENDER_SCALE_SLIDER");
+			frameRenderScaleSlider.Value = graphicSettings.FrameRenderScale.Clamp(1, 4);
+			frameRenderScaleSlider.GetValue = () => graphicSettings.FrameRenderScale.Clamp(1, 4);
+			frameRenderScaleSlider.OnChange += value =>
+			{
+				var scale = (int)MathF.Round(value).Clamp(1, 4);
+				if (graphicSettings.FrameRenderScale == scale)
+					return;
+
+				graphicSettings.FrameRenderScale = scale;
+				Game.Renderer.ApplyPerformanceSettings(graphicSettings);
+			};
+
+			var frameRenderScaleLabel = panel.Get<LabelWidget>("FRAME_RENDER_SCALE_LABEL");
+			frameRenderScaleLabel.GetText = () =>
+			{
+				var scale = graphicSettings.FrameRenderScale.Clamp(1, 4);
+				var resolution = Game.Renderer.NativeResolution;
+				return FluentProvider.GetMessage(FrameRenderScale,
+					"scale", scale, "width", resolution.Width / scale, "height", resolution.Height / scale);
+			};
+
 			// Update vsync immediately
 			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
 			var vsyncOnClick = vsyncCheckbox.OnClick;
@@ -347,22 +386,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			uiScaleDropdown.OnMouseDown = _ => ShowUIScaleDropdown(uiScaleDropdown, graphicSettings);
 			uiScaleDropdown.GetText = () => uiScaleLabel.Update(graphicSettings.UIScale);
 
-			var minResolution = viewportSizes.MinEffectiveResolution;
-			var resolution = Game.Renderer.Resolution;
-			var disableUIScale = world.Type != WorldType.Shellmap ||
-				resolution.Width * graphicSettings.UIScale < 1.25f * minResolution.Width ||
-				resolution.Height * graphicSettings.UIScale < 1.25f * minResolution.Height;
+			var disableUIScale = world.Type != WorldType.Shellmap;
 
 			uiScaleDropdown.IsDisabled = () => disableUIScale;
 
 			panel.Get("DISPLAY_SELECTION_CONTAINER").IsVisible = () => graphicSettings.Mode != WindowMode.Windowed;
-			panel.Get("WINDOW_RESOLUTION_CONTAINER").IsVisible = () => graphicSettings.Mode == WindowMode.Windowed;
+			panel.Get("WINDOW_RESOLUTION_CONTAINER").IsVisible = () => graphicSettings.Mode != WindowMode.PseudoFullscreen;
+			var configuredResolution = graphicSettings.Mode == WindowMode.Fullscreen
+				? (graphicSettings.FullscreenSize != int2.Zero
+					? graphicSettings.FullscreenSize
+					: Game.Renderer.NativeResolution.ToInt2())
+				: graphicSettings.WindowedSize;
 			var windowWidth = panel.Get<TextFieldWidget>("WINDOW_WIDTH");
-			var origWidthText = windowWidth.Text = graphicSettings.WindowedSize.X.ToString(NumberFormatInfo.CurrentInfo);
+			var origWidthText = windowWidth.Text = configuredResolution.X.ToString(NumberFormatInfo.CurrentInfo);
 
 			var windowHeight = panel.Get<TextFieldWidget>("WINDOW_HEIGHT");
-			var origHeightText = windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
-			windowHeight.Text = graphicSettings.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
+			var origHeightText = windowHeight.Text = configuredResolution.Y.ToString(NumberFormatInfo.CurrentInfo);
 
 			var resolutionPresetDropdown = panel.GetOrNull<DropDownButtonWidget>("RESOLUTION_PRESET_DROPDOWN");
 			if (resolutionPresetDropdown != null)
@@ -384,7 +423,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			restartDesc.IsVisible = () => graphicSettings.Mode != originalGraphicSettings.Mode ||
 				graphicSettings.VideoDisplay != originalGraphicSettings.VideoDisplay ||
 				graphicSettings.GLProfile != originalGraphicSettings.GLProfile ||
-				(graphicSettings.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
+				(graphicSettings.Mode != WindowMode.PseudoFullscreen &&
+					(origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
 
 			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
@@ -400,7 +440,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				int.TryParse(windowWidth.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var x);
 				int.TryParse(windowHeight.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var y);
-				graphicSettings.WindowedSize = new int2(x, y);
+				if (graphicSettings.Mode == WindowMode.Windowed)
+					graphicSettings.WindowedSize = new int2(x, y);
+				else if (graphicSettings.Mode == WindowMode.Fullscreen)
+					graphicSettings.FullscreenSize = new int2(x, y);
 
 				return graphicSettings.Mode != originalGraphicSettings.Mode ||
 					graphicSettings.VideoDisplay != originalGraphicSettings.VideoDisplay ||
@@ -423,11 +466,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				graphicSettings.Mode = defaultGraphicSettings.Mode;
 				graphicSettings.VideoDisplay = defaultGraphicSettings.VideoDisplay;
 				graphicSettings.WindowedSize = defaultGraphicSettings.WindowedSize;
+				graphicSettings.FullscreenSize = defaultGraphicSettings.FullscreenSize;
 				graphicSettings.CursorDouble = defaultGraphicSettings.CursorDouble;
 				graphicSettings.ViewportDistance = defaultGraphicSettings.ViewportDistance;
 				graphicSettings.RendererPerformancePreset = defaultGraphicSettings.RendererPerformancePreset;
 				graphicSettings.WorldRenderScale = defaultGraphicSettings.WorldRenderScale;
+				graphicSettings.FrameRenderScale = defaultGraphicSettings.FrameRenderScale;
 				graphicSettings.WorldRenderNearestNeighbor = defaultGraphicSettings.WorldRenderNearestNeighbor;
+				graphicSettings.WorldRenderSimpleScaling = defaultGraphicSettings.WorldRenderSimpleScaling;
+				graphicSettings.DirectRenderToDisplay = defaultGraphicSettings.DirectRenderToDisplay;
+				graphicSettings.WorldRenderNativeBlit = defaultGraphicSettings.WorldRenderNativeBlit;
 				graphicSettings.WorldRenderShadows = defaultGraphicSettings.WorldRenderShadows;
 				graphicSettings.WorldRenderPostProcessing = defaultGraphicSettings.WorldRenderPostProcessing;
 				graphicSettings.WorldRenderOverlayAntialiasing = defaultGraphicSettings.WorldRenderOverlayAntialiasing;
@@ -452,8 +500,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = RendererPerformancePresets[preset.Clamp(0, RendererPerformancePresets.Length - 1)];
 			settings.CapFramerateToGameFps = false;
-			settings.WorldRenderScale = options.Scale;
+			settings.WorldRenderScale = options.WorldScale;
+			settings.FrameRenderScale = options.FrameScale;
 			settings.WorldRenderNearestNeighbor = options.NearestNeighbor;
+			settings.WorldRenderSimpleScaling = options.SimpleScaling;
+			settings.DirectRenderToDisplay = options.DirectRender;
+			settings.WorldRenderNativeBlit = options.NativeBlit;
 			settings.WorldRenderShadows = options.Shadows;
 			settings.WorldRenderPostProcessing = options.PostProcessing;
 			settings.WorldRenderOverlayAntialiasing = options.OverlayAntialiasing;
@@ -467,8 +519,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			for (var preset = 0; preset < RendererPerformancePresets.Length; preset++)
 			{
 				var expected = RendererPerformancePresets[preset];
-				if (settings.WorldRenderScale == expected.Scale &&
+				if (settings.WorldRenderScale == expected.WorldScale &&
+					settings.FrameRenderScale == expected.FrameScale &&
 					settings.WorldRenderNearestNeighbor == expected.NearestNeighbor &&
+					settings.WorldRenderSimpleScaling == expected.SimpleScaling &&
+					settings.DirectRenderToDisplay == expected.DirectRender &&
+					settings.WorldRenderNativeBlit == expected.NativeBlit &&
 					settings.WorldRenderShadows == expected.Shadows &&
 					settings.WorldRenderPostProcessing == expected.PostProcessing &&
 					settings.WorldRenderOverlayAntialiasing == expected.OverlayAntialiasing &&
@@ -736,7 +792,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var maxScales = new float2(Game.Renderer.NativeResolution) / new float2(viewportSizes.MinEffectiveResolution);
 			var maxScale = Math.Min(maxScales.X, maxScales.Y);
 
-			var validScales = new[] { 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);
+			var validScales = new[] { .5f, .625f, .75f, .875f, 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validScales, SetupItem);
 		}
 	}
