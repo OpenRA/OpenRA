@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 					BorderWidth);
 			}
 
-			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
+			foreach (var a in w.ActorsWithTraitAsIterator<RenderJammerCircle>())
 				if (a.Actor.Owner.IsAlliedWith(w.RenderPlayer))
 					foreach (var r in a.Trait.RenderAnnotations(a.Actor, wr))
 						yield return r;

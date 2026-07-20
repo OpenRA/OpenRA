@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits
 					w.Add(new FlashTarget(self, Color.White));
 
 				var pc = captor.Info.TraitInfoOrDefault<ProximityCaptorInfo>();
-				foreach (var t in self.TraitsImplementing<INotifyCapture>())
+				foreach (var t in self.TraitsImplementingAsIterator<INotifyCapture>())
 					t.OnCapture(self, captor, previousOwner, captor.Owner, pc.Types);
 			});
 		}

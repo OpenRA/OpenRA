@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -42,6 +43,15 @@ namespace OpenRA.Graphics
 
 			var z = ZOffset?.Invoke(center + offset) ?? 0;
 			return Animation.Render(center, offset, z, pal);
+		}
+
+		public void AddRenderables(List<IRenderable> renderables, Actor self, PaletteReference pal)
+		{
+			var center = self.CenterPosition;
+			var offset = OffsetFunc?.Invoke() ?? WVec.Zero;
+
+			var z = ZOffset?.Invoke(center + offset) ?? 0;
+			Animation.AddRenderables(renderables, center, offset, z, pal);
 		}
 
 		public Rectangle ScreenBounds(Actor self, WorldRenderer wr)

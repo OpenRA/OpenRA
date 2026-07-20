@@ -59,6 +59,12 @@ namespace OpenRA
 
 		public Size WorldFrameBufferSize => worldSheet.Size;
 		public int WorldDownscaleFactor { get; private set; } = 1;
+		public int MinimumWorldDownscaleFactor { get; private set; }
+		public bool UseNearestNeighborScaling { get; private set; }
+		public bool DrawWorldShadows { get; private set; }
+		public bool EnableWorldPostProcessing { get; private set; }
+		public bool AntialiasWorldOverlays { get; private set; }
+		public bool PrioritizeGameTick { get; private set; }
 
 		/// <summary>
 		/// Copies and returns the currently rendered state as a temporary texture.
@@ -87,6 +93,12 @@ namespace OpenRA
 		public Renderer(IPlatform platform, GraphicSettings graphicSettings, int vertexBatchSize)
 		{
 			this.platform = platform;
+			MinimumWorldDownscaleFactor = graphicSettings.WorldRenderScale.Clamp(1, 8);
+			UseNearestNeighborScaling = graphicSettings.WorldRenderNearestNeighbor;
+			DrawWorldShadows = graphicSettings.WorldRenderShadows;
+			EnableWorldPostProcessing = graphicSettings.WorldRenderPostProcessing;
+			AntialiasWorldOverlays = graphicSettings.WorldRenderOverlayAntialiasing;
+			PrioritizeGameTick = graphicSettings.PrioritizeGameTick;
 			var resolution = GetResolution(graphicSettings);
 
 			TempVertexBufferSize = vertexBatchSize - vertexBatchSize % 4;
@@ -122,6 +134,27 @@ namespace OpenRA
 		public void SetUIScale(float scale)
 		{
 			Window.SetScaleModifier(scale);
+		}
+
+		public void ApplyPerformanceSettings(GraphicSettings settings)
+		{
+			var downscaleFactor = settings.WorldRenderScale.Clamp(1, 8);
+			var recreateWorldBuffer = MinimumWorldDownscaleFactor != downscaleFactor ||
+				UseNearestNeighborScaling != settings.WorldRenderNearestNeighbor;
+
+			MinimumWorldDownscaleFactor = downscaleFactor;
+			UseNearestNeighborScaling = settings.WorldRenderNearestNeighbor;
+			DrawWorldShadows = settings.WorldRenderShadows;
+			EnableWorldPostProcessing = settings.WorldRenderPostProcessing;
+			AntialiasWorldOverlays = settings.WorldRenderOverlayAntialiasing;
+			PrioritizeGameTick = settings.PrioritizeGameTick;
+
+			if (recreateWorldBuffer && lastMaximumViewportSize.Width > 0 && lastMaximumViewportSize.Height > 0)
+			{
+				worldSprite = null;
+				lastWorldViewport = Rectangle.Empty;
+				SetMaximumViewportSize(lastMaximumViewportSize);
+			}
 		}
 
 		public void InitializeFonts(ModData modData)
@@ -204,14 +237,23 @@ namespace OpenRA
 			// reaching the framebuffer size limits (typically 16k). We therefore clamp the maximum framebuffer size to
 			// twice the window surface size, which strikes a reasonable balance between rendering quality and performance.
 			// Mods that use the depth buffer must instead limit their artwork resolution or maximum zoom-out levels.
+			var scaledSize = new Size(
+				size.Width / MinimumWorldDownscaleFactor + 1,
+				size.Height / MinimumWorldDownscaleFactor + 1);
+
 			Size worldBufferSize;
 			if (depthMargin == 0)
 			{
 				var surfaceSize = Window.SurfaceSize;
-				worldBufferSize = new Size(Math.Min(size.Width, 2 * surfaceSize.Width), Math.Min(size.Height, 2 * surfaceSize.Height)).NextPowerOf2();
+				var maximumSize = new Size(
+					2 * surfaceSize.Width / MinimumWorldDownscaleFactor + 1,
+					2 * surfaceSize.Height / MinimumWorldDownscaleFactor + 1);
+				worldBufferSize = new Size(
+					Math.Min(scaledSize.Width, maximumSize.Width),
+					Math.Min(scaledSize.Height, maximumSize.Height)).NextPowerOf2();
 			}
 			else
-				worldBufferSize = size.NextPowerOf2();
+				worldBufferSize = scaledSize.NextPowerOf2();
 
 			if (worldSprite == null || worldSheet.Size != worldBufferSize)
 			{
@@ -220,8 +262,9 @@ namespace OpenRA
 				// If enableWorldFrameBufferDownscale and the world is more than twice the size of the final output size do we allow it to be downsampled!
 				worldBuffer = Context.CreateFrameBuffer(worldBufferSize);
 
-				// Pixel art scaling mode is a customized bilinear sampling
-				worldBuffer.Texture.ScaleFilter = TextureScaleFilter.Linear;
+				// Nearest-neighbour mode uses the cheapest possible upscale. Filtered
+				// rendering uses a customized bilinear pixel-art filter in BeginUI.
+				worldBuffer.Texture.ScaleFilter = UseNearestNeighborScaling ? TextureScaleFilter.Nearest : TextureScaleFilter.Linear;
 				worldSheet = new Sheet(SheetType.BGRA, worldBuffer.Texture);
 
 				// Invalidate cached state to force a shader update
@@ -253,7 +296,7 @@ namespace OpenRA
 				var vh = viewportSize.Height;
 				var bw = worldSheet.Size.Width;
 				var bh = worldSheet.Size.Height;
-				WorldDownscaleFactor = 1;
+				WorldDownscaleFactor = MinimumWorldDownscaleFactor;
 				while (vw / WorldDownscaleFactor > bw || vh / WorldDownscaleFactor > bh)
 					WorldDownscaleFactor++;
 
@@ -282,6 +325,26 @@ namespace OpenRA
 			renderType = RenderType.World;
 		}
 
+		void DrawWorldBufferToScreen()
+		{
+			screenBuffer.Bind();
+
+			var scale = Window.EffectiveWindowScale;
+
+			// We added 1 to worldSprite now we need to subtract.
+			var bufferScale = new float3(
+				(int)(screenSprite.Bounds.Width / scale) / (worldSprite.Size.X - 1),
+				(int)(-screenSprite.Bounds.Height / scale) / (worldSprite.Size.Y - 1),
+				1f);
+
+			if (!UseNearestNeighborScaling)
+				SpriteRenderer.EnablePixelArtScaling(true);
+			RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferScale);
+			Flush();
+			if (!UseNearestNeighborScaling)
+				SpriteRenderer.EnablePixelArtScaling(false);
+		}
+
 		public void BeginUI()
 		{
 			if (renderType == RenderType.World)
@@ -289,22 +352,7 @@ namespace OpenRA
 				// Complete world rendering
 				Flush();
 				worldBuffer.Unbind();
-
-				// Render the world buffer into the UI buffer
-				screenBuffer.Bind();
-
-				var scale = Window.EffectiveWindowScale;
-
-				// We added 1 to worldSprite now we need to subtract.
-				var bufferScale = new float3(
-					(int)(screenSprite.Bounds.Width / scale) / (worldSprite.Size.X - 1),
-					(int)(-screenSprite.Bounds.Height / scale) / (worldSprite.Size.Y - 1),
-					1f);
-
-				SpriteRenderer.EnablePixelArtScaling(true);
-				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferScale);
-				Flush();
-				SpriteRenderer.EnablePixelArtScaling(false);
+				DrawWorldBufferToScreen();
 			}
 			else
 			{

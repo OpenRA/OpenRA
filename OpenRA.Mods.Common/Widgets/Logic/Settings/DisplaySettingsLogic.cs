@@ -71,6 +71,59 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference("fps")]
 		const string FrameLimiter = "checkbox-frame-limiter";
 
+		[FluentReference("preset")]
+		const string RendererPerformancePreset = "label-renderer-performance-preset";
+
+		[FluentReference("scale", "width", "height")]
+		const string WorldRenderScale = "label-world-render-scale";
+
+		[FluentReference]
+		const string QualityPreset = "options-renderer-performance.quality";
+
+		[FluentReference]
+		const string BalancedPreset = "options-renderer-performance.balanced";
+
+		[FluentReference]
+		const string FastPreset = "options-renderer-performance.fast";
+
+		[FluentReference]
+		const string VeryFastPreset = "options-renderer-performance.very-fast";
+
+		[FluentReference]
+		const string MinimumPreset = "options-renderer-performance.minimum";
+
+		[FluentReference]
+		const string CustomPreset = "options-renderer-performance.custom";
+
+		readonly struct RendererPerformanceOptions(
+			int scale,
+			bool nearestNeighbor,
+			bool shadows,
+			bool postProcessing,
+			bool overlayAntialiasing,
+			bool prioritizeGameTick,
+			bool capFramerate,
+			int maxFramerate)
+		{
+			public readonly int Scale = scale;
+			public readonly bool NearestNeighbor = nearestNeighbor;
+			public readonly bool Shadows = shadows;
+			public readonly bool PostProcessing = postProcessing;
+			public readonly bool OverlayAntialiasing = overlayAntialiasing;
+			public readonly bool PrioritizeGameTick = prioritizeGameTick;
+			public readonly bool CapFramerate = capFramerate;
+			public readonly int MaxFramerate = maxFramerate;
+		}
+
+		static readonly RendererPerformanceOptions[] RendererPerformancePresets =
+		[
+			new(1, false, true, true, true, false, false, 60),
+			new(2, false, true, true, true, false, true, 60),
+			new(3, true, true, false, true, true, true, 45),
+			new(4, true, false, false, false, true, true, 30),
+			new(6, true, false, false, false, true, true, 20),
+		];
+
 		static readonly FrozenSet<Size> CommonResolutions = new Size[]
 		{
 			new(1024, 720),   // OpenRA minimum
@@ -97,6 +150,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly string automatic;
 		readonly string manual;
 		readonly string disabled;
+		readonly string[] rendererPerformancePresetNames;
+		readonly string customRendererPerformancePresetName;
 
 		readonly string legacyFullscreen;
 		readonly string fullscreen;
@@ -115,6 +170,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			legacyFullscreen = FluentProvider.GetMessage(LegacyFullscreen);
 			fullscreen = FluentProvider.GetMessage(Fullscreen);
 			selectPreset = FluentProvider.GetMessage(SelectPreset);
+			rendererPerformancePresetNames =
+			[
+				FluentProvider.GetMessage(QualityPreset),
+				FluentProvider.GetMessage(BalancedPreset),
+				FluentProvider.GetMessage(FastPreset),
+				FluentProvider.GetMessage(VeryFastPreset),
+				FluentProvider.GetMessage(MinimumPreset),
+			];
+			customRendererPerformancePresetName = FluentProvider.GetMessage(CustomPreset);
 
 			settingsLogic.RegisterSettingsPanel(panelID, label, InitPanel, ResetPanel);
 
@@ -154,6 +218,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "FRAME_LIMIT_GAMESPEED_CHECKBOX", graphicSettings, "CapFramerateToGameFps");
 			SettingsUtils.BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", graphicSettings, "MaxFramerate");
 			SettingsUtils.BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gameSettings, "UsePlayerStanceColors");
+
+			void BindPerformanceCheckbox(string id, string field)
+			{
+				SettingsUtils.BindCheckboxPref(panel, id, graphicSettings, field);
+				var checkbox = panel.Get<CheckboxWidget>(id);
+				var onClick = checkbox.OnClick;
+				checkbox.OnClick = () =>
+				{
+					onClick();
+					Game.Renderer.ApplyPerformanceSettings(graphicSettings);
+				};
+			}
+
+			BindPerformanceCheckbox("WORLD_RENDER_NEAREST_CHECKBOX", "WorldRenderNearestNeighbor");
+			BindPerformanceCheckbox("WORLD_RENDER_SHADOWS_CHECKBOX", "WorldRenderShadows");
+			BindPerformanceCheckbox("WORLD_RENDER_POST_PROCESSING_CHECKBOX", "WorldRenderPostProcessing");
+			BindPerformanceCheckbox("WORLD_RENDER_ANTIALIASING_CHECKBOX", "WorldRenderOverlayAntialiasing");
+			BindPerformanceCheckbox("PRIORITIZE_GAME_TICK_CHECKBOX", "PrioritizeGameTick");
 
 			var cb = panel.Get<CheckboxWidget>("PLAYER_STANCE_COLORS_CHECKBOX");
 			cb.IsChecked = () => gameSettings.UsePlayerStanceColors;
@@ -207,6 +289,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(graphicSettings.ViewportDistance);
 
 			BindTextNotificationPoolFilterSettings(panel, gameSettings);
+
+			var frameLimitSlider = panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER");
+			var rendererPerformanceSlider = panel.Get<SliderWidget>("RENDERER_PERFORMANCE_SLIDER");
+			rendererPerformanceSlider.Value = graphicSettings.RendererPerformancePreset.Clamp(0, rendererPerformancePresetNames.Length - 1);
+			rendererPerformanceSlider.GetValue = () => graphicSettings.RendererPerformancePreset.Clamp(0, rendererPerformancePresetNames.Length - 1);
+			rendererPerformanceSlider.OnChange += value =>
+			{
+				var preset = (int)MathF.Round(value).Clamp(0, rendererPerformancePresetNames.Length - 1);
+				graphicSettings.RendererPerformancePreset = preset;
+				ApplyRendererPerformancePreset(graphicSettings, preset);
+				frameLimitSlider.Value = graphicSettings.MaxFramerate;
+				Game.Renderer.ApplyPerformanceSettings(graphicSettings);
+			};
+
+			var rendererPerformanceLabel = panel.Get<LabelWidget>("RENDERER_PERFORMANCE_LABEL");
+			rendererPerformanceLabel.GetText = () =>
+			{
+				var preset = MatchingRendererPerformancePreset(graphicSettings);
+				var name = preset >= 0 ? rendererPerformancePresetNames[preset] : customRendererPerformancePresetName;
+				return FluentProvider.GetMessage(RendererPerformancePreset, "preset", name);
+			};
+
+			var worldRenderScaleSlider = panel.Get<SliderWidget>("WORLD_RENDER_SCALE_SLIDER");
+			worldRenderScaleSlider.Value = graphicSettings.WorldRenderScale.Clamp(1, 6);
+			worldRenderScaleSlider.GetValue = () => graphicSettings.WorldRenderScale.Clamp(1, 6);
+			worldRenderScaleSlider.OnChange += value =>
+			{
+				var scale = (int)MathF.Round(value).Clamp(1, 6);
+				if (graphicSettings.WorldRenderScale == scale)
+					return;
+
+				graphicSettings.WorldRenderScale = scale;
+				Game.Renderer.ApplyPerformanceSettings(graphicSettings);
+			};
+
+			var worldRenderScaleLabel = panel.Get<LabelWidget>("WORLD_RENDER_SCALE_LABEL");
+			worldRenderScaleLabel.GetText = () =>
+			{
+				var scale = graphicSettings.WorldRenderScale.Clamp(1, 6);
+				var resolution = Game.Renderer.Resolution;
+				return FluentProvider.GetMessage(WorldRenderScale,
+					"scale", scale, "width", resolution.Width / scale, "height", resolution.Height / scale);
+			};
 
 			// Update vsync immediately
 			var vsyncCheckbox = panel.Get<CheckboxWidget>("VSYNC_CHECKBOX");
@@ -267,7 +392,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(graphicSettings.MaxFramerate);
 			frameLimitCheckbox.IsDisabled = () => graphicSettings.CapFramerateToGameFps;
 
-			panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").IsDisabled = () => !frameLimitCheckbox.IsChecked() || frameLimitGamespeedCheckbox.IsChecked();
+			frameLimitSlider.IsDisabled = () => !frameLimitCheckbox.IsChecked() || frameLimitGamespeedCheckbox.IsChecked();
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
@@ -300,6 +425,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				graphicSettings.WindowedSize = defaultGraphicSettings.WindowedSize;
 				graphicSettings.CursorDouble = defaultGraphicSettings.CursorDouble;
 				graphicSettings.ViewportDistance = defaultGraphicSettings.ViewportDistance;
+				graphicSettings.RendererPerformancePreset = defaultGraphicSettings.RendererPerformancePreset;
+				graphicSettings.WorldRenderScale = defaultGraphicSettings.WorldRenderScale;
+				graphicSettings.WorldRenderNearestNeighbor = defaultGraphicSettings.WorldRenderNearestNeighbor;
+				graphicSettings.WorldRenderShadows = defaultGraphicSettings.WorldRenderShadows;
+				graphicSettings.WorldRenderPostProcessing = defaultGraphicSettings.WorldRenderPostProcessing;
+				graphicSettings.WorldRenderOverlayAntialiasing = defaultGraphicSettings.WorldRenderOverlayAntialiasing;
+				graphicSettings.PrioritizeGameTick = defaultGraphicSettings.PrioritizeGameTick;
+				panel.Get<SliderWidget>("FRAME_LIMIT_SLIDER").Value = graphicSettings.MaxFramerate;
+				Game.Renderer.ApplyPerformanceSettings(graphicSettings);
 
 				if (graphicSettings.UIScale != defaultGraphicSettings.UIScale)
 				{
@@ -312,6 +446,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				gameSettings.TextNotificationPoolFilters = defaultGameSettings.TextNotificationPoolFilters;
 			};
+		}
+
+		static void ApplyRendererPerformancePreset(GraphicSettings settings, int preset)
+		{
+			var options = RendererPerformancePresets[preset.Clamp(0, RendererPerformancePresets.Length - 1)];
+			settings.CapFramerateToGameFps = false;
+			settings.WorldRenderScale = options.Scale;
+			settings.WorldRenderNearestNeighbor = options.NearestNeighbor;
+			settings.WorldRenderShadows = options.Shadows;
+			settings.WorldRenderPostProcessing = options.PostProcessing;
+			settings.WorldRenderOverlayAntialiasing = options.OverlayAntialiasing;
+			settings.PrioritizeGameTick = options.PrioritizeGameTick;
+			settings.CapFramerate = options.CapFramerate;
+			settings.MaxFramerate = options.MaxFramerate;
+		}
+
+		static int MatchingRendererPerformancePreset(GraphicSettings settings)
+		{
+			for (var preset = 0; preset < RendererPerformancePresets.Length; preset++)
+			{
+				var expected = RendererPerformancePresets[preset];
+				if (settings.WorldRenderScale == expected.Scale &&
+					settings.WorldRenderNearestNeighbor == expected.NearestNeighbor &&
+					settings.WorldRenderShadows == expected.Shadows &&
+					settings.WorldRenderPostProcessing == expected.PostProcessing &&
+					settings.WorldRenderOverlayAntialiasing == expected.OverlayAntialiasing &&
+					settings.PrioritizeGameTick == expected.PrioritizeGameTick &&
+					settings.CapFramerate == expected.CapFramerate &&
+					(!settings.CapFramerate || settings.MaxFramerate == expected.MaxFramerate) &&
+					!settings.CapFramerateToGameFps)
+					return preset;
+			}
+
+			return -1;
 		}
 
 		static void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings graphicSettings, ScrollPanelWidget scrollPanel)

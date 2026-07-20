@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			foreach (var ini in notifiers)
 				ini.Infiltrating(self);
 
-			foreach (var t in targetActor.TraitsImplementing<INotifyInfiltrated>())
+			foreach (var t in targetActor.TraitsImplementingAsIterator<INotifyInfiltrated>())
 				t.Infiltrated(targetActor, self, infiltrates.Info.Types);
 
 			if (!string.IsNullOrEmpty(infiltrates.Info.Notification))

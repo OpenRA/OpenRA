@@ -858,7 +858,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Only crush actors that are on the ground level
 			foreach (var crushable in crushables)
 				if (crushable.Trait.CrushableBy(crushable.Actor, self, Info.Crushes) && crushable.Actor.IsAtGroundLevel())
-					foreach (var notifyCrushed in crushable.Actor.TraitsImplementing<INotifyCrushed>())
+					foreach (var notifyCrushed in crushable.Actor.TraitsImplementingAsIterator<INotifyCrushed>())
 						action(notifyCrushed)(crushable.Actor, self, Info.Crushes);
 		}
 

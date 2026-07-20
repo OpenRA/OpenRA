@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Activities
 				// Do the capture
 				enterActor.ChangeOwnerSync(self.Owner);
 
-				foreach (var t in enterActor.TraitsImplementing<INotifyCapture>())
+				foreach (var t in enterActor.TraitsImplementingAsIterator<INotifyCapture>())
 					t.OnCapture(enterActor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
 
 				if (self.Owner.RelationshipWith(oldOwner).HasRelationship(captures.Info.PlayerExperienceRelationships))

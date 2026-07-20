@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -37,6 +36,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithShadowInfo info;
 		readonly float3 shadowColor;
 		readonly float shadowAlpha;
+		readonly List<IRenderable> sourceRenderables = [];
+		readonly List<IRenderable> modifiedRenderables = [];
+		readonly List<Rectangle> sourceBounds = [];
+		readonly List<Rectangle> modifiedBounds = [];
 
 		public WithShadow(WithShadowInfo info)
 			: base(info)
@@ -48,30 +51,42 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || !Game.Renderer.DrawWorldShadows)
 				return r;
 
-			var renderables = r.ToList();
+			sourceRenderables.Clear();
+			sourceRenderables.AddRange(r);
+
+			modifiedRenderables.Clear();
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
-			var shadowSprites = renderables.Where(s => !s.IsDecoration && s is IModifyableRenderable)
-				.Select(ma => ((IModifyableRenderable)ma).WithTint(shadowColor, ((IModifyableRenderable)ma).TintModifiers | TintModifiers.ReplaceColor)
+			foreach (var renderable in sourceRenderables)
+				if (!renderable.IsDecoration && renderable is IModifyableRenderable modifyable)
+					modifiedRenderables.Add(modifyable.WithTint(shadowColor, modifyable.TintModifiers | TintModifiers.ReplaceColor)
 					.WithAlpha(shadowAlpha)
 					.OffsetBy(info.Offset - new WVec(0, 0, height))
-					.WithZOffset(ma.ZOffset + height + info.ZOffset)
+					.WithZOffset(renderable.ZOffset + height + info.ZOffset)
 					.AsDecoration());
 
-			return shadowSprites.Concat(renderables);
+			modifiedRenderables.AddRange(sourceRenderables);
+			return modifiedRenderables;
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
 		{
-			if (IsTraitDisabled)
+			if (IsTraitDisabled || !Game.Renderer.DrawWorldShadows)
 				return bounds;
 
-			var boundsList = bounds.ToList();
+			sourceBounds.Clear();
+			sourceBounds.AddRange(bounds);
+
+			modifiedBounds.Clear();
+			modifiedBounds.AddRange(sourceBounds);
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
 			var offset = wr.ScreenPxOffset(info.Offset - new WVec(0, 0, height));
-			return boundsList.Concat(boundsList.Select(r => new Rectangle(r.X + offset.X, r.Y + offset.Y, r.Width, r.Height)));
+			foreach (var bound in sourceBounds)
+				modifiedBounds.Add(new Rectangle(bound.X + offset.X, bound.Y + offset.Y, bound.Width, bound.Height));
+
+			return modifiedBounds;
 		}
 	}
 }

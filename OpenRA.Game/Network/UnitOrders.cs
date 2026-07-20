@@ -210,7 +210,7 @@ namespace OpenRA.Network
 				}
 
 				case "GameSaved":
-					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementing<INotifyGameSaved>())
+					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementingAsIterator<INotifyGameSaved>())
 						nsr.GameSaved(orderManager.World, order.ExtraData != 0);
 					break;
 

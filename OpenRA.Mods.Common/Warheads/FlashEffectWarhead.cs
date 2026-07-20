@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{
-			foreach (var flash in args.SourceActor.World.WorldActor.TraitsImplementing<FlashPostProcessEffect>())
+			foreach (var flash in args.SourceActor.World.WorldActor.TraitsImplementingAsIterator<FlashPostProcessEffect>())
 				if (flash.Info.Type == FlashType)
 					flash.Enable(Duration);
 		}

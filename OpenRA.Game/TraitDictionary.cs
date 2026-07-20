@@ -103,14 +103,30 @@ namespace OpenRA
 			return InnerGet<T>().GetMultiple(actor.ActorID);
 		}
 
+		public TraitIterator<T> WithInterfaceAsIterator<T>(Actor actor)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().GetMultipleAsIterator(actor.ActorID);
+		}
+
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
 			return InnerGet<T>().All();
 		}
 
+		public TraitPairIterator<T> ActorsWithTraitAsIterator<T>()
+		{
+			return InnerGet<T>().AllAsIterator();
+		}
+
 		public IEnumerable<Actor> ActorsHavingTrait<T>()
 		{
 			return InnerGet<T>().Actors();
+		}
+
+		public ActorIterator ActorsHavingTraitAsIterator<T>()
+		{
+			return InnerGet<T>().ActorsAsIterator();
 		}
 
 		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
@@ -187,6 +203,12 @@ namespace OpenRA
 				return new MultipleEnumerable(this, actor);
 			}
 
+			public TraitIterator<T> GetMultipleAsIterator(uint actor)
+			{
+				++Queries;
+				return new TraitIterator<T>(actors, traits, actor);
+			}
+
 			sealed class MultipleEnumerable : IEnumerable<T>
 			{
 				readonly TraitContainer<T> container;
@@ -225,6 +247,12 @@ namespace OpenRA
 				return new AllEnumerable(this);
 			}
 
+			public TraitPairIterator<T> AllAsIterator()
+			{
+				++Queries;
+				return new TraitPairIterator<T>(actors, traits);
+			}
+
 			public IEnumerable<Actor> Actors()
 			{
 				++Queries;
@@ -238,6 +266,12 @@ namespace OpenRA
 					yield return current;
 					last = current;
 				}
+			}
+
+			public ActorIterator ActorsAsIterator()
+			{
+				++Queries;
+				return new ActorIterator(actors);
 			}
 
 			public IEnumerable<Actor> Actors(Func<T, bool> predicate)
@@ -325,5 +359,87 @@ namespace OpenRA
 				}
 			}
 		}
+	}
+
+	/// <summary>
+	/// Allocation-free iterator for all actor/trait pairs of a given type.
+	/// The underlying trait collection must not be modified while iterating.
+	/// </summary>
+	public struct TraitPairIterator<T>
+	{
+		readonly List<Actor> actors;
+		readonly List<T> traits;
+		int index;
+
+		internal TraitPairIterator(List<Actor> actors, List<T> traits)
+		{
+			this.actors = actors;
+			this.traits = traits;
+			index = -1;
+		}
+
+		public readonly TraitPairIterator<T> GetEnumerator() { return this; }
+		public bool MoveNext() { return ++index < actors.Count; }
+		public readonly TraitPair<T> Current => new(actors[index], traits[index]);
+	}
+
+	/// <summary>
+	/// Allocation-free iterator for an actor's traits of a given type.
+	/// The underlying trait collection must not be modified while iterating.
+	/// </summary>
+	public struct TraitIterator<T>
+	{
+		readonly List<Actor> actors;
+		readonly List<T> traits;
+		readonly uint actor;
+		int index;
+
+		internal TraitIterator(List<Actor> actors, List<T> traits, uint actor)
+		{
+			this.actors = actors;
+			this.traits = traits;
+			this.actor = actor;
+			index = CollectionsMarshal.AsSpan(actors).BinarySearchMany(actor) - 1;
+		}
+
+		public readonly TraitIterator<T> GetEnumerator() { return this; }
+		public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
+		public readonly T Current => traits[index];
+	}
+
+	/// <summary>
+	/// Allocation-free iterator for the distinct actors that have a given trait type.
+	/// The underlying trait collection must not be modified while iterating.
+	/// </summary>
+	public struct ActorIterator
+	{
+		readonly List<Actor> actors;
+		int index;
+
+		internal ActorIterator(List<Actor> actors)
+		{
+			this.actors = actors;
+			index = -1;
+			Current = null;
+		}
+
+		public readonly ActorIterator GetEnumerator() { return this; }
+
+		public bool MoveNext()
+		{
+			while (++index < actors.Count)
+			{
+				var next = actors[index];
+				if (index == 0 || next != actors[index - 1])
+				{
+					Current = next;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public Actor Current { get; private set; }
 	}
 }

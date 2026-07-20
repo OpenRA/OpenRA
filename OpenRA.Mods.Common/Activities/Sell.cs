@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 			var refund = (int)(sellValue * sellableInfo.RefundPercent * hp / (100 * maxHP));
 			refund = playerResources.ChangeCash(refund);
 
-			foreach (var ns in self.TraitsImplementing<INotifySold>())
+			foreach (var ns in self.TraitsImplementingAsIterator<INotifySold>())
 				ns.Sold(self);
 
 			if (showTicks && refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))

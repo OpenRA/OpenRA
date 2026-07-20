@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 						return false;
 
 					foundActors = true;
-					foreach (var r in a.TraitsImplementing<Replaceable>())
+					foreach (var r in a.TraitsImplementingAsIterator<Replaceable>())
 					{
 						if (r.IsTraitDisabled)
 							continue;

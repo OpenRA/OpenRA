@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			RefreshGranted();
 
-			foreach (var i in launcher.World.ActorsWithTrait<GpsWatcher>())
+			foreach (var i in launcher.World.ActorsWithTraitAsIterator<GpsWatcher>())
 				i.Trait.RefreshGranted();
 		}
 
@@ -80,12 +80,22 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			var wasGranted = Granted;
 			var wasGrantedAllies = GrantedAllies;
-			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner)).ToList();
+			GrantedAllies = false;
+			var anyLaunched = false;
+			foreach (var watcher in owner.World.ActorsWithTraitAsIterator<GpsWatcher>())
+			{
+				if (!watcher.Actor.Owner.IsAlliedWith(owner))
+					continue;
+
+				GrantedAllies |= watcher.Trait.Granted;
+				anyLaunched |= watcher.Trait.Launched;
+				if (GrantedAllies && (explored || Launched || anyLaunched))
+					break;
+			}
 
 			Granted = actors.Count > 0 && Launched;
-			GrantedAllies = allyWatchers.Any(w => w.Trait.Granted);
 
-			if (!explored && (Launched || allyWatchers.Any(w => w.Trait.Launched)))
+			if (!explored && (Launched || anyLaunched))
 			{
 				explored = true;
 				owner.Shroud.ExploreAll();

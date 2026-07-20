@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (fa.HasRenderables)
 			{
 				fa.RefreshState();
-				fa.NeedRenderables = true;
+				fa.InvalidateRenderables();
 			}
 		};
 		static readonly FrozenActorAction Remove = (fufubg, fal, gps, fa) =>

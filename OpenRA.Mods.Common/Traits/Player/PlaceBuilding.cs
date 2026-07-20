@@ -132,10 +132,10 @@ namespace OpenRA.Mods.Common.Traits
 						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, placed.CenterPosition);
 
 					if (producer.Actor != null)
-						foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+						foreach (var nbp in producer.Actor.TraitsImplementingAsIterator<INotifyBuildingPlaced>())
 							nbp.BuildingPlaced(producer.Actor, placed);
 
-					foreach (var nbp in self.TraitsImplementing<INotifyBuildingPlaced>())
+					foreach (var nbp in self.TraitsImplementingAsIterator<INotifyBuildingPlaced>())
 						nbp.BuildingPlaced(self, placed);
 
 					// Build the connection segments
@@ -169,10 +169,10 @@ namespace OpenRA.Mods.Common.Traits
 						]);
 
 						if (producer.Actor != null)
-							foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+							foreach (var nbp in producer.Actor.TraitsImplementingAsIterator<INotifyBuildingPlaced>())
 								nbp.BuildingPlaced(producer.Actor, segment);
 
-						foreach (var nbp in self.TraitsImplementing<INotifyBuildingPlaced>())
+						foreach (var nbp in self.TraitsImplementingAsIterator<INotifyBuildingPlaced>())
 							nbp.BuildingPlaced(self, segment);
 					}
 				}
@@ -217,10 +217,10 @@ namespace OpenRA.Mods.Common.Traits
 						Game.Sound.PlayToPlayer(SoundType.World, order.Player, s, building.CenterPosition);
 
 					if (producer.Actor != null)
-						foreach (var nbp in producer.Actor.TraitsImplementing<INotifyBuildingPlaced>())
+						foreach (var nbp in producer.Actor.TraitsImplementingAsIterator<INotifyBuildingPlaced>())
 							nbp.BuildingPlaced(producer.Actor, building);
 
-					foreach (var nbp in self.TraitsImplementing<INotifyBuildingPlaced>())
+					foreach (var nbp in self.TraitsImplementingAsIterator<INotifyBuildingPlaced>())
 						nbp.BuildingPlaced(self, building);
 				}
 

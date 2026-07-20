@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 			{
 				if (layingMine)
-					foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
+					foreach (var t in self.TraitsImplementingAsIterator<INotifyMineLaying>())
 						t.MineLayingCanceled(self, self.Location);
 
 				return true;
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 			}
 
-			foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
+			foreach (var t in self.TraitsImplementingAsIterator<INotifyMineLaying>())
 				t.MineLaying(self, self.Location);
 
 			return true;
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Activities
 					new ParentActorInit(self)
 				]);
 
-				foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
+				foreach (var t in self.TraitsImplementingAsIterator<INotifyMineLaying>())
 					t.MineLaid(self, mine);
 			});
 

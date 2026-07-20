@@ -154,11 +154,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (ticksRemaining == 0)
 			{
-				foreach (var ntl in self.TraitsImplementing<INotifyTimeLimit>())
+				foreach (var ntl in self.TraitsImplementingAsIterator<INotifyTimeLimit>())
 					ntl.NotifyTimerExpired(self);
 
 				foreach (var p in self.World.Players)
-					foreach (var ntl in p.PlayerActor.TraitsImplementing<INotifyTimeLimit>())
+					foreach (var ntl in p.PlayerActor.TraitsImplementingAsIterator<INotifyTimeLimit>())
 						ntl.NotifyTimerExpired(p.PlayerActor);
 
 				return;

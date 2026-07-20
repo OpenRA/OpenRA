@@ -232,7 +232,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void HandleDisguise(ActorInfo oldEffectiveActor, Player oldEffectiveOwner, bool oldDisguiseSetting)
 		{
-			foreach (var t in self.TraitsImplementing<INotifyEffectiveOwnerChanged>())
+			foreach (var t in self.TraitsImplementingAsIterator<INotifyEffectiveOwnerChanged>())
 				t.OnEffectiveOwnerChanged(self, oldEffectiveOwner, AsPlayer);
 
 			if (Disguised != oldDisguiseSetting)

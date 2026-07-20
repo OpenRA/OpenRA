@@ -79,7 +79,7 @@ namespace OpenRA
 				SetPauseState(true);
 				IsGameOver = true;
 
-				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
+				foreach (var t in WorldActor.TraitsImplementingAsIterator<IGameOver>())
 					t.GameOver(this);
 
 				gameInfo.FinalGameTick = WorldTick;
@@ -212,7 +212,7 @@ namespace OpenRA
 
 			// Create an isolated RNG to simplify synchronization between client and server player faction/spawn assignments
 			var playerRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
-			foreach (var cmp in WorldActor.TraitsImplementing<ICreatePlayers>())
+			foreach (var cmp in WorldActor.TraitsImplementingAsIterator<ICreatePlayers>())
 				cmp.CreatePlayers(this, playerRandom);
 
 			Game.Sound.SoundVolumeModifier = 1.0f;
@@ -263,7 +263,7 @@ namespace OpenRA
 			{
 				wasLoadingGameSave = true;
 				Game.Sound.DisableAllSounds = true;
-				foreach (var nsr in WorldActor.TraitsImplementing<INotifyGameLoading>())
+				foreach (var nsr in WorldActor.TraitsImplementingAsIterator<INotifyGameLoading>())
 					nsr.GameLoading(this);
 			}
 
@@ -271,7 +271,7 @@ namespace OpenRA
 			using (new PerfTimer("ScreenMap.WorldLoaded"))
 				ScreenMap.WorldLoaded(this, wr);
 
-			foreach (var iwl in WorldActor.TraitsImplementing<IWorldLoaded>())
+			foreach (var iwl in WorldActor.TraitsImplementingAsIterator<IWorldLoaded>())
 			{
 				// These have already been initialized
 				if (iwl == ScreenMap)
@@ -282,7 +282,7 @@ namespace OpenRA
 			}
 
 			foreach (var p in Players)
-				foreach (var iwl in p.PlayerActor.TraitsImplementing<IWorldLoaded>())
+				foreach (var iwl in p.PlayerActor.TraitsImplementingAsIterator<IWorldLoaded>())
 					using (new PerfTimer(iwl.GetType().Name + ".WorldLoaded"))
 						iwl.WorldLoaded(this, wr);
 
@@ -299,12 +299,12 @@ namespace OpenRA
 
 		public void PostLoadComplete(WorldRenderer wr)
 		{
-			foreach (var iwl in WorldActor.TraitsImplementing<IPostWorldLoaded>())
+			foreach (var iwl in WorldActor.TraitsImplementingAsIterator<IPostWorldLoaded>())
 				using (new PerfTimer(iwl.GetType().Name + ".PostWorldLoaded"))
 					iwl.PostWorldLoaded(this, wr);
 
 			foreach (var p in Players)
-				foreach (var iwl in p.PlayerActor.TraitsImplementing<IPostWorldLoaded>())
+				foreach (var iwl in p.PlayerActor.TraitsImplementingAsIterator<IPostWorldLoaded>())
 					using (new PerfTimer(iwl.GetType().Name + ".PostWorldLoaded"))
 						iwl.PostWorldLoaded(this, wr);
 		}
@@ -337,7 +337,7 @@ namespace OpenRA
 			actors.Add(a.ActorID, a);
 			ActorAdded(a);
 
-			foreach (var t in a.TraitsImplementing<INotifyAddedToWorld>())
+			foreach (var t in a.TraitsImplementingAsIterator<INotifyAddedToWorld>())
 				t.AddedToWorld(a);
 		}
 
@@ -347,7 +347,7 @@ namespace OpenRA
 			actors.Remove(a.ActorID);
 			ActorRemoved(a);
 
-			foreach (var t in a.TraitsImplementing<INotifyRemovedFromWorld>())
+			foreach (var t in a.TraitsImplementingAsIterator<INotifyRemovedFromWorld>())
 				t.RemovedFromWorld(a);
 		}
 
@@ -429,7 +429,7 @@ namespace OpenRA
 				gameSaveTraitData.Clear();
 
 				Game.Sound.DisableAllSounds = false;
-				foreach (var nsr in WorldActor.TraitsImplementing<INotifyGameLoaded>())
+				foreach (var nsr in WorldActor.TraitsImplementingAsIterator<INotifyGameLoaded>())
 					nsr.GameLoaded(this);
 
 				wasLoadingGameSave = false;
@@ -491,7 +491,7 @@ namespace OpenRA
 					ret += n++ * (int)(1 + a.ActorID) * Sync.HashActor(a);
 
 				// Hash fields marked with the ISync interface.
-				foreach (var actor in ActorsHavingTrait<ISync>())
+				foreach (var actor in ActorsHavingTraitAsIterator<ISync>())
 					foreach (var syncHash in actor.SyncHashes)
 						ret += n++ * (int)(1 + actor.ActorID) * syncHash.Hash();
 
@@ -516,6 +516,11 @@ namespace OpenRA
 			return TraitDict.ActorsWithTrait<T>();
 		}
 
+		public TraitPairIterator<T> ActorsWithTraitAsIterator<T>()
+		{
+			return TraitDict.ActorsWithTraitAsIterator<T>();
+		}
+
 		public void ApplyToActorsWithTraitTimed<T>(Action<Actor, T> action, string text)
 		{
 			TraitDict.ApplyToActorsWithTraitTimed(action, text);
@@ -529,6 +534,11 @@ namespace OpenRA
 		public IEnumerable<Actor> ActorsHavingTrait<T>()
 		{
 			return TraitDict.ActorsHavingTrait<T>();
+		}
+
+		public ActorIterator ActorsHavingTraitAsIterator<T>()
+		{
+			return TraitDict.ActorsHavingTraitAsIterator<T>();
 		}
 
 		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
@@ -568,7 +578,7 @@ namespace OpenRA
 			// at the end of the save restoration
 			// TODO: This will need to be generalized to a request / response pair for multiplayer game saves
 			var i = 0;
-			foreach (var tp in TraitDict.ActorsWithTrait<IGameSaveTraitData>())
+			foreach (var tp in TraitDict.ActorsWithTraitAsIterator<IGameSaveTraitData>())
 			{
 				var data = tp.Trait.IssueTraitData(tp.Actor);
 				if (data != null)

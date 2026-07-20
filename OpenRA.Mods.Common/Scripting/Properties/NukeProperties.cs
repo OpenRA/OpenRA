@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			np.Activate(Self, Self.World.Map.CenterOfCell(target));
 
-			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
+			foreach (var notify in Self.TraitsImplementingAsIterator<INotifySupportPower>())
 				notify.Activated(Self);
 		}
 	}

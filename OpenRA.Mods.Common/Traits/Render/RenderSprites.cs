@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly RenderSpritesInfo Info;
 		readonly string faction;
 		readonly List<AnimationWrapper> anims = [];
-		readonly IEnumerable<IRenderable> renderables;
+		readonly List<IRenderable> renderables = [];
 		bool shouldRefreshPalettes;
 		string cachedImage;
 
@@ -160,7 +160,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			Info = info;
 			faction = init.GetValue<FactionInit, string>(init.Self.Owner.Faction.InternalName);
-			renderables = RenderAnimations(anims, init.Self);
 		}
 
 		public string GetImage(Actor self)
@@ -196,19 +195,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 				}
 			}
 
-			return renderables;
-		}
-
-		static IEnumerable<IRenderable> RenderAnimations(List<AnimationWrapper> anims, Actor self)
-		{
-			foreach (var a in anims)
+			renderables.Clear();
+			foreach (var animation in anims)
 			{
-				if (!a.IsVisible)
+				if (!animation.IsVisible)
 					continue;
 
-				foreach (var r in a.Animation.Render(self, a.PaletteReference))
-					yield return r;
+				animation.Animation.AddRenderables(renderables, self, animation.PaletteReference);
 			}
+
+			return renderables;
 		}
 
 		public virtual IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Command transport to paradrop passengers near the target cell.")]
 		public void Paradrop(CPos cell)
 		{
-			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
+			foreach (var notify in Self.TraitsImplementingAsIterator<INotifySupportPower>())
 				notify.Activated(Self);
 
 			paradrop.SetLZ(cell, true);

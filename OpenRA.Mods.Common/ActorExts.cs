@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common
 		public static void NotifyBlocker(this Actor self, IEnumerable<Actor> blockers)
 		{
 			foreach (var blocker in blockers)
-				foreach (var moveBlocked in blocker.TraitsImplementing<INotifyBlockingMove>())
+				foreach (var moveBlocked in blocker.TraitsImplementingAsIterator<INotifyBlockingMove>())
 					moveBlocked.OnNotifyBlockingMove(blocker, self);
 		}
 

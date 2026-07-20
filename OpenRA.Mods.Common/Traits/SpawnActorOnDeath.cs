@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.SkipMakeAnimations)
 				td.Add(new SkipMakeAnimsInit());
 
-			foreach (var modifier in self.TraitsImplementing<IDeathActorInitModifier>())
+			foreach (var modifier in self.TraitsImplementingAsIterator<IDeathActorInitModifier>())
 				modifier.ModifyDeathActorInit(self, td);
 
 			var huskActor = self.TraitsImplementing<IHuskModifier>()

@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Graphics
 		void DrawExtraBars(WorldRenderer wr)
 		{
 			var i = 1;
-			foreach (var extraBar in actor.TraitsImplementing<ISelectionBar>())
+			foreach (var extraBar in actor.TraitsImplementingAsIterator<ISelectionBar>())
 			{
 				var value = extraBar.GetValue();
 				if (value != 0 || extraBar.DisplayWhenEmpty)

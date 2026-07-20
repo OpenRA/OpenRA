@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
 
-			foreach (var a in passenger.TraitsImplementing<Armament>())
+			foreach (var a in passenger.TraitsImplementingAsIterator<Armament>())
 			{
 				if (Info.Armaments.Contains(a.Info.Name))
 				{

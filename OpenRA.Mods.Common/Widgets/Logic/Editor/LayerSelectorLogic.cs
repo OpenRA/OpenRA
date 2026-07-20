@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void IntializeLayerPreview()
 		{
 			layerTemplateList.RemoveChildren();
-			foreach (var resourceRenderer in worldRenderer.World.WorldActor.TraitsImplementing<IResourceRenderer>())
+			foreach (var resourceRenderer in worldRenderer.World.WorldActor.TraitsImplementingAsIterator<IResourceRenderer>())
 			{
 				foreach (var resourceType in resourceRenderer.ResourceTypes)
 				{

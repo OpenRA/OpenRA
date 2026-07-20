@@ -180,10 +180,10 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					c.Trait<Passenger>().Transport = self;
 
-					foreach (var nec in c.TraitsImplementing<INotifyEnteredCargo>())
+					foreach (var nec in c.TraitsImplementingAsIterator<INotifyEnteredCargo>())
 						nec.OnEnteredCargo(c, self);
 
-					foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+					foreach (var npe in self.TraitsImplementingAsIterator<INotifyPassengerEntered>())
 						npe.OnPassengerEntered(self, c);
 				}
 
@@ -348,10 +348,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			SetPassengerFacing(passenger);
 
-			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
+			foreach (var npe in self.TraitsImplementingAsIterator<INotifyPassengerExited>())
 				npe.OnPassengerExited(self, passenger);
 
-			foreach (var nec in passenger.TraitsImplementing<INotifyExitedCargo>())
+			foreach (var nec in passenger.TraitsImplementingAsIterator<INotifyExitedCargo>())
 				nec.OnExitedCargo(passenger, self);
 
 			var p = passenger.Trait<Passenger>();
@@ -396,10 +396,10 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				a.Trait<Passenger>().Transport = self;
 
-				foreach (var nec in a.TraitsImplementing<INotifyEnteredCargo>())
+				foreach (var nec in a.TraitsImplementingAsIterator<INotifyEnteredCargo>())
 					nec.OnEnteredCargo(a, self);
 
-				foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+				foreach (var npe in self.TraitsImplementingAsIterator<INotifyPassengerEntered>())
 					npe.OnPassengerEntered(self, a);
 			}
 

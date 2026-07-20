@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly float3 tint;
 		readonly float alpha;
+		readonly List<IRenderable> modifiedRenderables = [];
 
 		public WithColoredOverlay(WithColoredOverlayInfo info)
 			: base(info)
@@ -42,18 +43,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return r;
 
-			return ModifiedRender(r);
-		}
-
-		IEnumerable<IRenderable> ModifiedRender(IEnumerable<IRenderable> r)
-		{
+			modifiedRenderables.Clear();
 			foreach (var a in r)
 			{
-				yield return a;
+				modifiedRenderables.Add(a);
 
 				if (!a.IsDecoration && a is IModifyableRenderable ma)
-					yield return ma.WithTint(tint, ma.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(alpha);
+					modifiedRenderables.Add(ma.WithTint(tint, ma.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(alpha));
 			}
+
+			return modifiedRenderables;
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)

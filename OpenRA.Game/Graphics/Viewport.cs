@@ -255,7 +255,7 @@ namespace OpenRA.Graphics
 			var maxSize = 1f / minZoom * new float2(Game.Renderer.NativeResolution);
 			Game.Renderer.SetMaximumViewportSize(new Size((int)maxSize.X, (int)maxSize.Y));
 
-			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementing<INotifyViewportZoomExtentsChanged>())
+			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementingAsIterator<INotifyViewportZoomExtentsChanged>())
 				t.ViewportZoomExtentsChanged(minZoom, MaxZoom);
 		}
 

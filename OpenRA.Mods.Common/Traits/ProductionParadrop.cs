@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			var startPos = dropPos + new CVec(owner.World.Map.Bounds.Width, 0);
 			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, dropPos.Y);
 
-			foreach (var notify in self.TraitsImplementing<INotifyDelivery>())
+			foreach (var notify in self.TraitsImplementingAsIterator<INotifyDelivery>())
 				notify.IncomingDelivery(self);
 
 			var info = (ProductionParadropInfo)Info;
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 						return;
 					}
 
-					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
+					foreach (var cargo in self.TraitsImplementingAsIterator<INotifyDelivery>())
 						cargo.Delivered(self);
 
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit?.Info, productionType, inits));
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 
 				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					foreach (var t in self.TraitsImplementingAsIterator<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();

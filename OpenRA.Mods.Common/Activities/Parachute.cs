@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			groundLevel = self.World.Map.CenterOfCell(self.Location).Z;
-			foreach (var np in self.TraitsImplementing<INotifyParachute>())
+			foreach (var np in self.TraitsImplementingAsIterator<INotifyParachute>())
 				np.OnParachute(self);
 		}
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			var centerPosition = self.CenterPosition;
 			pos.SetPosition(self, centerPosition + new WVec(0, 0, groundLevel - centerPosition.Z));
 
-			foreach (var np in self.TraitsImplementing<INotifyParachute>())
+			foreach (var np in self.TraitsImplementingAsIterator<INotifyParachute>())
 				np.OnLanded(self);
 		}
 	}

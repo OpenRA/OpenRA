@@ -21,7 +21,7 @@ namespace OpenRA
 			if (phrase == null)
 				return;
 
-			foreach (var voiced in self.TraitsImplementing<IVoiced>())
+			foreach (var voiced in self.TraitsImplementingAsIterator<IVoiced>())
 			{
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
@@ -35,7 +35,7 @@ namespace OpenRA
 			if (phrase == null)
 				return;
 
-			foreach (var voiced in self.TraitsImplementing<IVoiced>())
+			foreach (var voiced in self.TraitsImplementingAsIterator<IVoiced>())
 			{
 				if (string.IsNullOrEmpty(voiced.VoiceSet))
 					return;
@@ -74,9 +74,9 @@ namespace OpenRA
 			if (orderSubject == null || orderSubject.Disposed)
 				return false;
 
-			foreach (var voice in orderSubject.TraitsImplementing<IVoiced>())
+			foreach (var voice in orderSubject.TraitsImplementingAsIterator<IVoiced>())
 			{
-				foreach (var v in orderSubject.TraitsImplementing<IOrderVoice>())
+				foreach (var v in orderSubject.TraitsImplementingAsIterator<IOrderVoice>())
 				{
 					if (voice.PlayVoice(orderSubject, v.VoicePhraseForOrder(orderSubject, o),
 						orderSubject.Owner.Faction.InternalName))

@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			visibleActorIds = [];
 			playedNotifications = [];
 
-			foreach (var actor in self.World.ActorsWithTrait<AnnounceOnSeen>())
+			foreach (var actor in self.World.ActorsWithTraitAsIterator<AnnounceOnSeen>())
 			{
 				// We don't want notifications for allied actors or actors disguised as such
 				if (actor.Actor.AppearsFriendlyTo(self))
@@ -94,14 +94,14 @@ namespace OpenRA.Mods.Common.Traits
 				var playNotification = !playedNotifications.Contains(notificationId) && ticksBeforeNextNotification <= 0;
 
 				// Notify the actor that he has been discovered
-				foreach (var trait in actor.Actor.TraitsImplementing<INotifyDiscovered>())
+				foreach (var trait in actor.Actor.TraitsImplementingAsIterator<INotifyDiscovered>())
 					trait.OnDiscovered(actor.Actor, self.Owner, playNotification);
 
 				var discoveredPlayer = actor.Actor.Owner;
 				if (!discoveredPlayers.Contains(discoveredPlayer))
 				{
 					// Notify the actor's owner that he has been discovered
-					foreach (var trait in discoveredPlayer.PlayerActor.TraitsImplementing<INotifyDiscovered>())
+					foreach (var trait in discoveredPlayer.PlayerActor.TraitsImplementingAsIterator<INotifyDiscovered>())
 						trait.OnDiscovered(actor.Actor, self.Owner, false);
 
 					discoveredPlayers.Add(discoveredPlayer);

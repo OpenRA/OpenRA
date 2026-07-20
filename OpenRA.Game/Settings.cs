@@ -251,6 +251,28 @@ namespace OpenRA
 		public WorldViewport ViewportDistance = WorldViewport.Medium;
 		public float UIScale = 1;
 
+		[Desc("Last renderer performance preset selected in the Display settings panel.")]
+		public int RendererPerformancePreset = 0;
+
+		[Desc("Divide the internal battlefield width and height by this value before upscaling.",
+			"The window and user interface remain at the configured resolution (for example 1024x768).")]
+		public int WorldRenderScale = 1;
+
+		[Desc("Use fast nearest-neighbour battlefield upscaling instead of the filtered pixel-art scaler.")]
+		public bool WorldRenderNearestNeighbor = false;
+
+		[Desc("Draw decorative battlefield shadows.")]
+		public bool WorldRenderShadows = true;
+
+		[Desc("Draw battlefield post-processing effects.")]
+		public bool WorldRenderPostProcessing = true;
+
+		[Desc("Antialias battlefield overlays such as range circles.")]
+		public bool WorldRenderOverlayAntialiasing = true;
+
+		[Desc("Allow rendering to skip a game tick when necessary to keep the simulation responsive.")]
+		public bool PrioritizeGameTick = false;
+
 		[Desc("Add a frame rate limiter.")]
 		public bool CapFramerate = false;
 

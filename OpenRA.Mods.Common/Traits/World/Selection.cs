@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			actors.Add(a);
 			UpdateHash();
 
-			foreach (var sel in a.TraitsImplementing<INotifySelected>())
+			foreach (var sel in a.TraitsImplementingAsIterator<INotifySelected>())
 				sel.Selected(a);
 
 			Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			UpdateHash();
 
 			foreach (var a in newSelectionCollection)
-				foreach (var sel in a.TraitsImplementing<INotifySelected>())
+				foreach (var sel in a.TraitsImplementingAsIterator<INotifySelected>())
 					sel.Selected(a);
 
 			Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));

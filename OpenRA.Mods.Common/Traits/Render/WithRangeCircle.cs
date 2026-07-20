@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					BorderColor,
 					BorderWidth);
 
-				foreach (var a in w.ActorsWithTrait<WithRangeCircle>())
+				foreach (var a in w.ActorsWithTraitAsIterator<WithRangeCircle>())
 					if (a.Trait.Info.Type == Type)
 						foreach (var r in a.Trait.RenderRangeCircle(a.Actor, RangeCircleVisibility.WhenSelected))
 							yield return r;

@@ -148,9 +148,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.NotifyAppliedDamage && repairer != null && repairer.IsInWorld && !repairer.IsDead)
 			{
-				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>())
+				foreach (var nd in repairer.TraitsImplementingAsIterator<INotifyAppliedDamage>())
 					nd.AppliedDamage(repairer, self, ai);
-				foreach (var nd in repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>())
+				foreach (var nd in repairer.Owner.PlayerActor.TraitsImplementingAsIterator<INotifyAppliedDamage>())
 					nd.AppliedDamage(repairer, self, ai);
 			}
 		}
@@ -207,9 +207,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.NotifyAppliedDamage && attacker != null && attacker.IsInWorld && !attacker.IsDead)
 			{
-				foreach (var nd in attacker.TraitsImplementing<INotifyAppliedDamage>())
+				foreach (var nd in attacker.TraitsImplementingAsIterator<INotifyAppliedDamage>())
 					nd.AppliedDamage(attacker, self, ai);
-				foreach (var nd in attacker.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>())
+				foreach (var nd in attacker.Owner.PlayerActor.TraitsImplementingAsIterator<INotifyAppliedDamage>())
 					nd.AppliedDamage(attacker, self, ai);
 			}
 

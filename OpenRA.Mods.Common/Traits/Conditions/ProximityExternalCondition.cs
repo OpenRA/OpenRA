@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			tokens.Remove(a);
-			foreach (var external in a.TraitsImplementing<ExternalCondition>())
+			foreach (var external in a.TraitsImplementingAsIterator<ExternalCondition>())
 				if (external.TryRevokeCondition(a, self, token))
 					break;
 		}
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 				else if (!hasRelationship && contains)
 				{
 					tokens.Remove(actor);
-					foreach (var external in actor.TraitsImplementing<ExternalCondition>())
+					foreach (var external in actor.TraitsImplementingAsIterator<ExternalCondition>())
 						if (external.TryRevokeCondition(actor, self, token))
 							break;
 				}

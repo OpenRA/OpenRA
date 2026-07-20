@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			objectives.Insert(newID, new MissionObjective(description, type, required));
 
 			ObjectiveAdded(player, inhibitAnnouncement);
-			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
+			foreach (var inou in player.PlayerActor.TraitsImplementingAsIterator<INotifyObjectivesUpdated>())
 				inou.OnObjectiveAdded(player, newID);
 
 			return newID;
@@ -130,13 +130,13 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			objectives[objectiveID].State = ObjectiveState.Completed;
-			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
+			foreach (var inou in player.PlayerActor.TraitsImplementingAsIterator<INotifyObjectivesUpdated>())
 				inou.OnObjectiveCompleted(player, objectiveID);
 
 			if (objectives[objectiveID].Required
 				&& objectives.Where(o => o.Required).All(o => o.State == ObjectiveState.Completed))
 			{
-				foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
+				foreach (var inwc in player.PlayerActor.TraitsImplementingAsIterator<INotifyWinStateChanged>())
 					inwc.OnPlayerWon(player);
 
 				CheckIfGameIsOver(player);
@@ -149,12 +149,12 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			objectives[objectiveID].State = ObjectiveState.Failed;
-			foreach (var inou in player.PlayerActor.TraitsImplementing<INotifyObjectivesUpdated>())
+			foreach (var inou in player.PlayerActor.TraitsImplementingAsIterator<INotifyObjectivesUpdated>())
 				inou.OnObjectiveFailed(player, objectiveID);
 
 			if (objectives[objectiveID].Required)
 			{
-				foreach (var inwc in player.PlayerActor.TraitsImplementing<INotifyWinStateChanged>())
+				foreach (var inwc in player.PlayerActor.TraitsImplementingAsIterator<INotifyWinStateChanged>())
 					inwc.OnPlayerLost(player);
 
 				CheckIfGameIsOver(player);

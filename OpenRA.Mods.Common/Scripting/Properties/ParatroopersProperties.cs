@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Activate the actor's Paratroopers Power. Returns the aircraft that will drop the reinforcements.")]
 		public Actor[] TargetParatroopers(WPos target, WAngle? facing = null)
 		{
-			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
+			foreach (var notify in Self.TraitsImplementingAsIterator<INotifySupportPower>())
 				notify.Activated(Self);
 
 			var actors = pp.SendParatroopers(Self, target, facing);

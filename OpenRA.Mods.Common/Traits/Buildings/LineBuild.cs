@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var parent in parentNodes)
 				if (!parent.Disposed)
-					foreach (var n in parent.TraitsImplementing<INotifyLineBuildSegmentsChanged>())
+					foreach (var n in parent.TraitsImplementingAsIterator<INotifyLineBuildSegmentsChanged>())
 						n.SegmentAdded(parent, self);
 		}
 
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var parent in parentNodes)
 				if (!parent.Disposed)
-					foreach (var n in parent.TraitsImplementing<INotifyLineBuildSegmentsChanged>())
+					foreach (var n in parent.TraitsImplementingAsIterator<INotifyLineBuildSegmentsChanged>())
 						n.SegmentRemoved(parent, self);
 
 			if (info.SegmentsRequireNode && segments != null)

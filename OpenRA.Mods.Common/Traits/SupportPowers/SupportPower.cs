@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			TextNotificationsManager.AddTransientLine(self.Owner, Info.EndChargeTextNotification);
 
-			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
+			foreach (var notify in self.TraitsImplementingAsIterator<INotifySupportPower>())
 				notify.Charged(self);
 		}
 
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.RadarPingDuration);
 			}
 
-			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
+			foreach (var notify in self.TraitsImplementingAsIterator<INotifySupportPower>())
 				notify.Activated(self);
 		}
 

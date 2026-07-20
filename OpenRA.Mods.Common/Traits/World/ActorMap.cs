@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		sealed class Bin
 		{
 			public readonly List<Actor> Actors = [];
+			public readonly List<TraitPair<DetectCloaked>> Detectors = [];
 			public readonly List<ProximityTrigger> ProximityTriggers = [];
 		}
 
@@ -138,10 +139,10 @@ namespace OpenRA.Mods.Common.Traits
 
 				var delta = new WVec(range, range, WDist.Zero);
 				currentActors.Clear();
-				currentActors.UnionWith(
-					am.ActorsInBox(position - delta, position + delta)
-					.Where(a => (a.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared
-						&& (vRange.Length == 0 || (a.World.Map.DistanceAboveTerrain(a.CenterPosition).LengthSquared <= vRange.LengthSquared))));
+				foreach (var actor in am.ActorsInBoxAsIterator(position - delta, position + delta))
+					if ((actor.CenterPosition - position).HorizontalLengthSquared < range.LengthSquared
+						&& (vRange.Length == 0 || actor.World.Map.DistanceAboveTerrain(actor.CenterPosition).LengthSquared <= vRange.LengthSquared))
+						currentActors.Add(actor);
 
 				if (onActorEntered != null)
 					foreach (var a in currentActors)
@@ -184,9 +185,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HashSet<Actor> addActorPosition = [];
 		readonly HashSet<Actor> removeActorPosition = [];
 		readonly Predicate<Actor> actorShouldBeRemoved;
+		readonly Predicate<TraitPair<DetectCloaked>> detectorShouldBeRemoved;
 
 		public WDist LargestActorRadius { get; }
 		public WDist LargestBlockingActorRadius { get; }
+		public WDist LargestDetectionRange { get; }
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -203,10 +206,26 @@ namespace OpenRA.Mods.Common.Traits
 
 			// PERF: Cache this delegate so it does not have to be allocated repeatedly.
 			actorShouldBeRemoved = removeActorPosition.Contains;
+			detectorShouldBeRemoved = detector => removeActorPosition.Contains(detector.Actor);
 
 			LargestActorRadius = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
 			var blockers = map.Rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>()).ToList();
 			LargestBlockingActorRadius = blockers.Count != 0 ? blockers.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius) : WDist.Zero;
+			var largestDetectionRange = 0m;
+			foreach (var actorInfo in map.Rules.Actors.Values)
+			{
+				// Conditional multipliers may independently toggle at runtime. Applying
+				// every increase gives a conservative upper bound for the spatial query.
+				var maximumMultiplier = 1m;
+				foreach (var modifier in actorInfo.TraitInfos<DetectCloakedMultiplierInfo>())
+					if (modifier.Modifier > 100)
+						maximumMultiplier *= modifier.Modifier / 100m;
+
+				foreach (var detector in actorInfo.TraitInfos<DetectCloakedInfo>())
+					largestDetectionRange = Math.Max(largestDetectionRange, detector.Range.Length * maximumMultiplier);
+			}
+
+			LargestDetectionRange = new WDist((int)Math.Min(int.MaxValue, largestDetectionRange));
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -479,6 +498,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var bin in bins)
 				{
 					var removed = bin.Actors.RemoveAll(actorShouldBeRemoved);
+					bin.Detectors.RemoveAll(detectorShouldBeRemoved);
 					if (removed > 0)
 						foreach (var t in bin.ProximityTriggers)
 							t.Dirty = true;
@@ -495,6 +515,9 @@ namespace OpenRA.Mods.Common.Traits
 				var bin = BinAt(row, col);
 
 				bin.Actors.Add(a);
+				if (a.IsInWorld && !a.Disposed)
+					foreach (var detector in a.TraitsImplementingAsIterator<DetectCloaked>())
+						bin.Detectors.Add(new TraitPair<DetectCloaked>(a, detector));
 				foreach (var t in bin.ProximityTriggers)
 					t.Dirty = true;
 			}
@@ -668,6 +691,213 @@ namespace OpenRA.Mods.Common.Traits
 					}
 				}
 			}
+		}
+
+		public readonly struct ActorsInBoxIterator
+		{
+			readonly ActorMap actorMap;
+			readonly int left;
+			readonly int top;
+			readonly int right;
+			readonly int bottom;
+			readonly Rectangle region;
+
+			internal ActorsInBoxIterator(ActorMap actorMap, WPos a, WPos b)
+			{
+				this.actorMap = actorMap;
+				left = Math.Min(a.X, b.X);
+				top = Math.Min(a.Y, b.Y);
+				right = Math.Max(a.X, b.X);
+				bottom = Math.Max(a.Y, b.Y);
+				region = actorMap.BinRectangleCoveringWorldArea(left, top, right, bottom);
+			}
+
+			public ActorsInBoxEnumerator GetEnumerator()
+			{
+				return new ActorsInBoxEnumerator(actorMap, left, top, right, bottom, region);
+			}
+		}
+
+		public struct ActorsInBoxEnumerator
+		{
+			readonly ActorMap actorMap;
+			readonly int left;
+			readonly int top;
+			readonly int right;
+			readonly int bottom;
+			readonly int minCol;
+			readonly int maxCol;
+			readonly int maxRow;
+			int row;
+			int col;
+			int actorIndex;
+			List<Actor> actors;
+
+			internal ActorsInBoxEnumerator(ActorMap actorMap, int left, int top, int right, int bottom, Rectangle region)
+			{
+				this.actorMap = actorMap;
+				this.left = left;
+				this.top = top;
+				this.right = right;
+				this.bottom = bottom;
+				minCol = region.Left;
+				maxCol = region.Right;
+				maxRow = region.Bottom;
+				row = region.Top;
+				col = minCol - 1;
+				actorIndex = 0;
+				actors = null;
+				Current = null;
+			}
+
+			public Actor Current { get; private set; }
+
+			public bool MoveNext()
+			{
+				while (true)
+				{
+					if (actors != null)
+					{
+						while (actorIndex < actors.Count)
+						{
+							var actor = actors[actorIndex++];
+							if (!actor.IsInWorld)
+								continue;
+
+							var center = actor.CenterPosition;
+							if (left <= center.X && center.X <= right && top <= center.Y && center.Y <= bottom)
+							{
+								Current = actor;
+								return true;
+							}
+						}
+					}
+
+					if (col < maxCol)
+						col++;
+					else
+					{
+						col = minCol;
+						if (++row > maxRow)
+						{
+							Current = null;
+							return false;
+						}
+					}
+
+					actors = actorMap.BinAt(row, col).Actors;
+					actorIndex = 0;
+				}
+			}
+		}
+
+		public ActorsInBoxIterator ActorsInBoxAsIterator(WPos a, WPos b)
+		{
+			return new ActorsInBoxIterator(this, a, b);
+		}
+
+		public readonly struct DetectorsInBoxIterator
+		{
+			readonly ActorMap actorMap;
+			readonly int left;
+			readonly int top;
+			readonly int right;
+			readonly int bottom;
+			readonly Rectangle region;
+
+			internal DetectorsInBoxIterator(ActorMap actorMap, WPos a, WPos b)
+			{
+				this.actorMap = actorMap;
+				left = Math.Min(a.X, b.X);
+				top = Math.Min(a.Y, b.Y);
+				right = Math.Max(a.X, b.X);
+				bottom = Math.Max(a.Y, b.Y);
+				region = actorMap.BinRectangleCoveringWorldArea(left, top, right, bottom);
+			}
+
+			public DetectorsInBoxEnumerator GetEnumerator()
+			{
+				return new DetectorsInBoxEnumerator(actorMap, left, top, right, bottom, region);
+			}
+		}
+
+		public struct DetectorsInBoxEnumerator
+		{
+			readonly ActorMap actorMap;
+			readonly int left;
+			readonly int top;
+			readonly int right;
+			readonly int bottom;
+			readonly int minCol;
+			readonly int maxCol;
+			readonly int maxRow;
+			int row;
+			int col;
+			int detectorIndex;
+			List<TraitPair<DetectCloaked>> detectors;
+
+			internal DetectorsInBoxEnumerator(ActorMap actorMap, int left, int top, int right, int bottom, Rectangle region)
+			{
+				this.actorMap = actorMap;
+				this.left = left;
+				this.top = top;
+				this.right = right;
+				this.bottom = bottom;
+				minCol = region.Left;
+				maxCol = region.Right;
+				maxRow = region.Bottom;
+				row = region.Top;
+				col = minCol - 1;
+				detectorIndex = 0;
+				detectors = null;
+				Current = default;
+			}
+
+			public TraitPair<DetectCloaked> Current { get; private set; }
+
+			public bool MoveNext()
+			{
+				while (true)
+				{
+					if (detectors != null)
+					{
+						while (detectorIndex < detectors.Count)
+						{
+							var detector = detectors[detectorIndex++];
+							var actor = detector.Actor;
+							if (!actor.IsInWorld)
+								continue;
+
+							var center = actor.CenterPosition;
+							if (left <= center.X && center.X <= right && top <= center.Y && center.Y <= bottom)
+							{
+								Current = detector;
+								return true;
+							}
+						}
+					}
+
+					if (col < maxCol)
+						col++;
+					else
+					{
+						col = minCol;
+						if (++row > maxRow)
+						{
+							Current = default;
+							return false;
+						}
+					}
+
+					detectors = actorMap.BinAt(row, col).Detectors;
+					detectorIndex = 0;
+				}
+			}
+		}
+
+		public DetectorsInBoxIterator DetectorsInBox(WPos a, WPos b)
+		{
+			return new DetectorsInBoxIterator(this, a, b);
 		}
 	}
 

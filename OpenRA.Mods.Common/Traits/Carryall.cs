@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 						new DynamicFacingInit(() => facing.Facing),
 					};
 
-					foreach (var api in Carryable.TraitsImplementing<IActorPreviewInitModifier>())
+					foreach (var api in Carryable.TraitsImplementingAsIterator<IActorPreviewInitModifier>())
 						api.ModifyActorPreviewInit(Carryable, carryableInits);
 
 					var init = new ActorPreviewInitializer(Carryable.Info, wr, carryableInits);

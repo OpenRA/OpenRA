@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			if (!producer.IsDead || producer.IsInWorld)
-				foreach (var cargo in producer.TraitsImplementing<INotifyDelivery>())
+				foreach (var cargo in producer.TraitsImplementingAsIterator<INotifyDelivery>())
 					cargo.Delivered(producer);
 
 			if (cargo.Info.AfterUnloadDelay > 0)

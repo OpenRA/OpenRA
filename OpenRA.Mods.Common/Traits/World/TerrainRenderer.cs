@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			spriteLayer.Draw(wr.Viewport);
 
-			foreach (var r in wr.World.WorldActor.TraitsImplementing<IRenderOverlay>())
+			foreach (var r in wr.World.WorldActor.TraitsImplementingAsIterator<IRenderOverlay>())
 				r.Render(wr);
 		}
 

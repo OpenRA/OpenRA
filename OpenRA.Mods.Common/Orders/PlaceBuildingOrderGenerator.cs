@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Common.Orders
 		bool AcceptsPlug(CPos cell, PlugInfo plug)
 		{
 			foreach (var a in world.ActorMap.GetActorsAt(cell))
-				foreach (var p in a.TraitsImplementing<Pluggable>())
+				foreach (var p in a.TraitsImplementingAsIterator<Pluggable>())
 					if (p.AcceptsPlug(plug.Type))
 						return true;
 

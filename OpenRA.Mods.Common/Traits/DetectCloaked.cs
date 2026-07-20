@@ -45,9 +45,17 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					return WDist.Zero;
 
-				var detectCloakedModifier = rangeModifiers.Select(x => x.GetDetectCloakedModifier());
-				var range = Util.ApplyPercentageModifiers(Info.Range.Length, detectCloakedModifier);
-				return new WDist(range);
+				// PERF: Inline ApplyPercentageModifiers to avoid allocating a LINQ iterator
+				// for every detector considered by every cloaked actor.
+				var range = (decimal)Info.Range.Length;
+				foreach (var modifier in rangeModifiers)
+				{
+					var percentage = modifier.GetDetectCloakedModifier();
+					if (percentage != 100)
+						range *= percentage / 100m;
+				}
+
+				return new WDist((int)range);
 			}
 		}
 	}

@@ -469,7 +469,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		static bool PreventsAutoTarget(Actor attacker, Actor target)
 		{
-			foreach (var deat in target.TraitsImplementing<IDisableEnemyAutoTarget>())
+			foreach (var deat in target.TraitsImplementingAsIterator<IDisableEnemyAutoTarget>())
 				if (deat.DisableEnemyAutoTarget(target, attacker))
 					return true;
 

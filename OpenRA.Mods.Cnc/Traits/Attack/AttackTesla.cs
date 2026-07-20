@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (attack.charges == 0)
 					return false;
 
-				foreach (var notify in self.TraitsImplementing<INotifyTeslaCharging>())
+				foreach (var notify in self.TraitsImplementingAsIterator<INotifyTeslaCharging>())
 					notify.Charging(self, target);
 
 				if (!string.IsNullOrEmpty(attack.info.ChargeAudio))

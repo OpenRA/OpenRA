@@ -123,8 +123,7 @@ namespace OpenRA
 		readonly IEnumerable<WPos> enabledTargetableWorldPositions;
 		bool created;
 
-		IEnumerable<IRenderable> renderables;
-		WorldRenderer lastWorldRenderer;
+		readonly List<IRenderable> renderables = [];
 
 		internal Actor(World world, string name, TypeDictionary initDict)
 		{
@@ -214,11 +213,11 @@ namespace OpenRA
 			created = true;
 
 			// Make sure traits are usable for condition notifiers
-			foreach (var t in TraitsImplementing<INotifyCreated>())
+			foreach (var t in TraitsImplementingAsIterator<INotifyCreated>())
 				t.Created(this);
 
 			var allObserverNotifiers = new HashSet<VariableObserverNotifier>();
-			foreach (var provider in TraitsImplementing<IObservesVariables>())
+			foreach (var provider in TraitsImplementingAsIterator<IObservesVariables>())
 			{
 				foreach (var variableUser in provider.GetVariableObservers())
 				{
@@ -246,7 +245,7 @@ namespace OpenRA
 			// The initial activity should run before any activities queued by INotifyCreated.Created
 			// However, we need to know which traits are enabled (via conditions), so wait for after the calls and insert the activity as the first
 			ICreationActivity creationActivity = null;
-			foreach (var ica in TraitsImplementing<ICreationActivity>())
+			foreach (var ica in TraitsImplementingAsIterator<ICreationActivity>())
 			{
 				if (!ica.IsTraitEnabled())
 					continue;
@@ -290,32 +289,16 @@ namespace OpenRA
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (lastWorldRenderer != wr)
-			{
-				// PERF: Cache the enumerable to reduce allocations.
-				lastWorldRenderer = wr;
-				renderables = Renderables(wr);
-			}
+			// Render is consumed immediately by the world renderer. Reusing a list
+			// avoids allocating nested iterator state for every on-screen actor.
+			renderables.Clear();
+			foreach (var render in renders)
+				renderables.AddRange(render.Render(this, wr));
 
-			// PERF: Avoid LINQ.
-			var modifiedRenderables = renderables;
+			IEnumerable<IRenderable> modifiedRenderables = renderables;
 			foreach (var modifier in renderModifiers)
 				modifiedRenderables = modifier.ModifyRender(this, wr, modifiedRenderables);
 			return modifiedRenderables;
-		}
-
-		IEnumerable<IRenderable> Renderables(WorldRenderer wr)
-		{
-			// PERF: Avoid LINQ.
-			// Implementations of Render are permitted to return both an eagerly materialized collection or a lazily
-			// generated sequence.
-			// For large amounts of renderables, a lazily generated sequence (e.g. as returned by LINQ, or by using
-			// `yield`) will avoid the need to allocate a large collection.
-			// For small amounts of renderables, allocating a small collection can often be faster and require less
-			// memory than creating the objects needed to represent a sequence.
-			foreach (var render in renders)
-				foreach (var renderable in render.Render(this, wr))
-					yield return renderable;
 		}
 
 		public IEnumerable<Rectangle> ScreenBounds(WorldRenderer wr)
@@ -410,6 +393,11 @@ namespace OpenRA
 			return World.TraitDict.WithInterface<T>(this);
 		}
 
+		public TraitIterator<T> TraitsImplementingAsIterator<T>()
+		{
+			return World.TraitDict.WithInterfaceAsIterator<T>(this);
+		}
+
 		public void AddTrait(object trait)
 		{
 			World.TraitDict.AddTrait(this, trait);
@@ -432,7 +420,7 @@ namespace OpenRA
 				if (IsInWorld)
 					World.Remove(this);
 
-				foreach (var t in TraitsImplementing<INotifyActorDisposing>())
+				foreach (var t in TraitsImplementingAsIterator<INotifyActorDisposing>())
 					t.Disposing(this);
 
 				World.TraitDict.RemoveActor(this);
@@ -473,10 +461,10 @@ namespace OpenRA
 			Owner = newOwner;
 			Generation++;
 
-			foreach (var t in TraitsImplementing<INotifyOwnerChanged>())
+			foreach (var t in TraitsImplementingAsIterator<INotifyOwnerChanged>())
 				t.OnOwnerChanged(this, oldOwner, newOwner);
 
-			foreach (var t in World.WorldActor.TraitsImplementing<INotifyOwnerChanged>())
+			foreach (var t in World.WorldActor.TraitsImplementingAsIterator<INotifyOwnerChanged>())
 				t.OnOwnerChanged(this, oldOwner, newOwner);
 
 			if (wasInWorld)

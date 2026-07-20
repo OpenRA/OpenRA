@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 					new DynamicFacingInit(() => body.QuantizeFacing(facing.Facing)),
 				};
 
-				foreach (var api in p.TraitsImplementing<IActorPreviewInitModifier>())
+				foreach (var api in p.TraitsImplementingAsIterator<IActorPreviewInitModifier>())
 					api.ModifyActorPreviewInit(p, passengerInits);
 
 				var init = new ActorPreviewInitializer(p.Info, wr, passengerInits);

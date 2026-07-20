@@ -43,10 +43,13 @@ namespace OpenRA.Graphics
 		readonly List<IFinalizedRenderable> preparedRenderables = [];
 		readonly List<IFinalizedRenderable> preparedOverlayRenderables = [];
 		readonly List<IFinalizedRenderable> preparedAnnotationRenderables = [];
+		readonly Dictionary<Type, List<IFinalizedRenderable>> overlayRenderableGroups = [];
+		readonly List<List<IFinalizedRenderable>> overlayRenderableGroupOrder = [];
 
 		readonly List<IRenderable> renderablesBuffer = [];
 		readonly IRenderer[] renderers;
 		readonly IRenderPostProcessPass[] postProcessPasses;
+		readonly IPaletteModifier[] paletteModifiers;
 		long[] renderablesKeysBuffer = [];
 
 		internal WorldRenderer(ModData modData, World world)
@@ -61,7 +64,7 @@ namespace OpenRA.Graphics
 			var mapGrid = modData.GetOrCreate<MapGrid>();
 			enableDepthBuffer = mapGrid.EnableDepthBuffer;
 
-			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
+			foreach (var pal in world.TraitDict.ActorsWithTraitAsIterator<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
 
 			Player.SetupRelationshipColors(world.Players, world.LocalPlayer, this, true);
@@ -71,6 +74,7 @@ namespace OpenRA.Graphics
 			TerrainLighting = world.WorldActor.TraitOrDefault<ITerrainLighting>();
 			renderers = world.WorldActor.TraitsImplementing<IRenderer>().ToArray();
 			terrainRenderer = world.WorldActor.TraitOrDefault<IRenderTerrain>();
+			paletteModifiers = world.WorldActor.TraitsImplementing<IPaletteModifier>().ToArray();
 
 			debugVis = Exts.Lazy(world.WorldActor.TraitOrDefault<DebugVisualizations>);
 
@@ -91,7 +95,7 @@ namespace OpenRA.Graphics
 
 		public void UpdatePalettesForPlayer(string internalName, Color color, bool replaceExisting)
 		{
-			foreach (var pal in World.WorldActor.TraitsImplementing<ILoadsPlayerPalettes>())
+			foreach (var pal in World.WorldActor.TraitsImplementingAsIterator<ILoadsPlayerPalettes>())
 				pal.LoadPlayerPalettes(this, internalName, color, replaceExisting);
 		}
 
@@ -190,7 +194,7 @@ namespace OpenRA.Graphics
 				if (!a.IsInWorld || a.Disposed)
 					continue;
 
-				foreach (var t in a.TraitsImplementing<IRenderAboveShroudWhenSelected>())
+				foreach (var t in a.TraitsImplementingAsIterator<IRenderAboveShroudWhenSelected>())
 				{
 					if (t.SpatiallyPartitionable && !onScreenActors.Contains(a))
 						continue;
@@ -231,7 +235,7 @@ namespace OpenRA.Graphics
 				if (!a.IsInWorld || a.Disposed)
 					continue;
 
-				foreach (var t in a.TraitsImplementing<IRenderAnnotationsWhenSelected>())
+				foreach (var t in a.TraitsImplementingAsIterator<IRenderAnnotationsWhenSelected>())
 				{
 					if (t.SpatiallyPartitionable && !onScreenActors.Contains(a))
 						continue;
@@ -315,11 +319,28 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.DisableScissor();
 
-			// HACK: Keep old grouping behaviour
-			var groupedOverlayRenderables = preparedOverlayRenderables.GroupBy(prs => prs.GetType());
-			foreach (var g in groupedOverlayRenderables)
-				foreach (var r in g)
+			// HACK: Keep old grouping behaviour without allocating GroupBy state every frame.
+			overlayRenderableGroupOrder.Clear();
+			foreach (var renderable in preparedOverlayRenderables)
+			{
+				var type = renderable.GetType();
+				if (!overlayRenderableGroups.TryGetValue(type, out var group))
+				{
+					group = [];
+					overlayRenderableGroups.Add(type, group);
+				}
+
+				if (group.Count == 0)
+					overlayRenderableGroupOrder.Add(group);
+				group.Add(renderable);
+			}
+
+			foreach (var group in overlayRenderableGroupOrder)
+			{
+				foreach (var r in group)
 					r.Render(this);
+				group.Clear();
+			}
 
 			ApplyPostProcessing(PostProcessPassType.AfterShroud);
 
@@ -328,6 +349,9 @@ namespace OpenRA.Graphics
 
 		void ApplyPostProcessing(PostProcessPassType type)
 		{
+			if (!Game.Renderer.EnableWorldPostProcessing)
+				return;
+
 			foreach (var pass in postProcessPasses)
 			{
 				if (pass.Type != type || !pass.Enabled)
@@ -340,10 +364,14 @@ namespace OpenRA.Graphics
 
 		public void DrawAnnotations()
 		{
-			Game.Renderer.EnableAntialiasingFilter();
+			if (Game.Renderer.AntialiasWorldOverlays)
+				Game.Renderer.EnableAntialiasingFilter();
+
 			for (var i = 0; i < preparedAnnotationRenderables.Count; i++)
 				preparedAnnotationRenderables[i].Render(this);
-			Game.Renderer.DisableAntialiasingFilter();
+
+			if (Game.Renderer.AntialiasWorldOverlays)
+				Game.Renderer.DisableAntialiasingFilter();
 
 			// Engine debugging overlays
 			if (debugVis.Value != null && debugVis.Value.RenderGeometry)
@@ -391,7 +419,7 @@ namespace OpenRA.Graphics
 
 		public void RefreshPalette()
 		{
-			palette.ApplyModifiers(World.WorldActor.TraitsImplementing<IPaletteModifier>());
+			palette.ApplyModifiers(paletteModifiers);
 			Game.Renderer.SetPalette(palette);
 		}
 

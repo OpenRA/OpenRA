@@ -56,7 +56,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				purchaseButton.IsVisible = () => false;
 			}
 
-			foreach (var bulkQueue in world.LocalPlayer.PlayerActor.TraitsImplementing<BulkProductionQueue>())
+			foreach (var bulkQueue in world.LocalPlayer.PlayerActor.TraitsImplementingAsIterator<BulkProductionQueue>())
 			{
 				if (bulkQueue.HasDeliveryStarted())
 				{

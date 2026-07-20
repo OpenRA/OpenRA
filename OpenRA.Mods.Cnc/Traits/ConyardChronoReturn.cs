@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (destination == null)
 				return;
 
-			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+			foreach (var nt in self.TraitsImplementingAsIterator<INotifyTransform>())
 				nt.OnTransform(self);
 
 			var init = new TypeDictionary
@@ -165,11 +165,11 @@ namespace OpenRA.Mods.Cnc.Traits
 				new HealthInit((int)(health.HP * 100L / health.MaxHP))
 			};
 
-			foreach (var modifier in self.TraitsImplementing<ITransformActorInitModifier>())
+			foreach (var modifier in self.TraitsImplementingAsIterator<ITransformActorInitModifier>())
 				modifier.ModifyTransformActorInit(self, init);
 
 			var a = self.World.CreateActor(info.OriginalActor, init);
-			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+			foreach (var nt in self.TraitsImplementingAsIterator<INotifyTransform>())
 				nt.AfterTransform(a);
 
 			if (selected)
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				TriggerVortex();
 
 			// Trigger screen desaturate effect
-			foreach (var cpa in self.World.ActorsWithTrait<ChronoshiftPostProcessEffect>())
+			foreach (var cpa in self.World.ActorsWithTraitAsIterator<ChronoshiftPostProcessEffect>())
 				cpa.Trait.Enable();
 
 			Game.Sound.Play(SoundType.World, info.ChronoshiftSound, self.CenterPosition);

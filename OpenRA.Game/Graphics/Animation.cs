@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Primitives;
@@ -56,7 +57,8 @@ namespace OpenRA.Graphics
 
 		public Sprite Image => CurrentSequence.GetSprite(CurrentFrame, facingFunc());
 
-		public IRenderable[] Render(WPos pos, in WVec offset, int zOffset, PaletteReference palette)
+		SpriteRenderable CreateRenderables(WPos pos, in WVec offset, int zOffset, PaletteReference palette, bool includeShadow,
+			out SpriteRenderable shadowRenderable)
 		{
 			var tintModifiers = CurrentSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
@@ -65,19 +67,33 @@ namespace OpenRA.Graphics
 				image, pos, offset, CurrentSequence.ZOffset + zOffset, palette,
 				CurrentSequence.Scale, alpha, float3.Ones, tintModifiers, IsDecoration, rotation);
 
-			var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
+			shadowRenderable = null;
+			var shadow = includeShadow ? CurrentSequence.GetShadow(CurrentFrame, facingFunc()) : null;
 			if (shadow != null)
 			{
 				var height = map.DistanceAboveTerrain(pos).Length;
 
-				var shadowRenderable = new SpriteRenderable(
+				shadowRenderable = new SpriteRenderable(
 					shadow, pos, offset - new WVec(0, 0, height), CurrentSequence.ShadowZOffset + zOffset + height, palette,
 					CurrentSequence.Scale, 1f, float3.Ones, tintModifiers,
 					true, rotation);
-				return [shadowRenderable, imageRenderable];
 			}
 
-			return [imageRenderable];
+			return imageRenderable;
+		}
+
+		public IRenderable[] Render(WPos pos, in WVec offset, int zOffset, PaletteReference palette)
+		{
+			var imageRenderable = CreateRenderables(pos, offset, zOffset, palette, Game.Renderer.DrawWorldShadows, out var shadowRenderable);
+			return shadowRenderable != null ? [shadowRenderable, imageRenderable] : [imageRenderable];
+		}
+
+		public void AddRenderables(List<IRenderable> renderables, WPos pos, in WVec offset, int zOffset, PaletteReference palette)
+		{
+			var imageRenderable = CreateRenderables(pos, offset, zOffset, palette, Game.Renderer.DrawWorldShadows, out var shadowRenderable);
+			if (shadowRenderable != null)
+				renderables.Add(shadowRenderable);
+			renderables.Add(imageRenderable);
 		}
 
 		public IRenderable[] RenderUI(WorldRenderer wr, int2 pos, in WVec offset, int zOffset, PaletteReference palette, float scale = 1f, float rotation = 0f)

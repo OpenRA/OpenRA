@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Assume a single exit point for simplicity
 			var exit = self.Info.TraitInfos<ExitInfo>().First();
 
-			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
+			foreach (var tower in self.TraitsImplementingAsIterator<INotifyDelivery>())
 				tower.IncomingDelivery(self);
 
 			owner.World.AddFrameEndTask(w =>
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 						return;
 					}
 
-					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
+					foreach (var cargo in self.TraitsImplementingAsIterator<INotifyDelivery>())
 						cargo.Delivered(self);
 
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, productionType, inits));

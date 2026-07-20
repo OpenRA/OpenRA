@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits
 						newUnit.QueueActivity(move.MoveTo(cell, 2, evaluateNearestMovableCell: true));
 
 				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					foreach (var t in self.TraitsImplementingAsIterator<INotifyProduction>())
 						t.UnitProduced(self, newUnit, destinations[0]);
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();

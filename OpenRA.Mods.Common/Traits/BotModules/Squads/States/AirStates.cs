@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				if (unit == null || unit.Info.HasTraitInfo<AircraftInfo>())
 					continue;
 
-				foreach (var ab in unit.TraitsImplementing<AttackBase>())
+				foreach (var ab in unit.TraitsImplementingAsIterator<AttackBase>())
 				{
 					if (ab.IsTraitDisabled || ab.IsTraitPaused)
 						continue;

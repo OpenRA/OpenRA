@@ -855,8 +855,10 @@ namespace OpenRA
 
 						LogicTick();
 
-						// Force at least one render per tick during regular gameplay
-						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
+						// Force at least one render per tick during regular gameplay unless the user
+						// has chosen to prioritize simulation speed on a slow renderer.
+						if (!Renderer.PrioritizeGameTick && OrderManager.World != null &&
+							!OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
 							renderBeforeNextTick = true;
 					}
 

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -67,6 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly HoversInfo info;
 		readonly int stepPercentage;
 		readonly int fallTickHeight;
+		readonly List<IRenderable> modifiedRenderables = [];
 
 		int ticks;
 
@@ -110,7 +110,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return r.Select(a => a.OffsetBy(WorldVisualOffset));
+			modifiedRenderables.Clear();
+			foreach (var renderable in r)
+				modifiedRenderables.Add(renderable.OffsetBy(WorldVisualOffset));
+			return modifiedRenderables;
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)

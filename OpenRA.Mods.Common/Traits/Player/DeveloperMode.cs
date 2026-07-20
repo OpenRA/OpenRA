@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				case Orders.GrowResources:
 				{
-					foreach (var a in self.World.ActorsWithTrait<ISeedableResource>())
+					foreach (var a in self.World.ActorsWithTraitAsIterator<ISeedableResource>())
 						for (var i = 0; i < info.ResourceGrowth; i++)
 							a.Trait.Seed(a.Actor);
 

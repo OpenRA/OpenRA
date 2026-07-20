@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!enterCargo.CanLoad(self))
 					return;
 
-				foreach (var inl in targetActor.TraitsImplementing<INotifyLoadCargo>())
+				foreach (var inl in targetActor.TraitsImplementingAsIterator<INotifyLoadCargo>())
 					inl.Loading(self);
 
 				enterCargo.Load(enterActor, self);

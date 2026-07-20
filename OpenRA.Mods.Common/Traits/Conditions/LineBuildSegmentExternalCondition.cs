@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (segment.Disposed)
 				return;
 
-			foreach (var external in segment.TraitsImplementing<ExternalCondition>())
+			foreach (var external in segment.TraitsImplementingAsIterator<ExternalCondition>())
 				if (external.TryRevokeCondition(segment, self, token))
 					break;
 		}

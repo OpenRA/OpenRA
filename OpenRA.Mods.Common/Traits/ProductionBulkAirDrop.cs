@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			var startPos = producer.World.Map.ChooseClosestEdgeCell(producer.Location);
 			var spawnFacing = producer.World.Map.FacingBetween(startPos, producer.Location, WAngle.Zero);
 
-			foreach (var tower in producer.TraitsImplementing<INotifyDelivery>())
+			foreach (var tower in producer.TraitsImplementingAsIterator<INotifyDelivery>())
 				tower.IncomingDelivery(producer);
 
 			owner.World.AddFrameEndTask(w =>

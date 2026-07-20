@@ -116,6 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly float3 cloakedColor;
 		readonly float cloakedColorAlpha;
+		readonly List<IRenderable> modifiedRenderables = [];
 
 		[VerifySync]
 		int remainingTime;
@@ -184,20 +185,29 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
 			{
+				modifiedRenderables.Clear();
 				switch (Info.CloakStyle)
 				{
 					case CloakStyle.Alpha:
-						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ? mr.WithAlpha(Info.CloakedAlpha) : a);
+						foreach (var renderable in r)
+							modifiedRenderables.Add(!renderable.IsDecoration && renderable is IModifyableRenderable modifyable ?
+								modifyable.WithAlpha(Info.CloakedAlpha) : renderable);
+						return modifiedRenderables;
 
 					case CloakStyle.Color:
-						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ?
-							mr.WithTint(cloakedColor, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(cloakedColorAlpha) :
-							a);
+						foreach (var renderable in r)
+							modifiedRenderables.Add(!renderable.IsDecoration && renderable is IModifyableRenderable modifyable ?
+								modifyable.WithTint(cloakedColor, modifyable.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(cloakedColorAlpha) :
+								renderable);
+						return modifiedRenderables;
 
 					case CloakStyle.Palette:
 					{
 						var palette = wr.Palette(Info.IsPlayerPalette ? Info.CloakedPalette + self.Owner.InternalName : Info.CloakedPalette);
-						return r.Select(a => !a.IsDecoration && a is IPalettedRenderable pr ? pr.WithPalette(palette) : a);
+						foreach (var renderable in r)
+							modifiedRenderables.Add(!renderable.IsDecoration && renderable is IPalettedRenderable paletted ?
+								paletted.WithPalette(palette) : renderable);
+						return modifiedRenderables;
 					}
 
 					default:
@@ -296,9 +306,28 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.IsInWorld
-				&& a.Actor.Owner.IsAlliedWith(viewer) && Info.DetectionTypes.Overlaps(a.Trait.Info.DetectionTypes)
-				&& (self.CenterPosition - a.Actor.CenterPosition).LengthSquared <= a.Trait.Range.LengthSquared);
+			var searchRadius = self.World.ActorMap.LargestDetectionRange;
+			if (searchRadius == WDist.Zero)
+				return false;
+
+			var pos = self.CenterPosition;
+			var vec = new WVec(searchRadius.Length, searchRadius.Length, WDist.Zero.Length);
+			foreach (var detector in ((ActorMap)self.World.ActorMap).DetectorsInBox(pos - vec, pos + vec))
+			{
+				var actor = detector.Actor;
+				if (!actor.Owner.IsAlliedWith(viewer))
+					continue;
+
+				var detectCloaked = detector.Trait;
+				if (detectCloaked.IsTraitDisabled ||
+					!Info.DetectionTypes.Overlaps(detectCloaked.Info.DetectionTypes))
+					continue;
+
+				if ((pos - actor.CenterPosition).LengthSquared <= detectCloaked.Range.LengthSquared)
+					return true;
+			}
+
+			return false;
 		}
 
 		Color IRadarColorModifier.RadarColorOverride(Actor self, Color color)

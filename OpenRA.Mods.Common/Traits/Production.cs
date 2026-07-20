@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var newUnit = self.World.CreateActor(producee.Name, td);
 				if (!self.IsDead)
-					foreach (var t in self.TraitsImplementing<INotifyProduction>())
+					foreach (var t in self.TraitsImplementingAsIterator<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
 
 				var notifyOthers = self.World.ActorsWithTrait<INotifyOtherProduction>();

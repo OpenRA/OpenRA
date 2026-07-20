@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (transforms != null && !transforms.CanDeploy())
 				return true;
 
-			foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+			foreach (var nt in self.TraitsImplementingAsIterator<INotifyTransform>())
 				nt.BeforeTransform(self);
 
 			var makeAnimation = self.TraitOrDefault<WithMakeAnimation>();
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 					return;
 				}
 
-				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				foreach (var nt in self.TraitsImplementingAsIterator<INotifyTransform>())
 					nt.OnTransform(self);
 
 				var selected = w.Selection.Contains(self);
@@ -133,11 +133,11 @@ namespace OpenRA.Mods.Common.Activities
 					init.Add(new HealthInit(newHP));
 				}
 
-				foreach (var modifier in self.TraitsImplementing<ITransformActorInitModifier>())
+				foreach (var modifier in self.TraitsImplementingAsIterator<ITransformActorInitModifier>())
 					modifier.ModifyTransformActorInit(self, init);
 
 				var a = w.CreateActor(ToActor, init);
-				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+				foreach (var nt in self.TraitsImplementingAsIterator<INotifyTransform>())
 					nt.AfterTransform(a);
 
 				// Use self.CurrentActivity to capture the parent activity if Transform is a child
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Activities
 						continue;
 
 					var order = transfer.IssueOrderForTransformedActor(a);
-					foreach (var t in a.TraitsImplementing<IResolveOrder>())
+					foreach (var t in a.TraitsImplementingAsIterator<IResolveOrder>())
 						t.ResolveOrder(a, order);
 				}
 

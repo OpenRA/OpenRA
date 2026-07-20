@@ -152,6 +152,113 @@ Container@DISPLAY_PANEL:
 					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
+						Container@RENDERER_PERFORMANCE_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Children:
+								Label@RENDERER_PERFORMANCE_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Align: Center
+								Slider@RENDERER_PERFORMANCE_SLIDER:
+									X: 10
+									Y: 25
+									Width: PARENT_WIDTH - 20
+									Height: 20
+									Ticks: 5
+									MinimumValue: 0
+									MaximumValue: 4
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
+						Container@WORLD_RENDER_SCALE_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH - 20
+							Children:
+								Label@WORLD_RENDER_SCALE_LABEL:
+									Width: PARENT_WIDTH
+									Height: 20
+									Align: Center
+								Slider@WORLD_RENDER_SCALE_SLIDER:
+									X: 10
+									Y: 25
+									Width: PARENT_WIDTH - 20
+									Height: 20
+									Ticks: 6
+									MinimumValue: 1
+									MaximumValue: 6
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
+						Container@WORLD_RENDER_NEAREST_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@WORLD_RENDER_NEAREST_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-world-render-nearest.label
+									TooltipText: checkbox-world-render-nearest.tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+						Container@WORLD_RENDER_SHADOWS_CHECKBOX_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@WORLD_RENDER_SHADOWS_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-world-render-shadows.label
+									TooltipText: checkbox-world-render-shadows.tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
+						Container@WORLD_RENDER_POST_PROCESSING_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@WORLD_RENDER_POST_PROCESSING_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-world-render-post-processing.label
+									TooltipText: checkbox-world-render-post-processing.tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+						Container@WORLD_RENDER_ANTIALIASING_CHECKBOX_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@WORLD_RENDER_ANTIALIASING_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-world-render-antialiasing.label
+									TooltipText: checkbox-world-render-antialiasing.tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
+						Container@PRIORITIZE_GAME_TICK_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@PRIORITIZE_GAME_TICK_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-prioritize-game-tick.label
+									TooltipText: checkbox-prioritize-game-tick.tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 50
+					Children:
 						Container@VIDEO_MODE_DROPDOWN_CONTAINER:
 							X: 10
 							Width: PARENT_WIDTH / 2 - 20
@@ -241,7 +348,7 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_WIDTH - 20
 									Height: 20
 									Ticks: 20
-									MinimumValue: 50
+									MinimumValue: 15
 									MaximumValue: 240
 						Container@VSYNC_CHECKBOX_CONTAINER:
 							X: PARENT_WIDTH / 2 + 10
