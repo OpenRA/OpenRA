@@ -150,8 +150,12 @@ namespace OpenRA
 
 					foreach (var f in Fonts)
 						f.Value.SetScale(newEffective);
+
+					ResolutionChanged?.Invoke();
 				});
 			};
+
+			Window.OnWindowResized += () => Game.RunAfterTick(() => ResolutionChanged?.Invoke());
 		}
 
 		public void SetDepthMargin(float depthMargin)
@@ -189,6 +193,13 @@ namespace OpenRA
 			// rounded to the next power of two, as the NextPowerOf2 calculation is done in the surface pixel coordinates
 			var scale = Window.EffectiveWindowScale;
 			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
+
+			// Always update the OpenGL viewport for the default framebuffer so that FrameBuffer.Bind()
+			// captures the correct window-sized viewport in cv, which is restored by Unbind().
+			// This must be done even when bufferSize is unchanged, because surfaceSize can change
+			// within the same NextPowerOf2 range (e.g. 1024x768 -> 1280x720) without bufferSize changing.
+			Context.SetViewport(surfaceSize.Width, surfaceSize.Height);
+
 			if (lastBufferSize != bufferSize)
 			{
 				SpriteRenderer.SetViewportParams(bufferSize, 1, 0f, int2.Zero);
@@ -388,6 +399,8 @@ namespace OpenRA
 			CurrentBatchRenderer = null;
 		}
 
+		public event Action ResolutionChanged;
+
 		public Size Resolution => Window.EffectiveWindowSize;
 		public Size NativeResolution => Window.NativeWindowSize;
 		public float WindowScale => Window.EffectiveWindowScale;
@@ -564,6 +577,11 @@ namespace OpenRA
 		public void SetVSyncEnabled(bool enabled)
 		{
 			Window.Context.SetVSyncEnabled(enabled);
+		}
+
+		public void SetWindowSize(int2 size)
+		{
+			Window.SetWindowSize(size);
 		}
 
 		public string GetClipboardText()

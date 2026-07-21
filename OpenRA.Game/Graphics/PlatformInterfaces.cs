@@ -62,6 +62,7 @@ namespace OpenRA
 		bool IsSuspended { get; }
 
 		event Action<float, float, float, float> OnWindowScaleChanged;
+		event Action OnWindowResized;
 
 		void PumpInput(IInputHandler inputHandler);
 		string GetClipboardText();
@@ -74,6 +75,7 @@ namespace OpenRA
 		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble);
 		void SetHardwareCursor(IHardwareCursor cursor);
 		void SetWindowTitle(string title);
+		void SetWindowSize(int2 size);
 		void SetRelativeMouseMode(bool mode);
 		void SetScaleModifier(float scale);
 
@@ -103,6 +105,7 @@ namespace OpenRA
 		void ClearDepthBuffer();
 		void SetBlendMode(BlendMode mode);
 		void SetVSyncEnabled(bool enabled);
+		void SetViewport(int width, int height);
 		string GLVersion { get; }
 	}
 
