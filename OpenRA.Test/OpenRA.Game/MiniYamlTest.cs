@@ -1085,6 +1085,7 @@ Parent: Second
 		sealed class TestStream : Stream
 		{
 			readonly ManualResetEventSlim mres = new();
+			readonly Lock bytesLock = new();
 			readonly List<byte> bytes = [];
 			bool ended;
 
@@ -1097,7 +1098,7 @@ Parent: Second
 			public void WriteBytes(ReadOnlySpan<byte> bytes)
 			{
 				if (ended) throw new InvalidOperationException();
-				lock (this.bytes)
+				lock (bytesLock)
 				{
 					this.bytes.AddRange(bytes);
 					mres.Set();
@@ -1112,7 +1113,7 @@ Parent: Second
 				if (bytes.Count == 0)
 					mres.Wait();
 
-				lock (bytes)
+				lock (bytesLock)
 				{
 					var read = Math.Min(bytes.Count, count);
 

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileSystem;
 
 namespace OpenRA
@@ -109,6 +110,7 @@ namespace OpenRA
 		const int SpacesPerLevel = 4;
 		static readonly Func<string, string> StringIdentity = s => s;
 		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
+		static readonly Lock ConflictScratchLock = new();
 		static readonly Dictionary<string, MiniYamlNode> ConflictScratch = [];
 
 		public readonly string Value;
@@ -561,7 +563,7 @@ namespace OpenRA
 			var resolvedExistingNodes = WeakResolveRemovals(existingNodes?.Nodes);
 			var resolvedOverrideNodes = WeakResolveRemovals(overrideNodes?.Nodes);
 
-			lock (ConflictScratch)
+			lock (ConflictScratchLock)
 			{
 				try
 				{

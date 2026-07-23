@@ -13,12 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileSystem;
 
 namespace OpenRA
 {
 	public sealed class MapDirectoryTracker : IDisposable
 	{
+		readonly Lock syncObject = new();
 		readonly FileSystemWatcher watcher;
 		readonly IReadOnlyPackage package;
 		readonly MapClassification classification;
@@ -50,7 +52,7 @@ namespace OpenRA
 
 		void AddMapAction(MapAction mapAction, string fullpath, string oldFullPath = null)
 		{
-			lock (mapActionQueue)
+			lock (syncObject)
 			{
 				dirty = true;
 
@@ -76,7 +78,7 @@ namespace OpenRA
 
 		public void UpdateMaps(MapCache mapcache)
 		{
-			lock (mapActionQueue)
+			lock (syncObject)
 			{
 				if (!dirty)
 					return;

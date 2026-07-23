@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool ValidateSlotCommand(S server, Connection conn, Session.Client client, string arg, bool requiresHost)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!server.LobbyInfo.Slots.ContainsKey(arg))
 				{
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public static bool ValidateCommand(S server, Connection conn, Session.Client client, string command)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				// Kick command is always valid for the host
 				if (command.StartsWith("kick ", StringComparison.Ordinal) || command.StartsWith("vote_kick ", StringComparison.Ordinal))
@@ -245,7 +245,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static void CheckAutoStart(S server)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var nonBotPlayers = server.LobbyInfo.NonBotPlayers;
 
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool State(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!Enum.TryParse<Session.ClientState>(s, out var state))
 				{
@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool StartGame(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -352,7 +352,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Slot(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!server.LobbyInfo.Slots.TryGetValue(s, out var slot))
 				{
@@ -383,7 +383,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool AllowSpectators(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (bool.TryParse(s, out server.LobbyInfo.GlobalSettings.AllowSpectators))
 				{
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Specate(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (server.LobbyInfo.GlobalSettings.AllowSpectators || client.IsAdmin)
 				{
@@ -419,7 +419,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool SlotClose(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!ValidateSlotCommand(server, conn, client, s, true))
 					return false;
@@ -453,7 +453,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool SlotOpen(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!ValidateSlotCommand(server, conn, client, s, true))
 					return false;
@@ -475,7 +475,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool SlotBot(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var parts = s.Split(' ');
 				if (parts.Length < 3)
@@ -557,7 +557,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Map(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -574,7 +574,7 @@ namespace OpenRA.Mods.Common.Server
 				var lastMap = server.LobbyInfo.GlobalSettings.Map;
 				void SelectMap(MapPreview map)
 				{
-					lock (server.LobbyInfo)
+					lock (server.LobbyInfoLock)
 					{
 						// Make sure the map hasn't changed in the meantime
 						if (server.LobbyInfo.GlobalSettings.Map != lastMap)
@@ -682,7 +682,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Option(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -731,7 +731,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool ResetOptions(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -762,7 +762,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool AssignTeams(S server, Connection conn, Session.Client client, string raw)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -806,7 +806,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Kick(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -864,7 +864,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool VoteKick(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var split = s.Split(' ');
 				if (split.Length != 2)
@@ -920,7 +920,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool MakeAdmin(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -957,7 +957,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool MakeSpectator(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -992,7 +992,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Name(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var sanitizedName = Settings.SanitizedPlayerName(s);
 				if (sanitizedName == client.Name)
@@ -1009,7 +1009,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Faction(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var parts = s.Split(' ');
 				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
@@ -1041,7 +1041,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Team(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var parts = s.Split(' ');
 				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
@@ -1069,7 +1069,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Handicap(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var parts = s.Split(' ');
 				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
@@ -1142,7 +1142,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool Spawn(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var parts = s.Split(' ');
 				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
@@ -1197,7 +1197,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool PlayerColor(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var parts = s.Split(' ');
 				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
@@ -1226,7 +1226,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool SyncLobby(S server, Connection conn, Session.Client client, string s)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (!client.IsAdmin)
 				{
@@ -1307,7 +1307,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public void ServerStarted(S server)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				InitializeMapPool(server);
 
@@ -1348,7 +1348,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public static void LoadMapSettings(S server, Session.Global gs, MapPreview map)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var options = map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
 					.Concat(map.WorldActorInfo.TraitInfos<ILobbyOptions>())
@@ -1384,7 +1384,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public static Color SanitizePlayerColor(S server, Color askedColor, int playerIndex, Connection connectionToEcho = null)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 				var askColor = askedColor;
@@ -1410,7 +1410,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public void ClientJoined(S server, Connection conn)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				if (server.MapPool != null)
 					server.SendOrderTo(conn, "SyncMapPool", FieldSaver.FormatValue(server.MapPool));
@@ -1425,7 +1425,7 @@ namespace OpenRA.Mods.Common.Server
 
 		void INotifyServerEmpty.ServerEmpty(S server)
 		{
-			lock (server.LobbyInfo)
+			lock (server.LobbyInfoLock)
 			{
 				// Expire any temporary bans
 				server.TempBans.Clear();

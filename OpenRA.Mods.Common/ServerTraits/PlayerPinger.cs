@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Server
 
 				// Ignore client timeout in singleplayer games to make debugging easier
 				var nonBotClientCount = 0;
-				lock (server.LobbyInfo)
+				lock (server.LobbyInfoLock)
 					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
 
 				if (nonBotClientCount >= 2 || server.Type == ServerType.Dedicated)

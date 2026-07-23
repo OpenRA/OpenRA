@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OpenRA.Primitives
 {
@@ -19,13 +20,14 @@ namespace OpenRA.Primitives
 	/// </summary>
 	public class ActionQueue
 	{
+		readonly Lock syncObject = new();
 		readonly List<DelayedAction> actions = [];
 
 		public void Add(Action a, long desiredTime)
 		{
 			ArgumentNullException.ThrowIfNull(a);
 
-			lock (actions)
+			lock (syncObject)
 			{
 				var action = new DelayedAction(a, desiredTime);
 				var index = Index(action);
@@ -36,7 +38,7 @@ namespace OpenRA.Primitives
 		public void PerformActions(long currentTime)
 		{
 			DelayedAction[] pendingActions;
-			lock (actions)
+			lock (syncObject)
 			{
 				var dummyAction = new DelayedAction(null, currentTime);
 				var index = Index(dummyAction);

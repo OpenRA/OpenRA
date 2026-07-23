@@ -11,12 +11,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
 	sealed class CellInfoLayerPool
 	{
 		const int MaxPoolSize = 4;
+		readonly Lock poolLock = new();
 		readonly Stack<CellLayer<CellInfo>> pool = new(MaxPoolSize);
 		readonly Map map;
 
@@ -33,7 +35,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		CellLayer<CellInfo> GetLayer()
 		{
 			CellLayer<CellInfo> layer = null;
-			lock (pool)
+			lock (poolLock)
 				if (pool.Count > 0)
 					layer = pool.Pop();
 
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		void ReturnLayer(CellLayer<CellInfo> layer)
 		{
-			lock (pool)
+			lock (poolLock)
 				if (pool.Count < MaxPoolSize)
 					pool.Push(layer);
 		}

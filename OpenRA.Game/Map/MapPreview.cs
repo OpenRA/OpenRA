@@ -199,7 +199,7 @@ namespace OpenRA
 			}
 		}
 
-		readonly object syncRoot = new();
+		readonly Lock syncRoot = new();
 		readonly MapCache cache;
 		readonly ModData modData;
 		IReadOnlyPackage package;

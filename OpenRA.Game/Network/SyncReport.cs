@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using OpenRA.Primitives;
 
 namespace OpenRA.Network
@@ -22,6 +23,7 @@ namespace OpenRA.Network
 	sealed class SyncReport
 	{
 		const int NumSyncReports = 7;
+		static readonly Lock TypeInfoCacheLock = new();
 		static readonly Cache<Type, TypeInfo> TypeInfoCache = new(t => new TypeInfo(t));
 
 		readonly OrderManager orderManager;
@@ -33,7 +35,7 @@ namespace OpenRA.Network
 		{
 			var type = sync.GetType();
 			TypeInfo typeInfo;
-			lock (TypeInfoCache)
+			lock (TypeInfoCacheLock)
 				typeInfo = TypeInfoCache[type];
 			var values = new Values(typeInfo.Names.Length);
 			var index = 0;

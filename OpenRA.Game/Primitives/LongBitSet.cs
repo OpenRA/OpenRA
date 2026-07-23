@@ -12,17 +12,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OpenRA.Primitives
 {
 	static class LongBitSetAllocator<T> where T : class
 	{
+		static readonly Lock SyncObject = new();
 		static readonly Cache<string, long> Bits = new(Allocate);
 		static long nextBits = 1;
 
 		static long Allocate(string value)
 		{
-			lock (Bits)
+			lock (SyncObject)
 			{
 				var bits = nextBits;
 				nextBits <<= 1;
@@ -37,7 +39,7 @@ namespace OpenRA.Primitives
 		public static long GetBits(string[] values)
 		{
 			long bits = 0;
-			lock (Bits)
+			lock (SyncObject)
 				foreach (var value in values)
 					bits |= Bits[value];
 
@@ -49,7 +51,7 @@ namespace OpenRA.Primitives
 			// Map strings to existing bits; do not allocate missing values new bits
 			long bits = 0;
 
-			lock (Bits)
+			lock (SyncObject)
 				foreach (var value in values)
 					if (Bits.TryGetValue(value, out var valueBit))
 						bits |= valueBit;
@@ -60,7 +62,7 @@ namespace OpenRA.Primitives
 		public static IEnumerable<string> GetStrings(long bits)
 		{
 			var values = new List<string>();
-			lock (Bits)
+			lock (SyncObject)
 				foreach (var kvp in Bits)
 					if ((kvp.Value & bits) != 0)
 						values.Add(kvp.Key);
@@ -71,7 +73,7 @@ namespace OpenRA.Primitives
 		public static bool BitsContainString(long bits, string value)
 		{
 			long valueBit;
-			lock (Bits)
+			lock (SyncObject)
 				if (!Bits.TryGetValue(value, out valueBit))
 					return false;
 			return (bits & valueBit) != 0;
@@ -79,7 +81,7 @@ namespace OpenRA.Primitives
 
 		public static void Reset()
 		{
-			lock (Bits)
+			lock (SyncObject)
 			{
 				Bits.Clear();
 				nextBits = 1;

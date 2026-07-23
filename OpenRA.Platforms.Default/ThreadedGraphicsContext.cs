@@ -24,13 +24,16 @@ namespace OpenRA.Platforms.Default
 	sealed class ThreadedGraphicsContext : IGraphicsContext
 	{
 		// PERF: Maintain several object pools to reduce allocations.
+		readonly Lock vertexBufferPoolsLock = new();
 		readonly Dictionary<Type, object> vertexBufferPools = [];
+		readonly Lock messagePoolLock = new();
 		readonly Stack<Message> messagePool = [];
+		readonly object messagesMonitor = new();
 		readonly Queue<Message> messages = [];
 
 		public readonly int VertexBatchSize;
 		public readonly int IndexBatchSize;
-		readonly object syncObject = new();
+		readonly object constructorMonitor = new();
 		readonly Thread renderThread;
 		volatile ExceptionDispatchInfo messageException;
 
@@ -63,12 +66,12 @@ namespace OpenRA.Platforms.Default
 				Name = "ThreadedGraphicsContext RenderThread",
 				IsBackground = true
 			};
-			lock (syncObject)
+			lock (constructorMonitor)
 			{
 				// Start and wait for the rendering thread to have initialized before returning.
 				// Otherwise, the delegates may not have been set yet.
 				renderThread.Start(context);
-				Monitor.Wait(syncObject);
+				Monitor.Wait(constructorMonitor);
 			}
 		}
 
@@ -77,7 +80,7 @@ namespace OpenRA.Platforms.Default
 			using (var context = (Sdl2GraphicsContext)contextObject)
 			{
 				// This lock allows the constructor to block until initialization completes.
-				lock (syncObject)
+				lock (constructorMonitor)
 				{
 					context.InitializeOpenGL();
 
@@ -140,7 +143,7 @@ namespace OpenRA.Platforms.Default
 					doSetBlendMode = mode => context.SetBlendMode((BlendMode)mode);
 					doSetVSync = enabled => context.SetVSyncEnabled((bool)enabled);
 
-					Monitor.Pulse(syncObject);
+					Monitor.Pulse(constructorMonitor);
 				}
 
 				// Run a message loop.
@@ -149,14 +152,14 @@ namespace OpenRA.Platforms.Default
 				Message message;
 				while (true)
 				{
-					lock (messages)
+					lock (messagesMonitor)
 					{
 						if (messages.Count == 0)
 						{
 							if (messageException != null)
 								break;
 
-							Monitor.Wait(messages);
+							Monitor.Wait(messagesMonitor);
 						}
 
 						message = messages.Dequeue();
@@ -172,7 +175,7 @@ namespace OpenRA.Platforms.Default
 
 		internal T[] GetVertices<T>(int size)
 		{
-			lock (vertexBufferPools)
+			lock (vertexBufferPoolsLock)
 			{
 				Stack<T[]> pool;
 				if (!vertexBufferPools.TryGetValue(typeof(T), out var poolObject))
@@ -193,7 +196,7 @@ namespace OpenRA.Platforms.Default
 		internal void ReturnVertices<T>(T[] vertices)
 		{
 			if (vertices.Length == VertexBatchSize)
-				lock (vertexBufferPools)
+				lock (vertexBufferPoolsLock)
 					((Stack<T[]>)vertexBufferPools[typeof(T)]).Push(vertices);
 		}
 
@@ -283,7 +286,7 @@ namespace OpenRA.Platforms.Default
 
 				if (wasSend)
 				{
-					lock (device.messagePool)
+					lock (device.messagePoolLock)
 						device.messagePool.Push(this);
 				}
 				else
@@ -308,7 +311,7 @@ namespace OpenRA.Platforms.Default
 
 		Message GetMessage()
 		{
-			lock (messagePool)
+			lock (messagePoolLock)
 				if (messagePool.Count > 0)
 					return messagePool.Pop();
 
@@ -320,11 +323,11 @@ namespace OpenRA.Platforms.Default
 			var exception = messageException;
 			exception?.Throw();
 
-			lock (messages)
+			lock (messagesMonitor)
 			{
 				messages.Enqueue(message);
 				if (messages.Count == 1)
-					Monitor.Pulse(messages);
+					Monitor.Pulse(messagesMonitor);
 			}
 		}
 
@@ -332,7 +335,7 @@ namespace OpenRA.Platforms.Default
 		{
 			QueueMessage(message);
 			var result = message.Result();
-			lock (messagePool)
+			lock (messagePoolLock)
 				messagePool.Push(message);
 			return result;
 		}

@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using OpenRA.Primitives;
 using SDL2;
 
@@ -29,7 +30,7 @@ namespace OpenRA.Platforms.Default
 		readonly IntPtr window;
 		bool disposed;
 
-		readonly object syncObject = new();
+		readonly Lock syncObject = new();
 		readonly Size windowSize;
 		Size surfaceSize;
 		float windowScale = 1f;
