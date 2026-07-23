@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
@@ -17,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		const int MaxHistorySize = 50;
 		static CommandHistory instance;
-		static readonly object LockObject = new();
+		static readonly Lock LockObject = new();
 		readonly List<string> history = [];
 		int currentIndex = -1;
 

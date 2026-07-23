@@ -14,6 +14,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using BeaconLib;
 using OpenRA.Network;
@@ -63,6 +64,7 @@ namespace OpenRA.Mods.Common.Server
 
 		volatile bool isBusy;
 		readonly Queue<string> masterServerMessages = [];
+		readonly Lock masterServerMessagesLock = new();
 
 		public void Tick(S server)
 		{
@@ -90,7 +92,7 @@ namespace OpenRA.Mods.Common.Server
 			}
 
 			if (server.Settings.AdvertiseOnline)
-				lock (masterServerMessages)
+				lock (masterServerMessagesLock)
 					while (masterServerMessages.Count > 0)
 						server.SendFluentMessage(masterServerMessages.Dequeue());
 		}
@@ -170,7 +172,7 @@ namespace OpenRA.Mods.Common.Server
 						}
 
 						isInitialPing = false;
-						lock (masterServerMessages)
+						lock (masterServerMessagesLock)
 						{
 							masterServerMessages.Enqueue(Connected);
 							if (errorCode != 0)
@@ -192,7 +194,7 @@ namespace OpenRA.Mods.Common.Server
 				catch (Exception ex)
 				{
 					Log.Write("server", ex.ToString());
-					lock (masterServerMessages)
+					lock (masterServerMessagesLock)
 						masterServerMessages.Enqueue(Error);
 				}
 

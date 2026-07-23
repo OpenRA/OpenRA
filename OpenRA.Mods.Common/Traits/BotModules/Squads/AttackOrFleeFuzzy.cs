@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using AI.Fuzzy.Library;
 using OpenRA.Mods.Common.Warheads;
 using OpenRA.Traits;
@@ -110,6 +111,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"then AttackOrFlee is Flee"
 		], null, null);
 
+		readonly Lock fuzzyEngineLock = new();
 		readonly MamdaniFuzzySystem fuzzyEngine = new();
 
 		public AttackOrFleeFuzzy(
@@ -117,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			IEnumerable<string> rulesForInjuredOwnHealth,
 			IEnumerable<string> rulesForNeadDeadOwnHealth)
 		{
-			lock (fuzzyEngine)
+			lock (fuzzyEngineLock)
 			{
 				var playerHealthFuzzy = new FuzzyVariable("OwnHealth", 0.0, 100.0);
 				playerHealthFuzzy.Terms.Add(new FuzzyTerm("NearDead", new TrapezoidMembershipFunction(0, 0, 20, 40)));
@@ -166,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		{
 			double attackChance;
 			var inputValues = new Dictionary<FuzzyVariable, double>();
-			lock (fuzzyEngine)
+			lock (fuzzyEngineLock)
 			{
 				inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), NormalizedHealth(ownUnits, 100));
 				inputValues.Add(fuzzyEngine.InputByName("EnemyHealth"), NormalizedHealth(enemyUnits, 100));

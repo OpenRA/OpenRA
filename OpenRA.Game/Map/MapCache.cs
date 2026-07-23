@@ -37,7 +37,7 @@ namespace OpenRA
 		readonly SheetBuilder sheetBuilder;
 		Thread previewLoaderThread;
 		bool previewLoaderThreadShutDown = true;
-		readonly object syncRoot = new();
+		readonly Lock syncRoot = new();
 		readonly Queue<MapPreview> generateMinimap = [];
 
 		public HashSet<string> StringPool { get; } = [];

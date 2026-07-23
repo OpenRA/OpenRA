@@ -12,18 +12,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using BitSetIndex = System.Numerics.BigInteger;
 
 namespace OpenRA.Primitives
 {
 	static class BitSetAllocator<T> where T : class
 	{
+		static readonly Lock SyncObject = new();
 		static readonly Cache<string, BitSetIndex> Bits = new(Allocate);
 		static BitSetIndex nextBits = 1;
 
 		static BitSetIndex Allocate(string value)
 		{
-			lock (Bits)
+			lock (SyncObject)
 			{
 				var bits = nextBits;
 				nextBits <<= 1;
@@ -34,7 +36,7 @@ namespace OpenRA.Primitives
 		public static BitSetIndex GetBits(string[] values)
 		{
 			BitSetIndex bits = 0;
-			lock (Bits)
+			lock (SyncObject)
 				foreach (var value in values)
 					bits |= Bits[value];
 
@@ -46,7 +48,7 @@ namespace OpenRA.Primitives
 			// Map strings to existing bits; do not allocate missing values new bits
 			BitSetIndex bits = 0;
 
-			lock (Bits)
+			lock (SyncObject)
 				foreach (var value in values)
 					if (Bits.TryGetValue(value, out var valueBit))
 						bits |= valueBit;
@@ -57,7 +59,7 @@ namespace OpenRA.Primitives
 		public static IEnumerable<string> GetStrings(BitSetIndex bits)
 		{
 			var values = new List<string>();
-			lock (Bits)
+			lock (SyncObject)
 				foreach (var kvp in Bits)
 					if ((kvp.Value & bits) != 0)
 						values.Add(kvp.Key);
@@ -68,7 +70,7 @@ namespace OpenRA.Primitives
 		public static bool BitsContainString(BitSetIndex bits, string value)
 		{
 			BitSetIndex valueBit;
-			lock (Bits)
+			lock (SyncObject)
 				if (!Bits.TryGetValue(value, out valueBit))
 					return false;
 			return (bits & valueBit) != 0;

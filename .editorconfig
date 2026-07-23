@@ -76,7 +76,7 @@ dotnet_diagnostic.IDE0290.severity = silent
 
 # IDE0330 Prefer 'System.Threading.Lock'
 #csharp_prefer_system_threading_lock = true
-dotnet_diagnostic.IDE0330.severity = silent # Requires C# 13
+dotnet_diagnostic.IDE0330.severity = warning
 
 ## Expression-bodied members
 
@@ -348,7 +348,7 @@ dotnet_diagnostic.IDE0350.severity = warning
 
 # IDE0360 Simplify property accessor
 #csharp_style_prefer_simple_property_accessors = true
-dotnet_diagnostic.IDE0360.severity = silent # Requires C# 13
+dotnet_diagnostic.IDE0360.severity = warning
 
 ## Field preferences
 

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Text;
+using System.Threading;
 using OpenRA.FileSystem;
 
 namespace OpenRA
@@ -19,7 +20,7 @@ namespace OpenRA
 	public static class FluentProvider
 	{
 		// Ensure thread-safety.
-		static readonly object SyncObject = new();
+		static readonly Lock SyncObject = new();
 		static FluentBundle modFluentBundle;
 		static FluentBundle mapFluentBundle;
 

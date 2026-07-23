@@ -13,12 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace OpenRA.Graphics
 {
 	public sealed class TerrainSpriteLayer : IDisposable
 	{
 		// PERF: we can reuse the IndexBuffer as all layers have the same size.
+		static readonly Lock IndexBuffersLock = new();
 		static readonly ConditionalWeakTable<World, IndexBufferRc> IndexBuffers = [];
 		readonly IndexBufferRc indexBufferWrapper;
 
@@ -54,7 +56,7 @@ namespace OpenRA.Graphics
 			vertexBuffer = Game.Renderer.Context.CreateEmptyVertexBuffer<Vertex>(vertices.Length);
 
 			indexRowStride = 6 * map.MapSize.Width;
-			lock (IndexBuffers)
+			lock (IndexBuffersLock)
 			{
 				indexBufferWrapper = IndexBuffers.GetValue(world, world => new IndexBufferRc(world));
 				indexBufferWrapper.AddRef();
@@ -239,7 +241,7 @@ namespace OpenRA.Graphics
 
 			vertexBuffer.Dispose();
 
-			lock (IndexBuffers)
+			lock (IndexBuffersLock)
 				indexBufferWrapper.Dispose();
 		}
 

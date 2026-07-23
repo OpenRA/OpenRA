@@ -194,13 +194,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 				var c = Color.Purple;
 				var psb = renderProxy.ProjectedShadowBounds;
 
-				Game.Renderer.RgbaColorRenderer.DrawPolygon(new float2[]
-				{
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(
+				[
 					wr.Viewport.WorldToViewPx(shadowOrigin + psb[1]),
 					wr.Viewport.WorldToViewPx(shadowOrigin + psb[3]),
 					wr.Viewport.WorldToViewPx(shadowOrigin + psb[0]),
 					wr.Viewport.WorldToViewPx(shadowOrigin + psb[2])
-				}, 1, c);
+				], 1, c);
 
 				// Draw bounding box
 				var draw = model.models.Where(v => v.IsVisible);
@@ -234,10 +234,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 				}
 
 				// Front face
-				cr.DrawPolygon(new[] { corners[0], corners[1], corners[3], corners[2] }, width, c);
+				cr.DrawPolygon([corners[0], corners[1], corners[3], corners[2]], width, c);
 
 				// Back face
-				cr.DrawPolygon(new[] { corners[4], corners[5], corners[7], corners[6] }, width, c);
+				cr.DrawPolygon([corners[4], corners[5], corners[7], corners[6]], width, c);
 
 				// Horizontal edges
 				cr.DrawLine(corners[0], corners[4], width, c);
