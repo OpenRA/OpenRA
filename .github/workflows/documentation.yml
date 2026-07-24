@@ -56,7 +56,7 @@ jobs:
         with:
           ref: ${{ needs.prepare.outputs.git_tag }}
 
-      - name: Install .NET 8
+      - name: Install .NET 10
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
@@ -111,7 +111,7 @@ jobs:
         with:
           ref: ${{ needs.prepare.outputs.git_tag }}
 
-      - name: Install .NET 8
+      - name: Install .NET 10
         uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
