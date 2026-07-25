@@ -41,6 +41,54 @@ GAGATE_B:
 	Replacement:
 		ReplaceableTypes: GDIGate
 
+GAFSDF:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Support
+		BuildPaletteOrder: 200
+		Prerequisites: gafire, ~structures.gdi, ~techlevel.superweapons
+		Description: actor-gafsdf.description
+	Tooltip:
+		Name: actor-gafsdf.name
+	Valued:
+		Cost: 50
+	Health:
+		HP: 20000
+	Armor:
+		Type: Concrete
+	Power:
+		Amount: -2
+	LineBuild:
+		NodeTypes: firestormwall
+	LineBuildNode:
+		Types: firestormwall
+	-Crushable:
+	-Building:
+	EnergyWall:
+		ActiveCondition: firestorm-active
+		Weapon: FirestormWall
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+		BuildSounds: place2.aud
+		UndeploySounds: cashturn.aud
+	GrantConditionOnPrerequisite:
+		Condition: firestorm-active
+		Prerequisites: firestormwall-active
+	DrainPrerequisitePowerOnDamage:
+		RequiresCondition: firestorm-active
+	-WithWallSpriteBody:
+	WithWallSpriteBody@ACTIVE:
+		RequiresCondition: firestorm-active
+		Type: firestormwall
+		Sequence: active
+		Name: active
+	WithWallSpriteBody@IDLE:
+		RequiresCondition: !firestorm-active
+		Type: firestormwall
+		Sequence: idle
+		Name: idle
+	BlocksProjectiles:
+		RequiresCondition: firestorm-active
+
 GACTWR:
 	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnPowerDown

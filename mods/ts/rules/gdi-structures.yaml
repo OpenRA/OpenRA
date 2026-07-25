@@ -793,19 +793,33 @@ GAFIRE:
 		EnabledSequence: active
 		SwitchingSequence: switching
 		DisabledSequence: disabled
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || firestorm-dormant
 		Palette: player-nobright
 		IsPlayerPalette: true
 		SwitchingLevel: 20
-		SwitchingLevelOnSpawn: 20
+		SwitchingLevelOnSpawn: 0
 	WithSwitchableOverlay@active-bright:
 		RequiresCondition: !build-incomplete
 		EnabledSequence: active-bright
-		PauseOnCondition: empdisable || disabled
+		PauseOnCondition: empdisable || disabled || firestorm-dormant
 		Palette: bright
 		IsDecoration: true
 		SwitchingLevel: 20
-		SwitchingLevelOnSpawn: 20
+		SwitchingLevelOnSpawn: 0
+	GrantPrerequisiteChargeDrainPower:
+		Prerequisite: firestormwall-active
+		DischargeModifier: 300
+		ChargeInterval: 7500
+		Icon: firestorm
+		PauseOnCondition: empdisable || disabled
+		Name: actor-gafire.firestormpower-name
+		Description: actor-gafire.firestormpower-description
+		EndChargeSpeechNotification: FireStormDefenseReady
+		EndChargeTextNotification: notification-firestorm-defense-ready
+	GrantConditionOnPrerequisite:
+		Condition: firestorm-dormant
+		Prerequisites: !firestormwall-active
+	SupportPowerChargeBar:
 	Power:
 		Amount: -100
 	ProvidesPrerequisite@buildingname:

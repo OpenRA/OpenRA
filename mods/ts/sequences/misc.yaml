@@ -730,6 +730,8 @@ icon:
 		Filename: pulsicon.shp
 	droppods:
 		Filename: podsicon.shp
+	firestorm:
+		Filename: fsdicon.shp
 
 clustermissile:
 	up: # TODO: use voxel

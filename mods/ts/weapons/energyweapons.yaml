@@ -208,3 +208,11 @@ LaserFence:
 		DebugOverlayColor: FF0000
 		Damage: 10000000
 		DamageTypes: FireDeath
+
+FirestormWall:
+	TargetActorCenter: true
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
+		DebugOverlayColor: FF8000
+		Damage: 10000000
+		DamageTypes: FireDeath

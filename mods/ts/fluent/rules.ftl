@@ -68,6 +68,7 @@ notification-select-target = Select target.
 notification-cluster-missile-ready = Cluster missile ready.
 notification-missile-launch-detected = Missile launch detected.
 notification-emp-cannon-ready = EMP cannon ready.
+notification-firestorm-defense-ready = Firestorm defense ready.
 
 ## Defaults
 notification-unit-lost = Unit lost.
@@ -395,6 +396,10 @@ actor-gafire =
     .name = Firestorm Generator
     .description =
     Building that grants access to the Firestorm device.
+    .firestormpower-name = Firestorm Defense
+    .firestormpower-description =
+    Raises the Firestorm Wall for a limited time.
+    Destroys anything caught in the barrier.
 
 actor-gaplug-socket-ioncannon-name = GDI Upgrade Center socket
 actor-gaplug-socket-hunterseeker-name = GDI Upgrade Center socket
@@ -420,6 +425,14 @@ actor-gawall =
     .description =
     Stops infantry and blocks enemy fire
     Can NOT be crushed by tanks.
+
+actor-gafsdf =
+    .name = Firestorm Wall
+    .description =
+    Passable while dormant. Becomes an impassable
+    barrier that destroys anything it touches while
+    the Firestorm Defense is active.
+    Requires a Firestorm Generator.
 
 actor-gagate-a-name = GDI Gate
 actor-gagate-b-name = GDI Gate
