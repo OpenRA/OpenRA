@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly EnergyWallInfo info;
 		IEnumerable<CPos> blockedPositions;
 
-		// Initial state is active to match Building adding the influence to the ActorMap
+		// Defaults to active so that a wall without an ActiveCondition behaves like a solid building.
 		// This will be updated by ConditionsChanged at actor creation.
 		bool active = true;
 
@@ -70,13 +70,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (info.ActiveCondition == null)
 				return;
 
-			var wasActive = active;
+			// Influence is deliberately left in place for both states: passability is handled by
+			// ITemporaryBlocker, and removing influence would hide inactive segments from the
+			// ActorMap lookups that WithWallSpriteBody uses to find its neighbours.
 			active = info.ActiveCondition.Evaluate(conditions);
-
-			if (!wasActive && active)
-				self.World.ActorMap.AddInfluence(self, this);
-			else if (wasActive && !active)
-				self.World.ActorMap.RemoveInfluence(self, this);
 		}
 
 		void ITick.Tick(Actor self)

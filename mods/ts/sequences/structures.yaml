@@ -1067,6 +1067,36 @@ gawall:
 		Offset: 0, 0
 		DepthSprite:
 
+gafsdf:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: gtfsdf.shp
+			SNOW: gafsdf.shp
+		Offset: 0, -12, 12
+		DepthSprite: isodepth.shp
+	idle:
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+	active:
+		Start: 32
+		Length: 16
+	damaged-active:
+		Start: 48
+		Length: 16
+	critical-active:
+		Start: 48
+		Length: 16
+	icon:
+		Filename: fspicon.shp
+		TilesetFilenames:
+		Offset: 0, 0
+		DepthSprite:
+
 gagate_a:
 	Defaults:
 		TilesetFilenames:
