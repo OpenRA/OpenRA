@@ -205,6 +205,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			selectedSize = MapSizes.Keys.Skip(1).First();
+
+			if (initialGeneratedMap != null)
+			{
+				var sizeLimit = MapSizes.Last().Value.Y;
+				var valid = generator.ValidateArgs(
+					modData,
+					initialGeneratedMap,
+					new Size(sizeLimit, sizeLimit),
+					MapGeneratorOption.VisibilityFlags.Lobby);
+				if (!valid)
+					initialGeneratedMap = null;
+			}
+
 			if (initialGeneratedMap != null)
 			{
 				// Make our own copy to prevent external mutation
@@ -284,16 +297,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (o.Id == "Seed")
 					continue;
 
-				if (!o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Lobby))
-					continue;
-
 				Widget optionWidget = null;
+				var hidden = !o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Lobby);
 				switch (o)
 				{
 					case MapGeneratorBooleanOption bo:
 					{
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = bo.Default ? trueString : falseString;
+
+						if (hidden)
+							break;
 
 						optionWidget = checkboxOptionTemplate.Clone();
 						var checkboxWidget = optionWidget.Get<CheckboxWidget>("CHECKBOX");
@@ -313,6 +327,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(io.Default);
 
+						if (hidden)
+							break;
+
 						optionWidget = textOptionTemplate.Clone();
 						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
 						var label = FluentProvider.GetMessage(io.Label);
@@ -322,9 +339,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						textFieldWidget.Text = generationArgs.Options[o.Id];
 						textFieldWidget.OnTextEdited = () =>
 						{
-							var valid = int.TryParse(textFieldWidget.Text, out _);
+							var valid = int.TryParse(textFieldWidget.Text, out var intValue);
 							if (valid)
-								generationArgs.Options[o.Id] = textFieldWidget.Text;
+							{
+								// Reformat the integer to improve cross-client compatibility.
+								generationArgs.Options[o.Id] = FieldSaver.FormatValue(intValue);
+							}
+
 							textFieldWidget.IsValid = () => valid;
 						};
 
@@ -338,6 +359,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(mio.Default);
+
+						if (hidden)
+							break;
 
 						optionWidget = dropdownOptionTemplate.Clone();
 						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
@@ -379,42 +403,42 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.TryGetValue(o.Id, out var option) || !validChoices.Contains(option))
 							generationArgs.Options[o.Id] = mo.DefaultFor(selectedTerrain, playerCount);
 
-						if (mo.Label != null && validChoices.Count > 0)
+						if (hidden || mo.Label == null || validChoices.Count == 0)
+							break;
+
+						optionWidget = dropdownOptionTemplate.Clone();
+						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
+						var label = FluentProvider.GetMessage(mo.Label);
+						labelWidget.GetText = () => label;
+
+						var labelCache = new CachedTransform<string, string>(v => FluentProvider.GetMessage(mo.Choices[v].Label + ".label"));
+						var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
+						dropDownWidget.GetText = () => labelCache.Update(generationArgs.Options[o.Id]);
+						dropDownWidget.OnMouseDown = _ =>
 						{
-							optionWidget = dropdownOptionTemplate.Clone();
-							var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
-							var label = FluentProvider.GetMessage(mo.Label);
-							labelWidget.GetText = () => label;
-
-							var labelCache = new CachedTransform<string, string>(v => FluentProvider.GetMessage(mo.Choices[v].Label + ".label"));
-							var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
-							dropDownWidget.GetText = () => labelCache.Update(generationArgs.Options[o.Id]);
-							dropDownWidget.OnMouseDown = _ =>
+							ScrollItemWidget SetupItem(string choice, ScrollItemWidget template)
 							{
-								ScrollItemWidget SetupItem(string choice, ScrollItemWidget template)
+								bool IsSelected() => choice == generationArgs.Options[o.Id];
+								void OnClick()
 								{
-									bool IsSelected() => choice == generationArgs.Options[o.Id];
-									void OnClick()
-									{
-										generationArgs.Options[o.Id] = choice;
-										GenerateMap();
-									}
-
-									var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
-
-									var itemLabel = FluentProvider.GetMessage(mo.Choices[choice].Label + ".label");
-									item.Get<LabelWidget>("LABEL").GetText = () => itemLabel;
-									if (FluentProvider.TryGetMessage(mo.Choices[choice].Label + ".description", out var desc))
-										item.GetTooltipText = () => desc;
-									else
-										item.GetTooltipText = null;
-
-									return item;
+									generationArgs.Options[o.Id] = choice;
+									GenerateMap();
 								}
 
-								dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", 250, validChoices, SetupItem);
-							};
-						}
+								var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
+
+								var itemLabel = FluentProvider.GetMessage(mo.Choices[choice].Label + ".label");
+								item.Get<LabelWidget>("LABEL").GetText = () => itemLabel;
+								if (FluentProvider.TryGetMessage(mo.Choices[choice].Label + ".description", out var desc))
+									item.GetTooltipText = () => desc;
+								else
+									item.GetTooltipText = null;
+
+								return item;
+							}
+
+							dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", 250, validChoices, SetupItem);
+						};
 
 						break;
 					}
