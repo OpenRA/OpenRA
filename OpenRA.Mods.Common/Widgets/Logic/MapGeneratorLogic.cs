@@ -285,7 +285,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					continue;
 
 				if (!o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Lobby))
+				{
+					generationArgs.Options.Remove(o.Id);
 					continue;
+				}
 
 				Widget optionWidget = null;
 				switch (o)
