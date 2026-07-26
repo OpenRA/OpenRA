@@ -1012,5 +1012,10 @@ namespace OpenRA.Mods.Common.Traits
 		ImmutableArray<string> Tilesets { get; }
 		ImmutableArray<MapGeneratorOption> Options { get; }
 		int GetPlayerCount(MapGenerationArgs args);
+		bool ValidateArgs(
+			ModData modData,
+			MapGenerationArgs args,
+			Size sizeLimit,
+			MapGeneratorOption.VisibilityFlags visibilityRequirements);
 	}
 }

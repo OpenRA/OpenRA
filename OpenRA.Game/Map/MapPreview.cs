@@ -484,6 +484,9 @@ namespace OpenRA
 				if (generator == null)
 					throw new Exception($"Unknown map generator type {args.Generator}");
 
+				if (!generator.ValidateArgs(modData, args))
+					throw new Exception("MapGenerationArgs validation failed");
+
 				if (!generator.TryGenerateMetadata(modData, args, out var players, out var ruleDefinitions))
 					throw new Exception("Failed to generate map metadata");
 

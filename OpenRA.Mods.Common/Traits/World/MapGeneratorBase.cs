@@ -9,10 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.MapGenerator;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -112,6 +114,104 @@ namespace OpenRA.Mods.Common.Traits
 				return FieldLoader.GetValue<int>("Players", players);
 
 			return 0;
+		}
+
+		public virtual bool ValidateArgs(ModData modData, MapGenerationArgs args)
+		{
+			return ValidateArgs(
+				modData,
+				args,
+				new Size(1000, 1000),
+				MapGeneratorOption.VisibilityFlags.Lobby);
+		}
+
+		/// <summary>
+		/// Detects incompatibilities in option choices. The method will return false if any of the following are found:
+		/// Non-default choices for hidden options, invalid choices, missing choices, choices for unrecognized options.
+		/// The map width and height must both be strictly less than sizeLimit width and height.
+		/// </summary>
+		public virtual bool ValidateArgs(
+			ModData modData,
+			MapGenerationArgs args,
+			Size sizeLimit,
+			MapGeneratorOption.VisibilityFlags visibilityRequirements)
+		{
+			var falseString = FieldSaver.FormatValue(false);
+			var trueString = FieldSaver.FormatValue(true);
+			var choices = args.Options;
+			var definitions = Options;
+			var playerCount = GetPlayerCount(args);
+			if (args.Size.Width >= sizeLimit.Width || args.Size.Height >= sizeLimit.Height)
+				return false;
+
+			if (!Tilesets.Contains(args.Tileset))
+				return false;
+
+			var terrain = modData.DefaultTerrainInfo[args.Tileset];
+
+			foreach (var definition in definitions)
+			{
+				if (!choices.TryGetValue(definition.Id, out var choice))
+					return false;
+
+				var needsDefault = !definition.Visibility.HasFlag(visibilityRequirements);
+
+				switch (definition)
+				{
+					case MapGeneratorBooleanOption d:
+					{
+						if (needsDefault && FieldSaver.FormatValue(d.Default) != choice)
+							return false;
+
+						if (choice != falseString && choice != trueString)
+							return false;
+
+						break;
+					}
+
+					case MapGeneratorIntegerOption d:
+					{
+						if (needsDefault && FieldSaver.FormatValue(d.Default) != choice)
+							return false;
+
+						if (!Exts.TryParseInt32Invariant(choice, out _))
+							return false;
+
+						break;
+					}
+
+					case MapGeneratorMultiIntegerChoiceOption d:
+					{
+						if (needsDefault && FieldSaver.FormatValue(d.Default) != choice)
+							return false;
+
+						if (!Exts.TryParseInt32Invariant(choice, out var intChoice))
+							return false;
+
+						if (!d.Choices.Contains(intChoice))
+							return false;
+
+						break;
+					}
+
+					case MapGeneratorMultiChoiceOption d:
+					{
+						if (needsDefault && d.DefaultFor(terrain, playerCount) != choice)
+							return false;
+
+						var validChoices = d.ValidChoices(terrain, playerCount);
+						if (!validChoices.Contains(choice))
+							return false;
+
+						break;
+					}
+
+					default:
+						throw new NotImplementedException($"Unhandled MapGeneratorOption type {definition.GetType().Name}");
+				}
+			}
+
+			return choices.Count == definitions.Length;
 		}
 
 		public abstract Map Generate(ModData modData, MapGenerationArgs args);

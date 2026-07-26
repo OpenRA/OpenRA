@@ -123,16 +123,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var o in generator.Options)
 			{
-				if (!o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Editor))
-					continue;
-
 				Widget optionWidget = null;
+				var hidden = !o.Visibility.HasFlag(MapGeneratorOption.VisibilityFlags.Editor);
 				switch (o)
 				{
 					case MapGeneratorBooleanOption bo:
 					{
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = bo.Default ? trueString : falseString;
+
+						if (hidden)
+							break;
 
 						optionWidget = checkboxOptionTemplate.Clone();
 						var checkboxWidget = optionWidget.Get<CheckboxWidget>("CHECKBOX");
@@ -148,6 +149,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(io.Default);
+
+						if (hidden)
+							break;
 
 						optionWidget = textOptionTemplate.Clone();
 						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
@@ -173,6 +177,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						if (!generationArgs.Options.ContainsKey(o.Id))
 							generationArgs.Options[o.Id] = FieldSaver.FormatValue(mio.Default);
+
+						if (hidden)
+							break;
 
 						optionWidget = dropdownOptionTemplate.Clone();
 						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
@@ -213,37 +220,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (!generationArgs.Options.TryGetValue(o.Id, out var option) || !validChoices.Contains(option))
 							generationArgs.Options[o.Id] = mo.DefaultFor(world.Map.Rules.TerrainInfo, playerCount);
 
-						if (mo.Label != null && validChoices.Count > 0)
+						if (hidden || mo.Label == null || validChoices.Count == 0)
+							break;
+
+						optionWidget = dropdownOptionTemplate.Clone();
+						var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
+						var label = FluentProvider.GetMessage(mo.Label);
+						labelWidget.GetText = () => label;
+
+						var labelCache = new CachedTransform<string, string>(v => FluentProvider.GetMessage(mo.Choices[v].Label + ".label"));
+						var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
+						dropDownWidget.GetText = () => labelCache.Update(generationArgs.Options[o.Id]);
+						dropDownWidget.OnMouseDown = _ =>
 						{
-							optionWidget = dropdownOptionTemplate.Clone();
-							var labelWidget = optionWidget.Get<LabelWidget>("LABEL");
-							var label = FluentProvider.GetMessage(mo.Label);
-							labelWidget.GetText = () => label;
-
-							var labelCache = new CachedTransform<string, string>(v => FluentProvider.GetMessage(mo.Choices[v].Label + ".label"));
-							var dropDownWidget = optionWidget.Get<DropDownButtonWidget>("DROPDOWN");
-							dropDownWidget.GetText = () => labelCache.Update(generationArgs.Options[o.Id]);
-							dropDownWidget.OnMouseDown = _ =>
+							ScrollItemWidget SetupItem(string choice, ScrollItemWidget template)
 							{
-								ScrollItemWidget SetupItem(string choice, ScrollItemWidget template)
-								{
-									bool IsSelected() => choice == generationArgs.Options[o.Id];
-									void OnClick() => generationArgs.Options[o.Id] = choice;
-									var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
+								bool IsSelected() => choice == generationArgs.Options[o.Id];
+								void OnClick() => generationArgs.Options[o.Id] = choice;
+								var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
 
-									var itemLabel = FluentProvider.GetMessage(mo.Choices[choice].Label + ".label");
-									item.Get<LabelWidget>("LABEL").GetText = () => itemLabel;
-									if (FluentProvider.TryGetMessage(mo.Choices[choice].Label + ".description", out var desc))
-										item.GetTooltipText = () => desc;
-									else
-										item.GetTooltipText = null;
+								var itemLabel = FluentProvider.GetMessage(mo.Choices[choice].Label + ".label");
+								item.Get<LabelWidget>("LABEL").GetText = () => itemLabel;
+								if (FluentProvider.TryGetMessage(mo.Choices[choice].Label + ".description", out var desc))
+									item.GetTooltipText = () => desc;
+								else
+									item.GetTooltipText = null;
 
-									return item;
-								}
+								return item;
+							}
 
-								dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", 250, validChoices, SetupItem);
-							};
-						}
+							dropDownWidget.ShowDropDown("LABEL_DROPDOWN_WITH_TOOLTIP_TEMPLATE", 250, validChoices, SetupItem);
+						};
 
 						break;
 					}
