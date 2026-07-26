@@ -4,7 +4,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="10.0.0" />
-		<PackageReference Include="Linguini.Bundle" Version="0.8.1" />
+		<PackageReference Include="Linguini.Bundle" Version="0.9.2" />
 		<PackageReference Include="OpenRA-Eluant" Version="1.0.23" />
 		<PackageReference Include="Mono.NAT" Version="3.0.4" />
 		<PackageReference Include="SharpZipLib" Version="1.4.2" />

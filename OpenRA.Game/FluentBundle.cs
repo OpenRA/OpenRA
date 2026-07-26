@@ -116,7 +116,7 @@ namespace OpenRA
 					var stream = fileSystem.Open(path);
 					using (var reader = new StreamReader(stream))
 					{
-						var parser = new LinguiniParser(reader);
+						var parser = LinguiniParser.FromTextReader(reader, path);
 						var resource = parser.Parse();
 						foreach (var error in resource.Errors)
 							onError(error);
@@ -128,7 +128,7 @@ namespace OpenRA
 
 			if (!string.IsNullOrEmpty(text))
 			{
-				var parser = new LinguiniParser(text);
+				var parser = LinguiniParser.FromFragment(text);
 				var resource = parser.Parse();
 				foreach (var error in resource.Errors)
 					onError(error);
