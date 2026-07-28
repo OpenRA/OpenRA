@@ -1,0 +1,20 @@
+# Space-Age: per-unit oxygen tuning. Loaded after ra|rules/infantry.yaml +
+# spaceage-defaults.yaml, so these merge onto specific actors (which already inherit
+# the ^Soldier vacuum traits).
+
+E1:            # Rifle Infantry — small tank, suffocates quickly
+	Oxygen:
+		Capacity: 5000
+		DrainRate: 3
+	DamagedByVacuum:
+		Damage: 350
+
+E3:            # Rocket Soldier — standard suit
+	Oxygen:
+		Capacity: 6000
+
+E6:            # Engineer — oversized life-support pack, lasts much longer
+	Oxygen:
+		Capacity: 9000
+		DrainRate: 1
+		RefillRate: 60

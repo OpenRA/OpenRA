@@ -130,6 +130,9 @@ test: all
 	@echo "Testing Red Alert mod MiniYAML..."
 	@./utility.sh ra-content --check-yaml
 	@./utility.sh ra --check-yaml
+	@echo
+	@echo "Testing Lunar Red Alert (Space-Age) mod MiniYAML..."
+	@./utility.sh spaceage --check-yaml
 
 tests:
 	@dotnet build OpenRA.Test/OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=$(TARGETPLATFORM)

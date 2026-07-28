@@ -1,0 +1,39 @@
+# Space-Age: environmental traits layered onto the base RA templates.
+# Loaded AFTER ra|rules/defaults.yaml, so these nodes merge into ^Soldier / ^Vehicle.
+#
+# Condition flow:
+#   pressurised  granted to units inside a life-support bubble (see spaceage-structures.yaml);
+#                the unit must declare ExternalCondition@PRESSURE to receive it.
+#   no-oxygen    granted by Oxygen when the tank hits zero; consumed here to slow the unit.
+#
+# Vehicles are implicitly vacuum-proof: they simply don't get Oxygen / DamagedByVacuum.
+
+^Soldier:
+	# Declare that this unit is willing to RECEIVE the pressurised external condition.
+	ExternalCondition@PRESSURE:
+		Condition: pressurised
+	Oxygen:
+		Capacity: 6000
+		DrainRate: 2
+		RefillRate: 40
+		DepletedCondition: no-oxygen
+		PressurisedCondition: pressurised
+	OxygenBar:
+	DamagedByVacuum:
+		Damage: 300
+		DamageInterval: 16
+		DamageTypes: Vacuum
+		SafeCondition: pressurised
+		RequireOxygenDepleted: true
+	# Low-gravity bounding stride.
+	GravitySpeedModifier@LOWG:
+		Modifier: 140
+	# Gasping for air: half speed while the O2 tank is empty (consumes no-oxygen).
+	GravitySpeedModifier@SUFFOCATING:
+		RequiresCondition: no-oxygen
+		Modifier: 50
+
+^Vehicle:
+	# Sealed cabins: no oxygen worries, just gentler low-g handling than infantry.
+	GravitySpeedModifier@LOWG:
+		Modifier: 110

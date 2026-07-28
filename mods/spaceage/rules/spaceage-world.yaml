@@ -1,0 +1,6 @@
+# Space-Age: world-level gravity. Merges into the base World actor defined in
+# ra|rules/world.yaml (loaded earlier), adding the LowGravity trait read by arcing
+# projectiles.
+World:
+	LowGravity:
+		GravityPercent: 16      # 16 = Moon, 38 = Mars, 100 = Earth

@@ -1,0 +1,33 @@
+# Weapon tuning for a low-gravity, vacuum world.
+#
+# Two things change on the Moon:
+#  1. Arcing weapons float. Either use the LowGravity projectile patch (physically
+#     unified) OR retune here (YAML-only). Both examples shown.
+#  2. There is no air, so blast/concussion warheads are weaker and there is no fire
+#     propagation. Give vacuum-appropriate warheads the `Vacuum` damage type so the
+#     DamagedByVacuum / armour tables can interact with them.
+
+# ---- Arcing artillery, retuned for 1/6 g (YAML-only route) -----------------
+# Longer range + flatter launch because shells hang in low gravity.
+ArtilleryShell:
+	Projectile: GravityBomb
+		# If NOT using the engine patch, cut Acceleration to ~1/6 to fake low-g:
+		Acceleration: 20      # was ~128 on Earth; tune to taste
+		Velocity: 0,0,213
+	Warhead@damage: SpreadDamage
+		Damage: 4000
+		DamageTypes: Prone50Percent, TriggerProne, Vacuum
+		# No air -> no fire spread; drop any IncendiaryWarhead you inherited.
+
+# ---- Ballistic small-arms: flatten the arc -----------------------------
+Rifle:
+	Projectile: Bullet
+		LaunchAngle: 0        # flat; vacuum + low-g = laser-straight tracers
+		Speed: 850
+	Warhead@damage: SpreadDamage
+		Damage: 40
+		DamageTypes: Vacuum
+
+# NOTE: `Vacuum` must be declared as a valid damage type wherever your Armor /
+# DamageMultiplier tables live (it is just a string BitSet member — add it to the
+# armour class definitions so units can resist/amplify vacuum-tagged damage).

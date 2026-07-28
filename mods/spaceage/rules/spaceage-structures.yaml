@@ -1,0 +1,24 @@
+# Space-Age: life-support structures. Rather than ship a brand-new DOME actor (which
+# would need its own art/sequences), we project the pressurised bubble from existing
+# base structures so the mechanic works immediately with real sprites. Move these onto
+# a dedicated DOME actor once you have art (see SPACE-AGE-DESIGN.md §3).
+
+# Construction Yard = the main pressurised dome of a base.
+FACT:
+	ProximityExternalCondition@LIFESUPPORT:
+		Condition: pressurised
+		Range: 8c0              # 8 cells
+		ValidRelationships: Ally
+
+# Power plants double as smaller atmosphere processors — forward pressure.
+POWR:
+	ProximityExternalCondition@LIFESUPPORT:
+		Condition: pressurised
+		Range: 4c0
+		ValidRelationships: Ally
+
+APWR:
+	ProximityExternalCondition@LIFESUPPORT:
+		Condition: pressurised
+		Range: 5c0
+		ValidRelationships: Ally
