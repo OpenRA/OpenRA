@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly int interval;
 
 		readonly TintModifiers modifiers;
-		readonly float3 tint;
+		readonly Vector3 tint;
 		readonly float? alpha;
 
 		int tick;
@@ -43,11 +44,11 @@ namespace OpenRA.Mods.Common.Effects
 			: this(target, count, interval, delay)
 		{
 			modifiers = TintModifiers.ReplaceColor;
-			tint = new float3(color.R, color.G, color.B) / 255f;
+			tint = new Vector3(color.R, color.G, color.B) / 255f;
 			this.alpha = alpha;
 		}
 
-		public FlashTarget(Actor target, float3 tint, int count = 2, int interval = 2, int delay = 0)
+		public FlashTarget(Actor target, Vector3 tint, int count = 2, int interval = 2, int delay = 0)
 			: this(target, count, interval, delay)
 		{
 			this.tint = tint;

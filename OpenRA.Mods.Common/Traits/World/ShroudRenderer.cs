@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -95,9 +96,9 @@ namespace OpenRA.Mods.Common.Traits
 			BottomLeft
 		}
 
-		readonly struct TileInfo(in float3 screenPosition, byte variant)
+		readonly struct TileInfo(in Vector3 screenPosition, byte variant)
 		{
-			public readonly float3 ScreenPosition = screenPosition;
+			public readonly Vector3 ScreenPosition = screenPosition;
 			public readonly byte Variant = variant;
 		}
 

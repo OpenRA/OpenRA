@@ -250,12 +250,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var hover = Ui.MouseOverWidget == this || Children.FirstOrDefault(c => c == Ui.MouseOverWidget) != null;
 			DrawBackground(rb, disabled, Depressed, hover, highlighted);
 			if (Contrast)
-				font.DrawTextWithContrast(text, position + stateOffset,
+				font.DrawTextWithContrast(text, (position + stateOffset).ToVector2(),
 					disabled ? colordisabled : color, bgDark, bgLight, ContrastRadius);
 			else if (Shadow)
-				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
+				font.DrawTextWithShadow(text, position.ToVector2(), color, bgDark, bgLight, 1);
 			else
-				font.DrawText(text, position + stateOffset,
+				font.DrawText(text, (position + stateOffset).ToVector2(),
 					disabled ? colordisabled : color);
 		}
 

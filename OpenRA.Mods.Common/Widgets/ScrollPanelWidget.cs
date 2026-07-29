@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -212,11 +213,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var upArrowImage = getUpArrowImage.Update((upDisabled, upPressed, upHover, false, false));
 				WidgetUtils.DrawSprite(upArrowImage,
-					new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
+					new Vector2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
 
 				var downArrowImage = getDownArrowImage.Update((downDisabled, downPressed, downHover, false, false));
 				WidgetUtils.DrawSprite(downArrowImage,
-					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
+					new Vector2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 			}
 
 			var drawBounds = backgroundRect.InflateBy(-BorderWidth, -BorderWidth, -BorderWidth, -BorderWidth);

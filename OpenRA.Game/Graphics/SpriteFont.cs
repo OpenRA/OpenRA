@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
@@ -58,21 +59,21 @@ namespace OpenRA.Graphics
 			contrastGlyphs.Clear();
 		}
 
-		void DrawTextContrast(string text, float2 location, Color contrastColor, int contrastOffset)
+		void DrawTextContrast(string text, Vector2 location, Color contrastColor, int contrastOffset)
 		{
 			// Offset from the baseline position to the top-left of the glyph for rendering
-			location += new float2(0, size);
+			location += new Vector2(0, size);
 
 			// Calculate positions in screen pixel coordinates
 			var screenContrast = (int)(contrastOffset * deviceScale);
 			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
-			var contrastVector = new float2(screenContrast, screenContrast);
-			var tint = new float3(contrastColor.R / 255f, contrastColor.G / 255f, contrastColor.B / 255f);
+			var contrastVector = new Vector2(screenContrast, screenContrast);
+			var tint = new Vector3(contrastColor.R / 255f, contrastColor.G / 255f, contrastColor.B / 255f);
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
-					location += new float2(0, size);
+					location += new Vector2(0, size);
 					screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 					continue;
 				}
@@ -84,7 +85,7 @@ namespace OpenRA.Graphics
 				{
 					var contrastSprite = contrastGlyphs[(s, screenContrast)];
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(contrastSprite,
-						(screen + g.Offset - contrastVector) / deviceScale,
+						(((screen + g.Offset).ToVector2() - contrastVector) / deviceScale).AsVector3(),
 						1f / deviceScale,
 						tint, 1f);
 				}
@@ -93,19 +94,19 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawText(string text, float2 location, Color c)
+		public void DrawText(string text, Vector2 location, Color c)
 		{
 			// Offset from the baseline position to the top-left of the glyph for rendering
-			location += new float2(0, size);
+			location += new Vector2(0, size);
 
 			// Calculate positions in screen pixel coordinates
 			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
-			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var tint = new Vector3(c.R / 255f, c.G / 255f, c.B / 255f);
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
-					location += new float2(0, size);
+					location += new Vector2(0, size);
 					screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 					continue;
 				}
@@ -115,7 +116,7 @@ namespace OpenRA.Graphics
 				// Convert screen coordinates back to UI coordinates for drawing
 				if (g.Sprite != null)
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
-					(screen + g.Offset).ToFloat2() / deviceScale,
+					((screen + g.Offset).ToVector2() / deviceScale).AsVector3(),
 					1f / deviceScale,
 					tint, 1f);
 
@@ -123,28 +124,28 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		static float2 Rotate(float2 v, float sina, float cosa, float2 offset)
+		static Vector2 Rotate(Vector2 v, float sina, float cosa, Vector2 offset)
 		{
-			return new float2(
+			return new Vector2(
 				v.X * cosa - v.Y * sina + offset.X,
 				v.X * sina + v.Y * cosa + offset.Y);
 		}
 
-		public void DrawText(string text, float2 location, Color c, float angle)
+		public void DrawText(string text, Vector2 location, Color c, float angle)
 		{
 			// Offset from the baseline position to the top-left of the glyph for rendering
 			// All positions are calculated in UI coordinates
-			var offset = new float2(0, size);
+			var offset = new Vector2(0, size);
 			var cosa = (float)Math.Cos(-angle);
 			var sina = (float)Math.Sin(-angle);
-			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var tint = new Vector3(c.R / 255f, c.G / 255f, c.B / 255f);
 
 			var p = offset;
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
-					offset += new float2(0, size);
+					offset += new Vector2(0, size);
 					p = offset;
 					continue;
 				}
@@ -152,12 +153,12 @@ namespace OpenRA.Graphics
 				var g = glyphs[s];
 				if (g.Sprite != null)
 				{
-					var tl = new float2(
+					var tl = new Vector2(
 						p.X + g.Offset.X / deviceScale,
 						p.Y + g.Offset.Y / deviceScale);
-					var br = tl + g.Sprite.Size.XY / deviceScale;
-					var tr = new float2(br.X, tl.Y);
-					var bl = new float2(tl.X, br.Y);
+					var br = tl + g.Sprite.Size.AsVector2() / deviceScale;
+					var tr = new Vector2(br.X, tl.Y);
+					var bl = new Vector2(tl.X, br.Y);
 
 					var ra = Rotate(tl, sina, cosa, location);
 					var rb = Rotate(tr, sina, cosa, location);
@@ -165,20 +166,22 @@ namespace OpenRA.Graphics
 					var rd = Rotate(bl, sina, cosa, location);
 
 					// Offset rotated glyph to align the top-left corner with the screen pixel grid
-					var screenOffset = new float2((int)(ra.X * deviceScale + 0.5f), (int)(ra.Y * deviceScale + 0.5f)) / deviceScale - ra;
+					var screenOffset = new Vector2((int)(ra.X * deviceScale + 0.5f), (int)(ra.Y * deviceScale + 0.5f)) / deviceScale - ra;
+
+					// Promoted Vector2 positions to Vector3 (with Z = 0) to match DrawSprite's expected signature
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
-						ra + screenOffset,
-						rb + screenOffset,
-						rc + screenOffset,
-						rd + screenOffset,
+						(ra + screenOffset).AsVector3(),
+						(rb + screenOffset).AsVector3(),
+						(rc + screenOffset).AsVector3(),
+						(rd + screenOffset).AsVector3(),
 						tint, 1f);
 				}
 
-				p += new float2(g.Advance / deviceScale, 0);
+				p += new Vector2(g.Advance / deviceScale, 0);
 			}
 		}
 
-		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
+		public void DrawTextWithContrast(string text, Vector2 location, Color fg, Color bg, int offset)
 		{
 			if (offset > 0)
 				DrawTextContrast(text, location, bg, offset);
@@ -186,43 +189,43 @@ namespace OpenRA.Graphics
 			DrawText(text, location, fg);
 		}
 
-		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
+		public void DrawTextWithContrast(string text, Vector2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
 			DrawTextWithContrast(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
 		}
 
-		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bg, int offset)
+		public void DrawTextWithShadow(string text, Vector2 location, Color fg, Color bg, int offset)
 		{
 			if (offset != 0)
 			{
 				// Shadow offsets are rounded to an integer number of screen pixels.
 				// This makes sure the shadow will be positioned consistently everywhere on the screen.
 				var screenOffset = (int)(offset * deviceScale) / deviceScale;
-				DrawText(text, location + new float2(screenOffset, screenOffset), bg);
+				DrawText(text, location + new Vector2(screenOffset, screenOffset), bg);
 			}
 
 			DrawText(text, location, fg);
 		}
 
-		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset)
+		public void DrawTextWithShadow(string text, Vector2 location, Color fg, Color bgDark, Color bgLight, int offset)
 		{
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset);
 		}
 
-		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bg, int offset, float angle)
+		public void DrawTextWithShadow(string text, Vector2 location, Color fg, Color bg, int offset, float angle)
 		{
 			if (offset != 0)
 			{
 				// Shadow offsets are rounded to an integer number of screen pixels.
 				// This makes sure the shadow will be positioned consistently everywhere on the screen.
 				var screenOffset = (int)(offset * deviceScale) / deviceScale;
-				DrawText(text, location + new float2(screenOffset, screenOffset), bg, angle);
+				DrawText(text, location + new Vector2(screenOffset, screenOffset), bg, angle);
 			}
 
 			DrawText(text, location, fg, angle);
 		}
 
-		public void DrawTextWithShadow(string text, float2 location, Color fg, Color bgDark, Color bgLight, int offset, float angle)
+		public void DrawTextWithShadow(string text, Vector2 location, Color fg, Color bgDark, Color bgLight, int offset, float angle)
 		{
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}

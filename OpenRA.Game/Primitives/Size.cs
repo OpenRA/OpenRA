@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 
 namespace OpenRA.Primitives
 {
@@ -51,9 +52,14 @@ namespace OpenRA.Primitives
 			return new(Width, Height);
 		}
 
-		public static Size FromInt2(int2 xy)
+		public static Size FromVector(Vector2 xy)
 		{
-			return new(xy.X, xy.Y);
+			return new((int)xy.X, (int)xy.Y);
+		}
+
+		public Vector2 ToVector2()
+		{
+			return new(Width, Height);
 		}
 
 		public bool Equals(Size other)

@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -79,13 +80,13 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var t in texts)
 			{
 				var textSize = font.Measure(t.Text);
-				var location = new float2(Bounds.X, Bounds.Y + y);
+				var location = new Vector2(Bounds.X, Bounds.Y + y);
 
 				if (Align == TextAlign.Center)
-					location += new int2((Bounds.Width - textSize.X) / 2, 0);
+					location += new Vector2((Bounds.Width - textSize.X) / 2, 0);
 
 				if (Align == TextAlign.Right)
-					location += new int2(Bounds.Width - textSize.X, 0);
+					location += new Vector2(Bounds.Width - textSize.X, 0);
 
 				font.DrawTextWithShadow(t.Text, location, t.Color, bgDark, bgLight, 1);
 				y += (font.Measure(t.Text).Y + 5) * (int)Order;

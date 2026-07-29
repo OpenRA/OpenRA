@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 
@@ -129,28 +130,28 @@ namespace OpenRA.Graphics
 			return pal.TextureIndex;
 		}
 
-		internal void DrawSprite(Sprite s, int paletteTextureIndex, in float3 location, in float3 scale, float rotation = 0f)
+		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 location, in Vector3 scale, float rotation = 0f)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, float3.Ones,
+			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, Vector3.One,
 								1f, rotation);
 			vertexCount += 4;
 		}
 
-		internal void DrawSprite(Sprite s, int paletteTextureIndex, in float3 location, float scale, float rotation = 0f)
+		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 location, float scale, float rotation = 0f)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, float3.Ones,
+			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, Vector3.One,
 								1f, rotation);
 			vertexCount += 4;
 		}
 
-		public void DrawSprite(Sprite s, PaletteReference pal, in float3 location, float scale = 1f, float rotation = 0f)
+		public void DrawSprite(Sprite s, PaletteReference pal, in Vector3 location, float scale = 1f, float rotation = 0f)
 		{
 			DrawSprite(s, ResolveTextureIndex(s, pal), location, scale, rotation);
 		}
 
-		internal void DrawSprite(Sprite s, int paletteTextureIndex, in float3 location, float scale, in float3 tint, float alpha,
+		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 location, float scale, in Vector3 tint, float alpha,
 			float rotation = 0f)
 		{
 			var samplers = SetRenderStateForSprite(s);
@@ -159,13 +160,13 @@ namespace OpenRA.Graphics
 			vertexCount += 4;
 		}
 
-		public void DrawSprite(Sprite s, PaletteReference pal, in float3 location, float scale, in float3 tint, float alpha,
+		public void DrawSprite(Sprite s, PaletteReference pal, in Vector3 location, float scale, in Vector3 tint, float alpha,
 			float rotation = 0f)
 		{
 			DrawSprite(s, ResolveTextureIndex(s, pal), location, scale, tint, alpha, rotation);
 		}
 
-		internal void DrawSprite(Sprite s, int paletteTextureIndex, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)
+		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 a, in Vector3 b, in Vector3 c, in Vector3 d, in Vector3 tint, float alpha)
 		{
 			var samplers = SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, paletteTextureIndex, tint, alpha, vertexCount);

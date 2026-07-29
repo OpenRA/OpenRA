@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
@@ -51,8 +52,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var pos = wr.Screen3DPxPosition(Pos);
-			var tl = wr.Viewport.WorldToViewPx(pos);
-			var br = wr.Viewport.WorldToViewPx(pos + new float3(64, 64, 0));
+			var tl = wr.Viewport.WorldToViewPx(pos).ToVector3();
+			var br = wr.Viewport.WorldToViewPx(pos + new Vector3(64, 64, 0)).ToVector3();
 			Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.Red);
 		}
 
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		{
 			var pos = wr.Screen3DPxPosition(Pos);
 			var tl = wr.Viewport.WorldToViewPx(pos);
-			var br = wr.Viewport.WorldToViewPx(pos + new float3(64, 64, 0));
+			var br = wr.Viewport.WorldToViewPx(pos + new Vector3(64, 64, 0));
 			return new Rectangle(tl.X, tl.Y, br.X - tl.X, br.Y - tl.Y);
 		}
 	}

@@ -117,12 +117,13 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
+			var floatPos = position.ToVector2();
 			if (Contrast)
-				font.DrawTextWithContrast(text, position, color, bgDark, bgLight, ContrastRadius);
+				font.DrawTextWithContrast(text, floatPos, color, bgDark, bgLight, ContrastRadius);
 			else if (Shadow)
-				font.DrawTextWithShadow(text, position, color, bgDark, bgLight, 1);
+				font.DrawTextWithShadow(text, floatPos, color, bgDark, bgLight, 1);
 			else
-				font.DrawText(text, position, color);
+				font.DrawText(text, floatPos, color);
 		}
 
 		public override LabelWidget Clone() { return new LabelWidget(this); }

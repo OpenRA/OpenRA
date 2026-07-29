@@ -109,8 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				color = Color.FromAhsv(
 					hue + (i % 2 == 0 ? -1 : 1) * (i / 2) * 0.1f * (0.2f + random.NextFloat()),
-					float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat()),
-					float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat()));
+					OpenRA.Graphics.Util.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat()),
+					OpenRA.Graphics.Util.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat()));
 
 				if (!IsInvalidColor(color, terrainColors) && !IsInvalidColor(color, playerColors))
 				{
@@ -121,8 +121,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Failed to find a solution within a reasonable time: return a random color without any validation
 			onError?.Invoke(InvalidPlayerColor);
-			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			var randomSat = OpenRA.Graphics.Util.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			var randomVal = OpenRA.Graphics.Util.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
 			return Color.FromAhsv(random.NextFloat(), randomSat, randomVal);
 		}
 
@@ -149,8 +149,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Fall back to a random non-preset color
 			var randomHue = random.NextFloat();
-			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			var randomSat = OpenRA.Graphics.Util.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			var randomVal = OpenRA.Graphics.Util.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
 			return MakeValid(randomHue, randomSat, randomVal, random, terrainColors, playerColors, null);
 		}
 
@@ -171,8 +171,8 @@ namespace OpenRA.Mods.Common.Traits
 			IReadOnlyCollection<Color> playerColors)
 		{
 			var h = random.NextFloat();
-			var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			var s = OpenRA.Graphics.Util.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			var v = OpenRA.Graphics.Util.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
 			return MakeValid(h, s, v, random, terrainColors, playerColors, null);
 		}
 

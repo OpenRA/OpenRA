@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Traits;
@@ -94,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!a.IsCanceling)
 					foreach (var n in a.TargetLineNodes(self))
 						if (n.Tile != null && n.Target.Type != TargetType.Invalid)
-							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, 1f, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+							yield return new SpriteRenderable(n.Tile, n.Target.CenterPosition, WVec.Zero, -511, pal, 1f, 1f, Vector3.One, TintModifiers.IgnoreWorldTint, true);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable => false;

@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			var color = disabled ? TextColorDisabled : !valid ? TextColorInvalid : TextColor;
-			font.DrawText(apparentText, textPos, color);
+			font.DrawText(apparentText, textPos.ToVector2(), color);
 
 			if (isTextOverflowing)
 				Game.Renderer.DisableScissor();

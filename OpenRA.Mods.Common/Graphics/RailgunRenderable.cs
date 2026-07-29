@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Projectiles;
 using OpenRA.Primitives;
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			// Move forward from self to target to draw helix
 			var centerPos = Pos;
-			var points = new float3[railgun.CycleCount * info.QuantizationCount];
+			var points = new Vector3[railgun.CycleCount * info.QuantizationCount];
 			for (var i = points.Length - 1; i >= 0; i--)
 			{
 				// Make it narrower near the end.

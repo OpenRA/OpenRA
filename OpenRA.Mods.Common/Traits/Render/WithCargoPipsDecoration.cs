@@ -85,14 +85,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 			pips.PlayRepeating(Info.EmptySequence);
 
 			var palette = wr.Palette(Info.Palette);
-			var pipSize = pips.Image.Size.XY.ToInt2();
+			var pipSize = int2.FromVector(pips.Image.Size);
 			var pipStride = Info.PipStride != int2.Zero ? Info.PipStride : new int2(pipSize.X, 0);
 
 			screenPos -= pipSize / 2;
 			for (var i = 0; i < pipCount; i++)
 			{
 				pips.PlayRepeating(GetPipSequence(i));
-				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
+				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos.ToVector2(), 0, palette);
 
 				screenPos += pipStride;
 			}

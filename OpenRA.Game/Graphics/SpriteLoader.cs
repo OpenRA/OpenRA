@@ -10,6 +10,7 @@
 #endregion
 
 using System.IO;
+using System.Numerics;
 using OpenRA.FileSystem;
 using OpenRA.Primitives;
 
@@ -69,7 +70,7 @@ namespace OpenRA.Graphics
 		/// </summary>
 		Size FrameSize { get; }
 
-		float2 Offset { get; }
+		Vector2 Offset { get; }
 		byte[] Data { get; }
 		bool DisableExportPadding { get; }
 	}

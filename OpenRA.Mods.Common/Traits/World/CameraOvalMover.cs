@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -42,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
 			var vo = wr.Viewport.CenterPosition;
-			var viewportOrigin = new float2(vo.X, vo.Y);
+			var viewportOrigin = new Vector2(vo.X, vo.Y);
 
 			float angle = info.StartAngle;
 			long lastTime = 0;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var rad = angle * (Math.PI / 180);
-				var offset = new float2((float)(info.OvalRadius.X * Math.Sin(rad)), (float)(info.OvalRadius.Y * Math.Cos(rad)));
+				var offset = new Vector2((float)(info.OvalRadius.X * Math.Sin(rad)), (float)(info.OvalRadius.Y * Math.Cos(rad)));
 				return viewportOrigin + offset;
 			};
 		}

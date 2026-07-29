@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -292,8 +293,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (world == null || !hasRadar)
 				return null;
 
-			var worldPos = MinimapPixelToWorldCoords(pos).ToInt2();
-			var wpos = new WPos(worldPos.X, worldPos.Y, 0);
+			var worldPos = MinimapPixelToWorldCoords(pos);
+			var wpos = new WPos((int)worldPos.X, (int)worldPos.Y, 0);
 			var cell = world.Map.CellContaining(wpos);
 
 			var worldPixel = worldRenderer.ScreenPxPosition(wpos);
@@ -333,8 +334,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 			else if (mi.Event == MouseInputEvent.Down && WorldInteractionController != null)
 			{
-				var worldPos = worldCoords.ToInt2();
-				var wpos = new WPos(worldPos.X, worldPos.Y, 0);
+				var wpos = new WPos((int)worldCoords.X, (int)worldCoords.Y, 0);
 
 				// fake a mousedown/mouseup here
 				var location = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPxPosition(wpos));
@@ -367,8 +367,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			radarSheet.CommitBufferedData();
 
-			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
-			var s = new float2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
+			var o = new Vector2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight) / 2);
+			var s = new Vector2(mapRect.Size.Width, mapRect.Size.Height * radarMinimapHeight);
 
 			WidgetUtils.DrawSprite(terrainSprite, o, s);
 			WidgetUtils.DrawSprite(actorSprite, o, s);
@@ -384,7 +384,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
-				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.White);
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl.ToVector3(), br.ToVector3(), 1, Color.White);
 				Game.Renderer.DisableScissor();
 			}
 		}
@@ -463,7 +463,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			frame += enabled ? 1 : -1;
-			radarMinimapHeight = float2.Lerp(0, 1, (float)frame / AnimationLength);
+			radarMinimapHeight = OpenRA.Graphics.Util.Lerp(0, 1, (float)frame / AnimationLength);
 
 			Animating(frame * 1f / AnimationLength);
 
@@ -494,20 +494,20 @@ namespace OpenRA.Mods.Common.Widgets
 			return new int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 
-		float2 MinimapPixelToWorldCoords(int2 pixel)
+		Vector2 MinimapPixelToWorldCoords(int2 pixel)
 		{
 			var u = (pixel.X - mapRect.X) / (previewScale * cellWidth) + world.Map.Bounds.Left;
 			var v = (pixel.Y - mapRect.Y) / previewScale + world.Map.Bounds.Top;
 
 			if (world.Map.Grid.Type == MapGridType.Rectangular)
 			{
-				return new float2(1024 * u + 512, 1024 * v + 512);
+				return new Vector2(1024 * u + 512, 1024 * v + 512);
 			}
 			else
 			{
 				var y = v / 2.0f - u;
 				var x = v - y;
-				return new float2(724 * (x - y), 724 * (x + y));
+				return new Vector2(724 * (x - y), 724 * (x + y));
 			}
 		}
 

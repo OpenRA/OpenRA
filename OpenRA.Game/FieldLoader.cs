@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -89,8 +90,8 @@ namespace OpenRA
 				{ typeof(int2[]), ParseInt2Array },
 				{ typeof(Size), ParseSize },
 				{ typeof(int2), ParseInt2 },
-				{ typeof(float2), ParseFloat2 },
-				{ typeof(float3), ParseFloat3 },
+				{ typeof(Vector2), ParseVector2 },
+				{ typeof(Vector3), ParseVector3 },
 				{ typeof(Rectangle), ParseRectangle },
 				{ typeof(DateTime), ParseDateTime }
 			}.ToFrozenDictionary();
@@ -473,7 +474,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseFloat2(string fieldName, Type fieldType, string value)
+		static object ParseVector2(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -481,13 +482,13 @@ namespace OpenRA
 				if (parts.Length == 2
 					&& Exts.TryParseFloatOrPercentInvariant(parts[0], out var x)
 					&& Exts.TryParseFloatOrPercentInvariant(parts[1], out var y))
-					return new float2(x, y);
+					return new Vector2(x, y);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseFloat3(string fieldName, Type fieldType, string value)
+		static object ParseVector3(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -496,13 +497,13 @@ namespace OpenRA
 					&& Exts.TryParseFloatOrPercentInvariant(parts[0], out var x)
 					&& Exts.TryParseFloatOrPercentInvariant(parts[1], out var y)
 					&& Exts.TryParseFloatOrPercentInvariant(parts[2], out var z))
-					return new float3(x, y, z);
+					return new Vector3(x, y, z);
 
-				// z component is optional for compatibility with older float2 definitions
+				// z component is optional for compatibility with older Vector2 definitions
 				if (parts.Length == 2
 					&& Exts.TryParseFloatOrPercentInvariant(parts[0], out x)
 					&& Exts.TryParseFloatOrPercentInvariant(parts[1], out y))
-					return new float3(x, y, 0);
+					return new Vector3(x, y, 0);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);

@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var frame in frames)
 			{
 				var frameSize = usePadding && !frame.DisableExportPadding ? frame.FrameSize : frame.Size;
-				var offset = usePadding && !frame.DisableExportPadding ? (frame.Offset - 0.5f * new float2(frame.Size - frame.FrameSize)).ToInt2() : int2.Zero;
+				var offset = usePadding && !frame.DisableExportPadding ? int2.FromVector(frame.Offset - 0.5f * (frame.Size - frame.FrameSize).ToVector2()) : int2.Zero;
 
 				// shp(ts) may define empty frames
 				if (frameSize.Width == 0 && frameSize.Height == 0)

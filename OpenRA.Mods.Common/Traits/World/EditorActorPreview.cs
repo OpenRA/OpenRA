@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits.Radar;
@@ -149,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						yield return r;
 						if (!r.IsDecoration && r is IModifyableRenderable mr)
-							yield return mr.WithTint(float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor)
+							yield return mr.WithTint(Vector3.One, mr.TintModifiers | TintModifiers.ReplaceColor)
 								.WithAlpha(0.5f);
 					}
 				}

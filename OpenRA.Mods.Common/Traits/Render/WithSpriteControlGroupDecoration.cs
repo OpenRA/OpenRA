@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -57,11 +58,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			anim.PlayFetchIndex(Info.GroupSequence, () => (int)group);
 
-			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) - (0.5f * anim.Image.Size.XY).ToInt2();
+			var screenPos = container.GetDecorationOrigin(self, wr, Info.Position, Info.Margin) - int2.FromVector(0.5f * anim.Image.Size.AsVector2());
 			var palette = wr.Palette(Info.Palette);
 			return
 			[
-				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos, 0, palette)
+				new UISpriteRenderable(anim.Image, self.CenterPosition, screenPos.ToVector2(), 0, palette)
 			];
 		}
 	}

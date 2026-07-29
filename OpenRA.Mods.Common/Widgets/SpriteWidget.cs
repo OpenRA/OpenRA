@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
 
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 		string cachedPalette = null;
 		float cachedScale;
 		PaletteReference pr;
-		float2 offset = float2.Zero;
+		Vector2 offset = Vector2.Zero;
 
 		public override void Draw()
 		{
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (sprite != cachedSprite || scale != cachedScale)
 			{
-				offset = 0.5f * (new float2(RenderBounds.Size) - scale * sprite.Size.XY);
+				offset = 0.5f * (RenderBounds.Size.ToVector2() - scale * sprite.Size.AsVector2());
 				cachedSprite = sprite;
 				cachedScale = scale;
 			}
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			Game.Renderer.EnableAntialiasingFilter();
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, pr, RenderOrigin + offset, scale);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, pr, RenderOrigin.ToVector3() + offset.AsVector3(), scale);
 			Game.Renderer.DisableAntialiasingFilter();
 		}
 	}

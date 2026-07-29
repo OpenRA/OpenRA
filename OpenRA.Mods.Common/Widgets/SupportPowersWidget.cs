@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 		Rectangle eventBounds;
 		public override Rectangle EventBounds => eventBounds;
 		SpriteFont overlayFont;
-		float2 iconOffset, holdOffset, readyOffset, timeOffset;
+		Vector2 iconOffset, holdOffset, readyOffset, timeOffset;
 
 		[CustomLintableHotkeyNames]
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError)
@@ -110,12 +111,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 			overlayFont = Game.Renderer.Fonts[OverlayFont];
 
-			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
+			iconOffset = 0.5f * IconSize.ToVector2() + IconSpriteOffset.ToVector2();
 
 			HoldText = FluentProvider.GetMessage(HoldText);
-			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			holdOffset = iconOffset - overlayFont.Measure(HoldText).ToVector2() / 2;
 			ReadyText = FluentProvider.GetMessage(ReadyText);
-			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+			readyOffset = iconOffset - overlayFont.Measure(ReadyText).ToVector2() / 2;
 
 			clock = new Animation(worldRenderer.World, ClockAnimation);
 		}
@@ -123,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public class SupportPowerIcon
 		{
 			public SupportPowerInstance Power;
-			public float2 Pos;
+			public Vector2 Pos;
 			public Sprite Sprite;
 			public PaletteReference Palette;
 			public PaletteReference IconClockPalette;
@@ -154,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var power = new SupportPowerIcon()
 				{
 					Power = p,
-					Pos = new float2(rect.Location),
+					Pos = rect.Location.ToVector2(),
 					Sprite = icon.Image,
 					Palette = worldRenderer.Palette(p.Info.IconPalette),
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
@@ -203,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, worldRenderer.World.Timestep)) / 2;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, worldRenderer.World.Timestep)).ToVector2() / 2;
 
 			// Icons
 			Game.Renderer.EnableAntialiasingFilter();
@@ -229,7 +230,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var customText = p.Power.IconOverlayTextOverride();
 				if (customText != null)
 				{
-					var customOffset = iconOffset - overlayFont.Measure(customText) / 2;
+					var customOffset = iconOffset - overlayFont.Measure(customText).ToVector2() / 2;
 					overlayFont.DrawTextWithContrast(customText,
 						p.Pos + customOffset,
 						Color.White, Color.Black, 1);

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -18,13 +19,13 @@ namespace OpenRA.Mods.Common.Graphics
 	public class UITextRenderable : IRenderable, IFinalizedRenderable
 	{
 		readonly SpriteFont font;
-		readonly int2 screenPos;
+		readonly Vector2 screenPos;
 		readonly Color color;
 		readonly Color bgDark;
 		readonly Color bgLight;
 		readonly string text;
 
-		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
+		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, Vector2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
 		{
 			this.font = font;
 			Pos = effectiveWorldPos;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.text = text;
 		}
 
-		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, string text)
+		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, Vector2 screenPos, int zOffset, Color color, string text)
 			: this(font, effectiveWorldPos, screenPos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
@@ -59,8 +60,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var size = font.Measure(text).ToFloat2();
-			Game.Renderer.RgbaColorRenderer.DrawRect(screenPos - 0.5f * size, screenPos + 0.5f * size, 1, Color.Red);
+			var size = font.Measure(text).ToVector2();
+			Game.Renderer.RgbaColorRenderer.DrawRect((screenPos - 0.5f * size).AsVector3(), (screenPos + 0.5f * size).AsVector3(), 1, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }

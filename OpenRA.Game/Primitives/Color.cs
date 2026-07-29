@@ -11,6 +11,7 @@
 
 using System;
 using System.Globalization;
+using OpenRA.Graphics;
 using OpenRA.Scripting;
 
 namespace OpenRA.Primitives
@@ -113,9 +114,9 @@ namespace OpenRA.Primitives
 			var py = Math.Abs((h + 2f / 3) % 1 * 6f - 3);
 			var pz = Math.Abs((h + 1f / 3) % 1 * 6f - 3);
 
-			var r = v * float2.Lerp(1f, (px - 1).Clamp(0, 1), s);
-			var g = v * float2.Lerp(1f, (py - 1).Clamp(0, 1), s);
-			var b = v * float2.Lerp(1f, (pz - 1).Clamp(0, 1), s);
+			var r = v * Util.Lerp(1f, (px - 1).Clamp(0, 1), s);
+			var g = v * Util.Lerp(1f, (py - 1).Clamp(0, 1), s);
+			var b = v * Util.Lerp(1f, (pz - 1).Clamp(0, 1), s);
 
 			return (r, g, b);
 		}

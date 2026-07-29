@@ -13,6 +13,7 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -194,9 +195,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: proper endcaps, if anyone cares (which won't happen unless depth is large)
 			var p = end - start;
-			var q = new float2(p.Y, -p.X);
-			q = (start != end) ? 1 / q.Length * q : new float2(1, 0);
-			var c = -float2.Dot(q, new float2(start.X, start.Y));
+			var q = new Vector2(p.Y, -p.X);
+			q = (start != end) ? 1 / q.Length() * q : new Vector2(1, 0);
+			var c = -Vector2.Dot(q, new Vector2(start.X, start.Y));
 
 			// return all points such that |ax + by + c| < depth
 			// HACK: This will return the wrong results for isometric cells
@@ -345,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 						alpha = blockedAlpha;
 					}
 
-					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, Vector3.One, TintModifiers.IgnoreWorldTint, true);
 				}
 			}
 

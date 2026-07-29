@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using System.Numerics;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 		const string Loading = "loadscreen-loading";
 
 		Rectangle stripeRect;
-		float2 logoPos;
+		Vector2 logoPos;
 		Sprite stripe, logo;
 
 		Sheet lastSheet;
@@ -53,20 +54,20 @@ namespace OpenRA.Mods.Common.LoadScreens
 			{
 				lastResolution = r.Resolution;
 				stripeRect = new Rectangle(0, lastResolution.Height / 2 - 128, lastResolution.Width, 256);
-				logoPos = new float2(lastResolution.Width / 2 - 128, lastResolution.Height / 2 - 128);
+				logoPos = new Vector2(lastResolution.Width / 2 - 128, lastResolution.Height / 2 - 128);
 			}
 
 			if (stripe != null)
 				WidgetUtils.FillRectWithSprite(stripeRect, stripe);
 
 			if (logo != null)
-				r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
+				r.RgbaSpriteRenderer.DrawSprite(logo, logoPos.AsVector3());
 
 			if (r.Fonts != null && messages.Length > 0)
 			{
 				var text = messages.Random(Game.CosmeticRandom);
 				var textSize = r.Fonts["Bold"].Measure(text);
-				r.Fonts["Bold"].DrawText(text, new float2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
+				r.Fonts["Bold"].DrawText(text, new Vector2(r.Resolution.Width - textSize.X - 20, r.Resolution.Height - textSize.Y - 20), Color.White);
 			}
 		}
 	}

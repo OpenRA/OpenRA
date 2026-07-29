@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public SpriteFrameType Type { get; set; }
 			public Size Size { get; set; }
 			public Size FrameSize { get; set; }
-			public float2 Offset { get; set; }
+			public Vector2 Offset { get; set; }
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding => false;
 		}
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			var png = new Png(s);
 
 			List<Rectangle> frameRegions;
-			List<float2> frameOffsets;
+			List<Vector2> frameOffsets;
 
 			// Prefer manual defined regions over auto sliced regions.
 			if (png.EmbeddedData.Any(meta => meta.Key.StartsWith("Frame[", StringComparison.Ordinal)))
@@ -90,7 +91,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			return true;
 		}
 
-		static void RegionsFromFrames(Png png, out List<Rectangle> regions, out List<float2> offsets)
+		static void RegionsFromFrames(Png png, out List<Rectangle> regions, out List<Vector2> offsets)
 		{
 			regions = [];
 			offsets = [];
@@ -105,11 +106,11 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 					throw new InvalidDataException($"Invalid frame regions {region} defined.");
 
 				regions.Add(region);
-				offsets.Add(FieldLoader.GetValue<float2>("Offset", coords[1]));
+				offsets.Add(FieldLoader.GetValue<Vector2>("Offset", coords[1]));
 			}
 		}
 
-		static void RegionsFromSlices(Png png, out List<Rectangle> regions, out List<float2> offsets)
+		static void RegionsFromSlices(Png png, out List<Rectangle> regions, out List<Vector2> offsets)
 		{
 			// Default: whole image is 1 frame.
 			var frameSize = new Size(png.Width, png.Height);
@@ -133,13 +134,13 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				frameSize = new Size(png.Width / frameAmount, png.Height);
 			}
 
-			float2 offset;
+			Vector2 offset;
 
 			// If Offset property exists, use its value. Otherwise assume the frame is centered.
 			if (png.EmbeddedData.TryGetValue("Offset", out value))
-				offset = FieldLoader.GetValue<float2>("Offset", value);
+				offset = FieldLoader.GetValue<Vector2>("Offset", value);
 			else
-				offset = float2.Zero;
+				offset = Vector2.Zero;
 
 			var framesPerRow = png.Width / frameSize.Width;
 

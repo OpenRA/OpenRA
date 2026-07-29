@@ -10,6 +10,7 @@
 #endregion
 
 using System.IO;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Primitives;
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }
 			public Size FrameSize { get; }
-			public float2 Offset { get; }
+			public Vector2 Offset { get; }
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding => false;
 
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				if (dataHeight % 2 == 1)
 					dataHeight++;
 
-				Offset = new int2(x + (dataWidth - frameSize.Width) / 2, y + (dataHeight - frameSize.Height) / 2);
+				Offset = new Vector2(x + (dataWidth - frameSize.Width) / 2, y + (dataHeight - frameSize.Height) / 2);
 				Size = new Size(dataWidth, dataHeight);
 				FrameSize = frameSize;
 

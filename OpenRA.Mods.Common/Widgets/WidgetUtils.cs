@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -66,26 +67,26 @@ namespace OpenRA.Mods.Common.Widgets
 					});
 		}
 
-		public static void DrawSprite(Sprite s, float2 pos)
+		public static void DrawSprite(Sprite s, Vector2 pos)
 		{
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos.AsVector3());
 		}
 
-		public static void DrawSprite(Sprite s, float2 pos, Size size)
+		public static void DrawSprite(Sprite s, Vector2 pos, Size size)
 		{
-			var scale = new float3(size.Width / s.Size.X, size.Height / s.Size.Y, 1f);
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, scale);
+			var scale = new Vector3(size.Width / s.Size.X, size.Height / s.Size.Y, 1f);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos.AsVector3(), scale);
 		}
 
-		public static void DrawSprite(Sprite s, float2 pos, float2 size)
+		public static void DrawSprite(Sprite s, Vector2 pos, Vector2 size)
 		{
-			var scale = new float3(size.X / s.Size.X, size.Y / s.Size.Y, 1f);
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, scale);
+			var scale = new Vector3(size.X / s.Size.X, size.Y / s.Size.Y, 1f);
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos.AsVector3(), scale);
 		}
 
-		public static void DrawSpriteCentered(Sprite s, PaletteReference p, float2 pos, float scale = 1f)
+		public static void DrawSpriteCentered(Sprite s, PaletteReference p, Vector2 pos, float scale = 1f)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, p, pos - 0.5f * scale * s.Size, scale);
+			Game.Renderer.SpriteRenderer.DrawSprite(s, p, pos.AsVector3() - 0.5f * scale * s.Size, scale);
 		}
 
 		public static void DrawPanel(string collection, Rectangle bounds)
@@ -115,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 						ss = new Sprite(s.Sheet, rr, s.Channel, scale);
 					}
 
-					DrawSprite(ss, new float2(x, y));
+					DrawSprite(ss, new Vector2(x, y));
 				}
 			}
 		}
@@ -123,26 +124,26 @@ namespace OpenRA.Mods.Common.Widgets
 		public static void FillRectWithColor(Rectangle r, Color c)
 		{
 			// Offset to the edges of the pixels
-			var tl = new float2(r.Left - 0.5f, r.Top - 0.5f);
-			var br = new float2(r.Right - 0.5f, r.Bottom - 0.5f);
+			var tl = new Vector3(r.Left - 0.5f, r.Top - 0.5f, 0);
+			var br = new Vector3(r.Right - 0.5f, r.Bottom - 0.5f, 0);
 			Game.Renderer.RgbaColorRenderer.FillRect(tl, br, c);
 		}
 
 		public static void FillRectWithColor(Rectangle r, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor)
 		{
-			var tl = new float2(r.Left - 0.5f, r.Top - 0.5f);
-			var br = new float2(r.Right - 0.5f, r.Bottom - 0.5f);
+			var tl = new Vector3(r.Left - 0.5f, r.Top - 0.5f, 0);
+			var br = new Vector3(r.Right - 0.5f, r.Bottom - 0.5f, 0);
 
-			var tr = new float3(br.X, tl.Y, 0);
-			var bl = new float3(tl.X, br.Y, 0);
+			var tr = new Vector3(br.X, tl.Y, 0);
+			var bl = new Vector3(tl.X, br.Y, 0);
 
 			Game.Renderer.RgbaColorRenderer.FillRect(tl, tr, br, bl, topLeftColor, topRightColor, bottomRightColor, bottomLeftColor);
 		}
 
 		public static void FillEllipseWithColor(Rectangle r, Color c)
 		{
-			var tl = new float2(r.Left, r.Top);
-			var br = new float2(r.Right, r.Bottom);
+			var tl = new Vector3(r.Left, r.Top, 0);
+			var br = new Vector3(r.Right, r.Bottom, 0);
 			Game.Renderer.RgbaColorRenderer.FillEllipse(tl, br, c);
 		}
 
@@ -197,19 +198,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Top-left corner
 			if (sprites[0] != null)
-				DrawSprite(sprites[0], new float2(bounds.Left, bounds.Top));
+				DrawSprite(sprites[0], new Vector2(bounds.Left, bounds.Top));
 
 			// Top-right corner
 			if (sprites[2] != null)
-				DrawSprite(sprites[2], new float2(bounds.Right - sprites[2].Size.X, bounds.Top));
+				DrawSprite(sprites[2], new Vector2(bounds.Right - sprites[2].Size.X, bounds.Top));
 
 			// Bottom-left corner
 			if (sprites[6] != null)
-				DrawSprite(sprites[6], new float2(bounds.Left, bounds.Bottom - sprites[6].Size.Y));
+				DrawSprite(sprites[6], new Vector2(bounds.Left, bounds.Bottom - sprites[6].Size.Y));
 
 			// Bottom-right corner
 			if (sprites[8] != null)
-				DrawSprite(sprites[8], new float2(bounds.Right - sprites[8].Size.X, bounds.Bottom - sprites[8].Size.Y));
+				DrawSprite(sprites[8], new Vector2(bounds.Right - sprites[8].Size.X, bounds.Bottom - sprites[8].Size.Y));
 		}
 
 		public static string FormatTime(int ticks, int timestep)

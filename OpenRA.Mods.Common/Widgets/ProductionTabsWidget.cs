@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -203,13 +204,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false, false));
 			WidgetUtils.DrawSprite(leftArrowImage,
-				new float2(
+				new Vector2(
 					leftButtonRect.Left + (int)((leftButtonRect.Width - leftArrowImage.Size.X) / 2),
 					leftButtonRect.Top + (int)((leftButtonRect.Height - leftArrowImage.Size.Y) / 2)));
 
 			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false, false));
 			WidgetUtils.DrawSprite(rightArrowImage,
-				new float2(
+				new Vector2(
 					rightButtonRect.Left + (int)((rightButtonRect.Width - rightArrowImage.Size.X) / 2),
 					rightButtonRect.Top + (int)((rightButtonRect.Height - rightArrowImage.Size.Y) / 2)));
 
@@ -228,7 +229,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var textSize = font.Measure(tab.Name);
 				var position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
-				font.DrawTextWithContrast(tab.Name, position, tab.Queue.AllQueued().Any(i => i.Done) ? TabColorDone : TabColor, Color.Black, 1);
+				font.DrawTextWithContrast(tab.Name, position.ToVector2(), tab.Queue.AllQueued().Any(i => i.Done) ? TabColorDone : TabColor, Color.Black, 1);
 			}
 
 			Game.Renderer.DisableScissor();

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using NUnit.Framework;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -51,8 +52,6 @@ namespace OpenRA.Test
 				new TestCaseData(true),
 				new TestCaseData(new Size(123, 456)),
 				new TestCaseData(new int2(123, 456)),
-				new TestCaseData(new float2(123, 456)),
-				new TestCaseData(new float3(123, 456, 789)),
 				new TestCaseData(new Rectangle(123, 456, 789, 123)),
 			];
 		}
@@ -63,6 +62,18 @@ namespace OpenRA.Test
 			var actual = FieldSaver.FormatValue(expected);
 
 			Assert.That(actual, Is.EqualTo(expected.ToString()));
+		}
+
+		[Test]
+		public void FormatValue_Vector()
+		{
+			var vector1 = new Vector2(123, 456);
+			var actual = FieldSaver.FormatValue(vector1);
+			Assert.That(actual, Is.EqualTo("123,456"));
+
+			var vector2 = new Vector3(123, 456, 789);
+			actual = FieldSaver.FormatValue(vector2);
+			Assert.That(actual, Is.EqualTo("123,456,789"));
 		}
 
 		[Test]

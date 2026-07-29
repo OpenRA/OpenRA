@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace OpenRA.Graphics
@@ -25,7 +26,7 @@ namespace OpenRA.Graphics
 		// Palette and channel flags
 		public readonly float P, C;
 
-		public ModelVertex(in float3 xyz, float s, float t, float u, float v, float p, float c)
+		public ModelVertex(in Vector3 xyz, float s, float t, float u, float v, float p, float c)
 			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c) { }
 
 		public ModelVertex(float x, float y, float z, float s, float t, float u, float v, float p, float c)

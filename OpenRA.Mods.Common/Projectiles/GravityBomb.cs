@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly ProjectileArgs args;
 		readonly WVec acceleration;
 
-		readonly float3 shadowColor;
+		readonly Vector3 shadowColor;
 		readonly float shadowAlpha;
 
 		WVec velocity;
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Common.Projectiles
 					anim.PlayRepeating(info.Sequences.Random(args.SourceActor.World.SharedRandom));
 			}
 
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowColor = new Vector3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 

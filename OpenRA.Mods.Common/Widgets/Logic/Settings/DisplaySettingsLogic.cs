@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					graphicSettings.UIScale = defaultGraphicSettings.UIScale;
 					Game.Renderer.SetUIScale(defaultGraphicSettings.UIScale);
 					RecalculateWidgetLayout(Ui.Root);
-					Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / graphicSettings.UIScale).ToInt2();
+					Viewport.LastMousePos = int2.FromVector(Viewport.LastMousePos.ToVector2() * oldScale / graphicSettings.UIScale);
 				}
 
 				gameSettings.TextNotificationPoolFilters = defaultGameSettings.TextNotificationPoolFilters;
@@ -555,7 +555,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							Game.Renderer.SetUIScale(o);
 							RecalculateWidgetLayout(Ui.Root);
-							Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / graphicSettings.UIScale).ToInt2();
+							Viewport.LastMousePos = int2.FromVector(Viewport.LastMousePos.ToVector2() * oldScale / graphicSettings.UIScale);
 						});
 					});
 
@@ -565,7 +565,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var viewportSizes = Game.ModData.GetOrCreate<WorldViewportSizes>();
-			var maxScales = new float2(Game.Renderer.NativeResolution) / new float2(viewportSizes.MinEffectiveResolution);
+			var maxScales = Game.Renderer.NativeResolution.ToVector2() / viewportSizes.MinEffectiveResolution.ToVector2();
 			var maxScale = Math.Min(maxScales.X, maxScales.Y);
 
 			var validScales = new[] { 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var sprite = GetSprite();
 			if (sprite != null)
-				WidgetUtils.DrawSprite(sprite, RenderOrigin);
+				WidgetUtils.DrawSprite(sprite, RenderOrigin.ToVector2());
 		}
 	}
 }

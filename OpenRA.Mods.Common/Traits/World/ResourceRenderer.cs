@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -303,9 +304,9 @@ namespace OpenRA.Mods.Common.Traits
 			var palette = wr.Palette(resourceInfo.Palette);
 
 			if (shadow != null)
-				yield return new UISpriteRenderable(shadow, WPos.Zero, origin, 0, palette, scale);
+				yield return new UISpriteRenderable(shadow, WPos.Zero, origin.ToVector2(), 0, palette, scale);
 
-			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, palette, scale);
+			yield return new UISpriteRenderable(sprite, WPos.Zero, origin.ToVector2(), 0, palette, scale);
 		}
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderPreview(WorldRenderer wr, string resourceType, WPos origin)
@@ -324,9 +325,9 @@ namespace OpenRA.Mods.Common.Traits
 			var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 
 			if (shadow != null)
-				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, Vector3.One, tintModifiers, false);
 
-			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, Vector3.One, tintModifiers, false);
 		}
 
 		event Action<CPos> IRadarTerrainLayer.CellEntryChanged

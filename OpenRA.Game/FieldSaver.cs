@@ -16,6 +16,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using OpenRA.Primitives;
@@ -135,6 +136,12 @@ namespace OpenRA
 
 				return d.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture);
 			}
+
+			if (v is Vector2 vector2)
+				return $"{vector2.X},{vector2.Y}";
+
+			if (v is Vector3 vector3)
+				return $"{vector3.X},{vector3.Y},{vector3.Z}";
 
 			// Try the TypeConverter
 			var conv = TypeDescriptor.GetConverter(t);

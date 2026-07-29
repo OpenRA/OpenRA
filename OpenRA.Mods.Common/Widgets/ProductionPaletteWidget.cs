@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Orders;
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public PaletteReference Palette;
 		public PaletteReference IconClockPalette;
 		public PaletteReference IconDarkenPalette;
-		public float2 Pos;
+		public Vector2 Pos;
 		public List<ProductionItem> Queued;
 		public ProductionQueue ProductionQueue;
 	}
@@ -49,9 +50,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly int2 IconMargin = int2.Zero;
 		public readonly int2 IconSpriteOffset = int2.Zero;
 
-		public readonly float2 QueuedOffset = new(4, 2);
+		public readonly Vector2 QueuedOffset = new(4, 2);
 
-		public readonly float2 BulkOffset = new(4, 2);
+		public readonly Vector2 BulkOffset = new(4, 2);
 		public readonly TextAlign QueuedTextAlign = TextAlign.Left;
 
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
@@ -127,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		SpriteFont overlayFont, symbolFont;
-		float2 iconOffset, holdOffset, readyOffset, timeOffset, infiniteOffset;
+		Vector2 iconOffset, holdOffset, readyOffset, timeOffset, infiniteOffset;
 
 		Player cachedQueueOwner;
 		IProductionIconOverlay[] pios;
@@ -179,11 +180,11 @@ namespace OpenRA.Mods.Common.Widgets
 			overlayFont = Game.Renderer.Fonts[OverlayFont];
 			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
 
-			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
+			iconOffset = 0.5f * IconSize.ToVector2() + IconSpriteOffset.ToVector2();
 			HoldText = FluentProvider.GetMessage(HoldText);
-			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			holdOffset = iconOffset - overlayFont.Measure(HoldText).ToVector2() / 2;
 			ReadyText = FluentProvider.GetMessage(ReadyText);
-			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+			readyOffset = iconOffset - overlayFont.Measure(ReadyText).ToVector2() / 2;
 
 			if (ChromeMetrics.TryGet("InfiniteOffset", out infiniteOffset))
 				infiniteOffset += QueuedOffset;
@@ -528,7 +529,7 @@ namespace OpenRA.Mods.Common.Widgets
 					Palette = worldRenderer.Palette(palette),
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
-					Pos = new float2(rect.Location),
+					Pos = rect.Location.ToVector2(),
 					Queued = currentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
 					ProductionQueue = currentQueue
 				};
@@ -545,7 +546,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)) / 2;
+			timeOffset = iconOffset - overlayFont.Measure(WidgetUtils.FormatTime(0, World.Timestep)).ToVector2() / 2;
 
 			if (CurrentQueue == null)
 				return;
@@ -560,7 +561,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				// Draw the ProductionIconOverlay's sprites
 				foreach (var pio in pios.Where(p => p.IsOverlayActive(icon.Actor)))
-					WidgetUtils.DrawSpriteCentered(pio.Sprite, worldRenderer.Palette(pio.Palette), icon.Pos + iconOffset + pio.Offset(IconSize));
+					WidgetUtils.DrawSpriteCentered(pio.Sprite, worldRenderer.Palette(pio.Palette), icon.Pos + iconOffset + pio.Offset(IconSize.ToVector2()));
 
 				// Build progress
 				if (icon.Queued.Count > 0)
@@ -618,8 +619,8 @@ namespace OpenRA.Mods.Common.Widgets
 							var size = overlayFont.Measure(total.ToString(NumberFormatInfo.CurrentInfo));
 
 							pos = QueuedTextAlign == TextAlign.Center ?
-								new float2(QueuedOffset.X - size.X / 2, QueuedOffset.Y) :
-								new float2(QueuedOffset.X - size.X, QueuedOffset.Y);
+								new Vector2(QueuedOffset.X - size.X / 2, QueuedOffset.Y) :
+								new Vector2(QueuedOffset.X - size.X, QueuedOffset.Y);
 						}
 
 						overlayFont.DrawTextWithContrast(total.ToString(NumberFormatInfo.CurrentInfo),

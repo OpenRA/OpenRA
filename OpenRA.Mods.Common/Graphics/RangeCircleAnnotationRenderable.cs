@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -57,8 +58,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = new WVec(radius.Length, 0, 0);
 			for (var i = 0; i < RangeCircleSegments; i++)
 			{
-				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleStartRotations[i])));
-				var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleEndRotations[i])));
+				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleStartRotations[i])).AsVector3()).ToVector3();
+				var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset.Rotate(ref RangeCircleEndRotations[i])).AsVector3()).ToVector3();
 
 				if (borderWidth > 0)
 					cr.DrawLine(a, b, borderWidth, borderColor);

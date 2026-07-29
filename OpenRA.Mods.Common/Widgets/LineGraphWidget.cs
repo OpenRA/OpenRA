@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -140,9 +141,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var pointStart = Math.Max(0, pointCount - xAxisSize);
 			var pointEnd = Math.Max(pointCount, xAxisSize);
 
-			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(Padding * 2 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
+			var graphOrigin = new Vector2(rect.Left, rect.Bottom) + new Vector2(Padding * 2 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
 
-			var origin = new float2(rect.Left, rect.Bottom);
+			var origin = new Vector2(rect.Left, rect.Bottom);
 
 			var keyOffset = 0;
 
@@ -164,28 +165,28 @@ namespace OpenRA.Mods.Common.Widgets
 						{
 							lastX = x;
 							lastPoint = point;
-							return graphOrigin + new float3(x * xStep, -point * scale, 0);
+							return graphOrigin.AsVector3() + new Vector3(x * xStep, -point * scale, 0);
 						}), 1, color);
 
 					if (lastPoint != 0f)
-						labelFont.DrawTextWithShadow(GetValueFormat().FormatCurrent(lastPoint), graphOrigin + new float2(lastX * xStep, -lastPoint * scale - 2),
+						labelFont.DrawTextWithShadow(GetValueFormat().FormatCurrent(lastPoint), graphOrigin + new Vector2(lastX * xStep, -lastPoint * scale - 2),
 							color, BackgroundColorDark, BackgroundColorLight, 1);
 				}
 
-				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + Padding), 10 * keyOffset + 3),
+				labelFont.DrawTextWithShadow(key, new Vector2(rect.Right, rect.Top) + new Vector2(-(widthLongestName + Padding), 10 * keyOffset + 3),
 					color, BackgroundColorDark, BackgroundColorLight, 1);
 				keyOffset++;
 			}
 
 			// Draw x axis
 			axisFont.DrawTextWithShadow(xAxisLabel,
-				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)),
+				new Vector2(graphOrigin.X, origin.Y) + new Vector2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)),
 				Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 
 			// TODO: make this stuff not draw outside of the RenderBounds
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
 			{
-				cr.DrawLine(graphOrigin + new float2(x, 0), graphOrigin + new float2(x, -5), 1, Color.White);
+				cr.DrawLine(graphOrigin + new Vector2(x, 0), graphOrigin + new Vector2(x, -5), 1, Color.White);
 				if (n % XAxisTicksPerLabel != 0)
 					continue;
 
@@ -193,19 +194,19 @@ namespace OpenRA.Mods.Common.Widgets
 				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
 				var xLocation = x - xAxisTickTextWidth / 2;
 				labelFont.DrawTextWithShadow(xAxisText,
-					graphOrigin + new float2(xLocation, 2),
+					graphOrigin + new Vector2(xLocation, 2),
 					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Draw y axis
 			axisFont.DrawTextWithShadow(yAxisLabel,
-				new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)),
+				new Vector2(origin.X, graphOrigin.Y) + new Vector2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)),
 				Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
 
 			for (var y = GetDisplayFirstYAxisValue() ? 0 : yStep; y <= height; y += yStep)
 			{
 				var yValue = y / scale;
-				cr.DrawLine(graphOrigin + new float2(0, -y), graphOrigin + new float2(5, -y), 1, Color.White);
+				cr.DrawLine(graphOrigin + new Vector2(0, -y), graphOrigin + new Vector2(5, -y), 1, Color.White);
 				var text = GetYAxisValueFormat().FormatCurrent(yValue);
 
 				var textWidth = labelFont.Measure(text);
@@ -213,15 +214,15 @@ namespace OpenRA.Mods.Common.Widgets
 				var yLocation = y + (textWidth.Y + labelFont.TopOffset) / 2;
 
 				labelFont.DrawTextWithShadow(text,
-					graphOrigin + new float2(-(textWidth.X + 3), -yLocation),
+					graphOrigin + new Vector2(-(textWidth.X + 3), -yLocation),
 					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Bottom line
-			cr.DrawLine(graphOrigin, graphOrigin + new float2(width, 0), 1, Color.White);
+			cr.DrawLine(graphOrigin, graphOrigin + new Vector2(width, 0), 1, Color.White);
 
 			// Left line
-			cr.DrawLine(graphOrigin, graphOrigin + new float2(0, -height), 1, Color.White);
+			cr.DrawLine(graphOrigin, graphOrigin + new Vector2(0, -height), 1, Color.White);
 		}
 
 		public override LineGraphWidget Clone()

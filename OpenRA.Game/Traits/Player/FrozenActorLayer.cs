@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -80,7 +81,7 @@ namespace OpenRA.Traits
 
 		int flashTicks;
 		TintModifiers flashModifiers;
-		float3 flashTint;
+		Vector3 flashTint;
 		float? flashAlpha;
 
 		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, PPos[] footprint, Player viewer, bool startsRevealed)
@@ -200,11 +201,11 @@ namespace OpenRA.Traits
 		{
 			flashTicks = 5;
 			flashModifiers = TintModifiers.ReplaceColor;
-			flashTint = new float3(color.R, color.G, color.B) / 255f;
+			flashTint = new Vector3(color.R, color.G, color.B) / 255f;
 			flashAlpha = alpha;
 		}
 
-		public void Flash(float3 tint)
+		public void Flash(Vector3 tint)
 		{
 			flashTicks = 5;
 			flashModifiers = TintModifiers.None;

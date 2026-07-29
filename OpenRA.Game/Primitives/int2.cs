@@ -11,6 +11,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -21,6 +22,9 @@ namespace OpenRA
 		public readonly int X, Y;
 		public int2(int x, int y) { X = x; Y = y; }
 		public int2(Size p) { X = p.Width; Y = p.Height; }
+
+		public static int2 FromVector(Vector2 v) { return new int2((int)v.X, (int)v.Y); }
+		public static int2 FromVector(Vector3 v) { return new int2((int)v.X, (int)v.Y); }
 
 		public static int2 operator +(int2 a, int2 b) { return new int2(a.X + b.X, a.Y + b.Y); }
 		public static int2 operator +(int2 a, Size b) { return new int2(a.X + b.Width, a.Y + b.Height); }
@@ -60,7 +64,9 @@ namespace OpenRA
 		public static int2 Min(int2 a, int2 b) { return new int2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
 
 		public static readonly int2 Zero = new(0, 0);
-		public float2 ToFloat2() { return new float2(X, Y); }
+
+		public Vector2 ToVector2() { return new Vector2(X, Y); }
+		public Vector3 ToVector3() { return new Vector3(X, Y, 0); }
 
 		// Change endianness of a uint32
 		public static uint Swap(uint orig)

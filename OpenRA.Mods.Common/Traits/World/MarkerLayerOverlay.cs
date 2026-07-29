@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -399,7 +400,7 @@ namespace OpenRA.Mods.Common.Traits
 			disposed = true;
 		}
 
-		readonly record struct MapLine(float2 Start, float2 End);
+		readonly record struct MapLine(Vector2 Start, Vector2 End);
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
@@ -418,12 +419,12 @@ namespace OpenRA.Mods.Common.Traits
 			var color = Info.AxisAngleColor;
 			var targetAngle = AxisAngle * DegreesToRadians;
 
-			var mapCenterFloat = new float2(mapCenter.X, mapCenter.Y);
+			var mapCenterFloat = new Vector2(mapCenter.X, mapCenter.Y);
 			var mapBoundsWorldSize = mapCenterFloat * 2;
 
 			// Create our axis lines
-			var horizontalVec = new float2(1, 0);
-			var verticalVec = new float2(0, 1);
+			var horizontalVec = new Vector2(1, 0);
+			var verticalVec = new Vector2(0, 1);
 			var edges = new[]
 			{
 				new MapLine(mapCenterFloat, mapCenterFloat + horizontalVec),
@@ -435,14 +436,14 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var isOpposite = i % 2 != 0;
 				var sourceAxis = sourceAxes[i];
-				var rotatedAxis = new float2(
+				var rotatedAxis = new Vector2(
 					(float)(sourceAxis.X * Math.Cos(targetAngle) - sourceAxis.Y * Math.Sin(targetAngle)),
 					(float)(sourceAxis.X * Math.Sin(targetAngle) + sourceAxis.Y * Math.Cos(targetAngle)));
 
-				var axisLine = new MapLine(float2.Zero, rotatedAxis);
+				var axisLine = new MapLine(Vector2.Zero, rotatedAxis);
 				var collisionPoints = FindEdgeCollisionPoints(edges, axisLine);
 
-				var closestCollisionPoint = collisionPoints.OrderBy(x => x.LengthSquared).First();
+				var closestCollisionPoint = collisionPoints.OrderBy(x => x.LengthSquared()).First();
 				if (isOpposite)
 					closestCollisionPoint *= -1;
 
@@ -451,9 +452,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		static float2[] FindEdgeCollisionPoints(MapLine[] mapEdges, MapLine axis)
+		static Vector2[] FindEdgeCollisionPoints(MapLine[] mapEdges, MapLine axis)
 		{
-			var collisionResults = new List<float2>();
+			var collisionResults = new List<Vector2>();
 			foreach (var mapEdge in mapEdges)
 				if (FindIntersection(axis.Start, axis.End, mapEdge.Start, mapEdge.End, out var collisionVec))
 					collisionResults.Add(collisionVec);
@@ -461,9 +462,9 @@ namespace OpenRA.Mods.Common.Traits
 			return collisionResults.ToArray();
 		}
 
-		static bool FindIntersection(float2 a1, float2 a2, float2 b1, float2 b2, out float2 result)
+		static bool FindIntersection(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, out Vector2 result)
 		{
-			result = float2.Zero;
+			result = Vector2.Zero;
 			var d = (a1.X - a2.X) * (b1.Y - b2.Y) - (a1.Y - a2.Y) * (b1.X - b2.X);
 
 			// check if lines are parallel
@@ -473,7 +474,7 @@ namespace OpenRA.Mods.Common.Traits
 			var px = (a1.X * a2.Y - a1.Y * a2.X) * (b1.X - b2.X) - (a1.X - a2.X) * (b1.X * b2.Y - b1.Y * b2.X);
 			var py = (a1.X * a2.Y - a1.Y * a2.X) * (b1.Y - b2.Y) - (a1.Y - a2.Y) * (b1.X * b2.Y - b1.Y * b2.X);
 
-			result = new float2(px, py) / d;
+			result = new Vector2(px, py) / d;
 			return true;
 		}
 

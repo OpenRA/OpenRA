@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -47,18 +48,18 @@ namespace OpenRA.Mods.Common.Graphics
 			if (filled)
 			{
 				var offset = new WVec(radius.Length, radius.Length, 0);
-				var tl = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos - offset));
-				var br = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + offset));
+				var tl = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos - offset).AsVector3()).ToVector3();
+				var br = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + offset).AsVector3()).ToVector3();
 
 				cr.FillEllipse(tl, br, color);
 			}
 			else
 			{
 				var r = radius.Length;
-				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + r * FacingOffsets[CircleSegments - 1] / 1024));
+				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + r * FacingOffsets[CircleSegments - 1] / 1024).AsVector3()).ToVector3();
 				for (var i = 0; i < CircleSegments; i++)
 				{
-					var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + r * FacingOffsets[i] / 1024));
+					var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + r * FacingOffsets[i] / 1024).AsVector3()).ToVector3();
 					cr.DrawLine(a, b, width, color);
 					a = b;
 				}

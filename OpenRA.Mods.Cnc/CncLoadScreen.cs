@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.LoadScreens;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Cnc
 
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
 		Sprite[] border;
-		float2 nodPos, gdiPos, evaPos;
+		Vector3 nodPos, gdiPos, evaPos;
 		Rectangle bounds;
 		string versionText;
 
@@ -78,9 +79,9 @@ namespace OpenRA.Mods.Cnc
 				lastResolution = r.Resolution;
 
 				bounds = new Rectangle(0, 0, lastResolution.Width, lastResolution.Height);
-				nodPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
-				gdiPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
-				evaPos = new float2(bounds.Width - 43 - 128, 43);
+				nodPos = new Vector3(bounds.Width / 2 - 384, bounds.Height / 2 - 128, 0);
+				gdiPos = new Vector3(bounds.Width / 2 + 128, bounds.Height / 2 - 128, 0);
+				evaPos = new Vector3(bounds.Width - 43 - 128, 43, 0);
 			}
 
 			var barY = bounds.Height - 78;
@@ -97,12 +98,12 @@ namespace OpenRA.Mods.Cnc
 			{
 				var loadingFont = r.Fonts["BigBold"];
 				var loadingText = message;
-				var loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
+				var loadingPos = new Vector2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 				loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
 
 				var versionFont = r.Fonts["Regular"];
 				var versionSize = versionFont.Measure(versionText);
-				var versionPos = new float2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
+				var versionPos = new Vector2(bounds.Width - 107 - versionSize.X / 2, 115 - versionSize.Y / 2);
 				versionFont.DrawTextWithContrast(versionText, versionPos, Color.White, Color.Black, 2);
 			}
 
@@ -110,9 +111,9 @@ namespace OpenRA.Mods.Cnc
 			{
 				var block = loadTick == i ? brightBlock : dimBlock;
 				r.RgbaSpriteRenderer.DrawSprite(block,
-					new float2(bounds.Width / 2 - 114 - i * 32, barY));
+					new Vector3(bounds.Width / 2 - 114 - i * 32, barY, 0));
 				r.RgbaSpriteRenderer.DrawSprite(block,
-					new float2(bounds.Width / 2 + 114 + i * 32 - 16, barY));
+					new Vector3(bounds.Width / 2 + 114 + i * 32 - 16, barY, 0));
 			}
 		}
 	}

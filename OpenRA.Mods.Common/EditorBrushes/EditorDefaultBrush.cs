@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
@@ -153,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				if (mi.Event == MouseInputEvent.Down && underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || underCursor == Selection.Actor))
 				{
-					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)));
+					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)).AsVector3());
 					dragPixelOffset = cellViewPx - mi.Location;
 					dragCellOffset = underCursor.Location - cell;
 					moveAction = new MoveActorAction(underCursor, actorLayer);

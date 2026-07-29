@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			Game.Renderer.EnableAntialiasingFilter();
 
-			var iconSize = new float2(IconWidth, IconHeight);
+			var iconSize = new Vector2(IconWidth, IconHeight);
 			foreach (var power in powers)
 			{
 				var item = power.a.Value;
@@ -119,7 +120,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				icon = new Animation(worldRenderer.World, item.Info.IconImage);
 				icon.Play(item.Info.Icon);
-				var location = new float2(RenderBounds.Location) + new float2(power.i * (IconWidth + IconSpacing), 0);
+				var location = RenderBounds.Location.ToVector2() + new Vector2(power.i * (IconWidth + IconSpacing), 0);
 
 				supportPowerIconsIcons.Add(new SupportPowersWidget.SupportPowerIcon { Power = item, Pos = location });
 				supportPowerIconsBounds.Add(new Rectangle((int)location.X, (int)location.Y, (int)iconSize.X, (int)iconSize.Y));
@@ -141,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var text = GetOverlayForItem(icon.Power, world.Timestep);
 				tiny.DrawTextWithContrast(text,
-					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
+					icon.Pos + new Vector2(16, 12) - new Vector2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
 			}
 		}

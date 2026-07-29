@@ -83,8 +83,8 @@ namespace OpenRA.Mods.Common.Graphics
 					if (region.Contains(c + offset))
 						continue;
 
-					var start = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[cornerIndex]));
-					var end = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[(cornerIndex + 1) % 4]));
+					var start = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[cornerIndex])).ToVector3();
+					var end = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos + corners[(cornerIndex + 1) % 4])).ToVector3();
 
 					if (constrastWidth > 0)
 						cr.DrawLine(start, end, constrastWidth, constrastColor);

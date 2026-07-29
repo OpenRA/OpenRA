@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
@@ -79,12 +80,12 @@ namespace OpenRA.Mods.Common.Widgets
 			(ScrollDirection.Right, "joystick-r-blocked"),
 		];
 
-		static readonly ImmutableArray<(ScrollDirection Direction, float2 Offset)> ScrollOffsets =
+		static readonly ImmutableArray<(ScrollDirection Direction, Vector2 Offset)> ScrollOffsets =
 		[
-			(ScrollDirection.Up, new float2(0, -1)),
-			(ScrollDirection.Down, new float2(0, 1)),
-			(ScrollDirection.Left, new float2(-1, 0)),
-			(ScrollDirection.Right, new float2(1, 0)),
+			(ScrollDirection.Up, new Vector2(0, -1)),
+			(ScrollDirection.Down, new Vector2(0, 1)),
+			(ScrollDirection.Left, new Vector2(-1, 0)),
+			(ScrollDirection.Right, new Vector2(1, 0)),
 		];
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
@@ -189,7 +190,7 @@ namespace OpenRA.Mods.Common.Widgets
 				// Base the JoystickScrolling speed on the Scroll Speed slider
 				var rate = 0.01f * Game.Settings.Game.ViewportEdgeScrollStep;
 
-				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToFloat2() * rate;
+				var scroll = (joystickScrollEnd.Value - joystickScrollStart.Value).ToVector2() * rate;
 				worldRenderer.Viewport.Scroll(scroll, false);
 			}
 			else if (!isStandardScrolling)
@@ -203,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (keyboardDirections != ScrollDirection.None || edgeDirections != ScrollDirection.None)
 				{
-					var scroll = float2.Zero;
+					var scroll = Vector2.Zero;
 
 					foreach (var (direction, offset) in ScrollOffsets)
 						if (keyboardDirections.Includes(direction) || edgeDirections.Includes(direction))
@@ -212,7 +213,7 @@ namespace OpenRA.Mods.Common.Widgets
 					// Scroll rate is defined for a 40ms interval
 					var deltaScale = Math.Min(Game.RunTime - lastScrollTime, 25f);
 
-					var length = Math.Max(1, scroll.Length);
+					var length = Math.Max(1, scroll.Length());
 					scroll *= deltaScale / (25 * length) * Game.Settings.Game.ViewportEdgeScrollStep;
 
 					worldRenderer.Viewport.Scroll(scroll, false);
@@ -335,7 +336,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					isStandardScrolling = true;
 					var d = scrollType == MouseScrollType.Inverted ? -1 : 1;
-					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location) * d, false);
+					worldRenderer.Viewport.Scroll((Viewport.LastMousePos - mi.Location).ToVector2() * d, false);
 					return true;
 				}
 				else if (mi.Event == MouseInputEvent.Up)

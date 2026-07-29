@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
@@ -63,7 +64,7 @@ namespace OpenRA.Graphics
 			var (image, rotation) = CurrentSequence.GetSpriteWithRotation(CurrentFrame, facingFunc());
 			var imageRenderable = new SpriteRenderable(
 				image, pos, offset, CurrentSequence.ZOffset + zOffset, palette,
-				CurrentSequence.Scale, alpha, float3.Ones, tintModifiers, IsDecoration, rotation);
+				CurrentSequence.Scale, alpha, Vector3.One, tintModifiers, IsDecoration, rotation);
 
 			var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
 			if (shadow != null)
@@ -72,7 +73,7 @@ namespace OpenRA.Graphics
 
 				var shadowRenderable = new SpriteRenderable(
 					shadow, pos, offset - new WVec(0, 0, height), CurrentSequence.ShadowZOffset + zOffset + height, palette,
-					CurrentSequence.Scale, 1f, float3.Ones, tintModifiers,
+					CurrentSequence.Scale, 1f, Vector3.One, tintModifiers,
 					true, rotation);
 				return [shadowRenderable, imageRenderable];
 			}
@@ -83,16 +84,18 @@ namespace OpenRA.Graphics
 		public IRenderable[] RenderUI(WorldRenderer wr, int2 pos, in WVec offset, int zOffset, PaletteReference palette, float scale = 1f, float rotation = 0f)
 		{
 			scale *= CurrentSequence.Scale;
-			var screenOffset = (scale * wr.ScreenVectorComponents(offset)).XY.ToInt2();
+			var screenOffset = int2.FromVector(scale * wr.ScreenVectorComponents(offset));
 			var imagePos = pos + screenOffset - new int2((int)(scale * Image.Size.X / 2), (int)(scale * Image.Size.Y / 2));
 			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
-			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos, CurrentSequence.ZOffset + zOffset, palette, scale, alpha, rotation);
+			var imageRenderable = new UISpriteRenderable(Image, WPos.Zero + offset, imagePos.ToVector2(), CurrentSequence.ZOffset + zOffset, palette,
+				scale, alpha, rotation);
 
 			var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
 			if (shadow != null)
 			{
 				var shadowPos = pos - new int2((int)(scale * shadow.Size.X / 2), (int)(scale * shadow.Size.Y / 2));
-				var shadowRenderable = new UISpriteRenderable(shadow, WPos.Zero + offset, shadowPos, CurrentSequence.ShadowZOffset + zOffset, palette, scale, 1f, rotation);
+				var shadowRenderable = new UISpriteRenderable(shadow, WPos.Zero + offset, shadowPos.ToVector2(), CurrentSequence.ShadowZOffset + zOffset, palette,
+					scale, 1f, rotation);
 				return [shadowRenderable, imageRenderable];
 			}
 

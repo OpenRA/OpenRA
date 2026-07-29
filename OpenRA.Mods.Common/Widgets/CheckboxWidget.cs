@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			DrawBackground(Background, rect, disabled, Depressed, hover, IsHighlighted());
 
-			var textPosition = new float2(RenderBounds.Left + RenderBounds.Height * 1.5f, RenderOrigin.Y + (Bounds.Height - font.Measure(text).Y - font.TopOffset) / 2);
+			var textPosition = new Vector2(RenderBounds.Left + RenderBounds.Height * 1.5f, RenderOrigin.Y + (Bounds.Height - font.Measure(text).Y - font.TopOffset) / 2);
 			if (Contrast)
 				font.DrawTextWithContrast(text, textPosition,
 					disabled ? colordisabled : color, GetContrastColorDark(), GetContrastColorLight(), 2);
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets
 				.Update((disabled, Depressed, hover, false, IsHighlighted()));
 			WidgetUtils.DrawSprite(
 				checkmarkImage,
-				new float2(
+				new Vector2(
 					rect.Right - (int)((rect.Height + checkmarkImage.Size.X) / 2),
 					rect.Top + (int)((rect.Height - checkmarkImage.Size.Y) / 2)));
 		}

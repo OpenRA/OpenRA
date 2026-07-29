@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var size = font.Measure(name);
 			return
 			[
-				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, info.UsePlayerColor ? self.OwnerColor() : info.Color, name)
+				new UITextRenderable(font, self.CenterPosition, (screenPos - size / 2).ToVector2(), 0, info.UsePlayerColor ? self.OwnerColor() : info.Color, name)
 			];
 		}
 

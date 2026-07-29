@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -86,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly struct Particle
 		{
-			public readonly float2 Pos;
+			public readonly Vector2 Pos;
 			public readonly int Size;
 			public readonly float DirectionScatterX;
 			public readonly float Gravity;
@@ -102,14 +103,14 @@ namespace OpenRA.Mods.Common.Traits
 				var x = r.Next(viewport.Left, viewport.Right);
 				var y = r.Next(viewport.Top, viewport.Bottom);
 
-				Pos = new int2(x, y);
+				Pos = new Vector2(x, y);
 				Size = r.Next(info.ParticleSize[0], info.ParticleSize[1] + 1);
 				DirectionScatterX = info.ScatterDirection[0] + r.Next(info.ScatterDirection[1] - info.ScatterDirection[0]);
-				Gravity = float2.Lerp(info.Gravity[0], info.Gravity[1], r.NextFloat());
-				SwingOffset = float2.Lerp(info.SwingOffset[0], info.SwingOffset[1], r.NextFloat());
-				SwingSpeed = float2.Lerp(info.SwingSpeed[0], info.SwingSpeed[1], r.NextFloat());
+				Gravity = OpenRA.Graphics.Util.Lerp(info.Gravity[0], info.Gravity[1], r.NextFloat());
+				SwingOffset = OpenRA.Graphics.Util.Lerp(info.SwingOffset[0], info.SwingOffset[1], r.NextFloat());
+				SwingSpeed = OpenRA.Graphics.Util.Lerp(info.SwingSpeed[0], info.SwingSpeed[1], r.NextFloat());
 				SwingDirection = r.Next(2) == 0 ? 1 : -1;
-				SwingAmplitude = float2.Lerp(info.SwingAmplitude[0], info.SwingAmplitude[1], r.NextFloat());
+				SwingAmplitude = OpenRA.Graphics.Util.Lerp(info.SwingAmplitude[0], info.SwingAmplitude[1], r.NextFloat());
 				Color = info.ParticleColors.Random(r);
 				TailColor = Color.FromArgb(info.LineTailAlphaValue, Color.R, Color.G, Color.B);
 			}
@@ -128,13 +129,13 @@ namespace OpenRA.Mods.Common.Traits
 				TailColor = source.TailColor;
 			}
 
-			public Particle(in Particle source, float2 pos)
+			public Particle(in Particle source, Vector2 pos)
 				: this(source)
 			{
 				Pos = pos;
 			}
 
-			public Particle(in Particle source, float2 pos, int swingDirection, float swingOffset)
+			public Particle(in Particle source, Vector2 pos, int swingDirection, float swingOffset)
 				: this(source)
 			{
 				Pos = pos;
@@ -171,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyViewportZoomExtentsChanged.ViewportZoomExtentsChanged(float minZoom, float maxZoom)
 		{
 			// Track particles in a viewport fixed to the minimum zoom level
-			var s = (1f / minZoom * new float2(Game.Renderer.NativeResolution)).ToInt2();
+			var s = int2.FromVector(1f / minZoom * Game.Renderer.NativeResolution.ToVector2());
 			viewportSize = new Size(s.X, s.Y);
 
 			// Randomly distribute particles within the initial viewport
@@ -241,7 +242,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
-			var center = wr.Viewport.CenterLocation.ToInt2();
+			var center = int2.FromVector(wr.Viewport.CenterLocation);
 			var viewport = new Rectangle(center - new int2(viewportSize) / 2, viewportSize);
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
@@ -264,12 +265,12 @@ namespace OpenRA.Mods.Common.Traits
 						swingDirection *= -1;
 
 					var swingOffset = p.SwingOffset + p.SwingDirection * p.SwingSpeed;
-					var pos = p.Pos + tickFraction * new float2(p.DirectionScatterX + p.SwingOffset + windStrength, p.Gravity);
+					var pos = p.Pos + tickFraction * new Vector2(p.DirectionScatterX + p.SwingOffset + windStrength, p.Gravity);
 					particles[i] = p = new Particle(p, pos, swingDirection, swingOffset);
 				}
 
 				// Move the particle back inside the viewport if necessary
-				if (!viewport.Contains(p.Pos.ToInt2()))
+				if (!viewport.Contains(int2.FromVector(p.Pos)))
 				{
 					var dx = (p.Pos.X - viewport.Left) % viewport.Width;
 					var dy = (p.Pos.Y - viewport.Top) % viewport.Height;
@@ -280,22 +281,22 @@ namespace OpenRA.Mods.Common.Traits
 					if (dy < 0)
 						dy += viewport.Height;
 
-					particles[i] = p = new Particle(p, new float2(viewport.Left + dx, viewport.Top + dy));
+					particles[i] = p = new Particle(p, new Vector2(viewport.Left + dx, viewport.Top + dy));
 				}
 
 				// Render the particle
 				// We must provide a z coordinate to stop the GL near and far Z limits from culling the geometry
-				var a = new float3(p.Pos.X, p.Pos.Y, p.Pos.Y);
+				var a = new Vector3(p.Pos.X, p.Pos.Y, p.Pos.Y);
 				if (Info.UseSquares)
 				{
-					var b = a + new float2(p.Size, p.Size);
+					var b = a + new Vector3(p.Size, p.Size, 0);
 					wcr.FillRect(a, b, p.Color);
 				}
 				else
 				{
-					var tail = p.Pos + new float2(-windStrength, -p.Gravity * 2 / 3);
+					var tail = p.Pos + new Vector2(-windStrength, -p.Gravity * 2 / 3);
 
-					var b = new float3(tail.X, tail.Y, tail.Y);
+					var b = new Vector3(tail.X, tail.Y, tail.Y);
 					wcr.DrawLine(a, b, p.Size, p.TailColor);
 				}
 			}

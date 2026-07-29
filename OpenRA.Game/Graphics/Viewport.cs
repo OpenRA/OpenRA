@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -50,12 +51,12 @@ namespace OpenRA.Graphics
 		readonly Size tileSize;
 
 		// Viewport geometry (world-px)
-		public float2 CenterLocation { get; private set; }
+		public Vector2 CenterLocation { get; private set; }
 
-		public WPos CenterPosition => worldRenderer.ProjectedPosition(CenterLocation.ToInt2());
+		public WPos CenterPosition => worldRenderer.ProjectedPosition(int2.FromVector(CenterLocation));
 
-		public int2 TopLeft => CenterLocation.ToInt2() - ViewportSize.ToInt2() / 2;
-		public int2 BottomRight => CenterLocation.ToInt2() + ViewportSize.ToInt2() / 2;
+		public int2 TopLeft => int2.FromVector(CenterLocation) - ViewportSize.ToInt2() / 2;
+		public int2 BottomRight => int2.FromVector(CenterLocation) + ViewportSize.ToInt2() / 2;
 		public Size ViewportSize { get; private set; }
 		ProjectedCellRegion cells;
 		bool cellsDirty = true;
@@ -72,7 +73,7 @@ namespace OpenRA.Graphics
 		float defaultScale;
 		bool overrideUserScale;
 
-		public Func<float2> ViewportCenterProvider;
+		public Func<Vector2> ViewportCenterProvider;
 		public event Action ViewportTick;
 
 		public float Zoom
@@ -82,7 +83,7 @@ namespace OpenRA.Graphics
 			private set
 			{
 				zoom = value;
-				ViewportSize = Size.FromInt2((1f / zoom * new float2(Game.Renderer.NativeResolution)).ToInt2());
+				ViewportSize = Size.FromVector(1f / zoom * Game.Renderer.NativeResolution.ToVector2());
 				cellsDirty = true;
 				allCellsDirty = true;
 			}
@@ -110,8 +111,8 @@ namespace OpenRA.Graphics
 			AdjustZoom(dz);
 			var newCenter = worldRenderer.Viewport.ViewToWorldPx(center);
 
-			var candidateCenterLocation = CenterLocation + oldCenter - newCenter;
-			CenterLocation = candidateCenterLocation.Clamp(mapBounds);
+			var candidateCenterLocation = CenterLocation + (oldCenter - newCenter).ToVector2();
+			CenterLocation = mapBounds.Clamp(candidateCenterLocation);
 		}
 
 		public void ToggleZoom()
@@ -166,14 +167,14 @@ namespace OpenRA.Graphics
 					height /= 2;
 
 				mapBounds = new Rectangle(0, 0, width, height);
-				CenterLocation = new int2(width / 2, height / 2);
+				CenterLocation = new int2(width / 2, height / 2).ToVector2();
 			}
 			else
 			{
 				var tl = wr.ScreenPxPosition(map.ProjectedTopLeft);
 				var br = wr.ScreenPxPosition(map.ProjectedBottomRight);
 				mapBounds = Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y);
-				CenterLocation = (tl + br) / 2;
+				CenterLocation = ((tl + br) / 2).ToVector2();
 			}
 
 			UpdateViewportZooms();
@@ -252,8 +253,8 @@ namespace OpenRA.Graphics
 				Zoom = Zoom.Clamp(MinZoom, MaxZoom);
 
 			var minZoom = unlockMinZoom ? unlockedMinZoom : MinZoom;
-			var maxSize = 1f / minZoom * new float2(Game.Renderer.NativeResolution);
-			Game.Renderer.SetMaximumViewportSize(new Size((int)maxSize.X, (int)maxSize.Y));
+			var maxSize = Size.FromVector(1f / minZoom * Game.Renderer.NativeResolution.ToVector2());
+			Game.Renderer.SetMaximumViewportSize(maxSize);
 
 			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementing<INotifyViewportZoomExtentsChanged>())
 				t.ViewportZoomExtentsChanged(minZoom, MaxZoom);
@@ -326,9 +327,14 @@ namespace OpenRA.Graphics
 					yield return new MPos(u, v);
 		}
 
-		public int2 ViewToWorldPx(int2 view) => (graphicSettings.UIScale / Zoom * view.ToFloat2() + CenterLocation - ViewportSize.ToInt2() / 2).ToInt2();
-		public int2 WorldToViewPx(int2 world) => (Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2)).ToInt2();
-		public int2 WorldToViewPx(in float3 world) => (Zoom / graphicSettings.UIScale * (world - CenterLocation + ViewportSize.ToInt2() / 2).XY).ToInt2();
+		public int2 ViewToWorldPx(int2 view)
+			=> int2.FromVector(graphicSettings.UIScale / Zoom * view.ToVector2() + CenterLocation - (ViewportSize.ToInt2() / 2).ToVector2());
+
+		public int2 WorldToViewPx(int2 world)
+			=> int2.FromVector(Zoom / graphicSettings.UIScale * (world.ToVector2() - CenterLocation + (ViewportSize.ToInt2() / 2).ToVector2()));
+
+		public int2 WorldToViewPx(in Vector3 world)
+			=> int2.FromVector(Zoom / graphicSettings.UIScale * (world.AsVector2() - CenterLocation + ViewportSize.ToVector2() / 2));
 
 		public void Center(IEnumerable<Actor> actors)
 		{
@@ -343,19 +349,19 @@ namespace OpenRA.Graphics
 
 		public void Center(WPos pos)
 		{
-			CenterLocation = worldRenderer.ScreenPxPosition(pos).Clamp(mapBounds);
+			CenterLocation = mapBounds.Clamp(worldRenderer.ScreenPxPosition(pos).ToVector2());
 			cellsDirty = true;
 			allCellsDirty = true;
 		}
 
-		public void Center(float2 pos)
+		public void Center(Vector2 pos)
 		{
-			CenterLocation = worldRenderer.ScreenPosition(pos).Clamp(mapBounds);
+			CenterLocation = mapBounds.Clamp(worldRenderer.ScreenPosition(pos));
 			cellsDirty = true;
 			allCellsDirty = true;
 		}
 
-		public void Scroll(float2 delta, bool ignoreBorders)
+		public void Scroll(Vector2 delta, bool ignoreBorders)
 		{
 			// Convert scroll delta from world-px to viewport-px
 			CenterLocation += 1f / Zoom * delta;
@@ -363,7 +369,7 @@ namespace OpenRA.Graphics
 			allCellsDirty = true;
 
 			if (!ignoreBorders)
-				CenterLocation = CenterLocation.Clamp(mapBounds);
+				CenterLocation = mapBounds.Clamp(CenterLocation);
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn

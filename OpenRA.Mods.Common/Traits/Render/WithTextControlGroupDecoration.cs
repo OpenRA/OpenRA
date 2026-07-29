@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return [];
 
 			var text = label.Update(group.Value);
-			var screenPos = container.GetDecorationOrigin(self, wr, info.Position, info.Margin);
+			var screenPos = container.GetDecorationOrigin(self, wr, info.Position, info.Margin).ToVector2();
 			return
 			[
 				new UITextRenderable(font, self.CenterPosition, screenPos, 0, info.UsePlayerColor ? self.OwnerColor() : info.Color, text)
