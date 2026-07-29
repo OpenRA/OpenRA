@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Effects;
 using OpenRA.Primitives;
@@ -362,18 +363,18 @@ namespace OpenRA.Graphics
 			{
 				foreach (var r in World.ScreenMap.RenderBounds(World.RenderPlayer))
 				{
-					var tl = Viewport.WorldToViewPx(new float2(r.Left, r.Top));
-					var br = Viewport.WorldToViewPx(new float2(r.Right, r.Bottom));
+					var tl = Viewport.WorldToViewPx(new Vector3(r.Left, r.Top, 0)).ToVector3();
+					var br = Viewport.WorldToViewPx(new Vector3(r.Right, r.Bottom, 0)).ToVector3();
 					Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.MediumSpringGreen);
 				}
 
 				foreach (var b in World.ScreenMap.MouseBounds(World.RenderPlayer))
 				{
-					var points = new float2[b.Vertices.Length];
+					var points = new Vector2[b.Vertices.Length];
 					for (var index = 0; index < b.Vertices.Length; index++)
 					{
 						var vertex = b.Vertices[index];
-						points[index] = Viewport.WorldToViewPx(vertex).ToFloat2();
+						points[index] = Viewport.WorldToViewPx(vertex).ToVector2();
 					}
 
 					Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 1, Color.OrangeRed);
@@ -398,20 +399,20 @@ namespace OpenRA.Graphics
 		/// <summary>
 		/// Converts a world position to a screen position.
 		/// </summary>
-		public float2 ScreenPosition(WPos pos)
+		public Vector2 ScreenPosition(WPos pos)
 		{
-			return new float2((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale);
+			return new Vector2((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale);
 		}
 
 		/// <summary>
 		/// Converts a world position to a screen position.
 		/// </summary>
-		public float2 ScreenPosition(float2 pos)
+		public Vector2 ScreenPosition(Vector2 pos)
 		{
-			return new float2(TileSize.Width * pos.X / TileScale, TileSize.Height * pos.Y / TileScale);
+			return new Vector2(TileSize.Width * pos.X / TileScale, TileSize.Height * pos.Y / TileScale);
 		}
 
-		public float3 Screen3DPosition(WPos pos)
+		public Vector3 Screen3DPosition(WPos pos)
 		{
 			// The projection from world coordinates to screen coordinates has
 			// a non-obvious relationship between the y and z coordinates:
@@ -420,7 +421,7 @@ namespace OpenRA.Graphics
 			// * Increasing the world y coordinate increases screen y and z coordinates equally.
 			// * Increases the world z coordinate decreases screen y but doesn't change screen z.
 			var z = pos.Y * (float)TileSize.Height / TileScale;
-			return new float3((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale, z);
+			return new Vector3((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale, z);
 		}
 
 		public int2 ScreenPxPosition(WPos pos)
@@ -430,17 +431,17 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
 
-		public float3 Screen3DPxPosition(WPos pos)
+		public Vector3 Screen3DPxPosition(WPos pos)
 		{
 			// Round to nearest pixel
 			var px = Screen3DPosition(pos);
-			return new float3((float)Math.Round(px.X), (float)Math.Round(px.Y), px.Z);
+			return new Vector3((float)Math.Round(px.X), (float)Math.Round(px.Y), px.Z);
 		}
 
 		// For scaling vectors to pixel sizes in the model renderer
-		public float3 ScreenVectorComponents(in WVec vec)
+		public Vector3 ScreenVectorComponents(in WVec vec)
 		{
-			return new float3(
+			return new Vector3(
 				(float)TileSize.Width * vec.X / TileScale,
 				(float)TileSize.Height * (vec.Y - vec.Z) / TileScale,
 				(float)TileSize.Height * vec.Z / TileScale);

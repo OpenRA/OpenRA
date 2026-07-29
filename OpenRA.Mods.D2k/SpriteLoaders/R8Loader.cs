@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -27,7 +28,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			public SpriteFrameType Type => SpriteFrameType.Bgra32;
 			public Size Size => inner.Size;
 			public Size FrameSize => inner.FrameSize;
-			public float2 Offset => inner.Offset;
+			public Vector2 Offset => inner.Offset;
 			public bool DisableExportPadding => inner.DisableExportPadding;
 
 			readonly Frame inner;
@@ -102,7 +103,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			public SpriteFrameType Type { get; }
 			public Size Size { get; }
 			public Size FrameSize { get; }
-			public float2 Offset { get; }
+			public Vector2 Offset { get; }
 			public byte[] Data { get; }
 			public bool DisableExportPadding => true;
 
@@ -121,7 +122,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 				var y = s.ReadInt32();
 
 				Size = new Size(width, height);
-				Offset = new int2(width / 2 - x, height / 2 - y);
+				Offset = new Vector2(width / 2 - x, height / 2 - y);
 
 				s.ReadUInt32(); // imageHandle
 				var paletteHandle = s.ReadInt32();

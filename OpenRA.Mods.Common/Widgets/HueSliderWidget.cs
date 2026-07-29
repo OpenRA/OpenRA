@@ -59,10 +59,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var ro = RenderOrigin;
 			var rb = RenderBounds;
-			WidgetUtils.DrawSprite(hueSprite, ro, rb.Size);
+			WidgetUtils.DrawSprite(hueSprite, ro.ToVector2(), rb.Size);
 
 			var pos = RenderOrigin + new int2(PxFromValue(Value).Clamp(0, rb.Width - 1) - (int)pickerSprite.Size.X / 2, (rb.Height - (int)pickerSprite.Size.Y) / 2);
-			WidgetUtils.DrawSprite(pickerSprite, pos);
+			WidgetUtils.DrawSprite(pickerSprite, pos.ToVector2());
 		}
 
 		public override void Removed()

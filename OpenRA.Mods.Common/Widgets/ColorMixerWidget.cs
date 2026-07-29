@@ -99,19 +99,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			WidgetUtils.DrawSprite(mixerSprite, RenderOrigin, RenderBounds.Size);
+			WidgetUtils.DrawSprite(mixerSprite, RenderOrigin.ToVector2(), RenderBounds.Size);
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
 			var pos = RenderOrigin + PxFromValue() - new int2((int)sprite.Size.X, (int)sprite.Size.Y) / 2;
 			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), Color);
-			WidgetUtils.DrawSprite(sprite, pos);
+			WidgetUtils.DrawSprite(sprite, pos.ToVector2());
 		}
 
 		void SetValueFromPx(int2 xy)
 		{
 			var rb = RenderBounds;
-			var v = float2.Lerp(minVal, maxVal, xy.X * 1f / rb.Width);
-			var s = float2.Lerp(minSat, maxSat, 1 - xy.Y * 1f / rb.Height);
+			var v = OpenRA.Graphics.Util.Lerp(minVal, maxVal, xy.X * 1f / rb.Width);
+			var s = OpenRA.Graphics.Util.Lerp(minSat, maxSat, 1 - xy.Y * 1f / rb.Height);
 			V = v.Clamp(minVal, maxVal);
 			S = s.Clamp(minSat, maxSat);
 		}

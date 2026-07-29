@@ -45,7 +45,7 @@ namespace OpenRA.Graphics
 			var r = map.Grid.Ramps[map.Ramp[pos]];
 			var wpos = map.CenterOfCell(pos) - new WVec(0, 0, r.CenterHeightOffset);
 
-			var corners = r.Corners.Select(corner => wr.Viewport.WorldToViewPx(wr.Screen3DPosition(wpos + corner))).ToList();
+			var corners = r.Corners.Select(corner => wr.Viewport.WorldToViewPx(wr.Screen3DPosition(wpos + corner)).ToVector3()).ToList();
 
 			Game.Renderer.RgbaColorRenderer.FillRect(corners[0], corners[1], corners[2], corners[3], color);
 		}

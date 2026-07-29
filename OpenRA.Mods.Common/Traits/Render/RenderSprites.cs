@@ -13,6 +13,7 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -289,7 +290,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)
-					.Select(a => (a.Animation.Animation.Image.Size.XY * a.Animation.Animation.CurrentSequence.Scale).ToInt2())
+					.Select(a => int2.FromVector(a.Animation.Animation.Image.Size.AsVector2() * a.Animation.Animation.CurrentSequence.Scale))
 					.FirstOrDefault();
 		}
 

@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			WidgetUtils.DrawSprite(GetSprite(), RenderOrigin);
+			WidgetUtils.DrawSprite(GetSprite(), RenderOrigin.ToVector2());
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

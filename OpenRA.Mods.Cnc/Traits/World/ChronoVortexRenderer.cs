@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly IShader shader;
 		readonly IVertexBuffer<RenderPostProcessPassTexturedVertex> vortexBuffer;
 		readonly Sheet vortexSheet;
-		readonly List<(float3, int)> vortices = [];
+		readonly List<(Vector3, int)> vortices = [];
 
 		public ChronoVortexRenderer(Actor self)
 		{
@@ -61,8 +62,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					}
 				}
 
-				var tl = new float2(col, row) / 8;
-				var br = new float2(col + 1, row + 1) / 8;
+				var tl = new Vector2(col, row) / 8;
+				var br = new Vector2(col + 1, row + 1) / 8;
 				vertices[j++] = new RenderPostProcessPassTexturedVertex(-32, -32, tl.X, tl.Y);
 				vertices[j++] = new RenderPostProcessPassTexturedVertex(32, -32, br.X, tl.Y);
 				vertices[j++] = new RenderPostProcessPassTexturedVertex(32, 32, br.X, br.Y);
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			vortexSheet.CommitBufferedData();
 		}
 
-		public void DrawVortex(float3 pos, int frame)
+		public void DrawVortex(Vector3 pos, int frame)
 		{
 			vortices.Add((pos, frame));
 		}

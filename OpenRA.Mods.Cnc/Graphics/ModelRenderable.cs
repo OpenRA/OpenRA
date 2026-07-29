@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
@@ -38,14 +39,14 @@ namespace OpenRA.Mods.Cnc.Graphics
 			: this(renderer, models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				color, normals, shadow, 1f,
-				float3.Ones, TintModifiers.None)
+				Vector3.One, TintModifiers.None)
 		{ }
 
 		public ModelRenderable(
 			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
 			in WRot lightSource, ImmutableArray<float> lightAmbientColor, ImmutableArray<float> lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow,
-			float alpha, in float3 tint, TintModifiers tintModifiers)
+			float alpha, in Vector3 tint, TintModifiers tintModifiers)
 		{
 			this.renderer = renderer;
 			this.models = models;
@@ -70,7 +71,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public bool IsDecoration => false;
 
 		public float Alpha { get; }
-		public float3 Tint { get; }
+		public Vector3 Tint { get; }
 		public TintModifiers TintModifiers { get; }
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 				Palette, normalsPalette, shadowPalette, newAlpha, Tint, TintModifiers);
 		}
 
-		public IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers)
+		public IModifyableRenderable WithTint(in Vector3 newTint, TintModifiers newTintModifiers)
 		{
 			return new ModelRenderable(
 				renderer, models, Pos, ZOffset, camera, scale,
@@ -147,15 +148,15 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader
 				// so for now just offset everything forward so that the back corner is rendered at pos.
-				pxOrigin -= new float3(0, 0, Screen3DBounds(wr).Z.X);
+				pxOrigin -= new Vector3(0, 0, Screen3DBounds(wr).Z.X);
 
 				// HACK: The previous hack isn't sufficient for the ramp type that is half flat and half
 				// sloped towards the camera. Offset it by another half cell to avoid clipping.
 				var cell = map.CellContaining(model.Pos);
 				if (map.Ramp.Contains(cell) && map.Ramp[cell] == 7)
-					pxOrigin += new float3(0, 0, 0.5f * map.Rules.TerrainInfo.TileSize.Height);
+					pxOrigin += new Vector3(0, 0, 0.5f * map.Rules.TerrainInfo.TileSize.Height);
 
-				var shadowOrigin = pxOrigin - groundZ * new float2(renderProxy.ShadowDirection, 1);
+				var shadowOrigin = pxOrigin - groundZ * new Vector3(renderProxy.ShadowDirection, 1, 0);
 
 				var psb = renderProxy.ProjectedShadowBounds;
 				var sa = shadowOrigin + psb[0];
@@ -182,13 +183,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 				var groundPos = model.Pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(model.Pos).Length);
 				var groundZ = wr.World.Map.Rules.TerrainInfo.TileSize.Height * (groundPos.Z - model.Pos.Z) / 1024f;
 				var pxOrigin = wr.Screen3DPosition(model.Pos);
-				var shadowOrigin = pxOrigin - groundZ * new float2(renderProxy.ShadowDirection, 1);
+				var shadowOrigin = pxOrigin - groundZ * new Vector3(renderProxy.ShadowDirection, 1, 0);
 
 				// Draw sprite rect
 				var offset = pxOrigin + renderProxy.Sprite.Offset - 0.5f * renderProxy.Sprite.Size;
-				var tl = wr.Viewport.WorldToViewPx(offset.XY);
-				var br = wr.Viewport.WorldToViewPx((offset + renderProxy.Sprite.Size).XY);
-				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.Red);
+				var tl = wr.Viewport.WorldToViewPx(int2.FromVector(offset));
+				var br = wr.Viewport.WorldToViewPx(int2.FromVector(offset + renderProxy.Sprite.Size));
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl.ToVector3(), br.ToVector3(), 1, Color.Red);
 
 				// Draw transformed shadow sprite rect
 				var c = Color.Purple;
@@ -196,10 +197,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 				Game.Renderer.RgbaColorRenderer.DrawPolygon(
 				[
-					wr.Viewport.WorldToViewPx(shadowOrigin + psb[1]),
-					wr.Viewport.WorldToViewPx(shadowOrigin + psb[3]),
-					wr.Viewport.WorldToViewPx(shadowOrigin + psb[0]),
-					wr.Viewport.WorldToViewPx(shadowOrigin + psb[2])
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[1]).ToVector3(),
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[3]).ToVector3(),
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[0]).ToVector3(),
+					wr.Viewport.WorldToViewPx(shadowOrigin + psb[2]).ToVector3()
 				], 1, c);
 
 				// Draw bounding box
@@ -222,15 +223,15 @@ namespace OpenRA.Mods.Cnc.Graphics
 			static readonly uint[] CornerXIndex = [0, 0, 0, 0, 3, 3, 3, 3];
 			static readonly uint[] CornerYIndex = [1, 1, 4, 4, 1, 1, 4, 4];
 			static readonly uint[] CornerZIndex = [2, 5, 2, 5, 2, 5, 2, 5];
-			static void DrawBoundsBox(WorldRenderer wr, in float3 pxPos, float[] transform, float[] bounds, float width, Color c)
+			static void DrawBoundsBox(WorldRenderer wr, in Vector3 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
 				var cr = Game.Renderer.RgbaColorRenderer;
-				var corners = new float2[8];
+				var corners = new Vector2[8];
 				for (var i = 0; i < 8; i++)
 				{
 					var vec = new[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
 					var screen = Util.MatrixVectorMultiply(transform, vec);
-					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new float3(screen[0], screen[1], screen[2]));
+					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new Vector3(screen[0], screen[1], screen[2])).ToVector2();
 				}
 
 				// Front face
@@ -251,9 +252,9 @@ namespace OpenRA.Mods.Cnc.Graphics
 				return Screen3DBounds(wr).Bounds;
 			}
 
-			(Rectangle Bounds, float2 Z) Screen3DBounds(WorldRenderer wr)
+			(Rectangle Bounds, Vector2 Z) Screen3DBounds(WorldRenderer wr)
 			{
-				var pxOrigin = wr.ScreenPosition(model.Pos);
+				var pxOrigin = wr.ScreenPosition(model.Pos).AsVector3();
 				var draw = model.models.Where(v => v.IsVisible);
 				var scaleTransform = Util.ScaleMatrix(model.scale, model.scale, model.scale);
 				var cameraTransform = Util.MakeFloatMatrix(model.camera.AsMatrix());
@@ -287,7 +288,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					}
 				}
 
-				return (Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
+				return (Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new Vector2(minZ, maxZ));
 			}
 		}
 	}

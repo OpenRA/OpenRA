@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.D2k.Traits.Buildings;
@@ -112,7 +113,7 @@ namespace OpenRA.Mods.D2k.Traits
 					{
 						// Terrain tiles define their origin at the topleft
 						var s = terrainRenderer.TileSprite(tile.Value);
-						var ss = new Sprite(s.Sheet, s.Bounds, s.ZRamp, float2.Zero, s.Channel, s.BlendMode);
+						var ss = new Sprite(s.Sheet, s.Bounds, s.ZRamp, Vector3.Zero, s.Channel, s.BlendMode);
 						render.Update(kv.Key, ss, paletteReference);
 					}
 					else

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -35,20 +36,20 @@ namespace OpenRA.Mods.Common.Traits
 
 	public sealed class TerrainLighting : ITerrainLighting
 	{
-		sealed class LightSource(WPos pos, CPos cell, WDist range, float intensity, in float3 tint)
+		sealed class LightSource(WPos pos, CPos cell, WDist range, float intensity, in Vector3 tint)
 		{
 			public readonly WPos Pos = pos;
 			public readonly CPos Cell = cell;
 			public readonly WDist Range = range;
 			public readonly float Intensity = intensity;
-			public readonly float3 Tint = tint;
+			public readonly Vector3 Tint = tint;
 		}
 
 		readonly TerrainLightingInfo info;
 		readonly Map map;
 		readonly Dictionary<int, LightSource> lightSources = [];
 		readonly SpatiallyPartitioned<LightSource> partitionedLightSources;
-		readonly float3 globalTint;
+		readonly Vector3 globalTint;
 		int nextLightSourceToken = 1;
 
 		public event Action<MPos> CellChanged = null;
@@ -57,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			map = world.Map;
-			globalTint = new float3(info.RedTint, info.GreenTint, info.BlueTint);
+			globalTint = new Vector3(info.RedTint, info.GreenTint, info.BlueTint);
 
 			var tileScale = map.Grid.TileScale;
 			partitionedLightSources = new SpatiallyPartitioned<LightSource>(
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Rectangle(c.X - r, c.Y - r, 2 * r, 2 * r);
 		}
 
-		public int AddLightSource(WPos pos, WDist range, float intensity, in float3 tint)
+		public int AddLightSource(WPos pos, WDist range, float intensity, in Vector3 tint)
 		{
 			var token = nextLightSourceToken++;
 			var source = new LightSource(pos, map.CellContaining(pos), range, intensity, tint);
@@ -100,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 					CellChanged(c.ToMPos(map));
 		}
 
-		float3 ITerrainLighting.TintAt(WPos pos)
+		Vector3 ITerrainLighting.TintAt(WPos pos)
 		{
 			using (new PerfSample("terrain_lighting"))
 			{

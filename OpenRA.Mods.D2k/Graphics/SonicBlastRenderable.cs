@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.D2k.Traits;
 using OpenRA.Primitives;
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.D2k.Graphics
 	{
 		public static readonly IEnumerable<IRenderable> None = [];
 		readonly SonicBlastRenderer renderer;
-		readonly float3 r;
+		readonly Vector3 r;
 
 		public WPos Pos { get; }
 		public int ZOffset => 0;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.D2k.Graphics
 		{
 			this.renderer = renderer;
 			Pos = pos;
-			r = renderer.Info.Size * new float3(0.5f, 0.5f, 0);
+			r = renderer.Info.Size * new Vector3(0.5f, 0.5f, 0);
 		}
 
 		public bool IsDecoration => false;
@@ -48,8 +49,8 @@ namespace OpenRA.Mods.D2k.Graphics
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var pos = wr.Screen3DPxPosition(Pos);
-			var tl = wr.Viewport.WorldToViewPx(pos - r);
-			var br = wr.Viewport.WorldToViewPx(pos + r);
+			var tl = wr.Viewport.WorldToViewPx(pos - r).ToVector3();
+			var br = wr.Viewport.WorldToViewPx(pos + r).ToVector3();
 			Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.Red);
 		}
 

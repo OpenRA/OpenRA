@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace OpenRA.Graphics
@@ -28,13 +29,13 @@ namespace OpenRA.Graphics
 		// Color tint
 		public readonly float R, G, B, A;
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, uint c)
-			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, c, float3.Ones, 1f) { }
+		public Vertex(in Vector3 xyz, float s, float t, float u, float v, uint c)
+			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, c, Vector3.One, 1f) { }
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, uint c, in float3 tint, float a)
+		public Vertex(in Vector3 xyz, float s, float t, float u, float v, uint c, in Vector3 tint, float a)
 			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, c, tint.X, tint.Y, tint.Z, a) { }
 
-		public Vertex(float x, float y, float z, float s, float t, float u, float v, uint c, in float3 tint, float a)
+		public Vertex(float x, float y, float z, float s, float t, float u, float v, uint c, in Vector3 tint, float a)
 			: this(x, y, z, s, t, u, v, c, tint.X, tint.Y, tint.Z, a) { }
 
 		public Vertex(float x, float y, float z, float s, float t, float u, float v, uint c, float r, float g, float b, float a)

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly List<ProductionIcon> productionIcons = [];
 		readonly List<Rectangle> productionIconsBounds = [];
 
-		readonly float2 iconSize;
+		readonly Vector2 iconSize;
 		int lastIconIdx;
 		public int MinWidth = 240;
 		int currentTooltipToken;
@@ -59,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetTooltipIcon = () => TooltipIcon;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-			iconSize = new float2(IconWidth, IconHeight);
+			iconSize = new Vector2(IconWidth, IconHeight);
 		}
 
 		protected ObserverProductionIconsWidget(ObserverProductionIconsWidget other)
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets
 			IconWidth = other.IconWidth;
 			IconHeight = other.IconHeight;
 			IconSpacing = other.IconSpacing;
-			iconSize = new float2(IconWidth, IconHeight);
+			iconSize = new Vector2(IconWidth, IconHeight);
 
 			ClockAnimation = other.ClockAnimation;
 			ClockSequence = other.ClockSequence;
@@ -140,9 +141,9 @@ namespace OpenRA.Mods.Common.Widgets
 				var bi = actor.TraitInfo<BuildableInfo>();
 
 				icon.Play(bi.Icon);
-				var topLeftOffset = new float2(queueCol * (IconWidth + IconSpacing), 0);
+				var topLeftOffset = new Vector2(queueCol * (IconWidth + IconSpacing), 0);
 
-				var iconTopLeft = RenderOrigin + topLeftOffset;
+				var iconTopLeft = RenderOrigin.ToVector2() + topLeftOffset;
 				var centerPosition = iconTopLeft + 0.5f * iconSize;
 
 				var palette = bi.IconPaletteIsPlayerPalette ? bi.IconPalette + player.InternalName : bi.IconPalette;
@@ -152,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 				productionIcons.Add(new ProductionIcon
 				{
 					Actor = actor,
-					Pos = new float2(rect.Location),
+					Pos = rect.Location.ToVector2(),
 					Queued = queued,
 					ProductionQueue = current.Queue
 				});
@@ -198,13 +199,13 @@ namespace OpenRA.Mods.Common.Widgets
 				var current = icon.Queued[0];
 				var text = GetOverlayForItem(current, world.Timestep);
 				tiny.DrawTextWithContrast(text,
-					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),
+					icon.Pos + new Vector2(16, 12) - new Vector2(tiny.Measure(text).X / 2, 0),
 					Color.White, Color.Black, 1);
 
 				if (icon.Queued.Count > 1)
 				{
 					text = icon.Queued.Count.ToString(NumberFormatInfo.CurrentInfo);
-					bold.DrawTextWithContrast(text, icon.Pos + new float2(16, 0) - new float2(bold.Measure(text).X / 2, 0),
+					bold.DrawTextWithContrast(text, icon.Pos + new Vector2(16, 0) - new Vector2(bold.Measure(text).X / 2, 0),
 						Color.White, Color.Black, 1);
 				}
 			}

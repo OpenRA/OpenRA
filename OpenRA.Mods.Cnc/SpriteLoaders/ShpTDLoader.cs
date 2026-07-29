@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Primitives;
@@ -80,7 +81,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }
 			public Size FrameSize { get; }
-			public float2 Offset { get; }
+			public Vector2 Offset { get; }
 			public byte[] Data { get; }
 			public bool DisableExportPadding { get { return false; } }
 
@@ -152,7 +153,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 					Size = new Size(trimmedWidth, trimmedHeight);
 					FrameSize = origSize;
-					Offset = 0.5f * new float2(
+					Offset = 0.5f * new Vector2(
 						left + right - origSize.Width + 1,
 						top + bottom - origSize.Height + 1);
 
@@ -167,7 +168,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size => reader.Size;
 			public Size FrameSize => reader.Size;
-			public float2 Offset => float2.Zero;
+			public Vector2 Offset => Vector2.Zero;
 			public byte[] Data { get; set; }
 			public bool DisableExportPadding => false;
 

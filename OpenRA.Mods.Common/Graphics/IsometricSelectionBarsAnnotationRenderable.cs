@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -67,24 +68,24 @@ namespace OpenRA.Mods.Common.Graphics
 		void DrawBar(WorldRenderer wr, float value, Color barColor, int barNum, float? secondValue = null, Color? secondColor = null)
 		{
 			var darkColor = Color.FromArgb(barColor.A, barColor.R / 2, barColor.G / 2, barColor.B / 2);
-			var barAspect = new float2(1f, 0.5f);
-			var stepAspect = new float2(1f, -0.5f);
+			var barAspect = new Vector3(1f, 0.5f, 0f);
+			var stepAspect = new Vector3(1f, -0.5f, 0f);
 
-			var offset = barNum * BarStride * barAspect - new float2(0, BarHeight + 1);
-			var start = wr.Viewport.WorldToViewPx(bounds.Vertices[1]).ToFloat2() + offset;
-			var end = wr.Viewport.WorldToViewPx(bounds.Vertices[0]).ToFloat2() + offset;
+			var offset = barNum * BarStride * barAspect - new Vector3(0, BarHeight + 1, 0);
+			var start = wr.Viewport.WorldToViewPx(bounds.Vertices[1]).ToVector3() + offset;
+			var end = wr.Viewport.WorldToViewPx(bounds.Vertices[0]).ToVector3() + offset;
 
 			// HACK: Work around rounding errors that may cause a few-px offset in the end relative to the start
 			// Force the bar to take a 45 degree angle
-			end = new float2(end.X, start.Y - (end.X - start.X) / 2);
+			end = new Vector3(end.X, start.Y - (end.X - start.X) / 2, 0);
 
 			// Round the cut point to the nearest pixel to avoid potential off-by-one pixel offsets distorting the bar
-			var cutX = (int)(float2.Lerp(start.X, end.X, value) + 0.5f);
-			var cut = new float2(cutX, start.Y - (cutX - start.X) / 2);
+			var cutX = (int)(OpenRA.Graphics.Util.Lerp(start.X, end.X, value) + 0.5f);
+			var cut = new Vector3(cutX, start.Y - (cutX - start.X) / 2, 0);
 
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var da = BarWidth * barAspect;
-			var db = new int2(0, BarHeight);
+			var db = new Vector3(0, BarHeight, 0);
 			var dc = da + db;
 
 			// Filled bar
@@ -105,8 +106,8 @@ namespace OpenRA.Mods.Common.Graphics
 			// Second bar (e.g. applied damage)
 			if (secondValue.HasValue && secondColor.HasValue)
 			{
-				var secondCutX = (int)(float2.Lerp(start.X, end.X, secondValue.Value) + 0.5f);
-				var secondCut = new float2(secondCutX, start.Y - (secondCutX - start.X) / 2);
+				var secondCutX = (int)(OpenRA.Graphics.Util.Lerp(start.X, end.X, secondValue.Value) + 0.5f);
+				var secondCut = new Vector3(secondCutX, start.Y - (secondCutX - start.X) / 2, 0);
 				var darkSecond = Color.FromArgb(secondColor.Value.A, secondColor.Value.R / 2, secondColor.Value.G / 2, secondColor.Value.B / 2);
 
 				cr.FillRect(cut + da, cut + dc, secondCut + dc, secondCut + da, darkSecond);

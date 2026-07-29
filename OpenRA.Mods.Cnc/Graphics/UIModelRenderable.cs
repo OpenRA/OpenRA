@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
@@ -92,13 +93,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			public void Render(WorldRenderer wr)
 			{
-				var pxOrigin = model.screenPos;
+				var pxOrigin = model.screenPos.ToVector3();
 				var psb = renderProxy.ProjectedShadowBounds;
 				var sa = pxOrigin + psb[0];
 				var sb = pxOrigin + psb[2];
 				var sc = pxOrigin + psb[1];
 				var sd = pxOrigin + psb[3];
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd, float3.Ones, 1f);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd, Vector3.One, 1f);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size);
 			}
 
@@ -112,7 +113,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			static readonly uint[] CornerXIndex = [0, 0, 0, 0, 3, 3, 3, 3];
 			static readonly uint[] CornerYIndex = [1, 1, 4, 4, 1, 1, 4, 4];
 			static readonly uint[] CornerZIndex = [2, 5, 2, 5, 2, 5, 2, 5];
-			(Rectangle Bounds, float2 Z) Screen3DBounds(WorldRenderer wr)
+			(Rectangle Bounds, Vector2 Z) Screen3DBounds(WorldRenderer wr)
 			{
 				var pxOrigin = model.screenPos;
 				var draw = model.models.Where(v => v.IsVisible);
@@ -132,7 +133,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
 					var worldTransform = Util.MatrixMultiply(scaleTransform, rotation);
 
-					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
+					var pxPos = pxOrigin.ToVector3() + wr.ScreenVectorComponents(v.OffsetFunc());
 					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)
@@ -148,7 +149,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					}
 				}
 
-				return (Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new float2(minZ, maxZ));
+				return (Rectangle.FromLTRB((int)minX, (int)minY, (int)maxX, (int)maxY), new Vector2(minZ, maxZ));
 			}
 		}
 	}

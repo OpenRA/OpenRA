@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -82,11 +83,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		Sprite IProductionIconOverlay.Sprite => sprite;
 		string IProductionIconOverlay.Palette => info.Palette;
 
-		float2 IProductionIconOverlay.Offset(float2 iconSize)
+		Vector2 IProductionIconOverlay.Offset(Vector2 iconSize)
 		{
 			var x = (sprite.Size.X - iconSize.X) / 2;
 			var y = (sprite.Size.Y - iconSize.Y) / 2;
-			return new float2(x, y);
+			return new Vector2(x, y);
 		}
 
 		bool IProductionIconOverlay.IsOverlayActive(ActorInfo ai)

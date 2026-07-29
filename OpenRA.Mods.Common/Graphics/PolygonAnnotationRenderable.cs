@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -47,7 +48,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var verts = vertices.Select(v => wr.Viewport.WorldToViewPx(wr.ScreenPosition(v)).ToFloat2()).ToArray();
+			var verts = vertices.Select(v => wr.Viewport.WorldToViewPx(wr.ScreenPosition(v).AsVector3()).ToVector2()).ToArray();
 			Game.Renderer.RgbaColorRenderer.DrawPolygon(verts, width, color);
 		}
 

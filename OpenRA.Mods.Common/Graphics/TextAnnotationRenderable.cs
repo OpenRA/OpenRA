@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -52,14 +53,14 @@ namespace OpenRA.Mods.Common.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos)) - 0.5f * font.Measure(text).ToFloat2();
+			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos).AsVector3()).ToVector2() - 0.5f * font.Measure(text).ToVector2();
 			font.DrawTextWithContrast(text, screenPos, color, bgDark, bgLight, 1);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var size = font.Measure(text).ToFloat2();
-			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos));
+			var size = font.Measure(text).ToVector3();
+			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos).AsVector3()).ToVector3();
 			Game.Renderer.RgbaColorRenderer.DrawRect(screenPos - 0.5f * size, screenPos + 0.5f * size, 1, Color.Red);
 		}
 

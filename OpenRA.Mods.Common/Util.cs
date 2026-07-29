@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
@@ -309,8 +310,11 @@ namespace OpenRA.Mods.Common
 			if (t == typeof(float) || t == typeof(decimal))
 				return "Real Number";
 
-			if (t == typeof(float2))
+			if (t == typeof(Vector2))
 				return "2D Real Number";
+
+			if (t == typeof(Vector3))
+				return "3D Real Number";
 
 			if (t == typeof(CPos))
 				return "2D Cell Position";

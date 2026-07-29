@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -78,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			WidgetUtils.DrawSprite(
 				arrowImage,
-				stateOffset + new float2(
+				stateOffset.ToVector2() + new Vector2(
 					rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2),
 					rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
 
@@ -88,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (separatorImage != null)
 				WidgetUtils.DrawSprite(
 					separatorImage,
-					stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4,
+					stateOffset.ToVector2() + new Vector2(-3, 0) + new Vector2(rb.Right - rb.Height + 4,
 					rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
 		}
 

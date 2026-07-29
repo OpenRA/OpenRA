@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -110,16 +111,16 @@ namespace OpenRA.Mods.Cnc.Graphics
 					yield return z;
 		}
 
-		static IEnumerable<IFinalizedRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, ISpriteSequence s, string pal)
+		static IEnumerable<IFinalizedRenderable> DrawZapWandering(WorldRenderer wr, Vector2 from, Vector2 to, ISpriteSequence s, string pal)
 		{
 			var dist = to - from;
-			var norm = 1f / dist.Length * new float2(-dist.Y, dist.X);
+			var norm = 1f / dist.Length() * new Vector2(-dist.Y, dist.X);
 
 			var renderables = new List<IFinalizedRenderable>();
 			if (Game.CosmeticRandom.Next(2) != 0)
 			{
-				var p1 = from + 1 / 3f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
-				var p2 = from + 2 / 3f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
+				var p1 = from + 1 / 3f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length() / 4096 * norm;
+				var p2 = from + 2 / 3f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length() / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
 				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2, pal));
@@ -127,7 +128,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			}
 			else
 			{
-				var p1 = from + 1 / 2f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
+				var p1 = from + 1 / 2f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length() / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
 				renderables.AddRange(DrawZap(wr, p1, to, s, out _, pal));
@@ -136,25 +137,25 @@ namespace OpenRA.Mods.Cnc.Graphics
 			return renderables;
 		}
 
-		static IEnumerable<IFinalizedRenderable> DrawZap(WorldRenderer wr, float2 from, float2 to, ISpriteSequence s, out float2 p, string palette)
+		static IEnumerable<IFinalizedRenderable> DrawZap(WorldRenderer wr, Vector2 from, Vector2 to, ISpriteSequence s, out Vector2 p, string palette)
 		{
 			var dist = to - from;
-			var q = new float2(-dist.Y, dist.X);
-			var c = -float2.Dot(from, q);
+			var q = new Vector2(-dist.Y, dist.X);
+			var c = -Vector2.Dot(from, q);
 			var rs = new List<IFinalizedRenderable>();
 			var z = from;
 			var pal = wr.Palette(palette);
 
 			while ((to - z).X > 5 || (to - z).X < -5 || (to - z).Y > 5 || (to - z).Y < -5)
 			{
-				var step = Steps.Where(t => (to - (z + new float2(t[0], t[1]))).LengthSquared < (to - z).LengthSquared)
-					.MinBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c));
+				var step = Steps.Where(t => (to - (z + new Vector2(t[0], t[1]))).LengthSquared() < (to - z).LengthSquared())
+					.MinBy(t => Math.Abs(Vector2.Dot(z + new Vector2(t[0], t[1]), q) + c));
 
-				var pos = wr.ProjectedPosition((z + new float2(step[2], step[3])).ToInt2());
+				var pos = wr.ProjectedPosition(int2.FromVector(z + new Vector2(step[2], step[3])));
 				var tintModifiers = s.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, s.GetAlpha(step[4]), float3.Ones, tintModifiers, true).PrepareRender(wr));
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, pal, 1f, s.GetAlpha(step[4]), Vector3.One, tintModifiers, true).PrepareRender(wr));
 
-				z += new float2(step[0], step[1]);
+				z += new Vector2(step[0], step[1]);
 				if (rs.Count >= 1000)
 					break;
 			}

@@ -12,6 +12,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Numerics;
 using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -34,8 +35,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Sheet overlaySheet;
 		string cachedVideoFileName;
 		float invLength;
-		float2 videoOrigin, videoSize;
-		float2 overlayOrigin, overlaySize;
+		Vector2 videoOrigin, videoSize;
+		Vector2 overlayOrigin, overlaySize;
 		float overlayScale;
 		readonly Stopwatch playTime = new();
 		int textureWidth;
@@ -139,12 +140,12 @@ namespace OpenRA.Mods.Common.Widgets
 				TextureChannel.RGBA);
 
 			var scale = Math.Min((float)RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
-			videoOrigin = new float2(
+			videoOrigin = new Vector2(
 				RenderBounds.X + (RenderBounds.Width - scale * video.Width) / 2,
 				RenderBounds.Y + (RenderBounds.Height - scale * video.Height * AspectRatio) / 2);
 
 			// Round size to integer pixels. Round up to be consistent with the scale calculation.
-			videoSize = new float2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
+			videoSize = new Vector2((int)Math.Ceiling(video.Width * scale), (int)Math.Ceiling(video.Height * AspectRatio * scale));
 		}
 
 		public override void Draw()
@@ -156,9 +157,9 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				int nextFrame;
 				if (Video.HasAudio && !Game.Sound.DummyEngine)
-					nextFrame = (int)float2.Lerp(0, Video.FrameCount, Game.Sound.VideoSeekPosition * invLength);
+					nextFrame = (int)OpenRA.Graphics.Util.Lerp(0, Video.FrameCount, Game.Sound.VideoSeekPosition * invLength);
 				else
-					nextFrame = (int)float2.Lerp(0, Video.FrameCount, (float)playTime.Elapsed.TotalSeconds * invLength);
+					nextFrame = (int)OpenRA.Graphics.Util.Lerp(0, Video.FrameCount, (float)playTime.Elapsed.TotalSeconds * invLength);
 
 				// Without the 2nd check the sound playback sometimes ends before the final frame is displayed which causes the player to be stuck on the first frame
 				if (nextFrame > Video.FrameCount || nextFrame < Video.CurrentFrameIndex)
@@ -223,8 +224,8 @@ namespace OpenRA.Mods.Common.Widgets
 					overlaySprite = new Sprite(overlaySheet, new Rectangle(0, 0, 1, overlayHeight), TextureChannel.RGBA);
 
 					// Overlay origin must be rounded to the nearest screen pixel to prevent aliasing
-					overlayOrigin = new float2((int)(RenderBounds.X * scale + 0.5f), (int)(RenderBounds.Y * scale + 0.5f)) / scale;
-					overlaySize = new float2(RenderBounds.Width, overlayHeight * halfRowHeight / scale);
+					overlayOrigin = new Vector2((int)(RenderBounds.X * scale + 0.5f), (int)(RenderBounds.Y * scale + 0.5f)) / scale;
+					overlaySize = new Vector2(RenderBounds.Width, overlayHeight * halfRowHeight / scale);
 					overlayScale = scale;
 				}
 

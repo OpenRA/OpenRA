@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -99,8 +100,8 @@ namespace OpenRA.Mods.Common.Widgets
 					var pos = ConvertToPreview(p, bounds, gridType, previewScale);
 
 					var sprite = spawnUnclaimed;
-					var offset = sprite.Size.XY.ToInt2() / 2;
-					WidgetUtils.DrawSprite(sprite, pos - offset);
+					var offset = sprite.Size / 2;
+					WidgetUtils.DrawSprite(sprite, pos.ToVector2() - offset.AsVector2());
 
 					var number = Convert.ToChar('A' + s.Count).ToString();
 					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
@@ -135,12 +136,12 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mapSprite == null)
 				return;
 
-			WidgetUtils.DrawSprite(mapSprite, mapRect.Location, mapRect.Size);
-			var offset = spawnUnclaimed.Size.XY.ToInt2() / 2;
+			WidgetUtils.DrawSprite(mapSprite, mapRect.Location.ToVector2(), mapRect.Size);
+			var offset = int2.FromVector(spawnUnclaimed.Size) / 2;
 			foreach (var (pos, label, labelOffset) in spawns)
 			{
-				WidgetUtils.DrawSprite(spawnUnclaimed, pos - offset);
-				spawnFont.DrawTextWithContrast(label, pos - labelOffset, spawnColor, spawnContrastColor, 1);
+				WidgetUtils.DrawSprite(spawnUnclaimed, (pos - offset).ToVector2());
+				spawnFont.DrawTextWithContrast(label, (pos - labelOffset).ToVector2(), spawnColor, spawnContrastColor, 1);
 			}
 		}
 

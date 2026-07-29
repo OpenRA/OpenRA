@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -65,8 +66,8 @@ namespace OpenRA.Mods.Common.Graphics
 						var end = wPos + p[j];
 
 						Game.Renderer.RgbaColorRenderer.DrawLine(
-							wr.Viewport.WorldToViewPx(wr.ScreenPosition(start)) + altPixelOffset,
-							wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end)) + altPixelOffset,
+							(wr.Viewport.WorldToViewPx(wr.ScreenPosition(start).AsVector3()) + altPixelOffset).ToVector3(),
+							(wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end)) + altPixelOffset).ToVector3(),
 							Width, color, color);
 					}
 				}

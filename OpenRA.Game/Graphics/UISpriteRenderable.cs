@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -16,12 +17,12 @@ namespace OpenRA.Graphics
 	public class UISpriteRenderable : IRenderable, IPalettedRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
-		readonly int2 screenPos;
+		readonly Vector2 screenPos;
 		readonly float scale;
 		readonly float alpha;
 		readonly float rotation = 0f;
 
-		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette,
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, Vector2 screenPos, int zOffset, PaletteReference palette,
 			float scale = 1f, float alpha = 1f, float rotation = 0f)
 		{
 			this.sprite = sprite;
@@ -57,21 +58,22 @@ namespace OpenRA.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, Palette, screenPos, scale, float3.Ones, alpha, rotation);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, Palette, screenPos.AsVector3(), scale, Vector3.One, alpha, rotation);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var offset = screenPos + sprite.Offset.XY;
+			var offset = (screenPos + sprite.Offset.AsVector2()).AsVector3();
+			var spriteSize = new Vector3(sprite.Size.X, sprite.Size.Y, 0);
 			if (rotation == 0f)
-				Game.Renderer.RgbaColorRenderer.DrawRect(offset, offset + sprite.Size.XY, 1, Color.Red);
+				Game.Renderer.RgbaColorRenderer.DrawRect(offset, offset + spriteSize, 1, Color.Red);
 			else
-				Game.Renderer.RgbaColorRenderer.DrawPolygon(Util.RotateQuad(offset, sprite.Size, rotation), 1, Color.Red);
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(Util.RotateQuad(offset, spriteSize, rotation), 1, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr)
 		{
-			var offset = screenPos + sprite.Offset;
+			var offset = screenPos.AsVector3() + sprite.Offset;
 			return Util.BoundingRectangle(offset, sprite.Size, rotation);
 		}
 	}

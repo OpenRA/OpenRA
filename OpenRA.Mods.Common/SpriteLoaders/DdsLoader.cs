@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using Pfim;
@@ -50,7 +51,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public SpriteFrameType Type { get; }
 			public Size Size { get; }
 			public Size FrameSize => Size;
-			public float2 Offset => float2.Zero;
+			public Vector2 Offset => Vector2.Zero;
 			public byte[] Data { get; }
 			public bool DisableExportPadding => false;
 

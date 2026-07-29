@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
@@ -264,10 +265,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static int DetermineSelectedSpawnPoint(MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
-			var spawnSize = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Size.XY;
+			var spawnSize = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Size.AsVector2();
 			var selectedSpawn = preview.SpawnPoints
 				.Select((sp, i) => (SpawnLocation: mapPreview.ConvertToPreview(sp, preview.GridType), Index: i))
-				.Where(a => ((a.SpawnLocation - mi.Location).ToFloat2() / spawnSize * 2).LengthSquared <= 1)
+				.Where(a => ((a.SpawnLocation - mi.Location).ToVector2() / spawnSize * 2).LengthSquared() <= 1)
 				.Select(a => a.Index + 1)
 				.FirstOrDefault();
 			return selectedSpawn;

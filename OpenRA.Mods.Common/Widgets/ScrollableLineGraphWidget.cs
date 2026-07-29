@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -242,9 +243,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var visibleStart = Math.Max(0, (int)Math.Floor(-horizontalOffset / xStep));
 			var visibleEnd = Math.Min(pointCount, visibleStart + xAxisSize + 1);
 
-			var graphOrigin = new float2(rect.Left, rect.Bottom) + new float2(Padding * 3 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
+			var graphOrigin = new Vector2(rect.Left, rect.Bottom) + new Vector2(Padding * 3 + widthMaxValue + yAxisLabelSize.Y, -graphBottomOffset);
 
-			var origin = new float2(rect.Left, rect.Bottom);
+			var origin = new Vector2(rect.Left, rect.Bottom);
 
 			var keyOffset = 0;
 
@@ -263,12 +264,12 @@ namespace OpenRA.Mods.Common.Widgets
 				var points = s.Points.ToArray();
 				if (points.Length > 0)
 				{
-					var visiblePoints = new List<float3>();
+					var visiblePoints = new List<Vector3>();
 					for (var i = visibleStart; i < Math.Min(visibleEnd, points.Length); i++)
 					{
 						var screenX = i * xStep + horizontalOffset;
 						var screenY = -points[i] * scale;
-						visiblePoints.Add(graphOrigin + new float3(screenX, screenY, 0));
+						visiblePoints.Add(graphOrigin.AsVector3() + new Vector3(screenX, screenY, 0));
 					}
 
 					if (visiblePoints.Count > 1)
@@ -288,7 +289,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var points = s.Points.ToArray();
 				if (points.Length > 0)
 				{
-					var visiblePoints = new List<float3>();
+					var visiblePoints = new List<Vector3>();
 					for (var i = visibleStart; i < Math.Min(visibleEnd, points.Length); i++)
 					{
 						var screenX = i * xStep + horizontalOffset;
@@ -296,7 +297,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 						if (screenX >= -xStep && screenX <= width + xStep)
 						{
-							visiblePoints.Add(graphOrigin + new float3(screenX, screenY, 0));
+							visiblePoints.Add(graphOrigin.AsVector3() + new Vector3(screenX, screenY, 0));
 						}
 					}
 
@@ -311,14 +312,14 @@ namespace OpenRA.Mods.Common.Widgets
 							if (lastValue != 0f)
 							{
 								labelFont.DrawTextWithShadow(GetValueFormat().FormatCurrent(lastValue),
-									new float2(lastPoint.X, lastPoint.Y - 2),
+									new Vector2(lastPoint.X, lastPoint.Y - 2),
 									color, BackgroundColorDark, BackgroundColorLight, 1);
 							}
 						}
 					}
 				}
 
-				labelFont.DrawTextWithShadow(key, new float2(rect.Right, rect.Top) + new float2(-(widthLongestName + Padding), 10 * keyOffset + 3),
+				labelFont.DrawTextWithShadow(key, new Vector2(rect.Right, rect.Top) + new Vector2(-(widthLongestName + Padding), 10 * keyOffset + 3),
 					color, BackgroundColorDark, BackgroundColorLight, 1);
 				keyOffset++;
 			}
@@ -384,15 +385,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false, false));
 			WidgetUtils.DrawSprite(leftArrowImage,
-				new float2(leftButtonRect.Left + leftOffset, leftButtonRect.Top + leftOffset));
+				new Vector2(leftButtonRect.Left + leftOffset, leftButtonRect.Top + leftOffset));
 
 			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false, false));
 			WidgetUtils.DrawSprite(rightArrowImage,
-				new float2(rightButtonRect.Left + rightOffset, rightButtonRect.Top + rightOffset));
+				new Vector2(rightButtonRect.Left + rightOffset, rightButtonRect.Top + rightOffset));
 
 			// Draw x axis
 			axisFont.DrawTextWithShadow(xAxisLabel,
-				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding + ScrollbarHeight)),
+				new Vector2(graphOrigin.X, origin.Y) + new Vector2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding + ScrollbarHeight)),
 				Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 
 			// Enable clipping for x-axis labels to prevent them from extending beyond the right graph bound
@@ -409,14 +410,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (screenX >= 0)
 				{
-					cr.DrawLine(graphOrigin + new float2(screenX, 0), graphOrigin + new float2(screenX, -5), 1, Color.White);
+					cr.DrawLine(graphOrigin + new Vector2(screenX, 0), graphOrigin + new Vector2(screenX, -5), 1, Color.White);
 					if (i % XAxisTicksPerLabel == 0)
 					{
 						var xAxisText = GetXAxisValueFormat().FormatCurrent(i / XAxisTicksPerLabel);
 						var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
 						var xLocation = screenX - xAxisTickTextWidth / 2;
 						labelFont.DrawTextWithShadow(xAxisText,
-							graphOrigin + new float2(xLocation, 2),
+							graphOrigin + new Vector2(xLocation, 2),
 							Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 					}
 				}
@@ -427,13 +428,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Draw y axis
 			axisFont.DrawTextWithShadow(yAxisLabel,
-				new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)),
+				new Vector2(origin.X, graphOrigin.Y) + new Vector2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)),
 				Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
 
 			for (var y = GetDisplayFirstYAxisValue() ? 0 : yStep; y <= height; y += yStep)
 			{
 				var yValue = y / scale;
-				cr.DrawLine(graphOrigin + new float2(0, -y), graphOrigin + new float2(5, -y), 1, Color.White);
+				cr.DrawLine(graphOrigin + new Vector2(0, -y), graphOrigin + new Vector2(5, -y), 1, Color.White);
 				var text = GetYAxisValueFormat().FormatCurrent(yValue);
 
 				var textWidth = labelFont.Measure(text);
@@ -441,15 +442,15 @@ namespace OpenRA.Mods.Common.Widgets
 				var yLocation = y + (textWidth.Y + labelFont.TopOffset) / 2;
 
 				labelFont.DrawTextWithShadow(text,
-					graphOrigin + new float2(-(textWidth.X + 3), -yLocation),
+					graphOrigin + new Vector2(-(textWidth.X + 3), -yLocation),
 					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Bottom line
-			cr.DrawLine(graphOrigin, graphOrigin + new float2(width, 0), 1, Color.White);
+			cr.DrawLine(graphOrigin, graphOrigin + new Vector2(width, 0), 1, Color.White);
 
 			// Left line
-			cr.DrawLine(graphOrigin, graphOrigin + new float2(0, -height), 1, Color.White);
+			cr.DrawLine(graphOrigin, graphOrigin + new Vector2(0, -height), 1, Color.White);
 		}
 
 		public override ScrollableLineGraphWidget Clone()

@@ -88,7 +88,7 @@ namespace OpenRA.Graphics
 				foreach (var f in frames)
 				{
 					// Hotspot is specified relative to the center of the frame
-					var hotspot = f.Offset.ToInt2() - kv.Value.Hotspot - new int2(f.Size) / 2;
+					var hotspot = int2.FromVector(f.Offset) - kv.Value.Hotspot - new int2(f.Size) / 2;
 
 					// Resolve indexed data to real colours
 					var data = f.Data;
@@ -99,7 +99,7 @@ namespace OpenRA.Graphics
 						type = SpriteFrameType.Bgra32;
 					}
 
-					c.Sprites[c.Length++] = SheetBuilder.Add(data, type, f.Size, 0, hotspot);
+					c.Sprites[c.Length++] = SheetBuilder.Add(data, type, f.Size, 0, hotspot.ToVector3());
 
 					// Bounds relative to the hotspot
 					c.Bounds = Rectangle.Union(c.Bounds, new Rectangle(hotspot, f.Size));
@@ -135,7 +135,7 @@ namespace OpenRA.Graphics
 					template.Cursors[i]?.Dispose();
 
 					// Calculate the padding to position the frame within sequenceBounds
-					var paddingTL = -(template.Bounds.Location - template.Sprites[i].Offset.XY.ToInt2());
+					var paddingTL = -(template.Bounds.Location - int2.FromVector(template.Sprites[i].Offset));
 					var paddingBR = template.PaddedSize - new int2(template.Sprites[i].Bounds.Size) - paddingTL;
 
 					var hardwareCursor = CreateHardwareCursor(kv.Key, template.Sprites[i], paddingTL, paddingBR, -template.Bounds.Location);
@@ -222,7 +222,7 @@ namespace OpenRA.Graphics
 
 			var mousePos = isLocked ? lockedPosition : Viewport.LastMousePos;
 			renderer.RgbaSpriteRenderer.DrawSprite(cursorSprite,
-				mousePos,
+				mousePos.ToVector3(),
 				cursorScale / Game.Renderer.WindowScale);
 		}
 

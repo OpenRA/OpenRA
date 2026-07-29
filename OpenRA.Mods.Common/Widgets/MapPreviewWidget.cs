@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var y = RenderBounds.Y + (RenderBounds.Height - h) / 2;
 			mapRect = new Rectangle(x, y, w, h);
 
-			WidgetUtils.DrawSprite(minimap, mapRect.Location, mapRect.Size);
+			WidgetUtils.DrawSprite(minimap, mapRect.Location.ToVector2(), mapRect.Size);
 
 			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
@@ -198,14 +198,14 @@ namespace OpenRA.Mods.Common.Widgets
 					var pos = ConvertToPreview(p, gridType);
 
 					var sprite = disabled ? spawnDisabled : occupied ? spawnClaimed : spawnUnclaimed;
-					var offset = sprite.Size.XY.ToInt2() / 2;
+					var offset = int2.FromVector(sprite.Size) / 2;
 
-					if (((pos - Viewport.LastMousePos).ToFloat2() / offset.ToFloat2()).LengthSquared <= 1)
+					if (((pos - Viewport.LastMousePos).ToVector2() / offset.ToVector2()).LengthSquared() <= 1)
 						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;
 
 					if (disabled)
 					{
-						WidgetUtils.DrawSprite(spawnDisabled, pos - offset);
+						WidgetUtils.DrawSprite(spawnDisabled, (pos - offset).ToVector2());
 						continue;
 					}
 
@@ -218,12 +218,12 @@ namespace OpenRA.Mods.Common.Widgets
 								(int)sprite.Size.Y - 2),
 							occupant.Color);
 
-					WidgetUtils.DrawSprite(sprite, pos - offset);
+					WidgetUtils.DrawSprite(sprite, (pos - offset).ToVector2());
 
 					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
 					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
 
-					spawnFont.DrawTextWithContrast(number, pos - textOffset, spawnColor, spawnContrastColor, 1);
+					spawnFont.DrawTextWithContrast(number, (pos - textOffset).ToVector2(), spawnColor, spawnContrastColor, 1);
 				}
 			}
 		}

@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -128,34 +129,34 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var rect = RenderBounds;
-			var origin = new float2(rect.Right, rect.Bottom);
-			var basis = new float2(-rect.Width / 100, -rect.Height / 100);
+			var origin = new Vector2(rect.Right, rect.Bottom);
+			var basis = new Vector2(-rect.Width / 100, -rect.Height / 100);
 
 			cr.DrawLine(
 			[
-				new float3(rect.Left, rect.Top, 0),
-				new float3(rect.Left, rect.Bottom, 0),
-				new float3(rect.Right, rect.Bottom, 0)
+				new Vector3(rect.Left, rect.Top, 0),
+				new Vector3(rect.Left, rect.Bottom, 0),
+				new Vector3(rect.Right, rect.Bottom, 0)
 			], 1, Color.White);
 
-			cr.DrawLine(origin + new float2(100, 0) * basis, origin + new float2(100, 100) * basis, 1, Color.White);
+			cr.DrawLine(origin + new Vector2(100, 0) * basis, origin + new Vector2(100, 100) * basis, 1, Color.White);
 
 			var k = 0;
 			foreach (var item in PerfHistory.Items.Values)
 			{
 				cr.DrawLine(item.Samples()
-					.Select((sample, i) => origin + new float3(i, (float)sample, 0) * basis),
+					.Select((sample, i) => origin.AsVector3() + new Vector3(i, (float)sample, 0) * basis.AsVector3()),
 					1, item.C);
 
-				var u = new float2(rect.Left, rect.Top);
+				var u = new Vector2(rect.Left, rect.Top);
 
 				cr.DrawLine(
-					u + new float2(10, 10 * k + 5),
-					u + new float2(12, 10 * k + 5),
+					u + new Vector2(10, 10 * k + 5),
+					u + new Vector2(12, 10 * k + 5),
 					1, item.C);
 				cr.DrawLine(
-					u + new float2(10, 10 * k + 4),
-					u + new float2(12, 10 * k + 4),
+					u + new Vector2(10, 10 * k + 4),
+					u + new Vector2(12, 10 * k + 4),
 					1, item.C);
 
 				++k;
@@ -180,12 +181,12 @@ namespace OpenRA.Mods.Common.Widgets
 				var dotsNeeded = (maxExtraDotSpace - nameWidth) / nextDotAdvance + 3; // first + 2 extra dots for spacing before numbers.
 				builder.Append(item.Name);
 				builder.Append('.', dotsNeeded);
-				font.DrawText(builder.ToString(), new float2(rect.Left, rect.Top) + new float2(18, 10 * k - 3), Color.White);
+				font.DrawText(builder.ToString(), new Vector2(rect.Left, rect.Top) + new Vector2(18, 10 * k - 3), Color.White);
 				builder.Clear();
 				SixCharacterFormatFloat(builder, item.Average(Game.Settings.Debug.Samples));
 				builder.Append(" : ");
 				SixCharacterFormatFloat(builder, item.ActiveGameTotalAverage());
-				font.DrawText(builder.ToString(), new float2(rect.Left, rect.Top) + new float2(18 + columnTwoStart, 10 * k - 3), Color.White);
+				font.DrawText(builder.ToString(), new Vector2(rect.Left, rect.Top) + new Vector2(18 + columnTwoStart, 10 * k - 3), Color.White);
 				builder.Clear();
 				++k;
 			}

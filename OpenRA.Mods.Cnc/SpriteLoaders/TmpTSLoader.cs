@@ -10,6 +10,7 @@
 #endregion
 
 using System.IO;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size => parent.Size;
 			public Size FrameSize => Size;
-			public float2 Offset => parent.Offset;
+			public Vector2 Offset => parent.Offset;
 			public byte[] Data => parent.DepthData;
 			public bool DisableExportPadding => false;
 
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }
 			public Size FrameSize => Size;
-			public float2 Offset { get; }
+			public Vector2 Offset { get; }
 			public byte[] Data { get; set; }
 			public byte[] DepthData { get; set; }
 			public bool DisableExportPadding => false;
@@ -66,7 +67,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 						var extraBounds = new Rectangle(extraX, extraY, extraWidth, extraHeight);
 						bounds = Rectangle.Union(bounds, extraBounds);
 
-						Offset = new float2(bounds.X + 0.5f * (bounds.Width - size.Width), bounds.Y + 0.5f * (bounds.Height - size.Height));
+						Offset = new Vector2(bounds.X + 0.5f * (bounds.Width - size.Width), bounds.Y + 0.5f * (bounds.Height - size.Height));
 						Size = new Size(bounds.Width, bounds.Height);
 					}
 

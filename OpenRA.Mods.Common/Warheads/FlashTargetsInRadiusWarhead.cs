@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly float ActorFlashOverlayAlpha = 0.5f;
 
 		[Desc("The tint to apply when ActorFlashType is Tint.")]
-		public readonly float3 ActorFlashTint = new(1.4f, 1.4f, 1.4f);
+		public readonly Vector3 ActorFlashTint = new(1.4f, 1.4f, 1.4f);
 
 		[Desc("Number of times to flash actors.")]
 		public readonly int ActorFlashCount = 2;

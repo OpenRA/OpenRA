@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		protected override void DrawInner(string text, SpriteFont font, Color color, int2 position)
 		{
-			font.DrawText(text, position, textColor.Update(inputWidget.Value.IsDisabled()));
+			font.DrawText(text, position.ToVector2(), textColor.Update(inputWidget.Value.IsDisabled()));
 		}
 
 		public override LabelForInputWidget Clone() { return new LabelForInputWidget(this); }

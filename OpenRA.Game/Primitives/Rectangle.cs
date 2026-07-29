@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Numerics;
 
 namespace OpenRA.Primitives
 {
@@ -91,6 +92,11 @@ namespace OpenRA.Primitives
 				return false;
 
 			return this == (Rectangle)obj;
+		}
+
+		public Vector2 Clamp(Vector2 value)
+		{
+			return Vector2.Clamp(value, new Vector2(Left, Top), new Vector2(Right, Bottom));
 		}
 
 		public override readonly int GetHashCode()

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Numerics;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int Intensity = 0;
 
 		[Desc("Shake multipliers by the X and Y axis, comma-separated.")]
-		public readonly float2 Multiplier = new(0, 0);
+		public readonly Vector2 Multiplier = Vector2.Zero;
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{

@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Widgets
 			IEnumerable<Actor> rollover;
 			if (IsValidDragbox)
 			{
-				var a = worldRenderer.Viewport.WorldToViewPx(dragStart);
-				var b = worldRenderer.Viewport.WorldToViewPx(mousePos);
+				var a = worldRenderer.Viewport.WorldToViewPx(dragStart).ToVector3();
+				var b = worldRenderer.Viewport.WorldToViewPx(mousePos).ToVector3();
 
 				var color = normalSelectionColor;
 				if (modifiers.HasFlag(Modifiers.Alt) && !modifiers.HasFlag(Modifiers.Ctrl))

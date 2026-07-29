@@ -13,6 +13,7 @@ using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -385,7 +386,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var sprite = veinSequence.GetSprite(HeavyIndices[0]);
 			var palette = wr.Palette(info.Palette);
 
-			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, palette, scale);
+			yield return new UISpriteRenderable(sprite, WPos.Zero, origin.ToVector2(), 0, palette, scale);
 		}
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderPreview(WorldRenderer wr, string resourceType, WPos origin)
@@ -399,7 +400,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var palette = wr.Palette(info.Palette);
 
 			var tintModifiers = veinSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, veinSequence.Scale, alpha, float3.Ones, tintModifiers, false);
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, veinSequence.Scale, alpha, Vector3.One, tintModifiers, false);
 		}
 
 		event Action<CPos> IRadarTerrainLayer.CellEntryChanged

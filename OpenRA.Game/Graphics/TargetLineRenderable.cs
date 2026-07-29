@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -51,9 +52,9 @@ namespace OpenRA.Graphics
 			if (!waypoints.Any())
 				return;
 
-			var first = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(waypoints.First()));
+			var first = wr.Viewport.WorldToViewPx(wr.Screen3DPosition(waypoints.First())).ToVector3();
 			var a = first;
-			foreach (var b in waypoints.Skip(1).Select(pos => wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos))))
+			foreach (var b in waypoints.Skip(1).Select(pos => wr.Viewport.WorldToViewPx(wr.Screen3DPosition(pos)).ToVector3()))
 			{
 				Game.Renderer.RgbaColorRenderer.DrawLine(a, b, width, color);
 				DrawTargetMarker(color, b, markerSize);
@@ -63,9 +64,9 @@ namespace OpenRA.Graphics
 			DrawTargetMarker(color, first);
 		}
 
-		public static void DrawTargetMarker(Color color, int2 screenPos, int size = 1)
+		public static void DrawTargetMarker(Color color, Vector3 screenPos, int size = 1)
 		{
-			var offset = new int2(size, size);
+			var offset = new Vector3(size, size, 0);
 			var tl = screenPos - offset;
 			var br = screenPos + offset;
 			Game.Renderer.RgbaColorRenderer.FillRect(tl, br, color);

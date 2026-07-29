@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.FileFormats;
@@ -59,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			sheetBuilder = CreateSheetBuilder();
 		}
 
-		ModelVertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement?> first, Func<int, int, VxlElement?> second, Func<int, int, float3> coord)
+		ModelVertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement?> first, Func<int, int, VxlElement?> second, Func<int, int, Vector3> coord)
 		{
 			var colors = new byte[su * sv];
 			var normals = new byte[su * sv];
@@ -153,21 +154,21 @@ namespace OpenRA.Mods.Cnc.Graphics
 					yield return GenerateSlicePlane(l.Size[1], l.Size[2],
 						(u, v) => Get(x, u, v),
 						(u, v) => Get(x - 1, u, v),
-						(u, v) => new float3(x, u, v));
+						(u, v) => new Vector3(x, u, v));
 
 			for (var y = 0; y <= l.Size[1]; y++)
 				if (yPlanes[y])
 					yield return GenerateSlicePlane(l.Size[0], l.Size[2],
 						(u, v) => Get(u, y, v),
 						(u, v) => Get(u, y - 1, v),
-						(u, v) => new float3(u, y, v));
+						(u, v) => new Vector3(u, y, v));
 
 			for (var z = 0; z <= l.Size[2]; z++)
 				if (zPlanes[z])
 					yield return GenerateSlicePlane(l.Size[0], l.Size[1],
 						(u, v) => Get(u, v, z),
 						(u, v) => Get(u, v, z - 1),
-						(u, v) => new float3(u, v, z));
+						(u, v) => new Vector3(u, v, z));
 		}
 
 		public ModelRenderData GenerateRenderData(VxlLimb l)

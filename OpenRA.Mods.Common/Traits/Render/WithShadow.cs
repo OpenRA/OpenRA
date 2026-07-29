@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -35,14 +36,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithShadow : ConditionalTrait<WithShadowInfo>, IRenderModifier
 	{
 		readonly WithShadowInfo info;
-		readonly float3 shadowColor;
+		readonly Vector3 shadowColor;
 		readonly float shadowAlpha;
 
 		public WithShadow(WithShadowInfo info)
 			: base(info)
 		{
 			this.info = info;
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowColor = new Vector3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 
