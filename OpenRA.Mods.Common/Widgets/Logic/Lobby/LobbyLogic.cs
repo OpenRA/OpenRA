@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					if (orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
+					if (botTypes.Any() && orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
 					{
 						var botOptions = new List<DropDownOption>()
 						{
