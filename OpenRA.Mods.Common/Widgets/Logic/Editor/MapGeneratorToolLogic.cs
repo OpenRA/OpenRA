@@ -335,6 +335,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				world.Map,
 				blitSource,
 				editorActorLayer,
+				false,
 				false);
 
 			var description = FluentProvider.GetMessage(MapGenerated, "name", FluentProvider.GetMessage(generator.Name));

@@ -281,4 +281,6 @@ EditorWorld:
 		DefaultStart: RockSmooth
 		DefaultInner: RockSmooth
 		DefaultEnd: RockSmooth
+	MultiBrushTool:
+		IgnoredMultiBrushes: Segmented
 	Inherits@MapGenerators: ^MapGenerators

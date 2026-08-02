@@ -572,7 +572,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 							terraformer.PaintTiling(pickAnyRandom, brush, baseHeight);
 
-							heightMap.MarkUntileable(brush.Shape.Select(cvec => CPos.Zero + cvec));
+							heightMap.MarkUntileable(brush.Shape.Select(cvec => CPos.Zero + cvec.Vec));
 						}
 					}
 

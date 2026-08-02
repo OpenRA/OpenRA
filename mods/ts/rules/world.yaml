@@ -435,4 +435,6 @@ EditorWorld:
 		DefaultStart: Clear
 		DefaultInner: Beach
 		DefaultEnd: Clear
+	MultiBrushTool:
+		IgnoredMultiBrushes: Segmented
 	Inherits@MapGenerators: ^MapGenerators

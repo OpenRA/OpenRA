@@ -65,13 +65,30 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return Center(map.Tiles);
 		}
 
-		/// <summary>
-		/// Return the radius of the largest circle that can be contained in the cell layer.
-		/// </summary>
+		/// <summary> Returns the center of a <see cref="CellCoordsRegion"/> in world coordinates.</summary>
+		public static WPos Center(MapGridType gridType, CellCoordsRegion region)
+		{
+			var topLeft = CPosToWPos(region.TopLeft, gridType);
+			var bottomRight = CPosToWPos(region.BottomRight, gridType);
+			return new WPos(
+				(topLeft.X + bottomRight.X) / 2,
+				(topLeft.Y + bottomRight.Y) / 2,
+				0);
+		}
+
+		/// <summary>Return the radius of the largest circle that can be contained in the <see cref="CellLayer{T}"/>.</summary>
 		public static WDist Radius<T>(CellLayer<T> cellLayer)
 		{
 			var center = Center(cellLayer);
 			return new WDist(Math.Min(center.X, center.Y));
+		}
+
+		/// <summary>Return the radius of the largest circle that can be contained in the <see cref="CellCoordsRegion"/>.</summary>
+		public static WDist Radius(MapGridType gridType, CellCoordsRegion region)
+		{
+			var size = region.BottomRight - region.TopLeft;
+			var dist = Math.Min(size.X, size.Y);
+			return WDist.FromCells(dist) / 2;
 		}
 
 		public static WDist Radius(Map map)
@@ -257,6 +274,21 @@ namespace OpenRA.Mods.Common.MapGenerator
 		}
 
 		/// <summary>
+		/// Run an action over all cells in <see cref="CellCoordsRegion"/>.
+		/// </summary>
+		/// <remarks>
+		/// Crashes if region is outside of the <see cref="CellLayer{T}"/>.
+		/// </remarks>
+		public static void OverCellRegion<T>(CellLayer<T> cellLayer, CellCoordsRegion region, Action<MPos, CPos> action)
+		{
+			foreach (var cPos in region)
+			{
+				var mPos = cPos.ToMPos(cellLayer.GridType);
+				action(mPos, cPos);
+			}
+		}
+
+		/// <summary>
 		/// <para>
 		/// Run an action over the inside or outside of a circle of given center and radius in
 		/// world coordinates. The action is called with cells' MPos, CPos, WPos center, and the
@@ -276,50 +308,58 @@ namespace OpenRA.Mods.Common.MapGenerator
 			bool outside,
 			Action<MPos, CPos, WPos, long> action)
 		{
+			OverCircle(cellLayer, cellLayer.CellRegion.CellCoords, wCenter, wRadius, outside, action);
+		}
+
+		/// <summary>
+		/// <para>
+		/// Run an action over the inside or outside of a circle of given center and radius in
+		/// world coordinates. The action is called with cells' MPos, CPos, WPos center, and the
+		/// squared distance to the WPos center from the circle's center.
+		/// If outside is true, the action is run for cells outside of the circle instead of the
+		/// inside.
+		/// </para>
+		/// <para>
+		/// A cell is inside the circle if its center is &lt;= wRadius from wCenter.
+		/// Coordinates outside of the CellLayer are ignored.
+		/// </para>
+		/// </summary>
+		public static void OverCircle<T>(
+			CellLayer<T> cellLayer,
+			CellCoordsRegion region,
+			WPos wCenter,
+			WDist wRadius,
+			bool outside,
+			Action<MPos, CPos, WPos, long> action)
+		{
 			var gridType = cellLayer.GridType;
-			int minU;
-			int minV;
-			int maxU;
-			int maxV;
+			int minX;
+			int minY;
+			int maxX;
+			int maxY;
 			if (outside)
 			{
-				minU = 0;
-				minV = 0;
-				maxU = cellLayer.Size.Width - 1;
-				maxV = cellLayer.Size.Height - 1;
+				minX = region.TopLeft.X;
+				minY = region.TopLeft.Y;
+				maxX = region.BottomRight.X;
+				maxY = region.BottomRight.Y;
 			}
 			else
 			{
-				var mCenter = WPosToMPos(wCenter, gridType);
-
-				int mRadiusU;
-				int mRadiusV;
-				switch (gridType)
-				{
-					case MapGridType.Rectangular:
-						mRadiusU = wRadius.Length / 1024 + 1;
-						mRadiusV = wRadius.Length / 1024 + 1;
-						break;
-					case MapGridType.RectangularIsometric:
-						mRadiusU = wRadius.Length / 1448 + 2;
-						mRadiusV = wRadius.Length / 724 + 2;
-						break;
-					default:
-						throw new NotImplementedException();
-				}
-
-				minU = Math.Max(mCenter.U - mRadiusU, 0);
-				minV = Math.Max(mCenter.V - mRadiusV, 0);
-				maxU = Math.Min(mCenter.U + mRadiusU, cellLayer.Size.Width - 1);
-				maxV = Math.Min(mCenter.V + mRadiusV, cellLayer.Size.Height - 1);
+				var mCenter = WPosToCPos(wCenter, gridType);
+				var radius = wRadius.Length / 1024 + 1;
+				minX = Math.Max(mCenter.X - radius, region.TopLeft.X);
+				minY = Math.Max(mCenter.Y - radius, region.TopLeft.Y);
+				maxX = Math.Min(mCenter.X + radius, region.BottomRight.X);
+				maxY = Math.Min(mCenter.Y + radius, region.BottomRight.Y);
 			}
 
 			var wRadiusSquared = wRadius.LengthSquared;
-			for (var v = minV; v <= maxV; v++)
-				for (var u = minU; u <= maxU; u++)
+			for (var x = minY; x <= maxY; x++)
+				for (var y = minX; y <= maxX; y++)
 				{
-					var mpos = new MPos(u, v);
-					var cpos = mpos.ToCPos(gridType);
+					var cpos = new CPos(y, x);
+					var mpos = cpos.ToMPos(gridType);
 					var wpos = CPosToWPos(cpos, gridType);
 					var offset = wCenter - wpos;
 					var thisRadiusSquared = offset.LengthSquared;
@@ -425,6 +465,36 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public static Rectangle CellBounds(Map map)
 		{
 			return CellBounds(map.MapSize, map.Grid.Type);
+		}
+
+		/// <summary>Returns a <see cref="CellLayer{T}"/> containing the <see cref="CellCoordsRegion"/>.</summary>
+		public static CellLayer<T> BoundingCellLayer<T>(MapGridType shape, CellCoordsRegion region, out CVec offset)
+		{
+			offset = new CVec(-region.TopLeft.X, -region.TopLeft.Y);
+			if (shape == MapGridType.Rectangular)
+				return new CellLayer<T>(shape, new Size(
+					region.BottomRight.X + 1 - region.TopLeft.X,
+					region.BottomRight.Y + 1 - region.TopLeft.Y));
+
+			var newRegion = new CellCoordsRegion(CPos.Zero, region.BottomRight + offset);
+
+			var tl = new CPos(0, 0);
+			var tr = new CPos(newRegion.BottomRight.X, 0);
+			var br = new CPos(newRegion.BottomRight.X, newRegion.BottomRight.Y);
+			var bl = new CPos(0, newRegion.BottomRight.Y);
+
+			var mtl = tl.ToMPos(shape);
+			var mtr = tr.ToMPos(shape);
+			var mbr = br.ToMPos(shape);
+			var mbl = bl.ToMPos(shape);
+
+			var minU = Math.Min(Math.Min(mtl.U, mtr.U), Math.Min(mbr.U, mbl.U));
+			var minV = Math.Min(Math.Min(mtl.V, mtr.V), Math.Min(mbr.V, mbl.V));
+			var maxU = Math.Max(Math.Max(mtl.U, mtr.U), Math.Max(mbr.U, mbl.U));
+			var maxV = Math.Max(Math.Max(mtl.V, mtr.V), Math.Max(mbr.V, mbl.V));
+
+			offset -= new MPos(minU, minV).ToCPos(shape) - CPos.Zero;
+			return new CellLayer<T>(shape, new Size(maxU - minU + 1, maxV - minV + 1));
 		}
 
 		/// <summary>
@@ -708,6 +778,12 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return output;
 		}
 
+		public static void Map<T, R>(CellLayer<R> target, CellLayer<T> input, Func<T, R> func)
+		{
+			foreach (var mpos in input.CellRegion.MapCoords)
+				target[mpos] = func(input[mpos]);
+		}
+
 		/// <summary>Create and initialize a CellLayer according to the given function.</summary>
 		public static CellLayer<T> Create<T>(Map map, Func<MPos, T> func)
 		{
@@ -726,6 +802,47 @@ namespace OpenRA.Mods.Common.MapGenerator
 				layer[cpos] = func(cpos);
 
 			return layer;
+		}
+
+		/// <summary>
+		/// <para>
+		/// Apply <paramref name="outputMask"/> while canceling true values with <paramref name="outdatedMask"/>.
+		/// The <paramref name="outputLayer"/> is updated with <paramref name="trueValue"/> and <paramref name="falseValue"/> accordingly.
+		/// </para>
+		/// </summary>
+		/// <remarks>
+		/// The true values of <paramref name="outdatedMask"/> are transferred to the <paramref name="outputMask"/>.
+		/// </remarks>
+		public static void ApplyMaskDifference<T>(
+			CellLayer<T> outputLayer,
+			CellLayer<bool> outputMask,
+			CellLayer<bool> outdatedMask,
+			CVec offset,
+			T trueValue,
+			T falseValue)
+		{
+			foreach (var cpos in outputMask.CellRegion)
+			{
+				var newcPos = cpos + offset;
+
+				// If the new position is outside of the old mask, then we do not need to check the difference.
+				if (!outdatedMask.Contains(newcPos))
+				{
+					outputLayer[cpos] = outputMask[cpos] ? trueValue : falseValue;
+					continue;
+				}
+
+				var isNewTrue = outputMask[cpos];
+				var isOldTrue = outdatedMask[newcPos];
+
+				// Transfer the mask state to the target mask.
+				outputMask[cpos] = isOldTrue || isNewTrue;
+
+				// If outdated mask is true, it means the cell was previously active and thus no longer needs to be active.
+				outputLayer[cpos] = isOldTrue
+					? falseValue
+					: isNewTrue ? trueValue : falseValue;
+			}
 		}
 	}
 }

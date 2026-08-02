@@ -21602,3 +21602,115 @@ MultiBrushCollections:
 	Obstructions:
 		FromActors: tree01,tree02,tree03,tree04,tree05,tree06,tree07,tree08,tree09,tree10,tree11,tree12,tree13,tree14,tree15,tree16,tree17,tree18,tree19,tree20,tree21,tree22,tree23,tree24,tree25
 		FromActors: srock01,srock02,srock03,srock04,srock05,trock01,trock02,trock03,trock04,trock05
+	Fona:
+		FromActors: fona01, fona02, fona03, fona04, fona05, fona06, fona07, fona08, fona09, fona10, fona11, fona12
+	MiscBuildings:
+		MultiBrush@mb01:
+			Template: 1
+		MultiBrush@mb02:
+			Template: 2
+		MultiBrush@mb03:
+			Template: 3
+	NodBuildings:
+		MultiBrush@1:
+			Actor: NAPOWR
+		MultiBrush@2:
+			Actor: NAAPWR
+		MultiBrush@3:
+			Actor: NAHAND
+		MultiBrush@4:
+			Actor: NAWEAP
+		MultiBrush@5:
+			Actor: NAHPAD
+		MultiBrush@6:
+			Actor: NARADR
+		MultiBrush@7:
+			Actor: NATECH
+		MultiBrush@8:
+			Actor: NASTLH
+		MultiBrush@9:
+			Actor: NATMPL
+		MultiBrush@10:
+			Actor: NAMISL
+		MultiBrush@11:
+			Actor: NAWAST
+	Infantry:
+		MultiBrush@infantry:
+			Actor: e1
+		MultiBrush@engineer:
+			Actor: engineer
+		MultiBrush@WEEDGUY:
+			Actor: WEEDGUY
+		MultiBrush@umagon:
+			Actor: UMAGON
+		MultiBrush@chamspy:
+			Actor: CHAMSPY
+		MultiBrush@mutant:
+			Actor: MUTANT
+		MultiBrush@mwmn:
+			Actor: MWMN
+		MultiBrush@mutant3:
+			Actor: MUTANT3
+		MultiBrush@tratos:
+			Actor: TRATOS
+		MultiBrush@oxanna:
+			Actor: OXANNA
+		MultiBrush@slav:
+			Actor: SLAV
+		MultiBrush@civ1:
+			Actor: CIV1
+		MultiBrush@civ2:
+			Actor: CIV2
+		MultiBrush@civ3:
+			Actor: CIV3
+		MultiBrush@ctech:
+			Actor: CTECH
+	Civilian:
+		MultiBrush@civ1:
+			Actor: CIV1
+		MultiBrush@civ2:
+			Actor: CIV2
+		MultiBrush@civ3:
+			Actor: CIV3
+		MultiBrush@ctech:
+			Actor: CTECH
+		MultiBrush@tratos:
+			Actor: TRATOS
+		MultiBrush@oxanna:
+			Actor: OXANNA
+		MultiBrush@ABAN01:
+			Actor: ABAN01
+		MultiBrush@ABAN02:
+			Actor: ABAN02
+		MultiBrush@ABAN03:
+			Actor: ABAN03
+		MultiBrush@ABAN04:
+			Actor: ABAN04
+		MultiBrush@ABAN05:
+			Actor: ABAN05
+		MultiBrush@ABAN06:
+			Actor: ABAN06
+		MultiBrush@ABAN07:
+			Actor: ABAN07
+		MultiBrush@ABAN08:
+			Actor: ABAN08
+		MultiBrush@ABAN09:
+			Actor: ABAN09
+		MultiBrush@ABAN10:
+			Actor: ABAN10
+		MultiBrush@ABAN11:
+			Actor: ABAN11
+		MultiBrush@ABAN12:
+			Actor: ABAN12
+		MultiBrush@ABAN13:
+			Actor: ABAN13
+		MultiBrush@ABAN14:
+			Actor: ABAN14
+		MultiBrush@ABAN15:
+			Actor: ABAN15
+		MultiBrush@ABAN16:
+			Actor: ABAN16
+		MultiBrush@ABAN17:
+			Actor: ABAN17
+		MultiBrush@ABAN18:
+			Actor: ABAN18
