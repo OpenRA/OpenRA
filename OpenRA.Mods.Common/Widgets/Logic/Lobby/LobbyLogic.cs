@@ -295,6 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				slotsButton.IsVisible = () => panel != PanelType.Servers && panel != PanelType.Options;
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
+					(orderManager.LobbyInfo.Clients.Count == 1 && map.PlayerActorInfo.TraitInfos<IBotInfo>().Count == 0) ||
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
 					!orderManager.LobbyInfo.Slots.Any(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null));
 
