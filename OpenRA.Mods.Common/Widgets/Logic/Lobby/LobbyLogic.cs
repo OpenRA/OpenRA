@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
 
-						if (orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
+						if (botTypes.Any() && orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
 						{
 							teamOptions.Add(new DropDownOption
 							{
