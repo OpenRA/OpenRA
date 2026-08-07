@@ -18,19 +18,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Name => "Mock Update Rule";
 		public override string Description => "A mock update rule that allows to test YAML loading and can be used to correct YAML syntax.";
 
-		public interface IBeforeUpdateActors
-		{
-			IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors) { yield break; }
-		}
-
-		public interface IBeforeUpdateWeapons
-		{
-			IEnumerable<string> BeforeUpdateWeapons(ModData modData, List<MiniYamlNodeBuilder> resolvedWeapons) { yield break; }
-		}
-
-		public interface IBeforeUpdateSequences
-		{
-			IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNodeBuilder> resolvedImages) { yield break; }
-		}
+		IEnumerable<string> IBeforeUpdateActors.BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors) { yield break; }
+		IEnumerable<string> IBeforeUpdateWeapons.BeforeUpdateWeapons(ModData modData, List<MiniYamlNodeBuilder> resolvedWeapons) { yield break; }
+		IEnumerable<string> IBeforeUpdateSequences.BeforeUpdateSequences(ModData modData, List<MiniYamlNodeBuilder> resolvedImages) { yield break; }
 	}
 }
