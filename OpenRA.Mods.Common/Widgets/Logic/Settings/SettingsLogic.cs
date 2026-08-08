@@ -150,10 +150,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Save();
 				}
 
+				var panelTitle = panels[activePanel];
+				if (FluentProvider.TryGetMessage(panelTitle, out var title))
+					panelTitle = title;
+
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: ResetTitle,
 					text: ResetPrompt,
-					titleArguments: ["panel", panels[activePanel]],
+					titleArguments: ["panel", panelTitle],
 					onConfirm: Reset,
 					confirmText: ResetAccept,
 					onCancel: () => { },
