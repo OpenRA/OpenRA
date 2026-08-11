@@ -81,7 +81,7 @@ Container@SAVE_MAP_PANEL:
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 345
-	Height: 195
+	Height: 260
 	Children:
 		Label@LABEL_TITLE:
 			Text: label-save-map-panel-title
@@ -168,6 +168,12 @@ Container@SAVE_MAP_PANEL:
 					Width: 110
 					Height: 25
 					Font: Regular
+				Checkbox@SAVE_MAP_PNG_IMAGE:
+					X: 110
+					Y: 192
+					Width: 220
+					Height: 20
+					Text: checkbox-save-map-panel-png-image
 		Button@BACK_BUTTON:
 			Y: PARENT_HEIGHT - 1
 			Width: 140

@@ -53,6 +53,7 @@ label-save-map-background-visibility = Visibility:
 dropdownbutton-save-map-background-visibility-dropdown = Map Visibility
 label-save-map-background-directory = Directory:
 label-save-map-background-filename = Filename:
+checkbox-save-map-panel-png-image = Save map as PNG image
 button-save-map-panel = Save
 label-actor-edit-panel-id = ID
 button-container-ok = OK

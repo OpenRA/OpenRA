@@ -58,7 +58,9 @@ namespace OpenRA
 		public static string EngineVersion { get; private set; }
 		public static LocalPlayerProfile LocalPlayerProfile;
 
-		static bool takeScreenshot = false;
+		static bool takeScreenshot;
+		static bool saveEditorMapAsPngImage;
+		static string editorMapPngImagePath;
 		static Benchmark benchmark = null;
 
 		public static event Action OnShellmapLoaded = () => { };
@@ -698,6 +700,12 @@ namespace OpenRA
 			takeScreenshot = true;
 		}
 
+		public static void SaveEditorMapAsPngImage(string path)
+		{
+			editorMapPngImagePath = path;
+			saveEditorMapAsPngImage = true;
+		}
+
 		static void RenderTick()
 		{
 			using (new PerfSample("render"))
@@ -756,6 +764,40 @@ namespace OpenRA
 				{
 					takeScreenshot = false;
 					TakeScreenshotInner();
+				}
+
+				if (saveEditorMapAsPngImage && worldRenderer != null)
+				{
+					saveEditorMapAsPngImage = false;
+					var pngImagePath = editorMapPngImagePath;
+					editorMapPngImagePath = null;
+
+					var map = worldRenderer.World.Map;
+					var tileSize = map.Rules.TerrainInfo.TileSize;
+
+					// Use the same bounds calculation as Viewport does for the editor:
+					// derive captureSize from MapSize and tileSize, halving the height for
+					// isometric maps because their tiles are displayed at a 2:1 ratio.
+					var captureWidth = map.MapSize.Width * tileSize.Width;
+					var captureHeight = map.MapSize.Height * tileSize.Height;
+					if (map.Grid.Type == MapGridType.RectangularIsometric)
+						captureHeight /= 2;
+
+					var captureSize = new Size(captureWidth, captureHeight);
+					var centerPx = new float2(captureWidth / 2f, captureHeight / 2f);
+
+					// Override the viewport before PrepareRenderables so all actors across the full map are collected.
+					var restoreViewport = worldRenderer.Viewport.OverrideForMapCapture(centerPx, captureSize);
+					worldRenderer.BeginFrame();
+					worldRenderer.PrepareRenderables();
+					Renderer.BeginWorld(centerPx, captureSize);
+					worldRenderer.Draw();
+					worldRenderer.EndFrame();
+					restoreViewport();
+					Renderer.BeginUI();
+					Renderer.EndFrame(null, display: false);
+
+					Renderer.SaveMapAsPngImage(pngImagePath);
 				}
 			}
 

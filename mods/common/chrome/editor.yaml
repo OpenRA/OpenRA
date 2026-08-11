@@ -77,7 +77,7 @@ Background@SAVE_MAP_PANEL:
 	X: (WINDOW_WIDTH - WIDTH) / 2
 	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 350
-	Height: 300
+	Height: 335
 	Children:
 		Label@LABEL_TITLE:
 			X: (PARENT_WIDTH - WIDTH) / 2
@@ -156,6 +156,12 @@ Background@SAVE_MAP_PANEL:
 			Y: 200
 			Width: 110
 			Height: 25
+		Checkbox@SAVE_MAP_PNG_IMAGE:
+			X: 110
+			Y: 237
+			Width: 220
+			Height: 20
+			Text: checkbox-save-map-panel-png-image
 		Button@SAVE_BUTTON:
 			X: 80
 			Y: PARENT_HEIGHT - 45
