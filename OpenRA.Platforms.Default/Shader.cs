@@ -25,6 +25,8 @@ namespace OpenRA.Platforms.Default
 		readonly Queue<int> unbindTextures = [];
 		readonly IShaderBindings bindings;
 		readonly uint program;
+		readonly uint vertexShader;
+		readonly uint fragmentShader;
 
 		static uint CompileShaderObject(int type, string code, string name)
 		{
@@ -60,8 +62,8 @@ namespace OpenRA.Platforms.Default
 
 		public Shader(IShaderBindings bindings)
 		{
-			var vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, bindings.VertexShaderCode, bindings.VertexShaderName);
-			var fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, bindings.FragmentShaderCode, bindings.FragmentShaderName);
+			vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, bindings.VertexShaderCode, bindings.VertexShaderName);
+			fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, bindings.FragmentShaderCode, bindings.FragmentShaderName);
 
 			// Assemble program
 			program = OpenGL.glCreateProgram();
@@ -255,6 +257,20 @@ namespace OpenRA.Platforms.Default
 					OpenGL.glUniformMatrix4fv(uniformCache[name], 1, false, new IntPtr(pMtx));
 			}
 
+			OpenGL.CheckGLError();
+		}
+
+		public void Dispose()
+		{
+			VerifyThreadAffinity();
+
+			OpenGL.glDeleteShader(vertexShader);
+			OpenGL.CheckGLError();
+
+			OpenGL.glDeleteShader(fragmentShader);
+			OpenGL.CheckGLError();
+
+			OpenGL.glDeleteProgram(program);
 			OpenGL.CheckGLError();
 		}
 	}

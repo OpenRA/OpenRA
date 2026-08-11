@@ -109,6 +109,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			vortexSheet.Dispose();
 			vortexBuffer.Dispose();
+			shader.Dispose();
 		}
 	}
 }

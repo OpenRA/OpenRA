@@ -22,8 +22,8 @@ namespace OpenRA.Graphics
 		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => $"Texture{i}");
 		static readonly int UintSize = Marshal.SizeOf<uint>();
 
+		public readonly IShader Shader;
 		readonly Renderer renderer;
-		readonly IShader shader;
 
 		Vertex[] vertices;
 		readonly Sheet[] sheets = new Sheet[SheetCount];
@@ -34,8 +34,8 @@ namespace OpenRA.Graphics
 
 		public SpriteRenderer(Renderer renderer, IShader shader)
 		{
+			Shader = shader;
 			this.renderer = renderer;
-			this.shader = shader;
 			vertices = renderer.Context.CreateVertices<Vertex>(renderer.TempVertexBufferSize);
 		}
 
@@ -45,14 +45,14 @@ namespace OpenRA.Graphics
 			{
 				for (var i = 0; i < sheetCount; i++)
 				{
-					shader.SetTexture(SheetIndexToTextureName[i], sheets[i].GetTexture());
+					Shader.SetTexture(SheetIndexToTextureName[i], sheets[i].GetTexture());
 					sheets[i] = null;
 				}
 
 				renderer.Context.SetBlendMode(currentBlend);
-				shader.PrepareRender();
+				Shader.PrepareRender();
 
-				renderer.DrawQuadBatch(ref vertices, shader, vertexCount);
+				renderer.DrawQuadBatch(ref vertices, Shader, vertexCount);
 				renderer.Context.SetBlendMode(BlendMode.None);
 
 				vertexCount = 0;
@@ -181,12 +181,12 @@ namespace OpenRA.Graphics
 					ThrowSheetOverflow(nameof(sheets));
 
 				if (s != null)
-					shader.SetTexture(SheetIndexToTextureName[i++], s.GetTexture());
+					Shader.SetTexture(SheetIndexToTextureName[i++], s.GetTexture());
 			}
 
 			renderer.Context.SetBlendMode(blendMode);
-			shader.PrepareRender();
-			renderer.DrawQuadBatch(buffer, indices, shader, length, UintSize * start);
+			Shader.PrepareRender();
+			renderer.DrawQuadBatch(buffer, indices, Shader, length, UintSize * start);
 			renderer.Context.SetBlendMode(BlendMode.None);
 		}
 
@@ -212,9 +212,9 @@ namespace OpenRA.Graphics
 
 		public void SetPalette(HardwarePalette palette)
 		{
-			shader.SetTexture("Palette", palette.Texture);
-			shader.SetTexture("ColorShifts", palette.ColorShifts);
-			shader.SetVec("PaletteRows", palette.Height);
+			Shader.SetTexture("Palette", palette.Texture);
+			Shader.SetTexture("ColorShifts", palette.ColorShifts);
+			Shader.SetVec("PaletteRows", palette.Height);
 		}
 
 		public void SetViewportParams(Size sheetSize, int downscale, float depthMargin, int2 scroll)
@@ -241,21 +241,21 @@ namespace OpenRA.Graphics
 			//   extend beyond the top of bottom edges of the screen may be pushed outside [-1, 1] and
 			//   culled by the GPU. We avoid this by forcing everything into the z = 0 plane.
 			var depth = depthMargin != 0f ? 2f / (downscale * (sheetSize.Height + depthMargin)) : 0;
-			shader.SetVec("DepthTextureScale", 128 * depth);
-			shader.SetVec("Scroll", scroll.X, scroll.Y, depthMargin != 0f ? scroll.Y : 0);
-			shader.SetVec("p1", width, height, -depth);
-			shader.SetVec("p2", -1, -1, depthMargin != 0f ? 1 : 0);
+			Shader.SetVec("DepthTextureScale", 128 * depth);
+			Shader.SetVec("Scroll", scroll.X, scroll.Y, depthMargin != 0f ? scroll.Y : 0);
+			Shader.SetVec("p1", width, height, -depth);
+			Shader.SetVec("p2", -1, -1, depthMargin != 0f ? 1 : 0);
 		}
 
 		public void SetDepthPreview(bool enabled, float contrast, float offset)
 		{
-			shader.SetBool("EnableDepthPreview", enabled);
-			shader.SetVec("DepthPreviewParams", contrast, offset);
+			Shader.SetBool("EnableDepthPreview", enabled);
+			Shader.SetVec("DepthPreviewParams", contrast, offset);
 		}
 
 		public void EnablePixelArtScaling(bool enabled)
 		{
-			shader.SetBool("EnablePixelArtScaling", enabled);
+			Shader.SetBool("EnablePixelArtScaling", enabled);
 		}
 	}
 }

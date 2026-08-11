@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			buffer.Dispose();
+			shader.Dispose();
 		}
 	}
 }
