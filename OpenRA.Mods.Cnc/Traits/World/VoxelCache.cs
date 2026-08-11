@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Loads voxel models.")]
-	public sealed class VoxelCacheInfo : TraitInfo, IModelCacheInfo
+	public sealed class VoxelCacheInfo : TraitInfo, IModelCacheInfo, Requires<ModelRendererInfo>
 	{
 		public readonly int SheetSize = 2048;
 		public override object Create(ActorInitializer init) { return new VoxelCache(this, init.Self); }
@@ -34,7 +34,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		public VoxelCache(VoxelCacheInfo info, Actor self)
 		{
 			var map = self.World.Map;
-			loader = new VoxelLoader(map, info.SheetSize);
+			var modelRenderer = self.Trait<ModelRenderer>();
+			loader = new VoxelLoader(map, info.SheetSize, modelRenderer);
 			foreach (var kv in map.Rules.ModelSequences)
 			{
 				Game.ModData.LoadScreen.Display();

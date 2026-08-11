@@ -10,20 +10,20 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using OpenRA.Graphics;
 
 namespace OpenRA.Platforms.Default
 {
 	sealed class Shader : ThreadAffine, IShader
 	{
-		readonly Dictionary<string, int> samplers = [];
-		readonly Dictionary<string, int> uniformCache = [];
+		public IShaderBindings Bindings { get; }
+		readonly FrozenDictionary<string, int> samplers;
+		readonly FrozenDictionary<string, int> uniformCache;
 		readonly Dictionary<int, ITexture> textures = [];
 		readonly Queue<int> unbindTextures = [];
-		readonly IShaderBindings bindings;
 		readonly uint program;
 
 		static uint CompileShaderObject(int type, string code, string name)
@@ -60,18 +60,25 @@ namespace OpenRA.Platforms.Default
 
 		public Shader(IShaderBindings bindings)
 		{
+			Bindings = bindings;
+
 			var vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, bindings.VertexShaderCode, bindings.VertexShaderName);
 			var fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, bindings.FragmentShaderCode, bindings.FragmentShaderName);
 
 			// Assemble program
 			program = OpenGL.glCreateProgram();
 			OpenGL.CheckGLError();
+			(uniformCache, samplers) = SetupProgram(program, vertexShader, fragmentShader, bindings);
+		}
 
-			this.bindings = bindings;
+		static (FrozenDictionary<string, int> UniformCache, FrozenDictionary<string, int> Samplers) SetupProgram(
+			uint program,
+			uint vertexShader,
+			uint fragmentShader,
+			IShaderBindings bindings)
+		{
 			for (ushort i = 0; i < bindings.Attributes.Length; i++)
 			{
-				OpenGL.glEnableVertexAttribArray(i);
-				OpenGL.CheckGLError();
 				OpenGL.glBindAttribLocation(program, i, bindings.Attributes[i].Name);
 				OpenGL.CheckGLError();
 			}
@@ -103,12 +110,15 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
+			Sdl2GraphicsContext.ActiveProgram = program;
 
 			OpenGL.glGetProgramiv(program, OpenGL.GL_ACTIVE_UNIFORMS, out var numUniforms);
 
 			OpenGL.CheckGLError();
 
 			var nextTexUnit = 0;
+			var uniformCache = new Dictionary<string, int>();
+			var samplers = new Dictionary<string, int>();
 			for (var i = 0; i < numUniforms; i++)
 			{
 				var sb = new StringBuilder(128);
@@ -129,26 +139,25 @@ namespace OpenRA.Platforms.Default
 					nextTexUnit++;
 				}
 			}
+
+			return (uniformCache.ToFrozenDictionary(), samplers.ToFrozenDictionary());
 		}
 
 		public void Bind()
 		{
-			for (ushort i = 0; i < bindings.Attributes.Length; i++)
+			VerifyThreadAffinity();
+
+			if (Sdl2GraphicsContext.ActiveProgram != program)
 			{
-				var attribute = bindings.Attributes[i];
-				if (attribute.Type == ShaderVertexAttributeType.Float)
-					OpenGL.glVertexAttribPointer(i, attribute.Components, OpenGL.GL_FLOAT, false, bindings.Stride, new IntPtr(attribute.Offset));
-				else
-					OpenGL.glVertexAttribIPointer(i, attribute.Components, (int)attribute.Type, bindings.Stride, new IntPtr(attribute.Offset));
+				OpenGL.glUseProgram(program);
 				OpenGL.CheckGLError();
+				Sdl2GraphicsContext.ActiveProgram = program;
 			}
 		}
 
 		public void PrepareRender()
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
 
 			// bind the textures
 			foreach (var kv in textures)
@@ -183,43 +192,40 @@ namespace OpenRA.Platforms.Default
 
 		public void SetBool(string name, bool value)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform1i(uniformCache[name], value ? 1 : 0);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform1f(uniformCache[name], x);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x, float y)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform2f(uniformCache[name], x, y);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float x, float y, float z)
 		{
-			VerifyThreadAffinity();
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
+			Bind();
+
 			OpenGL.glUniform3f(uniformCache[name], x, y, z);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, ReadOnlyMemory<float> vec, int length)
 		{
-			VerifyThreadAffinity();
+			Bind();
+
 			var param = uniformCache[name];
 			unsafe
 			{
@@ -242,12 +248,10 @@ namespace OpenRA.Platforms.Default
 
 		public void SetMatrix(string name, float[] mtx)
 		{
-			VerifyThreadAffinity();
+			Bind();
+
 			if (mtx.Length != 16)
 				throw new InvalidDataException("Invalid 4x4 matrix");
-
-			OpenGL.glUseProgram(program);
-			OpenGL.CheckGLError();
 
 			unsafe
 			{

@@ -22,6 +22,10 @@ namespace OpenRA.Platforms.Default
 
 		public string GLVersion => OpenGL.Version;
 
+		// Shadowing state.
+		internal static uint ActiveVAO;
+		internal static uint ActiveProgram;
+
 		public Sdl2GraphicsContext(Sdl2PlatformWindow window)
 		{
 			this.window = window;
@@ -42,23 +46,18 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.Initialize();
 			OpenGL.CheckGLError();
-
-			OpenGL.glGenVertexArrays(1, out var vao);
-			OpenGL.CheckGLError();
-			OpenGL.glBindVertexArray(vao);
-			OpenGL.CheckGLError();
 		}
 
-		public IVertexBuffer<T> CreateEmptyVertexBuffer<T>(int size) where T : struct
+		public IVertexBuffer<T> CreateEmptyVertexBuffer<T>(IShaderBindings bindings, int size) where T : struct
 		{
 			VerifyThreadAffinity();
-			return new VertexBuffer<T>(size);
+			return new VertexBuffer<T>(bindings, size);
 		}
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>(T[] data, bool dynamic = true) where T : struct
+		public IVertexBuffer<T> CreateVertexBuffer<T>(IShaderBindings bindings, T[] data, bool dynamic = true) where T : struct
 		{
 			VerifyThreadAffinity();
-			return new VertexBuffer<T>(data, dynamic);
+			return new VertexBuffer<T>(bindings, data, dynamic);
 		}
 
 		public IIndexBuffer CreateIndexBuffer(uint[] indices)

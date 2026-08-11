@@ -368,6 +368,9 @@ namespace OpenRA.Platforms.Default
 		public delegate void BindVertexArray(uint buffer);
 		public static BindVertexArray glBindVertexArray { get; private set; }
 
+		public delegate void DeleteVertexArrays(int n, ref uint buffers);
+		public static DeleteVertexArrays glDeleteVertexArrays { get; private set; }
+
 		public delegate void BufferData(int target, IntPtr size, IntPtr data, int usage);
 		public static BufferData glBufferData { get; private set; }
 
@@ -634,6 +637,7 @@ namespace OpenRA.Platforms.Default
 
 				glGenVertexArrays = Bind<GenVertexArrays>("glGenVertexArrays");
 				glBindVertexArray = Bind<BindVertexArray>("glBindVertexArray");
+				glDeleteVertexArrays = Bind<DeleteVertexArrays>("glDeleteVertexArrays");
 				glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffers");
 				glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebuffer");
 				glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2D");
