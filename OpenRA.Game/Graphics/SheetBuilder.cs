@@ -92,7 +92,7 @@ namespace OpenRA.Graphics
 
 			var rect = Allocate(size, zRamp, spriteOffset);
 			Util.FastCopyIntoChannel(rect, src, type, premultiplied);
-			Current.CommitBufferedData();
+			Current.CommitBufferedData(rect.Bounds);
 			return rect;
 		}
 
@@ -100,7 +100,7 @@ namespace OpenRA.Graphics
 		{
 			var rect = Allocate(new Size(src.Width, src.Height), scale);
 			Util.FastCopyIntoSprite(rect, src);
-			Current.CommitBufferedData();
+			Current.CommitBufferedData(rect.Bounds);
 			return rect;
 		}
 

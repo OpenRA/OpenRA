@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			// s and t are guaranteed to use the same sheet because
 			// of the custom voxel sheet allocation implementation
-			s.Sheet.CommitBufferedData();
+			s.Sheet.CommitBufferedData(s.Bounds);
 
 			var channelP = ChannelSelect[(int)s.Channel];
 			var channelC = ChannelSelect[(int)t.Channel];

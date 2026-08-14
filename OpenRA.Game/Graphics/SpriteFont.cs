@@ -294,7 +294,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			s.Sheet.CommitBufferedData();
+			s.Sheet.CommitBufferedData(s.Bounds);
 
 			return g;
 		}
@@ -412,7 +412,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			s.Sheet.CommitBufferedData();
+			s.Sheet.CommitBufferedData(s.Bounds);
 			return s;
 		}
 

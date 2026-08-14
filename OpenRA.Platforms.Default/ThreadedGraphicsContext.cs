@@ -669,6 +669,8 @@ namespace OpenRA.Platforms.Default
 		readonly Func<byte[]> getData;
 		readonly Action<object> setData1;
 		readonly Func<object, object> setData2;
+		readonly Action<object> setSubData1;
+		readonly Func<object, object> setSubData2;
 		readonly Action<object> setData3;
 		readonly Func<object, object> setData4;
 		readonly Action<object> setData5;
@@ -685,6 +687,8 @@ namespace OpenRA.Platforms.Default
 			getData = texture.GetData;
 			setData1 = tuple => { var t = ((byte[], int, int))tuple; texture.SetData(t.Item1, t.Item2, t.Item3); };
 			setData2 = tuple => { setData1(tuple); return null; };
+			setSubData1 = tuple => { var t = ((byte[], int, int, int, int))tuple; texture.SetSubData(t.Item1, t.Item2, t.Item3, t.Item4, t.Item5); };
+			setSubData2 = tuple => { setSubData1(tuple); return null; };
 			setData3 = tuple => { var t = ((float[], int, int))tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };
 			setData4 = tuple => { setData3(tuple); return null; };
 			setData5 = rect => texture.SetDataFromReadBuffer((Rectangle)rect);
@@ -728,6 +732,25 @@ namespace OpenRA.Platforms.Default
 				// If the length is large and would result in an array on the Large Object Heap (LOH),
 				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
 				device.Send(setData2, (colors, width, height));
+			}
+		}
+
+		public void SetSubData(byte[] colors, int xoffset, int yoffset, int width, int height)
+		{
+			// Objects 85000 bytes or more will be directly allocated in the Large Object Heap (LOH).
+			// https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/large-object-heap
+			if (colors.Length < 85000)
+			{
+				// If we are able to create a small array the GC can collect easily, post a message to avoid blocking.
+				var temp = new byte[colors.Length];
+				Array.Copy(colors, temp, temp.Length);
+				device.Post(setSubData1, (temp, xoffset, yoffset, width, height));
+			}
+			else
+			{
+				// If the length is large and would result in an array on the Large Object Heap (LOH),
+				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
+				device.Send(setSubData2, (colors, xoffset, yoffset, width, height));
 			}
 		}
 
