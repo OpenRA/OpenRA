@@ -92,6 +92,34 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		void SetSubData(IntPtr data, int xoffset, int yoffset, int width, int height)
+		{
+			PrepareTexture();
+
+			OpenGL.glPixelStorei(OpenGL.GL_UNPACK_ROW_LENGTH, Size.Width);
+			OpenGL.glPixelStorei(OpenGL.GL_UNPACK_SKIP_PIXELS, xoffset);
+			OpenGL.glPixelStorei(OpenGL.GL_UNPACK_SKIP_ROWS, yoffset);
+
+			OpenGL.glTexSubImage2D(OpenGL.GL_TEXTURE_2D, 0, xoffset, yoffset, width, height,
+				OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_BYTE, data);
+
+			OpenGL.glPixelStorei(OpenGL.GL_UNPACK_ROW_LENGTH, 0);
+			OpenGL.glPixelStorei(OpenGL.GL_UNPACK_SKIP_PIXELS, 0);
+			OpenGL.glPixelStorei(OpenGL.GL_UNPACK_SKIP_ROWS, 0);
+
+			OpenGL.CheckGLError();
+		}
+
+		public void SetSubData(byte[] colors, int xoffset, int yoffset, int width, int height)
+		{
+			VerifyThreadAffinity();
+			unsafe
+			{
+				fixed (byte* ptr = &colors[0])
+					SetSubData(new IntPtr(ptr), xoffset, yoffset, width, height);
+			}
+		}
+
 		public void SetFloatData(float[] data, int width, int height)
 		{
 			VerifyThreadAffinity();

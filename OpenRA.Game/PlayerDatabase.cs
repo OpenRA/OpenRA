@@ -54,7 +54,7 @@ namespace OpenRA
 						Game.RunAfterTick(() =>
 						{
 							Util.FastCopyIntoSprite(sprite, icon);
-							sprite.Sheet.CommitBufferedData();
+							sprite.Sheet.CommitBufferedData(sprite.Bounds);
 						});
 					}
 				}

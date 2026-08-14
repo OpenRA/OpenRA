@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var spriteRect = new Rectangle(0, 0, preview.Width, preview.Height);
 			mapSprite = new Sprite(mapSheet, spriteRect, TextureChannel.RGBA);
 			OpenRA.Graphics.Util.FastCopyIntoSprite(mapSprite, preview);
-			mapSheet.CommitBufferedData();
+			mapSheet.CommitBufferedData(mapSprite.Bounds);
 
 			// Update map rect
 			var previewScale = Math.Min(RenderBounds.Width * 1f / spriteRect.Width, RenderBounds.Height * 1f / spriteRect.Height);

@@ -93,6 +93,9 @@ namespace OpenRA.Platforms.Default
 		public const int GL_SCISSOR_TEST = 0x0C11;
 
 		// Texture mapping
+		public const int GL_UNPACK_ROW_LENGTH = 0x0CF2;
+		public const int GL_UNPACK_SKIP_ROWS = 0x0CF3;
+		public const int GL_UNPACK_SKIP_PIXELS = 0x0CF4;
 		public const int GL_TEXTURE_2D = 0x0DE1;
 		public const int GL_TEXTURE_WRAP_S = 0x2802;
 		public const int GL_TEXTURE_WRAP_T = 0x2803;
@@ -283,6 +286,9 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public delegate void PixelStorei(int paramName, int param);
+		public static PixelStorei glPixelStorei { get; private set; }
+
 		public delegate int GetIntegerv(int pname, out int param);
 		public static GetIntegerv glGetIntegerv { get; private set; }
 
@@ -451,6 +457,9 @@ namespace OpenRA.Platforms.Default
 			int x, int y, int width, int height, int border);
 		public static CopyTexImage2D glCopyTexImage2D { get; private set; }
 
+		public delegate void TexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
+		public static TexSubImage2D glTexSubImage2D { get; private set; }
+
 		public delegate void GetTexImage(int target, int level,
 			int format, int type, IntPtr pixels);
 		public static GetTexImage glGetTexImage { get; private set; }
@@ -506,6 +515,7 @@ namespace OpenRA.Platforms.Default
 				glGetError = Bind<GetError>("glGetError");
 				glGetStringInternal = Bind<GetString>("glGetString");
 				glGetStringiInternal = Bind<GetStringi>("glGetStringi");
+				glPixelStorei = Bind<PixelStorei>("glPixelStorei");
 				glGetIntegerv = Bind<GetIntegerv>("glGetIntegerv");
 			}
 			catch (Exception e)
@@ -617,6 +627,7 @@ namespace OpenRA.Platforms.Default
 				glBindTexture = Bind<BindTexture>("glBindTexture");
 				glActiveTexture = Bind<ActiveTexture>("glActiveTexture");
 				glTexImage2D = Bind<TexImage2D>("glTexImage2D");
+				glTexSubImage2D = Bind<TexSubImage2D>("glTexSubImage2D");
 				glCopyTexImage2D = Bind<CopyTexImage2D>("glCopyTexImage2D");
 				glTexParameteri = Bind<TexParameteri>("glTexParameteri");
 				glTexParameterf = Bind<TexParameterf>("glTexParameterf");

@@ -158,6 +158,7 @@ namespace OpenRA
 	public interface ITexture : IDisposable
 	{
 		void SetData(byte[] colors, int width, int height);
+		void SetSubData(byte[] colors, int xoffset, int yoffset, int width, int height);
 		void SetFloatData(float[] data, int width, int height);
 		void SetDataFromReadBuffer(Rectangle rect);
 		byte[] GetData();

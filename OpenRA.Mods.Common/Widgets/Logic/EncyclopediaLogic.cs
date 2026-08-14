@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				OpenRA.Graphics.Util.FastCopyIntoSprite(portraitSprite, portrait);
-				portraitSprite.Sheet.CommitBufferedData();
+				portraitSprite.Sheet.CommitBufferedData(portraitSprite.Bounds);
 			}
 
 			if (titleLabel != null)
