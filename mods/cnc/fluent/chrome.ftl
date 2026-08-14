@@ -246,6 +246,17 @@ button-command-bar-attack-move =
 
     Left-click icon then right-click on target location.
 
+button-command-bar-attack-move-as-move =
+    .tooltip = Move
+    .tooltipdesc =
+    Selected units will move to the desired location
+    without automatically engaging enemies encountered en route.
+
+    Attack Move (attacking any enemies encountered en route)
+    is the default when no key is held.
+
+    Left-click icon then right-click on target location.
+
 button-command-bar-force-move =
     .tooltip = Force Move
     .tooltipdesc =

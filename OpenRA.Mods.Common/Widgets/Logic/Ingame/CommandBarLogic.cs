@@ -22,6 +22,18 @@ namespace OpenRA.Mods.Common.Widgets
 	/// <summary>Contains all functions that are unit-specific.</summary>
 	public class CommandBarLogic : ChromeLogic
 	{
+		[FluentReference]
+		const string AttackMoveTooltip = "button-command-bar-attack-move.tooltip";
+
+		[FluentReference]
+		const string AttackMoveTooltipDesc = "button-command-bar-attack-move.tooltipdesc";
+
+		[FluentReference]
+		const string AttackMoveAsMoveTooltip = "button-command-bar-attack-move-as-move.tooltip";
+
+		[FluentReference]
+		const string AttackMoveAsMoveTooltipDesc = "button-command-bar-attack-move-as-move.tooltipdesc";
+
 		readonly World world;
 
 		int selectionHash;
@@ -52,10 +64,33 @@ namespace OpenRA.Mods.Common.Widgets
 			var attackMoveButton = widget.GetOrNull<ButtonWidget>("ATTACK_MOVE");
 			if (attackMoveButton != null)
 			{
+				// The tooltip is repurposed depending on the AttackMoveIsDefault setting (see below),
+				// so it can't be bound statically from the yaml TooltipText/TooltipDesc keys - it needs
+				// to switch between the two behaviours at runtime. The icon stays the same in both cases
+				// (there is no dedicated "Move" icon in the command-icons sprite sheet).
 				WidgetUtils.BindButtonIcon(attackMoveButton);
 
+				var attackMoveTooltip = FluentProvider.GetMessage(AttackMoveTooltip);
+				var attackMoveTooltipDesc = FluentProvider.GetMessage(AttackMoveTooltipDesc);
+				var attackMoveAsMoveTooltip = FluentProvider.GetMessage(AttackMoveAsMoveTooltip);
+				var attackMoveAsMoveTooltipDesc = FluentProvider.GetMessage(AttackMoveAsMoveTooltipDesc);
+
+				attackMoveButton.GetTooltipText = () => Game.Settings.Game.AttackMoveIsDefault
+					? attackMoveAsMoveTooltip
+					: attackMoveTooltip;
+				attackMoveButton.GetTooltipDesc = () => Game.Settings.Game.AttackMoveIsDefault
+					? attackMoveAsMoveTooltipDesc
+					: attackMoveTooltipDesc;
+
 				attackMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return attackMoveDisabled; };
-				attackMoveButton.IsHighlighted = () => world.OrderGenerator is AttackMoveOrderGenerator;
+
+				// When attack-move is the default click behaviour, this button/key is repurposed
+				// to issue a plain Move instead (AttackMoveOrderTargeter otherwise wins on a plain click -
+				// see its OrderPriority). When the player has turned that off, it keeps its original
+				// sticky attack-move-mode behaviour.
+				attackMoveButton.IsHighlighted = () => Game.Settings.Game.AttackMoveIsDefault
+					? world.OrderGenerator is MoveOrderGenerator
+					: world.OrderGenerator is AttackMoveOrderGenerator;
 
 				void Toggle(bool allowCancel)
 				{
@@ -64,6 +99,8 @@ namespace OpenRA.Mods.Common.Widgets
 						if (allowCancel)
 							world.CancelInputMode();
 					}
+					else if (Game.Settings.Game.AttackMoveIsDefault)
+						world.OrderGenerator = new MoveOrderGenerator(world);
 					else
 						world.OrderGenerator = new AttackMoveOrderGenerator(world, selectedActors);
 				}
