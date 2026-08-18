@@ -31,6 +31,11 @@ namespace OpenRA.Mods.Common.Terrain
 		{
 			return new DefaultTerrain(fileSystem, path);
 		}
+
+		public ITerrainInfo ParseTerrain(IReadOnlyFileSystem fileSystem, IEnumerable<string> paths)
+		{
+			return new DefaultTerrain(fileSystem, paths);
+		}
 	}
 
 	public class DefaultTerrainTileInfo : TerrainTileInfo
@@ -97,10 +102,17 @@ namespace OpenRA.Mods.Common.Terrain
 		readonly byte defaultWalkableTerrainIndex;
 
 		public DefaultTerrain(IReadOnlyFileSystem fileSystem, string filepath)
-		{
-			var yaml = MiniYaml.FromStream(fileSystem.Open(filepath), filepath)
-				.ToDictionary(x => x.Key, x => x.Value);
+			: this(MiniYaml.FromStream(fileSystem.Open(filepath), filepath)
+				.ToDictionary(x => x.Key, x => x.Value))
+		{ }
 
+		public DefaultTerrain(IReadOnlyFileSystem fileSystem, IEnumerable<string> paths)
+			: this(MiniYaml.Merge(paths.Select(p => MiniYaml.FromStream(fileSystem.Open(p), p)))
+				.ToDictionary(x => x.Key, x => x.Value))
+		{ }
+
+		DefaultTerrain(Dictionary<string, MiniYaml> yaml)
+		{
 			// General info
 			FieldLoader.Load(this, yaml["General"]);
 
@@ -119,7 +131,7 @@ namespace OpenRA.Mods.Common.Terrain
 				var tt = TerrainInfo[i].Type;
 
 				if (!tiby.TryAdd(tt, i))
-					throw new YamlException($"Duplicate terrain type '{tt}' in '{filepath}'.");
+					throw new YamlException($"Duplicate terrain type '{tt}' in tileset '{Id}'.");
 			}
 
 			terrainIndexByType = tiby.ToFrozenDictionary();

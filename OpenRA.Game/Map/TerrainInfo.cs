@@ -22,6 +22,7 @@ namespace OpenRA
 	public interface ITerrainLoader
 	{
 		ITerrainInfo ParseTerrain(IReadOnlyFileSystem fileSystem, string path);
+		ITerrainInfo ParseTerrain(IReadOnlyFileSystem fileSystem, IEnumerable<string> paths);
 	}
 
 	public interface ITerrainInfo

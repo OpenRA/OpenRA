@@ -312,7 +312,7 @@ namespace OpenRA
 
 		public Ruleset LoadRuleset()
 		{
-			return Ruleset.Load(modData, this, TileSet, innerData.RuleDefinitions,
+			return Ruleset.Load(modData, this, modData.DefaultTerrainInfo[TileSet], innerData.RuleDefinitions,
 				innerData.WeaponDefinitions, innerData.VoiceDefinitions, innerData.NotificationDefinitions,
 				innerData.MusicDefinitions, innerData.ModelSequenceDefinitions);
 		}

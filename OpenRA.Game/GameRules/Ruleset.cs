@@ -163,15 +163,13 @@ namespace OpenRA
 			return ruleset;
 		}
 
-		public static Ruleset LoadDefaultsForTileSet(ModData modData, string tileSet)
+		public static Ruleset LoadDefaultsForTileSet(ModData modData, ITerrainInfo terrainInfo)
 		{
 			var dr = modData.DefaultRules;
-			var terrainInfo = modData.DefaultTerrainInfo[tileSet];
-
 			return new Ruleset(dr.Actors, dr.Weapons, dr.Voices, dr.Notifications, dr.Music, terrainInfo, dr.ModelSequences);
 		}
 
-		public static Ruleset Load(ModData modData, IReadOnlyFileSystem fileSystem, string tileSet,
+		public static Ruleset Load(ModData modData, IReadOnlyFileSystem fileSystem, ITerrainInfo terrainInfo,
 			MiniYaml mapRules, MiniYaml mapWeapons, MiniYaml mapVoices, MiniYaml mapNotifications,
 			MiniYaml mapMusic, MiniYaml mapModelSequences)
 		{
@@ -196,9 +194,6 @@ namespace OpenRA
 
 				var music = MergeOrDefault("Music", fileSystem, m.Music, mapMusic, dr.Music,
 					k => new MusicInfo(k.Key, k.Value));
-
-				// TODO: Add support for merging custom terrain modifications
-				var terrainInfo = modData.DefaultTerrainInfo[tileSet];
 
 				var modelSequences = dr.ModelSequences;
 				if (mapModelSequences != null)

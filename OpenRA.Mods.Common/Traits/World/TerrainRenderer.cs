@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (terrainInfo == null)
 				throw new InvalidDataException($"{nameof(TerrainRenderer)} can only be used with the {nameof(DefaultTerrain)} parser");
 
-			tileCache = new DefaultTileCache(terrainInfo);
+			tileCache = new DefaultTileCache(terrainInfo, fileSystem: map);
 		}
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)

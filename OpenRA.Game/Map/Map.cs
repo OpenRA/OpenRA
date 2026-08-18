@@ -282,8 +282,11 @@ namespace OpenRA
 						streams.Add(package.GetStream(filename));
 
 				// Take the SHA1
+				// When we simplify the collection, .NET 10.0.102 doesn't know which overload of SHA1Hash to call
+#pragma warning disable IDE0301 // Simplify collection initialization
 				if (streams.Count == 0)
-					return CryptoUtil.SHA1Hash([]);
+					return CryptoUtil.SHA1Hash(Array.Empty<byte>());
+#pragma warning restore IDE0301 // Simplify collection initialization
 
 				var merged = streams[0];
 				for (var i = 1; i < streams.Count; i++)
@@ -436,9 +439,37 @@ namespace OpenRA
 
 		void PostInit()
 		{
+			// If the map contains a custom-tileset.yaml, merge it on top of the mod's base tileset.
+			// This uses the same recursive merge as rules/weapons/etc, so the custom file only needs
+			// to contain additions or overrides rather than duplicating the entire tileset.
+			ITerrainInfo terrainInfo;
+			if (Package != null && Package.Contains("custom-tileset.yaml"))
+			{
+				var terrainType = modData.ObjectCreator.FindType(modData.Manifest.TerrainFormat + "Loader");
+				var terrainCtor = terrainType?.GetConstructor([typeof(ModData)]);
+				if (terrainType == null || !terrainType.GetInterfaces().Contains(typeof(ITerrainLoader)) || terrainCtor == null)
+					throw new InvalidOperationException($"Unable to find a terrain loader for type '{modData.Manifest.TerrainFormat}'.");
+
+				var baseTilesetPath = modData.Manifest.TileSets.FirstOrDefault(f =>
+				{
+					var nodes = MiniYaml.FromStream(modData.DefaultFileSystem.Open(f), f);
+					var general = nodes.FirstOrDefault(n => n.Key == "General");
+					var id = general?.Value.NodeWithKeyOrDefault("Id");
+					return id?.Value.Value == Tileset;
+				});
+
+				if (baseTilesetPath == null)
+					throw new InvalidDataException($"No mod tileset found with Id '{Tileset}' to use as base for custom-tileset.yaml.");
+
+				var terrainLoader = (ITerrainLoader)terrainCtor.Invoke([modData]);
+				terrainInfo = terrainLoader.ParseTerrain(this, [baseTilesetPath, "custom-tileset.yaml"]);
+			}
+			else
+				terrainInfo = modData.DefaultTerrainInfo[Tileset];
+
 			try
 			{
-				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
+				Rules = Ruleset.Load(modData, this, terrainInfo, RuleDefinitions, WeaponDefinitions,
 					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, ModelSequenceDefinitions);
 			}
 			catch (Exception e)
@@ -447,7 +478,7 @@ namespace OpenRA
 				Log.Write("debug", e);
 				InvalidCustomRules = true;
 				InvalidCustomRulesException = e;
-				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
+				Rules = Ruleset.LoadDefaultsForTileSet(modData, terrainInfo);
 			}
 
 			Sequences = new SequenceSet(this, modData, Tileset, SequenceDefinitions);
@@ -465,7 +496,6 @@ namespace OpenRA
 				CustomTerrain[uv] = byte.MaxValue;
 
 			// Replace invalid tiles and cache ramp state
-			var terrainInfo = Rules.TerrainInfo;
 			foreach (var uv in AllCells.MapCoords)
 			{
 				if (!terrainInfo.TryGetTerrainInfo(Tiles[uv], out var info))
