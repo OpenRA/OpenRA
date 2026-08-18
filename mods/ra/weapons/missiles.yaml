@@ -74,6 +74,8 @@ Dragon:
 	Inherits: ^AntiGroundMissile
 	Projectile: Missile
 		TrailImage: smokey
+		ContrailStartWidth: 2c0
+		ContrailEndWidth: 0
 
 HellfireAG:
 	Inherits: ^AntiGroundMissile
@@ -85,6 +87,8 @@ HellfireAG:
 		Speed: 256
 		HorizontalRateOfTurn: 40
 		RangeLimit: 8c512
+		ContrailStartWidth: 0
+		ContrailEndWidth: 2c0
 	Warhead@1Dam: SpreadDamage
 		Damage: 6000
 		Versus:

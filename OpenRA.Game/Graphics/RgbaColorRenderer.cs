@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 {
 	public class RgbaColorRenderer
 	{
-		static readonly float3 Offset = new(0.5f, 0.5f, 0f);
+		public static readonly float3 Offset = new(0.5f, 0.5f, 0f);
 
 		readonly SpriteRenderer parent;
 		readonly Vertex[] vertices = new Vertex[4];
@@ -49,6 +49,29 @@ namespace OpenRA.Graphics
 			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0);
 			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0);
 			vertices[3] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0);
+
+			parent.DrawRGBAQuad(vertices, blendMode);
+		}
+
+		public void DrawLine(in float3 startl, in float3 startr, in float3 endr, in float3 endl,
+			Color startColor, Color endColor, BlendMode blendMode = BlendMode.Alpha)
+		{
+			startColor = Util.PremultiplyAlpha(startColor);
+			var sr = startColor.R / 255.0f;
+			var sg = startColor.G / 255.0f;
+			var sb = startColor.B / 255.0f;
+			var sa = startColor.A / 255.0f;
+
+			endColor = Util.PremultiplyAlpha(endColor);
+			var er = endColor.R / 255.0f;
+			var eg = endColor.G / 255.0f;
+			var eb = endColor.B / 255.0f;
+			var ea = endColor.A / 255.0f;
+
+			vertices[0] = new Vertex(startl, sr, sg, sb, sa, 0);
+			vertices[1] = new Vertex(startr, sr, sg, sb, sa, 0);
+			vertices[2] = new Vertex(endr, er, eg, eb, ea, 0);
+			vertices[3] = new Vertex(endl, er, eg, eb, ea, 0);
 
 			parent.DrawRGBAQuad(vertices, blendMode);
 		}
