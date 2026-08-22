@@ -1,7 +1,7 @@
-
 // MiniYaml 移植验证测试 / MiniYaml port verification tests
-// 覆盖：解析（缩进/注释/转义）、合并继承删除、序列化回环、真实 mod 文件解析
-// Covers: parsing (indent/comments/escapes), merge/inherit/removal, round-trip, real mod files
+// 覆盖：解析（缩进/注释/转义）、合并继承删除、序列化回环、字段注入、类型注册、真实 mod 文件
+// Covers: parsing (indent/comments/escapes), merge/inherit/removal, round-trips, field injection,
+// type registration, and real mod files. All fallible APIs return std::expected (no exceptions).
 
 #include "openra/MiniYaml.h"
 #include "openra/FieldLoader.h"
@@ -28,167 +28,21 @@ namespace
 			std::cout << "ok: " << what << "\n";
 	}
 
-	void testParsing()
+	// 解析断言辅助：失败时打印错误消息 / parse helper: prints the error message on failure
+	// 注意按值返回：expected 是局部对象，返回其内部引用会悬垂
+	// Returns by value: the expected is a local, so a reference into it would dangle
+	std::vector<MiniYamlNode> parsed(std::string_view text, std::string_view name)
 	{
-		const auto text = R"(# top comment
-player: World
-	Health: 100
-	Name: Generic Value
-	Speed: 7
-)";
-		auto nodes = miniYamlFromString(text, "test");
-		check(nodes.size() == 1, "single top-level node");
-		check(nodes[0].key && *nodes[0].key == "player", "key parsed");
-		check(nodes[0].value->value && *nodes[0].value->value == "World", "value parsed");
-		check(nodes[0].value->nodes.size() == 3, "three children");
-		check(*nodes[0].value->nodes[0].key == "Health"
-			&& *nodes[0].value->nodes[0].value->value == "100", "child key/value");
-		check(*nodes[0].value->nodes[1].value->value == "Generic Value", "value with spaces preserved");
-		check(nodes[0].location.line == 2, "source location line");
-	}
-
-	void testEscapes()
-	{
-		// '#' 需转义；注释以未转义 '#' 开始
-		// '#' must be escaped; comments start at an unescaped '#'
-		const auto text = R"(color: value\#withhash # real comment
-tag: \ spaced \
-)";
-		auto nodes = miniYamlFromString(text, "test", false);
-		check(nodes.size() == 2, "two nodes");
-		check(*nodes[0].value->value == "value#withhash", "escaped hash restored");
-		check(nodes[0].comment && *nodes[0].comment == " real comment", "comment captured");
-		check(*nodes[1].value->value == " spaced ", "backslash whitespace guards preserved");
-	}
-
-	void testTabIndent()
-	{
-		const auto text = "a:\n\tb: 1\n\t\tc: 2\n";
-		auto nodes = miniYamlFromString(text, "test");
-		check(nodes.size() == 1, "tab: single root");
-		check(nodes[0].value->nodes.size() == 1, "tab: one child");
-		check(nodes[0].value->nodes[0].value->nodes.size() == 1, "tab: one grandchild");
-		check(*nodes[0].value->nodes[0].value->nodes[0].key == "c", "tab: grandchild key");
-	}
-
-	void testBadIndent()
-	{
-		bool threw = false;
-		try
+		auto result = miniYamlFromString(text, name);
+		if (!result.has_value())
 		{
-			miniYamlFromString("a:\n\t\tb: 1\n", "test");
-		}
-		catch (const YamlException&)
-		{
-			threw = true;
+			std::cerr << "FAIL: parse error: " << result.error().message << "\n";
+			++failures;
+			return {};
 		}
 
-		check(threw, "bad indent throws");
+		return std::move(*result);
 	}
-
-	void testMergeInheritRemoval()
-	{
-		const auto base = R"(^base:
-	Inherits: ^common
-	HP: 10
-	Traits:
-		A: 1
-		B: 2
-^common:
-	HP: 1
-	Traits:
-		A: 9
-^extra:
-	Speed: 99
-)";
-		const auto override = R"(^base:
-	Inherits@extra: ^extra
-	HP: 20
-	Traits:
-		-B
-)";
-		auto baseNodes = miniYamlFromString(base, "base");
-		auto overrideNodes = miniYamlFromString(override, "override");
-		auto merged = miniYamlMerge({ baseNodes, overrideNodes });
-
-		check(merged.size() == 3, "merge: three top-level entries");
-		auto dict = merged[0].value->toDictionary();
-		check(dict.count("HP") && *dict.at("HP")->value == "20", "merge: override wins");
-		check(dict.count("Speed") && *dict.at("Speed")->value == "99", "inherit@extra applied");
-		auto traits = dict.at("Traits")->toDictionary();
-		check(traits.count("A") && *traits.at("A")->value == "1", "inherit: A survives from base");
-		check(!traits.count("B"), "removal: B removed");
-	}
-
-	void testDuplicateInheritThrows()
-	{
-		// C# 语义：同一父类型不可被继承两次（防循环/冗余）
-		// C# semantics: a parent may not be inherited twice (loop/redundancy guard)
-		const auto text = R"(^a:
-	Inherits: ^common
-	Inherits@dup: ^common
-^common:
-	X: 1
-)";
-		auto nodes = miniYamlFromString(text, "t");
-		bool threw = false;
-		try
-		{
-			miniYamlMerge({ nodes });
-		}
-		catch (const YamlException&)
-		{
-			threw = true;
-		}
-
-		check(threw, "duplicate inheritance throws");
-	}
-
-	void testRoundTrip()
-	{
-		const auto text = "a: 1\n\tb: hello world\n\t\tc: deep\n";
-		auto nodes = miniYamlFromString(text, "test");
-		auto out = miniYamlToString(nodes);
-		auto reparsed = miniYamlFromString(out, "roundtrip");
-		auto out2 = miniYamlToString(reparsed);
-		check(out == out2, "round-trip stable");
-		check(reparsed.size() == 1, "round-trip: same node count");
-		check(*reparsed[0].value->nodes[0].value->nodes[0].key == "c", "round-trip: deep child");
-	}
-
-	void testRealModFile(const std::filesystem::path& engineRoot)
-	{
-		// 用真实 mod 规则文件做冒烟解析 / smoke-parse real mod rule files
-		auto rules = engineRoot / "mods" / "ra" / "rules";
-		if (!std::filesystem::exists(rules))
-		{
-			std::cout << "skip: real mod files not found\n";
-			return;
-		}
-
-		int parsed = 0;
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(rules))
-		{
-			if (entry.path().extension() != ".yaml")
-				continue;
-			try
-			{
-				auto nodes = miniYamlFromFile(entry.path().string());
-				parsed++;
-				for (const auto& n : nodes)
-					if (!n.key)
-						throw YamlException("null key without comment retention");
-			}
-			catch (const std::exception& e)
-			{
-				check(false, "parse " + entry.path().string() + ": " + e.what());
-				return;
-			}
-		}
-
-		check(parsed > 0, "real mod files parsed (" + std::to_string(parsed) + " files)");
-	}
-}
 
 namespace
 {
@@ -239,8 +93,131 @@ namespace
 OPENRA_REGISTER_TYPE(TraitInfo, HealthInfo)
 OPENRA_REGISTER_TYPE(TraitInfo, SpeedInfo)
 
-namespace
-{
+	void testParsing()
+	{
+		const auto text = R"(# top comment
+player: World
+	Health: 100
+	Name: Generic Value
+	Speed: 7
+)";
+		const auto nodes = parsed(text, "test");
+		check(nodes.size() == 1, "single top-level node");
+		check(nodes[0].key && *nodes[0].key == "player", "key parsed");
+		check(nodes[0].value->value && *nodes[0].value->value == "World", "value parsed");
+		check(nodes[0].value->nodes.size() == 3, "three children");
+		check(*nodes[0].value->nodes[0].key == "Health"
+			&& *nodes[0].value->nodes[0].value->value == "100", "child key/value");
+		check(*nodes[0].value->nodes[1].value->value == "Generic Value", "value with spaces preserved");
+		check(nodes[0].location.line == 2, "source location line");
+	}
+
+	void testEscapes()
+	{
+		// '#' 需转义；注释以未转义 '#' 开始（保留前导空格）
+		// '#' must be escaped; comments start at an unescaped '#' (leading space kept)
+		const auto text = R"(color: value\#withhash # real comment
+tag: \ spaced \
+)";
+		auto retain = miniYamlFromString(text, "test", false);
+		check(retain.has_value() && (*retain).size() == 2, "two nodes");
+		check(*(*retain)[0].value->value == "value#withhash", "escaped hash restored");
+		check((*retain)[0].comment && *(*retain)[0].comment == " real comment", "comment captured");
+		check(*(*retain)[1].value->value == " spaced ", "backslash whitespace guards preserved");
+	}
+
+	void testTabIndent()
+	{
+		const auto nodes = parsed("a:\n\tb: 1\n\t\tc: 2\n", "test");
+		check(nodes.size() == 1, "tab: single root");
+		check(nodes[0].value->nodes.size() == 1, "tab: one child");
+		check(nodes[0].value->nodes[0].value->nodes.size() == 1, "tab: one grandchild");
+		check(*nodes[0].value->nodes[0].value->nodes[0].key == "c", "tab: grandchild key");
+	}
+
+	void testBadIndent()
+	{
+		auto result = miniYamlFromString("a:\n\t\tb: 1\n", "test");
+		check(!result.has_value(), "bad indent yields error");
+		check(result.error().message.find("Bad indent") != std::string::npos, "bad indent message");
+	}
+
+	void testMergeInheritRemoval()
+	{
+		const auto base = R"(^base:
+	Inherits: ^common
+	HP: 10
+	Traits:
+		A: 1
+		B: 2
+^common:
+	HP: 1
+	Traits:
+		A: 9
+^extra:
+	Speed: 99
+)";
+		const auto override = R"(^base:
+	Inherits@extra: ^extra
+	HP: 20
+	Traits:
+		-B
+)";
+		auto baseNodes = miniYamlFromString(base, "base");
+		auto overrideNodes = miniYamlFromString(override, "override");
+		check(baseNodes.has_value() && overrideNodes.has_value(), "merge: inputs parse");
+		auto merged = miniYamlMerge({ *baseNodes, *overrideNodes });
+		check(merged.has_value(), "merge succeeds");
+		if (!merged.has_value())
+			return;
+
+		check((*merged).size() == 3, "merge: three top-level entries");
+		auto dict = (*merged)[0].value->toDictionary();
+		check(dict.has_value(), "merge: dictionary builds");
+		if (!dict.has_value())
+			return;
+		check(dict->count("HP") && *dict->at("HP")->value == "20", "merge: override wins");
+		check(dict->count("Speed") && *dict->at("Speed")->value == "99", "inherit@extra applied");
+		auto traits = dict->at("Traits")->toDictionary();
+		check(traits.has_value() && traits->count("A") && *traits->at("A")->value == "1",
+			"inherit: A survives from base");
+		check(!traits->count("B"), "removal: B removed");
+	}
+
+	void testDuplicateInheritFails()
+	{
+		// C# 语义：同一父类型不可被继承两次（防循环/冗余）
+		// C# semantics: a parent may not be inherited twice (loop/redundancy guard)
+		const auto text = R"(^a:
+	Inherits: ^common
+	Inherits@dup: ^common
+^common:
+	X: 1
+)";
+		auto nodes = miniYamlFromString(text, "t");
+		check(nodes.has_value(), "duplicate inheritance: input parses");
+		auto merged = miniYamlMerge({ *nodes });
+		check(!merged.has_value(), "duplicate inheritance yields error");
+		check(merged.error().message.find("already inherited") != std::string::npos,
+			"duplicate inheritance message");
+	}
+
+	void testRoundTrip()
+	{
+		const auto text = "a: 1\n\tb: hello world\n\t\tc: deep\n";
+		auto nodes = miniYamlFromString(text, "test");
+		check(nodes.has_value(), "round-trip: parses");
+		auto out = miniYamlToString(*nodes);
+		auto reparsed = miniYamlFromString(out, "roundtrip");
+		check(reparsed.has_value(), "round-trip: reparses");
+		if (!reparsed.has_value())
+			return;
+		auto out2 = miniYamlToString(*reparsed);
+		check(out == out2, "round-trip stable");
+		check((*reparsed).size() == 1, "round-trip: same node count");
+		check(*(*reparsed)[0].value->nodes[0].value->nodes[0].key == "c", "round-trip: deep child");
+	}
+
 	void testFieldLoader()
 	{
 		const auto text = R"(Name: GuardTower
@@ -251,46 +228,32 @@ Weapon:
 	Range: 7.5
 )";
 		auto nodes = miniYamlFromString(text, "fields");
+		check(nodes.has_value(), "field: input parses");
 		// 顶层各字段为平级节点，包一层根容器再加载 / top-level fields are siblings; wrap in a root
-		auto tower = FieldLoader::load<TowerInfo>(MiniYaml(std::nullopt, std::move(nodes)));
+		auto tower = FieldLoader::load<TowerInfo>(MiniYaml(std::nullopt, std::move(*nodes)));
+		check(tower.has_value(), "field: loads without error");
+		if (!tower.has_value())
+		{
+			std::cerr << "  error: " << tower.error().message << "\n";
+			return;
+		}
 
-		check(tower.name == "GuardTower", "field: string loaded");
-		check(tower.active, "field: bool loaded");
-		check(tower.level == 1, "field: absent field keeps default");
-		check(tower.offsets == std::vector<int>({ 1, 2, 3 }), "field: vector loaded");
-		check(tower.weapon.damage == 50, "field: nested struct loaded");
-		check(tower.weapon.range > 7.49f && tower.weapon.range < 7.51f, "field: float loaded");
+		check(tower->name == "GuardTower", "field: string loaded");
+		check(tower->active, "field: bool loaded");
+		check(tower->level == 1, "field: absent field keeps default");
+		check(tower->offsets == std::vector<int>({ 1, 2, 3 }), "field: vector loaded");
+		check(tower->weapon.damage == 50, "field: nested struct loaded");
+		check(tower->weapon.range > 7.49f && tower->weapon.range < 7.51f, "field: float loaded");
 	}
 
 	void testFieldLoaderErrors()
 	{
-		bool threw = false;
-		try
-		{
-			const auto text = "Damage: fifty\n";
-			auto nodes = miniYamlFromString(text, "bad");
-			auto w = FieldLoader::load<WeaponInfo>(MiniYaml(std::nullopt, std::move(nodes)));
-		}
-		catch (const FieldLoadException&)
-		{
-			threw = true;
-		}
+		auto bad = FieldLoader::load<WeaponInfo>(MiniYaml(std::nullopt, *miniYamlFromString("Damage: fifty\n", "bad")));
+		check(!bad.has_value(), "field: bad numeric value yields error");
+		check(bad.error().message.find("Cannot parse") != std::string::npos, "field: numeric error message");
 
-		check(threw, "field: bad numeric value throws");
-
-		threw = false;
-		try
-		{
-			const auto text = "Active: yes\n";
-			auto nodes = miniYamlFromString(text, "bad");
-			auto t = FieldLoader::load<TowerInfo>(MiniYaml(std::nullopt, std::move(nodes)));
-		}
-		catch (const FieldLoadException&)
-		{
-			threw = true;
-		}
-
-		check(threw, "field: bad bool value throws");
+		auto badBool = FieldLoader::load<TowerInfo>(MiniYaml(std::nullopt, *miniYamlFromString("Active: yes\n", "bad")));
+		check(!badBool.has_value(), "field: bad bool value yields error");
 	}
 
 	void testTypeRegistry()
@@ -309,13 +272,44 @@ Weapon:
 	HP: 123
 )";
 		auto nodes = miniYamlFromString(text, "traits");
-		auto trait = TypeRegistry<TraitInfo>::create(*nodes[0].key);
+		check(nodes.has_value(), "registry: input parses");
+		auto trait = TypeRegistry<TraitInfo>::create(*(*nodes)[0].key);
 		check(trait != nullptr, "registry: yaml key drives creation");
 		auto* hi = dynamic_cast<HealthInfo*>(trait.get());
-		FieldLoader::load(*hi, *nodes[0].value);
+		auto ok = FieldLoader::load(*hi, *(*nodes)[0].value);
+		check(ok.has_value(), "registry+fields: loads without error");
 		check(hi->hp == 123, "registry+fields: yaml value injected");
 	}
+
+	void testRealModFile(const std::filesystem::path& engineRoot)
+	{
+		// 用真实 mod 规则文件做冒烟解析 / smoke-parse real mod rule files
+		auto rules = engineRoot / "mods" / "ra" / "rules";
+		if (!std::filesystem::exists(rules))
+		{
+			std::cout << "skip: real mod files not found\n";
+			return;
+		}
+
+		int parsedCount = 0;
+		for (const auto& entry : std::filesystem::recursive_directory_iterator(rules))
+		{
+			if (entry.path().extension() != ".yaml")
+				continue;
+			auto nodes = miniYamlFromFile(entry.path().string());
+			if (!nodes.has_value())
+			{
+				check(false, "parse " + entry.path().string() + ": " + nodes.error().message);
+				return;
+			}
+
+			parsedCount++;
+		}
+
+		check(parsedCount > 0, "real mod files parsed (" + std::to_string(parsedCount) + " files)");
+	}
 }
+
 
 int main(int argc, char** argv)
 {
@@ -324,7 +318,7 @@ int main(int argc, char** argv)
 	testTabIndent();
 	testBadIndent();
 	testMergeInheritRemoval();
-	testDuplicateInheritThrows();
+	testDuplicateInheritFails();
 	testRoundTrip();
 	testFieldLoader();
 	testFieldLoaderErrors();

@@ -90,31 +90,34 @@ namespace OpenRA
 
 	// ============================== 访问 / Access ==============================
 
-	const MiniYamlNode* MiniYaml::nodeWithKeyOrDefault(std::string_view key) const
+	std::expected<const MiniYamlNode*, YamlError> MiniYaml::nodeWithKeyOrDefault(std::string_view key) const
 	{
-		// C# 版对重复键抛异常 / the C# version throws on duplicate keys
+		// 重复键返回错误（对应 C# 抛异常的路径）/ duplicate keys surface as errors
+		// (the path where C# throws)
 		const MiniYamlNode* result = nullptr;
 		for (const auto& node : nodes)
 		{
 			if (!node.key || *node.key != key)
 				continue;
 			if (result != nullptr)
-				throw YamlException("Duplicate key '" + std::string(key) + "' in " + node.location.name + ":" + std::to_string(node.location.line));
+				return std::unexpected(yamlError("Duplicate key '" + std::string(key) + "' in "
+					+ node.location.name + ":" + std::to_string(node.location.line)));
 			result = &node;
 		}
 
 		return result;
 	}
 
-	const MiniYamlNode& MiniYaml::nodeWithKey(std::string_view key) const
+	const MiniYamlNode* MiniYaml::nodeWithKeyOrNull(std::string_view key) const
 	{
-		auto result = nodeWithKeyOrDefault(key);
-		if (result == nullptr)
-			throw YamlException("No node with key '" + std::string(key) + "'");
-		return *result;
+		// 快速路径：不做重复检测 / fast path: no duplicate detection
+		for (const auto& node : nodes)
+			if (node.key && *node.key == key)
+				return &node;
+		return nullptr;
 	}
 
-	std::map<std::string, const MiniYaml*> MiniYaml::toDictionary() const
+	std::expected<std::map<std::string, const MiniYaml*>, YamlError> MiniYaml::toDictionary() const
 	{
 		std::map<std::string, const MiniYaml*> ret;
 		for (const auto& y : nodes)
@@ -122,7 +125,8 @@ namespace OpenRA
 			if (!y.key)
 				continue;
 			if (!ret.emplace(*y.key, y.value.get()).second)
-				throw YamlException("Duplicate key '" + *y.key + "' in " + y.location.name + ":" + std::to_string(y.location.line));
+				return std::unexpected(yamlError("Duplicate key '" + *y.key + "' in "
+					+ y.location.name + ":" + std::to_string(y.location.line)));
 		}
 
 		return ret;
@@ -133,7 +137,7 @@ namespace OpenRA
 	namespace
 	{
 		// C# FromLines 的核心：缩进栈组装 / the core of C# FromLines: indent-stack assembly
-		std::vector<MiniYamlNode> fromLines(const std::vector<std::string_view>& lines,
+		std::expected<std::vector<MiniYamlNode>, YamlError> fromLines(const std::vector<std::string_view>& lines,
 			std::string_view name, bool discardCommentsAndWhitespace, StringPool* pool)
 		{
 			// result[level] 收集该层完成的节点 / result[level] collects completed nodes per level
@@ -287,7 +291,8 @@ namespace OpenRA
 				if (!key.empty() || !discardCommentsAndWhitespace)
 				{
 					if (!parsedLines.empty() && parsedLines.back().level < level - 1)
-						throw YamlException("Bad indent in miniyaml at " + location.name + ":" + std::to_string(location.line));
+						return std::unexpected(yamlError("Bad indent in miniyaml at "
+							+ location.name + ":" + std::to_string(location.line)));
 
 					while (!parsedLines.empty() && parsedLines.back().level > level)
 						buildCompletedSubNode(level);
@@ -311,18 +316,18 @@ namespace OpenRA
 		}
 	}
 
-	std::vector<MiniYamlNode> miniYamlFromString(std::string_view text, std::string_view name,
+	std::expected<std::vector<MiniYamlNode>, YamlError> miniYamlFromString(std::string_view text, std::string_view name,
 		bool discardCommentsAndWhitespace, StringPool* pool)
 	{
 		return fromLines(splitLines(text), name, discardCommentsAndWhitespace, pool);
 	}
 
-	std::vector<MiniYamlNode> miniYamlFromFile(const std::string& path,
+	std::expected<std::vector<MiniYamlNode>, YamlError> miniYamlFromFile(const std::string& path,
 		bool discardCommentsAndWhitespace, StringPool* pool)
 	{
 		std::ifstream file(path, std::ios::binary);
 		if (!file)
-			throw YamlException("Cannot open file: " + path);
+			return std::unexpected(yamlError("Cannot open file: " + path));
 
 		std::string text{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() };
 		return fromLines(splitLines(text), path, discardCommentsAndWhitespace, pool);
@@ -333,7 +338,7 @@ namespace OpenRA
 	namespace MiniYamlDetail
 	{
 		// 相互递归，先作前向声明 / mutually recursive; forward-declared first
-		std::vector<MiniYamlNode> resolveInherits(const MiniYaml& node,
+		std::expected<std::vector<MiniYamlNode>, YamlError> resolveInherits(const MiniYaml& node,
 			const std::map<std::string, const MiniYaml*>& tree,
 			std::map<std::string, YamlSourceLocation> inherited);
 
@@ -473,7 +478,8 @@ namespace OpenRA
 		}
 
 		// 覆盖节点并入已解析列表 / merge an override node into the resolved list
-		void mergeIntoResolved(const MiniYamlNode& overrideNode, std::vector<MiniYamlNode>& existingNodes,
+		std::expected<void, YamlError> mergeIntoResolved(const MiniYamlNode& overrideNode,
+			std::vector<MiniYamlNode>& existingNodes,
 			std::vector<std::string>& existingNodeKeys, const std::map<std::string, const MiniYaml*>& tree,
 			const std::map<std::string, YamlSourceLocation>& inherited)
 		{
@@ -493,7 +499,9 @@ namespace OpenRA
 
 			auto value = mergePartial(existingNode ? existingNode->value.get() : nullptr, overrideNode.value.get());
 			auto nodes = resolveInherits(value, tree, inherited);
-			value.nodes = std::move(nodes);
+			if (!nodes.has_value())
+				return std::unexpected(std::move(nodes).error());
+			value.nodes = std::move(*nodes);
 
 			if (existingNode != nullptr)
 			{
@@ -503,9 +511,11 @@ namespace OpenRA
 			}
 			else
 				existingNodes.push_back(overrideNode);
+
+			return {};
 		}
 
-		std::vector<MiniYamlNode> resolveInherits(const MiniYaml& node,
+		std::expected<std::vector<MiniYamlNode>, YamlError> resolveInherits(const MiniYaml& node,
 			const std::map<std::string, const MiniYaml*>& tree,
 			std::map<std::string, YamlSourceLocation> inherited)
 		{
@@ -522,21 +532,28 @@ namespace OpenRA
 				{
 					auto it = tree.find(*n.value->value);
 					if (it == tree.end())
-						throw YamlException(n.location.name + ":" + std::to_string(n.location.line)
-							+ ": Parent type `" + *n.value->value + "` not found");
+						return std::unexpected(yamlError(n.location.name + ":" + std::to_string(n.location.line)
+							+ ": Parent type `" + *n.value->value + "` not found"));
 
 					auto [inserted, ok] = inherited.emplace(*n.value->value, n.location);
 					if (!ok)
-						throw YamlException(n.location.name + ":" + std::to_string(n.location.line)
+						return std::unexpected(yamlError(n.location.name + ":" + std::to_string(n.location.line)
 							+ ": Parent type `" + *n.value->value + "` was already inherited by this yaml tree at "
 							+ inserted->second.name + ":" + std::to_string(inserted->second.line)
-							+ " (note: may be from a derived tree)");
+							+ " (note: may be from a derived tree)"));
 
 					// 注意：C# 里 inherited 在循环内持续累积；C++ 按值传参+修改局部副本等价
 					// Note: C# keeps accumulating `inherited` across loop iterations;
 					// the by-value parameter with local mutation is equivalent
-					for (const auto& r : resolveInherits(*it->second, tree, inherited))
-						mergeIntoResolved(r, resolved, resolvedKeys, tree, inherited);
+					auto parentResolved = resolveInherits(*it->second, tree, inherited);
+					if (!parentResolved.has_value())
+						return std::unexpected(std::move(parentResolved).error());
+					for (const auto& r : *parentResolved)
+					{
+						auto merged = mergeIntoResolved(r, resolved, resolvedKeys, tree, inherited);
+						if (!merged.has_value())
+							return std::unexpected(std::move(merged).error());
+					}
 				}
 				else if (n.key && startsWith(*n.key, "-"))
 				{
@@ -544,22 +561,26 @@ namespace OpenRA
 					auto before = resolved.size();
 					std::erase_if(resolved, [&](const MiniYamlNode& r) { return r.key && *r.key == removed; });
 					if (resolved.size() == before)
-						throw YamlException(n.location.name + ":" + std::to_string(n.location.line)
-							+ ": There are no elements with key `" + removed + "` to remove");
+						return std::unexpected(yamlError(n.location.name + ":" + std::to_string(n.location.line)
+							+ ": There are no elements with key `" + removed + "` to remove"));
 					std::erase(resolvedKeys, removed);
 				}
 				else if (n.key)
-					mergeIntoResolved(n, resolved, resolvedKeys, tree, inherited);
+				{
+					auto merged = mergeIntoResolved(n, resolved, resolvedKeys, tree, inherited);
+					if (!merged.has_value())
+						return std::unexpected(std::move(merged).error());
+				}
 			}
 
 			return resolved;
 		}
 	}
 
-	std::vector<MiniYamlNode> miniYamlMerge(const std::vector<std::vector<MiniYamlNode>>& sources)
+	std::expected<std::vector<MiniYamlNode>, YamlError> miniYamlMerge(const std::vector<std::vector<MiniYamlNode>>& sources)
 	{
 		if (sources.empty())
-			return {};
+			return std::vector<MiniYamlNode>{};
 
 		// 各源自合并后逐个归并 / self-merge each source, then fold them together
 		std::optional<std::vector<MiniYamlNode>> accumulated;
@@ -575,7 +596,7 @@ namespace OpenRA
 
 		for (const auto& n : *accumulated)
 			if (n.key && !tree.emplace(*n.key, n.value).second)
-				throw YamlException("Duplicate top-level key `" + *n.key + "` in merge");
+				return std::unexpected(yamlError("Duplicate top-level key `" + *n.key + "` in merge"));
 
 		std::map<std::string, const MiniYaml*> treeView;
 		for (const auto& [k, v] : tree)
@@ -587,7 +608,10 @@ namespace OpenRA
 			// 继承沿父→子追踪，不沿子→父的兄弟扩散
 			// Inheritance is tracked parent->child, not child->parentsiblings
 			std::map<std::string, YamlSourceLocation> inherited{ { k, {} } };
-			resolved.emplace(k, MiniYamlDetail::resolveInherits(*v, treeView, inherited));
+			auto children = MiniYamlDetail::resolveInherits(*v, treeView, inherited);
+			if (!children.has_value())
+				return std::unexpected(std::move(children).error());
+			resolved.emplace(k, std::move(*children));
 		}
 
 		// 解析顶层删除（如整块 actor 移除）/ resolve top-level removals (e.g. whole actor blocks)

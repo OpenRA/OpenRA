@@ -1,4 +1,3 @@
-
 // MiniYaml —— OpenRA 的 YAML 子集解析/合并引擎（C++23 移植版）
 // MiniYaml - OpenRA's YAML-subset parsing/merging engine (C++23 port)
 //
@@ -12,12 +11,16 @@
 // 与 C# 版的差异（有意为之）/ Differences from the C# version (intentional):
 //   - Key/Value/Comment 用 std::optional 表达 C# 的 null 语义
 //     Key/Value/Comment use std::optional to express C#'s null semantics
-//   - 解析结果直接返回 vector（C# 为 yield 流式）/ parsing returns a vector directly (C# yields lazily)
+//   - 严禁异常：C# 版抛 YamlException 的路径一律返回 std::expected<T, YamlError>
+//     No exceptions allowed: every path that throws YamlException in C# returns
+//     std::expected<T, YamlError> instead (enforced by -fno-exceptions in the build)
+//   - 解析结果直接返回 vector（C# 为 yield 流式）/ parsing returns a vector directly
 //   - MergePartial 的重复键告警日志暂未移植（不影响结果数据）
 //     MergePartial's duplicate-key warning log is not ported yet (does not affect results)
 
 #pragma once
 
+#include <expected>
 #include <map>
 #include <memory>
 #include <optional>
@@ -29,12 +32,18 @@
 
 namespace OpenRA
 {
-	// 解析失败异常 / parse failure exception
-	struct YamlException : std::runtime_error
+	// 统一错误载荷：消息文本（含源位置信息时由构造方拼入）
+	// Unified error payload: a message (source location included by the constructor when known)
+	struct YamlError
 	{
-		explicit YamlException(const std::string& s)
-			: std::runtime_error(s) { }
+		std::string message;
 	};
+
+	// 便捷构造 / convenience constructor
+	inline YamlError yamlError(std::string message)
+	{
+		return { std::move(message) };
+	}
 
 	// 源位置（文件名:行号）/ source location (filename:line)
 	struct YamlSourceLocation
@@ -76,12 +85,17 @@ namespace OpenRA
 		MiniYaml(std::optional<std::string> v, std::vector<MiniYamlNode> n)
 			: value(std::move(v)), nodes(std::move(n)) { }
 
-		// 取首个匹配 key 的子节点 / first child node matching the key
-		const MiniYamlNode* nodeWithKeyOrDefault(std::string_view key) const;
-		const MiniYamlNode& nodeWithKey(std::string_view key) const;
+		// 取首个匹配 key 的子节点；重复键返回错误（保持 C# 的数据错误可见性）
+		// First child matching the key; duplicate keys surface as errors
+		// (preserving C#'s data-error visibility without exceptions)
+		std::expected<const MiniYamlNode*, YamlError> nodeWithKeyOrDefault(std::string_view key) const;
 
-		// 子节点转字典（重复键抛异常）/ children to a map (duplicate keys throw)
-		std::map<std::string, const MiniYaml*> toDictionary() const;
+		// 快速版：首个匹配，重复键不检测（调用方自行保证时使用）
+		// Fast variant: first match, no duplicate detection (when the caller guarantees uniqueness)
+		const MiniYamlNode* nodeWithKeyOrNull(std::string_view key) const;
+
+		// 子节点转字典（重复键返回错误）/ children to a map (duplicate keys surface as errors)
+		std::expected<std::map<std::string, const MiniYaml*>, YamlError> toDictionary() const;
 	};
 
 	// ============================== 解析 / Parsing ==============================
@@ -90,16 +104,17 @@ namespace OpenRA
 	// string pool: deduplicates repeated strings across parses; pass nullptr to disable
 	using StringPool = std::unordered_set<std::string>;
 
-	std::vector<MiniYamlNode> miniYamlFromString(std::string_view text, std::string_view name,
-		bool discardCommentsAndWhitespace = true, StringPool* pool = nullptr);
-	std::vector<MiniYamlNode> miniYamlFromFile(const std::string& path,
+	std::expected<std::vector<MiniYamlNode>, YamlError> miniYamlFromString(std::string_view text,
+		std::string_view name, bool discardCommentsAndWhitespace = true, StringPool* pool = nullptr);
+	std::expected<std::vector<MiniYamlNode>, YamlError> miniYamlFromFile(const std::string& path,
 		bool discardCommentsAndWhitespace = true, StringPool* pool = nullptr);
 
 	// ============================== 合并 / Merging ==============================
 
 	// 合并多个来源并解析 Inherits 继承与 '-Key' 删除
 	// Merges sources, resolving Inherits inheritance and '-Key' removals
-	std::vector<MiniYamlNode> miniYamlMerge(const std::vector<std::vector<MiniYamlNode>>& sources);
+	std::expected<std::vector<MiniYamlNode>, YamlError> miniYamlMerge(
+		const std::vector<std::vector<MiniYamlNode>>& sources);
 
 	// ============================== 序列化 / Serialization ==============================
 
@@ -112,21 +127,21 @@ namespace OpenRA
 
 	namespace MiniYamlDetail
 	{
-		// 同层重复键去重合并（不解析继承/删除）
-		// Deduplicate-merge duplicate keys within one level (no inheritance/removal resolution)
+		// 同层重复键去重合并（不解析继承/删除；无错误路径）
+		// Deduplicate-merge duplicate keys within one level (no inheritance/removal; infallible)
 		std::vector<MiniYamlNode> mergeSelfPartial(const std::vector<MiniYamlNode>& existingNodes);
 
-		// 弱删除：'-Key' 移除前面出现的同名节点；无可删项时不报错
-		// Weak removal: '-Key' drops earlier same-key nodes; missing targets are ignored
+		// 弱删除：'-Key' 移除前面出现的同名节点；无可删项时不报错（无错误路径）
+		// Weak removal: '-Key' drops earlier same-key nodes; infallible by design
 		std::vector<MiniYamlNode> weakResolveRemovals(const std::vector<MiniYamlNode>& nodes);
 
-		// 节点级合并：override 覆盖 existing / node-level merge: override wins over existing
+		// 节点级合并：override 覆盖 existing（无错误路径）/ infallible node-level merge
 		MiniYaml mergePartial(const MiniYaml* existingNodes, const MiniYaml* overrideNodes);
 		std::vector<MiniYamlNode> mergePartial(const std::vector<MiniYamlNode>& existingNodes,
 			const std::vector<MiniYamlNode>& overrideNodes);
 
 		// 递归解析 Inherits / recursively resolve Inherits
-		std::vector<MiniYamlNode> resolveInherits(const MiniYaml& node,
+		std::expected<std::vector<MiniYamlNode>, YamlError> resolveInherits(const MiniYaml& node,
 			const std::map<std::string, const MiniYaml*>& tree,
 			std::map<std::string, YamlSourceLocation> inherited);
 	}

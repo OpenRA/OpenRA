@@ -32,7 +32,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_compile_options(-Wall -Wextra -Wpedantic)
+# 错误处理策略：严禁异常 —— 全部错误经 std::expected<T, YamlError> 传播
+# Error-handling policy: exceptions are forbidden - all errors propagate via std::expected
+add_compile_options(-Wall -Wextra -Wpedantic -fno-exceptions)
 
 add_library(openra_yaml
     src/MiniYaml.cpp

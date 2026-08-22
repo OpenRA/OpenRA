@@ -29,6 +29,42 @@ cmake --build build
 Windows 下可直接运行 `build.cmd [test]`。
 On Windows just run `build.cmd [test]`.
 
+## 编码规范：严禁异常 / Coding Rule: No Exceptions
+
+**C++23 移植全程严禁使用异常抛出。**
+**Exception throwing is strictly forbidden across the C++23 port.**
+
+该规则由构建系统强制执行：所有目标统一编译于 `-fno-exceptions`（见 `CMakeLists.txt`），
+任何残留的 `throw` 会直接导致编译失败。
+The rule is enforced by the build: every target compiles with `-fno-exceptions` (see
+`CMakeLists.txt`), so any leftover `throw` fails the build outright.
+
+错误处理统一约定：
+The unified error-handling convention:
+
+- **可失败路径**返回 `std::expected<T, OpenRA::YamlError>`（C++23），错误沿调用链显式传播；
+  对应 C# 侧抛 `YamlException` / `FieldLoadException` 的每一个路径。
+  **Fallible paths** return `std::expected<T, OpenRA::YamlError>` (C++23) and errors propagate
+  explicitly up the call chain, covering every path that throws `YamlException` /
+  `FieldLoadException` on the C# side.
+- **不可失败路径**（纯合并/查询等）保持普通返回值，不裹 expected。
+  **Infallible paths** (pure merging/queries) keep plain return types, unwrapped.
+- 快速查询可用可空指针变体（如 `nodeWithKeyOrNull`）。
+  Fast queries may use nullable-pointer variants (e.g. `nodeWithKeyOrNull`).
+
+```cpp
+// 示例：错误显式向上传播 / example: errors propagate explicitly
+auto nodes = OpenRA::miniYamlFromString(text, "rules");
+if (!nodes.has_value())
+    return std::unexpected(std::move(nodes).error());  // 而非 throw / instead of throwing
+```
+
+选择无异常的原因：确定性控制流便于引擎级审计、消除栈展开的代码体积与运行时开销、
+与游戏主循环的错误恢复策略（降级/日志/跳过）自然衔接。
+Rationale: deterministic control flow is easier to audit at engine level, stack unwinding's
+code-size and runtime cost disappears, and it fits the game loop's recovery strategy
+(degrade/log/skip) naturally.
+
 ## 移植进度总览 / Port Status Overview
 
 模块规模按 C# 侧文件数/行数标注，作为工作量参考。
