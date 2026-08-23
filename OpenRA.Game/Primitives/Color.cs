@@ -11,6 +11,7 @@
 
 using System;
 using System.Globalization;
+using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Scripting;
 
@@ -65,6 +66,10 @@ namespace OpenRA.Primitives
 		{
 			return argb;
 		}
+
+		public Vector4 ToVector4() => new Vector4(R, G, B, A) * (1f / 255f);
+
+		public Vector3 ToVector3() => new Vector3(R, G, B) * (1f / 255f);
 
 		public static Color FromArgb(int alpha, Color baseColor)
 		{

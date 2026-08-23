@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 			var screenContrast = (int)(contrastOffset * deviceScale);
 			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 			var contrastVector = new Vector2(screenContrast, screenContrast);
-			var tint = new Vector3(contrastColor.R / 255f, contrastColor.G / 255f, contrastColor.B / 255f);
+			var tint = contrastColor.ToVector3();
 			foreach (var s in text)
 			{
 				if (s == '\n')
@@ -101,7 +101,7 @@ namespace OpenRA.Graphics
 
 			// Calculate positions in screen pixel coordinates
 			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
-			var tint = new Vector3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var tint = c.ToVector3();
 			foreach (var s in text)
 			{
 				if (s == '\n')
@@ -129,7 +129,7 @@ namespace OpenRA.Graphics
 			// Offset from the baseline position to the top-left of the glyph for rendering
 			// All positions are calculated in UI coordinates
 			var offset = new Vector2(0, size);
-			var tint = new Vector3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var tint = c.ToVector3();
 			var transform = Matrix3x2.CreateRotation(-angle) * Matrix3x2.CreateTranslation(location);
 
 			var p = offset;

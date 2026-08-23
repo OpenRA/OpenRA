@@ -34,8 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 		public WithColoredOverlay(WithColoredOverlayInfo info)
 			: base(info)
 		{
-			tint = new Vector3(info.Color.R, info.Color.G, info.Color.B) / 255f;
-			alpha = info.Color.A / 255f;
+			var color = info.Color.ToVector4();
+			tint = color.AsVector3();
+			alpha = color.W;
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

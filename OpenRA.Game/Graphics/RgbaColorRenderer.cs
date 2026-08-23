@@ -35,22 +35,13 @@ namespace OpenRA.Graphics
 			var delta = direction / direction.AsVector2().Length();
 			var corner = width / 2 * new Vector3(-delta.Y, delta.X, delta.Z);
 
-			startColor = Util.PremultiplyAlpha(startColor);
-			var sr = startColor.R / 255.0f;
-			var sg = startColor.G / 255.0f;
-			var sb = startColor.B / 255.0f;
-			var sa = startColor.A / 255.0f;
+			var sc = Util.PremultiplyAlpha(startColor).ToVector4();
+			var ec = Util.PremultiplyAlpha(endColor).ToVector4();
 
-			endColor = Util.PremultiplyAlpha(endColor);
-			var er = endColor.R / 255.0f;
-			var eg = endColor.G / 255.0f;
-			var eb = endColor.B / 255.0f;
-			var ea = endColor.A / 255.0f;
-
-			vertices[0] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0);
-			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0);
-			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0);
-			vertices[3] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0);
+			vertices[0] = new Vertex(start - corner + Offset, sc.X, sc.Y, sc.Z, sc.W, 0);
+			vertices[1] = new Vertex(start + corner + Offset, sc.X, sc.Y, sc.Z, sc.W, 0);
+			vertices[2] = new Vertex(end + corner + Offset, ec.X, ec.Y, ec.Z, ec.W, 0);
+			vertices[3] = new Vertex(end - corner + Offset, ec.X, ec.Y, ec.Z, ec.W, 0);
 
 			parent.DrawRGBAQuad(vertices, blendMode);
 		}
@@ -66,16 +57,12 @@ namespace OpenRA.Graphics
 			var delta = direction / direction.AsVector2().Length();
 			var corner = width / 2 * new Vector3(-delta.Y, delta.X, 0);
 
-			color = Util.PremultiplyAlpha(color);
-			var r = color.R / 255.0f;
-			var g = color.G / 255.0f;
-			var b = color.B / 255.0f;
-			var a = color.A / 255.0f;
+			var c = Util.PremultiplyAlpha(color).ToVector4();
 
-			vertices[0] = new Vertex(start - corner + Offset, r, g, b, a, 0);
-			vertices[1] = new Vertex(start + corner + Offset, r, g, b, a, 0);
-			vertices[2] = new Vertex(end + corner + Offset, r, g, b, a, 0);
-			vertices[3] = new Vertex(end - corner + Offset, r, g, b, a, 0);
+			vertices[0] = new Vertex(start - corner + Offset, c.X, c.Y, c.Z, c.W, 0);
+			vertices[1] = new Vertex(start + corner + Offset, c.X, c.Y, c.Z, c.W, 0);
+			vertices[2] = new Vertex(end + corner + Offset, c.X, c.Y, c.Z, c.W, 0);
+			vertices[3] = new Vertex(end - corner + Offset, c.X, c.Y, c.Z, c.W, 0);
 			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
@@ -136,11 +123,7 @@ namespace OpenRA.Graphics
 				return;
 			}
 
-			color = Util.PremultiplyAlpha(color);
-			var r = color.R / 255.0f;
-			var g = color.G / 255.0f;
-			var b = color.B / 255.0f;
-			var a = color.A / 255.0f;
+			var c = Util.PremultiplyAlpha(color).ToVector4();
 
 			var start = points[0];
 			var end = points[1];
@@ -176,10 +159,10 @@ namespace OpenRA.Graphics
 				var cd = closed || i < limit - 1 ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
 
 				// Fill segment
-				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0);
-				vertices[1] = new Vertex(cb + Offset, r, g, b, a, 0);
-				vertices[2] = new Vertex(cc + Offset, r, g, b, a, 0);
-				vertices[3] = new Vertex(cd + Offset, r, g, b, a, 0);
+				vertices[0] = new Vertex(ca + Offset, c.X, c.Y, c.Z, c.W, 0);
+				vertices[1] = new Vertex(cb + Offset, c.X, c.Y, c.Z, c.W, 0);
+				vertices[2] = new Vertex(cc + Offset, c.X, c.Y, c.Z, c.W, 0);
+				vertices[3] = new Vertex(cd + Offset, c.X, c.Y, c.Z, c.W, 0);
 				parent.DrawRGBAQuad(vertices, blendMode);
 
 				// Advance line segment
@@ -226,16 +209,12 @@ namespace OpenRA.Graphics
 
 		public void FillRect(in Vector3 a, in Vector3 b, in Vector3 c, in Vector3 d, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
-			color = Util.PremultiplyAlpha(color);
-			var cr = color.R / 255.0f;
-			var cg = color.G / 255.0f;
-			var cb = color.B / 255.0f;
-			var ca = color.A / 255.0f;
+			var cv = Util.PremultiplyAlpha(color).ToVector4();
 
-			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0);
-			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0);
-			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0);
-			vertices[3] = new Vertex(d + Offset, cr, cg, cb, ca, 0);
+			vertices[0] = new Vertex(a + Offset, cv.X, cv.Y, cv.Z, cv.W, 0);
+			vertices[1] = new Vertex(b + Offset, cv.X, cv.Y, cv.Z, cv.W, 0);
+			vertices[2] = new Vertex(c + Offset, cv.X, cv.Y, cv.Z, cv.W, 0);
+			vertices[3] = new Vertex(d + Offset, cv.X, cv.Y, cv.Z, cv.W, 0);
 			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
@@ -252,13 +231,8 @@ namespace OpenRA.Graphics
 
 		static Vertex VertexWithColor(in Vector3 xyz, Color color)
 		{
-			color = Util.PremultiplyAlpha(color);
-			var cr = color.R / 255.0f;
-			var cg = color.G / 255.0f;
-			var cb = color.B / 255.0f;
-			var ca = color.A / 255.0f;
-
-			return new Vertex(xyz, cr, cg, cb, ca, 0);
+			var c = Util.PremultiplyAlpha(color).ToVector4();
+			return new Vertex(xyz, c.X, c.Y, c.Z, c.W, 0);
 		}
 
 		public void FillEllipse(in Vector3 tl, in Vector3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
