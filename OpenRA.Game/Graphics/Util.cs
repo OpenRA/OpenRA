@@ -26,9 +26,18 @@ namespace OpenRA.Graphics
 		public static uint[] CreateQuadIndices(int quads)
 		{
 			var indices = new uint[quads * 6];
-			ReadOnlySpan<uint> cornerVertexMap = [0, 1, 2, 2, 3, 0];
-			for (var i = 0; i < indices.Length; i++)
-				indices[i] = cornerVertexMap[i % 6] + (uint)(4 * (i / 6));
+			uint vertexOffset = 0;
+
+			for (var i = 0; i < indices.Length; i += 6)
+			{
+				indices[i] = vertexOffset;
+				indices[i + 1] = vertexOffset + 1;
+				indices[i + 2] = vertexOffset + 2;
+				indices[i + 3] = vertexOffset + 2;
+				indices[i + 4] = vertexOffset + 3;
+				indices[i + 5] = vertexOffset;
+				vertexOffset += 4;
+			}
 
 			return indices;
 		}
