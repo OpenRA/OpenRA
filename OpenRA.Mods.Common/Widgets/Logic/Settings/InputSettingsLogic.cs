@@ -66,6 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gameSettings, "LockMouseWindow");
 			SettingsUtils.BindSliderPref(panel, "ZOOMSPEED_SLIDER", gameSettings, "ZoomSpeed");
 			SettingsUtils.BindSliderPref(panel, "SCROLLSPEED_SLIDER", gameSettings, "ViewportEdgeScrollStep");
+			SettingsUtils.BindSliderPref(panel, "MOUSE_PAN_SPEED_SLIDER", gameSettings, "ViewportMousePanSpeed");
 			SettingsUtils.BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gameSettings, "UIScrollSpeed");
 
 			var mouseControlDropdown = panel.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
@@ -154,6 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gameSettings.ZoomModifier = defaultGameSettings.ZoomModifier;
 
 				panel.Get<SliderWidget>("SCROLLSPEED_SLIDER").Value = gameSettings.ViewportEdgeScrollStep;
+				panel.Get<SliderWidget>("MOUSE_PAN_SPEED_SLIDER").Value = gameSettings.ViewportMousePanSpeed;
 				panel.Get<SliderWidget>("UI_SCROLLSPEED_SLIDER").Value = gameSettings.UIScrollSpeed;
 
 				MakeMouseFocusSettingsLive(gameSettings);
