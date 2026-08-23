@@ -9,17 +9,15 @@
  */
 #endregion
 
-using System;
-
 namespace OpenRA.Network
 {
 	public sealed class TickTime
 	{
-		readonly Func<int> timestep;
+		public int Timestep;
 
-		public TickTime(Func<int> timestep, long lastTickTime)
+		public TickTime(int timestep, long lastTickTime)
 		{
-			this.timestep = timestep;
+			Timestep = timestep;
 			Value = lastTickTime;
 		}
 
@@ -27,25 +25,21 @@ namespace OpenRA.Network
 
 		public bool ShouldAdvance(long tick)
 		{
-			var i = timestep();
-
-			if (i == 0)
+			if (Timestep == 0)
 				return false;
 
 			var tickDelta = tick - Value;
-			return tickDelta >= i;
+			return tickDelta >= Timestep;
 		}
 
 		public void AdvanceTickTime(long tick)
 		{
 			var tickDelta = tick - Value;
 
-			var currentTimestep = timestep();
-
-			var integralTickTimestep = tickDelta / currentTimestep * currentTimestep;
+			var integralTickTimestep = tickDelta / Timestep * Timestep;
 			Value += integralTickTimestep >= Game.TimestepJankThreshold
 				? integralTickTimestep
-				: currentTimestep;
+				: Timestep;
 		}
 	}
 }
