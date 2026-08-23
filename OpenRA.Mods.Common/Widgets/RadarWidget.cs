@@ -50,6 +50,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
 		readonly GameSettings gameSettings;
 
+		readonly List<(CPos Cell, Color Color)> signatureCellsBuffer = new(64);
+
 		float radarMinimapHeight;
 		int frame;
 		bool hasRadar;
@@ -415,9 +417,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// The actor layer is updated every tick
 				var stride = radarSheet.Size.Width;
-				Array.Clear(radarData, 4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride);
-
-				var cells = new List<(CPos Cell, Color Color)>();
+				radarData.AsSpan(4 * actorSprite.Bounds.Top * stride, 4 * actorSprite.Bounds.Height * stride).Clear();
 
 				unsafe
 				{
@@ -430,27 +430,32 @@ namespace OpenRA.Mods.Common.Widgets
 							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
 								continue;
 
-							cells.Clear();
-							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
-							foreach (var cell in cells)
+							signatureCellsBuffer.Clear();
+							t.Trait.PopulateRadarSignatureCells(t.Actor, signatureCellsBuffer);
+
+							foreach (var cell in signatureCellsBuffer)
 							{
 								if (!world.Map.Contains(cell.Cell))
 									continue;
 
 								var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
 								var color = cell.Color.ToArgb();
+
+								var rowOffset = (uv.V + previewHeight) * stride;
 								if (isRectangularIsometric)
 								{
 									// Odd rows are shifted right by 1px
 									var dx = uv.V & 1;
-									if (uv.U + dx > 0)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = color;
+									var u2 = 2 * uv.U;
 
-									if (2 * uv.U + dx < stride)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = color;
+									if (uv.U + dx > 0)
+										colors[rowOffset + u2 + dx - 1] = color;
+
+									if (u2 + dx < stride)
+										colors[rowOffset + u2 + dx] = color;
 								}
 								else
-									colors[(uv.V + previewHeight) * stride + uv.U] = color;
+									colors[rowOffset + uv.U] = color;
 							}
 						}
 					}
@@ -463,9 +468,10 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			frame += enabled ? 1 : -1;
-			radarMinimapHeight = OpenRA.Graphics.Util.Lerp(0, 1, (float)frame / AnimationLength);
 
-			Animating(frame * 1f / AnimationLength);
+			var animationProgress = (float)frame / AnimationLength;
+			radarMinimapHeight = animationProgress;
+			Animating(animationProgress);
 
 			// Update map rectangle for event handling
 			var ro = RenderOrigin;
