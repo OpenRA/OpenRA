@@ -45,41 +45,21 @@ namespace OpenRA.Graphics
 		public static void FastCreateQuad(Vertex[] vertices, in Vector3 o, Sprite r, int2 samplers, int paletteTextureIndex, int nv,
 			in Vector3 size, in Vector3 tint, float alpha, float rotation = 0f)
 		{
-			Vector3 a, b, c, d;
-
 			// Rotate sprite if rotation angle is not equal to 0
 			if (rotation != 0f)
 			{
-				var center = o + 0.5f * size;
-				var angleSin = (float)Math.Sin(-rotation);
-				var angleCos = (float)Math.Cos(-rotation);
-
-				// Rotated offset for +/- x with +/- y
-				var ra = 0.5f * new Vector3(
-					size.X * angleCos - size.Y * angleSin,
-					size.X * angleSin + size.Y * angleCos,
-					(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
-
-				// Rotated offset for +/- x with -/+ y
-				var rb = 0.5f * new Vector3(
-					size.X * angleCos + size.Y * angleSin,
-					size.X * angleSin - size.Y * angleCos,
-					(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
-
-				a = center - ra;
-				b = center + rb;
-				c = center + ra;
-				d = center - rb;
+				Span<Vector3> rot = stackalloc Vector3[4];
+				RotateQuadInto(rot, o, size, rotation);
+				FastCreateQuad(vertices, rot[0], rot[1], rot[2], rot[3], r, samplers, paletteTextureIndex, tint, alpha, nv);
 			}
 			else
 			{
-				a = o;
-				b = new Vector3(o.X + size.X, o.Y, o.Z);
-				c = new Vector3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
-				d = new Vector3(o.X, o.Y + size.Y, o.Z + size.Z);
-			}
+				var b = new Vector3(o.X + size.X, o.Y, o.Z);
+				var c = new Vector3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
+				var d = new Vector3(o.X, o.Y + size.Y, o.Z + size.Z);
 
-			FastCreateQuad(vertices, a, b, c, d, r, samplers, paletteTextureIndex, tint, alpha, nv);
+				FastCreateQuad(vertices, o, b, c, d, r, samplers, paletteTextureIndex, tint, alpha, nv);
+			}
 		}
 
 		public static void FastCreateQuad(Vertex[] vertices,
