@@ -43,8 +43,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(info)
 		{
 			this.info = info;
-			shadowColor = new Vector3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
-			shadowAlpha = info.ShadowColor.A / 255f;
+
+			var sColor = info.ShadowColor.ToVector4();
+			shadowColor = sColor.AsVector3();
+			shadowAlpha = sColor.W;
 		}
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

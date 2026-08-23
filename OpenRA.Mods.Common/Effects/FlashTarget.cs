@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Effects
 			: this(target, count, interval, delay)
 		{
 			modifiers = TintModifiers.ReplaceColor;
-			tint = new Vector3(color.R, color.G, color.B) / 255f;
+			tint = color.ToVector3();
 			this.alpha = alpha;
 		}
 

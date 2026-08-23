@@ -61,7 +61,8 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void PrepareRender(WorldRenderer wr, IShader shader)
 		{
 			shader.SetVec("Blend", blend);
-			shader.SetVec("Color", (float)Info.Color.R / 255, (float)Info.Color.G / 255, (float)Info.Color.B / 255);
+			var color = Info.Color.ToVector3();
+			shader.SetVec("Color", color.X, color.Y, color.Z);
 		}
 	}
 }

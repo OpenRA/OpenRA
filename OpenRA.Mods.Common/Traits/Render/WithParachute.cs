@@ -137,8 +137,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 
-			shadowColor = new Vector3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
-			shadowAlpha = info.ShadowColor.A / 255f;
+			var sColor = info.ShadowColor.ToVector4();
+			shadowColor = sColor.AsVector3();
+			shadowAlpha = sColor.W;
 		}
 
 		protected override void TraitEnabled(Actor self)

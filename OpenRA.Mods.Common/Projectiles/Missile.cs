@@ -307,8 +307,9 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.TrailUsePlayerPalette)
 				trailPalette += args.SourceActor.Owner.InternalName;
 
-			shadowColor = new Vector3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
-			shadowAlpha = info.ShadowColor.A / 255f;
+			var sColor = info.ShadowColor.ToVector4();
+			shadowColor = sColor.AsVector3();
+			shadowAlpha = sColor.W;
 		}
 
 		static int LoopRadius(int speed, int rot)

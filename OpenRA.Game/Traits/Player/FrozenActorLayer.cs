@@ -201,7 +201,7 @@ namespace OpenRA.Traits
 		{
 			flashTicks = 5;
 			flashModifiers = TintModifiers.ReplaceColor;
-			flashTint = new Vector3(color.R, color.G, color.B) / 255f;
+			flashTint = color.ToVector3();
 			flashAlpha = alpha;
 		}
 
