@@ -84,14 +84,15 @@ namespace OpenRA.Graphics
 		/// Will behave badly if the lines are parallel.
 		/// Z position is the average of a and b (ignores actual intersection point if it exists).
 		/// </summary>
-		static Vector3 IntersectionOf(in Vector3 a, in Vector3 da, in Vector3 b, in Vector3 db)
+		static Vector3 IntersectionOf(in Vector3 a, in Vector2 da, in Vector3 b, in Vector2 db)
 		{
-			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
-			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);
-			var x = da.X * crossB - db.X * crossA;
-			var y = da.Y * crossB - db.Y * crossA;
-			var d = da.X * db.Y - da.Y * db.X;
-			return new Vector3(x / d, y / d, 0.5f * (a.Z + b.Z));
+			var crossA = Vector2.Cross(a.AsVector2(), da);
+			var crossB = Vector2.Cross(b.AsVector2(), db);
+
+			var num = da * crossB - db * crossA;
+			var invD = 1f / Vector2.Cross(da, db);
+
+			return new Vector3(num * invD, (a.Z + b.Z) * 0.5f);
 		}
 
 		void DrawDisconnectedLine(IEnumerable<Vector3> points, float width, Color color, BlendMode blendMode)
@@ -147,6 +148,7 @@ namespace OpenRA.Graphics
 			var delta = end - start;
 			var dir = delta / delta.AsVector2().Length();
 			var corner = width / 2 * new Vector3(-dir.Y, dir.X, dir.Z);
+			var dir2 = dir.AsVector2();
 
 			// Corners for start of line segment
 			var ca = start - corner;
@@ -158,9 +160,10 @@ namespace OpenRA.Graphics
 				var prev = points[^1];
 				var prevDelta = start - prev;
 				var prevDir = prevDelta / prevDelta.AsVector2().Length();
+				var prevDir2 = prevDir.AsVector2();
 				var prevCorner = width / 2 * new Vector3(-prevDir.Y, prevDir.X, prevDir.Z);
-				ca = IntersectionOf(start - prevCorner, prevDir, start - corner, dir);
-				cb = IntersectionOf(start + prevCorner, prevDir, start + corner, dir);
+				ca = IntersectionOf(start - prevCorner, prevDir2, start - corner, dir2);
+				cb = IntersectionOf(start + prevCorner, prevDir2, start + corner, dir2);
 			}
 
 			var limit = closed ? points.Length : points.Length - 1;
@@ -169,11 +172,12 @@ namespace OpenRA.Graphics
 				var next = points[(i + 2) % points.Length];
 				var nextDelta = next - end;
 				var nextDir = nextDelta / nextDelta.AsVector2().Length();
+				var nextDir2 = nextDir.AsVector2();
 				var nextCorner = width / 2 * new Vector3(-nextDir.Y, nextDir.X, nextDir.Z);
 
 				// Vertices for the corners joining start-end to end-next
-				var cc = closed || i < limit - 1 ? IntersectionOf(end + corner, dir, end + nextCorner, nextDir) : end + corner;
-				var cd = closed || i < limit - 1 ? IntersectionOf(end - corner, dir, end - nextCorner, nextDir) : end - corner;
+				var cc = closed || i < limit - 1 ? IntersectionOf(end + corner, dir2, end + nextCorner, nextDir2) : end + corner;
+				var cd = closed || i < limit - 1 ? IntersectionOf(end - corner, dir2, end - nextCorner, nextDir2) : end - corner;
 
 				// Fill segment
 				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0);
@@ -184,7 +188,7 @@ namespace OpenRA.Graphics
 
 				// Advance line segment
 				end = next;
-				dir = nextDir;
+				dir2 = nextDir2;
 				corner = nextCorner;
 
 				ca = cd;
