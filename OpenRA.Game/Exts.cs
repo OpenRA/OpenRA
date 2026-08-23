@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -268,18 +269,12 @@ namespace OpenRA
 
 		public static int NextPowerOf2(int v)
 		{
-			--v;
-			v |= v >> 1;
-			v |= v >> 2;
-			v |= v >> 4;
-			v |= v >> 8;
-			++v;
-			return v;
+			return (int)BitOperations.RoundUpToPowerOf2((uint)v);
 		}
 
 		public static bool IsPowerOf2(int v)
 		{
-			return (v & (v - 1)) == 0;
+			return BitOperations.IsPow2(v);
 		}
 
 		public static Size NextPowerOf2(this Size s) { return new Size(NextPowerOf2(s.Width), NextPowerOf2(s.Height)); }
