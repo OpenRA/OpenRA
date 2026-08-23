@@ -263,53 +263,33 @@ namespace OpenRA.Graphics
 		/// <returns>An array of four vertices representing the rotated quad (top-left, top-right, bottom-right, bottom-left).</returns>
 		public static Vector3[] RotateQuad(Vector3 tl, Vector3 size, float rotation)
 		{
-			var center = tl + 0.5f * size;
-			var angleSin = (float)Math.Sin(-rotation);
-			var angleCos = (float)Math.Cos(-rotation);
-
-			// Rotated offset for +/- x with +/- y
-			var ra = 0.5f * new Vector3(
-				size.X * angleCos - size.Y * angleSin,
-				size.X * angleSin + size.Y * angleCos,
-				(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
-
-			// Rotated offset for +/- x with -/+ y
-			var rb = 0.5f * new Vector3(
-				size.X * angleCos + size.Y * angleSin,
-				size.X * angleSin - size.Y * angleCos,
-				(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
-
-			return
-			[
-				center - ra,
-				center + rb,
-				center + ra,
-				center - rb
-			];
+			var des = new Vector3[4];
+			RotateQuadInto(des, tl, size, rotation);
+			return des;
 		}
 
 		/// <summary>Rotates a quad about its center in the x-y plane.</summary>
-		/// <param name="des">Destination array of four verties representing the rotated quad (top-left, top-right, bottom-right, bottom-left).</param>
+		/// <param name="des">Destination array of four vertices representing the rotated quad (top-left, top-right, bottom-right, bottom-left).</param>
 		/// <param name="tl">The top left vertex of the quad.</param>
 		/// <param name="size">A Vector3 containing the X, Y, and Z lengths of the quad.</param>
 		/// <param name="rotation">The number of radians to rotate by.</param>
 		public static void RotateQuadInto(Span<Vector3> des, Vector3 tl, Vector3 size, float rotation)
 		{
 			var center = tl + 0.5f * size;
-			var angleSin = (float)Math.Sin(-rotation);
-			var angleCos = (float)Math.Cos(-rotation);
+			var rotMatrix = Matrix3x2.CreateRotation(-rotation);
+
+			var halfX = size.X * 0.5f;
+			var halfY = size.Y * 0.5f;
+			var zScale = size.Z / size.Y;
+
+			var ra2D = Vector2.Transform(new Vector2(halfX, halfY), rotMatrix);
+			var rb2D = Vector2.Transform(new Vector2(halfX, -halfY), rotMatrix);
 
 			// Rotated offset for +/- x with +/- y
-			var ra = 0.5f * new Vector3(
-				size.X * angleCos - size.Y * angleSin,
-				size.X * angleSin + size.Y * angleCos,
-				(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
+			var ra = new Vector3(ra2D, ra2D.Y * zScale);
 
 			// Rotated offset for +/- x with -/+ y
-			var rb = 0.5f * new Vector3(
-				size.X * angleCos + size.Y * angleSin,
-				size.X * angleSin - size.Y * angleCos,
-				(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
+			var rb = new Vector3(rb2D, rb2D.Y * zScale);
 
 			des[0] = center - ra;
 			des[1] = center + rb;
