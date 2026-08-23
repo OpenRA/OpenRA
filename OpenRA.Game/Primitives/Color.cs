@@ -217,7 +217,7 @@ namespace OpenRA.Primitives
 
 		public override int GetHashCode()
 		{
-			return (int)(argb ^ argb >> 32);
+			return (int)argb;
 		}
 
 		public override string ToString()
