@@ -211,24 +211,10 @@ namespace OpenRA
 			return result;
 		}
 
-		public static float Product(this IEnumerable<float> xs)
-		{
-			return xs.Aggregate(1f, (a, x) => a * x);
-		}
-
 		public static IEnumerable<T> SymmetricDifference<T>(this IEnumerable<T> xs, IEnumerable<T> ys)
 		{
 			// this is probably a shockingly-slow way to do this, but it's concise.
 			return xs.Except(ys).Concat(ys.Except(xs));
-		}
-
-		public static IEnumerable<T> Iterate<T>(this T t, Func<T, T> f)
-		{
-			while (true)
-			{
-				yield return t;
-				t = f(t);
-			}
 		}
 
 		public static T MinBy<T, U>(this IEnumerable<T> ts, Func<T, U> selector)
