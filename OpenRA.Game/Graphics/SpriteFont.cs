@@ -124,21 +124,13 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		static Vector2 Rotate(Vector2 v, float sina, float cosa, Vector2 offset)
-		{
-			return new Vector2(
-				v.X * cosa - v.Y * sina + offset.X,
-				v.X * sina + v.Y * cosa + offset.Y);
-		}
-
 		public void DrawText(string text, Vector2 location, Color c, float angle)
 		{
 			// Offset from the baseline position to the top-left of the glyph for rendering
 			// All positions are calculated in UI coordinates
 			var offset = new Vector2(0, size);
-			var cosa = (float)Math.Cos(-angle);
-			var sina = (float)Math.Sin(-angle);
 			var tint = new Vector3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var transform = Matrix3x2.CreateRotation(-angle) * Matrix3x2.CreateTranslation(location);
 
 			var p = offset;
 			foreach (var s in text)
@@ -160,10 +152,10 @@ namespace OpenRA.Graphics
 					var tr = new Vector2(br.X, tl.Y);
 					var bl = new Vector2(tl.X, br.Y);
 
-					var ra = Rotate(tl, sina, cosa, location);
-					var rb = Rotate(tr, sina, cosa, location);
-					var rc = Rotate(br, sina, cosa, location);
-					var rd = Rotate(bl, sina, cosa, location);
+					var ra = Vector2.Transform(tl, transform);
+					var rb = Vector2.Transform(tr, transform);
+					var rc = Vector2.Transform(br, transform);
+					var rd = Vector2.Transform(bl, transform);
 
 					// Offset rotated glyph to align the top-left corner with the screen pixel grid
 					var screenOffset = new Vector2((int)(ra.X * deviceScale + 0.5f), (int)(ra.Y * deviceScale + 0.5f)) / deviceScale - ra;
