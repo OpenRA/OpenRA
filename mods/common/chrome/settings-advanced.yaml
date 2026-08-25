@@ -80,6 +80,16 @@ Container@ADVANCED_PANEL:
 									Height: 20
 									Font: Regular
 									Text: checkbox-perftext-container
+						Container@ENABLE_DISCORD_SERVICE_CONTAINER:
+							X: 10
+							Y: 30
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@ENABLE_DISCORD_SERVICE:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-enable-discord-service-container
 						Container@SENDSYSINFO_CHECKBOX_CONTAINER:
 							X: PARENT_WIDTH / 2 + 10
 							Width: PARENT_WIDTH / 2 - 20
@@ -96,19 +106,6 @@ Container@ADVANCED_PANEL:
 									Font: Tiny
 									WordWrap: True
 									Text: label-sendsysinfo-checkbox-container-desc
-				Container@ROW:
-					Width: PARENT_WIDTH - 24
-					Height: 20
-					Children:
-						Container@ENABLE_DISCORD_SERVICE_CONTAINER:
-							X: 10
-							Width: PARENT_WIDTH / 2 - 20
-							Children:
-								Checkbox@ENABLE_DISCORD_SERVICE:
-									Width: PARENT_WIDTH
-									Height: 20
-									Font: Regular
-									Text: checkbox-enable-discord-service-container
 				Container@SPACER:
 				Background@DEBUG_SECTION_HEADER:
 					X: 5
