@@ -28,12 +28,17 @@ namespace OpenRA.Mods.Tcd.Traits
 		"Client-side only: nothing here reaches the simulation, so it cannot desync.")]
 	public sealed class FormationCaptureInfo : TraitInfo
 	{
-		public override object Create(ActorInitializer init) { return new FormationCapture(init.World); }
+		[Desc("Most corners a marked shape may have. Reaching the cap places the units",
+			"straight away, so the tool always has an end.")]
+		public readonly int MaxPoints = 12;
+
+		public override object Create(ActorInitializer init) { return new FormationCapture(init.World, this); }
 	}
 
 	public sealed class FormationCapture
 	{
 		readonly World world;
+		readonly FormationCaptureInfo info;
 		readonly List<WPos> points = [];
 
 		public FormationCaptureMode Mode { get; private set; }
@@ -42,10 +47,13 @@ namespace OpenRA.Mods.Tcd.Traits
 		// Marked points close into a shape; a drawn line stays open.
 		public bool Closed => Mode == FormationCaptureMode.Points && points.Count > 2;
 
-		public FormationCapture(World world)
+		public FormationCapture(World world, FormationCaptureInfo info)
 		{
 			this.world = world;
+			this.info = info;
 		}
+
+		public bool IsFull => points.Count >= info.MaxPoints;
 
 		public void Begin(FormationCaptureMode mode)
 		{

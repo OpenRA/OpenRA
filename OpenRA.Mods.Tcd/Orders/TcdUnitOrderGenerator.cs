@@ -52,7 +52,15 @@ namespace OpenRA.Mods.Tcd.Orders
 			// generator on Up - Down and Move never arrive here - so a click has to be
 			// recorded on release.
 			if (mi.Event == MouseInputEvent.Up)
+			{
 				state.AddPoint(world.Map.CenterOfCell(cell));
+
+				if (state.IsFull)
+				{
+					var placed = state.Commit();
+					TextNotificationsManager.Debug($"Shape formation: {placed} units.");
+				}
+			}
 
 			// Swallow the click so it never becomes a move order.
 			return [];

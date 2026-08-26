@@ -66,37 +66,56 @@ namespace OpenRA.Mods.Tcd.Widgets.Logic
 				};
 			}
 
+			var capture = world.WorldActor.TraitOrDefault<FormationCapture>();
+
+			// The two drawing tools are mutually exclusive: arming one puts the other away.
+			void Disarm()
+			{
+				capture?.Cancel();
+				if (world.OrderGenerator is LineFormationOrderGenerator)
+					world.CancelInputMode();
+			}
+
 			var draw = widget.GetOrNull<ButtonWidget>("FORMATION_LINE");
 			if (draw != null)
 			{
 				draw.IsDisabled = () => world.Selection.Actors.Count == 0;
 				draw.IsHighlighted = () => world.OrderGenerator is LineFormationOrderGenerator;
-				draw.OnClick = () => world.OrderGenerator = new LineFormationOrderGenerator(world);
+				draw.OnClick = () =>
+				{
+					if (world.OrderGenerator is LineFormationOrderGenerator)
+					{
+						world.CancelInputMode();
+						return;
+					}
+
+					Disarm();
+					world.OrderGenerator = new LineFormationOrderGenerator(world, oneShot: true);
+					TextNotificationsManager.Debug("Drag a line with the right mouse button.");
+				};
 			}
 
 			var mark = widget.GetOrNull<ButtonWidget>("FORMATION_SHAPE");
 			if (mark == null)
 				return;
 
-			var capture = world.WorldActor.TraitOrDefault<FormationCapture>();
 			mark.IsDisabled = () => capture == null || world.Selection.Actors.Count == 0;
 			mark.IsHighlighted = () => capture != null && capture.Mode != FormationCaptureMode.None;
 			mark.OnClick = () =>
 			{
-				// First click starts marking, second click closes the shape and places
-				// the units - the button stands in for pressing and releasing the key.
+				// First click arms it, second click closes the shape and places the units.
 				if (capture.Mode == FormationCaptureMode.None)
 				{
+					Disarm();
 					capture.Begin(FormationCaptureMode.Points);
-					TextNotificationsManager.Debug("Right click to mark the shape, then press the button again.");
+					TextNotificationsManager.Debug("Right click to mark corners, then press the button again to finish.");
 					return;
 				}
 
 				var placed = capture.Commit();
 				TextNotificationsManager.Debug(placed > 0
 					? $"Shape formation: {placed} units."
-					: "Shape cancelled: no points marked.");
+					: "Shape cancelled: mark at least two corners.");
 			};
-		}
 	}
 }

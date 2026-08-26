@@ -31,13 +31,25 @@ namespace OpenRA.Mods.Tcd.Orders
 	{
 		protected override MouseActionType ActionType => MouseActionType.ConfirmOrder;
 
+		readonly bool oneShot;
 		WPos? anchor;
 
-		public LineFormationOrderGenerator(World world)
-			: base(world) { }
+		// oneShot is how the button behaves: draw one line and put the tool away.
+		// Holding the key instead keeps it armed until the key comes back up.
+		public LineFormationOrderGenerator(World world, bool oneShot)
+			: base(world)
+		{
+			this.oneShot = oneShot;
+		}
 
 		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
+			if (mi.Button == CancelButton && mi.Event == MouseInputEvent.Down)
+			{
+				world.CancelInputMode();
+				return [];
+			}
+
 			if (mi.Button != ActionButton)
 				return [];
 
@@ -48,6 +60,9 @@ namespace OpenRA.Mods.Tcd.Orders
 				var from = anchor.Value;
 				anchor = null;
 				Place(world, from, world.Map.CenterOfCell(cell));
+
+				if (oneShot)
+					world.CancelInputMode();
 			}
 
 			return [];

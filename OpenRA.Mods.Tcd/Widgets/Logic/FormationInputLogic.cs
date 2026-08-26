@@ -38,10 +38,10 @@ namespace OpenRA.Mods.Tcd.Widgets.Logic
 					return false;
 
 				if (pointsKey.IsActivatedBy(e))
-					return HandlePoints(capture, e);
+					return HandlePoints(world, capture, e);
 
 				if (drawKey.IsActivatedBy(e))
-					return HandleDraw(world, e);
+					return HandleDraw(world, capture, e);
 
 				return false;
 			});
@@ -52,10 +52,14 @@ namespace OpenRA.Mods.Tcd.Widgets.Logic
 			return logicArgs.TryGetValue(argName, out var yaml) ? modData.Hotkeys[yaml.Value] : new HotkeyReference();
 		}
 
-		static bool HandlePoints(FormationCapture capture, KeyInput e)
+		static bool HandlePoints(World world, FormationCapture capture, KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
+				// Only one drawing tool at a time.
+				if (world.OrderGenerator is LineFormationOrderGenerator)
+					world.CancelInputMode();
+
 				capture.Begin(FormationCaptureMode.Points);
 				return true;
 			}
@@ -68,14 +72,15 @@ namespace OpenRA.Mods.Tcd.Widgets.Logic
 			return true;
 		}
 
-		static bool HandleDraw(World world, KeyInput e)
+		static bool HandleDraw(World world, FormationCapture capture, KeyInput e)
 		{
 			if (e.Event == KeyInputEvent.Down)
 			{
 				// Swapping the generator is what buys us press-and-drag: only a generator
 				// that is not a UnitOrderGenerator receives mouse-down and mouse-move.
+				capture.Cancel();
 				if (world.OrderGenerator is not LineFormationOrderGenerator)
-					world.OrderGenerator = new LineFormationOrderGenerator(world);
+					world.OrderGenerator = new LineFormationOrderGenerator(world, oneShot: false);
 			}
 			else if (world.OrderGenerator is LineFormationOrderGenerator)
 				world.CancelInputMode();
