@@ -166,3 +166,32 @@ holds is **corrected, not deleted** — note what changed and when.
 - **Verified against:** f7dbaa1b
 - **Verified by:** @AbdullahZeynel — 2026-08-26
 - **Used by:** sprint 01 (toolchain), CONTRIBUTING quick start
+
+## Hotkey definitions are "KEY Modifier, Modifier"
+
+- **Claim:** `Hotkey.TryParse` splits the value on a space into at most two
+  fields: the `Keycode`, then the `Modifiers`. Multiple modifiers therefore go in
+  the second field comma-separated (`NUMBER_1 Ctrl, Shift`). Space-separating
+  them (`Q Ctrl Shift`) fails to parse and aborts mod loading.
+- **Source:** OpenRA.Game/Input/Hotkey.cs:27; `Modifiers` enum at
+  OpenRA.Game/Input/IInputHandler.cs:38; example at
+  mods/common/hotkeys/control-groups.yaml:121
+- **Verified against:** f7dbaa1b
+- **Verified by:** @AbdullahZeynel - 2026-08-26
+- **Used by:** F1 (squad hotkeys)
+
+## Chrome sheets must have power-of-two dimensions
+
+- **Claim:** any PNG loaded as a chrome sheet becomes an OpenGL texture, and
+  texture creation throws `InvalidDataException: Non-power-of-two array WxH`
+  unless both dimensions are powers of two. The crash surfaces at render time
+  inside `WidgetUtils.DrawPanel`, not at mod load, so a bad sheet looks like a
+  graphics bug rather than an asset bug. Pad the sheet and anchor the content at
+  the origin; the unused area costs nothing. Engine sheets follow this:
+  glyphs.png is 256x256, glyphs-2x.png 512x512, glyphs-3x.png 1024x1024.
+- **Source:** OpenRA.Platforms.Default/Texture.cs:84;
+  OpenRA.Game/Graphics/Sheet.cs:53
+- **Verified against:** f7dbaa1b
+- **Verified by:** @AbdullahZeynel - 2026-08-26
+- **Used by:** F1 (squad command bar icons)
+

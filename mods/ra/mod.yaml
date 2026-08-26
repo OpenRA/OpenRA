@@ -109,6 +109,7 @@ Cursors:
 
 Chrome:
 	ra|chrome.yaml
+	ra|chrome-tcd.yaml
 
 Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll, OpenRA.Mods.Tcd.dll
 
@@ -178,6 +179,7 @@ FluentMessages:
 	ra|fluent/ra.ftl
 	ra|fluent/chrome.ftl
 	ra|fluent/hotkeys.ftl
+	ra|fluent/tcd.ftl
 	ra|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
@@ -209,6 +211,7 @@ Hotkeys:
 	common|hotkeys/editor.yaml
 	common|hotkeys/control-groups.yaml
 	ra|hotkeys.yaml
+	ra|hotkeys/tcd.yaml
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ra|uibits/loadscreen.png

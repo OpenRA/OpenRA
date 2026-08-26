@@ -5,4 +5,6 @@
 # upstream footprint to four files (see AGENTS.md section 7).
 
 ^BaseWorld:
-	TcdBootstrap:
+	-Selection:
+	TcdSelection:
+	SquadManager:

@@ -1,0 +1,12 @@
+# Tactics & Command Dynamics chrome. Kept separate from ra|chrome.yaml so our
+# footprint on upstream files stays at four (see AGENTS.md section 7).
+
+tcd-icons:
+	Image: tcd-icons.png
+	Image2x: tcd-icons-2x.png
+	Image3x: tcd-icons-3x.png
+	Regions:
+		form-squad: 0, 0, 24, 24
+		form-squad-disabled: 24, 0, 24, 24
+		disband-squad: 48, 0, 24, 24
+		disband-squad-disabled: 72, 0, 24, 24
