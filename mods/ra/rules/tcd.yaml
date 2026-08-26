@@ -1,0 +1,8 @@
+# Tactics & Command Dynamics
+#
+# Every rule this mod adds lives here. Loaded after ra|rules/world.yaml so it can
+# override traits defined there. Keeping our changes in one file is what holds our
+# upstream footprint to four files (see AGENTS.md section 7).
+
+^BaseWorld:
+	TcdBootstrap:

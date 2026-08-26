@@ -4,6 +4,7 @@
   <Project Path="OpenRA.Mods.Cnc/OpenRA.Mods.Cnc.csproj" />
   <Project Path="OpenRA.Mods.Common/OpenRA.Mods.Common.csproj" />
   <Project Path="OpenRA.Mods.D2k/OpenRA.Mods.D2k.csproj" />
+  <Project Path="OpenRA.Mods.Tcd/OpenRA.Mods.Tcd.csproj" />
   <Project Path="OpenRA.Platforms.Default/OpenRA.Platforms.Default.csproj" />
   <Project Path="OpenRA.Server/OpenRA.Server.csproj" />
   <Project Path="OpenRA.Test/OpenRA.Test.csproj" />
