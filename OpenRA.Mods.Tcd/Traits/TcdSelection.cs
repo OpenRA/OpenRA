@@ -37,14 +37,13 @@ namespace OpenRA.Mods.Tcd.Traits
 			// Resolved lazily: the world actor's traits are not all constructed yet when we are.
 			squads ??= world.WorldActor.TraitOrDefault<SquadManager>();
 
-			if (isClick && selection.Count > 0 && squads != null && !Game.GetModifierKeys().HasModifier(Modifiers.Alt))
+			if (isClick && selection.Count > 0 && squads != null
+				&& !Game.GetModifierKeys().HasModifier(Modifiers.Alt)
+				&& squads.TryGetSquad(selection[0], out var squad))
 			{
-				if (squads.TryGetSquad(selection[0], out var squad))
-				{
-					// isClick: false so the base takes the whole list rather than just the first actor.
-					base.Combine(world, squad.Members, isCombine, false);
-					return;
-				}
+				// isClick: false so the base takes the whole list rather than just the first actor.
+				base.Combine(world, squad.Members, isCombine, false);
+				return;
 			}
 
 			base.Combine(world, selection, isCombine, isClick);
