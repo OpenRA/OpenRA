@@ -117,5 +117,6 @@ namespace OpenRA.Mods.Tcd.Widgets.Logic
 					? $"Shape formation: {placed} units."
 					: "Shape cancelled: mark at least two corners.");
 			};
+		}
 	}
 }
