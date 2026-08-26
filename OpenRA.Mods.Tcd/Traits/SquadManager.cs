@@ -24,6 +24,13 @@ namespace OpenRA.Mods.Tcd.Traits
 		[Desc("Maximum number of actors allowed in a single squad. Use 0 for no limit.")]
 		public readonly int MaxSquadSize = 24;
 
+		[Desc("Gap between neighbouring units in a formation, in whole cells.",
+			"Whole cells only: anything else lands between cells and leaves uneven gaps.")]
+		public readonly int FormationSpacingCells = 1;
+
+		[Desc("Widest row a formation will build before wrapping onto another row.")]
+		public readonly int FormationMaxRowWidth = 8;
+
 		public override object Create(ActorInitializer init) { return new SquadManager(init.World, this); }
 	}
 
@@ -66,6 +73,10 @@ namespace OpenRA.Mods.Tcd.Traits
 		}
 
 		public IReadOnlyList<Squad> Squads => squads;
+
+		public int FormationSpacingCells => info.FormationSpacingCells;
+
+		public int FormationMaxRowWidth => info.FormationMaxRowWidth;
 
 		public bool TryGetSquad(Actor a, out Squad squad)
 		{

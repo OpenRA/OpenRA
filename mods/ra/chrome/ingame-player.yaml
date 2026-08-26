@@ -3,10 +3,12 @@ Container@PLAYER_WIDGETS:
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:
-			Logic: RemoveFromControlGroupHotkeyLogic, FormSquadHotkeyLogic, DisbandSquadHotkeyLogic
+			Logic: RemoveFromControlGroupHotkeyLogic, FormSquadHotkeyLogic, DisbandSquadHotkeyLogic, FormationInputLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
 				FormSquadKey: FormSquad
 				DisbandSquadKey: DisbandSquad
+				FormationPointsKey: FormationPoints
+				FormationDrawKey: FormationDraw
 		ControlGroups@CONTROLGROUPS:
 			SelectGroupKeyPrefix: ControlGroupSelect
 			CreateGroupKeyPrefix: ControlGroupCreate
@@ -205,21 +207,22 @@ Container@PLAYER_WIDGETS:
 							Y: 1
 							ImageCollection: command-icons
 							ImageName: queue-orders
-		Container@SQUAD_BAR:
-			Logic: SquadCommandBarLogic
+		Container@TCD_BAR:
+			Logic: SquadCommandBarLogic, FormationCommandBarLogic
 			X: 437
 			Y: WINDOW_HEIGHT - HEIGHT - 14
-			Width: 72
+			Width: 34
 			Height: 26
 			Children:
-				Button@FORM_SQUAD:
+				Button@TCD_TOGGLE:
 					Logic: AddFactionSuffixLogic
+					X: 0
 					Width: 34
 					Height: 26
 					VisualHeight: 0
 					Background: command-button
-					TooltipText: button-squad-bar-form.tooltip
-					TooltipDesc: button-squad-bar-form.tooltipdesc
+					TooltipText: button-tcd-toggle.tooltip
+					TooltipDesc: button-tcd-toggle.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
 					Children:
@@ -227,24 +230,116 @@ Container@PLAYER_WIDGETS:
 							X: 5
 							Y: 1
 							ImageCollection: tcd-icons
-							ImageName: form-squad
-				Button@DISBAND_SQUAD:
-					Logic: AddFactionSuffixLogic
-					X: 38
-					Width: 34
+							ImageName: tcd-toggle
+				Container@TCD_TRAY:
+					X: -190
+					Y: -34
+					Width: 224
 					Height: 26
-					VisualHeight: 0
-					Background: command-button
-					TooltipText: button-squad-bar-disband.tooltip
-					TooltipDesc: button-squad-bar-disband.tooltipdesc
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Visible: false
 					Children:
-						Image@ICON:
-							X: 5
-							Y: 1
-							ImageCollection: tcd-icons
-							ImageName: disband-squad
+						Button@FORM_SQUAD:
+							Logic: AddFactionSuffixLogic
+							X: 0
+							Width: 34
+							Height: 26
+							VisualHeight: 0
+							Background: command-button
+							TooltipText: button-squad-bar-form.tooltip
+							TooltipDesc: button-squad-bar-form.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 1
+									ImageCollection: tcd-icons
+									ImageName: form-squad
+						Button@DISBAND_SQUAD:
+							Logic: AddFactionSuffixLogic
+							X: 38
+							Width: 34
+							Height: 26
+							VisualHeight: 0
+							Background: command-button
+							TooltipText: button-squad-bar-disband.tooltip
+							TooltipDesc: button-squad-bar-disband.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 1
+									ImageCollection: tcd-icons
+									ImageName: disband-squad
+						Button@FORMATION_GRID:
+							Logic: AddFactionSuffixLogic
+							X: 76
+							Width: 34
+							Height: 26
+							VisualHeight: 0
+							Background: command-button
+							TooltipText: button-formation-grid.tooltip
+							TooltipDesc: button-formation-grid.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 1
+									ImageCollection: tcd-icons
+									ImageName: formation-grid
+						Button@FORMATION_WEDGE:
+							Logic: AddFactionSuffixLogic
+							X: 114
+							Width: 34
+							Height: 26
+							VisualHeight: 0
+							Background: command-button
+							TooltipText: button-formation-wedge.tooltip
+							TooltipDesc: button-formation-wedge.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 1
+									ImageCollection: tcd-icons
+									ImageName: formation-wedge
+						Button@FORMATION_LINE:
+							Logic: AddFactionSuffixLogic
+							X: 152
+							Width: 34
+							Height: 26
+							VisualHeight: 0
+							Background: command-button
+							TooltipText: button-formation-line.tooltip
+							TooltipDesc: button-formation-line.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 1
+									ImageCollection: tcd-icons
+									ImageName: formation-line
+						Button@FORMATION_SHAPE:
+							Logic: AddFactionSuffixLogic
+							X: 190
+							Width: 34
+							Height: 26
+							VisualHeight: 0
+							Background: command-button
+							TooltipText: button-formation-shape.tooltip
+							TooltipDesc: button-formation-shape.tooltipdesc
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+							Children:
+								Image@ICON:
+									X: 5
+									Y: 1
+									ImageCollection: tcd-icons
+									ImageName: formation-shape
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
 			X: 294

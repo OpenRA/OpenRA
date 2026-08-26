@@ -195,3 +195,21 @@ holds is **corrected, not deleted** — note what changed and when.
 - **Verified by:** @AbdullahZeynel - 2026-08-26
 - **Used by:** F1 (squad command bar icons)
 
+## The right mouse button only reaches the order generator on release
+
+- **Claim:** `WorldInteractionControllerWidget.HandleMouseInput` calls `ApplyOrders`
+  for the right button only when `mi.Event == MouseInputEvent.Up`. Right-button
+  `Down` and `Move` events are never passed to `IOrderGenerator.Order` at all, so
+  an order generator cannot see a right-drag as it happens. `GetCursor` is the
+  hook that does run every frame with the cell under the cursor, so continuous
+  tracking has to be done there.
+- **Note:** this only applies while the active generator *is* a
+  `UnitOrderGenerator`. A generator that is not one takes an earlier branch that
+  forwards every event, which is why a standalone `OrderGenerator` behaves
+  differently from a `UnitOrderGenerator` subclass.
+- **Source:** OpenRA.Mods.Common/Widgets/WorldInteractionControllerWidget.cs:93
+  (the `is not UnitOrderGenerator` branch) and :170 (the right-button Up branch)
+- **Verified against:** f7dbaa1b
+- **Verified by:** @AbdullahZeynel - 2026-08-26
+- **Used by:** F2 (drawn formations)
+

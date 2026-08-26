@@ -1,5 +1,9 @@
 # Tactics & Command Dynamics chrome. Kept separate from ra|chrome.yaml so our
-# footprint on upstream files stays at four (see AGENTS.md section 7).
+# footprint on upstream files stays small (see AGENTS.md section 7).
+#
+# Row 0 is the normal icon, row 1 the dimmed disabled variant. The sheet is padded
+# to a power of two because chrome sheets become OpenGL textures - see
+# docs/ENGINE-NOTES.md.
 
 tcd-icons:
 	Image: tcd-icons.png
@@ -7,6 +11,16 @@ tcd-icons:
 	Image3x: tcd-icons-3x.png
 	Regions:
 		form-squad: 0, 0, 24, 24
-		form-squad-disabled: 24, 0, 24, 24
-		disband-squad: 48, 0, 24, 24
-		disband-squad-disabled: 72, 0, 24, 24
+		form-squad-disabled: 0, 24, 24, 24
+		disband-squad: 24, 0, 24, 24
+		disband-squad-disabled: 24, 24, 24, 24
+		formation-grid: 48, 0, 24, 24
+		formation-grid-disabled: 48, 24, 24, 24
+		formation-wedge: 72, 0, 24, 24
+		formation-wedge-disabled: 72, 24, 24, 24
+		formation-line: 96, 0, 24, 24
+		formation-line-disabled: 96, 24, 24, 24
+		formation-shape: 120, 0, 24, 24
+		formation-shape-disabled: 120, 24, 24, 24
+		tcd-toggle: 144, 0, 24, 24
+		tcd-toggle-disabled: 144, 24, 24, 24

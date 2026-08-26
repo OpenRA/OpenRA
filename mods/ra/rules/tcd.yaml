@@ -8,3 +8,102 @@
 	-Selection:
 	TcdSelection:
 	SquadManager:
+	FormationCapture:
+
+# Formation roles. Rank 0 is the front of the formation; higher ranks stand behind.
+# Anything without this trait is treated as Line, rank 1.
+
+1TNK:
+	FormationRole:
+		Role: Armor
+		Rank: 0
+
+2TNK:
+	FormationRole:
+		Role: Armor
+		Rank: 0
+
+3TNK:
+	FormationRole:
+		Role: Armor
+		Rank: 0
+
+4TNK:
+	FormationRole:
+		Role: Armor
+		Rank: 0
+
+APC:
+	FormationRole:
+		Role: Armor
+		Rank: 0
+
+E1:
+	FormationRole:
+		Role: Line
+		Rank: 1
+
+E4:
+	FormationRole:
+		Role: Line
+		Rank: 1
+
+E7:
+	FormationRole:
+		Role: Line
+		Rank: 1
+
+SHOK:
+	FormationRole:
+		Role: Line
+		Rank: 1
+
+DOG:
+	FormationRole:
+		Role: Line
+		Rank: 1
+
+E2:
+	FormationRole:
+		Role: Skirmish
+		Rank: 2
+
+JEEP:
+	FormationRole:
+		Role: Skirmish
+		Rank: 2
+
+E3:
+	FormationRole:
+		Role: Fire
+		Rank: 3
+
+ARTY:
+	FormationRole:
+		Role: Fire
+		Rank: 3
+
+E6:
+	FormationRole:
+		Role: Support
+		Rank: 4
+
+MEDI:
+	FormationRole:
+		Role: Support
+		Rank: 4
+
+MECH:
+	FormationRole:
+		Role: Support
+		Rank: 4
+
+SPY:
+	FormationRole:
+		Role: Support
+		Rank: 4
+
+THF:
+	FormationRole:
+		Role: Support
+		Rank: 4

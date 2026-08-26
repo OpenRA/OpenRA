@@ -7,3 +7,13 @@ DisbandSquad: Q Ctrl, Shift
 	Description: hotkey-description-disbandsquad
 	Types: Squads
 	Contexts: player
+
+FormationPoints: G
+	Description: hotkey-description-formationpoints
+	Types: Squads
+	Contexts: player
+
+FormationDraw: V
+	Description: hotkey-description-formationdraw
+	Types: Squads
+	Contexts: player
