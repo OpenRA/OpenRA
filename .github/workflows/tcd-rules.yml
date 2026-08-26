@@ -1,0 +1,177 @@
+# Enforces the project rules in CONTRIBUTING.md and AGENTS.md.
+# Each step names the law it enforces.
+
+name: TCD Rules
+
+on:
+  pull_request:
+    branches: [ tcd ]
+    types: [ opened, edited, synchronize, reopened, labeled, unlabeled, ready_for_review ]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  rules:
+    name: Project rules
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Collect PR facts
+        run: |
+          set -euo pipefail
+          gh api "repos/$REPO/pulls/$PR/files" --paginate -q '.[].filename' > /tmp/changed.txt
+          jq -r '.pull_request.body // ""' "$GITHUB_EVENT_PATH" | tr -d '\r' > /tmp/body.txt
+          jq -r '.pull_request.labels[].name' "$GITHUB_EVENT_PATH" > /tmp/labels.txt
+          {
+            echo "### Changed files"
+            sed 's/^/- /' /tmp/changed.txt
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: L1 L2 L3 - scope manifest
+        run: |
+          set -euo pipefail
+          awk '/^[[:space:]]*```scope[[:space:]]*$/ {f=1; next} f && /^[[:space:]]*```/ {f=0} f {print}' \
+            /tmp/body.txt \
+            | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' \
+            | grep -v '^$' | grep -v '^#' | sort -u > /tmp/declared.txt || true
+
+          if [ ! -s /tmp/declared.txt ]; then
+            echo "::error::No non-empty scope block in the PR body. Declare every file you touch. See AGENTS.md section 3."
+            exit 1
+          fi
+
+          echo "Declared:"; sed 's/^/  /' /tmp/declared.txt
+
+          fail=0
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            if ! grep -Fxq -- "$f" /tmp/declared.txt; then
+              echo "::error file=$f::L2 - changed but not declared in the scope block."
+              fail=1
+            fi
+          done < /tmp/changed.txt
+
+          while IFS= read -r d; do
+            [ -z "$d" ] && continue
+            if ! grep -Fxq -- "$d" /tmp/changed.txt; then
+              echo "::warning::Declared but not changed: $d"
+            fi
+          done < /tmp/declared.txt
+
+          if [ "$fail" -ne 0 ]; then
+            echo "::error::Undeclared files in the diff. Either revert them (L2) or widen the scope block and say why."
+            exit 1
+          fi
+          echo "Scope manifest matches the diff."
+
+      - name: L4 - protected engine paths
+        run: |
+          set -euo pipefail
+          grep -v '^[[:space:]]*#' .github/protected-paths.txt | grep -v '^[[:space:]]*$' > /tmp/prot.txt
+          hits=$(grep -E -f /tmp/prot.txt /tmp/changed.txt || true)
+
+          if [ -z "$hits" ]; then
+            echo "No protected paths touched."
+            exit 0
+          fi
+
+          echo "Protected paths touched:"; echo "$hits" | sed 's/^/  /'
+
+          ok=1
+          if ! grep -Fxq "engine-touch" /tmp/labels.txt; then
+            echo "::error::L4 - protected engine paths touched without the engine-touch label."
+            ok=0
+          fi
+          if ! grep -q '^ENGINE-TOUCH:' /tmp/body.txt; then
+            echo "::error::L4 - add a line to the PR body starting with ENGINE-TOUCH: justifying why an upstream engine file must change."
+            ok=0
+          fi
+          [ "$ok" -eq 1 ] || exit 1
+          echo "Labelled and justified."
+
+      - name: H4 - no imported game assets
+        run: |
+          set -euo pipefail
+          # Deliberately narrow. OpenRA itself ships .shp, .aud, .pal and one .mix
+          # under mods/*/bits/ - those are its own freely licensed replacements,
+          # so banning them outright would fail on day one. These five formats
+          # appear nowhere in the engine and are Westwood containers.
+          hits=$(grep -Ei '\.(vqa|vqp|wsa|cps|r8)$' /tmp/changed.txt || true)
+          if [ -n "$hits" ]; then
+            echo "$hits" | sed 's/^/  /'
+            echo "::error::H4 - Westwood/EA asset formats must never be committed."
+            exit 1
+          fi
+          echo "No imported game assets."
+
+      - name: H3 - DCO sign-off
+        run: |
+          set -euo pipefail
+          # jq's "m" flag means dotall, NOT multiline anchors, and its ^ anchors
+          # to the start of the whole string. A trailer on line 3 therefore never
+          # matched. (?m) inline is what actually anchors per line here.
+          gh api "repos/$REPO/pulls/$PR/commits" --paginate \
+            -q '.[] | select((.commit.message | test("(?m)^Signed-off-by: .+ <.+@.+>")) | not) | "\(.sha[0:8]) \(.commit.message | split("\n")[0])"' \
+            > /tmp/nodco.txt || true
+          if [ -s /tmp/nodco.txt ]; then
+            sed 's/^/  /' /tmp/nodco.txt
+            echo "::error::H3 - every commit needs a sign-off. Use git commit -s, or git rebase --signoff to fix existing commits."
+            exit 1
+          fi
+          echo "All commits signed off."
+
+      - name: L3 - diff size
+        run: |
+          set -euo pipefail
+          read -r adds dels < <(gh api "repos/$REPO/pulls/$PR" -q '"\(.additions) \(.deletions)"')
+          total=$((adds + dels))
+          echo "Changed lines: $total (+$adds -$dels)"
+          if [ "$total" -gt 300 ]; then
+            echo "::warning::L3 - $total changed lines is over the 300-line budget. Split the PR, or justify the size in the body."
+          fi
+
+      - name: A2 - hedge check
+        run: |
+          set -euo pipefail
+          # Advisory. A hard failure on prose gets the rule bypassed rather than obeyed.
+          hits=$(grep -inE 'should work|should be fine|i believe|presumably|in theory|probably works|i assume' /tmp/body.txt \
+                 | grep -v 'UNVERIFIED:' || true)
+          if [ -n "$hits" ]; then
+            echo "$hits" | sed 's/^/  /'
+            echo "::warning::A2 - hedged claims found. Cite file:line, or move the claim to an UNVERIFIED: line."
+          else
+            echo "No hedged claims."
+          fi
+
+  build:
+    name: L7 - build, lint, test
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v7
+
+      - name: Install .NET 10.0
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Check code
+        run: |
+          make check
+          make tests
+
+      - name: Check mods
+        run: |
+          sudo apt-get install -y lua5.1
+          make check-scripts
+          make TREAT_WARNINGS_AS_ERRORS=true test

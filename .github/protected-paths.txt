@@ -1,0 +1,20 @@
+# Protected paths — enforces L4 (Extend, don't edit).
+#
+# A pull request touching any path matching a pattern below must carry the
+# `engine-touch` label AND justify the change in the PR body. CI fails without
+# both.
+#
+# One extended regular expression per line, matched against repo-relative paths.
+# Lines starting with # are comments and are stripped before matching.
+
+^OpenRA\.Game/
+^OpenRA\.Mods\.Common/
+^OpenRA\.Mods\.Cnc/
+^OpenRA\.Mods\.D2k/
+^OpenRA\.Platforms\.Default/
+^OpenRA\.Server/
+^OpenRA\.Launcher/
+^OpenRA\.WindowsLauncher/
+^Makefile$
+^Directory\.Build\.props$
+^mods/(cnc|d2k|ts|common)/

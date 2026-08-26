@@ -1,0 +1,9 @@
+# Governance files require the maintainer's explicit review.
+# Feature PRs must never touch these — see AGENTS.md §5 (Hard stops).
+
+/AGENTS.md                  @AbdullahZeynel
+/CLAUDE.md                  @AbdullahZeynel
+/CONTRIBUTING.md            @AbdullahZeynel
+/ENGINE_BASE                @AbdullahZeynel
+/docs/                      @AbdullahZeynel
+/.github/                    @AbdullahZeynel
