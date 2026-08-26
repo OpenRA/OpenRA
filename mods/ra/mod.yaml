@@ -87,6 +87,7 @@ Rules:
 	ra|rules/ships.yaml
 	ra|rules/fakes.yaml
 	ra|rules/map-generators.yaml
+	ra|rules/tcd.yaml
 
 Sequences:
 	ra|sequences/ships.yaml
@@ -109,7 +110,7 @@ Cursors:
 Chrome:
 	ra|chrome.yaml
 
-Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll, OpenRA.Mods.Tcd.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml
