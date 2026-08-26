@@ -3,8 +3,10 @@ Container@PLAYER_WIDGETS:
 	Children:
 		Container@CHAT_ROOT:
 		LogicKeyListener@PLAYER_KEYHANDLER:
-			Logic: RemoveFromControlGroupHotkeyLogic
+			Logic: RemoveFromControlGroupHotkeyLogic, FormSquadHotkeyLogic, DisbandSquadHotkeyLogic
 				RemoveFromControlGroupKey: RemoveFromControlGroup
+				FormSquadKey: FormSquad
+				DisbandSquadKey: DisbandSquad
 		ControlGroups@CONTROLGROUPS:
 			SelectGroupKeyPrefix: ControlGroupSelect
 			CreateGroupKeyPrefix: ControlGroupCreate
@@ -203,6 +205,46 @@ Container@PLAYER_WIDGETS:
 							Y: 1
 							ImageCollection: command-icons
 							ImageName: queue-orders
+		Container@SQUAD_BAR:
+			Logic: SquadCommandBarLogic
+			X: 437
+			Y: WINDOW_HEIGHT - HEIGHT - 14
+			Width: 72
+			Height: 26
+			Children:
+				Button@FORM_SQUAD:
+					Logic: AddFactionSuffixLogic
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					TooltipText: button-squad-bar-form.tooltip
+					TooltipDesc: button-squad-bar-form.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: tcd-icons
+							ImageName: form-squad
+				Button@DISBAND_SQUAD:
+					Logic: AddFactionSuffixLogic
+					X: 38
+					Width: 34
+					Height: 26
+					VisualHeight: 0
+					Background: command-button
+					TooltipText: button-squad-bar-disband.tooltip
+					TooltipDesc: button-squad-bar-disband.tooltipdesc
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 1
+							ImageCollection: tcd-icons
+							ImageName: disband-squad
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
 			X: 294
