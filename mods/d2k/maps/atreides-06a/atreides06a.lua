@@ -193,7 +193,7 @@ WorldLoaded = function()
 	Smugglers.Cash = 3000
 	InitObjectives(Atreides)
 	KillOrdos = AddPrimaryObjective(Atreides, UserInterface.GetFluentMessage("destroy-ordos"))
-	KillOrdosStarport = AddPrimaryObjective(Atreides, UserInterface.GetFluentMessage("destroy-ordos-starport"))
+	KillOrdosStarport = AddPrimaryObjective(Atreides, UserInterface.GetFluentMessage("capture-or-destroy-ordos-starport"))
 	KillSmugglers = AddSecondaryObjective(Atreides, UserInterface.GetFluentMessage("destroy-smugglers"))
 	KillAtreides1 = AddPrimaryObjective(Ordos, "")
 	KillAtreides2 = AddPrimaryObjective(OrdosSmall, "")
