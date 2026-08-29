@@ -505,7 +505,12 @@ namespace OpenRA.Mods.Common.Widgets
 			DisplayedIconCount = 0;
 
 			var rb = RenderBounds;
-			var faction = producer.Trait.Faction;
+
+			// Resolve icon variants against the owning player's faction: shared units keep
+			// their own faction's cameo even when produced from a captured enemy structure.
+			// Faction-exclusive units have no player-faction image variant, so they still
+			// resolve to their default (producer faction) image via the GetImage fallback.
+			var faction = producer.Actor.Owner.Faction.InternalName;
 
 			foreach (var item in AllBuildables.Skip(IconRowOffset * Columns).Take(MaxIconRowOffset * Columns))
 			{
