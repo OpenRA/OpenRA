@@ -92,6 +92,7 @@ notification-quick-match-ready-deadline =
        *[other] Ready up no later than in { $seconds } seconds.
     }
 notification-quick-match-countdown-step = T-minus { $step }.
+notification-quick-match-final-countdown-step = { $step }
 
 ## ServerOrders, UnitOrders
 notification-joined = { $player } has joined the game.

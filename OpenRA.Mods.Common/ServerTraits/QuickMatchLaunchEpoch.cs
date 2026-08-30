@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Server
 		[FluentReference("step")]
 		const string CountdownStep = "notification-quick-match-countdown-step";
 
+		[FluentReference("step")]
+		const string FinalCountdownStep = "notification-quick-match-final-countdown-step";
+
 		[FluentReference]
 		const string YouWereKicked = "notification-you-were-kicked";
 
@@ -49,6 +52,7 @@ namespace OpenRA.Mods.Common.Server
 		Status status;
 		long deadline; // deadline in NowMs clock
 		int nextStep; // the next ten-second announcement still to make
+		int nextFinalStep;
 
 		public void Tick(S server)
 		{
@@ -80,6 +84,7 @@ namespace OpenRA.Mods.Common.Server
 					status = Status.Counting;
 					deadline = NowMs + Seconds * 1000L;
 					nextStep = Math.Min(5, Seconds / 10);
+					nextFinalStep = 3;
 					Announce(server, "start", Seconds * 1000L);
 					server.SendFluentMessage(AutoReadyIn, "seconds", Seconds);
 					server.SendFluentMessage(ReadyDeadline, "seconds", Seconds);
@@ -94,6 +99,9 @@ namespace OpenRA.Mods.Common.Server
 					Announce(server, nextStep.ToStringInvariant(), remaining);
 					server.SendFluentMessage(CountdownStep, "step", nextStep--);
 				}
+
+				while (nextFinalStep > 0 && remaining <= nextFinalStep * 1000L)
+					server.SendFluentMessage(FinalCountdownStep, "step", nextFinalStep--);
 
 				if (remaining <= 0)
 				{
