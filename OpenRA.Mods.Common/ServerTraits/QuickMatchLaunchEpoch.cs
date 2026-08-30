@@ -17,10 +17,10 @@ using S = OpenRA.Server.Server;
 namespace OpenRA.Mods.Common.Server
 {
 	/// <summary>
-	/// Gated behind OPENRA_QM_COUNTDOWN=true; the launch window is 50 seconds.
+	/// Gated behind OPENRA_QM_COUNTDOWN=true; the launch epoch is 50 seconds.
 	/// We only support 1v1 at the moment.
 	/// </summary>
-	public class QuickMatchLaunchWindow : ServerTrait, ITick
+	public class QuickMatchLaunchEpoch : ServerTrait, ITick
 	{
 		[FluentReference("seconds")]
 		const string AutoReady = "notification-quickmatch-auto-ready";

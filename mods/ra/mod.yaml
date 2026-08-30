@@ -215,7 +215,7 @@ LoadScreen: LogoStripeLoadScreen
 	Image3x: ra|uibits/loadscreen-3x.png
 
 ServerTraits:
-	QuickMatchLaunchWindow
+	QuickMatchLaunchEpoch
 	LobbyCommands
 	SkirmishLogic
 	PlayerPinger

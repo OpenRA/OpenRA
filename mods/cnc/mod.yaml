@@ -184,7 +184,7 @@ LoadScreen: CncLoadScreen
 	Image3x: cnc|uibits/chrome-3x.png
 
 ServerTraits:
-	QuickMatchLaunchWindow
+	QuickMatchLaunchEpoch
 	LobbyCommands
 	SkirmishLogic
 	PlayerPinger

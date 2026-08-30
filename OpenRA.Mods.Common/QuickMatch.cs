@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common
 {
 	/// <summary>
 	/// Finds a quick-match server on the master list, joins it as an ordinary
-	/// lobby client, and readies up as the server's launch window closes.
+	/// lobby client, and readies up as the server's launch epoch closes.
 	/// </summary>
 	public static class QuickMatch
 	{
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common
 		/// one, so an interface showing the old one can put it away.</summary>
 		public static Action LobbyLeaving { get; set; } = () => { };
 
-		/// <summary>Called as the launch window opens (0) and at each ten-second
+		/// <summary>Called as the launch epoch opens (0) and at each ten-second
 		/// step left on it (5 down to 1).</summary>
 		public static Action<int> CountdownStep { get; set; } = _ => { };
 
@@ -62,16 +62,16 @@ namespace OpenRA.Mods.Common
 
 		static OrderManager orderManager;
 		static DateTime lastRecheck;
-		// Window is the protocol's epoch number.
+		// Epoch is the protocol's epoch number.
 		// For example if Alice waits for an opponent, Bob joins and server sends QMCountdown with ExtraData.
-		// If Bob leaves, window closes by incrementing epoch number.
-		static int window;
+		// If Bob leaves, epoch closes by incrementing its number.
+		static int epoch;
 		static bool readySent;
 		static bool readyPending;
 		static int downloadErrors; // failed fetches of this lobby's map: retry once, then leave
 		static int mapQueries; // visits to an unresolved map: two asks, then leave
 
-		// ---- the launch window, as it arrives from the server ----
+		// ---- the launch epoch, as it arrives from the server ----
 
 		static QuickMatch()
 		{
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common
 				if (order.TargetString == "abort")
 				{
 					// Quick! Prevent RunAfterDelay Ready()
-					window++;
+					epoch++;
 					// Quick! Prevent FlushReady
 					readyPending = false;
 
@@ -91,12 +91,12 @@ namespace OpenRA.Mods.Common
 				}
 				else if (order.TargetString == "start")
 				{
-					var thisWindow = ++window;
+					var thisEpoch = ++epoch;
 					// Ready ahead of time; a roundtrip for an RTS is assumed to be well below ReadyLeadMs
 					var delay = (int)Math.Max(0, (long)order.ExtraData - ReadyLeadMs);
 					Game.RunAfterDelay(delay, () =>
 					{
-						if (window == thisWindow)
+						if (epoch == thisEpoch)
 							Ready();
 					});
 					CountdownStep(0);
