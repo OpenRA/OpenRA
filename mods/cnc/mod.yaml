@@ -4,6 +4,7 @@ Metadata:
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/cnc_32x32.png
 	WindowTitle: mod-windowtitle
+	WindowIcon: icon-3x.png
 
 PackageFormats: Mix
 
