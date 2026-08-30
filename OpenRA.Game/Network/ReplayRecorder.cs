@@ -132,7 +132,7 @@ namespace OpenRA.Network
 				return;
 
 			var oldReplays = directoryInfo.EnumerateFiles("*.orarep")
-				.OrderByDescending(f => f.CreationTimeUtc)
+				.OrderByDescending(f => f.LastWriteTimeUtc)
 				.Skip(maxReplayCount);
 
 			foreach (var replay in oldReplays)
