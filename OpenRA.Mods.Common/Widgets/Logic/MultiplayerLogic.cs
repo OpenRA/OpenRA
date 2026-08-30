@@ -12,12 +12,17 @@
 using System;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MultiplayerLogic : ChromeLogic
 	{
+		// Caption is dynamic
+		[FluentReference("seconds")]
+		const string QuickMatchSearching = "button-multiplayer-panel-quickmatch-searching";
+
 		static readonly Action DoNothing = () => { };
 
 		readonly Action onStart;
@@ -44,6 +49,45 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "directConnectEndPoint", null },
 				});
 			};
+
+			var quickMatchButton = widget.GetOrNull<ButtonWidget>("QUICKMATCH_BUTTON");
+			if (quickMatchButton != null)
+			{
+				var idle = FluentProvider.GetMessage(quickMatchButton.Text);
+				var searchStarted = DateTime.Now;
+				var searching = new CachedTransform<int, string>(
+					seconds => FluentProvider.GetMessage(QuickMatchSearching, "seconds", seconds));
+				quickMatchButton.GetText = () => QuickMatch.State == QuickMatch.Status.Searching
+					? searching.Update((int)(DateTime.Now - searchStarted).TotalSeconds)
+					: idle;
+				quickMatchButton.OnClick = () =>
+				{
+					if (QuickMatch.State != QuickMatch.Status.Idle && QuickMatch.State != QuickMatch.Status.NoServers)
+					{
+						QuickMatch.Cancel();
+						return;
+					}
+
+					QuickMatch.LobbyJoined = () => OpenLobby(QuickMatch.Cancel);
+					QuickMatch.LobbyLeaving = () =>
+					{
+						// This can happen routinely during Recheck
+						if (Ui.CurrentWindow()?.Id == "SERVER_LOBBY")
+							Ui.CloseWindow();
+					};
+
+					QuickMatch.CountdownStep = step =>
+					{
+						if (step > 0)
+							// Sound volume is correctly guided by UI sound parameters
+							Game.Sound.Play(SoundType.UI, $"common|quickmatch/tminus{step}.aud");
+					};
+
+					QuickMatch.MatchStarting = () => Game.Sound.Play(SoundType.UI, "common|quickmatch/startnow.aud");
+					searchStarted = DateTime.Now;
+					QuickMatch.Start();
+				};
+			}
 
 			var createServerButton = widget.Get<ButtonWidget>("CREATE_BUTTON");
 			createServerButton.OnClick = () =>
@@ -79,7 +123,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void OpenLobby()
+		void OpenLobby() { OpenLobby(null); }
+
+		void OpenLobby(Action onLeave)
 		{
 			// Close the multiplayer browser
 			Ui.CloseWindow();
@@ -102,7 +148,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
 			{
 				{ "onStart", onStart },
-				{ "onExit", OnLobbyExit },
+				{
+					"onExit", (Action)(() =>
+					{
+						// Since we piggy back on Lobby, we need to hook our callback somehow
+						onLeave?.Invoke();
+						OnLobbyExit();
+					})
+				},
 				{ "skirmishMode", false }
 			});
 		}
