@@ -301,11 +301,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				slotsButton.OnMouseDown = _ =>
 				{
-					var botTypes = map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type);
+					var botTypes = map.PlayerActorInfo.TraitInfos<IBotInfo>();
 					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
 
 					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					if (botTypes.Any() && orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
+					if (botTypes.Count > 0 && orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
 					{
 						var botOptions = new List<DropDownOption>()
 						{
@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								{
 									foreach (var slot in orderManager.LobbyInfo.Slots)
 									{
-										var bot = botTypes.Random(Game.CosmeticRandom);
+										var bot = botTypes.Random(Game.CosmeticRandom).Type;
 										var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
 										if (slot.Value.AllowBots && (c == null || c.Bot != null))
 											orderManager.IssueOrder(Order.Command($"slot_bot {slot.Key} {botController.Index} {bot}"));
@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
 
-						if (botTypes.Any() && orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
+						if (botTypes.Count > 0 && orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
 						{
 							teamOptions.Add(new DropDownOption
 							{
