@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 		Polygon Bounds(Actor self, WorldRenderer wr, ImmutableArray<int> bounds, int height)
 		{
 			int2 left, right, top, bottom;
-			if (bounds != null)
+			if (!bounds.IsDefault)
 			{
 				// Convert from WDist to pixels
 				var offset = bounds.Length >= 4 ? new int2(bounds[2] * wr.TileSize.Width / wr.TileScale, bounds[3] * wr.TileSize.Height / wr.TileScale) : int2.Zero;

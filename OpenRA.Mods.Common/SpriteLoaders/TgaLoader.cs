@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; }
+		public ImmutableArray<ISpriteFrame> Frames { get; }
 
 		public TgaSprite(Stream stream)
 		{

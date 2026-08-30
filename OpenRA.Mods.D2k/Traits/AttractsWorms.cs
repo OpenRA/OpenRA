@@ -42,7 +42,7 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			self = init.Self;
 
-			effectiveRange = info.Range != null ? info.Range : Exts.MakeArray(info.Falloff.Length, i => i * info.Spread).ToImmutableArray();
+			effectiveRange = info.Range != null ? info.Range : Exts.MakeImmutableArray(info.Falloff.Length, i => i * info.Spread);
 		}
 
 		int GetNoisePercentageAtDistance(int distance)
