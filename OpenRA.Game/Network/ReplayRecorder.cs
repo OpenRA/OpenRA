@@ -131,7 +131,7 @@ namespace OpenRA.Network
 			if (!directoryInfo.Exists)
 				return;
 
-			var oldReplays = directoryInfo.EnumerateFiles("*.orarep")
+			var oldReplays = directoryInfo.GetFiles("*.orarep")
 				.OrderByDescending(f => f.LastWriteTimeUtc)
 				.Skip(maxReplayCount);
 
