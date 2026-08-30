@@ -94,21 +94,26 @@ namespace OpenRA.Graphics
 			sheetCount = 0;
 		}
 
-		int2 SetRenderStateForSprite(Sprite s)
+		void TrackQuad(BlendMode blendMode)
 		{
-			renderer.CurrentBatchRenderer = this;
-
-			if (vertexCount + 4 > renderer.TempVertexBufferSize)
-				Flush();
-
-			if (blendSpans.Count == 0 || blendSpans[^1].Mode != s.BlendMode)
-				blendSpans.Add(new BlendSpan(vertexCount, 4, s.BlendMode));
+			if (blendSpans.Count == 0 || blendSpans[^1].Mode != blendMode)
+				blendSpans.Add(new BlendSpan(vertexCount, 4, blendMode));
 			else
 			{
 				// PERF: modify in-place.
 				var span = CollectionsMarshal.AsSpan(blendSpans);
 				span[^1].Length += 4;
 			}
+
+			vertexCount += 4;
+		}
+
+		int2 SetRenderStateForSprite(Sprite s)
+		{
+			renderer.CurrentBatchRenderer = this;
+
+			if (vertexCount + 4 > renderer.TempVertexBufferSize)
+				Flush();
 
 			// Check if the sheet (or secondary data sheet) have already been mapped
 			var sheet = s.Sheet;
@@ -175,7 +180,7 @@ namespace OpenRA.Graphics
 			var samplers = SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, Vector3.One,
 								1f, rotation);
-			vertexCount += 4;
+			TrackQuad(s.BlendMode);
 		}
 
 		internal void DrawSprite(Sprite s, int paletteTextureIndex, in Vector3 location, float scale, float rotation = 0f)
@@ -183,7 +188,7 @@ namespace OpenRA.Graphics
 			var samplers = SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, Vector3.One,
 								1f, rotation);
-			vertexCount += 4;
+			TrackQuad(s.BlendMode);
 		}
 
 		public void DrawSprite(Sprite s, PaletteReference pal, in Vector3 location, float scale = 1f, float rotation = 0f)
@@ -197,7 +202,7 @@ namespace OpenRA.Graphics
 			var samplers = SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, tint, alpha,
 								rotation);
-			vertexCount += 4;
+			TrackQuad(s.BlendMode);
 		}
 
 		public void DrawSprite(Sprite s, PaletteReference pal, in Vector3 location, float scale, in Vector3 tint, float alpha,
@@ -210,7 +215,7 @@ namespace OpenRA.Graphics
 		{
 			var samplers = SetRenderStateForSprite(s);
 			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, paletteTextureIndex, tint, alpha, vertexCount);
-			vertexCount += 4;
+			TrackQuad(s.BlendMode);
 		}
 
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, IIndexBuffer indices, int start, int length, IEnumerable<Sheet> sheets, BlendMode blendMode)
@@ -245,17 +250,8 @@ namespace OpenRA.Graphics
 			if (vertexCount + 4 > renderer.TempVertexBufferSize)
 				Flush();
 
-			if (blendSpans.Count == 0 || blendSpans[^1].Mode != blendMode)
-				blendSpans.Add(new BlendSpan(vertexCount, 4, blendMode));
-			else
-			{
-				// PERF: modify in-place.
-				var span = CollectionsMarshal.AsSpan(blendSpans);
-				span[^1].Length += 4;
-			}
-
 			Array.Copy(v, 0, vertices, vertexCount, v.Length);
-			vertexCount += 4;
+			TrackQuad(blendMode);
 		}
 
 		public void SetPalette(HardwarePalette palette)
