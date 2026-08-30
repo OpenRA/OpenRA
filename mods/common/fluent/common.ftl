@@ -8,10 +8,6 @@ button-quit = Quit
 ## Server Orders
 notification-custom-rules = This map contains custom rules. Game experience may change.
 notification-two-humans-required = This server requires at least two human players to start a match.
-notification-quickmatch-auto-ready = Quick match clients will auto-ready in { $seconds } seconds.
-notification-quickmatch-ready-deadline = Ready up no later than in { $seconds } seconds.
-notification-quickmatch-countdown = T-minus { $count }.
-notification-quickmatch-countdown-aborted = Countdown aborted.
 notification-unknown-server-command = Unknown server command: { $command }.
 notification-admin-start-game = Only the host can start the game.
 notification-no-start-until-required-slots-full = Unable to start the game until required slots are full.
@@ -84,6 +80,18 @@ notification-blacklisted-server-name = Server name contains a blacklisted word.
 notification-requires-authentication = Server requires players to have an OpenRA forum account.
 notification-no-permission-to-join = You do not have permission to join this server.
 notification-slot-closed = Your slot was closed by the host.
+notification-quick-match-countdown-aborted = Countdown aborted.
+notification-quick-match-auto-ready-in =
+    { $seconds ->
+        [one] Quick match clients will auto-ready in { $seconds } second.
+       *[other] Quick match clients will auto-ready in { $seconds } seconds.
+    }
+notification-quick-match-ready-deadline =
+    { $seconds ->
+        [one] Ready up no later than in { $seconds } second.
+       *[other] Ready up no later than in { $seconds } seconds.
+    }
+notification-quick-match-countdown-step = T-minus { $step }.
 
 ## ServerOrders, UnitOrders
 notification-joined = { $player } has joined the game.

@@ -22,17 +22,20 @@ namespace OpenRA.Mods.Common.Server
 	/// </summary>
 	public class QuickMatchLaunchEpoch : ServerTrait, ITick
 	{
-		[FluentReference("seconds")]
-		const string AutoReady = "notification-quickmatch-auto-ready";
+		[FluentReference]
+		const string CountdownAborted = "notification-quick-match-countdown-aborted";
 
 		[FluentReference("seconds")]
-		const string ReadyDeadline = "notification-quickmatch-ready-deadline";
+		const string AutoReadyIn = "notification-quick-match-auto-ready-in";
 
-		[FluentReference("count")]
-		const string Countdown = "notification-quickmatch-countdown";
+		[FluentReference("seconds")]
+		const string ReadyDeadline = "notification-quick-match-ready-deadline";
+
+		[FluentReference("step")]
+		const string CountdownStep = "notification-quick-match-countdown-step";
 
 		[FluentReference]
-		const string CountdownAborted = "notification-quickmatch-countdown-aborted";
+		const string YouWereKicked = "notification-you-were-kicked";
 
 		enum Status { Idle, Counting, Expired }
 
@@ -78,7 +81,7 @@ namespace OpenRA.Mods.Common.Server
 					deadline = NowMs + Seconds * 1000L;
 					nextStep = Math.Min(5, Seconds / 10);
 					Announce(server, "start", Seconds * 1000L);
-					server.SendFluentMessage(AutoReady, "seconds", Seconds);
+					server.SendFluentMessage(AutoReadyIn, "seconds", Seconds);
 					server.SendFluentMessage(ReadyDeadline, "seconds", Seconds);
 				}
 
@@ -89,7 +92,7 @@ namespace OpenRA.Mods.Common.Server
 				while (nextStep > 0 && remaining <= nextStep * 10000L)
 				{
 					Announce(server, nextStep.ToStringInvariant(), remaining);
-					server.SendFluentMessage(Countdown, "count", nextStep--);
+					server.SendFluentMessage(CountdownStep, "step", nextStep--);
 				}
 
 				if (remaining <= 0)
@@ -103,7 +106,7 @@ namespace OpenRA.Mods.Common.Server
 							(client.IsObserver && !client.IsAdmin))
 							continue;
 
-						server.SendOrderTo(conn, "ServerError", "notification-you-were-kicked");
+						server.SendOrderTo(conn, "ServerError", YouWereKicked);
 						server.DropClient(conn);
 					}
 
