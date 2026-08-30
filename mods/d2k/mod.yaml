@@ -181,6 +181,7 @@ LoadScreen: LogoStripeLoadScreen
 	Image3x: d2k|uibits/loadscreen-3x.png
 
 ServerTraits:
+	QuickMatchLaunchWindow
 	LobbyCommands
 	SkirmishLogic
 	PlayerPinger

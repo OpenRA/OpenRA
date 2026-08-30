@@ -8,6 +8,10 @@ button-quit = Quit
 ## Server Orders
 notification-custom-rules = This map contains custom rules. Game experience may change.
 notification-two-humans-required = This server requires at least two human players to start a match.
+notification-quickmatch-auto-ready = Quick match clients will auto-ready in { $seconds } seconds.
+notification-quickmatch-ready-deadline = Ready up no later than in { $seconds } seconds.
+notification-quickmatch-countdown = T-minus { $count }.
+notification-quickmatch-countdown-aborted = Countdown aborted.
 notification-unknown-server-command = Unknown server command: { $command }.
 notification-admin-start-game = Only the host can start the game.
 notification-no-start-until-required-slots-full = Unable to start the game until required slots are full.

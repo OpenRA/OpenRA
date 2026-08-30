@@ -215,6 +215,7 @@ LoadScreen: LogoStripeLoadScreen
 	Image: ts|uibits/loadscreen.png
 
 ServerTraits:
+	QuickMatchLaunchWindow
 	LobbyCommands
 	SkirmishLogic
 	PlayerPinger
