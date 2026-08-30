@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 	/// </summary>
 	public sealed class DamageType { DamageType() { } }
 
-	public interface IHealthInfo : ITraitInfoInterface
+	public interface IHealthInfo : SinglePerActor
 	{
 		int MaxHP { get; }
 	}
@@ -201,6 +201,8 @@ namespace OpenRA.Traits
 		int RemoveResource(string resourceType, int value);
 	}
 
+	public interface IEffectiveOwnerInfo : SinglePerActor { }
+
 	public interface IEffectiveOwner
 	{
 		bool Disguised { get; }
@@ -306,7 +308,7 @@ namespace OpenRA.Traits
 		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer);
 	}
 
-	public interface IOccupySpaceInfo : ITraitInfoInterface
+	public interface IOccupySpaceInfo : SinglePerActor
 	{
 		IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any);
 		bool SharesCell { get; }
@@ -337,7 +339,7 @@ namespace OpenRA.Traits
 		WRot Orientation { get; }
 	}
 
-	public interface IFacingInfo : ITraitInfoInterface { WAngle GetInitialFacing(); }
+	public interface IFacingInfo : SinglePerActor { WAngle GetInitialFacing(); }
 
 	public interface ITraitInfoInterface { }
 
@@ -362,6 +364,9 @@ namespace OpenRA.Traits
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Not a real interface, but more like a tag.")]
 	public interface NotBefore<T> where T : class, ITraitInfoInterface { }
+
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Not a real interface, but more like a tag.")]
+	public interface SinglePerActor : ITraitInfoInterface { }
 
 	public interface IActivityInterface { }
 
@@ -548,7 +553,7 @@ namespace OpenRA.Traits
 		IEnumerable<WPos> TargetablePositions(Actor self);
 	}
 
-	public interface IMoveInfo : ITraitInfoInterface
+	public interface IMoveInfo : SinglePerActor
 	{
 		Color GetTargetLineColor();
 	}
