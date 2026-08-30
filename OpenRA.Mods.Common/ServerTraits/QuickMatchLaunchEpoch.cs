@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Server
 					server.SendFluentMessage(CountdownStep, "step", nextStep--);
 				}
 
-				while (nextFinalStep > 0 && remaining <= nextFinalStep * 1000L)
+				while (nextFinalStep > 0 && remaining <= nextFinalStep * 1000L + QuickMatch.ReadyLeadMs)
 					server.SendFluentMessage(FinalCountdownStep, "step", nextFinalStep--);
 
 				if (remaining <= 0)

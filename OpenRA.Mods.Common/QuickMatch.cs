@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common
 
 		const int RecheckSeconds = 5;
 
-		const int ReadyLeadMs = 1000;
+		internal const int ReadyLeadMs = 1000;
 
 		// ---- delegate callbacks callers should replace ----
 
