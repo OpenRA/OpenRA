@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -94,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				var move = newUnit.TraitOrDefault<IMove>();
 				if (move != null)
 					foreach (var cell in destinations)
-						newUnit.QueueActivity(move.MoveTo(cell, 2, evaluateNearestMovableCell: true));
+						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(cell, 2, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
