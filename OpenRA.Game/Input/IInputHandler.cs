@@ -75,7 +75,7 @@ namespace OpenRA
 	public struct KeyInput
 	{
 		public KeyInputEvent Event;
-		public Keycode Key;
+		public Scancode Key;
 		public Modifiers Modifiers;
 		public int MultiTapCount;
 		public char UnicodeChar;

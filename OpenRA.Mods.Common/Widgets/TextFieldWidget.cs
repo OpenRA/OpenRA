@@ -221,29 +221,29 @@ namespace OpenRA.Mods.Common.Widgets
 
 			switch (e.Key)
 			{
-				case Keycode.RETURN:
-				case Keycode.KP_ENTER:
+				case Scancode.RETURN:
+				case Scancode.KP_ENTER:
 					if (OnEnterKey(e))
 						return true;
 					break;
 
-				case Keycode.TAB:
+				case Scancode.TAB:
 					if (OnTabKey(e))
 						return true;
 					break;
 
-				case Keycode.ESCAPE:
+				case Scancode.ESCAPE:
 					ClearSelection();
 					if (OnEscKey(e))
 						return true;
 					break;
 
-				case Keycode.LALT:
+				case Scancode.LALT:
 					if (OnAltKey())
 						return true;
 					break;
 
-				case Keycode.LEFT:
+				case Scancode.LEFT:
 					ResetBlinkCycle();
 					if (CursorPosition > 0)
 					{
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.RIGHT:
+				case Scancode.RIGHT:
 					ResetBlinkCycle();
 					if (CursorPosition <= Text.Length - 1)
 					{
@@ -285,17 +285,17 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.UP:
+				case Scancode.UP:
 					if (OnArrowUp(e))
 						return true;
 					break;
 
-				case Keycode.DOWN:
+				case Scancode.DOWN:
 					if (OnArrowDown(e))
 						return true;
 					break;
 
-				case Keycode.HOME:
+				case Scancode.HOME:
 					ResetBlinkCycle();
 					if (e.Modifiers.HasModifier(Modifiers.Shift))
 						HandleSelectionUpdate(CursorPosition, 0);
@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Widgets
 					CursorPosition = 0;
 					break;
 
-				case Keycode.END:
+				case Scancode.END:
 					ResetBlinkCycle();
 
 					if (e.Modifiers.HasModifier(Modifiers.Shift))
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Widgets
 					CursorPosition = Text.Length;
 					break;
 
-				case Keycode.D:
+				case Scancode.D:
 					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.K:
+				case Scancode.K:
 					// ctrl+k is equivalent to cmd+delete on osx (but also works on osx)
 					ResetBlinkCycle();
 					if (e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition < Text.Length)
@@ -342,7 +342,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.U:
+				case Scancode.U:
 					// ctrl+u is equivalent to cmd+backspace on osx
 					ResetBlinkCycle();
 					if (!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition > 0)
@@ -356,7 +356,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.X:
+				case Scancode.X:
 					ResetBlinkCycle();
 					if (((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))) &&
 						!string.IsNullOrEmpty(Text) && selectionStartIndex != -1)
@@ -369,7 +369,7 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					break;
-				case Keycode.C:
+				case Scancode.C:
 					ResetBlinkCycle();
 					if (((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
 						&& !string.IsNullOrEmpty(Text) && selectionStartIndex != -1)
@@ -381,7 +381,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.DELETE:
+				case Scancode.DELETE:
 					// cmd+delete is equivalent to ctrl+k on non-osx
 					ResetBlinkCycle();
 					if (selectionStartIndex != -1)
@@ -402,7 +402,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.BACKSPACE:
+				case Scancode.BACKSPACE:
 					// cmd+backspace is equivalent to ctrl+u on non-osx
 					ResetBlinkCycle();
 					if (selectionStartIndex != -1)
@@ -432,7 +432,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 					break;
 
-				case Keycode.V:
+				case Scancode.V:
 					ResetBlinkCycle();
 
 					if (selectionStartIndex != -1)
@@ -453,7 +453,7 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					break;
-				case Keycode.A:
+				case Scancode.A:
 					// Ctrl+A as Select-All, or Cmd+A on OSX
 					if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Meta)))
 					{

@@ -149,24 +149,24 @@ namespace OpenRA.Platforms.Default
 						if (e.button.button == SDL.SDL_BUTTON_X1 ||
 							e.button.button == SDL.SDL_BUTTON_X2)
 						{
-							Keycode keyCode;
+							Scancode scanCode;
 
 							if (e.button.button == SDL.SDL_BUTTON_X1)
-								keyCode = Keycode.MOUSE4;
+								scanCode = Scancode.MOUSE4;
 							else
-								keyCode = Keycode.MOUSE5;
+								scanCode = Scancode.MOUSE5;
 
 							var type = e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN ?
 								KeyInputEvent.Down : KeyInputEvent.Up;
 
 							var tapCount = e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN ?
-								MultiTapDetection.DetectFromKeyboard(keyCode, mods) :
-								MultiTapDetection.InfoFromKeyboard(keyCode, mods);
+								MultiTapDetection.DetectFromKeyboard(scanCode, mods) :
+								MultiTapDetection.InfoFromKeyboard(scanCode, mods);
 
 							var keyEvent = new KeyInput
 							{
 								Event = type,
-								Key = keyCode,
+								Key = scanCode,
 								Modifiers = mods,
 								UnicodeChar = '?',
 								MultiTapCount = tapCount,
@@ -215,26 +215,29 @@ namespace OpenRA.Platforms.Default
 					case SDL.SDL_EventType.SDL_KEYDOWN:
 					case SDL.SDL_EventType.SDL_KEYUP:
 					{
-						var keyCode = (Keycode)e.key.keysym.sym;
+						// Use scancode for layout-independent key identification
+						var scanCode = (Scancode)e.key.keysym.scancode;
 						var type = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
 							KeyInputEvent.Down : KeyInputEvent.Up;
 
 						var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
-							MultiTapDetection.DetectFromKeyboard(keyCode, mods) :
-							MultiTapDetection.InfoFromKeyboard(keyCode, mods);
+							MultiTapDetection.DetectFromKeyboard(scanCode, mods) :
+							MultiTapDetection.InfoFromKeyboard(scanCode, mods);
 
 						var keyEvent = new KeyInput
 						{
 							Event = type,
-							Key = keyCode,
+							Key = scanCode,
 							Modifiers = mods,
+
+							// Keep sym for unicode character (used for text input)
 							UnicodeChar = (char)e.key.keysym.sym,
 							MultiTapCount = tapCount,
 							IsRepeat = e.key.repeat != 0
 						};
 
-						// Special case workaround for windows users
-						if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
+						// Special case workaround for windows users (Alt+F4)
+						if (scanCode == Scancode.F4 && mods.HasModifier(Modifiers.Alt) &&
 							Platform.CurrentPlatform == PlatformType.Windows)
 							Game.Exit();
 						else

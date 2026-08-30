@@ -76,12 +76,12 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		static readonly Keycode[] IgnoreKeys =
+		static readonly Scancode[] IgnoreKeys =
 		[
-			Keycode.RSHIFT, Keycode.LSHIFT,
-			Keycode.RCTRL, Keycode.LCTRL,
-			Keycode.RALT, Keycode.LALT,
-			Keycode.RGUI, Keycode.LGUI,
+			Scancode.RSHIFT, Scancode.LSHIFT,
+			Scancode.RCTRL, Scancode.LCTRL,
+			Scancode.RALT, Scancode.LALT,
+			Scancode.RGUI, Scancode.LGUI,
 		];
 
 		public override bool HandleKeyPress(KeyInput e)
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			switch (e.Key)
 			{
-				case Keycode.ESCAPE:
+				case Scancode.ESCAPE:
 					OnEscKey(e);
 					break;
 

@@ -168,6 +168,9 @@ namespace OpenRA.Platforms.Default
 				if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) != 0)
 					Log.Write("graphics", $"SDL initialisation failed: {SDL.SDL_GetError()}");
 
+				// Initialize layout-aware scancode display names
+				ScancodeExts.GetLayoutAwareDisplayName = GetScancodeDisplayName;
+
 				SetSDLAttributes(profile);
 				Console.WriteLine($"Using SDL {GetSDLVersion()} with OpenGL ({profile}) renderer");
 				if (videoDisplay < 0 || videoDisplay >= DisplayCount)
@@ -615,6 +618,35 @@ namespace OpenRA.Platforms.Default
 			var oldScaleModifier = scaleModifier;
 			scaleModifier = scale;
 			OnWindowScaleChanged(windowScale, windowScale * oldScaleModifier, windowScale, windowScale * scaleModifier);
+		}
+
+		// Gets the display name for a scancode based on the current keyboard layout.
+		// This converts the physical key position to the character it produces on the user's keyboard.
+		public static string GetScancodeDisplayName(Scancode scancode)
+		{
+			// Handle special cases that don't have SDL keycodes
+			switch (scancode)
+			{
+				case Scancode.MOUSE4:
+					return "Mouse 4";
+				case Scancode.MOUSE5:
+					return "Mouse 5";
+				case Scancode.UNKNOWN:
+					return "Unknown";
+			}
+
+			// Convert scancode to keycode for the current keyboard layout
+			var sdlScancode = (SDL.SDL_Scancode)scancode;
+			var keycode = SDL.SDL_GetKeyFromScancode(sdlScancode);
+
+			// Get the name of the key from SDL
+			var keyName = SDL.SDL_GetKeyName(keycode);
+
+			// Return the key name if valid, otherwise return null to use fallback
+			if (!string.IsNullOrEmpty(keyName) && keyName != "Unknown Key")
+				return keyName;
+
+			return null;
 		}
 	}
 }

@@ -207,9 +207,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return true;
 				}
 
-				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
+				if (e.Key >= Scancode.NUMBER_0 && e.Key <= Scancode.NUMBER_9)
 				{
-					var key = (int)e.Key - (int)Keycode.NUMBER_0;
+					var key = (int)e.Key - (int)Scancode.NUMBER_0;
 					var team = teams.SingleOrDefault(t => t.Key == key)?.ToList();
 					if (team == null || team.Count == 0)
 						return false;

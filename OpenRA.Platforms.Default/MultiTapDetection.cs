@@ -16,7 +16,7 @@ namespace OpenRA.Platforms.Default
 {
 	static class MultiTapDetection
 	{
-		static readonly Cache<(Keycode Key, Modifiers Mods), TapHistory> KeyHistoryCache =
+		static readonly Cache<(Scancode Key, Modifiers Mods), TapHistory> KeyHistoryCache =
 			new(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 		static readonly Cache<byte, TapHistory> ClickHistoryCache =
 			new(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
@@ -31,12 +31,12 @@ namespace OpenRA.Platforms.Default
 			return ClickHistoryCache[button].LastTapCount();
 		}
 
-		public static int DetectFromKeyboard(Keycode key, Modifiers mods)
+		public static int DetectFromKeyboard(Scancode key, Modifiers mods)
 		{
 			return KeyHistoryCache[(key, mods)].GetTapCount(int2.Zero);
 		}
 
-		public static int InfoFromKeyboard(Keycode key, Modifiers mods)
+		public static int InfoFromKeyboard(Scancode key, Modifiers mods)
 		{
 			return KeyHistoryCache[(key, mods)].LastTapCount();
 		}
