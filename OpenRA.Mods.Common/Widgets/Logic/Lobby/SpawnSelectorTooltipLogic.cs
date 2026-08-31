@@ -17,16 +17,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SpawnSelectorTooltipLogic : ChromeLogic
 	{
-		[FluentReference]
+		[FluentReference("spawn")]
 		const string DisabledSpawn = "label-disabled-spawn";
 
-		[FluentReference]
+		[FluentReference("spawn")]
 		const string AvailableSpawn = "label-available-spawn";
 
-		[FluentReference("team")]
-		const string TeamNumber = "label-team-name";
+		[FluentReference("spawn")]
+		const string SpawnName = "label-spawn-name";
 
-		readonly CachedTransform<int, string> teamMessage;
+		[FluentReference("team", "spawn")]
+		const string TeamSpawn = "label-team-spawn";
+
+		readonly CachedTransform<string, string> disabledSpawnMessage;
+		readonly CachedTransform<string, string> availableSpawnMessage;
+		readonly CachedTransform<string, string> spawnMessage;
+		readonly CachedTransform<(int Team, string Spawn), string> teamSpawnMessage;
 
 		[ObjectCreator.UseCtor]
 		public SpawnSelectorTooltipLogic(Widget widget, ModData modData,
@@ -48,21 +54,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
-			teamMessage = new CachedTransform<int, string>(t => FluentProvider.GetMessage(TeamNumber, "team", t));
-			var disabledSpawn = FluentProvider.GetMessage(DisabledSpawn);
-			var availableSpawn = FluentProvider.GetMessage(AvailableSpawn);
+			var playerSpawn = "";
+			var occupied = false;
+			disabledSpawnMessage = new CachedTransform<string, string>(s => FluentProvider.GetMessage(DisabledSpawn, "spawn", s));
+			availableSpawnMessage = new CachedTransform<string, string>(s => FluentProvider.GetMessage(AvailableSpawn, "spawn", s));
+			spawnMessage = new CachedTransform<string, string>(s => FluentProvider.GetMessage(SpawnName, "spawn", s));
+			teamSpawnMessage = new CachedTransform<(int Team, string Spawn), string>(
+				t => FluentProvider.GetMessage(TeamSpawn, "team", t.Team, "spawn", t.Spawn));
 
 			tooltipContainer.BeforeRender = () =>
 			{
 				showTooltip = true;
 
 				var teamWidth = 0;
+				playerSpawn = Convert.ToChar('A' - 1 + preview.TooltipSpawnIndex).ToString();
 				if (preview.SpawnOccupants().TryGetValue(preview.TooltipSpawnIndex, out var occupant))
 				{
 					labelText = occupant.PlayerName;
 					playerFaction = occupant.Faction;
 					playerTeam = occupant.Team;
-					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
+					occupied = true;
+					widget.Bounds.Height = doubleHeight;
 					teamWidth = teamFont.Measure(team.GetText()).X;
 				}
 				else
@@ -74,11 +86,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					labelText = preview.DisabledSpawnPoints().Contains(preview.TooltipSpawnIndex)
-						? disabledSpawn
-						: availableSpawn;
+						? disabledSpawnMessage.Update(playerSpawn)
+						: availableSpawnMessage.Update(playerSpawn);
 
 					playerFaction = null;
 					playerTeam = 0;
+					occupied = false;
 					widget.Bounds.Height = singleHeight;
 				}
 
@@ -93,8 +106,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
-			team.GetText = () => playerTeam > 0 ? teamMessage.Update(playerTeam) : "";
-			team.IsVisible = () => playerTeam > 0;
+			team.GetText = () =>
+			{
+				if (!occupied)
+					return "";
+
+				return playerTeam > 0 ? teamSpawnMessage.Update((playerTeam, playerSpawn)) : spawnMessage.Update(playerSpawn);
+			};
+			team.IsVisible = () => occupied;
 		}
 	}
 }
