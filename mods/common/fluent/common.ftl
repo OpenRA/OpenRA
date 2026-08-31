@@ -342,6 +342,7 @@ label-created-by = Created by { $author }
 ## SpawnSelectorTooltipLogic
 label-disabled-spawn = Disabled spawn
 label-available-spawn = Available spawn
+label-team-spawn = Team { $team }  Spawn { $spawn }
 
 ## DisplaySettingsLogic
 options-camera =
