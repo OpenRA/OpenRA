@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string AvailableSpawn = "label-available-spawn";
 
-		[FluentReference("team")]
-		const string TeamNumber = "label-team-name";
+		[FluentReference("team", "spawn")]
+		const string TeamSpawn = "label-team-spawn";
 
-		readonly CachedTransform<int, string> teamMessage;
+		readonly CachedTransform<(int Team, string Spawn), string> teamSpawnMessage;
 
 		[ObjectCreator.UseCtor]
 		public SpawnSelectorTooltipLogic(Widget widget, ModData modData,
@@ -48,7 +48,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
-			teamMessage = new CachedTransform<int, string>(t => FluentProvider.GetMessage(TeamNumber, "team", t));
+			var playerSpawn = "";
+			teamSpawnMessage = new CachedTransform<(int Team, string Spawn), string>(
+				t => FluentProvider.GetMessage(TeamSpawn, "team", t.Team, "spawn", t.Spawn));
 			var disabledSpawn = FluentProvider.GetMessage(DisabledSpawn);
 			var availableSpawn = FluentProvider.GetMessage(AvailableSpawn);
 
@@ -62,6 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					labelText = occupant.PlayerName;
 					playerFaction = occupant.Faction;
 					playerTeam = occupant.Team;
+					playerSpawn = Convert.ToChar('A' - 1 + preview.TooltipSpawnIndex).ToString();
 					widget.Bounds.Height = playerTeam > 0 ? doubleHeight : singleHeight;
 					teamWidth = teamFont.Measure(team.GetText()).X;
 				}
@@ -79,6 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					playerFaction = null;
 					playerTeam = 0;
+					playerSpawn = "";
 					widget.Bounds.Height = singleHeight;
 				}
 
@@ -93,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
-			team.GetText = () => playerTeam > 0 ? teamMessage.Update(playerTeam) : "";
+			team.GetText = () => playerTeam > 0 ? teamSpawnMessage.Update((playerTeam, playerSpawn)) : "";
 			team.IsVisible = () => playerTeam > 0;
 		}
 	}
