@@ -56,10 +56,39 @@ jobs:
         run: |
           gh release upload ${{ github.ref_name }} build/source/*
 
-  linux:
-    name: Linux AppImages
+  linux-x64:
+    name: Linux AppImages (x64)
     needs: create-release
     runs-on: ubuntu-22.04
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v7
+
+      - name: Install .NET 10.0
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package AppImages
+        run: |
+          mkdir -p build/linux
+          sudo apt-get install -y desktop-file-utils
+          ./packaging/linux/buildpackage.sh "${GIT_TAG}" "${PWD}/build/linux"
+
+      - name: Upload Packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release upload ${{ github.ref_name }} build/linux/*
+
+  linux-arm64:
+    name: Linux AppImages (arm64)
+    needs: create-release
+    runs-on: ubuntu-22.04-arm
     steps:
       - name: Clone Repository
         uses: actions/checkout@v7
