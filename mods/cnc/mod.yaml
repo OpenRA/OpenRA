@@ -100,6 +100,7 @@ ChromeLayout:
 	cnc|chrome/encyclopedia.yaml
 	cnc|chrome/multiplayer-browser.yaml
 	cnc|chrome/multiplayer-browserpanels.yaml
+	common|chrome/multiplayer-servermenu.yaml
 	cnc|chrome/multiplayer-createserver.yaml
 	cnc|chrome/multiplayer-directconnect.yaml
 	cnc|chrome/lobby.yaml
@@ -109,6 +110,7 @@ ChromeLayout:
 	cnc|chrome/lobby-music.yaml
 	cnc|chrome/lobby-servers.yaml
 	cnc|chrome/lobby-kickdialogs.yaml
+	cnc|chrome/lobby-adminauth.yaml
 	cnc|chrome/connection.yaml
 	cnc|chrome/color-picker.yaml
 	cnc|chrome/mapchooser.yaml
