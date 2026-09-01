@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -280,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 			RemoveRange(PreviewsInCellRegion(region).ToArray().AsSpan());
 		}
 
-		public void RemoveRegion(CellCoordsRegion region, HashSet<CPos> mask)
+		public void RemoveRegion(CellCoordsRegion region, FrozenSet<CPos> mask)
 		{
 			RemoveRange(PreviewsInCellRegion(region).Where(p => mask.Overlaps(p.Footprint.Keys)).ToArray().AsSpan());
 		}

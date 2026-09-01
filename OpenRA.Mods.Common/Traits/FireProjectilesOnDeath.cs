@@ -11,6 +11,7 @@
 
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.GameRules;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -48,13 +49,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.RulesetLoaded(rules, ai);
 
-			WeaponInfos = Weapons.Select(w =>
+			var localWeaponInfos = new WeaponInfo[Weapons.Length];
+			for (var i = 0; i < Weapons.Length; i++)
 			{
+				var w = Weapons[i];
 				var weaponToLower = w.ToLowerInvariant();
 				if (!rules.Weapons.TryGetValue(weaponToLower, out var weapon))
 					throw new YamlException($"Weapons Ruleset does not contain an entry '{weaponToLower}'");
-				return weapon;
-			}).ToImmutableArray();
+
+				localWeaponInfos[i] = weapon;
+			}
+
+			WeaponInfos = ImmutableCollectionsMarshal.AsImmutableArray(localWeaponInfos);
 		}
 	}
 

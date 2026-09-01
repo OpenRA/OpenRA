@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
@@ -104,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
-		HotkeyReference[] hotkeys;
+		ImmutableArray<HotkeyReference> hotkeys;
 
 		public ProductionQueue CurrentQueue
 		{
@@ -174,7 +175,7 @@ namespace OpenRA.Mods.Common.Widgets
 			clock = new Animation(World, ClockAnimation);
 			cantBuild = new Animation(World, NotBuildableAnimation);
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
-			hotkeys = Exts.MakeArray(HotkeyCount,
+			hotkeys = Exts.MakeImmutableArray(HotkeyCount,
 				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			overlayFont = Game.Renderer.Fonts[OverlayFont];

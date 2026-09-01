@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Frozen;
 using System.Collections.Generic;
 
 namespace OpenRA
@@ -260,7 +261,7 @@ namespace OpenRA
 	public static class KeycodeExts
 	{
 		[FluentReference(Traits.LintDictionaryReference.Values)]
-		public static readonly IReadOnlyDictionary<Keycode, string> KeycodeFluentKeys = new Dictionary<Keycode, string>()
+		public static readonly FrozenDictionary<Keycode, string> KeycodeFluentKeys = new Dictionary<Keycode, string>()
 		{
 			{ Keycode.UNKNOWN, "keycode.unknown" },
 			{ Keycode.RETURN, "keycode.return" },
@@ -500,7 +501,7 @@ namespace OpenRA
 			{ Keycode.SLEEP, "keycode.sleep" },
 			{ Keycode.MOUSE4, "keycode.mouse4" },
 			{ Keycode.MOUSE5, "keycode.mouse5" },
-		};
+		}.ToFrozenDictionary();
 
 		public static string DisplayString(Keycode k)
 		{

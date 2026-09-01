@@ -9,10 +9,9 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -204,18 +203,28 @@ namespace OpenRA
 
 		ImmutableArray<ImmutableArray<CVec>> CreateTilesByDistance()
 		{
-			var ts = new List<CVec>[MaximumTileSearchRange + 1];
-			for (var i = 0; i < MaximumTileSearchRange + 1; i++)
-				ts[i] = [];
+			var maxRangeSq = MaximumTileSearchRange * MaximumTileSearchRange;
+			var len = MaximumTileSearchRange + 1;
+
+			var ts = new ImmutableArray<CVec>.Builder[len];
+			for (var i = 0; i < len; i++)
+				ts[i] = ImmutableArray.CreateBuilder<CVec>();
 
 			for (var j = -MaximumTileSearchRange; j <= MaximumTileSearchRange; j++)
+			{
 				for (var i = -MaximumTileSearchRange; i <= MaximumTileSearchRange; i++)
-					if (MaximumTileSearchRange * MaximumTileSearchRange >= i * i + j * j)
-						ts[Exts.ISqrt(i * i + j * j, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
+				{
+					var distSq = i * i + j * j;
+					if (maxRangeSq >= distSq)
+						ts[Exts.ISqrt(distSq, Exts.ISqrtRoundMode.Ceiling)].Add(new CVec(i, j));
+				}
+			}
 
 			// Sort each integer-distance group by the actual distance
-			foreach (var list in ts)
+			var finalArray = new ImmutableArray<CVec>[len];
+			for (var i = 0; i < len; i++)
 			{
+				var list = ts[i];
 				list.Sort((a, b) =>
 				{
 					var result = a.LengthSquared.CompareTo(b.LengthSquared);
@@ -236,9 +245,11 @@ namespace OpenRA
 
 					return a.Y.CompareTo(b.Y);
 				});
+
+				finalArray[i] = list.DrainToImmutable();
 			}
 
-			return ts.Select(list => list.ToImmutableArray()).ToImmutableArray();
+			return ImmutableCollectionsMarshal.AsImmutableArray(finalArray);
 		}
 
 		public WVec OffsetOfSubCell(SubCell subCell)

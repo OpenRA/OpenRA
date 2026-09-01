@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			}
 
 			public PermittedSegments(
-				IReadOnlyList<MultiBrush> multiBrushes,
+				ImmutableArray<MultiBrush> multiBrushes,
 				IEnumerable<MultiBrush> all)
 			{
 				var array = all.ToImmutableArray();
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// Creates a PermittedSegments using only the given types.
 			/// </summary>
 			public static PermittedSegments FromType(
-				IReadOnlyList<MultiBrush> multiBrushes,
+				ImmutableArray<MultiBrush> multiBrushes,
 				IEnumerable<string> types)
 				=> new(multiBrushes, FindSegments(multiBrushes, types));
 
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// at the start and end.
 			/// </summary>
 			public static PermittedSegments FromInnerAndTerminalTypes(
-				IReadOnlyList<MultiBrush> multiBrushes,
+				ImmutableArray<MultiBrush> multiBrushes,
 				IEnumerable<string> innerTypes,
 				IEnumerable<string> terminalTypes)
 			{
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// at the start and end.
 			/// </summary>
 			public static PermittedSegments FromTypes(
-				IReadOnlyList<MultiBrush> multiBrushes,
+				ImmutableArray<MultiBrush> multiBrushes,
 				IEnumerable<string> startTypes,
 				IEnumerable<string> innerTypes,
 				IEnumerable<string> endTypes)
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// Equivalent to FindSegments(multiBrushes, types, types, types).
 			/// </summary>
 			public static IEnumerable<MultiBrush> FindSegments(
-				IReadOnlyList<MultiBrush> multiBrushes,
+				ImmutableArray<MultiBrush> multiBrushes,
 				IEnumerable<string> types)
 			{
 				var array = types.ToImmutableArray();
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			/// Filter MultiBrushes to segments that use the given start, inner, and end types.
 			/// </summary>
 			public static IEnumerable<MultiBrush> FindSegments(
-				IReadOnlyList<MultiBrush> multiBrushes,
+				ImmutableArray<MultiBrush> multiBrushes,
 				IEnumerable<string> startTypes,
 				IEnumerable<string> innerTypes,
 				IEnumerable<string> endTypes)
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// </summary>
 		public static TilingPath QuickCreate(
 			Map map,
-			IReadOnlyList<MultiBrush> brushes,
+			ImmutableArray<MultiBrush> brushes,
 			CPos[] points,
 			int maxDeviation,
 			string innerSegmentType,

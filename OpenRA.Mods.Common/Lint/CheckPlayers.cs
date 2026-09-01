@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
@@ -24,14 +23,14 @@ namespace OpenRA.Mods.Common.Lint
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			var players = new MapPlayers(map.PlayerDefinitions);
-			var spawns = new List<CPos>();
+			var spawns = ImmutableArray.CreateBuilder<CPos>();
 			foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
 			{
 				var s = new ActorReference(kv.Value.Value, kv.Value);
 				spawns.Add(s.Get<LocationInit>().Value);
 			}
 
-			Run(emitError, emitWarning, players, map.Visibility, map.Rules.Actors[SystemActors.World], spawns.ToImmutableArray());
+			Run(emitError, emitWarning, players, map.Visibility, map.Rules.Actors[SystemActors.World], spawns.DrainToImmutable());
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)

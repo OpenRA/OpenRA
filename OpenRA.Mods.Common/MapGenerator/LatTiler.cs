@@ -9,9 +9,11 @@
 */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Support;
 
@@ -126,7 +128,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				}
 
 				Main = main?.ToImmutableHashSet();
-				Replacements = replacements.ToImmutableArray();
+				Replacements = ImmutableCollectionsMarshal.AsImmutableArray(replacements);
 			}
 
 			/// <summary>
@@ -162,7 +164,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				if (Replacements[index] == null)
 					return null;
 
-				return MultiBrush.PickAny(Replacements[index], random);
+				return MultiBrush.PickAny(Replacements[index].AsSpan(), random);
 			}
 		}
 
@@ -175,21 +177,25 @@ namespace OpenRA.Mods.Common.MapGenerator
 
 		public LatTiler(MiniYaml my, ITemplatedTerrainInfo itti)
 		{
-			var latRules = new List<LatRule>();
-			foreach (var node in my.Nodes)
+			var nodes = my.Nodes;
+			var latRules = new LatRule[nodes.Length];
+
+			for (var i = 0; i < nodes.Length; i++)
 			{
-				var parts = node.Key.Split('@');
-				switch (parts[0])
+				var node = nodes[i];
+				var keySpan = node.Key.AsSpan();
+				var atIndex = keySpan.IndexOf('@');
+				switch (atIndex >= 0 ? keySpan[..atIndex] : keySpan)
 				{
 					case "Rule":
-						latRules.Add(new LatRule(node.Value, itti));
+						latRules[i] = new LatRule(node.Value, itti);
 						break;
 					default:
 						throw new YamlException($"Invalid LatTiler key `{node.Key}`");
 				}
 			}
 
-			this.latRules = latRules.ToImmutableArray();
+			this.latRules = ImmutableCollectionsMarshal.AsImmutableArray(latRules);
 		}
 
 		/// <summary>

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -203,7 +204,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; }
+		public ImmutableArray<ISpriteFrame> Frames { get; }
 		public readonly Size Size;
 
 		int recurseDepth = 0;
@@ -244,7 +245,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			foreach (var h in headers)
 				Decompress(h);
 
-			Frames = headers.Select(f => (ISpriteFrame)new TrimmedFrame(f)).ToArray();
+			Frames = headers.Select(f => (ISpriteFrame)new TrimmedFrame(f)).ToImmutableArray();
 		}
 
 		void Decompress(ImageHeader h)
