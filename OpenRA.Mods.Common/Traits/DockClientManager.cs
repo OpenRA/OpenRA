@@ -271,6 +271,14 @@ namespace OpenRA.Mods.Common.Traits
 					.Any(host => dockClients.Any(client => client.CanDock(host.GetDockType, forceEnter)));
 		}
 
+		/// <summary>If <paramref name="type"/> is not set, checks all clients.</summary>
+		public bool CanDockAt(Actor target, BitSet<DockType> type, bool forceEnter = false, bool ignoreOccupancy = false)
+		{
+			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type, forceEnter);
+			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>()
+				.Any(host => clients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
+		}
+
 		/// <summary>Can we dock to this <paramref name="host"/>.</summary>
 		public bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
