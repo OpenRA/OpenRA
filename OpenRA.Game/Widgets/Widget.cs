@@ -389,13 +389,17 @@ namespace OpenRA.Widgets
 				return false;
 
 			Ui.KeyboardFocusWidget = this;
+			Game.Renderer.Window.SetTextInputActive(true);
 			return true;
 		}
 
 		public virtual bool YieldKeyboardFocus()
 		{
 			if (Ui.KeyboardFocusWidget == this)
+			{
 				Ui.KeyboardFocusWidget = null;
+				Game.Renderer.Window.SetTextInputActive(false);
+			}
 
 			return true;
 		}
@@ -403,7 +407,10 @@ namespace OpenRA.Widgets
 		void ForceYieldKeyboardFocus()
 		{
 			if (Ui.KeyboardFocusWidget == this && !YieldKeyboardFocus())
+			{
 				Ui.KeyboardFocusWidget = null;
+				Game.Renderer.Window.SetTextInputActive(false);
+			}
 		}
 
 		public virtual string GetCursor(int2 pos) { return defaultCursor; }
