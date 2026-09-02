@@ -20,7 +20,7 @@ namespace OpenRA
 {
 	static class SpanExts
 	{
-		public static int BinarySearchMany(this Span<Actor> span, uint searchFor)
+		public static int BinarySearchMany(this ReadOnlySpan<Actor> span, uint searchFor)
 		{
 			var start = 0;
 			var end = span.Length;
@@ -103,14 +103,30 @@ namespace OpenRA
 			return InnerGet<T>().GetMultiple(actor.ActorID);
 		}
 
+		public TraitIterator<T> WithInterfaceAsIterator<T>(Actor actor)
+		{
+			CheckDestroyed(actor);
+			return InnerGet<T>().GetMultipleAsIterator(actor.ActorID);
+		}
+
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
 			return InnerGet<T>().All();
 		}
 
+		public TraitPairIterator<T> ActorsWithTraitAsIterator<T>()
+		{
+			return InnerGet<T>().AllAsIterator();
+		}
+
 		public IEnumerable<Actor> ActorsHavingTrait<T>()
 		{
 			return InnerGet<T>().Actors();
+		}
+
+		public ActorIterator ActorsHavingTraitAsIterator<T>()
+		{
+			return InnerGet<T>().ActorsAsIterator();
 		}
 
 		public IEnumerable<Actor> ActorsHavingTrait<T>(Func<T, bool> predicate)
@@ -152,7 +168,7 @@ namespace OpenRA
 			public void Add(Actor actor, object trait)
 			{
 				var actorsSpan = CollectionsMarshal.AsSpan(actors);
-				var insertIndex = actorsSpan.BinarySearchMany(actor.ActorID + 1);
+				var insertIndex = ((ReadOnlySpan<Actor>)actorsSpan).BinarySearchMany(actor.ActorID + 1);
 				actors.Insert(insertIndex, actor);
 				traits.Insert(insertIndex, (T)trait);
 			}
@@ -169,7 +185,7 @@ namespace OpenRA
 			public T GetOrDefault(Actor actor)
 			{
 				++Queries;
-				var actorsSpan = CollectionsMarshal.AsSpan(actors);
+				var actorsSpan = (ReadOnlySpan<Actor>)CollectionsMarshal.AsSpan(actors);
 				var index = actorsSpan.BinarySearchMany(actor.ActorID);
 				if (index >= actorsSpan.Length || actorsSpan[index] != actor)
 					return default;
@@ -185,6 +201,13 @@ namespace OpenRA
 				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
 				return new MultipleEnumerable(this, actor);
+			}
+
+			public TraitIterator<T> GetMultipleAsIterator(uint actor)
+			{
+				// PERF: Custom zero alloc enumerator for efficiency
+				++Queries;
+				return new TraitIterator<T>(this.actors, this.traits, actor);
 			}
 
 			sealed class MultipleEnumerable : IEnumerable<T>
@@ -211,7 +234,7 @@ namespace OpenRA
 					Reset();
 				}
 
-				public void Reset() { index = CollectionsMarshal.AsSpan(actors).BinarySearchMany(actor) - 1; }
+				public void Reset() { index = ((ReadOnlySpan<Actor>)CollectionsMarshal.AsSpan(actors)).BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
 				public readonly T Current => traits[index];
 				readonly object System.Collections.IEnumerator.Current => Current;
@@ -223,6 +246,13 @@ namespace OpenRA
 				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
 				return new AllEnumerable(this);
+			}
+
+			public TraitPairIterator<T> AllAsIterator()
+			{
+				// PERF: Zero alloc enumerator
+				++Queries;
+				return new TraitPairIterator<T>(this.actors, this.traits);
 			}
 
 			public IEnumerable<Actor> Actors()
@@ -238,6 +268,12 @@ namespace OpenRA
 					yield return current;
 					last = current;
 				}
+			}
+
+			public ActorIterator ActorsAsIterator()
+			{
+				++Queries;
+				return new ActorIterator(this.actors);
 			}
 
 			public IEnumerable<Actor> Actors(Func<T, bool> predicate)
@@ -287,7 +323,7 @@ namespace OpenRA
 			public void RemoveActor(uint actor)
 			{
 				var actorsSpan = CollectionsMarshal.AsSpan(actors);
-				var startIndex = actorsSpan.BinarySearchMany(actor);
+				var startIndex = ((ReadOnlySpan<Actor>)actorsSpan).BinarySearchMany(actor);
 				if (startIndex >= actorsSpan.Length || actorsSpan[startIndex].ActorID != actor)
 					return;
 
@@ -325,5 +361,84 @@ namespace OpenRA
 				}
 			}
 		}
+	}
+
+	public ref struct TraitPairIterator<T>
+	{
+		readonly ReadOnlySpan<Actor> actors;
+		readonly ReadOnlySpan<T> traits;
+		int index;
+
+		public TraitPairIterator(List<Actor> actors, List<T> traits)
+		{
+			this.actors = CollectionsMarshal.AsSpan(actors);
+			this.traits = CollectionsMarshal.AsSpan(traits);
+			index = -1;
+		}
+
+		public bool MoveNext()
+		{
+			return ++index < actors.Length;
+		}
+
+		public readonly TraitPair<T> Current => new(actors[index], traits[index]);
+
+		public static void Dispose() { }
+		public readonly TraitPairIterator<T> GetEnumerator() => this;
+	}
+
+	public ref struct TraitIterator<T>
+	{
+		readonly ReadOnlySpan<Actor> actors;
+		readonly ReadOnlySpan<T> traits;
+		readonly uint actor;
+		int index;
+
+		public TraitIterator(List<Actor> actors, List<T> traits, uint actor)
+		{
+			this.actors = CollectionsMarshal.AsSpan(actors);
+			this.traits = CollectionsMarshal.AsSpan(traits);
+			this.actor = actor;
+			index = this.actors.BinarySearchMany(actor) - 1;
+		}
+
+		public bool MoveNext() { return ++index < actors.Length && actors[index].ActorID == actor; }
+		public readonly T Current => traits[index];
+		public static void Dispose() { }
+		public readonly TraitIterator<T> GetEnumerator() => this;
+	}
+
+	public ref struct ActorIterator
+	{
+		readonly ReadOnlySpan<Actor> actors;
+		int index;
+
+		public ActorIterator(List<Actor> actors)
+		{
+			this.actors = CollectionsMarshal.AsSpan(actors);
+			index = -1;
+		}
+
+		public bool MoveNext()
+		{
+			if (index >= actors.Length)
+				return false;
+
+			while (++index < actors.Length)
+			{
+				var next = actors[index];
+				if (index == 0 || next.ActorID != Current.ActorID)
+				{
+					Current = next;
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public Actor Current { get; private set; }
+		public static void Dispose() { }
+		public readonly ActorIterator GetEnumerator() => this;
 	}
 }

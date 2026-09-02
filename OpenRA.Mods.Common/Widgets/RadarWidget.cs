@@ -425,7 +425,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var colors = (uint*)colorBytes;
 
-						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+						foreach (var t in world.ActorsWithTraitAsIterator<IRadarSignature>())
 						{
 							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
 								continue;
