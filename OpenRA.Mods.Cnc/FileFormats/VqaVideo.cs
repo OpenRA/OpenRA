@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		{
 			var audio1 = new MemoryStream(); // left channel / mono
 			var audio2 = new MemoryStream(); // right channel
-			var adpcmIndex = 0;
+			byte adpcmIndex = 0;
 			var compressed = false;
 			for (var i = 0; i < FrameCount; i++)
 			{
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				}
 			}
 
-			static byte[] GetAudioData(bool compressed, MemoryStream audio, ref int adpcmIndex)
+			static byte[] GetAudioData(bool compressed, MemoryStream audio, ref byte adpcmIndex)
 			{
 				var audioArray = audio.ToArray();
 				if (!compressed)
