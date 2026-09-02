@@ -128,8 +128,11 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(BeaconImage))]
 		public readonly string BeaconPoster = null;
 
+		[PaletteReference(nameof(BeaconPaletteIsPlayerPalette))]
+		public readonly string BeaconPosterPalette = "player";
+
 		[PaletteReference]
-		public readonly string BeaconPosterPalette = "chrome";
+		public readonly string ClockPalette = "chrome";
 
 		[SequenceReference(nameof(BeaconImage))]
 		public readonly string ClockSequence = null;
