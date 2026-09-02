@@ -6,8 +6,9 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 AlliedReinforcementsA = { "e1", "e1", "e1", "e1", "e1" }
-AlliedReinforcementsB = { "e1", "e1", "e3", "e3", "e3" }
+AlliedReinforcementsB = { "e3", "e3", "e3", "e3", "e3" }
 AlliedBoatReinforcements = { "pt", "pt" }
 BadGuys = { BadGuy1, BadGuy2, BadGuy3, BadGuy4 }
 
@@ -39,9 +40,7 @@ SovietMammothPaths =
 SubPaths = {
 	{ SubPatrol1_1.Location, SubPatrol1_2.Location },
 	{ SubPatrol2_1.Location, SubPatrol2_2.Location },
-	{ SubPatrol3_1.Location, SubPatrol3_2.Location },
-	{ SubPatrol4_1.Location, SubPatrol4_2.Location },
-	{ SubPatrol5_1.Location, SubPatrol5_2.Location }
+	{ SubPatrol3_1.Location, SubPatrol3_2.Location }
 }
 
 ParadropWaypoints =
@@ -63,7 +62,7 @@ GroupPatrol = function(units, waypoints, delay)
 				return
 			end
 			if unit.Location == waypoints[i] then
-				local bool = Utils.All(units, function(actor) return actor.IsIdle end)
+				local bool = Utils.All(units, function(actor) return actor.IsIdle or actor.IsDead end)
 				if bool then
 					stop = true
 					i = i + 1
@@ -99,8 +98,43 @@ InitialSovietPatrols = function()
 	Patrol1Sub.Patrol(SubPaths[1])
 	Patrol2Sub.Patrol(SubPaths[2])
 	Patrol3Sub.Patrol(SubPaths[3])
-	Patrol4Sub.Patrol(SubPaths[4])
-	Patrol5Sub.Patrol(SubPaths[5])
+end
+
+MarkNavalObjective = function()
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		InfiltrateTechCenterObj = InfiltrateTechCenterObj or AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+		Greece.MarkCompletedObjective(NavalYardObj)
+		Media.PlaySpeechNotification(Greece, "FirstObjectiveMet")
+	end)
+end
+
+--- Once Greece is secure with a ship yard, send subs to investigate the coast.
+--- Any sub's death will trigger production of more subs, if not yet started.
+CheckNavalObjective = function()
+	if Greece.IsObjectiveCompleted(NavalYardObj) or not Greece.HasPrerequisites({ "syrd" }) then
+		return
+	end
+
+	local eastBase = { EastFlame1, EastFlame2, SovietBarracks }
+	local eastBaseDefeated = Utils.All(eastBase, function(building)
+		return building.IsDead or building.Owner ~= USSR
+	end)
+
+	if not eastBaseDefeated then
+		return
+	end
+
+	MarkNavalObjective()
+
+	if not ScoutSub1.IsDead then
+		-- NE and NW corners of the middle island, then back to NE.
+		local path = { SubPatrol3_2.Location, SubPatrol3_1.Location, Harbor.Location }
+		ScoutSub1.Patrol(path, false)
+	end
+
+	Trigger.AfterDelay(DateTime.Seconds(150), function()
+		IdleHunt(ScoutSub2)
+	end)
 end
 
 InitialAlliedReinforcements = function()
@@ -108,17 +142,22 @@ InitialAlliedReinforcements = function()
 	Trigger.AfterDelay(DateTime.Seconds(30), camera.Destroy)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-	Reinforcements.Reinforce(Greece, AlliedReinforcementsA, { AlliedEntry3.Location, UnitCStopLocation.Location }, 2)
+		Reinforcements.Reinforce(Greece, AlliedReinforcementsA, { AlliedEntry3.Location, UnitCStopLocation.Location }, 2)
 		Reinforcements.Reinforce(Greece, AlliedReinforcementsB, { AlliedEntry2.Location, UnitAStopLocation.Location }, 2)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Reinforcements.Reinforce(Greece, { "mcv" }, { AlliedEntry1.Location, UnitBStopLocation.Location })
+		local mcv = Reinforcements.Reinforce(Greece, { "mcv" }, { AlliedEntry1.Location, UnitBStopLocation.Location })[1]
+		Trigger.OnRemovedFromWorld(mcv, ActivateAI)
 		Reinforcements.Reinforce(Greece, AlliedBoatReinforcements, { AlliedBoatEntry.Location, AlliedBoatStop.Location })
 	end)
 end
 
 CaptureRadarDome = function()
 	Trigger.OnKilled(RadarDome, function()
+		if Greece.IsObjectiveCompleted(CaptureRadarDomeObj) then
+			return
+		end
+
 		Greece.MarkFailedObjective(CaptureRadarDomeObj)
 	end)
 
@@ -144,39 +183,93 @@ CaptureRadarDome = function()
 	end)
 end
 
+FailTechCenter = function(killed)
+	local speechDelay = 0
+
+	if not killed then
+		-- Let the capture speech play first.
+		speechDelay = 36
+	end
+
+	Trigger.AfterDelay(speechDelay, function()
+		Media.PlaySpeechNotification(Greece, "ObjectiveNotMet")
+	end)
+
+	Trigger.AfterDelay(speechDelay + DateTime.Seconds(1), function()
+		InfiltrateTechCenterObj = InfiltrateTechCenterObj or AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+		Greece.MarkFailedObjective(InfiltrateTechCenterObj)
+	end)
+end
+
 InfiltrateTechCenter = function()
+	local infiltrated = false
+	local allKilled = false
+
 	Utils.Do(SovietTechLabs, function(a)
 		Trigger.OnInfiltrated(a, function()
-			if Infiltrated then
+			if infiltrated then
 				return
 			end
-			Infiltrated = true
-			DestroySovietsObj = AddPrimaryObjective(Greece, "destroy-soviet-buildings-units")
-			Greece.MarkCompletedObjective(InfiltrateTechCenterObj)
+
+			infiltrated = true
+			InfiltrateTechCenterObj = InfiltrateTechCenterObj or AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+
+			-- Let the infiltration speech play first.
+			Trigger.AfterDelay(38, function()
+				Media.PlaySpeechNotification(Greece, "SecondObjectiveMet")
+				DestroySovietsObj = AddPrimaryObjective(Greece, "destroy-soviet-buildings-units")
+				Greece.MarkCompletedObjective(InfiltrateTechCenterObj)
+
+				local proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
+				Utils.Do(ParadropWaypoints[Difficulty], function(waypoint)
+					local plane = proxy.TargetParatroopers(waypoint.CenterPosition, Angle.South)[1]
+					Trigger.OnPassengerExited(plane, function(_, passenger)
+						IdleHunt(passenger)
+					end)
+				end)
+				proxy.Destroy()
+			end)
 		end)
 
 		Trigger.OnCapture(a, function()
-			if not Infiltrated then
+			if not infiltrated then
+				Media.PlaySoundNotification(Greece, "AlertBleep")
 				Media.DisplayMessage(UserInterface.GetFluentMessage("do-not-capture-tech-centers"))
 			end
 		end)
 	end)
 
+	Trigger.OnAllKilled(SovietTechLabs, function()
+		allKilled = true
+	end)
+
 	Trigger.OnAllKilledOrCaptured(SovietTechLabs, function()
-		if not Greece.IsObjectiveCompleted(InfiltrateTechCenterObj) then
-			Greece.MarkFailedObjective(InfiltrateTechCenterObj)
+		if infiltrated then
+			return
 		end
+
+		Trigger.AfterDelay(1, function()
+			FailTechCenter(allKilled)
+		end)
 	end)
 end
 
 Tick = function()
-	if Greece.HasNoRequiredUnits() then
-		Greece.MarkFailedObjective(InfiltrateTechCenterObj)
-	end
-
 	if DestroySovietsObj and USSR.HasNoRequiredUnits() then
 		Greece.MarkCompletedObjective(DestroySovietsObj)
 	end
+
+	if not Greece.HasNoRequiredUnits() then
+		return
+	end
+
+	Utils.Do({ NavalYardObj, InfiltrateTechCenterObj, DestroySovietsObj }, function(objective)
+		if Greece.IsObjectiveCompleted(objective) then
+			return
+		end
+
+		Greece.MarkFailedObjective(objective)
+	end)
 end
 
 WorldLoaded = function()
@@ -185,59 +278,80 @@ WorldLoaded = function()
 
 	InitObjectives(Greece)
 
-	InfiltrateTechCenterObj = AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+	NavalYardObj = AddPrimaryObjective(Greece, "build-naval-yard-redeploy-mcv")
 	CaptureRadarDomeObj = AddSecondaryObjective(Greece, "capture-radar-shore")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
-	if Difficulty == "easy" then
-		Trigger.OnEnteredProximityTrigger(SovietDefenseCam.CenterPosition, WDist.New(1024 * 7), function(a, id)
-			if a.Owner == Greece then
-				Trigger.RemoveProximityTrigger(id)
-				local cam1 = Actor.Create("TECH.CAM", true, { Owner = Greece, Location = SovietDefenseCam.Location })
-				Trigger.AfterDelay(DateTime.Seconds(15), cam1.Destroy)
-				if not DefenseFlame1.IsDead then
-					local cam2 = Actor.Create("TECH.CAM", true, { Owner = Greece, Location = DefenseFlame1.Location })
-					Trigger.AfterDelay(DateTime.Seconds(15), cam2.Destroy)
-				end
-				if not DefenseFlame2.IsDead then
-					local cam3 = Actor.Create("TECH.CAM", true, { Owner = Greece, Location = DefenseFlame2.Location })
-					Trigger.AfterDelay(DateTime.Seconds(15), cam3.Destroy)
-				end
-			end
-		end)
-	end
+	Trigger.OnEnteredProximityTrigger(SovietDefenseCam.CenterPosition, WDist.FromCells(7), function(a, id)
+		if a.Owner ~= Greece then
+			return
+		end
 
-	if Difficulty ~= "hard" then
-		Trigger.OnKilled(DefBrl1, function(a, b)
-			if not DefenseFlame1.IsDead then
-				DefenseFlame1.Kill()
-			end
-		end)
-		Trigger.OnKilled(DefBrl2, function(a, b)
-			if not DefenseFlame2.IsDead then
-				DefenseFlame2.Kill()
-			end
-		end)
-	end
+		Trigger.RemoveProximityTrigger(id)
+		local revealTargets = { SovietDefenseCam, StartFlame1, StartFlame2 }
 
-	Utils.Do(BadGuys, function(a)
-		a.AttackMove(UnitCStopLocation.Location)
+		Utils.Do(revealTargets, function(target)
+			if not target.IsInWorld then
+				return
+			end
+
+			local reveal = Actor.Create("TECH.CAM", true, { Owner = Greece, Location = target.Location })
+			Trigger.AfterDelay(DateTime.Seconds(20), reveal.Destroy)
+		end)
+	end)
+
+	Utils.Do(BadGuys, function(bg)
+		if bg == BadGuy3 or bg == BadGuy4 then
+			bg.AttackMove(UnitCStopLocation.Location)
+			IdleHunt(bg)
+			return
+		end
+
+		Trigger.OnEnteredProximityTrigger(bg.CenterPosition, WDist.FromCells(7), function(a, id)
+			if a.Owner ~= Greece or a.Type == "pt" or a.Type == "camera" then
+				return
+			end
+
+			Trigger.RemoveProximityTrigger(id)
+			IdleHunt(bg)
+		end)
+
+		Trigger.OnDamaged(bg, function()
+			if bg.IsIdle then
+				IdleHunt(bg)
+			end
+		end)
+	end)
+
+	Trigger.OnKilled(StartBarrel1, function()
+		if not StartFlame1.IsDead then
+			StartFlame1.Kill()
+		end
+	end)
+	Trigger.OnKilled(StartBarrel2, function()
+		if not StartFlame2.IsDead then
+			StartFlame2.Kill()
+		end
 	end)
 
 	InitialAlliedReinforcements()
-	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		InitialSovietPatrols()
+	Trigger.AfterDelay(DateTime.Seconds(1), InitialSovietPatrols)
+
+	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.FromCells(14), function(a, id)
+		if a.Owner ~= Greece or a.Type == "pt" or a.Type == "lst" then
+			return
+		end
+
+		Trigger.RemoveProximityTrigger(id)
+		local cam = Actor.Create("Camera", true, { Owner = Greece, Location = SovietMiniBaseCam.Location })
+		Trigger.AfterDelay(DateTime.Seconds(15), cam.Destroy)
 	end)
 
-	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.New(1024 * 14), function(a, id)
-		if a.Owner == Greece then
-			Trigger.RemoveProximityTrigger(id)
-			local cam = Actor.Create("Camera", true, { Owner = Greece, Location = SovietMiniBaseCam.Location })
-			Trigger.AfterDelay(DateTime.Seconds(15), cam.Destroy)
-		end
-	end)
 	CaptureRadarDome()
 	InfiltrateTechCenter()
-	Trigger.AfterDelay(0, ActivateAI)
+	Trigger.OnBuildingPlaced(Greece, CheckNavalObjective)
+	Trigger.OnAllKilledOrCaptured({ EastFlame1, EastFlame2, SovietBarracks }, CheckNavalObjective)
+	-- Prepare Soviet attacks if Greece still has not deployed the MCV.
+	Trigger.AfterDelay(DateTime.Seconds(90), ActivateAI)
 end
