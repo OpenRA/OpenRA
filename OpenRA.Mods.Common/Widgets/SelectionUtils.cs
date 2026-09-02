@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public static IEnumerable<Actor> SelectActorsOnScreen(
 			World world, WorldRenderer wr, IEnumerable<string> selectionClasses, IEnumerable<Player> players)
 		{
-			var actors = world.ScreenMap.ActorsInMouseBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight).Select(a => a.Actor);
+			var actors = world.ScreenMap.ActorsInMouseBox(wr.Viewport.Rect).Select(a => a.Actor);
 			return SelectActorsByOwnerAndSelectionClass(actors, players, selectionClasses);
 		}
 
