@@ -594,6 +594,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				lobbyOptionChangedSound = yaml.Value;
 
 			Game.Sound.PlayNotification(modRules, null, "Sounds", playerJoinedSound, null);
+
+			// The lobby may be opened by the LobbyInfoChanged event that populated
+			// its model, so this new subscriber cannot observe that same event.
+			UpdatePlayerList();
 		}
 
 		bool disposed;
