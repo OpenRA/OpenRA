@@ -138,8 +138,17 @@ namespace OpenRA.Mods.Common.Scripting
 			if (triggers.HasAnyCallbacksFor(Trigger.OnProduction))
 				return false;
 
-			var queue = queues.Where(q => actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
-				.FirstOrDefault(q => !q.AllQueued().Any());
+			foreach (var actorType in actorTypes.Distinct())
+				GetBuildableInfo(actorType);
+
+			var queue = queues.FirstOrDefault(q =>
+			{
+				if (q.AllQueued().Any())
+					return false;
+
+				var buildableItems = q.BuildableItems().Select(a => a.Name).ToHashSet();
+				return actorTypes.All(buildableItems.Contains);
+			});
 
 			if (queue == null)
 				return false;
