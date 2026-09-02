@@ -1,10 +1,12 @@
 ^BasePlayer:
 	Shroud:
-	PlayerResources:
+	TSPlayerResources:
 		ResourceValues:
 			Tiberium: 25
 			BlueTiberium: 40
 			Veins: 0
+		# uncomment this to make the waste refinery fill up faster, for testing.
+		#TriggerChemicalMissileOnVeinsAmount: 10
 
 EditorPlayer:
 	Inherits: ^BasePlayer
@@ -94,7 +96,7 @@ Player:
 		SpeechNotification: LowPower
 		TextNotification: notification-low-power
 	AllyRepair:
-	PlayerResources:
+	TSPlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
 		InsufficientFundsTextNotification: notification-insufficient-funds
 		CashTickUpNotification: CashTickUp

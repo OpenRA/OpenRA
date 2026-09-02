@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	sealed class NukePower : SupportPower
+	public class NukePower : SupportPower
 	{
 		readonly NukePowerInfo info;
 		BodyOrientation body;
@@ -206,6 +206,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				self.World.AddFrameEndTask(w => w.Add(beacon));
 			}
+
+			AfterActivate(self);
+		}
+
+		protected virtual void AfterActivate(Actor self)
+		{
 		}
 
 		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
