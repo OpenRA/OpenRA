@@ -416,6 +416,7 @@ checkbox-mainmenu-system-info-prompt-sysinfo = Send System Information
 label-profile-section-header = Profile
 label-player-container = Player Name:
 label-playercolor-container-color = Preferred Color:
+button-random-name-tooltip = Generate random name
 label-display-section-header = Display
 label-battlefield-camera-dropdown = Battlefield Camera:
 label-ui-scale-dropdown = UI Scale:
