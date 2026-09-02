@@ -646,6 +646,7 @@ AGUN:
 		Weapon: ZSU-23
 		LocalOffset: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	AttackTurreted:
 		PauseOnCondition: disabled || build-incomplete
 	WithMuzzleOverlay:
@@ -870,6 +871,7 @@ GUN:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	AttackTurreted:
 		PauseOnCondition: build-incomplete
 	WithMuzzleOverlay:
