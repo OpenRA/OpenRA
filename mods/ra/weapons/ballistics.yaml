@@ -176,13 +176,15 @@ Grenade:
 		Image: BOMB
 	Warhead@1Dam: SpreadDamage
 		Spread: 256
-		Damage: 6000
+		Damage: 0
 		Versus:
 			None: 60
 			Wood: 100
 			Light: 25
 			Heavy: 25
 			Concrete: 100
+	Warhead@spawn: SpawnActor
+		Actors: heli
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion
 		ImpactSounds: kaboom25.aud
