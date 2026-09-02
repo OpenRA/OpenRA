@@ -252,7 +252,6 @@ LST:
 		MaxWeight: 5
 		PassengerFacing: 0
 		LoadingCondition: notmobile
-	-Chronoshiftable:
 	Selectable:
 		DecorationBounds: 1536, 1536
 
