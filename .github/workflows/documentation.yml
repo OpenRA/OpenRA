@@ -134,6 +134,10 @@ jobs:
           ./utility.sh all --docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
           ./utility.sh all --weapon-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
           ./utility.sh all --sprite-sequence-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
+          ./utility.sh all --asset-loaders-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/asset-loaders.md"
+          ./utility.sh all --filesystem-loaders-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/filesystem-loaders.md"
+          ./utility.sh all --widget-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/widgets.md"
+          ./utility.sh all --widget-logic-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/widget-logic.md"
           ./utility.sh all --lua-docs "${{ needs.prepare.outputs.git_tag }}" > "docs/api/lua.md"
 
       - name: Update docs.openra.net
