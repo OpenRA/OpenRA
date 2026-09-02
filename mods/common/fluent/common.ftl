@@ -512,8 +512,43 @@ options-order-maps =
 
 button-mapchooser-system-maps-tab = Official Maps
 button-mapchooser-remote-maps-tab = Server Maps
+button-mapchooser-community-maps-tab = Community Maps
 button-mapchooser-user-maps-tab = Custom Maps
 button-mapchooser-generated-maps-tab = Generate Map
+
+label-community-maps-loading =
+    Searching for maps...
+label-community-maps-error =
+    Could not connect to the Resource Center.
+label-community-page-label = Page
+label-community-page-total =
+    / { $total }
+label-community-page-total-loading = / ?
+label-community-count =
+    { $count } maps
+button-community-search = Search
+button-community-resource-center = Resource Center
+
+label-community-sort-latest = Latest first
+label-community-sort-oldest = Oldest first
+label-community-sort-title = Title
+label-community-sort-title-reversed = Title in reverse
+label-community-sort-players = Players
+label-community-sort-lately-commented = Lately commented
+label-community-sort-rating = Rating
+label-community-sort-views = Views
+label-community-sort-downloads = Downloads
+label-community-sort-revisions = Upgrade activity
+
+label-community-filter-tileset-any = Any Tileset
+label-community-filter-tags-choose = Choose
+label-community-filter-tags-advanced = Advanced
+label-community-filter-tags-lua = Lua
+
+label-community-filter-tileset-desc = Tileset:
+label-community-filter-tags-desc = Tags:
+label-community-filter-players-desc = Players:
+label-community-filter-sort-desc = Sort by:
 
 ## MissionBrowserLogic
 dialog-no-video =
