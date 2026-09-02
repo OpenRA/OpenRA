@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public interface IEditorBrush : IDisposable
 	{
 		bool HandleMouseInput(MouseInput mi);
+		bool HandleKeyboardInput(KeyInput ki);
 		void Tick();
 
 		void TickRender(WorldRenderer wr, Actor self);
@@ -275,6 +276,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			return true;
 		}
+
+		public bool HandleKeyboardInput(KeyInput ki) => false;
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
