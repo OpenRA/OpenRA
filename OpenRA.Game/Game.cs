@@ -726,7 +726,13 @@ namespace OpenRA
 				if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
 				{
 					Renderer.BeginWorld(worldRenderer.Viewport.CenterLocation, worldRenderer.Viewport.ViewportSize);
-					Sound.SetListenerPosition(worldRenderer.Viewport.CenterPosition);
+
+					// By changing the Z position of the listener to size of the viewport we get quite intuitive sound behavior.
+					var viewportSize = worldRenderer.ProjectedPosition(worldRenderer.Viewport.ViewportSize.ToInt2());
+					var zoomOut = Math.Max(viewportSize.X, viewportSize.Y);
+					var cameraPos = worldRenderer.Viewport.CenterPosition + new WVec(0, 0, zoomOut);
+					Sound.SetListenerPosition(cameraPos);
+
 					using (new PerfSample("render_world"))
 						worldRenderer.Draw();
 				}
