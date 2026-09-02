@@ -17,6 +17,9 @@ BGGY:
 	Mobile:
 		TurnSpeed: 32
 		Speed: 142
+		SpeedRelatedWithFacing: true
+		TurnsWhileMoving: true
+		InitSpeedPercentageWithFacing: -120
 	Health:
 		HP: 22000
 	Armor:
@@ -56,6 +59,9 @@ BIKE:
 	Mobile:
 		TurnSpeed: 32
 		Speed: 170
+		SpeedRelatedWithFacing: true
+		TurnsWhileMoving: true
+		InitSpeedPercentageWithFacing: -120
 	Health:
 		HP: 15000
 	Armor:
@@ -523,6 +529,8 @@ STNK:
 	Mobile:
 		TurnSpeed: 20
 		Speed: 85
+		SpeedRelatedWithFacing: true
+		TurnsWhileMoving: true
 	Health:
 		HP: 18000
 	Armor:
