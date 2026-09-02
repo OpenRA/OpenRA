@@ -12,6 +12,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security;
+using System.Threading.Tasks;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Network
@@ -25,6 +27,7 @@ namespace OpenRA.Network
 		BinaryWriter writer;
 		readonly Func<string> chooseFilename;
 		MemoryStream preStartBuffer = new();
+		string replayDir;
 
 		static bool IsGameStart(byte[] data)
 		{
@@ -46,6 +49,7 @@ namespace OpenRA.Network
 			var filename = chooseFilename();
 			var mod = Game.ModData.Manifest;
 			var dir = Path.Combine(Platform.SupportDir, "Replays", mod.Id, mod.Metadata.Version);
+			replayDir = dir;
 
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
@@ -114,6 +118,47 @@ namespace OpenRA.Network
 
 			preStartBuffer?.Dispose();
 			writer.Close();
+
+			if (replayDir != null)
+			{
+				// PERF: Push I/O work to a background.
+				_ = Task.Run(() => PruneOldReplays(replayDir));
+			}
+		}
+
+		static void PruneOldReplays(string dir)
+		{
+			var maxReplayCount = Game.Settings.Game.MaxReplayCount;
+			if (maxReplayCount <= 0)
+				return;
+
+			var directoryInfo = new DirectoryInfo(dir);
+			if (!directoryInfo.Exists)
+				return;
+
+			var oldReplays = directoryInfo.GetFiles("*.orarep")
+				.OrderByDescending(f => f.LastWriteTimeUtc)
+				.Skip(maxReplayCount);
+
+			foreach (var replay in oldReplays)
+			{
+				try
+				{
+					replay.Delete();
+				}
+				catch (IOException e)
+				{
+					Log.Write("debug", $"File in use or I/O error deleting replay '{replay.Name}': {e.Message}");
+				}
+				catch (UnauthorizedAccessException e)
+				{
+					Log.Write("debug", $"Permission denied deleting replay '{replay.Name}': {e.Message}");
+				}
+				catch (SecurityException e)
+				{
+					Log.Write("debug", $"Security error deleting replay '{replay.Name}': {e.Message}");
+				}
+			}
 		}
 	}
 }
