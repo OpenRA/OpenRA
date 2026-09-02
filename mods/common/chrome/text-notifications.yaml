@@ -15,11 +15,13 @@ Container@CHAT_LINE_TEMPLATE:
 			Visible: false
 			TooltipContainer: TOOLTIP_CONTAINER
 			Template: ANONYMOUS_PLAYER_TOOLTIP
-		Label@TEXT:
+		LabelWithSelection@TEXT:
 			X: 5
 			Height: 16
 			WordWrap: True
 			Shadow: True
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
 
 Container@SYSTEM_LINE_TEMPLATE:
 	Width: PARENT_WIDTH
@@ -35,12 +37,14 @@ Container@SYSTEM_LINE_TEMPLATE:
 			Height: 16
 			Shadow: True
 			TextColor: FFFF00
-		Label@TEXT:
+		LabelWithSelection@TEXT:
 			X: 5
 			Height: 16
 			WordWrap: True
 			Shadow: True
 			TextColor: FFFF00
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
 
 Container@TRANSIENT_LINE_TEMPLATE:
 	Width: PARENT_WIDTH
@@ -51,9 +55,11 @@ Container@TRANSIENT_LINE_TEMPLATE:
 			Width: 37
 			Height: 16
 			Shadow: True
-		Label@TEXT:
+		LabelWithSelection@TEXT:
 			X: 5
 			Height: 16
 			WordWrap: True
 			Shadow: True
 			TextColor: AFEEEE
+			TooltipContainer: TOOLTIP_CONTAINER
+			TooltipTemplate: SIMPLE_TOOLTIP
