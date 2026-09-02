@@ -40,18 +40,20 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for rendering sprites.")]
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
-		public override object Create(ActorInitializer init) { return new DrawLineToTarget(this); }
+		public override object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
 	}
 
-	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected
+	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, IRenderAnnotations, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
+		readonly DebugVisualizations debugVis;
 		readonly List<IRenderable> renderableCache = [];
 		long lifetime;
 
-		public DrawLineToTarget(DrawLineToTargetInfo info)
+		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
 		{
 			this.info = info;
+			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 		}
 
 		public void ShowTargetLines(Actor self)
@@ -70,8 +72,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ShouldRender(Actor self)
 		{
-			if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled || !Ui.WidgetsVisible)
+			if (!Ui.WidgetsVisible)
 				return false;
+
+			if (debugVis?.TargetLines == DebugTargetLines.AlwaysAllPlayers)
+				return true;
+
+			if (debugVis == null || debugVis.TargetLines == DebugTargetLines.Default)
+			{
+				if (!self.Owner.IsAlliedWith(self.World.LocalPlayer) || Game.Settings.Game.TargetLines == TargetLinesType.Disabled)
+					return false;
+			}
 
 			// Players want to see the lines when in waypoint mode.
 			var force = Game.GetModifierKeys().HasModifier(Modifiers.Shift) || self.World.OrderGenerator is ForceModifiersOrderGenerator;
@@ -100,7 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IRenderAboveShroud.SpatiallyPartitionable => false;
 
-		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
+		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr) => RenderAnnotations(self);
+
+		IEnumerable<IRenderable> RenderAnnotations(Actor self)
 		{
 			if (!ShouldRender(self))
 				return [];
@@ -135,7 +148,11 @@ namespace OpenRA.Mods.Common.Traits
 			return renderableCache.ToArray();
 		}
 
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr) => RenderAnnotations(self);
+
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
+
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 	}
 
 	public static class LineTargetExts
