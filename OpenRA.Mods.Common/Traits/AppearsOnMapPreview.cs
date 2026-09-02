@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Overrides `Color` if both set.")]
 		public readonly string Terrain = null;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, OutputBuffer<(MPos Uv, Color Color)> cells)
 		{
 			Color color;
 			if (!string.IsNullOrEmpty(Terrain))
@@ -47,9 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var ios = ai.TraitInfo<IOccupySpaceInfo>();
-			var cells = ios.OccupiedCells(ai, s.Get<LocationInit>().Value);
-			foreach (var cell in cells)
-				destinationBuffer.Add((cell.Key.ToMPos(map), color));
+			var occupiedCells = ios.OccupiedCells(ai, s.Get<LocationInit>().Value);
+			foreach (var cell in occupiedCells)
+				cells.Add((cell.Key.ToMPos(map), color));
 		}
 	}
 
