@@ -31,14 +31,44 @@ harvester:
 		Tick: 80
 		ZOffset: 1
 		Alpha: 0.5
-	dock:
+	dock-se:
 		Filename: DATA.R16
 		Start: 3623
 		Length: 10
 		Remap: 54F94B
-	dock-loop:
+	dock-se-loop:
 		Filename: DATA.R16
 		Start: 3633
+		Remap: 54F94B
+	dock-sw:
+		Filename: DATA.R16
+		Start: 3623
+		Length: 10
+		FlipX: true
+		Remap: 54F94B
+	dock-sw-loop:
+		Filename: DATA.R16
+		Start: 3633
+		FlipX: true
+		Remap: 54F94B
+	dock-nw:
+		Filename: DATA.R16
+		Frames: 1727, 1727, 1727, 1727, 1727, 1727, 1727, 1727, 1727, 1727
+		Length: 10
+		Remap: 54F94B
+	dock-nw-loop:
+		Filename: DATA.R16
+		Start: 1727
+		Offset: 0,0
+		Remap: 54F94B
+	dock-ne:
+		Filename: DATA.R16
+		Frames: 1703, 1703, 1703, 1703, 1703, 1703, 1703, 1703, 1703, 1703
+		Length: 10
+		Remap: 54F94B
+	dock-ne-loop:
+		Filename: DATA.R16
+		Start: 1703
 		Remap: 54F94B
 	icon:
 		Filename: DATA.R16

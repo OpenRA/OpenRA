@@ -417,10 +417,14 @@ actor-refinery =
     .description =
     Harvesters unload Spice here
     for processing.
+    Use Rotations hotkey for
+    building rotation during placement.
     .encyclopedia =
     The basis of all Spice production on Dune. Harvesters transport mined Spice to the Refinery where it is converted into credits. Refined Spice is automatically distributed to Silos and Refineries for storage. Each refinery can store Spice. A Spice Harvester is delivered by Carryall once a Refinery is built.
 
     Refineries are vulnerable to most weapons.
+
+
 
 actor-silo =
     .name = Silo
