@@ -208,6 +208,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			autoSaveNoDropDown.GetText = () => FluentProvider.GetMessage(AutoSaveMaxFileNumber, "saves", autoSaveSettings.AutoSaveMaxFileCount);
 			autoSaveNoDropDown.IsDisabled = () => autoSaveSettings.AutoSaveInterval <= 0;
 
+			SettingsUtils.BindCheckboxPref(panel, "JUMP_TO_GROUP_SELECTS_CHECKBOX", gameSettings, "JumpToGroupSelects");
+
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () =>
