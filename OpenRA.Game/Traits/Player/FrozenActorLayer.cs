@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using OpenRA.Graphics;
@@ -35,7 +36,7 @@ namespace OpenRA.Traits
 
 	public class FrozenActor
 	{
-		public readonly PPos[] Footprint;
+		public readonly ImmutableArray<PPos> Footprint;
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
 		readonly ICreatesFrozenActors frozenTrait;
@@ -49,7 +50,7 @@ namespace OpenRA.Traits
 
 		public ITooltipInfo TooltipInfo { get; private set; }
 		public Player TooltipOwner { get; private set; }
-		readonly ITooltip[] tooltips;
+		readonly ImmutableArray<ITooltip> tooltips;
 
 		public int HP { get; private set; }
 		public DamageState DamageState { get; private set; }
@@ -71,20 +72,19 @@ namespace OpenRA.Traits
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
 		public bool UpdateVisibilityNextTick { get; set; }
-		public IRenderable[] Renderables = NoRenderables;
-		public Rectangle[] ScreenBounds = NoBounds;
+		public ImmutableArray<IRenderable> Renderables = [];
+		public ImmutableArray<Rectangle> ScreenBounds = [];
 
 		public Polygon MouseBounds = Polygon.Empty;
 
-		static readonly IRenderable[] NoRenderables = [];
-		static readonly Rectangle[] NoBounds = [];
+		internal int LayerIndex;
 
 		int flashTicks;
 		TintModifiers flashModifiers;
 		Vector3 flashTint;
 		float? flashAlpha;
 
-		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, PPos[] footprint, Player viewer, bool startsRevealed)
+		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, ImmutableArray<PPos> footprint, Player viewer, bool startsRevealed)
 		{
 			this.actor = actor;
 			this.frozenTrait = frozenTrait;
@@ -95,7 +95,7 @@ namespace OpenRA.Traits
 			// Consider all cells inside the map area (ignoring the current map bounds)
 			Footprint = footprint
 				.Where(m => shroud.Contains(m))
-				.ToArray();
+				.ToImmutableArray();
 
 			if (Footprint.Length == 0)
 				throw new ArgumentException("This frozen actor has no footprint.\n" +
@@ -106,7 +106,7 @@ namespace OpenRA.Traits
 
 			CenterPosition = actor.CenterPosition;
 
-			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
+			tooltips = actor.TraitsImplementing<ITooltip>().ToImmutableArray();
 			health = actor.TraitOrDefault<IHealth>();
 			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
@@ -184,12 +184,12 @@ namespace OpenRA.Traits
 					Shrouded = false;
 			}
 
+			NeedRenderables |= Visible && !wasVisible;
+
 			// Force the backing trait to update so other actors can't
 			// query inconsistent state (both hidden or both visible)
 			if (Visible != wasVisible)
 				frozenTrait.OnVisibilityChanged(this);
-
-			NeedRenderables |= Visible && !wasVisible;
 		}
 
 		public void Invalidate()
@@ -216,7 +216,7 @@ namespace OpenRA.Traits
 		public IEnumerable<IRenderable> Render()
 		{
 			if (Shrouded)
-				return NoRenderables;
+				return [];
 
 			if (flashTicks > 0 && flashTicks % 2 == 0)
 			{
@@ -254,7 +254,9 @@ namespace OpenRA.Traits
 		readonly int binSize;
 		readonly World world;
 		readonly Player owner;
-		readonly Dictionary<uint, FrozenActor> frozenActorsById;
+		readonly List<FrozenActor> actors = [];
+		readonly Dictionary<uint, FrozenActor> frozenActorsById = [];
+
 		readonly SpatiallyPartitioned<FrozenActor> partitionedFrozenActors;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
@@ -262,7 +264,6 @@ namespace OpenRA.Traits
 			binSize = info.BinSize;
 			world = self.World;
 			owner = self.Owner;
-			frozenActorsById = [];
 
 			partitionedFrozenActors = new SpatiallyPartitioned<FrozenActor>(
 				world.Map.MapSize.Width, world.Map.MapSize.Height, binSize);
@@ -276,13 +277,29 @@ namespace OpenRA.Traits
 
 		public void Add(FrozenActor fa)
 		{
+			FrozenHash += (int)fa.ID;
+
+			fa.LayerIndex = actors.Count;
+			actors.Add(fa);
 			frozenActorsById.Add(fa.ID, fa);
+
 			world.ScreenMap.AddOrUpdate(owner, fa);
 			partitionedFrozenActors.Add(fa, FootprintBounds(fa));
 		}
 
 		public void Remove(FrozenActor fa)
 		{
+			FrozenHash -= (int)fa.ID;
+
+			// PERF: Swap with last element and remove.
+			var index = fa.LayerIndex;
+			var lastIdx = actors.Count - 1;
+			var lastActor = actors[lastIdx];
+
+			actors[index] = lastActor;
+			lastActor.LayerIndex = index;
+			actors.RemoveAt(lastIdx);
+
 			partitionedFrozenActors.Remove(fa);
 			world.ScreenMap.Remove(owner, fa);
 			frozenActorsById.Remove(fa.ID);
@@ -313,31 +330,19 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			List<FrozenActor> frozenActorsToRemove = null;
 			VisibilityHash = 0;
-			FrozenHash = 0;
 
-			foreach (var kvp in frozenActorsById)
+			// Iterate backwards to allow safe removal during iteration.
+			for (var i = actors.Count - 1; i >= 0; i--)
 			{
-				var id = kvp.Key;
-				var hash = (int)id;
-				FrozenHash += hash;
-
-				var frozenActor = kvp.Value;
+				var frozenActor = actors[i];
 				frozenActor.Tick();
 
 				if (frozenActor.Visible)
-					VisibilityHash += hash;
+					VisibilityHash += (int)frozenActor.ID;
 				else if (frozenActor.Actor == null)
-				{
-					frozenActorsToRemove ??= [];
-					frozenActorsToRemove.Add(frozenActor);
-				}
+					Remove(frozenActor);
 			}
-
-			if (frozenActorsToRemove != null)
-				foreach (var fa in frozenActorsToRemove)
-					Remove(fa);
 		}
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
