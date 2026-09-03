@@ -256,7 +256,18 @@ namespace OpenRA.Mods.Common.Traits
 				orderID = "AssaultMove";
 			}
 			else
+			{
+				// Ctrl+click here is meant for force-attack-ground (Attack's own priority-6
+				// targeter, evaluated before this one). If Attack itself declined - e.g. the
+				// weapon can't target terrain at all - don't silently fall back to AttackMove:
+				// that would let us out-compete other legitimate priority-5 terrain+ForceAttack
+				// targeters (e.g. CA's KeepsDistance) instead of yielding to them like we would
+				// with the setting off. Fall through instead.
+				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
 				orderID = "AttackMove";
+			}
 
 			if (!self.AcceptsOrder(orderID))
 				return false;
