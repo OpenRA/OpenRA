@@ -786,6 +786,7 @@ button-hotkey-remap-dialog-reset =
 ## settings-input.yaml
 label-zoom-modifier-container = Zoom Modifier:
 checkbox-alternate-scroll-container = Alternate Mouse Panning
+checkbox-attackmove-default-container = Swap default: Move / Attack Move
 checkbox-lockmouse-container = Lock Mouse to Window
 label-mouse-scroll-type-container = Pan Behaviour:
 label-scrollspeed-slider-container-scroll-speed = Pan Speed:
