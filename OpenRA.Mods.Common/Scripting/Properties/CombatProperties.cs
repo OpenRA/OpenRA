@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"close enough to complete the activity.")]
 		public void AttackMove(CPos cell, int closeEnough = 0)
 		{
-			Self.QueueActivity(new AttackMoveActivity(Self, () => move.MoveTo(cell, closeEnough)));
+			Self.QueueActivity(new AttackMoveActivity(Self, () => move.MoveTo(cell, closeEnough, evaluateNearestMovableCell: true)));
 		}
 
 		[ScriptActorPropertyActivity]
