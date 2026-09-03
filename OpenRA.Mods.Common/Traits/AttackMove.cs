@@ -56,10 +56,12 @@ namespace OpenRA.Mods.Common.Traits
 	sealed class AttackMove : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly AttackMoveInfo Info;
+		readonly Actor self;
 		readonly IMove move;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
+			this.self = self;
 			move = self.Trait<IMove>();
 			Info = info;
 		}
@@ -69,13 +71,14 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (Game.Settings.Game.AttackMoveIsDefault)
-					yield return new AttackMoveOrderTargeter(Info);
+					yield return new AttackMoveOrderTargeter(Info, self.World.OrderGenerator is MoveOrderGenerator);
 			}
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
-			if (order.OrderID == "AttackMove")
+			// order.OrderID may be "AttackMove" or "AssaultMove" - see AttackMoveOrderTargeter.
+			if (order is AttackMoveOrderTargeter)
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
@@ -199,18 +202,30 @@ namespace OpenRA.Mods.Common.Traits
 	sealed class AttackMoveOrderTargeter : IOrderTargeter
 	{
 		readonly AttackMoveInfo info;
+		readonly bool moveButtonActive;
 
-		public AttackMoveOrderTargeter(AttackMoveInfo info)
+		// Mutable like AttackBase's own AttackOrderTargeter.OrderID: this same targeter doubles
+		// up for AssaultMove while the repurposed Move button/hotkey is active (see CanTarget).
+		string orderID = "AttackMove";
+
+		public AttackMoveOrderTargeter(AttackMoveInfo info, bool moveButtonActive)
 		{
 			this.info = info;
+			this.moveButtonActive = moveButtonActive;
 		}
 
-		public string OrderID => "AttackMove";
+		public string OrderID => orderID;
 
-		// Below Attack's force-attack-ground priority (6) so Ctrl+click on empty
-		// ground can still force-fire, but above Move's priority (4) so a plain
-		// click defaults to attack-move instead of a plain move.
-		public int OrderPriority => 5;
+		// Normally below Attack's force-attack-ground priority (6), so Ctrl+click on empty ground
+		// still force-fires, but above Move's priority (4), so a plain click defaults to
+		// attack-move instead of a plain move.
+		//
+		// While the repurposed Move button/hotkey is active (moveButtonActive), we instead need to
+		// win over force-attack-ground, so that Ctrl+click there gives AssaultMove instead - see
+		// CanTarget below. 9 (rather than just above Attack's 6) is intentional headroom: CA's own
+		// IgnoreOutOfRangeAttackOrders trait (used by e.g. NUKC/PTNK while deployed) defaults its
+		// own override priority to 7, and we don't want an exact tie with it.
+		public int OrderPriority => moveButtonActive ? 9 : 5;
 		public bool IsQueued { get; private set; }
 
 		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
@@ -220,28 +235,39 @@ namespace OpenRA.Mods.Common.Traits
 			if (modifiers.HasModifier(TargetModifiers.ForceMove))
 				return false;
 
-			// While the player is using the repurposed attack-move button/hotkey to force a
-			// plain default click (see MoveOrderGenerator), attack-move must not compete with it.
-			if (self.World.OrderGenerator is MoveOrderGenerator)
-				return false;
-
-			// AttackMove only overrides a plain click on empty terrain - clicking directly on
+			// AttackMove/AssaultMove only override a plain click on empty terrain - clicking directly on
 			// a unit/building is left entirely to Attack/Enter/Repair/etc.'s own targeters.
 			if (target.Type != TargetType.Terrain)
 				return false;
 
-			// AttackMove is meaningless without AutoTarget, and only makes sense if the order is accepted.
-			if (!self.Info.HasTraitInfo<AutoTargetInfo>() || !self.AcceptsOrder(OrderID))
+			// AttackMove is meaningless without AutoTarget.
+			if (!self.Info.HasTraitInfo<AutoTargetInfo>())
 				return false;
 
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
+			if (moveButtonActive)
+			{
+				// A plain click here must remain Move - fall through to Mobile's own
+				// (lower-priority) targeter by rejecting here.
+				if (!modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				orderID = "AssaultMove";
+			}
+			else
+				orderID = "AttackMove";
+
+			if (!self.AcceptsOrder(orderID))
+				return false;
+
 			var location = self.World.Map.CellContaining(target.CenterPosition);
 			var explored = self.Owner.Shroud.IsExplored(location);
+			var blocked = !self.World.Map.Contains(location) || (!explored && !info.MoveIntoShroud);
 
-			cursor = !self.World.Map.Contains(location) || (!explored && !info.MoveIntoShroud)
-				? info.AttackMoveBlockedCursor
-				: info.AttackMoveCursor;
+			cursor = orderID == "AssaultMove"
+				? (blocked ? info.AssaultMoveBlockedCursor : info.AssaultMoveCursor)
+				: (blocked ? info.AttackMoveBlockedCursor : info.AttackMoveCursor);
 
 			return true;
 		}
