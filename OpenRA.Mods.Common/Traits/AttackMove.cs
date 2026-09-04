@@ -53,15 +53,35 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackMove(init.Self, this); }
 	}
 
-	sealed class AttackMove : IResolveOrder, IOrderVoice
+	sealed class AttackMove : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly AttackMoveInfo Info;
+		readonly Actor self;
 		readonly IMove move;
 
 		public AttackMove(Actor self, AttackMoveInfo info)
 		{
+			this.self = self;
 			move = self.Trait<IMove>();
 			Info = info;
+		}
+
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
+		{
+			get
+			{
+				if (Game.Settings.Game.AttackMoveIsDefault)
+					yield return new AttackMoveOrderTargeter(Info, self.World.OrderGenerator is MoveOrderGenerator);
+			}
+		}
+
+		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
+		{
+			// order.OrderID may be "AttackMove" or "AssaultMove" - see AttackMoveOrderTargeter.
+			if (order is AttackMoveOrderTargeter)
+				return new Order(order.OrderID, self, target, queued);
+
+			return null;
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
@@ -177,5 +197,95 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public override bool ClearSelectionOnLeftClick => false;
+	}
+
+	sealed class AttackMoveOrderTargeter : IOrderTargeter
+	{
+		readonly AttackMoveInfo info;
+		readonly bool moveButtonActive;
+
+		// Mutable like AttackBase's own AttackOrderTargeter.OrderID: this same targeter doubles
+		// up for AssaultMove while the repurposed Move button/hotkey is active (see CanTarget).
+		string orderID = "AttackMove";
+
+		public AttackMoveOrderTargeter(AttackMoveInfo info, bool moveButtonActive)
+		{
+			this.info = info;
+			this.moveButtonActive = moveButtonActive;
+		}
+
+		public string OrderID => orderID;
+
+		// Normally below Attack's force-attack-ground priority (6), so Ctrl+click on empty ground
+		// still force-fires, but above Move's priority (4), so a plain click defaults to
+		// attack-move instead of a plain move.
+		//
+		// While the repurposed Move button/hotkey is active (moveButtonActive), we instead need to
+		// win over force-attack-ground, so that Ctrl+click there gives AssaultMove instead - see
+		// CanTarget below. 9 (rather than just above Attack's 6) is intentional headroom: CA's own
+		// IgnoreOutOfRangeAttackOrders trait (used by e.g. NUKC/PTNK while deployed) defaults its
+		// own override priority to 7, and we don't want an exact tie with it.
+		public int OrderPriority => moveButtonActive ? 9 : 5;
+		public bool IsQueued { get; private set; }
+
+		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
+		{
+			// Alt (ForceMove) is the general "give me a plain move" override used throughout
+			// the game - both when held directly and via the dedicated Force Move button/hotkey.
+			if (modifiers.HasModifier(TargetModifiers.ForceMove))
+				return false;
+
+			// AttackMove/AssaultMove only override a plain click on empty terrain - clicking directly on
+			// a unit/building is left entirely to Attack/Enter/Repair/etc.'s own targeters.
+			if (target.Type != TargetType.Terrain)
+				return false;
+
+			// AttackMove is meaningless without AutoTarget.
+			if (!self.Info.HasTraitInfo<AutoTargetInfo>())
+				return false;
+
+			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+
+			if (moveButtonActive)
+			{
+				// A plain click here must remain Move - fall through to Mobile's own
+				// (lower-priority) targeter by rejecting here.
+				if (!modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				orderID = "AssaultMove";
+			}
+			else
+			{
+				// Ctrl+click here is meant for force-attack-ground (Attack's own priority-6
+				// targeter, evaluated before this one). If Attack itself declined - e.g. the
+				// weapon can't target terrain at all - don't silently fall back to AttackMove:
+				// that would let us out-compete other legitimate priority-5 terrain+ForceAttack
+				// targeters (e.g. CA's KeepsDistance) instead of yielding to them like we would
+				// with the setting off. Fall through instead.
+				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
+					return false;
+
+				orderID = "AttackMove";
+			}
+
+			if (!self.AcceptsOrder(orderID))
+				return false;
+
+			var location = self.World.Map.CellContaining(target.CenterPosition);
+			var explored = self.Owner.Shroud.IsExplored(location);
+			var blocked = !self.World.Map.Contains(location) || (!explored && !info.MoveIntoShroud);
+
+			cursor = orderID == "AssaultMove"
+				? (blocked ? info.AssaultMoveBlockedCursor : info.AssaultMoveCursor)
+				: (blocked ? info.AttackMoveBlockedCursor : info.AttackMoveCursor);
+
+			return true;
+		}
+
+		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
+		{
+			return modifiers.HasModifier(TargetModifiers.ForceMove);
+		}
 	}
 }
