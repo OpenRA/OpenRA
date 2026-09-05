@@ -220,10 +220,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 					WidgetUtils.DrawSprite(sprite, (pos - offset).ToVector2());
 
-					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
-					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
+					var spawnLabelText = occupied && occupant.Team > 0 ? occupant.Team.ToStringInvariant() :
+						Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
 
-					spawnFont.DrawTextWithContrast(number, (pos - textOffset).ToVector2(), spawnColor, spawnContrastColor, 1);
+					var textOffset = spawnFont.Measure(spawnLabelText) / 2 + spawnLabelOffset;
+					spawnFont.DrawTextWithContrast(spawnLabelText, (pos - textOffset).ToVector2(), spawnColor, spawnContrastColor, 1);
 				}
 			}
 		}
