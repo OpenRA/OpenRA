@@ -99,6 +99,7 @@ ChromeLayout:
 	d2k|chrome/mainmenu.yaml
 	common|chrome/mainmenu-prompts.yaml
 	common|chrome/settings.yaml
+	common|chrome/settings-language.yaml
 	common|chrome/settings-display.yaml
 	common|chrome/settings-gameplay.yaml
 	common|chrome/settings-audio.yaml
@@ -147,6 +148,10 @@ FluentMessages:
 	d2k|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
+
+FluentLanguages:
+	en
+	ru
 
 Weapons:
 	d2k|weapons/debris.yaml
