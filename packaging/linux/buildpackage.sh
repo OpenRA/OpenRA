@@ -70,7 +70,12 @@ build_appimage() {
 	install_assemblies "${SRCDIR}" "${APPDIR}/usr/lib/openra" "linux-x64" "net6" "True" "True" "${IS_D2K}"
 	install_data "${SRCDIR}" "${APPDIR}/usr/lib/openra" "${MOD_ID}"
 	set_engine_version "${TAG}" "${APPDIR}/usr/lib/openra"
-	set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}-content/mod.yaml"
+	if [ "${MOD_ID}" = "pvphit" ]; then
+		# The mod and the ra packages it inherits must advertise the same version
+		set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/pvphit/mod.yaml" "${APPDIR}/usr/lib/openra/mods/ra/mod.yaml" "${APPDIR}/usr/lib/openra/mods/ra-content/mod.yaml"
+	else
+		set_mod_version "${TAG}" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}/mod.yaml" "${APPDIR}/usr/lib/openra/mods/${MOD_ID}-content/mod.yaml"
+	fi
 
 	# Add launcher and icons
 	sed "s/{MODID}/${MOD_ID}/g" AppRun.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" > "${APPDIR}/AppRun"
@@ -87,14 +92,19 @@ build_appimage() {
 	sed "s/{MODID}/${MOD_ID}/g" openra-mimeinfo.xml.discord.in | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
 	chmod 0755 "${APPDIR}/usr/share/mime/packages/openra-${MOD_ID}.xml"
 
-	if [ -f "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" ]; then
-		install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
+	if [ -f "${ARTWORK_DIR}/${ART_ID}_scalable.svg" ]; then
+		install -Dm644 "${ARTWORK_DIR}/${ART_ID}_scalable.svg" "${APPDIR}/usr/share/icons/hicolor/scalable/apps/openra-${MOD_ID}.svg"
 	fi
 
+	ART_ID="${MOD_ID}"
+	if [ "${MOD_ID}" = "pvphit" ]; then
+		# Reuse the Red Alert artwork until the PvPHit art batch (O7) lands
+		ART_ID="ra"
+	fi
 	for i in 16x16 32x32 48x48 64x64 128x128 256x256 512x512 1024x1024; do
-		if [ -f "${ARTWORK_DIR}/${MOD_ID}_${i}.png" ]; then
-			install -Dm644 "${ARTWORK_DIR}/${MOD_ID}_${i}.png" "${APPDIR}/usr/share/icons/hicolor/${i}/apps/openra-${MOD_ID}.png"
-			install -m644 "${ARTWORK_DIR}/${MOD_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
+		if [ -f "${ARTWORK_DIR}/${ART_ID}_${i}.png" ]; then
+			install -Dm644 "${ARTWORK_DIR}/${ART_ID}_${i}.png" "${APPDIR}/usr/share/icons/hicolor/${i}/apps/openra-${MOD_ID}.png"
+			install -m644 "${ARTWORK_DIR}/${ART_ID}_${i}.png" "${APPDIR}/openra-${MOD_ID}.png"
 		fi
 	done
 
@@ -124,6 +134,9 @@ build_appimage() {
 build_appimage "ra" "Red Alert" "699222659766026240"
 build_appimage "cnc" "Tiberian Dawn" "699223250181292033"
 build_appimage "d2k" "Dune 2000" "712711732770111550"
+# PvPHit: Red Alert data + PvPHit identity (pabl-o-ce/pvphit docs/openra/).
+# Discord rich presence reuses the ra application id for now.
+build_appimage "pvphit" "PvPHit" "699222659766026240"
 
 # Clean up
 rm -rf appimagetool-x86_64.AppImage "${BUILTDIR}"

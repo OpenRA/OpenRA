@@ -145,6 +145,9 @@ test: all
 	@echo
 	@echo "Testing Red Alert mod MiniYAML..."
 	@./utility.sh ra --check-yaml
+	@echo
+	@echo "Testing PvPHit mod MiniYAML..."
+	@./utility.sh pvphit --check-yaml
 
 tests:
 	@dotnet build OpenRA.Test/OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=$(TARGETPLATFORM)

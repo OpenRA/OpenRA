@@ -20,21 +20,34 @@ if [ z"${*#*Game.Mod=}" = z"$*" ]
 then
 	if command -v zenity > /dev/null
 	then
-		TITLE=$(zenity --title='Launch OpenRA' --list --hide-header --text 'Select game mod:' --column 'Game mod' 'Red Alert' 'Tiberian Dawn' 'Dune 2000' 'Tiberian Sun' || echo "cancel")
-		if [ "$TITLE" = "Tiberian Dawn" ]; then MODARG='Game.Mod=cnc'
+		TITLE=$(zenity --title='Launch OpenRA' --list --hide-header --text 'Select game mod:' --column 'Game mod' 'PvPHit' 'Red Alert' 'Tiberian Dawn' 'Dune 2000' 'Tiberian Sun' || echo "cancel")
+		if [ "$TITLE" = "PvPHit" ]; then MODARG='Game.Mod=pvphit'
+		elif [ "$TITLE" = "Tiberian Dawn" ]; then MODARG='Game.Mod=cnc'
 		elif [ "$TITLE" = "Dune 2000" ]; then MODARG='Game.Mod=d2k'
 		elif [ "$TITLE" = "Tiberian Sun" ]; then MODARG='Game.Mod=ts'
 		elif [ "$TITLE" = "Red Alert" ]; then MODARG='Game.Mod=ra'
 		else exit 0
 		fi
 	else
-		echo "Please provide the Game.Mod=\$MOD argument (possible \$MOD values: ra, cnc, d2k, ts)"
+		echo "Please provide the Game.Mod=\$MOD argument (possible \$MOD values: pvphit, ra, cnc, d2k, ts)"
 		exit 1
 	fi
 fi
 
+# The pvphit mod keeps its own support directory (settings, logs, replays and
+# the player.oraid authentication key) so its PvPHit identity never replaces
+# the stock OpenRA forum identity.
+SUPPORTDIRARG=''
+case "${MODARG} $*" in
+	*Game.Mod=pvphit*)
+		if [ z"${*#*Engine.SupportDir=}" = z"$*" ]; then
+			SUPPORTDIRARG="Engine.SupportDir=${XDG_CONFIG_HOME:-${HOME}/.config}/openra-pvphit/"
+		fi
+		;;
+esac
+
 # Launch the engine with the appropriate arguments
-${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@" && rc=0 || rc=$?
+${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} ${SUPPORTDIRARG} "$@" && rc=0 || rc=$?
 
 # Show a crash dialog if something went wrong
 if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
