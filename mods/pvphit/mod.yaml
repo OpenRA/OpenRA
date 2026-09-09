@@ -4,11 +4,11 @@
 # mod id `pvphit`, the PvPHit player database, and a per-mod map folder.
 # Engine and mod versions are stamped from the release tag by `make version`.
 Metadata:
-	Title: PvPHit
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Website: https://pvphit.com
 	WebIcon32: https://www.openra.net/images/icons/ra_32x32.png
-	WindowTitle: PvPHit
+	WindowTitle: mod-windowtitle
 
 PackageFormats: Mix
 
@@ -181,6 +181,8 @@ FluentMessages:
 	ra|fluent/chrome.ftl
 	ra|fluent/hotkeys.ftl
 	ra|fluent/rules.ftl
+	# Listed last: FluentBundle applies later files as overrides, so these replace ra.ftl's mod-title/mod-windowtitle.
+	pvphit|fluent/pvphit.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
 
