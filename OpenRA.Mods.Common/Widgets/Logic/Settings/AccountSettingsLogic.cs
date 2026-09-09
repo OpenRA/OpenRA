@@ -58,7 +58,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		LocalPlayerProfile.LinkState lastState;
 
 		[ObjectCreator.UseCtor]
-		public AccountSettingsLogic(ModData modData, Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel, string panelID, string label)
+		public AccountSettingsLogic(
+			ModData modData, Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel,
+			string panelID, string label)
 		{
 			this.modData = modData;
 			registerPanel(panelID, label, InitPanel, ResetPanel);
