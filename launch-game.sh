@@ -36,23 +36,30 @@ fi
 
 # The pvphit mod keeps its own support directory (settings, logs, replays and
 # the player.oraid authentication key) so its PvPHit identity never replaces
-# the stock OpenRA forum identity.
-SUPPORTDIRARG=''
+# the stock OpenRA forum identity. The engine refuses a support directory that
+# does not exist, so create it here. The default is prepended to the positional
+# parameters (quoted, so a HOME containing spaces survives); an explicit
+# Engine.SupportDir= given by the user is kept instead.
+SUPPORTDIR=''
 case "${MODARG} $*" in
 	*Game.Mod=pvphit*)
 		if [ z"${*#*Engine.SupportDir=}" = z"$*" ]; then
-			SUPPORTDIRARG="Engine.SupportDir=${XDG_CONFIG_HOME:-${HOME}/.config}/openra-pvphit/"
+			SUPPORTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/openra-pvphit/"
+			mkdir -p "${SUPPORTDIR}"
+			set -- "Engine.SupportDir=${SUPPORTDIR}" "$@"
 		fi
 		;;
 esac
 
 # Launch the engine with the appropriate arguments
-${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} ${SUPPORTDIRARG} "$@" && rc=0 || rc=$?
+${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@" && rc=0 || rc=$?
 
 # Show a crash dialog if something went wrong
 if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
 	if [ "$(uname -s)" = "Darwin" ]; then
 		LOGS="${HOME}/Library/Application Support/OpenRA/Logs/"
+	elif [ -n "${SUPPORTDIR}" ]; then
+		LOGS="${SUPPORTDIR}Logs"
 	else
 		LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
 		if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then

@@ -146,16 +146,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void UpdateForumAuthFields()
 		{
-			var state = Game.LocalPlayerProfile.State;
-			if (state == LocalPlayerProfile.LinkState.Linked)
+			// OnStateChanged is raised from the LocalPlayerProfile worker thread;
+			// widgets may only be touched on the main thread (as LocalProfileLogic.RefreshBadges does).
+			Game.RunAfterTick(() =>
 			{
-				profileUsernameTextfield.Text = Game.LocalPlayerProfile.ProfileData.ProfileName;
-				profilePasswordTextfield.Text = "";
-			}
-			else if (lastState == LocalPlayerProfile.LinkState.Linked)
-				profileUsernameTextfield.Text = "";
+				var localProfile = Game.LocalPlayerProfile;
+				var state = localProfile.State;
+				if (state == LocalPlayerProfile.LinkState.Linked && localProfile.ProfileData != null)
+				{
+					profileUsernameTextfield.Text = localProfile.ProfileData.ProfileName;
+					profilePasswordTextfield.Text = "";
+				}
+				else if (lastState == LocalPlayerProfile.LinkState.Linked)
+					profileUsernameTextfield.Text = "";
 
-			lastState = state;
+				lastState = state;
+			});
 		}
 
 		// release-20250330 has no engine-level URL opener (bleed's Renderer.TryOpenUrl

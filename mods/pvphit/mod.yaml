@@ -70,7 +70,7 @@ FileSystem: ContentInstallerFileSystem
 		content|expand/mwrench1.aud
 		content|expand/myeehaw1.aud
 		content|expand/myes1.aud
-	ContentInstallerMod: ra-content
+	ContentInstallerMod: pvphit-content
 
 MapFolders:
 	ra|maps: System
@@ -320,6 +320,3 @@ GameSpeeds:
 			Name: options-game-speed.fastest
 			Timestep: 20
 			OrderLatency: 6
-
-DiscordService:
-	ApplicationId: 699222659766026240
