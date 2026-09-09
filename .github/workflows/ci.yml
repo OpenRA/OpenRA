@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   push:
   pull_request:
-    branches: [ bleed, 'prep-*' ]
+    branches: [ bleed, 'prep-*', 'pvphit-release-*' ]
 
 permissions:
   contents: read  #  to fetch code (actions/checkout)
@@ -56,7 +56,7 @@ jobs:
 
   windows:
     name: Windows (.NET 6.0)
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     steps:
       - name: Clone Repository

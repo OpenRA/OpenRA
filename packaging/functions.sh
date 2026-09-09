@@ -127,6 +127,18 @@ install_data() (
 			cp -r "${SRC_PATH}/mods/${MOD_ID}-content" "${DEST_PATH}/mods/"
 		fi
 
+		# pvphit inherits every ra|... package, and its pvphit-content installer
+		# mounts the ra-content installer data, so it ships the Red Alert data
+		# and both content manifests next to its own manifest.
+		if [ "${MOD_ID}" = "pvphit" ]; then
+			echo "Installing mod ${MOD_ID} (with ra data) to ${DEST_PATH}"
+			cp -r "${SRC_PATH}/mods/pvphit" "${DEST_PATH}/mods/"
+			cp -r "${SRC_PATH}/mods/pvphit-content" "${DEST_PATH}/mods/"
+			cp -r "${SRC_PATH}/mods/ra" "${DEST_PATH}/mods/"
+			cp -r "${SRC_PATH}/mods/common-content" "${DEST_PATH}/mods/"
+			cp -r "${SRC_PATH}/mods/ra-content" "${DEST_PATH}/mods/"
+		fi
+
 		shift
 	done
 )

@@ -20,18 +20,36 @@ if [ z"${*#*Game.Mod=}" = z"$*" ]
 then
 	if command -v zenity > /dev/null
 	then
-		TITLE=$(zenity --title='Launch OpenRA' --list --hide-header --text 'Select game mod:' --column 'Game mod' 'Red Alert' 'Tiberian Dawn' 'Dune 2000' 'Tiberian Sun' || echo "cancel")
-		if [ "$TITLE" = "Tiberian Dawn" ]; then MODARG='Game.Mod=cnc'
+		TITLE=$(zenity --title='Launch OpenRA' --list --hide-header --text 'Select game mod:' --column 'Game mod' 'PvPHit' 'Red Alert' 'Tiberian Dawn' 'Dune 2000' 'Tiberian Sun' || echo "cancel")
+		if [ "$TITLE" = "PvPHit" ]; then MODARG='Game.Mod=pvphit'
+		elif [ "$TITLE" = "Tiberian Dawn" ]; then MODARG='Game.Mod=cnc'
 		elif [ "$TITLE" = "Dune 2000" ]; then MODARG='Game.Mod=d2k'
 		elif [ "$TITLE" = "Tiberian Sun" ]; then MODARG='Game.Mod=ts'
 		elif [ "$TITLE" = "Red Alert" ]; then MODARG='Game.Mod=ra'
 		else exit 0
 		fi
 	else
-		echo "Please provide the Game.Mod=\$MOD argument (possible \$MOD values: ra, cnc, d2k, ts)"
+		echo "Please provide the Game.Mod=\$MOD argument (possible \$MOD values: pvphit, ra, cnc, d2k, ts)"
 		exit 1
 	fi
 fi
+
+# The pvphit mod keeps its own support directory (settings, logs, replays and
+# the player.oraid authentication key) so its PvPHit identity never replaces
+# the stock OpenRA forum identity. The engine refuses a support directory that
+# does not exist, so create it here. The default is prepended to the positional
+# parameters (quoted, so a HOME containing spaces survives); an explicit
+# Engine.SupportDir= given by the user is kept instead.
+SUPPORTDIR=''
+case "${MODARG} $*" in
+	*Game.Mod=pvphit*)
+		if [ z"${*#*Engine.SupportDir=}" = z"$*" ]; then
+			SUPPORTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/openra-pvphit/"
+			mkdir -p "${SUPPORTDIR}"
+			set -- "Engine.SupportDir=${SUPPORTDIR}" "$@"
+		fi
+		;;
+esac
 
 # Launch the engine with the appropriate arguments
 ${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@" && rc=0 || rc=$?
@@ -40,6 +58,8 @@ ${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.L
 if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
 	if [ "$(uname -s)" = "Darwin" ]; then
 		LOGS="${HOME}/Library/Application Support/OpenRA/Logs/"
+	elif [ -n "${SUPPORTDIR}" ]; then
+		LOGS="${SUPPORTDIR}Logs"
 	else
 		LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
 		if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then

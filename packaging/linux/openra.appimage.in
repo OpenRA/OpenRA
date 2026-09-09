@@ -44,15 +44,32 @@ if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
 	JOIN_SERVER="Launch.Connect=${1#${PROTOCOL_PREFIX}}"
 fi
 
+# The pvphit client keeps its own support directory (settings, logs, replays
+# and the player.oraid authentication key) so its PvPHit identity never
+# replaces or leaks into the stock OpenRA forum identity. The engine refuses a
+# support directory that does not exist, so create it here. The default is
+# prepended to the positional parameters (quoted, so a HOME containing spaces
+# survives); an explicit Engine.SupportDir= given by the user is kept instead.
+SUPPORT_DIR=""
+if [ "{MODID}" = "pvphit" ] && [ "${*#*Engine.SupportDir=}" = "$*" ]; then
+	SUPPORT_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/openra-pvphit/"
+	mkdir -p "${SUPPORT_DIR}"
+	set -- "Engine.SupportDir=${SUPPORT_DIR}" "$@"
+fi
+
 # Run the game
 export SDL_VIDEO_X11_WMCLASS="openra-{MODID}-{TAG}"
 ./OpenRA Game.Mod={MODID} Engine.LaunchPath="${LAUNCHER}" "${JOIN_SERVER}" "$@" && rc=0 || rc=$?
 
 # Show a crash dialog if something went wrong
 if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
-	LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
-	if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then
-		LOGS="${HOME}/.openra/Logs"
+	if [ -n "${SUPPORT_DIR}" ]; then
+		LOGS="${SUPPORT_DIR}Logs"
+	else
+		LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
+		if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then
+			LOGS="${HOME}/.openra/Logs"
+		fi
 	fi
 
 	if [ -d Support/Logs ]; then

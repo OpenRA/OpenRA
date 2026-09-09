@@ -1,7 +1,12 @@
+# PvPHit mod (pabl-o-ce/OpenRA, branch pvphit-release-20250330).
+# Inherits Red Alert rules and content unchanged: every `ra|...` reference
+# below resolves to ../ra through the `ra` package. Only identity differs:
+# mod id `pvphit`, the PvPHit player database, and a per-mod map folder.
+# Engine and mod versions are stamped from the release tag by `make version`.
 Metadata:
 	Title: mod-title
 	Version: {DEV_VERSION}
-	Website: https://www.openra.net
+	Website: https://pvphit.com
 	WebIcon32: https://www.openra.net/images/icons/ra_32x32.png
 	WindowTitle: mod-windowtitle
 
@@ -10,7 +15,8 @@ PackageFormats: Mix
 FileSystem: ContentInstallerFileSystem
 	SystemPackages:
 		^EngineDir
-		$ra: ra
+		$pvphit: pvphit
+		^EngineDir|mods/ra: ra
 		^EngineDir|mods/common: common
 		~^SupportDir|Content/ra/v2/: content
 		common|scripts
@@ -64,11 +70,11 @@ FileSystem: ContentInstallerFileSystem
 		content|expand/mwrench1.aud
 		content|expand/myeehaw1.aud
 		content|expand/myes1.aud
-	ContentInstallerMod: ra-content
+	ContentInstallerMod: pvphit-content
 
 MapFolders:
 	ra|maps: System
-	~^SupportDir|maps/ra/{DEV_VERSION}: User
+	~^SupportDir|maps/pvphit/{DEV_VERSION}: User
 
 Rules:
 	ra|rules/misc.yaml
@@ -175,6 +181,8 @@ FluentMessages:
 	ra|fluent/chrome.ftl
 	ra|fluent/hotkeys.ftl
 	ra|fluent/rules.ftl
+	# Listed last: FluentBundle applies later files as overrides, so these replace ra.ftl's mod-title/mod-windowtitle.
+	pvphit|fluent/pvphit.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
 
@@ -210,6 +218,11 @@ LoadScreen: LogoStripeLoadScreen
 	Image: ra|uibits/loadscreen.png
 	Image2x: ra|uibits/loadscreen-2x.png
 	Image3x: ra|uibits/loadscreen-3x.png
+
+PlayerDatabase:
+	Profile: https://pvphit.com/api/openra/info/
+	Link: https://pvphit.com/api/openra/link
+	Forum: https://pvphit.com/
 
 ServerTraits:
 	LobbyCommands
@@ -309,6 +322,3 @@ GameSpeeds:
 			Name: options-game-speed.fastest
 			Timestep: 20
 			OrderLatency: 6
-
-DiscordService:
-	ApplicationId: 699222659766026240
