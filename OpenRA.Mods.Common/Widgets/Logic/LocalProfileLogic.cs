@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("PROFILE_RANK").GetText = () => localProfile.ProfileData.ProfileRank;
 
 			var destroyKey = widget.Get<ButtonWidget>("DESTROY_KEY");
-			destroyKey.OnClick = localProfile.DeleteKeypair;
+			destroyKey.OnClick = localProfile.UnlinkAccount;
 			destroyKey.IsDisabled = minimalProfile;
 
 			badgeContainer = widget.Get("BADGES_CONTAINER");

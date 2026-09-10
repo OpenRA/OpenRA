@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			linkButton.OnClick = () =>
 			{
 				if (localProfile.State == LocalPlayerProfile.LinkState.Linked)
-					localProfile.DeleteKeypair();
+					localProfile.UnlinkAccount();
 				else if (localProfile.State == LocalPlayerProfile.LinkState.Unlinked)
 					localProfile.LinkForumAccount(profileUsernameTextfield.Text, profilePasswordTextfield.Text, r => linkResult = r);
 			};

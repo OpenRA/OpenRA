@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -113,6 +114,63 @@ namespace OpenRA
 			State = LinkState.Unlinked;
 		}
 
+		/// <summary>
+		/// Player-initiated unlink (Settings → Account "Unlink", lobby "Destroy key").
+		/// Deletes the local keypair first, then asks the player database to revoke
+		/// the key so the device slot is freed. The revoke is best-effort and
+		/// fire-and-forget: the key is gone locally whatever the service answers, and
+		/// a PlayerDatabase without an Unlink URL (stock mods) skips the request.
+		/// The request is a proof of possession: the key signs
+		/// "unlink" + fingerprint + timestamp with itself; no credentials are sent.
+		/// </summary>
+		public void UnlinkAccount()
+		{
+			if (State != LinkState.Linked || keyData == null)
+				return;
+
+			var fingerprint = Fingerprint;
+			var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture);
+			var signature = Sign("unlink", fingerprint, timestamp);
+
+			DeleteKeypair();
+
+			if (string.IsNullOrEmpty(playerDatabase.Unlink) || signature == null)
+				return;
+
+			Task.Run(async () =>
+			{
+				try
+				{
+					var args = new Dictionary<string, string>
+					{
+						{ "fingerprint", fingerprint },
+						{ "timestamp", timestamp },
+						{ "signature", signature },
+					};
+
+					var client = HttpClientFactory.Create();
+					client.DefaultRequestHeaders.Add("User-Agent", UserAgent());
+					var httpResponseMessage = await client.PostAsync(playerDatabase.Unlink, new FormUrlEncodedContent(args));
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+					Log.Write("debug", $"Unlink {fingerprint}: HTTP {(int)httpResponseMessage.StatusCode} {result}");
+				}
+				catch (Exception e)
+				{
+					Log.Write("debug", $"Failed to revoke key {fingerprint} with exception:");
+					Log.Write("debug", e);
+				}
+			});
+		}
+
+		static string UserAgent()
+		{
+			var manifest = Game.ModData.Manifest;
+			var agentEngineVersion = Uri.EscapeDataString(Game.EngineVersion);
+			var agentModId = Uri.EscapeDataString(manifest.Id);
+			var agentModVersion = Uri.EscapeDataString(manifest.Metadata.Version);
+			return $"OpenRA/{agentEngineVersion} {agentModId}/{agentModVersion}";
+		}
+
 		public void RefreshPlayerData()
 		{
 			if (refreshing || State == LinkState.Unlinked)
@@ -184,13 +242,8 @@ namespace OpenRA
 						{ "pubkey", publicKey },
 					};
 
-					var manifest = Game.ModData.Manifest;
-					var agentEngineVersion = Uri.EscapeDataString(Game.EngineVersion);
-					var agentModId = Uri.EscapeDataString(manifest.Id);
-					var agentModVersion = Uri.EscapeDataString(manifest.Metadata.Version);
-
 					var client = HttpClientFactory.Create();
-					client.DefaultRequestHeaders.Add("User-Agent", $"OpenRA/{agentEngineVersion} {agentModId}/{agentModVersion}");
+					client.DefaultRequestHeaders.Add("User-Agent", UserAgent());
 					var httpResponseMessage = await client.PostAsync(playerDatabase.Link, new FormUrlEncodedContent(args));
 					var result = await httpResponseMessage.Content.ReadAsStringAsync();
 					if (httpResponseMessage.IsSuccessStatusCode)

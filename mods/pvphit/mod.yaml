@@ -222,6 +222,7 @@ LoadScreen: LogoStripeLoadScreen
 PlayerDatabase:
 	Profile: https://pvphit.com/api/openra/info/
 	Link: https://pvphit.com/api/openra/link
+	Unlink: https://pvphit.com/api/openra/unlink
 	Forum: https://pvphit.com/
 
 ServerTraits:

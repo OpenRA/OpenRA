@@ -22,6 +22,10 @@ namespace OpenRA
 		public readonly string Forum = "https://forum.openra.net/";
 		public readonly string Profile = "https://forum.openra.net/openra/info/";
 		public readonly string Link = "https://forum.openra.net/openra/link";
+
+		// PvPHit: where an in-game unlink posts a signed revoke of the device key.
+		// Empty (stock mods) means the unlink only deletes the local keypair.
+		public readonly string Unlink = "";
 		public readonly int IconSize = 24;
 
 		// 512x512 is large enough for 49 unique 72x72 badges

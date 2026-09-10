@@ -12,6 +12,7 @@ result contract the mod implements lives in
 | Change | Where | Why |
 | --- | --- | --- |
 | In-game account login (username + password → key link) | cherry-pick of upstream `1fce287392`, adapted into a new **Settings → Account** tab (`mods/{common,cnc}/chrome/settings-account.yaml`, `AccountSettingsLogic.cs`) | the tag could only link a key by pasting it on a website; PvPHit needs `POST {Link}` |
+| In-game unlink revokes the key on PvPHit | `PlayerDatabase.Unlink` (new, empty for stock mods), `LocalPlayerProfile.UnlinkAccount()` — deletes `player.oraid`, then posts `fingerprint`, `timestamp` and `Sign("unlink", fingerprint, timestamp)` to `{Unlink}` fire-and-forget (result in the `debug` log as `Unlink <fp>: HTTP <code> <body>`); both "Unlink Account" (`AccountSettingsLogic.cs`) and the lobby "Destroy key" (`LocalProfileLogic.cs`) use it | at the tag an unlink only deleted the local keypair, so every unlink/reinstall left an active key on the service until the 5-key cap locked the player out (`Error: too many keys`). Contract: pvphit `docs/openra/profile-service.md`, `POST {Unlink}` |
 | `mods/pvphit` + `mods/pvphit-content` | `pvphit` inherits every `ra\|…` package; only identity differs (`Metadata`, `PlayerDatabase`, per-mod user map folder). `pvphit-content` is its content installer: a copy of `ra-content`'s manifest that mounts the `ra-content` installer data and whose `ModContent.Mod` is `pvphit`, so installing (or cancelling) returns to PvPHit instead of stock Red Alert. No `DiscordService` until a PvPHit Discord application exists | gameplay stays byte-identical to Red Alert (O1 baseline) |
 | Separate support directory for the pvphit client | `launch-game.sh`, `packaging/linux/openra.appimage.in` create `$XDG_CONFIG_HOME/openra-pvphit/` (`mkdir -p`; the engine aborts on a missing support dir) and prepend `Engine.SupportDir=` pointing at it when `Game.Mod=pvphit` and no support dir is given; the crash dialog then points at its `Logs` | `Settings.Game.AuthProfile` is a user setting persisted to the shared `settings.yaml`; a separate dir keeps the PvPHit key (`player.oraid`), settings, logs and replays apart from the stock forum identity |
 | Packaging | `packaging/functions.sh` (`install_data pvphit` ships `mods/pvphit` + `mods/pvphit-content` + `mods/ra` + `mods/ra-content` + `mods/common-content`), `packaging/linux/buildpackage.sh` (`pvphit*` tags build `OpenRA-PvPHit-x86_64.AppImage` with no `-devel` suffix and no OpenRA update channel/zsync; no Discord URI handler; ra artwork reused until O7), `Makefile test` checks `pvphit` MiniYAML (content installer mods are not lint targets, as upstream) | one artifact contains client, server and utility |
@@ -22,6 +23,7 @@ result contract the mod implements lives in
 PlayerDatabase:
 	Profile: https://pvphit.com/api/openra/info/
 	Link: https://pvphit.com/api/openra/link
+	Unlink: https://pvphit.com/api/openra/unlink
 	Forum: https://pvphit.com/
 ```
 
@@ -77,7 +79,7 @@ no OpenRA update channel or `.zsync` file is produced, because PvPHit releases a
 served by `master.openra.net`. Stock `release*`/`playtest*`/`pkgtest*` tags are unchanged.
 The script still builds the stock ra/cnc/d2k AppImages alongside `OpenRA-PvPHit-x86_64.AppImage`.
 
-Point the mod at a local profile service for testing by editing the three
+Point the mod at a local profile service for testing by editing the four
 `PlayerDatabase` URLs in `mods/pvphit/mod.yaml` (e.g. `http://localhost:5000/api/openra/…`).
 
 ## Keeping stock OpenRA usable
