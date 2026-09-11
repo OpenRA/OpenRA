@@ -84,8 +84,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 			OpenRA.Graphics.Util.FastCopyIntoChannel(t, normals, SpriteFrameType.Indexed8);
 
 			// s and t are guaranteed to use the same sheet because
-			// of the custom voxel sheet allocation implementation
-			s.Sheet.CommitBufferedData(s.Bounds);
+			// of the custom voxel sheet allocation implementation.
+			// Both rectangles were written above, so both must be committed -
+			// otherwise t's pixels are only uploaded to the GPU by accident,
+			// whenever a later allocation's commit bounding box happens to
+			// sweep over it, and can otherwise sample stale/uninitialized
+			// texture data from a previous occupant of that sheet region.
+			s.Sheet.CommitBufferedData(Rectangle.Union(s.Bounds, t.Bounds));
 
 			var channelP = ChannelSelect[(int)s.Channel];
 			var channelC = ChannelSelect[(int)t.Channel];
