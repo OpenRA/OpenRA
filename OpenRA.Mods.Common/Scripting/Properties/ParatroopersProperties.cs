@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public Actor[] TargetParatroopers(WPos target, WAngle? facing = null)
 		{
 			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
-				notify.Activated(Self);
+				notify.Activated(Self, pp.Info.OrderName);
 
 			var actors = pp.SendParatroopers(Self, target, facing);
 			return actors.Aircraft;

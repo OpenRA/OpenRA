@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public void Paradrop(CPos cell)
 		{
 			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
-				notify.Activated(Self);
+				notify.Activated(Self, "ParaDropPower");
 
 			paradrop.SetLZ(cell, true);
 			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));

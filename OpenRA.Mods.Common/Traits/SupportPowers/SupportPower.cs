@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			foreach (var notify in self.TraitsImplementing<INotifySupportPower>())
-				notify.Activated(self);
+				notify.Activated(self, info.OrderName);
 		}
 
 		public virtual void PlayLaunchSounds()
