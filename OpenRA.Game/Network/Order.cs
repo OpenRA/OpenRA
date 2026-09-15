@@ -182,7 +182,9 @@ namespace OpenRA
 						Actor[] extraActors = null;
 						if (flags.HasField(OrderFields.ExtraActors))
 						{
-							var count = r.ReadInt32();
+							if (!TryReadActorCount(r, out var count))
+								return null;
+
 							if (world != null)
 								extraActors = Exts.MakeArray(count, _ => world.GetActorById(r.ReadUInt32()));
 							else
@@ -195,7 +197,9 @@ namespace OpenRA
 						Actor[] groupedActors = null;
 						if (flags.HasField(OrderFields.Grouped))
 						{
-							var count = r.ReadInt32();
+							if (!TryReadActorCount(r, out var count))
+								return null;
+
 							if (world != null)
 								groupedActors = Exts.MakeArray(count, _ => world.GetActorById(r.ReadUInt32()));
 							else
@@ -237,6 +241,14 @@ namespace OpenRA
 
 				return null;
 			}
+		}
+
+		static bool TryReadActorCount(BinaryReader r, out int count)
+		{
+			count = r.ReadInt32();
+			var remainingBytes = r.BaseStream.Length - r.BaseStream.Position;
+			return count >= 0 && count <= int.MaxValue / sizeof(uint) &&
+				count <= remainingBytes / sizeof(uint);
 		}
 
 		static uint UIntFromActor(Actor a)
