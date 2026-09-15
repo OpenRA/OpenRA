@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Server
 
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
-			if (server == null || conn == null || client == null || !ValidateCommand(server, conn, client, cmd))
+			if (server == null || conn == null || client == null || cmd == null || !ValidateCommand(server, conn, client, cmd))
 				return false;
 
 			var cmdName = cmd.Split(' ').First();
@@ -243,7 +243,19 @@ namespace OpenRA.Mods.Common.Server
 			if (!commandHandlers.TryGetValue(cmdName, out var a))
 				return false;
 
-			return a(server, conn, client, cmdValue);
+			try
+			{
+				return a(server, conn, client, cmdValue);
+			}
+			catch (Exception e)
+			{
+				// Commands are supplied by clients. Keep handler failures local so
+				// malformed input cannot escape into the server event loop.
+				Log.Write("server", $"Failed to process lobby command '{cmdName}' from {conn.EndPoint}.");
+				Log.Write("server", e);
+				server.SendFluentMessageTo(conn, MalformedCommand, ["command", cmdName]);
+				return true;
+			}
 		}
 
 		static void CheckAutoStart(S server)
@@ -1020,8 +1032,8 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfoLock)
 			{
-				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
+				if (!TryParseClientCommand(server, conn, "faction", s, out var parts, out var targetClient) || targetClient.Slot == null)
+					return true;
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -1033,7 +1045,7 @@ namespace OpenRA.Mods.Common.Server
 
 				var faction = parts[1];
 				var isValidFaction = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
-					.Any(f => f.Selectable && f.InternalName == client.Faction);
+					.Any(f => f.Selectable && f.InternalName == faction);
 
 				if (!isValidFaction)
 				{
@@ -1052,8 +1064,8 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfoLock)
 			{
-				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
+				if (!TryParseClientCommand(server, conn, "team", s, out var parts, out var targetClient) || targetClient.Slot == null)
+					return true;
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -1080,8 +1092,8 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfoLock)
 			{
-				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
+				if (!TryParseClientCommand(server, conn, "handicap", s, out var parts, out var targetClient) || targetClient.Slot == null)
+					return true;
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -1114,7 +1126,12 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool ClearPlayerSpawn(S server, Connection conn, Session.Client client, string s)
 		{
-			var spawnPoint = Exts.ParseInt32Invariant(s);
+			if (!Exts.TryParseInt32Invariant(s, out var spawnPoint))
+			{
+				server.SendFluentMessageTo(conn, MalformedCommand, ["command", "clear_spawn"]);
+				return true;
+			}
+
 			if (spawnPoint == 0)
 				return true;
 
@@ -1153,8 +1170,8 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfoLock)
 			{
-				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
+				if (!TryParseClientCommand(server, conn, "spawn", s, out var parts, out var targetClient) || targetClient.Slot == null)
+					return true;
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -1208,8 +1225,8 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfoLock)
 			{
-				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
+				if (!TryParseClientCommand(server, conn, "color", s, out var parts, out var targetClient))
+					return true;
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -1231,6 +1248,27 @@ namespace OpenRA.Mods.Common.Server
 
 				return true;
 			}
+		}
+
+		static bool TryParseClientCommand(S server, Connection conn, string command, string s,
+			out string[] parts, out Session.Client targetClient)
+		{
+			parts = s.Split(' ');
+			targetClient = null;
+			if (parts.Length != 2 || !Exts.TryParseInt32Invariant(parts[0], out var targetId))
+			{
+				server.SendFluentMessageTo(conn, MalformedCommand, ["command", command]);
+				return false;
+			}
+
+			targetClient = server.LobbyInfo.ClientWithIndex(targetId);
+			if (targetClient == null)
+			{
+				server.SendFluentMessageTo(conn, MalformedCommand, ["command", command]);
+				return false;
+			}
+
+			return true;
 		}
 
 		static bool SyncLobby(S server, Connection conn, Session.Client client, string s)
