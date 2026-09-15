@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifySupportPower.Charged(Actor self) { }
 
-		void INotifySupportPower.Activated(Actor self)
+		void INotifySupportPower.Activated(Actor self, string orderName)
 		{
 			if (!IsTraitDisabled)
 				wsb.PlayCustomAnimation(self, Info.Sequence, () => wsb.CancelCustomAnimation(self));

@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifySupportPower.Charged(Actor self) { }
 
-		void INotifySupportPower.Activated(Actor self)
+		void INotifySupportPower.Activated(Actor self, string orderName)
 		{
 			if (Info.UncloakOn.HasFlag(UncloakType.SupportPower))
 				Uncloak();

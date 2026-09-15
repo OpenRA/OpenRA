@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public Actor[] TargetAirstrike(WPos target, WAngle? facing = null)
 		{
 			foreach (var notify in Self.TraitsImplementing<INotifySupportPower>())
-				notify.Activated(Self);
+				notify.Activated(Self, ap.Info.OrderName);
 
 			return ap.SendAirstrike(Self, target, facing);
 		}

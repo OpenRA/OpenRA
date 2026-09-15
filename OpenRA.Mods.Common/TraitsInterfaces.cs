@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[RequireExplicitImplementation]
 	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
-	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self); }
+	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self, string orderName); }
 
 	public interface INotifyBuildingPlaced { void BuildingPlaced(Actor self, Actor building); }
 	public interface INotifyBurstComplete { void FiredBurst(Actor self, in Target target, Armament a); }

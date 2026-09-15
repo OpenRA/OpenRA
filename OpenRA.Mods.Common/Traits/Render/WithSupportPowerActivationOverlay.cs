@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifySupportPower.Charged(Actor self) { }
 
-		void INotifySupportPower.Activated(Actor self)
+		void INotifySupportPower.Activated(Actor self, string orderName)
 		{
 			visible = true;
 			overlay.PlayThen(overlay.CurrentSequence.Name, () => visible = false);

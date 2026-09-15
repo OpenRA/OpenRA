@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		OnIdle, OnDamaged, OnKilled, OnProduction, OnOtherProduction, OnBuildingPlaced, OnPlayerWon, OnPlayerLost,
 		OnObjectiveAdded, OnObjectiveCompleted, OnObjectiveFailed, OnCapture, OnInfiltrated,
 		OnAddedToWorld, OnRemovedFromWorld, OnDiscovered, OnPlayerDiscovered,
-		OnPassengerEntered, OnPassengerExited, OnSold, OnTimerExpired
+		OnPassengerEntered, OnPassengerExited, OnSold, OnSupportPowerActivated, OnTimerExpired
 	}
 
 	[Desc("Allows map scripts to attach triggers to this actor via the Triggers global.")]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 	public sealed class ScriptTriggers : INotifyIdle, INotifyDamage, INotifyKilled, INotifyProduction, INotifyBuildingPlaced, INotifyOtherProduction,
 		INotifyObjectivesUpdated, INotifyCapture, INotifyInfiltrated, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyDiscovered, INotifyActorDisposing,
-		INotifyPassengerEntered, INotifyPassengerExited, INotifySold, INotifyWinStateChanged, INotifyTimeLimit
+		INotifyPassengerEntered, INotifyPassengerExited, INotifySold, INotifySupportPower, INotifyWinStateChanged, INotifyTimeLimit
 	{
 		readonly World world;
 		readonly Actor self;
@@ -507,6 +507,27 @@ namespace OpenRA.Mods.Common.Scripting
 					using (var trans = self.ToLuaValue(f.Context))
 					using (var pass = passenger.ToLuaValue(f.Context))
 						f.Function.Call(trans, pass).Dispose();
+				}
+				catch (Exception ex)
+				{
+					f.Context.FatalError(ex);
+					return;
+				}
+			}
+		}
+
+		void INotifySupportPower.Charged(Actor self) { }
+		void INotifySupportPower.Activated(Actor self, string orderName)
+		{
+			if (world.Disposing)
+				return;
+
+			foreach (var f in Triggerables(Trigger.OnSupportPowerActivated))
+			{
+				try
+				{
+					using (var name = orderName.ToLuaValue(f.Context))
+						f.Function.Call(f.Self, name).Dispose();
 				}
 				catch (Exception ex)
 				{
