@@ -161,6 +161,8 @@ namespace OpenRA
 										var numberOfTerrainPositions = r.ReadInt16();
 										if (numberOfTerrainPositions == -1)
 											target = Target.FromPos(pos);
+										else if (!HasRemainingBytes(r, numberOfTerrainPositions, 3 * sizeof(int)))
+											return null;
 										else
 										{
 											var terrainPositions = new WPos[numberOfTerrainPositions];
@@ -246,9 +248,14 @@ namespace OpenRA
 		static bool TryReadActorCount(BinaryReader r, out int count)
 		{
 			count = r.ReadInt32();
+			return HasRemainingBytes(r, count, sizeof(uint));
+		}
+
+		static bool HasRemainingBytes(BinaryReader r, int count, int itemSize)
+		{
 			var remainingBytes = r.BaseStream.Length - r.BaseStream.Position;
-			return count >= 0 && count <= int.MaxValue / sizeof(uint) &&
-				count <= remainingBytes / sizeof(uint);
+			return count >= 0 && count <= int.MaxValue / itemSize &&
+				count <= remainingBytes / itemSize;
 		}
 
 		static uint UIntFromActor(Actor a)
