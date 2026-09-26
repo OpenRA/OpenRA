@@ -243,19 +243,7 @@ namespace OpenRA.Mods.Common.Server
 			if (!commandHandlers.TryGetValue(cmdName, out var a))
 				return false;
 
-			try
-			{
-				return a(server, conn, client, cmdValue);
-			}
-			catch (Exception e)
-			{
-				// Commands are supplied by clients. Keep handler failures local so
-				// malformed input cannot escape into the server event loop.
-				Log.Write("server", $"Failed to process lobby command '{cmdName}' from {conn.EndPoint}.");
-				Log.Write("server", e);
-				server.SendFluentMessageTo(conn, MalformedCommand, ["command", cmdName]);
-				return true;
-			}
+			return a(server, conn, client, cmdValue);
 		}
 
 		static void CheckAutoStart(S server)
@@ -1237,7 +1225,12 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 
 				// Validate if color is allowed and get an alternative it isn't
-				var newColor = FieldLoader.GetValue<Color>("(value)", parts[1]);
+				if (!Color.TryParse(parts[1], out var newColor))
+				{
+					server.SendFluentMessageTo(conn, MalformedCommand, ["command", "color"]);
+					return true;
+				}
+
 				targetClient.Color = SanitizePlayerColor(server, newColor, targetClient.Index, conn);
 
 				// Only update player's preferred color if new color is valid
