@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Warheads
 			var firedBy = args.SourceActor;
 
 			// Used by traits or warheads that damage a single actor, rather than a position
-			if (target.Type == TargetType.Actor)
+			if (target.Type == TargetType.Actor || target.Type == TargetType.ActorIgnoreVisibility)
 			{
 				var victim = target.Actor;
 
