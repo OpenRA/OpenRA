@@ -320,6 +320,15 @@ button-command-bar-queue-orders =
     Left-click icon then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 
+button-command-bar-formation-move =
+    .tooltip = Formation Move
+    .tooltipdesc =
+    Selected units will move to the desired location
+    while maintaining their relative formation.
+    All units move at the speed of the slowest unit.
+
+    Left-click icon then right-click on target location.
+
 button-stance-bar-attackanything =
     .tooltip = Attack Anything Stance
     .tooltipdesc =
