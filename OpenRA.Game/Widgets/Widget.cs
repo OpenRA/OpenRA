@@ -193,7 +193,7 @@ namespace OpenRA.Widgets
 		public static void Send<T>(T notification) => Mediator.Send(notification);
 	}
 
-	public class ChromeLogic : IDisposable
+	public abstract class ChromeLogic : IDisposable
 	{
 		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
 		public virtual void Tick() { }

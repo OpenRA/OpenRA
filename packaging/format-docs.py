@@ -50,6 +50,18 @@ def format_docs(version, collectionName, types, relatedEnums):
     elif collectionName == "SpriteSequenceTypes":
         title = "Sprite sequences"
         explanation = "all sprite sequence types with their properties and their default values plus developer commentary"
+    elif collectionName == "AssetLoaderTypes":
+        title = "Asset loaders"
+        explanation = "all asset loader types plus developer commentary"
+    elif collectionName == "FileSystemLoaders":
+        title = "FileSystem loaders"
+        explanation = "all file system loader types with their properties and their default values plus developer commentary"
+    elif collectionName == "WidgetTypes":
+        title = "Widget"
+        explanation = "all widget types with their properties plus developer commentary"
+    elif collectionName == "WidgetLogicTypes":
+        title = "Widget/Chrome Logic"
+        explanation = "all WidgetLogic/ChromeLogic types plus developer commentary"
 
     print(f"# {title}\n")
     print(f"This documentation is aimed at modders and has been automatically generated for version `{version}` of OpenRA. " +
