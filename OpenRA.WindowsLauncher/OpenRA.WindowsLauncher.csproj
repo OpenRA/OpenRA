@@ -3,6 +3,7 @@
 		<OutputType>winexe</OutputType>
 		<ApplicationIcon>$(LauncherIcon)</ApplicationIcon>
 		<AssemblyName>$(LauncherName)</AssemblyName>
+		<RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
 	</PropertyGroup>
 
 	<ItemGroup>
