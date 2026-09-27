@@ -79,6 +79,9 @@ build_appimage() {
 	sed "s/{MODID}/${MOD_ID}/g" openra.desktop.discord.in | sed "s/{MODNAME}/${DISPLAY_NAME}/g" | sed "s/{TAG}/${TAG}/g" | sed "s/{DISCORDAPPID}/${DISCORD_ID}/g" > "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
 	chmod 0755 "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop"
 	cp "${APPDIR}/usr/share/applications/openra-${MOD_ID}.desktop" "${APPDIR}/openra-${MOD_ID}.desktop"
+	mkdir "${APPDIR}/usr/share/metainfo/"
+	sed -e "s/{MODID}/${MOD_ID}/g" "openra.metainfo.xml.in" | sed "s/{MOD_NAME}/${MOD_NAME}/g" | sed "s/{SCREENSHOT_RA}/${SCREENSHOT_RA}/g" | sed "s/{SCREENSHOT_CNC}/${SCREENSHOT_CNC}/g" | sed "s/{SCREENSHOT_D2K}/${SCREENSHOT_D2K}/g" > "${APPDIR}/usr/share/metainfo/openra-${MOD_ID}.metainfo.xml"
+	chmod 0644 "${APPDIR}/usr/share/metainfo/openra-${MOD_ID}.metainfo.xml"
 
 	mkdir -p "${APPDIR}/usr/share/mime/packages"
 	# Note that the non-discord version of the mimeinfo file is used by the Mod SDK and must be maintained in parallel with the discord version!
