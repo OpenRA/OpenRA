@@ -50,16 +50,17 @@ namespace OpenRA.Mods.Common.Server
 				lock (server.LobbyInfoLock)
 					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
 
-				foreach (var c in server.Conns.Where(c => !c.Validated &&
-					c.ConnectionTimer.ElapsedMilliseconds > ValidationTimeout).ToList())
-					server.DropClient(c);
-
 				if (nonBotClientCount >= 2 || server.Type == ServerType.Dedicated)
 				{
 					foreach (var c in server.Conns.ToList())
 					{
 						if (!c.Validated)
+						{
+							if (c.ConnectionTimer.ElapsedMilliseconds > ValidationTimeout)
+								server.DropClient(c);
+
 							continue;
+						}
 
 						var client = server.GetClient(c);
 						if (client == null)
