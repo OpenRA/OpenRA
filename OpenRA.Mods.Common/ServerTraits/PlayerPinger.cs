@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Server
 		const int PingInterval = 5000; // Ping every 5 seconds
 		const int ConnReportInterval = 20000; // Report every 20 seconds
 		const int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
+		const int ValidationTimeout = 60000; // Drop clients that do not complete validation
 
 		long lastPing = 0;
 		long lastConnReport = 0;
@@ -48,6 +49,10 @@ namespace OpenRA.Mods.Common.Server
 				var nonBotClientCount = 0;
 				lock (server.LobbyInfoLock)
 					nonBotClientCount = server.LobbyInfo.NonBotClients.Count();
+
+				foreach (var c in server.Conns.Where(c => !c.Validated &&
+					c.ConnectionTimer.ElapsedMilliseconds > ValidationTimeout).ToList())
+					server.DropClient(c);
 
 				if (nonBotClientCount >= 2 || server.Type == ServerType.Dedicated)
 				{
