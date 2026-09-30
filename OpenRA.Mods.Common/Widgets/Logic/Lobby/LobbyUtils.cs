@@ -25,6 +25,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public static class LobbyUtils
 	{
+		static bool IsLocalClientAdmin(OrderManager orderManager) =>
+			orderManager.LocalClient?.IsAdmin == true;
 		[FluentReference]
 		const string Open = "options-lobby-slot.open";
 
@@ -112,12 +114,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				},
 			};
 
-			if (orderManager.LobbyInfo.GlobalSettings.Dedicated)
+			if (orderManager.LobbyInfo.GlobalSettings.Dedicated && !c.IsAdmin)
 			{
 				options.Add(new DropDownOption
 				{
 					Title = "Transfer Admin",
 					OnClick = () => orderManager.IssueOrder(Order.Command($"make_admin {c.Index}"))
+				});
+			}
+
+			if (!c.IsAdmin)
+			{
+				options.Add(new DropDownOption
+				{
+					Title = "Grant Admin",
+					OnClick = () => orderManager.IssueOrder(Order.Command($"grant_admin {c.Index}"))
+				});
+			}
+			else if (orderManager.LobbyInfo.Clients.Count(cl => cl.IsAdmin && cl.Bot == null) > 1)
+			{
+				options.Add(new DropDownOption
+				{
+					Title = "Revoke Admin",
+					OnClick = () => orderManager.IssueOrder(Order.Command($"revoke_admin {c.Index}"))
 				});
 			}
 
@@ -138,7 +157,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("PLAYERACTION_DROPDOWN_TEMPLATE", 167, options, SetupItem);
+			var substitutions = new Dictionary<string, int> { { "DROPDOWN_WIDTH", dropdown.Bounds.Width } };
+			var panel = (ScrollPanelWidget)Ui.LoadWidget("PLAYERACTION_DROPDOWN_TEMPLATE", null,
+				new WidgetArgs { { "substitutions", substitutions } });
+
+			var scrollItemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
+			panel.RemoveChildren();
+
+			// close is assigned after the foreach so that the lambda captures the variable reference,
+			// not the value - it will be non-null by the time any item is actually clicked.
+			Action close = null;
+
+			foreach (var option in options)
+			{
+				var item = SetupItem(option, scrollItemTemplate);
+				var origClick = item.OnClick;
+				item.OnClick = () => { origClick(); close(); };
+				panel.AddChild(item);
+			}
+
+			// Position panel below the dropdown button, clamped to screen edges.
+			// Uses direct Ui.Root popup instead of dropdown.ShowDropDown / AttachPanel to prevent
+			// UpdatePlayerList from closing the panel when it reuses scroll item templates.
+			panel.Bounds.Height = Math.Min(167, panel.ContentHeight);
+			var panelW = panel.Bounds.Width;
+			var panelH = panel.Bounds.Height;
+			var screenW = Game.Renderer.Resolution.Width;
+			var screenH = Game.Renderer.Resolution.Height;
+			var panelX = Math.Min(dropdown.RenderOrigin.X, screenW - panelW);
+			var panelY = dropdown.RenderOrigin.Y + dropdown.Bounds.Height;
+			if (panelY + panelH > screenH)
+				panelY = dropdown.RenderOrigin.Y - panelH;
+
+			close = DropDownButtonWidget.AttachRootPanel(panel, panelX, panelY);
 		}
 
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
@@ -251,7 +302,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var selectedSpawn = DetermineSelectedSpawnPoint(mapPreview, preview, mi);
 
-			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
+			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (IsLocalClientAdmin(orderManager) && c.Bot != null));
 			var playerToMove = locals.FirstOrDefault(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver);
 			SetSpawnPoint(orderManager, playerToMove, selectedSpawn);
 		}
@@ -259,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ClearPlayerSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
 			var selectedSpawn = DetermineSelectedSpawnPoint(mapPreview, preview, mi);
-			if (Game.IsHost || orderManager.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == selectedSpawn) == orderManager.LocalClient)
+			if (IsLocalClientAdmin(orderManager) || orderManager.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == selectedSpawn) == orderManager.LocalClient)
 				orderManager.IssueOrder(Order.Command($"clear_spawn {selectedSpawn}"));
 		}
 
@@ -378,7 +429,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		public static void SetupEditableNameWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
+		public static void SetupEditableNameWidget(Widget parent, Session.Client c, OrderManager orderManager,
+			WorldRenderer worldRenderer, bool allowAdminLogin = false)
 		{
 			var name = parent.Get<TextFieldWidget>("NAME");
 			name.IsVisible = () => true;
@@ -414,6 +466,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name.YieldKeyboardFocus();
 				return true;
 			};
+
+			// Right-click opens admin auth panel when allowed; reset any stale handler otherwise
+			// (e.g. template reused after the player gains admin).
+			name.OnRightClick = allowAdminLogin ? () => AdminAuthPromptLogic.Open(orderManager) : null;
 
 			SetupProfileWidget(name, c, orderManager, worldRenderer);
 
@@ -493,7 +549,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			WorldRenderer worldRenderer, Widget lobby, Action before, Action after)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("PLAYER_ACTION");
-			slot.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
+			slot.IsVisible = () => IsLocalClientAdmin(orderManager) && c.Index != orderManager.LocalClient?.Index;
 			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
 
 			var truncated = new CachedTransform<string, string>(name =>
@@ -501,7 +557,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Renderer.Fonts[slot.Font]));
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : string.Empty);
-			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, c, orderManager, lobby, before, after);
+			slot.OnClick = () => ShowPlayerActionDropDown(slot, c, orderManager, lobby, before, after);
 
 			SetupProfileWidget(slot, c, orderManager, worldRenderer);
 
