@@ -47,8 +47,8 @@ namespace OpenRA.Mods.Common.Lint
 			// but the mod or another map may use them and we don't have sight of that.
 			CheckKeys(modMessages.Concat(mapMessages), map.Open, usedKeys, _ => false, emitError, emitWarning);
 
-			var modFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, modMessages, modData.DefaultFileSystem, _ => { });
-			var mapFluentBundle = new FluentBundle(modData.Manifest.FluentCulture, mapMessages, map, error => emitError(error.Message));
+			var modFluentBundle = new FluentBundle("en", modMessages, modData.DefaultFileSystem, _ => { });
+			var mapFluentBundle = new FluentBundle("en", mapMessages, map, error => emitError(error.Message));
 
 			foreach (var group in usedKeys.KeysWithContext)
 			{
