@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Traits;
@@ -25,11 +26,11 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly int hotkeyCount;
 
-		HotkeyReference[] selectGroupHotkeys;
-		HotkeyReference[] createGroupHotkeys;
-		HotkeyReference[] addToGroupHotkeys;
-		HotkeyReference[] combineWithGroupHotkeys;
-		HotkeyReference[] jumpToGroupHotkeys;
+		ImmutableArray<HotkeyReference> selectGroupHotkeys;
+		ImmutableArray<HotkeyReference> createGroupHotkeys;
+		ImmutableArray<HotkeyReference> addToGroupHotkeys;
+		ImmutableArray<HotkeyReference> combineWithGroupHotkeys;
+		ImmutableArray<HotkeyReference> jumpToGroupHotkeys;
 
 		// Note: LinterHotkeyNames assumes that these are disabled by default
 		public readonly string SelectGroupKeyPrefix = null;
@@ -109,19 +110,19 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			selectGroupHotkeys = Exts.MakeArray(hotkeyCount,
+			selectGroupHotkeys = Exts.MakeImmutableArray(hotkeyCount,
 				i => modData.Hotkeys[SelectGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
-			createGroupHotkeys = Exts.MakeArray(hotkeyCount,
+			createGroupHotkeys = Exts.MakeImmutableArray(hotkeyCount,
 				i => modData.Hotkeys[CreateGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
-			addToGroupHotkeys = Exts.MakeArray(hotkeyCount,
+			addToGroupHotkeys = Exts.MakeImmutableArray(hotkeyCount,
 				i => modData.Hotkeys[AddToGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
-			combineWithGroupHotkeys = Exts.MakeArray(hotkeyCount,
+			combineWithGroupHotkeys = Exts.MakeImmutableArray(hotkeyCount,
 				i => modData.Hotkeys[CombineWithGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
-			jumpToGroupHotkeys = Exts.MakeArray(hotkeyCount,
+			jumpToGroupHotkeys = Exts.MakeImmutableArray(hotkeyCount,
 				i => modData.Hotkeys[JumpToGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 		}
 

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var basePalette = wr.Palette(info.BasePalette).Palette;
-			var pal = new ImmutablePalette(basePalette, new IndexedColorRemap(basePalette, info.Index, info.ReplaceIndex));
+			var pal = new ImmutablePalette(basePalette, new IndexedColorRemap(basePalette, info.Index.AsSpan(), info.ReplaceIndex.AsSpan()));
 			wr.AddPalette(info.Name, pal, info.AllowModifiers);
 		}
 	}
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<int, int> replacements = [];
 		readonly IPalette basePalette;
 
-		public IndexedColorRemap(IPalette basePalette, ImmutableArray<int> ramp, ImmutableArray<int> remap)
+		public IndexedColorRemap(IPalette basePalette, ReadOnlySpan<int> ramp, ReadOnlySpan<int> remap)
 		{
 			this.basePalette = basePalette;
 			if (ramp.Length != remap.Length)

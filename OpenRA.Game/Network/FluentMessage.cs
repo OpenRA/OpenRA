@@ -65,7 +65,7 @@ namespace OpenRA.Network
 			if (argumentsNode == null)
 				return ImmutableArray<object>.Empty;
 
-			var arguments = new List<object>(argumentsNode.Value.Nodes.Length * 2);
+			var arguments = ImmutableArray.CreateBuilder<object>(argumentsNode.Value.Nodes.Length * 2);
 			foreach (var argumentNode in argumentsNode.Value.Nodes)
 			{
 				var argument = FieldLoader.Load<FluentArgument>(argumentNode.Value);
@@ -81,7 +81,7 @@ namespace OpenRA.Network
 					arguments.Add(argument.Value);
 			}
 
-			return arguments.ToImmutableArray();
+			return arguments.DrainToImmutable();
 		}
 
 		public FluentMessage(MiniYaml yaml)
