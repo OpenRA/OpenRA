@@ -139,11 +139,34 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
+			// VTOLApproach defaults to true when VTOL is true, but can be overridden to use a fixed-wing approach.
+			var useVTOLApproach = aircraft.Info.VTOLApproach ?? aircraft.Info.VTOL;
+
 			// Move towards landing location/facing
-			if (aircraft.Info.VTOL)
+			if (useVTOLApproach)
 			{
-				if ((pos - targetPosition).HorizontalLengthSquared != 0)
+				var approachDelta = targetPosition - pos;
+				if (approachDelta.HorizontalLengthSquared != 0)
 				{
+					// Non-sliding VTOL aircraft with explicit VTOLApproach handle the final
+					// approach directly, avoiding the turn circle logic in Fly that would cause circling.
+					if (!aircraft.Info.CanSlide && aircraft.Info.VTOLApproach == true)
+					{
+						var approachFacing = approachDelta.Yaw;
+						var moveStep = aircraft.FlyStep(approachFacing);
+
+						// Close enough to set the final position directly.
+						if (approachDelta.HorizontalLengthSquared < moveStep.HorizontalLengthSquared)
+						{
+							var finalMove = new WVec(approachDelta.X, approachDelta.Y, 0);
+							Fly.FlyTick(self, aircraft, approachFacing, aircraft.Info.CruiseAltitude, finalMove);
+						}
+						else
+							Fly.FlyTick(self, aircraft, approachFacing, aircraft.Info.CruiseAltitude, moveStep);
+
+						return false;
+					}
+
 					QueueChild(new Fly(self, Target.FromPos(targetPosition)));
 					return false;
 				}
@@ -155,7 +178,7 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
-			if (!aircraft.Info.VTOL && !finishedApproach)
+			if (!useVTOLApproach && !finishedApproach)
 			{
 				// Calculate approach trajectory
 				var altitude = aircraft.Info.CruiseAltitude.Length;
