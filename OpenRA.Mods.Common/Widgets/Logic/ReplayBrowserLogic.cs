@@ -113,6 +113,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget playerTemplate, playerHeader;
 		readonly List<ReplayMetadata> replays = [];
 		readonly Dictionary<ReplayMetadata, ReplayState> replayState = [];
+		readonly HashSet<ReplayMetadata> selectedReplays = [];
+		ReplayMetadata rangeAnchor;
 		readonly Action onStart;
 		readonly ModData modData;
 		readonly WebServices services;
@@ -519,14 +521,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var deleteButton = panel.Get<ButtonWidget>("MNG_DELSEL_BUTTON");
-			deleteButton.IsDisabled = () => selectedReplay == null;
+			deleteButton.IsDisabled = () => selectedReplays.Count == 0;
 			deleteButton.OnClick = () =>
 			{
-				OnDeleteReplay(selectedReplay, () =>
+				var list = selectedReplays.ToList();
+				if (list.Count == 1)
 				{
-					if (selectedReplay == null)
-						SelectFirstVisibleReplay();
-				});
+					OnDeleteReplay(list[0], () =>
+					{
+						if (selectedReplay == null)
+							SelectFirstVisibleReplay();
+					});
+				}
+				else if (list.Count > 1)
+				{
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: DeleteAllReplaysTitle,
+						text: DeleteAllReplaysPrompt,
+						textArguments: ["count", list.Count],
+						onConfirm: () =>
+						{
+							foreach (var r in list)
+								DeleteReplay(r);
+
+							if (selectedReplay == null)
+								SelectFirstVisibleReplay();
+						},
+						confirmText: DeleteAllReplaysAccept,
+						onCancel: () => { });
+				}
 			};
 
 			var deleteAllButton = panel.Get<ButtonWidget>("MNG_DELALL_BUTTON");
@@ -596,6 +619,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replayList.RemoveChild(replayState[replay].Item);
 			replays.Remove(replay);
 			replayState.Remove(replay);
+			selectedReplays.Remove(replay);
+			if (rangeAnchor == replay)
+				rangeAnchor = null;
 		}
 
 		static bool EvaluateReplayVisibility(ReplayMetadata replay)
@@ -705,11 +731,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SelectReplay(ReplayMetadata replay)
 		{
-			selectedReplay = replay;
-			map = selectedReplay != null ? selectedReplay.GameInfo.GetMapPreview(modData) : MapCache.UnknownMap;
+			SelectReplay(replay, Modifiers.None);
+		}
 
+		void SelectReplay(ReplayMetadata replay, Modifiers modifiers)
+		{
 			if (replay == null)
+			{
+				selectedReplay = null;
+				map = MapCache.UnknownMap;
 				return;
+			}
+
+			var shift = modifiers.HasModifier(Modifiers.Shift);
+			var ctrl = modifiers.HasModifier(Modifiers.Ctrl);
+
+			if (shift && rangeAnchor != null)
+			{
+				var start = replays.IndexOf(rangeAnchor);
+				var end = replays.IndexOf(replay);
+				if (start < 0 || end < 0)
+					return;
+
+				var from = Math.Min(start, end);
+				var to = Math.Max(start, end);
+				selectedReplays.Clear();
+				for (var i = from; i <= to; i++)
+					selectedReplays.Add(replays[i]);
+			}
+			else if (ctrl)
+			{
+				if (!selectedReplays.Remove(replay))
+					selectedReplays.Add(replay);
+				rangeAnchor = replay;
+			}
+			else
+			{
+				selectedReplays.Clear();
+				selectedReplays.Add(replay);
+				rangeAnchor = replay;
+			}
+
+			selectedReplay = replay;
+			map = replay.GameInfo.GetMapPreview(modData);
 
 			try
 			{
@@ -792,9 +856,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replays.Add(replay);
 
 			var item = ScrollItemWidget.Setup(template,
-				() => selectedReplay == replay,
-				() => SelectReplay(replay),
+				() => selectedReplays.Contains(replay),
+				() => { },
 				WatchReplay);
+
+			item.OnMouseUp = mi => SelectReplay(replay, mi.Modifiers);
 
 			replayState[replay] = new ReplayState
 			{
@@ -806,6 +872,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			item.GetText = () => itemText;
 			var label = item.Get<LabelWithTooltipWidget>("TITLE");
 			WidgetUtils.TruncateLabelToTooltip(label, itemText);
+			label.GetColor = () => selectedReplays.Contains(replay) ? Color.FromArgb(255, 210, 100) : label.TextColor;
 
 			item.IsVisible = () => replayState[replay].Visible;
 			replayList.AddChild(item);
