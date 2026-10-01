@@ -718,6 +718,10 @@ description-render-geometry = toggles render geometry overlay.
 description-screen-map-overlay = toggles screen map overlay.
 description-depth-buffer = toggles depth buffer overlay.
 description-actor-tags-overlay = toggles actor tags overlay.
+description-target-lines = sets target lines visibility.
+notification-target-lines-default = Using default target lines settings.
+notification-target-lines-all-players = Show target lines for all players.
+notification-target-lines-always = Always show target lines for all players.
 
 ## DevCommands
 notification-invalid-cash-amount = Invalid cash amount.
