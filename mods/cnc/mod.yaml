@@ -132,6 +132,7 @@ ChromeLayout:
 	cnc|chrome/ingame-debuginfo.yaml
 	cnc|chrome/music.yaml
 	cnc|chrome/settings.yaml
+	common|chrome/settings-language.yaml
 	cnc|chrome/settings-display.yaml
 	cnc|chrome/settings-gameplay.yaml
 	cnc|chrome/settings-audio.yaml
@@ -148,6 +149,7 @@ ChromeLayout:
 
 FluentMessages:
 	common|fluent/common.ftl
+	common|fluent/chrome.ftl
 	common|fluent/ingame-debug.ftl
 	common|fluent/hotkeys.ftl
 	common|fluent/rules.ftl
@@ -157,6 +159,11 @@ FluentMessages:
 	cnc|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
+
+FluentLanguages:
+	en
+	ru
+	zh
 
 Voices:
 	cnc|audio/voices.yaml
@@ -195,35 +202,35 @@ ChromeMetrics:
 
 Fonts:
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 10
 		Ascender: 8
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 10
 		Ascender: 8
 	Small:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 12
 		Ascender: 9
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 14
 		Ascender: 11
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 14
 		Ascender: 11
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 18
 		Ascender: 14
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 24
 		Ascender: 18
 	Title:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 32
 		Ascender: 24
 

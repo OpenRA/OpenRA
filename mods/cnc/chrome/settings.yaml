@@ -4,6 +4,7 @@ Container@SETTINGS_PANEL:
 		Panels:
 			GAMEPLAY_PANEL: button-panel-gameplay
 			INPUT_PANEL: button-panel-input
+			LANGUAGE_PANEL: button-panel-language
 			DISPLAY_PANEL: button-panel-display
 			AUDIO_PANEL: button-panel-audio
 			HOTKEYS_PANEL: button-panel-hotkeys
