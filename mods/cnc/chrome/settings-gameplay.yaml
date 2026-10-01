@@ -38,10 +38,25 @@ Container@GAMEPLAY_PANEL:
 									For: PLAYERNAME
 								TextField@PLAYERNAME:
 									Y: 25
-									Width: PARENT_WIDTH
+									Width: PARENT_WIDTH - 30
 									Height: 25
 									MaxLength: 16
 									Text: Name
+								Button@RANDOM_NAME_BUTTON:
+									X: PARENT_WIDTH - 25
+									Y: 25
+									Width: 25
+									Height: 25
+									TooltipText: button-random-name-tooltip
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+									Children:
+										Image@ICON:
+											X: 4
+											Y: 4
+											Width: 16
+											Height: 16
+											ImageCollection: reload-icon
+											ImageName: enabled
 						Container@PLAYERCOLOR_CONTAINER:
 							X: PARENT_WIDTH / 2 + 10
 							Width: PARENT_WIDTH / 2 - 20
