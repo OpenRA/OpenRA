@@ -401,6 +401,8 @@ World:
 		TerrainFlashSequence: idle
 		TerrainFlashPalette: moveflash
 		ActorFlashType: Tint
+	AttackRangeCirclesOptions:
+		CheckboxDisplayOrder: 11
 
 EditorWorld:
 	Inherits: ^BaseWorld
