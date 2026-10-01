@@ -337,8 +337,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetListenerPosition(WPos position)
 		{
-			// Move the listener out of the plane so that sounds near the middle of the screen aren't too positional
-			AL10.alListener3f(AL10.AL_POSITION, position.X, position.Y, position.Z + 2133);
+			AL10.alListener3f(AL10.AL_POSITION, position.X, position.Y, position.Z);
 
 			var orientation = new[] { 0f, 0f, 1f, 0f, -1f, 0f };
 			AL10.alListenerfv(AL10.AL_ORIENTATION, orientation);
@@ -453,8 +452,9 @@ namespace OpenRA.Platforms.Default
 			AL10.alSourcei(source, AL10.AL_LOOPING, looping ? 1 : 0);
 			AL10.alSourcei(source, AL10.AL_SOURCE_RELATIVE, relative ? 1 : 0);
 
-			AL10.alSourcef(source, AL10.AL_REFERENCE_DISTANCE, 6826);
+			AL10.alSourcef(source, AL10.AL_REFERENCE_DISTANCE, 8826);
 			AL10.alSourcef(source, AL10.AL_MAX_DISTANCE, 136533);
+			AL10.alSourcef(source, AL10.AL_ROLLOFF_FACTOR, 0.7f);
 		}
 
 		internal void UnbindSource()
