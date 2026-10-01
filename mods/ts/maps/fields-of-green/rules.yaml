@@ -1,9 +1,11 @@
-Player:
-	-ConquestVictoryConditions:
-	PlayerResources:
-		ResourceValues:
-			Tiberium: 0
-			BlueTiberium: 0
+# If this is still needed, note that the player resources
+# needs to be TSPlayerResources, not PlayerResources 
+# Player:
+# 	-ConquestVictoryConditions:
+# 	TSPlayerResources:
+# 		ResourceValues:
+# 			Tiberium: 0
+# 			BlueTiberium: 0
 
 World:
 	-CrateSpawner:
