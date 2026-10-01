@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					startingCash, DefaultCash.ToStringInvariant(), DefaultCashDropdownLocked);
 		}
 
-		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new PlayerResources(init, this); }
 	}
 
 	public class PlayerResources : ISync
@@ -83,15 +83,17 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly PlayerResourcesInfo Info;
 		readonly Player owner;
 
-		public PlayerResources(Actor self, PlayerResourcesInfo info)
+		public PlayerResources(ActorInitializer init, PlayerResourcesInfo info)
 		{
 			Info = info;
-			owner = self.Owner;
+			owner = init.Self.Owner;
 
-			var startingCash = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("startingcash", info.DefaultCash.ToStringInvariant());
-
-			if (!int.TryParse(startingCash, out Cash))
+			if (init.Contains<StartingCashInit>())
+				Cash = init.GetValue<StartingCashInit, int>();
+			else if (init.World.LobbyInfo.GlobalSettings.TryGetOption("startingcash", out var startingCash)
+				&& int.TryParse(startingCash, CultureInfo.InvariantCulture, out var cash))
+				Cash = cash;
+			else
 				Cash = info.DefaultCash;
 
 			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
@@ -260,5 +262,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return Cash + Resources;
 		}
+	}
+
+	public class StartingCashInit(int value) : ValueActorInit<int>(value), ISingleInstanceInit
+	{
 	}
 }

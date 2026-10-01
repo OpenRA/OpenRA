@@ -75,8 +75,7 @@ namespace OpenRA
 
 		public List<MiniYamlNode> ToMiniYaml()
 		{
-			return Players.Select(p => new MiniYamlNode($"PlayerReference@{p.Key}",
-				FieldSaver.SaveDifferences(p.Value, new PlayerReference()))).ToList();
+			return Players.Select(p => new MiniYamlNode($"PlayerReference@{p.Key}", p.Value.ToMiniYaml())).ToList();
 		}
 	}
 }

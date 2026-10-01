@@ -263,6 +263,18 @@ namespace OpenRA.Network
 
 				return def;
 			}
+
+			public bool TryGetOption(string id, out string value)
+			{
+				if (LobbyOptions.TryGetValue(id, out var option))
+				{
+					value = option.Value;
+					return true;
+				}
+
+				value = null;
+				return false;
+			}
 		}
 
 		public string Serialize()
