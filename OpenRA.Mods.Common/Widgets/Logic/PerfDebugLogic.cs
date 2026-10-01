@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var fps = (newestFrame - oldestFrame) / (newestTime - oldestTime).TotalSeconds;
 
 				var wfbSize = Game.Renderer.WorldFrameBufferSize;
-				var viewportSize = worldRenderer.Viewport.ViewportSize;
+				var viewportSize = worldRenderer.Viewport.Rect.Size;
 				return $"FPS: {fps:0}\n" +
 					$"Tick: {worldRenderer.World.WorldTick} / {Game.LocalTick} @ {PerfHistory.Items["tick_time"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
 					$"Render {Game.RenderFrame} @ {PerfHistory.Items["render"].Average(Game.Settings.Debug.Samples):F1} ms\n" +
