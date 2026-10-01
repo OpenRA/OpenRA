@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			modifier = self.TraitsImplementing<IRadarColorModifier>().FirstOrDefault();
 		}
 
-		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
+		public void PopulateRadarSignatureCells(Actor self, OutputBuffer<(CPos Cell, Color Color)> cells)
 		{
 			var viewer = self.World.RenderPlayer ?? self.World.LocalPlayer;
 			if (IsTraitDisabled || (viewer != null && !Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(viewer))))
@@ -53,12 +52,12 @@ namespace OpenRA.Mods.Common.Traits.Radar
 
 			if (Info.UseLocation)
 			{
-				destinationBuffer.Add((self.Location, color));
+				cells.Add((self.Location, color));
 				return;
 			}
 
 			foreach (var cell in self.OccupiesSpace.OccupiedCells())
-				destinationBuffer.Add((cell.Cell, color));
+				cells.Add((cell.Cell, color));
 		}
 	}
 }

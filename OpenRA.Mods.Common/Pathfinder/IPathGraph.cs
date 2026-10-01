@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -22,12 +23,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 	public interface IPathGraph : IDisposable
 	{
 		/// <summary>
-		/// Given a source node, returns connections to all reachable destination nodes with their cost.
+		/// Given a source node, populates connections to all reachable destination nodes with their cost.
 		/// </summary>
-		/// <remarks>PERF: Returns a <see cref="List{T}"/> rather than an <see cref="IEnumerable{T}"/> as enumerating
-		/// this efficiently is important for pathfinding performance. Callers should interact with this as an
-		/// <see cref="IEnumerable{T}"/> and not mutate the result.</remarks>
-		List<GraphConnection> GetConnections(CPos source, Func<CPos, bool> targetPredicate);
+		void PopulateConnections(CPos source, Func<CPos, bool> targetPredicate, OutputBuffer<GraphConnection> connections);
 
 		/// <summary>
 		/// Gets or sets the pathfinding information for a given node.

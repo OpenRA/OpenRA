@@ -474,11 +474,11 @@ namespace OpenRA.Mods.Common.Traits
 			return nodes;
 		}
 
-		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
+		public void PopulateRadarSignatureCells(Actor self, OutputBuffer<(CPos Cell, Color Color)> cells)
 		{
 			foreach (var preview in cellMap.Keys)
 				foreach (var cell in OccupiedCells(preview))
-					destinationBuffer.Add((cell, preview.RadarColor));
+					cells.Add((cell, preview.RadarColor));
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
