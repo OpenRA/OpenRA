@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public ProductionQueueProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			queues = self.TraitsImplementing<ProductionQueue>().Where(q => q.Enabled).ToArray();
+			queues = self.TraitsImplementing<ProductionQueue>().ToArray();
 			triggers = TriggerGlobal.GetScriptTriggers(self);
 		}
 
@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (triggers.HasAnyCallbacksFor(Trigger.OnProduction))
 				return false;
 
-			var queue = queues.Where(q => actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
+			var queue = queues.Where(q => q.Enabled && actorTypes.All(t => GetBuildableInfo(t).Queue.Contains(q.Info.Type)))
 				.FirstOrDefault(q => !q.AllQueued().Any());
 
 			if (queue == null)
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (triggers.HasAnyCallbacksFor(Trigger.OnProduction))
 				return true;
 
-			return queues.Any(q => GetBuildableInfo(actorType).Queue.Contains(q.Info.Type) && q.AllQueued().Any());
+			return queues.Any(q => q.Enabled && GetBuildableInfo(actorType).Queue.Contains(q.Info.Type) && q.AllQueued().Any());
 		}
 
 		BuildableInfo GetBuildableInfo(string actorType)
