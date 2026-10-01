@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithDockingAnimationInfo : TraitInfo, Requires<WithSpriteBodyInfo>
+	public class WithDockingAnimationInfo : ConditionalTraitInfo, Requires<WithSpriteBodyInfo>
 	{
 		[SequenceReference]
 		[Desc("Displayed when docking to refinery.")]
@@ -27,12 +27,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithDockingAnimation(init.Self, this); }
 	}
 
-	public class WithDockingAnimation : IDockClientBody
+	public class WithDockingAnimation : ConditionalTrait<WithDockingAnimationInfo>, IDockClientBody
 	{
 		readonly WithDockingAnimationInfo info;
 		readonly WithSpriteBody wsb;
 
 		public WithDockingAnimation(Actor self, WithDockingAnimationInfo info)
+			: base(info)
 		{
 			this.info = info;
 			wsb = self.Trait<WithSpriteBody>();
@@ -40,11 +41,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void IDockClientBody.PlayDockAnimation(Actor self, Action after)
 		{
+			if (IsTraitDisabled)
+				return;
 			wsb.PlayCustomAnimation(self, info.DockSequence, () => { wsb.PlayCustomAnimationRepeating(self, info.DockLoopSequence); after(); });
 		}
 
 		void IDockClientBody.PlayReverseDockAnimation(Actor self, Action after)
 		{
+			if (IsTraitDisabled)
+				return;
 			wsb.PlayCustomAnimationBackwards(self, info.DockSequence, () => after());
 		}
 	}
