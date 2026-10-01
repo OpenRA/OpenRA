@@ -340,8 +340,10 @@ button-retry-search = Retry Search
 label-created-by = Created by { $author }
 
 ## SpawnSelectorTooltipLogic
-label-disabled-spawn = Disabled spawn
-label-available-spawn = Available spawn
+label-disabled-spawn = Disabled spawn { $spawn }
+label-available-spawn = Available spawn { $spawn }
+label-spawn-name = Spawn { $spawn }
+label-team-spawn = Team { $team }  Spawn { $spawn }
 
 ## DisplaySettingsLogic
 options-camera =
@@ -678,7 +680,7 @@ label-spectators-count =
        *[other] { $spectators } Spectators
     }
 
-## ServerlistLogic, GameInfoStatsLogic, ObserverShroudSelectorLogic, SpawnSelectorTooltipLogic, ReplayBrowserLogic
+## ServerlistLogic, GameInfoStatsLogic, ObserverShroudSelectorLogic, ReplayBrowserLogic
 label-team-name = Team { $team }
 label-no-team = No Team
 
