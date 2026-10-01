@@ -386,6 +386,7 @@ namespace OpenRA
 
 		public Size Resolution => Window.EffectiveWindowSize;
 		public Size NativeResolution => Window.NativeWindowSize;
+		public Size SurfaceSize => Window.SurfaceSize;
 		public float WindowScale => Window.EffectiveWindowScale;
 		public float NativeWindowScale => Window.NativeWindowScale;
 		public GLProfile GLProfile => Window.GLProfile;

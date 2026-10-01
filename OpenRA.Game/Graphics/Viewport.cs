@@ -191,10 +191,8 @@ namespace OpenRA.Graphics
 			ViewportTick?.Invoke();
 		}
 
-		static float CalculateMinimumZoom(float minHeight, float maxHeight)
+		static float CalculateMinimumZoom(float minHeight, float maxHeight, float h)
 		{
-			var h = Game.Renderer.NativeResolution.Height;
-
 			// Check the easy case: the native resolution is within the maximum limit
 			// Also catches the case where the user may force a resolution smaller than the minimum window size
 			if (h <= maxHeight)
@@ -231,7 +229,21 @@ namespace OpenRA.Graphics
 			else
 			{
 				var range = viewportSizes.GetSizeRange(vd);
-				MinZoom = CalculateMinimumZoom(range.X, range.Y) * defaultScale;
+
+				// For Native: keep the original NativeResolution behaviour (DPI-aware).
+				if (vd == WorldViewport.Native)
+				{
+					MinZoom = CalculateMinimumZoom(range.X, range.Y, Game.Renderer.NativeResolution.Height) * defaultScale;
+				}
+
+				// For Close/Medium/Far: use physical pixels for minZoom calculation so the result
+				// is identical regardless of OS DPI scale, then compensate MinZoom by dividing
+				// out NativeWindowScale so ViewportSize (= NativeResolution / zoom) always
+				// covers the same world area as on a 100% DPI system with the same resolution
+				else
+				{
+					MinZoom = CalculateMinimumZoom(range.X, range.Y, Game.Renderer.SurfaceSize.Height) / Game.Renderer.NativeWindowScale * defaultScale;
+				}
 			}
 
 			MaxZoom = Math.Min(
