@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
@@ -149,7 +148,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			var e = FindDefenselessTarget(owner);
 			if (e == null)
+			{
+				Retreat(owner, flee: false, rearm: true, repair: true);
 				return;
+			}
 
 			owner.SetActorToTarget((e, WVec.Zero));
 			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState());
@@ -214,21 +216,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			foreach (var a in owner.Units)
-			{
-				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
-
-				if (IsRearming(a))
-					continue;
-
-				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
-				{
-					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
-					continue;
-				}
-
-				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
-			}
+			Retreat(owner, flee: true, rearm: true, repair: true);
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState());
 		}
