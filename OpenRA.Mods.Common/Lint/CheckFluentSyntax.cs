@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Lint
 				using (var reader = new StreamReader(stream))
 				{
 					var ids = new List<string>();
-					var parser = new LinguiniParser(reader);
+					var parser = LinguiniParser.FromTextReader(reader, path);
 					var resource = parser.Parse();
 					foreach (var entry in resource.Entries)
 					{
