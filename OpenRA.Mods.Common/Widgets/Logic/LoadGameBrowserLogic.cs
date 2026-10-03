@@ -477,8 +477,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				button.OnClick = () =>
 				{
 					filter = new Filter();
-					if (nameInput != null)
-						nameInput.Text = string.Empty;
+					nameInput?.Text = string.Empty;
 					SetupSaveDependentFilters();
 					ApplyFilter();
 				};
@@ -704,8 +703,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				saveListContainer.Bounds = new WidgetBounds(newX, saveListNormalBounds.Y, newWidth, saveListNormalBounds.Height);
 
 				var saveListLabel = saveListContainer.GetOrNull<LabelWidget>("SAVE_LIST_LABEL");
-				if (saveListLabel != null)
-					saveListLabel.Bounds.Width += widthDelta;
+				saveListLabel?.Bounds.Width += widthDelta;
 
 				gameList.Bounds.Width += widthDelta;
 

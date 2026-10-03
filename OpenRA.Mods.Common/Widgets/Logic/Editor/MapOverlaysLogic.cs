@@ -83,14 +83,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var overlayPanel = CreateOverlaysPanel();
 
 			var overlayDropdown = widget.GetOrNull<DropDownButtonWidget>("OVERLAY_BUTTON");
-			if (overlayDropdown != null)
+			overlayDropdown?.OnMouseDown = _ =>
 			{
-				overlayDropdown.OnMouseDown = _ =>
-				{
-					overlayDropdown.RemovePanel();
-					overlayDropdown.AttachPanel(overlayPanel);
-				};
-			}
+				overlayDropdown.RemovePanel();
+				overlayDropdown.AttachPanel(overlayPanel);
+			};
 		}
 
 		Widget CreateOverlaysPanel()

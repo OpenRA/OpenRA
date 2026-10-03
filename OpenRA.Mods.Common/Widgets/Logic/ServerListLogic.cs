@@ -308,14 +308,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					reloadIcon.GetImageName = () => searchStatus == SearchStatus.Fetching ? disabledImage : reloadIcon.ImageName;
 
 					var reloadTicker = reloadIcon.Get<LogicTickerWidget>("ANIMATION");
-					if (reloadTicker != null)
+					reloadTicker?.OnTick = () =>
 					{
-						reloadTicker.OnTick = () =>
-						{
-							disabledFrame = searchStatus == SearchStatus.Fetching ? (disabledFrame + 1) % 12 : 0;
-							disabledImage = "disabled-" + disabledFrame.ToStringInvariant();
-						};
-					}
+						disabledFrame = searchStatus == SearchStatus.Fetching ? (disabledFrame + 1) % 12 : 0;
+						disabledImage = "disabled-" + disabledFrame.ToStringInvariant();
+					};
 				}
 			}
 
@@ -328,8 +325,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			mapPreview = widget.GetOrNull<MapPreviewWidget>("SELECTED_MAP_PREVIEW");
-			if (mapPreview != null)
-				mapPreview.Preview = () => currentMap;
+			mapPreview?.Preview = () => currentMap;
 
 			var mapTitle = widget.GetOrNull<LabelWithTooltipWidget>("SELECTED_MAP");
 			if (mapTitle != null)
@@ -502,8 +498,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							// Rewrite the server address with the correct IP
 							var addressNode = game.NodeWithKeyOrDefault("Address");
-							if (addressNode != null)
-								addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
+							addressNode?.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
 
 							game.Nodes.Add(new MiniYamlNodeBuilder("Location", "Local Network"));
 
@@ -561,14 +556,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (server == null || server.Clients.Length == 0)
 			{
-				if (joinButton != null)
-					joinButton.Bounds.Y = joinButtonY;
+				joinButton?.Bounds.Y = joinButtonY;
 
 				return;
 			}
 
-			if (joinButton != null)
-				joinButton.Bounds.Y = clientContainer.Bounds.Bottom;
+			joinButton?.Bounds.Y = clientContainer.Bounds.Bottom;
 
 			if (clientList == null)
 				return;

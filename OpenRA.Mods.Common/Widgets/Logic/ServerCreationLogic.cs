@@ -132,8 +132,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
-			if (passwordField != null)
-				passwordField.Text = Game.Settings.Server.Password;
+			passwordField?.Text = Game.Settings.Server.Password;
 
 			noticesLabelA = panel.GetOrNull<LabelWidget>("NOTICES_HEADER_A");
 			noticesLabelB = panel.GetOrNull<LabelWidget>("NOTICES_HEADER_B");
@@ -146,21 +145,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					(Nat.Status == NatStatus.NotSupported || Nat.Status == NatStatus.Disabled);
 
 				var settingsA = noticesNoUPnP.GetOrNull("SETTINGS_A");
-				if (settingsA != null)
-					settingsA.IsVisible = () => Nat.Status == NatStatus.Disabled;
+				settingsA?.IsVisible = () => Nat.Status == NatStatus.Disabled;
 
 				var settingsB = noticesNoUPnP.GetOrNull("SETTINGS_B");
-				if (settingsB != null)
-					settingsB.IsVisible = () => Nat.Status == NatStatus.Disabled;
+				settingsB?.IsVisible = () => Nat.Status == NatStatus.Disabled;
 			}
 
 			var noticesUPnP = panel.GetOrNull("NOTICES_UPNP");
-			if (noticesUPnP != null)
-				noticesUPnP.IsVisible = () => advertiseOnline && Nat.Status == NatStatus.Enabled;
+			noticesUPnP?.IsVisible = () => advertiseOnline && Nat.Status == NatStatus.Enabled;
 
 			var noticesLAN = panel.GetOrNull("NOTICES_LAN");
-			if (noticesLAN != null)
-				noticesLAN.IsVisible = () => !advertiseOnline;
+			noticesLAN?.IsVisible = () => !advertiseOnline;
 
 			BuildNotices();
 		}

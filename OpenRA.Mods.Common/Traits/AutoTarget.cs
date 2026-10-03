@@ -136,14 +136,11 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyOwnerChanged
 	{
 		public readonly IEnumerable<AttackBase> ActiveAttackBases;
-
-		readonly bool allowMovement;
-
 		[VerifySync]
 		int nextScanTime = 0;
 
 		public UnitStance Stance { get; private set; }
-		public bool AllowMove => allowMovement && Stance > UnitStance.Defend;
+		public bool AllowMove => field && Stance > UnitStance.Defend;
 
 		[VerifySync]
 		public Actor Aggressor;
@@ -191,7 +188,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			PredictedStance = Stance;
 
-			allowMovement = Info.AllowMovement && self.TraitOrDefault<IMove>() != null;
+			AllowMove = Info.AllowMovement && self.TraitOrDefault<IMove>() != null;
 		}
 
 		protected override void Created(Actor self)

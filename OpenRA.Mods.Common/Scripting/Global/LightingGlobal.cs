@@ -39,29 +39,25 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Red component (0-1).")]
 		public double Red
 		{
-			get => tintEffect?.Red ?? 1;
-			set { if (tintEffect != null) tintEffect.Red = (float)value; }
+			get => tintEffect?.Red ?? 1; set => tintEffect?.Red = (float)value;
 		}
 
 		[Desc("Green component (0-1).")]
 		public double Green
 		{
-			get => tintEffect?.Green ?? 1;
-			set { if (tintEffect != null) tintEffect.Green = (float)value; }
+			get => tintEffect?.Green ?? 1; set => tintEffect?.Green = (float)value;
 		}
 
 		[Desc("Blue component (0-1).")]
 		public double Blue
 		{
-			get => tintEffect?.Blue ?? 1;
-			set { if (tintEffect != null) tintEffect.Blue = (float)value; }
+			get => tintEffect?.Blue ?? 1; set => tintEffect?.Blue = (float)value;
 		}
 
 		[Desc("Strength of the lighting (0-1).")]
 		public double Ambient
 		{
-			get => tintEffect?.Ambient ?? 1;
-			set { if (tintEffect != null) tintEffect.Ambient = (float)value; }
+			get => tintEffect?.Ambient ?? 1; set => tintEffect?.Ambient = (float)value;
 		}
 	}
 }

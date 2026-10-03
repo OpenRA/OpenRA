@@ -24,15 +24,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 
 			var coordinateLabel = widget.GetOrNull<LabelWidget>("COORDINATE_LABEL");
-			if (coordinateLabel != null)
+			coordinateLabel?.GetText = () =>
 			{
-				coordinateLabel.GetText = () =>
-				{
-					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
-					var map = worldRenderer.World.Map;
-					return map.Height.Contains(cell) ? $"{cell},{map.Height[cell]} ({map.Tiles[cell].Type})" : "";
-				};
-			}
+				var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
+				var map = worldRenderer.World.Map;
+				return map.Height.Contains(cell) ? $"{cell},{map.Height[cell]} ({map.Tiles[cell].Type})" : "";
+			};
 
 			var cashLabel = widget.GetOrNull<LabelWidget>("CASH_LABEL");
 			if (cashLabel != null)
