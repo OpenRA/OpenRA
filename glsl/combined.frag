@@ -165,7 +165,7 @@ void main()
 		vec2 offset = fract(vUv);
 		vec2 pixelsPerTexel = vec2(1.0 / dFdx(vUv.x), 1.0 / dFdy(vUv.y));
 
-		// Offset the sampling point to simulate bilinear intepolation in window coordinates instead of texture coordinates
+		// Offset the sampling point to simulate bilinear interpolation in window coordinates instead of texture coordinates
 		// https://csantosbh.wordpress.com/2014/01/25/manual-texture-filtering-for-pixelated-games-in-webgl/
 		// https://csantosbh.wordpress.com/2014/02/05/automatically-detecting-the-texture-filter-threshold-for-pixelated-magnifications/
 		// ik is defined as 1/k from the articles, set to 1/0.7 because it looks good
