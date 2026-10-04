@@ -514,6 +514,7 @@ button-mapchooser-system-maps-tab = Official Maps
 button-mapchooser-remote-maps-tab = Server Maps
 button-mapchooser-user-maps-tab = Custom Maps
 button-mapchooser-generated-maps-tab = Generate Map
+button-mapchooser-resource-center = Resource Center
 
 ## MissionBrowserLogic
 dialog-no-video =
