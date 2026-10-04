@@ -205,15 +205,30 @@ namespace OpenRA.Network
 
 				clientId = stream.ReadInt32();
 				connectionState = ConnectionState.Connected;
+				var receiveBuffer = new byte[8192];
 
 				while (true)
 				{
 					var len = stream.ReadInt32();
+					if (len < sizeof(int))
+						throw new InvalidDataException($"Invalid server packet length: {len}");
+
 					var client = stream.ReadInt32();
-					var buf = stream.ReadBytes(len);
-					if (len == 0)
-						throw new NotImplementedException();
-					receivedPackets.Enqueue((client, buf));
+
+					// The server controls len, so only grow the packet as data arrives.
+					using var packet = new MemoryStream(Math.Min(len, receiveBuffer.Length));
+					var remaining = len;
+					while (remaining > 0)
+					{
+						var read = stream.Read(receiveBuffer, 0, Math.Min(remaining, receiveBuffer.Length));
+						if (read == 0)
+							throw new EndOfStreamException();
+
+						packet.Write(receiveBuffer, 0, read);
+						remaining -= read;
+					}
+
+					receivedPackets.Enqueue((client, packet.ToArray()));
 				}
 			}
 			catch (Exception ex)
