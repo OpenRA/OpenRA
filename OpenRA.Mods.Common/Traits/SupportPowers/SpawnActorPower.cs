@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return false;
 
-			if (!info.AllowUnderShroud && world.ShroudObscures(cell))
+			if (!info.AllowUnderShroud && !Self.Owner.Shroud.IsExplored(cell))
 				return false;
 
 			if (info.Terrain != null && !info.Terrain.Contains(world.Map.GetTerrainInfo(cell).Type))
