@@ -116,6 +116,8 @@ BIO:
 		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: BIO.Husk
+	WithBuildingBib:
+		HasMinibib: true
 	ProvidesPrerequisite@buildingname:
 
 BIO.Husk:
@@ -127,6 +129,8 @@ BIO.Husk:
 		Dimensions: 2,2
 	Tooltip:
 		Name: actor-bio-husk-name
+	WithBuildingBib:
+		HasMinibib: true
 
 MISS:
 	Inherits: ^TechBuilding
