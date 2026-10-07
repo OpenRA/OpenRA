@@ -54,6 +54,12 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		public int SampleRate => sampleRate;
 		public float LengthInSeconds => lengthInSeconds;
 		public Stream GetPCMInputStream() { return audStreamFactory(); }
+		public byte[] GetPCMData()
+		{
+			using var s = audStreamFactory();
+			return s.ReadAllBytes();
+		}
+
 		public void Dispose() { sourceStream.Dispose(); }
 
 		readonly Stream sourceStream;

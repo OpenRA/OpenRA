@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 	public static class AudReader
 	{
-		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
+		public static bool LoadSound(Stream s, out Func<Stream> result,
+			out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
 		{
 			result = null;
 			var startPosition = s.Position;
@@ -103,9 +104,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			int dataSize;
 			byte[] inputBuffer;
 
-			int currentSample;
+			short currentSample;
 			int baseOffset;
-			int index;
+			byte index;
 
 			public ImaAdpcmAudStream(Stream stream, int outputSize, int dataSize)
 				: base(stream)
