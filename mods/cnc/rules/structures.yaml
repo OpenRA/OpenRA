@@ -1019,6 +1019,7 @@ GUN:
 		Weapon: TurretGun
 		LocalOffset: 512,0,112
 		MuzzleSequence: muzzle
+		MuzzlePalette: muzzle
 	AttackTurreted:
 		PauseOnCondition: build-incomplete
 	WithMuzzleOverlay:
