@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[IncludeStaticFluentReferences(typeof(AddActorAction), typeof(CommonSelectorLogic))]
+	[IncludeStaticFluentReferences(typeof(AddActorsAction), typeof(CommonSelectorLogic))]
 	public class ActorSelectorLogic : CommonSelectorLogic
 	{
 		[FluentReference("actorType")]
@@ -156,12 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			InitializePreviews();
 
 			if (editor.CurrentBrush is EditorActorBrush brush)
-			{
-				var actor = brush.Preview;
-				actor.Owner = option;
-				actor.ReplaceInit(new OwnerInit(option.Name));
-				actor.ReplaceInit(new FactionInit(option.Faction));
-			}
+				brush.UpdatePreviewsOwner(option);
 		}
 
 		protected override void InitializePreviews()
@@ -192,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					var item = ScrollItemWidget.Setup(ItemTemplate,
-						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Preview.Info == actor,
+						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Previews[0].Info == actor,
 						() => Editor.SetBrush(new EditorActorBrush(Editor, actor, selectedOwner, WorldRenderer)));
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");

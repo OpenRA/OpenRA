@@ -200,6 +200,40 @@ namespace OpenRA.Mods.Common
 			return ExpandFootprint(cells, true);
 		}
 
+		public static IEnumerable<CPos> GetCurvedLine(CPos start, CPos end, int2 size)
+		{
+			var delta = end - start;
+			var xDelta = Math.Abs(delta.X);
+			var yDelta = Math.Abs(delta.Y);
+			var xDir = Math.Sign(delta.X);
+			var yDir = Math.Sign(delta.Y);
+
+			if (xDelta > yDelta)
+			{
+				for (var i = 0; i <= xDelta; i += size.X)
+				{
+					var newX = start.X + xDir * i;
+					var newY = start.Y + yDelta * i / xDelta * yDir;
+					yield return new CPos(newX, newY);
+				}
+			}
+			else if (yDelta > xDelta)
+			{
+				for (var i = 0; i <= yDelta; i += size.Y)
+				{
+					var newX = start.X + xDelta * i / yDelta * xDir;
+					var newY = start.Y + yDir * i;
+					yield return new CPos(newX, newY);
+				}
+			}
+			else
+			{
+				var step = Math.Min(size.X, size.Y);
+				for (var i = 0; i <= xDelta; i += step)
+					yield return new CPos(start.X + xDir * i, start.Y + yDir * i);
+			}
+		}
+
 		public static int ApplyPercentageModifiers(int number, IEnumerable<int> percentages)
 		{
 			// See the comments of PR#6079 for a faster algorithm if this becomes a performance bottleneck
