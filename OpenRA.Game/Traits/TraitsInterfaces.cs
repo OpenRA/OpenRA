@@ -303,7 +303,7 @@ namespace OpenRA.Traits
 
 	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
 	{
-		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer);
+		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, OutputBuffer<(MPos Uv, Color Color)> cells);
 	}
 
 	public interface IOccupySpaceInfo : ITraitInfoInterface
