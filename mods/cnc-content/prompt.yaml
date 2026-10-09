@@ -1,0 +1,354 @@
+Background@MODCONTENT_BACKGROUND:
+	Logic: ContentLogic
+	Background: background
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Children:
+		Container@SHELLMAP_DECORATIONS:
+			Children:
+				Image@NOD:
+					X: WINDOW_WIDTH / 2 - 384
+					Y: (WINDOW_HEIGHT - 256) / 2
+					ImageCollection: logos
+					ImageName: nod-load
+				Image@GDI:
+					X: WINDOW_WIDTH / 2 + 128
+					Y: (WINDOW_HEIGHT - 256) / 2
+					ImageCollection: logos
+					ImageName: gdi-load
+		Image@EVA:
+			X: WINDOW_WIDTH - 128 - 43
+			Y: 43
+			Width: 128
+			Height: 64
+			ImageCollection: logos
+			ImageName: eva
+		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
+			X: WINDOW_WIDTH - 128 - 43
+			Y: 116
+			Width: 128
+			Align: Center
+			Shadow: true
+		Background@BORDER:
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT
+			Background: shellmapborder
+
+Background@CONTENT_PROMPT_PANEL:
+	Logic: CncContentSelectorLogic
+		Attributes:
+			AudioLanguage: AUDIO_LANGUAGE
+			VideoLanguage: VIDEO_LANGUAGE
+		DiscAttributes:
+			GDI95: GDI_DISC
+			NOD95: NOD_DISC
+			COVERT: COVERT_DISC
+		Sources:
+			freeware: FREEWARE_CONTAINER
+
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 550
+	Height: 405
+	Background: panel-black
+	Children:
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: modcontent-title
+		Label@DESC:
+			X: 15
+			Y: 15
+			Width: PARENT_WIDTH - 30
+			Height: 110
+			Font: Regular
+			Text: modcontent-header
+			VAlign: Middle
+		Container@SOURCE_CONTAINER:
+			X: 15
+			Y: 140
+			Width: PARENT_WIDTH - 30
+			Height: 50
+			Children:
+				Label@SOURCE_LABEL:
+					Width: PARENT_WIDTH
+					Height: 20
+					Text: modcontent-label-source
+				DropDownButton@SOURCE_DROPDOWN:
+					Y: 25
+					Width: PARENT_WIDTH
+					Height: 25
+					Font: Bold
+		ScrollPanel@SCROLL_PANEL:
+			X: 15
+			Y: 200
+			Width: PARENT_WIDTH - 30
+			Height: PARENT_HEIGHT - 215
+			CollapseHiddenChildren: True
+			TopBottomSpacing: 5
+			ItemSpacing: 10
+			Children:
+				Background@SECTION_HEADER:
+					X: 5
+					Width: PARENT_WIDTH - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Font: TinyBold
+							Align: Center
+							Text: modcontent-content-section-language
+				Container@ROW:
+					Width: PARENT_WIDTH - 24 - 20
+					X: 10
+					Height: 70
+					Children:
+						Container@INTERFACE_LANGUAGE_CONTAINER:
+							Width: PARENT_WIDTH / 3 - 10
+							Children:
+								Label@INTERFACE_LANGUAGE:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: modcontent-content-interface-language
+								DropDownButton@INTERFACE_LANGUAGE_DROPDOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									Font: Bold
+									Text: modcontent-content-interface-language-en
+									Disabled: true
+						Container@AUDIO_LANGUAGE_CONTAINER:
+							X: (PARENT_WIDTH - WIDTH) / 2
+							Width: PARENT_WIDTH / 3 - 10
+							Children:
+								Label@AUDIO_LANGUAGE:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: modcontent-content-audio-language
+								DropDownButton@AUDIO_LANGUAGE_DROPDOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									Font: Bold
+						Container@VIDEO_LANGUAGE_CONTAINER:
+							X: PARENT_WIDTH - WIDTH
+							Width: PARENT_WIDTH / 3 - 10
+							Children:
+								Label@VIDEO_VARIANT:
+									Width: PARENT_WIDTH
+									Height: 20
+									Text: modcontent-content-video-language
+								DropDownButton@VIDEO_LANGUAGE_DROPDOWN:
+									Y: 25
+									Width: PARENT_WIDTH
+									Height: 25
+									Font: Bold
+						Label@DESC:
+							Y: 55 
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: TinyBold
+							Align: Center
+							Text: modcontent-content-language-faq
+				Container@FREEWARE_CONTAINER:
+					Width: PARENT_WIDTH - 24
+					Height: 73
+					Children:
+						Background@SECTION_HEADER:
+							X: 5
+							Width: PARENT_WIDTH - 10
+							Height: 13
+							Background: separator
+							ClickThrough: True
+							Children:
+								Label@LABEL:
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									Font: TinyBold
+									Align: Center
+									Text: modcontent-source-freeware
+						Container@ROW:
+							Width: PARENT_WIDTH - 20
+							X: 10
+							Y: 20
+							Height: 50
+							Children:
+								Container@GDI_DISC_CONTAINER:
+									Width: 115
+									Children:
+										Image@FLAG:
+											Y: 8
+											ImageCollection: flags
+											ImageName: gdi
+										Label@DISC_LABEL:
+											X: 40
+											Width: PARENT_WIDTH - 40
+											Height: 20
+											Text: modcontent-content-disc-gdi
+										Label@DETECTED_LABEL:
+											X: 40
+											Y: 15
+											Width: PARENT_WIDTH - 40
+											Height: 20
+											Font: TinyBold
+								Container@NOD_DISC_CONTAINER:
+									X: 115
+									Width: 115
+									Children:
+										Image@FLAG:
+											Y: 8
+											ImageCollection: flags
+											ImageName: nod
+										Label@DISC:
+											X: 40
+											Width: PARENT_WIDTH - 40
+											Height: 20
+											Text: modcontent-content-disc-nod
+										Label@DETECTED_LABEL:
+											X: 40
+											Y: 15
+											Width: PARENT_WIDTH - 40
+											Height: 20
+											Font: TinyBold
+								Container@COVERT_DISC_CONTAINER:
+									X: 230
+									Width: 115
+									Children:
+										Image@FLAG:
+											Y: 8
+											ImageCollection: flags
+											ImageName: Random
+										Label@DISC:
+											X: 40
+											Width: PARENT_WIDTH - 40
+											Height: 20
+											Text: modcontent-content-disc-covert
+										Label@DETECTED_LABEL:
+											X: 40
+											Y: 15
+											Width: PARENT_WIDTH - 40
+											Height: 20
+											Font: TinyBold
+								Button@ISO_BUTTON:
+									X: PARENT_WIDTH - WIDTH
+									Y: 5
+									Width: 80
+									Height: 25
+									Text: modcontent-content-button-iso-directory
+									Font: TinyBold	
+						Label@DESC:
+							Y: 57
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: TinyBold
+							Align: Center
+							Text: modcontent-content-freeware-faq
+		Button@QUIT_BUTTON:
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-quit
+			Font: Bold
+		Button@FAQ_BUTTON:
+			X: 150
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-faq
+			Font: Bold
+		Button@CONTINUE_BUTTON:
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-continue
+			Font: Bold
+			Key: return
+		Button@DOWNLOAD_BUTTON:
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-download
+			Font: Bold
+			Key: return
+			Visible: false
+
+Background@PACKAGE_DOWNLOAD_PANEL:
+	Logic: ContentDownloadLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 500
+	Height: 75
+	Background: panel-black
+	Children:
+		Label@TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+		ProgressBar@PROGRESS_BAR:
+			X: 15
+			Y: 15
+			Width: PARENT_WIDTH - 30
+			Height: 20
+		Label@STATUS_LABEL:
+			X: 15
+			Y: 40
+			Width: PARENT_WIDTH - 30
+			Height: 25
+			Align: Left
+		Button@RETRY_BUTTON:
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Visible: false
+			Text: button-retry
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
+			Width: 140
+			Height: 35
+			Text: button-cancel
+			Font: Bold
+			Key: escape
+
+ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
+	Width: DROPDOWN_WIDTH
+	Children:
+		ScrollItem@HEADER:
+			Background: scrollheader
+			Width: PARENT_WIDTH - 27
+			Height: 13
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					Font: TinyBold
+					Width: PARENT_WIDTH
+					Height: 13
+					Align: Center
+		ScrollItem@TEMPLATE:
+			Width: PARENT_WIDTH - 27
+			Height: 25
+			X: 2
+			Y: 0
+			Visible: false
+			Children:
+				Label@LABEL:
+					X: 10
+					Width: PARENT_WIDTH - 20
+					Height: 25
