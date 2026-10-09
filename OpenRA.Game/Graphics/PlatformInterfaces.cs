@@ -75,6 +75,7 @@ namespace OpenRA
 		void SetHardwareCursor(IHardwareCursor cursor);
 		void SetWindowTitle(string title);
 		void SetRelativeMouseMode(bool mode);
+		void SetTextInputActive(bool active);
 		void SetScaleModifier(float scale);
 
 		GLProfile GLProfile { get; }
