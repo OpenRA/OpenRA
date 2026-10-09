@@ -57,7 +57,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[FluentReference]
 		const string AutoSaveMaxFileNumber = "auto-save-max-file-number";
+
+		[FluentReference]
+		const string MaxReplayCountDisabled = "max-replay-count.disabled";
+
+		[FluentReference]
+		const string MaxReplayCountOptions = "max-replay-count.options";
+
 		readonly int[] autoSaveSeconds = [0, 10, 30, 45, 60, 120, 180, 300, 600];
+		readonly int[] maxReplayCountOptions = [0, 10, 50, 100];
 
 		readonly int[] autoSaveFileNumbers = [3, 5, 10, 20, 50, 100];
 		readonly AutoSaveSettings autoSaveSettings;
@@ -208,6 +216,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			autoSaveNoDropDown.GetText = () => FluentProvider.GetMessage(AutoSaveMaxFileNumber, "saves", autoSaveSettings.AutoSaveMaxFileCount);
 			autoSaveNoDropDown.IsDisabled = () => autoSaveSettings.AutoSaveInterval <= 0;
 
+			// Setup dropdown for replay limit.
+			var maxReplayCountDropDown = panel.Get<DropDownButtonWidget>("MAX_REPLAY_COUNT_DROP_DOWN");
+			maxReplayCountDropDown.OnMouseDown = _ => ShowMaxReplayCountDropdown(maxReplayCountDropDown, maxReplayCountOptions);
+			maxReplayCountDropDown.GetText = () => GetMessageForMaxReplayCount(gameSettings.MaxReplayCount);
+
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
 
 			return () =>
@@ -228,6 +241,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				playerSettings.Color = defaultPlayerSettings.Color;
 				autoSaveSettings.AutoSaveInterval = defaultAutoSaveSettings.AutoSaveInterval;
 				autoSaveSettings.AutoSaveMaxFileCount = defaultAutoSaveSettings.AutoSaveMaxFileCount;
+				gameSettings.MaxReplayCount = defaultGameSettings.MaxReplayCount;
 				gameSettings.HideReplayChat = defaultGameSettings.HideReplayChat;
 			};
 		}
@@ -289,11 +303,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			lastState = state;
 		}
 
+		void ShowMaxReplayCountDropdown(DropDownButtonWidget dropdown, IEnumerable<int> options)
+		{
+			ScrollItemWidget SetupItem(int o, ScrollItemWidget itemTemplate)
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => gameSettings.MaxReplayCount == o,
+					() =>
+					{
+						gameSettings.MaxReplayCount = o;
+						gameSettings.Save();
+					});
+
+				var deviceLabel = item.Get<LabelWidget>("LABEL");
+				deviceLabel.GetText = () => GetMessageForMaxReplayCount(o);
+
+				return item;
+			}
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options, SetupItem);
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			Game.LocalPlayerProfile.OnStateChanged -= UpdateForumAuthFields;
 			base.Dispose(disposing);
 		}
+
+		static string GetMessageForMaxReplayCount(int value) =>
+			value <= 0
+				? FluentProvider.GetMessage(MaxReplayCountDisabled)
+				: FluentProvider.GetMessage(MaxReplayCountOptions, "replays", value);
 
 		static string GetMessageForAutoSaveInterval(int value) =>
 			value switch
