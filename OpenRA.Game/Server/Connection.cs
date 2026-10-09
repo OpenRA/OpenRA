@@ -57,14 +57,14 @@ namespace OpenRA.Server
 			}.Start((server, socket));
 		}
 
-		static byte[] CreatePingFrame()
+		static byte[] CreatePingFrame(long timestamp)
 		{
 			var ms = new MemoryStream(21);
 			ms.Write(13);
 			ms.Write(0);
 			ms.Write(0);
 			ms.WriteByte((byte)OrderType.Ping);
-			ms.Write(Game.RunTime);
+			ms.Write(timestamp);
 			return ms.GetBuffer();
 		}
 
@@ -80,6 +80,8 @@ namespace OpenRA.Server
 			var expectLength = 8;
 			var frame = 0;
 			var lastPingSent = Stopwatch.StartNew();
+			var sentPingTimestamps = new Queue<long>();
+			var outstandingPingTimestamps = new HashSet<long>();
 
 			try
 			{
@@ -130,11 +132,19 @@ namespace OpenRA.Server
 									// server-introduced latencies from polling loops
 									if (expectLength == 10 && bytes[0] == (byte)OrderType.Ping)
 									{
-										if (pingHistory.Count == MaxPingSamples)
-											pingHistory.Dequeue();
+										var timestamp = BitConverter.ToInt64(bytes, 1);
+										if (outstandingPingTimestamps.Remove(timestamp))
+										{
+											var latency = Game.RunTime - timestamp;
+											if (latency >= 0 && latency <= int.MaxValue)
+											{
+												if (pingHistory.Count == MaxPingSamples)
+													pingHistory.Dequeue();
 
-										pingHistory.Enqueue((int)(Game.RunTime - BitConverter.ToInt64(bytes, 1)));
-										server.OnConnectionPing(this, pingHistory.ToArray(), bytes[9]);
+												pingHistory.Enqueue((int)latency);
+												server.OnConnectionPing(this, pingHistory.ToArray(), bytes[9]);
+											}
+										}
 									}
 									else
 										server.OnConnectionPacket(this, frame, bytes);
@@ -153,8 +163,19 @@ namespace OpenRA.Server
 						return;
 
 					// Regularly check player ping
-					if (lastPingSent.ElapsedMilliseconds > 1000 && TrySendData(CreatePingFrame()))
-						lastPingSent.Restart();
+					if (lastPingSent.ElapsedMilliseconds > 1000)
+					{
+						var timestamp = Game.RunTime;
+						if (TrySendData(CreatePingFrame(timestamp)))
+						{
+							if (sentPingTimestamps.Count == MaxPingSamples)
+								outstandingPingTimestamps.Remove(sentPingTimestamps.Dequeue());
+
+							sentPingTimestamps.Enqueue(timestamp);
+							outstandingPingTimestamps.Add(timestamp);
+							lastPingSent.Restart();
+						}
+					}
 
 					// Send all data immediately, we will block again on read
 					while (sendQueue.TryTake(out var data, 0))
