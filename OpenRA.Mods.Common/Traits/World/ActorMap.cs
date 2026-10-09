@@ -472,6 +472,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			FlushUpdatedPositions();
+
+			foreach (var t in cellTriggers)
+				t.Value.Tick(this);
+
+			foreach (var t in proximityTriggers)
+				t.Value.Tick(this);
+		}
+
+		public void FlushUpdatedPositions()
+		{
 			// Position updates are done in one pass
 			// to ensure consistency during a tick
 			if (removeActorPosition.Count > 0)
@@ -500,12 +511,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			addActorPosition.Clear();
-
-			foreach (var t in cellTriggers)
-				t.Value.Tick(this);
-
-			foreach (var t in proximityTriggers)
-				t.Value.Tick(this);
 		}
 
 		public int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit)

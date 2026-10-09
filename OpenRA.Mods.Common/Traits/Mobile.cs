@@ -585,6 +585,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!self.IsAtGroundLevel())
 				return;
 
+			// Ensure the actor's new position is reflected in the spatial bins before crushing,
+			// so that any explosion triggered by the crush can find the actor at its new position.
+			self.World.ActorMap.FlushUpdatedPositions();
+
 			CrushAction(self, (notifyCrushed) => notifyCrushed.OnCrush);
 		}
 
