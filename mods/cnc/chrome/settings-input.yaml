@@ -280,6 +280,19 @@ Container@INPUT_PANEL:
 					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
+						Container@ATTACKMOVE_DEFAULT_CHECKBOX_CONTAINER:
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
+							Children:
+								Checkbox@ATTACKMOVE_DEFAULT_CHECKBOX:
+									Width: PARENT_WIDTH
+									Height: 20
+									Font: Regular
+									Text: checkbox-attackmove-default-container
+				Container@ROW:
+					Width: PARENT_WIDTH - 24
+					Height: 20
+					Children:
 						Container@LOCKMOUSE_CHECKBOX_CONTAINER:
 							X: PARENT_WIDTH / 2 + 10
 							Width: PARENT_WIDTH / 2 - 20
