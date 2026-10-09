@@ -16,6 +16,26 @@ World:
 		Default: normal
 	TimeLimitManager:
 		SkipTimerExpiredNotification: True
+	WeatherOverlay:
+		ChangingWindLevel: false
+		WindLevels: 0, 0
+		WindTick: 150, 550
+		InstantWindChanges: false
+		UseSquares: true
+		ParticleSize: 1, 3
+		ScatterDirection: 0, 0
+		Gravity: 0.25, 0.25
+		SwingOffset: -0.1, 0.1
+		SwingSpeed: 0.001, 0.025
+		SwingAmplitude: -0.1, 0.1
+		ParticleColors: CCCCCC, C0C0C0, D0D0D0, B3B3B3
+		LineTailAlphaValue: 0
+	TintPostProcessEffect:
+		Red: 0.75
+		Green: 0.85
+		Blue: 2
+		Ambient: 0.25
+
 
 ^Palettes:
 	IndexedPlayerPalette@truk:
