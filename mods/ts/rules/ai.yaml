@@ -5,13 +5,15 @@ Player:
 	GrantConditionOnBotOwner@test:
 		Condition: enable-test-ai
 		Bots: test
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-test-ai
 	HarvesterBotModule:
 		RequiresCondition: enable-test-ai
 		HarvesterTypes: harv
 		RefineryTypes: proc
 	PowerDownBotModule:
 		RequiresCondition: enable-test-ai
-		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		PowerDownTypes: garadr, naradr, gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam,napuls
 	ResourceMapBotModule:
 		RequiresCondition: enable-test-ai
 		ResourceCreatorTypes: tibtre01, tibtre02, tibtre03, bigblue, bigblue3
@@ -26,12 +28,14 @@ Player:
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: gacnst
+		BuildingQueues: Building
+		DefenseQueues: Support
 		RefineryTypes: proc
 		PowerTypes: gapowr, gapowrup, napowr, naapwr
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		TechTypes: garadr, naradr, gahpad, nahpad, gatech, natech
 		SiloTypes: gasilo
-		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam,napuls
 		SellRefineryNoResourceDistance: 18
 		BuildingLimits:
 			proc: 4
@@ -56,6 +60,7 @@ Player:
 			naobel: 2
 			nalasr: 8
 			nasam: 4
+			napuls: 1
 		BuildingFractions:
 			proc: 30
 			gapile: 1
@@ -76,12 +81,13 @@ Player:
 			gactwr: 18
 			nasam: 6
 			naobel: 3
+			napuls: 1
 	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai
 	SquadManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		SquadSize: 20
-		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter, lpst
 		ConstructionYardTypes: gacnst
 		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
 		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
@@ -107,6 +113,9 @@ Player:
 			subtank: 10
 			sonic: 10
 			stnk: 8
+			art2: 5
+			jugg: 5
+			lpst: 5
 			orca: 5
 			orcab: 4
 			apache: 5
@@ -115,6 +124,7 @@ Player:
 			harv: 12
 			medic: 3
 			repair: 3
+			lpst: 1
 	McvExpansionManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		McvTypes: mcv
