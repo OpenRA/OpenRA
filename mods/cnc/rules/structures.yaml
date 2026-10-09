@@ -762,7 +762,6 @@ HQ:
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike
-		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
 		CameraActor: camera
 		ArrowSequence: arrow
@@ -957,7 +956,6 @@ TMPL:
 		SpawnOffset: 3c0,0,-1c512
 		DisplayBeacon: True
 		BeaconPoster: atomic
-		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
 		CameraRange: 10c0
 		ArrowSequence: arrow

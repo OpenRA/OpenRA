@@ -91,7 +91,6 @@ Astk.proxy:
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike
-		BeaconPosterPalette: beaconposter
 		DisplayRadarPing: True
 		CameraActor: camera
 		ArrowSequence: arrow
