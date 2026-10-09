@@ -67,6 +67,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant to the Carryall while it is carrying something.")]
 		public readonly string CarryCondition = null;
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant to the Carryall while it is approaching to pick up or deliver a unit.")]
+		public readonly string ApproachingCondition = null;
+
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when a specified actor is being carried.",
 			"A dictionary of [actor name]: [condition].")]
@@ -111,6 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 		FrozenSet<string> landableTerrainTypes;
 		int carryConditionToken = Actor.InvalidConditionToken;
 		int carryableConditionToken = Actor.InvalidConditionToken;
+		int approachingConditionToken = Actor.InvalidConditionToken;
 
 		/// <summary>Offset between the carryall's and the carried actor's CenterPositions.</summary>
 		public WVec CarryableOffset { get; private set; }
@@ -164,6 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 				Carryable = null;
 			}
 
+			RevokeApproachingCondition(self);
 			UnreserveCarryable(self);
 		}
 
@@ -181,6 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 				Carryable = null;
 			}
 
+			RevokeApproachingCondition(self);
 			UnreserveCarryable(self);
 		}
 
@@ -223,6 +230,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual void DetachCarryable(Actor self)
 		{
 			UnreserveCarryable(self);
+			RevokeApproachingCondition(self);
 			self.World.ScreenMap.AddOrUpdate(self);
 			if (carryConditionToken != Actor.InvalidConditionToken)
 				carryConditionToken = self.RevokeCondition(carryConditionToken);
@@ -259,6 +267,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			Carryable = null;
 			State = CarryallState.Idle;
+		}
+
+		public void GrantApproachingCondition(Actor self)
+		{
+			if (approachingConditionToken == Actor.InvalidConditionToken && Info.ApproachingCondition != null)
+				approachingConditionToken = self.GrantCondition(Info.ApproachingCondition);
+		}
+
+		public void RevokeApproachingCondition(Actor self)
+		{
+			if (approachingConditionToken != Actor.InvalidConditionToken)
+				approachingConditionToken = self.RevokeCondition(approachingConditionToken);
 		}
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)

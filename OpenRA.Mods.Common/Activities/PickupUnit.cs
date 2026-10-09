@@ -97,6 +97,9 @@ namespace OpenRA.Mods.Common.Activities
 					// Pickup position and facing are now known - swap the fly/wait activity with Land
 					ChildActivity.Cancel(self);
 
+					// Slow down for the final approach.
+					carryall.GrantApproachingCondition(self);
+
 					var localOffset = carryall.OffsetForCarryable(self, cargo).Rotate(carryableBody.QuantizeOrientation(cargo.Orientation));
 					QueueChild(new Land(self, Target.FromActor(cargo), -carryableBody.LocalToWorld(localOffset), carryableFacing.Facing));
 
@@ -106,6 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					// Remove our carryable from world
 					QueueChild(new AttachUnit(self, cargo));
+					QueueChild(new RevokeApproaching(self));
 					QueueChild(new TakeOff(self));
 
 					state = PickupState.Pickup;
@@ -118,6 +122,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
+			carryall.RevokeApproachingCondition(self);
 			base.Cancel(self, keepQueue);
 
 			// We are safe to bail here as base won't set IsCanceling to true if not interruptible.
@@ -148,6 +153,21 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (targetLineColor != null)
 				yield return new TargetLineNode(Target.FromActor(cargo), targetLineColor.Value);
+		}
+
+		sealed class RevokeApproaching : Activity
+		{
+			readonly Carryall carryall;
+
+			public RevokeApproaching(Actor self)
+			{
+				carryall = self.Trait<Carryall>();
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				carryall.RevokeApproachingCondition(self);
+			}
 		}
 
 		sealed class AttachUnit : Activity
