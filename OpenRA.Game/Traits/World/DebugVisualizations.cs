@@ -11,6 +11,8 @@
 
 namespace OpenRA.Traits
 {
+	public enum DebugTargetLines { Default, AllPlayers, AlwaysAllPlayers }
+
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Enables visualization commands. Attach this to the world actor.")]
 	public class DebugVisualizationsInfo : TraitInfo<DebugVisualizations> { }
@@ -21,6 +23,7 @@ namespace OpenRA.Traits
 		public bool RenderGeometry;
 		public bool ScreenMap;
 		public bool ActorTags;
+		public DebugTargetLines TargetLines = DebugTargetLines.Default;
 
 		// The depth buffer may have been left enabled by the previous world
 		// Initializing this as dirty forces us to reset the default rendering before the first render
