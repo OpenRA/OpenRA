@@ -123,7 +123,7 @@ namespace OpenRA
 
 		static readonly object BoxedTrue = true;
 		static readonly object BoxedFalse = false;
-		static readonly object[] BoxedInts = Exts.MakeArray(33, i => (object)i);
+		static readonly ImmutableArray<object> BoxedInts = Exts.MakeImmutableArray(33, i => (object)i);
 
 		static readonly MethodInfo ToImmutableArray =
 			typeof(ImmutableArray)

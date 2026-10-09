@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.FileSystem
@@ -33,11 +34,14 @@ namespace OpenRA.Mods.Common.FileSystem
 			if (packageNode == null)
 				return default(ImmutableArray<KeyValuePair<string, string>>);
 
-			var packages = new List<KeyValuePair<string, string>>(packageNode.Value.Nodes.Length);
-			foreach (var node in packageNode.Value.Nodes)
-				packages.Add(KeyValuePair.Create(node.Key, node.Value.Value));
+			var packages = new KeyValuePair<string, string>[packageNode.Value.Nodes.Length];
+			for (var i = 0; i < packageNode.Value.Nodes.Length; i++)
+			{
+				var node = packageNode.Value.Nodes[i];
+				packages[i] = KeyValuePair.Create(node.Key, node.Value.Value);
+			}
 
-			return packages.ToImmutableArray();
+			return ImmutableCollectionsMarshal.AsImmutableArray(packages);
 		}
 
 		public void Mount(Manifest manifest, OpenRA.FileSystem.FileSystem fileSystem, ObjectCreator objectCreator)

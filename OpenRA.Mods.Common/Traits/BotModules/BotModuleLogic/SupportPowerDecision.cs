@@ -54,12 +54,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		static object LoadConsiderations(MiniYaml yaml)
 		{
-			var ret = new List<Consideration>();
+			var ret = ImmutableArray.CreateBuilder<Consideration>();
 			foreach (var d in yaml.Nodes)
 				if (d.Key.Split('@')[0] == "Consideration")
 					ret.Add(new Consideration(d.Value));
 
-			return ret.ToImmutableArray();
+			return ret.DrainToImmutable();
 		}
 
 		/// <summary>Evaluates the attractiveness of a position according to all considerations.</summary>

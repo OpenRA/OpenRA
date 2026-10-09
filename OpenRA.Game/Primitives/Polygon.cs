@@ -54,7 +54,7 @@ namespace OpenRA.Primitives
 			{
 				isRectangle = true;
 				BoundingRect = Rectangle.Empty;
-				Vertices = Exts.MakeArray(4, _ => int2.Zero).ToImmutableArray();
+				Vertices = Exts.MakeImmutableArray(4, _ => int2.Zero);
 			}
 		}
 

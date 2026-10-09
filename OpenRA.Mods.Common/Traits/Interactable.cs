@@ -11,6 +11,7 @@
 
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -79,12 +80,12 @@ namespace OpenRA.Mods.Common.Traits
 				screenVertices[i] = wr.ScreenPxPosition(self.CenterPosition) + offset;
 			}
 
-			return screenVertices.ToImmutableArray();
+			return ImmutableCollectionsMarshal.AsImmutableArray(screenVertices);
 		}
 
 		Polygon Bounds(Actor self, WorldRenderer wr, ImmutableArray<WDist> bounds)
 		{
-			if (bounds == null)
+			if (bounds.IsDefault)
 				return new Polygon(AutoBounds(self, wr));
 
 			// Convert from WDist to pixels
@@ -108,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Rectangle DecorationBounds(Actor self, WorldRenderer wr)
 		{
-			return Bounds(self, wr, info.DecorationBounds != null ? info.DecorationBounds : info.Bounds).BoundingRect;
+			return Bounds(self, wr, info.DecorationBounds.IsDefault ? info.DecorationBounds : info.Bounds).BoundingRect;
 		}
 	}
 }

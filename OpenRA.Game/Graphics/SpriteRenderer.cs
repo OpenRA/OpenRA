@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Primitives;
@@ -35,7 +36,7 @@ namespace OpenRA.Graphics
 		}
 
 		public const int SheetCount = 8;
-		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => $"Texture{i}");
+		static readonly ImmutableArray<string> SheetIndexToTextureName = Exts.MakeImmutableArray(SheetCount, i => $"Texture{i}");
 		static readonly int UintSize = Marshal.SizeOf<uint>();
 
 		readonly Renderer renderer;

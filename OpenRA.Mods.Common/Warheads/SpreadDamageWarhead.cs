@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Warheads
 				effectiveRange = Range;
 			}
 			else
-				effectiveRange = Exts.MakeArray(Falloff.Length, i => i * Spread).ToImmutableArray();
+				effectiveRange = Exts.MakeImmutableArray(Falloff.Length, i => i * Spread);
 		}
 
 		protected override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)

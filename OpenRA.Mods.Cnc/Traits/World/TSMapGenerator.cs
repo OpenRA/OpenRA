@@ -10,9 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
@@ -144,7 +146,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			[FieldLoader.Require]
 			public readonly int MaximumBuildings = default;
 			[FieldLoader.LoadUsing(nameof(BuildingWeightsLoader))]
-			public readonly IReadOnlyDictionary<string, int> BuildingWeights = default;
+			public readonly FrozenDictionary<string, int> BuildingWeights = default;
 			[FieldLoader.Require]
 			public readonly int CivilianBuildings = default;
 			[FieldLoader.Require]
@@ -159,21 +161,21 @@ namespace OpenRA.Mods.Cnc.Traits
 			[FieldLoader.Require]
 			public readonly ushort WaterTile = default;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> SegmentedBrushes;
+			public readonly ImmutableArray<MultiBrush> SegmentedBrushes;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> ForestObstacles;
+			public readonly ImmutableArray<MultiBrush> ForestObstacles;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> UnplayableObstacles;
+			public readonly ImmutableArray<MultiBrush> UnplayableObstacles;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> CivilianBuildingsObstacles;
+			public readonly ImmutableArray<MultiBrush> CivilianBuildingsObstacles;
 			[FieldLoader.Require]
 			public readonly ushort ForestFloorTile = default;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<(ushort, int)> OtherGround;
+			public readonly ImmutableArray<(ushort, int)> OtherGround;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyDictionary<ushort, IReadOnlyList<MultiBrush>> RepaintTiles;
+			public readonly FrozenDictionary<ushort, ImmutableArray<MultiBrush>> RepaintTiles;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<ushort> RampTiles;
+			public readonly ImmutableArray<ushort> RampTiles;
 			[FieldLoader.Ignore]
 			public readonly LatTiler LatTiler;
 			[FieldLoader.Ignore]
@@ -184,18 +186,18 @@ namespace OpenRA.Mods.Cnc.Traits
 			[FieldLoader.Ignore]
 			public readonly ResourceTypeInfo DefaultResource;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyDictionary<string, ResourceTypeInfo> ResourceSpawnSeeds;
+			public readonly FrozenDictionary<string, ResourceTypeInfo> ResourceSpawnSeeds;
 			[FieldLoader.LoadUsing(nameof(ResourceSpawnWeightsLoader))]
-			public readonly IReadOnlyDictionary<string, int> ResourceSpawnWeights = default;
+			public readonly FrozenDictionary<string, int> ResourceSpawnWeights = default;
 
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> ClearTerrain;
+			public readonly FrozenSet<byte> ClearTerrain;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> PlayableTerrain;
+			public readonly FrozenSet<byte> PlayableTerrain;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> DominantTerrain;
+			public readonly FrozenSet<byte> DominantTerrain;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> ZoneableTerrain;
+			public readonly FrozenSet<byte> ZoneableTerrain;
 			[FieldLoader.Ignore]
 			public readonly string ClearSegmentType;
 			[FieldLoader.Ignore]
@@ -224,7 +226,7 @@ namespace OpenRA.Mods.Cnc.Traits
 							throw new YamlException($"OtherGround {n.Key} has invalid fraction (should be 0 to {FractionMax})");
 
 						return (tile, fraction);
-					}).ToList();
+					})?.ToImmutableArray() ?? [];
 				RepaintTiles = my.NodeWithKeyOrDefault("RepaintTiles")?.Value.ToDictionary(
 					k =>
 					{
@@ -233,10 +235,10 @@ namespace OpenRA.Mods.Cnc.Traits
 						else
 							throw new YamlException($"RepaintTile {k} is not a ushort");
 					},
-					v => MultiBrush.LoadCollection(map, v.Value) as IReadOnlyList<MultiBrush>);
-				RepaintTiles ??= ImmutableDictionary<ushort, IReadOnlyList<MultiBrush>>.Empty;
+					v => MultiBrush.LoadCollection(map, v.Value))?.ToFrozenDictionary();
+				RepaintTiles ??= FrozenDictionary<ushort, ImmutableArray<MultiBrush>>.Empty;
 
-				RampTiles = FieldLoader.GetValue<List<ushort>>(
+				RampTiles = FieldLoader.GetValue<ImmutableArray<ushort>>(
 					nameof(RampTiles),
 					my.NodeWithKey(nameof(RampTiles)).Value.Value);
 				LatTiler = new LatTiler(my.NodeWithKey("LatTiler").Value, terrainInfo);
@@ -251,7 +253,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					ResourceSpawnSeeds = my.NodeWithKey("ResourceSpawnSeeds").Value
 						.ToDictionary(subMy => subMy.Value)
-						.ToDictionary(kv => kv.Key, kv => resourceTypes[kv.Value]);
+						.ToFrozenDictionary(kv => kv.Key, kv => resourceTypes[kv.Value]);
 				}
 				catch (KeyNotFoundException e)
 				{
@@ -269,12 +271,12 @@ namespace OpenRA.Mods.Cnc.Traits
 						break;
 				}
 
-				IReadOnlySet<byte> ParseTerrainIndexes(string key)
+				FrozenSet<byte> ParseTerrainIndexes(string key)
 				{
 					return my.NodeWithKey(key).Value.Value
 						.Split(',', StringSplitOptions.RemoveEmptyEntries)
 						.Select(terrainInfo.GetTerrainIndex)
-						.ToImmutableHashSet();
+						.ToFrozenSet();
 				}
 
 				ClearTerrain = ParseTerrainIndexes("ClearTerrain");
@@ -298,7 +300,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					throw new YamlException($"Invalid Mirror value `{my.NodeWithKey("Mirror").Value.Value}`");
 			}
 
-			static IReadOnlyDictionary<string, int> BuildingWeightsLoader(MiniYaml my)
+			static FrozenDictionary<string, int> BuildingWeightsLoader(MiniYaml my)
 			{
 				return my.NodeWithKey("BuildingWeights").Value.ToDictionary(subMy =>
 					{
@@ -306,10 +308,10 @@ namespace OpenRA.Mods.Cnc.Traits
 							return f;
 						else
 							throw new YamlException($"Invalid building weight `{subMy.Value}`");
-					});
+					}).ToFrozenDictionary();
 			}
 
-			static IReadOnlyDictionary<string, int> ResourceSpawnWeightsLoader(MiniYaml my)
+			static FrozenDictionary<string, int> ResourceSpawnWeightsLoader(MiniYaml my)
 			{
 				return my.NodeWithKey("ResourceSpawnWeights").Value.ToDictionary(subMy =>
 					{
@@ -317,7 +319,7 @@ namespace OpenRA.Mods.Cnc.Traits
 							return f;
 						else
 							throw new YamlException($"Invalid resource spawn weight `{subMy.Value}`");
-					});
+					}).ToFrozenDictionary();
 			}
 		}
 
@@ -436,7 +438,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var heightMap = new RampTiler.HeightMap(map);
 
 			var coast = MatrixUtils.BordersToPoints(landPlan);
-			List<TilingPath> coastPaths;
+			ImmutableArray<TilingPath> coastPaths;
 			if (param.WaterCliffs)
 			{
 				var waterCliffZone = new Terraformer.PathPartitionZone()
@@ -473,7 +475,7 @@ namespace OpenRA.Mods.Cnc.Traits
 								param.BeachSegmentType,
 								param.BeachSegmentType)
 									.ExtendEdge(4))
-					.ToList();
+					.ToImmutableArray();
 			}
 
 			var landCoastWater = terraformer.PaintLoopsAndFill(
@@ -481,7 +483,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				coastPaths,
 				landPlan[0] ? Terraformer.Side.In : Terraformer.Side.Out,
 				[new MultiBrush().WithTemplate(map, param.WaterTile, CVec.Zero)],
-				null,
+				default,
 				null,
 				0)
 					?? throw new MapGenerationException("Could not fit tiles for coast");
@@ -811,7 +813,7 @@ namespace OpenRA.Mods.Cnc.Traits
 						resourcePattern,
 						resourceMask,
 						param.DefaultResource,
-						resourceBiases);
+						CollectionsMarshal.AsSpan(resourceBiases));
 					terraformer.GrowResources(
 						plan,
 						typePlan,

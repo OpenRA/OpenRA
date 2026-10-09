@@ -99,8 +99,8 @@ namespace OpenRA.Mods.Common.Widgets
 		ScrollDirection keyboardDirections;
 		ScrollDirection edgeDirections;
 
-		HotkeyReference[] saveBookmarkHotkeys;
-		HotkeyReference[] restoreBookmarkHotkeys;
+		ImmutableArray<HotkeyReference> saveBookmarkHotkeys;
+		ImmutableArray<HotkeyReference> restoreBookmarkHotkeys;
 		WPos?[] bookmarkPositions;
 
 		[CustomLintableHotkeyNames]
@@ -155,10 +155,10 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			saveBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
+			saveBookmarkHotkeys = Exts.MakeImmutableArray(BookmarkKeyCount,
 				i => modData.Hotkeys[BookmarkSaveKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
-			restoreBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
+			restoreBookmarkHotkeys = Exts.MakeImmutableArray(BookmarkKeyCount,
 				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			bookmarkPositions = new WPos?[BookmarkKeyCount];

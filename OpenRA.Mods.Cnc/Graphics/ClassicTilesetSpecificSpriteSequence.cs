@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					{
 						var subStart = LoadField("Start", 0, data);
 						var subLength = LoadField("Length", 1, data);
-						frames = Exts.MakeArray(subLength, i => subStart + i).ToImmutableArray();
+						frames = Exts.MakeImmutableArray(subLength, i => subStart + i);
 					}
 
 					return [new ReservationInfo(tilesetNode.Value.Value, frames, frames, tilesetNode.Location)];

@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Effects;
@@ -160,7 +159,7 @@ namespace OpenRA.GameRules
 
 		static object LoadWarheads(MiniYaml yaml)
 		{
-			var retList = new List<IWarhead>();
+			var retList = ImmutableArray.CreateBuilder<IWarhead>();
 			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead", StringComparison.Ordinal)))
 			{
 				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
@@ -171,7 +170,7 @@ namespace OpenRA.GameRules
 				retList.Add(ret);
 			}
 
-			return retList.ToImmutableArray();
+			return retList.DrainToImmutable();
 		}
 
 		public bool IsValidTarget(BitSet<TargetableType> targetTypes)

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			FieldLoader.Load(this, yaml);
 		}
 
-		public abstract IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount);
+		public abstract ImmutableArray<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount);
 
 		public virtual IEnumerable<string> GetFluentReferences()
 		{
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MapGeneratorBooleanOption(string id, MiniYaml yaml)
 			: base(id, yaml) { }
 
-		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
+		public override ImmutableArray<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
 			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(value))];
 		}
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 		public MapGeneratorIntegerOption(string id, MiniYaml yaml)
 			: base(id, yaml) { }
 
-		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
+		public override ImmutableArray<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
 			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(value))];
 		}
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			return validChoices.FirstOrDefault();
 		}
 
-		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
+		public override ImmutableArray<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
 			var validChoices = ValidChoices(terrainInfo, playerCount);
 			if (validChoices.Contains(value))
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			Default ??= Choices != null ? Choices[0] : 0;
 		}
 
-		public override IReadOnlyCollection<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
+		public override ImmutableArray<MiniYamlNode> GetParameters(ITerrainInfo terrainInfo, string value, int playerCount)
 		{
 			return [new MiniYamlNode(Parameter, FieldSaver.FormatValue(value))];
 		}
