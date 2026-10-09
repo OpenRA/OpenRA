@@ -164,6 +164,21 @@ Root2:
 			Assert.That(tabs, Is.EqualTo(mixed));
 		}
 
+		[TestCase(TestName = "Bad indent throws error")]
+		public void TestBadIndent()
+		{
+			const string Yaml = @"
+Root:
+		Child:
+			Key: value
+";
+
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(Yaml, "test-filename")]);
+
+			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
+				"Bad indent in miniyaml at test-filename:3"));
+		}
+
 		[TestCase(TestName = "Yaml files should be able to remove nodes")]
 		public void NodeRemoval()
 		{
@@ -564,31 +579,346 @@ Test:
 				"CollectionOfStrings value has not been set with the correct override value for StringC.");
 		}
 
-		[TestCase(TestName = "Inheritance works for nested nodes")]
-		public void InheritanceWorksForNestedNodes()
+		[TestCase(TestName = "Inheritance works")]
+		public void InheritanceWorks()
 		{
 			const string BaseYaml = @"
 ^DefaultKey:
 	Key: value
+	Key2: value2
 ";
 			const string ExtendedYaml = @"
 Parent:
-	Child:
-		Inherits: ^DefaultKey
+	Inherits: ^DefaultKey
+	Key3: value3
 ";
 
 			const string ResultString =
 @"^DefaultKey:
 	Key: value
+	Key2: value2
 Parent:
-	Child:
-		Key: value
+	Key: value
+	Key2: value2
+	Key3: value3
 ";
 			var baseYaml = MiniYaml.FromString(BaseYaml, "");
 			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
 
 			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
 			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance works for nested nodes")]
+		public void InheritanceWorksForNestedNodes()
+		{
+			const string BaseYaml = @"
+^DefaultKey:
+	Key: value
+	Key2: value2
+";
+			const string ExtendedYaml = @"
+Parent:
+	Child:
+		Inherits: ^DefaultKey
+		Key3: value3
+";
+
+			const string ResultString =
+@"^DefaultKey:
+	Key: value
+	Key2: value2
+Parent:
+	Child:
+		Key: value
+		Key2: value2
+		Key3: value3
+";
+			var baseYaml = MiniYaml.FromString(BaseYaml, "");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
+
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance works when used multiple times")]
+		public void InheritanceWorksMultipleTimes()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Key1: value1
+	Key2: value2
+	Key3: value3
+^Bravo:
+	Key1: value4
+	Key2: value5
+	Key4: value6
+";
+			const string ExtendedYaml = @"
+Parent:
+	Inherits@a: ^Alpha
+	Inherits@b: ^Bravo
+";
+
+			const string ResultString =
+@"^Alpha:
+	Key1: value1
+	Key2: value2
+	Key3: value3
+^Bravo:
+	Key1: value4
+	Key2: value5
+	Key4: value6
+Parent:
+	Key1: value4
+	Key2: value5
+	Key3: value3
+	Key4: value6
+";
+			var baseYaml = MiniYaml.FromString(BaseYaml, "");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
+
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance works when nested")]
+		public void InheritanceWorksWhenNested()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Key1: value1
+	Key2: value2
+^Bravo:
+	Inherits: ^Alpha
+	Key3: value3
+";
+			const string ExtendedYaml = @"
+Parent:
+	Inherits: ^Bravo
+	Key4: value4
+";
+
+			const string ResultString =
+@"^Alpha:
+	Key1: value1
+	Key2: value2
+^Bravo:
+	Key1: value1
+	Key2: value2
+	Key3: value3
+Parent:
+	Key1: value1
+	Key2: value2
+	Key3: value3
+	Key4: value4
+";
+			var baseYaml = MiniYaml.FromString(BaseYaml, "");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
+
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance with bad value throws error")]
+		public void InheritanceBadValueThrowsError()
+		{
+			const string BaseYaml = @"
+^DefaultKey:
+	Key: value
+	Key2: value2
+";
+			const string ExtendedYaml = @"
+Parent:
+	Inherits: ^WrongName
+";
+
+			var baseYaml = MiniYaml.FromString(BaseYaml, "base-filename");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "ext-filename");
+
+			void Merge() => MiniYaml.Merge([baseYaml, mergeYaml]);
+
+			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
+				"ext-filename:3: Parent type `^WrongName` not found"));
+		}
+
+		[TestCase(TestName = "Inheritance with duplicate value throws error")]
+		public void InheritanceDuplicateValueThrowsError()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Key: value
+";
+			const string ExtendedYaml = @"
+Parent:
+	Inherits@a: ^Alpha
+	Inherits@b: ^Alpha
+";
+
+			var baseYaml = MiniYaml.FromString(BaseYaml, "base-filename");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "ext-filename");
+
+			void Merge() => MiniYaml.Merge([baseYaml, mergeYaml]);
+
+			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
+				"ext-filename:4: Parent type `^Alpha` was already inherited by this yaml tree at ext-filename:3 (note: may be from a derived tree)"));
+		}
+
+		[TestCase(TestName = "Inheritance with duplicate value when nested throws error")]
+		public void InheritanceDuplicateValueWhenNestedThrowsError()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Key: value
+^Bravo:
+	Inherits: ^Alpha
+";
+			const string ExtendedYaml = @"
+Parent:
+	Inherits@a: ^Alpha
+	Inherits@b: ^Bravo
+";
+
+			var baseYaml = MiniYaml.FromString(BaseYaml, "base-filename");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "ext-filename");
+
+			void Merge() => MiniYaml.Merge([baseYaml, mergeYaml]);
+
+			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
+				"ext-filename:3: Parent type `^Alpha` was already inherited by this yaml tree at base-filename:5 (note: may be from a derived tree)"));
+		}
+
+		[TestCase(TestName = "Inheritance value can be used multiple times")]
+		public void InheritanceValueUsedMultipleTimes()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Key: value
+";
+			const string ExtendedYaml = @"
+First:
+	Inherits: ^Alpha
+Second:
+	Inherits: ^Alpha
+";
+
+			const string ResultString =
+@"^Alpha:
+	Key: value
+First:
+	Key: value
+Second:
+	Key: value
+";
+			var baseYaml = MiniYaml.FromString(BaseYaml, "");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "");
+
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance can be used multiple times when nested")]
+		public void InheritanceCanBeUsedMultipleTimesWhenNested()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Key: value
+^Bravo:
+	Inherits: ^Alpha
+";
+			const string ExtendedYaml = @"
+^Charlie:
+	Inherits: ^Bravo
+^Delta:
+	Inherits: ^Charlie
+First:
+	Inherits: ^Alpha
+Second:
+	Inherits: ^Bravo
+Third:
+	Inherits: ^Charlie
+Fourth:
+	Inherits: ^Delta
+";
+
+			const string ResultString =
+@"^Alpha:
+	Key: value
+^Bravo:
+	Key: value
+^Charlie:
+	Key: value
+^Delta:
+	Key: value
+First:
+	Key: value
+Second:
+	Key: value
+Third:
+	Key: value
+Fourth:
+	Key: value
+";
+			var baseYaml = MiniYaml.FromString(BaseYaml, "base-filename");
+			var mergeYaml = MiniYaml.FromString(ExtendedYaml, "ext-filename");
+
+			var resultYaml = MiniYaml.Merge([baseYaml, mergeYaml]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance at root is ignored")]
+		public void InheritanceAtRootIsIgnored()
+		{
+			const string BaseYaml = @"
+Key: value
+Inherits: Key
+";
+
+			const string ResultString =
+@"Key: value
+";
+			var resultYaml = MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "")]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance works when declared after use")]
+		public void InheritanceWorksWhenDeclaredAfterUse()
+		{
+			const string BaseYaml = @"
+Parent:
+	Inherits: ^DefaultKey
+^DefaultKey:
+	Key: value
+	Key2: value2
+";
+
+			const string ResultString =
+@"Parent:
+	Key: value
+	Key2: value2
+^DefaultKey:
+	Key: value
+	Key2: value2
+";
+
+			var resultYaml = MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "")]);
+			Assert.That(resultYaml.WriteToString(), Is.EqualTo(ResultString));
+		}
+
+		[TestCase(TestName = "Inheritance with loop throws error")]
+		public void InheritanceLoopThrowsError()
+		{
+			const string BaseYaml = @"
+^Alpha:
+	Inherits: ^Bravo
+^Bravo:
+	Inherits: ^Alpha
+";
+
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename")]);
+
+			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
+				"test-filename:5: Parent type `^Alpha` was already inherited by this yaml tree at test-filename:5 (note: may be from a derived tree)"));
 		}
 
 		[TestCase(TestName = "Empty lines should count toward line numbers")]
@@ -672,7 +1002,7 @@ Test:
 		Child:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename")]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child: [Child (at test-filename:4),Child (at test-filename:5)]"));
@@ -689,7 +1019,7 @@ Test:
 		-Child:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename")]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
 				"test-filename:6: There are no elements with key `Child` to remove"));
@@ -722,8 +1052,6 @@ Test:
 			const string BaseYaml = @"
 Test:
 	Merge:
-		-ChildA:
-		-ChildB:
 		ChildA:
 		ChildB:
 		ChildA:
@@ -731,10 +1059,10 @@ Test:
 		ChildB:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename")]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
-				"MiniYaml.Merge, duplicate values found for the following keys: ChildA: [ChildA (at test-filename:6),ChildA (at test-filename:8)]"));
+				"MiniYaml.Merge, duplicate values found for the following keys: ChildA: [ChildA (at test-filename:4),ChildA (at test-filename:6)]"));
 		}
 
 		[TestCase(TestName = "Duplicated child nodes with intervening removals across multiple source do not throw")]
@@ -776,7 +1104,7 @@ Test:
 	Merge:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename")]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child1: [Child1 (at test-filename:4),Child1 (at test-filename:5)]"));
@@ -793,7 +1121,7 @@ Test:
 		Child2:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename")]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child2: [Child2 (at test-filename:5),Child2 (at test-filename:6)]"));
@@ -833,10 +1161,13 @@ Test:
 	Merge:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { FirstYaml, SecondYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			var firstYaml = MiniYaml.FromString(FirstYaml, "1-filename");
+			var secondYaml = MiniYaml.FromString(SecondYaml, "2-filename");
+
+			void Merge() => MiniYaml.Merge([firstYaml, secondYaml]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
-				"MiniYaml.Merge, duplicate values found for the following keys: Child1: [Child1 (at test-filename:4),Child1 (at test-filename:5)]"));
+				"MiniYaml.Merge, duplicate values found for the following keys: Child1: [Child1 (at 1-filename:4),Child1 (at 1-filename:5)]"));
 		}
 
 		[TestCase(TestName = "Duplicated child nodes across multiple sources throw merge error if second parent requires merging")]
@@ -853,10 +1184,13 @@ Test:
 		Child2:
 ";
 
-			static void Merge() => MiniYaml.Merge(new[] { FirstYaml, SecondYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			var firstYaml = MiniYaml.FromString(FirstYaml, "1-filename");
+			var secondYaml = MiniYaml.FromString(SecondYaml, "2-filename");
+
+			void Merge() => MiniYaml.Merge([firstYaml, secondYaml]);
 
 			Assert.That(Merge, Throws.Exception.TypeOf<YamlException>().And.Message.EqualTo(
-				"MiniYaml.Merge, duplicate values found for the following keys: Child2: [Child2 (at test-filename:4),Child2 (at test-filename:5)]"));
+				"MiniYaml.Merge, duplicate values found for the following keys: Child2: [Child2 (at 2-filename:4),Child2 (at 2-filename:5)]"));
 		}
 
 		[TestCase(TestName = "Merging may be done on yaml that was not sanitised from comments.")]
@@ -864,7 +1198,12 @@ Test:
 		{
 			const string BaseYaml = @"
 # Random comment
+Base:
+	Test2:
+		MockString5:
+# Random comment
 T:
+	Inherits: Base
 	Test2:
 		MockString:
 			MockString2:
@@ -887,9 +1226,99 @@ T:
 	# Random comment
 # Random comment
 ";
+			const string ExpectedYaml =
+@"Base:
+	Test2:
+		MockString5:
+T:
+	Test2:
+		MockString5:
+		MockString:
+			MockString3:
+		MockString4:
+";
 
-			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename", false)));
-			Assert.That(Merge, Throws.Nothing, "Merging yaml with comments should not throw an exception.");
+			var actual = MiniYaml.Merge([MiniYaml.FromString(BaseYaml, "test-filename", false)]);
+			Assert.That(actual.WriteToString(), Is.EqualTo(ExpectedYaml));
+		}
+
+		[TestCase(TestName = "Merging handles node values")]
+		public void MergingHandlesNodeValues()
+		{
+			const string BaseYaml =
+@"First:
+	Key: value1
+Second:
+	Key:
+Third:
+	Key: value1
+";
+
+			const string ExtendedYaml =
+@"First:
+	Key: value2
+Second:
+	Key: value2
+Third:
+	Key:
+";
+
+			const string ExpectedYaml =
+@"First:
+	Key: value2
+Second:
+	Key: value2
+Third:
+	Key: value1
+";
+
+			var baseYaml = MiniYaml.FromString(BaseYaml, "base-filename");
+			var extendedYaml = MiniYaml.FromString(ExtendedYaml, "ext-filename");
+
+			var merged = MiniYaml.Merge([baseYaml, extendedYaml]);
+			var mergedString = merged.WriteToString();
+
+			Assert.That(mergedString, Is.EqualTo(ExpectedYaml));
+		}
+
+		[TestCase(TestName = "Merging via inheritance handles node values")]
+		public void MergingViaInheritanceHandlesNodeValues()
+		{
+			const string BaseYaml =
+@"^Empty:
+	Key:
+^Value2:
+	Key: value2
+First:
+	Key: value1
+	Inherits: ^Value2
+Second:
+	Key:
+	Inherits: ^Value2
+Third:
+	Key: value1
+	Inherits: ^Empty
+";
+
+			const string ExpectedYaml =
+@"^Empty:
+	Key:
+^Value2:
+	Key: value2
+First:
+	Key: value2
+Second:
+	Key: value2
+Third:
+	Key: value1
+";
+
+			var baseYaml = MiniYaml.FromString(BaseYaml, "base-filename");
+
+			var merged = MiniYaml.Merge([baseYaml]);
+			var mergedString = merged.WriteToString();
+
+			Assert.That(mergedString, Is.EqualTo(ExpectedYaml));
 		}
 
 		[TestCase(TestName = "Comments are correctly separated from values")]
