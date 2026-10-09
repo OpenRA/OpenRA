@@ -156,7 +156,7 @@ namespace OpenRA.Graphics
 				renderablesBuffer.AddRange(e.Render(this));
 
 			// Partitioned, currently on-screen effects
-			foreach (var e in World.ScreenMap.RenderableEffectsInBox(Viewport.TopLeft, Viewport.BottomRight))
+			foreach (var e in World.ScreenMap.RenderableEffectsInBox(Viewport.Rect))
 				renderablesBuffer.AddRange(e.Render(this));
 
 			// Renderables must be ordered using a stable sorting algorithm to avoid flickering artefacts
@@ -264,7 +264,7 @@ namespace OpenRA.Graphics
 			RefreshPalette();
 
 			// PERF: Reuse collection to avoid allocations.
-			onScreenActors.UnionWith(World.ScreenMap.RenderableActorsInBox(Viewport.TopLeft, Viewport.BottomRight));
+			onScreenActors.UnionWith(World.ScreenMap.RenderableActorsInBox(Viewport.Rect));
 
 			GenerateRenderables();
 			GenerateOverlayRenderables();
