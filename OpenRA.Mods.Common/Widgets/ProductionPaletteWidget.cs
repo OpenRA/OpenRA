@@ -103,16 +103,15 @@ namespace OpenRA.Mods.Common.Widgets
 		public int MaxIconRowOffset = int.MaxValue;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
-		ProductionQueue currentQueue;
 		HotkeyReference[] hotkeys;
 
 		public ProductionQueue CurrentQueue
 		{
-			get => currentQueue;
+			get;
 			set
 			{
-				currentQueue = value;
-				if (currentQueue != null)
+				field = value;
+				if (field != null)
 					UpdateCachedProductionIconOverlays();
 
 				RefreshIcons();
@@ -340,7 +339,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (buildable != null)
 			{
 				if (CurrentQueue.Info.PayUpFront &&
-					currentQueue.GetProductionCost(buildable) > CurrentQueue.Actor.Owner.PlayerActor.Trait<PlayerResources>().GetCashAndResources())
+					CurrentQueue.GetProductionCost(buildable) > CurrentQueue.Actor.Owner.PlayerActor.Trait<PlayerResources>().GetCashAndResources())
 					return false;
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
 
@@ -530,8 +529,8 @@ namespace OpenRA.Mods.Common.Widgets
 					IconClockPalette = worldRenderer.Palette(ClockPalette),
 					IconDarkenPalette = worldRenderer.Palette(NotBuildablePalette),
 					Pos = rect.Location.ToVector2(),
-					Queued = currentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
-					ProductionQueue = currentQueue
+					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
+					ProductionQueue = CurrentQueue
 				};
 
 				icons.Add(rect, pi);

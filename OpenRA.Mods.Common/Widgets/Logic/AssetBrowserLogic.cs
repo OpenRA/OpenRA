@@ -114,14 +114,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.ToArray();
 
 			var ticker = panel.GetOrNull<LogicTickerWidget>("ANIMATION_TICKER");
-			if (ticker != null)
+			ticker?.OnTick = () =>
 			{
-				ticker.OnTick = () =>
-				{
-					if (animateFrames && currentSprites != null)
-						SelectNextFrame();
-				};
-			}
+				if (animateFrames && currentSprites != null)
+					SelectNextFrame();
+			};
 
 			var sourceDropdown = panel.GetOrNull<DropDownButtonWidget>("SOURCE_SELECTOR");
 			if (sourceDropdown != null)
@@ -154,8 +151,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var playerWidget = panel.GetOrNull<VideoPlayerWidget>("PLAYER");
-			if (playerWidget != null)
-				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
+			playerWidget?.IsVisible = () => isVideoLoaded && !isLoadError;
 
 			if (panel.GetOrNull<Widget>("VOXEL") is IModelWidget modelWidget)
 			{
@@ -171,8 +167,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var errorLabelWidget = panel.GetOrNull("ERROR");
-			if (errorLabelWidget != null)
-				errorLabelWidget.IsVisible = () => isLoadError;
+			errorLabelWidget?.IsVisible = () => isLoadError;
 
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
 			if (paletteDropDown != null)
@@ -212,8 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var frameContainer = panel.GetOrNull("FRAME_SELECTOR");
-			if (frameContainer != null)
-				frameContainer.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
+			frameContainer?.IsVisible = () => (currentSprites != null && currentSprites.Length > 1) ||
 					(isVideoLoaded && player != null && player.Video != null && player.Video.FrameCount > 1) ||
 					currentSoundFormat != null;
 
@@ -294,24 +288,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var stopButton = panel.GetOrNull<ButtonWidget>("BUTTON_STOP");
-			if (stopButton != null)
+			stopButton?.OnClick = () =>
 			{
-				stopButton.OnClick = () =>
+				if (isVideoLoaded)
+					player.Stop();
+				else if (currentSound != null)
+					Game.Sound.StopSound(currentSound);
+				else
 				{
-					if (isVideoLoaded)
-						player.Stop();
-					else if (currentSound != null)
-						Game.Sound.StopSound(currentSound);
-					else
-					{
-						currentFrame = 0;
-						animateFrames = false;
-					}
+					currentFrame = 0;
+					animateFrames = false;
+				}
 
-					if (frameSlider != null)
-						frameSlider.Value = 0;
-				};
-			}
+				frameSlider?.Value = 0;
+			};
 
 			var nextButton = panel.GetOrNull<ButtonWidget>("BUTTON_NEXT");
 			if (nextButton != null)
@@ -347,8 +337,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");
-			if (voxelContainer != null)
-				voxelContainer.IsVisible = () => currentVoxel != null;
+			voxelContainer?.IsVisible = () => currentVoxel != null;
 
 			var rollSlider = panel.GetOrNull<SliderWidget>("ROLL_SLIDER");
 			if (rollSlider != null)
@@ -414,13 +403,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			PopulateAssetList();
 
 			var closeButton = panel.GetOrNull<ButtonWidget>("CLOSE_BUTTON");
-			if (closeButton != null)
-				closeButton.OnClick = () =>
-				{
-					ClearLoadedAssets();
-					Ui.CloseWindow();
-					onExit();
-				};
+			closeButton?.OnClick = () =>
+			{
+				ClearLoadedAssets();
+				Ui.CloseWindow();
+				onExit();
+			};
 		}
 
 		void SelectNextFrame()

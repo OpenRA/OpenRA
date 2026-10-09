@@ -181,8 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyTimeLimit.NotifyTimerExpired(Actor self)
 		{
-			if (countdownLabel != null)
-				countdownLabel.GetText = () => null;
+			countdownLabel?.GetText = () => null;
 
 			if (!info.SkipTimerExpiredNotification)
 				TextNotificationsManager.AddSystemLine(FluentProvider.GetMessage(TimeLimitExpired));

@@ -59,8 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
 
-					if (mo != null)
-						mo.ObjectiveAdded += StartBlinking;
+					mo?.ObjectiveAdded += StartBlinking;
 				}
 			}
 

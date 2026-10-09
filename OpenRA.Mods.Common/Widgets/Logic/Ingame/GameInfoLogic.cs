@@ -95,8 +95,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var numTabs = visiblePanels.Count;
 			var tabContainer = !hasError ? widget.GetOrNull($"TAB_CONTAINER_{numTabs}") : null;
-			if (tabContainer != null)
-				tabContainer.IsVisible = () => true;
+			tabContainer?.IsVisible = () => true;
 
 			var chatPanel = widget.Get(panels[IngameInfoPanel.Chat].Panel);
 
@@ -164,8 +163,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetupDebugPanel(ButtonWidget debugTabButton, Widget debugPanelContainer)
 		{
-			if (debugTabButton != null)
-				debugTabButton.IsDisabled = () => world.IsGameOver;
+			debugTabButton?.IsDisabled = () => world.IsGameOver;
 
 			Game.LoadWidget(world, "DEBUG_PANEL", debugPanelContainer, []);
 
