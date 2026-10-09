@@ -1,0 +1,65 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: bot test map
+
+Author: Your name here
+
+Tileset: ARRAKIS
+
+MapSize: 66,66
+
+Bounds: 1,1,64,64
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 30,33
+	Actor1: refinery
+		Owner: Multi0
+		Location: 42,33
+	Actor2: refinery
+		Owner: Multi0
+		Location: 42,37
+	Actor3: wind_trap
+		Owner: Multi0
+		Location: 39,31
+	Actor4: wind_trap
+		Owner: Multi0
+		Location: 37,31
+	Actor5: wind_trap
+		Owner: Multi0
+		Location: 35,31
+	Actor6: wind_trap
+		Owner: Multi0
+		Location: 33,31
+	Actor7: wind_trap
+		Owner: Multi0
+		Location: 39,34
+	Actor8: starport
+		Owner: Multi0
+		Location: 37,39
+
+Rules: rules.yaml
