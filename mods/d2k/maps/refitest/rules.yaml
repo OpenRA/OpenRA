@@ -1,0 +1,12 @@
+Player:
+	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
+		ID: autoconcrete
+		Label: checkbox-automatic-concrete.label
+		Description: checkbox-automatic-concrete.description
+		Enabled: true
+		DisplayOrder: 7
+		Prerequisites: global-auto-concrete
+	DeveloperMode:
+		CheckboxEnabled: true
+		CheckboxLocked: true
+		FastBuild: true
