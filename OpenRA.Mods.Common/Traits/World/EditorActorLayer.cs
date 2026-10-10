@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var newCount = previews.Count(p => p.Info.Name == PlayerSpawnName);
 			var playersChanged = false;
-			foreach (var kv in Players.Players)
+			foreach (var kv in Players.Players.ToList())
 			{
 				if (!kv.Key.StartsWith("Multi", StringComparison.Ordinal))
 					continue;

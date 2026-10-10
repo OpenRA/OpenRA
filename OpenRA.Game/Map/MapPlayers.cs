@@ -22,15 +22,16 @@ namespace OpenRA
 		// The "Everyone" player for spectators is created at runtime,
 		// reducing the available player count for maps by 1.
 		public const int MaximumPlayerCount = 63;
-		public readonly Dictionary<string, PlayerReference> Players;
+		public readonly OrderedDictionary<string, PlayerReference> Players;
 
 		public MapPlayers()
 			: this([]) { }
 
 		public MapPlayers(IEnumerable<MiniYamlNode> playerDefinitions)
 		{
-			Players = playerDefinitions.Select(pr => new PlayerReference(new MiniYaml(pr.Key, pr.Value.Nodes)))
-				.ToDictionary(player => player.Name);
+			Players = new OrderedDictionary<string, PlayerReference>(playerDefinitions
+				.Select(pr => new PlayerReference(new MiniYaml(pr.Key, pr.Value.Nodes)))
+				.Select(player => KeyValuePair.Create(player.Name, player)));
 		}
 
 		public MapPlayers(Ruleset rules, int playerCount)
@@ -38,7 +39,7 @@ namespace OpenRA
 			var firstFaction = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>()
 				.First(f => f.Selectable).InternalName;
 
-			Players = new Dictionary<string, PlayerReference>
+			Players = new OrderedDictionary<string, PlayerReference>
 			{
 				{
 					"Neutral", new PlayerReference
