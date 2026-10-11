@@ -484,7 +484,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Skirmish; } },
-				{ "skirmishMode", true }
+				{ "skirmishMode", true },
+				{ "lobbyEntryMode", LobbyEntryMode.Normal }
 			});
 		}
 

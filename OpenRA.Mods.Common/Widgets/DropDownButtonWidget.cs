@@ -170,6 +170,35 @@ namespace OpenRA.Mods.Common.Widgets
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
 		}
 
+		/// <summary>
+		/// Attaches a pre-built widget as a floating popup on Ui.Root at an explicit
+		/// position, covered by a transparent MaskWidget that dismisses it on any
+		/// outside click. Returns an Action that removes both the panel and the mask.
+		/// Used when the popup is not anchored to a specific button (e.g. panels
+		/// opened in response to a right-click on another widget).
+		/// </summary>
+		public static Action AttachRootPanel(Widget panel, int x, int y)
+		{
+			panel.Bounds = new WidgetBounds(x, y, panel.Bounds.Width, panel.Bounds.Height);
+
+			MaskWidget mask = null;
+			void Close()
+			{
+				Ui.Root.RemoveChild(mask);
+				Ui.Root.RemoveChild(panel);
+			}
+
+			mask = new MaskWidget
+			{
+				Bounds = new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+			};
+			mask.OnMouseDown += _ => Close();
+
+			Ui.Root.AddChild(mask);
+			Ui.Root.AddChild(panel);
+			return Close;
+		}
+
 		public void ShowDropDown<T>(
 			string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{

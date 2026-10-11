@@ -59,7 +59,7 @@ namespace OpenRA.Network
 			"Mod", "Version", "ModTitle", "ModWebsite", "ModIcon32",
 
 			// Current server state
-			"Map", "State", "MaxPlayers", "Protected", "Authentication", "DisabledSpawnPoints"
+			"Map", "State", "MaxPlayers", "Protected", "Authentication", "AllowSpectators", "DisabledSpawnPoints"
 		];
 
 		public const int ProtocolVersion = 2;
@@ -120,6 +120,9 @@ namespace OpenRA.Network
 
 		/// <summary>Number of spectators. Only defined if GameServer is parsed from yaml.</summary>
 		public readonly int Spectators = 0;
+
+		/// <summary>Spectators are allowed to join. Only defined if GameServer is parsed from yaml.</summary>
+		public readonly bool AllowSpectators = false;
 
 		/// <summary>Number of seconds that the game has been in the Playing state. Only defined if GameServer is parsed from yaml.</summary>
 		public readonly int PlayTime = -1;
@@ -228,6 +231,7 @@ namespace OpenRA.Network
 			ModTitle = manifest.Metadata.TitleTranslated;
 			ModWebsite = manifest.Metadata.Website;
 			ModIcon32 = manifest.Metadata.WebIcon32;
+			AllowSpectators = server.LobbyInfo.GlobalSettings.AllowSpectators;
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);
 			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Count > 0;
 			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToImmutableArray();

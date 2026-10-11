@@ -1,0 +1,26 @@
+Background@SERVER_CONTEXT_MENU:
+	Width: 180
+	Height: 90
+	Background: panel-black
+	Children:
+		Button@JOIN_BUTTON:
+			X: 0
+			Y: 0
+			Width: 180
+			Height: 30
+			Text: button-server-context-menu-join
+			Font: Regular
+		Button@JOIN_AS_ADMIN_BUTTON:
+			X: 0
+			Y: 30
+			Width: 180
+			Height: 30
+			Text: button-server-context-menu-join-as-admin
+			Font: Regular
+		Button@JOIN_AS_SPECTATOR_BUTTON:
+			X: 0
+			Y: 60
+			Width: 180
+			Height: 30
+			Text: button-server-context-menu-join-as-spectator
+			Font: Regular
