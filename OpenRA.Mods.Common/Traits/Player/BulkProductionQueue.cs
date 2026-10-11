@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Actor self;
 		readonly BulkProductionQueueInfo info;
+		public int MaxCapacity => info.MaxCapacity;
 
 		protected readonly List<(ActorInfo Actor, int Resources, int Cash)> ActorsReadyForDelivery = [];
 		public int DeliveryDelay { get; private set; } = 0;
@@ -243,7 +244,7 @@ namespace OpenRA.Mods.Common.Traits
 					ReturnOrder(order.TargetString, order.ExtraData);
 					break;
 				case "PurchaseOrder":
-					if (!deliveryProcessStarted && order.TargetString == info.Type)
+					if (!deliveryProcessStarted && order.TargetString == info.Type && ActorsReadyForDelivery.Count > 0)
 						StartDeliveryProcess();
 					break;
 			}
