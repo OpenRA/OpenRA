@@ -235,12 +235,18 @@ Container@MULTIPLAYER_PANEL:
 							Children:
 								LogicTicker@ANIMATION:
 				Label@PLAYER_COUNT:
-					X: 248
+					X: 212
 					Y: PARENT_HEIGHT - 40
-					Width: 189
+					Width: 160
 					Height: 25
 					Align: Center
 					Font: Bold
+				Button@QUICKMATCH_BUTTON:
+					X: 377
+					Y: PARENT_HEIGHT - 40
+					Width: 105
+					Height: 25
+					Text: button-multiplayer-panel-quickmatch
 				Button@DIRECTCONNECT_BUTTON:
 					X: 487
 					Y: PARENT_HEIGHT - 40
