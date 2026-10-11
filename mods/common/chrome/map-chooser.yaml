@@ -164,6 +164,13 @@ Background@MAPCHOOSER_PANEL:
 			Height: 25
 			Text: button-mapchooser-panel-delete-all-maps
 			Font: Bold
+		Button@RESOURCE_CENTER_BUTTON:
+			X: 440
+			Y: PARENT_HEIGHT - 45
+			Width: 140
+			Height: 25
+			Text: button-mapchooser-resource-center
+			Font: Bold
 		Label@REMOTE_MAP_LABEL:
 			X: 140
 			Y: PARENT_HEIGHT - HEIGHT - 20
