@@ -85,6 +85,11 @@
 		BlinkPatterns:
 			hospitalheal: On, Off
 
+^BotOwner:
+	GrantConditionOnBotOwner@BotOwner:
+		Condition: bot-owner
+		Bots: test
+
 ^CrateStatModifiers:
 	FirepowerMultiplier@CRATES:
 		RequiresCondition: crate-firepower
