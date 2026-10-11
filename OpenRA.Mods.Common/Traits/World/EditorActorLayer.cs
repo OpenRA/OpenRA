@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 			return preview;
 		}
 
-		public void AddRange(ReadOnlySpan<ActorReference> references, ReadOnlySpan<string> names)
+		public ReadOnlySpan<EditorActorPreview> AddRange(ReadOnlySpan<ActorReference> references, ReadOnlySpan<string> names)
 		{
 			if (names.Length != references.Length)
 				throw new ArgumentException("Member name count must match reference count.");
@@ -180,12 +180,14 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			AddRange(newPreviews);
+			var span = newPreviews.AsSpan();
+			AddRange(span);
+			return span;
 		}
 
-		public void AddRange(ReadOnlySpan<ActorReference> references)
+		public ReadOnlySpan<EditorActorPreview> AddRange(ReadOnlySpan<ActorReference> references)
 		{
-			AddRange(references, NextActorNames(references.Length));
+			return AddRange(references, NextActorNames(references.Length));
 		}
 
 		public void Add(EditorActorPreview preview)
