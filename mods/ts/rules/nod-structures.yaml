@@ -529,6 +529,8 @@ NAMISL:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
+	TSGrantConditionOnVeins:
+		Condition: veins-full
 	NukePower:
 		PauseOnCondition: empdisable || disabled
 		Cursor: nuke
@@ -557,6 +559,37 @@ NAMISL:
 		TrailImage: small_smoke_trail
 		TrailInterval: 0
 		TrailSequences: idle
+	TSChemicalMissilePower:
+		Prerequisites: nawast
+		PauseOnCondition: empdisable || disabled || !veins-full
+		Cursor: nuke
+		OrderName: ChemicalMissileAttack
+		Icon: chemicalmissile
+		ChargeInterval: 25
+		Name: Chemical Missile
+		Description: Launches an explosive Chemical missile\nat a target location.
+		EndChargeSpeechNotification: ChemicalMissileReady
+		SelectTargetSpeechNotification: SelectTarget
+		IncomingSpeechNotification: MissileLaunchDetected
+		EndChargeTextNotification: Chemical missile ready.
+		SelectTargetTextNotification: Select target.
+		IncomingTextNotification: Missile launch detected.
+		LaunchSound: icbm1.aud
+		MissileWeapon: ChemicalMissile
+		MissileImage: ClusterMissile
+		MissileDelay: 1
+		FlightDelay: 30
+		DetonationAltitude: 2c0
+		SpawnOffset: 0c128, -0c128, 1c0
+		DisplayTimerRelationships: None
+		DisplayBeacon: False
+		DisplayRadarPing: True
+		BeaconPoster:
+		CameraRange: 10c0
+		FlightVelocity: 1c0
+		TrailImage: small_smoke_trail
+		TrailInterval: 0
+		TrailSequences: idle
 	WithSupportPowerActivationOverlay:
 		Palette: player-nobright
 		IsPlayerPalette: True
@@ -571,6 +604,7 @@ NAWAST:
 		Type: Rectangle
 			TopLeft: -1536, -1536
 			BottomRight: 512, 1536
+	-Capturable:
 	Valued:
 		Cost: 1600
 	Tooltip:
@@ -589,13 +623,12 @@ NAWAST:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	Refinery:
+	TSWasteRefinery:
 	DockHost:
 		Type: UnloadWeed
 		DockAngle: 640
 		DockOffset: 724,724,0
-	StoresPlayerResources:
-		Capacity: 56
+	TSStoresVeins:
 	Power:
 		Amount: -40
 	FreeActor:
@@ -613,9 +646,9 @@ NAWAST:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
-	WithResourceStoragePipsDecoration:
+	WithVeinsPipsDecoration:
 		Position: BottomLeft
-		RequiresSelection: true
+		RequiresSelection: false
 		Margin: 8, 2
 		FullSequence: pip-red-building
 		EmptySequence: pip-empty-building
