@@ -141,6 +141,7 @@ ChromeLayout:
 	common|chrome/mainmenu-prompts.yaml
 	ts|chrome/mainmenu-prerelease-notification.yaml
 	common|chrome/settings.yaml
+	common|chrome/settings-language.yaml
 	common|chrome/settings-display.yaml
 	common|chrome/settings-gameplay.yaml
 	common|chrome/settings-audio.yaml
@@ -189,6 +190,11 @@ FluentMessages:
 
 AllowUnusedFluentMessagesInExternalPackages: false
 
+FluentLanguages:
+	en
+	ru
+	zh
+
 Voices:
 	ts|audio/voices.yaml
 
@@ -226,35 +232,35 @@ ChromeMetrics:
 
 Fonts:
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 10
 		Ascender: 8
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 10
 		Ascender: 8
 	Small:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 12
 		Ascender: 9
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|SourceHanSansCN-Regular.ttf
 		Size: 14
 		Ascender: 11
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 14
 		Ascender: 11
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 18
 		Ascender: 14
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 24
 		Ascender: 18
 	Title:
-		Font: common|FreeSansBold.ttf
+		Font: common|SourceHanSansCN-Bold.ttf
 		Size: 32
 		Ascender: 24
 
