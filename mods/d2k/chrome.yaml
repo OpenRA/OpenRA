@@ -175,6 +175,8 @@ command-icons:
 		stop-disabled: 460, 222, 26, 26
 		queue-orders: 486, 196, 26, 26
 		queue-orders-disabled: 486, 222, 26, 26
+		formation-move: 486, 196, 26, 26
+		formation-move-disabled: 486, 222, 26, 26
 
 command-icons-highlighted:
 	Inherits: command-icons
