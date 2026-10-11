@@ -9,7 +9,8 @@
  */
 #endregion
 
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -21,15 +22,33 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc($"A delay (in ticks) of repair all actors with {nameof(RepairableBuilding)} periodically. Set it to -1 to disable it.")]
 		public readonly int RepairAllBuildingsCoolDown = 107;
 
-		public override object Create(ActorInitializer init) { return new BuildingRepairBotModule(this); }
+		[Desc("Interval (in ticks) between processing repair requests.")]
+		public readonly int RepairRequestProcessingInterval = 100;
+
+		public override object Create(ActorInitializer init) { return new BuildingRepairBotModule(init.Self, this); }
 	}
 
-	public class BuildingRepairBotModule : ConditionalTrait<BuildingRepairBotModuleInfo>, IBotRespondToAttack
+	public class BuildingRepairBotModule : ConditionalTrait<BuildingRepairBotModuleInfo>, IBotRespondToAttack, IBotRequestBuildingRepair, IBotTick
 	{
-		int prevTicks = 0;
+		readonly HashSet<Actor> repairRequests = [];
+		readonly World world;
 
-		public BuildingRepairBotModule(BuildingRepairBotModuleInfo info)
-			: base(info) { }
+		int prevTicks = 0;
+		int processTick;
+
+		public BuildingRepairBotModule(Actor self, BuildingRepairBotModuleInfo info)
+			: base(info)
+		{
+			world = self.World;
+		}
+
+		public void RequestBuildingRepair(IBot bot, Actor building)
+		{
+			if (!building.Info.HasTraitInfo<RepairableBuildingInfo>())
+				return;
+
+			repairRequests.Add(building);
+		}
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
 		{
@@ -38,21 +57,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RepairAllBuildingsCoolDown >= 0 && prevTicks + Info.RepairAllBuildingsCoolDown < bot.Player.World.WorldTick)
 			{
 				prevTicks = bot.Player.World.WorldTick;
-				var reaprableBuildings = bot.Player.World.ActorsWithTrait<RepairableBuilding>()
-					.Where(tp =>
-					{
-						if (tp.Actor.Owner != bot.Player)
-							return false;
+				foreach (var tp in bot.Player.World.ActorsWithTrait<RepairableBuilding>())
+				{
+					if (tp.Actor.Owner != bot.Player)
+						continue;
 
-						var health = tp.Actor.TraitOrDefault<Health>();
-						if (health == null || health.DamageState <= DamageState.Undamaged || health.DamageState == DamageState.Dead)
-							return false;
+					var health = tp.Actor.TraitOrDefault<Health>();
+					if (health == null || health.DamageState <= DamageState.Undamaged || health.DamageState == DamageState.Dead)
+						continue;
 
-						return !tp.Trait.RepairActive;
-					});
-
-				foreach (var tp in reaprableBuildings)
-					bot.QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(tp.Actor), false));
+					if (!tp.Trait.RepairActive)
+						RequestBuildingRepair(bot, tp.Actor);
+				}
 
 				return;
 			}
@@ -69,7 +85,37 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				AIUtils.BotDebug("{0} noticed damage {1} {2}->{3}, repairing.",
 					self.Owner, self, e.PreviousDamageState, e.DamageState);
-				bot.QueueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, Target.FromActor(self), false));
+				RequestBuildingRepair(bot, self);
+			}
+		}
+
+		void IBotTick.BotTick(IBot bot)
+		{
+			if (--processTick > 0)
+				return;
+
+			processTick = Info.RepairRequestProcessingInterval;
+			if (repairRequests.Count == 0)
+				return;
+
+			var count = Math.Max(2, world.LocalRandom.Next(repairRequests.Count));
+
+			var i = 1;
+			foreach (var building in repairRequests.Shuffle(world.LocalRandom))
+			{
+				if (i > count)
+					break;
+
+				if (!building.IsDead)
+				{
+					var rb = building.TraitOrDefault<RepairableBuilding>();
+					if (rb != null && building.GetDamageState() != DamageState.Undamaged && !rb.RepairActive)
+						bot.QueueOrder(new Order("RepairBuilding", bot.Player.PlayerActor, Target.FromActor(building), false));
+
+					i++;
+				}
+
+				repairRequests.Remove(building);
 			}
 		}
 	}
