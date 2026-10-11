@@ -26,13 +26,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		static object LoadDecisions(MiniYaml yaml)
 		{
-			var ret = new List<SupportPowerDecision>();
+			var ret = ImmutableArray.CreateBuilder<SupportPowerDecision>();
 			var decisions = yaml.NodeWithKeyOrDefault("Decisions");
 			if (decisions != null)
 				foreach (var d in decisions.Value.Nodes)
 					ret.Add(new SupportPowerDecision(d.Value));
 
-			return ret.ToImmutableArray();
+			return ret.DrainToImmutable();
 		}
 
 		public override object Create(ActorInitializer init) { return new SupportPowerBotModule(init.Self, this); }

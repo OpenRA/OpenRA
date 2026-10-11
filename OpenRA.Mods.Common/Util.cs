@@ -227,6 +227,11 @@ namespace OpenRA.Mods.Common
 
 		public static int RandomInRange(MersenneTwister random, ImmutableArray<int> range)
 		{
+			return RandomInRange(random, range.AsSpan());
+		}
+
+		public static int RandomInRange(MersenneTwister random, ReadOnlySpan<int> range)
+		{
 			if (range.Length == 0)
 				return 0;
 
@@ -245,6 +250,11 @@ namespace OpenRA.Mods.Common
 
 		public static WDist RandomDistance(MersenneTwister random, ImmutableArray<WDist> distance)
 		{
+			return RandomDistance(random, distance.AsSpan());
+		}
+
+		public static WDist RandomDistance(MersenneTwister random, ReadOnlySpan<WDist> distance)
+		{
 			if (distance.Length == 0)
 				return WDist.Zero;
 
@@ -255,6 +265,11 @@ namespace OpenRA.Mods.Common
 		}
 
 		public static WVec RandomVector(MersenneTwister random, ImmutableArray<WVec> vector)
+		{
+			return RandomVector(random, vector.AsSpan());
+		}
+
+		public static WVec RandomVector(MersenneTwister random, ReadOnlySpan<WVec> vector)
 		{
 			if (vector.Length == 0)
 				return WVec.Zero;

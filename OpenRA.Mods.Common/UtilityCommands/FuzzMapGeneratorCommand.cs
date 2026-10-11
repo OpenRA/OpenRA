@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				long skip = 0;
 				var shard = 0;
 				var shardCount = 1;
-				var variables = new List<string>();
+				var variables = ImmutableArray.CreateBuilder<string>();
 				var choices = new Dictionary<string, ImmutableArray<string>>();
 
 				bool AddVariable(string variable, string choicesStr)
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					skip,
 					shard,
 					shardCount,
-					variables.ToImmutableArray(),
+					variables.DrainToImmutable(),
 					choices.ToFrozenDictionary());
 			}
 		}

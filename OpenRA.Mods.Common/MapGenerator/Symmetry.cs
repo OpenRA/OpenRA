@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -261,16 +260,16 @@ namespace OpenRA.Mods.Common.MapGenerator
 		/// Rotate and mirror multiple actor plans. See RotateAndMirrorActorPlan.
 		/// </summary>
 		public static ImmutableArray<ActorPlan> RotateAndMirrorActorPlans(
-			IReadOnlyList<ActorPlan> originals,
+			ReadOnlySpan<ActorPlan> originals,
 			int rotations,
 			WMirror wmirror)
 		{
-			var projections = new List<ActorPlan>(
-				originals.Count * RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos()));
+			var projections = ImmutableArray.CreateBuilder<ActorPlan>(
+				originals.Length * RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos()));
 			foreach (var original in originals)
 				projections.AddRange(RotateAndMirrorActorPlan(original, rotations, wmirror));
 
-			return projections.ToImmutableArray();
+			return projections.DrainToImmutable();
 		}
 
 		/// <summary>
@@ -282,7 +281,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 			int rotations,
 			WMirror wmirror)
 		{
-			var projections = new List<ActorPlan>(RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos()));
+			var projections = ImmutableArray.CreateBuilder<ActorPlan>(RotateAndMirrorProjectionCount(rotations, wmirror.ForWPos()));
 			var points = RotateAndMirrorWPos(
 				original.WPosCenterLocation,
 				original.Map.Tiles,
@@ -295,7 +294,7 @@ namespace OpenRA.Mods.Common.MapGenerator
 				projections.Add(plan);
 			}
 
-			return projections.ToImmutableArray();
+			return projections.DrainToImmutable();
 		}
 
 		/// <summary>

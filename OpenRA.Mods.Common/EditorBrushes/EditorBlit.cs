@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 			IResourceLayer resourceLayer,
 			CellCoordsRegion region,
 			MapBlitFilters blitFilters,
-			IReadOnlySet<CPos> mask = null)
+			FrozenSet<CPos> mask = null)
 		{
 			var mapTiles = map.Tiles;
 			var mapHeight = map.Height;
@@ -313,7 +314,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 		/// be at least partially inside the CellRegion. If an actor partially lies outside of the
 		/// CellRegion, only cells within the CellRegion are included in the output set.
 		/// </summary>
-		static HashSet<CPos> GetBlitSourceMask(
+		static FrozenSet<CPos> GetBlitSourceMask(
 			EditorBlitSource blitSource,
 			CVec offset)
 		{
@@ -344,7 +345,7 @@ namespace OpenRA.Mods.Common.EditorBrushes
 					throw new ArgumentException("EditorBlitSource contains an actor entirely outside of its CellRegion");
 			}
 
-			return mask;
+			return mask.ToFrozenSet();
 		}
 
 		public void Commit() => Blit(false);

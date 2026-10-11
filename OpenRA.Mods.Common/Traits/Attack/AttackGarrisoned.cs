@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 				};
 			}
 
-			Ports = ports.ToImmutableArray();
+			Ports = ImmutableCollectionsMarshal.AsImmutableArray(ports);
 
 			base.RulesetLoaded(rules, ai);
 		}
