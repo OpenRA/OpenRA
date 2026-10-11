@@ -300,23 +300,19 @@ namespace OpenRA.Graphics
 			Span<Vector3> rotatedQuad = stackalloc Vector3[4];
 			RotateQuadInto(rotatedQuad, offset, size, rotation);
 
-			var minX = rotatedQuad[0].X;
-			var maxX = rotatedQuad[0].X;
-			var minY = rotatedQuad[0].Y;
-			var maxY = rotatedQuad[0].Y;
-			for (var i = 1; i < rotatedQuad.Length; i++)
-			{
-				minX = Math.Min(rotatedQuad[i].X, minX);
-				maxX = Math.Max(rotatedQuad[i].X, maxX);
-				minY = Math.Min(rotatedQuad[i].Y, minY);
-				maxY = Math.Max(rotatedQuad[i].Y, maxY);
-			}
+			var min1 = Vector3.Min(rotatedQuad[0], rotatedQuad[1]);
+			var min2 = Vector3.Min(rotatedQuad[2], rotatedQuad[3]);
+			var min = Vector3.Min(min1, min2);
+
+			var max1 = Vector3.Max(rotatedQuad[0], rotatedQuad[1]);
+			var max2 = Vector3.Max(rotatedQuad[2], rotatedQuad[3]);
+			var max = Vector3.Max(max1, max2);
 
 			return new Rectangle(
-				(int)minX,
-				(int)minY,
-				(int)Math.Ceiling(maxX) - (int)minX,
-				(int)Math.Ceiling(maxY) - (int)minY);
+				(int)min.X,
+				(int)min.Y,
+				(int)Math.Ceiling(max.X) - (int)min.X,
+				(int)Math.Ceiling(max.Y) - (int)min.Y);
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
