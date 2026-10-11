@@ -5,38 +5,172 @@ Metadata:
 	WebIcon32: https://www.openra.net/images/icons/cnc_32x32.png
 	WindowTitle: mod-windowtitle
 
-PackageFormats: Mix
+PackageFormats: Mix, ZipFile, ISO9660
 
-FileSystem: ContentInstallerFileSystem
+FileSystem: ContentSourcesFileSystem
 	SystemPackages:
 		^EngineDir
 		$cnc: cnc
 		^EngineDir|mods/common: common
 		~^SupportDir|Content/cnc: content
-		common|scripts
 		cnc|scripts
-		cnc|uibits
-	ContentPackages:
-		content|speech.mix
-		content|conquer.mix
-		content|sounds.mix
-		content|tempicnh.mix
-		content|temperat.mix
-		content|winter.mix
-		content|desert.mix
-		~content|movies
-		~content|scores.mix
-		~content|scores2.mix
-		~content|scores-covertops.mix
-		~content|transit.mix
-		~content|general.mix
-		# Below are mod-provided (system) packages that need to be loaded after the content packages so they can override content assets.
+		common|scripts
+	OverridePackages:
 		cnc|bits/snow.mix
 		cnc|bits
 		cnc|bits/desert
 		cnc|bits/ss
-	ContentInstallerMod: cnc-content
-
+		cnc|scripts
+		cnc|uibits
+		common|scripts
+	SourceSelectorMod: cnc-content
+	ContentSources:
+		remaster:
+			Origins:
+				steam: Steam
+					AppId: 1213210
+					Mount: data
+					Attributes:
+						AudioLanguage: en
+						VideoLanguage: en
+				ea-app: RegistryDirectory
+					RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
+					RegistryKey: Petroglyph\CnCRemastered
+					RegistryValue: Install Dir
+					Mount: data
+					Attributes:
+						AudioLanguage: en
+						VideoLanguage: en
+			Packages:
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/CONQUER.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/SOUNDS.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/SPEECH.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/TEMPICNH.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/TEMPERAT.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/WINTER.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/DESERT.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/SCORES.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/TRANSIT.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/GENERAL.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/MOVIES.MIX
+				data|Data/CNCDATA/TIBERIAN_DAWN/CD2/MOVIES.MIX
+		tuc:
+			Origins:
+				steam-en: Steam
+					AppId: 2229830
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: 8bef9a6687c0fe0afd57c6561df58fa6e64f145d
+					Attributes:
+						AudioLanguage: en
+						VideoLanguage: en
+				ea-app-en: RegistryDirectory
+					RegistryKey: EA Games\CNC and The Covert Operations
+					RegistryValue: Install Dir
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: 8bef9a6687c0fe0afd57c6561df58fa6e64f145d
+					Attributes:
+						AudioLanguage: en
+						VideoLanguage: en
+				steam-de: Steam
+					AppId: 2229830
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: b0adb72378a591c921c57879c084a3e3437568b3
+					Attributes:
+						AudioLanguage: de
+						VideoLanguage: de
+				ea-app-de: RegistryDirectory
+					RegistryKey: EA Games\CNC and The Covert Operations
+					RegistryValue: Install Dir
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: b0adb72378a591c921c57879c084a3e3437568b3
+					Attributes:
+						AudioLanguage: de
+						VideoLanguage: de
+				steam-fr: Steam
+					AppId: 2229830
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: 4b1b2affac49472a1099d1dc731a1db7f8174c52
+					Attributes:
+						AudioLanguage: fr
+						VideoLanguage: fr
+				ea-app-fr: RegistryDirectory
+					RegistryKey: EA Games\CNC and The Covert Operations
+					RegistryValue: Install Dir
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: 4b1b2affac49472a1099d1dc731a1db7f8174c52
+					Attributes:
+						AudioLanguage: fr
+						VideoLanguage: fr
+				steam-jp: Steam
+					AppId: 2229830
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: a82579e530bbd3dfab4ef994255bf823a985514c
+					Attributes:
+						AudioLanguage: jp
+						VideoLanguage: jp
+				ea-app-jp: RegistryDirectory
+					RegistryKey: EA Games\CNC and The Covert Operations
+					RegistryValue: Install Dir
+					Mount: data
+					IDFiles:
+						DISK_GDI.WAV: a82579e530bbd3dfab4ef994255bf823a985514c
+					Attributes:
+						AudioLanguage: jp
+						VideoLanguage: jp
+			Packages:
+				data|CONQUER.MIX
+				data|SOUNDS.MIX
+				data|SPEECH.MIX
+				data|TEMPICNH.MIX
+				data|TEMPERAT.MIX
+				data|WINTER.MIX
+				data|DESERT.MIX
+				data|SCORES.MIX
+				data|TRANSIT.MIX
+				data|GENERAL.MIX
+				data|MOVIES.MIX
+		freeware:
+			Origins:
+				freeware: CncFreeware
+					Package: content|cnc-packages.zip
+					PackageMount: data
+					ISODirectory: ^SupportDir|Content/cnc
+					ISOVolumes:
+						GDI95:
+							Mount: gdi95
+							Attributes:
+								ISOVolumes: GDI95
+						NOD95:
+							Mount: nod95
+							Attributes:
+								ISOVolumes: NOD95
+						COVERT:
+							Mount: covert
+							Attributes:
+								ISOVolumes: COVERT
+					Attributes:
+						AudioLanguage: en
+						VideoLanguage: en
+			Packages:
+				data|CONQUER.MIX
+				data|SOUNDS.MIX
+				data|SPEECH.MIX
+				data|TEMPICNH.MIX
+				data|TEMPERAT.MIX
+				data|WINTER.MIX
+				data|DESERT.MIX
+				data|TRANSIT.MIX
+				data|GENERAL.MIX
+				~gdi95|MOVIES.MIX
+				~nod95|MOVIES.MIX
+				~covert|SCORES.MIX
 MapFolders:
 	cnc|maps: System
 	~^SupportDir|maps/cnc/{DEV_VERSION}: User
