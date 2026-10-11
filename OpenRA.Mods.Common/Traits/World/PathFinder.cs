@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public (
-			IReadOnlyDictionary<CPos, List<GraphConnection>> AbstractGraph,
+			IReadOnlyDictionary<CPos, GraphConnection[]> AbstractGraph,
 			IReadOnlyDictionary<CPos, uint> AbstractDomains) GetOverlayDataForLocomotor(
 			Locomotor locomotor, BlockedByActor check)
 		{
