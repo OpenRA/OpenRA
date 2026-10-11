@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			foreach (var pair in self.World.ActorsWithTrait<INotifyProximityOwnerChanged>())
+			foreach (var pair in self.World.ActorsWithTraitAsIterator<INotifyProximityOwnerChanged>())
 				pair.Trait.OnProximityOwnerChanged(self, oldOwner, newOwner);
 		}
 
