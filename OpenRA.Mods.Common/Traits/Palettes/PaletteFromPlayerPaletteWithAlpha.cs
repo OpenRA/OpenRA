@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Premultiply color by the alpha component.")]
 		public readonly bool Premultiply = true;
 
+		[Desc("Only modify these palette indices. Leave empty to modify all.")]
+		public readonly int[] Indices = [];
+
 		public override object Create(ActorInitializer init) { return new PaletteFromPlayerPaletteWithAlpha(this); }
 	}
 
@@ -49,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color color, bool replaceExisting)
 		{
-			var remap = new AlphaPaletteRemap(info.Alpha, info.Premultiply);
+			var remap = new AlphaPaletteRemap(info.Alpha, info.Premultiply, info.Indices);
 			var pal = new ImmutablePalette(wr.Palette(info.BasePalette + playerName).Palette, remap);
 			wr.AddPalette(info.BaseName + playerName, pal, info.AllowModifiers, replaceExisting);
 		}
