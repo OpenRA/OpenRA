@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
@@ -24,11 +25,13 @@ namespace OpenRA
 		static FluentBundle modFluentBundle;
 		static FluentBundle mapFluentBundle;
 
-		public static void Initialize(Manifest manifest, IReadOnlyFileSystem fileSystem)
+		public static void Initialize(Manifest manifest, IReadOnlyFileSystem fileSystem, string language = "en")
 		{
 			lock (SyncObject)
 			{
-				modFluentBundle = new FluentBundle(manifest.FluentCulture, manifest.FluentMessages, fileSystem);
+				var basePaths = manifest.FluentMessages;
+				var allPaths = BuildLanguagePaths(basePaths, fileSystem, language);
+				modFluentBundle = new FluentBundle(language, allPaths, fileSystem);
 				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
 				{
 					var files = ImmutableArray<string>.Empty;
@@ -46,9 +49,29 @@ namespace OpenRA
 						text = builder.ToString();
 					}
 
-					mapFluentBundle = new FluentBundle(manifest.FluentCulture, files, fileSystem, text);
+					mapFluentBundle = new FluentBundle(language, files, fileSystem, text);
 				}
 			}
+		}
+
+		static ImmutableArray<string> BuildLanguagePaths(ImmutableArray<string> basePaths, IReadOnlyFileSystem fileSystem, string language)
+		{
+			if (language == "en")
+				return basePaths;
+
+			var paths = new List<string>(basePaths);
+			foreach (var basePath in basePaths)
+			{
+				var slash = basePath.LastIndexOf('/');
+				if (slash < 0)
+					continue;
+
+				var langPath = basePath[..(slash + 1)] + language + "/" + basePath[(slash + 1)..];
+				if (fileSystem.Exists(langPath))
+					paths.Add(langPath);
+			}
+
+			return paths.ToImmutableArray();
 		}
 
 		public static string GetMessage(string key, params object[] args)

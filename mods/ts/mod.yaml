@@ -141,6 +141,7 @@ ChromeLayout:
 	common|chrome/mainmenu-prompts.yaml
 	ts|chrome/mainmenu-prerelease-notification.yaml
 	common|chrome/settings.yaml
+	common|chrome/settings-language.yaml
 	common|chrome/settings-display.yaml
 	common|chrome/settings-gameplay.yaml
 	common|chrome/settings-audio.yaml
@@ -188,6 +189,9 @@ FluentMessages:
 	ts|fluent/rules.ftl
 
 AllowUnusedFluentMessagesInExternalPackages: false
+
+FluentLanguages:
+	en
 
 Voices:
 	ts|audio/voices.yaml
