@@ -146,8 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (newShroud != shroud)
 			{
-				if (shroud != null)
-					shroud.OnShroudChanged -= UpdateShroudCell;
+				shroud?.OnShroudChanged -= UpdateShroudCell;
 
 				if (newShroud != null)
 				{
@@ -526,8 +525,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Removed();
 
-			if (playerRadarTerrain != null)
-				playerRadarTerrain.CellTerrainColorChanged -= CellTerrainColorChanged;
+			playerRadarTerrain?.CellTerrainColorChanged -= CellTerrainColorChanged;
 
 			world.RenderPlayerChanged -= WorldOnRenderPlayerChanged;
 			Dispose();

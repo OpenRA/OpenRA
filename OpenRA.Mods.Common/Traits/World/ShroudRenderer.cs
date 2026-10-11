@@ -294,8 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (shroud != newShroud)
 			{
-				if (shroud != null)
-					shroud.OnShroudChanged -= UpdateShroudCell;
+				shroud?.OnShroudChanged -= UpdateShroudCell;
 
 				if (newShroud != null)
 				{

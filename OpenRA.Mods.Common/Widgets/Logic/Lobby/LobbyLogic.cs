@@ -192,8 +192,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ChromeMetrics.TryGet("LobbyOptionChangedSound", out lobbyOptionChangedSound);
 
 			var name = lobby.GetOrNull<LabelWidget>("SERVER_NAME");
-			if (name != null)
-				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
+			name?.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
 			var mapContainer = Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{
@@ -575,14 +574,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			lobbyChatPanel.RemoveChildren();
 
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
-			if (settingsButton != null)
+			settingsButton?.OnClick = () => Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs
 			{
-				settingsButton.OnClick = () => Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs
-				{
-					{ "onExit", DoNothing },
-					{ "worldRenderer", worldRenderer }
-				});
-			}
+				{ "onExit", DoNothing },
+				{ "worldRenderer", worldRenderer }
+			});
 
 			if (logicArgs.TryGetValue("ChatLineSound", out var yaml))
 				chatLineSound = yaml.Value;

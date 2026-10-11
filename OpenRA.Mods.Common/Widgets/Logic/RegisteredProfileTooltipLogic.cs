@@ -124,8 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							header.Bounds.Width = widget.Bounds.Width = badgeContainer.Bounds.Width = profileWidth;
 							widget.Bounds.Height = header.Bounds.Height + badgeContainer.Bounds.Height;
 
-							if (badgeSeparator != null)
-								badgeSeparator.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
+							badgeSeparator?.Bounds.Width = profileWidth - 2 * badgeSeparator.Bounds.X;
 
 							profileLoaded = true;
 						});

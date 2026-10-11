@@ -340,7 +340,7 @@ dotnet_diagnostic.IDE0306.severity = warning
 
 # IDE0340 Use unbound generic type
 #csharp_style_prefer_unbound_generic_type_in_nameof = true
-dotnet_diagnostic.IDE0340.severity = silent # Requires C# 14
+dotnet_diagnostic.IDE0340.severity = warning
 
 # IDE0350 Use implicitly typed lambda
 #csharp_style_prefer_implicitly_typed_lambda_expression = true

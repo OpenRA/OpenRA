@@ -79,8 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Replace controls with a warning label if sound is disabled
 			var noDeviceLabel = panel.GetOrNull("NO_AUDIO_DEVICE_CONTAINER");
-			if (noDeviceLabel != null)
-				noDeviceLabel.Visible = Game.Sound.DummyEngine;
+			noDeviceLabel?.Visible = Game.Sound.DummyEngine;
 
 			panel.Get("CASH_TICKS_CONTAINER").Visible = !Game.Sound.DummyEngine;
 			panel.Get("MUTE_SOUND_CONTAINER").Visible = !Game.Sound.DummyEngine;
