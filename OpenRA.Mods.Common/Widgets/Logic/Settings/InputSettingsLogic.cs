@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
 
 			SettingsUtils.BindCheckboxPref(panel, "ALTERNATE_SCROLL_CHECKBOX", gameSettings, "UseAlternateScrollButton");
+			SettingsUtils.BindCheckboxPref(panel, "ATTACKMOVE_DEFAULT_CHECKBOX", gameSettings, "AttackMoveIsDefault");
 			SettingsUtils.BindCheckboxPref(panel, "EDGESCROLL_CHECKBOX", gameSettings, "ViewportEdgeScroll");
 			SettingsUtils.BindCheckboxPref(panel, "LOCKMOUSE_CHECKBOX", gameSettings, "LockMouseWindow");
 			SettingsUtils.BindSliderPref(panel, "ZOOMSPEED_SLIDER", gameSettings, "ZoomSpeed");
@@ -146,6 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				gameSettings.MouseControlStyle = defaultGameSettings.MouseControlStyle;
 				gameSettings.MouseScroll = defaultGameSettings.MouseScroll;
 				gameSettings.UseAlternateScrollButton = defaultGameSettings.UseAlternateScrollButton;
+				gameSettings.AttackMoveIsDefault = defaultGameSettings.AttackMoveIsDefault;
 				gameSettings.LockMouseWindow = defaultGameSettings.LockMouseWindow;
 				gameSettings.ViewportEdgeScroll = defaultGameSettings.ViewportEdgeScroll;
 				gameSettings.ViewportEdgeScrollStep = defaultGameSettings.ViewportEdgeScrollStep;
