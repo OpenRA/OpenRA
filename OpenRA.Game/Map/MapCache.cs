@@ -221,7 +221,8 @@ namespace OpenRA
 		}
 
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids,
-			Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
+			Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null,
+			MapClassification targetClass = MapClassification.Remote)
 		{
 			var queryUids = uids.Distinct()
 				.Where(uid => uid != null)
@@ -231,7 +232,7 @@ namespace OpenRA
 				.ToList();
 
 			foreach (var uid in queryUids)
-				previews[uid].BeginRemoteSearch();
+				previews[uid].BeginRemoteSearch(targetClass);
 
 			Task.Run(async () =>
 			{
@@ -248,7 +249,7 @@ namespace OpenRA
 						{
 							var result = await client.GetStreamAsync(url);
 							foreach (var kv in MiniYaml.FromStream(result, url, stringPool: stringPool))
-								previews[kv.Key].CompleteRemoteSearch(kv.Value, mapDetailsReceived);
+								previews[kv.Key].CompleteRemoteSearch(kv.Value, mapDetailsReceived, targetClass);
 						}
 						catch (Exception e)
 						{
@@ -261,7 +262,7 @@ namespace OpenRA
 						{
 							var p = previews[uid];
 							if (p.Status == MapStatus.Searching)
-								p.CompleteRemoteSearch(null, mapQueryFailed);
+								p.CompleteRemoteSearch(null, mapQueryFailed, targetClass);
 						}
 					}
 				}
