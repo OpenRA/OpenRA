@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
+		[Desc("Add external condition to docked actor")]
+		public readonly string DockedClientCondition = null;
+
 		public override object Create(ActorInitializer init) { return new DockHost(init.Self, this); }
 	}
 
@@ -57,6 +60,8 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsEnabledAndInWorld => !preventDock && !IsTraitDisabled && !self.IsDead && self.IsInWorld;
 		public int ReservationCount => ReservedDockClients.Count;
 		public bool CanBeReserved => ReservationCount < Info.MaxQueueLength;
+
+		public string DockedClientCondition => Info.DockedClientCondition;
 		protected readonly List<DockClientManager> ReservedDockClients = [];
 
 		public WPos DockPosition => self.CenterPosition + Info.DockOffset;

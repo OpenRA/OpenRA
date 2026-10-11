@@ -102,7 +102,30 @@ harvester:
 		EffectiveOwnerFromOwner: true
 		RequiresCondition: harvester-empty && !being-demolished
 	WithHarvestOverlay:
+	ExternalCondition@docked-se:
+		Condition: docked_se
+	ExternalCondition@docked-sw:
+		Condition: docked_sw
+	ExternalCondition@docked-ne:
+		Condition: docked_ne
+	ExternalCondition@docked-nw:
+		Condition: docked_nw
 	WithDockingAnimation:
+		DockSequence: dock-se
+		DockLoopSequence: dock-se-loop
+		RequiresCondition: docked_se
+	WithDockingAnimation@sw:
+		DockSequence: dock-sw
+		DockLoopSequence: dock-sw-loop
+		RequiresCondition: docked_sw
+	WithDockingAnimation@nw:
+		DockSequence: dock-nw
+		DockLoopSequence: dock-nw-loop
+		RequiresCondition: docked_nw
+	WithDockingAnimation@ne:
+		DockSequence: dock-ne
+		DockLoopSequence: dock-ne-loop
+		RequiresCondition: docked_ne
 	AttractsWorms:
 		Intensity: 700
 	ChangesHealth:
