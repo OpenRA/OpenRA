@@ -136,8 +136,15 @@ Background@SAVE_MAP_PANEL:
 		DropDownButton@DIRECTORY_DROPDOWN:
 			X: 110
 			Y: 165
-			Width: 220
+			Width: 155
 			Height: 25
+		Button@MAP_FOLDER_BUTTON:
+			X: 270
+			Y: 165
+			Width: 60
+			Height: 25
+			Text: button-save-map-panel-map-folder
+			Font: Bold
 		Label@FILENAME_LABEL:
 			X: 10
 			Y: 200
