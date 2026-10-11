@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Effects
 		readonly Player owner;
 		readonly WPos position;
 		readonly bool isPlayerPalette;
-		readonly string beaconPalette, posterPalette;
+		readonly string beaconPalette, posterPalette, clockPalette;
 		readonly Animation arrow, beacon, circles, clock, poster;
 		readonly int duration;
 
@@ -65,10 +65,12 @@ namespace OpenRA.Mods.Common.Effects
 
 		// By default, support power beacons are expected to clean themselves up
 		public Beacon(Player owner, WPos position, bool isPlayerPalette, string palette, string posterCollection, string posterType, string posterPalette,
-			string beaconSequence, string arrowSequence, string circleSequence, string clockSequence, Func<float> clockFraction, int delay = 0, int duration = -1)
+			string beaconSequence, string arrowSequence, string circleSequence, string clockSequence, Func<float> clockFraction, string clockPalette,
+			int delay = 0, int duration = -1)
 				: this(owner, position, duration, palette, isPlayerPalette, posterCollection, beaconSequence, arrowSequence, circleSequence, delay)
 		{
 			this.posterPalette = posterPalette;
+			this.clockPalette = clockPalette;
 
 			if (posterType != null)
 			{
@@ -131,11 +133,12 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (poster != null)
 			{
-				foreach (var a in poster.Render(position, r.Palette(posterPalette)))
+				var palettePoster = r.Palette(isPlayerPalette ? posterPalette + owner.InternalName : posterPalette);
+				foreach (var a in poster.Render(position, palettePoster))
 					yield return a;
 
 				if (clock != null)
-					foreach (var a in clock.Render(position, r.Palette(posterPalette)))
+					foreach (var a in clock.Render(position, r.Palette(clockPalette)))
 						yield return a;
 			}
 		}
