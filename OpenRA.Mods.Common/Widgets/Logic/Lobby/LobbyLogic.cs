@@ -117,6 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool updateDiscordStatus = true;
 		bool resetOptionsButtonEnabled;
 		bool mapAvailable;
+		bool mapSupportsBots;
 		Dictionary<int, SpawnOccupant> spawnOccupants = [];
 		Dictionary<string, Session.LobbyOptionState> lobbyOptions = [];
 
@@ -295,7 +296,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				slotsButton.IsVisible = () => panel != PanelType.Servers && panel != PanelType.Options;
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
-					(orderManager.LobbyInfo.Clients.Count == 1 && map.PlayerActorInfo.TraitInfos<IBotInfo>().Count == 0) ||
+					(orderManager.LobbyInfo.Clients.Count == 1 && !mapSupportsBots) ||
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
 					!orderManager.LobbyInfo.Slots.Any(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null));
 
@@ -734,6 +735,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Tell the server that we have the map
 			mapAvailable = map.Status == MapStatus.Available;
+			mapSupportsBots = map.PlayerActorInfo?.TraitInfos<IBotInfo>().Count > 0;
 			if (mapAvailable)
 				CurrentMapBecameAvailable();
 
