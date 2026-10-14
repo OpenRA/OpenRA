@@ -445,7 +445,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
-			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
+			slot.IsDisabled = () => orderManager.LocalClient.IsReady || (map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable);
 
 			var truncated = new CachedTransform<string, string>(name =>
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,

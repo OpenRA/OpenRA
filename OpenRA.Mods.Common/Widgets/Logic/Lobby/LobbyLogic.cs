@@ -237,6 +237,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
 
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
+				(map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable) ||
 				panel == PanelType.Kick || panel == PanelType.ForceStart || !MapIsPlayable ||
 				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
