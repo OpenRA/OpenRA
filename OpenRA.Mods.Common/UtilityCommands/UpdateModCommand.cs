@@ -26,7 +26,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		bool IUtilityCommand.ValidateArguments(string[] args) { return true; }
 
-		[Desc("SOURCE [--detailed] [--apply] [--skip-maps]", "Updates a mod to the latest version. SOURCE is either a known tag or the name of an update rule.")]
+		[Desc("SOURCE [--detailed] [--apply] [--yes] [--skip-maps]",
+			"Updates a mod to the latest version. SOURCE is either a known tag or the name of an update rule.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -38,7 +39,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (rules == null)
 			{
-				Console.WriteLine("--update-mod SOURCE [--detailed] [--apply] [--skip-maps]");
+				Console.WriteLine("--update-mod SOURCE [--detailed] [--apply] [--yes] [--skip-maps]");
 
 				if (args.Length > 1)
 					Console.WriteLine("Unknown source: " + args[1]);
