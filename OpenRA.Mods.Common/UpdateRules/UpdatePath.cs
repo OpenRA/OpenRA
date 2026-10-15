@@ -65,6 +65,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new ReplaceCloakPalette(),
 				new AbstractDocking(),
+				new AddModelRendererTraits(),
 			]),
 			new("release-20250303", "release-20250330", []),
 			new("release-20250330", [
