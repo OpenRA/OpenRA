@@ -470,7 +470,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					SpawnPoint = slotClient.SpawnPoint,
 					Team = slotClient.Team,
 					Bot = slotClient.Bot,
-					Name = slotClient.Bot != null ? FluentProvider.GetMessage(slotClient.BotName) : string.Empty
+					Name = FluentProvider.GetMessage(slotClient.Bot != null ? slotClient.BotName : HumanPlayer)
 				};
 
 				occupants[slotClient.SpawnPoint] = new SpawnOccupant(client);
