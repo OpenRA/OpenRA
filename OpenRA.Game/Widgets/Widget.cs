@@ -48,7 +48,7 @@ namespace OpenRA.Widgets
 			if (WindowList.Count > 0)
 			{
 				var hidden = WindowList.Pop();
-				Root.RemoveChild(hidden);
+				hidden.Parent.RemoveChild(hidden);
 				if (hidden.LogicObjects != null)
 					foreach (var l in hidden.LogicObjects)
 						l.BecameHidden();
@@ -57,7 +57,7 @@ namespace OpenRA.Widgets
 			if (WindowList.Count > 0)
 			{
 				var restore = WindowList.Peek();
-				Root.AddChild(restore);
+				restore.Parent.AddChild(restore);
 
 				if (restore.LogicObjects != null)
 					foreach (var l in restore.LogicObjects)
@@ -70,12 +70,12 @@ namespace OpenRA.Widgets
 			return OpenWindow(id, []);
 		}
 
-		public static Widget OpenWindow(string id, WidgetArgs args)
+		public static Widget OpenWindow(string id, WidgetArgs args, Widget parent = null)
 		{
 			if (!args.ContainsKey("modData"))
 				args = new WidgetArgs(args) { { "modData", modData } };
 
-			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
+			var window = Game.ModData.WidgetLoader.LoadWidget(args, parent ?? Root, id);
 			if (WindowList.Count > 0)
 				Root.HideChild(WindowList.Peek());
 			WindowList.Push(window);
