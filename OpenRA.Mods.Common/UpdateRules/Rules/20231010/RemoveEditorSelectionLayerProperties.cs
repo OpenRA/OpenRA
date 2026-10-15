@@ -15,21 +15,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RemoveEditorSelectionLayerProperties : UpdateRule
 	{
-		public override string Name => "Remove defunct properties from EditorSelectionLayer.";
+		public override string Name => "Remove EditorSelectionLayer.";
 
 		public override string Description =>
-			"Map editor was refactored and many of EditorSelectionLayer properties were removed.";
+			"Map editor was refactored and EditorSelectionLayer was removed.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
-			foreach (var editorSelectionLayer in actorNode.ChildrenMatching("EditorSelectionLayer"))
-			{
-				editorSelectionLayer.RemoveNodes("Palette");
-				editorSelectionLayer.RemoveNodes("FootprintAlpha");
-				editorSelectionLayer.RemoveNodes("Image");
-				editorSelectionLayer.RemoveNodes("CopySequence");
-				editorSelectionLayer.RemoveNodes("PasteSequence");
-			}
+			actorNode.RemoveNodes("EditorSelectionLayer");
 
 			yield break;
 		}
