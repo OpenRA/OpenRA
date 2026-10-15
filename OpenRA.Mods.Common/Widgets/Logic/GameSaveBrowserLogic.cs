@@ -219,6 +219,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "mapUpdatesEnabled", false },
 				{ "onMapUpdate", (Action<string>)(_ => { }) },
 			});
+			mapPreviewRoot.Get<MapPreviewWidget>("MAP_PREVIEW").TooltipContainer = "GAMESAVE_PREVIEW_TOOLTIP_CONTAINER";
 
 			var renameButton = panel.Get<ButtonWidget>("RENAME_BUTTON");
 			renameButton.IsDisabled = () => selectedSave == null;

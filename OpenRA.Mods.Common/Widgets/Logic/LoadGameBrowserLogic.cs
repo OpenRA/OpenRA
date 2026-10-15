@@ -251,6 +251,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "mapUpdatesEnabled", false },
 				{ "onMapUpdate", (Action<string>)(_ => { }) },
 			});
+			mapPreviewRoot.Get<MapPreviewWidget>("MAP_PREVIEW").TooltipContainer = "LOAD_GAME_PREVIEW_TOOLTIP_CONTAINER";
 
 			gameList = panel.Get<ScrollPanelWidget>("GAME_LIST");
 			gameTemplate = panel.Get<ScrollItemWidget>("GAME_TEMPLATE");

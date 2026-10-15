@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly bool IgnoreMouseInput = false;
 		public readonly bool ShowSpawnPoints = true;
 
-		public readonly string TooltipContainer;
+		public string TooltipContainer;
 		public readonly string TooltipTemplate = "SPAWN_TOOLTIP";
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 

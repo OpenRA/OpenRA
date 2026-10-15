@@ -207,4 +207,5 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Height: 25
 			Text: button-back
 			Font: Bold
+		TooltipContainer@GAMESAVE_PREVIEW_TOOLTIP_CONTAINER:
 		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:

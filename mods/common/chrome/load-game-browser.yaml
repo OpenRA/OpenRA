@@ -291,5 +291,6 @@
 			Height: 25
 			Text: button-back
 			Font: Bold
+		TooltipContainer@LOAD_GAME_PREVIEW_TOOLTIP_CONTAINER:
 		TooltipContainer@TOOLTIP_CONTAINER:
 		TooltipContainer@LOAD_GAME_TITLE_TOOLTIP_CONTAINER:
