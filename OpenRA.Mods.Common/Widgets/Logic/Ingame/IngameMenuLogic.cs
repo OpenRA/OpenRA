@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string ExitToMapEditorCancel = "dialog-exit-to-map-editor.cancel";
 
-		readonly Widget menu;
+		readonly Widget menuRoot;
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
 		readonly int2 buttonStride;
@@ -184,7 +184,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			isSinglePlayer = !world.LobbyInfo.GlobalSettings.Dedicated && world.LobbyInfo.NonBotClients.Count() == 1;
 
-			menu = widget.Get("INGAME_MENU");
+			menuRoot = Ui.Root.GetOrNull("MENU_ROOT");
+			var menu = widget.Get("INGAME_MENU");
 			mpe = world.WorldActor.TraitOrDefault<MenuPostProcessEffect>();
 			mpe?.Fade(mpe.Info.MenuEffect);
 
@@ -416,7 +417,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "onExit", () => hideMenu = false },
 					{ "onStart", CloseMenu },
-				});
+				}, menuRoot);
 			};
 		}
 
@@ -435,7 +436,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "onExit", () => hideMenu = false },
 					{ "onStart", () => { } },
 					{ "world", world }
-				});
+				}, menuRoot);
 			};
 		}
 
@@ -449,7 +450,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					{ "onExit", () => hideMenu = false },
 					{ "world", world }
-				});
+				}, menuRoot);
 			};
 		}
 
@@ -464,7 +465,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "world", world },
 					{ "worldRenderer", worldRenderer },
 					{ "onExit", () => hideMenu = false },
-				});
+				}, menuRoot);
 			};
 		}
 
@@ -510,7 +511,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "world", world },
 					{ "playerDefinitions", playerDefinitions },
 					{ "actorDefinitions", editorActorLayer.Save() }
-				});
+				}, menuRoot);
 			};
 		}
 
