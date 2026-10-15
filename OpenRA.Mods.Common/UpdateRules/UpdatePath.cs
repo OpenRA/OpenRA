@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveAndRenameDefenseRadiusInBaseBuilderBotModule(),
 
 				new WithDamageOverlayPropertyRename(),
+				new MoveTileSizeToTileSets(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new RenameMapGeneratorParameters(),
