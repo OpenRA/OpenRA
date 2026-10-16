@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.UpdateSelectedTab += HandleUpdateSelectedTab;
+			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
 			SetupTab("SELECT_TAB", "SELECT_WIDGETS", MenuType.Select);
 			SetupTab("TILES_TAB", "TILE_WIDGETS", MenuType.Tiles);
@@ -51,6 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void Dispose(bool disposing)
 		{
 			editor.DefaultBrush.UpdateSelectedTab -= HandleUpdateSelectedTab;
+			editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
 
 			base.Dispose(disposing);
 		}
@@ -95,6 +97,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				menuType = lastSelectedTab;
 
 			OnTabChanged?.Invoke();
+		}
+
+		void HandleSelectionChanged()
+		{
+			// Editor actions (e.g. deleting the selected actor or undo/redo) can clear the selection
+			// without going through UpdateSelectedTab, so make sure we don't stay on the disabled tab.
+			if (menuType == MenuType.Select && !editor.DefaultBrush.Selection.HasSelection)
+			{
+				menuType = lastSelectedTab;
+				OnTabChanged?.Invoke();
+			}
 		}
 	}
 }
