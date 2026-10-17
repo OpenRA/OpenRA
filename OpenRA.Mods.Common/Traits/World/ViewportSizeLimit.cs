@@ -16,8 +16,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	[Desc("If present, controls the viewport height for all players.")]
-	sealed class ViewportLockInfo : ConditionalTraitInfo
+	[Desc("If present, limits the size height for all players.")]
+	sealed class ViewportSizeLimitInfo : ConditionalTraitInfo
 	{
 		[Desc("The maximum viewport height for all players in world units.")]
 		public readonly WDist AbsoluteHeight = WDist.FromCells(512);
@@ -25,12 +25,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The maximum viewport height for all players as a percentage of map height. Takes precedence over AbsoluteHeight if specified.")]
 		public readonly int? PercentageHeight = null;
 
-		public override object Create(ActorInitializer init) { return new ViewportLock(this); }
+		public override object Create(ActorInitializer init) { return new ViewportSizeLimit(this); }
 	}
 
-	sealed class ViewportLock : ConditionalTrait<ViewportLockInfo>, IWorldLoaded
+	sealed class ViewportSizeLimit : ConditionalTrait<ViewportSizeLimitInfo>, IWorldLoaded
 	{
-		public ViewportLock(ViewportLockInfo info)
+		public ViewportSizeLimit(ViewportSizeLimitInfo info)
 			: base(info) { }
 
 		public void WorldLoaded(World w, WorldRenderer wr)
