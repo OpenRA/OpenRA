@@ -11,7 +11,6 @@
 
 using System;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -39,6 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 			var height = Info.PercentageHeight.HasValue
 				? WDist.FromCells(w.Map.Bounds.Height).Length * Info.PercentageHeight.Value / 100
 				: Info.AbsoluteHeight.Length;
+
 			// WPos to world pixels
 			wr.Viewport.OverrideDefaultHeight(
 					Math.Max(WDist.FromCells(1).Length, height) *
