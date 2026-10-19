@@ -12,6 +12,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using OpenRA.Primitives;
 using SDL2;
 
 namespace OpenRA.Platforms.Default
@@ -19,6 +20,8 @@ namespace OpenRA.Platforms.Default
 	sealed class Sdl2Input
 	{
 		MouseButton lastButtonBits = MouseButton.None;
+		int2 lastMotionPos;
+		int2 lastMotionDelta;
 
 		public static string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
 		public static bool SetClipboardText(string text) { return SDL.SDL_SetClipboardText(text) == 0; }
@@ -59,6 +62,36 @@ namespace OpenRA.Platforms.Default
 			}
 
 			return new int2(x, y);
+		}
+
+		static bool TryGetWindowExit(int2 pos, int2 delta, Size size, out int2 exit)
+		{
+			exit = pos;
+
+			// Already outside (X11 case) or no known direction: nothing to do
+			if (pos.X < 0 || pos.Y < 0 || pos.X >= size.Width || pos.Y >= size.Height || delta == int2.Zero)
+				return false;
+
+			var tx = delta.X < 0 ? (float)-pos.X / delta.X
+			: delta.X > 0 ? (float)(size.Width - 1 - pos.X) / delta.X
+			: float.PositiveInfinity;
+
+			var ty = delta.Y < 0 ? (float)-pos.Y / delta.Y
+			: delta.Y > 0 ? (float)(size.Height - 1 - pos.Y) / delta.Y
+			: float.PositiveInfinity;
+
+			var t = Math.Min(tx, ty);
+			var x = Math.Clamp((int)Math.Round(pos.X + delta.X * t), 0, size.Width - 1);
+			var y = Math.Clamp((int)Math.Round(pos.Y + delta.Y * t), 0, size.Height - 1);
+
+			// Put the exit axis just beyond the edge
+			if (tx <= ty)
+				x = delta.X < 0 ? -1 : size.Width;
+			else
+				y = delta.Y < 0 ? -1 : size.Height;
+
+			exit = new int2(x, y);
+			return true;
 		}
 
 		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler, int2? lockedMousePosition)
@@ -106,6 +139,33 @@ namespace OpenRA.Platforms.Default
 							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_RESTORED:
 								device.IsSuspended = false;
 								break;
+
+							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_ENTER:
+								lastMotionDelta = int2.Zero;
+								break;
+
+							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_LEAVE:
+							{
+								// Wayland (and thus XWayland) does not report where the pointer left the window,
+								// so the last position we know can still be well inside it. Estimate the exit edge
+								// from the last motion direction so that edge scrolling keeps working, as on X11.
+								if (lockedMousePosition == null && lastButtonBits == MouseButton.None &&
+									TryGetWindowExit(lastMotionPos, lastMotionDelta, device.EffectiveWindowSize, out var exitPos))
+								{
+									if (pendingMotion != null)
+									{
+										inputHandler.OnMouseInput(pendingMotion.Value);
+										pendingMotion = null;
+									}
+
+									inputHandler.OnMouseInput(new MouseInput(
+										MouseInputEvent.Move, MouseButton.None, exitPos, int2.Zero, mods, 0));
+
+									lastMotionDelta = int2.Zero;
+								}
+
+								break;
+							}
 						}
 
 						break;
@@ -187,6 +247,13 @@ namespace OpenRA.Platforms.Default
 						var delta = lockedMousePosition == null
 							? EventPosition(device, e.motion.xrel, e.motion.yrel)
 							: mousePos - lockedMousePosition.Value;
+
+						if (lockedMousePosition == null)
+						{
+							lastMotionPos = pos;
+							if (delta != int2.Zero)
+								lastMotionDelta = delta;
+						}
 
 						pendingMotion = new MouseInput(
 							MouseInputEvent.Move, lastButtonBits, pos, delta, mods, 0);
