@@ -752,8 +752,10 @@ description-no-description = no description available.
 description-help-description = provides useful info about various commands.
 
 ## PlayerCommands
+notification-whisper-invalid-player = Unable to whisper to that player.
 description-pause-description = pause or unpause the game.
 description-surrender-description = self-destruct everything and lose the game.
+description-whisper-description = send a private message to a player, /whisper (player name) (message).
 
 ## DeveloperMode, GainsExperience, PowerManager
 notification-cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }.

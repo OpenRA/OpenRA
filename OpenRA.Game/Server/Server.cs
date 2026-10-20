@@ -1032,6 +1032,18 @@ namespace OpenRA.Server
 						break;
 					}
 
+					case "Whisper":
+					{
+						if (!IsMultiplayer || !playerMessageTracker.IsPlayerAtFloodLimit(conn))
+						{
+							var target = Conns.FirstOrDefault(c => c.PlayerIndex == (int)o.ExtraData && c.Validated);
+							if (target != null && target != conn)
+								DispatchOrdersToClient(target, conn.PlayerIndex, 0, o.Serialize());
+						}
+
+						break;
+					}
+
 					case "GameSaveTraitData":
 					{
 						if (GameSave != null)
