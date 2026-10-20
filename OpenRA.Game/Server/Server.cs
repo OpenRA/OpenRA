@@ -1241,18 +1241,29 @@ namespace OpenRA.Server
 
 				// Client was the server admin
 				// TODO: Reassign admin for game in progress via an order
-				if (Type == ServerType.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				// Note: this used to be Dedicated-only, back when admin == host always held
+				// for non-dedicated servers. Now that /admin can hand admin to someone other
+				// than the host, a non-dedicated server can also end up with no admin left
+				// (e.g. a non-host admin disconnects while the host is still connected), so
+				// we run the same re-election here for every server type. On non-dedicated
+				// this naturally falls back to the host, since they hold the lowest index.
+				if (dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+
 				{
 					// Remove any bots controlled by the admin
 					LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
-					var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
-						.MinByOrDefault(c => c.Index);
-
-					if (nextAdmin != null)
+					// Is there no admin left? (Leaving player is already removed from list)
+					if (!LobbyInfo.Clients.Any(c => c.IsAdmin))
 					{
-						nextAdmin.IsAdmin = true;
-						SendFluentMessage(NewAdmin, "player", nextAdmin.Name);
+						var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
+							.MinByOrDefault(c => c.Index);
+
+						if (nextAdmin != null)
+						{
+							nextAdmin.IsAdmin = true;
+							SendFluentMessage(NewAdmin, "player", nextAdmin.Name);
+						}
 					}
 				}
 
@@ -1273,8 +1284,17 @@ namespace OpenRA.Server
 				if (Conns.Any(c => c.Validated) || Type == ServerType.Dedicated)
 					SyncLobbyClients();
 
-				if (Type != ServerType.Dedicated && dropClient.IsAdmin)
-					Shutdown();
+				if (Type != ServerType.Dedicated)
+				{
+					// Shut down if the actual host left (lowest non-bot index),
+					// regardless of their current admin status.
+					var lowestRemainingIndex = LobbyInfo.Clients
+						.Where(c => c.Bot == null)
+						.MinByOrDefault(c => c.Index)?.Index ?? int.MaxValue;
+
+					if (dropClient.Index < lowestRemainingIndex)
+						Shutdown();
+				}
 			}
 
 			toDrop.Dispose();

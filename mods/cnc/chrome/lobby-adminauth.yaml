@@ -1,0 +1,63 @@
+Container@ADMIN_AUTH_PANEL:
+	Logic: AdminAuthPromptLogic
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 370
+	Height: 155
+	Children:
+		Label@TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Y: 0 - 34
+			Font: BigBold
+			Contrast: true
+			Align: Center
+			Text: label-admin-auth-panel-title
+		Background@ADMIN_AUTH_BG:
+			Width: 370
+			Height: 120
+			Background: panel-black
+			Children:
+				Label@DESC:
+					Y: 16
+					Width: PARENT_WIDTH
+					Height: 25
+					Text: label-admin-auth-panel-desc
+					Font: Bold
+					Align: Center
+				Label@PASSWORD_LABEL:
+					X: 40
+					Y: 51
+					Width: 95
+					Height: 25
+					Align: Right
+					Text: label-admin-auth-panel-password
+					Font: Bold
+				PasswordField@PASSWORD_INPUT:
+					X: 140
+					Y: 51
+					Width: 155
+					Height: 25
+					MaxLength: 20
+				Checkbox@RESET_OTHERS_CHECKBOX:
+					X: 40
+					Y: 86
+					Width: 290
+					Height: 20
+					Text: checkbox-admin-auth-panel-reset-others
+		Button@OK_BUTTON:
+			X: 0
+			Y: 120
+			Width: 140
+			Height: 35
+			Text: button-admin-auth-panel-login
+			Font: Bold
+			Key: return
+		Button@CANCEL_BUTTON:
+			X: 230
+			Y: 120
+			Width: 140
+			Height: 35
+			Text: button-cancel
+			Font: Bold
+			Key: escape
