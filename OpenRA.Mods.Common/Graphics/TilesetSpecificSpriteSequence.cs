@@ -17,7 +17,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public class TilesetSpecificSpriteSequenceLoader : DefaultSpriteSequenceLoader
+	public class TilesetSpecificSpriteSequenceLoader : DepthSpriteSequenceLoader
 	{
 		public override TilesetSpecificSpriteSequence CreateSequence(
 			ModData modData, string tileSet, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Graphics
 	}
 
 	[Desc("A sprite sequence that can have tileset-specific variants.")]
-	public class TilesetSpecificSpriteSequence : DefaultSpriteSequence
+	public class TilesetSpecificSpriteSequence : DepthSpriteSequence
 	{
 		[Desc("Dictionary of <tileset name>: filename to override the Filename key.")]
 		static readonly SpriteSequenceField<FrozenDictionary<string, string>> TilesetFilenames = new(nameof(TilesetFilenames), null);
