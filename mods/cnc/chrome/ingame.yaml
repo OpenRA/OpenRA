@@ -2,7 +2,7 @@ Container@INGAME_ROOT:
 	Logic: LoadIngamePlayerOrObserverUILogic
 	Children:
 		LogicKeyListener@GLOBAL_KEYHANDLER:
-			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, DisableUIKeyLogic, DisableAllUIKeyLogic, QuickSaveHotkeyLogic
+			Logic: MusicHotkeyLogic, ScreenshotHotkeyLogic, MuteHotkeyLogic, DisableUIKeyLogic, DisableAllUIKeyLogic, QuickSaveHotkeyLogic, ReleaseMouseFocusHotkeyLogic
 				StopMusicKey: StopMusic
 				PauseMusicKey: PauseMusic
 				PrevMusicKey: PrevMusic
@@ -12,6 +12,7 @@ Container@INGAME_ROOT:
 				MuteAudioKey: ToggleMute
 				DisableUIKey: DisableUserInterface
 				DisableAllUIKey: DisableAllUserInterface
+				ReleaseMouseFocusKey: ReleaseMouseFocus
 		LogicKeyListener@WORLD_KEYHANDLER:
 			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, CycleHarvestersHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, ResetZoomHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, SelectUnitsByTypeHotkeyLogic, SelectAllUnitsHotkeyLogic
 				CycleBasesKey: CycleBase

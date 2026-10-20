@@ -58,6 +58,11 @@ ToggleMute: M
 	Types: World
 	Contexts: menu, player, spectator
 
+ReleaseMouseFocus:
+	Description: hotkey-description-releasemousefocus
+	Types: World
+	Contexts: menu, player, spectator
+
 TogglePlayerStanceColor:
 	Description: hotkey-description-toggleplayerstancecolor
 	Types: World

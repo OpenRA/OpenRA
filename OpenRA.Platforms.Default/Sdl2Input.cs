@@ -88,6 +88,12 @@ namespace OpenRA.Platforms.Default
 
 							case SDL.SDL_WindowEventID.SDL_WINDOWEVENT_FOCUS_GAINED:
 								device.HasInputFocus = true;
+
+								// Restore the mouse grab when regaining focus after it was previously
+								// released, e.g. by the ReleaseMouseFocus hotkey.
+								if (!device.IsMouseFocusGrabbed && Game.Settings.Game.LockMouseWindow)
+									device.GrabWindowMouseFocus();
+
 								break;
 
 							// Triggered when moving between displays with different DPI settings
@@ -114,6 +120,12 @@ namespace OpenRA.Platforms.Default
 					case SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN:
 					case SDL.SDL_EventType.SDL_MOUSEBUTTONUP:
 					{
+						// Restore the mouse grab when clicking inside the window after it was
+						// temporarily released, e.g. by the ReleaseMouseFocus hotkey.
+						if (e.type == SDL.SDL_EventType.SDL_MOUSEBUTTONDOWN &&
+							!device.IsMouseFocusGrabbed && Game.Settings.Game.LockMouseWindow)
+							device.GrabWindowMouseFocus();
+
 						// Mouse 1, Mouse 2 and Mouse 3 are handled as mouse inputs
 						// Mouse 4 and Mouse 5 are treated as (pseudo) keyboard inputs
 						if (e.button.button == SDL.SDL_BUTTON_LEFT ||
