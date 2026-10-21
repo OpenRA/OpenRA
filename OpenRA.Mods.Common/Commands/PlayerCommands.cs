@@ -33,7 +33,13 @@ namespace OpenRA.Mods.Common.Commands
 		const string WhisperDescription = "description-whisper-description";
 
 		[FluentReference]
-		const string WhisperInvalidPlayer = "notification-whisper-invalid-player";
+		const string WhisperPlayerNotFound = "notification-whisper-player-not-found";
+
+		[FluentReference]
+		const string WhisperAmbiguousPlayer = "notification-whisper-ambiguous-player";
+
+		[FluentReference]
+		const string WhisperSpectator = "notification-whisper-spectator";
 
 		World world;
 
@@ -67,9 +73,24 @@ namespace OpenRA.Mods.Common.Commands
 						.ToList();
 
 					var target = matches.FirstOrDefault();
-					if (target == null || matches.Count(c => c.Name == target.Name) > 1)
+					if (target == null)
 					{
-						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperInvalidPlayer));
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperPlayerNotFound));
+						break;
+					}
+
+					if (matches.Count(c => c.Name == target.Name) > 1)
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperAmbiguousPlayer));
+						break;
+					}
+
+					var targetPlayer = world.Players.FirstOrDefault(p => p.ClientIndex == target.Index && p.PlayerReference.Playable);
+					var senderSpectating = world.LocalPlayer == null || world.LocalPlayer.Spectating;
+					var targetSpectating = target.IsObserver || targetPlayer == null || targetPlayer.Spectating;
+					if (senderSpectating && !targetSpectating)
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperSpectator));
 						break;
 					}
 

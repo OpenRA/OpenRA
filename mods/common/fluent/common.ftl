@@ -752,7 +752,9 @@ description-no-description = no description available.
 description-help-description = provides useful info about various commands.
 
 ## PlayerCommands
-notification-whisper-invalid-player = Unable to whisper to that player.
+notification-whisper-player-not-found = No player with that name was found.
+notification-whisper-ambiguous-player = Multiple players match that name.
+notification-whisper-spectator = Spectators cannot whisper to players.
 description-pause-description = pause or unpause the game.
 description-surrender-description = self-destruct everything and lose the game.
 description-whisper-description = send a private message to a player, /whisper (player name) (message).

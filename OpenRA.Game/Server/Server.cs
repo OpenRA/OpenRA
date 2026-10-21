@@ -1038,7 +1038,14 @@ namespace OpenRA.Server
 						{
 							var target = Conns.FirstOrDefault(c => c.PlayerIndex == (int)o.ExtraData && c.Validated);
 							if (target != null && target != conn)
-								DispatchOrdersToClient(target, conn.PlayerIndex, 0, o.Serialize());
+							{
+								var sender = GetClient(conn);
+								var targetClient = GetClient(target);
+								var senderSpectating = sender == null || sender.IsObserver || HasClientWonOrLost(sender);
+								var targetSpectating = targetClient == null || targetClient.IsObserver || HasClientWonOrLost(targetClient);
+								if (!senderSpectating || targetSpectating)
+									DispatchOrdersToClient(target, conn.PlayerIndex, 0, o.Serialize());
+							}
 						}
 
 						break;
