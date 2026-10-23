@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 using Eluant;
 
 namespace OpenRA.Scripting
@@ -105,10 +107,11 @@ namespace OpenRA.Scripting
 				return true;
 			}
 
-			// Translate LuaTable<int, object> -> object[]
-			if (value is LuaTable table && t.IsArray)
+			// Translate LuaTable<int, object> -> object[] or ImmutableArray<object>
+			var isImmutableArray = t.IsGenericType && t.GetGenericTypeDefinition() == typeof(ImmutableArray<>);
+			if (value is LuaTable table && (t.IsArray || isImmutableArray))
 			{
-				var innerType = t.GetElementType();
+				var innerType = isImmutableArray ? t.GetGenericArguments()[0] : t.GetElementType();
 				var array = Array.CreateInstance(innerType, table.Count);
 				var i = 0;
 
@@ -132,7 +135,12 @@ namespace OpenRA.Scripting
 					}
 				}
 
-				clrObject = array;
+				clrObject = isImmutableArray
+					? typeof(ImmutableCollectionsMarshal)
+						.GetMethod(nameof(ImmutableCollectionsMarshal.AsImmutableArray))
+						.MakeGenericMethod(innerType)
+						.Invoke(null, [array])
+					: array;
 				return true;
 			}
 
