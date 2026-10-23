@@ -80,6 +80,19 @@ notification-blacklisted-server-name = Server name contains a blacklisted word.
 notification-requires-authentication = Server requires players to have an OpenRA forum account.
 notification-no-permission-to-join = You do not have permission to join this server.
 notification-slot-closed = Your slot was closed by the host.
+notification-quick-match-countdown-aborted = Countdown aborted.
+notification-quick-match-auto-ready-in =
+    { $seconds ->
+        [one] Quick match clients will auto-ready in { $seconds } second.
+       *[other] Quick match clients will auto-ready in { $seconds } seconds.
+    }
+notification-quick-match-ready-deadline =
+    { $seconds ->
+        [one] Ready up no later than in { $seconds } second.
+       *[other] Ready up no later than in { $seconds } seconds.
+    }
+notification-quick-match-countdown-step = T-minus { $step }.
+notification-quick-match-final-countdown-step = { $step }
 
 ## ServerOrders, UnitOrders
 notification-joined = { $player } has joined the game.
