@@ -555,7 +555,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var defenseCenterNode = data.NodeWithKeyOrDefault("DefenseCenter");
 			if (defenseCenterNode != null)
-				DefenseCenter = FieldLoader.GetValue<CPos>("DefenseCenter", defenseCenterNode.Value.Value);
+				DefenseCenter = FieldLoader.GetValue<CPos?>("DefenseCenter", defenseCenterNode.Value.Value);
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
