@@ -140,7 +140,7 @@ Trigger.OnEnteredFootprint(SmugglerTriggerZone, function(a, id)
 		Message[Harkonnen] = true
 	end
 
-	if a.Owner == OrdosMain or a.Owner == OrdosSmall and not Message[OrdosMain] then
+	if ( a.Owner == OrdosMain or a.Owner == OrdosSmall ) and not Message[OrdosMain] then
 		Media.DisplayMessage(UserInterface.GetFluentMessage("smuggler-warning-ordos"), "Smugglers", HSLColor.FromHex("7B2910"))
 		Message[OrdosMain] = true
 	end
