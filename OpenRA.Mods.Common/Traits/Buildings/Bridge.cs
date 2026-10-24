@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (offset == null)
 					continue; // End piece type
 
-				neighbours[d] = GetNeighbor(offset, bridges);
+				neighbours[d] = GetNeighbor(offset.AsSpan(), bridges);
 				if (neighbours[d] != null)
 					neighbours[d].neighbours[1 - d] = this; // Save reverse lookup
 			}
@@ -188,9 +188,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public LegacyBridgeHut GetHut(int index) { return huts[index]; }
-		public Bridge GetNeighbor(ImmutableArray<int> offset, LegacyBridgeLayer bridges)
+		public Bridge GetNeighbor(ReadOnlySpan<int> offset, LegacyBridgeLayer bridges)
 		{
-			if (offset == null)
+			if (offset.Length < 2)
 				return null;
 
 			return bridges.GetBridge(self.Location + new CVec(offset[0], offset[1]));

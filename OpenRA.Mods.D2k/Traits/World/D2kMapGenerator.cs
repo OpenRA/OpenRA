@@ -12,7 +12,9 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Mods.Common.MapGenerator;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
@@ -142,11 +144,11 @@ namespace OpenRA.Mods.D2k.Traits
 			[FieldLoader.Require]
 			public readonly ushort RockTile = default;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> PlayableTerrain;
+			public readonly FrozenSet<byte> PlayableTerrain;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> RockZoneableTerrain = default;
+			public readonly FrozenSet<byte> RockZoneableTerrain = default;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlySet<byte> SandZoneableTerrain = default;
+			public readonly FrozenSet<byte> SandZoneableTerrain = default;
 			[FieldLoader.Require]
 			public readonly string RockSmoothSegmentType = default;
 			[FieldLoader.Require]
@@ -158,11 +160,11 @@ namespace OpenRA.Mods.D2k.Traits
 			[FieldLoader.Require]
 			public readonly string DuneSegmentType = default;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> SegmentedBrushes;
+			public readonly ImmutableArray<MultiBrush> SegmentedBrushes;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> SandDetailBrushes;
+			public readonly ImmutableArray<MultiBrush> SandDetailBrushes;
 			[FieldLoader.Ignore]
-			public readonly IReadOnlyList<MultiBrush> DuneBrushes;
+			public readonly ImmutableArray<MultiBrush> DuneBrushes;
 
 			public Parameters(Map map, MiniYaml my)
 			{
@@ -170,7 +172,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 				var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 
-				IReadOnlySet<byte> ParseTerrainIndexes(string key)
+				FrozenSet<byte> ParseTerrainIndexes(string key)
 				{
 					return my.NodeWithKey(key).Value.Value
 						.Split(',', StringSplitOptions.RemoveEmptyEntries)
@@ -298,7 +300,7 @@ namespace OpenRA.Mods.D2k.Traits
 					rockTilingRandom,
 					tilingPaths,
 					plan[0] ? Terraformer.Side.In : Terraformer.Side.Out,
-					null,
+					default,
 					[new MultiBrush().WithTemplate(map, param.RockTile, CVec.Zero)],
 					null,
 					0)
@@ -404,12 +406,12 @@ namespace OpenRA.Mods.D2k.Traits
 								param.DuneSegmentType,
 								param.DuneSegmentType)
 									.ExtendEdge(4))
-					.ToArray();
+					.ToImmutableArray();
 				_ = terraformer.PaintLoopsAndFill(
 					duneTilingRandom,
 					tilingPaths,
 					plan[0] ? Terraformer.Side.In : Terraformer.Side.Out,
-					null,
+					default,
 					param.DuneBrushes,
 					null,
 					0)
@@ -554,7 +556,7 @@ namespace OpenRA.Mods.D2k.Traits
 						resourcePattern,
 						spiceZoneable,
 						param.Resource,
-						resourceBiases);
+						CollectionsMarshal.AsSpan(resourceBiases));
 					terraformer.GrowResources(
 						plan,
 						typePlan,

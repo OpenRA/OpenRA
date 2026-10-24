@@ -142,7 +142,7 @@ namespace OpenRA.Network
 
 		static object LoadClients(MiniYaml yaml)
 		{
-			var clients = new List<GameClient>();
+			var clients = ImmutableArray.CreateBuilder<GameClient>();
 			var clientsNode = yaml.NodeWithKeyOrDefault("Clients");
 			if (clientsNode != null)
 			{
@@ -152,7 +152,7 @@ namespace OpenRA.Network
 						clients.Add(FieldLoader.Load<GameClient>(client.Value));
 			}
 
-			return clients.ToImmutableArray();
+			return clients.DrainToImmutable();
 		}
 
 		public GameServer(MiniYaml yaml)

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
 		{
-			return new ImmutablePalette(fileSystem.Open(Filename), TransparentIndex, ShadowIndex);
+			return new ImmutablePalette(fileSystem.Open(Filename), TransparentIndex.AsSpan(), ShadowIndex.AsSpan());
 		}
 	}
 
