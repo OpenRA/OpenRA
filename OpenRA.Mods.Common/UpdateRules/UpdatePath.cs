@@ -71,7 +71,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 				// bleed only changes here.
 				new ReplaceBaseAttackNotifier(),
-				new RemoveBuildingInfoAllowPlacementOnResources(),
 				new EditorMarkerTileLabels(),
 				new RemoveBarracksTypesAndVehiclesTypesInBaseBuilderBotModule(),
 				new RemoveAlwaysVisible(),
@@ -81,6 +80,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new RenameMapGeneratorParameters(),
+
+				// Loads the full ruleset, so it must run after all trait removals and renames.
+				new RemoveBuildingInfoAllowPlacementOnResources(),
 			]),
 		];
 
