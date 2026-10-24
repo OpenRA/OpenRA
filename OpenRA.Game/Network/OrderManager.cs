@@ -154,8 +154,7 @@ namespace OpenRA.Network
 
 			// The Client state field is not synced; update it immediately so it can be shown in the UI
 			var client = LobbyInfo.ClientWithIndex(clientId);
-			if (client != null)
-				client.State = Session.ClientState.Disconnected;
+			client?.State = Session.ClientState.Disconnected;
 		}
 
 		public void ReceiveSync((int Frame, int SyncHash, ulong DefeatState) sync)

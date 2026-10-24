@@ -306,8 +306,6 @@ namespace OpenRA.Mods.Common.Traits
 		bool cruising;
 		int airborneToken = Actor.InvalidConditionToken;
 		int cruisingToken = Actor.InvalidConditionToken;
-
-		MovementType movementTypes;
 		WPos cachedPosition;
 		WAngle cachedFacing;
 
@@ -957,12 +955,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public MovementType CurrentMovementTypes
 		{
-			get => movementTypes;
+			get;
 
 			set
 			{
-				var oldValue = movementTypes;
-				movementTypes = value;
+				var oldValue = field;
+				field = value;
 				if (value != oldValue)
 					foreach (var n in notifyMoving)
 						n.MovementTypeChanged(self, value);
