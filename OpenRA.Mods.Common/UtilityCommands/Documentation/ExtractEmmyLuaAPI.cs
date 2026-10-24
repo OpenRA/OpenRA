@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -416,6 +417,9 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 		{
 			if (type.IsArray)
 				return EmmaLuaStringInner(type.GetElementType(), notSupportedExceptionContext) + "[]";
+
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ImmutableArray<>))
+				return EmmaLuaStringInner(type.GetGenericArguments()[0], notSupportedExceptionContext) + "[]";
 
 			return EmmaLuaStringInner(type, notSupportedExceptionContext);
 
