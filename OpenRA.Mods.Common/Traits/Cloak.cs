@@ -299,9 +299,32 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.IsInWorld
-				&& a.Actor.Owner.IsAlliedWith(viewer) && Info.DetectionTypes.Overlaps(a.Trait.Info.DetectionTypes)
-				&& (self.CenterPosition - a.Actor.CenterPosition).LengthSquared <= a.Trait.Range.LengthSquared);
+			var searchRadius = self.World.ActorMap.LargestDetectionRange;
+			if (searchRadius == WDist.Zero)
+				return false;
+
+			var pos = self.CenterPosition;
+			var vec = new WVec(searchRadius.Length, searchRadius.Length, WDist.Zero.Length);
+
+			foreach (var actor in self.World.ActorMap.ActorsInBox(pos - vec, pos + vec))
+			{
+				if (!actor.IsInWorld || !actor.Owner.IsAlliedWith(viewer))
+					continue;
+
+				foreach (var detectCloaked in actor.TraitsImplementing<DetectCloaked>())
+				{
+					if (detectCloaked.IsTraitDisabled)
+						continue;
+
+					if (!Info.DetectionTypes.Overlaps(detectCloaked.Info.DetectionTypes))
+						continue;
+
+					if ((pos - actor.CenterPosition).LengthSquared <= detectCloaked.Range.LengthSquared)
+						return true;
+				}
+			}
+
+			return false;
 		}
 
 		Color IRadarColorModifier.RadarColorOverride(Actor self, Color color)
