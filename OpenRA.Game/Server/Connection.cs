@@ -37,6 +37,7 @@ namespace OpenRA.Server
 
 		public bool TimeoutMessageShown;
 		public bool Validated;
+		public bool HandshakeReceived;
 		public int LastOrdersFrame;
 
 		long lastReceivedTime = 0;
