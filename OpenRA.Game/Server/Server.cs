@@ -1174,7 +1174,7 @@ namespace OpenRA.Server
 		{
 			// Levels set relative to the default order lag of 3 net ticks (360ms)
 			// TODO: Adjust this once dynamic lag is implemented
-			var latency = pingHistory.Sum() / pingHistory.Length;
+			var latency = pingHistory.Sum(sample => (long)sample) / pingHistory.Length;
 
 			var quality = latency < 240 ? Session.ConnectionQuality.Good :
 				latency < 360 ? Session.ConnectionQuality.Moderate :
