@@ -56,7 +56,6 @@ namespace OpenRA
 		Sheet worldSheet;
 		Sprite worldSprite;
 		Size lastMaximumViewportSize;
-		Size lastWorldViewportSize;
 
 		public Size WorldFrameBufferSize => worldSheet.Size;
 		public int WorldDownscaleFactor { get; private set; } = 1;
@@ -234,7 +233,7 @@ namespace OpenRA
 			lastMaximumViewportSize = size;
 		}
 
-		public void BeginWorld(Vector2 viewportLocation, Size viewportSize)
+		public void BeginWorld(Vector2 viewportLocation, Rectangle viewport)
 		{
 			if (renderType != RenderType.None)
 				throw new InvalidOperationException($"BeginWorld called with renderType = {renderType}, expected RenderType.None.");
@@ -245,14 +244,13 @@ namespace OpenRA
 				throw new InvalidOperationException("BeginWorld called before SetMaximumViewportSize has been set.");
 
 			var centerLocation = int2.FromVector(viewportLocation);
-			if (worldSprite == null || viewportSize != lastWorldViewportSize || viewportLocation != lastViewportLocation)
+			if (worldSprite == null || viewport != lastWorldViewport || viewportLocation != lastViewportLocation)
 			{
 				lastViewportLocation = viewportLocation;
-				lastWorldViewportSize = viewportSize;
 
 				// Downscale world rendering if needed to fit within the framebuffer
-				var vw = viewportSize.Width;
-				var vh = viewportSize.Height;
+				var vw = viewport.Width - 1;
+				var vh = viewport.Height - 1;
 				var bw = worldSheet.Size.Width;
 				var bh = worldSheet.Size.Height;
 				WorldDownscaleFactor = 1;
@@ -273,12 +271,10 @@ namespace OpenRA
 			}
 
 			worldBuffer.Bind();
-			var rect = new Rectangle(centerLocation, viewportSize);
-			if (lastWorldViewport != rect)
+			if (lastWorldViewport != viewport)
 			{
-				var topLeft = centerLocation - viewportSize.ToInt2() / 2;
-				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, WorldDownscaleFactor, depthMargin, topLeft);
-				lastWorldViewport = rect;
+				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, WorldDownscaleFactor, depthMargin, viewport.TopLeft);
+				lastWorldViewport = viewport;
 			}
 
 			renderType = RenderType.World;
