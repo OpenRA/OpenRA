@@ -100,8 +100,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyWinStateChanged.OnPlayerLost(Player player)
 		{
-			foreach (var a in player.World.ActorsWithTrait<INotifyOwnerLost>().Where(a => a.Actor.Owner == player))
-				a.Trait.OnOwnerLost(a.Actor);
+			foreach (var a in player.World.ActorsWithTraitAsIterator<INotifyOwnerLost>())
+				if (a.Actor.Owner == player)
+					a.Trait.OnOwnerLost(a.Actor);
 
 			if (info.SuppressNotifications)
 				return;

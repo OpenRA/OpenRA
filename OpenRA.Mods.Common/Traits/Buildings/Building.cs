@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (mapBuildRadius == null || !mapBuildRadius.BuildRadiusEnabled)
 				return null;
 
-			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
+			foreach (var bp in world.ActorsWithTraitAsIterator<BaseProvider>())
 			{
 				var validOwner = bp.Actor.Owner == p || (allyBuildEnabled && bp.Actor.Owner.RelationshipWith(p) == PlayerRelationship.Ally);
 				if (!validOwner || !bp.Trait.Ready())
