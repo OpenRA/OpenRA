@@ -145,6 +145,7 @@ namespace OpenRA.Platforms.Default
 			if (!Exts.IsPowerOf2(rect.Width) || !Exts.IsPowerOf2(rect.Height))
 				throw new InvalidDataException($"Non-power-of-two rectangle {rect.Width}x{rect.Height}");
 
+			Size = rect.Size;
 			PrepareTexture();
 
 			var glInternalFormat = OpenGL.Profile == GLProfile.Embedded ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
