@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -61,21 +62,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Ui.CloseWindow();
 				menuRoot.RemoveChildren();
 
+				void OpenMenu()
+				{
+					var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
+					if (optionsButton != null)
+						Sync.RunUnsynced(world, optionsButton.OnClick);
+				}
+
 				if (world.LocalPlayer != null)
 				{
-					var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
+					var script = world.WorldActor.TraitOrDefault<LuaScript>();
 					var missionData = world.WorldActor.Info.TraitInfoOrDefault<MissionDataInfo>();
-					if (missionData != null && !(scriptContext != null && scriptContext.FatalErrorOccurred))
+					if (missionData != null && !(script != null && script.FatalErrorOccurred))
 					{
-						var video = world.LocalPlayer.WinState == WinState.Won ? missionData.WinVideo : missionData.LossVideo;
+						var won = world.LocalPlayer.WinState == WinState.Won;
+						var video = won ? missionData.WinVideo : missionData.LossVideo;
+
+						// Opt-in campaign flow. Leave multiplayer and replay presentation unchanged.
+						if (!string.IsNullOrEmpty(missionData.GameOverScreen) && !world.IsReplay
+							&& world.LobbyInfo.NonBotClients.Count() == 1)
+						{
+							void ShowResults()
+							{
+								if (!Game.IsCurrentWorld(world))
+									return;
+
+								var dismissed = false;
+								void Dismiss(bool continueCampaign)
+								{
+									if (dismissed || !Game.IsCurrentWorld(world))
+										return;
+
+									dismissed = true;
+									Ui.CloseWindow();
+									if (continueCampaign && !string.IsNullOrEmpty(missionData.GameOverCallback)
+										&& script?.Context?.TryInvokeGlobal(missionData.GameOverCallback, won) == true)
+										return;
+
+									OpenMenu();
+								}
+
+								Sync.RunUnsynced(world, () => Game.OpenWindow(missionData.GameOverScreen, new WidgetArgs()
+								{
+									{ "onContinue", () => Dismiss(true) },
+									{ "onExit", () => Dismiss(false) }
+								}));
+							}
+
+							if (!string.IsNullOrEmpty(video))
+								Media.PlayFMVFullscreen(world, video, ShowResults);
+							else
+								ShowResults();
+
+							return;
+						}
+
 						if (!string.IsNullOrEmpty(video))
 							Media.PlayFMVFullscreen(world, video, () => { });
 					}
 				}
 
-				var optionsButton = playerRoot.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
-				if (optionsButton != null)
-					Sync.RunUnsynced(world, optionsButton.OnClick);
+				OpenMenu();
 			};
 		}
 	}

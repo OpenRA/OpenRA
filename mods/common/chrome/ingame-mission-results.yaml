@@ -1,0 +1,28 @@
+Container@MISSION_RESULTS:
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
+	Logic: MissionResultsLogic
+	Children:
+		Background@BACKGROUND:
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: (PARENT_HEIGHT - HEIGHT) / 2
+			Width: 580
+			Height: 500
+			Children:
+				Container@STATS:
+					Width: PARENT_WIDTH
+					Height: 430
+				Button@MENU:
+					X: 120
+					Y: 450
+					Width: 140
+					Height: 30
+					Text: button-mission-results-menu
+					Font: Bold
+				Button@CONTINUE:
+					X: 320
+					Y: 450
+					Width: 140
+					Height: 30
+					Text: button-continue
+					Font: Bold

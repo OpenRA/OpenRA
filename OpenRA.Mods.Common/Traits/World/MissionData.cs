@@ -35,6 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Automatically played when the player loses the mission.")]
 		public readonly string LossVideo;
+
+		[Desc("Optional results widget to open after a singleplayer mission ends instead of the ingame menu.",
+			"The common MISSION_RESULTS widget reuses the existing statistics panel.")]
+		public readonly string GameOverScreen;
+
+		[Desc("Optional Lua global called when continuing from the results screen, with a boolean indicating victory.",
+			"The ingame menu opens if the function is absent or fails. Only used with GameOverScreen.")]
+		public readonly string GameOverCallback;
 	}
 
 	public class MissionData { }
