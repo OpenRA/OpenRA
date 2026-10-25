@@ -401,6 +401,7 @@ namespace OpenRA.Mods.Common.UtilityCommands.Documentation
 			{ "String", "string" },
 			{ "Boolean", "boolean" },
 			{ "Double", "number" },
+			{ "Single", "number" },
 			{ "WVec", "wvec" },
 			{ "CVec", "cvec" },
 			{ "CPos", "cpos" },
