@@ -4,6 +4,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="Fixtures/TerrainGeometry/**/*.cs" />
 		<ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
 		<ProjectReference Include="..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj">
 			<Private>True</Private>
