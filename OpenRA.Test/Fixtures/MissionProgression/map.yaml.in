@@ -1,0 +1,51 @@
+MapFormat: 12
+RequiresMod: ts
+Title: Progression probe @STAGE@
+Author: OpenRA regression fixture
+Tileset: TEMPERATE
+MapSize: 60,120
+Bounds: 2,4,56,110
+Visibility: Lobby
+Categories: Campaign, Diagnostic
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: gdi
+	PlayerReference@GDI:
+		Name: GDI
+		Faction: gdi
+		LockFaction: True
+		Playable: True
+		AllowBots: False
+Actors:
+	Unit: e1
+		Owner: GDI
+		Location: 42,6
+FluentMessages: probe.ftl
+Rules:
+	World:
+		-CrateSpawner:
+		-StartGameNotification:
+		-SpawnStartingUnits:
+		-AutoSave:
+		-MapStartingLocations:
+		LuaScript:
+			Scripts: mission.lua
+		MissionData:
+			GameOverScreen: MISSION_RESULTS
+			GameOverCallback: ResultsDismissed
+		ScriptLobbyDropdown@DIFFICULTY:
+			ID: difficulty
+			Label: probe-difficulty
+			Description: probe-difficulty
+			Default: @DEFAULT@
+			Locked: @LOCKED@
+			Values:
+				normal: probe-normal
+@HARD_VALUE@
+	Player:
+		-ConquestVictoryConditions:
+		MissionObjectives:
+			GameOverDelay: 0
