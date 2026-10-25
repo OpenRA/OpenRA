@@ -220,6 +220,11 @@ namespace OpenRA.Mods.Common.Traits
 			// Remove any now unacceptable smudges on the tile.
 			if (!world.Map.GetTerrainInfo(cell).AcceptsSmudgeType.Contains(Info.Type))
 				RemoveSmudge(cell);
+			else
+			{
+				// Retained smudges must also follow the new height/ramp surface.
+				dirty[cell] = tile;
+			}
 		}
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)

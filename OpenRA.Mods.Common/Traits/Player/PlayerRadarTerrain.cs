@@ -75,6 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 					UpdateTerrainCellColor(uv);
 
 				world.Map.Tiles.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
+				world.Map.Height.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
 				foreach (var rtl in radarTerrainLayers)
 					rtl.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
 

@@ -49,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected bool CachedTraitDisabled { get; private set; }
 
 		WPos cachedPos;
+		int terrainGeometryRevision;
 
 		protected abstract void AddCellsToPlayerShroud(Actor self, Player player, PPos[] uv);
 		protected abstract void RemoveCellsFromPlayerShroud(Actor self, Player player);
@@ -114,7 +115,8 @@ namespace OpenRA.Mods.Common.Traits
 			var traitDisabled = IsTraitDisabled;
 			var range = Range;
 
-			if (cachedRange == range && traitDisabled == CachedTraitDisabled)
+			if (cachedRange == range && traitDisabled == CachedTraitDisabled
+				&& terrainGeometryRevision == self.World.Map.TerrainGeometryRevision)
 				return;
 
 			cachedRange = range;
@@ -125,6 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateShroudCells(Actor self)
 		{
+			terrainGeometryRevision = self.World.Map.TerrainGeometryRevision;
 			var cells = ProjectedCells(self);
 			foreach (var p in self.World.Players)
 			{
@@ -139,6 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 			var projectedPos = centerPosition - new WVec(0, centerPosition.Z, centerPosition.Z);
 			cachedLocation = self.World.Map.CellContaining(projectedPos);
 			cachedPos = centerPosition;
+			terrainGeometryRevision = self.World.Map.TerrainGeometryRevision;
 			CachedTraitDisabled = IsTraitDisabled;
 			var cells = ProjectedCells(self);
 

@@ -168,6 +168,7 @@ namespace OpenRA.Mods.Common.Widgets
 				else
 				{
 					world.Map.Tiles.CellEntryChanged -= CellTerrainColorChanged;
+					world.Map.Height.CellEntryChanged -= CellTerrainColorChanged;
 					foreach (var rtl in radarTerrainLayers)
 						rtl.CellEntryChanged -= CellTerrainColorChanged;
 				}
@@ -177,6 +178,7 @@ namespace OpenRA.Mods.Common.Widgets
 				else
 				{
 					world.Map.Tiles.CellEntryChanged += CellTerrainColorChanged;
+					world.Map.Height.CellEntryChanged += CellTerrainColorChanged;
 					foreach (var rtl in radarTerrainLayers)
 						rtl.CellEntryChanged += CellTerrainColorChanged;
 				}

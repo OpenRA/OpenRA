@@ -319,8 +319,19 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
+		int terrainGeometryRevision;
+		bool attachedToTerrain;
+
 		void ITick.Tick(Actor self)
 		{
+			var map = self.World.Map;
+			if (terrainGeometryRevision != map.TerrainGeometryRevision)
+			{
+				if (attachedToTerrain && FromCell.Layer == 0 && ToCell.Layer == 0)
+					SetCenterPosition(self, CenterPosition - new WVec(0, 0, map.DistanceAboveTerrain(CenterPosition).Length));
+				terrainGeometryRevision = map.TerrainGeometryRevision;
+			}
+
 			UpdateMovement();
 		}
 
@@ -508,6 +519,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.World.UpdateMaps(self, this);
 
 			var map = self.World.Map;
+			terrainGeometryRevision = map.TerrainGeometryRevision;
+			attachedToTerrain = FromCell.Layer == 0 && ToCell.Layer == 0 && map.DistanceAboveTerrain(pos).Length == 0;
 			SetTerrainRampOrientation(map.TerrainOrientation(map.CellContaining(pos)));
 
 			// The first time SetCenterPosition is called is in the constructor before creation, so we need a null check here as well

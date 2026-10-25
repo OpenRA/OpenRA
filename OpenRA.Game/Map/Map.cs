@@ -543,6 +543,9 @@ namespace OpenRA
 				UpdateProjection(cell);
 		}
 
+		/// <summary>Cache version for consumers of the live terrain surface.</summary>
+		public int TerrainGeometryRevision { get; private set; }
+
 		void UpdateProjection(CPos cell)
 		{
 			MPos uv;
@@ -554,6 +557,7 @@ namespace OpenRA
 				var inverse = inverseCellProjection[uv];
 				inverse.Clear();
 				inverse.Add(uv);
+				TerrainGeometryRevision = unchecked(TerrainGeometryRevision + 1);
 				CellProjectionChanged?.Invoke(cell);
 				return;
 			}
@@ -593,6 +597,7 @@ namespace OpenRA
 				}
 			}
 
+			TerrainGeometryRevision = unchecked(TerrainGeometryRevision + 1);
 			CellProjectionChanged?.Invoke(cell);
 		}
 
