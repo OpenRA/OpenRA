@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
 				panel == PanelType.Kick || panel == PanelType.ForceStart || !MapIsPlayable ||
-				orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+				map.PlayerActorInfo == null || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 			var mapButton = lobby.GetOrNull<ButtonWidget>("CHANGEMAP_BUTTON");
 			if (mapButton != null)
