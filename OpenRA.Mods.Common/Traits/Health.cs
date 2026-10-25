@@ -60,6 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyKilled[] notifyKilled;
 		INotifyKilled[] notifyKilledPlayer;
 
+		[VerifySync]
+		bool deathNotified;
+
 		public int DisplayHP { get; private set; }
 
 		public Health(ActorInitializer init, HealthInfo info)
@@ -129,6 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			HP = MaxHP;
+			deathNotified = false;
 
 			var ai = new AttackInfo
 			{
@@ -213,8 +217,10 @@ namespace OpenRA.Mods.Common.Traits
 					nd.AppliedDamage(attacker, self, ai);
 			}
 
-			if (HP == 0)
+			// Damage notifications may synchronously inflict another lethal hit.
+			if (HP == 0 && !deathNotified)
 			{
+				deathNotified = true;
 				foreach (var nd in notifyKilled)
 					nd.Killed(self, ai);
 				foreach (var nd in notifyKilledPlayer)
