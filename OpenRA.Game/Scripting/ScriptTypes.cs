@@ -110,6 +110,7 @@ namespace OpenRA.Scripting
 			{
 				var innerType = t.GetElementType();
 				var array = Array.CreateInstance(innerType, table.Count);
+				var sequentialKeys = HasSequentialKeys(table, array.Length);
 				var i = 0;
 
 				foreach (var kv in table)
@@ -128,7 +129,7 @@ namespace OpenRA.Scripting
 								throw new LuaException($"Unable to convert table value of type {kv.Value.WrappedClrType()} to type {innerType}");
 						}
 
-						array.SetValue(element, i++);
+						array.SetValue(element, sequentialKeys ? (int)kv.Key.ToNumber().Value - 1 : i++);
 					}
 				}
 
@@ -141,6 +142,24 @@ namespace OpenRA.Scripting
 			// Value types are assumed to specify a default constructor
 			clrObject = t.IsValueType ? Activator.CreateInstance(t) : null;
 			return false;
+		}
+
+		static bool HasSequentialKeys(LuaTable table, int length)
+		{
+			// Preserve iteration order for tables that are not dense, one-based sequences.
+			foreach (var kv in table)
+				using (kv.Key)
+				using (kv.Value)
+				{
+					if (kv.Key is not LuaNumber)
+						return false;
+
+					var index = kv.Key.ToNumber().Value;
+					if (index < 1 || index > length || index != Math.Truncate(index))
+						return false;
+				}
+
+			return true;
 		}
 
 		public static LuaValue ToLuaValue(this object obj, ScriptContext context)
