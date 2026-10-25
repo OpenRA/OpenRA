@@ -276,20 +276,48 @@ namespace OpenRA.Scripting
 
 		public void WorldLoaded()
 		{
-			if (FatalErrorOccurred || runtime.Globals["WorldLoaded"] is not LuaFunction worldLoaded)
-				return;
+			TryInvokeGlobal("WorldLoaded");
+		}
 
+		// Resolve the function at call time instead of retaining Lua handles across UI events.
+		// This does not synchronize UI input: callers must not change a live multiplayer world
+		// from a local event. Campaign UI can use a shellmap or the finished mission's context.
+		// Returns false for absent/non-function globals, disposed contexts, or fatal Lua errors.
+		public bool TryInvokeGlobal(string name, params object[] arguments)
+		{
+			if (FatalErrorOccurred || disposed)
+				return false;
+
+			ArgumentException.ThrowIfNullOrEmpty(name);
+			ArgumentNullException.ThrowIfNull(arguments);
+
+			using var global = runtime.Globals[name];
+			if (global is not LuaFunction function)
+				return false;
+
+			// Accept only plain values. In particular, never take ownership of a caller's Lua handle.
+			foreach (var argument in arguments)
+				if (argument != null && argument is not (string or bool or int or double))
+					throw new ArgumentException("Lua global arguments must be null, string, bool, int, or double.", nameof(arguments));
+
+			var values = new LuaValue[arguments.Length];
 			try
 			{
-				worldLoaded.Call().Dispose();
+				for (var i = 0; i < arguments.Length; i++)
+					values[i] = arguments[i].ToLuaValue(this);
+
+				function.Call(values).Dispose();
+				return true;
 			}
 			catch (LuaException e)
 			{
 				FatalError(e);
+				return false;
 			}
 			finally
 			{
-				worldLoaded?.Dispose();
+				foreach (var value in values)
+					value?.Dispose();
 			}
 		}
 
