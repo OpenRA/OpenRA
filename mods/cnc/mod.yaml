@@ -128,6 +128,7 @@ ChromeLayout:
 	common|chrome/ingame-infoscripterror.yaml
 	cnc|chrome/ingame-infoobjectives.yaml
 	cnc|chrome/ingame-infostats.yaml
+	common|chrome/ingame-mission-results.yaml
 	cnc|chrome/ingame-info-lobby-options.yaml
 	cnc|chrome/ingame-debuginfo.yaml
 	cnc|chrome/music.yaml
