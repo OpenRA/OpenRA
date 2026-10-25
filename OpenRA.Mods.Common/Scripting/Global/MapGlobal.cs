@@ -10,10 +10,14 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Network;
 using OpenRA.Scripting;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -23,6 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 		readonly SpawnMapActors sma;
 		readonly World world;
 		readonly GameSettings gameSettings;
+		bool missionStartRequested;
 
 		public MapGlobal(ScriptContext context)
 			: base(context)
@@ -104,6 +109,64 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Returns true if this is a shellmap and the player has paused animations.")]
 		public bool IsPausedShellmap => Context.World.Type == WorldType.Shellmap && gameSettings.PauseShellmap;
+
+		[Desc("Queue a locally available mission by map UID, from a shellmap or a finished singleplayer mission.",
+			"Returns false for an unavailable map, a duplicate pending request, replay, or an unsupported world.",
+			"Launch occurs after this Lua call returns; true means queued, not that loading has completed.",
+			"Compatible unlocked difficulty and gamespeed options are retained; other options use map defaults.",
+			"The script is responsible for playing any intro movie before calling this method.")]
+		public bool StartMission(string mapUid)
+		{
+			if (missionStartRequested || string.IsNullOrEmpty(mapUid) || !Game.IsCurrentWorld(world) || world.IsReplay
+				|| (world.Type != WorldType.Shellmap && (world.Type != WorldType.Regular || !world.IsGameOver
+					|| world.LocalPlayer == null || world.LobbyInfo.GlobalSettings.Dedicated
+					|| world.LobbyInfo.NonBotClients.Count() != 1)))
+				return false;
+
+			var modData = Game.ModData;
+			var uid = modData.MapCache.GetUpdatedMap(mapUid);
+			if (uid == null)
+				return false;
+
+			var map = modData.MapCache[uid];
+			var orders = new List<Order>();
+			var options = map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+				.Concat(map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+				.SelectMany(t => t.LobbyOptions(map));
+			foreach (var option in options)
+			{
+				if (option.IsLocked || (option.Id != "difficulty" && option.Id != "gamespeed"))
+					continue;
+
+				var value = world.LobbyInfo.GlobalSettings.OptionOrDefault(option.Id, option.DefaultValue);
+				if (option.Values.ContainsKey(value))
+					orders.Add(Order.Command($"option {option.Id} {value}"));
+			}
+
+			orders.Add(Order.Command($"state {Session.ClientState.Ready}"));
+			missionStartRequested = true;
+
+			// Never dispose the calling ScriptContext while it is still executing Lua.
+			Game.RunAfterTick(() =>
+			{
+				if (!Game.IsCurrentWorld(world))
+					return;
+
+				var updatedUid = modData.MapCache.GetUpdatedMap(uid);
+				if (updatedUid == null)
+				{
+					missionStartRequested = false;
+					Log.Write("lua", $"Mission '{uid}' is no longer available; launch cancelled.");
+					return;
+				}
+
+				Game.Disconnect();
+				Ui.ResetAll();
+				Game.CreateAndStartLocalServer(updatedUid, orders);
+			});
+
+			return true;
+		}
 
 		[Desc("Returns the value of a `" + nameof(ScriptLobbyDropdown) + "` selected in the game lobby.")]
 		public string LobbyOption(string id)
