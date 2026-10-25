@@ -196,7 +196,8 @@ namespace OpenRA.Mods.Common.Traits
 				var source = sources[0];
 
 				// For adjacent cells on the same layer, we can return the path without invoking a full search.
-				if (source.Layer == target.Layer && (source - target).LengthSquared < 3)
+				if (source.Layer == target.Layer && (source - target).LengthSquared < 3
+					&& locomotor.MovementCostToEnterCell(self, source, target, BlockedByActor.None, null) != PathGraph.MovementCostForUnreachableCell)
 				{
 					// If the source cell is inaccessible, there is no path.
 					// Unlike the destination cell, the source cell is allowed to have an unreachable movement cost.

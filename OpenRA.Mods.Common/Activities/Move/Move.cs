@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -258,6 +259,15 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				(alreadyAtDestination, path) = EvalPath(BlockedByActor.Immovable);
 				return (null, false);
+			}
+
+			// A previously calculated route can outlive a terrain-height change.
+			// Check the edge separately from occupancy to preserve infantry subcells.
+			if (mobile.Locomotor.MovementCostToEnterCell(self, mobile.ToCell, nextCell, BlockedByActor.None, null)
+				== PathGraph.MovementCostForUnreachableCell)
+			{
+				(alreadyAtDestination, path) = EvalPath(BlockedByActor.Immovable);
+				return (null, true);
 			}
 
 			var containsTemporaryBlocker = self.World.ContainsTemporaryBlocker(nextCell, self);
