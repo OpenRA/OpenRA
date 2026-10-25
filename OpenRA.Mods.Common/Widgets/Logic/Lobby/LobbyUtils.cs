@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var bots = new List<SlotDropDownOption>();
-			if (slot.AllowBots)
+			if (slot.AllowBots && map.PlayerActorInfo != null)
 			{
 				foreach (var b in map.PlayerActorInfo.TraitInfos<IBotInfo>())
 				{
