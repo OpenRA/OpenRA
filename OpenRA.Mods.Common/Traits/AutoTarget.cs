@@ -440,8 +440,8 @@ namespace OpenRA.Mods.Common.Traits
 					// the compiler allocating the helper class at the top of the loop.
 					static Func<Armament, bool> IsInRange(Actor self, Target target) =>
 						arm =>
-							target.IsInRange(self.CenterPosition, arm.MaxRange()) &&
-							!target.IsInRange(self.CenterPosition, arm.Weapon.MinRange);
+							arm.HasRangePolicy ? arm.IsInRange(self.CenterPosition, target)
+								: target.IsInRange(self.CenterPosition, arm.MaxRange()) && !target.IsInRange(self.CenterPosition, arm.Weapon.MinRange);
 
 					armaments = armaments.Where(IsInRange(self, target));
 				}

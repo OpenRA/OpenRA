@@ -44,6 +44,13 @@ namespace OpenRA.Mods.Common.Lint
 			var locomotorNamesSet = locomotorNames.ToHashSet();
 			foreach (var actorInfo in rules.Actors)
 			{
+				var ai = actorInfo.Value;
+				if (ai.TraitInfos<IArmamentRangePolicyInfo>().Count > 1)
+					emitError($"Actor `{ai.Name}` defines multiple armament range policies.");
+				if (ai.HasTraitInfo<IArmamentRangePolicyInfo>() && ai.HasTraitInfo<IMoveInfo>()
+					&& !ai.HasTraitInfo<IMoveWithinTargetRangeInfo>())
+					emitError($"Actor `{ai.Name}` has a contextual range policy but an incompatible mover.");
+
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = Utility.GetFields(traitInfo.GetType()).Where(Utility.HasAttribute<LocomotorReferenceAttribute>);

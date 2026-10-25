@@ -207,9 +207,11 @@ namespace OpenRA.Mods.Common.Activities
 				maxRange = armaments.Max(a => a.MaxRange());
 			}
 
+			var contextualRange = armaments.Any(a => a.HasRangePolicy)
+				? new TargetRange(self.World.Map, armaments.ToArray(), true) : null;
 			var pos = self.CenterPosition;
-			if (!target.IsInRange(pos, maxRange)
-				|| (minRange.Length != 0 && target.IsInRange(pos, minRange))
+			if ((contextualRange != null ? !contextualRange.Contains(pos, target)
+				: !target.IsInRange(pos, maxRange) || (minRange.Length != 0 && target.IsInRange(pos, minRange)))
 				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
@@ -219,7 +221,9 @@ namespace OpenRA.Mods.Common.Activities
 				attackStatus |= AttackStatus.NeedsToMove;
 				moveCooldownHelper.NotifyMoveQueued();
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
-				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
+				QueueChild(contextualRange != null && move is IMoveWithinTargetRange contextualMove
+					? contextualMove.MoveWithinRange(target, contextualRange, checkTarget.CenterPosition, Color.Red)
+					: move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
 				return AttackStatus.NeedsToMove;
 			}
 

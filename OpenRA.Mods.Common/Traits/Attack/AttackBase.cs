@@ -401,8 +401,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsReachableTarget(in Target target, bool allowMove)
 		{
-			return HasAnyValidWeapons(target)
-				&& (target.IsInRange(self.CenterPosition, GetMaximumRangeVersusTarget(target)) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
+			if (!Armaments.Any(a => a.HasRangePolicy))
+				return HasAnyValidWeapons(target)
+					&& (target.IsInRange(self.CenterPosition, GetMaximumRangeVersusTarget(target)) || (allowMove && self.Info.HasTraitInfo<IMoveInfo>()));
+
+			if (!HasAnyValidWeapons(target))
+				return false;
+
+			if (allowMove && self.Info.HasTraitInfo<IMoveInfo>())
+				return true;
+
+			foreach (var a in ChooseArmamentsForTarget(target, false))
+				if (a.IsInRange(self.CenterPosition, target))
+					return true;
+
+			return false;
 		}
 
 		public PlayerRelationship UnforcedAttackTargetStances()
@@ -453,14 +466,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
+				var rangeTarget = target;
 				var a = ab.ChooseArmamentsForTarget(target, forceAttack)
 					.OrderBy(x => x.IsTraitPaused)
+					.ThenByDescending(x => !x.HasRangePolicy || x.IsInRange(self.CenterPosition, rangeTarget))
 					.ThenByDescending(x => x.MaxRange())
 					.FirstOrDefault();
 				if (a == null)
 					return false;
 
-				var outOfRange = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
+				var outOfRange = !(a.HasRangePolicy ? a.IsInRange(self.CenterPosition, target) : target.IsInRange(self.CenterPosition, a.MaxRange())) ||
 					(!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors);
 
 				if (outOfRange && ab.Info.OutsideRangeRequiresForceFire && !modifiers.HasModifier(TargetModifiers.ForceAttack))
@@ -491,14 +506,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
+				var rangeTarget = target;
 				var a = ab.ChooseArmamentsForTarget(target, true)
 					.OrderBy(x => x.IsTraitPaused)
+					.ThenByDescending(x => !x.HasRangePolicy || x.IsInRange(self.CenterPosition, rangeTarget))
 					.ThenByDescending(x => x.MaxRange())
 					.FirstOrDefault();
 				if (a == null)
 					return false;
 
-				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+				cursor = !a.IsInRange(self.CenterPosition, target)
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
 					: ab.Info.Cursor ?? a.Info.Cursor;
 

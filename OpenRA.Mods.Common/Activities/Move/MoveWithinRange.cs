@@ -18,6 +18,9 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class MoveWithinRange : MoveAdjacentTo
 	{
+		readonly TargetRange contextualRange;
+		int rangeRevision;
+		WPos lastRangeTargetPosition;
 		readonly WDist maxRange;
 		readonly WDist minRange;
 		readonly Map map;
@@ -35,6 +38,14 @@ namespace OpenRA.Mods.Common.Activities
 			minCells = minRange.Length / 1024;
 		}
 
+		public MoveWithinRange(Actor self, in Target target, TargetRange range,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+			: this(self, target, WDist.Zero, range.Maximum, initialTargetPosition, targetLineColor)
+		{
+			contextualRange = range;
+			rangeRevision = range.Revision;
+		}
+
 		protected override bool ShouldStop(Actor self)
 		{
 			// We are now in range. Don't move any further!
@@ -44,6 +55,14 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override bool ShouldRepath(Actor self, CPos targetLocation)
 		{
+			if (contextualRange != null && (rangeRevision != contextualRange.Revision || lastRangeTargetPosition != Target.CenterPosition))
+			{
+				rangeRevision = contextualRange.Revision;
+				lastRangeTargetPosition = Target.CenterPosition;
+				searchCellsTick = -1;
+				return true;
+			}
+
 			return lastVisibleTargetLocation != targetLocation && (!AtCorrectRange(self.CenterPosition)
 				|| !Mobile.CanInteractWithGroundLayer(self) || !Mobile.CanStayInCell(self.Location));
 		}
@@ -59,7 +78,8 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				SearchCells.Clear();
 				searchCellsTick = self.World.WorldTick;
-				foreach (var cell in map.FindTilesInAnnulus(lastVisibleTargetLocation, minCells, maxCells))
+				foreach (var cell in map.FindTilesInAnnulus(lastVisibleTargetLocation, contextualRange == null ? minCells : 0,
+					contextualRange == null ? maxCells : (contextualRange.Maximum.Length + 1023) / 1024))
 					if (Mobile.CanStayInCell(cell) && Mobile.CanEnterCell(cell) && AtCorrectRange(map.CenterOfSubCell(cell, Mobile.FromSubCell)))
 						SearchCells.Add(cell);
 			}
@@ -72,7 +92,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		bool AtCorrectRange(WPos origin)
 		{
-			return Target.IsInRange(origin, maxRange) && !Target.IsInRange(origin, minRange);
+			return contextualRange?.Contains(origin, Target)
+				?? (Target.IsInRange(origin, maxRange) && !Target.IsInRange(origin, minRange));
 		}
 	}
 }

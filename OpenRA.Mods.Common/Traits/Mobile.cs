@@ -23,7 +23,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : PausableConditionalTraitInfo, IMoveInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo,
+	public class MobileInfo : PausableConditionalTraitInfo, IMoveWithinTargetRangeInfo, IMoveInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo,
 		IEditorActorOptions
 	{
 		[LocomotorReference]
@@ -171,6 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Mobile : PausableConditionalTrait<MobileInfo>, IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IMove, ITick, ICreationActivity,
+		IMoveWithinTargetRange,
 		IFacing, IDeathActorInitModifier, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove, IActorPreviewInitModifier, INotifyBecomingIdle, ISync
 	{
 		readonly Actor self;
@@ -642,6 +643,12 @@ namespace OpenRA.Mods.Common.Traits
 			bool evaluateNearestMovableCell = false, Color? targetLineColor = null)
 		{
 			return WrapMove(new Move(self, cell, WDist.FromCells(nearEnough), ignoreActor, evaluateNearestMovableCell, targetLineColor));
+		}
+
+		public Activity MoveWithinRange(in Target target, TargetRange range,
+			WPos? initialTargetPosition = null, Color? targetLineColor = null)
+		{
+			return WrapMove(new MoveWithinRange(self, target, range, initialTargetPosition, targetLineColor));
 		}
 
 		public Activity MoveWithinRange(in Target target, WDist range,

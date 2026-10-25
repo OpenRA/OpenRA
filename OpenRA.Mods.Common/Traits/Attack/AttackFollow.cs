@@ -94,8 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			var pos = self.CenterPosition;
 			var armaments = ChooseArmamentsForTarget(target, forceAttack);
 			foreach (var a in armaments)
-				if (target.IsInRange(pos, a.MaxRange()) &&
-					(a.Weapon.MinRange == WDist.Zero || !target.IsInRange(pos, a.Weapon.MinRange)) &&
+				if (a.IsInRange(pos, target) &&
 					TargetInFiringArc(self, target, Info.FacingTolerance))
 					return true;
 
@@ -409,9 +408,15 @@ namespace OpenRA.Mods.Common.Traits
 				var pos = self.CenterPosition;
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
+				var contextualArmaments = !useLastVisibleTarget
+					? attack.ChooseArmamentsForTarget(target, forceAttack).ToArray() : [];
+				var contextualRange = contextualArmaments.Any(a => a.HasRangePolicy)
+					? new TargetRange(self.World.Map, contextualArmaments, false) : null;
+
 				// We've reached the required range - if the target is visible and valid then we wait
 				// otherwise if it is hidden or dead we give up
-				if (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange))
+				if (contextualRange?.Contains(pos, checkTarget)
+					?? (checkTarget.IsInRange(pos, maxRange) && !checkTarget.IsInRange(pos, minRange)))
 				{
 					if (useLastVisibleTarget)
 						return true;
@@ -424,7 +429,9 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 				moveCooldownHelper.NotifyMoveQueued();
-				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition));
+				QueueChild(contextualRange != null && move is IMoveWithinTargetRange contextualMove
+					? contextualMove.MoveWithinRange(target, contextualRange, checkTarget.CenterPosition)
+					: move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition));
 				return false;
 			}
 

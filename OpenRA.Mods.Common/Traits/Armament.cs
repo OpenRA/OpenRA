@@ -124,6 +124,10 @@ namespace OpenRA.Mods.Common.Traits
 		int conditionToken = Actor.InvalidConditionToken;
 
 		IEnumerable<int> rangeModifiers;
+		IArmamentRangePolicy rangePolicy;
+
+		public bool HasRangePolicy => rangePolicy != null;
+		public int RangeRevision => rangePolicy?.RangeRevision ?? 0;
 		IEnumerable<int> reloadModifiers;
 		IEnumerable<int> damageModifiers;
 		IEnumerable<int> inaccuracyModifiers;
@@ -166,7 +170,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WDist MaxRange()
 		{
-			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers.ToArray()));
+			var nominal = NominalMaxRange();
+			return rangePolicy?.GetMaximumRange(this, nominal) ?? nominal;
+		}
+
+		WDist NominalMaxRange() => new(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers.ToArray()));
+
+		public bool IsInRange(WPos origin, in Target target)
+		{
+			if (rangePolicy != null)
+				return rangePolicy.IsInRange(this, origin, target, Weapon.MinRange, NominalMaxRange());
+
+			return target.IsInRange(origin, MaxRange())
+				&& (Weapon.MinRange == WDist.Zero || !target.IsInRange(origin, Weapon.MinRange));
 		}
 
 		protected override void Created(Actor self)
@@ -176,6 +192,10 @@ namespace OpenRA.Mods.Common.Traits
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			notifyAttacks = self.TraitsImplementing<INotifyAttack>().Select(a => (self, a)).ToList();
+
+			rangePolicy = self.TraitsImplementing<IArmamentRangePolicy>().SingleOrDefault();
+			if (rangePolicy != null && self.TraitOrDefault<IMove>() != null && self.TraitOrDefault<IMoveWithinTargetRange>() == null)
+				throw new YamlException($"{self.Info.Name}: contextual range requires a compatible mover.");
 
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 			reloadModifiers = self.TraitsImplementing<IReloadModifier>().ToArray().Select(m => m.GetReloadModifier());
@@ -257,8 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (turret != null && !turret.HasAchievedDesiredFacing)
 				return false;
 
-			if ((!target.IsInRange(self.CenterPosition, MaxRange()))
-				|| (Weapon.MinRange != WDist.Zero && target.IsInRange(self.CenterPosition, Weapon.MinRange)))
+			if (!IsInRange(self.CenterPosition, target))
 				return false;
 
 			if (!Weapon.IsValidAgainst(target, self.World, self))
