@@ -9,13 +9,14 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	interface IBridgeSegment
+	public interface IBridgeSegment
 	{
 		void Repair(Actor repairer);
 		void Demolish(Actor saboteur, BitSet<DamageType> damageTypes);
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BridgeLayer(init.World); }
 	}
 
-	sealed class BridgeLayer
+	public sealed class BridgeLayer
 	{
 		readonly CellLayer<Actor> bridges;
 
@@ -47,16 +48,27 @@ namespace OpenRA.Mods.Common.Traits
 		public void Add(Actor b)
 		{
 			var buildingInfo = b.Info.TraitInfo<BuildingInfo>();
-			foreach (var c in buildingInfo.PathableTiles(b.Location))
-				bridges[c] = b;
+			Add(b, buildingInfo.PathableTiles(b.Location));
+		}
+
+		// Mods may provide segments without a Building footprint (e.g. raised decks).
+		public void Add(Actor bridge, IEnumerable<CPos> cells)
+		{
+			foreach (var cell in cells)
+				bridges[cell] = bridge;
+		}
+
+		public void Remove(Actor bridge, IEnumerable<CPos> cells)
+		{
+			foreach (var cell in cells)
+				if (bridges[cell] == bridge)
+					bridges[cell] = null;
 		}
 
 		public void Remove(Actor b)
 		{
 			var buildingInfo = b.Info.TraitInfo<BuildingInfo>();
-			foreach (var c in buildingInfo.PathableTiles(b.Location))
-				if (bridges[c] == b)
-					bridges[c] = null;
+			Remove(b, buildingInfo.PathableTiles(b.Location));
 		}
 	}
 }

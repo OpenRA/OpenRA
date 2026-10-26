@@ -139,6 +139,8 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		public event Action<CPos, short, short> CellCostChanged;
 
+		public event Action<CPos> CellConnectivityChanged;
+
 		readonly LocomotorInfo.TerrainInfo[] terrainInfos;
 		readonly World world;
 		readonly HashSet<CPos> dirtyCells = [];
@@ -416,6 +418,12 @@ namespace OpenRA.Mods.Common.Traits
 
 					cellLayer[cell] = cost;
 				}
+
+				if (cml is ICustomMovementLayerTerrainChanges terrainChanges)
+					terrainChanges.CellTerrainChanged += cell => UpdateCellCost(new CPos(cell.X, cell.Y, cml.Index));
+
+				if (cml is ICustomMovementLayerConnectivityChanges connectionChanges)
+					connectionChanges.CellConnectivityChanged += cell => CellConnectivityChanged?.Invoke(new CPos(cell.X, cell.Y, cml.Index));
 			}
 		}
 

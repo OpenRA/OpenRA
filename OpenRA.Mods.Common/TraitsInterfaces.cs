@@ -503,6 +503,27 @@ namespace OpenRA.Mods.Common.Traits
 		WPos CenterOfCell(CPos cell);
 	}
 
+	// Optional notifications for simulation-owned mutable movement layers.
+	// Publish after updating all affected cells. Cell coordinates identify this layer's cells;
+	// consumers normalize Layer to the provider's Index.
+	public interface ICustomMovementLayerTerrainChanges
+	{
+		event Action<CPos> CellTerrainChanged;
+	}
+
+	// Entry/exit availability can change without changing the cost or type of any cell.
+	// Notify each changed endpoint so cached abstract pathfinding domains are rebuilt.
+	public interface ICustomMovementLayerConnectivityChanges
+	{
+		event Action<CPos> CellConnectivityChanged;
+	}
+
+	// Opt-in: legacy layers retain the existing ground-target fallback for move orders.
+	public interface ICustomMovementLayerMoveOrders
+	{
+		bool SupportsMoveOrders(LocomotorInfo locomotor);
+	}
+
 	public interface ICustomMovementLayerInfo : ITraitInfoInterface { }
 
 	// For traits that want to be exposed to the "Deploy" UI button / hotkey

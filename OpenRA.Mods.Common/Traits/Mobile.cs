@@ -498,7 +498,8 @@ namespace OpenRA.Mods.Common.Traits
 				self.World.GetCustomMovementLayers()[cell.Layer].CenterOfCell(cell);
 
 			position += self.World.Map.Grid.OffsetOfSubCell(subCell);
-			position -= new WVec(0, 0, self.World.Map.DistanceAboveTerrain(position).Length);
+			if (cell.Layer == 0)
+				position -= new WVec(0, 0, self.World.Map.DistanceAboveTerrain(position).Length);
 
 			SetCenterPosition(self, position);
 			FinishedMoving(self);
@@ -790,10 +791,15 @@ namespace OpenRA.Mods.Common.Traits
 			// HACK: This entire method is a hack, and needs to be replaced with
 			// a proper path search that can account for movement layer transitions.
 			// HACK: Work around code that blindly tries to move to cells in invalid movement layers.
-			// This will need to change (by removing this method completely as above) before we can
-			// properly support user-issued orders on to elevated bridges or other interactable custom layers
+			// Layers may explicitly support direct move orders. Keep nearest-cell candidates on
+			// that layer; unsupported legacy layer targets retain the ground fallback.
 			if (target.Layer != 0)
-				target = new CPos(target.X, target.Y);
+			{
+				var layers = self.World.GetCustomMovementLayers();
+				if (target.Layer >= layers.Length || layers[target.Layer] is not ICustomMovementLayerMoveOrders orders
+					|| !layers[target.Layer].EnabledForLocomotor(Locomotor.Info) || !orders.SupportsMoveOrders(Locomotor.Info))
+					target = new CPos(target.X, target.Y);
+			}
 
 			if (target == self.Location && CanStayInCell(target))
 				return target;
@@ -802,8 +808,11 @@ namespace OpenRA.Mods.Common.Traits
 				return target;
 
 			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
-				if (CanEnterCell(tile, check: BlockedByActor.Immovable) && CanStayInCell(tile))
-					return tile;
+			{
+				var candidate = new CPos(tile.X, tile.Y, target.Layer);
+				if (CanEnterCell(candidate, check: BlockedByActor.Immovable) && CanStayInCell(candidate))
+					return candidate;
+			}
 
 			// Couldn't find a cell
 			return target;

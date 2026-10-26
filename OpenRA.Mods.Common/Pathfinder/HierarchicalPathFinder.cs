@@ -281,6 +281,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// When we build the cost table, it depends on the movement costs of the cells at that time.
 			// When this changes, we must update the cost table.
 			locomotor.CellCostChanged += RequireCostRefreshInCell;
+			locomotor.CellConnectivityChanged += RequireProjectionRefreshInCell;
 
 			// If the map projection changes, the result of Map.Contains(CPos) may change.
 			// We need to rebuild grids to account for this possibility.
