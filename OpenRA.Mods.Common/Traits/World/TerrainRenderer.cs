@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
@@ -68,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DefaultTileCache tileCache;
 		WorldRenderer worldRenderer;
 		bool disposed;
+		ITerrainCellSpriteOverride[] spriteOverrides = [];
 
 		public TerrainRenderer(World world)
 		{
@@ -82,6 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
 		{
 			worldRenderer = wr;
+			spriteOverrides = world.WorldActor.TraitsImplementing<ITerrainCellSpriteOverride>().ToArray();
 			spriteLayer = new TerrainSpriteLayer(world, wr, tileCache.MissingTile, BlendMode.Alpha, world.Type != WorldType.Editor);
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
@@ -98,6 +101,15 @@ namespace OpenRA.Mods.Common.Traits
 				palette = ((DefaultTerrainTemplateInfo)template).Palette ?? palette;
 
 			var sprite = tileCache.TileSprite(tile);
+			foreach (var provider in spriteOverrides)
+			{
+				var replacement = provider.TerrainCellSprite(cell, tile);
+				if (replacement == null)
+					continue;
+				sprite = replacement;
+				break;
+			}
+
 			var paletteReference = worldRenderer.Palette(palette);
 			spriteLayer.Update(cell, sprite, paletteReference);
 		}

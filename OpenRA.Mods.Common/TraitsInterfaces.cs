@@ -822,6 +822,15 @@ namespace OpenRA.Mods.Common.Traits
 		bool ValidateTileSprites(ITemplatedTerrainInfo terrainInfo, Action<string> onError);
 	}
 
+	// Optional world traits may override a cell's graphics without changing its
+	// terrain identity or movement properties. First non-null result wins; null
+	// preserves the standard sprite. Providers must not mutate simulation state.
+	[RequireExplicitImplementation]
+	public interface ITerrainCellSpriteOverride
+	{
+		Sprite TerrainCellSprite(CPos cell, TerrainTile tile);
+	}
+
 	[RequireExplicitImplementation]
 	public interface ITiledTerrainRenderer
 	{
