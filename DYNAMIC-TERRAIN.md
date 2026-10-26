@@ -116,3 +116,59 @@ For a pre-change engine build the probe with `-p:EnableRangeProbe=false
 -p:OpenRAPath=/path/to/baseline -p:OutputPath=bin/baseline/` and run with `--baseline
 --probe /absolute/path/to/baseline/OpenRA.TerrainProbe.dll`. The fixture reports real
 failures rather than treating an unmodified build as a passing test.
+
+
+## Mod-owned mutable movement layers and bridge segments
+
+These optional interfaces let mods publish movement-layer changes through the
+existing Locomotor and hierarchical pathfinder. TS-specific damage thresholds,
+tile roles, occupant consequences and repair algorithms belong in the mod.
+
+- `ICustomMovementLayerTerrainChanges.CellTerrainChanged`: publish affected cells
+  after updating provider state. Locomotor normalizes coordinates to the provider's
+  Index and refreshes costs.
+- `ICustomMovementLayerConnectivityChanges.CellConnectivityChanged`: publish changed
+  entry/exit endpoints even when cell costs are unchanged. HPF rebuilds the affected
+  domains using its existing projection invalidation.
+- `ICustomMovementLayerMoveOrders.SupportsMoveOrders`: opt in to retaining the target
+  layer in `NearestMoveableCell` and its nearest-cell candidates. Legacy layers keep
+  their ground fallback. Target picking and order serialization remain mod-owned.
+- `Mobile.SetPosition(CPos)` retains the custom provider's Z. Only default-layer
+  placement is projected onto the ground.
+- Public `IBridgeSegment` and `BridgeLayer.Add/Remove(actor, cells)` allow repairable
+  mod segments without a Building footprint to use the existing hut/repair activities.
+  The Building overloads continue to use `BuildingInfo.PathableTiles`.
+
+Publish notifications after the simulation patch is complete. They are synchronous
+and do not provide a transactional multi-cell snapshot. Providers own their hashes,
+save/replay state and occupant policy. These hooks do not independently move a
+custom layer's height or replace mod validation of fixed deck geometry.
+
+## Graphics-only cell overrides
+
+`ITerrainCellSpriteOverride.TerrainCellSprite(CPos, TerrainTile)` allows world traits
+to replace a cell's sprite without changing its terrain identity. First non-null
+result wins; null keeps the normal sprite. The existing palette, TerrainSpriteLayer
+and depth renderer are retained. Providers must not mutate simulation state and
+must call `TerrainRenderer.UpdateCell` after their own graphics state changes.
+With no provider the normal path is unchanged. Radar uses the existing
+`IRadarTerrainLayer`; a graphics override is not terrain deformation.
+
+## Mutable-layer and sprite regression
+
+The native fixture above also primes a disconnected layer, changes endpoints with
+unchanged costs, removes/restores terrain and checks provider Z plus direct/nearest
+targets. Sprite checks cover null fallback, replacement and unchanged geometry.
+There are 207 assertions in a fresh process and another 207 after cold load;
+subsequent simulation events must match. Engine NUnit has 509 passes and two skips.
+
+To exercise the negative control, build the same probe against pre-extension HEAD
+`3e79a1f` using `-p:EnableLayerApi=false -p:EnableSpriteApi=false` and run its private
+engine archive via `--engine` and `--probe`. This gives 197 passes and 10 expected
+failures without an exception. Do not pass `--baseline` for that archive: it already
+has the range API. That flag is only for the pre-range engine described above.
+
+The fixture needs installed TS content, Xvfb and a .NET SDK; cold load also needs
+xdotool. No original assets are included. To bound native memory on Linux, run it
+under `systemd-run --user --scope -p MemoryMax=4G -p MemorySwapMax=0 -- python3 ...`.
+This is scoped API regression evidence, not complete TS or multiplayer qualification.
