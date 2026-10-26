@@ -61,6 +61,8 @@ Rules:
 \t\t\tGameSpeed: fastest
 \t\t\tGameSpeedDropdownLocked: True
 \t\tTerrainRuntimeProbe:
+\t\tMutableProbeLayer:
+\t\tSpriteOverrideProbe:
 \tE1:
 \t\tRevealsShroud:
 \t\t\tRange: 8c0

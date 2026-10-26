@@ -111,7 +111,12 @@ public sealed class TerrainRuntimeProbe : ITick, IWorldLoaded
 				Height(center, 3); Height(raised.Location, 3); Height(tank.Location, 3);
 				world.AddFrameEndTask(_ => LowerPatch(center + new CVec(8, 0)));
 			}
-			if (tick == 2) { Gate(walker!, 55); Gate(walker!, 59); }
+			if (tick == 2)
+			{
+				Gate(walker!, 55);
+				Gate(walker!, 59);
+				DynamicLayerChecks.Run(world, walker!, Check);
+			}
 			if (tick == 4)
 			{
 				Check("idle-grounded", world.Map.DistanceAboveTerrain(idle!.CenterPosition).Length == 0, idle.CenterPosition.ToString());

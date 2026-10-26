@@ -1,15 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
- <PropertyGroup>
-  <AssemblyName>OpenRA.TerrainProbe</AssemblyName>
-  <OpenRAPath Condition="'$(OpenRAPath)'==''">../../..</OpenRAPath>
-  <ImplicitUsings>enable</ImplicitUsings>
-  <Nullable>enable</Nullable>
-  <OutputPath>bin/$(Configuration)/</OutputPath>
-  <DefineConstants Condition="'$(EnableRangeProbe)' != 'false'">$(DefineConstants);RANGE_PROBE</DefineConstants>
- </PropertyGroup>
- <ItemGroup>
-  <Reference Include="Eluant"><HintPath>$(OpenRAPath)/bin/Eluant.dll</HintPath><Private>false</Private></Reference>
-  <Reference Include="OpenRA.Game"><HintPath>$(OpenRAPath)/bin/OpenRA.Game.dll</HintPath><Private>false</Private></Reference>
-  <Reference Include="OpenRA.Mods.Common"><HintPath>$(OpenRAPath)/bin/OpenRA.Mods.Common.dll</HintPath><Private>false</Private></Reference>
- </ItemGroup>
+	<PropertyGroup>
+		<AssemblyName>OpenRA.TerrainProbe</AssemblyName>
+		<OpenRAPath Condition="'$(OpenRAPath)' == ''">../../..</OpenRAPath>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputPath>bin/$(Configuration)/</OutputPath>
+		<DefineConstants Condition="'$(EnableRangeProbe)' != 'false'">$(DefineConstants);RANGE_PROBE</DefineConstants>
+		<DefineConstants Condition="'$(EnableLayerApi)' != 'false'">$(DefineConstants);LAYER_API</DefineConstants>
+		<DefineConstants Condition="'$(EnableSpriteApi)' != 'false'">$(DefineConstants);SPRITE_API</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Eluant">
+			<HintPath>$(OpenRAPath)/bin/Eluant.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="OpenRA.Game">
+			<HintPath>$(OpenRAPath)/bin/OpenRA.Game.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+		<Reference Include="OpenRA.Mods.Common">
+			<HintPath>$(OpenRAPath)/bin/OpenRA.Mods.Common.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 </Project>
