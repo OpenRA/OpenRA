@@ -687,6 +687,7 @@ label-gameplay-section-header = Gameplay
 label-auto-save-interval = Auto-save frequency:
 label-auto-save-max-file-number = Auto-save limit:
 checkbox-hide-replay-chat-container = Hide Chat in Replays
+button-random-name-tooltip = Generate random name
 
 label-forum-profile-section-header = OpenRA Forum Account
 label-forum-profile-description = Link a forum account to identify yourself to other players, join private servers, and display badges.
