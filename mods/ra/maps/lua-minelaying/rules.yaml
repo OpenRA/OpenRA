@@ -1,0 +1,62 @@
+^BaseWorld:
+	Locomotor@NAVAL:
+		Crushes: crate, mine
+	Locomotor@LANDINGCRAFT:
+		Crushes: crate, mine
+
+World:
+	LuaScript:
+		Scripts: utils.lua, lua-minelaying.lua
+	MissionData:
+		Briefing: Beacons show the target cells fed to minelayers. Selecting a minelayer and holding Shift should show where mines have been ordered.
+
+Player:
+	-DamageNotifier:
+	-DamageNotifier@Unit:
+
+^BasicBuilding:
+	DamageMultiplier:
+		Modifier: 0
+
+DOME:
+	RevealsMap:
+
+MNLY:
+	DamageMultiplier:
+		Modifier: 0
+	SpeedMultiplier:
+		Modifier: 200
+	AmmoPool:
+		ReloadDelay: 15
+
+LST:
+	Cargo:
+		InitialUnits: mnly
+
+PT:
+	ExternalCondition@DUMMY:
+		Condition: dummy-condition
+	AttackTurreted:
+		RequiresCondition: dummy-condition
+	SpeedMultiplier:
+		Modifier: 200
+	Minelayer:
+		TileUnknownName: build-valid
+		TerrainTypes: Water
+		AmmoPoolName: tertiary
+	MineImmune:
+	AmmoPool:
+		Name: tertiary
+		Armaments: tertiary
+		Ammo: 5
+		RearmSound: minelay1.aud
+	WithAmmoPipsDecoration:
+		AmmoPools: tertiary
+		Position: BottomLeft
+		Margin: 4, 3
+		RequiresSelection: true
+	ReloadAmmoPool:
+		AmmoPool: tertiary
+		Delay: 15
+	DamageMultiplier:
+		Modifier: 0
