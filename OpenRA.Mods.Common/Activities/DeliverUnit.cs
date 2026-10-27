@@ -55,7 +55,14 @@ namespace OpenRA.Mods.Common.Activities
 			QueueChild(new Land(self, destination, deliverRange));
 			QueueChild(new Wait(carryall.Info.BeforeUnloadDelay, false));
 			QueueChild(new ReleaseUnit(self));
+			QueueChild(new RevokeApproaching(self));
 			QueueChild(new TakeOff(self));
+		}
+
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			carryall.RevokeApproachingCondition(self);
+			base.Cancel(self, keepQueue);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
@@ -106,6 +113,21 @@ namespace OpenRA.Mods.Common.Activities
 					carryable.UnReserve(cargo);
 					carryable.Detached(cargo);
 				});
+			}
+		}
+
+		sealed class RevokeApproaching : Activity
+		{
+			readonly Carryall carryall;
+
+			public RevokeApproaching(Actor self)
+			{
+				carryall = self.Trait<Carryall>();
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				carryall.RevokeApproachingCondition(self);
 			}
 		}
 	}
