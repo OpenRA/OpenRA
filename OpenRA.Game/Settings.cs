@@ -377,6 +377,11 @@ namespace OpenRA
 		{
 			return ResolveActionButton(actionType) == MouseButton.Left ? MouseButton.Right : MouseButton.Left;
 		}
+
+		public bool CurrentControlStyleHasDedicatedRadarMoveButton()
+		{
+			return MouseControlStyle != MouseControlStyle.OtherRTS;
+		}
 	}
 
 	public class Settings
