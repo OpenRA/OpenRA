@@ -50,9 +50,22 @@ NAPULS:
 		Cursor: emp
 		Icon: emp
 		ChargeInterval: 3375
+		OrderName: EmpCannonAttack
 		Name: actor-napuls.attackorderpower-name
 		Description: actor-napuls.attackorderpower-description
 		EndChargeSpeechNotification: EmPulseCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeTextNotification: notification-emp-cannon-ready
 		SelectTargetTextNotification: notification-select-target
+	IssueOrderToBot@AI:
+		RequiresCondition: !empdisable && !disabled
+		OrderName: EmpCannonAttack
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 675
+		IsIssuerOwner: True
+		TargetRangeInCell: 38
+		ValidTargets: Vehicle
+		InvalidTargets: Air
+		ValidRelationships: Enemy
+		TargetDistance: Random

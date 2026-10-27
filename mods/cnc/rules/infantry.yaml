@@ -304,6 +304,26 @@ RMBO:
 	AnnounceOnKill:
 	Voiced:
 		VoiceSet: CommandoVoice
+	IssueOrderToBot@AI: ## retreat to safty
+		OrderName: AttackMove
+		OrderTrigger: Damage
+		OrderChance: 100
+		OrderInterval: 70
+		TargetRangeInCell: 9
+		ValidTargets: Ground
+		ValidRelationships: Ally
+		TargetDistance: Furthest
+	IssueOrderToBot@AI2: ## c4
+		OrderName: C4
+		OrderTrigger: Periodically
+		OrderChance: 100
+		OrderInterval: 100
+		UseTargetLocation: False
+		TargetRangeInCell: 4
+		ValidTargets: C4
+		InvalidTargets: Water
+		ValidRelationships: Enemy
+		TargetDistance: Closest
 
 PVICE:
 	Inherits: ^Viceroid
