@@ -25,13 +25,17 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActionManager editorActionManager;
 		readonly IResourceLayer resourceLayer;
+		readonly IResourceRenderer[] resourceRenderers;
+
+		readonly HashSet<CPos> cells = [];
+		readonly List<IRenderable> preview = [];
 
 		AddResourcesEditorAction action;
-		bool resourceAdded;
+
+		bool linePainting;
+		CPos lineStart;
 
 		CPos cell;
-		readonly List<IRenderable> preview = [];
-		readonly IResourceRenderer[] resourceRenderers;
 
 		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, string resourceType, WorldRenderer wr)
 		{
@@ -41,8 +45,10 @@ namespace OpenRA.Mods.Common.Widgets
 			world = wr.World;
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
-
 			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
+
+			ResourceType = resourceType;
+
 			cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
 			UpdatePreview();
 		}
@@ -64,40 +70,71 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
+			if (mi.Button != MouseButton.Left)
+				return true;
 
-			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && resourceLayer.CanAddResource(ResourceType, cell))
+			if (mi.Event == MouseInputEvent.Down && mi.Modifiers.HasModifier(Modifiers.Shift))
 			{
-				action ??= new AddResourcesEditorAction(ResourceType, resourceLayer);
-				action.Add(new CellResource(cell, resourceLayer.GetResource(cell)));
-				resourceAdded = true;
+				linePainting = true;
+				lineStart = worldRenderer.Viewport.ViewToWorld(mi.Location);
 			}
-			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
+			else if (mi.Event == MouseInputEvent.Up)
 			{
-				editorActionManager.Add(action);
-				action = null;
-				resourceAdded = false;
+				if (action != null)
+				{
+					editorActionManager.Add(action);
+					action = null;
+				}
+
+				linePainting = false;
+				cells.Clear();
+				UpdatePreview();
+			}
+			else
+			{
+				UpdatePreview();
+				action ??= new AddResourcesEditorAction(ResourceType, resourceLayer);
+
+				action.Replace(cells);
 			}
 
 			return true;
 		}
 
+		public bool HandleKeyboardInput(KeyInput ki) => false;
+
 		void UpdatePreview()
 		{
-			var pos = world.Map.CenterOfCell(cell);
+			var currentCell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
+			if (cell == currentCell && cells.Count > 0)
+				return;
+
+			cell = currentCell;
+
+			if (linePainting)
+			{
+				cells.Clear();
+				foreach (var cell in Util.GetCurvedLine(lineStart, currentCell, new int2(1, 1)))
+					if (world.Map.Contains(cell))
+						cells.Add(cell);
+			}
+			else
+			{
+				if (action == null)
+					cells.Clear();
+
+				if (world.Map.Contains(currentCell))
+					cells.Add(currentCell);
+			}
 
 			preview.Clear();
-			preview.AddRange(resourceRenderers.SelectMany(r => r.RenderPreview(worldRenderer, ResourceType, pos)));
+			preview.AddRange(resourceRenderers
+				.SelectMany(r => r.RenderPreview(worldRenderer, ResourceType, world.Map.CenterOfCell(cell))));
 		}
 
 		void IEditorBrush.TickRender(WorldRenderer wr, Actor self)
 		{
-			var currentCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-			if (cell != currentCell)
-			{
-				cell = currentCell;
-				UpdatePreview();
-			}
+			UpdatePreview();
 		}
 
 		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { return action == null ? preview : null; }
@@ -151,10 +188,16 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public void Add(CellResource resourceCell)
+		public void Replace(HashSet<CPos> resources)
 		{
-			resourceLayer.AddResource(resourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceType));
-			cellResources.Add(resourceCell);
+			Undo();
+			cellResources.Clear();
+			cellResources.AddRange(resources
+				.Where(c => resourceLayer.CanAddResource(resourceType, c))
+				.Select(c => new CellResource(c, resourceLayer.GetResource(c))));
+
+			Do();
+
 			Text = FluentProvider.GetMessage(AddedResource, "count", cellResources.Count, "type", resourceType);
 		}
 	}
