@@ -3,6 +3,15 @@
 Related upstream work: [terrain deformation #13951](https://github.com/OpenRA/OpenRA/issues/13951)
 and [template rendering #21826](https://github.com/OpenRA/OpenRA/pull/21826).
 
+The engine supplies geometry notifications and optional consumer policies. Mods own
+shared-corner validation, crater and ice rules, bridge stages and repair, falling
+motion, occupant consequences and synchronized save/replay state. None of these
+TS-specific rules is enabled in stock mods by adding the APIs.
+
+The activity/cargo policies below are additional generic API proposals motivated
+by the downstream TS consumer. The linked upstream discussions do not establish
+agreement on their exact shape, and this change does not close all of #13951.
+
 ## Changing the surface
 
 `Map.Tiles` and `Map.Height` remain the authoritative layers. Ramp geometry is derived
@@ -92,32 +101,6 @@ search/firing bound does not increase missile fuel/lifetime or a beam's own rang
 limit. Configure a compatible projectile in the mod. A ballistic reachability formula
 belongs in the mod policy and must agree with that projectile's trajectory model.
 
-## Reproduce the native regression
-
-The fixture is an ordinary TS-derived mod and map. It needs installed TS content,
-.NET, Xvfb and the default graphics platform; it uses software GL and a private
-Support directory. Cold-load automation also needs xdotool to resume the normal
-load-game menu. No original assets are committed.
-
-```sh
-dotnet build -c Release
-dotnet build OpenRA.Test/Fixtures/TerrainGeometry/Probe.csproj -c Release
-python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
-  --engine "$PWD" --content /path/to/Support/Content --out /tmp/terrain-test --cold
-```
-
-The output contains `result.json`, `command.json`, runtime logs, `terrain.jsonl` and
-an optional screenshot, and `inputs.json` with binary hashes. Assertions cover adjacent/live height edges, standing and
-moving infantry/vehicle grounding, a raised control, HPF gates inside/across grids
-compared to an independent reachability traversal, stationary visibility and a mod
-policy that forces a shooter to choose a higher firing position before shooting.
-
-For a pre-change engine build the probe with `-p:EnableRangeProbe=false
--p:OpenRAPath=/path/to/baseline -p:OutputPath=bin/baseline/` and run with `--baseline
---probe /absolute/path/to/baseline/OpenRA.TerrainProbe.dll`. The fixture reports real
-failures rather than treating an unmodified build as a passing test.
-
-
 ## Mod-owned mutable movement layers and bridge segments
 
 These optional interfaces let mods publish movement-layer changes through the
@@ -154,83 +137,159 @@ must call `TerrainRenderer.UpdateCell` after their own graphics state changes.
 With no provider the normal path is unchanged. Radar uses the existing
 `IRadarTerrainLayer`; a graphics override is not terrain deformation.
 
-## Mutable-layer and sprite regression
-
-The native fixture above also primes a disconnected layer, changes endpoints with
-unchanged costs, removes/restores terrain and checks provider Z plus direct/nearest
-targets. Sprite checks cover null fallback, replacement and unchanged geometry.
-There are 207 assertions in a fresh process and another 207 after cold load;
-subsequent simulation events must match. Engine NUnit has 509 passes and two skips.
-
-To exercise the negative control, build the same probe against pre-extension HEAD
-`3e79a1f` using `-p:EnableLayerApi=false -p:EnableSpriteApi=false` and run its private
-engine archive via `--engine` and `--probe`. This gives 197 passes and 10 expected
-failures without an exception. Do not pass `--baseline` for that archive: it already
-has the range API. That flag is only for the pre-range engine described above.
-
-The fixture needs installed TS content, Xvfb and a .NET SDK; cold load also needs
-xdotool. No original assets are included. To bound native memory on Linux, run it
-under `systemd-run --user --scope -p MemoryMax=4G -p MemorySwapMax=0 -- python3 ...`.
-This is scoped API regression evidence. The additional network runs below cover
-lockstep behavior; they do not qualify a full TS campaign or every mod mechanic.
-
-
-## Network acceptance
-
-The fixture can start two real clients through the normal lobby, network order
-manager and lockstep protocol. It records `World.SyncHash()` every simulation tick
-and requires both hashes and the complete assertion/event streams to match. Save
-requests are disabled in this mode; cold-load remains a separate process pair.
-
-```sh
-python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
-  --engine "$PWD" --content /path/to/Support/Content \
-  --out /tmp/terrain-network --network
-python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
-  --engine "$PWD" --content /path/to/Support/Content \
-  --out /tmp/terrain-network-large --network --large-map
-```
-
-The ordinary map has 7,200 allocated cells; `--large-map` uses 128 by 256
-(32,768 cells). Both runs pass 207 assertions on each client, with identical
-hashes and events across all 425 ticks. Combined process-group RSS peaks at
-1,160.34 MiB for the larger run, under a serial 4 GiB / zero-swap guard. This
-is a bounded regression test, not a long-match throughput benchmark.
-
-The final fresh/cold run also passes 207 assertions per process with matching
-subsequent events, including sync hashes. `make check`, `make tests` (509 passed,
-2 skipped), and `make TREAT_WARNINGS_AS_ERRORS=true test` for all four stock mods
-pass. The TS consumer additionally exercises source road/rail/low bridge repair,
-source event31 through Lua, cargo deaths, ice growth masks, geometry and LAT.
-The API does not require a TS-specific hook for those mechanics. The TS campaign
-VM and game content remain downstream work, separate from this API change.
-
-
 ## Mod-owned falling and activity/cargo policies
 
-`IPreventActivity` can suspend an actor's activity tree and idle callbacks without
-discarding the queue. Actor trait ticks, rendering, damage and disposal continue.
-Any provider returning true suspends the actor; when all return false the existing
-activity resumes. Actors without a provider follow the existing Tick path. Policy
-state must be synchronized by the mod. A terrain consumer can retain its visual
-position while releasing obsolete movement reservations through Mobile's APIs.
+Implement `OpenRA.Traits.IPreventActivity` explicitly on an actor trait:
 
-`ICargoEjectionPolicy` lets a mod reject cargo ejection for a particular death.
-All providers must allow ejection, in addition to the existing EjectOnDeath,
+```csharp
+bool IPreventActivity.PreventActivity(Actor self) => falling;
+```
+
+Any provider returning true suspends the actor's activity tree and idle callbacks
+without discarding the queue. When all return false the existing activity resumes.
+Trait ticks, rendering, damage and disposal continue; the policy does not reject
+orders or prevent other traits from changing position. Actors without a provider
+follow the existing activity path. The mod must synchronize policy state.
+
+Normal activity cancellation lets an uninterruptible movement half-step finish.
+A mod moving a falling actor must suspend that half-step, otherwise it can overwrite
+the actor's XY/Z with its old movement position. The mod must separately release
+obsolete movement reservations through `Mobile`'s APIs while preserving the visual
+position, and decide whether the retained activity is still valid after landing.
+
+Implement `OpenRA.Mods.Common.Traits.ICargoEjectionPolicy` explicitly on the carrier:
+
+```csharp
+bool ICargoEjectionPolicy.CanEjectOnDeath(Actor self, AttackInfo attack) => !falling;
+```
+
+All providers must allow death ejection, in addition to the existing `EjectOnDeath`,
 ground-level and terrain requirements. With no provider the previous behavior is
-preserved. Rejected ejection uses Cargo's normal passenger-death path, including
-its existing notifications. This interface does not define a fall or cause damage.
+preserved. A veto uses `Cargo`'s normal passenger-death path and notifications.
+This hook does not change voluntary unloading or define a fall or damage event.
 
-OpenRA's normal activity cancellation lets an uninterruptible movement half-step
-finish. A falling actor must suspend that half-step while the mod changes Z;
-otherwise the movement activity keeps writing its old position. The TS consumer
-owns the trajectory, native-frame clock, loss of support, landing death, cargo
-policy and save/replay verification. No TS fall constants enter the engine.
+The TS consumer owns loss-of-support classification, trajectory, native-frame
+clock, landing consequences, cargo policy and save/replay verification. No fall
+constants or TS casualty rules enter these engine interfaces.
 
-The opt-in native regression extends the terrain fixture with independent policy
-actors: suspension/resume of an uninterruptible activity, idle suspension/resume,
-continued trait ticks, ordinary cargo ejection, a denying policy and two-policy
-composition. It requires no TS module. Build the fixture as usual and add
-`--actor-policies` to the runner; combine with `--cold` or `--network --large-map`.
-For builds against an older binary without these interfaces, set
-`-p:EnableActorPolicyProbe=false` and omit `--actor-policies`.
+## Reproduce the native regression
+
+Run from this engine checkout after installing its normal build/runtime dependencies.
+The fixture needs a .NET 10 SDK, Python 3, installed TS content, Xvfb and the default
+graphics platform with software GL. Cold-load automation also needs xdotool to
+resume the normal load-game menu. ImageMagick's `import` is optional for screenshots.
+No original assets are committed. The fixture uses stock TS rules and requires
+no downstream TS module.
+
+The runner creates a private mod and Support directory, links existing content,
+and never installs into a user's game. Each `--out` directory must not exist yet.
+It links engine binaries: do not rebuild that checkout during a run. The Linux
+commands below run serially with a 4 GiB / zero-swap cgroup limit; the runner does
+not enforce a resource limit itself. They require a working user systemd manager.
+
+```sh
+dotnet build -c Release
+dotnet build OpenRA.Test/Fixtures/TerrainGeometry/Probe.csproj -c Release
+engine="$PWD"
+content=/path/to/Support/Content
+out="$(mktemp -d /tmp/openra-terrain.XXXXXX)"
+
+systemd-run --user --scope -p MemoryMax=4G -p MemorySwapMax=0 -- \
+  python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
+  --engine "$engine" --content "$content" --out "$out/cold" \
+  --actor-policies --cold
+
+systemd-run --user --scope -p MemoryMax=4G -p MemorySwapMax=0 -- \
+  python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
+  --engine "$engine" --content "$content" --out "$out/network-large" \
+  --actor-policies --network --large-map
+```
+
+`--actor-policies` enables nine additional assertions; the default fixture retains
+207, and the combined fixture has 216. Build-time `EnableActorPolicyProbe` defaults
+to true, but the runtime checks require the flag. Do not combine `--network` with
+`--cold`: these exercise different process/save paths. Omit `--large-map` to use
+the ordinary 60 by 120 map (7,200 allocated cells); the larger map is 128 by 256
+(32,768 cells).
+
+Coverage includes:
+
+- Adjacent and cached live height edges; stationary and moving infantry/vehicle
+  grounding; an elevated control; shared-corner geometry; hierarchical gates
+  inside/across grids compared with an independent reachability traversal.
+- Stationary visibility and a mod range policy that makes a ground shooter move
+  to a valid elevated firing position before shooting.
+- Mutable-layer endpoint changes with unchanged costs, terrain removal/restoration,
+  provider Z, direct/nearest targets, sprite replacement and null fallback without
+  changing simulation geometry.
+- With `--actor-policies`: uninterruptible activity suspension/resume, idle
+  suspension/resume, continued trait ticks, ordinary cargo ejection with no policy,
+  allowed/denied ejection and a veto among multiple providers. These are independent
+  test actors; they do not test TS falling rules.
+
+### Results and artifacts
+
+Every run produces `result.json`, `inputs.json` with binary/map hashes,
+`command.json`, runtime logs and JSONL simulation traces. A nonzero runner exit or
+`passed: false` is a failure. Input hashes are checked again during verification;
+changing an engine binary invalidates the run.
+
+Cold mode saves through the normal game path, starts a new process and compares the
+complete subsequent simulation events, including sync hashes, after save catch-up.
+Inspect `cold.passed` and `coldEventsEqual` in addition to the top-level `passed`.
+Fresh events are retained in `baseline.jsonl`; the cold trace remains in
+`Support/Logs/terrain.jsonl`. This qualifies replay with the tested binaries/content,
+not migration from earlier saves.
+
+Network mode starts two real clients through the normal lobby, network order
+manager and lockstep protocol. It records `World.SyncHash()` each simulation tick
+and requires both hashes and the complete event streams to match, with no exception
+or sync-report logs. Inspect `checks`, `syncHashTicks`, `syncHashesEqual` and
+`eventsEqual`; commands are saved in `network-commands.json`. Save requests are
+disabled in this mode.
+
+Local acceptance on 27 October 2026 at implementation commit `dce538d62822`:
+
+| Check | Observed result |
+| --- | --- |
+| Native `--actor-policies --cold` | 216 fresh + 216 cold assertions; subsequent events and hashes match |
+| Native `--actor-policies --network --large-map` | 216 assertions per client; matching complete events and hashes for all 425 ticks |
+| `make check` | Pass: Debug build with warnings as errors, explicit-interface and conditional-trait checks |
+| `make tests` | 509 passed, 2 skipped |
+| `make TREAT_WARNINGS_AS_ERRORS=true test` | Pass: Release build and stock RA/CNC/D2K/TS content/rules checks |
+
+The native cold and larger network runs peaked at 587.50 MiB and 1,159.85 MiB
+combined process-group RSS respectively under a serial 4 GiB / zero-swap guard.
+These are host-specific bounded regressions, not a long-match throughput benchmark
+or cross-platform certification. Local results do not imply GitHub Actions passed;
+the workflow status is reported separately in the PR.
+
+The downstream TS consumer separately tests source road/rail/low bridge repair,
+source event 31 through Lua, ice masks, real crater geometry/LAT and delayed falling
+with cargo. Those are mod acceptance results, not additional assertions of this
+standalone engine fixture or a qualification of the full TS campaign.
+
+### Historical negative controls
+
+The pre-extension engine `3e79a1f` already has the range API, but lacks the mutable
+layer, sprite and activity/cargo APIs. Build the current probe against that archive
+with the corresponding compile switches disabled, and use its engine binaries:
+
+```sh
+baseline_engine=/path/to/built/pre-extension-engine
+dotnet build OpenRA.Test/Fixtures/TerrainGeometry/Probe.csproj -c Release \
+  -p:OpenRAPath="$baseline_engine" -p:OutputPath=bin/pre-extension/ \
+  -p:EnableLayerApi=false -p:EnableSpriteApi=false \
+  -p:EnableActorPolicyProbe=false
+systemd-run --user --scope -p MemoryMax=4G -p MemorySwapMax=0 -- \
+  python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
+  --engine "$baseline_engine" --content "$content" --out "$out/pre-extension" \
+  --probe "$engine/OpenRA.Test/Fixtures/TerrainGeometry/bin/pre-extension/OpenRA.TerrainProbe.dll"
+```
+
+The recorded result was 197 passes and 10 expected failures, without an exception.
+The runner correctly returns failure for this control; it must not be counted as a
+passing run. This historical control demonstrates the earlier layer/sprite changes,
+not the newer activity/cargo policies. Omit `--actor-policies` because its interfaces
+are absent. Do not pass `--baseline`: that flag removes the range-policy actor and
+is reserved for pre-range archives, which also need `-p:EnableRangeProbe=false`.
