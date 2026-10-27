@@ -171,4 +171,36 @@ has the range API. That flag is only for the pre-range engine described above.
 The fixture needs installed TS content, Xvfb and a .NET SDK; cold load also needs
 xdotool. No original assets are included. To bound native memory on Linux, run it
 under `systemd-run --user --scope -p MemoryMax=4G -p MemorySwapMax=0 -- python3 ...`.
-This is scoped API regression evidence, not complete TS or multiplayer qualification.
+This is scoped API regression evidence. The additional network runs below cover
+lockstep behavior; they do not qualify a full TS campaign or every mod mechanic.
+
+
+## Network acceptance
+
+The fixture can start two real clients through the normal lobby, network order
+manager and lockstep protocol. It records `World.SyncHash()` every simulation tick
+and requires both hashes and the complete assertion/event streams to match. Save
+requests are disabled in this mode; cold-load remains a separate process pair.
+
+```sh
+python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
+  --engine "$PWD" --content /path/to/Support/Content \
+  --out /tmp/terrain-network --network
+python3 OpenRA.Test/Fixtures/TerrainGeometry/run.py \
+  --engine "$PWD" --content /path/to/Support/Content \
+  --out /tmp/terrain-network-large --network --large-map
+```
+
+The ordinary map has 7,200 allocated cells; `--large-map` uses 128 by 256
+(32,768 cells). Both runs pass 207 assertions on each client, with identical
+hashes and events across all 425 ticks. Combined process-group RSS peaks at
+1,160.34 MiB for the larger run, under a serial 4 GiB / zero-swap guard. This
+is a bounded regression test, not a long-match throughput benchmark.
+
+The final fresh/cold run also passes 207 assertions per process with matching
+subsequent events, including sync hashes. `make check`, `make tests` (509 passed,
+2 skipped), and `make TREAT_WARNINGS_AS_ERRORS=true test` for all four stock mods
+pass. The TS consumer additionally exercises source road/rail/low bridge repair,
+source event31 through Lua, cargo deaths, ice growth masks, geometry and LAT.
+The API does not require a TS-specific hook for those mechanics. The TS campaign
+VM and game content remain downstream work, separate from this API change.

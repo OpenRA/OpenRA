@@ -3,9 +3,11 @@
 import argparse,hashlib,json,os,shutil,struct,subprocess,time
 from pathlib import Path
 p=argparse.ArgumentParser(description=__doc__)
-p.add_argument('--engine',type=Path,required=True);p.add_argument('--content',type=Path,required=True)
+p.add_argument('--large-map',action='store_true');p.add_argument('--network',action='store_true');p.add_argument('--engine',type=Path,required=True);p.add_argument('--content',type=Path,required=True)
 p.add_argument('--out',type=Path,required=True);p.add_argument('--probe',type=Path);p.add_argument('--baseline',action='store_true');p.add_argument('--cold',action='store_true')
-a=p.parse_args();engine=a.engine.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
+a=p.parse_args()
+if a.network and a.cold:p.error('--network and --cold are separate runs')
+engine=a.engine.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=False)
 fixture=Path(__file__).resolve().parent
 probe=a.probe or fixture/'bin/Release/OpenRA.TerrainProbe.dll'
 private=out/'engine';private.mkdir()
@@ -23,7 +25,7 @@ manifest=manifest.replace('LoadScreen: LogoStripeLoadScreen','LoadScreen: Terrai
 (mod/'mod.yaml').write_text(manifest)
 (support/'settings.yaml').write_text('Game:\n\tIntroductionPromptVersion: 2\nDebug:\n\tSystemInformationVersionPrompt: 6\nSound:\n\tEngine: null\n')
 mapdir=support/'maps/terrainprobe/{DEV_VERSION}/terrain-probe';mapdir.mkdir(parents=True)
-width,height=60,120;n=width*height
+width,height=(128,256) if a.large_map else (60,120);n=width*height
 (mapdir/'map.bin').write_bytes(struct.pack('<BHHIII',2,width,height,17,17+3*n,17+4*n)+b'\0\0\0'*n+bytes([4])*n+b'\0\0'*n)
 shutil.copy2(engine/'mods/ts/maps/fields-of-green/map.png',mapdir/'map.png')
 (mapdir/'map.yaml').write_text('''MapFormat: 12
@@ -79,9 +81,15 @@ Rules:
 \tPlayer:
 \t\t-ConquestVictoryConditions:
 ''')
+if a.large_map:
+ text=(mapdir/'map.yaml').read_text().replace('MapSize: 60,120','MapSize: 128,256').replace('Bounds: 2,4,56,110','Bounds: 2,4,124,246')
+ (mapdir/'map.yaml').write_text(text)
+if a.network:
+ text=(mapdir/'map.yaml').read_text().replace('Actors:\n','\tPlayerReference@GDI2:\n\t\tName: GDI2\n\t\tFaction: gdi\n\t\tPlayable: True\n\t\tAllowBots: False\nActors:\n')
+ (mapdir/'map.yaml').write_text(text)
 if a.baseline:
  text=(mapdir/'map.yaml').read_text();start=text.index('\tPOLICYUNIT:');end=text.index('\tPlayer:',start);(mapdir/'map.yaml').write_text(text[:start]+text[end:])
-files=[engine/'bin'/name for name in ['OpenRA.dll','OpenRA.Game.dll','OpenRA.Mods.Common.dll','OpenRA.Mods.Cnc.dll','OpenRA.Platforms.Default.dll']]+[support/probe.name]
+files=[mapdir/'map.yaml',mapdir/'map.bin',fixture/'NetworkProbe.cs',fixture/'network_run.py']+[engine/'bin'/name for name in ['OpenRA.dll','OpenRA.Game.dll','OpenRA.Mods.Common.dll','OpenRA.Mods.Cnc.dll','OpenRA.Platforms.Default.dll']]+[support/probe.name]
 def_digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 hashes={str(p):def_digest(p)for p in files}
 (out/'inputs.json').write_text(json.dumps({'binaries':hashes,'baseline':a.baseline,'cold':a.cold,'fixtureSha256':def_digest(fixture/'Probe.cs')},indent=2)+'\n')
@@ -123,7 +131,15 @@ try:
     if process.poll()is None:process.terminate()
     try:process.wait(timeout=10)
     except subprocess.TimeoutExpired:process.kill();process.wait()
- result,first=launch(cmd,'runtime');passed=result['passed']
+ if a.network:
+  import sys
+  sys.dont_write_bytecode=True
+  sys.path.insert(0,str(fixture))
+  from network_run import run_network
+  result=run_network(cmd,support,out,private,env,check_inputs)
+  passed=result['passed'];first=[]
+ else:
+  result,first=launch(cmd,'runtime');passed=result['passed']
  if a.cold and passed:
   checkpoint=next((support/'Saves').rglob('terrain-checkpoint.orasav'),None)
   assert checkpoint,'No checkpoint produced'

@@ -21,6 +21,7 @@ public sealed class TerrainProbeLoadScreen : BlankLoadScreen
 {
 	public override void StartGame(Arguments args)
 	{
+		if (NetworkProbe.TryStart(args)) return;
 		if (!args.Contains("TerrainProbe.LoadSave")) { base.StartGame(args); return; }
 		var path = args.GetValue("TerrainProbe.LoadSave", ""); var save = new GameSave(path);
 		OpenRA.Widgets.Ui.ResetAll(); Game.Settings.Save();
@@ -97,6 +98,7 @@ public sealed class TerrainRuntimeProbe : ITick, IWorldLoaded
 	{
 		if (complete) return;
 		var tick = world.WorldTick;
+		ScenarioTrace.Write(world, "sync-hash", world.SyncHash().ToString());
 		var sightCell = center + new CVec(2, -2); var owner = world.Players.First(p => p.InternalName == "GDI");
 		try
 		{
@@ -144,7 +146,7 @@ public sealed class TerrainRuntimeProbe : ITick, IWorldLoaded
 			if (tick == 8) { Check("stationary-sight-before", owner.Shroud.IsVisible(sightCell.ToMPos(world.Map))); Height(sightCell, 7); }
 			if (tick == 10) { Check("stationary-sight-closes", !owner.Shroud.IsVisible(sightCell.ToMPos(world.Map))); Height(sightCell, 4); }
 			if (tick == 12) Check("stationary-sight-reopens", owner.Shroud.IsVisible(sightCell.ToMPos(world.Map)));
-			if (tick == 172 && !world.IsLoadingGameSave)
+			if (tick == 172 && !world.IsLoadingGameSave && world.LobbyInfo.NonBotClients.Count() == 1)
 				Sync.RunUnsynced(world, () => world.RequestGameSave("terrain-checkpoint.orasav", false));
 			if (tick == 170)
 			{
