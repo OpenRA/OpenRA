@@ -162,6 +162,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (jumpToGroupHotkeys[i].IsActivatedBy(e))
 				{
+					if (Game.Settings.Game.JumpToGroupSelects)
+						world.ControlGroups.SelectControlGroup(i);
+
 					worldRenderer.Viewport.Center(world.ControlGroups.GetActorsInControlGroup(i));
 					return true;
 				}
