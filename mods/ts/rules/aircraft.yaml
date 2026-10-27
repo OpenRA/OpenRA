@@ -508,6 +508,8 @@ HUNTER:
 		CruiseAltitude: 3c128
 		CruisingCondition: cruising
 		MoveIntoShroud: true
+		CanHover: true
+		CanSlide: true
 	AttackAircraft:
 		FacingTolerance: 512
 		AttackType: Hover
@@ -533,5 +535,6 @@ HUNTER:
 		UseLocation: true
 	Interactable:
 	HitShape:
+	HunterSeeker:
 	MapEditorData:
 		Categories: System
