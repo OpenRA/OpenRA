@@ -55,10 +55,12 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		public int SampleRate => sampleRate;
 		public float LengthInSeconds => lengthInSeconds;
 		public Stream GetPCMInputStream() { return wavStreamFactory(); }
+		public byte[] GetPCMData() { return pcmDataFactory(); }
 		public void Dispose() { sourceStream.Dispose(); }
 
 		readonly Stream sourceStream;
 		readonly Func<Stream> wavStreamFactory;
+		readonly Func<byte[]> pcmDataFactory;
 		readonly short channels;
 		readonly int sampleBits;
 		readonly int sampleRate;
@@ -68,7 +70,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		{
 			sourceStream = stream;
 
-			if (!WavReader.LoadSound(stream, out wavStreamFactory, out channels, out sampleBits, out sampleRate, out lengthInSeconds))
+			if (!WavReader.LoadSound(stream, out wavStreamFactory, out pcmDataFactory, out channels, out sampleBits, out sampleRate, out lengthInSeconds))
 				throw new InvalidDataException();
 		}
 	}
