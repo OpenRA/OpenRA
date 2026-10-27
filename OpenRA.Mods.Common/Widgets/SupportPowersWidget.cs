@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using OpenRA.Graphics;
@@ -62,7 +63,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		public Func<SupportPowerIcon> GetTooltipIcon;
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
-		HotkeyReference[] hotkeys;
+		ImmutableArray<HotkeyReference> hotkeys;
 
 		Rectangle eventBounds;
 		public override Rectangle EventBounds => eventBounds;
@@ -106,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			hotkeys = Exts.MakeArray(HotkeyCount,
+			hotkeys = Exts.MakeImmutableArray(HotkeyCount,
 				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			overlayFont = Game.Renderer.Fonts[OverlayFont];

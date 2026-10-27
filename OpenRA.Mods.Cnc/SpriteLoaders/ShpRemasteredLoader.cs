@@ -10,9 +10,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
 using OpenRA.Graphics;
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return Exts.ParseInt32Invariant(match.Groups[group].ValueSpan);
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; }
+		public ImmutableArray<ISpriteFrame> Frames { get; }
 
 		public ShpRemasteredSprite(Stream stream)
 		{
@@ -115,7 +116,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 				}
 			}
 
-			Frames = frames;
+			Frames = ImmutableCollectionsMarshal.AsImmutableArray(frames);
 		}
 	}
 }
