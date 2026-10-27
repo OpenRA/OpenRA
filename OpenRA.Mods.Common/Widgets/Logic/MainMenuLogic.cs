@@ -106,7 +106,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
 			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
-			missionsButton.OnClick = () => OpenMissionBrowserPanel(modData.MapCache.PickLastModifiedMap(MapVisibility.MissionSelector));
+			missionsButton.OnClick = () =>
+			{
+				var map = modData.MapCache.PickLastModifiedMap(MapVisibility.MissionSelector);
+				if (map == null)
+				{
+					var missionSettings = modData.GetSettings<MissionBrowserLogic.MissionSettings>();
+					map = missionSettings.Map;
+				}
+
+				OpenMissionBrowserPanel(map);
+			};
 
 			var hasCampaign = modData.Manifest.Missions.Length > 0;
 			var hasMissions = modData.MapCache
@@ -536,8 +546,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			switch (lastGameState)
 			{
 				case MenuPanel.Missions:
-					OpenMissionBrowserPanel(null);
+				{
+					var missionSettings = modData.GetSettings<MissionBrowserLogic.MissionSettings>();
+					OpenMissionBrowserPanel(missionSettings.Map);
 					break;
+				}
 
 				case MenuPanel.Replays:
 					OpenReplayBrowserPanel();
