@@ -120,6 +120,7 @@ namespace OpenRA
 		readonly IDefaultVisibility defaultVisibility;
 		readonly INotifyBecomingIdle[] becomingIdles;
 		readonly INotifyIdle[] tickIdles;
+		readonly IPreventActivity[] preventActivities = [];
 		readonly IEnumerable<WPos> enabledTargetableWorldPositions;
 		bool created;
 
@@ -161,6 +162,7 @@ namespace OpenRA
 				var visibilityModifiersList = new List<IVisibilityModifier>();
 				var becomingIdlesList = new List<INotifyBecomingIdle>();
 				var tickIdlesList = new List<INotifyIdle>();
+				var preventActivitiesList = new List<IPreventActivity>();
 				var targetablesList = new List<ITargetable>();
 				var targetablePositionsList = new List<ITargetablePositions>();
 				var syncHashesList = new List<SyncHash>();
@@ -188,6 +190,7 @@ namespace OpenRA
 					{ if (trait is IDefaultVisibility t) defaultVisibility = t; }
 					{ if (trait is INotifyBecomingIdle t) becomingIdlesList.Add(t); }
 					{ if (trait is INotifyIdle t) tickIdlesList.Add(t); }
+					{ if (trait is IPreventActivity t) preventActivitiesList.Add(t); }
 					{ if (trait is ITargetable t) targetablesList.Add(t); }
 					{ if (trait is ITargetablePositions t) targetablePositionsList.Add(t); }
 					{ if (trait is ISync t) syncHashesList.Add(new SyncHash(t)); }
@@ -201,6 +204,7 @@ namespace OpenRA
 				visibilityModifiers = visibilityModifiersList.ToArray();
 				becomingIdles = becomingIdlesList.ToArray();
 				tickIdles = tickIdlesList.ToArray();
+				preventActivities = preventActivitiesList.ToArray();
 				Targetables = targetablesList.ToArray();
 				var targetablePositions = targetablePositionsList.ToArray();
 				EnabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
@@ -271,6 +275,10 @@ namespace OpenRA
 
 		public void Tick()
 		{
+			foreach (var preventActivity in preventActivities)
+				if (preventActivity.PreventActivity(this))
+					return;
+
 			var wasIdle = IsIdle;
 			CurrentActivity = ActivityUtils.RunActivity(this, CurrentActivity);
 

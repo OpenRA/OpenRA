@@ -29,12 +29,13 @@ public sealed class TerrainProbeLoadScreen : BlankLoadScreen
 	}
 }
 public sealed class TerrainRuntimeProbeInfo : TraitInfo
-{ public override object Create(ActorInitializer init) => new TerrainRuntimeProbe(init.World); }
-public sealed class TerrainRuntimeProbe : ITick, IWorldLoaded
+{ public readonly bool ActorPolicies; public override object Create(ActorInitializer init) => new TerrainRuntimeProbe(init.World, ActorPolicies); }
+public sealed partial class TerrainRuntimeProbe : ITick, IWorldLoaded
 {
 	readonly World world; WorldRenderer? renderer; Actor? idle, walker, raised, tank; int raisedZ; bool complete; CPos lastTo; Actor? policyShooter, policyTarget;
 	readonly CPos center = new(42, 6); readonly List<string> failures = [];
-	public TerrainRuntimeProbe(World world) { this.world = world; }
+	readonly bool actorPolicies;
+	public TerrainRuntimeProbe(World world, bool actorPolicies) { this.world = world; this.actorPolicies = actorPolicies; }
 	void IWorldLoaded.WorldLoaded(World world, WorldRenderer renderer)
 	{ this.renderer = renderer; renderer.Viewport.Center(world.Map.CenterOfCell(center + new CVec(5, 5))); }
 	void Check(string name, bool passed, string detail = "")
@@ -183,6 +184,9 @@ public sealed class TerrainRuntimeProbe : ITick, IWorldLoaded
 			{
 				foreach (var cell in world.Map.AllCells) Height(cell, 4);
 			}
+#if ACTOR_POLICY_PROBE
+			if (actorPolicies) ActorPolicyChecks(tick);
+#endif
 			if (tick == 350) world.AddFrameEndTask(_ => LowerPatch(center + new CVec(8, 4)));
 			if (tick == 415) renderer?.Viewport.Center(world.Map.CenterOfCell(center + new CVec(8, 4)));
 			if (tick == 425) { Geometry(center + new CVec(8, 4)); Finish(); }

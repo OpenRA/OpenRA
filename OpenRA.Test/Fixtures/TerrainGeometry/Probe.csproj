@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<OutputPath>bin/$(Configuration)/</OutputPath>
+		<DefineConstants Condition="'$(EnableActorPolicyProbe)' != 'false'">$(DefineConstants);ACTOR_POLICY_PROBE</DefineConstants>
 		<DefineConstants Condition="'$(EnableRangeProbe)' != 'false'">$(DefineConstants);RANGE_PROBE</DefineConstants>
 		<DefineConstants Condition="'$(EnableLayerApi)' != 'false'">$(DefineConstants);LAYER_API</DefineConstants>
 		<DefineConstants Condition="'$(EnableSpriteApi)' != 'false'">$(DefineConstants);SPRITE_API</DefineConstants>

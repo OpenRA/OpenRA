@@ -202,6 +202,10 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyEnteredCargo { void OnEnteredCargo(Actor self, Actor cargo); }
 
+	// All policies must allow ejection; ordinary cargo death handles passengers otherwise.
+	[RequireExplicitImplementation]
+	public interface ICargoEjectionPolicy { bool CanEjectOnDeath(Actor self, AttackInfo attack); }
+
 	[RequireExplicitImplementation]
 	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
 

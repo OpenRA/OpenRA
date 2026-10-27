@@ -365,6 +365,10 @@ namespace OpenRA.Traits
 
 	public interface IActivityInterface { }
 
+	// Prevents activity and idle ticks while leaving trait ticks and rendering active.
+	[RequireExplicitImplementation]
+	public interface IPreventActivity { bool PreventActivity(Actor self); }
+
 	[RequireExplicitImplementation]
 	public interface INotifySelected { void Selected(Actor self); }
 	[RequireExplicitImplementation]

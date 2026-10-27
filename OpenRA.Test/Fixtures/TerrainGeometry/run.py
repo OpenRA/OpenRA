@@ -2,7 +2,7 @@
 """Native stock-engine terrain fixture. Private mod/content links; never installs."""
 import argparse,hashlib,json,os,shutil,struct,subprocess,time
 from pathlib import Path
-p=argparse.ArgumentParser(description=__doc__)
+p=argparse.ArgumentParser(description=__doc__);p.add_argument('--actor-policies',action='store_true')
 p.add_argument('--large-map',action='store_true');p.add_argument('--network',action='store_true');p.add_argument('--engine',type=Path,required=True);p.add_argument('--content',type=Path,required=True)
 p.add_argument('--out',type=Path,required=True);p.add_argument('--probe',type=Path);p.add_argument('--baseline',action='store_true');p.add_argument('--cold',action='store_true')
 a=p.parse_args()
@@ -86,6 +86,10 @@ if a.large_map:
  (mapdir/'map.yaml').write_text(text)
 if a.network:
  text=(mapdir/'map.yaml').read_text().replace('Actors:\n','\tPlayerReference@GDI2:\n\t\tName: GDI2\n\t\tFaction: gdi\n\t\tPlayable: True\n\t\tAllowBots: False\nActors:\n')
+ (mapdir/'map.yaml').write_text(text)
+if a.actor_policies:
+ text=(mapdir/'map.yaml').read_text().replace('TerrainRuntimeProbe:\n','TerrainRuntimeProbe:\n\t\t\tActorPolicies: True\n')
+ text+='\tACTORPOLICYUNIT:\n\t\tInherits: E1\n\t\tActorPolicyObserver:\n\tPOLICYCARGO:\n\t\tInherits: ACTORPOLICYUNIT\n\t\tCargo:\n\t\t\tTypes: Infantry\n\t\t\tMaxWeight: 5\n\t\t\tEjectOnDeath: True\n\tPLAINCARGO:\n\t\tInherits: E1\n\t\tCargo:\n\t\t\tTypes: Infantry\n\t\t\tMaxWeight: 5\n\t\t\tEjectOnDeath: True\n\tDENIEDCARGO:\n\t\tInherits: POLICYCARGO\n\t\tDenyCargoEjection:\n'
  (mapdir/'map.yaml').write_text(text)
 if a.baseline:
  text=(mapdir/'map.yaml').read_text();start=text.index('\tPOLICYUNIT:');end=text.index('\tPlayer:',start);(mapdir/'map.yaml').write_text(text[:start]+text[end:])

@@ -414,6 +414,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// IsAtGroundLevel contains Map.Contains(self.Location) check.
 			if (Info.EjectOnDeath &&
+				self.TraitsImplementing<ICargoEjectionPolicy>().All(p => p.CanEjectOnDeath(self, e)) &&
 				self.IsAtGroundLevel() &&
 				(!checkTerrainType || Info.UnloadTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type)))
 			{

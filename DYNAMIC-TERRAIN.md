@@ -204,3 +204,33 @@ pass. The TS consumer additionally exercises source road/rail/low bridge repair,
 source event31 through Lua, cargo deaths, ice growth masks, geometry and LAT.
 The API does not require a TS-specific hook for those mechanics. The TS campaign
 VM and game content remain downstream work, separate from this API change.
+
+
+## Mod-owned falling and activity/cargo policies
+
+`IPreventActivity` can suspend an actor's activity tree and idle callbacks without
+discarding the queue. Actor trait ticks, rendering, damage and disposal continue.
+Any provider returning true suspends the actor; when all return false the existing
+activity resumes. Actors without a provider follow the existing Tick path. Policy
+state must be synchronized by the mod. A terrain consumer can retain its visual
+position while releasing obsolete movement reservations through Mobile's APIs.
+
+`ICargoEjectionPolicy` lets a mod reject cargo ejection for a particular death.
+All providers must allow ejection, in addition to the existing EjectOnDeath,
+ground-level and terrain requirements. With no provider the previous behavior is
+preserved. Rejected ejection uses Cargo's normal passenger-death path, including
+its existing notifications. This interface does not define a fall or cause damage.
+
+OpenRA's normal activity cancellation lets an uninterruptible movement half-step
+finish. A falling actor must suspend that half-step while the mod changes Z;
+otherwise the movement activity keeps writing its old position. The TS consumer
+owns the trajectory, native-frame clock, loss of support, landing death, cargo
+policy and save/replay verification. No TS fall constants enter the engine.
+
+The opt-in native regression extends the terrain fixture with independent policy
+actors: suspension/resume of an uninterruptible activity, idle suspension/resume,
+continued trait ticks, ordinary cargo ejection, a denying policy and two-policy
+composition. It requires no TS module. Build the fixture as usual and add
+`--actor-policies` to the runner; combine with `--cold` or `--network --large-map`.
+For builds against an older binary without these interfaces, set
+`-p:EnableActorPolicyProbe=false` and omit `--actor-policies`.
