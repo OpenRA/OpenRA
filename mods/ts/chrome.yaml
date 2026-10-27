@@ -199,6 +199,9 @@ command-icons-gdi:
 		queue-orders: 486, 331, 26, 26
 		queue-orders-disabled: 486, 357, 26, 26
 		queue-orders-hover: 486, 409, 26, 26
+		formation-move: 486, 331, 26, 26
+		formation-move-disabled: 486, 357, 26, 26
+		formation-move-hover: 486, 409, 26, 26
 
 command-icons-gdi-highlighted:
 	Inherits: command-icons-gdi
@@ -219,6 +222,8 @@ command-icons-gdi-highlighted:
 		stop-hover: 460, 435, 26, 26
 		queue-orders: 486, 383, 26, 26
 		queue-orders-hover: 486, 435, 26, 26
+		formation-move: 486, 383, 26, 26
+		formation-move-hover: 486, 435, 26, 26
 
 stance-icons-gdi:
 	Inherits: ^Chrome

@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool scatterDisabled = true;
 		bool stopDisabled = true;
 		bool waypointModeDisabled = true;
+		bool formationMoveDisabled = true;
 
 		int deployHighlighted;
 		int scatterHighlighted;
@@ -208,6 +209,22 @@ namespace OpenRA.Mods.Common.Widgets
 				};
 			}
 
+			var formationMoveButton = widget.GetOrNull<ButtonWidget>("FORMATION_MOVE");
+			if (formationMoveButton != null)
+			{
+				WidgetUtils.BindButtonIcon(formationMoveButton);
+
+				formationMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return formationMoveDisabled; };
+				formationMoveButton.IsHighlighted = () => world.OrderGenerator is FormationMoveOrderGenerator;
+				formationMoveButton.OnClick = () =>
+				{
+					if (formationMoveButton.IsHighlighted())
+						world.CancelInputMode();
+					else
+						world.OrderGenerator = new FormationMoveOrderGenerator(world);
+				};
+			}
+
 			var keyOverrides = widget.GetOrNull<LogicKeyListenerWidget>("MODIFIER_OVERRIDES");
 			if (keyOverrides != null)
 			{
@@ -253,6 +270,32 @@ namespace OpenRA.Mods.Common.Widgets
 
 					return false;
 				});
+
+				// Formation Move hotkey handler
+				var formationMoveKey = Game.ModData.Hotkeys["FormationMove"];
+				keyOverrides.AddHandler(e =>
+				{
+					if (e.Event != KeyInputEvent.Down || e.IsRepeat)
+						return false;
+
+					// Allow activation with Shift held for queue mode
+					var eCheck = e;
+					eCheck.Modifiers &= ~Modifiers.Shift;
+
+					if (!formationMoveKey.IsActivatedBy(eCheck))
+						return false;
+
+					UpdateStateIfNecessary();
+					if (formationMoveDisabled)
+						return false;
+
+					if (world.OrderGenerator is FormationMoveOrderGenerator)
+						world.CancelInputMode();
+					else
+						world.OrderGenerator = new FormationMoveOrderGenerator(world);
+
+					return true;
+				});
 			}
 		}
 
@@ -292,6 +335,7 @@ namespace OpenRA.Mods.Common.Widgets
 			forceMoveDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<MobileInfo>() || a.Info.HasTraitInfo<AircraftInfo>());
 			forceAttackDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<AttackBaseInfo>());
 			scatterDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<IMoveInfo>());
+			formationMoveDisabled = !selectedActors.Any(a => a.Info.HasTraitInfo<MobileInfo>());
 
 			selectedDeploys = selectedActors
 				.SelectMany(a => a.TraitsImplementing<IIssueDeployOrder>()

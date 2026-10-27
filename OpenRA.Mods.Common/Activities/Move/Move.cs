@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Func<BlockedByActor, (bool AlreadyAtDestination, List<CPos> Path)> getPath;
 		readonly Actor ignoreActor;
 		readonly Color? targetLineColor;
+		readonly int groupSpeedCap;
 
 		static readonly BlockedByActor[] PathSearchOrder =
 		[
@@ -74,7 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 
 		public Move(Actor self, CPos destination, WDist nearEnough, Actor ignoreActor = null, bool evaluateNearestMovableCell = false,
-			Color? targetLineColor = null)
+			Color? targetLineColor = null, int groupSpeedCap = 0)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
 			mobile = (Mobile)self.OccupiesSpace;
@@ -98,6 +99,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.ignoreActor = ignoreActor;
 			this.evaluateNearestMovableCell = evaluateNearestMovableCell;
 			this.targetLineColor = targetLineColor;
+			this.groupSpeedCap = groupSpeedCap;
 		}
 
 		public Move(Actor self, Func<BlockedByActor, (bool AlreadyAtDestination, List<CPos> Path)> getPath, Color? targetLineColor = null)
@@ -477,7 +479,16 @@ namespace OpenRA.Mods.Common.Activities
 				// Only move by a full speed step if we didn't already move this tick.
 				// If we did, we limit the move to any carried-over leftover progress.
 				if (Move.lastMovePartCompletedTick < self.World.WorldTick)
-					progress += mobile.MovementSpeedForCell(mobile.ToCell);
+				{
+					var speed = mobile.MovementSpeedForCell(mobile.ToCell);
+
+					// Speed Grouping: scale the effective speed so this unit matches
+					// the slowest unit's base speed while preserving terrain modifiers.
+					if (Move.groupSpeedCap > 0 && mobile.Info.Speed > Move.groupSpeedCap)
+						speed = speed * Move.groupSpeedCap / mobile.Info.Speed;
+
+					progress += speed;
+				}
 
 				if (progress >= Distance)
 				{
