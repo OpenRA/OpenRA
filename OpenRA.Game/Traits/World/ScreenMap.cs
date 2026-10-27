@@ -190,22 +190,22 @@ namespace OpenRA.Traits
 				.Where(x => x.Bounds.IntersectsWith(r));
 		}
 
-		public IEnumerable<Actor> RenderableActorsInBox(int2 a, int2 b)
+		public IEnumerable<Actor> RenderableActorsInBox(Rectangle rect)
 		{
-			return partitionedRenderableActors.InBox(RectWithCorners(a, b)).Where(actorIsInWorld);
+			return partitionedRenderableActors.InBox(rect).Where(actorIsInWorld);
 		}
 
-		public IEnumerable<IEffect> RenderableEffectsInBox(int2 a, int2 b)
+		public IEnumerable<IEffect> RenderableEffectsInBox(Rectangle rect)
 		{
-			return partitionedRenderableEffects.InBox(RectWithCorners(a, b));
+			return partitionedRenderableEffects.InBox(rect);
 		}
 
-		public IEnumerable<FrozenActor> RenderableFrozenActorsInBox(Player p, int2 a, int2 b)
+		public IEnumerable<FrozenActor> RenderableFrozenActorsInBox(Player p, Rectangle rect)
 		{
 			if (p == null)
 				return NoFrozenActors;
 
-			return partitionedRenderableFrozenActors[p].InBox(RectWithCorners(a, b)).Where(frozenActorIsValid);
+			return partitionedRenderableFrozenActors[p].InBox(rect).Where(frozenActorIsValid);
 		}
 
 		public void TickRender()
