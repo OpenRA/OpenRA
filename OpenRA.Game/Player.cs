@@ -158,6 +158,8 @@ namespace OpenRA
 			inMissionMap = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
 			botInfos = World.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>();
 
+			var homeLocation = pr.Inits.GetOrDefault<HomeLocationInit>()?.Value ?? CPos.Zero;
+
 			// Real player or host-created bot
 			if (client != null)
 			{
@@ -171,7 +173,7 @@ namespace OpenRA
 				DisplayFaction = ResolveDisplayFaction(world, client.Faction);
 
 				var assignSpawnPoints = world.WorldActor.TraitOrDefault<IAssignSpawnPoints>();
-				HomeLocation = assignSpawnPoints?.AssignHomeLocation(world, client, playerRandom) ?? pr.HomeLocation;
+				HomeLocation = assignSpawnPoints?.AssignHomeLocation(world, client, playerRandom) ?? homeLocation;
 				SpawnPoint = assignSpawnPoints?.SpawnPointForPlayer(this) ?? client.SpawnPoint;
 				DisplaySpawnPoint = client.SpawnPoint;
 
@@ -190,7 +192,7 @@ namespace OpenRA
 				BotType = pr.Bot;
 				Faction = ResolveFaction(world, pr.Faction, playerRandom, false);
 				DisplayFaction = ResolveDisplayFaction(world, pr.Faction);
-				HomeLocation = pr.HomeLocation;
+				HomeLocation = homeLocation;
 				SpawnPoint = DisplaySpawnPoint = 0;
 				Handicap = pr.Handicap;
 			}
@@ -207,7 +209,11 @@ namespace OpenRA
 			// Therefore assign the uninitialized actor and run the Created callbacks
 			// by calling Initialize ourselves.
 			var playerActorType = world.Type == WorldType.Editor ? SystemActors.EditorPlayer : SystemActors.Player;
-			PlayerActor = new Actor(world, playerActorType.ToString(), [new OwnerInit(this)]);
+			var inits = new TypeDictionary(pr.Inits)
+			{
+				new OwnerInit(this)
+			};
+			PlayerActor = new Actor(world, playerActorType.ToString(), inits);
 			PlayerActor.Initialize(true);
 
 			Shroud = PlayerActor.Trait<Shroud>();
@@ -333,5 +339,14 @@ namespace OpenRA
 		}
 
 		#endregion
+	}
+
+	/// <summary>
+	/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera
+	/// location or choose the map edge for reinforcements.
+	/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index.
+	/// </summary>
+	public class HomeLocationInit(CPos value) : ValueActorInit<CPos>(value), ISingleInstanceInit
+	{
 	}
 }
