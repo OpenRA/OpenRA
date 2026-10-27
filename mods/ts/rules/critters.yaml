@@ -152,3 +152,5 @@ JFISH:
 		Type: Circle
 			Radius: 363
 			VerticalTopOffset: 768
+	FireWarheadsOnDeath:
+		Weapon: UnitExplode
