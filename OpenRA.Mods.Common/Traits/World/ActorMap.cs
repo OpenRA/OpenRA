@@ -187,6 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WDist LargestActorRadius { get; }
 		public WDist LargestBlockingActorRadius { get; }
+		public WDist LargestDetectionRange { get; }
 
 		public ActorMap(World world, ActorMapInfo info)
 		{
@@ -207,6 +208,8 @@ namespace OpenRA.Mods.Common.Traits
 			LargestActorRadius = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
 			var blockers = map.Rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>()).ToList();
 			LargestBlockingActorRadius = blockers.Count != 0 ? blockers.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius) : WDist.Zero;
+			var detectors = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<DetectCloakedInfo>()).ToList();
+			LargestDetectionRange = detectors.Count != 0 ? detectors.Max(d => d.Range) : WDist.Zero;
 		}
 
 		void INotifyCreated.Created(Actor self)
