@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -16,7 +18,7 @@ namespace OpenRA.Mods.Common.Commands
 {
 	[TraitLocation(SystemActors.World)]
 	[IncludeStaticFluentReferences(typeof(PlayerCommands))]
-	[Desc("Allows the player to pause or surrender the game via the chatbox. Attach this to the world actor.")]
+	[Desc("Allows the player to whisper to another player, pause or surrender the game via the chatbox. Attach this to the world actor.")]
 	public class PlayerCommandsInfo : TraitInfo<PlayerCommands> { }
 
 	public class PlayerCommands : IChatCommand, IWorldLoaded
@@ -27,6 +29,18 @@ namespace OpenRA.Mods.Common.Commands
 		[FluentReference]
 		const string SurrenderDescription = "description-surrender-description";
 
+		[FluentReference]
+		const string WhisperDescription = "description-whisper-description";
+
+		[FluentReference]
+		const string WhisperPlayerNotFound = "notification-whisper-player-not-found";
+
+		[FluentReference]
+		const string WhisperAmbiguousPlayer = "notification-whisper-ambiguous-player";
+
+		[FluentReference]
+		const string WhisperSpectator = "notification-whisper-spectator";
+
 		World world;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -34,6 +48,9 @@ namespace OpenRA.Mods.Common.Commands
 			world = w;
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
+
+			console.RegisterCommand("whisper", this);
+			help.RegisterHelp("whisper", WhisperDescription);
 
 			console.RegisterCommand("pause", this);
 			help.RegisterHelp("pause", PauseDescription);
@@ -46,6 +63,47 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			switch (name)
 			{
+				case "whisper":
+				{
+					var matches = world.LobbyInfo.Clients
+						.Where(c => !c.IsBot && !string.IsNullOrEmpty(c.Name)
+							&& arg.StartsWith(c.Name, StringComparison.Ordinal)
+							&& (arg.Length == c.Name.Length || arg[c.Name.Length] == ' '))
+						.OrderByDescending(c => c.Name.Length)
+						.ToList();
+
+					var target = matches.FirstOrDefault();
+					if (target == null)
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperPlayerNotFound));
+						break;
+					}
+
+					if (matches.Count(c => c.Name == target.Name) > 1)
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperAmbiguousPlayer));
+						break;
+					}
+
+					var targetPlayer = world.Players.FirstOrDefault(p => p.ClientIndex == target.Index && p.PlayerReference.Playable);
+					var senderSpectating = world.LocalPlayer == null || world.LocalPlayer.Spectating;
+					var targetSpectating = target.IsObserver || targetPlayer == null || targetPlayer.Spectating;
+					if (senderSpectating && !targetSpectating)
+					{
+						TextNotificationsManager.Debug(FluentProvider.GetMessage(WhisperSpectator));
+						break;
+					}
+
+					world.IssueOrder(new Order("Whisper", null, false)
+					{
+						IsImmediate = true,
+						TargetString = arg[target.Name.Length..].Trim(),
+						ExtraData = (uint)target.Index
+					});
+
+					break;
+				}
+
 				case "pause":
 					if (Game.IsHost || (world.LocalPlayer != null && world.LocalPlayer.WinState != WinState.Lost))
 						world.SetPauseState(!world.Paused);
