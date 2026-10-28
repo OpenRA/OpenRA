@@ -1,0 +1,48 @@
+c17:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\C17.ZIP
+	icon:
+		RemasteredFilename:
+
+tran:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\TRAN.ZIP
+	rotor:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\LROTOR.ZIP
+		RemasteredAlpha: 0.5
+	rotor2:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\RROTOR.ZIP
+		RemasteredAlpha: 0.5
+	slow-rotor:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\LROTOR.ZIP
+	slow-rotor2:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\RROTOR.ZIP
+	icon:
+		RemasteredFilename:
+
+heli:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\HELI.ZIP
+	rotor:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\LROTOR.ZIP
+		RemasteredAlpha: 0.5
+	slow-rotor:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\LROTOR.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	icon:
+		RemasteredFilename:
+
+orca:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\ORCA.ZIP
+	icon:
+		RemasteredFilename:
+
+a10:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\A10.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	icon:
+		RemasteredFilename:

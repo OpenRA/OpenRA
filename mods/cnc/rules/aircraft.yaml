@@ -226,8 +226,7 @@ C17:
 	Cloak:
 		InitialDelay: 0
 		CloakDelay: 0
-		CloakStyle: Palette
-		CloakedPalette: cloak
+		CloakStyle: Alpha
 		DetectionTypes: C17
 		RequiresCondition: global-C17-stealth
 	Contrail@1:

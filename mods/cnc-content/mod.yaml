@@ -26,6 +26,9 @@ ContentSourcesModContent:
 			de: modcontent-content-language-de
 			fr: modcontent-content-language-fr
 			jp: modcontent-content-language-jp
+		ArtworkStyle:
+			remastered: modcontent-content-artwork-style-remastered
+			classic: modcontent-content-artwork-style-classic
 	ContentSources:
 		remaster: modcontent-source-remaster
 			Origins:
@@ -34,12 +37,14 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: remastered, classic
 				ea-app: RegistryDirectory
 					RegistryKey: Petroglyph\CnCRemastered
 					RegistryValue: Install Dir
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: remastered, classic
 		tuc: modcontent-source-tuc
 			Origins:
 				steam-en: Steam
@@ -49,6 +54,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: classic
 				ea-app-en: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -57,6 +63,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: classic
 				steam-de: Steam
 					AppId: 2229830
 					IDFiles:
@@ -64,6 +71,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: de
 						VideoLanguage: de
+						ArtworkStyle: classic
 				ea-app-de: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -72,6 +80,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: de
 						VideoLanguage: de
+						ArtworkStyle: classic
 				steam-fr: Steam
 					AppId: 2229830
 					IDFiles:
@@ -79,6 +88,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: fr
 						VideoLanguage: fr
+						ArtworkStyle: classic
 				ea-app-fr: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -87,6 +97,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: fr
 						VideoLanguage: fr
+						ArtworkStyle: classic
 				steam-jp: Steam
 					AppId: 2229830
 					IDFiles:
@@ -94,6 +105,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: jp
 						VideoLanguage: jp
+						ArtworkStyle: classic
 				ea-app-jp: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -102,6 +114,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: jp
 						VideoLanguage: jp
+						ArtworkStyle: classic
 		freeware: modcontent-source-freeware
 			Origins:
 				freeware: CncFreeware
@@ -120,6 +133,7 @@ ContentSourcesModContent:
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: classic
 			RequiresQuickInstall: true
 	QuickInstall: modcontent-download-quickinstall
 		Path: ^SupportDir|Content/cnc/cnc-packages.zip

@@ -40,11 +40,13 @@ Background@CONTENT_PROMPT_PANEL:
 		Attributes:
 			AudioLanguage: AUDIO_LANGUAGE
 			VideoLanguage: VIDEO_LANGUAGE
+			ArtworkStyle: ARTWORK_STYLE
 		DiscAttributes:
 			GDI95: GDI_DISC
 			NOD95: NOD_DISC
 			COVERT: COVERT_DISC
 		Sources:
+			remaster: REMASTER_CONTAINER
 			freeware: FREEWARE_CONTAINER
 
 	X: (WINDOW_WIDTH - WIDTH) / 2
@@ -158,6 +160,41 @@ Background@CONTENT_PROMPT_PANEL:
 							Font: TinyBold
 							Align: Center
 							Text: modcontent-content-language-faq
+				Container@REMASTER_CONTAINER:
+					Width: PARENT_WIDTH - 24
+					Height: 73
+					Children:
+						Background@SECTION_HEADER:
+							X: 5
+							Width: PARENT_WIDTH - 10
+							Height: 13
+							Background: separator
+							ClickThrough: True
+							Children:
+								Label@LABEL:
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
+									Font: TinyBold
+									Align: Center
+									Text: modcontent-source-remaster
+						Container@ROW:
+							Width: PARENT_WIDTH - 20
+							X: 10
+							Y: 23
+							Height: 50
+							Children:
+								Container@ARTWORK_STYLE_CONTAINER:
+									Width: PARENT_WIDTH / 3 - 10
+									Children:
+										Label@ARTWORK_STYLE:
+											Width: PARENT_WIDTH
+											Height: 20
+											Text: modcontent-content-artwork-style
+										DropDownButton@ARTWORK_STYLE_DROPDOWN:
+											Y: 25
+											Width: PARENT_WIDTH
+											Height: 25
+											Font: Bold
 				Container@FREEWARE_CONTAINER:
 					Width: PARENT_WIDTH - 24
 					Height: 73

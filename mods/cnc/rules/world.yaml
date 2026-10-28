@@ -8,7 +8,7 @@
 		VictoryMusic: win1
 		DefeatMusic: nod_map1
 	DebugVisualizations:
-	TerrainRenderer:
+	RemasterTerrainRenderer:
 	TerrainGeometryOverlay:
 	ShroudRenderer:
 		ShroudVariants: shroud-typea, shroud-typeb, shroud-typec, shroud-typed
@@ -26,7 +26,7 @@
 			Road: 111
 			Bridge: 111
 			Tiberium: 78
-				PathingCost: 300
+				PathingCost: 3000
 			BlueTiberium: 78
 				PathingCost: 300
 			Beach: 89

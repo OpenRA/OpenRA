@@ -5,7 +5,7 @@ Metadata:
 	WebIcon32: https://www.openra.net/images/icons/cnc_32x32.png
 	WindowTitle: mod-windowtitle
 
-PackageFormats: Mix, ZipFile, ISO9660
+PackageFormats: Mix, MegV3, ZipFile, ISO9660
 
 FileSystem: ContentSourcesFileSystem
 	SystemPackages:
@@ -33,6 +33,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: remastered, classic
 				ea-app: RegistryDirectory
 					RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 					RegistryKey: Petroglyph\CnCRemastered
@@ -41,6 +42,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: remastered, classic
 			Packages:
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/CONQUER.MIX
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/SOUNDS.MIX
@@ -54,6 +56,11 @@ FileSystem: ContentSourcesFileSystem
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/GENERAL.MIX
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/MOVIES.MIX
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD2/MOVIES.MIX
+				data|Data/TEXTURES_RA_SRGB.MEG
+				data|Data/TEXTURES_TD_SRGB.MEG
+				data|Data/TEXTURES_COMMON_SRGB.MEG
+				cnc|bits/tilesets
+				cnc|bits/harvlost.zip
 		tuc:
 			Origins:
 				steam-en: Steam
@@ -64,6 +71,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: classic
 				ea-app-en: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -73,6 +81,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: classic
 				steam-de: Steam
 					AppId: 2229830
 					Mount: data
@@ -81,6 +90,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: de
 						VideoLanguage: de
+						ArtworkStyle: classic
 				ea-app-de: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -90,6 +100,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: de
 						VideoLanguage: de
+						ArtworkStyle: classic
 				steam-fr: Steam
 					AppId: 2229830
 					Mount: data
@@ -98,6 +109,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: fr
 						VideoLanguage: fr
+						ArtworkStyle: classic
 				ea-app-fr: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -107,6 +119,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: fr
 						VideoLanguage: fr
+						ArtworkStyle: classic
 				steam-jp: Steam
 					AppId: 2229830
 					Mount: data
@@ -115,6 +128,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: jp
 						VideoLanguage: jp
+						ArtworkStyle: classic
 				ea-app-jp: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -124,6 +138,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: jp
 						VideoLanguage: jp
+						ArtworkStyle: classic
 			Packages:
 				data|CONQUER.MIX
 				data|SOUNDS.MIX
@@ -158,6 +173,7 @@ FileSystem: ContentSourcesFileSystem
 					Attributes:
 						AudioLanguage: en
 						VideoLanguage: en
+						ArtworkStyle: classic
 			Packages:
 				data|CONQUER.MIX
 				data|SOUNDS.MIX
@@ -196,14 +212,23 @@ Rules:
 
 Sequences:
 	cnc|sequences/structures.yaml
+	cnc|sequences/structures-remastered.yaml
 	cnc|sequences/vehicles.yaml
+	cnc|sequences/vehicles-remastered.yaml
 	cnc|sequences/infantry.yaml
+	cnc|sequences/infantry-remastered.yaml
 	cnc|sequences/aircraft.yaml
+	cnc|sequences/aircraft-remastered.yaml
 	cnc|sequences/decorations.yaml
+	cnc|sequences/decorations-remastered.yaml
 	cnc|sequences/misc.yaml
+	cnc|sequences/misc-remastered.yaml
 	cnc|sequences/funpark.yaml
+	cnc|sequences/funpark-remastered.yaml
 	cnc|sequences/civilian.yaml
+	cnc|sequences/civilian-remastered.yaml
 	cnc|sequences/campaign.yaml
+	cnc|sequences/campaign-remastered.yaml
 
 TileSets:
 	cnc|tilesets/desert.yaml
@@ -366,6 +391,7 @@ Missions:
 
 MapGrid:
 	Type: Rectangular
+	EnableFrameBufferDownscale: true
 
 DefaultOrderGenerator: UnitOrderGenerator
 
@@ -373,16 +399,18 @@ SupportsMapsFrom: cnc
 
 SoundFormats: Aud, Wav
 
-SpriteFormats: ShpTD, TmpTD, ShpTS, TmpRA
+SpriteFormats: Tga, ShpTD, TmpTD, ShpTS, TmpRA, ShpRemastered, Dds, PngSheet
 
 VideoFormats: Vqa, Wsa
 
-TerrainFormat: DefaultTerrain
+TerrainFormat: RemasterTerrain
 
-SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
+SpriteSequenceFormat: RemasterSpriteSequence
+	BgraSheetSize: 8192
+	IndexedSheetSize: 512
 
 AssetBrowser:
-	SpriteExtensions: .shp, .tem, .win, .sno, .des
+	SpriteExtensions: .shp, .tem, .win, .sno, .des, .ZIP, .DDS, .TGA
 	AudioExtensions: .aud, .wav, .v00, .v01, .v02, .v03, .var
 	VideoExtensions: .vqa, .wsa
 

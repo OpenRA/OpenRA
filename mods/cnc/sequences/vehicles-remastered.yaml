@@ -1,0 +1,212 @@
+mcv:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MCV.ZIP
+	icon:
+		RemasteredFilename:
+
+mcv.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MCV.ZIP
+
+harv:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\HARV.ZIP
+	dock:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\PROC.ZIP
+		RemasteredStart: 12
+		RemasteredLength: 7
+		RemasteredMaskFilename: harvdock_dock_mask.png
+		RemasteredOffset: 80, -43
+	dock-loop:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\STRUCTURES\PROC.ZIP
+		RemasteredStart: 19
+		RemasteredLength: 1
+		RemasteredMaskFilename: harvdock_loop_mask.png
+		RemasteredOffset: 80, -43
+	icon:
+		RemasteredFilename:
+
+harv.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\HARV.ZIP
+
+bggy:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\BGGY.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	icon:
+		RemasteredFilename:
+
+bggy.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\BGGY.ZIP
+
+mtnk:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MTNK.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\GUNFIRE.ZIP
+	icon:
+		RemasteredFilename:
+
+mtnk.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MTNK.ZIP
+
+ltnk:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\LTNK.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\GUNFIRE.ZIP
+	icon:
+		RemasteredFilename:
+
+ltnk.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\LTNK.ZIP
+
+htnk:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\HTNK.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\GUNFIRE.ZIP
+	icon:
+		RemasteredFilename:
+
+htnk.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\HTNK.ZIP
+
+jeep:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\JEEP.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	icon:
+		RemasteredFilename:
+
+jeep.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\JEEP.ZIP
+
+bike:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\BIKE.ZIP
+	icon:
+		RemasteredFilename:
+
+bike.destroyed:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\BIKE.ZIP
+
+ftnk:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\FTNK.ZIP
+	muzzle:
+		Combine:
+			0:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-N.ZIP
+				RemasteredOffset: 16, 32
+			1:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-NW.ZIP
+				RemasteredOffset: 43, 37
+			2:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-W.ZIP
+				RemasteredOffset: 43, 11
+			3:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-SW.ZIP
+				RemasteredOffset: 37, -11
+			4:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-S.ZIP
+				RemasteredOffset: 16, -11
+			5:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-SE.ZIP
+				RemasteredOffset: -27, -11
+			6:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-E.ZIP
+				RemasteredOffset: -37, 11
+			7:
+				RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\FLAME-NE.ZIP
+				RemasteredOffset: -37, 43
+	icon:
+		RemasteredFilename:
+
+ftnk.destroyed:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\FTNK.ZIP
+
+mhq:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MHQ.ZIP
+	icon:
+		RemasteredFilename:
+
+msam:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MSAM.ZIP
+	icon:
+		RemasteredFilename:
+
+msam.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MSAM.ZIP
+
+mlrs:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MLRS.ZIP
+	icon:
+		RemasteredFilename:
+
+mlrs.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\MLRS.ZIP
+
+stnk:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\STNK.ZIP
+	icon:
+		RemasteredFilename:
+
+stnk.destroyed:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\STNK.ZIP
+
+arty:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\ARTY.ZIP
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\VFX\GUNFIRE.ZIP
+	icon:
+		RemasteredFilename:
+
+arty.destroyed:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\ARTY.ZIP
+
+apc:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\APC.ZIP
+	turret:
+		RemasteredFilename: apctur.png
+	turret-air:
+		RemasteredFilename: apctur.png
+	muzzle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	muzzle-air:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\COMMON\VFX\MINIGUN.ZIP
+	icon:
+		RemasteredFilename:
+apc.destroyed:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\APC.ZIP
+
+truck:
+	Defaults:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\TRUK.ZIP
+	icon:
+		RemasteredFilename:
+
+truck.destroyed:
+	idle:
+		RemasteredFilename: DATA\ART\TEXTURES\SRGB\TIBERIAN_DAWN\UNITS\TRUK.ZIP
