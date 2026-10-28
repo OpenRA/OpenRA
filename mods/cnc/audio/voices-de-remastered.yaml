@@ -1,0 +1,52 @@
+GenericVoice:
+	DefaultVariant: .WAV
+	Variants:
+		nod: .V01_DE-DE.WAV, .V03_DE-DE.WAV
+		gdi: .V01_DE-DE.WAV, .V03_DE-DE.WAV
+	Prefixes:
+		nod: DE-DE\TDR_SFX_UNT_
+		gdi: DE-DE\TDR_SFX_UNT_
+
+VehicleVoice:
+	DefaultVariant: .WAV
+	Variants:
+		nod: .V00_DE-DE.WAV, .V02_DE-DE.WAV
+		gdi: .V00_DE-DE.WAV, .V02_DE-DE.WAV
+	Prefixes:
+		nod: DE-DE\TDR_SFX_UNT_
+		gdi: DE-DE\TDR_SFX_UNT_
+	Voices:
+		Select: VEHIC1.V01_DE-DE, VEHIC1.V02_DE-DE, YESSIR1.V00_DE-DE, YESSIR1.V02_DE-DE, AWAIT1.V00_DE-DE, AWAIT1.V02_DE-DE, UNIT1.V00_DE-DE, UNIT1.V02_DE-DE, REPORT1.V00_DE-DE, REPORT1.V02_DE-DE
+	DisableVariants: Select
+
+CivilianMaleVoice:
+	Variants:
+		nod: _DE-DE.WAV
+		gdi: _DE-DE.WAV
+	Prefixes:
+		nod: DE-DE\TDR_SFX_UNT_
+		gdi: DE-DE\TDR_SFX_UNT_
+
+CivilianFemaleVoice:
+	Variants:
+		nod: _DE-DE.WAV
+		gdi: _DE-DE.WAV
+	Prefixes:
+		nod: DE-DE\TDR_SFX_UNT_
+		gdi: DE-DE\TDR_SFX_UNT_
+
+MoebiusVoice:
+	Variants:
+		nod: _DE-DE.WAV
+		gdi: _DE-DE.WAV
+	Prefixes:
+		nod: DE-DE\TDR_SFX_UNT_
+		gdi: DE-DE\TDR_SFX_UNT_
+
+CommandoVoice:
+	Variants:
+		nod: _DE-DE.WAV
+		gdi: _DE-DE.WAV
+	Prefixes:
+		nod: DE-DE\TDR_SFX_CMD_
+		gdi: DE-DE\TDR_SFX_CMD_
