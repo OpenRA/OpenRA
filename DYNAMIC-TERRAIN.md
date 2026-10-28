@@ -266,8 +266,13 @@ the workflow status is reported separately in the PR.
 
 The downstream TS consumer separately tests source road/rail/low bridge repair,
 source event 31 through Lua, ice masks, real crater geometry/LAT and delayed falling
-with cargo. Those are mod acceptance results, not additional assertions of this
-standalone engine fixture or a qualification of the full TS campaign.
+with cargo. On 28 October 2026 these were rechecked together on one production DLL:
+17 serial native fixtures, 572 fresh + 561 cold assertions and 660 network assertions,
+with matching subsequent replay events and complete two-client hashes/events.
+The consumer's observer builds and results pin that DLL and the engine binary
+hashes; failed or mixed inputs are rejected. These are mod acceptance results,
+not additional assertions of this standalone engine fixture or a qualification
+of source crew/debris/parachute effects, old-save migration or the full TS campaign.
 
 ### Historical negative controls
 
