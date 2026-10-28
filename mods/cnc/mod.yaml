@@ -7,7 +7,7 @@ Metadata:
 
 PackageFormats: Mix, MegV3, ZipFile, ISO9660
 
-FileSystem: ContentSourcesFileSystem
+FileSystem: RemasterFileSystem
 	SystemPackages:
 		^EngineDir
 		$cnc: cnc
@@ -31,18 +31,22 @@ FileSystem: ContentSourcesFileSystem
 					AppId: 1213210
 					Mount: data
 					Attributes:
-						AudioLanguage: en
+						AudioLanguage: en, de, fr
 						VideoLanguage: en
 						ArtworkStyle: remastered, classic
+						AudioStyle: remastered, classic
+						MusicStyle: remastered, classic
 				ea-app: RegistryDirectory
 					RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 					RegistryKey: Petroglyph\CnCRemastered
 					RegistryValue: Install Dir
 					Mount: data
 					Attributes:
-						AudioLanguage: en
+						AudioLanguage: en, de, fr
 						VideoLanguage: en
 						ArtworkStyle: remastered, classic
+						AudioStyle: remastered, classic
+						MusicStyle: remastered, classic
 			Packages:
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/CONQUER.MIX
 				data|Data/CNCDATA/TIBERIAN_DAWN/CD1/SOUNDS.MIX
@@ -59,6 +63,11 @@ FileSystem: ContentSourcesFileSystem
 				data|Data/TEXTURES_RA_SRGB.MEG
 				data|Data/TEXTURES_TD_SRGB.MEG
 				data|Data/TEXTURES_COMMON_SRGB.MEG
+				data|Data/SFX2D_EN-US.MEG
+				data|Data/SFX2D_DE-DE.MEG
+				data|Data/SFX2D_FR-FR.MEG
+				data|Data/SFX3D.MEG
+				data|Data/MUSIC.MEG
 				cnc|bits/tilesets
 				cnc|bits/harvlost.zip
 		tuc:
@@ -72,6 +81,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: en
 						VideoLanguage: en
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				ea-app-en: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -82,6 +93,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: en
 						VideoLanguage: en
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				steam-de: Steam
 					AppId: 2229830
 					Mount: data
@@ -91,6 +104,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: de
 						VideoLanguage: de
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				ea-app-de: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -101,6 +116,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: de
 						VideoLanguage: de
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				steam-fr: Steam
 					AppId: 2229830
 					Mount: data
@@ -110,6 +127,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: fr
 						VideoLanguage: fr
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				ea-app-fr: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -120,6 +139,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: fr
 						VideoLanguage: fr
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				steam-jp: Steam
 					AppId: 2229830
 					Mount: data
@@ -129,6 +150,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: jp
 						VideoLanguage: jp
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 				ea-app-jp: RegistryDirectory
 					RegistryKey: EA Games\CNC and The Covert Operations
 					RegistryValue: Install Dir
@@ -139,6 +162,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: jp
 						VideoLanguage: jp
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 			Packages:
 				data|CONQUER.MIX
 				data|SOUNDS.MIX
@@ -174,6 +199,8 @@ FileSystem: ContentSourcesFileSystem
 						AudioLanguage: en
 						VideoLanguage: en
 						ArtworkStyle: classic
+						AudioStyle: classic
+						MusicStyle: classic
 			Packages:
 				data|CONQUER.MIX
 				data|SOUNDS.MIX
@@ -187,6 +214,18 @@ FileSystem: ContentSourcesFileSystem
 				~gdi95|MOVIES.MIX
 				~nod95|MOVIES.MIX
 				~covert|SCORES.MIX
+	OverrideVoices:
+		remaster:
+			cnc|audio/voices-base.yaml
+			cnc|audio/voices-{AudioLanguage}-{AudioStyle}.yaml
+	OverrideNotifications:
+		remaster:
+			cnc|audio/notifications-base.yaml
+			cnc|audio/notifications-{AudioLanguage}-{AudioStyle}.yaml
+	OverrideMusic:
+		remaster:
+			cnc|audio/music-{MusicStyle}.yaml
+
 MapFolders:
 	cnc|maps: System
 	~^SupportDir|maps/cnc/{DEV_VERSION}: User

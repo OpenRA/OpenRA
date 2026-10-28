@@ -1,0 +1,64 @@
+GenericVoice:
+	DefaultVariant: .WAV
+	Variants:
+		nod: .V01_FR-FR.WAV, .V03_FR-FR.WAV
+		gdi: .V01_FR-FR.WAV, .V03_FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDC_SFX_UNT_
+		gdi: FR-FR\TDC_SFX_UNT_
+	Voices:
+		Die: TDC_SFX_NUYELL1, TDC_SFX_NUYELL3, TDC_SFX_NUYELL4, TDC_SFX_NUYELL5, TDC_SFX_NUYELL6
+		Burned: TDC_SFX_YELL1
+		Zapped: TDC_SFX_NUYELL3
+		Poisoned: TDC_SFX_NUYELL12
+
+VehicleVoice:
+	Variants:
+		nod: .V00_FR-FR.WAV, .V02_FR-FR.WAV
+		gdi: .V00_FR-FR.WAV, .V02_FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDC_SFX_UNT_
+		gdi: FR-FR\TDC_SFX_UNT_
+
+CivilianMaleVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDC_SFX_UNT_
+		gdi: FR-FR\TDC_SFX_UNT_
+
+CivilianFemaleVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDC_SFX_UNT_
+		gdi: FR-FR\TDC_SFX_UNT_
+
+MoebiusVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDC_SFX_UNT_
+		gdi: FR-FR\TDC_SFX_UNT_
+
+CommandoVoice:
+	Variants:
+		nod: _FR-FR.WAV
+		gdi: _FR-FR.WAV
+	Prefixes:
+		nod: FR-FR\TDC_SFX_CMD_
+		gdi: FR-FR\TDC_SFX_CMD_
+
+DinoVoice:
+	DefaultVariant: .WAV
+	Voices:
+		Select: TDC_SFX_DINOYES
+		Move: TDC_SFX_DINOMOUT
+		Attack: TDC_SFX_DINOATK1
+		Die: TDC_SFX_DINODIE1
+		Burned: TDC_SFX_DINODIE1
+		Zapped: TDC_SFX_DINODIE1
+		Poisoned: TDC_SFX_DINODIE1

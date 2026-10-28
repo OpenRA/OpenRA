@@ -1,0 +1,69 @@
+GenericVoice:
+	DefaultVariant: .WAV
+	Voices:
+		Select: ACKNO, AWAIT1, READY, REPORT1, YESSIR1
+		Action: AFFIRM1, RITAWAY, UGOTIT, ROGER, MOVOUT1
+		Attack: AFFIRM1, RITAWAY, UGOTIT, NOPROB, YESSIR1
+		Die: TDR_SFX_NUYELL1, TDR_SFX_NUYELL3, TDR_SFX_NUYELL4, TDR_SFX_NUYELL5, TDR_SFX_NUYELL6
+		Burned: TDR_SFX_YELL1
+		Zapped: TDR_SFX_NUYELL3
+		Poisoned: TDR_SFX_NUYELL12
+	DisableVariants: Die, Burned, Zapped, Poisoned
+	DisablePrefixes: Die, Burned, Zapped, Poisoned
+
+VehicleVoice:
+	Voices:
+		Select: VEHIC1, YESSIR1, AWAIT1, UNIT1, REPORT1
+		Action: ACKNO, AFFIRM1, MOVOUT1
+		Attack: ACKNO, AFFIRM1, YESSIR1
+		Unload: MOVOUT1, AFFIRM1
+
+CivilianMaleVoice:
+	Voices:
+		Select: GUYYEAH1
+		Action: GUYOKAY1
+		Die: NUYELL1, NUYELL3, NUYELL4, NUYELL5, NUYELL6
+		Burned: YELL1
+		Zapped: NUYELL3
+		Poisoned: NUYELL12
+
+CivilianFemaleVoice:
+	Voices:
+		Select: GIRLYEAH
+		Action: GIRLOKAY
+		Die: NUYELL1, NUYELL3, NUYELL4, NUYELL5, NUYELL6
+		Burned: YELL1
+		Zapped: NUYELL3
+		Poisoned: NUYELL12
+
+MoebiusVoice:
+	Voices:
+		Select: MCOMND1, MHELLO1, MYES1, MHMMM1
+		Action: MYESYES1, MCOURSE1, MTHANKS1, MTIBER1, MPLAN3
+		Die: NUYELL1, NUYELL3, NUYELL4, NUYELL5, NUYELL6
+		Burned: YELL1
+		Zapped: NUYELL3
+		Poisoned: NUYELL12
+
+CommandoVoice:
+	Voices:
+		Select: YEAH1, YES1, YO1
+		Action: ONIT1, GOTIT1, NOPRBLM1
+		Demolish: BOMBIT1
+		Die: RAMYELL1
+		Burned: RAMYELL1
+		Zapped: RAMYELL1
+		Poisoned: RAMYELL1
+		Build: ROKROLL1, CMON1
+		Kill: KEEPEM1, LAUGH1, LEFTY1, TUFFGUY1
+
+DinoVoice:
+	DefaultVariant: .WAV
+	Voices:
+		Select: TDR_SFX_DINOYES
+		Move: TDR_SFX_DINOMOUT
+		Attack: TDR_SFX_DINOATK1
+		Die: TDR_SFX_DINODIE1
+		Burned: TDR_SFX_DINODIE1
+		Zapped: TDR_SFX_DINODIE1
+		Poisoned: TDR_SFX_DINODIE1

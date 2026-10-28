@@ -41,6 +41,8 @@ Background@CONTENT_PROMPT_PANEL:
 			AudioLanguage: AUDIO_LANGUAGE
 			VideoLanguage: VIDEO_LANGUAGE
 			ArtworkStyle: ARTWORK_STYLE
+			AudioStyle: AUDIO_STYLE
+			MusicStyle: MUSIC_STYLE
 		DiscAttributes:
 			GDI95: GDI_DISC
 			NOD95: NOD_DISC
@@ -191,6 +193,32 @@ Background@CONTENT_PROMPT_PANEL:
 											Height: 20
 											Text: modcontent-content-artwork-style
 										DropDownButton@ARTWORK_STYLE_DROPDOWN:
+											Y: 25
+											Width: PARENT_WIDTH
+											Height: 25
+											Font: Bold
+								Container@AUDIO_STYLE_CONTAINER:
+									X: (PARENT_WIDTH - WIDTH) / 2
+									Width: PARENT_WIDTH / 3 - 10
+									Children:
+										Label@AUDIO_STYLE:
+											Width: PARENT_WIDTH
+											Height: 20
+											Text: modcontent-content-audio-style
+										DropDownButton@AUDIO_STYLE_DROPDOWN:
+											Y: 25
+											Width: PARENT_WIDTH
+											Height: 25
+											Font: Bold
+								Container@MUSIC_STYLE_CONTAINER:
+									X: PARENT_WIDTH - WIDTH
+									Width: PARENT_WIDTH / 3 - 10
+									Children:
+										Label@MUSIC_STYLE:
+											Width: PARENT_WIDTH
+											Height: 20
+											Text: modcontent-content-music-style
+										DropDownButton@MUSIC_STYLE_DROPDOWN:
 											Y: 25
 											Width: PARENT_WIDTH
 											Height: 25
