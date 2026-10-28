@@ -338,7 +338,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor Peek() { return cargo[^1]; }
 
-		public Actor Unload(Actor self, Actor passenger = null)
+		public Actor Unload(Actor self, Actor passenger = null) => DetachPassenger(self, passenger, true);
+
+		/// <summary>
+		/// Removes a passenger for disposal by the caller, without changing facing or
+		/// sending exit notifications. Releases cargo weight, transport conditions and
+		/// Passenger.Transport, but does not add the actor to the world or dispose it.
+		/// Passenger-side cargo conditions remain until disposal. Use Unload for survivors.
+		/// </summary>
+		public Actor RemovePassenger(Actor self, Actor passenger)
+		{
+			ArgumentNullException.ThrowIfNull(passenger);
+			return DetachPassenger(self, passenger, false);
+		}
+
+		Actor DetachPassenger(Actor self, Actor passenger, bool notify)
 		{
 			passenger ??= cargo[^1];
 			if (!cargo.Remove(passenger))
@@ -346,13 +360,16 @@ namespace OpenRA.Mods.Common.Traits
 
 			totalWeight -= GetWeight(passenger);
 
-			SetPassengerFacing(passenger);
+			if (notify)
+			{
+				SetPassengerFacing(passenger);
 
-			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
-				npe.OnPassengerExited(self, passenger);
+				foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
+					npe.OnPassengerExited(self, passenger);
 
-			foreach (var nec in passenger.TraitsImplementing<INotifyExitedCargo>())
-				nec.OnExitedCargo(passenger, self);
+				foreach (var nec in passenger.TraitsImplementing<INotifyExitedCargo>())
+					nec.OnExitedCargo(passenger, self);
+			}
 
 			var p = passenger.Trait<Passenger>();
 			p.Transport = null;
