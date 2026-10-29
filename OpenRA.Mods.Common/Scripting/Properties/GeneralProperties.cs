@@ -74,11 +74,10 @@ namespace OpenRA.Mods.Common.Scripting
 			return Self.HasScriptProperty(name);
 		}
 
-		[Desc("Render a target flash on the actor.")]
-		public void Flash(Color color, int count = 2, int interval = 2, int delay = 0)
+		[Desc("Render a target flash on the actor. Alpha controls opacity (0 = transparent, 1 = opaque).")]
+		public void Flash(Color color, int count = 2, int interval = 2, int delay = 0, float alpha = 0.5f)
 		{
-			// TODO: We can't use floats with Lua, so use the default 0.5f here
-			Self.World.Add(new FlashTarget(Self, color, 0.5f, count, interval, delay));
+			Self.World.Add(new FlashTarget(Self, color, alpha, count, interval, delay));
 		}
 
 		[Desc("The effective (displayed) owner of the actor. " +
