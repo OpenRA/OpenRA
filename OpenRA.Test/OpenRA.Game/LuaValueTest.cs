@@ -25,42 +25,7 @@ namespace OpenRA.Test
 			public float Value { get; set; }
 			public float? OptionalValue { get; set; }
 
-			public float SetValue(float value = 0.5f)
-			{
-				Value = value;
-				return Value;
-			}
-		}
-
-		[TestCase(0.0)]
-		[TestCase(1.25)]
-		[TestCase(-0.5)]
-		[TestCase((double)float.MaxValue)]
-		[TestCase(double.NaN)]
-		[TestCase(double.PositiveInfinity)]
-		public void LuaNumberConvertsToSingle(double number)
-		{
-			using var value = new LuaNumber(number);
-			Assert.That(value.TryGetClrValue<float>(out var actual), Is.True);
-			Assert.That(actual, Is.EqualTo((float)number));
-		}
-
-		[Test]
-		public void LuaNumberConvertsToNullableSingle()
-		{
-			using var value = new LuaNumber(1.25);
-			Assert.That(value.TryGetClrValue<float?>(out var actual), Is.True);
-			Assert.That(actual, Is.EqualTo(1.25f));
-		}
-
-		[TestCase(0f)]
-		[TestCase(1.25f)]
-		[TestCase(float.MaxValue)]
-		public void SingleConvertsToLuaNumber(float number)
-		{
-			using var value = number.ToLuaValue(null);
-			Assert.That(value, Is.TypeOf<LuaNumber>());
-			Assert.That(value.ToNumber().Value, Is.EqualTo((double)number));
+			public float SetValue(float value = 0.5f) => Value = value;
 		}
 
 		[TestCase(typeof(double))]
@@ -75,7 +40,12 @@ namespace OpenRA.Test
 			Assert.That(actual, Is.EqualTo(1));
 		}
 
+		[TestCase("return setValue(0)", 0f)]
 		[TestCase("return setValue(1.25)", 1.25f)]
+		[TestCase("return setValue(-0.5)", -0.5f)]
+		[TestCase("return setValue(3.4028234663852886e38)", float.MaxValue)]
+		[TestCase("return setValue(0 / 0)", float.NaN)]
+		[TestCase("return setValue(math.huge)", float.PositiveInfinity)]
 		[TestCase("return setValue()", 0.5f)]
 		public void SingleMethodCanBeCalledFromLua(string script, float expected)
 		{
@@ -95,27 +65,21 @@ namespace OpenRA.Test
 
 		[TestCase(nameof(SingleValue.Value))]
 		[TestCase(nameof(SingleValue.OptionalValue))]
-		public void SinglePropertyCanBeReadAndWritten(string name)
+		public void SinglePropertyAcceptsNumbersOnly(string name)
 		{
-			var target = new SingleValue();
-			var wrapper = new ScriptMemberWrapper(null, target, typeof(SingleValue).GetProperty(name));
+			var wrapper = new ScriptMemberWrapper(null, new SingleValue(), typeof(SingleValue).GetProperty(name));
 			using var input = new LuaNumber(1.25);
 			wrapper.Set(input);
 
 			using var output = wrapper.Get(null);
 			Assert.That(output, Is.TypeOf<LuaNumber>());
-			Assert.That(output.ToNumber().Value, Is.EqualTo(1.25));
-		}
+			Assert.That(output.TryGetClrValue<float?>(out var actual), Is.True);
+			Assert.That(actual, Is.EqualTo(1.25f));
 
-		[Test]
-		public void SinglePropertyRejectsNumericStrings()
-		{
-			var target = new SingleValue { Value = 0.5f };
-			var wrapper = new ScriptMemberWrapper(null, target, typeof(SingleValue).GetProperty(nameof(SingleValue.Value)));
-			using var value = new LuaString("1.25");
-
-			Assert.That(() => wrapper.Set(value), Throws.TypeOf<LuaException>());
-			Assert.That(target.Value, Is.EqualTo(0.5f));
+			using var invalid = new LuaString("2.5");
+			Assert.That(() => wrapper.Set(invalid), Throws.TypeOf<LuaException>());
+			using var unchanged = wrapper.Get(null);
+			Assert.That(unchanged.ToNumber().Value, Is.EqualTo(1.25));
 		}
 
 		[Test]
