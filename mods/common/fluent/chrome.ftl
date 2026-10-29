@@ -287,6 +287,17 @@ button-command-bar-attack-move =
 
     Left-click icon then right-click on target location.
 
+button-command-bar-attack-move-as-move =
+    .tooltip = Move
+    .tooltipdesc =
+    Selected units will move to the desired location
+    without automatically engaging enemies encountered en route.
+
+    Attack Move (attacking any enemies encountered en route)
+    is the default when no key is held.
+
+    Left-click icon then right-click on target location.
+
 button-command-bar-guard =
     .tooltip = Guard
     .tooltipdesc =
@@ -726,6 +737,7 @@ button-hotkey-remap-dialog-reset =
 ## settings-input.yaml
 label-zoom-modifier-container = Zoom Modifier:
 checkbox-alternate-scroll-container = Alternate Mouse Panning
+checkbox-attackmove-default-container = Swap default: Move / Attack Move
 checkbox-lockmouse-container = Lock Mouse to Window
 label-mouse-scroll-type-container = Pan Behaviour:
 label-scrollspeed-slider-container-scroll-speed = Pan Speed:
