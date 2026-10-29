@@ -121,8 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.Facing.HasValue && DeployState != DeployState.Undeployed)
 			{
 				var facing = self.TraitOrDefault<IFacing>();
-				if (facing != null)
-					facing.Facing = Info.Facing.Value;
+				facing?.Facing = Info.Facing.Value;
 			}
 
 			switch (DeployState)

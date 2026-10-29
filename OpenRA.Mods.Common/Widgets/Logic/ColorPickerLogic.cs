@@ -157,26 +157,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Store color button
 			var storeButton = widget.Get<ButtonWidget>("STORE_BUTTON");
-			if (storeButton != null)
+			storeButton?.OnClick = () =>
 			{
-				storeButton.OnClick = () =>
-				{
-					// Update the custom color list:
-					//  - Remove any duplicates of the new color
-					//  - Add the new color to the end
-					//  - Save the last N colors
-					Game.Settings.Player.CustomColors = Game.Settings.Player.CustomColors
-						.Where(c => c != mixer.Color)
-						.Append(mixer.Color)
-						.Reverse().Take(paletteCustomRows * paletteCols).Reverse()
-						.ToImmutableArray();
-					Game.Settings.Save();
+				// Update the custom color list:
+				//  - Remove any duplicates of the new color
+				//  - Add the new color to the end
+				//  - Save the last N colors
+				Game.Settings.Player.CustomColors = Game.Settings.Player.CustomColors
+					.Where(c => c != mixer.Color)
+					.Append(mixer.Color)
+					.Reverse().Take(paletteCustomRows * paletteCols).Reverse()
+					.ToImmutableArray();
+				Game.Settings.Save();
 
-					// Flash the palette tab to show players that something has happened
-					if (!paletteTabOpenedLast)
-						paletteTabHighlighted = 4;
-				};
-			}
+				// Flash the palette tab to show players that something has happened
+				if (!paletteTabOpenedLast)
+					paletteTabHighlighted = 4;
+			};
 
 			// Attach logic to preview actor.
 			extraLogic(widget);

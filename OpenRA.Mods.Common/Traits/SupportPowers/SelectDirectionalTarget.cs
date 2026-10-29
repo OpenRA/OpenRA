@@ -35,7 +35,6 @@ namespace OpenRA.Mods.Common.Traits
 		int2 targetLocation;
 		Vector2 dragDirection;
 		bool activated;
-		bool dragStarted;
 		Arrow currentArrow;
 		readonly MouseAttachmentWidget mouseAttachment;
 		readonly DirectionalSupportPowerInfo info;
@@ -89,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				currentArrow = GetArrow(angle);
 
 				mouseAttachment.SetAttachment(targetLocation, currentArrow.Sprite, info.DirectionArrowPalette);
-				dragStarted = true;
+				IsOutsideDragZone = true;
 			}
 
 			if (mi.Button == ActionButton && mi.Event == MouseInputEvent.Up)
@@ -113,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IOrderGenerator.SelectionChanged(World world, IEnumerable<Actor> selected) { }
 
-		bool IsOutsideDragZone => dragStarted && dragDirection.Length() > MinDragThreshold;
+		bool IsOutsideDragZone { get => field && dragDirection.Length() > MinDragThreshold; set; }
 
 		IEnumerable<IRenderable> IOrderGenerator.Render(WorldRenderer wr, World world) { yield break; }
 

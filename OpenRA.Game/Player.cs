@@ -84,7 +84,6 @@ namespace OpenRA
 		readonly INotifyPlayerDisconnected[] notifyDisconnected;
 
 		readonly IReadOnlyCollection<IBotInfo> botInfos;
-		string resolvedPlayerName;
 
 		// Each player is identified with a unique bit in the set
 		// Cache masks for the player's index and ally/enemy player indices for performance.
@@ -108,8 +107,8 @@ namespace OpenRA
 		{
 			get
 			{
-				resolvedPlayerName ??= ResolvePlayerName();
-				return resolvedPlayerName;
+				field ??= ResolvePlayerName();
+				return field;
 			}
 		}
 

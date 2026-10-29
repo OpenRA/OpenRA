@@ -237,8 +237,7 @@ namespace OpenRA.Graphics
 		public void Dispose()
 		{
 			worldRenderer.PaletteInvalidated -= UpdatePaletteIndices;
-			if (worldRenderer.TerrainLighting != null)
-				worldRenderer.TerrainLighting.CellChanged -= UpdateTint;
+			worldRenderer.TerrainLighting?.CellChanged -= UpdateTint;
 
 			vertexBuffer.Dispose();
 

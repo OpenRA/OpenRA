@@ -134,7 +134,7 @@ namespace OpenRA.Graphics
 		{
 			var si = 0;
 			var di = y * stride + x;
-			var d = MemoryMarshal.Cast<byte, uint>(dest);
+			var d = MemoryMarshal.Cast<byte, uint>(dest.AsSpan());
 
 			// SpriteFrameType.Brga32 is a common source format, and it matches the destination format.
 			// Provide a fast past that just performs memory copies.
@@ -211,7 +211,7 @@ namespace OpenRA.Graphics
 
 			var si = 0;
 			var di = y * stride + x;
-			var d = MemoryMarshal.Cast<byte, uint>(destData);
+			var d = MemoryMarshal.Cast<byte, uint>(destData.AsSpan());
 
 			for (var h = 0; h < height; h++)
 			{

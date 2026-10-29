@@ -35,7 +35,6 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			readonly bool useShadow;
 			readonly bool convertShroudToFog;
 			readonly Color remap;
-			byte[] data;
 
 			public RemappableFrame(Frame inner, bool useShadow = true, bool convertShroudToFog = false, Color remap = default)
 			{
@@ -49,10 +48,10 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			{
 				get
 				{
-					if (data == null)
+					if (field == null)
 					{
 						var pixelCount = inner.Size.Width * inner.Size.Height;
-						data = new byte[4 * pixelCount];
+						field = new byte[4 * pixelCount];
 
 						var palette = inner.Palette;
 						if (useShadow || convertShroudToFog || remap != default)
@@ -88,7 +87,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 						}
 					}
 
-					return data;
+					return field;
 				}
 			}
 
@@ -142,7 +141,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 					Data = new byte[width * height * 4];
 					Type = SpriteFrameType.Bgra32;
 
-					var data = MemoryMarshal.Cast<byte, uint>(Data);
+					var data = MemoryMarshal.Cast<byte, uint>(Data.AsSpan());
 					s.ReadBytes(Data.AsSpan()[..(Data.Length / 2)]);
 					for (var i = width * height - 1; i >= 0; i--)
 					{
@@ -164,7 +163,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 					s.ReadUInt32();
 
 					Palette = new uint[256];
-					var palette = MemoryMarshal.Cast<uint, byte>(Palette);
+					var palette = MemoryMarshal.Cast<uint, byte>(Palette.AsSpan());
 					s.ReadBytes(palette[..(palette.Length / 2)]);
 					for (var i = 255; i >= 0; i--)
 					{

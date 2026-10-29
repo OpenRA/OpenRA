@@ -372,8 +372,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var passengerFacing = passenger.TraitOrDefault<IFacing>();
-			if (passengerFacing != null)
-				passengerFacing.Facing = facing.Value.Facing + Info.PassengerFacing;
+			passengerFacing?.Facing = facing.Value.Facing + Info.PassengerFacing;
 		}
 
 		public void Load(Actor self, Actor a)

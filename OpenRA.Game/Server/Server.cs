@@ -1388,8 +1388,7 @@ namespace OpenRA.Server
 					if (p != null)
 						gameInfo.Players.Add(p);
 
-				if (recorder != null)
-					recorder.Metadata = new ReplayMetadata(gameInfo);
+				recorder?.Metadata = new ReplayMetadata(gameInfo);
 
 				SyncLobbyInfo();
 
