@@ -81,7 +81,7 @@ namespace OpenRA
 				while (reader.TryRead(out var item))
 					WriteValue(item);
 
-				Thread.Sleep(1);
+				Thread.Sleep(20);
 			}
 
 			while (reader.TryRead(out var item))
