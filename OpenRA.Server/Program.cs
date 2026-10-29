@@ -89,6 +89,11 @@ namespace OpenRA.Server
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
 			WriteLineWithTimeStamp($"Starting dedicated server for mod: {modID}");
+
+			// Remember whether a map was explicitly specified at launch.
+			// If yes, always restore that map on restart instead of the last played one.
+			var initialMap = settings.Map;
+
 			while (true)
 			{
 				// HACK: The engine code *still* assumes that Game.ModData is set
@@ -106,6 +111,17 @@ namespace OpenRA.Server
 					if (server.State == ServerState.GameStarted && server.Conns.Count < 1)
 					{
 						WriteLineWithTimeStamp("No one is playing, shutting down...");
+
+						// If no map was specified at launch, preserve the last used map so the
+						// next instance starts on the same map. If a map was specified at launch,
+						// always revert to that one.
+						if (string.IsNullOrEmpty(initialMap))
+						{
+							var lastMap = server.LobbyInfo.GlobalSettings.Map;
+							if (!string.IsNullOrEmpty(lastMap))
+								settings.Map = lastMap;
+						}
+
 						server.Shutdown();
 						break;
 					}
