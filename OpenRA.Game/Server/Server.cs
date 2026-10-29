@@ -660,6 +660,9 @@ namespace OpenRA.Server
 
 						events.Add(new CallbackEvent(() =>
 						{
+							if (!Conns.Contains(newConn) || newConn.Validated)
+								return;
+
 							var notAuthenticated = Type == ServerType.Dedicated && profile == null && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Count > 0);
 							var blacklisted = Type == ServerType.Dedicated && profile != null && Settings.ProfileIDBlacklist.Contains(profile.ProfileID);
 							var notWhitelisted = Type == ServerType.Dedicated && Settings.ProfileIDWhitelist.Count > 0 &&
@@ -1000,11 +1003,14 @@ namespace OpenRA.Server
 				// Anything else may be an attempt to exploit the server
 				if (!conn.Validated)
 				{
-					if (o.OrderString == "HandshakeResponse")
+					if (o.OrderString == "HandshakeResponse" && !conn.HandshakeReceived)
+					{
+						conn.HandshakeReceived = true;
 						ValidateClient(conn, o.TargetString, o.OrderString);
+					}
 					else
 					{
-						Log.Write("server", $"Rejected connection from {conn.EndPoint}; Order `{o.OrderString}` is not a `HandshakeResponse`.");
+						Log.Write("server", $"Rejected connection from {conn.EndPoint}; unexpected order `{o.OrderString}` before validation.");
 						DropClient(conn);
 					}
 
