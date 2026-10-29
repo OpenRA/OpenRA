@@ -188,42 +188,6 @@ carryall.reinforce:
 	Cargo:
 		MaxWeight: 10
 
-combat_tank_a:
-	Buildable:
-		Prerequisites: ~heavy_factory, ~player.atreides
-
-combat_tank_h:
-	Buildable:
-		Prerequisites: ~heavy_factory, ~player.harkonnen
-
-combat_tank_a.starport:
-	Buildable:
-		Prerequisites: ~starport, ~player.atreides
-
-combat_tank_h.starport:
-	Buildable:
-		Prerequisites: ~starport, ~player.harkonnen
-
-sonic_tank:
-	Buildable:
-		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.atreides
-
-devastator:
-	Buildable:
-		Prerequisites: ~heavy_factory, research_centre, ~techlevel.high, ~player.harkonnen
-
-high_tech_factory:
-	AirstrikePower:
-		Prerequisites: upgrade.hightech
-
-upgrade.hightech:
-	Buildable:
-		Prerequisites: ~hightech.atreides
-
-sardaukar:
-	Buildable:
-		Prerequisites: ~barracks, ~player.corrino
-
 mpsardaukar:
 	Buildable:
 		Prerequisites: ~disabled
