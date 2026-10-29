@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 using System.Threading;
@@ -24,11 +25,12 @@ namespace OpenRA
 		static FluentBundle modFluentBundle;
 		static FluentBundle mapFluentBundle;
 
-		public static void Initialize(Manifest manifest, IReadOnlyFileSystem fileSystem)
+		public static void Initialize(Manifest manifest, IReadOnlyFileSystem fileSystem, string language = "en")
 		{
 			lock (SyncObject)
 			{
-				modFluentBundle = new FluentBundle(manifest.FluentCulture, manifest.FluentMessages, fileSystem);
+				var allPaths = BuildLanguagePaths(manifest.FluentMessages, fileSystem, language);
+				modFluentBundle = new FluentBundle(language, allPaths, fileSystem);
 				if (fileSystem is Map map && map.FluentMessageDefinitions != null)
 				{
 					var files = ImmutableArray<string>.Empty;
@@ -46,9 +48,32 @@ namespace OpenRA
 						text = builder.ToString();
 					}
 
-					mapFluentBundle = new FluentBundle(manifest.FluentCulture, files, fileSystem, text);
+					files = BuildLanguagePaths(files, fileSystem, language);
+					mapFluentBundle = new FluentBundle(language, files, fileSystem, text);
 				}
 			}
+		}
+
+		// Later paths override earlier ones. English stays the fallback; language files overlay it.
+		internal static ImmutableArray<string> BuildLanguagePaths(ImmutableArray<string> basePaths, IReadOnlyFileSystem fileSystem, string language)
+		{
+			if (string.IsNullOrEmpty(language) || language == "en")
+				return basePaths;
+
+			var paths = new List<string>(basePaths.Length * 2);
+			paths.AddRange(basePaths);
+			foreach (var basePath in basePaths)
+			{
+				var slash = basePath.LastIndexOf('/');
+				var langPath = slash < 0
+					? language + "/" + basePath
+					: string.Concat(basePath.AsSpan(0, slash + 1), language, "/", basePath.AsSpan(slash + 1));
+
+				if (fileSystem.Exists(langPath))
+					paths.Add(langPath);
+			}
+
+			return paths.ToImmutableArray();
 		}
 
 		public static string GetMessage(string key, params object[] args)
