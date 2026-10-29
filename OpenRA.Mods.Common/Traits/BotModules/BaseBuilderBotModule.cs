@@ -277,8 +277,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (--assignRallyPointsTicks <= 0)
 			{
 				assignRallyPointsTicks = Math.Max(2, Info.AssignRallyPointsInterval);
-				foreach (var rp in world.ActorsWithTrait<RallyPoint>().Where(rp => rp.Actor.Owner == player))
-					rallyPoints.Push(rp);
+				foreach (var rp in world.ActorsWithTraitAsIterator<RallyPoint>())
+				{
+					if (rp.Actor.Owner == player)
+						rallyPoints.Push(rp);
+				}
 			}
 			else
 			{
