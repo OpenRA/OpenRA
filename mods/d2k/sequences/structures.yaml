@@ -541,6 +541,66 @@ refinery.atreides:
 		Tick: 100
 		BlendMode: Additive
 
+refinery_nw.atreides:
+	idle:
+		Filename: refineryangles/refineryatreidesbottom_nw.png
+		Offset: 12,18
+		ZOffset: 0
+		Remap: 54F94B
+	idle-middle:
+		Filename: refineryangles/refineryatreidesmiddle_nw.png
+		Offset: 12,18
+		Remap: 54F94B
+	idle-top:
+		Filename: refineryangles/refineryatreidestop_nw.png
+		Offset: 12,18
+		Remap: 54F94B
+		ZOffset: 1024
+	damaged-idle:
+		Filename: refineryangles/refineryatreidesbottom_nw.png
+		Offset: 12,18
+		ZOffset: -1024
+		Remap: 54F94B
+	damaged-idle-top:
+		Filename: refineryangles/refineryatreidestopdamaged_nw.png
+		Offset: 12,18
+		Remap: 54F94B
+		ZOffset: 1024
+	bib:
+		Filename: BLOXBASE.R16
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete:
+		Filename: BLOXBASE.R16
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
+	make:
+		Filename: DATA.R16
+		Start: 4495
+		Length: 11
+		Offset: -54,90
+		ZOffset: 1500
+	crumble-overlay:
+		Filename: DATA.R16
+		Start: 4505
+		Length: 12
+		Offset: -54,90
+		Tick: 100
+		ZOffset: 1500
+	icon:
+		Filename: DATA.R16
+		Start: 4330
+		Offset: -30,-24
+	smoke:
+		Filename: DATA.R16
+		Start: 4138
+		Length: 14
+		Offset: 13, 0
+		Tick: 100
+		BlendMode: Additive
+
 silo.atreides:
 	idle:
 		Filename: DATA.R16
@@ -1223,6 +1283,66 @@ refinery.harkonnen:
 		Tick: 100
 		BlendMode: Additive
 
+refinery_nw.harkonnen:
+	idle:
+		Filename: refineryangles/refineryharkonnenbottom_nw.png
+		Offset: 10,22
+		ZOffset: 0
+		Remap: 54F94B
+	idle-middle:
+		Filename: refineryangles/refineryharkonnenmiddle_nw.png
+		Offset: 10,22
+		Remap: 54F94B
+	idle-top:
+		Filename: refineryangles/refineryharkonnentop_nw.png
+		Offset: 10,22
+		Remap: 54F94B
+		ZOffset: 1024
+	damaged-idle:
+		Filename: refineryangles/refineryharkonnenbottom_nw.png
+		Offset: 10,22
+		ZOffset: -1024
+		Remap: 54F94B
+	damaged-idle-top:
+		Filename: refineryangles/refineryharkonnendamaged_nw.png
+		Offset: 10,22
+		ZOffset: 1024
+		Remap: 54F94B
+	bib:
+		Filename: BLOXBASE.R16
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete:
+		Filename: BLOXBASE.R16
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
+	icon:
+		Filename: DATA.R16
+		Start: 4331
+		Offset: -30,-24
+	crumble-overlay:
+		Filename: DATA.R16
+		Start: 4505
+		Length: 12
+		Offset: -54,86
+		Tick: 100
+		ZOffset: 1500
+	make:
+		Filename: DATA.R16
+		Start: 4495
+		Length: 11
+		Offset: -54,86
+		ZOffset: 1500
+	smoke:
+		Filename: DATA.R16
+		Start: 4138
+		Length: 14
+		Offset: 13, 16
+		Tick: 100
+		BlendMode: Additive
+
 silo.harkonnen:
 	idle:
 		Filename: DATA.R16
@@ -1763,6 +1883,104 @@ refinery.ordos:
 		Offset: 13,-16
 		Tick: 100
 		BlendMode: Additive
+
+refinery_nw.ordos:
+	idle:
+		Filename: refineryangles/refineryordosbottom_nw.png
+		Offset: 10,26
+		ZOffset: 0
+		Remap: 54F94B
+	idle-middle:
+		Filename: refineryangles/refineryordosmiddle_nw.png
+		Offset: 10,26
+		Remap: 54F94B
+	idle-top:
+		Filename: refineryangles/refineryordostop_nw.png
+		Offset: 10,26
+		Remap: 54F94B
+		ZOffset: 1024
+	damaged-idle:
+		Filename: refineryangles/refineryordosbottom_nw.png
+		Offset: 10,26
+		ZOffset: -1024
+		Remap: 54F94B
+	damaged-idle-top:
+		Filename: refineryangles/refineryordosdamaged_nw.png
+		Offset: 10,26
+		Remap: 54F94B
+		ZOffset: 1024
+	bib:
+		Filename: BLOXBASE.R16
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
+	bib-Concrete:
+		Filename: BLOXBASE.R16
+		Frames: 643, 644, 645, 663, 664, 665
+		Length: 6
+		Offset: -16,-16
+	make:
+		Filename: DATA.R16
+		Start: 4495
+		Length: 11
+		Offset: -54,96
+		ZOffset: 1500
+	crumble-overlay:
+		Filename: DATA.R16
+		Start: 4505
+		Length: 12
+		Offset: -54,96
+		Tick: 100
+		ZOffset: 1500
+	icon:
+		Filename: DATA.R16
+		Start: 4332
+		Offset: -30,-24
+	smoke:
+		Filename: DATA.R16
+		Start: 4138
+		Length: 14
+		Offset: 13, 13
+		Tick: 100
+		BlendMode: Additive
+
+silo.harkonnen:
+	idle:
+		Filename: DATA.R16
+		Start: 2974
+		Offset: -16,16
+		Remap: 54F94B
+	damaged-idle:
+		Filename: DATA.R16
+		Start: 2978
+		Offset: -16,16
+		Remap: 54F94B
+	stages:
+		Filename: DATA.R16
+		Start: 2974
+		Length: 4
+		Offset: -16,16
+	damaged-stages:
+		Filename: DATA.R16
+		Start: 2978
+		Offset: -16,16
+	make:
+		Filename: DATA.R16
+		Start: 4577
+		Length: 8
+		Offset: -16,16
+		Remap: 54F94B
+	crumble-overlay:
+		Filename: DATA.R16
+		Start: 4585
+		Length: 7
+		Offset: -16,16
+		Tick: 100
+		ZOffset: 1024
+	icon:
+		Filename: DATA.R16
+		Start: 4349
+		Offset: -30,-24
 
 silo.ordos:
 	idle:
