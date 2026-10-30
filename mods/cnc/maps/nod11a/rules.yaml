@@ -1,0 +1,175 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod11a.lua, nod11a-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		StartVideo: stealth.vqa
+		LossVideo: deskill.vqa
+		WinVideo: obel.vqa
+		BriefingVideo: nod11.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+	-LegacyBridgeLayer:
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 2000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+FACT:
+	AnnounceOnSeen:
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+BOAT.easy:
+	Inherits: BOAT
+	RenderSprites:
+		Image: boat
+	Armament:
+		Weapon: BoatMissile.easy
+
+ARTY:
+	ExternalCondition@DIFFICULTY-EASY:
+		Condition: difficulty-easy
+	ExternalCondition@DIFFICULTY-NORMAL:
+		Condition: difficulty-normal
+	ExternalCondition@DIFFICULTY-HARD:
+		Condition: difficulty-hard
+	RevealsShroud@DIFFICULTY-EASY:
+		RequiresCondition: difficulty-easy
+		Range: 8c0
+	RevealsShroud@DIFFICULTY-NORMAL:
+		RequiresCondition: difficulty-normal
+		Range: 7c0
+	RevealsShroud@DIFFICULTY-HARD:
+		RequiresCondition: difficulty-hard
+		Range: 7c0
+
+# The Obelisk normally needs the Temple of Nod, which is disabled here
+# (nuclear strike). Require a Communications Center instead.
+OBLI:
+	Buildable:
+		Prerequisites: anyhq, ~techlevel.high
+
+HPAD:
+	Buildable:
+		Prerequisites: ~disabled
+
+HELI:
+	Buildable:
+		Prerequisites: ~disabled
+
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+MISS:
+	CaptureManager:
+	Capturable:
+		Types: building
+	ProvidesPrerequisite:
+		Prerequisite: ezekiel
+
+STNK:
+	Buildable:
+		Prerequisites: ~ezekiel
+	RevealsShroud:
+		Range: 8c0
+	Armament@PRIMARY:
+		Weapon: 227mm.stnk.mission
+	Armament@SECONDARY:
+		Weapon: 227mm.stnkAA.mission
+
+A10.IN:
+	Inherits: A10
+	RenderSprites:
+		Image: A10
+	Armament@BOMBS:
+		Weapon: Napalm.IN
+	Armament@GUNS:
+		Weapon: Vulcan.IN
+
+airstrike.proxy:
+	AirstrikePower:
+		UnitType: a10.in
+		SquadSize: 1
+
+HQ:
+	AirstrikePower:
+		Prerequisites: gdi
+		UnitType: a10.in
+		SquadSize: 1
+		StartFullyCharged: True
+
+TRAN.IN:
+	Inherits: TRAN
+	RejectsOrders:
+	-Selectable:
+	RenderSprites:
+		Image: TRAN
+	Buildable:
+		Prerequisites: ~disabled
+	Interactable:
+
+V20:
+	-SpawnActorOnDeath:
+
+V21:
+	-SpawnActorOnDeath:
+
+V22:
+	-SpawnActorOnDeath:
+
+V23:
+	-SpawnActorOnDeath:
+
+V24:
+	-SpawnActorOnDeath:
+
+V25:
+	SpawnActorOnDeath:
+		Actor: moneycrate
+
+V26:
+	-SpawnActorOnDeath:
+
+V27:
+	-SpawnActorOnDeath:
+
+V28:
+	-SpawnActorOnDeath:
+
+V29:
+	-SpawnActorOnDeath:
+
+V30:
+	-SpawnActorOnDeath:
+
+V31:
+	-SpawnActorOnDeath:
+
+V32:
+	-SpawnActorOnDeath:
+
+V33:
+	-SpawnActorOnDeath:
+
+V34:
+	-SpawnActorOnDeath:
