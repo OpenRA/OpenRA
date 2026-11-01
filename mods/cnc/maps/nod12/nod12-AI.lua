@@ -421,8 +421,8 @@ RebuildSiteTimeoutAttempts = 20
 GDIRebuildQueueType = "Building.GDI"
 GDIBuildingPriority = { fact = 1, nuk2 = 2, proc = 3, pyle = 4, weap = 5, atwr = 6, gtwr = 7 }
 GDIBuildingFootprint = {
-	fact = { 3, 3 }, proc = { 3, 4 }, weap = { 3, 2 }, pyle = { 2, 3 },
-	nuk2 = { 2, 2 }, atwr = { 1, 1 }, gtwr = { 1, 1 },
+	fact = { 3, 3 }, proc = { 3, 4 }, weap = { 3, 3 }, pyle = { 2, 3 },
+	nuk2 = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 },
 }
 
 BuildingKey = function(building)
@@ -922,13 +922,11 @@ ProduceGDIUnit = function(buildingType)
 		return
 	end
 
-	-- Production only needs a harvestable credit balance, not a living
-	-- harvester: with a refinery and some tib on hand, wait for the harvest.
-	if buildingType == "weap" and #GDI.GetActorsByType("harv") == 0 then
-		if #GDI.GetActorsByType("proc") == 0 or GDI.Cash + GDI.Resources < 500 then
-			retry()
-			return
-		end
+	-- Only the refinery and affordable funds count, no harvester check: on
+	-- easy/normal the harvester economy (CheckGDIEconomy) only runs on hard.
+	if #GDI.GetActorsByType("proc") == 0 or GDI.Cash + GDI.Resources < 500 then
+		retry()
+		return
 	end
 
 	if CountProducedUnits() >= MaxProducedUnits[Difficulty or "normal"] then
