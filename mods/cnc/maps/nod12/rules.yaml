@@ -1,0 +1,80 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, nod12.lua, nod12-AI.lua
+	MusicPlaylist:
+		StartingMusic: march
+		VictoryMusic: nod_win1
+	MissionData:
+		Briefing: briefing
+		StartVideo: akira.vqa
+		LossVideo: nodlose.vqa
+		WinVideo: spycrash.vqa
+		BriefingVideo: nod12.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	MapBuildRadius:
+		BuildRadiusCheckboxEnabled: False
+	-LegacyBridgeLayer:
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 5000
+	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+		Enabled: True
+
+# The original map places a supply crate at (45,4), which sits inside the GDI
+# Construction Yard's footprint and therefore only becomes visible once the
+# yard is destroyed. The stock SCRATE actor has no CrateAction at all, so
+# driving over it did nothing; give it a cash reward like the original crates.
+SCRATE:
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 1
+		UseCashTick: true
+
+HARV:
+	Harvester:
+		SearchFromProcRadius: 30
+		SearchFromHarvesterRadius: 20
+
+# The Temple of Nod does not exist in this mission (and with it the nuclear
+# strike), but the Obelisk of Light and the Stealth Tank belong to the Nod
+# arsenal here. Build them after a Communications Center instead.
+TMPL:
+	Buildable:
+		Prerequisites: ~disabled
+
+OBLI:
+	Buildable:
+		Prerequisites: anyhq, ~techlevel.high
+
+STNK:
+	Buildable:
+		Prerequisites: anyhq, ~techlevel.high
+
+# Deliberate deviation from the original: Nod may build a Helipad after its
+# Refinery and Apaches after a Communications Center. GDI uses the two pads
+# already on the map for its Orcas.
+
+# The original win condition is attached to the Advanced Communications
+# Center: capturing it wins the mission, destroying it loses. Base buildings
+# normally can only be sabotaged by engineers, so allow a regular capture.
+EYE:
+	Capturable:
+		Types: building
+	# Shorter recharge so the scripted ion cannon strike is actually seen.
+	IonCannonPower:
+		ChargeInterval: 3000
+
+# The original A10 reinforcement (air1) consists of two aircraft.
+HQ:
+	AirstrikePower:
+		SquadSize: 2
