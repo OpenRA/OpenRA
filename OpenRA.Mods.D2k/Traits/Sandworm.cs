@@ -143,8 +143,15 @@ namespace OpenRA.Mods.D2k.Traits
 			if (disposed)
 				return;
 
-			manager.DecreaseActorCount();
 			disposed = true;
+			var otherWorms = self.World.ActorsHavingTrait<Sandworm>()
+				.Where(a => a != self)
+				.ToArray();
+
+			// Not all campaign worms are spawned by the manager, so its count
+			// may be less than the worms present. Avoid an extra decrease.
+			if (manager.GetActorCount() > otherWorms.Length)
+				manager.DecreaseActorCount();
 		}
 	}
 }
