@@ -127,8 +127,8 @@ TeamDefs = {
 	auto4 = { units = { "e3", "e3", "jeep" }, moves = NorthRoute17 },
 	auto5 = { units = { "e1", "e1", "e1", "mtnk" }, moves = Route16 },
 	auto6 = { units = { "e3", "e3", "mtnk" }, moves = NorthRoute17 },
-	auto7 = { units = { "mtnk" }, moves = NorthRoute16 },
-	auto8 = { units = { "mtnk" }, moves = Route17 },
+	auto7 = { units = { "htnk" }, moves = NorthRoute16 },
+	auto8 = { units = { "htnk" }, moves = Route17 },
 	auto9 = { units = { "jeep", "jeep" }, moves = Route17 },
 }
 
