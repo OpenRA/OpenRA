@@ -879,9 +879,8 @@ ProduceOrca = function()
 	local retry = function() ProduceOrca() end
 	local pads = GDI.GetActorsByType("hpad")
 
-	-- Same economy rule as ProduceGDIUnit: refinery and affordable funds.
-	if #pads == 0 or #GDI.GetActorsByType("proc") == 0
-		or GDI.Cash + GDI.Resources < 500
+	-- Same economy rule as ProduceGDIUnit: no harvester, no new units.
+	if #pads == 0 or #GDI.GetActorsByType("harv") == 0
 		or #GDI.GetActorsByType("orca") >= MaxOrcas[Difficulty or "normal"] then
 		Trigger.AfterDelay(DateTime.Seconds(15), retry)
 		return
@@ -929,10 +928,8 @@ ProduceGDIUnit = function(buildingType)
 	local retry = function() ProduceGDIUnit(buildingType) end
 	local factories = GDI.GetActorsByType(buildingType)
 
-	-- Only the refinery and affordable funds count; otherwise easy/normal
-	-- would stop forever (CheckGDIEconomy only runs on hard).
-	if #factories == 0 or #GDI.GetActorsByType("proc") == 0
-		or GDI.Cash + GDI.Resources < 500
+	-- Production depends on the economy: no harvester, no new units.
+	if #factories == 0 or #GDI.GetActorsByType("harv") == 0
 		or CountProducedUnits() >= MaxProducedUnits[Difficulty or "normal"] then
 		TrySendGroup()
 		Trigger.AfterDelay(DateTime.Seconds(10), retry)
@@ -976,12 +973,12 @@ ProduceGDIUnit = function(buildingType)
 	end
 end
 
--- Hard only: if GDI has lost its last harvester it (1) builds a new one at the
+-- If GDI has lost its last harvester it (1) builds a new one at the
 -- Weapons Factory, (2) without a factory re-creates the refinery (a new
 -- refinery brings a free harvester), (3) sells buildings for money (never the
 -- Construction Yard, HQ, Weapons Factory or Refinery; power plants only last
 -- and only while power stays sufficient), (4) as a last resort all
--- GDI ground units and Orcas attack.
+-- GDI ground units and Orcas attack (not on Easy).
 EconomySellOrder = { "silo", "gtwr", "atwr", "pyle", "hpad" }
 -- Power plants are sold last and only while the remaining power still covers
 -- the drain (never the HQ: it is not in any sell list).
@@ -1144,9 +1141,11 @@ CheckGDIEconomy = function()
 		return
 	end
 
-	-- Nothing left to do: all-out attack.
-	AllOutAttackStarted = true
-	StartBaseDefense()
+	-- Nothing left to do: all-out attack. Easy never does this.
+	if Difficulty ~= "easy" then
+		AllOutAttackStarted = true
+		StartBaseDefense()
+	end
 end
 
 TryStartGDIProduction = function()
@@ -1161,9 +1160,7 @@ TryStartGDIProduction = function()
 	ProduceOrca()
 	OrcaWatch()
 
-	if Difficulty == "hard" then
-		Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
-	end
+	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
 end
 
 StartBaseDefense = function()
