@@ -154,7 +154,7 @@ GDIBaseBuildings = {
 
 GDIProductionTypes = {
 	pyle = { "e1", "e2", "e3" },
-	weap = { "jeep", "mtnk", "mtnk", "msam", "apc" },
+	weap = { "jeep", "mtnk", "htnk", "msam", "apc" },
 }
 
 -- Original `grd1` cell trigger south of the river.
