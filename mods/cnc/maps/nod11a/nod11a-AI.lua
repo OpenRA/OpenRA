@@ -75,6 +75,117 @@ HuntBuildings = {
 	GDIBarracks, GDICYard, GDIProc, GDIWeaponsFactory,
 }
 
+IsMobileNod = function(actor)
+	return actor.Owner == Nod and actor.HasProperty("Move")
+end
+
+IsNorthOfRiver = function(actor)
+	return actor.Location.Y < RiverCenter.Location.Y
+end
+
+local function IsDeadOrIdle(actor)
+	return actor.IsDead or actor.IsIdle
+end
+
+-- Guard units stay near their post, attack intruders in a small area and then
+-- return. Once the group is idle again it is re-armed.
+local function GuardArea(guards, center, range)
+	guards = Utils.Where(guards, function(guard)
+		return not guard.IsDead
+	end)
+
+	if #guards == 0 then
+		return
+	end
+
+	local activated = false
+	local refreshed = false
+
+	Trigger.OnEnteredProximityTrigger(center, range, function(target, id)
+		if activated or not IsMobileNod(target) then
+			return
+		end
+
+		activated = true
+		Trigger.RemoveProximityTrigger(id)
+
+		Utils.Do(guards, function(guard)
+			if guard.IsDead or not guard.IsIdle then
+				return
+			end
+
+			guard.AttackMove(target.Location, 2)
+			guard.AttackMove(guard.Location)
+		end)
+	end)
+
+	Utils.Do(guards, function(guard)
+		guard.Stance = "Defend"
+
+		Trigger.OnIdle(guard, function()
+			if refreshed or not activated or not Utils.All(guards, IsDeadOrIdle) then
+				return
+			end
+
+			refreshed = true
+
+			Utils.Do(guards, function(g)
+				if g.IsDead then
+					return
+				end
+
+				Trigger.Clear(g, "OnIdle")
+			end)
+
+			Trigger.AfterDelay(10, function()
+				GuardArea(guards, center, range)
+			end)
+		end)
+	end)
+end
+
+PrepareAreaGuards = function()
+	local teams =
+	{
+		{ actors = { SouthGrenadier1, SouthGrenadier2, SouthGrenadier3, SouthGrenadier4 }, range = 6 },
+		{ actors = { SouthBridgeTank }, range = 8 },
+		{ actors = { WestEdgeTank } },
+		-- 6 instead of the default 7: the northern starting squad is 6.3 cells
+		-- away, so the jeep does not attack it before the player has moved.
+		{ actors = { BridgeHumvee }, range = 6 },
+	}
+
+	Utils.Do(teams, function(team)
+		local radius = WDist.FromCells(team.range or 7)
+		local center = team.center or team.actors[1].CenterPosition
+		GuardArea(team.actors, center, radius)
+	end)
+end
+
+-- The two guard towers at the hidden Nod base reveal themselves when a Nod
+-- unit approaches from the north. This is cosmetic (2.5 cells around the
+-- tower) and mirrors the original mission's reveal-on-approach.
+local function RevealTechBaseTower(tower)
+	if tower.IsDead then
+		return
+	end
+
+	tower.GrantCondition("revealed")
+end
+
+PrepareTowerReveals = function()
+	Utils.Do({ TechBaseTower1, TechBaseTower2 }, function(tower)
+		Trigger.OnEnteredProximityTrigger(tower.CenterPosition, WDist.FromCells(9), function(actor, id)
+			if not IsMobileNod(actor) or not IsNorthOfRiver(actor) then
+				return
+			end
+
+			Trigger.RemoveProximityTrigger(id)
+			RevealTechBaseTower(tower)
+		end)
+	end)
+end
+
 -- Waves enter on the top map edge (y = 3) instead of inside the playable
 -- area, so they walk in rather than pop up.
 WaveSpawn = CPos.New(waypoint6.Location.X, 3)
@@ -137,6 +248,7 @@ AttackScheduleStarted = false
 -- Set for good once the GDI Construction Yard is destroyed or captured: no more waves.
 WavesStopped = false
 Atk1Sent = false
+Atk1Pending = false
 ProducedGDIUnits = {}
 ProductionBusy = {}
 OrcaBusy = nil
@@ -377,8 +489,8 @@ end
 --    are killed (OnKilled) and buildings GDI sold for money come back once the
 --    economy runs again.
 --  * One building at a time, paid up front, placed after its normal build time.
---  * Order by importance (Construction Yard first); an unaffordable important
---    building does not block cheap ones (<= RebuildCheapCost).
+--  * Order by importance (Construction Yard first); the first affordable
+--    building in that order is rebuilt next.
 --  * Everything except the Construction Yard needs a living Construction Yard.
 --  * The site must be free: GDI units are sent away, enemy units are waited out.
 RebuildQueue = {}
@@ -386,7 +498,6 @@ RebuildWorkerRunning = false
 RebuildBusy = false
 RebuildPending = {}
 RebuildPollSeconds = 5
-RebuildCheapCost = 500
 RebuildSiteTimeoutAttempts = 30
 -- Seconds a sold building needs before it counts as gone (sell animation).
 RebuildSoldDelaySeconds = 15
@@ -394,8 +505,8 @@ RebuildSoldDelaySeconds = 15
 GDIBuildingPriority = { fact = 1, proc = 2, weap = 3, pyle = 4, hq = 5, nuke = 6, atwr = 7, gtwr = 8, hpad = 9, silo = 10 }
 -- Occupied cells (width, height) of each building, used for the free-site check.
 GDIBuildingFootprint = {
-	fact = { 3, 2 }, proc = { 3, 3 }, weap = { 3, 2 }, pyle = { 2, 2 }, hq = { 2, 2 },
-	nuke = { 2, 2 }, atwr = { 1, 2 }, gtwr = { 1, 1 }, hpad = { 2, 2 }, silo = { 2, 1 },
+	fact = { 3, 3 }, proc = { 3, 4 }, weap = { 3, 3 }, pyle = { 2, 3 }, hq = { 2, 3 },
+	nuke = { 2, 3 }, atwr = { 1, 1 }, gtwr = { 1, 1 }, hpad = { 2, 2 }, silo = { 2, 1 },
 }
 -- Hard: restored every time they are killed.
 HardRebuildTypes = { fact = true, proc = true, weap = true, pyle = true }
@@ -568,9 +679,9 @@ PickRebuildCandidate = function()
 		return GDIBuildingPriority[a.building.type] < GDIBuildingPriority[b.building.type]
 	end)
 
-	for index, entry in ipairs(eligible) do
+	for _, entry in ipairs(eligible) do
 		local cost = Actor.Cost(entry.building.type)
-		if GDI.Cash >= cost and (index == 1 or cost <= RebuildCheapCost) then
+		if GDI.Cash >= cost then
 			return entry
 		end
 	end
@@ -768,6 +879,7 @@ ProduceOrca = function()
 	local retry = function() ProduceOrca() end
 	local pads = GDI.GetActorsByType("hpad")
 
+	-- Same economy rule as ProduceGDIUnit: no harvester, no new units.
 	if #pads == 0 or #GDI.GetActorsByType("harv") == 0
 		or #GDI.GetActorsByType("orca") >= MaxOrcas[Difficulty or "normal"] then
 		Trigger.AfterDelay(DateTime.Seconds(15), retry)
@@ -861,13 +973,13 @@ ProduceGDIUnit = function(buildingType)
 	end
 end
 
--- Hard only: if GDI has lost its last harvester it (1) builds a new one at the
+-- If GDI has lost its last harvester it (1) builds a new one at the
 -- Weapons Factory, (2) without a factory re-creates the refinery (a new
 -- refinery brings a free harvester), (3) sells buildings for money (never the
 -- Construction Yard, HQ, Weapons Factory or Refinery; power plants only last
 -- and only while power stays sufficient), (4) as a last resort all
--- GDI ground units and Orcas attack.
-EconomySellOrder = { "hpad", "silo", "gtwr", "atwr", "pyle" }
+-- GDI ground units and Orcas attack (not on Easy).
+EconomySellOrder = { "silo", "gtwr", "atwr", "pyle", "hpad" }
 -- Power plants are sold last and only while the remaining power still covers
 -- the drain (never the HQ: it is not in any sell list).
 PowerPlantType = "nuke"
@@ -913,17 +1025,32 @@ BuildGDIHarvester = function(factory)
 end
 
 -- Creates the refinery at `position` (paid, after its build time). A fresh
--- refinery spawns a free harvester.
-CreateGDIRefinery = function(position, delay)
+-- refinery spawns a free harvester. If the money was spent in the meantime
+-- the refinery is not dropped: the payment is retried (RefineryPayAttempts).
+RefineryPayAttempts = 12
+CreateGDIRefinery = function(position, delay, attempt)
+	attempt = attempt or 0
 	RefineryBusy = true
 	Trigger.AfterDelay(delay, function()
 		local cost = Actor.Cost("proc")
 		if GDI.Cash >= cost then
 			GDI.Cash = GDI.Cash - cost
 			RegisterGDIBuilding(Actor.Create("proc", true, { Owner = GDI, Location = position }))
+			RefineryBusy = false
+		elseif attempt < RefineryPayAttempts then
+			CreateGDIRefinery(position, DateTime.Seconds(5), attempt + 1)
+		else
+			RefineryBusy = false
 		end
-		RefineryBusy = false
 	end)
+end
+
+-- Engine default Sellable.RefundPercent: a sold building returns 50 % of its
+-- cost, scaled by its health. Replacing a refinery therefore nets
+-- cost - refund for GDI (the sale is credited before the new refinery is paid).
+ReplaceRefundPercent = 50
+ProcRefund = function(proc)
+	return math.floor(Actor.Cost("proc") * ReplaceRefundPercent * proc.Health / (100 * proc.MaxHealth))
 end
 
 ReplaceGDIRefinery = function(proc)
@@ -938,7 +1065,9 @@ SellForEconomy = function()
 	local candidate = nil
 	for _, buildingType in ipairs(EconomySellOrder) do
 		local list = GDI.GetActorsByType(buildingType)
-		if #list > 0 then
+		-- Orcas need the helipad to repair and return: sold last.
+		local keepPad = buildingType == "hpad" and #GDI.GetActorsByType("orca") > 0
+		if #list > 0 and not keepPad then
 			candidate = list[1]
 			break
 		end
@@ -988,12 +1117,13 @@ CheckGDIEconomy = function()
 	local refineries = GDI.GetActorsByType("proc")
 
 	if #factories > 0 and #refineries > 0 then
-		if GDIFunds() >= Actor.Cost("harv") then
+		if GDI.Cash >= Actor.Cost("harv") then
 			BuildGDIHarvester(factories[1])
 			return
 		end
-	elseif GDI.Cash >= Actor.Cost("proc") then
+	elseif GDI.Cash + (#refineries > 0 and ProcRefund(refineries[1]) or 0) >= Actor.Cost("proc") then
 		-- No factory (or no refinery): a new refinery brings a free harvester.
+		-- A replacement is paid partly by the refund of the sold refinery.
 		if #refineries > 0 then
 			ReplaceGDIRefinery(refineries[1])
 		else
@@ -1011,9 +1141,11 @@ CheckGDIEconomy = function()
 		return
 	end
 
-	-- Nothing left to do: all-out attack.
-	AllOutAttackStarted = true
-	StartBaseDefense()
+	-- Nothing left to do: all-out attack. Easy never does this.
+	if Difficulty ~= "easy" then
+		AllOutAttackStarted = true
+		StartBaseDefense()
+	end
 end
 
 TryStartGDIProduction = function()
@@ -1028,9 +1160,7 @@ TryStartGDIProduction = function()
 	ProduceOrca()
 	OrcaWatch()
 
-	if Difficulty == "hard" then
-		Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
-	end
+	Trigger.AfterDelay(DateTime.Seconds(10), CheckGDIEconomy)
 end
 
 StartBaseDefense = function()
@@ -1049,6 +1179,13 @@ StartAttackSchedule = function()
 	end
 
 	AttackScheduleStarted = true
+
+	-- atk1 was entered before the takeover: send it now.
+	if Atk1Pending and not Atk1Sent then
+		Atk1Sent = true
+		AttackWave(TeamDefs.atk1)
+	end
+
 	local times = WaveTimes[Difficulty or "normal"]
 
 	Trigger.AfterDelay(DateTime.Seconds(4), StartMammothPatrol)
@@ -1075,6 +1212,8 @@ end
 
 SetupAI = function()
 	InitSouthGroup()
+	PrepareAreaGuards()
+	PrepareTowerReveals()
 
 	Trigger.OnEnteredFootprint(Atk1Cells, function(actor, id)
 		if actor.Owner == Nod and BaseTakenOver and not Atk1Sent then
@@ -1082,6 +1221,9 @@ SetupAI = function()
 			Atk1Sent = true
 			Trigger.RemoveFootprintTrigger(id)
 			AttackWave(TeamDefs.atk1)
+		elseif actor.Owner == Nod and not BaseTakenOver then
+			-- Base not yet taken over: keep the trigger, StartAttackSchedule sends the team.
+			Atk1Pending = true
 		end
 	end)
 
@@ -1133,6 +1275,4 @@ SetupAI = function()
 	Trigger.OnKilled(GDIHQ, function()
 		AirstrikeDisabled = true
 	end)
-
-	TryStartGDIProduction()
 end

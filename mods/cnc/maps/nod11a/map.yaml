@@ -622,10 +622,10 @@ Actors:
 	Actor189: v20
 		Location: 7,55
 		Owner: Neutral
-	Actor190: gtwr
+	TechBaseTower1: gtwr
 		Location: 8,41
 		Owner: GDI
-	Actor191: gtwr
+	TechBaseTower2: gtwr
 		Location: 12,41
 		Owner: GDI
 	NodConYard: fact
@@ -644,7 +644,7 @@ Actors:
 	Actor196: hpad
 		Location: 44,4
 		Owner: GDI
-	Actor198: mtnk
+	WestEdgeTank: mtnk
 		Location: 4,18
 		Owner: GDI
 		Facing: 896
@@ -671,7 +671,7 @@ Actors:
 		Location: 51,51
 		Owner: GDI
 		Facing: 896
-	Actor206: htnk
+	SouthBridgeTank: htnk
 		Location: 29,55
 		Owner: GDI
 		Facing: 640
@@ -691,7 +691,7 @@ Actors:
 		Location: 11,34
 		Owner: GDI
 		Facing: 384
-	Actor212: jeep
+	BridgeHumvee: jeep
 		Location: 11,11
 		Owner: GDI
 		Facing: 640
@@ -729,19 +729,19 @@ Actors:
 		Owner: Nod
 		Facing: 512
 		SubCell: 1
-	Actor221: e2
+	SouthGrenadier1: e2
 		Location: 42,52
 		Owner: GDI
 		SubCell: 2
-	Actor222: e2
+	SouthGrenadier2: e2
 		Location: 43,52
 		Owner: GDI
 		SubCell: 1
-	Actor223: e2
+	SouthGrenadier3: e2
 		Location: 43,51
 		Owner: GDI
 		SubCell: 4
-	Actor224: e2
+	SouthGrenadier4: e2
 		Location: 42,51
 		Owner: GDI
 		SubCell: 5
@@ -832,6 +832,9 @@ Actors:
 		Owner: Nod
 		Facing: 512
 	DefaultChinookTarget: waypoint
+		Location: 34,45
+		Owner: Neutral
+	RiverCenter: waypoint
 		Location: 34,45
 		Owner: Neutral
 	BoatLocation: waypoint
